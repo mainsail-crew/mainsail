@@ -108,12 +108,6 @@
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
                 show-select>
-                <template slot="items" slot-scope="props">
-                    <td v-for="header in filteredHeaders" :key="header.text" class="text-no-wrap">
-                        {{ props.item[header.value] }}
-                    </td>
-                </template>
-
                 <template slot="no-data">
                     <div class="text-center">{{ $t('History.Empty') }}</div>
                 </template>

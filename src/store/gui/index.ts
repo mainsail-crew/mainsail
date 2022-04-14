@@ -168,6 +168,7 @@ export const getDefaultState = (): GuiState => {
                 showPrintedFiles: true,
                 hideMetadataColums: [],
                 currentPath: 'gcodes',
+                selectedFiles: [],
             },
             heightmap: {
                 probed: true,

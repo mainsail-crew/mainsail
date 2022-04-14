@@ -153,6 +153,7 @@
         "Delete": "Delete",
         "DeleteDirectory": "Delete Directory",
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
+        "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
         "Download": "Download",
         "Downloading": "Downloading",
         "DoYouWantToStartFilename": "Do you want to start {filename}?",

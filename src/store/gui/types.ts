@@ -4,6 +4,7 @@ import { GuiPresetsState } from '@/store/gui/presets/types'
 import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { GuiNotificationState } from '@/store/gui/notifications/types'
+import { FileStateGcodefile } from '@/store/files/types'
 
 export interface GuiState {
     general: {
@@ -116,6 +117,7 @@ export interface GuiState {
             showPrintedFiles: boolean
             hideMetadataColums: string[]
             currentPath: string
+            selectedFiles: FileStateGcodefile[]
         }
         heightmap: {
             probed: boolean

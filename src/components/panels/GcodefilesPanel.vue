@@ -1,4 +1,4 @@
-<style scoped>
+<style>
 .files-table .v-data-table-header__icon {
     margin-left: 7px;
 }
@@ -11,7 +11,15 @@
     position: relative;
 }
 
-.dragzone {
+.file-list--select-td {
+    width: 20px;
+}
+
+.files-table th.text-start {
+    padding-right: 0 !important;
+}
+
+.file-list__dragzone {
     position: absolute;
     top: 0;
     left: 0;
@@ -24,7 +32,7 @@
     font: bold 42px Oswald, DejaVu Sans, Tahoma, sans-serif;
 }
 
-.dragzone:before {
+.file-list__dragzone:before {
     display: block;
     content: ' ';
     position: absolute;
@@ -36,7 +44,7 @@
     border-radius: 15px;
 }
 
-.dragzone .textnode {
+.file-list__dragzone .textnode {
     text-align: center;
     transition: font-size 175ms;
 }
@@ -59,6 +67,14 @@
                             dense
                             style="max-width: 300px"></v-text-field>
                         <v-spacer></v-spacer>
+                        <v-btn
+                            v-if="selectedFiles.length"
+                            :title="$t('Files.Delete')"
+                            color="warning"
+                            class="px-2 minwidth-0 ml-3"
+                            @click="deleteSelectedDialog = true">
+                            <v-icon>{{ mdiDelete }}</v-icon>
+                        </v-btn>
                         <input
                             ref="fileUpload"
                             type="file"
@@ -150,6 +166,7 @@
             </v-card-text>
             <v-divider class="mb-3"></v-divider>
             <v-data-table
+                v-model="selectedFiles"
                 :items="files"
                 class="files-table"
                 :headers="filteredHeaders"
@@ -162,10 +179,11 @@
                     itemsPerPageAllText: $t('Files.AllFiles'),
                     itemsPerPageOptions: [10, 25, 50, 100, -1],
                 }"
-                item-key="name"
+                item-key="filename"
                 :search="search"
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
+                show-select
                 @current-items="refreshMetadata">
                 <template #no-data>
                     <div class="text-center">{{ $t('Files.Empty') }}</div>
@@ -185,7 +203,7 @@
                     </tr>
                 </template>
 
-                <template #item="{ index, item }">
+                <template #item="{ index, item, isSelected, select }">
                     <tr
                         :key="`${index} ${item.filename}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
@@ -199,7 +217,14 @@
                         @dragover="dragOverFilelist($event, item)"
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, item)">
-                        <td class="pr-0 text-center" style="width: 32px">
+                        <td class="file-list__select-td pr-0">
+                            <v-simple-checkbox
+                                v-ripple
+                                :value="isSelected"
+                                class="pa-0 mr-0"
+                                @click.stop="select(!isSelected)"></v-simple-checkbox>
+                        </td>
+                        <td class="px-0 text-center" style="width: 32px">
                             <template v-if="item.isDirectory">
                                 <v-icon>{{ mdiFolder }}</v-icon>
                             </template>
@@ -315,7 +340,7 @@
                 </template>
             </v-data-table>
             <div
-                class="dragzone d-flex justify-center flex-column"
+                class="file-list__dragzone d-flex justify-center flex-column"
                 :style="'visibility: ' + dropzone.visibility + '; opacity: ' + dropzone.hidden">
                 <div class="textnode">{{ $t('Files.DropFilesToAddGcode') }}</div>
             </div>
@@ -523,6 +548,23 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <v-dialog v-model="deleteSelectedDialog" max-width="400">
+            <panel :title="$t('Files.Delete')" card-class="gcode-files-delete-selected-dialog" :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="deleteSelectedDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">{{ $t('Files.DeleteSelectedQuestion', { count: selectedFiles.length }) }}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="deleteSelectedDialog = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn color="error" text @click="deleteSelectedFiles">{{ $t('Files.Delete') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </div>
 </template>
 
@@ -556,6 +598,7 @@ import {
     mdiCloseThick,
     mdiClose,
 } from '@mdi/js'
+import { ServerHistoryStateJob } from '@/store/server/history/types'
 
 interface draggingFile {
     status: boolean
@@ -650,6 +693,15 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            small_thumbnail: null,
+            big_thumbnail: null,
+            big_thumbnail_width: null,
+            last_filament_used: null,
+            last_start_time: null,
+            last_end_time: null,
+            last_print_duration: null,
+            last_status: null,
+            last_total_duration: null,
         },
     }
     private uploadSnackbar: uploadSnackbar = {
@@ -691,6 +743,15 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            small_thumbnail: null,
+            big_thumbnail: null,
+            big_thumbnail_width: null,
+            last_filament_used: null,
+            last_start_time: null,
+            last_end_time: null,
+            last_print_duration: null,
+            last_status: null,
+            last_total_duration: null,
         },
     }
 
@@ -702,6 +763,15 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            small_thumbnail: null,
+            big_thumbnail: null,
+            big_thumbnail_width: null,
+            last_filament_used: null,
+            last_start_time: null,
+            last_end_time: null,
+            last_print_duration: null,
+            last_status: null,
+            last_total_duration: null,
         },
     }
 
@@ -713,6 +783,15 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            small_thumbnail: null,
+            big_thumbnail: null,
+            big_thumbnail_width: null,
+            last_filament_used: null,
+            last_start_time: null,
+            last_end_time: null,
+            last_print_duration: null,
+            last_status: null,
+            last_total_duration: null,
         },
     }
 
@@ -724,8 +803,19 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            small_thumbnail: null,
+            big_thumbnail: null,
+            big_thumbnail_width: null,
+            last_filament_used: null,
+            last_start_time: null,
+            last_end_time: null,
+            last_print_duration: null,
+            last_status: null,
+            last_total_duration: null,
         },
     }
+
+    private deleteSelectedDialog = false
 
     private input_rules = [(value: string) => value.indexOf(' ') === -1 || 'Name contains spaces!']
 
@@ -738,6 +828,14 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
     set currentPath(newVal) {
         this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.currentPath', value: newVal })
+    }
+
+    get selectedFiles() {
+        return this.$store.state.gui.view.gcodefiles.selectedFiles ?? []
+    }
+
+    set selectedFiles(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.selectedFiles', value: newVal })
     }
 
     get headers() {
@@ -937,7 +1035,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         )
     }
 
-    getJobStatus(item: FileStateFile) {
+    getJobStatus(item: FileStateGcodefile) {
         return this.$store.getters['server/history/getPrintStatus'](item.job_id)
     }
 
@@ -1154,9 +1252,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         )
     }
 
-    refreshMetadata(data: FileStateFile[]) {
+    refreshMetadata(data: FileStateGcodefile[]) {
         const items = data.filter((file) => !file.isDirectory && !file.metadataRequested && !file.metadataPulled)
-        items.forEach((file: FileStateFile) => {
+        items.forEach((file: FileStateGcodefile) => {
             this.$store.dispatch('files/requestMetadata', {
                 filename: 'gcodes' + this.currentPath + '/' + file.filename,
             })
@@ -1171,7 +1269,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         )
     }
 
-    clickRow(item: FileStateFile, force = false) {
+    clickRow(item: FileStateGcodefile, force = false) {
         if (!this.contextMenu.shown || force) {
             if (force) this.contextMenu.shown = false
 
@@ -1188,7 +1286,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf('/'))
     }
 
-    addToQueue(item: FileStateFile) {
+    addToQueue(item: FileStateGcodefile) {
         let path = this.currentPath.slice(7)
         if (path != '') path += '/'
         const filename = path + item.filename
@@ -1246,7 +1344,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         }
     }
 
-    editFile(item: FileStateFile) {
+    editFile(item: FileStateGcodefile) {
         const path = this.currentPath === 'gcodes' ? '' : this.currentPath.slice(7)
 
         this.$store.dispatch('editor/openFile', {
@@ -1265,7 +1363,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         window.open(href)
     }
 
-    renameFile(item: FileStateFile) {
+    renameFile(item: FileStateGcodefile) {
         this.dialogRenameFile.item = item
         this.dialogRenameFile.newName = item.filename
         this.dialogRenameFile.show = true
@@ -1287,7 +1385,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         )
     }
 
-    renameDirectory(item: FileStateFile) {
+    renameDirectory(item: FileStateGcodefile) {
         this.dialogRenameDirectory.item = item
         this.dialogRenameDirectory.newName = item.filename
         this.dialogRenameDirectory.show = true
@@ -1312,12 +1410,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     removeFile() {
         this.$socket.emit(
             'server.files.delete_file',
-            { path: this.currentPath + '/' + this.contextMenu.item.filename },
+            { path: 'gcodes/' + this.currentPath + this.contextMenu.item.filename },
             { action: 'files/getDeleteFile' }
         )
     }
 
-    deleteDirectory(item: FileStateFile) {
+    deleteDirectory(item: FileStateGcodefile) {
         this.dialogDeleteDirectory.item = item
         this.dialogDeleteDirectory.show = true
     }
@@ -1337,7 +1435,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$socket.emit('printer.print.start', { filename: filename }, { action: 'switchToDashboard' })
     }
 
-    dragFile(e: Event, item: FileStateFile) {
+    dragFile(e: Event, item: FileStateGcodefile) {
         e.preventDefault()
         this.draggingFile.status = true
         this.draggingFile.item = item
@@ -1351,6 +1449,15 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            small_thumbnail: null,
+            big_thumbnail: null,
+            big_thumbnail_width: null,
+            last_filament_used: null,
+            last_start_time: null,
+            last_end_time: null,
+            last_print_duration: null,
+            last_status: null,
+            last_total_duration: null,
         }
     }
 
@@ -1370,6 +1477,19 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
     view3D(item: FileStateFile) {
         this.$router.push({ path: '/viewer', query: { filename: this.currentPath + '/' + item.filename } })
+    }
+
+    deleteSelectedFiles() {
+        this.selectedFiles.forEach((item: FileStateGcodefile) => {
+            this.$socket.emit(
+                'server.files.delete_file',
+                { path: 'gcodes/' + this.currentPath + item.filename },
+                { action: 'files/getDeleteFile' }
+            )
+        })
+
+        this.selectedFiles = []
+        this.deleteSelectedDialog = false
     }
 }
 </script>
