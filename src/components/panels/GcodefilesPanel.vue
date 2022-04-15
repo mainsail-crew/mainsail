@@ -282,64 +282,14 @@
                             </v-tooltip>
                         </td>
                         <td
-                            v-if="headers.find((header) => header.value === 'size').visible"
-                            class="text-no-wrap text-right">
-                            {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
-                        </td>
-                        <td v-if="headers.find((header) => header.value === 'modified').visible" class="text-right">
-                            {{ formatDate(item.modified) }}
-                        </td>
-                        <td
-                            v-if="headers.find((header) => header.value === 'object_height').visible"
-                            class="text-no-wrap text-right">
-                            {{ item.object_height ? item.object_height.toFixed(2) + ' mm' : '--' }}
-                        </td>
-                        <td
-                            v-if="headers.find((header) => header.value === 'layer_height').visible"
-                            class="text-no-wrap text-right">
-                            {{ item.layer_height ? item.layer_height.toFixed(2) + ' mm' : '--' }}
-                        </td>
-                        <td
-                            v-if="headers.find((header) => header.value === 'nozzle_diameter').visible"
-                            class="text-no-wrap text-right">
-                            {{ item.nozzle_diameter ? item.nozzle_diameter.toFixed(2) + ' mm' : '--' }}
-                        </td>
-                        <td
-                            v-if="headers.find((header) => header.value === 'filament_name').visible"
-                            class="text-no-wrap text-right">
-                            {{ item.filament_name ? item.filament_name : '--' }}
-                        </td>
-                        <td
-                            v-if="headers.find((header) => header.value === 'filament_type').visible"
-                            class="text-no-wrap text-right">
-                            {{ item.filament_type ? item.filament_type : '--' }}
-                        </td>
-                        <td
-                            v-if="headers.find((header) => header.value === 'filament_total').visible"
-                            class="text-no-wrap text-right">
-                            {{ item.filament_total ? item.filament_total.toFixed() + ' mm' : '--' }}
-                        </td>
-                        <td
-                            v-if="headers.find((header) => header.value === 'filament_weight_total').visible"
-                            class="text-no-wrap text-right">
-                            {{ item.filament_weight_total ? item.filament_weight_total.toFixed(2) + ' g' : '--' }}
-                        </td>
-                        <td
-                            v-if="headers.find((header) => header.value === 'estimated_time').visible"
-                            class="text-no-wrap text-right">
-                            {{ formatPrintTime(item.estimated_time) }}
-                        </td>
-                        <td
-                            v-if="headers.find((header) => header.value === 'last_print_duration').visible"
-                            class="text-no-wrap text-right">
-                            {{ formatPrintTime(item.last_print_duration) }}
-                        </td>
-                        <td
-                            v-if="headers.find((header) => header.value === 'slicer').visible"
-                            class="text-no-wrap text-right">
-                            {{ item.slicer ? item.slicer : '--' }}
-                            <br />
-                            <small v-if="item.slicer_version">{{ item.slicer_version }}</small>
+                            v-for="col in tableFields"
+                            :key="col.value"
+                            :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
+                            {{ outputValue(col, item) }}
+                            <template v-if="col.value === 'slicer'">
+                                <br />
+                                <small v-if="item.slicer_version">{{ item.slicer_version }}</small>
+                            </template>
                         </td>
                     </tr>
                 </template>
@@ -603,7 +553,6 @@ import {
     mdiCloseThick,
     mdiClose,
 } from '@mdi/js'
-import { ServerHistoryStateJob } from '@/store/server/history/types'
 
 interface draggingFile {
     status: boolean
@@ -845,60 +794,59 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
     get headers() {
         const headers = [
-            { text: '', value: '', align: 'left', configable: false, visible: true, filterable: false },
+            { text: '', value: '', configable: false, visible: true, filterable: false, sortable: false },
             {
                 text: this.$t('Files.Name'),
                 value: 'filename',
-                align: 'left',
                 configable: false,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'string',
             },
-            { text: '', value: 'status', align: 'left', configable: false, visible: true, class: 'text-no-wrap' },
+            { text: '', value: 'status', configable: false, visible: true, class: 'text-no-wrap' },
             {
                 text: this.$t('Files.Filesize'),
                 value: 'size',
-                align: 'right',
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'filesize',
             },
             {
                 text: this.$t('Files.LastModified'),
                 value: 'modified',
-                align: 'right',
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'date',
             },
             {
                 text: this.$t('Files.ObjectHeight'),
                 value: 'object_height',
-                align: 'right',
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'length',
             },
             {
                 text: this.$t('Files.LayerHeight'),
                 value: 'layer_height',
-                align: 'right',
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'length',
             },
             {
                 text: this.$t('Files.NozzleDiameter'),
                 value: 'nozzle_diameter',
-                align: 'right',
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'length',
             },
             {
                 text: this.$t('Files.FilamentName'),
                 value: 'filament_name',
-                align: 'right',
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
@@ -906,26 +854,26 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Files.FilamentType'),
                 value: 'filament_type',
-                align: 'right',
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'string',
             },
             {
                 text: this.$t('Files.FilamentUsage'),
                 value: 'filament_total',
-                align: 'right',
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'length',
             },
             {
                 text: this.$t('Files.FilamentWeight'),
                 value: 'filament_weight_total',
-                align: 'right',
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'weight',
             },
             {
                 text: this.$t('Files.PrintTime'),
@@ -934,22 +882,23 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'time',
             },
             {
                 text: this.$t('Files.LastPrintDuration'),
                 value: 'last_print_duration',
-                align: 'right',
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'time',
             },
             {
                 text: this.$t('Files.Slicer'),
                 value: 'slicer',
-                align: 'right',
                 configable: true,
                 visible: true,
                 class: 'text-no-wrap',
+                outputType: 'string',
             },
         ]
 
@@ -982,6 +931,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
     get filteredHeaders() {
         return this.headers.filter((header) => header.visible)
+    }
+
+    get tableFields() {
+        return this.filteredHeaders.filter(
+            (col: any) => !['filename', 'status'].includes(col.value) && col.value !== ''
+        )
     }
 
     get hideMetadataColums() {
@@ -1503,6 +1458,37 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
         this.selectedFiles = []
         this.deleteSelectedDialog = false
+    }
+
+    outputValue(col: any, item: FileStateGcodefile) {
+        const value = col.value in item ? item[col.value] : null
+
+        if (value !== null) {
+            switch (col.outputType) {
+                case 'filesize':
+                    return formatFilesize(value)
+
+                case 'date':
+                    return this.formatDate(value)
+
+                case 'time':
+                    return this.formatPrintTime(value)
+
+                case 'temp':
+                    return value.toFixed() + ' °C'
+
+                case 'length':
+                    if (value > 1000) return (value / 1000).toFixed(2) + ' m'
+
+                    return value.toFixed(2) + ' mm'
+
+                case 'weight':
+                    return value.toFixed(2) + ' g'
+
+                default:
+                    return value
+            }
+        } else return '--'
     }
 }
 </script>
