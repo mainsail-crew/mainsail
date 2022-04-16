@@ -322,9 +322,11 @@
                             <v-tooltip v-if="getJobStatus(item)" top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
-                                        <v-icon small :color="getStatusColor(getJobStatus(item))">
-                                            {{ getStatusIcon(getJobStatus(item)) }}
-                                        </v-icon>
+                                        <v-badge :value="item.count_printed > 1" :content="item.count_printed" overlap>
+                                            <v-icon :color="getStatusColor(getJobStatus(item))">
+                                                {{ getStatusIcon(getJobStatus(item)) }}
+                                            </v-icon>
+                                        </v-badge>
                                     </span>
                                 </template>
                                 <span>{{ getJobStatus(item).replace(/_/g, ' ') }}</span>
@@ -716,6 +718,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             small_thumbnail: null,
             big_thumbnail: null,
             big_thumbnail_width: null,
+            count_printed: 0,
             last_filament_used: null,
             last_start_time: null,
             last_end_time: null,
@@ -766,6 +769,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             small_thumbnail: null,
             big_thumbnail: null,
             big_thumbnail_width: null,
+            count_printed: 0,
             last_filament_used: null,
             last_start_time: null,
             last_end_time: null,
@@ -786,6 +790,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             small_thumbnail: null,
             big_thumbnail: null,
             big_thumbnail_width: null,
+            count_printed: 0,
             last_filament_used: null,
             last_start_time: null,
             last_end_time: null,
@@ -806,6 +811,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             small_thumbnail: null,
             big_thumbnail: null,
             big_thumbnail_width: null,
+            count_printed: 0,
             last_filament_used: null,
             last_start_time: null,
             last_end_time: null,
@@ -826,6 +832,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             small_thumbnail: null,
             big_thumbnail: null,
             big_thumbnail_width: null,
+            count_printed: 0,
             last_filament_used: null,
             last_start_time: null,
             last_end_time: null,
@@ -867,7 +874,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 visible: true,
                 class: 'text-no-wrap',
             },
-            { text: '', value: 'status', visible: true, class: 'text-no-wrap' },
+            { text: '', value: 'status', visible: true, class: 'text-no-wrap', sortable: false },
         ]
     }
 

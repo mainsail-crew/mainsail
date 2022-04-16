@@ -69,6 +69,7 @@ export const getters: GetterTree<FileState, any> = {
                     small_thumbnail: null,
                     big_thumbnail: null,
                     big_thumbnail_width: null,
+                    count_printed: 0,
                     last_start_time: null,
                     last_end_time: null,
                     last_filament_used: null,
@@ -117,6 +118,8 @@ export const getters: GetterTree<FileState, any> = {
                     tmp.last_status = history.status
                     tmp.last_total_duration = history.total_duration
                 }
+
+                tmp.count_printed = rootGetters['server/history/getCountPrinted'](fullFilename, fileTimestamp)
 
                 if (boolShowPrintedFiles) output.push(tmp)
                 else if (tmp.last_status !== 'completed') output.push(tmp)

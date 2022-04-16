@@ -326,4 +326,15 @@ export const getters: GetterTree<ServerHistoryState, any> = {
             return !hideStatus.includes(job.status)
         })
     },
+
+    getCountPrinted: (state) => (filename: string, modified: number) => {
+        if (state.jobs.length === 0) return 0
+
+        return state.jobs.filter(
+            (job) =>
+                job.status === 'completed' &&
+                job.filename === filename &&
+                Math.round(job.metadata?.modified * 1000) === modified
+        ).length
+    },
 }

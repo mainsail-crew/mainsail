@@ -33,6 +33,7 @@ export interface FileStateGcodefile extends FileStateFile {
     small_thumbnail: string | null
     big_thumbnail: string | null
     big_thumbnail_width: number | null
+    count_printed: number
     last_end_time: Date | null
     last_filament_used: number | null
     last_print_duration: number | null
