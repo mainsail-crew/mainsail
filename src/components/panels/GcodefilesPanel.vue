@@ -1469,9 +1469,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     startPrint(filename = '') {
-        filename = (this.currentPath + '/' + filename).substring(7)
         this.dialogPrintFile.show = false
-        this.$socket.emit('printer.print.start', { filename: filename }, { action: 'switchToDashboard' })
+        this.$socket.emit(
+            'printer.print.start',
+            { filename: this.currentPath + '/' + filename },
+            { action: 'switchToDashboard' }
+        )
     }
 
     dragFile(e: Event, item: FileStateGcodefile) {
