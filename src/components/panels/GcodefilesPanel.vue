@@ -108,32 +108,78 @@
                                 </v-btn>
                             </template>
                             <v-list>
-                                <v-list-item class="minHeight36">
-                                    <v-checkbox
-                                        v-model="showHiddenFiles"
-                                        class="mt-0"
-                                        hide-details
-                                        :label="$t('Files.HiddenFiles')"></v-checkbox>
+                                <v-list-item class="minHeight36" link>
+                                    <v-row>
+                                        <v-col class="pr-0">
+                                            {{ $t('Files.HiddenFiles') }}
+                                        </v-col>
+                                        <v-col class="col-auto pl-0">
+                                            <v-icon
+                                                v-if="showHiddenFiles"
+                                                color="primary"
+                                                @click.stop="showHiddenFiles = false">
+                                                {{ mdiCheckboxMarked }}
+                                            </v-icon>
+                                            <v-icon v-else color="grey lighten-1" @click.stop="showHiddenFiles = true">
+                                                {{ mdiCheckboxBlankOutline }}
+                                            </v-icon>
+                                        </v-col>
+                                    </v-row>
                                 </v-list-item>
-                                <v-list-item class="minHeight36">
-                                    <v-checkbox
-                                        v-model="showPrintedFiles"
-                                        class="mt-0"
-                                        hide-details
-                                        :label="$t('Files.PrintedFiles')"></v-checkbox>
+                                <v-list-item class="minHeight36" link>
+                                    <v-row>
+                                        <v-col class="pr-0">
+                                            {{ $t('Files.PrintedFiles') }}
+                                        </v-col>
+                                        <v-col class="col-auto pl-0">
+                                            <v-icon
+                                                v-if="showPrintedFiles"
+                                                color="primary"
+                                                @click.stop="showPrintedFiles = false">
+                                                {{ mdiCheckboxMarked }}
+                                            </v-icon>
+                                            <v-icon v-else color="grey lighten-1" @click.stop="showPrintedFiles = true">
+                                                {{ mdiCheckboxBlankOutline }}
+                                            </v-icon>
+                                        </v-col>
+                                    </v-row>
                                 </v-list-item>
                                 <v-divider></v-divider>
-                                <v-list-item
-                                    v-for="header of configableHeaders"
-                                    :key="header.value"
-                                    class="minHeight36">
-                                    <v-checkbox
-                                        v-model="header.visible"
-                                        class="mt-0"
-                                        hide-details
-                                        :label="header.text"
-                                        @change="changeMetadataVisible(header.value)"></v-checkbox>
-                                </v-list-item>
+                                <draggable
+                                    v-model="configableHeaders"
+                                    handle=".handle"
+                                    class="v-list-item-group"
+                                    ghost-class="ghost"
+                                    group="gcodeFilesColumnOrder">
+                                    <v-list-item
+                                        v-for="header of configableHeaders"
+                                        :key="header.value"
+                                        class="minHeight36"
+                                        link>
+                                        <v-row>
+                                            <v-col class="col-auto pr-0">
+                                                <v-icon class="handle">{{ mdiArrowUpDown }}</v-icon>
+                                            </v-col>
+                                            <v-col>
+                                                {{ header.text }}
+                                            </v-col>
+                                            <v-col class="col-auto pl-0">
+                                                <v-icon
+                                                    v-if="!header.visible"
+                                                    color="grey lighten-1"
+                                                    @click.stop="changeMetadataVisible(header.value, true)">
+                                                    {{ mdiCheckboxBlankOutline }}
+                                                </v-icon>
+                                                <v-icon
+                                                    v-else
+                                                    color="primary"
+                                                    @click.stop="changeMetadataVisible(header.value, false)">
+                                                    {{ mdiCheckboxMarked }}
+                                                </v-icon>
+                                            </v-col>
+                                        </v-row>
+                                    </v-list-item>
+                                </draggable>
                             </v-list>
                         </v-menu>
                     </v-col>
@@ -285,7 +331,7 @@
                             </v-tooltip>
                         </td>
                         <td
-                            v-for="col in configableHeaders"
+                            v-for="col in tableColumns"
                             :key="col.value"
                             :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
                             {{ outputValue(col, item) }}
@@ -535,6 +581,7 @@ import { formatFilesize, formatDate, sortFiles, formatPrintTime } from '@/plugin
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+import draggable from 'vuedraggable'
 import {
     mdiFileDocumentMultipleOutline,
     mdiFile,
@@ -555,6 +602,9 @@ import {
     mdiDelete,
     mdiCloseThick,
     mdiClose,
+    mdiCheckboxBlankOutline,
+    mdiCheckboxMarked,
+    mdiArrowUpDown,
 } from '@mdi/js'
 
 interface draggingFile {
@@ -594,11 +644,12 @@ interface tableColumnSetting {
     visible: boolean
     sortable?: boolean
     class?: string
+    pos?: number
     outputType?: 'string' | 'date' | 'length' | 'weight' | 'filesize' | 'time'
 }
 
 @Component({
-    components: { Panel, SettingsRow },
+    components: { Panel, SettingsRow, draggable },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin) {
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
@@ -620,6 +671,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     mdiPencil = mdiPencil
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
+    mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
+    mdiCheckboxMarked = mdiCheckboxMarked
+    mdiArrowUpDown = mdiArrowUpDown
 
     validGcodeExtensions = validGcodeExtensions
     formatDate = formatDate
@@ -841,9 +895,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 outputType: 'length',
             },
             {
-                text: this.$t('Files.LayerHeight'),
+                text: this.$t('Files.LayerHeight').toString(),
                 value: 'layer_height',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'length',
@@ -905,19 +958,34 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             },
         ]
 
+        let unknownPos = 0
         headers.forEach((header) => {
-            if (header.visible && this.hideMetadataColums.includes(header.value)) {
-                header.visible = false
-            } else if (!header.visible && !this.hideMetadataColums.includes(header.value)) {
-                header.visible = true
+            header.visible = !this.hideMetadataColumns.includes(header.value)
+
+            let pos = this.orderMetadataColumns?.findIndex((value: string) => value === header.value)
+            if (pos === -1) {
+                unknownPos++
+                pos = this.orderMetadataColumns.length + unknownPos
             }
+            header.pos = pos
         })
 
-        return headers
+        return headers.sort((a, b) => (a.pos ?? 0) - (b.pos ?? 0))
+    }
+
+    set configableHeaders(newVal) {
+        const orderArray: string[] = []
+        newVal.forEach((row: tableColumnSetting) => orderArray.push(row.value))
+
+        this.orderMetadataColumns = orderArray
     }
 
     get headers() {
         return [...this.fixedHeaders, ...this.configableHeaders]
+    }
+
+    get tableColumns() {
+        return this.configableHeaders.filter((column) => column.visible)
     }
 
     get directory() {
@@ -936,12 +1004,20 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         return this.headers.filter((header) => header.visible)
     }
 
-    get hideMetadataColums() {
-        return this.$store.state.gui.view.gcodefiles.hideMetadataColums
+    get orderMetadataColumns() {
+        return this.$store.state.gui.view.gcodefiles.orderMetadataColumns ?? []
     }
 
-    set hideMetadataColums(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.hideMetadataColums', value: newVal })
+    set orderMetadataColumns(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.orderMetadataColumns', value: newVal })
+    }
+
+    get hideMetadataColumns() {
+        return this.$store.state.gui.view.gcodefiles.hideMetadataColumns ?? []
+    }
+
+    set hideMetadataColumns(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.hideMetadataColumns', value: newVal })
     }
 
     get showHiddenFiles() {
@@ -1259,12 +1335,10 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('server/jobQueue/addToQueue', [filename])
     }
 
-    changeMetadataVisible(name: string) {
-        if (this.headers.filter((header) => header.value === name).length) {
-            const value = this.headers.filter((header) => header.value === name)[0].visible
+    changeMetadataVisible(name: string, value: boolean) {
+        window.console.log('changeMetadataVisible', name, value)
 
-            this.$store.dispatch('gui/setGcodefilesMetadata', { name: name, value: value })
-        }
+        this.$store.dispatch('gui/setGcodefilesMetadata', { name: name, value: value })
     }
 
     cancelUpload() {

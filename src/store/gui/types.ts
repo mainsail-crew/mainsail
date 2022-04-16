@@ -115,7 +115,8 @@ export interface GuiState {
             sortDesc: boolean
             showHiddenFiles: boolean
             showPrintedFiles: boolean
-            hideMetadataColums: string[]
+            hideMetadataColumns: string[]
+            orderMetadataColumns: string[]
             currentPath: string
             selectedFiles: FileStateGcodefile[]
         }

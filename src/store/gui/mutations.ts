@@ -46,14 +46,13 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     setGcodefilesMetadata(state, data) {
-        if (data.value && state.view.gcodefiles.hideMetadataColums.includes(data.name)) {
-            state.view.gcodefiles.hideMetadataColums.splice(
-                state.view.gcodefiles.hideMetadataColums.indexOf(data.name),
-                1
-            )
-        } else if (!data.value && !state.view.gcodefiles.hideMetadataColums.includes(data.name)) {
-            state.view.gcodefiles.hideMetadataColums.push(data.name)
-        }
+        const array = [...state.view.gcodefiles.hideMetadataColumns]
+        const index = array.findIndex((value: string) => value === data.name)
+
+        if (data.value && index !== -1) array.splice(index, 1)
+        else if (!data.value && index === -1) array.push(data.name)
+
+        Vue.set(state.view.gcodefiles, 'hideMetadataColumns', array)
     },
 
     setGcodefilesShowHiddenFiles(state, value) {
