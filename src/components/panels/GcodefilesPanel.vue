@@ -123,7 +123,10 @@
                                         :label="$t('Files.PrintedFiles')"></v-checkbox>
                                 </v-list-item>
                                 <v-divider></v-divider>
-                                <v-list-item v-for="header of configHeaders" :key="header.key" class="minHeight36">
+                                <v-list-item
+                                    v-for="header of configableHeaders"
+                                    :key="header.value"
+                                    class="minHeight36">
                                     <v-checkbox
                                         v-model="header.visible"
                                         class="mt-0"
@@ -282,7 +285,7 @@
                             </v-tooltip>
                         </td>
                         <td
-                            v-for="col in tableFields"
+                            v-for="col in configableHeaders"
                             :key="col.value"
                             :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
                             {{ outputValue(col, item) }}
@@ -585,6 +588,15 @@ interface dialogRenameObject {
     item: FileStateGcodefile
 }
 
+interface tableColumnSetting {
+    text: string
+    value: string
+    visible: boolean
+    sortable?: boolean
+    class?: string
+    outputType?: 'string' | 'date' | 'length' | 'weight' | 'filesize' | 'time'
+}
+
 @Component({
     components: { Panel, SettingsRow },
 })
@@ -792,38 +804,38 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.selectedFiles', value: newVal })
     }
 
-    get headers() {
-        const headers = [
-            { text: '', value: '', configable: false, visible: true, filterable: false, sortable: false },
+    get fixedHeaders(): tableColumnSetting[] {
+        return [
+            { text: '', value: '', visible: true, sortable: false },
             {
-                text: this.$t('Files.Name'),
+                text: this.$t('Files.Name').toString(),
                 value: 'filename',
-                configable: false,
                 visible: true,
                 class: 'text-no-wrap',
-                outputType: 'string',
             },
-            { text: '', value: 'status', configable: false, visible: true, class: 'text-no-wrap' },
+            { text: '', value: 'status', visible: true, class: 'text-no-wrap' },
+        ]
+    }
+
+    get configableHeaders() {
+        const headers: tableColumnSetting[] = [
             {
-                text: this.$t('Files.Filesize'),
+                text: this.$t('Files.Filesize').toString(),
                 value: 'size',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'filesize',
             },
             {
-                text: this.$t('Files.LastModified'),
+                text: this.$t('Files.LastModified').toString(),
                 value: 'modified',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'date',
             },
             {
-                text: this.$t('Files.ObjectHeight'),
+                text: this.$t('Files.ObjectHeight').toString(),
                 value: 'object_height',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'length',
@@ -837,65 +849,56 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 outputType: 'length',
             },
             {
-                text: this.$t('Files.NozzleDiameter'),
+                text: this.$t('Files.NozzleDiameter').toString(),
                 value: 'nozzle_diameter',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'length',
             },
             {
-                text: this.$t('Files.FilamentName'),
+                text: this.$t('Files.FilamentName').toString(),
                 value: 'filament_name',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
             },
             {
-                text: this.$t('Files.FilamentType'),
+                text: this.$t('Files.FilamentType').toString(),
                 value: 'filament_type',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'string',
             },
             {
-                text: this.$t('Files.FilamentUsage'),
+                text: this.$t('Files.FilamentUsage').toString(),
                 value: 'filament_total',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'length',
             },
             {
-                text: this.$t('Files.FilamentWeight'),
+                text: this.$t('Files.FilamentWeight').toString(),
                 value: 'filament_weight_total',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'weight',
             },
             {
-                text: this.$t('Files.PrintTime'),
+                text: this.$t('Files.PrintTime').toString(),
                 value: 'estimated_time',
-                align: 'right',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'time',
             },
             {
-                text: this.$t('Files.LastPrintDuration'),
+                text: this.$t('Files.LastPrintDuration').toString(),
                 value: 'last_print_duration',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'time',
             },
             {
-                text: this.$t('Files.Slicer'),
+                text: this.$t('Files.Slicer').toString(),
                 value: 'slicer',
-                configable: true,
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'string',
@@ -913,6 +916,10 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         return headers
     }
 
+    get headers() {
+        return [...this.fixedHeaders, ...this.configableHeaders]
+    }
+
     get directory() {
         return this.$store.getters['files/getDirectory']('gcodes/' + this.currentPath)
     }
@@ -925,18 +932,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         return this.$store.getters['files/getGcodeFiles'](this.currentPath, this.showHiddenFiles, this.showPrintedFiles)
     }
 
-    get configHeaders() {
-        return this.headers.filter((header) => header.configable)
-    }
-
     get filteredHeaders() {
         return this.headers.filter((header) => header.visible)
-    }
-
-    get tableFields() {
-        return this.filteredHeaders.filter(
-            (col: any) => !['filename', 'status'].includes(col.value) && col.value !== ''
-        )
     }
 
     get hideMetadataColums() {
