@@ -36,7 +36,7 @@
                 </v-list>
             </v-menu>
         </template>
-        <v-card-text class="px-0 py-0 content d-inline-block">
+        <v-card-text v-if="webcams.length" class="px-0 py-0 content d-inline-block">
             <v-row>
                 <v-col class="pb-0" style="position: relative">
                     <template v-if="currentCam.service === 'grid'">
@@ -59,6 +59,9 @@
                     </template>
                 </v-col>
             </v-row>
+        </v-card-text>
+        <v-card-text v-else>
+            <p class="text-center mb-0 text--disabled">{{ $t('Panels.WebcamPanel.NoWebcam') }}</p>
         </v-card-text>
     </panel>
 </template>
