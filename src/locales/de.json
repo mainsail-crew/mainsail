@@ -592,6 +592,7 @@
             "All": "Alle",
             "FPS": "FPS",
             "Headline": "Webcam",
+            "NoWebcam": "Keine Webcam verfügbar. Füge eine Webcam unter \"Interface Einstellungen\" -> \"Webcams\".",
             "UnknownWebcamService": "Unbekannter Webcam Dienst",
             "UrlNotAvailable": "URL nicht verfügbar"
         },
@@ -742,7 +743,7 @@
             "Restore": "Wiederherstellung",
             "RestoreDialog": "Bitte wähle alle Abschnitte aus, die du wiederherstellen möchtest:"
         },
-        "InterfaceSettings": "Schnittstelleneinstellungen",
+        "InterfaceSettings": "Interface Einstellungen",
         "MacrosTab": {
             "Add": "hinzufügen",
             "AddGroup": "Gruppe hinzufügen",

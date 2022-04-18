@@ -593,6 +593,7 @@
             "All": "All",
             "FPS": "FPS",
             "Headline": "Webcam",
+            "NoWebcam": "No webcam available. Add a webcam under \"Interface Settings\" -> \"Webcams\".",
             "UnknownWebcamService": "Unknown Webcam Service",
             "UrlNotAvailable": "URL not available"
         },
