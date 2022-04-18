@@ -288,31 +288,43 @@
                                         content-class="tooltip__content-opacity1">
                                         <template #activator="{ on, attrs }">
                                             <vue-load-image>
-                                                <img
-                                                    slot="image"
-                                                    :src="item.small_thumbnail"
-                                                    width="32"
-                                                    height="32"
-                                                    v-bind="attrs"
-                                                    v-on="on" />
-                                                <v-progress-circular
-                                                    slot="preloader"
-                                                    indeterminate
-                                                    color="primary"></v-progress-circular>
-                                                <v-icon slot="error">{{ mdiFile }}</v-icon>
+                                                <template #image>
+                                                    <img
+                                                        :src="item.small_thumbnail"
+                                                        width="32"
+                                                        height="32"
+                                                        v-bind="attrs"
+                                                        v-on="on"
+                                                        :alt="item.filename" />
+                                                </template>
+                                                <template #preloader>
+                                                    <v-progress-circular
+                                                        indeterminate
+                                                        color="primary"></v-progress-circular>
+                                                </template>
+                                                <template #error>
+                                                    <v-icon>{{ mdiFile }}</v-icon>
+                                                </template>
                                             </vue-load-image>
                                         </template>
-                                        <span><img :src="item.big_thumbnail" width="250" /></span>
+                                        <span><img :src="item.big_thumbnail" width="250" :alt="item.filename" /></span>
                                     </v-tooltip>
                                 </template>
                                 <template v-else-if="item.small_thumbnail">
                                     <vue-load-image>
-                                        <img slot="image" :src="item.small_thumbnail" width="32" height="32" />
-                                        <v-progress-circular
-                                            slot="preloader"
-                                            indeterminate
-                                            color="primary"></v-progress-circular>
-                                        <v-icon slot="error">{{ mdiFile }}</v-icon>
+                                        <template #image>
+                                            <img
+                                                :src="item.small_thumbnail"
+                                                width="32"
+                                                height="32"
+                                                :alt="item.filename" />
+                                        </template>
+                                        <template #preloader>
+                                            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                                        </template>
+                                        <template #error>
+                                            <v-icon>{{ mdiFile }}</v-icon>
+                                        </template>
                                     </vue-load-image>
                                 </template>
                                 <template v-else>
@@ -1501,6 +1513,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            count_printed: 0,
             small_thumbnail: null,
             big_thumbnail: null,
             big_thumbnail_width: null,

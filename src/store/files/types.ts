@@ -40,6 +40,7 @@ export interface FileStateGcodefile extends FileStateFile {
     last_status: string | null
     last_start_time: Date | null
     last_total_duration: number | null
+    [key: string]: any
 }
 
 export interface FileStateDiskUsage {
