@@ -48,6 +48,15 @@
     text-align: center;
     transition: font-size 175ms;
 }
+
+.v-chip.minimum-chip {
+    padding: 0;
+    min-width: 24px;
+}
+
+.v-chip.minimum-chip .v-chip__content {
+    margin: 0 auto;
+}
 </style>
 
 <template>
@@ -293,9 +302,9 @@
                                                         :src="item.small_thumbnail"
                                                         width="32"
                                                         height="32"
+                                                        :alt="item.filename"
                                                         v-bind="attrs"
-                                                        v-on="on"
-                                                        :alt="item.filename" />
+                                                        v-on="on" />
                                                 </template>
                                                 <template #preloader>
                                                     <v-progress-circular
@@ -337,11 +346,25 @@
                             <v-tooltip v-if="getJobStatus(item)" top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
-                                        <v-badge :value="item.count_printed > 1" :content="item.count_printed" overlap>
-                                            <v-icon :color="getStatusColor(getJobStatus(item))">
-                                                {{ getStatusIcon(getJobStatus(item)) }}
-                                            </v-icon>
-                                        </v-badge>
+                                        <template v-if="item.count_printed > 1">
+                                            <v-chip :color="getStatusColor(getJobStatus(item))" small pill>
+                                                <v-icon small left>
+                                                    {{ getStatusIcon(getJobStatus(item)) }}
+                                                </v-icon>
+                                                {{ item.count_printed }}
+                                            </v-chip>
+                                        </template>
+                                        <template v-else>
+                                            <v-chip
+                                                class="minimum-chip"
+                                                :color="getStatusColor(getJobStatus(item))"
+                                                small
+                                                pill>
+                                                <v-icon small>
+                                                    {{ getStatusIcon(getJobStatus(item)) }}
+                                                </v-icon>
+                                            </v-chip>
+                                        </template>
                                     </span>
                                 </template>
                                 <span>{{ getJobStatus(item).replace(/_/g, ' ') }}</span>
