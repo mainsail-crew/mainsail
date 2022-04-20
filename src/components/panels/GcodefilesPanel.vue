@@ -1480,8 +1480,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'server.files.move',
             {
-                source: this.currentPath + '/' + this.dialogRenameDirectory.item.filename,
-                dest: this.currentPath + '/' + this.dialogRenameDirectory.newName,
+                source: 'gcodes' + this.currentPath + '/' + this.dialogRenameDirectory.item.filename,
+                dest: 'gcodes' + this.currentPath + '/' + this.dialogRenameDirectory.newName,
             },
             { action: 'files/getMove' }
         )
