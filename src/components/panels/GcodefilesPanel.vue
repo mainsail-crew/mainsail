@@ -1028,7 +1028,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     get directory() {
-        return this.$store.getters['files/getDirectory']('gcodes/' + this.currentPath)
+        return this.$store.getters['files/getDirectory']('gcodes' + this.currentPath)
     }
 
     get disk_usage() {
