@@ -1313,7 +1313,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             this.dialogCreateDirectory.show = false
             this.$socket.emit(
                 'server.files.post_directory',
-                { path: this.currentPath + '/' + this.dialogCreateDirectory.name },
+                { path: 'gcodes' + this.currentPath + '/' + this.dialogCreateDirectory.name },
                 { action: 'files/getCreateDir' }
             )
         }
