@@ -1196,7 +1196,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.uploadSnackbar.lastProgress.loaded = 0
         this.uploadSnackbar.lastProgress.time = 0
 
-        formData.append('file', file, (this.currentPath + '/' + filename).substring(7))
+        formData.append('file', file, this.currentPath + '/' + filename)
 
         return new Promise((resolve) => {
             this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source()
@@ -1219,7 +1219,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                     },
                 })
                 .then((result: any) => {
-                    const filename = result.data.item.path.substr(result.data.item.path.indexOf('/') + 1)
+                    const filename = result.data.item.path.slice(result.data.item.path.indexOf('/') + 1)
                     this.uploadSnackbar.status = false
                     resolve(filename)
                 })
@@ -1266,8 +1266,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             this.$socket.emit(
                 'server.files.move',
                 {
-                    source: this.currentPath + '/' + this.draggingFile.item.filename,
-                    dest: dest,
+                    source: 'gcodes' + this.currentPath + '/' + this.draggingFile.item.filename,
+                    dest: 'gcodes' + dest,
                 },
                 { action: 'files/getMove' }
             )
@@ -1425,11 +1425,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     editFile(item: FileStateGcodefile) {
-        const path = this.currentPath === 'gcodes' ? '' : this.currentPath.slice(7)
-
         this.$store.dispatch('editor/openFile', {
             root: 'gcodes',
-            path: path !== '' ? '/' + path : '',
+            path: this.currentPath,
             filename: item.filename,
             size: item.size,
             permissions: item.permissions,
@@ -1490,7 +1488,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     removeFile() {
         this.$socket.emit(
             'server.files.delete_file',
-            { path: 'gcodes/' + this.currentPath + this.contextMenu.item.filename },
+            { path: 'gcodes' + this.currentPath + '/' + this.contextMenu.item.filename },
             { action: 'files/getDeleteFile' }
         )
     }
@@ -1504,7 +1502,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.dialogDeleteDirectory.show = false
         this.$socket.emit(
             'server.files.delete_directory',
-            { path: this.currentPath + '/' + this.contextMenu.item.filename, force: true },
+            { path: 'gcodes' + this.currentPath + '/' + this.contextMenu.item.filename, force: true },
             { action: 'files/getDeleteDir' }
         )
     }
@@ -1567,7 +1565,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.selectedFiles.forEach((item: FileStateGcodefile) => {
             this.$socket.emit(
                 'server.files.delete_file',
-                { path: 'gcodes/' + this.currentPath + item.filename },
+                { path: 'gcodes' + this.currentPath + '/' + item.filename },
                 { action: 'files/getDeleteFile' }
             )
         })
