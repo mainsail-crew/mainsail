@@ -1320,7 +1320,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     refreshFileList() {
-        this.$socket.emit('server.files.get_directory', { path: this.currentPath }, { action: 'files/getDirectory' })
+        this.$socket.emit('server.files.get_directory', { path: 'gcodes' + this.currentPath }, { action: 'files/getDirectory' })
     }
 
     advancedSearch(value: string | number, search: string) {
