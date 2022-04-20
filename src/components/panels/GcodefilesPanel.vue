@@ -297,23 +297,19 @@
                                         content-class="tooltip__content-opacity1">
                                         <template #activator="{ on, attrs }">
                                             <vue-load-image>
-                                                <template #image>
-                                                    <img
-                                                        :src="item.small_thumbnail"
-                                                        width="32"
-                                                        height="32"
-                                                        :alt="item.filename"
-                                                        v-bind="attrs"
-                                                        v-on="on" />
-                                                </template>
-                                                <template #preloader>
-                                                    <v-progress-circular
-                                                        indeterminate
-                                                        color="primary"></v-progress-circular>
-                                                </template>
-                                                <template #error>
-                                                    <v-icon>{{ mdiFile }}</v-icon>
-                                                </template>
+                                                <img
+                                                    :src="item.small_thumbnail"
+                                                    width="32"
+                                                    height="32"
+                                                    :alt="item.filename"
+                                                    slot="image"
+                                                    v-bind="attrs"
+                                                    v-on="on" />
+                                                <v-progress-circular
+                                                    slot="preloader"
+                                                    indeterminate
+                                                    color="primary"></v-progress-circular>
+                                                <v-icon slot="error">{{ mdiFile }}</v-icon>
                                             </vue-load-image>
                                         </template>
                                         <span><img :src="item.big_thumbnail" width="250" :alt="item.filename" /></span>
@@ -321,19 +317,17 @@
                                 </template>
                                 <template v-else-if="item.small_thumbnail">
                                     <vue-load-image>
-                                        <template #image>
-                                            <img
-                                                :src="item.small_thumbnail"
-                                                width="32"
-                                                height="32"
-                                                :alt="item.filename" />
-                                        </template>
-                                        <template #preloader>
-                                            <v-progress-circular indeterminate color="primary"></v-progress-circular>
-                                        </template>
-                                        <template #error>
-                                            <v-icon>{{ mdiFile }}</v-icon>
-                                        </template>
+                                        <img
+                                            :src="item.small_thumbnail"
+                                            width="32"
+                                            height="32"
+                                            slot="image"
+                                            :alt="item.filename" />
+                                        <v-progress-circular
+                                            slot="preloader"
+                                            indeterminate
+                                            color="primary"></v-progress-circular>
+                                        <v-icon slot="error">{{ mdiFile }}</v-icon>
                                     </vue-load-image>
                                 </template>
                                 <template v-else>
