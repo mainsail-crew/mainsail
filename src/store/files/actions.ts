@@ -9,6 +9,7 @@ import {
 } from '@/store/files/types'
 import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
+import { validGcodeExtensions } from '@/store/variables'
 
 export const actions: ActionTree<FileState, RootState> = {
     reset({ commit }) {
@@ -134,9 +135,9 @@ export const actions: ActionTree<FileState, RootState> = {
     },
 
     requestMetadata({ commit }, payload: { filename: string }) {
-        const rootPath = payload.filename.substr(0, payload.filename.indexOf('/'))
+        const rootPath = payload.filename.slice(0, payload.filename.indexOf('/'))
         if (rootPath === 'gcodes') {
-            const requestFilename = payload.filename.substr(7)
+            const requestFilename = payload.filename.slice(7)
             commit('setMetadataRequested', { filename: requestFilename })
             Vue.$socket.emit('server.files.metadata', { filename: requestFilename }, { action: 'files/getMetadata' })
         }
@@ -158,7 +159,7 @@ export const actions: ActionTree<FileState, RootState> = {
         commit('printer/setData', { current_file: payload }, { root: true })
     },
 
-    filelist_changed({ commit, dispatch }, payload) {
+    async filelist_changed({ commit, dispatch }, payload) {
         switch (payload.action) {
             case 'create_file':
                 commit('setCreateFile', payload)
@@ -167,7 +168,17 @@ export const actions: ActionTree<FileState, RootState> = {
             case 'move_file':
                 if (payload.source_item?.path === 'printer_autosave.cfg' && payload.source_item?.root === 'config')
                     commit('setCreateFile', payload)
-                else commit('setMoveFile', payload)
+                else {
+                    await commit('setMoveFile', payload)
+                    if (
+                        payload.item.root === 'gcodes' &&
+                        validGcodeExtensions.includes(payload.item.path.slice(payload.item.path.lastIndexOf('.')))
+                    ) {
+                        await dispatch('requestMetadata', {
+                            filename: 'gcodes/' + payload.item.path,
+                        })
+                    }
+                }
                 break
 
             case 'delete_file':
