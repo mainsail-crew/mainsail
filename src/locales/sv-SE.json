@@ -1,0 +1,222 @@
+{
+  "App": {
+    "Notifications": {
+      "DependencyDescription": "Den nuvarande versionen av {name} stöder inte alla funktioner i Mainsail. \nUppdatera {name} till minst {neededVersion}.",
+      "DependencyName": "Beroende: {name}",
+      "DismissAll": "Avfärda alla",
+      "KlipperWarnings": {
+        "DeprecatedOptionHeadline": "Utfasad Klipper Alternativ",
+        "DeprecatedValueHeadline": "Utfasad Klipper-värde",
+        "KlipperWarning": "Klipper varning",
+        "DeprecatedOption": "Alternativet '{option}' i avsnittet '{section}' är utfasat och kommer att tas bort i en framtida version.",
+        "DeprecatedValue": "Värdet '{value}' i alternativet '{option}' i avsnittet '{section}' är utfasat och kommer att tas bort i en framtida version."
+      },
+      "MoonrakerWarnings": {
+        "MoonrakerComponent": "Moonraker: {komponent}",
+        "MoonrakerWarning": "Moonraker varning",
+        "MoonrakerFailedComponentDescription": "Ett fel upptäcktes vid laddning av moonraker-komponenten '{component}'. Kontrollera loggfilen och åtgärda problemet.",
+        "UnparsedConfigOption": "Otolkat konfigurationsalternativ '{option}: {value}' upptäcktes i avsnittet [{sektion}]. Detta kan vara ett alternativ som inte längre är tillgängligt eller kan vara resultatet av en modul som inte kunde laddas. I framtiden kommer detta att resultera i ett startfel.",
+        "UnparsedConfigSection": "Otolkat konfigurationsavsnitt [{sektion}] upptäcktes. Detta kan vara resultatet av en komponent som inte kunde laddas. I framtiden kommer detta att resultera i ett startfel."
+      },
+      "Never": "aldrig",
+      "NextReboot": "nästa omstart",
+      "NoNotification": "Ingen avisering tillgänglig",
+      "Remind": "Påminn:"
+    },
+    "NumberInput": {
+      "GreaterOrEqualError": "Måste vara större än eller lika med {min}!",
+      "MustBeBetweenError": "Måste vara mellan {min} och {max}!",
+      "NoEmptyAllowedError": "Indata får inte vara tom!"
+    },
+    "Printers": "Skrivare",
+    "ThrottledStates": {
+      "TitleCurrentlyThrottled": "För närvarande strypt",
+      "TitleFrequencyCapped": "Frekvenstak",
+      "DescriptionCurrentlyThrottled": "rPi ARM-kärnorna är för närvarande strypta.",
+      "DescriptionFrequencyCapped": "rPi ARM max frekvens är för närvarande begränsad till 1,2 GHz.",
+      "DescriptionPreviouslyFrequencyCapped": "rPi ARM max-frekvensen var vid minst ett tillfälle begränsad till 1,2 GHz sedan senaste start.",
+      "DescriptionPreviouslyTemperatureLimited": "rPi uC (endast 3A+/3B+)-temperaturen var vid minst ett tillfälle över den mjuka gränsen (standard 60C) sedan senaste start.",
+      "DescriptionPreviouslyThrottled": "rPI ARM-kärnorna har strypts ned vid minst ett tillfälle sedan senaste start.",
+      "DescriptionPreviouslyUnderVolted": "rPI-matningsspänningen har sjunkit under 4,65V vid minst ett tillfälle sedan senaste start.",
+      "DescriptionTemperatureLimitActive": "rPi uC (endast 3A+/3B+) temperaturen är för närvarande över den mjuka gränsen (standard 60C).",
+      "DescriptionUnderVoltageDetected": "rPI matningsspänning är för närvarande under 4,65V",
+      "TitlePreviouslyFrequencyCapped": "Tidigare frekvensbegränsning",
+      "TitlePreviouslyTemperatureLimited": "Tidigare temperaturbegränsad",
+      "TitlePreviouslyThrottled": "Tidigare strypt",
+      "TitlePreviouslyUnderVolted": "Tidigare underspänning",
+      "TitleTemperatureLimitActive": "Temperaturgräns aktiv",
+      "TitleUnderVoltageDetected": "Underspänning upptäckt"
+    },
+    "Titles": {
+      "Complete": "Färdig – {filename}",
+      "Error": "FEL",
+      "Pause": "Pausa utskrift",
+      "Printing": "{percent}% Skriver ut - {filename}",
+      "PrintingETA": "{percent}% Skriver ut - ETA: {eta} - {filename}"
+    },
+    "TopBar": {
+      "CannotUploadTheFile": "Det går inte att ladda upp filen!",
+      "EmergencyStop": "Nödstopp",
+      "SAVE_CONFIG": "SPARA KONFIGURATION",
+      "UploadPrint": "Ladda upp och skriv ut",
+      "Uploading": "Laddar upp",
+      "UploadOfFileSuccessful": "Uppladdningen av {file} lyckades!"
+    },
+    "TopCornerMenu": {
+      "Cancel": "Avbryt",
+      "ConfirmationDialog": {
+        "Description": {
+          "HostReboot": "Om du startar om värddatorn kommer den aktuella utskriften att misslyckas!",
+          "HostShutdown": "Om du stänger av värddatorn kommer den aktuella utskriften att misslyckas!",
+          "KlipperFirmwareRestart": "Om du startar om Klipper Firmware kommer den aktuella utskriften att misslyckas!",
+          "KlipperRestart": "Om du startar om Klipper kommer den aktuella utskriften att misslyckas!",
+          "KlipperStop": "Om du stoppar Klipper kommer den aktuella utskriften att misslyckas!",
+          "ServiceRestart": "Om du startar om denna tjänst kan det leda till att den aktuella utskriften misslyckas!",
+          "ServiceStart": "Om du startar den här tjänsten kan det leda till att den aktuella utskriften misslyckas!",
+          "ServiceStop": "Om den här tjänsten stoppas kan den aktuella utskriften misslyckas!"
+        },
+        "Title": {
+          "HostReboot": "Omstart Värddator",
+          "HostShutdown": "Avstängning Värddator",
+          "KlipperFirmwareRestart": "Omstart av Klipper Firmware",
+          "KlipperRestart": "Omstart av Klipper",
+          "ServiceRestart": "Omstart av Tjänsten",
+          "ServiceStart": "Starta Tjänsten",
+          "ServiceStop": "Stoppa Tjänsten"
+        }
+      },
+      "HostControl": "Värdkontroll",
+      "KlipperControl": "Klipper-styrning",
+      "KlipperFirmwareRestart": "Starta om Firmware",
+      "KlipperRestart": "Starta om",
+      "PowerDevices": "Strömenheter",
+      "Reboot": "Starta om",
+      "Restart": "Starta om",
+      "ServiceControl": "Tjänstekontroll",
+      "Shutdown": "Stäng av",
+      "Start": "Starta",
+      "Stop": "Stoppa"
+    },
+    "UpdateDialog": {
+      "Close": "Stäng",
+      "Empty": "Tom",
+      "Recovering": "Återställer {software}...",
+      "RecoveringDone": "Återställning av {software} klar!",
+      "Updating": "Uppdaterar {software}...",
+      "UpdatingDone": "Uppdatering av {software} klar!"
+    }
+  },
+  "ConnectionDialog": {
+    "CannotConnectTo": "Kan inte ansluta till Moonraker ({host}).",
+    "CheckMoonrakerLog": "Om det här meddelandet visas upprepade gånger, vänligen ta en titt i loggfilen som finns på:",
+    "Connecting": "Ansluter till {host}",
+    "Failed": "Anslutningen misslyckades",
+    "TryAgain": "försök igen"
+  },
+  "Console": {
+    "CommandList": "Kommandolista",
+    "Empty": "Tom",
+    "HideTemperatures": "Dölj temperaturer",
+    "SendCode": "Skicka kod...",
+    "SetupConsole": "Installationskonsol"
+  },
+  "Editor": {
+    "Cancel": "Avbryt",
+    "ConfigReference": "Referens för konfiguration",
+    "DontSave": "Spara inte",
+    "Downloading": "Laddar ner",
+    "FailedSave": "{filename} kunde inte laddas upp!",
+    "FileReadOnly": "skrivskyddad",
+    "Minimap": "Visa minikarta",
+    "SaveClose": "Spara & stäng",
+    "SaveRestart": "Spara & Starta om",
+    "SuccessfullySaved": "{filename} sparades.",
+    "UnsavedChanges": "Osparade ändringar",
+    "UnsavedChangesMessage": "Vill du spara dina ändringar som gjorts i {filename}?",
+    "UnsavedChangesSubMessage": "Dina ändringar kommer att gå förlorade om du inte sparar dem. Du kan avaktivera det här meddelandet i redigerarens inställningar.",
+    "Uploading": "Laddar upp"
+  },
+  "EmergencyStopDialog": {
+    "AreYouSure": "Är du säker?",
+    "EmergencyStop": "Nödstopp",
+    "No": "Nej",
+    "Yes": "Ja"
+  },
+  "Files": {
+    "AddToQueue": "Lägg till i kö",
+    "AllFiles": "Alla",
+    "Cancel": "Avbryt",
+    "Create": "Skapa",
+    "CreateNewDirectory": "Skapa ny katalog",
+    "CurrentPath": "Nuvarande sökväg",
+    "Delete": "Radera",
+    "DeleteDirectory": "Radera katalog",
+    "DeleteDirectoryQuestion": "Vill du verkligen ta bort katalogen \"{name}\" med allt dess innehåll?",
+    "DoYouWantToStartFilename": "Vill du starta {filename}?",
+    "Download": "Ladda ner",
+    "Downloading": "Laddar ner",
+    "DropFilesToAddGcode": "Dra & släpp filer för att lägga till G-Code.",
+    "EditFile": "Redigera fil",
+    "Empty": "Tom",
+    "Filament": "Filament",
+    "FilamentName": "Filament Namn",
+    "FilamentType": "Filament Typ",
+    "FilamentUsage": "Filament Användning",
+    "FilamentWeight": "Filament Vikt",
+    "Files": "Filer",
+    "Filesize": "Filstorlek",
+    "Free": "Tillgängligt",
+    "FreeDisk": "Tillgänglig disk",
+    "GCodeFiles": "G-Code Filer",
+    "HiddenFiles": "Dolda filer",
+    "LastModified": "Senast ändrad",
+    "LayerHeight": "Lagerhöjd",
+    "Name": "Namn",
+    "NewDirectory": "Ny katalog",
+    "ObjectHeight": "Objektets höjd",
+    "Preheat": "Förvärm",
+    "PrintStart": "Utskriftsstart",
+    "PrintTime": "Utskriftstid",
+    "PrintedFiles": "Utskrivna filer",
+    "RefreshCurrentDirectory": "Uppdatera aktuell katalog",
+    "Rename": "Ändra namn",
+    "RenameDirectory": "Byt namn på katalogen",
+    "RenameFile": "Byt namn på fil",
+    "Search": "Sök",
+    "Slicer": "Slicer",
+    "StartPrint": "Starta utskriften",
+    "SuccessfullyCreated": "{filename} har skapats.",
+    "SuccessfullyDeleted": "{filename} har raderats.",
+    "SuccessfullyMoved": "{filename} har flyttats.",
+    "SuccessfullyRenamed": "{filename} har bytt namn.",
+    "SuccessfullyUploaded": "Uppladdningen av {filename} lyckades!",
+    "Total": "Sammanlagt",
+    "UploadNewGcode": "Ladda upp ny G-Code",
+    "Uploading": "Laddar upp",
+    "Used": "Använt",
+    "View3D": "Visa 3D",
+    "WrongFileUploaded": "Uppladdningen nekades för {filename}. Fel filformat!"
+  },
+  "GCodeViewer": {
+    "ClearLoadedFile": "Rensa",
+    "ColorMode": "Färgläge",
+    "Downloading": "Laddar ner",
+    "ForceLineRendering": "Tvinga linjerendering",
+    "HDRendering": "HD-rendering (runda profiler)",
+    "High": "Hög",
+    "LoadCurrentFile": "Nuvarande fil",
+    "LoadLocal": "Lokal fil",
+    "Low": "Låg",
+    "Max": "Maximal",
+    "Medium": "Medium",
+    "Rendering": "Rendering",
+    "ShowObjectSelection": "Visa objektval",
+    "ShowToolhead": "Visa verktygshuvud",
+    "Title": "G-Code Granskare",
+    "Transparency": "Genomskinlighet",
+    "Ultra": "Extrem"
+  },
+  "Heightmap": {
+    "Abort": "avbryt"
+  }
+}
