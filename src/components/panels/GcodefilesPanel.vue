@@ -1320,7 +1320,11 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     refreshFileList() {
-        this.$socket.emit('server.files.get_directory', { path: 'gcodes' + this.currentPath }, { action: 'files/getDirectory' })
+        this.$socket.emit(
+            'server.files.get_directory',
+            { path: 'gcodes' + this.currentPath },
+            { action: 'files/getDirectory' }
+        )
     }
 
     advancedSearch(value: string | number, search: string) {
@@ -1454,8 +1458,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'server.files.move',
             {
-                source: this.currentPath + '/' + this.dialogRenameFile.item.filename,
-                dest: this.currentPath + '/' + this.dialogRenameFile.newName,
+                source: 'gcodes' + this.currentPath + '/' + this.dialogRenameFile.item.filename,
+                dest: 'gcodes' + this.currentPath + '/' + this.dialogRenameFile.newName,
             },
             { action: 'files/getMove' }
         )
