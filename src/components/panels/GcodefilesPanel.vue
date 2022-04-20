@@ -1375,8 +1375,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     changeMetadataVisible(name: string, value: boolean) {
-        window.console.log('changeMetadataVisible', name, value)
-
         this.$store.dispatch('gui/setGcodefilesMetadata', { name: name, value: value })
     }
 
