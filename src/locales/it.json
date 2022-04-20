@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "Stampanti",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "L'opzione '{option}' nella sezione '{section}' è obsoleta e sarà rimossa in una versione futura.",
                 "DeprecatedValue": "Il valore '{value}' in '{option}' nella sezione '{section}' è obsoleto e sarà rimosso in una versione futura."
             }
         },
+        "Printers": "Stampanti",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Uno o più core ARM dell'rPI sono attualmente rallentati.",
             "DescriptionFrequencyCapped": "La frequenza massima del processore ARM dell'rPI è attualmente limitata a 1,2 GHz.",

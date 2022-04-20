@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "打印机组",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "选项 '{option}' 在章节 '{section}' 已经弃用，在未来版本会被移除.",
                 "DeprecatedValue": "数值 '{value}' 在选项 '{option}' 中的章节'{section}' 已经弃用，在未来版本会被移除."
             }
         },
+        "Printers": "打印机组",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM 核心当前被限制.",
             "DescriptionFrequencyCapped": "rPi ARM 最高频率限制再 1.2 GHz.",
