@@ -1436,7 +1436,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
     downloadFile() {
         const filename = this.currentPath + '/' + this.contextMenu.item.filename
-        const href = this.apiUrl + '/server/files/' + encodeURI(filename)
+        const href = this.apiUrl + '/server/files/gcodes' + encodeURI(filename)
 
         window.open(href)
     }
