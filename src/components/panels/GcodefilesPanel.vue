@@ -298,11 +298,11 @@
                                         <template #activator="{ on, attrs }">
                                             <vue-load-image>
                                                 <img
+                                                    slot="image"
                                                     :src="item.small_thumbnail"
                                                     width="32"
                                                     height="32"
                                                     :alt="item.filename"
-                                                    slot="image"
                                                     v-bind="attrs"
                                                     v-on="on" />
                                                 <v-progress-circular
@@ -318,10 +318,10 @@
                                 <template v-else-if="item.small_thumbnail">
                                     <vue-load-image>
                                         <img
+                                            slot="image"
                                             :src="item.small_thumbnail"
                                             width="32"
                                             height="32"
-                                            slot="image"
                                             :alt="item.filename" />
                                         <v-progress-circular
                                             slot="preloader"
