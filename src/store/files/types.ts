@@ -10,6 +10,7 @@ export interface FileStateFile {
     childrens?: FileStateFile[]
     disk_usage?: FileStateDiskUsage
     print_start_time?: Date | null
+    uuid?: string | null
     job_id?: string | null
     estimated_time?: number
     filament_total?: number

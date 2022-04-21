@@ -41,6 +41,7 @@ export const checkKlipperConfigModules = [
  * List of allowed metadata fields
  */
 export const allowedMetadata = [
+    'uuid',
     'estimated_time',
     'filament_name',
     'filament_type',
