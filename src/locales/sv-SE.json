@@ -195,7 +195,9 @@
     "Uploading": "Laddar upp",
     "Used": "Använt",
     "View3D": "Visa 3D",
-    "WrongFileUploaded": "Uppladdningen nekades för {filename}. Fel filformat!"
+    "WrongFileUploaded": "Uppladdningen nekades för {filename}. Fel filformat!",
+    "NozzleDiameter": "Diameter Munstycke (Nozzle)",
+    "StartJob": "Starta jobb"
   },
   "GCodeViewer": {
     "ClearLoadedFile": "Rensa",
@@ -214,9 +216,282 @@
     "ShowToolhead": "Visa verktygshuvud",
     "Title": "G-Code Granskare",
     "Transparency": "Genomskinlighet",
-    "Ultra": "Extrem"
+    "Ultra": "Extrem",
+    "ReloadRequired": "Omladdning krävs",
+    "RenderQuality": "Renderingskvalitet",
+    "ShowTravelMoves": "Visa reserörelser",
+    "SpecularLighting": "Speglande belysning",
+    "Tracking": "Spårning"
   },
   "Heightmap": {
-    "Abort": "avbryt"
+    "Abort": "avbryt",
+    "Calibrate": "kalibrera",
+    "Clear": "rensa",
+    "CurrentMesh": {
+      "Max": "Max",
+      "Name": "Namn",
+      "Size": "Storlek",
+      "Min": "Min",
+      "Variance": "Variation"
+    },
+    "DoYouReallyWantToDelete": "Vill du verkligen radera profilen \"{name}\"?",
+    "Flat": "Plan",
+    "Later": "Senare",
+    "Name": "Namn",
+    "NoProfile": "Ingen profil tillgänglig",
+    "Ok": "OK",
+    "Probed": "Sonderat",
+    "Profiles": "Profiler",
+    "Remove": "radera",
+    "Rename": "döp om",
+    "ScaleGradient": "Skala övertoning",
+    "ScaleZMax": "Skala z-max.",
+    "TitleHomeAll": "Hem Alla"
+  },
+  "History": {
+    "AddNote": "Lägg till anteckning",
+    "AllJobs": "Alla",
+    "AvgPrinttime": "Utskriftstid - Ø",
+    "Cancel": "Avbryt",
+    "CreateNote": "Skapa anteckning",
+    "Delete": "Radera",
+    "DeleteSelectedQuestion": "Vill du verkligen ta bort {count} markerade jobb?",
+    "Details": "Detaljer",
+    "EditNote": "Redigera anteckning",
+    "Empty": "tom",
+    "EndTime": "Sluttid",
+    "EstimatedFilament": "Beräknad filament",
+    "EstimatedFilamentWeight": "Beräknad filament vikt",
+    "EstimatedTime": "Beräknad tid",
+    "FilamentCalc": "Filament beräkn",
+    "FilamentUsage": "Användning av filament",
+    "FilamentUsed": "Filament använt",
+    "Filename": "Filnamn",
+    "Filesize": "Filstorlek",
+    "HistoryFilamentUsage": "Filament",
+    "HistoryPrinttimeAVG": "Utskrifter",
+    "JobDetails": "Uppgifter om jobb",
+    "Jobs": "Jobb",
+    "LastModified": "Senast ändrad",
+    "LayerHeight": "Lagerhöjd",
+    "LongestPrinttime": "Längsta utskriftstid",
+    "Note": "Anteckning",
+    "ObjectHeight": "Objekts höjd",
+    "PrintDuration": "Utskriftstid",
+    "PrintHistory": "Utskriftshistorik",
+    "PrintTime": "Utskriftstid",
+    "PrinttimeAvg": "Utskriftstid - Ø",
+    "Reprint": "Skriv ut på nytt",
+    "Save": "spara",
+    "Search": "sök",
+    "SelectedFilamentUsed": "Valt filament som används",
+    "SelectedJobs": "Valda jobb",
+    "SelectedPrinttime": "Vald utskriftstid",
+    "Slicer": "Slicer",
+    "SlicerVersion": "Slicer version",
+    "StartTime": "Starttid",
+    "Statistics": "Statistik",
+    "Status": "Status",
+    "StatusValues": {
+      "cancelled": "Avbruten",
+      "completed": "Slutförd",
+      "error": "Fel",
+      "in_progress": "Pågående",
+      "klippy_disconnect": "Klippy koppla bort",
+      "klippy_shutdown": "Avstängning av Klippy",
+      "server_exit": "Avsluta servern"
+    },
+    "TitleExportHistory": "Exportera historik",
+    "TitleRefreshHistory": "Uppdatera historik",
+    "TitleSettings": "Inställningar",
+    "TotalDuration": "Total tid",
+    "TotalFilamentUsed": "Totalt använt filament",
+    "TotalJobs": "Totalt antal jobb",
+    "TotalPrinttime": "Total utskriftstid",
+    "TotalTime": "Total tid"
+  },
+  "JobQueue": {
+    "AllJobs": "Alla jobb",
+    "Delete": "Radera",
+    "Empty": "Tom",
+    "JobQueue": "Jobbkö",
+    "Jobs": "Jobb",
+    "Pause": "Pausa",
+    "Start": "Starta"
+  },
+  "Machine": {
+    "ConfigFilesPanel": {
+      "AllFiles": "Alla",
+      "Cancel": "Avbryt",
+      "ConfigFiles": "Konfigurationsfiler",
+      "Create": "Skapa",
+      "CreateDirectory": "Skapa katalog",
+      "CreateFile": "Skapa fil",
+      "CurrentPath": "Nuvarande sökväg",
+      "Delete": "Radera",
+      "DeleteDirectory": "Radera historik",
+      "DeleteDirectoryQuestion": "Vill du verkligen radera katalogen \"{name}\" med allt dess innehåll?",
+      "Download": "Ladda ner",
+      "EditFile": "Redigera filen",
+      "Empty": "Tom",
+      "Files": "Filer",
+      "Filesize": "Filstorlek",
+      "Free": "Tillgängligt",
+      "FreeDisk": "Tillgängligt diskutrymme",
+      "HiddenFiles": "Dolda filer",
+      "HideBackupFiles": "Dölj säkerhetskopior",
+      "LastModified": "Senast ändrad",
+      "Name": "Namn",
+      "RefreshDirectory": "Uppdatera katalogen",
+      "Rename": "Döp om",
+      "RenameDirectory": "Döp om katalogen",
+      "RenameFile": "Döp om fil",
+      "ShowFile": "Visa fil",
+      "Total": "Totalt",
+      "UploadFile": "Ladda upp fil",
+      "Uploading": "Laddar upp",
+      "Used": "Använt"
+    },
+    "EndstopPanel": {
+      "TRIGGERED": "UTLÖSTES",
+      "open": "ÖPPEN"
+    },
+    "LogfilesPanel": {
+      "Logfiles": "Loggfiler"
+    },
+    "SystemPanel": {
+      "Constants": "Konstanter",
+      "Cpu": "Processor",
+      "HostDetails": "Värdinformation",
+      "LastStats": "Senaste statistiken",
+      "Load": "Ladda",
+      "Memory": "Minne",
+      "NoMoreInfos": "Ingen mer info",
+      "SystemLoad": "Systembelastningar",
+      "Values": {
+        "Bandwidth": "Bandbredd: {bandwidth}/s",
+        "Distro": "Distribution: {name} {version_id}",
+        "Frequency": "Frekvens: {frequency}",
+        "Load": "Belastning: {load}",
+        "Memory": "Minne: {memory}",
+        "Os": "Operativsystem: {os}",
+        "Received": "Mottaget: {received}",
+        "Temp": "Temperatur: {temp}°C",
+        "TempMax": "max: {temp}°C",
+        "TempMin": "min: {temp}°C",
+        "Transmitted": "Överfört: {transmitted}",
+        "Version": "Version: {version}"
+      }
+    },
+    "UpdatePanel": {
+      "CheckForUpdates": "Sök efter uppdateringar",
+      "Detached": "friliggande",
+      "ERROR": "FEL",
+      "Invalid": "ogiltig",
+      "OSPackages": "Operativsystems-Paket",
+      "PackagesCanBeUpgraded": "paketen kan uppgraderas",
+      "System": "System",
+      "Unknown": "okänd",
+      "UpToDate": "aktuell",
+      "Update": "uppdatera",
+      "UpdateAll": "Uppdatera alla komponenter",
+      "UpdateManager": "Uppdateringshanterare",
+      "Upgrade": "uppgradera"
+    }
+  },
+  "Panels": {
+    "ControlPanel": {
+      "ALL": "ALLA",
+      "AlternateControls": "Växla kontroller",
+      "Extrude": "Extrudera",
+      "FeedAmountIn": "Inmatningsmängd in",
+      "FeedrateIn": "Matningshastighet in",
+      "Headline": "Reglage",
+      "HotendTooCold": "Hotend temp. lägre än",
+      "InvertX": "Invertera X",
+      "InvertY": "Invertera Y",
+      "InvertZ": "Invertera Z",
+      "PleaseConfigureSteps": "Vänligen konfigurera steg",
+      "QGL": "QGL",
+      "Retract": "Retract",
+      "X": "X",
+      "Z": "Z",
+      "Y": "Y",
+      "ZTilt": "Z Lutning"
+    },
+    "FarmPrinterPanel": {
+      "ReconnectToPrinter": "Återanslut",
+      "SwitchToPrinter": "Byt till skrivare",
+      "WebcamOff": "Av"
+    },
+    "KlippyStatePanel": {
+      "FirmwareRestart": "Omstart av Firmware",
+      "KlipperCheck": "Kontrollera om Klipper-tjänsten körs och en UDS (Unix Domain Socket) är konfigurerad.",
+      "KlippyState": "Klippy-läge",
+      "MoonrakerCannotConnect": "Moonraker kan inte ansluta till Klipper!",
+      "Restart": "Starta om"
+    },
+    "MachineSettingsPanel": {
+      "FirmwareRetractionSettings": {
+        "RetractLength": "Längd för Retract",
+        "RetractSpeed": "Hastighet för Retract"
+      },
+      "Headline": "Maskininställningar",
+      "MotionSettings": {
+        "Acceleration": "Acceleration",
+        "MaxAccelToDecel": "Max Accel. till Decel.",
+        "Motion": "Rörelse",
+        "SquareCornerVelocity": "Skarpa hörn Velocitet",
+        "Velocity": "Velocitet"
+      },
+      "PressureAdvanceSettings": {
+        "Advance": "Advance",
+        "Extruder": "Extruder",
+        "PressureAdvance": "Pressure Advance",
+        "SmoothTime": "Utjämningstid"
+      }
+    },
+    "MacrosPanel": {
+      "Headline": "Makron",
+      "Send": "skicka"
+    },
+    "MinSettingsPanel": {
+      "IncludeMainsailCfg": "Säkerhetställ att du inkluderar mainsail.cfg i filen printer.cfg.",
+      "IsNotDefinedInConfig": "är inte definierad i config.",
+      "MissingConfiguration": "Konfiguration saknas",
+      "MoreInformation": "mer information"
+    },
+    "MiniconsolePanel": {
+      "Headline": "Konsol",
+      "HideTemperatures": "Dölj temperaturer",
+      "HideTimelapse": "Dölj Timelapse",
+      "SendCode": "Skicka kod...",
+      "SetupConsole": "Installationskonsol"
+    },
+    "MiscellaneousPanel": {
+      "Headline": "Övrigt",
+      "RunoutSensor": {
+        "Detected": "upptäckt",
+        "Disabled": "inaktiverad",
+        "Empty": "Tom"
+      }
+    },
+    "PowerControlPanel": {
+      "Error": "Fel",
+      "Off": "Av",
+      "On": "På",
+      "PowerControl": "Strömstyrning"
+    },
+    "PrintsettingsPanel": {
+      "Headline": "Utskriftsinställningar",
+      "SpeedFactor": "Hastighetsfaktor"
+    },
+    "StatusPanel": {
+      "Absolute": "absolut",
+      "CancelPrint": "Avbryt utskrift",
+      "ClearPrintStats": "Rensa utskriftsstatistik",
+      "Difference": "Differens",
+      "ETA": "Beräknad tid"
+    }
   }
 }
