@@ -16,4 +16,3 @@ package-lock.json
 
 cypress/videos/
 components.d.ts
-.vscode/settings.json
