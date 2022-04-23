@@ -39,6 +39,7 @@
             <template #activator="{ on, attrs }">
                 <v-btn
                     :disabled="['printing', 'paused'].includes(printer_state)"
+                    tabindex="-1"
                     x-small
                     plain
                     v-bind="attrs"
