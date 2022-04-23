@@ -160,6 +160,7 @@
                                     :color="heater.target > 0 ? `${heater.chartColor}aa` : `${heater.chartColor}22`"
                                     class="_no-focus-style"
                                     style="cursor: pointer"
+                                    tabindex="-1"
                                     @click="openHeater(heater)">
                                     {{ heater.icon }}
                                 </v-icon>
@@ -235,6 +236,7 @@
                                     :class="fan.speed ? ' icon-rotate' : ''"
                                     class="_no-focus-style"
                                     style="cursor: pointer"
+                                    tabindex="-1"
                                     @click="openHeater(fan)">
                                     {{ mdiFan }}
                                 </v-icon>
@@ -323,6 +325,7 @@
                                     )}: ${sensor.max_temp}°`"
                                     class="_no-focus-style"
                                     style="cursor: pointer"
+                                    tabindex="-1"
                                     @click="openHeater(sensor)">
                                     {{ sensor.icon }}
                                 </v-icon>
