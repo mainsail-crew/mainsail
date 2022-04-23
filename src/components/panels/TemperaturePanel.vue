@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="scss" scoped>
 .canvasjs-chart-tooltip > div {
     border-radius: 10px !important;
 }
@@ -6,6 +6,10 @@
 ._preset-title {
     font-size: 0.8125rem;
     font-weight: 500;
+}
+
+.v-icon._no-focus-style:focus::after {
+    opacity: 0 !important;
 }
 </style>
 
@@ -153,7 +157,10 @@
                                 }"
                                 class="pl-8 d-flex align-center flex-grow-0 py-2">
                                 <v-icon
-                                    :color="heater.target > 0 ? `${heater.chartColor}aa` : `${heater.chartColor}22`">
+                                    :color="heater.target > 0 ? `${heater.chartColor}aa` : `${heater.chartColor}22`"
+                                    class="_no-focus-style"
+                                    style="cursor: pointer"
+                                    @click="openHeater(heater)">
                                     {{ heater.icon }}
                                 </v-icon>
                                 <span class="pl-2" style="cursor: pointer" @click="openHeater(heater)">
@@ -225,7 +232,10 @@
                                 class="pl-8 d-flex align-center flex-grow-0 py-2">
                                 <v-icon
                                     :color="fan.target ? `${fan.chartColor}aa` : `${fan.chartColor}22`"
-                                    :class="fan.speed ? ' icon-rotate' : ''">
+                                    :class="fan.speed ? ' icon-rotate' : ''"
+                                    class="_no-focus-style"
+                                    style="cursor: pointer"
+                                    @click="openHeater(fan)">
                                     {{ mdiFan }}
                                 </v-icon>
                                 <span class="pl-2" style="cursor: pointer" @click="openHeater(fan)">
@@ -310,7 +320,10 @@
                                     :color="`${sensor.chartColor}aa`"
                                     :title="`${$t('Panels.TemperaturePanel.Min')}: ${sensor.min_temp}° / ${$t(
                                         'Panels.TemperaturePanel.Max'
-                                    )}: ${sensor.max_temp}°`">
+                                    )}: ${sensor.max_temp}°`"
+                                    class="_no-focus-style"
+                                    style="cursor: pointer"
+                                    @click="openHeater(sensor)">
                                     {{ sensor.icon }}
                                 </v-icon>
                                 <span class="pl-2" style="cursor: pointer" @click="openHeater(sensor)">
