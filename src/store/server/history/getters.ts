@@ -253,31 +253,29 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         return state.jobs.find((job) => job.job_id === job_id)
     },
 
-    getPrintJobForGcodes: (state) => (filename: string, modified: number, job_id: string) => {
-        if (state.jobs.length === 0) return
+    getPrintJobsForGcodes:
+        (state) =>
+        (
+            filename: string,
+            modified: number,
+            filesize: number,
+            uuid: string | null,
+            job_id: string | null
+        ): ServerHistoryStateJob[] => {
+            if (state.jobs.length === 0) return []
 
-        // find completed job
-        const completed = state.jobs.find((job) => {
-            return (
-                job.filename === filename &&
-                job.status === 'completed' &&
-                Math.round(job.metadata?.modified * 1000) === modified
-            )
-        })
+            // find jobs via file uuid
+            if (uuid) return state.jobs.filter((job) => job.metadata?.uuid === uuid)
 
-        // return completed job, if it exists
-        if (completed) return completed
+            // find jobs via metadata
+            const jobs = state.jobs.filter((job) => {
+                return job.metadata?.size === filesize && Math.round(job.metadata?.modified * 1000) === modified
+            })
+            if (jobs.length) return jobs
+            if (job_id) return jobs.filter((job) => job.job_id === job_id)
 
-        //search a not completed job and return
-        const open = state.jobs.find((job) => {
-            return job.filename === filename && Math.round(job.metadata?.modified * 1000) === modified
-        })
-
-        // return open job, if it exists
-        if (open) return open
-
-        return state.jobs.find((job) => job.job_id === job_id)
-    },
+            return []
+        },
 
     getPrintStatusByFilename: (state) => (filename: string, modified: number) => {
         if (state.jobs.length) {
@@ -325,16 +323,5 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         return state.jobs.filter((job: ServerHistoryStateJob) => {
             return !hideStatus.includes(job.status)
         })
-    },
-
-    getCountPrinted: (state) => (filename: string, modified: number) => {
-        if (state.jobs.length === 0) return 0
-
-        return state.jobs.filter(
-            (job) =>
-                job.status === 'completed' &&
-                job.filename === filename &&
-                Math.round(job.metadata?.modified * 1000) === modified
-        ).length
     },
 }

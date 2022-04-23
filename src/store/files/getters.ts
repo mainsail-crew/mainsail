@@ -7,6 +7,7 @@ import {
 } from '@/store/variables'
 import { GetterTree } from 'vuex'
 import { FileState, FileStateFile, FileStateGcodefile } from '@/store/files/types'
+import { ServerHistoryStateJob } from '@/store/server/history/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<FileState, any> = {
@@ -105,21 +106,26 @@ export const getters: GetterTree<FileState, any> = {
                 }
 
                 const fullFilename = path.length ? path + '/' + file.filename : file.filename
-                const history = rootGetters['server/history/getPrintJobForGcodes'](
+                const histories = rootGetters['server/history/getPrintJobsForGcodes'](
                     fullFilename,
                     fileTimestamp,
+                    file.size,
+                    file.uuid ?? null,
                     file.job_id
                 )
-                if (history) {
+                if (histories && histories.length) {
+                    const history = histories[0]
                     tmp.last_end_time = new Date(history.end_time * 1000)
                     tmp.last_filament_used = history.filament_used
                     tmp.last_print_duration = history.print_duration
                     tmp.last_start_time = new Date(history.start_time * 1000)
                     tmp.last_status = history.status
                     tmp.last_total_duration = history.total_duration
-                }
 
-                tmp.count_printed = rootGetters['server/history/getCountPrinted'](fullFilename, fileTimestamp)
+                    tmp.count_printed = histories.filter(
+                        (job: ServerHistoryStateJob) => job.status === 'completed'
+                    ).length
+                }
 
                 if (boolShowPrintedFiles) output.push(tmp)
                 else if (tmp.last_status !== 'completed') output.push(tmp)
