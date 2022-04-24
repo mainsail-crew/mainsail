@@ -5,12 +5,29 @@
         }">
         <template #default="{ el }">
             <v-container class="py-0">
-                <v-row dense>
-                    <v-col class="pb-2 text-center text--disabled text-caption font-weight-light d-flex justify-start">
-                        <span>{{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}</span>
+                <v-row>
+                    <v-col>
+                        <v-btn-toggle v-model="positionString" dense mandatory style="flex-wrap: nowrap; width: 100%">
+                            <v-btn
+                                value="absolute"
+                                :disabled="['printing'].includes(printer_state)"
+                                dense
+                                class="btnMinWidthAuto flex-grow-1 px-0"
+                                style="height: 28px">
+                                <span class="body-2">{{ $t('Panels.ToolheadControlPanel.Absolute') }}</span>
+                            </v-btn>
+                            <v-btn
+                                value="relative"
+                                :disabled="['printing'].includes(printer_state)"
+                                dense
+                                class="btnMinWidthAuto flex-grow-1 px-0"
+                                style="height: 28px">
+                                <span class="body-2">{{ $t('Panels.ToolheadControlPanel.Relative') }}</span>
+                            </v-btn>
+                        </v-btn-toggle>
                     </v-col>
                 </v-row>
-                <v-form class="pt-1" @keyup.native.enter="sendCmd">
+                <v-form class="pt-3" @keyup.native.enter="sendCmd">
                     <v-row dense>
                         <v-col :class="el.is.small ? 'col-12' : 'col-4'">
                             <move-to-input
@@ -142,8 +159,20 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
             : this.$t('Panels.ToolheadControlPanel.Relative')
     }
 
-    get positionAbsolute(): boolean {
+    get positionAbsolute() {
         return this.$store.state.printer.gcode_move?.absolute_coordinates ?? true
+    }
+
+    get positionString() {
+        return this.positionAbsolute ? 'absolute' : 'relative'
+    }
+
+    set positionString(newVal) {
+        let gcode = 'G90'
+        if (newVal === 'relative') gcode = 'G91'
+
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
     get livePositions() {
@@ -181,7 +210,6 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
         }
 
         if (gcode !== '' && this.input.x.valid && this.input.y.valid && this.input.z.valid) {
-            console.log(gcode)
             this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
             this.$socket.emit('printer.gcode.script', { script: gcode })
         }
