@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "Drukarki",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "Opcja '{option}' w sekcji '{section}' jest przestarzała i zostanie usunięta w przyszłych wydaniach.",
                 "DeprecatedValue": "Ustawienie '{value}' w opcji '{option}' w sekcji '{section}' jest przestarzała i zostanie usunięta w przyszłych wydaniach."
             }
         },
+        "Printers": "Drukarki",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Częstotliwość rdzeni rPi jest aktualnie obniżona.",
             "DescriptionFrequencyCapped": "Taktowanie rPi ograniczone do 1.2 GHz.",
@@ -486,22 +486,6 @@
             "Total": "Całkowicie",
             "Unknown": "Nieznany"
         },
-        "ToolheadControlPanel": {
-            "Absolute": "absolutna",
-            "ALL": "WSZYSTKIE",
-            "Headline": "Sterowanie drukarką",
-            "InvertX": "Odwróć oś X",
-            "InvertY": "Odwróć oś Y",
-            "InvertZ": "Odwróć oś Z",
-            "PleaseConfigureSteps": "Proszę skonfigurować kroki",
-            "Position": "Pozycja",
-            "QGL": "QGL",
-            "Relative": "względna",
-            "SettingsInterfaceControl": "Ustawienia > Interfejs > Konfiguracja",
-            "SetupControls": "Konfiguracja sterowania",
-            "SpeedFactor": "Wartość prędkości",
-            "ZTilt": "Nachylenie osi Z"
-        },
         "TemperaturePanel": {
             "AutoscaleChart": "Autoskaluj wykres",
             "Avg": "Śred.",
@@ -528,6 +512,22 @@
             "TemperaturesInChart": "Temperatura [°C]",
             "TempTooHigh": "Temperatura zbyt wysoka dla {name}! (max: {max})",
             "TempTooLow": "Temperatura zbyt mała dla {name}! (min: {min})"
+        },
+        "ToolheadControlPanel": {
+            "Absolute": "absolutna",
+            "ALL": "WSZYSTKIE",
+            "Headline": "Sterowanie drukarką",
+            "InvertX": "Odwróć oś X",
+            "InvertY": "Odwróć oś Y",
+            "InvertZ": "Odwróć oś Z",
+            "PleaseConfigureSteps": "Proszę skonfigurować kroki",
+            "Position": "Pozycja",
+            "QGL": "QGL",
+            "Relative": "względna",
+            "SettingsInterfaceControl": "Ustawienia > Interfejs > Konfiguracja",
+            "SetupControls": "Konfiguracja sterowania",
+            "SpeedFactor": "Wartość prędkości",
+            "ZTilt": "Nachylenie osi Z"
         },
         "WebcamPanel": {
             "All": "Wszystkie",

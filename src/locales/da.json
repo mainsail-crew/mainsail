@@ -518,22 +518,6 @@
             "Total": "Total",
             "Unknown": "Ukendt"
         },
-        "ToolheadControlPanel": {
-            "Absolute": "absolut",
-            "ALL": "Alle",
-            "Headline": "Kontrolpanel",
-            "InvertX": "Invertér X",
-            "InvertY": "Invertér Y",
-            "InvertZ": "Invertér Z",
-            "PleaseConfigureSteps": "Konfigurer steps",
-            "Position": "Position",
-            "QGL": "QGL",
-            "Relative": "relativ",
-            "SettingsInterfaceControl": "Indstillinger > Interface > Control",
-            "SetupControls": "Kontrolindstillinger",
-            "SpeedFactor": "Hastighed",
-            "ZTilt": "Z Tilt"
-        },
         "TemperaturePanel": {
             "AutoscaleChart": "Autoskalér diagram",
             "Avg": "Gns",
@@ -560,6 +544,22 @@
             "TemperaturesInChart": "Temperatur [°C]",
             "TempTooHigh": "Temperaturen er for høj for {name}! (max: {max})",
             "TempTooLow": "Temperaturen er for lav for {name}! (min: {min})"
+        },
+        "ToolheadControlPanel": {
+            "Absolute": "absolut",
+            "ALL": "Alle",
+            "Headline": "Kontrolpanel",
+            "InvertX": "Invertér X",
+            "InvertY": "Invertér Y",
+            "InvertZ": "Invertér Z",
+            "PleaseConfigureSteps": "Konfigurer steps",
+            "Position": "Position",
+            "QGL": "QGL",
+            "Relative": "relativ",
+            "SettingsInterfaceControl": "Indstillinger > Interface > Control",
+            "SetupControls": "Kontrolindstillinger",
+            "SpeedFactor": "Hastighed",
+            "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
             "All": "Alle",

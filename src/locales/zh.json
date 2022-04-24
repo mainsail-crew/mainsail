@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "打印机组",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "选项 '{option}' 在章节 '{section}' 已经弃用，在未来版本会被移除.",
                 "DeprecatedValue": "数值 '{value}' 在选项 '{option}' 中的章节'{section}' 已经弃用，在未来版本会被移除."
             }
         },
+        "Printers": "打印机组",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM 核心当前被限制.",
             "DescriptionFrequencyCapped": "rPi ARM 最高频率限制再 1.2 GHz.",
@@ -486,21 +486,6 @@
             "Total": "总",
             "Unknown": "未知"
         },
-        "ToolheadControlPanel": {
-            "Absolute": "绝对",
-            "ALL": "所有",
-            "InvertX": "翻转 X",
-            "InvertY": "翻转 Y",
-            "InvertZ": "翻转 Z",
-            "PleaseConfigureSteps": "请设置步",
-            "Position": "位置",
-            "QGL": "四点调平",
-            "Relative": "相对",
-            "SettingsInterfaceControl": "设置 > 界面 > 控制",
-            "SetupControls": "设置",
-            "SpeedFactor": "速度因子",
-            "ZTilt": "Z 抬升"
-        },
         "TemperaturePanel": {
             "AutoscaleChart": "自动缩放图表",
             "Avg": "平均",
@@ -527,6 +512,21 @@
             "TemperaturesInChart": "温度 [°C]",
             "TempTooHigh": "温度过高 {name}! (max: {max})",
             "TempTooLow": "温度过低 {name}! (min: {min})"
+        },
+        "ToolheadControlPanel": {
+            "Absolute": "绝对",
+            "ALL": "所有",
+            "InvertX": "翻转 X",
+            "InvertY": "翻转 Y",
+            "InvertZ": "翻转 Z",
+            "PleaseConfigureSteps": "请设置步",
+            "Position": "位置",
+            "QGL": "四点调平",
+            "Relative": "相对",
+            "SettingsInterfaceControl": "设置 > 界面 > 控制",
+            "SetupControls": "设置",
+            "SpeedFactor": "速度因子",
+            "ZTilt": "Z 抬升"
         },
         "WebcamPanel": {
             "All": "所有",

@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "Printers",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "Optie '{option}' in sectie '{section}' is verouderd en wordt in een toekomstige versie verwijderd.",
                 "DeprecatedValue": "Waarde '{value}' in optie '{option}' in sectie '{section}' is verouderd en wordt in een toekomstige versie verwijderd."
             }
         },
+        "Printers": "Printers",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM core(s) worden momenteel gethrottled.",
             "DescriptionFrequencyCapped": "rPi ARM max frequency is momenteel beperkt tot 1.2 GHz.",
@@ -502,25 +502,6 @@
             "Total": "Totaal",
             "Unknown": "Onbekend"
         },
-        "ToolheadControlPanel": {
-            "Absolute": "absoluut",
-            "ALL": "ALLES",
-            "Controls": "Bediening",
-            "Home": "Home",
-            "HotendTooCold": "Hotend temp. lager dan",
-            "InvertX": "Inverteer X",
-            "InvertY": "Inverteer Y",
-            "InvertZ": "Inverteer Z",
-            "Macros": "Macros",
-            "PleaseConfigureSteps": "Configureer steps",
-            "Position": "Positie",
-            "QGL": "QGL",
-            "Relative": "relatief",
-            "SettingsInterfaceControl": "Instllingen > Interface > Bediening",
-            "SetupControls": "Bewerk Bediening",
-            "SpeedFactor": "Snelheid factor",
-            "ZTilt": "Z Tilt"
-        },
         "TemperaturePanel": {
             "AutoscaleChart": "Schaal automatisch",
             "Avg": "Gemiddeld",
@@ -554,6 +535,25 @@
             "TempTooHigh": "Temperatuur te hoog voor {name}! (max: {max})",
             "TempTooLow": "Temperatuur te laag voor {name}! (min: {min})",
             "UNKNOWN": "ONBEKEND"
+        },
+        "ToolheadControlPanel": {
+            "Absolute": "absoluut",
+            "ALL": "ALLES",
+            "Controls": "Bediening",
+            "Home": "Home",
+            "HotendTooCold": "Hotend temp. lager dan",
+            "InvertX": "Inverteer X",
+            "InvertY": "Inverteer Y",
+            "InvertZ": "Inverteer Z",
+            "Macros": "Macros",
+            "PleaseConfigureSteps": "Configureer steps",
+            "Position": "Positie",
+            "QGL": "QGL",
+            "Relative": "relatief",
+            "SettingsInterfaceControl": "Instllingen > Interface > Bediening",
+            "SetupControls": "Bewerk Bediening",
+            "SpeedFactor": "Snelheid factor",
+            "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
             "All": "Alle",

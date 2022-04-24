@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "Stampanti",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "L'opzione '{option}' nella sezione '{section}' è obsoleta e sarà rimossa in una versione futura.",
                 "DeprecatedValue": "Il valore '{value}' in '{option}' nella sezione '{section}' è obsoleto e sarà rimosso in una versione futura."
             }
         },
+        "Printers": "Stampanti",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Uno o più core ARM dell'rPI sono attualmente rallentati.",
             "DescriptionFrequencyCapped": "La frequenza massima del processore ARM dell'rPI è attualmente limitata a 1,2 GHz.",
@@ -488,21 +488,6 @@
             "Total": "Totale",
             "Unknown": "Sconosciuto"
         },
-        "ToolheadControlPanel": {
-            "Absolute": "assoluto",
-            "ALL": "TUTTI",
-            "InvertX": "Inverti X",
-            "InvertY": "Inverti Y",
-            "InvertZ": "Inverti Z",
-            "PleaseConfigureSteps": "Configura gli step",
-            "Position": "Posizione",
-            "QGL": "QGL",
-            "Relative": "relativo",
-            "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
-            "SetupControls": "Controlli Installazione",
-            "SpeedFactor": "Fattore di velocità",
-            "ZTilt": "Inclinazione Z"
-        },
         "TemperaturePanel": {
             "AutoscaleChart": "Scala automaticamente il Grafico",
             "Avg": "Medio",
@@ -529,6 +514,21 @@
             "TemperaturesInChart": "Temperatura [°C]",
             "TempTooHigh": "Temperatura troppo alta per {name}! (max: {max})",
             "TempTooLow": "Temperatura troppo bassa per {name}! (min: {min})"
+        },
+        "ToolheadControlPanel": {
+            "Absolute": "assoluto",
+            "ALL": "TUTTI",
+            "InvertX": "Inverti X",
+            "InvertY": "Inverti Y",
+            "InvertZ": "Inverti Z",
+            "PleaseConfigureSteps": "Configura gli step",
+            "Position": "Posizione",
+            "QGL": "QGL",
+            "Relative": "relativo",
+            "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
+            "SetupControls": "Controlli Installazione",
+            "SpeedFactor": "Fattore di velocità",
+            "ZTilt": "Inclinazione Z"
         },
         "WebcamPanel": {
             "All": "Tutto",

@@ -493,21 +493,6 @@
             "Total": "Total",
             "Unknown": "Inconnu"
         },
-        "ToolheadControlPanel": {
-            "Absolute": "absolue",
-            "ALL": "Tous",
-            "InvertX": "Inversion X",
-            "InvertY": "Inversion Y",
-            "InvertZ": "Inversion Z",
-            "PleaseConfigureSteps": "Configurez Pas",
-            "Position": "Position",
-            "QGL": "QGL",
-            "Relative": "relative",
-            "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
-            "SetupControls": "Réglages",
-            "SpeedFactor": "Facteur de vitesse",
-            "ZTilt": "Z Tilt"
-        },
         "TemperaturePanel": {
             "AutoscaleChart": "Echelle automatique",
             "Avg": "Moyenne",
@@ -534,6 +519,21 @@
             "TemperaturesInChart": "Température [°C]",
             "TempTooHigh": "La température de {name} est trop haute, (max: {max})",
             "TempTooLow": "La température de {name} est trop basse, (min: {min})"
+        },
+        "ToolheadControlPanel": {
+            "Absolute": "absolue",
+            "ALL": "Tous",
+            "InvertX": "Inversion X",
+            "InvertY": "Inversion Y",
+            "InvertZ": "Inversion Z",
+            "PleaseConfigureSteps": "Configurez Pas",
+            "Position": "Position",
+            "QGL": "QGL",
+            "Relative": "relative",
+            "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
+            "SetupControls": "Réglages",
+            "SpeedFactor": "Facteur de vitesse",
+            "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
             "All": "Tous",

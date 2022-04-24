@@ -95,7 +95,6 @@ export const getDefaultState = (): GuiState => {
             ],
             widescreenLayout2: [
                 { name: 'temperature', visible: true },
-                { name: 'printsettings', visible: true },
                 { name: 'machine-settings', visible: true },
             ],
             widescreenLayout3: [

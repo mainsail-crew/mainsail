@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "列印機組",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "{section}' 中的部分選項 '{option}' 已棄用，將在未來版本中刪除。",
                 "DeprecatedValue": "不推薦使用'{section}' 部分的選項'{option}' 中的值'{value}'，並將在未來版本中刪除。"
             }
         },
+        "Printers": "列印機組",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "樹莓派ARM核心目前已被限制.",
             "DescriptionFrequencyCapped": "樹莓派ARM最大頻率目前限制為1.2 GHz.",
@@ -434,21 +434,6 @@
             "Total": "總共: ",
             "Unknown": "Unknown"
         },
-        "ToolheadControlPanel": {
-            "Absolute": "絕對",
-            "ALL": "所有",
-            "InvertX": "翻轉 X",
-            "InvertY": "翻轉 Y",
-            "InvertZ": "翻轉 Z",
-            "PleaseConfigureSteps": "請設定步進",
-            "Position": "位置",
-            "QGL": "QGL",
-            "Relative": "相對的",
-            "SettingsInterfaceControl": "設定 > 界面 > 控制",
-            "SetupControls": "設定控制",
-            "SpeedFactor": "速度係數",
-            "ZTilt": "Z 傾斜"
-        },
         "TemperaturePanel": {
             "AutoscaleChart": "自動縮放圖表",
             "Avg": "平均",
@@ -473,6 +458,21 @@
             "State": "狀態",
             "Target": "目標",
             "TemperaturesInChart": "溫度 [°C]"
+        },
+        "ToolheadControlPanel": {
+            "Absolute": "絕對",
+            "ALL": "所有",
+            "InvertX": "翻轉 X",
+            "InvertY": "翻轉 Y",
+            "InvertZ": "翻轉 Z",
+            "PleaseConfigureSteps": "請設定步進",
+            "Position": "位置",
+            "QGL": "QGL",
+            "Relative": "相對的",
+            "SettingsInterfaceControl": "設定 > 界面 > 控制",
+            "SetupControls": "設定控制",
+            "SpeedFactor": "速度係數",
+            "ZTilt": "Z 傾斜"
         },
         "WebcamPanel": {
             "All": "全部",

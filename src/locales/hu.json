@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "Nyomtatók",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "'{section}' / '{option}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
                 "DeprecatedValue": "'{section}' / '{option}' / Value '{value}' opcióját leírtuk, és a következő verzióban már nem lesz benne."
             }
         },
+        "Printers": "Nyomtatók",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Az rPi ARM mag(ok) jelenleg túlterheltek.",
             "DescriptionFrequencyCapped": "Az rPi ARM max frekvenciája jelenleg 1,2 GHz -re korlátozódik.",
@@ -490,21 +490,6 @@
             "Total": "Összesen",
             "Unknown": "Ismeretlen"
         },
-        "ToolheadControlPanel": {
-            "Absolute": "abszolút",
-            "ALL": "MIND",
-            "InvertX": "X invertálása",
-            "InvertY": "Y invertálása",
-            "InvertZ": "Z invertálása",
-            "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
-            "Position": "Pozíció",
-            "QGL": "QGL",
-            "Relative": "relatív",
-            "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
-            "SetupControls": "Beállítás vezérlései",
-            "SpeedFactor": "Sebességállítás",
-            "ZTilt": "Z dőlésszög"
-        },
         "TemperaturePanel": {
             "AutoscaleChart": "Grafikon automatikus méretezése",
             "Avg": "Átl.",
@@ -531,6 +516,21 @@
             "TemperaturesInChart": "Hőmérséklet [°C]",
             "TempTooHigh": "A {name} hőmérséklete túl magas! (max: {max})",
             "TempTooLow": "A {name} hőmérséklete túl alacsony! (min: {min})"
+        },
+        "ToolheadControlPanel": {
+            "Absolute": "abszolút",
+            "ALL": "MIND",
+            "InvertX": "X invertálása",
+            "InvertY": "Y invertálása",
+            "InvertZ": "Z invertálása",
+            "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
+            "Position": "Pozíció",
+            "QGL": "QGL",
+            "Relative": "relatív",
+            "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
+            "SetupControls": "Beállítás vezérlései",
+            "SpeedFactor": "Sebességállítás",
+            "ZTilt": "Z dőlésszög"
         },
         "WebcamPanel": {
             "All": "Mind",

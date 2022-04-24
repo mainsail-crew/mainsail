@@ -1,22 +1,22 @@
 {
     "App": {
         "Notifications": {
-            "DependencyName": "Dependency: {name}",
             "DependencyDescription": "The current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}.",
+            "DependencyName": "Dependency: {name}",
             "DismissAll": "Dismiss all",
-            "MoonrakerWarnings": {
-                "MoonrakerComponent": "Moonraker: {component}",
-                "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the logfile and fix the issue.",
-                "MoonrakerWarning": "Moonraker warning",
-                "UnparsedConfigOption": "Unparsed config option '{option}: {value}' detected in section [{section}]. This may be an option no longer available or could be the result of a module that failed to load. In the future this will result in a startup error.",
-                "UnparsedConfigSection": "Unparsed config section [{section}] detected. This may be the result of a component that failed to load. In the future this will result in a startup error."
-            },
             "KlipperWarnings": {
                 "DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
                 "DeprecatedOptionHeadline": "Deprecated Klipper Option",
                 "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
                 "DeprecatedValueHeadline": "Deprecated Klipper Value",
                 "KlipperWarning": "Klipper warning"
+            },
+            "MoonrakerWarnings": {
+                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the logfile and fix the issue.",
+                "MoonrakerWarning": "Moonraker warning",
+                "UnparsedConfigOption": "Unparsed config option '{option}: {value}' detected in section [{section}]. This may be an option no longer available or could be the result of a module that failed to load. In the future this will result in a startup error.",
+                "UnparsedConfigSection": "Unparsed config section [{section}] detected. This may be the result of a component that failed to load. In the future this will result in a startup error."
             },
             "Never": "never",
             "NextReboot": "next reboot",
@@ -561,27 +561,7 @@
             "Total": "Total",
             "Unknown": "Unknown"
         },
-        "ToolheadControlPanel": {
-            "Absolute": "absolute",
-            "ALL": "ALL",
-            "Headline": "Toolhead",
-            "InvertX": "Invert X",
-            "InvertY": "Invert Y",
-            "InvertZ": "Invert Z",
-            "MotorsOff": "Motors Off",
-            "PleaseConfigureSteps": "Please configure steps",
-            "Position": "Position",
-            "QGL": "QGL",
-            "Relative": "relative",
-            "SettingsInterfaceControl": "Settings > Interface > Control",
-            "SetupControls": "Setup Controls",
-            "SpeedFactor": "Speed factor",
-            "XOffset": "X-Offset",
-            "YOffset": "Y-Offset",
-            "ZOffset": "Z-Offset",
-            "ZTilt": "Z-Tilt"
-        },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Autoscale Chart",
             "Avg": "Avg",
             "Color": "Color",
@@ -607,6 +587,26 @@
             "TemperaturesInChart": "Temperature [°C]",
             "TempTooHigh": "Temperature too high for {name}! (max: {max})",
             "TempTooLow": "Temperature too low for {name}! (min: {min})"
+        },
+        "ToolheadControlPanel": {
+            "Absolute": "absolute",
+            "ALL": "ALL",
+            "Headline": "Toolhead",
+            "InvertX": "Invert X",
+            "InvertY": "Invert Y",
+            "InvertZ": "Invert Z",
+            "MotorsOff": "Motors Off",
+            "PleaseConfigureSteps": "Please configure steps",
+            "Position": "Position",
+            "QGL": "QGL",
+            "Relative": "relative",
+            "SettingsInterfaceControl": "Settings > Interface > Control",
+            "SetupControls": "Setup Controls",
+            "SpeedFactor": "Speed factor",
+            "XOffset": "X-Offset",
+            "YOffset": "Y-Offset",
+            "ZOffset": "Z-Offset",
+            "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {
             "All": "All",
