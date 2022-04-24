@@ -118,10 +118,7 @@ import { Mixins } from 'vue-property-decorator'
 import draggable from 'vuedraggable'
 import { capitalize, convertPanelnameToIcon } from '@/plugins/helpers'
 import DashboardMixin from '@/components/mixins/dashboard'
-
 import { mdiInformation, mdiCheckboxMarked, mdiCheckboxBlankOutline, mdiLock, mdiArrowUpDown } from '@mdi/js'
-import kebabCase from 'lodash.kebabcase'
-import { allDashboardPanels } from '@/store/variables'
 
 @Component({
     components: {
