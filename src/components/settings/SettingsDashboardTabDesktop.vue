@@ -120,6 +120,8 @@ import { capitalize, convertPanelnameToIcon } from '@/plugins/helpers'
 import DashboardMixin from '@/components/mixins/dashboard'
 
 import { mdiInformation, mdiCheckboxMarked, mdiCheckboxBlankOutline, mdiLock, mdiArrowUpDown } from '@mdi/js'
+import kebabCase from 'lodash.kebabcase'
+import { allDashboardPanels } from '@/store/variables'
 
 @Component({
     components: {
@@ -143,6 +145,7 @@ export default class SettingsDashboardTabDesktop extends Mixins(DashboardMixin) 
     get desktopLayout1() {
         let panels = this.$store.getters['gui/getPanels']('desktopLayout1')
         panels = panels.concat(this.missingPanelsDesktop)
+        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
 
         return panels
     }
@@ -154,7 +157,10 @@ export default class SettingsDashboardTabDesktop extends Mixins(DashboardMixin) 
     }
 
     get desktopLayout2() {
-        return this.$store.getters['gui/getPanels']('desktopLayout2')
+        let panels = this.$store.getters['gui/getPanels']('desktopLayout2')
+        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
+
+        return panels
     }
 
     set desktopLayout2(newVal) {
