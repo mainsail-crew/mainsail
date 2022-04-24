@@ -1,6 +1,12 @@
 {
     "App": {
         "Printers": "打印机组",
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "选项 '{option}' 在章节 '{section}' 已经弃用，在未来版本会被移除.",
+                "DeprecatedValue": "数值 '{value}' 在选项 '{option}' 中的章节'{section}' 已经弃用，在未来版本会被移除."
+            }
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM 核心当前被限制.",
             "DescriptionFrequencyCapped": "rPi ARM 最高频率限制再 1.2 GHz.",
@@ -373,10 +379,6 @@
         }
     },
     "Panels": {
-        "DependenciesPanel": {
-            "Dependency": "依赖",
-            "DependencyDescription": "你当前 {name} 版本并不支持所有 Mainsail 的特性. 跟新 {name} 到至少 {neededVersion}版本."
-        },
         "ExtruderControlPanel": {
             "Extrude": "挤出",
             "ExtrusionFactor": "挤出因子",
@@ -386,12 +388,6 @@
             "ReconnectToPrinter": "重新连接",
             "SwitchToPrinter": "切换到打印机",
             "WebcamOff": "关闭"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "选项 '{option}' 在章节 '{section}' 已经弃用，在未来版本会被移除.",
-            "DeprecatedValue": "数值 '{value}' 在选项 '{option}' 中的章节'{section}' 已经弃用，在未来版本会被移除.",
-            "DownloadLog": "下载记录",
-            "KlipperWarnings": "Klipper 警告"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware 重启",
@@ -505,7 +501,7 @@
             "SpeedFactor": "速度因子",
             "ZTilt": "Z 抬升"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "自动缩放图表",
             "Avg": "平均",
             "Color": "颜色",

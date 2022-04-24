@@ -10,8 +10,9 @@ import {
     PrinterStateTemperatureFan,
     PrinterStateMiscellaneous,
     PrinterStateMcu,
-    PrinterStateSensor,
     PrinterStateMacro,
+    PrinterStateTemperatureObject,
+    PrinterStateTemperatureSensor,
 } from '@/store/printer/types'
 import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
@@ -108,7 +109,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     if (!name.startsWith('_')) {
                         heaters.push({
                             name: name,
-                            type: nameSplit[0],
+                            type: nameSplit[0] as PrinterStateHeater['type'],
                             icon: icon,
                             iconColor: color,
                             target: Math.round(value.target * 10) / 10,
@@ -159,7 +160,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getTemperatureSensors: (state, getters) => {
-        const sensors: PrinterStateSensor[] = []
+        const sensors: PrinterStateTemperatureSensor[] = []
 
         for (const [key, value] of Object.entries(state)) {
             const nameSplit = key.split(' ')
@@ -189,6 +190,99 @@ export const getters: GetterTree<PrinterState, RootState> = {
         }
 
         return caseInsensitiveSort(sensors, 'name')
+    },
+
+    getTemperatureObjects: (state, getters) => {
+        const objects: PrinterStateTemperatureObject[] = []
+
+        const heaters = getters['getHeaters']
+        if (heaters.length) {
+            heaters.forEach((heater: PrinterStateHeater) => {
+                objects.push({
+                    name: heater.name,
+                    type: heater.type,
+                    icon: heater.icon,
+                    iconColor: heater.target > 0 ? `${heater.chartColor}aa` : `${heater.chartColor}22`,
+                    iconClass: '',
+                    state: heater.target > 0 ? heater.power + '%' : 'off',
+                    avgState: heater.avgPower + '%',
+                    temperature: heater.temperature,
+                    additionSensors: heater.additionSensors,
+                    target: heater.target,
+                    presets: heater.presets,
+                    min_temp: heater.min_temp,
+                    max_temp: heater.max_temp,
+                    measured_min_temp: null,
+                    measured_max_temp: null,
+                    rpm: null,
+                    rpmClass: '',
+                    command: 'SET_HEATER_TEMPERATURE',
+                    commandAttributeName: 'HEATER',
+                    chartColor: heater.chartColor,
+                    chartSeries: heater.chartSeries,
+                })
+            })
+        }
+
+        const temperature_fans = getters['getTemperatureFans']
+        if (temperature_fans.length) {
+            temperature_fans.forEach((fan: PrinterStateTemperatureFan) => {
+                objects.push({
+                    name: fan.name,
+                    type: 'temperature_fan',
+                    icon: fan.icon,
+                    iconColor: fan.target > 0 ? `${fan.chartColor}aa` : `${fan.chartColor}22`,
+                    iconClass: fan.speed ? ' icon-rotate' : '',
+                    state: fan.target > 0 && fan.speed > 0 ? fan.speed + '%' : fan.target > 0 ? 'standby' : 'off',
+                    avgState: fan.avgSpeed + '%',
+                    temperature: fan.temperature,
+                    additionSensors: fan.additionSensors,
+                    target: fan.target,
+                    presets: fan.presets,
+                    min_temp: fan.min_temp,
+                    max_temp: fan.max_temp,
+                    measured_min_temp: null,
+                    measured_max_temp: null,
+                    rpm: `${fan.rpm} RPM`,
+                    rpmClass: fan.rpm === 0 && fan.speed > 0 ? 'red--text' : '',
+                    command: 'SET_TEMPERATURE_FAN_TARGET',
+                    commandAttributeName: 'TEMPERATURE_FAN',
+                    chartColor: fan.chartColor,
+                    chartSeries: fan.chartSeries,
+                })
+            })
+        }
+
+        const temperature_sensors = getters['getTemperatureSensors']
+        if (temperature_sensors.length) {
+            temperature_sensors.forEach((sensor: PrinterStateTemperatureSensor) => {
+                objects.push({
+                    name: sensor.name,
+                    type: 'temperature_sensor',
+                    icon: sensor.icon,
+                    iconColor: `${sensor.chartColor}aa`,
+                    iconClass: '',
+                    state: null,
+                    avgState: '',
+                    temperature: sensor.temperature,
+                    additionSensors: sensor.additionSensors,
+                    target: null,
+                    presets: [],
+                    min_temp: sensor.min_temp,
+                    max_temp: sensor.max_temp,
+                    measured_min_temp: sensor.measured_min_temp,
+                    measured_max_temp: sensor.measured_max_temp,
+                    rpm: null,
+                    rpmClass: '',
+                    command: null,
+                    commandAttributeName: null,
+                    chartColor: sensor.chartColor,
+                    chartSeries: sensor.chartSeries,
+                })
+            })
+        }
+
+        return objects
     },
 
     getPartFanSpeed: (state) => {
@@ -272,9 +366,12 @@ export const getters: GetterTree<PrinterState, RootState> = {
                         max_power: undefined,
                     }
 
-                    if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
+                    if (
+                        'configfile' in state &&
+                        'settings' in state.configfile &&
+                        key.toLowerCase() in state.configfile.settings
+                    ) {
                         if ('off_below' in settings) tmp.off_below = settings?.off_below ?? 0
-
                         if ('max_power' in settings) tmp.max_power = settings?.max_power ?? 1
                     }
 

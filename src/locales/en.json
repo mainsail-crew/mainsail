@@ -1,5 +1,28 @@
 {
     "App": {
+        "Notifications": {
+            "DependencyName": "Dependency: {name}",
+            "DependencyDescription": "The current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}.",
+            "DismissAll": "Dismiss all",
+            "MoonrakerWarnings": {
+                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the logfile and fix the issue.",
+                "MoonrakerWarning": "Moonraker warning",
+                "UnparsedConfigOption": "Unparsed config option '{option}: {value}' detected in section [{section}]. This may be an option no longer available or could be the result of a module that failed to load. In the future this will result in a startup error.",
+                "UnparsedConfigSection": "Unparsed config section [{section}] detected. This may be the result of a component that failed to load. In the future this will result in a startup error."
+            },
+            "KlipperWarnings": {
+                "DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
+                "DeprecatedOptionHeadline": "Deprecated Klipper Option",
+                "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
+                "DeprecatedValueHeadline": "Deprecated Klipper Value",
+                "KlipperWarning": "Klipper warning"
+            },
+            "Never": "never",
+            "NextReboot": "next reboot",
+            "NoNotification": "No Notification available",
+            "Remind": "Remind:"
+        },
         "NumberInput": {
             "GreaterOrEqualError": "Must be grater or equal than {min}!",
             "MustBeBetweenError": "Must be between {min} and {max}!",
@@ -15,8 +38,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI supply voltage dropped below 4.65V at least once since the last power-on.",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperature is currently above the soft limit (default 60C).",
             "DescriptionUnderVoltageDetected": "rPI supply voltage currently below 4.65V",
-            "HeadlineCurrentFlags": "Current Flags",
-            "HeadlinePreviouslyFlags": "Previously Flags",
             "TitleCurrentlyThrottled": "Currently Throttled",
             "TitleFrequencyCapped": "Frequency Capped",
             "TitlePreviouslyFrequencyCapped": "Previously Frequency Capped",
@@ -413,9 +434,21 @@
         }
     },
     "Panels": {
-        "DependenciesPanel": {
-            "Dependency": "Dependency | Dependencies",
-            "DependencyDescription": "Your current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}."
+        "ControlPanel": {
+            "ALL": "ALL",
+            "AlternateControls": "Alternate controls",
+            "Headline": "Controls",
+            "InvertX": "Invert X",
+            "InvertY": "Invert Y",
+            "InvertZ": "Invert Z",
+            "PleaseConfigureSteps": "Please configure steps",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Settings > Interface > Control",
+            "SetupControls": "Setup Controls",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Tilt"
         },
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
@@ -436,12 +469,6 @@
             "ReconnectToPrinter": "Reconnect",
             "SwitchToPrinter": "Switch to Printer",
             "WebcamOff": "Off"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
-            "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
-            "DownloadLog": "download log",
-            "KlipperWarnings": "Klipper Warnings"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Restart",
@@ -497,12 +524,6 @@
                 "Disabled": "disabled",
                 "Empty": "Empty"
             }
-        },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Download Log",
-            "FollowingPluginHasAnError": "Following plugin has an error:",
-            "MoonrakerErrorInfo": "An error was detected while loading the moonraker components. Please check the logfile and fix the issue.",
-            "MoonrakerWarnings": "Moonraker Warnings"
         },
         "PowerControlPanel": {
             "Error": "Error",
@@ -591,6 +612,7 @@
             "All": "All",
             "FPS": "FPS",
             "Headline": "Webcam",
+            "NoWebcam": "No webcam available. Add a webcam under \"Interface Settings\" -> \"Webcams\".",
             "UnknownWebcamService": "Unknown Webcam Service",
             "UrlNotAvailable": "URL not available"
         },
@@ -802,9 +824,13 @@
             "CustomGCode": "Custom G-Code",
             "EditCooldown": "Edit Cooldown",
             "EditHeadline": "Edit Preset",
+            "ErrorInvalidValue": "Invalid value",
+            "ErrorNameNotUnique": "Name already exists",
+            "ErrorNameRequired": "Name required",
             "Name": "Name",
             "PreheatPresets": "Presets",
-            "PresetInfo": "You have to set minimum a target temperature or a custom G-Code.",
+            "PresetInfo": "Please set at least a target temperature or a custom G-Code.",
+            "PresetNamePlaceholder": "Preset name (required)",
             "StoreButton": "Store preset",
             "UpdateButton": "Update preset",
             "UpdateCooldown": "Update Cooldown"

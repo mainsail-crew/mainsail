@@ -1,5 +1,11 @@
 {
     "App": {
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "La opción '{option}' en la sección '{section}' está discontinuada y será removida en la próxima versión.",
+                "DeprecatedValue": "El valor '{value}' en la opción '{option}' en la sección '{section}' está discontinuado y será removido en la próxima versión."
+            }
+        },
         "NumberInput": {
             "GreaterOrEqualError": "¡Debe ser mayor o igual a {min}!",
             "MustBeBetweenError": "¡Debe estar entre {min} y {max}!",
@@ -390,10 +396,6 @@
         }
     },
     "Panels": {
-        "DependenciesPanel": {
-            "Dependency": "Dependencia | Dependencias",
-            "DependencyDescription": "La versión de {name} actual no soporta todas las funciones de Mainsail. Actualice {name} por lo menos a la versión {neededVersion}."
-        },
         "ExtruderControlPanel": {
             "Extrude": "Extruir",
             "ExtrusionFactor": "Factor de extrusión",
@@ -403,12 +405,6 @@
             "ReconnectToPrinter": "Reconectar",
             "SwitchToPrinter": "Cambiar a impresora",
             "WebcamOff": "Apagar"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "La opción '{option}' en la sección '{section}' está discontinuada y será removida en la próxima versión.",
-            "DeprecatedValue": "El valor '{value}' en la opción '{option}' en la sección '{section}' está discontinuado y será removido en la próxima versión.",
-            "DownloadLog": "Descargar registro",
-            "KlipperWarnings": "Alertas de Klipper"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Reiniciar Firmware",
@@ -522,7 +518,7 @@
             "SpeedFactor": "Factor de velocidad",
             "ZTilt": "Z Tilt"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Autoescalar gráfico",
             "Avg": "Promedio",
             "Color": "Color",

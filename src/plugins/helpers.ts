@@ -79,7 +79,7 @@ export const convertPanelnameToIcon = (name: string): string => {
             return mdiCodeTags
         case 'miscellaneous':
             return mdiDipSwitch
-        case 'tools':
+        case 'temperature':
             return mdiThermometerLines
         case 'miniconsole':
             return mdiConsoleLine

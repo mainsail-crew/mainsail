@@ -1,6 +1,12 @@
 {
     "App": {
         "Printers": "Stampanti",
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "L'opzione '{option}' nella sezione '{section}' è obsoleta e sarà rimossa in una versione futura.",
+                "DeprecatedValue": "Il valore '{value}' in '{option}' nella sezione '{section}' è obsoleto e sarà rimosso in una versione futura."
+            }
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Uno o più core ARM dell'rPI sono attualmente rallentati.",
             "DescriptionFrequencyCapped": "La frequenza massima del processore ARM dell'rPI è attualmente limitata a 1,2 GHz.",
@@ -373,10 +379,6 @@
         }
     },
     "Panels": {
-        "DependenciesPanel": {
-            "Dependency": "Dipendenze",
-            "DependencyDescription": "L'attuale versione di {name} non supporta tutte le features di Mainsail. Aggiorna {name} almeno alla versione {neededVersion}."
-        },
         "ExtruderControlPanel": {
             "Extrude": "Estrudi",
             "ExtrusionFactor": "Fattore di estrusione",
@@ -386,12 +388,6 @@
             "ReconnectToPrinter": "Riconnetti",
             "SwitchToPrinter": "Passa alla Stampante",
             "WebcamOff": "Spenta"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "L'opzione '{option}' nella sezione '{section}' è obsoleta e sarà rimossa in una versione futura.",
-            "DeprecatedValue": "Il valore '{value}' in '{option}' nella sezione '{section}' è obsoleto e sarà rimosso in una versione futura.",
-            "DownloadLog": "scarica log",
-            "KlipperWarnings": "Avvisi di Klipper"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Riavvio Firmware",
@@ -507,7 +503,7 @@
             "SpeedFactor": "Fattore di velocità",
             "ZTilt": "Inclinazione Z"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Scala automaticamente il Grafico",
             "Avg": "Medio",
             "Color": "Colore",

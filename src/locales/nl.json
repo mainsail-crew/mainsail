@@ -1,6 +1,12 @@
 {
     "App": {
         "Printers": "Printers",
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "Optie '{option}' in sectie '{section}' is verouderd en wordt in een toekomstige versie verwijderd.",
+                "DeprecatedValue": "Waarde '{value}' in optie '{option}' in sectie '{section}' is verouderd en wordt in een toekomstige versie verwijderd."
+            }
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM core(s) worden momenteel gethrottled.",
             "DescriptionFrequencyCapped": "rPi ARM max frequency is momenteel beperkt tot 1.2 GHz.",
@@ -373,10 +379,6 @@
         }
     },
     "Panels": {
-        "DependenciesPanel": {
-            "Dependency": "Afhankelijkheid | Afhankelijkheden",
-            "DependencyDescription": "Je huidige {name} versie ondersteunt niet alle features van Mainsail. Update {name} naar tenminste {neededVersion}"
-        },
         "ExtruderControlPanel": {
             "Extrude": "Extrude",
             "ExtrusionFactor": "Extrusie factor",
@@ -386,12 +388,6 @@
             "ReconnectToPrinter": "Opnieuw verbinden",
             "SwitchToPrinter": "Wissel naar Printer",
             "WebcamOff": "Uit"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Optie '{option}' in sectie '{section}' is verouderd en wordt in een toekomstige versie verwijderd.",
-            "DeprecatedValue": "Waarde '{value}' in optie '{option}' in sectie '{section}' is verouderd en wordt in een toekomstige versie verwijderd.",
-            "DownloadLog": "log downloaden",
-            "KlipperWarnings": "Klipper Waarschuwingen"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Herstart",
@@ -525,7 +521,7 @@
             "SpeedFactor": "Snelheid factor",
             "ZTilt": "Z Tilt"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Schaal automatisch",
             "Avg": "Gemiddeld",
             "Color": "Kleur",

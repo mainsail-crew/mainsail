@@ -201,6 +201,8 @@
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
+                    <!-- EXTRUDER CONTROL SETTINGS -->
+                    <v-card-title class="mx-n4">{{ $t('Panels.ExtruderControlPanel.Headline') }}</v-card-title>
                     <settings-row
                         :title="$t('Settings.ControlTab.ZOffsetIncrements').toString()"
                         :mobile-second-row="true">
