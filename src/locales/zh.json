@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "打印机组",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "选项 '{option}' 在章节 '{section}' 已经弃用，在未来版本会被移除.",
                 "DeprecatedValue": "数值 '{value}' 在选项 '{option}' 中的章节'{section}' 已经弃用，在未来版本会被移除."
             }
         },
+        "Printers": "打印机组",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM 核心当前被限制.",
             "DescriptionFrequencyCapped": "rPi ARM 最高频率限制再 1.2 GHz.",
@@ -379,30 +379,10 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "所有",
-            "AlternateControls": "翻转控制",
+        "ExtruderControlPanel": {
             "Extrude": "挤出",
-            "FeedAmountIn": "进料量",
-            "FeedrateIn": "进料速度",
-            "Headline": "控制",
-            "HotendTooCold": "挤出头温度. 低于",
-            "InvertX": "翻转 X",
-            "InvertY": "翻转 Y",
-            "InvertZ": "翻转 Z",
-            "PleaseConfigureSteps": "请设置步",
-            "QGL": "四点调平",
-            "Retract": "回抽",
-            "SettingsInterfaceControl": "设置 > 界面 > 控制",
-            "SetupControls": "设置",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z 抬升"
-        },
-        "DependenciesPanel": {
-            "Dependency": "依赖",
-            "DependencyDescription": "你当前 {name} 版本并不支持所有 Mainsail 的特性. 跟新 {name} 到至少 {neededVersion}版本."
+            "ExtrusionFactor": "挤出因子",
+            "Retract": "回抽"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "重新连接",
@@ -476,13 +456,7 @@
             "On": "打开",
             "PowerControl": "电源控制"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "挤出因子",
-            "Headline": "打印机设置",
-            "SpeedFactor": "速度因子"
-        },
         "StatusPanel": {
-            "Absolute": "绝对",
             "CancelPrint": "终止打印",
             "ClearPrintStats": "清除打印提醒",
             "Difference": "不同",
@@ -503,21 +477,16 @@
             "Max": "最大",
             "ObjectHeight": "物体高度",
             "PausePrint": "暂停打印",
-            "Position": "位置",
             "Print": "打印",
-            "Relative": "相对",
             "ReprintJob": "再次打印",
             "Requested": "已发送请求",
             "ResumePrint": "继续打印",
             "Slicer": "切片",
             "Speed": "速度",
             "Total": "总",
-            "Unknown": "未知",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "未知"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "自动缩放图表",
             "Avg": "平均",
             "Color": "颜色",
@@ -544,6 +513,21 @@
             "TempTooHigh": "温度过高 {name}! (max: {max})",
             "TempTooLow": "温度过低 {name}! (min: {min})"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "绝对",
+            "ALL": "所有",
+            "InvertX": "翻转 X",
+            "InvertY": "翻转 Y",
+            "InvertZ": "翻转 Z",
+            "PleaseConfigureSteps": "请设置步",
+            "Position": "位置",
+            "QGL": "四点调平",
+            "Relative": "相对",
+            "SettingsInterfaceControl": "设置 > 界面 > 控制",
+            "SetupControls": "设置",
+            "SpeedFactor": "速度因子",
+            "ZTilt": "Z 抬升"
+        },
         "WebcamPanel": {
             "All": "所有",
             "FPS": "帧率",
@@ -557,7 +541,7 @@
             "Later": "最后的",
             "Ok": "好",
             "Save": "保存",
-            "SAVE_CONFIG": "保存配置",
+            "SaveConfig": "保存配置",
             "SaveInfoDescription": "已经计算生成新的Z偏移. 点击 保存配置 保存到 printer.cfg 中并重启 Klipper.",
             "SaveInfoDescriptionPrint": "已经计算生成新的Z偏移. 打印后点击 保存配置 保存到 printer.cfg 中并重启 Klipper.",
             "SaveInfoHeadline": "信息",

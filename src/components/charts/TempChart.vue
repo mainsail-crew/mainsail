@@ -89,7 +89,7 @@ export default class TempChart extends Mixins(BaseMixin) {
         },
         yAxis: [
             {
-                name: this.$t('Panels.ToolsPanel.TemperaturesInChart'),
+                name: this.$t('Panels.TemperaturePanel.TemperaturesInChart'),
                 type: 'value',
                 min: 0,
                 max: (value: any) => {

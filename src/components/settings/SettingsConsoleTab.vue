@@ -4,7 +4,7 @@
     <div>
         <v-card v-if="!form.bool" flat>
             <v-card-text>
-                <settings-row :title="$t('Settings.ConsoleTab.Direction')">
+                <settings-row :title="$t('Settings.ConsoleTab.Direction').toString()">
                     <v-select
                         v-model="consoleDirection"
                         :items="availableDirections"
@@ -14,7 +14,7 @@
                         attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.ConsoleTab.EntryStyle')">
+                <settings-row :title="$t('Settings.ConsoleTab.EntryStyle').toString()">
                     <v-select
                         v-model="entryStyle"
                         :items="availableEntryStyles"
@@ -24,7 +24,7 @@
                         attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.ConsoleTab.Height')">
+                <settings-row :title="$t('Settings.ConsoleTab.Height').toString()">
                     <v-slider
                         v-model="consoleHeightTmp"
                         hide-details
@@ -35,12 +35,14 @@
                         @change="updateConsoleHeight"></v-slider>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures')" :dynamic-slot-width="true">
+                <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures').toString()" :dynamic-slot-width="true">
                     <v-switch v-model="hideWaitTemperatures" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <template v-if="moonrakerComponents.includes('timelapse')">
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ConsoleTab.HideTimelapse')" :dynamic-slot-width="true">
+                    <settings-row
+                        :title="$t('Settings.ConsoleTab.HideTimelapse').toString()"
+                        :dynamic-slot-width="true">
                         <v-switch v-model="hideTimelapse" hide-details class="mt-0"></v-switch>
                     </settings-row>
                 </template>
@@ -85,7 +87,7 @@
                     }}
                 </v-card-title>
                 <v-card-text>
-                    <settings-row :title="$t('Settings.ConsoleTab.Name')">
+                    <settings-row :title="$t('Settings.ConsoleTab.Name').toString()">
                         <v-text-field
                             v-model="form.name"
                             hide-details="auto"
@@ -94,7 +96,7 @@
                             outlined></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ConsoleTab.Regex')">
+                    <settings-row :title="$t('Settings.ConsoleTab.Regex').toString()">
                         <v-textarea v-model="form.regex" outlined hide-details="auto"></v-textarea>
                     </settings-row>
                 </v-card-text>

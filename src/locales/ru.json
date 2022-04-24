@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "Принтер",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "Опция '{option}' в разделе '{section}' устарела и будет удалена в будущем выпуске.",
                 "DeprecatedValue": "Значение '{value}' в опции '{option}' в секции '{section}' устарело и будет удалено в будущем релизе."
             }
         },
+        "Printers": "Принтер",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "ARM-ядро(ядра) rPi в настоящее время дросселируется.",
             "DescriptionFrequencyCapped": "Максимальная частота rPi ARM в настоящее время ограничена 1,2 ГГц.",
@@ -379,33 +379,10 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "ALL",
-            "AlternateControls": "Альтернативный контроль",
-            "Controls": "Контроль",
+        "ExtruderControlPanel": {
             "Extrude": "Экструдировать",
-            "FeedAmountIn": "Скорость подачи Количество в",
-            "FeedrateIn": "Скорость подачи",
-            "Headline": "Управление",
-            "Home": "Home",
-            "HotendTooCold": "Температура нагревателя ниже, чем",
-            "InvertX": "X инвертировать",
-            "InvertY": "Y инвертировать",
-            "InvertZ": "Z инвертировать",
-            "Macros": "Макрос",
-            "PleaseConfigureSteps": "Пожалуйста, настройте расстояние вращения",
-            "QGL": "QGL",
-            "Retract": "Въехать",
-            "SettingsInterfaceControl": "Настройки > интерфейс > управление",
-            "SetupControls": "Установить контроль",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
-        "DependenciesPanel": {
-            "Dependency": "Зависимость | Зависимости",
-            "DependencyDescription": "Ваша текущая версия {name} не поддерживает все функции Mainsail. Обновите {name} по крайней мере до версии {neededVersion}."
+            "ExtrusionFactor": "Коэффициент экструзии",
+            "Retract": "Въехать"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Подключите",
@@ -495,13 +472,7 @@
             "On": "На сайте",
             "PowerControl": "Переключатель питания"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Коэффициент экструзии",
-            "Headline": "Настройки печати",
-            "SpeedFactor": "Коэффициент скорости"
-        },
         "StatusPanel": {
-            "Absolute": "Абсолютно",
             "CancelPrint": "Отменить давление",
             "ClearPrintStats": "Удаление статистики печати",
             "Difference": "Разница",
@@ -522,21 +493,16 @@
             "Max": "макс.",
             "ObjectHeight": "Высота объекта",
             "PausePrint": "Давление прерывания",
-            "Position": "Позиция",
             "Print": "Печать",
-            "Relative": "Инкрементальный",
             "ReprintJob": "Повторять давление",
             "Requested": "Запрошено",
             "ResumePrint": "Возобновить печать",
             "Slicer": "Slicer",
             "Speed": "Скорость",
             "Total": "Всего",
-            "Unknown": "Неизвестный",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Неизвестный"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Автомасштабируемая диаграмма",
             "Avg": "средний",
             "Color": "Цвет",
@@ -570,6 +536,24 @@
             "TempTooLow": "Температура слишком низкая для {name}! (min: {min})",
             "UNKNOWN": "ЗНАЕТЕ"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "Абсолютно",
+            "ALL": "ALL",
+            "Controls": "Контроль",
+            "Home": "Home",
+            "InvertX": "X инвертировать",
+            "InvertY": "Y инвертировать",
+            "InvertZ": "Z инвертировать",
+            "Macros": "Макрос",
+            "PleaseConfigureSteps": "Пожалуйста, настройте расстояние вращения",
+            "Position": "Позиция",
+            "QGL": "QGL",
+            "Relative": "Инкрементальный",
+            "SettingsInterfaceControl": "Настройки > интерфейс > управление",
+            "SetupControls": "Установить контроль",
+            "SpeedFactor": "Коэффициент скорости",
+            "ZTilt": "Z Tilt"
+        },
         "WebcamPanel": {
             "All": "Все",
             "FPS": "FPS",
@@ -578,19 +562,15 @@
             "UrlNotAvailable": "URL недоступен",
             "Webcam": "Веб-камера"
         },
-        "ZOffsetPanel": {
-            "CurrentOffset": "Смещение тока: ",
-            "ZBabyStepping": "Z Смещение"
-        },
         "ZoffsetPanel": {
             "CurrentOffset": "Текущее смещение",
             "Headline": "Z-смещение",
             "Later": "Позже",
             "Ok": "OK",
             "Save": "Сохранить",
-            "SAVE_CONFIG": "СОХРАНИТЬ_КОНФИГ",
-            "SaveInfoDescription": "Новое z-смещение было рассчитано и зарегистрировано. Нажмите SAVE_CONFIG, чтобы сохранить новое z-смещение в файле printer.cfg, и перезапустите Klipper.",
-            "SaveInfoDescriptionPrint": "Новое смещение по Z было рассчитано и зарегистрировано. После печати нажмите на SAVE_CONFIG в верхней панели, чтобы сохранить его в файле printer.cfg, и перезапустите Klipper.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "Новое z-смещение было рассчитано и зарегистрировано. Нажмите \"SAVE CONFIG\", чтобы сохранить новое z-смещение в файле printer.cfg, и перезапустите Klipper.",
+            "SaveInfoDescriptionPrint": "Новое смещение по Z было рассчитано и зарегистрировано. После печати нажмите на \"SAVE CONFIG\" в верхней панели, чтобы сохранить его в файле printer.cfg, и перезапустите Klipper.",
             "SaveInfoHeadline": "Информация",
             "ToEndstop": "до конечной остановки",
             "ToProbe": "к зонду"

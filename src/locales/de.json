@@ -1,22 +1,22 @@
 {
     "App": {
         "Notifications": {
-            "DependencyName": "Abhängigkeit: {name}",
             "DependencyDescription": "Die momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}.",
+            "DependencyName": "Abhängigkeit: {name}",
             "DismissAll": "Dismiss all",
-            "MoonrakerWarnings": {
-                "MoonrakerComponent": "Moonraker: {component}",
-                "MoonrakerFailedComponentDescription": "Beim Laden der Moonraker-Komponenten wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
-                "MoonrakerWarning": "Moonraker Warnung",
-                "UnparsedConfigOption": "Nicht erkannte Config-Option '{option}: {value}' in Abschnitt [{section}] entdeckt. Dies kann eine Option sein, die nicht mehr verfügbar ist, oder das Ergebnis eines Moduls sein, das nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen.",
-                "UnparsedConfigSection": "Nicht erkannter Config-Abschnitt [{section}] gefunden. Dies kann das Ergebnis einer Komponente sein, die nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen."
-            },
             "KlipperWarnings": {
                 "DeprecatedOption": "Option '{option}' im Abschnitt '{section}' ist veraltet und wird in einem zukünftigen Release entfernt.",
                 "DeprecatedOptionHeadline": "Veralterte Klipper Option",
                 "DeprecatedValue": "Wert '{value}' in Option '{option}' im Abschnitt '{section}' ist veraltet und wird in einem zukünftigen Release entfernt.",
                 "DeprecatedValueHeadline": "Veralteter Klipper Wert",
                 "KlipperWarning": "Klipper Warnung"
+            },
+            "MoonrakerWarnings": {
+                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerFailedComponentDescription": "Beim Laden der Moonraker-Komponenten wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
+                "MoonrakerWarning": "Moonraker Warnung",
+                "UnparsedConfigOption": "Nicht erkannte Config-Option '{option}: {value}' in Abschnitt [{section}] entdeckt. Dies kann eine Option sein, die nicht mehr verfügbar ist, oder das Ergebnis eines Moduls sein, das nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen.",
+                "UnparsedConfigSection": "Nicht erkannter Config-Abschnitt [{section}] gefunden. Dies kann das Ergebnis einer Komponente sein, die nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen."
             },
             "Never": "nie",
             "NextReboot": "nächsten Reboot",
@@ -433,26 +433,19 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "ALLE",
-            "AlternateControls": "Steuerkreuz",
+        "ExtruderControlPanel": {
+            "Allowed": "Erlaubt",
+            "EstimatedExtrusion": "Geschätzte Extrusion:",
             "Extrude": "Extrudieren",
-            "FeedAmountIn": "Vorschub in",
-            "FeedrateIn": "Geschwindigkeit in",
-            "Headline": "Steuerung",
-            "HotendTooCold": "Hotend-Temp. niedriger als",
-            "InvertX": "X invertieren",
-            "InvertY": "Y invertieren",
-            "InvertZ": "Z invertieren",
-            "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
-            "QGL": "QGL",
+            "ExtruderTempTooLow": "Extruder Temp. <",
+            "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
+            "FilamentLength": "Filamentlänge",
+            "Headline": "Extruder",
+            "LoadFilament": "Filament laden",
+            "Requested": "Angefordert",
             "Retract": "Rückzug",
-            "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
-            "SetupControls": "Setup-Steuerelemente",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
+            "TooLargeExtrusion": "Extrusion zu groß!",
+            "UnloadFilament": "Filament entladen"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Neu verbinden",
@@ -483,7 +476,7 @@
                 "Velocity": "Geschwindigkeit"
             },
             "PressureAdvanceSettings": {
-                "Advance": "Advance",
+                "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "PressureAdvance": "Pressure Advance",
                 "SmoothTime": "Smooth Time"
@@ -520,13 +513,7 @@
             "On": "An",
             "PowerControl": "Stromversorgung"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Extrusionsfaktor",
-            "Headline": "Druckeinstellungen",
-            "SpeedFactor": "Geschwindigkeitsfaktor"
-        },
         "StatusPanel": {
-            "Absolute": "absolut",
             "CancelPrint": "Druck abbrechen",
             "ClearPrintStats": "Druckstatistiken löschen",
             "Difference": "Unterschied",
@@ -547,21 +534,16 @@
             "Max": "max",
             "ObjectHeight": "Objekthöhe",
             "PausePrint": "Druck pausieren",
-            "Position": "Position",
             "Print": "Druck",
-            "Relative": "relativ",
             "ReprintJob": "Auftrag erneut drucken",
             "Requested": "Angefordert",
             "ResumePrint": "Druck fortführen",
             "Slicer": "Slicer",
             "Speed": "Geschwindigkeit",
             "Total": "Gesamt",
-            "Unknown": "Unbekannt",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Unbekannt"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Autoskalierung",
             "Avg": "Ø",
             "Color": "Farbe",
@@ -588,6 +570,25 @@
             "TempTooHigh": "Temperature von {name} zu hoch! (max: {max})",
             "TempTooLow": "Temperature von {name} zu niedrig! (min: {min})"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "absolut",
+            "ALL": "ALLE",
+            "Headline": "Werkzeugkopf",
+            "InvertX": "X invertieren",
+            "InvertY": "Y invertieren",
+            "InvertZ": "Z invertieren",
+            "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
+            "Position": "Position",
+            "QGL": "QGL",
+            "Relative": "relativ",
+            "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
+            "SetupControls": "Setup-Steuerelemente",
+            "SpeedFactor": "Geschwindigkeitsfaktor",
+            "XOffset": "X-Versatz",
+            "YOffset": "Y-Versatz",
+            "ZOffset": "Z-Versatz",
+            "ZTilt": "Z Tilt"
+        },
         "WebcamPanel": {
             "All": "Alle",
             "FPS": "FPS",
@@ -597,14 +598,15 @@
             "UrlNotAvailable": "URL nicht verfügbar"
         },
         "ZoffsetPanel": {
+            "Clear": "Löschen",
             "CurrentOffset": "Aktueller Versatz",
-            "Headline": "Z-Offset",
+            "Headline": "Z-Versatz",
             "Later": "Später",
             "Ok": "OK",
             "Save": "Speichern",
-            "SAVE_CONFIG": "SAVE_CONFIG",
-            "SaveInfoDescription": "Der neue Z-Versatz wurde berechnet und registriert. Auf SAVE_CONFIG, klicken um den neuen Z-Versatz in Ihrer printer.cfg zu speichern und Klipper neu zu starten.",
-            "SaveInfoDescriptionPrint": "Der neue Z-Versatz wurde berechnet und registriert. Nach dem Drucken auf SAVE_CONFIG in der oberen Leiste klicken um die Einstellungen in der Datei printer.cfg zu speichern und Klipper neu zu starten.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "Der neue Z-Versatz wurde berechnet und registriert. Auf \"SAVE CONFIG\", klicken um den neuen Z-Versatz in der printer.cfg zu speichern und Klipper neu zu starten.",
+            "SaveInfoDescriptionPrint": "Der neue Z-Versatz wurde berechnet und registriert. Nach dem Drucken auf \"SAVE CONFIG\" in der oberen Leiste klicken um den neuen Z-Versatz in der printer.cfg zu speichern und Klipper neu zu starten.",
             "SaveInfoHeadline": "Information",
             "ToEndstop": "bis Endschalter",
             "ToProbe": "bis Sensor"
@@ -673,21 +675,31 @@
             "Circle": "Kreis",
             "Control": "Steuerung",
             "Cross": "Kreuz",
-            "InvertXMovement": "X-Bewegung invertieren",
-            "InvertYMovement": "Y-Bewegung invertieren",
-            "InvertZMovement": "Z-Bewegung invertieren",
+            "DisplayZOffset": "Z-Offset-Steuerung immer anzeigen",
+            "DisplayZOffsetDescription": "Wenn deaktiviert, dann werden die Steuerelemente nur angezeigt wenn ein Druckvorgang gestartet wurde.",
+            "EnableXYHoming": "Aktiviere kombiniertes X & Y homing",
+            "EstimatedExtrusionInfo": "Zeige Info zur geschätzten Extrusion",
+            "EstimatedExtrusionInfoDescription": "Anzeigen/ausblenden der Info zur geschätzten Extrusion, basierend auf Extrusionmenge und Extrusionsgeschwindigkeit",
+            "InvertXMovement": "Bewegung der X-Achse invertieren",
+            "InvertYMovement": "Bewegung der Y-Achse invertieren",
+            "InvertZMovement": "Bewegung der Z-Achse invertieren",
+            "IsDefault": " (standard)",
             "MaximumValues": "Maximum: {maximum} Einträge",
             "MaximumValuesVisibility": "Maximal {maximum} Einträge für beste Darstellung",
             "MinimumValues": "Minimum: {minimum} Eintrag",
-            "MoveDistancesEInMm": "Verfahrwege E in mm",
-            "MoveDistancesInMm": "Abstände in mm verschieben",
-            "MoveDistancesXYInMm": "Verfahrwege XY in mm",
-            "MoveDistancesZInMm": "Verfahrwege Z in mm",
-            "SpeedEInMms": "Geschw. E in mm/s",
-            "SpeedXY": "Geschw. XY",
-            "SpeedZ": "Geschw. Z",
+            "MotorsOff": "Motoren aus{isDefault}",
+            "MoveDistancesEInMm": "Extrusionslängen (in mm)",
+            "MoveDistancesInMm": "Schrittweiten (in mm)",
+            "MoveDistancesXYInMm": "Schrittweiten X & Y-Achse (in mm)",
+            "MoveDistancesZInMm": "Schrittweiten Z-Achse (in mm)",
+            "QuadGantryLevel": "Quad Gantry Level{isDefault}",
+            "SpeedEInMms": "Extrusions-Geschwindigkeit (in mm/s)",
+            "SpeedXY": "Geschwindigkeit X & Y-Achse (in mm/s)",
+            "SpeedZ": "Geschwindigkeit Z-Achse (in mm/s)",
             "Style": "Stil",
-            "ValueGreaterThan": "Wert muss größer als {value} sein"
+            "ValueGreaterThan": "Wert muss größer als {value} sein",
+            "ZOffsetIncrements": "Schrittweiten Z-Versatz (in mm)",
+            "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
             "Dashboard": "Dashboard",
@@ -884,8 +896,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Zeige vor Änderung der Stromversorgung von Geräten einen Bestätigungsdialog.",
             "DisplayCANCEL_PRINT": "Zeige CANCEL_PRINT an",
             "DisplayCANCEL_PRINTDescription": "Zeigt die CANCEL_PRINT Schaltfläche dauerhaft an - keine weitere Bestätigung erforderlich.",
-            "DisplayZOffset": "Zeige Z-Offset-Panel an",
-            "DisplayZOffsetDescription": "Andernfalls wird das Bedienfeld nur nach dem Starten eines Drucks angezeigt .",
             "GcodeThumbnails": "G-Code Vorschaubilder",
             "GcodeThumbnailsDescription": "Klicke auf die Schaltfläche um zum Leitfaden zu gelangen.",
             "Guide": "Leitfaden",

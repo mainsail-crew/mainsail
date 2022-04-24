@@ -12,11 +12,6 @@
                 <motion-settings></motion-settings>
             </sub-panel>
             <sub-panel
-                :title="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.PressureAdvance').toString()"
-                sub-panel-class="pressure-advance-settings-subpanel">
-                <pressure-advance-settings></pressure-advance-settings>
-            </sub-panel>
-            <sub-panel
                 v-if="existsFirmwareRetraction"
                 :title="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.FirmwareRetraction').toString()"
                 sub-panel-class="firmware-retraction-settings-subpanel">
