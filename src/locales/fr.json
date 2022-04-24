@@ -383,17 +383,12 @@
         "ControlPanel": {
             "ALL": "Tous",
             "AlternateControls": "Commandes en croix",
-            "Extrude": "Extrusion",
-            "FeedAmountIn": "Longueur à extraire",
-            "FeedrateIn": "Vitesse d'extrusion",
             "Headline": "Contrôles",
-            "HotendTooCold": "Tête d'impression trop froide",
             "InvertX": "Inversion X",
             "InvertY": "Inversion Y",
             "InvertZ": "Inversion Z",
             "PleaseConfigureSteps": "Configurez Pas",
             "QGL": "QGL",
-            "Retract": "Rétractation",
             "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
             "SetupControls": "Réglages",
             "X": "X",
@@ -404,6 +399,13 @@
         "DependenciesPanel": {
             "Dependency": "Dépendance(s)",
             "DependencyDescription": "Votre version {name} ne supporte pas toutes possibilités de Mainsail. Mettez à jour {name} vers {neededVersion}."
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "Extrusion",
+            "ExtrusionFactor": "Facteur d'extrusion",
+            "ExtrusionFeedrate": "Vitesse d'extrusion",
+            "Headline": "Contrôles d'Extrudeur",
+            "Retract": "Rétractation"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Re-connection",

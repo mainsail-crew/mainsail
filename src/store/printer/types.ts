@@ -203,3 +203,12 @@ export interface PrinterStateKlipperConfigWarning {
     type: 'deprecated_value' | 'deprecated_option'
     value: string
 }
+
+export interface PrinterStateExtruder {
+    key: string
+    name: string
+    filamentDiameter: number
+    minExtrudeTemp: number
+    nozzleDiameter: number
+    maxExtrudeOnlyDistance: number
+}

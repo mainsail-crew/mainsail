@@ -383,19 +383,14 @@
             "ALL": "ALL",
             "AlternateControls": "Альтернативный контроль",
             "Controls": "Контроль",
-            "Extrude": "Экструдировать",
-            "FeedAmountIn": "Скорость подачи Количество в",
-            "FeedrateIn": "Скорость подачи",
             "Headline": "Управление",
             "Home": "Home",
-            "HotendTooCold": "Температура нагревателя ниже, чем",
             "InvertX": "X инвертировать",
             "InvertY": "Y инвертировать",
             "InvertZ": "Z инвертировать",
             "Macros": "Макрос",
             "PleaseConfigureSteps": "Пожалуйста, настройте расстояние вращения",
             "QGL": "QGL",
-            "Retract": "Въехать",
             "SettingsInterfaceControl": "Настройки > интерфейс > управление",
             "SetupControls": "Установить контроль",
             "X": "X",
@@ -406,6 +401,11 @@
         "DependenciesPanel": {
             "Dependency": "Зависимость | Зависимости",
             "DependencyDescription": "Ваша текущая версия {name} не поддерживает все функции Mainsail. Обновите {name} по крайней мере до версии {neededVersion}."
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "Экструдировать",
+            "ExtrusionFactor": "Коэффициент экструзии",
+            "Retract": "Въехать"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Подключите",

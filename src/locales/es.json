@@ -399,17 +399,12 @@
         "ControlPanel": {
             "ALL": "TODO",
             "AlternateControls": "Alternar controles",
-            "Extrude": "Extruir",
-            "FeedAmountIn": "Cantidad alim.",
-            "FeedrateIn": "Velocidad alim.",
             "Headline": "Controles",
-            "HotendTooCold": "Temp. del Hotend por debajo de",
             "InvertX": "Invertir X",
             "InvertY": "Invertir Y",
             "InvertZ": "Invertir Z",
             "PleaseConfigureSteps": "Por favor configure los pasos",
             "QGL": "QGL",
-            "Retract": "Retraer",
             "SettingsInterfaceControl": "Configuración > Interfaz > Control",
             "SetupControls": "Configurar controles",
             "X": "X",
@@ -420,6 +415,11 @@
         "DependenciesPanel": {
             "Dependency": "Dependencia | Dependencias",
             "DependencyDescription": "La versión de {name} actual no soporta todas las funciones de Mainsail. Actualice {name} por lo menos a la versión {neededVersion}."
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "Extruir",
+            "ExtrusionFactor": "Factor de extrusión",
+            "Retract": "Retraer"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Reconectar",

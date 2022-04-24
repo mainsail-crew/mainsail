@@ -1,7 +1,9 @@
 <style scoped>
 ._spin_button_group {
     width: 24px;
-    margin: -6px -6px 0 -6px;
+    margin-top: -6px;
+    margin-left: -6px;
+    margin-bottom: -6px;
 }
 
 .v-input--has-state {
@@ -13,10 +15,8 @@
     <form @submit.prevent="submit">
         <v-text-field
             v-model.number="value"
-            class="d-flex align-top"
             :label="label"
             :suffix="unit"
-            :append-icon="target !== defaultValue ? mdiRestart : ''"
             :error="invalidInput()"
             :error-messages="inputErrors()"
             :disabled="disabled"
@@ -29,9 +29,13 @@
             hide-details="auto"
             outlined
             dense
+            class="d-flex align-top"
             @blur="value = target"
-            @click:append="resetToDefault"
+            @focus="$event.target.select()"
             @keydown="checkInvalidChars">
+            <template v-if="defaultValue" #append>
+                <v-icon @click="resetToDefault">{{ value !== defaultValue ? mdiRestart : '' }}</v-icon>
+            </template>
             <template v-if="hasSpinner" #append-outer>
                 <div class="_spin_button_group">
                     <v-btn
@@ -85,7 +89,7 @@ export default class NumberInput extends Mixins(BaseMixin) {
     @Prop({ type: Number, required: true })
     declare readonly target: number
 
-    @Prop({ type: Number, required: true })
+    @Prop({ type: Number, required: false })
     declare readonly defaultValue: number
 
     // props for internal processing

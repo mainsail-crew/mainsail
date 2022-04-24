@@ -3,6 +3,7 @@ import { GetterTree } from 'vuex'
 import {
     PrinterState,
     PrinterStateBedMesh,
+    PrinterStateExtruder,
     PrinterStateFan,
     PrinterStateFilamentSensors,
     PrinterStateHeater,
@@ -670,6 +671,27 @@ export const getters: GetterTree<PrinterState, RootState> = {
         }
 
         return caseInsensitiveSort(profiles, 'name')
+    },
+
+    getExtruders: (state) => {
+        const extruders: PrinterStateExtruder[] = []
+        if (state.configfile?.settings) {
+            Object.keys(state.configfile?.settings)
+                .filter((key) => key.startsWith('extruder'))
+                .sort()
+                .forEach((key: string) => {
+                    const extruder = state.configfile?.settings[key]
+                    extruders.push({
+                        key: key,
+                        name: `Extruder ${key == 'extruder' ? '0' : key.replace('extruder', '')}`,
+                        filamentDiameter: extruder.filament_diameter,
+                        nozzleDiameter: extruder.nozzle_diameter,
+                        minExtrudeTemp: extruder.min_extrude_temp,
+                        maxExtrudeOnlyDistance: extruder.max_extrude_only_distance,
+                    })
+                })
+        }
+        return extruders
     },
 
     getExtrudePossible: (state) => {

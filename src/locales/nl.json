@@ -383,9 +383,6 @@
             "ALL": "ALLES",
             "AlternateControls": "Alternatieve bediening",
             "Controls": "Bediening",
-            "Extrude": "Extrude",
-            "FeedAmountIn": "Feedlengte in",
-            "FeedrateIn": "Feedsnelheid in",
             "Headline": "Bediening",
             "Home": "Home",
             "HotendTooCold": "Hotend temp. lager dan",
@@ -395,7 +392,6 @@
             "Macros": "Macros",
             "PleaseConfigureSteps": "Configureer steps",
             "QGL": "QGL",
-            "Retract": "Retract",
             "SettingsInterfaceControl": "Instllingen > Interface > Bediening",
             "SetupControls": "Bewerk Bediening",
             "X": "X",
@@ -406,6 +402,11 @@
         "DependenciesPanel": {
             "Dependency": "Afhankelijkheid | Afhankelijkheden",
             "DependencyDescription": "Je huidige {name} versie ondersteunt niet alle features van Mainsail. Update {name} naar tenminste {neededVersion}"
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "Extrude",
+            "ExtrusionFactor": "Extrusie factor",
+            "Retract": "Retract"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Opnieuw verbinden",

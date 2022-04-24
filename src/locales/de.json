@@ -436,23 +436,32 @@
         "ControlPanel": {
             "ALL": "ALLE",
             "AlternateControls": "Steuerkreuz",
-            "Extrude": "Extrudieren",
-            "FeedAmountIn": "Vorschub in",
-            "FeedrateIn": "Geschwindigkeit in",
             "Headline": "Steuerung",
-            "HotendTooCold": "Hotend-Temp. niedriger als",
             "InvertX": "X invertieren",
             "InvertY": "Y invertieren",
             "InvertZ": "Z invertieren",
             "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
             "QGL": "QGL",
-            "Retract": "Rückzug",
             "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
             "SetupControls": "Setup-Steuerelemente",
             "X": "X",
             "Y": "Y",
             "Z": "Z",
             "ZTilt": "Z Tilt"
+        },
+        "ExtruderControlPanel": {
+            "Allowed": "Erlaubt",
+            "EstimatedExtrusion": "Geschätzte Extrusion:",
+            "Extrude": "Extrudieren",
+            "ExtruderTempTooLow": "Extruder Temp. <",
+            "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
+            "FilamentLength": "Filamentlänge",
+            "Headline": "Extruder",
+            "LoadFilament": "Filament laden",
+            "Requested": "Angefordert",
+            "Retract": "Rückzug",
+            "TooLargeExtrusion": "Extrusion zu groß!",
+            "UnloadFilament": "Filament entladen"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Neu verbinden",
@@ -483,7 +492,7 @@
                 "Velocity": "Geschwindigkeit"
             },
             "PressureAdvanceSettings": {
-                "Advance": "Advance",
+                "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "PressureAdvance": "Pressure Advance",
                 "SmoothTime": "Smooth Time"
@@ -560,6 +569,9 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z"
+        },
+        "ToolheadControlPanel": {
+            "Headline": "Werkzeugkopf-Steuerung"
         },
         "TemperaturePanel": {
             "AutoscaleChart": "Autoskalierung",
@@ -673,6 +685,8 @@
             "Circle": "Kreis",
             "Control": "Steuerung",
             "Cross": "Kreuz",
+            "EstimatedExtrusionInfo": "Info zur geschätzten Extrusion",
+            "EstimatedExtrusionInfoDescription": "Anzeigen/ausblenden der Info zur geschätzten Extrusion, basierend auf Extrusionmenge und Extrusionsgeschwindigkeit",
             "InvertXMovement": "X-Bewegung invertieren",
             "InvertYMovement": "Y-Bewegung invertieren",
             "InvertZMovement": "Z-Bewegung invertieren",

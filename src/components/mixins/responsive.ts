@@ -39,6 +39,10 @@ export default class ResponsiveMixin extends BaseMixin {
     }
 
     private onResize(entries: ResizeObserverEntry[]) {
+        if (entries[0].contentRect.height === 0 && entries[0].contentRect.width === 0) {
+            return
+        }
+
         const cr = entries[0].contentRect
         const conds = this.breakpoints
         for (const breakpoint in conds) {

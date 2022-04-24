@@ -5,7 +5,9 @@
         <v-card flat>
             <v-card-text>
                 <v-form ref="formControlExtruder">
-                    <settings-row :title="$t('Settings.ControlTab.Style')">
+                    <!-- TOOLHEAD CONTROL SETTINGS -->
+                    <v-card-title class="mx-n4">{{ $t('Panels.ToolheadControlPanel.Headline') }}</v-card-title>
+                    <settings-row :title="$t('Settings.ControlTab.Style').toString()">
                         <v-select
                             v-model="controlStyle"
                             :items="controlStyles"
@@ -16,20 +18,26 @@
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="['circle', 'cross'].includes(controlStyle)">
-                        <settings-row :title="$t('Settings.ControlTab.InvertXMovement')" :dynamic-slot-width="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.InvertXMovement').toString()"
+                            :dynamic-slot-width="true">
                             <v-switch v-model="reverseX" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.InvertYMovement')" :dynamic-slot-width="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.InvertYMovement').toString()"
+                            :dynamic-slot-width="true">
                             <v-switch v-model="reverseY" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.InvertZMovement')" :dynamic-slot-width="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.InvertZMovement').toString()"
+                            :dynamic-slot-width="true">
                             <v-switch v-model="reverseZ" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
-                    <settings-row :title="$t('Settings.ControlTab.SpeedXY')">
+                    <settings-row :title="$t('Settings.ControlTab.SpeedXY').toString()">
                         <v-text-field
                             v-model="feedrateXY"
                             type="number"
@@ -42,7 +50,7 @@
                             @blur="blurFeedrateXY"></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.SpeedZ')">
+                    <settings-row :title="$t('Settings.ControlTab.SpeedZ').toString()">
                         <v-text-field
                             v-model="feedrateZ"
                             type="number"
@@ -56,7 +64,9 @@
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="controlStyle === 'cross'">
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesInMm')" :mobile-second-row="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.MoveDistancesInMm').toString()"
+                            :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsAll"
                                 hide-selected
@@ -79,7 +89,9 @@
                         <v-divider class="my-2"></v-divider>
                     </template>
                     <template v-else-if="controlStyle === 'circle'">
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()"
+                            :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsCircleXY"
                                 hide-selected
@@ -98,7 +110,9 @@
                                 hide-spin-buttons></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.MoveDistancesZInMm').toString()"
+                            :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsCircleZ"
                                 hide-selected
@@ -119,7 +133,9 @@
                         <v-divider class="my-2"></v-divider>
                     </template>
                     <template v-else>
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()"
+                            :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsXY"
                                 hide-selected
@@ -140,7 +156,9 @@
                                 hide-spin-buttons></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.MoveDistancesZInMm').toString()"
+                            :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsZ"
                                 hide-selected
@@ -162,7 +180,11 @@
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
-                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesEInMm')" :mobile-second-row="true">
+                    <!-- EXTRUDER CONTROL SETTINGS -->
+                    <v-card-title class="mx-n4">{{ $t('Panels.ExtruderControlPanel.Headline') }}</v-card-title>
+                    <settings-row
+                        :title="$t('Settings.ControlTab.MoveDistancesEInMm').toString()"
+                        :mobile-second-row="true">
                         <v-combobox
                             v-model="feedamountsE"
                             hide-selected
@@ -183,7 +205,7 @@
                             hide-spin-buttons></v-combobox>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.SpeedEInMms')" :mobile-second-row="true">
+                    <settings-row :title="$t('Settings.ControlTab.SpeedEInMms').toString()" :mobile-second-row="true">
                         <v-combobox
                             v-model="feedratesE"
                             hide-selected
@@ -202,6 +224,12 @@
                             dense
                             outlined
                             hide-spin-buttons></v-combobox>
+                    </settings-row>
+                    <settings-row
+                        :title="$t('Settings.ControlTab.EstimatedExtrusionInfo').toString()"
+                        :sub-title="$t('Settings.ControlTab.EstimatedExtrusionInfoDescription').toString()"
+                        :dynamic-slot-width="true">
+                        <v-switch v-model="showEstimatedExtrusionInfo" hide-details class="mt-0"></v-switch>
                     </settings-row>
                 </v-form>
             </v-card-text>
@@ -389,6 +417,14 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         const rates = absRates.filter(this.onlyUnique)
 
         this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedrates', value: rates })
+    }
+
+    get showEstimatedExtrusionInfo() {
+        return this.$store.state.gui.control.extruder.showEstimatedExtrusionInfo
+    }
+
+    set showEstimatedExtrusionInfo(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.showEstimatedExtrusionInfo', value: newVal })
     }
 
     blurFeedrateXY() {

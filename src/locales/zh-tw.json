@@ -331,16 +331,12 @@
         "ControlPanel": {
             "ALL": "所有",
             "AlternateControls": "備用控制",
-            "Extrude": "擠出",
-            "FeedAmountIn": "進料",
-            "FeedrateIn": "擠出率",
             "Headline": "控制",
             "InvertX": "翻轉 X",
             "InvertY": "翻轉 Y",
             "InvertZ": "翻轉 Z",
             "PleaseConfigureSteps": "請設定步進",
             "QGL": "QGL",
-            "Retract": "回抽",
             "SettingsInterfaceControl": "設定 > 界面 > 控制",
             "SetupControls": "設定控制",
             "X": "X",
@@ -351,6 +347,11 @@
         "DependenciesPanel": {
             "Dependency": "依賴 | 依賴關係",
             "DependencyDescription": "您當前的 {name} 版本不支持 Mainsail 的所有功能。將 {name} 更新為至少 {neededVersion}。"
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "擠出",
+            "ExtrusionFactor": "擠出係數",
+            "Retract": "回抽"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "重新連線",

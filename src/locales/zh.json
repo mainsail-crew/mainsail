@@ -382,17 +382,12 @@
         "ControlPanel": {
             "ALL": "所有",
             "AlternateControls": "翻转控制",
-            "Extrude": "挤出",
-            "FeedAmountIn": "进料量",
-            "FeedrateIn": "进料速度",
             "Headline": "控制",
-            "HotendTooCold": "挤出头温度. 低于",
             "InvertX": "翻转 X",
             "InvertY": "翻转 Y",
             "InvertZ": "翻转 Z",
             "PleaseConfigureSteps": "请设置步",
             "QGL": "四点调平",
-            "Retract": "回抽",
             "SettingsInterfaceControl": "设置 > 界面 > 控制",
             "SetupControls": "设置",
             "X": "X",
@@ -403,6 +398,11 @@
         "DependenciesPanel": {
             "Dependency": "依赖",
             "DependencyDescription": "你当前 {name} 版本并不支持所有 Mainsail 的特性. 跟新 {name} 到至少 {neededVersion}版本."
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "挤出",
+            "ExtrusionFactor": "挤出因子",
+            "Retract": "回抽"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "重新连接",

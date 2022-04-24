@@ -2,7 +2,7 @@
     <div>
         <v-card flat>
             <v-card-text>
-                <settings-row :title="$t('Settings.UiSettingsTab.Logo')">
+                <settings-row :title="$t('Settings.UiSettingsTab.Logo').toString()">
                     <v-btn
                         v-if="logoColor.toLowerCase() !== defaultLogoColor.toLowerCase()"
                         small
@@ -23,7 +23,7 @@
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.UiSettingsTab.Primary')">
+                <settings-row :title="$t('Settings.UiSettingsTab.Primary').toString()">
                     <v-btn
                         v-if="primaryColor.toLowerCase() !== defaultPrimaryColor.toLowerCase()"
                         small
@@ -45,8 +45,8 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.UiSettingsTab.GcodeThumbnails')"
-                    :sub-title="$t('Settings.UiSettingsTab.GcodeThumbnailsDescription')"
+                    :title="$t('Settings.UiSettingsTab.GcodeThumbnails').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.GcodeThumbnailsDescription').toString()"
                     :dynamic-slot-width="true">
                     <v-btn
                         outlined
@@ -59,33 +59,33 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.UiSettingsTab.BoolBigThumbnail')"
-                    :sub-title="$t('Settings.UiSettingsTab.BoolBigThumbnailDescription')"
+                    :title="$t('Settings.UiSettingsTab.BoolBigThumbnail').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.BoolBigThumbnailDescription').toString()"
                     :dynamic-slot-width="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.UiSettingsTab.ShowWebcamInNavigation')">
+                <settings-row :title="$t('Settings.UiSettingsTab.ShowWebcamInNavigation').toString()">
                     <v-switch v-model="boolWebcamInNavigation" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINT')"
-                    :sub-title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINTDescription')"
+                    :title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINT').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINTDescription').toString()"
                     :dynamic-slot-width="true">
                     <v-switch v-model="displayCancelPrint" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.UiSettingsTab.DisplayZOffset')"
-                    :sub-title="$t('Settings.UiSettingsTab.DisplayZOffsetDescription')"
+                    :title="$t('Settings.UiSettingsTab.DisplayZOffset').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.DisplayZOffsetDescription').toString()"
                     :dynamic-slot-width="true">
                     <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.UiSettingsTab.LockSliders')"
-                    :sub-title="$t('Settings.UiSettingsTab.LockSlidersDescription')"
+                    :title="$t('Settings.UiSettingsTab.LockSliders').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.LockSlidersDescription').toString()"
                     :dynamic-slot-width="true">
                     <v-switch v-model="lockSliders" hide-details class="mt-0"></v-switch>
                 </settings-row>
@@ -93,8 +93,8 @@
                 <v-expand-transition>
                     <settings-row
                         v-show="lockSliders"
-                        :title="$t('Settings.UiSettingsTab.LockSlidersDelay')"
-                        :sub-title="$t('Settings.UiSettingsTab.LockSlidersDelayDescription')"
+                        :title="$t('Settings.UiSettingsTab.LockSlidersDelay').toString()"
+                        :sub-title="$t('Settings.UiSettingsTab.LockSlidersDelayDescription').toString()"
                         :dynamic-slot-width="true">
                         <v-text-field
                             v-model="lockSlidersDelay"
@@ -115,35 +115,35 @@
                 </v-expand-transition>
                 <v-divider v-show="lockSliders" class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStop')"
-                    :sub-title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStopDescription')"
+                    :title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStop').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStopDescription').toString()"
                     :dynamic-slot-width="true">
                     <v-switch v-model="confirmOnEmergencyStop" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChange')"
-                    :sub-title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChangeDescription')"
+                    :title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChange').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChangeDescription').toString()"
                     :dynamic-slot-width="true">
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.UiSettingsTab.NavigationStyle')"
-                    :sub-title="$t('Settings.UiSettingsTab.NavigationStyleDescription')">
+                    :title="$t('Settings.UiSettingsTab.NavigationStyle').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.NavigationStyleDescription').toString()">
                     <v-select
                         v-model="navigationStyleSetting"
                         :items="navigationStyles"
-                        outlined
-                        dense
-                        hide-details
                         class="mt-0"
-                        attach></v-select>
+                        hide-details
+                        outlined
+                        attach
+                        dense></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton')"
-                    :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription')"
+                    :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription').toString()"
                     :dynamic-slot-width="true">
                     <v-switch v-model="boolHideUploadAndPrintButton" hide-details class="mt-0"></v-switch>
                 </settings-row>

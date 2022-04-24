@@ -415,17 +415,12 @@
         "ControlPanel": {
             "ALL": "Alle",
             "AlternateControls": "Alternative kontroller",
-            "Extrude": "Extrude",
-            "FeedAmountIn": "Længde",
-            "FeedrateIn": "Hastighed",
             "Headline": "Kontrolpanel",
-            "HotendTooCold": "Hotend temp. under",
             "InvertX": "Invertér X",
             "InvertY": "Invertér Y",
             "InvertZ": "Invertér Z",
             "PleaseConfigureSteps": "Konfigurer steps",
             "QGL": "QGL",
-            "Retract": "Retract",
             "SettingsInterfaceControl": "Indstillinger > Interface > Control",
             "SetupControls": "Kontrolindstillinger",
             "X": "X",
@@ -436,6 +431,12 @@
         "DependenciesPanel": {
             "Dependency": "Afhængighed | Afhængigheder",
             "DependencyDescription": "Din nuværende version af {name} understøtter ikke alle funktioner i Mainsail. Opdater {name} til mindst version {neededVersion}."
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "Extrude",
+            "ExtruderTempTooLow": "Hotend temp. <",
+            "Headline": "Extruder Kontrolpanel",
+            "Retract": "Retract"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Genopret forbindelse",
