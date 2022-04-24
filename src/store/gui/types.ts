@@ -3,6 +3,7 @@ import { GuiConsoleState } from '@/store/gui/console/types'
 import { GuiPresetsState } from '@/store/gui/presets/types'
 import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
+import { GuiNotificationState } from '@/store/gui/notifications/types'
 
 export interface GuiState {
     general: {
@@ -80,6 +81,7 @@ export interface GuiState {
         }
     }
     macros?: GuiMacrosState
+    notifications?: GuiNotificationState
     presets?: GuiPresetsState
     remoteprinters?: GuiRemoteprintersState
     uiSettings: {

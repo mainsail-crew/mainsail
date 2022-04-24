@@ -12,6 +12,7 @@ import { macros } from '@/store/gui/macros'
 import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
 import { webcams } from '@/store/gui/webcams'
+import { notifications } from '@/store/gui/notifications'
 
 export const getDefaultState = (): GuiState => {
     return {
@@ -58,7 +59,7 @@ export const getDefaultState = (): GuiState => {
                 { name: 'printsettings', visible: true },
                 { name: 'machine-settings', visible: true },
                 { name: 'miscellaneous', visible: true },
-                { name: 'tools', visible: true },
+                { name: 'temperature', visible: true },
                 { name: 'miniconsole', visible: false },
             ],
             tabletLayout1: [
@@ -72,7 +73,7 @@ export const getDefaultState = (): GuiState => {
                 { name: 'miscellaneous', visible: true },
             ],
             tabletLayout2: [
-                { name: 'tools', visible: true },
+                { name: 'temperature', visible: true },
                 { name: 'miniconsole', visible: true },
             ],
             desktopLayout1: [
@@ -86,7 +87,7 @@ export const getDefaultState = (): GuiState => {
                 { name: 'miscellaneous', visible: true },
             ],
             desktopLayout2: [
-                { name: 'tools', visible: true },
+                { name: 'temperature', visible: true },
                 { name: 'miniconsole', visible: true },
             ],
             widescreenLayout1: [
@@ -97,7 +98,7 @@ export const getDefaultState = (): GuiState => {
                 { name: 'miscellaneous', visible: true },
             ],
             widescreenLayout2: [
-                { name: 'tools', visible: true },
+                { name: 'temperature', visible: true },
                 { name: 'printsettings', visible: true },
                 { name: 'machine-settings', visible: true },
             ],
@@ -239,6 +240,7 @@ export const gui: Module<GuiState, any> = {
         console,
         gcodehistory,
         macros,
+        notifications,
         presets,
         remoteprinters,
         webcams,

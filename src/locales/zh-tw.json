@@ -1,6 +1,12 @@
 {
     "App": {
         "Printers": "列印機組",
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "{section}' 中的部分選項 '{option}' 已棄用，將在未來版本中刪除。",
+                "DeprecatedValue": "不推薦使用'{section}' 部分的選項'{option}' 中的值'{value}'，並將在未來版本中刪除。"
+            }
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "樹莓派ARM核心目前已被限制.",
             "DescriptionFrequencyCapped": "樹莓派ARM最大頻率目前限制為1.2 GHz.",
@@ -352,12 +358,6 @@
             "SwitchToPrinter": "切換到列印機",
             "WebcamOff": "關閉"
         },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "{section}' 中的部分選項 '{option}' 已棄用，將在未來版本中刪除。",
-            "DeprecatedValue": "不推薦使用'{section}' 部分的選項'{option}' 中的值'{value}'，並將在未來版本中刪除。",
-            "DownloadLog": "下載日誌",
-            "KlipperWarnings": "Klipper 警告"
-        },
         "KlippyStatePanel": {
             "FirmwareRestart": "韌體重新啟動",
             "KlipperCheck": "請檢查Klipper服務是否運行並且已經設定UDS（Unix Domain Socket）。",
@@ -465,7 +465,7 @@
             "Y": "Y",
             "Z": "Z"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "自動縮放圖表",
             "Avg": "平均",
             "Color": "顏色",

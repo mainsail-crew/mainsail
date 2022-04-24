@@ -147,6 +147,10 @@ export const mutations: MutationTree<ServerState> = {
         if (payload && 'flags' in payload) Vue.set(state.throttled_state, 'flags', payload.flags)
     },
 
+    setSystemBootAt(state, payload) {
+        Vue.set(state, 'system_boot_at', payload)
+    },
+
     addRootDirectory(state, payload) {
         state.registered_directories.push(payload.name)
     },

@@ -110,6 +110,18 @@ export const actions: ActionTree<SocketState, RootState> = {
                 dispatch('server/jobQueue/getEvent', payload.params[0], { root: true })
                 break
 
+            case 'notify_announcement_update':
+                dispatch('server/announcements/getList', payload.params[0], { root: true })
+                break
+
+            case 'notify_announcement_dismissed':
+                dispatch('server/announcements/getDismissed', payload.params[0], { root: true })
+                break
+
+            case 'notify_announcement_wake':
+                dispatch('server/announcements/getWaked', payload.params[0], { root: true })
+                break
+
             default:
                 if (payload.result !== 'ok' && payload.error?.message)
                     window.console.error('JSON-RPC: ' + payload.error.message)

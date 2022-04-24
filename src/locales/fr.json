@@ -1,6 +1,12 @@
 {
     "_last_update:": "09.01.2022",
     "App": {
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "L'option '{option}' dans la section '{section}' est obsolète.",
+                "DeprecatedValue": "La valeur '{value}' dans l'option '{option}' dans la section '{section}' est obsolète."
+            }
+        },
         "Printers": "Imprimantes",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM core(s) sont actuellement réduits",
@@ -406,12 +412,6 @@
             "SwitchToPrinter": "Changer d'imprimante",
             "WebcamOff": "Arrêt"
         },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "L'option '{option}' dans la section '{section}' est obsolète.",
-            "DeprecatedValue": "La valeur '{value}' dans l'option '{option}' dans la section '{section}' est obsolète.",
-            "DownloadLog": "téléchargement du fichier log",
-            "KlipperWarnings": "Avertissements Klipper"
-        },
         "KlippyStatePanel": {
             "FirmwareRestart": "Redémarrage Firmware",
             "KlipperCheck": "Contrôlez que le sevice Klipper est actif et qu'un UDS (Unix Domain Socket) est configuré",
@@ -520,7 +520,7 @@
             "Y": "Y",
             "Z": "Z"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Echelle automatique",
             "Avg": "Moyenne",
             "Color": "Couleur",

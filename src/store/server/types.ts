@@ -31,7 +31,9 @@ export interface ServerState {
         network: {
             [key: string]: ServerStateNetwork
         }
+        system_uptime: number | null
     } | null
+    system_boot_at: Date | null
     moonraker_stats: {
         cpu_usage: number
         mem_units: string

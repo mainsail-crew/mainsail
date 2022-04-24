@@ -1,5 +1,28 @@
 {
     "App": {
+        "Notifications": {
+            "DependencyName": "Abhängigkeit: {name}",
+            "DependencyDescription": "Die momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}.",
+            "DismissAll": "Dismiss all",
+            "MoonrakerWarnings": {
+                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerFailedComponentDescription": "Beim Laden der Moonraker-Komponenten wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
+                "MoonrakerWarning": "Moonraker Warnung",
+                "UnparsedConfigOption": "Nicht erkannte Config-Option '{option}: {value}' in Abschnitt [{section}] entdeckt. Dies kann eine Option sein, die nicht mehr verfügbar ist, oder das Ergebnis eines Moduls sein, das nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen.",
+                "UnparsedConfigSection": "Nicht erkannter Config-Abschnitt [{section}] gefunden. Dies kann das Ergebnis einer Komponente sein, die nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen."
+            },
+            "KlipperWarnings": {
+                "DeprecatedOption": "Option '{option}' im Abschnitt '{section}' ist veraltet und wird in einem zukünftigen Release entfernt.",
+                "DeprecatedOptionHeadline": "Veralterte Klipper Option",
+                "DeprecatedValue": "Wert '{value}' in Option '{option}' im Abschnitt '{section}' ist veraltet und wird in einem zukünftigen Release entfernt.",
+                "DeprecatedValueHeadline": "Veralteter Klipper Wert",
+                "KlipperWarning": "Klipper Warnung"
+            },
+            "Never": "nie",
+            "NextReboot": "nächsten Reboot",
+            "NoNotification": "Keine Benachrichtigung vorhanden",
+            "Remind": "Errinnere:"
+        },
         "NumberInput": {
             "GreaterOrEqualError": "Muss größer oder gleich {min} sein!",
             "MustBeBetweenError": "Muss zwischen {min} und {max} liegen!",
@@ -15,8 +38,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI-Versorgungsspannung ist seit dem letzten Einschalten mindestens einmal unter 4,65 V gefallen.",
             "DescriptionTemperatureLimitActive": "Die Temperatur des rPi uC (nur 3A+/3B+) liegt derzeit über dem Soft-Limit (Standard 60C).",
             "DescriptionUnderVoltageDetected": "rPI-Versorgungsspannung derzeit unter 4,65V",
-            "HeadlineCurrentFlags": "Derzeitige flags",
-            "HeadlinePreviouslyFlags": "Bisherige flags",
             "TitleCurrentlyThrottled": "Drosselung aktiv",
             "TitleFrequencyCapped": "Frequenz begrenzt",
             "TitlePreviouslyFrequencyCapped": "Vorh. Frequenzbegrenzung registriert",
@@ -428,10 +449,6 @@
             "Z": "Z",
             "ZTilt": "Z Tilt"
         },
-        "DependenciesPanel": {
-            "Dependency": "Abhängigkeit | Abhängigkeiten",
-            "DependencyDescription": "Deine momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}."
-        },
         "ExtruderControlPanel": {
             "Allowed": "Erlaubt",
             "EstimatedExtrusion": "Geschätzte Extrusion:",
@@ -450,12 +467,6 @@
             "ReconnectToPrinter": "Neu verbinden",
             "SwitchToPrinter": "Zum Drucker wechseln",
             "WebcamOff": "Aus"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Option '{option}' im Abschnitt '{section}' ist veraltet und wird in einem zukünftigen Release entfernt.",
-            "DeprecatedValue": "Wert '{value}' in Option '{option}' im Abschnitt '{section}' ist veraltet und wird in einem zukünftigen Release entfernt.",
-            "DownloadLog": "Logdatei herunterladen",
-            "KlipperWarnings": "Klipper Warnungen"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Neustart",
@@ -512,12 +523,6 @@
                 "Empty": "Leer"
             }
         },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Log herunterladen",
-            "FollowingPluginHasAnError": "Das folgende Plugin hat einen Fehler:",
-            "MoonrakerErrorInfo": "Beim Laden der Moonraker-Komponenten wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
-            "MoonrakerWarnings": "Moonraker Warnungen"
-        },
         "PowerControlPanel": {
             "Error": "Fehler",
             "Off": "Aus",
@@ -568,7 +573,7 @@
         "ToolheadControlPanel": {
             "Headline": "Werkzeugkopf-Steuerung"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Autoskalierung",
             "Avg": "Ø",
             "Color": "Farbe",
@@ -599,6 +604,7 @@
             "All": "Alle",
             "FPS": "FPS",
             "Headline": "Webcam",
+            "NoWebcam": "Keine Webcam verfügbar. Füge eine Webcam unter \"Interface Einstellungen\" -> \"Webcams\".",
             "UnknownWebcamService": "Unbekannter Webcam Dienst",
             "UrlNotAvailable": "URL nicht verfügbar"
         },
@@ -751,7 +757,7 @@
             "Restore": "Wiederherstellung",
             "RestoreDialog": "Bitte wähle alle Abschnitte aus, die du wiederherstellen möchtest:"
         },
-        "InterfaceSettings": "Schnittstelleneinstellungen",
+        "InterfaceSettings": "Interface Einstellungen",
         "MacrosTab": {
             "Add": "hinzufügen",
             "AddGroup": "Gruppe hinzufügen",
@@ -795,9 +801,13 @@
             "CustomGCode": "Benutzerdefinierter G-Code",
             "EditCooldown": "Abkühlen bearbeiten",
             "EditHeadline": "Voreinstellung bearbeiten",
+            "ErrorInvalidValue": "Ungültiger Wert",
+            "ErrorNameNotUnique": "Name existiert bereits",
+            "ErrorNameRequired": "Name erforderlich",
             "Name": "Name",
             "PreheatPresets": "Presets",
-            "PresetInfo": "Du musst mindestens eine Zieltemperatur oder einen benutzerdefinierten G-Code festlegen.",
+            "PresetInfo": "Bitte mindestens eine Zieltemperatur oder einen benutzerdefinierten G-Code festlegen.",
+            "PresetNamePlaceholder": "Voreinstellungs-Name (erforderlich)",
             "StoreButton": "Voreinstellung speichern",
             "UpdateButton": "Voreinstellung ändern",
             "UpdateCooldown": "Abkühlen ändern"

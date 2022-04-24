@@ -1,6 +1,12 @@
 {
     "App": {
         "Printers": "Принтер",
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "Опция '{option}' в разделе '{section}' устарела и будет удалена в будущем выпуске.",
+                "DeprecatedValue": "Значение '{value}' в опции '{option}' в секции '{section}' устарело и будет удалено в будущем релизе."
+            }
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "ARM-ядро(ядра) rPi в настоящее время дросселируется.",
             "DescriptionFrequencyCapped": "Максимальная частота rPi ARM в настоящее время ограничена 1,2 ГГц.",
@@ -406,12 +412,6 @@
             "SwitchToPrinter": "Переключение на принтер",
             "WebcamOff": "Офф"
         },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Опция '{option}' в разделе '{section}' устарела и будет удалена в будущем выпуске.",
-            "DeprecatedValue": "Значение '{value}' в опции '{option}' в секции '{section}' устарело и будет удалено в будущем релизе.",
-            "DownloadLog": "Загрузить файл журнала",
-            "KlipperWarnings": "Предупреждения о клиперах"
-        },
         "KlippyStatePanel": {
             "FirmwareRestart": "Перезапуск прошивки",
             "KlipperCheck": "Проверьте, запущена ли служба Klipper и настроен ли UDS (Unix Domain Socket).",
@@ -536,7 +536,7 @@
             "Y": "Y",
             "Z": "Z"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Автомасштабируемая диаграмма",
             "Avg": "средний",
             "Color": "Цвет",

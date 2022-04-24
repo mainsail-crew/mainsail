@@ -2,7 +2,7 @@ export const defaultLogoColor = '#D41216'
 export const defaultPrimaryColor = '#2196f3'
 
 export const minKlipperVersion = 'v0.10.0-271'
-export const minMoonrakerVersion = 'v0.7.1-449'
+export const minMoonrakerVersion = 'v0.7.1-486'
 
 export const colorArray = ['#F44336', '#8e379d', '#03DAC5', '#3F51B5', '#ffde03', '#009688', '#E91E63']
 
@@ -24,7 +24,7 @@ export const validGcodeExtensions = ['.gcode', '.g', '.gco', '.ufp', '.nc']
 /*
  * List of initable server components
  */
-export const initableServerComponents = ['history', 'power', 'updateManager', 'timelapse', 'jobQueue']
+export const initableServerComponents = ['history', 'power', 'updateManager', 'timelapse', 'jobQueue', 'announcements']
 
 /*
  * List of required klipper config modules
@@ -76,7 +76,7 @@ export const allDashboardPanels = [
     'miniconsole',
     'miscellaneous',
     'printsettings',
-    'tools',
+    'temperature',
     'webcam',
     'zoffset',
 ]

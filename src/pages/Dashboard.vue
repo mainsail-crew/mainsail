@@ -92,10 +92,9 @@ import MacrosPanel from '@/components/panels/MacrosPanel.vue'
 import MiniconsolePanel from '@/components/panels/MiniconsolePanel.vue'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import MiscellaneousPanel from '@/components/panels/MiscellaneousPanel.vue'
-import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
 import PrintsettingsPanel from '@/components/panels/PrintsettingsPanel.vue'
 import StatusPanel from '@/components/panels/StatusPanel.vue'
-import ToolsPanel from '@/components/panels/ToolsPanel.vue'
+import TemperaturePanel from '@/components/panels/TemperaturePanel.vue'
 import WebcamPanel from '@/components/panels/WebcamPanel.vue'
 import ZoffsetPanel from '@/components/panels/ZoffsetPanel.vue'
 import kebabCase from 'lodash.kebabcase'
@@ -111,10 +110,9 @@ import kebabCase from 'lodash.kebabcase'
         MiniconsolePanel,
         MinSettingsPanel,
         MiscellaneousPanel,
-        MoonrakerStatePanel,
         PrintsettingsPanel,
         StatusPanel,
-        ToolsPanel,
+        TemperaturePanel,
         WebcamPanel,
         ZoffsetPanel,
     },

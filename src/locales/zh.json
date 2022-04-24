@@ -1,6 +1,12 @@
 {
     "App": {
         "Printers": "打印机组",
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "选项 '{option}' 在章节 '{section}' 已经弃用，在未来版本会被移除.",
+                "DeprecatedValue": "数值 '{value}' 在选项 '{option}' 中的章节'{section}' 已经弃用，在未来版本会被移除."
+            }
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM 核心当前被限制.",
             "DescriptionFrequencyCapped": "rPi ARM 最高频率限制再 1.2 GHz.",
@@ -403,12 +409,6 @@
             "SwitchToPrinter": "切换到打印机",
             "WebcamOff": "关闭"
         },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "选项 '{option}' 在章节 '{section}' 已经弃用，在未来版本会被移除.",
-            "DeprecatedValue": "数值 '{value}' 在选项 '{option}' 中的章节'{section}' 已经弃用，在未来版本会被移除.",
-            "DownloadLog": "下载记录",
-            "KlipperWarnings": "Klipper 警告"
-        },
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware 重启",
             "KlipperCheck": "请检查Klipper服务是否运行并且已经设置UDS(Unix Domain Socket).",
@@ -517,7 +517,7 @@
             "Y": "Y",
             "Z": "Z"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "自动缩放图表",
             "Avg": "平均",
             "Color": "颜色",
