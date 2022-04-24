@@ -69,16 +69,14 @@ export const maxGcodeHistory = 50
  * List of generic dashboard panels
  */
 export const allDashboardPanels = [
-    'control',
+    'toolhead-control',
     'extruder-control',
     'macros',
     'machine-settings',
     'miniconsole',
     'miscellaneous',
-    'printsettings',
     'temperature',
     'webcam',
-    'zoffset',
 ]
 
 export const thumbnailSmallMin = 32

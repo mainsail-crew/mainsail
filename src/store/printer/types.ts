@@ -212,3 +212,12 @@ export interface PrinterStateExtruder {
     nozzleDiameter: number
     maxExtrudeOnlyDistance: number
 }
+
+export interface PrinterStateExtruder {
+    key: string
+    name: string
+    filamentDiameter: number
+    minExtrudeTemp: number
+    nozzleDiameter: number
+    maxExtrudeOnlyDistance: number
+}

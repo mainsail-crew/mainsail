@@ -211,14 +211,6 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.displayCancelPrint', value: newVal })
     }
 
-    get displayZOffsetStandby() {
-        return this.$store.state.gui.uiSettings.displayZOffsetStandby
-    }
-
-    set displayZOffsetStandby(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.displayZOffsetStandby', value: newVal })
-    }
-
     get confirmOnEmergencyStop() {
         return this.$store.state.gui.uiSettings.confirmOnEmergencyStop
     }

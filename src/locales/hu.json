@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "Nyomtatók",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "'{section}' / '{option}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
                 "DeprecatedValue": "'{section}' / '{option}' / Value '{value}' opcióját leírtuk, és a következő verzióban már nem lesz benne."
             }
         },
+        "Printers": "Nyomtatók",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Az rPi ARM mag(ok) jelenleg túlterheltek.",
             "DescriptionFrequencyCapped": "Az rPi ARM max frekvenciája jelenleg 1,2 GHz -re korlátozódik.",
@@ -379,22 +379,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "MIND",
-            "AlternateControls": "Vezérlési alternatívák",
-            "Headline": "Vezérlések",
-            "InvertX": "X invertálása",
-            "InvertY": "Y invertálása",
-            "InvertZ": "Z invertálása",
-            "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
-            "SetupControls": "Beállítás vezérlései",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z dőlésszög"
-        },
         "DependenciesPanel": {
             "Dependency": "Függőség | Függőségek",
             "DependencyDescription": "A jelenlegi verzió {name} nem támogatja a Mainsail minden funkcióját. Frissítsd a {name} verziót legalább erre: {neededVersion}."
@@ -476,13 +460,7 @@
             "On": "BE",
             "PowerControl": "Tápellátás vezérlés"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Extrudálási szorzó",
-            "Headline": "Nyomtatási beállítások",
-            "SpeedFactor": "Sebességállítás"
-        },
         "StatusPanel": {
-            "Absolute": "abszolút",
             "CancelPrint": "Nyomtatás megszakítása",
             "ClearPrintStats": "Nyomt. statisztikák törlése",
             "Difference": "Különbség",
@@ -503,19 +481,14 @@
             "Max": "max",
             "ObjectHeight": "Tárgy magassága",
             "PausePrint": "Nyomtatás szüneteltetése",
-            "Position": "Pozíció",
             "Print": "Nyomtatás",
-            "Relative": "relatív",
             "ReprintJob": "Munka újranyomtatása",
             "Requested": "Kért",
             "ResumePrint": "Nyomtatás folytatása",
             "Slicer": "Slicer",
             "Speed": "Sebesség",
             "Total": "Összesen",
-            "Unknown": "Ismeretlen",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Ismeretlen"
         },
         "TemperaturePanel": {
             "AutoscaleChart": "Grafikon automatikus méretezése",
@@ -544,6 +517,21 @@
             "TempTooHigh": "A {name} hőmérséklete túl magas! (max: {max})",
             "TempTooLow": "A {name} hőmérséklete túl alacsony! (min: {min})"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "abszolút",
+            "ALL": "MIND",
+            "InvertX": "X invertálása",
+            "InvertY": "Y invertálása",
+            "InvertZ": "Z invertálása",
+            "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
+            "Position": "Pozíció",
+            "QGL": "QGL",
+            "Relative": "relatív",
+            "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
+            "SetupControls": "Beállítás vezérlései",
+            "SpeedFactor": "Sebességállítás",
+            "ZTilt": "Z dőlésszög"
+        },
         "WebcamPanel": {
             "All": "Mind",
             "FPS": "FPS",
@@ -557,9 +545,9 @@
             "Later": "Később",
             "Ok": "OK",
             "Save": "Mentés",
-            "SAVE_CONFIG": "BÁLLÍTÁS MENTÉSE",
-            "SaveInfoDescription": "Új Z-eltolás kiszámítva és regisztrálva. Kattints a BÁLLÍTÁS MENTÉSE gombra az új Z-eltolás eltárolásához a printer.cfg-be és indítsd újra a Klippert.",
-            "SaveInfoDescriptionPrint": "Új Z-eltolás kiszámítva és regisztrálva. Nyomtatás után kattints a BÁLLÍTÁS MENTÉSE-re a felső sávban, a printer.cfg-be eltárolásához  és a Klipper újraindításához.",
+            "SaveConfig": "BÁLLÍTÁS MENTÉSE",
+            "SaveInfoDescription": "Új Z-eltolás kiszámítva és regisztrálva. Kattints a \"BÁLLÍTÁS MENTÉSE\" gombra az új Z-eltolás eltárolásához a printer.cfg-be és indítsd újra a Klippert.",
+            "SaveInfoDescriptionPrint": "Új Z-eltolás kiszámítva és regisztrálva. Nyomtatás után kattints a \"BÁLLÍTÁS MENTÉSE\"-re a felső sávban, a printer.cfg-be eltárolásához  és a Klipper újraindításához.",
             "SaveInfoHeadline": "Információ",
             "ToEndstop": "a végállásig",
             "ToProbe": "szondáig"

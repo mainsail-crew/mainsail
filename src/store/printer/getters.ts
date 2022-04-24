@@ -48,20 +48,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return state.virtual_sdcard?.progress ?? 0
     },
 
-    getPositions: (state) => {
-        const position = state.motion_report?.live_position ?? state.toolhead?.position ?? [0, 0, 0]
-        const gcode_position = state.gcode_move?.gcode_position ?? [0, 0, 0]
-        const absolute = state.gcode_move?.absolute_coordinates ?? true
-
-        return {
-            coordinates: absolute,
-            x: position[0]?.toFixed(2) ?? '--',
-            y: position[1]?.toFixed(2) ?? '--',
-            z: position[2]?.toFixed(2) ?? '--',
-            gcode_z: gcode_position[2]?.toFixed(2) ?? '--',
-        }
-    },
-
     getMacros: (state, getters, rootState) => {
         const array: PrinterStateMacro[] = []
         const hiddenMacros: string[] = []
@@ -848,5 +834,41 @@ export const getters: GetterTree<PrinterState, RootState> = {
         if (time && timeCount) return Date.now() + (time / timeCount) * 1000
 
         return 0
+    },
+
+    existsQGL: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'quad_gantry_level' in state.configfile.settings
+    },
+
+    existsZtilt: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'z_tilt' in state.configfile.settings
+    },
+
+    existsBedTilt: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'bed_tilt' in state.configfile.settings
+    },
+
+    existsBedScrews: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'bed_screws' in state.configfile.settings
+    },
+
+    existsDeltaCalibrate: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'delta_calibrate' in state.configfile.settings
+    },
+
+    existsScrewsTilt: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'screws_tilt_adjust' in state.configfile.settings
     },
 }

@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "列印機組",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "{section}' 中的部分選項 '{option}' 已棄用，將在未來版本中刪除。",
                 "DeprecatedValue": "不推薦使用'{section}' 部分的選項'{option}' 中的值'{value}'，並將在未來版本中刪除。"
             }
         },
+        "Printers": "列印機組",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "樹莓派ARM核心目前已被限制.",
             "DescriptionFrequencyCapped": "樹莓派ARM最大頻率目前限制為1.2 GHz.",
@@ -328,26 +328,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "所有",
-            "AlternateControls": "備用控制",
-            "Headline": "控制",
-            "InvertX": "翻轉 X",
-            "InvertY": "翻轉 Y",
-            "InvertZ": "翻轉 Z",
-            "PleaseConfigureSteps": "請設定步進",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "設定 > 界面 > 控制",
-            "SetupControls": "設定控制",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z 傾斜"
-        },
-        "DependenciesPanel": {
-            "Dependency": "依賴 | 依賴關係",
-            "DependencyDescription": "您當前的 {name} 版本不支持 Mainsail 的所有功能。將 {name} 更新為至少 {neededVersion}。"
-        },
         "ExtruderControlPanel": {
             "Extrude": "擠出",
             "ExtrusionFactor": "擠出係數",
@@ -424,13 +404,7 @@
             "On": "開",
             "PowerControl": "電源管理"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "擠出係數",
-            "Headline": "列印設定",
-            "SpeedFactor": "速度係數"
-        },
         "StatusPanel": {
-            "Absolute": "絕對",
             "CancelPrint": "取消列印",
             "ClearPrintStats": "清除列印統計數據",
             "Difference": "差異",
@@ -451,19 +425,14 @@
             "Max": "max",
             "ObjectHeight": "物體高度",
             "PausePrint": "暫停列印",
-            "Position": "位置",
             "Print": "列印",
-            "Relative": "相對的",
             "ReprintJob": "繼續列印",
             "Requested": "請求",
             "ResumePrint": "繼續列印",
             "Slicer": "切片",
             "Speed": "速度",
             "Total": "總共: ",
-            "Unknown": "Unknown",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Unknown"
         },
         "TemperaturePanel": {
             "AutoscaleChart": "自動縮放圖表",
@@ -490,6 +459,21 @@
             "Target": "目標",
             "TemperaturesInChart": "溫度 [°C]"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "絕對",
+            "ALL": "所有",
+            "InvertX": "翻轉 X",
+            "InvertY": "翻轉 Y",
+            "InvertZ": "翻轉 Z",
+            "PleaseConfigureSteps": "請設定步進",
+            "Position": "位置",
+            "QGL": "QGL",
+            "Relative": "相對的",
+            "SettingsInterfaceControl": "設定 > 界面 > 控制",
+            "SetupControls": "設定控制",
+            "SpeedFactor": "速度係數",
+            "ZTilt": "Z 傾斜"
+        },
         "WebcamPanel": {
             "All": "全部",
             "FPS": "FPS",
@@ -503,7 +487,7 @@
             "Later": "最後的",
             "Ok": "好",
             "Save": "儲存",
-            "SAVE_CONFIG": "儲存配置",
+            "SaveConfig": "儲存配置",
             "SaveInfoDescription": "已經計算生成新的Z偏移. 點擊 儲存配置 儲存到 printer.cfg 中並重啟 Klipper.",
             "SaveInfoDescriptionPrint": "已經計算生成新的Z偏移. 列印後點擊 儲存配置 儲存到 printer.cfg 中並重啟 Klipper.",
             "SaveInfoHeadline": "資訊",
