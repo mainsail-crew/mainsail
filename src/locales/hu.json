@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "Nyomtatók",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "'{section}' / '{option}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
                 "DeprecatedValue": "'{section}' / '{option}' / Value '{value}' opcióját leírtuk, és a következő verzióban már nem lesz benne."
             }
         },
+        "Printers": "Nyomtatók",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Az rPi ARM mag(ok) jelenleg túlterheltek.",
             "DescriptionFrequencyCapped": "Az rPi ARM max frekvenciája jelenleg 1,2 GHz -re korlátozódik.",

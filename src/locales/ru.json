@@ -1,12 +1,12 @@
 {
     "App": {
-        "Printers": "Принтер",
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "Опция '{option}' в разделе '{section}' устарела и будет удалена в будущем выпуске.",
                 "DeprecatedValue": "Значение '{value}' в опции '{option}' в секции '{section}' устарело и будет удалено в будущем релизе."
             }
         },
+        "Printers": "Принтер",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "ARM-ядро(ядра) rPi в настоящее время дросселируется.",
             "DescriptionFrequencyCapped": "Максимальная частота rPi ARM в настоящее время ограничена 1,2 ГГц.",
