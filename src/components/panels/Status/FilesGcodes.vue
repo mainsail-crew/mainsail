@@ -133,7 +133,9 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
             })
             .slice(0, 5)
 
-        const requestItems = gcodes.filter((file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled)
+        const requestItems = gcodes.filter(
+            (file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled
+        )
         requestItems.forEach((file: FileStateGcodefile) => {
             this.$store.dispatch('files/requestMetadata', {
                 filename: 'gcodes/' + file.filename,
