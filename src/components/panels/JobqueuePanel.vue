@@ -121,7 +121,6 @@ import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { mdiPlay, mdiPause, mdiFile, mdiDelete, mdiTrayFull } from '@mdi/js'
 @Component({
     components: { Panel },

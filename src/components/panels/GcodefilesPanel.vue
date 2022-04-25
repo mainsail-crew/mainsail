@@ -591,7 +591,6 @@ import draggable from 'vuedraggable'
 import {
     mdiFile,
     mdiFileDocumentMultipleOutline,
-    mdiFile,
     mdiMagnify,
     mdiUpload,
     mdiFolderPlus,
@@ -662,7 +661,6 @@ interface tableColumnSetting {
 export default class GcodefilesPanel extends Mixins(BaseMixin) {
     mdiFile = mdiFile
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
-    mdiFile = mdiFile
     mdiMagnify = mdiMagnify
     mdiUpload = mdiUpload
     mdiFolderPlus = mdiFolderPlus
