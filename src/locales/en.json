@@ -560,6 +560,7 @@
                 "EmptyGcodes": "No G-Code available.",
                 "EmptyJobqueue": "There is currently no file in the job queue.",
                 "Filament": "Filament",
+                "Files": "Files",
                 "Jobqueue": "Jobqueue ({count})",
                 "JobqueueMoreFiles": "no more jobs | one more job | {count} more jobs",
                 "PrintTime": "Print Time"

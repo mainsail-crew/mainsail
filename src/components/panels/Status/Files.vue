@@ -3,16 +3,16 @@
 <template>
     <div>
         <v-tabs v-model="tabs" fixed-tabs dark>
-            <v-tab>{{ $t('Panels.StatusPanel.Files.Jobqueue', { count: jobsCount }) }}</v-tab>
-            <v-tab>Files</v-tab>
+            <v-tab value="files">{{ $t('Panels.StatusPanel.Files.Files') }}</v-tab>
+            <v-tab value="jobqueue">{{ $t('Panels.StatusPanel.Files.Jobqueue', { count: jobsCount }) }}</v-tab>
         </v-tabs>
         <v-divider class="my-0"></v-divider>
         <v-tabs-items v-model="tabs">
             <v-tab-item>
-                <status-panel-files-jobqueue></status-panel-files-jobqueue>
+                <status-panel-files-gcodes></status-panel-files-gcodes>
             </v-tab-item>
             <v-tab-item>
-                <status-panel-files-gcodes></status-panel-files-gcodes>
+                <status-panel-files-jobqueue></status-panel-files-jobqueue>
             </v-tab-item>
         </v-tabs-items>
     </div>
@@ -31,7 +31,7 @@ import StatusPanelFilesGcodes from '@/components/panels/Status/FilesGcodes.vue'
     },
 })
 export default class StatusPanelFiles extends Mixins(BaseMixin) {
-    private tabs = null
+    private tabs = 'files'
 
     get jobs() {
         return this.$store.getters['server/jobQueue/getJobs']
