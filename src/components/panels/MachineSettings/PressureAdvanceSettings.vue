@@ -1,73 +1,77 @@
 <template>
-    <v-card-text>
-        <v-row>
-            <v-col v-if="allExtruders.length > 1" class="col-12 col-xl-4">
-                <div class="d-flex align-center">
-                    <v-btn
-                        v-if="selectedExtruder !== activeExtruder"
-                        icon
-                        plain
-                        class="mr-2"
-                        @click="resetToActiveExtruder">
-                        <v-icon>{{ mdiRestart }}</v-icon>
-                    </v-btn>
-                    <v-select
-                        v-model="selectedExtruder"
-                        :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Extruder').toString()"
-                        :items="allExtruders"
-                        :value="activeExtruder"
-                        hide-details
-                        outlined
-                        dense></v-select>
-                </div>
-            </v-col>
-            <v-col :class="allExtruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
-                <number-input
-                    :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Advance').toString()"
-                    param="ADVANCE"
-                    :target="pressureAdvance"
-                    :default-value="defaultPressureAdvance"
-                    :extruder="selectedExtruder"
-                    :output-error-msg="true"
-                    :has-spinner="true"
-                    :min="0"
-                    :max="null"
-                    :step="0.001"
-                    :dec="3"
-                    unit="mm/s"
-                    @submit="sendCmd"></number-input>
-            </v-col>
-            <v-col :class="allExtruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
-                <number-input
-                    :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.SmoothTime').toString()"
-                    param="SMOOTH_TIME"
-                    :target="smoothTime"
-                    :default-value="defaultSmoothTime"
-                    :extruder="selectedExtruder"
-                    :output-error-msg="true"
-                    :has-spinner="true"
-                    :spinner-factor="10"
-                    :min="0"
-                    :max="0.2"
-                    :step="0.001"
-                    :dec="3"
-                    unit="s"
-                    @submit="sendCmd"></number-input>
-            </v-col>
-        </v-row>
-    </v-card-text>
+    <v-container>
+        <responsive
+            :breakpoints="{
+                small: (el) => el.width <= 350,
+                medium: (el) => el.width > 350 && el.width <= 500,
+            }">
+            <template #default="{ el }">
+                <v-row>
+                    <v-col v-if="allExtruders.length > 1" :class="{ 'col-12': el.is.small || el.is.medium }">
+                        <div class="d-flex align-center">
+                            <v-btn v-if="selectedExtruder !== activeExtruder" icon plain @click="resetToActiveExtruder">
+                                <v-icon>{{ mdiRestart }}</v-icon>
+                            </v-btn>
+                            <v-select
+                                v-model="selectedExtruder"
+                                :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Extruder').toString()"
+                                :items="allExtruders"
+                                :value="activeExtruder"
+                                hide-details
+                                outlined
+                                dense></v-select>
+                        </div>
+                    </v-col>
+                    <v-col :class="{ 'col-12': el.is.small }">
+                        <number-input
+                            :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Advance').toString()"
+                            param="ADVANCE"
+                            :target="pressureAdvance"
+                            :default-value="defaultPressureAdvance"
+                            :extruder="selectedExtruder"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :min="0"
+                            :max="null"
+                            :step="0.001"
+                            :dec="3"
+                            unit="mm/s"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                    <v-col :class="{ 'col-12': el.is.small }">
+                        <number-input
+                            :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.SmoothTime').toString()"
+                            param="SMOOTH_TIME"
+                            :target="smoothTime"
+                            :default-value="defaultSmoothTime"
+                            :extruder="selectedExtruder"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="10"
+                            :min="0"
+                            :max="0.2"
+                            :step="0.001"
+                            :dec="3"
+                            unit="s"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                </v-row>
+            </template>
+        </responsive>
+    </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import Panel from '@/components/ui/Panel.vue'
-import NumberInput from '@/components/inputs/NumberInput.vue'
 import { Debounce } from 'vue-debounce-decorator'
+import BaseMixin from '@/components/mixins/base'
+import NumberInput from '@/components/inputs/NumberInput.vue'
+import Panel from '@/components/ui/Panel.vue'
+import Responsive from '@/components/ui/Responsive.vue'
 import { mdiRestart } from '@mdi/js'
 
 @Component({
-    components: { Panel, NumberInput },
+    components: { NumberInput, Panel, Responsive },
 })
 export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
     mdiRestart = mdiRestart

@@ -1,6 +1,12 @@
 {
     "_last_update:": "09.01.2022",
     "App": {
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "L'option '{option}' dans la section '{section}' est obsolète.",
+                "DeprecatedValue": "La valeur '{value}' dans l'option '{option}' dans la section '{section}' est obsolète."
+            }
+        },
         "Printers": "Imprimantes",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM core(s) sont actuellement réduits",
@@ -374,41 +380,21 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "Tous",
-            "AlternateControls": "Commandes en croix",
-            "Extrude": "Extrusion",
-            "FeedAmountIn": "Longueur à extraire",
-            "FeedrateIn": "Vitesse d'extrusion",
-            "Headline": "Contrôles",
-            "HotendTooCold": "Tête d'impression trop froide",
-            "InvertX": "Inversion X",
-            "InvertY": "Inversion Y",
-            "InvertZ": "Inversion Z",
-            "PleaseConfigureSteps": "Configurez Pas",
-            "QGL": "QGL",
-            "Retract": "Rétractation",
-            "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
-            "SetupControls": "Réglages",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "DependenciesPanel": {
             "Dependency": "Dépendance(s)",
             "DependencyDescription": "Votre version {name} ne supporte pas toutes possibilités de Mainsail. Mettez à jour {name} vers {neededVersion}."
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "Extrusion",
+            "ExtrusionFactor": "Facteur d'extrusion",
+            "ExtrusionFeedrate": "Vitesse d'extrusion",
+            "Headline": "Contrôles d'Extrudeur",
+            "Retract": "Rétractation"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Re-connection",
             "SwitchToPrinter": "Changer d'imprimante",
             "WebcamOff": "Arrêt"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "L'option '{option}' dans la section '{section}' est obsolète.",
-            "DeprecatedValue": "La valeur '{value}' dans l'option '{option}' dans la section '{section}' est obsolète.",
-            "DownloadLog": "téléchargement du fichier log",
-            "KlipperWarnings": "Avertissements Klipper"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Redémarrage Firmware",
@@ -477,13 +463,7 @@
             "On": "Marche",
             "PowerControl": "Alimentation"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Facteur d'extrusion",
-            "Headline": "Réglages d'impression",
-            "SpeedFactor": "Facteur de vitesse"
-        },
         "StatusPanel": {
-            "Absolute": "absolue",
             "CancelPrint": "Annuler l'impression",
             "ClearPrintStats": "Effacer les statistiques d'impression",
             "Difference": "Différence",
@@ -504,21 +484,16 @@
             "Max": "max",
             "ObjectHeight": "hauteur objet",
             "PausePrint": "Pause impression",
-            "Position": "Position",
             "Print": "Impression",
-            "Relative": "relative",
             "ReprintJob": "Ré-impression",
             "Requested": "Requis",
             "ResumePrint": "Reprise impression",
             "Slicer": "Trancheur",
             "Speed": "Vitesse",
             "Total": "Total",
-            "Unknown": "Inconnu",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Inconnu"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Echelle automatique",
             "Avg": "Moyenne",
             "Color": "Couleur",
@@ -545,6 +520,21 @@
             "TempTooHigh": "La température de {name} est trop haute, (max: {max})",
             "TempTooLow": "La température de {name} est trop basse, (min: {min})"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "absolue",
+            "ALL": "Tous",
+            "InvertX": "Inversion X",
+            "InvertY": "Inversion Y",
+            "InvertZ": "Inversion Z",
+            "PleaseConfigureSteps": "Configurez Pas",
+            "Position": "Position",
+            "QGL": "QGL",
+            "Relative": "relative",
+            "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
+            "SetupControls": "Réglages",
+            "SpeedFactor": "Facteur de vitesse",
+            "ZTilt": "Z Tilt"
+        },
         "WebcamPanel": {
             "All": "Tous",
             "FPS": "IPS",
@@ -558,9 +548,9 @@
             "Later": "Plus tard",
             "Ok": "Ok",
             "Save": "Sauvegarder",
-            "SAVE_CONFIG": "SAVE_CONFIG",
-            "SaveInfoDescription": "Le nouvel offset Z a été calculé et enregistré. Cliquez sur SAVE_CONFIG afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
-            "SaveInfoDescriptionPrint": "Le nouvel offset Z a été calculé et enregistré. Après l'impression cliquez sur SAVE_CONFIG dans la barre du haut afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "Le nouvel offset Z a été calculé et enregistré. Cliquez sur \"SAVE CONFIG\" afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
+            "SaveInfoDescriptionPrint": "Le nouvel offset Z a été calculé et enregistré. Après l'impression cliquez sur \"SAVE CONFIG\" dans la barre du haut afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
             "SaveInfoHeadline": "Information",
             "ToEndstop": "jusqu'au fin de course",
             "ToProbe": "jusqu'à la sonde"

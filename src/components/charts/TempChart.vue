@@ -89,7 +89,7 @@ export default class TempChart extends Mixins(BaseMixin) {
         },
         yAxis: [
             {
-                name: this.$t('Panels.ToolsPanel.TemperaturesInChart'),
+                name: this.$t('Panels.TemperaturePanel.TemperaturesInChart'),
                 type: 'value',
                 min: 0,
                 max: (value: any) => {
@@ -228,11 +228,19 @@ export default class TempChart extends Mixins(BaseMixin) {
 
     mounted() {
         this.initChart()
+
+        window.addEventListener('resize', this.eventListenerResize)
     }
 
     beforeDestroy() {
         if (typeof window === 'undefined') return
         if (this.chart) this.chart.dispose()
+
+        window.removeEventListener('resize', this.eventListenerResize)
+    }
+
+    eventListenerResize() {
+        this.chart?.resize()
     }
 
     initChart() {

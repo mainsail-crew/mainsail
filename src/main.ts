@@ -1,3 +1,4 @@
+import 'core-js/stable' // polyfills for older browsers
 import 'regenerator-runtime' // async polyfill used by the gcodeviewer
 import 'resize-observer-polyfill' // polyfill needed by the responsive class detection
 
@@ -29,7 +30,7 @@ Vue.use(VueMeta)
 import VueLoadImage from 'vue-load-image'
 Vue.component('VueLoadImage', VueLoadImage)
 
-//vue-toast-notification
+//vue-toast-notifications
 import VueToast from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-sugar.css'
 import { WebSocketPlugin } from '@/plugins/webSocketClient'

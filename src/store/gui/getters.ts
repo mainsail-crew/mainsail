@@ -1,6 +1,7 @@
 import { GetterTree } from 'vuex'
 import { GuiState } from '@/store/gui/types'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
+import Vue from 'vue'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
@@ -61,5 +62,12 @@ export const getters: GetterTree<GuiState, any> = {
         }
 
         return panels
+    },
+
+    getDefaultControlActionButton: (state, getters, rootState, rootGetters) => {
+        if (rootGetters['printer/existsQGL']) return 'qgl'
+        else if (rootGetters['printer/existsZtilt']) return 'ztilt'
+
+        return 'm84'
     },
 }

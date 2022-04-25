@@ -84,6 +84,10 @@ export const actions: ActionTree<ServerState, RootState> = {
 
     initProcStats({ commit }, payload) {
         if (payload.throttled_state !== null) commit('setThrottledState', payload.throttled_state)
+        if (payload.system_uptime) {
+            const system_boot_at = new Date(new Date().getTime() - payload.system_uptime * 1000)
+            commit('setSystemBootAt', system_boot_at)
+        }
     },
 
     updateProcStats({ commit }, payload) {

@@ -6,11 +6,8 @@
 
 <template>
     <div>
-        <dependencies-panel></dependencies-panel>
         <min-settings-panel></min-settings-panel>
-        <moonraker-state-panel></moonraker-state-panel>
         <klippy-state-panel></klippy-state-panel>
-        <klipper-warnings-panel></klipper-warnings-panel>
         <panel
             v-if="klipperState === 'ready'"
             :icon="mdiInformation"
@@ -137,46 +134,7 @@
                     </v-container>
                     <v-divider class="mt-0 mb-0"></v-divider>
                 </template>
-                <v-container class="py-0">
-                    <v-row
-                        :class="
-                            'text-center ' +
-                            (!['printing', 'paused', 'error', 'complete', 'cancelled'].includes(printer_state)
-                                ? 'pt-5 pb-2 mb-0'
-                                : 'py-5')
-                        "
-                        align="center">
-                        <v-col class="col-3 pa-0">
-                            <strong>{{ $t('Panels.StatusPanel.Position') }}</strong>
-                            <br />
-                            {{ coordinates }}
-                        </v-col>
-                        <v-col class="col-3 pa-0">
-                            <strong>{{ $t('Panels.StatusPanel.X') }}</strong>
-                            <br />
-                            {{ positions.x }}
-                        </v-col>
-                        <v-col class="col-3 pa-0">
-                            <strong>{{ $t('Panels.StatusPanel.Y') }}</strong>
-                            <br />
-                            {{ positions.y }}
-                        </v-col>
-                        <v-col class="col-3 pa-0">
-                            <v-tooltip top>
-                                <template #activator="{ on, attrs }">
-                                    <div v-bind="attrs" class="text-center" v-on="on">
-                                        <strong>{{ $t('Panels.StatusPanel.Z') }}</strong>
-                                        <br />
-                                        {{ positions.z }}
-                                    </div>
-                                </template>
-                                <span>G-Code: {{ positions.gcode_z }}mm</span>
-                            </v-tooltip>
-                        </v-col>
-                    </v-row>
-                </v-container>
                 <template v-if="['printing', 'paused', 'error', 'cancelled'].includes(printer_state)">
-                    <v-divider class="my-0"></v-divider>
                     <v-container class="py-0">
                         <v-row class="text-center py-5" align="center">
                             <v-col class="col-3 pa-0">
@@ -372,13 +330,10 @@ import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import { thumbnailSmallMin, thumbnailSmallMax, thumbnailBigMin } from '@/store/variables'
 import BaseMixin from '@/components/mixins/base'
-import DependenciesPanel from '@/components/panels/DependenciesPanel.vue'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
-import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
-import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel.vue'
-import StatusPanelExcludeObject from '@/components/panels/Status/ExcludeObject.vue'
 import StatusPanelFiles from '@/components/panels/Status/Files.vue'
+import StatusPanelExcludeObject from '@/components/panels/StatusPanelExcludeObject.vue'
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiCloseCircle,
@@ -396,11 +351,8 @@ import {
 
 @Component({
     components: {
-        DependenciesPanel,
-        KlipperWarningsPanel,
         KlippyStatePanel,
         MinSettingsPanel,
-        MoonrakerStatePanel,
         Panel,
         StatusPanelExcludeObject,
         StatusPanelFiles,
@@ -430,16 +382,6 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     get print_stats_message() {
         return this.$store.state.printer.print_stats?.message ?? ''
-    }
-
-    get positions() {
-        return this.$store.getters['printer/getPositions']
-    }
-
-    get coordinates() {
-        return this.positions.coordinates
-            ? this.$t('Panels.StatusPanel.Absolute')
-            : this.$t('Panels.StatusPanel.Relative')
     }
 
     get filament_used() {
@@ -589,8 +531,9 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     get current_layer() {
         if (this.print_time > 0 && 'first_layer_height' in this.current_file && 'layer_height' in this.current_file) {
+            const gcodePositionZ = this.$store.state.printer.gcode_move?.gcode_position[2] ?? 0
             let current_layer = Math.ceil(
-                (this.positions.gcode_z - this.current_file.first_layer_height) / this.current_file.layer_height + 1
+                (gcodePositionZ - this.current_file.first_layer_height) / this.current_file.layer_height + 1
             )
             current_layer = current_layer <= this.max_layers ? current_layer : this.max_layers
 

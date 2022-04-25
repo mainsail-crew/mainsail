@@ -1,5 +1,28 @@
 {
     "App": {
+        "Notifications": {
+            "DependencyDescription": "The current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}.",
+            "DependencyName": "Dependency: {name}",
+            "DismissAll": "Dismiss all",
+            "KlipperWarnings": {
+                "DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
+                "DeprecatedOptionHeadline": "Deprecated Klipper Option",
+                "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
+                "DeprecatedValueHeadline": "Deprecated Klipper Value",
+                "KlipperWarning": "Klipper warning"
+            },
+            "MoonrakerWarnings": {
+                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the logfile and fix the issue.",
+                "MoonrakerWarning": "Moonraker warning",
+                "UnparsedConfigOption": "Unparsed config option '{option}: {value}' detected in section [{section}]. This may be an option no longer available or could be the result of a module that failed to load. In the future this will result in a startup error.",
+                "UnparsedConfigSection": "Unparsed config section [{section}] detected. This may be the result of a component that failed to load. In the future this will result in a startup error."
+            },
+            "Never": "never",
+            "NextReboot": "next reboot",
+            "NoNotification": "No Notification available",
+            "Remind": "Remind:"
+        },
         "NumberInput": {
             "GreaterOrEqualError": "Must be grater or equal than {min}!",
             "MustBeBetweenError": "Must be between {min} and {max}!",
@@ -15,8 +38,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI supply voltage dropped below 4.65V at least once since the last power-on.",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperature is currently above the soft limit (default 60C).",
             "DescriptionUnderVoltageDetected": "rPI supply voltage currently below 4.65V",
-            "HeadlineCurrentFlags": "Current Flags",
-            "HeadlinePreviouslyFlags": "Previously Flags",
             "TitleCurrentlyThrottled": "Currently Throttled",
             "TitleFrequencyCapped": "Frequency Capped",
             "TitlePreviouslyFrequencyCapped": "Previously Frequency Capped",
@@ -253,12 +274,15 @@
         "Wireframe": "Wireframe"
     },
     "History": {
+        "AddNote": "Add note",
         "AllJobs": "All",
         "AvgPrinttime": "Printtime - Ø",
         "Cancel": "Cancel",
+        "CreateNote": "Create Note",
         "Delete": "Delete",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected jobs?",
         "Details": "Details",
+        "EditNote": "Edit Note",
         "Empty": "empty",
         "EndTime": "End Time",
         "EstimatedFilament": "Estimated Filament",
@@ -279,12 +303,14 @@
         "LastModified": "Last Modified",
         "LayerHeight": "Layer Height",
         "LongestPrinttime": "Longest Printtime",
+        "Note": "Note",
         "ObjectHeight": "Object Height",
         "PrintDuration": "Print Time",
         "PrintHistory": "Print History",
         "PrintTime": "Print Time",
         "PrinttimeAvg": "Printtime - Ø",
         "Reprint": "Reprint",
+        "Save": "save",
         "Search": "search",
         "SelectedFilamentUsed": "Selected Filament Used",
         "SelectedJobs": "Selected Jobs",
@@ -419,17 +445,12 @@
         "ControlPanel": {
             "ALL": "ALL",
             "AlternateControls": "Alternate controls",
-            "Extrude": "Extrude",
-            "FeedAmountIn": "Feed amount in",
-            "FeedrateIn": "Feedrate in",
             "Headline": "Controls",
-            "HotendTooCold": "Hotend temp. lower than",
             "InvertX": "Invert X",
             "InvertY": "Invert Y",
             "InvertZ": "Invert Z",
             "PleaseConfigureSteps": "Please configure steps",
             "QGL": "QGL",
-            "Retract": "Retract",
             "SettingsInterfaceControl": "Settings > Interface > Control",
             "SetupControls": "Setup Controls",
             "X": "X",
@@ -437,20 +458,25 @@
             "Z": "Z",
             "ZTilt": "Z Tilt"
         },
-        "DependenciesPanel": {
-            "Dependency": "Dependency | Dependencies",
-            "DependencyDescription": "Your current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}."
+        "ExtruderControlPanel": {
+            "Allowed": "Allowed",
+            "EstimatedExtrusion": "Estimated Extrusion:",
+            "Extrude": "Extrude",
+            "ExtruderTempTooLow": "Extruder temp. <",
+            "ExtrusionFactor": "Extrusion factor",
+            "ExtrusionFeedrate": "Extrusion Feedrate",
+            "FilamentLength": "Filament Length",
+            "Headline": "Extruder",
+            "LoadFilament": "Load Filament",
+            "Requested": "Requested",
+            "Retract": "Retract",
+            "TooLargeExtrusion": "Extrusion too large!",
+            "UnloadFilament": "Unload Filament"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Reconnect",
             "SwitchToPrinter": "Switch to Printer",
             "WebcamOff": "Off"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
-            "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
-            "DownloadLog": "download log",
-            "KlipperWarnings": "Klipper Warnings"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Restart",
@@ -476,7 +502,7 @@
                 "Velocity": "Velocity"
             },
             "PressureAdvanceSettings": {
-                "Advance": "Advance",
+                "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "PressureAdvance": "Pressure Advance",
                 "SmoothTime": "Smooth Time"
@@ -507,25 +533,13 @@
                 "Empty": "Empty"
             }
         },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Download Log",
-            "FollowingPluginHasAnError": "Following plugin has an error:",
-            "MoonrakerErrorInfo": "An error was detected while loading the moonraker components. Please check the logfile and fix the issue.",
-            "MoonrakerWarnings": "Moonraker Warnings"
-        },
         "PowerControlPanel": {
             "Error": "Error",
             "Off": "Off",
             "On": "On",
             "PowerControl": "Power Control"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Extrusion factor",
-            "Headline": "Print Settings",
-            "SpeedFactor": "Speed factor"
-        },
         "StatusPanel": {
-            "Absolute": "absolute",
             "CancelPrint": "Cancel print",
             "ClearPrintStats": "Clear print stats",
             "Difference": "Difference",
@@ -554,21 +568,16 @@
             "Max": "max",
             "ObjectHeight": "Object Height",
             "PausePrint": "Pause print",
-            "Position": "Position",
             "Print": "Print",
-            "Relative": "relative",
             "ReprintJob": "Reprint job",
             "Requested": "Requested",
             "ResumePrint": "Resume print",
             "Slicer": "Slicer",
             "Speed": "Speed",
             "Total": "Total",
-            "Unknown": "Unknown",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Unknown"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Autoscale Chart",
             "Avg": "Avg",
             "Color": "Color",
@@ -595,22 +604,45 @@
             "TempTooHigh": "Temperature too high for {name}! (max: {max})",
             "TempTooLow": "Temperature too low for {name}! (min: {min})"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "absolute",
+            "ALL": "ALL",
+            "Headline": "Toolhead",
+            "InvertX": "Invert X",
+            "InvertY": "Invert Y",
+            "InvertZ": "Invert Z",
+            "MotorsOff": "Motors Off",
+            "OutOfRange": "Out of range!",
+            "PleaseConfigureSteps": "Please configure steps",
+            "Position": "Position",
+            "QGL": "QGL",
+            "Relative": "relative",
+            "SettingsInterfaceControl": "Settings > Interface > Control",
+            "SetupControls": "Setup Controls",
+            "SpeedFactor": "Speed factor",
+            "XOffset": "X-Offset",
+            "YOffset": "Y-Offset",
+            "ZOffset": "Z-Offset",
+            "ZTilt": "Z-Tilt"
+        },
         "WebcamPanel": {
             "All": "All",
             "FPS": "FPS",
             "Headline": "Webcam",
+            "NoWebcam": "No webcam available. Add a webcam under \"Interface Settings\" -> \"Webcams\".",
             "UnknownWebcamService": "Unknown Webcam Service",
             "UrlNotAvailable": "URL not available"
         },
         "ZoffsetPanel": {
+            "Clear": "Clear",
             "CurrentOffset": "current offset",
             "Headline": "Z-Offset",
             "Later": "Later",
             "Ok": "OK",
             "Save": "Save",
-            "SAVE_CONFIG": "SAVE_CONFIG",
-            "SaveInfoDescription": "The new z-offset has been calculated and registered. Click on SAVE_CONFIG to store the new z-offset in your printer.cfg and restart Klipper.",
-            "SaveInfoDescriptionPrint": "The new Z offset has been calculated and registered. After printing, click on SAVE_CONFIG in the top bar to store it in printer.cfg and restart Klipper.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "The new Z-Offset has been calculated and registered. Click on \"SAVE CONFIG\" to save it to the printer.cfg and restart Klipper.",
+            "SaveInfoDescriptionPrint": "The new Z-Offset has been calculated and registered. After printing, click on \"SAVE CONFIG\" in the top bar to save it to the printer.cfg and restart Klipper.",
             "SaveInfoHeadline": "Information",
             "ToEndstop": "to Endstop",
             "ToProbe": "to Probe"
@@ -681,21 +713,31 @@
             "Circle": "Circle",
             "Control": "Control",
             "Cross": "Cross",
-            "InvertXMovement": "Invert X movement",
-            "InvertYMovement": "Invert Y movement",
-            "InvertZMovement": "Invert Z movement",
+            "DisplayZOffset": "Always display Z-Offset-Controls",
+            "DisplayZOffsetDescription": "If disabled, the controls will appear only if a print has started.",
+            "EnableXYHoming": "Enable combined X & Y axes homing",
+            "EstimatedExtrusionInfo": "Show estimated extrusion info",
+            "EstimatedExtrusionInfoDescription": "Show / Hide info for estimated extrusions based on extrusion amount and feedrate",
+            "InvertXMovement": "Invert X axis movement direction",
+            "InvertYMovement": "Invert Y axis movement direction",
+            "InvertZMovement": "Invert Z axis movement direction",
+            "IsDefault": " (default)",
             "MaximumValues": "Maximum values: {maximum}",
             "MaximumValuesVisibility": "Maximum of {maximum} values is recommended for best visibilty",
             "MinimumValues": "Minimum values: {minimum}",
-            "MoveDistancesEInMm": "Move distances E in mm",
-            "MoveDistancesInMm": "Move distances in mm",
-            "MoveDistancesXYInMm": "Move distances XY in mm",
-            "MoveDistancesZInMm": "Move distances Z in mm",
-            "SpeedEInMms": "Speed E in mm/s",
-            "SpeedXY": "Speed XY",
-            "SpeedZ": "Speed Z",
+            "MotorsOff": "Motors off{isDefault}",
+            "MoveDistancesEInMm": "Extrusion amount presets (in mm)",
+            "MoveDistancesInMm": "Move distance increments (in mm)",
+            "MoveDistancesXYInMm": "Move distance increments X & Y axes (in mm)",
+            "MoveDistancesZInMm": "Move distance increments Z axis (in mm)",
+            "QuadGantryLevel": "Quad Gantry Level{isDefault}",
+            "SpeedEInMms": "Extrusion speed presets (in mm/s)",
+            "SpeedXY": "Movement speed X & Y axes",
+            "SpeedZ": "Movement speed Z axis",
             "Style": "Style",
-            "ValueGreaterThan": "Value has to be greater than {value}"
+            "ValueGreaterThan": "Value has to be greater than {value}",
+            "ZOffsetIncrements": "Z-Offset increments (in mm)",
+            "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
             "Dashboard": "Dashboard",
@@ -799,9 +841,13 @@
             "CustomGCode": "Custom G-Code",
             "EditCooldown": "Edit Cooldown",
             "EditHeadline": "Edit Preset",
+            "ErrorInvalidValue": "Invalid value",
+            "ErrorNameNotUnique": "Name already exists",
+            "ErrorNameRequired": "Name required",
             "Name": "Name",
             "PreheatPresets": "Presets",
-            "PresetInfo": "You have to set minimum a target temperature or a custom G-Code.",
+            "PresetInfo": "Please set at least a target temperature or a custom G-Code.",
+            "PresetNamePlaceholder": "Preset name (required)",
             "StoreButton": "Store preset",
             "UpdateButton": "Update preset",
             "UpdateCooldown": "Update Cooldown"
@@ -892,8 +938,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",
             "DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
-            "DisplayZOffset": "Show Z-Offset-Panel",
-            "DisplayZOffsetDescription": "Otherwise, the panel will appear only after a print has started.",
             "GcodeThumbnails": "G-Code thumbnails",
             "GcodeThumbnailsDescription": "Click on the button to get to the instructions.",
             "Guide": "Guide",

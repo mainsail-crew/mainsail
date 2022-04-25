@@ -1,5 +1,16 @@
 {
     "App": {
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "Funktionen \"{option}\" i sektion \"{section}\" er forældet.",
+                "DeprecatedValue": "Værdien \"{value}\" i muligheden \"{option}\" i sektion \"{section}\" er forældet."
+            }
+        },
+        "NumberInput": {
+            "GreaterOrEqualError": "Skal være større eller lig med {min}!",
+            "MustBeBetweenError": "Skal være mellem {min} og {max}!",
+            "NoEmptyAllowedError": "Må ikke være tom!"
+        },
         "Printers": "Printere",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM kerne(r) er i øjeblikket begrænset .",
@@ -10,8 +21,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI strømforsyning faldt til under 4,65V mindst en gang siden sidste opstart.",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperatur er i øjeblikket over advarselsgrænsen (standard 60°C).",
             "DescriptionUnderVoltageDetected": "rPI strømforsyning i øjeblikket under 4,65V",
-            "HeadlineCurrentFlags": "\"Lige nu\" varsel",
-            "HeadlinePreviouslyFlags": "\"Tidligere\" varsel",
             "TitleCurrentlyThrottled": "Begrænset i øjeblikket",
             "TitleFrequencyCapped": "Maks. frekvens formindsket",
             "TitlePreviouslyFrequencyCapped": "Maks. frekvens formindsket tidligere",
@@ -215,22 +224,25 @@
             "Variance": "Variation"
         },
         "DeleteBedMeshProfile": "Slet Bed Mesh profil",
-        "Deleted": "Slettet",
-        "DoYouReallyWantToCalibrate": "Vil du starte kalibrering?",
         "DoYouReallyWantToDelete": "Vil du slette \"{name}\"?",
         "ErrorKlipperNotReady": "Klipper er ikke klar. Kan ikke vise højdekort.",
         "Flat": "Fladt",
         "Heightmap": "Højdekort",
+        "Later": "Senere",
         "Mesh": "Mesh",
         "Name": "Navn",
         "NoBedMeshHasBeenLoadedYet": "Intet Bed Mesh indlæst.",
         "NoProfile": "Ingen profil tilgængelig",
+        "Ok": "Ok",
         "Probed": "Målt",
         "Profiles": "Profiler",
         "Remove": "Fjern",
+        "RemoveSaveDescription": "Profilen er markeret til sletning. Klik på GEM KONFIGURATIONfor at fjerne den fra printer.cfg og genstarte Klipper.",
         "Rename": "Omdøb",
         "RenameBedMeshProfile": "Omdøb Bed Mesh profil",
-        "Scale": "Skalér",
+        "SAVE_CONFIG": "GEM KONFIGURATION",
+        "ScaleGradient": "Skala graduering",
+        "ScaleZMax": "Skalér til z-max.",
         "TitleCalibrate": "Kalibrer nyt Bed Mesh",
         "TitleClear": "Slet bed mesh",
         "TitleHomeAll": "Home alle",
@@ -239,7 +251,9 @@
     "History": {
         "AllJobs": "Alle job",
         "AvgPrinttime": "Gns. printtid",
+        "Cancel": "Annuller",
         "Delete": "Slet",
+        "DeleteSelectedQuestion": "Er du sikker på du vil slette alle {count} valgte jobs?",
         "Details": "Detaljer",
         "Empty": "Tom",
         "EndTime": "Sluttid",
@@ -268,12 +282,24 @@
         "PrinttimeAvg": "Printtid gns.",
         "Reprint": "Print igen",
         "Search": "Søg",
-        "ShowStatusName": "Vis \"{name}\" ({count})",
+        "SelectedFilamentUsed": "Filament brugt på valgte",
+        "SelectedJobs": "Valgte jobs",
+        "SelectedPrinttime": "Printtid for valgte",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Version",
         "StartTime": "Starttid",
         "Statistics": "Statistik",
         "Status": "Status",
+        "StatusValues": {
+            "cancelled": "Annulleret",
+            "completed": "Færdige",
+            "error": "Fejl",
+            "in_progress": "Igangværende",
+            "klippy_disconnect": "Klippy afbrudt",
+            "klippy_shutdown": "Klippy lukket ned",
+            "server_exit": "Server exit"
+        },
+        "TitleExportHistory": "Export History",
         "TitleRefreshHistory": "Opdater historik",
         "TitleSettings": "Indstillinger",
         "TotalDuration": "Total varighed",
@@ -318,6 +344,7 @@
             "Rename": "Omdøb",
             "RenameDirectory": "Omdøb mappe",
             "RenameFile": "Omdøb fil",
+            "Root": "Rod",
             "SetupCurrentList": "Indstil visning",
             "ShowFile": "Vis fil",
             "Total": "Total",
@@ -336,17 +363,29 @@
             "Logfiles": "Logfiler"
         },
         "SystemPanel": {
-            "Awake": "Vågen/Aktiv",
-            "Constants": "Konstanter",
-            "Distro": "Distro",
-            "Frequency": "Frekvens",
-            "HostDetails": "Værtsdetaljer",
-            "LastStats": "Seneste data",
-            "Load": "Belastning",
-            "Memory": "Hukommelse",
-            "Os": "OS",
-            "SystemLoad": "Systembelastning",
-            "Version": "Version"
+            "Constants": "Constants",
+            "Cpu": "CPU",
+            "HostDetails": "Host details",
+            "LastStats": "Last stats",
+            "Load": "Load",
+            "Memory": "MEM",
+            "NoMoreInfos": "No more Infos",
+            "SystemLoad": "System Loads",
+            "Values": {
+                "Awake": "Vågen/Aktiv: {awake}",
+                "Bandwidth": "Båndbredde: {bandwidth}/s",
+                "Distro": "Distro: {name} {version_id}",
+                "Frequency": "Frekvens: {frequency}",
+                "Load": "Belastning: {load}",
+                "Memory": "Hukkommelse: {memory}",
+                "Os": "OS: {os}",
+                "Received": "Modtaget: {received}",
+                "Temp": "Temp: {temp}°C",
+                "TempMax": "maks: {temp}°C",
+                "TempMin": "min: {temp}°C",
+                "Transmitted": "Sendt: {transmitted}",
+                "Version": "Version: {version}"
+            }
         },
         "UpdatePanel": {
             "CheckForUpdates": "Tjek for opdateringer",
@@ -373,41 +412,20 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "Alle",
-            "AlternateControls": "Alternative kontroller",
-            "Extrude": "Extrude",
-            "FeedAmountIn": "Længde",
-            "FeedrateIn": "Hastighed",
-            "Headline": "Kontrolpanel",
-            "HotendTooCold": "Hotend temp. under",
-            "InvertX": "Invertér X",
-            "InvertY": "Invertér Y",
-            "InvertZ": "Invertér Z",
-            "PleaseConfigureSteps": "Konfigurer steps",
-            "QGL": "QGL",
-            "Retract": "Retract",
-            "SettingsInterfaceControl": "Indstillinger > Interface > Control",
-            "SetupControls": "Kontrolindstillinger",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "DependenciesPanel": {
             "Dependency": "Afhængighed | Afhængigheder",
             "DependencyDescription": "Din nuværende version af {name} understøtter ikke alle funktioner i Mainsail. Opdater {name} til mindst version {neededVersion}."
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "Extrude",
+            "ExtruderTempTooLow": "Hotend temp. <",
+            "Headline": "Extruder Kontrolpanel",
+            "Retract": "Retract"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Genopret forbindelse",
             "SwitchToPrinter": "Skift til printer",
             "WebcamOff": "Sluk"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Funktionen \"{option}\" i sektion \"{section}\" er forældet.",
-            "DeprecatedValue": "Værdien \"{value}\" i muligheden \"{option}\" i sektion \"{section}\" er forældet.",
-            "DownloadLog": "Download log",
-            "KlipperWarnings": "Klipper advarsler"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Genstart alt",
@@ -464,25 +482,13 @@
                 "Empty": "Tom"
             }
         },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Download log",
-            "FollowingPluginHasAnError": "Følgende plugin har en fejl:",
-            "MoonrakerErrorInfo": "En fejl blev fundet under indlæsning af moonraker komponenter. Tjek logfilen og ret fejlen.",
-            "MoonrakerWarnings": "Moonraker advarsler"
-        },
         "PowerControlPanel": {
             "Error": "Fejl",
             "Off": "Sluk",
             "On": "Tænd",
             "PowerControl": "Strømstyring"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Ekstrudering",
-            "Headline": "Print indstillinger",
-            "SpeedFactor": "Hastighed"
-        },
         "StatusPanel": {
-            "Absolute": "Absolut",
             "CancelPrint": "Afbryd print",
             "ClearPrintStats": "Slet printstatistik",
             "Difference": "Opvarmning",
@@ -503,21 +509,16 @@
             "Max": "maks",
             "ObjectHeight": "Objekt Højde",
             "PausePrint": "Pause print",
-            "Position": "Position",
             "Print": "Reel printtid",
-            "Relative": "Relativ",
             "ReprintJob": "Print job igen",
             "Requested": "Anmodet",
             "ResumePrint": "Genoptag print",
             "Slicer": "Slicer",
             "Speed": "Hastighed",
             "Total": "Total",
-            "Unknown": "Ukendt",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Ukendt"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Autoskalér diagram",
             "Avg": "Gns",
             "Color": "Farve",
@@ -544,6 +545,22 @@
             "TempTooHigh": "Temperaturen er for høj for {name}! (max: {max})",
             "TempTooLow": "Temperaturen er for lav for {name}! (min: {min})"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "absolut",
+            "ALL": "Alle",
+            "Headline": "Kontrolpanel",
+            "InvertX": "Invertér X",
+            "InvertY": "Invertér Y",
+            "InvertZ": "Invertér Z",
+            "PleaseConfigureSteps": "Konfigurer steps",
+            "Position": "Position",
+            "QGL": "QGL",
+            "Relative": "relativ",
+            "SettingsInterfaceControl": "Indstillinger > Interface > Control",
+            "SetupControls": "Kontrolindstillinger",
+            "SpeedFactor": "Hastighed",
+            "ZTilt": "Z Tilt"
+        },
         "WebcamPanel": {
             "All": "Alle",
             "FPS": "FPS",
@@ -557,9 +574,9 @@
             "Later": "Senere",
             "Ok": "OK",
             "Save": "Gem",
-            "SAVE_CONFIG": "GEM KONFIGURATION",
-            "SaveInfoDescription": "Det nye z-offset er blevet beregnet og registreret. Klik på GEM KONFIGURATION for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
-            "SaveInfoDescriptionPrint": "Det nye z-offset er blevet beregnet og registreret. Klik på GEM KONFIGURATION i topbaren efter endt print for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
+            "SaveConfig": "GEM KONFIGURATION",
+            "SaveInfoDescription": "Det nye z-offset er blevet beregnet og registreret. Klik på \"GEM KONFIGURATION\" for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
+            "SaveInfoDescriptionPrint": "Det nye z-offset er blevet beregnet og registreret. Klik på \"GEM KONFIGURATION\" i topbaren efter endt print for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
             "SaveInfoHeadline": "Information",
             "ToEndstop": "Til Endstop",
             "ToProbe": "Til Probe"
@@ -593,7 +610,9 @@
         "EditPrinter": "Rediger Printer",
         "Hello": "Hej og velkommen til fjernbetjeningsversionen af Mainsail!",
         "HostnameInvalid": "Ugyldigt værtsnavn/IP",
+        "HostnameIp": "Værtsnavn/IP",
         "HostnameRequired": "Værtsnavn er påkrævet",
+        "Port": "Port",
         "PortRequired": "Port er påkrævet",
         "RememberToAdd": "Husk at tilføje {cors} i moonraker.conf under \"cors_domains\".",
         "SelectPrinter": "Vælg printer",
@@ -657,6 +676,10 @@
             "ConfirmUnsavedChanges": "Spørg om at gemme ændringer",
             "ConfirmUnsavedChangesDescription": "Hvis aktiv beder Editor om bekræftelse på at gemme eller kassere. Ellers bliver ændringer automatisk kasseret.",
             "Editor": "Editor",
+            "KlipperRestartMethod": "Metode for genstart af Klipper",
+            "KlipperRestartMethodDescription": "Vælg hvilken metode der skal bruges ved brug af 'Gem & Genstart' når der redigeres i Klipper config filer.",
+            "MoonrakerRestartInstance": "Genstart Moonraker instans",
+            "MoonrakerRestartInstanceDescription": "Vælg hvilken instans af Moonraker servicen der skal genstartes ved brug af 'Gem & Genstart' når der redigeres i Moonraker config filer.",
             "UseEscToClose": "Tryk ESC for at lukke Editor.",
             "UseEscToCloseDescription": "Tillader at ESC lukker Editor"
         },
@@ -683,6 +706,11 @@
             "DbTimelapseSettings": "Timelapse indstillinger",
             "DbView": "Vis indstillinger",
             "DbWebcams": "Webcams",
+            "EstimateValues": {
+                "Filament": "Filament",
+                "File": "Fil",
+                "Slicer": "Slicer"
+            },
             "FactoryDialog": "Vælg venligst de sektioner du ønsker at nulstille:",
             "FactoryReset": "Komplet nulstilling",
             "General": "Generelt",

@@ -17,7 +17,7 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
         commit('setTotals', payload.job_totals)
     },
 
-    getHistory({ commit, state }, payload) {
+    getHistory({ commit, dispatch, state }, payload) {
         if ('requestParams' in payload && 'start' in payload.requestParams && payload.requestParams.start === 0)
             commit('resetJobs')
 
@@ -34,6 +34,28 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
                 },
                 { action: 'server/history/getHistory' }
             )
+        else dispatch('loadHistoryNotes')
+    },
+
+    loadHistoryNotes({ rootState }) {
+        if (rootState.server?.dbNamespaces.includes('history_notes'))
+            Vue.$socket.emit(
+                'server.database.get_item',
+                { namespace: 'history_notes' },
+                { action: 'server/history/initHistoryNotes' }
+            )
+    },
+
+    initHistoryNotes({ commit, state }, payload) {
+        const job_ids = Object.keys(payload.value)
+
+        job_ids.forEach((job_id: string) => {
+            const noteObject: { text: string } = payload.value[job_id]
+            commit('setHistoryNotes', {
+                job_id,
+                text: noteObject.text,
+            })
+        })
     },
 
     getChanged({ commit }, payload) {
@@ -49,5 +71,18 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
                 commit('destroyJob', jobId)
             })
         }
+    },
+
+    saveHistoryNote({ commit }, payload: { job_id: string; note: string }) {
+        Vue.$socket.emit('server.database.post_item', {
+            namespace: 'history_notes',
+            key: payload.job_id,
+            value: { text: payload.note },
+        })
+
+        commit('setHistoryNotes', {
+            job_id: payload.job_id,
+            text: payload.note,
+        })
     },
 }

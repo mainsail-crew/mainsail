@@ -41,7 +41,7 @@
         <the-connecting-dialog v-else></the-connecting-dialog>
         <the-update-dialog></the-update-dialog>
         <the-editor></the-editor>
-        <the-timelapse-rendering-snackbar>-</the-timelapse-rendering-snackbar>
+        <the-timelapse-rendering-snackbar></the-timelapse-rendering-snackbar>
     </v-app>
 </template>
 

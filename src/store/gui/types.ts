@@ -3,6 +3,7 @@ import { GuiConsoleState } from '@/store/gui/console/types'
 import { GuiPresetsState } from '@/store/gui/presets/types'
 import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
+import { GuiNotificationState } from '@/store/gui/notifications/types'
 
 export interface GuiState {
     general: {
@@ -14,9 +15,12 @@ export interface GuiState {
     console?: GuiConsoleState
     control: {
         style: 'bars' | 'circle' | 'cross'
+        actionButton: null | 'm84' | 'qgl' | 'ztilt'
+        enableXYHoming: boolean
         feedrateXY: number
         stepsXY: number[]
         feedrateZ: number
+        offsetsZ: number[]
         stepsZ: number[]
         stepsAll: number[]
         stepsCircleXY: number[]
@@ -30,6 +34,7 @@ export interface GuiState {
             feedamounts: number[]
             feedrate: number
             feedrates: number[]
+            showEstimatedExtrusionInfo: boolean
         }
     }
     dashboard: {
@@ -72,15 +77,20 @@ export interface GuiState {
         voxelWidth: number
         voxelHeight: number
         specularLighting: boolean
+        klipperCache: {
+            kinematics: string | null
+            axis_minimum: number[] | null
+            axis_maximum: number[] | null
+        }
     }
     macros?: GuiMacrosState
+    notifications?: GuiNotificationState
     presets?: GuiPresetsState
     remoteprinters?: GuiRemoteprintersState
     uiSettings: {
         logo: string
         primary: string
         displayCancelPrint: boolean
-        displayZOffsetStandby: boolean
         lockSlidersOnTouchDevices: boolean
         lockSlidersDelay: number
         confirmOnEmergencyStop: boolean

@@ -399,4 +399,20 @@ export const actions: ActionTree<GuiState, RootState> = {
             value: newVal,
         })
     },
+
+    updateGcodeviewerCache({ dispatch, state }, payload) {
+        const klipperCache = (state.gcodeViewer.klipperCache as { [key: string]: any }) ?? {}
+
+        Object.keys(payload).forEach((key) => {
+            const value = payload[key]
+            const oldValue = key in klipperCache ? klipperCache[key] : null
+
+            if (JSON.stringify(value) !== JSON.stringify(oldValue))
+                dispatch('saveSetting', { name: `gcodeViewer.klipperCache.${key}`, value })
+        })
+    },
+
+    announcementDismissFlag(_, payload) {
+        window.console.log(payload)
+    },
 }

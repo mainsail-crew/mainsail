@@ -82,7 +82,7 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
-import ControlPanel from '@/components/panels/ControlPanel.vue'
+import ExtruderControlPanel from '@/components/panels/ExtruderControlPanel.vue'
 import DashboardMixin from '@/components/mixins/dashboard'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import MachineSettingsPanel from '@/components/panels/MachineSettings/MachineSettingsPanel.vue'
@@ -91,16 +91,15 @@ import MacrosPanel from '@/components/panels/MacrosPanel.vue'
 import MiniconsolePanel from '@/components/panels/MiniconsolePanel.vue'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import MiscellaneousPanel from '@/components/panels/MiscellaneousPanel.vue'
-import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
-import PrintsettingsPanel from '@/components/panels/PrintsettingsPanel.vue'
 import StatusPanel from '@/components/panels/StatusPanel.vue'
-import ToolsPanel from '@/components/panels/ToolsPanel.vue'
+import ToolheadControlPanel from '@/components/panels/ToolheadControlPanel.vue'
+import TemperaturePanel from '@/components/panels/TemperaturePanel.vue'
 import WebcamPanel from '@/components/panels/WebcamPanel.vue'
-import ZoffsetPanel from '@/components/panels/ZoffsetPanel.vue'
+import kebabCase from 'lodash.kebabcase'
 
 @Component({
     components: {
-        ControlPanel,
+        ExtruderControlPanel,
         KlippyStatePanel,
         MachineSettingsPanel,
         MacrogroupPanel,
@@ -108,19 +107,30 @@ import ZoffsetPanel from '@/components/panels/ZoffsetPanel.vue'
         MiniconsolePanel,
         MinSettingsPanel,
         MiscellaneousPanel,
-        MoonrakerStatePanel,
-        PrintsettingsPanel,
         StatusPanel,
-        ToolsPanel,
+        ToolheadControlPanel,
+        TemperaturePanel,
         WebcamPanel,
-        ZoffsetPanel,
     },
 })
 export default class PageDashboard extends Mixins(DashboardMixin) {
+    get allComponents() {
+        const output: string[] = []
+        const components = Object.keys(this.$options.components ?? {})
+
+        components?.forEach((component) => {
+            if (component.endsWith('Panel')) output.push(kebabCase(component))
+        })
+
+        return output
+    }
+
     get mobileLayout() {
         let panels = this.$store.getters['gui/getPanels']('mobileLayout')
         panels = panels.concat(this.missingPanelsMobile)
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
@@ -128,14 +138,18 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     get tabletLayout1() {
         let panels = this.$store.getters['gui/getPanels']('tabletLayout1')
         panels = panels.concat(this.missingPanelsTablet)
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
 
     get tabletLayout2() {
         let panels = this.$store.getters['gui/getPanels']('tabletLayout2')
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
@@ -143,14 +157,18 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     get desktopLayout1() {
         let panels = this.$store.getters['gui/getPanels']('desktopLayout1')
         panels = panels.concat(this.missingPanelsDesktop)
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
 
     get desktopLayout2() {
         let panels = this.$store.getters['gui/getPanels']('desktopLayout2')
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
@@ -158,21 +176,27 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     get widescreenLayout1() {
         let panels = this.$store.getters['gui/getPanels']('widescreenLayout1')
         panels = panels.concat(this.missingPanelsWidescreen)
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
 
     get widescreenLayout2() {
         let panels = this.$store.getters['gui/getPanels']('widescreenLayout2')
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
 
     get widescreenLayout3() {
         let panels = this.$store.getters['gui/getPanels']('widescreenLayout3')
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
