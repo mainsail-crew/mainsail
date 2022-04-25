@@ -89,7 +89,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiFile } from '@mdi/js'
-import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
+import { FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 
 @Component({
@@ -133,7 +133,7 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
             })
             .slice(0, 5)
 
-        const requestItems = gcodes.filter((file: FileStateFile) => !file.metadataRequested && !file.metadataPulled)
+        const requestItems = gcodes.filter((file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled)
         requestItems.forEach((file: FileStateGcodefile) => {
             this.$store.dispatch('files/requestMetadata', {
                 filename: 'gcodes/' + file.filename,
