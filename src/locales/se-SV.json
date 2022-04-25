@@ -260,10 +260,10 @@
         "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Skala övertoning",
         "ScaleZMax": "Skala z-max.",
-        "TitleHomeAll": "Hem Alla",
-        "Wireframe": "Wireframe",
+        "TitleCalibrate": "Kalibrera nytt sängnät (bed mesh)",
         "TitleClear": "Rensa sängnät (bed mesh)",
-        "TitleCalibrate": "Kalibrera nytt sängnät (bed mesh)"
+        "TitleHomeAll": "Hem Alla",
+        "Wireframe": "Wireframe"
     },
     "History": {
         "AddNote": "Lägg till anteckning",
@@ -428,9 +428,9 @@
             "Unknown": "okänd",
             "Update": "uppdatera",
             "UpdateAll": "Uppdatera alla komponenter",
-            "UpToDate": "aktuell",
             "UpdateManager": "Uppdateringshanterare",
-            "Upgrade": "uppgradera"
+            "Upgrade": "uppgradera",
+            "UpToDate": "aktuell"
         }
     },
     "Panels": {
@@ -839,10 +839,10 @@
             "OutputFramerateDescription": "Definierar bildhastigheten för videon. Obs: detta kommer att ignoreras om variable_fps är aktiverat",
             "Parkhead": "Parkera verktygshuvud",
             "ParkheadDescription": "Om aktiverat, kommer verktygshuvudet att parkeras innan du tar en bild.",
-            "ParkTime": "Parkeringstid",
-            "ParkTimeDescription": "Lägg till ytterligare vilotid vid parkering.",
             "Parkpos": "Parkeringsposition",
             "ParkposDescription": "Välj parkeringsposition",
+            "ParkTime": "Parkeringstid",
+            "ParkTimeDescription": "Lägg till ytterligare vilotid vid parkering.",
             "Pixelformat": "Pixelformat",
             "PixelformatDescription": "Definierar pixelformatet för utdatavideon",
             "PosDZ": "Position Z",
@@ -872,8 +872,8 @@
             "UnretractDistance": "Avstånd unretract",
             "UnretractDistanceDescription": "Längden av filament som extrudern unretracts efter en retraction.",
             "UnretractSpeed": "Hastighet unretract",
-            "VariableFps": "Variable FPS",
             "UnretractSpeedDescription": "Hastighet med vilken extrudern unretracts filamentet efter en retraction.",
+            "VariableFps": "Variable FPS",
             "VariableFpsDescription": "Om det är aktiverat kommer bildhastigheten för utmatningsvideon att beräknas baserat på mållängden",
             "VariableFpsMax": "Variable FPS max",
             "VariableFpsMin": "Variable FPS min"
