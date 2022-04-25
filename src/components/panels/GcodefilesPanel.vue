@@ -341,7 +341,7 @@
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
-                        <td class="text-right">
+                        <td class="text-right text-no-wrap">
                             <v-tooltip v-if="getJobStatus(item)" top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
