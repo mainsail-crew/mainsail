@@ -333,7 +333,7 @@ import BaseMixin from '@/components/mixins/base'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import StatusPanelFiles from '@/components/panels/Status/Files.vue'
-import StatusPanelExcludeObject from '@/components/panels/StatusPanelExcludeObject.vue'
+import StatusPanelExcludeObject from '@/components/panels/Status/ExcludeObject.vue'
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiCloseCircle,
