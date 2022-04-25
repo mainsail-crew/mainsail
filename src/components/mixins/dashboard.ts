@@ -3,6 +3,8 @@ import BaseMixin from '@/components/mixins/base'
 import { allDashboardPanels } from '@/store/variables'
 import { capitalize } from '@/plugins/helpers'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
+import kebabCase from 'lodash.kebabcase'
+import Vue from 'vue'
 
 @Component
 export default class DashboardMixin extends BaseMixin {
@@ -52,9 +54,8 @@ export default class DashboardMixin extends BaseMixin {
         return this.checkMissingPanels(panels)
     }
 
-    checkMissingPanels(panels: any[]) {
+    get allPossiblePanels() {
         let allPanels = [...allDashboardPanels]
-        const missingPanels: any[] = []
 
         // remove macros panel and add macrogroups panels if macroMode === expert
         if (this.macroMode === 'expert') {
@@ -70,7 +71,13 @@ export default class DashboardMixin extends BaseMixin {
             allPanels = allPanels.filter((name) => name !== 'webcam')
         }
 
-        allPanels.forEach((panelname) => {
+        return allPanels
+    }
+
+    checkMissingPanels(panels: any[]) {
+        const missingPanels: any[] = []
+
+        this.allPossiblePanels.forEach((panelname) => {
             if (!panels.find((panel) => panel.name === panelname))
                 missingPanels.push({
                     name: panelname,
