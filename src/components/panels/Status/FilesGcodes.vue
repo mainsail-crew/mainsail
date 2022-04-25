@@ -89,7 +89,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiFile } from '@mdi/js'
-import { FileStateFile } from '@/store/files/types'
+import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 
 @Component({
@@ -101,11 +101,21 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
     mdiFile = mdiFile
 
     private showDialogBool = false
-    private dialogFile: FileStateFile = {
+    private dialogFile: FileStateGcodefile = {
         isDirectory: false,
         filename: '',
         modified: new Date(),
         permissions: '',
+        small_thumbnail: null,
+        big_thumbnail: null,
+        big_thumbnail_width: null,
+        count_printed: 0,
+        last_end_time: null,
+        last_filament_used: null,
+        last_print_duration: null,
+        last_status: null,
+        last_start_time: null,
+        last_total_duration: null,
     }
     private currentPath = ''
     private contentTdWidth = 100
@@ -118,13 +128,13 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
         let gcodes = this.$store.getters['files/getAllGcodes'] ?? []
         gcodes = gcodes
             .slice()
-            .sort((a: FileStateFile, b: FileStateFile) => {
+            .sort((a: FileStateGcodefile, b: FileStateGcodefile) => {
                 return b.modified.getTime() - a.modified.getTime()
             })
             .slice(0, 5)
 
         const requestItems = gcodes.filter((file: FileStateFile) => !file.metadataRequested && !file.metadataPulled)
-        requestItems.forEach((file: FileStateFile) => {
+        requestItems.forEach((file: FileStateGcodefile) => {
             this.$store.dispatch('files/requestMetadata', {
                 filename: 'gcodes/' + file.filename,
             })
@@ -159,7 +169,7 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
         return this.$store.getters['files/getBigThumbnail'](item, currentPath)
     }
 
-    getDescription(item: FileStateFile) {
+    getDescription(item: FileStateGcodefile) {
         let output = ''
 
         output += this.$t('Panels.StatusPanel.Files.Filament') + ': '
@@ -176,7 +186,7 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
         return output
     }
 
-    existMetadata(item: FileStateFile) {
+    existMetadata(item: FileStateGcodefile) {
         return item?.metadataPulled
     }
 
@@ -216,8 +226,8 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
         return '--'
     }
 
-    getJobStatus(item: FileStateFile) {
-        return this.$store.getters['server/history/getPrintStatus'](item.job_id)
+    getJobStatus(item: FileStateGcodefile) {
+        return item.last_status
     }
 
     getStatusIcon(status: string) {
@@ -228,7 +238,7 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
         return this.$store.getters['server/history/getPrintStatusIconColor'](status)
     }
 
-    showDialog(file: FileStateFile) {
+    showDialog(file: FileStateGcodefile) {
         this.currentPath =
             file.filename.lastIndexOf('/') >= 0
                 ? 'gcodes/' + file.filename.slice(0, file.filename.lastIndexOf('/'))

@@ -43,10 +43,32 @@ export const getters: GetterTree<FileState, any> = {
 
     getGcodeFiles:
         (state, getters, rootState, rootGetters) =>
-        (path: string, boolShowHiddenFiles: boolean, boolShowPrintedFiles: boolean) => {
-            const directory = getters['getDirectory']('gcodes' + path)
-            const baseURL = `${rootGetters['socket/getUrl']}/server/files/gcodes${encodeURI(path)}`
-            let files = directory?.childrens ?? []
+        (path: string | null, boolShowHiddenFiles: boolean, boolShowPrintedFiles: boolean) => {
+            let baseURL = `${rootGetters['socket/getUrl']}/server/files/gcodes`
+            let files: FileStateFile[] = []
+
+            if (path !== null) {
+                baseURL += encodeURI(path)
+                const directory = getters['getDirectory']('gcodes' + path)
+                files = directory?.childrens ?? []
+            } else {
+                baseURL += '/'
+                const rootGcodes = getters['getDirectory']('gcodes')
+
+                const searchGcodes = (directory: FileStateFile, currentPath: string) => {
+                    if (directory.isDirectory && directory.childrens?.length) {
+                        directory.childrens?.forEach((file) => {
+                            if (!file.isDirectory) {
+                                const tmp = { ...file }
+                                tmp.filename = currentPath + file.filename
+                                files.push(tmp)
+                            } else searchGcodes(file, currentPath + file.filename + '/')
+                        })
+                    }
+                }
+
+                searchGcodes(rootGcodes, '')
+            }
 
             files = files.filter((file: FileStateFile) => {
                 // filter hidden files
@@ -106,7 +128,7 @@ export const getters: GetterTree<FileState, any> = {
                     }
                 }
 
-                const fullFilename = path.length ? path + '/' + file.filename : file.filename
+                const fullFilename = path && path.length ? path + '/' + file.filename : file.filename
                 const histories = rootGetters['server/history/getPrintJobsForGcodes'](
                     fullFilename,
                     fileTimestamp,
@@ -134,6 +156,10 @@ export const getters: GetterTree<FileState, any> = {
 
             return output
         },
+
+    getAllGcodes: (state, getters) => {
+        return getters['getGcodeFiles'](null, false, true)
+    },
 
     getThemeFileUrl: (state, getters, rootState, rootGetters) => (acceptName: string, acceptExtensions: string[]) => {
         const directory = getters['getDirectory']('config/' + themeDir)
@@ -208,30 +234,6 @@ export const getters: GetterTree<FileState, any> = {
                 (element: FileStateFile) => element.filename !== undefined && element.filename === acceptName
             ) !== -1
         )
-    },
-
-    getAllGcodes: (state, getters) => {
-        const output: FileStateFile[] = []
-        const rootGcodes = getters.getDirectory('gcodes')
-
-        const searchGcodes = (directory: FileStateFile, currentPath: string) => {
-            if (directory.isDirectory && directory.childrens?.length) {
-                directory.childrens?.forEach((file) => {
-                    if (!file.isDirectory) {
-                        const extension = file.filename.slice(file.filename.lastIndexOf('.'))
-                        if (validGcodeExtensions.includes(extension)) {
-                            const tmp = { ...file }
-                            tmp.filename = currentPath + file.filename
-                            output.push(tmp)
-                        }
-                    } else searchGcodes(file, currentPath + file.filename + '/')
-                })
-            }
-        }
-
-        searchGcodes(rootGcodes, '')
-
-        return output
     },
 
     getSmallThumbnail: (state, getters, rootState, rootGetters) => (item: FileStateFile, currentPath: string) => {
