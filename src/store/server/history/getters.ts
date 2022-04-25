@@ -289,7 +289,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         return ''
     },
 
-    getPrintStatusChipColor: () => (status: string) => {
+    getPrintStatusIconColor: () => (status: string) => {
         switch (status) {
             case 'in_progress':
                 return 'blue accent-3' //'blue-grey darken-1'
@@ -303,7 +303,21 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         }
     },
 
-    getPrintStatusChipIcon: () => (status: string) => {
+    getPrintStatusTextColor: () => (status: string) => {
+        switch (status) {
+            case 'in_progress':
+                return 'blue--text' //'blue-grey darken-1'
+            case 'completed':
+                return 'green--text' //'green'
+            case 'cancelled':
+                return 'red--text'
+
+            default:
+                return 'orange--text'
+        }
+    },
+
+    getPrintStatusIcon: () => (status: string) => {
         switch (status) {
             case 'in_progress':
                 return mdiProgressClock

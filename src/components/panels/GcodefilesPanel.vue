@@ -57,6 +57,11 @@
 .v-chip.minimum-chip .v-chip__content {
     margin: 0 auto;
 }
+
+.file-list__count_printed {
+    position: relative;
+    top: 1px;
+}
 </style>
 
 <template>
@@ -336,29 +341,20 @@
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
-                        <td class="text-center">
+                        <td class="text-right">
                             <v-tooltip v-if="getJobStatus(item)" top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
-                                        <template v-if="item.count_printed > 1">
-                                            <v-chip :color="getStatusColor(getJobStatus(item))" small pill>
-                                                <v-icon small left>
-                                                    {{ getStatusIcon(getJobStatus(item)) }}
-                                                </v-icon>
-                                                {{ item.count_printed }}
-                                            </v-chip>
-                                        </template>
-                                        <template v-else>
-                                            <v-chip
-                                                class="minimum-chip"
-                                                :color="getStatusColor(getJobStatus(item))"
-                                                small
-                                                pill>
-                                                <v-icon small>
-                                                    {{ getStatusIcon(getJobStatus(item)) }}
-                                                </v-icon>
-                                            </v-chip>
-                                        </template>
+                                        <span
+                                            v-if="item.count_printed > 1"
+                                            :class="`file-list__count_printed ${getStatusTextColor(
+                                                getJobStatus(item)
+                                            )}`">
+                                            {{ item.count_printed }}
+                                        </span>
+                                        <v-icon small :color="getStatusColor(getJobStatus(item))">
+                                            {{ getStatusIcon(getJobStatus(item)) }}
+                                        </v-icon>
                                     </span>
                                 </template>
                                 <span>{{ getJobStatus(item).replace(/_/g, ' ') }}</span>
@@ -1123,11 +1119,15 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     getStatusIcon(status: string) {
-        return this.$store.getters['server/history/getPrintStatusChipIcon'](status)
+        return this.$store.getters['server/history/getPrintStatusIcon'](status)
+    }
+
+    getStatusTextColor(status: string) {
+        return this.$store.getters['server/history/getPrintStatusTextColor'](status)
     }
 
     getStatusColor(status: string) {
-        return this.$store.getters['server/history/getPrintStatusChipColor'](status)
+        return this.$store.getters['server/history/getPrintStatusIconColor'](status)
     }
 
     dragOverUpload(e: Event) {
