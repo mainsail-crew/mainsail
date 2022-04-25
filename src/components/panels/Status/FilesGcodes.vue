@@ -1,7 +1,7 @@
 <style lang="scss" scoped></style>
 
 <template>
-    <v-card flat>
+    <v-card ref="filesGcodeCard" flat>
         <v-data-table
             :items="gcodeFiles"
             hide-default-footer
@@ -55,7 +55,7 @@
                         </template>
                     </td>
                     <td class="pr-2">
-                        <div class="d-block text-wrap">{{ item.filename }}</div>
+                        <div class="d-block text-truncate" :style="styleContentTdWidth">{{ item.filename }}</div>
                         <div v-if="existMetadata(item)">
                             <small>{{ getDescription(item) }}</small>
                         </div>
@@ -108,6 +108,11 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
         permissions: '',
     }
     private currentPath = ''
+    private contentTdWidth = 100
+
+    declare $refs: {
+        filesGcodeCard: any
+    }
 
     get gcodeFiles() {
         let gcodes = this.$store.getters['files/getAllGcodes'] ?? []
@@ -126,6 +131,10 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
         })
 
         return gcodes
+    }
+
+    get styleContentTdWidth() {
+        return `width: ${this.contentTdWidth}px;`
     }
 
     getSmallThumbnail(item: ServerJobQueueStateJob) {
@@ -171,11 +180,11 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
         return item?.metadataPulled
     }
 
-    setFirst(currItems: ServerJobQueueStateJob[]) {
+    setFirst(currItems: any) {
         // first check that actually exists values
         if (currItems.length) {
             // toggle all to false
-            currItems.forEach((x: ServerJobQueueStateJob) => (x.isFirst = false))
+            currItems.forEach((x: any) => (x.isFirst = false))
             // just set first to true
             currItems[0].isFirst = true
         }
@@ -233,6 +242,19 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
 
     closeDialog() {
         this.showDialogBool = false
+    }
+
+    mounted() {
+        window.addEventListener('resize', this.eventListenerResize)
+        this.eventListenerResize()
+    }
+
+    destroyed() {
+        window.removeEventListener('resize', this.eventListenerResize)
+    }
+
+    eventListenerResize() {
+        this.contentTdWidth = this.$refs.filesGcodeCard?.$el?.clientWidth - 48 - 48 - 32
     }
 }
 </script>
