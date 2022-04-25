@@ -989,11 +989,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     getStatusIcon(status: string) {
-        return this.$store.getters['server/history/getPrintStatusChipIcon'](status)
+        return this.$store.getters['server/history/getPrintStatusIcon'](status)
     }
 
     getStatusColor(status: string) {
-        return this.$store.getters['server/history/getPrintStatusChipColor'](status)
+        return this.$store.getters['server/history/getPrintStatusIconColor'](status)
     }
 
     outputValue(col: any, item: any, format: boolean = true, escapeChar: string | null = null) {
