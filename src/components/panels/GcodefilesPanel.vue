@@ -79,7 +79,7 @@
                         <v-btn
                             v-if="selectedFiles.length"
                             :title="$t('Files.Delete')"
-                            color="warning"
+                            color="error"
                             class="px-2 minwidth-0 ml-3"
                             @click="deleteSelectedDialog = true">
                             <v-icon>{{ mdiDelete }}</v-icon>
