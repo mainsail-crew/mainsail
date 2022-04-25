@@ -180,6 +180,7 @@ export default class SettingsDashboardTabWidescreen extends Mixins(DashboardMixi
     get widescreenLayout1() {
         let panels = this.$store.getters['gui/getPanels']('widescreenLayout1')
         panels = panels.concat(this.missingPanelsWidescreen)
+        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
 
         return panels
     }
@@ -191,7 +192,10 @@ export default class SettingsDashboardTabWidescreen extends Mixins(DashboardMixi
     }
 
     get widescreenLayout2() {
-        return this.$store.getters['gui/getPanels']('widescreenLayout2')
+        let panels = this.$store.getters['gui/getPanels']('widescreenLayout2')
+        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
+
+        return panels
     }
 
     set widescreenLayout2(newVal) {
@@ -201,7 +205,10 @@ export default class SettingsDashboardTabWidescreen extends Mixins(DashboardMixi
     }
 
     get widescreenLayout3() {
-        return this.$store.getters['gui/getPanels']('widescreenLayout3')
+        let panels = this.$store.getters['gui/getPanels']('widescreenLayout3')
+        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
+
+        return panels
     }
 
     set widescreenLayout3(newVal) {

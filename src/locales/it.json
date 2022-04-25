@@ -379,30 +379,10 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "TUTTI",
-            "AlternateControls": "Controlli Alternativi",
+        "ExtruderControlPanel": {
             "Extrude": "Estrudi",
-            "FeedAmountIn": "Quantità di alimentazione in",
-            "FeedrateIn": "Velocità di avanzamento",
-            "Headline": "Controlli",
-            "HotendTooCold": "Temp. hotend più bassa di",
-            "InvertX": "Inverti X",
-            "InvertY": "Inverti Y",
-            "InvertZ": "Inverti Z",
-            "PleaseConfigureSteps": "Configura gli step",
-            "QGL": "QGL",
-            "Retract": "Retrazione",
-            "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
-            "SetupControls": "Controlli Installazione",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Inclinazione Z"
-        },
-        "DependenciesPanel": {
-            "Dependency": "Dipendenze",
-            "DependencyDescription": "L'attuale versione di {name} non supporta tutte le features di Mainsail. Aggiorna {name} almeno alla versione {neededVersion}."
+            "ExtrusionFactor": "Fattore di estrusione",
+            "Retract": "Retrazione"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Riconnetti",
@@ -478,13 +458,7 @@
             "On": "Acceso",
             "PowerControl": "Controllo Alimentazione"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Fattore di estrusione",
-            "Headline": "Impostazioni di Stampa",
-            "SpeedFactor": "Fattore di velocità"
-        },
         "StatusPanel": {
-            "Absolute": "assoluto",
             "CancelPrint": "Annulla stampa",
             "ClearPrintStats": "Cancella statistiche di stampa",
             "Difference": "Differenza",
@@ -505,21 +479,16 @@
             "Max": "max",
             "ObjectHeight": "Altezza Oggetto",
             "PausePrint": "Metti in Pausa la stampa",
-            "Position": "Posizione",
             "Print": "Stampa",
-            "Relative": "relativo",
             "ReprintJob": "Ristampa il processo",
             "Requested": "Richiesto",
             "ResumePrint": "Riprendi stampa",
             "Slicer": "Slicer",
             "Speed": "Velocità",
             "Total": "Totale",
-            "Unknown": "Sconosciuto",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Sconosciuto"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Scala automaticamente il Grafico",
             "Avg": "Medio",
             "Color": "Colore",
@@ -546,6 +515,21 @@
             "TempTooHigh": "Temperatura troppo alta per {name}! (max: {max})",
             "TempTooLow": "Temperatura troppo bassa per {name}! (min: {min})"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "assoluto",
+            "ALL": "TUTTI",
+            "InvertX": "Inverti X",
+            "InvertY": "Inverti Y",
+            "InvertZ": "Inverti Z",
+            "PleaseConfigureSteps": "Configura gli step",
+            "Position": "Posizione",
+            "QGL": "QGL",
+            "Relative": "relativo",
+            "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
+            "SetupControls": "Controlli Installazione",
+            "SpeedFactor": "Fattore di velocità",
+            "ZTilt": "Inclinazione Z"
+        },
         "WebcamPanel": {
             "All": "Tutto",
             "FPS": "FPS",
@@ -553,16 +537,15 @@
             "UnknownWebcamService": "Servizio Webcam Sconosciuto",
             "UrlNotAvailable": "URL non disponibile"
         },
-        "ZOffsetPanel": {},
         "ZoffsetPanel": {
             "CurrentOffset": "offset corrente",
             "Headline": "Z-Offset",
             "Later": "Dopo",
             "Ok": "OK",
             "Save": "Salva",
-            "SAVE_CONFIG": "SAVE_CONFIG",
-            "SaveInfoDescription": "Il nuovo z-offset è stato calcolato e registrato. Fai clic su SAVE_CONFIG per memorizzare il nuovo z-offset nel tuo printer.cfg e riavviare Klipper.",
-            "SaveInfoDescriptionPrint": "Il nuovo Z offset è stato calcolato e registrato. Dopo la stampa, fai clic su SAVE_CONFIG nella barra in alto per salvarlo in printer.cfg e riavviare Klipper.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "Il nuovo z-offset è stato calcolato e registrato. Fai clic su \"SAVE CONFIG\" per memorizzare il nuovo z-offset nel tuo printer.cfg e riavviare Klipper.",
+            "SaveInfoDescriptionPrint": "Il nuovo Z offset è stato calcolato e registrato. Dopo la stampa, fai clic su \"SAVE CONFIG\" nella barra in alto per salvarlo in printer.cfg e riavviare Klipper.",
             "SaveInfoHeadline": "Informazione",
             "ToEndstop": "all'Endstop",
             "ToProbe": "alla Sonda"

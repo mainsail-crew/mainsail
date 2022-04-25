@@ -100,6 +100,7 @@ export default class SettingsDashboardTabMobile extends Mixins(DashboardMixin) {
     get mobileLayout() {
         let panels = this.$store.getters['gui/getPanels']('mobileLayout')
         panels = panels.concat(this.missingPanelsMobile)
+        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
 
         return panels
     }

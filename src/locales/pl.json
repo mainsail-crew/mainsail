@@ -379,30 +379,10 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "WSZYSTKIE",
-            "AlternateControls": "Alternatywne sterowanie",
+        "ExtruderControlPanel": {
             "Extrude": "Wytłocz",
-            "FeedAmountIn": "Ilość filamentu",
-            "FeedrateIn": "Tempo podawania",
-            "Headline": "Sterowanie drukarką",
-            "HotendTooCold": "Temperatura hotendu mniejsza niż",
-            "InvertX": "Odwróć oś X",
-            "InvertY": "Odwróć oś Y",
-            "InvertZ": "Odwróć oś Z",
-            "PleaseConfigureSteps": "Proszę skonfigurować kroki",
-            "QGL": "QGL",
-            "Retract": "Retrakcja",
-            "SettingsInterfaceControl": "Ustawienia > Interfejs > Konfiguracja",
-            "SetupControls": "Konfiguracja sterowania",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Nachylenie osi Z"
-        },
-        "DependenciesPanel": {
-            "Dependency": "Zależność | Zależności",
-            "DependencyDescription": "Twoja aktualna {name} wersja nie wspiera wszystkich funkcji Mainsaila. Zaktualizuj {name} do wersji co najmniej {neededVersion}."
+            "ExtrusionFactor": "Wartość ekstruzji",
+            "Retract": "Retrakcja"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Ponownie połącz",
@@ -476,13 +456,7 @@
             "On": "Wł.",
             "PowerControl": "Kontrola zasilania"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Wartość ekstruzji",
-            "Headline": "Ustawienia wydruku",
-            "SpeedFactor": "Wartość prędkości"
-        },
         "StatusPanel": {
-            "Absolute": "absolutna",
             "CancelPrint": "Anuluj wydruk",
             "ClearPrintStats": "Wyczyść statystyki drukarki",
             "Difference": "Różnica",
@@ -503,21 +477,16 @@
             "Max": "Maks.",
             "ObjectHeight": "Wysokość obiektu",
             "PausePrint": "Pauza wydruku",
-            "Position": "Pozycja",
             "Print": "Drukuj",
-            "Relative": "względna",
             "ReprintJob": "Ponownie wydrukuj",
             "Requested": "Wymagane",
             "ResumePrint": "Wznowienie wydruku",
             "Slicer": "Slicer",
             "Speed": "Prędkość",
             "Total": "Całkowicie",
-            "Unknown": "Nieznany",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Nieznany"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Autoskaluj wykres",
             "Avg": "Śred.",
             "Color": "Kolor",
@@ -544,6 +513,22 @@
             "TempTooHigh": "Temperatura zbyt wysoka dla {name}! (max: {max})",
             "TempTooLow": "Temperatura zbyt mała dla {name}! (min: {min})"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "absolutna",
+            "ALL": "WSZYSTKIE",
+            "Headline": "Sterowanie drukarką",
+            "InvertX": "Odwróć oś X",
+            "InvertY": "Odwróć oś Y",
+            "InvertZ": "Odwróć oś Z",
+            "PleaseConfigureSteps": "Proszę skonfigurować kroki",
+            "Position": "Pozycja",
+            "QGL": "QGL",
+            "Relative": "względna",
+            "SettingsInterfaceControl": "Ustawienia > Interfejs > Konfiguracja",
+            "SetupControls": "Konfiguracja sterowania",
+            "SpeedFactor": "Wartość prędkości",
+            "ZTilt": "Nachylenie osi Z"
+        },
         "WebcamPanel": {
             "All": "Wszystkie",
             "FPS": "Kl/S",
@@ -557,9 +542,9 @@
             "Later": "Później",
             "Ok": "Okej",
             "Save": "Zapisz",
-            "SAVE_CONFIG": "ZAPISZ_KONFIGURACJĘ",
-            "SaveInfoDescription": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Kliknij na ZAPISZ_KONFIGURACJĘ aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
-            "SaveInfoDescriptionPrint": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Po wydrukowaniu , kliknij na ZAPISZ_KONFIGURACJĘ aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
+            "SaveConfig": "ZAPISZ KONFIGURACJĘ",
+            "SaveInfoDescription": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Kliknij na \"ZAPISZ KONFIGURACJĘ\" aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
+            "SaveInfoDescriptionPrint": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Po wydrukowaniu , kliknij na \"ZAPISZ KONFIGURACJĘ\" aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
             "SaveInfoHeadline": "Informacja",
             "ToEndstop": "Do krańcówki",
             "ToProbe": "Do sondy"

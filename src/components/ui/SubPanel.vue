@@ -4,22 +4,22 @@
     transition: transform 500ms;
 }
 
-.icon-rotate-180 {
-    transform: rotate(180deg);
+.icon-rotate-n90 {
+    transform: rotate(-90deg);
 }
 </style>
 
 <template>
     <div>
-        <v-card-actions>
-            <v-btn class="btn-collapsible" plain small @click="expand = !expand">
-                <v-icon small :class="!expand ? 'icon-rotate-180' : ''">
+        <div class="px-3 d-flex align-center">
+            <v-btn class="px-0 btn-collapsible" plain small :ripple="false" @click="expand = !expand">
+                <v-icon small :class="!expand ? 'icon-rotate-n90' : ''">
                     {{ expand ? iconExpanded : iconCollapsed }}
                 </v-icon>
                 <span class="pl-1">{{ title }}</span>
             </v-btn>
-            <v-divider class="mx-1"></v-divider>
-        </v-card-actions>
+            <v-divider class="ml-3"></v-divider>
+        </div>
         <v-expand-transition>
             <div v-show="expand">
                 <slot></slot>
@@ -32,12 +32,12 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { mdiMinus, mdiPlus } from '@mdi/js'
+import { mdiChevronDown } from '@mdi/js'
 
 @Component
 export default class Panel extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: mdiMinus }) declare readonly iconExpanded: string | null
-    @Prop({ required: false, default: mdiPlus }) declare readonly iconCollapsed: string | null
+    @Prop({ required: false, default: mdiChevronDown }) declare readonly iconExpanded: string | null
+    @Prop({ required: false, default: mdiChevronDown }) declare readonly iconCollapsed: string | null
     @Prop({ required: true, default: '' }) declare readonly title: string
     @Prop({ required: true }) declare readonly subPanelClass: string
 

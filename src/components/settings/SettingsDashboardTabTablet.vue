@@ -140,6 +140,7 @@ export default class SettingsDashboardTabTablet extends Mixins(DashboardMixin) {
     get tabletLayout1() {
         let panels = this.$store.getters['gui/getPanels']('tabletLayout1')
         panels = panels.concat(this.missingPanelsTablet)
+        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
 
         return panels
     }
@@ -151,7 +152,10 @@ export default class SettingsDashboardTabTablet extends Mixins(DashboardMixin) {
     }
 
     get tabletLayout2() {
-        return this.$store.getters['gui/getPanels']('tabletLayout2')
+        let panels = this.$store.getters['gui/getPanels']('tabletLayout2')
+        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
+
+        return panels
     }
 
     set tabletLayout2(newVal) {

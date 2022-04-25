@@ -379,33 +379,10 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "ALLES",
-            "AlternateControls": "Alternatieve bediening",
-            "Controls": "Bediening",
+        "ExtruderControlPanel": {
             "Extrude": "Extrude",
-            "FeedAmountIn": "Feedlengte in",
-            "FeedrateIn": "Feedsnelheid in",
-            "Headline": "Bediening",
-            "Home": "Home",
-            "HotendTooCold": "Hotend temp. lager dan",
-            "InvertX": "Inverteer X",
-            "InvertY": "Inverteer Y",
-            "InvertZ": "Inverteer Z",
-            "Macros": "Macros",
-            "PleaseConfigureSteps": "Configureer steps",
-            "QGL": "QGL",
-            "Retract": "Retract",
-            "SettingsInterfaceControl": "Instllingen > Interface > Bediening",
-            "SetupControls": "Bewerk Bediening",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
-        "DependenciesPanel": {
-            "Dependency": "Afhankelijkheid | Afhankelijkheden",
-            "DependencyDescription": "Je huidige {name} versie ondersteunt niet alle features van Mainsail. Update {name} naar tenminste {neededVersion}"
+            "ExtrusionFactor": "Extrusie factor",
+            "Retract": "Retract"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Opnieuw verbinden",
@@ -495,13 +472,7 @@
             "On": "Aan",
             "PowerControl": "Power Control"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Extrusie factor",
-            "Headline": "Print instellingen",
-            "SpeedFactor": "Snelheid factor"
-        },
         "StatusPanel": {
-            "Absolute": "absoluut",
             "CancelPrint": "Annuleer print",
             "ClearPrintStats": "Wis print statistieken",
             "Difference": "Verschil",
@@ -522,21 +493,16 @@
             "Max": "max",
             "ObjectHeight": "Objecthoogte",
             "PausePrint": "Pauzeer print",
-            "Position": "Positie",
             "Print": "Print",
-            "Relative": "relatief",
             "ReprintJob": "Herprint job",
             "Requested": "Aangevraagd",
             "ResumePrint": "Hervat print",
             "Slicer": "Slicer",
             "Speed": "Snelheid",
             "Total": "Totaal",
-            "Unknown": "Onbekend",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Onbekend"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Schaal automatisch",
             "Avg": "Gemiddeld",
             "Color": "Kleur",
@@ -570,6 +536,25 @@
             "TempTooLow": "Temperatuur te laag voor {name}! (min: {min})",
             "UNKNOWN": "ONBEKEND"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "absoluut",
+            "ALL": "ALLES",
+            "Controls": "Bediening",
+            "Home": "Home",
+            "HotendTooCold": "Hotend temp. lager dan",
+            "InvertX": "Inverteer X",
+            "InvertY": "Inverteer Y",
+            "InvertZ": "Inverteer Z",
+            "Macros": "Macros",
+            "PleaseConfigureSteps": "Configureer steps",
+            "Position": "Positie",
+            "QGL": "QGL",
+            "Relative": "relatief",
+            "SettingsInterfaceControl": "Instllingen > Interface > Bediening",
+            "SetupControls": "Bewerk Bediening",
+            "SpeedFactor": "Snelheid factor",
+            "ZTilt": "Z Tilt"
+        },
         "WebcamPanel": {
             "All": "Alle",
             "FPS": "FPS",
@@ -578,19 +563,15 @@
             "UrlNotAvailable": "URL niet beschikbaar",
             "Webcam": "Webcam"
         },
-        "ZOffsetPanel": {
-            "CurrentOffset": "Huidige Offset",
-            "ZBabyStepping": "Z Baby Stepping"
-        },
         "ZoffsetPanel": {
             "CurrentOffset": "Huidige offset",
             "Headline": "Z offset",
             "Later": "Later",
             "Ok": "Ok",
             "Save": "Opslaan",
-            "SAVE_CONFIG": "SAVE_CONFIG",
-            "SaveInfoDescription": "De nieuwe z-offset is berekend en geregistreerd. Klik op SAVE_CONFIG om de nieuwe z-offset op te slaan in je printer.cf en Klipper te herstarten.",
-            "SaveInfoDescriptionPrint": "De nieuwe z-offset is berekend en geregistreerd. Klik na het printen op SAVE_CONFIG om de nieuwe z-offset op te slaan in je printer.cf en Klipper te herstarten.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "De nieuwe z-offset is berekend en geregistreerd. Klik op \"SAVE CONFIG\" om de nieuwe z-offset op te slaan in je printer.cf en Klipper te herstarten.",
+            "SaveInfoDescriptionPrint": "De nieuwe z-offset is berekend en geregistreerd. Klik na het printen op \"SAVE CONFIG\" om de nieuwe z-offset op te slaan in je printer.cf en Klipper te herstarten.",
             "SaveInfoHeadline": "Informatie",
             "ToEndstop": "naar Endstop",
             "ToProbe": "naar Probe",
