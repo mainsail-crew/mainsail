@@ -577,6 +577,7 @@
             "InvertX": "X invertieren",
             "InvertY": "Y invertieren",
             "InvertZ": "Z invertieren",
+            "OutOfRange": "Außerhalb der Maschinengrenze!",
             "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
             "Position": "Position",
             "QGL": "QGL",

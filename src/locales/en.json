@@ -596,6 +596,7 @@
             "InvertY": "Invert Y",
             "InvertZ": "Invert Z",
             "MotorsOff": "Motors Off",
+            "OutOfRange": "Out of range!",
             "PleaseConfigureSteps": "Please configure steps",
             "Position": "Position",
             "QGL": "QGL",
