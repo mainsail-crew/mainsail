@@ -68,7 +68,7 @@
                     </td>
                 </tr>
             </template>
-            <template #body.append v-if="jobs.length > jobsTable.length">
+            <template v-if="jobs.length > jobsTable.length" #body.append>
                 <tr>
                     <td class="pr-0 text-center" style="width: 32px">
                         <v-icon>{{ mdiFileMultiple }}</v-icon>

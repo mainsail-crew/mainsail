@@ -212,11 +212,11 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
     }
 
     getStatusIcon(status: string) {
-        return this.$store.getters['server/history/getPrintStatusChipIcon'](status)
+        return this.$store.getters['server/history/getPrintStatusIcon'](status)
     }
 
     getStatusColor(status: string) {
-        return this.$store.getters['server/history/getPrintStatusChipColor'](status)
+        return this.$store.getters['server/history/getPrintStatusIconColor'](status)
     }
 
     showDialog(file: FileStateFile) {
