@@ -481,12 +481,15 @@
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
-                <v-list-item v-if="!contextMenu.item.isDirectory" @click="removeFile">
-                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
+                <v-list-item v-if="!contextMenu.item.isDirectory" class="red--text" @click="removeFile">
+                    <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Files.Delete') }}
                 </v-list-item>
-                <v-list-item v-if="contextMenu.item.isDirectory" @click="deleteDirectory(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
+                <v-list-item
+                    v-if="contextMenu.item.isDirectory"
+                    class="red--text"
+                    @click="deleteDirectory(contextMenu.item)">
+                    <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Files.Delete') }}
                 </v-list-item>
             </v-list>
