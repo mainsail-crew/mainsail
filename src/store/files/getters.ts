@@ -6,7 +6,8 @@ import {
     validGcodeExtensions,
 } from '@/store/variables'
 import { GetterTree } from 'vuex'
-import { FileState, FileStateFile } from '@/store/files/types'
+import { FileState, FileStateFile, FileStateGcodefile } from '@/store/files/types'
+import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 
 // eslint-disable-next-line
@@ -39,6 +40,100 @@ export const getters: GetterTree<FileState, any> = {
 
         return directory?.childrens?.find((file: FileStateFile) => file.filename === filename && !file.isDirectory)
     },
+
+    getGcodeFiles:
+        (state, getters, rootState, rootGetters) =>
+        (path: string, boolShowHiddenFiles: boolean, boolShowPrintedFiles: boolean) => {
+            const directory = getters['getDirectory']('gcodes' + path)
+            const baseURL = `${rootGetters['socket/getUrl']}/server/files/gcodes${encodeURI(path)}`
+            let files = directory?.childrens ?? []
+
+            files = files.filter((file: FileStateFile) => {
+                // filter hidden files
+                if (!boolShowHiddenFiles && (file.filename === 'thumbs' || file.filename.startsWith('.'))) return false
+
+                // START filter != gcode files or dirs
+                if (file.isDirectory) return true
+
+                const pos = file.filename.lastIndexOf('.')
+                const extension = file.filename.slice(pos)
+
+                return validGcodeExtensions.includes(extension)
+                // END filter != gcode files or dirs
+            })
+
+            // build gcode files array with all data in one array
+            const output: FileStateGcodefile[] = []
+            files.forEach((file: FileStateFile) => {
+                const fileTimestamp = typeof file.modified.getTime === 'function' ? file.modified.getTime() : 0
+                const tmp: FileStateGcodefile = {
+                    ...file,
+                    small_thumbnail: null,
+                    big_thumbnail: null,
+                    big_thumbnail_width: null,
+                    count_printed: 0,
+                    last_start_time: null,
+                    last_end_time: null,
+                    last_filament_used: null,
+                    last_status: '',
+                    last_print_duration: null,
+                    last_total_duration: null,
+                }
+
+                if (file.thumbnails?.length) {
+                    const small_thumbnail = file.thumbnails.find(
+                        (thumb) =>
+                            thumb.width >= thumbnailSmallMin &&
+                            thumb.width <= thumbnailSmallMax &&
+                            thumb.height >= thumbnailSmallMin &&
+                            thumb.height <= thumbnailSmallMax
+                    )
+
+                    if (small_thumbnail && 'relative_path' in small_thumbnail) {
+                        tmp.small_thumbnail = `${baseURL}/${encodeURI(
+                            small_thumbnail.relative_path
+                        )}?timestamp=${fileTimestamp}`
+                    }
+
+                    const big_thumbnail = file.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
+
+                    if (big_thumbnail && 'relative_path' in big_thumbnail) {
+                        tmp.big_thumbnail = `${baseURL}/${encodeURI(
+                            big_thumbnail.relative_path
+                        )}?timestamp=${fileTimestamp}`
+
+                        tmp.big_thumbnail_width = big_thumbnail.width
+                    }
+                }
+
+                const fullFilename = path.length ? path + '/' + file.filename : file.filename
+                const histories = rootGetters['server/history/getPrintJobsForGcodes'](
+                    fullFilename,
+                    fileTimestamp,
+                    file.size,
+                    file.uuid ?? null,
+                    file.job_id
+                )
+                if (histories && histories.length) {
+                    const history = histories[0]
+                    tmp.last_end_time = new Date(history.end_time * 1000)
+                    tmp.last_filament_used = history.filament_used
+                    tmp.last_print_duration = history.print_duration
+                    tmp.last_start_time = new Date(history.start_time * 1000)
+                    tmp.last_status = history.status
+                    tmp.last_total_duration = history.total_duration
+
+                    tmp.count_printed = histories.filter(
+                        (job: ServerHistoryStateJob) => job.status === 'completed'
+                    ).length
+                }
+
+                if (boolShowPrintedFiles) output.push(tmp)
+                else if (tmp.last_status !== 'completed') output.push(tmp)
+            })
+
+            return output
+        },
 
     getThemeFileUrl: (state, getters, rootState, rootGetters) => (acceptName: string, acceptExtensions: string[]) => {
         const directory = getters['getDirectory']('config/' + themeDir)

@@ -247,6 +247,36 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         return ''
     },
 
+    getPrintJobById: (state) => (job_id: string) => {
+        if (state.jobs.length === 0) return
+
+        return state.jobs.find((job) => job.job_id === job_id)
+    },
+
+    getPrintJobsForGcodes:
+        (state) =>
+        (
+            filename: string,
+            modified: number,
+            filesize: number,
+            uuid: string | null,
+            job_id: string | null
+        ): ServerHistoryStateJob[] => {
+            if (state.jobs.length === 0) return []
+
+            // find jobs via file uuid
+            if (uuid) return state.jobs.filter((job) => job.metadata?.uuid === uuid)
+
+            // find jobs via metadata
+            const jobs = state.jobs.filter((job) => {
+                return job.metadata?.size === filesize && Math.round(job.metadata?.modified * 1000) === modified
+            })
+            if (jobs.length) return jobs
+            if (job_id) return jobs.filter((job) => job.job_id === job_id)
+
+            return []
+        },
+
     getPrintStatusByFilename: (state) => (filename: string, modified: number) => {
         if (state.jobs.length) {
             const job = state.jobs.find((job) => {
@@ -259,7 +289,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         return ''
     },
 
-    getPrintStatusChipColor: () => (status: string) => {
+    getPrintStatusIconColor: () => (status: string) => {
         switch (status) {
             case 'in_progress':
                 return 'blue accent-3' //'blue-grey darken-1'
@@ -273,7 +303,21 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         }
     },
 
-    getPrintStatusChipIcon: () => (status: string) => {
+    getPrintStatusTextColor: () => (status: string) => {
+        switch (status) {
+            case 'in_progress':
+                return 'blue--text' //'blue-grey darken-1'
+            case 'completed':
+                return 'green--text' //'green'
+            case 'cancelled':
+                return 'red--text'
+
+            default:
+                return 'orange--text'
+        }
+    },
+
+    getPrintStatusIcon: () => (status: string) => {
         switch (status) {
             case 'in_progress':
                 return mdiProgressClock

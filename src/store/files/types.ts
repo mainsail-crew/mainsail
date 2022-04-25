@@ -10,6 +10,7 @@ export interface FileStateFile {
     childrens?: FileStateFile[]
     disk_usage?: FileStateDiskUsage
     print_start_time?: Date | null
+    uuid?: string | null
     job_id?: string | null
     estimated_time?: number
     filament_total?: number
@@ -27,6 +28,20 @@ export interface FileStateFile {
     metadataPulled?: boolean
     metadataRequested?: boolean
     size?: number
+}
+
+export interface FileStateGcodefile extends FileStateFile {
+    small_thumbnail: string | null
+    big_thumbnail: string | null
+    big_thumbnail_width: number | null
+    count_printed: number
+    last_end_time: Date | null
+    last_filament_used: number | null
+    last_print_duration: number | null
+    last_status: string | null
+    last_start_time: Date | null
+    last_total_duration: number | null
+    [key: string]: any
 }
 
 export interface FileStateDiskUsage {
