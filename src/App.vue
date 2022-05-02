@@ -42,6 +42,7 @@
         <the-update-dialog></the-update-dialog>
         <the-editor></the-editor>
         <the-timelapse-rendering-snackbar></the-timelapse-rendering-snackbar>
+        <the-fullscreen-upload></the-fullscreen-upload>
     </v-app>
 </template>
 
@@ -57,6 +58,7 @@ import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import TheEditor from '@/components/TheEditor.vue'
 import { panelToolbarHeight, topbarHeight, navigationItemHeight } from '@/store/variables'
 import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSnackbar.vue'
+import TheFullscreenUpload from '@/components/TheFullscreenUpload.vue'
 
 @Component({
     components: {
@@ -67,6 +69,7 @@ import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSna
         TheUpdateDialog,
         TheTopbar,
         TheSidebar,
+        TheFullscreenUpload,
     },
     metaInfo() {
         const title = this.$store.getters['getTitle']

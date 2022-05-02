@@ -463,7 +463,6 @@ interface uploadSnackbar {
 }
 
 interface draggingFile {
-    status: boolean
     item: FileStateFile
 }
 
@@ -571,13 +570,20 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         },
     }
     private draggingFile: draggingFile = {
-        status: false,
         item: {
             isDirectory: false,
             filename: '',
             permissions: '',
             modified: new Date(),
         },
+    }
+
+    get blockFileUpload() {
+        return this.$store.state.gui.view.blockFileUpload ?? false
+    }
+
+    set blockFileUpload(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.blockFileUpload', value: newVal })
     }
 
     get toolbarButtons() {
@@ -1008,13 +1014,13 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     dragFile(e: Event, item: FileStateFile) {
         e.preventDefault()
-        this.draggingFile.status = true
+        this.blockFileUpload = true
         this.draggingFile.item = item
     }
 
     dragendFile(e: Event) {
         e.preventDefault()
-        this.draggingFile.status = false
+        this.blockFileUpload = false
         this.draggingFile.item = {
             isDirectory: false,
             filename: '',
@@ -1024,7 +1030,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     dragOverFilelist(e: any, row: any) {
-        if (this.draggingFile.status) {
+        if (this.blockFileUpload) {
             e.preventDefault()
             //e.stopPropagation()
 
@@ -1033,7 +1039,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     dragLeaveFilelist(e: any) {
-        if (this.draggingFile.status) {
+        if (this.blockFileUpload) {
             e.preventDefault()
             e.stopPropagation()
 
@@ -1042,7 +1048,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     async dragDropFilelist(e: any, row: any) {
-        if (this.draggingFile.status) {
+        if (this.blockFileUpload) {
             e.preventDefault()
             e.target.parentElement.style.backgroundColor = 'transparent'
 

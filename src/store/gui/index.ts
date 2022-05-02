@@ -150,6 +150,7 @@ export const getDefaultState = (): GuiState => {
             navigationStyle: 'iconsAndText',
         },
         view: {
+            blockFileUpload: false,
             configfiles: {
                 countPerPage: 10,
                 sortBy: 'filename',

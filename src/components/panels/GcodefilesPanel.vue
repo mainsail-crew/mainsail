@@ -7,46 +7,12 @@
     cursor: pointer;
 }
 
-.fileupload-card {
-    position: relative;
-}
-
 .file-list--select-td {
     width: 20px;
 }
 
 .files-table th.text-start {
     padding-right: 0 !important;
-}
-
-.file-list__dragzone {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 100%;
-    z-index: 9999999999;
-    background-color: rgba(0, 0, 0, 0.5);
-    transition: visibility 175ms, opacity 175ms;
-    font: bold 42px Oswald, DejaVu Sans, Tahoma, sans-serif;
-}
-
-.file-list__dragzone:before {
-    display: block;
-    content: ' ';
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    bottom: 15px;
-    left: 15px;
-    border: 3px dashed white;
-    border-radius: 15px;
-}
-
-.file-list__dragzone .textnode {
-    text-align: center;
-    transition: font-size 175ms;
 }
 
 .v-chip.minimum-chip {
@@ -65,7 +31,7 @@
 </style>
 
 <template>
-    <div @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
+    <div>
         <panel :title="$t('Files.GCodeFiles')" :icon="mdiFileDocumentMultipleOutline" card-class="gcode-files-panel">
             <v-card-text>
                 <v-row>
@@ -373,11 +339,6 @@
                     </tr>
                 </template>
             </v-data-table>
-            <div
-                class="file-list__dragzone d-flex justify-center flex-column"
-                :style="'visibility: ' + dropzone.visibility + '; opacity: ' + dropzone.hidden">
-                <div class="textnode">{{ $t('Files.DropFilesToAddGcode') }}</div>
-            </div>
         </panel>
         <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
             <span v-if="uploadSnackbar.max > 1" class="mr-1">
@@ -641,7 +602,6 @@ import {
 } from '@mdi/js'
 
 interface draggingFile {
-    status: boolean
     item: FileStateGcodefile
 }
 
@@ -740,7 +700,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         opacity: 0,
     }
     private draggingFile: draggingFile = {
-        status: false,
         item: {
             isDirectory: false,
             filename: '',
@@ -876,6 +835,14 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     private deleteSelectedDialog = false
 
     private input_rules = [(value: string) => value.indexOf(' ') === -1 || 'Name contains spaces!']
+
+    get blockFileUpload() {
+        return this.$store.state.gui.view.blockFileUpload ?? false
+    }
+
+    set blockFileUpload(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.blockFileUpload', value: newVal })
+    }
 
     get currentPath() {
         const path = this.$store.state.gui.view.gcodefiles.currentPath
@@ -1130,64 +1097,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         return this.$store.getters['server/history/getPrintStatusIconColor'](status)
     }
 
-    dragOverUpload(e: Event) {
-        if (!this.draggingFile.status) {
-            e.preventDefault()
-            e.stopPropagation()
-
-            this.dropzone.visibility = 'visible'
-            this.dropzone.opacity = 1
-        }
-    }
-
-    dragLeaveUpload(e: Event) {
-        if (!this.draggingFile.status) {
-            e.preventDefault()
-            e.stopPropagation()
-
-            this.dropzone.visibility = 'hidden'
-            this.dropzone.opacity = 0
-        }
-    }
-
-    async dragDropUpload(e: any) {
-        if (!this.draggingFile.status) {
-            e.preventDefault()
-
-            this.dropzone.visibility = 'hidden'
-            this.dropzone.opacity = 0
-
-            if (e.dataTransfer.files.length) {
-                const files = [...e.dataTransfer.files].filter((file: File) => {
-                    const format = file.name.slice(file.name.lastIndexOf('.'))
-
-                    if (!validGcodeExtensions.includes(format)) {
-                        this.$toast.error(this.$t('Files.WrongFileUploaded', { filename: file.name }).toString())
-
-                        return false
-                    }
-
-                    return true
-                })
-
-                this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
-                let successFiles = []
-                this.uploadSnackbar.number = 0
-                this.uploadSnackbar.max = files.length
-                for (const file of files) {
-                    this.uploadSnackbar.number++
-                    const result = await this.doUploadFile(file)
-                    successFiles.push(result)
-                }
-
-                this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
-                for (const file of successFiles) {
-                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: file }).toString())
-                }
-            }
-        }
-    }
-
     doUploadFile(file: File) {
         let formData = new FormData()
         let filename = file.name
@@ -1235,7 +1144,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     dragOverFilelist(e: any, row: any) {
-        if (this.draggingFile.status) {
+        if (this.blockFileUpload) {
             e.preventDefault()
             //e.stopPropagation()
 
@@ -1246,7 +1155,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     dragLeaveFilelist(e: any) {
-        if (this.draggingFile.status) {
+        if (this.blockFileUpload) {
             e.preventDefault()
             e.stopPropagation()
 
@@ -1255,7 +1164,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     async dragDropFilelist(e: any, row: any) {
-        if (this.draggingFile.status) {
+        if (this.blockFileUpload) {
             e.preventDefault()
             e.target.parentElement.style.backgroundColor = 'transparent'
 
@@ -1521,13 +1430,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
     dragFile(e: Event, item: FileStateGcodefile) {
         e.preventDefault()
-        this.draggingFile.status = true
+        this.blockFileUpload = true
         this.draggingFile.item = item
     }
 
     dragendFile(e: Event) {
         e.preventDefault()
-        this.draggingFile.status = false
+        this.blockFileUpload = false
         this.draggingFile.item = {
             isDirectory: false,
             filename: '',

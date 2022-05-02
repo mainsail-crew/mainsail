@@ -103,6 +103,7 @@ export interface GuiState {
         navigationStyle: 'iconsAndText' | 'iconsOnly'
     }
     view: {
+        blockFileUpload: boolean
         configfiles: {
             countPerPage: number
             sortBy: string
