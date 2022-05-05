@@ -7,6 +7,15 @@ import { getters } from '@/store/files/getters'
 export const getDefaultState = (): FileState => {
     return {
         filetree: [],
+        upload: {
+            show: false,
+            filename: '',
+            currentNumber: 0,
+            maxNumber: 0,
+            cancelTokenSource: null,
+            percent: 0,
+            speed: 0,
+        },
     }
 }
 

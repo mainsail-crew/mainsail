@@ -10,6 +10,7 @@ import {
 import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
 import { validGcodeExtensions } from '@/store/variables'
+import axios from 'axios'
 
 export const actions: ActionTree<FileState, RootState> = {
     reset({ commit }) {
@@ -257,5 +258,76 @@ export const actions: ActionTree<FileState, RootState> = {
             if (!(payload.item.root === 'timelapse' && fileExtension === 'jpg'))
                 Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', { filename: delPath }))
         }
+    },
+
+    async uploadFile(
+        { dispatch, commit, rootGetters },
+        payload: { file: File; path: string; root: 'gcodes' | 'config' }
+    ) {
+        const apiUrl = rootGetters['socket/getUrl']
+        const formData = new FormData()
+        formData.append('file', payload.file, payload.file.name)
+        formData.append('root', payload.root)
+        formData.append('path', payload.path)
+        const cancelTokenSource = axios.CancelToken.source()
+
+        await commit('uploadClearState')
+        await commit('uploadSetCancelTokenSource', cancelTokenSource)
+        await commit('uploadSetFilename', payload.file.name)
+        await commit('uploadSetShow', true)
+
+        let lastTime = 0
+        let lastLoaded = 0
+
+        return new Promise((resolve) => {
+            axios
+                .post(apiUrl + '/server/files/upload', formData, {
+                    cancelToken: cancelTokenSource.token,
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    onUploadProgress: (progressEvent: any) => {
+                        const percent = (progressEvent.loaded * 100) / progressEvent.total
+                        commit('uploadSetPercent', percent)
+
+                        if (lastTime === 0) {
+                            lastTime = progressEvent.timeStamp
+                            lastLoaded = progressEvent.loaded
+
+                            return
+                        }
+
+                        const time = progressEvent.timeStamp - lastTime
+                        if (time < 1000) return
+
+                        const data = progressEvent.loaded - lastLoaded
+                        const speed = data / (time / 1000)
+                        commit('uploadSetSpeed', speed)
+
+                        lastTime = progressEvent.timeStamp
+                        lastLoaded = progressEvent.loaded
+                    },
+                })
+                .then((result: any) => {
+                    commit('uploadSetShow', false)
+                    const lastPos = result.data.item.path.lastIndexOf('/')
+                    const filename = result.data.item.path.slice(lastPos + 1)
+                    resolve(filename)
+                })
+                .catch(() => {
+                    commit('uploadSetShow', false)
+                    Vue.$toast.error('Cannot upload the file!')
+                })
+        })
+    },
+
+    uploadSetCurrentNumber({ commit }, payload) {
+        commit('uploadSetCurrentNumber', payload)
+    },
+
+    uploadIncrementCurrentNumber({ state, commit }) {
+        commit('uploadSetCurrentNumber', state.upload.currentNumber + 1)
+    },
+
+    uploadSetMaxNumber({ commit }, payload) {
+        commit('uploadSetMaxNumber', payload)
     },
 }

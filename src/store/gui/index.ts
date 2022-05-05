@@ -181,7 +181,7 @@ export const getDefaultState = (): GuiState => {
                     'last_print_duration',
                     'slicer',
                 ],
-                currentPath: 'gcodes',
+                currentPath: '',
                 selectedFiles: [],
             },
             heightmap: {

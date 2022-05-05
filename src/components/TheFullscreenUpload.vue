@@ -1,11 +1,5 @@
 <template>
-    <div
-        class="d-flex justify-center flex-column"
-        :class="dropzoneClasses"
-        @dragenter="onDragEnter"
-        @dragover="onDragOver"
-        @dragleave="hideDropZone"
-        @drop="onDrop">
+    <div class="d-flex justify-center flex-column" :class="dropzoneClasses" @drop="onDrop">
         <div class="textnode">{{ $t('Files.DropFilesToAddGcode') }}</div>
     </div>
 </template>
@@ -14,14 +8,11 @@
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Component from 'vue-class-component'
+import { validGcodeExtensions } from '@/store/variables'
 
 @Component
 export default class TheFullscreenUpload extends Mixins(BaseMixin) {
     private visable = false
-
-    get blockFileUpload() {
-        return this.$store.state.gui.view.blockFileUpload ?? false
-    }
 
     get dropzoneClasses() {
         return {
@@ -30,20 +21,28 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
         }
     }
 
-    onDrop(e: any) {
-        e.preventDefault()
-        this.hideDropZone()
-        window.console.log('handleDrop', e, e.dataTransfer.files)
+    get currentRoute() {
+        return this.$route.path ?? ''
+    }
+
+    get currentPathGcodes() {
+        return this.$store.state.gui.view.gcodefiles.currentPath ?? ''
+    }
+
+    get currentPathConfig() {
+        return this.$store.state.gui.view.configfiles.currentPath ?? ''
     }
 
     mounted() {
         window.addEventListener('dragenter', this.onDragOverWindow)
         window.addEventListener('dragover', this.onDragOverWindow)
+        window.addEventListener('dragleave', this.onDragLeaveWindow)
     }
 
     beforeDestroy() {
         window.removeEventListener('dragenter', this.onDragOverWindow)
         window.removeEventListener('dragover', this.onDragOverWindow)
+        window.removeEventListener('dragleave', this.onDragLeaveWindow)
     }
 
     showDropZone() {
@@ -55,59 +54,53 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
     }
 
     onDragOverWindow(e: any) {
-        if (this.blockFileUpload) return
+        const type = e.dataTransfer?.types[0] ?? ''
+        if (type !== 'Files') return
+
         e.preventDefault()
         if (this.visable) return
 
         this.showDropZone()
     }
 
-    onDragEnter(e: any) {
-        e.dataTransfer.dropEffect = 'copy'
+    onDragLeaveWindow(e: any) {
         e.preventDefault()
+        this.hideDropZone()
     }
 
-    onDragOver(e: any) {
+    async onDrop(e: any) {
         e.preventDefault()
-    }
+        this.hideDropZone()
 
-    /*async dragDropUpload(e: any) {
-        if (!this.blockFileUpload) {
-            e.preventDefault()
+        if (e.dataTransfer?.files?.length) {
+            const files = [...e.dataTransfer.files]
 
-            this.dropzone.visibility = 'hidden'
-            this.dropzone.opacity = 0
+            await this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
+            let successFiles = []
+            await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
+            await this.$store.dispatch('files/uploadSetMaxNumber', files.length)
 
-            if (e.dataTransfer.files.length) {
-                const files = [...e.dataTransfer.files].filter((file: File) => {
-                    const format = file.name.slice(file.name.lastIndexOf('.'))
+            for (const file of files) {
+                const extensionPos = file.name.lastIndexOf('.')
+                const extension = file.name.slice(extensionPos)
+                const isGcode = validGcodeExtensions.includes(extension)
 
-                    if (!validGcodeExtensions.includes(format)) {
-                        this.$toast.error(this.$t('Files.WrongFileUploaded', { filename: file.name }).toString())
+                let path = ''
+                if (this.currentRoute === '/files' && isGcode) path = this.currentPathGcodes
+                else if (this.currentRoute === '/config' && !isGcode) path = this.currentPathConfig
 
-                        return false
-                    }
+                const root = isGcode ? 'gcodes' : 'config'
+                await this.$store.dispatch('files/uploadIncrementCurrentNumber')
+                const result = await this.$store.dispatch('files/uploadFile', { file, path, root })
+                successFiles.push(result)
+            }
 
-                    return true
-                })
-
-                this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
-                let successFiles = []
-                this.uploadSnackbar.number = 0
-                this.uploadSnackbar.max = files.length
-                for (const file of files) {
-                    this.uploadSnackbar.number++
-                    const result = await this.doUploadFile(file)
-                    successFiles.push(result)
-                }
-
-                this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
-                for (const file of successFiles) {
-                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: file }).toString())
-                }
+            await this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
+            for (const file of successFiles) {
+                this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: file }).toString())
             }
         }
-    }*/
+    }
 }
 </script>
 

@@ -43,6 +43,7 @@
         <the-editor></the-editor>
         <the-timelapse-rendering-snackbar></the-timelapse-rendering-snackbar>
         <the-fullscreen-upload></the-fullscreen-upload>
+        <the-upload-snackbar></the-upload-snackbar>
     </v-app>
 </template>
 
@@ -59,6 +60,7 @@ import TheEditor from '@/components/TheEditor.vue'
 import { panelToolbarHeight, topbarHeight, navigationItemHeight } from '@/store/variables'
 import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSnackbar.vue'
 import TheFullscreenUpload from '@/components/TheFullscreenUpload.vue'
+import TheUploadSnackbar from '@/components/TheUploadSnackbar.vue'
 
 @Component({
     components: {
@@ -70,6 +72,7 @@ import TheFullscreenUpload from '@/components/TheFullscreenUpload.vue'
         TheTopbar,
         TheSidebar,
         TheFullscreenUpload,
+        TheUploadSnackbar,
     },
     metaInfo() {
         const title = this.$store.getters['getTitle']
