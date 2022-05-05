@@ -1220,12 +1220,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/setGcodefilesMetadata', { name: name, value: value })
     }
 
-    cancelUpload() {
-        this.uploadSnackbar.cancelTokenSource.cancel()
-        this.uploadSnackbar.status = false
-        this.$refs.fileUpload.value = ''
-    }
-
     showContextMenu(e: any, item: FileStateFile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()

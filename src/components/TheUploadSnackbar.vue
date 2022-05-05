@@ -32,6 +32,10 @@ export default class TheUploadSnackbar extends Mixins(BaseMixin) {
         return this.$store.state.files.upload.show ?? false
     }
 
+    get cancelTokenSource() {
+        return this.$store.state.files.upload.cancelTokenSource
+    }
+
     get filename() {
         return this.$store.state.files.upload.filename ?? ''
     }
@@ -52,6 +56,10 @@ export default class TheUploadSnackbar extends Mixins(BaseMixin) {
         return Math.round(this.$store.state.files.upload.percent ?? 0)
     }
 
-    cancelUpload() {}
+    cancelUpload() {
+        this.cancelTokenSource?.cancel()
+        this.$store.dispatch('files/uploadSetShow', false)
+        this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
+    }
 }
 </script>

@@ -319,6 +319,10 @@ export const actions: ActionTree<FileState, RootState> = {
         })
     },
 
+    uploadSetShow({ commit }, payload) {
+        commit('uploadSetShow', payload)
+    },
+
     uploadSetCurrentNumber({ commit }, payload) {
         commit('uploadSetCurrentNumber', payload)
     },
