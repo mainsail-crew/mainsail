@@ -939,72 +939,28 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     async uploadFile() {
         if (this.$refs.fileUpload.files?.length) {
-            this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
+            await this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
             let successFiles = []
-            this.uploadSnackbar.number = 0
-            this.uploadSnackbar.max = this.$refs.fileUpload.files.length
+            await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
+            await this.$store.dispatch('files/uploadSetMaxNumber', this.$refs.fileUpload.files.length)
             for (const file of this.$refs.fileUpload.files) {
-                this.uploadSnackbar.number++
-                const result = await this.doUploadFile(file)
+                await this.$store.dispatch('files/uploadIncrementCurrentNumber')
+                const path = this.currentPath.slice(0, 1) === '/' ? this.currentPath.slice(1) : this.currentPath
+                const result = await this.$store.dispatch('files/uploadFile', {
+                    file,
+                    path,
+                    root: 'config',
+                })
                 successFiles.push(result)
             }
 
-            this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
+            await this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
             for (const file of successFiles) {
                 this.$toast.success('Upload of ' + file + ' successful!')
             }
 
             this.$refs.fileUpload.value = ''
         }
-    }
-
-    doUploadFile(file: File) {
-        let toast = this.$toast
-        let formData = new FormData()
-        let filename = file.name.replace(' ', '_')
-
-        this.uploadSnackbar.filename = filename
-        this.uploadSnackbar.status = true
-        this.uploadSnackbar.percent = 0
-        this.uploadSnackbar.speed = 0
-        this.uploadSnackbar.lastProgress.loaded = 0
-        this.uploadSnackbar.lastProgress.time = 0
-
-        formData.append('root', this.root)
-        formData.append('file', file, this.currentPath + '/' + filename)
-        this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
-
-        return new Promise((resolve) => {
-            this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source()
-            axios
-                .post(this.apiUrl + '/server/files/upload', formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                    cancelToken: this.uploadSnackbar.cancelTokenSource.token,
-                    onUploadProgress: (progressEvent) => {
-                        this.uploadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
-                        if (this.uploadSnackbar.lastProgress.time) {
-                            const time = progressEvent.timeStamp - this.uploadSnackbar.lastProgress.time
-                            const data = progressEvent.loaded - this.uploadSnackbar.lastProgress.loaded
-
-                            if (time) this.uploadSnackbar.speed = data / (time / 1000)
-                        }
-
-                        this.uploadSnackbar.lastProgress.time = progressEvent.timeStamp
-                        this.uploadSnackbar.lastProgress.loaded = progressEvent.loaded
-                        this.uploadSnackbar.total = progressEvent.total
-                    },
-                })
-                .then((result) => {
-                    const filename = result.data.item.path.substr(result.data.item.path.indexOf('/') + 1)
-                    this.uploadSnackbar.status = false
-                    resolve(filename)
-                })
-                .catch(() => {
-                    this.uploadSnackbar.status = false
-                    this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
-                    toast.error('Cannot upload the file!')
-                })
-        })
     }
 
     cancelUpload() {

@@ -60,6 +60,7 @@ export default class TheUploadSnackbar extends Mixins(BaseMixin) {
         this.cancelTokenSource?.cancel()
         this.$store.dispatch('files/uploadSetShow', false)
         this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
+        this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
     }
 }
 </script>
