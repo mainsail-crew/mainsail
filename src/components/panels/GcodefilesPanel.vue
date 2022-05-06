@@ -554,7 +554,6 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import axios from 'axios'
 import { validGcodeExtensions } from '@/store/variables'
 import { formatFilesize, formatDate, sortFiles, formatPrintTime } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
