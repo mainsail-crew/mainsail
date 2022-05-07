@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-center flex-column" :class="dropzoneClasses" @drop="onDrop">
-        <div class="textnode">{{ $t('Files.DropFilesToAddGcode') }}</div>
+        <div class="textnode">{{ $t('FullscreenUpload.DropFilesToUploadFiles') }}</div>
     </div>
 </template>
 

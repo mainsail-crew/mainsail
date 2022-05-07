@@ -314,7 +314,7 @@ export const actions: ActionTree<FileState, RootState> = {
                 })
                 .catch(() => {
                     commit('uploadSetShow', false)
-                    Vue.$toast.error('Cannot upload the file!')
+                    Vue.$toast.error(i18n.t('FullscreenUpload.CannotUploadFile').toString())
                 })
         })
     },
