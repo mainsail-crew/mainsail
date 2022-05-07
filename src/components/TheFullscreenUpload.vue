@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-center flex-column" :class="dropzoneClasses" @drop="onDrop">
+    <div class="d-flex justify-center flex-column fullscreen-upload__dragzone" :class="dropzoneClasses" @drop="onDrop">
         <div class="textnode">{{ $t('FullscreenUpload.DropFilesToUploadFiles') }}</div>
     </div>
 </template>
@@ -16,7 +16,6 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
 
     get dropzoneClasses() {
         return {
-            'fullscreen-upload__dragzone': true,
             'fullscreen-upload__dragzone--visable': this.visable,
         }
     }
@@ -103,6 +102,7 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
 </script>
 
 <style scoped>
+/*noinspection CssUnusedSymbol*/
 .fullscreen-upload__dragzone {
     position: fixed;
     top: 0;
@@ -118,11 +118,13 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
     font: bold 42px Oswald, DejaVu Sans, Tahoma, sans-serif;
 }
 
+/*noinspection CssUnusedSymbol*/
 .fullscreen-upload__dragzone--visable {
     opacity: 1;
     visibility: visible;
 }
 
+/*noinspection CssUnusedSymbol*/
 .fullscreen-upload__dragzone:before {
     display: block;
     content: ' ';

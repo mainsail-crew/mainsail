@@ -11,12 +11,13 @@
                     <v-col class="col-12 col-lg pr-lg-0">
                         <v-select
                             v-model="root"
+                            class="machine-configfiles-panel__root-select"
                             :items="registeredDirectories"
                             :label="$t('Machine.ConfigFilesPanel.Root')"
                             outlined
                             hide-details
                             dense
-                            attach
+                            attach=".machine-configfiles-panel__root-select"
                             @change="changeRoot"></v-select>
                     </v-col>
                     <v-col class="col col-lg-auto pl-lg-0 text-right">
@@ -34,10 +35,10 @@
                                 <span>{{ button.text }}</span>
                             </v-tooltip>
                         </v-btn>
-                        <v-menu offset-y left :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')" attach>
+                        <v-menu offset-y left :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')">
                             <template #activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
-                                    <v-icon>{{ mdiCog }}</v-icon>
+                                    <v-icon class="machine-configfiles-panel__settings-icon">{{ mdiCog }}</v-icon>
                                 </v-btn>
                             </template>
                             <v-list>
@@ -93,7 +94,6 @@
                 :items="files"
                 class="files-table"
                 :headers="headers"
-                :options="options"
                 :page.sync="currentPage"
                 :custom-sort="sortFiles"
                 :sort-by.sync="sortBy"
@@ -494,8 +494,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         inputDialogRenameDirectoryName: HTMLInputElement
     }
 
-    private selected = []
-    private options = {}
     private currentPage = 1
     private contextMenu: contextMenu = {
         shown: false,
@@ -1008,7 +1006,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             e.preventDefault()
             e.target.parentElement.style.backgroundColor = 'transparent'
 
-            let dest = ''
+            let dest: string
             if (row.filename === '..') {
                 dest =
                     this.absolutePath.slice(1, this.absolutePath.lastIndexOf('/') + 1) + this.draggingFile.item.filename

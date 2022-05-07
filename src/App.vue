@@ -16,6 +16,7 @@
     background-repeat: no-repeat;
 }
 
+/*noinspection CssUnusedSymbol*/
 .v-btn:not(.v-btn--outlined).primary {
     /*noinspection CssUnresolvedCustomProperty*/
     color: var(--v-btn-text-primary);
@@ -245,8 +246,8 @@ export default class App extends Mixins(BaseMixin) {
             } else {
                 const favicon =
                     'data:image/svg+xml;base64,' +
-                    btoa(
-                        '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">' +
+                    Buffer.from(
+                        '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">' +
                             '<g>' +
                             '<path style="fill:' +
                             this.logoColor +
@@ -259,7 +260,7 @@ export default class App extends Mixins(BaseMixin) {
                             ';" d="M599.38,447.69l-49.25,75.42L417,522.82l101.6-153.67l0,0C543.48,397.35,570.49,423.61,599.38,447.69 L599.38,447.69z"/>' +
                             '</g>' +
                             '</svg>'
-                    )
+                    ).toString('base64')
 
                 favicon16.href = favicon
                 favicon32.href = favicon
