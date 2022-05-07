@@ -1112,7 +1112,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             this.$refs.fileUpload.value = ''
 
             await this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
-            let successFiles = []
             await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
             await this.$store.dispatch('files/uploadSetMaxNumber', this.$refs.fileUpload.files.length)
             for (const file of files) {
@@ -1123,13 +1122,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                     path,
                     root: 'gcodes',
                 })
-                successFiles.push(result)
+
+                if (result !== false)
+                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
             }
 
             await this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
-            for (const file of successFiles) {
-                this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: file }).toString())
-            }
         }
     }
 

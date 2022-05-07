@@ -17,6 +17,7 @@
 }
 
 .v-btn:not(.v-btn--outlined).primary {
+    /*noinspection CssUnresolvedCustomProperty*/
     color: var(--v-btn-text-primary);
 }
 
@@ -82,10 +83,6 @@ import TheUploadSnackbar from '@/components/TheUploadSnackbar.vue'
     },
 })
 export default class App extends Mixins(BaseMixin) {
-    panelToolbarHeight = panelToolbarHeight
-    topbarHeight = topbarHeight
-    navigationItemHeight = navigationItemHeight
-
     get title(): string {
         return this.$store.getters['getTitle']
     }

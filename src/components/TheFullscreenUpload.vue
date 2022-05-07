@@ -76,7 +76,6 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
             const files = [...e.dataTransfer.files]
 
             await this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
-            let successFiles = []
             await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
             await this.$store.dispatch('files/uploadSetMaxNumber', files.length)
 
@@ -92,13 +91,12 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
                 const root = isGcode ? 'gcodes' : 'config'
                 await this.$store.dispatch('files/uploadIncrementCurrentNumber')
                 const result = await this.$store.dispatch('files/uploadFile', { file, path, root })
-                successFiles.push(result)
+
+                if (result !== false)
+                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
             }
 
             await this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
-            for (const file of successFiles) {
-                this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: file }).toString())
-            }
         }
     }
 }

@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiClose } from '@mdi/js'
 import { formatFilesize } from '@/plugins/helpers'
@@ -61,6 +61,14 @@ export default class TheUploadSnackbar extends Mixins(BaseMixin) {
         this.$store.dispatch('files/uploadSetShow', false)
         this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
         this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
+    }
+
+    @Watch('show')
+    showChanged(newVal: boolean) {
+        const body = document.getElementsByTagName('body')[0]
+
+        if (newVal) body.classList.add('fullscreenUpload--active')
+        else body.classList.remove('fullscreenUpload--active')
     }
 }
 </script>
