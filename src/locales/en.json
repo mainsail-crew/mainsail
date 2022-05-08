@@ -203,7 +203,7 @@
         "WrongFileUploaded": "Upload was denied for {filename}. Wrong file format!"
     },
     "FullscreenUpload": {
-        "CannotUploadFile": "Drop files to upload",
+        "CannotUploadFile": "Cannot upload file!",
         "DropFilesToUploadFiles": "Drop files to upload"
     },
     "GCodeViewer": {
