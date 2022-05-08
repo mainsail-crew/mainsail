@@ -8,9 +8,9 @@
                 <v-row>
                     <v-col class="v-subheader text--secondary pr-0">
                         <v-icon small class="mr-2">
-                            {{ mdiCrosshairs }}
+                            {{ mdiCrosshairsGps }}
                         </v-icon>
-                        <span>{{ $t('Panels.ToolheadControlPanel.Coordinates') }}: {{ displayPositionAbsolute }}</span>
+                        <span>{{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}</span>
                     </v-col>
                 </v-row>
                 <v-form class="pt-3" @keyup.native.enter="sendCmd">
@@ -64,13 +64,13 @@ import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import MoveToInput from '@/components/inputs/MoveToInput.vue'
 import Responsive from '@/components/ui/Responsive.vue'
-import { mdiCrosshairs } from '@mdi/js'
+import { mdiCrosshairsGps } from '@mdi/js'
 
 @Component({
     components: { MoveToInput, Responsive },
 })
 export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
-    mdiCrosshairs = mdiCrosshairs
+    mdiCrosshairsGps = mdiCrosshairsGps
 
     input: { [index: string]: any } = {
         x: { pos: '', valid: true },

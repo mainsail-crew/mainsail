@@ -596,7 +596,6 @@
         "ToolheadControlPanel": {
             "Absolute": "absolute",
             "ALL": "ALL",
-            "Coordinates": "Coordinates",
             "Headline": "Toolhead",
             "InvertX": "Invert X",
             "InvertY": "Invert Y",
