@@ -205,6 +205,10 @@
         "View3D": "3D Betrachtung",
         "WrongFileUploaded": "Hochladen von {filename} verweigert. Falsches Dateiformat!"
     },
+    "FullscreenUpload": {
+        "CannotUploadFile": "Datei konnte nicht hochgeladen werden!",
+        "DropFilesToUploadFiles": "Datei ablegen zum Hochladen"
+    },
     "GCodeViewer": {
         "ClearLoadedFile": "Löschen",
         "ColorMode": "Farbmodus",
