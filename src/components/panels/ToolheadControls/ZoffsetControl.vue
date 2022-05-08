@@ -48,6 +48,7 @@
     <responsive
         :breakpoints="{
             xsmall: (el) => el.width <= 285,
+            medium: (el) => el.width <= 510,
         }">
         <template #default="{ el }">
             <v-container class="pa-0">
@@ -115,7 +116,7 @@
                     </v-col>
                 </v-row>
                 <v-row dense>
-                    <v-col>
+                    <v-col :class="!el.is.medium ? 'order-1 col-6' : 'col-12'">
                         <div class="d-flex align-center">
                             <v-item-group class="_btn-group">
                                 <v-btn
@@ -132,7 +133,7 @@
                             </v-item-group>
                         </div>
                     </v-col>
-                    <v-col>
+                    <v-col :class="!el.is.medium ? 'order-0 col-6' : 'col-12'">
                         <v-item-group class="_btn-group">
                             <v-btn
                                 v-for="(offset, index) in offsetsZ"
