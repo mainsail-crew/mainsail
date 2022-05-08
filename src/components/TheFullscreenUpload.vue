@@ -12,11 +12,11 @@ import { validGcodeExtensions } from '@/store/variables'
 
 @Component
 export default class TheFullscreenUpload extends Mixins(BaseMixin) {
-    private visable = false
+    private visible = false
 
     get dropzoneClasses() {
         return {
-            'fullscreen-upload__dragzone--visable': this.visable,
+            'fullscreen-upload__dragzone--visable': this.visible,
         }
     }
 
@@ -45,11 +45,11 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
     }
 
     showDropZone() {
-        this.visable = true
+        this.visible = true
     }
 
     hideDropZone() {
-        this.visable = false
+        this.visible = false
     }
 
     onDragOverWindow(e: any) {
@@ -57,7 +57,7 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
         if (type !== 'Files') return
 
         e.preventDefault()
-        if (this.visable) return
+        if (this.visible) return
 
         this.showDropZone()
     }
