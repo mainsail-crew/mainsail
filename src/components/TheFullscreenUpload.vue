@@ -53,8 +53,8 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
     }
 
     onDragOverWindow(e: any) {
-        const type = e.dataTransfer?.types[0] ?? ''
-        if (type !== 'Files') return
+        const types = e.dataTransfer?.types ?? []
+        if (!types.includes('Files')) return
 
         e.preventDefault()
         if (this.visible) return
