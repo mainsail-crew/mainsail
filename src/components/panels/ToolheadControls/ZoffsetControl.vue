@@ -48,6 +48,7 @@
     <responsive
         :breakpoints="{
             xsmall: (el) => el.width <= 285,
+            medium: (el) => el.width <= 510,
         }">
         <template #default="{ el }">
             <v-container class="pa-0">
@@ -115,7 +116,7 @@
                     </v-col>
                 </v-row>
                 <v-row dense>
-                    <v-col>
+                    <v-col :class="!el.is.medium ? 'order-1 col-6' : 'col-12'">
                         <div class="d-flex align-center">
                             <v-item-group class="_btn-group">
                                 <v-btn
@@ -125,14 +126,14 @@
                                     class="_btn-qs flex-grow-1 px-1"
                                     @click="sendBabyStepUp(offset)">
                                     <v-icon v-if="index === 0 && !el.is.xsmall" left small class="mr-1 ml-1">
-                                        {{ mdiArrowSplitHorizontal }}
+                                        {{ mdiArrowExpandUp }}
                                     </v-icon>
                                     <span>&plus;{{ offset }}</span>
                                 </v-btn>
                             </v-item-group>
                         </div>
                     </v-col>
-                    <v-col>
+                    <v-col :class="!el.is.medium ? 'order-0 col-6' : 'col-12'">
                         <v-item-group class="_btn-group">
                             <v-btn
                                 v-for="(offset, index) in offsetsZ"
@@ -141,7 +142,7 @@
                                 class="_btn-qs flex-grow-1 px-1"
                                 @click="sendBabyStepDown(offset)">
                                 <v-icon v-if="index === 0 && !el.is.xsmall" left small class="mr-1 ml-1">
-                                    {{ mdiArrowCollapseVertical }}
+                                    {{ mdiArrowCollapseDown }}
                                 </v-icon>
                                 <span>&minus;{{ offset }}</span>
                             </v-btn>
@@ -191,10 +192,10 @@ import {
     mdiElectricSwitch,
     mdiElevator,
     mdiContentSave,
-    mdiArrowCollapseVertical,
+    mdiArrowCollapseDown,
     mdiInformation,
     mdiMenuDown,
-    mdiArrowSplitHorizontal,
+    mdiArrowExpandUp,
     mdiLayersOutline,
 } from '@mdi/js'
 @Component({
@@ -205,10 +206,10 @@ export default class ZoffsetControl extends Mixins(BaseMixin) {
     mdiElectricSwitch = mdiElectricSwitch
     mdiElevator = mdiElevator
     mdiContentSave = mdiContentSave
-    mdiArrowCollapseVertical = mdiArrowCollapseVertical
+    mdiArrowCollapseDown = mdiArrowCollapseDown
     mdiInformation = mdiInformation
     mdiMenuDown = mdiMenuDown
-    mdiArrowSplitHorizontal = mdiArrowSplitHorizontal
+    mdiArrowExpandUp = mdiArrowExpandUp
     mdiLayersOutline = mdiLayersOutline
 
     private saveOffsetDialog = false
