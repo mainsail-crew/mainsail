@@ -1,0 +1,23 @@
+name: Lint Commit Messages
+on:
+  push:
+    branches:
+      - '**'
+    paths-ignore:
+      - 'src/locales/**'
+  pull_request:
+    branches:
+      - '**'
+    paths-ignore:
+      - 'src/locales/**'
+
+  workflow_call:
+
+jobs:
+  commitlinter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v4
