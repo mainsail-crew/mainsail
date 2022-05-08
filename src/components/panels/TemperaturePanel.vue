@@ -175,8 +175,8 @@
                     </template>
                 </responsive>
             </v-card-text>
-            <v-card-text v-if="boolTempchart" class="pa-0">
-                <v-divider class="my-2"></v-divider>
+            <v-card-text v-if="boolTempchart" class="pa-0 d-inline-block">
+                <v-divider class="mt-0 mb-2"></v-divider>
                 <v-row>
                     <v-col class="py-0">
                         <temp-chart></temp-chart>
