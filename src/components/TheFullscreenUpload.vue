@@ -1,5 +1,6 @@
 <template>
     <div class="d-flex justify-center flex-column fullscreen-upload__dragzone" :class="dropzoneClasses" @drop="onDrop">
+        <v-icon class="fullscreen-upload__icon">{{ mdiTrayArrowDown }}</v-icon>
         <div class="textnode">{{ $t('FullscreenUpload.DropFilesToUploadFiles') }}</div>
     </div>
 </template>
@@ -9,9 +10,11 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Component from 'vue-class-component'
 import { validGcodeExtensions } from '@/store/variables'
+import { mdiTrayArrowDown } from '@mdi/js'
 
 @Component
 export default class TheFullscreenUpload extends Mixins(BaseMixin) {
+    mdiTrayArrowDown = mdiTrayArrowDown
     private visible = false
 
     get dropzoneClasses() {
@@ -101,8 +104,7 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
 }
 </script>
 
-<style scoped>
-/*noinspection CssUnusedSymbol*/
+<style>
 .fullscreen-upload__dragzone {
     position: fixed;
     top: 0;
@@ -129,16 +131,23 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
     display: block;
     content: ' ';
     position: absolute;
-    top: 15px;
-    right: 15px;
-    bottom: 15px;
-    left: 15px;
+    top: 1em;
+    right: 1em;
+    bottom: 1em;
+    left: 1em;
     border: 3px dashed white;
-    border-radius: 15px;
+    border-radius: 1em;
+}
+
+/*noinspection CssUnusedSymbol*/
+.fullscreen-upload__icon .v-icon__svg {
+    width: 250px;
+    height: 250px;
 }
 
 .fullscreen-upload__dragzone .textnode {
     text-align: center;
     transition: font-size 175ms;
+    font-size: 82px;
 }
 </style>
