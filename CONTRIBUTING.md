@@ -1,14 +1,53 @@
-# Mainsail Contributing Guide
+# Contributing to Mainsail
 
-Hi! I'm really excited that you are interested in contributing to Mainsail. Before submitting your contribution, please make sure to take a moment and read through the following guidelines:
+If you are reading this document right now, you are probably considering to contribute to Mainsail and make it better than it is today. Thank you for taking that initiative!
+Before submitting your contribution, please take a moment and make sure to read through our contribution guidelines:
 
 - [Code of Conduct](https://github.com/meteyou/mainsail/.github/CODE_OF_CONDUCT.md)
+- [Question or Problem?](#question)
 - [Issue Reporting Guidelines](#issue-reporting-guidelines)
 - [Pull Request Guidelines](#pull-request-guidelines)
 
-## Issue Reporting Guidelines
+## <a name="question"></a> Got a Question or Problem?
 
-- Use [https://github.com/meteyou/mainsail/issues](https://github.com/meteyou/mainsail/issues) to create new issues.
+Please do not open issues for general support questions. We want to keep GitHub issues for bug reports and feature requests.
+Instead, please visit us on [Discord](https://discord.gg/mainsail) to ask support-related questions.
+
+Our Discord server is a much better place to ask general support questions. We take the right to close issues that are requests for general support and redirect people to Discord.
+
+## <a name="issue"></a> Found a Bug?
+
+If you find a bug in the source code, or you think that Mainsail is behaving odd in specific situations, you can help us to fix that issues by [submitting an issue](https://github.com/meteyou/mainsail/issues).
+In case you fixed that issue already by yourself, you can [submit a Pull Request](#submit-pr) with that fix.
+
+## <a name="feature"></a> Missing a Feature?
+
+
+## <a name="submit"></a> Submission Guidelines
+
+### <a name="submit-issue"></a> Submitting an Issue
+
+### <a name="submit-pr"></a> Submitting a Pull Request (PR)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Pull Request Guidelines
 
