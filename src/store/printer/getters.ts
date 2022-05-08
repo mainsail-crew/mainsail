@@ -1,4 +1,9 @@
-import { additionalSensors, checkKlipperConfigModules } from '@/store/variables'
+import {
+    additionalSensors,
+    checkKlipperConfigModules,
+    opacityHeaterActive,
+    opacityHeaterInactive,
+} from '@/store/variables'
 import { GetterTree } from 'vuex'
 import {
     PrinterState,
@@ -202,7 +207,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     name: heater.name,
                     type: heater.type,
                     icon: heater.icon,
-                    iconColor: heater.target > 0 ? `${heater.chartColor}aa` : `${heater.chartColor}22`,
+                    iconColor:
+                        heater.target > 0
+                            ? `${heater.chartColor}${opacityHeaterActive}`
+                            : `${heater.chartColor}${opacityHeaterInactive}`,
                     iconClass: '',
                     state: heater.target > 0 ? heater.power + '%' : 'off',
                     avgState: heater.avgPower + '%',
@@ -231,7 +239,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     name: fan.name,
                     type: 'temperature_fan',
                     icon: fan.icon,
-                    iconColor: fan.target > 0 ? `${fan.chartColor}aa` : `${fan.chartColor}22`,
+                    iconColor:
+                        fan.target > 0
+                            ? `${fan.chartColor}${opacityHeaterActive}`
+                            : `${fan.chartColor}${opacityHeaterInactive}`,
                     iconClass: fan.speed ? ' icon-rotate' : '',
                     state: fan.target > 0 && fan.speed > 0 ? fan.speed + '%' : fan.target > 0 ? 'standby' : 'off',
                     avgState: fan.avgSpeed + '%',
@@ -260,7 +271,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     name: sensor.name,
                     type: 'temperature_sensor',
                     icon: sensor.icon,
-                    iconColor: `${sensor.chartColor}aa`,
+                    iconColor: `${sensor.chartColor}${opacityHeaterActive}`,
                     iconClass: '',
                     state: null,
                     avgState: '',
