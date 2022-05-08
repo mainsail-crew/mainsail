@@ -16,7 +16,7 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
 
     get dropzoneClasses() {
         return {
-            'fullscreen-upload__dragzone--visable': this.visible,
+            'fullscreen-upload__dragzone--visible': this.visible,
         }
     }
 
@@ -119,7 +119,7 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
 }
 
 /*noinspection CssUnusedSymbol*/
-.fullscreen-upload__dragzone--visable {
+.fullscreen-upload__dragzone--visible {
     opacity: 1;
     visibility: visible;
 }
