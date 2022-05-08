@@ -125,7 +125,7 @@
                                     class="_btn-qs flex-grow-1 px-1"
                                     @click="sendBabyStepUp(offset)">
                                     <v-icon v-if="index === 0 && !el.is.xsmall" left small class="mr-1 ml-1">
-                                        {{ mdiArrowSplitHorizontal }}
+                                        {{ mdiArrowExpandUp }}
                                     </v-icon>
                                     <span>&plus;{{ offset }}</span>
                                 </v-btn>
@@ -141,7 +141,7 @@
                                 class="_btn-qs flex-grow-1 px-1"
                                 @click="sendBabyStepDown(offset)">
                                 <v-icon v-if="index === 0 && !el.is.xsmall" left small class="mr-1 ml-1">
-                                    {{ mdiArrowCollapseVertical }}
+                                    {{ mdiArrowCollapseDown }}
                                 </v-icon>
                                 <span>&minus;{{ offset }}</span>
                             </v-btn>
@@ -191,10 +191,10 @@ import {
     mdiElectricSwitch,
     mdiElevator,
     mdiContentSave,
-    mdiArrowCollapseVertical,
+    mdiArrowCollapseDown,
     mdiInformation,
     mdiMenuDown,
-    mdiArrowSplitHorizontal,
+    mdiArrowExpandUp,
     mdiLayersOutline,
 } from '@mdi/js'
 @Component({
@@ -205,10 +205,10 @@ export default class ZoffsetControl extends Mixins(BaseMixin) {
     mdiElectricSwitch = mdiElectricSwitch
     mdiElevator = mdiElevator
     mdiContentSave = mdiContentSave
-    mdiArrowCollapseVertical = mdiArrowCollapseVertical
+    mdiArrowCollapseDown = mdiArrowCollapseDown
     mdiInformation = mdiInformation
     mdiMenuDown = mdiMenuDown
-    mdiArrowSplitHorizontal = mdiArrowSplitHorizontal
+    mdiArrowExpandUp = mdiArrowExpandUp
     mdiLayersOutline = mdiLayersOutline
 
     private saveOffsetDialog = false
