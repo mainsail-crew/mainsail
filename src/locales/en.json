@@ -157,7 +157,6 @@
         "Download": "Download",
         "Downloading": "Downloading",
         "DoYouWantToStartFilename": "Do you want to start {filename}?",
-        "DropFilesToAddGcode": "Drag & Drop files to add G-Code.",
         "EditFile": "Edit File",
         "Empty": "Empty",
         "Filament": "Filament",
@@ -202,6 +201,10 @@
         "Used": "Used",
         "View3D": "View 3D",
         "WrongFileUploaded": "Upload was denied for {filename}. Wrong file format!"
+    },
+    "FullscreenUpload": {
+        "CannotUploadFile": "Cannot upload file!",
+        "DropFilesToUploadFiles": "Drop files to upload"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Clear",

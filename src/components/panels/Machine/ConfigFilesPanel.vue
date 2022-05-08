@@ -11,12 +11,13 @@
                     <v-col class="col-12 col-lg pr-lg-0">
                         <v-select
                             v-model="root"
+                            class="machine-configfiles-panel__root-select"
                             :items="registeredDirectories"
                             :label="$t('Machine.ConfigFilesPanel.Root')"
                             outlined
                             hide-details
                             dense
-                            attach
+                            attach=".machine-configfiles-panel__root-select"
                             @change="changeRoot"></v-select>
                     </v-col>
                     <v-col class="col col-lg-auto pl-lg-0 text-right">
@@ -34,10 +35,10 @@
                                 <span>{{ button.text }}</span>
                             </v-tooltip>
                         </v-btn>
-                        <v-menu offset-y left :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')" attach>
+                        <v-menu offset-y left :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')">
                             <template #activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
-                                    <v-icon>{{ mdiCog }}</v-icon>
+                                    <v-icon class="machine-configfiles-panel__settings-icon">{{ mdiCog }}</v-icon>
                                 </v-btn>
                             </template>
                             <v-list>
@@ -93,7 +94,6 @@
                 :items="files"
                 class="files-table"
                 :headers="headers"
-                :options="options"
                 :page.sync="currentPage"
                 :custom-sort="sortFiles"
                 :sort-by.sync="sortBy"
@@ -464,7 +464,6 @@ interface uploadSnackbar {
 }
 
 interface draggingFile {
-    status: boolean
     item: FileStateFile
 }
 
@@ -496,8 +495,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         inputDialogRenameDirectoryName: HTMLInputElement
     }
 
-    private selected = []
-    private options = {}
     private currentPage = 1
     private contextMenu: contextMenu = {
         shown: false,
@@ -572,13 +569,20 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         },
     }
     private draggingFile: draggingFile = {
-        status: false,
         item: {
             isDirectory: false,
             filename: '',
             permissions: '',
             modified: new Date(),
         },
+    }
+
+    get blockFileUpload() {
+        return this.$store.state.gui.view.blockFileUpload ?? false
+    }
+
+    set blockFileUpload(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.blockFileUpload', value: newVal })
     }
 
     get toolbarButtons() {
@@ -934,72 +938,28 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     async uploadFile() {
         if (this.$refs.fileUpload.files?.length) {
-            this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
-            let successFiles = []
-            this.uploadSnackbar.number = 0
-            this.uploadSnackbar.max = this.$refs.fileUpload.files.length
-            for (const file of this.$refs.fileUpload.files) {
-                this.uploadSnackbar.number++
-                const result = await this.doUploadFile(file)
-                successFiles.push(result)
-            }
-
-            this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
-            for (const file of successFiles) {
-                this.$toast.success('Upload of ' + file + ' successful!')
-            }
-
+            const files = [...this.$refs.fileUpload.files]
             this.$refs.fileUpload.value = ''
+
+            await this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
+            await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
+            await this.$store.dispatch('files/uploadSetMaxNumber', this.$refs.fileUpload.files.length)
+
+            for (const file of files) {
+                await this.$store.dispatch('files/uploadIncrementCurrentNumber')
+                const path = this.currentPath.slice(0, 1) === '/' ? this.currentPath.slice(1) : this.currentPath
+                const result = await this.$store.dispatch('files/uploadFile', {
+                    file,
+                    path,
+                    root: 'config',
+                })
+
+                if (result !== false)
+                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
+            }
+
+            await this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
         }
-    }
-
-    doUploadFile(file: File) {
-        let toast = this.$toast
-        let formData = new FormData()
-        let filename = file.name.replace(' ', '_')
-
-        this.uploadSnackbar.filename = filename
-        this.uploadSnackbar.status = true
-        this.uploadSnackbar.percent = 0
-        this.uploadSnackbar.speed = 0
-        this.uploadSnackbar.lastProgress.loaded = 0
-        this.uploadSnackbar.lastProgress.time = 0
-
-        formData.append('root', this.root)
-        formData.append('file', file, this.currentPath + '/' + filename)
-        this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
-
-        return new Promise((resolve) => {
-            this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source()
-            axios
-                .post(this.apiUrl + '/server/files/upload', formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                    cancelToken: this.uploadSnackbar.cancelTokenSource.token,
-                    onUploadProgress: (progressEvent) => {
-                        this.uploadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
-                        if (this.uploadSnackbar.lastProgress.time) {
-                            const time = progressEvent.timeStamp - this.uploadSnackbar.lastProgress.time
-                            const data = progressEvent.loaded - this.uploadSnackbar.lastProgress.loaded
-
-                            if (time) this.uploadSnackbar.speed = data / (time / 1000)
-                        }
-
-                        this.uploadSnackbar.lastProgress.time = progressEvent.timeStamp
-                        this.uploadSnackbar.lastProgress.loaded = progressEvent.loaded
-                        this.uploadSnackbar.total = progressEvent.total
-                    },
-                })
-                .then((result) => {
-                    const filename = result.data.item.path.substr(result.data.item.path.indexOf('/') + 1)
-                    this.uploadSnackbar.status = false
-                    resolve(filename)
-                })
-                .catch(() => {
-                    this.uploadSnackbar.status = false
-                    this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
-                    toast.error('Cannot upload the file!')
-                })
-        })
     }
 
     cancelUpload() {
@@ -1009,13 +969,13 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     dragFile(e: Event, item: FileStateFile) {
         e.preventDefault()
-        this.draggingFile.status = true
+        this.blockFileUpload = true
         this.draggingFile.item = item
     }
 
     dragendFile(e: Event) {
         e.preventDefault()
-        this.draggingFile.status = false
+        this.blockFileUpload = false
         this.draggingFile.item = {
             isDirectory: false,
             filename: '',
@@ -1025,7 +985,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     dragOverFilelist(e: any, row: any) {
-        if (this.draggingFile.status) {
+        if (this.blockFileUpload) {
             e.preventDefault()
             //e.stopPropagation()
 
@@ -1034,7 +994,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     dragLeaveFilelist(e: any) {
-        if (this.draggingFile.status) {
+        if (this.blockFileUpload) {
             e.preventDefault()
             e.stopPropagation()
 
@@ -1043,11 +1003,11 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     async dragDropFilelist(e: any, row: any) {
-        if (this.draggingFile.status) {
+        if (this.blockFileUpload) {
             e.preventDefault()
             e.target.parentElement.style.backgroundColor = 'transparent'
 
-            let dest = ''
+            let dest: string
             if (row.filename === '..') {
                 dest =
                     this.absolutePath.slice(1, this.absolutePath.lastIndexOf('/') + 1) + this.draggingFile.item.filename

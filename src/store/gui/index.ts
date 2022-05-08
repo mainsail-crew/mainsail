@@ -150,6 +150,7 @@ export const getDefaultState = (): GuiState => {
             navigationStyle: 'iconsAndText',
         },
         view: {
+            blockFileUpload: false,
             configfiles: {
                 countPerPage: 10,
                 sortBy: 'filename',
@@ -180,7 +181,7 @@ export const getDefaultState = (): GuiState => {
                     'last_print_duration',
                     'slicer',
                 ],
-                currentPath: 'gcodes',
+                currentPath: '',
                 selectedFiles: [],
             },
             heightmap: {

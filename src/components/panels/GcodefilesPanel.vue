@@ -7,46 +7,12 @@
     cursor: pointer;
 }
 
-.fileupload-card {
-    position: relative;
-}
-
 .file-list--select-td {
     width: 20px;
 }
 
 .files-table th.text-start {
     padding-right: 0 !important;
-}
-
-.file-list__dragzone {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 100%;
-    z-index: 9999999999;
-    background-color: rgba(0, 0, 0, 0.5);
-    transition: visibility 175ms, opacity 175ms;
-    font: bold 42px Oswald, DejaVu Sans, Tahoma, sans-serif;
-}
-
-.file-list__dragzone:before {
-    display: block;
-    content: ' ';
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    bottom: 15px;
-    left: 15px;
-    border: 3px dashed white;
-    border-radius: 15px;
-}
-
-.file-list__dragzone .textnode {
-    text-align: center;
-    transition: font-size 175ms;
 }
 
 .v-chip.minimum-chip {
@@ -65,7 +31,7 @@
 </style>
 
 <template>
-    <div @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
+    <div>
         <panel :title="$t('Files.GCodeFiles')" :icon="mdiFileDocumentMultipleOutline" card-class="gcode-files-panel">
             <v-card-text>
                 <v-row>
@@ -373,27 +339,7 @@
                     </tr>
                 </template>
             </v-data-table>
-            <div
-                class="file-list__dragzone d-flex justify-center flex-column"
-                :style="'visibility: ' + dropzone.visibility + '; opacity: ' + dropzone.hidden">
-                <div class="textnode">{{ $t('Files.DropFilesToAddGcode') }}</div>
-            </div>
         </panel>
-        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
-            <span v-if="uploadSnackbar.max > 1" class="mr-1">
-                ({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})
-            </span>
-            <strong>{{ $t('Files.Uploading') + ' ' + uploadSnackbar.filename }}</strong>
-            <br />
-            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
-            <br />
-            <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
-            <template #action="{ attrs }">
-                <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelUpload">
-                    <v-icon class="0">{{ mdiClose }}</v-icon>
-                </v-btn>
-            </template>
-        </v-snackbar>
         <v-dialog v-model="dialogPrintFile.show" :max-width="dialogPrintFile.item.big_thumbnail_width">
             <v-card>
                 <v-img
@@ -608,7 +554,6 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import axios from 'axios'
 import { validGcodeExtensions } from '@/store/variables'
 import { formatFilesize, formatDate, sortFiles, formatPrintTime } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
@@ -641,7 +586,6 @@ import {
 } from '@mdi/js'
 
 interface draggingFile {
-    status: boolean
     item: FileStateGcodefile
 }
 
@@ -740,7 +684,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         opacity: 0,
     }
     private draggingFile: draggingFile = {
-        status: false,
         item: {
             isDirectory: false,
             filename: '',
@@ -1130,171 +1073,61 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         return this.$store.getters['server/history/getPrintStatusIconColor'](status)
     }
 
-    dragOverUpload(e: Event) {
-        if (!this.draggingFile.status) {
-            e.preventDefault()
-            e.stopPropagation()
-
-            this.dropzone.visibility = 'visible'
-            this.dropzone.opacity = 1
-        }
-    }
-
-    dragLeaveUpload(e: Event) {
-        if (!this.draggingFile.status) {
-            e.preventDefault()
-            e.stopPropagation()
-
-            this.dropzone.visibility = 'hidden'
-            this.dropzone.opacity = 0
-        }
-    }
-
-    async dragDropUpload(e: any) {
-        if (!this.draggingFile.status) {
-            e.preventDefault()
-
-            this.dropzone.visibility = 'hidden'
-            this.dropzone.opacity = 0
-
-            if (e.dataTransfer.files.length) {
-                const files = [...e.dataTransfer.files].filter((file: File) => {
-                    const format = file.name.slice(file.name.lastIndexOf('.'))
-
-                    if (!validGcodeExtensions.includes(format)) {
-                        this.$toast.error(this.$t('Files.WrongFileUploaded', { filename: file.name }).toString())
-
-                        return false
-                    }
-
-                    return true
-                })
-
-                this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
-                let successFiles = []
-                this.uploadSnackbar.number = 0
-                this.uploadSnackbar.max = files.length
-                for (const file of files) {
-                    this.uploadSnackbar.number++
-                    const result = await this.doUploadFile(file)
-                    successFiles.push(result)
-                }
-
-                this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
-                for (const file of successFiles) {
-                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: file }).toString())
-                }
-            }
-        }
-    }
-
-    doUploadFile(file: File) {
-        let formData = new FormData()
-        let filename = file.name
-
-        this.uploadSnackbar.filename = filename
-        this.uploadSnackbar.status = true
-        this.uploadSnackbar.percent = 0
-        this.uploadSnackbar.speed = 0
-        this.uploadSnackbar.lastProgress.loaded = 0
-        this.uploadSnackbar.lastProgress.time = 0
-
-        formData.append('file', file, this.currentPath + '/' + filename)
-
-        return new Promise((resolve) => {
-            this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source()
-            axios
-                .post(this.apiUrl + '/server/files/upload', formData, {
-                    cancelToken: this.uploadSnackbar.cancelTokenSource.token,
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                    onUploadProgress: (progressEvent: any) => {
-                        this.uploadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
-                        if (this.uploadSnackbar.lastProgress.time) {
-                            const time = progressEvent.timeStamp - this.uploadSnackbar.lastProgress.time
-                            const data = progressEvent.loaded - this.uploadSnackbar.lastProgress.loaded
-
-                            if (time) this.uploadSnackbar.speed = data / (time / 1000)
-                        }
-
-                        this.uploadSnackbar.lastProgress.time = progressEvent.timeStamp
-                        this.uploadSnackbar.lastProgress.loaded = progressEvent.loaded
-                        this.uploadSnackbar.total = progressEvent.total
-                    },
-                })
-                .then((result: any) => {
-                    const filename = result.data.item.path.slice(result.data.item.path.indexOf('/') + 1)
-                    this.uploadSnackbar.status = false
-                    resolve(filename)
-                })
-                .catch(() => {
-                    this.uploadSnackbar.status = false
-                    this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
-                    this.$toast.error('Cannot upload the file!')
-                })
-        })
-    }
-
     dragOverFilelist(e: any, row: any) {
-        if (this.draggingFile.status) {
-            e.preventDefault()
-            //e.stopPropagation()
+        e.preventDefault()
 
-            if (row.isDirectory) {
-                e.target.parentElement.style.backgroundColor = '#43A04720'
-            }
-        }
+        if (row.isDirectory) e.target.parentElement.style.backgroundColor = '#43A04720'
     }
 
     dragLeaveFilelist(e: any) {
-        if (this.draggingFile.status) {
-            e.preventDefault()
-            e.stopPropagation()
+        e.preventDefault()
+        e.stopPropagation()
 
-            e.target.parentElement.style.backgroundColor = 'transparent'
-        }
+        e.target.parentElement.style.backgroundColor = 'transparent'
     }
 
     async dragDropFilelist(e: any, row: any) {
-        if (this.draggingFile.status) {
-            e.preventDefault()
-            e.target.parentElement.style.backgroundColor = 'transparent'
+        e.preventDefault()
+        e.target.parentElement.style.backgroundColor = 'transparent'
 
-            let dest = ''
-            if (row.filename === '..') {
-                dest =
-                    this.currentPath.substring(0, this.currentPath.lastIndexOf('/') + 1) +
-                    this.draggingFile.item.filename
-            } else dest = this.currentPath + '/' + row.filename + '/' + this.draggingFile.item.filename
+        let dest = ''
+        if (row.filename === '..') {
+            dest =
+                this.currentPath.substring(0, this.currentPath.lastIndexOf('/') + 1) + this.draggingFile.item.filename
+        } else dest = this.currentPath + '/' + row.filename + '/' + this.draggingFile.item.filename
 
-            this.$socket.emit(
-                'server.files.move',
-                {
-                    source: 'gcodes' + this.currentPath + '/' + this.draggingFile.item.filename,
-                    dest: 'gcodes' + dest,
-                },
-                { action: 'files/getMove' }
-            )
-        }
+        this.$socket.emit(
+            'server.files.move',
+            {
+                source: 'gcodes' + this.currentPath + '/' + this.draggingFile.item.filename,
+                dest: 'gcodes' + dest,
+            },
+            { action: 'files/getMove' }
+        )
     }
 
     async uploadFile() {
         if (this.$refs.fileUpload.files?.length) {
-            this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
-            let successFiles = []
-            this.uploadSnackbar.number = 0
-            this.uploadSnackbar.max = this.$refs.fileUpload.files.length
-            for (const file of this.$refs.fileUpload.files) {
-                this.uploadSnackbar.number++
-                const result = await this.doUploadFile(file)
-                successFiles.push(result)
-            }
-
-            this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
-            for (const file of successFiles) {
-                this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: file }).toString())
-            }
-
+            const files = [...this.$refs.fileUpload.files]
             this.$refs.fileUpload.value = ''
+
+            await this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
+            await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
+            await this.$store.dispatch('files/uploadSetMaxNumber', this.$refs.fileUpload.files.length)
+            for (const file of files) {
+                await this.$store.dispatch('files/uploadIncrementCurrentNumber')
+                const path = this.currentPath.slice(0, 1) === '/' ? this.currentPath.slice(1) : this.currentPath
+                const result = await this.$store.dispatch('files/uploadFile', {
+                    file,
+                    path,
+                    root: 'gcodes',
+                })
+
+                if (result !== false)
+                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
+            }
+
+            await this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
         }
     }
 
@@ -1383,12 +1216,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
     changeMetadataVisible(name: string, value: boolean) {
         this.$store.dispatch('gui/setGcodefilesMetadata', { name: name, value: value })
-    }
-
-    cancelUpload() {
-        this.uploadSnackbar.cancelTokenSource.cancel()
-        this.uploadSnackbar.status = false
-        this.$refs.fileUpload.value = ''
     }
 
     showContextMenu(e: any, item: FileStateFile) {
@@ -1521,13 +1348,11 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
     dragFile(e: Event, item: FileStateGcodefile) {
         e.preventDefault()
-        this.draggingFile.status = true
         this.draggingFile.item = item
     }
 
     dragendFile(e: Event) {
         e.preventDefault()
-        this.draggingFile.status = false
         this.draggingFile.item = {
             isDirectory: false,
             filename: '',
