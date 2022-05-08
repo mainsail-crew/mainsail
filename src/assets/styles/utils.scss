@@ -52,6 +52,10 @@
     animation-timing-function: linear;
 }
 
+.v-toast {
+    padding: 8px !important;
+}
+
 @keyframes spin {
     from {
         transform: rotate(0deg);

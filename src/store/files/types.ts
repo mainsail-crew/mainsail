@@ -1,5 +1,16 @@
+import { CancelTokenSource } from 'axios'
+
 export interface FileState {
     filetree: FileStateFile[]
+    upload: {
+        show: boolean
+        filename: string
+        currentNumber: number
+        maxNumber: number
+        cancelTokenSource: CancelTokenSource | null
+        percent: number
+        speed: number
+    }
 }
 
 export interface FileStateFile {

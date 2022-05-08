@@ -211,6 +211,10 @@
         "View3D": "View 3D",
         "WrongFileUploaded": "Upload was denied for {filename}. Wrong file format!"
     },
+    "FullscreenUpload": {
+        "CannotUploadFile": "Cannot upload file!",
+        "DropFilesToUploadFiles": "Drop files to upload"
+    },
     "GCodeViewer": {
         "ClearLoadedFile": "Clear",
         "ColorMode": "Color Mode",

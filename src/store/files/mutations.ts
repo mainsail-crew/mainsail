@@ -255,4 +255,43 @@ export const mutations: MutationTree<FileState> = {
         const rootState = state.filetree.find((dir: FileStateFile) => dir.filename === payload.name)
         if (rootState) Vue.set(rootState, 'permissions', payload.permissions)
     },
+
+    uploadClearState(state) {
+        const upload = { ...state.upload }
+        upload.show = false
+        upload.filename = ''
+        upload.cancelTokenSource = null
+        upload.speed = 0
+        upload.percent = 0
+
+        Vue.set(state, 'upload', upload)
+    },
+
+    uploadSetShow(state, payload) {
+        Vue.set(state.upload, 'show', payload)
+    },
+
+    uploadSetFilename(state, payload) {
+        Vue.set(state.upload, 'filename', payload)
+    },
+
+    uploadSetCancelTokenSource(state, payload) {
+        Vue.set(state.upload, 'cancelTokenSource', payload)
+    },
+
+    uploadSetCurrentNumber(state, payload) {
+        Vue.set(state.upload, 'currentNumber', payload)
+    },
+
+    uploadSetMaxNumber(state, payload) {
+        Vue.set(state.upload, 'maxNumber', payload)
+    },
+
+    uploadSetPercent(state, payload) {
+        if (state.upload.percent !== payload) Vue.set(state.upload, 'percent', payload)
+    },
+
+    uploadSetSpeed(state, payload) {
+        if (state.upload.speed !== payload) Vue.set(state.upload, 'speed', payload)
+    },
 }
