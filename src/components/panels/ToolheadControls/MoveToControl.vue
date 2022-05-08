@@ -6,25 +6,11 @@
         <template #default="{ el }">
             <v-container class="py-0">
                 <v-row>
-                    <v-col>
-                        <v-btn-toggle v-model="positionString" dense mandatory style="flex-wrap: nowrap; width: 100%">
-                            <v-btn
-                                value="absolute"
-                                :disabled="['printing'].includes(printer_state)"
-                                dense
-                                class="btnMinWidthAuto flex-grow-1 px-0"
-                                style="height: 28px">
-                                <span class="body-2">{{ $t('Panels.ToolheadControlPanel.Absolute') }}</span>
-                            </v-btn>
-                            <v-btn
-                                value="relative"
-                                :disabled="['printing'].includes(printer_state)"
-                                dense
-                                class="btnMinWidthAuto flex-grow-1 px-0"
-                                style="height: 28px">
-                                <span class="body-2">{{ $t('Panels.ToolheadControlPanel.Relative') }}</span>
-                            </v-btn>
-                        </v-btn-toggle>
+                    <v-col class="v-subheader text--secondary pr-0">
+                        <v-icon small class="mr-2">
+                            {{ mdiCrosshairs }}
+                        </v-icon>
+                        <span>{{ $t('Panels.ToolheadControlPanel.Coordinates') }}: {{ displayPositionAbsolute }}</span>
                     </v-col>
                 </v-row>
                 <v-form class="pt-3" @keyup.native.enter="sendCmd">
@@ -78,11 +64,14 @@ import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import MoveToInput from '@/components/inputs/MoveToInput.vue'
 import Responsive from '@/components/ui/Responsive.vue'
+import { mdiCrosshairs } from '@mdi/js'
 
 @Component({
     components: { MoveToInput, Responsive },
 })
 export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
+    mdiCrosshairs = mdiCrosshairs
+
     input: { [index: string]: any } = {
         x: { pos: '', valid: true },
         y: { pos: '', valid: true },
@@ -161,18 +150,6 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
 
     get positionAbsolute() {
         return this.$store.state.printer.gcode_move?.absolute_coordinates ?? true
-    }
-
-    get positionString() {
-        return this.positionAbsolute ? 'absolute' : 'relative'
-    }
-
-    set positionString(newVal) {
-        let gcode = 'G90'
-        if (newVal === 'relative') gcode = 'G91'
-
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
     get livePositions() {
