@@ -1,4 +1,5 @@
 <style>
+/*noinspection CssUnusedSymbol*/
 .files-table .v-data-table-header__icon {
     margin-left: 7px;
 }
@@ -7,23 +8,28 @@
     cursor: pointer;
 }
 
+/*noinspection CssUnusedSymbol*/
 .file-list--select-td {
     width: 20px;
 }
 
+/*noinspection CssUnusedSymbol*/
 .files-table th.text-start {
     padding-right: 0 !important;
 }
 
+/*noinspection CssUnusedSymbol*/
 .v-chip.minimum-chip {
     padding: 0;
     min-width: 24px;
 }
 
+/*noinspection CssUnusedSymbol*/
 .v-chip.minimum-chip .v-chip__content {
     margin: 0 auto;
 }
 
+/*noinspection CssUnusedSymbol*/
 .file-list__count_printed {
     position: relative;
     top: 1px;
@@ -32,7 +38,10 @@
 
 <template>
     <div>
-        <panel :title="$t('Files.GCodeFiles')" :icon="mdiFileDocumentMultipleOutline" card-class="gcode-files-panel">
+        <panel
+            :title="$t('Files.GCodeFiles').toString()"
+            :icon="mdiFileDocumentMultipleOutline"
+            card-class="gcode-files-panel">
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 d-flex align-center">
@@ -126,13 +135,13 @@
                                 </v-list-item>
                                 <v-divider></v-divider>
                                 <draggable
-                                    v-model="configableHeaders"
+                                    v-model="configurableHeaders"
                                     handle=".handle"
                                     class="v-list-item-group"
                                     ghost-class="ghost"
                                     group="gcodeFilesColumnOrder">
                                     <v-list-item
-                                        v-for="header of configableHeaders"
+                                        v-for="header of configurableHeaders"
                                         :key="header.value"
                                         class="minHeight36"
                                         link>
@@ -345,38 +354,6 @@
             :file="dialogPrintFile.item"
             :current-path="currentPath"
             @closeDialog="closeStartPrint"></start-print-dialog>
-        <v-dialog v-model="dialogPrintFile.show" :max-width="dialogPrintFile.item.big_thumbnail_width">
-            <v-card>
-                <v-img
-                    v-if="dialogPrintFile.item.big_thumbnail"
-                    contain
-                    :src="dialogPrintFile.item.big_thumbnail"></v-img>
-                <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
-                <v-card-text class="pb-0">
-                    {{ $t('Files.DoYouWantToStartFilename', { filename: dialogPrintFile.item.filename }) }}
-                </v-card-text>
-                <template v-if="moonrakerComponents.includes('timelapse')">
-                    <v-divider class="mt-3 mb-2"></v-divider>
-                    <v-card-text class="pb-0">
-                        <settings-row title="Timelapse">
-                            <v-switch v-model="timelapseEnabled" hide-details class="mt-0"></v-switch>
-                        </settings-row>
-                    </v-card-text>
-                    <v-divider class="mt-2 mb-0"></v-divider>
-                </template>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogPrintFile.show = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn
-                        color="primary"
-                        text
-                        :disabled="printerIsPrinting || !klipperReadyForGui"
-                        @click="startPrint(dialogPrintFile.item.filename)">
-                        {{ $t('Files.StartPrint') }}
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item
@@ -584,7 +561,6 @@ import {
     mdiPencil,
     mdiDelete,
     mdiCloseThick,
-    mdiClose,
     mdiCheckboxBlankOutline,
     mdiCheckboxMarked,
     mdiArrowUpDown,
@@ -593,21 +569,6 @@ import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 
 interface draggingFile {
     item: FileStateGcodefile
-}
-
-interface uploadSnackbar {
-    status: boolean
-    filename: string
-    percent: number
-    speed: number
-    total: number
-    number: number
-    max: number
-    cancelTokenSource: any
-    lastProgress: {
-        time: number
-        loaded: number
-    }
 }
 
 interface dialogPrintFile {
@@ -647,7 +608,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     mdiPlay = mdiPlay
     mdiPlaylistPlus = mdiPlaylistPlus
     mdiFire = mdiFire
-    mdiClose = mdiClose
     mdiVideo3d = mdiVideo3d
     mdiCloudDownload = mdiCloudDownload
     mdiRenameBox = mdiRenameBox
@@ -671,24 +631,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         inputFieldRenameDirectory: HTMLInputElement
     }
 
-    private TimelapseModeOptions = [
-        {
-            text: 'layermacro',
-            value: 'layermacro',
-        },
-        {
-            text: 'hyperlapse',
-            value: 'hyperlapse',
-        },
-    ]
-
     private search = ''
-    private selected = []
-    private hideHeaderColums = []
-    private dropzone = {
-        visibility: 'hidden',
-        opacity: 0,
-    }
     private draggingFile: draggingFile = {
         item: {
             isDirectory: false,
@@ -705,20 +648,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             last_print_duration: null,
             last_status: null,
             last_total_duration: null,
-        },
-    }
-    private uploadSnackbar: uploadSnackbar = {
-        status: false,
-        filename: '',
-        percent: 0,
-        speed: 0,
-        total: 0,
-        number: 0,
-        max: 0,
-        cancelTokenSource: {},
-        lastProgress: {
-            time: 0,
-            loaded: 0,
         },
     }
     private dialogCreateDirectory = {
@@ -858,7 +787,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         ]
     }
 
-    get configableHeaders() {
+    get configurableHeaders() {
         const headers: tableColumnSetting[] = [
             {
                 text: this.$t('Files.Filesize').toString(),
@@ -960,7 +889,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         return headers.sort((a, b) => (a.pos ?? 0) - (b.pos ?? 0))
     }
 
-    set configableHeaders(newVal) {
+    set configurableHeaders(newVal) {
         const orderArray: string[] = []
         newVal.forEach((row: tableColumnSetting) => orderArray.push(row.value))
 
@@ -968,11 +897,11 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     get headers() {
-        return [...this.fixedHeaders, ...this.configableHeaders]
+        return [...this.fixedHeaders, ...this.configurableHeaders]
     }
 
     get tableColumns() {
-        return this.configableHeaders.filter((column) => column.visible)
+        return this.configurableHeaders.filter((column) => column.visible)
     }
 
     get directory() {
@@ -1200,7 +1129,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf('/'))
     }
 
-    addToQueue(item: FileStateGcodefile) {
+    addToQueue(item: FileStateGcodefile | FileStateFile) {
         let path = this.currentPath.slice(7)
         if (path != '') path += '/'
         const filename = path + item.filename
