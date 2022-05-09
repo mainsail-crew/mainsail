@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
-import { GuiState } from '@/store/gui/types'
+import { GuiState, GuiStateLayoutoption } from '@/store/gui/types'
 import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
 import { themeDir } from '@/store/variables'
@@ -61,6 +61,36 @@ export const actions: ActionTree<GuiState, RootState> = {
                 value: payload.value.dashboard.nonExpandPanels,
             })
             delete payload.value.dashboard.nonExpandPanels
+        }
+
+        //update tools to temperatures panel from V2.1.x to V2.2.0
+        if ('dashboard' in payload.value) {
+            const dashboard = payload.value.dashboard
+            const layouts = [
+                'mobileLayout',
+                'tabletLayout1',
+                'tabletLayout2',
+                'desktopLayout1',
+                'desktopLayout2',
+                'widescreenLayout1',
+                'widescreenLayout2',
+                'widescreenLayout3',
+            ]
+
+            layouts.forEach((layout) => {
+                if (layout in dashboard) {
+                    const index = dashboard[layout].findIndex((entry: GuiStateLayoutoption) => entry.name === 'tools')
+
+                    if (index !== -1) {
+                        dashboard[layout][index].name = 'temperature'
+
+                        dispatch('saveSetting', {
+                            name: 'dashboard.' + layout,
+                            value: dashboard[layout],
+                        })
+                    }
+                }
+            })
         }
 
         commit('setData', payload.value)
