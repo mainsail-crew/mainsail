@@ -86,7 +86,7 @@
                     <template #default="{ el }">
                         <v-simple-table class="temperature-panel-table">
                             <thead>
-                                <tr>
+                                <tr class="_no-hover">
                                     <th class="icon">&nbsp;</th>
                                     <th class="name">{{ $t('Panels.TemperaturePanel.Name') }}</th>
                                     <th v-if="!el.is.mobile" class="state">
@@ -401,6 +401,10 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
     padding-top: 5px !important;
     padding-bottom: 5px !important;
     height: auto !important;
+}
+
+.temperature-panel-table tr:hover {
+    background: none !important;
 }
 
 .temperature-panel-table .icon {
