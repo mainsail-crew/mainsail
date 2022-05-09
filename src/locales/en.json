@@ -490,7 +490,7 @@
                 "UnretractExtraLength": "Unretract Extra Length",
                 "UnretractSpeed": "Unretract Speed"
             },
-            "Headline": "Machine Settings",
+            "Headline": "Machine",
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. to Decel.",
