@@ -86,7 +86,7 @@
                     <template #default="{ el }">
                         <v-simple-table class="temperature-panel-table">
                             <thead>
-                                <tr class="_no-hover">
+                                <tr>
                                     <th class="icon">&nbsp;</th>
                                     <th class="name">{{ $t('Panels.TemperaturePanel.Name') }}</th>
                                     <th v-if="!el.is.mobile" class="state">
