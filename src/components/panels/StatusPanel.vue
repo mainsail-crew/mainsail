@@ -9,7 +9,7 @@
         <min-settings-panel></min-settings-panel>
         <klippy-state-panel></klippy-state-panel>
         <panel
-            v-if="klipperState === 'ready'"
+            v-if="klipperReadyForGui"
             :icon="mdiInformation"
             :title="printerStateOutput"
             :collapsible="true"
