@@ -1,72 +1,80 @@
 <template>
     <v-container>
-        <v-row>
-            <v-col class="col-12 col-md-6">
-                <number-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.Velocity').toString()"
-                    param="VELOCITY"
-                    :target="velocity"
-                    :default-value="defaultVelocity"
-                    :output-error-msg="true"
-                    :has-spinner="true"
-                    :spinner-factor="5"
-                    :step="1"
-                    :min="1"
-                    :max="null"
-                    :dec="0"
-                    unit="mm/s"
-                    @submit="sendCmd"></number-input>
-            </v-col>
-            <v-col class="col-12 col-md-6">
-                <number-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.SquareCornerVelocity').toString()"
-                    param="SQUARE_CORNER_VELOCITY"
-                    :target="squareCornerVelocity"
-                    :default-value="defaultSquareCornerVelocity"
-                    :output-error-msg="true"
-                    :has-spinner="true"
-                    :step="0.1"
-                    :min="0.1"
-                    :max="null"
-                    :dec="1"
-                    unit="mm/s"
-                    @submit="sendCmd"></number-input>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col class="col-12 col-md-6">
-                <number-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.Acceleration').toString()"
-                    param="ACCEL"
-                    :target="accel"
-                    :default-value="defaultAccel"
-                    :output-error-msg="true"
-                    :has-spinner="true"
-                    :spinner-factor="100"
-                    :step="1"
-                    :min="1"
-                    :max="null"
-                    :dec="0"
-                    unit="mm/s²"
-                    @submit="sendCmd"></number-input>
-            </v-col>
-            <v-col class="col-12 col-md-6">
-                <number-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.MaxAccelToDecel').toString()"
-                    param="ACCEL_TO_DECEL"
-                    :target="accelToDecel"
-                    :default-value="defaultAccelToDecel"
-                    :output-error-msg="true"
-                    :has-spinner="true"
-                    :spinner-factor="100"
-                    :step="1"
-                    :min="1"
-                    :max="null"
-                    :dec="0"
-                    unit="mm/s²"
-                    @submit="sendCmd"></number-input>
-            </v-col>
-        </v-row>
+        <responsive
+            :breakpoints="{
+                small: (el) => el.width < 375,
+                medium: (el) => el.width >= 375,
+            }">
+            <template #default="{ el }">
+                <v-row>
+                    <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <number-input
+                            :label="$t('Panels.MachineSettingsPanel.MotionSettings.Velocity').toString()"
+                            param="VELOCITY"
+                            :target="velocity"
+                            :default-value="defaultVelocity"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="5"
+                            :step="1"
+                            :min="1"
+                            :max="null"
+                            :dec="0"
+                            unit="mm/s"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                    <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <number-input
+                            :label="$t('Panels.MachineSettingsPanel.MotionSettings.SquareCornerVelocity').toString()"
+                            param="SQUARE_CORNER_VELOCITY"
+                            :target="squareCornerVelocity"
+                            :default-value="defaultSquareCornerVelocity"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :step="0.1"
+                            :min="0.1"
+                            :max="null"
+                            :dec="1"
+                            unit="mm/s"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <number-input
+                            :label="$t('Panels.MachineSettingsPanel.MotionSettings.Acceleration').toString()"
+                            param="ACCEL"
+                            :target="accel"
+                            :default-value="defaultAccel"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="100"
+                            :step="1"
+                            :min="1"
+                            :max="null"
+                            :dec="0"
+                            unit="mm/s²"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                    <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <number-input
+                            :label="$t('Panels.MachineSettingsPanel.MotionSettings.MaxAccelToDecel').toString()"
+                            param="ACCEL_TO_DECEL"
+                            :target="accelToDecel"
+                            :default-value="defaultAccelToDecel"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="100"
+                            :step="1"
+                            :min="1"
+                            :max="null"
+                            :dec="0"
+                            unit="mm/s²"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                </v-row>
+            </template>
+        </responsive>
     </v-container>
 </template>
 
@@ -76,9 +84,10 @@ import { Debounce } from 'vue-debounce-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import NumberInput from '@/components/inputs/NumberInput.vue'
+import Responsive from '@/components/ui/Responsive.vue'
 
 @Component({
-    components: { Panel, NumberInput },
+    components: { Panel, NumberInput, Responsive },
 })
 export default class MotionSettings extends Mixins(BaseMixin) {
     get velocity(): number {
