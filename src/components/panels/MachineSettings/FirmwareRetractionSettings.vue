@@ -1,5 +1,5 @@
 <template>
-    <v-card-text>
+    <v-container>
         <v-row>
             <v-col class="col-12 col-md-6">
                 <number-input
@@ -70,7 +70,7 @@
                     @submit="sendCmd"></number-input>
             </v-col>
         </v-row>
-    </v-card-text>
+    </v-container>
 </template>
 
 <script lang="ts">

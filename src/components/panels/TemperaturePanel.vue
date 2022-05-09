@@ -403,6 +403,10 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
     height: auto !important;
 }
 
+.temperature-panel-table tr:hover {
+    background: none !important;
+}
+
 .temperature-panel-table .icon {
     width: 24px;
     padding-right: 0 !important;
