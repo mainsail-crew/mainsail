@@ -52,7 +52,6 @@ export const getters: GetterTree<FileState, any> = {
                 const directory = getters['getDirectory']('gcodes' + path)
                 files = directory?.childrens ?? []
             } else {
-                baseURL += '/'
                 const rootGcodes = getters['getDirectory']('gcodes')
 
                 const searchGcodes = (directory: FileStateFile, currentPath: string) => {
@@ -103,6 +102,12 @@ export const getters: GetterTree<FileState, any> = {
                 }
 
                 if (file.thumbnails?.length) {
+                    let subdirectory = ''
+                    if (path === null) {
+                        const pos = file.filename.lastIndexOf('/')
+                        if (pos > 0) subdirectory = '/' + file.filename.slice(0, pos)
+                    }
+
                     const small_thumbnail = file.thumbnails.find(
                         (thumb) =>
                             thumb.width >= thumbnailSmallMin &&
@@ -112,7 +117,7 @@ export const getters: GetterTree<FileState, any> = {
                     )
 
                     if (small_thumbnail && 'relative_path' in small_thumbnail) {
-                        tmp.small_thumbnail = `${baseURL}/${encodeURI(
+                        tmp.small_thumbnail = `${baseURL + subdirectory}/${encodeURI(
                             small_thumbnail.relative_path
                         )}?timestamp=${fileTimestamp}`
                     }
@@ -120,7 +125,7 @@ export const getters: GetterTree<FileState, any> = {
                     const big_thumbnail = file.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
 
                     if (big_thumbnail && 'relative_path' in big_thumbnail) {
-                        tmp.big_thumbnail = `${baseURL}/${encodeURI(
+                        tmp.big_thumbnail = `${baseURL + subdirectory}/${encodeURI(
                             big_thumbnail.relative_path
                         )}?timestamp=${fileTimestamp}`
 

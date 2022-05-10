@@ -21,16 +21,13 @@
                     @contextmenu="showContextMenu($event, item)"
                     @click="showDialog(item)">
                     <td class="pr-0 text-center" style="width: 32px">
-                        <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
-                            <v-tooltip
-                                v-if="getSmallThumbnail(item) && getBigThumbnail(item)"
-                                top
-                                content-class="tooltip__content-opacity1">
+                        <template v-if="item.small_thumbnail && item.big_thumbnail">
+                            <v-tooltip top content-class="tooltip__content-opacity1">
                                 <template #activator="{ on, attrs }">
                                     <vue-load-image class="d-flex">
                                         <img
                                             slot="image"
-                                            :src="getSmallThumbnail(item)"
+                                            :src="item.small_thumbnail"
                                             width="32"
                                             height="32"
                                             v-bind="attrs"
@@ -42,12 +39,12 @@
                                         <v-icon slot="error">{{ mdiFile }}</v-icon>
                                     </vue-load-image>
                                 </template>
-                                <span><img :src="getBigThumbnail(item)" width="250" /></span>
+                                <span><img :src="item.big_thumbnail" width="250" /></span>
                             </v-tooltip>
                         </template>
-                        <template v-else-if="getSmallThumbnail(item)">
+                        <template v-else-if="item.small_thumbnail">
                             <vue-load-image>
-                                <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" />
+                                <img slot="image" :src="item.small_thumbnail" width="32" height="32" />
                                 <v-progress-circular
                                     slot="preloader"
                                     indeterminate
@@ -161,7 +158,6 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiFile } from '@mdi/js'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
@@ -294,28 +290,6 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
                 this.contextMenu.shown = true
             })
         }
-    }
-
-    getSmallThumbnail(item: ServerJobQueueStateJob) {
-        const tmp = { ...item }
-        const currentPath =
-            item.filename.lastIndexOf('/') >= 0
-                ? 'gcodes/' + item.filename.slice(0, item.filename.lastIndexOf('/'))
-                : 'gcodes'
-        tmp.filename = item.filename.slice(item.filename.lastIndexOf('/'))
-
-        return this.$store.getters['files/getSmallThumbnail'](item, currentPath)
-    }
-
-    getBigThumbnail(item: ServerJobQueueStateJob) {
-        const tmp = { ...item }
-        const currentPath =
-            item.filename.lastIndexOf('/') >= 0
-                ? 'gcodes/' + item.filename.slice(0, item.filename.lastIndexOf('/'))
-                : 'gcodes'
-        tmp.filename = item.filename.slice(item.filename.lastIndexOf('/'))
-
-        return this.$store.getters['files/getBigThumbnail'](item, currentPath)
     }
 
     getDescription(item: FileStateGcodefile) {
