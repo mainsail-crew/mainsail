@@ -13,7 +13,11 @@ export const actions: ActionTree<EditorState, RootState> = {
     },
 
     openFile({ state, dispatch, commit, rootGetters, rootState }, payload) {
-        const fullFilepath = payload.root + payload.path + '/' + payload.filename
+        let path = payload.path
+        if (path.slice(0, 1) === '/') path = path.slice(1)
+        if (path.slice(-1) === '/') path = path.slice(0, -1)
+
+        const fullFilepath = [payload.root, path, payload.filename].join('/')
         const url = rootGetters['socket/getUrl'] + '/server/files/' + encodeURI(fullFilepath) + `?${Date.now()}`
 
         if (state.cancelToken) dispatch('cancelLoad')
@@ -66,7 +70,7 @@ export const actions: ActionTree<EditorState, RootState> = {
                 commit('openFile', {
                     filename: payload.filename,
                     fileroot: payload.root,
-                    filepath: payload.path,
+                    filepath: path,
                     file,
                 })
             })

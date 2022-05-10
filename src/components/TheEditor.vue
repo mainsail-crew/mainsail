@@ -14,7 +14,8 @@
                 card-class="editor-dialog"
                 :icon="isWriteable ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"
                 :title="
-                    (filepath ? filepath.slice(1) + '/' : '') +
+                    filepath +
+                    '/' +
                     filename +
                     ' ' +
                     (isWriteable ? changedOutput : '(' + $t('Editor.FileReadOnly') + ')')

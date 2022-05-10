@@ -537,33 +537,33 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { validGcodeExtensions } from '@/store/variables'
-import { formatFilesize, formatDate, sortFiles, formatPrintTime } from '@/plugins/helpers'
+import { formatDate, formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import draggable from 'vuedraggable'
 import {
-    mdiFile,
-    mdiFileDocumentMultipleOutline,
-    mdiMagnify,
-    mdiUpload,
-    mdiFolderPlus,
-    mdiRefresh,
-    mdiCog,
-    mdiFolderUpload,
-    mdiFolder,
-    mdiPlay,
-    mdiPlaylistPlus,
-    mdiFire,
-    mdiVideo3d,
-    mdiCloudDownload,
-    mdiRenameBox,
-    mdiPencil,
-    mdiDelete,
-    mdiCloseThick,
+    mdiArrowUpDown,
     mdiCheckboxBlankOutline,
     mdiCheckboxMarked,
-    mdiArrowUpDown,
+    mdiCloseThick,
+    mdiCloudDownload,
+    mdiCog,
+    mdiDelete,
+    mdiFile,
+    mdiFileDocumentMultipleOutline,
+    mdiFire,
+    mdiFolder,
+    mdiFolderPlus,
+    mdiFolderUpload,
+    mdiMagnify,
+    mdiPencil,
+    mdiPlay,
+    mdiPlaylistPlus,
+    mdiRefresh,
+    mdiRenameBox,
+    mdiUpload,
+    mdiVideo3d,
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 
@@ -1141,7 +1141,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/setGcodefilesMetadata', { name: name, value: value })
     }
 
-    showContextMenu(e: any, item: FileStateFile) {
+    showContextMenu(e: any, item: FileStateGcodefile | FileStateFile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true
