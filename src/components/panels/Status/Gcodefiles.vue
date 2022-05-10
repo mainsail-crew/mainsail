@@ -10,7 +10,7 @@
             mobile-breakpoint="0"
             @current-items="setFirst">
             <template #no-data>
-                <div class="text-center">{{ $t('Panels.StatusPanel.Files.EmptyGcodes') }}</div>
+                <div class="text-center">{{ $t('Panels.StatusPanel.EmptyGcodes') }}</div>
             </template>
 
             <template #item="{ item }">
@@ -158,10 +158,10 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { mdiFile } from '@mdi/js'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import {
+    mdiFile,
     mdiPlay,
     mdiPlaylistPlus,
     mdiFire,
@@ -184,7 +184,7 @@ interface dialogRenameObject {
         StartPrintDialog,
     },
 })
-export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
+export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
     mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiPlaylistPlus = mdiPlaylistPlus
@@ -295,14 +295,14 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
     getDescription(item: FileStateGcodefile) {
         let output = ''
 
-        output += this.$t('Panels.StatusPanel.Files.Filament') + ': '
+        output += this.$t('Panels.StatusPanel.Filament') + ': '
         if (item.filament_total || item.filament_weight_total) {
             if (item.filament_total) output += item.filament_total.toFixed() + ' mm'
             if (item.filament_total && item.filament_weight_total) output += ' / '
             if (item.filament_weight_total) output += item.filament_weight_total.toFixed(2) + ' g'
         } else output += '--'
 
-        output += ', ' + this.$t('Panels.StatusPanel.Files.PrintTime') + ': '
+        output += ', ' + this.$t('Panels.StatusPanel.PrintTime') + ': '
         if (item.estimated_time) output += this.formatPrintTime(item.estimated_time)
         else output += '--'
 

@@ -10,7 +10,7 @@
             mobile-breakpoint="0"
             @current-items="setFirst">
             <template #no-data>
-                <div class="text-center">{{ $t('Panels.StatusPanel.Files.EmptyJobqueue') }}</div>
+                <div class="text-center">{{ $t('Panels.StatusPanel.EmptyJobqueue') }}</div>
             </template>
 
             <template #item="{ item }">
@@ -75,7 +75,7 @@
                     </td>
                     <td class="pr-2">
                         {{
-                            $tc('Panels.StatusPanel.Files.JobqueueMoreFiles', jobs.length - jobsTable.length, {
+                            $tc('Panels.StatusPanel.JobqueueMoreFiles', jobs.length - jobsTable.length, {
                                 count: jobs.length - jobsTable.length,
                             })
                         }}
@@ -97,7 +97,7 @@ import { mdiFile, mdiPlay, mdiFileMultiple } from '@mdi/js'
 @Component({
     components: {},
 })
-export default class StatusPanelFilesJobqueue extends Mixins(BaseMixin) {
+export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
     mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiFileMultiple = mdiFileMultiple
