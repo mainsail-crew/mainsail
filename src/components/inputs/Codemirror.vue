@@ -22,6 +22,7 @@ import { gcode } from '@/plugins/StreamParserGcode'
 import { EditorView, keymap } from '@codemirror/view'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
+import { defaultHighlightStyle, HighlightStyle, syntaxHighlighting } from '@codemirror/language'
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin) {
@@ -79,8 +80,6 @@ export default class Codemirror extends Mixins(BaseMixin) {
     }
 
     setCmValue(content: string) {
-        window.console.log(this.cminstance, content)
-
         this.cminstance?.setState(EditorState.create({ doc: content, extensions: this.cmExtensions }))
     }
 

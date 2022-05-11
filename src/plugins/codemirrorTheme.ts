@@ -1,13 +1,14 @@
 import { EditorView } from '@codemirror/view'
 import { Extension } from '@codemirror/state'
-import { HighlightStyle, tags as t } from '@codemirror/highlight'
+import { tags as t } from '@lezer/highlight'
+import { HighlightStyle, syntaxHighlighting } from '@codemirror/language'
 
 const ui = {
     background: '#1e1e1e',
     foreground: '#d4d4d4',
 }
 
-export const mainsailEditor = EditorView.theme(
+const mainsailEditor = EditorView.theme(
     {
         '&': {
             color: '#d4d4d4',
@@ -40,7 +41,7 @@ export const mainsailEditor = EditorView.theme(
     { dark: true }
 )
 
-/*export const mainsailHighlightStyle = HighlightStyle.define([
+const mainsailHighlightStyle = HighlightStyle.define([
     { tag: t.number, color: '#b5cea8' },
     { tag: [t.meta], color: '#d4d4d4' },
     { tag: [t.comment], color: '#6a9955' },
@@ -50,8 +51,12 @@ export const mainsailEditor = EditorView.theme(
     { tag: t.className, color: '#c586c0' },
     { tag: t.name, color: '#e40', fontWeight: 'bold' },
     { tag: t.propertyName, color: '#e56735' },
-])*/
+])
+const fn0 = mainsailHighlightStyle.style
+// noinspection JSConstantReassignment
+// @ts-ignore
+mainsailHighlightStyle.style = (tags) => fn0(tags || [])
 
 /// Extension to enable the Mox theme (both the editor theme and
 /// the highlight style).
-export const mainsailTheme: Extension = [mainsailEditor]
+export const mainsailTheme: Extension = [mainsailEditor, syntaxHighlighting(mainsailHighlightStyle)]
