@@ -251,7 +251,6 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
     }
 
     removeFromJobqueue(item: ServerJobQueueStateJob) {
-        this.$store.dispatch('server/jobQueue/start')
         this.$store.dispatch('server/jobQueue/deleteFromQueue', [item.job_id])
     }
 
