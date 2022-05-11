@@ -1,6 +1,6 @@
 <template>
     <div>
-        <panel :icon="mdiTrayFull" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
+        <panel ref="jobqueuePanel" :icon="mdiTrayFull" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
             <template #buttons>
                 <v-btn
                     v-if="queueState === 'paused'"
@@ -93,11 +93,8 @@
                             </template>
                         </td>
                         <td class=" ">
-                            {{ item.filename }}
-                            <template v-if="existMetadata(item)">
-                                <br />
-                                <small>{{ getDescription(item) }}</small>
-                            </template>
+                            <div class="d-block text-truncate" :style="styleContentTdWidth">{{ item.filename }}</div>
+                            <small v-if="existMetadata(item)">{{ getDescription(item) }}</small>
                         </td>
                     </tr>
                 </template>
@@ -134,12 +131,17 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
 
     formatFilesize = formatFilesize
 
+    private contentTdWidth = 100
     private contextMenu = {
         shown: false,
         touchTimer: undefined,
         x: 0,
         y: 0,
         item: {},
+    }
+
+    declare $refs: {
+        jobqueuePanel: any
     }
 
     get jobs() {
@@ -158,34 +160,8 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.jobqueue.countPerPage', value: newVal })
     }
 
-    refreshHistory() {
-        this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
-    }
-
-    formatPrintTime(totalSeconds: number) {
-        if (totalSeconds) {
-            let output = ''
-
-            const days = Math.floor(totalSeconds / (3600 * 24))
-            if (days) {
-                totalSeconds %= 3600 * 24
-                output += days + 'd'
-            }
-
-            const hours = Math.floor(totalSeconds / 3600)
-            totalSeconds %= 3600
-            if (hours) output += ' ' + hours + 'h'
-
-            const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += ' ' + minutes + 'm'
-
-            const seconds = totalSeconds % 60
-            if (seconds) output += ' ' + seconds.toFixed(0) + 's'
-
-            return output
-        }
-
-        return '--'
+    get styleContentTdWidth() {
+        return `width: ${this.contentTdWidth}px;`
     }
 
     showContextMenu(e: any, item: ServerHistoryStateJob) {
@@ -240,6 +216,19 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
 
     existMetadata(item: ServerJobQueueStateJob) {
         return item?.metadata?.metadataPulled
+    }
+
+    mounted() {
+        window.addEventListener('resize', this.eventListenerResize)
+        this.eventListenerResize()
+    }
+
+    destroyed() {
+        window.removeEventListener('resize', this.eventListenerResize)
+    }
+
+    eventListenerResize() {
+        this.contentTdWidth = this.$refs.jobqueuePanel?.$el?.clientWidth - 48 - 32
     }
 }
 </script>
