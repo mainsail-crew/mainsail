@@ -354,7 +354,7 @@
             "Delete": "Löschen",
             "DeleteDirectory": "Verzeichnis löschen",
             "DeleteDirectoryQuestion": "Verzeichnis \"{name}\" und den gesamten Inhalt löschen?",
-            "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Elemente gelöscht werden?",
+            "DeleteSelectedQuestion": "{count} ausgewählte Elemente löschen?",
             "Download": "Herunterladen",
             "EditFile": "Bearbeite Datei",
             "Empty": "Leer",
