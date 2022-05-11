@@ -1,5 +1,5 @@
 /*
-import {StringStream} from "@codemirror/stream-parser";
+import {StringStream} from "@codemirror/language";
 let keywords = ["and", "as", "block", "endblock", "by", "cycle", "debug", "else", "elif",
         "extends", "filter", "endfilter", "firstof", "for",
         "endfor", "if", "endif", "ifchanged", "endifchanged",

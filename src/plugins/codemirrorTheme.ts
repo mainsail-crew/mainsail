@@ -40,7 +40,7 @@ export const mainsailEditor = EditorView.theme(
     { dark: true }
 )
 
-export const mainsailHighlightStyle = HighlightStyle.define([
+/*export const mainsailHighlightStyle = HighlightStyle.define([
     { tag: t.number, color: '#b5cea8' },
     { tag: [t.meta], color: '#d4d4d4' },
     { tag: [t.comment], color: '#6a9955' },
@@ -50,8 +50,8 @@ export const mainsailHighlightStyle = HighlightStyle.define([
     { tag: t.className, color: '#c586c0' },
     { tag: t.name, color: '#e40', fontWeight: 'bold' },
     { tag: t.propertyName, color: '#e56735' },
-])
+])*/
 
 /// Extension to enable the Mox theme (both the editor theme and
 /// the highlight style).
-export const mainsailTheme: Extension = [mainsailEditor, mainsailHighlightStyle]
+export const mainsailTheme: Extension = [mainsailEditor]

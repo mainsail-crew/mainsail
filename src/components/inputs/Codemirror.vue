@@ -16,7 +16,7 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import { basicSetup, EditorState } from '@codemirror/basic-setup'
 import { mainsailTheme } from '@/plugins/codemirrorTheme'
-import { StreamLanguage } from '@codemirror/stream-parser'
+import { StreamLanguage } from '@codemirror/language'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
 import { gcode } from '@/plugins/StreamParserGcode'
 import { EditorView, keymap } from '@codemirror/view'
@@ -79,6 +79,8 @@ export default class Codemirror extends Mixins(BaseMixin) {
     }
 
     setCmValue(content: string) {
+        window.console.log(this.cminstance, content)
+
         this.cminstance?.setState(EditorState.create({ doc: content, extensions: this.cmExtensions }))
     }
 
