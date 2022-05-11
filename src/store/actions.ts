@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 export const actions: ActionTree<RootState, RootState> = {
     switchToDashboard() {
-        router.push('/')
+        if (router.currentRoute.fullPath !== '/') router.push('/')
     },
 
     changePrinter({ dispatch, getters, state }, payload) {

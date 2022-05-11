@@ -22,14 +22,15 @@ export const mutations: MutationTree<ServerHistoryState> = {
     },
 
     addJob(state, payload) {
-        state.jobs.push(payload)
+        const jobs = [...state.jobs]
+        jobs.push(payload)
+
+        Vue.set(state, 'jobs', jobs)
     },
 
     updateJob(state, payload) {
         const index = state.jobs.findIndex((job) => job.job_id === payload.job_id)
-        if (index !== -1) {
-            Vue.set(state.jobs, index, payload)
-        }
+        if (index !== -1) Vue.set(state.jobs, index, payload)
     },
 
     destroyJob(state, payload) {

@@ -1,4 +1,5 @@
 <style>
+/*noinspection CssUnusedSymbol*/
 .files-table .v-data-table-header__icon {
     margin-left: 7px;
 }
@@ -7,23 +8,28 @@
     cursor: pointer;
 }
 
+/*noinspection CssUnusedSymbol*/
 .file-list--select-td {
     width: 20px;
 }
 
+/*noinspection CssUnusedSymbol*/
 .files-table th.text-start {
     padding-right: 0 !important;
 }
 
+/*noinspection CssUnusedSymbol*/
 .v-chip.minimum-chip {
     padding: 0;
     min-width: 24px;
 }
 
+/*noinspection CssUnusedSymbol*/
 .v-chip.minimum-chip .v-chip__content {
     margin: 0 auto;
 }
 
+/*noinspection CssUnusedSymbol*/
 .file-list__count_printed {
     position: relative;
     top: 1px;
@@ -32,7 +38,10 @@
 
 <template>
     <div>
-        <panel :title="$t('Files.GCodeFiles')" :icon="mdiFileDocumentMultipleOutline" card-class="gcode-files-panel">
+        <panel
+            :title="$t('Files.GCodeFiles').toString()"
+            :icon="mdiFileDocumentMultipleOutline"
+            card-class="gcode-files-panel">
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 d-flex align-center">
@@ -126,13 +135,13 @@
                                 </v-list-item>
                                 <v-divider></v-divider>
                                 <draggable
-                                    v-model="configableHeaders"
+                                    v-model="configurableHeaders"
                                     handle=".handle"
                                     class="v-list-item-group"
                                     ghost-class="ghost"
                                     group="gcodeFilesColumnOrder">
                                     <v-list-item
-                                        v-for="header of configableHeaders"
+                                        v-for="header of configurableHeaders"
                                         :key="header.value"
                                         class="minHeight36"
                                         link>
@@ -308,22 +317,20 @@
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-right text-no-wrap">
-                            <v-tooltip v-if="getJobStatus(item)" top>
+                            <v-tooltip v-if="item.last_status" top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
                                         <span
-                                            v-if="item.count_printed > 1"
-                                            :class="`file-list__count_printed ${getStatusTextColor(
-                                                getJobStatus(item)
-                                            )}`">
+                                            v-if="item.count_printed > 0"
+                                            :class="`file-list__count_printed ${getStatusTextColor(item.last_status)}`">
                                             {{ item.count_printed }}
                                         </span>
-                                        <v-icon small :color="getStatusColor(getJobStatus(item))">
-                                            {{ getStatusIcon(getJobStatus(item)) }}
+                                        <v-icon small :color="getStatusColor(item.last_status)">
+                                            {{ getStatusIcon(item.last_status) }}
                                         </v-icon>
                                     </span>
                                 </template>
-                                <span>{{ getJobStatus(item).replace(/_/g, ' ') }}</span>
+                                <span>{{ item.last_status.replace(/_/g, ' ') }}</span>
                             </v-tooltip>
                         </td>
                         <td
@@ -340,38 +347,11 @@
                 </template>
             </v-data-table>
         </panel>
-        <v-dialog v-model="dialogPrintFile.show" :max-width="dialogPrintFile.item.big_thumbnail_width">
-            <v-card>
-                <v-img
-                    v-if="dialogPrintFile.item.big_thumbnail"
-                    contain
-                    :src="dialogPrintFile.item.big_thumbnail"></v-img>
-                <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
-                <v-card-text class="pb-0">
-                    {{ $t('Files.DoYouWantToStartFilename', { filename: dialogPrintFile.item.filename }) }}
-                </v-card-text>
-                <template v-if="moonrakerComponents.includes('timelapse')">
-                    <v-divider class="mt-3 mb-2"></v-divider>
-                    <v-card-text class="pb-0">
-                        <settings-row title="Timelapse">
-                            <v-switch v-model="timelapseEnabled" hide-details class="mt-0"></v-switch>
-                        </settings-row>
-                    </v-card-text>
-                    <v-divider class="mt-2 mb-0"></v-divider>
-                </template>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogPrintFile.show = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn
-                        color="primary"
-                        text
-                        :disabled="printerIsPrinting || !klipperReadyForGui"
-                        @click="startPrint(dialogPrintFile.item.filename)">
-                        {{ $t('Files.StartPrint') }}
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <start-print-dialog
+            :bool="dialogPrintFile.show"
+            :file="dialogPrintFile.item"
+            :current-path="currentPath"
+            @closeDialog="closeStartPrint"></start-print-dialog>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item
@@ -555,34 +535,35 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { validGcodeExtensions } from '@/store/variables'
-import { formatFilesize, formatDate, sortFiles, formatPrintTime } from '@/plugins/helpers'
+import { formatDate, formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import draggable from 'vuedraggable'
 import {
-    mdiFileDocumentMultipleOutline,
-    mdiFile,
-    mdiMagnify,
-    mdiUpload,
-    mdiFolderPlus,
-    mdiRefresh,
-    mdiCog,
-    mdiFolderUpload,
-    mdiFolder,
-    mdiPlay,
-    mdiPlaylistPlus,
-    mdiFire,
-    mdiVideo3d,
-    mdiCloudDownload,
-    mdiRenameBox,
-    mdiPencil,
-    mdiDelete,
-    mdiCloseThick,
+    mdiArrowUpDown,
     mdiCheckboxBlankOutline,
     mdiCheckboxMarked,
-    mdiArrowUpDown,
+    mdiCloseThick,
+    mdiCloudDownload,
+    mdiCog,
+    mdiDelete,
+    mdiFile,
+    mdiFileDocumentMultipleOutline,
+    mdiFire,
+    mdiFolder,
+    mdiFolderPlus,
+    mdiFolderUpload,
+    mdiMagnify,
+    mdiPlay,
+    mdiPlaylistPlus,
+    mdiRefresh,
+    mdiRenameBox,
+    mdiUpload,
+    mdiVideo3d,
+    mdiPencil,
 } from '@mdi/js'
+import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 
 interface draggingFile {
     item: FileStateGcodefile
@@ -610,11 +591,11 @@ interface tableColumnSetting {
 }
 
 @Component({
-    components: { Panel, SettingsRow, draggable },
+    components: { StartPrintDialog, Panel, SettingsRow, draggable },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin) {
-    mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiFile = mdiFile
+    mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiMagnify = mdiMagnify
     mdiUpload = mdiUpload
     mdiFolderPlus = mdiFolderPlus
@@ -804,7 +785,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         ]
     }
 
-    get configableHeaders() {
+    get configurableHeaders() {
         const headers: tableColumnSetting[] = [
             {
                 text: this.$t('Files.Filesize').toString(),
@@ -876,11 +857,39 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 outputType: 'time',
             },
             {
+                text: this.$t('Files.LastStartTime').toString(),
+                value: 'last_start_time',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'date',
+            },
+            {
+                text: this.$t('Files.LastEndTime').toString(),
+                value: 'last_end_time',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'date',
+            },
+            {
                 text: this.$t('Files.LastPrintDuration').toString(),
                 value: 'last_print_duration',
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'time',
+            },
+            {
+                text: this.$t('Files.LastTotalDuration').toString(),
+                value: 'last_total_duration',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'time',
+            },
+            {
+                text: this.$t('Files.LastFilamentUsed').toString(),
+                value: 'last_filament_used',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'length',
             },
             {
                 text: this.$t('Files.Slicer').toString(),
@@ -906,7 +915,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         return headers.sort((a, b) => (a.pos ?? 0) - (b.pos ?? 0))
     }
 
-    set configableHeaders(newVal) {
+    set configurableHeaders(newVal) {
         const orderArray: string[] = []
         newVal.forEach((row: tableColumnSetting) => orderArray.push(row.value))
 
@@ -914,11 +923,11 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     get headers() {
-        return [...this.fixedHeaders, ...this.configableHeaders]
+        return [...this.fixedHeaders, ...this.configurableHeaders]
     }
 
     get tableColumns() {
-        return this.configableHeaders.filter((column) => column.visible)
+        return this.configurableHeaders.filter((column) => column.visible)
     }
 
     get directory() {
@@ -997,31 +1006,15 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.countPerPage', value: newVal })
     }
 
-    get timelapseEnabled() {
-        return this.$store.state.server.timelapse?.settings?.enabled ?? false
-    }
-
-    set timelapseEnabled(newVal) {
-        this.$socket.emit(
-            'machine.timelapse.post_settings',
-            { enabled: newVal },
-            { action: 'server/timelapse/initSettings' }
-        )
-    }
-
-    getJobStatus(item: FileStateGcodefile) {
-        return this.$store.getters['server/history/getPrintStatus'](item.job_id)
-    }
-
-    getStatusIcon(status: string) {
+    getStatusIcon(status: string | null) {
         return this.$store.getters['server/history/getPrintStatusIcon'](status)
     }
 
-    getStatusTextColor(status: string) {
+    getStatusTextColor(status: string | null) {
         return this.$store.getters['server/history/getPrintStatusTextColor'](status)
     }
 
-    getStatusColor(status: string) {
+    getStatusColor(status: string | null) {
         return this.$store.getters['server/history/getPrintStatusIconColor'](status)
     }
 
@@ -1158,7 +1151,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf('/'))
     }
 
-    addToQueue(item: FileStateGcodefile) {
+    addToQueue(item: FileStateGcodefile | FileStateFile) {
         let path = this.currentPath.slice(7)
         if (path != '') path += '/'
         const filename = path + item.filename
@@ -1170,7 +1163,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/setGcodefilesMetadata', { name: name, value: value })
     }
 
-    showContextMenu(e: any, item: FileStateFile) {
+    showContextMenu(e: any, item: FileStateGcodefile | FileStateFile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true
@@ -1289,13 +1282,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         )
     }
 
-    startPrint(filename = '') {
+    closeStartPrint() {
         this.dialogPrintFile.show = false
-        this.$socket.emit(
-            'printer.print.start',
-            { filename: this.currentPath + '/' + filename },
-            { action: 'switchToDashboard' }
-        )
     }
 
     dragFile(e: Event, item: FileStateGcodefile) {
