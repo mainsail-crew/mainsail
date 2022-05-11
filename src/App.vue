@@ -33,7 +33,7 @@
         <the-topbar></the-topbar>
 
         <v-main id="content" :style="mainStyle">
-            <overlay-scrollbars class="main-content-scrollbar">
+            <overlay-scrollbars class="main-content-scrollbar" :options="scrollbarOptions">
                 <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
                     <router-view></router-view>
                 </v-container>
@@ -84,6 +84,12 @@ import TheUploadSnackbar from '@/components/TheUploadSnackbar.vue'
     },
 })
 export default class App extends Mixins(BaseMixin) {
+    private scrollbarOptions = {
+        scrollbars: {
+            autoHide: 'move',
+        },
+    }
+
     get title(): string {
         return this.$store.getters['getTitle']
     }
