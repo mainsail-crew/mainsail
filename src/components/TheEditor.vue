@@ -13,13 +13,7 @@
             <panel
                 card-class="editor-dialog"
                 :icon="isWriteable ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"
-                :title="
-                    filepath +
-                    '/' +
-                    filename +
-                    ' ' +
-                    (isWriteable ? changedOutput : '(' + $t('Editor.FileReadOnly') + ')')
-                ">
+                :title="title">
                 <template #buttons>
                     <v-btn
                         v-if="restartServiceName === 'klipper'"
@@ -254,6 +248,14 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     get escToClose() {
         return this.$store.state.gui.editor.escToClose ?? false
+    }
+
+    get title() {
+        let title = `${this.filepath}/${this.filename}`
+
+        if (!this.isWriteable) return `${title} (${this.$t('Editor.FileReadOnly')})`
+
+        return `${title} ${this.changedOutput}`
     }
 
     cancelDownload() {
