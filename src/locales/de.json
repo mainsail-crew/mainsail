@@ -335,11 +335,11 @@
     },
     "JobQueue": {
         "AllJobs": "Alle Aufträge",
-        "Delete": "Löschen",
         "Empty": "Leer",
         "JobQueue": "Auftragswarteschlange",
         "Jobs": "Aufträge",
         "Pause": "Pause",
+        "RemoveFromQueue": "Von Auftragswarteschlange entfernen",
         "Start": "Start"
     },
     "Machine": {

@@ -106,8 +106,8 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
-                    {{ $t('JobQueue.Delete') }}
+                    <v-icon class="mr-1">{{ mdiPlaylistRemove }}</v-icon>
+                    {{ $t('JobQueue.RemoveFromQueue') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -121,7 +121,7 @@ import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { mdiPlay, mdiPause, mdiFile, mdiDelete, mdiTrayFull } from '@mdi/js'
+import { mdiPlay, mdiPause, mdiFile, mdiPlaylistRemove, mdiTrayFull } from '@mdi/js'
 @Component({
     components: { Panel },
 })
@@ -129,7 +129,7 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     mdiPlay = mdiPlay
     mdiPause = mdiPause
     mdiFile = mdiFile
-    mdiDelete = mdiDelete
+    mdiPlaylistRemove = mdiPlaylistRemove
     mdiTrayFull = mdiTrayFull
 
     formatFilesize = formatFilesize
