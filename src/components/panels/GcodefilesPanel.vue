@@ -579,7 +579,6 @@ import {
     mdiPencil,
     mdiDelete,
     mdiCloseThick,
-    mdiClose,
     mdiCheckboxBlankOutline,
     mdiCheckboxMarked,
     mdiArrowUpDown,
@@ -587,21 +586,6 @@ import {
 
 interface draggingFile {
     item: FileStateGcodefile
-}
-
-interface uploadSnackbar {
-    status: boolean
-    filename: string
-    percent: number
-    speed: number
-    total: number
-    number: number
-    max: number
-    cancelTokenSource: any
-    lastProgress: {
-        time: number
-        loaded: number
-    }
 }
 
 interface dialogPrintFile {
@@ -641,7 +625,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     mdiPlay = mdiPlay
     mdiPlaylistPlus = mdiPlaylistPlus
     mdiFire = mdiFire
-    mdiClose = mdiClose
     mdiVideo3d = mdiVideo3d
     mdiCloudDownload = mdiCloudDownload
     mdiRenameBox = mdiRenameBox
@@ -665,24 +648,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         inputFieldRenameDirectory: HTMLInputElement
     }
 
-    private TimelapseModeOptions = [
-        {
-            text: 'layermacro',
-            value: 'layermacro',
-        },
-        {
-            text: 'hyperlapse',
-            value: 'hyperlapse',
-        },
-    ]
-
     private search = ''
-    private selected = []
-    private hideHeaderColums = []
-    private dropzone = {
-        visibility: 'hidden',
-        opacity: 0,
-    }
     private draggingFile: draggingFile = {
         item: {
             isDirectory: false,
@@ -699,20 +665,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             last_print_duration: null,
             last_status: null,
             last_total_duration: null,
-        },
-    }
-    private uploadSnackbar: uploadSnackbar = {
-        status: false,
-        filename: '',
-        percent: 0,
-        speed: 0,
-        total: 0,
-        number: 0,
-        max: 0,
-        cancelTokenSource: {},
-        lastProgress: {
-            time: 0,
-            loaded: 0,
         },
     }
     private dialogCreateDirectory = {
