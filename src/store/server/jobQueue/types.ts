@@ -9,4 +9,5 @@ export interface ServerJobQueueStateJob {
     time_added: number
     time_in_queue: number
     metadata?: any
+    isFirst?: boolean
 }

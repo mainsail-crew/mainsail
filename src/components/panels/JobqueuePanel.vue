@@ -121,7 +121,6 @@ import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { mdiPlay, mdiPause, mdiFile, mdiDelete, mdiTrayFull } from '@mdi/js'
 @Component({
     components: { Panel },
@@ -215,55 +214,11 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     }
 
     getSmallThumbnail(item: ServerJobQueueStateJob) {
-        if (item?.metadata?.thumbnails?.length) {
-            const thumbnail = item?.metadata?.thumbnails.find(
-                (thumb: any) =>
-                    thumb.width >= thumbnailSmallMin &&
-                    thumb.width <= thumbnailSmallMax &&
-                    thumb.height >= thumbnailSmallMin &&
-                    thumb.height <= thumbnailSmallMax
-            )
-            const path =
-                item.filename.lastIndexOf('/') !== -1
-                    ? 'gcodes/' + item.filename.slice(0, item.filename.lastIndexOf('/'))
-                    : 'gcodes'
-
-            if (thumbnail && 'relative_path' in thumbnail)
-                return (
-                    this.apiUrl +
-                    '/server/files/' +
-                    path +
-                    '/' +
-                    encodeURI(thumbnail.relative_path) +
-                    '?timestamp=' +
-                    item.metadata?.modified.getTime()
-                )
-        }
-
-        return ''
+        return this.$store.getters['server/jobQueue/getSmallThumbnail'](item)
     }
 
     getBigThumbnail(item: ServerJobQueueStateJob) {
-        if (item?.metadata?.thumbnails?.length) {
-            const thumbnail = item?.metadata?.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
-            const path =
-                item.filename.lastIndexOf('/') !== -1
-                    ? 'gcodes/' + item.filename.slice(0, item.filename.lastIndexOf('/'))
-                    : 'gcodes'
-
-            if (thumbnail && 'relative_path' in thumbnail)
-                return (
-                    this.apiUrl +
-                    '/server/files/' +
-                    path +
-                    '/' +
-                    encodeURI(thumbnail.relative_path) +
-                    '?timestamp=' +
-                    item.metadata?.modified.getTime()
-                )
-        }
-
-        return ''
+        return this.$store.getters['server/jobQueue/getBigThumbnail'](item)
     }
 
     getDescription(item: ServerJobQueueStateJob) {

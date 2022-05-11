@@ -59,7 +59,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import StatusPanelExcludeObjectDialog from '@/components/panels/StatusPanelExcludeObjectDialog.vue'
+import StatusPanelExcludeObjectDialog from '@/components/panels/Status/ExcludeObjectDialog.vue'
 import { mdiPrinter3dNozzle, mdiSelectionRemove } from '@mdi/js'
 @Component({
     components: { StatusPanelExcludeObjectDialog },

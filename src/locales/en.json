@@ -121,6 +121,15 @@
         "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
     },
+    "Dialogs": {
+        "StartPrint": {
+            "Cancel": "Cancel",
+            "DoYouWantToStartFilename": "Do you want to start {filename}?",
+            "Headline": "Start Job",
+            "Print": "print",
+            "Timelapse": "Timelapse"
+        }
+    },
     "Editor": {
         "Cancel": "Cancel",
         "ConfigReference": "Config Reference",
@@ -156,7 +165,7 @@
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
         "Download": "Download",
         "Downloading": "Downloading",
-        "DoYouWantToStartFilename": "Do you want to start {filename}?",
+        "DropFilesToAddGcode": "Drag & Drop files to add G-Code.",
         "EditFile": "Edit File",
         "Empty": "Empty",
         "Filament": "Filament",
@@ -170,8 +179,12 @@
         "FreeDisk": "Free disk",
         "GCodeFiles": "G-Code Files",
         "HiddenFiles": "Hidden files",
+        "LastEndTime": "Last End Time",
+        "LastFilamentUsed": "Last Filament Used",
         "LastModified": "Last modified",
         "LastPrintDuration": "Last Print Duration",
+        "LastStartTime": "Last Start Time",
+        "LastTotalDuration": "Last Total Duration",
         "LayerHeight": "Layer Height",
         "Name": "Name",
         "NewDirectory": "New Directory",
@@ -551,6 +564,12 @@
             },
             "Filament": "Filament",
             "File": "File",
+            "Files": "Files",
+            "EmptyGcodes": "No G-Code available.",
+            "EmptyJobqueue": "There is currently no file in the job queue.",
+            "Jobqueue": "Jobqueue ({count})",
+            "JobqueueMoreFiles": "no more jobs | one more job | {count} more jobs",
+            "PrintTime": "Print Time",
             "Flow": "Flow",
             "Headline": "Status",
             "Layer": "Layer",
@@ -563,6 +582,7 @@
             "ResumePrint": "Resume print",
             "Slicer": "Slicer",
             "Speed": "Speed",
+            "Status": "Status",
             "Total": "Total",
             "Unknown": "Unknown"
         },
