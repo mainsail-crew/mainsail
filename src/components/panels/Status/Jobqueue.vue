@@ -152,14 +152,14 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
     getDescription(item: ServerJobQueueStateJob) {
         let output = ''
 
-        output += this.$t('Panels.StatusPanel.Files.Filament') + ': '
+        output += this.$t('Panels.StatusPanel.Filament') + ': '
         if (item.metadata?.filament_total || item.metadata.filament_weight_total) {
             if (item.metadata?.filament_total) output += item.metadata.filament_total.toFixed() + ' mm'
             if (item.metadata?.filament_total && item.metadata.filament_weight_total) output += ' / '
             if (item.metadata?.filament_weight_total) output += item.metadata.filament_weight_total.toFixed(2) + ' g'
         } else output += '--'
 
-        output += ', ' + this.$t('Panels.StatusPanel.Files.PrintTime') + ': '
+        output += ', ' + this.$t('Panels.StatusPanel.PrintTime') + ': '
         if (item.metadata?.estimated_time) output += this.formatPrintTime(item.metadata.estimated_time)
         else output += '--'
 
