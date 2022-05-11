@@ -159,6 +159,7 @@ export const getDefaultState = (): GuiState => {
                 hideBackupFiles: false,
                 currentPath: '',
                 rootPath: 'config',
+                selectedFiles: [],
             },
             gcodefiles: {
                 countPerPage: 10,

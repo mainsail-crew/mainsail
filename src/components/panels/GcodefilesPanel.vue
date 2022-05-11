@@ -555,13 +555,13 @@ import {
     mdiFolderPlus,
     mdiFolderUpload,
     mdiMagnify,
-    mdiPencil,
     mdiPlay,
     mdiPlaylistPlus,
     mdiRefresh,
     mdiRenameBox,
     mdiUpload,
     mdiVideo3d,
+    mdiPencil,
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 
@@ -1331,11 +1331,19 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
     deleteSelectedFiles() {
         this.selectedFiles.forEach((item: FileStateGcodefile) => {
-            this.$socket.emit(
-                'server.files.delete_file',
-                { path: 'gcodes' + this.currentPath + '/' + item.filename },
-                { action: 'files/getDeleteFile' }
-            )
+            if (item.isDirectory) {
+                this.$socket.emit(
+                    'server.files.delete_directory',
+                    { path: 'gcodes' + this.currentPath + '/' + item.filename, force: true },
+                    { action: 'files/getDeleteDir' }
+                )
+            } else {
+                this.$socket.emit(
+                    'server.files.delete_file',
+                    { path: 'gcodes' + this.currentPath + '/' + item.filename },
+                    { action: 'files/getDeleteFile' }
+                )
+            }
         })
 
         this.selectedFiles = []
