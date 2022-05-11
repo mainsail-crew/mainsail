@@ -1,7 +1,7 @@
 <style lang="scss" scoped></style>
 
 <template>
-    <v-card flat>
+    <v-card ref="filesJobqueue" flat>
         <v-data-table
             :items="jobsTable"
             hide-default-footer
@@ -14,7 +14,11 @@
             </template>
 
             <template #item="{ item }">
-                <tr :key="item.job_id">
+                <tr
+                    :key="item.job_id"
+                    v-longpress:600="(e) => showContextMenu(e, item)"
+                    class="cursor-pointer"
+                    @contextmenu="showContextMenu($event, item)">
                     <td class="pr-0 text-center" style="width: 32px">
                         <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
                             <v-tooltip
@@ -60,11 +64,8 @@
                                 <v-icon>{{ mdiPlay }}</v-icon>
                             </v-btn>
                         </template>
-                        {{ item.filename }}
-                        <template v-if="existMetadata(item)">
-                            <br />
-                            <small>{{ getDescription(item) }}</small>
-                        </template>
+                        <div class="d-block text-truncate" :style="styleContentTdWidth">{{ item.filename }}</div>
+                        <small v-if="existMetadata(item)">{{ getDescription(item) }}</small>
                     </td>
                 </tr>
             </template>
@@ -85,6 +86,14 @@
                 </tr>
             </template>
         </v-data-table>
+        <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
+            <v-list>
+                <v-list-item @click="removeFromJobqueue(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiPlaylistRemove }}</v-icon>
+                    {{ $t('JobQueue.RemoveFromQueue') }}
+                </v-list-item>
+            </v-list>
+        </v-menu>
     </v-card>
 </template>
 
@@ -93,7 +102,7 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { mdiFile, mdiPlay, mdiFileMultiple } from '@mdi/js'
+import { mdiFile, mdiPlay, mdiFileMultiple, mdiPlaylistRemove } from '@mdi/js'
 @Component({
     components: {},
 })
@@ -101,6 +110,20 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
     mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiFileMultiple = mdiFileMultiple
+    mdiPlaylistRemove = mdiPlaylistRemove
+
+    private contentTdWidth = 100
+    private contextMenu = {
+        shown: false,
+        touchTimer: undefined,
+        x: 0,
+        y: 0,
+        item: {},
+    }
+
+    declare $refs: {
+        filesJobqueue: any
+    }
 
     get jobs() {
         return this.$store.getters['server/jobQueue/getJobs'] ?? []
@@ -139,6 +162,10 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
         else output += '--'
 
         return output
+    }
+
+    get styleContentTdWidth() {
+        return `width: ${this.contentTdWidth}px;`
     }
 
     getSmallThumbnail(item: ServerJobQueueStateJob) {
@@ -206,8 +233,38 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
         return '--'
     }
 
+    showContextMenu(e: any, item: ServerJobQueueStateJob) {
+        if (!this.contextMenu.shown) {
+            e?.preventDefault()
+            this.contextMenu.shown = true
+            this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2
+            this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2
+            this.contextMenu.item = item
+            this.$nextTick(() => {
+                this.contextMenu.shown = true
+            })
+        }
+    }
+
     startJobqueue() {
         this.$store.dispatch('server/jobQueue/start')
+    }
+
+    removeFromJobqueue(item: ServerJobQueueStateJob) {
+        this.$store.dispatch('server/jobQueue/deleteFromQueue', [item.job_id])
+    }
+
+    mounted() {
+        window.addEventListener('resize', this.eventListenerResize)
+        this.eventListenerResize()
+    }
+
+    destroyed() {
+        window.removeEventListener('resize', this.eventListenerResize)
+    }
+
+    eventListenerResize() {
+        this.contentTdWidth = this.$refs.filesJobqueue?.$el?.clientWidth - 48 - 48 - 32
     }
 }
 </script>

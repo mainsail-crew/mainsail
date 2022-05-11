@@ -350,11 +350,11 @@
     },
     "JobQueue": {
         "AllJobs": "All Jobs",
-        "Delete": "Delete",
         "Empty": "Empty",
         "JobQueue": "Job Queue",
         "Jobs": "Jobs",
         "Pause": "Pause",
+        "RemoveFromQueue": "Remove from Queue",
         "Start": "Start"
     },
     "Machine": {
