@@ -369,7 +369,7 @@
             "Delete": "Delete",
             "DeleteDirectory": "Delete Directory",
             "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
-            "DeleteSelectedQuestion": "Do you really want to delete {count} selected elements?",
+            "DeleteSelectedQuestion": "Delete {count} selected elements?",
             "Download": "Download",
             "EditFile": "Edit file",
             "Empty": "Empty",
