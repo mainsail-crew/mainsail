@@ -91,6 +91,7 @@
             </v-card-text>
             <v-divider></v-divider>
             <v-data-table
+                v-model="selectedFiles"
                 :items="files"
                 class="files-table"
                 :headers="headers"
@@ -117,6 +118,9 @@
                         @dragover="dragOverFilelist($event, { isDirectory: true, filename: '..' })"
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, { isDirectory: true, filename: '..' })">
+                        <td class="file-list__select-td pr-0">
+                            <v-simple-checkbox v-ripple disabled class="pa-0 mr-0"></v-simple-checkbox>
+                        </td>
                         <td class="pr-0 text-center" style="width: 32px">
                             <v-icon>{{ mdiFolderUpload }}</v-icon>
                         </td>
@@ -124,7 +128,7 @@
                     </tr>
                 </template>
 
-                <template #item="{ index, item }">
+                <template #item="{ index, item, isSelected, select }">
                     <tr
                         :key="`${index} ${item.filename}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
@@ -138,6 +142,13 @@
                         @dragover="dragOverFilelist($event, item)"
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, item)">
+                        <td class="file-list__select-td pr-0">
+                            <v-simple-checkbox
+                                v-ripple
+                                :value="isSelected"
+                                class="pa-0 mr-0"
+                                @click.stop="select(!isSelected)"></v-simple-checkbox>
+                        </td>
                         <td class="pr-0 text-center" style="width: 32px">
                             <v-icon v-if="item.isDirectory">{{ mdiFolder }}</v-icon>
                             <v-icon v-if="!item.isDirectory">{{ mdiFile }}</v-icon>
@@ -669,6 +680,14 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             { text: this.$t('Machine.ConfigFilesPanel.Filesize'), value: 'size', align: 'right' },
             { text: this.$t('Machine.ConfigFilesPanel.LastModified'), value: 'modified', align: 'right' },
         ]
+    }
+
+    get selectedFiles() {
+        return this.$store.state.gui.view.configfiles.selectedFiles ?? []
+    }
+
+    set selectedFiles(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.selectedFiles', value: newVal })
     }
 
     get countPerPage() {
