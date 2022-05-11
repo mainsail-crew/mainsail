@@ -1,7 +1,7 @@
 <template>
-    <v-dialog v-model="bool" :max-width="getThumbnailWidth(file)">
+    <v-dialog v-model="bool" :max-width="dialogWidth">
         <v-card>
-            <v-img v-if="getBigThumbnail(file)" contain :src="getBigThumbnail(file)"></v-img>
+            <v-img v-if="file.big_thumbnail" contain :src="file.big_thumbnail"></v-img>
             <v-card-title class="headline">{{ $t('Dialogs.StartPrint.Headline') }}</v-card-title>
             <v-card-text class="pb-0">
                 {{ $t('Dialogs.StartPrint.DoYouWantToStartFilename', { filename: file.filename }) }}
@@ -33,8 +33,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { FileStateFile } from '@/store/files/types'
-import { thumbnailBigMin } from '@/store/variables'
+import { FileStateGcodefile } from '@/store/files/types'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 
 @Component({
@@ -50,7 +49,7 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
     declare readonly currentPath: string
 
     @Prop({ required: true })
-    declare file: FileStateFile
+    declare file: FileStateGcodefile
 
     get timelapseEnabled() {
         return this.$store.state.server.timelapse?.settings?.enabled ?? false
@@ -64,22 +63,12 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
         )
     }
 
-    getBigThumbnail(item: FileStateFile) {
-        return this.$store.getters['files/getBigThumbnail'](item, this.currentPath)
-    }
-
-    getThumbnailWidth(item: FileStateFile) {
-        if (this.getBigThumbnail(item)) {
-            const thumbnail = item?.thumbnails?.find((thumb) => thumb.width >= thumbnailBigMin)
-
-            if (thumbnail) return thumbnail.width
-        }
-
-        return 400
+    get dialogWidth() {
+        return this.file.big_thumbnail_width ?? 400
     }
 
     startPrint(filename = '') {
-        filename = (this.currentPath + '/' + filename).substring(7)
+        filename = (this.currentPath + '/' + filename).substring(1)
         this.closeDialog()
         this.$socket.emit('printer.print.start', { filename: filename }, { action: 'switchToDashboard' })
     }

@@ -363,9 +363,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
 
     showDialog(file: FileStateGcodefile) {
         this.currentPath =
-            file.filename.lastIndexOf('/') >= 0
-                ? 'gcodes/' + file.filename.slice(0, file.filename.lastIndexOf('/'))
-                : 'gcodes'
+            file.filename.lastIndexOf('/') >= 0 ? '/' + file.filename.slice(0, file.filename.lastIndexOf('/')) : ''
         this.dialogFile = { ...file }
         if (file.filename.lastIndexOf('/') >= 0) {
             this.dialogFile.filename = file.filename.slice(file.filename.lastIndexOf('/') + 1)
