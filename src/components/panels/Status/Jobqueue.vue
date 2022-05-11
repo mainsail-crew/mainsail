@@ -1,7 +1,7 @@
 <style lang="scss" scoped></style>
 
 <template>
-    <v-card flat>
+    <v-card ref="filesJobqueue" flat>
         <v-data-table
             :items="jobsTable"
             hide-default-footer
@@ -60,11 +60,8 @@
                                 <v-icon>{{ mdiPlay }}</v-icon>
                             </v-btn>
                         </template>
-                        {{ item.filename }}
-                        <template v-if="existMetadata(item)">
-                            <br />
-                            <small>{{ getDescription(item) }}</small>
-                        </template>
+                        <div class="d-block text-truncate" :style="styleContentTdWidth">{{ item.filename }}</div>
+                        <small v-if="existMetadata(item)">{{ getDescription(item) }}</small>
                     </td>
                 </tr>
             </template>
@@ -101,6 +98,12 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
     mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiFileMultiple = mdiFileMultiple
+
+    private contentTdWidth = 100
+
+    declare $refs: {
+        filesJobqueue: any
+    }
 
     get jobs() {
         return this.$store.getters['server/jobQueue/getJobs'] ?? []
@@ -139,6 +142,10 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
         else output += '--'
 
         return output
+    }
+
+    get styleContentTdWidth() {
+        return `width: ${this.contentTdWidth}px;`
     }
 
     getSmallThumbnail(item: ServerJobQueueStateJob) {
@@ -208,6 +215,19 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
 
     startJobqueue() {
         this.$store.dispatch('server/jobQueue/start')
+    }
+
+    mounted() {
+        window.addEventListener('resize', this.eventListenerResize)
+        this.eventListenerResize()
+    }
+
+    destroyed() {
+        window.removeEventListener('resize', this.eventListenerResize)
+    }
+
+    eventListenerResize() {
+        this.contentTdWidth = this.$refs.filesJobqueue?.$el?.clientWidth - 48 - 48 - 32
     }
 }
 </script>
