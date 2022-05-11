@@ -49,7 +49,7 @@
                     </v-btn>
                 </template>
                 <v-card-text class="pa-0">
-                    <overlay-scrollbars style="height: calc(var(--app-height) - 48px)" :options="{}">
+                    <overlay-scrollbars style="height: calc(var(--app-height) - 48px)" :options="scrollbarOptions">
                         <codemirror-async
                             v-if="show"
                             ref="editor"
@@ -160,6 +160,8 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiHelpCircle = mdiHelpCircle
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiFileDocumentOutline = mdiFileDocumentOutline
+
+    private scrollbarOptions = { scrollbars: { autoHide: 'never' } }
 
     declare $refs: {
         editor: Codemirror
