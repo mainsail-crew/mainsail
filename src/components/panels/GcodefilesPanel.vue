@@ -317,22 +317,20 @@
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-right text-no-wrap">
-                            <v-tooltip v-if="getJobStatus(item)" top>
+                            <v-tooltip v-if="item.last_status" top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
                                         <span
-                                            v-if="item.count_printed > 1"
-                                            :class="`file-list__count_printed ${getStatusTextColor(
-                                                getJobStatus(item)
-                                            )}`">
+                                            v-if="item.count_printed > 0"
+                                            :class="`file-list__count_printed ${getStatusTextColor(item.last_status)}`">
                                             {{ item.count_printed }}
                                         </span>
-                                        <v-icon small :color="getStatusColor(getJobStatus(item))">
-                                            {{ getStatusIcon(getJobStatus(item)) }}
+                                        <v-icon small :color="getStatusColor(item.last_status)">
+                                            {{ getStatusIcon(item.last_status) }}
                                         </v-icon>
                                     </span>
                                 </template>
-                                <span>{{ getJobStatus(item).replace(/_/g, ' ') }}</span>
+                                <span>{{ item.last_status.replace(/_/g, ' ') }}</span>
                             </v-tooltip>
                         </td>
                         <td
@@ -859,11 +857,39 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 outputType: 'time',
             },
             {
+                text: this.$t('Files.LastStartTime').toString(),
+                value: 'last_start_time',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'date',
+            },
+            {
+                text: this.$t('Files.LastEndTime').toString(),
+                value: 'last_end_time',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'date',
+            },
+            {
                 text: this.$t('Files.LastPrintDuration').toString(),
                 value: 'last_print_duration',
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'time',
+            },
+            {
+                text: this.$t('Files.LastTotalDuration').toString(),
+                value: 'last_total_duration',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'time',
+            },
+            {
+                text: this.$t('Files.LastFilamentUsed').toString(),
+                value: 'last_filament_used',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'length',
             },
             {
                 text: this.$t('Files.Slicer').toString(),
@@ -980,19 +1006,15 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.countPerPage', value: newVal })
     }
 
-    getJobStatus(item: FileStateFile) {
-        return this.$store.getters['server/history/getPrintStatus'](item.job_id)
-    }
-
-    getStatusIcon(status: string) {
+    getStatusIcon(status: string | null) {
         return this.$store.getters['server/history/getPrintStatusIcon'](status)
     }
 
-    getStatusTextColor(status: string) {
+    getStatusTextColor(status: string | null) {
         return this.$store.getters['server/history/getPrintStatusTextColor'](status)
     }
 
-    getStatusColor(status: string) {
+    getStatusColor(status: string | null) {
         return this.$store.getters['server/history/getPrintStatusIconColor'](status)
     }
 

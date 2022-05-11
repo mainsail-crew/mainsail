@@ -63,15 +63,15 @@
                         </div>
                     </td>
                     <td>
-                        <v-tooltip v-if="getJobStatus(item)" top>
+                        <v-tooltip v-if="item.last_status" top>
                             <template #activator="{ on, attrs }">
                                 <span v-bind="attrs" v-on="on">
-                                    <v-icon small :color="getStatusColor(getJobStatus(item))">
-                                        {{ getStatusIcon(getJobStatus(item)) }}
+                                    <v-icon small :color="getStatusColor(item.last_status)">
+                                        {{ getStatusIcon(item.last_status) }}
                                     </v-icon>
                                 </span>
                             </template>
-                            <span>{{ getJobStatus(item).replace(/_/g, ' ') }}</span>
+                            <span>{{ item.last_status.replace(/_/g, ' ') }}</span>
                         </v-tooltip>
                     </td>
                 </tr>

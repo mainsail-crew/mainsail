@@ -96,7 +96,7 @@ export const getters: GetterTree<FileState, any> = {
                     last_start_time: null,
                     last_end_time: null,
                     last_filament_used: null,
-                    last_status: '',
+                    last_status: null,
                     last_print_duration: null,
                     last_total_duration: null,
                 }
@@ -134,29 +134,40 @@ export const getters: GetterTree<FileState, any> = {
                 }
 
                 const fullFilename = path && path.length ? path + '/' + file.filename : file.filename
-                const histories = rootGetters['server/history/getPrintJobsForGcodes'](
+                let histories = rootGetters['server/history/getPrintJobsForGcodes'](
                     fullFilename,
                     fileTimestamp,
                     file.size,
                     file.uuid ?? null,
                     file.job_id
                 )
-                if (histories && histories.length) {
-                    const history = histories[0]
-                    tmp.last_end_time = new Date(history.end_time * 1000)
-                    tmp.last_filament_used = history.filament_used
-                    tmp.last_print_duration = history.print_duration
-                    tmp.last_start_time = new Date(history.start_time * 1000)
-                    tmp.last_status = history.status
-                    tmp.last_total_duration = history.total_duration
 
-                    tmp.count_printed = histories.filter(
-                        (job: ServerHistoryStateJob) => job.status === 'completed'
-                    ).length
+                if (histories && histories.length) {
+                    histories = histories.sort(
+                        (a: ServerHistoryStateJob, b: ServerHistoryStateJob) => b.start_time - a.start_time
+                    )
+
+                    const histories_completed = histories.filter(
+                        (history: ServerHistoryStateJob) => history.status === 'completed'
+                    )
+
+                    const last_history = [...histories].shift()
+                    tmp.last_status = last_history.status
+                    tmp.count_printed = histories_completed.length
+                    tmp.last_start_time = new Date(last_history.start_time * 1000)
+
+                    if (tmp.count_printed > 0) {
+                        const history_completed = histories_completed[0]
+                        tmp.last_start_time = new Date(history_completed.start_time * 1000)
+                        tmp.last_end_time = new Date(history_completed.end_time * 1000)
+                        tmp.last_filament_used = history_completed.filament_used
+                        tmp.last_print_duration = history_completed.print_duration
+                        tmp.last_total_duration = history_completed.total_duration
+                    }
                 }
 
                 if (boolShowPrintedFiles) output.push(tmp)
-                else if (tmp.last_status !== 'completed') output.push(tmp)
+                else if (tmp.count_printed === 0) output.push(tmp)
             })
 
             return output
