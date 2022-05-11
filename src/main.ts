@@ -47,7 +47,7 @@ Vue.use(OverlayScrollbarsPlugin, {
     className: 'os-theme-light',
     scrollbars: {
         visibility: 'auto',
-        autoHide: 'scroll',
+        autoHide: 'move',
     },
 })
 
