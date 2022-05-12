@@ -113,7 +113,7 @@
                     {{ $t('Files.Download') }}
                 </v-list-item>
                 <v-list-item @click="editFile(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiPencil }}</v-icon>
+                    <v-icon class="mr-1">{{ mdiFileDocumentEditOutline }}</v-icon>
                     {{ $t('Files.EditFile') }}
                 </v-list-item>
                 <v-list-item @click="renameFile(contextMenu.item)">
@@ -167,7 +167,7 @@ import {
     mdiFire,
     mdiVideo3d,
     mdiCloudDownload,
-    mdiPencil,
+    mdiFileDocumentEditOutline,
     mdiRenameBox,
     mdiDelete,
     mdiCloseThick,
@@ -191,7 +191,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
     mdiFire = mdiFire
     mdiVideo3d = mdiVideo3d
     mdiCloudDownload = mdiCloudDownload
-    mdiPencil = mdiPencil
+    mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiRenameBox = mdiRenameBox
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
