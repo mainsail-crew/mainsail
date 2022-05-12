@@ -396,7 +396,7 @@
                     {{ $t('Files.Rename') }}
                 </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="editFile(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiPencil }}</v-icon>
+                    <v-icon class="mr-1">{{ mdiFileDocumentEditOutline }}</v-icon>
                     {{ $t('Files.EditFile') }}
                 </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="renameFile(contextMenu.item)">
@@ -561,7 +561,7 @@ import {
     mdiRenameBox,
     mdiUpload,
     mdiVideo3d,
-    mdiPencil,
+    mdiFileDocumentEditOutline,
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 
@@ -609,7 +609,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     mdiVideo3d = mdiVideo3d
     mdiCloudDownload = mdiCloudDownload
     mdiRenameBox = mdiRenameBox
-    mdiPencil = mdiPencil
+    mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
     mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
