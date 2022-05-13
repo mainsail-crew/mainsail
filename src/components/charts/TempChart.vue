@@ -305,7 +305,7 @@ export default class TempChart extends Mixins(BaseMixin) {
             if (dataset.seriesName.includes('-')) {
                 if (dataset.seriesName.lastIndexOf('-') > -1) {
                     const suffix = dataset.seriesName.slice(dataset.seriesName.lastIndexOf('-') + 1)
-                    return !['target', 'power'].includes(suffix)
+                    return !['target', 'power', 'speed'].includes(suffix)
                 }
 
                 return true

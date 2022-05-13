@@ -108,7 +108,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                     if (tmp.startsWith('_')) return false
                     if (tmp.lastIndexOf('-') > -1) {
                         const suffix = tmp.slice(tmp.lastIndexOf('-') + 1)
-                        return !['target', 'power'].includes(suffix)
+                        return !['target', 'power', 'speed'].includes(suffix)
                     }
 
                     return true
