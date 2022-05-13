@@ -253,7 +253,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get title() {
-        const title = `${this.filepath}/${this.filename}`
+        const title = this.filepath ? `${this.filepath}/${this.filename}` : this.filename
 
         if (!this.isWriteable) return `${title} (${this.$t('Editor.FileReadOnly')})`
 
