@@ -93,7 +93,7 @@ export const actions: ActionTree<EditorState, RootState> = {
         const formData = new FormData()
         formData.append('file', content, state.filename)
         formData.append('root', state.fileroot)
-        formData.append('path', state.filepath.slice(1))
+        formData.append('path', state.filepath)
         formData.append('checksum', sha256(payload.content))
 
         const url = rootGetters['socket/getUrl'] + '/server/files/upload'
