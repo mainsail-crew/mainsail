@@ -99,6 +99,7 @@
                     </tr>
                 </template>
             </v-data-table>
+            <resize-observer @notify="handleResize" />
         </panel>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
@@ -119,6 +120,7 @@ import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiPlay, mdiPause, mdiFile, mdiPlaylistRemove, mdiTrayFull } from '@mdi/js'
+import { Debounce } from 'vue-debounce-decorator'
 @Component({
     components: { Panel },
 })
@@ -219,16 +221,24 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        window.addEventListener('resize', this.eventListenerResize)
-        this.eventListenerResize()
+        this.calcContentTdWidth()
     }
 
-    destroyed() {
-        window.removeEventListener('resize', this.eventListenerResize)
-    }
-
-    eventListenerResize() {
+    calcContentTdWidth() {
         this.contentTdWidth = this.$refs.jobqueuePanel?.$el?.clientWidth - 48 - 32
+    }
+
+    @Debounce(200)
+    handleResize() {
+        this.$nextTick(() => {
+            this.calcContentTdWidth()
+        })
     }
 }
 </script>
+
+<style>
+.jobqueue-panel {
+    position: relative;
+}
+</style>
