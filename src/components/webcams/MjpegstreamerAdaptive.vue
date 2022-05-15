@@ -11,7 +11,7 @@
 </style>
 
 <template>
-    <div v-observe-visibility="visibilityChanged" style="position: relative">
+    <div style="position: relative">
         <div v-if="!isLoaded" class="text-center py-5">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </div>
@@ -66,15 +66,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
 
     get fpsOutput() {
         return this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS
-    }
-
-    visibilityChanged(isVisible: boolean) {
-        this.isVisible = isVisible
-        if (isVisible) this.refreshFrame()
-        else {
-            clearTimeout(this.timer)
-            this.timer = undefined
-        }
     }
 
     refreshFrame() {
@@ -138,6 +129,29 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
             image.onerror = () => setTimeout(this.refreshFrame, 1000)
             image.src = url
         })
+    }
+
+    mounted() {
+        document.addEventListener('visibilitychange', this.visibilityChanged)
+        this.refreshFrame()
+    }
+
+    beforeDestroy() {
+        document.removeEventListener('visibilitychange', this.visibilityChanged)
+    }
+
+    visibilityChanged() {
+        const visibility = document.visibilityState
+
+        if (visibility === 'visible') {
+            this.isVisible = true
+            this.refreshFrame()
+            return
+        }
+
+        this.isVisible = false
+        clearTimeout(this.timer)
+        this.timer = undefined
     }
 }
 </script>
