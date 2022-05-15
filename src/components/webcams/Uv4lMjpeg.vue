@@ -38,11 +38,35 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
         return ''
     }
 
+    mounted() {
+        document.addEventListener('visibilitychange', this.visibilityChanged)
+    }
+
     beforeDestroy() {
+        document.removeEventListener('visibilitychange', this.visibilityChanged)
+        this.stopStream()
+    }
+
+    startStream() {
+        if (this.$refs.webcamUv4lMjpegImage) this.$refs.webcamUv4lMjpegImage.setAttribute('src', this.url)
+    }
+
+    stopStream() {
         if (this.$refs.webcamUv4lMjpegImage) {
             this.$refs.webcamUv4lMjpegImage.removeAttribute('src')
             URL.revokeObjectURL(this.url)
         }
+    }
+
+    visibilityChanged() {
+        const visibility = document.visibilityState
+
+        if (visibility === 'visible') {
+            this.startStream()
+            return
+        }
+
+        this.stopStream()
     }
 }
 </script>
