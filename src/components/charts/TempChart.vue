@@ -4,6 +4,7 @@
         v-observe-visibility="visibilityChanged"
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
+        :autoresize="true"
         style="height: 250px; width: 100%"></e-chart>
 </template>
 
@@ -228,19 +229,11 @@ export default class TempChart extends Mixins(BaseMixin) {
 
     mounted() {
         this.initChart()
-
-        window.addEventListener('resize', this.eventListenerResize)
     }
 
     beforeDestroy() {
         if (typeof window === 'undefined') return
         if (this.chart) this.chart.dispose()
-
-        window.removeEventListener('resize', this.eventListenerResize)
-    }
-
-    eventListenerResize() {
-        this.chart?.resize()
     }
 
     initChart() {

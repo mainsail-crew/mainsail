@@ -99,6 +99,7 @@
                     </tr>
                 </template>
             </v-data-table>
+            <resize-observer @notify="handleResize" />
         </panel>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
@@ -219,16 +220,23 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        window.addEventListener('resize', this.eventListenerResize)
-        this.eventListenerResize()
+        this.calcContentTdWidth()
     }
 
-    destroyed() {
-        window.removeEventListener('resize', this.eventListenerResize)
-    }
-
-    eventListenerResize() {
+    calcContentTdWidth() {
         this.contentTdWidth = this.$refs.jobqueuePanel?.$el?.clientWidth - 48 - 32
+    }
+
+    handleResize() {
+        this.$nextTick(() => {
+            this.calcContentTdWidth()
+        })
     }
 }
 </script>
+
+<style>
+.jobqueue-panel {
+    position: relative;
+}
+</style>

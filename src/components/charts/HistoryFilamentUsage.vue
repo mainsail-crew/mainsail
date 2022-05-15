@@ -3,6 +3,7 @@
         ref="historyFilamentUsage"
         v-observe-visibility="visibilityChanged"
         :option="chartOptions"
+        :autoresize="true"
         :init-options="{ renderer: 'svg' }"
         style="height: 175px; width: 100%"></e-chart>
 </template>
@@ -115,12 +116,6 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
     mounted() {
         this.chartOptions.series[0].data = this.filamentUsageArray
         this.chart?.setOption(this.chartOptions)
-
-        window.addEventListener('resize', this.eventListenerResize)
-    }
-
-    destroyed() {
-        window.removeEventListener('resize', this.eventListenerResize)
     }
 
     beforeDestroy() {
@@ -143,10 +138,6 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
 
     visibilityChanged(isVisible: boolean) {
         if (isVisible) this.chart?.resize()
-    }
-
-    eventListenerResize() {
-        this.chart?.resize()
     }
 }
 </script>
