@@ -1,7 +1,5 @@
-<style lang="scss" scoped></style>
-
 <template>
-    <v-card ref="filesJobqueue" flat>
+    <v-card ref="filesJobqueue" class="filesJobqueue" flat>
         <v-data-table
             :items="jobsTable"
             hide-default-footer
@@ -86,6 +84,7 @@
                 </tr>
             </template>
         </v-data-table>
+        <resize-observer @notify="handleResize" />
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="removeFromJobqueue(contextMenu.item)">
@@ -103,6 +102,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiFile, mdiPlay, mdiFileMultiple, mdiPlaylistRemove } from '@mdi/js'
+import { Debounce } from 'vue-debounce-decorator'
 @Component({
     components: {},
 })
@@ -255,16 +255,24 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        window.addEventListener('resize', this.eventListenerResize)
-        this.eventListenerResize()
+        this.calcContentTdWidth()
     }
 
-    destroyed() {
-        window.removeEventListener('resize', this.eventListenerResize)
-    }
-
-    eventListenerResize() {
+    calcContentTdWidth() {
         this.contentTdWidth = this.$refs.filesJobqueue?.$el?.clientWidth - 48 - 48 - 32
+    }
+
+    @Debounce(200)
+    handleResize() {
+        this.$nextTick(() => {
+            this.calcContentTdWidth()
+        })
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.filesJobqueue {
+    position: relative;
+}
+</style>
