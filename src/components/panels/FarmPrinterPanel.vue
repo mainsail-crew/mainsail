@@ -1,33 +1,3 @@
-<style scoped>
-.v-card.disabledPrinter {
-    opacity: 0.6;
-    filter: grayscale(70%);
-}
-
-.webcamContainer,
-.webcamContainer .vue-load-image,
-.webcamContainer > div,
-.webcamContainer img {
-    position: absolute !important;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.webcamContainer img {
-    height: 100%;
-}
-
-.webcamContainer .webcamFpsOutput {
-    display: none;
-}
-
-.v-overlay {
-    top: 48px;
-}
-</style>
-
 <template>
     <panel
         :icon="mdiPrinter3d"
@@ -145,6 +115,7 @@
                 </div>
             </template>
         </v-hover>
+        <resize-observer @notify="handleResize" />
     </panel>
 </template>
 
@@ -157,6 +128,7 @@ import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vu
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline } from '@mdi/js'
+import { Debounce } from 'vue-debounce-decorator'
 
 @Component({
     components: {
@@ -255,18 +227,59 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        window.addEventListener('resize', this.resize)
-        this.resize()
+        this.calcImageHeight()
     }
 
-    beforeDestroy() {
-        window.removeEventListener('resize', this.resize)
-    }
-
-    resize() {
+    calcImageHeight() {
         if (this.imageDiv?.$el?.clientWidth) {
             this.imageHeight = Math.round((this.imageDiv.$el.clientWidth / 3) * 2)
-        } else this.imageHeight = 200
+            return
+        }
+
+        this.imageHeight = 200
+    }
+
+    @Debounce(200)
+    handleResize() {
+        this.$nextTick(() => {
+            this.calcImageHeight()
+        })
     }
 }
 </script>
+
+<style scoped>
+.v-card.disabledPrinter {
+    opacity: 0.6;
+    filter: grayscale(70%);
+}
+
+.webcamContainer,
+.webcamContainer .vue-load-image,
+.webcamContainer > div,
+.webcamContainer img {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.webcamContainer img {
+    height: 100%;
+}
+
+.webcamContainer .webcamFpsOutput {
+    display: none;
+}
+
+.v-overlay {
+    top: 48px;
+}
+</style>
+
+<style>
+.farmprinter-panel {
+    position: relative;
+}
+</style>

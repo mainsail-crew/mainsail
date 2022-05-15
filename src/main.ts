@@ -67,6 +67,12 @@ import { GridComponent, LegendComponent, TooltipComponent, DatasetComponent } fr
 use([SVGRenderer, LineChart, BarChart, LegendComponent, PieChart, DatasetComponent, GridComponent, TooltipComponent])
 Vue.component('EChart', ECharts)
 
+// vue-resize
+import 'vue-resize/dist/vue-resize.css'
+// @ts-ignore
+import VueResize from 'vue-resize'
+Vue.use(VueResize)
+
 //load config.json and init vue
 fetch('/config.json')
     .then((res) => res.json())

@@ -1,11 +1,5 @@
-<style lang="scss" scoped>
-.statusPanel-big-thumbnail {
-    transition: height 0.25s ease-out;
-}
-</style>
-
 <template>
-    <div v-if="current_filename">
+    <div v-if="current_filename" class="statusPanel-printstatus-thumbnail">
         <v-img
             v-if="boolBigThumbnail"
             ref="bigThumbnail"
@@ -75,6 +69,7 @@
                 </v-row>
             </v-container>
         </template>
+        <resize-observer @notify="handleResize" />
     </div>
 </template>
 
@@ -84,6 +79,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { mdiFileOutline, mdiFile } from '@mdi/js'
+import { Debounce } from 'vue-debounce-decorator'
 
 @Component({
     components: {},
@@ -198,17 +194,22 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
         }
     }
 
-    created() {
-        window.addEventListener('resize', this.onResize)
-    }
-
-    destroyed() {
-        window.removeEventListener('resize', this.onResize)
-    }
-
-    onResize() {
-        const isFocused = document.activeElement === this.$refs.bigThumbnail?.$el
-        if (isFocused) this.focusBigThumbnail()
+    @Debounce(200)
+    handleResize() {
+        this.$nextTick(() => {
+            const isFocused = document.activeElement === this.$refs.bigThumbnail?.$el
+            if (isFocused) this.focusBigThumbnail()
+        })
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.statusPanel-big-thumbnail {
+    transition: height 0.25s ease-out;
+}
+
+.statusPanel-printstatus-thumbnail {
+    position: relative;
+}
+</style>

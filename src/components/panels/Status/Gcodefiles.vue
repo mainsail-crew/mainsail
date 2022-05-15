@@ -1,7 +1,5 @@
-<style lang="scss" scoped></style>
-
 <template>
-    <v-card ref="filesGcodeCard" flat>
+    <v-card ref="filesGcodeCard" class="filesGcodeCard" flat>
         <v-data-table
             :items="gcodeFiles"
             hide-default-footer
@@ -77,6 +75,7 @@
                 </tr>
             </template>
         </v-data-table>
+        <resize-observer @notify="handleResize" />
         <start-print-dialog
             :bool="showDialogBool"
             :file="dialogFile"
@@ -113,7 +112,7 @@
                     {{ $t('Files.Download') }}
                 </v-list-item>
                 <v-list-item @click="editFile(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiPencil }}</v-icon>
+                    <v-icon class="mr-1">{{ mdiFileDocumentEditOutline }}</v-icon>
                     {{ $t('Files.EditFile') }}
                 </v-list-item>
                 <v-list-item @click="renameFile(contextMenu.item)">
@@ -167,7 +166,7 @@ import {
     mdiFire,
     mdiVideo3d,
     mdiCloudDownload,
-    mdiPencil,
+    mdiFileDocumentEditOutline,
     mdiRenameBox,
     mdiDelete,
     mdiCloseThick,
@@ -191,7 +190,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
     mdiFire = mdiFire
     mdiVideo3d = mdiVideo3d
     mdiCloudDownload = mdiCloudDownload
-    mdiPencil = mdiPencil
+    mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiRenameBox = mdiRenameBox
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
@@ -458,16 +457,23 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        window.addEventListener('resize', this.eventListenerResize)
-        this.eventListenerResize()
+        this.calcContentTdWidth()
     }
 
-    destroyed() {
-        window.removeEventListener('resize', this.eventListenerResize)
-    }
-
-    eventListenerResize() {
+    calcContentTdWidth() {
         this.contentTdWidth = this.$refs.filesGcodeCard?.$el?.clientWidth - 48 - 48 - 32
+    }
+
+    handleResize() {
+        this.$nextTick(() => {
+            this.calcContentTdWidth()
+        })
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.filesGcodeCard {
+    position: relative;
+}
+</style>

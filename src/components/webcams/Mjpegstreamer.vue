@@ -150,6 +150,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
                                         // we're done reading the jpeg. Time to render it.
                                         else {
                                             img.src = URL.createObjectURL(new Blob([imageBuffer], { type: TYPE_JPEG }))
+                                            img.onload = () => URL.revokeObjectURL(img.src)
                                             frames++
                                             contentLength = 0
                                             bytesRead = 0
@@ -181,6 +182,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 
     stopStream() {
+        URL.revokeObjectURL(this.url)
         if (this.timerFPS) clearTimeout(this.timerFPS)
         if (this.timerRestart) clearTimeout(this.timerRestart)
         this.controller?.abort()
