@@ -1,7 +1,5 @@
-<style lang="scss" scoped></style>
-
 <template>
-    <v-card ref="filesGcodeCard" flat>
+    <v-card ref="filesGcodeCard" class="filesGcodeCard" flat>
         <v-data-table
             :items="gcodeFiles"
             hide-default-footer
@@ -77,6 +75,7 @@
                 </tr>
             </template>
         </v-data-table>
+        <resize-observer @notify="handleResize" />
         <start-print-dialog
             :bool="showDialogBool"
             :file="dialogFile"
@@ -172,6 +171,7 @@ import {
     mdiDelete,
     mdiCloseThick,
 } from '@mdi/js'
+import { Debounce } from 'vue-debounce-decorator'
 
 interface dialogRenameObject {
     show: boolean
@@ -458,16 +458,24 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        window.addEventListener('resize', this.eventListenerResize)
-        this.eventListenerResize()
+        this.calcContentTdWidth()
     }
 
-    destroyed() {
-        window.removeEventListener('resize', this.eventListenerResize)
-    }
-
-    eventListenerResize() {
+    calcContentTdWidth() {
         this.contentTdWidth = this.$refs.filesGcodeCard?.$el?.clientWidth - 48 - 48 - 32
+    }
+
+    @Debounce(200)
+    handleResize() {
+        this.$nextTick(() => {
+            this.calcContentTdWidth()
+        })
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.filesGcodeCard {
+    position: relative;
+}
+</style>
