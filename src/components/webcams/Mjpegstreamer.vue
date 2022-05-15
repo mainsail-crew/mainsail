@@ -15,7 +15,7 @@
 </style>
 
 <template>
-    <div v-observe-visibility="visibilityChanged" style="position: relative">
+    <div style="position: relative">
         <img ref="image" class="webcamImage" :style="webcamStyle" />
         <span v-if="showFps" class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span>
     </div>
@@ -31,7 +31,6 @@ const TYPE_JPEG = 'image/jpeg'
 
 @Component
 export default class Mjpegstreamer extends Mixins(BaseMixin) {
-    private isVisible = true
     private currentFPS = 0
     private timerFPS: number | null = null
     private timerRestart: number | null = null
@@ -167,17 +166,13 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
             })
     }
 
-    visibilityChanged(isVisible: boolean) {
-        this.isVisible = isVisible
-
-        if (isVisible) {
-            this.startStream()
-        } else {
-            this.stopStream()
-        }
+    mounted() {
+        document.addEventListener('visibilitychange', this.visibilityChanged)
+        this.startStream()
     }
 
     beforeDestroy() {
+        document.removeEventListener('visibilitychange', this.visibilityChanged)
         this.stopStream()
     }
 
@@ -197,6 +192,17 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     @Watch('url')
     urlChanged() {
         this.restartStream()
+    }
+
+    visibilityChanged() {
+        const visibility = document.visibilityState
+
+        if (visibility === 'visible') {
+            this.startStream()
+            return
+        }
+
+        this.stopStream()
     }
 }
 </script>
