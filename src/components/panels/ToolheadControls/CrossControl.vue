@@ -376,8 +376,6 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
     mdiEngineOff = mdiEngineOff
     mdiHome = mdiHome
 
-    private stepSize = this.stepsReversed[this.selectedCrossStep]
-
     get actionButton(): string {
         return this.$store.state.gui.control.actionButton ?? this.defaultActionButton
     }
@@ -391,6 +389,10 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
 
     set selectedCrossStep(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'control.selectedCrossStep', value: newVal })
+    }
+
+    get stepSize(): number {
+        return this.stepsReversed[this.selectedCrossStep]
     }
 
     /**
