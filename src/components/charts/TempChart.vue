@@ -47,7 +47,7 @@ export default class TempChart extends Mixins(BaseMixin) {
                 fontSize: '14px',
             },
             padding: 15,
-            formatter: this.tooltipFormater,
+            formatter: this.tooltipFormatter,
             confine: true,
             className: 'echarts-tooltip',
             position: function (pos: any, params: any, dom: any, rect: any, size: any) {
@@ -297,7 +297,7 @@ export default class TempChart extends Mixins(BaseMixin) {
         }
     }
 
-    tooltipFormater(datasets: any) {
+    tooltipFormatter(datasets: any) {
         let output = ''
 
         const mainDatasets = datasets.filter((dataset: any) => {
