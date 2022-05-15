@@ -53,6 +53,10 @@
 .disable-transition {
     transition: none !important;
 }
+
+.gcode-viewer-panel {
+    position: relative;
+}
 </style>
 
 <template>
@@ -219,6 +223,7 @@
                     type="file"
                     @change="fileSelected" />
             </v-card-text>
+            <resize-observer @notify="handleResize" />
         </panel>
         <v-snackbar v-model="loading" :timeout="-1" :value="true" fixed right bottom dark>
             <div>
@@ -276,6 +281,7 @@ import {
     mdiToggleSwitchOffOutline,
     mdiVideo3d,
 } from '@mdi/js'
+import { Debounce } from 'vue-debounce-decorator'
 
 interface downloadSnackbar {
     status: boolean
@@ -358,8 +364,6 @@ export default class Viewer extends Mixins(BaseMixin) {
         viewer = this.$store.state.gcodeviewer?.viewerBackup ?? null
 
         await this.init()
-
-        window.addEventListener('resize', this.eventListenerResize)
     }
 
     beforeDestroy() {
@@ -368,12 +372,13 @@ export default class Viewer extends Mixins(BaseMixin) {
             this.$store.dispatch('gcodeviewer/setLoadedFileBackup', this.loadedFile)
             this.$store.dispatch('gcodeviewer/setViewerBackup', viewer)
         }
-
-        window.removeEventListener('resize', this.eventListenerResize)
     }
 
-    eventListenerResize() {
-        viewer?.resize()
+    @Debounce(200)
+    handleResize() {
+        this.$nextTick(() => {
+            viewer?.resize()
+        })
     }
 
     get filePosition() {
