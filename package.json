@@ -23,7 +23,6 @@
     },
     "dependencies": {
         "@codemirror/basic-setup": "^0.20.0",
-        "@codemirror/highlight": "^0.19.8",
         "@codemirror/lang-javascript": "^0.20.0",
         "@codemirror/lang-json": "^0.20.0",
         "@codemirror/language": "^0.20.0",
