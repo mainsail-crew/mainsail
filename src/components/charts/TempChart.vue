@@ -1,10 +1,13 @@
 <template>
-    <e-chart
-        ref="tempchart"
-        v-observe-visibility="visibilityChanged"
-        :option="chartOptions"
-        :init-options="{ renderer: 'svg' }"
-        style="height: 250px; width: 100%"></e-chart>
+    <div class="resize-helper">
+        <e-chart
+            ref="tempchart"
+            v-observe-visibility="visibilityChanged"
+            :option="chartOptions"
+            :init-options="{ renderer: 'svg' }"
+            style="height: 250px; width: 100%"></e-chart>
+        <resize-observer @notify="handleResize" />
+    </div>
 </template>
 
 <script lang="ts">
@@ -17,6 +20,7 @@ import { PrinterTempHistoryStateSerie, PrinterTempHistoryStateSourceEntry } from
 import type { ECharts } from 'echarts/core'
 import type { ECBasicOption } from 'echarts/types/dist/shared'
 import { mdiClock } from '@mdi/js'
+import { Debounce } from 'vue-debounce-decorator'
 
 interface echartsTooltipObj {
     [key: string]: any
@@ -228,19 +232,18 @@ export default class TempChart extends Mixins(BaseMixin) {
 
     mounted() {
         this.initChart()
-
-        window.addEventListener('resize', this.eventListenerResize)
     }
 
     beforeDestroy() {
         if (typeof window === 'undefined') return
         if (this.chart) this.chart.dispose()
-
-        window.removeEventListener('resize', this.eventListenerResize)
     }
 
-    eventListenerResize() {
-        this.chart?.resize()
+    @Debounce(200)
+    handleResize() {
+        this.$nextTick(() => {
+            this.chart?.resize()
+        })
     }
 
     initChart() {
@@ -394,3 +397,9 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.resize-helper {
+    position: relative;
+}
+</style>
