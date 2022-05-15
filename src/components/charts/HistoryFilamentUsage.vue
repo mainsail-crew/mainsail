@@ -1,13 +1,11 @@
 <template>
-    <div class="resize-helper">
-        <e-chart
-            ref="historyFilamentUsage"
-            v-observe-visibility="visibilityChanged"
-            :option="chartOptions"
-            :init-options="{ renderer: 'svg' }"
-            style="height: 175px; width: 100%"></e-chart>
-        <resize-observer @notify="handleResize" />
-    </div>
+    <e-chart
+        ref="historyFilamentUsage"
+        v-observe-visibility="visibilityChanged"
+        :option="chartOptions"
+        :autoresize="true"
+        :init-options="{ renderer: 'svg' }"
+        style="height: 175px; width: 100%"></e-chart>
 </template>
 
 <script lang="ts">
@@ -15,7 +13,6 @@ import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import type { ECharts } from 'echarts/core'
-import { Debounce } from 'vue-debounce-decorator'
 
 @Component({})
 export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
@@ -142,18 +139,5 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
     visibilityChanged(isVisible: boolean) {
         if (isVisible) this.chart?.resize()
     }
-
-    @Debounce(200)
-    handleResize() {
-        this.$nextTick(() => {
-            this.chart?.resize()
-        })
-    }
 }
 </script>
-
-<style scoped>
-.resize-helper {
-    position: relative;
-}
-</style>

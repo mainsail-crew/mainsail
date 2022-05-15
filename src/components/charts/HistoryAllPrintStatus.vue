@@ -1,13 +1,11 @@
 <template>
-    <div class="resize-helper">
-        <e-chart
-            ref="historyAllPrintStatus"
-            v-observe-visibility="visibilityChanged"
-            :option="chartOptions"
-            :init-options="{ renderer: 'svg' }"
-            style="height: 250px; width: 100%"></e-chart>
-        <resize-observer @notify="handleResize" />
-    </div>
+    <e-chart
+        ref="historyAllPrintStatus"
+        v-observe-visibility="visibilityChanged"
+        :option="chartOptions"
+        :autoresize="true"
+        :init-options="{ renderer: 'svg' }"
+        style="height: 250px; width: 100%"></e-chart>
 </template>
 
 <script lang="ts">
@@ -17,7 +15,6 @@ import BaseMixin from '@/components/mixins/base'
 import type { ECharts } from 'echarts/core'
 import { ECBasicOption } from 'echarts/types/dist/shared'
 import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/types'
-import { Debounce } from 'vue-debounce-decorator'
 
 @Component({
     components: {},
@@ -112,18 +109,5 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
     visibilityChanged(isVisible: boolean) {
         if (isVisible) this.chart?.resize()
     }
-
-    @Debounce(200)
-    handleResize() {
-        this.$nextTick(() => {
-            this.chart?.resize()
-        })
-    }
 }
 </script>
-
-<style scoped>
-.resize-helper {
-    position: relative;
-}
-</style>
