@@ -102,7 +102,6 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiFile, mdiPlay, mdiFileMultiple, mdiPlaylistRemove } from '@mdi/js'
-import { Debounce } from 'vue-debounce-decorator'
 @Component({
     components: {},
 })
@@ -262,7 +261,6 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
         this.contentTdWidth = this.$refs.filesJobqueue?.$el?.clientWidth - 48 - 48 - 32
     }
 
-    @Debounce(200)
     handleResize() {
         this.$nextTick(() => {
             this.calcContentTdWidth()

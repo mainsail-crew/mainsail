@@ -120,7 +120,6 @@ import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiPlay, mdiPause, mdiFile, mdiPlaylistRemove, mdiTrayFull } from '@mdi/js'
-import { Debounce } from 'vue-debounce-decorator'
 @Component({
     components: { Panel },
 })
@@ -228,7 +227,6 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
         this.contentTdWidth = this.$refs.jobqueuePanel?.$el?.clientWidth - 48 - 32
     }
 
-    @Debounce(200)
     handleResize() {
         this.$nextTick(() => {
             this.calcContentTdWidth()

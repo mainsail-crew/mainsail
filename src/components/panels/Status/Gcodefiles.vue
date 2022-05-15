@@ -171,7 +171,6 @@ import {
     mdiDelete,
     mdiCloseThick,
 } from '@mdi/js'
-import { Debounce } from 'vue-debounce-decorator'
 
 interface dialogRenameObject {
     show: boolean
@@ -465,7 +464,6 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
         this.contentTdWidth = this.$refs.filesGcodeCard?.$el?.clientWidth - 48 - 48 - 32
     }
 
-    @Debounce(200)
     handleResize() {
         this.$nextTick(() => {
             this.calcContentTdWidth()
