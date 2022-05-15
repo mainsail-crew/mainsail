@@ -106,12 +106,12 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
             const masterDatasetKeys = tempDatasetKeys
                 .filter((tmp) => {
                     if (tmp.startsWith('_')) return false
-                    if (tmp.lastIndexOf('-') > -1) {
-                        const suffix = tmp.slice(tmp.lastIndexOf('-') + 1)
-                        return !['target', 'power'].includes(suffix)
-                    }
 
-                    return true
+                    const lastIndex = tmp.lastIndexOf('-')
+                    if (lastIndex === -1) return true
+
+                    const suffix = tmp.slice(lastIndex + 1)
+                    return !['target', 'power', 'speed'].includes(suffix)
                 })
                 .sort()
             const series: PrinterTempHistoryStateSerie[] = []
