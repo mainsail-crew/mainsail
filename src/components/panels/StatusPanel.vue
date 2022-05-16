@@ -241,10 +241,20 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     @Watch('current_filename')
     current_filenameChanged(newVal: string) {
-        if (this.current_filename === '' && newVal !== '') this.activeTab = 'status'
+        if (this.current_filename === '' && newVal !== '') {
+            this.activeTab = 'status'
+            return
+        }
+
         if (this.boolFirstLoad && newVal !== '') {
             this.boolFirstLoad = false
             this.activeTab = 'status'
+            return
+        }
+
+        if (newVal === '') {
+            this.activeTab = 'files'
+            return
         }
     }
 
