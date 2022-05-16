@@ -417,20 +417,5 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
     get stepsReversed() {
         return Array.from(new Set([...(this.stepsAll ?? [])])).sort((a, b) => a - b)
     }
-
-    /**
-     * Axes home states
-     */
-    get xAxisHomed(): boolean {
-        return this.$store.state.printer.toolhead?.homed_axes.includes('x') ?? false
-    }
-
-    get yAxisHomed(): boolean {
-        return this.$store.state.printer.toolhead?.homed_axes.includes('y') ?? false
-    }
-
-    get zAxisHomed(): boolean {
-        return this.$store.state.printer.toolhead?.homed_axes.includes('z') ?? false
-    }
 }
 </script>

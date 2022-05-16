@@ -7,10 +7,6 @@ export default class ControlMixin extends Vue {
         return this.$store.state.printer?.gcode_move?.absolute_coordinates ?? true
     }
 
-    get homedAxes(): string {
-        return this.$store.state.printer?.toolhead?.homed_axes ?? ''
-    }
-
     get enableXYHoming(): boolean {
         return this.$store.state.gui.control.enableXYHoming
     }
@@ -61,6 +57,26 @@ export default class ControlMixin extends Vue {
 
     get defaultActionButton() {
         return this.$store.getters['gui/getDefaultControlActionButton']
+    }
+
+    /**
+     * Axes home states
+     */
+
+    get homedAxes(): string {
+        return this.$store.state.printer?.toolhead?.homed_axes ?? ''
+    }
+
+    get xAxisHomed(): boolean {
+        return this.homedAxes.includes('x')
+    }
+
+    get yAxisHomed(): boolean {
+        return this.homedAxes.includes('y')
+    }
+
+    get zAxisHomed(): boolean {
+        return this.homedAxes.includes('z')
     }
 
     doHome() {

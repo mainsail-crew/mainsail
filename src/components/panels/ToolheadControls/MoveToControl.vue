@@ -98,21 +98,6 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     /**
-     * Axes home states
-     */
-    get xAxisHomed(): boolean {
-        return this.$store.state.printer.toolhead?.homed_axes.includes('x') ?? false
-    }
-
-    get yAxisHomed(): boolean {
-        return this.$store.state.printer.toolhead?.homed_axes.includes('y') ?? false
-    }
-
-    get zAxisHomed(): boolean {
-        return this.$store.state.printer.toolhead?.homed_axes.includes('z') ?? false
-    }
-
-    /**
      * Axis limits
      */
     get stepperXmin(): number {
