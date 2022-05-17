@@ -86,7 +86,7 @@ export interface PrinterStateTemperatureObject {
     max_temp: number
     measured_min_temp: number | null
     measured_max_temp: number | null
-    rpm: string | null
+    rpm: number | null
     rpmClass: string
     command: 'SET_HEATER_TEMPERATURE' | 'SET_TEMPERATURE_FAN_TARGET' | null
     commandAttributeName: 'HEATER' | 'TEMPERATURE_FAN' | null
