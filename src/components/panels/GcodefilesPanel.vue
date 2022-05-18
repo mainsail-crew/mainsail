@@ -1152,9 +1152,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     addToQueue(item: FileStateGcodefile | FileStateFile) {
-        let path = this.currentPath.slice(7)
-        if (path != '') path += '/'
-        const filename = path + item.filename
+        let filename = [this.currentPath, item.filename].join('/')
+        if (filename.startsWith('/')) filename = filename.slice(1)
 
         this.$store.dispatch('server/jobQueue/addToQueue', [filename])
     }
