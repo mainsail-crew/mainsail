@@ -155,7 +155,7 @@
                                             </span>
                                         </div>
                                         <div v-if="object.rpm !== null">
-                                            <small :class="object.rpmClass">{{ object.rpm }}</small>
+                                            <small :class="object.rpmClass">{{ object.rpm }} RPM</small>
                                         </div>
                                     </td>
                                     <td class="target">
