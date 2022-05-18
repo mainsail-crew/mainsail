@@ -570,7 +570,7 @@
             "EmptyJobqueue": "現在、ジョブキューにファイルがありません。",
             "Jobqueue": "ジョブキュー ({count})",
             "JobqueueMoreFiles": "ジョブなし | あとひとつのジョブ | あと {count}個のジョブ",
-            "PrintTime": "印刷時刻",
+            "PrintTime": "印刷時間",
             "Flow": "フロー",
             "Headline": "状態",
             "Layer": "層",
