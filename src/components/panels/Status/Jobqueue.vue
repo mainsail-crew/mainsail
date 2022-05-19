@@ -57,7 +57,7 @@
                         </template>
                     </td>
                     <td class="pr-2">
-                        <template v-if="item.isFirst">
+                        <template v-if="item.isFirst && !printerIsPrinting">
                             <v-btn icon color="success" class="float-right minwidth-0 mt-1" @click="startJobqueue">
                                 <v-icon>{{ mdiPlay }}</v-icon>
                             </v-btn>
