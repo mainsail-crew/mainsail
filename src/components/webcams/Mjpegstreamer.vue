@@ -1,29 +1,29 @@
 <style>
-    .webcamImage {
-        width: 100%;
-    }
+.webcamImage {
+    width: 100%;
+}
 
-    .webcamFpsOutput {
-        display: inline-block;
-        position:absolute;
-        bottom: 6px;
-        right: 0;
-        background: rgba(0,0,0,0.8);
-        padding: 3px 10px;
-        border-top-left-radius: 5px;
-    }
+.webcamFpsOutput {
+    display: inline-block;
+    position: absolute;
+    bottom: 6px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 3px 10px;
+    border-top-left-radius: 5px;
+}
 </style>
 
 <template>
-    <div v-observe-visibility="visibilityChanged" style="position: relative;">
+    <div style="position: relative">
         <img ref="image" class="webcamImage" :style="webcamStyle" />
-        <span class="webcamFpsOutput" v-if="showFps">{{ $t('Panels.WebcamPanel.FPS')}}: {{ fpsOutput }}</span>
+        <span v-if="showFps" class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span>
     </div>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {Mixins, Prop, Watch} from 'vue-property-decorator'
+import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 const CONTENT_LENGTH = 'content-length'
@@ -31,7 +31,6 @@ const TYPE_JPEG = 'image/jpeg'
 
 @Component
 export default class Mjpegstreamer extends Mixins(BaseMixin) {
-    private isVisible = true
     private currentFPS = 0
     private timerFPS: number | null = null
     private timerRestart: number | null = null
@@ -44,11 +43,11 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     @Prop()
     printerUrl: string | undefined
 
-    @Prop({ default: true }) showFps!: boolean
+    @Prop({ default: true }) declare showFps: boolean
 
-    $refs!: {
-        canvas: HTMLCanvasElement,
-        image: HTMLImageElement,
+    declare $refs: {
+        canvas: HTMLCanvasElement
+        image: HTMLImageElement
     }
 
     get url() {
@@ -68,19 +67,20 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 
     get fpsOutput() {
-        return (this.currentFPS < 10) ? '0'+this.currentFPS.toString() : this.currentFPS
+        return this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS
     }
 
     startStream() {
         const SOI = new Uint8Array(2)
-        SOI[0] = 0xFF
-        SOI[1] = 0xD8
+        SOI[0] = 0xff
+        SOI[1] = 0xd8
 
         function getLength(headers: any) {
             let contentLength = -1
             headers.split('\n').forEach((header: any) => {
                 const pair = header.split(':')
-                if (pair[0].toLowerCase() === CONTENT_LENGTH) { // Fix for issue https://github.com/aruntj/mjpeg-readable-stream/issues/3 suggested by martapanc
+                if (pair[0].toLowerCase() === CONTENT_LENGTH) {
+                    // Fix for issue https://github.com/aruntj/mjpeg-readable-stream/issues/3 suggested by martapanc
                     contentLength = pair[1]
                 }
             })
@@ -92,8 +92,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
         //readable stream credit to from https://github.com/aruntj/mjpeg-readable-stream
         fetch(this.url, { signal })
-            .then(response => response.body)
-            .then(rb => {
+            .then((response) => response.body)
+            .then((rb) => {
                 const reader = rb?.getReader()
 
                 let headers = ''
@@ -121,7 +121,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
                         // The following function handles each data chunk
                         function pump(): any {
                             // "done" is a Boolean and value a "Uint8Array"
-                            return reader?.read().then( ({done, value}) => {
+                            return reader?.read().then(({ done, value }) => {
                                 // If there is no more data to read
                                 if (done) {
                                     window.console.log('done')
@@ -132,10 +132,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
                                 controller.enqueue(value)
 
                                 if (value) {
-                                    for (let index =0; index < value.length; index++) {
-
+                                    for (let index = 0; index < value.length; index++) {
                                         // we've found start of the frame. Everything we've read till now is the header.
-                                        if (value[index] === SOI[0] && value[index+1] === SOI[1]) {
+                                        if (value[index] === SOI[0] && value[index + 1] === SOI[1]) {
                                             contentLength = getLength(headers)
                                             imageBuffer = new Uint8Array(new ArrayBuffer(contentLength))
                                         }
@@ -144,12 +143,13 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
                                             headers += String.fromCharCode(value[index])
                                         }
                                         // we're now reading the jpeg.
-                                        else if (bytesRead < contentLength){
+                                        else if (bytesRead < contentLength) {
                                             imageBuffer[bytesRead++] = value[index]
                                         }
                                         // we're done reading the jpeg. Time to render it.
                                         else {
-                                            img.src = URL.createObjectURL(new Blob([imageBuffer], {type: TYPE_JPEG}))
+                                            img.src = URL.createObjectURL(new Blob([imageBuffer], { type: TYPE_JPEG }))
+                                            img.onload = () => URL.revokeObjectURL(img.src)
                                             frames++
                                             contentLength = 0
                                             bytesRead = 0
@@ -161,26 +161,23 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
                                 return pump()
                             })
                         }
-                    }
+                    },
                 })
             })
     }
 
-    visibilityChanged(isVisible: boolean) {
-        this.isVisible = isVisible
-
-        if (isVisible) {
-            this.startStream()
-        } else {
-            this.stopStream()
-        }
+    mounted() {
+        document.addEventListener('visibilitychange', this.visibilityChanged)
+        this.startStream()
     }
 
     beforeDestroy() {
+        document.removeEventListener('visibilitychange', this.visibilityChanged)
         this.stopStream()
     }
 
     stopStream() {
+        URL.revokeObjectURL(this.url)
         if (this.timerFPS) clearTimeout(this.timerFPS)
         if (this.timerRestart) clearTimeout(this.timerRestart)
         this.controller?.abort()
@@ -195,6 +192,17 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     @Watch('url')
     urlChanged() {
         this.restartStream()
+    }
+
+    visibilityChanged() {
+        const visibility = document.visibilityState
+
+        if (visibility === 'visible') {
+            this.startStream()
+            return
+        }
+
+        this.stopStream()
     }
 }
 </script>

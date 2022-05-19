@@ -41,17 +41,17 @@ export const getDefaultState = (): ServerTimelapseState => {
             duplicatelastframe: 0,
             previewimage: true,
             time_format_code: '%Y%m%d_%H%M',
-            blockedsettings: []
+            blockedsettings: [],
         },
         lastFrame: {
             count: 0,
-            file: ''
+            file: '',
         },
         rendering: {
             status: '',
             progress: 0,
-            filename: ''
-        }
+            filename: '',
+        },
     }
 }
 
@@ -64,5 +64,5 @@ export const timelapse: Module<ServerTimelapseState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

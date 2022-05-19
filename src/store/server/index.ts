@@ -10,6 +10,7 @@ import { updateManager } from '@/store/server/updateManager'
 import { history } from '@/store/server/history'
 import { timelapse } from '@/store/server/timelapse'
 import { jobQueue } from '@/store/server/jobQueue'
+import { announcements } from '@/store/server/announcements'
 
 // create getDefaultState
 export const getDefaultState = (): ServerState => {
@@ -24,17 +25,20 @@ export const getDefaultState = (): ServerState => {
         warnings: [],
         registered_directories: [],
         events: [],
-        config: { },
+        config: {},
         system_info: null,
+        system_boot_at: null,
         cpu_temp: 0,
         moonraker_stats: null,
         throttled_state: {
             bits: 0,
             flags: [],
         },
+        network_stats: {},
+        system_cpu_usage: {},
         dbNamespaces: [],
         websocket_count: 0,
-        moonraker_version: ''
+        moonraker_version: '',
     }
 }
 
@@ -54,5 +58,6 @@ export const server: Module<ServerState, any> = {
         history,
         timelapse,
         jobQueue,
-    }
+        announcements,
+    },
 }

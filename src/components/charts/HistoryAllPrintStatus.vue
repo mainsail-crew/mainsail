@@ -1,34 +1,30 @@
 <template>
-    <ECharts
+    <e-chart
         ref="historyAllPrintStatus"
-        :option="chartOptions"
-        :init-options="{ renderer: 'svg' }"
-        style="height: 250px; width: 100%;"
         v-observe-visibility="visibilityChanged"
-    ></ECharts>
+        :option="chartOptions"
+        :autoresize="true"
+        :init-options="{ renderer: 'svg' }"
+        style="height: 250px; width: 100%"></e-chart>
 </template>
 
 <script lang="ts">
-
 import Component from 'vue-class-component'
-import {createComponent} from 'echarts-for-vue'
-import * as echarts from 'echarts'
-import {Mixins, Watch} from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {ECharts} from 'echarts/core'
+import type { ECharts } from 'echarts/core'
+import { ECBasicOption } from 'echarts/types/dist/shared'
+import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/types'
 
 @Component({
-    components: {
-        ECharts: createComponent({ echarts }),
-    }
+    components: {},
 })
 export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
-
-    $refs!: {
+    declare $refs: {
         historyAllPrintStatus: any
     }
 
-    private chartOptions: any = {
+    private chartOptions: ECBasicOption = {
         darkMode: true,
         animation: false,
         grid: {
@@ -41,39 +37,55 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
             trigger: 'item',
             borderWidth: 0,
         },
-        series: [{
-            type: 'pie',
-            data: [],
-            avoidLabelOverlap: false,
-            radius: ['35%', '60%'],
-            emphasis: {
-                itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        }]
+        series: [
+            {
+                type: 'pie',
+                data: [],
+                avoidLabelOverlap: false,
+                radius: ['35%', '60%'],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    },
+                },
+            },
+        ],
+    }
+
+    get selectedJobs() {
+        return this.$store.state.gui.view.history.selectedJobs ?? []
     }
 
     get allPrintStatusArray() {
         return this.$store.getters['server/history/getAllPrintStatusArray']
     }
 
-    get chart (): ECharts | null {
-        const historyAllPrintStatus = this.$refs.historyAllPrintStatus
-        return historyAllPrintStatus?.inst ?? null
+    get selectedPrintStatusArray() {
+        return this.$store.getters['server/history/getSelectedPrintStatusArray']
+    }
+
+    get printStatusArray() {
+        const output: ServerHistoryStateAllPrintStatusEntry[] = []
+        const orgArray = this.selectedJobs.length ? this.selectedPrintStatusArray : this.allPrintStatusArray
+
+        orgArray.forEach((status: ServerHistoryStateAllPrintStatusEntry) => {
+            const tmp = { ...status }
+            tmp.name = status.displayName
+            output.push(tmp)
+        })
+
+        return output
+    }
+
+    get chart(): ECharts | null {
+        return this.$refs.historyAllPrintStatus ?? null
     }
 
     mounted() {
-        this.chartOptions.series[0].data = this.allPrintStatusArray
+        this.chartOptions.series[0].data = this.printStatusArray
         this.chart?.setOption(this.chartOptions)
-
-        window.addEventListener('resize', this.eventListenerResize)
-    }
-
-    destroyed() {
-        window.removeEventListener('resize', this.eventListenerResize)
     }
 
     beforeDestroy() {
@@ -81,21 +93,21 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
         if (this.chart) this.chart.dispose()
     }
 
-    @Watch('allPrintStatusArray')
-    allPrintStatusArrayChanged(newVal: any) {
-        this.chart?.setOption({
-            series: {
-                data: newVal
-            }
-        })
+    @Watch('printStatusArray')
+    printStatusArrayChanged(newVal: any) {
+        this.chart?.setOption(
+            {
+                series: {
+                    data: newVal,
+                },
+            },
+            false,
+            true
+        )
     }
 
-    visibilityChanged (isVisible: boolean) {
+    visibilityChanged(isVisible: boolean) {
         if (isVisible) this.chart?.resize()
-    }
-
-    eventListenerResize() {
-        this.chart?.resize()
     }
 }
 </script>

@@ -1,14 +1,13 @@
-import {defaultLogoColor, themeDir, thumbnailBigMin} from '@/store/variables'
-import {convertName} from '@/plugins/helpers'
-import {GetterTree} from 'vuex'
-import {FarmPrinterState} from '@/store/farm/printer/types'
-import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
+import { defaultLogoColor, themeDir, thumbnailBigMin } from '@/store/variables'
+import { convertName } from '@/plugins/helpers'
+import { GetterTree } from 'vuex'
+import { FarmPrinterState } from '@/store/farm/printer/types'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<FarmPrinterState, any> = {
-
     getSocketUrl: (state) => {
-        return state.socket.protocol+'://'+state.socket.hostname+':'+state.socket.port+'/websocket'
+        return state.socket.protocol + '://' + state.socket.hostname + ':' + state.socket.port + '/websocket'
     },
 
     getSocketData: (state) => {
@@ -16,26 +15,24 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     isCurrentPrinter: (state, getters, rootState) => {
-        return (
-            rootState.socket.hostname === state.socket.hostname &&
-			rootState.socket.port === state.socket.port
-        )
+        return rootState.socket.hostname === state.socket.hostname && rootState.socket.port === state.socket.port
     },
 
     // eslint-disable-next-line
-	getSetting: (state) => (name: string, fallback: any) => {
+    getSetting: (state) => (name: string, fallback: any) => {
         return state.settings[name] ?? fallback
     },
 
     getPrinterName: (state) => {
         if (
             'gui' in state.data &&
-			'general' in state.data.gui &&
-			'printername' in state.data.gui.general &&
-			state.data.gui.general.printername !== ''
-        ) return state.data.gui.general.printername
+            'general' in state.data.gui &&
+            'printername' in state.data.gui.general &&
+            state.data.gui.general.printername !== ''
+        )
+            return state.data.gui.general.printername
 
-        return state.socket.port !== 80 ? state.socket.hostname+':'+state.socket.port : state.socket.hostname
+        return state.socket.port !== 80 ? state.socket.hostname + ':' + state.socket.port : state.socket.hostname
     },
 
     getPrinterSocketState: (state) => {
@@ -55,7 +52,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
             if (state.data.print_stats.state === 'printing') {
                 const percent = getters['getPrintPercent']
 
-                return Math.round(percent*100)+'% Printing'
+                return Math.round(percent * 100) + '% Printing'
             }
 
             return state.data.print_stats.state.charAt(0).toUpperCase() + state.data.print_stats.state.slice(1)
@@ -70,10 +67,10 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 
     getPrintPercent: (state) => {
         if (
-			state.current_file?.filename &&
-			state.current_file?.gcode_start_byte &&
-			state.current_file?.gcode_end_byte &&
-			state.current_file.filename === state.data.print_stats.filename
+            state.current_file?.filename &&
+            state.current_file?.gcode_start_byte &&
+            state.current_file?.gcode_end_byte &&
+            state.current_file.filename === state.data.print_stats.filename
         ) {
             if (state.data.virtual_sdcard.file_position <= state.current_file.gcode_start_byte) return 0
             if (state.data.virtual_sdcard.file_position >= state.current_file?.gcode_end_byte) return 1
@@ -81,31 +78,41 @@ export const getters: GetterTree<FarmPrinterState, any> = {
             const currentPosition = state.data.virtual_sdcard.file_position - state.current_file.gcode_start_byte
             const maxPosition = state.current_file.gcode_end_byte - state.current_file.gcode_start_byte
 
-            if (currentPosition > 0 && maxPosition > 0) return 1 / maxPosition * currentPosition
+            if (currentPosition > 0 && maxPosition > 0) return (1 / maxPosition) * currentPosition
         }
 
         return state.data.virtual_sdcard?.progress ?? 0
     },
 
-    getImage: state => {
+    getImage: (state) => {
         if (state.current_file.filename && state.current_file.thumbnails?.length) {
             const indexLastDir = state.current_file.filename.lastIndexOf('/')
-            const dir = (indexLastDir !== -1) ? state.current_file.filename.substr(0, indexLastDir)+'/' : ''
-            const thumbnail = state.current_file.thumbnails.find(thumb => thumb.width >= thumbnailBigMin)
+            const dir = indexLastDir !== -1 ? state.current_file.filename.substr(0, indexLastDir) + '/' : ''
+            const thumbnail = state.current_file.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
 
-            if (thumbnail && 'relative_path' in thumbnail) return '//'+state.socket.hostname+':'+state.socket.port+'/server/files/gcodes/'+dir+thumbnail.relative_path
+            if (thumbnail && 'relative_path' in thumbnail)
+                return (
+                    '//' +
+                    state.socket.hostname +
+                    ':' +
+                    state.socket.port +
+                    '/server/files/gcodes/' +
+                    dir +
+                    thumbnail.relative_path
+                )
         }
 
         return '/img/sidebar-background.svg'
     },
 
     getThemeFileUrl: (state) => (acceptName: string, acceptExtensions: string[]) => {
-        const file = state.theme_files.find((element: string) =>
-            element.substr(0, element.lastIndexOf('.')) === themeDir+'/'+acceptName &&
-			acceptExtensions.includes(element.substr(element.lastIndexOf('.')+1))
+        const file = state.theme_files.find(
+            (element: string) =>
+                element.substr(0, element.lastIndexOf('.')) === themeDir + '/' + acceptName &&
+                acceptExtensions.includes(element.substr(element.lastIndexOf('.') + 1))
         )
 
-        return (file) ? '//'+state.socket.hostname+':'+state.socket.port+'/server/files/config/'+file : null
+        return file ? '//' + state.socket.hostname + ':' + state.socket.port + '/server/files/config/' + file : null
     },
 
     getLogo: (state, getters) => {
@@ -115,11 +122,8 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         return getters['getThemeFileUrl'](acceptName, acceptExtensions)
     },
 
-    getPosition: state => {
-        if (
-            'toolhead' in state.data &&
-			'position' in state.data.toolhead
-        ) return state.data.toolhead.position
+    getPosition: (state) => {
+        if ('toolhead' in state.data && 'position' in state.data.toolhead) return state.data.toolhead.position
 
         return []
     },
@@ -129,49 +133,63 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 
         const output = []
 
-        Object.keys(state.data).filter((key) => key.startsWith('extruder')).forEach((key) => {
-            if (state.data[key]?.temperature !== undefined && state.data[key]?.target !== undefined) {
-                output.push({
-                    name: convertName(key),
-                    value: state.data[key].temperature?.toFixed(0)+'° / '+state.data[key].target?.toFixed(0)+'°',
-                })
-            }
-        })
+        Object.keys(state.data)
+            .filter((key) => key.startsWith('extruder'))
+            .forEach((key) => {
+                if (state.data[key]?.temperature !== undefined && state.data[key]?.target !== undefined) {
+                    output.push({
+                        name: convertName(key),
+                        value:
+                            state.data[key].temperature?.toFixed(0) + '° / ' + state.data[key].target?.toFixed(0) + '°',
+                    })
+                }
+            })
 
         if (state.data.heater_bed?.temperature !== undefined && state.data.heater_bed?.target !== undefined) {
             output.push({
                 name: convertName('heater_bed'),
-                value: state.data.heater_bed.temperature.toFixed(0)+'° / '+state.data.heater_bed.target.toFixed(0)+'°'
+                value:
+                    state.data.heater_bed.temperature.toFixed(0) +
+                    '° / ' +
+                    state.data.heater_bed.target.toFixed(0) +
+                    '°',
             })
         }
 
-        if (state.data['temperature_fan chamber']?.temperature !== undefined && state.data['temperature_fan chamber']?.target !== undefined) {
+        if (
+            state.data['temperature_fan chamber']?.temperature !== undefined &&
+            state.data['temperature_fan chamber']?.target !== undefined
+        ) {
             output.push({
                 name: convertName('chamber'),
-                value: state.data['temperature_fan chamber'].temperature.toFixed(0)+'° / '+state.data['temperature_fan chamber'].target.toFixed(0)+'°'
+                value:
+                    state.data['temperature_fan chamber'].temperature.toFixed(0) +
+                    '° / ' +
+                    state.data['temperature_fan chamber'].target.toFixed(0) +
+                    '°',
             })
         }
 
         if ('temperature_sensor chamber' in state.data) {
             output.push({
                 name: convertName('chamber'),
-                value: state.data['temperature_sensor chamber'].temperature.toFixed(0)+'°'
+                value: state.data['temperature_sensor chamber'].temperature.toFixed(0) + '°',
             })
         }
 
         if (
             'print_stats' in state.data &&
-			'state' in state.data.print_stats &&
-			state.data.print_stats.state === 'printing' &&
-			getters['getPrintPercent'] > 0
+            'state' in state.data.print_stats &&
+            state.data.print_stats.state === 'printing' &&
+            getters['getPrintPercent'] > 0
         ) {
             const eta = new Date(getters.estimated_time_eta)
-            const h = eta.getHours() >= 10 ? eta.getHours() : '0'+eta.getHours()
-            const m = eta.getMinutes() >= 10 ? eta.getMinutes() : '0'+eta.getMinutes()
+            const h = eta.getHours() >= 10 ? eta.getHours() : '0' + eta.getHours()
+            const m = eta.getMinutes() >= 10 ? eta.getMinutes() : '0' + eta.getMinutes()
 
             output.push({
                 name: 'ETA',
-                value: getters.estimated_time_eta > 0 ? h+':'+m : '--',
+                value: getters.estimated_time_eta > 0 ? h + ':' + m : '--',
                 file: getters.estimated_time_file,
                 filament: getters.estimated_time_filament,
                 slicer: getters.estimated_time_slicer,
@@ -183,9 +201,11 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     estimated_time_file: (state, getters) => {
-        if (
-			state.data.print_stats?.print_duration > 0 && getters.getPrintPercent > 0) {
-            return (state.data.print_stats.print_duration / getters.getPrintPercent - state.data.print_stats.print_duration).toFixed(0)
+        if (state.data.print_stats?.print_duration > 0 && getters.getPrintPercent > 0) {
+            return (
+                state.data.print_stats.print_duration / getters.getPrintPercent -
+                state.data.print_stats.print_duration
+            ).toFixed(0)
         }
 
         return 0
@@ -193,13 +213,17 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 
     estimated_time_filament: (state) => {
         if (
-			state.data.print_stats?.print_duration &&
-			state.data.print_stats?.filament_used &&
-			state.current_file.filament_total &&
-
-			state.data.print_stats.filament_used > 0 &&
-			state.current_file.filament_total > state.data.print_stats.filament_used) {
-            return (state.data.print_stats.print_duration / (state.data.print_stats.filament_used / state.current_file.filament_total) - state.data.print_stats.print_duration).toFixed(0)
+            state.data.print_stats?.print_duration &&
+            state.data.print_stats?.filament_used &&
+            state.current_file.filament_total &&
+            state.data.print_stats.filament_used > 0 &&
+            state.current_file.filament_total > state.data.print_stats.filament_used
+        ) {
+            return (
+                state.data.print_stats.print_duration /
+                    (state.data.print_stats.filament_used / state.current_file.filament_total) -
+                state.data.print_stats.print_duration
+            ).toFixed(0)
         }
 
         return 0
@@ -208,10 +232,10 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     estimated_time_slicer: (state) => {
         if (
             state.data.print_stats &&
-			state.data.print_stats?.print_duration &&
-			state.current_file?.estimated_time &&
-
-			state.current_file?.estimated_time > state.data.print_stats.print_duration) {
+            state.data.print_stats?.print_duration &&
+            state.current_file?.estimated_time &&
+            state.current_file?.estimated_time > state.data.print_stats.print_duration
+        ) {
             return (state.current_file.estimated_time - state.data.print_stats.print_duration).toFixed(0)
         }
 
@@ -250,10 +274,10 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 
         if (state.data.webcams) {
             Object.keys(state.data.webcams).forEach((id: string) => {
-                webcams.push({...state.data?.webcams[id], id})
+                webcams.push({ ...state.data?.webcams[id], id })
             })
         }
 
         return webcams
-    }
+    },
 }

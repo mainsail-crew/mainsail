@@ -1,4 +1,4 @@
-import {PrinterTempHistoryState} from '@/store/printer/tempHistory/types'
+import { PrinterTempHistoryState } from '@/store/printer/tempHistory/types'
 
 export interface VTextareaType extends HTMLInputElement {
     $refs: {
@@ -7,13 +7,13 @@ export interface VTextareaType extends HTMLInputElement {
 }
 
 export interface CommandHelp {
-    command: string,
-    commandLow: string,
+    command: string
+    commandLow: string
     description?: string | Record<string, unknown>
 }
 
 export interface ConsoleCommandHelp {
-    command: CommandHelp | null,
+    command: CommandHelp | null
     original: string
 }
 
@@ -26,7 +26,7 @@ export interface PrinterState {
 
 export interface PrinterStateHeater {
     name: string
-    type: string
+    type: 'extruder' | 'heater_bed' | 'heater_generic'
     icon: string
     iconColor: string
     target: number
@@ -57,7 +57,7 @@ export interface PrinterStateTemperatureFan {
     max_temp: number
 }
 
-export interface PrinterStateSensor {
+export interface PrinterStateTemperatureSensor {
     name: string
     temperature: number
     additionSensors: PrinterStateAdditionSensor[]
@@ -66,6 +66,30 @@ export interface PrinterStateSensor {
     max_temp: number
     measured_min_temp: number
     measured_max_temp: number
+    chartColor: string
+    chartSeries: string[]
+}
+
+export interface PrinterStateTemperatureObject {
+    name: string
+    type: 'extruder' | 'heater_bed' | 'heater_generic' | 'temperature_fan' | 'temperature_sensor'
+    icon: string
+    iconColor: string
+    iconClass: string
+    state: string | null
+    avgState: string
+    temperature: number
+    additionSensors: PrinterStateAdditionSensor[]
+    target: number | null
+    presets: number[]
+    min_temp: number
+    max_temp: number
+    measured_min_temp: number | null
+    measured_max_temp: number | null
+    rpm: number | null
+    rpmClass: string
+    command: 'SET_HEATER_TEMPERATURE' | 'SET_TEMPERATURE_FAN_TARGET' | null
+    commandAttributeName: 'HEATER' | 'TEMPERATURE_FAN' | null
     chartColor: string
     chartSeries: string[]
 }
@@ -93,7 +117,7 @@ export interface PrinterStateMiscellaneous {
     rpm: number
     scale: number
     // eslint-disable-next-line
-    object: any,
+    object: any
     // eslint-disable-next-line
     config: any
     off_below?: number
@@ -130,7 +154,7 @@ export interface PrinterStateBedMesh {
 }
 
 export interface PrinterStateMacroParam {
-    type: 'int' | 'double' | 'string' | null,
+    type: 'int' | 'double' | 'string' | null
     default: string | null
 }
 
@@ -144,11 +168,56 @@ export interface PrinterStateMacro {
     prop: {
         // eslint-disable-next-line
         [key: string]: any
-    },
+    }
     params: PrinterStateMacroParams
 }
 
 export interface PrinterStateKlipperConfig {
     // eslint-disable-next-line
     [key: string]: any
+}
+
+export interface PrinterStateMcu {
+    name: string
+    mcu_constants: { [key: string]: string | number }
+    last_stats: { [key: string]: number }
+    version: string
+    chip: string | null
+    freq: number | null
+    freqFormat: string
+    awake: string
+    load: string
+    loadPercent: number
+    loadProgressColor: string
+    tempSensor: {
+        temperature: number
+        measured_min_temp: number | null
+        measured_max_temp: number | null
+    }
+}
+
+export interface PrinterStateKlipperConfigWarning {
+    message: string
+    option: string
+    section: string
+    type: 'deprecated_value' | 'deprecated_option'
+    value: string
+}
+
+export interface PrinterStateExtruder {
+    key: string
+    name: string
+    filamentDiameter: number
+    minExtrudeTemp: number
+    nozzleDiameter: number
+    maxExtrudeOnlyDistance: number
+}
+
+export interface PrinterStateExtruder {
+    key: string
+    name: string
+    filamentDiameter: number
+    minExtrudeTemp: number
+    nozzleDiameter: number
+    maxExtrudeOnlyDistance: number
 }

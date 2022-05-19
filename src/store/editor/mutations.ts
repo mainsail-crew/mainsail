@@ -1,11 +1,10 @@
 import { getDefaultState } from './index'
-import {MutationTree} from 'vuex'
-import {EditorState} from '@/store/editor/types'
+import { MutationTree } from 'vuex'
+import { EditorState } from '@/store/editor/types'
 import Vue from 'vue'
 import { sha256 } from 'js-sha256'
 
 export const mutations: MutationTree<EditorState> = {
-    
     reset(state) {
         Object.assign(state, getDefaultState())
     },
@@ -67,9 +66,6 @@ export const mutations: MutationTree<EditorState> = {
         // calculations. Hash calculations with typical config file sizes (50KB) only take 1 or 2ms
         // on my machine, so I guess this is acceptable for most use cases.
 
-        state.changed = (sha256(payload) != state.loadedHash)
-    }
-
+        state.changed = sha256(payload) != state.loadedHash
+    },
 }
-
-

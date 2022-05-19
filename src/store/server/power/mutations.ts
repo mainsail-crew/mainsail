@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
-import {MutationTree} from 'vuex'
-import {ServerPowerState} from '@/store/server/power/types'
+import { MutationTree } from 'vuex'
+import { ServerPowerState } from '@/store/server/power/types'
 
 export const mutations: MutationTree<ServerPowerState> = {
     reset(state) {
@@ -13,7 +13,7 @@ export const mutations: MutationTree<ServerPowerState> = {
     },
 
     setStatus(state, payload) {
-        const devIdx = state.devices.findIndex(device => device.device === payload.device)
+        const devIdx = state.devices.findIndex((device) => device.device === payload.device)
         if (devIdx >= 0) Vue.set(state.devices[devIdx], 'status', payload.status)
     },
 }

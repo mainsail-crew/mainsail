@@ -1,25 +1,25 @@
 <style>
-    .topbar .v-toolbar__content {
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-    }
+.topbar .v-toolbar__content {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
 </style>
 <style scoped>
-    .button-min-width-auto {
-        min-width: auto !important;
+.button-min-width-auto {
+    min-width: auto !important;
+}
+.topbar .v-btn {
+    height: 100% !important;
+    max-height: none;
+}
+.topbar .v-btn.v-btn--icon {
+    width: var(--topbar-icon-btn-width) !important;
+}
+@media (min-width: 768px) {
+    header.topbar {
+        z-index: 8 !important;
     }
-    .topbar .v-btn {
-        height: 100% !important;
-        max-height: none;
-    }
-    .topbar .v-btn.v-btn--icon {
-        width: var(--topbar-icon-btn-width) !important;
-    }
-    @media (min-width: 768px) {
-        header.topbar {
-            z-index: 8 !important;
-        }
-    }
+}
 </style>
 
 <template>
@@ -28,85 +28,105 @@
             <v-app-bar-nav-icon tile @click.stop="naviDrawer = !naviDrawer"></v-app-bar-nav-icon>
             <router-link to="/">
                 <template v-if="sidebarLogo">
-                    <img :src="sidebarLogo" style="height: 32px;" class="nav-logo ml-4 mr-1 d-none d-sm-flex" alt="Logo" />
+                    <img
+                        :src="sidebarLogo"
+                        style="height: 32px"
+                        class="nav-logo ml-4 mr-1 d-none d-sm-flex"
+                        alt="Logo" />
                 </template>
                 <template v-else>
-                    <mainsail-logo :color="logoColor" style="height: 32px;" class="nav-logo ml-4 mr-1 d-none d-sm-flex" router to="/" :ripple="false"></mainsail-logo>
+                    <mainsail-logo
+                        :color="logoColor"
+                        style="height: 32px"
+                        class="nav-logo ml-4 mr-1 d-none d-sm-flex"
+                        router
+                        to="/"
+                        :ripple="false"></mainsail-logo>
                 </template>
             </router-link>
             <v-toolbar-title class="text-no-wrap ml-0 pl-2 mr-2">{{ printerName }}</v-toolbar-title>
             <printer-selector v-if="countPrinters"></printer-selector>
             <v-spacer></v-spacer>
-            <the-throttled-states></the-throttled-states>
-            <input type="file" ref="fileUploadAndStart" :accept="validGcodeExtensions.join(', ')" style="display: none" @change="uploadAndStart" />
-            <v-btn tile
+            <input
+                ref="fileUploadAndStart"
+                type="file"
+                :accept="validGcodeExtensions.join(', ')"
+                style="display: none"
+                @change="uploadAndStart" />
+            <v-btn
+                v-if="klippyIsConnected && saveConfigPending"
+                tile
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="primary"
                 class="button-min-width-auto px-3 d-none d-sm-flex save-config-button"
-                v-if="klippyIsConnected && saveConfigPending"
                 :disabled="printerIsPrinting"
                 :loading="loadings.includes('topbarSaveConfig')"
                 @click="saveConfig">
-                <v-icon class="d-md-none">mdi-content-save</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.SAVE_CONFIG") }}</span>
+                <v-icon class="d-md-none">{{ mdiContentSave }}</v-icon>
+                <span class="d-none d-md-inline">{{ $t('App.TopBar.SAVE_CONFIG') }}</span>
             </v-btn>
-            <v-btn tile
+            <v-btn
+                v-if="
+                    klippyIsConnected &&
+                    ['standby', 'complete', 'cancelled'].includes(printer_state) &&
+                    !boolHideUploadAndPrintButton
+                "
+                tile
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="primary"
                 class="button-min-width-auto px-3 d-none d-sm-flex upload-and-start-button"
-                v-if="klippyIsConnected && ['standby', 'complete', 'cancelled'].includes(printer_state) && !boolHideUploadAndPrintButton"
                 :loading="loadings.includes('btnUploadAndStart')"
                 @click="btnUploadAndStart">
-                <v-icon class="mr-md-2">mdi-file-upload</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.UploadPrint") }}</span>
+                <v-icon class="mr-md-2">{{ mdiFileUpload }}</v-icon>
+                <span class="d-none d-md-inline">{{ $t('App.TopBar.UploadPrint') }}</span>
             </v-btn>
-            <v-btn tile
+            <v-btn
+                v-if="klippyIsConnected"
+                tile
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="error"
                 class="button-min-width-auto px-3 emergency-button"
-                v-if="klippyIsConnected"
                 :loading="loadings.includes('topbarEmergencyStop')"
                 @click="btnEmergencyStop">
-                <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.EmergencyStop") }}</span>
+                <v-icon class="mr-md-2">{{ mdiAlertCircleOutline }}</v-icon>
+                <span class="d-none d-md-inline">{{ $t('App.TopBar.EmergencyStop') }}</span>
             </v-btn>
+            <the-notification-menu></the-notification-menu>
             <the-settings-menu></the-settings-menu>
             <the-top-corner-menu></the-top-corner-menu>
         </v-app-bar>
-        <v-snackbar
-            :timeout="-1"
-            :value="true"
-            fixed
-            right
-            bottom
-            dark
-            v-model="uploadSnackbar.status"
-        >
-            <strong>{{ $t("App.TopBar.Uploading") }} {{ uploadSnackbar.filename }}</strong><br />
-            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
+        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
+            <strong>{{ $t('App.TopBar.Uploading') }} {{ uploadSnackbar.filename }}</strong>
+            <br />
+            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
+            <br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
-            <template v-slot:action="{ attrs }">
-                <v-btn
-                    color="red"
-                    text
-                    v-bind="attrs"
-                    @click="cancelUpload"
-                    style="min-width: auto;"
-                >
-                    <v-icon class="0">mdi-close</v-icon>
+            <template #action="{ attrs }">
+                <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelUpload">
+                    <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
         </v-snackbar>
         <v-dialog v-model="showEmergencyStopDialog" width="400" :fullscreen="isMobile">
-            <panel :title="$t('EmergencyStopDialog.EmergencyStop')" toolbar-color="error" card-class="emergency-stop-dialog" icon="mdi-alert-circle-outline" :margin-bottom="false">
-                <template v-slot:buttons>
-                    <v-btn icon tile @click="showEmergencyStopDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+            <panel
+                :title="$t('EmergencyStopDialog.EmergencyStop')"
+                toolbar-color="error"
+                card-class="emergency-stop-dialog"
+                :icon="mdiAlertCircleOutline"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="showEmergencyStopDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn text @click="showEmergencyStopDialog = false">{{ $t('EmergencyStopDialog.No')}}</v-btn>
-                    <v-btn color="primary" text @click="emergencyStop">{{$t('EmergencyStopDialog.Yes')}}</v-btn>
+                    <v-btn text @click="showEmergencyStopDialog = false">{{ $t('EmergencyStopDialog.No') }}</v-btn>
+                    <v-btn color="primary" text @click="emergencyStop">{{ $t('EmergencyStopDialog.Yes') }}</v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -114,19 +134,20 @@
 </template>
 
 <script lang="ts">
-import {Mixins} from 'vue-property-decorator'
+import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {validGcodeExtensions} from '@/store/variables'
+import { validGcodeExtensions } from '@/store/variables'
 import Component from 'vue-class-component'
 import axios from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
 import TheTopCornerMenu from '@/components/TheTopCornerMenu.vue'
 import TheSettingsMenu from '@/components/TheSettingsMenu.vue'
-import TheThrottledStates from '@/components/TheThrottledStates.vue'
 import Panel from '@/components/ui/Panel.vue'
 import PrinterSelector from '@/components/ui/PrinterSelector.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
-import {topbarHeight} from '@/store/variables'
+import TheNotificationMenu from '@/components/notifications/TheNotificationMenu.vue'
+import { topbarHeight } from '@/store/variables'
+import { mdiAlertCircleOutline, mdiContentSave, mdiFileUpload, mdiClose, mdiCloseThick } from '@mdi/js'
 
 type uploadSnackbar = {
     status: boolean
@@ -144,14 +165,20 @@ type uploadSnackbar = {
 @Component({
     components: {
         Panel,
-        TheThrottledStates,
         TheSettingsMenu,
         TheTopCornerMenu,
         PrinterSelector,
-        MainsailLogo
-    }
+        MainsailLogo,
+        TheNotificationMenu,
+    },
 })
 export default class TheTopbar extends Mixins(BaseMixin) {
+    mdiAlertCircleOutline = mdiAlertCircleOutline
+    mdiContentSave = mdiContentSave
+    mdiFileUpload = mdiFileUpload
+    mdiClose = mdiClose
+    mdiCloseThick = mdiCloseThick
+
     topbarHeight = topbarHeight
 
     showEmergencyStopDialog = false
@@ -165,13 +192,13 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         cancelTokenSource: null,
         lastProgress: {
             time: 0,
-            loaded: 0
-        }
+            loaded: 0,
+        },
     }
 
     formatFilesize = formatFilesize
 
-    $refs!: {
+    declare $refs: {
         fileUploadAndStart: HTMLFormElement
     }
 
@@ -195,9 +222,8 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         return this.$store.state.printer.configfile?.save_config_pending ?? false
     }
 
-    get printerName():string {
-        if (this.$store.state.gui.general.printername.length)
-            return this.$store.state.gui.general.printername
+    get printerName(): string {
+        if (this.$store.state.gui.general.printername.length) return this.$store.state.gui.general.printername
 
         return this.$store.state.printer.hostname
     }
@@ -226,8 +252,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         const confirmOnEmergencyStop = this.$store.state.gui.uiSettings.confirmOnEmergencyStop
         if (confirmOnEmergencyStop) {
             this.showEmergencyStopDialog = true
-        }
-        else {
+        } else {
             this.emergencyStop()
         }
     }
@@ -250,14 +275,14 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         if (this.$refs.fileUploadAndStart?.files.length) {
             this.$store.dispatch('socket/addLoading', { name: 'btnUploadAndStart' })
             let successFiles = []
-            for (const file of this.$refs.fileUploadAndStart?.files) {
+            for (const file of this.$refs.fileUploadAndStart?.files || []) {
                 const result = await this.doUploadAndStart(file)
                 successFiles.push(result)
             }
 
             this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
-            for(const file of successFiles) {
-                const text = this.$t('App.TopBar.UploadOfFileSuccessful', {file:file}).toString()
+            for (const file of successFiles) {
+                const text = this.$t('App.TopBar.UploadOfFileSuccessful', { file: file }).toString()
                 this.$toast.success(text)
             }
 
@@ -280,10 +305,10 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         formData.append('file', file, filename)
         formData.append('print', 'true')
 
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source()
-            axios.post(this.apiUrl + '/server/files/upload',
-                formData, {
+            axios
+                .post(this.apiUrl + '/server/files/upload', formData, {
                     cancelToken: this.uploadSnackbar.cancelTokenSource.token,
                     headers: { 'Content-Type': 'multipart/form-data' },
                     onUploadProgress: (progressEvent: ProgressEvent) => {
@@ -298,17 +323,18 @@ export default class TheTopbar extends Mixins(BaseMixin) {
                         this.uploadSnackbar.lastProgress.time = progressEvent.timeStamp
                         this.uploadSnackbar.lastProgress.loaded = progressEvent.loaded
                         this.uploadSnackbar.total = progressEvent.total
-                    }
-                }
-            ).then((result) => {
-                this.uploadSnackbar.status = false
-                resolve(result.data.result)
-            }).catch(() => {
-                this.uploadSnackbar.status = false
-                this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
-                const text = this.$t('App.TopBar.CannotUploadTheFile').toString()
-                this.$toast.error(text)
-            })
+                    },
+                })
+                .then((result) => {
+                    this.uploadSnackbar.status = false
+                    resolve(result.data.result)
+                })
+                .catch(() => {
+                    this.uploadSnackbar.status = false
+                    this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
+                    const text = this.$t('App.TopBar.CannotUploadTheFile').toString()
+                    this.$toast.error(text)
+                })
         })
     }
 

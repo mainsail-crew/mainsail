@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex'
-import {RootState} from '@/store/types'
-import {GuiWebcamState} from '@/store/gui/webcams/types'
+import { RootState } from '@/store/types'
+import { GuiWebcamState } from '@/store/gui/webcams/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
 
@@ -29,16 +29,23 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
         commit('store', { id, values: payload.values })
         dispatch('upload', {
             id,
-            value: state.webcams[id]
+            value: state.webcams[id],
         })
     },
 
-    update({ commit, dispatch, state }, payload) {
+    update({ commit, dispatch, state, rootState }, payload) {
         commit('update', payload)
         dispatch('upload', {
             id: payload.id,
-            value: state.webcams[payload.id]
+            value: state.webcams[payload.id],
         })
+
+        if (
+            rootState.server?.components.includes('timelapse') &&
+            rootState.server?.timelapse?.settings.camera === payload.id
+        ) {
+            dispatch('server/timelapse/saveSetting', { camera: payload.id }, { root: true })
+        }
     },
 
     delete({ commit }, payload) {

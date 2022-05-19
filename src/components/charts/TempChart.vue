@@ -1,44 +1,42 @@
 <template>
-    <ECharts
+    <e-chart
         ref="tempchart"
+        v-observe-visibility="visibilityChanged"
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
-        style="height: 250px; width: 100%;"
-        v-observe-visibility="visibilityChanged"
-    ></ECharts>
+        :autoresize="true"
+        style="height: 250px; width: 100%"></e-chart>
 </template>
 
 <script lang="ts">
-
 import { convertName } from '@/plugins/helpers'
 import Component from 'vue-class-component'
-import {Mixins, Watch} from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
-import {PrinterTempHistoryStateSerie, PrinterTempHistoryStateSourceEntry} from '@/store/printer/tempHistory/types'
+import { PrinterTempHistoryStateSerie, PrinterTempHistoryStateSourceEntry } from '@/store/printer/tempHistory/types'
 
-import { createComponent } from 'echarts-for-vue'
-import * as echarts from 'echarts'
-import {ECharts} from 'echarts/core'
+import type { ECharts } from 'echarts/core'
+import type { ECBasicOption } from 'echarts/types/dist/shared'
+import { mdiClock } from '@mdi/js'
 
 interface echartsTooltipObj {
     [key: string]: any
 }
 
 @Component({
-    components: {
-        ECharts: createComponent({ echarts }),
-    }
+    components: {},
 })
 export default class TempChart extends Mixins(BaseMixin) {
     convertName = convertName
 
-    $refs!: {
+    declare $refs: {
         tempchart: any
     }
 
     private isVisible = true
-    public chartOptions = {
+    public chartOptions: ECBasicOption = {
         darkMode: true,
+        renderer: 'svg',
         animation: false,
         tooltip: {
             animation: false,
@@ -47,19 +45,19 @@ export default class TempChart extends Mixins(BaseMixin) {
             borderWidth: 0,
             textStyle: {
                 color: '#fff',
-                fontSize: '14px'
+                fontSize: '14px',
             },
             padding: 15,
-            formatter: this.tooltipFormater,
+            formatter: this.tooltipFormatter,
             confine: true,
             className: 'echarts-tooltip',
             position: function (pos: any, params: any, dom: any, rect: any, size: any) {
                 // tooltip will be fixed on the right if mouse hovering on the left,
                 // and on the left if hovering on the right.
-                const obj: echartsTooltipObj = {top: 60}
+                const obj: echartsTooltipObj = { top: 60 }
                 obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5
                 return obj
-            }
+            },
         },
         grid: {
             top: 35,
@@ -70,7 +68,7 @@ export default class TempChart extends Mixins(BaseMixin) {
         legend: {
             animation: false,
             show: false,
-            selected: {}
+            selected: {},
         },
         /*dataZoom: [{
             type: 'inside',
@@ -78,7 +76,7 @@ export default class TempChart extends Mixins(BaseMixin) {
         xAxis: {
             type: 'time',
             splitNumber: 5,
-            minInterval: 60*1000,
+            minInterval: 60 * 1000,
             splitLine: {
                 show: true,
                 lineStyle: {
@@ -92,7 +90,7 @@ export default class TempChart extends Mixins(BaseMixin) {
         },
         yAxis: [
             {
-                name: this.$t('Panels.ToolsPanel.TemperaturesInChart'),
+                name: this.$t('Panels.TemperaturePanel.TemperaturesInChart'),
                 type: 'value',
                 min: 0,
                 max: (value: any) => {
@@ -127,7 +125,8 @@ export default class TempChart extends Mixins(BaseMixin) {
                         color: 'rgba(255, 255, 255, 0.12)',
                     },
                 },
-            }, {
+            },
+            {
                 show: this.boolDisplayPwmAxis,
                 name: 'PWM [%]',
                 min: 0,
@@ -145,7 +144,9 @@ export default class TempChart extends Mixins(BaseMixin) {
                 },
                 axisLabel: {
                     color: 'rgba(255, 255, 255, 0.24)',
-                    formatter: (value: number) => { return value * 100 },
+                    formatter: (value: number) => {
+                        return value * 100
+                    },
                     showMinLabel: true,
                     rotate: 90,
                     margin: 5,
@@ -155,50 +156,51 @@ export default class TempChart extends Mixins(BaseMixin) {
                     lineStyle: {
                         color: 'rgba(255, 255, 255, 0.12)',
                     },
-                }
-            }
-        ],
-        media: [{
-            query: {
-                minWidth: 500,
-            },
-            option: {
-                grid: {
-                    right: 15,
-                    left: 40,
                 },
-                yAxis: [
-                    {
-                        maxInterval: 50,
-                        axisLabel: {
-                            showMinLabel: false,
-                            showMaxLabel: true,
-                            rotate: 0
-                        }
+            },
+        ],
+        media: [
+            {
+                query: {
+                    minWidth: 500,
+                },
+                option: {
+                    grid: {
+                        right: 15,
+                        left: 40,
                     },
-                    {
-                        maxInterval: 25,
-                        axisLabel: {
-                            showMinLabel: false,
-                            rotate: 0
-                        }
-                    },
-                ],
-            }
-        }],
+                    yAxis: [
+                        {
+                            maxInterval: 50,
+                            axisLabel: {
+                                showMinLabel: false,
+                                showMaxLabel: true,
+                                rotate: 0,
+                            },
+                        },
+                        {
+                            maxInterval: 25,
+                            axisLabel: {
+                                showMinLabel: false,
+                                rotate: 0,
+                            },
+                        },
+                    ],
+                },
+            },
+        ],
         dataset: {
-            source: []
+            source: [],
         },
-        series: []
+        series: [],
     }
 
-    get chart (): ECharts | null {
-        const tempchart = this.$refs.tempchart
-        return tempchart?.inst ?? null
+    get chart(): ECharts | null {
+        return this.$refs.tempchart ?? null
     }
 
     get maxHistory() {
-        return this.$store.getters['server/getConfig']('server', 'temperature_store_size') ?? 1200
+        return this.$store.getters['printer/tempHistory/getTemperatureStoreSize']
     }
 
     get series() {
@@ -248,11 +250,15 @@ export default class TempChart extends Mixins(BaseMixin) {
                 return entry.date >= limitDate
             })
 
-            this.chart?.setOption({
-                dataset: {
-                    source: newSource
+            this.chart?.setOption(
+                {
+                    dataset: {
+                        source: newSource,
+                    },
                 },
-            })
+                false,
+                true
+            )
 
             //const t1 = performance.now()
             //window.console.debug('calc chart', (t1-t0).toFixed(), newSource.length, this.source.length)
@@ -276,7 +282,7 @@ export default class TempChart extends Mixins(BaseMixin) {
         }
     }
 
-    visibilityChanged (isVisible: boolean) {
+    visibilityChanged(isVisible: boolean) {
         this.isVisible = isVisible
 
         if (isVisible) {
@@ -284,10 +290,18 @@ export default class TempChart extends Mixins(BaseMixin) {
         }
     }
 
-    tooltipFormater(datasets: any) {
+    tooltipFormatter(datasets: any) {
         let output = ''
 
-        const mainDatasets = datasets.filter((dataset: any) => !dataset.seriesName.includes('-') && dataset.seriesName !== 'date')
+        const mainDatasets = datasets.filter((dataset: any) => {
+            if (dataset.seriesName === 'date') return false
+
+            const lastIndex = dataset.seriesName.lastIndexOf('-')
+            if (lastIndex === -1) return true
+
+            const suffix = dataset.seriesName.slice(lastIndex + 1)
+            return !['target', 'power', 'speed'].includes(suffix)
+        })
         if (datasets.length) {
             let outputTime = datasets[0]['axisValueLabel']
             outputTime = outputTime.substr(outputTime.indexOf(' '))
@@ -295,8 +309,15 @@ export default class TempChart extends Mixins(BaseMixin) {
             output +=
                 '<div class="row">' +
                 '<div class="col py-1" style=\'border-bottom: 1px solid rgba(255, 255, 255, 0.24);\'>' +
-                '<span class=\'v-icon mdi mdi-clock theme-dark\' style=\'font-size: 14px; margin-right: 5px;\'></span>' +
-                '<span class=\'font-weight-bold\'>'+outputTime+'</span>' +
+                '<span class="v-icon mdi theme-dark" style="margin-right: 5px;">' +
+                '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" viewBox="0 0 24 24" class="v-icon__svg" style="font-size: 12px; width: 12px; height: 12px;">' +
+                `<path d="${mdiClock}">` +
+                '</path>' +
+                '</svg>' +
+                '</span>' +
+                '<span class="font-weight-bold">' +
+                outputTime +
+                '</span>' +
                 '</div>' +
                 '</div>'
         }
@@ -306,17 +327,20 @@ export default class TempChart extends Mixins(BaseMixin) {
 
             output += '<div class="col-auto py-0">'
             output += dataset.marker
-            output += '<span class=\'ml-2\'>'+convertName(dataset.seriesName)+':</span>'
+            output += "<span class='ml-2'>" + convertName(dataset.seriesName) + ':</span>'
             output += '</div>'
 
             output += '<div class="col text-right py-0 font-weight-bold">'
 
             if (dataset.seriesName in dataset.value) output += dataset.value[dataset.seriesName].toFixed(1)
-            if (dataset.seriesName+'-target' in dataset.value) output += ' / '+dataset.value[dataset.seriesName+'-target'].toFixed(1)
+            if (dataset.seriesName + '-target' in dataset.value)
+                output += ' / ' + dataset.value[dataset.seriesName + '-target'].toFixed(1)
             output += '°C'
 
-            if (dataset.seriesName+'-power' in dataset.value) output += ' [ '+(dataset.value[dataset.seriesName+'-power']*100).toFixed(0)+'% ]'
-            if (dataset.seriesName+'-speed' in dataset.value) output += ' [ '+(dataset.value[dataset.seriesName+'-speed']*100).toFixed(0)+'% ]'
+            if (dataset.seriesName + '-power' in dataset.value)
+                output += ' [ ' + (dataset.value[dataset.seriesName + '-power'] * 100).toFixed(0) + '% ]'
+            if (dataset.seriesName + '-speed' in dataset.value)
+                output += ' [ ' + (dataset.value[dataset.seriesName + '-speed'] * 100).toFixed(0) + '% ]'
 
             output += '</div>'
             output += '</div>'
@@ -328,9 +352,13 @@ export default class TempChart extends Mixins(BaseMixin) {
     @Watch('series', { deep: true })
     seriesChanged(newVal: PrinterTempHistoryStateSerie[]) {
         if (this.chart && this.chart?.isDisposed() !== true) {
-            this.chart.setOption({
-                series: newVal
-            })
+            this.chart.setOption(
+                {
+                    series: newVal,
+                },
+                false,
+                true
+            )
         }
     }
 
@@ -342,7 +370,7 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     @Watch('selectedLegends')
-    selectedLegendsChanged(newVal: any, oldVal:any) {
+    selectedLegendsChanged(newVal: any, oldVal: any) {
         if (this.chart?.isDisposed() !== true) {
             Object.keys(newVal).forEach((key) => {
                 if (newVal[key] !== oldVal[key]) {

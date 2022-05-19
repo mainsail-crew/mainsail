@@ -7,7 +7,7 @@ import { getters } from '@/store/server/jobQueue/getters'
 export const getDefaultState = (): ServerJobQueueState => {
     return {
         queued_jobs: [],
-        queue_state: ''
+        queue_state: '',
     }
 }
 
@@ -20,5 +20,5 @@ export const jobQueue: Module<ServerJobQueueState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

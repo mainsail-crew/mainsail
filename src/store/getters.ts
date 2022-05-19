@@ -1,12 +1,12 @@
 import { GetterTree } from 'vuex'
-import {RootState, RootStateDependency} from '@/store/types'
+import { RootState, RootStateDependency } from '@/store/types'
 import semver from 'semver'
-import {minKlipperVersion, minMoonrakerVersion} from '@/store/variables'
+import { minKlipperVersion, minMoonrakerVersion } from '@/store/variables'
 import i18n from '@/plugins/i18n'
 
 // eslint-disable-next-line
 export const getters: GetterTree<RootState, any> = {
-    getVersion: state => {
+    getVersion: (state) => {
         return state.packageVersion
     },
 
@@ -24,20 +24,26 @@ export const getters: GetterTree<RootState, any> = {
 
                 if (eta) {
                     const date = new Date(eta)
-                    const h = date.getHours() >= 10 ? date.getHours() : '0'+date.getHours()
-                    const m = date.getMinutes() >= 10 ? date.getMinutes() : '0'+date.getMinutes()
+                    const h = date.getHours() >= 10 ? date.getHours() : '0' + date.getHours()
+                    const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
                     const diff = eta - new Date().getTime()
 
                     return i18n.t('App.Titles.PrintingETA', {
                         percent: (getters['printer/getPrintPercent'] * 100).toFixed(0),
                         filename: state.printer.print_stats?.filename,
-                        eta: h+':'+m+((diff > 60*60*24*1000) ? '+'+(diff / (60*60*24*1000)).toFixed() : '')
+                        eta:
+                            h +
+                            ':' +
+                            m +
+                            (diff > 60 * 60 * 24 * 1000 ? '+' + (diff / (60 * 60 * 24 * 1000)).toFixed() : ''),
                     })
-                } else return i18n.t('App.Titles.Printing', {
-                    percent: (getters['printer/getPrintPercent'] * 100).toFixed(0),
-                    filename: state.printer.print_stats?.filename,
-                })
-            } else if (state.printer?.print_stats?.state === 'complete') return i18n.t('App.Titles.Complete', { filename: state.printer.print_stats.filename })
+                } else
+                    return i18n.t('App.Titles.Printing', {
+                        percent: (getters['printer/getPrintPercent'] * 100).toFixed(0),
+                        filename: state.printer.print_stats?.filename,
+                    })
+            } else if (state.printer?.print_stats?.state === 'complete')
+                return i18n.t('App.Titles.Complete', { filename: state.printer.print_stats.filename })
 
             return state.gui?.general.printername ?? state.printer?.hostname ?? 'Mainsail'
         }
@@ -58,15 +64,15 @@ export const getters: GetterTree<RootState, any> = {
         const minKlipperVersionBuild = parseInt(minKlipperVersionSplits[1] ?? 0)
 
         if (
-            semver.valid(klipperVersionRelease) && (
-                semver.gt(minKlipperVersionRelease, klipperVersionRelease) ||
-                (semver.eq(minKlipperVersionRelease, klipperVersionRelease) && klipperVersionBuild < minKlipperVersionBuild)
-            )
+            semver.valid(klipperVersionRelease) &&
+            (semver.gt(minKlipperVersionRelease, klipperVersionRelease) ||
+                (semver.eq(minKlipperVersionRelease, klipperVersionRelease) &&
+                    klipperVersionBuild < minKlipperVersionBuild))
         ) {
             dependencies.push({
                 serviceName: 'Klipper',
                 installedVersion: klipperVersion,
-                neededVersion: minKlipperVersion
+                neededVersion: minKlipperVersion,
             })
         }
 
@@ -80,18 +86,18 @@ export const getters: GetterTree<RootState, any> = {
         const minMoonrakerVersionBuild = parseInt(minMoonrakerVersionSplits[1] ?? 0)
 
         if (
-            semver.valid(moonrakerVersionRelease) && (
-                semver.gt(minMoonrakerVersionRelease, moonrakerVersionRelease) ||
-                (semver.eq(minMoonrakerVersionRelease, moonrakerVersionRelease) && moonrakerVersionBuild < minMoonrakerVersionBuild)
-            )
+            semver.valid(moonrakerVersionRelease) &&
+            (semver.gt(minMoonrakerVersionRelease, moonrakerVersionRelease) ||
+                (semver.eq(minMoonrakerVersionRelease, moonrakerVersionRelease) &&
+                    moonrakerVersionBuild < minMoonrakerVersionBuild))
         ) {
             dependencies.push({
                 serviceName: 'Moonraker',
                 installedVersion: moonrakerVersion,
-                neededVersion: minMoonrakerVersion
+                neededVersion: minMoonrakerVersion,
             })
         }
 
         return dependencies
-    }
+    },
 }

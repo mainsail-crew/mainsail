@@ -1,12 +1,13 @@
 import Component from 'vue-class-component'
 import BaseMixin from '@/components/mixins/base'
-import {allDashboardPanels} from '@/store/variables'
-import {capitalize} from '@/plugins/helpers'
-import {GuiMacrosStateMacrogroup} from '@/store/gui/macros/types'
+import { allDashboardPanels } from '@/store/variables'
+import { capitalize } from '@/plugins/helpers'
+import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
+import kebabCase from 'lodash.kebabcase'
+import Vue from 'vue'
 
 @Component
 export default class DashboardMixin extends BaseMixin {
-
     get macroMode() {
         return this.$store.state.gui.macros.mode ?? 'simple'
     }
@@ -15,15 +16,12 @@ export default class DashboardMixin extends BaseMixin {
         return this.$store.getters['gui/macros/getAllMacrogroups'] ?? []
     }
 
-
     get webcams() {
         return this.$store.getters['gui/webcams/getWebcams'] ?? []
     }
 
     get missingPanelsMobile() {
-        const panels = [
-            ...this.$store.state.gui.dashboard.mobileLayout,
-        ]
+        const panels = [...this.$store.state.gui.dashboard.mobileLayout]
 
         return this.checkMissingPanels(panels)
     }
@@ -56,14 +54,13 @@ export default class DashboardMixin extends BaseMixin {
         return this.checkMissingPanels(panels)
     }
 
-    checkMissingPanels(panels: any[]) {
+    get allPossiblePanels() {
         let allPanels = [...allDashboardPanels]
-        const missingPanels: any[] = []
 
         // remove macros panel and add macrogroups panels if macroMode === expert
         if (this.macroMode === 'expert') {
             this.macrogroups.forEach((group: GuiMacrosStateMacrogroup) => {
-                allPanels.push('macrogroup_'+group.id)
+                allPanels.push('macrogroup_' + group.id)
             })
 
             allPanels = allPanels.filter((name) => name !== 'macros')
@@ -74,11 +71,17 @@ export default class DashboardMixin extends BaseMixin {
             allPanels = allPanels.filter((name) => name !== 'webcam')
         }
 
-        allPanels.forEach((panelname) => {
+        return allPanels
+    }
+
+    checkMissingPanels(panels: any[]) {
+        const missingPanels: any[] = []
+
+        this.allPossiblePanels.forEach((panelname) => {
             if (!panels.find((panel) => panel.name === panelname))
                 missingPanels.push({
                     name: panelname,
-                    visible: true
+                    visible: true,
                 })
         })
 
@@ -90,13 +93,15 @@ export default class DashboardMixin extends BaseMixin {
             const groupId = name.split('_')[1] ?? ''
             const group = this.macrogroups.find((group: GuiMacrosStateMacrogroup) => group.id === groupId)
 
-            return (group) ? group.name : 'Macrogroup'
+            return group ? group.name : 'Macrogroup'
         }
 
         if (name.includes('-')) {
             let panelName = ''
             const subStrings = name.split('-')
-            subStrings.forEach((subStr) => {panelName += capitalize(subStr)})
+            subStrings.forEach((subStr) => {
+                panelName += capitalize(subStr)
+            })
             return this.$t('Panels.' + panelName + 'Panel.Headline')
         }
 

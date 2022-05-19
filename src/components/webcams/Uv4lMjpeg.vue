@@ -1,34 +1,26 @@
 <style scoped>
-    .webcamImage {
-        width: 100%;
-    }
+.webcamImage {
+    width: 100%;
+}
 </style>
 
 <template>
-    <vue-load-image v-observe-visibility="visibilityChanged">
-        <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" />
-        <div slot="preloader" class="text-center py-5">
-            <v-progress-circular indeterminate color="primary"></v-progress-circular>
-        </div>
-        <div slot="error" class="text-center py-5">
-            <v-icon x-large>mdi-webcam-off</v-icon>
-            <div class="subtitle-1 mt-2">{{ $t('Panels.WebcamPanel.UrlNotAvailable') }}</div>
-        </div>
-    </vue-load-image>
+    <img ref="webcamUv4lMjpegImage" :src="url" :alt="camSettings.name" :style="webcamStyle" class="webcamImage" />
 </template>
 
 <script lang="ts">
-import {Component, Mixins, Prop} from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 @Component
 export default class Uv4lMjpeg extends Mixins(BaseMixin) {
-    private isVisible = true
+    @Prop({ required: true }) declare readonly camSettings: GuiWebcamStateWebcam
+    @Prop({ default: null }) declare readonly printerUrl: string | null
 
-    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-
-    @Prop({ default: null }) readonly printerUrl!: string | null
+    declare $refs: {
+        webcamUv4lMjpegImage: HTMLImageElement
+    }
 
     get url() {
         const baseUrl = this.camSettings.urlStream
@@ -41,13 +33,40 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
         let transforms = ''
         if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimLeft().length) return {transform: transforms.trimLeft()}
+        if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
 
         return ''
     }
 
-    visibilityChanged(isVisible: boolean) {
-        this.isVisible = isVisible
+    mounted() {
+        document.addEventListener('visibilitychange', this.visibilityChanged)
+    }
+
+    beforeDestroy() {
+        document.removeEventListener('visibilitychange', this.visibilityChanged)
+        this.stopStream()
+    }
+
+    startStream() {
+        if (this.$refs.webcamUv4lMjpegImage) this.$refs.webcamUv4lMjpegImage.setAttribute('src', this.url)
+    }
+
+    stopStream() {
+        if (this.$refs.webcamUv4lMjpegImage) {
+            this.$refs.webcamUv4lMjpegImage.removeAttribute('src')
+            URL.revokeObjectURL(this.url)
+        }
+    }
+
+    visibilityChanged() {
+        const visibility = document.visibilityState
+
+        if (visibility === 'visible') {
+            this.startStream()
+            return
+        }
+
+        this.stopStream()
     }
 }
 </script>

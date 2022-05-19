@@ -3,19 +3,23 @@ import { SocketState } from '@/store/socket/types'
 import { actions } from '@/store/socket/actions'
 import { mutations } from '@/store/socket/mutations'
 import { getters } from '@/store/socket/getters'
-import {RootState} from '@/store/types'
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): SocketState => {
+    const hostname = (import.meta.env.VUE_APP_HOSTNAME as string) || window.location.hostname
+    const defaultPort = window.location.port || (window.location.protocol === 'https:' ? 443 : 80)
+    const port = import.meta.env.VUE_APP_PORT ? Number(import.meta.env.VUE_APP_PORT) : Number(defaultPort)
+
     return {
-        remoteMode: process.env.VUE_APP_REMOTE_MODE?.toLowerCase() === 'true' || (document.location.hostname === 'my.mainsail.xyz'),
-        hostname: process.env.VUE_APP_HOSTNAME || (process.env.VUE_APP_REMOTE_MODE?.toLowerCase() === 'true' || document.location.hostname === 'my.mainsail.xyz' ? '' : window.location.hostname),
-        port: process.env.VUE_APP_PORT || (process.env.VUE_APP_REMOTE_MODE?.toLowerCase() === 'true' || document.location.hostname === 'my.mainsail.xyz' ? 7125 : window.location.port),
+        hostname,
+        port,
         protocol: document.location.protocol === 'https:' ? 'wss' : 'ws',
-        reconnectInterval: process.env.VUE_APP_RECONNECT_INTERVAL || 2000,
+        reconnectInterval: Number(import.meta.env.VUE_APP_RECONNECT_INTERVAL || 2000),
         isConnected: false,
         isConnecting: false,
         connectingFailed: false,
-        loadings: []
+        loadings: [],
+        connection_id: null,
     }
 }
 
@@ -27,5 +31,5 @@ export const socket: Module<SocketState, RootState> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

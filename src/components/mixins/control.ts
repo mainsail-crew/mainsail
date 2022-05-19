@@ -3,13 +3,12 @@ import Component from 'vue-class-component'
 
 @Component
 export default class ControlMixin extends Vue {
-
     get absolute_coordinates() {
         return this.$store.state.printer?.gcode_move?.absolute_coordinates ?? true
     }
 
-    get homedAxes(): string {
-        return this.$store.state.printer?.toolhead?.homed_axes ?? ''
+    get enableXYHoming(): boolean {
+        return this.$store.state.gui.control.enableXYHoming
     }
 
     get feedrateXY() {
@@ -21,11 +20,27 @@ export default class ControlMixin extends Vue {
     }
 
     get existsQGL() {
-        return 'quad_gantry_level' in this.$store.state.printer.configfile?.settings ?? false
+        return this.$store.getters['printer/existsQGL']
     }
 
     get existsZtilt() {
-        return 'z_tilt' in this.$store.state.printer.configfile?.settings ?? false
+        return this.$store.getters['printer/existsZtilt']
+    }
+
+    get existsBedTilt() {
+        return this.$store.getters['printer/existsBedTilt']
+    }
+
+    get existsBedScrews() {
+        return this.$store.getters['printer/existsBedScrews']
+    }
+
+    get existsDeltaCalibrate() {
+        return this.$store.getters['printer/existsDeltaCalibrate']
+    }
+
+    get existsScrewsTilt() {
+        return this.$store.getters['printer/existsScrewsTilt']
     }
 
     get colorQuadGantryLevel() {
@@ -38,6 +53,30 @@ export default class ControlMixin extends Vue {
         const status = this.$store.state.printer.z_tilt?.applied ?? true
 
         return status ? 'primary' : 'warning'
+    }
+
+    get defaultActionButton() {
+        return this.$store.getters['gui/getDefaultControlActionButton']
+    }
+
+    /**
+     * Axes home states
+     */
+
+    get homedAxes(): string {
+        return this.$store.state.printer?.toolhead?.homed_axes ?? ''
+    }
+
+    get xAxisHomed(): boolean {
+        return this.homedAxes.includes('x')
+    }
+
+    get yAxisHomed(): boolean {
+        return this.homedAxes.includes('y')
+    }
+
+    get zAxisHomed(): boolean {
+        return this.homedAxes.includes('z')
     }
 
     doHome() {
@@ -53,6 +92,11 @@ export default class ControlMixin extends Vue {
     doHomeY() {
         this.$store.dispatch('server/addEvent', { message: 'G28 Y', type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: 'G28 Y' }, { loading: 'homeY' })
+    }
+
+    doHomeXY() {
+        this.$store.dispatch('server/addEvent', { message: 'G28 X Y', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'G28 X Y' }, { loading: 'homeXY' })
     }
 
     doHomeZ() {
@@ -71,8 +115,7 @@ export default class ControlMixin extends Vue {
     }
 
     doSendMove(gcode: string, feedrate: number) {
-        gcode = 'G91' + '\n' +
-            'G1 ' + gcode + ' F'+feedrate*60
+        gcode = 'G91' + '\n' + 'G1 ' + gcode + ' F' + feedrate * 60
 
         if (this.absolute_coordinates) gcode += '\nG90'
 

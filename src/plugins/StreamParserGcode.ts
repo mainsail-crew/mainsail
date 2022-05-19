@@ -1,19 +1,16 @@
-import {StringStream} from '@codemirror/stream-parser'
+import { StringStream } from '@codemirror/stream-parser'
 
 export const gcode = {
-    token: function(stream: StringStream, state: StreamParserGcodeState, zeroPos = 0): string | null {
+    token: function (stream: StringStream, state: StreamParserGcodeState, zeroPos = 0): string | null {
         const ch = stream.peek()
 
         if (stream.pos === zeroPos && state.klipperMacro) state.klipperMacro = false
 
         /* Klipper macro attributes */
         if (stream.pos > zeroPos && state.klipperMacro) {
-            if (stream.match(/^\s*[A-Z_]+/))
-                return 'propertyName'
-            else if (stream.match(/^\s*[A-Za-z0-9_]+/))
-                return 'number'
-            else if (stream.match(/^{.*}/))
-                return 'variable'
+            if (stream.match(/^\s*[A-Z_]+/)) return 'propertyName'
+            else if (stream.match(/^\s*[A-Za-z0-9_]+/)) return 'number'
+            else if (stream.match(/^{.*}/)) return 'variable'
         }
 
         /* comments */
@@ -42,8 +39,7 @@ export const gcode = {
             return 'atom'
         }
 
-        if (stream.pos > zeroPos && stream.match(/^{.*}/))
-            return 'propertyName'
+        if (stream.pos > zeroPos && stream.match(/^{.*}/)) return 'propertyName'
 
         /* Klipper macro names */
         if (stream.pos == zeroPos && stream.match(/^[A-Z_]+/)) {
@@ -54,14 +50,14 @@ export const gcode = {
         stream.next()
         return null
     },
-    startState: function(): StreamParserGcodeState {
+    startState: function (): StreamParserGcodeState {
         return {
             klipperMacro: false,
         }
     },
     languageData: {
-        commentTokens: {line: ';'}
-    }
+        commentTokens: { line: ';' },
+    },
 }
 
 interface StreamParserGcodeState {

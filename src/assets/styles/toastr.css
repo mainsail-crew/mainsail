@@ -1,15 +1,19 @@
 .v-toast__item--error {
-    background-color: #F56565 !important;
+    background-color: #f56565 !important;
 }
 
 .v-toast__item--success {
-    background-color: #38A169 !important;
+    background-color: #38a169 !important;
 }
 
 .v-toast__item--warning {
-    background-color: #ED8936 !important;
+    background-color: #ed8936 !important;
 }
 
 .v-toast__text {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+
+.fullscreenUpload--active .v-toast--bottom {
+    bottom: 88px;
 }

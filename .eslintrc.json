@@ -5,40 +5,35 @@
         "es6": true,
         "node": true
     },
-    "extends": [
-        "plugin:vue/essential",
-        "eslint:recommended",
-        "@vue/typescript"
-    ],
+    "extends": ["plugin:jsonc/base", "plugin:vue/recommended", "eslint:recommended", "@vue/typescript", "prettier"],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
+    "rules": {
+        "vue/no-v-html": 0,
+        "vue/component-tags-order": 0,
+        "vue/valid-v-slot": [
+            "error",
+            {
+                "allowModifiers": true
+            }
+        ]
+    },
     "parser": "vue-eslint-parser",
     "parserOptions": {
         "parser": "@typescript-eslint/parser",
-        "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "plugins": [
-        "vue"
-    ],
-    "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ]
-    }
+    "plugins": ["vue"],
+    "overrides": [
+        {
+            "files": "src/locales/*.json",
+            "parser": "jsonc-eslint-parser",
+            "rules": {
+                "jsonc/no-dupe-keys": "error",
+                "jsonc/sort-keys": ["error", "asc", { "caseSensitive": false, "natural": false }]
+            }
+        }
+    ]
 }

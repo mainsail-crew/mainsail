@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import {ActionTree} from 'vuex'
-import {GuiState} from '@/store/gui/types'
-import {RootState} from '@/store/types'
+import { ActionTree } from 'vuex'
+import { GuiState, GuiStateLayoutoption } from '@/store/gui/types'
+import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
-import {themeDir} from '@/store/variables'
+import { themeDir } from '@/store/variables'
 
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit, dispatch }) {
@@ -17,7 +17,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
     init() {
         window.console.debug('init gui')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/initStore'})
+        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/initStore' })
     },
 
     async initStore({ commit, dispatch, rootGetters, rootState }, payload) {
@@ -25,7 +25,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         const mainsailUrl = baseUrl + '?namespace=mainsail'
 
         if ('remoteprinters' in payload.value) {
-            if (!rootState.socket?.remoteMode) dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
+            if (!rootState.remoteMode) dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
             delete payload.value.remoteprinters
         }
 
@@ -34,7 +34,7 @@ export const actions: ActionTree<GuiState, RootState> = {
             window.console.debug('update cooldownGcode to new namespace')
             dispatch('saveSetting', { name: 'presets.cooldownGcode', value: payload.value.cooldownGcode })
 
-            await fetch(mainsailUrl+'&key=cooldownGcode', { method: 'DELETE' })
+            await fetch(mainsailUrl + '&key=cooldownGcode', { method: 'DELETE' })
             delete payload.value.cooldownGcode
         }
 
@@ -49,6 +49,50 @@ export const actions: ActionTree<GuiState, RootState> = {
             delete payload.value.presets
         }
 
+        //update nonExpandPanels from V2.1.x to V2.2.0
+        if (
+            'dashboard' in payload.value &&
+            'nonExpandPanels' in payload.value.dashboard &&
+            Array.isArray(payload.value.dashboard.nonExpandPanels)
+        ) {
+            await fetch(mainsailUrl + '&key=dashboard.nonExpandPanels', { method: 'DELETE' })
+            dispatch('saveSetting', {
+                name: 'dashboard.nonExpandPanels.widescreen',
+                value: payload.value.dashboard.nonExpandPanels,
+            })
+            delete payload.value.dashboard.nonExpandPanels
+        }
+
+        //update tools to temperatures panel from V2.1.x to V2.2.0
+        if ('dashboard' in payload.value) {
+            const dashboard = payload.value.dashboard
+            const layouts = [
+                'mobileLayout',
+                'tabletLayout1',
+                'tabletLayout2',
+                'desktopLayout1',
+                'desktopLayout2',
+                'widescreenLayout1',
+                'widescreenLayout2',
+                'widescreenLayout3',
+            ]
+
+            layouts.forEach((layout) => {
+                if (layout in dashboard) {
+                    const index = dashboard[layout].findIndex((entry: GuiStateLayoutoption) => entry.name === 'tools')
+
+                    if (index !== -1) {
+                        dashboard[layout][index].name = 'temperature'
+
+                        dispatch('saveSetting', {
+                            name: 'dashboard.' + layout,
+                            value: dashboard[layout],
+                        })
+                    }
+                }
+            })
+        }
+
         commit('setData', payload.value)
     },
 
@@ -58,7 +102,8 @@ export const actions: ActionTree<GuiState, RootState> = {
     async initDb({ dispatch, rootGetters }) {
         const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
 
-        const urlDefault = rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
+        const urlDefault =
+            rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
         const responseDefault = await fetch(urlDefault)
         let defaults: any = {}
         if (responseDefault) {
@@ -72,26 +117,26 @@ export const actions: ActionTree<GuiState, RootState> = {
                     await fetch(baseUrl, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
                             namespace: key,
                             key: key2,
-                            value: defaults[key][key2]
-                        })
+                            value: defaults[key][key2],
+                        }),
                     })
                 }
             } else {
                 await fetch(baseUrl, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         namespace: 'mainsail',
                         key: key,
-                        value: defaults[key]
-                    })
+                        value: defaults[key],
+                    }),
                 })
             }
         }
@@ -99,13 +144,13 @@ export const actions: ActionTree<GuiState, RootState> = {
         await fetch(baseUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 namespace: 'mainsail',
                 key: 'initVersion',
-                value: rootGetters['getVersion']
-            })
+                value: rootGetters['getVersion'],
+            }),
         })
 
         dispatch('init')
@@ -114,7 +159,11 @@ export const actions: ActionTree<GuiState, RootState> = {
     saveSetting({ commit }, payload) {
         commit('saveSetting', payload)
 
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: payload.name, value: payload.value })
+        Vue.$socket.emit('server.database.post_item', {
+            namespace: 'mainsail',
+            key: payload.name,
+            value: payload.value,
+        })
     },
 
     saveSettingWithoutUpload({ commit }, payload) {
@@ -129,7 +178,8 @@ export const actions: ActionTree<GuiState, RootState> = {
             keyName in payload.value &&
             typeof payload.value[keyName] !== 'string' &&
             !Array.isArray(payload.value[keyName])
-        ) newState = Object.assign(payload.value[keyName], {...newState})
+        )
+            newState = Object.assign(payload.value[keyName], { ...newState })
 
         Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
     },
@@ -138,7 +188,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('setGcodefilesMetadata', data)
         dispatch('updateSettings', {
             keyName: 'view.gcodefiles',
-            newVal: state.view.gcodefiles
+            newVal: state.view.gcodefiles,
         })
     },
 
@@ -146,7 +196,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('setGcodefilesShowHiddenFiles', data)
         dispatch('updateSettings', {
             keyName: 'view.gcodefiles',
-            newVal: state.view.gcodefiles
+            newVal: state.view.gcodefiles,
         })
     },
 
@@ -154,7 +204,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('setCurrentWebcam', payload)
         dispatch('updateSettings', {
             keyName: 'view.webcam.currentCam',
-            newVal: state.view.webcam.currentCam
+            newVal: state.view.webcam.currentCam,
         })
     },
 
@@ -162,14 +212,15 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('setTempchartDatasetAdditionalSensorSetting', payload)
         dispatch('updateSettings', {
             keyName: 'view.tempchart',
-            newVal: state.view.tempchart
+            newVal: state.view.tempchart,
         })
     },
 
     async resetMoonrakerDB({ commit, dispatch, rootGetters }, payload) {
         const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
 
-        const urlDefault = rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
+        const urlDefault =
+            rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
         const responseDefault = await fetch(urlDefault)
         let defaults: any = {}
         if (responseDefault) {
@@ -185,7 +236,7 @@ export const actions: ActionTree<GuiState, RootState> = {
                 const objects = await response.json()
                 if (objects?.result?.value) {
                     for (const item of Object.keys(objects?.result?.value)) {
-                        await fetch(url+'&key='+item, { method: 'DELETE' })
+                        await fetch(url + '&key=' + item, { method: 'DELETE' })
                     }
                 }
 
@@ -194,13 +245,13 @@ export const actions: ActionTree<GuiState, RootState> = {
                         await fetch(baseUrl, {
                             method: 'POST',
                             headers: {
-                                'Content-Type': 'application/json'
+                                'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({
                                 namespace: key,
                                 key: key2,
-                                value: defaults[key][key2]
-                            })
+                                value: defaults[key][key2],
+                            }),
                         })
                     }
                 }
@@ -209,19 +260,21 @@ export const actions: ActionTree<GuiState, RootState> = {
             } else if (key === 'history_totals') {
                 await fetch(rootGetters['socket/getUrl'] + '/server/history/reset_totals', { method: 'POST' })
             } else {
-                await fetch(rootGetters['socket/getUrl'] + '/server/database/item?namespace=mainsail&key=' + key, { method: 'DELETE' })
+                await fetch(rootGetters['socket/getUrl'] + '/server/database/item?namespace=mainsail&key=' + key, {
+                    method: 'DELETE',
+                })
 
                 if (key in defaults) {
                     await fetch(baseUrl, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
                             namespace: 'mainsail',
                             key: key,
-                            value: defaults[key]
-                        })
+                            value: defaults[key],
+                        }),
                     })
                 }
             }
@@ -243,9 +296,9 @@ export const actions: ActionTree<GuiState, RootState> = {
 
                 const response = await fetch(url)
                 const objects = await response.json()
-                if (objects?.result?.value) backup[key] = {...objects?.result?.value}
+                if (objects?.result?.value) backup[key] = { ...objects?.result?.value }
             } else if (key in mainsailDb) {
-                backup[key] = {...mainsailDb[key]}
+                backup[key] = { ...mainsailDb[key] }
             }
         }
 
@@ -281,7 +334,7 @@ export const actions: ActionTree<GuiState, RootState> = {
                     const objects = await response.json()
                     if (objects?.result?.value) {
                         for (const item of Object.keys(objects?.result?.value)) {
-                            await fetch(url + '&key=' + item, {method: 'DELETE'})
+                            await fetch(url + '&key=' + item, { method: 'DELETE' })
                         }
                     }
                 }
@@ -291,27 +344,27 @@ export const actions: ActionTree<GuiState, RootState> = {
                     await fetch(baseUrl, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
                             namespace: key,
                             key: key2,
-                            value
-                        })
+                            value,
+                        }),
                     })
                 }
             } else {
-                if (mainsailArray.includes(key)) await fetch(mainsailUrl+'&key='+key, { method: 'DELETE' })
+                if (mainsailArray.includes(key)) await fetch(mainsailUrl + '&key=' + key, { method: 'DELETE' })
                 await fetch(mainsailUrl, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         namespace: 'mainsail',
                         key,
-                        value: payload.restoreObjects[key]
-                    })
+                        value: payload.restoreObjects[key],
+                    }),
                 })
             }
         }
@@ -323,7 +376,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('setHistoryColumns', data)
         dispatch('updateSettings', {
             keyName: 'view.history',
-            newVal: state.view.history
+            newVal: state.view.history,
         })
     },
 
@@ -336,18 +389,18 @@ export const actions: ActionTree<GuiState, RootState> = {
 
             dispatch('updateSettings', {
                 keyName: 'view.history.hidePrintStatus',
-                newVal: array
+                newVal: array,
             })
         }
     },
 
     saveExpandPanel({ commit, dispatch, state }, payload) {
-        if (!payload.value) commit('addClosePanel', { name: payload.name })
-        else commit('removeClosePanel', { name: payload.name })
+        if (!payload.value) commit('addClosePanel', { name: payload.name, viewport: payload.viewport })
+        else commit('removeClosePanel', { name: payload.name, viewport: payload.viewport })
 
         dispatch('updateSettings', {
-            keyName: 'dashboard.nonExpandPanels',
-            newVal: state.dashboard.nonExpandPanels
+            keyName: `dashboard.nonExpandPanels.${payload.viewport}`,
+            newVal: state.dashboard.nonExpandPanels[payload.viewport],
         })
     },
 
@@ -361,7 +414,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
             dispatch('updateSettings', {
                 keyName: 'view.history.hidePrintStatus',
-                newVal: array
+                newVal: array,
             })
         }
     },
@@ -372,8 +425,24 @@ export const actions: ActionTree<GuiState, RootState> = {
         const newVal: any = defaultState.dashboard[name] ?? []
 
         dispatch('saveSetting', {
-            name: 'dashboard.'+name,
-            value: newVal
+            name: 'dashboard.' + name,
+            value: newVal,
         })
+    },
+
+    updateGcodeviewerCache({ dispatch, state }, payload) {
+        const klipperCache = (state.gcodeViewer.klipperCache as { [key: string]: any }) ?? {}
+
+        Object.keys(payload).forEach((key) => {
+            const value = payload[key]
+            const oldValue = key in klipperCache ? klipperCache[key] : null
+
+            if (JSON.stringify(value) !== JSON.stringify(oldValue))
+                dispatch('saveSetting', { name: `gcodeViewer.klipperCache.${key}`, value })
+        })
+    },
+
+    announcementDismissFlag(_, payload) {
+        window.console.log(payload)
     },
 }

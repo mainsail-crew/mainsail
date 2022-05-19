@@ -4,20 +4,19 @@ import {
     colorHeaterBed,
     datasetInterval,
     datasetTypes,
-    datasetTypesInPercents
+    datasetTypesInPercents,
 } from '@/store/variables'
-import {ActionTree} from 'vuex'
+import { ActionTree } from 'vuex'
 import {
     PrinterTempHistoryState,
     PrinterTempHistoryStateSerie,
-    PrinterTempHistoryStateSourceEntry
+    PrinterTempHistoryStateSourceEntry,
 } from '@/store/printer/tempHistory/types'
-import {RootState} from '@/store/types'
+import { RootState } from '@/store/types'
 
 export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
     reset({ commit, state }) {
-        if (state.updateSourceInterval !== null)
-            clearInterval(state.updateSourceInterval)
+        if (state.updateSourceInterval !== null) clearInterval(state.updateSourceInterval)
 
         commit('reset')
     },
@@ -28,26 +27,29 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
         const now = new Date()
         const allSensors = rootGetters['printer/getAvailableSensors'] ?? []
-        const maxHistory = rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
+        const maxHistory = rootGetters['printer/tempHistory/getTemperatureStoreSize']
 
         if (payload !== undefined) {
             if ('requestParams' in payload) delete payload.requestParams
 
             const objectKeys = Object.keys(payload)
             // eslint-disable-next-line
-			const importData: any = {}
+            const importData: any = {}
 
             objectKeys.forEach((key: string) => {
                 if (allSensors.includes(key)) {
                     const datasetValues = payload[key]
                     datasetTypes.forEach((datasetKey) => {
-                        if (datasetKey+'s' in datasetValues) {
-                            const length = maxHistory - datasetValues[datasetKey+'s'].length
-                            datasetValues[datasetKey+'s'] = [...Array.from({ length }, () => 0), ...datasetValues[datasetKey+'s']]
+                        if (datasetKey + 's' in datasetValues) {
+                            const length = maxHistory - datasetValues[datasetKey + 's'].length
+                            datasetValues[datasetKey + 's'] = [
+                                ...Array.from({ length }, () => 0),
+                                ...datasetValues[datasetKey + 's'],
+                            ]
                         }
                     })
 
-                    importData[key] = {...datasetValues}
+                    importData[key] = { ...datasetValues }
                 } else delete payload[key]
             })
 
@@ -57,8 +59,13 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                     const keySplits = key.split(' ')
                     const sensorType = keySplits[0]
 
-                    const addValues: { temperatures: number[], targets?: number[], power?: number[], speed?: number[] } = {
-                        temperatures: Array(maxHistory).fill(0)
+                    const addValues: {
+                        temperatures: number[]
+                        targets?: number[]
+                        power?: number[]
+                        speed?: number[]
+                    } = {
+                        temperatures: Array(maxHistory).fill(0),
                     }
 
                     if (['heater_bed', 'heater_generic'].includes(sensorType) || sensorType.startsWith('extruder')) {
@@ -69,14 +76,14 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                         addValues.speed = Array(maxHistory).fill(0)
                     }
 
-                    importData[key] = {...addValues}
+                    importData[key] = { ...addValues }
                 }
             })
 
             const tempDataset = []
             for (let i = 0; i < maxHistory; i++) {
                 const tmpDataset: PrinterTempHistoryStateSourceEntry = {
-                    date: new Date(now.getTime() - (1000 * (maxHistory - i)))
+                    date: new Date(now.getTime() - 1000 * (maxHistory - i)),
                 }
 
                 Object.keys(importData).forEach((key) => {
@@ -85,7 +92,8 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
                     datasetTypes.forEach((attrKey) => {
                         if (attrKey === 'temperature') tmpDataset[name] = importData[key]['temperatures'][i]
-                        else if (attrKey+'s' in importData[key]) tmpDataset[name+'-'+attrKey] = importData[key][attrKey+'s'][i]
+                        else if (attrKey + 's' in importData[key])
+                            tmpDataset[name + '-' + attrKey] = importData[key][attrKey + 's'][i]
                     })
                 })
 
@@ -95,27 +103,37 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
             commit('setInitSource', tempDataset)
 
             const tempDatasetKeys = Object.keys(tempDataset[0]).filter((tmp) => tmp !== 'date')
-            const masterDatasetKeys = tempDatasetKeys.filter((tmp) => !tmp.includes('-') && !tmp.startsWith('_')).sort()
+            const masterDatasetKeys = tempDatasetKeys
+                .filter((tmp) => {
+                    if (tmp.startsWith('_')) return false
+
+                    const lastIndex = tmp.lastIndexOf('-')
+                    if (lastIndex === -1) return true
+
+                    const suffix = tmp.slice(lastIndex + 1)
+                    return !['target', 'power', 'speed'].includes(suffix)
+                })
+                .sort()
             const series: PrinterTempHistoryStateSerie[] = []
             let colorNumber = 0
 
-            masterDatasetKeys.forEach((name) => {
+            masterDatasetKeys.forEach((name: string) => {
                 let color = rootGetters['gui/getDatasetValue']({ name: name, type: 'color' })
 
                 if (!color) {
                     switch (name) {
-                    case 'heater_bed':
-                        color = colorHeaterBed
-                        break
+                        case 'heater_bed':
+                            color = colorHeaterBed
+                            break
 
-                    case 'chamber':
-                        color = colorChamber
-                        break
+                        case 'chamber':
+                            color = colorChamber
+                            break
 
-                    default:
-                        color = colorArray[colorNumber]
-                        colorNumber++
-                        break
+                        default:
+                            color = colorArray[colorNumber]
+                            colorNumber++
+                            break
                     }
                 }
 
@@ -137,15 +155,15 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                         lineStyle: {
                             color: color,
                             width: 2,
-                            opacity: 0.9
-                        }
+                            opacity: 0.9,
+                        },
                     },
                 }
 
                 series.push(serie)
 
                 datasetTypes.forEach((attrKey) => {
-                    const subName = name+'-'+attrKey
+                    const subName = name + '-' + attrKey
 
                     if (tempDatasetKeys.includes(subName)) {
                         const subSerie: PrinterTempHistoryStateSerie = {
@@ -166,8 +184,8 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                                 lineStyle: {
                                     color: color,
                                     width: 2,
-                                    opacity: 0.1
-                                }
+                                    opacity: 0.1,
+                                },
                             },
                         }
 
@@ -177,12 +195,12 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
                             subSerie.areaStyle = {
                                 color: color,
-                                opacity: 0.1
+                                opacity: 0.1,
                             }
 
                             subSerie.emphasis.areaStyle = {
                                 color: color,
-                                opacity: 0.1
+                                opacity: 0.1,
                             }
                         } else if (datasetTypesInPercents.includes(attrKey)) {
                             subSerie.yAxisIndex = 1
@@ -216,7 +234,6 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
             window.console.debug('update Source', t0-state.timeLastUpdate)
         }*/
 
-
         if (rootState?.printer?.heaters?.available_sensors?.length) {
             const now = new Date()
 
@@ -230,7 +247,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
             }
 
             const data: PrinterTempHistoryStateSourceEntry = {
-                date: now
+                date: now,
             }
 
             rootState.printer.heaters.available_sensors.forEach((key: string) => {
@@ -239,15 +256,18 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
                 if (rootState.printer && rootState.printer[key]) {
                     if ('temperature' in rootState.printer[key]) data[name] = rootState.printer[key].temperature
-                    if ('target' in rootState.printer[key]) data[name+'-target'] = Math.round(rootState.printer[key].target * 10) / 10
-                    if ('power' in rootState.printer[key]) data[name+'-power'] = Math.round(rootState.printer[key].power * 1000) / 1000
-                    if ('speed' in rootState.printer[key]) data[name+'-speed'] = Math.round(rootState.printer[key].speed * 1000) / 1000
+                    if ('target' in rootState.printer[key])
+                        data[name + '-target'] = Math.round(rootState.printer[key].target * 10) / 10
+                    if ('power' in rootState.printer[key])
+                        data[name + '-power'] = Math.round(rootState.printer[key].power * 1000) / 1000
+                    if ('speed' in rootState.printer[key])
+                        data[name + '-speed'] = Math.round(rootState.printer[key].speed * 1000) / 1000
                 }
             })
 
             await commit('addToSource', {
                 data: data,
-                maxHistory: rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
+                maxHistory: rootGetters['printer/tempHistory/getTemperatureStoreSize'],
             })
         }
 
