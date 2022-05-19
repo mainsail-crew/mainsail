@@ -254,7 +254,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     max_temp: fan.max_temp,
                     measured_min_temp: null,
                     measured_max_temp: null,
-                    rpm: `${fan.rpm} RPM`,
+                    rpm: fan.rpm,
                     rpmClass: fan.rpm === 0 && fan.speed > 0 ? 'red--text' : '',
                     command: 'SET_TEMPERATURE_FAN_TARGET',
                     commandAttributeName: 'TEMPERATURE_FAN',

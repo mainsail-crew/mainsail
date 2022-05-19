@@ -23,18 +23,19 @@
 
 <template>
     <div class="d-flex align-center">
-        <v-text-field
-            v-model="value"
-            suffix="°C"
-            type="number"
-            dense
-            outlined
-            hide-details
-            hide-spin-buttons
-            class="_temp-input pr-1"
-            @blur="value = target"
-            @focus="$event.target.select()"
-            @keyup.enter="setTemps"></v-text-field>
+        <form @submit.prevent="setTemps">
+            <v-text-field
+                v-model="value"
+                suffix="°C"
+                type="number"
+                dense
+                outlined
+                hide-details
+                hide-spin-buttons
+                class="_temp-input pr-1"
+                @blur="value = target"
+                @focus="$event.target.select()"></v-text-field>
+        </form>
         <v-menu v-if="presets" :offset-y="true" left title="Preheat">
             <template #activator="{ on, attrs }">
                 <v-btn
