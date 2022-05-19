@@ -34,7 +34,7 @@ export const actions: ActionTree<FileState, RootState> = {
         const root = pathArray.length ? pathArray[0] : payload.requestParams.path
 
         const slashIndex = payload.requestParams.path.indexOf('/')
-        const path = slashIndex > 1 ? payload.requestParams.path.substr(slashIndex + 1) : ''
+        const path = slashIndex > 1 ? payload.requestParams.path.slice(slashIndex + 1) : ''
         const directory = getters['getDirectory'](root + '/' + path)
 
         if (directory?.childrens?.length) {
