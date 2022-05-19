@@ -1126,14 +1126,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         })
     }
 
-    created() {
-        this.$socket.emit(
-            'server.files.get_directory',
-            { path: 'gcodes/' + this.currentPath },
-            { action: 'files/getDirectory' }
-        )
-    }
-
     clickRow(item: FileStateGcodefile, force = false) {
         if (!this.contextMenu.shown || force) {
             if (force) this.contextMenu.shown = false
