@@ -226,8 +226,6 @@
                             hide-spin-buttons />
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <!-- EXTRUDER CONTROL SETTINGS -->
-                    <v-card-title class="mx-n4">{{ $t('Panels.ExtruderControlPanel.Headline') }}</v-card-title>
                     <settings-row
                         :title="$t('Settings.ControlTab.MoveDistancesEInMm').toString()"
                         :mobile-second-row="true">
