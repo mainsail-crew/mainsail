@@ -229,7 +229,6 @@
                             outlined
                             hide-spin-buttons />
                     </settings-row>
-                    <v-divider class="my-2"></v-divider>
                     <!-- EXTRUDER CONTROL SETTINGS -->
                     <div class="d-flex align-center">
                         <v-icon style="opacity: 0.7">{{ mdiPrinter3dNozzle }}</v-icon>
