@@ -122,13 +122,13 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiCloseCircle = mdiCloseCircle
 
     private boolShowObjects = false
-    private boolFirstLoad = true
 
     declare $refs: {
         bigThumbnail: any
     }
 
     private activeTab = 'files'
+    private lastFilename = ''
 
     get jobs() {
         return this.$store.getters['server/jobQueue/getJobs']
@@ -241,11 +241,10 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     @Watch('current_filename')
     current_filenameChanged(newVal: string) {
-        if (this.current_filename === '' && newVal !== '') this.activeTab = 'status'
-        if (this.boolFirstLoad && newVal !== '') {
-            this.boolFirstLoad = false
-            this.activeTab = 'status'
-        }
+        if (newVal === '') this.activeTab = 'files'
+        else if (this.lastFilename !== newVal) this.activeTab = 'status'
+
+        this.lastFilename = newVal
     }
 
     clearDisplayMessage() {
