@@ -6,7 +6,13 @@
             <v-card-text>
                 <v-form ref="formControlExtruder">
                     <!-- TOOLHEAD CONTROL SETTINGS -->
-                    <v-card-title class="mx-n4">{{ $t('Panels.ToolheadControlPanel.Headline') }}</v-card-title>
+                    <div class="d-flex align-center">
+                        <v-icon style="opacity: 0.7">{{ mdiGamepad }}</v-icon>
+                        <v-card-title class="mx-n2">
+                            {{ $t('Panels.ToolheadControlPanel.Headline') }}
+                        </v-card-title>
+                        <v-divider class="ml-3"></v-divider>
+                    </div>
                     <settings-row :title="$t('Settings.ControlTab.Style').toString()">
                         <v-select
                             v-model="controlStyle"
@@ -201,8 +207,6 @@
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
-                    <!-- EXTRUDER CONTROL SETTINGS -->
-                    <v-card-title class="mx-n4">{{ $t('Panels.ExtruderControlPanel.Headline') }}</v-card-title>
                     <settings-row
                         :title="$t('Settings.ControlTab.ZOffsetIncrements').toString()"
                         :mobile-second-row="true">
@@ -226,6 +230,14 @@
                             hide-spin-buttons />
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
+                    <!-- EXTRUDER CONTROL SETTINGS -->
+                    <div class="d-flex align-center">
+                        <v-icon style="opacity: 0.7">{{ mdiPrinter3dNozzle }}</v-icon>
+                        <v-card-title class="mx-n2">
+                            {{ $t('Panels.ExtruderControlPanel.Headline') }}
+                        </v-card-title>
+                        <v-divider class="ml-3"></v-divider>
+                    </div>
                     <settings-row
                         :title="$t('Settings.ControlTab.MoveDistancesEInMm').toString()"
                         :mobile-second-row="true">
@@ -269,6 +281,7 @@
                             outlined
                             hide-spin-buttons></v-combobox>
                     </settings-row>
+                    <v-divider class="my-2"></v-divider>
                     <settings-row
                         :title="$t('Settings.ControlTab.EstimatedExtrusionInfo').toString()"
                         :sub-title="$t('Settings.ControlTab.EstimatedExtrusionInfoDescription').toString()"
@@ -286,11 +299,15 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+import { mdiPrinter3dNozzle, mdiGamepad } from '@mdi/js'
 
 @Component({
     components: { SettingsRow },
 })
 export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) {
+    mdiGamepad = mdiGamepad
+    mdiPrinter3dNozzle = mdiPrinter3dNozzle
+
     declare $refs: {
         formControlExtruder: HTMLFormElement
     }
