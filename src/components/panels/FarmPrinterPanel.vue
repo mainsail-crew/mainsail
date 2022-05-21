@@ -45,21 +45,28 @@
                 <div>
                     <v-img ref="imageDiv" :height="imageHeight" :src="printer_image" class="d-flex align-end">
                         <div
-                            v-if="printer.socket.isConnected && currentCamId !== 'off' && currentWebcam"
+                            v-if="
+                                printer.socket.isConnected &&
+                                currentCamId !== 'off' &&
+                                currentWebcam &&
+                                'service' in currentWebcam
+                            "
                             class="webcamContainer">
-                            <template v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer'">
-                                <webcam-mjpegstreamer
-                                    :cam-settings="currentWebcam"
-                                    :printer-url="printerUrl"
-                                    :show-fps="false"></webcam-mjpegstreamer>
-                            </template>
-                            <template
-                                v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer-adaptive'">
-                                <webcam-mjpegstreamer-adaptive
-                                    :cam-settings="currentWebcam"
-                                    :printer-url="printerUrl"
-                                    :show-fps="false"></webcam-mjpegstreamer-adaptive>
-                            </template>
+                            <webcam-mjpegstreamer
+                                v-if="currentWebcam.service === 'mjpegstreamer'"
+                                :cam-settings="currentWebcam"
+                                :printer-url="printerUrl"
+                                :show-fps="false"></webcam-mjpegstreamer>
+                            <webcam-mjpegstreamer-adaptive
+                                v-else-if="currentWebcam.service === 'mjpegstreamer-adaptive'"
+                                :cam-settings="currentWebcam"
+                                :printer-url="printerUrl"
+                                :show-fps="false"></webcam-mjpegstreamer-adaptive>
+                            <webcam-uv4l-mjpeg
+                                v-else-if="currentWebcam.service === 'uv4l-mjpeg'"
+                                :cam-settings="currentWebcam"
+                                :printer-url="printerUrl"
+                                :show-fps="false"></webcam-uv4l-mjpeg>
                         </div>
                         <v-card-title
                             class="white--text py-2"
@@ -125,6 +132,7 @@ import BaseMixin from '@/components/mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
+import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline } from '@mdi/js'
@@ -135,6 +143,7 @@ import { Debounce } from 'vue-debounce-decorator'
         Panel,
         'webcam-mjpegstreamer': Mjpegstreamer,
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
+        'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'mainsail-logo': MainsailLogo,
     },
 })
