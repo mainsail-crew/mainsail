@@ -26,7 +26,7 @@
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item
-                        v-for="webcam of printer_webcams"
+                        v-for="webcam of supportedPrinterWebcams"
                         :key="webcam.index"
                         link
                         @click="currentCamId = webcam.id">
@@ -137,6 +137,7 @@ import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 @Component({
     components: {
@@ -216,11 +217,17 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     }
 
     get showWebcamSwitch() {
-        return this.printer.socket.isConnected && this.printer_webcams.length > 0
+        return this.printer.socket.isConnected && this.supportedPrinterWebcams.length > 0
     }
 
     get printer_webcams() {
         return this.$store.getters['farm/' + this.printer._namespace + '/getPrinterWebcams']
+    }
+
+    get supportedPrinterWebcams() {
+        return this.printer_webcams.filter((webcam: GuiWebcamStateWebcam) =>
+            ['mjpegstreamer', 'mjpegstreamer-adaptive', 'uv4l-mjpeg'].includes(webcam.service)
+        )
     }
 
     get currentWebcam() {
