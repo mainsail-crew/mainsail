@@ -148,8 +148,12 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
                                         }
                                         // we're done reading the jpeg. Time to render it.
                                         else {
-                                            img.src = URL.createObjectURL(new Blob([imageBuffer], { type: TYPE_JPEG }))
-                                            img.onload = () => URL.revokeObjectURL(img.src)
+                                            if (img) {
+                                                img.src = URL.createObjectURL(
+                                                    new Blob([imageBuffer], { type: TYPE_JPEG })
+                                                )
+                                                img.onload = () => URL.revokeObjectURL(img.src)
+                                            }
                                             frames++
                                             contentLength = 0
                                             bytesRead = 0
