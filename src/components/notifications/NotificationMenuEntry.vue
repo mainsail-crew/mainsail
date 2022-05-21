@@ -119,7 +119,10 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
     declare readonly parentState: boolean
 
     get formatedText() {
-        return this.entry.description.replace(/\[([^\]]+)\]\(([^)]+)\)/, '<a href="$2" target="_blank">$1</a>')
+        return this.entry.description.replace(
+            /(\bhttps?:\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim,
+            '<a href="$1" target="_blank" class="' + this.alertColor + '--text">$1</a>'
+        )
     }
 
     get alertColor() {
