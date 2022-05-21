@@ -18,8 +18,8 @@
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item link @click="currentCamId = 'off'">
-                        <v-list-item-icon class="mr-0">
-                            <v-icon small>{{ mdiWebcamOff }}</v-icon>
+                        <v-list-item-icon class="mr-2">
+                            <v-icon small class="mt-1">{{ mdiWebcamOff }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title>{{ $t('Panels.FarmPrinterPanel.WebcamOff') }}</v-list-item-title>
@@ -30,8 +30,8 @@
                         :key="webcam.index"
                         link
                         @click="currentCamId = webcam.id">
-                        <v-list-item-icon class="mr-0">
-                            <v-icon small>{{ webcam.icon }}</v-icon>
+                        <v-list-item-icon class="mr-2">
+                            <v-icon small class="mt-1">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title v-text="webcam.name"></v-list-item-title>
@@ -138,6 +138,7 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component({
     components: {
@@ -148,7 +149,7 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
         'mainsail-logo': MainsailLogo,
     },
 })
-export default class FarmPrinterPanel extends Mixins(BaseMixin) {
+export default class FarmPrinterPanel extends Mixins(BaseMixin, WebcamMixin) {
     mdiPrinter3d = mdiPrinter3d
     mdiWebcam = mdiWebcam
     mdiMenuDown = mdiMenuDown
