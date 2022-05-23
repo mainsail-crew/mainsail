@@ -6,7 +6,14 @@
 </style>
 
 <template>
-    <img ref="webcamUv4lMjpegImage" :src="url" :alt="camSettings.name" :style="webcamStyle" class="webcamImage" />
+    <img
+        ref="webcamUv4lMjpegImage"
+        v-observe-visibility="visibilityChanged"
+        :src="url"
+        :alt="camSettings.name"
+        :style="webcamStyle"
+        class="webcamImage"
+        @load="onload" />
 </template>
 
 <script lang="ts">
@@ -16,6 +23,7 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 @Component
 export default class Uv4lMjpeg extends Mixins(BaseMixin) {
+    private aspectRatio: null | number = null
     @Prop({ required: true }) declare readonly camSettings: GuiWebcamStateWebcam
     @Prop({ default: null }) declare readonly printerUrl: string | null
 
@@ -47,11 +55,11 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        document.addEventListener('visibilitychange', this.visibilityChanged)
+        document.addEventListener('visibilitychange', this.documentVisibilityChanged)
     }
 
     beforeDestroy() {
-        document.removeEventListener('visibilitychange', this.visibilityChanged)
+        document.removeEventListener('visibilitychange', this.documentVisibilityChanged)
         this.stopStream()
     }
 
@@ -66,15 +74,25 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
         }
     }
 
-    visibilityChanged() {
+    documentVisibilityChanged() {
         const visibility = document.visibilityState
+        this.visibilityChanged(visibility === 'visible')
+    }
 
-        if (visibility === 'visible') {
+    visibilityChanged(newVal: boolean) {
+        if (newVal) {
             this.startStream()
             return
         }
 
         this.stopStream()
+    }
+
+    onload() {
+        if (this.aspectRatio === null && this.$refs.webcamUv4lMjpegImage) {
+            this.aspectRatio =
+                this.$refs.webcamUv4lMjpegImage.naturalWidth / this.$refs.webcamUv4lMjpegImage.naturalHeight
+        }
     }
 }
 </script>
