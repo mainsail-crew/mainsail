@@ -17,6 +17,7 @@
         </div>
         <canvas
             ref="mjpegstreamerAdaptive"
+            v-observe-visibility="visibilityChanged"
             width="600"
             height="400"
             :style="webcamStyle"
@@ -56,12 +57,17 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     @Prop({ default: true }) declare showFps: boolean
 
     get webcamStyle() {
+        const output = {
+            transform: 'none',
+            aspectRatio: 16 / 9,
+        }
+
         let transforms = ''
         if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
+        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
-        return ''
+        return output
     }
 
     get fpsOutput() {
@@ -132,18 +138,21 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        document.addEventListener('visibilitychange', this.visibilityChanged)
+        document.addEventListener('visibilitychange', this.documentVisibilityChanged)
         this.refreshFrame()
     }
 
     beforeDestroy() {
-        document.removeEventListener('visibilitychange', this.visibilityChanged)
+        document.removeEventListener('visibilitychange', this.documentVisibilityChanged)
     }
 
-    visibilityChanged() {
+    documentVisibilityChanged() {
         const visibility = document.visibilityState
+        this.visibilityChanged(visibility === 'visible')
+    }
 
-        if (visibility === 'visible') {
+    visibilityChanged(newVal: boolean) {
+        if (newVal) {
             this.isVisible = true
             this.refreshFrame()
             return
