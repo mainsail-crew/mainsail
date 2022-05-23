@@ -16,8 +16,6 @@
             "DescriptionPreviouslyUnderVolted": "Az rPI tápfeszültsége az utolsó bekapcsolás óta legalább egyszer 4,65 V alá esett.",
             "DescriptionTemperatureLimitActive": "Az rPi uC(csak 3A+/3B+) hőmérséklete jelenleg az első határérték felett van (alapértelmezett 60C).",
             "DescriptionUnderVoltageDetected": "Az rPI tápfeszültsége jelenleg 4,65 V alatt van",
-            "HeadlineCurrentFlags": "Aktuális jelzések",
-            "HeadlinePreviouslyFlags": "Korábbi jelzések",
             "TitleCurrentlyThrottled": "Jelenleg leterhelt",
             "TitleFrequencyCapped": "Frekvencia-korlátozások",
             "TitlePreviouslyFrequencyCapped": "Korábbi frekvencia-korlátozások",
@@ -135,8 +133,6 @@
         "DeleteDirectoryQuestion": "Tényleg szeretnéd törölni a(z) \"{name}\" mappát és minden tartalmát?",
         "Download": "Letöltés",
         "Downloading": "Letöltés...",
-        "DoYouWantToStartFilename": "El akarod indítani ezt?: {filename}",
-        "DropFilesToAddGcode": "Gcode hozzáadásáért dobd ide a fájlod.",
         "EditFile": "Fájl szerkesztése",
         "Empty": "Üres",
         "Filament": "Filament",
@@ -167,8 +163,6 @@
         "Search": "Keresés",
         "SetupCurrentList": "Aktuális lista készítése",
         "Slicer": "Slicer",
-        "StartJob": "Munka indítása",
-        "StartPrint": "Nyomtatás indítása",
         "SuccessfullyCreated": "Sikeresen létrehozva: {filename}",
         "SuccessfullyDeleted": "Sikeresen törölve: {filename}",
         "SuccessfullyMoved": "Sikeresen áthelyezve: {filename}",
@@ -178,8 +172,7 @@
         "Uploading": "Feltöltés",
         "UploadNewGcode": "Új Gcode feltöltése",
         "Used": "Felhasznált",
-        "View3D": "3D nézet",
-        "WrongFileUploaded": "A {filename} feltöltése meghiusúlt. Rossz file formátum!"
+        "View3D": "3D nézet"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Kitakarít",
@@ -221,8 +214,6 @@
             "Variance": "Eltérés"
         },
         "DeleteBedMeshProfile": "Síkrács profil törlése",
-        "Deleted": "eltávolított",
-        "DoYouReallyWantToCalibrate": "Tényleg el akarod kezdeni az asztal kalibrálását?",
         "DoYouReallyWantToDelete": "Tényleg törölni akarod a profilt?: \"{name}\"",
         "ErrorKlipperNotReady": "A Klipper nem áll készen. Magasságtérkép letiltva.",
         "Flat": "Lapos",
@@ -236,7 +227,6 @@
         "Remove": "eltávolítás",
         "Rename": "átnevez",
         "RenameBedMeshProfile": "Síkrács profil átnevezése",
-        "Scale": "Méretarány",
         "TitleCalibrate": "Új síkrács kalibrálása",
         "TitleClear": "Síkrács kinullázása",
         "TitleHomeAll": "Kezdőpontba áll",
@@ -274,7 +264,6 @@
         "PrinttimeAvg": "Nyomtatási átlag",
         "Reprint": "Újranyomtat",
         "Search": "keresés",
-        "ShowStatusName": "\"{name}\" ({count}) megjelenítése",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer verzió",
         "StartTime": "Kezdés",
@@ -290,7 +279,6 @@
     },
     "JobQueue": {
         "AllJobs": "Minden Feladat",
-        "Delete": "Törlés",
         "Empty": "Üres",
         "JobQueue": "Feladatlista",
         "Jobs": "Feladatok",
@@ -342,17 +330,12 @@
             "Logfiles": "Logfájlok"
         },
         "SystemPanel": {
-            "Awake": "Ébren",
             "Constants": "Állandók",
-            "Distro": "Disztribúció",
-            "Frequency": "Frekv.",
             "HostDetails": "Gazdagép részletei",
             "LastStats": "Utolsó statisztikák",
             "Load": "Betöltés",
             "Memory": "Mem",
-            "Os": "OS",
-            "SystemLoad": "Rendszerterhelések",
-            "Version": "Verzió"
+            "SystemLoad": "Rendszerterhelések"
         },
         "UpdatePanel": {
             "CheckForUpdates": "Frissítések keresése",
@@ -818,8 +801,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Megerősítő párbeszéd megjelenítése az Eszköz Tápellátásának változtatásához",
             "DisplayCANCEL_PRINT": "Nyomtatás_megszakítása mutatása",
             "DisplayCANCEL_PRINTDescription": "A Nyomtatás megszakítása gomb véglegesítése, megerősítést nem kér.",
-            "DisplayZOffset": "Z-eltolás-panel mutatása",
-            "DisplayZOffsetDescription": "Egyébként a panel csak a nyomtatás megkezdése után jelenik meg.",
             "GcodeThumbnails": "G-Code előképek",
             "GcodeThumbnailsDescription": "Kattints a gombra útmutatásért",
             "Guide": "Útmutató",
