@@ -16,8 +16,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI voedingsspanning is onder de 4.65V sinds de laatste power-on.",
             "DescriptionTemperatureLimitActive": "rPi uC (alleen 3A+/3B+) temperatuur is momenteel boven de soft limit (standaard 60C).",
             "DescriptionUnderVoltageDetected": "rPI voedingsspanning is momenteel onder de 4.65V",
-            "HeadlineCurrentFlags": "Huidige Flags",
-            "HeadlinePreviouslyFlags": "Vorige Flags",
             "TitleCurrentlyThrottled": "Momenteel Gethrottled",
             "TitleFrequencyCapped": "Frequentie Beperkt",
             "TitlePreviouslyFrequencyCapped": "Voorheen Freqentie Beperkt",
@@ -135,8 +133,6 @@
         "DeleteDirectoryQuestion": "Weet je zeker dat je de \"{name}\" map wil verwijderen met alle inhoud?",
         "Download": "Download",
         "Downloading": "Downloaden",
-        "DoYouWantToStartFilename": "Wil je {filename} starten?",
-        "DropFilesToAddGcode": "Sleep bestanden om G-Code toe te voegen",
         "EditFile": "Bewerk bestand",
         "Empty": "Leeg",
         "Filament": "Filament",
@@ -167,8 +163,6 @@
         "Search": "Zoeken",
         "SetupCurrentList": "Instellingen",
         "Slicer": "Slicer",
-        "StartJob": "Starten",
-        "StartPrint": "Start print",
         "SuccessfullyCreated": "{filename} succesvol aangemaakt.",
         "SuccessfullyDeleted": "{filename} succesvol verwijderd.",
         "SuccessfullyMoved": "{filename} succesvol verplaatsd.",
@@ -178,8 +172,7 @@
         "Uploading": "Uploaden",
         "UploadNewGcode": "Upload nieuwe G-Code",
         "Used": "Gebruikt",
-        "View3D": "Bekijk in 3D",
-        "WrongFileUploaded": "Upload is gewijgerd voor {filename}. Verkeerd bestandsformaat!"
+        "View3D": "Bekijk in 3D"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Leeg",
@@ -221,8 +214,6 @@
             "Variance": "Variatie"
         },
         "DeleteBedMeshProfile": "Verwijder Bed Mesh Profiel",
-        "Deleted": "verwijderd",
-        "DoYouReallyWantToCalibrate": "Weet je zeker dat je een bedkalibratie wil starten?",
         "DoYouReallyWantToDelete": "Weet je zeker dat je het profiel \"{name}\" wil verwijderen?",
         "ErrorKlipperNotReady": "Klipper nog niet klaar . Hoogtekaart uitgeschakeld.",
         "Flat": "Vlak",
@@ -236,7 +227,6 @@
         "Remove": "verwijderen",
         "Rename": "hernoemen",
         "RenameBedMeshProfile": "Hernoem Bed Mesh Profiel",
-        "Scale": "Schaal",
         "TitleCalibrate": "Kalibreer nieuwe bed mesh",
         "TitleClear": "Verijwder bed mesh",
         "TitleHomeAll": "Home alles",
@@ -274,7 +264,6 @@
         "PrinttimeAvg": "Printtijd gemiddeld",
         "Reprint": "Opnieuw printen",
         "Search": "zoek",
-        "ShowStatusName": "Toon \"{name}\" ({count})",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Versie",
         "StartTime": "Starttijd",
@@ -290,7 +279,6 @@
     },
     "JobQueue": {
         "AllJobs": "Alle jobs",
-        "Delete": "Verwijderen",
         "Empty": "Leeg",
         "JobQueue": "Job wachtrij",
         "Jobs": "Jobs",
@@ -342,17 +330,12 @@
             "Logfiles": "Logbestanden"
         },
         "SystemPanel": {
-            "Awake": "Wakker",
             "Constants": "Constanten",
-            "Distro": "Distributie",
-            "Frequency": "Freq",
             "HostDetails": "Host details",
             "LastStats": "Laatste statistieken",
             "Load": "Load",
             "Memory": "Mem",
-            "Os": "OS",
-            "SystemLoad": "Systeem Loads",
-            "Version": "Versie"
+            "SystemLoad": "Systeem Loads"
         },
         "UpdatePanel": {
             "CheckForUpdates": "Controleer op updates",
@@ -843,8 +826,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Vraag om een bevesting bij wijzigen van Stroomvoorziening van apparaten",
             "DisplayCANCEL_PRINT": "Toon CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Toont de CANCEL_PRINT knop altijd - geen bevestiging nodig.",
-            "DisplayZOffset": "Toon Z-Offset Paneel",
-            "DisplayZOffsetDescription": "Zo niet, wordt het alleen getoond nadat een print is gestart.",
             "GcodeThumbnails": "Gcode thumbnails",
             "GcodeThumbnailsDescription": "Klik op de knop om naar de instructies te gaan.",
             "Guide": "Richtlijnen",
