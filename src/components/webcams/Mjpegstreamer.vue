@@ -67,16 +67,16 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
     get webcamStyle() {
         const output = {
-            transition: 'none',
-            paddingTop: 16 / 9,
+            transform: 'none',
+            aspectRatio: 16 / 9,
         }
 
         let transforms = ''
         if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimStart().length) output.transition = transforms.trimStart()
+        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
-        if (this.aspectRatio) output.paddingTop = this.aspectRatio
+        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
 
         return output
     }
@@ -237,7 +237,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
     onload() {
         if (this.aspectRatio === null && this.$refs.image) {
-            this.aspectRatio = this.$refs.image.naturalHeight / this.$refs.image.naturalWidth
+            this.aspectRatio = this.$refs.image.naturalWidth / this.$refs.image.naturalHeight
         }
     }
 }
