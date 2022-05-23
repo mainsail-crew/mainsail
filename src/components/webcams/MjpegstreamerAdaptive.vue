@@ -47,6 +47,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     private time_smoothing = 0.6
     private request_time_smoothing = 0.1
     private currentFPS = 0
+    private aspectRatio: null | number = null
 
     declare $refs: {
         mjpegstreamerAdaptive: any
@@ -66,6 +67,8 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
         if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
         if (transforms.trimStart().length) output.transform = transforms.trimStart()
+
+        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
 
         return output
     }
@@ -118,6 +121,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
 
             canvas.width = canvas.clientWidth
             canvas.height = canvas.clientWidth * (frame.height / frame.width)
+            if (this.aspectRatio === null) {
+                this.aspectRatio = frame.width / frame.height
+            }
 
             ctx?.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvas.width, canvas.height)
             this.isLoaded = true

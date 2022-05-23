@@ -1,6 +1,7 @@
 <style scoped>
 .webcamImage {
     width: 100%;
+    background: lightgray;
 }
 </style>
 
@@ -30,12 +31,19 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     }
 
     get webcamStyle() {
+        const output = {
+            transform: 'none',
+            aspectRatio: 16 / 9,
+        }
+
         let transforms = ''
         if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
+        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
-        return ''
+        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
+
+        return output
     }
 
     mounted() {
