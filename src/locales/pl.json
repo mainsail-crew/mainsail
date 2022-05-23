@@ -16,8 +16,6 @@
             "DescriptionPreviouslyUnderVolted": "Zasilanie rPi było poniżej 4.65V co najmniej raz od ostatniego włączenia.",
             "DescriptionTemperatureLimitActive": "Temperatura rPi (wyłącznie 3A+/3B+) jest aktualnie powyżej ograniczeń programowych (domyślnie 60C).",
             "DescriptionUnderVoltageDetected": "Zasilanie rPi poniżej 4.65V",
-            "HeadlineCurrentFlags": "Aktualne flagi",
-            "HeadlinePreviouslyFlags": "Poprzednie flagi",
             "TitleCurrentlyThrottled": "Zdławienie",
             "TitleFrequencyCapped": "Obniżenie częstotliwości",
             "TitlePreviouslyFrequencyCapped": "Poprzednio ograniczone taktowanie",
@@ -135,8 +133,6 @@
         "DeleteDirectoryQuestion": "Czy na pewno chcesz usunąć katalog \"{name}\" z całą jej zawartością?",
         "Download": "Pobierz",
         "Downloading": "Pobieranie",
-        "DoYouWantToStartFilename": "Czy chcesz rozpocząć druk {filename}?",
-        "DropFilesToAddGcode": "Przenieś i upuść plik(i) aby wgrać G-Code",
         "EditFile": "Edytowanie pliku",
         "Empty": "Puste",
         "Filament": "Filament",
@@ -167,8 +163,6 @@
         "Search": "Wyszukaj",
         "SetupCurrentList": "Ustawienia aktualnych list",
         "Slicer": "Slicer",
-        "StartJob": "Start pracy",
-        "StartPrint": "Start druku",
         "SuccessfullyCreated": "Pomyślnie utworzono {filename}.",
         "SuccessfullyDeleted": "Pomyślnie usunięto {filename}.",
         "SuccessfullyMoved": "Pomyślnie przeniesiono {filename}.",
@@ -178,8 +172,7 @@
         "Uploading": "Wgrywanie",
         "UploadNewGcode": "Wgraj nowy G-Code",
         "Used": "Użyte",
-        "View3D": "Zobacz w 3D",
-        "WrongFileUploaded": "Niemożliwe wgranie {filename}. Zły format pliku!"
+        "View3D": "Zobacz w 3D"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Wyczyść",
@@ -221,8 +214,6 @@
             "Variance": "Różnica"
         },
         "DeleteBedMeshProfile": "Usuń siatkę stołu",
-        "Deleted": "Usunięto",
-        "DoYouReallyWantToCalibrate": "Czy na pewno chcesz rozpocząć nową kalibrację siatki?",
         "DoYouReallyWantToDelete": "Czy na pewno chcesz usunąć profil \"{name}\"?",
         "ErrorKlipperNotReady": "Klipper nie jest gotowy. Mapa stołu wyłączona",
         "Flat": "Stół",
@@ -236,7 +227,6 @@
         "Remove": "Usuń",
         "Rename": "Zmień nazwę",
         "RenameBedMeshProfile": "Zmień nazwę siatki stołu",
-        "Scale": "Skala",
         "TitleCalibrate": "Kalibracja nowej siatki",
         "TitleClear": "Wyczyść siatkę stołu.",
         "TitleHomeAll": "Pozycja zerowa wszystkich osi",
@@ -274,7 +264,6 @@
         "PrinttimeAvg": "Średni czas wydruku",
         "Reprint": "Ponownie wydrukuj",
         "Search": "wyszukaj",
-        "ShowStatusName": "Pokaż \"{name}\" ({count})",
         "Slicer": "Slicer",
         "SlicerVersion": "Wersja Slicera",
         "StartTime": "Czas rozpoczęcia",
@@ -290,7 +279,6 @@
     },
     "JobQueue": {
         "AllJobs": "Wszystkie wydruki",
-        "Delete": "Usuń",
         "Empty": "Puste",
         "JobQueue": "Kolejka wydruków",
         "Jobs": "Wydruki",
@@ -342,17 +330,12 @@
             "Logfiles": "Pliki logów"
         },
         "SystemPanel": {
-            "Awake": "Wzbudzony",
             "Constants": "Stałe",
-            "Distro": "Dystrybucja",
-            "Frequency": "Częstotliwość",
             "HostDetails": "Detale Hosta",
             "LastStats": "Ostatnie statystyki",
             "Load": "Śr. zużycia",
             "Memory": "Pamięć",
-            "Os": "System",
-            "SystemLoad": "Ładowanie systemu",
-            "Version": "Wersja"
+            "SystemLoad": "Ładowanie systemu"
         },
         "UpdatePanel": {
             "CheckForUpdates": "Sprawdź , czy są dostępne aktualizacje",
@@ -815,8 +798,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Pokazuj dialog potwierdzenia po naciśnięciu zmiany zasilania.",
             "DisplayCANCEL_PRINT": "Pokazuj przycisk ANULUJ_WYDRUK",
             "DisplayCANCEL_PRINTDescription": "Pokazuje przycisk ANULUJ_WYDRUK permamentnie - brak potrzeby drugiej warstwy.",
-            "DisplayZOffset": "Pokazuj panel Z-Offset",
-            "DisplayZOffsetDescription": "W przeciwnym wypadku , panel będzie pojawiał się wyłącznie po rozpoczęciu wydruku.",
             "GcodeThumbnails": "Pokazuj miniaturki",
             "GcodeThumbnailsDescription": "Wciśnij aby przejść na stronę z pomocnikiem dot. włączenia funkcji.",
             "Guide": "Przewodnik",
