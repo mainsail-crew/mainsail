@@ -1,6 +1,6 @@
 module.exports = {
     vueFilesPath: './src/**/{*.?(js|ts|vue),.i18nignore}',
-    languageFilesPath: './src/locales/da.json',
+    languageFilesPath: './src/locales/*.json',
     options: {
         output: false,
         add: false,
