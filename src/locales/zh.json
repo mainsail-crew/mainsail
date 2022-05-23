@@ -16,8 +16,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI 自从开机一来已经不止一次低于 4.65V.",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ 仅) 温度当前超过限制数值 (默认 60C).",
             "DescriptionUnderVoltageDetected": "树莓派电源目前低于 4.65V",
-            "HeadlineCurrentFlags": "当前标志",
-            "HeadlinePreviouslyFlags": "先前的标志",
             "TitleCurrentlyThrottled": "当前受到限制",
             "TitleFrequencyCapped": "频率上限",
             "TitlePreviouslyFrequencyCapped": "历史频率上限",
@@ -135,8 +133,6 @@
         "DeleteDirectoryQuestion": "你确定想要删除 \"{name}\" 和内部所有的内容吗?",
         "Download": "下载",
         "Downloading": "下载中",
-        "DoYouWantToStartFilename": "你想要开始 {filename}?",
-        "DropFilesToAddGcode": "拖 & 放 文件来添加 G-Code.",
         "EditFile": "编辑文件",
         "Empty": "空",
         "Filament": "耗材",
@@ -167,8 +163,6 @@
         "Search": "搜索",
         "SetupCurrentList": "设置当前列表",
         "Slicer": "切片",
-        "StartJob": "开始工作",
-        "StartPrint": "开始打印",
         "SuccessfullyCreated": "成功创建 {filename}.",
         "SuccessfullyDeleted": "成功删除 {filename}.",
         "SuccessfullyMoved": "成功移动{filename}.",
@@ -178,8 +172,7 @@
         "Uploading": "上传中",
         "UploadNewGcode": "上传新的 G-Code",
         "Used": "已经使用",
-        "View3D": "打开 3D",
-        "WrongFileUploaded": "上传 {filename}被否定. 文件格式错误!"
+        "View3D": "打开 3D"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "清除",
@@ -221,8 +214,6 @@
             "Variance": "方差"
         },
         "DeleteBedMeshProfile": "删除预设网床",
-        "Deleted": "删除",
-        "DoYouReallyWantToCalibrate": "你确定要开始网床校准吗?",
         "DoYouReallyWantToDelete": "你确定要删除预设 \"{name}\"?",
         "ErrorKlipperNotReady": "Klipper 未准备好. 高度图未开启.",
         "Flat": "平",
@@ -236,7 +227,6 @@
         "Remove": "删除",
         "Rename": "重命名",
         "RenameBedMeshProfile": "重命名网床",
-        "Scale": "比例",
         "TitleCalibrate": "校准新网床",
         "TitleClear": "清除网床",
         "TitleHomeAll": "归位",
@@ -274,7 +264,6 @@
         "PrinttimeAvg": "平均打印时间",
         "Reprint": "转载",
         "Search": "搜索",
-        "ShowStatusName": "显示 \"{name}\" ({count})",
         "Slicer": "切片",
         "SlicerVersion": "切片版本",
         "StartTime": "开始时间",
@@ -290,7 +279,6 @@
     },
     "JobQueue": {
         "AllJobs": "所有的任务",
-        "Delete": "删除",
         "Empty": "空",
         "JobQueue": "打印队列",
         "Jobs": "任务",
@@ -342,17 +330,12 @@
             "Logfiles": "日志文件"
         },
         "SystemPanel": {
-            "Awake": "唤醒",
             "Constants": "常数",
-            "Distro": "发行版",
-            "Frequency": "频率",
             "HostDetails": "主控细节",
             "LastStats": "最后统计",
             "Load": "负载",
             "Memory": "内存",
-            "Os": "操作系统",
-            "SystemLoad": "系统负载",
-            "Version": "版本"
+            "SystemLoad": "系统负载"
         },
         "UpdatePanel": {
             "CheckForUpdates": "检查更新",
@@ -814,8 +797,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "显示有关设备电源更改的确认对话框",
             "DisplayCANCEL_PRINT": "显示 取消打印",
             "DisplayCANCEL_PRINTDescription": "永久显示 取消打印 按钮 - 不需要第二层.",
-            "DisplayZOffset": "显示 Z-微调-面板",
-            "DisplayZOffsetDescription": "否则，面板将旨在打印开始后显示.",
             "GcodeThumbnails": "Gcode 缩略图",
             "GcodeThumbnailsDescription": "单击按钮获得说明.",
             "Guide": "说明",
