@@ -261,7 +261,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
 
     @Watch('target')
     targetChanged(newVal: number): void {
-        this.value = newVal / this.max
+        this.value = newVal
     }
 
     @Watch('value')
