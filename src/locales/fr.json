@@ -17,8 +17,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI l'alimentation a chuté au moins une fois sous 4.65V depuis la dernière mise sous tension",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+) température au dessus de la limite software (défaut 60°C).",
             "DescriptionUnderVoltageDetected": "rPI alimentation inférieure à 4.65V",
-            "HeadlineCurrentFlags": "Etat actuel",
-            "HeadlinePreviouslyFlags": "Etat précédent",
             "TitleCurrentlyThrottled": "actuellement en mode réduit",
             "TitleFrequencyCapped": "fréquence réduite",
             "TitlePreviouslyFrequencyCapped": "a été limité en fréquence",
@@ -136,8 +134,6 @@
         "DeleteDirectoryQuestion": "Voulez vous vraiment effacer le dossier \"{name}\" et tout son contenu ?",
         "Download": "Téléchargement",
         "Downloading": "Téléchargement en cours",
-        "DoYouWantToStartFilename": "Voulez vous imprimer {filename} ?",
-        "DropFilesToAddGcode": "Drop files to add G-Code.",
         "EditFile": "Editer Fichier",
         "Empty": "vide",
         "Filament": "Filament",
@@ -168,8 +164,6 @@
         "Search": "Rechercher",
         "SetupCurrentList": "Configurer liste",
         "Slicer": "Trancheur",
-        "StartJob": "Démarrer",
-        "StartPrint": "Imprimer",
         "SuccessfullyCreated": "Fichier {filename} créé",
         "SuccessfullyDeleted": "Fichier {filename} éffacé",
         "SuccessfullyMoved": "Fichier {filename} déplacé",
@@ -179,8 +173,7 @@
         "Uploading": "Chargement",
         "UploadNewGcode": "Charger nouveau G-Code",
         "Used": "Utilisé",
-        "View3D": "Vue 3D",
-        "WrongFileUploaded": "Téléchargem,ent refusé pour {filename}. Mauvais format de fichier !"
+        "View3D": "Vue 3D"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Effacer",
@@ -222,8 +215,6 @@
             "Variance": "Variance"
         },
         "DeleteBedMeshProfile": "Effacer maillage",
-        "Deleted": "effacé",
-        "DoYouReallyWantToCalibrate": "Voulez-vous démarrer la calibration du maillage plateau ?",
         "DoYouReallyWantToDelete": "Voulez-vous effacer le maillage \"{name}\" ?",
         "ErrorKlipperNotReady": "Klipper pas prêt, maillage désactivé",
         "Flat": "Plat",
@@ -237,7 +228,6 @@
         "Remove": "supprimer",
         "Rename": "renommer",
         "RenameBedMeshProfile": "Renommer maillage",
-        "Scale": "Echelle",
         "TitleCalibrate": "Calibrer nouveau maillage",
         "TitleClear": "Effacer maillage",
         "TitleHomeAll": "Réf. tous",
@@ -275,7 +265,6 @@
         "PrinttimeAvg": "Temps moyen d'impression",
         "Reprint": "Ré-impression",
         "Search": "Recherche",
-        "ShowStatusName": "Afficher \"{name}\" ({count})",
         "Slicer": "Trancheur",
         "SlicerVersion": "Version trancheur",
         "StartTime": "Heure départ",
@@ -291,7 +280,6 @@
     },
     "JobQueue": {
         "AllJobs": "Tous",
-        "Delete": "Effacer",
         "Empty": "vide",
         "JobQueue": "Queue des travaux",
         "Jobs": "Travaux",
@@ -343,17 +331,12 @@
             "Logfiles": "Fichiers log"
         },
         "SystemPanel": {
-            "Awake": "Actif",
             "Constants": "Constantes",
-            "Distro": "Distribution",
-            "Frequency": "Fréquence",
             "HostDetails": "Détails hôte",
             "LastStats": "Dern. Stats.",
             "Load": "Charge",
             "Memory": "Mémoire",
-            "Os": "OS",
-            "SystemLoad": "Charge Système",
-            "Version": "Version"
+            "SystemLoad": "Charge Système"
         },
         "UpdatePanel": {
             "CheckForUpdates": "Contrôle de disponibilité de mises à jour",
@@ -821,8 +804,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Affiche une demande de confirmation pour changement de mode de modules de puissance.",
             "DisplayCANCEL_PRINT": "Affiche CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Affiche le bouton CANCEL_PRINT de manière permanente. Pas de confirmation demandée.",
-            "DisplayZOffset": "Affiche le panneau Z-Offset",
-            "DisplayZOffsetDescription": "Si inactif le panneau n'apparaît qu'une fois l'impression démarrée.",
             "GcodeThumbnails": "Miniature G-Code",
             "GcodeThumbnailsDescription": "Cliquez sur le bouton pour obtenir des instructions.",
             "Guide": "Guide",
