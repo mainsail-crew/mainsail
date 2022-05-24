@@ -16,8 +16,6 @@
             "DescriptionPreviouslyUnderVolted": "Напряжение питания rPI упало ниже 4,65 В хотя бы один раз с момента последнего включения питания.",
             "DescriptionTemperatureLimitActive": "rPi uC (только 3A+/3B+) температура в настоящее время выше плавного предела (по умолчанию 60C).",
             "DescriptionUnderVoltageDetected": "Напряжение питания rPI в настоящее время ниже 4,65 В",
-            "HeadlineCurrentFlags": "Текущие флаги",
-            "HeadlinePreviouslyFlags": "Ранее флаги",
             "TitleCurrentlyThrottled": "В настоящее время дросселируется",
             "TitleFrequencyCapped": "Частота ограничена",
             "TitlePreviouslyFrequencyCapped": "Ранее частота была ограничена",
@@ -135,8 +133,6 @@
         "DeleteDirectoryQuestion": "Вы действительно хотите удалить каталог \"{name}\" со всем его содержимым?",
         "Download": "Скачать",
         "Downloading": "Загрузка",
-        "DoYouWantToStartFilename": "Вы хотите начать {filename}?",
-        "DropFilesToAddGcode": "Удалить файлы для добавления кода.",
         "EditFile": "Редактировать файл",
         "Empty": "Пустой",
         "Filament": "Филамент",
@@ -167,8 +163,6 @@
         "Search": "Поиск",
         "SetupCurrentList": "Создать текущий список",
         "Slicer": "Slicer",
-        "StartJob": "Стартовый заказ",
-        "StartPrint": "Распечатать",
         "SuccessfullyCreated": "Успешно создано {filename}.",
         "SuccessfullyDeleted": "Успешно удалено {filename}.",
         "SuccessfullyMoved": "Успешное перемещение {filename}.",
@@ -178,8 +172,7 @@
         "Uploading": "Загрузить",
         "UploadNewGcode": "Загрузить новый Gcode",
         "Used": "Использует: ",
-        "View3D": "3D просмотр",
-        "WrongFileUploaded": "В загрузке файла {filename} было отказано. Неправильный формат файла!"
+        "View3D": "3D просмотр"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Удалить",
@@ -221,8 +214,6 @@
             "Variance": "Отклонение"
         },
         "DeleteBedMeshProfile": "Удалить профиль высоты кровати",
-        "Deleted": "удалённый",
-        "DoYouReallyWantToCalibrate": "Ты действительно хочешь начать калибровку постели?",
         "DoYouReallyWantToDelete": "Вы действительно хотите удалить профиль \"{name}\"?",
         "ErrorKlipperNotReady": "Клиппер не готов. Карта высот отключена.",
         "Flat": "Плоский",
@@ -236,7 +227,6 @@
         "Remove": "удалить",
         "Rename": "переименовать",
         "RenameBedMeshProfile": "Переименовать профиль высоты кровати",
-        "Scale": "Шкала",
         "TitleCalibrate": " новая постельная сетка",
         "TitleClear": "Ясная сетка",
         "TitleHomeAll": "Дома все",
@@ -274,7 +264,6 @@
         "PrinttimeAvg": "время печати",
         "Reprint": "Перепечатка",
         "Search": "Поиск",
-        "ShowStatusName": "Показать \" {name}\" ({count})",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Версия",
         "StartTime": "Время начала",
@@ -290,7 +279,6 @@
     },
     "JobQueue": {
         "AllJobs": "Все заказы",
-        "Delete": "Удалить",
         "Empty": "Пустой",
         "JobQueue": "Очередь на работу",
         "Jobs": "Заказы",
@@ -342,17 +330,12 @@
             "Logfiles": "Журналы"
         },
         "SystemPanel": {
-            "Awake": "Проснись",
             "Constants": "Константы",
-            "Distro": "Распространение",
-            "Frequency": "Частота",
             "HostDetails": "Информация о хозяине",
             "LastStats": "Последняя статистика",
             "Load": "Нагрузка",
             "Memory": "Память",
-            "Os": "OS",
-            "SystemLoad": "Нагрузки на систему",
-            "Version": "Версия"
+            "SystemLoad": "Нагрузки на систему"
         },
         "UpdatePanel": {
             "CheckForUpdates": "Проверьте наличие обновлений",
@@ -841,8 +824,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Отображение диалога подтверждения перед изменением питания устройств.",
             "DisplayCANCEL_PRINT": "Показать CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Отображает кнопку CANCEL_PRINT постоянно - дальнейшее подтверждение не требуется.",
-            "DisplayZOffset": "Показать панель Z-смещения",
-            "DisplayZOffsetDescription": "В противном случае панель управления отображается только после запуска печати.",
             "GcodeThumbnails": "Эскизы G-кода",
             "GcodeThumbnailsDescription": "Нажмите на кнопку, чтобы перейти к руководству.",
             "Guide": "Руководство",

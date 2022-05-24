@@ -165,7 +165,6 @@
         "DeleteSelectedQuestion": "選択された {count}個のファイルを削除します。よろしいですか？",
         "Download": "ダウンロード",
         "Downloading": "ダウンロード中",
-        "DropFilesToAddGcode": "ドラッグ&ドロップしてGコードを追加します。",
         "EditFile": "ファイル編集",
         "Empty": "空",
         "Filament": "フィラメント",
@@ -201,8 +200,6 @@
         "Search": "検索",
         "SetupCurrentList": "一覧の設定",
         "Slicer": "スライサー",
-        "StartJob": "ジョブ開始",
-        "StartPrint": "印刷開始",
         "SuccessfullyCreated": "{filename}が作成されました。",
         "SuccessfullyDeleted": "{filename}が削除されました。",
         "SuccessfullyMoved": "{filename}が移動されました。",
@@ -212,8 +209,7 @@
         "Uploading": "アップロード中",
         "UploadNewGcode": "新しいGコードファイルをアップロード",
         "Used": "使用済み",
-        "View3D": "3Dビュー",
-        "WrongFileUploaded": "{filename}のアップロードが拒否されました。ファイル形式が正しくありません。"
+        "View3D": "3Dビュー"
     },
     "FullscreenUpload": {
         "CannotUploadFile": "アップロードできませんでした!",
@@ -353,7 +349,6 @@
         "Jobs": "ジョブ",
         "AllJobs": "全ジョブ",
         "Empty": "空",
-        "Delete": "削除",
         "Start": "開始",
         "Pause": "一時停止"
     },
@@ -723,8 +718,6 @@
             "Circle": "サークル",
             "Control": "コントロール",
             "Cross": "クロス",
-            "DisplayZOffset": "Z軸オフセットコントロールを常に表示",
-            "DisplayZOffsetDescription": "無効にした場合、このコントロールは印刷時のみ表示されます。",
             "EnableXYHoming": "XY軸の複合ホーミングを有効",
             "EstimatedExtrusionInfo": "推定押し出し情報を表示",
             "EstimatedExtrusionInfoDescription": "押し出し量と送り速度に基づいて推定された押し出し情報を表示または隠す。",

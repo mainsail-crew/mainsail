@@ -159,8 +159,6 @@
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
         "Download": "Herunterladen",
         "Downloading": "Herunterladen",
-        "DoYouWantToStartFilename": "Willst du {filename} starten?",
-        "DropFilesToAddGcode": "Drag & Drop, um G-Code hinzuzufügen.",
         "EditFile": "Datei bearbeiten",
         "Empty": "Leer",
         "Filament": "Filament",
@@ -191,8 +189,6 @@
         "Search": "Suchen",
         "SetupCurrentList": "Einstellungen",
         "Slicer": "Slicer",
-        "StartJob": "Job beginnen",
-        "StartPrint": "Druck starten",
         "SuccessfullyCreated": "{filename} erfolgreich erstellt.",
         "SuccessfullyDeleted": "{filename} erfolgreich gelöscht.",
         "SuccessfullyMoved": "{filename} erfolgreich verschoben.",
@@ -202,8 +198,7 @@
         "Uploading": "Hochladen",
         "UploadNewGcode": "G-Code hochladen",
         "Used": "Belegt",
-        "View3D": "3D Betrachtung",
-        "WrongFileUploaded": "Hochladen von {filename} verweigert. Falsches Dateiformat!"
+        "View3D": "3D Betrachtung"
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Datei konnte nicht hochgeladen werden!",
@@ -681,8 +676,6 @@
             "Circle": "Kreis",
             "Control": "Steuerung",
             "Cross": "Kreuz",
-            "DisplayZOffset": "Z-Offset-Steuerung immer anzeigen",
-            "DisplayZOffsetDescription": "Wenn deaktiviert, dann werden die Steuerelemente nur angezeigt wenn ein Druckvorgang gestartet wurde.",
             "EnableXYHoming": "Aktiviere kombiniertes X & Y homing",
             "EstimatedExtrusionInfo": "Zeige Info zur geschätzten Extrusion",
             "EstimatedExtrusionInfoDescription": "Anzeigen/ausblenden der Info zur geschätzten Extrusion, basierend auf Extrusionmenge und Extrusionsgeschwindigkeit",

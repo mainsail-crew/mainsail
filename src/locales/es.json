@@ -21,8 +21,6 @@
             "DescriptionPreviouslyUnderVolted": "El voltaje de entrada de rPi se redujo a menos de  4.65V por lo menos una vez desde el último encendido.",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ solamente). La temperatura está actualmente por encima del límite (default 60C).",
             "DescriptionUnderVoltageDetected": "El voltaje de alimentación del rPi está actualmente por debajo de los 4.65V",
-            "HeadlineCurrentFlags": "Flags actuales",
-            "HeadlinePreviouslyFlags": "Flags anteriores",
             "TitleCurrentlyThrottled": "Actualmente limitado",
             "TitleFrequencyCapped": "Limitado por frecuencia",
             "TitlePreviouslyFrequencyCapped": "Limitado anteriormente por frecuencia",
@@ -140,8 +138,6 @@
         "DeleteDirectoryQuestion": "¿Realmente quiere borrar la carpeta \"{name}\" con todo su contenido?",
         "Download": "Descargar",
         "Downloading": "Descargando",
-        "DoYouWantToStartFilename": "¿Quiere iniciar {filename}?",
-        "DropFilesToAddGcode": "Arrastre y suelte archivos para agregar G-code.",
         "EditFile": "Editar archivo",
         "Empty": "Vacío",
         "Filament": "Filamento",
@@ -172,8 +168,6 @@
         "Search": "Buscar",
         "SetupCurrentList": "Configurar lista actual",
         "Slicer": "Laminador",
-        "StartJob": "Comenzar trabajo",
-        "StartPrint": "Iniciar impresión",
         "SuccessfullyCreated": "{filename} creado con éxito.",
         "SuccessfullyDeleted": "{filename} eliminado con éxito.",
         "SuccessfullyMoved": "{filename} movido con éxito.",
@@ -183,8 +177,7 @@
         "Uploading": "Cargando",
         "UploadNewGcode": "Cargar nuevo G-Code",
         "Used": "Usado",
-        "View3D": "Vista 3D",
-        "WrongFileUploaded": "Carga denegada para {filename}. ¡Formato de archivo erróneo!"
+        "View3D": "Vista 3D"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Borrar",
@@ -226,8 +219,6 @@
             "Variance": "Variación"
         },
         "DeleteBedMeshProfile": "Borrar perfil de la malla de cama",
-        "Deleted": "Eliminado",
-        "DoYouReallyWantToCalibrate": "¿Realmente quiere iniciar la calibración de la cama?",
         "DoYouReallyWantToDelete": "¿Realmente quiere eliminar el perfil \"{name}\"?",
         "ErrorKlipperNotReady": "Klipper no disponible. Mapa de altura deshabilitado.",
         "Flat": "Plana",
@@ -245,7 +236,6 @@
         "Rename": "renombrar",
         "RenameBedMeshProfile": "Renombrar perfil de BED_MESH",
         "SAVE_CONFIG": "SAVE_CONFIG",
-        "Scale": "Escala",
         "ScaleGradient": "Gradiente de escala",
         "ScaleZMax": "Escalar Z-Max",
         "TitleCalibrate": "Calibrar nueva malla de cama",
@@ -290,7 +280,6 @@
         "SelectedFilamentUsed": "",
         "SelectedJobs": "",
         "SelectedPrinttime": "",
-        "ShowStatusName": "Mostrar \"{name}\" ({count})",
         "Slicer": "Laminador",
         "SlicerVersion": "Versión del laminador",
         "StartTime": "Hora de inicio",
@@ -307,7 +296,6 @@
     },
     "JobQueue": {
         "AllJobs": "Todas las tareas",
-        "Delete": "Eliminar",
         "Empty": "Vacía",
         "JobQueue": "Cola de tareas",
         "Jobs": "Tareas",
@@ -359,17 +347,12 @@
             "Logfiles": "Archivos de registro"
         },
         "SystemPanel": {
-            "Awake": "Encendida",
             "Constants": "Constantes",
-            "Distro": "Distribución",
-            "Frequency": "Frec.",
             "HostDetails": "Detalles del host",
             "LastStats": "Últimas estadísticas",
             "Load": "Carga",
             "Memory": "Mem.",
-            "Os": "SO",
-            "SystemLoad": "Cargas del sistema",
-            "Version": "Versión"
+            "SystemLoad": "Cargas del sistema"
         },
         "UpdatePanel": {
             "CheckForUpdates": "Verificar actualizaciones",
@@ -831,8 +814,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Muestra una ventana de confirmación en los cambios de energía del dispositivo.",
             "DisplayCANCEL_PRINT": "Mostrar CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Mostrar el botón CANCEL_PRINT permanentemente - no hay segundo nivel de confirmación.",
-            "DisplayZOffset": "Mostrar el panel Z-Offset",
-            "DisplayZOffsetDescription": "De lo contrario, el panel aparecerá sólo después de que haya comenzado una impresión.\n",
             "GcodeThumbnails": "Miniatura G-Code",
             "GcodeThumbnailsDescription": "Click en el botón para obtener instrucciones.",
             "Guide": "Guía",
