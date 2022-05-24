@@ -221,3 +221,9 @@ export interface PrinterStateExtruder {
     nozzleDiameter: number
     maxExtrudeOnlyDistance: number
 }
+
+export interface PrinterStateExtruderStepper {
+    key: string
+    name: string
+    extruder: number
+}

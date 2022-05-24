@@ -9,6 +9,7 @@ import {
     PrinterState,
     PrinterStateBedMesh,
     PrinterStateExtruder,
+    PrinterStateExtruderStepper,
     PrinterStateFan,
     PrinterStateFilamentSensors,
     PrinterStateHeater,
@@ -674,7 +675,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const extruders: PrinterStateExtruder[] = []
         if (state.configfile?.settings) {
             Object.keys(state.configfile?.settings)
-                .filter((key) => key.startsWith('extruder'))
+                .filter((key) => key.match(/^(extruder)\d?$/g))
                 .sort()
                 .forEach((key: string) => {
                     const extruder = state.configfile?.settings[key]
@@ -689,6 +690,24 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 })
         }
         return extruders
+    },
+
+    getExtruderSteppers: (state) => {
+        const extruderSteppers: PrinterStateExtruderStepper[] = []
+        if (state.configfile?.settings) {
+            Object.keys(state.configfile?.settings)
+                .filter((key) => key.match(/^extruder_stepper/g))
+                .sort()
+                .forEach((key: string) => {
+                    const extruderStepper = state.configfile?.settings[key]
+                    extruderSteppers.push({
+                        key: key,
+                        name: key.replace('extruder_stepper ', ''),
+                        extruder: extruderStepper.extruder,
+                    })
+                })
+        }
+        return extruderSteppers
     },
 
     getExtrudePossible: (state) => {
