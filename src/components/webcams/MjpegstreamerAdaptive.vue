@@ -17,6 +17,7 @@
         </div>
         <canvas
             ref="mjpegstreamerAdaptive"
+            v-observe-visibility="visibilityChanged"
             width="600"
             height="400"
             :style="webcamStyle"
@@ -46,6 +47,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     private time_smoothing = 0.6
     private request_time_smoothing = 0.1
     private currentFPS = 0
+    private aspectRatio: null | number = null
 
     declare $refs: {
         mjpegstreamerAdaptive: any
@@ -56,12 +58,19 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     @Prop({ default: true }) declare showFps: boolean
 
     get webcamStyle() {
+        const output = {
+            transform: 'none',
+            aspectRatio: 16 / 9,
+        }
+
         let transforms = ''
         if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
+        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
-        return ''
+        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
+
+        return output
     }
 
     get fpsOutput() {
@@ -112,6 +121,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
 
             canvas.width = canvas.clientWidth
             canvas.height = canvas.clientWidth * (frame.height / frame.width)
+            if (this.aspectRatio === null) {
+                this.aspectRatio = frame.width / frame.height
+            }
 
             ctx?.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvas.width, canvas.height)
             this.isLoaded = true
@@ -132,18 +144,21 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        document.addEventListener('visibilitychange', this.visibilityChanged)
+        document.addEventListener('visibilitychange', this.documentVisibilityChanged)
         this.refreshFrame()
     }
 
     beforeDestroy() {
-        document.removeEventListener('visibilitychange', this.visibilityChanged)
+        document.removeEventListener('visibilitychange', this.documentVisibilityChanged)
     }
 
-    visibilityChanged() {
+    documentVisibilityChanged() {
         const visibility = document.visibilityState
+        this.visibilityChanged(visibility === 'visible')
+    }
 
-        if (visibility === 'visible') {
+    visibilityChanged(newVal: boolean) {
+        if (newVal) {
             this.isVisible = true
             this.refreshFrame()
             return
