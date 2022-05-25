@@ -29,6 +29,26 @@ export const actions: ActionTree<GuiState, RootState> = {
             delete payload.value.remoteprinters
         }
 
+        // delete currentPath if exists
+        if (
+            'view' in payload.value &&
+            'gcodefiles' in payload.value.view &&
+            'currentPath' in payload.value.view.gcodefiles
+        ) {
+            window.console.debug('remove currentPath from gui namespace')
+            await fetch(mainsailUrl + '&key=view.gcodefiles.currentPath', { method: 'DELETE' })
+        }
+
+        // delete currentPath if exists
+        if (
+            'view' in payload.value &&
+            'configfiles' in payload.value.view &&
+            'currentPath' in payload.value.view.configfiles
+        ) {
+            window.console.debug('remove currentPath from gui namespace')
+            await fetch(mainsailUrl + '&key=view.configfiles.currentPath', { method: 'DELETE' })
+        }
+
         //update cooldownGcode from V2.0.1 to V2.1.0
         if ('cooldownGcode' in payload.value) {
             window.console.debug('update cooldownGcode to new namespace')
@@ -187,16 +207,16 @@ export const actions: ActionTree<GuiState, RootState> = {
     setGcodefilesMetadata({ commit, dispatch, state }, data) {
         commit('setGcodefilesMetadata', data)
         dispatch('updateSettings', {
-            keyName: 'view.gcodefiles',
-            newVal: state.view.gcodefiles,
+            keyName: 'view.gcodefiles.hideMetadataColumns',
+            newVal: state.view.gcodefiles.hideMetadataColumns,
         })
     },
 
     setGcodefilesShowHiddenFiles({ commit, dispatch, state }, data) {
         commit('setGcodefilesShowHiddenFiles', data)
         dispatch('updateSettings', {
-            keyName: 'view.gcodefiles',
-            newVal: state.view.gcodefiles,
+            keyName: 'view.gcodefiles.showHiddenFiles',
+            newVal: state.view.gcodefiles.showHiddenFiles,
         })
     },
 
