@@ -117,22 +117,7 @@
         <responsive :breakpoints="{ large: (el) => el.width >= 640 }">
             <template #default="{ el }">
                 <!-- TOOL SELECTOR BUTTONS -->
-                <v-container v-if="extruders.length === toolchangeMacros.length" class="pb-1">
-                    <v-item-group class="_btn-group py-0">
-                        <v-btn
-                            v-for="extruder in extruders"
-                            :key="extruder.key"
-                            :class="extruder.key === activeExtruder ? 'primary--text' : {}"
-                            :value="extruder.key"
-                            :disabled="isPrinting"
-                            dense
-                            class="flex-grow-1 px-0"
-                            @click="doSend(toolchangeMacros[extruders.indexOf(extruder)])">
-                            {{ toolchangeMacros[extruders.indexOf(extruder)] }}
-                        </v-btn>
-                    </v-item-group>
-                </v-container>
-                <v-container v-else-if="extruderSteppers.length === toolchangeMacros.length" class="pb-1">
+                <v-container v-if="toolchangeMacros.length" class="pb-1">
                     <v-item-group class="_btn-group py-0">
                         <v-btn
                             v-for="tool in toolchangeMacros"
@@ -376,7 +361,7 @@ import {
     mdiDotsVertical,
 } from '@mdi/js'
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { PrinterStateExtruder, PrinterStateExtruderStepper } from '@/store/printer/types'
+import { PrinterStateExtruder } from '@/store/printer/types'
 import BaseMixin from '../mixins/base'
 import ControlMixin from '../mixins/control'
 import NumberInput from '@/components/inputs/NumberInput.vue'
@@ -428,10 +413,6 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get extruders(): PrinterStateExtruder[] {
         return this.$store.getters['printer/getExtruders']
-    }
-
-    get extruderSteppers(): PrinterStateExtruderStepper[] {
-        return this.$store.getters['printer/getExtruderSteppers']
     }
 
     get activeExtruder(): string {
