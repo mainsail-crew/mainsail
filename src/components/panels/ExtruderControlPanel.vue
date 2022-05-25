@@ -117,16 +117,17 @@
         <responsive :breakpoints="{ large: (el) => el.width >= 640 }">
             <template #default="{ el }">
                 <!-- TOOL SELECTOR BUTTONS -->
-                <v-container v-if="toolchangeMacros.length" class="pb-1">
+                <v-container v-if="toolchangeMacros.length > 1" class="pb-1">
                     <v-item-group class="_btn-group py-0">
                         <v-btn
                             v-for="tool in toolchangeMacros"
-                            :key="tool"
+                            :key="tool.name"
+                            :class="tool.active ? 'primary--text' : {}"
                             :disabled="isPrinting"
                             dense
                             class="flex-grow-1 px-0"
-                            @click="doSend(tool)">
-                            {{ tool }}
+                            @click="doSend(tool.name)">
+                            {{ tool.name }}
                         </v-btn>
                     </v-item-group>
                 </v-container>
@@ -361,7 +362,7 @@ import {
     mdiDotsVertical,
 } from '@mdi/js'
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { PrinterStateExtruder } from '@/store/printer/types'
+import { PrinterStateExtruder, PrinterStateToolchangeMacro } from '@/store/printer/types'
 import BaseMixin from '../mixins/base'
 import ControlMixin from '../mixins/control'
 import NumberInput from '@/components/inputs/NumberInput.vue'
@@ -392,14 +393,8 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         return ['printing'].includes(this.printer_state)
     }
 
-    get toolchangeMacros(): string[] {
-        const macros = this.$store.getters['printer/getMacros']
-        let tools: string[] = []
-        macros
-            .filter((macro: any) => macro.name.toUpperCase().match(/^T\d+/))
-            .forEach((macro: any) => tools.push(macro.name))
-
-        return tools
+    get toolchangeMacros(): PrinterStateToolchangeMacro[] {
+        return this.$store.getters['printer/getToolchangeMacros']
     }
 
     get filamentChangeMacros(): boolean {
