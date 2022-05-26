@@ -97,11 +97,11 @@
                                                     </v-col>
                                                     <v-col cols="3" md="2">
                                                         <v-btn @click="scrubPlaying = !scrubPlaying">
-                                                            <v-icon v-if="scrubPlaying">mdi-stop</v-icon>
-                                                            <v-icon v-else>mdi-play</v-icon>
+                                                            <v-icon v-if="scrubPlaying">{{ mdiStop }}</v-icon>
+                                                            <v-icon v-else> {{ mdiPlay }}</v-icon>
                                                         </v-btn>
                                                         <v-btn @click="fastForward">
-                                                            <v-icon>mdi-fast-forward</v-icon>
+                                                            <v-icon>{{ mdiFastForward }}</v-icon>
                                                         </v-btn>
                                                     </v-col>
                                                     <v-col cols="12" md="2">
@@ -313,6 +313,9 @@ import {
     mdiToggleSwitch,
     mdiToggleSwitchOffOutline,
     mdiVideo3d,
+    mdiPlay,
+    mdiStop,
+    mdiFastForward
 } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
 
@@ -344,6 +347,9 @@ export default class Viewer extends Mixins(BaseMixin) {
     mdiClose = mdiClose
     mdiCog = mdiCog
     mdiVideo3d = mdiVideo3d
+    mdiPlay  = mdiPlay
+    mdiStop = mdiStop
+    mdiFastForward = mdiFastForward
 
     formatFilesize = formatFilesize
 
@@ -364,7 +370,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     private scrubPosition = 0
     private scrubPlaying = false
     private scrubSpeed = 1
-    private scrubInterval = -1
+    private scrubInterval : ReturnType<typeof setInterval> | undefined
     private scrubFileSize = 0
 
     private downloadSnackbar: downloadSnackbar = {
@@ -407,8 +413,6 @@ export default class Viewer extends Mixins(BaseMixin) {
             this.scrubFileSize = viewer.fileSize
 
         }
-
-        window.addEventListener('resize', this.eventListenerResize)
     }
 
     beforeDestroy() {
@@ -419,11 +423,10 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
 
         this.scrubPlaying =false
-        if(this.scrubInterval != -1){
+        if(this.scrubInterval !== undefined){
             clearInterval(this.scrubInterval)
+            this.scrubInterval = undefined;
         }
-
-        window.removeEventListener('resize', this.eventListenerResize)
     }
 
     @Debounce(200)
@@ -476,8 +479,8 @@ export default class Viewer extends Mixins(BaseMixin) {
             }
         }
 
-        if (viewer === null) {
-            await this.viewerInit(canvasElement)
+        if (viewer === null && canvasElement !== null) {
+            this.viewerInit(canvasElement)
         }
 
         this.registerProgressCallback()
@@ -489,9 +492,9 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
     }
 
-    viewerInit(element: HTMLCanvasElement) {
+    async viewerInit(element: HTMLCanvasElement) {
         viewer = new GCodeViewer(element)
-        viewer.init()
+        await viewer.init()
         viewer.setBackgroundColor(this.backgroundColor)
         viewer.bed.setBedColor(this.gridColor)
         viewer.setCursorVisiblity(this.showCursor)
@@ -1067,8 +1070,9 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('scrubPlaying') scrubPlayingChanaged(to: boolean): void {
         if (to) {
-            if (this.scrubInterval != -1) {
+            if (this.scrubInterval !== undefined) {
                 clearInterval(this.scrubInterval)
+                this.scrubInterval = undefined;
             }
             this.scrubPlaying = true
             if (this.scrubPosition >= this.scrubFileSize) {
@@ -1084,11 +1088,11 @@ export default class Viewer extends Mixins(BaseMixin) {
                 }
             }, 200)
         } else {
-            if (this.scrubInterval > -1) {
+            if (this.scrubInterval !== undefined) {
                 clearInterval(this.scrubInterval)
             }
             this.scrubPlaying = false
-            this.scrubInterval = -1
+            this.scrubInterval = undefined
         }
     }
 
