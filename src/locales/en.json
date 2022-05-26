@@ -165,7 +165,6 @@
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
         "Download": "Download",
         "Downloading": "Downloading",
-        "DropFilesToAddGcode": "Drag & Drop files to add G-Code.",
         "EditFile": "Edit File",
         "Empty": "Empty",
         "Filament": "Filament",
@@ -201,8 +200,6 @@
         "Search": "Search",
         "SetupCurrentList": "Setup current list",
         "Slicer": "Slicer",
-        "StartJob": "Start Job",
-        "StartPrint": "Start print",
         "SuccessfullyCreated": "Successfully created {filename}.",
         "SuccessfullyDeleted": "Successfully deleted {filename}.",
         "SuccessfullyMoved": "Successfully moved {filename}.",
@@ -212,8 +209,7 @@
         "Uploading": "Uploading",
         "UploadNewGcode": "Upload new G-Code",
         "Used": "Used",
-        "View3D": "View 3D",
-        "WrongFileUploaded": "Upload was denied for {filename}. Wrong file format!"
+        "View3D": "View 3D"
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Cannot upload file!",
@@ -618,6 +614,7 @@
             "Absolute": "absolute",
             "ALL": "ALL",
             "Headline": "Toolhead",
+            "Invalid": "Invalid",
             "InvertX": "Invert X",
             "InvertY": "Invert Y",
             "InvertZ": "Invert Z",
@@ -723,8 +720,6 @@
             "Circle": "Circle",
             "Control": "Control",
             "Cross": "Cross",
-            "DisplayZOffset": "Always display Z-Offset-Controls",
-            "DisplayZOffsetDescription": "If disabled, the controls will appear only if a print has started.",
             "EnableXYHoming": "Enable combined X & Y axes homing",
             "EstimatedExtrusionInfo": "Show estimated extrusion info",
             "EstimatedExtrusionInfoDescription": "Show / Hide info for estimated extrusions based on extrusion amount and feedrate",

@@ -1,10 +1,27 @@
 {
-    "_last_update:": "09.01.2022",
+    "_last_update:": "24.05.2022",
     "App": {
         "Notifications": {
             "KlipperWarnings": {
                 "DeprecatedOption": "L'option '{option}' dans la section '{section}' est obsolète.",
-                "DeprecatedValue": "La valeur '{value}' dans l'option '{option}' dans la section '{section}' est obsolète."
+                "DeprecatedValue": "La valeur '{value}' dans l'option '{option}' dans la section '{section}' est obsolète.",
+                "DeprecatedOptionHeadline": "Option de Klipper obsolète",
+                "DeprecatedValueHeadline": "Valeur d'une option Klipper obsolète",
+                "KlipperWarning": "Avertissement Klipper"
+            },
+            "DependencyDescription": "La version actuelle de {name} ne supporte pas toutes les fonctionalités de Mainsail. Mettez {name} a jour vers la version {neededVersion}.",
+            "DependencyName": "Dépendance: {name}",
+            "DismissAll": "Annuler tout",
+            "Never": "jamais",
+            "NextReboot": "prochain redémarrage",
+            "NoNotification": "Pas de notification(s) disponible(s)",
+            "Remind": "Rappel:",
+            "MoonrakerWarnings": {
+                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerFailedComponentDescription": "Une erreur a été détectée lors du chargement de '{component}'. Contrôlez le fichier log et corrigez le problème.",
+                "MoonrakerWarning": "Avertissement Moonraker",
+                "UnparsedConfigOption": "L' option '{option}: {value}' de la section [{section}] n'a pas été analysée. Cela peut provenir du fait que cette option n'est plus disponible ou que le chargement d'un module a créé une erreur. Dans le futur, ceci créera une erreur de démarrage.",
+                "UnparsedConfigSection": "L'a section [{section}] n'a pas été analysée. Cela peut provenir du fait que cette option n'est plus disponible ou que le chargement d'un module a créé une erreur. Dans le futur, ceci créera une erreur de démarrage."
             }
         },
         "Printers": "Imprimantes",
@@ -17,8 +34,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI l'alimentation a chuté au moins une fois sous 4.65V depuis la dernière mise sous tension",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+) température au dessus de la limite software (défaut 60°C).",
             "DescriptionUnderVoltageDetected": "rPI alimentation inférieure à 4.65V",
-            "HeadlineCurrentFlags": "Etat actuel",
-            "HeadlinePreviouslyFlags": "Etat précédent",
             "TitleCurrentlyThrottled": "actuellement en mode réduit",
             "TitleFrequencyCapped": "fréquence réduite",
             "TitlePreviouslyFrequencyCapped": "a été limité en fréquence",
@@ -85,6 +100,11 @@
             "RecoveringDone": "Restauration {software} effectuée !",
             "Updating": "Mise à jour {software}...",
             "UpdatingDone": "Mise à jour {software} effectuée !"
+        },
+        "NumberInput": {
+            "GreaterOrEqualError": "Doit être plus grand ou égal à {min} !",
+            "MustBeBetweenError": "Doit être compris entre {min} et {max} !",
+            "NoEmptyAllowedError": "Une valeur est nécessaire !"
         }
     },
     "ConnectionDialog": {
@@ -136,8 +156,6 @@
         "DeleteDirectoryQuestion": "Voulez vous vraiment effacer le dossier \"{name}\" et tout son contenu ?",
         "Download": "Téléchargement",
         "Downloading": "Téléchargement en cours",
-        "DoYouWantToStartFilename": "Voulez vous imprimer {filename} ?",
-        "DropFilesToAddGcode": "Drop files to add G-Code.",
         "EditFile": "Editer Fichier",
         "Empty": "vide",
         "Filament": "Filament",
@@ -168,8 +186,6 @@
         "Search": "Rechercher",
         "SetupCurrentList": "Configurer liste",
         "Slicer": "Trancheur",
-        "StartJob": "Démarrer",
-        "StartPrint": "Imprimer",
         "SuccessfullyCreated": "Fichier {filename} créé",
         "SuccessfullyDeleted": "Fichier {filename} éffacé",
         "SuccessfullyMoved": "Fichier {filename} déplacé",
@@ -180,7 +196,12 @@
         "UploadNewGcode": "Charger nouveau G-Code",
         "Used": "Utilisé",
         "View3D": "Vue 3D",
-        "WrongFileUploaded": "Téléchargem,ent refusé pour {filename}. Mauvais format de fichier !"
+        "DeleteSelectedQuestion": "Désirez-vous supprimer {count} fichiers ?",
+        "LastEndTime": "Dernière heure de fin d'impression",
+        "LastFilamentUsed": "Dernier filament utilisé",
+        "LastPrintDuration": "Dernière durée d'impression",
+        "LastStartTime": "Dernière heure de départ d'impression",
+        "LastTotalDuration": "Dernière durée totale"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Effacer",
@@ -222,8 +243,6 @@
             "Variance": "Variance"
         },
         "DeleteBedMeshProfile": "Effacer maillage",
-        "Deleted": "effacé",
-        "DoYouReallyWantToCalibrate": "Voulez-vous démarrer la calibration du maillage plateau ?",
         "DoYouReallyWantToDelete": "Voulez-vous effacer le maillage \"{name}\" ?",
         "ErrorKlipperNotReady": "Klipper pas prêt, maillage désactivé",
         "Flat": "Plat",
@@ -237,11 +256,16 @@
         "Remove": "supprimer",
         "Rename": "renommer",
         "RenameBedMeshProfile": "Renommer maillage",
-        "Scale": "Echelle",
         "TitleCalibrate": "Calibrer nouveau maillage",
         "TitleClear": "Effacer maillage",
         "TitleHomeAll": "Réf. tous",
-        "Wireframe": "Maillage"
+        "Wireframe": "Maillage",
+        "Later": "Plus tard",
+        "Ok": "OK",
+        "RemoveSaveDescription": "Le maillage a été enregistré comme supprimé. Cliquez sur SAVE_CONFIG pour le retirer du fichier printer.cfg et redémarrez Klipper.",
+        "SAVE_CONFIG": "SAVE_CONFIG",
+        "ScaleGradient": "Facteur d'échelle",
+        "ScaleZMax": "Echelle z-max."
     },
     "History": {
         "AllJobs": "Tous",
@@ -275,7 +299,6 @@
         "PrinttimeAvg": "Temps moyen d'impression",
         "Reprint": "Ré-impression",
         "Search": "Recherche",
-        "ShowStatusName": "Afficher \"{name}\" ({count})",
         "Slicer": "Trancheur",
         "SlicerVersion": "Version trancheur",
         "StartTime": "Heure départ",
@@ -287,16 +310,36 @@
         "TotalFilamentUsed": "Total filament utilisé",
         "TotalJobs": "Nombre travaux",
         "TotalPrinttime": "Total temps d'impression",
-        "TotalTime": "Temps total"
+        "TotalTime": "Temps total",
+        "AddNote": "Ajouter ue note",
+        "Cancel": "Annuler",
+        "CreateNote": "Créer une note",
+        "DeleteSelectedQuestion": "Vulez-vous vraiment effacer {count} travaux ?",
+        "EditNote": "Editer note",
+        "Note": "Note",
+        "Save": "sauvegarder",
+        "SelectedFilamentUsed": "Filament sélectionné utilisé",
+        "SelectedJobs": "Travaux sélectionnés",
+        "SelectedPrinttime": "Temps d'impression sélectionnés",
+        "StatusValues": {
+            "cancelled": "Annulé",
+            "completed": "Terminé",
+            "error": "Erreur",
+            "in_progress": "en cours",
+            "klippy_disconnect": "Klippy déconnecté",
+            "klippy_shutdown": "Klippy arrêté",
+            "server_exit": "Serveur quitté"
+        },
+        "TitleExportHistory": "Exporter l'historique"
     },
     "JobQueue": {
         "AllJobs": "Tous",
-        "Delete": "Effacer",
         "Empty": "vide",
         "JobQueue": "Queue des travaux",
         "Jobs": "Travaux",
         "Pause": "Pause",
-        "Start": "Impression"
+        "Start": "Impression",
+        "RemoveFromQueue": "Enlever de la queue des travaux"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -330,7 +373,9 @@
             "Total": "Total",
             "UploadFile": "Chargement d'un fichier",
             "Uploading": "Téléchargement",
-            "Used": "Utilisé"
+            "Used": "Utilisé",
+            "DeleteSelectedQuestion": "Effacer {count} éléments sélectionnés",
+            "Root": "Racine"
         },
         "EndstopPanel": {
             "Endstop": "Fin de course",
@@ -343,17 +388,29 @@
             "Logfiles": "Fichiers log"
         },
         "SystemPanel": {
-            "Awake": "Actif",
             "Constants": "Constantes",
-            "Distro": "Distribution",
-            "Frequency": "Fréquence",
             "HostDetails": "Détails hôte",
             "LastStats": "Dern. Stats.",
             "Load": "Charge",
             "Memory": "Mémoire",
-            "Os": "OS",
             "SystemLoad": "Charge Système",
-            "Version": "Version"
+            "Cpu": "CPU",
+            "NoMoreInfos": "Pas d'infos supplémentaires",
+            "Values": {
+                "Awake": "Eveillé: {awake}",
+                "Bandwidth": "Bande passante: {bandwidth}/s",
+                "Distro": "Distribution: {name} {version_id}",
+                "Frequency": "Frequence: {frequency}",
+                "Load": "Charge: {load}",
+                "Memory": "Mémoire: {memory}",
+                "Os": "OS: {os}",
+                "Received": "Reçu: {received}",
+                "Temp": "Température: {temp}°C",
+                "TempMax": "max: {temp}°C",
+                "TempMin": "min: {temp}°C",
+                "Transmitted": "Transmis: {transmitted}",
+                "Version": "Version: {version}"
+            }
         },
         "UpdatePanel": {
             "CheckForUpdates": "Contrôle de disponibilité de mises à jour",
@@ -380,16 +437,20 @@
         }
     },
     "Panels": {
-        "DependenciesPanel": {
-            "Dependency": "Dépendance(s)",
-            "DependencyDescription": "Votre version {name} ne supporte pas toutes possibilités de Mainsail. Mettez à jour {name} vers {neededVersion}."
-        },
         "ExtruderControlPanel": {
             "Extrude": "Extrusion",
             "ExtrusionFactor": "Facteur d'extrusion",
             "ExtrusionFeedrate": "Vitesse d'extrusion",
             "Headline": "Contrôles d'Extrudeur",
-            "Retract": "Rétractation"
+            "Retract": "Rétractation",
+            "Allowed": "Permis",
+            "EstimatedExtrusion": "Estimation d'extrusion:",
+            "ExtruderTempTooLow": "Température d'extrusion trop basse",
+            "FilamentLength": "Longueur de filament",
+            "LoadFilament": "Chargement du filament",
+            "Requested": "Demandé",
+            "TooLargeExtrusion": "Extrusion trop grande !",
+            "UnloadFilament": "Déchargement du filament"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Re-connection",
@@ -451,12 +512,6 @@
                 "Empty": "vide"
             }
         },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Téléchargement log",
-            "FollowingPluginHasAnError": "Le Plug-in suivant a une erreur:",
-            "MoonrakerErrorInfo": "Une erreur a été détectée lors du chargement d'un composant de Moonraker. Contrôlez le fichier log et corrigez.",
-            "MoonrakerWarnings": "Avertissement Moonraker"
-        },
         "PowerControlPanel": {
             "Error": "Erreur",
             "Off": "Arrêt",
@@ -491,7 +546,14 @@
             "Slicer": "Trancheur",
             "Speed": "Vitesse",
             "Total": "Total",
-            "Unknown": "Inconnu"
+            "Unknown": "Inconnu",
+            "EmptyGcodes": "Pas de G-Codes disponibles",
+            "EmptyJobqueue": "Pas de fichier dans la queue d'impression",
+            "Files": "Fichiers",
+            "Jobqueue": "Queue d'impression ({count})",
+            "JobqueueMoreFiles": "plus de travaux | un travail  | {count} travaux",
+            "PrintTime": "Durée d'impression",
+            "Status": "Status"
         },
         "TemperaturePanel": {
             "AutoscaleChart": "Echelle automatique",
@@ -533,14 +595,22 @@
             "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
             "SetupControls": "Réglages",
             "SpeedFactor": "Facteur de vitesse",
-            "ZTilt": "Z Tilt"
+            "ZTilt": "Z Tilt",
+            "Headline": "Tête d'impression",
+            "Invalid": "Invalide",
+            "MotorsOff": "Arrêt des moteurs",
+            "OutOfRange": "Hors limites !",
+            "XOffset": "Offset-X",
+            "YOffset": "Offset-Y",
+            "ZOffset": "Offset-Z"
         },
         "WebcamPanel": {
             "All": "Tous",
             "FPS": "IPS",
             "Headline": "Caméra",
             "UnknownWebcamService": "Service Caméra inconnu",
-            "UrlNotAvailable": "URL non disponible"
+            "UrlNotAvailable": "URL non disponible",
+            "NoWebcam": "Pas de caméra disponible. Ajoutez une caméra dans \"Réglages interface\" > \"Caméras\""
         },
         "ZoffsetPanel": {
             "CurrentOffset": "Offset actuel",
@@ -553,7 +623,24 @@
             "SaveInfoDescriptionPrint": "Le nouvel offset Z a été calculé et enregistré. Après l'impression cliquez sur \"SAVE CONFIG\" dans la barre du haut afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
             "SaveInfoHeadline": "Information",
             "ToEndstop": "jusqu'au fin de course",
-            "ToProbe": "jusqu'à la sonde"
+            "ToProbe": "jusqu'à la sonde",
+            "Clear": "Effacer"
+        },
+        "ControlPanel": {
+            "ALL": "Tous",
+            "AlternateControls": "Contrôles alternatifs",
+            "Headline": "Contrôles",
+            "InvertX": "Inversion X",
+            "InvertY": "Inversion Y",
+            "InvertZ": "Inversion Z",
+            "PleaseConfigureSteps": "Configurez les pas",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Paramètres > Interface > Contrôles",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Tilt",
+            "SetupControls": "Configuration des contrôles"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -590,7 +677,9 @@
         "SelectPrinter": "Choisir imprimante",
         "TryAgain": "re-essayer",
         "UpdatePrinter": "Mise à jour imprimante",
-        "YouCanFindMore": "Vous pouvez trouver plus de détails ici:"
+        "YouCanFindMore": "Vous pouvez trouver plus de détails ici:",
+        "HostnameIp": "Nom d'hôte/IP",
+        "Port": "Port"
     },
     "Settings": {
         "Cancel": "Annuler",
@@ -633,7 +722,15 @@
             "SpeedXY": "Vitesse X & Y",
             "SpeedZ": "Vitesse Z",
             "Style": "Style",
-            "ValueGreaterThan": "La valeur doit être supérieure à {value}"
+            "ValueGreaterThan": "La valeur doit être supérieure à {value}",
+            "EnableXYHoming": "Activer les m.a.z. simultanées des axes X & Y",
+            "EstimatedExtrusionInfo": "Afficher les estimations d'extrusion",
+            "EstimatedExtrusionInfoDescription": "Afficher / Cacher les estimations d'extrusions basées sur la quantité et le débit.",
+            "IsDefault": " (default)",
+            "MotorsOff": "Arrêt moteur {isDefault}",
+            "QuadGantryLevel": "Quad Gantry Level{isDefault}",
+            "ZOffsetIncrements": "Increments Offset-Z (in mm)",
+            "ZTiltAdjust": "Adjustement Z-Tilt{isDefault}"
         },
         "DashboardTab": {
             "Dashboard": "Tab. de bord",
@@ -649,7 +746,11 @@
             "ConfirmUnsavedChangesDescription": "Si actif, l'éditeur requiert une confirmation de sauvegarde ou d'annulation des changements effectués. Si inactif, les changements sont annulés sans confirmation.",
             "Editor": "Editeur",
             "UseEscToClose": "Utiliser la touche \"esc\" pour fermer l'éditeur",
-            "UseEscToCloseDescription": "Autoriser la touche \"esc\" de fermer l'éditeur."
+            "UseEscToCloseDescription": "Autoriser la touche \"esc\" de fermer l'éditeur.",
+            "KlipperRestartMethod": "Méthode de redémarrage de Klipper",
+            "KlipperRestartMethodDescription": "Choisissez la méthode utilisée pour redémarrer Klipper lors d'un appui sur 'Save & Restart' après édition des fichiers de configuration.",
+            "MoonrakerRestartInstance": "Redémarrage Moonraker",
+            "MoonrakerRestartInstanceDescription": "Choisissez quel service Moonraker doit redémarrer lors d'un appui sur 'Save & Restart' après édition des fichiers de configuration."
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Couleur de l'arrière-plan",
@@ -682,7 +783,12 @@
             "PrinterName": "Nom de l'imprimante",
             "Reset": "réinitalisation",
             "Restore": "Restauration",
-            "RestoreDialog": "Choisissez les sections que vous désirez restaurer:"
+            "RestoreDialog": "Choisissez les sections que vous désirez restaurer:",
+            "EstimateValues": {
+                "Filament": "Filament",
+                "File": "Fichier",
+                "Slicer": "Trancheur"
+            }
         },
         "InterfaceSettings": "Réglages interface",
         "MacrosTab": {
@@ -733,7 +839,11 @@
             "PresetInfo": "Vous devez définir une température cible ou un G-Code utilisateur",
             "StoreButton": "Ajouter préréglage",
             "UpdateButton": "Mise à jour préréglage",
-            "UpdateCooldown": "Mise à jour refroidissement"
+            "UpdateCooldown": "Mise à jour refroidissement",
+            "ErrorInvalidValue": "Valeur invalide",
+            "ErrorNameNotUnique": "Nom existe déjà",
+            "ErrorNameRequired": "Nom nécessaire",
+            "PresetNamePlaceholder": "Name par défaut (required)"
         },
         "RemotePrintersTab": {
             "AddPrinter": "Ajouter imprimante",
@@ -806,9 +916,9 @@
             "VariableFps": "IPS variable",
             "VariableFpsDescription": "Si activé, le nombre d'images par seconde (IPS) sera calculé tenant compte de la taille du fichier de sortie.",
             "VariableFpsMax": "IPS variable max",
-            "VariableFpsMaxDescription": "En cas d'IPS variable, nombre maximum d'images par seconde (IPS)",
+            "VariableFpsMaxDescription": "",
             "VariableFpsMin": "IPS variable min",
-            "VariableFpsMinDescription": "En cas d'IPS variable, nombre minimum d'images par seconde (IPS)"
+            "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Grande miniature",
@@ -821,8 +931,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Affiche une demande de confirmation pour changement de mode de modules de puissance.",
             "DisplayCANCEL_PRINT": "Affiche CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Affiche le bouton CANCEL_PRINT de manière permanente. Pas de confirmation demandée.",
-            "DisplayZOffset": "Affiche le panneau Z-Offset",
-            "DisplayZOffsetDescription": "Si inactif le panneau n'apparaît qu'une fois l'impression démarrée.",
             "GcodeThumbnails": "Miniature G-Code",
             "GcodeThumbnailsDescription": "Cliquez sur le bouton pour obtenir des instructions.",
             "Guide": "Guide",
@@ -919,5 +1027,18 @@
         "Variable": "Variable",
         "Video": "Vidéo"
     },
-    "title": "Français"
+    "title": "Français",
+    "Dialogs": {
+        "StartPrint": {
+            "Cancel": "Annuler",
+            "DoYouWantToStartFilename": "Désirez-vous imprimer {filename} ?",
+            "Headline": "Démarrage Impression",
+            "Print": "Impression",
+            "Timelapse": "Accéléré"
+        }
+    },
+    "FullscreenUpload": {
+        "CannotUploadFile": "Impossible de télécharger le fichier !",
+        "DropFilesToUploadFiles": "Déposez les fichiers à télécharger"
+    }
 }

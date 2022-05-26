@@ -19,8 +19,8 @@ const updateSW = registerSW({
 Vue.config.productionTip = false
 
 // vue-observe-visibility
-import VueObserveVisibility from 'vue-observe-visibility'
-Vue.use(VueObserveVisibility)
+import { ObserveVisibility } from 'vue-observe-visibility'
+Vue.directive('observe-visibility', ObserveVisibility)
 
 //vue-meta
 import VueMeta from 'vue-meta'
