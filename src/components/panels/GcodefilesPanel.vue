@@ -1108,13 +1108,17 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         )
     }
 
-    advancedSearch(value: string | number, search: string) {
-        return (
-            value != null &&
-            search != null &&
-            typeof value === 'string' &&
-            value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
-        )
+    advancedSearch(value: any, search: string | null) {
+        if (search === null) return false
+        if (typeof value !== 'string') return false
+
+        value = value.toString().toLowerCase()
+        const searchSplits = search.toLowerCase().split(' ')
+        for (const searchWord of searchSplits) {
+            if (!value.includes(searchWord)) return false
+        }
+
+        return true
     }
 
     refreshMetadata(data: FileStateGcodefile[]) {
