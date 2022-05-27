@@ -67,13 +67,13 @@
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "ホストをリブートすると現在の印刷が中断されます!",
-                    "HostShutdown": "ホストをシャットダウンすると現在の印刷が中断されます!"
+                    "HostShutdown": "ホストをシャットダウンすると現在の印刷が中断されます!",
                     "KlipperFirmwareRestart": "Klipperをファームウェア再始動すると現在の印刷は中断されます!",
                     "KlipperRestart": "Klipperを再始動すると現在の印刷は中断されます!",
                     "KlipperStop": "Klipperを停止すると現在の印刷は中断されます!",
                     "ServiceRestart": "サービスを再始動すると現在の印刷が中断されるかもしれません!",
                     "ServiceStart": "サービスをスタートすると現在の印刷が中断されるかもしれません!",
-                    "ServiceStop": "サービスを停止すると現在の印刷が中断されるかもしれません!",
+                    "ServiceStop": "サービスを停止すると現在の印刷が中断されるかもしれません!"
                 },
                 "Title": {
                     "HostReboot": "ホスト 再起動",
