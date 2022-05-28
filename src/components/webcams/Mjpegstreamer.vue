@@ -19,7 +19,7 @@
     <div style="position: relative">
         <img
             ref="image"
-            v-observe-visibility="visibilityChanged"
+            v-observe-visibility="viewportVisibilityChanged"
             class="webcamImage"
             :style="webcamStyle"
             @load="onload" />
@@ -44,6 +44,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     private timerRestart: number | null = null
     private stream: ReadableStream | null = null
     private controller: AbortController | null = null
+    private isVisibleViewport = false
+    private isVisibleDocument = true
 
     @Prop({ required: true })
     camSettings: any
@@ -86,6 +88,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 
     startStream() {
+        if (this.streamState) return
+        window.console.log('start stream')
         this.streamState = true
 
         const SOI = new Uint8Array(2)
@@ -198,6 +202,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 
     stopStream() {
+        window.console.log('stop stream')
         this.streamState = false
         URL.revokeObjectURL(this.url)
         if (this.timerFPS) clearTimeout(this.timerFPS)
@@ -220,14 +225,20 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     // this function check if you changed the browser tab
     documentVisibilityChanged() {
         const visibility = document.visibilityState
-        this.visibilityChanged(visibility === 'visible')
+        this.isVisibleDocument = visibility === 'visible'
+        if (!this.isVisibleDocument) this.stopStream()
+        this.visibilityChanged()
+    }
+
+    // this function check if you webcam is in the viewport
+    viewportVisibilityChanged(newVal: boolean) {
+        this.isVisibleViewport = newVal
+        this.visibilityChanged()
     }
 
     // this function is to stop the stream, on scroll or on collapse the webcam panel
-    visibilityChanged(newVal: boolean) {
-        if (newVal && this.streamState) return
-
-        if (newVal) {
+    visibilityChanged() {
+        if (this.isVisibleViewport && this.isVisibleDocument) {
             this.startStream()
             return
         }
