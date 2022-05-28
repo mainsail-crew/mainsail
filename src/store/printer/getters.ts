@@ -452,6 +452,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return additionValues
     },
 
+    getAvailableHeaters: (state) => {
+        return state.heaters?.available_heaters ?? []
+    },
+
     getAvailableSensors: (state) => {
         return state.heaters?.available_sensors ?? []
     },
@@ -868,6 +872,12 @@ export const getters: GetterTree<PrinterState, RootState> = {
             )
 
         return tools
+    },
+
+    getKinematics: (state) => {
+        if (!state.configfile?.settings?.printer) return false
+
+        return state.configfile?.settings?.printer.kinematics ?? 'none'
     },
 
     existsQGL: (state) => {
