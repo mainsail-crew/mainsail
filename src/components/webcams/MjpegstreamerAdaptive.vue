@@ -17,7 +17,7 @@
         </div>
         <canvas
             ref="mjpegstreamerAdaptive"
-            v-observe-visibility="visibilityChanged"
+            v-observe-visibility="viewportVisibilityChanged"
             width="600"
             height="400"
             :style="webcamStyle"
@@ -37,6 +37,8 @@ import BaseMixin from '@/components/mixins/base'
 export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     private refresh = Math.ceil(Math.random() * Math.pow(10, 12))
     private isVisible = true
+    private isVisibleDocument = true
+    private isVisibleViewport = false
     private isLoaded = true
     private timer: number | undefined = undefined
 
@@ -84,27 +86,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
         }
     }
 
-    onLoad() {
-        this.isLoaded = true
-
-        const targetFps = this.camSettings.targetFps || 10
-        const end_time = performance.now()
-        const current_time = end_time - this.start_time
-        this.time = this.time * this.time_smoothing + current_time * (1.0 - this.time_smoothing)
-        this.start_time = end_time
-
-        const target_time = 1000 / targetFps
-
-        const current_request_time = performance.now() - this.request_start_time
-        this.request_time =
-            this.request_time * this.request_time_smoothing + current_request_time * (1.0 - this.request_time_smoothing)
-        const timeout = Math.max(0, target_time - this.request_time)
-
-        this.$nextTick(() => {
-            this.timer = setTimeout(this.refreshFrame, timeout)
-        })
-    }
-
     async setFrame() {
         const baseUrl = this.camSettings.urlSnapshot
         const url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
@@ -125,12 +106,33 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
                 this.aspectRatio = frame.width / frame.height
             }
 
-            ctx?.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvas.width, canvas.height)
+            await ctx?.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvas.width, canvas.height)
             this.isLoaded = true
         }
 
         this.$nextTick(() => {
             this.onLoad()
+        })
+    }
+
+    onLoad() {
+        this.isLoaded = true
+
+        const targetFps = this.camSettings.targetFps || 10
+        const end_time = performance.now()
+        const current_time = end_time - this.start_time
+        this.time = this.time * this.time_smoothing + current_time * (1.0 - this.time_smoothing)
+        this.start_time = end_time
+
+        const target_time = 1000 / targetFps
+
+        const current_request_time = performance.now() - this.request_start_time
+        this.request_time =
+            this.request_time * this.request_time_smoothing + current_request_time * (1.0 - this.request_time_smoothing)
+        const timeout = Math.max(0, target_time - this.request_time)
+
+        this.$nextTick(() => {
+            this.timer = setTimeout(this.refreshFrame, timeout)
         })
     }
 
@@ -154,16 +156,32 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
 
     documentVisibilityChanged() {
         const visibility = document.visibilityState
-        this.visibilityChanged(visibility === 'visible')
+        this.isVisibleDocument = visibility === 'visible'
+        if (!this.isVisibleDocument) this.stopStream()
+        this.visibilityChanged()
     }
 
-    visibilityChanged(newVal: boolean) {
-        if (newVal) {
-            this.isVisible = true
-            this.refreshFrame()
+    viewportVisibilityChanged(newVal: boolean) {
+        this.isVisibleViewport = newVal
+        this.visibilityChanged()
+    }
+
+    visibilityChanged() {
+        if (this.isVisibleViewport && this.isVisibleDocument) {
+            this.startStream()
             return
         }
 
+        this.stopStream()
+    }
+
+    startStream() {
+        if (this.isVisible) return
+        this.isVisible = true
+        this.refreshFrame()
+    }
+
+    stopStream() {
         this.isVisible = false
         clearTimeout(this.timer)
         this.timer = undefined

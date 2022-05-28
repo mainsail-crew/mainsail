@@ -8,7 +8,7 @@
 <template>
     <img
         ref="webcamUv4lMjpegImage"
-        v-observe-visibility="visibilityChanged"
+        v-observe-visibility="viewportVisibilityChanged"
         :src="url"
         :alt="camSettings.name"
         :style="webcamStyle"
@@ -24,6 +24,10 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 @Component
 export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     private aspectRatio: null | number = null
+    private isVisible = false
+    private isVisibleViewport = false
+    private isVisibleDocument = true
+
     @Prop({ required: true }) declare readonly camSettings: GuiWebcamStateWebcam
     @Prop({ default: null }) declare readonly printerUrl: string | null
 
@@ -64,6 +68,8 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     }
 
     startStream() {
+        if (this.isVisible) return
+
         if (this.$refs.webcamUv4lMjpegImage) this.$refs.webcamUv4lMjpegImage.setAttribute('src', this.url)
     }
 
@@ -74,13 +80,22 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
         }
     }
 
+    // this function checks if the browser tab was changed
     documentVisibilityChanged() {
         const visibility = document.visibilityState
-        this.visibilityChanged(visibility === 'visible')
+        this.isVisibleDocument = visibility === 'visible'
+        if (!this.isVisibleDocument) this.stopStream()
+        this.visibilityChanged()
     }
 
-    visibilityChanged(newVal: boolean) {
-        if (newVal) {
+    // this function checks if the webcam is in the viewport
+    viewportVisibilityChanged(newVal: boolean) {
+        this.isVisibleViewport = newVal
+        this.visibilityChanged()
+    }
+
+    visibilityChanged() {
+        if (this.isVisibleViewport && this.isVisibleDocument) {
             this.startStream()
             return
         }
