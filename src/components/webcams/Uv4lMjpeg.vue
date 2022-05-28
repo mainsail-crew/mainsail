@@ -69,14 +69,11 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
 
     startStream() {
         if (this.isVisible) return
-        window.console.log('start stream')
 
         if (this.$refs.webcamUv4lMjpegImage) this.$refs.webcamUv4lMjpegImage.setAttribute('src', this.url)
     }
 
     stopStream() {
-        window.console.log('stop stream')
-
         if (this.$refs.webcamUv4lMjpegImage) {
             this.$refs.webcamUv4lMjpegImage.removeAttribute('src')
             URL.revokeObjectURL(this.url)

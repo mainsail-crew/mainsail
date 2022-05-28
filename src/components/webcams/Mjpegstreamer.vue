@@ -89,7 +89,6 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
     startStream() {
         if (this.streamState) return
-        window.console.log('start stream')
         this.streamState = true
 
         const SOI = new Uint8Array(2)
@@ -202,7 +201,6 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 
     stopStream() {
-        window.console.log('stop stream')
         this.streamState = false
         URL.revokeObjectURL(this.url)
         if (this.timerFPS) clearTimeout(this.timerFPS)
