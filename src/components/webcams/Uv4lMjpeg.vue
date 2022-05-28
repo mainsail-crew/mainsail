@@ -80,7 +80,7 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
         }
     }
 
-    // this function check if you changed the browser tab
+    // this function checks if the browser tab was changed
     documentVisibilityChanged() {
         const visibility = document.visibilityState
         this.isVisibleDocument = visibility === 'visible'
@@ -88,7 +88,7 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
         this.visibilityChanged()
     }
 
-    // this function check if you webcam is in the viewport
+    // this function checks if the webcam is in the viewport
     viewportVisibilityChanged(newVal: boolean) {
         this.isVisibleViewport = newVal
         this.visibilityChanged()

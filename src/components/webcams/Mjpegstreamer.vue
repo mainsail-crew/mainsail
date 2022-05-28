@@ -228,13 +228,13 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
         this.visibilityChanged()
     }
 
-    // this function check if you webcam is in the viewport
+    // this function checks if the webcam is in the viewport
     viewportVisibilityChanged(newVal: boolean) {
         this.isVisibleViewport = newVal
         this.visibilityChanged()
     }
 
-    // this function is to stop the stream, on scroll or on collapse the webcam panel
+    // this function stops the stream on scroll or on collapse of the webcam panel
     visibilityChanged() {
         if (this.isVisibleViewport && this.isVisibleDocument) {
             this.startStream()
