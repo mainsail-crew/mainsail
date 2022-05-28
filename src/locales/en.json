@@ -24,7 +24,7 @@
             "Remind": "Remind:"
         },
         "NumberInput": {
-            "GreaterOrEqualError": "Must be grater or equal than {min}!",
+            "GreaterOrEqualError": "Must be greater or equal than {min}!",
             "MustBeBetweenError": "Must be between {min} and {max}!",
             "NoEmptyAllowedError": "Input must not be empty!"
         },
