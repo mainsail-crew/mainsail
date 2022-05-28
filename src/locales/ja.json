@@ -66,14 +66,14 @@
             "Cancel": "取り消し",
             "ConfirmationDialog": {
                 "Description": {
-                    "KlipperStop": "Klipperを停止すると現在の印刷は中断されます!",
-                    "KlipperRestart": "Klipperを再始動すると現在の印刷は中断されます!",
-                    "KlipperFirmwareRestart": "Klipperをファームウェア再始動すると現在の印刷は中断されます!",
-                    "ServiceStart": "サービスをスタートすると現在の印刷が中断されるかもしれません!",
-                    "ServiceRestart": "サービスを再始動すると現在の印刷が中断されるかもしれません!",
-                    "ServiceStop": "サービスを停止すると現在の印刷が中断されるかもしれません!",
                     "HostReboot": "ホストをリブートすると現在の印刷が中断されます!",
-                    "HostShutdown": "ホストをシャットダウンすると現在の印刷が中断されます!"
+                    "HostShutdown": "ホストをシャットダウンすると現在の印刷が中断されます!",
+                    "KlipperFirmwareRestart": "Klipperをファームウェア再始動すると現在の印刷は中断されます!",
+                    "KlipperRestart": "Klipperを再始動すると現在の印刷は中断されます!",
+                    "KlipperStop": "Klipperを停止すると現在の印刷は中断されます!",
+                    "ServiceRestart": "サービスを再始動すると現在の印刷が中断されるかもしれません!",
+                    "ServiceStart": "サービスをスタートすると現在の印刷が中断されるかもしれません!",
+                    "ServiceStop": "サービスを停止すると現在の印刷が中断されるかもしれません!"
                 },
                 "Title": {
                     "HostReboot": "ホスト 再起動",
@@ -153,7 +153,7 @@
         "Yes": "はい"
     },
     "Files": {
-        "AddToQueue": "印刷キューに追加",
+        "AddToQueue": "ジョブキューに追加",
         "AllFiles": "すべてのファイル",
         "Cancel": "取り消し",
         "Create": "作成",
@@ -345,12 +345,13 @@
         "TotalTime": "総時間"
     },
     "JobQueue": {
-        "JobQueue": "ジョブキュー",
-        "Jobs": "ジョブ",
         "AllJobs": "全ジョブ",
         "Empty": "空",
-        "Start": "開始",
-        "Pause": "一時停止"
+        "JobQueue": "ジョブキュー",
+        "Jobs": "ジョブ",
+        "Pause": "一時停止",
+        "RemoveFromQueue": "キューから削除",
+        "Start": "開始"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -469,7 +470,7 @@
             "EstimatedExtrusion": "推定押し出し量:",
             "Extrude": "押し出し",
             "ExtruderTempTooLow": "エクストルーダー温度 <",
-            "ExtrusionFactor": "押し出し系数",
+            "ExtrusionFactor": "押し出し係数",
             "ExtrusionFeedrate": "押し出し速度",
             "FilamentLength": "フィラメント長",
             "Headline": "エクストルーダー",
@@ -613,6 +614,7 @@
             "Absolute": "絶対",
             "ALL": "すべて",
             "Headline": "ツールヘッド",
+            "Invalid": "無効",
             "InvertX": "X反転",
             "InvertY": "Y反転",
             "InvertZ": "Z反転",
