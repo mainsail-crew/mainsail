@@ -47,7 +47,7 @@ export const getters: GetterTree<GuiState, any> = {
                 panels = panels.filter((element: any) => {
                     if (!element.name.startsWith('macrogroup_')) return true
 
-                    const macrogroupId = element.name.substr(11)
+                    const macrogroupId = element.name.slice(11)
                     return (
                         macrogroups.findIndex(
                             (macrogroup: GuiMacrosStateMacrogroup) => macrogroup.id === macrogroupId
