@@ -90,31 +90,37 @@
                 <v-row>
                     <v-col>
                         <div ref="viewerCanvasContainer"></div>
-                        <div class="scrubber" v-show="!tracking && scrubFileSize > 0">
-                                                <v-row dense>
-                                                    <v-col cols="9" md="7">
-                                                        <v-slider :hint="scrubPosition + '/' + scrubFileSize" :max="scrubFileSize" dense min="0" persistent-hint v-model="scrubPosition"></v-slider>
-                                                    </v-col>
-                                                    <v-col cols="3" md="2">
-                                                        <v-btn @click="scrubPlaying = !scrubPlaying">
-                                                            <v-icon v-if="scrubPlaying">{{ mdiStop }}</v-icon>
-                                                            <v-icon v-else> {{ mdiPlay }}</v-icon>
-                                                        </v-btn>
-                                                        <v-btn @click="fastForward">
-                                                            <v-icon>{{ mdiFastForward }}</v-icon>
-                                                        </v-btn>
-                                                    </v-col>
-                                                    <v-col cols="12" md="2">
-                                                        <v-btn-toggle dense mandatory rounded v-model="scrubSpeed">
-                                                            <v-btn :value="1">1x</v-btn>
-                                                            <v-btn :value="2">2x</v-btn>
-                                                            <v-btn :value="5">5x</v-btn>
-                                                            <v-btn :value="10">10x</v-btn>
-                                                            <v-btn :value="20">20x</v-btn>
-                                                        </v-btn-toggle>
-                                                    </v-col>
-                                                </v-row>
-                            </div>
+                        <div v-show="!tracking && scrubFileSize > 0" class="scrubber">
+                            <v-row dense>
+                                <v-col cols="9" md="7">
+                                    <v-slider
+                                        v-model="scrubPosition"
+                                        :hint="scrubPosition + '/' + scrubFileSize"
+                                        :max="scrubFileSize"
+                                        dense
+                                        min="0"
+                                        persistent-hint></v-slider>
+                                </v-col>
+                                <v-col cols="3" md="2">
+                                    <v-btn @click="scrubPlaying = !scrubPlaying">
+                                        <v-icon v-if="scrubPlaying">{{ mdiStop }}</v-icon>
+                                        <v-icon v-else>{{ mdiPlay }}</v-icon>
+                                    </v-btn>
+                                    <v-btn @click="fastForward">
+                                        <v-icon>{{ mdiFastForward }}</v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="2">
+                                    <v-btn-toggle v-model="scrubSpeed" dense mandatory rounded>
+                                        <v-btn :value="1">1x</v-btn>
+                                        <v-btn :value="2">2x</v-btn>
+                                        <v-btn :value="5">5x</v-btn>
+                                        <v-btn :value="10">10x</v-btn>
+                                        <v-btn :value="20">20x</v-btn>
+                                    </v-btn-toggle>
+                                </v-col>
+                            </v-row>
+                        </div>
                     </v-col>
                     <v-col class="col-auto pr-6">
                         <v-slider
@@ -315,7 +321,7 @@ import {
     mdiVideo3d,
     mdiPlay,
     mdiStop,
-    mdiFastForward
+    mdiFastForward,
 } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
 
@@ -347,7 +353,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     mdiClose = mdiClose
     mdiCog = mdiCog
     mdiVideo3d = mdiVideo3d
-    mdiPlay  = mdiPlay
+    mdiPlay = mdiPlay
     mdiStop = mdiStop
     mdiFastForward = mdiFastForward
 
@@ -364,13 +370,12 @@ export default class Viewer extends Mixins(BaseMixin) {
     private fileSize = 0
     private maxZSlider = 100000
     private zSlider = this.maxZSlider
-    private zSlicerHeight = 100
     private renderQuality = this.renderQualities[2]
 
     private scrubPosition = 0
     private scrubPlaying = false
     private scrubSpeed = 1
-    private scrubInterval : ReturnType<typeof setInterval> | undefined
+    private scrubInterval: ReturnType<typeof setInterval> | undefined
     private scrubFileSize = 0
 
     private downloadSnackbar: downloadSnackbar = {
@@ -409,10 +414,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         viewer = this.$store.state.gcodeviewer?.viewerBackup ?? null
         await this.init()
 
-        if(this.loadedFile !== null){
-            this.scrubFileSize = viewer.fileSize
-
-        }
+        if (this.loadedFile !== null) this.scrubFileSize = viewer.fileSize
     }
 
     beforeDestroy() {
@@ -422,10 +424,10 @@ export default class Viewer extends Mixins(BaseMixin) {
             this.$store.dispatch('gcodeviewer/setViewerBackup', viewer)
         }
 
-        this.scrubPlaying =false
-        if(this.scrubInterval !== undefined){
+        this.scrubPlaying = false
+        if (this.scrubInterval !== undefined) {
             clearInterval(this.scrubInterval)
-            this.scrubInterval = undefined;
+            this.scrubInterval = undefined
         }
     }
 
@@ -479,15 +481,13 @@ export default class Viewer extends Mixins(BaseMixin) {
             }
         }
 
-        if (viewer === null && canvasElement !== null) {
-            this.viewerInit(canvasElement)
-        }
+        if (viewer === null) await this.viewerInit(canvasElement)
 
         this.registerProgressCallback()
 
         if (this.$route.query?.filename && this.loadedFile !== this.$route.query?.filename?.toString()) {
             //TODO: test without sleep
-            await this.sleep(1000) //Give the store a chance to initializ before loading the file.
+            await this.sleep(1000) //Give the store a chance to initialize before loading the file.
             await this.loadFile(this.$route.query.filename.toString())
         }
     }
@@ -1072,7 +1072,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (to) {
             if (this.scrubInterval !== undefined) {
                 clearInterval(this.scrubInterval)
-                this.scrubInterval = undefined;
+                this.scrubInterval = undefined
             }
             this.scrubPlaying = true
             if (this.scrubPosition >= this.scrubFileSize) {
@@ -1083,30 +1083,26 @@ export default class Viewer extends Mixins(BaseMixin) {
             this.scrubInterval = setInterval(() => {
                 this.scrubPosition += 100 * this.scrubSpeed
                 viewer.gcodeProcessor.updateFilePosition(this.scrubPosition)
-                if (this.tracking  || this.scrubPosition >= this.scrubFileSize) {
+                if (this.tracking || this.scrubPosition >= this.scrubFileSize) {
                     this.scrubPlaying = false
                 }
             }, 200)
         } else {
-            if (this.scrubInterval !== undefined) {
-                clearInterval(this.scrubInterval)
-            }
+            if (this.scrubInterval) clearInterval(this.scrubInterval)
             this.scrubPlaying = false
             this.scrubInterval = undefined
         }
     }
 
     @Debounce(200)
-    @Watch('scrubPosition') updateScrubPosition(to: number) : void {
-        if(!this.tracking){
-            viewer.gcodeProcessor.updateFilePosition(to)
-        }
+    @Watch('scrubPosition')
+    updateScrubPosition(to: number): void {
+        if (!this.tracking) viewer.gcodeProcessor.updateFilePosition(to)
     }
 
-    fastForward() :void{
+    fastForward(): void {
         this.scrubPosition = this.scrubFileSize
         viewer.gcodeProcessor.updateFilePosition(this.scrubPosition)
     }
-
 }
 </script>
