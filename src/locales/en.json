@@ -707,6 +707,7 @@
             "EntryStyle": "Entry-Design",
             "EntryStyleCompact": "compact",
             "EntryStyleDefault": "default",
+            "Filters": "Filters",
             "Height": "Height",
             "HideTemperatures": "Hide temperatures",
             "HideTimelapse": "Hide Timelapse",
