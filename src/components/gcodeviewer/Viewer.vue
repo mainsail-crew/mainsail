@@ -2,7 +2,7 @@
 <style>
 .viewer {
     width: 100%;
-    height: calc(var(--app-height) - 230px);
+    height: calc(var(--app-height) - 240px);
     border: 1px solid #3f3f3f;
 }
 
@@ -12,35 +12,26 @@
 
 @media (min-width: 600px) and (max-width: 959px) {
     .viewer {
-        height: calc(var(--app-height) - 318px);
+        height: calc(var(--app-height) - 295px);
+    }
+
+    .withScrubber .viewer {
+        height: calc(var(--app-height) - 360px);
     }
 }
 
 @media (max-width: 599px) {
     .viewer {
-        height: calc(var(--app-height) - 356px);
+        height: calc(var(--app-height) - 340px);
+    }
+
+    .withScrubber .viewer {
+        height: calc(var(--app-height) - 340px);
     }
 }
 </style>
 
 <style scoped>
-.progress-text {
-    font-size: small;
-}
-
-.progress-container {
-    position: absolute;
-    width: 80.5%;
-}
-
-.disable-transition {
-    transition: none !important;
-}
-
-.gcode-viewer-panel {
-    position: relative;
-}
-
 .scrubber {
     position: relative;
     left: 0;
@@ -74,13 +65,13 @@
                 </v-btn>
             </template>
             <v-card-text>
-                <v-row :class="!tracking && scrubFileSize > 0 ? 'withScrubber' : ''">
+                <v-row :class="showScrubber ? 'withScrubber' : ''">
                     <v-col>
                         <div ref="viewerCanvasContainer"></div>
                     </v-col>
                 </v-row>
-                <v-row v-show="!tracking && scrubFileSize > 0" class="scrubber">
-                    <v-col cols="9" md="7">
+                <v-row v-show="showScrubber" class="scrubber">
+                    <v-col class="pt-0">
                         <v-slider
                             v-model="scrubPosition"
                             :hint="scrubPosition + '/' + scrubFileSize"
@@ -89,17 +80,15 @@
                             min="0"
                             persistent-hint></v-slider>
                     </v-col>
-                    <v-col cols="3" md="2">
-                        <v-btn @click="scrubPlaying = !scrubPlaying">
-                            <v-icon v-if="scrubPlaying">{{ mdiStop }}</v-icon>
+                    <v-col class="col-auto pt-0 text-center">
+                        <v-btn class="px-2 minwidth-0" color="primary" @click="scrubPlaying = !scrubPlaying">
+                            <v-icon v-if="scrubPlaying">{{ mdiPause }}</v-icon>
                             <v-icon v-else>{{ mdiPlay }}</v-icon>
                         </v-btn>
-                        <v-btn @click="fastForward">
+                        <v-btn class="px-2 minwidth-0 mx-3" color="primary" @click="fastForward">
                             <v-icon>{{ mdiFastForward }}</v-icon>
                         </v-btn>
-                    </v-col>
-                    <v-col cols="12" md="2">
-                        <v-btn-toggle v-model="scrubSpeed" dense mandatory rounded>
+                        <v-btn-toggle v-model="scrubSpeed" class="mt-3 mt-sm-0" dense mandatory rounded>
                             <v-btn :value="1">1x</v-btn>
                             <v-btn :value="2">2x</v-btn>
                             <v-btn :value="5">5x</v-btn>
@@ -130,7 +119,10 @@
                                             v-html="tracking ? mdiToggleSwitch : mdiToggleSwitchOffOutline"></v-icon>
                                         {{ $t('GCodeViewer.Tracking') }}
                                     </v-btn>
-                                    <v-btn @click="clearLoadedFile">{{ $t('GCodeViewer.ClearLoadedFile') }}</v-btn>
+                                    <v-btn @click="clearLoadedFile">
+                                        <v-icon left>{{ mdiBroom }}</v-icon>
+                                        {{ $t('GCodeViewer.ClearLoadedFile') }}
+                                    </v-btn>
                                 </template>
                             </v-col>
                             <v-col class="col-12 col-sm-6 col-md-4">
@@ -143,7 +135,7 @@
                                     hide-details
                                     outlined></v-select>
                             </v-col>
-                            <v-col order-md="3" class="col-12 col-sm-6 col-md-4">
+                            <v-col order-md="3" class="col-12 col-sm-6 col-md-4 d-flex">
                                 <v-select
                                     v-model="renderQuality"
                                     :items="renderQualities"
@@ -152,82 +144,82 @@
                                     dense
                                     hide-details
                                     outlined></v-select>
+                                <v-menu
+                                    :offset-y="true"
+                                    :offset-x="true"
+                                    top
+                                    :close-on-content-click="false"
+                                    :title="$t('Files.SetupCurrentList')">
+                                    <template #activator="{ on, attrs }">
+                                        <v-btn class="minwidth-0 px-2 ml-3" v-bind="attrs" v-on="on">
+                                            <v-icon>{{ mdiCog }}</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <v-list>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox
+                                                v-model="showCursor"
+                                                class="mt-0"
+                                                hide-details
+                                                :label="$t('GCodeViewer.ShowToolhead')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox
+                                                v-model="showTravelMoves"
+                                                class="mt-0"
+                                                hide-details
+                                                :label="$t('GCodeViewer.ShowTravelMoves')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-list-item
+                                            v-if="loadedFile === sdCardFilePath && printing_objects.length > 1"
+                                            class="minHeight36">
+                                            <v-checkbox
+                                                v-model="showObjectSelection"
+                                                class="mt-0"
+                                                hide-details
+                                                :label="$t('GCodeViewer.ShowObjectSelection')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-divider></v-divider>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox
+                                                v-model="hdRendering"
+                                                class="mt-0"
+                                                hide-details
+                                                :label="$t('GCodeViewer.HDRendering')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox
+                                                v-model="forceLineRendering"
+                                                class="mt-0"
+                                                hide-details
+                                                :label="$t('GCodeViewer.ForceLineRendering')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox
+                                                v-model="transparency"
+                                                class="mt-0"
+                                                hide-details
+                                                :label="$t('GCodeViewer.Transparency')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox
+                                                v-model="voxelMode"
+                                                class="mt-0"
+                                                hide-details
+                                                :label="$t('GCodeViewer.VoxelMode')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox
+                                                v-model="specularLighting"
+                                                class="mt-0"
+                                                hide-details
+                                                :label="$t('GCodeViewer.SpecularLighting')"></v-checkbox>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>
                             </v-col>
                         </v-row>
                     </v-col>
-                    <v-menu
-                        :offset-y="true"
-                        :offset-x="true"
-                        top
-                        :close-on-content-click="false"
-                        :title="$t('Files.SetupCurrentList')">
-                        <template #activator="{ on, attrs }">
-                            <v-btn class="minwidth-0 px-2 mr-3 mt-3" v-bind="attrs" v-on="on">
-                                <v-icon>{{ mdiCog }}</v-icon>
-                            </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item class="minHeight36">
-                                <v-checkbox
-                                    v-model="showCursor"
-                                    class="mt-0"
-                                    hide-details
-                                    :label="$t('GCodeViewer.ShowToolhead')"></v-checkbox>
-                            </v-list-item>
-                            <v-list-item class="minHeight36">
-                                <v-checkbox
-                                    v-model="showTravelMoves"
-                                    class="mt-0"
-                                    hide-details
-                                    :label="$t('GCodeViewer.ShowTravelMoves')"></v-checkbox>
-                            </v-list-item>
-                            <v-list-item
-                                v-if="loadedFile === sdCardFilePath && printing_objects.length > 1"
-                                class="minHeight36">
-                                <v-checkbox
-                                    v-model="showObjectSelection"
-                                    class="mt-0"
-                                    hide-details
-                                    :label="$t('GCodeViewer.ShowObjectSelection')"></v-checkbox>
-                            </v-list-item>
-                            <v-divider></v-divider>
-                            <v-list-item class="minHeight36">
-                                <v-checkbox
-                                    v-model="hdRendering"
-                                    class="mt-0"
-                                    hide-details
-                                    :label="$t('GCodeViewer.HDRendering')"></v-checkbox>
-                            </v-list-item>
-                            <v-list-item class="minHeight36">
-                                <v-checkbox
-                                    v-model="forceLineRendering"
-                                    class="mt-0"
-                                    hide-details
-                                    :label="$t('GCodeViewer.ForceLineRendering')"></v-checkbox>
-                            </v-list-item>
-                            <v-list-item class="minHeight36">
-                                <v-checkbox
-                                    v-model="transparency"
-                                    class="mt-0"
-                                    hide-details
-                                    :label="$t('GCodeViewer.Transparency')"></v-checkbox>
-                            </v-list-item>
-                            <v-list-item class="minHeight36">
-                                <v-checkbox
-                                    v-model="voxelMode"
-                                    class="mt-0"
-                                    hide-details
-                                    :label="$t('GCodeViewer.VoxelMode')"></v-checkbox>
-                            </v-list-item>
-                            <v-list-item class="minHeight36">
-                                <v-checkbox
-                                    v-model="specularLighting"
-                                    class="mt-0"
-                                    hide-details
-                                    :label="$t('GCodeViewer.SpecularLighting')"></v-checkbox>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
                 </v-row>
                 <input
                     ref="fileInput"
@@ -295,8 +287,9 @@ import {
     mdiToggleSwitchOffOutline,
     mdiVideo3d,
     mdiPlay,
-    mdiStop,
+    mdiPause,
     mdiFastForward,
+    mdiBroom,
 } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
 
@@ -329,8 +322,9 @@ export default class Viewer extends Mixins(BaseMixin) {
     mdiCog = mdiCog
     mdiVideo3d = mdiVideo3d
     mdiPlay = mdiPlay
-    mdiStop = mdiStop
+    mdiPause = mdiPause
     mdiFastForward = mdiFastForward
+    mdiBroom = mdiBroom
 
     formatFilesize = formatFilesize
 
@@ -1052,6 +1046,10 @@ export default class Viewer extends Mixins(BaseMixin) {
             this.scrubPlaying = false
             this.scrubInterval = undefined
         }
+    }
+
+    get showScrubber() {
+        return !this.tracking && this.scrubFileSize > 0
     }
 
     @Debounce(200)
