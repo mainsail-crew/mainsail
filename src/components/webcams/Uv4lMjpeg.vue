@@ -9,8 +9,6 @@
     <img
         ref="webcamUv4lMjpegImage"
         v-observe-visibility="viewportVisibilityChanged"
-        :src="url"
-        :alt="camSettings.name"
         :style="webcamStyle"
         class="webcamImage"
         @load="onload" />
