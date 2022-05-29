@@ -649,7 +649,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get chart(): ECharts | null {
-        return this.$refs.heightmap ?? null
+        return this.$refs.heightmap?.chart ?? null
     }
 
     get profiles() {
