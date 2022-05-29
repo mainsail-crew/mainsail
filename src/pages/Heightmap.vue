@@ -115,7 +115,7 @@
                                 :loading="loadings.includes('bedMeshCalibrate')"
                                 :disabled="printerIsPrinting"
                                 :title="$t('Heightmap.TitleCalibrate')"
-                                @click="calibrateDialog = true">
+                                @click="openCalibrateMesh">
                                 {{ $t('Heightmap.Calibrate') }}
                             </v-btn>
                         </v-item-group>
