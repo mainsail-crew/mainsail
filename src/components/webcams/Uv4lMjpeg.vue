@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
@@ -106,6 +106,12 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
             this.aspectRatio =
                 this.$refs.webcamUv4lMjpegImage.naturalWidth / this.$refs.webcamUv4lMjpegImage.naturalHeight
         }
+    }
+
+    @Watch('url')
+    async urlChanged() {
+        await this.stopStream()
+        await this.startStream()
     }
 }
 </script>
