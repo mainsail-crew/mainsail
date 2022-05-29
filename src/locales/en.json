@@ -772,6 +772,7 @@
             "GridColor": "Grid Color",
             "MaxFeed": "Max Feed Rate",
             "MinFeed": "Min Feed Rate",
+            "ProgressColor": "Progress Color",
             "ShowAxes": "Show Axes"
         },
         "GeneralTab": {
