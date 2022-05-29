@@ -46,7 +46,7 @@
     <div>
         <v-row v-if="klipperReadyForGui">
             <v-col class="col-12 col-md-8 pb-0">
-                <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" :icon="mdiGrid">
+                <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap').toString()" :icon="mdiGrid">
                     <template #buttons>
                         <v-btn
                             icon
@@ -115,7 +115,7 @@
                                 :loading="loadings.includes('bedMeshCalibrate')"
                                 :disabled="printerIsPrinting"
                                 :title="$t('Heightmap.TitleCalibrate')"
-                                @click="calibrateDialog = true">
+                                @click="openCalibrateMesh">
                                 {{ $t('Heightmap.Calibrate') }}
                             </v-btn>
                         </v-item-group>
@@ -190,7 +190,7 @@
             <v-col class="col-12 col-md-4">
                 <panel
                     v-if="currentProfile"
-                    :title="$t('Heightmap.CurrentMesh.Headline')"
+                    :title="$t('Heightmap.CurrentMesh.Headline').toString()"
                     card-class="heightmap-current-mesh-panel"
                     :icon="mdiInformation"
                     :collapsible="true"
@@ -236,7 +236,7 @@
                     </v-card-text>
                 </panel>
                 <panel
-                    :title="$t('Heightmap.Profiles')"
+                    :title="$t('Heightmap.Profiles').toString()"
                     card-class="heightmap-profiles-panel"
                     :icon="mdiStackOverflow"
                     :collapsible="true"
@@ -319,7 +319,7 @@
         </v-row>
         <v-dialog v-model="renameDialog" persistent :max-width="400" @keydown.esc="renameDialog = false">
             <panel
-                :title="$t('Heightmap.RenameBedMeshProfile')"
+                :title="$t('Heightmap.RenameBedMeshProfile').toString()"
                 :icon="mdiGrid"
                 card-class="heightmap-rename-dialog"
                 :margin-bottom="false">
@@ -349,7 +349,7 @@
             :max-width="400"
             @keydown.esc="calibrateDialog.boolShow = false">
             <panel
-                :title="$t('Heightmap.BedMeshCalibrate')"
+                :title="$t('Heightmap.BedMeshCalibrate').toString()"
                 :icon="mdiGrid"
                 card-class="heightmap-calibrate-dialog"
                 :margin-bottom="false">
@@ -375,7 +375,7 @@
         </v-dialog>
         <v-dialog v-model="removeDialog" persistent :max-width="400" @keydown.esc="removeDialog = false">
             <panel
-                :title="$t('Heightmap.BedMeshRemove')"
+                :title="$t('Heightmap.BedMeshRemove').toString()"
                 :icon="mdiGrid"
                 card-class="heightmap-remove-dialog"
                 :margin-bottom="false">
@@ -396,7 +396,7 @@
         </v-dialog>
         <v-dialog v-model="saveConfigDialog" persistent :max-width="400" @keydown.esc="saveConfigDialog = false">
             <panel
-                :title="$t('Heightmap.SAVE_CONFIG')"
+                :title="$t('Heightmap.SAVE_CONFIG').toString()"
                 :icon="mdiGrid"
                 card-class="heightmap-remove-save-dialog"
                 :margin-bottom="false">
@@ -649,7 +649,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get chart(): ECharts | null {
-        return this.$refs.heightmap ?? null
+        return this.$refs.heightmap?.chart ?? null
     }
 
     get profiles() {

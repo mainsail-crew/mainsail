@@ -27,8 +27,6 @@ interface echartsTooltipObj {
     components: {},
 })
 export default class TempChart extends Mixins(BaseMixin) {
-    convertName = convertName
-
     declare $refs: {
         tempchart: any
     }
@@ -196,7 +194,7 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     get chart(): ECharts | null {
-        return this.$refs.tempchart ?? null
+        return this.$refs.tempchart?.chart ?? null
     }
 
     get maxHistory() {
