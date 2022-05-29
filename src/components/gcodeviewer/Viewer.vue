@@ -375,7 +375,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     private scrubPosition = 0
     private scrubPlaying = false
     private scrubSpeed = 1
-    private scrubInterval: ReturnType<typeof setInterval> | undefined
+    private scrubInterval: ReturnType<typeof setInterval> | undefined = undefined
     private scrubFileSize = 0
 
     private downloadSnackbar: downloadSnackbar = {
@@ -425,7 +425,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
 
         this.scrubPlaying = false
-        if (this.scrubInterval !== undefined) {
+        if (this.scrubInterval) {
             clearInterval(this.scrubInterval)
             this.scrubInterval = undefined
         }
@@ -1068,9 +1068,10 @@ export default class Viewer extends Mixins(BaseMixin) {
         this.zSlider = newVal
     }
 
-    @Watch('scrubPlaying') scrubPlayingChanaged(to: boolean): void {
+    @Watch('scrubPlaying')
+    scrubPlayingChanged(to: boolean): void {
         if (to) {
-            if (this.scrubInterval !== undefined) {
+            if (this.scrubInterval) {
                 clearInterval(this.scrubInterval)
                 this.scrubInterval = undefined
             }
