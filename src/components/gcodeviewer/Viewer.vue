@@ -2,22 +2,17 @@
 <style>
 .viewer {
     width: 100%;
-    height: calc(var(--app-height) - 266px);
+    height: calc(var(--app-height) - 230px);
     border: 1px solid #3f3f3f;
 }
 
-.slider-autoheight,
-.slider-autoheight .v-slider {
-    height: calc(var(--app-height) - 286px);
+.withScrubber .viewer {
+    height: calc(var(--app-height) - 300px);
 }
 
 @media (min-width: 600px) and (max-width: 959px) {
     .viewer {
         height: calc(var(--app-height) - 318px);
-    }
-    .slider-autoheight,
-    .slider-autoheight .v-slider {
-        height: calc(var(--app-height) - 338px);
     }
 }
 
@@ -25,18 +20,6 @@
     .viewer {
         height: calc(var(--app-height) - 356px);
     }
-    .slider-autoheight,
-    .slider-autoheight .v-slider {
-        height: calc(var(--app-height) - 376px);
-    }
-}
-
-.slider-autoheight .v-slider {
-    margin-top: 0;
-    margin-bottom: 0;
-}
-.slider-autoheight .v-input__slot {
-    height: 100%;
 }
 </style>
 
@@ -69,7 +52,11 @@
 
 <template>
     <div>
-        <panel :title="$t('GCodeViewer.Title')" :icon="mdiVideo3d" card-class="gcode-viewer-panel">
+        <panel
+            :title="$t('GCodeViewer.Title')"
+            :icon="mdiVideo3d"
+            card-class="gcode-viewer-panel"
+            :margin-bottom="false">
             <template #buttons>
                 <v-btn
                     v-show="reloadRequired"
@@ -87,50 +74,38 @@
                 </v-btn>
             </template>
             <v-card-text>
-                <v-row>
+                <v-row :class="!tracking && scrubFileSize > 0 ? 'withScrubber' : ''">
                     <v-col>
                         <div ref="viewerCanvasContainer"></div>
-                        <div v-show="!tracking && scrubFileSize > 0" class="scrubber">
-                            <v-row dense>
-                                <v-col cols="9" md="7">
-                                    <v-slider
-                                        v-model="scrubPosition"
-                                        :hint="scrubPosition + '/' + scrubFileSize"
-                                        :max="scrubFileSize"
-                                        dense
-                                        min="0"
-                                        persistent-hint></v-slider>
-                                </v-col>
-                                <v-col cols="3" md="2">
-                                    <v-btn @click="scrubPlaying = !scrubPlaying">
-                                        <v-icon v-if="scrubPlaying">{{ mdiStop }}</v-icon>
-                                        <v-icon v-else>{{ mdiPlay }}</v-icon>
-                                    </v-btn>
-                                    <v-btn @click="fastForward">
-                                        <v-icon>{{ mdiFastForward }}</v-icon>
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="12" md="2">
-                                    <v-btn-toggle v-model="scrubSpeed" dense mandatory rounded>
-                                        <v-btn :value="1">1x</v-btn>
-                                        <v-btn :value="2">2x</v-btn>
-                                        <v-btn :value="5">5x</v-btn>
-                                        <v-btn :value="10">10x</v-btn>
-                                        <v-btn :value="20">20x</v-btn>
-                                    </v-btn-toggle>
-                                </v-col>
-                            </v-row>
-                        </div>
                     </v-col>
-                    <v-col class="col-auto pr-6">
+                </v-row>
+                <v-row v-show="!tracking && scrubFileSize > 0" class="scrubber">
+                    <v-col cols="9" md="7">
                         <v-slider
-                            vertical
-                            :disabled="loading || !loadedFile"
-                            :max="maxZSlider"
-                            :min="0"
-                            :value="zSlider"
-                            class="slider-autoheight mt-3"
-                            @input="updateZSlider"></v-slider>
+                            v-model="scrubPosition"
+                            :hint="scrubPosition + '/' + scrubFileSize"
+                            :max="scrubFileSize"
+                            dense
+                            min="0"
+                            persistent-hint></v-slider>
+                    </v-col>
+                    <v-col cols="3" md="2">
+                        <v-btn @click="scrubPlaying = !scrubPlaying">
+                            <v-icon v-if="scrubPlaying">{{ mdiStop }}</v-icon>
+                            <v-icon v-else>{{ mdiPlay }}</v-icon>
+                        </v-btn>
+                        <v-btn @click="fastForward">
+                            <v-icon>{{ mdiFastForward }}</v-icon>
+                        </v-btn>
+                    </v-col>
+                    <v-col cols="12" md="2">
+                        <v-btn-toggle v-model="scrubSpeed" dense mandatory rounded>
+                            <v-btn :value="1">1x</v-btn>
+                            <v-btn :value="2">2x</v-btn>
+                            <v-btn :value="5">5x</v-btn>
+                            <v-btn :value="10">10x</v-btn>
+                            <v-btn :value="20">20x</v-btn>
+                        </v-btn-toggle>
                     </v-col>
                 </v-row>
                 <v-row class="mt-0 d-flex align-top">
@@ -368,8 +343,6 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     private reloadRequired = false
     private fileSize = 0
-    private maxZSlider = 100000
-    private zSlider = this.maxZSlider
     private renderQuality = this.renderQualities[2]
 
     private scrubPosition = 0
@@ -565,8 +538,6 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     finishLoad() {
-        this.maxZSlider = viewer.getMaxHeight() + 1
-        this.zSlider = this.maxZSlider
         this.loading = false
         viewer.setCursorVisiblity(this.showCursor)
 
@@ -732,8 +703,6 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (!viewer) return
         if (newVal) {
             this.scrubPlaying = false
-            //Set zSlider to max value
-            this.zSlider = this.maxZSlider
             //Force renderers reload.
             viewer.gcodeProcessor.updateFilePosition(0)
             viewer?.forceRender()
@@ -1049,12 +1018,6 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
     }
 
-    @Watch('zSlider')
-    zSliderChanged(newVal: number) {
-        viewer?.setZClipPlane(newVal, -1)
-        viewer?.forceRender()
-    }
-
     get progressColor() {
         return this.$store.state.gui.gcodeViewer?.progressColor ?? '#FFFFFF'
     }
@@ -1062,10 +1025,6 @@ export default class Viewer extends Mixins(BaseMixin) {
     @Watch('progressColor')
     progressColorChanged(newVal: string) {
         viewer?.setProgressColor(newVal)
-    }
-
-    updateZSlider(newVal: any) {
-        this.zSlider = newVal
     }
 
     @Watch('scrubPlaying')
