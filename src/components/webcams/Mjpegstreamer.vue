@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 .webcamImage {
     width: 100%;
     background: lightgray;
