@@ -1321,7 +1321,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     view3D(item: FileStateFile) {
-        this.$router.push({ path: '/viewer', query: { filename: this.currentPath + '/' + item.filename } })
+        this.$router.push({ path: '/viewer', query: { filename: 'gcodes' + this.currentPath + '/' + item.filename } })
     }
 
     deleteSelectedFiles() {
