@@ -37,6 +37,24 @@
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GCodeViewerTab.ProgressColor')">
+                    <v-menu :close-on-content-click="false" bottom left offset-y>
+                        <template #activator="{ on, attrs }">
+                            <v-btn
+                                :color="progressColor"
+                                class="minwidth-0 px-5"
+                                small
+                                v-bind="attrs"
+                                v-on="on"></v-btn>
+                        </template>
+                        <v-color-picker
+                            :value="progressColor"
+                            hide-mode-switch
+                            mode="rgba"
+                            @update:color="updateColorValue('progressColor', $event)"></v-color-picker>
+                    </v-menu>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.ExtruderColor')">
                     <v-row no-gutters>
                         <v-menu
@@ -172,6 +190,14 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.gridColor', value: newVal })
     }
 
+    get progressColor(): string {
+        return this.$store.state.gui.gcodeViewer.progressColor
+    }
+
+    set progressColor(newVal: string) {
+        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.progressColor', value: newVal })
+    }
+
     @Debounce(500)
     updateColorValue(colorElement: string, newVal: any): void {
         Vue.set(this, colorElement, this.clearColorObject(newVal))
@@ -218,14 +244,6 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
     feedBlur(): void {
         if (this.minFeed < 1) this.minFeed = 1
         if (this.maxFeed < this.minFeed) this.maxFeed = this.minFeed + 1
-    }
-
-    get progressColor(): string {
-        return this.$store.state.gui.gcodeViewer.progressColor
-    }
-
-    set progressColor(newVal: string) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.progressColor', value: newVal })
     }
 }
 </script>

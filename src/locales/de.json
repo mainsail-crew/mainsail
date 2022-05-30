@@ -724,6 +724,7 @@
             "GridColor": "Gitterfarbe",
             "MaxFeed": "Max Vorschub",
             "MinFeed": "Min Vorschub",
+            "ProgressColor": "Fortschrittsfarbe",
             "ShowAxes": "Zeige Achsen an"
         },
         "GeneralTab": {
