@@ -1,4 +1,8 @@
 <style scoped>
+.webcamImage {
+    width: 100%;
+}
+
 .webcamFpsOutput {
     display: inline-block;
     position: absolute;
