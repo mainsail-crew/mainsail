@@ -707,6 +707,7 @@
             "EntryStyle": "デザイン",
             "EntryStyleCompact": "コンパクト",
             "EntryStyleDefault": "デフォルト",
+            "Filters": "フィルター",
             "Height": "高さ",
             "HideTemperatures": "温度報告を隠す",
             "HideTimelapse": "タイムラプス報告を隠す",
@@ -771,6 +772,7 @@
             "GridColor": "グリッド色",
             "MaxFeed": "最大フィードレート",
             "MinFeed": "最小フィードレート",
+            "ProgressColor": "進行中色",
             "ShowAxes": "軸表示"
         },
         "GeneralTab": {
