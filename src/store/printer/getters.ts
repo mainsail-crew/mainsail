@@ -890,7 +890,12 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 })
             )
 
-        return tools
+        return tools.sort((a, b) => {
+            const numberA = parseInt(a.name.slice(1))
+            const numberB = parseInt(b.name.slice(1))
+
+            return numberA - numberB
+        })
     },
 
     getKinematics: (state) => {
