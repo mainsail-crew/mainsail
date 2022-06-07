@@ -39,6 +39,11 @@ export const actions: ActionTree<RootState, RootState> = {
             if ('instances' in payload && Array.isArray(payload.instances) && payload.instances.length) {
                 commit('setConfigInstances', payload.instances)
             }
+
+            return
         }
+
+        if (payload.hostname) commit('socket/setData', { hostname: payload.hostname })
+        if (payload.port) commit('socket/setData', { port: parseInt(payload.port.toString()) })
     },
 }
