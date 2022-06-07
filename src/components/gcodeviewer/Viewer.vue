@@ -402,7 +402,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     get panelTitle() {
-        let title = this.$t('GCodeViewer.Title')
+        let title = this.$t('GCodeViewer.Title').toString()
 
         if (this.loadedFile) title += ': ' + this.loadedFile
 
