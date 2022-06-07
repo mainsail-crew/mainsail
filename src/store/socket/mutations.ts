@@ -7,7 +7,6 @@ export const mutations: MutationTree<SocketState> = {
     reset(state) {
         const defaults = getDefaultState()
 
-        Vue.set(state, 'loadings', [])
         Vue.set(state, 'initializationList', defaults.initializationList)
     },
 
@@ -42,6 +41,26 @@ export const mutations: MutationTree<SocketState> = {
     },
 
     clearLoadings(state) {
-        if (state.loadings.length) state.loadings.splice(0, state.loadings.length)
+        if (state.loadings.length) Vue.set(state, 'loadings', [])
+    },
+
+    addInitModule(state, payload) {
+        const list = [...state.initializationList]
+        const index = list.indexOf(payload)
+        if (index > -1) return
+
+        list.push(payload)
+        Vue.set(state, 'initializationList', list)
+        window.console.log(list)
+    },
+
+    removeInitModule(state, payload) {
+        const list = [...state.initializationList]
+        const index = list.indexOf(payload)
+        if (index === -1) return
+
+        list.splice(index, 1)
+        Vue.set(state, 'initializationList', list)
+        window.console.log(list)
     },
 }

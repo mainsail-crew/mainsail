@@ -12,7 +12,7 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
         Vue.$socket.emit('server.announcements.list', {}, { action: 'server/announcements/getList' })
     },
 
-    getList({ commit }, payload) {
+    async getList({ commit, dispatch }, payload) {
         if ('entries' in payload) {
             const entries = payload.entries.map((entry: any) => {
                 const date = new Date(entry.date * 1000)
@@ -22,9 +22,11 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
                 return { ...entry, date, date_dismissed, dismiss_wake }
             })
 
-            commit('setEntries', entries)
+            await commit('setEntries', entries)
         }
-        if ('feeds' in payload) commit('setFeeds', payload.feeds)
+        if ('feeds' in payload) await commit('setFeeds', payload.feeds)
+
+        await dispatch('socket/removeInitModule', 'server/announcements/init', { root: true })
     },
 
     getDismissed({ commit }, payload) {

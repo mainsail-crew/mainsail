@@ -19,7 +19,7 @@ export const getDefaultState = (): SocketState => {
         isConnecting: false,
         connectingFailed: false,
         loadings: [],
-        initializationList: ['gui', 'server'],
+        initializationList: ['server'],
         connection_id: null,
     }
 }

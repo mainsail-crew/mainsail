@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 export const actions: ActionTree<SocketState, RootState> = {
     reset({ commit }) {
         commit('setDisconnected')
+        commit('clearLoadings')
         commit('reset')
     },
 
@@ -140,6 +141,14 @@ export const actions: ActionTree<SocketState, RootState> = {
 
     clearLoadings({ commit }) {
         commit('clearLoadings')
+    },
+
+    addInitModule({ commit }, payload: string) {
+        commit('addInitModule', payload)
+    },
+
+    removeInitModule({ commit }, payload: string) {
+        commit('removeInitModule', payload)
     },
 
     reportDebug(_, payload) {

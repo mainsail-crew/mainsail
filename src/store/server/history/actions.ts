@@ -17,9 +17,9 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
         commit('setTotals', payload.job_totals)
     },
 
-    getHistory({ commit, dispatch, state }, payload) {
+    async getHistory({ commit, dispatch, state }, payload) {
         if ('requestParams' in payload && 'start' in payload.requestParams && payload.requestParams.start === 0)
-            commit('resetJobs')
+            await commit('resetJobs')
 
         payload.jobs?.forEach((job: ServerHistoryStateJob) => {
             if (state.jobs.findIndex((stateJob) => stateJob.job_id === job.job_id) === -1) commit('addJob', job)
@@ -34,28 +34,31 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
                 },
                 { action: 'server/history/getHistory' }
             )
-        else dispatch('loadHistoryNotes')
+        else await dispatch('loadHistoryNotes')
     },
 
-    loadHistoryNotes({ rootState }) {
+    loadHistoryNotes({ dispatch, rootState }) {
         if (rootState.server?.dbNamespaces.includes('history_notes'))
             Vue.$socket.emit(
                 'server.database.get_item',
                 { namespace: 'history_notes' },
                 { action: 'server/history/initHistoryNotes' }
             )
+        else dispatch('socket/removeInitModule', 'server/history/init', { root: true })
     },
 
-    initHistoryNotes({ commit, state }, payload) {
+    async initHistoryNotes({ commit, dispatch, state }, payload) {
         const job_ids = Object.keys(payload.value)
 
-        job_ids.forEach((job_id: string) => {
+        for (const job_id of job_ids) {
             const noteObject: { text: string } = payload.value[job_id]
-            commit('setHistoryNotes', {
+            await commit('setHistoryNotes', {
                 job_id,
                 text: noteObject.text,
             })
-        })
+        }
+
+        await dispatch('socket/removeInitModule', 'server/history/init', { root: true })
     },
 
     getChanged({ commit }, payload) {

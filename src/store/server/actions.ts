@@ -16,15 +16,24 @@ export const actions: ActionTree<ServerState, RootState> = {
     async init({ dispatch }) {
         window.console.debug('init Server')
 
+        dispatch('socket/addInitModule', 'server/info', { root: true })
+        dispatch('socket/addInitModule', 'server/config', { root: true })
+        dispatch('socket/addInitModule', 'server/systemInfo', { root: true })
+        dispatch('socket/addInitModule', 'server/procStats', { root: true })
+        dispatch('socket/addInitModule', 'server/databaseList', { root: true })
+
         await dispatch('identify')
         await Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo' })
         await Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig' })
         await Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo' })
         await Vue.$socket.emit('machine.proc_stats', {}, { action: 'server/initProcStats' })
         await Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases' })
+
+        await dispatch('socket/removeInitModule', 'server', { root: true })
     },
 
-    identify({ rootState }) {
+    async identify({ dispatch, rootState }) {
+        await dispatch('socket/addInitModule', 'server/identify', { root: true })
         Vue.$socket.emit(
             'server.connection.identify',
             {
@@ -37,57 +46,69 @@ export const actions: ActionTree<ServerState, RootState> = {
         )
     },
 
-    setConnectionId({ commit }, payload) {
-        commit('setConnectionId', payload.connection_id)
+    async setConnectionId({ commit, dispatch }, payload) {
+        await commit('setConnectionId', payload.connection_id)
+        await dispatch('socket/removeInitModule', 'server/identify', { root: true })
     },
 
-    checkDatabases({ dispatch, commit, rootState }, payload) {
-        if (payload.namespaces?.includes('mainsail')) dispatch('gui/init', null, { root: true })
-        else dispatch('gui/initDb', null, { root: true })
-        if (payload.namespaces?.includes('webcams')) dispatch('gui/webcams/init', null, { root: true })
+    async checkDatabases({ dispatch, commit, rootState }, payload) {
+        if (payload.namespaces?.includes('mainsail')) {
+            await dispatch('socket/addInitModule', 'gui/init', { root: true })
+            await dispatch('gui/init', null, { root: true })
+        } else dispatch('gui/initDb', null, { root: true })
+        if (payload.namespaces?.includes('webcams')) {
+            await dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
+            await dispatch('gui/webcams/init', null, { root: true })
+        }
 
-        commit('saveDbNamespaces', payload.namespaces)
+        await commit('saveDbNamespaces', payload.namespaces)
 
-        Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected' })
-        //dispatch('printer/init', null, { root: true })
+        await Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected' })
+        await dispatch('socket/removeInitModule', 'server/databaseList', { root: true })
     },
 
-    initServerInfo({ dispatch, commit }, payload) {
+    async initServerInfo({ dispatch, commit }, payload) {
         // delete old plugin entries
         if ('plugins' in payload) delete payload.plugins
         if ('failed_plugins' in payload) delete payload.failed_plugins
 
         if (payload.components?.length) {
-            payload.components.forEach((component: string) => {
+            for (let component of payload.components) {
                 component = camelize(component)
                 if (initableServerComponents.includes(component)) {
                     window.console.debug('init server component: ' + component)
-                    dispatch('server/' + component + '/init', {}, { root: true })
+                    await dispatch('socket/addInitModule', 'server/' + component + '/init', { root: true })
+                    await dispatch('server/' + component + '/init', {}, { root: true })
                 }
-            })
+            }
         }
 
         if (payload.registered_directories?.length) {
-            dispatch('files/initRootDirs', payload.registered_directories, { root: true })
+            await dispatch('files/initRootDirs', payload.registered_directories, { root: true })
         }
 
-        commit('setData', payload)
+        await commit('setData', payload)
+        await dispatch('socket/removeInitModule', 'server/info', { root: true })
     },
 
-    initServerConfig({ commit }, payload) {
-        commit('setConfig', payload)
+    async initServerConfig({ commit, dispatch }, payload) {
+        await commit('setConfig', payload)
+        await dispatch('socket/removeInitModule', 'server/config', { root: true })
     },
 
-    initSystemInfo({ commit }, payload) {
-        commit('setSystemInfo', payload.system_info)
+    async initSystemInfo({ commit, dispatch }, payload) {
+        await commit('setSystemInfo', payload.system_info)
+        await dispatch('socket/removeInitModule', 'server/systemInfo', { root: true })
     },
 
-    initProcStats({ commit }, payload) {
+    async initProcStats({ commit, dispatch }, payload) {
         if (payload.throttled_state !== null) commit('setThrottledState', payload.throttled_state)
         if (payload.system_uptime) {
             const system_boot_at = new Date(new Date().getTime() - payload.system_uptime * 1000)
-            commit('setSystemBootAt', system_boot_at)
+            await commit('setSystemBootAt', system_boot_at)
         }
+
+        await dispatch('socket/removeInitModule', 'server/procStats', { root: true })
     },
 
     updateProcStats({ commit }, payload) {
