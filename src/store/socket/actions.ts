@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 export const actions: ActionTree<SocketState, RootState> = {
     reset({ commit }) {
+        commit('setDisconnected')
         commit('reset')
     },
 
