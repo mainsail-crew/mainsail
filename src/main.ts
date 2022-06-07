@@ -73,11 +73,18 @@ import 'vue-resize/dist/vue-resize.css'
 import VueResize from 'vue-resize'
 Vue.use(VueResize)
 
-//load config.json and init vue
-fetch('/config.json')
+//load config.json
+const configJson = await fetch('/config.json')
     .then((res) => res.json())
-    .then(async (file) => {
-        await store.dispatch('importConfigJson', file)
+    .then(async (file) => file)
+    .catch((_) => {
+        window.console.error('config.json not found or cannot be decoded!')
+        return {}
+    })
+
+window.console.log({ configJson })
+/*
+await store.dispatch('importConfigJson', file)
 
         const url = store.getters['socket/getWebsocketUrl']
         Vue.use(WebSocketPlugin, {
@@ -94,11 +101,4 @@ fetch('/config.json')
             i18n,
             render: (h) => h(App),
         }).$mount('#app')
-    })
-    .catch((error) => {
-        const p = document.createElement('p')
-        const content = document.createTextNode('config.json not found or cannot be decoded!')
-        p.appendChild(content)
-        document.getElementById('app')?.append(p)
-        window.console.error('Error:', error)
-    })
+ */
