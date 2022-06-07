@@ -67,25 +67,26 @@
                 </v-btn>
                 <v-spacer></v-spacer>
                 <span v-if="!hasInputField" class="font-weight-bold">{{ value }} {{ unit }}</span>
-                <v-text-field
-                    v-if="hasInputField"
-                    v-model="numInput"
-                    :error="errors().length > 0"
-                    :suffix="unit"
-                    type="number"
-                    hide-spin-buttons
-                    hide-details
-                    outlined
-                    dense
-                    class="_slider-input d-flex align-center pt-1"
-                    @blur="numInput = value"
-                    @focus="$event.target.select()"
-                    @keydown="checkInvalidChars"
-                    @keyup.enter="submitInput">
-                    <template v-if="value !== defaultValue || value !== numInput" #append>
-                        <v-icon small @click="resetSlider">{{ mdiRestart }}</v-icon>
-                    </template>
-                </v-text-field>
+                <form @submit.prevent="submitInput">
+                    <v-text-field
+                        v-if="hasInputField"
+                        v-model="numInput"
+                        :error="errors().length > 0"
+                        :suffix="unit"
+                        type="number"
+                        hide-spin-buttons
+                        hide-details
+                        outlined
+                        dense
+                        class="_slider-input d-flex align-center pt-1"
+                        @blur="numInput = value"
+                        @focus="$event.target.select()"
+                        @keydown="checkInvalidChars">
+                        <template v-if="value !== defaultValue || value !== numInput" #append>
+                            <v-icon small @click="resetSlider">{{ mdiRestart }}</v-icon>
+                        </template>
+                    </v-text-field>
+                </form>
             </v-subheader>
             <transition name="fade">
                 <!-- display errors-->
