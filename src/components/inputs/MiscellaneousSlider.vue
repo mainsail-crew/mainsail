@@ -74,21 +74,22 @@
                     <v-icon v-if="controllable && !pwm" @click="switchOutputPin">
                         {{ value ? mdiToggleSwitch : mdiToggleSwitchOffOutline }}
                     </v-icon>
-                    <v-text-field
-                        v-if="controllable && pwm"
-                        v-model="inputValue"
-                        :error="errors().length > 0"
-                        suffix="%"
-                        type="number"
-                        hide-spin-buttons
-                        hide-details
-                        outlined
-                        dense
-                        class="_slider-input pt-1"
-                        @blur="inputValue = Math.round(parseFloat(sliderValue) * 100)"
-                        @focus="$event.target.select()"
-                        @keydown="checkInvalidChars"
-                        @keyup.enter="submitInput"></v-text-field>
+                    <form @submit.prevent="submitInput">
+                        <v-text-field
+                            v-if="controllable && pwm"
+                            v-model="inputValue"
+                            :error="errors().length > 0"
+                            suffix="%"
+                            type="number"
+                            hide-spin-buttons
+                            hide-details
+                            outlined
+                            dense
+                            class="_slider-input pt-1"
+                            @blur="inputValue = Math.round(parseFloat(sliderValue) * 100)"
+                            @focus="$event.target.select()"
+                            @keydown="checkInvalidChars"></v-text-field>
+                    </form>
                 </v-subheader>
                 <transition name="fade">
                     <!-- display errors -->

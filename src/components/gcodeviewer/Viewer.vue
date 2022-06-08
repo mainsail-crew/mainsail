@@ -43,11 +43,7 @@
 
 <template>
     <div>
-        <panel
-            :title="$t('GCodeViewer.Title')"
-            :icon="mdiVideo3d"
-            card-class="gcode-viewer-panel"
-            :margin-bottom="false">
+        <panel :title="panelTitle" :icon="mdiVideo3d" card-class="gcode-viewer-panel" :margin-bottom="false">
             <template #buttons>
                 <v-btn
                     v-show="reloadRequired"
@@ -403,6 +399,14 @@ export default class Viewer extends Mixins(BaseMixin) {
         this.$nextTick(() => {
             viewer?.resize()
         })
+    }
+
+    get panelTitle() {
+        let title = this.$t('GCodeViewer.Title').toString()
+
+        if (this.loadedFile) title += `: ${this.loadedFile}`
+
+        return title
     }
 
     get filePosition() {
