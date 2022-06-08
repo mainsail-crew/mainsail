@@ -35,7 +35,7 @@
                         <span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span>
                     </v-btn>
                     <v-btn
-                        v-if="restartServiceName !== null"
+                        v-if="restartServiceNameExists"
                         color="primary"
                         text
                         tile
@@ -187,6 +187,12 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return this.$store.state.editor.filename ?? ''
     }
 
+    get filenameWithoutExtension(): string {
+        if (this.filename.lastIndexOf('.')) return this.filename.slice(0, this.filename.lastIndexOf('.'))
+
+        return this.filename
+    }
+
     get fileExtension() {
         if (this.filename.lastIndexOf('.')) return this.filename.slice(this.filename.lastIndexOf('.') + 1)
 
@@ -231,17 +237,25 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return this.$t('Editor.' + directionUppercase)
     }
 
+    get availableServices() {
+        return this.$store.state.server.system_info?.available_services ?? []
+    }
+
     get restartServiceName() {
         if (!this.isWriteable) return null
         if (['printing', 'paused'].includes(this.printer_state)) return null
 
-        if (this.filename === 'moonraker.conf') return 'moonraker'
-        else if (this.filename === 'webcam.conf') return 'webcamd'
-        else if (this.filename.startsWith('webcam') && this.filename.endsWith('.txt')) return 'webcamd'
-        else if (this.filename.startsWith('mooncord') && this.filename.endsWith('.json')) return 'mooncord'
-        else if (this.filename.endsWith('.cfg')) return 'klipper'
+        if (this.availableServices.includes(this.filenameWithoutExtension) && this.fileExtension === 'conf')
+            return this.filenameWithoutExtension
+        if (this.filename.startsWith('webcam') && ['conf', 'txt'].includes(this.fileExtension)) return 'webcamd'
+        if (this.filename.startsWith('mooncord') && this.fileExtension === 'json') return 'mooncord'
+        if (this.fileExtension === 'cfg') return 'klipper'
 
         return null
+    }
+
+    get restartServiceNameExists() {
+        return this.availableServices.includes(this.restartServiceName)
     }
 
     get confirmUnsavedChanges() {
