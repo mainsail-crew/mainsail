@@ -1,19 +1,19 @@
 {
     "App": {
         "Notifications": {
-	    "DependencyDescription": "{neededVersion} 버전 이상으로 업데이트 해야 정상 사용이 가능합니다",
+            "DependencyDescription": "{neededVersion} 버전 이상으로 업데이트 해야 정상 사용이 가능합니다",
             "DependencyName": "설치 버전: {name}",
             "DismissAll": "모두 닫기",
             "KlipperWarnings": {
-		"DeprecatedOption": "'{section}' 섹션의 '{option}' 값은 더 이상 사용할 수 없으며 차후 릴리즈 버전에서 제거됩니다",
+                "DeprecatedOption": "'{section}' 섹션의 '{option}' 값은 더 이상 사용할 수 없으며 차후 릴리즈 버전에서 제거됩니다",
                 "DeprecatedOptionHeadline": "사용 불가 클리퍼 옵션",
-		"DeprecatedValue": "'{section}' 섹션의 '{option}'에 지정한 '{value}'값은 값은 더 이상 사용할 수 없으며 차후 릴리즈 버전에서 제거됩니다",
+                "DeprecatedValue": "'{section}' 섹션의 '{option}'에 지정한 '{value}'값은 값은 더 이상 사용할 수 없으며 차후 릴리즈 버전에서 제거됩니다",
                 "DeprecatedValueHeadline": "사용 불가 클리퍼 옵션",
                 "KlipperWarning": "클리퍼 : 주의"
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "문래커: {component}",
-		"MoonrakerFailedComponentDescription": "문래커 구성 요소인 '{component}'을(를) 로드하는 동안 오류가 발생했습니다 고르 파일을 확인해 문제를 해결해 주세요",
+                "MoonrakerFailedComponentDescription": "문래커 구성 요소인 '{component}'을(를) 로드하는 동안 오류가 발생했습니다 고르 파일을 확인해 문제를 해결해 주세요",
                 "MoonrakerWarning": "문래커 : 주의",
                 "UnparsedConfigOption": "[{section}]에서 사용할 수 없는 구성 옵션인 '{option}:{value}'이(가) 존재하며 이는 더 이상 사용할 수 없는 옵션 또는 모듈 로딩을 할 수 없는 경우이며 이제부터 시작 오류가 발생할 수 있습니다",
                 "UnparsedConfigSection": "[{section}]에서 사용할 수 없는 구성이 존재하며 이는 더 이상 사용할 수 없는 옵션 또는 모듈 로딩을 할 수 없는 경우이며 이제부터 시작 오류가 발생할 수 있습니다"
@@ -122,7 +122,8 @@
         "SetupConsole": "콘솔 설정"
     },
     "Dialogs": {
-        "StartPrint": { "StartPrint":"네",
+        "StartPrint": {
+            "StartPrint": "네",
             "Cancel": "아니오",
             "DoYouWantToStartFilename": "{filename} 파일을 출력하시겠습니까?",
             "Headline": "프린트전 확인",
@@ -239,9 +240,9 @@
         "Transparency": "투명 표시",
         "Ultra": "높음",
         "VoxelMode": "Voxel 모드 (ASMBL)",
-	"Extuder": "익스트루더",
-	"Feature": "출력 특징",
-	"FeedRate": "이송속도"
+        "Extuder": "익스트루더",
+        "Feature": "출력 특징",
+        "FeedRate": "이송속도"
     },
     "Heightmap": {
         "Abort": "취소",
@@ -487,7 +488,7 @@
             "ReconnectToPrinter": "재접속",
             "SwitchToPrinter": "프린터 전환",
             "WebcamOff": "웹캠 끔"
-	},
+        },
         "KlippyStatePanel": {
             "FirmwareRestart": "펌웨어 재시작",
             "KlipperCheck": "Klipper 서비스가 실행 중이고 UDS(Unix Domain Socket)가 구성 확인 또는 클리퍼 재시작을 눌러 주세요",
@@ -775,7 +776,7 @@
             "GridColor": "그리드 색상",
             "MaxFeed": "최대 압출량",
             "MinFeed": "최저 압출량",
-            "ProgressColor": "진행 색상,
+            "ProgressColor": "진행 색상",
             "ShowAxes": "축(Axis) 보기"
         },
         "GeneralTab": {
