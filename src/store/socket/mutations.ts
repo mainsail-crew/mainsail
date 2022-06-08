@@ -51,7 +51,6 @@ export const mutations: MutationTree<SocketState> = {
 
         list.push(payload)
         Vue.set(state, 'initializationList', list)
-        window.console.log(list)
     },
 
     removeInitModule(state, payload) {
@@ -61,6 +60,5 @@ export const mutations: MutationTree<SocketState> = {
 
         list.splice(index, 1)
         Vue.set(state, 'initializationList', list)
-        window.console.log(list)
     },
 }
