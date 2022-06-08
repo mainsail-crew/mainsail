@@ -123,7 +123,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "StartPrint": "네",
             "Cancel": "아니오",
             "DoYouWantToStartFilename": "{filename} 파일을 출력하시겠습니까?",
             "Headline": "프린트전 확인",
@@ -239,10 +238,7 @@
         "Tracking": "트래킹",
         "Transparency": "투명 표시",
         "Ultra": "높음",
-        "VoxelMode": "Voxel 모드 (ASMBL)",
-        "Extuder": "익스트루더",
-        "Feature": "출력 특징",
-        "FeedRate": "이송속도"
+        "VoxelMode": "Voxel 모드 (ASMBL)"
     },
     "Heightmap": {
         "Abort": "취소",
