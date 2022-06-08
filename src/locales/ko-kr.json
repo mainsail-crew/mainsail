@@ -460,7 +460,7 @@
             "InvertY": "Y 반전",
             "InvertZ": "Z 반전",
             "PleaseConfigureSteps": "Steps를 설정해 주세요P",
-            "QGL": "쿼드 갠트리 레벨[QGL]",
+            "QGL": "쿼드 갠트리 레벨",
             "SettingsInterfaceControl": "설정 > 인터페이스 > 컨트롤",
             "SetupControls": "컨트롤 설정",
             "X": "X",
