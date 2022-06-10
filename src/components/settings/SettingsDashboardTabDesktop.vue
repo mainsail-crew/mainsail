@@ -109,7 +109,7 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import draggable from 'vuedraggable'
-import { capitalize, convertPanelnameToIcon } from '@/plugins/helpers'
+import { convertPanelnameToIcon } from '@/plugins/helpers'
 import DashboardMixin from '@/components/mixins/dashboard'
 import { mdiInformation, mdiCheckboxMarked, mdiCheckboxBlankOutline, mdiLock, mdiDragVertical } from '@mdi/js'
 
@@ -119,7 +119,6 @@ import { mdiInformation, mdiCheckboxMarked, mdiCheckboxBlankOutline, mdiLock, md
     },
 })
 export default class SettingsDashboardTabDesktop extends Mixins(DashboardMixin) {
-    capitalize = capitalize
     convertPanelnameToIcon = convertPanelnameToIcon
 
     /**

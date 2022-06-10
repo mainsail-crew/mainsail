@@ -149,7 +149,7 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import draggable from 'vuedraggable'
-import { capitalize, convertPanelnameToIcon } from '@/plugins/helpers'
+import { convertPanelnameToIcon } from '@/plugins/helpers'
 import DashboardMixin from '@/components/mixins/dashboard'
 import { mdiDragVertical, mdiCheckboxBlankOutline, mdiCheckboxMarked, mdiInformation, mdiLock } from '@mdi/js'
 @Component({
@@ -167,7 +167,6 @@ export default class SettingsDashboardTabWidescreen extends Mixins(DashboardMixi
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
 
-    capitalize = capitalize
     convertPanelnameToIcon = convertPanelnameToIcon
 
     get widescreenLayout1() {
