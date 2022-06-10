@@ -25,7 +25,7 @@
                                 ghost-class="ghost"
                                 group="desktopViewport">
                                 <template v-for="element in desktopLayout1">
-                                    <v-list-item :key="'item-desktop-' + element.name" link>
+                                    <v-list-item :key="'item-desktop-' + element.name">
                                         <v-row>
                                             <v-col class="col-auto px-0">
                                                 <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
@@ -65,7 +65,7 @@
                                 ghost-class="ghost"
                                 group="desktopViewport">
                                 <template v-for="element in desktopLayout2">
-                                    <v-list-item :key="'item-desktop-' + element.name" link>
+                                    <v-list-item :key="'item-desktop-' + element.name">
                                         <v-row>
                                             <v-col class="col-auto px-0">
                                                 <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
@@ -119,17 +119,16 @@ import { mdiInformation, mdiCheckboxMarked, mdiCheckboxBlankOutline, mdiLock, md
     },
 })
 export default class SettingsDashboardTabDesktop extends Mixins(DashboardMixin) {
-    convertPanelnameToIcon = convertPanelnameToIcon
-
     /**
      * Icons
      */
-
     mdiLock = mdiLock
     mdiInformation = mdiInformation
     mdiDragVertical = mdiDragVertical
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
+
+    convertPanelnameToIcon = convertPanelnameToIcon
 
     get desktopLayout1() {
         let panels = this.$store.getters['gui/getPanels']('desktopLayout1')
@@ -185,5 +184,9 @@ export default class SettingsDashboardTabDesktop extends Mixins(DashboardMixin) 
 .ghost {
     opacity: 0.5;
     background: #c8ebfb;
+}
+
+.handle {
+    cursor: move;
 }
 </style>

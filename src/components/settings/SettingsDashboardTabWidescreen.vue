@@ -25,7 +25,7 @@
                                 ghost-class="ghost"
                                 group="widescreenViewport">
                                 <template v-for="element in widescreenLayout1">
-                                    <v-list-item :key="'item-widescreen-' + element.name" link>
+                                    <v-list-item :key="'item-widescreen-' + element.name">
                                         <v-row>
                                             <v-col class="col-auto px-0">
                                                 <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
@@ -65,7 +65,7 @@
                                 ghost-class="ghost"
                                 group="widescreenViewport">
                                 <template v-for="element in widescreenLayout2">
-                                    <v-list-item :key="'item-widescreen-' + element.name" link>
+                                    <v-list-item :key="'item-widescreen-' + element.name">
                                         <v-row>
                                             <v-col class="col-auto px-0">
                                                 <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
@@ -105,7 +105,7 @@
                                 ghost-class="ghost"
                                 group="widescreenViewport">
                                 <template v-for="element in widescreenLayout3">
-                                    <v-list-item :key="'item-widescreen-' + element.name" link>
+                                    <v-list-item :key="'item-widescreen-' + element.name">
                                         <v-row>
                                             <v-col class="col-auto px-0">
                                                 <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
@@ -254,5 +254,9 @@ export default class SettingsDashboardTabWidescreen extends Mixins(DashboardMixi
 .ghost {
     opacity: 0.5;
     background: #c8ebfb;
+}
+
+.handle {
+    cursor: move;
 }
 </style>

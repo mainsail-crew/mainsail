@@ -25,7 +25,7 @@
                                 ghost-class="ghost"
                                 group="tabletViewport">
                                 <template v-for="element in tabletLayout1">
-                                    <v-list-item :key="'item-tablet-' + element.name" link>
+                                    <v-list-item :key="'item-tablet-' + element.name">
                                         <v-row>
                                             <v-col class="col-auto px-0">
                                                 <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
@@ -65,7 +65,7 @@
                                 ghost-class="ghost"
                                 group="tabletViewport">
                                 <template v-for="element in tabletLayout2">
-                                    <v-list-item :key="'item-tablet-' + element.name" link>
+                                    <v-list-item :key="'item-tablet-' + element.name">
                                         <v-row>
                                             <v-col class="col-auto px-0">
                                                 <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
@@ -183,5 +183,9 @@ export default class SettingsDashboardTabTablet extends Mixins(DashboardMixin) {
 .ghost {
     opacity: 0.5;
     background: #c8ebfb;
+}
+
+.handle {
+    cursor: move;
 }
 </style>
