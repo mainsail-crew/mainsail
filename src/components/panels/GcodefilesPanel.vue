@@ -105,8 +105,7 @@
                                     <v-list-item
                                         v-for="header of configurableHeaders"
                                         :key="header.value"
-                                        class="minHeight36"
-                                        link>
+                                        class="minHeight36">
                                         <v-row>
                                             <v-col class="col-auto pr-0">
                                                 <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
@@ -1375,5 +1374,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 .file-list__count_printed {
     position: relative;
     top: 1px;
+}
+
+.handle {
+    cursor: move;
 }
 </style>
