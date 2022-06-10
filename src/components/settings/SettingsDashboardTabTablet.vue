@@ -1,10 +1,3 @@
-<style scoped>
-.ghost {
-    opacity: 0.5;
-    background: #c8ebfb;
-}
-</style>
-
 <template>
     <v-card flat>
         <v-card-text>
@@ -14,34 +7,34 @@
                         <v-list dense>
                             <v-list-item>
                                 <v-row>
-                                    <v-col class="col-auto pr-0">
+                                    <v-col class="col-auto pr-0 pl-8">
                                         <v-icon>{{ mdiInformation }}</v-icon>
                                     </v-col>
-                                    <v-col>
+                                    <v-col class="pr-0 text-truncate">
                                         {{ $t('Panels.StatusPanel.Headline') }}
                                     </v-col>
-                                    <v-col class="col-auto">
+                                    <v-col class="col-auto pl-0">
                                         <v-icon color="grey lighten-1">{{ mdiLock }}</v-icon>
                                     </v-col>
                                 </v-row>
                             </v-list-item>
                             <draggable
                                 v-model="tabletLayout1"
-                                :handle="isMobile ? '.handle' : ''"
+                                handle=".handle"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
                                 group="tabletViewport">
                                 <template v-for="element in tabletLayout1">
                                     <v-list-item :key="'item-tablet-' + element.name" link>
                                         <v-row>
-                                            <v-col class="col-auto pr-0">
-                                                <v-icon v-if="isMobile" class="handle">{{ mdiArrowUpDown }}</v-icon>
-                                                <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                            <v-col class="col-auto px-0">
+                                                <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
+                                                <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                             </v-col>
-                                            <v-col class="pr-0">
+                                            <v-col class="pr-0 text-truncate">
                                                 {{ getPanelName(element.name) }}
                                             </v-col>
-                                            <v-col class="col-auto pl-0">
+                                            <v-col class="col-auto pl-2">
                                                 <v-icon
                                                     v-if="!element.visible"
                                                     color="grey lighten-1"
@@ -67,21 +60,21 @@
                         <v-list dense>
                             <draggable
                                 v-model="tabletLayout2"
-                                :handle="isMobile ? '.handle' : ''"
+                                handle=".handle"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
                                 group="tabletViewport">
                                 <template v-for="element in tabletLayout2">
                                     <v-list-item :key="'item-tablet-' + element.name" link>
                                         <v-row>
-                                            <v-col class="col-auto pr-0">
-                                                <v-icon v-if="isMobile" class="handle">{{ mdiArrowUpDown }}</v-icon>
-                                                <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                            <v-col class="col-auto px-0">
+                                                <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
+                                                <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                             </v-col>
-                                            <v-col class="pr-0">
+                                            <v-col class="pr-0 text-truncate">
                                                 {{ getPanelName(element.name) }}
                                             </v-col>
-                                            <v-col class="col-auto pl-0">
+                                            <v-col class="col-auto pl-2">
                                                 <v-icon
                                                     v-if="!element.visible"
                                                     color="grey lighten-1"
@@ -118,7 +111,7 @@ import { Mixins } from 'vue-property-decorator'
 import DashboardMixin from '@/components/mixins/dashboard'
 import draggable from 'vuedraggable'
 import { capitalize, convertPanelnameToIcon } from '@/plugins/helpers'
-import { mdiLock, mdiInformation, mdiArrowUpDown, mdiCheckboxMarked, mdiCheckboxBlankOutline } from '@mdi/js'
+import { mdiLock, mdiInformation, mdiDragVertical, mdiCheckboxMarked, mdiCheckboxBlankOutline } from '@mdi/js'
 @Component({
     components: {
         draggable,
@@ -130,7 +123,7 @@ export default class SettingsDashboardTabTablet extends Mixins(DashboardMixin) {
      */
     mdiLock = mdiLock
     mdiInformation = mdiInformation
-    mdiArrowUpDown = mdiArrowUpDown
+    mdiDragVertical = mdiDragVertical
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
 
@@ -186,3 +179,10 @@ export default class SettingsDashboardTabTablet extends Mixins(DashboardMixin) {
     }
 }
 </script>
+
+<style scoped>
+.ghost {
+    opacity: 0.5;
+    background: #c8ebfb;
+}
+</style>
