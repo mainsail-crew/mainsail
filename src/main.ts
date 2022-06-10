@@ -49,7 +49,7 @@ Vue.use(OverlayScrollbarsPlugin, {
     className: 'os-theme-light',
     scrollbars: {
         visibility: 'auto',
-        autoHide: isSafari && isTouch ? 'never' : 'move',
+        autoHide: isSafari && isTouch ? 'scroll' : 'move',
     },
 })
 
