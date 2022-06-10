@@ -26,7 +26,7 @@
                                 group="desktopViewport">
                                 <template v-for="element in desktopLayout1">
                                     <v-list-item :key="'item-desktop-' + element.name">
-                                        <v-row>
+                                        <v-row class="d-flex align-center">
                                             <v-col class="col-auto px-0">
                                                 <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
                                                 <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
@@ -66,7 +66,7 @@
                                 group="desktopViewport">
                                 <template v-for="element in desktopLayout2">
                                     <v-list-item :key="'item-desktop-' + element.name">
-                                        <v-row>
+                                        <v-row class="d-flex align-center">
                                             <v-col class="col-auto px-0">
                                                 <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
                                                 <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>

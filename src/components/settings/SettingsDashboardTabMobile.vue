@@ -26,7 +26,7 @@
                                 group="mobileViewport">
                                 <template v-for="element in mobileLayout">
                                     <v-list-item :key="'item-mobile-' + element.name">
-                                        <v-row>
+                                        <v-row class="d-flex align-center">
                                             <v-col class="col-auto px-0">
                                                 <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
                                                 <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
