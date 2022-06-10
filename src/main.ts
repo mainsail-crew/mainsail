@@ -43,11 +43,13 @@ Vue.use(VueToast, {
 import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
 import 'overlayscrollbars/css/OverlayScrollbars.css'
 
+const isSafari = navigator.userAgent.includes('Safari') && navigator.userAgent.search('Chrome') === -1
+const isTouch = 'ontouchstart' in window || (navigator.maxTouchPoints > 0 && navigator.maxTouchPoints !== 256)
 Vue.use(OverlayScrollbarsPlugin, {
     className: 'os-theme-light',
     scrollbars: {
         visibility: 'auto',
-        autoHide: 'move',
+        autoHide: isSafari && isTouch ? 'never' : 'move',
     },
 })
 

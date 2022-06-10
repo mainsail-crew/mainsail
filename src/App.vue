@@ -32,7 +32,7 @@
         <the-sidebar></the-sidebar>
         <the-topbar></the-topbar>
         <v-main id="content" :style="mainStyle">
-            <overlay-scrollbars class="main-content-scrollbar" :options="overlayScrollbarsOptions">
+            <overlay-scrollbars class="main-content-scrollbar">
                 <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
                     <router-view></router-view>
                 </v-container>
@@ -157,16 +157,6 @@ export default class App extends Mixins(BaseMixin) {
 
     get print_percent(): number {
         return Math.round(this.$store.getters['printer/getPrintPercent'] * 100)
-    }
-
-    get overlayScrollbarsOptions() {
-        let options = {}
-
-        if (this.isTouchDevice) {
-            options = { scrollbars: { autoHide: 'never' } }
-        }
-
-        return options
     }
 
     @Watch('language')
