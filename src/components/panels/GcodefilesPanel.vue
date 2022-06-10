@@ -147,7 +147,7 @@
                                         link>
                                         <v-row>
                                             <v-col class="col-auto pr-0">
-                                                <v-icon class="handle">{{ mdiArrowUpDown }}</v-icon>
+                                                <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
                                             </v-col>
                                             <v-col>
                                                 {{ header.text }}
@@ -541,7 +541,7 @@ import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import draggable from 'vuedraggable'
 import {
-    mdiArrowUpDown,
+    mdiDragVertical,
     mdiCheckboxBlankOutline,
     mdiCheckboxMarked,
     mdiCloseThick,
@@ -614,7 +614,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
     mdiCheckboxMarked = mdiCheckboxMarked
-    mdiArrowUpDown = mdiArrowUpDown
+    mdiDragVertical = mdiDragVertical
 
     validGcodeExtensions = validGcodeExtensions
     formatDate = formatDate
