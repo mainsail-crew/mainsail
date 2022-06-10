@@ -1,41 +1,3 @@
-<style>
-/*noinspection CssUnusedSymbol*/
-.files-table .v-data-table-header__icon {
-    margin-left: 7px;
-}
-
-.files-table .file-list-cursor:hover {
-    cursor: pointer;
-}
-
-/*noinspection CssUnusedSymbol*/
-.file-list--select-td {
-    width: 20px;
-}
-
-/*noinspection CssUnusedSymbol*/
-.files-table th.text-start {
-    padding-right: 0 !important;
-}
-
-/*noinspection CssUnusedSymbol*/
-.v-chip.minimum-chip {
-    padding: 0;
-    min-width: 24px;
-}
-
-/*noinspection CssUnusedSymbol*/
-.v-chip.minimum-chip .v-chip__content {
-    margin: 0 auto;
-}
-
-/*noinspection CssUnusedSymbol*/
-.file-list__count_printed {
-    position: relative;
-    top: 1px;
-}
-</style>
-
 <template>
     <div>
         <panel
@@ -1377,3 +1339,41 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style>
+/*noinspection CssUnusedSymbol*/
+.files-table .v-data-table-header__icon {
+    margin-left: 7px;
+}
+
+.files-table .file-list-cursor:hover {
+    cursor: pointer;
+}
+
+/*noinspection CssUnusedSymbol*/
+.file-list--select-td {
+    width: 20px;
+}
+
+/*noinspection CssUnusedSymbol*/
+.files-table th.text-start {
+    padding-right: 0 !important;
+}
+
+/*noinspection CssUnusedSymbol*/
+.v-chip.minimum-chip {
+    padding: 0;
+    min-width: 24px;
+}
+
+/*noinspection CssUnusedSymbol*/
+.v-chip.minimum-chip .v-chip__content {
+    margin: 0 auto;
+}
+
+/*noinspection CssUnusedSymbol*/
+.file-list__count_printed {
+    position: relative;
+    top: 1px;
+}
+</style>
