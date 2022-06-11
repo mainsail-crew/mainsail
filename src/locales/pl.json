@@ -707,6 +707,7 @@
             "EntryStyle": "Styl Zapisu",
             "EntryStyleCompact": "Kompaktowy",
             "EntryStyleDefault": "Domyślny",
+            "Filters": "Filtry",
             "Height": "Wysokość",
             "HideTemperatures": "Ukryj temperatury",
             "HideTimelapse": "Ukryj timelapse",
@@ -771,6 +772,7 @@
             "GridColor": "Kolory siatki",
             "MaxFeed": "Maksymalna prędkość feedrate",
             "MinFeed": "Minimalna prędkość feedrate",
+            "ProgressColor": "Kolor Postępu",
             "ShowAxes": "Pokazuj osie"
         },
         "GeneralTab": {
