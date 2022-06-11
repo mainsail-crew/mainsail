@@ -1,15 +1,13 @@
-import {GetterTree} from 'vuex'
-import {
-    ServerUpdateMangerState
-} from '@/store/server/updateManager/types'
+import { GetterTree } from 'vuex'
+import { ServerUpdateMangerState } from '@/store/server/updateManager/types'
 import semver from 'semver'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerUpdateMangerState, any> = {
     getUpdateableSoftwares(state) {
         // eslint-disable-next-line
-		const output: any = {}
-        const sortKeys = Object.keys(state.version_info).sort((a,b) => {
+        const output: any = {}
+        const sortKeys = Object.keys(state.version_info).sort((a, b) => {
             if (a === 'klipper') return -1
             if (b === 'klipper') return 1
             if ('name' in state.version_info[a] && state.version_info[a].name === 'mainsail') return 1
@@ -37,13 +35,14 @@ export const getters: GetterTree<ServerUpdateMangerState, any> = {
 
             if (
                 'version' in versionInfo &&
-				'remote_version' in versionInfo &&
-				semver.valid(versionInfo.version) &&
-				semver.valid(versionInfo.remote_version) &&
-				semver.gt(versionInfo.remote_version, versionInfo.version)
-            ) return true
+                'remote_version' in versionInfo &&
+                semver.valid(versionInfo.version) &&
+                semver.valid(versionInfo.remote_version) &&
+                semver.gt(versionInfo.remote_version, versionInfo.version)
+            )
+                return true
         }
 
         return false
-    }
+    },
 }

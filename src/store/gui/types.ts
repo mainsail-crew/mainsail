@@ -1,7 +1,10 @@
-import {GuiMacrosState} from '@/store/gui/macros/types'
-import {GuiConsoleState} from '@/store/gui/console/types'
-import {GuiPresetsState} from '@/store/gui/presets/types'
-import {GuiRemoteprintersState} from '@/store/gui/remoteprinters/types'
+import { GuiMacrosState } from '@/store/gui/macros/types'
+import { GuiConsoleState } from '@/store/gui/console/types'
+import { GuiPresetsState } from '@/store/gui/presets/types'
+import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
+import { ServerHistoryStateJob } from '@/store/server/history/types'
+import { GuiNotificationState } from '@/store/gui/notifications/types'
+import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 
 export interface GuiState {
     general: {
@@ -13,9 +16,12 @@ export interface GuiState {
     console?: GuiConsoleState
     control: {
         style: 'bars' | 'circle' | 'cross'
+        actionButton: null | 'm84' | 'qgl' | 'ztilt'
+        enableXYHoming: boolean
         feedrateXY: number
         stepsXY: number[]
         feedrateZ: number
+        offsetsZ: number[]
         stepsZ: number[]
         stepsAll: number[]
         stepsCircleXY: number[]
@@ -29,10 +35,13 @@ export interface GuiState {
             feedamounts: number[]
             feedrate: number
             feedrates: number[]
+            showEstimatedExtrusionInfo: boolean
         }
     }
     dashboard: {
-        nonExpandPanels: string[]
+        nonExpandPanels: {
+            [index: string]: string[]
+        }
         mobileLayout: GuiStateLayoutoption[]
         tabletLayout1: GuiStateLayoutoption[]
         tabletLayout2: GuiStateLayoutoption[]
@@ -45,18 +54,20 @@ export interface GuiState {
     editor: {
         escToClose: boolean
         confirmUnsavedChanges: boolean
+        klipperRestartMethod: 'FIRMWARE_RESTART' | 'RESTART'
+        moonrakerRestartInstance: string | null
     }
     gcodeViewer: {
-        extruderColors : string[]
-        gridColor : string
-        backgroundColor : string
-        colorMode : number
-        showAxes : boolean
-        minFeed : number
-        maxFeed : number
-        minFeedColor : string
-        maxFeedColor : string
-        progressColor : string
+        extruderColors: string[]
+        gridColor: string
+        backgroundColor: string
+        colorMode: number
+        showAxes: boolean
+        minFeed: number
+        maxFeed: number
+        minFeedColor: string
+        maxFeedColor: string
+        progressColor: string
         showCursor: boolean
         showTravelMoves: boolean
         showObjectSelection: boolean
@@ -67,15 +78,20 @@ export interface GuiState {
         voxelWidth: number
         voxelHeight: number
         specularLighting: boolean
+        klipperCache: {
+            kinematics: string | null
+            axis_minimum: number[] | null
+            axis_maximum: number[] | null
+        }
     }
     macros?: GuiMacrosState
+    notifications?: GuiNotificationState
     presets?: GuiPresetsState
     remoteprinters?: GuiRemoteprintersState
     uiSettings: {
         logo: string
         primary: string
         displayCancelPrint: boolean
-        displayZOffsetStandby: boolean
         lockSlidersOnTouchDevices: boolean
         lockSlidersDelay: number
         confirmOnEmergencyStop: boolean
@@ -87,6 +103,7 @@ export interface GuiState {
         navigationStyle: 'iconsAndText' | 'iconsOnly'
     }
     view: {
+        blockFileUpload: boolean
         configfiles: {
             countPerPage: number
             sortBy: string
@@ -95,6 +112,7 @@ export interface GuiState {
             hideBackupFiles: boolean
             currentPath: string
             rootPath: string
+            selectedFiles: FileStateFile[]
         }
         gcodefiles: {
             countPerPage: number
@@ -102,8 +120,10 @@ export interface GuiState {
             sortDesc: boolean
             showHiddenFiles: boolean
             showPrintedFiles: boolean
-            hideMetadataColums: string[]
+            hideMetadataColumns: string[]
+            orderMetadataColumns: string[]
             currentPath: string
+            selectedFiles: FileStateGcodefile[]
         }
         heightmap: {
             probed: boolean
@@ -118,6 +138,7 @@ export interface GuiState {
             toggleChartCol3: string
             hidePrintStatus: string[]
             hideColums: string[]
+            selectedJobs: ServerHistoryStateJob[]
         }
         jobqueue: {
             countPerPage: number

@@ -1,7 +1,7 @@
 import { getDefaultState } from './index'
-import {MutationTree} from 'vuex'
+import { MutationTree } from 'vuex'
 import Vue from 'vue'
-import {GuiRemoteprintersState} from '@/store/gui/remoteprinters/types'
+import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
 
 export const mutations: MutationTree<GuiRemoteprintersState> = {
     reset(state) {
@@ -14,7 +14,7 @@ export const mutations: MutationTree<GuiRemoteprintersState> = {
 
     update(state, payload) {
         if (payload.id in state.printers) {
-            const preset = {...state.printers[payload.id]}
+            const preset = { ...state.printers[payload.id] }
             Object.assign(preset, payload.values)
 
             Vue.set(state.printers, payload.id, preset)

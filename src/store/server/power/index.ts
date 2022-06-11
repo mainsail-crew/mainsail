@@ -6,7 +6,7 @@ import { getters } from '@/store/server/power/getters'
 
 export const getDefaultState = (): ServerPowerState => {
     return {
-        devices: []
+        devices: [],
     }
 }
 
@@ -19,5 +19,5 @@ export const power: Module<ServerPowerState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

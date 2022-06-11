@@ -14,18 +14,18 @@ export interface PrinterTempHistoryStateSerie {
     encode: {
         x: string
         y: string
-    },
-    animation: boolean,
+    }
+    animation: boolean
     lineStyle: {
         color: string
         width: number
         opacity: number
         type?: string
-    },
+    }
     areaStyle?: {
         color: string
         opacity: number
-    },
+    }
     showSymbol: boolean
     emphasis: {
         lineStyle: {
@@ -33,12 +33,12 @@ export interface PrinterTempHistoryStateSerie {
             width: number
             opacity: number
             type?: string
-        },
+        }
         areaStyle?: {
             color: string
             opacity: number
-        },
-    },
+        }
+    }
 }
 
 export interface PrinterTempHistoryStateSourceEntry {

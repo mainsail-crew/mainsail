@@ -1,38 +1,32 @@
 <template>
     <div>
-        <panel
-            icon="mdi-tray-full"
-            :title="$t('JobQueue.JobQueue')"
-            card-class="jobqueue-panel"
-        >
-            <template v-slot:buttons>
+        <panel ref="jobqueuePanel" :icon="mdiTrayFull" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
+            <template #buttons>
                 <v-btn
+                    v-if="queueState === 'paused'"
                     color="success"
-                    @click="startJobqueue"
                     :loading="loadings.includes('startJobqueue')"
                     icon
                     tile
-                    v-if="queueState === 'paused'"
                     :disabled="!klipperReadyForGui"
-                >
+                    @click="startJobqueue">
                     <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on">mdi-play</v-icon>
+                        <template #activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on">{{ mdiPlay }}</v-icon>
                         </template>
                         <span>{{ $t('JobQueue.Start') }}</span>
                     </v-tooltip>
                 </v-btn>
                 <v-btn
+                    v-if="['ready', 'loading'].includes(queueState)"
                     color="warning"
-                    @click="pauseJobqueue"
                     :loading="loadings.includes('pauseJobqueue')"
                     icon
                     tile
-                    v-if="['ready', 'loading'].includes(queueState)"
-                >
+                    @click="pauseJobqueue">
                     <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on">mdi-pause</v-icon>
+                        <template #activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on">{{ mdiPause }}</v-icon>
                         </template>
                         <span>{{ $t('JobQueue.Pause') }}</span>
                     </v-tooltip>
@@ -46,29 +40,39 @@
                 :footer-props="{
                     itemsPerPageText: $t('JobQueue.Jobs'),
                     itemsPerPageAllText: $t('JobQueue.AllJobs'),
-                    itemsPerPageOptions: [10,25,50,100,-1]
+                    itemsPerPageOptions: [10, 25, 50, 100, -1],
                 }"
                 mobile-breakpoint="0">
-
                 <template #no-data>
                     <div class="text-center">{{ $t('JobQueue.Empty') }}</div>
                 </template>
 
-                <template #item="{ index, item }">
+                <template #item="{ item }">
                     <tr
                         :key="item.job_id"
                         v-longpress:600="(e) => showContextMenu(e, item)"
-                        @contextmenu="showContextMenu($event, item)"
                         class="file-list-cursor user-select-none"
-                    >
-                        <td class="pr-0 text-center" style="width: 32px;">
+                        @contextmenu="showContextMenu($event, item)">
+                        <td class="pr-0 text-center" style="width: 32px">
                             <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
-                                <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top content-class="tooltip__content-opacity1">
-                                    <template v-slot:activator="{ on, attrs }">
+                                <v-tooltip
+                                    v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)"
+                                    top
+                                    content-class="tooltip__content-opacity1">
+                                    <template #activator="{ on, attrs }">
                                         <vue-load-image>
-                                            <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on" />
-                                            <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
-                                            <v-icon slot="error">mdi-file</v-icon>
+                                            <img
+                                                slot="image"
+                                                :src="getSmallThumbnail(item)"
+                                                width="32"
+                                                height="32"
+                                                v-bind="attrs"
+                                                v-on="on" />
+                                            <v-progress-circular
+                                                slot="preloader"
+                                                indeterminate
+                                                color="primary"></v-progress-circular>
+                                            <v-icon slot="error">{{ mdiFile }}</v-icon>
                                         </vue-load-image>
                                     </template>
                                     <span><img :src="getBigThumbnail(item)" width="250" /></span>
@@ -77,29 +81,31 @@
                             <template v-else-if="getSmallThumbnail(item)">
                                 <vue-load-image>
                                     <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" />
-                                    <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
-                                    <v-icon slot="error">mdi-file</v-icon>
+                                    <v-progress-circular
+                                        slot="preloader"
+                                        indeterminate
+                                        color="primary"></v-progress-circular>
+                                    <v-icon slot="error">{{ mdiFile }}</v-icon>
                                 </vue-load-image>
                             </template>
                             <template v-else>
-                                <v-icon>mdi-file</v-icon>
+                                <v-icon>{{ mdiFile }}</v-icon>
                             </template>
                         </td>
                         <td class=" ">
-                            {{ item.filename }}
-                            <template v-if="existMetadata(item)">
-                                <br />
-                                <small>{{ getDescription(item) }}</small>
-                            </template>
+                            <div class="d-block text-truncate" :style="styleContentTdWidth">{{ item.filename }}</div>
+                            <small v-if="existMetadata(item)">{{ getDescription(item) }}</small>
                         </td>
                     </tr>
                 </template>
             </v-data-table>
+            <resize-observer @notify="handleResize" />
         </panel>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('JobQueue.Delete') }}
+                    <v-icon class="mr-1">{{ mdiPlaylistRemove }}</v-icon>
+                    {{ $t('JobQueue.RemoveFromQueue') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -107,25 +113,36 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {ServerHistoryStateJob} from '@/store/server/history/types'
-import {formatFilesize, formatPrintTime} from '@/plugins/helpers'
+import { ServerHistoryStateJob } from '@/store/server/history/types'
+import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
-import {ServerJobQueueStateJob} from '@/store/server/jobQueue/types'
-import {thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin} from '@/store/variables'
+import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
+import { mdiPlay, mdiPause, mdiFile, mdiPlaylistRemove, mdiTrayFull } from '@mdi/js'
 @Component({
-    components: {Panel}
+    components: { Panel },
 })
 export default class JobqueuePanel extends Mixins(BaseMixin) {
+    mdiPlay = mdiPlay
+    mdiPause = mdiPause
+    mdiFile = mdiFile
+    mdiPlaylistRemove = mdiPlaylistRemove
+    mdiTrayFull = mdiTrayFull
+
     formatFilesize = formatFilesize
 
+    private contentTdWidth = 100
     private contextMenu = {
         shown: false,
         touchTimer: undefined,
         x: 0,
         y: 0,
-        item: {}
+        item: {},
+    }
+
+    declare $refs: {
+        jobqueuePanel: any
     }
 
     get jobs() {
@@ -144,37 +161,11 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.jobqueue.countPerPage', value: newVal })
     }
 
-    refreshHistory() {
-        this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
+    get styleContentTdWidth() {
+        return `width: ${this.contentTdWidth}px;`
     }
 
-    formatPrintTime(totalSeconds: number) {
-        if (totalSeconds) {
-            let output = ''
-
-            const days = Math.floor(totalSeconds / (3600 * 24))
-            if (days) {
-                totalSeconds %= (3600 * 24)
-                output += days+'d'
-            }
-
-            const hours = Math.floor(totalSeconds / 3600)
-            totalSeconds %= 3600
-            if (hours) output += ' '+hours+'h'
-
-            const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += ' '+minutes+'m'
-
-            const seconds = totalSeconds % 60
-            if (seconds) output += ' '+seconds.toFixed(0)+'s'
-
-            return output
-        }
-
-        return '--'
-    }
-    
-    showContextMenu (e: any, item: ServerHistoryStateJob) {
+    showContextMenu(e: any, item: ServerHistoryStateJob) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true
@@ -200,41 +191,24 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     }
 
     getSmallThumbnail(item: ServerJobQueueStateJob) {
-        if (item?.metadata?.thumbnails?.length) {
-            const thumbnail = item?.metadata?.thumbnails.find((thumb: any) =>
-                thumb.width >= thumbnailSmallMin && thumb.width <= thumbnailSmallMax &&
-                thumb.height >= thumbnailSmallMin && thumb.height <= thumbnailSmallMax
-            )
-            const path = item.filename.lastIndexOf('/') !== -1 ? 'gcodes/'+item.filename.slice(0, item.filename.lastIndexOf('/')) : 'gcodes'
-
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+path+'/'+encodeURI(thumbnail.relative_path)+'?timestamp='+item.metadata?.modified.getTime()
-        }
-
-        return ''
+        return this.$store.getters['server/jobQueue/getSmallThumbnail'](item)
     }
 
     getBigThumbnail(item: ServerJobQueueStateJob) {
-        if (item?.metadata?.thumbnails?.length) {
-            const thumbnail = item?.metadata?.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
-            const path = item.filename.lastIndexOf('/') !== -1 ? 'gcodes/'+item.filename.slice(0, item.filename.lastIndexOf('/')) : 'gcodes'
-
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+path+'/'+encodeURI(thumbnail.relative_path)+'?timestamp='+item.metadata?.modified.getTime()
-        }
-
-        return ''
+        return this.$store.getters['server/jobQueue/getBigThumbnail'](item)
     }
 
     getDescription(item: ServerJobQueueStateJob) {
         let output = ''
 
-        output += this.$t('Files.Filament')+': '
+        output += this.$t('Files.Filament') + ': '
         if (item.metadata?.filament_total || item.metadata.filament_weight_total) {
-            if (item.metadata?.filament_total) output += item.metadata.filament_total.toFixed()+' mm'
+            if (item.metadata?.filament_total) output += item.metadata.filament_total.toFixed() + ' mm'
             if (item.metadata?.filament_total && item.metadata.filament_weight_total) output += ' / '
-            if (item.metadata?.filament_weight_total) output += item.metadata.filament_weight_total.toFixed(2)+' g'
+            if (item.metadata?.filament_weight_total) output += item.metadata.filament_weight_total.toFixed(2) + ' g'
         } else output += '--'
 
-        output += ', '+this.$t('Files.PrintTime')+': '
+        output += ', ' + this.$t('Files.PrintTime') + ': '
         if (item.metadata?.estimated_time) output += formatPrintTime(item.metadata.estimated_time)
         else output += '--'
 
@@ -244,5 +218,25 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     existMetadata(item: ServerJobQueueStateJob) {
         return item?.metadata?.metadataPulled
     }
+
+    mounted() {
+        this.calcContentTdWidth()
+    }
+
+    calcContentTdWidth() {
+        this.contentTdWidth = this.$refs.jobqueuePanel?.$el?.clientWidth - 48 - 32
+    }
+
+    handleResize() {
+        this.$nextTick(() => {
+            this.calcContentTdWidth()
+        })
+    }
 }
 </script>
+
+<style>
+.jobqueue-panel {
+    position: relative;
+}
+</style>

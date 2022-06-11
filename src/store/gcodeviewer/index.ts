@@ -8,7 +8,7 @@ export const getDefaultState = (): GcodeviewerState => {
     return {
         viewerBackup: null,
         canvasBackup: null,
-        loadedFileBackup: null
+        loadedFileBackup: null,
     }
 }
 
@@ -20,5 +20,5 @@ export const gcodeviewer: Module<GcodeviewerState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

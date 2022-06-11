@@ -1,24 +1,21 @@
-import {StringStream} from '@codemirror/stream-parser'
-import {gcode} from '@/plugins/StreamParserGcode'
+import { StringStream } from '@codemirror/stream-parser'
+import { gcode } from '@/plugins/StreamParserGcode'
 
 export const klipper_config = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
         const ch = stream.peek()
 
-
         /* comments */
-        if (stream.match(/^\s+#/) || (
-            ch === '#' && (stream.pos === 0 || /\s/.test(stream.string.charAt(stream.pos - 1)))
-        )) {
+        if (
+            stream.match(/^\s+#/) ||
+            (ch === '#' && (stream.pos === 0 || /\s/.test(stream.string.charAt(stream.pos - 1))))
+        ) {
             stream.skipToEnd()
             state.pair = false
             return 'comment'
         }
 
-        if (state.gcode &&
-            !state.klipperMacroJinja &&
-            (ch === '[')
-        ) {
+        if (state.gcode && !state.klipperMacroJinja && ch === '[') {
             state.gcode = false
             state.gcodeZeroPos = null
         }
@@ -63,7 +60,8 @@ export const klipper_config = {
                 return 'macroName'
             } else if (
                 stream.match(/^[\^!]*(?:(?:P[A-Z]?|A[A-Z]?|EXP|GPIOCHIP|GPIO)+[0-9.]+|z_virtual_endstop)(_[0-9]+)?/i) ||
-                stream.match(/^\/gpio[0-9]+/i)) {
+                stream.match(/^\/gpio[0-9]+/i)
+            ) {
                 if (stream.eol()) {
                     state.pair = false
                 }
@@ -114,8 +112,7 @@ export const klipper_config = {
             return null
         }
 
-        if (stream.match(/^('([^']|\\.)*'?|"([^"]|\\.)*"?)/))
-            return 'string'
+        if (stream.match(/^('([^']|\\.)*'?|"([^"]|\\.)*"?)/)) return 'string'
 
         stream.next()
         return 'string'
@@ -131,16 +128,15 @@ export const klipper_config = {
         }
     },
     languageData: {
-        commentTokens: {line: '#'}
-    }
+        commentTokens: { line: '#' },
+    },
 }
 
-
 interface StreamParserKlipperConfigState {
-    block: boolean,
-    pair: boolean,
-    gcode: boolean,
-    gcodeZeroPos: number | null,
-    klipperMacro: boolean,
+    block: boolean
+    pair: boolean
+    gcode: boolean
+    gcodeZeroPos: number | null
+    klipperMacro: boolean
     klipperMacroJinja: boolean
 }

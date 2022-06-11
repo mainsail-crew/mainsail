@@ -4,6 +4,6 @@ module.exports = {
     options: {
         output: false,
         add: false,
-        dynamic: true
-    }
+        dynamic: true,
+    },
 }

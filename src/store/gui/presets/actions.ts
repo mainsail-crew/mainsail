@@ -1,8 +1,8 @@
 import { ActionTree } from 'vuex'
-import {RootState} from '@/store/types'
+import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
-import {GuiPresetsState} from '@/store/gui/presets/types'
+import { GuiPresetsState } from '@/store/gui/presets/types'
 
 export const actions: ActionTree<GuiPresetsState, RootState> = {
     reset({ commit }) {
@@ -10,14 +10,22 @@ export const actions: ActionTree<GuiPresetsState, RootState> = {
     },
 
     saveSetting({ dispatch }, payload) {
-        dispatch('gui/saveSetting', {
-            name: 'presets.'+payload.name,
-            value: payload.value
-        }, { root: true })
+        dispatch(
+            'gui/saveSetting',
+            {
+                name: 'presets.' + payload.name,
+                value: payload.value,
+            },
+            { root: true }
+        )
     },
 
     upload(_, payload) {
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'presets.presets.'+payload.id, value: payload.value })
+        Vue.$socket.emit('server.database.post_item', {
+            namespace: 'mainsail',
+            key: 'presets.presets.' + payload.id,
+            value: payload.value,
+        })
     },
 
     store({ commit, dispatch, state }, payload) {
@@ -26,7 +34,7 @@ export const actions: ActionTree<GuiPresetsState, RootState> = {
         commit('store', { id, values: payload.values })
         dispatch('upload', {
             id,
-            value: state.presets[id]
+            value: state.presets[id],
         })
     },
 
@@ -34,12 +42,12 @@ export const actions: ActionTree<GuiPresetsState, RootState> = {
         commit('update', payload)
         dispatch('upload', {
             id: payload.id,
-            value: state.presets[payload.id]
+            value: state.presets[payload.id],
         })
     },
 
     delete({ commit }, payload) {
         commit('delete', payload)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'presets.presets.'+payload })
+        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'presets.presets.' + payload })
     },
 }

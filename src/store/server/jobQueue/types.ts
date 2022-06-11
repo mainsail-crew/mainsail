@@ -1,5 +1,5 @@
 export interface ServerJobQueueState {
-    queued_jobs: ServerJobQueueStateJob[],
+    queued_jobs: ServerJobQueueStateJob[]
     queue_state: string
 }
 
@@ -9,4 +9,5 @@ export interface ServerJobQueueStateJob {
     time_added: number
     time_in_queue: number
     metadata?: any
+    isFirst?: boolean
 }

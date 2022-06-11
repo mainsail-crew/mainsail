@@ -3,7 +3,6 @@ import Component from 'vue-class-component'
 
 @Component
 export default class BaseMixin extends Vue {
-
     get apiUrl(): boolean {
         return this.$store.getters['socket/getUrl']
     }
@@ -13,7 +12,7 @@ export default class BaseMixin extends Vue {
     }
 
     get remoteMode() {
-        return this.$store.state.socket.remoteMode
+        return this.$store.state.remoteMode
     }
 
     get socketIsConnected(): boolean {
@@ -29,11 +28,11 @@ export default class BaseMixin extends Vue {
     }
 
     get klipperReadyForGui(): boolean {
-        return (this.socketIsConnected && this.klipperState === 'ready')
+        return this.socketIsConnected && this.klipperState === 'ready'
     }
 
     get printerIsPrinting() {
-        return (this.klipperReadyForGui && ['printing', 'paused'].includes(this.printer_state))
+        return this.klipperReadyForGui && ['printing', 'paused'].includes(this.printer_state)
     }
 
     get loadings(): string[] {
@@ -41,9 +40,10 @@ export default class BaseMixin extends Vue {
     }
 
     get printer_state(): string {
-        const printer_state = this.$store.state.printer.print_stats?.state ?? ''
+        const printer_state =
+            this.$store.state.printer.print_stats?.state ?? this.$store.state.printer.idle_timeout?.state ?? ''
         const timelapse_pause = this.$store.state.printer['gcode_macro TIMELAPSE_TAKE_FRAME']?.is_paused ?? false
-        return (printer_state === 'paused' && timelapse_pause) ? 'printing' : printer_state
+        return printer_state === 'paused' && timelapse_pause ? 'printing' : printer_state
     }
 
     get isMobile() {
@@ -62,9 +62,16 @@ export default class BaseMixin extends Vue {
         return this.$vuetify.breakpoint.xl
     }
 
+    get viewport() {
+        if (this.isMobile) return 'mobile'
+        else if (this.isTablet) return 'tablet'
+        else if (this.isDesktop) return 'desktop'
+        else return 'widescreen'
+    }
+
     get isTouchDevice() {
         // ignore if browser reports maxTouchPoints === 256, can happen on Windows 10
-        return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0 && navigator.maxTouchPoints !== 256))
+        return 'ontouchstart' in window || (navigator.maxTouchPoints > 0 && navigator.maxTouchPoints !== 256)
     }
 
     get moonrakerComponents() {

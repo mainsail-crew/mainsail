@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
 import { ServerPowerState } from '@/store/server/power/types'
-import {RootState} from '@/store/types'
+import { RootState } from '@/store/types'
 
 export const actions: ActionTree<ServerPowerState, RootState> = {
     reset({ commit }) {
@@ -9,7 +9,7 @@ export const actions: ActionTree<ServerPowerState, RootState> = {
     },
 
     init() {
-        Vue.$socket.emit('machine.device_power.devices', {}, { action: 'server/power/getDevices'})
+        Vue.$socket.emit('machine.device_power.devices', {}, { action: 'server/power/getDevices' })
     },
 
     getDevices({ commit }, payload) {
@@ -17,8 +17,7 @@ export const actions: ActionTree<ServerPowerState, RootState> = {
     },
 
     getStatus({ commit }, payload) {
-        if (!payload.error)
-            commit('setStatus', payload)
+        if (!payload.error) commit('setStatus', payload)
     },
 
     responseToggle({ commit }, payload) {
@@ -27,5 +26,5 @@ export const actions: ActionTree<ServerPowerState, RootState> = {
         for (const [key, value] of Object.entries(payload)) {
             commit('setStatus', { device: key, status: value })
         }
-    }
+    },
 }

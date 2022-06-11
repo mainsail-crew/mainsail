@@ -12,12 +12,7 @@ temp
 .idea
 package-lock.json
 *.local
-docker/gcode
-docker/logs
-docker/moonraker
-docker/config/**/*
-docker/config/*.cfg
-docker/config/*.conf
-docker/config/.mainsail.json
-docker/config/.theme
 .env
+
+cypress/videos/
+components.d.ts

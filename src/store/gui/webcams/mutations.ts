@@ -1,6 +1,6 @@
 import { getDefaultState } from './index'
-import {MutationTree} from 'vuex'
-import {GuiWebcamState} from '@/store/gui/webcams/types'
+import { MutationTree } from 'vuex'
+import { GuiWebcamState } from '@/store/gui/webcams/types'
 import Vue from 'vue'
 
 export const mutations: MutationTree<GuiWebcamState> = {
@@ -18,7 +18,7 @@ export const mutations: MutationTree<GuiWebcamState> = {
 
     update(state, payload) {
         if (payload.id in state.webcams) {
-            const webcam = {...state.webcams[payload.id]}
+            const webcam = { ...state.webcams[payload.id] }
             Object.assign(webcam, payload.values)
 
             Vue.set(state.webcams, payload.id, webcam)

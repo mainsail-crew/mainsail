@@ -1,6 +1,6 @@
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import {ServerJobQueueState, ServerJobQueueStateJob} from '@/store/server/jobQueue/types'
+import { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import Vue from 'vue'
 
 export const mutations: MutationTree<ServerJobQueueState> = {
@@ -14,5 +14,5 @@ export const mutations: MutationTree<ServerJobQueueState> = {
 
     setQueueState(state, payload: string) {
         Vue.set(state, 'queue_state', payload)
-    }
+    },
 }

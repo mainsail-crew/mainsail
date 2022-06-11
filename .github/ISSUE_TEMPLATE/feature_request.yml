@@ -1,0 +1,41 @@
+name: Feature request
+description: You have an idea for a new feature? Tell us here!
+labels: ['💡 Type: FR']
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        ## ✨ First of all: Thank you for choosing Mainsail! ✨
+
+        #### This form is ONLY for feature requests related to Mainsail! 
+
+        * In case you want to report an issue, please use the following
+        form: [Bug report](https://github.com/mainsail-crew/mainsail/issues/new?assignees=&labels=feature+request&template=bug_report.yml)
+
+        * If you need general support, please visit us on
+        [Discord](https://discord.gg/mainsail)
+
+        ---
+  - type: textarea
+    id: request
+    attributes:
+      label: 'Requested feature:'
+      description: >-
+        A clear and concise description of the feature you wish to see implemented.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: 'Solves the following problem:'
+      description: |
+        Is your feature request related to a problem? Please describe below.
+        (In case there is an existing bug report, please add the link to it)
+    validations:
+      required: false
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: 'Additional information:'
+      description: |
+        If you have any additional information use the field below.

@@ -1,6 +1,6 @@
 import { getDefaultState } from './index'
-import {MutationTree} from 'vuex'
-import {GcodeviewerState} from '@/store/gcodeviewer/types'
+import { MutationTree } from 'vuex'
+import { GcodeviewerState } from '@/store/gcodeviewer/types'
 import Vue from 'vue'
 
 export const mutations: MutationTree<GcodeviewerState> = {
@@ -18,5 +18,5 @@ export const mutations: MutationTree<GcodeviewerState> = {
 
     setLoadedFileBackup(state, backup) {
         Vue.set(state, 'loadedFileBackup', backup)
-    }
+    },
 }

@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
-import {MutationTree} from 'vuex'
-import {PrinterState} from '@/store/printer/types'
+import { MutationTree } from 'vuex'
+import { PrinterState } from '@/store/printer/types'
+import { setDataDeep } from '@/plugins/helpers'
 
 export const mutations: MutationTree<PrinterState> = {
     reset(state) {
@@ -19,29 +20,13 @@ export const mutations: MutationTree<PrinterState> = {
     },
 
     setData(state, payload) {
-        // eslint-disable-next-line
-		const setDataDeep = (currentState: any, payload: any) => {
-            if (payload !== null && typeof payload === 'object') {
-                Object.keys(payload).forEach((key: string) => {
-                    const value = payload[key]
-
-                    if (
-                        typeof value === 'object' &&
-						!Array.isArray(value) &&
-						key in currentState &&
-						value !== null &&
-						currentState[key] !== null
-                    ) {
-                        setDataDeep(currentState[key], value)
-                    } else if (key === 'temperature') {
-                        const newValue = Math.round(value * 10) / 10
-                        if (currentState[key] !== newValue) Vue.set(currentState, key, newValue)
-                    } else Vue.set(currentState, key, value)
-                })
-            }
-        }
-
         setDataDeep(state, payload)
+    },
+
+    setBedMeshProfiles(state, payload) {
+        if ('bed_mesh' in state) {
+            Vue.set(state.bed_mesh, 'profiles', payload)
+        }
     },
 
     setHelplist(state, payload) {
@@ -49,9 +34,9 @@ export const mutations: MutationTree<PrinterState> = {
 
         for (const [command, description] of Object.entries(payload)) {
             helplist.push({
-                'commandLow': command.toLowerCase(),
-                'command': command,
-                'description': description,
+                commandLow: command.toLowerCase(),
+                command: command,
+                description: description,
             })
         }
 
@@ -69,8 +54,8 @@ export const mutations: MutationTree<PrinterState> = {
     },
 
     removeBedMeshProfile(state, payload) {
-        if ('bed_mesh '+payload.name in state.configfile.config) {
-            Object.assign(state.configfile.config['bed_mesh '+payload.name], { deleted: true })
+        if ('bed_mesh ' + payload.name in state.configfile.config) {
+            Object.assign(state.configfile.config['bed_mesh ' + payload.name], { deleted: true })
         }
-    }
+    },
 }

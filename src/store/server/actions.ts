@@ -1,9 +1,10 @@
 import Vue from 'vue'
-import {ActionTree} from 'vuex'
-import {ServerState, ServerStateEvent} from '@/store/server/types'
-import {camelize, formatConsoleMessage} from '@/plugins/helpers'
-import {RootState} from '@/store/types'
-import {initableServerComponents} from '@/store/variables'
+import router from '@/plugins/router'
+import { ActionTree } from 'vuex'
+import { ServerState, ServerStateEvent } from '@/store/server/types'
+import { camelize, formatConsoleMessage } from '@/plugins/helpers'
+import { RootState } from '@/store/types'
+import { initableServerComponents } from '@/store/variables'
 
 export const actions: ActionTree<ServerState, RootState> = {
     reset({ commit, dispatch }) {
@@ -12,14 +13,32 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('updateManager/reset')
     },
 
-    init() {
+    async init({ dispatch }) {
         window.console.debug('init Server')
 
-        Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo'})
-        Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig'})
-        Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo'})
-        Vue.$socket.emit('machine.proc_stats', {}, { action: 'server/initProcStats' })
-        Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases'})
+        await dispatch('identify')
+        await Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo' })
+        await Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig' })
+        await Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo' })
+        await Vue.$socket.emit('machine.proc_stats', {}, { action: 'server/initProcStats' })
+        await Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases' })
+    },
+
+    identify({ rootState }) {
+        Vue.$socket.emit(
+            'server.connection.identify',
+            {
+                client_name: 'mainsail',
+                version: rootState.packageVersion,
+                type: 'web',
+                url: 'https://github.com/mainsail-crew/mainsail',
+            },
+            { action: 'server/setConnectionId' }
+        )
+    },
+
+    setConnectionId({ commit }, payload) {
+        commit('setConnectionId', payload.connection_id)
     },
 
     checkDatabases({ dispatch, commit, rootState }, payload) {
@@ -29,7 +48,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         commit('saveDbNamespaces', payload.namespaces)
 
-        Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected'})
+        Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected' })
         //dispatch('printer/init', null, { root: true })
     },
 
@@ -42,14 +61,14 @@ export const actions: ActionTree<ServerState, RootState> = {
             payload.components.forEach((component: string) => {
                 component = camelize(component)
                 if (initableServerComponents.includes(component)) {
-                    window.console.debug('init server component: '+component)
-                    dispatch('server/' + component + '/init', {}, {root: true})
+                    window.console.debug('init server component: ' + component)
+                    dispatch('server/' + component + '/init', {}, { root: true })
                 }
             })
         }
 
         if (payload.registered_directories?.length) {
-            dispatch('files/initRootDirs', payload.registered_directories, {root: true})
+            dispatch('files/initRootDirs', payload.registered_directories, { root: true })
         }
 
         commit('setData', payload)
@@ -64,8 +83,18 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     initProcStats({ commit }, payload) {
-        if (payload.throttled_state !== null)
-            commit('setThrottledState', payload.throttled_state)
+        if (payload.throttled_state !== null) commit('setThrottledState', payload.throttled_state)
+        if (payload.system_uptime) {
+            const system_boot_at = new Date(new Date().getTime() - payload.system_uptime * 1000)
+            commit('setSystemBootAt', system_boot_at)
+        }
+    },
+
+    updateProcStats({ commit }, payload) {
+        if ('cpu_temp' in payload) commit('setCpuTemp', payload.cpu_temp)
+        if ('moonraker_stats' in payload) commit('setMoonrakerStats', payload.moonraker_stats)
+        if ('network' in payload) commit('setNetworkStats', payload.network)
+        if ('system_cpu_usage' in payload) commit('setCpuStats', payload.system_cpu_usage)
     },
 
     setKlippyReady({ dispatch, state }) {
@@ -90,7 +119,7 @@ export const actions: ActionTree<ServerState, RootState> = {
     startKlippyConnectedInterval({ commit, state }) {
         if (state.klippy_connected_timer === null) {
             const timer = setInterval(() => {
-                Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected'})
+                Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected' })
             }, 2000)
             commit('setKlippyConnectedTimer', timer)
         }
@@ -115,7 +144,7 @@ export const actions: ActionTree<ServerState, RootState> = {
     startKlippyStateInterval({ commit, state }) {
         if (state.klippy_state_timer === null) {
             const timer = setInterval(() => {
-                Vue.$socket.emit('printer.info', {}, { action: 'server/checkKlippyState'})
+                Vue.$socket.emit('printer.info', {}, { action: 'server/checkKlippyState' })
             }, 2000)
             commit('setKlippyStateTimer', timer)
         }
@@ -128,7 +157,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
-    checkKlippyState({ commit, dispatch, state }, payload: { state: string, state_message: string | null }) {
+    checkKlippyState({ commit, dispatch, state }, payload: { state: string; state_message: string | null }) {
         commit('setKlippyState', payload.state)
         commit('setKlippyMessage', payload.state_message)
 
@@ -141,7 +170,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
-    getData({ commit }, payload){
+    getData({ commit }, payload) {
         commit('setData', payload)
     },
 
@@ -153,8 +182,28 @@ export const actions: ActionTree<ServerState, RootState> = {
         filters.forEach((filter: string) => {
             try {
                 const regex = new RegExp(filter)
-                events = events.filter(event => !regex.test(event.message))
-            } catch { window.console.error('Custom console filter \''+filter+'\' doesn\'t work')}
+                events = events.filter((event) => !regex.test(event.message))
+            } catch {
+                window.console.error("Custom console filter '" + filter + "' doesn't work")
+            }
+        })
+
+        const cleared_since = rootGetters['gui/console/getConsoleClearedSince']
+
+        events = events.filter((event) => {
+            if (!cleared_since) {
+                return true
+            }
+
+            if (event.time && event.time * 1000 < cleared_since) {
+                return false
+            }
+
+            if (event.date && new Date(event.date).valueOf() < cleared_since) {
+                return false
+            }
+
+            return true
         })
 
         commit('setGcodeStore', events)
@@ -166,7 +215,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
-    addEvent({ commit, rootGetters }, payload) {
+    async addEvent({ commit, rootGetters }, payload) {
         let message = payload
         let type = 'response'
 
@@ -185,25 +234,33 @@ export const actions: ActionTree<ServerState, RootState> = {
                 const regex = new RegExp(filter)
                 if (regex.test(formatMessage)) boolImport = false
             } catch {
-                window.console.error('Custom console filter \''+filter+'\' doesn\'t work')
+                window.console.error("Custom console filter '" + filter + "' doesn't work")
             }
 
             return boolImport
         })
 
         if (boolImport) {
-            if (payload.type === 'command') formatMessage = '<a class="command text--blue">'+formatMessage+'</a>'
+            if (payload.type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
 
-            commit('addEvent', {
+            await commit('addEvent', {
                 date: new Date(),
                 message: message,
                 formatMessage: formatMessage,
-                type: type
+                type: type,
             })
+
+            if (
+                ['error', 'response'].includes(type) &&
+                !['/', '/console'].includes(router.currentRoute.path) &&
+                message.startsWith('!! ')
+            ) {
+                Vue.$toast.error(formatMessage)
+            }
         }
     },
 
     serviceStateChanged({ commit }, payload) {
         commit('updateServiceState', payload)
-    }
+    },
 }

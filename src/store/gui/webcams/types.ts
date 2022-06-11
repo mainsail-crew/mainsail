@@ -1,7 +1,7 @@
 export interface GuiWebcamState {
     webcams: {
         [key: string]: GuiWebcamStateWebcam
-    },
+    }
 }
 
 export interface GuiWebcamStateWebcam {

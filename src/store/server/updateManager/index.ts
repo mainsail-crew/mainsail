@@ -11,7 +11,7 @@ export const getDefaultState = (): ServerUpdateMangerState => {
             application: '',
             complete: true,
             messages: [],
-        }
+        },
     }
 }
 
@@ -24,5 +24,5 @@ export const updateManager: Module<ServerUpdateMangerState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

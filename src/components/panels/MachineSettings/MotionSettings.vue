@@ -1,112 +1,136 @@
 <template>
-    <v-card-text>
-        <v-row>
-            <v-col class="col-12 col-md-6">
-                <motion-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.Velocity').toString()"
-                    :target="current_velocity"
-                    :default-value="max_velocity"
-                    :hasSpinner="true"
-                    :spinnerFactor="5"
-                    :step="1"
-                    :min="1"
-                    :max="null"
-                    :dec="0"
-                    unit="mm/s"
-                    attribute-name="VELOCITY"
-                ></motion-settings-input>
-            </v-col>
-            <v-col class="col-12 col-md-6">
-                <motion-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.SquareCornerVelocity').toString()"
-                    :target="current_square_corner_velocity"
-                    :default-value="max_square_corner_velocity"
-                    :hasSpinner="true"
-                    :step="0.1"
-                    :min="0.1"
-                    :max="null"
-                    :dec="1"
-                    unit="mm/s"
-                    attribute-name="SQUARE_CORNER_VELOCITY"
-                ></motion-settings-input>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col class="col-12 col-md-6">
-                <motion-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.Acceleration').toString()"
-                    :target="current_accel"
-                    :default-value="max_accel"
-                    :hasSpinner="true"
-                    :spinnerFactor="100"
-                    :step="1"
-                    :min="1"
-                    :max="null"
-                    :dec="0"
-                    unit="mm/s²"
-                    attribute-name="ACCEL"
-                ></motion-settings-input>
-            </v-col>
-            <v-col class="col-12 col-md-6">
-                <motion-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.MaxAccelToDecel').toString()"
-                    :target="current_accel_to_decel"
-                    :default-value="max_accel_to_decel"
-                    :hasSpinner="true"
-                    :spinnerFactor="100"
-                    :step="1"
-                    :min="1"
-                    :max="null"
-                    :dec="0"
-                    unit="mm/s²"
-                    attribute-name="ACCEL_TO_DECEL"
-                ></motion-settings-input>
-            </v-col>
-        </v-row>
-    </v-card-text>
+    <v-container>
+        <responsive
+            :breakpoints="{
+                small: (el) => el.width < 375,
+                medium: (el) => el.width >= 375,
+            }">
+            <template #default="{ el }">
+                <v-row>
+                    <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <number-input
+                            :label="$t('Panels.MachineSettingsPanel.MotionSettings.Velocity').toString()"
+                            param="VELOCITY"
+                            :target="velocity"
+                            :default-value="defaultVelocity"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="5"
+                            :step="1"
+                            :min="1"
+                            :max="null"
+                            :dec="0"
+                            unit="mm/s"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                    <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <number-input
+                            :label="$t('Panels.MachineSettingsPanel.MotionSettings.SquareCornerVelocity').toString()"
+                            param="SQUARE_CORNER_VELOCITY"
+                            :target="squareCornerVelocity"
+                            :default-value="defaultSquareCornerVelocity"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :step="0.1"
+                            :min="0.1"
+                            :max="null"
+                            :dec="1"
+                            unit="mm/s"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <number-input
+                            :label="$t('Panels.MachineSettingsPanel.MotionSettings.Acceleration').toString()"
+                            param="ACCEL"
+                            :target="accel"
+                            :default-value="defaultAccel"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="100"
+                            :step="1"
+                            :min="1"
+                            :max="null"
+                            :dec="0"
+                            unit="mm/s²"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                    <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <number-input
+                            :label="$t('Panels.MachineSettingsPanel.MotionSettings.MaxAccelToDecel').toString()"
+                            param="ACCEL_TO_DECEL"
+                            :target="accelToDecel"
+                            :default-value="defaultAccelToDecel"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="100"
+                            :step="1"
+                            :min="1"
+                            :max="null"
+                            :dec="0"
+                            unit="mm/s²"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                </v-row>
+            </template>
+        </responsive>
+    </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
+import { Debounce } from 'vue-debounce-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import MotionSettingsInput from '@/components/inputs/MotionSettingsInput.vue'
+import NumberInput from '@/components/inputs/NumberInput.vue'
+import Responsive from '@/components/ui/Responsive.vue'
 
 @Component({
-    components: {Panel, MotionSettingsInput}
+    components: { Panel, NumberInput, Responsive },
 })
 export default class MotionSettings extends Mixins(BaseMixin) {
-    
-    get current_velocity(): number {
+    get velocity(): number {
         return Math.trunc(this.$store.state.printer?.toolhead?.max_velocity ?? 300)
     }
 
-    get current_accel(): number {
+    get accel(): number {
         return Math.trunc(this.$store.state.printer?.toolhead?.max_accel ?? 3000)
     }
 
-    get current_accel_to_decel(): number {
-        return Math.trunc(this.$store.state.printer?.toolhead?.max_accel_to_decel ?? 1500)
+    get accelToDecel(): number {
+        return Math.trunc(this.$store.state.printer?.toolhead?.max_accel_to_decel ?? this.accel / 2)
     }
 
-    get current_square_corner_velocity(): number {
+    get squareCornerVelocity(): number {
         return Math.floor((this.$store.state.printer?.toolhead?.square_corner_velocity ?? 8) * 10) / 10
     }
-    
-    get max_velocity(): number {
+
+    get defaultVelocity(): number {
         return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_velocity ?? 300)
     }
 
-    get max_accel(): number {
+    get defaultAccel(): number {
         return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_accel ?? 3000)
     }
 
-    get max_accel_to_decel(): number {
+    get defaultAccelToDecel(): number {
         return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_accel_to_decel ?? 1500)
     }
 
-    get max_square_corner_velocity(): number {
-        return Math.floor((this.$store.state.printer?.configfile?.settings?.printer?.square_corner_velocity ?? 8) * 10) / 10
+    get defaultSquareCornerVelocity(): number {
+        return (
+            Math.floor((this.$store.state.printer?.configfile?.settings?.printer?.square_corner_velocity ?? 8) * 10) /
+            10
+        )
+    }
+
+    @Debounce(500)
+    sendCmd(params: { name: string; value: number }): void {
+        const gcode = `SET_VELOCITY_LIMIT ${params.name}=${params.value}`
+
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 }
 </script>
