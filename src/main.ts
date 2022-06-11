@@ -8,7 +8,7 @@ import vuetify from '@/plugins/vuetify'
 import i18n from '@/plugins/i18n'
 import store from '@/store'
 import router from '@/plugins/router'
-
+import { WebSocketPlugin } from '@/plugins/webSocketClient'
 import { registerSW } from 'virtual:pwa-register'
 
 // noinspection JSUnusedGlobalSymbols
@@ -33,7 +33,6 @@ Vue.component('VueLoadImage', VueLoadImage)
 //vue-toast-notifications
 import VueToast from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-sugar.css'
-import { WebSocketPlugin } from '@/plugins/webSocketClient'
 
 Vue.use(VueToast, {
     duration: 3000,
