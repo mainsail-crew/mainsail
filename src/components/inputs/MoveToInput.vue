@@ -1,28 +1,30 @@
 <template>
-    <v-text-field
-        v-model="position"
-        :label="`[ ${label} ]`"
-        :suffix="suffix"
-        :disabled="disabled"
-        :readonly="readonly"
-        :error="!validate"
-        hide-details="auto"
-        type="number"
-        hide-spin-buttons
-        outlined
-        reverse
-        dense
-        @blur="onBlur"
-        @focus="!readonly ? $event.target.select() : {}">
-        <template v-if="errorMsg.length" #append>
-            <v-tooltip top>
-                <template #activator="{ on, attrs }">
-                    <v-icon color="error" v-bind="attrs" v-on="on">{{ mdiAlert }}</v-icon>
-                </template>
-                <span>{{ errorMsg.join(', ') }}</span>
-            </v-tooltip>
-        </template>
-    </v-text-field>
+    <form @submit.prevent="submit">
+        <v-text-field
+            v-model="position"
+            :label="`[ ${label} ]`"
+            :suffix="suffix"
+            :disabled="disabled"
+            :readonly="readonly"
+            :error="!validate"
+            hide-details="auto"
+            type="number"
+            hide-spin-buttons
+            outlined
+            reverse
+            dense
+            @blur="onBlur"
+            @focus="!readonly ? $event.target.select() : {}">
+            <template v-if="errorMsg.length" #append>
+                <v-tooltip top>
+                    <template #activator="{ on, attrs }">
+                        <v-icon color="error" v-bind="attrs" v-on="on">{{ mdiAlert }}</v-icon>
+                    </template>
+                    <span>{{ errorMsg.join(', ') }}</span>
+                </v-tooltip>
+            </template>
+        </v-text-field>
+    </form>
 </template>
 
 <script lang="ts">
@@ -65,6 +67,10 @@ export default class MoveToInput extends Mixins(BaseMixin) {
             this.position = this.currentPos
             this.$emit('validate', { axis: this.suffix.toLowerCase(), valid: true })
         }
+    }
+
+    submit(): void {
+        this.$emit('submit')
     }
 
     get validate(): boolean {
