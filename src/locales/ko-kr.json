@@ -118,7 +118,7 @@
         "Empty": "비어있음",
         "HideTemperatures": "온도 숨김",
         "HideTimelapse": "타임랩스 숨김",
-        "SendCode": "제어 명령 실행...",
+        "SendCode": "제어 명령 입력 후 엔터를 눌러 주세요..",
         "SetupConsole": "콘솔 설정"
     },
     "Dialogs": {
@@ -126,7 +126,7 @@
             "Cancel": "아니오",
             "DoYouWantToStartFilename": "{filename} 파일을 출력하시겠습니까?",
             "Headline": "프린트전 확인",
-            "Print": "프린트",
+            "Print": "출력 시작",
             "Timelapse": "타임랩스"
         }
     },
@@ -156,7 +156,7 @@
         "AddToQueue": "작업 목록 추가",
         "AllFiles": "전체",
         "Cancel": "취소",
-        "Create": "신규생성",
+        "Create": "신규 생성",
         "CreateNewDirectory": "새 디렉토리 생성",
         "CurrentPath": "현재 경로",
         "Delete": "삭제",
@@ -167,7 +167,7 @@
         "Downloading": "다운로드 중..",
         "EditFile": "파일 편집",
         "Empty": "비어있음",
-        "Filament": "필라멘트",
+        "Filament": "예상 압출 길이",
         "FilamentName": "필라멘트 이름",
         "FilamentType": "필라멘트 유형",
         "FilamentUsage": "필라멘트 소비",
@@ -178,12 +178,12 @@
         "FreeDisk": "사용 가능 디스크 공간",
         "GCodeFiles": "G-Code 파일",
         "HiddenFiles": "숨김 파일",
-        "LastEndTime": "최종 종료 시간",
-        "LastFilamentUsed": "최종 필라멘트 사용 유형",
+        "LastEndTime": "최종 출력 종료",
+        "LastFilamentUsed": "최종 필라멘트 소비 길이",
         "LastModified": "최종 수정",
-        "LastPrintDuration": "최종 출력 시간",
-        "LastStartTime": "최종 시작 시간",
-        "LastTotalDuration": "최종 총 출력 시간",
+        "LastPrintDuration": "이전 출력 시간",
+        "LastStartTime": "이전 시작 시간",
+        "LastTotalDuration": "이전 출력 소요",
         "LayerHeight": "레이어 높이",
         "Name": "파일 이름",
         "NewDirectory": "새 디렉토리",
@@ -208,7 +208,7 @@
         "Total": "전체 용량",
         "Uploading": "업로드 중..",
         "UploadNewGcode": "새로운 G-Code 업로드",
-        "Used": "사용 용량",
+        "Used": "사용량",
         "View3D": "3D Gcode 뷰어"
     },
     "FullscreenUpload": {
@@ -259,7 +259,7 @@
         "ErrorKlipperNotReady": "클리퍼가 준비 상태가 아니므로 하이트맵은 비활성화 됩니다",
         "Flat": "평면",
         "Heightmap": "하이트맵",
-        "Later": "차후",
+        "Later": "다음에",
         "Mesh": "메쉬",
         "Name": "이름",
         "NoBedMeshHasBeenLoadedYet": "불러온 베드 메쉬 정보가 없습니다",
@@ -282,7 +282,7 @@
     "History": {
         "AddNote": "노트 추가",
         "AllJobs": "전체",
-        "AvgPrinttime": "평균 출력 시간 - Ø",
+        "AvgPrinttime": "평균 출력 시간",
         "Cancel": "취소",
         "CreateNote": "노트 생성",
         "Delete": "삭제",
@@ -306,7 +306,7 @@
         "HistoryPrinttimeAVG": "평균 출력 소비 시간",
         "JobDetails": "출력 세부 내역",
         "Jobs": "출력",
-        "LastModified": "마지막 수정",
+        "LastModified": "최종 수정",
         "LayerHeight": "레이어 높이",
         "LongestPrinttime": "최장 출력 시간",
         "Note": "노트",
@@ -314,7 +314,7 @@
         "PrintDuration": "출력 소요 시간",
         "PrintHistory": "출력 기록",
         "PrintTime": "출력 시간",
-        "PrinttimeAvg": "출력 시간 - Ø",
+        "PrinttimeAvg": "출력 시간",
         "Reprint": "재출력",
         "Save": "저장",
         "Search": "검색",
@@ -341,7 +341,7 @@
         "TotalDuration": "프린터 가동 시간",
         "TotalFilamentUsed": "필라멘트 사용 총량",
         "TotalJobs": "전체 출력 횟수",
-        "TotalPrinttime": "Total Printtime",
+        "TotalPrinttime": "전체 출력 시간",
         "TotalTime": "Total Time"
     },
     "JobQueue": {
@@ -375,7 +375,7 @@
             "FreeDisk": "사용 가능 디스크 공간",
             "HiddenFiles": "숨김 파일",
             "HideBackupFiles": "백업 파일 숨김",
-            "LastModified": "마지막 수정",
+            "LastModified": "최종 수정",
             "Name": "이름",
             "RefreshDirectory": "디렉토리 새로 고침",
             "Rename": "이름 변경",
@@ -403,7 +403,7 @@
             "Constants": "세부정보",
             "Cpu": "CPU",
             "HostDetails": "호스트 세부 정보",
-            "LastStats": "마지막 통계",
+            "LastStats": "최종 통계",
             "Load": "부하량",
             "Memory": "메모리",
             "NoMoreInfos": "추가 정보 없음",
@@ -472,7 +472,7 @@
             "ExtruderTempTooLow": "익스트루더 온도가 낮습니다",
             "ExtrusionFactor": "압출 계수",
             "ExtrusionFeedrate": "압출 속도",
-            "FilamentLength": "필라멘트 길이Filament Length",
+            "FilamentLength": "필라멘트 길이",
             "Headline": "익스트루더",
             "LoadFilament": "필라멘트 공급",
             "Requested": "요청됨",
@@ -500,19 +500,19 @@
                 "UnretractExtraLength": "리트랙트 해제 추가 길이",
                 "UnretractSpeed": "리트랙트 해제 속도"
             },
-            "Headline": "프린터 설정",
+            "Headline": "프린트 속도 설정",
             "MotionSettings": {
                 "Acceleration": "가속도",
                 "MaxAccelToDecel": "감속을 위한 최대 가속",
                 "Motion": "툴헤드 이송 속도",
-                "SquareCornerVelocity": "모서리 통과 속도(SCV)",
+                "SquareCornerVelocity": "모서리 통과 속도-SCV",
                 "Velocity": "출력 속도"
             },
             "PressureAdvanceSettings": {
-                "Advance": "압출 제어 속도",
-                "Extruder": "익스트루더",
-                "PressureAdvance": "모서리 압출 제어",
-                "SmoothTime": "반응 시간"
+                "Advance": "압출 제어 속도-Pressure Advance",
+                "Extruder": "압출 제어",
+                "PressureAdvance": "모서리 압출 제어-PA",
+                "SmoothTime": "반응 시간-Smooth time"
             }
         },
         "MacrosPanel": {
@@ -523,7 +523,7 @@
             "Headline": "콘솔",
             "HideTemperatures": "온도 숨김",
             "HideTimelapse": "타임랩스 숨김",
-            "SendCode": "명령 입력...",
+            "SendCode": "제어 명령 입력 후 엔터를 눌러 주세요",
             "SetupConsole": "콘솔 설정"
         },
         "MinSettingsPanel": {
@@ -533,7 +533,7 @@
             "MoreInformation": "정보 더 보기"
         },
         "MiscellaneousPanel": {
-            "Headline": "기타 [사용자 정의]",
+            "Headline": "쿨링팬 & 조명 제어",
             "RunoutSensor": {
                 "Detected": "감지됨",
                 "Disabled": "비활성화됨",
@@ -555,9 +555,9 @@
             "ExcludeObject": {
                 "Cancel": "취소",
                 "Excluded": "제외",
-                "ExcludeObject": "제외된 개체 ",
-                "ExcludeObjectHeadline": "제외된 개체",
-                "ExcludeObjectText": "\"{name}\"을(를) 제외 하시겠습니까??"
+                "ExcludeObject": "출력 제외",
+                "ExcludeObjectHeadline": "출력 제외",
+                "ExcludeObjectText": "\"{name}\"을(를) 출력 제외 시킬까요?"
             },
             "Filament": "필라멘트",
             "File": "파일",
@@ -568,13 +568,13 @@
             "JobqueueMoreFiles": "더 이상 작업 없음 | 1개 이상의 작업 | {count}개 이상의 작업",
             "PrintTime": "출력 시간",
             "Flow": "유량",
-            "Headline": "상태",
+            "Headline": "프린터 현재 상태",
             "Layer": "레이어",
             "Max": "최대",
             "ObjectHeight": "출력 높이",
-            "PausePrint": "출력 일시정지",
+            "PausePrint": "일시정지",
             "Print": "출력",
-            "ReprintJob": "재출력 작업",
+            "ReprintJob": "재출력",
             "Requested": "요청됨",
             "ResumePrint": "출력 재개",
             "Slicer": "슬라이서",
@@ -587,7 +587,7 @@
             "AutoscaleChart": "자동 스케일 차트",
             "Avg": "평균",
             "Color": "색상",
-            "Cooldown": "재사용 대기 시간",
+            "Cooldown": "쿨다운",
             "Current": "현재",
             "Dataset": {
                 "Power": "PWM-전원",
@@ -604,16 +604,16 @@
             "ShowChart": "차트 보기",
             "ShowNameInChart": "{name}의 차트 보기",
             "ShowNameInList": "{name}의 목록 보기",
-            "State": "통계",
-            "Target": "목표",
+            "State": "사용량",
+            "Target": "설정 온도",
             "TemperaturesInChart": "온도 [°C]",
             "TempTooHigh": "{name}의 온도가 너무 높습니다! (최대: {max})",
             "TempTooLow": "{name}의 온도가 너무 낮습니다!! (최저: {min})"
         },
         "ToolheadControlPanel": {
-            "Absolute": "절대좌표",
+            "Absolute": "절대 좌표",
             "ALL": "전체",
-            "Headline": "툴헤드",
+            "Headline": "툴 헤드",
             "Invalid": "무효",
             "InvertX": "X 반전",
             "InvertY": "Y 반전",
@@ -621,9 +621,9 @@
             "MotorsOff": "스테퍼 모터 전원 끄기",
             "OutOfRange": "범위 초과!",
             "PleaseConfigureSteps": "steps를 설정해 주세요",
-            "Position": "Position",
+            "Position": "좌표계",
             "QGL": "쿼드 갠트리 레벨",
-            "Relative": "상대좌표",
+            "Relative": "상대 좌표",
             "SettingsInterfaceControl": "설정 > 인터페이스 > 컨트롤",
             "SetupControls": "컨트롤 설정",
             "SpeedFactor": "속도 계수",
@@ -669,7 +669,7 @@
         "G-Code Viewer": "G-Code 뷰어",
         "Heightmap": "하이트맵",
         "History": "작업내역",
-        "Machine": "머신",
+        "Machine": "머신설정",
         "Printers": "프린터",
         "Timelapse": "타임랩스",
         "Webcam": "웹캠"
@@ -843,10 +843,10 @@
         },
         "PresetsTab": {
             "AddPreset": "프리셋 추가",
-            "Cooldown": "재사용 대기 시간",
+            "Cooldown": "쿨다운",
             "CreateHeadline": "프리셋 추가",
             "CustomGCode": "G-Code 사용자화",
-            "EditCooldown": "재사용 대기 시간 편집",
+            "EditCooldown": "쿨다운 편집",
             "EditHeadline": "프리셋 편집",
             "ErrorInvalidValue": "잘못된 값",
             "ErrorNameNotUnique": "이름이 이미 존재합니다",
@@ -857,7 +857,7 @@
             "PresetNamePlaceholder": "프리셋 이름 (필요)",
             "StoreButton": "프리셋 저장",
             "UpdateButton": "프리셋 업데이트",
-            "UpdateCooldown": "재사용 대기 시간 업데이트"
+            "UpdateCooldown": "쿨다운 업데이트"
         },
         "RemotePrintersTab": {
             "AddPrinter": "프린터 추가",
@@ -1013,7 +1013,7 @@
         "Frames": "프레임",
         "Free": "여유 공간",
         "FreeDisk": "사용 가능 디스크 공간",
-        "LastModified": "마지막 수정",
+        "LastModified": "최종 수정",
         "MaxFramerate": "최대 프레임 레이트",
         "MinFramerate": "최저 프레임 레이트",
         "Name": "이름",
@@ -1029,7 +1029,7 @@
         "SaveFrames": "프레임 저장",
         "Search": "검색",
         "StartRender": "렌더링 시작",
-        "Status": "통계",
+        "Status": "상태",
         "TargetFps": "목표 FPS",
         "Targetlength": "목표 길이",
         "TimelapseFiles": "타임랩스 파일",
