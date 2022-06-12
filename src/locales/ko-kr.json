@@ -149,7 +149,11 @@
         "UnsavedChanges": "저장되지 않은 변경사항",
         "UnsavedChangesMessage": "{filename}의 수장 내용을 저장하시겠습니까?",
         "UnsavedChangesSubMessage": "저장하지 않으면 변경 사항이 적용되지 않습니다 (에디터 설정에서 이 메세지를 비활성화 시킬 수 있습니다)",
-        "Uploading": "업로드 중.."
+        "Uploading": "업로드 중..",
+        "KlipperRestartMethod": "클리퍼 재시작 방법",
+        "KlipperRestartMethodDescription": "클리퍼 설정 파일을 수정할 때 '저장 후 재시작'에서 사용할 재부팅 방법을 선택합니다",
+        "MoonrakerRestartInstance": "문래커 재시작 인스턴스",
+        "MoonrakerRestartInstanceDescription": "문래커 설정 파일을 편집할 때 '저장 및 재부팅' 시 다시 시작할 문래커 인스턴스를 선택합니다."
     },
     "EmergencyStopDialog": {
         "AreYouSure": "확실합니까?",
@@ -500,7 +504,8 @@
             "KlippyInfo": "문래커가 클리피에 연결할 수 없습니다!\nKlipper 서비스가 실행 중이고 UDS(Unix Domain Socket)의 구성 확인 또는 클리퍼 재시작을 눌러 주세요",
             "KlippyState": "Klippy 상태",
             "MoonrakerCannotConnect": "문래커가 클리퍼로 접속할 수 없습니다!",
-            "Restart": "재시작"
+            "Restart": "재시작",
+            "KlippyInfo": "문래커가 클리피에 연결할 수 없습니다!\nKlipper 서비스가 실행 중이고 UDS(Unix Domain Socket)의 구성 확인 또는 클리퍼 재시작을 눌러 주세요"
         },
         "MachineSettingsPanel": {
             "FirmwareRetractionSettings": {
@@ -671,7 +676,11 @@
             "XOffset": "X-옵셋",
             "YOffset": "Y-옵셋",
             "ZOffset": "Z-옵셋",
-            "ZTilt": "Z-틸트"
+            "ZTilt": "Z-틸트",
+            "Controls": "제어",
+            "Home": "홈",
+            "HotendTooCold": "핫엔드가 차갑습니다",
+            "Macros": "매크로"
         },
         "WebcamPanel": {
             "All": "전체",
