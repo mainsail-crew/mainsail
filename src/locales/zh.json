@@ -88,9 +88,9 @@
             "HostControl": "上位机控制",
             "KlipperControl": "Klipper控制",
             "KlipperFirmwareRestart": "重启Klipper服务并重置主控",
-            "KlipperRestart": "重启",
+            "KlipperRestart": "重启Klipper服务",
             "PowerDevices": "电源设备",
-            "Reboot": "重新载入",
+            "Reboot": "重启",
             "Restart": "重新启动",
             "ServiceControl": "服务控制",
             "Shutdown": "关闭",
@@ -486,11 +486,11 @@
             "WebcamOff": "关闭"
         },
         "KlippyStatePanel": {
-            "FirmwareRestart": "重启固件",
+            "FirmwareRestart": "重启Klipper服务并重置主控",
             "KlipperCheck": "请检查Klipper服务是否运行并且已经设置UDS(Unix Domain Socket)。",
             "KlippyState": "Klippy状态：",
             "MoonrakerCannotConnect": "Moonraker 无法连接到 Klipper ！",
-            "Restart": "重启"
+            "Restart": "重启Klipper服务"
         },
         "MachineSettingsPanel": {
             "FirmwareRetractionSettings": {
