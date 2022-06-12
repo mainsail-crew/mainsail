@@ -111,7 +111,7 @@
     "CheckMoonrakerLog": "이 메세지가 계속 나타날 경우 해당 경로의 로그 파일을 점검해 주세요",
     "Connecting": "{host}로 접속 중..",
     "Failed": "접속 실패",
-    "TryAgain": "다시 시도 해주세요"
+    "TryAgain": "재접속 시도"
   },
   "Console": {
     "CommandList": "커맨드 목록",
@@ -731,7 +731,7 @@
     "PortRequired": "포트 번호를 입력해 주세요",
     "RememberToAdd": "moonraker.conf의 'cors_domains' 안에 '{cors}'를 추가해야 합니다",
     "SelectPrinter": "프린터 선택",
-    "TryAgain": "다시 시도해 주세요",
+    "TryAgain": "재접속 시도",
     "UpdatePrinter": "프린터 목록 업데이트",
     "YouCanFindMore": "부가 설명은 다음을 참고해 주세요"
   },
