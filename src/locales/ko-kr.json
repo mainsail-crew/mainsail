@@ -20,7 +20,7 @@
             },
             "Never": "안함",
             "NextReboot": "다음 재부팅",
-            "NoNotification": "알림 표시하지 않음",
+            "NoNotification": "시스템 관련 알림이 없습니다",
             "Remind": "재확인:"
         },
         "NumberInput": {
