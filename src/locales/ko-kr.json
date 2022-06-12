@@ -56,7 +56,7 @@
         },
         "TopBar": {
             "CannotUploadTheFile": "파일 업로드 불가!",
-            "EmergencyStop": "긴급 정지",
+            "EmergencyStop": "비상 정지",
             "SAVE_CONFIG": "설정 저장",
             "Uploading": "업로드 중..",
             "UploadOfFileSuccessful": "{file} 업로드 완료!",
