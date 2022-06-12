@@ -58,7 +58,7 @@
       "CannotUploadTheFile": "파일을 업로드 할 수 없습니다!",
       "EmergencyStop": "비상 정지!",
       "SAVE_CONFIG": "설정 저장",
-      "Uploading": "업로드 중..",
+      "Uploading": "변경 사항 저장 및 업로드 중..",
       "UploadOfFileSuccessful": "{file} 업로드 완료!",
       "UploadPrint": "업로드 & 프린트"
     },
@@ -134,7 +134,7 @@
     "Cancel": "취소",
     "ConfigReference": "설정 참고",
     "DontSave": "저장 안함",
-    "Downloading": "수정 파일 다운로드 중..",
+    "Downloading": "수정해야 할 파일 다운로드 중..",
     "FailedSave": "{filename}을(를) 업로드 할 수 없습니다!",
     "FileReadOnly": "읽기 전용",
     "Minimap": "미니맵 표시",
@@ -144,7 +144,7 @@
     "UnsavedChanges": "저장되지 않은 변경사항",
     "UnsavedChangesMessage": "{filename}의 수장 내용을 저장하시겠습니까?",
     "UnsavedChangesSubMessage": "저장하지 않으면 변경 사항이 적용되지 않습니다 (에디터 설정에서 이 메세지를 비활성화 시킬 수 있습니다)",
-    "Uploading": "업로드 중..",
+    "Uploading": "변경 사항 저장 및 업로드 중..",
     "KlipperRestartMethod": "클리퍼 재시작 방법",
     "KlipperRestartMethodDescription": "클리퍼 설정 파일을 수정할 때 '저장 후 재시작'에서 사용할 재부팅 방법을 선택합니다",
     "MoonrakerRestartInstance": "문래커 재시작 인스턴스",
@@ -210,7 +210,7 @@
     "SuccessfullyRenamed": "{filename} 이름 변경 완료",
     "SuccessfullyUploaded": "{filename} 업로드 완료",
     "Total": "전체 용량",
-    "Uploading": "업로드 중..",
+    "Uploading": "변경 사항 저장 및 업로드 중..",
     "UploadNewGcode": "새로운 G-Code 업로드",
     "Used": "사용량",
     "View3D": "3D Gcode 뷰어"
@@ -390,7 +390,7 @@
       "ShowFile": "파일 보기",
       "Total": "전체",
       "UploadFile": "파일 업로드",
-      "Uploading": "업로드 중..",
+      "Uploading": "변경 사항 저장 및 업로드 중..",
       "Used": "사용됨"
     },
     "EndstopPanel": {
@@ -522,7 +522,7 @@
       }
     },
     "MacrosPanel": {
-      "Headline": "매크로",
+      "Headline": "매크로 모음",
       "Send": "보내기"
     },
     "MiniconsolePanel": {
@@ -543,7 +543,7 @@
       "MoreInformation": "정보 더 보기"
     },
     "MiscellaneousPanel": {
-      "Headline": "기타 - 쿨링팬 & 조명 제어",
+      "Headline": "기타 설정 - 쿨링팬 & 조명 제어",
       "RunoutSensor": {
         "Detected": "감지됨",
         "Disabled": "비활성화됨",
@@ -573,7 +573,7 @@
         "ExcludeObjectHeadline": "출력 제외 대상",
         "ExcludeObjectText": "\"{name}\"을(를) 제외 하시겠습니까??"
       },
-      "Filament": "필라 예측 소비량",
+      "Filament": "필라 소비 예측",
       "File": "파일",
       "Files": "파일",
       "EmptyGcodes": "사용 가능한 G-code가 없습니다",
@@ -609,7 +609,7 @@
         "Target": "목표 온도",
         "Temperature": "현재 온도"
       },
-      "Headline": "온도 제어",
+      "Headline": "온도 설정",
       "Max": "최대",
       "Min": "최저",
       "Name": "이름",
@@ -653,7 +653,7 @@
       "ZTilt": "Z-틸트",
       "Controls": "제어",
       "Home": "홈",
-      "HotendTooCold": "핫엔드가 차갑습니다",
+      "HotendTooCold": "핫 엔드가 차갑습니다",
       "Macros": "매크로"
     },
     "WebcamPanel": {
