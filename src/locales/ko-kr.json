@@ -21,7 +21,7 @@
             },
             "Never": "안함",
             "NextReboot": "다음 재부팅",
-            "NoNotification": "알림 표시하지 않음",
+            "NoNotification": "표시할 알림 없음",
             "Remind": "재확인:"
         },
         "NumberInput": {
@@ -41,7 +41,7 @@
             "DescriptionUnderVoltageDetected": "RPi 주 전원이 저전력(4.65V)을 감지 했습니다",
             "TitleCurrentlyThrottled": "RPi 코어 성능을 제한중입니다",
             "TitleFrequencyCapped": "RPi 코어 클럭을 제한중입니다",
-            "TitlePreviouslyFrequencyCapped": "종료 이전 세션에서 클럭 제한    알림",
+            "TitlePreviouslyFrequencyCapped": "종료 이전 세션에서 클럭 제한 알림",
             "TitlePreviouslyTemperatureLimited": "종료 이전 세션에서 온도 제한 알림",
             "TitlePreviouslyThrottled": "종료 이전 세션에서 성능 제한 알림",
             "TitlePreviouslyUnderVolted": "종료 이전 세션에서 저전압 경고 알림",
