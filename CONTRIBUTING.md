@@ -3,7 +3,7 @@
 If you are reading this document right now, you are probably considering to contribute to Mainsail and make it better than it is today. Thank you for taking that initiative!
 Before submitting your contribution, please take a moment and make sure to read through our contribution guidelines:
 
-- [Code of Conduct](https://github.com/mainsail-crew/mainsail/.github/CODE_OF_CONDUCT.md)
+- [Code of Conduct](https://github.com/mainsail-crew/mainsail/blob/develop/.github/CODE_OF_CONDUCT.md)
 - [Question or Problem?](#question)
 - [Issues and Bugs](#issue)
 - [Feature Requests](#feature)
