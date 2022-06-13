@@ -5,8 +5,13 @@ Before submitting your contribution, please take a moment and make sure to read 
 
 - [Code of Conduct](https://github.com/meteyou/mainsail/.github/CODE_OF_CONDUCT.md)
 - [Question or Problem?](#question)
-- [Issue Reporting Guidelines](#issue-reporting-guidelines)
-- [Pull Request Guidelines](#pull-request-guidelines)
+- [Issues and Bugs](#issue)
+- [Feature Requests](#feature)
+- [Submission Guidelines](#submit)
+  - [Submit an Issue](#submit-issue)
+  - [Submit a Pull Request](#submit-pr)
+- [Financial Contributions](#financial)
+- [Credits](https://docs.mainsail.xyz/credits)
 
 ## <a name="question"></a> Got a Question or Problem?
 
@@ -17,66 +22,47 @@ Our Discord server is a much better place to ask general support questions. We t
 
 ## <a name="issue"></a> Found a Bug?
 
-If you find a bug in the source code, or you think that Mainsail is behaving odd in specific situations, you can help us to fix that issues by [submitting an issue](https://github.com/meteyou/mainsail/issues).
+If you find a bug in the source code, or you think that Mainsail is behaving odd in specific situations, you can help us to fix that issues by [submitting an issue](https://github.com/mainsail-crew/mainsail/issues/new?assignees=&labels=%E2%9A%A1+Type%3A+Bug&template=bug_report.yml).
 In case you fixed that issue already by yourself, you can [submit a Pull Request](#submit-pr) with that fix.
 
 ## <a name="feature"></a> Missing a Feature?
 
+You can request a new feature by [submitting a feature request](https://github.com/mainsail-crew/mainsail/issues/new?assignees=&labels=%F0%9F%92%A1+Type%3A+FR&template=feature_request.yml).
+If you would like to implement a new feature, please consider the scope of the change. For changes that require a lot of work, it's best to outline a proposal first so that it can be discussed.
+This allows us to prevent wasted time and efforts and discuss how to bring your proposed feature into the project.
 
 ## <a name="submit"></a> Submission Guidelines
 
 ### <a name="submit-issue"></a> Submitting an Issue
 
+Before you submit an issue, please search the issue tracker if your problem may already exist. In case that there is already a ticket covering your issue, please refrain from opening a new ticket and rather contribute to the existing ticket.
+If you submit an issue, please make sure to provide the required information and reproduction steps. We need those, to be able to try and reproduce the bug ourselfs.
+Without proper instructions on how to reproduce the issue you are encountering we might not be able to fix a possible bug.
+
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
 
+Before you work on a PR and submit it, please pay attention to the following guidelines:
 
+1. Search the [pull requests](https://github.com/mainsail-crew/mainsail/pulls) for an open or closed PR that relates to your submission.
+   - You don't want to duplicate existing efforts or work on something that is unlinkely to be merged into the project.
+2. Do not submit PRs against the `master` branch. PRs need to be submitted against the `develop` branch.
+3. Follow our [Code Standards](https://docs.mainsail.xyz/development/code-standards)
+4. If there is an issue describing the problem you're fixing or a discussion of a feature you are implementing, make sure to link it in the PRs body.
+   - You can also add `fix #<id>` in the PR title where `<id>` is the issue id.
+5. If there is no issue describing the problem, either create an issue first or provide a sufficient description of the bug / feature.
+   - Screenshots of your changes are welcome in case you worked on UI related code.
+6. The title of the PR should follow the [commit message convention](https://www.conventionalcommits.org/en/v1.0.0/).
+   - If the PR consists of multiple commits, it's good practice to also follow the convention although that is not necessarily required.
+   - Upon merging, we will squash all commits of the PR into a single commit for a clean history and release-changelogs.
+7. Please sign off each commit and your PR. It must contain your real name and a current email adress.
+   - The sign-off should follow this pattern: `Signed-off-by: My Name <myemail@example.org>`
+   - The sign-off certifies, that you agree with the [developer certificate of origin](https://github.com/meteyou/mainsail/.github/DEVELOPER_CERTIFICATE_OF_ORIGIN.md).
+   - If you provide a translation, a sign-off is not necessarily required.
+8. When opening a pull request, make sure to keep `Allow edits and access to secrets by maintainers` **enabled**.
 
+## <a name="financial"></a> Financial Contribution
 
+As a pure community-driven project without major corporate backing, we always welcome financial contributions. A list of options we offer to support us financially can be seen below.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Pull Request Guidelines
-
-- The `master` branch is just a snapshot of the latest stable release. All development should be done in dedicated branches. **Do not submit PRs against the `master` branch.**
-
-- Checkout a topic branch from the relevant branch, e.g. `develop`, and merge back against that branch.
-
-- It's OK to have multiple small commits as you work on the PR - GitHub will automatically squash it before merging.
-
-- If adding a new feature:
-
-  - Provide a convincing reason to add this feature. Ideally, you should open a suggestion issue first and have it approved before working on it.
-
-- If fixing bug:
-  - If you are resolving a special issue, add `(fix #xxxx[,#xxxx])` (#xxxx is the issue id) in your PR title for a better release log, e.g. `update entities encoding/decoding (fix #3899)`.
-  - Provide a detailed description of the bug in the PR. Live demo preferred.
-  - Add appropriate test coverage if applicable.
-
-## Committing Changes
-
-Commit messages should follow the [commit message convention](https://www.conventionalcommits.org/en/v1.0.0/) so that changelogs can be automatically generated.
-
-## Financial Contribution
-
-As a pure community-driven project without major corporate backing, we also welcome financial contributions via Patreon and OpenCollective.
-
-- [Become a supporter on Patreon](https://patreon.com/meteyou)
-- [One-time donation via Ko-Fi](https://ko-fi.com/mainsail)
-
-## Credits
-
-Thank you to all the people who have already contributed to Mainsail!
+- [Become a supporter on Patreon](https://patreon.com/meteyou) (monthly recurring)
+- [Donation via Ko-Fi](https://ko-fi.com/mainsail) (one time / monthly recurring)
