@@ -107,7 +107,7 @@ export default class MacroButton extends Mixins(BaseMixin) {
         this.paramArray.splice(0, this.paramArray.length)
         this.params = {}
 
-        if (this.klipperMacro.params !== null) {
+        if (this.klipperMacro?.params !== null) {
             Object.keys(this.klipperMacro.params).forEach((name: string) => {
                 if (!name.startsWith('_')) {
                     this.paramArray.push(name)
@@ -134,7 +134,7 @@ export default class MacroButton extends Mixins(BaseMixin) {
         this.paramArray.forEach((paramname: string) => {
             if (this.params[paramname].value !== null && this.params[paramname].value !== '') {
                 let tmp: string = paramname
-                tmp += this.isGcodeStyle ? this.params[paramname].value : '=' + this.params[paramname].value
+                tmp += this.isGcodeStyle ? this.params[paramname].value : `=${this.params[paramname].value}`
 
                 params.push(tmp)
             }
