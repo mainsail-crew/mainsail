@@ -134,8 +134,7 @@ export default class MacroButton extends Mixins(BaseMixin) {
         this.paramArray.forEach((paramname: string) => {
             if (this.params[paramname].value !== null && this.params[paramname].value !== '') {
                 let tmp: string = paramname
-                if (this.isGcodeStyle && paramname.length === 1) tmp += this.params[paramname].value
-                else tmp += '=' + this.params[paramname].value
+                tmp += this.isGcodeStyle ? this.params[paramname].value : '=' + this.params[paramname].value
 
                 params.push(tmp)
             }
