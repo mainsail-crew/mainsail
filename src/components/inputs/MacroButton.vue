@@ -94,6 +94,10 @@ export default class MacroButton extends Mixins(BaseMixin) {
         return this.$store.getters['printer/getMacro'](this.macro.name)
     }
 
+    get isGcodeStyle() {
+        return this.macro.name.match(/([G|M])(\d{1,3})/gm)
+    }
+
     @Watch('klipperMacro')
     klipperMacroChange() {
         this.refreshParams()
@@ -130,7 +134,7 @@ export default class MacroButton extends Mixins(BaseMixin) {
         this.paramArray.forEach((paramname: string) => {
             if (this.params[paramname].value !== null && this.params[paramname].value !== '') {
                 let tmp: string = paramname
-                if (paramname.length === 1) tmp += this.params[paramname].value
+                if (this.isGcodeStyle && paramname.length === 1) tmp += this.params[paramname].value
                 else tmp += '=' + this.params[paramname].value
 
                 params.push(tmp)
