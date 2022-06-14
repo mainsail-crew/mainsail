@@ -95,7 +95,7 @@ export default class MacroButton extends Mixins(BaseMixin) {
     }
 
     get isGcodeStyle() {
-        return this.macro.name.match(/([G|M])(\d{1,3})/gm)
+        return this.macro.name.match(/[G|M]\d{1,3}/gm)
     }
 
     @Watch('klipperMacro')
