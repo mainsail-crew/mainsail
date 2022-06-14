@@ -58,31 +58,36 @@ export const getters: GetterTree<PrinterState, RootState> = {
     getMacros: (state, getters, rootState) => {
         const array: PrinterStateMacro[] = []
         const hiddenMacros: string[] = []
+        const settings = state.configfile?.settings ?? null
 
         rootState.gui?.macros?.hiddenMacros.forEach((item: string, index: number) => {
             hiddenMacros[index] = item.toLowerCase()
         })
 
-        if (state.configfile?.config) {
+        if (settings) {
             Object.keys(state.configfile?.config).forEach((prop) => {
+                const propLower = prop.toLowerCase()
+
                 if (
-                    prop.startsWith('gcode_macro') &&
-                    !prop.startsWith('gcode_macro _') &&
-                    !('rename_existing' in state.configfile.config[prop]) &&
-                    !(hiddenMacros.indexOf(prop.replace('gcode_macro ', '').toLowerCase()) > -1)
+                    propLower.startsWith('gcode_macro') &&
+                    !propLower.startsWith('gcode_macro _') &&
+                    !('rename_existing' in settings[propLower]) &&
+                    !(hiddenMacros.indexOf(propLower.replace('gcode_macro ', '')) > -1)
                 ) {
                     const variables = state[prop] ?? {}
 
                     array.push({
                         name: prop.replace('gcode_macro ', ''),
-                        description: state.configfile.config[prop].description ?? null,
-                        prop: state.configfile.config[prop],
-                        params: getMacroParams(state.configfile.config[prop]),
+                        description: settings[propLower].description ?? null,
+                        prop: settings[propLower],
+                        params: getMacroParams(settings[propLower]),
                         variables,
                     })
                 }
             })
         }
+
+        window.console.log(array)
 
         return caseInsensitiveSort(array, 'name')
     },
@@ -485,19 +490,9 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return caseInsensitiveSort(array, 'name')
     },
 
-    getMacro: (state) => (name: string) => {
-        if ('gcode_macro ' + name in state.configfile.config) {
-            const config = state.configfile.config['gcode_macro ' + name]
-
-            return {
-                name,
-                description: config.description ?? null,
-                prop: config,
-                params: getMacroParams(config),
-            }
-        }
-
-        return null
+    getMacro: (state, getters) => (name: string) => {
+        const nameLower = name.toLowerCase()
+        return getters['getAllMacros'].find((macro: PrinterStateMacro) => macro.name.toLowerCase() === nameLower)
     },
 
     getFilamentSensors: (state) => {
