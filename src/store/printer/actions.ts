@@ -10,8 +10,13 @@ export const actions: ActionTree<PrinterState, RootState> = {
         commit('socket/clearLoadings', null, { root: true })
     },
 
-    init() {
+    init({ dispatch }) {
         window.console.debug('init printer')
+
+        dispatch('socket/addInitModule', 'printer/info', { root: true })
+        dispatch('socket/addInitModule', 'printer/initSubscripts', { root: true })
+        dispatch('socket/addInitModule', 'printer/initHelpList', { root: true })
+        dispatch('socket/addInitModule', 'server/gcode_store', { root: true })
 
         Vue.$socket.emit('printer.info', {}, { action: 'printer/getInfo' })
         Vue.$socket.emit('printer.objects.list', {}, { action: 'printer/initSubscripts' })
@@ -19,7 +24,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
         Vue.$socket.emit('server.gcode_store', {}, { action: 'server/getGcodeStore' })
     },
 
-    getInfo({ commit }, payload) {
+    getInfo({ commit, dispatch }, payload) {
         commit(
             'server/setData',
             {
@@ -34,9 +39,11 @@ export const actions: ActionTree<PrinterState, RootState> = {
             software_version: payload.software_version,
             cpu_info: payload.cpu_info,
         })
+
+        dispatch('socket/removeInitModule', 'printer/info', { root: true })
     },
 
-    initSubscripts(_, payload) {
+    initSubscripts({ dispatch }, payload) {
         let subscripts = {}
         const blocklist = ['menu']
 
@@ -49,6 +56,8 @@ export const actions: ActionTree<PrinterState, RootState> = {
         if (Object.keys(subscripts).length > 0)
             Vue.$socket.emit('printer.objects.subscribe', { objects: subscripts }, { action: 'printer/getInitData' })
         else Vue.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
+
+        dispatch('socket/removeInitModule', 'printer/initSubscripts', { root: true })
     },
 
     getInitData({ dispatch }, payload) {
@@ -109,8 +118,10 @@ export const actions: ActionTree<PrinterState, RootState> = {
         commit('setData', payload)
     },
 
-    initHelpList({ commit }, payload) {
+    initHelpList({ commit, dispatch }, payload) {
         commit('setHelplist', payload)
+
+        dispatch('socket/removeInitModule', 'printer/initHelpList', { root: true })
     },
 
     getEndstopStatus({ commit }, payload) {

@@ -195,7 +195,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('setData', payload)
     },
 
-    getGcodeStore({ commit, rootGetters }, payload) {
+    getGcodeStore({ commit, dispatch, rootGetters }, payload) {
         commit('clearGcodeStore')
 
         let events: ServerStateEvent[] = payload.gcode_store
@@ -228,6 +228,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         })
 
         commit('setGcodeStore', events)
+        dispatch('socket/removeInitModule', 'server/gcode_store', { root: true })
     },
 
     addRootDirectory({ commit, state }, data) {
