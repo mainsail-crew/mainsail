@@ -55,41 +55,47 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return state.virtual_sdcard?.progress ?? 0
     },
 
-    getMacros: (state, getters, rootState) => {
+    getAllMacros: (state) => {
         const array: PrinterStateMacro[] = []
-        const hiddenMacros: string[] = []
+        const config = state.configfile?.config ?? {}
         const settings = state.configfile?.settings ?? null
 
-        rootState.gui?.macros?.hiddenMacros.forEach((item: string, index: number) => {
-            hiddenMacros[index] = item.toLowerCase()
-        })
-
-        if (settings) {
-            Object.keys(state.configfile?.config).forEach((prop) => {
+        Object.keys(config)
+            .filter((prop) => prop.toLowerCase().startsWith('gcode_macro'))
+            .forEach((prop) => {
                 const propLower = prop.toLowerCase()
+                const variables = state[prop] ?? {}
 
-                if (
-                    propLower.startsWith('gcode_macro') &&
-                    !propLower.startsWith('gcode_macro _') &&
-                    !('rename_existing' in settings[propLower]) &&
-                    !(hiddenMacros.indexOf(propLower.replace('gcode_macro ', '')) > -1)
-                ) {
-                    const variables = state[prop] ?? {}
-
-                    array.push({
-                        name: prop.replace('gcode_macro ', ''),
-                        description: settings[propLower].description ?? null,
-                        prop: settings[propLower],
-                        params: getMacroParams(settings[propLower]),
-                        variables,
-                    })
-                }
+                array.push({
+                    name: prop.replace('gcode_macro ', ''),
+                    description: settings[propLower].description ?? null,
+                    prop: settings[propLower],
+                    params: getMacroParams(settings[propLower]),
+                    variables,
+                })
             })
-        }
-
-        window.console.log(array)
 
         return caseInsensitiveSort(array, 'name')
+    },
+
+    getMacros: (state, getters, rootState) => {
+        let macros = getters['getAllMacros']
+        const macroMode = rootState.gui?.macros?.mode ?? 'simple'
+        const hiddenMacros = (rootState.gui?.macros?.hiddenMacros ?? []).map((name) => name.toLowerCase())
+
+        macros = macros.filter(
+            (macro: PrinterStateMacro) => !macro.name.startsWith('_') && !('rename_existing' in macro.prop)
+        )
+
+        if (macroMode === 'simple')
+            macros = macros.filter((macro: PrinterStateMacro) => !hiddenMacros.includes(macro.name.toLowerCase()))
+
+        return caseInsensitiveSort(macros, 'name')
+    },
+
+    getMacro: (state, getters) => (name: string) => {
+        const nameLower = name.toLowerCase()
+        return getters['getAllMacros'].find((macro: PrinterStateMacro) => macro.name.toLowerCase() === nameLower)
     },
 
     getHeaters: (state, getters, rootState, rootGetters) => {
@@ -464,35 +470,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getAvailableSensors: (state) => {
         return state.heaters?.available_sensors ?? []
-    },
-
-    getAllMacros: (state) => {
-        const array: PrinterStateMacro[] = []
-
-        Object.keys(state.configfile?.config ?? {}).forEach((prop) => {
-            if (
-                prop.startsWith('gcode_macro') &&
-                !prop.startsWith('gcode_macro _') &&
-                !Object.hasOwnProperty.call(state.configfile.config[prop], 'rename_existing')
-            ) {
-                const variables = state[prop] ?? {}
-
-                array.push({
-                    name: prop.replace('gcode_macro ', ''),
-                    description: state.configfile.config[prop].description ?? null,
-                    prop: state.configfile.config[prop],
-                    params: getMacroParams(state.configfile.config[prop]),
-                    variables,
-                })
-            }
-        })
-
-        return caseInsensitiveSort(array, 'name')
-    },
-
-    getMacro: (state, getters) => (name: string) => {
-        const nameLower = name.toLowerCase()
-        return getters['getAllMacros'].find((macro: PrinterStateMacro) => macro.name.toLowerCase() === nameLower)
     },
 
     getFilamentSensors: (state) => {
