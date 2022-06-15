@@ -239,6 +239,10 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return this.$store.state.printer.print_stats?.message ?? ''
     }
 
+    mounted() {
+        if (this.current_filename !== '') this.activeTab = 'status'
+    }
+
     @Watch('current_filename')
     current_filenameChanged(newVal: string) {
         if (newVal === '') this.activeTab = 'files'
