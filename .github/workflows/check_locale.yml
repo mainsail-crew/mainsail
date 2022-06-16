@@ -50,5 +50,5 @@ jobs:
         with:
           message: |
             Hello world ! :wave:
-            $OUTPUT
+            ${{ env.OUTPUT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
