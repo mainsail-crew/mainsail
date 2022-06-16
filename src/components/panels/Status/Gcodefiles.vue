@@ -161,7 +161,7 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
-import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
+import { FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import {
     mdiFile,
@@ -229,11 +229,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         touchTimer: undefined,
         x: 0,
         y: 0,
-        item: {
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-        },
+        item: this.dialogFile,
     }
 
     private dialogRenameFile: dialogRenameObject = {
@@ -282,7 +278,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         return `width: ${this.contentTdWidth}px;`
     }
 
-    showContextMenu(e: any, item: FileStateFile) {
+    showContextMenu(e: any, item: FileStateGcodefile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true
