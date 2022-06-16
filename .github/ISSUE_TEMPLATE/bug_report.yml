@@ -20,7 +20,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: 'Mainsail version:'
+      label: 'Mainsail Version:'
       description: Mainsail version where the issue occurs
       placeholder: <your current mainsail version>
     validations:
