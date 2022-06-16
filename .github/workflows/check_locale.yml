@@ -43,6 +43,7 @@ jobs:
             MISSING=$(cat i18n-extract/${file##*/} | jq '.missingKeys | length')
             UNUSED=$(cat i18n-extract/${file##*/} | jq '.unusedKeys | length')
             OUTPUT="${OUTPUT}\n${f##*/}: Missing: ${MISSING}, Unused: ${UNUSED}"
+            echo "$file: Missing: ${MISSING}, Unused: ${UNUSED}"
           done
 
       - name: Comment PR
