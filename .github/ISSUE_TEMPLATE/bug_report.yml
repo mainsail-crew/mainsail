@@ -17,7 +17,7 @@ body:
         [Discord](https://discord.gg/mainsail)
 
         ---
-  -type: input
+  - type: input
     id: version
     attributes:
       label: 'Mainsail version:'
