@@ -235,22 +235,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     private dialogRenameFile: dialogRenameObject = {
         show: false,
         newName: '',
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-            small_thumbnail: null,
-            big_thumbnail: null,
-            big_thumbnail_width: null,
-            count_printed: 0,
-            last_filament_used: null,
-            last_start_time: null,
-            last_end_time: null,
-            last_print_duration: null,
-            last_status: null,
-            last_total_duration: null,
-        },
+        item: this.dialogFile,
     }
 
     get gcodeFiles() {
