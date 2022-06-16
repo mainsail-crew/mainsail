@@ -4,7 +4,6 @@ on:
     types: [synchronize, opened]
     paths:
       - 'src/locales/**'
-  workflow_dispatch:
 
 jobs:
   check_translations:
@@ -13,8 +12,7 @@ jobs:
       - name: Fetch repo
         uses: actions/checkout@v3
         with:
-          ref: chore/check-locale-workflow
-        #  ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install node
         uses: actions/setup-node@v3
