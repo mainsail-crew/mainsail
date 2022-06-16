@@ -17,6 +17,14 @@ body:
         [Discord](https://discord.gg/mainsail)
 
         ---
+  -type: input
+    id: version
+    attributes:
+      label: 'Mainsail version:'
+      description: Mainsail version where the issue occurs
+      placeholder: <your current mainsail version>
+    validations:
+      required: true
   - type: dropdown
     id: browser
     attributes:
