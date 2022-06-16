@@ -100,12 +100,7 @@
                     {{ $t('Files.AddToQueue') }}
                 </v-list-item>
                 <v-list-item
-                    v-if="
-                        'first_layer_extr_temp' in contextMenu.item &&
-                        contextMenu.item.first_layer_extr_temp > 0 &&
-                        'first_layer_bed_temp' in contextMenu.item &&
-                        contextMenu.item.first_layer_bed_temp > 0
-                    "
+                    v-if="canPreheat(contextMenu.item)"
                     :disabled="['error', 'printing', 'paused'].includes(printer_state)"
                     @click="preheat(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiFire }}</v-icon>
@@ -165,6 +160,7 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ControlMixin from '@/components/mixins/control'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import {
@@ -191,7 +187,7 @@ interface dialogRenameObject {
         StartPrintDialog,
     },
 })
-export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
+export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixin) {
     mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiPlaylistPlus = mdiPlaylistPlus
@@ -386,24 +382,21 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
         this.$store.dispatch('server/jobQueue/addToQueue', [item.filename])
     }
 
-    preheat(item: FileStateGcodefile) {
-        if (
-            'first_layer_extr_temp' in item &&
-            'first_layer_bed_temp' in item &&
-            !['error', 'printing', 'paused'].includes(this.printer_state)
-        ) {
-            if (item.first_layer_extr_temp && item.first_layer_extr_temp > 0) {
-                const gcode = 'M104 S' + item.first_layer_extr_temp
-                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: gcode })
-            }
+    canPreheat(item: FileStateGcodefile) {
+        const bed = item.first_layer_bed_temp
+        const extr = item.first_layer_extr_temp
 
-            if (item.first_layer_bed_temp && item.first_layer_bed_temp > 0) {
-                const gcode = 'M140 S' + item.first_layer_bed_temp
-                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: gcode })
-            }
-        }
+        return extr && extr > 0 && bed && bed > 0
+    }
+
+    preheat(item: FileStateGcodefile) {
+        if (!this.canPreheat(item) || ['error', 'printing', 'paused'].includes(this.printer_state)) return
+
+        const heatExtr = `M104 S${item.first_layer_extr_temp}`
+        const heatBed = `M140 S${item.first_layer_bed_temp}`
+
+        this.doSend(heatExtr)
+        this.doSend(heatBed)
     }
 
     view3D(item: FileStateGcodefile) {
