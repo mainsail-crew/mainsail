@@ -234,7 +234,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
                 this.loaderProgress.direction?.charAt(0).toUpperCase() + this.loaderProgress.direction?.slice(1)
         }
 
-        return this.$t('Editor.' + directionUppercase)
+        return this.$t(`Editor.${directionUppercase}`)
     }
 
     get availableServices() {
