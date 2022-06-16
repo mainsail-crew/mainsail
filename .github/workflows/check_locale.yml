@@ -15,6 +15,7 @@ jobs:
       - name: Fetch repo
         uses: actions/checkout@v3
         with:
+          fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install node
@@ -29,7 +30,6 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v23
         with:
-          fetch-depth: 0
           files: 'src/locales/*.json'
 
       - name: Run i18n-extract on changed locale files
