@@ -31,11 +31,12 @@
                                             height="32"
                                             v-bind="attrs"
                                             v-on="on" />
-                                        <v-progress-circular
-                                            slot="preloader"
-                                            indeterminate
-                                            color="primary"></v-progress-circular>
-                                        <v-icon slot="error">{{ mdiFile }}</v-icon>
+                                        <div slot="preloader">
+                                            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                                        </div>
+                                        <div slot="error">
+                                            <v-icon>{{ mdiFile }}</v-icon>
+                                        </div>
                                     </vue-load-image>
                                 </template>
                                 <span><img :src="item.big_thumbnail" alt="big_thumbnail" width="250" /></span>
@@ -49,11 +50,12 @@
                                     alt="small_thumbnail"
                                     width="32"
                                     height="32" />
-                                <v-progress-circular
-                                    slot="preloader"
-                                    indeterminate
-                                    color="primary"></v-progress-circular>
-                                <v-icon slot="error">{{ mdiFile }}</v-icon>
+                                <div slot="preloader">
+                                    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                                </div>
+                                <div slot="error">
+                                    <v-icon>{{ mdiFile }}</v-icon>
+                                </div>
                             </vue-load-image>
                         </template>
                         <template v-else>
