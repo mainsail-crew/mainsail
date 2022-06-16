@@ -26,6 +26,7 @@
                                         <img
                                             slot="image"
                                             :src="item.small_thumbnail"
+                                            alt="small_thumbnail"
                                             width="32"
                                             height="32"
                                             v-bind="attrs"
@@ -37,12 +38,17 @@
                                         <v-icon slot="error">{{ mdiFile }}</v-icon>
                                     </vue-load-image>
                                 </template>
-                                <span><img :src="item.big_thumbnail" width="250" /></span>
+                                <span><img :src="item.big_thumbnail" alt="big_thumbnail" width="250" /></span>
                             </v-tooltip>
                         </template>
                         <template v-else-if="item.small_thumbnail">
                             <vue-load-image>
-                                <img slot="image" :src="item.small_thumbnail" width="32" height="32" />
+                                <img
+                                    slot="image"
+                                    :src="item.small_thumbnail"
+                                    alt="small_thumbnail"
+                                    width="32"
+                                    height="32" />
                                 <v-progress-circular
                                     slot="preloader"
                                     indeterminate
