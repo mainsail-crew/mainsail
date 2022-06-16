@@ -19,8 +19,8 @@
                     @contextmenu="showContextMenu($event, item)"
                     @click="showDialog(item)">
                     <td class="pr-0 text-center" style="width: 32px">
-                        <template v-if="item.small_thumbnail && item.big_thumbnail">
-                            <v-tooltip top content-class="tooltip__content-opacity1">
+                        <template v-if="item.small_thumbnail">
+                            <v-tooltip top content-class="tooltip__content-opacity1" :disabled="!item.big_thumbnail">
                                 <template #activator="{ on, attrs }">
                                     <vue-load-image class="d-flex">
                                         <img
@@ -41,22 +41,6 @@
                                 </template>
                                 <span><img :src="item.big_thumbnail" alt="big_thumbnail" width="250" /></span>
                             </v-tooltip>
-                        </template>
-                        <template v-else-if="item.small_thumbnail">
-                            <vue-load-image>
-                                <img
-                                    slot="image"
-                                    :src="item.small_thumbnail"
-                                    alt="small_thumbnail"
-                                    width="32"
-                                    height="32" />
-                                <div slot="preloader">
-                                    <v-progress-circular indeterminate color="primary"></v-progress-circular>
-                                </div>
-                                <div slot="error">
-                                    <v-icon>{{ mdiFile }}</v-icon>
-                                </div>
-                            </vue-load-image>
                         </template>
                         <template v-else>
                             <v-icon>{{ mdiFile }}</v-icon>
