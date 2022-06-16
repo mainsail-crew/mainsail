@@ -133,7 +133,7 @@
         </v-menu>
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
             <panel
-                :title="$t('Files.RenameFile')"
+                :title="$t('Files.RenameFile').toString()"
                 card-class="dashboard-files-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
