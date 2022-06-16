@@ -89,7 +89,7 @@
         "vite-plugin-pwa": "^0.11.13",
         "vite-plugin-vue2": "^1.9.3",
         "vue-debounce-decorator": "^1.0.1",
-        "vue-i18n-extract": "^1.2.3",
+        "vue-i18n-extract": "^2.0.7",
         "vue-router": "^3.5.2",
         "vue-template-compiler": "^2.6.14",
         "workbox-core": "^6.4.2"
