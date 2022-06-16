@@ -26,11 +26,20 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v23
         with:
+          fetch-depth: 0
           files: 'src/locales/*.json'
 
       - name: Run i18n-extract on changed locale files
         run: |
+          mkdir ./i18n-extract
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "$file was changed"
+            npm run i18n-extract -- --languageFiles=`${{ github.workspace }}/src/locales/${file##*/}` --output=i18n-extract/${file##*/}
           done
-          npm run i18n-extract -- --languageFiles='./src/locales/fr.json' --output=i18n-extract/fr.json
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |
+            Hello world ! :wave:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
