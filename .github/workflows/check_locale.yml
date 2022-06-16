@@ -1,0 +1,38 @@
+name: Check Translations
+on:
+  pull_request_target:
+    types: [synchronize, opened]
+    paths:
+      - 'src/locales/**'
+  workflow_dispatch:
+
+jobs:
+  check_translations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch repo
+        uses: actions/checkout@v3
+        with:
+          ref: chore/check-locale-workflow
+        #  ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v23
+        with:
+          files: 'src/locales/*.json'
+
+      - name: Run i18n-extract on changed locale files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+          npm run i18n-extract -- --languageFiles='./src/locales/fr.json' --output=i18n-extract/fr.json
