@@ -133,9 +133,9 @@ export default class DashboardMixin extends BaseMixin {
             subStrings.forEach((subStr) => {
                 panelName += capitalize(subStr)
             })
-            return this.$t('Panels.' + panelName + 'Panel.Headline')
+            return this.$t(`Panels.${panelName}Panel.Headline`)
         }
 
-        return this.$t('Panels.' + capitalize(name) + 'Panel.Headline')
+        return this.$t(`Panels.${capitalize(name)}Panel.Headline`)
     }
 }
