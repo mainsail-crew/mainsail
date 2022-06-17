@@ -162,7 +162,6 @@
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
         "Download": "Download",
-        "Downloading": "Downloading",
         "EditFile": "Edit File",
         "Empty": "Empty",
         "Filament": "Filament",
@@ -204,7 +203,6 @@
         "SuccessfullyRenamed": "Successfully renamed {filename}.",
         "SuccessfullyUploaded": "Upload of {filename} successful!",
         "Total": "Total",
-        "Uploading": "Uploading",
         "UploadNewGcode": "Upload new G-Code",
         "Used": "Used",
         "View3D": "View 3D"
