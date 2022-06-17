@@ -51,9 +51,8 @@ jobs:
         with:
           message: |
             Hello world ! :wave:
-            ```
+
             |File|Missing Keys|Unused Keys|
             |-|-|-|
-            ${{join(steps.i18n-extract.outputs.*, '\')}}
-            ```
+            ${{join(steps.i18n-extract.outputs.*, '  ')}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
