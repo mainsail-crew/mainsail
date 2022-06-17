@@ -43,7 +43,7 @@ jobs:
             npm run i18n-extract -- --languageFiles=src/locales/${file##*/} --output=i18n-extract/${file##*/}
             MISSING=$(cat i18n-extract/${file##*/} | jq '.missingKeys | length')
             UNUSED=$(cat i18n-extract/${file##*/} | jq '.unusedKeys | length')
-            echo "$OUTPUT\n${file##*/}: Missing: ${MISSING}, Unused: ${UNUSED}" >> $OUTPUT
+            #echo "$OUTPUT\n${file##*/}: Missing: ${MISSING}, Unused: ${UNUSED}" >> $OUTPUT
             echo "${file}: Missing: ${MISSING}, Unused: ${UNUSED}"
           done
 
