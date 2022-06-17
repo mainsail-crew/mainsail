@@ -53,9 +53,7 @@ jobs:
             Hello world ! :wave:
 
             |File|Missing Keys|Unused Keys|
-            |-|-|-|
-            ${{join(steps.i18n-extract.outputs.*, '  ')}}
-            for line in ${{ steps.i18n-extract.outputs.* }}; do
-              echo "$line"
-            done
+            |:---|---:|---:|
+            ${{join(steps.i18n-extract.outputs.*, '
+            ')}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
