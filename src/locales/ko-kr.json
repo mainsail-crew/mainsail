@@ -1,5 +1,5 @@
 {
-    "_last_update:": "12.06.2022",
+    "_last_update": "12.06.2022",
     "App": {
         "Notifications": {
             "DependencyDescription": "{neededVersion} 버전 이상으로 업데이트 해야 정상 사용이 가능합니다",

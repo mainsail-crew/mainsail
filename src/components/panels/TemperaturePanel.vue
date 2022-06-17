@@ -203,11 +203,7 @@
                                 v-model="editHeater['bool' + dataset.charAt(0).toUpperCase() + dataset.slice(1)]"
                                 :label="
                                     $t('Panels.TemperaturePanel.ShowNameInChart', {
-                                        name: $t(
-                                            'Panels.TemperaturePanel.Dataset.' +
-                                                dataset.charAt(0).toUpperCase() +
-                                                dataset.slice(1)
-                                        ),
+                                        name: $t(`Panels.TemperaturePanel.Dataset.${capitalize(dataset)}`),
                                     })
                                 "
                                 hide-details
@@ -244,7 +240,7 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
-import { convertName } from '@/plugins/helpers'
+import { capitalize, convertName } from '@/plugins/helpers'
 import { Debounce } from 'vue-debounce-decorator'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
 import { PrinterStateTemperatureObject } from '@/store/printer/types'
@@ -254,14 +250,12 @@ import TempChart from '@/components/charts/TempChart.vue'
 import TemperatureInput from '@/components/inputs/TemperatureInput.vue'
 import Panel from '@/components/ui/Panel.vue'
 import Responsive from '@/components/ui/Responsive.vue'
-import { datasetTypes } from '@/store/variables'
-import { mdiCloseThick, mdiCog, mdiFan, mdiSnowflake, mdiFire, mdiMenuDown, mdiThermometerLines } from '@mdi/js'
+import { mdiCloseThick, mdiCog, mdiSnowflake, mdiFire, mdiMenuDown, mdiThermometerLines } from '@mdi/js'
 
 @Component({
     components: { Panel, TempChart, TemperatureInput, Responsive },
 })
 export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
-    mdiFan = mdiFan
     mdiSnowflake = mdiSnowflake
     mdiCloseThick = mdiCloseThick
     mdiCog = mdiCog
@@ -270,7 +264,7 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
     mdiThermometerLines = mdiThermometerLines
 
     convertName = convertName
-    datasetTypes = datasetTypes
+    capitalize = capitalize
 
     private editHeater: any = {
         bool: false,
