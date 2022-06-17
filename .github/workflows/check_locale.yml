@@ -43,7 +43,7 @@ jobs:
             npm run i18n-extract -- --languageFiles=src/locales/${file##*/} --output=i18n-extract/${file##*/}
             MISSING=$(cat i18n-extract/${file##*/} | jq '.missingKeys | length')
             UNUSED=$(cat i18n-extract/${file##*/} | jq '.unusedKeys | length')
-            echo "::set-output name=$file::${file##*/} => Missing: ${MISSING}, Unused: ${UNUSED}"
+            echo "::set-output name=$file::|${file##*/}|${MISSING}|${UNUSED}|"
           done
 
       - name: Comment PR
@@ -52,6 +52,8 @@ jobs:
           message: |
             Hello world ! :wave:
             ```
-            ${{join(steps.i18n-extract.outputs.*, '\n')}}
+            |File|Missing Keys|Unused Keys|
+            |-|-|-|
+            ${{join(steps.i18n-extract.outputs.*, '\')}}
             ```
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
