@@ -51,6 +51,7 @@ jobs:
         with:
           message: |
             Hello world ! :wave:
+            ```
             ${{join(steps.i18n-extract.outputs.*, '\n')}}
-
+            ```
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
