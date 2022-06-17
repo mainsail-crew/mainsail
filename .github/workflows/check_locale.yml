@@ -55,4 +55,7 @@ jobs:
             |File|Missing Keys|Unused Keys|
             |-|-|-|
             ${{join(steps.i18n-extract.outputs.*, '  ')}}
+            for line in ${{ steps.i18n-extract.outputs.* }}; do
+              echo "$line"
+            done
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
