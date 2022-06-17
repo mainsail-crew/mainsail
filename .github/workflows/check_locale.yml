@@ -8,8 +8,6 @@ on:
 jobs:
   check_translations:
     runs-on: ubuntu-latest
-    env:
-      OUTPUT: ''
     steps:
       - name: Install jq
         run: sudo apt install -y jq
@@ -37,14 +35,17 @@ jobs:
 
       - name: Run i18n-extract on changed locale files
         id: i18n-extract
+        env:
+          OUTPUT: ''
         run: |
           mkdir ./i18n-extract
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             npm run i18n-extract -- --languageFiles=src/locales/${file##*/} --output=i18n-extract/${file##*/}
             MISSING=$(cat i18n-extract/${file##*/} | jq '.missingKeys | length')
             UNUSED=$(cat i18n-extract/${file##*/} | jq '.unusedKeys | length')
-            #echo "$OUTPUT\n${file##*/}: Missing: ${MISSING}, Unused: ${UNUSED}" >> $OUTPUT
+            #echo "${OUTPUT}\n${file##*/}: Missing: ${MISSING}, Unused: ${UNUSED}" >> $OUTPUT
             echo "${file}: Missing: ${MISSING}, Unused: ${UNUSED}"
+            echo "::set-output name=$file::Missing: ${MISSING}, Unused: ${UNUSED}"
           done
 
       - name: Comment PR
@@ -52,5 +53,6 @@ jobs:
         with:
           message: |
             Hello world ! :wave:
-            ${{ env.OUTPUT }}
+            ${{join(steps.i18n-extract.outputs.*, '\n')}}
+
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
