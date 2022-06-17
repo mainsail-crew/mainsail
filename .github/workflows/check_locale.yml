@@ -38,12 +38,13 @@ jobs:
         id: i18n-extract
         run: |
           mkdir ./i18n-extract
+          echo ${{ steps.changed-files.outputs.all_changed_files }}
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             npm run i18n-extract -- --languageFiles=`${{ github.workspace }}/src/locales/${file##*/}` --output=i18n-extract/${file##*/}
             MISSING=$(cat i18n-extract/${file##*/} | jq '.missingKeys | length')
             UNUSED=$(cat i18n-extract/${file##*/} | jq '.unusedKeys | length')
-            echo "$OUTPUT\n${f##*/}: Missing: ${MISSING}, Unused: ${UNUSED}" >> $OUTPUT
-            echo "$file: Missing: ${MISSING}, Unused: ${UNUSED}"
+            echo "$OUTPUT\n${file##*/}: Missing: ${MISSING}, Unused: ${UNUSED}" >> $OUTPUT
+            echo "${file}: Missing: ${MISSING}, Unused: ${UNUSED}"
           done
 
       - name: Comment PR
