@@ -133,6 +133,8 @@
     "Editor": {
         "ConfigReference": "Config Reference",
         "DontSave": "Don't save",
+        "Downloading": "Downloading",
+        "Uploading": "Uploading",
         "FailedSave": "{filename} could not be uploaded!",
         "FileReadOnly": "read-only",
         "SaveClose": "Save & close",
