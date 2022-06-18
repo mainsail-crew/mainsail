@@ -126,7 +126,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
+import { capitalize, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import {
@@ -228,11 +228,8 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get snackbarHeadline() {
-        let directionUppercase = this.$t('Files.Downloading')
-        if (this.loaderProgress.direction) {
-            directionUppercase =
-                this.loaderProgress.direction?.charAt(0).toUpperCase() + this.loaderProgress.direction?.slice(1)
-        }
+        let directionUppercase = this.$t('Editor.Downloading')
+        if (this.loaderProgress.direction) directionUppercase = capitalize(this.loaderProgress.direction)
 
         return this.$t(`Editor.${directionUppercase}`)
     }
