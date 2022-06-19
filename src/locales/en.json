@@ -131,20 +131,18 @@
         }
     },
     "Editor": {
-        "Cancel": "Cancel",
         "ConfigReference": "Config Reference",
         "DontSave": "Don't save",
         "Downloading": "Downloading",
+        "Uploading": "Uploading",
         "FailedSave": "{filename} could not be uploaded!",
         "FileReadOnly": "read-only",
-        "Minimap": "Show minimap",
         "SaveClose": "Save & close",
         "SaveRestart": "Save & Restart",
         "SuccessfullySaved": "{filename} successfully saved.",
         "UnsavedChanges": "Unsaved Changes",
         "UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
-        "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
-        "Uploading": "Uploading"
+        "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings."
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Are you sure?",
@@ -164,7 +162,6 @@
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
         "Download": "Download",
-        "Downloading": "Downloading",
         "EditFile": "Edit File",
         "Empty": "Empty",
         "Filament": "Filament",
@@ -206,7 +203,6 @@
         "SuccessfullyRenamed": "Successfully renamed {filename}.",
         "SuccessfullyUploaded": "Upload of {filename} successful!",
         "Total": "Total",
-        "Uploading": "Uploading",
         "UploadNewGcode": "Upload new G-Code",
         "Used": "Used",
         "View3D": "View 3D"
@@ -449,22 +445,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "ALL",
-            "AlternateControls": "Alternate controls",
-            "Headline": "Controls",
-            "InvertX": "Invert X",
-            "InvertY": "Invert Y",
-            "InvertZ": "Invert Z",
-            "PleaseConfigureSteps": "Please configure steps",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Settings > Interface > Control",
-            "SetupControls": "Setup Controls",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
             "EstimatedExtrusion": "Estimated Extrusion:",
@@ -511,7 +491,6 @@
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
                 "SmoothTime": "Smooth Time"
             }
         },
@@ -586,7 +565,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "Autoscale Chart",
             "Avg": "Avg",
-            "Color": "Color",
             "Cooldown": "Cooldown",
             "Current": "Current",
             "Dataset": {
@@ -615,21 +593,13 @@
             "ALL": "ALL",
             "Headline": "Toolhead",
             "Invalid": "Invalid",
-            "InvertX": "Invert X",
-            "InvertY": "Invert Y",
-            "InvertZ": "Invert Z",
-            "MotorsOff": "Motors Off",
             "OutOfRange": "Out of range!",
             "PleaseConfigureSteps": "Please configure steps",
             "Position": "Position",
             "QGL": "QGL",
             "Relative": "relative",
             "SettingsInterfaceControl": "Settings > Interface > Control",
-            "SetupControls": "Setup Controls",
             "SpeedFactor": "Speed factor",
-            "XOffset": "X-Offset",
-            "YOffset": "Y-Offset",
-            "ZOffset": "Z-Offset",
             "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {
@@ -637,12 +607,10 @@
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "No webcam available. Add a webcam under \"Interface Settings\" -> \"Webcams\".",
-            "UnknownWebcamService": "Unknown Webcam Service",
-            "UrlNotAvailable": "URL not available"
+            "UnknownWebcamService": "Unknown Webcam Service"
         },
         "ZoffsetPanel": {
             "Clear": "Clear",
-            "CurrentOffset": "current offset",
             "Headline": "Z-Offset",
             "Later": "Later",
             "Ok": "OK",

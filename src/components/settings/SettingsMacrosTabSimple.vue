@@ -32,7 +32,7 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 })
 export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
     get macros() {
-        return this.$store.getters['printer/getAllMacros'] ?? []
+        return this.$store.getters['printer/getMacros'] ?? []
     }
 
     get hiddenMacros() {
