@@ -1,7 +1,7 @@
 <template>
     <v-snackbar v-if="show" :timeout="-1" :value="true" fixed right bottom dark>
         <span v-if="maxNumber > 1" class="mr-1">({{ currentNumber }}/{{ maxNumber }})</span>
-        <strong>{{ $t('Files.Uploading') + ' ' + filename }}</strong>
+        <strong>{{ $t('Editor.Uploading') + ' ' + filename }}</strong>
         <br />
         {{ percent }} % @ {{ speed }}/s
         <br />
