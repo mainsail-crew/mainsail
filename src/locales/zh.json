@@ -131,13 +131,11 @@
         }
     },
     "Editor": {
-        "Cancel": "取消",
         "ConfigReference": "配置参考",
         "DontSave": "不保存",
         "Downloading": "正在下载",
         "FailedSave": "无法上传{filename}！",
         "FileReadOnly": "只读",
-        "Minimap": "显示缩略图",
         "SaveClose": "保存并关闭",
         "SaveRestart": "保存并重启",
         "SuccessfullySaved": "{filename}保存成功。",
@@ -449,22 +447,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "全部",
-            "AlternateControls": "翻转控制",
-            "Headline": "控制",
-            "InvertX": "翻转X",
-            "InvertY": "翻转Y",
-            "InvertZ": "翻转Z",
-            "PleaseConfigureSteps": "请设置步数",
-            "QGL": "四轴调平(QGL)",
-            "SettingsInterfaceControl": "设置 > 界面 > 控制",
-            "SetupControls": "设置",
-            "X": "X轴",
-            "Y": "Y轴",
-            "Z": "Z轴",
-            "ZTilt": "Z轴倾斜"
-        },
         "ExtruderControlPanel": {
             "Allowed": "允许",
             "EstimatedExtrusion": "预计挤出量：",
@@ -511,7 +493,6 @@
             "PressureAdvanceSettings": {
                 "Advance": "压力提前",
                 "Extruder": "挤出机",
-                "PressureAdvance": "压力提前",
                 "SmoothTime": "平滑时间"
             }
         },
@@ -586,7 +567,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "自动缩放图表",
             "Avg": "平均",
-            "Color": "颜色",
             "Cooldown": "冷却",
             "Current": "当前",
             "Dataset": {
@@ -615,21 +595,13 @@
             "ALL": "全部",
             "Headline": "打印头",
             "Invalid": "无效",
-            "InvertX": "翻转X",
-            "InvertY": "翻转Y",
-            "InvertZ": "翻转Z",
-            "MotorsOff": "关闭电机",
             "OutOfRange": "超出范围！",
             "PleaseConfigureSteps": "请配置步骤",
             "Position": "位置",
             "QGL": "四轴调平(QGL)",
             "Relative": "相对坐标",
             "SettingsInterfaceControl": "设置 > 界面 > 控制",
-            "SetupControls": "控制设置",
             "SpeedFactor": "速度因子",
-            "XOffset": "X轴偏移",
-            "YOffset": "Y轴偏移",
-            "ZOffset": "Z轴偏移",
             "ZTilt": "Z轴倾斜"
         },
         "WebcamPanel": {
@@ -637,12 +609,10 @@
             "FPS": "帧率",
             "Headline": "摄像头",
             "NoWebcam": "没有可用的摄像头。在 \"Mainsail设置\" -> \"摄像头\" 添加新的摄像头。",
-            "UnknownWebcamService": "未知摄像头服务",
-            "UrlNotAvailable": "URL 不可用"
+            "UnknownWebcamService": "未知摄像头服务"
         },
         "ZoffsetPanel": {
             "Clear": "清除",
-            "CurrentOffset": "当前偏移",
             "Headline": "Z轴偏移",
             "Later": "最后的",
             "Ok": "好的",
