@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
@@ -105,12 +105,31 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
             const frame: any = await this.loadImage(url.toString())
 
             canvas.width = canvas.clientWidth
-            canvas.height = canvas.clientWidth * (frame.height / frame.width)
-            if (this.aspectRatio === null) {
-                this.aspectRatio = frame.width / frame.height
+            if (this.camSettings.rotate > 0) {
+                if (this.aspectRatio === null) this.aspectRatio = frame.height / frame.width
+                canvas.height = canvas.clientWidth / (frame.height / frame.width)
+            } else {
+                if (this.aspectRatio === null) this.aspectRatio = frame.width / frame.height
+                canvas.height = canvas.clientWidth * (frame.width / frame.height)
             }
 
-            await ctx?.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvas.width, canvas.height)
+            if (this.camSettings.rotate) {
+                const scale = canvas.height / frame.width
+                const x = canvas.width / 2
+                const y = canvas.height / 2
+                ctx.translate(x, y)
+                ctx.rotate((this.camSettings.rotate * Math.PI) / 180)
+                await ctx?.drawImage(
+                    frame,
+                    (-frame.width / 2) * scale,
+                    (-frame.height / 2) * scale,
+                    frame.width * scale,
+                    frame.height * scale
+                )
+                ctx.rotate(-((this.camSettings.rotate * Math.PI) / 180))
+                ctx.translate(-x, -y)
+            } else await ctx?.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvas.width, canvas.height)
+
             this.isLoaded = true
         }
 
@@ -189,6 +208,11 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
         this.isVisible = false
         clearTimeout(this.timer)
         this.timer = undefined
+    }
+
+    @Watch('camSettings', { immediate: true, deep: true })
+    camSettingsChanged() {
+        this.aspectRatio = null
     }
 }
 </script>

@@ -949,6 +949,7 @@
             "Name": "Name",
             "NameAlreadyExists": "Name already exists",
             "Required": "required",
+            "Rotate": "Rotate",
             "SaveWebcam": "Save Webcam",
             "Service": "Service",
             "TargetFPS": "Target FPS",
