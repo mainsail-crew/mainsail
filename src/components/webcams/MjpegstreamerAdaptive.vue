@@ -70,8 +70,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
         }
 
         let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
+        if (this.camSettings.flipX ?? false) transforms += ' scaleX(-1)'
+        if (this.camSettings.flipY ?? false) transforms += ' scaleY(-1)'
+        if ((this.camSettings.rotate ?? 0) === 180) transforms += ' rotate(180deg)'
         if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) output.aspectRatio = this.aspectRatio
@@ -81,6 +82,10 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
 
     get fpsOutput() {
         return this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS
+    }
+
+    get rotate() {
+        return [90, 270].includes(this.camSettings.rotate ?? 0)
     }
 
     refreshFrame() {
@@ -105,7 +110,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
             const frame: any = await this.loadImage(url.toString())
 
             canvas.width = canvas.clientWidth
-            if (this.camSettings.rotate > 0) {
+            if (this.rotate) {
                 if (this.aspectRatio === null) this.aspectRatio = frame.height / frame.width
                 canvas.height = canvas.clientWidth / (frame.height / frame.width)
             } else {
@@ -113,7 +118,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
                 canvas.height = canvas.clientWidth * (frame.width / frame.height)
             }
 
-            if (this.camSettings.rotate) {
+            if (this.rotate) {
                 const scale = canvas.height / frame.width
                 const x = canvas.width / 2
                 const y = canvas.height / 2

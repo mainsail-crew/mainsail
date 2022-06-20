@@ -297,6 +297,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
     private rotateItems = [
         { value: 0, text: '0°' },
         { value: 90, text: '90°' },
+        { value: 180, text: '180°' },
         { value: 270, text: '270°' },
     ]
 
