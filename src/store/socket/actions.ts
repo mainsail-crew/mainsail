@@ -125,9 +125,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             default:
-                if (payload.result !== 'ok' && payload.error?.message)
-                    window.console.error('JSON-RPC: ' + payload.error.message)
-                else window.console.debug(payload)
+                window.console.debug(payload)
         }
     },
 
