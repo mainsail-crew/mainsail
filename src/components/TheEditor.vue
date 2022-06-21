@@ -112,7 +112,7 @@
                     <v-btn text color="primary" @click="save">
                         {{ $t('Editor.SaveClose') }}
                     </v-btn>
-                    <template v-if="restartServiceName != null">
+                    <template v-if="restartServiceNameExists">
                         <v-btn text color="primary" @click="save(restartServiceName)">
                             {{ $t('Editor.SaveRestart') }}
                         </v-btn>
