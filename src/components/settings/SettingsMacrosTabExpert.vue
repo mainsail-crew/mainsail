@@ -381,7 +381,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 
     get allMacros() {
-        return this.$store.getters['printer/getAllMacros'] ?? []
+        return this.$store.getters['printer/getMacros'] ?? []
     }
 
     get availableMacros() {

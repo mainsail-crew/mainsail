@@ -340,7 +340,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Frissítések keresése",
             "Commits": "Véglegesítés",
-            "CommitsAvailabe": "nincs elérhető véglegesítés  | {count} véglegesítés elérhető | {count} véglegesítés elérhető",
+            "CommitsAvailable": "nincs elérhető véglegesítés  | {count} véglegesítés elérhető | {count} véglegesítés elérhető",
             "CommitsOnDate": "véglegesítés ekkor:{date}",
             "CommittedDaysAgo": "véglegesítve {days} nappal ezelőtt",
             "CommittedHoursAgo": "véglegesítve {hours} órával ezelőtt",

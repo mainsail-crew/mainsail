@@ -20,16 +20,20 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
 
     getSerieNames: (state) => (name: string) => {
         const output: string[] = []
+        const seriesKeys = state.series
+            .map((serie: PrinterTempHistoryStateSerie) => serie.name)
+            .filter((serieName) => serieName.startsWith(name))
 
-        if (state.series.findIndex((serie: PrinterTempHistoryStateSerie) => serie.name === name) !== -1) {
-            output.push('temperature')
-        }
+        seriesKeys.forEach((seriesKey) => {
+            if (seriesKey === name) {
+                output.push('temperature')
+                return
+            }
 
-        state.series
-            .filter((serie: PrinterTempHistoryStateSerie) => serie.name.startsWith(name + '-'))
-            .forEach((serie) => {
-                output.push(serie.name.substr(name.length + 1))
-            })
+            if (seriesKey.startsWith(name + '-')) {
+                output.push(seriesKey.slice(name.length + 1))
+            }
+        })
 
         return output
     },

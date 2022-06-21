@@ -427,7 +427,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Sprawdź , czy są dostępne aktualizacje",
             "Commits": "Wydane",
-            "CommitsAvailabe": "Brak nowych wydań | {count} dostępnych wydań| {count} dostępnych wydań",
+            "CommitsAvailable": "Brak nowych wydań | {count} dostępnych wydań| {count} dostępnych wydań",
             "CommitsOnDate": "Wydano {date}",
             "CommittedDaysAgo": "Wydano {days} dni temu",
             "CommittedHoursAgo": "Wydano {hours} godzin temu",

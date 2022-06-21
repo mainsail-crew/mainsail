@@ -406,7 +406,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Sök efter uppdateringar",
             "Commits": "Commits",
-            "CommitsAvailabe": "inga commits tillgängliga | {count} commit tillgänglig | {count} commits tillgängliga",
+            "CommitsAvailable": "inga commits tillgängliga | {count} commit tillgänglig | {count} commits tillgängliga",
             "CommitsOnDate": "Commits den {date}",
             "CommittedDaysAgo": "committed för {days} dagar sedan",
             "CommittedHoursAgo": "committed för {hours} timmar sedan",

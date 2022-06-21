@@ -55,36 +55,38 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return state.virtual_sdcard?.progress ?? 0
     },
 
-    getMacros: (state, getters, rootState) => {
+    getMacros: (state) => {
         const array: PrinterStateMacro[] = []
-        const hiddenMacros: string[] = []
+        const config = state.configfile?.config ?? {}
+        const settings = state.configfile?.settings ?? null
 
-        rootState.gui?.macros?.hiddenMacros.forEach((item: string, index: number) => {
-            hiddenMacros[index] = item.toLowerCase()
-        })
+        Object.keys(config)
+            .filter((prop) => prop.toLowerCase().startsWith('gcode_macro'))
+            .forEach((prop) => {
+                const name = prop.replace('gcode_macro ', '')
+                if (name.startsWith('_')) return
 
-        if (state.configfile?.config) {
-            Object.keys(state.configfile?.config).forEach((prop) => {
-                if (
-                    prop.startsWith('gcode_macro') &&
-                    !prop.startsWith('gcode_macro _') &&
-                    !('rename_existing' in state.configfile.config[prop]) &&
-                    !(hiddenMacros.indexOf(prop.replace('gcode_macro ', '').toLowerCase()) > -1)
-                ) {
-                    const variables = state[prop] ?? {}
+                const propLower = prop.toLowerCase()
+                const propSettings = settings[propLower]
+                if ('rename_existing' in propSettings) return
 
-                    array.push({
-                        name: prop.replace('gcode_macro ', ''),
-                        description: state.configfile.config[prop].description ?? null,
-                        prop: state.configfile.config[prop],
-                        params: getMacroParams(state.configfile.config[prop]),
-                        variables,
-                    })
-                }
+                const variables = state[prop] ?? {}
+
+                array.push({
+                    name,
+                    description: settings[propLower].description ?? null,
+                    prop: propSettings,
+                    params: getMacroParams(propSettings),
+                    variables,
+                })
             })
-        }
 
         return caseInsensitiveSort(array, 'name')
+    },
+
+    getMacro: (state, getters) => (name: string) => {
+        const nameLower = name.toLowerCase()
+        return getters['getMacros'].find((macro: PrinterStateMacro) => macro.name.toLowerCase() === nameLower)
     },
 
     getHeaters: (state, getters, rootState, rootGetters) => {
@@ -459,45 +461,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getAvailableSensors: (state) => {
         return state.heaters?.available_sensors ?? []
-    },
-
-    getAllMacros: (state) => {
-        const array: PrinterStateMacro[] = []
-
-        Object.keys(state.configfile?.config ?? {}).forEach((prop) => {
-            if (
-                prop.startsWith('gcode_macro') &&
-                !prop.startsWith('gcode_macro _') &&
-                !Object.hasOwnProperty.call(state.configfile.config[prop], 'rename_existing')
-            ) {
-                const variables = state[prop] ?? {}
-
-                array.push({
-                    name: prop.replace('gcode_macro ', ''),
-                    description: state.configfile.config[prop].description ?? null,
-                    prop: state.configfile.config[prop],
-                    params: getMacroParams(state.configfile.config[prop]),
-                    variables,
-                })
-            }
-        })
-
-        return caseInsensitiveSort(array, 'name')
-    },
-
-    getMacro: (state) => (name: string) => {
-        if ('gcode_macro ' + name in state.configfile.config) {
-            const config = state.configfile.config['gcode_macro ' + name]
-
-            return {
-                name,
-                description: config.description ?? null,
-                prop: config,
-                params: getMacroParams(config),
-            }
-        }
-
-        return null
     },
 
     getFilamentSensors: (state) => {
