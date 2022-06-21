@@ -425,7 +425,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "检查更新",
             "Commits": "提交",
-            "CommitsAvailabe": "没有新的提交 | 有{count}个提交 | 有{count}个提交",
+            "CommitsAvailable": "没有新的提交 | 有{count}个提交 | 有{count}个提交",
             "CommitsOnDate": "提交日期{date}",
             "CommittedDaysAgo": "{days}天前提交",
             "CommittedHoursAgo": "{hours}小时前提交",

@@ -426,7 +426,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "업데이트 확인",
             "Commits": "커밋",
-            "CommitsAvailabe": "사용 가능 커밋 없음 | {count}개의 커밋 사용 가능 | {count}개의 커밋 사용 가능",
+            "CommitsAvailable": "사용 가능 커밋 없음 | {count}개의 커밋 사용 가능 | {count}개의 커밋 사용 가능",
             "CommitsOnDate": "{date}일에 커밋",
             "CommittedDaysAgo": "{days}일 전에 커밋됨",
             "CommittedHoursAgo": "{hours}시간 전에 커밋됨",
