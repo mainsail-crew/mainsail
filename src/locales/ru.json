@@ -414,7 +414,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Проверьте наличие обновлений",
             "Commits": "Обязательства",
-            "CommitsAvailabe": "нет доступных коммитов | {count} доступных коммитов | {count} доступных коммитов",
+            "CommitsAvailable": "нет доступных коммитов | {count} доступных коммитов | {count} доступных коммитов",
             "CommitsOnDate": "Отправлено {date}",
             "CommittedDaysAgo": "Отправлено {days} назад",
             "CommittedHoursAgo": "Отправлено {hours} назад",
