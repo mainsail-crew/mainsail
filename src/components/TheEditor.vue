@@ -112,7 +112,7 @@
                     <v-btn text color="primary" @click="save">
                         {{ $t('Editor.SaveClose') }}
                     </v-btn>
-                    <template v-if="restartServiceName != null">
+                    <template v-if="restartServiceNameExists">
                         <v-btn text color="primary" @click="save(restartServiceName)">
                             {{ $t('Editor.SaveRestart') }}
                         </v-btn>
@@ -246,13 +246,21 @@ export default class TheEditor extends Mixins(BaseMixin) {
             return this.filenameWithoutExtension
         if (this.filename.startsWith('webcam') && ['conf', 'txt'].includes(this.fileExtension)) return 'webcamd'
         if (this.filename.startsWith('mooncord') && this.fileExtension === 'json') return 'mooncord'
+        if (this.filename === 'moonraker.conf') return this.moonrakerRestartInstance ?? 'moonraker'
+
         if (this.fileExtension === 'cfg') return 'klipper'
 
         return null
     }
 
     get restartServiceNameExists() {
+        if (this.restartServiceName) return true
+
         return this.availableServices.includes(this.restartServiceName)
+    }
+
+    get moonrakerRestartInstance() {
+        return this.$store.state.gui.editor.moonrakerRestartInstance
     }
 
     get confirmUnsavedChanges() {

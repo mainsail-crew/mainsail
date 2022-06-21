@@ -414,7 +414,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Verificar actualizaciones",
             "Commits": "Actualizaciones",
-            "CommitsAvailabe": "Sin actualizaciones disponibles | {count} actualización disponible | {count} actualizaciones disponibles",
+            "CommitsAvailable": "Sin actualizaciones disponibles | {count} actualización disponible | {count} actualizaciones disponibles",
             "CommitsOnDate": "Generado el {date}",
             "CommittedDaysAgo": "Generado hace {days} día/s",
             "CommittedHoursAgo": "Generado hace {hours} horas",

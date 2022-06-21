@@ -340,7 +340,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Verifica aggiornamenti",
             "Commits": "Commits",
-            "CommitsAvailabe": "no commits available | {count} commit available | {count} commits available",
+            "CommitsAvailable": "no commits available | {count} commit available | {count} commits available",
             "CommitsOnDate": "Commits on {date}",
             "CommittedDaysAgo": "committed {days} days ago",
             "CommittedHoursAgo": "committed {hours} hours ago",
