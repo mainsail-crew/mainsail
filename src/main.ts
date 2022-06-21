@@ -74,21 +74,25 @@ import 'vue-resize/dist/vue-resize.css'
 import VueResize from 'vue-resize'
 Vue.use(VueResize)
 
-//load config.json
-await fetch('/config.json')
-    .then((res) => res.json())
-    .then(async (file) => {
-        window.console.debug('Loaded config.json')
+const initLoad = async () => {
+    //load config.json
+    await fetch('/config.json')
+        .then((res) => res.json())
+        .then(async (file) => {
+            window.console.debug('Loaded config.json')
 
-        await store.dispatch('importConfigJson', file)
-    })
-    .catch((_) => {
-        window.console.error('config.json not found or cannot be decoded!')
-    })
+            await store.dispatch('importConfigJson', file)
+        })
+        .catch((_) => {
+            window.console.error('config.json not found or cannot be decoded!')
+        })
 
-const url = store.getters['socket/getWebsocketUrl']
-Vue.use(WebSocketPlugin, { url, store })
-if (!store?.state?.remoteMode) Vue.$socket.connect()
+    const url = store.getters['socket/getWebsocketUrl']
+    Vue.use(WebSocketPlugin, { url, store })
+    if (!store?.state?.remoteMode) Vue.$socket.connect()
+}
+
+initLoad()
 
 new Vue({
     vuetify,
