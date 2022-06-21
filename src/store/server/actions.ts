@@ -8,6 +8,9 @@ import { initableServerComponents } from '@/store/variables'
 
 export const actions: ActionTree<ServerState, RootState> = {
     reset({ commit, dispatch }) {
+        dispatch('stopKlippyConnectedInterval')
+        dispatch('stopKlippyStateInterval')
+
         commit('reset')
         dispatch('power/reset')
         dispatch('updateManager/reset')
@@ -22,18 +25,18 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('socket/addInitModule', 'server/procStats', { root: true })
         dispatch('socket/addInitModule', 'server/databaseList', { root: true })
 
-        await dispatch('identify')
-        await Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo' })
-        await Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig' })
-        await Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo' })
-        await Vue.$socket.emit('machine.proc_stats', {}, { action: 'server/initProcStats' })
-        await Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases' })
+        dispatch('identify')
+        Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo' })
+        Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig' })
+        Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo' })
+        Vue.$socket.emit('machine.proc_stats', {}, { action: 'server/initProcStats' })
+        Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases' })
 
         await dispatch('socket/removeInitModule', 'server', { root: true })
     },
 
-    async identify({ dispatch, rootState }) {
-        await dispatch('socket/addInitModule', 'server/identify', { root: true })
+    identify({ dispatch, rootState }): void {
+        dispatch('socket/addInitModule', 'server/identify', { root: true })
         Vue.$socket.emit(
             'server.connection.identify',
             {
@@ -46,28 +49,28 @@ export const actions: ActionTree<ServerState, RootState> = {
         )
     },
 
-    async setConnectionId({ commit, dispatch }, payload) {
-        await commit('setConnectionId', payload.connection_id)
-        await dispatch('socket/removeInitModule', 'server/identify', { root: true })
+    setConnectionId({ commit, dispatch }, payload) {
+        commit('setConnectionId', payload.connection_id)
+        dispatch('socket/removeInitModule', 'server/identify', { root: true })
     },
 
-    async checkDatabases({ dispatch, commit, rootState }, payload) {
+    checkDatabases({ dispatch, commit, rootState }, payload) {
         if (payload.namespaces?.includes('mainsail')) {
-            await dispatch('socket/addInitModule', 'gui/init', { root: true })
-            await dispatch('gui/init', null, { root: true })
+            dispatch('socket/addInitModule', 'gui/init', { root: true })
+            dispatch('gui/init', null, { root: true })
         } else dispatch('gui/initDb', null, { root: true })
         if (payload.namespaces?.includes('webcams')) {
-            await dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
-            await dispatch('gui/webcams/init', null, { root: true })
+            dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
+            dispatch('gui/webcams/init', null, { root: true })
         }
 
-        await commit('saveDbNamespaces', payload.namespaces)
+        commit('saveDbNamespaces', payload.namespaces)
 
-        await Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected' })
-        await dispatch('socket/removeInitModule', 'server/databaseList', { root: true })
+        Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected' })
+        dispatch('socket/removeInitModule', 'server/databaseList', { root: true })
     },
 
-    async initServerInfo({ dispatch, commit }, payload) {
+    initServerInfo({ dispatch, commit }, payload) {
         // delete old plugin entries
         if ('plugins' in payload) delete payload.plugins
         if ('failed_plugins' in payload) delete payload.failed_plugins
@@ -77,38 +80,41 @@ export const actions: ActionTree<ServerState, RootState> = {
                 component = camelize(component)
                 if (initableServerComponents.includes(component)) {
                     window.console.debug('init server component: ' + component)
-                    await dispatch('socket/addInitModule', 'server/' + component + '/init', { root: true })
-                    await dispatch('server/' + component + '/init', {}, { root: true })
+                    dispatch('socket/addInitModule', 'server/' + component + '/init', { root: true })
+                    dispatch('server/' + component + '/init', {}, { root: true })
                 }
             }
         }
 
         if (payload.registered_directories?.length) {
-            await dispatch('files/initRootDirs', payload.registered_directories, { root: true })
+            dispatch('files/initRootDirs', payload.registered_directories, { root: true })
         }
 
-        await commit('setData', payload)
-        await dispatch('socket/removeInitModule', 'server/info', { root: true })
+        commit('setData', payload)
+        dispatch('socket/removeInitModule', 'server/info', { root: true })
     },
 
-    async initServerConfig({ commit, dispatch }, payload) {
-        await commit('setConfig', payload)
-        await dispatch('socket/removeInitModule', 'server/config', { root: true })
+    initServerConfig({ commit, dispatch }, payload) {
+        commit('setConfig', payload)
+        dispatch('socket/removeInitModule', 'server/config', { root: true })
     },
 
-    async initSystemInfo({ commit, dispatch }, payload) {
-        await commit('setSystemInfo', payload.system_info)
-        await dispatch('socket/removeInitModule', 'server/systemInfo', { root: true })
+    initSystemInfo({ commit, dispatch }, payload) {
+        commit('setSystemInfo', payload.system_info)
+        dispatch('socket/removeInitModule', 'server/systemInfo', { root: true })
     },
 
-    async initProcStats({ commit, dispatch }, payload) {
-        if (payload.throttled_state !== null) commit('setThrottledState', payload.throttled_state)
+    initProcStats({ commit, dispatch }, payload) {
+        if (payload.throttled_state !== null) {
+            commit('setThrottledState', payload.throttled_state)
+        }
+
         if (payload.system_uptime) {
             const system_boot_at = new Date(new Date().getTime() - payload.system_uptime * 1000)
-            await commit('setSystemBootAt', system_boot_at)
+            commit('setSystemBootAt', system_boot_at)
         }
 
-        await dispatch('socket/removeInitModule', 'server/procStats', { root: true })
+        dispatch('socket/removeInitModule', 'server/procStats', { root: true })
     },
 
     updateProcStats({ commit }, payload) {
@@ -118,77 +124,81 @@ export const actions: ActionTree<ServerState, RootState> = {
         if ('system_cpu_usage' in payload) commit('setCpuStats', payload.system_cpu_usage)
     },
 
-    setKlippyReady({ dispatch, state }) {
-        if (state.klippy_connected_timer !== null) dispatch('stopKlippyConnectedInterval')
-        if (state.klippy_state_timer !== null) dispatch('stopKlippyStateInterval')
+    setKlippyReady({ dispatch }) {
+        dispatch('stopKlippyConnectedInterval')
+        dispatch('stopKlippyStateInterval')
         dispatch('printer/reset', null, { root: true })
         dispatch('printer/init', null, { root: true })
     },
 
-    async setKlippyDisconnected({ commit, dispatch, state }) {
-        await commit('setKlippyDisconnected', null)
-        if (state.klippy_state_timer !== null) await dispatch('stopKlippyStateInterval')
-        await dispatch('startKlippyConnectedInterval')
+    setKlippyDisconnected({ commit, dispatch }) {
+        commit('setKlippyDisconnected', null)
+        dispatch('stopKlippyStateInterval')
+        dispatch('startKlippyConnectedInterval')
     },
 
-    async setKlippyShutdown({ commit, dispatch, state }) {
-        await commit('setKlippyShutdown', null)
-        if (state.klippy_state_timer !== null) await dispatch('stopKlippyStateInterval')
-        await dispatch('startKlippyConnectedInterval')
+    setKlippyShutdown({ commit, dispatch }) {
+        commit('setKlippyShutdown', null)
+        dispatch('stopKlippyStateInterval')
+        dispatch('startKlippyConnectedInterval')
     },
 
     startKlippyConnectedInterval({ commit, state }) {
-        if (state.klippy_connected_timer === null) {
-            const timer = setInterval(() => {
-                Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected' })
-            }, 2000)
-            commit('setKlippyConnectedTimer', timer)
-        }
+        if (state.klippy_connected_timer) return
+
+        const timer = setInterval(() => {
+            Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected' })
+        }, 2000)
+        commit('setKlippyConnectedTimer', timer)
     },
 
     stopKlippyConnectedInterval({ commit, state }) {
-        if (state.klippy_connected_timer !== null) {
-            clearInterval(state.klippy_connected_timer)
-            commit('setKlippyConnectedTimer', null)
-        }
+        if (state.klippy_connected_timer === null) return
+
+        clearInterval(state.klippy_connected_timer)
+        commit('setKlippyConnectedTimer', null)
     },
 
-    async checkKlippyConnected({ commit, dispatch, state }, payload) {
-        if (payload.klippy_connected) {
-            await dispatch('stopKlippyConnectedInterval')
-            await commit('setKlippyConnected')
-            dispatch('checkKlippyState', { state: payload.klippy_state, state_message: null })
-        } else if (!payload.klippy_connected && state.klippy_connected_timer === null)
+    checkKlippyConnected({ commit, dispatch, state }, payload) {
+        if (!payload.klippy_connected) {
             dispatch('startKlippyConnectedInterval')
+
+            return
+        }
+
+        dispatch('stopKlippyConnectedInterval')
+        commit('setKlippyConnected')
+        dispatch('checkKlippyState', { state: payload.klippy_state, state_message: null })
     },
 
     startKlippyStateInterval({ commit, state }) {
-        if (state.klippy_state_timer === null) {
-            const timer = setInterval(() => {
-                Vue.$socket.emit('printer.info', {}, { action: 'server/checkKlippyState' })
-            }, 2000)
-            commit('setKlippyStateTimer', timer)
-        }
+        if (state.klippy_state_timer) return
+
+        const timer = setInterval(() => {
+            Vue.$socket.emit('printer.info', {}, { action: 'server/checkKlippyState' })
+        }, 2000)
+        commit('setKlippyStateTimer', timer)
     },
 
     stopKlippyStateInterval({ commit, state }) {
-        if (state.klippy_state_timer !== null) {
-            clearInterval(state.klippy_state_timer)
-            commit('setKlippyStateTimer', null)
-        }
+        if (state.klippy_state_timer === null) return
+
+        clearInterval(state.klippy_state_timer)
+        commit('setKlippyStateTimer', null)
     },
 
     checkKlippyState({ commit, dispatch, state }, payload: { state: string; state_message: string | null }) {
         commit('setKlippyState', payload.state)
         commit('setKlippyMessage', payload.state_message)
 
-        if (payload.state !== 'ready' && state.klippy_connected && state.klippy_state_timer === null) {
+        if (payload.state !== 'ready') {
             dispatch('startKlippyStateInterval')
-        } else if (payload.state === 'ready' && state.klippy_state_timer !== null) {
-            dispatch('stopKlippyStateInterval')
-        } else if (payload.state === 'ready' && state.klippy_state_timer === null) {
-            dispatch('printer/init', null, { root: true })
+            return
         }
+
+        dispatch('stopKlippyConnectedInterval')
+        dispatch('stopKlippyStateInterval')
+        dispatch('printer/init', null, { root: true })
     },
 
     getData({ commit }, payload) {
@@ -220,11 +230,7 @@ export const actions: ActionTree<ServerState, RootState> = {
                 return false
             }
 
-            if (event.date && new Date(event.date).valueOf() < cleared_since) {
-                return false
-            }
-
-            return true
+            return !(event.date && new Date(event.date).valueOf() < cleared_since)
         })
 
         commit('setGcodeStore', events)
@@ -256,7 +262,7 @@ export const actions: ActionTree<ServerState, RootState> = {
                 const regex = new RegExp(filter)
                 if (regex.test(formatMessage)) boolImport = false
             } catch {
-                window.console.error("Custom console filter '" + filter + "' doesn't work")
+                window.console.error("Custom console filter '" + filter + "' doesn't work!")
             }
 
             return boolImport
