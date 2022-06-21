@@ -477,8 +477,8 @@
                 "FirmwareRetraction": "Firmware Retraction",
                 "RetractLength": "Retract Length",
                 "RetractSpeed": "Retract Speed",
-                "UnretractExtraLength": "Un-retract Extra Length",
-                "UnretractSpeed": "Un-retract Speed"
+                "UnretractExtraLength": "Unretract Extra Length",
+                "UnretractSpeed": "Unretract Speed"
             },
             "Headline": "Machine",
             "MotionSettings": {
@@ -892,9 +892,9 @@
             "TravelSpeed": "Travel Speed",
             "TravelSpeedDescription": "Travel speed while moving to the parking position and resuming",
             "UnretractDistance": "Unretract Distance",
-            "UnretractDistanceDescription": "The length of filament that the extruder un-retracts after a retraction.",
+            "UnretractDistanceDescription": "The length of filament that the extruder unretracts after a retraction.",
             "UnretractSpeed": "Unretract Speed",
-            "UnretractSpeedDescription": "Speed at which the extruder un-retracts the filament after a retraction.",
+            "UnretractSpeedDescription": "Speed at which the extruder unretracts the filament after a retraction.",
             "VariableFps": "Variable FPS",
             "VariableFpsDescription": "If enabled, the framerate of the output video will be calculated based on target length",
             "VariableFpsMax": "Variable FPS max",
