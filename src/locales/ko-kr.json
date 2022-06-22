@@ -833,7 +833,7 @@
         "RemotePrintersTab": {
             "AddPrinter": "원격 관리 프린터 추가",
             "EditPrinter": "등록된 원격 프린터 정보 수정",
-            "Hostname": "호스트 이름 (공유기의 공인 IP 주소를 입력해 주세요)",
+            "Hostname": "호스트 이름 (공인 IP 주소를 입력해 주세요)",
             "Port": "포트(공유기의 외부 포트를 입력해 주세요)",
             "RemotePrinters": "원격 프린터",
             "UpdatePrinter": "적용"
