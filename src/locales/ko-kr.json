@@ -164,7 +164,7 @@
         "DeleteSelectedQuestion": "선택된 {count}개의 파일을 삭제하시겠습니까?",
         "Download": "다운로드",
         "Downloading": "다운로드 중..",
-        "EditFile": "파일 에디터",
+        "EditFile": "파일 내용 수정",
         "Empty": "비어있음",
         "Filament": "필라멘트",
         "FilamentName": "필라 이름",
@@ -366,7 +366,7 @@
             "DeleteDirectoryQuestion": "\"{name}\" 디렉토리와 하위 모든 내용을 삭제하시겠습니까?",
             "DeleteSelectedQuestion": "{count}개의 선택된 요소를 삭제하시겠습니까?",
             "Download": "다운로드",
-            "EditFile": "파일 에디터",
+            "EditFile": "파일 내용 수정",
             "Empty": "비어있음",
             "Files": "파일",
             "Filesize": "파일 크기",
@@ -566,7 +566,7 @@
             "Unknown": "알 수 없음"
         },
         "TemperaturePanel": {
-            "AutoscaleChart": "자동 스케일 차트",
+            "AutoscaleChart": "오토 스케일링 그래프",
             "Avg": "평균",
             "Cooldown": "작동 정지",
             "Current": "현재 온도",
@@ -583,8 +583,8 @@
             "Presets": "프리셋",
             "SetupTemperatures": "온도 설정",
             "ShowChart": "차트 보기",
-            "ShowNameInChart": "{name}의 차트 보기",
-            "ShowNameInList": "{name}의 목록 보기",
+            "ShowNameInChart": "{name}를 그래프에 표시",
+            "ShowNameInList": "목록에서 {name} 보기",
             "State": "전력 사용량",
             "Target": "설정 온도",
             "TemperaturesInChart": "온도 [°C]",
@@ -724,17 +724,17 @@
             "Tablet": "태블릿",
             "Widescreen": "와이드스크린"
         },
-        "Edit": "파일 에디터",
+        "Edit": "옵션 수정",
         "EditorTab": {
             "ConfirmUnsavedChanges": "저장 알림 표시",
-            "ConfirmUnsavedChangesDescription": "활성화된 경우 파일 에디터는 변경 사항을 저장하거나 취소하기 위해 확인 창을 표시하며 비활성화시    확인 창이 표시되지 않고 수정 내용은 취소됩니다",
-            "Editor": "파일 에디터",
+            "ConfirmUnsavedChangesDescription": "활성화된 경우 파일 편집기는 변경 사항을 저장하거나 취소하기 위해 확인 창을 표시하며 비활성화시    확인 창이 표시되지 않고 수정 내용은 취소됩니다",
+            "Editor": "파일 편집기",
             "KlipperRestartMethod": "클리퍼 재시작 방법",
             "KlipperRestartMethodDescription": "printer.cfg 파일을 수정 후, '저장 및 다시 시작'을 클릭할 때 사용할 다시 시작 방법을 선택합니다",
             "MoonrakerRestartInstance": "문래커 재시작 방법",
             "MoonrakerRestartInstanceDescription": "moonraker.conf 파일을 수정할 때 '저장 및 다시 시작'을 클릭할 때 사용할 문래커 서비스를 선택합니다",
             "UseEscToClose": "ESC키를 눌러 종료",
-            "UseEscToCloseDescription": "ESC 키를 눌렀을 때 파일 에디터를 종료하며 만약 비활성화 했을 경우 ESC 키를 누르는 즉시 기존 입력 값은 모두 취소됩니다"
+            "UseEscToCloseDescription": "ESC 키를 눌렀을 때 파일 편집기를 종료하며 만약 비활성화 했을 경우 ESC 키를 누르는 즉시 기존 입력 값은 모두 취소됩니다"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "배경 색",
@@ -917,7 +917,7 @@
             "DisplayCANCEL_PRINT": "출력 취소 표시",
             "DisplayCANCEL_PRINTDescription": "상태 창에서 출력 정지 아이콘을 표시하며 비활성화 시킬 경우, 일시 정지 후 출력 정지 아이콘이 표시됩니다",
             "GcodeThumbnails": "G-Code 썸네일",
-            "GcodeThumbnailsDescription": "Gcode 썸네일을 클릭하면 파일 에디터기로 곧바로 전환합니다",
+            "GcodeThumbnailsDescription": "Gcode 썸네일을 클릭하면 파일 편집기로 곧바로 전환합니다",
             "Guide": "추가 설명",
             "LockSliders": "터치스크린 장치의 슬라이더 기능 잠금",
             "LockSlidersDelay": "슬라이더 잠금 지연",
