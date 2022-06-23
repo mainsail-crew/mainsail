@@ -5,7 +5,7 @@ import {
     ServerHistoryStateJob,
 } from '@/store/server/history/types'
 import {
-    mdiAlertCircleOutline,
+    mdiAlertOctagon,
     mdiAlertOutline,
     mdiCheckboxMarkedCircleOutline,
     mdiCloseCircleOutline,
