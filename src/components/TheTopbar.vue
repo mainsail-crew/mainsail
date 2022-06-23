@@ -91,7 +91,7 @@
                 class="button-min-width-auto px-3 emergency-button"
                 :loading="loadings.includes('topbarEmergencyStop')"
                 @click="btnEmergencyStop">
-                <v-icon class="mr-md-2">{{ mdiAlertCircleOutline }}</v-icon>
+                <v-icon class="mr-md-2">{{ mdiAlertOctagon }}</v-icon>
                 <span class="d-none d-md-inline">{{ $t('App.TopBar.EmergencyStop') }}</span>
             </v-btn>
             <the-notification-menu></the-notification-menu>
@@ -115,7 +115,7 @@
                 :title="$t('EmergencyStopDialog.EmergencyStop')"
                 toolbar-color="error"
                 card-class="emergency-stop-dialog"
-                :icon="mdiAlertCircleOutline"
+                :icon="mdiAlertOctagon"
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="showEmergencyStopDialog = false">
