@@ -442,6 +442,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
                                 tmp[key]['unit'] = '%'
                                 break
 
+                            case 'tvoc':
+                                tmp[key]['unit'] = 'ppb'
+                                break
+
                             default:
                                 tmp[key]['unit'] = ''
                         }
