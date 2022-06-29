@@ -17,7 +17,7 @@ export const gcode = {
         }
 
         /* comments */
-        if ([';', '#'].includes(ch ?? '')) {
+        if ([';'].includes(ch ?? '')) {
             stream.skipToEnd()
             return 'comment'
         }
