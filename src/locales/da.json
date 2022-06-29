@@ -1,5 +1,11 @@
 {
     "App": {
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "Funktionen \"{option}\" i sektion \"{section}\" er forældet.",
+                "DeprecatedValue": "Værdien \"{value}\" i muligheden \"{option}\" i sektion \"{section}\" er forældet."
+            }
+        },
         "NumberInput": {
             "GreaterOrEqualError": "Skal være større eller lig med {min}!",
             "MustBeBetweenError": "Skal være mellem {min} og {max}!",
@@ -15,8 +21,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI strømforsyning faldt til under 4,65V mindst en gang siden sidste opstart.",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperatur er i øjeblikket over advarselsgrænsen (standard 60°C).",
             "DescriptionUnderVoltageDetected": "rPI strømforsyning i øjeblikket under 4,65V",
-            "HeadlineCurrentFlags": "\"Lige nu\" varsel",
-            "HeadlinePreviouslyFlags": "\"Tidligere\" varsel",
             "TitleCurrentlyThrottled": "Begrænset i øjeblikket",
             "TitleFrequencyCapped": "Maks. frekvens formindsket",
             "TitlePreviouslyFrequencyCapped": "Maks. frekvens formindsket tidligere",
@@ -134,8 +138,6 @@
         "DeleteDirectoryQuestion": "Vil du slette mappen \"{name}\" og alt dens indhold?",
         "Download": "Download",
         "Downloading": "Downloader",
-        "DoYouWantToStartFilename": "Vil du printe {filename}?",
-        "DropFilesToAddGcode": "Træk G-Code-filer her for at uploade.",
         "EditFile": "Rediger Fil",
         "Empty": "Tom",
         "Filament": "Filament",
@@ -166,8 +168,6 @@
         "Search": "Søg",
         "SetupCurrentList": "Rediger visning",
         "Slicer": "Slicer",
-        "StartJob": "Start print",
-        "StartPrint": "Start print",
         "SuccessfullyCreated": "{filename} oprettet.",
         "SuccessfullyDeleted": "{filename} slettet.",
         "SuccessfullyMoved": "{filename} flyttet.",
@@ -177,8 +177,7 @@
         "Uploading": "Uploader",
         "UploadNewGcode": "Upload ny G-Code",
         "Used": "Brugt",
-        "View3D": "Vis i 3D",
-        "WrongFileUploaded": "Upload blev afvist for {filename}. Forkert filformat!"
+        "View3D": "Vis i 3D"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Fjern",
@@ -306,7 +305,6 @@
     },
     "JobQueue": {
         "AllJobs": "Alle Jobs",
-        "Delete": "Slet",
         "Empty": "Tom",
         "JobQueue": "Jobkø",
         "Jobs": "Jobs",
@@ -386,7 +384,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Tjek for opdateringer",
             "Commits": "Forpligtelse",
-            "CommitsAvailabe": "Ingen commits tilgængelige | {count} commits tilgængelige | {count} commits tilgængelige",
+            "CommitsAvailable": "Ingen commits tilgængelige | {count} commits tilgængelige | {count} commits tilgængelige",
             "CommitsOnDate": " Forpligtelse af {date}",
             "CommittedDaysAgo": "Forpligtelse delt for {days} dage siden",
             "CommittedHoursAgo": "Forpligtelse delt for {hours} timer siden",
@@ -408,41 +406,20 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "Alle",
-            "AlternateControls": "Alternative kontroller",
-            "Extrude": "Extrude",
-            "FeedAmountIn": "Længde",
-            "FeedrateIn": "Hastighed",
-            "Headline": "Kontrolpanel",
-            "HotendTooCold": "Hotend temp. under",
-            "InvertX": "Invertér X",
-            "InvertY": "Invertér Y",
-            "InvertZ": "Invertér Z",
-            "PleaseConfigureSteps": "Konfigurer steps",
-            "QGL": "QGL",
-            "Retract": "Retract",
-            "SettingsInterfaceControl": "Indstillinger > Interface > Control",
-            "SetupControls": "Kontrolindstillinger",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "DependenciesPanel": {
             "Dependency": "Afhængighed | Afhængigheder",
             "DependencyDescription": "Din nuværende version af {name} understøtter ikke alle funktioner i Mainsail. Opdater {name} til mindst version {neededVersion}."
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "Extrude",
+            "ExtruderTempTooLow": "Hotend temp. <",
+            "Headline": "Extruder Kontrolpanel",
+            "Retract": "Retract"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Genopret forbindelse",
             "SwitchToPrinter": "Skift til printer",
             "WebcamOff": "Sluk"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Funktionen \"{option}\" i sektion \"{section}\" er forældet.",
-            "DeprecatedValue": "Værdien \"{value}\" i muligheden \"{option}\" i sektion \"{section}\" er forældet.",
-            "DownloadLog": "Download log",
-            "KlipperWarnings": "Klipper advarsler"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Genstart alt",
@@ -499,25 +476,13 @@
                 "Empty": "Tom"
             }
         },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Download log",
-            "FollowingPluginHasAnError": "Følgende plugin har en fejl:",
-            "MoonrakerErrorInfo": "En fejl blev fundet under indlæsning af moonraker komponenter. Tjek logfilen og ret fejlen.",
-            "MoonrakerWarnings": "Moonraker advarsler"
-        },
         "PowerControlPanel": {
             "Error": "Fejl",
             "Off": "Sluk",
             "On": "Tænd",
             "PowerControl": "Strømstyring"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Ekstrudering",
-            "Headline": "Print indstillinger",
-            "SpeedFactor": "Hastighed"
-        },
         "StatusPanel": {
-            "Absolute": "Absolut",
             "CancelPrint": "Afbryd print",
             "ClearPrintStats": "Slet printstatistik",
             "Difference": "Opvarmning",
@@ -538,21 +503,16 @@
             "Max": "maks",
             "ObjectHeight": "Objekt Højde",
             "PausePrint": "Pause print",
-            "Position": "Position",
             "Print": "Reel printtid",
-            "Relative": "Relativ",
             "ReprintJob": "Print job igen",
             "Requested": "Anmodet",
             "ResumePrint": "Genoptag print",
             "Slicer": "Slicer",
             "Speed": "Hastighed",
             "Total": "Total",
-            "Unknown": "Ukendt",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Ukendt"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Autoskalér diagram",
             "Avg": "Gns",
             "Color": "Farve",
@@ -579,6 +539,22 @@
             "TempTooHigh": "Temperaturen er for høj for {name}! (max: {max})",
             "TempTooLow": "Temperaturen er for lav for {name}! (min: {min})"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "absolut",
+            "ALL": "Alle",
+            "Headline": "Kontrolpanel",
+            "InvertX": "Invertér X",
+            "InvertY": "Invertér Y",
+            "InvertZ": "Invertér Z",
+            "PleaseConfigureSteps": "Konfigurer steps",
+            "Position": "Position",
+            "QGL": "QGL",
+            "Relative": "relativ",
+            "SettingsInterfaceControl": "Indstillinger > Interface > Control",
+            "SetupControls": "Kontrolindstillinger",
+            "SpeedFactor": "Hastighed",
+            "ZTilt": "Z Tilt"
+        },
         "WebcamPanel": {
             "All": "Alle",
             "FPS": "FPS",
@@ -592,9 +568,9 @@
             "Later": "Senere",
             "Ok": "OK",
             "Save": "Gem",
-            "SAVE_CONFIG": "GEM KONFIGURATION",
-            "SaveInfoDescription": "Det nye z-offset er blevet beregnet og registreret. Klik på GEM KONFIGURATION for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
-            "SaveInfoDescriptionPrint": "Det nye z-offset er blevet beregnet og registreret. Klik på GEM KONFIGURATION i topbaren efter endt print for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
+            "SaveConfig": "GEM KONFIGURATION",
+            "SaveInfoDescription": "Det nye z-offset er blevet beregnet og registreret. Klik på \"GEM KONFIGURATION\" for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
+            "SaveInfoDescriptionPrint": "Det nye z-offset er blevet beregnet og registreret. Klik på \"GEM KONFIGURATION\" i topbaren efter endt print for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
             "SaveInfoHeadline": "Information",
             "ToEndstop": "Til Endstop",
             "ToProbe": "Til Probe"
@@ -876,8 +852,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Vis bekræftelse ved ændringer på Enhedens strømtilstand",
             "DisplayCANCEL_PRINT": "Vis Afbryd print",
             "DisplayCANCEL_PRINTDescription": "Viser Afbryd print knappen konstant - ingen tofaktor godkendelse nødvendig.",
-            "DisplayZOffset": "Vis Z-Offset-panel",
-            "DisplayZOffsetDescription": "Ellers vises panelet kun når et print er igang.",
             "GcodeThumbnails": "Gcode forhåndsvisninger",
             "GcodeThumbnailsDescription": "Klik på knappen for mere information.",
             "Guide": "Guide",

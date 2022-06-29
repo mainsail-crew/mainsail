@@ -8,7 +8,7 @@ import vuetify from '@/plugins/vuetify'
 import i18n from '@/plugins/i18n'
 import store from '@/store'
 import router from '@/plugins/router'
-
+import { WebSocketPlugin } from '@/plugins/webSocketClient'
 import { registerSW } from 'virtual:pwa-register'
 
 // noinspection JSUnusedGlobalSymbols
@@ -19,8 +19,8 @@ const updateSW = registerSW({
 Vue.config.productionTip = false
 
 // vue-observe-visibility
-import VueObserveVisibility from 'vue-observe-visibility'
-Vue.use(VueObserveVisibility)
+import { ObserveVisibility } from 'vue-observe-visibility'
+Vue.directive('observe-visibility', ObserveVisibility)
 
 //vue-meta
 import VueMeta from 'vue-meta'
@@ -30,10 +30,9 @@ Vue.use(VueMeta)
 import VueLoadImage from 'vue-load-image'
 Vue.component('VueLoadImage', VueLoadImage)
 
-//vue-toast-notification
+//vue-toast-notifications
 import VueToast from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-sugar.css'
-import { WebSocketPlugin } from '@/plugins/webSocketClient'
 
 Vue.use(VueToast, {
     duration: 3000,
@@ -43,11 +42,13 @@ Vue.use(VueToast, {
 import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
 import 'overlayscrollbars/css/OverlayScrollbars.css'
 
+const isSafari = navigator.userAgent.includes('Safari') && navigator.userAgent.search('Chrome') === -1
+const isTouch = 'ontouchstart' in window || (navigator.maxTouchPoints > 0 && navigator.maxTouchPoints !== 256)
 Vue.use(OverlayScrollbarsPlugin, {
     className: 'os-theme-light',
     scrollbars: {
         visibility: 'auto',
-        autoHide: 'scroll',
+        autoHide: isSafari && isTouch ? 'scroll' : 'move',
     },
 })
 
@@ -66,6 +67,12 @@ import { GridComponent, LegendComponent, TooltipComponent, DatasetComponent } fr
 
 use([SVGRenderer, LineChart, BarChart, LegendComponent, PieChart, DatasetComponent, GridComponent, TooltipComponent])
 Vue.component('EChart', ECharts)
+
+// vue-resize
+import 'vue-resize/dist/vue-resize.css'
+// @ts-ignore
+import VueResize from 'vue-resize'
+Vue.use(VueResize)
 
 //load config.json and init vue
 fetch('/config.json')

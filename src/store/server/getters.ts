@@ -33,7 +33,9 @@ export const getters: GetterTree<ServerState, any> = {
         },
 
     getConfig: (state) => (section: string, attribute: string) => {
-        if (section in state.config && attribute in state.config[section]) return state.config[section][attribute]
+        const config = state.config?.config ?? {}
+
+        if (section in config && attribute in config[section]) return config[section][attribute]
 
         return null
     },
@@ -158,5 +160,26 @@ export const getters: GetterTree<ServerState, any> = {
         })
 
         return interfaces
+    },
+
+    getThrottledStateFlags: (state) => {
+        let flags = state.throttled_state.flags.filter((flag: string) => flag !== '?')
+        /*let flags = [
+            'Under-Voltage Detected',
+            'Frequency Capped',
+            'Currently Throttled',
+            'Temperature Limit Active',
+            'Previously Under-Volted',
+            'Previously Frequency Capped',
+            'Previously Throttled',
+            'Previously Temperature Limited',
+        ]*/
+
+        flags = flags.map((flag) => {
+            flag = flag.replace(/ /g, '').replace(/-/g, '')
+            return flag.charAt(0).toUpperCase() + flag.slice(1)
+        })
+
+        return flags
     },
 }

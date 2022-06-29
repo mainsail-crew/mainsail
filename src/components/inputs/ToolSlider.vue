@@ -49,25 +49,25 @@
 </style>
 
 <template>
-    <v-container class="px-0 py-2">
-        <v-row>
-            <v-col class="pb-1 pt-3">
-                <v-subheader class="_tool-slider-subheader">
-                    <v-icon small class="mr-2">
-                        {{ icon }}
-                    </v-icon>
-                    <span>{{ label }}</span>
-                    <v-btn
-                        v-if="value !== defaultValue && !hasInputField"
-                        x-small
-                        icon
-                        class="ml-2"
-                        :disabled="isLocked"
-                        @click="resetSlider">
-                        <v-icon>{{ mdiRestart }}</v-icon>
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <span v-if="!hasInputField" class="font-weight-bold">{{ value }} {{ unit }}</span>
+    <v-row dense>
+        <v-col class="pa-0">
+            <v-subheader class="_tool-slider-subheader px-1">
+                <v-icon small class="mr-2">
+                    {{ icon }}
+                </v-icon>
+                <span>{{ label }}</span>
+                <v-btn
+                    v-if="value !== defaultValue && !hasInputField"
+                    x-small
+                    icon
+                    class="ml-2"
+                    :disabled="isLocked"
+                    @click="resetSlider">
+                    <v-icon>{{ mdiRestart }}</v-icon>
+                </v-btn>
+                <v-spacer></v-spacer>
+                <span v-if="!hasInputField" class="font-weight-bold">{{ value }} {{ unit }}</span>
+                <form @submit.prevent="submitInput">
                     <v-text-field
                         v-if="hasInputField"
                         v-model="numInput"
@@ -81,54 +81,53 @@
                         class="_slider-input d-flex align-center pt-1"
                         @blur="numInput = value"
                         @focus="$event.target.select()"
-                        @keydown="checkInvalidChars"
-                        @keyup.enter="submitInput">
+                        @keydown="checkInvalidChars">
                         <template v-if="value !== defaultValue || value !== numInput" #append>
                             <v-icon small @click="resetSlider">{{ mdiRestart }}</v-icon>
                         </template>
                     </v-text-field>
-                </v-subheader>
-                <transition name="fade">
-                    <!-- display errors-->
-                    <div v-show="errors().length > 0" class="_error-msg d-flex justify-end">
-                        {{ errors()[0] }}
-                    </div>
-                </transition>
-                <v-card-text class="py-0 pb-2 d-flex align-center">
-                    <v-btn
-                        v-if="lockSliders && isTouchDevice"
-                        plain
-                        small
-                        icon
-                        class="_lock-button"
-                        @click="isLocked = !isLocked">
-                        <v-icon small :color="isLocked ? 'red' : ''">
-                            {{ isLocked ? mdiLockOutline : mdiLockOpenVariantOutline }}
-                        </v-icon>
-                    </v-btn>
-                    <v-slider
-                        v-model="value"
-                        v-touch="{ start: resetLockTimer }"
-                        :disabled="isLocked"
-                        :min="min"
-                        :max="processedMax"
-                        :color="colorBar"
-                        hide-details
-                        @change="changeSlider">
-                        <template #prepend>
-                            <v-icon :disabled="isLocked || value <= min" @click="decrement">{{ mdiMinus }}</v-icon>
-                        </template>
+                </form>
+            </v-subheader>
+            <transition name="fade">
+                <!-- display errors-->
+                <div v-show="errors().length > 0" class="_error-msg d-flex justify-end">
+                    {{ errors()[0] }}
+                </div>
+            </transition>
+            <v-card-text class="pa-0 d-flex align-center">
+                <v-btn
+                    v-if="lockSliders && isTouchDevice"
+                    plain
+                    small
+                    icon
+                    class="_lock-button"
+                    @click="isLocked = !isLocked">
+                    <v-icon small :color="isLocked ? 'red' : ''">
+                        {{ isLocked ? mdiLockOutline : mdiLockOpenVariantOutline }}
+                    </v-icon>
+                </v-btn>
+                <v-slider
+                    v-model="value"
+                    v-touch="{ start: resetLockTimer }"
+                    :disabled="isLocked"
+                    :min="min"
+                    :max="processedMax"
+                    :color="colorBar"
+                    hide-details
+                    @change="changeSlider">
+                    <template #prepend>
+                        <v-icon :disabled="isLocked || value <= min" @click="decrement">{{ mdiMinus }}</v-icon>
+                    </template>
 
-                        <template #append>
-                            <v-icon :disabled="isLocked || (value >= max && !dynamicRange)" @click="increment">
-                                {{ mdiPlus }}
-                            </v-icon>
-                        </template>
-                    </v-slider>
-                </v-card-text>
-            </v-col>
-        </v-row>
-    </v-container>
+                    <template #append>
+                        <v-icon :disabled="isLocked || (value >= max && !dynamicRange)" @click="increment">
+                            {{ mdiPlus }}
+                        </v-icon>
+                    </template>
+                </v-slider>
+            </v-card-text>
+        </v-col>
+    </v-row>
 </template>
 
 <script lang="ts">

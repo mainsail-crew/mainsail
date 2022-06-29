@@ -16,7 +16,9 @@
     background-repeat: no-repeat;
 }
 
+/*noinspection CssUnusedSymbol*/
 .v-btn:not(.v-btn--outlined).primary {
+    /*noinspection CssUnresolvedCustomProperty*/
     color: var(--v-btn-text-primary);
 }
 
@@ -29,7 +31,6 @@
     <v-app dark :style="cssVars">
         <the-sidebar></the-sidebar>
         <the-topbar></the-topbar>
-
         <v-main id="content" :style="mainStyle">
             <overlay-scrollbars class="main-content-scrollbar">
                 <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
@@ -41,7 +42,9 @@
         <the-connecting-dialog v-else></the-connecting-dialog>
         <the-update-dialog></the-update-dialog>
         <the-editor></the-editor>
-        <the-timelapse-rendering-snackbar>-</the-timelapse-rendering-snackbar>
+        <the-timelapse-rendering-snackbar></the-timelapse-rendering-snackbar>
+        <the-fullscreen-upload></the-fullscreen-upload>
+        <the-upload-snackbar></the-upload-snackbar>
     </v-app>
 </template>
 
@@ -57,6 +60,8 @@ import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import TheEditor from '@/components/TheEditor.vue'
 import { panelToolbarHeight, topbarHeight, navigationItemHeight } from '@/store/variables'
 import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSnackbar.vue'
+import TheFullscreenUpload from '@/components/TheFullscreenUpload.vue'
+import TheUploadSnackbar from '@/components/TheUploadSnackbar.vue'
 
 @Component({
     components: {
@@ -67,6 +72,8 @@ import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSna
         TheUpdateDialog,
         TheTopbar,
         TheSidebar,
+        TheFullscreenUpload,
+        TheUploadSnackbar,
     },
     metaInfo() {
         const title = this.$store.getters['getTitle']
@@ -76,10 +83,6 @@ import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSna
     },
 })
 export default class App extends Mixins(BaseMixin) {
-    panelToolbarHeight = panelToolbarHeight
-    topbarHeight = topbarHeight
-    navigationItemHeight = navigationItemHeight
-
     get title(): string {
         return this.$store.getters['getTitle']
     }
@@ -242,21 +245,15 @@ export default class App extends Mixins(BaseMixin) {
             } else {
                 const favicon =
                     'data:image/svg+xml;base64,' +
-                    btoa(
-                        '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">' +
-                            '<g>' +
-                            '<path style="fill:' +
-                            this.logoColor +
-                            ';" d="M382.29,142.98L132.98,522.82L0,522.68L344.3,0l0,0C352.18,49.06,365.2,97.68,382.29,142.98"/>' +
-                            '<path style="fill:' +
-                            this.logoColor +
-                            ';" d="M413.28,213.54L208.5,522.92l132.94,0.19l135.03-206.33l0,0C452.69,284.29,431.53,249.77,413.28,213.54 L413.28,213.54"/>' +
-                            '<path style="fill:' +
-                            this.logoColor +
-                            ';" d="M599.38,447.69l-49.25,75.42L417,522.82l101.6-153.67l0,0C543.48,397.35,570.49,423.61,599.38,447.69 L599.38,447.69z"/>' +
-                            '</g>' +
-                            '</svg>'
-                    )
+                    window.btoa(`
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">
+                            <g>
+                                <path style="fill:${this.logoColor};" d="M382.29,142.98L132.98,522.82L0,522.68L344.3,0l0,0C352.18,49.06,365.2,97.68,382.29,142.98"/>
+                                <path style="fill:${this.logoColor};" d="M413.28,213.54L208.5,522.92l132.94,0.19l135.03-206.33l0,0C452.69,284.29,431.53,249.77,413.28,213.54 L413.28,213.54"/>
+                                <path style="fill:${this.logoColor};" d="M599.38,447.69l-49.25,75.42L417,522.82l101.6-153.67l0,0C543.48,397.35,570.49,423.61,599.38,447.69 L599.38,447.69z"/>
+                            </g>
+                        </svg>
+                    `)
 
                 favicon16.href = favicon
                 favicon32.href = favicon

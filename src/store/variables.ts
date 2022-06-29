@@ -2,18 +2,18 @@ export const defaultLogoColor = '#D41216'
 export const defaultPrimaryColor = '#2196f3'
 
 export const minKlipperVersion = 'v0.10.0-271'
-export const minMoonrakerVersion = 'v0.7.1-449'
+export const minMoonrakerVersion = 'v0.7.1-486'
 
 export const colorArray = ['#F44336', '#8e379d', '#03DAC5', '#3F51B5', '#ffde03', '#009688', '#E91E63']
 
 export const colorHeaterBed = '#2196F3'
 export const colorChamber = '#4CAF50'
+export const opacityHeaterActive = '99'
+export const opacityHeaterInactive = '44'
 export const themeDir = '.theme'
 export const datasetInterval = 1000
 export const datasetTypes = ['temperature', 'target', 'power', 'speed']
-
 export const datasetTypesInPercents = ['power', 'speed']
-
 export const additionalSensors = ['bme280', 'htu21d']
 
 /*
@@ -24,7 +24,7 @@ export const validGcodeExtensions = ['.gcode', '.g', '.gco', '.ufp', '.nc']
 /*
  * List of initable server components
  */
-export const initableServerComponents = ['history', 'power', 'updateManager', 'timelapse', 'jobQueue']
+export const initableServerComponents = ['history', 'power', 'updateManager', 'timelapse', 'jobQueue', 'announcements']
 
 /*
  * List of required klipper config modules
@@ -41,6 +41,7 @@ export const checkKlipperConfigModules = [
  * List of allowed metadata fields
  */
 export const allowedMetadata = [
+    'uuid',
     'estimated_time',
     'filament_name',
     'filament_type',
@@ -69,15 +70,14 @@ export const maxGcodeHistory = 50
  * List of generic dashboard panels
  */
 export const allDashboardPanels = [
-    'control',
+    'toolhead-control',
+    'extruder-control',
     'macros',
     'machine-settings',
     'miniconsole',
     'miscellaneous',
-    'printsettings',
-    'tools',
+    'temperature',
     'webcam',
-    'zoffset',
 ]
 
 export const thumbnailSmallMin = 32

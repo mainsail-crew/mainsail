@@ -1,6 +1,6 @@
 <template>
     <div>
-        <panel :icon="mdiTrayFull" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
+        <panel ref="jobqueuePanel" :icon="mdiTrayFull" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
             <template #buttons>
                 <v-btn
                     v-if="queueState === 'paused'"
@@ -93,21 +93,19 @@
                             </template>
                         </td>
                         <td class=" ">
-                            {{ item.filename }}
-                            <template v-if="existMetadata(item)">
-                                <br />
-                                <small>{{ getDescription(item) }}</small>
-                            </template>
+                            <div class="d-block text-truncate" :style="styleContentTdWidth">{{ item.filename }}</div>
+                            <small v-if="existMetadata(item)">{{ getDescription(item) }}</small>
                         </td>
                     </tr>
                 </template>
             </v-data-table>
+            <resize-observer @notify="handleResize" />
         </panel>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
-                    {{ $t('JobQueue.Delete') }}
+                    <v-icon class="mr-1">{{ mdiPlaylistRemove }}</v-icon>
+                    {{ $t('JobQueue.RemoveFromQueue') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -121,8 +119,7 @@ import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
-import { mdiPlay, mdiPause, mdiFile, mdiDelete, mdiTrayFull } from '@mdi/js'
+import { mdiPlay, mdiPause, mdiFile, mdiPlaylistRemove, mdiTrayFull } from '@mdi/js'
 @Component({
     components: { Panel },
 })
@@ -130,17 +127,22 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     mdiPlay = mdiPlay
     mdiPause = mdiPause
     mdiFile = mdiFile
-    mdiDelete = mdiDelete
+    mdiPlaylistRemove = mdiPlaylistRemove
     mdiTrayFull = mdiTrayFull
 
     formatFilesize = formatFilesize
 
+    private contentTdWidth = 100
     private contextMenu = {
         shown: false,
         touchTimer: undefined,
         x: 0,
         y: 0,
         item: {},
+    }
+
+    declare $refs: {
+        jobqueuePanel: any
     }
 
     get jobs() {
@@ -159,34 +161,8 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.jobqueue.countPerPage', value: newVal })
     }
 
-    refreshHistory() {
-        this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
-    }
-
-    formatPrintTime(totalSeconds: number) {
-        if (totalSeconds) {
-            let output = ''
-
-            const days = Math.floor(totalSeconds / (3600 * 24))
-            if (days) {
-                totalSeconds %= 3600 * 24
-                output += days + 'd'
-            }
-
-            const hours = Math.floor(totalSeconds / 3600)
-            totalSeconds %= 3600
-            if (hours) output += ' ' + hours + 'h'
-
-            const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += ' ' + minutes + 'm'
-
-            const seconds = totalSeconds % 60
-            if (seconds) output += ' ' + seconds.toFixed(0) + 's'
-
-            return output
-        }
-
-        return '--'
+    get styleContentTdWidth() {
+        return `width: ${this.contentTdWidth}px;`
     }
 
     showContextMenu(e: any, item: ServerHistoryStateJob) {
@@ -215,55 +191,11 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     }
 
     getSmallThumbnail(item: ServerJobQueueStateJob) {
-        if (item?.metadata?.thumbnails?.length) {
-            const thumbnail = item?.metadata?.thumbnails.find(
-                (thumb: any) =>
-                    thumb.width >= thumbnailSmallMin &&
-                    thumb.width <= thumbnailSmallMax &&
-                    thumb.height >= thumbnailSmallMin &&
-                    thumb.height <= thumbnailSmallMax
-            )
-            const path =
-                item.filename.lastIndexOf('/') !== -1
-                    ? 'gcodes/' + item.filename.slice(0, item.filename.lastIndexOf('/'))
-                    : 'gcodes'
-
-            if (thumbnail && 'relative_path' in thumbnail)
-                return (
-                    this.apiUrl +
-                    '/server/files/' +
-                    path +
-                    '/' +
-                    encodeURI(thumbnail.relative_path) +
-                    '?timestamp=' +
-                    item.metadata?.modified.getTime()
-                )
-        }
-
-        return ''
+        return this.$store.getters['server/jobQueue/getSmallThumbnail'](item)
     }
 
     getBigThumbnail(item: ServerJobQueueStateJob) {
-        if (item?.metadata?.thumbnails?.length) {
-            const thumbnail = item?.metadata?.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
-            const path =
-                item.filename.lastIndexOf('/') !== -1
-                    ? 'gcodes/' + item.filename.slice(0, item.filename.lastIndexOf('/'))
-                    : 'gcodes'
-
-            if (thumbnail && 'relative_path' in thumbnail)
-                return (
-                    this.apiUrl +
-                    '/server/files/' +
-                    path +
-                    '/' +
-                    encodeURI(thumbnail.relative_path) +
-                    '?timestamp=' +
-                    item.metadata?.modified.getTime()
-                )
-        }
-
-        return ''
+        return this.$store.getters['server/jobQueue/getBigThumbnail'](item)
     }
 
     getDescription(item: ServerJobQueueStateJob) {
@@ -286,5 +218,25 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     existMetadata(item: ServerJobQueueStateJob) {
         return item?.metadata?.metadataPulled
     }
+
+    mounted() {
+        this.calcContentTdWidth()
+    }
+
+    calcContentTdWidth() {
+        this.contentTdWidth = this.$refs.jobqueuePanel?.$el?.clientWidth - 48 - 32
+    }
+
+    handleResize() {
+        this.$nextTick(() => {
+            this.calcContentTdWidth()
+        })
+    }
 }
 </script>
+
+<style>
+.jobqueue-panel {
+    position: relative;
+}
+</style>

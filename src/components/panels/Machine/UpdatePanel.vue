@@ -557,7 +557,9 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
             output +=
                 local_version +
                 ' > ' +
-                this.$tc('Machine.UpdatePanel.CommitsAvailabe', commits_behind.length, { count: commits_behind.length })
+                this.$tc('Machine.UpdatePanel.CommitsAvailable', commits_behind.length, {
+                    count: commits_behind.length,
+                })
         else if ('full_version_string' in object && object.full_version_string !== '?')
             output += object.full_version_string
         else output += local_version

@@ -3,6 +3,7 @@
         ref="historyAllPrintStatus"
         v-observe-visibility="visibilityChanged"
         :option="chartOptions"
+        :autoresize="true"
         :init-options="{ renderer: 'svg' }"
         style="height: 250px; width: 100%"></e-chart>
 </template>
@@ -79,18 +80,12 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
     }
 
     get chart(): ECharts | null {
-        return this.$refs.historyAllPrintStatus ?? null
+        return this.$refs.historyAllPrintStatus?.chart ?? null
     }
 
     mounted() {
         this.chartOptions.series[0].data = this.printStatusArray
         this.chart?.setOption(this.chartOptions)
-
-        window.addEventListener('resize', this.eventListenerResize)
-    }
-
-    destroyed() {
-        window.removeEventListener('resize', this.eventListenerResize)
     }
 
     beforeDestroy() {
@@ -113,10 +108,6 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
 
     visibilityChanged(isVisible: boolean) {
         if (isVisible) this.chart?.resize()
-    }
-
-    eventListenerResize() {
-        this.chart?.resize()
     }
 }
 </script>

@@ -26,7 +26,7 @@ export interface PrinterState {
 
 export interface PrinterStateHeater {
     name: string
-    type: string
+    type: 'extruder' | 'heater_bed' | 'heater_generic'
     icon: string
     iconColor: string
     target: number
@@ -57,7 +57,7 @@ export interface PrinterStateTemperatureFan {
     max_temp: number
 }
 
-export interface PrinterStateSensor {
+export interface PrinterStateTemperatureSensor {
     name: string
     temperature: number
     additionSensors: PrinterStateAdditionSensor[]
@@ -66,6 +66,30 @@ export interface PrinterStateSensor {
     max_temp: number
     measured_min_temp: number
     measured_max_temp: number
+    chartColor: string
+    chartSeries: string[]
+}
+
+export interface PrinterStateTemperatureObject {
+    name: string
+    type: 'extruder' | 'heater_bed' | 'heater_generic' | 'temperature_fan' | 'temperature_sensor'
+    icon: string
+    iconColor: string
+    iconClass: string
+    state: string | null
+    avgState: string
+    temperature: number
+    additionSensors: PrinterStateAdditionSensor[]
+    target: number | null
+    presets: number[]
+    min_temp: number
+    max_temp: number
+    measured_min_temp: number | null
+    measured_max_temp: number | null
+    rpm: number | null
+    rpmClass: string
+    command: 'SET_HEATER_TEMPERATURE' | 'SET_TEMPERATURE_FAN_TARGET' | null
+    commandAttributeName: 'HEATER' | 'TEMPERATURE_FAN' | null
     chartColor: string
     chartSeries: string[]
 }
@@ -145,6 +169,10 @@ export interface PrinterStateMacro {
         // eslint-disable-next-line
         [key: string]: any
     }
+    variables: {
+        // eslint-disable-next-line
+        [key: string]: any
+    }
     params: PrinterStateMacroParams
 }
 
@@ -170,4 +198,32 @@ export interface PrinterStateMcu {
         measured_min_temp: number | null
         measured_max_temp: number | null
     }
+}
+
+export interface PrinterStateKlipperConfigWarning {
+    message: string
+    option: string
+    section: string
+    type: 'deprecated_value' | 'deprecated_option'
+    value: string
+}
+
+export interface PrinterStateExtruder {
+    key: string
+    name: string
+    filamentDiameter: number
+    minExtrudeTemp: number
+    nozzleDiameter: number
+    maxExtrudeOnlyDistance: number
+}
+
+export interface PrinterStateExtruderStepper {
+    key: string
+    name: string
+    extruder: number
+}
+
+export interface PrinterStateToolchangeMacro {
+    name: string
+    active: boolean
 }

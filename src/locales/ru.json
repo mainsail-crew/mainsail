@@ -1,5 +1,28 @@
 {
     "App": {
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "Опция '{option}' в разделе '{section}' устарела и будет удалена в будущем выпуске.",
+                "DeprecatedValue": "Значение '{value}' в опции '{option}' в секции '{section}' устарело и будет удалено в будущем релизе.",
+                "KlipperWarning": "Предупреждение о клиппере",
+                "DeprecatedValueHeadline": "Устаревшее значение клиппера",
+                "DeprecatedOptionHeadline": "Устаревшая опция клиппера"
+            },
+            "Remind": "Напомнить:",
+            "NextReboot": "следующая перезагрузка",
+            "Never": "никогда",
+            "DismissAll": "Отказаться от всех",
+            "NoNotification": "Уведомление отсутствует",
+            "DependencyName": "Зависимость: {name}",
+            "DependencyDescription": "Текущая версия {name} не поддерживает все возможности Mainsail. Обновите {name} по крайней мере до {neededVersion}.",
+            "MoonrakerWarnings": {
+                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerWarning": "Предупреждение Moonraker",
+                "UnparsedConfigOption": "Обнаружена неразобранная опция конфигурации '{option}: {value}' обнаружена в секции [{section}]. Это может быть опция, которая больше недоступна, или результат неудачной загрузки модуля. В будущем это приведет к ошибке при запуске.",
+                "UnparsedConfigSection": "Обнаружен неразобранный раздел конфигурации  [{section}]. Это может быть результатом неудачной загрузки компонента. В будущем это приведет к ошибке при запуске.",
+                "MoonrakerFailedComponentDescription": "Обнаружена ошибка при загрузке компонента moonraker '{component}'. Пожалуйста, проверьте лог-файл и устраните проблему."
+            }
+        },
         "Printers": "Принтер",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "ARM-ядро(ядра) rPi в настоящее время дросселируется.",
@@ -10,8 +33,6 @@
             "DescriptionPreviouslyUnderVolted": "Напряжение питания rPI упало ниже 4,65 В хотя бы один раз с момента последнего включения питания.",
             "DescriptionTemperatureLimitActive": "rPi uC (только 3A+/3B+) температура в настоящее время выше плавного предела (по умолчанию 60C).",
             "DescriptionUnderVoltageDetected": "Напряжение питания rPI в настоящее время ниже 4,65 В",
-            "HeadlineCurrentFlags": "Текущие флаги",
-            "HeadlinePreviouslyFlags": "Ранее флаги",
             "TitleCurrentlyThrottled": "В настоящее время дросселируется",
             "TitleFrequencyCapped": "Частота ограничена",
             "TitlePreviouslyFrequencyCapped": "Ранее частота была ограничена",
@@ -78,6 +99,11 @@
             "RecoveringDone": "Восстановление проделанной работы",
             "Updating": "Обновление",
             "UpdatingDone": "Обновление выполнено"
+        },
+        "NumberInput": {
+            "GreaterOrEqualError": "Должно быть больше или равно {min}!",
+            "MustBeBetweenError": "Должно быть между {min} и {max}!",
+            "NoEmptyAllowedError": "Вход не должен быть пустым!"
         }
     },
     "ConnectionDialog": {
@@ -129,8 +155,6 @@
         "DeleteDirectoryQuestion": "Вы действительно хотите удалить каталог \"{name}\" со всем его содержимым?",
         "Download": "Скачать",
         "Downloading": "Загрузка",
-        "DoYouWantToStartFilename": "Вы хотите начать {filename}?",
-        "DropFilesToAddGcode": "Удалить файлы для добавления кода.",
         "EditFile": "Редактировать файл",
         "Empty": "Пустой",
         "Filament": "Филамент",
@@ -161,8 +185,6 @@
         "Search": "Поиск",
         "SetupCurrentList": "Создать текущий список",
         "Slicer": "Slicer",
-        "StartJob": "Стартовый заказ",
-        "StartPrint": "Druck starten",
         "SuccessfullyCreated": "Успешно создано {filename}.",
         "SuccessfullyDeleted": "Успешно удалено {filename}.",
         "SuccessfullyMoved": "Успешное перемещение {filename}.",
@@ -173,7 +195,12 @@
         "UploadNewGcode": "Загрузить новый Gcode",
         "Used": "Использует: ",
         "View3D": "3D просмотр",
-        "WrongFileUploaded": "В загрузке файла {filename} было отказано. Неправильный формат файла!"
+        "DeleteSelectedQuestion": "Вы действительно хотите удалить {count} выбранных файлов?",
+        "LastEndTime": "Последнее время окончания",
+        "LastFilamentUsed": "Последний использованный материал",
+        "LastPrintDuration": "Продолжительность последней печати",
+        "LastStartTime": "Время последнего запуска",
+        "LastTotalDuration": "Последняя общая продолжительность"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Удалить",
@@ -215,8 +242,6 @@
             "Variance": "Отклонение"
         },
         "DeleteBedMeshProfile": "Удалить профиль высоты кровати",
-        "Deleted": "удалённый",
-        "DoYouReallyWantToCalibrate": "Ты действительно хочешь начать калибровку постели?",
         "DoYouReallyWantToDelete": "Вы действительно хотите удалить профиль \"{name}\"?",
         "ErrorKlipperNotReady": "Клиппер не готов. Карта высот отключена.",
         "Flat": "Плоский",
@@ -230,11 +255,16 @@
         "Remove": "удалить",
         "Rename": "переименовать",
         "RenameBedMeshProfile": "Переименовать профиль высоты кровати",
-        "Scale": "Шкала",
         "TitleCalibrate": " новая постельная сетка",
         "TitleClear": "Ясная сетка",
         "TitleHomeAll": "Дома все",
-        "Wireframe": "Каркас"
+        "Wireframe": "Каркас",
+        "Later": "Позже",
+        "Ok": "ХОРОШО",
+        "RemoveSaveDescription": "Профиль bed_mesh был зарегистрирован как удаленный. Нажмите на SAVE_CONFIG, чтобы удалить его из файла printer.cfg, и перезапустите Klipper.",
+        "SAVE_CONFIG": "СОХРАНИТЬ_КОНФИГ",
+        "ScaleGradient": "Градиент шкалы",
+        "ScaleZMax": "Масштаб z-макс."
     },
     "History": {
         "AllJobs": "весь",
@@ -268,7 +298,6 @@
         "PrinttimeAvg": "время печати",
         "Reprint": "Перепечатка",
         "Search": "Поиск",
-        "ShowStatusName": "Показать \" {name}\" ({count})",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Версия",
         "StartTime": "Время начала",
@@ -280,16 +309,36 @@
         "TotalFilamentUsed": "Общая используемая нить",
         "TotalJobs": "Всего отпечатков",
         "TotalPrinttime": "Общее время печати",
-        "TotalTime": "Общее время"
+        "TotalTime": "Общее время",
+        "AddNote": "Добавить заметку",
+        "Cancel": "Отмена",
+        "CreateNote": "Создать заметку",
+        "DeleteSelectedQuestion": "Вы действительно хотите удалить {count} выбранных заданий?",
+        "EditNote": "Примечание редакции",
+        "Note": "Примечание",
+        "Save": "сохранить",
+        "SelectedFilamentUsed": "Выбранный используемый материал",
+        "SelectedJobs": "Избранные вакансии",
+        "SelectedPrinttime": "Выбранное время печати",
+        "TitleExportHistory": "История экспорта",
+        "StatusValues": {
+            "cancelled": "Отменено",
+            "completed": "Завершено",
+            "error": "Ошибка",
+            "in_progress": "В процессе выполнения",
+            "klippy_disconnect": "Клипповое разъединение",
+            "klippy_shutdown": "Клиппи отключение",
+            "server_exit": "Выход сервера"
+        }
     },
     "JobQueue": {
         "AllJobs": "Все заказы",
-        "Delete": "Удалить",
         "Empty": "Пустой",
         "JobQueue": "Очередь на работу",
         "Jobs": "Заказы",
         "Pause": "Pause",
-        "Start": "Начало"
+        "Start": "Начало",
+        "RemoveFromQueue": "Удалить из очереди"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -323,7 +372,9 @@
             "Total": "Всего",
             "UploadFile": "Загрузить файл",
             "Uploading": "Загрузка",
-            "Used": "Используется"
+            "Used": "Используется",
+            "DeleteSelectedQuestion": "Удалить {count} выбранных элементов?",
+            "Root": "Корень"
         },
         "EndstopPanel": {
             "Endstop": "Концевой упор",
@@ -336,22 +387,34 @@
             "Logfiles": "Журналы"
         },
         "SystemPanel": {
-            "Awake": "Проснись",
             "Constants": "Константы",
-            "Distro": "Распространение",
-            "Frequency": "Частота",
             "HostDetails": "Информация о хозяине",
             "LastStats": "Последняя статистика",
             "Load": "Нагрузка",
             "Memory": "Память",
-            "Os": "OS",
             "SystemLoad": "Нагрузки на систему",
-            "Version": "Версия"
+            "Cpu": "CPU",
+            "NoMoreInfos": "Больше никакой информации",
+            "Values": {
+                "Awake": "Проснуться: {awake}",
+                "Bandwidth": "Пропускная способность: {bandwidth}/s",
+                "Distro": "Дистрибутив: {name} {version_id}",
+                "Frequency": "Freq: {frequency}",
+                "Load": "Загрузка: {load}",
+                "Memory": "Память: {memory}",
+                "Os": "Операционная система: {os}",
+                "Received": "Получено: {received}",
+                "Temp": "Температура: {temp}°C",
+                "TempMax": "макс: {темп}°C",
+                "TempMin": "мин: {temp}°C",
+                "Transmitted": "Передано: {transmitted}",
+                "Version": "Версия: {version}"
+            }
         },
         "UpdatePanel": {
             "CheckForUpdates": "Проверьте наличие обновлений",
             "Commits": "Обязательства",
-            "CommitsAvailabe": "нет доступных коммитов | {count} доступных коммитов | {count} доступных коммитов",
+            "CommitsAvailable": "нет доступных коммитов | {count} доступных коммитов | {count} доступных коммитов",
             "CommitsOnDate": "Отправлено {date}",
             "CommittedDaysAgo": "Отправлено {days} назад",
             "CommittedHoursAgo": "Отправлено {hours} назад",
@@ -373,44 +436,25 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "ALL",
-            "AlternateControls": "Альтернативный контроль",
-            "Controls": "Контроль",
+        "ExtruderControlPanel": {
             "Extrude": "Экструдировать",
-            "FeedAmountIn": "Скорость подачи Количество в",
-            "FeedrateIn": "Скорость подачи",
-            "Headline": "Управление",
-            "Home": "Home",
-            "HotendTooCold": "Температура нагревателя ниже, чем",
-            "InvertX": "X инвертировать",
-            "InvertY": "Y инвертировать",
-            "InvertZ": "Z инвертировать",
-            "Macros": "Макрос",
-            "PleaseConfigureSteps": "Пожалуйста, настройте расстояние вращения",
-            "QGL": "QGL",
+            "ExtrusionFactor": "Коэффициент экструзии",
             "Retract": "Въехать",
-            "SettingsInterfaceControl": "Настройки > интерфейс > управление",
-            "SetupControls": "Установить контроль",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
-        "DependenciesPanel": {
-            "Dependency": "Зависимость | Зависимости",
-            "DependencyDescription": "Ваша текущая версия {name} не поддерживает все функции Mainsail. Обновите {name} по крайней мере до версии {neededVersion}."
+            "Allowed": "Разрешено",
+            "EstimatedExtrusion": "Предполагаемая экструзия:",
+            "ExtruderTempTooLow": "Температура экструдера. <",
+            "ExtrusionFeedrate": "Скорость подачи экструзии",
+            "FilamentLength": "Длина нити",
+            "Headline": "Экструдер",
+            "LoadFilament": "Нагрузочная нить",
+            "Requested": "Запрошено",
+            "TooLargeExtrusion": "Экструзия слишком велика!",
+            "UnloadFilament": "Выгрузить нить"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Подключите",
             "SwitchToPrinter": "Переключение на принтер",
             "WebcamOff": "Офф"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Опция '{option}' в разделе '{section}' устарела и будет удалена в будущем выпуске.",
-            "DeprecatedValue": "Значение '{value}' в опции '{option}' в секции '{section}' устарело и будет удалено в будущем релизе.",
-            "DownloadLog": "Загрузить файл журнала",
-            "KlipperWarnings": "Предупреждения о клиперах"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Перезапуск прошивки",
@@ -495,13 +539,7 @@
             "On": "На сайте",
             "PowerControl": "Переключатель питания"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Коэффициент экструзии",
-            "Headline": "Настройки печати",
-            "SpeedFactor": "Коэффициент скорости"
-        },
         "StatusPanel": {
-            "Absolute": "Абсолютно",
             "CancelPrint": "Отменить давление",
             "ClearPrintStats": "Удаление статистики печати",
             "Difference": "Разница",
@@ -522,9 +560,7 @@
             "Max": "макс.",
             "ObjectHeight": "Высота объекта",
             "PausePrint": "Давление прерывания",
-            "Position": "Позиция",
             "Print": "Печать",
-            "Relative": "Инкрементальный",
             "ReprintJob": "Повторять давление",
             "Requested": "Запрошено",
             "ResumePrint": "Возобновить печать",
@@ -532,11 +568,15 @@
             "Speed": "Скорость",
             "Total": "Всего",
             "Unknown": "Неизвестный",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "EmptyGcodes": "G-код отсутствует.",
+            "EmptyJobqueue": "There is currently no file in the job queue.",
+            "Files": "Файлы",
+            "Jobqueue": "Jobqueue ({count})",
+            "JobqueueMoreFiles": "нет больше рабочих мест | одно рабочее место | {count} больше рабочих мест",
+            "PrintTime": "Время печати",
+            "Status": "Статус"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Автомасштабируемая диаграмма",
             "Avg": "средний",
             "Color": "Цвет",
@@ -570,17 +610,39 @@
             "TempTooLow": "Температура слишком низкая для {name}! (min: {min})",
             "UNKNOWN": "ЗНАЕТЕ"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "Абсолютно",
+            "ALL": "ALL",
+            "Controls": "Контроль",
+            "Home": "Home",
+            "InvertX": "X инвертировать",
+            "InvertY": "Y инвертировать",
+            "InvertZ": "Z инвертировать",
+            "Macros": "Макрос",
+            "PleaseConfigureSteps": "Пожалуйста, настройте расстояние вращения",
+            "Position": "Позиция",
+            "QGL": "QGL",
+            "Relative": "Инкрементальный",
+            "SettingsInterfaceControl": "Настройки > интерфейс > управление",
+            "SetupControls": "Установить контроль",
+            "SpeedFactor": "Коэффициент скорости",
+            "ZTilt": "Z Наклон",
+            "Headline": "Головка инструмента",
+            "Invalid": "Неверный",
+            "MotorsOff": "Двигатели выключены",
+            "OutOfRange": "Вне зоны доступа!",
+            "XOffset": "X-смещение",
+            "YOffset": "Y-смещение",
+            "ZOffset": "Z-смещение"
+        },
         "WebcamPanel": {
             "All": "Все",
             "FPS": "FPS",
             "Headline": "Веб-камера",
             "UnknownWebcamService": "Неизвестная веб-камера",
             "UrlNotAvailable": "URL недоступен",
-            "Webcam": "Веб-камера"
-        },
-        "ZOffsetPanel": {
-            "CurrentOffset": "Смещение тока: ",
-            "ZBabyStepping": "Z Смещение"
+            "Webcam": "Веб-камера",
+            "NoWebcam": "Нет доступной веб-камеры. Добавьте веб-камеру в разделе \"Настройки интерфейса\" -> \"Веб-камеры\"."
         },
         "ZoffsetPanel": {
             "CurrentOffset": "Текущее смещение",
@@ -588,12 +650,29 @@
             "Later": "Позже",
             "Ok": "OK",
             "Save": "Сохранить",
-            "SAVE_CONFIG": "СОХРАНИТЬ_КОНФИГ",
-            "SaveInfoDescription": "Новое z-смещение было рассчитано и зарегистрировано. Нажмите SAVE_CONFIG, чтобы сохранить новое z-смещение в файле printer.cfg, и перезапустите Klipper.",
-            "SaveInfoDescriptionPrint": "Новое смещение по Z было рассчитано и зарегистрировано. После печати нажмите на SAVE_CONFIG в верхней панели, чтобы сохранить его в файле printer.cfg, и перезапустите Klipper.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "Новое z-смещение было рассчитано и зарегистрировано. Нажмите \"SAVE CONFIG\", чтобы сохранить новое z-смещение в файле printer.cfg, и перезапустите Klipper.",
+            "SaveInfoDescriptionPrint": "Новое смещение по Z было рассчитано и зарегистрировано. После печати нажмите на \"SAVE CONFIG\" в верхней панели, чтобы сохранить его в файле printer.cfg, и перезапустите Klipper.",
             "SaveInfoHeadline": "Информация",
             "ToEndstop": "до конечной остановки",
-            "ToProbe": "к зонду"
+            "ToProbe": "к зонду",
+            "Clear": "Очистить"
+        },
+        "ControlPanel": {
+            "ALL": "ВСЕ",
+            "AlternateControls": "Альтернативные средства управления",
+            "Headline": "Управление",
+            "InvertX": "Инвертировать X",
+            "InvertY": "Инвертировать Y",
+            "InvertZ": "Инвертировать Z",
+            "PleaseConfigureSteps": "Пожалуйста, настройте шаги",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Настройки > Интерфейс > Управление",
+            "SetupControls": "Элементы управления настройками",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Наклон"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -630,7 +709,9 @@
         "SelectPrinter": "Выберите принтер",
         "TryAgain": "повторите попытку",
         "UpdatePrinter": "Обновление принтера",
-        "YouCanFindMore": "Более подробную информацию вы можете найти на сайте"
+        "YouCanFindMore": "Более подробную информацию вы можете найти на сайте",
+        "HostnameIp": "Имя хоста/IP",
+        "Port": "Порт"
     },
     "Settings": {
         "Cancel": "Отмена",
@@ -652,7 +733,8 @@
             "Name": "Имя",
             "Regex": "Regex",
             "StoreButton": "Фильтр магазина",
-            "UpdateButton": "Обновление фильтра"
+            "UpdateButton": "Обновление фильтра",
+            "Filters": "Фильтры"
         },
         "ControlTab": {
             "Bars": "Бар",
@@ -673,7 +755,15 @@
             "SpeedXY": "Скорость XY",
             "SpeedZ": "Скорость Z",
             "Style": "Стиль",
-            "ValueGreaterThan": "Значение должно быть больше, чем {value}"
+            "ValueGreaterThan": "Значение должно быть больше, чем {value}",
+            "EnableXYHoming": "Включение комбинированного наведения по осям X и Y",
+            "EstimatedExtrusionInfo": "Показать примерную информацию об экструзии",
+            "EstimatedExtrusionInfoDescription": "Показать / скрыть информацию о предполагаемых экструзиях на основе количества экструзии и скорости подачи",
+            "IsDefault": " (по умолчанию)",
+            "QuadGantryLevel": "Quad Gantry Level{isDefault}",
+            "ZOffsetIncrements": "Приращения Z-смещения (в мм)",
+            "ZTiltAdjust": "Z-Tilt Adjust{isDefault}",
+            "MotorsOff": "Двигатели выключены {isDefault}"
         },
         "DashboardTab": {
             "Dashboard": "Приборная панель",
@@ -689,7 +779,11 @@
             "ConfirmUnsavedChangesDescription": "Если включено, то для сохранения/отмены несохраненных изменений требуется подтверждение. Если отключено, изменения отбрасываются в фоновом режиме.",
             "Editor": "Редактор",
             "UseEscToClose": "Нажмите ESC, чтобы закрыть редактор",
-            "UseEscToCloseDescription": "Позволяет закрыть редактор с помощью ESC."
+            "UseEscToCloseDescription": "Позволяет закрыть редактор с помощью ESC.",
+            "KlipperRestartMethod": "Метод перезапуска клиппера",
+            "KlipperRestartMethodDescription": "Выберите, какой метод перезапуска будет использоваться при 'Save & Restart' при редактировании файлов конфигурации Klipper.",
+            "MoonrakerRestartInstance": "Инстанция перезапуска Moonraker",
+            "MoonrakerRestartInstanceDescription": "Выберите, какая служба Moonraker будет перезапускаться при 'Save & Restart' при редактировании файлов конфигурации Moonraker."
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Цвет фона",
@@ -698,7 +792,8 @@
             "GridColor": "Цвет сетки",
             "MaxFeed": "Максимальная подача",
             "MinFeed": "Мин. подача",
-            "ShowAxes": "Показать оси"
+            "ShowAxes": "Показать оси",
+            "ProgressColor": "Цвет прогресса"
         },
         "GeneralTab": {
             "Backup": "Резервная копия",
@@ -722,7 +817,12 @@
             "PrinterName": "Имя принтера",
             "Reset": "сброс",
             "Restore": "Восстановить",
-            "RestoreDialog": "Пожалуйста, выберите все разделы, которые вы хотите восстановить:"
+            "RestoreDialog": "Пожалуйста, выберите все разделы, которые вы хотите восстановить:",
+            "EstimateValues": {
+                "Filament": "Филамент",
+                "File": "Файл",
+                "Slicer": "Ломтерезка"
+            }
         },
         "InterfaceSettings": "Настройки интерфейса",
         "MacrosTab": {
@@ -773,7 +873,11 @@
             "PresetInfo": "Вы должны задать минимальную целевую температуру или пользовательский gcode.",
             "StoreButton": "Сохранить предустановку",
             "UpdateButton": "Обновление предустановки",
-            "UpdateCooldown": "Обновить время ожидания"
+            "UpdateCooldown": "Обновить время ожидания",
+            "ErrorInvalidValue": "Недопустимое значение",
+            "ErrorNameNotUnique": "Имя уже существует",
+            "ErrorNameRequired": "Требуемое имя",
+            "PresetNamePlaceholder": "Имя предустановки (обязательно)"
         },
         "RemotePrintersTab": {
             "AddPrinter": "Добавить принтер",
@@ -861,8 +965,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Отображение диалога подтверждения перед изменением питания устройств.",
             "DisplayCANCEL_PRINT": "Показать CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Отображает кнопку CANCEL_PRINT постоянно - дальнейшее подтверждение не требуется.",
-            "DisplayZOffset": "Показать панель Z-смещения",
-            "DisplayZOffsetDescription": "В противном случае панель управления отображается только после запуска печати.",
             "GcodeThumbnails": "Эскизы G-кода",
             "GcodeThumbnailsDescription": "Нажмите на кнопку, чтобы перейти к руководству.",
             "Guide": "Руководство",
@@ -959,5 +1061,18 @@
         "Variable": "Переменная",
         "Video": "Видео"
     },
-    "title": "Pусский"
+    "title": "Pусский",
+    "FullscreenUpload": {
+        "CannotUploadFile": "Невозможно загрузить файл!",
+        "DropFilesToUploadFiles": "Сбрасывайте файлы для загрузки"
+    },
+    "Dialogs": {
+        "StartPrint": {
+            "Headline": "Начать работу",
+            "Cancel": "Cancel",
+            "DoYouWantToStartFilename": "Вы хотите начать {имя файла}?",
+            "Print": "вывести",
+            "Timelapse": "Таймлапс"
+        }
+    }
 }

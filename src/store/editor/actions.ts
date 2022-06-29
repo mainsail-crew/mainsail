@@ -13,7 +13,15 @@ export const actions: ActionTree<EditorState, RootState> = {
     },
 
     openFile({ state, dispatch, commit, rootGetters, rootState }, payload) {
-        const fullFilepath = payload.root + payload.path + '/' + payload.filename
+        const fullFilepathArray = []
+        fullFilepathArray.push(payload.root)
+        let path = payload.path
+        if (path.slice(0, 1) === '/') path = path.slice(1)
+        if (path.slice(-1) === '/') path = path.slice(0, -1)
+        if (path !== '') fullFilepathArray.push(path)
+        fullFilepathArray.push(payload.filename)
+
+        const fullFilepath = fullFilepathArray.join('/')
         const url = rootGetters['socket/getUrl'] + '/server/files/' + encodeURI(fullFilepath) + `?${Date.now()}`
 
         if (state.cancelToken) dispatch('cancelLoad')
@@ -66,7 +74,7 @@ export const actions: ActionTree<EditorState, RootState> = {
                 commit('openFile', {
                     filename: payload.filename,
                     fileroot: payload.root,
-                    filepath: payload.path,
+                    filepath: path,
                     file,
                 })
             })
@@ -85,7 +93,7 @@ export const actions: ActionTree<EditorState, RootState> = {
         const formData = new FormData()
         formData.append('file', content, state.filename)
         formData.append('root', state.fileroot)
-        formData.append('path', state.filepath.slice(1))
+        formData.append('path', state.filepath)
         formData.append('checksum', sha256(payload.content))
 
         const url = rootGetters['socket/getUrl'] + '/server/files/upload'

@@ -32,7 +32,10 @@
                 <h3 class="text-h5 mb-3">{{ $t('Settings.WebcamsTab.Webcams') }}</h3>
                 <div v-for="webcam in webcams" :key="webcam.id">
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="webcam.name" :icon="webcam.icon" :sub-title="getSubtitle(webcam)">
+                    <settings-row
+                        :title="webcam.name"
+                        :icon="convertWebcamIcon(webcam.icon)"
+                        :sub-title="getSubtitle(webcam)">
                         <v-btn small outlined @click="editWebcam(webcam)">
                             <v-icon small left>{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
@@ -76,7 +79,7 @@
                                                     v-on="on"
                                                     @blur="selectIcon = !selectIcon"
                                                     @focus="selectIcon = !selectIcon">
-                                                    <v-icon>{{ form.icon }}</v-icon>
+                                                    <v-icon>{{ convertWebcamIcon(form.icon) }}</v-icon>
                                                     <v-icon
                                                         :class="!selectIcon ? '' : '_rotate-180'"
                                                         :color="!selectIcon ? '' : 'primary'"
@@ -91,8 +94,10 @@
                                                     :key="icon.value"
                                                     link
                                                     @click="setFormIcon(icon.value)">
-                                                    <v-list-item-icon class="mr-0">
-                                                        <v-icon small>{{ icon.value }}</v-icon>
+                                                    <v-list-item-icon class="mr-2">
+                                                        <v-icon small class="mt-1">
+                                                            {{ convertWebcamIcon(icon.value) }}
+                                                        </v-icon>
                                                     </v-list-item-icon>
                                                     <v-list-item-content>
                                                         <v-list-item-title v-text="icon.text"></v-list-item-title>
@@ -224,19 +229,8 @@ import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
-import {
-    mdiAlbum,
-    mdiCampfire,
-    mdiDoor,
-    mdiMenuDown,
-    mdiDelete,
-    mdiPencil,
-    mdiPrinter3d,
-    mdiPrinter3dNozzle,
-    mdiRadiatorDisabled,
-    mdiRaspberryPi,
-    mdiWebcam,
-} from '@mdi/js'
+import { mdiMenuDown, mdiDelete, mdiPencil, mdiWebcam } from '@mdi/js'
+import WebcamMixin from '@/components/mixins/webcam'
 
 interface webcamForm {
     bool: boolean
@@ -261,7 +255,7 @@ interface webcamForm {
         'webcam-ipstreamer': Ipstreamer,
     },
 })
-export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
+export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
     mdiPencil = mdiPencil
     mdiDelete = mdiDelete
     mdiMenuDown = mdiMenuDown
@@ -297,14 +291,14 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
 
     get iconItems() {
         return [
-            { value: mdiPrinter3d, text: this.$t('Settings.WebcamsTab.IconPrinter') },
-            { value: mdiPrinter3dNozzle, text: this.$t('Settings.WebcamsTab.IconNozzle') },
-            { value: mdiRadiatorDisabled, text: this.$t('Settings.WebcamsTab.IconBed') },
-            { value: mdiWebcam, text: this.$t('Settings.WebcamsTab.IconCam') },
-            { value: mdiAlbum, text: this.$t('Settings.WebcamsTab.IconFilament') },
-            { value: mdiDoor, text: this.$t('Settings.WebcamsTab.IconDoor') },
-            { value: mdiRaspberryPi, text: this.$t('Settings.WebcamsTab.IconMcu') },
-            { value: mdiCampfire, text: this.$t('Settings.WebcamsTab.IconHot') },
+            { value: 'mdiPrinter3d', text: this.$t('Settings.WebcamsTab.IconPrinter') },
+            { value: 'mdiPrinter3dNozzle', text: this.$t('Settings.WebcamsTab.IconNozzle') },
+            { value: 'mdiRadiatorDisabled', text: this.$t('Settings.WebcamsTab.IconBed') },
+            { value: 'mdiWebcam', text: this.$t('Settings.WebcamsTab.IconCam') },
+            { value: 'mdiAlbum', text: this.$t('Settings.WebcamsTab.IconFilament') },
+            { value: 'mdiDoor', text: this.$t('Settings.WebcamsTab.IconDoor') },
+            { value: 'mdiRaspberryPi', text: this.$t('Settings.WebcamsTab.IconMcu') },
+            { value: 'mdiCampfire', text: this.$t('Settings.WebcamsTab.IconHot') },
         ]
     }
 

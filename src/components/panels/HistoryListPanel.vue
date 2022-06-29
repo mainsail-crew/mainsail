@@ -31,7 +31,7 @@
                         <template v-if="selectedJobs.length">
                             <v-btn
                                 :title="$t('History.Delete')"
-                                color="warning"
+                                color="error"
                                 class="px-2 minwidth-0 ml-3"
                                 @click="deleteSelectedDialog = true">
                                 <v-icon>{{ mdiDelete }}</v-icon>
@@ -108,12 +108,6 @@
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
                 show-select>
-                <template slot="items" slot-scope="props">
-                    <td v-for="header in filteredHeaders" :key="header.text" class="text-no-wrap">
-                        {{ props.item[header.value] }}
-                    </td>
-                </template>
-
                 <template slot="no-data">
                     <div class="text-center">{{ $t('History.Empty') }}</div>
                 </template>
@@ -240,8 +234,8 @@
                     <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
                     {{ $t('History.Reprint') }}
                 </v-list-item>
-                <v-list-item @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
+                <v-list-item class="red--text" @click="deleteJob(contextMenu.item)">
+                    <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('History.Delete') }}
                 </v-list-item>
             </v-list>
@@ -995,11 +989,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     getStatusIcon(status: string) {
-        return this.$store.getters['server/history/getPrintStatusChipIcon'](status)
+        return this.$store.getters['server/history/getPrintStatusIcon'](status)
     }
 
     getStatusColor(status: string) {
-        return this.$store.getters['server/history/getPrintStatusChipColor'](status)
+        return this.$store.getters['server/history/getPrintStatusIconColor'](status)
     }
 
     outputValue(col: any, item: any, format: boolean = true, escapeChar: string | null = null) {

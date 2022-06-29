@@ -1,10 +1,3 @@
-<style scoped>
-.ghost {
-    opacity: 0.5;
-    background: #c8ebfb;
-}
-</style>
-
 <template>
     <v-card flat>
         <v-card-text>
@@ -14,34 +7,34 @@
                         <v-list dense>
                             <v-list-item>
                                 <v-row>
-                                    <v-col class="col-auto pr-0">
+                                    <v-col class="col-auto pr-0 pl-8">
                                         <v-icon>{{ mdiInformation }}</v-icon>
                                     </v-col>
-                                    <v-col>
+                                    <v-col class="pr-0 text-truncate">
                                         {{ $t('Panels.StatusPanel.Headline') }}
                                     </v-col>
-                                    <v-col class="col-auto">
+                                    <v-col class="col-auto pl-0">
                                         <v-icon color="grey lighten-1">{{ mdiLock }}</v-icon>
                                     </v-col>
                                 </v-row>
                             </v-list-item>
                             <draggable
                                 v-model="mobileLayout"
-                                :handle="isMobile ? '.handle' : ''"
+                                handle=".handle"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
                                 group="mobileViewport">
                                 <template v-for="element in mobileLayout">
-                                    <v-list-item :key="'item-mobile-' + element.name" link>
-                                        <v-row>
-                                            <v-col class="col-auto pr-0">
-                                                <v-icon v-if="isMobile" class="handle">{{ mdiArrowUpDown }}</v-icon>
-                                                <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                    <v-list-item :key="'item-mobile-' + element.name">
+                                        <v-row class="d-flex align-center">
+                                            <v-col class="col-auto px-0">
+                                                <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
+                                                <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                             </v-col>
-                                            <v-col class="pr-0">
+                                            <v-col class="pr-0 text-truncate">
                                                 {{ getPanelName(element.name) }}
                                             </v-col>
-                                            <v-col class="col-auto pl-0">
+                                            <v-col class="col-auto pl-2">
                                                 <v-icon
                                                     v-if="!element.visible"
                                                     color="grey lighten-1"
@@ -77,8 +70,8 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import DashboardMixin from '@/components/mixins/dashboard'
 import draggable from 'vuedraggable'
-import { capitalize, convertPanelnameToIcon } from '@/plugins/helpers'
-import { mdiArrowUpDown, mdiCheckboxBlankOutline, mdiCheckboxMarked, mdiInformation, mdiLock } from '@mdi/js'
+import { convertPanelnameToIcon } from '@/plugins/helpers'
+import { mdiDragVertical, mdiCheckboxBlankOutline, mdiCheckboxMarked, mdiInformation, mdiLock } from '@mdi/js'
 @Component({
     components: {
         draggable,
@@ -90,16 +83,16 @@ export default class SettingsDashboardTabMobile extends Mixins(DashboardMixin) {
      */
     mdiLock = mdiLock
     mdiInformation = mdiInformation
-    mdiArrowUpDown = mdiArrowUpDown
+    mdiDragVertical = mdiDragVertical
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
 
-    capitalize = capitalize
     convertPanelnameToIcon = convertPanelnameToIcon
 
     get mobileLayout() {
         let panels = this.$store.getters['gui/getPanels']('mobileLayout')
         panels = panels.concat(this.missingPanelsMobile)
+        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
 
         return panels
     }
@@ -123,3 +116,14 @@ export default class SettingsDashboardTabMobile extends Mixins(DashboardMixin) {
     }
 }
 </script>
+
+<style scoped>
+.ghost {
+    opacity: 0.5;
+    background: #c8ebfb;
+}
+
+.handle {
+    cursor: move;
+}
+</style>

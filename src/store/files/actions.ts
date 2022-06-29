@@ -9,6 +9,8 @@ import {
 } from '@/store/files/types'
 import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
+import { validGcodeExtensions } from '@/store/variables'
+import axios from 'axios'
 
 export const actions: ActionTree<FileState, RootState> = {
     reset({ commit }) {
@@ -32,7 +34,7 @@ export const actions: ActionTree<FileState, RootState> = {
         const root = pathArray.length ? pathArray[0] : payload.requestParams.path
 
         const slashIndex = payload.requestParams.path.indexOf('/')
-        const path = slashIndex > 1 ? payload.requestParams.path.substr(slashIndex + 1) : ''
+        const path = slashIndex > 1 ? payload.requestParams.path.slice(slashIndex + 1) : ''
         const directory = getters['getDirectory'](root + '/' + path)
 
         if (directory?.childrens?.length) {
@@ -134,9 +136,9 @@ export const actions: ActionTree<FileState, RootState> = {
     },
 
     requestMetadata({ commit }, payload: { filename: string }) {
-        const rootPath = payload.filename.substr(0, payload.filename.indexOf('/'))
+        const rootPath = payload.filename.slice(0, payload.filename.indexOf('/'))
         if (rootPath === 'gcodes') {
-            const requestFilename = payload.filename.substr(7)
+            const requestFilename = payload.filename.slice(7)
             commit('setMetadataRequested', { filename: requestFilename })
             Vue.$socket.emit('server.files.metadata', { filename: requestFilename }, { action: 'files/getMetadata' })
         }
@@ -158,7 +160,7 @@ export const actions: ActionTree<FileState, RootState> = {
         commit('printer/setData', { current_file: payload }, { root: true })
     },
 
-    filelist_changed({ commit, dispatch }, payload) {
+    async filelist_changed({ commit, dispatch }, payload) {
         switch (payload.action) {
             case 'create_file':
                 commit('setCreateFile', payload)
@@ -167,7 +169,17 @@ export const actions: ActionTree<FileState, RootState> = {
             case 'move_file':
                 if (payload.source_item?.path === 'printer_autosave.cfg' && payload.source_item?.root === 'config')
                     commit('setCreateFile', payload)
-                else commit('setMoveFile', payload)
+                else {
+                    await commit('setMoveFile', payload)
+                    if (
+                        payload.item.root === 'gcodes' &&
+                        validGcodeExtensions.includes(payload.item.path.slice(payload.item.path.lastIndexOf('.')))
+                    ) {
+                        await dispatch('requestMetadata', {
+                            filename: 'gcodes/' + payload.item.path,
+                        })
+                    }
+                }
                 break
 
             case 'delete_file':
@@ -246,5 +258,81 @@ export const actions: ActionTree<FileState, RootState> = {
             if (!(payload.item.root === 'timelapse' && fileExtension === 'jpg'))
                 Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', { filename: delPath }))
         }
+    },
+
+    async uploadFile(
+        { dispatch, commit, rootGetters },
+        payload: { file: File; path: string; root: 'gcodes' | 'config' }
+    ) {
+        const apiUrl = rootGetters['socket/getUrl']
+        const formData = new FormData()
+        formData.append('file', payload.file, payload.file.name)
+        formData.append('root', payload.root)
+        formData.append('path', payload.path)
+        const cancelTokenSource = axios.CancelToken.source()
+
+        await commit('uploadClearState')
+        await commit('uploadSetCancelTokenSource', cancelTokenSource)
+        await commit('uploadSetFilename', payload.file.name)
+        await commit('uploadSetShow', true)
+
+        let lastTime = 0
+        let lastLoaded = 0
+
+        return new Promise((resolve) => {
+            axios
+                .post(apiUrl + '/server/files/upload', formData, {
+                    cancelToken: cancelTokenSource.token,
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    onUploadProgress: (progressEvent: any) => {
+                        const percent = (progressEvent.loaded * 100) / progressEvent.total
+                        commit('uploadSetPercent', percent)
+
+                        if (lastTime === 0) {
+                            lastTime = progressEvent.timeStamp
+                            lastLoaded = progressEvent.loaded
+
+                            return
+                        }
+
+                        const time = progressEvent.timeStamp - lastTime
+                        if (time < 1000) return
+
+                        const data = progressEvent.loaded - lastLoaded
+                        const speed = data / (time / 1000)
+                        commit('uploadSetSpeed', speed)
+
+                        lastTime = progressEvent.timeStamp
+                        lastLoaded = progressEvent.loaded
+                    },
+                })
+                .then((result: any) => {
+                    commit('uploadSetShow', false)
+                    const lastPos = result.data.item.path.lastIndexOf('/')
+                    const filename = result.data.item.path.slice(lastPos + 1)
+                    resolve(filename)
+                })
+                .catch(() => {
+                    commit('uploadSetShow', false)
+                    Vue.$toast.error(i18n.t('FullscreenUpload.CannotUploadFile').toString())
+                    resolve(false)
+                })
+        })
+    },
+
+    uploadSetShow({ commit }, payload) {
+        commit('uploadSetShow', payload)
+    },
+
+    uploadSetCurrentNumber({ commit }, payload) {
+        commit('uploadSetCurrentNumber', payload)
+    },
+
+    uploadIncrementCurrentNumber({ state, commit }) {
+        commit('uploadSetCurrentNumber', state.upload.currentNumber + 1)
+    },
+
+    uploadSetMaxNumber({ commit }, payload) {
+        commit('uploadSetMaxNumber', payload)
     },
 }

@@ -1,6 +1,6 @@
 {
     "name": "mainsail",
-    "version": "2.2.0-alpha",
+    "version": "2.2.1",
     "private": true,
     "decription": "a klipper web interface",
     "author": {
@@ -14,7 +14,7 @@
         "format:check": "npm run format:base -- --check",
         "lint": "eslint --ignore-path .gitignore src",
         "lint:fix": "npm run lint -- --fix",
-        "build.zip": "cd ./dist && zip -r mainsail.zip ./ && cd ..",
+        "build.zip": "cd ./dist && zip -r mainsail.zip ./ -x '**.DS_Store' ./ && cd ..",
         "i18n-extract": "vue-i18n-extract use-config",
         "start": "vite preview",
         "test": "npm run build && cypress run",
@@ -24,6 +24,7 @@
     "dependencies": {
         "@codemirror/basic-setup": "^0.19.1",
         "@codemirror/highlight": "^0.19.7",
+        "@codemirror/lang-css": "^0.19.3",
         "@codemirror/lang-javascript": "^0.19.7",
         "@codemirror/lang-json": "^0.19.1",
         "@codemirror/fold": "^0.19.2",
@@ -33,7 +34,7 @@
         "@codemirror/search": "^0.19.6",
         "@codemirror/stream-parser": "^0.19.5",
         "@codemirror/view": "^0.19.42",
-        "@sindarius/gcodeviewer": "^2.1.17",
+        "@sindarius/gcodeviewer": "^3.1.0",
         "@types/node": "^16.11.22",
         "@types/overlayscrollbars": "^1.12.1",
         "axios": "^0.26.0",
@@ -41,6 +42,7 @@
         "echarts": "^5.2.2",
         "echarts-gl": "^2.0.8",
         "js-sha256": "^0.9.0",
+        "lodash.kebabcase": "^4.1.1",
         "lodash.throttle": "^4.1.1",
         "overlayscrollbars": "^1.13.1",
         "overlayscrollbars-vue": "^0.2.2",
@@ -56,6 +58,7 @@
         "vue-meta": "^2.4.0",
         "vue-observe-visibility": "^1.0.0",
         "vue-property-decorator": "^9.1.2",
+        "vue-resize": "^1.0.1",
         "vue-toast-notification": "^0.6.1",
         "vuedraggable": "^2.24.3",
         "vuetify": "^2.6.1",
@@ -64,6 +67,7 @@
     "devDependencies": {
         "@intlify/vite-plugin-vue-i18n": "^2.5.0",
         "@mdi/js": "^6.5.95",
+        "@types/lodash.kebabcase": "^4.1.6",
         "@types/lodash.throttle": "^4.1.6",
         "@types/semver": "^7.3.8",
         "@types/uuid": "^8.3.1",
@@ -87,7 +91,7 @@
         "vite-plugin-pwa": "^0.11.13",
         "vite-plugin-vue2": "^1.9.3",
         "vue-debounce-decorator": "^1.0.1",
-        "vue-i18n-extract": "^1.2.3",
+        "vue-i18n-extract": "^2.0.7",
         "vue-router": "^3.5.2",
         "vue-template-compiler": "^2.6.14",
         "workbox-core": "^6.4.2"

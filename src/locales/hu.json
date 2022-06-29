@@ -1,5 +1,11 @@
 {
     "App": {
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "'{section}' / '{option}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
+                "DeprecatedValue": "'{section}' / '{option}' / Value '{value}' opcióját leírtuk, és a következő verzióban már nem lesz benne."
+            }
+        },
         "Printers": "Nyomtatók",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Az rPi ARM mag(ok) jelenleg túlterheltek.",
@@ -10,8 +16,6 @@
             "DescriptionPreviouslyUnderVolted": "Az rPI tápfeszültsége az utolsó bekapcsolás óta legalább egyszer 4,65 V alá esett.",
             "DescriptionTemperatureLimitActive": "Az rPi uC(csak 3A+/3B+) hőmérséklete jelenleg az első határérték felett van (alapértelmezett 60C).",
             "DescriptionUnderVoltageDetected": "Az rPI tápfeszültsége jelenleg 4,65 V alatt van",
-            "HeadlineCurrentFlags": "Aktuális jelzések",
-            "HeadlinePreviouslyFlags": "Korábbi jelzések",
             "TitleCurrentlyThrottled": "Jelenleg leterhelt",
             "TitleFrequencyCapped": "Frekvencia-korlátozások",
             "TitlePreviouslyFrequencyCapped": "Korábbi frekvencia-korlátozások",
@@ -129,8 +133,6 @@
         "DeleteDirectoryQuestion": "Tényleg szeretnéd törölni a(z) \"{name}\" mappát és minden tartalmát?",
         "Download": "Letöltés",
         "Downloading": "Letöltés...",
-        "DoYouWantToStartFilename": "El akarod indítani ezt?: {filename}",
-        "DropFilesToAddGcode": "Gcode hozzáadásáért dobd ide a fájlod.",
         "EditFile": "Fájl szerkesztése",
         "Empty": "Üres",
         "Filament": "Filament",
@@ -161,8 +163,6 @@
         "Search": "Keresés",
         "SetupCurrentList": "Aktuális lista készítése",
         "Slicer": "Slicer",
-        "StartJob": "Munka indítása",
-        "StartPrint": "Nyomtatás indítása",
         "SuccessfullyCreated": "Sikeresen létrehozva: {filename}",
         "SuccessfullyDeleted": "Sikeresen törölve: {filename}",
         "SuccessfullyMoved": "Sikeresen áthelyezve: {filename}",
@@ -172,8 +172,7 @@
         "Uploading": "Feltöltés",
         "UploadNewGcode": "Új Gcode feltöltése",
         "Used": "Felhasznált",
-        "View3D": "3D nézet",
-        "WrongFileUploaded": "A {filename} feltöltése meghiusúlt. Rossz file formátum!"
+        "View3D": "3D nézet"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Kitakarít",
@@ -215,8 +214,6 @@
             "Variance": "Eltérés"
         },
         "DeleteBedMeshProfile": "Síkrács profil törlése",
-        "Deleted": "eltávolított",
-        "DoYouReallyWantToCalibrate": "Tényleg el akarod kezdeni az asztal kalibrálását?",
         "DoYouReallyWantToDelete": "Tényleg törölni akarod a profilt?: \"{name}\"",
         "ErrorKlipperNotReady": "A Klipper nem áll készen. Magasságtérkép letiltva.",
         "Flat": "Lapos",
@@ -230,7 +227,6 @@
         "Remove": "eltávolítás",
         "Rename": "átnevez",
         "RenameBedMeshProfile": "Síkrács profil átnevezése",
-        "Scale": "Méretarány",
         "TitleCalibrate": "Új síkrács kalibrálása",
         "TitleClear": "Síkrács kinullázása",
         "TitleHomeAll": "Kezdőpontba áll",
@@ -268,7 +264,6 @@
         "PrinttimeAvg": "Nyomtatási átlag",
         "Reprint": "Újranyomtat",
         "Search": "keresés",
-        "ShowStatusName": "\"{name}\" ({count}) megjelenítése",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer verzió",
         "StartTime": "Kezdés",
@@ -284,7 +279,6 @@
     },
     "JobQueue": {
         "AllJobs": "Minden Feladat",
-        "Delete": "Törlés",
         "Empty": "Üres",
         "JobQueue": "Feladatlista",
         "Jobs": "Feladatok",
@@ -336,22 +330,17 @@
             "Logfiles": "Logfájlok"
         },
         "SystemPanel": {
-            "Awake": "Ébren",
             "Constants": "Állandók",
-            "Distro": "Disztribúció",
-            "Frequency": "Frekv.",
             "HostDetails": "Gazdagép részletei",
             "LastStats": "Utolsó statisztikák",
             "Load": "Betöltés",
             "Memory": "Mem",
-            "Os": "OS",
-            "SystemLoad": "Rendszerterhelések",
-            "Version": "Verzió"
+            "SystemLoad": "Rendszerterhelések"
         },
         "UpdatePanel": {
             "CheckForUpdates": "Frissítések keresése",
             "Commits": "Véglegesítés",
-            "CommitsAvailabe": "nincs elérhető véglegesítés  | {count} véglegesítés elérhető | {count} véglegesítés elérhető",
+            "CommitsAvailable": "nincs elérhető véglegesítés  | {count} véglegesítés elérhető | {count} véglegesítés elérhető",
             "CommitsOnDate": "véglegesítés ekkor:{date}",
             "CommittedDaysAgo": "véglegesítve {days} nappal ezelőtt",
             "CommittedHoursAgo": "véglegesítve {hours} órával ezelőtt",
@@ -373,41 +362,19 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "MIND",
-            "AlternateControls": "Vezérlési alternatívák",
-            "Extrude": "Extrudálás",
-            "FeedAmountIn": "Behúzás mennyisége",
-            "FeedrateIn": "Behúzási ráta",
-            "Headline": "Vezérlések",
-            "HotendTooCold": "Hotend hőm. kevesebb mint",
-            "InvertX": "X invertálása",
-            "InvertY": "Y invertálása",
-            "InvertZ": "Z invertálása",
-            "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
-            "QGL": "QGL",
-            "Retract": "Visszahúzás",
-            "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
-            "SetupControls": "Beállítás vezérlései",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z dőlésszög"
-        },
         "DependenciesPanel": {
             "Dependency": "Függőség | Függőségek",
             "DependencyDescription": "A jelenlegi verzió {name} nem támogatja a Mainsail minden funkcióját. Frissítsd a {name} verziót legalább erre: {neededVersion}."
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "Extrudálás",
+            "ExtrusionFactor": "Extrudálási szorzó",
+            "Retract": "Visszahúzás"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Újracsatlakozás",
             "SwitchToPrinter": "Váltás a nyomtatóra",
             "WebcamOff": "Ki"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "'{section}' / '{option}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
-            "DeprecatedValue": "'{section}' / '{option}' / Value '{value}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
-            "DownloadLog": "log letöltése",
-            "KlipperWarnings": "Klipper Figyelmeztetések"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware újraindítása",
@@ -476,13 +443,7 @@
             "On": "BE",
             "PowerControl": "Tápellátás vezérlés"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Extrudálási szorzó",
-            "Headline": "Nyomtatási beállítások",
-            "SpeedFactor": "Sebességállítás"
-        },
         "StatusPanel": {
-            "Absolute": "abszolút",
             "CancelPrint": "Nyomtatás megszakítása",
             "ClearPrintStats": "Nyomt. statisztikák törlése",
             "Difference": "Különbség",
@@ -503,21 +464,16 @@
             "Max": "max",
             "ObjectHeight": "Tárgy magassága",
             "PausePrint": "Nyomtatás szüneteltetése",
-            "Position": "Pozíció",
             "Print": "Nyomtatás",
-            "Relative": "relatív",
             "ReprintJob": "Munka újranyomtatása",
             "Requested": "Kért",
             "ResumePrint": "Nyomtatás folytatása",
             "Slicer": "Slicer",
             "Speed": "Sebesség",
             "Total": "Összesen",
-            "Unknown": "Ismeretlen",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Ismeretlen"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Grafikon automatikus méretezése",
             "Avg": "Átl.",
             "Color": "Szín",
@@ -544,6 +500,21 @@
             "TempTooHigh": "A {name} hőmérséklete túl magas! (max: {max})",
             "TempTooLow": "A {name} hőmérséklete túl alacsony! (min: {min})"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "abszolút",
+            "ALL": "MIND",
+            "InvertX": "X invertálása",
+            "InvertY": "Y invertálása",
+            "InvertZ": "Z invertálása",
+            "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
+            "Position": "Pozíció",
+            "QGL": "QGL",
+            "Relative": "relatív",
+            "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
+            "SetupControls": "Beállítás vezérlései",
+            "SpeedFactor": "Sebességállítás",
+            "ZTilt": "Z dőlésszög"
+        },
         "WebcamPanel": {
             "All": "Mind",
             "FPS": "FPS",
@@ -557,9 +528,9 @@
             "Later": "Később",
             "Ok": "OK",
             "Save": "Mentés",
-            "SAVE_CONFIG": "BÁLLÍTÁS MENTÉSE",
-            "SaveInfoDescription": "Új Z-eltolás kiszámítva és regisztrálva. Kattints a BÁLLÍTÁS MENTÉSE gombra az új Z-eltolás eltárolásához a printer.cfg-be és indítsd újra a Klippert.",
-            "SaveInfoDescriptionPrint": "Új Z-eltolás kiszámítva és regisztrálva. Nyomtatás után kattints a BÁLLÍTÁS MENTÉSE-re a felső sávban, a printer.cfg-be eltárolásához  és a Klipper újraindításához.",
+            "SaveConfig": "BÁLLÍTÁS MENTÉSE",
+            "SaveInfoDescription": "Új Z-eltolás kiszámítva és regisztrálva. Kattints a \"BÁLLÍTÁS MENTÉSE\" gombra az új Z-eltolás eltárolásához a printer.cfg-be és indítsd újra a Klippert.",
+            "SaveInfoDescriptionPrint": "Új Z-eltolás kiszámítva és regisztrálva. Nyomtatás után kattints a \"BÁLLÍTÁS MENTÉSE\"-re a felső sávban, a printer.cfg-be eltárolásához  és a Klipper újraindításához.",
             "SaveInfoHeadline": "Információ",
             "ToEndstop": "a végállásig",
             "ToProbe": "szondáig"
@@ -830,8 +801,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Megerősítő párbeszéd megjelenítése az Eszköz Tápellátásának változtatásához",
             "DisplayCANCEL_PRINT": "Nyomtatás_megszakítása mutatása",
             "DisplayCANCEL_PRINTDescription": "A Nyomtatás megszakítása gomb véglegesítése, megerősítést nem kér.",
-            "DisplayZOffset": "Z-eltolás-panel mutatása",
-            "DisplayZOffsetDescription": "Egyébként a panel csak a nyomtatás megkezdése után jelenik meg.",
             "GcodeThumbnails": "G-Code előképek",
             "GcodeThumbnailsDescription": "Kattints a gombra útmutatásért",
             "Guide": "Útmutató",

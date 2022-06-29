@@ -1,7 +1,30 @@
 {
     "App": {
+        "Notifications": {
+            "DependencyDescription": "The current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}.",
+            "DependencyName": "Dependency: {name}",
+            "DismissAll": "Dismiss all",
+            "KlipperWarnings": {
+                "DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
+                "DeprecatedOptionHeadline": "Deprecated Klipper Option",
+                "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
+                "DeprecatedValueHeadline": "Deprecated Klipper Value",
+                "KlipperWarning": "Klipper warning"
+            },
+            "MoonrakerWarnings": {
+                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the log file and fix the issue.",
+                "MoonrakerWarning": "Moonraker warning",
+                "UnparsedConfigOption": "Unparsed config option '{option}: {value}' detected in section [{section}]. This may be an option no longer available or could be the result of a module that failed to load. In the future this will result in a startup error.",
+                "UnparsedConfigSection": "Unparsed config section [{section}] detected. This may be the result of a component that failed to load. In the future this will result in a startup error."
+            },
+            "Never": "never",
+            "NextReboot": "next reboot",
+            "NoNotification": "No Notification available",
+            "Remind": "Remind:"
+        },
         "NumberInput": {
-            "GreaterOrEqualError": "Must be grater or equal than {min}!",
+            "GreaterOrEqualError": "Must be greater or equal than {min}!",
             "MustBeBetweenError": "Must be between {min} and {max}!",
             "NoEmptyAllowedError": "Input must not be empty!"
         },
@@ -15,8 +38,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI supply voltage dropped below 4.65V at least once since the last power-on.",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperature is currently above the soft limit (default 60C).",
             "DescriptionUnderVoltageDetected": "rPI supply voltage currently below 4.65V",
-            "HeadlineCurrentFlags": "Current Flags",
-            "HeadlinePreviouslyFlags": "Previously Flags",
             "TitleCurrentlyThrottled": "Currently Throttled",
             "TitleFrequencyCapped": "Frequency Capped",
             "TitlePreviouslyFrequencyCapped": "Previously Frequency Capped",
@@ -100,21 +121,28 @@
         "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
     },
+    "Dialogs": {
+        "StartPrint": {
+            "Cancel": "Cancel",
+            "DoYouWantToStartFilename": "Do you want to start {filename}?",
+            "Headline": "Start Job",
+            "Print": "print",
+            "Timelapse": "Timelapse"
+        }
+    },
     "Editor": {
-        "Cancel": "Cancel",
         "ConfigReference": "Config Reference",
         "DontSave": "Don't save",
         "Downloading": "Downloading",
+        "Uploading": "Uploading",
         "FailedSave": "{filename} could not be uploaded!",
         "FileReadOnly": "read-only",
-        "Minimap": "Show minimap",
         "SaveClose": "Save & close",
         "SaveRestart": "Save & Restart",
         "SuccessfullySaved": "{filename} successfully saved.",
         "UnsavedChanges": "Unsaved Changes",
         "UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
-        "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
-        "Uploading": "Uploading"
+        "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings."
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Are you sure?",
@@ -132,10 +160,8 @@
         "Delete": "Delete",
         "DeleteDirectory": "Delete Directory",
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
+        "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
         "Download": "Download",
-        "Downloading": "Downloading",
-        "DoYouWantToStartFilename": "Do you want to start {filename}?",
-        "DropFilesToAddGcode": "Drag & Drop files to add G-Code.",
         "EditFile": "Edit File",
         "Empty": "Empty",
         "Filament": "Filament",
@@ -144,12 +170,17 @@
         "FilamentUsage": "Filament Usage",
         "FilamentWeight": "Filament Weight",
         "Files": "Files",
-        "Filesize": "Filesize",
+        "Filesize": "File size",
         "Free": "Free",
         "FreeDisk": "Free disk",
         "GCodeFiles": "G-Code Files",
         "HiddenFiles": "Hidden files",
+        "LastEndTime": "Last End Time",
+        "LastFilamentUsed": "Last Filament Used",
         "LastModified": "Last modified",
+        "LastPrintDuration": "Last Print Duration",
+        "LastStartTime": "Last Start Time",
+        "LastTotalDuration": "Last Total Duration",
         "LayerHeight": "Layer Height",
         "Name": "Name",
         "NewDirectory": "New Directory",
@@ -166,19 +197,19 @@
         "Search": "Search",
         "SetupCurrentList": "Setup current list",
         "Slicer": "Slicer",
-        "StartJob": "Start Job",
-        "StartPrint": "Start print",
         "SuccessfullyCreated": "Successfully created {filename}.",
         "SuccessfullyDeleted": "Successfully deleted {filename}.",
         "SuccessfullyMoved": "Successfully moved {filename}.",
         "SuccessfullyRenamed": "Successfully renamed {filename}.",
         "SuccessfullyUploaded": "Upload of {filename} successful!",
         "Total": "Total",
-        "Uploading": "Uploading",
         "UploadNewGcode": "Upload new G-Code",
         "Used": "Used",
-        "View3D": "View 3D",
-        "WrongFileUploaded": "Upload was denied for {filename}. Wrong file format!"
+        "View3D": "View 3D"
+    },
+    "FullscreenUpload": {
+        "CannotUploadFile": "Cannot upload file!",
+        "DropFilesToUploadFiles": "Drop files to upload"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Clear",
@@ -247,7 +278,7 @@
     "History": {
         "AddNote": "Add note",
         "AllJobs": "All",
-        "AvgPrinttime": "Printtime - Ø",
+        "AvgPrinttime": "Print Time - Ø",
         "Cancel": "Cancel",
         "CreateNote": "Create Note",
         "Delete": "Delete",
@@ -273,19 +304,19 @@
         "Jobs": "Jobs",
         "LastModified": "Last Modified",
         "LayerHeight": "Layer Height",
-        "LongestPrinttime": "Longest Printtime",
+        "LongestPrinttime": "Longest Print Time",
         "Note": "Note",
         "ObjectHeight": "Object Height",
         "PrintDuration": "Print Time",
         "PrintHistory": "Print History",
         "PrintTime": "Print Time",
-        "PrinttimeAvg": "Printtime - Ø",
+        "PrinttimeAvg": "Print Time - Ø",
         "Reprint": "Reprint",
         "Save": "save",
         "Search": "search",
         "SelectedFilamentUsed": "Selected Filament Used",
         "SelectedJobs": "Selected Jobs",
-        "SelectedPrinttime": "Selected Printtime",
+        "SelectedPrinttime": "Selected Print Time",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Version",
         "StartTime": "Start Time",
@@ -306,16 +337,16 @@
         "TotalDuration": "Total Time",
         "TotalFilamentUsed": "Total Filament Used",
         "TotalJobs": "Total Jobs",
-        "TotalPrinttime": "Total Printtime",
+        "TotalPrinttime": "Total Print Time",
         "TotalTime": "Total Time"
     },
     "JobQueue": {
         "AllJobs": "All Jobs",
-        "Delete": "Delete",
         "Empty": "Empty",
         "JobQueue": "Job Queue",
         "Jobs": "Jobs",
         "Pause": "Pause",
+        "RemoveFromQueue": "Remove from Queue",
         "Start": "Start"
     },
     "Machine": {
@@ -329,7 +360,8 @@
             "CurrentPath": "Current path",
             "Delete": "Delete",
             "DeleteDirectory": "Delete Directory",
-            "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
+            "DeleteDirectoryQuestion": "Delete directory \"{name}\" and all its contents?",
+            "DeleteSelectedQuestion": "Delete {count} selected elements?",
             "Download": "Download",
             "EditFile": "Edit file",
             "Empty": "Empty",
@@ -361,7 +393,7 @@
             "TRIGGERED": "TRIGGERED"
         },
         "LogfilesPanel": {
-            "Logfiles": "Logfiles"
+            "Logfiles": "Log Files"
         },
         "SystemPanel": {
             "Constants": "Constants",
@@ -391,7 +423,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Check for updates",
             "Commits": "Commits",
-            "CommitsAvailabe": "no commits available | {count} commit available | {count} commits available",
+            "CommitsAvailable": "no commits available | {count} commit available | {count} commits available",
             "CommitsOnDate": "Commits on {date}",
             "CommittedDaysAgo": "committed {days} days ago",
             "CommittedHoursAgo": "committed {hours} hours ago",
@@ -413,41 +445,25 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "ALL",
-            "AlternateControls": "Alternate controls",
+        "ExtruderControlPanel": {
+            "Allowed": "Allowed",
+            "EstimatedExtrusion": "Estimated Extrusion:",
             "Extrude": "Extrude",
-            "FeedAmountIn": "Feed amount in",
-            "FeedrateIn": "Feedrate in",
-            "Headline": "Controls",
-            "HotendTooCold": "Hotend temp. lower than",
-            "InvertX": "Invert X",
-            "InvertY": "Invert Y",
-            "InvertZ": "Invert Z",
-            "PleaseConfigureSteps": "Please configure steps",
-            "QGL": "QGL",
+            "ExtruderTempTooLow": "Extruder temp. <",
+            "ExtrusionFactor": "Extrusion factor",
+            "ExtrusionFeedrate": "Extrusion Feedrate",
+            "FilamentLength": "Filament Length",
+            "Headline": "Extruder",
+            "LoadFilament": "Load Filament",
+            "Requested": "Requested",
             "Retract": "Retract",
-            "SettingsInterfaceControl": "Settings > Interface > Control",
-            "SetupControls": "Setup Controls",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
-        "DependenciesPanel": {
-            "Dependency": "Dependency | Dependencies",
-            "DependencyDescription": "Your current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}."
+            "TooLargeExtrusion": "Extrusion too large!",
+            "UnloadFilament": "Unload Filament"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Reconnect",
             "SwitchToPrinter": "Switch to Printer",
             "WebcamOff": "Off"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
-            "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
-            "DownloadLog": "download log",
-            "KlipperWarnings": "Klipper Warnings"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Restart",
@@ -464,7 +480,7 @@
                 "UnretractExtraLength": "Unretract Extra Length",
                 "UnretractSpeed": "Unretract Speed"
             },
-            "Headline": "Machine Settings",
+            "Headline": "Machine",
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. to Decel.",
@@ -473,9 +489,8 @@
                 "Velocity": "Velocity"
             },
             "PressureAdvanceSettings": {
-                "Advance": "Advance",
+                "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
                 "SmoothTime": "Smooth Time"
             }
         },
@@ -504,25 +519,13 @@
                 "Empty": "Empty"
             }
         },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Download Log",
-            "FollowingPluginHasAnError": "Following plugin has an error:",
-            "MoonrakerErrorInfo": "An error was detected while loading the moonraker components. Please check the logfile and fix the issue.",
-            "MoonrakerWarnings": "Moonraker Warnings"
-        },
         "PowerControlPanel": {
             "Error": "Error",
             "Off": "Off",
             "On": "On",
             "PowerControl": "Power Control"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Extrusion factor",
-            "Headline": "Print Settings",
-            "SpeedFactor": "Speed factor"
-        },
         "StatusPanel": {
-            "Absolute": "absolute",
             "CancelPrint": "Cancel print",
             "ClearPrintStats": "Clear print stats",
             "Difference": "Difference",
@@ -537,30 +540,31 @@
             },
             "Filament": "Filament",
             "File": "File",
+            "Files": "Files",
+            "EmptyGcodes": "No G-Code available.",
+            "EmptyJobqueue": "There is currently no file in the job queue.",
+            "Jobqueue": "Job Queue ({count})",
+            "JobqueueMoreFiles": "no more jobs | one more job | {count} more jobs",
+            "PrintTime": "Print Time",
             "Flow": "Flow",
             "Headline": "Status",
             "Layer": "Layer",
             "Max": "max",
             "ObjectHeight": "Object Height",
             "PausePrint": "Pause print",
-            "Position": "Position",
             "Print": "Print",
-            "Relative": "relative",
             "ReprintJob": "Reprint job",
             "Requested": "Requested",
             "ResumePrint": "Resume print",
             "Slicer": "Slicer",
             "Speed": "Speed",
+            "Status": "Status",
             "Total": "Total",
-            "Unknown": "Unknown",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Unknown"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Autoscale Chart",
             "Avg": "Avg",
-            "Color": "Color",
             "Cooldown": "Cooldown",
             "Current": "Current",
             "Dataset": {
@@ -584,22 +588,36 @@
             "TempTooHigh": "Temperature too high for {name}! (max: {max})",
             "TempTooLow": "Temperature too low for {name}! (min: {min})"
         },
+        "ToolheadControlPanel": {
+            "Absolute": "absolute",
+            "ALL": "ALL",
+            "Headline": "Toolhead",
+            "Invalid": "Invalid",
+            "OutOfRange": "Out of range!",
+            "PleaseConfigureSteps": "Please configure steps",
+            "Position": "Position",
+            "QGL": "QGL",
+            "Relative": "relative",
+            "SettingsInterfaceControl": "Settings > Interface > Control",
+            "SpeedFactor": "Speed factor",
+            "ZTilt": "Z-Tilt"
+        },
         "WebcamPanel": {
             "All": "All",
             "FPS": "FPS",
             "Headline": "Webcam",
-            "UnknownWebcamService": "Unknown Webcam Service",
-            "UrlNotAvailable": "URL not available"
+            "NoWebcam": "No webcam available. Add a webcam under \"Interface Settings\" -> \"Webcams\".",
+            "UnknownWebcamService": "Unknown Webcam Service"
         },
         "ZoffsetPanel": {
-            "CurrentOffset": "current offset",
+            "Clear": "Clear",
             "Headline": "Z-Offset",
             "Later": "Later",
             "Ok": "OK",
             "Save": "Save",
-            "SAVE_CONFIG": "SAVE_CONFIG",
-            "SaveInfoDescription": "The new z-offset has been calculated and registered. Click on SAVE_CONFIG to store the new z-offset in your printer.cfg and restart Klipper.",
-            "SaveInfoDescriptionPrint": "The new Z offset has been calculated and registered. After printing, click on SAVE_CONFIG in the top bar to store it in printer.cfg and restart Klipper.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "The new Z-Offset has been calculated and registered. Click on \"SAVE CONFIG\" to save it to the printer.cfg and restart Klipper.",
+            "SaveInfoDescriptionPrint": "The new Z-Offset has been calculated and registered. After printing, click on \"SAVE CONFIG\" in the top bar to save it to the printer.cfg and restart Klipper.",
             "SaveInfoHeadline": "Information",
             "ToEndstop": "to Endstop",
             "ToProbe": "to Probe"
@@ -657,6 +675,7 @@
             "EntryStyle": "Entry-Design",
             "EntryStyleCompact": "compact",
             "EntryStyleDefault": "default",
+            "Filters": "Filters",
             "Height": "Height",
             "HideTemperatures": "Hide temperatures",
             "HideTimelapse": "Hide Timelapse",
@@ -670,21 +689,29 @@
             "Circle": "Circle",
             "Control": "Control",
             "Cross": "Cross",
-            "InvertXMovement": "Invert X movement",
-            "InvertYMovement": "Invert Y movement",
-            "InvertZMovement": "Invert Z movement",
+            "EnableXYHoming": "Enable combined X & Y axes homing",
+            "EstimatedExtrusionInfo": "Show estimated extrusion info",
+            "EstimatedExtrusionInfoDescription": "Show / Hide info for estimated extrusions based on extrusion amount and feedrate",
+            "InvertXMovement": "Invert X axis movement direction",
+            "InvertYMovement": "Invert Y axis movement direction",
+            "InvertZMovement": "Invert Z axis movement direction",
+            "IsDefault": " (default)",
             "MaximumValues": "Maximum values: {maximum}",
-            "MaximumValuesVisibility": "Maximum of {maximum} values is recommended for best visibilty",
+            "MaximumValuesVisibility": "Maximum of {maximum} values is recommended for best visibility",
             "MinimumValues": "Minimum values: {minimum}",
-            "MoveDistancesEInMm": "Move distances E in mm",
-            "MoveDistancesInMm": "Move distances in mm",
-            "MoveDistancesXYInMm": "Move distances XY in mm",
-            "MoveDistancesZInMm": "Move distances Z in mm",
-            "SpeedEInMms": "Speed E in mm/s",
-            "SpeedXY": "Speed XY",
-            "SpeedZ": "Speed Z",
+            "MotorsOff": "Motors off{isDefault}",
+            "MoveDistancesEInMm": "Extrusion amount presets (in mm)",
+            "MoveDistancesInMm": "Move distance increments (in mm)",
+            "MoveDistancesXYInMm": "Move distance increments X & Y axes (in mm)",
+            "MoveDistancesZInMm": "Move distance increments Z axis (in mm)",
+            "QuadGantryLevel": "Quad Gantry Level{isDefault}",
+            "SpeedEInMms": "Extrusion speed presets (in mm/s)",
+            "SpeedXY": "Movement speed X & Y axes",
+            "SpeedZ": "Movement speed Z axis",
             "Style": "Style",
-            "ValueGreaterThan": "Value has to be greater than {value}"
+            "ValueGreaterThan": "Value has to be greater than {value}",
+            "ZOffsetIncrements": "Z-Offset increments (in mm)",
+            "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
             "Dashboard": "Dashboard",
@@ -713,6 +740,7 @@
             "GridColor": "Grid Color",
             "MaxFeed": "Max Feed Rate",
             "MinFeed": "Min Feed Rate",
+            "ProgressColor": "Progress Color",
             "ShowAxes": "Show Axes"
         },
         "GeneralTab": {
@@ -788,9 +816,13 @@
             "CustomGCode": "Custom G-Code",
             "EditCooldown": "Edit Cooldown",
             "EditHeadline": "Edit Preset",
+            "ErrorInvalidValue": "Invalid value",
+            "ErrorNameNotUnique": "Name already exists",
+            "ErrorNameRequired": "Name required",
             "Name": "Name",
             "PreheatPresets": "Presets",
-            "PresetInfo": "You have to set minimum a target temperature or a custom G-Code.",
+            "PresetInfo": "Please set at least a target temperature or a custom G-Code.",
+            "PresetNamePlaceholder": "Preset name (required)",
             "StoreButton": "Store preset",
             "UpdateButton": "Update preset",
             "UpdateCooldown": "Update Cooldown"
@@ -809,13 +841,13 @@
             "Camera": "Camera",
             "CameraDescription": "Select which camera should be used",
             "ConstantRateFactor": "Constant Rate Factor",
-            "ConstantRateFactorDescription": "This configure quality vs filesize of the rendered video. The range of the CRF scale is 0–51, where 0 is lossless, 23 is the default and 51 is worst quality possible. A lower value generally leads to higher quality and a subjectively sane range is 17–28. Consider 17 or 18 to be visually lossless.",
-            "duplicatelastframe": "duplicatelastframe",
+            "ConstantRateFactorDescription": "This configure quality vs file size of the rendered video. The range of the CRF scale is 0–51, where 0 is lossless, 23 is the default and 51 is worst quality possible. A lower value generally leads to higher quality and a subjectively sane range is 17–28. Consider 17 or 18 to be visually lossless.",
+            "duplicatelastframe": "Duplicate Last Frame",
             "duplicatelastframeDescription": "Duplicates the last frame on the end of the video",
             "Enabled": "Enabled",
-            "EnabledDescription": "If disabled, G-Code macros are ignored and autorender is skipped.",
-            "Extraoutputparams": "Extraoutputparams",
-            "ExtraoutputparamsDescription": "Defines extra output parameters to FFMPEG. Note: Specifing anything here will disable the rotation setting",
+            "EnabledDescription": "If disabled, G-Code macros are ignored and auto-render is skipped.",
+            "Extraoutputparams": "Extra Output Params",
+            "ExtraoutputparamsDescription": "Defines extra output parameters to FFMPEG. Note: Specifying anything here will disable the rotation setting",
             "FwRetract": "FW Retract",
             "FwRetractDescription": "Use firmware retraction in the timelapse macro",
             "GcodeVerbose": "Verbose G-Code",
@@ -824,7 +856,7 @@
             "HyperlapseCycle": "Hyperlapse Cycle Time",
             "HyperlapseCycleDescription": "A snapshot will be taken any X seconds",
             "Mode": "Mode",
-            "ModeDescription": "Select between Layermacro and Hyperlapse (timebased) mode",
+            "ModeDescription": "Select between Layer macro and Hyperlapse (time-based) mode",
             "OutputFramerate": "Output Framerate",
             "OutputFramerateDescription": "Defines the framerate of the video. Note: this will be ignored if variable_fps is enabled",
             "Parkhead": "Park Toolhead",
@@ -833,14 +865,14 @@
             "ParkposDescription": "Select the parking position",
             "ParkTime": "Park Time",
             "ParkTimeDescription": "Add additional idle time when parking.",
-            "Pixelformat": "Pixelformat",
-            "PixelformatDescription": "Defines the pixelformat of the output video",
+            "Pixelformat": "Pixel format",
+            "PixelformatDescription": "Defines the pixel format of the output video",
             "PosDZ": "Position Z",
-            "PosDZDescription": "Park postion Z (relative)",
+            "PosDZDescription": "Park position Z (relative)",
             "PosX": "Position X",
-            "PosXDescription": "Park postion X (absolute)",
+            "PosXDescription": "Park position X (absolute)",
             "PosY": "Position Y",
-            "PosYDescription": "Park postion Y (absolute)",
+            "PosYDescription": "Park position Y (absolute)",
             "PreviewImage": "Preview Image",
             "PreviewImageDescription": "Save a preview image with the same name as the video",
             "RenderingOptions": "Rendering Options",
@@ -874,15 +906,13 @@
             "BoolBigThumbnail": "Large thumbnail",
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
-            "BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the topbar.",
+            "BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the top bar.",
             "ConfirmOnEmergencyStop": "Require confirm on Emergency Stop",
             "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
             "ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
             "ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",
             "DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
-            "DisplayZOffset": "Show Z-Offset-Panel",
-            "DisplayZOffsetDescription": "Otherwise, the panel will appear only after a print has started.",
             "GcodeThumbnails": "G-Code thumbnails",
             "GcodeThumbnailsDescription": "Click on the button to get to the instructions.",
             "Guide": "Guide",
@@ -931,7 +961,7 @@
     },
     "Timelapse": {
         "AllFiles": "All",
-        "Autorender": "Autorender",
+        "Autorender": "Auto-render",
         "Cancel": "Cancel",
         "Create": "Create",
         "CreateNewDirectory": "create directory",

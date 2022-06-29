@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { GuiState } from '@/store/gui/types'
+import { setDataDeep } from '@/plugins/helpers'
 
 export const mutations: MutationTree<GuiState> = {
     reset(state) {
@@ -9,19 +10,6 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     setData(state, payload) {
-        // eslint-disable-next-line
-        const setDataDeep = (currentState: any, payload: any) => {
-            if (typeof payload === 'object') {
-                Object.keys(payload).forEach((key: string) => {
-                    const value = payload[key]
-
-                    if (typeof value === 'object' && !Array.isArray(value) && key in currentState) {
-                        setDataDeep(currentState[key], value)
-                    } else Vue.set(currentState, key, value)
-                })
-            }
-        }
-
         setDataDeep(state, payload)
     },
 
@@ -46,14 +34,13 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     setGcodefilesMetadata(state, data) {
-        if (data.value && state.view.gcodefiles.hideMetadataColums.includes(data.name)) {
-            state.view.gcodefiles.hideMetadataColums.splice(
-                state.view.gcodefiles.hideMetadataColums.indexOf(data.name),
-                1
-            )
-        } else if (!data.value && !state.view.gcodefiles.hideMetadataColums.includes(data.name)) {
-            state.view.gcodefiles.hideMetadataColums.push(data.name)
-        }
+        const array = [...state.view.gcodefiles.hideMetadataColumns]
+        const index = array.findIndex((value: string) => value === data.name)
+
+        if (data.value && index !== -1) array.splice(index, 1)
+        else if (!data.value && index === -1) array.push(data.name)
+
+        Vue.set(state.view.gcodefiles, 'hideMetadataColumns', array)
     },
 
     setGcodefilesShowHiddenFiles(state, value) {

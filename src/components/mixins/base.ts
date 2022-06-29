@@ -40,7 +40,8 @@ export default class BaseMixin extends Vue {
     }
 
     get printer_state(): string {
-        const printer_state = this.$store.state.printer.print_stats?.state ?? ''
+        const printer_state =
+            this.$store.state.printer.print_stats?.state ?? this.$store.state.printer.idle_timeout?.state ?? ''
         const timelapse_pause = this.$store.state.printer['gcode_macro TIMELAPSE_TAKE_FRAME']?.is_paused ?? false
         return printer_state === 'paused' && timelapse_pause ? 'printing' : printer_state
     }

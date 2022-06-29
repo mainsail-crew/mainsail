@@ -5,7 +5,7 @@
         <v-card-text>
             <v-row>
                 <v-col class="text-center">
-                    <v-btn-toggle v-model="currentViewport" class="mx-auto">
+                    <v-btn-toggle v-model="currentViewport" class="mx-auto" mandatory>
                         <v-btn value="mobile">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Mobile') }}</span>
                             <v-icon right class="hidden-sm-and-down">{{ mdiCellphone }}</v-icon>
@@ -34,7 +34,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <component :is="'settings-dashboard-tab-' + viewport"></component>
+                    <component :is="currentTab"></component>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -75,6 +75,10 @@ export default class SettingsDashboardTab extends Mixins(BaseMixin) {
         else if (this.isDesktop) this.currentViewport = 'desktop'
         else if (this.isWidescreen) this.currentViewport = 'widescreen'
         else this.currentViewport = 'desktop'
+    }
+
+    get currentTab() {
+        return 'settings-dashboard-tab-' + this.currentViewport
     }
 }
 </script>

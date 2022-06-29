@@ -4,7 +4,14 @@
     <div>
         <v-card v-if="!form.bool" flat>
             <v-card-text>
-                <settings-row :title="$t('Settings.ConsoleTab.Direction')">
+                <div class="d-flex align-center">
+                    <v-icon style="opacity: 0.7">{{ mdiConsoleLine }}</v-icon>
+                    <v-card-title class="mx-n2">
+                        {{ $t('Settings.ConsoleTab.Console') }}
+                    </v-card-title>
+                    <v-divider class="ml-3"></v-divider>
+                </div>
+                <settings-row :title="$t('Settings.ConsoleTab.Direction').toString()">
                     <v-select
                         v-model="consoleDirection"
                         :items="availableDirections"
@@ -14,7 +21,7 @@
                         attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.ConsoleTab.EntryStyle')">
+                <settings-row :title="$t('Settings.ConsoleTab.EntryStyle').toString()">
                     <v-select
                         v-model="entryStyle"
                         :items="availableEntryStyles"
@@ -24,7 +31,7 @@
                         attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.ConsoleTab.Height')">
+                <settings-row :title="$t('Settings.ConsoleTab.Height').toString()">
                     <v-slider
                         v-model="consoleHeightTmp"
                         hide-details
@@ -34,13 +41,21 @@
                         :label="consoleHeightTmp + 'px'"
                         @change="updateConsoleHeight"></v-slider>
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures')" :dynamic-slot-width="true">
+                <div class="d-flex align-center">
+                    <v-icon style="opacity: 0.7">{{ mdiFilter }}</v-icon>
+                    <v-card-title class="mx-n2">
+                        {{ $t('Settings.ConsoleTab.Filters') }}
+                    </v-card-title>
+                    <v-divider class="ml-3"></v-divider>
+                </div>
+                <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures').toString()" :dynamic-slot-width="true">
                     <v-switch v-model="hideWaitTemperatures" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <template v-if="moonrakerComponents.includes('timelapse')">
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ConsoleTab.HideTimelapse')" :dynamic-slot-width="true">
+                    <settings-row
+                        :title="$t('Settings.ConsoleTab.HideTimelapse').toString()"
+                        :dynamic-slot-width="true">
                         <v-switch v-model="hideTimelapse" hide-details class="mt-0"></v-switch>
                     </settings-row>
                 </template>
@@ -85,7 +100,7 @@
                     }}
                 </v-card-title>
                 <v-card-text>
-                    <settings-row :title="$t('Settings.ConsoleTab.Name')">
+                    <settings-row :title="$t('Settings.ConsoleTab.Name').toString()">
                         <v-text-field
                             v-model="form.name"
                             hide-details="auto"
@@ -94,7 +109,7 @@
                             outlined></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ConsoleTab.Regex')">
+                    <settings-row :title="$t('Settings.ConsoleTab.Regex').toString()">
                         <v-textarea v-model="form.regex" outlined hide-details="auto"></v-textarea>
                     </settings-row>
                 </v-card-text>
@@ -120,7 +135,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { Debounce } from 'vue-debounce-decorator'
-import { mdiFilter, mdiPencil, mdiFilterOff, mdiDelete } from '@mdi/js'
+import { mdiFilter, mdiPencil, mdiFilterOff, mdiDelete, mdiConsoleLine } from '@mdi/js'
 
 interface consoleForm {
     bool: boolean
@@ -138,6 +153,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     mdiFilterOff = mdiFilterOff
     mdiPencil = mdiPencil
     mdiDelete = mdiDelete
+    mdiConsoleLine = mdiConsoleLine
 
     private form: consoleForm = {
         bool: false,

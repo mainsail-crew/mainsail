@@ -6,22 +6,21 @@
         :collapsible="true"
         card-class="machine-settings-panel">
         <div>
-            <sub-panel
-                :title="$t('Panels.MachineSettingsPanel.MotionSettings.Motion').toString()"
-                sub-panel-class="motion-settings-subpanel">
-                <motion-settings></motion-settings>
-            </sub-panel>
-            <sub-panel
-                :title="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.PressureAdvance').toString()"
-                sub-panel-class="pressure-advance-settings-subpanel">
-                <pressure-advance-settings></pressure-advance-settings>
-            </sub-panel>
-            <sub-panel
-                v-if="existsFirmwareRetraction"
-                :title="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.FirmwareRetraction').toString()"
-                sub-panel-class="firmware-retraction-settings-subpanel">
-                <firmware-retraction-settings></firmware-retraction-settings>
-            </sub-panel>
+            <template v-if="existsFirmwareRetraction">
+                <sub-panel
+                    :title="$t('Panels.MachineSettingsPanel.MotionSettings.Motion').toString()"
+                    sub-panel-class="motion-settings-subpanel"
+                    class="py-3">
+                    <motion-settings class="pb-0"></motion-settings>
+                </sub-panel>
+                <sub-panel
+                    :title="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.FirmwareRetraction').toString()"
+                    sub-panel-class="firmware-retraction-settings-subpanel"
+                    class="pb-3">
+                    <firmware-retraction-settings class="pb-0"></firmware-retraction-settings>
+                </sub-panel>
+            </template>
+            <motion-settings v-else></motion-settings>
         </div>
     </panel>
 </template>

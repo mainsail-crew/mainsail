@@ -145,7 +145,7 @@
                             <div :key="macro.name">
                                 <v-row>
                                     <v-col class="col-auto pr-0 d-flex">
-                                        <v-icon class="handle">{{ mdiArrowUpDown }}</v-icon>
+                                        <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
                                     </v-col>
                                     <v-col>
                                         <settings-row
@@ -309,7 +309,7 @@ import {
     mdiPause,
     mdiPrinter3dNozzle,
     mdiPlus,
-    mdiArrowUpDown,
+    mdiDragVertical,
     mdiPalette,
     mdiPencil,
 } from '@mdi/js'
@@ -319,15 +319,15 @@ import {
 })
 export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     /**
-Icons
-*/
+     * Icons
+     */
     mdiPencil = mdiPencil
     mdiDelete = mdiDelete
     mdiSleep = mdiSleep
     mdiPause = mdiPause
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
     mdiPlus = mdiPlus
-    mdiArrowUpDown = mdiArrowUpDown
+    mdiDragVertical = mdiDragVertical
     mdiPalette = mdiPalette
 
     private rules = {
@@ -381,7 +381,7 @@ Icons
     }
 
     get allMacros() {
-        return this.$store.getters['printer/getAllMacros'] ?? []
+        return this.$store.getters['printer/getMacros'] ?? []
     }
 
     get availableMacros() {
