@@ -1,8 +1,3 @@
-<style>
-.vue-codemirror .cm-editor {
-}
-</style>
-
 <template>
     <div class="vue-codemirror">
         <div ref="codemirror" v-observe-visibility="visibilityChanged"></div>
@@ -109,3 +104,8 @@ export default class Codemirror extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style>
+.vue-codemirror .cm-editor {
+}
+</style>
