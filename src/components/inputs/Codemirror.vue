@@ -104,8 +104,3 @@ export default class Codemirror extends Mixins(BaseMixin) {
     }
 }
 </script>
-
-<style>
-.vue-codemirror .cm-editor {
-}
-</style>
