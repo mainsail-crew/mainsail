@@ -427,7 +427,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "アップデートを確認",
             "Commits": "コミット",
-            "CommitsAvailabe": "有効なコミットなし | {count}個のコミット有効 | {count}個のコミット有効",
+            "CommitsAvailable": "有効なコミットなし | {count}個のコミット有効 | {count}個のコミット有効",
             "CommitsOnDate": "{date}のコミット",
             "CommittedDaysAgo": "{days}日前にコミット",
             "CommittedHoursAgo": "{hours}時間前にコミット",
