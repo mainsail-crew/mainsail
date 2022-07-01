@@ -48,8 +48,13 @@
         </template>
         <template v-else-if="socketIsConnected">
             <div class="d-flex flex-column justify-center align-center" style="min-height: 100%">
-                <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
-                <h3 class="mt-6">Mainsail will be initialised...</h3>
+                <h3 class="mb-3">Initializing...</h3>
+                <v-progress-linear
+                    color="primary"
+                    indeterminate
+                    rounded
+                    height="6"
+                    style="width: 200px"></v-progress-linear>
             </div>
         </template>
         <the-select-printer-dialog v-if="remoteMode"></the-select-printer-dialog>
