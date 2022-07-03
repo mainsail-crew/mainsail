@@ -427,7 +427,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Controleer op updates",
             "Commits": "Commits",
-            "CommitsAvailabe": "geen commits beschikbaar | {count} commit beschikbaar | {count} commits beschikbaar",
+            "CommitsAvailable": "geen commits beschikbaar | {count} commit beschikbaar | {count} commits beschikbaar",
             "CommitsOnDate": "Gecommit op {date}",
             "CommittedDaysAgo": "{days} dagen geleden gecommit",
             "CommittedHoursAgo": "{days} uur geleden gecommit",

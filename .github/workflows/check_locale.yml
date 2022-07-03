@@ -1,0 +1,57 @@
+name: Check Translations
+on:
+  pull_request_target:
+    types: [synchronize, opened]
+    paths:
+      - 'src/locales/**'
+
+jobs:
+  check_translations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install jq
+        run: sudo apt install -y jq
+
+      - name: Fetch repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v23
+        with:
+          sha: ${{ github.event.pull_request.head.sha }}
+          files: 'src/locales/*.json'
+
+      - name: Run i18n-extract on changed locale files
+        id: i18n-extract
+        env:
+          OUTPUT: ''
+        run: |
+          mkdir ./i18n-extract
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            npm run i18n-extract -- --languageFiles=src/locales/${file##*/} --output=i18n-extract/${file##*/}
+            MISSING=$(cat i18n-extract/${file##*/} | jq '.missingKeys | length')
+            UNUSED=$(cat i18n-extract/${file##*/} | jq '.unusedKeys | length')
+            echo "::set-output name=$file::|${file##*/}|${MISSING}|${UNUSED}|"
+          done
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |
+            Language file analysis report:
+            |File|Missing Keys|Unused Keys|
+            |:---|---:|---:|
+            ${{join(steps.i18n-extract.outputs.*, '
+            ')}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

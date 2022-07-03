@@ -1,5 +1,5 @@
 {
-    "_last_update:": "26.05.2022",
+    "_last_update": "26.05.2022",
     "App": {
         "Notifications": {
             "KlipperWarnings": {
@@ -415,7 +415,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Contrôle de disponibilité de mises à jour",
             "Commits": "publié",
-            "CommitsAvailabe": "pas de mise à jour disponible | {count} mise à jour disponible | {count} mises à jour disponibles",
+            "CommitsAvailable": "pas de mise à jour disponible | {count} mise à jour disponible | {count} mises à jour disponibles",
             "CommitsOnDate": "Publié le {date}",
             "CommittedDaysAgo": "Publié il y a {days} jours",
             "CommittedHoursAgo": "Publié il y a {hours} heures",

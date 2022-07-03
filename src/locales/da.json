@@ -384,7 +384,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Tjek for opdateringer",
             "Commits": "Forpligtelse",
-            "CommitsAvailabe": "Ingen commits tilgængelige | {count} commits tilgængelige | {count} commits tilgængelige",
+            "CommitsAvailable": "Ingen commits tilgængelige | {count} commits tilgængelige | {count} commits tilgængelige",
             "CommitsOnDate": " Forpligtelse af {date}",
             "CommittedDaysAgo": "Forpligtelse delt for {days} dage siden",
             "CommittedHoursAgo": "Forpligtelse delt for {hours} timer siden",

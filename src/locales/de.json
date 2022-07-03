@@ -431,7 +431,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "auf aktualisierungen prüfen",
             "Commits": "Commits",
-            "CommitsAvailabe": "keine Einreichung verfügbar | {count} Einreichung verfügbar | {count} Einreichungen verfügbar",
+            "CommitsAvailable": "keine Einreichung verfügbar | {count} Einreichung verfügbar | {count} Einreichungen verfügbar",
             "CommitsOnDate": "Engereicht am {date}",
             "CommittedDaysAgo": "eingereicht vor {days} Tagen",
             "CommittedHoursAgo": "eingereicht vor {hours} Stunden",
