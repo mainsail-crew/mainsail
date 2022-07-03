@@ -3,7 +3,7 @@
 <template>
     <div>
         <panel
-            :title="$t('Machine.ConfigFilesPanel.ConfigFiles')"
+            :title="$t('Machine.ConfigFilesPanel.ConfigFiles').toString()"
             card-class="machine-configfiles-panel"
             :icon="mdiInformation"
             :collapsible="true">
@@ -245,7 +245,7 @@
         </v-dialog>
         <v-dialog v-model="dialogCreateFile.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.CreateFile')"
+                :title="$t('Machine.ConfigFilesPanel.CreateFile').toString()"
                 card-class="maschine-configfiles-create-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -274,7 +274,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.RenameFile')"
+                :title="$t('Machine.ConfigFilesPanel.RenameFile').toString()"
                 card-class="maschine-configfiles-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -303,7 +303,7 @@
         </v-dialog>
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.CreateDirectory')"
+                :title="$t('Machine.ConfigFilesPanel.CreateDirectory').toString()"
                 card-class="maschine-configfiles-create-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -332,7 +332,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.RenameDirectory')"
+                :title="$t('Machine.ConfigFilesPanel.RenameDirectory').toString()"
                 card-class="maschine-configfiles-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -361,7 +361,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.DeleteDirectory')"
+                :title="$t('Machine.ConfigFilesPanel.DeleteDirectory').toString()"
                 card-class="maschine-configfiles-delete-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -391,7 +391,7 @@
         </v-dialog>
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.Delete')"
+                :title="$t('Machine.ConfigFilesPanel.Delete').toString()"
                 card-class="gcode-files-delete-selected-dialog"
                 :margin-bottom="false">
                 <template #buttons>
