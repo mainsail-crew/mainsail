@@ -708,7 +708,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         let files = [...(this.directory?.childrens ?? [])]
 
         if (!this.showHiddenFiles) {
-            files = files.filter((file) => file.filename.substr(0, 1) !== '.')
+            files = files.filter((file) => file.filename.slice(0, 1) !== '.')
         }
 
         if (this.hideBackupFiles) {
@@ -854,7 +854,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     clickRowGoBack() {
-        this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf('/'))
+        this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
     }
 
     showContextMenu(e: any, item: FileStateFile) {
