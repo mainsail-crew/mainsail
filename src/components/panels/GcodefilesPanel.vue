@@ -392,7 +392,6 @@
                         ref="inputFieldCreateDirectory"
                         v-model="dialogCreateDirectory.name"
                         :label="$t('Files.Name')"
-                        :rules="input_rules"
                         required
                         @keypress.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
@@ -711,8 +710,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     private deleteSelectedDialog = false
-
-    private input_rules = [(value: string) => value.indexOf(' ') === -1 || 'Name contains spaces!']
 
     get currentPath() {
         const path = this.$store.state.gui.view.gcodefiles.currentPath
@@ -1051,7 +1048,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     createDirectoryAction() {
-        if (this.dialogCreateDirectory.name.length && this.dialogCreateDirectory.name.indexOf(' ') === -1) {
+        if (this.dialogCreateDirectory.name.length) {
             this.dialogCreateDirectory.show = false
             this.$socket.emit(
                 'server.files.post_directory',
