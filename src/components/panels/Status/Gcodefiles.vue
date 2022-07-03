@@ -213,13 +213,13 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         touchTimer: undefined,
         x: 0,
         y: 0,
-        item: this.dialogFile,
+        item: { ...this.dialogFile },
     }
 
     private dialogRenameFile: dialogRenameObject = {
         show: false,
         newName: '',
-        item: this.dialogFile,
+        item: { ...this.dialogFile },
     }
 
     get gcodeFiles() {
