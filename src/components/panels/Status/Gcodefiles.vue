@@ -317,10 +317,6 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         return '--'
     }
 
-    getJobStatus(item: FileStateGcodefile) {
-        return item.last_status
-    }
-
     getStatusIcon(status: string) {
         return this.$store.getters['server/history/getPrintStatusIcon'](status)
     }
