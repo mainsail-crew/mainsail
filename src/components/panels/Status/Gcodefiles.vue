@@ -26,7 +26,7 @@
                                         <img
                                             slot="image"
                                             :src="item.small_thumbnail"
-                                            alt="small_thumbnail"
+                                            :alt="item.filename"
                                             width="32"
                                             height="32"
                                             v-bind="attrs"
@@ -39,7 +39,7 @@
                                         </div>
                                     </vue-load-image>
                                 </template>
-                                <span><img :src="item.big_thumbnail" alt="big_thumbnail" width="250" /></span>
+                                <span><img :src="item.big_thumbnail" :alt="item.filename" width="250" /></span>
                             </v-tooltip>
                         </template>
                         <template v-else>
