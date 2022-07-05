@@ -288,8 +288,14 @@
                         v-if="filamentDiameter && nozzleDiameter"
                         style="font-size: 0.8em"
                         class="text--disabled text-caption font-weight-light d-flex justify-center">
-                        {{ $t('Panels.ExtruderControlPanel.EstimatedExtrusion') }} ~ {{ extrudedLength }} mm @
-                        {{ volumetricFlow }} mm³/s
+                        <span>
+                            {{ $t('Panels.ExtruderControlPanel.EstimatedExtrusion') }} ~ {{ extrudedLength }} mm @
+                            {{ volumetricFlow }} mm³/s [
+                            <v-icon x-small style="opacity: 0.4; margin-top: -2px">
+                                {{ mdiPrinter3dNozzle }}
+                            </v-icon>
+                            {{ nozzleDiameter }} mm ]
+                        </span>
                     </div>
                 </v-container>
             </template>
