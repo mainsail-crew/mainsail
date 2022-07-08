@@ -13,11 +13,17 @@
         "sourceMap": true,
         "skipLibCheck": true,
         "baseUrl": ".",
+        "types": [
+            "vite/client",
+            "vuetify",
+            "@intlify/vite-plugin-vue-i18n/client",
+            "vite-plugin-pwa/client"
+        ],
         "paths": {
             "@/*": ["src/*"]
         },
         "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
-        "typeRoots": ["./node_modules/vuetify/types", "./node_modules/@types"]
+        "typeRoots": ["./node_modules/vuetify/types"]
     },
     "include": [
         "components.d.ts",
@@ -29,5 +35,5 @@
         "tests/**/*.ts",
         "tests/**/*.tsx"
     ],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "cypress"]
 }
