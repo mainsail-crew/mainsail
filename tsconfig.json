@@ -13,17 +13,11 @@
         "sourceMap": true,
         "skipLibCheck": true,
         "baseUrl": ".",
-        "types": [
-            "vite/client",
-            "vuetify",
-            "@intlify/vite-plugin-vue-i18n/client",
-            "vite-plugin-pwa/client"
-        ],
         "paths": {
             "@/*": ["src/*"]
         },
         "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
-        "typeRoots": ["./node_modules/vuetify/types"]
+        "typeRoots": ["./node_modules/vuetify/types", "./node_modules/@types"]
     },
     "include": [
         "components.d.ts",
