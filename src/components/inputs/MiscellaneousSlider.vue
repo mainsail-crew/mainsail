@@ -15,7 +15,7 @@
                         v-if="rpm || rpm === 0"
                         :class="`mr-3 mt-1 ${controllable && pwm ? '_rpm' : ''}
                                 ${rpm === 0 && value > 0 ? 'red--text' : ''}`">
-                        {{ Math.round(rpm) }} RPM
+                        {{ Math.round(rpm ?? 0) }} RPM
                     </small>
                     <span v-if="!controllable" class="font-weight-bold">
                         {{ Math.round(parseFloat(value) * 100) }} %
@@ -27,7 +27,7 @@
                         <v-text-field
                             v-if="controllable && pwm"
                             v-model="inputValue"
-                            :error="errors().length > 0"
+                            :error="errors"
                             suffix="%"
                             type="number"
                             hide-spin-buttons
@@ -42,8 +42,8 @@
                 </v-subheader>
                 <transition v-if="controllable && pwm" name="fade">
                     <!-- display errors -->
-                    <div v-show="errors().length > 0" class="_error-msg d-flex justify-end">
-                        {{ errors()[0] }}
+                    <div v-show="errors.length > 0" class="_error-msg d-flex justify-end">
+                        {{ errors[0] }}
                     </div>
                 </transition>
                 <v-card-text v-if="controllable && pwm" class="py-0 pb-2 d-flex align-center">
@@ -246,7 +246,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         if (this.invalidChars.includes(event.key)) event.preventDefault()
     }
 
-    errors() {
+    get errors() {
         const errors = []
         const input = this.inputValue / 100
         if (this.inputValue.toString() === '') {
@@ -261,7 +261,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 
     submitInput(): void {
-        if (this.errors().length > 0) return
+        if (this.errors.length > 0) return
 
         let newVal = this.inputValue / 100
         if (this.value === 0 && newVal < this.off_below) {
