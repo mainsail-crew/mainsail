@@ -12,6 +12,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
 
     init({ dispatch }) {
         window.console.debug('init printer')
+        dispatch('reset')
 
         dispatch('socket/addInitModule', 'printer/info', { root: true })
         dispatch('socket/addInitModule', 'printer/initSubscripts', { root: true })

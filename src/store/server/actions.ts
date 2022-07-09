@@ -243,7 +243,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
-    async addEvent({ commit, rootGetters }, payload) {
+    addEvent({ commit, rootGetters }, payload) {
         let message = payload
         let type = 'response'
 
@@ -271,7 +271,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         if (boolImport) {
             if (payload.type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
 
-            await commit('addEvent', {
+            commit('addEvent', {
                 date: new Date(),
                 message: message,
                 formatMessage: formatMessage,
