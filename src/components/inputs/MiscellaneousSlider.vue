@@ -1,54 +1,3 @@
-<style scoped>
-._fan-slider-subheader {
-    height: auto;
-}
-
-._lock-button {
-    margin-left: -6px;
-}
-
-._rpm {
-    padding-top: 0.2rem !important;
-    margin: 0 !important;
-}
-
-._error-msg {
-    color: #ff5252;
-    font-size: 12px;
-    padding: 4px 16px 2px 0;
-}
-
-.fade-enter-active {
-    animation: slide-in 0.15s reverse;
-    opacity: 1;
-}
-
-.fade-leave-active {
-    animation: slide-in 0.15s;
-    opacity: 1;
-}
-
-@keyframes slide-in {
-    100% {
-        transform: translateY(-5px);
-    }
-}
-
-._slider-input {
-    font-size: 0.875rem;
-    max-width: 5.4rem;
-    margin-left: 12px;
-}
-
-._slider-input >>> .v-input__slot {
-    min-height: 1rem !important;
-}
-
-._slider-input >>> .v-text-field__slot input {
-    padding: 4px 0 4px;
-}
-</style>
-
 <template>
     <v-container class="px-0 py-2">
         <v-row>
@@ -325,3 +274,54 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+._fan-slider-subheader {
+    height: auto;
+}
+
+._lock-button {
+    margin-left: -6px;
+}
+
+._rpm {
+    padding-top: 0.2rem !important;
+    margin: 0 !important;
+}
+
+._error-msg {
+    color: #ff5252;
+    font-size: 12px;
+    padding: 4px 16px 2px 0;
+}
+
+.fade-enter-active {
+    animation: slide-in 0.15s reverse;
+    opacity: 1;
+}
+
+.fade-leave-active {
+    animation: slide-in 0.15s;
+    opacity: 1;
+}
+
+@keyframes slide-in {
+    100% {
+        transform: translateY(-5px);
+    }
+}
+
+._slider-input {
+    font-size: 0.875rem;
+    max-width: 5.4rem;
+    margin-left: 12px;
+}
+
+._slider-input >>> .v-input__slot {
+    min-height: 1rem !important;
+}
+
+._slider-input >>> .v-text-field__slot input {
+    padding: 4px 0 4px;
+}
+</style>
