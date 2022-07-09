@@ -11,12 +11,7 @@
                     </v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
-                    <small
-                        v-if="rpm || rpm === 0"
-                        :class="`mr-3 mt-1 ${controllable && pwm ? '_rpm' : ''}
-                                ${rpm === 0 && value > 0 ? 'red--text' : ''}`">
-                        {{ Math.round(rpm ?? 0) }} RPM
-                    </small>
+                    <small v-if="rpm || rpm === 0" :class="rpmClasses">{{ Math.round(rpm ?? 0) }} RPM</small>
                     <span v-if="!controllable" class="font-weight-bold">
                         {{ Math.round(parseFloat(value) * 100) }} %
                     </span>
@@ -43,7 +38,7 @@
                 <transition v-if="controllable && pwm" name="fade">
                     <!-- display errors -->
                     <div v-show="errors.length > 0" class="_error-msg d-flex justify-end">
-                        {{ errors[0] }}
+                        {{ errors[0] ?? '' }}
                     </div>
                 </transition>
                 <v-card-text v-if="controllable && pwm" class="py-0 pb-2 d-flex align-center">
@@ -258,6 +253,14 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
             errors.push(this.$t('App.NumberInput.GreaterOrEqualError', { min: this.min * 100 }))
         }
         return errors
+    }
+
+    get rpmClasses() {
+        const output = ['mr-3', 'mt-1']
+        if (this.controllable && this.pwm) output.push('_rpm')
+        if (this.rpm && this.value > 0) output.push('red--text')
+
+        return output
     }
 
     submitInput(): void {
