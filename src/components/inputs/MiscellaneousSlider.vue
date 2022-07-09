@@ -166,19 +166,39 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     private invalidChars: string[] = ['e', 'E', '+']
 
     private min = 0
-    private value = 0
     private inputValue = 0
     private sliderValue = 0
 
-    @Prop({ type: Number, required: true }) declare target: number
-    @Prop({ type: Number, default: 1 }) declare max: number
-    @Prop({ type: String, default: '' }) declare name: string
-    @Prop({ type: String, default: '' }) declare type: string
-    @Prop({ type: Boolean, default: false }) declare controllable: boolean
-    @Prop({ type: Boolean, default: false }) declare pwm: boolean
-    @Prop({ type: [Number, Boolean], default: false }) declare rpm: number | boolean
-    @Prop({ type: Number, default: 1 }) declare multi: number
-    @Prop({ type: Number, default: 0 }) declare off_below: number
+    @Prop({ type: Number, required: true })
+    declare target: number
+
+    @Prop({ type: Number, default: 1 })
+    declare max: number
+
+    @Prop({ type: String, default: '' })
+    declare name: string
+
+    @Prop({ type: String, default: '' })
+    declare type: string
+
+    @Prop({ type: Boolean, default: false })
+    declare controllable: boolean
+
+    @Prop({ type: Boolean, default: false })
+    declare pwm: boolean
+
+    @Prop({ type: [Number, Boolean], default: false })
+    declare rpm: number | boolean
+
+    @Prop({ type: Number, default: 1 })
+    declare multi: number
+
+    @Prop({ type: Number, default: 0 })
+    declare off_below: number
+
+    get value(): number {
+        return Math.round((this.target / this.max) * 100) / 100
+    }
 
     @Watch('lockSliders', { immediate: true })
     lockSlidersChanged(): void {
@@ -215,19 +235,19 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         } else if (this.sliderValue > this.value && this.sliderValue < this.off_below) {
             this.sliderValue = this.off_below
         }
-        this.value = this.sliderValue
-        this.sendCmd()
+
+        this.sendCmd(this.sliderValue)
     }
 
-    sendCmd(): void {
-        if (this.target === this.value) return
+    sendCmd(newVal: number): void {
+        if (this.value === newVal) return
 
         let gcode = ''
-        if (this.value < this.min) this.value = 0
-        const l_value = this.value * this.multi
-        if (this.type === 'fan') gcode = `M106 S${l_value.toFixed(0)}`
-        if (this.type === 'fan_generic') gcode = `SET_FAN_SPEED FAN=${this.name} SPEED=${l_value}`
-        if (this.type === 'output_pin') gcode = `SET_PIN PIN=${this.name} VALUE=${l_value.toFixed(2)}`
+        if (newVal < this.min) newVal = 0
+        newVal = newVal * this.multi
+        if (this.type === 'fan') gcode = `M106 S${newVal.toFixed(0)}`
+        if (this.type === 'fan_generic') gcode = `SET_FAN_SPEED FAN=${this.name} SPEED=${newVal}`
+        if (this.type === 'output_pin') gcode = `SET_PIN PIN=${this.name} VALUE=${newVal.toFixed(2)}`
 
         if (gcode !== '') {
             this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
@@ -238,31 +258,26 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 
     switchOutputPin(): void {
-        this.value = this.value ? 0 : 1
-        const gcode = `SET_PIN PIN=${this.name} VALUE=${(this.value * this.multi).toFixed(2)}`
+        const newVal = this.value ? 0 : 1
+        const gcode = `SET_PIN PIN=${this.name} VALUE=${(newVal * this.multi).toFixed(2)}`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
     decrement(): void {
-        this.value = this.value > 0 ? Math.round((this.value - 0.01) * 100) / 100 : 0
-        if (this.value < this.off_below) this.value = 0
-        this.sendCmd()
+        let newVal = this.value > 0 ? Math.round((this.value - 0.01) * 100) / 100 : 0
+        if (this.value < this.off_below) newVal = 0
+        this.sendCmd(newVal)
     }
 
     increment(): void {
-        this.value = this.value < 1.0 ? Math.round((this.value + 0.01) * 100) / 100 : 1.0
-        if (this.value < this.off_below) this.value = this.off_below
-        this.sendCmd()
+        let newVal = this.value < 1.0 ? Math.round((this.value + 0.01) * 100) / 100 : 1.0
+        if (this.value < this.off_below) newVal = this.off_below
+        this.sendCmd(newVal)
     }
 
-    mounted(): void {
-        this.value = this.target
-    }
-
-    @Watch('target')
-    targetChanged(newVal: number): void {
-        this.value = newVal
+    mounted() {
+        this.sliderValue = this.value
     }
 
     @Watch('value')
@@ -293,24 +308,20 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
             // "Must be grater or equal than {min}!"
             errors.push(this.$t('App.NumberInput.GreaterOrEqualError', { min: this.min * 100 }))
         }
-        if (input > this.max || input < this.min) {
-            // "Must be between {min} and {max}!"
-            errors.push(this.$t('App.NumberInput.MustBeBetweenError', { min: this.min * 100, max: this.max * 100 }))
-        }
         return errors
     }
 
     submitInput(): void {
         if (this.errors().length > 0) return
 
-        const input = this.inputValue / 100
-        if (this.value === 0 && input < this.off_below) {
-            this.value = this.off_below
-        } else if (this.value >= this.off_below && input < this.off_below) {
-            this.value = 0
-        } else this.value = input
+        let newVal = this.inputValue / 100
+        if (this.value === 0 && newVal < this.off_below) {
+            newVal = this.off_below
+        } else if (this.value >= this.off_below && newVal < this.off_below) {
+            newVal = 0
+        }
 
-        this.sendCmd()
+        this.sendCmd(newVal)
     }
 }
 </script>
