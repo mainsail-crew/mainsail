@@ -54,13 +54,25 @@ Before you work on a PR and submit it, please pay attention to the following gui
 2. Do not submit PRs against the `master` branch. PRs need to be submitted against the `develop` branch.
 3. Follow our [Code Standards](https://docs.mainsail.xyz/development/code-standards)
 4. If there is an issue describing the problem you're fixing or a discussion of a feature you are implementing, make sure to link it in the PRs body.
-   - You can also add `fix #<id>` in the PR title where `<id>` is the issue id.
+
+   - You can also add `fix #<id>` or `fixes #<id>` in the PR body where `<id>` is the issue id.
+   - Example PR title, body and sign-off:
+
+   ```
+   fix: incorrect handling of click event
+
+   This PR will fix #123.
+   Fixes correct handling of click event when button [X] is clicked.
+
+   Signed-off-by: James Smith <james.smith@myvalidemail.com>
+   ```
+
 5. If there is no issue describing the problem, create an issue first or provide a sufficient description of the bug/feature.
    - Screenshots of your changes are welcome if you worked on UI-related code.
 6. The title of the PR should follow the [commit message convention](https://www.conventionalcommits.org/en/v1.0.0/).
    - If the PR consists of multiple commits, it's good practice to follow the convention, although that is not necessarily required.
    - Upon merging, we will squash all commits of the PR into a single commit for a clean history and release changelogs.
-7. Please sign off each commit and your PR. It must contain your real name and a current email address.
+7. Please sign off each commit and your PR. It must contain your real name and a current email address (see example in item 4).
    - The sign-off should follow this pattern: `Signed-off-by: My Name <myemail@example.org>`
    - The sign-off certifies that you agree with the [developer certificate of origin](https://github.com/mainsail-crew/mainsail/.github/DEVELOPER_CERTIFICATE_OF_ORIGIN.md).
    - If you provide a translation, a sign-off is not necessarily required.
