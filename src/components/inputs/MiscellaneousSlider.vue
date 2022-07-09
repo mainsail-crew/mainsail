@@ -13,7 +13,7 @@
                     <v-spacer></v-spacer>
                     <small
                         v-if="rpm || rpm === 0"
-                        :class="`mr-3 ${controllable && pwm ? '_rpm' : ''}
+                        :class="`mr-3 mt-1 ${controllable && pwm ? '_rpm' : ''}
                                 ${rpm === 0 && value > 0 ? 'red--text' : ''}`">
                         {{ Math.round(rpm) }} RPM
                     </small>
@@ -40,9 +40,9 @@
                             @keydown="checkInvalidChars"></v-text-field>
                     </form>
                 </v-subheader>
-                <transition name="fade">
+                <transition v-if="controllable && pwm" name="fade">
                     <!-- display errors -->
-                    <div v-show="errors().length > 0 && controllable && pwm" class="_error-msg d-flex justify-end">
+                    <div v-show="errors().length > 0" class="_error-msg d-flex justify-end">
                         {{ errors()[0] }}
                     </div>
                 </transition>
