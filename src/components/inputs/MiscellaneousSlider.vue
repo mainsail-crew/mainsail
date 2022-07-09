@@ -3,15 +3,10 @@
         <v-row>
             <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
-                    <v-icon
-                        v-if="type !== 'output_pin'"
-                        small
-                        :class="'mr-2 ' + (value >= off_below && value > 0 ? 'icon-rotate' : '')">
-                        {{ mdiFan }}
-                    </v-icon>
+                    <v-icon v-if="type !== 'output_pin'" small :class="fanClasses">{{ mdiFan }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
-                    <small v-if="rpm || rpm === 0" :class="rpmClasses">{{ Math.round(rpm ?? 0) }} RPM</small>
+                    <small v-if="rpm !== false" :class="rpmClasses">{{ Math.round(rpm ?? 0) }} RPM</small>
                     <span v-if="!controllable" class="font-weight-bold">
                         {{ Math.round(parseFloat(value) * 100) }} %
                     </span>
@@ -22,7 +17,7 @@
                         <v-text-field
                             v-if="controllable && pwm"
                             v-model="inputValue"
-                            :error="errors"
+                            :error="errors.length > 0"
                             suffix="%"
                             type="number"
                             hide-spin-buttons
@@ -32,7 +27,7 @@
                             class="_slider-input pt-1"
                             @blur="inputValue = Math.round(parseFloat(sliderValue) * 100)"
                             @focus="$event.target.select()"
-                            @keydown="checkInvalidChars"></v-text-field>
+                            @keydown="checkInvalidChars" />
                     </form>
                 </v-subheader>
                 <transition v-if="controllable && pwm" name="fade">
@@ -255,10 +250,18 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         return errors
     }
 
+    get fanClasses() {
+        const output = ['mr-2']
+        if (this.value >= this.off_below && this.value > 0) output.push('icon-rotate')
+
+        return output
+    }
+
     get rpmClasses() {
-        const output = ['mr-3', 'mt-1']
-        if (this.controllable && this.pwm) output.push('_rpm')
-        if (this.rpm && this.value > 0) output.push('red--text')
+        const output = []
+        if (!this.controllable) output.push(['mr-3', 'mt-1'])
+        else output.push(['mt-2'])
+        if (this.rpm === 0 && this.value > 0) output.push('red--text')
 
         return output
     }
@@ -285,11 +288,6 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
 
 ._lock-button {
     margin-left: -6px;
-}
-
-._rpm {
-    padding-top: 0.2rem !important;
-    margin: 0 !important;
 }
 
 ._error-msg {
