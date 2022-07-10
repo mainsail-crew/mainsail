@@ -102,14 +102,17 @@ export const getters: GetterTree<FileState, any> = {
                     last_total_duration: null,
                 }
 
-                const preheat_gcode_array = []
-                if ((file.first_layer_extr_temp ?? 0) > 0) {
-                    preheat_gcode_array.push(`M104 S${file.first_layer_extr_temp}`)
-                }
+                const preheat_gcode_array: string[] = []
+                const preheat_gcode_objects = [
+                    { name: 'first_layer_extr_temp', gcode: 'M104' },
+                    { name: 'first_layer_bed_temp', gcode: 'M140' },
+                ]
 
-                if ((file.first_layer_bed_temp ?? 0) > 0) {
-                    preheat_gcode_array.push(`M140 S${file.first_layer_bed_temp}`)
-                }
+                preheat_gcode_objects.forEach((object) => {
+                    if (object.name in file && file[object.name] > 1) {
+                        preheat_gcode_array.push(`${object.gcode} S${file[object.name]}`)
+                    }
+                })
 
                 if (preheat_gcode_array.length) {
                     tmp.preheat_gcode = preheat_gcode_array.join('\n')

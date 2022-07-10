@@ -39,6 +39,7 @@ export interface FileStateFile {
     metadataPulled?: boolean
     metadataRequested?: boolean
     size?: number
+    [key: string]: any
 }
 
 export interface FileStateGcodefile extends FileStateFile {
