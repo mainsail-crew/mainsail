@@ -84,9 +84,9 @@
                     {{ $t('Files.AddToQueue') }}
                 </v-list-item>
                 <v-list-item
-                    v-if="canPreheat(contextMenu.item)"
+                    v-if="contextMenu.item.preheat_gcode !== null"
                     :disabled="['error', 'printing', 'paused'].includes(printer_state)"
-                    @click="preheat(contextMenu.item)">
+                    @click="doSend(contextMenu.item.preheat_gcode)">
                     <v-icon class="mr-1">{{ mdiFire }}</v-icon>
                     {{ $t('Files.Preheat') }}
                 </v-list-item>
@@ -341,23 +341,6 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
 
     addToQueue(item: FileStateGcodefile) {
         this.$store.dispatch('server/jobQueue/addToQueue', [item.filename])
-    }
-
-    canPreheat(item: FileStateGcodefile) {
-        const bed = item.first_layer_bed_temp
-        const extr = item.first_layer_extr_temp
-
-        return extr && extr > 0 && bed && bed > 0
-    }
-
-    preheat(item: FileStateGcodefile) {
-        if (!this.canPreheat(item) || ['error', 'printing', 'paused'].includes(this.printer_state)) return
-
-        const heatExtr = `M104 S${item.first_layer_extr_temp}`
-        const heatBed = `M140 S${item.first_layer_bed_temp}`
-
-        this.doSend(heatExtr)
-        this.doSend(heatBed)
     }
 
     view3D(item: FileStateGcodefile) {
