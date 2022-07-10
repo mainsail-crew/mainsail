@@ -1,73 +1,12 @@
-<style scoped>
-._fan-slider-subheader {
-    height: auto;
-}
-
-._lock-button {
-    margin-left: -6px;
-}
-
-._rpm {
-    padding-top: 0.2rem !important;
-    margin: 0 !important;
-}
-
-._error-msg {
-    color: #ff5252;
-    font-size: 12px;
-    padding: 4px 16px 2px 0;
-}
-
-.fade-enter-active {
-    animation: slide-in 0.15s reverse;
-    opacity: 1;
-}
-
-.fade-leave-active {
-    animation: slide-in 0.15s;
-    opacity: 1;
-}
-
-@keyframes slide-in {
-    100% {
-        transform: translateY(-5px);
-    }
-}
-
-._slider-input {
-    font-size: 0.875rem;
-    max-width: 5.4rem;
-    margin-left: 12px;
-}
-
-._slider-input >>> .v-input__slot {
-    min-height: 1rem !important;
-}
-
-._slider-input >>> .v-text-field__slot input {
-    padding: 4px 0 4px;
-}
-</style>
-
 <template>
     <v-container class="px-0 py-2">
         <v-row>
             <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
-                    <v-icon
-                        v-if="type !== 'output_pin'"
-                        small
-                        :class="'mr-2 ' + (value >= off_below && value > 0 ? 'icon-rotate' : '')">
-                        {{ mdiFan }}
-                    </v-icon>
+                    <v-icon v-if="type !== 'output_pin'" small :class="fanClasses">{{ mdiFan }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
-                    <small
-                        v-if="rpm || rpm === 0"
-                        :class="`mr-3 ${controllable && pwm ? '_rpm' : ''}
-                                ${rpm === 0 && value > 0 ? 'red--text' : ''}`">
-                        {{ Math.round(rpm) }} RPM
-                    </small>
+                    <small v-if="rpm !== null" :class="rpmClasses">{{ Math.round(rpm ?? 0) }} RPM</small>
                     <span v-if="!controllable" class="font-weight-bold">
                         {{ Math.round(parseFloat(value) * 100) }} %
                     </span>
@@ -78,7 +17,7 @@
                         <v-text-field
                             v-if="controllable && pwm"
                             v-model="inputValue"
-                            :error="errors().length > 0"
+                            :error="errors.length > 0"
                             suffix="%"
                             type="number"
                             hide-spin-buttons
@@ -88,13 +27,13 @@
                             class="_slider-input pt-1"
                             @blur="inputValue = Math.round(parseFloat(sliderValue) * 100)"
                             @focus="$event.target.select()"
-                            @keydown="checkInvalidChars"></v-text-field>
+                            @keydown="checkInvalidChars" />
                     </form>
                 </v-subheader>
-                <transition name="fade">
+                <transition v-if="controllable && pwm" name="fade">
                     <!-- display errors -->
-                    <div v-show="errors().length > 0 && controllable && pwm" class="_error-msg d-flex justify-end">
-                        {{ errors()[0] }}
+                    <div v-show="errors.length > 0" class="_error-msg d-flex justify-end">
+                        {{ errors[0] ?? '' }}
                     </div>
                 </transition>
                 <v-card-text v-if="controllable && pwm" class="py-0 pb-2 d-flex align-center">
@@ -166,19 +105,39 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     private invalidChars: string[] = ['e', 'E', '+']
 
     private min = 0
-    private value = 0
     private inputValue = 0
     private sliderValue = 0
 
-    @Prop({ type: Number, required: true }) declare target: number
-    @Prop({ type: Number, default: 1 }) declare max: number
-    @Prop({ type: String, default: '' }) declare name: string
-    @Prop({ type: String, default: '' }) declare type: string
-    @Prop({ type: Boolean, default: false }) declare controllable: boolean
-    @Prop({ type: Boolean, default: false }) declare pwm: boolean
-    @Prop({ type: [Number, Boolean], default: false }) declare rpm: number | boolean
-    @Prop({ type: Number, default: 1 }) declare multi: number
-    @Prop({ type: Number, default: 0 }) declare off_below: number
+    @Prop({ type: Number, required: true })
+    declare target: number
+
+    @Prop({ type: Number, default: 1 })
+    declare max: number
+
+    @Prop({ type: String, default: '' })
+    declare name: string
+
+    @Prop({ type: String, default: '' })
+    declare type: string
+
+    @Prop({ type: Boolean, default: false })
+    declare controllable: boolean
+
+    @Prop({ type: Boolean, default: false })
+    declare pwm: boolean
+
+    @Prop({ type: [Number, Boolean], default: false })
+    declare rpm: number | boolean
+
+    @Prop({ type: Number, default: 1 })
+    declare multi: number
+
+    @Prop({ type: Number, default: 0 })
+    declare off_below: number
+
+    get value(): number {
+        return Math.round((this.target / this.max) * 100) / 100
+    }
 
     @Watch('lockSliders', { immediate: true })
     lockSlidersChanged(): void {
@@ -215,19 +174,19 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         } else if (this.sliderValue > this.value && this.sliderValue < this.off_below) {
             this.sliderValue = this.off_below
         }
-        this.value = this.sliderValue
-        this.sendCmd()
+
+        this.sendCmd(this.sliderValue)
     }
 
-    sendCmd(): void {
-        if (this.target === this.value) return
+    sendCmd(newVal: number): void {
+        if (this.value === newVal) return
 
         let gcode = ''
-        if (this.value < this.min) this.value = 0
-        const l_value = this.value * this.multi
-        if (this.type === 'fan') gcode = `M106 S${l_value.toFixed(0)}`
-        if (this.type === 'fan_generic') gcode = `SET_FAN_SPEED FAN=${this.name} SPEED=${l_value}`
-        if (this.type === 'output_pin') gcode = `SET_PIN PIN=${this.name} VALUE=${l_value.toFixed(2)}`
+        if (newVal < this.min) newVal = 0
+        newVal = newVal * this.multi
+        if (this.type === 'fan') gcode = `M106 S${newVal.toFixed(0)}`
+        if (this.type === 'fan_generic') gcode = `SET_FAN_SPEED FAN=${this.name} SPEED=${newVal}`
+        if (this.type === 'output_pin') gcode = `SET_PIN PIN=${this.name} VALUE=${newVal.toFixed(2)}`
 
         if (gcode !== '') {
             this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
@@ -238,31 +197,26 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 
     switchOutputPin(): void {
-        this.value = this.value ? 0 : 1
-        const gcode = `SET_PIN PIN=${this.name} VALUE=${(this.value * this.multi).toFixed(2)}`
+        const newVal = this.value ? 0 : 1
+        const gcode = `SET_PIN PIN=${this.name} VALUE=${(newVal * this.multi).toFixed(2)}`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
     decrement(): void {
-        this.value = this.value > 0 ? Math.round((this.value - 0.01) * 100) / 100 : 0
-        if (this.value < this.off_below) this.value = 0
-        this.sendCmd()
+        let newVal = this.value > 0 ? Math.round((this.value - 0.01) * 100) / 100 : 0
+        if (this.value < this.off_below) newVal = 0
+        this.sendCmd(newVal)
     }
 
     increment(): void {
-        this.value = this.value < 1.0 ? Math.round((this.value + 0.01) * 100) / 100 : 1.0
-        if (this.value < this.off_below) this.value = this.off_below
-        this.sendCmd()
+        let newVal = this.value < 1.0 ? Math.round((this.value + 0.01) * 100) / 100 : 1.0
+        if (this.value < this.off_below) newVal = this.off_below
+        this.sendCmd(newVal)
     }
 
-    mounted(): void {
-        this.value = this.target
-    }
-
-    @Watch('target')
-    targetChanged(newVal: number): void {
-        this.value = newVal
+    mounted() {
+        this.sliderValue = this.value
     }
 
     @Watch('value')
@@ -282,7 +236,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         if (this.invalidChars.includes(event.key)) event.preventDefault()
     }
 
-    errors() {
+    get errors() {
         const errors = []
         const input = this.inputValue / 100
         if (this.inputValue.toString() === '') {
@@ -293,24 +247,82 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
             // "Must be grater or equal than {min}!"
             errors.push(this.$t('App.NumberInput.GreaterOrEqualError', { min: this.min * 100 }))
         }
-        if (input > this.max || input < this.min) {
-            // "Must be between {min} and {max}!"
-            errors.push(this.$t('App.NumberInput.MustBeBetweenError', { min: this.min * 100, max: this.max * 100 }))
-        }
         return errors
     }
 
+    get fanClasses() {
+        const output = ['mr-2']
+        if (this.value >= this.off_below && this.value > 0) output.push('icon-rotate')
+
+        return output
+    }
+
+    get rpmClasses() {
+        const output = []
+        if (!this.controllable) output.push(['mr-3', 'mt-1'])
+        else output.push(['mt-2'])
+        if (this.rpm === 0 && this.value > 0) output.push('red--text')
+
+        return output
+    }
+
     submitInput(): void {
-        if (this.errors().length > 0) return
+        if (this.errors.length > 0) return
 
-        const input = this.inputValue / 100
-        if (this.value === 0 && input < this.off_below) {
-            this.value = this.off_below
-        } else if (this.value >= this.off_below && input < this.off_below) {
-            this.value = 0
-        } else this.value = input
+        let newVal = this.inputValue / 100
+        if (this.value === 0 && newVal < this.off_below) {
+            newVal = this.off_below
+        } else if (this.value >= this.off_below && newVal < this.off_below) {
+            newVal = 0
+        }
 
-        this.sendCmd()
+        this.sendCmd(newVal)
     }
 }
 </script>
+
+<style scoped>
+._fan-slider-subheader {
+    height: auto;
+}
+
+._lock-button {
+    margin-left: -6px;
+}
+
+._error-msg {
+    color: #ff5252;
+    font-size: 12px;
+    padding: 4px 16px 2px 0;
+}
+
+.fade-enter-active {
+    animation: slide-in 0.15s reverse;
+    opacity: 1;
+}
+
+.fade-leave-active {
+    animation: slide-in 0.15s;
+    opacity: 1;
+}
+
+@keyframes slide-in {
+    100% {
+        transform: translateY(-5px);
+    }
+}
+
+._slider-input {
+    font-size: 0.875rem;
+    max-width: 5.4rem;
+    margin-left: 12px;
+}
+
+._slider-input >>> .v-input__slot {
+    min-height: 1rem !important;
+}
+
+._slider-input >>> .v-text-field__slot input {
+    padding: 4px 0 4px;
+}
+</style>
