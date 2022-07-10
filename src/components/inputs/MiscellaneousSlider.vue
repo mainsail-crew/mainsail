@@ -6,7 +6,7 @@
                     <v-icon v-if="type !== 'output_pin'" small :class="fanClasses">{{ mdiFan }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
-                    <small v-if="rpm !== false" :class="rpmClasses">{{ Math.round(rpm ?? 0) }} RPM</small>
+                    <small v-if="rpm !== null" :class="rpmClasses">{{ Math.round(rpm ?? 0) }} RPM</small>
                     <span v-if="!controllable" class="font-weight-bold">
                         {{ Math.round(parseFloat(value) * 100) }} %
                     </span>
