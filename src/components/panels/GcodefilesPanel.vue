@@ -258,6 +258,9 @@
                                     <span><img :src="item.big_thumbnail" width="250" :alt="item.filename" /></span>
                                 </v-tooltip>
                             </template>
+                            <template v-else>
+                                <v-icon>{{ mdiFile }}</v-icon>
+                            </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-right text-no-wrap">
