@@ -42,6 +42,7 @@ export interface FileStateFile {
 }
 
 export interface FileStateGcodefile extends FileStateFile {
+    preheat_gcode: string | null
     small_thumbnail: string | null
     big_thumbnail: string | null
     big_thumbnail_width: number | null
