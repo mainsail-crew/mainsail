@@ -230,50 +230,33 @@
                             <template v-if="item.isDirectory">
                                 <v-icon>{{ mdiFolder }}</v-icon>
                             </template>
-                            <template v-else>
-                                <template v-if="item.small_thumbnail && item.big_thumbnail">
-                                    <v-tooltip
-                                        v-if="!item.isDirectory && item.small_thumbnail && item.big_thumbnail"
-                                        top
-                                        content-class="tooltip__content-opacity1">
-                                        <template #activator="{ on, attrs }">
-                                            <vue-load-image>
-                                                <img
-                                                    slot="image"
-                                                    :src="item.small_thumbnail"
-                                                    width="32"
-                                                    height="32"
-                                                    :alt="item.filename"
-                                                    v-bind="attrs"
-                                                    v-on="on" />
+                            <template v-else-if="item.small_thumbnail">
+                                <v-tooltip
+                                    top
+                                    content-class="tooltip__content-opacity1"
+                                    :disabled="!item.big_thumbnail">
+                                    <template #activator="{ on, attrs }">
+                                        <vue-load-image>
+                                            <img
+                                                slot="image"
+                                                :src="item.small_thumbnail"
+                                                width="32"
+                                                height="32"
+                                                :alt="item.filename"
+                                                v-bind="attrs"
+                                                v-on="on" />
+                                            <div slot="preloader">
                                                 <v-progress-circular
-                                                    slot="preloader"
                                                     indeterminate
                                                     color="primary"></v-progress-circular>
-                                                <v-icon slot="error">{{ mdiFile }}</v-icon>
-                                            </vue-load-image>
-                                        </template>
-                                        <span><img :src="item.big_thumbnail" width="250" :alt="item.filename" /></span>
-                                    </v-tooltip>
-                                </template>
-                                <template v-else-if="item.small_thumbnail">
-                                    <vue-load-image>
-                                        <img
-                                            slot="image"
-                                            :src="item.small_thumbnail"
-                                            width="32"
-                                            height="32"
-                                            :alt="item.filename" />
-                                        <v-progress-circular
-                                            slot="preloader"
-                                            indeterminate
-                                            color="primary"></v-progress-circular>
-                                        <v-icon slot="error">{{ mdiFile }}</v-icon>
-                                    </vue-load-image>
-                                </template>
-                                <template v-else>
-                                    <v-icon>{{ mdiFile }}</v-icon>
-                                </template>
+                                            </div>
+                                            <div slot="error">
+                                                <v-icon>{{ mdiFile }}</v-icon>
+                                            </div>
+                                        </vue-load-image>
+                                    </template>
+                                    <span><img :src="item.big_thumbnail" width="250" :alt="item.filename" /></span>
+                                </v-tooltip>
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
@@ -330,14 +313,9 @@
                     {{ $t('Files.AddToQueue') }}
                 </v-list-item>
                 <v-list-item
-                    v-if="
-                        'first_layer_extr_temp' in contextMenu.item &&
-                        contextMenu.item.first_layer_extr_temp > 0 &&
-                        'first_layer_bed_temp' in contextMenu.item &&
-                        contextMenu.item.first_layer_bed_temp > 0
-                    "
+                    v-if="contextMenu.item.preheat_gcode !== null"
                     :disabled="['error', 'printing', 'paused'].includes(printer_state)"
-                    @click="preheat">
+                    @click="doSend(contextMenu.item.preheat_gcode)">
                     <v-icon class="mr-1">{{ mdiFire }}</v-icon>
                     {{ $t('Files.Preheat') }}
                 </v-list-item>
@@ -379,7 +357,7 @@
         </v-menu>
         <v-dialog v-model="dialogCreateDirectory.show" :max-width="400">
             <panel
-                :title="$t('Files.NewDirectory')"
+                :title="$t('Files.NewDirectory').toString()"
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -403,7 +381,10 @@
             </panel>
         </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
-            <panel :title="$t('Files.RenameFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
+            <panel
+                :title="$t('Files.RenameFile').toString()"
+                card-class="gcode-files-rename-file-dialog"
+                :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogRenameFile.show = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -413,7 +394,7 @@
                     <v-text-field
                         ref="inputFieldRenameFile"
                         v-model="dialogRenameFile.newName"
-                        :label="$t('Files.Name')"
+                        :label="$t('Files.Name').toString()"
                         required
                         @keyup.enter="renameFileAction"></v-text-field>
                 </v-card-text>
@@ -426,7 +407,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel
-                :title="$t('Files.RenameDirectory')"
+                :title="$t('Files.RenameDirectory').toString()"
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -451,7 +432,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel
-                :title="$t('Files.DeleteDirectory')"
+                :title="$t('Files.DeleteDirectory').toString()"
                 card-class="gcode-files-delete-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -472,7 +453,10 @@
             </panel>
         </v-dialog>
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
-            <panel :title="$t('Files.Delete')" card-class="gcode-files-delete-selected-dialog" :margin-bottom="false">
+            <panel
+                :title="$t('Files.Delete').toString()"
+                card-class="gcode-files-delete-selected-dialog"
+                :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="deleteSelectedDialog = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -524,6 +508,16 @@ import {
     mdiFileDocumentEditOutline,
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
+import ControlMixin from '@/components/mixins/control'
+
+interface contextMenu {
+    shown: boolean
+    isDirectory: boolean
+    touchTimer?: number | null
+    x: number
+    y: number
+    item: FileStateGcodefile
+}
 
 interface draggingFile {
     item: FileStateGcodefile
@@ -553,7 +547,7 @@ interface tableColumnSetting {
 @Component({
     components: { StartPrintDialog, Panel, SettingsRow, draggable },
 })
-export default class GcodefilesPanel extends Mixins(BaseMixin) {
+export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiFile = mdiFile
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiMagnify = mdiMagnify
@@ -590,29 +584,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     private search = ''
-    private draggingFile: draggingFile = {
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-            small_thumbnail: null,
-            big_thumbnail: null,
-            big_thumbnail_width: null,
-            count_printed: 0,
-            last_filament_used: null,
-            last_start_time: null,
-            last_end_time: null,
-            last_print_duration: null,
-            last_status: null,
-            last_total_duration: null,
-        },
-    }
+
     private dialogCreateDirectory = {
         show: false,
         name: '',
     }
-    private contextMenu = {
+
+    private contextMenu: contextMenu = {
         shown: false,
         isDirectory: false,
         touchTimer: undefined,
@@ -623,16 +601,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
-        },
-    }
-
-    private dialogPrintFile: dialogPrintFile = {
-        show: false,
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
+            preheat_gcode: null,
             small_thumbnail: null,
             big_thumbnail: null,
             big_thumbnail_width: null,
@@ -644,69 +613,33 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             last_status: null,
             last_total_duration: null,
         },
+    }
+
+    private draggingFile: draggingFile = {
+        item: { ...this.contextMenu.item },
+    }
+
+    private dialogPrintFile: dialogPrintFile = {
+        show: false,
+        item: { ...this.contextMenu.item },
     }
 
     private dialogRenameFile: dialogRenameObject = {
         show: false,
         newName: '',
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-            small_thumbnail: null,
-            big_thumbnail: null,
-            big_thumbnail_width: null,
-            count_printed: 0,
-            last_filament_used: null,
-            last_start_time: null,
-            last_end_time: null,
-            last_print_duration: null,
-            last_status: null,
-            last_total_duration: null,
-        },
+        item: { ...this.contextMenu.item },
     }
 
     private dialogRenameDirectory: dialogRenameObject = {
         show: false,
         newName: '',
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-            small_thumbnail: null,
-            big_thumbnail: null,
-            big_thumbnail_width: null,
-            count_printed: 0,
-            last_filament_used: null,
-            last_start_time: null,
-            last_end_time: null,
-            last_print_duration: null,
-            last_status: null,
-            last_total_duration: null,
-        },
+        item: { ...this.contextMenu.item },
     }
 
     private dialogDeleteDirectory: dialogRenameObject = {
         show: false,
         newName: '',
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-            small_thumbnail: null,
-            big_thumbnail: null,
-            big_thumbnail_width: null,
-            count_printed: 0,
-            last_filament_used: null,
-            last_start_time: null,
-            last_end_time: null,
-            last_print_duration: null,
-            last_status: null,
-            last_total_duration: null,
-        },
+        item: { ...this.contextMenu.item },
     }
 
     private deleteSelectedDialog = false
@@ -993,7 +926,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         e.preventDefault()
         e.target.parentElement.style.backgroundColor = 'transparent'
 
-        let dest = ''
+        let dest: string
         if (row.filename === '..') {
             dest =
                 this.currentPath.substring(0, this.currentPath.lastIndexOf('/') + 1) + this.draggingFile.item.filename
@@ -1102,7 +1035,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     clickRowGoBack() {
-        this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf('/'))
+        this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
     }
 
     addToQueue(item: FileStateGcodefile | FileStateFile) {
@@ -1116,7 +1049,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/setGcodefilesMetadata', { name: name, value: value })
     }
 
-    showContextMenu(e: any, item: FileStateGcodefile | FileStateFile) {
+    showContextMenu(e: any, item: FileStateGcodefile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true
@@ -1126,29 +1059,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             this.$nextTick(() => {
                 this.contextMenu.shown = true
             })
-        }
-    }
-
-    preheat() {
-        const file: any = this.contextMenu.item
-
-        if (
-            'first_layer_extr_temp' in file &&
-            'first_layer_bed_temp' in file &&
-            !['error', 'printing', 'paused'].includes(this.printer_state)
-        ) {
-            let gcode = ''
-            if (file.first_layer_extr_temp > 0) {
-                gcode = 'M104 S' + file.first_layer_extr_temp
-                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: gcode })
-            }
-
-            if (file.first_layer_bed_temp > 0) {
-                gcode = 'M140 S' + file.first_layer_bed_temp
-                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: gcode })
-            }
         }
     }
 
@@ -1252,6 +1162,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             permissions: '',
             modified: new Date(),
             count_printed: 0,
+            preheat_gcode: null,
             small_thumbnail: null,
             big_thumbnail: null,
             big_thumbnail_width: null,
