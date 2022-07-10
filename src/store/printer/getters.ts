@@ -601,7 +601,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const sensors = getters.getMcuTempSensors
         // eslint-disable-next-line
         sensors.forEach((sensor: { key: string; settings: any; object: any }) => {
-            if (sensor.settings?.sensor_mcu === mcuName && sensor.object?.temperature) {
+            if (mcuName.endsWith(sensor.settings?.sensor_mcu) && sensor.object?.temperature) {
                 output = {
                     temperature: sensor.object.temperature.toFixed(0),
                     measured_min_temp: sensor.object.measured_min_temp?.toFixed(1) ?? null,
