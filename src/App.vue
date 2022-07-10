@@ -46,18 +46,7 @@
             <the-fullscreen-upload></the-fullscreen-upload>
             <the-upload-snackbar></the-upload-snackbar>
         </template>
-        <template v-else-if="socketIsConnected">
-            <div class="d-flex flex-column justify-center align-center" style="min-height: 100%">
-                <h3 class="mb-3">Initializing...</h3>
-                <v-progress-linear
-                    color="primary"
-                    indeterminate
-                    rounded
-                    height="6"
-                    style="width: 200px"></v-progress-linear>
-            </div>
-        </template>
-        <the-select-printer-dialog v-if="remoteMode"></the-select-printer-dialog>
+        <the-select-printer-dialog v-else-if="remoteMode"></the-select-printer-dialog>
         <the-connecting-dialog v-else></the-connecting-dialog>
     </v-app>
 </template>

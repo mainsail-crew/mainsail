@@ -7,20 +7,11 @@
                 <v-toolbar-title>
                     <span class="subheading">
                         <v-icon left>{{ mdiConnection }}</v-icon>
-                        <template v-if="connectingFailed">
-                            {{ $t('ConnectionDialog.Failed', { host: formatHostname }) }}
-                        </template>
-                        <template v-else-if="isConnecting">
-                            {{ $t('ConnectionDialog.Connecting', { host: formatHostname }) }}
-                        </template>
-                        <template v-else>{{ formatHostname }}</template>
+                        {{ titleText }}
                     </span>
                 </v-toolbar-title>
             </v-toolbar>
-            <v-card-text v-if="isConnecting" class="pt-5">
-                <v-progress-linear color="white" indeterminate></v-progress-linear>
-            </v-card-text>
-            <v-card-text v-if="!isConnecting && connectingFailed" class="pt-5">
+            <v-card-text v-if="connectingFailed" class="pt-5">
                 <connection-status :moonraker="false"></connection-status>
                 <p class="text-center mt-3">{{ $t('ConnectionDialog.CannotConnectTo', { host: formatHostname }) }}</p>
                 <template v-if="counter > 2">
@@ -35,6 +26,9 @@
                 <div class="text-center">
                     <v-btn class="primary--text" @click="reconnect">{{ $t('ConnectionDialog.TryAgain') }}</v-btn>
                 </div>
+            </v-card-text>
+            <v-card-text v-else class="pt-5">
+                <v-progress-linear color="white" indeterminate></v-progress-linear>
             </v-card-text>
         </v-card>
     </v-dialog>
@@ -73,10 +67,6 @@ export default class TheConnectingDialog extends Mixins(BaseMixin) {
         return parseInt(this.port) !== 80 && this.port !== '' ? this.hostname + ':' + this.port : this.hostname
     }
 
-    get isConnected() {
-        return this.$store.state.socket.isConnected
-    }
-
     get isConnecting() {
         return this.$store.state.socket.isConnecting
     }
@@ -86,7 +76,15 @@ export default class TheConnectingDialog extends Mixins(BaseMixin) {
     }
 
     get showDialog() {
-        return !this.isConnected
+        return true
+    }
+
+    get titleText() {
+        if (this.connectingFailed) return this.$t('ConnectionDialog.Failed', { host: this.formatHostname })
+        if (this.isConnecting) return this.$t('ConnectionDialog.Connecting', { host: this.formatHostname })
+        if (!this.guiIsReady) return this.$t('ConnectionDialog.Initializing')
+
+        return this.formatHostname
     }
 
     reconnect() {
