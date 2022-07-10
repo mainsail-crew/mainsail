@@ -32,12 +32,12 @@
                     </template>
                 </template>
             </template>
-            <template v-if="isConnecting">
+            <template v-if="isConnecting || (isConnected && !guiIsReady)">
                 <v-card-text>
                     <v-progress-linear color="primary" indeterminate></v-progress-linear>
                 </v-card-text>
             </template>
-            <template v-else-if="!isConnecting && connectingFailed">
+            <template v-else-if="connectingFailed">
                 <v-card-text>
                     <p>
                         {{
@@ -54,7 +54,7 @@
                     </div>
                 </v-card-text>
             </template>
-            <template v-else-if="!isConnecting && dialogAddPrinter.bool">
+            <template v-else-if="dialogAddPrinter.bool">
                 <v-form v-model="addPrinterValid" @submit.prevent="addPrinter">
                     <v-card-text>
                         <v-row>
@@ -92,7 +92,7 @@
                     </v-card-actions>
                 </v-form>
             </template>
-            <template v-else-if="!isConnecting && dialogEditPrinter.bool">
+            <template v-else-if="dialogEditPrinter.bool">
                 <v-form v-model="editPrinterValid" @submit.prevent="updatePrinter">
                     <v-card-text>
                         <v-row>
@@ -290,7 +290,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get showDialog() {
-        return !this.isConnected
+        return !this.isConnected || (this.isConnected && !this.guiIsReady)
     }
 
     get currentUrl() {
@@ -316,6 +316,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         if (this.dialogAddPrinter.bool) return this.$t('SelectPrinterDialog.AddPrinter')
         else if (this.dialogEditPrinter.bool) return this.$t('SelectPrinterDialog.EditPrinter')
         else if (this.isConnecting) return this.$t('SelectPrinterDialog.Connecting', { host: this.formatHostname })
+        else if (this.isConnected && !this.guiIsReady) return this.$t('ConnectionDialog.Initializing')
         else if (this.connectingFailed)
             return this.$t('SelectPrinterDialog.ConnectionFailed', { host: this.formatHostname })
         else return this.$t('SelectPrinterDialog.SelectPrinter')
