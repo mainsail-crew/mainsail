@@ -330,14 +330,9 @@
                     {{ $t('Files.AddToQueue') }}
                 </v-list-item>
                 <v-list-item
-                    v-if="
-                        'first_layer_extr_temp' in contextMenu.item &&
-                        contextMenu.item.first_layer_extr_temp > 0 &&
-                        'first_layer_bed_temp' in contextMenu.item &&
-                        contextMenu.item.first_layer_bed_temp > 0
-                    "
+                    v-if="contextMenu.item.preheat_gcode !== null"
                     :disabled="['error', 'printing', 'paused'].includes(printer_state)"
-                    @click="preheat">
+                    @click="doSend(contextMenu.item.preheat_gcode)">
                     <v-icon class="mr-1">{{ mdiFire }}</v-icon>
                     {{ $t('Files.Preheat') }}
                 </v-list-item>
@@ -524,6 +519,16 @@ import {
     mdiFileDocumentEditOutline,
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
+import ControlMixin from '@/components/mixins/control'
+
+interface contextMenu {
+    shown: boolean
+    isDirectory: boolean
+    touchTimer?: number | null
+    x: number
+    y: number
+    item: FileStateGcodefile
+}
 
 interface draggingFile {
     item: FileStateGcodefile
@@ -553,7 +558,7 @@ interface tableColumnSetting {
 @Component({
     components: { StartPrintDialog, Panel, SettingsRow, draggable },
 })
-export default class GcodefilesPanel extends Mixins(BaseMixin) {
+export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiFile = mdiFile
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiMagnify = mdiMagnify
@@ -590,29 +595,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     private search = ''
-    private draggingFile: draggingFile = {
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-            small_thumbnail: null,
-            big_thumbnail: null,
-            big_thumbnail_width: null,
-            count_printed: 0,
-            last_filament_used: null,
-            last_start_time: null,
-            last_end_time: null,
-            last_print_duration: null,
-            last_status: null,
-            last_total_duration: null,
-        },
-    }
+
     private dialogCreateDirectory = {
         show: false,
         name: '',
     }
-    private contextMenu = {
+
+    private contextMenu: contextMenu = {
         shown: false,
         isDirectory: false,
         touchTimer: undefined,
@@ -623,16 +612,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
-        },
-    }
-
-    private dialogPrintFile: dialogPrintFile = {
-        show: false,
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
+            preheat_gcode: null,
             small_thumbnail: null,
             big_thumbnail: null,
             big_thumbnail_width: null,
@@ -644,69 +624,33 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             last_status: null,
             last_total_duration: null,
         },
+    }
+
+    private draggingFile: draggingFile = {
+        item: { ...this.contextMenu.item },
+    }
+
+    private dialogPrintFile: dialogPrintFile = {
+        show: false,
+        item: { ...this.contextMenu.item },
     }
 
     private dialogRenameFile: dialogRenameObject = {
         show: false,
         newName: '',
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-            small_thumbnail: null,
-            big_thumbnail: null,
-            big_thumbnail_width: null,
-            count_printed: 0,
-            last_filament_used: null,
-            last_start_time: null,
-            last_end_time: null,
-            last_print_duration: null,
-            last_status: null,
-            last_total_duration: null,
-        },
+        item: { ...this.contextMenu.item },
     }
 
     private dialogRenameDirectory: dialogRenameObject = {
         show: false,
         newName: '',
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-            small_thumbnail: null,
-            big_thumbnail: null,
-            big_thumbnail_width: null,
-            count_printed: 0,
-            last_filament_used: null,
-            last_start_time: null,
-            last_end_time: null,
-            last_print_duration: null,
-            last_status: null,
-            last_total_duration: null,
-        },
+        item: { ...this.contextMenu.item },
     }
 
     private dialogDeleteDirectory: dialogRenameObject = {
         show: false,
         newName: '',
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-            small_thumbnail: null,
-            big_thumbnail: null,
-            big_thumbnail_width: null,
-            count_printed: 0,
-            last_filament_used: null,
-            last_start_time: null,
-            last_end_time: null,
-            last_print_duration: null,
-            last_status: null,
-            last_total_duration: null,
-        },
+        item: { ...this.contextMenu.item },
     }
 
     private deleteSelectedDialog = false
@@ -1116,7 +1060,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/setGcodefilesMetadata', { name: name, value: value })
     }
 
-    showContextMenu(e: any, item: FileStateGcodefile | FileStateFile) {
+    showContextMenu(e: any, item: FileStateGcodefile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true
@@ -1126,29 +1070,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             this.$nextTick(() => {
                 this.contextMenu.shown = true
             })
-        }
-    }
-
-    preheat() {
-        const file: any = this.contextMenu.item
-
-        if (
-            'first_layer_extr_temp' in file &&
-            'first_layer_bed_temp' in file &&
-            !['error', 'printing', 'paused'].includes(this.printer_state)
-        ) {
-            let gcode = ''
-            if (file.first_layer_extr_temp > 0) {
-                gcode = 'M104 S' + file.first_layer_extr_temp
-                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: gcode })
-            }
-
-            if (file.first_layer_bed_temp > 0) {
-                gcode = 'M140 S' + file.first_layer_bed_temp
-                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: gcode })
-            }
         }
     }
 
@@ -1252,6 +1173,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             permissions: '',
             modified: new Date(),
             count_printed: 0,
+            preheat_gcode: null,
             small_thumbnail: null,
             big_thumbnail: null,
             big_thumbnail_width: null,
