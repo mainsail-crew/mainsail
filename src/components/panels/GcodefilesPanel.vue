@@ -230,50 +230,33 @@
                             <template v-if="item.isDirectory">
                                 <v-icon>{{ mdiFolder }}</v-icon>
                             </template>
-                            <template v-else>
-                                <template v-if="item.small_thumbnail && item.big_thumbnail">
-                                    <v-tooltip
-                                        v-if="!item.isDirectory && item.small_thumbnail && item.big_thumbnail"
-                                        top
-                                        content-class="tooltip__content-opacity1">
-                                        <template #activator="{ on, attrs }">
-                                            <vue-load-image>
-                                                <img
-                                                    slot="image"
-                                                    :src="item.small_thumbnail"
-                                                    width="32"
-                                                    height="32"
-                                                    :alt="item.filename"
-                                                    v-bind="attrs"
-                                                    v-on="on" />
+                            <template v-else-if="item.small_thumbnail">
+                                <v-tooltip
+                                    top
+                                    content-class="tooltip__content-opacity1"
+                                    :disabled="!item.big_thumbnail">
+                                    <template #activator="{ on, attrs }">
+                                        <vue-load-image>
+                                            <img
+                                                slot="image"
+                                                :src="item.small_thumbnail"
+                                                width="32"
+                                                height="32"
+                                                :alt="item.filename"
+                                                v-bind="attrs"
+                                                v-on="on" />
+                                            <div slot="preloader">
                                                 <v-progress-circular
-                                                    slot="preloader"
                                                     indeterminate
                                                     color="primary"></v-progress-circular>
-                                                <v-icon slot="error">{{ mdiFile }}</v-icon>
-                                            </vue-load-image>
-                                        </template>
-                                        <span><img :src="item.big_thumbnail" width="250" :alt="item.filename" /></span>
-                                    </v-tooltip>
-                                </template>
-                                <template v-else-if="item.small_thumbnail">
-                                    <vue-load-image>
-                                        <img
-                                            slot="image"
-                                            :src="item.small_thumbnail"
-                                            width="32"
-                                            height="32"
-                                            :alt="item.filename" />
-                                        <v-progress-circular
-                                            slot="preloader"
-                                            indeterminate
-                                            color="primary"></v-progress-circular>
-                                        <v-icon slot="error">{{ mdiFile }}</v-icon>
-                                    </vue-load-image>
-                                </template>
-                                <template v-else>
-                                    <v-icon>{{ mdiFile }}</v-icon>
-                                </template>
+                                            </div>
+                                            <div slot="error">
+                                                <v-icon>{{ mdiFile }}</v-icon>
+                                            </div>
+                                        </vue-load-image>
+                                    </template>
+                                    <span><img :src="item.big_thumbnail" width="250" :alt="item.filename" /></span>
+                                </v-tooltip>
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
@@ -374,7 +357,7 @@
         </v-menu>
         <v-dialog v-model="dialogCreateDirectory.show" :max-width="400">
             <panel
-                :title="$t('Files.NewDirectory')"
+                :title="$t('Files.NewDirectory').toString()"
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -398,7 +381,10 @@
             </panel>
         </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
-            <panel :title="$t('Files.RenameFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
+            <panel
+                :title="$t('Files.RenameFile').toString()"
+                card-class="gcode-files-rename-file-dialog"
+                :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogRenameFile.show = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -408,7 +394,7 @@
                     <v-text-field
                         ref="inputFieldRenameFile"
                         v-model="dialogRenameFile.newName"
-                        :label="$t('Files.Name')"
+                        :label="$t('Files.Name').toString()"
                         required
                         @keyup.enter="renameFileAction"></v-text-field>
                 </v-card-text>
@@ -421,7 +407,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel
-                :title="$t('Files.RenameDirectory')"
+                :title="$t('Files.RenameDirectory').toString()"
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -446,7 +432,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel
-                :title="$t('Files.DeleteDirectory')"
+                :title="$t('Files.DeleteDirectory').toString()"
                 card-class="gcode-files-delete-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -467,7 +453,10 @@
             </panel>
         </v-dialog>
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
-            <panel :title="$t('Files.Delete')" card-class="gcode-files-delete-selected-dialog" :margin-bottom="false">
+            <panel
+                :title="$t('Files.Delete').toString()"
+                card-class="gcode-files-delete-selected-dialog"
+                :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="deleteSelectedDialog = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -937,7 +926,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         e.preventDefault()
         e.target.parentElement.style.backgroundColor = 'transparent'
 
-        let dest = ''
+        let dest: string
         if (row.filename === '..') {
             dest =
                 this.currentPath.substring(0, this.currentPath.lastIndexOf('/') + 1) + this.draggingFile.item.filename
@@ -1046,7 +1035,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     clickRowGoBack() {
-        this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf('/'))
+        this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
     }
 
     addToQueue(item: FileStateGcodefile | FileStateFile) {
