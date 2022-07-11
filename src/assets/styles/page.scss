@@ -57,3 +57,7 @@ body {
 .settings-tabs .v-window {
     overflow-y: auto !important;
 }
+
+.editor-dialog .cm-editor {
+    height: calc(100vh - 48px);
+}
