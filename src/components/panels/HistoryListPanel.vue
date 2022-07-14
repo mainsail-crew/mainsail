@@ -1011,7 +1011,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 default:
                     switch (typeof value) {
                         case 'number':
-                            return value.toLocaleString()
+                            return value.toLocaleString(undefined, { useGrouping: false })
 
                         case 'string':
                             if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
