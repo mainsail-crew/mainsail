@@ -113,7 +113,8 @@ export const actions: ActionTree<GuiState, RootState> = {
             })
         }
 
-        commit('setData', payload.value)
+        await commit('setData', payload.value)
+        await dispatch('socket/removeInitModule', 'gui/init', { root: true })
     },
 
     /*

@@ -110,6 +110,7 @@
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
         "Connecting": "Connecting to {host}",
+        "Initializing": "Initializing",
         "Failed": "Connection failed",
         "TryAgain": "try again"
     },

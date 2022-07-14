@@ -227,6 +227,8 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
             commit('setUpdateSourceInterval', updateSourceInterval)
         }
+
+        dispatch('socket/removeInitModule', 'printer/initTempHistory', { root: true })
     },
 
     async updateSource({ commit, rootState, rootGetters, state }) {

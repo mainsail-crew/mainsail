@@ -25,6 +25,8 @@ export interface RootStateDependency {
 }
 
 export interface ConfigJson {
+    hostname?: string | null
+    port?: string | number | null
     remoteMode?: boolean
     instances?: ConfigJsonInstance[]
 }
