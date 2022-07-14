@@ -948,9 +948,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
         row.push('filename')
         row.push('status')
+
         this.tableFields.forEach((col) => {
             row.push(col.value)
         })
+
+        if (this.headers.find((header) => header.value === 'slicer')?.visible) {
+            row.push('slicer')
+        }
 
         content.push(row)
 
