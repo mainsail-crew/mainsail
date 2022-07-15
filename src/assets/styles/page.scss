@@ -61,3 +61,15 @@ body {
 .editor-dialog .cm-editor {
     height: calc(100vh - 48px);
 }
+
+::-webkit-scrollbar {
+    width: 1em;
+    background-color: #181818;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #060606;
+    border-radius: 0.5em;
+    border: 4px solid #181818;
+    min-height: 100px;
+}
