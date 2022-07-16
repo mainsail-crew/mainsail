@@ -23,8 +23,8 @@
     },
     "dependencies": {
         "@codemirror/basic-setup": "^0.20.0",
-        "@codemirror/lang-javascript": "^0.20.0",
         "@codemirror/lang-json": "^0.20.0",
+        "@codemirror/lang-css": "^0.20.0",
         "@codemirror/language": "^0.20.0",
         "@codemirror/legacy-modes": "^0.20.0",
         "@codemirror/search": "^0.20.0",
