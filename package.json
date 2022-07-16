@@ -1,6 +1,6 @@
 {
     "name": "mainsail",
-    "version": "2.2.0-beta2",
+    "version": "2.3.0-alpha",
     "private": true,
     "decription": "a klipper web interface",
     "author": {
@@ -14,7 +14,7 @@
         "format:check": "npm run format:base -- --check",
         "lint": "eslint --ignore-path .gitignore src",
         "lint:fix": "npm run lint -- --fix",
-        "build.zip": "cd ./dist && zip -r mainsail.zip ./ && cd ..",
+        "build.zip": "cd ./dist && zip -r mainsail.zip ./ -x '**.DS_Store' ./ && cd ..",
         "i18n-extract": "vue-i18n-extract use-config",
         "start": "vite preview",
         "test": "npm run build && cypress run",
@@ -86,9 +86,9 @@
         "vite-plugin-checker": "^0.4.2",
         "vite-plugin-package-version": "^1.0.2",
         "vite-plugin-pwa": "^0.11.13",
-        "vite-plugin-vue2": "^1.9.3",
+        "vite-plugin-vue2": "^2.0.1",
         "vue-debounce-decorator": "^1.0.1",
-        "vue-i18n-extract": "^1.2.3",
+        "vue-i18n-extract": "^2.0.7",
         "vue-router": "^3.5.2",
         "vue-template-compiler": "^2.6.14",
         "workbox-core": "^6.4.2"

@@ -35,7 +35,7 @@
                         <span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span>
                     </v-btn>
                     <v-btn
-                        v-if="restartServiceName !== null"
+                        v-if="restartServiceNameExists"
                         color="primary"
                         text
                         tile
@@ -112,7 +112,7 @@
                     <v-btn text color="primary" @click="save">
                         {{ $t('Editor.SaveClose') }}
                     </v-btn>
-                    <template v-if="restartServiceName != null">
+                    <template v-if="restartServiceNameExists">
                         <v-btn text color="primary" @click="save(restartServiceName)">
                             {{ $t('Editor.SaveRestart') }}
                         </v-btn>
@@ -126,7 +126,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
+import { capitalize, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import {
@@ -187,6 +187,12 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return this.$store.state.editor.filename ?? ''
     }
 
+    get filenameWithoutExtension(): string {
+        if (this.filename.lastIndexOf('.')) return this.filename.slice(0, this.filename.lastIndexOf('.'))
+
+        return this.filename
+    }
+
     get fileExtension() {
         if (this.filename.lastIndexOf('.')) return this.filename.slice(this.filename.lastIndexOf('.') + 1)
 
@@ -222,26 +228,39 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get snackbarHeadline() {
-        let directionUppercase = this.$t('Files.Downloading')
-        if (this.loaderProgress.direction) {
-            directionUppercase =
-                this.loaderProgress.direction?.charAt(0).toUpperCase() + this.loaderProgress.direction?.slice(1)
-        }
+        let directionUppercase = this.$t('Editor.Downloading')
+        if (this.loaderProgress.direction) directionUppercase = capitalize(this.loaderProgress.direction)
 
-        return this.$t('Editor.' + directionUppercase)
+        return this.$t(`Editor.${directionUppercase}`)
+    }
+
+    get availableServices() {
+        return this.$store.state.server.system_info?.available_services ?? []
     }
 
     get restartServiceName() {
         if (!this.isWriteable) return null
         if (['printing', 'paused'].includes(this.printer_state)) return null
 
-        if (this.filename === 'moonraker.conf') return 'moonraker'
-        else if (this.filename === 'webcam.conf') return 'webcamd'
-        else if (this.filename.startsWith('webcam') && this.filename.endsWith('.txt')) return 'webcamd'
-        else if (this.filename.startsWith('mooncord') && this.filename.endsWith('.json')) return 'mooncord'
-        else if (this.filename.endsWith('.cfg')) return 'klipper'
+        if (this.availableServices.includes(this.filenameWithoutExtension) && this.fileExtension === 'conf')
+            return this.filenameWithoutExtension
+        if (this.filename.startsWith('webcam') && ['conf', 'txt'].includes(this.fileExtension)) return 'webcamd'
+        if (this.filename.startsWith('mooncord') && this.fileExtension === 'json') return 'mooncord'
+        if (this.filename === 'moonraker.conf') return this.moonrakerRestartInstance ?? 'moonraker'
+
+        if (this.fileExtension === 'cfg') return 'klipper'
 
         return null
+    }
+
+    get restartServiceNameExists() {
+        if (this.restartServiceName) return true
+
+        return this.availableServices.includes(this.restartServiceName)
+    }
+
+    get moonrakerRestartInstance() {
+        return this.$store.state.gui.editor.moonrakerRestartInstance
     }
 
     get confirmUnsavedChanges() {

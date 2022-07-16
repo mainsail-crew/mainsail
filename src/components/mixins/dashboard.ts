@@ -8,6 +8,22 @@ import Vue from 'vue'
 
 @Component
 export default class DashboardMixin extends BaseMixin {
+    get printerKinematics() {
+        return this.$store.getters['printer/getKinematics']
+    }
+
+    get printerExtruderCount() {
+        return this.$store.getters['printer/getExtruders'].length
+    }
+
+    get printerAvailableHeatersCount() {
+        return this.$store.getters['printer/getAvailableHeaters'].length
+    }
+
+    get printerAvailableSensorsCount() {
+        return this.$store.getters['printer/getAvailableSensors'].length
+    }
+
     get macroMode() {
         return this.$store.state.gui.macros.mode ?? 'simple'
     }
@@ -66,6 +82,21 @@ export default class DashboardMixin extends BaseMixin {
             allPanels = allPanels.filter((name) => name !== 'macros')
         }
 
+        // remove toolhead panel, if kinematics === none
+        if (this.printerKinematics === 'none') {
+            allPanels = allPanels.filter((name) => name !== 'toolhead-control')
+        }
+
+        // remove extruder panel, if printerExtruderCount < 1
+        if (this.printerExtruderCount < 1) {
+            allPanels = allPanels.filter((name) => name !== 'extruder-control')
+        }
+
+        // remove temperature panel, if heaters & sensors < 1
+        if (this.printerAvailableHeatersCount + this.printerAvailableSensorsCount < 1) {
+            allPanels = allPanels.filter((name) => name !== 'temperature')
+        }
+
         // remove webcam panel, if no webcam exists
         if (this.webcams.length === 0) {
             allPanels = allPanels.filter((name) => name !== 'webcam')
@@ -102,9 +133,9 @@ export default class DashboardMixin extends BaseMixin {
             subStrings.forEach((subStr) => {
                 panelName += capitalize(subStr)
             })
-            return this.$t('Panels.' + panelName + 'Panel.Headline')
+            return this.$t(`Panels.${panelName}Panel.Headline`)
         }
 
-        return this.$t('Panels.' + capitalize(name) + 'Panel.Headline')
+        return this.$t(`Panels.${capitalize(name)}Panel.Headline`)
     }
 }

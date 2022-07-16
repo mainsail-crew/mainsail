@@ -16,8 +16,6 @@
             "DescriptionPreviouslyUnderVolted": "La tensione di alimentazione dell'rPI è scesa al di sotto di 4,65V almeno una volta dall'ultima accensione.",
             "DescriptionTemperatureLimitActive": "La temperatura del microcontrollore rPI (solo 3A+/3B+) è attualmente sopra il limite minimo (predefinito 60C).",
             "DescriptionUnderVoltageDetected": "Tensione di alimentazione dell'rPI attualmente inferiore a 4,65V",
-            "HeadlineCurrentFlags": "Segnalazioni Attuali",
-            "HeadlinePreviouslyFlags": "Segnalazioni Precedenti",
             "TitleCurrentlyThrottled": "Attualmente Rallentato",
             "TitleFrequencyCapped": "Frequenza Limitata",
             "TitlePreviouslyFrequencyCapped": "Precedentemente Frequenza-Limitato ",
@@ -135,8 +133,6 @@
         "DeleteDirectoryQuestion": "Vuoi davvero eliminare la directory \"{name}\" con tutto il suo contenuto?",
         "Download": "Scarica",
         "Downloading": "Scaricando",
-        "DoYouWantToStartFilename": "Vuoi avviare {filename}?",
-        "DropFilesToAddGcode": "Trascina i file per aggiungere gcode.",
         "EditFile": "Modifica file",
         "Empty": "Vuoto",
         "Filament": "Filamento",
@@ -167,8 +163,6 @@
         "Search": "Cerca",
         "SetupCurrentList": "Imposta l'elenco corrente",
         "Slicer": "Slicer",
-        "StartJob": "Inizia il processo",
-        "StartPrint": "Avvia stampa",
         "SuccessfullyCreated": "Creato {filename} con successo.",
         "SuccessfullyDeleted": "Eliminato {filename} con successo.",
         "SuccessfullyMoved": "Spostato {filename} con successo.",
@@ -178,8 +172,7 @@
         "Uploading": "Caricamento",
         "UploadNewGcode": "Carica nuovo Gcode",
         "Used": "Utilizzato",
-        "View3D": "Vedi 3D",
-        "WrongFileUploaded": "Il caricamento è stato rifiutato per {filename}. Formato file sbagliato!"
+        "View3D": "Vedi 3D"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Rimuovi",
@@ -221,8 +214,6 @@
             "Variance": "Variazione "
         },
         "DeleteBedMeshProfile": "Elimina il Profilo \"Bed Mesh\"",
-        "Deleted": "cancellato",
-        "DoYouReallyWantToCalibrate": "Vuoi davvero avviare la calibrazione del piano?",
         "DoYouReallyWantToDelete": "Vuoi davvero eliminare il profilo",
         "ErrorKlipperNotReady": "Klipper non è pronto. Mappatura dei rilievi disabilitata.",
         "Flat": "Piatto",
@@ -236,7 +227,6 @@
         "Remove": "eliminare",
         "Rename": "rinominare",
         "RenameBedMeshProfile": "Rinomina Profilo \"Bed Mesh\"",
-        "Scale": "Scala",
         "TitleCalibrate": "Calibra nuovo \"Bed Mesh\"",
         "TitleClear": "Cancella \"Bed Mesh\"",
         "TitleHomeAll": "Home - Tutti gli assi",
@@ -274,7 +264,6 @@
         "PrinttimeAvg": "Tempo di stampa medio",
         "Reprint": "Ristampa",
         "Search": "cerca",
-        "ShowStatusName": "Mostra \"{name}\" ({count})",
         "Slicer": "Slicer",
         "SlicerVersion": "Versione Slicer",
         "StartTime": "Ora Inizio",
@@ -290,7 +279,6 @@
     },
     "JobQueue": {
         "AllJobs": "Tutti i lavori",
-        "Delete": "Cancella",
         "Empty": "Vuoto",
         "JobQueue": "Coda dei lavori",
         "Jobs": "Lavori",
@@ -342,22 +330,17 @@
             "Logfiles": "File di registro"
         },
         "SystemPanel": {
-            "Awake": "Sveglio",
             "Constants": "Costanti",
-            "Distro": "Distro",
-            "Frequency": "Freq",
             "HostDetails": "Dettagli dell'Host",
             "LastStats": "Ultime statistiche",
             "Load": "Utilizzo",
             "Memory": "Memoria",
-            "Os": "SO",
-            "SystemLoad": "Carichi di Sistema",
-            "Version": "Versione"
+            "SystemLoad": "Carichi di Sistema"
         },
         "UpdatePanel": {
             "CheckForUpdates": "Verifica aggiornamenti",
             "Commits": "Commits",
-            "CommitsAvailabe": "no commits available | {count} commit available | {count} commits available",
+            "CommitsAvailable": "no commits available | {count} commit available | {count} commits available",
             "CommitsOnDate": "Commits on {date}",
             "CommittedDaysAgo": "committed {days} days ago",
             "CommittedHoursAgo": "committed {hours} hours ago",
@@ -814,8 +797,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Mostra un dialogo di conferma alle modifiche di Device Power",
             "DisplayCANCEL_PRINT": "Mostra CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Mostra un bottone CANCEL_PRINT permanentemente - nessuna conferma del secondo strato necessaria.",
-            "DisplayZOffset": "Mostra pannello Z-Offset",
-            "DisplayZOffsetDescription": "Altrimenti, il pannello apparirà solo dopo una stampa è iniziata.",
             "GcodeThumbnails": "Anteprime Gcode",
             "GcodeThumbnailsDescription": "Clicca sul bottone per ricevere le istruzioni.",
             "Guide": "Guida",

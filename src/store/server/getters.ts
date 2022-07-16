@@ -33,7 +33,9 @@ export const getters: GetterTree<ServerState, any> = {
         },
 
     getConfig: (state) => (section: string, attribute: string) => {
-        if (section in state.config && attribute in state.config[section]) return state.config[section][attribute]
+        const config = state.config?.config ?? {}
+
+        if (section in config && attribute in config[section]) return config[section][attribute]
 
         return null
     },

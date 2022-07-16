@@ -1,6 +1,7 @@
-<style>
+<style scoped>
 .webcamImage {
     width: 100%;
+    background: lightgray;
 }
 
 .webcamFpsOutput {
@@ -15,8 +16,13 @@
 </style>
 
 <template>
-    <div v-observe-visibility="visibilityChanged" style="position: relative">
-        <img ref="image" class="webcamImage" :style="webcamStyle" />
+    <div style="position: relative">
+        <img
+            ref="image"
+            v-observe-visibility="viewportVisibilityChanged"
+            class="webcamImage"
+            :style="webcamStyle"
+            @load="onload" />
         <span v-if="showFps" class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span>
     </div>
 </template>
@@ -31,12 +37,15 @@ const TYPE_JPEG = 'image/jpeg'
 
 @Component
 export default class Mjpegstreamer extends Mixins(BaseMixin) {
-    private isVisible = true
     private currentFPS = 0
+    private streamState = false
+    private aspectRatio: null | number = null
     private timerFPS: number | null = null
     private timerRestart: number | null = null
     private stream: ReadableStream | null = null
     private controller: AbortController | null = null
+    private isVisibleViewport = false
+    private isVisibleDocument = true
 
     @Prop({ required: true })
     camSettings: any
@@ -59,12 +68,19 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 
     get webcamStyle() {
+        const output = {
+            transform: 'none',
+            aspectRatio: 16 / 9,
+        }
+
         let transforms = ''
         if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
+        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
-        return ''
+        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
+
+        return output
     }
 
     get fpsOutput() {
@@ -72,6 +88,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 
     startStream() {
+        if (this.streamState) return
+        this.streamState = true
+
         const SOI = new Uint8Array(2)
         SOI[0] = 0xff
         SOI[1] = 0xd8
@@ -92,7 +111,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
         const { signal } = this.controller
 
         //readable stream credit to from https://github.com/aruntj/mjpeg-readable-stream
-        fetch(this.url, { signal })
+        fetch(this.url, { signal, mode: 'cors' })
             .then((response) => response.body)
             .then((rb) => {
                 const reader = rb?.getReader()
@@ -117,10 +136,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
                 this.stream = new ReadableStream({
                     start(controller) {
-                        return pump()
-
                         // The following function handles each data chunk
-                        function pump(): any {
+                        const pump = (): any => {
                             // "done" is a Boolean and value a "Uint8Array"
                             return reader?.read().then(({ done, value }) => {
                                 // If there is no more data to read
@@ -149,8 +166,12 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
                                         }
                                         // we're done reading the jpeg. Time to render it.
                                         else {
-                                            img.src = URL.createObjectURL(new Blob([imageBuffer], { type: TYPE_JPEG }))
-                                            img.onload = () => URL.revokeObjectURL(img.src)
+                                            if (img) {
+                                                img.src = URL.createObjectURL(
+                                                    new Blob([imageBuffer], { type: TYPE_JPEG })
+                                                )
+                                                img.onload = () => URL.revokeObjectURL(img.src)
+                                            }
                                             frames++
                                             contentLength = 0
                                             bytesRead = 0
@@ -162,26 +183,25 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
                                 return pump()
                             })
                         }
+
+                        return pump()
                     },
                 })
             })
     }
 
-    visibilityChanged(isVisible: boolean) {
-        this.isVisible = isVisible
-
-        if (isVisible) {
-            this.startStream()
-        } else {
-            this.stopStream()
-        }
+    mounted() {
+        document.addEventListener('visibilitychange', this.documentVisibilityChanged)
+        this.startStream()
     }
 
     beforeDestroy() {
+        document.removeEventListener('visibilitychange', this.documentVisibilityChanged)
         this.stopStream()
     }
 
     stopStream() {
+        this.streamState = false
         URL.revokeObjectURL(this.url)
         if (this.timerFPS) clearTimeout(this.timerFPS)
         if (this.timerRestart) clearTimeout(this.timerRestart)
@@ -196,7 +216,38 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
     @Watch('url')
     urlChanged() {
+        this.aspectRatio = null
         this.restartStream()
+    }
+
+    // this function check if you changed the browser tab
+    documentVisibilityChanged() {
+        const visibility = document.visibilityState
+        this.isVisibleDocument = visibility === 'visible'
+        if (!this.isVisibleDocument) this.stopStream()
+        this.visibilityChanged()
+    }
+
+    // this function checks if the webcam is in the viewport
+    viewportVisibilityChanged(newVal: boolean) {
+        this.isVisibleViewport = newVal
+        this.visibilityChanged()
+    }
+
+    // this function stops the stream on scroll or on collapse of the webcam panel
+    visibilityChanged() {
+        if (this.isVisibleViewport && this.isVisibleDocument) {
+            this.startStream()
+            return
+        }
+
+        this.stopStream()
+    }
+
+    onload() {
+        if (this.aspectRatio === null && this.$refs.image) {
+            this.aspectRatio = this.$refs.image.naturalWidth / this.$refs.image.naturalHeight
+        }
     }
 }
 </script>

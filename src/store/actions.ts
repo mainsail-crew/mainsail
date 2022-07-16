@@ -1,7 +1,6 @@
 import router from '@/plugins/router'
 import { ActionTree } from 'vuex'
 import { ConfigJson, RootState } from './types'
-import { v4 as uuidv4 } from 'uuid'
 
 export const actions: ActionTree<RootState, RootState> = {
     switchToDashboard() {
@@ -31,18 +30,20 @@ export const actions: ActionTree<RootState, RootState> = {
 
     /**
      * This function will parse the config.json content and config mainsail
-     * @param commit - vuex commit
-     * @param dispatch - vuex dispatch
-     * @param payload - content of config.json as a object
      */
     importConfigJson({ commit, dispatch }, payload: ConfigJson) {
-        const remoteMode = 'remoteMode' in payload ? payload.remoteMode : false
+        const remoteMode = payload.remoteMode ?? false
         if (remoteMode) {
             commit('setRemoteMode', true)
 
             if ('instances' in payload && Array.isArray(payload.instances) && payload.instances.length) {
                 commit('setConfigInstances', payload.instances)
             }
+
+            return
         }
+
+        if (payload.hostname) commit('socket/setData', { hostname: payload.hostname })
+        if (payload.port) commit('socket/setData', { port: parseInt(payload.port.toString()) })
     },
 }

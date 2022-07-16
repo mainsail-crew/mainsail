@@ -5,7 +5,7 @@
         <v-card-text>
             <v-row>
                 <v-col class="text-center">
-                    <v-btn-toggle v-model="currentViewport" class="mx-auto">
+                    <v-btn-toggle v-model="currentViewport" class="mx-auto" mandatory>
                         <v-btn value="mobile">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Mobile') }}</span>
                             <v-icon right class="hidden-sm-and-down">{{ mdiCellphone }}</v-icon>

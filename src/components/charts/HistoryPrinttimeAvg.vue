@@ -95,7 +95,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
     }
 
     get chart(): ECharts | null {
-        return this.$refs.historyPrinttimeAvg ?? null
+        return this.$refs.historyPrinttimeAvg?.chart ?? null
     }
 
     mounted() {

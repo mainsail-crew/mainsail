@@ -80,7 +80,7 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
     }
 
     get chart(): ECharts | null {
-        return this.$refs.historyAllPrintStatus ?? null
+        return this.$refs.historyAllPrintStatus?.chart ?? null
     }
 
     mounted() {

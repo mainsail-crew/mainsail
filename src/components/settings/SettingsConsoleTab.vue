@@ -4,6 +4,13 @@
     <div>
         <v-card v-if="!form.bool" flat>
             <v-card-text>
+                <div class="d-flex align-center">
+                    <v-icon style="opacity: 0.7">{{ mdiConsoleLine }}</v-icon>
+                    <v-card-title class="mx-n2">
+                        {{ $t('Settings.ConsoleTab.Console') }}
+                    </v-card-title>
+                    <v-divider class="ml-3"></v-divider>
+                </div>
                 <settings-row :title="$t('Settings.ConsoleTab.Direction').toString()">
                     <v-select
                         v-model="consoleDirection"
@@ -34,7 +41,13 @@
                         :label="consoleHeightTmp + 'px'"
                         @change="updateConsoleHeight"></v-slider>
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
+                <div class="d-flex align-center">
+                    <v-icon style="opacity: 0.7">{{ mdiFilter }}</v-icon>
+                    <v-card-title class="mx-n2">
+                        {{ $t('Settings.ConsoleTab.Filters') }}
+                    </v-card-title>
+                    <v-divider class="ml-3"></v-divider>
+                </div>
                 <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures').toString()" :dynamic-slot-width="true">
                     <v-switch v-model="hideWaitTemperatures" hide-details class="mt-0"></v-switch>
                 </settings-row>
@@ -122,7 +135,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { Debounce } from 'vue-debounce-decorator'
-import { mdiFilter, mdiPencil, mdiFilterOff, mdiDelete } from '@mdi/js'
+import { mdiFilter, mdiPencil, mdiFilterOff, mdiDelete, mdiConsoleLine } from '@mdi/js'
 
 interface consoleForm {
     bool: boolean
@@ -140,6 +153,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     mdiFilterOff = mdiFilterOff
     mdiPencil = mdiPencil
     mdiDelete = mdiDelete
+    mdiConsoleLine = mdiConsoleLine
 
     private form: consoleForm = {
         bool: false,

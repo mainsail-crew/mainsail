@@ -155,8 +155,6 @@
         "DeleteDirectoryQuestion": "Vill du verkligen ta bort katalogen \"{name}\" med allt dess innehåll?",
         "Download": "Ladda ner",
         "Downloading": "Laddar ner",
-        "DoYouWantToStartFilename": "Vill du starta {filename}?",
-        "DropFilesToAddGcode": "Dra & släpp filer för att lägga till G-Code.",
         "EditFile": "Redigera fil",
         "Empty": "Tom",
         "Filament": "Filament",
@@ -187,8 +185,6 @@
         "Search": "Sök",
         "SetupCurrentList": "Ställ in aktuell lista",
         "Slicer": "Slicer",
-        "StartJob": "Starta jobb",
-        "StartPrint": "Starta utskriften",
         "SuccessfullyCreated": "{filename} har skapats.",
         "SuccessfullyDeleted": "{filename} har raderats.",
         "SuccessfullyMoved": "{filename} har flyttats.",
@@ -198,8 +194,7 @@
         "Uploading": "Laddar upp",
         "UploadNewGcode": "Ladda upp ny G-Code",
         "Used": "Använt",
-        "View3D": "Visa 3D",
-        "WrongFileUploaded": "Uppladdningen nekades för {filename}. Fel filformat!"
+        "View3D": "Visa 3D"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Rensa",
@@ -332,7 +327,6 @@
     },
     "JobQueue": {
         "AllJobs": "Alla jobb",
-        "Delete": "Radera",
         "Empty": "Tom",
         "JobQueue": "Jobbkö",
         "Jobs": "Jobb",
@@ -412,7 +406,7 @@
         "UpdatePanel": {
             "CheckForUpdates": "Sök efter uppdateringar",
             "Commits": "Commits",
-            "CommitsAvailabe": "inga commits tillgängliga | {count} commit tillgänglig | {count} commits tillgängliga",
+            "CommitsAvailable": "inga commits tillgängliga | {count} commit tillgänglig | {count} commits tillgängliga",
             "CommitsOnDate": "Commits den {date}",
             "CommittedDaysAgo": "committed för {days} dagar sedan",
             "CommittedHoursAgo": "committed för {hours} timmar sedan",
@@ -889,8 +883,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Visa en bekräftelsedialogruta för ändringar av enhetsström",
             "DisplayCANCEL_PRINT": "Visa CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Visar CANCEL_PRINT-knappen permanent – ingen ytterliggare bekräftelse behövs.",
-            "DisplayZOffset": "Visa Z-Offset-Panel",
-            "DisplayZOffsetDescription": "Annars visas panelen först efter att en utskrift har startat.",
             "GcodeThumbnails": "G-Code miniatyrbilder",
             "GcodeThumbnailsDescription": "Klicka på knappen för att komma till instruktionerna.",
             "Guide": "Guide",

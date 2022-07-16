@@ -12,7 +12,8 @@ export const actions: ActionTree<ServerUpdateMangerState, RootState> = {
         Vue.$socket.emit('machine.update.status', {}, { action: 'server/updateManager/getStatus' })
     },
 
-    getStatus({ commit }, payload) {
-        commit('setStatus', payload)
+    async getStatus({ commit, dispatch }, payload) {
+        await commit('setStatus', payload)
+        await dispatch('socket/removeInitModule', 'server/updateManager/init', { root: true })
     },
 }

@@ -1,8 +1,3 @@
-<style>
-.vue-codemirror .cm-editor {
-}
-</style>
-
 <template>
     <div class="vue-codemirror">
         <div ref="codemirror" v-observe-visibility="visibilityChanged"></div>
@@ -22,6 +17,7 @@ import { gcode } from '@/plugins/StreamParserGcode'
 import { EditorView, keymap } from '@codemirror/view'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
+import { css } from '@codemirror/lang-css'
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin) {
@@ -98,6 +94,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
         if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(klipper_config))
         else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
+        else if (['css'].includes(this.fileExtension)) extensions.push(css())
 
         return extensions
     }

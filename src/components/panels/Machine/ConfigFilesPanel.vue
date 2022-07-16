@@ -3,9 +3,10 @@
 <template>
     <div>
         <panel
-            :title="$t('Machine.ConfigFilesPanel.ConfigFiles')"
+            :title="$t('Machine.ConfigFilesPanel.ConfigFiles').toString()"
             card-class="machine-configfiles-panel"
-            :icon="mdiInformation">
+            :icon="mdiInformation"
+            :collapsible="true">
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 col-lg pr-lg-0">
@@ -244,7 +245,7 @@
         </v-dialog>
         <v-dialog v-model="dialogCreateFile.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.CreateFile')"
+                :title="$t('Machine.ConfigFilesPanel.CreateFile').toString()"
                 card-class="maschine-configfiles-create-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -273,7 +274,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.RenameFile')"
+                :title="$t('Machine.ConfigFilesPanel.RenameFile').toString()"
                 card-class="maschine-configfiles-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -302,7 +303,7 @@
         </v-dialog>
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.CreateDirectory')"
+                :title="$t('Machine.ConfigFilesPanel.CreateDirectory').toString()"
                 card-class="maschine-configfiles-create-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -331,7 +332,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.RenameDirectory')"
+                :title="$t('Machine.ConfigFilesPanel.RenameDirectory').toString()"
                 card-class="maschine-configfiles-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -360,7 +361,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.DeleteDirectory')"
+                :title="$t('Machine.ConfigFilesPanel.DeleteDirectory').toString()"
                 card-class="maschine-configfiles-delete-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -390,7 +391,7 @@
         </v-dialog>
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.Delete')"
+                :title="$t('Machine.ConfigFilesPanel.Delete').toString()"
                 card-class="gcode-files-delete-selected-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -707,7 +708,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         let files = [...(this.directory?.childrens ?? [])]
 
         if (!this.showHiddenFiles) {
-            files = files.filter((file) => file.filename.substr(0, 1) !== '.')
+            files = files.filter((file) => file.filename.slice(0, 1) !== '.')
         }
 
         if (this.hideBackupFiles) {
@@ -853,7 +854,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     clickRowGoBack() {
-        this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf('/'))
+        this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
     }
 
     showContextMenu(e: any, item: FileStateFile) {

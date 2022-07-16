@@ -9,6 +9,7 @@ import {
     PrinterState,
     PrinterStateBedMesh,
     PrinterStateExtruder,
+    PrinterStateExtruderStepper,
     PrinterStateFan,
     PrinterStateFilamentSensors,
     PrinterStateHeater,
@@ -18,6 +19,7 @@ import {
     PrinterStateMacro,
     PrinterStateTemperatureObject,
     PrinterStateTemperatureSensor,
+    PrinterStateToolchangeMacro,
 } from '@/store/printer/types'
 import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
@@ -53,33 +55,38 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return state.virtual_sdcard?.progress ?? 0
     },
 
-    getMacros: (state, getters, rootState) => {
+    getMacros: (state) => {
         const array: PrinterStateMacro[] = []
-        const hiddenMacros: string[] = []
+        const config = state.configfile?.config ?? {}
+        const settings = state.configfile?.settings ?? null
 
-        rootState.gui?.macros?.hiddenMacros.forEach((item: string, index: number) => {
-            hiddenMacros[index] = item.toLowerCase()
-        })
+        Object.keys(config)
+            .filter((prop) => prop.toLowerCase().startsWith('gcode_macro'))
+            .forEach((prop) => {
+                const name = prop.replace('gcode_macro ', '')
+                if (name.startsWith('_')) return
 
-        if (state.configfile?.config) {
-            Object.keys(state.configfile?.config).forEach((prop) => {
-                if (
-                    prop.startsWith('gcode_macro') &&
-                    !prop.startsWith('gcode_macro _') &&
-                    !('rename_existing' in state.configfile.config[prop]) &&
-                    !(hiddenMacros.indexOf(prop.replace('gcode_macro ', '').toLowerCase()) > -1)
-                ) {
-                    array.push({
-                        name: prop.replace('gcode_macro ', ''),
-                        description: state.configfile.config[prop].description ?? null,
-                        prop: state.configfile.config[prop],
-                        params: getMacroParams(state.configfile.config[prop]),
-                    })
-                }
+                const propLower = prop.toLowerCase()
+                const propSettings = settings[propLower]
+                if ('rename_existing' in propSettings) return
+
+                const variables = state[prop] ?? {}
+
+                array.push({
+                    name,
+                    description: settings[propLower].description ?? null,
+                    prop: propSettings,
+                    params: getMacroParams(propSettings),
+                    variables,
+                })
             })
-        }
 
         return caseInsensitiveSort(array, 'name')
+    },
+
+    getMacro: (state, getters) => (name: string) => {
+        const nameLower = name.toLowerCase()
+        return getters['getMacros'].find((macro: PrinterStateMacro) => macro.name.toLowerCase() === nameLower)
     },
 
     getHeaters: (state, getters, rootState, rootGetters) => {
@@ -254,7 +261,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     max_temp: fan.max_temp,
                     measured_min_temp: null,
                     measured_max_temp: null,
-                    rpm: `${fan.rpm} RPM`,
+                    rpm: fan.rpm,
                     rpmClass: fan.rpm === 0 && fan.speed > 0 ? 'red--text' : '',
                     command: 'SET_TEMPERATURE_FAN_TARGET',
                     commandAttributeName: 'TEMPERATURE_FAN',
@@ -350,7 +357,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     let controllable = controllableFans.includes(nameSplit[0].toLowerCase())
                     const settings = state.configfile?.settings[key.toLowerCase()] ?? {}
                     const power = 'speed' in value ? value.speed : 'value' in value ? value.value : 0
-                    const rpm = 'rpm' in value ? value.rpm : false
+                    const rpm = 'rpm' in value ? value.rpm : null
                     let pwm = controllable
                     let scale = 1
 
@@ -366,11 +373,11 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     const tmp = {
                         name: name,
                         type: nameSplit[0],
-                        power: power,
-                        controllable: controllable,
-                        pwm: pwm,
-                        rpm: rpm,
-                        scale: scale,
+                        power,
+                        controllable,
+                        pwm,
+                        rpm,
+                        scale,
                         object: value,
                         config: settings,
                         off_below: undefined,
@@ -448,44 +455,12 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return additionValues
     },
 
+    getAvailableHeaters: (state) => {
+        return state.heaters?.available_heaters ?? []
+    },
+
     getAvailableSensors: (state) => {
         return state.heaters?.available_sensors ?? []
-    },
-
-    getAllMacros: (state) => {
-        const array: PrinterStateMacro[] = []
-
-        Object.keys(state.configfile?.config ?? {}).forEach((prop) => {
-            if (
-                prop.startsWith('gcode_macro') &&
-                !prop.startsWith('gcode_macro _') &&
-                !Object.hasOwnProperty.call(state.configfile.config[prop], 'rename_existing')
-            ) {
-                array.push({
-                    name: prop.replace('gcode_macro ', ''),
-                    description: state.configfile.config[prop].description ?? null,
-                    prop: state.configfile.config[prop],
-                    params: getMacroParams(state.configfile.config[prop]),
-                })
-            }
-        })
-
-        return caseInsensitiveSort(array, 'name')
-    },
-
-    getMacro: (state) => (name: string) => {
-        if ('gcode_macro ' + name in state.configfile.config) {
-            const config = state.configfile.config['gcode_macro ' + name]
-
-            return {
-                name,
-                description: config.description ?? null,
-                prop: config,
-                params: getMacroParams(config),
-            }
-        }
-
-        return null
     },
 
     getFilamentSensors: (state) => {
@@ -626,7 +601,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const sensors = getters.getMcuTempSensors
         // eslint-disable-next-line
         sensors.forEach((sensor: { key: string; settings: any; object: any }) => {
-            if (sensor.settings?.sensor_mcu === mcuName && sensor.object?.temperature) {
+            if (mcuName.endsWith(sensor.settings?.sensor_mcu) && sensor.object?.temperature) {
                 output = {
                     temperature: sensor.object.temperature.toFixed(0),
                     measured_min_temp: sensor.object.measured_min_temp?.toFixed(1) ?? null,
@@ -674,7 +649,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const extruders: PrinterStateExtruder[] = []
         if (state.configfile?.settings) {
             Object.keys(state.configfile?.settings)
-                .filter((key) => key.startsWith('extruder'))
+                .filter((key) => key.match(/^(extruder)\d?$/g))
                 .sort()
                 .forEach((key: string) => {
                     const extruder = state.configfile?.settings[key]
@@ -689,6 +664,24 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 })
         }
         return extruders
+    },
+
+    getExtruderSteppers: (state) => {
+        const extruderSteppers: PrinterStateExtruderStepper[] = []
+        if (state.configfile?.settings) {
+            Object.keys(state.configfile?.settings)
+                .filter((key) => key.match(/^extruder_stepper/g))
+                .sort()
+                .forEach((key: string) => {
+                    const extruderStepper = state.configfile?.settings[key]
+                    extruderSteppers.push({
+                        key: key,
+                        name: key.replace('extruder_stepper ', ''),
+                        extruder: extruderStepper.extruder,
+                    })
+                })
+        }
+        return extruderSteppers
     },
 
     getExtrudePossible: (state) => {
@@ -845,6 +838,33 @@ export const getters: GetterTree<PrinterState, RootState> = {
         if (time && timeCount) return Date.now() + (time / timeCount) * 1000
 
         return 0
+    },
+
+    getToolchangeMacros: (state, getters) => {
+        const macros = getters['getMacros']
+        const tools: PrinterStateToolchangeMacro[] = []
+
+        macros
+            .filter((macro: any) => macro.name.toUpperCase().match(/^T\d+/))
+            .forEach((macro: any) =>
+                tools.push({
+                    name: macro.name,
+                    active: macro.variables.active ?? false,
+                })
+            )
+
+        return tools.sort((a, b) => {
+            const numberA = parseInt(a.name.slice(1))
+            const numberB = parseInt(b.name.slice(1))
+
+            return numberA - numberB
+        })
+    },
+
+    getKinematics: (state) => {
+        if (!state.configfile?.settings?.printer) return false
+
+        return state.configfile?.settings?.printer.kinematics ?? 'none'
     },
 
     existsQGL: (state) => {

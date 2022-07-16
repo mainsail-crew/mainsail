@@ -17,9 +17,11 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
         if ('queue_state' in payload) commit('setQueueState', payload.queue_state)
     },
 
-    getStatus({ commit }, payload) {
-        if ('queued_jobs' in payload) commit('setQueuedJobs', payload.queued_jobs)
-        if ('queue_state' in payload) commit('setQueueState', payload.queue_state)
+    async getStatus({ commit, dispatch }, payload) {
+        if ('queued_jobs' in payload) await commit('setQueuedJobs', payload.queued_jobs)
+        if ('queue_state' in payload) await commit('setQueueState', payload.queue_state)
+
+        await dispatch('socket/removeInitModule', 'server/jobQueue/init', { root: true })
     },
 
     async addToQueue({ state }, filenames: string[]) {

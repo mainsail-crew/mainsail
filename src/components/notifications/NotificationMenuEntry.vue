@@ -1,5 +1,5 @@
 <template>
-    <v-alert text :color="alertColor" border="left">
+    <v-alert :class="`notification-menu-entry--priority-${entry.priority}`" text :color="alertColor" border="left">
         <v-row align="start">
             <v-col class="grow">
                 <div class="notification-menu-entry__headline mb-1 text-subtitle-1">
@@ -15,7 +15,9 @@
                         <span :class="`${alertColor}--text`">{{ entry.title }}</span>
                     </template>
                 </div>
-                <p class="text-body-2 mb-0 text--disabled font-weight-light" v-html="formatedText"></p>
+                <p
+                    class="notification-menu-entry__description text-body-2 mb-0 text--disabled font-weight-light"
+                    v-html="formatedText"></p>
             </v-col>
             <v-col
                 v-if="entry.priority !== 'critical'"
@@ -117,7 +119,10 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
     declare readonly parentState: boolean
 
     get formatedText() {
-        return this.entry.description.replace(/\[([^\]]+)\]\(([^)]+)\)/, '<a href="$2" target="_blank">$1</a>')
+        return this.entry.description.replace(
+            /(\bhttps?:\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim,
+            '<a href="$1" target="_blank" class="' + this.alertColor + '--text">$1</a>'
+        )
     }
 
     get alertColor() {
@@ -152,5 +157,13 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
 <style scoped>
 .notification-menu-entry__headline {
     line-height: 1.2;
+}
+
+.notification-menu-entry__description {
+    max-width: 292px;
+}
+
+.notification-menu-entry--priority-critical .notification-menu-entry__description {
+    max-width: 336px;
 }
 </style>

@@ -117,22 +117,17 @@
         <responsive :breakpoints="{ large: (el) => el.width >= 640 }">
             <template #default="{ el }">
                 <!-- TOOL SELECTOR BUTTONS -->
-                <v-container v-if="extruders.length > 1" class="pb-1">
+                <v-container v-if="toolchangeMacros.length > 1" class="pb-1">
                     <v-item-group class="_btn-group py-0">
                         <v-btn
-                            v-for="extruder in extruders"
-                            :key="extruder.key"
-                            :class="extruder.key === activeExtruder ? 'primary--text' : {}"
-                            :value="extruder.key"
+                            v-for="tool in toolchangeMacros"
+                            :key="tool.name"
+                            :class="tool.active ? 'primary--text' : {}"
                             :disabled="isPrinting"
                             dense
                             class="flex-grow-1 px-0"
-                            @click="activateExtruder(extruder.key)">
-                            {{
-                                toolchangeMacros.length === extruders.length
-                                    ? toolchangeMacros[extruders.indexOf(extruder)]
-                                    : extruder.name
-                            }}
+                            @click="doSend(tool.name)">
+                            {{ tool.name }}
                         </v-btn>
                     </v-item-group>
                 </v-container>
@@ -151,8 +146,10 @@
                         attribute-name="S"></tool-slider>
                 </v-container>
                 <!-- PRESSURE ADVANCE SETTINGS -->
-                <v-divider></v-divider>
-                <pressure-advance-settings></pressure-advance-settings>
+                <template v-if="!extruderSteppers.length > 0">
+                    <v-divider></v-divider>
+                    <pressure-advance-settings></pressure-advance-settings>
+                </template>
                 <v-divider class="pb-1"></v-divider>
                 <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
                 <v-container>
@@ -367,8 +364,9 @@ import {
     mdiDotsVertical,
 } from '@mdi/js'
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { PrinterStateExtruder } from '@/store/printer/types'
+import { PrinterStateExtruder, PrinterStateExtruderStepper, PrinterStateToolchangeMacro } from '@/store/printer/types'
 import BaseMixin from '../mixins/base'
+import ControlMixin from '../mixins/control'
 import NumberInput from '@/components/inputs/NumberInput.vue'
 import Panel from '@/components/ui/Panel.vue'
 import PressureAdvanceSettings from '@/components/panels/MachineSettings/PressureAdvanceSettings.vue'
@@ -384,7 +382,7 @@ import ToolSlider from '@/components/inputs/ToolSlider.vue'
         ToolSlider,
     },
 })
-export default class ExtruderControlPanel extends Mixins(BaseMixin) {
+export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiArrowUpBold = mdiArrowUpBold
     mdiArrowDownBold = mdiArrowDownBold
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
@@ -397,14 +395,8 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin) {
         return ['printing'].includes(this.printer_state)
     }
 
-    get toolchangeMacros(): string[] {
-        let tools: string[] = []
-        for (let i = 0; i < this.extruders.length; i++) {
-            this.$store.getters['printer/getMacros'].forEach((m: any) => {
-                if (`T${i}`.includes(m.name.toUpperCase())) tools.push(`T${i}`)
-            })
-        }
-        return tools
+    get toolchangeMacros(): PrinterStateToolchangeMacro[] {
+        return this.$store.getters['printer/getToolchangeMacros']
     }
 
     get filamentChangeMacros(): boolean {
@@ -418,6 +410,10 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin) {
 
     get extruders(): PrinterStateExtruder[] {
         return this.$store.getters['printer/getExtruders']
+    }
+
+    get extruderSteppers(): PrinterStateExtruderStepper[] {
+        return this.$store.getters['printer/getExtruderSteppers']
     }
 
     get activeExtruder(): string {
@@ -510,22 +506,6 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin) {
         if (this.feedamount > this.maxExtrudeOnlyDistance) {
             this.setFeedamount({ value: this.maxExtrudeOnlyDistance })
         }
-    }
-
-    activateExtruder(extruder: string): void {
-        /**
-         * If toolchange macros in the form of T{n} are found, use those
-         * otherwise use the regular 'ACTIVATE_EXTRUDER' Klipper command
-         */
-        let gcode: string
-        if (this.toolchangeMacros.length === this.extruders.length) {
-            gcode = `T${this.extruders.findIndex((ex: any) => ex.key === extruder)}`
-        } else {
-            gcode = `ACTIVATE_EXTRUDER EXTRUDER=${extruder}`
-        }
-
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
     sendRetract(): void {

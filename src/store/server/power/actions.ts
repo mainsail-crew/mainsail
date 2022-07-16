@@ -12,8 +12,10 @@ export const actions: ActionTree<ServerPowerState, RootState> = {
         Vue.$socket.emit('machine.device_power.devices', {}, { action: 'server/power/getDevices' })
     },
 
-    getDevices({ commit }, payload) {
-        if (!payload.error) commit('setDevices', payload.devices)
+    async getDevices({ commit, dispatch }, payload) {
+        if (!payload.error) await commit('setDevices', payload.devices)
+
+        await dispatch('socket/removeInitModule', 'server/power/init', { root: true })
     },
 
     getStatus({ commit }, payload) {

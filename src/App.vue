@@ -29,23 +29,25 @@
 
 <template>
     <v-app dark :style="cssVars">
-        <the-sidebar></the-sidebar>
-        <the-topbar></the-topbar>
+        <template v-if="socketIsConnected && guiIsReady">
+            <the-sidebar></the-sidebar>
+            <the-topbar></the-topbar>
 
-        <v-main id="content" :style="mainStyle">
-            <overlay-scrollbars class="main-content-scrollbar">
-                <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
-                    <router-view></router-view>
-                </v-container>
-            </overlay-scrollbars>
-        </v-main>
-        <the-select-printer-dialog v-if="remoteMode"></the-select-printer-dialog>
+            <v-main id="content" :style="mainStyle">
+                <overlay-scrollbars class="main-content-scrollbar">
+                    <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
+                        <router-view></router-view>
+                    </v-container>
+                </overlay-scrollbars>
+            </v-main>
+            <the-update-dialog></the-update-dialog>
+            <the-editor></the-editor>
+            <the-timelapse-rendering-snackbar></the-timelapse-rendering-snackbar>
+            <the-fullscreen-upload></the-fullscreen-upload>
+            <the-upload-snackbar></the-upload-snackbar>
+        </template>
+        <the-select-printer-dialog v-else-if="remoteMode"></the-select-printer-dialog>
         <the-connecting-dialog v-else></the-connecting-dialog>
-        <the-update-dialog></the-update-dialog>
-        <the-editor></the-editor>
-        <the-timelapse-rendering-snackbar></the-timelapse-rendering-snackbar>
-        <the-fullscreen-upload></the-fullscreen-upload>
-        <the-upload-snackbar></the-upload-snackbar>
     </v-app>
 </template>
 

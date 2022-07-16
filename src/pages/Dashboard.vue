@@ -115,12 +115,27 @@ import kebabCase from 'lodash.kebabcase'
 })
 export default class PageDashboard extends Mixins(DashboardMixin) {
     get allComponents() {
-        const output: string[] = []
+        let output: string[] = []
         const components = Object.keys(this.$options.components ?? {})
 
         components?.forEach((component) => {
             if (component.endsWith('Panel')) output.push(kebabCase(component))
         })
+
+        // remove toolhead panel, if kinematics === none
+        if (this.printerKinematics === 'none') {
+            output = output.filter((name) => name !== 'toolhead-control-panel')
+        }
+
+        // remove extruder panel, if printerExtruderCount < 1
+        if (this.printerExtruderCount < 1) {
+            output = output.filter((name) => name !== 'extruder-control-panel')
+        }
+
+        // remove temperature panel, if heaters & sensors < 1
+        if (this.printerAvailableHeatersCount + this.printerAvailableSensorsCount < 1) {
+            output = output.filter((name) => name !== 'temperature-panel')
+        }
 
         return output
     }

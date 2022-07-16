@@ -13,46 +13,47 @@
                         <span>{{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}</span>
                     </v-col>
                 </v-row>
-                <v-form class="pt-3" @keyup.native.enter="sendCmd">
-                    <v-row dense>
-                        <v-col :class="el.is.small ? 'col-12' : 'col-4'">
-                            <move-to-input
-                                v-model="input.x.pos"
-                                :label="livePositions.x"
-                                :suffix="'X'"
-                                :position-max="stepperXmax"
-                                :position-min="stepperXmin"
-                                :current-pos="gcodePositions.x"
-                                :readonly="['printing'].includes(printer_state)"
-                                :disabled="!xAxisHomed"
-                                @validate="validate"></move-to-input>
-                        </v-col>
-                        <v-col :class="el.is.small ? 'col-12' : 'col-4'">
-                            <move-to-input
-                                v-model="input.y.pos"
-                                :label="livePositions.y"
-                                :suffix="'Y'"
-                                :position-max="stepperYmax"
-                                :position-min="stepperYmin"
-                                :current-pos="gcodePositions.y"
-                                :readonly="['printing'].includes(printer_state)"
-                                :disabled="!yAxisHomed"
-                                @validate="validate"></move-to-input>
-                        </v-col>
-                        <v-col :class="el.is.small ? 'col-12' : 'col-4'">
-                            <move-to-input
-                                v-model="input.z.pos"
-                                :label="livePositions.z"
-                                :suffix="'Z'"
-                                :position-max="stepperZmax"
-                                :position-min="stepperZmin"
-                                :current-pos="gcodePositions.z"
-                                :readonly="['printing'].includes(printer_state)"
-                                :disabled="!zAxisHomed"
-                                @validate="validate"></move-to-input>
-                        </v-col>
-                    </v-row>
-                </v-form>
+                <v-row dense>
+                    <v-col :class="el.is.small ? 'col-12' : 'col-4'">
+                        <move-to-input
+                            v-model="input.x.pos"
+                            :label="livePositions.x"
+                            :suffix="'X'"
+                            :position-max="stepperXmax"
+                            :position-min="stepperXmin"
+                            :current-pos="gcodePositions.x"
+                            :readonly="['printing'].includes(printer_state)"
+                            :disabled="!xAxisHomed"
+                            @validate="validate"
+                            @submit="sendCmd"></move-to-input>
+                    </v-col>
+                    <v-col :class="el.is.small ? 'col-12' : 'col-4'">
+                        <move-to-input
+                            v-model="input.y.pos"
+                            :label="livePositions.y"
+                            :suffix="'Y'"
+                            :position-max="stepperYmax"
+                            :position-min="stepperYmin"
+                            :current-pos="gcodePositions.y"
+                            :readonly="['printing'].includes(printer_state)"
+                            :disabled="!yAxisHomed"
+                            @validate="validate"
+                            @submit="sendCmd"></move-to-input>
+                    </v-col>
+                    <v-col :class="el.is.small ? 'col-12' : 'col-4'">
+                        <move-to-input
+                            v-model="input.z.pos"
+                            :label="livePositions.z"
+                            :suffix="'Z'"
+                            :position-max="stepperZmax"
+                            :position-min="stepperZmin"
+                            :current-pos="gcodePositions.z"
+                            :readonly="['printing'].includes(printer_state)"
+                            :disabled="!zAxisHomed"
+                            @validate="validate"
+                            @submit="sendCmd"></move-to-input>
+                    </v-col>
+                </v-row>
             </v-container>
         </template>
     </responsive>
@@ -95,21 +96,6 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
     @Watch('gcodePositions.z', { immediate: true })
     updatePositionZ(newVal: string): void {
         this.input.z.pos = newVal
-    }
-
-    /**
-     * Axes home states
-     */
-    get xAxisHomed(): boolean {
-        return this.$store.state.printer.toolhead?.homed_axes.includes('x') ?? false
-    }
-
-    get yAxisHomed(): boolean {
-        return this.$store.state.printer.toolhead?.homed_axes.includes('y') ?? false
-    }
-
-    get zAxisHomed(): boolean {
-        return this.$store.state.printer.toolhead?.homed_axes.includes('z') ?? false
     }
 
     /**

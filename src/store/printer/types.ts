@@ -86,7 +86,7 @@ export interface PrinterStateTemperatureObject {
     max_temp: number
     measured_min_temp: number | null
     measured_max_temp: number | null
-    rpm: string | null
+    rpm: number | null
     rpmClass: string
     command: 'SET_HEATER_TEMPERATURE' | 'SET_TEMPERATURE_FAN_TARGET' | null
     commandAttributeName: 'HEATER' | 'TEMPERATURE_FAN' | null
@@ -169,6 +169,10 @@ export interface PrinterStateMacro {
         // eslint-disable-next-line
         [key: string]: any
     }
+    variables: {
+        // eslint-disable-next-line
+        [key: string]: any
+    }
     params: PrinterStateMacroParams
 }
 
@@ -213,11 +217,13 @@ export interface PrinterStateExtruder {
     maxExtrudeOnlyDistance: number
 }
 
-export interface PrinterStateExtruder {
+export interface PrinterStateExtruderStepper {
     key: string
     name: string
-    filamentDiameter: number
-    minExtrudeTemp: number
-    nozzleDiameter: number
-    maxExtrudeOnlyDistance: number
+    extruder: number
+}
+
+export interface PrinterStateToolchangeMacro {
+    name: string
+    active: boolean
 }
