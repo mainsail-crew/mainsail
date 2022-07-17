@@ -64,13 +64,15 @@ body {
 }
 
 ::-webkit-scrollbar {
-    width: 14px;
     background-color: #272727;
+    width: 14px;
+    height: 14px;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: #6b6b6b;
     border-radius: 7px;
     border: 4px solid #272727;
+    min-width: 100px;
     min-height: 100px;
 }
