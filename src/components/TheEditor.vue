@@ -1,5 +1,3 @@
-<style scoped></style>
-
 <template>
     <div>
         <v-dialog
@@ -49,14 +47,12 @@
                     </v-btn>
                 </template>
                 <v-card-text class="pa-0">
-                    <overlay-scrollbars style="height: calc(var(--app-height) - 48px)" :options="scrollbarOptions">
-                        <codemirror-async
-                            v-if="show"
-                            ref="editor"
-                            v-model="sourcecode"
-                            :name="filename"
-                            :file-extension="fileExtension"></codemirror-async>
-                    </overlay-scrollbars>
+                    <codemirror-async
+                        v-if="show"
+                        ref="editor"
+                        v-model="sourcecode"
+                        :name="filename"
+                        :file-extension="fileExtension"></codemirror-async>
                 </v-card-text>
             </panel>
         </v-dialog>

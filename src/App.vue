@@ -21,10 +21,6 @@
     /*noinspection CssUnresolvedCustomProperty*/
     color: var(--v-btn-text-primary);
 }
-
-.main-content-scrollbar {
-    height: calc(var(--app-height) - 48px);
-}
 </style>
 
 <template>
@@ -34,11 +30,9 @@
             <the-topbar></the-topbar>
 
             <v-main id="content" :style="mainStyle">
-                <overlay-scrollbars class="main-content-scrollbar">
-                    <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
-                        <router-view></router-view>
-                    </v-container>
-                </overlay-scrollbars>
+                <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
+                    <router-view></router-view>
+                </v-container>
             </v-main>
             <the-update-dialog></the-update-dialog>
             <the-editor></the-editor>
