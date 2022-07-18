@@ -1,4 +1,4 @@
-import { StreamParser, StringStream } from '@codemirror/stream-parser'
+import { StreamParser, StringStream } from '@codemirror/language'
 import { gcode } from '@/plugins/StreamParserGcode'
 
 export const klipper_config: StreamParser<any> = {
