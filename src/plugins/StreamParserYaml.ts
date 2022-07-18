@@ -1,4 +1,4 @@
-import { StringStream } from '@codemirror/language'
+import { StringStream } from '@codemirror/stream-parser'
 
 const cons = ['true', 'false', 'on', 'off', 'yes', 'no']
 const keywordRegex = new RegExp('\\b((' + cons.join(')|(') + '))$', 'i')

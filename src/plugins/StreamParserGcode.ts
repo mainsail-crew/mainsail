@@ -1,4 +1,4 @@
-import { StringStream } from '@codemirror/language'
+import { StringStream } from '@codemirror/stream-parser'
 
 export const gcode = {
     token: function (stream: StringStream, state: StreamParserGcodeState, zeroPos = 0): string | null {
