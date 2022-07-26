@@ -5,6 +5,7 @@
             :label="`[ ${label} ]`"
             :suffix="suffix"
             :disabled="disabled"
+            :step="step"
             :readonly="readonly"
             :error="!validate"
             hide-details="auto"
@@ -55,6 +56,9 @@ export default class MoveToInput extends Mixins(BaseMixin) {
 
     @Prop({ type: Number, required: true })
     declare readonly positionMin: number
+
+    @Prop({ type: Number, required: false, default: 1 })
+    declare readonly step: number
 
     @Prop({ type: Boolean, required: false })
     declare readonly disabled: boolean
