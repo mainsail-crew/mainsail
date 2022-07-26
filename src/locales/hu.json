@@ -29,7 +29,7 @@
             "NoEmptyAllowedError": "Nem lehet üres a bemenet!"
         },
         "Printers": "Nyomtatók",
-        "ThrottledStates": {ű
+        "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Az rPi ARM mag(ok) jelenleg túlterheltek.",
             "DescriptionFrequencyCapped": "Az rPi ARM max frekvenciája jelenleg 1,2 GHz -re korlátozódik.",
             "DescriptionPreviouslyFrequencyCapped": "Az rPi ARM maximális frekvenciája legalább egyszer 1,2 GHz-re korlátozódott az utolsó bekapcsolás óta.",
