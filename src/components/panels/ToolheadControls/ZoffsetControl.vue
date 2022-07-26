@@ -1,49 +1,3 @@
-<style lang="scss" scoped>
-.v-btn-toggle {
-    width: 100%;
-}
-
-._btn-group {
-    border-radius: 4px;
-    display: inline-flex;
-    flex-wrap: nowrap;
-    max-width: 100%;
-    min-width: 100%;
-    width: 100%;
-
-    .v-btn {
-        border-radius: 0;
-        border-color: rgba(255, 255, 255, 0.12);
-        border-style: solid;
-        border-width: thin;
-        box-shadow: none;
-        height: 28px;
-        opacity: 0.8;
-        min-width: auto !important;
-    }
-
-    .v-btn:first-child {
-        border-top-left-radius: inherit;
-        border-bottom-left-radius: inherit;
-    }
-
-    .v-btn:last-child {
-        border-top-right-radius: inherit;
-        border-bottom-right-radius: inherit;
-    }
-
-    .v-btn:not(:first-child) {
-        border-left-width: 0;
-    }
-}
-
-._btn-qs {
-    font-size: 0.8rem !important;
-    font-weight: 400;
-    max-height: 28px;
-}
-</style>
-
 <template>
     <responsive
         :breakpoints="{
@@ -295,3 +249,49 @@ export default class ZoffsetControl extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.v-btn-toggle {
+    width: 100%;
+}
+
+._btn-group {
+    border-radius: 4px;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
+
+    .v-btn {
+        border-radius: 0;
+        border-color: rgba(255, 255, 255, 0.12);
+        border-style: solid;
+        border-width: thin;
+        box-shadow: none;
+        height: 28px;
+        opacity: 0.8;
+        min-width: auto !important;
+    }
+
+    .v-btn:first-child {
+        border-top-left-radius: inherit;
+        border-bottom-left-radius: inherit;
+    }
+
+    .v-btn:last-child {
+        border-top-right-radius: inherit;
+        border-bottom-right-radius: inherit;
+    }
+
+    .v-btn:not(:first-child) {
+        border-left-width: 0;
+    }
+}
+
+._btn-qs {
+    font-size: 0.8rem !important;
+    font-weight: 400;
+    max-height: 28px;
+}
+</style>
