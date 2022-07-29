@@ -61,12 +61,16 @@
                 <v-list dense>
                     <v-list-item>
                         <!-- FILAMENT UNLOAD -->
-                        <v-tooltip top :disabled="extrudePossible" color="secondary">
+                        <v-tooltip top :disabled="extrudePossible || allowUnloadFilament" color="secondary">
                             <template #activator="{ on }">
                                 <div style="width: 100%" v-on="on">
                                     <v-btn
                                         :loading="loadings.includes('btnUnloadFilament')"
-                                        :disabled="!extrudePossible || isPrinting"
+                                        :disabled="
+                                            (!extrudePossible && !allowUnloadFilament) ||
+                                            loadings.includes('btnLoadFilament') ||
+                                            isPrinting
+                                        "
                                         small
                                         style="width: 100%"
                                         @click="sendUnloadFilament()">
@@ -87,12 +91,16 @@
                     </v-list-item>
                     <v-list-item>
                         <!-- FILAMENT LOAD -->
-                        <v-tooltip top :disabled="extrudePossible" color="secondary">
+                        <v-tooltip top :disabled="extrudePossible || allowLoadFilament" color="secondary">
                             <template #activator="{ on }">
                                 <div style="width: 100%" v-on="on">
                                     <v-btn
                                         :loading="loadings.includes('btnLoadFilament')"
-                                        :disabled="!extrudePossible || isPrinting"
+                                        :disabled="
+                                            (!extrudePossible && !allowLoadFilament) ||
+                                            loadings.includes('btnUnloadFilament') ||
+                                            isPrinting
+                                        "
                                         small
                                         style="width: 100%"
                                         @click="sendLoadFilament()">
@@ -391,6 +399,9 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     mdiLocationExit = mdiLocationExit
     mdiDotsVertical = mdiDotsVertical
 
+    private allowUnloadFilament: boolean = false
+    private allowLoadFilament: boolean = false
+
     get isPrinting(): boolean {
         return ['printing'].includes(this.printer_state)
     }
@@ -400,12 +411,41 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get filamentChangeMacros(): boolean {
-        let macros: string[] = []
-        this.$store.getters['printer/getMacros'].forEach((m: any) => {
-            if (m.name.toUpperCase().startsWith('LOAD_FILAMENT')) macros.push(m.name)
-            if (m.name.toUpperCase().startsWith('UNLOAD_FILAMENT')) macros.push(m.name)
+        let filamentMacros: string[] = []
+        const allMacros = this.$store.getters['printer/getMacros']
+
+        /**
+         * find the index of the LOAD_FILAMENT and UNLOAD_FILAMENT gcode macro.
+         * if found, push the name to filamentMacros array,
+         * to check later if both necessary macros are present
+         */
+        const loadFilamentMacro: number = allMacros.findIndex((macro: any) => {
+            if (macro.name === 'LOAD_FILAMENT') {
+                filamentMacros.push(macro.name)
+                return true
+            }
         })
-        return macros.length === 2
+        const unloadFilamentMacro: number = allMacros.findIndex((macro: any) => {
+            if (macro.name === 'UNLOAD_FILAMENT') {
+                filamentMacros.push(macro.name)
+                return true
+            }
+        })
+
+        /**
+         * define the strings of which the gcode macro must contain
+         * at least one in order to be allowed to be executed
+         * even if at the current time extrudePossible === false
+         */
+        const commands = ['printer.extruder.can_extrude', 'TEMPERATURE_WAIT', 'M104', 'M109']
+        if (commands.some((command) => allMacros[loadFilamentMacro].prop.gcode.includes(command))) {
+            this.allowLoadFilament = true
+        }
+        if (commands.some((command) => allMacros[unloadFilamentMacro].prop.gcode.includes(command))) {
+            this.allowUnloadFilament = true
+        }
+
+        return filamentMacros.length === 2
     }
 
     get extruders(): PrinterStateExtruder[] {
