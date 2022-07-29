@@ -392,7 +392,7 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
          * at least one in order to be allowed to be executed
          * even if at the current time extrudePossible === false
          */
-        const commands = ['printer.extruder.can_extrude', 'TEMPERATURE_WAIT', 'M104', 'M109']
+        const commands = ['printer.extruder.can_extrude', 'TEMPERATURE_WAIT', 'M109']
         if (commands.some((command) => allMacros[loadFilamentMacro].prop.gcode.includes(command))) {
             this.allowLoadFilament = true
         }
