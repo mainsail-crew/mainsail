@@ -17,6 +17,7 @@
             :color="color"
             :class="paramArray.length ? 'macroWithParameters' : ''"
             :loading="loadings.includes('macro_' + macro.name)"
+            :disabled="disabled"
             @click="doSendMacro(macro.name)">
             {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
         </v-btn>
@@ -94,6 +95,9 @@ export default class MacroButton extends Mixins(BaseMixin) {
 
     @Prop({ default: null })
     declare readonly alias: string
+
+    @Prop({ default: false })
+    declare readonly disabled: boolean
 
     get klipperMacro() {
         return this.$store.getters['printer/getMacro'](this.macro.name)
