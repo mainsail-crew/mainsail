@@ -18,7 +18,7 @@
             :class="paramArray.length ? 'macroWithParameters' : ''"
             :loading="loadings.includes('macro_' + macro.name)"
             @click="doSendMacro(macro.name)">
-            {{ macro.name.replace(/_/g, ' ') }}
+            {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
         </v-btn>
         <template v-if="paramArray.length">
             <v-menu offset-y :close-on-content-click="false">
@@ -88,7 +88,12 @@ export default class MacroButton extends Mixins(BaseMixin) {
 
     @Prop({ required: true })
     declare readonly macro: GuiMacrosStateMacrogroupMacro
-    @Prop({ default: 'primary' }) declare readonly color: string
+
+    @Prop({ default: 'primary' })
+    declare readonly color: string
+
+    @Prop({ default: null })
+    declare readonly alias: string
 
     get klipperMacro() {
         return this.$store.getters['printer/getMacro'](this.macro.name)
