@@ -7,7 +7,7 @@
         card-class="extruder-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
         <template #buttons>
-            <v-menu v-if="filamentChangeMacros.length === 2" :offset-y="true" :close-on-content-click="false" left>
+            <v-menu v-if="showFilamentMacros" :offset-y="true" :close-on-content-click="false" left>
                 <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" v-on="on">
                         <v-icon>{{ mdiDotsVertical }}</v-icon>
@@ -15,14 +15,19 @@
                 </template>
                 <v-list dense>
                     <!-- FILAMENT UNLOAD -->
-                    <v-list-item>
-                        <v-tooltip top :disabled="extrudePossible || allowUnloadFilament" color="secondary">
+                    <v-list-item v-if="unloadFilamentMacro">
+                        <v-tooltip
+                            top
+                            :disabled="extrudePossible || canExecuteMacro(unloadFilamentMacro)"
+                            color="secondary">
                             <template #activator="{ on }">
                                 <div v-on="on">
                                     <macro-button
-                                        :macro="filamentChangeMacros[0]"
+                                        :macro="unloadFilamentMacro"
                                         :alias="$t('Panels.ExtruderControlPanel.UnloadFilament').toString()"
-                                        :disabled="(!extrudePossible && !allowUnloadFilament) || isPrinting"
+                                        :disabled="
+                                            (!extrudePossible && !canExecuteMacro(unloadFilamentMacro)) || isPrinting
+                                        "
                                         color="#272727" />
                                 </div>
                             </template>
@@ -33,14 +38,19 @@
                         </v-tooltip>
                     </v-list-item>
                     <!-- FILAMENT LOAD -->
-                    <v-list-item>
-                        <v-tooltip top :disabled="extrudePossible || allowUnloadFilament" color="secondary">
+                    <v-list-item v-if="loadFilamentMacro">
+                        <v-tooltip
+                            top
+                            :disabled="extrudePossible || canExecuteMacro(loadFilamentMacro)"
+                            color="secondary">
                             <template #activator="{ on }">
                                 <div v-on="on">
                                     <macro-button
-                                        :macro="filamentChangeMacros[1]"
+                                        :macro="loadFilamentMacro"
                                         :alias="$t('Panels.ExtruderControlPanel.LoadFilament').toString()"
-                                        :disabled="(!extrudePossible && !allowUnloadFilament) || isPrinting"
+                                        :disabled="
+                                            (!extrudePossible && !canExecuteMacro(loadFilamentMacro)) || isPrinting
+                                        "
                                         color="#272727" />
                                 </div>
                             </template>
@@ -326,9 +336,6 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     mdiPrinter3dNozzleOutline = mdiPrinter3dNozzleOutline
     mdiDotsVertical = mdiDotsVertical
 
-    private allowUnloadFilament: boolean = false
-    private allowLoadFilament: boolean = false
-
     get isPrinting(): boolean {
         return ['printing'].includes(this.printer_state)
     }
@@ -337,42 +344,20 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         return this.$store.getters['printer/getToolchangeMacros']
     }
 
-    get filamentChangeMacros(): boolean {
-        let filamentMacros: any = []
-        const allMacros = this.$store.getters['printer/getMacros']
+    get loadFilamentMacro() {
+        return this.$store.getters['printer/getMacros'].find(
+            (macro: { name: string }) => macro.name === 'LOAD_FILAMENT'
+        )
+    }
 
-        /**
-         * find the index of the LOAD_FILAMENT and UNLOAD_FILAMENT gcode macro.
-         * if found, push the name to filamentMacros array,
-         * to check later if both necessary macros are present
-         */
-        const loadFilamentMacro: number = allMacros.findIndex((macro: any) => {
-            if (macro.name === 'LOAD_FILAMENT') {
-                filamentMacros.push(macro)
-                return true
-            }
-        })
-        const unloadFilamentMacro: number = allMacros.findIndex((macro: any) => {
-            if (macro.name === 'UNLOAD_FILAMENT') {
-                filamentMacros.push(macro)
-                return true
-            }
-        })
+    get unloadFilamentMacro() {
+        return this.$store.getters['printer/getMacros'].find(
+            (macro: { name: string }) => macro.name === 'UNLOAD_FILAMENT'
+        )
+    }
 
-        /**
-         * define the strings of which the gcode macro must contain
-         * at least one in order to be allowed to be executed
-         * even if at the current time extrudePossible === false
-         */
-        const commands = ['printer.extruder.can_extrude', 'TEMPERATURE_WAIT', 'M109']
-        if (commands.some((command) => allMacros[loadFilamentMacro].prop.gcode.includes(command))) {
-            this.allowLoadFilament = true
-        }
-        if (commands.some((command) => allMacros[unloadFilamentMacro].prop.gcode.includes(command))) {
-            this.allowUnloadFilament = true
-        }
-
-        return filamentMacros
+    get showFilamentMacros() {
+        return this.loadFilamentMacro !== undefined || this.unloadFilamentMacro !== undefined
     }
 
     get extruders(): PrinterStateExtruder[] {
@@ -473,6 +458,19 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         if (this.feedamount > this.maxExtrudeOnlyDistance) {
             this.setFeedamount({ value: this.maxExtrudeOnlyDistance })
         }
+    }
+
+    /**
+     * test if the gcode of a macro includes specifics keywords
+     * if a keyword is found, we allow execution of that macro
+     * even if at the current time extrudePossible === false
+     * @param macro
+     */
+    canExecuteMacro(macro: any): boolean {
+        const commands = ['printer.extruder.can_extrude', 'TEMPERATURE_WAIT', 'M109']
+        if (commands.some((command) => macro.prop.gcode.includes(command))) return true
+
+        return false
     }
 
     sendRetract(): void {
