@@ -1,15 +1,3 @@
-<style scoped>
-.btnMacroMenu {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.macroWithParameters {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-</style>
-
 <template>
     <v-item-group class="d-inline-block">
         <v-btn
@@ -158,3 +146,15 @@ export default class MacroButton extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.btnMacroMenu {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.macroWithParameters {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+</style>
