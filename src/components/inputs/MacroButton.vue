@@ -12,7 +12,13 @@
         <template v-if="paramArray.length">
             <v-menu offset-y :close-on-content-click="false">
                 <template #activator="{ on, attrs }">
-                    <v-btn small :color="color" v-bind="attrs" class="minwidth-0 px-1 btnMacroMenu" v-on="on">
+                    <v-btn
+                        :disabled="disabled"
+                        :color="color"
+                        v-bind="attrs"
+                        class="minwidth-0 px-1 btnMacroMenu"
+                        small
+                        v-on="on">
                         <v-icon>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
