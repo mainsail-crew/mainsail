@@ -7,35 +7,23 @@
         card-class="extruder-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
         <template #buttons>
-            <v-menu v-if="filamentChangeMacros" left :offset-y="true" :close-on-content-click="false" class="pa-0">
+            <v-menu v-if="filamentChangeMacros.length === 2" :offset-y="true" :close-on-content-click="false" left>
                 <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" v-on="on">
                         <v-icon>{{ mdiDotsVertical }}</v-icon>
                     </v-btn>
                 </template>
                 <v-list dense>
+                    <!-- FILAMENT UNLOAD -->
                     <v-list-item>
-                        <!-- FILAMENT UNLOAD -->
                         <v-tooltip top :disabled="extrudePossible || allowUnloadFilament" color="secondary">
                             <template #activator="{ on }">
-                                <div style="width: 100%" v-on="on">
-                                    <v-btn
-                                        :loading="loadings.includes('btnUnloadFilament')"
-                                        :disabled="
-                                            (!extrudePossible && !allowUnloadFilament) ||
-                                            loadings.includes('btnLoadFilament') ||
-                                            isPrinting
-                                        "
-                                        small
-                                        style="width: 100%"
-                                        @click="sendUnloadFilament()">
-                                        <span class="d-flex align-center">
-                                            <v-icon left small style="transform: rotate(270deg)" class="mr-1">
-                                                {{ mdiLocationExit }}
-                                            </v-icon>
-                                            {{ $t('Panels.ExtruderControlPanel.UnloadFilament') }}
-                                        </span>
-                                    </v-btn>
+                                <div v-on="on">
+                                    <macro-button
+                                        :macro="filamentChangeMacros[0]"
+                                        :alias="$t('Panels.ExtruderControlPanel.UnloadFilament').toString()"
+                                        :disabled="(!extrudePossible && !allowUnloadFilament) || isPrinting"
+                                        color="#272727" />
                                 </div>
                             </template>
                             <span>
@@ -44,28 +32,16 @@
                             </span>
                         </v-tooltip>
                     </v-list-item>
+                    <!-- FILAMENT LOAD -->
                     <v-list-item>
-                        <!-- FILAMENT LOAD -->
-                        <v-tooltip top :disabled="extrudePossible || allowLoadFilament" color="secondary">
+                        <v-tooltip top :disabled="extrudePossible || allowUnloadFilament" color="secondary">
                             <template #activator="{ on }">
-                                <div style="width: 100%" v-on="on">
-                                    <v-btn
-                                        :loading="loadings.includes('btnLoadFilament')"
-                                        :disabled="
-                                            (!extrudePossible && !allowLoadFilament) ||
-                                            loadings.includes('btnUnloadFilament') ||
-                                            isPrinting
-                                        "
-                                        small
-                                        style="width: 100%"
-                                        @click="sendLoadFilament()">
-                                        <span class="d-flex align-center">
-                                            <v-icon left small style="transform: rotate(90deg)" class="mr-1">
-                                                {{ mdiLocationEnter }}
-                                            </v-icon>
-                                            {{ $t('Panels.ExtruderControlPanel.LoadFilament') }}
-                                        </span>
-                                    </v-btn>
+                                <div v-on="on">
+                                    <macro-button
+                                        :macro="filamentChangeMacros[1]"
+                                        :alias="$t('Panels.ExtruderControlPanel.LoadFilament').toString()"
+                                        :disabled="(!extrudePossible && !allowUnloadFilament) || isPrinting"
+                                        color="#272727" />
                                 </div>
                             </template>
                             <span>
@@ -322,8 +298,6 @@ import {
     mdiArrowUpBold,
     mdiPrinter3dNozzle,
     mdiPrinter3dNozzleOutline,
-    mdiLocationEnter,
-    mdiLocationExit,
     mdiDotsVertical,
 } from '@mdi/js'
 import { Component, Mixins, Watch } from 'vue-property-decorator'
@@ -350,8 +324,6 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     mdiArrowDownBold = mdiArrowDownBold
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
     mdiPrinter3dNozzleOutline = mdiPrinter3dNozzleOutline
-    mdiLocationEnter = mdiLocationEnter
-    mdiLocationExit = mdiLocationExit
     mdiDotsVertical = mdiDotsVertical
 
     private allowUnloadFilament: boolean = false
@@ -366,7 +338,7 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get filamentChangeMacros(): boolean {
-        let filamentMacros: string[] = []
+        let filamentMacros: any = []
         const allMacros = this.$store.getters['printer/getMacros']
 
         /**
@@ -376,13 +348,13 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
          */
         const loadFilamentMacro: number = allMacros.findIndex((macro: any) => {
             if (macro.name === 'LOAD_FILAMENT') {
-                filamentMacros.push(macro.name)
+                filamentMacros.push(macro)
                 return true
             }
         })
         const unloadFilamentMacro: number = allMacros.findIndex((macro: any) => {
             if (macro.name === 'UNLOAD_FILAMENT') {
-                filamentMacros.push(macro.name)
+                filamentMacros.push(macro)
                 return true
             }
         })
@@ -400,7 +372,7 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
             this.allowUnloadFilament = true
         }
 
-        return filamentMacros.length === 2
+        return filamentMacros
     }
 
     get extruders(): PrinterStateExtruder[] {
@@ -513,18 +485,6 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         const gcode = `M83\nG1 E${this.feedamount} F${this.feedrate * 60}`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
-    }
-
-    sendUnloadFilament(): void {
-        const gcode = 'UNLOAD_FILAMENT'
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnUnloadFilament' })
-    }
-
-    sendLoadFilament(): void {
-        const gcode = 'LOAD_FILAMENT'
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnLoadFilament' })
     }
 }
 </script>
