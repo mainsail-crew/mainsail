@@ -29,7 +29,7 @@
                         </v-btn>
                     </v-col>
                     <v-col
-                        v-if="existCrowsnestLog"
+                        v-if="existsCrowsnestLog"
                         :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
                         <v-btn
                             :href="apiUrl + '/server/files/logs/crowsnest.log'"
@@ -41,7 +41,7 @@
                         </v-btn>
                     </v-col>
                     <v-col
-                        v-if="existSonarLog"
+                        v-if="existsSonarLog"
                         :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
                         <v-btn
                             :href="apiUrl + '/server/files/logs/sonar.log'"
@@ -75,11 +75,11 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
         return this.$store.getters['files/getDirectory']('logs').childrens
     }
 
-    get existCrowsnestLog(): boolean {
+    get existsCrowsnestLog(): boolean {
         return this.logfiles.findIndex((log: FileStateFile) => log.filename === 'crowsnest.log') !== -1
     }
 
-    get existSonarLog(): boolean {
+    get existsSonarLog(): boolean {
         const sonarLog = this.logfiles.find((log: FileStateFile) => log.filename === 'sonar.log')
 
         return sonarLog?.size > 0
