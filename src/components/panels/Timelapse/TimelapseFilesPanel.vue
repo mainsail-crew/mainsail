@@ -15,7 +15,7 @@
 <template>
     <div>
         <panel
-            :title="$t('Timelapse.TimelapseFiles')"
+            :title="$t('Timelapse.TimelapseFiles').toString()"
             :icon="mdiFileDocumentMultipleOutline"
             card-class="timelapse-files-panel">
             <v-card-text>
@@ -200,7 +200,7 @@
         </v-menu>
         <v-dialog v-model="dialogRenameFile.show" max-width="400">
             <panel
-                :title="$t('Timelapse.RenameFile')"
+                :title="$t('Timelapse.RenameFile').toString()"
                 card-class="gcode-files-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -225,7 +225,7 @@
         </v-dialog>
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
             <panel
-                :title="$t('Timelapse.NewDirectory')"
+                :title="$t('Timelapse.NewDirectory').toString()"
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -253,7 +253,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel
-                :title="$t('Timelapse.RenameDirectory')"
+                :title="$t('Timelapse.RenameDirectory').toString()"
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -280,7 +280,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel
-                :title="$t('Timelapse.DeleteDirectory')"
+                :title="$t('Timelapse.DeleteDirectory').toString()"
                 card-class="gcode-files-delete-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -304,7 +304,7 @@
         </v-dialog>
         <v-dialog v-model="boolVideoDialog" :max-width="700">
             <panel
-                :title="$t('Timelapse.Video')"
+                :title="$t('Timelapse.Video').toString()"
                 :icon="mdiFileVideo"
                 card-class="timelapse-video-dialog"
                 :margin-bottom="false">
