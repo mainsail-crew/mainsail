@@ -28,6 +28,30 @@
                             Moonraker
                         </v-btn>
                     </v-col>
+                    <v-col
+                        v-if="crowsnestLog"
+                        :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
+                        <v-btn
+                            :href="apiUrl + '/server/files/logs/crowsnest.log'"
+                            block
+                            class="primary--text"
+                            @click="downloadLog">
+                            <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
+                            Crowsnest
+                        </v-btn>
+                    </v-col>
+                    <v-col
+                        v-if="sonarLog && sonarLog.size > 0"
+                        :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
+                        <v-btn
+                            :href="apiUrl + '/server/files/logs/sonar.log'"
+                            block
+                            class="primary--text"
+                            @click="downloadLog">
+                            <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
+                            Sonar
+                        </v-btn>
+                    </v-col>
                 </v-row>
             </v-container>
         </v-card-text>
@@ -45,6 +69,18 @@ import { mdiDownload, mdiFileDocumentEdit } from '@mdi/js'
 export default class LogfilesPanel extends Mixins(BaseMixin) {
     mdiFileDocumentEdit = mdiFileDocumentEdit
     mdiDownload = mdiDownload
+
+    get crowsnestLog() {
+        const logfiles = this.$store.getters['files/getDirectory']('logs').childrens
+
+        return logfiles.find((log: { filename: string }) => log.filename === 'crowsnest.log')
+    }
+
+    get sonarLog() {
+        const logfiles = this.$store.getters['files/getDirectory']('logs').childrens
+
+        return logfiles.find((log: { filename: string }) => log.filename === 'sonar.log')
+    }
 
     downloadLog(event: any) {
         event.preventDefault()
