@@ -29,7 +29,7 @@
                         </v-btn>
                     </v-col>
                     <v-col
-                        v-if="crowsnestLog"
+                        v-if="existCrowsnestLog"
                         :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
                         <v-btn
                             :href="apiUrl + '/server/files/logs/crowsnest.log'"
@@ -41,7 +41,7 @@
                         </v-btn>
                     </v-col>
                     <v-col
-                        v-if="sonarLog && sonarLog.size > 0"
+                        v-if="existSonarLog"
                         :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
                         <v-btn
                             :href="apiUrl + '/server/files/logs/sonar.log'"
@@ -62,6 +62,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
+import { FileStateFile } from '@/store/files/types'
 import { mdiDownload, mdiFileDocumentEdit } from '@mdi/js'
 @Component({
     components: { Panel },
@@ -70,16 +71,18 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
     mdiFileDocumentEdit = mdiFileDocumentEdit
     mdiDownload = mdiDownload
 
-    get crowsnestLog() {
-        const logfiles = this.$store.getters['files/getDirectory']('logs').childrens
-
-        return logfiles.find((log: { filename: string }) => log.filename === 'crowsnest.log')
+    get logfiles() {
+        return this.$store.getters['files/getDirectory']('logs').childrens
     }
 
-    get sonarLog() {
-        const logfiles = this.$store.getters['files/getDirectory']('logs').childrens
+    get existCrowsnestLog(): boolean {
+        return this.logfiles.findIndex((log: FileStateFile) => log.filename === 'crowsnest.log') !== -1
+    }
 
-        return logfiles.find((log: { filename: string }) => log.filename === 'sonar.log')
+    get existSonarLog(): boolean {
+        const sonarLog = this.logfiles.find((log: FileStateFile) => log.filename === 'sonar.log')
+
+        return sonarLog?.size > 0
     }
 
     downloadLog(event: any) {
