@@ -311,7 +311,12 @@ import {
     mdiDotsVertical,
 } from '@mdi/js'
 import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { PrinterStateExtruder, PrinterStateExtruderStepper, PrinterStateToolchangeMacro } from '@/store/printer/types'
+import {
+    PrinterStateExtruder,
+    PrinterStateExtruderStepper,
+    PrinterStateMacro,
+    PrinterStateToolchangeMacro,
+} from '@/store/printer/types'
 import BaseMixin from '../mixins/base'
 import ControlMixin from '../mixins/control'
 import NumberInput from '@/components/inputs/NumberInput.vue'
@@ -340,20 +345,20 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         return ['printing'].includes(this.printer_state)
     }
 
+    get macros() {
+        return this.$store.getters['printer/getMacros']
+    }
+
     get toolchangeMacros(): PrinterStateToolchangeMacro[] {
         return this.$store.getters['printer/getToolchangeMacros']
     }
 
     get loadFilamentMacro() {
-        return this.$store.getters['printer/getMacros'].find(
-            (macro: { name: string }) => macro.name === 'LOAD_FILAMENT'
-        )
+        return this.macros.find((macro: PrinterStateMacro) => macro.name === 'LOAD_FILAMENT')
     }
 
     get unloadFilamentMacro() {
-        return this.$store.getters['printer/getMacros'].find(
-            (macro: { name: string }) => macro.name === 'UNLOAD_FILAMENT'
-        )
+        return this.macros.find((macro: PrinterStateMacro) => macro.name === 'UNLOAD_FILAMENT')
     }
 
     get showFilamentMacros(): boolean {
