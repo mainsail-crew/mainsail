@@ -634,23 +634,24 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     renameFileAction() {
         const posLastPoint = this.dialogRenameFile.item.filename.lastIndexOf('.')
-        const oldNameWithoutExtension = this.dialogRenameFile.item.filename.substr(0, posLastPoint)
+        const oldNameWithoutExtension = this.dialogRenameFile.item.filename.slice(0, posLastPoint)
+        const fileExtension = this.dialogRenameFile.item.filename.split('.').pop()
 
         this.dialogRenameFile.show = false
         this.$socket.emit(
             'server.files.move',
             {
-                source: this.currentPath + '/' + this.dialogRenameFile.item.filename,
-                dest: this.currentPath + '/' + this.dialogRenameFile.newName + '.mp4',
+                source: `${this.currentPath}/${this.dialogRenameFile.item.filename}`,
+                dest: `${this.currentPath}/${this.dialogRenameFile.newName}.${fileExtension}`,
             },
             { action: 'files/getMove' }
         )
 
-        const fileJpg = this.files.find((file) => file.filename === oldNameWithoutExtension + '.jpg')
+        const fileJpg = this.files.find((file) => file.filename === `${oldNameWithoutExtension}.jpg`)
         if (fileJpg) {
             this.$socket.emit('server.files.move', {
-                source: this.currentPath + '/' + oldNameWithoutExtension + '.jpg',
-                dest: this.currentPath + '/' + this.dialogRenameFile.newName + '.jpg',
+                source: `${this.currentPath}/${oldNameWithoutExtension}.jpg`,
+                dest: `${this.currentPath}/${this.dialogRenameFile.newName}.jpg`,
             })
         }
     }
