@@ -473,9 +473,7 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
      */
     canExecuteMacro(macro: any): boolean {
         const commands = ['printer.extruder.can_extrude', 'TEMPERATURE_WAIT', 'M109']
-        if (commands.some((command) => macro.prop.gcode.includes(command))) return true
-
-        return false
+        return commands.some((command) => macro.prop.gcode.includes(command))
     }
 
     sendRetract(): void {
