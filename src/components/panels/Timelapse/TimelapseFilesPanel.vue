@@ -590,7 +590,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     clickRowGoBack() {
-        this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf('/'))
+        this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
     }
 
     showContextMenu(e: any, item: FileStateFile) {
@@ -608,7 +608,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     existsFramesZip(item: FileStateFile) {
         const posLastPoint = item.filename.lastIndexOf('.')
-        const zipFilename = item.filename.substr(0, posLastPoint) + '.zip'
+        const zipFilename = item.filename.slice(0, posLastPoint) + '.zip'
 
         return this.files.findIndex((file) => file.filename === zipFilename) !== -1
     }
@@ -622,7 +622,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     renameFile(item: FileStateFile) {
         const posLastPoint = item.filename.lastIndexOf('.')
-        this.dialogRenameFile.newName = item.filename.substr(0, posLastPoint)
+        this.dialogRenameFile.newName = item.filename.slice(0, posLastPoint)
 
         this.dialogRenameFile.item = item
         this.dialogRenameFile.show = true
