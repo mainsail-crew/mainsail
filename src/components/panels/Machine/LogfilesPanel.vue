@@ -1,6 +1,6 @@
 <template>
     <panel
-        :title="$t('Machine.LogfilesPanel.Logfiles')"
+        :title="$t('Machine.LogfilesPanel.Logfiles').toString()"
         :icon="mdiFileDocumentEdit"
         card-class="machine-logfiles-panel"
         :collapsible="true">
