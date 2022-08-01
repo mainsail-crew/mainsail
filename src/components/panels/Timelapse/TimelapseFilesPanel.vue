@@ -661,7 +661,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
          */
         const fileJpg = this.files.find((file) => file.filename === `${oldNameWithoutExtension}.jpg`)
 
-        if (fileJpg && fileExtension === 'mp4') {
+        if (fileJpg) {
             this.$socket.emit('server.files.move', {
                 source: `${this.currentPath}/${oldNameWithoutExtension}.jpg`,
                 dest: `${this.currentPath}/${this.dialogRenameFile.newName}.jpg`,
@@ -712,7 +712,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         const previewFilename = filename + '.jpg'
         const previewExists = this.files.findIndex((file) => file.filename === previewFilename) !== -1
 
-        if (previewExists && fileExtension === 'mp4')
+        if (previewExists)
             this.$socket.emit(
                 'server.files.delete_file',
                 { path: this.currentPath + '/' + previewFilename },
