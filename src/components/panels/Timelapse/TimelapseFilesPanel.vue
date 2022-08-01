@@ -636,6 +636,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         const posLastPoint = this.dialogRenameFile.item.filename.lastIndexOf('.')
         const oldNameWithoutExtension = this.dialogRenameFile.item.filename.slice(0, posLastPoint)
         const fileExtension = this.dialogRenameFile.item.filename.split('.').pop()
+        const fileJpg = this.files.find((file) => file.filename === `${oldNameWithoutExtension}.jpg`)
 
         this.dialogRenameFile.show = false
 
@@ -655,7 +656,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
          * mp4 and jpg always require to have the same name as the
          * jpg is used as a mp4-thumbnail in the timelapse file-browser
          */
-        const fileJpg = this.files.find((file) => file.filename === `${oldNameWithoutExtension}.jpg`)
         if (fileJpg && fileExtension === 'mp4') {
             this.$socket.emit('server.files.move', {
                 source: `${this.currentPath}/${oldNameWithoutExtension}.jpg`,
@@ -688,20 +688,28 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     removeFile() {
         const filename = this.contextMenu.item.filename.slice(0, this.contextMenu.item.filename.lastIndexOf('.'))
+        const fileExtension = this.contextMenu.item.filename.split('.').pop()
         const previewFilename = filename + '.jpg'
         const previewExists = this.files.findIndex((file) => file.filename === previewFilename) !== -1
 
-        if (previewExists)
-            this.$socket.emit(
-                'server.files.delete_file',
-                { path: this.currentPath + '/' + previewFilename },
-                { action: 'files/getDeleteFile' }
-            )
+        /**
+         * delete the file regardless of its file-extension
+         */
         this.$socket.emit(
             'server.files.delete_file',
             { path: this.currentPath + '/' + this.contextMenu.item.filename },
             { action: 'files/getDeleteFile' }
         )
+
+        /**
+         * if file-extension is mp4, also delete its corresponding thumbnail jpg
+         */
+        if (previewExists && fileExtension === 'mp4')
+            this.$socket.emit(
+                'server.files.delete_file',
+                { path: this.currentPath + '/' + previewFilename },
+                { action: 'files/getDeleteFile' }
+            )
     }
 
     deleteDirectory(item: FileStateFile) {
