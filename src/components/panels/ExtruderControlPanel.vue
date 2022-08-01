@@ -16,13 +16,13 @@
                 <v-list dense>
                     <!-- FILAMENT UNLOAD -->
                     <v-list-item v-if="unloadFilamentMacro">
-                        <v-tooltip top :disabled="extrudePossible || canExecuteUnloadMacro" color="secondary">
+                        <v-tooltip top :disabled="canExecuteUnloadMacro" color="secondary">
                             <template #activator="{ on }">
                                 <div v-on="on">
                                     <macro-button
                                         :macro="unloadFilamentMacro"
                                         :alias="$t('Panels.ExtruderControlPanel.UnloadFilament').toString()"
-                                        :disabled="(!extrudePossible && !canExecuteUnloadMacro) || isPrinting"
+                                        :disabled="!canExecuteUnloadMacro || isPrinting"
                                         color="#272727" />
                                 </div>
                             </template>
@@ -34,13 +34,13 @@
                     </v-list-item>
                     <!-- FILAMENT LOAD -->
                     <v-list-item v-if="loadFilamentMacro">
-                        <v-tooltip top :disabled="extrudePossible || canExecuteLoadMacro" color="secondary">
+                        <v-tooltip top :disabled="canExecuteLoadMacro" color="secondary">
                             <template #activator="{ on }">
                                 <div v-on="on">
                                     <macro-button
                                         :macro="loadFilamentMacro"
                                         :alias="$t('Panels.ExtruderControlPanel.LoadFilament').toString()"
-                                        :disabled="(!extrudePossible && !canExecuteLoadMacro) || isPrinting"
+                                        :disabled="!canExecuteLoadMacro || isPrinting"
                                         color="#272727" />
                                 </div>
                             </template>
@@ -358,10 +358,14 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
      * execution of that macro even if at the current time extrudePossible === false
      */
     get canExecuteLoadMacro(): boolean {
+        if (this.extrudePossible) return true
+
         return this.heatWaitGcodes.some((gcode) => this.loadFilamentMacro.prop.gcode.includes(gcode))
     }
 
     get canExecuteUnloadMacro(): boolean {
+        if (this.extrudePossible) return true
+
         return this.heatWaitGcodes.some((gcode) => this.unloadFilamentMacro.prop.gcode.includes(gcode))
     }
 
