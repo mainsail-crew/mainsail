@@ -1,15 +1,3 @@
-<style scoped>
-.btnMacroMenu {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.macroWithParameters {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-</style>
-
 <template>
     <v-item-group class="d-inline-block">
         <v-btn
@@ -17,13 +5,20 @@
             :color="color"
             :class="paramArray.length ? 'macroWithParameters' : ''"
             :loading="loadings.includes('macro_' + macro.name)"
+            :disabled="disabled"
             @click="doSendMacro(macro.name)">
-            {{ macro.name.replace(/_/g, ' ') }}
+            {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
         </v-btn>
         <template v-if="paramArray.length">
             <v-menu offset-y :close-on-content-click="false">
                 <template #activator="{ on, attrs }">
-                    <v-btn small :color="color" v-bind="attrs" class="minwidth-0 px-1 btnMacroMenu" v-on="on">
+                    <v-btn
+                        :disabled="disabled"
+                        :color="color"
+                        v-bind="attrs"
+                        class="minwidth-0 px-1 btnMacroMenu"
+                        small
+                        v-on="on">
                         <v-icon>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
@@ -88,7 +83,15 @@ export default class MacroButton extends Mixins(BaseMixin) {
 
     @Prop({ required: true })
     declare readonly macro: GuiMacrosStateMacrogroupMacro
-    @Prop({ default: 'primary' }) declare readonly color: string
+
+    @Prop({ default: 'primary' })
+    declare readonly color: string
+
+    @Prop({ default: null })
+    declare readonly alias: string
+
+    @Prop({ default: false })
+    declare readonly disabled: boolean
 
     get klipperMacro() {
         return this.$store.getters['printer/getMacro'](this.macro.name)
@@ -149,3 +152,15 @@ export default class MacroButton extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.btnMacroMenu {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.macroWithParameters {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+</style>
