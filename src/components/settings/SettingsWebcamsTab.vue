@@ -163,6 +163,17 @@
                                         :label="$t('Settings.WebcamsTab.TargetFPS')"></v-text-field>
                                 </v-col>
                             </v-row>
+                            <v-row v-if="form.service === 'mjpegstreamer-adaptive'">
+                                <v-col class="py-2">
+                                    <v-select
+                                        v-model="form.rotate"
+                                        :items="rotateItems"
+                                        outlined
+                                        dense
+                                        hide-details
+                                        :label="$t('Settings.WebcamsTab.Rotate')"></v-select>
+                                </v-col>
+                            </v-row>
                             <v-row>
                                 <v-col class="py-1">
                                     <v-checkbox
@@ -242,6 +253,7 @@ interface webcamForm {
     targetFps: number
     urlStream: string
     urlSnapshot: string
+    rotate: number
     flipX: boolean
     flipY: boolean
 }
@@ -272,6 +284,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         targetFps: 15,
         urlStream: '',
         urlSnapshot: '',
+        rotate: 0,
         flipX: false,
         flipY: false,
     }
@@ -280,6 +293,13 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         required: (value: string) => value !== '' || this.$t('Settings.WebcamsTab.Required'),
         unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamsTab.NameAlreadyExists'),
     }
+
+    private rotateItems = [
+        { value: 0, text: '0°' },
+        { value: 90, text: '90°' },
+        { value: 180, text: '180°' },
+        { value: 270, text: '270°' },
+    ]
 
     declare $refs: {
         webcamForm: any
@@ -348,6 +368,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         this.form.targetFps = webcam.targetFps
         this.form.urlStream = webcam.urlStream
         this.form.urlSnapshot = webcam.urlSnapshot
+        this.form.rotate = webcam.rotate ?? 0
         this.form.flipX = webcam.flipX
         this.form.flipY = webcam.flipY
 
@@ -368,6 +389,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
                 targetFps: this.form.targetFps,
                 urlStream: this.form.urlStream,
                 urlSnapshot: this.form.urlSnapshot,
+                rotate: this.form.rotate,
                 flipX: this.form.flipX,
                 flipY: this.form.flipY,
             }
@@ -392,6 +414,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         this.form.targetFps = 15
         this.form.urlStream = '/webcam/?action=stream'
         this.form.urlSnapshot = '/webcam/?action=snapshot'
+        this.form.rotate = 0
         this.form.flipX = false
         this.form.flipY = false
     }
