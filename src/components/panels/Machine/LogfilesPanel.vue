@@ -72,7 +72,7 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
     mdiDownload = mdiDownload
 
     get logfiles() {
-        return this.$store.getters['files/getDirectory']('logs').childrens
+        return this.$store.getters['files/getDirectory']('logs')?.childrens ?? []
     }
 
     get existsCrowsnestLog(): boolean {
