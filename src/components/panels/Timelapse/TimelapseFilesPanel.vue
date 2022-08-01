@@ -638,7 +638,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         const posLastPoint = this.dialogRenameFile.item.filename.lastIndexOf('.')
         const oldNameWithoutExtension = this.dialogRenameFile.item.filename.slice(0, posLastPoint)
         const fileExtension = this.dialogRenameFile.item.filename.split('.').pop()
-        const fileJpg = this.files.find((file) => file.filename === `${oldNameWithoutExtension}.jpg`)
 
         this.dialogRenameFile.show = false
 
@@ -654,10 +653,14 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             { action: 'files/getMove' }
         )
 
+        if (fileExtension !== 'mp4') return
+
         /**
          * mp4 and jpg always require to have the same name as the
          * jpg is used as a mp4-thumbnail in the timelapse file-browser
          */
+        const fileJpg = this.files.find((file) => file.filename === `${oldNameWithoutExtension}.jpg`)
+
         if (fileJpg && fileExtension === 'mp4') {
             this.$socket.emit('server.files.move', {
                 source: `${this.currentPath}/${oldNameWithoutExtension}.jpg`,
@@ -691,8 +694,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     removeFile() {
         const filename = this.contextMenu.item.filename.slice(0, this.contextMenu.item.filename.lastIndexOf('.'))
         const fileExtension = this.contextMenu.item.filename.split('.').pop()
-        const previewFilename = filename + '.jpg'
-        const previewExists = this.files.findIndex((file) => file.filename === previewFilename) !== -1
 
         /**
          * delete the file regardless of its file-extension
@@ -703,9 +704,14 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             { action: 'files/getDeleteFile' }
         )
 
+        if (fileExtension !== 'mp4') return
+
         /**
          * if file-extension is mp4, also delete its corresponding thumbnail jpg
          */
+        const previewFilename = filename + '.jpg'
+        const previewExists = this.files.findIndex((file) => file.filename === previewFilename) !== -1
+
         if (previewExists && fileExtension === 'mp4')
             this.$socket.emit(
                 'server.files.delete_file',
