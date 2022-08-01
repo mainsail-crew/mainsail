@@ -1,49 +1,3 @@
-<style lang="scss" scoped>
-.v-btn-toggle {
-    width: 100%;
-}
-
-._btn-group {
-    border-radius: 4px;
-    display: inline-flex;
-    flex-wrap: nowrap;
-    max-width: 100%;
-    min-width: 100%;
-    width: 100%;
-
-    .v-btn {
-        border-radius: 0;
-        border-color: rgba(255, 255, 255, 0.12);
-        border-style: solid;
-        border-width: thin;
-        box-shadow: none;
-        height: 28px;
-        opacity: 0.8;
-        min-width: auto !important;
-    }
-
-    .v-btn:first-child {
-        border-top-left-radius: inherit;
-        border-bottom-left-radius: inherit;
-    }
-
-    .v-btn:last-child {
-        border-top-right-radius: inherit;
-        border-bottom-right-radius: inherit;
-    }
-
-    .v-btn:not(:first-child) {
-        border-left-width: 0;
-    }
-}
-
-._btn-qs {
-    font-size: 0.8rem !important;
-    font-weight: 400;
-    max-height: 28px;
-}
-</style>
-
 <template>
     <responsive
         :breakpoints="{
@@ -125,7 +79,7 @@
                                     small
                                     class="_btn-qs flex-grow-1 px-1"
                                     @click="sendBabyStepUp(offset)">
-                                    <v-icon v-if="index === 0 && !el.is.xsmall" left small class="mr-1 ml-1">
+                                    <v-icon v-if="index === 0 && !el.is.xsmall" left small class="mr-1 ml-n1">
                                         {{ mdiArrowExpandUp }}
                                     </v-icon>
                                     <span>&plus;{{ offset }}</span>
@@ -134,14 +88,31 @@
                         </div>
                     </v-col>
                     <v-col :class="!el.is.medium ? 'order-0 col-6' : 'col-12'">
-                        <v-item-group class="_btn-group">
+                        <v-item-group v-if="!el.is.medium" class="_btn-group">
+                            <v-btn
+                                v-for="(offset, index) in offsetsZ.slice().reverse()"
+                                :key="`offsetsDown-${index}`"
+                                small
+                                class="_btn-qs flex-grow-1 px-1"
+                                @click="sendBabyStepDown(offset)">
+                                <span>&minus;{{ offset }}</span>
+                                <v-icon
+                                    v-if="index === offsetsZ.length - 1 && !el.is.xsmall"
+                                    left
+                                    small
+                                    class="mr-n1 ml-1">
+                                    {{ mdiArrowCollapseDown }}
+                                </v-icon>
+                            </v-btn>
+                        </v-item-group>
+                        <v-item-group v-else class="_btn-group">
                             <v-btn
                                 v-for="(offset, index) in offsetsZ"
                                 :key="`offsetsDown-${index}`"
                                 small
                                 class="_btn-qs flex-grow-1 px-1"
                                 @click="sendBabyStepDown(offset)">
-                                <v-icon v-if="index === 0 && !el.is.xsmall" left small class="mr-1 ml-1">
+                                <v-icon v-if="index === 0 && !el.is.xsmall" left small class="mr-1 ml-n1">
                                     {{ mdiArrowCollapseDown }}
                                 </v-icon>
                                 <span>&minus;{{ offset }}</span>
@@ -295,3 +266,49 @@ export default class ZoffsetControl extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.v-btn-toggle {
+    width: 100%;
+}
+
+._btn-group {
+    border-radius: 4px;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
+
+    .v-btn {
+        border-radius: 0;
+        border-color: rgba(255, 255, 255, 0.12);
+        border-style: solid;
+        border-width: thin;
+        box-shadow: none;
+        height: 28px;
+        opacity: 0.8;
+        min-width: auto !important;
+    }
+
+    .v-btn:first-child {
+        border-top-left-radius: inherit;
+        border-bottom-left-radius: inherit;
+    }
+
+    .v-btn:last-child {
+        border-top-right-radius: inherit;
+        border-bottom-right-radius: inherit;
+    }
+
+    .v-btn:not(:first-child) {
+        border-left-width: 0;
+    }
+}
+
+._btn-qs {
+    font-size: 0.8rem !important;
+    font-weight: 400;
+    max-height: 28px;
+}
+</style>
