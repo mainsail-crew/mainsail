@@ -16,18 +16,13 @@
                 <v-list dense>
                     <!-- FILAMENT UNLOAD -->
                     <v-list-item v-if="unloadFilamentMacro">
-                        <v-tooltip
-                            top
-                            :disabled="extrudePossible || canExecuteMacro(unloadFilamentMacro)"
-                            color="secondary">
+                        <v-tooltip top :disabled="extrudePossible || canExecuteUnloadMacro" color="secondary">
                             <template #activator="{ on }">
                                 <div v-on="on">
                                     <macro-button
                                         :macro="unloadFilamentMacro"
                                         :alias="$t('Panels.ExtruderControlPanel.UnloadFilament').toString()"
-                                        :disabled="
-                                            (!extrudePossible && !canExecuteMacro(unloadFilamentMacro)) || isPrinting
-                                        "
+                                        :disabled="(!extrudePossible && !canExecuteUnloadMacro) || isPrinting"
                                         color="#272727" />
                                 </div>
                             </template>
@@ -39,18 +34,13 @@
                     </v-list-item>
                     <!-- FILAMENT LOAD -->
                     <v-list-item v-if="loadFilamentMacro">
-                        <v-tooltip
-                            top
-                            :disabled="extrudePossible || canExecuteMacro(loadFilamentMacro)"
-                            color="secondary">
+                        <v-tooltip top :disabled="extrudePossible || canExecuteLoadMacro" color="secondary">
                             <template #activator="{ on }">
                                 <div v-on="on">
                                     <macro-button
                                         :macro="loadFilamentMacro"
                                         :alias="$t('Panels.ExtruderControlPanel.LoadFilament').toString()"
-                                        :disabled="
-                                            (!extrudePossible && !canExecuteMacro(loadFilamentMacro)) || isPrinting
-                                        "
+                                        :disabled="(!extrudePossible && !canExecuteLoadMacro) || isPrinting"
                                         color="#272727" />
                                 </div>
                             </template>
@@ -341,6 +331,8 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     mdiPrinter3dNozzleOutline = mdiPrinter3dNozzleOutline
     mdiDotsVertical = mdiDotsVertical
 
+    private heatWaitGcodes = ['printer.extruder.can_extrude', 'TEMPERATURE_WAIT', 'M109']
+
     get isPrinting(): boolean {
         return ['printing'].includes(this.printer_state)
     }
@@ -359,6 +351,18 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get unloadFilamentMacro() {
         return this.macros.find((macro: PrinterStateMacro) => macro.name === 'UNLOAD_FILAMENT')
+    }
+
+    /**
+     * test if the load and unload macro include specific keywords. if true, we allow
+     * execution of that macro even if at the current time extrudePossible === false
+     */
+    get canExecuteLoadMacro(): boolean {
+        return this.heatWaitGcodes.some((gcode) => this.loadFilamentMacro.prop.gcode.includes(gcode))
+    }
+
+    get canExecuteUnloadMacro(): boolean {
+        return this.heatWaitGcodes.some((gcode) => this.unloadFilamentMacro.prop.gcode.includes(gcode))
     }
 
     get showFilamentMacros(): boolean {
@@ -463,17 +467,6 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         if (this.feedamount > this.maxExtrudeOnlyDistance) {
             this.setFeedamount({ value: this.maxExtrudeOnlyDistance })
         }
-    }
-
-    /**
-     * test if the gcode of a macro includes specifics keywords
-     * if a keyword is found, we allow execution of that macro
-     * even if at the current time extrudePossible === false
-     * @param macro
-     */
-    canExecuteMacro(macro: any): boolean {
-        const commands = ['printer.extruder.can_extrude', 'TEMPERATURE_WAIT', 'M109']
-        return commands.some((command) => macro.prop.gcode.includes(command))
     }
 
     sendRetract(): void {
