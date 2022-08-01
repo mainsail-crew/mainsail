@@ -1,6 +1,6 @@
 <template>
     <panel
-        :title="$t('Machine.LogfilesPanel.Logfiles')"
+        :title="$t('Machine.LogfilesPanel.Logfiles').toString()"
         :icon="mdiFileDocumentEdit"
         card-class="machine-logfiles-panel"
         :collapsible="true">
@@ -28,6 +28,30 @@
                             Moonraker
                         </v-btn>
                     </v-col>
+                    <v-col
+                        v-if="existsCrowsnestLog"
+                        :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
+                        <v-btn
+                            :href="apiUrl + '/server/files/logs/crowsnest.log'"
+                            block
+                            class="primary--text"
+                            @click="downloadLog">
+                            <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
+                            Crowsnest
+                        </v-btn>
+                    </v-col>
+                    <v-col
+                        v-if="existsSonarLog"
+                        :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
+                        <v-btn
+                            :href="apiUrl + '/server/files/logs/sonar.log'"
+                            block
+                            class="primary--text"
+                            @click="downloadLog">
+                            <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
+                            Sonar
+                        </v-btn>
+                    </v-col>
                 </v-row>
             </v-container>
         </v-card-text>
@@ -38,6 +62,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
+import { FileStateFile } from '@/store/files/types'
 import { mdiDownload, mdiFileDocumentEdit } from '@mdi/js'
 @Component({
     components: { Panel },
@@ -45,6 +70,20 @@ import { mdiDownload, mdiFileDocumentEdit } from '@mdi/js'
 export default class LogfilesPanel extends Mixins(BaseMixin) {
     mdiFileDocumentEdit = mdiFileDocumentEdit
     mdiDownload = mdiDownload
+
+    get logfiles() {
+        return this.$store.getters['files/getDirectory']('logs')?.childrens ?? []
+    }
+
+    get existsCrowsnestLog(): boolean {
+        return this.logfiles.findIndex((log: FileStateFile) => log.filename === 'crowsnest.log') !== -1
+    }
+
+    get existsSonarLog(): boolean {
+        const sonarLog = this.logfiles.find((log: FileStateFile) => log.filename === 'sonar.log')
+
+        return sonarLog?.size > 0
+    }
 
     downloadLog(event: any) {
         event.preventDefault()
