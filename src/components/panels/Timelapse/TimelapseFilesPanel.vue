@@ -638,6 +638,10 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         const fileExtension = this.dialogRenameFile.item.filename.split('.').pop()
 
         this.dialogRenameFile.show = false
+
+        /**
+         * rename the file regardless of its file-extension
+         */
         this.$socket.emit(
             'server.files.move',
             {
@@ -647,8 +651,12 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             { action: 'files/getMove' }
         )
 
+        /**
+         * mp4 and jpg always require to have the same name as the
+         * jpg is used as a mp4-thumbnail in the timelapse file-browser
+         */
         const fileJpg = this.files.find((file) => file.filename === `${oldNameWithoutExtension}.jpg`)
-        if (fileJpg) {
+        if (fileJpg && fileExtension === 'mp4') {
             this.$socket.emit('server.files.move', {
                 source: `${this.currentPath}/${oldNameWithoutExtension}.jpg`,
                 dest: `${this.currentPath}/${this.dialogRenameFile.newName}.jpg`,
