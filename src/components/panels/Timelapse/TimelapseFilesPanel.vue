@@ -169,31 +169,33 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="downloadFile(contextMenu.item.filename)">
-                    <v-icon left>{{ mdiCloudDownload }}</v-icon>
+                    <v-icon class="mr-1">{{ mdiCloudDownload }}</v-icon>
                     {{ $t('Timelapse.Download') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="renameDirectory(contextMenu.item)">
-                    <v-icon left>{{ mdiRenameBox }}</v-icon>
+                    <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Timelapse.Rename') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="renameFile(contextMenu.item)">
-                    <v-icon left>{{ mdiRenameBox }}</v-icon>
+                    <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Timelapse.Rename') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    class="red--text"
                     @click="removeFile">
-                    <v-icon left>{{ mdiDelete }}</v-icon>
+                    <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Timelapse.Delete') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    class="red--text"
                     @click="deleteDirectory(contextMenu.item)">
-                    <v-icon left>{{ mdiDelete }}</v-icon>
+                    <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Timelapse.Delete') }}
                 </v-list-item>
             </v-list>
