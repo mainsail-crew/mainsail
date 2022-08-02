@@ -13,6 +13,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         dispatch('gcodehistory/reset')
         dispatch('macros/reset')
         dispatch('presets/reset')
+        dispatch('webcams/reset')
     },
 
     init() {
