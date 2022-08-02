@@ -173,29 +173,38 @@
                             </v-row>
                         </v-col>
                     </v-row>
-                    <v-row v-if="showCorsInfo">
-                        <v-col>
-                            <p v-if="printers.length === 0" class="text-center">
-                                {{ $t('SelectPrinterDialog.Hello') }}
-                            </p>
-                            <p class="text-center">
-                                {{ $t('SelectPrinterDialog.RememberToAdd', { cors: currentUrl }) }}
-                            </p>
-                            <p class="text-center mb-0">
-                                {{ $t('SelectPrinterDialog.YouCanFindMore') }}
-                                <br />
-                                <a href="https://docs.mainsail.xyz/remotemode" target="_blank">
-                                    https://docs.mainsail.xyz/remotemode
-                                </a>
-                                .
-                            </p>
-                        </v-col>
-                    </v-row>
-                    <v-row v-if="canAddPrinters">
+                    <template v-if="instancesDB === 'browser'">
+                        <v-row v-if="showCorsInfo">
+                            <v-col>
+                                <p v-if="printers.length === 0" class="text-center">
+                                    {{ $t('SelectPrinterDialog.Hello') }}
+                                </p>
+                                <p class="text-center">
+                                    {{ $t('SelectPrinterDialog.RememberToAdd', { cors: currentUrl }) }}
+                                </p>
+                                <p class="text-center mb-0">
+                                    {{ $t('SelectPrinterDialog.YouCanFindMore') }}
+                                    <br />
+                                    <a href="https://docs.mainsail.xyz/remotemode" target="_blank">
+                                        https://docs.mainsail.xyz/remotemode
+                                    </a>
+                                    .
+                                </p>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col class="text-center mt-0">
+                                <v-btn text color="primary" @click="createPrinter">
+                                    {{ $t('SelectPrinterDialog.AddPrinter') }}
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </template>
+                    <v-row v-else-if="instancesDB === 'json' && printers.length === 0">
                         <v-col class="text-center mt-0">
-                            <v-btn text color="primary" @click="createPrinter">
-                                {{ $t('SelectPrinterDialog.AddPrinter') }}
-                            </v-btn>
+                            <p class="text-center">
+                                {{ $t('SelectPrinterDialog.PleaseAddYourPrintersToConfigJson') }}
+                            </p>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -254,7 +263,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get canAddPrinters() {
-        return this.$store.state.configInstances.length === 0
+        return this.instancesDB !== 'json'
     }
 
     get protocol() {

@@ -38,7 +38,10 @@ export default class PrinterSelector extends Mixins(BaseMixin) {
     mdiChevronDown = mdiChevronDown
 
     get displayMenuPoint() {
-        return (this.remoteMode && this.countPrinters > 1) || (!this.remoteMode && this.countPrinters)
+        return (
+            (this.instancesDB !== 'moonraker' && this.countPrinters > 1) ||
+            (this.instancesDB === 'moonraker' && this.countPrinters)
+        )
     }
 
     get printers() {
