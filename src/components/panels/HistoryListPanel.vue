@@ -948,9 +948,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
         row.push('filename')
         row.push('status')
+
         this.tableFields.forEach((col) => {
             row.push(col.value)
         })
+
+        if (this.headers.find((header) => header.value === 'slicer')?.visible) {
+            row.push('slicer')
+        }
 
         content.push(row)
 
@@ -1011,7 +1016,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 default:
                     switch (typeof value) {
                         case 'number':
-                            return value.toLocaleString()
+                            return value.toLocaleString(undefined, { useGrouping: false })
 
                         case 'string':
                             if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
