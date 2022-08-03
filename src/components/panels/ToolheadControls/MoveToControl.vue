@@ -1,29 +1,42 @@
 <template>
     <responsive
         :breakpoints="{
-            small: (el) => el.width <= 320,
+            xsmall: (el) => el.width <= 320,
+            small: (el) => el.width > 320 && el.width <= 460,
+            medium: (el) => el.width > 460 && el.width <= 560,
+            large: (el) => el.width > 560,
         }">
         <template #default="{ el }">
             <v-container class="py-0">
-                <v-row class="d-flex justify-space-between pb-1">
-                    <div class="v-subheader text--secondary pr-0" style="max-width: 50%">
+                <v-row class="flex-nowrap pb-1">
+                    <v-col
+                        :class="{
+                            'col-5': el.is.small,
+                            'col-4': el.is.xsmall || el.is.medium,
+                            'col-3': el.is.large,
+                        }"
+                        class="v-subheader text--secondary mr-2">
                         <v-icon small class="mr-1">
                             {{ mdiCrosshairsGps }}
                         </v-icon>
-                        <span v-if="!el.is.small" class="text-no-wrap">
+                        <span v-if="!el.is.xsmall" class="text-no-wrap">
                             {{ $t('Panels.ToolheadControlPanel.Position') }}:&nbsp;
                         </span>
                         <span class="text-no-wrap">{{ displayPositionAbsolute }}</span>
-                    </div>
-                    <div v-if="currentProfileName" class="v-subheader text--secondary pl-0">
+                    </v-col>
+                    <v-col
+                        v-if="currentProfileName"
+                        class="v-subheader text--secondary pl-2 justify-end text-no-wrap text-truncate">
                         <v-icon small class="mr-1">
                             {{ mdiGrid }}
                         </v-icon>
-                        <span class="text-no-wrap">{{ currentProfileName }}</span>
-                    </div>
+                        <span class="text-no-wrap text-truncate">
+                            {{ currentProfileName }}
+                        </span>
+                    </v-col>
                 </v-row>
                 <v-row dense>
-                    <v-col :class="el.is.small ? 'col-12' : 'col-4'">
+                    <v-col :class="el.is.xsmall ? 'col-12' : 'col-4'">
                         <move-to-input
                             v-model="input.x.pos"
                             :label="livePositions.x"
@@ -37,7 +50,7 @@
                             @validate="validate"
                             @submit="sendCmd"></move-to-input>
                     </v-col>
-                    <v-col :class="el.is.small ? 'col-12' : 'col-4'">
+                    <v-col :class="el.is.xsmall ? 'col-12' : 'col-4'">
                         <move-to-input
                             v-model="input.y.pos"
                             :label="livePositions.y"
@@ -51,7 +64,7 @@
                             @validate="validate"
                             @submit="sendCmd"></move-to-input>
                     </v-col>
-                    <v-col :class="el.is.small ? 'col-12' : 'col-4'">
+                    <v-col :class="el.is.xsmall ? 'col-12' : 'col-4'">
                         <move-to-input
                             v-model="input.z.pos"
                             :label="livePositions.z"
@@ -177,13 +190,7 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get currentProfileName() {
-        let profileName = this.bed_mesh?.profile_name ?? ''
-
-        if (profileName.length > 20) {
-            profileName = `${profileName.substring(0, 15)}...`
-        }
-
-        return profileName
+        return this.bed_mesh?.profile_name ?? ''
     }
 
     sendCmd(): void {
