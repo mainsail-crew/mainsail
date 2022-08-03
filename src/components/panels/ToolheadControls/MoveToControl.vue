@@ -6,13 +6,14 @@
         <template #default="{ el }">
             <v-container class="py-0">
                 <v-row class="d-flex justify-space-between pb-1">
-                    <div class="v-subheader text--secondary pr-0">
+                    <div class="v-subheader text--secondary pr-0" style="max-width: 50%">
                         <v-icon small class="mr-1">
                             {{ mdiCrosshairsGps }}
                         </v-icon>
-                        <span class="text-no-wrap">
-                            {{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}
+                        <span v-if="!el.is.small" class="text-no-wrap">
+                            {{ $t('Panels.ToolheadControlPanel.Position') }}:&nbsp;
                         </span>
+                        <span class="text-no-wrap">{{ displayPositionAbsolute }}</span>
                     </div>
                     <div v-if="currentProfileName" class="v-subheader text--secondary pl-0">
                         <v-icon small class="mr-1">
