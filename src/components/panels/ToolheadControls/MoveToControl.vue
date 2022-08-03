@@ -5,13 +5,21 @@
         }">
         <template #default="{ el }">
             <v-container class="py-0">
-                <v-row>
-                    <v-col class="v-subheader text--secondary pr-0">
-                        <v-icon small class="mr-2">
+                <v-row class="d-flex justify-space-between pb-1">
+                    <div class="v-subheader text--secondary pr-0">
+                        <v-icon small class="mr-1">
                             {{ mdiCrosshairsGps }}
                         </v-icon>
-                        <span>{{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}</span>
-                    </v-col>
+                        <span class="text-no-wrap">
+                            {{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}
+                        </span>
+                    </div>
+                    <div v-if="currentProfileName" class="v-subheader text--secondary pl-0">
+                        <v-icon small class="mr-1">
+                            {{ mdiGrid }}
+                        </v-icon>
+                        <span class="text-no-wrap">{{ currentProfileName }}</span>
+                    </div>
                 </v-row>
                 <v-row dense>
                     <v-col :class="el.is.small ? 'col-12' : 'col-4'">
@@ -68,13 +76,14 @@ import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import MoveToInput from '@/components/inputs/MoveToInput.vue'
 import Responsive from '@/components/ui/Responsive.vue'
-import { mdiCrosshairsGps } from '@mdi/js'
+import { mdiCrosshairsGps, mdiGrid } from '@mdi/js'
 
 @Component({
     components: { MoveToInput, Responsive },
 })
 export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
     mdiCrosshairsGps = mdiCrosshairsGps
+    mdiGrid = mdiGrid
 
     input: { [index: string]: any } = {
         x: { pos: '', valid: true },
@@ -157,6 +166,23 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
             y: pos[1]?.toFixed(2) ?? '--',
             z: pos[2]?.toFixed(3) ?? '--',
         }
+    }
+
+    /**
+     * Get currently loaded bed mesh profile name
+     */
+    get bed_mesh() {
+        return this.$store.state.printer.bed_mesh ?? null
+    }
+
+    get currentProfileName() {
+        let profileName = this.bed_mesh?.profile_name ?? ''
+
+        if (profileName.length > 20) {
+            profileName = `${profileName.substring(0, 15)}...`
+        }
+
+        return profileName
     }
 
     sendCmd(): void {
