@@ -2,18 +2,5 @@
     "hostname": null,
     "port": null,
     "instancesDB": "moonraker",
-    "instances": [
-        {
-            "hostname": "192.168.0.210",
-            "port": 7125
-        },
-        {
-            "hostname": "192.168.0.211",
-            "port": 7125
-        },
-        {
-            "hostname": "192.168.0.212",
-            "port": 7125
-        }
-    ]
+    "instances": []
 }
