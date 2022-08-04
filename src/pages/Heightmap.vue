@@ -335,10 +335,8 @@
                         :label="$t('Heightmap.Name')"
                         required
                         :rules="[
-                            (name) => !!name || 'Must not be empty!',
-                            (name) =>
-                                name !== 'default' ||
-                                'Profile \'default\' is reserved, please choose another profile name.',
+                            (name) => !!name || $t('Heightmap.InvalidNameEmpty'),
+                            (name) => name !== 'default' || $t('Heightmap.InvalidNameReserved'),
                         ]"
                         @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameProfile"></v-text-field>

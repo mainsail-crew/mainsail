@@ -275,6 +275,8 @@
         "RemoveSaveDescription": "Das Löschen des Höhenprofils wurde registriert. Mit einem Klick auf SAVE_CONFIG wird es aus der printer.cfg gelöscht und Klipper neu gestartet.",
         "Rename": "umbenennen",
         "RenameBedMeshProfile": "Bed Mesh umbenennen",
+        "InvalidNameEmpty": "Feld darf nicht leer sein!",
+        "InvalidNameReserved": "Das Profil 'default' ist reserviert, bitte wähle einen anderen Profilnamen.",
         "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Farbverlauf skalieren",
         "ScaleZMax": "Skaliere z-max.",
