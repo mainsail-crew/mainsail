@@ -335,13 +335,13 @@
                         :label="$t('Heightmap.Name')"
                         required
                         :rules="[(name) => !!name || 'Must not be empty!']"
-                        @update:error="invalidName = true"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameProfile"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text @click="renameDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
-                    <v-btn :disabled="invalidName" color="primary" text @click="renameProfile">
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="renameProfile">
                         {{ $t('Heightmap.Rename') }}
                     </v-btn>
                 </v-card-actions>
@@ -515,7 +515,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
     private newName = ''
     private oldName = ''
-    private invalidName = false
+    private isInvalidName = false
 
     private heightmapScale = 0.5
     private probedOpacity = 1
