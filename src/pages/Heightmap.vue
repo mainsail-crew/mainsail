@@ -334,7 +334,12 @@
                         v-model="newName"
                         :label="$t('Heightmap.Name')"
                         required
-                        :rules="[(name) => !!name || 'Must not be empty!']"
+                        :rules="[
+                            (name) => !!name || 'Must not be empty!',
+                            (name) =>
+                                name !== 'default' ||
+                                'Profile \'default\' is reserved, please choose another profile name.',
+                        ]"
                         @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameProfile"></v-text-field>
                 </v-card-text>
