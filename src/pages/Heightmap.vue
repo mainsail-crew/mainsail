@@ -1,47 +1,3 @@
-<style scoped>
-.rename-profile {
-    text-transform: none;
-}
-
-.currentMeshName {
-    cursor: pointer;
-    color: var(--v-primary-base);
-}
-
-.currentMeshName .v-icon {
-    opacity: 0;
-}
-
-.currentMeshName:hover .v-icon {
-    opacity: 1;
-}
-
-.rowProfile {
-}
-
-.rowProfile .colActions {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-}
-
-.rowProfile .colName,
-.rowProfile .colVariance {
-    line-height: 48px;
-}
-
-.rowProfile .colName span.current {
-    font-weight: bold;
-    color: var(--v-primary-base);
-}
-
-.rowProfile .colActions .v-btn {
-    height: 48px;
-    width: 48px;
-}
-</style>
-
 <template>
     <div>
         <v-row v-if="klipperReadyForGui">
@@ -1183,3 +1139,47 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 }
 </script>
+
+<style scoped>
+.rename-profile {
+    text-transform: none;
+}
+
+.currentMeshName {
+    cursor: pointer;
+    color: var(--v-primary-base);
+}
+
+.currentMeshName .v-icon {
+    opacity: 0;
+}
+
+.currentMeshName:hover .v-icon {
+    opacity: 1;
+}
+
+.rowProfile {
+}
+
+.rowProfile .colActions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.rowProfile .colName,
+.rowProfile .colVariance {
+    line-height: 48px;
+}
+
+.rowProfile .colName span.current {
+    font-weight: bold;
+    color: var(--v-primary-base);
+}
+
+.rowProfile .colActions .v-btn {
+    height: 48px;
+    width: 48px;
+}
+</style>
