@@ -454,7 +454,6 @@
             "ExtrusionFeedrate": "进给速度",
             "FilamentLength": "耗材长度",
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "固件回抽",
                 "RetractLength": "回抽长度",
                 "RetractSpeed": "回抽速度",
                 "UnretractExtraLength": "回料长度",

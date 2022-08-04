@@ -455,7 +455,6 @@
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filament Length",
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Retraction",
                 "RetractLength": "Retract Length",
                 "RetractSpeed": "Retract Speed",
                 "UnretractExtraLength": "Unretract Extra Length",

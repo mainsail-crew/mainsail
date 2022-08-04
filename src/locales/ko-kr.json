@@ -457,7 +457,6 @@
             "ExtrusionFeedrate": "압출 속도",
             "FilamentLength": "필라멘트 길이",
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "필라 퇴출 (펌웨어)",
                 "RetractLength": "필라 퇴출 길이",
                 "RetractSpeed": "필라 퇴출 속도",
                 "UnretractExtraLength": "필라 압출 추가 길이",

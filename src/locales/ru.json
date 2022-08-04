@@ -474,7 +474,6 @@
             "ExtrusionFeedrate": "Скорость подачи экструзии",
             "FilamentLength": "Длина нити",
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Отступление от прошивки",
                 "RetractLength": "Длина втягивания",
                 "RetractSpeed": "Скорость втягивания",
                 "UnretractExtraLength": "Дополнительная длина удлинителя",

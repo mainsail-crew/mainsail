@@ -414,7 +414,6 @@
             "Extrude": "Extrude",
             "ExtruderTempTooLow": "Hotend temp. <",
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Retraction",
                 "RetractLength": "Retract længde",
                 "RetractSpeed": "Retract hastighed",
                 "UnretractExtraLength": "Unretract ekstra længde",

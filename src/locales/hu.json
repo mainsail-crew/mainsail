@@ -455,7 +455,6 @@
             "ExtrusionFeedrate": "Extruder Előtolása",
             "FilamentLength": "Filament Hossz",
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Visszahúzás",
                 "RetractLength": "Visszahúzás hossza",
                 "RetractSpeed": "Visszahúzás sebessége",
                 "UnretractExtraLength": "Eresztés Extra Hossza",

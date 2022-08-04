@@ -318,7 +318,6 @@
             "Extrude": "擠出",
             "ExtrusionFactor": "擠出係數",
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "韌體回抽",
                 "RetractLength": "回抽長度",
                 "RetractSpeed": "回抽速度",
                 "UnretractExtraLength": "退料長度",

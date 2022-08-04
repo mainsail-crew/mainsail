@@ -474,7 +474,6 @@
             "ExtrusionFeedrate": "押し出し速度",
             "FilamentLength": "フィラメント長",
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "ファームウェア引き込み",
                 "RetractLength": "引き込み長",
                 "RetractSpeed": "引き込み速度",
                 "UnretractExtraLength": "追加の戻り長",

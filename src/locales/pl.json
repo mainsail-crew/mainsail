@@ -474,7 +474,6 @@
             "ExtrusionFeedrate": "Prędkość wysuwania",
             "FilamentLength": "Długość filamentu",
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Retrakcja oprogramowania",
                 "RetractLength": "Długość retrakcji",
                 "RetractSpeed": "Prędkość retrakcji",
                 "UnretractExtraLength": "Dodatkowa długość wycofywania",

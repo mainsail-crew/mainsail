@@ -366,7 +366,6 @@
             "Extrude": "Estrudi",
             "ExtrusionFactor": "Fattore di estrusione",
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Retrazione Firmware",
                 "RetractLength": "Lunghezza Retrazione",
                 "RetractSpeed": "Velocità Retrazione",
                 "UnretractExtraLength": "Lunghezza Extra Ri-estrusione",

@@ -474,7 +474,6 @@
             "ExtrusionFeedrate": "Velocidad de avance de extrusión",
             "FilamentLength": "Largo del filamento",
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Retracción por firmware",
                 "RetractLength": "Distancia de retracción",
                 "RetractSpeed": "Velocidad de retracción",
                 "UnretractExtraLength": "Distancia adicional post-retracción",

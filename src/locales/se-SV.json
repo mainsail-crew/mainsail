@@ -451,7 +451,6 @@
         },
         "ExtuderControlPanel": {
             "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Retraction",
                 "RetractLength": "Längd för Retract",
                 "RetractSpeed": "Hastighet för Retract",
                 "UnretractExtraLength": "Unretract extra längd",
