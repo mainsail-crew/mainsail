@@ -334,10 +334,7 @@
                         v-model="newName"
                         :label="$t('Heightmap.Name')"
                         required
-                        :rules="[
-                            (name) => !!name || $t('Heightmap.InvalidNameEmpty'),
-                            (name) => name !== 'default' || $t('Heightmap.InvalidNameReserved'),
-                        ]"
+                        :rules="renameInputRules"
                         @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameProfile"></v-text-field>
                 </v-card-text>
@@ -518,7 +515,12 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
     private newName = ''
     private oldName = ''
-    private isInvalidName = false
+    private isInvalidName = true
+    private renameInputRules = [
+        (value: string) => !!value || this.$t('Heightmap.InvalidNameEmpty'),
+        (value: string) => value !== 'default' || this.$t('Heightmap.InvalidNameReserved'),
+        (value: string) => !this.existsProfileName(value) || this.$t('Heightmap.InvalidNameAlreadyExists'),
+    ]
 
     private heightmapScale = 0.5
     private probedOpacity = 1
@@ -1084,6 +1086,10 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         setTimeout(() => {
             this.$refs.inputDialogRenameHeightmapName?.focus()
         }, 200)
+    }
+
+    existsProfileName(name: string) {
+        return this.profiles.findIndex((profile: { name: string }) => profile.name === name) >= 0
     }
 
     renameProfile(): void {

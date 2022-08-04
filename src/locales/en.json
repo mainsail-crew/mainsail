@@ -270,6 +270,7 @@
         "RenameBedMeshProfile": "Rename Bed Mesh Profile",
         "InvalidNameEmpty": "Input must not be empty!",
         "InvalidNameReserved": "Profile 'default' is reserved, please choose another profile name.",
+        "InvalidNameAlreadyExists": "Profile name already exists, please choose another profile name.",
         "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Scale gradient",
         "ScaleZMax": "Scale z-max.",

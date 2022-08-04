@@ -277,6 +277,7 @@
         "RenameBedMeshProfile": "Bed Mesh umbenennen",
         "InvalidNameEmpty": "Feld darf nicht leer sein!",
         "InvalidNameReserved": "Das Profil 'default' ist reserviert, bitte wähle einen anderen Profilnamen.",
+        "InvalidNameAlreadyExists": "Das Profil existiert bereits, bitte wähle einen anderen Profilnamen.",
         "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Farbverlauf skalieren",
         "ScaleZMax": "Skaliere z-max.",
