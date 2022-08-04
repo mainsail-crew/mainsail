@@ -203,7 +203,7 @@
                     <v-row v-else-if="instancesDB === 'json' && printers.length === 0">
                         <v-col class="text-center mt-0">
                             <p class="text-center">
-                                {{ $t('SelectPrinterDialog.PleaseAddYourPrintersToConfigJson') }}
+                                {{ $t('SelectPrinterDialog.AddPrintersToJson') }}
                             </p>
                         </v-col>
                     </v-row>

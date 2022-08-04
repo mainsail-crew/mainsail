@@ -654,7 +654,7 @@
         "HostnameInvalid": "invalid Hostname/IP",
         "HostnameIp": "Hostname/IP",
         "HostnameRequired": "Hostname is required",
-        "PleaseAddYourPrintersToConfigJson": "Please add your Printers to your config.json.",
+        "AddPrintersToJson": "Please add the Printers to the config.json.",
         "Port": "Port",
         "PortRequired": "Port is required",
         "RememberToAdd": "Please remember to add '{cors}' in moonraker.conf within 'cors_domains'.",
