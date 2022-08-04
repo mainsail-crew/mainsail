@@ -461,8 +461,21 @@
             "ExtrusionFactor": "Extrusionsfaktor",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
             "FilamentLength": "Filamentlänge",
+            "FirmwareRetractionSettings": {
+                "FirmwareRetraction": "Firmware Rückzug",
+                "RetractLength": "Rückzugslänge",
+                "RetractSpeed": "Rückzuggeschwindigkeit",
+                "UnretractExtraLength": "Zusätzliche Ausfahrlänge",
+                "UnretractSpeed": "Ausfahrgeschwindigkeit"
+            },
             "Headline": "Extruder",
             "LoadFilament": "Filament laden",
+            "PressureAdvanceSettings": {
+                "Advance": "Pressure Advance",
+                "Extruder": "Extruder",
+                "PressureAdvance": "Pressure Advance",
+                "SmoothTime": "Smooth Time"
+            },
             "Requested": "Angefordert",
             "Retract": "Rückzug",
             "TooLargeExtrusion": "Extrusion zu groß!",
@@ -481,13 +494,6 @@
             "Restart": "Neustart"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Rückzug",
-                "RetractLength": "Rückzugslänge",
-                "RetractSpeed": "Rückzuggeschwindigkeit",
-                "UnretractExtraLength": "Zusätzliche Ausfahrlänge",
-                "UnretractSpeed": "Ausfahrgeschwindigkeit"
-            },
             "Headline": "Maschine",
             "MotionSettings": {
                 "Acceleration": "Beschleunigung",
@@ -495,12 +501,6 @@
                 "Motion": "Bewegung",
                 "SquareCornerVelocity": "Eck-Geschwindigkeit",
                 "Velocity": "Geschwindigkeit"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
-                "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
-                "SmoothTime": "Smooth Time"
             }
         },
         "MacrosPanel": {
@@ -538,6 +538,8 @@
             "CancelPrint": "Druck abbrechen",
             "ClearPrintStats": "Druckstatistiken löschen",
             "Difference": "Unterschied",
+            "EmptyGcodes": "Kein G-Code verfügbar.",
+            "EmptyJobqueue": "Aktuell keine Datei in der Warteschlange.",
             "Estimate": "Schätzung",
             "ETA": "ETA",
             "ExcludeObject": {
@@ -550,18 +552,16 @@
             "Filament": "Filament",
             "File": "Datei",
             "Files": "Dateien",
-            "EmptyGcodes": "Kein G-Code verfügbar.",
-            "EmptyJobqueue": "Aktuell keine Datei in der Warteschlange.",
             "Flow": "Fluss",
             "Headline": "Status",
             "Jobqueue": "Warteschlange ({count})",
             "JobqueueMoreFiles": "keine weiteren Aufträge | einen weiteren Auftrag | {count} weitere Aufträge",
-            "PrintTime": "Druckzeit",
             "Layer": "Schicht",
             "Max": "max",
             "ObjectHeight": "Objekthöhe",
             "PausePrint": "Druck pausieren",
             "Print": "Druck",
+            "PrintTime": "Druckzeit",
             "ReprintJob": "Auftrag erneut drucken",
             "Requested": "Angefordert",
             "ResumePrint": "Druck fortführen",

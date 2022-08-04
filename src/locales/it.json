@@ -365,6 +365,19 @@
         "ExtruderControlPanel": {
             "Extrude": "Estrudi",
             "ExtrusionFactor": "Fattore di estrusione",
+            "FirmwareRetractionSettings": {
+                "FirmwareRetraction": "Retrazione Firmware",
+                "RetractLength": "Lunghezza Retrazione",
+                "RetractSpeed": "Velocità Retrazione",
+                "UnretractExtraLength": "Lunghezza Extra Ri-estrusione",
+                "UnretractSpeed": "Velocità Ri-estrusione"
+            },
+            "PressureAdvanceSettings": {
+                "Advance": "Advance",
+                "Extruder": "Estrusore",
+                "PressureAdvance": "Pressure Advance",
+                "SmoothTime": "Smooth Time"
+            },
             "Retract": "Retrazione"
         },
         "FarmPrinterPanel": {
@@ -380,13 +393,6 @@
             "Restart": "Riavvia"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Retrazione Firmware",
-                "RetractLength": "Lunghezza Retrazione",
-                "RetractSpeed": "Velocità Retrazione",
-                "UnretractExtraLength": "Lunghezza Extra Ri-estrusione",
-                "UnretractSpeed": "Velocità Ri-estrusione"
-            },
             "Headline": "Impostazioni Macchina",
             "MotionSettings": {
                 "Acceleration": "Accelerazione",
@@ -395,12 +401,6 @@
                 "Motion": "Movimento",
                 "SquareCornerVelocity": "Velocità Angolo Retto",
                 "Velocity": "Velocità"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Advance",
-                "Extruder": "Estrusore",
-                "PressureAdvance": "Pressure Advance",
-                "SmoothTime": "Smooth Time"
             }
         },
         "MacrosPanel": {

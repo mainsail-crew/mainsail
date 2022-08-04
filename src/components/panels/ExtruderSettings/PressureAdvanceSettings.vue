@@ -14,7 +14,7 @@
                             </v-btn>
                             <v-select
                                 v-model="selectedExtruder"
-                                :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Extruder').toString()"
+                                :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Extruder').toString()"
                                 :items="allExtruders"
                                 :value="activeExtruder"
                                 hide-details
@@ -24,7 +24,7 @@
                     </v-col>
                     <v-col :class="{ 'col-12': el.is.small }">
                         <number-input
-                            :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Advance').toString()"
+                            :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Advance').toString()"
                             param="ADVANCE"
                             :target="pressureAdvance"
                             :default-value="defaultPressureAdvance"
@@ -40,7 +40,7 @@
                     </v-col>
                     <v-col :class="{ 'col-12': el.is.small }">
                         <number-input
-                            :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.SmoothTime').toString()"
+                            :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.SmoothTime').toString()"
                             param="SMOOTH_TIME"
                             :target="smoothTime"
                             :default-value="defaultSmoothTime"

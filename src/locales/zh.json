@@ -134,7 +134,6 @@
         "ConfigReference": "配置参考",
         "DontSave": "不保存",
         "Downloading": "正在下载",
-        "Uploading": "正在上传",
         "FailedSave": "无法上传{filename}！",
         "FileReadOnly": "只读",
         "SaveClose": "保存并关闭",
@@ -142,7 +141,8 @@
         "SuccessfullySaved": "{filename}保存成功。",
         "UnsavedChanges": "修改未被保存",
         "UnsavedChangesMessage": "是否将修改保存至{filename}？",
-        "UnsavedChangesSubMessage": "不保存你的修改将会丢失。你可以在编辑设置里关闭此提示。"
+        "UnsavedChangesSubMessage": "不保存你的修改将会丢失。你可以在编辑设置里关闭此提示。",
+        "Uploading": "正在上传"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "是否确定？",
@@ -453,8 +453,20 @@
             "ExtrusionFactor": "挤出倍数",
             "ExtrusionFeedrate": "进给速度",
             "FilamentLength": "耗材长度",
+            "FirmwareRetractionSettings": {
+                "FirmwareRetraction": "固件回抽",
+                "RetractLength": "回抽长度",
+                "RetractSpeed": "回抽速度",
+                "UnretractExtraLength": "回料长度",
+                "UnretractSpeed": "回料速度"
+            },
             "Headline": "挤出机",
             "LoadFilament": "装载耗材",
+            "PressureAdvanceSettings": {
+                "Advance": "压力提前",
+                "Extruder": "挤出机",
+                "SmoothTime": "平滑时间"
+            },
             "Requested": "需要",
             "Retract": "回抽",
             "TooLargeExtrusion": "挤出过大！",
@@ -473,13 +485,6 @@
             "Restart": "重启Klipper"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "固件回抽",
-                "RetractLength": "回抽长度",
-                "RetractSpeed": "回抽速度",
-                "UnretractExtraLength": "回料长度",
-                "UnretractSpeed": "回料速度"
-            },
             "Headline": "机器设置",
             "MotionSettings": {
                 "Acceleration": "加速度",
@@ -487,11 +492,6 @@
                 "Motion": "运动",
                 "SquareCornerVelocity": "直角拐弯速度",
                 "Velocity": "速度"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "压力提前",
-                "Extruder": "挤出机",
-                "SmoothTime": "平滑时间"
             }
         },
         "MacrosPanel": {
@@ -529,6 +529,8 @@
             "CancelPrint": "取消打印",
             "ClearPrintStats": "清除打印统计数据",
             "Difference": "不同",
+            "EmptyGcodes": "没有G-Code文件",
+            "EmptyJobqueue": "当前任务队列中没有文件。",
             "Estimate": "估算时间",
             "ETA": "预估完成",
             "ExcludeObject": {
@@ -541,18 +543,16 @@
             "Filament": "耗材用量",
             "File": "文件",
             "Files": "文件",
-            "EmptyGcodes": "没有G-Code文件",
-            "EmptyJobqueue": "当前任务队列中没有文件。",
-            "Jobqueue": "任务队列({count})",
-            "JobqueueMoreFiles": "没有任务 | 一个任务 | {count}个任务",
-            "PrintTime": "打印耗时",
             "Flow": "流量",
             "Headline": "状态",
+            "Jobqueue": "任务队列({count})",
+            "JobqueueMoreFiles": "没有任务 | 一个任务 | {count}个任务",
             "Layer": "层",
             "Max": "最高",
             "ObjectHeight": "物体高度",
             "PausePrint": "暂停打印",
             "Print": "打印",
+            "PrintTime": "打印耗时",
             "ReprintJob": "再次打印",
             "Requested": "请求",
             "ResumePrint": "恢复打印",

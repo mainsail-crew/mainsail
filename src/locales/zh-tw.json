@@ -317,6 +317,19 @@
         "ExtruderControlPanel": {
             "Extrude": "擠出",
             "ExtrusionFactor": "擠出係數",
+            "FirmwareRetractionSettings": {
+                "FirmwareRetraction": "韌體回抽",
+                "RetractLength": "回抽長度",
+                "RetractSpeed": "回抽速度",
+                "UnretractExtraLength": "退料長度",
+                "UnretractSpeed": "退料速度"
+            },
+            "PressureAdvanceSettings": {
+                "Advance": "推進",
+                "Extruder": "擠出機",
+                "PressureAdvance": "壓力推進控制",
+                "SmoothTime": "平滑時間"
+            },
             "Retract": "回抽"
         },
         "FarmPrinterPanel": {
@@ -332,13 +345,6 @@
             "Restart": "重新啟動"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "韌體回抽",
-                "RetractLength": "回抽長度",
-                "RetractSpeed": "回抽速度",
-                "UnretractExtraLength": "退料長度",
-                "UnretractSpeed": "退料速度"
-            },
             "Headline": "機器設定",
             "MotionSettings": {
                 "Acceleration": "加速度",
@@ -346,12 +352,6 @@
                 "Motion": "運動",
                 "SquareCornerVelocity": "直角拐角速度",
                 "Velocity": "速度"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "推進",
-                "Extruder": "擠出機",
-                "PressureAdvance": "壓力推進控制",
-                "SmoothTime": "平滑時間"
             }
         },
         "MacrosPanel": {

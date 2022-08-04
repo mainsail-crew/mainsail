@@ -473,8 +473,21 @@
             "ExtrusionFactor": "Extrusie factor",
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filamentlengte",
+            "FirmwareRetractionSettings": {
+                "FirmwareRetraction": "Firmware Retracties",
+                "RetractLength": "Retractie lengte",
+                "RetractSpeed": "Retractie snelheid",
+                "UnretractExtraLength": "Extra lengte uitvoer",
+                "UnretractSpeed": "Uitvoer snelheid"
+            },
             "Headline": "Extruder",
             "LoadFilament": "Filament laden",
+            "PressureAdvanceSettings": {
+                "Advance": "Advance",
+                "Extruder": "Extruder",
+                "PressureAdvance": "Pressure Advance",
+                "SmoothTime": "Smooth Time"
+            },
             "Requested": "Aangevraagd",
             "Retract": "Retract",
             "TooLargeExtrusion": "Extrusie te lang!",
@@ -494,13 +507,6 @@
             "Restart": "Herstart"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Retracties",
-                "RetractLength": "Retractie lengte",
-                "RetractSpeed": "Retractie snelheid",
-                "UnretractExtraLength": "Extra lengte uitvoer",
-                "UnretractSpeed": "Uitvoer snelheid"
-            },
             "Headline": "Machine instellingen",
             "MotionSettings": {
                 "Acceleration": "Acceleratie",
@@ -509,12 +515,6 @@
                 "Motion": "Beweging",
                 "SquareCornerVelocity": "Hoeksnelheid (SCV)",
                 "Velocity": "Snelheid"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Advance",
-                "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
-                "SmoothTime": "Smooth Time"
             }
         },
         "MacrosPanel": {
