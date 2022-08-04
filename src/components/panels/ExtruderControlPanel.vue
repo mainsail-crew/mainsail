@@ -89,6 +89,11 @@
                     <v-divider></v-divider>
                     <pressure-advance-settings></pressure-advance-settings>
                 </template>
+                <!-- FIRMWARE RETRACTION SETTINGS -->
+                <template v-if="existsFirmwareRetraction">
+                    <v-divider></v-divider>
+                    <firmware-retraction-settings></firmware-retraction-settings>
+                </template>
                 <v-divider class="pb-1"></v-divider>
                 <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
                 <v-container>
@@ -312,6 +317,7 @@ import ControlMixin from '../mixins/control'
 import NumberInput from '@/components/inputs/NumberInput.vue'
 import Panel from '@/components/ui/Panel.vue'
 import PressureAdvanceSettings from '@/components/panels/MachineSettings/PressureAdvanceSettings.vue'
+import FirmwareRetractionSettings from '@/components/panels/MachineSettings/FirmwareRetractionSettings.vue'
 import Responsive from '@/components/ui/Responsive.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 
@@ -319,6 +325,7 @@ import ToolSlider from '@/components/inputs/ToolSlider.vue'
     components: {
         Panel,
         PressureAdvanceSettings,
+        FirmwareRetractionSettings,
         NumberInput,
         Responsive,
         ToolSlider,
@@ -371,6 +378,10 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get showFilamentMacros(): boolean {
         return this.loadFilamentMacro !== undefined || this.unloadFilamentMacro !== undefined
+    }
+
+    get existsFirmwareRetraction() {
+        return this.$store.state.printer.configfile?.settings?.firmware_retraction ?? false
     }
 
     get extruders(): PrinterStateExtruder[] {
