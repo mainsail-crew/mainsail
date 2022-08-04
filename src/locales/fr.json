@@ -511,7 +511,6 @@
             "MotionSettings": {
                 "Acceleration": "Accélération",
                 "MaxAccelToDecel": "Décélération maximum",
-                "Motion": "Déplacements",
                 "SquareCornerVelocity": "Vitesse des angles droits",
                 "Velocity": "Vitesse"
             }

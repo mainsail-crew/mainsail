@@ -481,7 +481,6 @@
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. till Decel.",
-                "Motion": "Rörelse",
                 "SquareCornerVelocity": "Skarpa hörn Velocitet",
                 "Velocity": "Velocitet"
             }

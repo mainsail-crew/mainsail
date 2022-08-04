@@ -490,7 +490,6 @@
             "MotionSettings": {
                 "Acceleration": "Gyorsulás",
                 "MaxAccelToDecel": "Lassulás Max Gyorsulása",
-                "Motion": "Mozgás",
                 "SquareCornerVelocity": "Sebesség a sarkokban",
                 "Velocity": "Gyorsaság"
             }

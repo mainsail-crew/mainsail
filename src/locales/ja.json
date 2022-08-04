@@ -510,7 +510,6 @@
             "MotionSettings": {
                 "Acceleration": "最大加速度",
                 "MaxAccelToDecel": "最大加速から減速",
-                "Motion": "運動特性",
                 "SquareCornerVelocity": "コーナー速度(SCV)",
                 "Velocity": "最高速度"
             }

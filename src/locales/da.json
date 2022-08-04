@@ -446,7 +446,6 @@
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Maks. accel. til decel.",
-                "Motion": "Bevægelse",
                 "SquareCornerVelocity": "Hastighed for 90° hjørne",
                 "Velocity": "Hastighed (Feedrate)"
             }

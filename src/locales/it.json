@@ -398,7 +398,6 @@
                 "Acceleration": "Accelerazione",
                 "Deceleration": "Decelerazione",
                 "MaxAccelToDecel": "Max Accel. a Decel.",
-                "Motion": "Movimento",
                 "SquareCornerVelocity": "Velocità Angolo Retto",
                 "Velocity": "Velocità"
             }

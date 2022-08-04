@@ -489,7 +489,6 @@
             "MotionSettings": {
                 "Acceleration": "加速度",
                 "MaxAccelToDecel": "加速到减速最大值",
-                "Motion": "运动",
                 "SquareCornerVelocity": "直角拐弯速度",
                 "Velocity": "速度"
             }

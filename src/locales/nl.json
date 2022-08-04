@@ -512,7 +512,6 @@
                 "Acceleration": "Acceleratie",
                 "Deceleration": "Vertraging",
                 "MaxAccelToDecel": "Max Accel. naar Decel.",
-                "Motion": "Beweging",
                 "SquareCornerVelocity": "Hoeksnelheid (SCV)",
                 "Velocity": "Snelheid"
             }

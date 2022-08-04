@@ -510,7 +510,6 @@
             "MotionSettings": {
                 "Acceleration": "Przyspieszenie",
                 "MaxAccelToDecel": "Maks. przysp. do startu zmniejszania prędkości.",
-                "Motion": "Ruch",
                 "SquareCornerVelocity": "Prędkość na rogu kwadratu",
                 "Velocity": "Prędkość"
             }

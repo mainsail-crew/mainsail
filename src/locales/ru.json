@@ -512,7 +512,6 @@
                 "Acceleration": "Ускорение",
                 "Deceleration": "Замедление",
                 "MaxAccelToDecel": "Макс. ускорение - замедление.",
-                "Motion": "Движение",
                 "SquareCornerVelocity": "Угловая скорость",
                 "Velocity": "Скорость"
             }
