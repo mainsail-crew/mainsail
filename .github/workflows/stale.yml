@@ -23,7 +23,9 @@ jobs:
           exempt-all-milestones: true
           close-issue-reason: not_planned
           only-labels: '❔ User Input'
-          labels-to-remove-when-unstale: '❔ User Input,Stale'
+          labels-to-remove-when-unstale: '❔ User Input,💤 Stale'
+          stale-issue-label: '💤 Stale'
+          stale-pr-label: '💤 Stale'
           stale-issue-message: |
             Ahoi!
 
@@ -33,10 +35,10 @@ jobs:
             and close it. Otherwise, if there is no further activity
             on this issue, it will be automatically closedwithin the
             next 7 days.
-            
+
             Fair wind and a following sea!
             ~ Your friendly MainsailGithubBot
-            
+
             *PS: I'm just an automated script, not a real sailor.*
           stale-pr-message: |
             Ahoi!
@@ -47,8 +49,8 @@ jobs:
             to github and close it. Otherwise, if there is no further
             activity on this pull request, it will be automatically
             closed within the next 7 days.
-            
+
             Fair wind and a following sea!
             ~ Your friendly MainsailGithubBot
-            
+
             *PS: I'm just an automated script, not a real sailor.*
