@@ -27,12 +27,12 @@ stale:
     comment: |
       Ahoi!
 
-      It looks like there hasn't been any recent updates on this
-      Mainsail github pull request.  If you created this issue and
-      no longer consider it open, then please login to github and
-      close the issue.  Otherwise, if there is no further activity
-      on this thread then it will be automatically closed in a few
-      days.
+      It looks like there hasn't been any recent updates on
+      this pull request. If you created this pull request and
+      no longer consider it to get merged, then please login
+      to github and close it. Otherwise, if there is no further
+      activity on this pull request, it will be automatically
+      closed within the next 7 days.
 
       Fair wind and a following sea!
       ~ Your friendly MainsailGithubBot
