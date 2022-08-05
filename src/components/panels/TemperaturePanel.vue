@@ -31,7 +31,7 @@
                             </div>
                         </v-list-item>
                     </v-list>
-                    <v-divider></v-divider>
+                    <v-divider class="_fix_transparency"></v-divider>
                     <v-list dense class="py-0">
                         <v-list-item link @click="cooldown()">
                             <div class="d-flex align-center _preset-title">
@@ -419,5 +419,13 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
 
 .temperature-panel-table .target {
     width: 140px;
+}
+
+/*
+workaround for fixing a transparency issue
+which is assumingly a vuetify bug
+*/
+._fix_transparency {
+    background-color: #1e1e1e;
 }
 </style>
