@@ -23,7 +23,7 @@ jobs:
           exempt-all-milestones: true
           close-issue-reason: not_planned
           only-labels: '❔ User Input'
-          labels-to-remove-when-unstale: '❔ User Input'
+          labels-to-remove-when-unstale: '❔ User Input,Stale'
           stale-issue-message: |
             Ahoi!
 
