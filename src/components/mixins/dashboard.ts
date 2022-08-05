@@ -20,8 +20,8 @@ export default class DashboardMixin extends BaseMixin {
         return this.$store.getters['printer/getAvailableHeaters'].length
     }
 
-    get printerAvailableSensorsCount() {
-        return this.$store.getters['printer/getAvailableSensors'].length
+    get printerTemperatureSensorsCount() {
+        return this.$store.getters['printer/getTemperatureSensors'].length
     }
 
     get macroMode() {
@@ -93,7 +93,7 @@ export default class DashboardMixin extends BaseMixin {
         }
 
         // remove temperature panel, if heaters & sensors < 1
-        if (this.printerAvailableHeatersCount + this.printerAvailableSensorsCount < 1) {
+        if (this.printerAvailableHeatersCount + this.printerTemperatureSensorsCount < 1) {
             allPanels = allPanels.filter((name) => name !== 'temperature')
         }
 
