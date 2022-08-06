@@ -110,8 +110,8 @@
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
         "Connecting": "Connecting to {host}",
-        "Initializing": "Initializing",
         "Failed": "Connection failed",
+        "Initializing": "Initializing",
         "TryAgain": "try again"
     },
     "Console": {
@@ -135,7 +135,6 @@
         "ConfigReference": "Config Reference",
         "DontSave": "Don't save",
         "Downloading": "Downloading",
-        "Uploading": "Uploading",
         "FailedSave": "{filename} could not be uploaded!",
         "FileReadOnly": "read-only",
         "SaveClose": "Save & close",
@@ -143,7 +142,8 @@
         "SuccessfullySaved": "{filename} successfully saved.",
         "UnsavedChanges": "Unsaved Changes",
         "UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
-        "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings."
+        "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
+        "Uploading": "Uploading"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Are you sure?",
@@ -256,6 +256,9 @@
         "ErrorKlipperNotReady": "Klipper not ready. Heightmap disabled.",
         "Flat": "Flat",
         "Heightmap": "Heightmap",
+        "InvalidNameEmpty": "Input must not be empty!",
+        "InvalidNameReserved": "Profile 'default' is reserved, please choose another profile name.",
+        "InvalidNameAlreadyExists": "Profile name already exists, please choose another profile name.",
         "Later": "Later",
         "Mesh": "Mesh",
         "Name": "Name",
@@ -268,9 +271,6 @@
         "RemoveSaveDescription": "The bed_mesh profile has been registered as deleted. Click on SAVE_CONFIG to remove it from the printer.cfg and restart Klipper.",
         "Rename": "rename",
         "RenameBedMeshProfile": "Rename Bed Mesh Profile",
-        "InvalidNameEmpty": "Input must not be empty!",
-        "InvalidNameReserved": "Profile 'default' is reserved, please choose another profile name.",
-        "InvalidNameAlreadyExists": "Profile name already exists, please choose another profile name.",
         "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Scale gradient",
         "ScaleZMax": "Scale z-max.",
@@ -533,6 +533,8 @@
             "CancelPrint": "Cancel print",
             "ClearPrintStats": "Clear print stats",
             "Difference": "Difference",
+            "EmptyGcodes": "No G-Code available.",
+            "EmptyJobqueue": "There is currently no file in the job queue.",
             "Estimate": "Estimate",
             "ETA": "ETA",
             "ExcludeObject": {
@@ -545,8 +547,6 @@
             "Filament": "Filament",
             "File": "File",
             "Files": "Files",
-            "EmptyGcodes": "No G-Code available.",
-            "EmptyJobqueue": "There is currently no file in the job queue.",
             "Jobqueue": "Job Queue ({count})",
             "JobqueueMoreFiles": "no more jobs | one more job | {count} more jobs",
             "PrintTime": "Print Time",
