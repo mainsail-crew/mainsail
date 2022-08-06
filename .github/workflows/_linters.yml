@@ -2,6 +2,10 @@ name: '⑇ Lint'
 
 on: workflow_call
 
+permissions:
+  checks: write
+  contents: write
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -18,7 +22,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Run linters
-        uses: wearerequired/lint-action@v1
+        uses: wearerequired/lint-action@v2
         with:
           eslint: true
           prettier: true
