@@ -56,3 +56,7 @@ jobs:
   call-prettier:
     needs: [debs-cache]
     uses: meteyou/mainsail-dev/.github/workflows/_prettier.yml@chore/rewrite-workflows
+
+  call-check-locale:
+    needs: [debs-cache]
+    uses: meteyou/mainsail-dev/.github/workflows/_check_locale.yml@chore/rewrite-workflows
