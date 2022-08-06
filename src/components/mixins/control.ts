@@ -43,6 +43,10 @@ export default class ControlMixin extends Vue {
         return this.$store.getters['printer/existsScrewsTilt']
     }
 
+    get existsFirmwareRetraction(): boolean {
+        return this.$store.getters['printer/existsFirmwareRetraction']
+    }
+
     get colorQuadGantryLevel() {
         const status = this.$store.state.printer.quad_gantry_level?.applied ?? true
 

@@ -380,10 +380,6 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         return this.loadFilamentMacro !== undefined || this.unloadFilamentMacro !== undefined
     }
 
-    get existsFirmwareRetraction() {
-        return this.$store.state.printer.configfile?.settings?.firmware_retraction ?? false
-    }
-
     get extruders(): PrinterStateExtruder[] {
         return this.$store.getters['printer/getExtruders']
     }
