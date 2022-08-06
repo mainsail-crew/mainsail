@@ -16,10 +16,17 @@ jobs:
 
       - name: Cache dependencies
         id: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
         with:
           path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: List the state of node modules
+        if: ${{ steps.cache-npm.outputs.cache-hit == 'false' }}
+        continue-on-error: true
+        run: npm list
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
