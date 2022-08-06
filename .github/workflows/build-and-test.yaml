@@ -16,8 +16,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  call-debs-cache:
+    uses: meteyou/mainsail-dev/.github/workflows/_debs-cache.yml@chore/rewrite-workflows
   call-build:
+    needs: [call-debs-cache]
     uses: meteyou/mainsail-dev/.github/workflows/_build.yml@chore/rewrite-workflows
   call-linters:
-    needs: [call-build]
+    needs: [call-debs-cache]
     uses: meteyou/mainsail-dev/.github/workflows/_linters.yml@chore/rewrite-workflows

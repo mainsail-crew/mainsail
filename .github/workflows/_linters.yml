@@ -6,10 +6,16 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          name: workspace
-          path: /tmp
+          node-version: '16'
+          cache: 'npm'
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: node_modules/
+          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Run linters
         uses: wearerequired/lint-action@v1

@@ -6,41 +6,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch repo
-        uses: actions/checkout@v3
-
-      - name: Install node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
-
-      - name: Cache dependencies
+          cache: 'npm'
+      - uses: actions/cache@v3
         id: cache
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: List the state of node modules
-        if: ${{ steps.cache-npm.outputs.cache-hit == 'false' }}
-        continue-on-error: true
-        run: npm list
-
-      - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+          path: node_modules/
+          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Build
         run: npm run build
-
-      - name: Build
-        run: npm run build
-
-      - run: tar -zcf /tmp/mainsail-env.tar.gz .
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: workspace
-          path: /tmp/mainsail-env.tar.gz
