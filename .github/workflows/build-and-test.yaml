@@ -17,4 +17,4 @@ concurrency:
 
 jobs:
   call-lint-and-build:
-    uses: mainsail-crew/mainsail/.github/workflows/_lint-and-build.yml@develop
+    uses: mainsail-crew/mainsail/.github/workflows/_lint-and-build.yml@chore/rewrite-workflows
