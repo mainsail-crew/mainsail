@@ -1,75 +1,90 @@
 <template>
     <v-container>
-        <v-row>
-            <v-col class="col-12 col-md-6">
-                <number-input
-                    :label="$t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.RetractLength').toString()"
-                    param="RETRACT_LENGTH"
-                    :target="retractLength"
-                    :default-value="defaultRetractLength"
-                    :output-error-msg="true"
-                    :has-spinner="true"
-                    :spinner-factor="10"
-                    :step="0.01"
-                    :min="0"
-                    :max="null"
-                    :dec="2"
-                    unit="mm"
-                    @submit="sendCmd"></number-input>
-            </v-col>
-            <v-col class="col-12 col-md-6">
-                <number-input
-                    :label="$t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.RetractSpeed').toString()"
-                    param="RETRACT_SPEED"
-                    :target="retractSpeed"
-                    :default-value="defaultRetractSpeed"
-                    :output-error-msg="true"
-                    :has-spinner="true"
-                    :spinner-factor="5"
-                    :step="1"
-                    :min="1"
-                    :max="null"
-                    :dec="0"
-                    unit="mm/s"
-                    @submit="sendCmd"></number-input>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col class="col-12 col-md-6">
-                <number-input
-                    :label="
-                        $t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.UnretractExtraLength').toString()
-                    "
-                    param="UNRETRACT_EXTRA_LENGTH"
-                    :target="unretractExtraLength"
-                    :default-value="defaultUnretractExtraLength"
-                    :output-error-msg="true"
-                    :has-spinner="true"
-                    :spinner-factor="10"
-                    :step="0.01"
-                    :min="0"
-                    :max="null"
-                    :dec="2"
-                    unit="mm"
-                    @submit="sendCmd"></number-input>
-            </v-col>
-            <v-col class="col-12 col-md-6">
-                <number-input
-                    :label="$t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.UnretractSpeed').toString()"
-                    param="UNRETRACT_SPEED"
-                    :target="unretractSpeed"
-                    :default-value="defaultUnretractSpeed"
-                    :output-error-msg="true"
-                    :has-spinner="true"
-                    :spinner-factor="5"
-                    :step="1"
-                    :min="1"
-                    :max="null"
-                    :dec="0"
-                    unit="mm/s"
-                    @submit="sendCmd"></number-input>
-            </v-col>
-        </v-row>
+        <responsive
+            :breakpoints="{
+                small: (el) => el.width <= 350,
+            }">
+            <template #default="{ el }">
+                <v-row>
+                    <v-col :class="{ 'col-12': el.is.small }">
+                        <number-input
+                            :label="
+                                $t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.RetractLength').toString()
+                            "
+                            param="RETRACT_LENGTH"
+                            :target="retractLength"
+                            :default-value="defaultRetractLength"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="10"
+                            :step="0.01"
+                            :min="0"
+                            :max="null"
+                            :dec="2"
+                            unit="mm"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                    <v-col :class="{ 'col-12': el.is.small }">
+                        <number-input
+                            :label="
+                                $t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.RetractSpeed').toString()
+                            "
+                            param="RETRACT_SPEED"
+                            :target="retractSpeed"
+                            :default-value="defaultRetractSpeed"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="5"
+                            :step="1"
+                            :min="1"
+                            :max="null"
+                            :dec="0"
+                            unit="mm/s"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col :class="{ 'col-12': el.is.small }">
+                        <number-input
+                            :label="
+                                $t(
+                                    'Panels.ExtruderControlPanel.FirmwareRetractionSettings.UnretractExtraLength'
+                                ).toString()
+                            "
+                            param="UNRETRACT_EXTRA_LENGTH"
+                            :target="unretractExtraLength"
+                            :default-value="defaultUnretractExtraLength"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="10"
+                            :step="0.01"
+                            :min="0"
+                            :max="null"
+                            :dec="2"
+                            unit="mm"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                    <v-col :class="{ 'col-12': el.is.small }">
+                        <number-input
+                            :label="
+                                $t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.UnretractSpeed').toString()
+                            "
+                            param="UNRETRACT_SPEED"
+                            :target="unretractSpeed"
+                            :default-value="defaultUnretractSpeed"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="5"
+                            :step="1"
+                            :min="1"
+                            :max="null"
+                            :dec="0"
+                            unit="mm/s"
+                            @submit="sendCmd"></number-input>
+                    </v-col>
+                </v-row>
+            </template>
+        </responsive>
     </v-container>
 </template>
 
@@ -79,9 +94,10 @@ import { Debounce } from 'vue-debounce-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import NumberInput from '@/components/inputs/NumberInput.vue'
+import Responsive from '@/components/ui/Responsive.vue'
 
 @Component({
-    components: { Panel, NumberInput },
+    components: { Panel, NumberInput, Responsive },
 })
 export default class FirmwareRetractionSettings extends Mixins(BaseMixin) {
     get retractLength(): number {
