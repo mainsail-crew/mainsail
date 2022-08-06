@@ -657,6 +657,7 @@
         "HostnameInvalid": "invalid Hostname/IP",
         "HostnameIp": "Hostname/IP",
         "HostnameRequired": "Hostname is required",
+        "AddPrintersToJson": "Please add the Printers to the config.json.",
         "Port": "Port",
         "PortRequired": "Port is required",
         "RememberToAdd": "Please remember to add '{cors}' in moonraker.conf within 'cors_domains'.",
@@ -837,7 +838,8 @@
             "Hostname": "Hostname",
             "Port": "Port",
             "RemotePrinters": "Printers",
-            "UpdatePrinter": "Update Printer"
+            "UpdatePrinter": "Update Printer",
+            "UseConfigJson": "InstanceDB = JSON detected. Please use the config.json to modify the printers list."
         },
         "TimelapseTab": {
             "Autorender": "Autorender",

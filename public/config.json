@@ -1,8 +1,6 @@
 {
     "hostname": null,
     "port": null,
-    "remoteMode": false,
-    "instances": [
-
-    ]
+    "instancesDB": "moonraker",
+    "instances": []
 }

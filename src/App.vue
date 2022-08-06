@@ -40,7 +40,7 @@
             <the-fullscreen-upload></the-fullscreen-upload>
             <the-upload-snackbar></the-upload-snackbar>
         </template>
-        <the-select-printer-dialog v-else-if="remoteMode"></the-select-printer-dialog>
+        <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'"></the-select-printer-dialog>
         <the-connecting-dialog v-else></the-connecting-dialog>
     </v-app>
 </template>

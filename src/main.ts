@@ -89,7 +89,7 @@ const initLoad = async () => {
 
     const url = store.getters['socket/getWebsocketUrl']
     Vue.use(WebSocketPlugin, { url, store })
-    if (!store?.state?.remoteMode) Vue.$socket.connect()
+    if (store?.state?.instancesDB === 'moonraker') Vue.$socket.connect()
 }
 
 initLoad()
