@@ -663,6 +663,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Drucker hinzufügen",
+        "AddPrintersToJson": "Bitte füge einen Drucker in der config.json hinzu.",
         "CannotConnectTo": "Kann keine Verbindung zu {host} herstellen.",
         "ChangePrinter": "Drucker ändern",
         "Connecting": "Verbinde zu {host}",
@@ -852,7 +853,8 @@
             "Hostname": "Hostname",
             "Port": "Port",
             "RemotePrinters": "Remote Drucker",
-            "UpdatePrinter": "Drucker aktualisieren"
+            "UpdatePrinter": "Drucker aktualisieren",
+            "UseConfigJson": "InstanceDB = JSON erkannt. Bitte bearbeite die config.json um die Druckerliste zu modifizieren."
         },
         "TimelapseTab": {
             "Autorender": "Autorender",
