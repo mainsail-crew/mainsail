@@ -1,10 +1,6 @@
-name: '⑇ Lint'
+name: '⑇ ESlint'
 
 on: workflow_call
-
-permissions:
-  checks: write
-  contents: write
 
 jobs:
   lint:
@@ -21,10 +17,5 @@ jobs:
           path: node_modules/
           key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-      - name: Run linters
-        uses: wearerequired/lint-action@v2
-        with:
-          eslint: true
-          prettier: true
-          eslint_dir: src
-          eslint_extensions: ts,vue
+      - name: Run eslint
+        run: npm run lint
