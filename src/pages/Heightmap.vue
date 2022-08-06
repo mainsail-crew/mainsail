@@ -1,47 +1,3 @@
-<style scoped>
-.rename-profile {
-    text-transform: none;
-}
-
-.currentMeshName {
-    cursor: pointer;
-    color: var(--v-primary-base);
-}
-
-.currentMeshName .v-icon {
-    opacity: 0;
-}
-
-.currentMeshName:hover .v-icon {
-    opacity: 1;
-}
-
-.rowProfile {
-}
-
-.rowProfile .colActions {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-}
-
-.rowProfile .colName,
-.rowProfile .colVariance {
-    line-height: 48px;
-}
-
-.rowProfile .colName span.current {
-    font-weight: bold;
-    color: var(--v-primary-base);
-}
-
-.rowProfile .colActions .v-btn {
-    height: 48px;
-    width: 48px;
-}
-</style>
-
 <template>
     <div>
         <v-row v-if="klipperReadyForGui">
@@ -334,12 +290,16 @@
                         v-model="newName"
                         :label="$t('Heightmap.Name')"
                         required
+                        :rules="renameInputRules"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameProfile"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text @click="renameDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
-                    <v-btn color="primary" text @click="renameProfile">{{ $t('Heightmap.Rename') }}</v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="renameProfile">
+                        {{ $t('Heightmap.Rename') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -511,6 +471,12 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
     private newName = ''
     private oldName = ''
+    private isInvalidName = true
+    private renameInputRules = [
+        (value: string) => !!value || this.$t('Heightmap.InvalidNameEmpty'),
+        (value: string) => value !== 'default' || this.$t('Heightmap.InvalidNameReserved'),
+        (value: string) => !this.existsProfileName(value) || this.$t('Heightmap.InvalidNameAlreadyExists'),
+    ]
 
     private heightmapScale = 0.5
     private probedOpacity = 1
@@ -1078,6 +1044,10 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         }, 200)
     }
 
+    existsProfileName(name: string) {
+        return this.profiles.findIndex((profile: { name: string }) => profile.name === name) >= 0
+    }
+
     renameProfile(): void {
         this.renameDialog = false
         const gcodeNew = 'BED_MESH_PROFILE SAVE="' + this.newName + '"'
@@ -1169,3 +1139,47 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 }
 </script>
+
+<style scoped>
+.rename-profile {
+    text-transform: none;
+}
+
+.currentMeshName {
+    cursor: pointer;
+    color: var(--v-primary-base);
+}
+
+.currentMeshName .v-icon {
+    opacity: 0;
+}
+
+.currentMeshName:hover .v-icon {
+    opacity: 1;
+}
+
+.rowProfile {
+}
+
+.rowProfile .colActions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.rowProfile .colName,
+.rowProfile .colVariance {
+    line-height: 48px;
+}
+
+.rowProfile .colName span.current {
+    font-weight: bold;
+    color: var(--v-primary-base);
+}
+
+.rowProfile .colActions .v-btn {
+    height: 48px;
+    width: 48px;
+}
+</style>
