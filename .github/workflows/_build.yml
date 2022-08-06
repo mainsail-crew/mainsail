@@ -1,4 +1,4 @@
-name: '🏗 Lint & Build'
+name: '🏗 Build'
 
 on: workflow_call
 
@@ -25,13 +25,15 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: Run linters
-        uses: wearerequired/lint-action@v1
-        with:
-          eslint: true
-          prettier: true
-          eslint_dir: src
-          eslint_extensions: ts,vue
+      - name: Build
+        run: npm run build
 
       - name: Build
         run: npm run build
+
+      - run: tar -zcf /tmp/mainsail-env.tar.gz .
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: workspace
+          path: /tmp/mainsail-env.tar.gz
