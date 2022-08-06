@@ -19,4 +19,5 @@ jobs:
   call-build:
     uses: meteyou/mainsail-dev/.github/workflows/_build.yml@chore/rewrite-workflows
   call-linters:
+    needs: [call-build]
     uses: meteyou/mainsail-dev/.github/workflows/_linters.yml@chore/rewrite-workflows
