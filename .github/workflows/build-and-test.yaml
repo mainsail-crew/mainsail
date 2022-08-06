@@ -1,0 +1,20 @@
+name: 'Build'
+
+on:
+  # Triggers the workflow on push or pull request events but only for the develop branch
+  push:
+    branches: [develop, master]
+  pull_request:
+    branches: [develop, master]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Allow to stop obsolete workflows
+concurrency:
+  group: ci-tests-${{ github.ref }}-1
+  cancel-in-progress: true
+
+jobs:
+  call-lint-and-build:
+    uses: mainsail-crew/mainsail/.github/workflows/_lint-and-build.yml@develop
