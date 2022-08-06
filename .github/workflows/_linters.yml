@@ -1,0 +1,20 @@
+name: '🏗 Lint'
+
+on: workflow_call
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: workspace
+          path: /tmp
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v1
+        with:
+          eslint: true
+          prettier: true
+          eslint_dir: src
+          eslint_extensions: ts,vue
