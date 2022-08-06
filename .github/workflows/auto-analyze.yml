@@ -21,7 +21,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v24.1
 
-      - name: Get packaged.json is changed file
+      - name: Get package.json is changed file
         id: changed-file-package-json
         uses: tj-actions/changed-files@v24.1
         with:
