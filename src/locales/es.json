@@ -1,27 +1,27 @@
 {
     "App": {
         "Notifications": {
+            "DependencyDescription": "La versión actual de {name} no es compatible con todas las funciones de Mainsail. Actualice {name} a al menos {neededVersion}.",
+            "DependencyName": "Dependencia: {name}",
+            "DismissAll": "Descartar todo",
             "KlipperWarnings": {
                 "DeprecatedOption": "La opción '{option}' en la sección '{section}' está discontinuada y será removida en la próxima versión.",
-                "DeprecatedValue": "El valor '{value}' en la opción '{option}' en la sección '{section}' está discontinuado y será removido en la próxima versión.",
                 "DeprecatedOptionHeadline": "Opción de Klipper en desuso",
+                "DeprecatedValue": "El valor '{value}' en la opción '{option}' en la sección '{section}' está discontinuado y será removido en la próxima versión.",
                 "DeprecatedValueHeadline": "Valor de Klipper en desuso",
                 "KlipperWarning": "Advertencia de Klipper"
             },
-            "DismissAll": "Descartar todo",
-            "DependencyDescription": "La versión actual de {name} no es compatible con todas las funciones de Mainsail. Actualice {name} a al menos {neededVersion}.",
-            "DependencyName": "Dependencia: {name}",
-            "Never": "nunca",
-            "NextReboot": "próximo reinicio",
-            "NoNotification": "No hay notificación disponible",
-            "Remind": "Recordar:",
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "Se detectó un error al cargar el componente moonraker '{componente}'. Verifique el archivo de registro y solucione el problema.",
                 "MoonrakerWarning": "Advertencia de Moonraker",
                 "UnparsedConfigOption": "Opción de configuración no analizada '{option}: {value}' detectada en la sección [{section}]. Esta puede ser una opción que ya no está disponible o puede ser el resultado de un módulo que no se pudo cargar. En el futuro, esto dará un error de inicio.",
                 "UnparsedConfigSection": "Sección de configuración no analizada [{section}] detectada. Esto puede ser por un componente que no se pudo cargar. En el futuro, esto dará un error de inicio."
-            }
+            },
+            "Never": "nunca",
+            "NextReboot": "próximo reinicio",
+            "NoNotification": "No hay notificación disponible",
+            "Remind": "Recordar:"
         },
         "NumberInput": {
             "GreaterOrEqualError": "¡Debe ser mayor o igual a {min}!",
@@ -121,6 +121,15 @@
         "SendCode": "Enviar código...",
         "SetupConsole": "Configurar consola"
     },
+    "Dialogs": {
+        "StartPrint": {
+            "Cancel": "Cancelar",
+            "DoYouWantToStartFilename": "¿Desea iniciar {filename}?",
+            "Headline": "Iniciar trabajo",
+            "Print": "imprimir",
+            "Timelapse": "Lapso de tiempo"
+        }
+    },
     "Editor": {
         "Cancel": "Cancelar",
         "ConfigReference": "Configuración de referencia",
@@ -153,6 +162,7 @@
         "Delete": "Borrar",
         "DeleteDirectory": "Borrar directorio",
         "DeleteDirectoryQuestion": "¿Realmente quiere borrar la carpeta \"{name}\" con todo su contenido?",
+        "DeleteSelectedQuestion": "¿Realmente desea eliminar {count} archivos seleccionados?",
         "Download": "Descargar",
         "Downloading": "Descargando",
         "EditFile": "Editar archivo",
@@ -168,7 +178,12 @@
         "FreeDisk": "Espacio libre en disco",
         "GCodeFiles": "Archivos G-Code",
         "HiddenFiles": "Archivos ocultos",
+        "LastEndTime": "Ultima hora de finalización",
+        "LastFilamentUsed": "Ultimo filamento usado",
         "LastModified": "Ultima modificación",
+        "LastPrintDuration": "Duración de la ultima impresión",
+        "LastStartTime": "Ultima hora de inicio",
+        "LastTotalDuration": "Ultima duración total",
         "LayerHeight": "Altura de capa",
         "Name": "Nombre",
         "NewDirectory": "Nuevo directorio",
@@ -194,13 +209,11 @@
         "Uploading": "Cargando",
         "UploadNewGcode": "Cargar nuevo G-Code",
         "Used": "Usado",
-        "View3D": "Vista 3D",
-        "DeleteSelectedQuestion": "¿Realmente desea eliminar {count} archivos seleccionados?",
-        "LastEndTime": "Ultima hora de finalización",
-        "LastFilamentUsed": "Ultimo filamento usado",
-        "LastPrintDuration": "Duración de la ultima impresión",
-        "LastStartTime": "Ultima hora de inicio",
-        "LastTotalDuration": "Ultima duración total"
+        "View3D": "Vista 3D"
+    },
+    "FullscreenUpload": {
+        "CannotUploadFile": "No se pudo cargar el erchivo!",
+        "DropFilesToUploadFiles": "Borrar archivos para subir"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Borrar",
@@ -267,12 +280,15 @@
         "Wireframe": "Estructura de hilos"
     },
     "History": {
+        "AddNote": "Agregar Nota",
         "AllJobs": "Todos",
         "AvgPrinttime": "Tiempo promedio de imp.",
         "Cancel": "Cancelar",
+        "CreateNote": "Crear Nota",
         "Delete": "Eliminar",
         "DeleteSelectedQuestion": "¿Está seguro de que desea eliminar los {count} trabajos seleccionados?",
         "Details": "Detalles",
+        "EditNote": "Editar Nota",
         "Empty": "Vacío",
         "EndTime": "Hora de finalización",
         "EstimatedFilament": "Filamento estimado",
@@ -293,12 +309,14 @@
         "LastModified": "Última modificación",
         "LayerHeight": "Altura de capa",
         "LongestPrinttime": "Impresión más larga",
+        "Note": "Nota",
         "ObjectHeight": "Altura del objeto",
         "PrintDuration": "Duración de la impresión",
         "PrintHistory": "Historial de impresiones",
         "PrintTime": "Tiempo de impresión",
         "PrinttimeAvg": "Tiempo promedio de imp.",
         "Reprint": "Reimprimir",
+        "Save": "guardar",
         "Search": "Buscar",
         "SelectedFilamentUsed": "Elija el filamento usado",
         "SelectedJobs": "Tareas elegidas",
@@ -308,19 +326,6 @@
         "StartTime": "Hora de inicio",
         "Statistics": "Estadísticas",
         "Status": "Estado",
-        "TitleExportHistory": "Exportar historial",
-        "TitleRefreshHistory": "Actualizar historial",
-        "TitleSettings": "Configuración",
-        "TotalDuration": "Duración total",
-        "TotalFilamentUsed": "Filamento utilizado en total",
-        "TotalJobs": "Trabajos totales",
-        "TotalPrinttime": "Tiempo total de impresión",
-        "TotalTime": "Tiempo total",
-        "AddNote": "Agregar Nota",
-        "CreateNote": "Crear Nota",
-        "EditNote": "Editar Nota",
-        "Note": "Nota",
-        "Save": "guardar",
         "StatusValues": {
             "cancelled": "Cancelado",
             "completed": "Completado",
@@ -329,7 +334,15 @@
             "klippy_disconnect": "Klippy desconectado",
             "klippy_shutdown": "Klippy apagado",
             "server_exit": "salida del servidor"
-        }
+        },
+        "TitleExportHistory": "Exportar historial",
+        "TitleRefreshHistory": "Actualizar historial",
+        "TitleSettings": "Configuración",
+        "TotalDuration": "Duración total",
+        "TotalFilamentUsed": "Filamento utilizado en total",
+        "TotalJobs": "Trabajos totales",
+        "TotalPrinttime": "Tiempo total de impresión",
+        "TotalTime": "Tiempo total"
     },
     "JobQueue": {
         "AllJobs": "Todas las tareas",
@@ -337,8 +350,8 @@
         "JobQueue": "Cola de tareas",
         "Jobs": "Tareas",
         "Pause": "Pausar",
-        "Start": "Iniciar",
-        "RemoveFromQueue": "Remover de la cola"
+        "RemoveFromQueue": "Remover de la cola",
+        "Start": "Iniciar"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -352,6 +365,7 @@
             "Delete": "Eliminar",
             "DeleteDirectory": "Eliminar carpeta",
             "DeleteDirectoryQuestion": "¿Realmente quiere eliminar \"{name}\" con todo su contenido?",
+            "DeleteSelectedQuestion": "¿Eliminar {count} elementos seleccionados?",
             "Download": "Descargar",
             "EditFile": "Editar archivo",
             "Empty": "Vacío",
@@ -367,14 +381,13 @@
             "Rename": "Renombrar",
             "RenameDirectory": "Renombrar directorio",
             "RenameFile": "Renombrar archivo",
+            "Root": "Raiz",
             "SetupCurrentList": "Configurar lista actual",
             "ShowFile": "Mostrar archivo",
             "Total": "Total",
             "UploadFile": "Cargar archivo",
             "Uploading": "Cargando",
-            "Used": "Usado",
-            "Root": "Raiz",
-            "DeleteSelectedQuestion": "¿Eliminar {count} elementos seleccionados?"
+            "Used": "Usado"
         },
         "EndstopPanel": {
             "Endstop": "Fin de carrera",
@@ -388,13 +401,13 @@
         },
         "SystemPanel": {
             "Constants": "Constantes",
+            "Cpu": "Cpu",
             "HostDetails": "Detalles del host",
             "LastStats": "Últimas estadísticas",
             "Load": "Carga",
             "Memory": "Mem.",
-            "SystemLoad": "Cargas del sistema",
-            "Cpu": "Cpu",
             "NoMoreInfos": "No hay mas Info",
+            "SystemLoad": "Cargas del sistema",
             "Values": {
                 "Awake": "Despierto: {awake}",
                 "Bandwidth": "Ancho de banda: {bandwidth}/s",
@@ -436,18 +449,34 @@
         }
     },
     "Panels": {
+        "ControlPanel": {
+            "ALL": "Todos",
+            "AlternateControls": "Alternar controles",
+            "Headline": "Controles",
+            "InvertX": "Invertir X",
+            "InvertY": "Invertir Y",
+            "InvertZ": "Invertir Z",
+            "PleaseConfigureSteps": "Por favor configure los pasos",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Ajustes > Interfaz > Control",
+            "SetupControls": "Controles de configuración",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Tilt"
+        },
         "ExtruderControlPanel": {
-            "Extrude": "Extruir",
-            "ExtrusionFactor": "Factor de extrusión",
-            "Retract": "Retraer",
             "Allowed": "Permitida",
             "EstimatedExtrusion": "Extrusion estimada",
+            "Extrude": "Extruir",
             "ExtruderTempTooLow": "Temp del extrusor. <",
+            "ExtrusionFactor": "Factor de extrusión",
+            "ExtrusionFeedrate": "Velocidad de avance de extrusión",
+            "FilamentLength": "Largo del filamento",
+            "Headline": "Extrusor",
             "LoadFilament": "Cargar filamento",
             "Requested": "Solicitada",
-            "ExtrusionFeedrate": "Velocidad de avance de extrusión",
-            "Headline": "Extrusor",
-            "FilamentLength": "Largo del filamento",
+            "Retract": "Retraer",
             "TooLargeExtrusion": "¡Extrusión muy grande!",
             "UnloadFilament": "Descargar Filamento"
         },
@@ -521,6 +550,8 @@
             "CancelPrint": "Cancelar impresión",
             "ClearPrintStats": "Limpiar estadísticas de impresión",
             "Difference": "Diferencia",
+            "EmptyGcodes": "No hay código G disponible.",
+            "EmptyJobqueue": "No hay ningún archivo en la cola de trabajos.",
             "Estimate": "Estimación",
             "ETA": "ETA",
             "ExcludeObject": {
@@ -532,27 +563,25 @@
             },
             "Filament": "Filamento",
             "File": "Archivo",
+            "Files": "Archivos",
             "Flow": "Flujo",
             "Headline": "Estado",
+            "Jobqueue": "Cola de trabajo ({count})",
+            "JobqueueMoreFiles": "no mas trabajos | un trabajo mas | {count} trabajos mas",
             "Layer": "Capa",
             "Max": "max",
             "ObjectHeight": "Altura del objeto",
             "PausePrint": "Pausar impresión",
             "Print": "Imprimir",
+            "PrintTime": "Tiempo de impresion",
             "ReprintJob": "Reimprimir trabajo",
             "Requested": "Solicitada",
             "ResumePrint": "Reanudar impresión",
             "Slicer": "Laminador",
             "Speed": "Velocidad",
+            "Status": "Estado",
             "Total": "Total",
-            "Unknown": "Desconocido",
-            "EmptyGcodes": "No hay código G disponible.",
-            "Files": "Archivos",
-            "EmptyJobqueue": "No hay ningún archivo en la cola de trabajos.",
-            "Jobqueue": "Cola de trabajo ({count})",
-            "JobqueueMoreFiles": "no mas trabajos | un trabajo mas | {count} trabajos mas",
-            "PrintTime": "Tiempo de impresion",
-            "Status": "Estado"
+            "Unknown": "Desconocido"
         },
         "TemperaturePanel": {
             "AutoscaleChart": "Autoescalar gráfico",
@@ -584,9 +613,13 @@
         "ToolheadControlPanel": {
             "Absolute": "absoluta",
             "ALL": "TODO",
+            "Headline": "Toolhead",
+            "Invalid": "Invalido",
             "InvertX": "Invertir X",
             "InvertY": "Invertir Y",
             "InvertZ": "Invertir Z",
+            "MotorsOff": "Motores Apagados",
+            "OutOfRange": "Fuera de rango!",
             "PleaseConfigureSteps": "Por favor configure los pasos",
             "Position": "Posición",
             "QGL": "QGL",
@@ -594,24 +627,21 @@
             "SettingsInterfaceControl": "Configuración > Interfaz > Control",
             "SetupControls": "Configurar controles",
             "SpeedFactor": "Factor de velocidad",
-            "ZTilt": "Z Tilt",
-            "Invalid": "Invalido",
-            "MotorsOff": "Motores Apagados",
-            "OutOfRange": "Fuera de rango!",
             "XOffset": "X-Offset",
             "YOffset": "Y-Offset",
             "ZOffset": "Z-Offset",
-            "Headline": "Toolhead"
+            "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
             "All": "Todos",
             "FPS": "FPS",
             "Headline": "Cámara web",
+            "NoWebcam": "No hay cámara web disponible. Agregue una cámara web en \"Configuración\" -> \"Cámaras web\".",
             "UnknownWebcamService": "Servicio de cámara web desconocido",
-            "UrlNotAvailable": "URL no disponible",
-            "NoWebcam": "No hay cámara web disponible. Agregue una cámara web en \"Configuración\" -> \"Cámaras web\"."
+            "UrlNotAvailable": "URL no disponible"
         },
         "ZoffsetPanel": {
+            "Clear": "Limpiar",
             "CurrentOffset": "Offset actual",
             "Headline": "Z-Offset",
             "Later": "Más tarde",
@@ -622,24 +652,7 @@
             "SaveInfoDescriptionPrint": "El nuevo Z-Offset fue calculado y registrado. Después de imprimir, haga click en \"SAVE CONFIG\" en la barra superior para guardarlo en printer.cfg y reiniciar Klipper.",
             "SaveInfoHeadline": "Información",
             "ToEndstop": "al fin de carrera",
-            "ToProbe": "a la sonda",
-            "Clear": "Limpiar"
-        },
-        "ControlPanel": {
-            "ALL": "Todos",
-            "AlternateControls": "Alternar controles",
-            "Headline": "Controles",
-            "InvertX": "Invertir X",
-            "InvertY": "Invertir Y",
-            "InvertZ": "Invertir Z",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "PleaseConfigureSteps": "Por favor configure los pasos",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Ajustes > Interfaz > Control",
-            "SetupControls": "Controles de configuración",
-            "ZTilt": "Z Tilt"
+            "ToProbe": "a la sonda"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -670,15 +683,15 @@
         "EditPrinter": "Editar impresora",
         "Hello": "¡Hola y bienvenido al modo remoto de Mainsail!",
         "HostnameInvalid": "Nombre de host o IP inválida",
+        "HostnameIp": "Nombre del host/IP",
         "HostnameRequired": "El nombre del host es obligatorio",
+        "Port": "Puerto",
         "PortRequired": "El puerto es obligatorio",
         "RememberToAdd": "Por favor recuerde agregar {cors} en moonraker.conf dentro de 'cors_domains'.",
         "SelectPrinter": "Elegir impresora",
         "TryAgain": "Intentar nuevamente",
         "UpdatePrinter": "Actualizar impresora",
-        "YouCanFindMore": "Puede encontrar más detalles en",
-        "Port": "Puerto",
-        "HostnameIp": "Nombre del host/IP"
+        "YouCanFindMore": "Puede encontrar más detalles en"
     },
     "Settings": {
         "Cancel": "Cancelar",
@@ -694,41 +707,41 @@
             "EntryStyle": "Estilo",
             "EntryStyleCompact": "Compacto",
             "EntryStyleDefault": "Predeterminado",
+            "Filters": "Filtros",
             "Height": "Altura",
             "HideTemperatures": "Ocultar temperaturas",
             "HideTimelapse": "Ocultar Timelapse",
             "Name": "Nombre",
             "Regex": "Regex",
             "StoreButton": "Guardar filtro",
-            "UpdateButton": "Actualizar filtro",
-            "Filters": "Filtros"
+            "UpdateButton": "Actualizar filtro"
         },
         "ControlTab": {
             "Bars": "Barras",
             "Circle": "Círculo",
             "Control": "Control",
             "Cross": "Cruz",
+            "EnableXYHoming": "Habilitar homing X Y combinado ",
+            "EstimatedExtrusionInfo": "Mostrar info de extrusion estimada",
+            "EstimatedExtrusionInfoDescription": "Mostrar / Ocultar informacion de extrusion estimada basado en la candidad de extrusion y el avance",
             "InvertXMovement": "Invertir movimiento X",
             "InvertYMovement": "Invertir movimiento Y",
             "InvertZMovement": "Invertir movimiento Z",
+            "IsDefault": " (default)",
             "MaximumValues": "Valores máximos: {maximum}",
             "MaximumValuesVisibility": "Máximo valor de {maximum} se recomienda para mejor visibilidad",
             "MinimumValues": "Valores mínimos: {minimum}",
+            "MotorsOff": "Motores apagados{isDefault}",
             "MoveDistancesEInMm": "Distancia recorrido E en mm",
             "MoveDistancesInMm": "Distancia recorrido en mm",
             "MoveDistancesXYInMm": "Distancia recorrido XY en mm",
             "MoveDistancesZInMm": "Distancia recorrido Z en mm",
+            "QuadGantryLevel": "Quad Gantry Level{isDefault}",
             "SpeedEInMms": "Velocidad E en mm/s",
             "SpeedXY": "Velocidad XY",
             "SpeedZ": "Velocidad Z",
             "Style": "Estilo",
             "ValueGreaterThan": "El valor debe ser mayor a {value}",
-            "EnableXYHoming": "Habilitar homing X Y combinado ",
-            "EstimatedExtrusionInfoDescription": "Mostrar / Ocultar informacion de extrusion estimada basado en la candidad de extrusion y el avance",
-            "EstimatedExtrusionInfo": "Mostrar info de extrusion estimada",
-            "IsDefault": " (default)",
-            "MotorsOff": "Motores apagados{isDefault}",
-            "QuadGantryLevel": "Quad Gantry Level{isDefault}",
             "ZOffsetIncrements": "Incrementos de Z-Offset  (en mm)",
             "ZTiltAdjust": "Ajuste de Z-Tilt{isDefault}"
         },
@@ -745,12 +758,12 @@
             "ConfirmUnsavedChanges": "Preguntar si guardar o descartar cambios",
             "ConfirmUnsavedChangesDescription": "Si está activa, el editor requerirá una confirmación para guardar o descartar los cambio realizados. Si está desactivada, los cambios serán descartados.",
             "Editor": "Editor",
-            "UseEscToClose": "Use ESC para cerrar",
-            "UseEscToCloseDescription": "Permite que la tecla ESC cierre el editor",
             "KlipperRestartMethod": "Metodo de reinicio de klipper",
             "KlipperRestartMethodDescription": "Elija metodo de reinicio que sera usado cuando editamos configuracion de klipper y presionamos \"Guardar y Reiniciar\"",
+            "MoonrakerRestartInstance": "Instancia de Moonraker a reinicar",
             "MoonrakerRestartInstanceDescription": "Elija que instacia de moonrker se reiniciara cuando editando configuracionde monnraker presionemos \"Guardar y reiniciar\" ",
-            "MoonrakerRestartInstance": "Instancia de Moonraker a reinicar"
+            "UseEscToClose": "Use ESC para cerrar",
+            "UseEscToCloseDescription": "Permite que la tecla ESC cierre el editor"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Color de fondo",
@@ -775,6 +788,11 @@
             "DbTimelapseSettings": "Configuración de Timelapse",
             "DbView": "Configuraciones de vista",
             "DbWebcams": "Cámaras web",
+            "EstimateValues": {
+                "Filament": "Filamento",
+                "File": "Archivo",
+                "Slicer": "Slicer"
+            },
             "FactoryDialog": "Elija las secciones que quiere reiniciar:",
             "FactoryReset": "Restablecimiento de fábrica",
             "General": "General",
@@ -783,12 +801,7 @@
             "PrinterName": "Nombre de la impresora",
             "Reset": "Reiniciar",
             "Restore": "Restaurar",
-            "RestoreDialog": "Elija las secciones que quiere restaurar:",
-            "EstimateValues": {
-                "Filament": "Filamento",
-                "File": "Archivo",
-                "Slicer": "Slicer"
-            }
+            "RestoreDialog": "Elija las secciones que quiere restaurar:"
         },
         "InterfaceSettings": "Configuración de la interfaz",
         "MacrosTab": {
@@ -834,16 +847,16 @@
             "CustomGCode": "G-Code personalizado",
             "EditCooldown": "Editar enfriamiento",
             "EditHeadline": "Editar config. preestablecida",
+            "ErrorInvalidValue": "Valor invalido",
+            "ErrorNameNotUnique": "Nombre ya existente",
+            "ErrorNameRequired": "nombre requerido",
             "Name": "Nombre",
             "PreheatPresets": "Precalentamiento",
             "PresetInfo": "Debe configurar como mínimo una temperatura objetivo o un G-code personalizado.",
+            "PresetNamePlaceholder": "Nombre preestablecido (requerido)",
             "StoreButton": "Guardar config. preestablecida",
             "UpdateButton": "Actualizar config. preestablecida",
-            "UpdateCooldown": "Actualizar enfriamiento",
-            "ErrorInvalidValue": "Valor invalido",
-            "ErrorNameNotUnique": "Nombre ya existente",
-            "PresetNamePlaceholder": "Nombre preestablecido (requerido)",
-            "ErrorNameRequired": "nombre requerido"
+            "UpdateCooldown": "Actualizar enfriamiento"
         },
         "RemotePrintersTab": {
             "AddPrinter": "Agregar impresora",
@@ -1027,18 +1040,5 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Español",
-    "FullscreenUpload": {
-        "CannotUploadFile": "No se pudo cargar el erchivo!",
-        "DropFilesToUploadFiles": "Borrar archivos para subir"
-    },
-    "Dialogs": {
-        "StartPrint": {
-            "Cancel": "Cancelar",
-            "DoYouWantToStartFilename": "¿Desea iniciar {filename}?",
-            "Headline": "Iniciar trabajo",
-            "Print": "imprimir",
-            "Timelapse": "Lapso de tiempo"
-        }
-    }
+    "title": "Español"
 }

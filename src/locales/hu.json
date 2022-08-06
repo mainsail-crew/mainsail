@@ -110,8 +110,8 @@
         "CannotConnectTo": "Nem lehet csatlakozni a Moonrakerhez ({host}).",
         "CheckMoonrakerLog": "Ha ez az üzenet többször is megjelenik, nézd meg a naplófájlt, itt:",
         "Connecting": "Csatlakozás ehhez: {host}",
-        "Initializing": "Inicializálás",
         "Failed": "Kapcsolódás sikeretelen ",
+        "Initializing": "Inicializálás",
         "TryAgain": "Próbáld újra"
     },
     "Console": {
@@ -135,7 +135,6 @@
         "ConfigReference": "Konfigurációs refencia",
         "DontSave": "Ne mentsd",
         "Downloading": "Letöltés",
-        "Uploading": "Feltöltés",
         "FailedSave": "Nem tölthető fel: {filename}!",
         "FileReadOnly": "csak olvasható",
         "SaveClose": "Ment és bezár",
@@ -143,7 +142,8 @@
         "SuccessfullySaved": "Sikeresen mentve: {filename}",
         "UnsavedChanges": "Mentetlen Változások",
         "UnsavedChangesMessage": "Szeretnéd menteni a következőn végzett változtatásokat?: {filename}",
-        "UnsavedChangesSubMessage": "A változtatásaid elvesznek ha nem mented őket. Ezt az üzenetet az Editor beállításokban kikapcsolhatod."
+        "UnsavedChangesSubMessage": "A változtatásaid elvesznek ha nem mented őket. Ezt az üzenetet az Editor beállításokban kikapcsolhatod.",
+        "Uploading": "Feltöltés"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Biztos?",
@@ -530,6 +530,8 @@
             "CancelPrint": "Nyomtatás megszakítása",
             "ClearPrintStats": "Nyomt. statisztikák törlése",
             "Difference": "Különbség",
+            "EmptyGcodes": "Nincs elérhető G-Code.",
+            "EmptyJobqueue": "Jelenleg nincs munka a várólistán.",
             "Estimate": "Becslés",
             "ETA": "Becs.Idő",
             "ExcludeObject": {
@@ -542,18 +544,16 @@
             "Filament": "Filament",
             "File": "Fájl",
             "Files": "Fájlok",
-            "EmptyGcodes": "Nincs elérhető G-Code.",
-            "EmptyJobqueue": "Jelenleg nincs munka a várólistán.",
-            "Jobqueue": "Várólista ({count})",
-            "JobqueueMoreFiles": "Nincs több munka | Még egy munka | {count} munka hátra",
-            "PrintTime": "Nyomtatási Idő",
             "Flow": "Anyagáramlás",
             "Headline": "Állapot",
+            "Jobqueue": "Várólista ({count})",
+            "JobqueueMoreFiles": "Nincs több munka | Még egy munka | {count} munka hátra",
             "Layer": "Réteg",
             "Max": "max",
             "ObjectHeight": "Tárgy magassága",
             "PausePrint": "Nyomtatás szüneteltetése",
             "Print": "Nyomtatás",
+            "PrintTime": "Nyomtatási Idő",
             "ReprintJob": "Munka újranyomtatása",
             "Requested": "Kért",
             "ResumePrint": "Nyomtatás folytatása",
