@@ -1,4 +1,5 @@
 {
+    "defaultLocale": "en",
     "hostname": null,
     "port": null,
     "remoteMode": false,
