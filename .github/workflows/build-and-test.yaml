@@ -48,6 +48,11 @@ jobs:
   call-build:
     needs: [debs-cache]
     uses: meteyou/mainsail-dev/.github/workflows/_build.yml@chore/rewrite-workflows
-  call-linters:
+
+  call-eslint:
     needs: [debs-cache]
-    uses: meteyou/mainsail-dev/.github/workflows/_linters.yml@chore/rewrite-workflows
+    uses: meteyou/mainsail-dev/.github/workflows/_eslint.yml@chore/rewrite-workflows
+
+  call-prettier:
+    needs: [debs-cache]
+    uses: meteyou/mainsail-dev/.github/workflows/_prettier.yml@chore/rewrite-workflows
