@@ -19,3 +19,11 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Copy output
+        run: cp ${{ github.workspace }}/dist/mainsail.zip mainsail-latest.zip
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: mainsail-latest.zip
+          path: mainsail-latest.zip

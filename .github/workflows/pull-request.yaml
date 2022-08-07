@@ -1,9 +1,6 @@
-name: 'Build NEW'
+name: 'PULL-REQUEST'
 
 on:
-  # Triggers the workflow on push or pull request events but only for the develop branch
-  push:
-    branches: [ develop, master ]
   pull_request:
     branches: [ develop, master ]
 
@@ -37,7 +34,7 @@ jobs:
         key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
     - name: List the state of node modules
-      if: ${{ steps.cache.outputs.cache-hit == 'false' }}
+      if: steps.cache.outputs.cache-hit != 'true'
       continue-on-error: true
       run: npm list
 
@@ -60,3 +57,7 @@ jobs:
   call-check-locale:
     needs: [debs-cache]
     uses: meteyou/mainsail-dev/.github/workflows/_check_locale.yml@chore/rewrite-workflows
+
+  call-size-report:
+    needs: [debs-cache]
+    uses: meteyou/mainsail-dev/.github/workflows/_size_report.yml@chore/rewrite-workflows
