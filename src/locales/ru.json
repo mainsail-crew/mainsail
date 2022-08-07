@@ -326,6 +326,15 @@
         "StartTime": "Время начала",
         "Statistics": "Статистика",
         "Status": "Статус",
+        "TitleRefreshHistory": "Обновить историю",
+        "TitleSettings": "Настройки",
+        "TotalDuration": "Общее время",
+        "TotalFilamentUsed": "Общая используемая нить",
+        "TotalJobs": "Всего отпечатков",
+        "TotalPrinttime": "Общее время печати",
+        "TotalTime": "Общее время",
+        "SelectedJobs": "Избранные вакансии",
+        "SelectedPrinttime": "Выбранное время печати",
         "StatusValues": {
             "cancelled": "Отменено",
             "completed": "Завершено",
@@ -473,8 +482,21 @@
             "ExtrusionFactor": "Коэффициент экструзии",
             "ExtrusionFeedrate": "Скорость подачи экструзии",
             "FilamentLength": "Длина нити",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Длина втягивания",
+                "RetractSpeed": "Скорость втягивания",
+                "UnretractExtraLength": "Дополнительная длина удлинителя",
+                "UnretractSpeed": "Скорость выдвижения"
+            },
             "Headline": "Экструдер",
+            "Retract": "Въехать",
             "LoadFilament": "Нагрузочная нить",
+            "PressureAdvanceSettings": {
+                "Advance": "Аванс",
+                "Extruder": "Экструдер",
+                "PressureAdvance": "Опережение давления",
+                "SmoothTime": "Плавное время"
+            },
             "Requested": "Запрошено",
             "Retract": "Въехать",
             "TooLargeExtrusion": "Экструзия слишком велика!",
@@ -494,27 +516,13 @@
             "Restart": "Перезапустить"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Отступление от прошивки",
-                "RetractLength": "Длина втягивания",
-                "RetractSpeed": "Скорость втягивания",
-                "UnretractExtraLength": "Дополнительная длина удлинителя",
-                "UnretractSpeed": "Скорость выдвижения"
-            },
             "Headline": "Настройки машины",
             "MotionSettings": {
                 "Acceleration": "Ускорение",
                 "Deceleration": "Замедление",
                 "MaxAccelToDecel": "Макс. ускорение - замедление.",
-                "Motion": "Движение",
                 "SquareCornerVelocity": "Угловая скорость",
                 "Velocity": "Скорость"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Аванс",
-                "Extruder": "Экструдер",
-                "PressureAdvance": "Опережение давления",
-                "SmoothTime": "Плавное время"
             }
         },
         "MacrosPanel": {

@@ -456,8 +456,19 @@
             "ExtrusionFactor": "압출 속도 비율",
             "ExtrusionFeedrate": "압출 속도",
             "FilamentLength": "필라멘트 길이",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "필라 퇴출 길이",
+                "RetractSpeed": "필라 퇴출 속도",
+                "UnretractExtraLength": "필라 압출 추가 길이",
+                "UnretractSpeed": "필라 압출 속도"
+            },
             "Headline": "압출 제어",
             "LoadFilament": "필라멘트 압출",
+            "PressureAdvanceSettings": {
+                "Advance": "모서리 압출 제어 [Pressure Advance]",
+                "Extruder": "필라멘트 압출 제어",
+                "SmoothTime": "반응 시간 [Smooth time]"
+            },
             "Requested": "요청됨",
             "Retract": "필라 퇴출",
             "TooLargeExtrusion": "압출 길이를 초과합니다!",
@@ -476,25 +487,12 @@
             "Restart": "재시작"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "필라 퇴출 (펌웨어)",
-                "RetractLength": "필라 퇴출 길이",
-                "RetractSpeed": "필라 퇴출 속도",
-                "UnretractExtraLength": "필라 압출 추가 길이",
-                "UnretractSpeed": "필라 압출 속도"
-            },
             "Headline": "프린터 속도 설정",
             "MotionSettings": {
                 "Acceleration": "가속도",
                 "MaxAccelToDecel": "감속을 위한 최대 가속",
-                "Motion": "툴 헤드 이송 속도",
                 "SquareCornerVelocity": "모서리 통과 속도 [SCV]",
                 "Velocity": "출력 속도"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "모서리 압출 제어 [Pressure Advance]",
-                "Extruder": "필라멘트 압출 제어",
-                "SmoothTime": "반응 시간 [Smooth time]"
             }
         },
         "MacrosPanel": {

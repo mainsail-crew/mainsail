@@ -3,6 +3,9 @@
         <v-card v-if="!form.bool" flat>
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.RemotePrintersTab.RemotePrinters') }}</h3>
+                <v-alert v-if="!canAddPrinters" :icon="mdiAlertOutline" type="warning" text>
+                    {{ $t('Settings.RemotePrintersTab.UseConfigJson') }}
+                </v-alert>
                 <div v-for="(printer, index) in printers" :key="printer.id">
                     <v-divider v-if="index" class="my-2"></v-divider>
                     <settings-row
@@ -82,7 +85,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
-import { mdiCancel, mdiCheckboxMarkedCircle, mdiDelete, mdiPencil } from '@mdi/js'
+import { mdiCancel, mdiCheckboxMarkedCircle, mdiDelete, mdiPencil, mdiAlertOutline } from '@mdi/js'
 
 interface printerForm {
     bool: boolean
@@ -100,6 +103,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     mdiCancel = mdiCancel
     mdiPencil = mdiPencil
     mdiDelete = mdiDelete
+    mdiAlertOutline = mdiAlertOutline
 
     private form: printerForm = {
         bool: false,
@@ -114,7 +118,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     }
 
     get canAddPrinters() {
-        return this.$store.state.configInstances.length === 0
+        return this.$store.state.instancesDB !== 'json'
     }
 
     get protocol() {

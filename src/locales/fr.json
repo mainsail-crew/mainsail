@@ -327,6 +327,15 @@
         "StartTime": "Heure de début d'impression",
         "Statistics": "Statistiques",
         "Status": "Status",
+        "TitleRefreshHistory": "Rafraîchir l'historique",
+        "TitleSettings": "Réglages",
+        "TotalDuration": "Durée totale",
+        "TotalFilamentUsed": "Total filament utilisé",
+        "TotalJobs": "Nombre travaux",
+        "TotalPrinttime": "Total temps d'impression",
+        "TotalTime": "Durée totale",
+        "SelectedJobs": "Travaux sélectionnés",
+        "SelectedPrinttime": "Temps d'impression sélectionnés",
         "StatusValues": {
             "cancelled": "Annulé",
             "completed": "Terminé",
@@ -474,8 +483,21 @@
             "ExtrusionFactor": "Facteur d'extrusion",
             "ExtrusionFeedrate": "Vitesse d'extrusion",
             "FilamentLength": "Longueur de filament",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Distance de rétractation",
+                "RetractSpeed": "Vitesse de rétractation",
+                "UnretractExtraLength": "Distance d'extrusion supplémentaire",
+                "UnretractSpeed": "Vitesse d'extrusion"
+            },
             "Headline": "Contrôles d'Extrudeur",
             "LoadFilament": "Chargement du filament",
+            "PressureAdvanceSettings": {
+                "Advance": "avance",
+                "Extruder": "extrudeur",
+                "PressureAdvance": "pression en avance",
+                "SmoothTime": "Temps de lissage"
+            },
+            "Retract": "Rétractation",
             "Requested": "Demandé",
             "Retract": "Rétractation",
             "TooLargeExtrusion": "Extrusion trop grande !",
@@ -494,26 +516,12 @@
             "Restart": "Redémarrage"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Rétractation firmware",
-                "RetractLength": "Distance de rétractation",
-                "RetractSpeed": "Vitesse de rétractation",
-                "UnretractExtraLength": "Distance d'extrusion supplémentaire",
-                "UnretractSpeed": "Vitesse d'extrusion"
-            },
             "Headline": "Réglages machine",
             "MotionSettings": {
                 "Acceleration": "Accélération",
                 "MaxAccelToDecel": "Décélération maximum",
-                "Motion": "Déplacements",
                 "SquareCornerVelocity": "Vitesse des angles droits",
                 "Velocity": "Vitesse"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "avance",
-                "Extruder": "extrudeur",
-                "PressureAdvance": "pression en avance",
-                "SmoothTime": "Temps de lissage"
             }
         },
         "MacrosPanel": {

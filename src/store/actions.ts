@@ -8,8 +8,6 @@ export const actions: ActionTree<RootState, RootState> = {
     },
 
     changePrinter({ dispatch, getters, state }, payload) {
-        const remoteMode = state.remoteMode
-
         dispatch('files/reset')
         dispatch('gui/reset')
         dispatch('printer/reset')
@@ -32,11 +30,21 @@ export const actions: ActionTree<RootState, RootState> = {
      * This function will parse the config.json content and config mainsail
      */
     importConfigJson({ commit, dispatch }, payload: ConfigJson) {
-        const remoteMode = payload.remoteMode ?? false
-        if (remoteMode) {
-            commit('setRemoteMode', true)
+        type RootStateInstancesDbType = 'moonraker' | 'browser' | 'json'
+        let instancesDB: RootStateInstancesDbType = payload.instancesDB ?? 'moonraker'
+        if (document.location.hostname === 'my.mainsail.xyz') instancesDB = 'browser'
+        if (import.meta.env.VUE_APP_INSTANCES_DB)
+            instancesDB = import.meta.env.VUE_APP_INSTANCES_DB as RootStateInstancesDbType
 
-            if ('instances' in payload && Array.isArray(payload.instances) && payload.instances.length) {
+        if (instancesDB !== 'moonraker') {
+            commit('setInstancesDB', instancesDB)
+
+            if (
+                instancesDB === 'json' &&
+                'instances' in payload &&
+                Array.isArray(payload.instances) &&
+                payload.instances.length
+            ) {
                 commit('setConfigInstances', payload.instances)
             }
 

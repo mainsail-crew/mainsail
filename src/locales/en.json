@@ -457,8 +457,19 @@
             "ExtrusionFactor": "Extrusion factor",
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filament Length",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Retract Length",
+                "RetractSpeed": "Retract Speed",
+                "UnretractExtraLength": "Unretract Extra Length",
+                "UnretractSpeed": "Unretract Speed"
+            },
             "Headline": "Extruder",
             "LoadFilament": "Load Filament",
+            "PressureAdvanceSettings": {
+                "Advance": "Pressure Advance",
+                "Extruder": "Extruder",
+                "SmoothTime": "Smooth Time"
+            },
             "Requested": "Requested",
             "Retract": "Retract",
             "TooLargeExtrusion": "Extrusion too large!",
@@ -477,25 +488,12 @@
             "Restart": "Restart"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Retraction",
-                "RetractLength": "Retract Length",
-                "RetractSpeed": "Retract Speed",
-                "UnretractExtraLength": "Unretract Extra Length",
-                "UnretractSpeed": "Unretract Speed"
-            },
             "Headline": "Machine",
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. to Decel.",
-                "Motion": "Motion",
                 "SquareCornerVelocity": "Square Corner Velocity",
                 "Velocity": "Velocity"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
-                "Extruder": "Extruder",
-                "SmoothTime": "Smooth Time"
             }
         },
         "MacrosPanel": {
@@ -657,6 +655,7 @@
         "HostnameInvalid": "invalid Hostname/IP",
         "HostnameIp": "Hostname/IP",
         "HostnameRequired": "Hostname is required",
+        "AddPrintersToJson": "Please add the Printers to the config.json.",
         "Port": "Port",
         "PortRequired": "Port is required",
         "RememberToAdd": "Please remember to add '{cors}' in moonraker.conf within 'cors_domains'.",
@@ -837,7 +836,8 @@
             "Hostname": "Hostname",
             "Port": "Port",
             "RemotePrinters": "Printers",
-            "UpdatePrinter": "Update Printer"
+            "UpdatePrinter": "Update Printer",
+            "UseConfigJson": "InstanceDB = JSON detected. Please use the config.json to modify the printers list."
         },
         "TimelapseTab": {
             "Autorender": "Autorender",

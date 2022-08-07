@@ -449,6 +449,20 @@
             "Z": "Z",
             "ZTilt": "Z Lutning"
         },
+        "ExtuderControlPanel": {
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Längd för Retract",
+                "RetractSpeed": "Hastighet för Retract",
+                "UnretractExtraLength": "Unretract extra längd",
+                "UnretractSpeed": "Unretract hastighet"
+            },
+            "PressureAdvanceSettings": {
+                "Advance": "Advance",
+                "Extruder": "Extruder",
+                "PressureAdvance": "Pressure Advance",
+                "SmoothTime": "Utjämningstid"
+            }
+        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Återanslut",
             "SwitchToPrinter": "Byt till skrivare",
@@ -462,26 +476,12 @@
             "Restart": "Starta om"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Retraction",
-                "RetractLength": "Längd för Retract",
-                "RetractSpeed": "Hastighet för Retract",
-                "UnretractExtraLength": "Unretract extra längd",
-                "UnretractSpeed": "Unretract hastighet"
-            },
             "Headline": "Maskininställningar",
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. till Decel.",
-                "Motion": "Rörelse",
                 "SquareCornerVelocity": "Skarpa hörn Velocitet",
                 "Velocity": "Velocitet"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Advance",
-                "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
-                "SmoothTime": "Utjämningstid"
             }
         },
         "MacrosPanel": {

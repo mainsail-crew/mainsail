@@ -473,10 +473,22 @@
             "ExtrusionFactor": "Factor de extrusión",
             "ExtrusionFeedrate": "Velocidad de avance de extrusión",
             "FilamentLength": "Largo del filamento",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Distancia de retracción",
+                "RetractSpeed": "Velocidad de retracción",
+                "UnretractExtraLength": "Distancia adicional post-retracción",
+                "UnretractSpeed": "Velocidad de post-retracción"
+            },
             "Headline": "Extrusor",
-            "LoadFilament": "Cargar filamento",
-            "Requested": "Solicitada",
             "Retract": "Retraer",
+            "LoadFilament": "Cargar filamento",
+            "PressureAdvanceSettings": {
+                "Advance": "Avance",
+                "Extruder": "Extrusor",
+                "PressureAdvance": "Avance de presión",
+                "SmoothTime": "Tiempo de suavizado"
+            },
+            "Requested": "Solicitada",
             "TooLargeExtrusion": "¡Extrusión muy grande!",
             "UnloadFilament": "Descargar Filamento"
         },
@@ -493,26 +505,12 @@
             "Restart": "Reiniciar"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Retracción por firmware",
-                "RetractLength": "Distancia de retracción",
-                "RetractSpeed": "Velocidad de retracción",
-                "UnretractExtraLength": "Distancia adicional post-retracción",
-                "UnretractSpeed": "Velocidad de post-retracción"
-            },
             "Headline": "Configuración de impresora",
             "MotionSettings": {
                 "Acceleration": "Aceleración",
                 "MaxAccelToDecel": "Max. Acel. a Decel.",
-                "Motion": "Movimiento",
                 "SquareCornerVelocity": "Velocidad esquinas rectas",
                 "Velocity": "Velocidad"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Avance",
-                "Extruder": "Extrusor",
-                "PressureAdvance": "Avance de presión",
-                "SmoothTime": "Tiempo de suavizado"
             }
         },
         "MacrosPanel": {

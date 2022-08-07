@@ -26,7 +26,8 @@ export const actions: ActionTree<GuiState, RootState> = {
         const mainsailUrl = baseUrl + '?namespace=mainsail'
 
         if ('remoteprinters' in payload.value) {
-            if (!rootState.remoteMode) dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
+            if (rootState.instancesDB === 'moonraker')
+                dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
             delete payload.value.remoteprinters
         }
 

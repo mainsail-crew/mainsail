@@ -453,8 +453,19 @@
             "ExtrusionFactor": "挤出倍数",
             "ExtrusionFeedrate": "进给速度",
             "FilamentLength": "耗材长度",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "回抽长度",
+                "RetractSpeed": "回抽速度",
+                "UnretractExtraLength": "回料长度",
+                "UnretractSpeed": "回料速度"
+            },
             "Headline": "挤出机",
             "LoadFilament": "装载耗材",
+            "PressureAdvanceSettings": {
+                "Advance": "压力提前",
+                "Extruder": "挤出机",
+                "SmoothTime": "平滑时间"
+            },
             "Requested": "需要",
             "Retract": "回抽",
             "TooLargeExtrusion": "挤出过大！",
@@ -473,25 +484,12 @@
             "Restart": "重启Klipper"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "固件回抽",
-                "RetractLength": "回抽长度",
-                "RetractSpeed": "回抽速度",
-                "UnretractExtraLength": "回料长度",
-                "UnretractSpeed": "回料速度"
-            },
             "Headline": "机器设置",
             "MotionSettings": {
                 "Acceleration": "加速度",
                 "MaxAccelToDecel": "加速到减速最大值",
-                "Motion": "运动",
                 "SquareCornerVelocity": "直角拐弯速度",
                 "Velocity": "速度"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "压力提前",
-                "Extruder": "挤出机",
-                "SmoothTime": "平滑时间"
             }
         },
         "MacrosPanel": {

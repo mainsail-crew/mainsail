@@ -111,6 +111,7 @@
         "CheckMoonrakerLog": "Wenn diese Meldung wiederholt erscheint, schaue bitte in die Logdatei unter:",
         "Connecting": "Verbinde zu {host}",
         "Failed": "Verbindung fehlgeschlagen",
+        "Initializing": "Initialisieren",
         "TryAgain": "Erneut versuchen"
     },
     "Console": {
@@ -464,8 +465,20 @@
             "ExtrusionFactor": "Extrusionsfaktor",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
             "FilamentLength": "Filamentlänge",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Rückzugslänge",
+                "RetractSpeed": "Rückzuggeschwindigkeit",
+                "UnretractExtraLength": "Zusätzliche Ausfahrlänge",
+                "UnretractSpeed": "Ausfahrgeschwindigkeit"
+            },
             "Headline": "Extruder",
             "LoadFilament": "Filament laden",
+            "PressureAdvanceSettings": {
+                "Advance": "Pressure Advance",
+                "Extruder": "Extruder",
+                "PressureAdvance": "Pressure Advance",
+                "SmoothTime": "Smooth Time"
+            },
             "Requested": "Angefordert",
             "Retract": "Rückzug",
             "TooLargeExtrusion": "Extrusion zu groß!",
@@ -484,26 +497,12 @@
             "Restart": "Neustart"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Rückzug",
-                "RetractLength": "Rückzugslänge",
-                "RetractSpeed": "Rückzuggeschwindigkeit",
-                "UnretractExtraLength": "Zusätzliche Ausfahrlänge",
-                "UnretractSpeed": "Ausfahrgeschwindigkeit"
-            },
             "Headline": "Maschine",
             "MotionSettings": {
                 "Acceleration": "Beschleunigung",
                 "MaxAccelToDecel": "Max. Beschl. zu Verz.",
-                "Motion": "Bewegung",
                 "SquareCornerVelocity": "Eck-Geschwindigkeit",
                 "Velocity": "Geschwindigkeit"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
-                "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
-                "SmoothTime": "Smooth Time"
             }
         },
         "MacrosPanel": {
@@ -666,6 +665,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Drucker hinzufügen",
+        "AddPrintersToJson": "Bitte füge einen Drucker in der config.json hinzu.",
         "CannotConnectTo": "Kann keine Verbindung zu {host} herstellen.",
         "ChangePrinter": "Drucker ändern",
         "Connecting": "Verbinde zu {host}",
@@ -855,7 +855,8 @@
             "Hostname": "Hostname",
             "Port": "Port",
             "RemotePrinters": "Remote Drucker",
-            "UpdatePrinter": "Drucker aktualisieren"
+            "UpdatePrinter": "Drucker aktualisieren",
+            "UseConfigJson": "InstanceDB = JSON erkannt. Bitte bearbeite die config.json um die Druckerliste zu modifizieren."
         },
         "TimelapseTab": {
             "Autorender": "Autorender",

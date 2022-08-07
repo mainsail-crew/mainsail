@@ -454,8 +454,19 @@
             "ExtrusionFactor": "Extrudálási szorzó",
             "ExtrusionFeedrate": "Extruder Előtolása",
             "FilamentLength": "Filament Hossz",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Visszahúzás hossza",
+                "RetractSpeed": "Visszahúzás sebessége",
+                "UnretractExtraLength": "Eresztés Extra Hossza",
+                "UnretractSpeed": "Eresztés Sebessége"
+            },
             "Headline": "Extruder",
             "LoadFilament": "Filament Behúzása",
+            "PressureAdvanceSettings": {
+                "Advance": "Fejlett mód",
+                "Extruder": "Extruder",
+                "SmoothTime": "Simítás ideje"
+            },
             "Requested": "Kért",
             "Retract": "Visszahúzás",
             "TooLargeExtrusion": "A visszahúzás túl nagy!",
@@ -474,25 +485,12 @@
             "Restart": "Újraindítás"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Visszahúzás",
-                "RetractLength": "Visszahúzás hossza",
-                "RetractSpeed": "Visszahúzás sebessége",
-                "UnretractExtraLength": "Eresztés Extra Hossza",
-                "UnretractSpeed": "Eresztés Sebessége"
-            },
             "Headline": "Gép beállításai",
             "MotionSettings": {
                 "Acceleration": "Gyorsulás",
                 "MaxAccelToDecel": "Lassulás Max Gyorsulása",
-                "Motion": "Mozgás",
                 "SquareCornerVelocity": "Sebesség a sarkokban",
                 "Velocity": "Gyorsaság"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Fejlett mód",
-                "Extruder": "Extruder",
-                "SmoothTime": "Simítás ideje"
             }
         },
         "MacrosPanel": {

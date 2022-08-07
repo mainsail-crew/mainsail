@@ -7,8 +7,8 @@ export const mutations: MutationTree<RootState> = {
         Vue.set(state, 'naviDrawer', payload)
     },
 
-    setRemoteMode(state, payload) {
-        Vue.set(state, 'remoteMode', payload)
+    setInstancesDB(state, payload) {
+        Vue.set(state, 'instancesDB', payload)
     },
 
     setConfigInstances(state, payload) {

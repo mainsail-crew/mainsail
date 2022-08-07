@@ -473,8 +473,20 @@
             "ExtrusionFactor": "Parametr hotendu",
             "ExtrusionFeedrate": "Prędkość wysuwania",
             "FilamentLength": "Długość filamentu",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Długość retrakcji",
+                "RetractSpeed": "Prędkość retrakcji",
+                "UnretractExtraLength": "Dodatkowa długość wycofywania",
+                "UnretractSpeed": "Prędkość wycofywania"
+            },
             "Headline": "Hotend",
             "LoadFilament": "Załadowywanie filamentu",
+            "PressureAdvanceSettings": {
+                "Advance": "Wzrost nacisku",
+                "Extruder": "Ekstruder",
+                "PressureAdvance": "Ustawienia nacisku",
+                "SmoothTime": "Czas wygładzania"
+            },
             "Requested": "Wymagane",
             "Retract": "Retrakcja",
             "TooLargeExtrusion": "Długość wysunięcia zbyt duża!",
@@ -493,26 +505,12 @@
             "Restart": "Ponowne uruchomienie"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Retrakcja oprogramowania",
-                "RetractLength": "Długość retrakcji",
-                "RetractSpeed": "Prędkość retrakcji",
-                "UnretractExtraLength": "Dodatkowa długość wycofywania",
-                "UnretractSpeed": "Prędkość wycofywania"
-            },
             "Headline": "Ustawienia drukarki",
             "MotionSettings": {
                 "Acceleration": "Przyspieszenie",
                 "MaxAccelToDecel": "Maks. przysp. do startu zmniejszania prędkości.",
-                "Motion": "Ruch",
                 "SquareCornerVelocity": "Prędkość na rogu kwadratu",
                 "Velocity": "Prędkość"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Wzrost nacisku",
-                "Extruder": "Ekstruder",
-                "PressureAdvance": "Ustawienia nacisku",
-                "SmoothTime": "Czas wygładzania"
             }
         },
         "MacrosPanel": {

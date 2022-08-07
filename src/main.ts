@@ -82,6 +82,7 @@ const initLoad = async () => {
             window.console.debug('Loaded config.json')
 
             await store.dispatch('importConfigJson', file)
+            if ('defaultLocale' in file) i18n.locale = file.defaultLocale
         })
         .catch((_) => {
             window.console.error('config.json not found or cannot be decoded!')
@@ -89,7 +90,7 @@ const initLoad = async () => {
 
     const url = store.getters['socket/getWebsocketUrl']
     Vue.use(WebSocketPlugin, { url, store })
-    if (!store?.state?.remoteMode) Vue.$socket.connect()
+    if (store?.state?.instancesDB === 'moonraker') Vue.$socket.connect()
 }
 
 initLoad()
