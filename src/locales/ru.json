@@ -320,6 +320,8 @@
         "Search": "Поиск",
         "SelectedFilamentUsed": "Выбранный используемый материал",
         "SelectedJobs": "Избранные вакансии",
+        "SelectedJobs": "Избранные вакансии",
+        "SelectedPrinttime": "Выбранное время печати",
         "SelectedPrinttime": "Выбранное время печати",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Версия",
@@ -337,11 +339,18 @@
         },
         "TitleExportHistory": "История экспорта",
         "TitleRefreshHistory": "Обновить историю",
+        "TitleRefreshHistory": "Обновить историю",
+        "TitleSettings": "Настройки",
         "TitleSettings": "Настройки",
         "TotalDuration": "Общее время",
+        "TotalDuration": "Общее время",
+        "TotalFilamentUsed": "Общая используемая нить",
         "TotalFilamentUsed": "Общая используемая нить",
         "TotalJobs": "Всего отпечатков",
+        "TotalJobs": "Всего отпечатков",
         "TotalPrinttime": "Общее время печати",
+        "TotalPrinttime": "Общее время печати",
+        "TotalTime": "Общее время",
         "TotalTime": "Общее время"
     },
     "JobQueue": {
@@ -488,6 +497,7 @@
                 "SmoothTime": "Плавное время"
             },
             "Requested": "Запрошено",
+            "Retract": "Въехать",
             "Retract": "Въехать",
             "TooLargeExtrusion": "Экструзия слишком велика!",
             "UnloadFilament": "Выгрузить нить"

@@ -326,6 +326,8 @@
         "Search": "Recherche",
         "SelectedFilamentUsed": "Filament sélectionné utilisé",
         "SelectedJobs": "Travaux sélectionnés",
+        "SelectedJobs": "Travaux sélectionnés",
+        "SelectedPrinttime": "Temps d'impression sélectionnés",
         "SelectedPrinttime": "Temps d'impression sélectionnés",
         "Slicer": "Trancheur",
         "SlicerVersion": "Version trancheur",
@@ -344,11 +346,18 @@
         },
         "TitleExportHistory": "Exporter l'historique",
         "TitleRefreshHistory": "Rafraîchir l'historique",
+        "TitleRefreshHistory": "Rafraîchir l'historique",
+        "TitleSettings": "Réglages",
         "TitleSettings": "Réglages",
         "TotalDuration": "Durée totale",
+        "TotalDuration": "Durée totale",
+        "TotalFilamentUsed": "Total filament utilisé",
         "TotalFilamentUsed": "Total filament utilisé",
         "TotalJobs": "Nombre travaux",
+        "TotalJobs": "Nombre travaux",
         "TotalPrinttime": "Total temps d'impression",
+        "TotalPrinttime": "Total temps d'impression",
+        "TotalTime": "Durée totale",
         "TotalTime": "Durée totale"
     },
     "JobQueue": {
@@ -479,6 +488,7 @@
                 "SmoothTime": "Temps de lissage"
             },
             "Requested": "Demandé",
+            "Retract": "Rétractation",
             "Retract": "Rétractation",
             "TooLargeExtrusion": "Extrusion trop grande !",
             "UnloadFilament": "Déchargement du filament"
