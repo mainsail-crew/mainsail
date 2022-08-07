@@ -18,6 +18,7 @@
         "i18n-extract": "vue-i18n-extract use-config",
         "start": "vite preview",
         "test": "npm run build && cypress run",
+        "test:only": "cypress run",
         "test:ui": "cypress open",
         "changelog": "git cliff v0.0.4..$(git describe --tags $(git rev-list --tags --max-count=1)) --output CHANGELOG.md"
     },
