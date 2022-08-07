@@ -902,4 +902,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         return 'screws_tilt_adjust' in state.configfile.settings
     },
+
+    existsFirmwareRetraction: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'firmware_retraction' in state.configfile.settings
+    },
 }

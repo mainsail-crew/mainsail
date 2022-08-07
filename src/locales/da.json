@@ -413,7 +413,19 @@
         "ExtruderControlPanel": {
             "Extrude": "Extrude",
             "ExtruderTempTooLow": "Hotend temp. <",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Retract længde",
+                "RetractSpeed": "Retract hastighed",
+                "UnretractExtraLength": "Unretract ekstra længde",
+                "UnretractSpeed": "Unretract hastighed"
+            },
             "Headline": "Extruder Kontrolpanel",
+            "PressureAdvanceSettings": {
+                "Advance": "Advance",
+                "Extruder": "Extruder",
+                "PressureAdvance": "Pressure Advance",
+                "SmoothTime": "Smooth Time"
+            },
             "Retract": "Retract"
         },
         "FarmPrinterPanel": {
@@ -429,26 +441,12 @@
             "Restart": "Genstart"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Retraction",
-                "RetractLength": "Retract længde",
-                "RetractSpeed": "Retract hastighed",
-                "UnretractExtraLength": "Unretract ekstra længde",
-                "UnretractSpeed": "Unretract hastighed"
-            },
             "Headline": "Printer indstillinger",
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Maks. accel. til decel.",
-                "Motion": "Bevægelse",
                 "SquareCornerVelocity": "Hastighed for 90° hjørne",
                 "Velocity": "Hastighed (Feedrate)"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Advance",
-                "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
-                "SmoothTime": "Smooth Time"
             }
         },
         "MacrosPanel": {

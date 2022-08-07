@@ -58,9 +58,9 @@
             "CannotUploadTheFile": "アップロードできませんでした!",
             "EmergencyStop": "緊急停止",
             "SAVE_CONFIG": "設定保存",
-            "UploadPrint": "アップロード & 印刷",
+            "Uploading": "アップロード中",
             "UploadOfFileSuccessful": "{file}のアップロードが完了しました!",
-            "Uploading": "アップロード中"
+            "UploadPrint": "アップロード & 印刷"
         },
         "TopCornerMenu": {
             "Cancel": "取り消し",
@@ -147,8 +147,8 @@
         "Uploading": "アップロード中"
     },
     "EmergencyStopDialog": {
-        "EmergencyStop": "緊急停止",
         "AreYouSure": "よろしいですか？",
+        "EmergencyStop": "緊急停止",
         "No": "いいえ",
         "Yes": "はい"
     },
@@ -230,9 +230,9 @@
         "ReloadRequired": "リロードが必要",
         "Rendering": "レンダリング",
         "RenderQuality": "レンダークオリティー",
+        "ShowObjectSelection": "オブジェクト選択表示",
         "ShowToolhead": "ツールヘッド表示",
         "ShowTravelMoves": "トラベル表示",
-        "ShowObjectSelection": "オブジェクト選択表示",
         "SpecularLighting": "スペキュラーラインティング",
         "Title": "Gコードビュアー",
         "Tracking": "トラッキング",
@@ -473,8 +473,20 @@
             "ExtrusionFactor": "押し出し係数",
             "ExtrusionFeedrate": "押し出し速度",
             "FilamentLength": "フィラメント長",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "引き込み長",
+                "RetractSpeed": "引き込み速度",
+                "UnretractExtraLength": "追加の戻り長",
+                "UnretractSpeed": "戻り速度"
+            },
             "Headline": "エクストルーダー",
             "LoadFilament": "フィラメントのロード",
+            "PressureAdvanceSettings": {
+                "Advance": "Pressure Advance",
+                "Extruder": "エクストルーダー",
+                "PressureAdvance": "Pressure Advance",
+                "SmoothTime": "スムーズ時間"
+            },
             "Requested": "要求",
             "Retract": "引き込み",
             "TooLargeExtrusion": "押し出しが量が大きすぎます!",
@@ -493,26 +505,12 @@
             "Restart": "再始動"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "ファームウェア引き込み",
-                "RetractLength": "引き込み長",
-                "RetractSpeed": "引き込み速度",
-                "UnretractExtraLength": "追加の戻り長",
-                "UnretractSpeed": "戻り速度"
-            },
             "Headline": "機器設定",
             "MotionSettings": {
                 "Acceleration": "最大加速度",
                 "MaxAccelToDecel": "最大加速から減速",
-                "Motion": "運動特性",
                 "SquareCornerVelocity": "コーナー速度(SCV)",
                 "Velocity": "最高速度"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
-                "Extruder": "エクストルーダー",
-                "PressureAdvance": "Pressure Advance",
-                "SmoothTime": "スムーズ時間"
             }
         },
         "MacrosPanel": {
@@ -550,6 +548,8 @@
             "CancelPrint": "印刷取り消し",
             "ClearPrintStats": "印刷状態の表示クリア",
             "Difference": "差分",
+            "EmptyGcodes": "Gコードがありません。",
+            "EmptyJobqueue": "現在、ジョブキューにファイルがありません。",
             "Estimate": "推定",
             "ETA": "推定完了時刻",
             "ExcludeObject": {
@@ -562,18 +562,16 @@
             "Filament": "フィラメント",
             "File": "ファイル",
             "Files": "ファイル",
-            "EmptyGcodes": "Gコードがありません。",
-            "EmptyJobqueue": "現在、ジョブキューにファイルがありません。",
-            "Jobqueue": "ジョブキュー ({count})",
-            "JobqueueMoreFiles": "ジョブなし | あとひとつのジョブ | あと {count}個のジョブ",
-            "PrintTime": "印刷時間",
             "Flow": "フロー",
             "Headline": "状態",
+            "Jobqueue": "ジョブキュー ({count})",
+            "JobqueueMoreFiles": "ジョブなし | あとひとつのジョブ | あと {count}個のジョブ",
             "Layer": "層",
             "Max": "最大",
             "ObjectHeight": "印刷物の高さ",
             "PausePrint": "印刷一時停止",
             "Print": "印刷",
+            "PrintTime": "印刷時間",
             "ReprintJob": "再印刷ジョブ",
             "Requested": "要求",
             "ResumePrint": "印刷再開",
@@ -694,8 +692,8 @@
         "YouCanFindMore": "You can find more details at"
     },
     "Settings": {
-        "Close": "クローズ",
         "Cancel": "取り消し",
+        "Close": "クローズ",
         "ConsoleTab": {
             "AddFilter": "フィルター追加",
             "Console": "コンソール",

@@ -473,8 +473,20 @@
             "ExtrusionFactor": "Parametr hotendu",
             "ExtrusionFeedrate": "Prędkość wysuwania",
             "FilamentLength": "Długość filamentu",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Długość retrakcji",
+                "RetractSpeed": "Prędkość retrakcji",
+                "UnretractExtraLength": "Dodatkowa długość wycofywania",
+                "UnretractSpeed": "Prędkość wycofywania"
+            },
             "Headline": "Hotend",
             "LoadFilament": "Załadowywanie filamentu",
+            "PressureAdvanceSettings": {
+                "Advance": "Wzrost nacisku",
+                "Extruder": "Ekstruder",
+                "PressureAdvance": "Ustawienia nacisku",
+                "SmoothTime": "Czas wygładzania"
+            },
             "Requested": "Wymagane",
             "Retract": "Retrakcja",
             "TooLargeExtrusion": "Długość wysunięcia zbyt duża!",
@@ -493,26 +505,12 @@
             "Restart": "Ponowne uruchomienie"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Retrakcja oprogramowania",
-                "RetractLength": "Długość retrakcji",
-                "RetractSpeed": "Prędkość retrakcji",
-                "UnretractExtraLength": "Dodatkowa długość wycofywania",
-                "UnretractSpeed": "Prędkość wycofywania"
-            },
             "Headline": "Ustawienia drukarki",
             "MotionSettings": {
                 "Acceleration": "Przyspieszenie",
                 "MaxAccelToDecel": "Maks. przysp. do startu zmniejszania prędkości.",
-                "Motion": "Ruch",
                 "SquareCornerVelocity": "Prędkość na rogu kwadratu",
                 "Velocity": "Prędkość"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Wzrost nacisku",
-                "Extruder": "Ekstruder",
-                "PressureAdvance": "Ustawienia nacisku",
-                "SmoothTime": "Czas wygładzania"
             }
         },
         "MacrosPanel": {
@@ -550,6 +548,8 @@
             "CancelPrint": "Anuluj wydruk",
             "ClearPrintStats": "Wyczyść statystyki drukarki",
             "Difference": "Różnica",
+            "EmptyGcodes": "Brak dostępnego G-Code.",
+            "EmptyJobqueue": "Aktualnie nie ma żadnego pliku w kolejce wydruków.",
             "Estimate": "Szacowana",
             "ETA": "ETA",
             "ExcludeObject": {
@@ -562,18 +562,16 @@
             "Filament": "Filament",
             "File": "Plik",
             "Files": "Pliki",
-            "EmptyGcodes": "Brak dostępnego G-Code.",
-            "EmptyJobqueue": "Aktualnie nie ma żadnego pliku w kolejce wydruków.",
-            "Jobqueue": "W kolejce ({count})",
-            "JobqueueMoreFiles": "brak więcej wydruków | jeszcze jeden wydruk | {count} więcej wydruków",
-            "PrintTime": "Czas wydruku",
             "Flow": "Przepływ",
             "Headline": "Status",
+            "Jobqueue": "W kolejce ({count})",
+            "JobqueueMoreFiles": "brak więcej wydruków | jeszcze jeden wydruk | {count} więcej wydruków",
             "Layer": "Warstwa",
             "Max": "Maks.",
             "ObjectHeight": "Wysokość obiektu",
             "PausePrint": "Pauza wydruku",
             "Print": "Drukuj",
+            "PrintTime": "Czas wydruku",
             "ReprintJob": "Ponownie wydrukuj",
             "Requested": "Wymagane",
             "ResumePrint": "Wznowienie wydruku",
