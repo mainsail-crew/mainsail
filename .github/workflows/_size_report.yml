@@ -25,10 +25,9 @@ jobs:
         uses: tj-actions/changed-files@v23
         with:
           sha: ${{ github.event.pull_request.head.sha }}
-          files: 'package-lock.json'
 
       - uses: preactjs/compressed-size-action@v2
-        if: steps.changed-file-package-json.outputs.any_changed == 'true'
+        if: contains(steps.changed-file-package-json.outputs.modified_files, 'package.json')
         with:
           strip-hash: "\\b\\w{8}\\."
           pattern: './dist/**/*.{js,css,html,json,woff2,svg,png}'
