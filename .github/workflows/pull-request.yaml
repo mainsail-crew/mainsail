@@ -17,51 +17,51 @@ jobs:
     name: 'Debs-Cache'
     runs-on: ubuntu-latest
     steps:
-    - name: Fetch repo
-      uses: actions/checkout@v3
+      - name: Fetch repo
+        uses: actions/checkout@v3
 
-    - name: Install node
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-        cache: 'npm'
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
 
-    - name: Cache dependencies
-      id: cache
-      uses: actions/cache@v3
-      with:
-        path: node_modules/
-        key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules/
+          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-    - name: List the state of node modules
-      if: steps.cache.outputs.cache-hit != 'true'
-      continue-on-error: true
-      run: npm list
+      - name: List the state of node modules
+        if: steps.cache.outputs.cache-hit != 'true'
+        continue-on-error: true
+        run: npm list
 
-    - name: Install dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: npm ci
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
 
   call-build:
-    needs: [debs-cache]
+    needs: [ debs-cache ]
     uses: meteyou/mainsail-dev/.github/workflows/_build.yml@chore/rewrite-workflows
 
   call-eslint:
-    needs: [debs-cache]
+    needs: [ debs-cache ]
     uses: meteyou/mainsail-dev/.github/workflows/_eslint.yml@chore/rewrite-workflows
 
   call-prettier:
-    needs: [debs-cache]
+    needs: [ debs-cache ]
     uses: meteyou/mainsail-dev/.github/workflows/_prettier.yml@chore/rewrite-workflows
 
   call-check-locale:
-    needs: [debs-cache]
+    needs: [ debs-cache ]
     uses: meteyou/mainsail-dev/.github/workflows/_check_locale.yml@chore/rewrite-workflows
 
   call-size-report:
-    needs: [debs-cache]
+    needs: [ debs-cache ]
     uses: meteyou/mainsail-dev/.github/workflows/_size_report.yml@chore/rewrite-workflows
 
   call-test-cypress:
-    needs: [debs-cache, call-build]
+    needs: [ debs-cache, call-build ]
     uses: meteyou/mainsail-dev/.github/workflows/_test_cypress.yml@chore/rewrite-workflows
