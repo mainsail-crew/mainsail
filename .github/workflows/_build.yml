@@ -24,7 +24,7 @@ jobs:
         id: cache-dist
         with:
           path: dist/
-          key: ${{ runner.os }}-${{ git rev-parse --short "$GITHUB_SHA" }}
+          key: ${{ runner.os }}-${{ github.head_ref }}
 
       - name: Copy output
         run: cp ${{ github.workspace }}/dist/mainsail.zip mainsail-latest.zip
