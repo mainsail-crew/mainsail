@@ -3,7 +3,7 @@ name: '⑇ i18n-extract'
 on: workflow_call
 
 jobs:
-  check_locale:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
