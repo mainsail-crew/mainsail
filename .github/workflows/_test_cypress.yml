@@ -21,7 +21,7 @@ jobs:
         id: cache-dist
         with:
           path: dist/
-          key: ${{ runner.os }}-${{ git rev-parse --short "$GITHUB_SHA" }}
+          key: ${{ runner.os }}-${{ github.head_ref }}
 
       - name: Build
         if: steps.cache-dist.outputs.cache-hit != 'true'
