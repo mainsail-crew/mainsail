@@ -61,3 +61,7 @@ jobs:
   call-size-report:
     needs: [debs-cache]
     uses: meteyou/mainsail-dev/.github/workflows/_size_report.yml@chore/rewrite-workflows
+
+  call-test-cypress:
+    needs: [debs-cache]
+    uses: meteyou/mainsail-dev/.github/workflows/_test_cypress.yml@chore/rewrite-workflows
