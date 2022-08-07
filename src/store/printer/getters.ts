@@ -36,7 +36,22 @@ import {
 } from '@mdi/js'
 
 export const getters: GetterTree<PrinterState, RootState> = {
-    getPrintPercent: (state) => {
+    getPrintPercent: (state, getters, rootState) => {
+        const type = rootState?.gui?.general?.calcPrintProgress ?? 'file-relative'
+        switch (type) {
+            case 'file-relative':
+                return getters['getPrintPercentByFilepositionRelative']
+            case 'file-absolute':
+                return getters['getPrintPercentByFilepositionAbsolute']
+            case 'slicer':
+                return getters['getPrintPercentBySlicer']
+
+            default:
+                return getters['getPrintPercentByFilepositionRelative']
+        }
+    },
+
+    getPrintPercentByFilepositionRelative: (state) => {
         if (
             state.current_file?.filename &&
             state.current_file?.gcode_start_byte &&
@@ -53,6 +68,14 @@ export const getters: GetterTree<PrinterState, RootState> = {
         }
 
         return state.virtual_sdcard?.progress ?? 0
+    },
+
+    getPrintPercentByFilepositionAbsolute: (state) => {
+        return state.virtual_sdcard?.progress ?? 0
+    },
+
+    getPrintPercentBySlicer: (state) => {
+        return state.display_stats?.progress ?? 0
     },
 
     getMacros: (state) => {

@@ -2,11 +2,11 @@
     <div>
         <v-card flat>
             <v-card-text>
-                <settings-row :title="$t('Settings.GeneralTab.PrinterName')">
+                <settings-row :title="$t('Settings.GeneralTab.PrinterName').toString()">
                     <v-text-field v-model="printerName" hide-details outlined dense></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.Language')">
+                <settings-row :title="$t('Settings.GeneralTab.Language').toString()">
                     <v-select
                         v-model="currentLanguage"
                         :items="availableLanguages"
@@ -17,8 +17,21 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.GeneralTab.CalcEstimateTime')"
-                    :sub-title="$t('Settings.GeneralTab.CalcEstimateTimeDescription')">
+                    :title="$t('Settings.GeneralTab.CalcPrintProgress').toString()"
+                    :sub-title="$t('Settings.GeneralTab.CalcPrintProgressDescription').toString()">
+                    <v-select
+                        v-model="calcPrintProgress"
+                        :items="calcPrintProgressItems"
+                        multiple
+                        hide-details
+                        dense
+                        outlined
+                        attach></v-select>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row
+                    :title="$t('Settings.GeneralTab.CalcEstimateTime').toString()"
+                    :sub-title="$t('Settings.GeneralTab.CalcEstimateTimeDescription').toString()">
                     <v-select
                         v-model="calcEstimateTime"
                         :items="calcEstimateItems"
@@ -30,8 +43,8 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.GeneralTab.CalcEtaTime')"
-                    :sub-title="$t('Settings.GeneralTab.CalcEtaTimeDescription')">
+                    :title="$t('Settings.GeneralTab.CalcEtaTime').toString()"
+                    :sub-title="$t('Settings.GeneralTab.CalcEtaTimeDescription').toString()">
                     <v-select
                         v-model="calcEtaTime"
                         :items="calcEtaTimeItems"
@@ -42,7 +55,7 @@
                         attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.MoonrakerDb')" :dynamic-slot-width="true">
+                <settings-row :title="$t('Settings.GeneralTab.MoonrakerDb').toString()" :dynamic-slot-width="true">
                     <input
                         ref="uploadBackupFile"
                         type="file"
@@ -57,7 +70,7 @@
                     </v-btn>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamic-slot-width="true">
+                <settings-row :title="$t('Settings.GeneralTab.FactoryReset').toString()" :dynamic-slot-width="true">
                     <v-btn color="error" small @click="resetMainsail">
                         {{ $t('Settings.GeneralTab.FactoryReset') }}
                     </v-btn>
@@ -66,7 +79,7 @@
         </v-card>
         <v-dialog v-model="dialogBackupMainsail" persistent :width="360">
             <panel
-                :title="$t('Settings.GeneralTab.Backup')"
+                :title="$t('Settings.GeneralTab.Backup').toString()"
                 card-class="mainsail-backup-dialog"
                 :margin-bottom="false"
                 :icon="mdiHelpCircle">
@@ -117,7 +130,7 @@
         </v-dialog>
         <v-dialog v-model="dialogResetMainsail" persistent :width="360">
             <panel
-                :title="$t('Settings.GeneralTab.FactoryReset')"
+                :title="$t('Settings.GeneralTab.FactoryReset').toString()"
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
                 :icon="mdiHelpCircle">
@@ -183,7 +196,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRestoreMainsail" persistent :width="360">
             <panel
-                :title="$t('Settings.GeneralTab.Restore')"
+                :title="$t('Settings.GeneralTab.Restore').toString()"
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
                 :icon="mdiHelpCircle">
@@ -348,6 +361,22 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         return languages
     }
 
+    get calcPrintProgressItems() {
+        return [
+            { value: 'file-relative', text: this.$t('Settings.GeneralTab.CalcPrintProgressItems.FileRelative') },
+            { value: 'file-absolute', text: this.$t('Settings.GeneralTab.CalcPrintProgressItems.FileAbsolute') },
+            { value: 'slicer', text: this.$t('Settings.GeneralTab.CalcPrintProgressItems.Slicer') },
+        ]
+    }
+
+    get calcPrintProgress() {
+        return this.$store.state.gui.general.calcPrintProgress ?? 'file-relative'
+    }
+
+    set calcPrintProgress(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'general.calcPrintProgress', value: newVal })
+    }
+
     get calcEstimateItems() {
         return [
             { value: 'file', text: this.$t('Settings.GeneralTab.EstimateValues.File') },
@@ -452,7 +481,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     }
 
     async backupDb() {
-        this.$store.dispatch('socket/addLoading', 'backupDbButton')
+        await this.$store.dispatch('socket/addLoading', 'backupDbButton')
         await this.refreshNamespaces()
         if (this.availableNamespaces.includes('mainsail')) await this.refreshMainsailKeys()
         else this.mainsailKeys = []
@@ -469,7 +498,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     }
 
     async restoreDb() {
-        this.$store.dispatch('socket/addLoading', 'restoreUploadButton')
+        await this.$store.dispatch('socket/addLoading', 'restoreUploadButton')
         this.$refs?.uploadBackupFile?.click()
     }
 
