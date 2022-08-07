@@ -111,7 +111,7 @@
         "CheckMoonrakerLog": "Wenn diese Meldung wiederholt erscheint, schaue bitte in die Logdatei unter:",
         "Connecting": "Verbinde zu {host}",
         "Failed": "Verbindung fehlgeschlagen",
-        "Initializing": "Inizialisieren",
+        "Initializing": "Initialisieren",
         "TryAgain": "Erneut versuchen"
     },
     "Console": {
