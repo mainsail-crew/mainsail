@@ -646,6 +646,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Add Printer",
+        "AddPrintersToJson": "Please add the Printers to the config.json.",
         "CannotConnectTo": "Cannot connect to {host}.",
         "ChangePrinter": "Change Printer",
         "Connecting": "Connecting to {host}",
@@ -655,7 +656,6 @@
         "HostnameInvalid": "invalid Hostname/IP",
         "HostnameIp": "Hostname/IP",
         "HostnameRequired": "Hostname is required",
-        "AddPrintersToJson": "Please add the Printers to the config.json.",
         "Port": "Port",
         "PortRequired": "Port is required",
         "RememberToAdd": "Please remember to add '{cors}' in moonraker.conf within 'cors_domains'.",
