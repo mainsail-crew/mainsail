@@ -1,0 +1,26 @@
+name: '⑇ Cypress'
+
+on: workflow_call
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: node_modules/
+          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Build
+        run: npm run build
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          start: npm start
