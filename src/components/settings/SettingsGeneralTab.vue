@@ -22,7 +22,6 @@
                     <v-select
                         v-model="calcPrintProgress"
                         :items="calcPrintProgressItems"
-                        multiple
                         hide-details
                         dense
                         outlined
