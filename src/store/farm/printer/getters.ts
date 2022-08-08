@@ -65,7 +65,22 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         return state.data.print_stats?.filename ?? ''
     },
 
-    getPrintPercent: (state) => {
+    getPrintPercent: (state, getters) => {
+        const type = state.data.gui?.general?.calcPrintProgress ?? 'file-relative'
+        switch (type) {
+            case 'file-relative':
+                return getters['getPrintPercentByFilepositionRelative']
+            case 'file-absolute':
+                return getters['getPrintPercentByFilepositionAbsolute']
+            case 'slicer':
+                return getters['getPrintPercentBySlicer']
+
+            default:
+                return getters['getPrintPercentByFilepositionRelative']
+        }
+    },
+
+    getPrintPercentByFilepositionRelative: (state) => {
         if (
             state.current_file?.filename &&
             state.current_file?.gcode_start_byte &&
@@ -82,6 +97,14 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         }
 
         return state.data.virtual_sdcard?.progress ?? 0
+    },
+
+    getPrintPercentByFilepositionAbsolute: (state) => {
+        return state.data.virtual_sdcard?.progress ?? 0
+    },
+
+    getPrintPercentBySlicer: (state) => {
+        return state.data.display_stats?.progress ?? 0
     },
 
     getImage: (state) => {
