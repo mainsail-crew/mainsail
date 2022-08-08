@@ -75,7 +75,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getPrintPercentBySlicer: (state) => {
-        return state.display_stats?.progress ?? 0
+        return state.display_status?.progress ?? 0
     },
 
     getMacros: (state) => {

@@ -104,7 +104,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     getPrintPercentBySlicer: (state) => {
-        return state.data.display_stats?.progress ?? 0
+        return state.data.display_status?.progress ?? 0
     },
 
     getImage: (state) => {
