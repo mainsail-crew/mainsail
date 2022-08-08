@@ -754,7 +754,7 @@
             "CalcEtaTime": "ETA calculation",
             "CalcEtaTimeDescription": "If multiple are selected, an average will be calculated",
             "CalcPrintProgress": "Print progress calculation",
-            "CalcPrintProgressDescription": "How to calculate the print progress?",
+            "CalcPrintProgressDescription": "Method for calculating the print progress.",
             "CalcPrintProgressItems": {
                 "Filament": "Filament",
                 "FileRelative": "File position (relative)",
