@@ -756,6 +756,7 @@
             "CalcPrintProgress": "Print progress calculation",
             "CalcPrintProgressDescription": "How to calculate the print progress?",
             "CalcPrintProgressItems": {
+                "Filament": "Filament",
                 "FileRelative": "File position (relative)",
                 "FileAbsolute": "File position (absolute)",
                 "Slicer": "Slicer (M73)"

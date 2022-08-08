@@ -45,6 +45,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 return getters['getPrintPercentByFilepositionAbsolute']
             case 'slicer':
                 return getters['getPrintPercentBySlicer']
+            case 'filament':
+                return getters['getPrintPercentByFilament']
 
             default:
                 return getters['getPrintPercentByFilepositionRelative']
@@ -76,6 +78,19 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getPrintPercentBySlicer: (state) => {
         return state.display_status?.progress ?? 0
+    },
+
+    getPrintPercentByFilament: (state) => {
+        const filament_used = state.print_stats?.filament_used ?? null
+        const filament_total = state.current_file?.filament_total ?? null
+
+        if (filament_used !== null && filament_total !== null) {
+            if (filament_total == 0) return 0
+
+            return filament_used / filament_total
+        }
+
+        return state.virtual_sdcard?.progress ?? 0
     },
 
     getMacros: (state) => {

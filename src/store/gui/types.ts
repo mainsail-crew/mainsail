@@ -10,7 +10,7 @@ export interface GuiState {
     general: {
         printername: string
         language: string
-        calcPrintProgress: 'file-relative' | 'file-absolute' | 'slicer'
+        calcPrintProgress: 'file-relative' | 'file-absolute' | 'slicer' | 'filament'
         calcEstimateTime: string[] // file, filament are possible values
         calcEtaTime: string[] // file, filament, slicer are possible values
     }
