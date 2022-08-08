@@ -772,6 +772,14 @@
             "CalcEstimateTimeDescription": "Bei Mehrfachauswahl wird ein Durchschnitt berechnet",
             "CalcEtaTime": "ETA Berechnung",
             "CalcEtaTimeDescription": "Bei Mehrfachauswahl wird ein Durchschnitt berechnet",
+            "CalcPrintProgress": "Berechnung des Druckfortschritts",
+            "CalcPrintProgressDescription": "Nach welcher Methode der Druckfortschritt berechnet werden soll",
+            "CalcPrintProgressItems": {
+                "Filament": "Filament",
+                "FileRelative": "Dateiposition (relative)",
+                "FileAbsolute": "Dateiposition (absolute)",
+                "Slicer": "Slicer (M73)"
+            },
             "CannotReadJson": "Sicherungsdatei kann nicht gelesen/analysiert werden.",
             "DbConsoleHistory": "Verlauf der Konsole",
             "DbHistoryJobs": "Historie Druckvorgänge",
