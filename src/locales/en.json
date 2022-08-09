@@ -753,6 +753,14 @@
             "CalcEstimateTimeDescription": "If multiple are selected, an average will be calculated",
             "CalcEtaTime": "ETA calculation",
             "CalcEtaTimeDescription": "If multiple are selected, an average will be calculated",
+            "CalcPrintProgress": "Print progress calculation",
+            "CalcPrintProgressDescription": "Method for calculating the print progress.",
+            "CalcPrintProgressItems": {
+                "Filament": "Filament",
+                "FileRelative": "File position (relative)",
+                "FileAbsolute": "File position (absolute)",
+                "Slicer": "Slicer (M73)"
+            },
             "CannotReadJson": "Cannot read/parse backup file.",
             "DbConsoleHistory": "Console History",
             "DbHistoryJobs": "History Jobs",

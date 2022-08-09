@@ -36,7 +36,24 @@ import {
 } from '@mdi/js'
 
 export const getters: GetterTree<PrinterState, RootState> = {
-    getPrintPercent: (state) => {
+    getPrintPercent: (state, getters, rootState) => {
+        const type = rootState?.gui?.general?.calcPrintProgress ?? 'file-relative'
+        switch (type) {
+            case 'file-relative':
+                return getters['getPrintPercentByFilepositionRelative']
+            case 'file-absolute':
+                return getters['getPrintPercentByFilepositionAbsolute']
+            case 'slicer':
+                return getters['getPrintPercentBySlicer']
+            case 'filament':
+                return getters['getPrintPercentByFilament']
+
+            default:
+                return getters['getPrintPercentByFilepositionRelative']
+        }
+    },
+
+    getPrintPercentByFilepositionRelative: (state) => {
         if (
             state.current_file?.filename &&
             state.current_file?.gcode_start_byte &&
@@ -50,6 +67,27 @@ export const getters: GetterTree<PrinterState, RootState> = {
             const maxPosition = state.current_file.gcode_end_byte - state.current_file.gcode_start_byte
 
             if (currentPosition > 0 && maxPosition > 0) return (1 / maxPosition) * currentPosition
+        }
+
+        return state.virtual_sdcard?.progress ?? 0
+    },
+
+    getPrintPercentByFilepositionAbsolute: (state) => {
+        return state.virtual_sdcard?.progress ?? 0
+    },
+
+    getPrintPercentBySlicer: (state) => {
+        return state.display_status?.progress ?? 0
+    },
+
+    getPrintPercentByFilament: (state) => {
+        const filament_used = state.print_stats?.filament_used ?? null
+        const filament_total = state.current_file?.filament_total ?? null
+
+        if (filament_used !== null && filament_total !== null) {
+            if (filament_total == 0) return 0
+
+            return filament_used / filament_total
         }
 
         return state.virtual_sdcard?.progress ?? 0
