@@ -1,27 +1,3 @@
-<style>
-.topbar .v-toolbar__content {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-}
-</style>
-<style scoped>
-.button-min-width-auto {
-    min-width: auto !important;
-}
-.topbar .v-btn {
-    height: 100% !important;
-    max-height: none;
-}
-.topbar .v-btn.v-btn--icon {
-    width: var(--topbar-icon-btn-width) !important;
-}
-@media (min-width: 768px) {
-    header.topbar {
-        z-index: 8 !important;
-    }
-}
-</style>
-
 <template>
     <div>
         <v-app-bar app elevate-on-scroll :height="topbarHeight" class="topbar pa-0" clipped-left>
@@ -344,3 +320,27 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style>
+.topbar .v-toolbar__content {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+</style>
+<style scoped>
+.button-min-width-auto {
+    min-width: auto !important;
+}
+.topbar .v-btn {
+    height: 100% !important;
+    max-height: none;
+}
+.topbar .v-btn.v-btn--icon {
+    width: var(--topbar-icon-btn-width) !important;
+}
+@media (min-width: 768px) {
+    header.topbar {
+        z-index: 8 !important;
+    }
+}
+</style>
