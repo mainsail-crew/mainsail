@@ -175,6 +175,7 @@
         "Free": "Free",
         "FreeDisk": "Free disk",
         "GCodeFiles": "G-Code Files",
+        "GcodesRootDirectoryDoesntExists": "No Gcodes-Directory detected. Please check the path in your virtual_sdcard section in your Klipper config.",
         "HiddenFiles": "Hidden files",
         "LastEndTime": "Last End Time",
         "LastFilamentUsed": "Last Filament Used",

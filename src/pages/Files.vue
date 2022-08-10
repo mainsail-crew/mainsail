@@ -1,5 +1,5 @@
 <template>
-    <v-row v-if="true">
+    <v-row v-if="existGcodesRootDirectory">
         <v-col :class="showJobQueue ? 'col-12 col-md-8 pt-0 pt-md-3 order-1 order-md-0' : 'col-12'">
             <gcodefiles-panel></gcodefiles-panel>
         </v-col>
@@ -16,7 +16,7 @@
             class="mx-auto mt-6"
             max-width="500"
             :icon="mdiLockOutline">
-            {{ $t('Heightmap.ErrorKlipperNotReady') }}
+            {{ $t('Files.GcodesRootDirectoryDoesntExists') }}
         </v-alert>
     </v-row>
 </template>
