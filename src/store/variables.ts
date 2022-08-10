@@ -50,6 +50,7 @@ export const allowedMetadata = [
     'nozzle_diameter',
     'first_layer_bed_temp',
     'first_layer_extr_temp',
+    'chamber_temp',
     'first_layer_height',
     'gcode_end_byte',
     'gcode_start_byte',
