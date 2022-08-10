@@ -43,11 +43,7 @@
                 <span class="d-none d-md-inline">{{ $t('App.TopBar.SAVE_CONFIG') }}</span>
             </v-btn>
             <v-btn
-                v-if="
-                    klippyIsConnected &&
-                    ['standby', 'complete', 'cancelled'].includes(printer_state) &&
-                    !boolHideUploadAndPrintButton
-                "
+                v-if="boolShowUploadAndPrint"
                 tile
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
@@ -222,6 +218,21 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     get logoColor(): string {
         return this.$store.state.gui.uiSettings.logo
+    }
+
+    get existGcodesRootDirectory() {
+        const roots = this.$store.state.server.registered_directories
+
+        return roots.findIndex((root: string) => root === 'gcodes') >= 0
+    }
+
+    get boolShowUploadAndPrint() {
+        return (
+            this.klippyIsConnected &&
+            this.existGcodesRootDirectory &&
+            ['standby', 'complete', 'cancelled'].includes(this.printer_state) &&
+            !this.boolHideUploadAndPrintButton
+        )
     }
 
     btnEmergencyStop() {
