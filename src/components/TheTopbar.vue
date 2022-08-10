@@ -220,12 +220,6 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         return this.$store.state.gui.uiSettings.logo
     }
 
-    get existGcodesRootDirectory() {
-        const roots = this.$store.state.server.registered_directories
-
-        return roots.findIndex((root: string) => root === 'gcodes') >= 0
-    }
-
     get boolShowUploadAndPrint() {
         return (
             this.klippyIsConnected &&

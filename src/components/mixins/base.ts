@@ -81,4 +81,10 @@ export default class BaseMixin extends Vue {
     get moonrakerComponents() {
         return this.$store.state.server?.components ?? []
     }
+
+    get existGcodesRootDirectory() {
+        const roots = this.$store.state.server.registered_directories
+
+        return roots.findIndex((root: string) => root === 'gcodes') >= 0
+    }
 }
