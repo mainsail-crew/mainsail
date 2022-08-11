@@ -97,12 +97,7 @@ export default class MoveToInput extends Mixins(BaseMixin) {
 }
 </script>
 
-<style>
-label {
-    font-size: 14px !important;
-    color: rgba(255, 255, 255, 0.5) !important;
-}
-
+<style scoped lang="scss">
 .v-input.error--text .v-input__slot {
     padding-left: 3px !important;
 }
