@@ -127,7 +127,7 @@
                                 </v-col>
                             </v-row>
                             <v-row v-if="form.service === 'mjpegstreamer-adaptive'">
-                                <v-col class="py-2">
+                                <v-col class="py-2 col-6">
                                     <v-text-field
                                         v-model="form.targetFps"
                                         outlined
@@ -135,9 +135,7 @@
                                         hide-details
                                         :label="$t('Settings.WebcamsTab.TargetFPS')"></v-text-field>
                                 </v-col>
-                            </v-row>
-                            <v-row v-if="form.service === 'mjpegstreamer-adaptive'">
-                                <v-col class="py-2">
+                                <v-col class="py-2 col-6">
                                     <v-select
                                         v-model="form.rotate"
                                         :items="rotateItems"
