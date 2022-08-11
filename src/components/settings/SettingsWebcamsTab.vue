@@ -66,7 +66,7 @@
                     <v-row>
                         <v-col class="col-12 col-sm-6">
                             <v-row>
-                                <v-col class="d-flex align-center">
+                                <v-col class="d-flex">
                                     <v-item-group>
                                         <v-menu :offset-y="true" title="Icon">
                                             <template #activator="{ on, attrs }">
