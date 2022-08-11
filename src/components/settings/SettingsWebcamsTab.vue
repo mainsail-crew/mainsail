@@ -1,30 +1,3 @@
-<style lang="scss" scoped>
-._transition i::before {
-    transition: transform 500ms;
-}
-._rotate-180:before {
-    transform: rotate(180deg);
-}
-
-.v-item-group {
-    button:hover::before,
-    button:focus::before {
-        opacity: 0 !important;
-    }
-    ._menu-button {
-        height: 40px;
-        width: 62px;
-        border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    }
-    ._menu-button:hover {
-        border-color: rgba(255, 255, 255, 1) !important;
-    }
-    ._menu-button:focus {
-        border: 2px solid var(--color-primary) !important;
-    }
-}
-</style>
-
 <template>
     <div>
         <v-card v-if="!form.bool" flat>
@@ -424,3 +397,30 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+._transition i::before {
+    transition: transform 500ms;
+}
+._rotate-180:before {
+    transform: rotate(180deg);
+}
+
+.v-item-group {
+    button:hover::before,
+    button:focus::before {
+        opacity: 0 !important;
+    }
+    ._menu-button {
+        height: 40px;
+        width: 62px;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    }
+    ._menu-button:hover {
+        border-color: rgba(255, 255, 255, 1) !important;
+    }
+    ._menu-button:focus {
+        border: 2px solid var(--color-primary) !important;
+    }
+}
+</style>
