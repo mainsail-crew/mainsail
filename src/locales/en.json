@@ -21,6 +21,7 @@
             "Never": "never",
             "NextReboot": "next reboot",
             "NoNotification": "No Notification available",
+            "Notifications": "Notifications",
             "Remind": "Remind:"
         },
         "NumberInput": {
