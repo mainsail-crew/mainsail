@@ -271,59 +271,63 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         return [
             {
                 name: 'general',
-                label: this.$t('Settings.GeneralTab.General') + '',
+                label: this.$t('Settings.GeneralTab.General').toString(),
             },
             {
                 name: 'console',
-                label: this.$t('Settings.ConsoleTab.Console') + '',
+                label: this.$t('Settings.ConsoleTab.Console').toString(),
             },
             {
                 name: 'control',
-                label: this.$t('Settings.ControlTab.Control') + '',
+                label: this.$t('Settings.ControlTab.Control').toString(),
             },
             {
                 name: 'dashboard',
-                label: this.$t('Settings.DashboardTab.Dashboard') + '',
+                label: this.$t('Settings.DashboardTab.Dashboard').toString(),
             },
             {
                 name: 'editor',
-                label: this.$t('Settings.EditorTab.Editor') + '',
+                label: this.$t('Settings.EditorTab.Editor').toString(),
             },
             {
-                name: 'gcodeviewer',
-                label: this.$t('Settings.GCodeViewerTab.GCodeViewer') + '',
+                name: 'gcodeViewer',
+                label: this.$t('Settings.GCodeViewerTab.GCodeViewer').toString(),
             },
             {
                 name: 'gcodehistory',
-                label: this.$t('Settings.GeneralTab.DbConsoleHistory') + '',
+                label: this.$t('Settings.GeneralTab.DbConsoleHistory').toString(),
             },
             {
                 name: 'macros',
-                label: this.$t('Settings.MacrosTab.Macros') + '',
+                label: this.$t('Settings.MacrosTab.Macros').toString(),
+            },
+            {
+                name: 'notifications',
+                label: this.$t('App.Notifications.Notifications').toString(),
             },
             {
                 name: 'presets',
-                label: this.$t('Settings.PresetsTab.PreheatPresets') + '',
+                label: this.$t('Settings.PresetsTab.PreheatPresets').toString(),
             },
             {
                 name: 'remoteprinters',
-                label: this.$t('Settings.RemotePrintersTab.RemotePrinters') + '',
+                label: this.$t('Settings.RemotePrintersTab.RemotePrinters').toString(),
             },
             {
                 name: 'timelapse',
-                label: this.$t('Settings.TimelapseTab.Timelapse') + '',
+                label: this.$t('Settings.TimelapseTab.Timelapse').toString(),
             },
             {
                 name: 'uiSettings',
-                label: this.$t('Settings.UiSettingsTab.UiSettings') + '',
+                label: this.$t('Settings.UiSettingsTab.UiSettings').toString(),
             },
             {
                 name: 'view',
-                label: this.$t('Settings.GeneralTab.DbView') + '',
+                label: this.$t('Settings.GeneralTab.DbView').toString(),
             },
             {
                 name: 'webcams',
-                label: this.$t('Settings.WebcamsTab.Webcams') + '',
+                label: this.$t('Settings.WebcamsTab.Webcams').toString(),
             },
         ]
     }
