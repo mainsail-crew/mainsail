@@ -175,6 +175,7 @@
         "Free": "Frei",
         "FreeDisk": "Freier Speicherplatz",
         "GCodeFiles": "G-Code Dateien",
+        "GcodesRootDirectoryDoesntExists": "Keinen G-Code-Ordner gefunden. Bitte überpüfe den Pfad in der virtual_sdcard Sektion in der Klipper-Konfig.",
         "HiddenFiles": "Versteckte Dateien",
         "LastEndTime": "Letzte Endzeit",
         "LastFilamentUsed": "Letzter Filamentverbrauch",
