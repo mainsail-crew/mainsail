@@ -359,6 +359,7 @@
             "AllFiles": "All",
             "Cancel": "Cancel",
             "ConfigFiles": "Config Files",
+            "ConfigRootDirectoryDoesntExists": "No configuration directory found. Please check option \"config_path\" in the [file_manager] section of the Moonraker configuration.",
             "Create": "Create",
             "CreateDirectory": "Create Directory",
             "CreateFile": "Create File",
