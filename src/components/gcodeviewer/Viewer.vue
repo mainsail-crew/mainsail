@@ -1,46 +1,3 @@
-<!-- Because the viewer lives outside of the components DOM it can't be scoped -->
-<style>
-.viewer {
-    width: 100%;
-    height: calc(var(--app-height) - 240px);
-    border: 1px solid #3f3f3f;
-}
-
-.withScrubber .viewer {
-    height: calc(var(--app-height) - 300px);
-}
-
-@media (min-width: 600px) and (max-width: 959px) {
-    .viewer {
-        height: calc(var(--app-height) - 295px);
-    }
-
-    .withScrubber .viewer {
-        height: calc(var(--app-height) - 360px);
-    }
-}
-
-@media (max-width: 599px) {
-    .viewer {
-        height: calc(var(--app-height) - 340px);
-    }
-
-    .withScrubber .viewer {
-        height: calc(var(--app-height) - 340px);
-    }
-}
-</style>
-
-<style scoped>
-.scrubber {
-    position: relative;
-    left: 0;
-    right: 0;
-    bottom: 5px;
-    z-index: 19 !important;
-}
-</style>
-
 <template>
     <div>
         <panel :title="panelTitle" :icon="mdiVideo3d" card-class="gcode-viewer-panel" :margin-bottom="false">
@@ -1068,3 +1025,46 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<!-- Because the viewer lives outside of the components DOM it can't be scoped -->
+<style>
+.viewer {
+    width: 100%;
+    height: calc(var(--app-height) - 240px);
+    border: 1px solid #3f3f3f;
+}
+
+.withScrubber .viewer {
+    height: calc(var(--app-height) - 300px);
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+    .viewer {
+        height: calc(var(--app-height) - 295px);
+    }
+
+    .withScrubber .viewer {
+        height: calc(var(--app-height) - 360px);
+    }
+}
+
+@media (max-width: 599px) {
+    .viewer {
+        height: calc(var(--app-height) - 340px);
+    }
+
+    .withScrubber .viewer {
+        height: calc(var(--app-height) - 340px);
+    }
+}
+</style>
+
+<style scoped>
+.scrubber {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+    z-index: 19 !important;
+}
+</style>
