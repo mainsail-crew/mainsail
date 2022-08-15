@@ -32,6 +32,7 @@ jobs:
         if: steps.changed-file-package-json.outputs.any_changed == 'true'
         uses: actions/github-script@v6
         with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             github.rest.issues.addLabels({
               issue_number: context.issue.number,
