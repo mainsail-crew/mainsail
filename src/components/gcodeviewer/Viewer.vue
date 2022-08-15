@@ -1065,6 +1065,5 @@ export default class Viewer extends Mixins(BaseMixin) {
     left: 0;
     right: 0;
     bottom: 5px;
-    z-index: 19 !important;
 }
 </style>
