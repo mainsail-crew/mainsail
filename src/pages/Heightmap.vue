@@ -263,8 +263,8 @@
         </v-row>
         <v-row v-else>
             <v-alert
-                border="left"
-                colored-border
+                dense
+                text
                 type="warning"
                 elevation="2"
                 class="mx-auto mt-6"
