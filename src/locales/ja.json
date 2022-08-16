@@ -21,6 +21,7 @@
             "Never": "何もしない",
             "NextReboot": "次回再起動時",
             "NoNotification": "非通知を有効",
+            "Notifications": "通知",
             "Remind": "注意喚起:"
         },
         "NumberInput": {
@@ -111,6 +112,7 @@
         "CheckMoonrakerLog": "このメッセージが繰り返し表示される場合は、以下のログファイルを参照してください。:",
         "Connecting": "{host}に接続中",
         "Failed": "接続に失敗しました",
+        "Initializing": "初期化中",
         "TryAgain": "再試行してください"
     },
     "Console": {
@@ -131,13 +133,11 @@
         }
     },
     "Editor": {
-        "Cancel": "取り消し",
         "ConfigReference": "設定の参考",
         "DontSave": "保存しない",
         "Downloading": "ダウンロード中",
         "FailedSave": "{filename}をアップロードできませんでした!",
         "FileReadOnly": "読み取り専用",
-        "Minimap": "ミニマップの表示",
         "SaveClose": "保存してクローズ",
         "SaveRestart": "保存して再始動",
         "SuccessfullySaved": "{filename}が保存されました",
