@@ -1,4 +1,4 @@
-name: 'Auto add analyze label if package.json was edited'
+name: 'Auto analyze if package.json was edited'
 
 on:
   pull_request:
@@ -9,34 +9,30 @@ permissions:
   pull-requests: write
 
 jobs:
-  add-analyze-label:
-    name: 'Add analyze label'
+  auto-analyze:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v24.1
-
-      - name: Get package.json is changed file
+      - name: Check package.json was changed
         id: changed-file-package-json
-        uses: tj-actions/changed-files@v24.1
+        uses: tj-actions/changed-files@v23
         with:
-          files: |
-            package.json
+          sha: ${{ github.event.pull_request.head.sha }}
 
-      - name: Add Label
-        if: steps.changed-file-package-json.outputs.any_changed == 'true'
-        uses: actions/github-script@v6
+      - name: Install node
+        uses: actions/setup-node@v3
+        if: contains(steps.changed-file-package-json.outputs.modified_files, 'package.json')
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            github.rest.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['analyze']
-            })
+          node-version: '16'
+          cache: 'npm'
+
+      - uses: preactjs/compressed-size-action@v2
+        if: contains(steps.changed-file-package-json.outputs.modified_files, 'package.json')
+        with:
+          strip-hash: "\\b\\w{8}\\."
+          pattern: './dist/**/*.{js,css,html,json,woff2,svg,png}'
+          exclude: '{./dist/manifest.json,./dist/build.zip,**/*.map,**/node_modules/**}'
