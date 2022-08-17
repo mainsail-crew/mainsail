@@ -21,6 +21,7 @@
             "Never": "何もしない",
             "NextReboot": "次回再起動時",
             "NoNotification": "非通知を有効",
+            "Notifications": "通知",
             "Remind": "注意喚起:"
         },
         "NumberInput": {
@@ -111,6 +112,7 @@
         "CheckMoonrakerLog": "このメッセージが繰り返し表示される場合は、以下のログファイルを参照してください。:",
         "Connecting": "{host}に接続中",
         "Failed": "接続に失敗しました",
+        "Initializing": "初期化中",
         "TryAgain": "再試行してください"
     },
     "Console": {
@@ -131,13 +133,11 @@
         }
     },
     "Editor": {
-        "Cancel": "取り消し",
         "ConfigReference": "設定の参考",
         "DontSave": "保存しない",
         "Downloading": "ダウンロード中",
         "FailedSave": "{filename}をアップロードできませんでした!",
         "FileReadOnly": "読み取り専用",
-        "Minimap": "ミニマップの表示",
         "SaveClose": "保存してクローズ",
         "SaveRestart": "保存して再始動",
         "SuccessfullySaved": "{filename}が保存されました",
@@ -155,7 +155,9 @@
     "Files": {
         "AddToQueue": "ジョブキューに追加",
         "AllFiles": "すべてのファイル",
+        "BedTemp": "ベッド温度",
         "Cancel": "取り消し",
+        "ChamberTemp": "チャンバー温度",
         "Create": "作成",
         "CreateNewDirectory": "新規ディレクトリの作成",
         "CurrentPath": "現在のパス",
@@ -164,9 +166,9 @@
         "DeleteDirectoryQuestion": "ディレクトリ\"{name}\"と中に含まれるすべてのファイルが削除されます。よろしいですか？",
         "DeleteSelectedQuestion": "選択された {count}個のファイルを削除します。よろしいですか？",
         "Download": "ダウンロード",
-        "Downloading": "ダウンロード中",
         "EditFile": "ファイル編集",
         "Empty": "空",
+        "ExtruderTemp": "エクストルーダー温度",
         "Filament": "フィラメント",
         "FilamentName": "フィラメント名",
         "FilamentType": "材質",
@@ -177,6 +179,7 @@
         "Free": "空き",
         "FreeDisk": "空きディスク",
         "GCodeFiles": "Gコードファイル",
+        "GcodesRootDirectoryDoesntExists": "Gコードディレクトリが見つかりませんでした。Klipperの設定[virtual_sdcard]セクションの\"path\"オプションを確認してください。",
         "HiddenFiles": "隠し属性ファイル",
         "LastEndTime": "直近の終了時刻",
         "LastFilamentUsed": "直近の使用量",
@@ -206,7 +209,6 @@
         "SuccessfullyRenamed": "{filename}の名前が変更されました。",
         "SuccessfullyUploaded": "{filename}がアップロードされました!",
         "Total": "総計",
-        "Uploading": "アップロード中",
         "UploadNewGcode": "新しいGコードファイルをアップロード",
         "Used": "使用済み",
         "View3D": "3Dビュー"
@@ -259,6 +261,9 @@
         "ErrorKlipperNotReady": "Klipperは準備できていません。高低マップは無効になりました。",
         "Flat": "平面",
         "Heightmap": "高低マップ",
+        "InvalidNameAlreadyExists": "プロファイル名は既に存在しています。違う名前をつけてください。",
+        "InvalidNameEmpty": "名前の入力は空であってはなりません!",
+        "InvalidNameReserved": "プロファイル名 'default' は予約されています。違う名前をつけてください。",
         "Later": "あとで",
         "Mesh": "メッシュ",
         "Name": "名前",
@@ -284,6 +289,7 @@
         "AllJobs": "全ジョブ",
         "AvgPrinttime": "平均印刷時間",
         "Cancel": "取り消し",
+        "ChamberTemp": "チャンバー温度",
         "CreateNote": "メモ作成",
         "Delete": "削除",
         "DeleteSelectedQuestion": "選択された {count}個のジョブを削除します。よろしいですか?",
@@ -358,6 +364,7 @@
             "AllFiles": "すべてのファイル",
             "Cancel": "取り消し",
             "ConfigFiles": "設定ファイル",
+            "ConfigRootDirectoryDoesntExists": "設定ディレクトリが見つかりませんでした。Moonrakerの設定[file_manager]セクションの\"config_path\"オプションを確認してください。",
             "Create": "作成",
             "CreateDirectory": "ディレクトリ作成",
             "CreateFile": "ファイル作成",
@@ -391,7 +398,7 @@
         },
         "EndstopPanel": {
             "Endstop": "エンドストップ",
-            "EndstopInfo": "Press the sync-button on the right-bottom to load the current endstop status.",
+            "EndstopInfo": "右下の同期ボタンを押すと現在のエンドストップの状態を読み込みます。",
             "Endstops": "エンドストップ",
             "open": "オープン",
             "TRIGGERED": "トリガー"
@@ -449,22 +456,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "すべて",
-            "AlternateControls": "代替コントロール",
-            "Headline": "コントロール",
-            "InvertX": "X軸反転",
-            "InvertY": "Y軸反転",
-            "InvertZ": "Z軸反転",
-            "PleaseConfigureSteps": "ステップを設定してください",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "設定 > インターフェース > コントロール",
-            "SetupControls": "コントロール設定",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z軸チルト"
-        },
         "ExtruderControlPanel": {
             "Allowed": "許可",
             "EstimatedExtrusion": "推定押し出し量:",
@@ -484,7 +475,6 @@
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "エクストルーダー",
-                "PressureAdvance": "Pressure Advance",
                 "SmoothTime": "スムーズ時間"
             },
             "Requested": "要求",
@@ -584,7 +574,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "グラフの自動調整",
             "Avg": "平均",
-            "Color": "色",
             "Cooldown": "クールダウン",
             "Current": "温度",
             "Dataset": {
@@ -613,21 +602,13 @@
             "ALL": "すべて",
             "Headline": "ツールヘッド",
             "Invalid": "無効",
-            "InvertX": "X反転",
-            "InvertY": "Y反転",
-            "InvertZ": "Z反転",
-            "MotorsOff": "モーターオフ",
             "OutOfRange": "範囲外です!",
             "PleaseConfigureSteps": "ステップを設定をしてください",
             "Position": "位置",
             "QGL": "QGL",
             "Relative": "相対",
             "SettingsInterfaceControl": "設定 > インターフェース > コントロール",
-            "SetupControls": "コントロール設定",
             "SpeedFactor": "速度係数",
-            "XOffset": "X軸オフセット",
-            "YOffset": "Y軸オフセット",
-            "ZOffset": "Z軸オフセット",
             "ZTilt": "Z軸チルト"
         },
         "WebcamPanel": {
@@ -635,12 +616,10 @@
             "FPS": "FPS",
             "Headline": "カメラ",
             "NoWebcam": "カメラがありません。\"インターフェース設定\" -> \"カメラ\"からカメラを追加してください。",
-            "UnknownWebcamService": "不明なカメラサービス",
-            "UrlNotAvailable": "URLがありません"
+            "UnknownWebcamService": "不明なカメラサービス"
         },
         "ZoffsetPanel": {
             "Clear": "初期化",
-            "CurrentOffset": "現在のオフセット",
             "Headline": "Z軸オフセット",
             "Later": "あとで",
             "Ok": "OK",
@@ -674,6 +653,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "プリンター追加",
+        "AddPrintersToJson": "config.jsonにプリンターを追加してください。",
         "CannotConnectTo": "{host}に接続できません",
         "ChangePrinter": "プリンター変更",
         "Connecting": "{host}に接続中",
@@ -685,7 +665,7 @@
         "HostnameRequired": "ホスト名が必要です",
         "Port": "ポート",
         "PortRequired": "ポート番号が必要です",
-        "RememberToAdd": "Please remember to add {cors} in moonraker.conf within 'cors_domains'.",
+        "RememberToAdd": "moonraker.confの'cors_domains'に{cors}を忘れずに追加してください。",
         "SelectPrinter": "プリンター選択",
         "TryAgain": "再試行",
         "UpdatePrinter": "プリンター更新",
@@ -780,6 +760,14 @@
             "CalcEstimateTimeDescription": "複数選択した場合は、平均時間を算出します。",
             "CalcEtaTime": "推定完了時刻の計算",
             "CalcEtaTimeDescription": "複数選択した場合は、平均時間を算出します。",
+            "CalcPrintProgress": "印刷進捗の計算",
+            "CalcPrintProgressDescription": "印刷進捗の計算法",
+            "CalcPrintProgressItems": {
+                "Filament": "フィラメント",
+                "FileAbsolute": "ファイル位置(絶対)",
+                "FileRelative": "ファイル位置(相対)",
+                "Slicer": "スライサー(M73)"
+            },
             "CannotReadJson": "バックアップファイルの読み込み/解析ができません。",
             "DbConsoleHistory": "コンソール履歴",
             "DbHistoryJobs": "ジョブ履歴",
@@ -863,7 +851,8 @@
             "Hostname": "ホスト名",
             "Port": "ポート",
             "RemotePrinters": "プリンター",
-            "UpdatePrinter": "プリンター更新"
+            "UpdatePrinter": "プリンター更新",
+            "UseConfigJson": "InstanceDB = JSONが検出されました。プリンターリストはconfig.jsonで変更してください。"
         },
         "TimelapseTab": {
             "Autorender": "自動レンダリング",
@@ -979,6 +968,7 @@
             "Name": "名前",
             "NameAlreadyExists": "その名前は既に存在しています",
             "Required": "必須",
+            "Rotate": "回転",
             "SaveWebcam": "カメラ保存",
             "Service": "サービス",
             "TargetFPS": "目標FPS",
