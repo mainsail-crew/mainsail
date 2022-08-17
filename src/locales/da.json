@@ -1,10 +1,28 @@
 {
     "App": {
         "Notifications": {
+            "DependencyDescription": "Den nuværende version af {name} understøtter ikke alle funktioner i Mainsail. Opdatér {name} til minimum version: {neededVersion}.",
+            "DependencyName": "Afhængighed: {name}",
+            "DismissAll": "Fjern alle",
             "KlipperWarnings": {
                 "DeprecatedOption": "Funktionen \"{option}\" i sektion \"{section}\" er forældet.",
-                "DeprecatedValue": "Værdien \"{value}\" i muligheden \"{option}\" i sektion \"{section}\" er forældet."
-            }
+                "DeprecatedOptionHeadline": "Forældet Klipper mulighed",
+                "DeprecatedValue": "Værdien \"{value}\" i muligheden \"{option}\" i sektion \"{section}\" er forældet.",
+                "DeprecatedValueHeadline": "Forældet Klipper værdi",
+                "KlipperWarning": "Klipper advarsel"
+            },
+            "MoonrakerWarnings": {
+                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerFailedComponentDescription": "Der blev fundet en fejl under indlæsning af Moonraker komponenten '{component}'. Tjek logfilen og løs problemet.",
+                "MoonrakerWarning": "Moonraker advarsel",
+                "UnparsedConfigOption": "Upareret mulighed '{option}: {value}' fundet i sektionen: [{section}]. Denne mulighed er måske ikke længere tilgængelig, eller der kan være et problem under indlæsning af et modul. Dette vil resultere i en opstartsfejl.",
+                "UnparsedConfigSection": "Upareret konfigurationssektion [{section}] fundet. Dette kan være på grund af en fejl under indlæsning af en komponent. Dette vil resultere i en opstartsfejl."
+            },
+            "Never": "aldrig",
+            "NextReboot": "næste genstart",
+            "NoNotification": "Ingen tilgængelig notifikationer",
+            "Notifications": "Notifikationer",
+            "Remind": "Påmind mig om:"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Skal være større eller lig med {min}!",
@@ -94,6 +112,7 @@
         "CheckMoonrakerLog": "Hvis denne besked vises flere gange, kig da i logfilen her:",
         "Connecting": "Forbinder med {host}",
         "Failed": "Forbindelse fejlede",
+        "Initializing": "Initialiserer",
         "TryAgain": "Prøv igen"
     },
     "Console": {
@@ -104,14 +123,21 @@
         "SendCode": "Send kode...",
         "SetupConsole": "Terminalindstillinger"
     },
+    "Dialogs": {
+        "StartPrint": {
+            "Cancel": "Annuller",
+            "DoYouWantToStartFilename": "Vil du begynde at printe: {filename}?",
+            "Headline": "Start print",
+            "Print": "print",
+            "Timelapse": "Timelapse"
+        }
+    },
     "Editor": {
-        "Cancel": "Annuller",
         "ConfigReference": "Konfigurationsreference",
         "DontSave": "Gem ikke",
         "Downloading": "Downloader",
         "FailedSave": "{filename} blev IKKE gemt!",
         "FileReadOnly": "Skrivebeskyttet",
-        "Minimap": "Vis minikort",
         "SaveClose": "Gem & luk",
         "SaveRestart": "Gem & genstart",
         "SuccessfullySaved": "{filename} blev gemt.",
@@ -129,17 +155,20 @@
     "Files": {
         "AddToQueue": "Tilføj til kø",
         "AllFiles": "Alle",
+        "BedTemp": "Bed temperatur",
         "Cancel": "Annuller",
+        "ChamberTemp": "Indelukke temperatur",
         "Create": "Opret",
         "CreateNewDirectory": "Ny mappe",
         "CurrentPath": "Du er her",
         "Delete": "Slet",
         "DeleteDirectory": "Slet mappe",
         "DeleteDirectoryQuestion": "Vil du slette mappen \"{name}\" og alt dens indhold?",
+        "DeleteSelectedQuestion": "Vil du slette alle {count} valgte filer?",
         "Download": "Download",
-        "Downloading": "Downloader",
         "EditFile": "Rediger Fil",
         "Empty": "Tom",
+        "ExtruderTemp": "Hotend temperatur",
         "Filament": "Filament",
         "FilamentName": "Filament navn",
         "FilamentType": "Filament type",
@@ -151,7 +180,12 @@
         "FreeDisk": "Ledig plads",
         "GCodeFiles": "G-Code Filer",
         "HiddenFiles": "Skjulte filer",
+        "LastEndTime": "Sidste slut tid",
+        "LastFilamentUsed": "Sidste filament forbrug",
         "LastModified": "Sidst ændret",
+        "LastPrintDuration": "Sidste printtid",
+        "LastStartTime": "Sidste start tid",
+        "LastTotalDuration": "Sidste totale tid",
         "LayerHeight": "Laghøjde",
         "Name": "Navn",
         "NewDirectory": "Ny mappe",
@@ -174,10 +208,13 @@
         "SuccessfullyRenamed": "{filename} omdøbt.",
         "SuccessfullyUploaded": "Upload af {filename} udført!",
         "Total": "Total",
-        "Uploading": "Uploader",
         "UploadNewGcode": "Upload ny G-Code",
         "Used": "Brugt",
         "View3D": "Vis i 3D"
+    },
+    "FullscreenUpload": {
+        "CannotUploadFile": "Kan ikke uploade filen!",
+        "DropFilesToUploadFiles": "Drop filer her for at uploade"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Fjern",
@@ -223,6 +260,9 @@
         "ErrorKlipperNotReady": "Klipper er ikke klar. Kan ikke vise højdekort.",
         "Flat": "Fladt",
         "Heightmap": "Højdekort",
+        "InvalidNameAlreadyExists": "Profilnavnet bruges allerede, vælg venligst et andet profilnavn.",
+        "InvalidNameEmpty": "Feltet må ikke være tomt!",
+        "InvalidNameReserved": "Profilnavnet 'default' er reserveret af systemet, vælg venligst et andet profilnavn",
         "Later": "Senere",
         "Mesh": "Mesh",
         "Name": "Navn",
@@ -244,12 +284,16 @@
         "Wireframe": "Wireframe"
     },
     "History": {
+        "AddNote": "Tilføj note",
         "AllJobs": "Alle job",
         "AvgPrinttime": "Gns. printtid",
         "Cancel": "Annuller",
+        "ChamberTemp": "Indelukke temperatur",
+        "CreateNote": "Gem note",
         "Delete": "Slet",
         "DeleteSelectedQuestion": "Er du sikker på du vil slette alle {count} valgte jobs?",
         "Details": "Detaljer",
+        "EditNote": "Redigér note",
         "Empty": "Tom",
         "EndTime": "Sluttid",
         "EstimatedFilament": "Estimeret filament",
@@ -270,12 +314,14 @@
         "LastModified": "Sidst ændret",
         "LayerHeight": "Laghøjde",
         "LongestPrinttime": "Længste print",
+        "Note": "Note",
         "ObjectHeight": "Objekt Højde",
         "PrintDuration": "Print varighed",
         "PrintHistory": "Print historik",
         "PrintTime": "Print Tid",
         "PrinttimeAvg": "Printtid gns.",
         "Reprint": "Print igen",
+        "Save": "Gem",
         "Search": "Søg",
         "SelectedFilamentUsed": "Filament brugt på valgte",
         "SelectedJobs": "Valgte jobs",
@@ -309,6 +355,7 @@
         "JobQueue": "Jobkø",
         "Jobs": "Jobs",
         "Pause": "Pause",
+        "RemoveFromQueue": "Fjern fra køen",
         "Start": "Start"
     },
     "Machine": {
@@ -323,6 +370,7 @@
             "Delete": "Slet",
             "DeleteDirectory": "Slet mappe",
             "DeleteDirectoryQuestion": "Vil du slette mappen \"{name}\" og alt dens indhold?",
+            "DeleteSelectedQuestion": "Vil du slette alle {count} valgte filer?",
             "Download": "Download",
             "EditFile": "Rediger fil",
             "Empty": "Tom",
@@ -357,14 +405,14 @@
             "Logfiles": "Logfiler"
         },
         "SystemPanel": {
-            "Constants": "Constants",
+            "Constants": "Konstanter",
             "Cpu": "CPU",
-            "HostDetails": "Host details",
-            "LastStats": "Last stats",
-            "Load": "Load",
-            "Memory": "MEM",
-            "NoMoreInfos": "No more Infos",
-            "SystemLoad": "System Loads",
+            "HostDetails": "Værtsdetaljer",
+            "LastStats": "Sidste detaljer",
+            "Load": "Belastning",
+            "Memory": "RAM",
+            "NoMoreInfos": "Ikke mere info",
+            "SystemLoad": "Systembelastninger",
             "Values": {
                 "Awake": "Vågen/Aktiv: {awake}",
                 "Bandwidth": "Båndbredde: {bandwidth}/s",
@@ -406,27 +454,31 @@
         }
     },
     "Panels": {
-        "DependenciesPanel": {
-            "Dependency": "Afhængighed | Afhængigheder",
-            "DependencyDescription": "Din nuværende version af {name} understøtter ikke alle funktioner i Mainsail. Opdater {name} til mindst version {neededVersion}."
-        },
         "ExtruderControlPanel": {
+            "Allowed": "Tilladt",
+            "EstimatedExtrusion": "Estimeret ekstrudering",
             "Extrude": "Extrude",
             "ExtruderTempTooLow": "Hotend temp. <",
+            "ExtrusionFactor": "Ekstruderingsfaktor",
+            "ExtrusionFeedrate": "Ekstruderingsfødehastighed",
+            "FilamentLength": "Filamentlængde",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Retract længde",
                 "RetractSpeed": "Retract hastighed",
                 "UnretractExtraLength": "Unretract ekstra længde",
                 "UnretractSpeed": "Unretract hastighed"
             },
-            "Headline": "Extruder Kontrolpanel",
+            "Headline": "Ekstruder Kontrolpanel",
+            "LoadFilament": "Fød filament",
             "PressureAdvanceSettings": {
                 "Advance": "Advance",
-                "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
+                "Extruder": "Ekstruder",
                 "SmoothTime": "Smooth Time"
             },
-            "Retract": "Retract"
+            "Requested": "Anmodet",
+            "Retract": "Retract",
+            "TooLargeExtrusion": "Ekstruderingen er for lang!",
+            "UnloadFilament": "Fjern filament"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Genopret forbindelse",
@@ -484,6 +536,8 @@
             "CancelPrint": "Afbryd print",
             "ClearPrintStats": "Slet printstatistik",
             "Difference": "Opvarmning",
+            "EmptyGcodes": "Ingen G-kode tilgængelig.",
+            "EmptyJobqueue": "Der er ingen jobs i kø.",
             "Estimate": "Estimeret",
             "ETA": "ETA",
             "ExcludeObject": {
@@ -495,25 +549,29 @@
             },
             "Filament": "Filament",
             "File": "Fil",
+            "Files": "Filer",
             "Flow": "Flow",
             "Headline": "Status",
+            "Jobqueue": "Jobkø: ({count})",
+            "JobqueueMoreFiles": "Ikke flere jobs | Et job til | {count} jobs tilbage",
             "Layer": "Lag",
             "Max": "maks",
             "ObjectHeight": "Objekt Højde",
             "PausePrint": "Pause print",
             "Print": "Reel printtid",
+            "PrintTime": "Print Tid",
             "ReprintJob": "Print job igen",
             "Requested": "Anmodet",
             "ResumePrint": "Genoptag print",
             "Slicer": "Slicer",
             "Speed": "Hastighed",
+            "Status": "Status",
             "Total": "Total",
             "Unknown": "Ukendt"
         },
         "TemperaturePanel": {
             "AutoscaleChart": "Autoskalér diagram",
             "Avg": "Gns",
-            "Color": "Farve",
             "Cooldown": "Nedkøling",
             "Current": "Nuværende",
             "Dataset": {
@@ -541,15 +599,13 @@
             "Absolute": "absolut",
             "ALL": "Alle",
             "Headline": "Kontrolpanel",
-            "InvertX": "Invertér X",
-            "InvertY": "Invertér Y",
-            "InvertZ": "Invertér Z",
+            "Invalid": "Ugyldig",
+            "OutOfRange": "Uden for grænse!",
             "PleaseConfigureSteps": "Konfigurer steps",
             "Position": "Position",
             "QGL": "QGL",
             "Relative": "relativ",
             "SettingsInterfaceControl": "Indstillinger > Interface > Control",
-            "SetupControls": "Kontrolindstillinger",
             "SpeedFactor": "Hastighed",
             "ZTilt": "Z Tilt"
         },
@@ -557,11 +613,11 @@
             "All": "Alle",
             "FPS": "FPS",
             "Headline": "Webcam",
-            "UnknownWebcamService": "Ukendt Webcam service",
-            "UrlNotAvailable": "URL ikke tilgængelig"
+            "NoWebcam": "Intet webcam tilgængeligt. Tilføj et under \"Interfaceindstillinger\" -> \"Webcams\".",
+            "UnknownWebcamService": "Ukendt Webcam service"
         },
         "ZoffsetPanel": {
-            "CurrentOffset": "Nuværende offset",
+            "Clear": "Nulstil",
             "Headline": "Z-Offset",
             "Later": "Senere",
             "Ok": "OK",
@@ -595,6 +651,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Tilføj Printer",
+        "AddPrintersToJson": "Tilføj venligst Printere til config.json.",
         "CannotConnectTo": "Kan ikke forbinde med {host}.",
         "ChangePrinter": "Skift Printer",
         "Connecting": "Forbinder med {host}",
@@ -626,6 +683,7 @@
             "EntryStyle": "Indtastnings-Design",
             "EntryStyleCompact": "Kompakt",
             "EntryStyleDefault": "Standard",
+            "Filters": "Filtre",
             "Height": "Højde",
             "HideTemperatures": "Skjul temperaturer",
             "HideTimelapse": "Skjul Timelapse",
@@ -639,21 +697,29 @@
             "Circle": "Cirkel",
             "Control": "Kontrol",
             "Cross": "Kryds",
+            "EnableXYHoming": "Aktivér kombineret X & Y homing",
+            "EstimatedExtrusionInfo": "Vis estimerede ekstruderingsinformationer",
+            "EstimatedExtrusionInfoDescription": "Vis/Skjul information om estimerede ekstruderinger baseret på eksrtuderingsmængde og hastighed",
             "InvertXMovement": "Invertér X",
             "InvertYMovement": "Invertér Y",
             "InvertZMovement": "Invertér Z",
+            "IsDefault": "Standard",
             "MaximumValues": "Maksimumværdier",
             "MaximumValuesVisibility": "Vis maksimumværdier",
             "MinimumValues": "Minimumsværdier",
+            "MotorsOff": "Slukkede motorer{isDefault}",
             "MoveDistancesEInMm": "Distance E i mm",
             "MoveDistancesInMm": "Distance i mm",
             "MoveDistancesXYInMm": "Distance XY i mm",
             "MoveDistancesZInMm": "Distance Z i mm",
+            "QuadGantryLevel": "Firarms nivellering {isDefault}",
             "SpeedEInMms": "Hastighed E i mm/s",
             "SpeedXY": "Hastighed XY",
             "SpeedZ": "Hastighed Z",
             "Style": "Stil",
-            "ValueGreaterThan": "Værdi større end"
+            "ValueGreaterThan": "Værdi større end {value}",
+            "ZOffsetIncrements": "Z-offset trin (i mm)",
+            "ZTiltAdjust": "Z-Tilt justering{isDefault}"
         },
         "DashboardTab": {
             "Dashboard": "Kontrolpanel",
@@ -677,11 +743,12 @@
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Baggrundsfarve",
-            "ExtruderColor": "Extruder farve",
+            "ExtruderColor": "Ekstruder farve",
             "GCodeViewer": "G-Code viser",
             "GridColor": "Grid farve",
             "MaxFeed": "Maksimum hastighed",
             "MinFeed": "Minimum hastighed",
+            "ProgressColor": "Fremgangsfarve",
             "ShowAxes": "Vis akser"
         },
         "GeneralTab": {
@@ -691,6 +758,14 @@
             "CalcEstimateTimeDescription": "Hvis flere er valgt vil et gennemsnit blive brugt",
             "CalcEtaTime": "Beregn sluttidspunkt for print",
             "CalcEtaTimeDescription": "Hvis flere er valgt vil et gennemsnit blive brugt",
+            "CalcPrintProgress": "Fremgangsberegning",
+            "CalcPrintProgressDescription": "Metode til beregning af fremgang.",
+            "CalcPrintProgressItems": {
+                "Filament": "Filament",
+                "FileAbsolute": "Filposition (absolut)",
+                "FileRelative": "Filposition (relativ)",
+                "Slicer": "Slicer (M73)"
+            },
             "CannotReadJson": "Kan ikke læse backup-fil",
             "DbConsoleHistory": "Terminal Historik",
             "DbHistoryJobs": "Jobhistorik",
@@ -757,9 +832,13 @@
             "CustomGCode": "Brugerdefineret G-Code",
             "EditCooldown": "Rediger nedkøling",
             "EditHeadline": "Rediger forudindstilling",
+            "ErrorInvalidValue": "Ugyldig værdi",
+            "ErrorNameNotUnique": "Navnet er allerede i brug",
+            "ErrorNameRequired": "Navn skal udfyldes",
             "Name": "Navn",
             "PreheatPresets": "Forudindstillinger",
             "PresetInfo": "Du skal indstille mindst én temperatur eller g-kode.",
+            "PresetNamePlaceholder": "Navn (skal udfyldes)",
             "StoreButton": "Gem forudindstilling",
             "UpdateButton": "Opdater forudindstilling",
             "UpdateCooldown": "Opdater nedkøling"
@@ -770,7 +849,8 @@
             "Hostname": "Værtsnavn",
             "Port": "Port",
             "RemotePrinters": "Printere",
-            "UpdatePrinter": "Opdater printer"
+            "UpdatePrinter": "Opdater printer",
+            "UseConfigJson": "InstanceDB = JSON fundet. Brug venligst config.json til at ændre på printerlisten."
         },
         "TimelapseTab": {
             "Autorender": "Autorendering",
@@ -782,12 +862,12 @@
             "duplicatelastframe": "Kopier sidste frame",
             "duplicatelastframeDescription": "Kopierer sidste frame i videoen",
             "Enabled": "Aktiveret",
-            "EnabledDescription": "Hvis inaktiv, bliver G-Code makroer ignoreret og AutoRendering bliver sprunget over.",
+            "EnabledDescription": "Hvis inaktiv, bliver G-Kode makroer ignoreret og AutoRendering bliver sprunget over.",
             "Extraoutputparams": "Ekstra output parametre",
             "ExtraoutputparamsDescription": "Definerer ekstra output parametre til FFMPEG. Bemærk: Udfyldning af dette felt vil deaktivere rotationsindstillinger",
             "FwRetract": "Firmware Retract",
             "FwRetractDescription": "Brug firmware retraction i timelapse makroen",
-            "GcodeVerbose": "Beskrevet G-Code",
+            "GcodeVerbose": "Beskrevet G-Kode",
             "GcodeVerboseDescription": "Hvis aktiv, vil G-Code skrive informationer i terminalen",
             "General": "Generelt",
             "HyperlapseCycle": "Hyperlapse cyklus tid",
@@ -835,9 +915,9 @@
             "VariableFps": "Variabel FPS",
             "VariableFpsDescription": "Hvis aktiv, vil framrate blive beregnet ud fra ønsket længde.",
             "VariableFpsMax": "Variabel FPS maks",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "Største værdi for variabel FPS",
             "VariableFpsMin": "Variabel FPS min",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "Mindste værdi for variabel FPS"
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Stor forhåndsvisning",
@@ -886,6 +966,7 @@
             "Name": "Navn",
             "NameAlreadyExists": "Navnet bruges allerede",
             "Required": "Krævet",
+            "Rotate": "Rotér",
             "SaveWebcam": "Gem Webcam",
             "Service": "Service",
             "TargetFPS": "Ønsket FPS",
