@@ -99,6 +99,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         } else if (state.current_file?.layer_count) {
             return state.current_file.layer_count
         } else if (
+            'current_file' in state &&
             'first_layer_height' in state.current_file &&
             'layer_height' in state.current_file &&
             'object_height' in state.current_file
