@@ -119,11 +119,11 @@ export const getters: GetterTree<PrinterState, RootState> = {
         if (state.print_stats?.layer_current !== null) {
             return state.print_stats.layer_current
         } else if (
-            state.print_time > 0 &&
+            state.print_stats?.print_duration > 0 &&
             'first_layer_height' in state.current_file &&
             'layer_height' in state.current_file
         ) {
-            const gcodePositionZ = state.printer.gcode_move?.gcode_position[2] ?? 0
+            const gcodePositionZ = state.gcode_move?.gcode_position[2] ?? 0
             const current_layer = Math.ceil(
                 (gcodePositionZ - state.current_file.first_layer_height) / state.current_file.layer_height + 1
             )
