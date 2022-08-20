@@ -44,24 +44,24 @@ jobs:
 
   call-build:
     needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_build.yml@chore/rewrite-workflows
+    uses: mainsail-crew/mainsail/.github/workflows/_build.yml@develop
 
   call-eslint:
     needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_eslint.yml@chore/rewrite-workflows
+    uses: mainsail-crew/mainsail/.github/workflows/_eslint.yml@develop
 
   call-prettier:
     needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_prettier.yml@chore/rewrite-workflows
+    uses: mainsail-crew/mainsail/.github/workflows/_prettier.yml@develop
 
   call-check-locale:
     needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_check_locale.yml@chore/rewrite-workflows
+    uses: mainsail-crew/mainsail/.github/workflows/_check_locale.yml@develop
 
   call-size-report:
     needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_size_report.yml@chore/rewrite-workflows
+    uses: mainsail-crew/mainsail/.github/workflows/_size_report.yml@develop
 
   call-test-cypress:
     needs: [ debs-cache, call-build ]
-    uses: mainsail-crew/mainsail/.github/workflows/_test_cypress.yml@chore/rewrite-workflows
+    uses: mainsail-crew/mainsail/.github/workflows/_test_cypress.yml@develop
