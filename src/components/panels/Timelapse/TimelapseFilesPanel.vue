@@ -33,6 +33,14 @@
                             style="max-width: 300px"></v-text-field>
                         <v-spacer></v-spacer>
                         <v-btn
+                            v-if="selectedFiles.length"
+                            :title="$t('Timelapse.Delete')"
+                            color="error"
+                            class="px-2 minwidth-0 ml-3"
+                            @click="deleteSelectedDialog = true">
+                            <v-icon>{{ mdiDelete }}</v-icon>
+                        </v-btn>
+                        <v-btn
                             v-if="directoryPermissions.includes('w')"
                             :title="$t('Timelapse.CreateNewDirectory')"
                             class="px-2 minwidth-0 ml-3"
@@ -78,6 +86,7 @@
             </v-card-text>
             <v-divider class="mb-3"></v-divider>
             <v-data-table
+                v-model="selectedFiles"
                 :items="displayFiles"
                 class="files-table"
                 :headers="headers"
@@ -90,10 +99,11 @@
                     itemsPerPageAllText: $t('Timelapse.AllFiles'),
                     itemsPerPageOptions: [10, 25, 50, 100, -1],
                 }"
-                item-key="name"
+                item-key="filename"
                 :search="search"
                 :custom-filter="advancedSearch"
-                mobile-breakpoint="0">
+                mobile-breakpoint="0"
+                show-select>
                 <template slot="items">
                     <td v-for="header in headers" :key="header.value">{{ header.text }}</td>
                 </template>
@@ -111,19 +121,26 @@
                     </tr>
                 </template>
 
-                <template #item="{ index, item }">
+                <template #item="{ index, item, isSelected, select }">
                     <tr
                         :key="`${index} ${item.filename}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
                         class="file-list-cursor user-select-none"
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)">
-                        <td class="pr-0 text-center" style="width: 32px">
+                        <td class="file-list__select-td pr-0">
+                            <v-simple-checkbox
+                                v-ripple
+                                :value="isSelected"
+                                class="pa-0 mr-0"
+                                @click.stop="select(!isSelected)"></v-simple-checkbox>
+                        </td>
+                        <td class="px-0 text-center" style="width: 32px">
                             <template v-if="item.isDirectory">
-                                <v-icon>{{ mdiFolder }}</v-icon>
+                                <v-icon width="32">{{ mdiFolder }}</v-icon>
                             </template>
                             <template v-else-if="item.filename.endsWith('zip')">
-                                <v-icon>{{ mdiFolderZipOutline }}</v-icon>
+                                <v-icon width="32">{{ mdiFolderZipOutline }}</v-icon>
                             </template>
                             <template v-else-if="getThumbnail(item)">
                                 <v-tooltip
@@ -139,11 +156,15 @@
                                                 width="32"
                                                 v-bind="attrs"
                                                 v-on="on" />
-                                            <v-progress-circular
-                                                slot="preloader"
-                                                indeterminate
-                                                color="primary"></v-progress-circular>
-                                            <v-icon slot="error">{{ mdiFile }}</v-icon>
+                                            <div slot="preloader">
+                                                <v-progress-circular
+                                                    slot="preloader"
+                                                    indeterminate
+                                                    color="primary"></v-progress-circular>
+                                            </div>
+                                            <div slot="error">
+                                                <v-icon>{{ mdiFile }}</v-icon>
+                                            </div>
                                         </vue-load-image>
                                     </template>
                                     <span><img :src="getThumbnail(item)" :alt="item.filename" width="250" /></span>
@@ -339,13 +360,33 @@
                 </v-card-text>
             </panel>
         </v-dialog>
+        <v-dialog v-model="deleteSelectedDialog" max-width="400">
+            <panel
+                :title="$t('Timelapse.Delete').toString()"
+                card-class="timelapse-delete-selected-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="deleteSelectedDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">{{ $t('Timelapse.DeleteSelectedQuestion', { count: selectedFiles.length }) }}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="deleteSelectedDialog = false">{{ $t('Timelapse.Cancel') }}</v-btn>
+                    <v-btn color="error" text @click="deleteSelectedFiles">{{ $t('Timelapse.Delete') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </div>
 </template>
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { formatFilesize, formatDate, sortFiles } from '@/plugins/helpers'
-import { FileStateFile } from '@/store/files/types'
+import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiFolderPlus,
@@ -453,11 +494,13 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         },
     }
 
+    private deleteSelectedDialog = false
+
     private input_rules = [(value: string) => value.indexOf(' ') === -1 || 'Name contains spaces!']
 
     get headers() {
         return [
-            { text: '', value: '', align: 'left', configable: false, visible: true, filterable: false },
+            { text: '', value: '', align: 'left', configable: false, visible: true, sortable: false },
             { text: this.$t('Timelapse.Name'), value: 'filename', align: 'left', configable: false, visible: true },
             { text: this.$t('Timelapse.Filesize'), value: 'size', align: 'right', configable: true, visible: true },
             {
@@ -530,6 +573,14 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     set currentPath(newVal) {
         this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.timelapse.currentPath', value: newVal })
+    }
+
+    get selectedFiles() {
+        return this.$store.state.gui.view.timelapse.selectedFiles ?? []
+    }
+
+    set selectedFiles(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.timelapse.selectedFiles', value: newVal })
     }
 
     createDirectory() {
@@ -732,6 +783,45 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             { path: this.currentPath + '/' + this.contextMenu.item.filename, force: true },
             { action: 'files/getDeleteDir' }
         )
+    }
+
+    deleteSelectedFiles() {
+        this.selectedFiles.forEach((item: FileStateGcodefile) => {
+            if (item.isDirectory) {
+                this.$socket.emit(
+                    'server.files.delete_directory',
+                    { path: this.currentPath + '/' + item.filename, force: true },
+                    { action: 'files/getDeleteDir' }
+                )
+            } else {
+                const filename = item.filename.slice(0, item.filename.lastIndexOf('.'))
+                const fileExtension = item.filename.split('.').pop()
+
+                this.$socket.emit(
+                    'server.files.delete_file',
+                    { path: this.currentPath + '/' + item.filename },
+                    { action: 'files/getDeleteFile' }
+                )
+
+                if (fileExtension !== 'mp4') return
+
+                /**
+                 * if file-extension is mp4, also delete its corresponding thumbnail jpg
+                 */
+                const previewFilename = filename + '.jpg'
+                const previewExists = this.files.findIndex((file) => file.filename === previewFilename) !== -1
+
+                if (previewExists)
+                    this.$socket.emit(
+                        'server.files.delete_file',
+                        { path: this.currentPath + '/' + previewFilename },
+                        { action: 'files/getDeleteFile' }
+                    )
+            }
+        })
+
+        this.selectedFiles = []
+        this.deleteSelectedDialog = false
     }
 }
 </script>
