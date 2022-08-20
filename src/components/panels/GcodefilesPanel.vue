@@ -544,7 +544,7 @@ interface tableColumnSetting {
     sortable?: boolean
     class?: string
     pos?: number
-    outputType?: 'string' | 'date' | 'length' | 'weight' | 'filesize' | 'time'
+    outputType?: 'string' | 'date' | 'length' | 'weight' | 'filesize' | 'temp' | 'time'
 }
 
 @Component({
@@ -715,6 +715,27 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'length',
+            },
+            {
+                text: this.$t('Files.ExtruderTemp').toString(),
+                value: 'first_layer_extr_temp',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'temp',
+            },
+            {
+                text: this.$t('Files.BedTemp').toString(),
+                value: 'first_layer_bed_temp',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'temp',
+            },
+            {
+                text: this.$t('Files.ChamberTemp').toString(),
+                value: 'chamber_temp',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'temp',
             },
             {
                 text: this.$t('Files.FilamentName').toString(),

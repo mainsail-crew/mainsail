@@ -1,27 +1,3 @@
-<style>
-.topbar .v-toolbar__content {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-}
-</style>
-<style scoped>
-.button-min-width-auto {
-    min-width: auto !important;
-}
-.topbar .v-btn {
-    height: 100% !important;
-    max-height: none;
-}
-.topbar .v-btn.v-btn--icon {
-    width: var(--topbar-icon-btn-width) !important;
-}
-@media (min-width: 768px) {
-    header.topbar {
-        z-index: 8 !important;
-    }
-}
-</style>
-
 <template>
     <div>
         <v-app-bar app elevate-on-scroll :height="topbarHeight" class="topbar pa-0" clipped-left>
@@ -67,11 +43,7 @@
                 <span class="d-none d-md-inline">{{ $t('App.TopBar.SAVE_CONFIG') }}</span>
             </v-btn>
             <v-btn
-                v-if="
-                    klippyIsConnected &&
-                    ['standby', 'complete', 'cancelled'].includes(printer_state) &&
-                    !boolHideUploadAndPrintButton
-                "
+                v-if="boolShowUploadAndPrint"
                 tile
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
@@ -248,6 +220,15 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         return this.$store.state.gui.uiSettings.logo
     }
 
+    get boolShowUploadAndPrint() {
+        return (
+            this.klippyIsConnected &&
+            this.existGcodesRootDirectory &&
+            ['standby', 'complete', 'cancelled'].includes(this.printer_state) &&
+            !this.boolHideUploadAndPrintButton
+        )
+    }
+
     btnEmergencyStop() {
         const confirmOnEmergencyStop = this.$store.state.gui.uiSettings.confirmOnEmergencyStop
         if (confirmOnEmergencyStop) {
@@ -344,3 +325,27 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style>
+.topbar .v-toolbar__content {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+</style>
+<style scoped>
+.button-min-width-auto {
+    min-width: auto !important;
+}
+.topbar .v-btn {
+    height: 100% !important;
+    max-height: none;
+}
+.topbar .v-btn.v-btn--icon {
+    width: var(--topbar-icon-btn-width) !important;
+}
+@media (min-width: 768px) {
+    header.topbar {
+        z-index: 8 !important;
+    }
+}
+</style>

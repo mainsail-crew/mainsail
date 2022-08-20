@@ -1,30 +1,3 @@
-<style lang="scss" scoped>
-._transition i::before {
-    transition: transform 500ms;
-}
-._rotate-180:before {
-    transform: rotate(180deg);
-}
-
-.v-item-group {
-    button:hover::before,
-    button:focus::before {
-        opacity: 0 !important;
-    }
-    ._menu-button {
-        height: 40px;
-        width: 62px;
-        border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    }
-    ._menu-button:hover {
-        border-color: rgba(255, 255, 255, 1) !important;
-    }
-    ._menu-button:focus {
-        border: 2px solid var(--color-primary) !important;
-    }
-}
-</style>
-
 <template>
     <div>
         <v-card v-if="!form.bool" flat>
@@ -66,7 +39,7 @@
                     <v-row>
                         <v-col class="col-12 col-sm-6">
                             <v-row>
-                                <v-col class="d-flex align-center">
+                                <v-col class="d-flex">
                                     <v-item-group>
                                         <v-menu :offset-y="true" title="Icon">
                                             <template #activator="{ on, attrs }">
@@ -154,7 +127,7 @@
                                 </v-col>
                             </v-row>
                             <v-row v-if="form.service === 'mjpegstreamer-adaptive'">
-                                <v-col class="py-2">
+                                <v-col class="py-2 col-6">
                                     <v-text-field
                                         v-model="form.targetFps"
                                         outlined
@@ -162,9 +135,7 @@
                                         hide-details
                                         :label="$t('Settings.WebcamsTab.TargetFPS')"></v-text-field>
                                 </v-col>
-                            </v-row>
-                            <v-row v-if="form.service === 'mjpegstreamer-adaptive'">
-                                <v-col class="py-2">
+                                <v-col class="py-2 col-6">
                                     <v-select
                                         v-model="form.rotate"
                                         :items="rotateItems"
@@ -424,3 +395,30 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+._transition i::before {
+    transition: transform 500ms;
+}
+._rotate-180:before {
+    transform: rotate(180deg);
+}
+
+.v-item-group {
+    button:hover::before,
+    button:focus::before {
+        opacity: 0 !important;
+    }
+    ._menu-button {
+        height: 40px;
+        width: 62px;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    }
+    ._menu-button:hover {
+        border-color: rgba(255, 255, 255, 1) !important;
+    }
+    ._menu-button:focus {
+        border: 2px solid var(--color-primary) !important;
+    }
+}
+</style>

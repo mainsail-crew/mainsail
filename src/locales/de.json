@@ -21,6 +21,7 @@
             "Never": "nie",
             "NextReboot": "nächsten Reboot",
             "NoNotification": "Keine Benachrichtigung vorhanden",
+            "Notifications": "Benachrichtigungen",
             "Remind": "Errinnere:"
         },
         "NumberInput": {
@@ -132,17 +133,11 @@
         }
     },
     "Editor": {
-        "Cancel": "Abbrechen",
         "ConfigReference": "Konfig-Referenz",
         "DontSave": "Nicht speichern",
         "Downloading": "Herunterladen",
         "FailedSave": "{filename} konnte nicht hochgeladen werden!",
         "FileReadOnly": "schreibgeschützt",
-        "KlipperRestartMethod": "Klipper Neustartmethode",
-        "KlipperRestartMethodDescription": "Wählen der Neustartmethode die bei 'Speichern & Neustarten' verwendet wird, wenn Klipper-Konfigurationsdateien bearbeitet werden.",
-        "Minimap": "Minimap anzeigen",
-        "MoonrakerRestartInstance": "Moonraker Neustartinstanz",
-        "MoonrakerRestartInstanceDescription": "Wählen der Moonraker-Instanz die bei 'Speichern & Neustarten' neu gestartet wird, wenn Moonraker-Konfigurationsdateien bearbeitet werden.",
         "SaveClose": "Speichern & schließen",
         "SaveRestart": "Speichern & Neustart",
         "SuccessfullySaved": "{filename} erfolgreich gespeichert.",
@@ -160,7 +155,9 @@
     "Files": {
         "AddToQueue": "Zur Auftragswarteschlange hinzufügen",
         "AllFiles": "Alle",
+        "BedTemp": "Bett Temp.",
         "Cancel": "Abbrechen",
+        "ChamberTemp": "Kammer Temp.",
         "Create": "Erstellen",
         "CreateNewDirectory": "Ordner erstellen",
         "CurrentPath": "Aktueller Pfad",
@@ -169,9 +166,9 @@
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",
         "Download": "Herunterladen",
-        "Downloading": "Herunterladen",
         "EditFile": "Datei bearbeiten",
         "Empty": "Leer",
+        "ExtruderTemp": "Extruder Temp.",
         "Filament": "Filament",
         "FilamentName": "Filament Name",
         "FilamentType": "Filament Typ",
@@ -182,6 +179,7 @@
         "Free": "Frei",
         "FreeDisk": "Freier Speicherplatz",
         "GCodeFiles": "G-Code Dateien",
+        "GcodesRootDirectoryDoesntExists": "Keinen G-Code Ordner gefunden. Bitte überprüfe die Option \"path\" im Abschnitt [virtual_sdcard] in der Klipper Konfiguration.",
         "HiddenFiles": "Versteckte Dateien",
         "LastEndTime": "Letzte Endzeit",
         "LastFilamentUsed": "Letzter Filamentverbrauch",
@@ -211,7 +209,6 @@
         "SuccessfullyRenamed": "{filename} erfolgreich umbenannt.",
         "SuccessfullyUploaded": "Hochladen von {filename} erfolgreich!",
         "Total": "Gesamt",
-        "Uploading": "Hochladen",
         "UploadNewGcode": "G-Code hochladen",
         "Used": "Belegt",
         "View3D": "3D Betrachtung"
@@ -292,6 +289,7 @@
         "AllJobs": "Alle",
         "AvgPrinttime": "Druckzeit - Ø",
         "Cancel": "abbrechen",
+        "ChamberTemp": "Kammer Temp.",
         "CreateNote": "Notiz anlegen",
         "Delete": "Löschen",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Jobs gelöscht werden?",
@@ -366,6 +364,7 @@
             "AllFiles": "Alle",
             "Cancel": "Abbruch",
             "ConfigFiles": "Konfigurationsdateien",
+            "ConfigRootDirectoryDoesntExists": "Keinen Konfigurations-Ordner gefunden. Bitte überprüfe die Option \"config_path\" im Abschnitt [file_manager] in der Moonraker Konfiguration.",
             "Create": "Erstellen",
             "CreateDirectory": "Verzeichnis erstellen",
             "CreateFile": "Datei erstellen",
@@ -476,7 +475,6 @@
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
                 "SmoothTime": "Smooth Time"
             },
             "Requested": "Angefordert",
@@ -576,7 +574,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "Autoskalierung",
             "Avg": "Ø",
-            "Color": "Farbe",
             "Cooldown": "Abkühlen",
             "Current": "Aktuell",
             "Dataset": {
@@ -605,20 +602,13 @@
             "ALL": "ALLE",
             "Headline": "Werkzeugkopf",
             "Invalid": "Ungültig",
-            "InvertX": "X invertieren",
-            "InvertY": "Y invertieren",
-            "InvertZ": "Z invertieren",
             "OutOfRange": "Außerhalb der Maschinengrenze!",
             "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
             "Position": "Position",
             "QGL": "QGL",
             "Relative": "relativ",
             "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
-            "SetupControls": "Setup-Steuerelemente",
             "SpeedFactor": "Geschwindigkeitsfaktor",
-            "XOffset": "X-Versatz",
-            "YOffset": "Y-Versatz",
-            "ZOffset": "Z-Versatz",
             "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
@@ -626,12 +616,10 @@
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "Keine Webcam verfügbar. Füge eine Webcam unter \"Interface Einstellungen\" -> \"Webcams\".",
-            "UnknownWebcamService": "Unbekannter Webcam Dienst",
-            "UrlNotAvailable": "URL nicht verfügbar"
+            "UnknownWebcamService": "Unbekannter Webcam Dienst"
         },
         "ZoffsetPanel": {
             "Clear": "Löschen",
-            "CurrentOffset": "Aktueller Versatz",
             "Headline": "Z-Versatz",
             "Later": "Später",
             "Ok": "OK",
@@ -772,6 +760,14 @@
             "CalcEstimateTimeDescription": "Bei Mehrfachauswahl wird ein Durchschnitt berechnet",
             "CalcEtaTime": "ETA Berechnung",
             "CalcEtaTimeDescription": "Bei Mehrfachauswahl wird ein Durchschnitt berechnet",
+            "CalcPrintProgress": "Berechnung des Druckfortschritts",
+            "CalcPrintProgressDescription": "Methode zur Berechnung des Druckfortschritts.",
+            "CalcPrintProgressItems": {
+                "Filament": "Filament",
+                "FileAbsolute": "Dateiposition (absolut)",
+                "FileRelative": "Dateiposition (relativ)",
+                "Slicer": "Slicer (M73)"
+            },
             "CannotReadJson": "Sicherungsdatei kann nicht gelesen/analysiert werden.",
             "DbConsoleHistory": "Verlauf der Konsole",
             "DbHistoryJobs": "Historie Druckvorgänge",
@@ -972,6 +968,7 @@
             "Name": "Name",
             "NameAlreadyExists": "Name existiert bereits",
             "Required": "benötigt",
+            "Rotate": "Drehen",
             "SaveWebcam": "Webcam speichern",
             "Service": "Dienst",
             "TargetFPS": "Ziel FPS",
