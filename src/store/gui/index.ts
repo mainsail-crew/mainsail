@@ -228,6 +228,7 @@ export const getDefaultState = (): GuiState => {
                 sortDesc: true,
                 showHiddenFiles: false,
                 currentPath: 'timelapse',
+                selectedFiles: [],
             },
             webcam: {
                 currentCam: {
