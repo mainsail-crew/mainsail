@@ -1,46 +1,3 @@
-<!-- Because the viewer lives outside of the components DOM it can't be scoped -->
-<style>
-.viewer {
-    width: 100%;
-    height: calc(var(--app-height) - 240px);
-    border: 1px solid #3f3f3f;
-}
-
-.withScrubber .viewer {
-    height: calc(var(--app-height) - 300px);
-}
-
-@media (min-width: 600px) and (max-width: 959px) {
-    .viewer {
-        height: calc(var(--app-height) - 295px);
-    }
-
-    .withScrubber .viewer {
-        height: calc(var(--app-height) - 360px);
-    }
-}
-
-@media (max-width: 599px) {
-    .viewer {
-        height: calc(var(--app-height) - 340px);
-    }
-
-    .withScrubber .viewer {
-        height: calc(var(--app-height) - 340px);
-    }
-}
-</style>
-
-<style scoped>
-.scrubber {
-    position: relative;
-    left: 0;
-    right: 0;
-    bottom: 5px;
-    z-index: 19 !important;
-}
-</style>
-
 <template>
     <div>
         <panel :title="panelTitle" :icon="mdiVideo3d" card-class="gcode-viewer-panel" :margin-bottom="false">
@@ -167,7 +124,7 @@
                                                 :label="$t('GCodeViewer.ShowTravelMoves')"></v-checkbox>
                                         </v-list-item>
                                         <v-list-item
-                                            v-if="loadedFile === sdCardFilePath && printing_objects.length > 1"
+                                            v-if="loadedFile === sdCardFilePath && printing_objects.length"
                                             class="minHeight36">
                                             <v-checkbox
                                                 v-model="showObjectSelection"
@@ -264,6 +221,30 @@
                 </v-btn>
             </template>
         </v-snackbar>
+        <v-dialog v-model="excludeObject.bool" max-width="400">
+            <v-card>
+                <v-toolbar flat dense>
+                    <v-toolbar-title>
+                        <span class="subheading">
+                            <v-icon left>{{ mdiSelectionRemove }}</v-icon>
+                            {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectHeadline') }}
+                        </span>
+                    </v-toolbar-title>
+                </v-toolbar>
+                <v-card-text class="mt-3">
+                    {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectText', { name: excludeObject.name }) }}
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text @click="excludeObject.bool = false">
+                        {{ $t('Panels.StatusPanel.ExcludeObject.Cancel') }}
+                    </v-btn>
+                    <v-btn color="primary" text @click="cancelObject">
+                        {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObject') }}
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -286,6 +267,7 @@ import {
     mdiPause,
     mdiFastForward,
     mdiBroom,
+    mdiSelectionRemove,
 } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
 
@@ -321,6 +303,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     mdiPause = mdiPause
     mdiFastForward = mdiFastForward
     mdiBroom = mdiBroom
+    mdiSelectionRemove = mdiSelectionRemove
 
     formatFilesize = formatFilesize
 
@@ -352,6 +335,11 @@ export default class Viewer extends Mixins(BaseMixin) {
             time: 0,
             loaded: 0,
         },
+    }
+
+    private excludeObject = {
+        bool: false,
+        name: '',
     }
 
     @Prop({ type: String, default: '', required: false }) declare filename: string
@@ -429,8 +417,18 @@ export default class Viewer extends Mixins(BaseMixin) {
         return this.$store.state.printer.exclude_object?.objects ?? []
     }
 
+    @Watch('printing_objects')
+    printing_objectsChanged() {
+        this.refreshPrintingObjects()
+    }
+
     get excluded_objects() {
         return this.$store.state.printer.exclude_object?.excluded_objects ?? []
+    }
+
+    @Watch('excluded_objects')
+    excluded_objectsChanged() {
+        this.refreshPrintingObjects()
     }
 
     get nozzle_diameter() {
@@ -493,6 +491,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         viewer.gcodeProcessor.voxelHeight = this.voxelHeight
         viewer.gcodeProcessor.useSpecularColor(this.specularLighting)
         viewer.gcodeProcessor.setLiveTracking(false)
+        viewer.buildObjects.objectCallback = this.objectCallback
 
         this.loadToolColors(this.extruderColors)
 
@@ -539,9 +538,16 @@ export default class Viewer extends Mixins(BaseMixin) {
         this.loading = false
         viewer.setCursorVisiblity(this.showCursor)
 
-        if (this.loadedFile === this.sdCardFilePath && this.printing_objects.length) {
-            let objects: any = []
+        this.refreshPrintingObjects()
+        this.scrubFileSize = viewer.fileSize
 
+        viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
+    }
+
+    refreshPrintingObjects() {
+        let objects: any = []
+
+        if (this.loadedFile === this.sdCardFilePath && this.printing_objects.length) {
             this.printing_objects.forEach((object: any) => {
                 const xValues = object.polygon.map((point: number[]) => point[0])
                 const yValues = object.polygon.map((point: number[]) => point[1])
@@ -553,13 +559,10 @@ export default class Viewer extends Mixins(BaseMixin) {
                     y: [Math.min(...yValues), Math.max(...yValues)],
                 })
             })
-
-            viewer.buildObjects.loadObjectBoundaries(objects)
-            viewer.buildObjects.showObjectSelection(this.showObjectSelection)
         }
-        this.scrubFileSize = viewer.fileSize
 
-        viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
+        viewer.buildObjects.loadObjectBoundaries(objects)
+        viewer.buildObjects.showObjectSelection(this.showObjectSelection)
     }
 
     async fileSelected(e: any) {
@@ -1066,5 +1069,59 @@ export default class Viewer extends Mixins(BaseMixin) {
         this.scrubPosition = this.scrubFileSize
         viewer.gcodeProcessor.updateFilePosition(this.scrubPosition)
     }
+
+    objectCallback(metadata: any) {
+        if (metadata?.cancelled === false) {
+            this.excludeObject.name = metadata.name ?? 'UNKNOWN'
+            this.excludeObject.bool = true
+        }
+    }
+
+    cancelObject() {
+        this.$socket.emit('printer.gcode.script', { script: 'EXCLUDE_OBJECT NAME=' + this.excludeObject.name })
+        this.excludeObject.bool = false
+    }
 }
 </script>
+
+<!-- Because the viewer lives outside of the components DOM it can't be scoped -->
+<style>
+.viewer {
+    width: 100%;
+    height: calc(var(--app-height) - 240px);
+    border: 1px solid #3f3f3f;
+}
+
+.withScrubber .viewer {
+    height: calc(var(--app-height) - 300px);
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+    .viewer {
+        height: calc(var(--app-height) - 295px);
+    }
+
+    .withScrubber .viewer {
+        height: calc(var(--app-height) - 360px);
+    }
+}
+
+@media (max-width: 599px) {
+    .viewer {
+        height: calc(var(--app-height) - 340px);
+    }
+
+    .withScrubber .viewer {
+        height: calc(var(--app-height) - 340px);
+    }
+}
+</style>
+
+<style scoped>
+.scrubber {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+}
+</style>

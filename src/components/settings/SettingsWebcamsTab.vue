@@ -24,7 +24,11 @@
                     </settings-row>
                 </div>
             </v-card-text>
-            <v-card-actions class="d-flex justify-end">
+            <v-card-actions>
+                <v-btn v-if="existCrowsnestConf" text color="primary" @click="openCrowsnestConf">
+                    {{ $t('Settings.WebcamsTab.EditCrowsnestConf') }}
+                </v-btn>
+                <v-spacer></v-spacer>
                 <v-btn text color="primary" @click="createWebcam">{{ $t('Settings.WebcamsTab.AddWebcam') }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -213,6 +217,7 @@ import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import { mdiMenuDown, mdiDelete, mdiPencil, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
+import { FileStateFile } from '@/store/files/types'
 
 interface webcamForm {
     bool: boolean
@@ -313,6 +318,18 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         return ''
     }
 
+    get configfiles() {
+        return this.$store.getters['files/getDirectory']('config')?.childrens ?? []
+    }
+
+    get crowsnestConf(): FileStateFile | null {
+        return this.configfiles.find((file: FileStateFile) => file.filename === 'crowsnest.conf')
+    }
+
+    get existCrowsnestConf(): boolean {
+        return this.configfiles.findIndex((file: FileStateFile) => file.filename === 'crowsnest.conf') !== -1
+    }
+
     getSubtitle(webcam: GuiWebcamStateWebcam) {
         return 'URL: ' + (webcam.service === 'mjpegstreamer-adaptive' ? webcam.urlSnapshot : webcam.urlStream)
     }
@@ -392,6 +409,16 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
 
     setFormIcon(icon: string) {
         this.form.icon = icon
+    }
+
+    openCrowsnestConf() {
+        this.$store.dispatch('editor/openFile', {
+            root: 'config',
+            path: '/',
+            filename: this.crowsnestConf?.filename,
+            size: this.crowsnestConf?.size,
+            permissions: this.crowsnestConf?.permissions,
+        })
     }
 }
 </script>
