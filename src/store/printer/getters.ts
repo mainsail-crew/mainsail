@@ -87,7 +87,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
         if (filament_used !== null && filament_total !== null) {
             if (filament_total == 0) return 0
 
-            return filament_used / filament_total
+            const progress = filament_used / filament_total
+            if (progress > 1) return 1
+
+            return progress
         }
 
         return state.virtual_sdcard?.progress ?? 0
