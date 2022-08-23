@@ -951,6 +951,7 @@
         "WebcamsTab": {
             "AddWebcam": "add webcam",
             "CreateWebcam": "Create Webcam",
+            "EditCrowsnestConf": "Edit crowsnest.conf",
             "EditWebcam": "Edit Webcam",
             "FlipHorizontally": "Flip webcam horizontally",
             "FlipVertically": "Flip webcam vertically",
