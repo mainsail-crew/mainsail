@@ -20,6 +20,10 @@
                 :max="object.max_power"
                 :multi="parseInt(object.scale)"></miscellaneous-slider>
         </div>
+        <div v-for="(light, index) of lights" :key="'light_' + light.name">
+            <v-divider v-if="index || miscellaneous.length"></v-divider>
+            <miscellaneous-light :object="light" />
+        </div>
         <div v-for="(sensor, index) of filamentSensors" :key="'sensor_' + index">
             <v-divider v-if="index || miscellaneous.length"></v-divider>
             <filament-sensor
@@ -34,21 +38,26 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MiscellaneousSlider from '@/components/inputs/MiscellaneousSlider.vue'
+import MiscellaneousLight from '@/components/inputs/MiscellaneousLight.vue'
 import FilamentSensor from '@/components/inputs/FilamentSensor.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiDipSwitch } from '@mdi/js'
 @Component({
-    components: { Panel, FilamentSensor, MiscellaneousSlider },
+    components: { Panel, FilamentSensor, MiscellaneousSlider, MiscellaneousLight },
 })
 export default class MiscellaneousPanel extends Mixins(BaseMixin) {
     mdiDipSwitch = mdiDipSwitch
+
+    get filamentSensors() {
+        return this.$store.getters['printer/getFilamentSensors'] ?? []
+    }
 
     get miscellaneous() {
         return this.$store.getters['printer/getMiscellaneous'] ?? []
     }
 
-    get filamentSensors() {
-        return this.$store.getters['printer/getFilamentSensors'] ?? []
+    get lights() {
+        return this.$store.getters['printer/getLights'] ?? []
     }
 }
 </script>

@@ -102,10 +102,12 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const outputObjects: PrinterGetterObject[] = []
 
         for (const [key, value] of Object.entries(state)) {
-            const type = key.substring(0, key.indexOf(' '))
-            const name = key.substring(key.indexOf(' ') + 1)
+            let type = key.substring(0, key.indexOf(' ')).trimEnd()
+            let name = key.substring(key.indexOf(' ') + 1).trimStart()
 
-            if (supportedObjects.includes(key)) {
+            if (key.indexOf(' ') === -1) type = name = key
+
+            if (supportedObjects.includes(type)) {
                 outputObjects.push({
                     name,
                     type,
@@ -406,40 +408,45 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const supportedObjects = ['neopixel', 'dotstar', 'pca9533', 'pca9632']
         const objects = getters.getPrinterObjects(supportedObjects)
 
-        objects.foreach((object: PrinterGetterObject) => {
-            let colorOrder = object.settings.color_order[0] ?? 0
-
-            if (object.type === 'led') {
-                colorOrder = ''
-                if ('red_pin' in object.config) colorOrder += 'R'
-                if ('green_pin' in object.config) colorOrder += 'G'
-                if ('blue_pin' in object.config) colorOrder += 'B'
-                if ('white_pin' in object.config) colorOrder += 'W'
-            }
-
-            let initialRed = object.settings.initial_red ?? null
-            if (!('initial_red' in object.config)) initialRed = null
-
-            let initialGreen = object.settings.initial_green ?? null
-            if (!('initial_green' in object.config)) initialGreen = null
-
-            let initialBlue = object.settings.initial_blue ?? null
-            if (!('initial_blue' in object.config)) initialBlue = null
-
-            let initialWhite = object.settings.initial_white ?? null
-            if (!('initial_white' in object.config)) initialWhite = null
-
-            lights.push({
-                name: object.name,
-                type: object.type as PrinterStateLight['type'],
-                chainCount: object.settings.chain_count ?? 1,
-                colorOrder,
-                initialRed,
-                initialGreen,
-                initialBlue,
-                initialWhite,
+        objects
+            .filter((object: PrinterGetterObject) => {
+                return !object.name.startsWith('_')
             })
-        })
+            .forEach((object: PrinterGetterObject) => {
+                let colorOrder = object.settings.color_order[0] ?? 0
+
+                if (object.type === 'led') {
+                    colorOrder = ''
+                    if ('red_pin' in object.config) colorOrder += 'R'
+                    if ('green_pin' in object.config) colorOrder += 'G'
+                    if ('blue_pin' in object.config) colorOrder += 'B'
+                    if ('white_pin' in object.config) colorOrder += 'W'
+                }
+
+                let initialRed = object.settings.initial_red ?? null
+                if (!('initial_red' in object.config)) initialRed = null
+
+                let initialGreen = object.settings.initial_green ?? null
+                if (!('initial_green' in object.config)) initialGreen = null
+
+                let initialBlue = object.settings.initial_blue ?? null
+                if (!('initial_blue' in object.config)) initialBlue = null
+
+                let initialWhite = object.settings.initial_white ?? null
+                if (!('initial_white' in object.config)) initialWhite = null
+
+                lights.push({
+                    name: object.name,
+                    type: object.type as PrinterStateLight['type'],
+                    chainCount: object.settings.chain_count ?? 1,
+                    colorOrder,
+                    initialRed,
+                    initialGreen,
+                    initialBlue,
+                    initialWhite,
+                    colorData: object.state.color_data ?? [],
+                })
+            })
 
         return lights.sort((a, b) => {
             const nameA = a.name.toUpperCase()

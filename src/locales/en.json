@@ -522,6 +522,12 @@
         },
         "MiscellaneousPanel": {
             "Headline": "Miscellaneous",
+            "Light": {
+                "Blue": "blue",
+                "Green": "green",
+                "Red": "red",
+                "White": "white"
+            },
             "RunoutSensor": {
                 "Detected": "detected",
                 "Disabled": "disabled",
