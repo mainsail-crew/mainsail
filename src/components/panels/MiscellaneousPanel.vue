@@ -2,7 +2,7 @@
 
 <template>
     <panel
-        v-if="klipperReadyForGui && (miscellaneous.length || filamentSensors.length)"
+        v-if="showMiscellaneousPanel"
         :icon="mdiDipSwitch"
         :title="$t('Panels.MiscellaneousPanel.Headline')"
         :collapsible="true"
@@ -58,6 +58,12 @@ export default class MiscellaneousPanel extends Mixins(BaseMixin) {
 
     get lights() {
         return this.$store.getters['printer/getLights'] ?? []
+    }
+
+    get showMiscellaneousPanel() {
+        return (
+            this.klipperReadyForGui && (this.miscellaneous.length || this.filamentSensors.length || this.lights.length)
+        )
     }
 }
 </script>
