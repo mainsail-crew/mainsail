@@ -951,7 +951,7 @@
         "WebcamsTab": {
             "AddWebcam": "web kamerası ekle",
             "CreateWebcam": "Web Kamerası Oluştur",
-            "EditCrowsnestConf": "crowsnest.conf düzenle",
+            "EditCrowsnestConf": "crowsnest.conf'u düzenle",
             "EditWebcam": "Web Kamerası Düzenle",
             "FlipHorizontally": "Web kamerasını yatay olarak çevirin",
             "FlipVertically": "Web kamerasını dikey olarak çevirin",
