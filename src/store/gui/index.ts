@@ -9,6 +9,7 @@ import { defaultLogoColor, defaultPrimaryColor } from '@/store/variables'
 import { console } from '@/store/gui/console'
 import { gcodehistory } from '@/store/gui/gcodehistory'
 import { macros } from '@/store/gui/macros'
+import { miscellaneous } from '@/store/gui/miscellaneous'
 import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
 import { webcams } from '@/store/gui/webcams'
@@ -253,6 +254,7 @@ export const gui: Module<GuiState, any> = {
         console,
         gcodehistory,
         macros,
+        miscellaneous,
         notifications,
         presets,
         remoteprinters,
