@@ -834,6 +834,23 @@
             "UnknownGroup": "Unknown Group",
             "Warning": "warning"
         },
+        "MiscellaneousTab": {
+            "AddGroup": "add group",
+            "CreateGroup": "Create group",
+            "End": "End",
+            "EndDescription": "Last LED of this group.",
+            "Groups": "Groups",
+            "GroupSubTitle": "Start: {start}, End: {end}",
+            "LightGroups": "{name} - Groups",
+            "Miscellaneous": "Miscellaneous",
+            "Name": "Name",
+            "NoDevicesFound": "No devices found",
+            "NoGroupFound": "No group found",
+            "Start": "Start",
+            "StartDescription": "First LED of this group.",
+            "Presets": "Presets",
+            "UnableToLoadLight": "Unable to load light"
+        },
         "PresetsTab": {
             "AddPreset": "add preset",
             "Cooldown": "Cooldown",
@@ -861,6 +878,7 @@
             "UpdatePrinter": "Update Printer",
             "UseConfigJson": "InstanceDB = JSON detected. Please use the config.json to modify the printers list."
         },
+        "Store": "store",
         "TimelapseTab": {
             "Autorender": "Autorender",
             "AutorenderDescription": "If enabled, the timelapse video will automatically render at the end of the print",
@@ -955,6 +973,7 @@
             "ShowWebcamInNavigation": "Show Webcam in navigation",
             "UiSettings": "UI-Settings"
         },
+        "Update": "update",
         "WebcamsTab": {
             "AddWebcam": "add webcam",
             "CreateWebcam": "Create Webcam",
