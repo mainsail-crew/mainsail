@@ -951,6 +951,7 @@
         "WebcamsTab": {
             "AddWebcam": "web kamerası ekle",
             "CreateWebcam": "Web Kamerası Oluştur",
+            "EditCrowsnestConf": "crowsnest.conf düzenle",
             "EditWebcam": "Web Kamerası Düzenle",
             "FlipHorizontally": "Web kamerasını yatay olarak çevirin",
             "FlipVertically": "Web kamerasını dikey olarak çevirin",
@@ -989,6 +990,7 @@
         "Delete": "Sil",
         "DeleteDirectory": "Dizini Sil",
         "DeleteDirectoryQuestion": "\"{name}\" dizinini tüm içeriğiyle birlikte gerçekten silmek istiyor musunuz?",
+        "DeleteSelectedQuestion": "Seçilen {count} dosyayı gerçekten silmek istiyor musunuz?",
         "Download": "İndir",
         "DuplicateLastframe": "Son kareyi çoğalt",
         "Empty": "Bitmiş timelapse bulunamadı.",
