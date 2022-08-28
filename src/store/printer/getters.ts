@@ -405,7 +405,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getLights: (state, getters) => {
         const lights: PrinterStateLight[] = []
-        const supportedObjects = ['neopixel', 'dotstar', 'pca9533', 'pca9632']
+        const supportedObjects = ['dotstar', 'led', 'neopixel', 'pca9533', 'pca9632']
         const objects = getters.getPrinterObjects(supportedObjects)
 
         objects
@@ -413,7 +413,9 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 return !object.name.startsWith('_')
             })
             .forEach((object: PrinterGetterObject) => {
-                let colorOrder = object.settings.color_order[0] ?? 0
+                let colorOrder = 'RGB'
+
+                if ('color_order' in object.settings) colorOrder = object.settings.color_order[0] ?? ''
 
                 if (object.type === 'led') {
                     colorOrder = ''
