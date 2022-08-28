@@ -458,7 +458,7 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
-            "EstimatedExtrusion": "Estimated Extrusion:",
+            "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrude",
             "ExtruderTempTooLow": "Extruder temp. <",
             "ExtrusionFactor": "Extrusion factor",
