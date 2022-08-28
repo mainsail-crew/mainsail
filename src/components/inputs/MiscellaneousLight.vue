@@ -27,7 +27,7 @@
                             <color-picker
                                 :color="colorRGB"
                                 :options="colorPickerOptions"
-                                @update:color="onColorChanged" />
+                                @update:color="onColorRGBChanged" />
                             <color-picker
                                 v-if="existWhite"
                                 :color="colorRGBW"
@@ -86,12 +86,12 @@
                                     <number-input
                                         :label="$t('Panels.MiscellaneousPanel.Light.White')"
                                         param="white"
-                                        :target="whiteDouble"
-                                        :default-value="Math.round(object.initialWhite * 100) / 100"
+                                        :target="whiteInt"
+                                        :default-value="Math.round(object.initialWhite * 255)"
                                         :min="0"
-                                        :max="1"
-                                        :dec="2"
-                                        :step="0.01"
+                                        :max="255"
+                                        :dec="1"
+                                        :step="1"
                                         :has-spinner="true"
                                         @submit="onColorInput" />
                                 </v-col>
@@ -227,7 +227,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         color.red = firstColorData[0] * 255
         color.green = firstColorData[1] * 255
         color.blue = firstColorData[2] * 255
-        if (this.object.colorOrder.indexOf('W') !== -1) color.white = firstColorData[3]
+        if (this.object.colorOrder.indexOf('W') !== -1) color.white = firstColorData[3] * 255
 
         return color
     }
@@ -264,7 +264,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     }
 
     get colorRGBW() {
-        return `rgba(255, 255, 255, ${this.current.white ?? 0})`
+        return `rgba(255, 255, 255, ${(this.current.white ?? 0) / 255})`
     }
 
     get redInt() {
@@ -279,16 +279,15 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         return Math.round(this.current.blue ?? 0)
     }
 
-    get whiteDouble() {
-        return Math.round((this.current.white ?? 0) * 100) / 100
+    get whiteInt() {
+        return Math.round(this.current.white ?? 0)
     }
 
-    @Debounce({ time: 250 })
-    onColorChanged(color: ColorData) {
+    colorChanged(color: ColorData) {
         const red = Math.round(((color.red ?? 0) / 255) * 10000) / 10000
         const green = Math.round(((color.green ?? 0) / 255) * 10000) / 10000
         const blue = Math.round(((color.blue ?? 0) / 255) * 10000) / 10000
-        const white = Math.round((color.white ?? 0) * 10000) / 10000
+        const white = Math.round(((color.white ?? 0) / 255) * 10000) / 10000
 
         let gcode = `SET_LED LED="${this.object.name}" RED=${red} GREEN=${green} BLUE=${blue}`
         if (this.existWhite) gcode += ` WHITE=${white}`
@@ -302,9 +301,19 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     }
 
     @Debounce({ time: 250 })
-    onColorWhiteChanged(payload: IroColor) {
-        window.console.log(payload, payload.alpha)
+    onColorRGBChanged(payload: IroColor) {
+        const color: ColorData = {
+            red: payload.red,
+            green: payload.green,
+            blue: payload.blue,
+            white: this.current.white,
+        }
 
+        this.colorChanged(color)
+    }
+
+    @Debounce({ time: 250 })
+    onColorWhiteChanged(payload: IroColor) {
         const color: ColorData = {
             red: this.current.red,
             green: this.current.green,
@@ -313,9 +322,9 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         }
 
         // @ts-ignore
-        color.white = payload.alpha
+        color.white = payload.alpha * 255
 
-        this.onColorChanged(color)
+        this.colorChanged(color)
     }
 
     onColorInput(payload: { name: string; value: number }) {
@@ -329,7 +338,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         // @ts-ignore
         color[payload.name] = payload.value
 
-        this.onColorChanged(color)
+        this.colorChanged(color)
     }
 }
 </script>
