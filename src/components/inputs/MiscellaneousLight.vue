@@ -106,7 +106,6 @@ import ColorPicker from '@/components/inputs/ColorPicker.vue'
 import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker'
 import { Debounce } from 'vue-debounce-decorator'
 import iro from '@jaames/iro'
-// @ts-ignore
 
 interface ColorData {
     red: number | null
