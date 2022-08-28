@@ -353,5 +353,6 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     height: 15px;
     border-radius: 50%;
     border: 1px solid lightgray;
+    cursor: pointer;
 }
 </style>
