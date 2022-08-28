@@ -24,10 +24,18 @@
                 <v-card-text class="pt-6">
                     <v-row>
                         <v-col class="text-center">
-                            <color-picker :color="colorRGB" :options="options" @update:color="onColorChanged" />
+                            <color-picker
+                                :color="colorRGB"
+                                :options="colorPickerOptions"
+                                @update:color="onColorChanged" />
+                            <color-picker
+                                v-if="existWhite"
+                                :color="colorRGBW"
+                                :options="colorPickerWhiteOptions"
+                                @update:color="onColorWhiteChanged" />
                         </v-col>
                         <v-col>
-                            <v-row>
+                            <v-row v-if="existRed">
                                 <v-col>
                                     <number-input
                                         :label="$t('Panels.MiscellaneousPanel.Light.Red')"
@@ -43,7 +51,7 @@
                                         @submit="onColorInput" />
                                 </v-col>
                             </v-row>
-                            <v-row>
+                            <v-row v-if="existGreen">
                                 <v-col>
                                     <number-input
                                         :label="$t('Panels.MiscellaneousPanel.Light.Green')"
@@ -58,7 +66,7 @@
                                         @submit="onColorInput" />
                                 </v-col>
                             </v-row>
-                            <v-row>
+                            <v-row v-if="existBlue">
                                 <v-col>
                                     <number-input
                                         :label="$t('Panels.MiscellaneousPanel.Light.Blue')"
@@ -78,12 +86,12 @@
                                     <number-input
                                         :label="$t('Panels.MiscellaneousPanel.Light.White')"
                                         param="white"
-                                        :target="whiteInt"
-                                        :default-value="Math.round(object.initialWhite * 255)"
+                                        :target="whiteDouble"
+                                        :default-value="Math.round(object.initialWhite * 100) / 100"
                                         :min="0"
-                                        :max="255"
-                                        :dec="1"
-                                        :step="1"
+                                        :max="1"
+                                        :dec="2"
+                                        :step="0.01"
                                         :has-spinner="true"
                                         @submit="onColorInput" />
                                 </v-col>
@@ -106,6 +114,7 @@ import ColorPicker from '@/components/inputs/ColorPicker.vue'
 import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker'
 import { Debounce } from 'vue-debounce-decorator'
 import iro from '@jaames/iro'
+import { IroColor } from '@irojs/iro-core'
 
 interface ColorData {
     red: number | null
@@ -128,24 +137,79 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
 
     boolDialog = false
 
-    options: ColorPickerProps = {
-        width: 200,
-        margin: 15,
-        layout: [
-            {
-                component: iro.ui.Wheel,
-            },
-            {
-                component: iro.ui.Slider,
-                options: {
-                    sliderType: 'value',
-                },
-            },
-        ],
-    }
-
     get name() {
         return convertName(this.object.name)
+    }
+
+    get colorPickerOptions() {
+        let options: ColorPickerProps = {
+            width: 200,
+            margin: 15,
+            layout: [],
+        }
+
+        if (this.existRed) {
+            // @ts-ignore
+            options?.layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'red',
+                },
+            })
+        }
+
+        if (this.existGreen) {
+            // @ts-ignore
+            options?.layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'green',
+                },
+            })
+        }
+
+        if (this.existBlue) {
+            // @ts-ignore
+            options?.layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'blue',
+                },
+            })
+        }
+
+        if (this.existRed && this.existGreen && this.existBlue) {
+            options.layout = [
+                {
+                    component: iro.ui.Wheel,
+                },
+                {
+                    component: iro.ui.Slider,
+                    options: {
+                        sliderType: 'value',
+                    },
+                },
+            ]
+        }
+
+        return options
+    }
+
+    get colorPickerWhiteOptions() {
+        let options: ColorPickerProps = {
+            width: 200,
+            margin: 15,
+            layout: [
+                {
+                    component: iro.ui.Slider,
+                    options: {
+                        sliderType: 'alpha',
+                    },
+                },
+            ],
+        }
+
+        return options
     }
 
     get current() {
@@ -163,9 +227,21 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         color.red = firstColorData[0] * 255
         color.green = firstColorData[1] * 255
         color.blue = firstColorData[2] * 255
-        if (this.object.colorOrder.indexOf('W') !== -1) color.white = firstColorData[3] * 255
+        if (this.object.colorOrder.indexOf('W') !== -1) color.white = firstColorData[3]
 
         return color
+    }
+
+    get existRed() {
+        return this.object.colorOrder.indexOf('R') !== -1
+    }
+
+    get existGreen() {
+        return this.object.colorOrder.indexOf('G') !== -1
+    }
+
+    get existBlue() {
+        return this.object.colorOrder.indexOf('B') !== -1
     }
 
     get existWhite() {
@@ -176,7 +252,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         let output = this.colorRGB
 
         if (this.current.white !== null && this.current.red == 0 && this.current.green == 0 && this.current.blue == 0)
-            output = `rgb(${this.current.white}, ${this.current.white}, ${this.current.white})`
+            output = `rgb(${this.current.white * 255}, ${this.current.white * 255}, ${this.current.white * 255})`
 
         return {
             'background-color': output,
@@ -185,6 +261,10 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
 
     get colorRGB() {
         return `rgb(${this.current.red ?? 0}, ${this.current.green ?? 0}, ${this.current.blue ?? 0})`
+    }
+
+    get colorRGBW() {
+        return `rgba(255, 255, 255, ${this.current.white ?? 0})`
     }
 
     get redInt() {
@@ -199,8 +279,8 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         return Math.round(this.current.blue ?? 0)
     }
 
-    get whiteInt() {
-        return Math.round(this.current.white ?? 0)
+    get whiteDouble() {
+        return Math.round((this.current.white ?? 0) * 100) / 100
     }
 
     @Debounce({ time: 250 })
@@ -208,7 +288,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         const red = Math.round(((color.red ?? 0) / 255) * 10000) / 10000
         const green = Math.round(((color.green ?? 0) / 255) * 10000) / 10000
         const blue = Math.round(((color.blue ?? 0) / 255) * 10000) / 10000
-        const white = Math.round(((color.white ?? 0) / 255) * 10000) / 10000
+        const white = Math.round((color.white ?? 0) * 10000) / 10000
 
         let gcode = `SET_LED LED="${this.object.name}" RED=${red} GREEN=${green} BLUE=${blue}`
         if (this.existWhite) gcode += ` WHITE=${white}`
@@ -219,6 +299,23 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
             type: 'command',
         })
         this.$socket.emit('printer.gcode.script', { script: gcode })
+    }
+
+    @Debounce({ time: 250 })
+    onColorWhiteChanged(payload: IroColor) {
+        window.console.log(payload, payload.alpha)
+
+        const color: ColorData = {
+            red: this.current.red,
+            green: this.current.green,
+            blue: this.current.blue,
+            white: this.current.white,
+        }
+
+        // @ts-ignore
+        color.white = payload.alpha
+
+        this.onColorChanged(color)
     }
 
     onColorInput(payload: { name: string; value: number }) {
