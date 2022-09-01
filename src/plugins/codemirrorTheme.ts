@@ -51,6 +51,8 @@ const mainsailHighlightStyle = HighlightStyle.define([
     { tag: t.className, color: '#c586c0' },
     { tag: t.name, color: '#e40', fontWeight: 'bold' },
     { tag: t.propertyName, color: '#e56735' },
+    { tag: t.keyword, color: '#fcbe03'},
+    { tag: t.operator, color: '#fc03fc'}
 ])
 const fn0 = mainsailHighlightStyle.style
 // noinspection JSConstantReassignment

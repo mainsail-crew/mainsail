@@ -1,27 +1,28 @@
+/*
 import {StringStream} from "@codemirror/language";
-// const keywords = ["and", "as", "block", "endblock", "by", "cycle", "debug", "else", "elif",
-//         "extends", "filter", "endfilter", "firstof", "for",
-//         "endfor", "if", "endif", "ifchanged", "endifchanged",
-//         "ifequal", "endifequal", "ifnotequal",
-//         "endifnotequal", "in", "include", "load", "not", "now", "or",
-//         "parsed", "regroup", "reversed", "spaceless",
-//         "endspaceless", "ssi", "templatetag", "openblock",
-//         "closeblock", "openvariable", "closevariable",
-//         "openbrace", "closebrace", "opencomment",
-//         "closecomment", "widthratio", "url", "with", "endwith",
-//         "get_current_language", "trans", "endtrans", "noop", "blocktrans",
-//         "endblocktrans", "get_available_languages",
-//         "get_current_language_bidi", "plural"];
-
+let keywords = ["and", "as", "block", "endblock", "by", "cycle", "debug", "else", "elif",
+        "extends", "filter", "endfilter", "firstof", "for",
+        "endfor", "if", "endif", "ifchanged", "endifchanged",
+        "ifequal", "endifequal", "ifnotequal",
+        "endifnotequal", "in", "include", "load", "not", "now", "or",
+        "parsed", "regroup", "reversed", "spaceless",
+        "endspaceless", "ssi", "templatetag", "openblock",
+        "closeblock", "openvariable", "closevariable",
+        "openbrace", "closebrace", "opencomment",
+        "closecomment", "widthratio", "url", "with", "endwith",
+        "get_current_language", "trans", "endtrans", "noop", "blocktrans",
+        "endblocktrans", "get_available_languages",
+        "get_current_language_bidi", "plural"];
+const operator = /^[+\-*&%=<>!?|~^]/;
 const sign = /^[:[({]/;
+let atom = ["true", "false"];
 const number = /^(\d[+\-*!/])?\d+(\.\d+)?/;
-const keywords = ["if", "endif", "endfor", "for", "loop\\.index", "loop\\.revindex", "loop\\.first", "loop\\.last", "loop\\.length", "loop\\.cycle", "loop\\.depth", "and", "or", "not", "in", "is"];
-const reKeyword = new RegExp("^" + keywords.join("|"));
-const reAtom = /^true|false/;
-const operators = ["\\+", "-", "\\/\\/", "\\/", "%", "\\*\\*", "\\*", "\\(", "\\)", "==", "!=", ">=", ">", "<=", "<", "=", "\\|", "~"];
-const reOperator = new RegExp("^" + operators.join("|"));
+
+keywords = new RegExp("((" + keywords.join(")|(") + "))\\b");
+atom = new RegExp("((" + atom.join(")|(") + "))\\b");
+
 export const jinja2 = {
-    token: function(stream: StringStream, state: StreamParserJinja2State): string | null {
+    token: function(stream: StringStream, state: StreamParserJinja2State): string {
         let ch: string | void = stream.peek();
 
         //Comment
@@ -38,7 +39,7 @@ export const jinja2 = {
             //After operator
             if(state.operator) {
                 state.operator = false;
-                if(stream.match(reAtom)) {
+                if(stream.match(atom)) {
                     return "atom";
                 }
                 if(stream.match(number)) {
@@ -48,7 +49,7 @@ export const jinja2 = {
             //After sign
             if(state.sign) {
                 state.sign = false;
-                if(stream.match(reAtom)) {
+                if(stream.match(atom)) {
                     return "atom";
                 }
                 if(stream.match(number)) {
@@ -69,17 +70,17 @@ export const jinja2 = {
             } else if(stream.match(state.intag + "}") || stream.eat("-") && stream.match(state.intag + "}")) {
                 state.intag = false;
                 return "tag";
-            } else if(stream.match(reOperator)) {
+            } else if(stream.match(operator)) {
                 state.operator = true;
                 return "operator";
             } else if(stream.match(sign)) {
                 state.sign = true;
             } else {
                 if(stream.eat(" ") || stream.sol()) {
-                    if(stream.match(reKeyword)) {
+                    if(stream.match(keywords)) {
                         return "keyword";
                     }
-                    if(stream.match(reAtom)) {
+                    if(stream.match(atom)) {
                         return "atom";
                     }
                     if(stream.match(number)) {
@@ -115,11 +116,8 @@ export const jinja2 = {
                 stream.eat("-");
                 return "tag";
             }
-            return 'tag'
         }
         stream.next();
-        // TODO: not sure about returning null here
-        return null;
     },
     startState: function(): StreamParserJinja2State {
         return {
@@ -143,3 +141,4 @@ export interface StreamParserJinja2State {
     sign: boolean,
     instring: boolean | string,
 }
+*/

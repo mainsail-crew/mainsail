@@ -1,9 +1,13 @@
 import { StreamLanguage, StreamParser, StringStream } from '@codemirror/language'
 import { gcode } from '@/plugins/StreamParserGcode'
-import { jinja2, StreamParserJinja2State } from '@/plugins/StreamParserJinja2'
 
 export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
+        const operators = ["\\+", "-", "\\/\\/", "\\/", "%", "\\*\\*", "\\*", "\\(", "\\)", "==", "!=", ">=", ">", "<=", "<", "=", "\\|", "~"]
+        const reOperator = new RegExp("^" + operators.join("|"))
+        const keywords = ["if", "endif", "endfor", "for", "loop\\.index", "loop\\.revindex", "loop\\.first", "loop\\.last", "loop\\.length", "loop\\.cycle", "loop\\.depth", "and", "or", "not", "in", "is"]
+        const reKeyword = new RegExp("^" + keywords.join("\\s|") + "\\s")
+
         const ch = stream.peek()
         /* comments */
         if (
@@ -61,23 +65,32 @@ export const klipper_config: StreamParser<any> = {
                         state.klipperMacroJinjaPercent = false
                         stream.eatSpace()
                         state.gcodeZeroPos = stream.pos
-                        // return null
                         return 'tag'
                     }
+                    /* string, operator, keyword, atom, number */
                     if (stream.match(/^"[^"]+"/)) {
                         return 'string'
                     }
-                    stream.eatWhile(/^\s+\S/)
-                    const jinjaState = {...jinja2.startState(), intag: true}
-                    return jinja2.token(stream, jinjaState)
+                    if (stream.match(reOperator)) {
+                        return 'number'
+                    }
+                    if (stream.match(reKeyword)) {
+                        return 'keyword'
+                    }
+                    if (stream.match(/^true\s|false\s/)) {
+                        return 'atom'
+                    }
+                    if (stream.match(/^\d+/)) {
+                        return 'number'
+                    }
+                    stream.next()
+                    stream.eatSpace()
+                    return 'propertyName'
                 }
-                const jinjaMatch: any = stream.match(/^\s*{[%#{]?/)
-                if (jinjaMatch) {
+                if (stream.match(/^\s*{[%#{]?/)) {
                     state.klipperMacroJinjaPercent = stream.string.includes('{%')
                     state.klipperMacroJinja = true
-                    stream.backUp(jinjaMatch[0].trimStart().length)
-                    // return null
-                    return jinja2.token(stream, jinja2.startState())
+                    return 'tag'
                 }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? 0)
             }
@@ -97,24 +110,32 @@ export const klipper_config: StreamParser<any> = {
                         state.klipperMacroJinjaPercent = false
                         stream.eatSpace()
                         state.gcodeZeroPos = stream.pos
-                        // return null
                         return 'tag'
                     }
+                    /* string, operator, keyword, atom, number */
                     if (stream.match(/^"[^"]+"/)) {
                         return 'string'
                     }
-                    stream.eatWhile(/^\s+\S/)
-                    const jinjaState = {...jinja2.startState(), intag: true}
-                    return jinja2.token(stream, jinjaState)
+                    if (stream.match(reOperator)) {
+                        return 'number'
+                    }
+                    if (stream.match(reKeyword)) {
+                        return 'keyword'
+                    }
+                    if (stream.match(/^true\s|false\s/)) {
+                        return 'atom'
+                    }
+                    if (stream.match(/^\d+/)) {
+                        return 'number'
+                    }
+                    stream.next()
+                    stream.eatSpace()
+                    return 'propertyName'
                 }
-
-                const jinjaMatch: any = stream.match(/^\s*{[%#{]?/)
-                if (jinjaMatch) {
+                if (stream.match(/^\s*{[%#{]?/)) {
                     state.klipperMacroJinjaPercent = stream.string.includes('{%')
                     state.klipperMacroJinja = true
-                    stream.backUp(jinjaMatch[0].trimStart().length)
-                    // return null
-                    return jinja2.token(stream, jinja2.startState())
+                    return 'tag'
                 }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? stream.pos)
             } else if (state.pair) {
