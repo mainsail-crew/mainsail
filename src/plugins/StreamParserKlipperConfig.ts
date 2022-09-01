@@ -1,5 +1,6 @@
-import { StreamParser, StringStream } from '@codemirror/language'
+import { StreamLanguage, StreamParser, StringStream } from '@codemirror/language'
 import { gcode } from '@/plugins/StreamParserGcode'
+import { jinja2 } from '@/plugins/StreamParserJinja2'
 
 export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
@@ -60,16 +61,28 @@ export const klipper_config: StreamParser<any> = {
                         state.klipperMacroJinjaPercent = false
                         stream.eatSpace()
                         state.gcodeZeroPos = stream.pos
-                        return null
+                        // return null
+                        return 'tag'
                     }
-                    stream.next()
-                    return 'string'
+                    // stream.next()
+                    // return 'string'
+                    stream.eatWhile(/^\s+\S/)
+                    const jinjaState = {
+                        incomment: false,
+                        intag: true,
+                        operator: false,
+                        sign: false,
+                        instring: false
+                    }
+                    return jinja2.token(stream, jinjaState)
                 }
-
-                if (stream.match(/^\s*{[%{]?/)) {
+                const jinjaMatch: any = stream.match(/^\s*{[%#{]?/)
+                if (jinjaMatch) {
                     state.klipperMacroJinjaPercent = stream.string.includes('{%')
                     state.klipperMacroJinja = true
-                    return null
+                    stream.backUp(jinjaMatch[0].trimStart().length)
+                    // return null
+                    return jinja2.token(stream, jinja2.startState())
                 }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? 0)
             }
@@ -89,16 +102,29 @@ export const klipper_config: StreamParser<any> = {
                         state.klipperMacroJinjaPercent = false
                         stream.eatSpace()
                         state.gcodeZeroPos = stream.pos
-                        return null
+                        // return null
+                        return 'tag'
                     }
-                    stream.next()
-                    return 'string'
+                    // stream.next()
+                    // return 'string'
+                    stream.eatWhile(/^\s+\S/)
+                    const jinjaState = {
+                        incomment: false,
+                        intag: true,
+                        operator: false,
+                        sign: false,
+                        instring: false
+                    }
+                    return jinja2.token(stream, jinjaState)
                 }
 
-                if (stream.match(/^\s*{[%{]?/)) {
+                const jinjaMatch: any = stream.match(/^\s*{[%#{]?/)
+                if (jinjaMatch) {
                     state.klipperMacroJinjaPercent = stream.string.includes('{%')
                     state.klipperMacroJinja = true
-                    return null
+                    stream.backUp(jinjaMatch[0].trimStart().length)
+                    // return null
+                    return jinja2.token(stream, jinja2.startState())
                 }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? stream.pos)
             } else if (state.pair) {

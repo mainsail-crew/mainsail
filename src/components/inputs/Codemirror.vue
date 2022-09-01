@@ -1,5 +1,5 @@
 <template>
-    <div class="vue-codemirror">
+    <div className="vue-codemirror">
         <div ref="codemirror" v-observe-visibility="visibilityChanged"></div>
     </div>
 </template>
@@ -15,6 +15,7 @@ import { EditorState } from '@codemirror/state'
 import { mainsailTheme } from '@/plugins/codemirrorTheme'
 import { StreamLanguage } from '@codemirror/language'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
+// import { jinja2 } from '@/plugins/StreamParserJinja2'
 import { gcode } from '@/plugins/StreamParserGcode'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
@@ -94,6 +95,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
 
         if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(klipper_config))
         else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
+        // else if (['jinja2'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(jinja2))
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
         else if (['css'].includes(this.fileExtension)) extensions.push(css())
 
