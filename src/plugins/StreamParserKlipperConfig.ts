@@ -3,10 +3,67 @@ import { gcode } from '@/plugins/StreamParserGcode'
 
 export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
-        const operators = ["\\+", "-", "\\/\\/", "\\/", "%", "\\*\\*", "\\*", "\\(", "\\)", "==", "!=", ">=", ">", "<=", "<", "=", "\\|", "~"]
+        const operators = [
+            "\\+\\(", "-\\(", "\\/\\/\\(", "\\/\\(", "%\\(", "\\*\\*", "\\*", "\\(", "\\)",
+            "==", "!=", ">=", ">", "<=", "<", "=", "\\|", "~"
+        ]
         const reOperator = new RegExp("^" + operators.join("|"))
-        const keywords = ["if", "endif", "endfor", "for", "loop\\.index", "loop\\.revindex", "loop\\.first", "loop\\.last", "loop\\.length", "loop\\.cycle", "loop\\.depth", "and", "or", "not", "in", "is"]
-        const reKeyword = new RegExp("^" + keywords.join("\\s|") + "\\s")
+        const keywords = [
+            "if", "elif", "else", "endif", "endfor", "for", "loop\\.index", "loop\\.revindex",
+            "loop\\.first", "loop\\.last", "loop\\.length", "loop\\.cycle", "loop\\.depth",
+            "and", "or", "not", "in", "is", "endmacro", "macro"
+        ]
+        const reKeyword = new RegExp("^" + keywords.join("\\s+|") + "\\s+")
+        const filters = [
+            "abs", "attr", "batch", "capitalize", "center", "default", "dictsort", "escape",
+            "filesizeformat", "first", "float", "forceescape", "format", "groupby", "indent",
+            "int", "join", "last", "length", "list", "lower", "map", "max", "min", "pprint",
+            "random", "reject", "rejectattr", "replace", "reverse", "round", "tojson", "safe",
+            "select", "selectattr", "slice", "sort", "string", "striptags", "sum", "title",
+            "trim", "truncate", "unique", "upper", "urlencode", "urlize", "wordcount",
+            "wordwrap", "xmlattr"
+        ]
+        // This RegExp may be useful:
+        // const reFilter = new RegExp("^" + filters.join("\\([^(]*\\)|") + "\\([^(]*\\)")
+        const reFilter = new RegExp("^" + filters.join("|"))
+
+        function jinja2Element(stream:StringStream): string {
+            if (
+                (state.klipperMacroJinjaPercent && stream.match(/^%}/)) ||
+                (!state.klipperMacroJinjaPercent && stream.match(/^}/), false)
+            ) {
+                state.klipperMacroJinja = false
+                state.klipperMacroJinjaPercent = false
+                stream.eatSpace()
+                state.gcodeZeroPos = stream.pos
+                return 'tag'
+            }
+            /* string, operator, keyword, atom, number */
+            if (stream.match(/^"[^"]+"/)) {
+                return 'string'
+            }
+            if (stream.match(reKeyword)) {
+                return 'keyword'
+            }
+            if (stream.match(reFilter)) {
+                if (stream.peek() === "(") {
+                    return 'updateOperator'
+                }
+            }
+            if (stream.match(reOperator)) {
+                return 'number'
+            }
+            if (stream.match(/^true\s|false\s/)) {
+                return 'atom'
+            }
+            if (stream.match(/^\d+/)) {
+                return 'number'
+            }
+            stream.next()
+            stream.eatSpace()
+            state.indent = stream.indentation()
+            return 'propertyName'
+        }
 
         const ch = stream.peek()
         /* comments */
@@ -53,43 +110,17 @@ export const klipper_config: StreamParser<any> = {
 
                 if (!state.gcodeZeroPos) {
                     stream.eatSpace()
+                    state.indent = stream.indentation()
                     state.gcodeZeroPos = stream.pos
                 }
 
                 if (state.klipperMacroJinja) {
-                    if (
-                        (state.klipperMacroJinjaPercent && stream.match(/^%}/)) ||
-                        (!state.klipperMacroJinjaPercent && stream.match(/^}/))
-                    ) {
-                        state.klipperMacroJinja = false
-                        state.klipperMacroJinjaPercent = false
-                        stream.eatSpace()
-                        state.gcodeZeroPos = stream.pos
-                        return 'tag'
-                    }
-                    /* string, operator, keyword, atom, number */
-                    if (stream.match(/^"[^"]+"/)) {
-                        return 'string'
-                    }
-                    if (stream.match(reOperator)) {
-                        return 'number'
-                    }
-                    if (stream.match(reKeyword)) {
-                        return 'keyword'
-                    }
-                    if (stream.match(/^true\s|false\s/)) {
-                        return 'atom'
-                    }
-                    if (stream.match(/^\d+/)) {
-                        return 'number'
-                    }
-                    stream.next()
-                    stream.eatSpace()
-                    return 'propertyName'
+                    return jinja2Element(stream)
                 }
                 if (stream.match(/^\s*{[%#{]?/)) {
                     state.klipperMacroJinjaPercent = stream.string.includes('{%')
                     state.klipperMacroJinja = true
+                    state.indent = stream.indentation()
                     return 'tag'
                 }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? 0)
@@ -99,38 +130,11 @@ export const klipper_config: StreamParser<any> = {
             if (state.gcode) {
                 if (stream.sol()) {
                     stream.eatSpace()
+                    state.indent = stream.indentation()
                     state.gcodeZeroPos = stream.pos
                 }
                 if (state.klipperMacroJinja) {
-                    if (
-                        (state.klipperMacroJinjaPercent && stream.match(/^%}/)) ||
-                        (!state.klipperMacroJinjaPercent && stream.match(/^}/))
-                    ) {
-                        state.klipperMacroJinja = false
-                        state.klipperMacroJinjaPercent = false
-                        stream.eatSpace()
-                        state.gcodeZeroPos = stream.pos
-                        return 'tag'
-                    }
-                    /* string, operator, keyword, atom, number */
-                    if (stream.match(/^"[^"]+"/)) {
-                        return 'string'
-                    }
-                    if (stream.match(reOperator)) {
-                        return 'number'
-                    }
-                    if (stream.match(reKeyword)) {
-                        return 'keyword'
-                    }
-                    if (stream.match(/^true\s|false\s/)) {
-                        return 'atom'
-                    }
-                    if (stream.match(/^\d+/)) {
-                        return 'number'
-                    }
-                    stream.next()
-                    stream.eatSpace()
-                    return 'propertyName'
+                    return jinja2Element(stream)
                 }
                 if (stream.match(/^\s*{[%#{]?/)) {
                     state.klipperMacroJinjaPercent = stream.string.includes('{%')
@@ -202,6 +206,7 @@ export const klipper_config: StreamParser<any> = {
             gcode: false,
             klipperMacro: false,
             gcodeZeroPos: null,
+            indent: 0,
             klipperMacroJinja: false,
             klipperMacroJinjaPercent: false,
         }
@@ -217,6 +222,7 @@ interface StreamParserKlipperConfigState {
     was: boolean
     gcode: boolean
     gcodeZeroPos: number | null
+    indent: number | null
     klipperMacro: boolean
     klipperMacroJinja: boolean
     klipperMacroJinjaPercent: boolean
