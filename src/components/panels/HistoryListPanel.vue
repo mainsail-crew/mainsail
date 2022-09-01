@@ -959,8 +959,13 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
         content.push(row)
 
-        if (this.jobs.length) {
-            this.jobs.forEach((job: ServerHistoryStateJob) => {
+        let jobs = [...this.jobs]
+        if (this.selectedJobs.length) {
+            jobs = [...this.selectedJobs]
+        }
+
+        if (jobs.length) {
+            jobs.forEach((job: ServerHistoryStateJob) => {
                 const row: string[] = []
 
                 let filename = job.filename
