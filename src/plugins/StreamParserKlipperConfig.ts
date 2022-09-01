@@ -1,6 +1,6 @@
 import { StreamLanguage, StreamParser, StringStream } from '@codemirror/language'
 import { gcode } from '@/plugins/StreamParserGcode'
-import { jinja2 } from '@/plugins/StreamParserJinja2'
+import { jinja2, StreamParserJinja2State } from '@/plugins/StreamParserJinja2'
 
 export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
@@ -64,16 +64,11 @@ export const klipper_config: StreamParser<any> = {
                         // return null
                         return 'tag'
                     }
-                    // stream.next()
-                    // return 'string'
-                    stream.eatWhile(/^\s+\S/)
-                    const jinjaState = {
-                        incomment: false,
-                        intag: true,
-                        operator: false,
-                        sign: false,
-                        instring: false
+                    if (stream.match(/^"[^"]+"/)) {
+                        return 'string'
                     }
+                    stream.eatWhile(/^\s+\S/)
+                    const jinjaState = {...jinja2.startState(), intag: true}
                     return jinja2.token(stream, jinjaState)
                 }
                 const jinjaMatch: any = stream.match(/^\s*{[%#{]?/)
@@ -105,16 +100,11 @@ export const klipper_config: StreamParser<any> = {
                         // return null
                         return 'tag'
                     }
-                    // stream.next()
-                    // return 'string'
-                    stream.eatWhile(/^\s+\S/)
-                    const jinjaState = {
-                        incomment: false,
-                        intag: true,
-                        operator: false,
-                        sign: false,
-                        instring: false
+                    if (stream.match(/^"[^"]+"/)) {
+                        return 'string'
                     }
+                    stream.eatWhile(/^\s+\S/)
+                    const jinjaState = {...jinja2.startState(), intag: true}
                     return jinja2.token(stream, jinjaState)
                 }
 
