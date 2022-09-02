@@ -11,7 +11,7 @@ export const klipper_config: StreamParser<any> = {
         const keywords = [
             "if", "elif", "else", "endif", "endfor", "for", "loop\\.index", "loop\\.revindex",
             "loop\\.first", "loop\\.last", "loop\\.length", "loop\\.cycle", "loop\\.depth",
-            "and", "or", "not", "in", "is", "endmacro", "macro"
+            "and", "or", "not", "in", "is", "endmacro", "macro", "endcall", "call"
         ]
         const reKeyword = new RegExp("^" + keywords.join("\\s+|") + "\\s+")
         const filters = [
@@ -23,7 +23,6 @@ export const klipper_config: StreamParser<any> = {
             "trim", "truncate", "unique", "upper", "urlencode", "urlize", "wordcount",
             "wordwrap", "xmlattr"
         ]
-        // This RegExp may be useful:
         // const reFilter = new RegExp("^" + filters.join("\\([^(]*\\)|") + "\\([^(]*\\)")
         const reFilter = new RegExp("^" + filters.join("|"))
 
@@ -61,7 +60,6 @@ export const klipper_config: StreamParser<any> = {
             }
             stream.next()
             stream.eatSpace()
-            state.indent = stream.indentation()
             return 'propertyName'
         }
 
@@ -110,7 +108,6 @@ export const klipper_config: StreamParser<any> = {
 
                 if (!state.gcodeZeroPos) {
                     stream.eatSpace()
-                    state.indent = stream.indentation()
                     state.gcodeZeroPos = stream.pos
                 }
 
@@ -120,7 +117,6 @@ export const klipper_config: StreamParser<any> = {
                 if (stream.match(/^\s*{[%#{]?/)) {
                     state.klipperMacroJinjaPercent = stream.string.includes('{%')
                     state.klipperMacroJinja = true
-                    state.indent = stream.indentation()
                     return 'tag'
                 }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? 0)
@@ -130,7 +126,6 @@ export const klipper_config: StreamParser<any> = {
             if (state.gcode) {
                 if (stream.sol()) {
                     stream.eatSpace()
-                    state.indent = stream.indentation()
                     state.gcodeZeroPos = stream.pos
                 }
                 if (state.klipperMacroJinja) {
@@ -206,7 +201,6 @@ export const klipper_config: StreamParser<any> = {
             gcode: false,
             klipperMacro: false,
             gcodeZeroPos: null,
-            indent: 0,
             klipperMacroJinja: false,
             klipperMacroJinjaPercent: false,
         }
@@ -222,7 +216,6 @@ interface StreamParserKlipperConfigState {
     was: boolean
     gcode: boolean
     gcodeZeroPos: number | null
-    indent: number | null
     klipperMacro: boolean
     klipperMacroJinja: boolean
     klipperMacroJinjaPercent: boolean

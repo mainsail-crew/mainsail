@@ -13,7 +13,7 @@ temp
 package-lock.json
 *.local
 .env
-.vscode
+.vscode/
 
 cypress/videos/
 components.d.ts
