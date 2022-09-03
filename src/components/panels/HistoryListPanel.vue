@@ -1016,12 +1016,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     return this.formatDate(value)
 
                 case 'time':
-                    return value.toFixed()
+                    return value?.toFixed() ?? ''
 
                 default:
                     switch (typeof value) {
                         case 'number':
-                            return value.toLocaleString(undefined, { useGrouping: false })
+                            return value?.toLocaleString(undefined, { useGrouping: false }) ?? 0
 
                         case 'string':
                             if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
@@ -1044,12 +1044,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     return this.formatPrintTime(value)
 
                 case 'temp':
-                    return value.toFixed() + ' °C'
+                    return value?.toFixed() + ' °C'
 
                 case 'length':
                     if (value > 1000) return (value / 1000).toFixed(2) + ' m'
 
-                    return value.toFixed(2) + ' mm'
+                    return value?.toFixed(2) + ' mm'
 
                 default:
                     return value
