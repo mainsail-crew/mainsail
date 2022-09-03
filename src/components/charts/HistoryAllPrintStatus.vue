@@ -13,7 +13,7 @@ import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import type { ECharts } from 'echarts/core'
-import { ECBasicOption } from 'echarts/types/dist/shared'
+import { ECBasicOption } from 'echarts/types/dist/shared.d'
 import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/types'
 
 @Component({
