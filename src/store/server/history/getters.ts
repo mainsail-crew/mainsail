@@ -119,7 +119,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
             }
         })
 
-        const otherLimit = totalCount * 0.1
+        const otherLimit = totalCount * 0.05
         const others = output.filter((entry) => entry.value < otherLimit)
         if (others.length > 1) {
             let otherValue = 0
