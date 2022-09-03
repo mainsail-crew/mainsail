@@ -288,8 +288,14 @@
                         v-if="filamentDiameter && nozzleDiameter"
                         style="font-size: 0.8em"
                         class="text--disabled text-caption font-weight-light d-flex justify-center">
-                        {{ $t('Panels.ExtruderControlPanel.EstimatedExtrusion') }} ~ {{ extrudedLength }} mm @
-                        {{ volumetricFlow }} mm³/s
+                        <span>
+                            {{ $t('Panels.ExtruderControlPanel.EstimatedExtrusion') }} ~ {{ extrudedLength }} mm @
+                            {{ volumetricFlow }} mm³/s -
+                            <v-icon x-small style="opacity: 0.4; margin-top: -2px">
+                                {{ mdiDiameterVariant }}
+                            </v-icon>
+                            {{ nozzleDiameter }} mm
+                        </span>
                     </div>
                 </v-container>
             </template>
@@ -304,6 +310,7 @@ import {
     mdiPrinter3dNozzle,
     mdiPrinter3dNozzleOutline,
     mdiDotsVertical,
+    mdiDiameterVariant,
 } from '@mdi/js'
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import {
@@ -337,6 +344,7 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
     mdiPrinter3dNozzleOutline = mdiPrinter3dNozzleOutline
     mdiDotsVertical = mdiDotsVertical
+    mdiDiameterVariant = mdiDiameterVariant
 
     private heatWaitGcodes = ['printer.extruder.can_extrude', 'TEMPERATURE_WAIT', 'M109']
 

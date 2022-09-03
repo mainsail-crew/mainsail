@@ -339,6 +339,7 @@
             "in_progress": "In progress",
             "klippy_disconnect": "Klippy disconnect",
             "klippy_shutdown": "Klippy shutdown",
+            "Others": "Others",
             "server_exit": "Server exit"
         },
         "TitleExportHistory": "Export History",
@@ -458,7 +459,7 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
-            "EstimatedExtrusion": "Estimated Extrusion:",
+            "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrude",
             "ExtruderTempTooLow": "Extruder temp. <",
             "ExtrusionFactor": "Extrusion factor",
