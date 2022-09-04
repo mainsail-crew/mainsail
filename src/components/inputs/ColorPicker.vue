@@ -20,7 +20,7 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import iro from '@jaames/iro'
 import { IroColor } from '@irojs/iro-core'
-import { ColorPickerProps, IroColorPicker as IroCP } from '@jaames/iro/dist/ColorPicker'
+import { ColorPickerProps, IroColorPicker as IroCP } from '@jaames/iro/dist/ColorPicker.d'
 
 @Component
 export default class ColorPicker extends Mixins(BaseMixin) {
