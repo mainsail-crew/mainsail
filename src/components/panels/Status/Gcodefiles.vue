@@ -402,7 +402,9 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     }
 
     mounted() {
-        this.calcContentTdWidth()
+        setTimeout(() => {
+            this.calcContentTdWidth()
+        }, 200)
     }
 
     calcContentTdWidth() {
