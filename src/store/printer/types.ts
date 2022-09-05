@@ -118,6 +118,7 @@ export interface PrinterStateLight {
     initialBlue: number | null
     initialWhite: number | null
     colorData: number[][]
+    singleChannelTarget: number | null
 }
 
 export interface PrinterStateMiscellaneous {

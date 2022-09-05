@@ -135,7 +135,8 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true })
     declare object: PrinterStateLight
 
-    boolDialog = false
+    private boolDialog = false
+    private inputValue = 0
 
     get name() {
         return convertName(this.object.name)
@@ -291,7 +292,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
 
         let gcode = `SET_LED LED="${this.object.name}" RED=${red} GREEN=${green} BLUE=${blue}`
         if (this.existWhite) gcode += ` WHITE=${white}`
-        gcode += ` TRANSMIT=1`
+        gcode += ` SYNC=0 TRANSMIT=1`
 
         this.$store.dispatch('server/addEvent', {
             message: gcode,

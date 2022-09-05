@@ -3,7 +3,8 @@
         <v-row>
             <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
-                    <v-icon v-if="type !== 'output_pin'" small :class="fanClasses">{{ mdiFan }}</v-icon>
+                    <v-icon v-if="type === 'led'" class="mr-2" small>{{ mdiLightbulbOutline }}</v-icon>
+                    <v-icon v-else-if="type !== 'output_pin'" small :class="fanClasses">{{ mdiFan }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
                     <small v-if="rpm !== null" :class="rpmClasses">{{ Math.round(rpm ?? 0) }} RPM</small>
@@ -87,6 +88,7 @@ import {
     mdiPlus,
     mdiToggleSwitch,
     mdiToggleSwitchOffOutline,
+    mdiLightbulbOutline,
 } from '@mdi/js'
 
 @Component
@@ -98,6 +100,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     mdiLockOpenVariantOutline = mdiLockOpenVariantOutline
     mdiMinus = mdiMinus
     mdiPlus = mdiPlus
+    mdiLightbulbOutline = mdiLightbulbOutline
 
     convertName = convertName
     private declare timeout: ReturnType<typeof setTimeout>
@@ -134,6 +137,9 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
 
     @Prop({ type: Number, default: 0 })
     declare off_below: number
+
+    @Prop({ type: String, default: '' })
+    declare colorOrder: string
 
     get value(): number {
         return Math.round((this.target / this.max) * 100) / 100
@@ -187,6 +193,8 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         if (this.type === 'fan') gcode = `M106 S${newVal.toFixed(0)}`
         if (this.type === 'fan_generic') gcode = `SET_FAN_SPEED FAN=${this.name} SPEED=${newVal}`
         if (this.type === 'output_pin') gcode = `SET_PIN PIN=${this.name} VALUE=${newVal.toFixed(2)}`
+        if (this.type === 'led')
+            gcode = `SET_LED LED=${this.name} ${this.ledChannelName}=${newVal.toFixed(2)} SYNC=0 TRANSMIT=1`
 
         if (gcode !== '') {
             this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
@@ -264,6 +272,14 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         if (this.rpm === 0 && this.value > 0) output.push('red--text')
 
         return output
+    }
+
+    get ledChannelName() {
+        if (this.colorOrder === 'R') return 'RED'
+        if (this.colorOrder === 'G') return 'GREEN'
+        if (this.colorOrder === 'B') return 'BLUE'
+
+        return 'WHITE'
     }
 
     submitInput(): void {

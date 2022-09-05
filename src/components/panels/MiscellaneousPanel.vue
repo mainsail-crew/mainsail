@@ -22,7 +22,16 @@
         </div>
         <div v-for="(light, index) of lights" :key="'light_' + light.name">
             <v-divider v-if="index || miscellaneous.length"></v-divider>
-            <miscellaneous-light :object="light" />
+            <miscellaneous-slider
+                v-if="light.type === 'led' && light.colorOrder.length === 1"
+                :name="light.name"
+                type="led"
+                :rpm="null"
+                :controllable="true"
+                :pwm="true"
+                :target="light.singleChannelTarget"
+                :color-order="light.colorOrder" />
+            <miscellaneous-light v-else :object="light" />
         </div>
         <div v-for="(sensor, index) of filamentSensors" :key="'sensor_' + index">
             <v-divider v-if="index || miscellaneous.length || lights.length"></v-divider>
