@@ -33,10 +33,10 @@ export const mutations: MutationTree<GuiMiscellaneousState> = {
     },
 
     destroyLightgroup(state, payload: payloadDestroyLightgroup) {
-        const entry = state.entries[payload.entryId]
-        delete entry.lightgroups[payload.lightgroupId]
+        const entries = { ...state.entries }
+        delete entries[payload.entryId].lightgroups[payload.lightgroupId]
 
-        Vue.set(state.entries, payload.entryId, entry)
+        Vue.set(state, 'entries', entries)
     },
 }
 
