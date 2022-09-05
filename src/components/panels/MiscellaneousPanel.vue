@@ -25,7 +25,7 @@
             <miscellaneous-light :object="light" />
         </div>
         <div v-for="(sensor, index) of filamentSensors" :key="'sensor_' + index">
-            <v-divider v-if="index || miscellaneous.length"></v-divider>
+            <v-divider v-if="index || miscellaneous.length || lights.length"></v-divider>
             <filament-sensor
                 :name="sensor.name"
                 :enabled="sensor.enabled"
