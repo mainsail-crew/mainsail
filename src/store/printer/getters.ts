@@ -414,6 +414,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
             })
             .forEach((object: PrinterGetterObject) => {
                 let colorOrder = 'RGB'
+                let singleChannelTarget = null
+                const colorData = object.state.color_data ?? []
 
                 if ('color_order' in object.settings) colorOrder = object.settings.color_order[0] ?? ''
 
@@ -437,6 +439,25 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 let initialWhite = object.settings.initial_white ?? null
                 if (!('initial_white' in object.config)) initialWhite = null
 
+                if (object.type === 'led' && colorOrder.length === 1) {
+                    const firstColorData = colorData[0] ?? []
+
+                    switch (colorOrder) {
+                        case 'R':
+                            singleChannelTarget = firstColorData[0] ?? 0
+                            break
+                        case 'G':
+                            singleChannelTarget = firstColorData[1] ?? 0
+                            break
+                        case 'B':
+                            singleChannelTarget = firstColorData[2] ?? 0
+                            break
+                        case 'W':
+                            singleChannelTarget = firstColorData[3] ?? 0
+                            break
+                    }
+                }
+
                 lights.push({
                     name: object.name,
                     type: object.type as PrinterStateLight['type'],
@@ -446,7 +467,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     initialGreen,
                     initialBlue,
                     initialWhite,
-                    colorData: object.state.color_data ?? [],
+                    colorData,
+                    singleChannelTarget,
                 })
             })
 
