@@ -20,21 +20,16 @@ export const getters: GetterTree<GuiMiscellaneousState, any> = {
             })
         })
 
-        window.console.log('getEntries', output)
-
         return output
     },
 
     getEntry: (state, getters) => (payload: { type: string; name: string }) => {
-        window.console.log('getEntry', payload)
-
         return getters.getEntries.find(
             (entry: GuiMiscellaneousStateEntry) => entry.name === payload.name && entry.type === payload.type
         ) as GuiMiscellaneousStateEntry
     },
 
     getId: (state, getters) => (payload: { type: string; name: string }) => {
-        window.console.log('getId', payload)
         return getters.getEntry(payload)?.id ?? null
     },
 
@@ -52,7 +47,6 @@ export const getters: GetterTree<GuiMiscellaneousState, any> = {
                 id: key,
             })
         })
-        window.console.log('getEntryLightgroups', groups)
 
         return caseInsensitiveSort(groups, 'name')
     },
