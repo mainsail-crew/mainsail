@@ -1,4 +1,4 @@
-{
+{ 
     "App": {
         "Notifications": {
             "DependencyDescription": "Поточна версія {name} не підтримує всі функції Mainsail. Оновіть {Ім'я} принаймні до {needversion}.",
