@@ -339,6 +339,7 @@
             "in_progress": "In progress",
             "klippy_disconnect": "Klippy disconnect",
             "klippy_shutdown": "Klippy shutdown",
+            "Others": "Others",
             "server_exit": "Server exit"
         },
         "TitleExportHistory": "Export History",
@@ -458,7 +459,7 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
-            "EstimatedExtrusion": "Estimated Extrusion:",
+            "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrude",
             "ExtruderTempTooLow": "Extruder temp. <",
             "ExtrusionFactor": "Extrusion factor",
@@ -951,6 +952,7 @@
         "WebcamsTab": {
             "AddWebcam": "add webcam",
             "CreateWebcam": "Create Webcam",
+            "EditCrowsnestConf": "Edit crowsnest.conf",
             "EditWebcam": "Edit Webcam",
             "FlipHorizontally": "Flip webcam horizontally",
             "FlipVertically": "Flip webcam vertically",
@@ -989,6 +991,7 @@
         "Delete": "Delete",
         "DeleteDirectory": "Delete Directory",
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
+        "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
         "Download": "Download",
         "DuplicateLastframe": "Duplicate last frame",
         "Empty": "No finished timelapse found.",

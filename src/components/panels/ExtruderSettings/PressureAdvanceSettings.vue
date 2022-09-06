@@ -35,7 +35,7 @@
                             :max="null"
                             :step="0.001"
                             :dec="3"
-                            unit="mm/s"
+                            unit="s"
                             @submit="sendCmd"></number-input>
                     </v-col>
                     <v-col :class="{ 'col-12': el.is.small }">

@@ -339,6 +339,7 @@
             "in_progress": "In Arbeit",
             "klippy_disconnect": "Klippy getrennt",
             "klippy_shutdown": "Klippy heruntergefahren",
+            "Others": "Sonstige",
             "server_exit": "Server-Exit"
         },
         "TitleExportHistory": "Historie exportieren",
@@ -458,7 +459,7 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Erlaubt",
-            "EstimatedExtrusion": "Geschätzte Extrusion:",
+            "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrudieren",
             "ExtruderTempTooLow": "Extruder Temp. <",
             "ExtrusionFactor": "Extrusionsfaktor",
@@ -951,6 +952,7 @@
         "WebcamsTab": {
             "AddWebcam": "Webcam hinzufügen",
             "CreateWebcam": "Erstelle Webcam",
+            "EditCrowsnestConf": "crowsnest.conf bearbeiten",
             "EditWebcam": "Webcam bearbeiten",
             "FlipHorizontally": "Webcam waagerecht spiegeln",
             "FlipVertically": "Webcam vertikal spiegeln",
@@ -989,6 +991,7 @@
         "Delete": "Löschen",
         "DeleteDirectory": "Verzeichnis löschen",
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
+        "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",
         "Download": "Download",
         "DuplicateLastframe": "Letztes Bild duplizieren",
         "Empty": "Keine fertigen Zeitraffer gefunden.",

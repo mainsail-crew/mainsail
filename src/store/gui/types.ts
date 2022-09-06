@@ -157,6 +157,7 @@ export interface GuiState {
             sortDesc: boolean
             showHiddenFiles: boolean
             currentPath: string
+            selectedFiles: FileStateFile[]
         }
         webcam: {
             currentCam: {
