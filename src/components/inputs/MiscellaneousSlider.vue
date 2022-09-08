@@ -3,7 +3,17 @@
         <v-row>
             <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
-                    <v-icon v-if="type === 'led'" class="mr-2" small>{{ mdiLightbulbOutline }}</v-icon>
+                    <v-icon
+                        v-if="type === 'led' && target > 0"
+                        class="mr-2"
+                        small
+                        :retain-focus-on-click="true"
+                        @click="ledOff">
+                        {{ mdiLightbulbOnOutline }}
+                    </v-icon>
+                    <v-icon v-else-if="type === 'led'" class="mr-2" small :retain-focus-on-click="true" @click="ledOn">
+                        {{ mdiLightbulbOutline }}
+                    </v-icon>
                     <v-icon v-else-if="type !== 'output_pin'" small :class="fanClasses">{{ mdiFan }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
@@ -89,6 +99,7 @@ import {
     mdiToggleSwitch,
     mdiToggleSwitchOffOutline,
     mdiLightbulbOutline,
+    mdiLightbulbOnOutline,
 } from '@mdi/js'
 
 @Component
@@ -101,6 +112,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     mdiMinus = mdiMinus
     mdiPlus = mdiPlus
     mdiLightbulbOutline = mdiLightbulbOutline
+    mdiLightbulbOnOutline = mdiLightbulbOnOutline
 
     convertName = convertName
     private declare timeout: ReturnType<typeof setTimeout>
@@ -202,6 +214,14 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         }
 
         this.startLockTimer()
+    }
+
+    ledOff() {
+        this.sendCmd(0)
+    }
+
+    ledOn() {
+        this.sendCmd(1)
     }
 
     switchOutputPin(): void {

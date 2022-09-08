@@ -3,6 +3,8 @@
         <v-row>
             <v-col class="pb-3">
                 <v-subheader class="_light-subheader">
+                    <v-icon v-if="isOn" small left @click="off">{{ mdiLightbulbOnOutline }}</v-icon>
+                    <v-icon v-else small left @click="on">{{ mdiLightbulbOutline }}</v-icon>
                     <v-icon small left>{{ mdiLightbulbOutline }}</v-icon>
                     <span>{{ name }}</span>
                     <v-spacer></v-spacer>
@@ -108,7 +110,7 @@
 import { convertName } from '@/plugins/helpers'
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { mdiCloseThick, mdiLightbulbOutline } from '@mdi/js'
+import { mdiCloseThick, mdiLightbulbOutline, mdiLightbulbOnOutline } from '@mdi/js'
 import { PrinterStateLight } from '@/store/printer/types'
 import ColorPicker from '@/components/inputs/ColorPicker.vue'
 import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
@@ -131,6 +133,7 @@ interface ColorData {
 export default class MiscellaneousLight extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiLightbulbOutline = mdiLightbulbOutline
+    mdiLightbulbOnOutline = mdiLightbulbOnOutline
 
     @Prop({ type: Object, required: true })
     declare object: PrinterStateLight
@@ -231,6 +234,16 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         if (this.object.colorOrder.indexOf('W') !== -1) color.white = firstColorData[3] * 255
 
         return color
+    }
+
+    get isOn() {
+        return (
+            (this.current.red ?? 0) +
+                (this.current?.green ?? 0) +
+                (this.current.blue ?? 0) +
+                (this.current.white ?? 0) >
+            0
+        )
     }
 
     get existRed() {
@@ -338,6 +351,28 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
 
         // @ts-ignore
         color[payload.name] = payload.value
+
+        this.colorChanged(color)
+    }
+
+    off() {
+        const color: ColorData = {
+            red: 0,
+            green: 0,
+            blue: 0,
+            white: 0,
+        }
+
+        this.colorChanged(color)
+    }
+
+    on() {
+        const color: ColorData = {
+            red: 255,
+            green: 255,
+            blue: 255,
+            white: 255,
+        }
 
         this.colorChanged(color)
     }
