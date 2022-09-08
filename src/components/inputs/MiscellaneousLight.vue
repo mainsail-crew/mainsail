@@ -5,7 +5,6 @@
                 <v-subheader class="_light-subheader">
                     <v-icon v-if="isOn" small left @click="off">{{ mdiLightbulbOnOutline }}</v-icon>
                     <v-icon v-else small left @click="on">{{ mdiLightbulbOutline }}</v-icon>
-                    <v-icon small left>{{ mdiLightbulbOutline }}</v-icon>
                     <span>{{ name }}</span>
                     <v-spacer></v-spacer>
                     <span class="_currentState" :style="currentStateStyle" @click="boolDialog = true"></span>
