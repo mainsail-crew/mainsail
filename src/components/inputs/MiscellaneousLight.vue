@@ -1,16 +1,23 @@
 <template>
-    <v-container class="px-0 py-2">
+    <v-container :class="containerClass">
         <v-row>
             <v-col class="pb-3">
                 <v-subheader class="_light-subheader">
-                    <v-icon v-if="isOn" small left @click="off">{{ mdiLightbulbOnOutline }}</v-icon>
-                    <v-icon v-else small left @click="on">{{ mdiLightbulbOutline }}</v-icon>
+                    <v-icon v-if="!root && isOn" small left @click="off">{{ mdiLightbulbOnOutline }}</v-icon>
+                    <v-icon v-else-if="!root" small left @click="on">{{ mdiLightbulbOutline }}</v-icon>
                     <span>{{ name }}</span>
                     <v-spacer></v-spacer>
-                    <span class="_currentState" :style="currentStateStyle" @click="boolDialog = true"></span>
+                    <span
+                        v-if="!root"
+                        class="_currentState"
+                        :style="currentStateStyle"
+                        @click="boolDialog = true"></span>
                 </v-subheader>
             </v-col>
         </v-row>
+        <template v-if="root && groups.length">
+            <miscellaneous-light v-for="group in groups" :key="group.id" :object="object" :group="group" />
+        </template>
         <v-dialog v-model="boolDialog" persistent :width="400">
             <panel
                 :title="name"
@@ -116,6 +123,7 @@ import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
 import { Debounce } from 'vue-debounce-decorator'
 import iro from '@jaames/iro'
 import { IroColor } from '@irojs/iro-core'
+import { GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
 
 interface ColorData {
     red: number | null
@@ -137,10 +145,15 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true })
     declare object: PrinterStateLight
 
+    @Prop({ type: Boolean, default: false }) readonly root!: boolean
+    @Prop(Object) readonly group!: GuiMiscellaneousStateEntryLightgroup | undefined
+
     private boolDialog = false
     private inputValue = 0
 
     get name() {
+        if (this.group) return convertName(this.group.name)
+
         return convertName(this.object.name)
     }
 
@@ -226,7 +239,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         if (this.existWhite) color.white = 0
         if (this.object.colorData.length === 0) return color
 
-        const firstColorData = this.object.colorData[0]
+        const firstColorData = this.object.colorData[(this.group?.start ?? 1) - 1]
         color.red = firstColorData[0] * 255
         color.green = firstColorData[1] * 255
         color.blue = firstColorData[2] * 255
@@ -273,7 +286,9 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     }
 
     get colorRGB() {
-        return `rgb(${this.current.red ?? 0}, ${this.current.green ?? 0}, ${this.current.blue ?? 0})`
+        return `rgb(${Math.round(this.current.red ?? 0)}, ${Math.round(this.current.green ?? 0)}, ${Math.round(
+            this.current.blue ?? 0
+        )})`
     }
 
     get colorRGBW() {
@@ -296,6 +311,23 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         return Math.round(this.current.white ?? 0)
     }
 
+    get groups() {
+        return (
+            this.$store.getters['gui/miscellaneous/getEntryLightgroups']({
+                type: this.object.type,
+                name: this.object.name,
+            }) ?? []
+        )
+    }
+
+    get containerClass() {
+        let output = ['px-0']
+
+        output.push(this.root ? 'py-2' : 'pt-2 pb-0')
+
+        return output
+    }
+
     colorChanged(color: ColorData) {
         const red = Math.round(((color.red ?? 0) / 255) * 10000) / 10000
         const green = Math.round(((color.green ?? 0) / 255) * 10000) / 10000
@@ -304,7 +336,22 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
 
         let gcode = `SET_LED LED="${this.object.name}" RED=${red} GREEN=${green} BLUE=${blue}`
         if (this.existWhite) gcode += ` WHITE=${white}`
-        gcode += ` SYNC=0 TRANSMIT=1`
+        gcode += ` SYNC=0`
+
+        if (this.group) {
+            const tmp = gcode
+
+            for (let i = this.group.start; i <= this.group.end; i++) {
+                if (i === this.group.start) {
+                    gcode += ` INDEX=${i}`
+                    continue
+                }
+
+                gcode += `\n${tmp} INDEX=${i}`
+            }
+        }
+
+        gcode += ` TRANSMIT=1`
 
         this.$store.dispatch('server/addEvent', {
             message: gcode,

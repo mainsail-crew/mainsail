@@ -37,7 +37,9 @@ export default class ColorPicker extends Mixins(BaseMixin) {
 
     @Watch('color', { deep: true })
     colorChanged(value: string) {
-        if (this.colorPicker) this.colorPicker.color.rgbString = value
+        if (this.colorPicker && this.colorPicker.color.rgbString !== value) {
+            this.colorPicker.color.rgbString = value
+        }
     }
 
     get internalOptions(): ColorPickerProps {
@@ -54,12 +56,17 @@ export default class ColorPicker extends Mixins(BaseMixin) {
         this.$emit('update:color', color)
     }
 
+    onColorChange(color: IroColor) {
+        this.emitColorChange(color)
+    }
+
     mounted() {
         this.colorPicker = iro.ColorPicker(this.picker, this.internalOptions)
+        this.colorPicker.on('color:change', this.onColorChange)
+    }
 
-        this.colorPicker.on('color:change', (color: IroColor) => {
-            this.emitColorChange(color)
-        })
+    beforeDestroy() {
+        this.colorPicker?.off('color:change', this.onColorChange)
     }
 }
 </script>
