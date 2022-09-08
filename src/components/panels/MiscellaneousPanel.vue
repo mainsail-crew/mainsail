@@ -31,7 +31,7 @@
                 :pwm="true"
                 :target="light.singleChannelTarget"
                 :color-order="light.colorOrder" />
-            <miscellaneous-light v-else :object="light" />
+            <miscellaneous-light v-else :object="light" :root="true" />
         </div>
         <div v-for="(sensor, index) of filamentSensors" :key="'sensor_' + index">
             <v-divider v-if="index || miscellaneous.length || lights.length"></v-divider>
