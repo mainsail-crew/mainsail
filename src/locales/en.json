@@ -21,6 +21,7 @@
             "Never": "never",
             "NextReboot": "next reboot",
             "NoNotification": "No Notification available",
+            "Notifications": "Notifications",
             "Remind": "Remind:"
         },
         "NumberInput": {
@@ -111,6 +112,7 @@
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
         "Connecting": "Connecting to {host}",
         "Failed": "Connection failed",
+        "Initializing": "Initializing",
         "TryAgain": "try again"
     },
     "Console": {
@@ -134,7 +136,6 @@
         "ConfigReference": "Config Reference",
         "DontSave": "Don't save",
         "Downloading": "Downloading",
-        "Uploading": "Uploading",
         "FailedSave": "{filename} could not be uploaded!",
         "FileReadOnly": "read-only",
         "SaveClose": "Save & close",
@@ -142,7 +143,8 @@
         "SuccessfullySaved": "{filename} successfully saved.",
         "UnsavedChanges": "Unsaved Changes",
         "UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
-        "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings."
+        "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
+        "Uploading": "Uploading"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Are you sure?",
@@ -153,7 +155,9 @@
     "Files": {
         "AddToQueue": "Add to Queue",
         "AllFiles": "All",
+        "BedTemp": "Bed Temp.",
         "Cancel": "Cancel",
+        "ChamberTemp": "Chamber Temp.",
         "Create": "Create",
         "CreateNewDirectory": "Create new Directory",
         "CurrentPath": "Current path",
@@ -164,6 +168,7 @@
         "Download": "Download",
         "EditFile": "Edit File",
         "Empty": "Empty",
+        "ExtruderTemp": "Extruder Temp.",
         "Filament": "Filament",
         "FilamentName": "Filament Name",
         "FilamentType": "Filament Type",
@@ -174,6 +179,7 @@
         "Free": "Free",
         "FreeDisk": "Free disk",
         "GCodeFiles": "G-Code Files",
+        "GcodesRootDirectoryDoesntExists": "No G-Code directory found. Please check option \"path\" in the [virtual_sdcard] section of the Klipper configuration.",
         "HiddenFiles": "Hidden files",
         "LastEndTime": "Last End Time",
         "LastFilamentUsed": "Last Filament Used",
@@ -255,6 +261,9 @@
         "ErrorKlipperNotReady": "Klipper not ready. Heightmap disabled.",
         "Flat": "Flat",
         "Heightmap": "Heightmap",
+        "InvalidNameAlreadyExists": "Profile name already exists, please choose another profile name.",
+        "InvalidNameEmpty": "Input must not be empty!",
+        "InvalidNameReserved": "Profile 'default' is reserved, please choose another profile name.",
         "Later": "Later",
         "Mesh": "Mesh",
         "Name": "Name",
@@ -280,6 +289,7 @@
         "AllJobs": "All",
         "AvgPrinttime": "Print Time - Ø",
         "Cancel": "Cancel",
+        "ChamberTemp": "Chamber Temp.",
         "CreateNote": "Create Note",
         "Delete": "Delete",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected jobs?",
@@ -329,6 +339,7 @@
             "in_progress": "In progress",
             "klippy_disconnect": "Klippy disconnect",
             "klippy_shutdown": "Klippy shutdown",
+            "Others": "Others",
             "server_exit": "Server exit"
         },
         "TitleExportHistory": "Export History",
@@ -354,6 +365,7 @@
             "AllFiles": "All",
             "Cancel": "Cancel",
             "ConfigFiles": "Config Files",
+            "ConfigRootDirectoryDoesntExists": "No configuration directory found. Please check option \"config_path\" in the [file_manager] section of the Moonraker configuration.",
             "Create": "Create",
             "CreateDirectory": "Create Directory",
             "CreateFile": "Create File",
@@ -447,14 +459,25 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
-            "EstimatedExtrusion": "Estimated Extrusion:",
+            "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrude",
             "ExtruderTempTooLow": "Extruder temp. <",
             "ExtrusionFactor": "Extrusion factor",
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filament Length",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Retract Length",
+                "RetractSpeed": "Retract Speed",
+                "UnretractExtraLength": "Unretract Extra Length",
+                "UnretractSpeed": "Unretract Speed"
+            },
             "Headline": "Extruder",
             "LoadFilament": "Load Filament",
+            "PressureAdvanceSettings": {
+                "Advance": "Pressure Advance",
+                "Extruder": "Extruder",
+                "SmoothTime": "Smooth Time"
+            },
             "Requested": "Requested",
             "Retract": "Retract",
             "TooLargeExtrusion": "Extrusion too large!",
@@ -473,25 +496,12 @@
             "Restart": "Restart"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Retraction",
-                "RetractLength": "Retract Length",
-                "RetractSpeed": "Retract Speed",
-                "UnretractExtraLength": "Unretract Extra Length",
-                "UnretractSpeed": "Unretract Speed"
-            },
             "Headline": "Machine",
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. to Decel.",
-                "Motion": "Motion",
                 "SquareCornerVelocity": "Square Corner Velocity",
                 "Velocity": "Velocity"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
-                "Extruder": "Extruder",
-                "SmoothTime": "Smooth Time"
             }
         },
         "MacrosPanel": {
@@ -529,6 +539,8 @@
             "CancelPrint": "Cancel print",
             "ClearPrintStats": "Clear print stats",
             "Difference": "Difference",
+            "EmptyGcodes": "No G-Code available.",
+            "EmptyJobqueue": "There is currently no file in the job queue.",
             "Estimate": "Estimate",
             "ETA": "ETA",
             "ExcludeObject": {
@@ -541,18 +553,16 @@
             "Filament": "Filament",
             "File": "File",
             "Files": "Files",
-            "EmptyGcodes": "No G-Code available.",
-            "EmptyJobqueue": "There is currently no file in the job queue.",
-            "Jobqueue": "Job Queue ({count})",
-            "JobqueueMoreFiles": "no more jobs | one more job | {count} more jobs",
-            "PrintTime": "Print Time",
             "Flow": "Flow",
             "Headline": "Status",
+            "Jobqueue": "Job Queue ({count})",
+            "JobqueueMoreFiles": "no more jobs | one more job | {count} more jobs",
             "Layer": "Layer",
             "Max": "max",
             "ObjectHeight": "Object Height",
             "PausePrint": "Pause print",
             "Print": "Print",
+            "PrintTime": "Print Time",
             "ReprintJob": "Reprint job",
             "Requested": "Requested",
             "ResumePrint": "Resume print",
@@ -644,6 +654,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Add Printer",
+        "AddPrintersToJson": "Please add the Printers to the config.json.",
         "CannotConnectTo": "Cannot connect to {host}.",
         "ChangePrinter": "Change Printer",
         "Connecting": "Connecting to {host}",
@@ -750,6 +761,14 @@
             "CalcEstimateTimeDescription": "If multiple are selected, an average will be calculated",
             "CalcEtaTime": "ETA calculation",
             "CalcEtaTimeDescription": "If multiple are selected, an average will be calculated",
+            "CalcPrintProgress": "Print progress calculation",
+            "CalcPrintProgressDescription": "Method for calculating the print progress.",
+            "CalcPrintProgressItems": {
+                "Filament": "Filament",
+                "FileAbsolute": "File position (absolute)",
+                "FileRelative": "File position (relative)",
+                "Slicer": "Slicer (M73)"
+            },
             "CannotReadJson": "Cannot read/parse backup file.",
             "DbConsoleHistory": "Console History",
             "DbHistoryJobs": "History Jobs",
@@ -833,7 +852,8 @@
             "Hostname": "Hostname",
             "Port": "Port",
             "RemotePrinters": "Printers",
-            "UpdatePrinter": "Update Printer"
+            "UpdatePrinter": "Update Printer",
+            "UseConfigJson": "InstanceDB = JSON detected. Please use the config.json to modify the printers list."
         },
         "TimelapseTab": {
             "Autorender": "Autorender",
@@ -932,6 +952,7 @@
         "WebcamsTab": {
             "AddWebcam": "add webcam",
             "CreateWebcam": "Create Webcam",
+            "EditCrowsnestConf": "Edit crowsnest.conf",
             "EditWebcam": "Edit Webcam",
             "FlipHorizontally": "Flip webcam horizontally",
             "FlipVertically": "Flip webcam vertically",
@@ -949,6 +970,7 @@
             "Name": "Name",
             "NameAlreadyExists": "Name already exists",
             "Required": "required",
+            "Rotate": "Rotate",
             "SaveWebcam": "Save Webcam",
             "Service": "Service",
             "TargetFPS": "Target FPS",
@@ -969,6 +991,7 @@
         "Delete": "Delete",
         "DeleteDirectory": "Delete Directory",
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
+        "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
         "Download": "Download",
         "DuplicateLastframe": "Duplicate last frame",
         "Empty": "No finished timelapse found.",

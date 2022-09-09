@@ -133,7 +133,7 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
         }
 
         // remove temperature panel, if heaters & sensors < 1
-        if (this.printerAvailableHeatersCount + this.printerAvailableSensorsCount < 1) {
+        if (this.printerAvailableHeatersCount + this.printerTemperatureSensorsCount < 1) {
             output = output.filter((name) => name !== 'temperature-panel')
         }
 

@@ -11,12 +11,16 @@ export default class BaseMixin extends Vue {
         return this.$store.getters['socket/getHostUrl']
     }
 
-    get remoteMode() {
-        return this.$store.state.remoteMode
+    get instancesDB() {
+        return this.$store.state.instancesDB ?? 'moonraker'
     }
 
     get socketIsConnected(): boolean {
         return this.$store.state.socket.isConnected ?? false
+    }
+
+    get guiIsReady() {
+        return this.$store.state.socket.initializationList.length === 0
     }
 
     get klippyIsConnected(): boolean {
@@ -76,5 +80,11 @@ export default class BaseMixin extends Vue {
 
     get moonrakerComponents() {
         return this.$store.state.server?.components ?? []
+    }
+
+    get existGcodesRootDirectory() {
+        const roots = this.$store.state.server.registered_directories
+
+        return roots.findIndex((root: string) => root === 'gcodes') >= 0
     }
 }

@@ -19,36 +19,28 @@
                     @contextmenu="showContextMenu($event, item)"
                     @click="showDialog(item)">
                     <td class="pr-0 text-center" style="width: 32px">
-                        <template v-if="item.small_thumbnail && item.big_thumbnail">
-                            <v-tooltip top content-class="tooltip__content-opacity1">
+                        <template v-if="item.small_thumbnail">
+                            <v-tooltip top content-class="tooltip__content-opacity1" :disabled="!item.big_thumbnail">
                                 <template #activator="{ on, attrs }">
                                     <vue-load-image class="d-flex">
                                         <img
                                             slot="image"
                                             :src="item.small_thumbnail"
+                                            :alt="item.filename"
                                             width="32"
                                             height="32"
                                             v-bind="attrs"
                                             v-on="on" />
-                                        <v-progress-circular
-                                            slot="preloader"
-                                            indeterminate
-                                            color="primary"></v-progress-circular>
-                                        <v-icon slot="error">{{ mdiFile }}</v-icon>
+                                        <div slot="preloader">
+                                            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                                        </div>
+                                        <div slot="error">
+                                            <v-icon>{{ mdiFile }}</v-icon>
+                                        </div>
                                     </vue-load-image>
                                 </template>
-                                <span><img :src="item.big_thumbnail" width="250" /></span>
+                                <span><img :src="item.big_thumbnail" :alt="item.filename" width="250" /></span>
                             </v-tooltip>
-                        </template>
-                        <template v-else-if="item.small_thumbnail">
-                            <vue-load-image>
-                                <img slot="image" :src="item.small_thumbnail" width="32" height="32" />
-                                <v-progress-circular
-                                    slot="preloader"
-                                    indeterminate
-                                    color="primary"></v-progress-circular>
-                                <v-icon slot="error">{{ mdiFile }}</v-icon>
-                            </vue-load-image>
                         </template>
                         <template v-else>
                             <v-icon>{{ mdiFile }}</v-icon>
@@ -92,14 +84,9 @@
                     {{ $t('Files.AddToQueue') }}
                 </v-list-item>
                 <v-list-item
-                    v-if="
-                        'first_layer_extr_temp' in contextMenu.item &&
-                        contextMenu.item.first_layer_extr_temp > 0 &&
-                        'first_layer_bed_temp' in contextMenu.item &&
-                        contextMenu.item.first_layer_bed_temp > 0
-                    "
+                    v-if="contextMenu.item.preheat_gcode !== null"
                     :disabled="['error', 'printing', 'paused'].includes(printer_state)"
-                    @click="preheat(contextMenu.item)">
+                    @click="doSend(contextMenu.item.preheat_gcode)">
                     <v-icon class="mr-1">{{ mdiFire }}</v-icon>
                     {{ $t('Files.Preheat') }}
                 </v-list-item>
@@ -127,7 +114,7 @@
         </v-menu>
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
             <panel
-                :title="$t('Files.RenameFile')"
+                :title="$t('Files.RenameFile').toString()"
                 card-class="dashboard-files-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -157,7 +144,8 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
+import ControlMixin from '@/components/mixins/control'
+import { FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import {
     mdiFile,
@@ -183,7 +171,7 @@ interface dialogRenameObject {
         StartPrintDialog,
     },
 })
-export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
+export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixin) {
     mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiPlaylistPlus = mdiPlaylistPlus
@@ -225,32 +213,13 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
         touchTimer: undefined,
         x: 0,
         y: 0,
-        item: {
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-        },
+        item: { ...this.dialogFile },
     }
 
     private dialogRenameFile: dialogRenameObject = {
         show: false,
         newName: '',
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-            small_thumbnail: null,
-            big_thumbnail: null,
-            big_thumbnail_width: null,
-            count_printed: 0,
-            last_filament_used: null,
-            last_start_time: null,
-            last_end_time: null,
-            last_print_duration: null,
-            last_status: null,
-            last_total_duration: null,
-        },
+        item: { ...this.dialogFile },
     }
 
     get gcodeFiles() {
@@ -278,7 +247,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
         return `width: ${this.contentTdWidth}px;`
     }
 
-    showContextMenu(e: any, item: FileStateFile) {
+    showContextMenu(e: any, item: FileStateGcodefile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true
@@ -348,10 +317,6 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
         return '--'
     }
 
-    getJobStatus(item: FileStateGcodefile) {
-        return item.last_status
-    }
-
     getStatusIcon(status: string) {
         return this.$store.getters['server/history/getPrintStatusIcon'](status)
     }
@@ -376,26 +341,6 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
 
     addToQueue(item: FileStateGcodefile) {
         this.$store.dispatch('server/jobQueue/addToQueue', [item.filename])
-    }
-
-    preheat(item: FileStateGcodefile) {
-        if (
-            'first_layer_extr_temp' in item &&
-            'first_layer_bed_temp' in item &&
-            !['error', 'printing', 'paused'].includes(this.printer_state)
-        ) {
-            if (item.first_layer_extr_temp && item.first_layer_extr_temp > 0) {
-                const gcode = 'M104 S' + item.first_layer_extr_temp
-                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: gcode })
-            }
-
-            if (item.first_layer_bed_temp && item.first_layer_bed_temp > 0) {
-                const gcode = 'M140 S' + item.first_layer_bed_temp
-                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: gcode })
-            }
-        }
     }
 
     view3D(item: FileStateGcodefile) {
@@ -457,7 +402,9 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        this.calcContentTdWidth()
+        setTimeout(() => {
+            this.calcContentTdWidth()
+        }, 200)
     }
 
     calcContentTdWidth() {

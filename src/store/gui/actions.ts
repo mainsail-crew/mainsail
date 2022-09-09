@@ -13,6 +13,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         dispatch('gcodehistory/reset')
         dispatch('macros/reset')
         dispatch('presets/reset')
+        dispatch('webcams/reset')
     },
 
     init() {
@@ -25,7 +26,8 @@ export const actions: ActionTree<GuiState, RootState> = {
         const mainsailUrl = baseUrl + '?namespace=mainsail'
 
         if ('remoteprinters' in payload.value) {
-            if (!rootState.remoteMode) dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
+            if (rootState.instancesDB === 'moonraker')
+                dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
             delete payload.value.remoteprinters
         }
 
@@ -113,7 +115,8 @@ export const actions: ActionTree<GuiState, RootState> = {
             })
         }
 
-        commit('setData', payload.value)
+        await commit('setData', payload.value)
+        await dispatch('socket/removeInitModule', 'gui/init', { root: true })
     },
 
     /*

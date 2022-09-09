@@ -16,7 +16,7 @@ import BaseMixin from '../mixins/base'
 import { PrinterTempHistoryStateSerie, PrinterTempHistoryStateSourceEntry } from '@/store/printer/tempHistory/types'
 
 import type { ECharts } from 'echarts/core'
-import type { ECBasicOption } from 'echarts/types/dist/shared'
+import type { ECBasicOption } from 'echarts/types/dist/shared.d'
 import { mdiClock } from '@mdi/js'
 
 interface echartsTooltipObj {

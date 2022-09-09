@@ -27,16 +27,10 @@
                     <div v-if="hostStats.os">
                         {{ $t('Machine.SystemPanel.Values.Os', { os: hostStats.os }) }}
                     </div>
-                    <div
-                        v-if="
-                            hostStats.release_info &&
-                            'name' in hostStats.release_info &&
-                            hostStats.release_info.name !== '0.'
-                        "
-                        class="text-no-wrap">
+                    <div v-if="releaseName" class="text-no-wrap">
                         {{
                             $t('Machine.SystemPanel.Values.Distro', {
-                                name: hostStats.release_info.name,
+                                name: releaseName,
                                 version_id: hostStats.release_info.version_id,
                             })
                         }}
@@ -223,6 +217,15 @@ export default class SystemPanelHost extends Mixins(BaseMixin) {
 
     get systemInfo() {
         return this.$store.state.server?.system_info ?? {}
+    }
+
+    get releaseName() {
+        let name = this.hostStats.release_info?.name ?? ''
+
+        if (name.startsWith('#')) return this.hostStats.release_info?.id ?? null
+        if (name.startsWith('0.')) return null
+
+        return name
     }
 
     get directory() {

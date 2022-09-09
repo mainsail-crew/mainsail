@@ -948,14 +948,24 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
         row.push('filename')
         row.push('status')
+
         this.tableFields.forEach((col) => {
             row.push(col.value)
         })
 
+        if (this.headers.find((header) => header.value === 'slicer')?.visible) {
+            row.push('slicer')
+        }
+
         content.push(row)
 
-        if (this.jobs.length) {
-            this.jobs.forEach((job: ServerHistoryStateJob) => {
+        let jobs = [...this.jobs]
+        if (this.selectedJobs.length) {
+            jobs = [...this.selectedJobs]
+        }
+
+        if (jobs.length) {
+            jobs.forEach((job: ServerHistoryStateJob) => {
                 const row: string[] = []
 
                 let filename = job.filename
@@ -1006,12 +1016,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     return this.formatDate(value)
 
                 case 'time':
-                    return value.toFixed()
+                    return value?.toFixed() ?? ''
 
                 default:
                     switch (typeof value) {
                         case 'number':
-                            return value.toLocaleString()
+                            return value?.toLocaleString(undefined, { useGrouping: false }) ?? 0
 
                         case 'string':
                             if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
@@ -1034,12 +1044,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     return this.formatPrintTime(value)
 
                 case 'temp':
-                    return value.toFixed() + ' °C'
+                    return value?.toFixed() + ' °C'
 
                 case 'length':
                     if (value > 1000) return (value / 1000).toFixed(2) + ' m'
 
-                    return value.toFixed(2) + ' mm'
+                    return value?.toFixed(2) + ' mm'
 
                 default:
                     return value

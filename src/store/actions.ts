@@ -1,7 +1,6 @@
 import router from '@/plugins/router'
 import { ActionTree } from 'vuex'
 import { ConfigJson, RootState } from './types'
-import { v4 as uuidv4 } from 'uuid'
 
 export const actions: ActionTree<RootState, RootState> = {
     switchToDashboard() {
@@ -9,8 +8,6 @@ export const actions: ActionTree<RootState, RootState> = {
     },
 
     changePrinter({ dispatch, getters, state }, payload) {
-        const remoteMode = state.remoteMode
-
         dispatch('files/reset')
         dispatch('gui/reset')
         dispatch('printer/reset')
@@ -31,18 +28,30 @@ export const actions: ActionTree<RootState, RootState> = {
 
     /**
      * This function will parse the config.json content and config mainsail
-     * @param commit - vuex commit
-     * @param dispatch - vuex dispatch
-     * @param payload - content of config.json as a object
      */
     importConfigJson({ commit, dispatch }, payload: ConfigJson) {
-        const remoteMode = 'remoteMode' in payload ? payload.remoteMode : false
-        if (remoteMode) {
-            commit('setRemoteMode', true)
+        type RootStateInstancesDbType = 'moonraker' | 'browser' | 'json'
+        let instancesDB: RootStateInstancesDbType = payload.instancesDB ?? 'moonraker'
+        if (document.location.hostname === 'my.mainsail.xyz') instancesDB = 'browser'
+        if (import.meta.env.VUE_APP_INSTANCES_DB)
+            instancesDB = import.meta.env.VUE_APP_INSTANCES_DB as RootStateInstancesDbType
 
-            if ('instances' in payload && Array.isArray(payload.instances) && payload.instances.length) {
+        if (instancesDB !== 'moonraker') {
+            commit('setInstancesDB', instancesDB)
+
+            if (
+                instancesDB === 'json' &&
+                'instances' in payload &&
+                Array.isArray(payload.instances) &&
+                payload.instances.length
+            ) {
                 commit('setConfigInstances', payload.instances)
             }
+
+            return
         }
+
+        if (payload.hostname) commit('socket/setData', { hostname: payload.hostname })
+        if (payload.port) commit('socket/setData', { port: parseInt(payload.port.toString()) })
     },
 }

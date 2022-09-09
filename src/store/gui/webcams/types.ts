@@ -12,6 +12,7 @@ export interface GuiWebcamStateWebcam {
     targetFps: number
     urlStream: string
     urlSnapshot: string
+    rotate?: number
     flipX: boolean
     flipY: boolean
 }

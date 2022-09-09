@@ -1,3 +1,7 @@
 {
-
+    "defaultLocale": "en",
+    "hostname": null,
+    "port": null,
+    "instancesDB": "moonraker",
+    "instances": []
 }

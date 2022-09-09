@@ -21,7 +21,7 @@
             "Never": "永不",
             "NextReboot": "下次重启",
             "NoNotification": "没有通知",
-            "Remind": "提醒:"
+            "Remind": "提醒："
         },
         "NumberInput": {
             "GreaterOrEqualError": "必须大于或等于{min}！",
@@ -48,7 +48,7 @@
             "TitleUnderVoltageDetected": "检测到电压过低"
         },
         "Titles": {
-            "Complete": "完成 - {filename}",
+            "Complete": "已完成 - {filename}",
             "Error": "错误",
             "Pause": "暂停打印",
             "Printing": "已打印 {percent}% - {filename}",
@@ -142,7 +142,7 @@
         "UnsavedChanges": "修改未被保存",
         "UnsavedChangesMessage": "是否将修改保存至{filename}？",
         "UnsavedChangesSubMessage": "不保存你的修改将会丢失。你可以在编辑设置里关闭此提示。",
-        "Uploading": "上传中"
+        "Uploading": "正在上传"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "是否确定？",
@@ -162,7 +162,6 @@
         "DeleteDirectoryQuestion": "你确定要删除\"{name}\"和里面的所有内容吗？",
         "DeleteSelectedQuestion": "你是否要删除选中的{count}个文件？",
         "Download": "下载",
-        "Downloading": "下载中",
         "EditFile": "编辑文件",
         "Empty": "空",
         "Filament": "耗材",
@@ -170,7 +169,7 @@
         "FilamentType": "耗材规格",
         "FilamentUsage": "耗材用量",
         "FilamentWeight": "耗材重量",
-        "Files": "文件",
+        "Files": "每页显示文件数",
         "Filesize": "文件大小",
         "Free": "未使用",
         "FreeDisk": "剩余磁盘空间",
@@ -204,7 +203,6 @@
         "SuccessfullyRenamed": "成功修改名称{filename}。",
         "SuccessfullyUploaded": "成功上传{filename}！",
         "Total": "合计",
-        "Uploading": "上传中",
         "UploadNewGcode": "上传新的G-Code",
         "Used": "已使用",
         "View3D": "3D预览"
@@ -442,7 +440,7 @@
             "Update": "更新",
             "UpdateAll": "更新全部组件",
             "UpdateManager": "更新管理",
-            "Upgrade": "升级",
+            "Upgrade": "更新",
             "UpToDate": "已经更新到最新"
         }
     },
@@ -452,11 +450,22 @@
             "EstimatedExtrusion": "预计挤出量：",
             "Extrude": "挤出",
             "ExtruderTempTooLow": "挤出温度 <",
-            "ExtrusionFactor": "挤出因子",
+            "ExtrusionFactor": "挤出倍数",
             "ExtrusionFeedrate": "进给速度",
             "FilamentLength": "耗材长度",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "回抽长度",
+                "RetractSpeed": "回抽速度",
+                "UnretractExtraLength": "回料长度",
+                "UnretractSpeed": "回料速度"
+            },
             "Headline": "挤出机",
             "LoadFilament": "装载耗材",
+            "PressureAdvanceSettings": {
+                "Advance": "压力提前",
+                "Extruder": "挤出机",
+                "SmoothTime": "平滑时间"
+            },
             "Requested": "需要",
             "Retract": "回抽",
             "TooLargeExtrusion": "挤出过大！",
@@ -472,28 +481,15 @@
             "KlipperCheck": "请检查Klipper服务是否运行并且已经设置UDS(Unix Domain Socket)。",
             "KlippyState": "Klippy状态",
             "MoonrakerCannotConnect": "Moonraker无法连接到Klipper ！",
-            "Restart": "重启"
+            "Restart": "重启Klipper"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "固件回抽",
-                "RetractLength": "回抽长度",
-                "RetractSpeed": "回抽速度",
-                "UnretractExtraLength": "回料长度",
-                "UnretractSpeed": "回料速度"
-            },
             "Headline": "机器设置",
             "MotionSettings": {
                 "Acceleration": "加速度",
                 "MaxAccelToDecel": "加速到减速最大值",
-                "Motion": "运动",
                 "SquareCornerVelocity": "直角拐弯速度",
                 "Velocity": "速度"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "压力提前",
-                "Extruder": "挤出机",
-                "SmoothTime": "平滑时间"
             }
         },
         "MacrosPanel": {
@@ -531,6 +527,8 @@
             "CancelPrint": "取消打印",
             "ClearPrintStats": "清除打印统计数据",
             "Difference": "不同",
+            "EmptyGcodes": "没有G-Code文件",
+            "EmptyJobqueue": "当前任务队列中没有文件。",
             "Estimate": "估算时间",
             "ETA": "预估完成",
             "ExcludeObject": {
@@ -543,18 +541,16 @@
             "Filament": "耗材用量",
             "File": "文件",
             "Files": "文件",
-            "EmptyGcodes": "没有G-Code文件",
-            "EmptyJobqueue": "当前任务队列中没有文件。",
-            "Jobqueue": "任务队列({count})",
-            "JobqueueMoreFiles": "没有任务 | 一个任务 | {count}个任务",
-            "PrintTime": "打印时间",
             "Flow": "流量",
             "Headline": "状态",
+            "Jobqueue": "任务队列({count})",
+            "JobqueueMoreFiles": "没有任务 | 一个任务 | {count}个任务",
             "Layer": "层",
             "Max": "最高",
             "ObjectHeight": "物体高度",
             "PausePrint": "暂停打印",
             "Print": "打印",
+            "PrintTime": "打印耗时",
             "ReprintJob": "再次打印",
             "Requested": "请求",
             "ResumePrint": "恢复打印",
@@ -601,7 +597,7 @@
             "QGL": "四轴调平(QGL)",
             "Relative": "相对坐标",
             "SettingsInterfaceControl": "设置 > 界面 > 控制",
-            "SpeedFactor": "速度因子",
+            "SpeedFactor": "速度倍数",
             "ZTilt": "Z轴倾斜"
         },
         "WebcamPanel": {
@@ -621,8 +617,8 @@
             "SaveInfoDescription": "已经计算生成新的Z轴偏移。点击\"保存配置\"后会自动保存到printer.cfg中并重启Klipper。",
             "SaveInfoDescriptionPrint": "已经计算生成新的Z轴偏移。打印完成后点击\"保存配置\"后会自动保存到printer.cfg中并重启Klipper。",
             "SaveInfoHeadline": "信息",
-            "ToEndstop": "到限位",
-            "ToProbe": "到Probe传感器"
+            "ToEndstop": "距离限位",
+            "ToProbe": "距离Probe传感器"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -635,8 +631,8 @@
     "Router": {
         "Console": "控制台",
         "Dashboard": "控制面板",
-        "G-Code Files": "G-Code文件",
-        "G-Code Viewer": "G-Code预览",
+        "G-Code Files": "G-Code 文件",
+        "G-Code Viewer": "G-Code 预览",
         "Heightmap": "高度图",
         "History": "历史记录",
         "Machine": "机器",
@@ -738,7 +734,7 @@
         "GCodeViewerTab": {
             "BackgroundColor": "背景颜色",
             "ExtruderColor": "喷嘴颜色",
-            "GCodeViewer": "G-Code预览",
+            "GCodeViewer": "G-Code 预览",
             "GridColor": "网格颜色",
             "MaxFeed": "最大挤出速度",
             "MinFeed": "最小挤出速度",

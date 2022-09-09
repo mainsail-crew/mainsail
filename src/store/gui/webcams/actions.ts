@@ -14,9 +14,10 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
         Vue.$socket.emit('server.database.get_item', { namespace: 'webcams' }, { action: 'gui/webcams/initStore' })
     },
 
-    initStore({ commit }, payload) {
-        commit('reset')
-        commit('initStore', payload)
+    async initStore({ commit, dispatch }, payload) {
+        await commit('reset')
+        await commit('initStore', payload)
+        await dispatch('socket/removeInitModule', 'gui/webcam/init', { root: true })
     },
 
     upload(_, payload) {

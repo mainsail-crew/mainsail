@@ -1,30 +1,3 @@
-<style lang="scss" scoped>
-._transition i::before {
-    transition: transform 500ms;
-}
-._rotate-180:before {
-    transform: rotate(180deg);
-}
-
-.v-item-group {
-    button:hover::before,
-    button:focus::before {
-        opacity: 0 !important;
-    }
-    ._menu-button {
-        height: 40px;
-        width: 62px;
-        border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    }
-    ._menu-button:hover {
-        border-color: rgba(255, 255, 255, 1) !important;
-    }
-    ._menu-button:focus {
-        border: 2px solid var(--color-primary) !important;
-    }
-}
-</style>
-
 <template>
     <div>
         <v-card v-if="!form.bool" flat>
@@ -51,7 +24,11 @@
                     </settings-row>
                 </div>
             </v-card-text>
-            <v-card-actions class="d-flex justify-end">
+            <v-card-actions>
+                <v-btn v-if="existCrowsnestConf" text color="primary" @click="openCrowsnestConf">
+                    {{ $t('Settings.WebcamsTab.EditCrowsnestConf') }}
+                </v-btn>
+                <v-spacer></v-spacer>
                 <v-btn text color="primary" @click="createWebcam">{{ $t('Settings.WebcamsTab.AddWebcam') }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -66,7 +43,7 @@
                     <v-row>
                         <v-col class="col-12 col-sm-6">
                             <v-row>
-                                <v-col class="d-flex align-center">
+                                <v-col class="d-flex">
                                     <v-item-group>
                                         <v-menu :offset-y="true" title="Icon">
                                             <template #activator="{ on, attrs }">
@@ -154,13 +131,22 @@
                                 </v-col>
                             </v-row>
                             <v-row v-if="form.service === 'mjpegstreamer-adaptive'">
-                                <v-col class="py-2">
+                                <v-col class="py-2 col-6">
                                     <v-text-field
                                         v-model="form.targetFps"
                                         outlined
                                         dense
                                         hide-details
                                         :label="$t('Settings.WebcamsTab.TargetFPS')"></v-text-field>
+                                </v-col>
+                                <v-col class="py-2 col-6">
+                                    <v-select
+                                        v-model="form.rotate"
+                                        :items="rotateItems"
+                                        outlined
+                                        dense
+                                        hide-details
+                                        :label="$t('Settings.WebcamsTab.Rotate')"></v-select>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -231,6 +217,7 @@ import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import { mdiMenuDown, mdiDelete, mdiPencil, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
+import { FileStateFile } from '@/store/files/types'
 
 interface webcamForm {
     bool: boolean
@@ -242,6 +229,7 @@ interface webcamForm {
     targetFps: number
     urlStream: string
     urlSnapshot: string
+    rotate: number
     flipX: boolean
     flipY: boolean
 }
@@ -272,6 +260,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         targetFps: 15,
         urlStream: '',
         urlSnapshot: '',
+        rotate: 0,
         flipX: false,
         flipY: false,
     }
@@ -280,6 +269,13 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         required: (value: string) => value !== '' || this.$t('Settings.WebcamsTab.Required'),
         unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamsTab.NameAlreadyExists'),
     }
+
+    private rotateItems = [
+        { value: 0, text: '0°' },
+        { value: 90, text: '90°' },
+        { value: 180, text: '180°' },
+        { value: 270, text: '270°' },
+    ]
 
     declare $refs: {
         webcamForm: any
@@ -322,6 +318,18 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         return ''
     }
 
+    get configfiles() {
+        return this.$store.getters['files/getDirectory']('config')?.childrens ?? []
+    }
+
+    get crowsnestConf(): FileStateFile | null {
+        return this.configfiles.find((file: FileStateFile) => file.filename === 'crowsnest.conf')
+    }
+
+    get existCrowsnestConf(): boolean {
+        return this.configfiles.findIndex((file: FileStateFile) => file.filename === 'crowsnest.conf') !== -1
+    }
+
     getSubtitle(webcam: GuiWebcamStateWebcam) {
         return 'URL: ' + (webcam.service === 'mjpegstreamer-adaptive' ? webcam.urlSnapshot : webcam.urlStream)
     }
@@ -348,6 +356,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         this.form.targetFps = webcam.targetFps
         this.form.urlStream = webcam.urlStream
         this.form.urlSnapshot = webcam.urlSnapshot
+        this.form.rotate = webcam.rotate ?? 0
         this.form.flipX = webcam.flipX
         this.form.flipY = webcam.flipY
 
@@ -368,6 +377,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
                 targetFps: this.form.targetFps,
                 urlStream: this.form.urlStream,
                 urlSnapshot: this.form.urlSnapshot,
+                rotate: this.form.rotate,
                 flipX: this.form.flipX,
                 flipY: this.form.flipY,
             }
@@ -392,6 +402,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         this.form.targetFps = 15
         this.form.urlStream = '/webcam/?action=stream'
         this.form.urlSnapshot = '/webcam/?action=snapshot'
+        this.form.rotate = 0
         this.form.flipX = false
         this.form.flipY = false
     }
@@ -399,5 +410,42 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
     setFormIcon(icon: string) {
         this.form.icon = icon
     }
+
+    openCrowsnestConf() {
+        this.$store.dispatch('editor/openFile', {
+            root: 'config',
+            path: '/',
+            filename: this.crowsnestConf?.filename,
+            size: this.crowsnestConf?.size,
+            permissions: this.crowsnestConf?.permissions,
+        })
+    }
 }
 </script>
+
+<style lang="scss" scoped>
+._transition i::before {
+    transition: transform 500ms;
+}
+._rotate-180:before {
+    transform: rotate(180deg);
+}
+
+.v-item-group {
+    button:hover::before,
+    button:focus::before {
+        opacity: 0 !important;
+    }
+    ._menu-button {
+        height: 40px;
+        width: 62px;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    }
+    ._menu-button:hover {
+        border-color: rgba(255, 255, 255, 1) !important;
+    }
+    ._menu-button:focus {
+        border: 2px solid var(--color-primary) !important;
+    }
+}
+</style>

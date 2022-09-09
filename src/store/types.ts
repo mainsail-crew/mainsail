@@ -8,7 +8,7 @@ export interface RootState {
     packageVersion: string
     debugMode: boolean
     naviDrawer: boolean | null
-    remoteMode: boolean
+    instancesDB: 'moonraker' | 'browser' | 'json'
     configInstances: ConfigJsonInstance[]
 
     socket?: SocketState
@@ -25,7 +25,9 @@ export interface RootStateDependency {
 }
 
 export interface ConfigJson {
-    remoteMode?: boolean
+    hostname?: string | null
+    port?: string | number | null
+    instancesDB?: 'moonraker' | 'browser' | 'json'
     instances?: ConfigJsonInstance[]
 }
 

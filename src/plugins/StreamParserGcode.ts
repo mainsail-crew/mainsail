@@ -1,4 +1,4 @@
-import { StringStream } from '@codemirror/stream-parser'
+import { StringStream } from '@codemirror/language'
 
 export const gcode = {
     token: function (stream: StringStream, state: StreamParserGcodeState, zeroPos = 0): string | null {
@@ -8,41 +8,51 @@ export const gcode = {
 
         /* Klipper macro attributes */
         if (stream.pos > zeroPos && state.klipperMacro) {
-            if (stream.match(/^\s*[A-Z_]+/)) return 'propertyName'
-            else if (stream.match(/^\s*[A-Za-z0-9_]+/)) return 'number'
-            else if (stream.match(/^{.*}/)) return 'variable'
+            stream.eatSpace()
+            if (stream.match(/^(".+"|true|false)/i)) {
+                return 'string'
+            } else if (stream.match(/^\d+/)) return 'number'
+            else if (stream.match(/^[A-Za-z\d_]+/)) return 'propertyName'
+            else if (zeroPos === 0 && stream.match(/^{[^%]+}/)) return 'variable'
         }
 
         /* comments */
-        if ([';', '#'].includes(ch ?? '')) {
+        if ([';'].includes(ch ?? '')) {
             stream.skipToEnd()
             return 'comment'
         }
 
+        const isZero = stream.pos == zeroPos
+
         /* Mxxx Gxxx commands */
-        if (stream.pos == zeroPos && stream.match(/[GMgm][\d]+/)) {
+        if (isZero && stream.match(/_?[GMgm][\d.]+/)) {
             return 'namespace'
         }
 
+        if (stream.string.substr(zeroPos).toLowerCase().startsWith('m117')) {
+            stream.skipToEnd()
+            return 'string'
+        }
+
         /* G0/1 movements */
-        if (stream.pos > zeroPos && stream.match(/[XYZIJxyzij]-?([\d]*\.[\d]+|[\d]+)?/)) {
+        if (stream.pos > zeroPos && stream.match(/[EPXYZIJ]-?([\d]*\.[\d]+|[\d]+)?/i)) {
             return 'className'
         }
 
         /* G0/1 speeds */
-        if (stream.pos > zeroPos && stream.match(/[Ff]-?([\d]*\.[\d]+|[\d]+)/)) {
+        if (stream.pos > zeroPos && stream.match(/[Ff]-?([\d]*\.[\d]+|[\d]+)?/)) {
             return 'string'
         }
 
         /* G0/1 extrusions */
-        if (stream.pos > zeroPos && stream.match(/[TtSsEe]-?([\d]*\.[\d]+|[\d]+)/)) {
+        if (stream.pos > zeroPos && stream.match(/[TtSs]-?([\d]*\.[\d]+|[\d]+)?/)) {
             return 'atom'
         }
 
-        if (stream.pos > zeroPos && stream.match(/^{.*}/)) return 'propertyName'
+        if (zeroPos === 0 && stream.pos > zeroPos && stream.match(/^{[^%]+}/)) return 'propertyName'
 
         /* Klipper macro names */
-        if (stream.pos == zeroPos && stream.match(/^[A-Z_]+/)) {
+        if (isZero && stream.match(/^\s*[A-Z_\d]+/)) {
             state.klipperMacro = true
             return 'name'
         }

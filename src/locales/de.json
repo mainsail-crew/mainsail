@@ -21,6 +21,7 @@
             "Never": "nie",
             "NextReboot": "nächsten Reboot",
             "NoNotification": "Keine Benachrichtigung vorhanden",
+            "Notifications": "Benachrichtigungen",
             "Remind": "Errinnere:"
         },
         "NumberInput": {
@@ -111,6 +112,7 @@
         "CheckMoonrakerLog": "Wenn diese Meldung wiederholt erscheint, schaue bitte in die Logdatei unter:",
         "Connecting": "Verbinde zu {host}",
         "Failed": "Verbindung fehlgeschlagen",
+        "Initializing": "Initialisieren",
         "TryAgain": "Erneut versuchen"
     },
     "Console": {
@@ -131,17 +133,11 @@
         }
     },
     "Editor": {
-        "Cancel": "Abbrechen",
         "ConfigReference": "Konfig-Referenz",
         "DontSave": "Nicht speichern",
         "Downloading": "Herunterladen",
         "FailedSave": "{filename} konnte nicht hochgeladen werden!",
         "FileReadOnly": "schreibgeschützt",
-        "KlipperRestartMethod": "Klipper Neustartmethode",
-        "KlipperRestartMethodDescription": "Wählen der Neustartmethode die bei 'Speichern & Neustarten' verwendet wird, wenn Klipper-Konfigurationsdateien bearbeitet werden.",
-        "Minimap": "Minimap anzeigen",
-        "MoonrakerRestartInstance": "Moonraker Neustartinstanz",
-        "MoonrakerRestartInstanceDescription": "Wählen der Moonraker-Instanz die bei 'Speichern & Neustarten' neu gestartet wird, wenn Moonraker-Konfigurationsdateien bearbeitet werden.",
         "SaveClose": "Speichern & schließen",
         "SaveRestart": "Speichern & Neustart",
         "SuccessfullySaved": "{filename} erfolgreich gespeichert.",
@@ -159,7 +155,9 @@
     "Files": {
         "AddToQueue": "Zur Auftragswarteschlange hinzufügen",
         "AllFiles": "Alle",
+        "BedTemp": "Bett Temp.",
         "Cancel": "Abbrechen",
+        "ChamberTemp": "Kammer Temp.",
         "Create": "Erstellen",
         "CreateNewDirectory": "Ordner erstellen",
         "CurrentPath": "Aktueller Pfad",
@@ -168,9 +166,9 @@
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",
         "Download": "Herunterladen",
-        "Downloading": "Herunterladen",
         "EditFile": "Datei bearbeiten",
         "Empty": "Leer",
+        "ExtruderTemp": "Extruder Temp.",
         "Filament": "Filament",
         "FilamentName": "Filament Name",
         "FilamentType": "Filament Typ",
@@ -181,6 +179,7 @@
         "Free": "Frei",
         "FreeDisk": "Freier Speicherplatz",
         "GCodeFiles": "G-Code Dateien",
+        "GcodesRootDirectoryDoesntExists": "Keinen G-Code Ordner gefunden. Bitte überprüfe die Option \"path\" im Abschnitt [virtual_sdcard] in der Klipper Konfiguration.",
         "HiddenFiles": "Versteckte Dateien",
         "LastEndTime": "Letzte Endzeit",
         "LastFilamentUsed": "Letzter Filamentverbrauch",
@@ -210,7 +209,6 @@
         "SuccessfullyRenamed": "{filename} erfolgreich umbenannt.",
         "SuccessfullyUploaded": "Hochladen von {filename} erfolgreich!",
         "Total": "Gesamt",
-        "Uploading": "Hochladen",
         "UploadNewGcode": "G-Code hochladen",
         "Used": "Belegt",
         "View3D": "3D Betrachtung"
@@ -263,6 +261,9 @@
         "ErrorKlipperNotReady": "Klipper nicht bereit. Heightmap deaktiviert.",
         "Flat": "Flach",
         "Heightmap": "Heightmap",
+        "InvalidNameAlreadyExists": "Das Profil existiert bereits, bitte wähle einen anderen Profilnamen.",
+        "InvalidNameEmpty": "Feld darf nicht leer sein!",
+        "InvalidNameReserved": "Das Profil 'default' ist reserviert, bitte wähle einen anderen Profilnamen.",
         "Later": "später",
         "Mesh": "Mesh",
         "Name": "Name",
@@ -288,6 +289,7 @@
         "AllJobs": "Alle",
         "AvgPrinttime": "Druckzeit - Ø",
         "Cancel": "abbrechen",
+        "ChamberTemp": "Kammer Temp.",
         "CreateNote": "Notiz anlegen",
         "Delete": "Löschen",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Jobs gelöscht werden?",
@@ -337,6 +339,7 @@
             "in_progress": "In Arbeit",
             "klippy_disconnect": "Klippy getrennt",
             "klippy_shutdown": "Klippy heruntergefahren",
+            "Others": "Sonstige",
             "server_exit": "Server-Exit"
         },
         "TitleExportHistory": "Historie exportieren",
@@ -362,6 +365,7 @@
             "AllFiles": "Alle",
             "Cancel": "Abbruch",
             "ConfigFiles": "Konfigurationsdateien",
+            "ConfigRootDirectoryDoesntExists": "Keinen Konfigurations-Ordner gefunden. Bitte überprüfe die Option \"config_path\" im Abschnitt [file_manager] in der Moonraker Konfiguration.",
             "Create": "Erstellen",
             "CreateDirectory": "Verzeichnis erstellen",
             "CreateFile": "Datei erstellen",
@@ -455,14 +459,25 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Erlaubt",
-            "EstimatedExtrusion": "Geschätzte Extrusion:",
+            "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrudieren",
             "ExtruderTempTooLow": "Extruder Temp. <",
             "ExtrusionFactor": "Extrusionsfaktor",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
             "FilamentLength": "Filamentlänge",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Rückzugslänge",
+                "RetractSpeed": "Rückzuggeschwindigkeit",
+                "UnretractExtraLength": "Zusätzliche Ausfahrlänge",
+                "UnretractSpeed": "Ausfahrgeschwindigkeit"
+            },
             "Headline": "Extruder",
             "LoadFilament": "Filament laden",
+            "PressureAdvanceSettings": {
+                "Advance": "Pressure Advance",
+                "Extruder": "Extruder",
+                "SmoothTime": "Smooth Time"
+            },
             "Requested": "Angefordert",
             "Retract": "Rückzug",
             "TooLargeExtrusion": "Extrusion zu groß!",
@@ -481,26 +496,12 @@
             "Restart": "Neustart"
         },
         "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Firmware Rückzug",
-                "RetractLength": "Rückzugslänge",
-                "RetractSpeed": "Rückzuggeschwindigkeit",
-                "UnretractExtraLength": "Zusätzliche Ausfahrlänge",
-                "UnretractSpeed": "Ausfahrgeschwindigkeit"
-            },
             "Headline": "Maschine",
             "MotionSettings": {
                 "Acceleration": "Beschleunigung",
                 "MaxAccelToDecel": "Max. Beschl. zu Verz.",
-                "Motion": "Bewegung",
                 "SquareCornerVelocity": "Eck-Geschwindigkeit",
                 "Velocity": "Geschwindigkeit"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
-                "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
-                "SmoothTime": "Smooth Time"
             }
         },
         "MacrosPanel": {
@@ -538,6 +539,8 @@
             "CancelPrint": "Druck abbrechen",
             "ClearPrintStats": "Druckstatistiken löschen",
             "Difference": "Unterschied",
+            "EmptyGcodes": "Kein G-Code verfügbar.",
+            "EmptyJobqueue": "Aktuell keine Datei in der Warteschlange.",
             "Estimate": "Schätzung",
             "ETA": "ETA",
             "ExcludeObject": {
@@ -550,18 +553,16 @@
             "Filament": "Filament",
             "File": "Datei",
             "Files": "Dateien",
-            "EmptyGcodes": "Kein G-Code verfügbar.",
-            "EmptyJobqueue": "Aktuell keine Datei in der Warteschlange.",
             "Flow": "Fluss",
             "Headline": "Status",
             "Jobqueue": "Warteschlange ({count})",
             "JobqueueMoreFiles": "keine weiteren Aufträge | einen weiteren Auftrag | {count} weitere Aufträge",
-            "PrintTime": "Druckzeit",
             "Layer": "Schicht",
             "Max": "max",
             "ObjectHeight": "Objekthöhe",
             "PausePrint": "Druck pausieren",
             "Print": "Druck",
+            "PrintTime": "Druckzeit",
             "ReprintJob": "Auftrag erneut drucken",
             "Requested": "Angefordert",
             "ResumePrint": "Druck fortführen",
@@ -574,7 +575,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "Autoskalierung",
             "Avg": "Ø",
-            "Color": "Farbe",
             "Cooldown": "Abkühlen",
             "Current": "Aktuell",
             "Dataset": {
@@ -603,20 +603,13 @@
             "ALL": "ALLE",
             "Headline": "Werkzeugkopf",
             "Invalid": "Ungültig",
-            "InvertX": "X invertieren",
-            "InvertY": "Y invertieren",
-            "InvertZ": "Z invertieren",
             "OutOfRange": "Außerhalb der Maschinengrenze!",
             "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
             "Position": "Position",
             "QGL": "QGL",
             "Relative": "relativ",
             "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
-            "SetupControls": "Setup-Steuerelemente",
             "SpeedFactor": "Geschwindigkeitsfaktor",
-            "XOffset": "X-Versatz",
-            "YOffset": "Y-Versatz",
-            "ZOffset": "Z-Versatz",
             "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
@@ -624,12 +617,10 @@
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "Keine Webcam verfügbar. Füge eine Webcam unter \"Interface Einstellungen\" -> \"Webcams\".",
-            "UnknownWebcamService": "Unbekannter Webcam Dienst",
-            "UrlNotAvailable": "URL nicht verfügbar"
+            "UnknownWebcamService": "Unbekannter Webcam Dienst"
         },
         "ZoffsetPanel": {
             "Clear": "Löschen",
-            "CurrentOffset": "Aktueller Versatz",
             "Headline": "Z-Versatz",
             "Later": "Später",
             "Ok": "OK",
@@ -663,6 +654,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Drucker hinzufügen",
+        "AddPrintersToJson": "Bitte füge einen Drucker in der config.json hinzu.",
         "CannotConnectTo": "Kann keine Verbindung zu {host} herstellen.",
         "ChangePrinter": "Drucker ändern",
         "Connecting": "Verbinde zu {host}",
@@ -769,6 +761,14 @@
             "CalcEstimateTimeDescription": "Bei Mehrfachauswahl wird ein Durchschnitt berechnet",
             "CalcEtaTime": "ETA Berechnung",
             "CalcEtaTimeDescription": "Bei Mehrfachauswahl wird ein Durchschnitt berechnet",
+            "CalcPrintProgress": "Berechnung des Druckfortschritts",
+            "CalcPrintProgressDescription": "Methode zur Berechnung des Druckfortschritts.",
+            "CalcPrintProgressItems": {
+                "Filament": "Filament",
+                "FileAbsolute": "Dateiposition (absolut)",
+                "FileRelative": "Dateiposition (relativ)",
+                "Slicer": "Slicer (M73)"
+            },
             "CannotReadJson": "Sicherungsdatei kann nicht gelesen/analysiert werden.",
             "DbConsoleHistory": "Verlauf der Konsole",
             "DbHistoryJobs": "Historie Druckvorgänge",
@@ -852,7 +852,8 @@
             "Hostname": "Hostname",
             "Port": "Port",
             "RemotePrinters": "Remote Drucker",
-            "UpdatePrinter": "Drucker aktualisieren"
+            "UpdatePrinter": "Drucker aktualisieren",
+            "UseConfigJson": "InstanceDB = JSON erkannt. Bitte bearbeite die config.json um die Druckerliste zu modifizieren."
         },
         "TimelapseTab": {
             "Autorender": "Autorender",
@@ -951,6 +952,7 @@
         "WebcamsTab": {
             "AddWebcam": "Webcam hinzufügen",
             "CreateWebcam": "Erstelle Webcam",
+            "EditCrowsnestConf": "crowsnest.conf bearbeiten",
             "EditWebcam": "Webcam bearbeiten",
             "FlipHorizontally": "Webcam waagerecht spiegeln",
             "FlipVertically": "Webcam vertikal spiegeln",
@@ -968,6 +970,7 @@
             "Name": "Name",
             "NameAlreadyExists": "Name existiert bereits",
             "Required": "benötigt",
+            "Rotate": "Drehen",
             "SaveWebcam": "Webcam speichern",
             "Service": "Dienst",
             "TargetFPS": "Ziel FPS",
@@ -988,6 +991,7 @@
         "Delete": "Löschen",
         "DeleteDirectory": "Verzeichnis löschen",
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
+        "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",
         "Download": "Download",
         "DuplicateLastframe": "Letztes Bild duplizieren",
         "Empty": "Keine fertigen Zeitraffer gefunden.",

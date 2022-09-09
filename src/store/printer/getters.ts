@@ -36,7 +36,24 @@ import {
 } from '@mdi/js'
 
 export const getters: GetterTree<PrinterState, RootState> = {
-    getPrintPercent: (state) => {
+    getPrintPercent: (state, getters, rootState) => {
+        const type = rootState?.gui?.general?.calcPrintProgress ?? 'file-relative'
+        switch (type) {
+            case 'file-relative':
+                return getters['getPrintPercentByFilepositionRelative']
+            case 'file-absolute':
+                return getters['getPrintPercentByFilepositionAbsolute']
+            case 'slicer':
+                return getters['getPrintPercentBySlicer']
+            case 'filament':
+                return getters['getPrintPercentByFilament']
+
+            default:
+                return getters['getPrintPercentByFilepositionRelative']
+        }
+    },
+
+    getPrintPercentByFilepositionRelative: (state) => {
         if (
             state.current_file?.filename &&
             state.current_file?.gcode_start_byte &&
@@ -50,6 +67,30 @@ export const getters: GetterTree<PrinterState, RootState> = {
             const maxPosition = state.current_file.gcode_end_byte - state.current_file.gcode_start_byte
 
             if (currentPosition > 0 && maxPosition > 0) return (1 / maxPosition) * currentPosition
+        }
+
+        return state.virtual_sdcard?.progress ?? 0
+    },
+
+    getPrintPercentByFilepositionAbsolute: (state) => {
+        return state.virtual_sdcard?.progress ?? 0
+    },
+
+    getPrintPercentBySlicer: (state) => {
+        return state.display_status?.progress ?? 0
+    },
+
+    getPrintPercentByFilament: (state) => {
+        const filament_used = state.print_stats?.filament_used ?? null
+        const filament_total = state.current_file?.filament_total ?? null
+
+        if (filament_used !== null && filament_total !== null) {
+            if (filament_total == 0) return 0
+
+            const progress = filament_used / filament_total
+            if (progress > 1) return 1
+
+            return progress
         }
 
         return state.virtual_sdcard?.progress ?? 0
@@ -357,7 +398,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     let controllable = controllableFans.includes(nameSplit[0].toLowerCase())
                     const settings = state.configfile?.settings[key.toLowerCase()] ?? {}
                     const power = 'speed' in value ? value.speed : 'value' in value ? value.value : 0
-                    const rpm = 'rpm' in value ? value.rpm : false
+                    const rpm = 'rpm' in value ? value.rpm : null
                     let pwm = controllable
                     let scale = 1
 
@@ -373,11 +414,11 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     const tmp = {
                         name: name,
                         type: nameSplit[0],
-                        power: power,
-                        controllable: controllable,
-                        pwm: pwm,
-                        rpm: rpm,
-                        scale: scale,
+                        power,
+                        controllable,
+                        pwm,
+                        rpm,
+                        scale,
                         object: value,
                         config: settings,
                         off_below: undefined,
@@ -601,7 +642,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const sensors = getters.getMcuTempSensors
         // eslint-disable-next-line
         sensors.forEach((sensor: { key: string; settings: any; object: any }) => {
-            if (sensor.settings?.sensor_mcu === mcuName && sensor.object?.temperature) {
+            if (mcuName.endsWith(sensor.settings?.sensor_mcu) && sensor.object?.temperature) {
                 output = {
                     temperature: sensor.object.temperature.toFixed(0),
                     measured_min_temp: sensor.object.measured_min_temp?.toFixed(1) ?? null,
@@ -901,5 +942,11 @@ export const getters: GetterTree<PrinterState, RootState> = {
         if (!state.configfile?.settings) return false
 
         return 'screws_tilt_adjust' in state.configfile.settings
+    },
+
+    existsFirmwareRetraction: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'firmware_retraction' in state.configfile.settings
     },
 }

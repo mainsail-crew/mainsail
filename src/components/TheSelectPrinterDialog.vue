@@ -32,12 +32,12 @@
                     </template>
                 </template>
             </template>
-            <template v-if="isConnecting">
+            <template v-if="isConnecting || (isConnected && !guiIsReady)">
                 <v-card-text>
                     <v-progress-linear color="primary" indeterminate></v-progress-linear>
                 </v-card-text>
             </template>
-            <template v-else-if="!isConnecting && connectingFailed">
+            <template v-else-if="connectingFailed">
                 <v-card-text>
                     <p>
                         {{
@@ -54,7 +54,7 @@
                     </div>
                 </v-card-text>
             </template>
-            <template v-else-if="!isConnecting && dialogAddPrinter.bool">
+            <template v-else-if="dialogAddPrinter.bool">
                 <v-form v-model="addPrinterValid" @submit.prevent="addPrinter">
                     <v-card-text>
                         <v-row>
@@ -92,7 +92,7 @@
                     </v-card-actions>
                 </v-form>
             </template>
-            <template v-else-if="!isConnecting && dialogEditPrinter.bool">
+            <template v-else-if="dialogEditPrinter.bool">
                 <v-form v-model="editPrinterValid" @submit.prevent="updatePrinter">
                     <v-card-text>
                         <v-row>
@@ -173,29 +173,38 @@
                             </v-row>
                         </v-col>
                     </v-row>
-                    <v-row v-if="showCorsInfo">
-                        <v-col>
-                            <p v-if="printers.length === 0" class="text-center">
-                                {{ $t('SelectPrinterDialog.Hello') }}
-                            </p>
-                            <p class="text-center">
-                                {{ $t('SelectPrinterDialog.RememberToAdd', { cors: currentUrl }) }}
-                            </p>
-                            <p class="text-center mb-0">
-                                {{ $t('SelectPrinterDialog.YouCanFindMore') }}
-                                <br />
-                                <a href="https://docs.mainsail.xyz/remotemode" target="_blank">
-                                    https://docs.mainsail.xyz/remotemode
-                                </a>
-                                .
-                            </p>
-                        </v-col>
-                    </v-row>
-                    <v-row v-if="canAddPrinters">
+                    <template v-if="instancesDB === 'browser'">
+                        <v-row v-if="showCorsInfo">
+                            <v-col>
+                                <p v-if="printers.length === 0" class="text-center">
+                                    {{ $t('SelectPrinterDialog.Hello') }}
+                                </p>
+                                <p class="text-center">
+                                    {{ $t('SelectPrinterDialog.RememberToAdd', { cors: currentUrl }) }}
+                                </p>
+                                <p class="text-center mb-0">
+                                    {{ $t('SelectPrinterDialog.YouCanFindMore') }}
+                                    <br />
+                                    <a href="https://docs.mainsail.xyz/remotemode" target="_blank">
+                                        https://docs.mainsail.xyz/remotemode
+                                    </a>
+                                    .
+                                </p>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col class="text-center mt-0">
+                                <v-btn text color="primary" @click="createPrinter">
+                                    {{ $t('SelectPrinterDialog.AddPrinter') }}
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </template>
+                    <v-row v-else-if="instancesDB === 'json' && printers.length === 0">
                         <v-col class="text-center mt-0">
-                            <v-btn text color="primary" @click="createPrinter">
-                                {{ $t('SelectPrinterDialog.AddPrinter') }}
-                            </v-btn>
+                            <p class="text-center">
+                                {{ $t('SelectPrinterDialog.AddPrintersToJson') }}
+                            </p>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -254,7 +263,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get canAddPrinters() {
-        return this.$store.state.configInstances.length === 0
+        return this.instancesDB !== 'json'
     }
 
     get protocol() {
@@ -290,7 +299,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get showDialog() {
-        return !this.isConnected
+        return !this.isConnected || (this.isConnected && !this.guiIsReady)
     }
 
     get currentUrl() {
@@ -316,6 +325,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         if (this.dialogAddPrinter.bool) return this.$t('SelectPrinterDialog.AddPrinter')
         else if (this.dialogEditPrinter.bool) return this.$t('SelectPrinterDialog.EditPrinter')
         else if (this.isConnecting) return this.$t('SelectPrinterDialog.Connecting', { host: this.formatHostname })
+        else if (this.isConnected && !this.guiIsReady) return this.$t('ConnectionDialog.Initializing')
         else if (this.connectingFailed)
             return this.$t('SelectPrinterDialog.ConnectionFailed', { host: this.formatHostname })
         else return this.$t('SelectPrinterDialog.SelectPrinter')

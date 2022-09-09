@@ -74,32 +74,31 @@ import 'vue-resize/dist/vue-resize.css'
 import VueResize from 'vue-resize'
 Vue.use(VueResize)
 
-//load config.json and init vue
-fetch('/config.json')
-    .then((res) => res.json())
-    .then(async (file) => {
-        await store.dispatch('importConfigJson', file)
+const initLoad = async () => {
+    //load config.json
+    await fetch('/config.json')
+        .then((res) => res.json())
+        .then(async (file) => {
+            window.console.debug('Loaded config.json')
 
-        const url = store.getters['socket/getWebsocketUrl']
-        Vue.use(WebSocketPlugin, {
-            url: url,
-            store: store,
+            await store.dispatch('importConfigJson', file)
+            if ('defaultLocale' in file) i18n.locale = file.defaultLocale
+        })
+        .catch((_) => {
+            window.console.error('config.json not found or cannot be decoded!')
         })
 
-        if (!store?.state?.remoteMode) Vue.$socket.connect()
+    const url = store.getters['socket/getWebsocketUrl']
+    Vue.use(WebSocketPlugin, { url, store })
+    if (store?.state?.instancesDB === 'moonraker') Vue.$socket.connect()
+}
 
-        new Vue({
-            vuetify,
-            router,
-            store,
-            i18n,
-            render: (h) => h(App),
-        }).$mount('#app')
-    })
-    .catch((error) => {
-        const p = document.createElement('p')
-        const content = document.createTextNode('config.json not found or cannot be decoded!')
-        p.appendChild(content)
-        document.getElementById('app')?.append(p)
-        window.console.error('Error:', error)
-    })
+initLoad()
+
+new Vue({
+    vuetify,
+    router,
+    store,
+    i18n,
+    render: (h) => h(App),
+}).$mount('#app')

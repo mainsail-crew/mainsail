@@ -19,6 +19,7 @@ export const getDefaultState = (): GuiState => {
         general: {
             printername: '',
             language: 'en',
+            calcPrintProgress: 'file-relative',
             calcEstimateTime: ['file', 'filament'],
             calcEtaTime: ['file', 'filament', 'slicer'],
         },
@@ -227,6 +228,7 @@ export const getDefaultState = (): GuiState => {
                 sortDesc: true,
                 showHiddenFiles: false,
                 currentPath: 'timelapse',
+                selectedFiles: [],
             },
             webcam: {
                 currentCam: {
