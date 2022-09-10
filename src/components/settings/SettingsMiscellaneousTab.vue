@@ -10,10 +10,6 @@
                 <div v-for="(light, index) in lights" :key="index">
                     <v-divider v-if="index" class="my-2"></v-divider>
                     <settings-row :title="convertName(light.name)" :dynamic-slot-width="true">
-                        <v-btn small outlined class="ml-3">
-                            <v-icon left small>{{ mdiPalette }}</v-icon>
-                            {{ $t('Settings.MiscellaneousTab.Presets') }}
-                        </v-btn>
                         <v-btn
                             v-if="light.chainCount > 1"
                             small
@@ -22,6 +18,10 @@
                             @click="editLightGroupObject = light">
                             <v-icon left small>{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.MiscellaneousTab.Groups') }}
+                        </v-btn>
+                        <v-btn small outlined class="ml-3">
+                            <v-icon left small>{{ mdiPalette }}</v-icon>
+                            {{ $t('Settings.MiscellaneousTab.Presets') }}
                         </v-btn>
                     </settings-row>
                 </div>
