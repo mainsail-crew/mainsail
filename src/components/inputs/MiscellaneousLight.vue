@@ -3,12 +3,16 @@
         <v-row>
             <v-col class="pb-3">
                 <v-subheader class="_light-subheader">
-                    <v-icon v-if="!root && isOn" small left @click="off">{{ mdiLightbulbOnOutline }}</v-icon>
-                    <v-icon v-else-if="!root" small left @click="on">{{ mdiLightbulbOutline }}</v-icon>
+                    <v-icon v-if="(!root || groups.length === 0) && isOn" small left @click="off">
+                        {{ mdiLightbulbOnOutline }}
+                    </v-icon>
+                    <v-icon v-else-if="!root || groups.length === 0" small left @click="on">
+                        {{ mdiLightbulbOutline }}
+                    </v-icon>
                     <span>{{ name }}</span>
                     <v-spacer></v-spacer>
                     <span
-                        v-if="!root"
+                        v-if="!root || groups.length === 0"
                         class="_currentState"
                         :style="currentStateStyle"
                         @click="boolDialog = true"></span>
