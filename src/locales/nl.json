@@ -21,6 +21,7 @@
             "Never": "nooit",
             "NextReboot": "volgende reboot",
             "NoNotification": "Geen notificaties beschikbaar",
+            "Notifications": "Notificaties",
             "Remind": "Herinnering:"
         },
         "NumberInput": {
@@ -58,9 +59,9 @@
             "CannotUploadTheFile": "Kan het bestand niet uploaden!",
             "EmergencyStop": "Noodstop",
             "SAVE_CONFIG": "CONFIG OPSLAAN",
-            "Uploading": "Uploaden",
             "UploadOfFileSuccessful": "Upload van {file} succesvol!",
-            "UploadPrint": "Upload & Print"
+            "UploadPrint": "Upload & Print",
+            "Uploading": "Uploaden"
         },
         "TopCornerMenu": {
             "Cancel": "Annuleer",
@@ -111,6 +112,7 @@
         "CheckMoonrakerLog": "Als deze melding vaker getoond wordt, kijk in de logs op:",
         "Connecting": "Verbinden met {host}",
         "Failed": "Verbinding mislukt",
+        "Initializing": "Initialiseren",
         "TryAgain": "probeer nogmaals"
     },
     "Console": {
@@ -131,13 +133,11 @@
         }
     },
     "Editor": {
-        "Cancel": "Annuleer",
         "ConfigReference": "Config Referentie",
         "DontSave": "Sla niet op",
         "Downloading": "Downloaden",
         "FailedSave": "{filename} kon niet worden geupload!",
         "FileReadOnly": "alleen-lezen",
-        "Minimap": "Toon minimap",
         "SaveClose": "Bewaar & sluiten",
         "SaveRestart": "Bewaar & herstart",
         "SuccessfullySaved": "{filename} succesvol opgeslagen.",
@@ -155,7 +155,9 @@
     "Files": {
         "AddToQueue": "Voeg aan wachtrij toe",
         "AllFiles": "Alle",
+        "BedTemp": "Bed Temp.",
         "Cancel": "Annuleer",
+        "ChamberTemp": "Kamer Temp.",
         "Create": "Creëer",
         "CreateNewDirectory": "Creëer nieuwe Map",
         "CurrentPath": "Huidige pad",
@@ -164,9 +166,9 @@
         "DeleteDirectoryQuestion": "Weet je zeker dat je de \"{name}\" map wil verwijderen met alle inhoud?",
         "DeleteSelectedQuestion": "Weet je zeker dat je {count} geselecteerde bestanden wil verwijderen?",
         "Download": "Download",
-        "Downloading": "Downloaden",
         "EditFile": "Bewerk bestand",
         "Empty": "Leeg",
+        "ExtruderTemp": "Extruder Temp.",
         "Filament": "Filament",
         "FilamentName": "Filamentnaam",
         "FilamentType": "Filament Type",
@@ -177,6 +179,7 @@
         "Free": "Vrij",
         "FreeDisk": "Vrije schijfruimte",
         "GCodeFiles": "G-Code Bestanden",
+        "GcodesRootDirectoryDoesntExists": "Geen G-Code directory gevonden. Controleer de optie \"path\" in de [virtual_sdcard] sectie van de Klipper configuratie.",
         "HiddenFiles": "Verborgen bestanden",
         "LastEndTime": "Laatste eindtijd",
         "LastFilamentUsed": "Laatst gebruikte filament",
@@ -190,9 +193,9 @@
         "NozzleDiameter": "Nozzle Diameter",
         "ObjectHeight": "Objecthoogte",
         "Preheat": "Voorverwarmen",
-        "PrintedFiles": "Geprinte bestanden",
         "PrintStart": "Start print",
         "PrintTime": "Printtijd",
+        "PrintedFiles": "Geprinte bestanden",
         "RefreshCurrentDirectory": "Ververs huidige map",
         "Rename": "Hernoem",
         "RenameDirectory": "Hernoem map",
@@ -206,7 +209,6 @@
         "SuccessfullyRenamed": "{filename} succesvol hernoemd.",
         "SuccessfullyUploaded": "Upload van {filename} succesvol!",
         "Total": "Totaal",
-        "Uploading": "Uploaden",
         "UploadNewGcode": "Upload nieuwe G-Code",
         "Used": "Gebruikt",
         "View3D": "Bekijk in 3D"
@@ -228,8 +230,8 @@
         "Max": "Max",
         "Medium": "Medium",
         "ReloadRequired": "Herladen nodig",
-        "Rendering": "Renderen",
         "RenderQuality": "Render kwaliteit",
+        "Rendering": "Renderen",
         "ShowObjectSelection": "Toon object selectie",
         "ShowToolhead": "Toon Toolhead",
         "ShowTravelMoves": "Toon bewegingen",
@@ -259,6 +261,9 @@
         "ErrorKlipperNotReady": "Klipper nog niet klaar . Hoogtekaart uitgeschakeld.",
         "Flat": "Vlak",
         "Heightmap": "Hoogtekaart",
+        "InvalidNameAlreadyExists": "Profielnaam bestaat al, kies een andere profielnaam.",
+        "InvalidNameEmpty": "Veld mag niet leeg zijn!",
+        "InvalidNameReserved": "Profiel 'default' is gereserveerd, kies een andere profielnaam.",
         "Later": "Later",
         "Mesh": "Mesh",
         "Name": "Naam",
@@ -327,6 +332,7 @@
         "Statistics": "Statistieken",
         "Status": "Status",
         "StatusValues": {
+            "Others": "Overige",
             "cancelled": "Geannuleerd",
             "completed": "Voltooid",
             "error": "Fout",
@@ -358,6 +364,7 @@
             "AllFiles": "Alle",
             "Cancel": "Annuleer",
             "ConfigFiles": "Config bestanden",
+            "ConfigRootDirectoryDoesntExists": "Geen configuratie directory gevonden. Controleer de optie \"config_path\" in de [file_manager] sectie van de Moonraker configuratie.",
             "Create": "Maak",
             "CreateDirectory": "Maak map",
             "CreateFile": "Maak bestand",
@@ -393,8 +400,8 @@
             "Endstop": "Endstop",
             "EndstopInfo": "Druk op de sync-knop rechtsoner om de huidige endstop status te laden.",
             "Endstops": "Endstops",
-            "open": "OPEN",
-            "TRIGGERED": "GETRIGGERED"
+            "TRIGGERED": "GETRIGGERED",
+            "open": "OPEN"
         },
         "LogfilesPanel": {
             "Logfiles": "Logbestanden"
@@ -441,30 +448,14 @@
             "PackagesCanBeUpgraded": "pakketten kunnen worden geüpgraded",
             "System": "Systeem",
             "Unknown": "onbekend",
+            "UpToDate": "up-to-date",
             "Update": "update",
             "UpdateAll": "Update alle componenten",
             "UpdateManager": "Update Manager",
-            "Upgrade": "upgrade",
-            "UpToDate": "up-to-date"
+            "Upgrade": "upgrade"
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "Alle",
-            "AlternateControls": "Alternatieve bediening",
-            "Headline": "Bediening",
-            "InvertX": "Inverteer X",
-            "InvertY": "Inverteer Y",
-            "InvertZ": "Inverteer Z",
-            "PleaseConfigureSteps": "Configureer steps aub",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Instellingen > Interface > Bediening",
-            "SetupControls": "Bewerk Bediening",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "ExtruderControlPanel": {
             "Allowed": "Toegestaan",
             "EstimatedExtrusion": "Geschatte extrusie:",
@@ -484,7 +475,6 @@
             "PressureAdvanceSettings": {
                 "Advance": "Advance",
                 "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
                 "SmoothTime": "Smooth Time"
             },
             "Requested": "Aangevraagd",
@@ -500,7 +490,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Herstart",
             "KlipperCheck": "Controleer of de Klipper service draait en een UDS (Unix Domain Socket) geconfigureerd is.",
-            "KlippyInfo": "Moonraker kan niet verbinden met Klippy!\nControleer of de Klipper Service draait en een UDS (Unix Domain Socket) is geconfigureerd.",
             "KlippyState": "Klippy-Status",
             "MoonrakerCannotConnect": "Moonraker kan niet met Klipper verbinden!",
             "Restart": "Herstart"
@@ -509,7 +498,6 @@
             "Headline": "Machine instellingen",
             "MotionSettings": {
                 "Acceleration": "Acceleratie",
-                "Deceleration": "Vertraging",
                 "MaxAccelToDecel": "Max Accel. naar Decel.",
                 "SquareCornerVelocity": "Hoeksnelheid (SCV)",
                 "Velocity": "Snelheid"
@@ -519,46 +507,26 @@
             "Headline": "Macros",
             "Send": "verstuur"
         },
-        "MiniconsolePanel": {
-            "Console": "Console",
-            "CustomFilters": "Eigen filters",
-            "Empty": "Leeg",
-            "Headline": "Console",
-            "HideTemperatures": "Verberg temperaturen",
-            "HideTimelapse": "Verberg Timelapse",
-            "Send": "Verzend",
-            "SendCode": "Verzend code...",
-            "SetupConsole": "Console Instellingen"
-        },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Zorg dat je mainsail.cfg in je printer.cfg geïnclude hebt.",
             "IsNotDefinedInConfig": "is niet gedefinieerd in de config.",
             "MissingConfiguration": "Ontbrekende configuratie",
             "MoreInformation": "meer informatie"
         },
+        "MiniconsolePanel": {
+            "Headline": "Console",
+            "HideTemperatures": "Verberg temperaturen",
+            "HideTimelapse": "Verberg Timelapse",
+            "SendCode": "Verzend code...",
+            "SetupConsole": "Console Instellingen"
+        },
         "MiscellaneousPanel": {
-            "ExtrusionFactor": "Extrusie factor",
             "Headline": "Overige",
-            "Miscellaneous": "Overige",
-            "PrintSettings": "Printinstellingen",
             "RunoutSensor": {
                 "Detected": "gedetecteerd",
                 "Disabled": "uitgeschakeld",
                 "Empty": "Leeg"
-            },
-            "SpeedFactor": "Snelheid factor"
-        },
-        "MoonrakerFailedComponentsPanel": {
-            "DownloadLog": "Download Log",
-            "FollowingPluginHasAnError": "De volgende plugin heeft een fout:",
-            "MoonrakerErrorInfo": "Er is een fout was gedetecteerd bij het laden van de moonraker componenten. Controleer de logfile los de fout op.",
-            "MoonrakerFailedComponents": "Fouten in Moonraker Componenten"
-        },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Download Log",
-            "FollowingPluginHasAnError": "De volgende plugin heeft een fout:",
-            "MoonrakerErrorInfo": "Een fout was ontdekt bij het laden van de Moonraker componenten. Controleer de logfile en fix het probleem.",
-            "MoonrakerWarnings": "Moonraker Waarschuwingen"
+            }
         },
         "PowerControlPanel": {
             "Error": "Fout",
@@ -570,16 +538,16 @@
             "CancelPrint": "Annuleer print",
             "ClearPrintStats": "Wis print statistieken",
             "Difference": "Verschil",
+            "ETA": "ETA",
             "EmptyGcodes": "Geen G-Code beschikbaar.",
             "EmptyJobqueue": "Er zijn geen bestanden in de wachtrij.",
             "Estimate": "Schatting",
-            "ETA": "ETA",
             "ExcludeObject": {
                 "Cancel": "annuleer",
-                "Excluded": "Uitgesloten",
                 "ExcludeObject": "Object uitsluiten",
                 "ExcludeObjectHeadline": "Object uitsluiten",
-                "ExcludeObjectText": "Weet je zeker dat je \"{name}\" wil uitsluiten?"
+                "ExcludeObjectText": "Weet je zeker dat je \"{name}\" wil uitsluiten?",
+                "Excluded": "Uitgesloten"
             },
             "Filament": "Filament",
             "File": "Bestand",
@@ -606,7 +574,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "Schaal automatisch",
             "Avg": "Gemiddeld",
-            "Color": "Kleur",
             "Cooldown": "Afkoelen",
             "Current": "Huidige",
             "Dataset": {
@@ -616,51 +583,30 @@
                 "Temperature": "huidige temperatuur"
             },
             "Headline": "Temperaturen",
-            "InList": "in lijst",
             "Max": "max",
             "Min": "min",
             "Name": "Naam",
             "Presets": "Presets",
             "SetupTemperatures": "Stel Temperaturen in",
-            "Show": "Toon",
             "ShowChart": "Toon Grafiek",
-            "ShowCurrentTemperatureInChart": "Toon huidige temperatuur in de grafiek",
             "ShowNameInChart": "Toon {name} in de grafiek",
             "ShowNameInList": "Toon {name} in de lijst",
-            "ShowPWMPowerInChart": "Toon PWM-kracht in de grafiek",
-            "ShowTargetTemperatureInChart": "Toon doeltemperatuur in de grafiek",
             "State": "Status",
             "Target": "Doel",
-            "Temperatures": "Temperaturen",
-            "TemperaturesInChart": "Temperatuur [°C]",
             "TempTooHigh": "Temperatuur te hoog voor {name}! (max: {max})",
             "TempTooLow": "Temperatuur te laag voor {name}! (min: {min})",
-            "UNKNOWN": "ONBEKEND"
+            "TemperaturesInChart": "Temperatuur [°C]"
         },
         "ToolheadControlPanel": {
-            "Absolute": "absoluut",
             "ALL": "ALLES",
-            "Controls": "Bediening",
+            "Absolute": "absoluut",
             "Headline": "Toolhead",
-            "Home": "Home",
-            "HotendTooCold": "Hotend temp. lager dan",
-            "Invalid": "Ongeldig",
-            "InvertX": "Inverteer X",
-            "InvertY": "Inverteer Y",
-            "InvertZ": "Inverteer Z",
-            "Macros": "Macros",
-            "MotorsOff": "Motoren uit",
-            "OutOfRange": "Buiten bereik",
             "PleaseConfigureSteps": "Configureer steps",
             "Position": "Positie",
             "QGL": "QGL",
             "Relative": "relatief",
             "SettingsInterfaceControl": "Instllingen > Interface > Bediening",
-            "SetupControls": "Bewerk Bediening",
             "SpeedFactor": "Snelheid factor",
-            "XOffset": "X-Offset",
-            "YOffset": "Y-Offset",
-            "ZOffset": "Z-Offset",
             "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
@@ -668,13 +614,10 @@
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "Geen webcam beschikbaar. Voeg een webcam toe onder \"Interface Settings\" -> \"Webcams\".",
-            "UnknownWebcamService": "Onbekende Webcam Service",
-            "UrlNotAvailable": "URL niet beschikbaar",
-            "Webcam": "Webcam"
+            "UnknownWebcamService": "Onbekende Webcam Service"
         },
         "ZoffsetPanel": {
             "Clear": "Wissen",
-            "CurrentOffset": "Huidige offset",
             "Headline": "Z offset",
             "Later": "Later",
             "Ok": "Ok",
@@ -684,8 +627,7 @@
             "SaveInfoDescriptionPrint": "De nieuwe z-offset is berekend en geregistreerd. Klik na het printen op \"SAVE CONFIG\" om de nieuwe z-offset op te slaan in je printer.cf en Klipper te herstarten.",
             "SaveInfoHeadline": "Informatie",
             "ToEndstop": "naar Endstop",
-            "ToProbe": "naar Probe",
-            "ZBabyStepping": "Z Baby Stepping"
+            "ToProbe": "naar Probe"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -709,6 +651,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Voeg printer toe",
+        "AddPrintersToJson": "Voeg de printers toe aan de config.json",
         "CannotConnectTo": "Kan niet verbinden met {host}.",
         "ChangePrinter": "Wijzig printer",
         "Connecting": "Verbinden met {host}",
@@ -805,6 +748,7 @@
             "GridColor": "Rasterkleur",
             "MaxFeed": "Max Doorvoer",
             "MinFeed": "Min Doorvoer",
+            "ProgressColor": "Voortgangskleur",
             "ShowAxes": "Toon Assen"
         },
         "GeneralTab": {
@@ -814,6 +758,14 @@
             "CalcEstimateTimeDescription": "Als meerdere geselecteerd zijn, wordt het gemiddelde berekend",
             "CalcEtaTime": "ETA berekening",
             "CalcEtaTimeDescription": "Als meerdere geselecteerd zijn, wordt het gemiddelde berekend",
+            "CalcPrintProgress": "Printvoortgang berekening",
+            "CalcPrintProgressDescription": "Methode om de voortgang van de print te berekenen.",
+            "CalcPrintProgressItems": {
+                "Filament": "Filament",
+                "FileAbsolute": "Bestandslocatie (absoluut)",
+                "FileRelative": "Bestandslocatie (relatief)",
+                "Slicer": "Slicer (M73)"
+            },
             "CannotReadJson": "Kan het backup bestand niet lezen/verwerken. ",
             "DbConsoleHistory": "Console Geschiedenis",
             "DbHistoryJobs": "Geschiedenis Jobs",
@@ -846,8 +798,8 @@
             "CountMacros": "geen Macros toegevoegd | {count} Macro | {count} Macros",
             "Custom": "custom",
             "CustomColor": "Custom Kleur",
-            "DeletedMacro": "Verwijderde macro",
             "DeleteMacroFromGroup": "Verwijder macro uit groep.",
+            "DeletedMacro": "Verwijderde macro",
             "EditGroup": "Bewerk groep",
             "Error": "fout",
             "Expert": "Expert",
@@ -857,10 +809,10 @@
             "Macrogroups": "Groepen",
             "Macros": "Macros",
             "Management": "Beheer",
+            "NOMacros": "geen macros gevonden...",
             "Name": "Naam",
             "NoAvailableMacros": "Geen macros beschikbaar.",
             "NoGroups": "Geen groepen gevonden...",
-            "NOMacros": "geen macros gevonden...",
             "NoMacrosInGroup": "Geen macros in deze groep.",
             "Primary": "primair",
             "Secondary": "secundair",
@@ -897,7 +849,8 @@
             "Hostname": "Hostname",
             "Port": "Poort",
             "RemotePrinters": "Printers op afstand",
-            "UpdatePrinter": "Update Printer"
+            "UpdatePrinter": "Update Printer",
+            "UseConfigJson": "InstanceDB = JSON gedetecteerd. Gebruik de config.json om de printerlijst aan te passen."
         },
         "TimelapseTab": {
             "Autorender": "Autorender",
@@ -906,8 +859,6 @@
             "CameraDescription": "Selecteer welke camera gebruikt wordt",
             "ConstantRateFactor": "Constant Rate Factor",
             "ConstantRateFactorDescription": "Dit bepaalt de kwaliteit vs bestandsgrootte van de gerenderde video. De CRF schaal is van 0-51 waar 0 zonder verlies is, 23 de standaard en 51 de slechts mogelijke kwaliteit. Een lagere waarde geeft over het algemeen betere kwaliteit en een gangbare waarde is 17-28. Zie 17 of 18 als praktisch zonder kwaliteitsverlies.",
-            "duplicatelastframe": "duplicatelastframe",
-            "duplicatelastframeDescription": "Herhaal het laatste frame aan het eind van de video",
             "Enabled": "Ingeschakeld",
             "EnabledDescription": "Indien uitgeschakeld, worden gcode macros genegeerd en autorender overgeslagen.",
             "Extraoutputparams": "Extraoutputparams",
@@ -923,12 +874,12 @@
             "ModeDescription": "Kies tussen Layermacro en Hyperlapse (tijd gebaseerde) modus",
             "OutputFramerate": "Uitvoer Framerate",
             "OutputFramerateDescription": "Definieert  de framerate van de video. Note: dit wordt genegeerd wanneer variable_fps is ingeschakeld",
+            "ParkTime": "Parkeerduur",
+            "ParkTimeDescription": "Voeg extra tijd toe bij het parkeren.",
             "Parkhead": "Parkhead",
             "ParkheadDescription": "Indien ingeschakeld, wordt de printkop geparkeerd voor een foto te nemen.",
             "Parkpos": "Parkeer postitie",
             "ParkposDescription": "Selecteer de parkeer positie",
-            "ParkTime": "Parkeerduur",
-            "ParkTimeDescription": "Voeg extra tijd toe bij het parkeren.",
             "Pixelformat": "Pixelformat",
             "PixelformatDescription": "Definieer het pixelformaat van de video",
             "PosDZ": "Positie Z",
@@ -964,7 +915,9 @@
             "VariableFpsMax": "Variabele FPS max",
             "VariableFpsMaxDescription": "",
             "VariableFpsMin": "Variabele FPS max",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "",
+            "duplicatelastframe": "duplicatelastframe",
+            "duplicatelastframeDescription": "Herhaal het laatste frame aan het eind van de video"
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Grote thumbnail",
@@ -996,6 +949,7 @@
         "WebcamsTab": {
             "AddWebcam": "voeg webcam toe",
             "CreateWebcam": "Nieuwe Webcam",
+            "EditCrowsnestConf": "Bewerk crowsnest.conf",
             "EditWebcam": "Bewerk Webcam",
             "FlipHorizontally": "Flip webcam horizontaal",
             "FlipVertically": "Flip webcam verticaal",
@@ -1013,6 +967,7 @@
             "Name": "Naam",
             "NameAlreadyExists": "Naam bestaat al",
             "Required": "verplicht",
+            "Rotate": "Roteer",
             "SaveWebcam": "Sla Webcam op",
             "Service": "Dienst",
             "TargetFPS": "Doel FPS",
@@ -1033,6 +988,7 @@
         "Delete": "Verwijder",
         "DeleteDirectory": "Verwijder map",
         "DeleteDirectoryQuestion": "Weet je zeker dat je de \"{name}\" map wil verwijderen met alle inhoud?",
+        "DeleteSelectedQuestion": "Weet je zeker dat je {count} geselecteerde bestanden wil verwijderen?",
         "Download": "Download",
         "DuplicateLastframe": "Herhaal laatste frame",
         "Empty": "Geen voltooide timelapse gevonden.",

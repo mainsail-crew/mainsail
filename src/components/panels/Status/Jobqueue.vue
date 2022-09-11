@@ -254,7 +254,9 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        this.calcContentTdWidth()
+        setTimeout(() => {
+            this.calcContentTdWidth()
+        }, 200)
     }
 
     calcContentTdWidth() {

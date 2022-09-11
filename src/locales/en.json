@@ -339,6 +339,7 @@
             "in_progress": "In progress",
             "klippy_disconnect": "Klippy disconnect",
             "klippy_shutdown": "Klippy shutdown",
+            "Others": "Others",
             "server_exit": "Server exit"
         },
         "TitleExportHistory": "Export History",
