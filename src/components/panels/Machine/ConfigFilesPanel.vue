@@ -162,7 +162,7 @@
                         <td class="text-no-wrap text-right">
                             {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
                         </td>
-                        <td class="text-right">{{ formatDate(item.modified) }}</td>
+                        <td class="text-right">{{ formatDateTime(item.modified) }}</td>
                     </tr>
                 </template>
             </v-data-table>

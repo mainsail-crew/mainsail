@@ -181,7 +181,7 @@
                             {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
                         </td>
                         <td v-if="headers.find((header) => header.value === 'modified').visible" class="text-right">
-                            {{ formatDate(item.modified) }}
+                            {{ formatDateTime(item.modified) }}
                         </td>
                     </tr>
                 </template>
