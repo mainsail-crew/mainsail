@@ -123,6 +123,14 @@ export default class BaseMixin extends Vue {
         return navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
     }
 
+    get hours12Format() {
+        const setting = this.$store.state.gui.general.timeFormat
+        if (setting === '12hours') return true
+        if (setting === null && this.browserLocale === 'en_us') return true
+
+        return false
+    }
+
     formatDate(value: number): string {
         let tmp = null
 

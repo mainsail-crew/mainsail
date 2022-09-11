@@ -881,6 +881,30 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return 0
     },
 
+    getEstimatedTimeETAFormat: (state, getters, rootState, rootGetters) => {
+        const hours12Format = rootGetters['gui/getHours12Format'] ?? false
+        const eta = getters['getEstimatedTimeETA']
+        if (eta === 0) return '--'
+
+        const date = new Date(eta)
+        let am = true
+        let h: string | number = date.getHours()
+        if (hours12Format && h > 12) {
+            am = false
+            h -= 12
+        }
+        if (h < 10) h = '0' + h
+
+        const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
+
+        const diff = eta - new Date().getTime()
+        let output = h + ':' + m
+        if (hours12Format) output += ` ${am ? 'AM' : 'PM'}`
+        if (diff > 60 * 60 * 24 * 1000) output += `+${Math.trunc(diff / (60 * 60 * 24 * 1000))}`
+
+        return output
+    },
+
     getToolchangeMacros: (state, getters) => {
         const macros = getters['getMacros']
         const tools: PrinterStateToolchangeMacro[] = []

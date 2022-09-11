@@ -81,16 +81,16 @@
                                 <strong>{{ $t('Panels.StatusPanel.Estimate') }}</strong>
                                 <br />
                                 <span class="text-no-wrap">
-                                    {{ estimated_time_avg ? formatTime(estimated_time_avg) : '--' }}
+                                    {{ estimated_time_avg ? formatDuration(estimated_time_avg) : '--' }}
                                 </span>
                             </div>
                         </template>
                         <div class="text-right">
                             {{ $t('Panels.StatusPanel.File') }}:
-                            {{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}
+                            {{ estimated_time_file ? formatDuration(estimated_time_file) : '--' }}
                             <br />
                             {{ $t('Panels.StatusPanel.Filament') }}:
-                            {{ estimated_time_filament ? formatTime(estimated_time_filament) : '--' }}
+                            {{ estimated_time_filament ? formatDuration(estimated_time_filament) : '--' }}
                         </div>
                     </v-tooltip>
                 </v-col>
@@ -98,7 +98,7 @@
                     <strong>{{ $t('Panels.StatusPanel.Slicer') }}</strong>
                     <br />
                     <span class="text-no-wrap">
-                        {{ estimated_time_slicer ? formatTime(estimated_time_slicer) : '--' }}
+                        {{ estimated_time_slicer ? formatDuration(estimated_time_slicer) : '--' }}
                     </span>
                 </v-col>
                 <v-col class="col-3 pa-0">
@@ -108,23 +108,23 @@
                                 <strong>{{ $t('Panels.StatusPanel.Total') }}</strong>
                                 <br />
                                 <span class="text-no-wrap">
-                                    {{ print_time_total ? formatTime(print_time_total) : '--' }}
+                                    {{ print_time_total ? formatDuration(print_time_total) : '--' }}
                                 </span>
                             </div>
                         </template>
                         <div class="text-right">
                             {{ $t('Panels.StatusPanel.Print') }}:
-                            {{ print_time ? formatTime(print_time) : '--' }}
+                            {{ print_time ? formatDuration(print_time) : '--' }}
                             <br />
                             {{ $t('Panels.StatusPanel.Difference') }}:
-                            {{ print_time && print_time_total ? formatTime(print_time_total - print_time) : '--' }}
+                            {{ print_time && print_time_total ? formatDuration(print_time_total - print_time) : '--' }}
                         </div>
                     </v-tooltip>
                 </v-col>
                 <v-col class="col-3 pa-0">
                     <strong>{{ $t('Panels.StatusPanel.ETA') }}</strong>
                     <br />
-                    <span class="text-no-wrap">{{ outputEta }}</span>
+                    <span class="text-no-wrap">{{ eta }}</span>
                 </v-col>
             </v-row>
         </v-container>
@@ -236,11 +236,7 @@ export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin) {
     }
 
     get eta() {
-        return this.$store.getters['printer/getEstimatedTimeETA']
-    }
-
-    get outputEta() {
-        return this.eta ? this.formatDateTime(this.eta) : '--'
+        return this.$store.getters['printer/getEstimatedTimeETAFormat']
     }
 
     get filament_diameter() {
@@ -265,22 +261,13 @@ export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin) {
             : this.filament_used.toFixed(2) + ' mm'
     }
 
-    formatTime(seconds: number) {
+    formatDuration(seconds: number) {
         let h = Math.floor(seconds / 3600)
         seconds %= 3600
         let m = ('0' + Math.floor(seconds / 60)).slice(-2)
         let s = ('0' + (seconds % 60).toFixed(0)).slice(-2)
 
         return h + ':' + m + ':' + s
-    }
-
-    formatDateTime(msec: number) {
-        const date = new Date(msec)
-        const h = date.getHours() >= 10 ? date.getHours() : '0' + date.getHours()
-        const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
-
-        const diff = msec - new Date().getTime()
-        return h + ':' + m + (diff > 60 * 60 * 24 * 1000 ? '+' + Math.round(diff / (60 * 60 * 24 * 1000)) : '')
     }
 }
 </script>

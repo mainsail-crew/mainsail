@@ -69,4 +69,17 @@ export const getters: GetterTree<GuiState, any> = {
 
         return 'm84'
     },
+
+    getHours12Format: (state) => {
+        const setting = state.general.timeFormat
+        if (setting === '12hours') return true
+        if (setting === null) {
+            const browserLocale =
+                navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
+
+            if (browserLocale === 'en_us') return true
+        }
+
+        return false
+    },
 }
