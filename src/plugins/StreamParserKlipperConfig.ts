@@ -3,17 +3,19 @@ import { gcode } from '@/plugins/StreamParserGcode'
 
 export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
+        /* see https://tedboy.github.io/jinja2/off_doc.templates.html */
         const operators = [
             "\\+\\(", "-\\(", "\\/\\/\\(", "\\/\\(", "%\\(", "\\*\\*", "\\*", "\\(", "\\)",
-            "==", "!=", ">=", ">", "<=", "<", "=", "\\|", "~"
+            "==", "!=", ">=", ">", "<=", "<", "=", "\\|", "~", ","
         ]
-        const reOperator = new RegExp("^" + operators.join("|"))
+        const reOperator = new RegExp("^\\(" + operators.join("|") + "\\)")
+        
         const keywords = [
-            "if", "elif", "else", "endif", "endfor", "for", "loop\\.index", "loop\\.revindex",
+            "elif", "else", "endif", "if", "endfor", "for", "loop\\.index", "loop\\.revindex",
             "loop\\.first", "loop\\.last", "loop\\.length", "loop\\.cycle", "loop\\.depth",
-            "and", "or", "not", "in", "is", "endmacro", "macro", "endcall", "call"
+            "and", "or", "not", "in", "is", "endmacro", "macro", "endcall", "call", "endfilter",
+            "filter", "endset", "set", "extends", "block", "endblock", "include", "import"
         ]
-        const reKeyword = new RegExp("^" + keywords.join("\\s+|") + "\\s+")
         const filters = [
             "abs", "attr", "batch", "capitalize", "center", "default", "dictsort", "escape",
             "filesizeformat", "first", "float", "forceescape", "format", "groupby", "indent",
@@ -23,8 +25,28 @@ export const klipper_config: StreamParser<any> = {
             "trim", "truncate", "unique", "upper", "urlencode", "urlize", "wordcount",
             "wordwrap", "xmlattr"
         ]
+        const tests = [
+            "callable", "defined", "divisibleby", "equalto", "escaped", "even", "iterable",
+            "lower", "mapping", "none", "number", "odd", "sameas", "sequence", "string",
+            "undefined", "upper"
+        ]
+        const globalFns = [
+            "range", "lipsum", "dict", "cycler", "joiner"
+        ]
+        const cyclerMethods = [
+            "\\.reset\\(\\)", "\\.next\\(\\)"
+        ]
+
         // const reFilter = new RegExp("^" + filters.join("\\([^(]*\\)|") + "\\([^(]*\\)")
-        const reFilter = new RegExp("^" + filters.join("|"))
+        const reKeyword = new RegExp(
+            "^\\(" + keywords.join("\\s+|") + "|" +
+            cyclerMethods.join("|") + "\\)\\s+"
+        )
+        const reUpdateOps = new RegExp(
+            "^\\(" + filters.join("|") + "|" +
+            tests.join("|") + "|" +
+            globalFns.join("|") + "\\)\\s+"
+        )
 
         function jinja2Element(stream:StringStream): string {
             if (
@@ -44,7 +66,7 @@ export const klipper_config: StreamParser<any> = {
             if (stream.match(reKeyword)) {
                 return 'keyword'
             }
-            if (stream.match(reFilter)) {
+            if (stream.match(reUpdateOps)) {
                 if (stream.peek() === "(") {
                     return 'updateOperator'
                 }
