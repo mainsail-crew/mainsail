@@ -755,6 +755,8 @@
             "ShowAxes": "Show Axes"
         },
         "GeneralTab": {
+            "12hours": "12-hours ({time})",
+            "24hours": "24-hours ({time})",
             "Backup": "Backup",
             "BackupDialog": "Please select all the sections you want to create a backup:",
             "CalcEstimateTime": "Estimate time calculation",
@@ -770,6 +772,7 @@
                 "Slicer": "Slicer (M73)"
             },
             "CannotReadJson": "Cannot read/parse backup file.",
+            "DateFormat": "Date Format",
             "DbConsoleHistory": "Console History",
             "DbHistoryJobs": "History Jobs",
             "DbHistoryTotals": "History Totals",
@@ -789,7 +792,8 @@
             "PrinterName": "Printer Name",
             "Reset": "reset",
             "Restore": "Restore",
-            "RestoreDialog": "Please select all the sections you want to restore:"
+            "RestoreDialog": "Please select all the sections you want to restore:",
+            "TimeFormat": "Time Format"
         },
         "InterfaceSettings": "Interface Settings",
         "MacrosTab": {

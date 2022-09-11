@@ -16,6 +16,26 @@
                         attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.DateFormat').toString()">
+                    <v-select
+                        v-model="dateFormat"
+                        :items="dateFormatItems"
+                        hide-details
+                        outlined
+                        dense
+                        attach></v-select>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.TimeFormat').toString()">
+                    <v-select
+                        v-model="timeFormat"
+                        :items="timeFormatItems"
+                        hide-details
+                        outlined
+                        dense
+                        attach></v-select>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.GeneralTab.CalcPrintProgress').toString()"
                     :sub-title="$t('Settings.GeneralTab.CalcPrintProgressDescription').toString()">
@@ -362,6 +382,62 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         })
 
         return languages
+    }
+
+    get dateFormat() {
+        return this.$store.state.gui.general.dateFormat
+    }
+
+    set dateFormat(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'general.dateFormat', value: newVal })
+    }
+
+    get dateFormatItems() {
+        const date = new Date()
+        const userLocale =
+            navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
+
+        return [
+            { value: null, text: `Browser (${date.toLocaleDateString(userLocale, { dateStyle: 'medium' })})` },
+            {
+                value: '2-digits',
+                text: date.toLocaleDateString(userLocale, { day: '2-digit', month: '2-digit', year: 'numeric' }),
+            },
+            {
+                value: 'short',
+                text: date.toLocaleDateString(userLocale, { day: '2-digit', month: 'short', year: 'numeric' }),
+            },
+        ]
+    }
+
+    get timeFormat() {
+        return this.$store.state.gui.general.timeFormat
+    }
+
+    set timeFormat(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'general.timeFormat', value: newVal })
+    }
+
+    get timeFormatItems() {
+        const date = new Date()
+        const userLocale =
+            navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
+
+        return [
+            { value: null, text: `Browser (${date.toLocaleTimeString(userLocale, { timeStyle: 'short' })})` },
+            {
+                value: '24hours',
+                text: this.$t('Settings.GeneralTab.24hours', {
+                    time: date.toLocaleTimeString(userLocale, { hour: '2-digit', minute: '2-digit', hour12: false }),
+                }).toString(),
+            },
+            {
+                value: '12hours',
+                text: this.$t('Settings.GeneralTab.12hours', {
+                    time: date.toLocaleTimeString(userLocale, { hour: '2-digit', minute: '2-digit', hour12: true }),
+                }).toString(),
+            },
+        ]
     }
 
     get calcPrintProgressItems() {
