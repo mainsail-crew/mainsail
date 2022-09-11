@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { DateTimeFormatOptions } from 'vue-i18n'
 
 @Component
 export default class BaseMixin extends Vue {
@@ -86,5 +87,70 @@ export default class BaseMixin extends Vue {
         const roots = this.$store.state.server.registered_directories
 
         return roots.findIndex((root: string) => root === 'gcodes') >= 0
+    }
+
+    get formatDateOptions(): DateTimeFormatOptions {
+        const format = this.$store.state.gui.general.dateFormat
+
+        switch (format) {
+            case '2-digits':
+                return { day: '2-digit', month: '2-digit', year: 'numeric' }
+
+            case 'short':
+                return { day: '2-digit', month: 'short', year: 'numeric' }
+
+            default:
+                return { dateStyle: 'medium' }
+        }
+    }
+
+    get formatTimeOptions(): DateTimeFormatOptions {
+        const format = this.$store.state.gui.general.timeFormat
+
+        switch (format) {
+            case '24hours':
+                return { hour: '2-digit', minute: '2-digit', hour12: false }
+
+            case '12hours':
+                return { hour: '2-digit', minute: '2-digit', hour12: true }
+
+            default:
+                return { timeStyle: 'short' }
+        }
+    }
+
+    get browserLocale() {
+        return navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
+    }
+
+    formatDate(value: number): string {
+        let tmp = null
+
+        try {
+            tmp = new Date(value)
+        } catch (_) {
+            return 'UNKNOWN'
+        }
+
+        return tmp.toLocaleDateString(this.browserLocale, this.formatDateOptions)
+    }
+
+    formatTime(value: number): string {
+        let tmp = null
+
+        try {
+            tmp = new Date(value)
+        } catch (_) {
+            return 'UNKNOWN'
+        }
+
+        return tmp.toLocaleTimeString(this.browserLocale, this.formatTimeOptions)
+    }
+
+    formatDateTime(value: number): string {
+        const date = this.formatDate(value)
+        const time = this.formatTime(value)
+
+        return `${date} ${time}`
     }
 }

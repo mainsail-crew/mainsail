@@ -482,7 +482,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { validGcodeExtensions } from '@/store/variables'
-import { formatDate, formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
+import { formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
@@ -574,7 +574,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiDragVertical = mdiDragVertical
 
     validGcodeExtensions = validGcodeExtensions
-    formatDate = formatDate
     formatFilesize = formatFilesize
     formatPrintTime = formatPrintTime
     sortFiles = sortFiles
@@ -1247,7 +1246,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                     return formatFilesize(value)
 
                 case 'date':
-                    return this.formatDate(value)
+                    return this.formatDateTime(value)
 
                 case 'time':
                     return this.formatPrintTime(value)
