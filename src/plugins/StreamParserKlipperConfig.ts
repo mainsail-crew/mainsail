@@ -39,13 +39,13 @@ export const klipper_config: StreamParser<any> = {
 
         // const reFilter = new RegExp("^" + filters.join("\\([^(]*\\)|") + "\\([^(]*\\)")
         const reKeyword = new RegExp(
-            "^\\(" + keywords.join("\\s+|") + "|" +
-            cyclerMethods.join("|") + "\\)\\s+"
+            "^" + keywords.join("\\s+|") + "|" +
+            cyclerMethods.join("|") + "\\s+"
         )
         const reUpdateOps = new RegExp(
-            "^\\(" + filters.join("|") + "|" +
+            "^" + filters.join("|") + "|" +
             tests.join("|") + "|" +
-            globalFns.join("|") + "\\)\\s+"
+            globalFns.join("|") + "\\s+"
         )
 
         function jinja2Element(stream:StringStream): string {
