@@ -34,6 +34,23 @@
                     </v-btn>
                 </template>
                 <v-card-text class="pt-6">
+                    <template v-if="presets.length">
+                        <v-row>
+                            <v-col class="light-presets-container pt-0 d-flex flex-wrap flex-row justify-center">
+                                <v-tooltip v-for="preset in presets" :key="preset.id" top>
+                                    <template #activator="{ on, attrs }">
+                                        <div
+                                            :style="presetStyle(preset)"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            @click="usePreset(preset)"></div>
+                                    </template>
+                                    <span>{{ preset.name }}</span>
+                                </v-tooltip>
+                            </v-col>
+                        </v-row>
+                        <v-divider class="my-3"></v-divider>
+                    </template>
                     <v-row>
                         <v-col class="text-center">
                             <color-picker
@@ -127,7 +144,7 @@ import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
 import { Debounce } from 'vue-debounce-decorator'
 import iro from '@jaames/iro'
 import { IroColor } from '@irojs/iro-core'
-import { GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
+import { GuiMiscellaneousStateEntryLightgroup, GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
 
 interface ColorData {
     red: number | null
@@ -232,6 +249,16 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         return options
     }
 
+    get optionsColors() {
+        let output: string[] = []
+
+        this.presets.forEach((preset: GuiMiscellaneousStateEntryPreset) => {
+            output.push(`rgb(${preset.red}%, ${preset.green}%, ${preset.blue}%)`)
+        })
+
+        return output
+    }
+
     get current() {
         const color: ColorData = {
             red: 0,
@@ -318,6 +345,15 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     get groups() {
         return (
             this.$store.getters['gui/miscellaneous/getEntryLightgroups']({
+                type: this.object.type,
+                name: this.object.name,
+            }) ?? []
+        )
+    }
+
+    get presets() {
+        return (
+            this.$store.getters['gui/miscellaneous/getEntryPresets']({
                 type: this.object.type,
                 name: this.object.name,
             }) ?? []
@@ -426,6 +462,18 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
 
         this.colorChanged(color)
     }
+
+    presetStyle(preset: GuiMiscellaneousStateEntryPreset) {
+        return {
+            backgroundColor: `rgb(${preset.red}%, ${preset.green}%, ${preset.blue}%)`,
+        }
+    }
+
+    usePreset(preset: GuiMiscellaneousStateEntryPreset) {
+        const color: ColorData = { ...preset }
+
+        this.colorChanged(color)
+    }
 }
 </script>
 
@@ -439,6 +487,17 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     height: 15px;
     border-radius: 50%;
     border: 1px solid lightgray;
+    cursor: pointer;
+}
+
+.light-presets-container {
+    gap: 6px;
+}
+
+.light-presets-container > div {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
     cursor: pointer;
 }
 </style>

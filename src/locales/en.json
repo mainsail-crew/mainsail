@@ -836,20 +836,27 @@
         },
         "MiscellaneousTab": {
             "AddGroup": "add group",
+            "AddPreset": "add preset",
+            "Color": "Color",
             "CreateGroup": "Create group",
+            "CreatePreset": "Create preset",
             "End": "End",
             "EndDescription": "Last LED of this group.",
             "Groups": "Groups",
             "GroupSubTitle": "Start: {start}, End: {end}",
             "LightGroups": "{name} - Groups",
+            "LightPresets": "{name} - Presets",
             "Miscellaneous": "Miscellaneous",
             "Name": "Name",
             "NoDevicesFound": "No devices found",
             "NoGroupFound": "No group found",
+            "NoPresetFound": "No preset found",
+            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, G: {white}",
             "Start": "Start",
             "StartDescription": "First LED of this group.",
             "Presets": "Presets",
-            "UnableToLoadLight": "Unable to load light"
+            "UnableToLoadLight": "Unable to load light",
+            "UnableToLoadPreset": "Unable to load preset"
         },
         "PresetsTab": {
             "AddPreset": "add preset",

@@ -3,6 +3,7 @@ import {
     GuiMiscellaneousState,
     GuiMiscellaneousStateEntry,
     GuiMiscellaneousStateEntryLightgroup,
+    GuiMiscellaneousStateEntryPreset,
 } from '@/store/gui/miscellaneous/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 
@@ -17,6 +18,7 @@ export const getters: GetterTree<GuiMiscellaneousState, any> = {
                 name: values.name,
                 type: values.type,
                 lightgroups: { ...values.lightgroups },
+                presets: { ...values.presets },
             })
         })
 
@@ -49,5 +51,25 @@ export const getters: GetterTree<GuiMiscellaneousState, any> = {
         })
 
         return caseInsensitiveSort(groups, 'name')
+    },
+
+    getEntryPresets: (state, getters) => (payload: { type: string; name: string }) => {
+        const entry = getters.getEntry(payload) as GuiMiscellaneousStateEntry | null
+
+        if (!entry) return []
+
+        const presets: GuiMiscellaneousStateEntryPreset[] = []
+        Object.entries(entry.presets).forEach(([key, preset]) => {
+            presets.push({
+                name: preset.name,
+                red: preset.red,
+                green: preset.green,
+                blue: preset.blue,
+                white: preset.white,
+                id: key,
+            })
+        })
+
+        return caseInsensitiveSort(presets, 'name')
     },
 }

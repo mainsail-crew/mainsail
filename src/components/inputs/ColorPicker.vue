@@ -1,17 +1,6 @@
 <template>
     <div>
         <div ref="picker"></div>
-        <v-row>
-            <v-col>
-                <v-input small />
-            </v-col>
-            <v-col>
-                <v-input small />
-            </v-col>
-            <v-col>
-                <v-input small />
-            </v-col>
-        </v-row>
     </div>
 </template>
 

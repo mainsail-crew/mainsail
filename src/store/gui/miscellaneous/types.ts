@@ -11,6 +11,9 @@ export interface GuiMiscellaneousStateEntry {
     lightgroups: {
         [key: string]: GuiMiscellaneousStateEntryLightgroup
     }
+    presets: {
+        [key: string]: GuiMiscellaneousStateEntryPreset
+    }
 }
 
 export interface GuiMiscellaneousStateEntryLightgroup {
@@ -18,4 +21,13 @@ export interface GuiMiscellaneousStateEntryLightgroup {
     name: string
     start: number
     end: number
+}
+
+export interface GuiMiscellaneousStateEntryPreset {
+    id?: string
+    name: string
+    red: number | null
+    blue: number | null
+    green: number | null
+    white: number | null
 }
