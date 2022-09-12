@@ -6,7 +6,7 @@ export const klipper_config: StreamParser<any> = {
         /* see https://tedboy.github.io/jinja2/off_doc.templates.html */
         const operators = [
             "\\+\\(", "-\\(", "\\/\\/\\(", "\\/\\(", "%\\(", "\\*\\*", "\\*", "\\(", "\\)",
-            "==", "!=", ">=", ">", "<=", "<", "=", "\\|", "~", ","
+            "==", "!=", ">=", ">", "<=", "<", "=", "\\|", "~", "," //, "{%", "%}", "{", "}"
         ]
         const reOperator = new RegExp("^\\(" + operators.join("|") + "\\)")
         
@@ -51,7 +51,7 @@ export const klipper_config: StreamParser<any> = {
         function jinja2Element(stream:StringStream): string {
             if (
                 (state.klipperMacroJinjaPercent && stream.match(/^%}/)) ||
-                (!state.klipperMacroJinjaPercent && stream.match(/^}/), false)
+                (!state.klipperMacroJinjaPercent && stream.match(/^}/))
             ) {
                 state.klipperMacroJinja = false
                 state.klipperMacroJinjaPercent = false
@@ -136,7 +136,7 @@ export const klipper_config: StreamParser<any> = {
                 if (state.klipperMacroJinja) {
                     return jinja2Element(stream)
                 }
-                if (stream.match(/^\s*{[%#{]?/)) {
+                if (stream.match(/^\s*{[%#]?/)) {
                     state.klipperMacroJinjaPercent = stream.string.includes('{%')
                     state.klipperMacroJinja = true
                     return 'tag'
@@ -153,7 +153,7 @@ export const klipper_config: StreamParser<any> = {
                 if (state.klipperMacroJinja) {
                     return jinja2Element(stream)
                 }
-                if (stream.match(/^\s*{[%#{]?/)) {
+                if (stream.match(/^\s*{[%#]?/)) {
                     state.klipperMacroJinjaPercent = stream.string.includes('{%')
                     state.klipperMacroJinja = true
                     return 'tag'
