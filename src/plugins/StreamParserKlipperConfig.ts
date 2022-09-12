@@ -1,5 +1,6 @@
 import { StreamLanguage, StreamParser, StringStream } from '@codemirror/language'
 import { gcode } from '@/plugins/StreamParserGcode'
+import { SlowBuffer } from 'buffer'
 
 export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
@@ -14,7 +15,7 @@ export const klipper_config: StreamParser<any> = {
             "elif", "else", "endif", "if", "endfor", "for", "loop\\.index", "loop\\.revindex",
             "loop\\.first", "loop\\.last", "loop\\.length", "loop\\.cycle", "loop\\.depth",
             "and", "or", "not", "in", "is", "endmacro", "macro", "endcall", "call", "endfilter",
-            "filter", "endset", "set", "extends", "block", "endblock", "include", "import"
+            "filter", "endset", "set", "extends", "block", "endblock", "include", "import", "do"
         ]
         const filters = [
             "abs", "attr", "batch", "capitalize", "center", "default", "dictsort", "escape",
@@ -60,7 +61,7 @@ export const klipper_config: StreamParser<any> = {
                 return 'tag'
             }
             /* string, operator, keyword, atom, number */
-            if (stream.match(/^"[^"]+"/)) {
+            if (stream.match(/^"[^"]+"/) || stream.match(/^'[^']+'/)) {
                 return 'string'
             }
             if (stream.match(reKeyword)) {
@@ -80,8 +81,9 @@ export const klipper_config: StreamParser<any> = {
             if (stream.match(/^\d+/)) {
                 return 'number'
             }
+            stream.eatWhile(/^[a-z0-9_]/i)
             stream.next()
-            stream.eatSpace()
+            
             return 'propertyName'
         }
 
