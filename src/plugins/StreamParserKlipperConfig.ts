@@ -71,7 +71,7 @@ export const klipper_config: StreamParser<any> = {
             if (state.klipperMacroJinjaWillHighlight) {
                 if (stream.match(reUpdateOps)) {
                     // adding '}' for filters at end of template line without trailing parentheses
-                    if (['(', '}', ' '].includes(stream.peek() ?? '')) {
+                    if (['(', '}', ',', ' '].includes(stream.peek() ?? '')) {
                         state.klipperMacroJinjaWillHighlight = false
                         return 'updateOperator'
                     }
