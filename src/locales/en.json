@@ -603,6 +603,13 @@
             "ALL": "ALL",
             "Headline": "Toolhead",
             "Invalid": "Invalid",
+            "ManualProbe": {
+                "Abort": "abort",
+                "Accept": "accept",
+                "Current": "current",
+                "Headline": "Manual Probe",
+                "MinMax": "min: {min} / max: {max}"
+            },
             "OutOfRange": "Out of range!",
             "PleaseConfigureSteps": "Please configure steps",
             "Position": "Position",
