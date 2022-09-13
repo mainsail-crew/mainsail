@@ -6,10 +6,10 @@ export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
         /* see https://tedboy.github.io/jinja2/off_doc.templates.html */
         const operators = [
-            "\\+\\(", "-\\(", "\\/\\/\\(", "\\/\\(", "%\\(", "\\*\\*", "\\*", "\\(", "\\)",
-            "==", "!=", ">=", ">", "<=", "<", "=", "\\|", "~", "," //, "{%", "%}", "{", "}"
+            "\\+", "-", "\\/\\/", "\\/", "%", "\\*\\*", "\\*", "\\(", "\\)",
+            "==", "!=", ">=", ">", "<=", "<", "=", "\\|", "~", ","
         ]
-        const reOperator = new RegExp("^\\(" + operators.join("|") + "\\)")
+        const reOperator = new RegExp("^" + operators.join("|"))
         
         const keywords = [
             "elif", "else", "endif", "if", "endfor", "for", "loop\\.index", "loop\\.revindex",
@@ -37,8 +37,6 @@ export const klipper_config: StreamParser<any> = {
         const cyclerMethods = [
             "\\.reset\\(\\)", "\\.next\\(\\)"
         ]
-
-        // const reFilter = new RegExp("^" + filters.join("\\([^(]*\\)|") + "\\([^(]*\\)")
         const reKeyword = new RegExp(
             "^" + keywords.join("\\s+|") + "|" +
             cyclerMethods.join("|") + "\\s+"
@@ -60,30 +58,44 @@ export const klipper_config: StreamParser<any> = {
                 state.gcodeZeroPos = stream.pos
                 return 'tag'
             }
-            /* string, operator, keyword, atom, number */
             if (stream.match(/^"[^"]+"/) || stream.match(/^'[^']+'/)) {
+                state.klipperMacroJinjaWillHighlight = false
                 return 'string'
             }
-            if (stream.match(reKeyword)) {
-                return 'keyword'
+            if (state.klipperMacroJinjaWillHighlight) {
+                if (stream.match(reKeyword)) {
+                    state.klipperMacroJinjaWillHighlight = false
+                    return 'keyword'
+                }
             }
-            if (stream.match(reUpdateOps)) {
-                if (stream.peek() === "(") {
-                    return 'updateOperator'
+            if (state.klipperMacroJinjaWillHighlight) {
+                if (stream.match(reUpdateOps)) {
+                    // adding '}' for filters at end of template line without trailing parentheses
+                    if (['(', '}'].includes(stream.peek() ?? '')) {
+                        state.klipperMacroJinjaWillHighlight = false
+                        return 'updateOperator'
+                    }
                 }
             }
             if (stream.match(reOperator)) {
+                state.klipperMacroJinjaWillHighlight = true
                 return 'number'
             }
             if (stream.match(/^true\s|false\s/)) {
+                state.klipperMacroJinjaWillHighlight = false
                 return 'atom'
             }
             if (stream.match(/^\d+/)) {
+                state.klipperMacroJinjaWillHighlight = false
                 return 'number'
             }
-            stream.eatWhile(/^[a-z0-9_]/i)
+            if (stream.eatSpace()) {
+                state.klipperMacroJinjaWillHighlight = true
+                return 'propertyName'
+            }
             stream.next()
-            
+
+            state.klipperMacroJinjaWillHighlight = false
             return 'propertyName'
         }
 
@@ -227,6 +239,7 @@ export const klipper_config: StreamParser<any> = {
             gcodeZeroPos: null,
             klipperMacroJinja: false,
             klipperMacroJinjaPercent: false,
+            klipperMacroJinjaWillHighlight: false,
         }
     },
     languageData: {
@@ -243,4 +256,5 @@ interface StreamParserKlipperConfigState {
     klipperMacro: boolean
     klipperMacroJinja: boolean
     klipperMacroJinjaPercent: boolean
+    klipperMacroJinjaWillHighlight: boolean
 }
