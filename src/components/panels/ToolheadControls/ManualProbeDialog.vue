@@ -84,8 +84,10 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn text @click="sendAbort">{{ $t('Panels.ToolheadControlPanel.ManualProbe.Abort') }}</v-btn>
-                <v-btn color="primary" text @click="sendAccept">
+                <v-btn text :loading="loadingAbort" @click="sendAbort">
+                    {{ $t('Panels.ToolheadControlPanel.ManualProbe.Abort') }}
+                </v-btn>
+                <v-btn color="primary" text :loading="loadingAccept" @click="sendAccept">
                     {{ $t('Panels.ToolheadControlPanel.ManualProbe.Accept') }}
                 </v-btn>
             </v-card-actions>
@@ -135,24 +137,30 @@ export default class ManualProbeDialog extends Mixins(BaseMixin) {
         return (this.$store.state.printer.manual_probe?.z_position_upper ?? 0).toFixed(3)
     }
 
-    sendGcode(gcode: string) {
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
+    get loadingAbort() {
+        return this.loadings.includes('manualProbeAbort')
+    }
+
+    get loadingAccept() {
+        return this.loadings.includes('manualProbeAccept')
     }
 
     sendTestZ(offset: string) {
         const gcode = `TESTZ Z=${offset}`
-        this.sendGcode(gcode)
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
     sendAbort() {
         const gcode = `ABORT`
-        this.sendGcode(gcode)
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAbort' })
     }
 
     sendAccept() {
         const gcode = `ACCEPT`
-        this.sendGcode(gcode)
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAccept' })
     }
 }
 </script>
