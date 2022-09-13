@@ -50,7 +50,7 @@ export default class ConsoleTableEntry extends Vue {
 
     colorConsoleMessage(item: ServerStateEvent): string {
         if (item.message.startsWith('!! ')) return 'error--text'
-
+        if (item.message.startsWith('// ')) return 'cyan--text'
         return 'text--primary'
     }
 
