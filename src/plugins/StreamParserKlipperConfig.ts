@@ -85,8 +85,9 @@ export const klipper_config: StreamParser<any> = {
                 state.klipperMacroJinjaWillHighlight = false
                 return 'atom'
             }
-            if (stream.match(/^\d+/)) {
-                state.klipperMacroJinjaWillHighlight = false
+            // if (stream.match(/^\d+/)) {
+            if (stream.match(/^[-+]?[0-9]*\.?[0-9]+/)) {
+                    state.klipperMacroJinjaWillHighlight = false
                 return 'number'
             }
             if (stream.eatSpace()) {
