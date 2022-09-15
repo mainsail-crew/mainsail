@@ -1,6 +1,8 @@
 import { StreamLanguage, StreamParser, StringStream } from '@codemirror/language'
 import { gcode } from '@/plugins/StreamParserGcode'
 import { SlowBuffer } from 'buffer'
+import { StateField } from '@codemirror/state'
+import { toInteger } from 'cypress/types/lodash'
 
 export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
@@ -48,55 +50,74 @@ export const klipper_config: StreamParser<any> = {
         )
 
         function jinja2Element(stream:StringStream): string {
-            if (
-                (state.klipperMacroJinjaPercent && stream.match(/^%}/)) ||
-                (!state.klipperMacroJinjaPercent && stream.match(/^}/))
-            ) {
-                state.klipperMacroJinja = false
-                state.klipperMacroJinjaPercent = false
+            const pctMatch: any = stream.match(/^%}/)
+            const braceMatch: any = stream.match(/^}/)
+            function notJinja(): boolean {
+                return (
+                    state.klipperMacroJinjaBraceStack.length === 0 &&
+                    state.klipperMacroJinjaPctStack.length === 0
+                )
+            }
+
+            if (pctMatch || braceMatch) {
+                if (pctMatch) {
+                    state.klipperMacroJinjaPctStack.pop()
+                    if (notJinja()) {
+                        state.klipperMacroJinja = false
+                    }
+                }
+                else { // brace match
+                    state.klipperMacroJinjaBraceStack.pop()
+                    if (notJinja()) {
+                        state.klipperMacroJinja = false
+                    }
+                }
                 stream.eatSpace()
                 state.gcodeZeroPos = stream.pos
                 return 'tag'
             }
             if (stream.match(/^"[^"]+"/) || stream.match(/^'[^']+'/)) {
-                state.klipperMacroJinjaWillHighlight = false
+                state.klipperMacroJinjaHighlightNext = true
                 return 'string'
             }
-            if (state.klipperMacroJinjaWillHighlight) {
+            if (stream.eol() && stream.match(/^"/)) {
+                state.klipperMacroJinjaHighlightNext = false
+                return 'string'
+            }
+            if (state.klipperMacroJinjaHighlightNext) {
                 if (stream.match(reKeyword)) {
-                    state.klipperMacroJinjaWillHighlight = false
+                    state.klipperMacroJinjaHighlightNext = false
                     return 'keyword'
                 }
             }
-            if (state.klipperMacroJinjaWillHighlight) {
+            if (state.klipperMacroJinjaHighlightNext) {
                 if (stream.match(reUpdateOps)) {
-                    // adding '}' for filters at end of template line without trailing parentheses
-                    if (['(', '}', ',', ' '].includes(stream.peek() ?? '')) {
-                        state.klipperMacroJinjaWillHighlight = false
+                    // check character after "updateOp" element -- might not be a "("
+                    if (['(', '}', ',', '|', ' '].includes(stream.peek() ?? '')) {
+                        state.klipperMacroJinjaHighlightNext = false
                         return 'updateOperator'
                     }
                 }
             }
             if (stream.match(reOperator)) {
-                state.klipperMacroJinjaWillHighlight = true
+                state.klipperMacroJinjaHighlightNext = true
                 return 'number'
             }
-            if (stream.match(/^true\s|false\s/)) {
-                state.klipperMacroJinjaWillHighlight = false
+            if (stream.match(/^true\s|false\s/i)) {
+                state.klipperMacroJinjaHighlightNext = false
                 return 'atom'
             }
-            // if (stream.match(/^\d+/)) {
             if (stream.match(/^[-+]?[0-9]*\.?[0-9]+/)) {
-                    state.klipperMacroJinjaWillHighlight = false
+                    state.klipperMacroJinjaHighlightNext = false
                 return 'number'
             }
             if (stream.eatSpace()) {
-                state.klipperMacroJinjaWillHighlight = true
+                state.klipperMacroJinjaHighlightNext = true
                 return 'propertyName'
             }
             stream.next()
 
-            state.klipperMacroJinjaWillHighlight = false
+            state.klipperMacroJinjaHighlightNext = false
             return 'propertyName'
         }
 
@@ -147,33 +168,59 @@ export const klipper_config: StreamParser<any> = {
                     stream.eatSpace()
                     state.gcodeZeroPos = stream.pos
                 }
-
+                if (stream.match(/^\s*{[%#]?/)) {
+                    state.klipperMacroJinja = true
+                    if (stream.string.includes('{%')) {
+                        state.klipperMacroJinjaPctStack.push('{%')
+                    }
+                    else {
+                        state.klipperMacroJinjaBraceStack.push('{')
+                    }
+                    return 'tag'
+                }
                 if (state.klipperMacroJinja) {
                     return jinja2Element(stream)
                 }
-                if (stream.match(/^\s*{[%#]?/)) {
-                    state.klipperMacroJinjaPercent = stream.string.includes('{%')
-                    state.klipperMacroJinja = true
-                    return 'tag'
-                }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? 0)
             }
-        } else {
+        } else { // stream.indentation > 0
             state.was = true
             if (state.gcode) {
                 if (stream.sol()) {
                     stream.eatSpace()
                     state.gcodeZeroPos = stream.pos
                 }
+                if (stream.match(/^\s*{[%#]?/)) {
+                    state.klipperMacroJinja = true
+                    if (stream.string.includes('{%')) {
+                        state.klipperMacroJinjaPctStack.push('{%')
+                    }
+                    else {
+                        state.klipperMacroJinjaBraceStack.push('{')
+                    }
+                    return 'tag'
+                }
                 if (state.klipperMacroJinja) {
                     return jinja2Element(stream)
                 }
+                return gcode.token(stream, state, state.gcodeZeroPos ?? stream.pos)
+            } else if (state.variable) {
+                if (stream.sol()) {
+                    stream.eatSpace()
+                }
                 if (stream.match(/^\s*{[%#]?/)) {
-                    state.klipperMacroJinjaPercent = stream.string.includes('{%')
                     state.klipperMacroJinja = true
+                    if (stream.string.includes('{%')) {
+                        state.klipperMacroJinjaPctStack.push('{%')
+                    }
+                    else {
+                        state.klipperMacroJinjaBraceStack.push('{')
+                    }
                     return 'tag'
                 }
-                return gcode.token(stream, state, state.gcodeZeroPos ?? stream.pos)
+                if (state.klipperMacroJinja) {
+                    return jinja2Element(stream)
+                }
             } else if (state.pair) {
                 stream.eatSpace()
                 if (ch !== ',') {
@@ -191,18 +238,48 @@ export const klipper_config: StreamParser<any> = {
         if (state.was && stream.indentation() === 0) {
             state.pair = false
             state.gcode = false
+            state.variable = false
             state.was = false
         }
 
-        if (!state.pair && !state.gcode && stream.sol()) {
+        if (!state.pair && !state.gcode && !state.variable && stream.sol()) {
             if (stream.match(/^(?:[A-Za-z]*_?gcode|enable):/)) {
                 state.gcode = true
-            } else {
+            }
+            else if (stream.match(/^variable_[a-zA-Z]+:/)) {
+                state.variable = true
+            }
+            else {
                 stream.match(/^.+?:\s*/)
                 state.pair = !stream.eol()
             }
 
             return 'atom'
+        }
+
+        if (state.variable) {
+            if (stream.sol() || stream.eol()) {
+                state.variable = false
+                return null
+            }
+            if (stream.match(/^\s*{[%#]?/)) {
+                state.klipperMacroJinja = true
+                if (stream.string.includes('{%')) {
+                    state.klipperMacroJinjaPctStack.push('{%')
+                }
+                else {
+                    state.klipperMacroJinjaBraceStack.push('{')
+                }
+                return 'tag'
+            }
+            else { // no Jinja in variable
+                state.pair = true
+                // state.variable = false
+            }
+            if (state.klipperMacroJinja) {
+                stream.eatSpace()
+                return jinja2Element(stream)
+            }
         }
 
         if (state.pair) {
@@ -216,7 +293,6 @@ export const klipper_config: StreamParser<any> = {
                 state.pair = false
                 return null
             }
-
             if (stream.match(/^(-?\d*\.?(?:\d+)?(,|$|\s))+/)) {
                 state.pair = false
                 return 'number'
@@ -236,11 +312,13 @@ export const klipper_config: StreamParser<any> = {
             pair: false,
             was: false,
             gcode: false,
+            variable: false,
             klipperMacro: false,
             gcodeZeroPos: null,
             klipperMacroJinja: false,
-            klipperMacroJinjaPercent: false,
-            klipperMacroJinjaWillHighlight: false,
+            klipperMacroJinjaHighlightNext: false,
+            klipperMacroJinjaBraceStack: [],
+            klipperMacroJinjaPctStack: [],
         }
     },
     languageData: {
@@ -253,9 +331,11 @@ interface StreamParserKlipperConfigState {
     pair: boolean
     was: boolean
     gcode: boolean
+    variable: boolean
     gcodeZeroPos: number | null
     klipperMacro: boolean
     klipperMacroJinja: boolean
-    klipperMacroJinjaPercent: boolean
-    klipperMacroJinjaWillHighlight: boolean
+    klipperMacroJinjaHighlightNext: boolean // Highlight next element if no space follows curent keyword
+    klipperMacroJinjaBraceStack: string[] // Should these two stacks be combined for overhead / aesthetics?
+    klipperMacroJinjaPctStack: string[]
 }
