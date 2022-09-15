@@ -54,6 +54,7 @@ export default class ConsoleTableEntry extends Vue {
         if (item.message.match('^//\\s(Klipper state:)|([Ww]arning//s?:)|(\\(!\\))')) return 'warning--text console-message--warning'
         if (item.message.match('^//\\s([Ii]nfo//s?:)|(\\(i\\))')) return 'info--text console-message--info'
         if (item.message.match('^//\\s(\\[(.*?)\\])|@')) return 'accent--text console-message--accent'
+
         return 'text--primary'
     }
 
