@@ -49,8 +49,11 @@ export default class ConsoleTableEntry extends Vue {
     }
 
     colorConsoleMessage(item: ServerStateEvent): string {
-        if (item.message.startsWith('!! ')) return 'error--text'
-        if (item.message.startsWith('// ')) return 'cyan--text'
+        if (item.message.match('(^!! )|(^//\\s([Ee]rror//s?:))')) return 'error--text console-message--error'
+        if (item.message.match('^//\\s((Klipper state: Ready)|[Ss]uccess//s?:)|√')) return 'success--text console-message--success'
+        if (item.message.match('^//\\s(Klipper state:)|([Ww]arning//s?:)|(\\(!\\))')) return 'warning--text console-message--warning'
+        if (item.message.match('^//\\s([Ii]nfo//s?:)|(\\(i\\))')) return 'info--text  console-message--info'
+        if (item.message.match('^//\\s(\\[(.*?)\\])|@')) return 'accent--text console-message--accent'
         return 'text--primary'
     }
 
