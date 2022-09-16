@@ -320,20 +320,13 @@
         "Save": "sauvegarder",
         "Search": "Recherche",
         "SelectedFilamentUsed": "Filament sélectionné utilisé",
+        "SelectedJobs": "Travaux sélectionnés",
+        "SelectedPrinttime": "Temps d'impression sélectionnés",
         "Slicer": "Trancheur",
         "SlicerVersion": "Version trancheur",
         "StartTime": "Heure de début d'impression",
         "Statistics": "Statistiques",
         "Status": "Status",
-        "TitleRefreshHistory": "Rafraîchir l'historique",
-        "TitleSettings": "Réglages",
-        "TotalDuration": "Durée totale",
-        "TotalFilamentUsed": "Total filament utilisé",
-        "TotalJobs": "Nombre travaux",
-        "TotalPrinttime": "Total temps d'impression",
-        "TotalTime": "Durée totale",
-        "SelectedJobs": "Travaux sélectionnés",
-        "SelectedPrinttime": "Temps d'impression sélectionnés",
         "StatusValues": {
             "cancelled": "Annulé",
             "completed": "Terminé",
@@ -343,7 +336,14 @@
             "klippy_shutdown": "Klippy arrêté",
             "server_exit": "Serveur quitté"
         },
-        "TitleExportHistory": "Exporter l'historique"
+        "TitleExportHistory": "Exporter l'historique",
+        "TitleRefreshHistory": "Rafraîchir l'historique",
+        "TitleSettings": "Réglages",
+        "TotalDuration": "Durée totale",
+        "TotalFilamentUsed": "Total filament utilisé",
+        "TotalJobs": "Nombre travaux",
+        "TotalPrinttime": "Total temps d'impression",
+        "TotalTime": "Durée totale"
     },
     "JobQueue": {
         "AllJobs": "Tous",
@@ -488,8 +488,8 @@
                 "PressureAdvance": "pression en avance",
                 "SmoothTime": "Temps de lissage"
             },
-            "Retract": "Rétractation",
             "Requested": "Demandé",
+            "Retract": "Rétractation",
             "TooLargeExtrusion": "Extrusion trop grande !",
             "UnloadFilament": "Déchargement du filament"
         },
