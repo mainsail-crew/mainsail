@@ -277,7 +277,7 @@
                         v-model="dialogCreateFile.name"
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
-                        :rules="filenameInputRules"
+                        :rules="nameInputRules"
                         @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="createFileAction"></v-text-field>
                 </v-card-text>
@@ -308,7 +308,7 @@
                         v-model="dialogRenameFile.newName"
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
-                        :rules="filenameInputRules"
+                        :rules="nameInputRules"
                         @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameFileAction"></v-text-field>
                 </v-card-text>
@@ -339,7 +339,7 @@
                         v-model="dialogCreateDirectory.name"
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
-                        :rules="directoryNameInputRules"
+                        :rules="nameInputRules"
                         @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
@@ -370,7 +370,7 @@
                         v-model="dialogRenameDirectory.newName"
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
-                        :rules="directoryNameInputRules"
+                        :rules="nameInputRules"
                         @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameDirectoryAction"></v-text-field>
                 </v-card-text>
@@ -648,21 +648,13 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     private deleteSelectedDialog = false
 
     private isInvalidName = true
-    private filenameInputRules = [
+    private nameInputRules = [
         (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
-        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameFileAlreadyExists'),
-    ]
-    private directoryNameInputRules = [
-        (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
-        (value: string) => !this.existsDirectoryName(value) || this.$t('Files.InvalidNameDirectoryAlreadyExists'),
+        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
     ]
 
     existsFilename(name: string) {
-        return this.files.findIndex((file) => !file.isDirectory && file.filename === name) >= 0
-    }
-
-    existsDirectoryName(name: string) {
-        return this.files.findIndex((directory) => directory.isDirectory && directory.filename === name) >= 0
+        return this.files.findIndex((file) => file.filename === name) >= 0
     }
 
     get blockFileUpload() {
