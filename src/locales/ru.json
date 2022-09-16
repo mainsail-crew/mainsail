@@ -319,20 +319,13 @@
         "Save": "сохранить",
         "Search": "Поиск",
         "SelectedFilamentUsed": "Выбранный используемый материал",
+        "SelectedJobs": "Избранные вакансии",
+        "SelectedPrinttime": "Выбранное время печати",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Версия",
         "StartTime": "Время начала",
         "Statistics": "Статистика",
         "Status": "Статус",
-        "TitleRefreshHistory": "Обновить историю",
-        "TitleSettings": "Настройки",
-        "TotalDuration": "Общее время",
-        "TotalFilamentUsed": "Общая используемая нить",
-        "TotalJobs": "Всего отпечатков",
-        "TotalPrinttime": "Общее время печати",
-        "TotalTime": "Общее время",
-        "SelectedJobs": "Избранные вакансии",
-        "SelectedPrinttime": "Выбранное время печати",
         "StatusValues": {
             "cancelled": "Отменено",
             "completed": "Завершено",
@@ -342,7 +335,14 @@
             "klippy_shutdown": "Клиппи отключение",
             "server_exit": "Выход сервера"
         },
-        "TitleExportHistory": "История экспорта"
+        "TitleExportHistory": "История экспорта",
+        "TitleRefreshHistory": "Обновить историю",
+        "TitleSettings": "Настройки",
+        "TotalDuration": "Общее время",
+        "TotalFilamentUsed": "Общая используемая нить",
+        "TotalJobs": "Всего отпечатков",
+        "TotalPrinttime": "Общее время печати",
+        "TotalTime": "Общее время"
     },
     "JobQueue": {
         "AllJobs": "Все заказы",
@@ -480,7 +480,6 @@
                 "UnretractSpeed": "Скорость выдвижения"
             },
             "Headline": "Экструдер",
-            "Retract": "Въехать",
             "LoadFilament": "Нагрузочная нить",
             "PressureAdvanceSettings": {
                 "Advance": "Аванс",
@@ -489,6 +488,7 @@
                 "SmoothTime": "Плавное время"
             },
             "Requested": "Запрошено",
+            "Retract": "Въехать",
             "TooLargeExtrusion": "Экструзия слишком велика!",
             "UnloadFilament": "Выгрузить нить"
         },

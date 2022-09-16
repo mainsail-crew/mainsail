@@ -480,7 +480,6 @@
                 "UnretractSpeed": "Velocidad de post-retracción"
             },
             "Headline": "Extrusor",
-            "Retract": "Retraer",
             "LoadFilament": "Cargar filamento",
             "PressureAdvanceSettings": {
                 "Advance": "Avance",
@@ -489,6 +488,7 @@
                 "SmoothTime": "Tiempo de suavizado"
             },
             "Requested": "Solicitada",
+            "Retract": "Retraer",
             "TooLargeExtrusion": "¡Extrusión muy grande!",
             "UnloadFilament": "Descargar Filamento"
         },
