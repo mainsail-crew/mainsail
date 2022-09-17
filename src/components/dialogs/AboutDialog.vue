@@ -25,7 +25,7 @@ import Component from 'vue-class-component'
 import { mdiCloseThick, mdiHelpCircleOutline, mdiMoonWaningCrescent } from '@mdi/js'
 
 @Component({})
-export default class AboutModal extends Mixins(BaseMixin) {
+export default class AboutDialog extends Mixins(BaseMixin) {
     mdiHelpCircleOutline = mdiHelpCircleOutline
     mdiCloseThick = mdiCloseThick
     mdiMoonWaningCrescent = mdiMoonWaningCrescent
