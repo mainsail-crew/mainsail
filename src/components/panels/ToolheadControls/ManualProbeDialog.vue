@@ -7,6 +7,11 @@
             :margin-bottom="false"
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
+            <template #buttons>
+                <v-btn icon tile @click="sendAbort">
+                    <v-icon>{{ mdiCloseThick }}</v-icon>
+                </v-btn>
+            </template>
             <v-container>
                 <v-row>
                     <v-col class="d-flex align-center justify-center">
@@ -102,6 +107,7 @@ import {
     mdiMinusThick,
     mdiChevronTripleLeft,
     mdiChevronTripleRight,
+    mdiCloseThick,
 } from '@mdi/js'
 @Component({
     components: { Panel, Responsive },
@@ -114,6 +120,7 @@ export default class ManualProbeDialog extends Mixins(BaseMixin) {
     mdiMinusThick = mdiMinusThick
     mdiChevronTripleLeft = mdiChevronTripleLeft
     mdiChevronTripleRight = mdiChevronTripleRight
+    mdiCloseThick = mdiCloseThick
 
     get showDialog() {
         return this.$store.state.printer.manual_probe?.is_active ?? false
