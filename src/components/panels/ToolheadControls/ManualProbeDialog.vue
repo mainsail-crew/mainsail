@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="showDialog" width="600" persistent :fullscreen="isMobile">
+    <v-dialog :value="showDialog" width="400" persistent :fullscreen="isMobile">
         <panel
             :title="$t('Panels.ToolheadControlPanel.ManualProbe.Headline').toString()"
             :icon="mdiArrowCollapseDown"
@@ -9,76 +9,76 @@
             :height="isMobile ? 0 : 548">
             <v-card-text>
                 <v-row>
-                    <v-col class="v-subheader text--secondary">
-                        <span class="font-weight-bold">
-                            {{ $t('Panels.ToolheadControlPanel.ManualProbe.Current') }}: {{ z_position }}
-                        </span>
-                        <v-spacer />
-                        <span>
-                            {{
-                                $t('Panels.ToolheadControlPanel.ManualProbe.MinMax', {
-                                    min: z_position_lower,
-                                    max: z_position_upper,
-                                })
-                            }}
-                        </span>
+                    <v-col class="d-flex align-center justify-center">
+                        <span class="text-h5">{{ z_position_lower }}</span>
+                        <v-icon class="mx-2">{{ mdiChevronTripleRight }}</v-icon>
+                        <span class="text-h4">{{ z_position }}</span>
+                        <v-icon class="mx-2">{{ mdiChevronTripleLeft }}</v-icon>
+                        <span class="text-h5">{{ z_position_upper }}</span>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="text-center">
+                        <v-btn class="" color="primary" @click="sendTestZ('--')">
+                            <v-icon small>{{ mdiMinusThick }}</v-icon>
+                            <v-icon small>{{ mdiMinusThick }}</v-icon>
+                        </v-btn>
+                    </v-col>
+                    <v-col class="text-center">
+                        <v-btn class="" color="primary" @click="sendTestZ('-')">
+                            <v-icon small>{{ mdiMinusThick }}</v-icon>
+                        </v-btn>
+                    </v-col>
+                    <v-col class="text-center">
+                        <v-btn class="" color="primary" @click="sendTestZ('+')">
+                            <v-icon small>{{ mdiPlusThick }}</v-icon>
+                        </v-btn>
+                    </v-col>
+                    <v-col class="text-center">
+                        <v-btn class="" color="primary" @click="sendTestZ('++')">
+                            <v-icon small>{{ mdiPlusThick }}</v-icon>
+                            <v-icon small>{{ mdiPlusThick }}</v-icon>
+                        </v-btn>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col>
-                        <v-item-group class="_btn-group">
-                            <v-btn
-                                v-for="(offset, index) in offsetsZ"
-                                :key="`offsetsUp-${index}`"
-                                small
-                                class="_btn-qs flex-grow-1 px-1"
-                                @click="sendTestZ(offset.toString())">
-                                <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
-                                    {{ mdiArrowCollapseUp }}
-                                </v-icon>
-                                <span>&plus;{{ offset }}</span>
-                            </v-btn>
-                        </v-item-group>
-                    </v-col>
-                </v-row>
-                <v-row class="mt-0">
-                    <v-col>
-                        <v-item-group class="_btn-group">
-                            <v-btn class="_btn-qs flex-grow-1 px-1" color="primary" @click="sendTestZ('--')">
-                                <span>&minus;&minus;</span>
-                            </v-btn>
-                            <v-btn class="_btn-qs flex-grow-1 px-1" color="primary" @click="sendTestZ('-')">
-                                <span>&minus;</span>
-                            </v-btn>
-                        </v-item-group>
-                    </v-col>
-                    <v-col></v-col>
-                    <v-col>
-                        <v-item-group class="_btn-group">
-                            <v-btn class="_btn-qs flex-grow-1 px-1" color="primary" @click="sendTestZ('+')">
-                                <span>&plus;</span>
-                            </v-btn>
-                            <v-btn class="_btn-qs flex-grow-1 px-1" color="primary" @click="sendTestZ('++')">
-                                <span>&plus;&plus;</span>
-                            </v-btn>
-                        </v-item-group>
-                    </v-col>
-                </v-row>
-                <v-row class="mt-0">
-                    <v-col>
-                        <v-item-group class="_btn-group">
-                            <v-btn
-                                v-for="(offset, index) in offsetsZ"
-                                :key="`offsetsDown-${index}`"
-                                small
-                                class="_btn-qs flex-grow-1 px-1"
-                                @click="sendTestZ((offset * -1).toString())">
-                                <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
-                                    {{ mdiArrowCollapseDown }}
-                                </v-icon>
-                                <span>&minus;{{ offset }}</span>
-                            </v-btn>
-                        </v-item-group>
+                        <sub-panel title="Advanced" sub-panel-class="manual-probe-dialog-advanced">
+                            <v-row>
+                                <v-col>
+                                    <v-item-group class="_btn-group">
+                                        <v-btn
+                                            v-for="(offset, index) in offsetsZ"
+                                            :key="`offsetsUp-${index}`"
+                                            small
+                                            class="_btn-qs flex-grow-1 px-1"
+                                            @click="sendTestZ(offset.toString())">
+                                            <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
+                                                {{ mdiArrowExpandUp }}
+                                            </v-icon>
+                                            <span>&plus;{{ offset }}</span>
+                                        </v-btn>
+                                    </v-item-group>
+                                </v-col>
+                            </v-row>
+                            <v-row class="mt-0">
+                                <v-col>
+                                    <v-item-group class="_btn-group">
+                                        <v-btn
+                                            v-for="(offset, index) in offsetsZ"
+                                            :key="`offsetsDown-${index}`"
+                                            small
+                                            class="_btn-qs flex-grow-1 px-1"
+                                            @click="sendTestZ((offset * -1).toString())">
+                                            <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
+                                                {{ mdiArrowCollapseDown }}
+                                            </v-icon>
+                                            <span>&minus;{{ offset }}</span>
+                                        </v-btn>
+                                    </v-item-group>
+                                </v-col>
+                            </v-row>
+                        </sub-panel>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -101,14 +101,26 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import Responsive from '@/components/ui/Responsive.vue'
 
-import { mdiArrowCollapseDown, mdiArrowCollapseUp, mdiInformation } from '@mdi/js'
+import {
+    mdiArrowCollapseDown,
+    mdiArrowExpandUp,
+    mdiInformation,
+    mdiPlusThick,
+    mdiMinusThick,
+    mdiChevronTripleLeft,
+    mdiChevronTripleRight,
+} from '@mdi/js'
 @Component({
     components: { Panel, Responsive },
 })
 export default class ManualProbeDialog extends Mixins(BaseMixin) {
     mdiArrowCollapseDown = mdiArrowCollapseDown
-    mdiArrowCollapseUp = mdiArrowCollapseUp
+    mdiArrowExpandUp = mdiArrowExpandUp
     mdiInformation = mdiInformation
+    mdiPlusThick = mdiPlusThick
+    mdiMinusThick = mdiMinusThick
+    mdiChevronTripleLeft = mdiChevronTripleLeft
+    mdiChevronTripleRight = mdiChevronTripleRight
 
     get showDialog() {
         return this.$store.state.printer.manual_probe?.is_active ?? false
@@ -130,11 +142,17 @@ export default class ManualProbeDialog extends Mixins(BaseMixin) {
     }
 
     get z_position_lower() {
-        return (this.$store.state.printer.manual_probe?.z_position_lower ?? 0).toFixed(3)
+        const value = this.$store.state.printer.manual_probe?.z_position_lower
+        if (value === null) return '??????'
+
+        return value.toFixed(3)
     }
 
     get z_position_upper() {
-        return (this.$store.state.printer.manual_probe?.z_position_upper ?? 0).toFixed(3)
+        const value = this.$store.state.printer.manual_probe?.z_position_upper
+        if (value === null) return '??????'
+
+        return value.toFixed(3)
     }
 
     get loadingAbort() {
