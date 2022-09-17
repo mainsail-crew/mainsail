@@ -47,40 +47,32 @@
                 sub-panel-class="manual-probe-dialog-advanced"
                 class="mb-n2">
                 <v-container>
-                    <v-row>
-                        <v-col>
-                            <v-item-group class="_btn-group">
-                                <v-btn
-                                    v-for="(offset, index) in offsetsZ"
-                                    :key="`offsetsUp-${index}`"
-                                    small
-                                    class="_btn-qs flex-grow-1 px-1"
-                                    @click="sendTestZ(offset.toString())">
-                                    <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
-                                        {{ mdiArrowExpandUp }}
-                                    </v-icon>
-                                    <span>&plus;{{ offset }}</span>
-                                </v-btn>
-                            </v-item-group>
-                        </v-col>
-                    </v-row>
-                    <v-row class="mt-0">
-                        <v-col>
-                            <v-item-group class="_btn-group">
-                                <v-btn
-                                    v-for="(offset, index) in offsetsZ"
-                                    :key="`offsetsDown-${index}`"
-                                    small
-                                    class="_btn-qs flex-grow-1 px-1"
-                                    @click="sendTestZ((offset * -1).toString())">
-                                    <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
-                                        {{ mdiArrowCollapseDown }}
-                                    </v-icon>
-                                    <span>&minus;{{ offset }}</span>
-                                </v-btn>
-                            </v-item-group>
-                        </v-col>
-                    </v-row>
+                    <v-item-group class="_btn-group">
+                        <v-btn
+                            v-for="(offset, index) in offsetsZ"
+                            :key="`offsetsUp-${index}`"
+                            small
+                            class="_btn-qs flex-grow-1 px-1"
+                            @click="sendTestZ(offset.toString())">
+                            <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
+                                {{ mdiArrowExpandUp }}
+                            </v-icon>
+                            <span>&plus;{{ offset }}</span>
+                        </v-btn>
+                    </v-item-group>
+                    <v-item-group class="_btn-group mt-3">
+                        <v-btn
+                            v-for="(offset, index) in offsetsZ"
+                            :key="`offsetsDown-${index}`"
+                            small
+                            class="_btn-qs flex-grow-1 px-1"
+                            @click="sendTestZ((offset * -1).toString())">
+                            <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
+                                {{ mdiArrowCollapseDown }}
+                            </v-icon>
+                            <span>&minus;{{ offset }}</span>
+                        </v-btn>
+                    </v-item-group>
                 </v-container>
             </sub-panel>
             <v-card-actions>
