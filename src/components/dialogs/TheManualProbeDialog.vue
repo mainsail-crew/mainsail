@@ -1,7 +1,7 @@
 <template>
     <v-dialog :value="showDialog" width="400" persistent :fullscreen="isMobile">
         <panel
-            :title="$t('Panels.ToolheadControlPanel.ManualProbe.Headline').toString()"
+            :title="$t('ManualProbe.Headline').toString()"
             :icon="mdiArrowCollapseDown"
             card-class="manual_probe-dialog"
             :margin-bottom="false"
@@ -47,10 +47,7 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <sub-panel
-                :title="$t('Panels.ToolheadControlPanel.ManualProbe.Advanced')"
-                sub-panel-class="manual-probe-dialog-advanced"
-                class="mb-n2">
+            <sub-panel :title="$t('ManualProbe.Advanced')" sub-panel-class="manual-probe-dialog-advanced" class="mb-n2">
                 <v-container>
                     <v-item-group class="_btn-group">
                         <v-btn
@@ -83,10 +80,10 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn text :loading="loadingAbort" @click="sendAbort">
-                    {{ $t('Panels.ToolheadControlPanel.ManualProbe.Abort') }}
+                    {{ $t('ManualProbe.Abort') }}
                 </v-btn>
                 <v-btn color="primary" text :loading="loadingAccept" @click="sendAccept">
-                    {{ $t('Panels.ToolheadControlPanel.ManualProbe.Accept') }}
+                    {{ $t('ManualProbe.Accept') }}
                 </v-btn>
             </v-card-actions>
         </panel>
@@ -112,7 +109,7 @@ import {
 @Component({
     components: { Panel, Responsive },
 })
-export default class ManualProbeDialog extends Mixins(BaseMixin) {
+export default class TheManualProbeDialog extends Mixins(BaseMixin) {
     mdiArrowCollapseDown = mdiArrowCollapseDown
     mdiArrowExpandUp = mdiArrowExpandUp
     mdiInformation = mdiInformation

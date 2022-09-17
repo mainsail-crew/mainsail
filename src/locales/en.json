@@ -458,6 +458,14 @@
             "UpToDate": "up-to-date"
         }
     },
+    "ManualProbe": {
+        "Abort": "abort",
+        "Accept": "accept",
+        "Advanced": "Advanced",
+        "Current": "current",
+        "Headline": "Manual Probe",
+        "MinMax": "min: {min} / max: {max}"
+    },
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
@@ -605,14 +613,6 @@
             "ALL": "ALL",
             "Headline": "Toolhead",
             "Invalid": "Invalid",
-            "ManualProbe": {
-                "Abort": "abort",
-                "Accept": "accept",
-                "Advanced": "Advanced",
-                "Current": "current",
-                "Headline": "Manual Probe",
-                "MinMax": "min: {min} / max: {max}"
-            },
             "OutOfRange": "Out of range!",
             "PleaseConfigureSteps": "Please configure steps",
             "Position": "Position",

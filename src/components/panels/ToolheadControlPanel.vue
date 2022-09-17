@@ -118,7 +118,6 @@
                 command="M220"
                 attribute-name="S"></tool-slider>
         </v-container>
-        <manual-probe-dialog />
     </panel>
 </template>
 
@@ -133,7 +132,6 @@ import MoveToControl from '@/components/panels/ToolheadControls/MoveToControl.vu
 import Panel from '@/components/ui/Panel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 import ZoffsetControl from '@/components/panels/ToolheadControls/ZoffsetControl.vue'
-import ManualProbeDialog from '@/components/panels/ToolheadControls/ManualProbeDialog.vue'
 import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown, mdiRestore } from '@mdi/js'
 
 @Component({
@@ -145,7 +143,6 @@ import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown,
         Panel,
         ToolSlider,
         ZoffsetControl,
-        ManualProbeDialog,
     },
 })
 export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin) {
