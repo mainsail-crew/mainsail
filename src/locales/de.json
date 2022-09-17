@@ -458,6 +458,12 @@
             "UpToDate": "aktuell"
         }
     },
+    "ManualProbe": {
+        "Abort": "abbrechen",
+        "Accept": "akzeptieren",
+        "Advanced": "Erweitert",
+        "Headline": "Manuelle Messung"
+    },
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Erlaubt",
