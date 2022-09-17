@@ -181,6 +181,8 @@
         "GCodeFiles": "G-Code Dateien",
         "GcodesRootDirectoryDoesntExists": "Keinen G-Code Ordner gefunden. Bitte überprüfe die Option \"path\" im Abschnitt [virtual_sdcard] in der Klipper Konfiguration.",
         "HiddenFiles": "Versteckte Dateien",
+        "InvalidNameEmpty": "Feld darf nicht leer sein!",
+        "InvalidNameAlreadyExists": "Name existiert bereits, bitte wähle einen anderen Namen.",
         "LastEndTime": "Letzte Endzeit",
         "LastFilamentUsed": "Letzter Filamentverbrauch",
         "LastModified": "Zuletzt geändert",
