@@ -608,6 +608,7 @@
             "ManualProbe": {
                 "Abort": "abort",
                 "Accept": "accept",
+                "Advanced": "Advanced",
                 "Current": "current",
                 "Headline": "Manual Probe",
                 "MinMax": "min: {min} / max: {max}"
