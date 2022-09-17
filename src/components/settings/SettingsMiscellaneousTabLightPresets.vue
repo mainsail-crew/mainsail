@@ -158,11 +158,7 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiDelete, mdiPalette, mdiPencil } from '@mdi/js'
 import { caseInsensitiveSort, convertName } from '@/plugins/helpers'
 import { PrinterStateLight } from '@/store/printer/types'
-import {
-    GuiMiscellaneousStateEntry,
-    GuiMiscellaneousStateEntryLightgroup,
-    GuiMiscellaneousStateEntryPreset,
-} from '@/store/gui/miscellaneous/types'
+import { GuiMiscellaneousStateEntry, GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
 import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker'
 import iro from '@jaames/iro'
 import { Debounce } from 'vue-debounce-decorator'
