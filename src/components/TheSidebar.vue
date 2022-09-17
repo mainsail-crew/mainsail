@@ -130,7 +130,7 @@
         <template #append>
             <v-list-item class="small-list-item mb-2">
                 <v-list-item-icon class="menu-item-icon">
-                    <about-modal></about-modal>
+                    <about-dialog></about-dialog>
                 </v-list-item-icon>
             </v-list-item>
         </template>
@@ -144,7 +144,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { PrinterStateKlipperConfig } from '@/store/printer/types'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
-import AboutModal from '@/components/modals/AboutModal.vue'
+import AboutDialog from '@/components/dialogs/AboutDialog.vue'
 import { navigationWidth, topbarHeight } from '@/store/variables'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import { mdiViewDashboardOutline } from '@mdi/js'
@@ -152,7 +152,7 @@ import { mdiViewDashboardOutline } from '@mdi/js'
 @Component({
     components: {
         TheSelectPrinterDialog,
-        AboutModal,
+        AboutDialog,
         MainsailLogo,
     },
 })
