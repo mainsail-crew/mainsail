@@ -45,7 +45,7 @@ jobs:
     needs: [ debs-cache ]
     runs-on: ubuntu-latest
     steps:
-      - name: check-locale
+      - name: Check locale
         uses: mainsail-crew/mainsail-actions/check-locale@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -54,12 +54,12 @@ jobs:
     needs: [ debs-cache ]
     runs-on: ubuntu-latest
     steps:
-      - name: size-report
+      - name: Size report
         uses: mainsail-crew/mainsail-actions/size-report@master
 
   test-cypress:
     needs: [ debs-cache, build ]
     runs-on: ubuntu-latest
     steps:
-      - name: test-cypress
+      - name: Cypress test
         uses: mainsail-crew/mainsail-actions/test-cypress@master
