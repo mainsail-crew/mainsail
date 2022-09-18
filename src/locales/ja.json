@@ -126,7 +126,7 @@
     "Dialogs": {
         "StartPrint": {
             "Cancel": "取り消し",
-            "DoYouWantToStartFilename": "{filename}の印刷を開始しますか?",
+            "DoYouWantToStartFilename": "{filename}の印刷を開始しますか？",
             "Headline": "ジョブ開始",
             "Print": "印刷",
             "Timelapse": "タイムラプス"
@@ -142,7 +142,7 @@
         "SaveRestart": "保存して再始動",
         "SuccessfullySaved": "{filename}が保存されました",
         "UnsavedChanges": "未保存の変更",
-        "UnsavedChangesMessage": "変更を{filename}に保存しますか?",
+        "UnsavedChangesMessage": "変更を{filename}に保存しますか？",
         "UnsavedChangesSubMessage": "この変更を保存しなければ、この変更は失われます。エディター設定にてこのメッセージを無効にすることができます。",
         "Uploading": "アップロード中"
     },
@@ -257,7 +257,7 @@
             "Variance": "変動"
         },
         "DeleteBedMeshProfile": "ベッドメッシュのプロファイルを削除",
-        "DoYouReallyWantToDelete": "プロファイル \"{name}\"を削除します。よろしいですか?",
+        "DoYouReallyWantToDelete": "プロファイル \"{name}\"を削除します。よろしいですか？",
         "ErrorKlipperNotReady": "Klipperは準備できていません。高低マップは無効になりました。",
         "Flat": "平面",
         "Heightmap": "高低マップ",
@@ -292,7 +292,7 @@
         "ChamberTemp": "チャンバー温度",
         "CreateNote": "メモ作成",
         "Delete": "削除",
-        "DeleteSelectedQuestion": "選択された {count}個のジョブを削除します。よろしいですか?",
+        "DeleteSelectedQuestion": "選択された {count}個のジョブを削除します。よろしいですか？",
         "Details": "詳細",
         "EditNote": "ノート編集",
         "Empty": "空",
@@ -339,6 +339,7 @@
             "in_progress": "進行中",
             "klippy_disconnect": "Klippy切断",
             "klippy_shutdown": "Klippyシャットダウン",
+            "Others": "その他",
             "server_exit": "サーバー終了"
         },
         "TitleExportHistory": "履歴をエクスポート",
@@ -372,7 +373,7 @@
             "Delete": "削除",
             "DeleteDirectory": "ディレクトリ削除",
             "DeleteDirectoryQuestion": "ディレクトリ\"{name}\"と中に含まれるすべてのファイルが削除されます。よろしいですか？",
-            "DeleteSelectedQuestion": "選択した {count}個を削除しますか?",
+            "DeleteSelectedQuestion": "選択した {count}個を削除しますか？",
             "Download": "ダウンロード",
             "EditFile": "ファイル編集",
             "Empty": "空",
@@ -547,7 +548,7 @@
                 "Excluded": "除外",
                 "ExcludeObject": "オブジェクト除外",
                 "ExcludeObjectHeadline": "オブジェクト除外",
-                "ExcludeObjectText": "\"{name}\"を除外します。よろしいですか?"
+                "ExcludeObjectText": "\"{name}\"を除外します。よろしいですか？"
             },
             "Filament": "フィラメント",
             "File": "ファイル",
@@ -633,7 +634,7 @@
         }
     },
     "PowerDeviceChangeDialog": {
-        "AreYouSure": "よろしいですか?",
+        "AreYouSure": "よろしいですか？",
         "No": "いいえ",
         "TurnDeviceOff": "{device}オフ",
         "TurnDeviceOn": "{device}オン",
@@ -951,6 +952,7 @@
         "WebcamsTab": {
             "AddWebcam": "カメラ追加",
             "CreateWebcam": "カメラ作成",
+            "EditCrowsnestConf": "crowsnest.confを編集",
             "EditWebcam": "カメラ編集",
             "FlipHorizontally": "カメラ画像を水平反転",
             "FlipVertically": "カメラ画像を垂直反転",
@@ -989,6 +991,7 @@
         "Delete": "削除",
         "DeleteDirectory": "ディレクトリの削除",
         "DeleteDirectoryQuestion": "ディレクトリ\"{name}\"と中に含まれるすべてのファイルが削除されます。よろしいですか？",
+        "DeleteSelectedQuestion": "選択された{count}個のファイルが削除されます。よろしいですか？",
         "Download": "ダウンロード",
         "DuplicateLastframe": "最終フレームの複製",
         "Empty": "完成したタイムラプスは見つかりませんでした。",
