@@ -1,19 +1,17 @@
 name: PR
 
 on:
-  push:
+  pull_request_target:
+    types: [synchronize, opened, reopened]
     branches:
       - '**'
-
-  pull_request_target:
-    types: [synchronize, opened]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # Allow to stop obsolete workflows
 concurrency:
-  group: ci-tests-${{ github.ref }}-1
+  group: ci-tests-${{ github.ref }}-PR
   cancel-in-progress: true
 
 jobs:
@@ -22,8 +20,6 @@ jobs:
     steps:
       - name: Debs-Cache
         uses: mainsail-crew/mainsail-actions/debs-cache@master
-        with:
-          github_ref: ${{ github.ref }}
 
   build:
     needs: [ debs-cache ]
@@ -31,26 +27,38 @@ jobs:
     steps:
       - name: Build
         uses: mainsail-crew/mainsail-actions/build@master
-        with:
-          github_ref: ${{ github.ref }}
-          github_sha: ${{ github.sha }}
 
-#  call-eslint:
-#    needs: [ debs-cache ]
-#    uses: mainsail-crew/mainsail/.github/workflows/_eslint.yml@develop
+  eslint:
+    needs: [ debs-cache ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ESlint
+        uses: mainsail-crew/mainsail-actions/eslint@master
 
-#  call-prettier:
-#    needs: [ debs-cache ]
-#    uses: mainsail-crew/mainsail/.github/workflows/_prettier.yml@develop
+  prettier:
+    needs: [ debs-cache ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prettier
+        uses: mainsail-crew/mainsail-actions/prettier@master
 
-#  call-check-locale:
-#    needs: [ debs-cache ]
-#    uses: mainsail-crew/mainsail/.github/workflows/_check_locale.yml@develop
+  check-locale:
+    needs: [ debs-cache ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: check-locale
+        uses: mainsail-crew/mainsail-actions/check-locale@master
 
-#  call-size-report:
-#    needs: [ debs-cache ]
-#    uses: mainsail-crew/mainsail/.github/workflows/_size_report.yml@develop
+  size-report:
+    needs: [ debs-cache ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: size-report
+        uses: mainsail-crew/mainsail-actions/size-report@master
 
-#  call-test-cypress:
-#    needs: [ debs-cache, call-build ]
-#    uses: mainsail-crew/mainsail/.github/workflows/_test_cypress.yml@develop
+  test-cypress:
+    needs: [ debs-cache, build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: test-cypress
+        uses: mainsail-crew/mainsail-actions/test-cypress@master
