@@ -1,4 +1,4 @@
-name: 'PULL-REQUEST'
+name: PR
 
 on:
   pull_request_target:
@@ -19,7 +19,7 @@ jobs:
       - name: 'Debs-Cache'
         uses: mainsail-crew/mainsail-actions/debs-cache@master
         with:
-          github_ref: ${{ GITHUB_REF }}
+          github_ref: ${{ github.ref }}
 
 #  call-build:
 #    needs: [ debs-cache ]
