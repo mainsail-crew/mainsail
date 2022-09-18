@@ -47,6 +47,8 @@ jobs:
     steps:
       - name: check-locale
         uses: mainsail-crew/mainsail-actions/check-locale@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   size-report:
     needs: [ debs-cache ]
