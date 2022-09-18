@@ -1,59 +1,48 @@
-name: 'PUSH'
+name: PUSH
 
 on:
   push:
-    branches: [ develop, master ]
+    branches: [ develop, master]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # Allow to stop obsolete workflows
 concurrency:
-  group: ci-tests-push-${{ github.ref }}-1
+  group: ci-tests-${{ github.ref }}-PUSH
   cancel-in-progress: true
 
 jobs:
   debs-cache:
-    name: 'Debs-Cache'
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch repo
-        uses: actions/checkout@v3
+      - name: Debs-Cache
+        uses: mainsail-crew/mainsail-actions/debs-cache@master
 
-      - name: Install node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-          cache: 'npm'
-
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules/
-          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-      - name: List the state of node modules
-        if: steps.cache.outputs.cache-hit != 'true'
-        continue-on-error: true
-        run: npm list
-
-      - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-
-  call-build:
+  build:
     needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_build.yml@develop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        uses: mainsail-crew/mainsail-actions/build@master
 
-  call-eslint:
+  eslint:
     needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_eslint.yml@develop
+    runs-on: ubuntu-latest
+    steps:
+      - name: ESlint
+        uses: mainsail-crew/mainsail-actions/eslint@master
 
-  call-prettier:
+  prettier:
     needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_prettier.yml@develop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prettier
+        uses: mainsail-crew/mainsail-actions/prettier@master
 
-  call-test-cypress:
-    needs: [ debs-cache, call-build ]
-    uses: mainsail-crew/mainsail/.github/workflows/_test_cypress.yml@develop
+  test-cypress:
+    needs: [ debs-cache, build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cypress test
+        uses: mainsail-crew/mainsail-actions/test-cypress@master
