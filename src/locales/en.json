@@ -107,6 +107,12 @@
             "UpdatingDone": "Updating {software} done!"
         }
     },
+    "BedScrews": {
+        "Abort": "abort",
+        "Adjusted": "adjusted",
+        "Accept": "accept",
+        "Headline": "Bed Screws"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
