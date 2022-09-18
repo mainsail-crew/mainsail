@@ -14,54 +14,33 @@ concurrency:
 
 jobs:
   debs-cache:
-    name: 'Debs-Cache'
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch repo
-        uses: actions/checkout@v3
-
-      - name: Install node
-        uses: actions/setup-node@v3
+      - name: 'Debs-Cache'
+        uses: mainsail-crew/mainsail-actions/debs-cache@master
         with:
-          node-version: '16'
-          cache: 'npm'
+          github_ref: ${{ GITHUB_REF }}
 
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules/
-          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+#  call-build:
+#    needs: [ debs-cache ]
+#    uses: mainsail-crew/mainsail/.github/workflows/_build.yml@develop
 
-      - name: List the state of node modules
-        if: steps.cache.outputs.cache-hit != 'true'
-        continue-on-error: true
-        run: npm list
+#  call-eslint:
+#    needs: [ debs-cache ]
+#    uses: mainsail-crew/mainsail/.github/workflows/_eslint.yml@develop
 
-      - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+#  call-prettier:
+#    needs: [ debs-cache ]
+#    uses: mainsail-crew/mainsail/.github/workflows/_prettier.yml@develop
 
-  call-build:
-    needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_build.yml@develop
+#  call-check-locale:
+#    needs: [ debs-cache ]
+#    uses: mainsail-crew/mainsail/.github/workflows/_check_locale.yml@develop
 
-  call-eslint:
-    needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_eslint.yml@develop
+#  call-size-report:
+#    needs: [ debs-cache ]
+#    uses: mainsail-crew/mainsail/.github/workflows/_size_report.yml@develop
 
-  call-prettier:
-    needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_prettier.yml@develop
-
-  call-check-locale:
-    needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_check_locale.yml@develop
-
-  call-size-report:
-    needs: [ debs-cache ]
-    uses: mainsail-crew/mainsail/.github/workflows/_size_report.yml@develop
-
-  call-test-cypress:
-    needs: [ debs-cache, call-build ]
-    uses: mainsail-crew/mainsail/.github/workflows/_test_cypress.yml@develop
+#  call-test-cypress:
+#    needs: [ debs-cache, call-build ]
+#    uses: mainsail-crew/mainsail/.github/workflows/_test_cypress.yml@develop
