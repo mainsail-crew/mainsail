@@ -33,6 +33,7 @@ jobs:
         uses: mainsail-crew/mainsail-actions/build@master
         with:
           github_ref: ${{ github.ref }}
+          github_sha: ${{ github.sha }}
 
 #  call-eslint:
 #    needs: [ debs-cache ]
