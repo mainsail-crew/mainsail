@@ -1,65 +1,65 @@
 name: PR
 
 on:
-  pull_request:
-    branches:
-      - '**'
+    pull_request:
+        branches:
+            - '**'
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
 
 # Allow to stop obsolete workflows
 concurrency:
-  group: ci-tests-${{ github.ref }}-PR
-  cancel-in-progress: true
+    group: ci-tests-${{ github.ref }}-PR
+    cancel-in-progress: true
 
 jobs:
-  debs-cache:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Debs-Cache
-        uses: mainsail-crew/mainsail-actions/debs-cache@master
+    debs-cache:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Debs-Cache
+              uses: mainsail-crew/mainsail-actions/debs-cache@master
 
-  build:
-    needs: [ debs-cache ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build
-        uses: mainsail-crew/mainsail-actions/build@master
+    build:
+        needs: [debs-cache]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Build
+              uses: mainsail-crew/mainsail-actions/build@master
 
-  eslint:
-    needs: [ debs-cache ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: ESlint
-        uses: mainsail-crew/mainsail-actions/eslint@master
+    eslint:
+        needs: [debs-cache]
+        runs-on: ubuntu-latest
+        steps:
+            - name: ESlint
+              uses: mainsail-crew/mainsail-actions/eslint@master
 
-  prettier:
-    needs: [ debs-cache ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Prettier
-        uses: mainsail-crew/mainsail-actions/prettier@master
+    prettier:
+        needs: [debs-cache]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Prettier
+              uses: mainsail-crew/mainsail-actions/prettier@master
 
-  check-locale:
-    needs: [ debs-cache ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check locale
-        uses: mainsail-crew/mainsail-actions/check-locale@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+    check-locale:
+        needs: [debs-cache]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check locale
+              uses: mainsail-crew/mainsail-actions/check-locale@master
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
 
-  size-report:
-    needs: [ debs-cache ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Size report
-        uses: mainsail-crew/mainsail-actions/size-report@master
+    size-report:
+        needs: [debs-cache]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Size report
+              uses: mainsail-crew/mainsail-actions/size-report@master
 
-  test-cypress:
-    needs: [ debs-cache, build ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cypress test
-        uses: mainsail-crew/mainsail-actions/test-cypress@master
+    test-cypress:
+        needs: [debs-cache, build]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Cypress test
+              uses: mainsail-crew/mainsail-actions/test-cypress@master
