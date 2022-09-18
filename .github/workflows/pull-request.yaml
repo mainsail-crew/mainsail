@@ -1,6 +1,10 @@
 name: PR
 
 on:
+  push:
+    branches:
+      - '**'
+
   pull_request_target:
     types: [synchronize, opened]
 
