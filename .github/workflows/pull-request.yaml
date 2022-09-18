@@ -20,14 +20,19 @@ jobs:
   debs-cache:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Debs-Cache'
+      - name: Debs-Cache
         uses: mainsail-crew/mainsail-actions/debs-cache@master
         with:
           github_ref: ${{ github.ref }}
 
-#  call-build:
-#    needs: [ debs-cache ]
-#    uses: mainsail-crew/mainsail/.github/workflows/_build.yml@develop
+  build:
+    needs: [ debs-cache ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        uses: mainsail-crew/mainsail-actions/build@master
+        with:
+          github_ref: ${{ github.ref }}
 
 #  call-eslint:
 #    needs: [ debs-cache ]
