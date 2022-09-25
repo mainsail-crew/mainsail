@@ -97,7 +97,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
         else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
         // else if (['jinja2'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(jinja2))
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
-        else if (['css'].includes(this.fileExtension)) extensions.push(css())
+        else if (['css', 'scss', 'sass'].includes(this.fileExtension)) extensions.push(css())
 
         return extensions
     }
