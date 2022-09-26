@@ -76,8 +76,9 @@ export const klipper_config: StreamParser<any> = {
                 state.gcodeZeroPos = stream.pos
                 return 'tag'
             }
-            if (stream.match(/^"[^"]+"/) || stream.match(/^'[^']+'/)) {
-                state.klipperMacroJinjaHighlightNext = true
+            if (stream.match(/^"(?!\\")|[^"]+"/) || stream.match(/^'(?!\\')|[^']+'/)) {
+            // if (stream.match(/^"[^"]+"/) || stream.match(/^'[^']+'/)) {
+                    state.klipperMacroJinjaHighlightNext = true
                 return 'string'
             }
             if (stream.eol() && stream.match(/^"/)) {
