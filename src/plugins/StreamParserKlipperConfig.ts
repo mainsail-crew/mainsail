@@ -76,9 +76,9 @@ export const klipper_config: StreamParser<any> = {
                 state.gcodeZeroPos = stream.pos
                 return 'tag'
             }
-            if (stream.match(/^"(?!\\")|[^"]+"/) || stream.match(/^'(?!\\')|[^']+'/)) {
-            // if (stream.match(/^"[^"]+"/) || stream.match(/^'[^']+'/)) {
-                    state.klipperMacroJinjaHighlightNext = true
+            // https://www.metaltoad.com/blog/regex-quoted-string-escapable-quotes
+            if (stream.match(/^((?<![\\])['"])((?:.(?!(?<![\\])\1))*.?)\1/)) {
+                state.klipperMacroJinjaHighlightNext = true
                 return 'string'
             }
             if (stream.eol() && stream.match(/^"/)) {
