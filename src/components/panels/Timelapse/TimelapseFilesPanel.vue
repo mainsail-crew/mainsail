@@ -237,12 +237,16 @@
                         v-model="dialogRenameFile.newName"
                         :label="$t('Timelapse.Name')"
                         required
+                        :rules="nameInputRules"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keypress.enter="renameFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Timelapse.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="renameFileAction">{{ $t('Timelapse.Rename') }}</v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="renameFileAction">
+                        {{ $t('Timelapse.Rename') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -261,8 +265,9 @@
                         ref="inputFieldCreateDirectory"
                         v-model="dialogCreateDirectory.name"
                         :label="$t('Timelapse.Name')"
-                        :rules="input_rules"
                         required
+                        :rules="nameInputRules"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keypress.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -270,7 +275,9 @@
                     <v-btn color="" text @click="dialogCreateDirectory.show = false">
                         {{ $t('Timelapse.Cancel') }}
                     </v-btn>
-                    <v-btn color="primary" text @click="createDirectoryAction">{{ $t('Timelapse.Create') }}</v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="createDirectoryAction">
+                        {{ $t('Timelapse.Create') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -290,6 +297,8 @@
                         v-model="dialogRenameDirectory.newName"
                         :label="$t('Timelapse.Name')"
                         required
+                        :rules="nameInputRules"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -297,7 +306,9 @@
                     <v-btn color="" text @click="dialogRenameDirectory.show = false">
                         {{ $t('Timelapse.Cancel') }}
                     </v-btn>
-                    <v-btn color="primary" text @click="renameDirectoryAction">{{ $t('Timelapse.Rename') }}</v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="renameDirectoryAction">
+                        {{ $t('Timelapse.Rename') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -496,7 +507,15 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     private deleteSelectedDialog = false
 
-    private input_rules = [(value: string) => value.indexOf(' ') === -1 || 'Name contains spaces!']
+    private isInvalidName = true
+    private nameInputRules = [
+        (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
+        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
+    ]
+
+    existsFilename(name: string) {
+        return this.files.findIndex((file) => file.filename === name) >= 0
+    }
 
     get headers() {
         return [
@@ -593,14 +612,15 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     createDirectoryAction() {
-        if (this.dialogCreateDirectory.name.length && this.dialogCreateDirectory.name.indexOf(' ') === -1) {
-            this.dialogCreateDirectory.show = false
-            this.$socket.emit(
-                'server.files.post_directory',
-                { path: this.currentPath + '/' + this.dialogCreateDirectory.name },
-                { action: 'files/getCreateDir' }
-            )
-        }
+        this.dialogCreateDirectory.show = false
+
+        this.$socket.emit(
+            'server.files.post_directory',
+            {
+                path: this.currentPath + '/' + this.dialogCreateDirectory.name,
+            },
+            { action: 'files/getCreateDir' }
+        )
     }
 
     refreshFileList() {

@@ -181,6 +181,8 @@
         "GCodeFiles": "G-Code Dateien",
         "GcodesRootDirectoryDoesntExists": "Keinen G-Code Ordner gefunden. Bitte überprüfe die Option \"path\" im Abschnitt [virtual_sdcard] in der Klipper Konfiguration.",
         "HiddenFiles": "Versteckte Dateien",
+        "InvalidNameEmpty": "Feld darf nicht leer sein!",
+        "InvalidNameAlreadyExists": "Name existiert bereits, bitte wähle einen anderen Namen.",
         "LastEndTime": "Letzte Endzeit",
         "LastFilamentUsed": "Letzter Filamentverbrauch",
         "LastModified": "Zuletzt geändert",
@@ -339,6 +341,7 @@
             "in_progress": "In Arbeit",
             "klippy_disconnect": "Klippy getrennt",
             "klippy_shutdown": "Klippy heruntergefahren",
+            "Others": "Sonstige",
             "server_exit": "Server-Exit"
         },
         "TitleExportHistory": "Historie exportieren",
@@ -455,10 +458,16 @@
             "UpToDate": "aktuell"
         }
     },
+    "ManualProbe": {
+        "Abort": "abbrechen",
+        "Accept": "akzeptieren",
+        "Advanced": "Erweitert",
+        "Headline": "Manuelle Messung"
+    },
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Erlaubt",
-            "EstimatedExtrusion": "Geschätzte Extrusion:",
+            "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrudieren",
             "ExtruderTempTooLow": "Extruder Temp. <",
             "ExtrusionFactor": "Extrusionsfaktor",
