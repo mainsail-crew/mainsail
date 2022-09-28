@@ -97,8 +97,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getPrintMaxLayers: (state) => {
-        if (state.print_stats?.layer_total !== null) {
-            return state.print_stats.layer_total
+        if (state.print_stats?.info?.total_layer !== null) {
+            return state.print_stats.info.total_layer
         } else if (state.current_file?.layer_count) {
             return state.current_file.layer_count
         } else if (
@@ -119,8 +119,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getPrintCurrentLayer: (state, getters) => {
-        if (state.print_stats?.layer_current !== null) {
-            return state.print_stats.layer_current
+        if (state.print_stats?.info?.current_layer !== null) {
+            return state.print_stats.info.current_layer
         } else if (
             state.print_stats?.print_duration > 0 &&
             'first_layer_height' in state.current_file &&
