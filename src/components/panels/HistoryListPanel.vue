@@ -272,7 +272,9 @@
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.LastModified') }}</v-col>
-                                <v-col class="text-right">{{ formatDate(detailsDialog.item.metadata.modified) }}</v-col>
+                                <v-col class="text-right">
+                                    {{ formatDateTime(detailsDialog.item.metadata.modified) }}
+                                </v-col>
                             </v-row>
                         </template>
                         <v-divider class="my-3"></v-divider>
@@ -289,13 +291,13 @@
                         <v-divider class="my-3"></v-divider>
                         <v-row>
                             <v-col>{{ $t('History.StartTime') }}</v-col>
-                            <v-col class="text-right">{{ formatDate(detailsDialog.item.start_time) }}</v-col>
+                            <v-col class="text-right">{{ formatDateTime(detailsDialog.item.start_time) }}</v-col>
                         </v-row>
                         <template v-if="'end_time' in detailsDialog.item && detailsDialog.item.end_time > 0">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.EndTime') }}</v-col>
-                                <v-col class="text-right">{{ formatDate(detailsDialog.item.end_time) }}</v-col>
+                                <v-col class="text-right">{{ formatDateTime(detailsDialog.item.end_time) }}</v-col>
                             </v-row>
                         </template>
                         <template
@@ -761,12 +763,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
     }
 
-    formatDate(date: number) {
-        const tmp2 = new Date(date * 1000)
-
-        return tmp2.toLocaleString().replace(',', '')
-    }
-
     formatPrintTime(totalSeconds: number) {
         if (totalSeconds) {
             let output = ''
@@ -1013,7 +1009,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         if (!format) {
             switch (col.outputType) {
                 case 'date':
-                    return this.formatDate(value)
+                    return this.formatDateTime(value)
 
                 case 'time':
                     return value?.toFixed() ?? ''
@@ -1038,7 +1034,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     return formatFilesize(value)
 
                 case 'date':
-                    return this.formatDate(value)
+                    return this.formatDateTime(value)
 
                 case 'time':
                     return this.formatPrintTime(value)
