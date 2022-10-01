@@ -374,12 +374,16 @@
                         v-model="dialogCreateDirectory.name"
                         :label="$t('Files.Name')"
                         required
+                        :rules="nameInputRules"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keypress.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogCreateDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="createDirectoryAction">{{ $t('Files.Create') }}</v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="createDirectoryAction">
+                        {{ $t('Files.Create') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -399,12 +403,16 @@
                         v-model="dialogRenameFile.newName"
                         :label="$t('Files.Name').toString()"
                         required
+                        :rules="nameInputRules"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="renameFileAction">{{ $t('Files.Rename') }}</v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="renameFileAction">
+                        {{ $t('Files.Rename') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -424,12 +432,16 @@
                         v-model="dialogRenameDirectory.newName"
                         :label="$t('Files.Name')"
                         required
+                        :rules="nameInputRules"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogRenameDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="renameDirectoryAction">{{ $t('Files.Rename') }}</v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="renameDirectoryAction">
+                        {{ $t('Files.Rename') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -645,6 +657,16 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     private deleteSelectedDialog = false
+
+    private isInvalidName = true
+    private nameInputRules = [
+        (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
+        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
+    ]
+
+    existsFilename(name: string) {
+        return this.files.findIndex((file) => file.filename === name) >= 0
+    }
 
     get currentPath() {
         const path = this.$store.state.gui.view.gcodefiles.currentPath

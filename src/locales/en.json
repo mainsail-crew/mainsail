@@ -181,6 +181,8 @@
         "GCodeFiles": "G-Code Files",
         "GcodesRootDirectoryDoesntExists": "No G-Code directory found. Please check option \"path\" in the [virtual_sdcard] section of the Klipper configuration.",
         "HiddenFiles": "Hidden files",
+        "InvalidNameEmpty": "Input must not be empty!",
+        "InvalidNameAlreadyExists": "Name already exists, please choose another name.",
         "LastEndTime": "Last End Time",
         "LastFilamentUsed": "Last Filament Used",
         "LastModified": "Last modified",
@@ -455,6 +457,12 @@
             "Upgrade": "upgrade",
             "UpToDate": "up-to-date"
         }
+    },
+    "ManualProbe": {
+        "Abort": "abort",
+        "Accept": "accept",
+        "Advanced": "Advanced",
+        "Headline": "Manual Probe"
     },
     "Panels": {
         "ExtruderControlPanel": {
