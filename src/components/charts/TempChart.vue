@@ -84,6 +84,7 @@ export default class TempChart extends Mixins(BaseMixin) {
             axisLabel: {
                 color: 'rgba(255, 255, 255, 0.24)',
                 margin: 10,
+                formatter: this.timeFormat,
             },
         },
         yAxis: [
@@ -225,8 +226,15 @@ export default class TempChart extends Mixins(BaseMixin) {
         return this.$store.getters['printer/tempHistory/getSelectedLegends']
     }
 
+    get timeFormat() {
+        if (this.hours12Format) return '{hh}:{mm}'
+
+        return '{HH}:{mm}'
+    }
+
     mounted() {
         this.initChart()
+        this.chartOptions.xAxis.axisLabel.formatter = this.timeFormat
     }
 
     beforeDestroy() {
@@ -382,6 +390,11 @@ export default class TempChart extends Mixins(BaseMixin) {
     @Watch('boolDisplayPwmAxis')
     boolDisplayPwmAxisChanged() {
         this.updateChartPwmAxis()
+    }
+
+    @Watch('hours12Format')
+    hours12FormatChanged() {
+        this.chartOptions.xAxis.axisLabel.formatter = this.timeFormat
     }
 }
 </script>
