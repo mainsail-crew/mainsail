@@ -1,9 +1,8 @@
 name: 'Auto analyze if package.json was edited'
 
 on:
-  pull_request:
-    branches:
-      - develop
+  pull_request_target:
+    types: [synchronize, opened]
 
 permissions:
   pull-requests: write
