@@ -3,8 +3,6 @@ import BaseMixin from '@/components/mixins/base'
 import { allDashboardPanels } from '@/store/variables'
 import { capitalize } from '@/plugins/helpers'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
-import kebabCase from 'lodash.kebabcase'
-import Vue from 'vue'
 
 @Component
 export default class DashboardMixin extends BaseMixin {
