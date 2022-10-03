@@ -119,6 +119,21 @@ export default class BaseMixin extends Vue {
         }
     }
 
+    get formatTimeWithSecondsOptions(): DateTimeFormatOptions {
+        const format = this.$store.state.gui.general.timeFormat
+
+        switch (format) {
+            case '24hours':
+                return { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }
+
+            case '12hours':
+                return { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }
+
+            default:
+                return { timeStyle: 'short' }
+        }
+    }
+
     get browserLocale() {
         return navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
     }
@@ -131,11 +146,12 @@ export default class BaseMixin extends Vue {
         return false
     }
 
-    formatDate(value: number): string {
+    formatDate(value: number | Date): string {
         let tmp = null
 
         try {
-            tmp = new Date(value)
+            // @ts-ignore
+            tmp = (typeof value.getMonth === 'function' ? value : new Date(value)) as Date
         } catch (_) {
             return 'UNKNOWN'
         }
@@ -143,21 +159,24 @@ export default class BaseMixin extends Vue {
         return tmp.toLocaleDateString(this.browserLocale, this.formatDateOptions)
     }
 
-    formatTime(value: number): string {
+    formatTime(value: number | Date, boolSeconds = false): string {
         let tmp = null
 
         try {
-            tmp = new Date(value)
+            // @ts-ignore
+            tmp = (typeof value.getMonth === 'function' ? value : new Date(value)) as Date
         } catch (_) {
             return 'UNKNOWN'
         }
 
+        if (boolSeconds) return tmp.toLocaleTimeString(this.browserLocale, this.formatTimeWithSecondsOptions)
+
         return tmp.toLocaleTimeString(this.browserLocale, this.formatTimeOptions)
     }
 
-    formatDateTime(value: number): string {
+    formatDateTime(value: number, boolSeconds = false): string {
         const date = this.formatDate(value)
-        const time = this.formatTime(value)
+        const time = this.formatTime(value, boolSeconds)
 
         return `${date} ${time}`
     }

@@ -22,7 +22,6 @@ export const getters: GetterTree<ServerState, any> = {
 
                 events.unshift({
                     date: date,
-                    formatTime: formatTime(date),
                     message: message,
                     formatMessage: formatConsoleMessage(message),
                     type: 'response',

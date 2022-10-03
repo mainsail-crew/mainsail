@@ -105,7 +105,6 @@ export const mutations: MutationTree<ServerState> = {
 
             state.events.push({
                 date: date,
-                formatTime: formatTime(date),
                 message: message.message,
                 formatMessage: formatMessage,
                 type: message.type,
@@ -126,7 +125,6 @@ export const mutations: MutationTree<ServerState> = {
 
         state.events.push({
             date: payload.date,
-            formatTime: formatTime(payload.date),
             message: payload.message,
             formatMessage: payload.formatMessage,
             type: payload.type,
