@@ -1,8 +1,9 @@
 name: 'Auto analyze if package.json was edited'
 
 on:
-  pull_request_target:
-    types: [synchronize, opened]
+  pull_request:
+    branches:
+      - develop
 
 permissions:
   pull-requests: write
@@ -26,7 +27,7 @@ jobs:
         uses: actions/setup-node@v3
         if: contains(steps.changed-file-package-json.outputs.modified_files, 'package.json')
         with:
-          node-version: 18
+          node-version: '16'
           cache: 'npm'
 
       - uses: preactjs/compressed-size-action@v2

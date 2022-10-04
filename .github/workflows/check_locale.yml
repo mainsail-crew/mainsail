@@ -21,8 +21,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: 'npm'
+          node-version: 16
 
       - name: Install dependencies
         run: npm ci
@@ -49,7 +48,6 @@ jobs:
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v1
         with:
-          comment_includes: 'Language file analysis report'
           message: |
             Language file analysis report:
             |File|Missing Keys|Unused Keys|

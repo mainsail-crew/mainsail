@@ -28,8 +28,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: 'npm'
+          node-version: '16'
 
       - name: Install dependencies
         run: npm ci
@@ -40,7 +39,7 @@ jobs:
       - name: Copy output
         run: cp ${{ github.workspace }}/dist/mainsail.zip mainsail-latest.zip
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v2.2.4
         with:
           name: mainsail-latest.zip
           path: mainsail-latest.zip
