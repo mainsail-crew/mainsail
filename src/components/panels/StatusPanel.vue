@@ -1,5 +1,3 @@
-<style lang="scss" scoped></style>
-
 <template>
     <div>
         <min-settings-panel></min-settings-panel>
@@ -65,7 +63,7 @@
                 <v-tab href="#jobqueue">{{ $t('Panels.StatusPanel.Jobqueue', { count: jobsCount }) }}</v-tab>
             </v-tabs>
             <v-divider class="my-0"></v-divider>
-            <v-tabs-items v-model="activeTab">
+            <v-tabs-items v-model="activeTab" class="_border-radius">
                 <v-tab-item v-if="current_filename" value="status">
                     <status-panel-printstatus></status-panel-printstatus>
                 </v-tab-item>
@@ -284,3 +282,10 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+._border-radius {
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+}
+</style>
