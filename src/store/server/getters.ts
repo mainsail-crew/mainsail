@@ -44,6 +44,7 @@ export const getters: GetterTree<ServerState, any> = {
         interface HostStats {
             cpuName: string | null
             cpuDesc: string | null
+            bits: string | null
             version: string | null
             pythonVersion: string | null
             os: string | null
@@ -119,6 +120,7 @@ export const getters: GetterTree<ServerState, any> = {
             output = {
                 cpuName: state.system_info?.cpu_info?.processor ?? null,
                 cpuDesc: state.system_info?.cpu_info?.cpu_desc ?? null,
+                bits: state.system_info?.cpu_info?.bits ?? null,
                 version,
                 pythonVersion,
                 os: state.system_info?.distribution?.name ?? null,

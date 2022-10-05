@@ -21,6 +21,7 @@
             "Never": "永不",
             "NextReboot": "下次重启",
             "NoNotification": "没有通知",
+            "Notifications": "通知",
             "Remind": "提醒："
         },
         "NumberInput": {
@@ -28,7 +29,7 @@
             "MustBeBetweenError": "必须在{min}和{max}之间！",
             "NoEmptyAllowedError": "输入值不能为空！"
         },
-        "Printers": "打印机组",
+        "Printers": "打印机集群",
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "树莓派ARM核心当前被限制。",
             "DescriptionFrequencyCapped": "树莓派ARM最高频率目前限制在1.2 GHz。",
@@ -59,7 +60,7 @@
             "EmergencyStop": "紧急停止",
             "SAVE_CONFIG": "保存配置",
             "Uploading": "上传中",
-            "UploadOfFileSuccessful": "{file}上传成功！",
+            "UploadOfFileSuccessful": "{file} 上传成功！",
             "UploadPrint": "上传并打印"
         },
         "TopCornerMenu": {
@@ -111,6 +112,7 @@
         "CheckMoonrakerLog": "如果此消息重复显示, 请从此处查看日志文件：",
         "Connecting": "连接到{host}",
         "Failed": "连接失败",
+        "Initializing": "正在初始化",
         "TryAgain": "重试"
     },
     "Console": {
@@ -153,17 +155,20 @@
     "Files": {
         "AddToQueue": "添加到队列",
         "AllFiles": "所有文件",
+        "BedTemp": "热床温度",
         "Cancel": "取消",
+        "ChamberTemp": "仓室温度",
         "Create": "新建",
         "CreateNewDirectory": "新建文件夹",
         "CurrentPath": "当前路径",
         "Delete": "删除",
         "DeleteDirectory": "删除文件夹",
         "DeleteDirectoryQuestion": "你确定要删除\"{name}\"和里面的所有内容吗？",
-        "DeleteSelectedQuestion": "你是否要删除选中的{count}个文件？",
+        "DeleteSelectedQuestion": "你确定要删除选中的{count}个文件？",
         "Download": "下载",
         "EditFile": "编辑文件",
         "Empty": "空",
+        "ExtruderTemp": "挤出机温度",
         "Filament": "耗材",
         "FilamentName": "耗材名称",
         "FilamentType": "耗材规格",
@@ -174,7 +179,10 @@
         "Free": "未使用",
         "FreeDisk": "剩余磁盘空间",
         "GCodeFiles": "G-Code文件",
+        "GcodesRootDirectoryDoesntExists": "未找到G-Code文件夹。请检查Klipper配置[virtual_sdcard]标签中的\"path\"项是否正确填写。",
         "HiddenFiles": "显示隐藏文件",
+        "InvalidNameEmpty": "输入值不能为空！",
+        "InvalidNameAlreadyExists": "名字已经存在，请换一个名字。",
         "LastEndTime": "上次打印结束时间",
         "LastFilamentUsed": "上次耗材使用量",
         "LastModified": "最后修改时间",
@@ -255,6 +263,9 @@
         "ErrorKlipperNotReady": "Klipper未准备好。高度图已关闭。",
         "Flat": "平面",
         "Heightmap": "高度图",
+        "InvalidNameAlreadyExists": "预设名称已经存在，请换一个名称。",
+        "InvalidNameEmpty": "输入值不能为空！",
+        "InvalidNameReserved": "预设 'default' 已保留，请选择其他预设名称。",
         "Later": "Later",
         "Mesh": "床网",
         "Name": "名称",
@@ -280,6 +291,7 @@
         "AllJobs": "全部",
         "AvgPrinttime": "平均打印时间",
         "Cancel": "取消",
+        "ChamberTemp": "仓室温度",
         "CreateNote": "新建便条",
         "Delete": "删除",
         "DeleteSelectedQuestion": "你是否要删除已选中的{count}个任务？",
@@ -329,6 +341,7 @@
             "in_progress": "进程中",
             "klippy_disconnect": "Klippy失去连接",
             "klippy_shutdown": "Klippy已关闭",
+            "Others": "其他",
             "server_exit": "服务器退出"
         },
         "TitleExportHistory": "导出历史记录",
@@ -354,6 +367,7 @@
             "AllFiles": "全部",
             "Cancel": "取消",
             "ConfigFiles": "配置文件",
+            "ConfigRootDirectoryDoesntExists": "未找到配置文件夹。请检查Moonraker配置[file_manager]标签中的\"config_path\"项是否正确填写。",
             "Create": "新建",
             "CreateDirectory": "新建文件夹",
             "CreateFile": "新建文件",
@@ -604,7 +618,7 @@
             "All": "全部",
             "FPS": "帧率",
             "Headline": "摄像头",
-            "NoWebcam": "没有可用的摄像头。在 \"Mainsail设置\" -> \"摄像头\" 添加新的摄像头。",
+            "NoWebcam": "没有可用的摄像头。在\"Mainsail设置\" -> \"摄像头\"添加新的摄像头。",
             "UnknownWebcamService": "未知摄像头服务"
         },
         "ZoffsetPanel": {
@@ -642,6 +656,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "添加打印机",
+        "AddPrintersToJson": "请将打印机添加到 config.json 。",
         "CannotConnectTo": "无法连接到{host} 。",
         "ChangePrinter": "更换打印机",
         "Connecting": "正在连接到{host}",
@@ -743,11 +758,19 @@
         },
         "GeneralTab": {
             "Backup": "备份",
-            "BackupDialog": "请选择你想要备份的内容:",
+            "BackupDialog": "请选择你想要备份的内容：",
             "CalcEstimateTime": "估算时间计算",
             "CalcEstimateTimeDescription": "如果选择了多项，将会计算平均值",
             "CalcEtaTime": "预计完成时间计算",
             "CalcEtaTimeDescription": "如果选择了多项，将会计算平均值",
+            "CalcPrintProgress": "打印进度估算",
+            "CalcPrintProgressDescription": "计算打印进度的方法。",
+            "CalcPrintProgressItems": {
+                "Filament": "耗材",
+                "FileAbsolute": "文件位置（绝对）",
+                "FileRelative": "文件位置（相对）",
+                "Slicer": "切片软件 (M73)"
+            },
             "CannotReadJson": "无法读取/解析备份文件。",
             "DbConsoleHistory": "控制台历史记录",
             "DbHistoryJobs": "历史任务",
@@ -831,7 +854,8 @@
             "Hostname": "主机名称/IP地址",
             "Port": "Moonraker服务端口",
             "RemotePrinters": "打印机",
-            "UpdatePrinter": "更新打印机"
+            "UpdatePrinter": "更新打印机",
+            "UseConfigJson": "InstanceDB = JSON detected. 请使用 config.json 来修改打印机列表。"
         },
         "TimelapseTab": {
             "Autorender": "自动渲染",
@@ -930,6 +954,7 @@
         "WebcamsTab": {
             "AddWebcam": "添加摄像头",
             "CreateWebcam": "添加摄像头",
+            "EditCrowsnestConf": "编辑 crowsnest.conf",
             "EditWebcam": "编辑摄像头",
             "FlipHorizontally": "水平翻转摄像头",
             "FlipVertically": "垂直翻转摄像头",
@@ -947,6 +972,7 @@
             "Name": "名称",
             "NameAlreadyExists": "名称已经存在",
             "Required": "需要填写名称",
+            "Rotate": "旋转",
             "SaveWebcam": "保存摄像头",
             "Service": "服务",
             "TargetFPS": "目标FPS",
@@ -967,6 +993,7 @@
         "Delete": "删除",
         "DeleteDirectory": "删除文件夹",
         "DeleteDirectoryQuestion": "你确定要删除\"{name}\"文件夹和里面所有的文件吗？",
+        "DeleteSelectedQuestion": "你确定要删除选中的{count}个文件吗？",
         "Download": "下载",
         "DuplicateLastframe": "重复最后一帧",
         "Empty": "没有发现已完成的延时摄影文件",

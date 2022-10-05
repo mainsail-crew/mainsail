@@ -465,9 +465,9 @@
             "Headline": "압출 제어",
             "LoadFilament": "필라멘트 압출",
             "PressureAdvanceSettings": {
-                "Advance": "모서리 압출 제어 [Pressure Advance]",
+                "Advance": "모서리 압출 제어 [PA]",
                 "Extruder": "필라멘트 압출 제어",
-                "SmoothTime": "반응 시간 [Smooth time]"
+                "SmoothTime": "반응 시간 [ST]"
             },
             "Requested": "요청됨",
             "Retract": "필라 퇴출",
@@ -515,9 +515,9 @@
         "MiscellaneousPanel": {
             "Headline": "기타 - 쿨링팬 & 조명 제어",
             "RunoutSensor": {
-                "Detected": "감지됨",
+                "Detected": "필라멘트 있음",
                 "Disabled": "비활성화됨",
-                "Empty": "비어있음"
+                "Empty": "필라멘트 없음"
             }
         },
         "PowerControlPanel": {
@@ -541,7 +541,7 @@
                 "ExcludeObjectHeadline": "출력 제외 대상 선택",
                 "ExcludeObjectText": "\"{name}\"을(를) 제외 하시겠습니까??"
             },
-            "Filament": "사용 길이",
+            "Filament": "길이",
             "File": "파일",
             "Files": "파일",
             "Flow": "유량",
@@ -553,7 +553,7 @@
             "ObjectHeight": "출력 높이",
             "PausePrint": "일시 정지",
             "Print": "출력",
-            "PrintTime": "소요 시간",
+            "PrintTime": "시간",
             "ReprintJob": "다시 출력",
             "Requested": "요청됨",
             "ResumePrint": "작업 재개",
@@ -701,12 +701,12 @@
             "MaximumValuesVisibility": "가시성을 극대화하기 위해 {maximum}의 값을 최대 값으로 사용해 주세요",
             "MinimumValues": "최소 값: {minimum}",
             "MotorsOff": "모터 전원 끄기 {isDefault}",
-            "MoveDistancesEInMm": "압출 속도 단위(mm)",
+            "MoveDistancesEInMm": "압출 거리 단위(mm)",
             "MoveDistancesInMm": "이동 단위(mm)",
             "MoveDistancesXYInMm": " X & Y축 이동 단위(mm)",
             "MoveDistancesZInMm": "Z축 이동 단위(mm)",
             "QuadGantryLevel": "쿼드 갠트리 레벨 {isDefault}",
-            "SpeedEInMms": "압출 거리 단위(mm)",
+            "SpeedEInMms": "압출 속도 단위(mm)",
             "SpeedXY": "X & Y축 이동 속도",
             "SpeedZ": "Z축 이동 속도",
             "Style": "화면 표시 스타일",
