@@ -1,30 +1,3 @@
-<style scoped>
-._temp-input {
-    min-width: 4.2rem;
-    max-width: 5rem;
-}
-
-._temp-input >>> .v-input__slot {
-    min-height: 1rem !important;
-    padding-left: 8px !important;
-    padding-right: 8px !important;
-}
-
-._temp-input >>> .v-text-field__slot input {
-    padding-top: 4px;
-    padding-bottom: 4px;
-}
-
-._preset {
-    font-size: 0.875rem;
-}
-
-._preset-icon {
-    margin-top: -1px;
-    margin-right: 4px;
-}
-</style>
-
 <template>
     <div class="d-flex align-center">
         <form @submit.prevent="setTemps">
@@ -128,3 +101,30 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
     }
 }
 </script>
+
+<style scoped>
+._temp-input {
+    min-width: 4.2rem;
+    max-width: 5rem;
+}
+
+._temp-input >>> .v-input__slot {
+    min-height: 1rem !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+._temp-input >>> .v-text-field__slot input {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+._preset {
+    font-size: 0.875rem;
+}
+
+._preset-icon {
+    margin-top: -1px;
+    margin-right: 4px;
+}
+</style>

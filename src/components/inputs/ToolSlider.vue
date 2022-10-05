@@ -1,54 +1,3 @@
-<style scoped>
-._tool-slider-subheader {
-    height: auto;
-}
-
-._lock-button {
-    margin-left: -6px;
-}
-
-._error-msg {
-    color: #ff5252;
-    font-size: 12px;
-    padding: 4px 16px 2px 0;
-}
-
-.fade-enter-active {
-    animation: slide-in 0.15s reverse;
-    opacity: 1;
-}
-
-.fade-leave-active {
-    animation: slide-in 0.15s;
-    opacity: 1;
-}
-
-@keyframes slide-in {
-    100% {
-        transform: translateY(-5px);
-    }
-}
-
-._slider-input {
-    min-width: 4.2rem;
-    max-width: 5rem;
-    margin-left: 12px;
-}
-
-._slider-input >>> .v-input__slot {
-    min-height: 1rem !important;
-}
-
-._slider-input >>> .v-text-field__slot input {
-    padding-top: 4px;
-    padding-bottom: 4px;
-}
-
-._slider-input >>> .v-input__append-inner {
-    margin: auto -5px auto 0 !important;
-}
-</style>
-
 <template>
     <v-row dense>
         <v-col class="pa-0">
@@ -302,3 +251,54 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+._tool-slider-subheader {
+    height: auto;
+}
+
+._lock-button {
+    margin-left: -6px;
+}
+
+._error-msg {
+    color: #ff5252;
+    font-size: 12px;
+    padding: 4px 16px 2px 0;
+}
+
+.fade-enter-active {
+    animation: slide-in 0.15s reverse;
+    opacity: 1;
+}
+
+.fade-leave-active {
+    animation: slide-in 0.15s;
+    opacity: 1;
+}
+
+@keyframes slide-in {
+    100% {
+        transform: translateY(-5px);
+    }
+}
+
+._slider-input {
+    min-width: 4.2rem;
+    max-width: 5rem;
+    margin-left: 12px;
+}
+
+._slider-input >>> .v-input__slot {
+    min-height: 1rem !important;
+}
+
+._slider-input >>> .v-text-field__slot input {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+._slider-input >>> .v-input__append-inner {
+    margin: auto -5px auto 0 !important;
+}
+</style>
