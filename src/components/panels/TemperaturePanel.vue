@@ -81,7 +81,7 @@
             <v-card-text class="pa-0">
                 <responsive
                     :breakpoints="{
-                        mobile: (el) => el.width <= 390,
+                        mobile: (el) => el.width <= 395,
                     }">
                     <template #default="{ el }">
                         <v-simple-table class="temperature-panel-table">
@@ -120,9 +120,9 @@
                                     <td v-if="!el.is.mobile" class="state">
                                         <v-tooltip v-if="object.state !== null" top>
                                             <template #activator="{ on, attrs }">
-                                                <small v-bind="attrs" v-on="on">
+                                                <div v-bind="attrs" v-on="on">
                                                     {{ object.state }}
-                                                </small>
+                                                </div>
                                             </template>
                                             <span>{{ $t('Panels.TemperaturePanel.Avg') }}: {{ object.avgState }}</span>
                                         </v-tooltip>

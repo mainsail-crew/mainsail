@@ -30,8 +30,8 @@
 }
 
 ._slider-input {
-    font-size: 0.875rem;
-    max-width: 5.4rem;
+    min-width: 4.2rem;
+    max-width: 5rem;
     margin-left: 12px;
 }
 
@@ -40,7 +40,8 @@
 }
 
 ._slider-input >>> .v-text-field__slot input {
-    padding: 4px 0 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 ._slider-input >>> .v-input__append-inner {

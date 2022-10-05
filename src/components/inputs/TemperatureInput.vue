@@ -1,7 +1,6 @@
 <style scoped>
 ._temp-input {
-    font-size: 0.875rem;
-    min-width: 4rem;
+    min-width: 4.2rem;
     max-width: 5rem;
 }
 
@@ -12,12 +11,17 @@
 }
 
 ._temp-input >>> .v-text-field__slot input {
-    padding: 4px 0 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 ._preset {
-    font-size: 0.8125rem;
-    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+._preset-icon {
+    margin-top: -1px;
+    margin-right: 4px;
 }
 </style>
 
@@ -57,11 +61,11 @@
                     link
                     style="min-height: 32px"
                     @click="doSend(`${command} ${attributeName}=${name} TARGET=${preset.value}`)">
-                    <div class="d-flex align-center _preset">
-                        <v-icon v-if="preset.value === 0" else color="primary" small class="mr-1">
+                    <div class="_preset">
+                        <v-icon v-if="preset.value === 0" else color="primary" small class="_preset-icon">
                             {{ mdiSnowflake }}
                         </v-icon>
-                        <v-icon v-else small class="mr-1">{{ mdiFire }}</v-icon>
+                        <v-icon v-else small class="_preset-icon">{{ mdiFire }}</v-icon>
                         <span style="padding-top: 2px">{{ preset.value }}°C</span>
                     </div>
                 </v-list-item>
