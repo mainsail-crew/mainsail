@@ -131,13 +131,11 @@
         }
     },
     "Editor": {
-        "Cancel": "Отмена",
         "ConfigReference": "Справочник по конфигурации",
         "DontSave": "Не сохранять",
         "Downloading": "Загрузка",
         "FailedSave": "{filename} не удалось загрузить!",
         "FileReadOnly": "только для чтения",
-        "Minimap": "Показать минимум",
         "SaveClose": "Сохранить и закрыть",
         "SaveRestart": "Сохранить и перезапустить",
         "SuccessfullySaved": "{filename} успешно сохранено.",
@@ -164,7 +162,6 @@
         "DeleteDirectoryQuestion": "Вы действительно хотите удалить каталог \"{name}\" со всем его содержимым?",
         "DeleteSelectedQuestion": "Вы действительно хотите удалить {count} выбранных файлов?",
         "Download": "Скачать",
-        "Downloading": "Загрузка",
         "EditFile": "Редактировать файл",
         "Empty": "Пустой",
         "Filament": "Филамент",
@@ -206,7 +203,6 @@
         "SuccessfullyRenamed": "Успешное переименование {filename}.",
         "SuccessfullyUploaded": "Загрузка {filename} успешна!",
         "Total": "Всего: ",
-        "Uploading": "Загрузить",
         "UploadNewGcode": "Загрузить новый Gcode",
         "Used": "Использует: ",
         "View3D": "3D просмотр"
@@ -449,22 +445,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "ВСЕ",
-            "AlternateControls": "Альтернативные средства управления",
-            "Headline": "Управление",
-            "InvertX": "Инвертировать X",
-            "InvertY": "Инвертировать Y",
-            "InvertZ": "Инвертировать Z",
-            "PleaseConfigureSteps": "Пожалуйста, настройте шаги",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Настройки > Интерфейс > Управление",
-            "SetupControls": "Элементы управления настройками",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Наклон"
-        },
         "ExtruderControlPanel": {
             "Allowed": "Разрешено",
             "EstimatedExtrusion": "Предполагаемая экструзия:",
@@ -484,7 +464,6 @@
             "PressureAdvanceSettings": {
                 "Advance": "Аванс",
                 "Extruder": "Экструдер",
-                "PressureAdvance": "Опережение давления",
                 "SmoothTime": "Плавное время"
             },
             "Requested": "Запрошено",
@@ -500,7 +479,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Перезапуск прошивки",
             "KlipperCheck": "Проверьте, запущена ли служба Klipper и настроен ли UDS (Unix Domain Socket).",
-            "KlippyInfo": "Moonraker не может подключиться к Klippy!\nPlease и проверить, запущен ли сервис Klipper и настроен ли UDS (Unix Domain Socket).",
             "KlippyState": "Klippy-Статус",
             "MoonrakerCannotConnect": "Moonraker не может соединиться с Клиппером!",
             "Restart": "Перезапустить"
@@ -509,7 +487,6 @@
             "Headline": "Настройки машины",
             "MotionSettings": {
                 "Acceleration": "Ускорение",
-                "Deceleration": "Замедление",
                 "MaxAccelToDecel": "Макс. ускорение - замедление.",
                 "SquareCornerVelocity": "Угловая скорость",
                 "Velocity": "Скорость"
@@ -520,13 +497,9 @@
             "Send": "отправить"
         },
         "MiniconsolePanel": {
-            "Console": "Консоль",
-            "CustomFilters": "Пользовательские фильтры",
-            "Empty": "Пустой",
             "Headline": "Консоль",
             "HideTemperatures": "Скрытые температуры",
             "HideTimelapse": "Скрыть таймлапс",
-            "Send": "Отправить",
             "SendCode": "Отправьте код...",
             "SetupConsole": "Настройка консоли "
         },
@@ -537,28 +510,12 @@
             "MoreInformation": "дополнительные сведения"
         },
         "MiscellaneousPanel": {
-            "ExtrusionFactor": "коэффициент экструзии",
             "Headline": "Разное",
-            "Miscellaneous": "Другое",
-            "PrintSettings": "Настройки печати",
             "RunoutSensor": {
                 "Detected": "обнаружено",
                 "Disabled": "отключено",
                 "Empty": "Пустой"
-            },
-            "SpeedFactor": "Коэффициент скорости"
-        },
-        "MoonrakerFailedComponentsPanel": {
-            "DownloadLog": "Скачать протокол",
-            "FollowingPluginHasAnError": "Следующий плагин имеет ошибку:",
-            "MoonrakerErrorInfo": "Ошибка была обнаружена при загрузке компонентов Moonraker. Пожалуйста, проверьте лог-файл и устраните проблему.",
-            "MoonrakerFailedComponents": "Фантастические компоненты для лунохода"
-        },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Скачать журнал",
-            "FollowingPluginHasAnError": "В следующем плагине возникла ошибка:",
-            "MoonrakerErrorInfo": "При загрузке компонентов moonraker была обнаружена ошибка. Пожалуйста, проверьте лог-файл и устраните проблему.",
-            "MoonrakerWarnings": "Предупреждения Moonraker"
+            }
         },
         "PowerControlPanel": {
             "Error": "Ошибка",
@@ -606,7 +563,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "Автомасштабируемая диаграмма",
             "Avg": "средний",
-            "Color": "Цвет",
             "Cooldown": "Охлаждение",
             "Current": "Текущий",
             "Dataset": {
@@ -616,50 +572,30 @@
                 "Temperature": "текущая температура"
             },
             "Headline": "Температуры",
-            "InList": "в списке",
             "Max": "макс.",
             "Min": "мини",
             "Name": "Имя",
             "Presets": "Предпочтения",
             "SetupTemperatures": "Заданные температуры",
-            "Show": "показать",
             "ShowChart": "Показать диаграмму",
-            "ShowCurrentTemperatureInChart": "Отображать текущую температуру на диаграмме",
             "ShowNameInChart": "Показать {name} на графике",
             "ShowNameInList": "Показать {name} в списке",
-            "ShowPWMPowerInChart": "Отображение мощности ШИМ на диаграмме",
-            "ShowTargetTemperatureInChart": "Индикация заданной температуры на диаграмме",
             "State": "Статус",
             "Target": "должен быть",
-            "Temperatures": "Температуры",
             "TemperaturesInChart": "Температуры [°C]",
             "TempTooHigh": "Температура слишком высока для {name}! (max: {max})",
-            "TempTooLow": "Температура слишком низкая для {name}! (min: {min})",
-            "UNKNOWN": "ЗНАЕТЕ"
+            "TempTooLow": "Температура слишком низкая для {name}! (min: {min})"
         },
         "ToolheadControlPanel": {
             "Absolute": "Абсолютно",
             "ALL": "ALL",
-            "Controls": "Контроль",
             "Headline": "Головка инструмента",
-            "Home": "Home",
-            "Invalid": "Неверный",
-            "InvertX": "X инвертировать",
-            "InvertY": "Y инвертировать",
-            "InvertZ": "Z инвертировать",
-            "Macros": "Макрос",
-            "MotorsOff": "Двигатели выключены",
-            "OutOfRange": "Вне зоны доступа!",
             "PleaseConfigureSteps": "Пожалуйста, настройте расстояние вращения",
             "Position": "Позиция",
             "QGL": "QGL",
             "Relative": "Инкрементальный",
             "SettingsInterfaceControl": "Настройки > интерфейс > управление",
-            "SetupControls": "Установить контроль",
             "SpeedFactor": "Коэффициент скорости",
-            "XOffset": "X-смещение",
-            "YOffset": "Y-смещение",
-            "ZOffset": "Z-смещение",
             "ZTilt": "Z Наклон"
         },
         "WebcamPanel": {
@@ -667,13 +603,10 @@
             "FPS": "FPS",
             "Headline": "Веб-камера",
             "NoWebcam": "Нет доступной веб-камеры. Добавьте веб-камеру в разделе \"Настройки интерфейса\" -> \"Веб-камеры\".",
-            "UnknownWebcamService": "Неизвестная веб-камера",
-            "UrlNotAvailable": "URL недоступен",
-            "Webcam": "Веб-камера"
+            "UnknownWebcamService": "Неизвестная веб-камера"
         },
         "ZoffsetPanel": {
             "Clear": "Очистить",
-            "CurrentOffset": "Текущее смещение",
             "Headline": "Z-смещение",
             "Later": "Позже",
             "Ok": "OK",
