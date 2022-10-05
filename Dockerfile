@@ -1,7 +1,7 @@
 #
 # Builder stage, builds the application in node
 #
-FROM --platform=$BUILDPLATFORM node:16-alpine as builder
+FROM --platform=$BUILDPLATFORM node:18-alpine as builder
 
 RUN apk add zip
 
