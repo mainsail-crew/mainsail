@@ -41,22 +41,6 @@ jobs:
             - name: Prettier
               uses: mainsail-crew/mainsail-actions/prettier@master
 
-    check-locale:
-        needs: [debs-cache]
-        runs-on: ubuntu-latest
-        steps:
-            - name: Check locale
-              uses: mainsail-crew/mainsail-actions/check-locale@master
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-
-    size-report:
-        needs: [debs-cache]
-        runs-on: ubuntu-latest
-        steps:
-            - name: Size report
-              uses: mainsail-crew/mainsail-actions/size-report@master
-
     test-cypress:
         needs: [debs-cache, build]
         runs-on: ubuntu-latest
