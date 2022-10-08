@@ -96,6 +96,48 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return state.virtual_sdcard?.progress ?? 0
     },
 
+    getPrintMaxLayers: (state) => {
+        if (state.print_stats?.info?.total_layer !== null) {
+            return state.print_stats.info.total_layer
+        } else if (state.current_file?.layer_count) {
+            return state.current_file.layer_count
+        } else if (
+            'current_file' in state &&
+            'first_layer_height' in state.current_file &&
+            'layer_height' in state.current_file &&
+            'object_height' in state.current_file
+        ) {
+            const max = Math.ceil(
+                (state.current_file.object_height - state.current_file.first_layer_height) /
+                    state.current_file.layer_height +
+                    1
+            )
+            return max > 0 ? max : 0
+        }
+
+        return 0
+    },
+
+    getPrintCurrentLayer: (state, getters) => {
+        if (state.print_stats?.info?.current_layer !== null) {
+            return state.print_stats.info.current_layer
+        } else if (
+            state.print_stats?.print_duration > 0 &&
+            'first_layer_height' in state.current_file &&
+            'layer_height' in state.current_file
+        ) {
+            const gcodePositionZ = state.gcode_move?.gcode_position[2] ?? 0
+            const current_layer = Math.ceil(
+                (gcodePositionZ - state.current_file.first_layer_height) / state.current_file.layer_height + 1
+            )
+
+            if (current_layer > getters.getPrintMaxLayers) return getters.getPrintMaxLayers
+            if (current_layer > 0) return current_layer
+        }
+
+        return 0
+    },
+
     getMacros: (state) => {
         const array: PrinterStateMacro[] = []
         const config = state.configfile?.config ?? {}
