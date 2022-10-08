@@ -150,21 +150,26 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col class="py-1">
-                                    <v-checkbox
-                                        v-model="form.flipX"
-                                        hide-details
-                                        class="mt-1"
-                                        :label="$t('Settings.WebcamsTab.FlipHorizontally')"></v-checkbox>
+                                <v-col class="pt-1 pb-3">
+                                    <div class="v-label v-label--active theme--dark text-subtitle-1">
+                                        {{ $t('Settings.WebcamsTab.FlipWebcam') }}
+                                    </div>
                                 </v-col>
                             </v-row>
-                            <v-row>
-                                <v-col class="py-1">
+                            <v-row class="mt-0">
+                                <v-col class="py-0">
+                                    <v-checkbox
+                                        v-model="form.flipX"
+                                        class="mt-1"
+                                        hide-details
+                                        :label="$t('Settings.WebcamsTab.Horizontally')" />
+                                </v-col>
+                                <v-col class="py-0">
                                     <v-checkbox
                                         v-model="form.flipY"
-                                        hide-details
                                         class="mt-1"
-                                        :label="$t('Settings.WebcamsTab.FlipVertically')"></v-checkbox>
+                                        hide-details
+                                        :label="$t('Settings.WebcamsTab.Vertically')" />
                                 </v-col>
                             </v-row>
                         </v-col>
