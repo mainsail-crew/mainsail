@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import { actions } from '@/store/actions'
 import { mutations } from '@/store/mutations'
 import { getters } from '@/store/getters'
-import { ConfigJsonInstance, RootState } from './types'
+import { RootState } from './types'
 
 // load modules
 import { socket } from '@/store/socket'

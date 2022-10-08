@@ -239,7 +239,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    async resetMoonrakerDB({ commit, dispatch, rootGetters }, payload) {
+    async resetMoonrakerDB({ rootGetters }, payload) {
         const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
 
         const urlDefault =
@@ -306,7 +306,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         window.location.reload()
     },
 
-    async backupMoonrakerDB({ commit, dispatch, rootGetters }, payload) {
+    async backupMoonrakerDB({ rootGetters }, payload) {
         const backup: any = {}
 
         const responseMainsail = await fetch(rootGetters['socket/getUrl'] + '/server/database/item?namespace=mainsail')

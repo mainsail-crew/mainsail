@@ -10,7 +10,7 @@ import { PluginOption } from 'vite'
 export default function buildVersion(): PluginOption {
     return {
         name: 'build-version',
-        writeBundle: (context, options) => {
+        writeBundle: () => {
             setImmediate(async () => {
                 const versionIdentifier = version.toString()
                 const versionFile = await fs.promises.open(path.resolve(__dirname, '../../dist/.version'), 'w')
