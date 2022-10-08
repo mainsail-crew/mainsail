@@ -20,6 +20,7 @@ import {
     PrinterStateTemperatureObject,
     PrinterStateTemperatureSensor,
     PrinterStateToolchangeMacro,
+    PrinterStateAdditionSensor,
 } from '@/store/printer/types'
 import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
@@ -281,6 +282,34 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     chartColor: getters['tempHistory/getDatasetColor'](nameSplit[1]),
                     chartSeries: getters['tempHistory/getSerieNames'](nameSplit[1]),
                 })
+            } else if (key === 'z_thermal_adjust') {
+                let icon = mdiThermometer
+                const min_temp = state.configfile?.settings[key]?.min_temp ?? 0
+                const max_temp = state.configfile?.settings[key]?.max_temp ?? 210
+                const split = (max_temp - min_temp) / 3
+
+                if (value.temperature <= min_temp + split) icon = mdiThermometerLow
+                if (value.temperature >= max_temp - split) icon = mdiThermometerHigh
+
+                const additionSensor: PrinterStateAdditionSensor = {
+                    bool: getters.getAdditionSensors(key),
+                    name: 'z_adjust',
+                    unit: 'mm',
+                    value: Math.round(value.current_z_adjust / 100) * 100,
+                }
+
+                sensors.push({
+                    name: key,
+                    temperature: Math.round(value.temperature * 10) / 10,
+                    additionSensors: [additionSensor],
+                    icon,
+                    min_temp: min_temp,
+                    max_temp: max_temp,
+                    measured_min_temp: Math.round(value.measured_min_temp * 10) / 10,
+                    measured_max_temp: Math.round(value.measured_max_temp * 10) / 10,
+                    chartColor: getters['tempHistory/getDatasetColor'](key),
+                    chartSeries: getters['tempHistory/getSerieNames'](key),
+                })
             }
         }
 
@@ -502,34 +531,30 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getAdditionSensors: (state, getters, rootState, rootGetters) => (name: string) => {
-        let additionValues = {}
+        const additionValues: PrinterStateAdditionSensor[] = []
+
         additionalSensors.forEach((sensorName) => {
             if (sensorName + ' ' + name in state) {
                 Object.keys(state[sensorName + ' ' + name]).forEach((key) => {
                     if (key !== 'temperature') {
-                        // eslint-disable-next-line
-                        const tmp: any = {}
-                        tmp[key] = {}
-                        tmp[key]['value'] = state[sensorName + ' ' + name][key].toFixed(1)
-                        tmp[key]['bool'] = rootGetters['gui/getDatasetAdditionalSensorValue']({
+                        const bool = rootGetters['gui/getDatasetAdditionalSensorValue']({
                             name: name,
                             sensor: key,
                         })
 
-                        switch (key) {
-                            case 'pressure':
-                                tmp[key]['unit'] = 'hPa'
-                                break
+                        let unit = ''
+                        if (key === 'pressure') unit = 'hPa'
+                        if (key === 'humidity') unit = '%'
 
-                            case 'humidity':
-                                tmp[key]['unit'] = '%'
-                                break
-
-                            default:
-                                tmp[key]['unit'] = ''
+                        // eslint-disable-next-line
+                        const tmp: PrinterStateAdditionSensor = {
+                            name: key,
+                            value: state[sensorName + ' ' + name][key].toFixed(1),
+                            bool,
+                            unit,
                         }
 
-                        additionValues = Object.assign(additionValues, tmp)
+                        additionValues.push(tmp)
                     }
                 })
             }
