@@ -193,7 +193,7 @@
                     <v-btn text @click="form.bool = false">
                         {{ $t('Settings.Cancel') }}
                     </v-btn>
-                    <v-btn color="primary" text type="submit">
+                    <v-btn color="primary" text type="submit" :disabled="!form.name">
                         {{
                             form.id === null
                                 ? $t('Settings.WebcamsTab.SaveWebcam')
