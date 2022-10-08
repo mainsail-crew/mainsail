@@ -255,7 +255,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return caseInsensitiveSort(fans, 'name')
     },
 
-    getTemperatureSensors: (state, getters) => {
+    getTemperatureSensors: (state, getters, rootState, rootGetters) => {
         const sensors: PrinterStateTemperatureSensor[] = []
 
         for (const [key, value] of Object.entries(state)) {
@@ -291,8 +291,13 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 if (value.temperature <= min_temp + split) icon = mdiThermometerLow
                 if (value.temperature >= max_temp - split) icon = mdiThermometerHigh
 
+                const additionalSensorBool = rootGetters['gui/getDatasetAdditionalSensorValue']({
+                    name: key,
+                    sensor: 'z_adjust',
+                })
+
                 const additionSensor: PrinterStateAdditionSensor = {
-                    bool: getters.getAdditionSensors(key),
+                    bool: additionalSensorBool,
                     name: 'z_adjust',
                     unit: 'mm',
                     value: Math.round(value.current_z_adjust / 100) * 100,
