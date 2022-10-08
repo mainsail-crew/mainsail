@@ -89,6 +89,7 @@
                                         hide-details="auto"
                                         outlined
                                         :rules="[rules.required, rules.unique]"
+                                        class="_webcam-settings-name-field"
                                         dense></v-text-field>
                                 </v-col>
                             </v-row>
@@ -452,5 +453,10 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
     ._menu-button:focus {
         border: 2px solid var(--color-primary) !important;
     }
+}
+</style>
+<style>
+._webcam-settings-name-field .v-text-field__details {
+    margin-bottom: -12px !important;
 }
 </style>
