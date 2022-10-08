@@ -28,7 +28,7 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
         })
     },
 
-    async groupStore({ commit, dispatch, state }, payload) {
+    async groupStore({ commit, dispatch }, payload) {
         const id = uuidv4()
 
         await commit('groupStore', { id, values: payload.values })
@@ -37,7 +37,7 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
         return id
     },
 
-    groupUpdate({ commit, dispatch, state }, payload) {
+    groupUpdate({ commit, dispatch }, payload) {
         commit('groupUpdate', payload)
         dispatch('groupUpload', payload.id)
     },

@@ -8,7 +8,6 @@ import {
     mdiEngine,
     mdiGamepad,
     mdiInformation,
-    mdiPrinter3d,
     mdiPrinter3dNozzle,
     mdiThermometerLines,
     mdiWebcam,

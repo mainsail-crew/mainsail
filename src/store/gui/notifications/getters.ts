@@ -3,7 +3,6 @@ import { GuiNotificationState, GuiNotificationStateDismissEntry, GuiNotification
 import { ServerAnnouncementsStateEntry } from '@/store/server/announcements/types'
 import i18n from '@/plugins/i18n.js'
 import { RootStateDependency } from '@/store/types'
-import { camelize } from '@/plugins/helpers'
 import { sha256 } from 'js-sha256'
 import { PrinterStateKlipperConfigWarning } from '@/store/printer/types'
 

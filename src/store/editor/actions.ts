@@ -12,7 +12,7 @@ export const actions: ActionTree<EditorState, RootState> = {
         commit('reset')
     },
 
-    openFile({ state, dispatch, commit, rootGetters, rootState }, payload) {
+    openFile({ state, dispatch, commit, rootGetters }, payload) {
         const fullFilepathArray = []
         fullFilepathArray.push(payload.root)
         let path = payload.path

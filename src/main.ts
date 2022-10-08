@@ -12,7 +12,7 @@ import { WebSocketPlugin } from '@/plugins/webSocketClient'
 import { registerSW } from 'virtual:pwa-register'
 
 // noinspection JSUnusedGlobalSymbols
-const updateSW = registerSW({
+registerSW({
     onOfflineReady() {},
 })
 
@@ -84,7 +84,7 @@ const initLoad = async () => {
             await store.dispatch('importConfigJson', file)
             if ('defaultLocale' in file) i18n.locale = file.defaultLocale
         })
-        .catch((_) => {
+        .catch(() => {
             window.console.error('config.json not found or cannot be decoded!')
         })
 
