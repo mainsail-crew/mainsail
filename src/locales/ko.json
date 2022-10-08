@@ -930,8 +930,6 @@
             "AddWebcam": "웹캠 추가",
             "CreateWebcam": "웹캠 장치 정보 입력",
             "EditWebcam": "웹캠 장치 정보 수정",
-            "FlipHorizontally": "화면 수평 반전",
-            "FlipVertically": "화면 수직 반전",
             "IconBed": "베드",
             "IconCam": "캠",
             "IconDoor": "도어",
