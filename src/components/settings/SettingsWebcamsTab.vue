@@ -163,14 +163,14 @@
                                         v-model="form.flipX"
                                         class="mt-1"
                                         hide-details
-                                        :label="$t('Settings.WebcamsTab.Horizontally')" />
+                                        :label="$t('Settings.WebcamsTab.Horizontally')"></v-checkbox>
                                 </v-col>
                                 <v-col class="py-0">
                                     <v-checkbox
                                         v-model="form.flipY"
                                         class="mt-1"
                                         hide-details
-                                        :label="$t('Settings.WebcamsTab.Vertically')" />
+                                        :label="$t('Settings.WebcamsTab.Vertically')"></v-checkbox>
                                 </v-col>
                             </v-row>
                         </v-col>
