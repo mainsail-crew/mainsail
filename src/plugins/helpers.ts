@@ -134,12 +134,6 @@ export const formatFilesize = (fileSizeInBytes: number): string => {
     return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i]
 }
 
-export const formatDate = (date: number): string => {
-    const tmp2 = new Date(date)
-
-    return tmp2.toLocaleString().replace(',', '')
-}
-
 export const formatFrequency = (frequency: number): string => {
     let i = -1
     const units = [' kHz', ' MHz', ' GHz']

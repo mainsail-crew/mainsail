@@ -66,7 +66,6 @@ export interface ServerState {
 export interface ServerStateEvent {
     date: Date
     time?: number
-    formatTime: string
     type: string
     message: string
     formatMessage: string | string[]

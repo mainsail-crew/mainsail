@@ -162,7 +162,7 @@
                         <td class="text-no-wrap text-right">
                             {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
                         </td>
-                        <td class="text-right">{{ formatDate(item.modified) }}</td>
+                        <td class="text-right">{{ formatDateTime(item.modified) }}</td>
                     </tr>
                 </template>
             </v-data-table>
@@ -462,7 +462,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { formatDate, formatFilesize, sortFiles } from '@/plugins/helpers'
+import { formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
@@ -553,7 +553,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     sortFiles = sortFiles
     formatFilesize = formatFilesize
-    formatDate = formatDate
 
     declare $refs: {
         fileUpload: HTMLInputElement

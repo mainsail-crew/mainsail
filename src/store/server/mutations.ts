@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { ServerState } from '@/store/server/types'
-import { formatConsoleMessage, formatTime } from '@/plugins/helpers'
+import { formatConsoleMessage } from '@/plugins/helpers'
 import { maxEventHistory } from '@/store/variables'
 
 export const mutations: MutationTree<ServerState> = {
@@ -105,7 +105,6 @@ export const mutations: MutationTree<ServerState> = {
 
             state.events.push({
                 date: date,
-                formatTime: formatTime(date),
                 message: message.message,
                 formatMessage: formatMessage,
                 type: message.type,
@@ -126,7 +125,6 @@ export const mutations: MutationTree<ServerState> = {
 
         state.events.push({
             date: payload.date,
-            formatTime: formatTime(payload.date),
             message: payload.message,
             formatMessage: payload.formatMessage,
             type: payload.type,
