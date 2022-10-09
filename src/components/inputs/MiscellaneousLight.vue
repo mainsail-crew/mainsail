@@ -409,7 +409,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
-    @Debounce({ time: 250 })
+    @Debounce({ time: 500 })
     onColorRGBChanged(payload: IroColor) {
         const color: ColorData = {
             red: payload.red,
@@ -421,7 +421,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         this.colorChanged(color)
     }
 
-    @Debounce({ time: 250 })
+    @Debounce({ time: 500 })
     onColorWhiteChanged(payload: IroColor) {
         const color: ColorData = {
             red: this.current.red,
@@ -436,7 +436,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         this.colorChanged(color)
     }
 
-    @Debounce({ time: 250 })
+    @Debounce({ time: 500 })
     onColorInput(payload: { name: string; value: number }) {
         const color: ColorData = {
             red: this.current.red,
