@@ -61,6 +61,7 @@
                                 v-if="existWhite"
                                 :color="colorRGBW"
                                 :options="colorPickerWhiteOptions"
+                                class="mt-3"
                                 @update:color="onColorWhiteChanged" />
                         </v-col>
                         <v-col>

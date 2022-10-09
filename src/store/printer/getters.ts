@@ -21,6 +21,8 @@ import {
     PrinterStateTemperatureSensor,
     PrinterStateToolchangeMacro,
     PrinterStateAdditionalSensor,
+    PrinterGetterObject,
+    PrinterStateLight,
 } from '@/store/printer/types'
 import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
@@ -137,6 +139,29 @@ export const getters: GetterTree<PrinterState, RootState> = {
         }
 
         return 0
+    },
+
+    getPrinterObjects: (state) => (supportedObjects: string[]) => {
+        const outputObjects: PrinterGetterObject[] = []
+
+        for (const [key, value] of Object.entries(state)) {
+            let type = key.substring(0, key.indexOf(' ')).trimEnd()
+            let name = key.substring(key.indexOf(' ') + 1).trimStart()
+
+            if (key.indexOf(' ') === -1) type = name = key
+
+            if (supportedObjects.includes(type)) {
+                outputObjects.push({
+                    name,
+                    type,
+                    state: { ...value },
+                    config: state.configfile?.config[key] ?? {},
+                    settings: state.configfile?.settings[key] ?? {},
+                })
+            }
+        }
+
+        return outputObjects
     },
 
     getMacros: (state) => {
@@ -429,31 +454,106 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return 'fan' in state ? state.fan.speed : 0
     },
 
-    getFans: (state) => {
+    getFans: (state, getters) => {
         const fans: PrinterStateFan[] = []
         const supportedFans = ['temperature_fan', 'controller_fan', 'heater_fan', 'fan_generic', 'fan']
+        const objects = getters.getPrinterObjects(supportedFans)
 
         const controllableFans = ['fan_generic', 'fan']
 
-        for (const [key, value] of Object.entries(state)) {
-            const nameSplit = key.split(' ')
-
-            if (supportedFans.includes(nameSplit[0])) {
-                const name = nameSplit.length > 1 ? nameSplit[1] : nameSplit[0]
-
-                fans.push({
-                    name: name,
-                    type: nameSplit[0],
-                    speed: 'speed' in value ? value.speed : 0,
-                    controllable: controllableFans.includes(nameSplit[0]),
-                })
-            }
-        }
+        objects.foreach((object: PrinterGetterObject) => {
+            fans.push({
+                name: object.name,
+                type: object.type,
+                speed: object.state.speed ?? 0,
+                controllable: controllableFans.includes(object.type),
+            })
+        })
 
         return fans.sort((a, b) => {
             if (a.controllable < b.controllable) return 1
             if (a.controllable > b.controllable) return -1
 
+            const nameA = a.name.toUpperCase()
+            const nameB = b.name.toUpperCase()
+
+            if (nameA < nameB) return -1
+            if (nameA > nameB) return 1
+
+            return 0
+        })
+    },
+
+    getLights: (state, getters) => {
+        const lights: PrinterStateLight[] = []
+        const supportedObjects = ['dotstar', 'led', 'neopixel', 'pca9533', 'pca9632']
+        const objects = getters.getPrinterObjects(supportedObjects)
+
+        objects
+            .filter((object: PrinterGetterObject) => {
+                return !object.name.startsWith('_')
+            })
+            .forEach((object: PrinterGetterObject) => {
+                let colorOrder = 'RGB'
+                let singleChannelTarget = null
+                const colorData = object.state.color_data ?? []
+
+                if ('color_order' in object.settings) colorOrder = object.settings.color_order[0] ?? ''
+
+                if (object.type === 'led') {
+                    colorOrder = ''
+                    if ('red_pin' in object.config) colorOrder += 'R'
+                    if ('green_pin' in object.config) colorOrder += 'G'
+                    if ('blue_pin' in object.config) colorOrder += 'B'
+                    if ('white_pin' in object.config) colorOrder += 'W'
+                }
+
+                let initialRed = object.settings.initial_red ?? null
+                if (!('initial_red' in object.config)) initialRed = null
+
+                let initialGreen = object.settings.initial_green ?? null
+                if (!('initial_green' in object.config)) initialGreen = null
+
+                let initialBlue = object.settings.initial_blue ?? null
+                if (!('initial_blue' in object.config)) initialBlue = null
+
+                let initialWhite = object.settings.initial_white ?? null
+                if (!('initial_white' in object.config)) initialWhite = null
+
+                if (object.type === 'led' && colorOrder.length === 1) {
+                    const firstColorData = colorData[0] ?? []
+
+                    switch (colorOrder) {
+                        case 'R':
+                            singleChannelTarget = firstColorData[0] ?? 0
+                            break
+                        case 'G':
+                            singleChannelTarget = firstColorData[1] ?? 0
+                            break
+                        case 'B':
+                            singleChannelTarget = firstColorData[2] ?? 0
+                            break
+                        case 'W':
+                            singleChannelTarget = firstColorData[3] ?? 0
+                            break
+                    }
+                }
+
+                lights.push({
+                    name: object.name,
+                    type: object.type as PrinterStateLight['type'],
+                    chainCount: object.settings.chain_count ?? 1,
+                    colorOrder,
+                    initialRed,
+                    initialGreen,
+                    initialBlue,
+                    initialWhite,
+                    colorData,
+                    singleChannelTarget,
+                })
+            })
+
+        return lights.sort((a, b) => {
             const nameA = a.name.toUpperCase()
             const nameB = b.name.toUpperCase()
 

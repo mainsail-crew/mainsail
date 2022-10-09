@@ -23,6 +23,7 @@
                                 v-if="existWhite"
                                 :color="colorRGBW"
                                 :options="colorPickerWhiteOptions"
+                                class="mt-3"
                                 @update:color="onColorWhiteChanged" />
                         </v-col>
                         <v-col>
@@ -155,11 +156,11 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { mdiDelete, mdiPalette, mdiPencil } from '@mdi/js'
+import { mdiDelete, mdiPencil } from '@mdi/js'
 import { caseInsensitiveSort, convertName } from '@/plugins/helpers'
 import { PrinterStateLight } from '@/store/printer/types'
 import { GuiMiscellaneousStateEntry, GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
-import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker'
+import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
 import iro from '@jaames/iro'
 import { Debounce } from 'vue-debounce-decorator'
 import { IroColor } from '@irojs/iro-core'
@@ -178,7 +179,6 @@ interface ColorData {
 })
 export default class SettingsMiscellaneousTabLightPresets extends Mixins(BaseMixin) {
     mdiDelete = mdiDelete
-    mdiPalette = mdiPalette
     mdiPencil = mdiPencil
 
     convertName = convertName
