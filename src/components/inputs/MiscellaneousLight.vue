@@ -436,6 +436,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
         this.colorChanged(color)
     }
 
+    @Debounce({ time: 250 })
     onColorInput(payload: { name: string; value: number }) {
         const color: ColorData = {
             red: this.current.red,
