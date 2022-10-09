@@ -369,8 +369,8 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     }
 
     get availableLanguages() {
-        const locales = import.meta.globEager('../../locales/*.json')
-        const languages: any = []
+        const locales = import.meta.glob('../../locales/*.json', { eager: true }) as { [key: string]: any }
+        const languages: { text: string; value: string }[] = []
 
         Object.keys(locales).map((file: string) => {
             const langKey = file.slice(file.lastIndexOf('.') - 2, file.lastIndexOf('.'))

@@ -591,8 +591,6 @@
             "Absolute": "abszolút",
             "ALL": "MIND",
             "Headline": "Fúvókafej",
-            "Invalid": "Érvénytelen",
-            "OutOfRange": "Hatértéken túl!",
             "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
             "Position": "Pozíció",
             "QGL": "QGL",
@@ -605,11 +603,9 @@
             "All": "Mind",
             "FPS": "FPS",
             "Headline": "Webkamera",
-            "UnknownWebcamService": "Ismeretlen webkamera szolg.",
-            "UrlNotAvailable": "Az URL nem elérhető"
+            "UnknownWebcamService": "Ismeretlen webkamera szolg."
         },
         "ZoffsetPanel": {
-            "CurrentOffset": "aktuális eltolás",
             "Headline": "Z-eltolás",
             "Later": "Később",
             "Ok": "OK",

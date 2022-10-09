@@ -189,34 +189,11 @@ export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin) {
     }
 
     get max_layers() {
-        if (
-            'first_layer_height' in this.current_file &&
-            'layer_height' in this.current_file &&
-            'object_height' in this.current_file
-        ) {
-            const max = Math.ceil(
-                (this.current_file.object_height - this.current_file.first_layer_height) /
-                    this.current_file.layer_height +
-                    1
-            )
-            return max > 0 ? max : 0
-        }
-
-        return 0
+        return this.$store.getters['printer/getPrintMaxLayers'] ?? 0
     }
 
     get current_layer() {
-        if (this.print_time > 0 && 'first_layer_height' in this.current_file && 'layer_height' in this.current_file) {
-            const gcodePositionZ = this.$store.state.printer.gcode_move?.gcode_position[2] ?? 0
-            let current_layer = Math.ceil(
-                (gcodePositionZ - this.current_file.first_layer_height) / this.current_file.layer_height + 1
-            )
-            current_layer = current_layer <= this.max_layers ? current_layer : this.max_layers
-
-            return current_layer > 0 ? current_layer : 0
-        }
-
-        return 0
+        return this.$store.getters['printer/getPrintCurrentLayer'] ?? 0
     }
 
     get estimated_time_file() {
