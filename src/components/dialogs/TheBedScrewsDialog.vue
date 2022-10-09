@@ -15,12 +15,38 @@
             <v-card-text>
                 <v-row>
                     <v-col>
-                        <span>State: {{ bed_screws_state }}</span>
-                        <br />
-                        <span>current_screw: {{ current_screw }}</span>
-                        <br />
-                        <span>accepted_screws: {{ accepted_screws }}</span>
-                        <br />
+                        <v-text-field
+                            v-model="currentScrewName"
+                            :label="$t('BedScrews.ScrewName')"
+                            outlined
+                            dense
+                            clearable
+                            hide-details></v-text-field>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="6">
+                        <v-text-field
+                            v-model="currentScrewOutput"
+                            :label="$t('BedScrews.ScrewIndex')"
+                            outlined
+                            dense
+                            clearable
+                            hide-details></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field
+                            v-model="acceptedScrewOutput"
+                            :label="$t('BedScrews.ScrewAccepted')"
+                            outlined
+                            dense
+                            clearable
+                            hide-details></v-text-field>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <p class="text-center mb-0" v-html="$t('BedScrews.Description')" />
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -47,20 +73,23 @@ import Panel from '@/components/ui/Panel.vue'
 import Responsive from '@/components/ui/Responsive.vue'
 
 import { mdiArrowCollapseDown, mdiInformation, mdiCloseThick } from '@mdi/js'
+import ControlMixin from '@/components/mixins/control'
 @Component({
     components: { Panel, Responsive },
 })
-export default class TheBedScrewsDialog extends Mixins(BaseMixin) {
+export default class TheBedScrewsDialog extends Mixins(BaseMixin, ControlMixin) {
     mdiArrowCollapseDown = mdiArrowCollapseDown
     mdiInformation = mdiInformation
     mdiCloseThick = mdiCloseThick
 
     get showDialog() {
-        return this.$store.state.printer.bed_screws?.is_active ?? false
+        const is_active = this.$store.state.printer.bed_screws?.is_active ?? false
+
+        return is_active && this.homedAxes.includes('xyz')
     }
 
     get config() {
-        return this.$store.state.configfile?.bed_screws ?? {}
+        return this.$store.state.printer.configfile?.settings?.bed_screws ?? {}
     }
 
     get bed_screws_state() {
@@ -85,6 +114,37 @@ export default class TheBedScrewsDialog extends Mixins(BaseMixin) {
 
     get loadingAdjusted() {
         return this.loadings.includes('bedScrewsAdjusted')
+    }
+
+    get screwNames() {
+        const configKeys = Object.keys(this.config)
+        const screwNameKeys = configKeys.filter((name: string) => name.startsWith('screw') && name.endsWith('_name'))
+
+        const output: string[] = []
+        screwNameKeys?.forEach((fullName: string) => {
+            const index = fullName.indexOf('_')
+            const number = parseInt(fullName.slice(5, index))
+
+            output[number - 1] = this.config[`screw${number}_name`] ?? ''
+        })
+
+        return output
+    }
+
+    get countScrews() {
+        return this.screwNames.length
+    }
+
+    get currentScrewName() {
+        return this.screwNames[this.current_screw] ?? 'UNKNOWN'
+    }
+
+    get currentScrewOutput() {
+        return this.$t('BedScrews.ScrewOutput', { current: this.current_screw, max: this.countScrews })
+    }
+
+    get acceptedScrewOutput() {
+        return this.$t('BedScrews.ScrewOutput', { current: this.accepted_screws, max: this.countScrews })
     }
 
     sendAbort() {

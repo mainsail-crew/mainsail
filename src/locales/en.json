@@ -111,7 +111,12 @@
         "Abort": "abort",
         "Adjusted": "adjusted",
         "Accept": "accept",
-        "Headline": "Bed Screws"
+        "Description": "Click on adjusted when you have <b>adjusted</b> the current screw. Click on <b>accept</b> to continue without adjustment.",
+        "Headline": "Bed Screws",
+        "ScrewAccepted": "Screws accepted",
+        "ScrewIndex": "Screw Index",
+        "ScrewName": "Screw Name",
+        "ScrewOutput": "{current} of {max}"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
