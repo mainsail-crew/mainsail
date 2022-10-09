@@ -296,7 +296,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     sensor: 'z_adjust',
                 })
 
-                const additionSensor: PrinterStateAdditionalSensor = {
+                const additionalSensor: PrinterStateAdditionalSensor = {
                     bool: additionalSensorBool,
                     name: 'z_adjust',
                     unit: 'μm',
@@ -304,14 +304,14 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 }
 
                 if (Math.abs(value.current_z_adjust) >= 0.1) {
-                    additionSensor.value = Math.round(value.current_z_adjust * 1000) / 1000
-                    additionSensor.unit = 'mm'
+                    additionalSensor.value = Math.round(value.current_z_adjust * 1000) / 1000
+                    additionalSensor.unit = 'mm'
                 }
 
                 sensors.push({
                     name: key,
                     temperature: Math.round(value.temperature * 10) / 10,
-                    additionalSensors: [additionSensor],
+                    additionalSensors: [additionalSensor],
                     icon,
                     min_temp: min_temp,
                     max_temp: max_temp,

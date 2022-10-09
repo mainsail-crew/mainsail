@@ -211,14 +211,14 @@
                                 @change="setVisible(dataset)"></v-checkbox>
                         </v-col>
                     </v-row>
-                    <v-row v-for="additionSensor in editHeater.additionalSensors" :key="additionSensor.name">
+                    <v-row v-for="additionalSensor in editHeater.additionalSensors" :key="additionalSensor.name">
                         <v-col class="col-12 py-1">
                             <v-checkbox
-                                v-model="additionSensor.bool"
-                                :label="$t('Panels.TemperaturePanel.ShowNameInList', { name: additionSensor.name })"
+                                v-model="additionalSensor.bool"
+                                :label="$t('Panels.TemperaturePanel.ShowNameInList', { name: additionalSensor.name })"
                                 hide-details
                                 class="mt-0"
-                                @change="setVisibleAdditionalSensor(additionSensor)"></v-checkbox>
+                                @change="setVisibleAdditionalSensor(additionalSensor)"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-row>
