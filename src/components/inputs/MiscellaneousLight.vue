@@ -371,10 +371,10 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
 
     colorChanged(color: ColorData) {
         if (
-            color.red === this.current.red &&
-            color.green === this.current.green &&
-            color.blue === this.current.blue &&
-            color.white === this.current.white
+            Math.round(color.red ?? 0) === Math.round(this.current.red ?? 0) &&
+            Math.round(color.green ?? 0) === Math.round(this.current.green ?? 0) &&
+            Math.round(color.blue ?? 0) === Math.round(this.current.blue ?? 0) &&
+            Math.round(color.white ?? 0) === Math.round(this.current.white ?? 0)
         )
             return
 
