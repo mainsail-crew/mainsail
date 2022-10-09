@@ -1009,7 +1009,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         if (!format) {
             switch (col.outputType) {
                 case 'date':
-                    return this.formatDateTime(value)
+                    return this.formatDateTime(value * 1000)
 
                 case 'time':
                     return value?.toFixed() ?? ''
@@ -1034,7 +1034,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     return formatFilesize(value)
 
                 case 'date':
-                    return this.formatDateTime(value)
+                    return this.formatDateTime(value * 1000)
 
                 case 'time':
                     return this.formatPrintTime(value)
