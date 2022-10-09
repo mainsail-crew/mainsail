@@ -20,6 +20,7 @@ import {
     PrinterStateTemperatureObject,
     PrinterStateTemperatureSensor,
     PrinterStateToolchangeMacro,
+    PrinterStateAdditionalSensor,
 } from '@/store/printer/types'
 import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
@@ -209,7 +210,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                             iconColor: color,
                             target: Math.round(value.target * 10) / 10,
                             temperature: Math.round(value.temperature * 10) / 10,
-                            additionSensors: getters.getAdditionSensors(nameSplit[1]),
+                            additionalSensors: getters.getAdditionalSensors(nameSplit[1]),
                             power: Math.round((value.power ?? 0) * 100),
                             avgPower: Math.round(getters['tempHistory/getAvgPower'](name) ?? 0),
                             presets: rootGetters['gui/presets/getPresetsFromHeater']({ name: key }),
@@ -238,7 +239,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     icon: mdiFan,
                     target: Math.round(value.target * 10) / 10,
                     temperature: Math.round(value.temperature * 10) / 10,
-                    additionSensors: getters.getAdditionSensors(nameSplit[1]),
+                    additionalSensors: getters.getAdditionalSensors(nameSplit[1]),
                     speed: Math.round((value.speed ?? 0) * 100),
                     avgSpeed: Math.round(getters['tempHistory/getAvgSpeed'](name) ?? 0),
                     rpm: value.rpm !== null ? Math.round(value.rpm) : null,
@@ -254,7 +255,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return caseInsensitiveSort(fans, 'name')
     },
 
-    getTemperatureSensors: (state, getters) => {
+    getTemperatureSensors: (state, getters, rootState, rootGetters) => {
         const sensors: PrinterStateTemperatureSensor[] = []
 
         for (const [key, value] of Object.entries(state)) {
@@ -272,7 +273,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 sensors.push({
                     name: nameSplit[1],
                     temperature: Math.round(value.temperature * 10) / 10,
-                    additionSensors: getters.getAdditionSensors(nameSplit[1]),
+                    additionalSensors: getters.getAdditionalSensors(nameSplit[1]),
                     icon: icon,
                     min_temp: min_temp,
                     max_temp: max_temp,
@@ -280,6 +281,44 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     measured_max_temp: Math.round(value.measured_max_temp * 10) / 10,
                     chartColor: getters['tempHistory/getDatasetColor'](nameSplit[1]),
                     chartSeries: getters['tempHistory/getSerieNames'](nameSplit[1]),
+                })
+            } else if (key === 'z_thermal_adjust') {
+                let icon = mdiThermometer
+                const min_temp = state.configfile?.settings[key]?.min_temp ?? 0
+                const max_temp = state.configfile?.settings[key]?.max_temp ?? 210
+                const split = (max_temp - min_temp) / 3
+
+                if (value.temperature <= min_temp + split) icon = mdiThermometerLow
+                if (value.temperature >= max_temp - split) icon = mdiThermometerHigh
+
+                const additionalSensorBool = rootGetters['gui/getDatasetAdditionalSensorValue']({
+                    name: key,
+                    sensor: 'z_adjust',
+                })
+
+                const additionalSensor: PrinterStateAdditionalSensor = {
+                    bool: additionalSensorBool,
+                    name: 'z_adjust',
+                    unit: 'μm',
+                    value: Math.round(value.current_z_adjust * 1000),
+                }
+
+                if (Math.abs(value.current_z_adjust) >= 0.1) {
+                    additionalSensor.value = Math.round(value.current_z_adjust * 1000) / 1000
+                    additionalSensor.unit = 'mm'
+                }
+
+                sensors.push({
+                    name: key,
+                    temperature: Math.round(value.temperature * 10) / 10,
+                    additionalSensors: [additionalSensor],
+                    icon,
+                    min_temp: min_temp,
+                    max_temp: max_temp,
+                    measured_min_temp: Math.round(value.measured_min_temp * 10) / 10,
+                    measured_max_temp: Math.round(value.measured_max_temp * 10) / 10,
+                    chartColor: getters['tempHistory/getDatasetColor'](key),
+                    chartSeries: getters['tempHistory/getSerieNames'](key),
                 })
             }
         }
@@ -305,7 +344,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     state: heater.target > 0 ? heater.power + '%' : 'off',
                     avgState: heater.avgPower + '%',
                     temperature: heater.temperature,
-                    additionSensors: heater.additionSensors,
+                    additionalSensors: heater.additionalSensors,
                     target: heater.target,
                     presets: heater.presets,
                     min_temp: heater.min_temp,
@@ -337,7 +376,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     state: fan.target > 0 && fan.speed > 0 ? fan.speed + '%' : fan.target > 0 ? 'standby' : 'off',
                     avgState: fan.avgSpeed + '%',
                     temperature: fan.temperature,
-                    additionSensors: fan.additionSensors,
+                    additionalSensors: fan.additionalSensors,
                     target: fan.target,
                     presets: fan.presets,
                     min_temp: fan.min_temp,
@@ -366,7 +405,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     state: null,
                     avgState: '',
                     temperature: sensor.temperature,
-                    additionSensors: sensor.additionSensors,
+                    additionalSensors: sensor.additionalSensors,
                     target: null,
                     presets: [],
                     min_temp: sensor.min_temp,
@@ -501,35 +540,31 @@ export const getters: GetterTree<PrinterState, RootState> = {
         })
     },
 
-    getAdditionSensors: (state, getters, rootState, rootGetters) => (name: string) => {
-        let additionValues = {}
+    getAdditionalSensors: (state, getters, rootState, rootGetters) => (name: string) => {
+        const additionValues: PrinterStateAdditionalSensor[] = []
+
         additionalSensors.forEach((sensorName) => {
             if (sensorName + ' ' + name in state) {
                 Object.keys(state[sensorName + ' ' + name]).forEach((key) => {
                     if (key !== 'temperature') {
-                        // eslint-disable-next-line
-                        const tmp: any = {}
-                        tmp[key] = {}
-                        tmp[key]['value'] = state[sensorName + ' ' + name][key].toFixed(1)
-                        tmp[key]['bool'] = rootGetters['gui/getDatasetAdditionalSensorValue']({
+                        const bool = rootGetters['gui/getDatasetAdditionalSensorValue']({
                             name: name,
                             sensor: key,
                         })
 
-                        switch (key) {
-                            case 'pressure':
-                                tmp[key]['unit'] = 'hPa'
-                                break
+                        let unit = ''
+                        if (key === 'pressure') unit = 'hPa'
+                        if (key === 'humidity') unit = '%'
 
-                            case 'humidity':
-                                tmp[key]['unit'] = '%'
-                                break
-
-                            default:
-                                tmp[key]['unit'] = ''
+                        // eslint-disable-next-line
+                        const tmp: PrinterStateAdditionalSensor = {
+                            name: key,
+                            value: state[sensorName + ' ' + name][key].toFixed(1),
+                            bool,
+                            unit,
                         }
 
-                        additionValues = Object.assign(additionValues, tmp)
+                        additionValues.push(tmp)
                     }
                 })
             }
