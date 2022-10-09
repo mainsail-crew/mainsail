@@ -465,6 +465,12 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     }
 
     presetStyle(preset: GuiMiscellaneousStateEntryPreset) {
+        if ((preset?.red ?? 0) + (preset?.green ?? 0) + (preset?.blue ?? 0) === 0 && (preset?.white ?? 0) > 0) {
+            return {
+                backgroundColor: `rgb(${preset.white}%, ${preset.white}%, ${preset.white}%)`,
+            }
+        }
+
         return {
             backgroundColor: `rgb(${preset.red}%, ${preset.green}%, ${preset.blue}%)`,
         }
