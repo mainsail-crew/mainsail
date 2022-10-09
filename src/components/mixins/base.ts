@@ -109,10 +109,10 @@ export default class BaseMixin extends Vue {
 
         switch (format) {
             case '24hours':
-                return { hour: '2-digit', minute: '2-digit', hour12: false }
+                return { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }
 
             case '12hours':
-                return { hour: '2-digit', minute: '2-digit', hour12: true }
+                return { hour: '2-digit', minute: '2-digit', hourCycle: 'h12' }
 
             default:
                 return { timeStyle: 'short' }
@@ -124,10 +124,10 @@ export default class BaseMixin extends Vue {
 
         switch (format) {
             case '24hours':
-                return { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }
+                return { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }
 
             case '12hours':
-                return { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }
+                return { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h12' }
 
             default:
                 return { timeStyle: 'short' }

@@ -428,13 +428,13 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
             {
                 value: '24hours',
                 text: this.$t('Settings.GeneralTab.24hours', {
-                    time: date.toLocaleTimeString(userLocale, { hour: '2-digit', minute: '2-digit', hour12: false }),
+                    time: date.toLocaleTimeString(userLocale, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }),
                 }).toString(),
             },
             {
                 value: '12hours',
                 text: this.$t('Settings.GeneralTab.12hours', {
-                    time: date.toLocaleTimeString(userLocale, { hour: '2-digit', minute: '2-digit', hour12: true }),
+                    time: date.toLocaleTimeString(userLocale, { hour: '2-digit', minute: '2-digit', hourCycle: 'h12' }),
                 }).toString(),
             },
         ]
