@@ -20,6 +20,8 @@ export const getDefaultState = (): GuiState => {
         general: {
             printername: '',
             language: 'en',
+            dateFormat: null,
+            timeFormat: null,
             calcPrintProgress: 'file-relative',
             calcEstimateTime: ['file', 'filament'],
             calcEtaTime: ['file', 'filament', 'slicer'],

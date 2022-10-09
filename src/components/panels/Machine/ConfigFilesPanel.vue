@@ -162,7 +162,7 @@
                         <td class="text-no-wrap text-right">
                             {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
                         </td>
-                        <td class="text-right">{{ formatDate(item.modified) }}</td>
+                        <td class="text-right">{{ formatDateTime(item.modified) }}</td>
                     </tr>
                 </template>
             </v-data-table>
@@ -277,6 +277,8 @@
                         v-model="dialogCreateFile.name"
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
+                        :rules="nameInputRules"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="createFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -284,7 +286,7 @@
                     <v-btn color="" text @click="dialogCreateFile.show = false">
                         {{ $t('Machine.ConfigFilesPanel.Cancel') }}
                     </v-btn>
-                    <v-btn color="primary" text @click="createFileAction">
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="createFileAction">
                         {{ $t('Machine.ConfigFilesPanel.Create') }}
                     </v-btn>
                 </v-card-actions>
@@ -306,6 +308,8 @@
                         v-model="dialogRenameFile.newName"
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
+                        :rules="nameInputRules"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -313,7 +317,7 @@
                     <v-btn color="" text @click="dialogRenameFile.show = false">
                         {{ $t('Machine.ConfigFilesPanel.Cancel') }}
                     </v-btn>
-                    <v-btn color="primary" text @click="renameFileAction">
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="renameFileAction">
                         {{ $t('Machine.ConfigFilesPanel.Rename') }}
                     </v-btn>
                 </v-card-actions>
@@ -335,6 +339,8 @@
                         v-model="dialogCreateDirectory.name"
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
+                        :rules="nameInputRules"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -342,7 +348,7 @@
                     <v-btn color="" text @click="dialogCreateDirectory.show = false">
                         {{ $t('Machine.ConfigFilesPanel.Cancel') }}
                     </v-btn>
-                    <v-btn color="primary" text @click="createDirectoryAction">
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="createDirectoryAction">
                         {{ $t('Machine.ConfigFilesPanel.Create') }}
                     </v-btn>
                 </v-card-actions>
@@ -364,6 +370,8 @@
                         v-model="dialogRenameDirectory.newName"
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
+                        :rules="nameInputRules"
+                        @update:error="isInvalidName = !isInvalidName"
                         @keyup.enter="renameDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -371,7 +379,7 @@
                     <v-btn color="" text @click="dialogRenameDirectory.show = false">
                         {{ $t('Machine.ConfigFilesPanel.Cancel') }}
                     </v-btn>
-                    <v-btn color="primary" text @click="renameDirectoryAction">
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="renameDirectoryAction">
                         {{ $t('Machine.ConfigFilesPanel.Rename') }}
                     </v-btn>
                 </v-card-actions>
@@ -454,7 +462,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { formatDate, formatFilesize, sortFiles } from '@/plugins/helpers'
+import { formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
@@ -545,7 +553,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     sortFiles = sortFiles
     formatFilesize = formatFilesize
-    formatDate = formatDate
 
     declare $refs: {
         fileUpload: HTMLInputElement
@@ -638,6 +645,16 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     private deleteSelectedDialog = false
+
+    private isInvalidName = true
+    private nameInputRules = [
+        (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
+        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
+    ]
+
+    existsFilename(name: string) {
+        return this.files.findIndex((file) => file.filename === name) >= 0
+    }
 
     get blockFileUpload() {
         return this.$store.state.gui.view.blockFileUpload ?? false

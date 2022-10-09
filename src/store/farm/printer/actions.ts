@@ -186,7 +186,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             })
     },
 
-    getData({ commit, dispatch, state }, payload) {
+    getData({ commit, dispatch }, payload) {
         const data = 'status' in payload ? { ...payload.status } : { ...payload }
         commit('setData', data)
 

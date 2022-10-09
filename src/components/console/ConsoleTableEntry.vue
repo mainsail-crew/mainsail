@@ -25,7 +25,7 @@
 
 <template>
     <v-row :class="'ma-0 ' + entryStyle">
-        <v-col class="col-auto pr-0 text--disabled console-time">{{ event.formatTime }}</v-col>
+        <v-col class="col-auto pr-0 text--disabled console-time">{{ entryFormatTime }}</v-col>
         <v-col
             :class="colorConsoleMessage(event) + ' ' + 'console-message'"
             @click.capture="commandClick"
@@ -35,17 +35,21 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import Vue from 'vue'
-import { Prop } from 'vue-property-decorator'
+import { Mixins, Prop } from 'vue-property-decorator'
 import { ServerStateEvent } from '@/store/server/types'
+import BaseMixin from '@/components/mixins/base'
 
 @Component
-export default class ConsoleTableEntry extends Vue {
+export default class ConsoleTableEntry extends Mixins(BaseMixin) {
     @Prop({ required: true })
     declare readonly event: ServerStateEvent
 
     get entryStyle() {
         return this.$store.state.gui.console.entryStyle ?? 'default'
+    }
+
+    get entryFormatTime() {
+        return this.formatTime(this.event.date.getTime(), true)
     }
 
     colorConsoleMessage(item: ServerStateEvent): string {

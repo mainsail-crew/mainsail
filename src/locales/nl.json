@@ -59,9 +59,9 @@
             "CannotUploadTheFile": "Kan het bestand niet uploaden!",
             "EmergencyStop": "Noodstop",
             "SAVE_CONFIG": "CONFIG OPSLAAN",
+            "Uploading": "Uploaden",
             "UploadOfFileSuccessful": "Upload van {file} succesvol!",
-            "UploadPrint": "Upload & Print",
-            "Uploading": "Uploaden"
+            "UploadPrint": "Upload & Print"
         },
         "TopCornerMenu": {
             "Cancel": "Annuleer",
@@ -193,9 +193,9 @@
         "NozzleDiameter": "Nozzle Diameter",
         "ObjectHeight": "Objecthoogte",
         "Preheat": "Voorverwarmen",
+        "PrintedFiles": "Geprinte bestanden",
         "PrintStart": "Start print",
         "PrintTime": "Printtijd",
-        "PrintedFiles": "Geprinte bestanden",
         "RefreshCurrentDirectory": "Ververs huidige map",
         "Rename": "Hernoem",
         "RenameDirectory": "Hernoem map",
@@ -230,8 +230,8 @@
         "Max": "Max",
         "Medium": "Medium",
         "ReloadRequired": "Herladen nodig",
-        "RenderQuality": "Render kwaliteit",
         "Rendering": "Renderen",
+        "RenderQuality": "Render kwaliteit",
         "ShowObjectSelection": "Toon object selectie",
         "ShowToolhead": "Toon Toolhead",
         "ShowTravelMoves": "Toon bewegingen",
@@ -332,13 +332,13 @@
         "Statistics": "Statistieken",
         "Status": "Status",
         "StatusValues": {
-            "Others": "Overige",
             "cancelled": "Geannuleerd",
             "completed": "Voltooid",
             "error": "Fout",
             "in_progress": "Bezig",
             "klippy_disconnect": "Klippy verbinding verbroken",
             "klippy_shutdown": "Klippy afgesloten",
+            "Others": "Overige",
             "server_exit": "Server exit"
         },
         "TitleExportHistory": "Export geschiedenis",
@@ -400,8 +400,8 @@
             "Endstop": "Endstop",
             "EndstopInfo": "Druk op de sync-knop rechtsoner om de huidige endstop status te laden.",
             "Endstops": "Endstops",
-            "TRIGGERED": "GETRIGGERED",
-            "open": "OPEN"
+            "open": "OPEN",
+            "TRIGGERED": "GETRIGGERED"
         },
         "LogfilesPanel": {
             "Logfiles": "Logbestanden"
@@ -448,11 +448,11 @@
             "PackagesCanBeUpgraded": "pakketten kunnen worden geüpgraded",
             "System": "Systeem",
             "Unknown": "onbekend",
-            "UpToDate": "up-to-date",
             "Update": "update",
             "UpdateAll": "Update alle componenten",
             "UpdateManager": "Update Manager",
-            "Upgrade": "upgrade"
+            "Upgrade": "upgrade",
+            "UpToDate": "up-to-date"
         }
     },
     "Panels": {
@@ -507,18 +507,18 @@
             "Headline": "Macros",
             "Send": "verstuur"
         },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Zorg dat je mainsail.cfg in je printer.cfg geïnclude hebt.",
-            "IsNotDefinedInConfig": "is niet gedefinieerd in de config.",
-            "MissingConfiguration": "Ontbrekende configuratie",
-            "MoreInformation": "meer informatie"
-        },
         "MiniconsolePanel": {
             "Headline": "Console",
             "HideTemperatures": "Verberg temperaturen",
             "HideTimelapse": "Verberg Timelapse",
             "SendCode": "Verzend code...",
             "SetupConsole": "Console Instellingen"
+        },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Zorg dat je mainsail.cfg in je printer.cfg geïnclude hebt.",
+            "IsNotDefinedInConfig": "is niet gedefinieerd in de config.",
+            "MissingConfiguration": "Ontbrekende configuratie",
+            "MoreInformation": "meer informatie"
         },
         "MiscellaneousPanel": {
             "Headline": "Overige",
@@ -538,16 +538,16 @@
             "CancelPrint": "Annuleer print",
             "ClearPrintStats": "Wis print statistieken",
             "Difference": "Verschil",
-            "ETA": "ETA",
             "EmptyGcodes": "Geen G-Code beschikbaar.",
             "EmptyJobqueue": "Er zijn geen bestanden in de wachtrij.",
             "Estimate": "Schatting",
+            "ETA": "ETA",
             "ExcludeObject": {
                 "Cancel": "annuleer",
+                "Excluded": "Uitgesloten",
                 "ExcludeObject": "Object uitsluiten",
                 "ExcludeObjectHeadline": "Object uitsluiten",
-                "ExcludeObjectText": "Weet je zeker dat je \"{name}\" wil uitsluiten?",
-                "Excluded": "Uitgesloten"
+                "ExcludeObjectText": "Weet je zeker dat je \"{name}\" wil uitsluiten?"
             },
             "Filament": "Filament",
             "File": "Bestand",
@@ -593,13 +593,13 @@
             "ShowNameInList": "Toon {name} in de lijst",
             "State": "Status",
             "Target": "Doel",
+            "TemperaturesInChart": "Temperatuur [°C]",
             "TempTooHigh": "Temperatuur te hoog voor {name}! (max: {max})",
-            "TempTooLow": "Temperatuur te laag voor {name}! (min: {min})",
-            "TemperaturesInChart": "Temperatuur [°C]"
+            "TempTooLow": "Temperatuur te laag voor {name}! (min: {min})"
         },
         "ToolheadControlPanel": {
-            "ALL": "ALLES",
             "Absolute": "absoluut",
+            "ALL": "ALLES",
             "Headline": "Toolhead",
             "PleaseConfigureSteps": "Configureer steps",
             "Position": "Positie",
@@ -798,8 +798,8 @@
             "CountMacros": "geen Macros toegevoegd | {count} Macro | {count} Macros",
             "Custom": "custom",
             "CustomColor": "Custom Kleur",
-            "DeleteMacroFromGroup": "Verwijder macro uit groep.",
             "DeletedMacro": "Verwijderde macro",
+            "DeleteMacroFromGroup": "Verwijder macro uit groep.",
             "EditGroup": "Bewerk groep",
             "Error": "fout",
             "Expert": "Expert",
@@ -809,10 +809,10 @@
             "Macrogroups": "Groepen",
             "Macros": "Macros",
             "Management": "Beheer",
-            "NOMacros": "geen macros gevonden...",
             "Name": "Naam",
             "NoAvailableMacros": "Geen macros beschikbaar.",
             "NoGroups": "Geen groepen gevonden...",
+            "NOMacros": "geen macros gevonden...",
             "NoMacrosInGroup": "Geen macros in deze groep.",
             "Primary": "primair",
             "Secondary": "secundair",
@@ -859,6 +859,8 @@
             "CameraDescription": "Selecteer welke camera gebruikt wordt",
             "ConstantRateFactor": "Constant Rate Factor",
             "ConstantRateFactorDescription": "Dit bepaalt de kwaliteit vs bestandsgrootte van de gerenderde video. De CRF schaal is van 0-51 waar 0 zonder verlies is, 23 de standaard en 51 de slechts mogelijke kwaliteit. Een lagere waarde geeft over het algemeen betere kwaliteit en een gangbare waarde is 17-28. Zie 17 of 18 als praktisch zonder kwaliteitsverlies.",
+            "duplicatelastframe": "duplicatelastframe",
+            "duplicatelastframeDescription": "Herhaal het laatste frame aan het eind van de video",
             "Enabled": "Ingeschakeld",
             "EnabledDescription": "Indien uitgeschakeld, worden gcode macros genegeerd en autorender overgeslagen.",
             "Extraoutputparams": "Extraoutputparams",
@@ -874,12 +876,12 @@
             "ModeDescription": "Kies tussen Layermacro en Hyperlapse (tijd gebaseerde) modus",
             "OutputFramerate": "Uitvoer Framerate",
             "OutputFramerateDescription": "Definieert  de framerate van de video. Note: dit wordt genegeerd wanneer variable_fps is ingeschakeld",
-            "ParkTime": "Parkeerduur",
-            "ParkTimeDescription": "Voeg extra tijd toe bij het parkeren.",
             "Parkhead": "Parkhead",
             "ParkheadDescription": "Indien ingeschakeld, wordt de printkop geparkeerd voor een foto te nemen.",
             "Parkpos": "Parkeer postitie",
             "ParkposDescription": "Selecteer de parkeer positie",
+            "ParkTime": "Parkeerduur",
+            "ParkTimeDescription": "Voeg extra tijd toe bij het parkeren.",
             "Pixelformat": "Pixelformat",
             "PixelformatDescription": "Definieer het pixelformaat van de video",
             "PosDZ": "Positie Z",
@@ -915,9 +917,7 @@
             "VariableFpsMax": "Variabele FPS max",
             "VariableFpsMaxDescription": "",
             "VariableFpsMin": "Variabele FPS max",
-            "VariableFpsMinDescription": "",
-            "duplicatelastframe": "duplicatelastframe",
-            "duplicatelastframeDescription": "Herhaal het laatste frame aan het eind van de video"
+            "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Grote thumbnail",
@@ -951,8 +951,9 @@
             "CreateWebcam": "Nieuwe Webcam",
             "EditCrowsnestConf": "Bewerk crowsnest.conf",
             "EditWebcam": "Bewerk Webcam",
-            "FlipHorizontally": "Flip webcam horizontaal",
-            "FlipVertically": "Flip webcam verticaal",
+            "FlipWebcam": "Flip webcam beeld:",
+            "Horizontally": "horizontaal",
+            "Vertically": "verticaal",
             "IconBed": "Bed",
             "IconCam": "Camera",
             "IconDoor": "Deur",

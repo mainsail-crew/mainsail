@@ -15,7 +15,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
 
     initFromLocalstorage({ dispatch, rootState }) {
         let value = rootState.configInstances ?? []
-        if (rootState.instancesDB === 'moonraker') value = JSON.parse(localStorage.getItem('printers') ?? '{}')
+        if (rootState.instancesDB === 'browser') value = JSON.parse(localStorage.getItem('printers') ?? '{}')
         if (Array.isArray(value)) {
             const printers: any = {}
 
@@ -28,7 +28,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         }
     },
 
-    async initStore({ commit, dispatch, state }, payload) {
+    async initStore({ commit, dispatch }, payload) {
         dispatch('reset')
         Object.keys(payload).forEach((printerId: string) => {
             const printer = payload[printerId]
@@ -74,7 +74,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         }
     },
 
-    store({ commit, dispatch, state }, payload) {
+    store({ commit, dispatch }, payload) {
         const id = uuidv4()
 
         commit('store', { id, values: payload.values })
@@ -91,7 +91,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         dispatch('upload', id)
     },
 
-    update({ commit, dispatch, state }, payload) {
+    update({ commit, dispatch }, payload) {
         commit('update', payload)
         dispatch('farm/updatePrinter', payload, { root: true })
 

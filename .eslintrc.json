@@ -13,6 +13,7 @@
     "rules": {
         "vue/no-v-html": 0,
         "vue/component-tags-order": 0,
+        "vue/no-v-text-v-html-on-component": 0,
         "vue/valid-v-slot": [
             "error",
             {

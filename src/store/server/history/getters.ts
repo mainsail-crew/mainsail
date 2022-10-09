@@ -4,13 +4,7 @@ import {
     ServerHistoryStateAllPrintStatusEntry,
     ServerHistoryStateJob,
 } from '@/store/server/history/types'
-import {
-    mdiAlertCircleOutline,
-    mdiAlertOutline,
-    mdiCheckboxMarkedCircleOutline,
-    mdiCloseCircleOutline,
-    mdiProgressClock,
-} from '@mdi/js'
+import { mdiAlertOutline, mdiCheckboxMarkedCircleOutline, mdiCloseCircleOutline, mdiProgressClock } from '@mdi/js'
 import i18n from '@/plugins/i18n'
 
 // eslint-disable-next-line

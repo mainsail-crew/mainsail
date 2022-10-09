@@ -20,24 +20,15 @@ export const getters: GetterTree<RootState, any> = {
             if (state.server?.klippy_state !== 'ready') return i18n.t('App.Titles.Error')
             else if (printer_state === 'paused') return i18n.t('App.Titles.Pause')
             else if (printer_state === 'printing') {
-                const eta = getters['printer/getEstimatedTimeETA']
+                const eta = getters['printer/getEstimatedTimeETAFormat']
 
-                if (eta) {
-                    const date = new Date(eta)
-                    const h = date.getHours() >= 10 ? date.getHours() : '0' + date.getHours()
-                    const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
-                    const diff = eta - new Date().getTime()
-
+                if (eta !== '--')
                     return i18n.t('App.Titles.PrintingETA', {
                         percent: (getters['printer/getPrintPercent'] * 100).toFixed(0),
                         filename: state.printer.print_stats?.filename,
-                        eta:
-                            h +
-                            ':' +
-                            m +
-                            (diff > 60 * 60 * 24 * 1000 ? '+' + (diff / (60 * 60 * 24 * 1000)).toFixed() : ''),
+                        eta,
                     })
-                } else
+                else
                     return i18n.t('App.Titles.Printing', {
                         percent: (getters['printer/getPrintPercent'] * 100).toFixed(0),
                         filename: state.printer.print_stats?.filename,

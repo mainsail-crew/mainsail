@@ -14,5 +14,6 @@ package-lock.json
 *.local
 .env
 
+cypress/screenshots/
 cypress/videos/
 components.d.ts

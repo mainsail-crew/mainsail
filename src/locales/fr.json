@@ -1,5 +1,5 @@
 {
-    "_last_update": "26.05.2022",
+    "_last_update": "12.09.2022",
     "App": {
         "Notifications": {
             "DependencyDescription": "La version actuelle de {name} ne supporte pas toutes les fonctionalités de Mainsail. Mettez {name} a jour vers la version {neededVersion}.",
@@ -22,6 +22,7 @@
             "Never": "jamais",
             "NextReboot": "prochain redémarrage",
             "NoNotification": "Pas de notification(s) disponible(s)",
+            "Notifications": "Notifications",
             "Remind": "Rappel:"
         },
         "NumberInput": {
@@ -112,6 +113,7 @@
         "CheckMoonrakerLog": "Si ce message apparait régulièrement, contrôlez le fichier log à l'adresse suivante:",
         "Connecting": "Connection avec {host}",
         "Failed": "Connection échouée",
+        "Initializing": "Initialisation",
         "TryAgain": " répétez"
     },
     "Console": {
@@ -132,13 +134,11 @@
         }
     },
     "Editor": {
-        "Cancel": "Annuler",
         "ConfigReference": "Référence de configuration",
         "DontSave": "Ne pas sauvegarder",
         "Downloading": "Téléchargement",
         "FailedSave": "Le fichier {filename}  n'a pas pu être téléchargé",
         "FileReadOnly": "lecture seule",
-        "Minimap": "Afficher minimap",
         "SaveClose": "Sauvegarde et fermeture",
         "SaveRestart": "Sauvegarde et redémarrage",
         "SuccessfullySaved": "Le fichier {filename} a été sauvegardé",
@@ -156,7 +156,9 @@
     "Files": {
         "AddToQueue": "Ajouter à la queue",
         "AllFiles": "Tous",
+        "BedTemp": "Température plateau",
         "Cancel": "Annuler",
+        "ChamberTemp": "Température chambre",
         "Create": "Créer",
         "CreateNewDirectory": "Nouveau dossier",
         "CurrentPath": "Dossier actuel",
@@ -165,9 +167,9 @@
         "DeleteDirectoryQuestion": "Voulez vous vraiment effacer le dossier \"{name}\" et tout son contenu ?",
         "DeleteSelectedQuestion": "Désirez-vous supprimer {count} fichiers ?",
         "Download": "Téléchargement",
-        "Downloading": "Téléchargement en cours",
         "EditFile": "Editer Fichier",
         "Empty": "vide",
+        "ExtruderTemp": "Température extrudeur",
         "Filament": "Filament",
         "FilamentName": "Nom du filament",
         "FilamentType": "Type de filament",
@@ -178,6 +180,7 @@
         "Free": "Libre",
         "FreeDisk": "Disque libre",
         "GCodeFiles": "Fichiers G-Code",
+        "GcodesRootDirectoryDoesntExists": "Pas trouvé de dossier G-Code. Contrôlez l'option \"path\" dans la section [virtual_sdcard] de la configuration de Klipper.",
         "HiddenFiles": "Fichiers cachés",
         "LastEndTime": "Dernière heure de fin d'impression",
         "LastFilamentUsed": "Dernier filament utilisé",
@@ -207,7 +210,6 @@
         "SuccessfullyRenamed": "Fichier {filename} renommé",
         "SuccessfullyUploaded": "Fichier {filename} mis à jour",
         "Total": "Total",
-        "Uploading": "Chargement",
         "UploadNewGcode": "Charger nouveau G-Code",
         "Used": "Utilisé",
         "View3D": "Vue 3D"
@@ -260,6 +262,9 @@
         "ErrorKlipperNotReady": "Klipper pas prêt, maillage désactivé",
         "Flat": "Plat",
         "Heightmap": "Maillage de hauteur",
+        "InvalidNameAlreadyExists": "Ce profil existe déjà, choisissez-en un autre.",
+        "InvalidNameEmpty": "L'entrée ne doit pas être vide !",
+        "InvalidNameReserved": "Le nom de profil \"default\" est réservé, choisissez-en un autre.",
         "Later": "Plus tard",
         "Mesh": "Calculé",
         "Name": "Nom",
@@ -320,20 +325,13 @@
         "Save": "sauvegarder",
         "Search": "Recherche",
         "SelectedFilamentUsed": "Filament sélectionné utilisé",
+        "SelectedJobs": "Travaux sélectionnés",
+        "SelectedPrinttime": "Temps d'impression sélectionnés",
         "Slicer": "Trancheur",
         "SlicerVersion": "Version trancheur",
         "StartTime": "Heure de début d'impression",
         "Statistics": "Statistiques",
         "Status": "Status",
-        "TitleRefreshHistory": "Rafraîchir l'historique",
-        "TitleSettings": "Réglages",
-        "TotalDuration": "Durée totale",
-        "TotalFilamentUsed": "Total filament utilisé",
-        "TotalJobs": "Nombre travaux",
-        "TotalPrinttime": "Total temps d'impression",
-        "TotalTime": "Durée totale",
-        "SelectedJobs": "Travaux sélectionnés",
-        "SelectedPrinttime": "Temps d'impression sélectionnés",
         "StatusValues": {
             "cancelled": "Annulé",
             "completed": "Terminé",
@@ -341,9 +339,17 @@
             "in_progress": "en cours",
             "klippy_disconnect": "Klippy déconnecté",
             "klippy_shutdown": "Klippy arrêté",
+            "Others": "Autres",
             "server_exit": "Serveur quitté"
         },
-        "TitleExportHistory": "Exporter l'historique"
+        "TitleExportHistory": "Exporter l'historique",
+        "TitleRefreshHistory": "Rafraîchir l'historique",
+        "TitleSettings": "Réglages",
+        "TotalDuration": "Durée totale",
+        "TotalFilamentUsed": "Total filament utilisé",
+        "TotalJobs": "Nombre travaux",
+        "TotalPrinttime": "Total temps d'impression",
+        "TotalTime": "Durée totale"
     },
     "JobQueue": {
         "AllJobs": "Tous",
@@ -359,6 +365,7 @@
             "AllFiles": "Tous",
             "Cancel": "Annuler",
             "ConfigFiles": "Fichiers de configuration",
+            "ConfigRootDirectoryDoesntExists": "Pas trouvé de dossier racine de configuration. Contr^lez l'option \"config_path\" dans la section [file_manager]  de la configuration de Moonraker.",
             "Create": "Créer",
             "CreateDirectory": "Nouveau dossier",
             "CreateFile": "Nouveau fichier",
@@ -450,22 +457,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "Tous",
-            "AlternateControls": "Contrôles alternatifs",
-            "Headline": "Contrôles",
-            "InvertX": "Inversion X",
-            "InvertY": "Inversion Y",
-            "InvertZ": "Inversion Z",
-            "PleaseConfigureSteps": "Configurez les pas",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Paramètres > Interface > Contrôles",
-            "SetupControls": "Configuration des contrôles",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "ExtruderControlPanel": {
             "Allowed": "Permis",
             "EstimatedExtrusion": "Estimation d'extrusion:",
@@ -485,11 +476,10 @@
             "PressureAdvanceSettings": {
                 "Advance": "avance",
                 "Extruder": "extrudeur",
-                "PressureAdvance": "pression en avance",
                 "SmoothTime": "Temps de lissage"
             },
-            "Retract": "Rétractation",
             "Requested": "Demandé",
+            "Retract": "Rétractation",
             "TooLargeExtrusion": "Extrusion trop grande !",
             "UnloadFilament": "Déchargement du filament"
         },
@@ -585,7 +575,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "Echelle automatique",
             "Avg": "Moyenne",
-            "Color": "Couleur",
             "Cooldown": "Refroidissement",
             "Current": "En cours",
             "Dataset": {
@@ -613,22 +602,12 @@
             "Absolute": "absolue",
             "ALL": "Tous",
             "Headline": "Tête d'impression",
-            "Invalid": "Invalide",
-            "InvertX": "Inversion X",
-            "InvertY": "Inversion Y",
-            "InvertZ": "Inversion Z",
-            "MotorsOff": "Arrêt des moteurs",
-            "OutOfRange": "Hors limites !",
             "PleaseConfigureSteps": "Configurez Pas",
             "Position": "Position",
             "QGL": "QGL",
             "Relative": "relative",
             "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
-            "SetupControls": "Réglages",
             "SpeedFactor": "Facteur de vitesse",
-            "XOffset": "Offset-X",
-            "YOffset": "Offset-Y",
-            "ZOffset": "Offset-Z",
             "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
@@ -636,12 +615,10 @@
             "FPS": "IPS",
             "Headline": "Caméra",
             "NoWebcam": "Pas de caméra disponible. Ajoutez une caméra dans \"Réglages interface\" > \"Caméras\"",
-            "UnknownWebcamService": "Service Caméra inconnu",
-            "UrlNotAvailable": "URL non disponible"
+            "UnknownWebcamService": "Service Caméra inconnu"
         },
         "ZoffsetPanel": {
             "Clear": "Effacer",
-            "CurrentOffset": "Offset actuel",
             "Headline": "Offset Z",
             "Later": "Plus tard",
             "Ok": "Ok",
@@ -675,6 +652,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Nouvelle d'imprimante",
+        "AddPrintersToJson": "Veuillez ajouter les imprimantes dans le fichier config.json.",
         "CannotConnectTo": "Connection vers {host} impossible",
         "ChangePrinter": "Changement d'imprimante",
         "Connecting": "Connection vers {host}",
@@ -771,6 +749,7 @@
             "GridColor": "Couleur de la grille",
             "MaxFeed": "Débit maximum",
             "MinFeed": "Débit minimum",
+            "ProgressColor": "Couleur d'avancement",
             "ShowAxes": "Affiche les axes"
         },
         "GeneralTab": {
@@ -780,6 +759,14 @@
             "CalcEstimateTimeDescription": "En cas de séléction multiple, une moyenne est calculée",
             "CalcEtaTime": "Calcul du TEA",
             "CalcEtaTimeDescription": "En cas de séléction multiple, une moyenne est calculée",
+            "CalcPrintProgress": "Calculation progression d'impression",
+            "CalcPrintProgressDescription": "Méthode pour calculer la progression d'impression",
+            "CalcPrintProgressItems": {
+                "Filament": "Filament",
+                "FileAbsolute": "Posiiton (absolue) dans le fichier",
+                "FileRelative": "Posiiton (relative) dans le fichier",
+                "Slicer": "Trancheur (M73)"
+            },
             "CannotReadJson": "Lecture/interprétation du fichier de sauvegarde impossible.",
             "DbConsoleHistory": "Historique des commandes de console",
             "DbHistoryJobs": "Historique des travaux",
@@ -863,7 +850,8 @@
             "Hostname": "Nom d'hôte",
             "Port": "Port",
             "RemotePrinters": "Imprimantes",
-            "UpdatePrinter": "Mise à jour imprimante"
+            "UpdatePrinter": "Mise à jour imprimante",
+            "UseConfigJson": "InstanceDB = JSON trouvé dans la configuration. Utilisez le fichier config.json pour modifier la liste des imprimantes."
         },
         "TimelapseTab": {
             "Autorender": "Rendu automatique",
@@ -962,9 +950,11 @@
         "WebcamsTab": {
             "AddWebcam": "Nouvelle caméra",
             "CreateWebcam": "Nouvelle caméra",
+            "EditCrowsnestConf": "Edition de crowsnest.conf",
             "EditWebcam": "Editer caméra",
-            "FlipHorizontally": "Miroir horizontal",
-            "FlipVertically": "Miroir vertical",
+            "FlipWebcam": "Miroir l'image de la webcam:",
+            "Horizontally": "horizontal",
+            "Vertically": "vertical",
             "IconBed": "Plateau",
             "IconCam": "Caméra",
             "IconDoor": "Porte",
@@ -979,6 +969,7 @@
             "Name": "Nom",
             "NameAlreadyExists": "Nom existe déjà",
             "Required": "requis",
+            "Rotate": "Rotation",
             "SaveWebcam": "ajouter caméra",
             "Service": "Service",
             "TargetFPS": "IPS destination",
@@ -999,6 +990,7 @@
         "Delete": "Effacer",
         "DeleteDirectory": "Effacer dossier",
         "DeleteDirectoryQuestion": "Voulez-vous vraiment effacer le dossier \"{name}\" et tout son contenu ?",
+        "DeleteSelectedQuestion": "Voulez-vous vraiment effacer les {count} fichiers sélectionnées ?",
         "Download": "Téléchargement",
         "DuplicateLastframe": "Multiplie la dernière image",
         "Empty": "Pas de fichier vidéo trouvé",

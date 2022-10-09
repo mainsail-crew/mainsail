@@ -349,8 +349,8 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
 }
 
 ._slider-input {
-    font-size: 0.875rem;
-    max-width: 5.4rem;
+    min-width: 4.2rem;
+    max-width: 5rem;
     margin-left: 12px;
 }
 
