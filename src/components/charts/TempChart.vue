@@ -227,9 +227,7 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     get timeFormat() {
-        if (this.hours12Format) return '{hh}:{mm}'
-
-        return '{HH}:{mm}'
+        return this.hours12Format ? '{hh}:{mm}' : '{HH}:{mm}'
     }
 
     mounted() {
