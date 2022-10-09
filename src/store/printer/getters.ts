@@ -20,7 +20,7 @@ import {
     PrinterStateTemperatureObject,
     PrinterStateTemperatureSensor,
     PrinterStateToolchangeMacro,
-    PrinterStateAdditionSensor,
+    PrinterStateAdditionialSensor,
 } from '@/store/printer/types'
 import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
@@ -296,7 +296,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     sensor: 'z_adjust',
                 })
 
-                const additionSensor: PrinterStateAdditionSensor = {
+                const additionSensor: PrinterStateAdditionialSensor = {
                     bool: additionalSensorBool,
                     name: 'z_adjust',
                     unit: 'μm',
@@ -541,7 +541,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getAdditionSensors: (state, getters, rootState, rootGetters) => (name: string) => {
-        const additionValues: PrinterStateAdditionSensor[] = []
+        const additionValues: PrinterStateAdditionialSensor[] = []
 
         additionalSensors.forEach((sensorName) => {
             if (sensorName + ' ' + name in state) {
@@ -557,7 +557,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                         if (key === 'humidity') unit = '%'
 
                         // eslint-disable-next-line
-                        const tmp: PrinterStateAdditionSensor = {
+                        const tmp: PrinterStateAdditionialSensor = {
                             name: key,
                             value: state[sensorName + ' ' + name][key].toFixed(1),
                             bool,

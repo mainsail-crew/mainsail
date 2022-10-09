@@ -31,7 +31,7 @@ export interface PrinterStateHeater {
     iconColor: string
     target: number
     temperature: number
-    additionSensors: PrinterStateAdditionSensor[]
+    additionSensors: PrinterStateAdditionialSensor[]
     power: number
     avgPower: number
     chartColor: string
@@ -46,7 +46,7 @@ export interface PrinterStateTemperatureFan {
     icon: string
     target: number
     temperature: number
-    additionSensors: PrinterStateAdditionSensor[]
+    additionSensors: PrinterStateAdditionialSensor[]
     speed: number
     avgSpeed: number
     rpm: number | null
@@ -60,7 +60,7 @@ export interface PrinterStateTemperatureFan {
 export interface PrinterStateTemperatureSensor {
     name: string
     temperature: number
-    additionSensors: PrinterStateAdditionSensor[]
+    additionSensors: PrinterStateAdditionialSensor[]
     icon: string
     min_temp: number
     max_temp: number
@@ -79,7 +79,7 @@ export interface PrinterStateTemperatureObject {
     state: string | null
     avgState: string
     temperature: number
-    additionSensors: PrinterStateAdditionSensor[]
+    additionSensors: PrinterStateAdditionialSensor[]
     target: number | null
     presets: number[]
     min_temp: number
@@ -94,7 +94,7 @@ export interface PrinterStateTemperatureObject {
     chartSeries: string[]
 }
 
-export interface PrinterStateAdditionSensor {
+export interface PrinterStateAdditionialSensor {
     bool: boolean
     name: string
     unit: string

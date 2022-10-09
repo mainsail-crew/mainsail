@@ -243,7 +243,7 @@ import { Mixins } from 'vue-property-decorator'
 import { capitalize, convertName } from '@/plugins/helpers'
 import { Debounce } from 'vue-debounce-decorator'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
-import { PrinterStateAdditionSensor, PrinterStateTemperatureObject } from '@/store/printer/types'
+import { PrinterStateAdditionialSensor, PrinterStateTemperatureObject } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import TempChart from '@/components/charts/TempChart.vue'
@@ -360,7 +360,7 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
         this.$store.dispatch('gui/saveSetting', { name, value })
     }
 
-    setVisibleAdditionalSensor(sensor: PrinterStateAdditionSensor): void {
+    setVisibleAdditionalSensor(sensor: PrinterStateAdditionialSensor): void {
         const name = 'view.tempchart.datasetSettings.' + this.editHeater.name + '.additionalSensors.' + sensor.name
         this.$store.dispatch('gui/saveSetting', { name, value: sensor.bool })
     }
