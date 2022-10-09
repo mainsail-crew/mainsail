@@ -455,8 +455,9 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
     }
 }
 </style>
-<style>
-._webcam-settings-name-field .v-text-field__details {
+
+<style scoped>
+._webcam-settings-name-field >>> .v-text-field__details {
     margin-bottom: -12px !important;
 }
 </style>
