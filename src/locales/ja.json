@@ -951,8 +951,6 @@
             "CreateWebcam": "カメラ作成",
             "EditCrowsnestConf": "crowsnest.confを編集",
             "EditWebcam": "カメラ編集",
-            "FlipHorizontally": "カメラ画像を水平反転",
-            "FlipVertically": "カメラ画像を垂直反転",
             "IconBed": "ベッド",
             "IconCam": "カメラ",
             "IconDoor": "ドア",

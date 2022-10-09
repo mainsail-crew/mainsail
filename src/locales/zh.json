@@ -953,8 +953,6 @@
             "CreateWebcam": "添加摄像头",
             "EditCrowsnestConf": "编辑 crowsnest.conf",
             "EditWebcam": "编辑摄像头",
-            "FlipHorizontally": "水平翻转摄像头",
-            "FlipVertically": "垂直翻转摄像头",
             "IconBed": "热床",
             "IconCam": "摄像头",
             "IconDoor": "门",
