@@ -8,7 +8,6 @@ import {
 import { GetterTree } from 'vuex'
 import { FileState, FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
-import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<FileState, any> = {

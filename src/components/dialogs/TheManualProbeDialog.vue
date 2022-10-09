@@ -134,14 +134,14 @@ export default class TheManualProbeDialog extends Mixins(BaseMixin) {
     }
 
     get z_position_lower() {
-        const value = this.$store.state.printer.manual_probe?.z_position_lower
+        const value = this.$store.state.printer.manual_probe?.z_position_lower ?? null
         if (value === null) return '??????'
 
         return value.toFixed(3)
     }
 
     get z_position_upper() {
-        const value = this.$store.state.printer.manual_probe?.z_position_upper
+        const value = this.$store.state.printer.manual_probe?.z_position_upper ?? null
         if (value === null) return '??????'
 
         return value.toFixed(3)

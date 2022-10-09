@@ -7,7 +7,7 @@ export const actions: ActionTree<RootState, RootState> = {
         if (router.currentRoute.fullPath !== '/') router.push('/')
     },
 
-    changePrinter({ dispatch, getters, state }, payload) {
+    changePrinter({ dispatch, getters }, payload) {
         dispatch('files/reset')
         dispatch('gui/reset')
         dispatch('printer/reset')
@@ -29,7 +29,7 @@ export const actions: ActionTree<RootState, RootState> = {
     /**
      * This function will parse the config.json content and config mainsail
      */
-    importConfigJson({ commit, dispatch }, payload: ConfigJson) {
+    importConfigJson({ commit }, payload: ConfigJson) {
         type RootStateInstancesDbType = 'moonraker' | 'browser' | 'json'
         let instancesDB: RootStateInstancesDbType = payload.instancesDB ?? 'moonraker'
         if (document.location.hostname === 'my.mainsail.xyz') instancesDB = 'browser'

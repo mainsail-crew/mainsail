@@ -163,7 +163,6 @@
         "DeleteDirectoryQuestion": "\"{name}\" 디렉토리와 하위 모든 내용을 삭제하시겠습니까?",
         "DeleteSelectedQuestion": "선택된 {count}개의 파일을 삭제하시겠습니까?",
         "Download": "다운로드",
-        "Downloading": "다운로드 중..",
         "EditFile": "파일 내용 수정",
         "Empty": "비어있음",
         "Filament": "필라멘트",
@@ -205,7 +204,6 @@
         "SuccessfullyRenamed": "{filename} 이름 변경 완료",
         "SuccessfullyUploaded": "{filename} 업로드 완료",
         "Total": "전체 용량",
-        "Uploading": "업로드 중..",
         "UploadNewGcode": "G-Code 파일 업로드",
         "Used": "사용량",
         "View3D": "3D Gcode 뷰어"
@@ -465,9 +463,9 @@
             "Headline": "압출 제어",
             "LoadFilament": "필라멘트 압출",
             "PressureAdvanceSettings": {
-                "Advance": "모서리 압출 제어 [Pressure Advance]",
+                "Advance": "모서리 압출 제어 [PA]",
                 "Extruder": "필라멘트 압출 제어",
-                "SmoothTime": "반응 시간 [Smooth time]"
+                "SmoothTime": "반응 시간 [ST]"
             },
             "Requested": "요청됨",
             "Retract": "필라 퇴출",
@@ -515,9 +513,9 @@
         "MiscellaneousPanel": {
             "Headline": "기타 - 쿨링팬 & 조명 제어",
             "RunoutSensor": {
-                "Detected": "감지됨",
+                "Detected": "필라멘트 있음",
                 "Disabled": "비활성화됨",
-                "Empty": "비어있음"
+                "Empty": "필라멘트 없음"
             }
         },
         "PowerControlPanel": {
@@ -541,7 +539,7 @@
                 "ExcludeObjectHeadline": "출력 제외 대상 선택",
                 "ExcludeObjectText": "\"{name}\"을(를) 제외 하시겠습니까??"
             },
-            "Filament": "사용 길이",
+            "Filament": "길이",
             "File": "파일",
             "Files": "파일",
             "Flow": "유량",
@@ -553,7 +551,7 @@
             "ObjectHeight": "출력 높이",
             "PausePrint": "일시 정지",
             "Print": "출력",
-            "PrintTime": "소요 시간",
+            "PrintTime": "시간",
             "ReprintJob": "다시 출력",
             "Requested": "요청됨",
             "ResumePrint": "작업 재개",
@@ -593,8 +591,6 @@
             "Absolute": "절대 좌표",
             "ALL": "전체",
             "Headline": "툴 헤드 제어",
-            "Invalid": "무효",
-            "OutOfRange": "범위 초과!",
             "PleaseConfigureSteps": "steps를 설정해 주세요",
             "Position": "좌표 유형",
             "QGL": "쿼드 갠트리 레벨",
@@ -701,12 +697,12 @@
             "MaximumValuesVisibility": "가시성을 극대화하기 위해 {maximum}의 값을 최대 값으로 사용해 주세요",
             "MinimumValues": "최소 값: {minimum}",
             "MotorsOff": "모터 전원 끄기 {isDefault}",
-            "MoveDistancesEInMm": "압출 속도 단위(mm)",
+            "MoveDistancesEInMm": "압출 거리 단위(mm)",
             "MoveDistancesInMm": "이동 단위(mm)",
             "MoveDistancesXYInMm": " X & Y축 이동 단위(mm)",
             "MoveDistancesZInMm": "Z축 이동 단위(mm)",
             "QuadGantryLevel": "쿼드 갠트리 레벨 {isDefault}",
-            "SpeedEInMms": "압출 거리 단위(mm)",
+            "SpeedEInMms": "압출 속도 단위(mm)",
             "SpeedXY": "X & Y축 이동 속도",
             "SpeedZ": "Z축 이동 속도",
             "Style": "화면 표시 스타일",
@@ -934,8 +930,6 @@
             "AddWebcam": "웹캠 추가",
             "CreateWebcam": "웹캠 장치 정보 입력",
             "EditWebcam": "웹캠 장치 정보 수정",
-            "FlipHorizontally": "화면 수평 반전",
-            "FlipVertically": "화면 수직 반전",
             "IconBed": "베드",
             "IconCam": "캠",
             "IconDoor": "도어",

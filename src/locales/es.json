@@ -131,13 +131,11 @@
         }
     },
     "Editor": {
-        "Cancel": "Cancelar",
         "ConfigReference": "Configuración de referencia",
         "DontSave": "No guardar",
         "Downloading": "Descargando",
         "FailedSave": "¡{filename} no pudo cargarse!",
         "FileReadOnly": "Sólo lectura",
-        "Minimap": "Mostrar minimapa",
         "SaveClose": "Guardar y cerrar",
         "SaveRestart": "Guardar y reiniciar",
         "SuccessfullySaved": "{filename} guardado con éxito.",
@@ -164,7 +162,6 @@
         "DeleteDirectoryQuestion": "¿Realmente quiere borrar la carpeta \"{name}\" con todo su contenido?",
         "DeleteSelectedQuestion": "¿Realmente desea eliminar {count} archivos seleccionados?",
         "Download": "Descargar",
-        "Downloading": "Descargando",
         "EditFile": "Editar archivo",
         "Empty": "Vacío",
         "Filament": "Filamento",
@@ -206,7 +203,6 @@
         "SuccessfullyRenamed": "{filename} renombrado con éxito.",
         "SuccessfullyUploaded": "{filename} subido con éxito!",
         "Total": "Total",
-        "Uploading": "Cargando",
         "UploadNewGcode": "Cargar nuevo G-Code",
         "Used": "Usado",
         "View3D": "Vista 3D"
@@ -449,22 +445,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "Todos",
-            "AlternateControls": "Alternar controles",
-            "Headline": "Controles",
-            "InvertX": "Invertir X",
-            "InvertY": "Invertir Y",
-            "InvertZ": "Invertir Z",
-            "PleaseConfigureSteps": "Por favor configure los pasos",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Ajustes > Interfaz > Control",
-            "SetupControls": "Controles de configuración",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "ExtruderControlPanel": {
             "Allowed": "Permitida",
             "EstimatedExtrusion": "Extrusion estimada",
@@ -484,7 +464,6 @@
             "PressureAdvanceSettings": {
                 "Advance": "Avance",
                 "Extruder": "Extrusor",
-                "PressureAdvance": "Avance de presión",
                 "SmoothTime": "Tiempo de suavizado"
             },
             "Requested": "Solicitada",
@@ -584,7 +563,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "Autoescalar gráfico",
             "Avg": "Promedio",
-            "Color": "Color",
             "Cooldown": "Enfriar",
             "Current": "Actual",
             "Dataset": {
@@ -612,22 +590,12 @@
             "Absolute": "absoluta",
             "ALL": "TODO",
             "Headline": "Toolhead",
-            "Invalid": "Invalido",
-            "InvertX": "Invertir X",
-            "InvertY": "Invertir Y",
-            "InvertZ": "Invertir Z",
-            "MotorsOff": "Motores Apagados",
-            "OutOfRange": "Fuera de rango!",
             "PleaseConfigureSteps": "Por favor configure los pasos",
             "Position": "Posición",
             "QGL": "QGL",
             "Relative": "relativa",
             "SettingsInterfaceControl": "Configuración > Interfaz > Control",
-            "SetupControls": "Configurar controles",
             "SpeedFactor": "Factor de velocidad",
-            "XOffset": "X-Offset",
-            "YOffset": "Y-Offset",
-            "ZOffset": "Z-Offset",
             "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
@@ -635,12 +603,10 @@
             "FPS": "FPS",
             "Headline": "Cámara web",
             "NoWebcam": "No hay cámara web disponible. Agregue una cámara web en \"Configuración\" -> \"Cámaras web\".",
-            "UnknownWebcamService": "Servicio de cámara web desconocido",
-            "UrlNotAvailable": "URL no disponible"
+            "UnknownWebcamService": "Servicio de cámara web desconocido"
         },
         "ZoffsetPanel": {
             "Clear": "Limpiar",
-            "CurrentOffset": "Offset actual",
             "Headline": "Z-Offset",
             "Later": "Más tarde",
             "Ok": "OK",
@@ -962,8 +928,9 @@
             "AddWebcam": "Agregar cámara web",
             "CreateWebcam": "Crear cámara web",
             "EditWebcam": "Editar cámara web",
-            "FlipHorizontally": "Voltear horizontalmente",
-            "FlipVertically": "Voltear verticalmente",
+            "FlipWebcam": "Voltear la imagen de la cámara web:",
+            "Horizontally": "horizontalmente",
+            "Vertically": "verticalmente",
             "IconBed": "Cama",
             "IconCam": "Cámara",
             "IconDoor": "Puerta",
