@@ -149,7 +149,7 @@
                                                 {{ object.measured_min_temp }}°C
                                             </span>
                                         </v-tooltip>
-                                        <div v-for="(values, key) of object.additionSensors" :key="key">
+                                        <div v-for="(values, key) of object.additionalSensors" :key="key">
                                             <span v-if="values.bool" class="d-block">
                                                 <small>{{ values.value }} {{ values.unit }}</small>
                                             </span>
@@ -211,7 +211,7 @@
                                 @change="setVisible(dataset)"></v-checkbox>
                         </v-col>
                     </v-row>
-                    <v-row v-for="additionSensor in editHeater.additionSensors" :key="additionSensor.name">
+                    <v-row v-for="additionSensor in editHeater.additionalSensors" :key="additionSensor.name">
                         <v-col class="col-12 py-1">
                             <v-checkbox
                                 v-model="additionSensor.bool"
@@ -243,7 +243,7 @@ import { Mixins } from 'vue-property-decorator'
 import { capitalize, convertName } from '@/plugins/helpers'
 import { Debounce } from 'vue-debounce-decorator'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
-import { PrinterStateAdditionialSensor, PrinterStateTemperatureObject } from '@/store/printer/types'
+import { PrinterStateAdditionalSensor, PrinterStateTemperatureObject } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import TempChart from '@/components/charts/TempChart.vue'
@@ -274,7 +274,7 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
         boolTarget: false,
         boolPower: false,
         boolSpeed: false,
-        additionSensors: {},
+        additionalSensors: {},
         color: '',
     }
 
@@ -347,7 +347,7 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
         this.editHeater.boolTarget = this.$store.getters['gui/getDatasetValue']({ name: object.name, type: 'target' })
         this.editHeater.boolPower = this.$store.getters['gui/getDatasetValue']({ name: object.name, type: 'power' })
         this.editHeater.boolSpeed = this.$store.getters['gui/getDatasetValue']({ name: object.name, type: 'speed' })
-        this.editHeater.additionSensors = object.additionSensors
+        this.editHeater.additionalSensors = object.additionalSensors
 
         this.editHeater.bool = true
     }
@@ -360,7 +360,7 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
         this.$store.dispatch('gui/saveSetting', { name, value })
     }
 
-    setVisibleAdditionalSensor(sensor: PrinterStateAdditionialSensor): void {
+    setVisibleAdditionalSensor(sensor: PrinterStateAdditionalSensor): void {
         const name = 'view.tempchart.datasetSettings.' + this.editHeater.name + '.additionalSensors.' + sensor.name
         this.$store.dispatch('gui/saveSetting', { name, value: sensor.bool })
     }
