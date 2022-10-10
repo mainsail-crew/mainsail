@@ -2,28 +2,17 @@
     <panel
         v-if="klipperState !== 'ready' && socketIsConnected"
         :icon="mdiPrinter3d"
-        :title="$t('Panels.KlippyStatePanel.KlippyState') + ': ' + klipperState"
+        :title="`${$t('Panels.KlippyStatePanel.KlippyState')}: ${klipperState}`"
         card-class="klippy-state-panel">
         <div>
             <template v-if="klippyIsConnected">
                 <!-- KLIPPER MESSAGES -->
                 <v-container v-if="klippy_message !== null" class="py-1 mt-2">
                     <v-alert :color="messageType" dense text border="left" class="mb-0">
-                        <p v-if="klipperState === 'error'" class="font-weight-bold">
+                        <p class="font-weight-medium">
                             <v-icon :color="messageType">{{ iconType }}</v-icon>
-                            Klipper reports: ERROR
-                        </p>
-                        <p v-else-if="klipperState === 'shutdown'" class="font-weight-medium">
-                            <v-icon :color="messageType">{{ iconType }}</v-icon>
-                            Klipper reports: SHUTDOWN
-                        </p>
-                        <p v-else-if="klipperState === 'startup'">
-                            <v-icon :color="messageType">{{ iconType }}</v-icon>
-                            Klipper reports: STARTUP
-                        </p>
-                        <p v-else>
-                            <v-icon :color="messageType">{{ iconType }}</v-icon>
-                            Klipper is reporting:
+                            <!-- TODO: needs localization -->
+                            Klipper reports: {{ klipperState.toUpperCase() }}
                         </p>
                         <pre style="white-space: pre-wrap">{{ klippy_message }}</pre>
                     </v-alert>
@@ -50,7 +39,8 @@
                     <v-alert dense text border="left">
                         <p>
                             <v-icon>{{ iconType }}</v-icon>
-                            Moonraker reports: DISCONNECTED
+                            <!-- TODO: needs localization -->
+                            Moonraker reports: {{ klipperState.toUpperCase() }}
                         </p>
                         <connection-status :moonraker="true" :klipper="false"></connection-status>
                         <p class="mt-2 mb-0 text-center">{{ $t('Panels.KlippyStatePanel.MoonrakerCannotConnect') }}</p>
@@ -78,7 +68,6 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
     mdiRestart = mdiRestart
 
     get klippy_message() {
-        console.log(this.klipperState)
         return this.$store.state.server.klippy_message ?? null
     }
 
