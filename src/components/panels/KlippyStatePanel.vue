@@ -3,8 +3,8 @@
         <v-container v-if="klippyIsConnected" class="pa-0 pb-6">
             <v-alert :color="messageType" dense text border="left" class="mb-0">
                 <!-- KLIPPER MESSAGE TITLE -->
-                <p class="font-weight-medium">
-                    <v-icon :color="messageType">{{ iconType }}</v-icon>
+                <p class="font-weight-medium d-flex align-center">
+                    <v-icon :color="messageType" class="pr-2">{{ iconType }}</v-icon>
                     {{ $t('Panels.KlippyStatePanel.ServiceReports', { service: 'Klipper' }) }}:
                     {{ klipperState.toUpperCase() }}
                 </p>
@@ -60,8 +60,8 @@
         <!-- DISCONNECTED INFOGRAPHIC -->
         <v-container v-if="klipperState === 'disconnected'" class="pa-0">
             <v-alert dense text border="left">
-                <p>
-                    <v-icon>{{ iconType }}</v-icon>
+                <p class="font-weight-medium d-flex align-center">
+                    <v-icon class="pr-2">{{ iconType }}</v-icon>
                     {{ $t('Panels.KlippyStatePanel.ServiceReports', { service: 'Moonraker' }) }}:
                     {{ klipperState.toUpperCase() }}
                 </p>
