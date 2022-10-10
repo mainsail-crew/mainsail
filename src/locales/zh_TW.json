@@ -334,7 +334,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "韌體重新啟動",
             "KlipperCheck": "請檢查Klipper服務是否運行並且已經設定UDS（Unix Domain Socket）。",
-            "KlippyState": "Klippy狀態: ",
             "MoonrakerCannotConnect": "Moonraker 不能連接 Klipper!",
             "Restart": "重新啟動"
         },

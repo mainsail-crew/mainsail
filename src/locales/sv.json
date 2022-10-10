@@ -432,7 +432,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Omstart av Firmware",
             "KlipperCheck": "Kontrollera om Klipper-tjänsten körs och en UDS (Unix Domain Socket) är konfigurerad.",
-            "KlippyState": "Klippy-läge",
             "MoonrakerCannotConnect": "Moonraker kan inte ansluta till Klipper!",
             "Restart": "Starta om"
         },

@@ -489,7 +489,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Yeniden Başlatma",
             "KlipperCheck": "Lütfen Klipper hizmetinin çalışıp çalışmadığını ve bir UDS'nin (Unix Etki Alanı Soketi) yapılandırılıp yapılandırılmadığını kontrol edin.",
-            "KlippyState": "Klippy-Durumu",
             "MoonrakerCannotConnect": "Moonraker Klipper'a bağlanamıyor!",
             "Restart": "Yeniden Başlat"
         },
