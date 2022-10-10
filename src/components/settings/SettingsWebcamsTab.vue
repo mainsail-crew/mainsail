@@ -310,6 +310,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'mjpegstreamer-adaptive', text: this.$t('Settings.WebcamsTab.MjpegstreamerAdaptive') },
             { value: 'uv4l-mjpeg', text: this.$t('Settings.WebcamsTab.Uv4lMjpeg') },
             { value: 'ipstream', text: this.$t('Settings.WebcamsTab.Ipstream') },
+            { value: 'webrtc', text: this.$t('Settings.WebcamsTab.Webrtc') },
         ]
     }
 
