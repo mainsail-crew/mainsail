@@ -107,6 +107,7 @@ export default class Webrtc extends Mixins(BaseMixin) {
         fetch(this.url, {
             body: JSON.stringify({
                 type: 'request',
+                //res: params.res
             }),
             headers: {
                 'Content-Type': 'application/json',
