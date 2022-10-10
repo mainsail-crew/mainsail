@@ -1,7 +1,7 @@
 <template>
     <panel
         v-if="klipperState !== 'ready' && socketIsConnected"
-        :icon="mdiAlertCircle"
+        :icon="mdiPrinter3d"
         :title="$t('Panels.KlippyStatePanel.KlippyState') + ': ' + klipperState"
         card-class="klippy-state-panel">
         <div>
@@ -11,19 +11,19 @@
                     <v-alert :color="messageType" dense text border="left" class="mb-0">
                         <p v-if="klipperState === 'error'" class="font-weight-bold">
                             <v-icon :color="messageType">{{ iconType }}</v-icon>
-                            Klipper reports an error:
+                            Klipper reports: ERROR
                         </p>
                         <p v-else-if="klipperState === 'shutdown'" class="font-weight-medium">
                             <v-icon :color="messageType">{{ iconType }}</v-icon>
-                            Klipper reports a shutdown:
+                            Klipper reports: SHUTDOWN
                         </p>
                         <p v-else-if="klipperState === 'startup'">
                             <v-icon :color="messageType">{{ iconType }}</v-icon>
-                            Klipper is starting up:
+                            Klipper reports: STARTUP
                         </p>
                         <p v-else>
                             <v-icon :color="messageType">{{ iconType }}</v-icon>
-                            Klipper reports:
+                            Klipper is reporting:
                         </p>
                         <pre style="white-space: pre-wrap">{{ klippy_message }}</pre>
                     </v-alert>
@@ -33,7 +33,7 @@
                     <v-progress-circular indeterminate color="primary"></v-progress-circular>
                 </v-card-text>
                 <!-- RESTART BUTTONS -->
-                <v-card-actions class="justify-start">
+                <v-card-actions class="justify-center">
                     <v-btn small :class="`${messageType}--text ml-2`" @click="restart">
                         <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
                         {{ $t('Panels.KlippyStatePanel.Restart') }}
@@ -50,7 +50,7 @@
                     <v-alert dense text border="left">
                         <p>
                             <v-icon>{{ iconType }}</v-icon>
-                            Moonraker reports a disconnection:
+                            Moonraker reports: DISCONNECTED
                         </p>
                         <connection-status :moonraker="true" :klipper="false"></connection-status>
                         <p class="mt-2 mb-0 text-center">{{ $t('Panels.KlippyStatePanel.MoonrakerCannotConnect') }}</p>
@@ -68,13 +68,13 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import ConnectionStatus from '../ui/ConnectionStatus.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiAlertCircle, mdiRestart, mdiMessageOutline, mdiAlertOutline, mdiRocketLaunch, mdiConnection } from '@mdi/js'
+import { mdiRestart, mdiMessageOutline, mdiAlertOutline, mdiRocketLaunch, mdiConnection, mdiPrinter3d } from '@mdi/js'
 
 @Component({
     components: { Panel, ConnectionStatus },
 })
 export default class KlippyStatePanel extends Mixins(BaseMixin) {
-    mdiAlertCircle = mdiAlertCircle
+    mdiPrinter3d = mdiPrinter3d
     mdiRestart = mdiRestart
 
     get klippy_message() {
