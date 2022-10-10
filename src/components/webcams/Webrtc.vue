@@ -129,3 +129,9 @@ export default class Webrtc extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+video {
+    width: 100%;
+}
+</style>
