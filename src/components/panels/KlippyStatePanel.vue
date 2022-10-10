@@ -1,10 +1,10 @@
 <template>
     <div v-if="klipperState !== 'ready' && socketIsConnected">
         <v-container v-if="klippyIsConnected" class="pa-0 pb-6">
-            <v-alert :color="messageType" dense text border="left" class="mb-0">
+            <v-alert :color="messageType.color" dense text border="left" class="mb-0">
                 <!-- KLIPPER MESSAGE TITLE -->
                 <p class="font-weight-medium d-flex align-center">
-                    <v-icon :color="messageType" class="pr-2">{{ iconType }}</v-icon>
+                    <v-icon :color="messageType.color" class="pr-2">{{ messageType.icon }}</v-icon>
                     {{ $t('Panels.KlippyStatePanel.ServiceReports', { service: 'Klipper' }) }}:
                     {{ klipperState.toUpperCase() }}
                 </p>
@@ -15,13 +15,17 @@
                     <v-row>
                         <!-- RESTART BUTTONS -->
                         <v-col>
-                            <v-btn small :class="`${messageType}--text my-1`" style="width: 100%" @click="restart">
+                            <v-btn
+                                small
+                                :class="`${messageType.color}--text my-1`"
+                                style="width: 100%"
+                                @click="restart">
                                 <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
                                 {{ $t('Panels.KlippyStatePanel.Restart') }}
                             </v-btn>
                             <v-btn
                                 small
-                                :class="`${messageType}--text my-1`"
+                                :class="`${messageType.color}--text my-1`"
                                 style="width: 100%"
                                 @click="firmwareRestart">
                                 <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
@@ -33,7 +37,7 @@
                             <v-btn
                                 :href="apiUrl + '/server/files/klippy.log'"
                                 small
-                                :class="`${messageType}--text my-1`"
+                                :class="`${messageType.color}--text my-1`"
                                 style="width: 100%"
                                 @click="downloadLog">
                                 <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
@@ -42,7 +46,7 @@
                             <v-btn
                                 :href="apiUrl + '/server/files/moonraker.log'"
                                 small
-                                :class="`${messageType}--text my-1`"
+                                :class="`${messageType.color}--text my-1`"
                                 style="width: 100%"
                                 @click="downloadLog">
                                 <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
@@ -53,7 +57,7 @@
                 </div>
                 <!-- LOADER -->
                 <v-card-text v-else class="text-center py-3">
-                    <v-progress-circular indeterminate :color="messageType"></v-progress-circular>
+                    <v-progress-circular indeterminate :color="messageType.color"></v-progress-circular>
                 </v-card-text>
             </v-alert>
         </v-container>
@@ -61,7 +65,7 @@
         <v-container v-if="klipperState === 'disconnected'" class="pa-0">
             <v-alert dense text border="left">
                 <p class="font-weight-medium d-flex align-center">
-                    <v-icon class="pr-2">{{ iconType }}</v-icon>
+                    <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
                     {{ $t('Panels.KlippyStatePanel.ServiceReports', { service: 'Moonraker' }) }}:
                     {{ klipperState.toUpperCase() }}
                 </p>
@@ -101,23 +105,19 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
         return this.$store.state.server.klippy_message ?? null
     }
 
-    get messageType() {
-        let type
-
-        if (this.klipperState === 'startup') type = 'info'
-        if (this.klipperState === 'shutdown') type = 'warning'
-        if (this.klipperState === 'error') type = 'error'
-
-        return type
-    }
-
-    get iconType() {
-        if (this.klipperState === 'startup') return mdiRocketLaunch
-        if (this.klipperState === 'shutdown') return mdiAlertOutline
-        if (this.klipperState === 'error') return mdiAlertOutline
-        if (this.klipperState === 'disconnected') return mdiConnection
-
-        return mdiMessageOutline
+    get messageType(): { color: string; icon: string } {
+        switch (this.klipperState) {
+            case 'startup':
+                return { color: 'info', icon: mdiRocketLaunch }
+            case 'shutdown':
+                return { color: 'warning', icon: mdiAlertOutline }
+            case 'error':
+                return { color: 'error', icon: mdiAlertOutline }
+            case 'disconnected':
+                return { color: '', icon: mdiConnection }
+            default:
+                return { color: '', icon: mdiMessageOutline }
+        }
     }
 
     restart() {
