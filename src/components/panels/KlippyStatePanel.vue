@@ -5,24 +5,51 @@
                 <!-- KLIPPER MESSAGE TITLE -->
                 <p class="font-weight-medium">
                     <v-icon :color="messageType">{{ iconType }}</v-icon>
-                    <!-- TODO: needs localization -->
-                    Klipper reports: {{ klipperState.toUpperCase() }}
+                    {{ $t('Panels.KlippyStatePanel.ServiceReports', { service: 'Klipper' }) }}:
+                    {{ klipperState.toUpperCase() }}
                 </p>
                 <!-- KLIPPER MESSAGE -->
                 <div v-if="klippy_message !== null">
                     <pre style="white-space: pre-wrap">{{ klippy_message.trim() }}</pre>
-                    <!-- RESTART BUTTONS -->
                     <v-divider class="mt-2 pb-3"></v-divider>
-                    <div class="d-flex justify-center">
-                        <v-btn small :class="`${messageType}--text ml-2`" @click="restart">
-                            <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
-                            {{ $t('Panels.KlippyStatePanel.Restart') }}
-                        </v-btn>
-                        <v-btn small :class="`${messageType}--text ml-4`" @click="firmwareRestart">
-                            <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
-                            {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
-                        </v-btn>
-                    </div>
+                    <v-row>
+                        <!-- RESTART BUTTONS -->
+                        <v-col>
+                            <v-btn small :class="`${messageType}--text my-1`" style="width: 100%" @click="restart">
+                                <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
+                                {{ $t('Panels.KlippyStatePanel.Restart') }}
+                            </v-btn>
+                            <v-btn
+                                small
+                                :class="`${messageType}--text my-1`"
+                                style="width: 100%"
+                                @click="firmwareRestart">
+                                <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
+                                {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
+                            </v-btn>
+                        </v-col>
+                        <!-- LOG DOWNLOAD BUTTONS -->
+                        <v-col>
+                            <v-btn
+                                :href="apiUrl + '/server/files/klippy.log'"
+                                small
+                                :class="`${messageType}--text my-1`"
+                                style="width: 100%"
+                                @click="downloadLog">
+                                <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
+                                Klipper Log
+                            </v-btn>
+                            <v-btn
+                                :href="apiUrl + '/server/files/moonraker.log'"
+                                small
+                                :class="`${messageType}--text my-1`"
+                                style="width: 100%"
+                                @click="downloadLog">
+                                <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
+                                Moonraker Log
+                            </v-btn>
+                        </v-col>
+                    </v-row>
                 </div>
                 <!-- LOADER -->
                 <v-card-text v-else class="text-center py-3">
@@ -35,8 +62,8 @@
             <v-alert dense text border="left">
                 <p>
                     <v-icon>{{ iconType }}</v-icon>
-                    <!-- TODO: needs localization -->
-                    Moonraker reports: {{ klipperState.toUpperCase() }}
+                    {{ $t('Panels.KlippyStatePanel.ServiceReports', { service: 'Moonraker' }) }}:
+                    {{ klipperState.toUpperCase() }}
                 </p>
                 <connection-status :moonraker="true" :klipper="false"></connection-status>
                 <p class="mt-2 mb-0 text-center">{{ $t('Panels.KlippyStatePanel.MoonrakerCannotConnect') }}</p>
@@ -52,7 +79,15 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import ConnectionStatus from '../ui/ConnectionStatus.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiRestart, mdiMessageOutline, mdiAlertOutline, mdiRocketLaunch, mdiConnection, mdiPrinter3d } from '@mdi/js'
+import {
+    mdiRestart,
+    mdiDownload,
+    mdiMessageOutline,
+    mdiAlertOutline,
+    mdiRocketLaunch,
+    mdiConnection,
+    mdiPrinter3d,
+} from '@mdi/js'
 
 @Component({
     components: { Panel, ConnectionStatus },
@@ -60,10 +95,9 @@ import { mdiRestart, mdiMessageOutline, mdiAlertOutline, mdiRocketLaunch, mdiCon
 export default class KlippyStatePanel extends Mixins(BaseMixin) {
     mdiPrinter3d = mdiPrinter3d
     mdiRestart = mdiRestart
+    mdiDownload = mdiDownload
 
     get klippy_message() {
-        console.log(this.klipperState)
-        console.log(this.$store.state.server.klippy_message)
         return this.$store.state.server.klippy_message ?? null
     }
 
@@ -92,6 +126,15 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
 
     firmwareRestart() {
         this.$socket.emit('printer.firmware_restart', {}, { loading: 'firmwareRestart' })
+    }
+
+    downloadLog(event: any) {
+        event.preventDefault()
+        let href = ''
+        if ('href' in event.target.attributes) href = event.target.attributes.href.value
+        if ('href' in event.target.parentElement.attributes) href = event.target.parentElement.attributes.href.value
+
+        window.open(href)
     }
 }
 </script>
