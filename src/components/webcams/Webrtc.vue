@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Ref, Vue } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
@@ -51,6 +51,7 @@ export default class Webrtc extends Mixins(BaseMixin) {
             window.console.log('track event ' + evt.track.kind)
             if (evt.track.kind == 'video') {
                 window.console.log(this.$refs.stream)
+                this.$refs.stream.srcObject = evt.streams[0]
 
                 /*if (document.getElementById('stream')) {
                     document.getElementById('stream').srcObject = evt.streams[0];
@@ -61,13 +62,12 @@ export default class Webrtc extends Mixins(BaseMixin) {
         fetch(this.url, {
             body: JSON.stringify({
                 type: 'request',
-                //res: params.res
             }),
             headers: {
                 'Content-Type': 'application/json',
             },
             method: 'POST',
-            mode: 'no-cors',
+            mode: 'cors',
         })
             .then(function (response) {
                 window.console.log('response', response)
@@ -101,10 +101,10 @@ export default class Webrtc extends Mixins(BaseMixin) {
                     }
                 })
             })
-            .then(function (answer) {
+            .then((answer) => {
                 let offer = pc.localDescription
 
-                return fetch('/webrtc', {
+                return fetch(this.url, {
                     body: JSON.stringify({
                         type: offer.type,
                         id: pc.remote_pc_id,
