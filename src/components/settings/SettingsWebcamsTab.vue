@@ -187,6 +187,9 @@
                             <template v-else-if="form.service === 'ipstream'">
                                 <webcam-ipstreamer :cam-settings="form"></webcam-ipstreamer>
                             </template>
+                            <template v-else-if="form.service === 'webrtc'">
+                                <webcam-webrtc :cam-settings="form"></webcam-webrtc>
+                            </template>
                             <template v-else>
                                 <p class="text-center py-3 font-italic">
                                     {{ $t('Panels.WebcamPanel.UnknownWebcamService') }}
@@ -224,6 +227,7 @@ import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import { mdiMenuDown, mdiDelete, mdiPencil, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
 import { FileStateFile } from '@/store/files/types'
+import Webrtc from '@/components/webcams/Webrtc.vue'
 
 interface webcamForm {
     bool: boolean
@@ -247,6 +251,7 @@ interface webcamForm {
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'webcam-ipstreamer': Ipstreamer,
+        'webcam-webrtc': Webrtc,
     },
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
