@@ -1,69 +1,31 @@
+<style scoped>
+.webcamImage {
+    width: 100%;
+}
+</style>
+
 <template>
-    <div>
-        <video
-            v-show="status === 'connected'"
-            ref="stream"
-            class="webcamStream"
-            :style="webcamStyle"
-            autoplay
-            muted
-            playsinline></video>
-        <v-row v-if="status !== 'connected'">
-            <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
-                <v-progress-circular
-                    v-if="status === 'connecting'"
-                    indeterminate
-                    color="primary"
-                    class="mb-3"></v-progress-circular>
-                <span class="mt-3">{{ status }}</span>
-            </v-col>
-        </v-row>
-    </div>
+    <video ref="stream" controls autoplay muted playsinline></video>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class Webrtc extends Mixins(BaseMixin) {
-    private pc: RTCPeerConnection | null = null
     private useStun = false
-    private remote_pc_id: string | null = null
-    private aspectRatio: null | number = null
-    private status: string = 'connecting'
 
     @Prop({ required: true })
     camSettings: any
 
-    @Prop({ default: null }) declare readonly printerUrl: string | null
+    @Prop()
+    printerUrl: string | undefined
 
-    @Ref() declare stream: HTMLVideoElement
+    @Ref() declare readonly stream: HTMLVideoElement
 
     get url() {
-        const baseUrl = this.camSettings.urlStream
-        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
-        url.port = this.hostPort.toString()
-
-        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
-
-        return decodeURIComponent(url.toString())
-    }
-
-    get webcamStyle() {
-        const output = {
-            transform: 'none',
-            aspectRatio: 16 / 9,
-        }
-
-        let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimStart().length) output.transform = transforms.trimStart()
-
-        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
-
-        return output
+        return this.camSettings.urlStream || ''
     }
 
     get streamConfig() {
@@ -79,76 +41,83 @@ export default class Webrtc extends Mixins(BaseMixin) {
     }
 
     startStream() {
-        this.pc = new RTCPeerConnection(this.streamConfig)
-        this.pc.addTransceiver('video', { direction: 'recvonly' })
+        window.console.log('start stream')
+        window.console.log(this.$refs.stream)
 
-        this.pc.addEventListener(
-            'track',
-            (evt) => {
-                if (evt.track.kind == 'video' && this.$refs.stream) {
-                    // @ts-ignore
-                    this.$refs.stream.srcObject = evt.streams[0]
-                }
-            },
-            false
-        )
+        const pc = new RTCPeerConnection(this.streamConfig)
+        pc.addTransceiver('video', { direction: 'recvonly' })
 
-        this.pc.onconnectionstatechange = () => {
-            this.status = (this.pc?.connectionState ?? '').toString()
+        pc.addEventListener('track', (evt) => {
+            window.console.log('track event ' + evt.track.kind)
+            if (evt.track.kind == 'video') {
+                window.console.log(this.$refs.stream)
+                this.$refs.stream.srcObject = evt.streams[0]
 
-            if (['failed', 'disconnected'].includes(this.status)) {
-                setTimeout(async () => {
-                    await this.pc?.close()
-                    this.startStream()
-                }, 500)
+                /*if (document.getElementById('stream')) {
+                    document.getElementById('stream').srcObject = evt.streams[0];
+                }*/
             }
-        }
+        })
 
         fetch(this.url, {
             body: JSON.stringify({
                 type: 'request',
-                //res: params.res
             }),
             headers: {
                 'Content-Type': 'application/json',
             },
             method: 'POST',
-            mode: 'no-cors',
+            mode: 'cors',
         })
-            .then((response) => response.json())
-            .then((answer) => {
-                this.remote_pc_id = answer.id
-                return this.pc?.setRemoteDescription(answer)
-            })
-            .then(() => this.pc?.createAnswer())
-            .then((answer) => this.pc?.setLocalDescription(answer))
-            .then(() => {
-                // wait for ICE gathering to complete
-                return new Promise((resolve) => {
-                    const checkState = () => {
-                        if (this.pc?.iceGatheringState === 'complete') {
-                            this.pc?.removeEventListener('icegatheringstatechange', checkState)
-                            resolve(true)
-                        }
-                    }
+            .then(function (response) {
+                window.console.log('response', response)
 
-                    if (this.pc?.iceGatheringState === 'complete') resolve(true)
-                    else this.pc?.addEventListener('icegatheringstatechange', checkState)
+                return response.json()
+            })
+            .then(function (answer) {
+                window.console.log('answer', answer)
+                pc.remote_pc_id = answer.id
+                return pc.setRemoteDescription(answer)
+            })
+            .then(function () {
+                return pc.createAnswer()
+            })
+            .then(function (answer) {
+                return pc.setLocalDescription(answer)
+            })
+            .then(function () {
+                // wait for ICE gathering to complete
+                return new Promise(function (resolve) {
+                    if (pc.iceGatheringState === 'complete') {
+                        resolve()
+                    } else {
+                        function checkState() {
+                            if (pc.iceGatheringState === 'complete') {
+                                pc.removeEventListener('icegatheringstatechange', checkState)
+                                resolve()
+                            }
+                        }
+                        pc.addEventListener('icegatheringstatechange', checkState)
+                    }
                 })
             })
-            .then(() => {
-                const offer = this.pc?.localDescription
-                fetch(this.url, {
+            .then((answer) => {
+                let offer = pc.localDescription
+
+                return fetch(this.url, {
                     body: JSON.stringify({
-                        type: offer?.type,
-                        id: this.remote_pc_id,
-                        sdp: offer?.sdp,
+                        type: offer.type,
+                        id: pc.remote_pc_id,
+                        sdp: offer.sdp,
                     }),
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     method: 'POST',
                 })
+            })
+            .then(function (response) {
+                return response.json()
             })
             .catch(function (e) {
                 window.console.error(e)
@@ -158,25 +127,11 @@ export default class Webrtc extends Mixins(BaseMixin) {
     mounted() {
         this.startStream()
     }
-
-    beforeDestroy() {
-        this.pc?.close()
-    }
-
-    @Watch('url')
-    async changedUrl() {
-        await this.pc?.close()
-        this.startStream()
-    }
 }
 </script>
 
 <style scoped>
-.webcamStream {
+video {
     width: 100%;
-}
-
-._webcam_webrtc_output {
-    aspect-ratio: calc(3 / 2);
 }
 </style>
