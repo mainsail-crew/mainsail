@@ -314,17 +314,6 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         ]
     }
 
-    get webcamStyle() {
-        let transforms = ''
-        if (this.form.flipX) transforms += ' scaleX(-1)'
-        if (this.form.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimLeft().length) {
-            return { transform: transforms.trimLeft() }
-        }
-
-        return ''
-    }
-
     get configfiles() {
         return this.$store.getters['files/getDirectory']('config')?.childrens ?? []
     }
