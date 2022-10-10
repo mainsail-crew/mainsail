@@ -112,7 +112,7 @@ export default class Webrtc extends Mixins(BaseMixin) {
                 'Content-Type': 'application/json',
             },
             method: 'POST',
-            mode: 'cors',
+            mode: 'no-cors',
         })
             .then((response) => response.json())
             .then((answer) => {
