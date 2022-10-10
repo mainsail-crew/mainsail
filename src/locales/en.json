@@ -988,7 +988,8 @@
             "UrlSnapshot": "URL Snapshot",
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
-            "Webcams": "Webcams"
+            "Webcams": "Webcams",
+            "Webrtc": "WebRTC"
         }
     },
     "Timelapse": {
