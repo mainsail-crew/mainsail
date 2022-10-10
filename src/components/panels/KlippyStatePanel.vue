@@ -9,11 +9,11 @@
                 <!-- KLIPPER MESSAGES -->
                 <v-container v-if="klippy_message !== null" class="py-1 mt-2">
                     <v-alert :color="messageType" dense text border="left" class="mb-0">
-                        <p v-if="klipperState === 'error'">
+                        <p v-if="klipperState === 'error'" class="font-weight-bold">
                             <v-icon :color="messageType">{{ iconType }}</v-icon>
                             Klipper reports an error:
                         </p>
-                        <p v-else-if="klipperState === 'shutdown'">
+                        <p v-else-if="klipperState === 'shutdown'" class="font-weight-medium">
                             <v-icon :color="messageType">{{ iconType }}</v-icon>
                             Klipper reports a shutdown:
                         </p>
@@ -34,11 +34,11 @@
                 </v-card-text>
                 <!-- RESTART BUTTONS -->
                 <v-card-actions class="justify-start">
-                    <v-btn small class="ml-2 error--text" @click="restart">
+                    <v-btn small :class="`${messageType}--text ml-2`" @click="restart">
                         <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
                         {{ $t('Panels.KlippyStatePanel.Restart') }}
                     </v-btn>
-                    <v-btn small class="ml-4 error--text" @click="firmwareRestart">
+                    <v-btn small :class="`${messageType}--text ml-4`" @click="firmwareRestart">
                         <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
                         {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
                     </v-btn>
