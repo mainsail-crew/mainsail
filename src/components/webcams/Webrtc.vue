@@ -1,11 +1,5 @@
-<style scoped>
-.webcamImage {
-    width: 100%;
-}
-</style>
-
 <template>
-    <video ref="stream" controls autoplay muted playsinline></video>
+    <video ref="stream" class="webcamStream" autoplay muted playsinline></video>
 </template>
 
 <script lang="ts">
@@ -14,7 +8,9 @@ import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class Webrtc extends Mixins(BaseMixin) {
+    private pc: RTCPeerConnection | null = null
     private useStun = false
+    private remote_pc_id: string | null = null
 
     @Prop({ required: true })
     camSettings: any
@@ -22,7 +18,7 @@ export default class Webrtc extends Mixins(BaseMixin) {
     @Prop()
     printerUrl: string | undefined
 
-    @Ref() declare readonly stream: HTMLVideoElement
+    @Ref() declare stream: HTMLVideoElement
 
     get url() {
         return this.camSettings.urlStream || ''
@@ -41,21 +37,13 @@ export default class Webrtc extends Mixins(BaseMixin) {
     }
 
     startStream() {
-        window.console.log('start stream')
-        window.console.log(this.$refs.stream)
+        this.pc = new RTCPeerConnection(this.streamConfig)
+        this.pc.addTransceiver('video', { direction: 'recvonly' })
 
-        const pc = new RTCPeerConnection(this.streamConfig)
-        pc.addTransceiver('video', { direction: 'recvonly' })
-
-        pc.addEventListener('track', (evt) => {
-            window.console.log('track event ' + evt.track.kind)
-            if (evt.track.kind == 'video') {
-                window.console.log(this.$refs.stream)
+        this.pc.addEventListener('track', (evt) => {
+            if (evt.track.kind == 'video' && this.$refs.stream) {
+                // @ts-ignore
                 this.$refs.stream.srcObject = evt.streams[0]
-
-                /*if (document.getElementById('stream')) {
-                    document.getElementById('stream').srcObject = evt.streams[0];
-                }*/
             }
         })
 
@@ -69,55 +57,40 @@ export default class Webrtc extends Mixins(BaseMixin) {
             method: 'POST',
             mode: 'cors',
         })
-            .then(function (response) {
-                window.console.log('response', response)
-
-                return response.json()
+            .then((response) => response.json())
+            .then((answer) => {
+                this.remote_pc_id = answer.id
+                return this.pc?.setRemoteDescription(answer)
             })
-            .then(function (answer) {
-                window.console.log('answer', answer)
-                pc.remote_pc_id = answer.id
-                return pc.setRemoteDescription(answer)
-            })
-            .then(function () {
-                return pc.createAnswer()
-            })
-            .then(function (answer) {
-                return pc.setLocalDescription(answer)
-            })
-            .then(function () {
+            .then(() => this.pc?.createAnswer())
+            .then((answer) => this.pc?.setLocalDescription(answer))
+            .then(() => {
                 // wait for ICE gathering to complete
-                return new Promise(function (resolve) {
-                    if (pc.iceGatheringState === 'complete') {
-                        resolve()
-                    } else {
-                        function checkState() {
-                            if (pc.iceGatheringState === 'complete') {
-                                pc.removeEventListener('icegatheringstatechange', checkState)
-                                resolve()
-                            }
+                return new Promise((resolve) => {
+                    const checkState = () => {
+                        if (this.pc?.iceGatheringState === 'complete') {
+                            this.pc?.removeEventListener('icegatheringstatechange', checkState)
+                            resolve(true)
                         }
-                        pc.addEventListener('icegatheringstatechange', checkState)
                     }
+
+                    if (this.pc?.iceGatheringState === 'complete') resolve(true)
+                    else this.pc?.addEventListener('icegatheringstatechange', checkState)
                 })
             })
-            .then((answer) => {
-                let offer = pc.localDescription
-
-                return fetch(this.url, {
+            .then(() => {
+                const offer = this.pc?.localDescription
+                fetch(this.url, {
                     body: JSON.stringify({
-                        type: offer.type,
-                        id: pc.remote_pc_id,
-                        sdp: offer.sdp,
+                        type: offer?.type,
+                        id: this.remote_pc_id,
+                        sdp: offer?.sdp,
                     }),
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     method: 'POST',
                 })
-            })
-            .then(function (response) {
-                return response.json()
             })
             .catch(function (e) {
                 window.console.error(e)
@@ -127,11 +100,15 @@ export default class Webrtc extends Mixins(BaseMixin) {
     mounted() {
         this.startStream()
     }
+
+    beforeDestroy() {
+        this.pc?.close()
+    }
 }
 </script>
 
 <style scoped>
-video {
+.webcamStream {
     width: 100%;
 }
 </style>
