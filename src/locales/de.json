@@ -498,9 +498,9 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Neustart",
             "KlipperCheck": "Bitte überprüfen Sie, ob der Klipper-Dienst läuft und ein UDS (Unix Domain Socket) konfiguriert ist.",
-            "KlippyState": "Klippy-Status",
             "MoonrakerCannotConnect": "Moonraker kann keine Verbindung zu Klipper herstellen!",
-            "Restart": "Neustart"
+            "Restart": "Neustart",
+            "ServiceReports": "{service} meldet"
         },
         "MachineSettingsPanel": {
             "Headline": "Maschine",

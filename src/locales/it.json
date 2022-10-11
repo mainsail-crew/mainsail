@@ -382,7 +382,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Riavvio Firmware",
             "KlipperCheck": "Controlla se il servizio Klipper è in esecuzione e se è configurato un UDS (Unix Domain Socket).",
-            "KlippyState": "Stato Klippy",
             "MoonrakerCannotConnect": "Moonraker non riesce a connettersi a Klipper!",
             "Restart": "Riavvia"
         },

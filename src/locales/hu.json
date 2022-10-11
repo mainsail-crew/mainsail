@@ -480,7 +480,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware újraindítása",
             "KlipperCheck": "Kérjük, ellenőrizd, a Klipper szolgáltatás fut-e, konfigurálva van-e UDS (Unix Domain Socket).",
-            "KlippyState": "Klippy-állapota",
             "MoonrakerCannotConnect": "A Moonraker nem tud csatlakozni a Klipperhez!",
             "Restart": "Újraindítás"
         },
