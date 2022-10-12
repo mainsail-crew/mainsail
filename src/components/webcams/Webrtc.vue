@@ -1,5 +1,5 @@
 <template>
-    <video ref="stream" class="webcamStream" autoplay muted playsinline></video>
+    <video ref="stream" class="webcamStream" :style="webcamStyle" autoplay muted playsinline></video>
 </template>
 
 <script lang="ts">
@@ -11,17 +11,36 @@ export default class Webrtc extends Mixins(BaseMixin) {
     private pc: RTCPeerConnection | null = null
     private useStun = false
     private remote_pc_id: string | null = null
+    private aspectRatio: null | number = null
 
     @Prop({ required: true })
     camSettings: any
 
-    @Prop()
-    printerUrl: string | undefined
+    @Prop({ default: null }) declare readonly printerUrl: string | null
 
     @Ref() declare stream: HTMLVideoElement
 
     get url() {
-        return this.camSettings.urlStream || ''
+        const baseUrl = this.camSettings.urlStream
+        const url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
+
+        return decodeURIComponent(url.toString())
+    }
+
+    get webcamStyle() {
+        const output = {
+            transform: 'none',
+            aspectRatio: 16 / 9,
+        }
+
+        let transforms = ''
+        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
+        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
+        if (transforms.trimStart().length) output.transform = transforms.trimStart()
+
+        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
+
+        return output
     }
 
     get streamConfig() {
