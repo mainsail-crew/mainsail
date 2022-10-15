@@ -490,7 +490,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Перезапуск Прошивки",
             "KlipperCheck": "Будь ласка, перевірте, чи працює служба Klipper та налаштована UDS (UNIX домен).",
-            "KlippyState": "Klippy-Стан",
             "MoonrakerCannotConnect": "Moonraker не може підключитися до Klipper!",
             "Restart": "Перезапустити"
         },
