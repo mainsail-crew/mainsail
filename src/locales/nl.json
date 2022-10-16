@@ -490,7 +490,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Herstart",
             "KlipperCheck": "Controleer of de Klipper service draait en een UDS (Unix Domain Socket) geconfigureerd is.",
-            "KlippyState": "Klippy-Status",
             "MoonrakerCannotConnect": "Moonraker kan niet met Klipper verbinden!",
             "Restart": "Herstart"
         },
@@ -951,8 +950,9 @@
             "CreateWebcam": "Nieuwe Webcam",
             "EditCrowsnestConf": "Bewerk crowsnest.conf",
             "EditWebcam": "Bewerk Webcam",
-            "FlipHorizontally": "Flip webcam horizontaal",
-            "FlipVertically": "Flip webcam verticaal",
+            "FlipWebcam": "Flip webcam beeld:",
+            "Horizontally": "horizontaal",
+            "Vertically": "verticaal",
             "IconBed": "Bed",
             "IconCam": "Camera",
             "IconDoor": "Deur",

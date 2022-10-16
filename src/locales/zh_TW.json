@@ -67,12 +67,10 @@
         "SetupConsole": "設定控制台"
     },
     "Editor": {
-        "Cancel": "取消",
         "ConfigReference": "設定檔參考",
         "DontSave": "不儲存",
         "Downloading": "正在下載",
         "FailedSave": "{filename} 無法上傳!",
-        "Minimap": "顯示小地圖",
         "SaveClose": "保存並關閉",
         "SaveRestart": "保存並重新啟動",
         "SuccessfullySaved": "{filename} 保存成功.",
@@ -97,7 +95,6 @@
         "DeleteDirectory": "刪除目錄ˋ",
         "DeleteDirectoryQuestion": "您真的要刪除 \"{name}\" 目錄及其所有內容嗎？",
         "Download": "下載",
-        "Downloading": "下載中",
         "EditFile": "編輯檔案",
         "Empty": "空的",
         "FilamentUsage": "耗材用量",
@@ -130,7 +127,6 @@
         "SuccessfullyRenamed": "{filename} 重新命名成功.",
         "SuccessfullyUploaded": "{filename} 更新成功!",
         "Total": "總計",
-        "Uploading": "上傳中",
         "UploadNewGcode": "上傳新 Gcode",
         "Used": "已使用",
         "View3D": "View 3D"
@@ -326,7 +322,6 @@
             "PressureAdvanceSettings": {
                 "Advance": "推進",
                 "Extruder": "擠出機",
-                "PressureAdvance": "壓力推進控制",
                 "SmoothTime": "平滑時間"
             },
             "Retract": "回抽"
@@ -339,7 +334,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "韌體重新啟動",
             "KlipperCheck": "請檢查Klipper服務是否運行並且已經設定UDS（Unix Domain Socket）。",
-            "KlippyState": "Klippy狀態: ",
             "MoonrakerCannotConnect": "Moonraker 不能連接 Klipper!",
             "Restart": "重新啟動"
         },
@@ -375,12 +369,6 @@
                 "Disabled": "關閉",
                 "Empty": "空的"
             }
-        },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "下載日誌",
-            "FollowingPluginHasAnError": "下面的外掛程式有一個錯誤:",
-            "MoonrakerErrorInfo": "載入moonraker時出現了一點問題. 請檢查日誌檔案並解決問題.",
-            "MoonrakerWarnings": "Moonraker 警告"
         },
         "PowerControlPanel": {
             "Error": "錯誤",
@@ -421,7 +409,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "自動縮放圖表",
             "Avg": "平均",
-            "Color": "顏色",
             "Cooldown": "冷卻",
             "Current": "目前",
             "Dataset": {
@@ -446,15 +433,11 @@
         "ToolheadControlPanel": {
             "Absolute": "絕對",
             "ALL": "所有",
-            "InvertX": "翻轉 X",
-            "InvertY": "翻轉 Y",
-            "InvertZ": "翻轉 Z",
             "PleaseConfigureSteps": "請設定步進",
             "Position": "位置",
             "QGL": "QGL",
             "Relative": "相對的",
             "SettingsInterfaceControl": "設定 > 界面 > 控制",
-            "SetupControls": "設定控制",
             "SpeedFactor": "速度係數",
             "ZTilt": "Z 傾斜"
         },
@@ -462,11 +445,9 @@
             "All": "全部",
             "FPS": "FPS",
             "Headline": "網路攝影機",
-            "UnknownWebcamService": "未知網絡攝影機服務",
-            "UrlNotAvailable": "地址無效"
+            "UnknownWebcamService": "未知網絡攝影機服務"
         },
         "ZoffsetPanel": {
-            "CurrentOffset": "目前偏移: ",
             "Headline": "Z-偏移",
             "Later": "最後的",
             "Ok": "好",
@@ -749,8 +730,6 @@
             "AddWebcam": "新增攝影機",
             "CreateWebcam": "建立攝影機",
             "EditWebcam": "編輯攝影機",
-            "FlipHorizontally": "水平翻轉網絡攝影機",
-            "FlipVertically": "垂直翻轉網絡攝影機",
             "IconBed": "床",
             "IconCam": "攝影機",
             "IconDoor": "門",

@@ -122,13 +122,11 @@
         "SetupConsole": "Installationskonsol"
     },
     "Editor": {
-        "Cancel": "Avbryt",
         "ConfigReference": "Referens för konfiguration",
         "DontSave": "Spara inte",
         "Downloading": "Laddar ner",
         "FailedSave": "{filename} kunde inte laddas upp!",
         "FileReadOnly": "skrivskyddad",
-        "Minimap": "Visa minikarta",
         "SaveClose": "Spara & stäng",
         "SaveRestart": "Spara & Starta om",
         "SuccessfullySaved": "{filename} sparades.",
@@ -154,7 +152,6 @@
         "DeleteDirectory": "Radera katalog",
         "DeleteDirectoryQuestion": "Vill du verkligen ta bort katalogen \"{name}\" med allt dess innehåll?",
         "Download": "Ladda ner",
-        "Downloading": "Laddar ner",
         "EditFile": "Redigera fil",
         "Empty": "Tom",
         "Filament": "Filament",
@@ -191,7 +188,6 @@
         "SuccessfullyRenamed": "{filename} har bytt namn.",
         "SuccessfullyUploaded": "Uppladdningen av {filename} lyckades!",
         "Total": "Sammanlagt",
-        "Uploading": "Laddar upp",
         "UploadNewGcode": "Ladda upp ny G-Code",
         "Used": "Använt",
         "View3D": "Visa 3D"
@@ -428,41 +424,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "ALLA",
-            "AlternateControls": "Växla kontroller",
-            "Extrude": "Extrudera",
-            "FeedAmountIn": "Inmatningsmängd in",
-            "FeedrateIn": "Matningshastighet in",
-            "Headline": "Reglage",
-            "HotendTooCold": "Hotend temp. lägre än",
-            "InvertX": "Invertera X",
-            "InvertY": "Invertera Y",
-            "InvertZ": "Invertera Z",
-            "PleaseConfigureSteps": "Vänligen konfigurera steg",
-            "QGL": "QGL",
-            "Retract": "Retract",
-            "SettingsInterfaceControl": "Inställningar > Gränssnitt > Kontroll",
-            "SetupControls": "Konfigurationskontroller",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Lutning"
-        },
-        "ExtuderControlPanel": {
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Längd för Retract",
-                "RetractSpeed": "Hastighet för Retract",
-                "UnretractExtraLength": "Unretract extra längd",
-                "UnretractSpeed": "Unretract hastighet"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Advance",
-                "Extruder": "Extruder",
-                "PressureAdvance": "Pressure Advance",
-                "SmoothTime": "Utjämningstid"
-            }
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Återanslut",
             "SwitchToPrinter": "Byt till skrivare",
@@ -471,7 +432,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Omstart av Firmware",
             "KlipperCheck": "Kontrollera om Klipper-tjänsten körs och en UDS (Unix Domain Socket) är konfigurerad.",
-            "KlippyState": "Klippy-läge",
             "MoonrakerCannotConnect": "Moonraker kan inte ansluta till Klipper!",
             "Restart": "Starta om"
         },
@@ -515,13 +475,7 @@
             "On": "På",
             "PowerControl": "Strömstyrning"
         },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Extruderingsfaktor",
-            "Headline": "Utskriftsinställningar",
-            "SpeedFactor": "Hastighetsfaktor"
-        },
         "StatusPanel": {
-            "Absolute": "absolut",
             "CancelPrint": "Avbryt utskrift",
             "ClearPrintStats": "Rensa utskriftsstatistik",
             "Difference": "Differens",
@@ -542,62 +496,27 @@
             "Max": "max",
             "ObjectHeight": "Objekts höjd",
             "PausePrint": "Pausa utskrift",
-            "Position": "Position",
             "Print": "Skriv ut",
-            "Relative": "relativ",
             "ReprintJob": "Skriv ut jobb på nytt",
             "Requested": "Begärt",
             "ResumePrint": "Fortsätt utskrift",
             "Slicer": "Slicer",
             "Speed": "Hastighet",
             "Total": "Totalt",
-            "Unknown": "Okänd",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
-        },
-        "ToolsPanel": {
-            "AutoscaleChart": "Autoskala diagram",
-            "Avg": "Genomsnittlig",
-            "Color": "Färg",
-            "Cooldown": "Nedkylning",
-            "Current": "Nuvarande",
-            "Dataset": {
-                "Power": "PWM-effekt",
-                "Speed": "PWM-hastighet",
-                "Target": "måltemperatur",
-                "Temperature": "aktuell temperatur"
-            },
-            "Headline": "Temperaturer",
-            "Max": "max",
-            "Min": "min",
-            "Name": "Namn",
-            "Presets": "Förinställningar",
-            "SetupTemperatures": "Konfigurera temperaturer",
-            "ShowChart": "Visa diagram",
-            "ShowNameInChart": "Visa {name} i diagrammet",
-            "ShowNameInList": "Visa {name} i listan",
-            "State": "Läge",
-            "Target": "Mål",
-            "TemperaturesInChart": "Temperatur [°C]",
-            "TempTooHigh": "För hög temperatur för {name}! (max: {max})",
-            "TempTooLow": "För låg temperatur för {name}! (min: {min})"
+            "Unknown": "Okänd"
         },
         "WebcamPanel": {
             "All": "Alla",
             "FPS": "FPS",
             "Headline": "Webbkamera",
             "NoWebcam": "Ingen webbkamera tillgänglig. Lägg till en webbkamera under \"Gränssnittsinställningar\" -> \"Webbkameror\".",
-            "UnknownWebcamService": "Okänd webbkameratjänst",
-            "UrlNotAvailable": "Webbadressen är inte tillgänglig"
+            "UnknownWebcamService": "Okänd webbkameratjänst"
         },
         "ZoffsetPanel": {
-            "CurrentOffset": "aktuell offset",
             "Headline": "Z-Offset",
             "Later": "Senare",
             "Ok": "OK",
             "Save": "Spara",
-            "SAVE_CONFIG": "SAVE_CONFIG",
             "SaveInfoDescription": "Den nya z-offset har beräknats och registrerats. Klicka på SAVE_CONFIG för att lagra den nya z-offset i din printer.cfg och starta om Klipper.",
             "SaveInfoDescriptionPrint": "Den nya Z-offseten har beräknats och registrerats. Efter utskrift, klicka på SAVE_CONFIG i den övre raden för att lagra den i printer.cfg och starta om Klipper.",
             "SaveInfoHeadline": "Information",
@@ -903,8 +822,9 @@
             "AddWebcam": "lägg till webbkamera",
             "CreateWebcam": "Skapa webbkamera",
             "EditWebcam": "Redigera webbkamera",
-            "FlipHorizontally": "Vänd webbkameran horisontellt",
-            "FlipVertically": "Vänd webbkameran vertikalt",
+            "FlipWebcam": "Vänd webbkamerabilden",
+            "Horizontally": "horisontellt",
+            "Vertically": "vertikalt",
             "IconBed": "Bädd",
             "IconCam": "Kamera",
             "IconDoor": "Dörr",

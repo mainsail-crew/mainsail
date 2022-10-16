@@ -54,7 +54,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('socket/removeInitModule', 'server/identify', { root: true })
     },
 
-    checkDatabases({ dispatch, commit, rootState }, payload) {
+    checkDatabases({ dispatch, commit }, payload) {
         if (payload.namespaces?.includes('mainsail')) {
             dispatch('socket/addInitModule', 'gui/init', { root: true })
             dispatch('gui/init', null, { root: true })
@@ -159,7 +159,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('setKlippyConnectedTimer', null)
     },
 
-    checkKlippyConnected({ commit, dispatch, state }, payload) {
+    checkKlippyConnected({ commit, dispatch }, payload) {
         if (!payload.klippy_connected) {
             dispatch('startKlippyConnectedInterval')
 
@@ -187,7 +187,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('setKlippyStateTimer', null)
     },
 
-    checkKlippyState({ commit, dispatch, state }, payload: { state: string; state_message: string | null }) {
+    checkKlippyState({ commit, dispatch }, payload: { state: string; state_message: string | null }) {
         commit('setKlippyState', payload.state)
         commit('setKlippyMessage', payload.state_message)
 

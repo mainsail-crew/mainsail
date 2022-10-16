@@ -100,13 +100,11 @@
         "SetupConsole": "Impostazione Console"
     },
     "Editor": {
-        "Cancel": "Cancella",
         "ConfigReference": "Configurazione di Riferimento",
         "DontSave": "Non salvare",
         "Downloading": "Scaricando",
         "FailedSave": " Impossibile caricare {filename} !",
         "FileReadOnly": "read-only",
-        "Minimap": "Mostra minimappa",
         "SaveClose": "Salva e Chiudi",
         "SaveRestart": "Salva e Riavvia",
         "SuccessfullySaved": "{filename} salvato con successo.",
@@ -132,7 +130,6 @@
         "DeleteDirectory": "Elimina Directory ",
         "DeleteDirectoryQuestion": "Vuoi davvero eliminare la directory \"{name}\" con tutto il suo contenuto?",
         "Download": "Scarica",
-        "Downloading": "Scaricando",
         "EditFile": "Modifica file",
         "Empty": "Vuoto",
         "Filament": "Filamento",
@@ -169,7 +166,6 @@
         "SuccessfullyRenamed": "Rinominato {filename} con successo.",
         "SuccessfullyUploaded": "Caricamento di {filename} riuscito!",
         "Total": "Totale",
-        "Uploading": "Caricamento",
         "UploadNewGcode": "Carica nuovo Gcode",
         "Used": "Utilizzato",
         "View3D": "Vedi 3D"
@@ -374,7 +370,6 @@
             "PressureAdvanceSettings": {
                 "Advance": "Advance",
                 "Extruder": "Estrusore",
-                "PressureAdvance": "Pressure Advance",
                 "SmoothTime": "Smooth Time"
             },
             "Retract": "Retrazione"
@@ -387,7 +382,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Riavvio Firmware",
             "KlipperCheck": "Controlla se il servizio Klipper è in esecuzione e se è configurato un UDS (Unix Domain Socket).",
-            "KlippyState": "Stato Klippy",
             "MoonrakerCannotConnect": "Moonraker non riesce a connettersi a Klipper!",
             "Restart": "Riavvia"
         },
@@ -395,7 +389,6 @@
             "Headline": "Impostazioni Macchina",
             "MotionSettings": {
                 "Acceleration": "Accelerazione",
-                "Deceleration": "Decelerazione",
                 "MaxAccelToDecel": "Max Accel. a Decel.",
                 "SquareCornerVelocity": "Velocità Angolo Retto",
                 "Velocity": "Velocità"
@@ -425,13 +418,6 @@
                 "Disabled": "disabilitato",
                 "Empty": "Vuoto"
             }
-        },
-        "MoonrakerFailedComponentsPanel": {},
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Scarica il Registro",
-            "FollowingPluginHasAnError": "Il seguente plugin ha un errore:",
-            "MoonrakerErrorInfo": "È stato rilevato un errore durante il caricamento dei componenti di moonraker. Si prega di controllare il file di registro e risolvere il problema.",
-            "MoonrakerWarnings": "Avvertenze di Moonraker"
         },
         "PowerControlPanel": {
             "Error": "Errore",
@@ -472,7 +458,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "Scala automaticamente il Grafico",
             "Avg": "Medio",
-            "Color": "Colore",
             "Cooldown": "Raffreddamento",
             "Current": "Attuale",
             "Dataset": {
@@ -499,15 +484,11 @@
         "ToolheadControlPanel": {
             "Absolute": "assoluto",
             "ALL": "TUTTI",
-            "InvertX": "Inverti X",
-            "InvertY": "Inverti Y",
-            "InvertZ": "Inverti Z",
             "PleaseConfigureSteps": "Configura gli step",
             "Position": "Posizione",
             "QGL": "QGL",
             "Relative": "relativo",
             "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
-            "SetupControls": "Controlli Installazione",
             "SpeedFactor": "Fattore di velocità",
             "ZTilt": "Inclinazione Z"
         },
@@ -515,11 +496,9 @@
             "All": "Tutto",
             "FPS": "FPS",
             "Headline": "Webcam",
-            "UnknownWebcamService": "Servizio Webcam Sconosciuto",
-            "UrlNotAvailable": "URL non disponibile"
+            "UnknownWebcamService": "Servizio Webcam Sconosciuto"
         },
         "ZoffsetPanel": {
-            "CurrentOffset": "offset corrente",
             "Headline": "Z-Offset",
             "Later": "Dopo",
             "Ok": "OK",
@@ -815,8 +794,9 @@
             "AddWebcam": "aggiungi webcam",
             "CreateWebcam": "Crea Webcam",
             "EditWebcam": "Modifica Webcam",
-            "FlipHorizontally": "Gira webcam orizzontalmente",
-            "FlipVertically": "Gira webcam verticalmente",
+            "FlipWebcam": "Specchio dell'immagine della webcam:",
+            "Horizontally": "orizzontalmente",
+            "Vertically": "verticalmente",
             "IconBed": "Letto",
             "IconCam": "Cam",
             "IconDoor": "Porta",

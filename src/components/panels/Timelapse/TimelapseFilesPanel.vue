@@ -181,7 +181,7 @@
                             {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
                         </td>
                         <td v-if="headers.find((header) => header.value === 'modified').visible" class="text-right">
-                            {{ formatDate(item.modified) }}
+                            {{ formatDateTime(item.modified) }}
                         </td>
                     </tr>
                 </template>
@@ -396,7 +396,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { formatFilesize, formatDate, sortFiles } from '@/plugins/helpers'
+import { formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import {
@@ -425,7 +425,6 @@ interface dialogRenameObject {
     components: { Panel },
 })
 export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
-    formatDate = formatDate
     formatFilesize = formatFilesize
     sortFiles = sortFiles
 

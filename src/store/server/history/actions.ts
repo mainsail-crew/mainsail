@@ -47,7 +47,7 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
         else dispatch('socket/removeInitModule', 'server/history/init', { root: true })
     },
 
-    async initHistoryNotes({ commit, dispatch, state }, payload) {
+    async initHistoryNotes({ commit, dispatch }, payload) {
         const job_ids = Object.keys(payload.value)
 
         for (const job_id of job_ids) {

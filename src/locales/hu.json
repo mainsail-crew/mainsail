@@ -480,7 +480,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware újraindítása",
             "KlipperCheck": "Kérjük, ellenőrizd, a Klipper szolgáltatás fut-e, konfigurálva van-e UDS (Unix Domain Socket).",
-            "KlippyState": "Klippy-állapota",
             "MoonrakerCannotConnect": "A Moonraker nem tud csatlakozni a Klipperhez!",
             "Restart": "Újraindítás"
         },
@@ -591,8 +590,6 @@
             "Absolute": "abszolút",
             "ALL": "MIND",
             "Headline": "Fúvókafej",
-            "Invalid": "Érvénytelen",
-            "OutOfRange": "Hatértéken túl!",
             "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
             "Position": "Pozíció",
             "QGL": "QGL",
@@ -605,11 +602,9 @@
             "All": "Mind",
             "FPS": "FPS",
             "Headline": "Webkamera",
-            "UnknownWebcamService": "Ismeretlen webkamera szolg.",
-            "UrlNotAvailable": "Az URL nem elérhető"
+            "UnknownWebcamService": "Ismeretlen webkamera szolg."
         },
         "ZoffsetPanel": {
-            "CurrentOffset": "aktuális eltolás",
             "Headline": "Z-eltolás",
             "Later": "Később",
             "Ok": "OK",
@@ -932,8 +927,9 @@
             "AddWebcam": "Webkamera hozzáadása",
             "CreateWebcam": "Webkamera létrehozása",
             "EditWebcam": "Webkamera szerkesztése",
-            "FlipHorizontally": "Webkamera vízszintes tükrözése",
-            "FlipVertically": "Webkamera függőleges tükrözése",
+            "FlipWebcam": "Webkamera tükrözése:",
+            "Horizontally": "vízszintes",
+            "Vertically": "függőleges",
             "IconBed": "Asztal",
             "IconCam": "Kamera",
             "IconDoor": "Ajtó",

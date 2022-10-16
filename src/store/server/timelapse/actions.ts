@@ -48,7 +48,7 @@ export const actions: ActionTree<ServerTimelapseState, RootState> = {
         }
     },
 
-    saveSetting({ commit }, payload) {
+    saveSetting(_, payload) {
         Vue.$socket.emit('machine.timelapse.post_settings', payload, { action: 'server/timelapse/initSettings' })
     },
 

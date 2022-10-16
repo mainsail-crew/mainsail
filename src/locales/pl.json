@@ -131,13 +131,11 @@
         }
     },
     "Editor": {
-        "Cancel": "Anuluj",
         "ConfigReference": "Wzór konfiguracji",
         "DontSave": "Nie zapisuj",
         "Downloading": "Pobieranie",
         "FailedSave": "{filename} nie mógł zostać wgrany!",
         "FileReadOnly": "Tylko do odczytu",
-        "Minimap": "Pokaż minimapę",
         "SaveClose": "Zapisz i zamknij",
         "SaveRestart": "Zapisz i uruchom ponownie",
         "SuccessfullySaved": "{filename} pomyślnie zapisano.",
@@ -164,7 +162,6 @@
         "DeleteDirectoryQuestion": "Czy na pewno chcesz usunąć katalog \"{name}\" z całą jej zawartością?",
         "DeleteSelectedQuestion": "Czy na pewno chcesz usunąć {count} plików?",
         "Download": "Pobierz",
-        "Downloading": "Pobieranie",
         "EditFile": "Edytuj plik",
         "Empty": "Puste",
         "Filament": "Filament",
@@ -206,7 +203,6 @@
         "SuccessfullyRenamed": "Pomyślnie zmieniono nazwę {filename}.",
         "SuccessfullyUploaded": "Wgranie {filename} zakończono pomyślnie!",
         "Total": "Łącznie",
-        "Uploading": "Wgrywanie",
         "UploadNewGcode": "Wgraj nowy G-Code",
         "Used": "Użyte",
         "View3D": "Zobacz w 3D"
@@ -449,22 +445,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "Wszystkie",
-            "AlternateControls": "Alternatywne sterowanie",
-            "Headline": "Sterowanie",
-            "InvertX": "Odwróć oś X",
-            "InvertY": "Odwróć oś Y",
-            "InvertZ": "Odwróć oś Z",
-            "PleaseConfigureSteps": "Proszę skonfigurować kroki",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Ustawienia > Interfejs > Sterowanie",
-            "SetupControls": "Setup sterowania",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Nachylenie osi Z"
-        },
         "ExtruderControlPanel": {
             "Allowed": "Zezwolone",
             "EstimatedExtrusion": "Przewidywana ekstruzja:",
@@ -484,7 +464,6 @@
             "PressureAdvanceSettings": {
                 "Advance": "Wzrost nacisku",
                 "Extruder": "Ekstruder",
-                "PressureAdvance": "Ustawienia nacisku",
                 "SmoothTime": "Czas wygładzania"
             },
             "Requested": "Wymagane",
@@ -500,7 +479,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Ponowne uruchomienie oprogramowania",
             "KlipperCheck": "Sprawdź , czy Klipper jest uruchomiony oraz czy UDS (Unix Domain Socket) został skonfigurowany poprawnie.",
-            "KlippyState": "Status Klippera",
             "MoonrakerCannotConnect": "Moonraker nie może połączyć się z Klipperem!",
             "Restart": "Ponowne uruchomienie"
         },
@@ -584,7 +562,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "Autoskaluj wykres",
             "Avg": "Śred.",
-            "Color": "Kolor",
             "Cooldown": "Chłodzenie",
             "Current": "Aktualna",
             "Dataset": {
@@ -612,22 +589,12 @@
             "Absolute": "Absolutna",
             "ALL": "WSZYSTKIE",
             "Headline": "Sterowanie drukarką",
-            "Invalid": "Nieprawidłowe",
-            "InvertX": "Odwróć oś X",
-            "InvertY": "Odwróć oś Y",
-            "InvertZ": "Odwróć oś Z",
-            "MotorsOff": "Wyłączenie silników",
-            "OutOfRange": "Poza zasięgiem!",
             "PleaseConfigureSteps": "Proszę skonfigurować kroki",
             "Position": "Pozycja",
             "QGL": "QGL",
             "Relative": "względna",
             "SettingsInterfaceControl": "Ustawienia > Interfejs > Konfiguracja",
-            "SetupControls": "Konfiguracja sterowania",
             "SpeedFactor": "Wartość prędkości",
-            "XOffset": "X-Offset",
-            "YOffset": "Y-Offset",
-            "ZOffset": "Z-Offset",
             "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {
@@ -635,12 +602,10 @@
             "FPS": "Kl/S",
             "Headline": "Kamera internetowa",
             "NoWebcam": "Brak dostępnej kamery. Dodaj kamerę w \"Ustawienia Interfejsu\" -> \"Kamera Internetowa\".",
-            "UnknownWebcamService": "Nieznana usługa kamery",
-            "UrlNotAvailable": "URL niedostępny"
+            "UnknownWebcamService": "Nieznana usługa kamery"
         },
         "ZoffsetPanel": {
             "Clear": "Wyczyść",
-            "CurrentOffset": "Aktualne przesunięcie",
             "Headline": "Przesunięcie osi Z",
             "Later": "Później",
             "Ok": "Okej",
@@ -963,8 +928,9 @@
             "AddWebcam": "Dodaj kamerę",
             "CreateWebcam": "Stwórz kamerę",
             "EditWebcam": "Edytuj kamerę",
-            "FlipHorizontally": "Odwróć widok kamery w poziomie",
-            "FlipVertically": "Odwróć widok kamery w pionie",
+            "FlipWebcam": "Odwróć widok kamery:",
+            "Horizontally": "poziomo",
+            "Vertically": "pionowo",
             "IconBed": "Stół",
             "IconCam": "Kamera",
             "IconDoor": "Drzwi",
