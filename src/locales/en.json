@@ -111,7 +111,7 @@
         "Abort": "abort",
         "Adjusted": "adjusted",
         "Accept": "accept",
-        "Description": "Click on adjusted when you have <b>adjusted</b> the current screw. Click on <b>accept</b> to continue without adjustment.",
+        "Description": "Click on <b>ADJUSTED</b> if the current screw was adjusted. Click on <b>ACCEPT</b> to continue without adjustment.",
         "Headline": "Bed Screws",
         "ScrewAccepted": "Screws accepted",
         "ScrewIndex": "Screw Index",
