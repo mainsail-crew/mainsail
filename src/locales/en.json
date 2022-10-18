@@ -860,7 +860,7 @@
             "NoDevicesFound": "No devices found",
             "NoGroupFound": "No group found",
             "NoPresetFound": "No preset found",
-            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, G: {white}",
+            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, W: {white}",
             "Start": "Start",
             "StartDescription": "First LED of this group.",
             "Presets": "Presets",
