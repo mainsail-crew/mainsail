@@ -952,7 +952,6 @@
             "EditWebcam": "Bewerk Webcam",
             "FlipWebcam": "Flip webcam beeld:",
             "Horizontally": "horizontaal",
-            "Vertically": "verticaal",
             "IconBed": "Bed",
             "IconCam": "Camera",
             "IconDoor": "Deur",
@@ -975,6 +974,7 @@
             "UrlSnapshot": "URL Snapshot",
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "verticaal",
             "Webcams": "Webcams"
         }
     },

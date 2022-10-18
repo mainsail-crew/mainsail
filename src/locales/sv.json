@@ -824,7 +824,6 @@
             "EditWebcam": "Redigera webbkamera",
             "FlipWebcam": "Vänd webbkamerabilden",
             "Horizontally": "horisontellt",
-            "Vertically": "vertikalt",
             "IconBed": "Bädd",
             "IconCam": "Kamera",
             "IconDoor": "Dörr",
@@ -846,6 +845,7 @@
             "UrlSnapshot": "Ögonblicksbild av webbadressen",
             "UrlStream": "Webbadressström",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "vertikalt",
             "Webcams": "Webbkameror"
         }
     },

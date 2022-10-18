@@ -929,7 +929,6 @@
             "EditWebcam": "Webkamera szerkesztése",
             "FlipWebcam": "Webkamera tükrözése:",
             "Horizontally": "vízszintes",
-            "Vertically": "függőleges",
             "IconBed": "Asztal",
             "IconCam": "Kamera",
             "IconDoor": "Ajtó",
@@ -951,6 +950,7 @@
             "UrlSnapshot": "Snapshot URL-je ",
             "UrlStream": "Stream URL-je ",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "függőleges",
             "Webcams": "Webkamerák"
         }
     },

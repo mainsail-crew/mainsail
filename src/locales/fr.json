@@ -953,7 +953,6 @@
             "EditWebcam": "Editer caméra",
             "FlipWebcam": "Miroir l'image de la webcam:",
             "Horizontally": "horizontal",
-            "Vertically": "vertical",
             "IconBed": "Plateau",
             "IconCam": "Caméra",
             "IconDoor": "Porte",
@@ -976,6 +975,7 @@
             "UrlSnapshot": "URL des instantanés",
             "UrlStream": "URL du flux",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "vertical",
             "Webcams": "Caméras"
         }
     },

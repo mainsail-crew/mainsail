@@ -530,6 +530,12 @@
         },
         "MiscellaneousPanel": {
             "Headline": "Miscellaneous",
+            "Light": {
+                "Blue": "blue",
+                "Green": "green",
+                "Red": "red",
+                "White": "white"
+            },
             "RunoutSensor": {
                 "Detected": "detected",
                 "Disabled": "disabled",
@@ -837,6 +843,30 @@
             "UnknownGroup": "Unknown Group",
             "Warning": "warning"
         },
+        "MiscellaneousTab": {
+            "AddGroup": "add group",
+            "AddPreset": "add preset",
+            "Color": "Color",
+            "CreateGroup": "Create group",
+            "CreatePreset": "Create preset",
+            "End": "End",
+            "EndDescription": "Last LED of this group.",
+            "Groups": "Groups",
+            "GroupSubTitle": "Start: {start}, End: {end}",
+            "LightGroups": "{name} - Groups",
+            "LightPresets": "{name} - Presets",
+            "Miscellaneous": "Miscellaneous",
+            "Name": "Name",
+            "NoDevicesFound": "No devices found",
+            "NoGroupFound": "No group found",
+            "NoPresetFound": "No preset found",
+            "Presets": "Presets",
+            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, W: {white}",
+            "Start": "Start",
+            "StartDescription": "First LED of this group.",
+            "UnableToLoadLight": "Unable to load light",
+            "UnableToLoadPreset": "Unable to load preset"
+        },
         "PresetsTab": {
             "AddPreset": "add preset",
             "Cooldown": "Cooldown",
@@ -864,6 +894,7 @@
             "UpdatePrinter": "Update Printer",
             "UseConfigJson": "InstanceDB = JSON detected. Please use the config.json to modify the printers list."
         },
+        "Store": "store",
         "TimelapseTab": {
             "Autorender": "Autorender",
             "AutorenderDescription": "If enabled, the timelapse video will automatically render at the end of the print",
@@ -958,6 +989,7 @@
             "ShowWebcamInNavigation": "Show Webcam in navigation",
             "UiSettings": "UI-Settings"
         },
+        "Update": "update",
         "WebcamsTab": {
             "AddWebcam": "add webcam",
             "CreateWebcam": "Create Webcam",
@@ -965,7 +997,6 @@
             "EditWebcam": "Edit Webcam",
             "FlipWebcam": "Flip webcam image:",
             "Horizontally": "horizontally",
-            "Vertically": "vertically",
             "IconBed": "Bed",
             "IconCam": "Cam",
             "IconDoor": "Door",
@@ -988,6 +1019,7 @@
             "UrlSnapshot": "URL Snapshot",
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "vertically",
             "Webcams": "Webcams"
         }
     },
