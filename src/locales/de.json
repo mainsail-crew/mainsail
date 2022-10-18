@@ -111,11 +111,11 @@
         "Abort": "abbrechen",
         "Adjusted": "angepasst",
         "Accept": "bestätigen",
-        "Description": "Klick auf <b>ANGEPASST</b> wenn die aktuelle schraube angepasst wurde. Klick auf <b>BESTÄTIGEN</b> um weiterzufahren ohne Anpassung.",
+        "Description": "Klick auf <b>ANGEPASST</b> wenn die aktuelle Schraube eingestellt wurde. Klick auf <b>BESTÄTIGEN</b> um fortzufahren ohne Anpassung.",
         "Headline": "Bettschrauben",
         "ScrewAccepted": "bestätigte Schrauben",
         "ScrewIndex": "Index der Schraube",
-        "ScrewName": "Name der Schrauben",
+        "ScrewName": "Name der Schraube",
         "ScrewOutput": "{current} von {max}"
     },
     "ConnectionDialog": {
