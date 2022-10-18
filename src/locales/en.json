@@ -107,6 +107,17 @@
             "UpdatingDone": "Updating {software} done!"
         }
     },
+    "BedScrews": {
+        "Abort": "abort",
+        "Adjusted": "adjusted",
+        "Accept": "accept",
+        "Description": "Click on <b>ADJUSTED</b> if the current screw was adjusted. Click on <b>ACCEPT</b> to continue without adjustment.",
+        "Headline": "Bed Screws",
+        "ScrewAccepted": "Screws accepted",
+        "ScrewIndex": "Screw Index",
+        "ScrewName": "Screw Name",
+        "ScrewOutput": "{current} of {max}"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
