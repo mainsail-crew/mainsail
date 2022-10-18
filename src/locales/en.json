@@ -860,10 +860,10 @@
             "NoDevicesFound": "No devices found",
             "NoGroupFound": "No group found",
             "NoPresetFound": "No preset found",
+            "Presets": "Presets",
             "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, W: {white}",
             "Start": "Start",
             "StartDescription": "First LED of this group.",
-            "Presets": "Presets",
             "UnableToLoadLight": "Unable to load light",
             "UnableToLoadPreset": "Unable to load preset"
         },
@@ -997,7 +997,6 @@
             "EditWebcam": "Edit Webcam",
             "FlipWebcam": "Flip webcam image:",
             "Horizontally": "horizontally",
-            "Vertically": "vertically",
             "IconBed": "Bed",
             "IconCam": "Cam",
             "IconDoor": "Door",
@@ -1020,6 +1019,7 @@
             "UrlSnapshot": "URL Snapshot",
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "vertically",
             "Webcams": "Webcams"
         }
     },

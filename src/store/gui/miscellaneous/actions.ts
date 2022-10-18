@@ -21,7 +21,7 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
         })
     },
 
-    async store({ commit, dispatch, state }, payload: payloadStore) {
+    async store({ commit, dispatch }, payload: payloadStore) {
         const id = uuidv4()
 
         await commit('store', { id, values: payload })
@@ -30,7 +30,7 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
         return id
     },
 
-    async storeLightgroup({ commit, dispatch, state, getters }, payload: payloadStoreLightgroup) {
+    async storeLightgroup({ commit, dispatch, getters }, payload: payloadStoreLightgroup) {
         let entryId = getters['getId'](payload.entry)
         if (entryId === null) entryId = await dispatch('store', payload.entry)
 
@@ -42,7 +42,7 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
         return lightgroupId
     },
 
-    async updateLightgroup({ commit, dispatch, state, getters }, payload: payloadStoreLightgroup) {
+    async updateLightgroup({ commit, dispatch, getters }, payload: payloadStoreLightgroup) {
         const entryId = getters['getId'](payload.entry)
         if (entryId === null) return
 
@@ -53,7 +53,7 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
         return payload.lightgroup.id
     },
 
-    async deleteLightgroup({ commit, dispatch, state, getters }, payload: payloadDeleteLightgroup) {
+    async deleteLightgroup({ commit, dispatch, getters }, payload: payloadDeleteLightgroup) {
         const entryId = getters['getId'](payload.entry)
         if (entryId === null) return
 
@@ -62,7 +62,7 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
         await dispatch('upload', entryId)
     },
 
-    async storePreset({ commit, dispatch, state, getters }, payload: payloadStorePreset) {
+    async storePreset({ commit, dispatch, getters }, payload: payloadStorePreset) {
         let entryId = getters['getId'](payload.entry)
         if (entryId === null) entryId = await dispatch('store', payload.entry)
 
@@ -74,7 +74,7 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
         return presetId
     },
 
-    async updatePreset({ commit, dispatch, state, getters }, payload: payloadStorePreset) {
+    async updatePreset({ commit, dispatch, getters }, payload: payloadStorePreset) {
         const entryId = getters['getId'](payload.entry)
         if (entryId === null) return
 
@@ -85,7 +85,7 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
         return payload.preset.id
     },
 
-    async deletePreset({ commit, dispatch, state, getters }, payload: payloadDeletePreset) {
+    async deletePreset({ commit, dispatch, getters }, payload: payloadDeletePreset) {
         const entryId = getters['getId'](payload.entry)
         if (entryId === null) return
 

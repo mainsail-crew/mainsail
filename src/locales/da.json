@@ -948,7 +948,6 @@
             "EditWebcam": "Rediger Webcam",
             "FlipWebcam": "Vend webcam-billedet:",
             "Horizontally": "horisontalt",
-            "Vertically": "vertikalt",
             "IconBed": "Bed",
             "IconCam": "Kamera",
             "IconDoor": "Dør",
@@ -971,6 +970,7 @@
             "UrlSnapshot": "URL Snapshot",
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "vertikalt",
             "Webcams": "Webcams"
         }
     },
