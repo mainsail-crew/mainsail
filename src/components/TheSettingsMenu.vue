@@ -97,7 +97,9 @@ import {
     mdiTune,
     mdiVideo3d,
     mdiWebcam,
+    mdiDipSwitch,
 } from '@mdi/js'
+import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneousTab.vue'
 @Component({
     components: {
         Panel,
@@ -113,6 +115,7 @@ import {
         SettingsGCodeViewerTab,
         SettingsEditorTab,
         SettingsTimelapseTab,
+        SettingsMiscellaneousTab,
     },
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
@@ -185,6 +188,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 icon: mdiFileDocumentEditOutline,
                 name: 'editor',
                 title: this.$t('Settings.EditorTab.Editor'),
+            },
+            {
+                icon: mdiDipSwitch,
+                name: 'miscellaneous',
+                title: this.$t('Settings.MiscellaneousTab.Miscellaneous'),
             },
         ]
 

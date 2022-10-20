@@ -40,6 +40,7 @@
             <the-fullscreen-upload></the-fullscreen-upload>
             <the-upload-snackbar></the-upload-snackbar>
             <the-manual-probe-dialog />
+            <the-bed-screws-dialog />
         </template>
         <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'"></the-select-printer-dialog>
         <the-connecting-dialog v-else></the-connecting-dialog>
@@ -61,6 +62,7 @@ import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSna
 import TheFullscreenUpload from '@/components/TheFullscreenUpload.vue'
 import TheUploadSnackbar from '@/components/TheUploadSnackbar.vue'
 import TheManualProbeDialog from '@/components/dialogs/TheManualProbeDialog.vue'
+import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
 
 @Component({
     components: {
@@ -74,6 +76,7 @@ import TheManualProbeDialog from '@/components/dialogs/TheManualProbeDialog.vue'
         TheFullscreenUpload,
         TheUploadSnackbar,
         TheManualProbeDialog,
+        TheBedScrewsDialog,
     },
     metaInfo() {
         const title = this.$store.getters['getTitle']

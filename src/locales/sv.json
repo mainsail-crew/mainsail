@@ -432,7 +432,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Omstart av Firmware",
             "KlipperCheck": "Kontrollera om Klipper-tjänsten körs och en UDS (Unix Domain Socket) är konfigurerad.",
-            "KlippyState": "Klippy-läge",
             "MoonrakerCannotConnect": "Moonraker kan inte ansluta till Klipper!",
             "Restart": "Starta om"
         },
@@ -825,7 +824,6 @@
             "EditWebcam": "Redigera webbkamera",
             "FlipWebcam": "Vänd webbkamerabilden",
             "Horizontally": "horisontellt",
-            "Vertically": "vertikalt",
             "IconBed": "Bädd",
             "IconCam": "Kamera",
             "IconDoor": "Dörr",
@@ -847,6 +845,7 @@
             "UrlSnapshot": "Ögonblicksbild av webbadressen",
             "UrlStream": "Webbadressström",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "vertikalt",
             "Webcams": "Webbkameror"
         }
     },

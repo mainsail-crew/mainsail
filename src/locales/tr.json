@@ -489,7 +489,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Yeniden Başlatma",
             "KlipperCheck": "Lütfen Klipper hizmetinin çalışıp çalışmadığını ve bir UDS'nin (Unix Etki Alanı Soketi) yapılandırılıp yapılandırılmadığını kontrol edin.",
-            "KlippyState": "Klippy-Durumu",
             "MoonrakerCannotConnect": "Moonraker Klipper'a bağlanamıyor!",
             "Restart": "Yeniden Başlat"
         },
@@ -952,7 +951,6 @@
             "EditWebcam": "Web Kamerası Düzenle",
             "FlipWebcam": "Web kamerasını çevirin:",
             "Horizontally": "yatay olarak",
-            "Vertically": "dikey olarak",
             "IconBed": "Yatak",
             "IconCam": "Kamera",
             "IconDoor": "Kapı",
@@ -975,6 +973,7 @@
             "UrlSnapshot": "URL Anlık Görüntüsü",
             "UrlStream": "URL Akışı",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "dikey olarak",
             "Webcams": "Web kameraları"
         }
     },

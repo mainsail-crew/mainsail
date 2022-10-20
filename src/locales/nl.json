@@ -490,7 +490,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Herstart",
             "KlipperCheck": "Controleer of de Klipper service draait en een UDS (Unix Domain Socket) geconfigureerd is.",
-            "KlippyState": "Klippy-Status",
             "MoonrakerCannotConnect": "Moonraker kan niet met Klipper verbinden!",
             "Restart": "Herstart"
         },
@@ -953,7 +952,6 @@
             "EditWebcam": "Bewerk Webcam",
             "FlipWebcam": "Flip webcam beeld:",
             "Horizontally": "horizontaal",
-            "Vertically": "verticaal",
             "IconBed": "Bed",
             "IconCam": "Camera",
             "IconDoor": "Deur",
@@ -976,6 +974,7 @@
             "UrlSnapshot": "URL Snapshot",
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "verticaal",
             "Webcams": "Webcams"
         }
     },

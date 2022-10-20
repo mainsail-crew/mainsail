@@ -479,7 +479,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Перезапуск прошивки",
             "KlipperCheck": "Проверьте, запущена ли служба Klipper и настроен ли UDS (Unix Domain Socket).",
-            "KlippyState": "Klippy-Статус",
             "MoonrakerCannotConnect": "Moonraker не может соединиться с Клиппером!",
             "Restart": "Перезапустить"
         },
@@ -931,7 +930,6 @@
             "EditWebcam": "Редактирование веб-камеры",
             "FlipWebcam": "Зеркальное отображение веб-камеры:",
             "Horizontally": "горизонтально",
-            "Vertically": "вертикально",
             "IconBed": "Кровать",
             "IconCam": "Камера",
             "IconDoor": "Дверь",
@@ -953,6 +951,7 @@
             "UrlSnapshot": "URL моментального снимка",
             "UrlStream": "URL потока",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "вертикально",
             "Webcams": "Веб-камеры"
         }
     },

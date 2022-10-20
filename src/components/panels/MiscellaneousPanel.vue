@@ -2,7 +2,7 @@
 
 <template>
     <panel
-        v-if="klipperReadyForGui && (miscellaneous.length || filamentSensors.length)"
+        v-if="showMiscellaneousPanel"
         :icon="mdiDipSwitch"
         :title="$t('Panels.MiscellaneousPanel.Headline')"
         :collapsible="true"
@@ -20,8 +20,21 @@
                 :max="object.max_power"
                 :multi="parseInt(object.scale)"></miscellaneous-slider>
         </div>
-        <div v-for="(sensor, index) of filamentSensors" :key="'sensor_' + index">
+        <div v-for="(light, index) of lights" :key="'light_' + light.name">
             <v-divider v-if="index || miscellaneous.length"></v-divider>
+            <miscellaneous-slider
+                v-if="light.type === 'led' && light.colorOrder.length === 1"
+                :name="light.name"
+                type="led"
+                :rpm="null"
+                :controllable="true"
+                :pwm="true"
+                :target="light.singleChannelTarget"
+                :color-order="light.colorOrder" />
+            <miscellaneous-light v-else :object="light" :root="true" />
+        </div>
+        <div v-for="(sensor, index) of filamentSensors" :key="'sensor_' + index">
+            <v-divider v-if="index || miscellaneous.length || lights.length"></v-divider>
             <filament-sensor
                 :name="sensor.name"
                 :enabled="sensor.enabled"
@@ -34,21 +47,32 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MiscellaneousSlider from '@/components/inputs/MiscellaneousSlider.vue'
+import MiscellaneousLight from '@/components/inputs/MiscellaneousLight.vue'
 import FilamentSensor from '@/components/inputs/FilamentSensor.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiDipSwitch } from '@mdi/js'
 @Component({
-    components: { Panel, FilamentSensor, MiscellaneousSlider },
+    components: { Panel, FilamentSensor, MiscellaneousSlider, MiscellaneousLight },
 })
 export default class MiscellaneousPanel extends Mixins(BaseMixin) {
     mdiDipSwitch = mdiDipSwitch
+
+    get filamentSensors() {
+        return this.$store.getters['printer/getFilamentSensors'] ?? []
+    }
 
     get miscellaneous() {
         return this.$store.getters['printer/getMiscellaneous'] ?? []
     }
 
-    get filamentSensors() {
-        return this.$store.getters['printer/getFilamentSensors'] ?? []
+    get lights() {
+        return this.$store.getters['printer/getLights'] ?? []
+    }
+
+    get showMiscellaneousPanel() {
+        return (
+            this.klipperReadyForGui && (this.miscellaneous.length || this.filamentSensors.length || this.lights.length)
+        )
     }
 }
 </script>
