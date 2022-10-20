@@ -1,4 +1,4 @@
-export interface ServerUpdateMangerState {
+export interface ServerUpdateManagerState {
     version_info: {
         // eslint-disable-next-line
         [key: string]: any
@@ -6,16 +6,16 @@ export interface ServerUpdateMangerState {
     updateResponse: {
         application: string
         complete: boolean
-        messages: ServerUpdateMangerStateMessages[]
+        messages: ServerUpdateManagerStateMessages[]
     }
 }
 
-export interface ServerUpdateMangerStateMessages {
+export interface ServerUpdateManagerStateMessages {
     date: Date
     message: string
 }
 
-export interface ServerUpdateMangerStateVersionInfoGitRepoCommits {
+export interface ServerUpdateManagerStateVersionInfoGitRepoCommits {
     sha: string
     author: string
     date: string
@@ -27,7 +27,7 @@ export interface ServerUpdateMangerStateVersionInfoGitRepoCommits {
 export interface ServerUpdateMangerStateVersionInfoGitRepo {
     branch: string
     channel: string
-    commits_behind: ServerUpdateMangerStateVersionInfoGitRepoCommits[]
+    commits_behind: ServerUpdateManagerStateVersionInfoGitRepoCommits[]
     configured_type: string
     current_hash: string
     debug_enabled: boolean
@@ -46,7 +46,7 @@ export interface ServerUpdateMangerStateVersionInfoGitRepo {
     version: string
 }
 
-export interface ServerUpdateMangerStateVersionInfoWeb {
+export interface ServerUpdateManagerStateVersionInfoWeb {
     channel: string
     configured_type: string
     name: string
@@ -55,7 +55,7 @@ export interface ServerUpdateMangerStateVersionInfoWeb {
     version: string
 }
 
-export interface ServerUpdateMangerStateVersionInfoSystem {
+export interface ServerUpdateManagerStateVersionInfoSystem {
     package_count: number
     package_list: string[]
 }

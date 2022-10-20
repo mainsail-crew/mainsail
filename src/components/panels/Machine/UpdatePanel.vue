@@ -317,7 +317,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import semver from 'semver'
 import Panel from '@/components/ui/Panel.vue'
-import { ServerUpdateMangerStateVersionInfoGitRepoCommits } from '@/store/server/updateManager/types'
+import { ServerUpdateManagerStateVersionInfoGitRepoCommits } from '@/store/server/updateManager/types'
 import VueI18n from 'vue-i18n'
 import DateTimeFormatOptions = VueI18n.DateTimeFormatOptions
 import {
@@ -336,7 +336,7 @@ import {
 
 interface groupedCommit {
     date: Date
-    commits: ServerUpdateMangerStateVersionInfoGitRepoCommits[]
+    commits: ServerUpdateManagerStateVersionInfoGitRepoCommits[]
 }
 
 interface commitsOverlay {
@@ -344,7 +344,7 @@ interface commitsOverlay {
     owner: string
     modul: string
     repoName: string
-    commits: ServerUpdateMangerStateVersionInfoGitRepoCommits[]
+    commits: ServerUpdateManagerStateVersionInfoGitRepoCommits[]
     groupedCommits: groupedCommit[]
 }
 
@@ -605,7 +605,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
             this.commitsOverlay.groupedCommits = []
 
             let lastDate: null | Date = null
-            let tmpCommits: ServerUpdateMangerStateVersionInfoGitRepoCommits[] = []
+            let tmpCommits: ServerUpdateManagerStateVersionInfoGitRepoCommits[] = []
 
             object.commits_behind.forEach((commit: any) => {
                 const commitDate = new Date(commit.date * 1000)

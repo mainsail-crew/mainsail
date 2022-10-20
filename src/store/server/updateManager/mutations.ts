@@ -1,9 +1,9 @@
 import { getDefaultState } from './index'
 import Vue from 'vue'
 import { MutationTree } from 'vuex'
-import { ServerUpdateMangerState } from '@/store/server/updateManager/types'
+import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 
-export const mutations: MutationTree<ServerUpdateMangerState> = {
+export const mutations: MutationTree<ServerUpdateManagerState> = {
     reset(state) {
         Object.assign(state, getDefaultState())
     },

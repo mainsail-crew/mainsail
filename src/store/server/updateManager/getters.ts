@@ -1,9 +1,9 @@
 import { GetterTree } from 'vuex'
-import { ServerUpdateMangerState } from '@/store/server/updateManager/types'
+import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 import semver from 'semver'
 
 // eslint-disable-next-line
-export const getters: GetterTree<ServerUpdateMangerState, any> = {
+export const getters: GetterTree<ServerUpdateManagerState, any> = {
     getUpdateableSoftwares(state) {
         // eslint-disable-next-line
         const output: any = {}
