@@ -53,6 +53,7 @@ export interface ServerUpdateManagerStateVersionInfoWeb {
     owner: string
     remote_version: string
     version: string
+    last_error: string
 }
 
 export interface ServerUpdateManagerStateVersionInfoSystem {
