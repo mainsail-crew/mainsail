@@ -16,6 +16,9 @@
                 <template v-else-if="webcam.service === 'ipstream'">
                     <webcam-ipstreamer :cam-settings="webcam"></webcam-ipstreamer>
                 </template>
+                <template v-else-if="webcam.service === 'webrtc'">
+                    <webcam-webrtc :cam-settings="webcam"></webcam-webrtc>
+                </template>
                 <template v-else>
                     <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
                 </template>
@@ -32,6 +35,7 @@ import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vu
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import Webrtc from '@/components/webcams/Webrtc.vue'
 
 @Component({
     components: {
@@ -39,6 +43,7 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'webcam-ipstreamer': Ipstreamer,
+        'webcam-webrtc': Webrtc,
     },
 })
 export default class WebcamGrid extends Mixins(BaseMixin) {
