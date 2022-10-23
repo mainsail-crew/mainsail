@@ -1,10 +1,33 @@
 import { GetterTree } from 'vuex'
-import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
-import semver from 'semver'
+import { ServerUpdateManagerState, ServerUpdateManagerStateGuiList } from '@/store/server/updateManager/types'
+import { caseInsensitiveSort } from '@/plugins/helpers'
+//import semver from 'semver'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerUpdateManagerState, any> = {
-    getUpdateableSoftwares(state) {
+    getUpdateManagerList(state) {
+        const output: ServerUpdateManagerStateGuiList[] = []
+
+        state.git_repos.forEach((repo) => {
+            output.push({
+                name: repo.name,
+                type: 'git',
+                data: { ...repo },
+            })
+        })
+
+        state.web_repos.forEach((repo) => {
+            output.push({
+                name: repo.name,
+                type: 'web',
+                data: { ...repo },
+            })
+        })
+
+        return caseInsensitiveSort(output, 'name')
+    },
+
+    /*getUpdateableSoftwares(state) {
         // eslint-disable-next-line
         const output: any = {}
         const sortKeys = Object.keys(state.version_info).sort((a, b) => {
@@ -44,5 +67,5 @@ export const getters: GetterTree<ServerUpdateManagerState, any> = {
         }
 
         return false
-    },
+    },*/
 }

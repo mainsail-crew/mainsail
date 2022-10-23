@@ -93,7 +93,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_update_refreshed':
-                commit('server/updateManager/setStatus', payload.params[0], { root: true })
+                dispatch('server/updateManager/onUpdateStatus', payload.params[0], { root: true })
                 break
 
             case 'notify_history_changed':

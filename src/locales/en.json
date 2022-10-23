@@ -466,9 +466,16 @@
             "Detached": "detached",
             "Dirty": "dirty",
             "ERROR": "ERROR",
+            "HardRecovery": "Hard Recovery",
             "Invalid": "invalid",
+            "Notification": {
+                "Detached": "Detached state is not an error nor is it a problem. It only means that additional commits exist in the local repository that do not exist in the remote repository.",
+                "Dirty": "Your local repository has been modified and cannot be updated in this state. Please recovery your this repository. (Caution! Unsaved files in this directory will be deleted!)",
+                "Invalid": "Detached state is not an error nor is it a problem."
+            },
             "OSPackages": "OS-Packages",
             "PackagesCanBeUpgraded": "packages can be upgraded",
+            "SoftRecovery": "Soft Recovery",
             "System": "System",
             "Unknown": "unknown",
             "Update": "update",

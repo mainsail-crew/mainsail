@@ -164,7 +164,7 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
             window.location.reload(true)
         else {
             this.$store.commit('server/updateManager/resetUpdateResponse')
-            this.$socket.emit('machine.update.status', { refresh: false }, { action: 'server/updateManager/getStatus' })
+            this.$socket.emit('machine.update.status', { refresh: false }, { action: 'server/updateManager/onUpdateStatus' })
         }
     }
 

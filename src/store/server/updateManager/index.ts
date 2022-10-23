@@ -6,7 +6,16 @@ import { getters } from '@/store/server/updateManager/getters'
 
 export const getDefaultState = (): ServerUpdateManagerState => {
     return {
-        version_info: {},
+        busy: false,
+        github_rate_limit: null,
+        github_requests_remaining: null,
+        github_limit_reset_time: null,
+        git_repos: [],
+        web_repos: [],
+        system: {
+            package_count: 0,
+            package_list: [],
+        },
         updateResponse: {
             application: '',
             complete: true,

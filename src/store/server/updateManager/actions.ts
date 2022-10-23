@@ -9,11 +9,32 @@ export const actions: ActionTree<ServerUpdateManagerState, RootState> = {
     },
 
     init() {
-        Vue.$socket.emit('machine.update.status', {}, { action: 'server/updateManager/getStatus' })
+        Vue.$socket.emit('machine.update.status', {}, { action: 'server/updateManager/onUpdateStatus' })
     },
 
-    async getStatus({ commit, dispatch }, payload) {
-        await commit('setStatus', payload)
+    async onUpdateStatus({ commit, dispatch }, payload) {
+        await commit('resetRepos')
+
+        for (const key of Object.keys(payload.version_info)) {
+            const module = payload.version_info[key] ?? {}
+            const configured_type = module.configured_type ?? null
+
+            if (['git_repo', 'zip'].includes(configured_type)) {
+                await commit('storeGitRepo', { ...module, name: key })
+                continue
+            }
+
+            if (['web', 'web_beta'].includes(configured_type)) {
+                await commit('storeWebRepo', { ...module, name: key })
+                continue
+            }
+
+            if (key === 'system') {
+                await commit('updateSystem', { ...module })
+            }
+        }
+
+        //await commit('setStatus', payload)
         await dispatch('socket/removeInitModule', 'server/updateManager/init', { root: true })
     },
 }
