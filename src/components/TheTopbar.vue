@@ -26,7 +26,7 @@
             <input
                 ref="fileUploadAndStart"
                 type="file"
-                :accept="validGcodeExtensions.join(', ')"
+                :accept="gcodeInputFileAccept.join(', ')"
                 style="display: none"
                 @change="uploadAndStart" />
             <v-btn
@@ -108,7 +108,7 @@
 <script lang="ts">
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { validGcodeExtensions } from '@/store/variables'
+import { gcodeInputFileAccept } from '@/store/variables'
 import Component from 'vue-class-component'
 import axios from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
@@ -151,6 +151,8 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     mdiClose = mdiClose
     mdiCloseThick = mdiCloseThick
 
+    gcodeInputFileAccept = gcodeInputFileAccept
+
     topbarHeight = topbarHeight
 
     showEmergencyStopDialog = false
@@ -180,10 +182,6 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     set naviDrawer(newVal) {
         this.$store.dispatch('setNaviDrawer', newVal)
-    }
-
-    get validGcodeExtensions() {
-        return validGcodeExtensions
     }
 
     get currentPage() {

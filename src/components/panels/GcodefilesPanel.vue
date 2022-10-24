@@ -29,7 +29,7 @@
                         <input
                             ref="fileUpload"
                             type="file"
-                            :accept="validGcodeExtensions.join(', ')"
+                            :accept="gcodeInputFileAccept.join(', ')"
                             style="display: none"
                             multiple
                             @change="uploadFile" />
@@ -493,7 +493,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { validGcodeExtensions } from '@/store/variables'
+import { validGcodeExtensions, gcodeInputFileAccept } from '@/store/variables'
 import { formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
@@ -585,7 +585,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiDragVertical = mdiDragVertical
 
-    validGcodeExtensions = validGcodeExtensions
+    gcodeInputFileAccept = gcodeInputFileAccept
     formatFilesize = formatFilesize
     formatPrintTime = formatPrintTime
     sortFiles = sortFiles
