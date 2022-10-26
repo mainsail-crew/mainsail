@@ -136,6 +136,7 @@ import {
     mdiRestart,
 } from '@mdi/js'
 import type Codemirror from '@/components/inputs/Codemirror.vue'
+import { availableKlipperConfigReferenceTranslations, klipperConfigReferenceTranslations } from '@/store/variables'
 
 @Component({
     components: { Panel, CodemirrorAsync },
@@ -281,7 +282,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     get klipperConfigReference(): string {
         const currentLanguage = this.currentLanguage
-        const translations = ['it', 'hu', 'zh']
+        const translations = availableKlipperConfigReferenceTranslations
         let url = 'https://www.klipper3d.org/Config_Reference.html'
 
         if (translations.includes(currentLanguage)) {
