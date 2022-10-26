@@ -124,6 +124,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { capitalize, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
+import { availableKlipperConfigReferenceTranslations } from '@/store/variables'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import {
     mdiClose,
@@ -136,7 +137,6 @@ import {
     mdiRestart,
 } from '@mdi/js'
 import type Codemirror from '@/components/inputs/Codemirror.vue'
-import { availableKlipperConfigReferenceTranslations, klipperConfigReferenceTranslations } from '@/store/variables'
 
 @Component({
     components: { Panel, CodemirrorAsync },
