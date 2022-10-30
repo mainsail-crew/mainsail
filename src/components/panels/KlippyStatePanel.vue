@@ -17,6 +17,8 @@
                         <v-col>
                             <v-btn
                                 small
+                                outlined
+                                text
                                 :class="`${messageType.color}--text my-1`"
                                 style="width: 100%"
                                 @click="restart">
@@ -25,6 +27,8 @@
                             </v-btn>
                             <v-btn
                                 small
+                                outlined
+                                text
                                 :class="`${messageType.color}--text my-1`"
                                 style="width: 100%"
                                 @click="firmwareRestart">
@@ -37,6 +41,8 @@
                             <v-btn
                                 :href="apiUrl + '/server/files/klippy.log'"
                                 small
+                                outlined
+                                text
                                 :class="`${messageType.color}--text my-1`"
                                 style="width: 100%"
                                 @click="downloadLog">
@@ -46,6 +52,8 @@
                             <v-btn
                                 :href="apiUrl + '/server/files/moonraker.log'"
                                 small
+                                outlined
+                                text
                                 :class="`${messageType.color}--text my-1`"
                                 style="width: 100%"
                                 @click="downloadLog">
