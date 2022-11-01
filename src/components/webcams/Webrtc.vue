@@ -1,5 +1,24 @@
 <template>
-    <video ref="stream" class="webcamStream" :style="webcamStyle" autoplay muted playsinline></video>
+    <div>
+        <video
+            v-show="status === 'connected'"
+            ref="stream"
+            class="webcamStream"
+            :style="webcamStyle"
+            autoplay
+            muted
+            playsinline></video>
+        <v-row v-if="status !== 'connected'">
+            <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
+                <v-progress-circular
+                    v-if="status === 'connecting'"
+                    indeterminate
+                    color="primary"
+                    class="mb-3"></v-progress-circular>
+                <span class="mt-3">{{ status }}</span>
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
 <script lang="ts">
@@ -12,6 +31,7 @@ export default class Webrtc extends Mixins(BaseMixin) {
     private useStun = false
     private remote_pc_id: string | null = null
     private aspectRatio: null | number = null
+    private status: string = 'connecting'
 
     @Prop({ required: true })
     camSettings: any
@@ -59,12 +79,21 @@ export default class Webrtc extends Mixins(BaseMixin) {
         this.pc = new RTCPeerConnection(this.streamConfig)
         this.pc.addTransceiver('video', { direction: 'recvonly' })
 
-        this.pc.addEventListener('track', (evt) => {
-            if (evt.track.kind == 'video' && this.$refs.stream) {
-                // @ts-ignore
-                this.$refs.stream.srcObject = evt.streams[0]
-            }
-        })
+        this.pc.addEventListener(
+            'track',
+            (evt) => {
+                if (evt.track.kind == 'video' && this.$refs.stream) {
+                    // @ts-ignore
+                    this.$refs.stream.srcObject = evt.streams[0]
+                }
+            },
+            false
+        )
+
+        this.pc.onconnectionstatechange = () => {
+            this.status = (this.pc?.connectionState ?? '').toString()
+            window.console.log(this.status)
+        }
 
         fetch(this.url, {
             body: JSON.stringify({
@@ -129,5 +158,9 @@ export default class Webrtc extends Mixins(BaseMixin) {
 <style scoped>
 .webcamStream {
     width: 100%;
+}
+
+._webcam_webrtc_output {
+    aspect-ratio: calc(3 / 2);
 }
 </style>
