@@ -54,6 +54,11 @@ export interface ServerUpdateManagerStateGitRepo {
     info_tags: string[]
 }
 
+export interface ServerUpdateManagerStateGitRepoGroupedCommit {
+    date: Date
+    commits: ServerUpdateManagerStateGitRepoCommits[]
+}
+
 export interface ServerUpdateManagerStateWebRepo {
     channel: string
     configured_type: 'web' | 'web_beta'

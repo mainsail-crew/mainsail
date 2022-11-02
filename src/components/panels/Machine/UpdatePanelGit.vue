@@ -5,10 +5,10 @@
                 <strong>{{ repo.name }}</strong>
                 <br />
                 <template v-if="commitsBehind.length">
-                    <span class="primary--text cursor--pointer" @click="alert('test')">
+                    <a class="primary--text cursor--pointer" @click="boolShowCommitList = true">
                         <v-icon small color="primary" class="mr-1">{{ mdiInformation }}</v-icon>
                         {{ versionOutput }}
-                    </span>
+                    </a>
                 </template>
                 <span v-else>{{ versionOutput }}</span>
             </v-col>
@@ -71,6 +71,10 @@
                 </v-alert>
             </v-col>
         </v-row>
+        <update-panel-git-commits-list
+            :bool-show-dialog="boolShowCommitList"
+            :repo="repo"
+            @close-dialog="closeCommitList" />
     </div>
 </template>
 
@@ -88,12 +92,16 @@ import {
     mdiReload,
 } from '@mdi/js'
 import semver from 'semver'
-
-@Component
+import UpdatePanelGitCommitsList from '@/components/panels/Machine/UpdatePanelGitCommitsList.vue'
+@Component({
+    components: { UpdatePanelGitCommitsList },
+})
 export default class UpdatePanelGit extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
     mdiMenuDown = mdiMenuDown
     mdiReload = mdiReload
+
+    boolShowCommitList = false
 
     @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
 
@@ -266,5 +274,11 @@ export default class UpdatePanelGit extends Mixins(BaseMixin) {
     doRecovery(hard: boolean) {
         this.$socket.emit('machine.update.recover', { name: this.repo.name, hard: hard })
     }
+
+    closeCommitList() {
+        this.boolShowCommitList = false
+    }
 }
 </script>
+
+<style scoped></style>
