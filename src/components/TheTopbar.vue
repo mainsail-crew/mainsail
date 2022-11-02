@@ -108,7 +108,7 @@
 <script lang="ts">
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { gcodeInputFileAccept } from '@/store/variables'
+import { validGcodeExtensions, validGcodeMime } from '@/store/variables'
 import Component from 'vue-class-component'
 import axios from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
@@ -151,8 +151,6 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     mdiClose = mdiClose
     mdiCloseThick = mdiCloseThick
 
-    gcodeInputFileAccept = gcodeInputFileAccept
-
     topbarHeight = topbarHeight
 
     showEmergencyStopDialog = false
@@ -174,6 +172,12 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     declare $refs: {
         fileUploadAndStart: HTMLFormElement
+    }
+
+    get gcodeInputFileAccept() {
+        if (this.isIOS) return validGcodeMime
+
+        return validGcodeExtensions
     }
 
     get naviDrawer() {

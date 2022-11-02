@@ -493,7 +493,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { validGcodeExtensions, gcodeInputFileAccept } from '@/store/variables'
+import { validGcodeExtensions, validGcodeMime } from '@/store/variables'
 import { formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
@@ -585,7 +585,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiDragVertical = mdiDragVertical
 
-    gcodeInputFileAccept = gcodeInputFileAccept
     formatFilesize = formatFilesize
     formatPrintTime = formatPrintTime
     sortFiles = sortFiles
@@ -666,6 +665,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     existsFilename(name: string) {
         return this.files.findIndex((file) => file.filename === name) >= 0
+    }
+
+    get gcodeInputFileAccept() {
+        if (this.isIOS) return validGcodeMime
+
+        return validGcodeExtensions
     }
 
     get currentPath() {
