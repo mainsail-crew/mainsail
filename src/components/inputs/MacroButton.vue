@@ -22,10 +22,10 @@
                         <v-icon>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
-                <v-card max-width="200">
+                <v-card :max-width="paramsOverlayWidth">
                     <v-card-text class="py-2">
-                        <v-row v-for="(name, key) in paramArray" :key="'param_' + key" class="my-2">
-                            <v-col class="py-0">
+                        <v-row class="my-2">
+                            <v-col v-for="(name, key) in paramArray" :key="'param_' + key" :cols="paramCssCols">
                                 <v-text-field
                                     v-model="params[name].value"
                                     :label="name"
@@ -99,6 +99,22 @@ export default class MacroButton extends Mixins(BaseMixin) {
 
     get isGcodeStyle() {
         return this.macro.name.match(/[G|M]\d{1,3}/gm)
+    }
+
+    get paramCols() {
+        const cols = this.paramArray.length / 5
+
+        if (cols > 4) return 4
+
+        return cols
+    }
+
+    get paramCssCols() {
+        return 12 / this.paramCols
+    }
+
+    get paramsOverlayWidth() {
+        return 200 * this.paramCols
     }
 
     @Watch('klipperMacro')
