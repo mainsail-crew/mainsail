@@ -18,7 +18,7 @@
                                 v-for="group of groupedCommits"
                                 :key="group.date.getTime()"
                                 :repo="repo"
-                                :grouped-commit="groupedCommits" />
+                                :commits="group" />
                         </v-timeline>
                     </v-col>
                 </v-row>
