@@ -102,7 +102,7 @@ export default class MacroButton extends Mixins(BaseMixin) {
     }
 
     get paramCols() {
-        const cols = this.paramArray.length / 5
+        const cols = Math.ceil(this.paramArray.length / 5)
 
         if (cols > 4) return 4
 
