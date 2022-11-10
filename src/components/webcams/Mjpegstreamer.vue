@@ -62,7 +62,10 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
     get url() {
         const baseUrl = this.camSettings.urlStream
-        const url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
+        let url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
+        url.port = this.hostPort.toString()
+
+        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
         return decodeURIComponent(url.toString())
     }
