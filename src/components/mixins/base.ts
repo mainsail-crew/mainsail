@@ -12,6 +12,10 @@ export default class BaseMixin extends Vue {
         return this.$store.getters['socket/getHostUrl']
     }
 
+    get hostPort(): boolean {
+        return this.$store.state.socket.port ?? 80
+    }
+
     get instancesDB() {
         return this.$store.state.instancesDB ?? 'moonraker'
     }
