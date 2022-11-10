@@ -52,7 +52,7 @@
                 :loading="loadings.includes('btnUploadAndStart')"
                 @click="btnUploadAndStart">
                 <v-icon class="mr-md-2">{{ mdiFileUpload }}</v-icon>
-                <span class="d-none d-md-inline">{{ $t('App.TopBar.UploadPrint') }}</span>
+                <span class="d-none d-md-inline">{{ $t('App.TopBar.UploadPrint') }}{{ isIOS ? ' iOS' : '' }}</span>
             </v-btn>
             <v-btn
                 v-if="klippyIsConnected"
