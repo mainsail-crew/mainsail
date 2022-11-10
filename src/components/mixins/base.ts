@@ -80,7 +80,11 @@ export default class BaseMixin extends Vue {
     }
 
     get isIOS() {
-        return /iPad|iPhone|iPod/.test(navigator.userAgent)
+        return !!(
+            navigator.userAgent.match(/(iPad|iPhone|iPod)/) ||
+            // @ts-ignore
+            (navigator.platform === 'MacIntel' && typeof navigator.standalone !== 'undefined')
+        )
     }
 
     get moonrakerComponents() {
