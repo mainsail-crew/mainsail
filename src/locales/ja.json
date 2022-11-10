@@ -107,6 +107,17 @@
             "UpdatingDone": "{software}完了!"
         }
     },
+    "BedScrews": {
+        "Abort": "中止",
+        "Adjusted": "調整済み",
+        "Accept": "確認",
+        "Description": "現在のスクリューの調整が済んだら<b>調整済み</b>をクリックしてください。<b>確認</b>をクリックすると調整せずに先に進みます。",
+        "Headline": "ベッドスクリュー",
+        "ScrewAccepted": "スクリュー確認済み",
+        "ScrewIndex": "スクリュー番号",
+        "ScrewName": "スクリュー名",
+        "ScrewOutput": "{current}/{max}"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Moonraker({host})に接続できません",
         "CheckMoonrakerLog": "このメッセージが繰り返し表示される場合は、以下のログファイルを参照してください。:",
@@ -181,6 +192,8 @@
         "GCodeFiles": "Gコードファイル",
         "GcodesRootDirectoryDoesntExists": "Gコードディレクトリが見つかりませんでした。Klipperの設定[virtual_sdcard]セクションの\"path\"オプションを確認してください。",
         "HiddenFiles": "隠し属性ファイル",
+        "InvalidNameAlreadyExists": "名前は既に存在します。他の名前をつけてください。",
+        "InvalidNameEmpty": "名前の入力は空であってはなりません！",
         "LastEndTime": "直近の終了時刻",
         "LastFilamentUsed": "直近の使用量",
         "LastModified": "最終更新",
@@ -455,6 +468,12 @@
             "UpToDate": "最新の状態"
         }
     },
+    "ManualProbe": {
+        "Abort": "中止",
+        "Accept": "確認",
+        "Advanced": "アドバンスド",
+        "Headline": "手動プローブ"
+    },
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "許可",
@@ -491,7 +510,8 @@
             "FirmwareRestart": "ファームウェア再始動",
             "KlipperCheck": "Klipperサービスが動いていて、UDS (Unix Domain Socket)が設定されているかどうか確認してください。",
             "MoonrakerCannotConnect": "MoonrakerはKlipperに接続できません!",
-            "Restart": "再始動"
+            "Restart": "再始動",
+            "ServiceReports": "{service} レポート"
         },
         "MachineSettingsPanel": {
             "Headline": "機器設定",
@@ -521,6 +541,12 @@
         },
         "MiscellaneousPanel": {
             "Headline": "その他",
+            "Light": {
+                "Blue": "青",
+                "Green": "緑",
+                "Red": "赤",
+                "White": "白"
+            },
             "RunoutSensor": {
                 "Detected": "検出",
                 "Disabled": "無効",
@@ -666,7 +692,7 @@
         "SelectPrinter": "プリンター選択",
         "TryAgain": "再試行",
         "UpdatePrinter": "プリンター更新",
-        "YouCanFindMore": "You can find more details at"
+        "YouCanFindMore": "詳細はこちらでご覧になれます"
     },
     "Settings": {
         "Cancel": "取り消し",
@@ -751,6 +777,8 @@
             "ShowAxes": "軸表示"
         },
         "GeneralTab": {
+            "12hours": "12時間表示 ({time})",
+            "24hours": "24時間表示 ({time})",
             "Backup": "バックアップ",
             "BackupDialog": "バックアップを作成したい項目をすべて選んでください:",
             "CalcEstimateTime": "推定時間の計算",
@@ -766,6 +794,7 @@
                 "Slicer": "スライサー(M73)"
             },
             "CannotReadJson": "バックアップファイルの読み込み/解析ができません。",
+            "DateFormat": "日付フォーマット",
             "DbConsoleHistory": "コンソール履歴",
             "DbHistoryJobs": "ジョブ履歴",
             "DbHistoryTotals": "履歴総計",
@@ -785,7 +814,8 @@
             "PrinterName": "プリンター名",
             "Reset": "初期化",
             "Restore": "復元",
-            "RestoreDialog": "バックアップから復元したい項目をすべて選んでください:"
+            "RestoreDialog": "バックアップから復元したい項目をすべて選んでください:",
+            "TimeFormat": "時間フォーマット"
         },
         "InterfaceSettings": "インターフェース設定",
         "MacrosTab": {
@@ -824,6 +854,30 @@
             "UnknownGroup": "不明なグループ",
             "Warning": "警告"
         },
+        "MiscellaneousTab": {
+            "AddGroup": "グループ追加",
+            "AddPreset": "プリセット追加",
+            "Color": "色",
+            "CreateGroup": "グループ作成",
+            "CreatePreset": "プリセット作成",
+            "End": "終了",
+            "EndDescription": "このグループ最後のLEDです。",
+            "Groups": "グループ",
+            "GroupSubTitle": "開始: {start}, 終了: {end}",
+            "LightGroups": "{name} - グループ",
+            "LightPresets": "{name} - プリセット",
+            "Miscellaneous": "その他",
+            "Name": "名前",
+            "NoDevicesFound": "デバイスが見つかりませんでした。",
+            "NoGroupFound": "グループが見つかりませんでした。",
+            "NoPresetFound": "プリセットが見つかりませんでした。",
+            "Presets": "プリセット",
+            "PresetSubTitle": "赤: {red}, 緑: {green}, 青: {blue}, 白: {white}",
+            "Start": "開始",
+            "StartDescription": "このグループ最初のLEDです。",
+            "UnableToLoadLight": "照明を読み込めませんでした。",
+            "UnableToLoadPreset": "プリセットを読み込めませんでした。"
+        },
         "PresetsTab": {
             "AddPreset": "プリセット追加",
             "Cooldown": "クールダウン",
@@ -851,6 +905,7 @@
             "UpdatePrinter": "プリンター更新",
             "UseConfigJson": "InstanceDB = JSONが検出されました。プリンターリストはconfig.jsonで変更してください。"
         },
+        "Store": "保存",
         "TimelapseTab": {
             "Autorender": "自動レンダリング",
             "AutorenderDescription": "有効にすると、タイムラプスビデオは印刷終了すると自動的にレンダリングされます。",
@@ -945,11 +1000,14 @@
             "ShowWebcamInNavigation": "ナビゲーションにカメラを表示",
             "UiSettings": "UI設定"
         },
+        "Update": "更新",
         "WebcamsTab": {
             "AddWebcam": "カメラ追加",
             "CreateWebcam": "カメラ作成",
             "EditCrowsnestConf": "crowsnest.confを編集",
             "EditWebcam": "カメラ編集",
+            "FlipWebcam": "カメラ画像の反転:",
+            "Horizontally": "水平方向",
             "IconBed": "ベッド",
             "IconCam": "カメラ",
             "IconDoor": "ドア",
@@ -972,6 +1030,7 @@
             "UrlSnapshot": "URL スナップショット",
             "UrlStream": "URL ストリーム",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "垂直方向",
             "Webcams": "カメラ"
         }
     },
