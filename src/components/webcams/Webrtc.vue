@@ -92,7 +92,13 @@ export default class Webrtc extends Mixins(BaseMixin) {
 
         this.pc.onconnectionstatechange = () => {
             this.status = (this.pc?.connectionState ?? '').toString()
-            window.console.log(this.status)
+
+            if (['failed', 'disconnected'].includes(this.status)) {
+                setTimeout(async () => {
+                    await this.pc?.close()
+                    this.startStream()
+                }, 500)
+            }
         }
 
         fetch(this.url, {
