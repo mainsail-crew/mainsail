@@ -10,7 +10,7 @@
             {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
         </v-btn>
         <template v-if="paramArray.length">
-            <v-menu offset-y :close-on-content-click="false">
+            <v-menu :offset-y="!isMobile" :close-on-content-click="false">
                 <template #activator="{ on, attrs }">
                     <v-btn
                         :disabled="disabled"
@@ -102,6 +102,8 @@ export default class MacroButton extends Mixins(BaseMixin) {
     }
 
     get paramCols() {
+        if (this.isMobile) return 1
+
         const cols = Math.ceil(this.paramArray.length / 5)
 
         if (cols > 4) return 4
