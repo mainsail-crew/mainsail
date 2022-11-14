@@ -1,4 +1,8 @@
-<style scoped></style>
+<style scoped>
+.dashboard-rows-container /deep/ .v-list-item-group {
+    min-height: 80px;
+}
+</style>
 
 <template>
     <v-card flat>
@@ -33,7 +37,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col>
+                <v-col class="dashboard-rows-container">
                     <component :is="currentTab"></component>
                 </v-col>
             </v-row>
