@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
@@ -42,7 +42,10 @@ export default class Webrtc extends Mixins(BaseMixin) {
 
     get url() {
         const baseUrl = this.camSettings.urlStream
-        const url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
+        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
+        url.port = this.hostPort.toString()
+
+        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
         return decodeURIComponent(url.toString())
     }
@@ -157,6 +160,12 @@ export default class Webrtc extends Mixins(BaseMixin) {
 
     beforeDestroy() {
         this.pc?.close()
+    }
+
+    @Watch('url')
+    async changedUrl() {
+        await this.pc?.close()
+        this.startStream()
     }
 }
 </script>
