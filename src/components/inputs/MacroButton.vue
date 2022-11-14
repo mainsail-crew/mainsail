@@ -10,7 +10,7 @@
             {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
         </v-btn>
         <template v-if="paramArray.length">
-            <v-menu :offset-y="!isMobile" :close-on-content-click="false">
+            <v-menu v-if="!isMobile" offset-y :close-on-content-click="false">
                 <template #activator="{ on, attrs }">
                     <v-btn
                         :disabled="disabled"
@@ -49,6 +49,47 @@
                     </v-card-text>
                 </v-card>
             </v-menu>
+            <template v-else>
+                <v-btn
+                    :disabled="disabled"
+                    :color="color"
+                    class="minwidth-0 px-1 btnMacroMenu"
+                    small
+                    @click="paramsDialog = true">
+                    <v-icon>{{ mdiMenuDown }}</v-icon>
+                </v-btn>
+                <v-dialog v-model="paramsDialog">
+                    <panel :title="macro.name" :card-class="`macro-params-mobile-${macro.name}`" :margin-bottom="0">
+                        <template #buttons>
+                            <v-btn icon tile @click="paramsDialog = false">
+                                <v-icon>{{ mdiCloseThick }}</v-icon>
+                            </v-btn>
+                        </template>
+                        <v-card-text>
+                            <v-row>
+                                <v-col v-for="(name, key) in paramArray" :key="'param_mobile_' + key" :cols="6">
+                                    <v-text-field
+                                        v-model="params[name].value"
+                                        :label="name"
+                                        :placeholder="params[name].default"
+                                        :persistent-placeholder="true"
+                                        hide-details
+                                        outlined
+                                        dense
+                                        clearable
+                                        :clear-icon="mdiRefresh"
+                                        @keyup.enter="sendWithParams"></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-card-text>
+                        <v-card-actions class="px-4 pb-4">
+                            <v-btn color="primary" class="text-uppercase" block @click="sendWithParams">
+                                {{ $t('Panels.MacrosPanel.Send') }}
+                            </v-btn>
+                        </v-card-actions>
+                    </panel>
+                </v-dialog>
+            </template>
         </template>
     </v-item-group>
 </template>
@@ -58,7 +99,8 @@ import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
-import { mdiMenuDown, mdiRefresh } from '@mdi/js'
+import { mdiCloseThick, mdiMenuDown, mdiRefresh } from '@mdi/js'
+import Panel from '@/components/ui/Panel.vue'
 
 interface param {
     type: 'int' | 'double' | 'string' | null
@@ -70,16 +112,20 @@ interface params {
     [key: string]: param
 }
 
-@Component
+@Component({
+    components: { Panel },
+})
 export default class MacroButton extends Mixins(BaseMixin) {
     /**
      * Icons
      */
+    mdiCloseThick = mdiCloseThick
     mdiMenuDown = mdiMenuDown
     mdiRefresh = mdiRefresh
 
     private paramArray: string[] = []
     private params: params = {}
+    private paramsDialog = false
 
     @Prop({ required: true })
     declare readonly macro: GuiMacrosStateMacrogroupMacro
