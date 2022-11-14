@@ -17,7 +17,7 @@
                         v-if="restartServiceName === 'klipper'"
                         text
                         tile
-                        href="https://www.klipper3d.org/Config_Reference.html"
+                        :href="klipperConfigReference"
                         target="_blank"
                         class="d-none d-md-flex">
                         <v-icon small class="mr-1">{{ mdiHelp }}</v-icon>
@@ -124,6 +124,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { capitalize, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
+import { availableKlipperConfigReferenceTranslations } from '@/store/variables'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import {
     mdiClose,
@@ -273,6 +274,22 @@ export default class TheEditor extends Mixins(BaseMixin) {
         if (!this.isWriteable) return `${title} (${this.$t('Editor.FileReadOnly')})`
 
         return `${title} ${this.changedOutput}`
+    }
+
+    get currentLanguage() {
+        return this.$store.state.gui.general.language
+    }
+
+    get klipperConfigReference(): string {
+        const currentLanguage = this.currentLanguage
+        const translations = availableKlipperConfigReferenceTranslations
+        let url = 'https://www.klipper3d.org/Config_Reference.html'
+
+        if (translations.includes(currentLanguage)) {
+            url = `https://www.klipper3d.org/${currentLanguage}/Config_Reference.html`
+        }
+
+        return url
     }
 
     cancelDownload() {

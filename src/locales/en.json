@@ -107,6 +107,17 @@
             "UpdatingDone": "Updating {software} done!"
         }
     },
+    "BedScrews": {
+        "Abort": "abort",
+        "Adjusted": "adjusted",
+        "Accept": "accept",
+        "Description": "Click on <b>ADJUSTED</b> if the current screw was adjusted. Click on <b>ACCEPT</b> to continue without adjustment.",
+        "Headline": "Bed Screws",
+        "ScrewAccepted": "Screws accepted",
+        "ScrewIndex": "Screw Index",
+        "ScrewName": "Screw Name",
+        "ScrewOutput": "{current} of {max}"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
@@ -181,8 +192,8 @@
         "GCodeFiles": "G-Code Files",
         "GcodesRootDirectoryDoesntExists": "No G-Code directory found. Please check option \"path\" in the [virtual_sdcard] section of the Klipper configuration.",
         "HiddenFiles": "Hidden files",
-        "InvalidNameEmpty": "Input must not be empty!",
         "InvalidNameAlreadyExists": "Name already exists, please choose another name.",
+        "InvalidNameEmpty": "Input must not be empty!",
         "LastEndTime": "Last End Time",
         "LastFilamentUsed": "Last Filament Used",
         "LastModified": "Last modified",
@@ -291,7 +302,6 @@
         "AllJobs": "All",
         "AvgPrinttime": "Print Time - Ø",
         "Cancel": "Cancel",
-        "ChamberTemp": "Chamber Temp.",
         "CreateNote": "Create Note",
         "Delete": "Delete",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected jobs?",
@@ -458,6 +468,12 @@
             "UpToDate": "up-to-date"
         }
     },
+    "ManualProbe": {
+        "Abort": "abort",
+        "Accept": "accept",
+        "Advanced": "Advanced",
+        "Headline": "Manual Probe"
+    },
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
@@ -492,10 +508,10 @@
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Restart",
-            "KlipperCheck": "Please check if the Klipper service is running and an UDS (Unix Domain Socket) is configured.",
-            "KlippyState": "Klippy-State",
+            "KlipperCheck": "Please check if the Klipper service is running.",
             "MoonrakerCannotConnect": "Moonraker can't connect to Klipper!",
-            "Restart": "Restart"
+            "Restart": "Restart",
+            "ServiceReports": "{service} reports"
         },
         "MachineSettingsPanel": {
             "Headline": "Machine",
@@ -525,6 +541,12 @@
         },
         "MiscellaneousPanel": {
             "Headline": "Miscellaneous",
+            "Light": {
+                "Blue": "blue",
+                "Green": "green",
+                "Red": "red",
+                "White": "white"
+            },
             "RunoutSensor": {
                 "Detected": "detected",
                 "Disabled": "disabled",
@@ -604,8 +626,6 @@
             "Absolute": "absolute",
             "ALL": "ALL",
             "Headline": "Toolhead",
-            "Invalid": "Invalid",
-            "OutOfRange": "Out of range!",
             "PleaseConfigureSteps": "Please configure steps",
             "Position": "Position",
             "QGL": "QGL",
@@ -757,6 +777,8 @@
             "ShowAxes": "Show Axes"
         },
         "GeneralTab": {
+            "12hours": "12-hours ({time})",
+            "24hours": "24-hours ({time})",
             "Backup": "Backup",
             "BackupDialog": "Please select all the sections you want to create a backup:",
             "CalcEstimateTime": "Estimate time calculation",
@@ -772,6 +794,7 @@
                 "Slicer": "Slicer (M73)"
             },
             "CannotReadJson": "Cannot read/parse backup file.",
+            "DateFormat": "Date Format",
             "DbConsoleHistory": "Console History",
             "DbHistoryJobs": "History Jobs",
             "DbHistoryTotals": "History Totals",
@@ -791,7 +814,8 @@
             "PrinterName": "Printer Name",
             "Reset": "reset",
             "Restore": "Restore",
-            "RestoreDialog": "Please select all the sections you want to restore:"
+            "RestoreDialog": "Please select all the sections you want to restore:",
+            "TimeFormat": "Time Format"
         },
         "InterfaceSettings": "Interface Settings",
         "MacrosTab": {
@@ -830,6 +854,30 @@
             "UnknownGroup": "Unknown Group",
             "Warning": "warning"
         },
+        "MiscellaneousTab": {
+            "AddGroup": "add group",
+            "AddPreset": "add preset",
+            "Color": "Color",
+            "CreateGroup": "Create group",
+            "CreatePreset": "Create preset",
+            "End": "End",
+            "EndDescription": "Last LED of this group.",
+            "Groups": "Groups",
+            "GroupSubTitle": "Start: {start}, End: {end}",
+            "LightGroups": "{name} - Groups",
+            "LightPresets": "{name} - Presets",
+            "Miscellaneous": "Miscellaneous",
+            "Name": "Name",
+            "NoDevicesFound": "No devices found",
+            "NoGroupFound": "No group found",
+            "NoPresetFound": "No preset found",
+            "Presets": "Presets",
+            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, W: {white}",
+            "Start": "Start",
+            "StartDescription": "First LED of this group.",
+            "UnableToLoadLight": "Unable to load light",
+            "UnableToLoadPreset": "Unable to load preset"
+        },
         "PresetsTab": {
             "AddPreset": "add preset",
             "Cooldown": "Cooldown",
@@ -857,6 +905,7 @@
             "UpdatePrinter": "Update Printer",
             "UseConfigJson": "InstanceDB = JSON detected. Please use the config.json to modify the printers list."
         },
+        "Store": "store",
         "TimelapseTab": {
             "Autorender": "Autorender",
             "AutorenderDescription": "If enabled, the timelapse video will automatically render at the end of the print",
@@ -951,13 +1000,14 @@
             "ShowWebcamInNavigation": "Show Webcam in navigation",
             "UiSettings": "UI-Settings"
         },
+        "Update": "update",
         "WebcamsTab": {
             "AddWebcam": "add webcam",
             "CreateWebcam": "Create Webcam",
             "EditCrowsnestConf": "Edit crowsnest.conf",
             "EditWebcam": "Edit Webcam",
-            "FlipHorizontally": "Flip webcam horizontally",
-            "FlipVertically": "Flip webcam vertically",
+            "FlipWebcam": "Flip webcam image:",
+            "Horizontally": "horizontally",
             "IconBed": "Bed",
             "IconCam": "Cam",
             "IconDoor": "Door",
@@ -980,6 +1030,7 @@
             "UrlSnapshot": "URL Snapshot",
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "vertically",
             "Webcams": "Webcams"
         }
     },

@@ -866,7 +866,8 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             if (config.probe_count && typeof config.probe_count === 'string') {
                 probe_count = config.probe_count.split(',')
             } else if (config.probe_count) {
-                probe_count = config.probe_count
+                probe_count =
+                    config.probe_count.length < 2 ? [config.probe_count, config.probe_count] : config.probe_count
             } else if (config.round_probe_count) {
                 probe_count = [config.round_probe_count, config.round_probe_count]
             }

@@ -9,16 +9,12 @@
         <v-row class="py-0 pr-4">
             <v-col class="pl-6">
                 <strong style="cursor: pointer" @click="hostDetailsDialog = true">Host</strong>
-                <template v-if="hostStats.cpuDesc">
-                    <v-tooltip top>
-                        <template #activator="{ on, attrs }">
-                            <small v-if="hostStats.cpuName" class="ml-2" v-bind="attrs" v-on="on">
-                                ({{ hostStats.cpuName }})
-                            </small>
-                        </template>
-                        <span>{{ hostStats.cpuDesc }}</span>
-                    </v-tooltip>
-                </template>
+                <v-tooltip top>
+                    <template #activator="{ on, attrs }">
+                        <small v-if="hostStats.cpuName" class="ml-2" v-bind="attrs" v-on="on">({{ cpuName }})</small>
+                    </template>
+                    <span>{{ cpuDesc }}</span>
+                </v-tooltip>
                 <br />
                 <div class="text-body-2">
                     <div v-if="hostStats.version">
@@ -260,6 +256,22 @@ export default class SystemPanelHost extends Mixins(BaseMixin) {
         if (ipv6) return ` (${ipv6.address})`
 
         return null
+    }
+
+    get cpuDesc() {
+        let output = this.hostStats.cpuDesc
+
+        return output
+    }
+
+    get cpuName() {
+        let output = this.hostStats.cpuName
+
+        if (this.hostStats.bits) {
+            output += `, ${this.hostStats.bits}`
+        }
+
+        return output
     }
 }
 </script>

@@ -8,7 +8,6 @@ import {
     mdiEngine,
     mdiGamepad,
     mdiInformation,
-    mdiPrinter3d,
     mdiPrinter3dNozzle,
     mdiThermometerLines,
     mdiWebcam,
@@ -133,12 +132,6 @@ export const formatFilesize = (fileSizeInBytes: number): string => {
     } while (fileSizeInBytes > 1024)
 
     return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i]
-}
-
-export const formatDate = (date: number): string => {
-    const tmp2 = new Date(date)
-
-    return tmp2.toLocaleString().replace(',', '')
 }
 
 export const formatFrequency = (frequency: number): string => {

@@ -106,3 +106,9 @@ export const timelapseConsoleFilters = [
  * List of hidden root directories in config files panel
  */
 export const hiddenRootDirectories = ['gcodes', 'timelapse', 'timelapse_frames']
+
+/*
+ * List of available Klipper config reference translations
+ * https://www.klipper3d.org/Config_Reference.html
+ */
+export const availableKlipperConfigReferenceTranslations = ['it', 'hu', 'zh']

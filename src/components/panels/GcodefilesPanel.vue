@@ -29,7 +29,7 @@
                         <input
                             ref="fileUpload"
                             type="file"
-                            :accept="validGcodeExtensions.join(', ')"
+                            :accept="gcodeInputFileAccept.join(', ')"
                             style="display: none"
                             multiple
                             @change="uploadFile" />
@@ -494,7 +494,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { validGcodeExtensions } from '@/store/variables'
-import { formatDate, formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
+import { formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
@@ -585,8 +585,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiDragVertical = mdiDragVertical
 
-    validGcodeExtensions = validGcodeExtensions
-    formatDate = formatDate
     formatFilesize = formatFilesize
     formatPrintTime = formatPrintTime
     sortFiles = sortFiles
@@ -667,6 +665,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     existsFilename(name: string) {
         return this.files.findIndex((file) => file.filename === name) >= 0
+    }
+
+    get gcodeInputFileAccept() {
+        if (this.isIOS) return []
+
+        return validGcodeExtensions
     }
 
     get currentPath() {
@@ -1269,7 +1273,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                     return formatFilesize(value)
 
                 case 'date':
-                    return this.formatDate(value)
+                    return this.formatDateTime(value)
 
                 case 'time':
                     return this.formatPrintTime(value)

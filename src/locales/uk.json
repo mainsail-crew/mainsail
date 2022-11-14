@@ -289,7 +289,6 @@
         "AllJobs": "ВСІ",
         "AvgPrinttime": "Час Друку - Ø",
         "Cancel": "Скасувати",
-        "ChamberTemp": "Темп. Камери",
         "CreateNote": "Створити Примітку",
         "Delete": "Видалити",
         "DeleteSelectedQuestion": "Ви дійсно хочете видалити {count} вибрану роботу?",
@@ -417,7 +416,7 @@
             "NoMoreInfos": "Більше немає Infos",
             "SystemLoad": "Навантаження системи",
             "Values": {
-                "Awake": "ППробудження: {awake}",
+                "Awake": "Пробудження: {awake}",
                 "Bandwidth": "Пропускна здатність: {bandwidth}/s",
                 "Distro": "Дистрибутив: {name} {version_id}",
                 "Frequency": "Частота: {frequency}",
@@ -491,7 +490,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Перезапуск Прошивки",
             "KlipperCheck": "Будь ласка, перевірте, чи працює служба Klipper та налаштована UDS (UNIX домен).",
-            "KlippyState": "Klippy-Стан",
             "MoonrakerCannotConnect": "Moonraker не може підключитися до Klipper!",
             "Restart": "Перезапустити"
         },
@@ -576,7 +574,7 @@
             "AutoscaleChart": "Автоматичний графік",
             "Avg": "Avg",
             "Cooldown": "Охолодження",
-            "Current": "Поточний",
+            "Current": "Поточна t°",
             "Dataset": {
                 "Power": "ШІМ-потужність",
                 "Speed": "Швидкість ШІМ",
@@ -593,7 +591,7 @@
             "ShowNameInChart": "Показувати {name} у графіку",
             "ShowNameInList": "Показувати {name} у списку",
             "State": "Стан",
-            "Target": "Ціль",
+            "Target": "Встановити",
             "TemperaturesInChart": "Температура [°C]",
             "TempTooHigh": "Температура занадто висока для{name}! (макс: {max})",
             "TempTooLow": "Температура занадто низька для {name}! (мін: {min})"
@@ -602,8 +600,6 @@
             "Absolute": "абсолютні",
             "ALL": "ВСІ",
             "Headline": "Інструмент",
-            "Invalid": "Недійсний",
-            "OutOfRange": "Поза межами!",
             "PleaseConfigureSteps": "Будь ласка, налаштуйте кроки",
             "Position": "Положення",
             "QGL": "QGL",
@@ -954,8 +950,8 @@
             "CreateWebcam": "Створити веб-камеру",
             "EditCrowsnestConf": "Редагувати crowsnest.conf",
             "EditWebcam": "Редагувати веб-камеру",
-            "FlipHorizontally": "Повернути веб-камеру горизонтально",
-            "FlipVertically": "Повернути веб-камеру вертикально",
+            "FlipWebcam": "Повернути веб-камеру:",
+            "Horizontally": "горизонтально",
             "IconBed": "Ліжко",
             "IconCam": "Cam",
             "IconDoor": "Двері",
@@ -978,6 +974,7 @@
             "UrlSnapshot": "URL-адреса Знімку",
             "UrlStream": "URL-адреса Потоку",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "вертикально",
             "Webcams": "Веб-камери"
         }
     },

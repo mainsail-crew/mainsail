@@ -89,6 +89,7 @@
                                         hide-details="auto"
                                         outlined
                                         :rules="[rules.required, rules.unique]"
+                                        class="_webcam-settings-name-field"
                                         dense></v-text-field>
                                 </v-col>
                             </v-row>
@@ -150,21 +151,26 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col class="py-1">
-                                    <v-checkbox
-                                        v-model="form.flipX"
-                                        hide-details
-                                        class="mt-1"
-                                        :label="$t('Settings.WebcamsTab.FlipHorizontally')"></v-checkbox>
+                                <v-col class="pt-1 pb-3">
+                                    <div class="v-label v-label--active theme--dark text-subtitle-1">
+                                        {{ $t('Settings.WebcamsTab.FlipWebcam') }}
+                                    </div>
                                 </v-col>
                             </v-row>
-                            <v-row>
-                                <v-col class="py-1">
+                            <v-row class="mt-0">
+                                <v-col class="py-0">
+                                    <v-checkbox
+                                        v-model="form.flipX"
+                                        class="mt-1"
+                                        hide-details
+                                        :label="$t('Settings.WebcamsTab.Horizontally')"></v-checkbox>
+                                </v-col>
+                                <v-col class="py-0">
                                     <v-checkbox
                                         v-model="form.flipY"
-                                        hide-details
                                         class="mt-1"
-                                        :label="$t('Settings.WebcamsTab.FlipVertically')"></v-checkbox>
+                                        hide-details
+                                        :label="$t('Settings.WebcamsTab.Vertically')"></v-checkbox>
                                 </v-col>
                             </v-row>
                         </v-col>
@@ -193,7 +199,7 @@
                     <v-btn text @click="form.bool = false">
                         {{ $t('Settings.Cancel') }}
                     </v-btn>
-                    <v-btn color="primary" text type="submit">
+                    <v-btn color="primary" text type="submit" :disabled="!form.name">
                         {{
                             form.id === null
                                 ? $t('Settings.WebcamsTab.SaveWebcam')
@@ -447,5 +453,9 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
     ._menu-button:focus {
         border: 2px solid var(--color-primary) !important;
     }
+}
+
+._webcam-settings-name-field ::v-deep .v-text-field__details {
+    margin-bottom: -12px !important;
 }
 </style>

@@ -22,8 +22,8 @@
             "Never": "jamais",
             "NextReboot": "prochain redémarrage",
             "NoNotification": "Pas de notification(s) disponible(s)",
-            "Remind": "Rappel:",
-            "Notifications": "Notifications"
+            "Notifications": "Notifications",
+            "Remind": "Rappel:"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Doit être plus grand ou égal à {min} !",
@@ -113,8 +113,8 @@
         "CheckMoonrakerLog": "Si ce message apparait régulièrement, contrôlez le fichier log à l'adresse suivante:",
         "Connecting": "Connection avec {host}",
         "Failed": "Connection échouée",
-        "TryAgain": " répétez",
-        "Initializing": "Initialisation"
+        "Initializing": "Initialisation",
+        "TryAgain": " répétez"
     },
     "Console": {
         "CommandList": "Liste des commandes",
@@ -156,7 +156,9 @@
     "Files": {
         "AddToQueue": "Ajouter à la queue",
         "AllFiles": "Tous",
+        "BedTemp": "Température plateau",
         "Cancel": "Annuler",
+        "ChamberTemp": "Température chambre",
         "Create": "Créer",
         "CreateNewDirectory": "Nouveau dossier",
         "CurrentPath": "Dossier actuel",
@@ -167,6 +169,7 @@
         "Download": "Téléchargement",
         "EditFile": "Editer Fichier",
         "Empty": "vide",
+        "ExtruderTemp": "Température extrudeur",
         "Filament": "Filament",
         "FilamentName": "Nom du filament",
         "FilamentType": "Type de filament",
@@ -177,6 +180,7 @@
         "Free": "Libre",
         "FreeDisk": "Disque libre",
         "GCodeFiles": "Fichiers G-Code",
+        "GcodesRootDirectoryDoesntExists": "Pas trouvé de dossier G-Code. Contrôlez l'option \"path\" dans la section [virtual_sdcard] de la configuration de Klipper.",
         "HiddenFiles": "Fichiers cachés",
         "LastEndTime": "Dernière heure de fin d'impression",
         "LastFilamentUsed": "Dernier filament utilisé",
@@ -208,11 +212,7 @@
         "Total": "Total",
         "UploadNewGcode": "Charger nouveau G-Code",
         "Used": "Utilisé",
-        "View3D": "Vue 3D",
-        "BedTemp": "Température plateau",
-        "ChamberTemp": "Température chambre",
-        "ExtruderTemp": "Température extrudeur",
-        "GcodesRootDirectoryDoesntExists": "Pas trouvé de dossier G-Code. Contrôlez l'option \"path\" dans la section [virtual_sdcard] de la configuration de Klipper."
+        "View3D": "Vue 3D"
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Impossible de télécharger le fichier !",
@@ -262,6 +262,9 @@
         "ErrorKlipperNotReady": "Klipper pas prêt, maillage désactivé",
         "Flat": "Plat",
         "Heightmap": "Maillage de hauteur",
+        "InvalidNameAlreadyExists": "Ce profil existe déjà, choisissez-en un autre.",
+        "InvalidNameEmpty": "L'entrée ne doit pas être vide !",
+        "InvalidNameReserved": "Le nom de profil \"default\" est réservé, choisissez-en un autre.",
         "Later": "Plus tard",
         "Mesh": "Calculé",
         "Name": "Nom",
@@ -280,10 +283,7 @@
         "TitleCalibrate": "Calibrer nouveau maillage",
         "TitleClear": "Effacer maillage",
         "TitleHomeAll": "Réf. tous",
-        "Wireframe": "Maillage",
-        "InvalidNameAlreadyExists": "Ce profil existe déjà, choisissez-en un autre.",
-        "InvalidNameEmpty": "L'entrée ne doit pas être vide !",
-        "InvalidNameReserved": "Le nom de profil \"default\" est réservé, choisissez-en un autre."
+        "Wireframe": "Maillage"
     },
     "History": {
         "AddNote": "Ajouter une note",
@@ -339,8 +339,8 @@
             "in_progress": "en cours",
             "klippy_disconnect": "Klippy déconnecté",
             "klippy_shutdown": "Klippy arrêté",
-            "server_exit": "Serveur quitté",
-            "Others": "Autres"
+            "Others": "Autres",
+            "server_exit": "Serveur quitté"
         },
         "TitleExportHistory": "Exporter l'historique",
         "TitleRefreshHistory": "Rafraîchir l'historique",
@@ -365,6 +365,7 @@
             "AllFiles": "Tous",
             "Cancel": "Annuler",
             "ConfigFiles": "Fichiers de configuration",
+            "ConfigRootDirectoryDoesntExists": "Pas trouvé de dossier racine de configuration. Contr^lez l'option \"config_path\" dans la section [file_manager]  de la configuration de Moonraker.",
             "Create": "Créer",
             "CreateDirectory": "Nouveau dossier",
             "CreateFile": "Nouveau fichier",
@@ -394,8 +395,7 @@
             "Total": "Total",
             "UploadFile": "Chargement d'un fichier",
             "Uploading": "Téléchargement",
-            "Used": "Utilisé",
-            "ConfigRootDirectoryDoesntExists": "Pas trouvé de dossier racine de configuration. Contr^lez l'option \"config_path\" dans la section [file_manager]  de la configuration de Moonraker."
+            "Used": "Utilisé"
         },
         "EndstopPanel": {
             "Endstop": "Fin de course",
@@ -491,7 +491,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Redémarrage Firmware",
             "KlipperCheck": "Contrôlez que le sevice Klipper est actif et qu'un UDS (Unix Domain Socket) est configuré",
-            "KlippyState": "Etat-Klippy",
             "MoonrakerCannotConnect": "Moonraker n'arrive pas à se connecter à Klipper",
             "Restart": "Redémarrage"
         },
@@ -652,6 +651,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Nouvelle d'imprimante",
+        "AddPrintersToJson": "Veuillez ajouter les imprimantes dans le fichier config.json.",
         "CannotConnectTo": "Connection vers {host} impossible",
         "ChangePrinter": "Changement d'imprimante",
         "Connecting": "Connection vers {host}",
@@ -667,8 +667,7 @@
         "SelectPrinter": "Choisir imprimante",
         "TryAgain": "re-essayer",
         "UpdatePrinter": "Mise à jour imprimante",
-        "YouCanFindMore": "Vous pouvez trouver plus de détails ici:",
-        "AddPrintersToJson": "Veuillez ajouter les imprimantes dans le fichier config.json."
+        "YouCanFindMore": "Vous pouvez trouver plus de détails ici:"
     },
     "Settings": {
         "Cancel": "Annuler",
@@ -749,8 +748,8 @@
             "GridColor": "Couleur de la grille",
             "MaxFeed": "Débit maximum",
             "MinFeed": "Débit minimum",
-            "ShowAxes": "Affiche les axes",
-            "ProgressColor": "Couleur d'avancement"
+            "ProgressColor": "Couleur d'avancement",
+            "ShowAxes": "Affiche les axes"
         },
         "GeneralTab": {
             "Backup": "Sauvegarde",
@@ -759,6 +758,14 @@
             "CalcEstimateTimeDescription": "En cas de séléction multiple, une moyenne est calculée",
             "CalcEtaTime": "Calcul du TEA",
             "CalcEtaTimeDescription": "En cas de séléction multiple, une moyenne est calculée",
+            "CalcPrintProgress": "Calculation progression d'impression",
+            "CalcPrintProgressDescription": "Méthode pour calculer la progression d'impression",
+            "CalcPrintProgressItems": {
+                "Filament": "Filament",
+                "FileAbsolute": "Posiiton (absolue) dans le fichier",
+                "FileRelative": "Posiiton (relative) dans le fichier",
+                "Slicer": "Trancheur (M73)"
+            },
             "CannotReadJson": "Lecture/interprétation du fichier de sauvegarde impossible.",
             "DbConsoleHistory": "Historique des commandes de console",
             "DbHistoryJobs": "Historique des travaux",
@@ -779,15 +786,7 @@
             "PrinterName": "Nom de l'imprimante",
             "Reset": "réinitalisation",
             "Restore": "Restauration",
-            "RestoreDialog": "Choisissez les sections que vous désirez restaurer:",
-            "CalcPrintProgress": "Calculation progression d'impression",
-            "CalcPrintProgressDescription": "Méthode pour calculer la progression d'impression",
-            "CalcPrintProgressItems": {
-                "Filament": "Filament",
-                "FileAbsolute": "Posiiton (absolue) dans le fichier",
-                "FileRelative": "Posiiton (relative) dans le fichier",
-                "Slicer": "Trancheur (M73)"
-            }
+            "RestoreDialog": "Choisissez les sections que vous désirez restaurer:"
         },
         "InterfaceSettings": "Réglages interface",
         "MacrosTab": {
@@ -950,9 +949,10 @@
         "WebcamsTab": {
             "AddWebcam": "Nouvelle caméra",
             "CreateWebcam": "Nouvelle caméra",
+            "EditCrowsnestConf": "Edition de crowsnest.conf",
             "EditWebcam": "Editer caméra",
-            "FlipHorizontally": "Miroir horizontal",
-            "FlipVertically": "Miroir vertical",
+            "FlipWebcam": "Miroir l'image de la webcam:",
+            "Horizontally": "horizontal",
             "IconBed": "Plateau",
             "IconCam": "Caméra",
             "IconDoor": "Porte",
@@ -967,6 +967,7 @@
             "Name": "Nom",
             "NameAlreadyExists": "Nom existe déjà",
             "Required": "requis",
+            "Rotate": "Rotation",
             "SaveWebcam": "ajouter caméra",
             "Service": "Service",
             "TargetFPS": "IPS destination",
@@ -974,9 +975,8 @@
             "UrlSnapshot": "URL des instantanés",
             "UrlStream": "URL du flux",
             "Uv4lMjpeg": "UV4L-MJPEG",
-            "Webcams": "Caméras",
-            "EditCrowsnestConf": "Edition de crowsnest.conf",
-            "Rotate": "Rotation"
+            "Vertically": "vertical",
+            "Webcams": "Caméras"
         }
     },
     "Timelapse": {
@@ -989,6 +989,7 @@
         "Delete": "Effacer",
         "DeleteDirectory": "Effacer dossier",
         "DeleteDirectoryQuestion": "Voulez-vous vraiment effacer le dossier \"{name}\" et tout son contenu ?",
+        "DeleteSelectedQuestion": "Voulez-vous vraiment effacer les {count} fichiers sélectionnées ?",
         "Download": "Téléchargement",
         "DuplicateLastframe": "Multiplie la dernière image",
         "Empty": "Pas de fichier vidéo trouvé",
@@ -1027,8 +1028,7 @@
         "Type": "Type",
         "Used": "Utilisé",
         "Variable": "Variable",
-        "Video": "Vidéo",
-        "DeleteSelectedQuestion": "Voulez-vous vraiment effacer les {count} fichiers sélectionnées ?"
+        "Video": "Vidéo"
     },
     "title": "Français"
 }

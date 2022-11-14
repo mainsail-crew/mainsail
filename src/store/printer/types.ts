@@ -31,7 +31,7 @@ export interface PrinterStateHeater {
     iconColor: string
     target: number
     temperature: number
-    additionSensors: PrinterStateAdditionSensor[]
+    additionalSensors: PrinterStateAdditionalSensor[]
     power: number
     avgPower: number
     chartColor: string
@@ -46,7 +46,7 @@ export interface PrinterStateTemperatureFan {
     icon: string
     target: number
     temperature: number
-    additionSensors: PrinterStateAdditionSensor[]
+    additionalSensors: PrinterStateAdditionalSensor[]
     speed: number
     avgSpeed: number
     rpm: number | null
@@ -60,7 +60,7 @@ export interface PrinterStateTemperatureFan {
 export interface PrinterStateTemperatureSensor {
     name: string
     temperature: number
-    additionSensors: PrinterStateAdditionSensor[]
+    additionalSensors: PrinterStateAdditionalSensor[]
     icon: string
     min_temp: number
     max_temp: number
@@ -79,7 +79,7 @@ export interface PrinterStateTemperatureObject {
     state: string | null
     avgState: string
     temperature: number
-    additionSensors: PrinterStateAdditionSensor[]
+    additionalSensors: PrinterStateAdditionalSensor[]
     target: number | null
     presets: number[]
     min_temp: number
@@ -94,7 +94,7 @@ export interface PrinterStateTemperatureObject {
     chartSeries: string[]
 }
 
-export interface PrinterStateAdditionSensor {
+export interface PrinterStateAdditionalSensor {
     bool: boolean
     name: string
     unit: string
@@ -106,6 +106,32 @@ export interface PrinterStateFan {
     type: string
     speed: number
     controllable: boolean
+}
+
+export interface PrinterStateLight {
+    name: string
+    type: 'led' | 'neopixel' | 'dotstar' | 'pca9533' | 'pca9632'
+    colorOrder: string
+    chainCount: number
+    initialRed: number | null
+    initialGreen: number | null
+    initialBlue: number | null
+    initialWhite: number | null
+    colorData: number[][]
+    singleChannelTarget: number | null
+}
+
+export interface PrinterStateLight {
+    name: string
+    type: 'led' | 'neopixel' | 'dotstar' | 'pca9533' | 'pca9632'
+    colorOrder: string
+    chainCount: number
+    initialRed: number | null
+    initialGreen: number | null
+    initialBlue: number | null
+    initialWhite: number | null
+    colorData: number[][]
+    singleChannelTarget: number | null
 }
 
 export interface PrinterStateMiscellaneous {
@@ -226,4 +252,18 @@ export interface PrinterStateExtruderStepper {
 export interface PrinterStateToolchangeMacro {
     name: string
     active: boolean
+}
+
+export interface PrinterGetterObject {
+    name: string
+    type: string
+    state: {
+        [key: string]: any
+    }
+    config: {
+        [key: string]: string
+    }
+    settings: {
+        [key: string]: any
+    }
 }

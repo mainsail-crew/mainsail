@@ -288,7 +288,6 @@
         "AllJobs": "Alle job",
         "AvgPrinttime": "Gns. printtid",
         "Cancel": "Annuller",
-        "ChamberTemp": "Indelukke temperatur",
         "CreateNote": "Gem note",
         "Delete": "Slet",
         "DeleteSelectedQuestion": "Er du sikker på du vil slette alle {count} valgte jobs?",
@@ -488,7 +487,6 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "Genstart alt",
             "KlipperCheck": "Check at Klipper service kører og at en UDS (Unix Domain Socket) er konfigureret.",
-            "KlippyState": "Klippy-Status",
             "MoonrakerCannotConnect": "Moonraker kan ikke forbinde til Klipper!",
             "Restart": "Genstart"
         },
@@ -599,8 +597,6 @@
             "Absolute": "absolut",
             "ALL": "Alle",
             "Headline": "Kontrolpanel",
-            "Invalid": "Ugyldig",
-            "OutOfRange": "Uden for grænse!",
             "PleaseConfigureSteps": "Konfigurer steps",
             "Position": "Position",
             "QGL": "QGL",
@@ -950,8 +946,8 @@
             "AddWebcam": "Tilføj webcam",
             "CreateWebcam": "Nyt Webcam",
             "EditWebcam": "Rediger Webcam",
-            "FlipHorizontally": "Vend webcam horisontalt",
-            "FlipVertically": "Vend webcam vertikalt",
+            "FlipWebcam": "Vend webcam-billedet:",
+            "Horizontally": "horisontalt",
             "IconBed": "Bed",
             "IconCam": "Kamera",
             "IconDoor": "Dør",
@@ -974,6 +970,7 @@
             "UrlSnapshot": "URL Snapshot",
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "vertikalt",
             "Webcams": "Webcams"
         }
     },
