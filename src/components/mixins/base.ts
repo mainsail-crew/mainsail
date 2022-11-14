@@ -83,6 +83,14 @@ export default class BaseMixin extends Vue {
         return 'ontouchstart' in window || (navigator.maxTouchPoints > 0 && navigator.maxTouchPoints !== 256)
     }
 
+    get isIOS() {
+        return !!(
+            navigator.userAgent.match(/(iPad|iPhone|iPod)/) ||
+            // @ts-ignore
+            (navigator.platform === 'MacIntel' && typeof navigator.standalone !== 'undefined')
+        )
+    }
+
     get moonrakerComponents() {
         return this.$store.state.server?.components ?? []
     }
