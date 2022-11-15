@@ -930,7 +930,6 @@
             "EditWebcam": "Edytuj kamerę",
             "FlipWebcam": "Odwróć widok kamery:",
             "Horizontally": "poziomo",
-            "Vertically": "pionowo",
             "IconBed": "Stół",
             "IconCam": "Kamera",
             "IconDoor": "Drzwi",
@@ -952,6 +951,7 @@
             "UrlSnapshot": "Migawka URL",
             "UrlStream": "Transmisja po URL",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "pionowo",
             "Webcams": "Kamery"
         }
     },

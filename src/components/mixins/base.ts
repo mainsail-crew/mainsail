@@ -12,6 +12,10 @@ export default class BaseMixin extends Vue {
         return this.$store.getters['socket/getHostUrl']
     }
 
+    get hostPort(): boolean {
+        return this.$store.state.socket.port ?? 80
+    }
+
     get instancesDB() {
         return this.$store.state.instancesDB ?? 'moonraker'
     }
@@ -77,6 +81,14 @@ export default class BaseMixin extends Vue {
     get isTouchDevice() {
         // ignore if browser reports maxTouchPoints === 256, can happen on Windows 10
         return 'ontouchstart' in window || (navigator.maxTouchPoints > 0 && navigator.maxTouchPoints !== 256)
+    }
+
+    get isIOS() {
+        return !!(
+            navigator.userAgent.match(/(iPad|iPhone|iPod)/) ||
+            // @ts-ignore
+            (navigator.platform === 'MacIntel' && typeof navigator.standalone !== 'undefined')
+        )
     }
 
     get moonrakerComponents() {

@@ -108,6 +108,32 @@ export interface PrinterStateFan {
     controllable: boolean
 }
 
+export interface PrinterStateLight {
+    name: string
+    type: 'led' | 'neopixel' | 'dotstar' | 'pca9533' | 'pca9632'
+    colorOrder: string
+    chainCount: number
+    initialRed: number | null
+    initialGreen: number | null
+    initialBlue: number | null
+    initialWhite: number | null
+    colorData: number[][]
+    singleChannelTarget: number | null
+}
+
+export interface PrinterStateLight {
+    name: string
+    type: 'led' | 'neopixel' | 'dotstar' | 'pca9533' | 'pca9632'
+    colorOrder: string
+    chainCount: number
+    initialRed: number | null
+    initialGreen: number | null
+    initialBlue: number | null
+    initialWhite: number | null
+    colorData: number[][]
+    singleChannelTarget: number | null
+}
+
 export interface PrinterStateMiscellaneous {
     name: string
     type: string
@@ -226,4 +252,18 @@ export interface PrinterStateExtruderStepper {
 export interface PrinterStateToolchangeMacro {
     name: string
     active: boolean
+}
+
+export interface PrinterGetterObject {
+    name: string
+    type: string
+    state: {
+        [key: string]: any
+    }
+    config: {
+        [key: string]: string
+    }
+    settings: {
+        [key: string]: any
+    }
 }

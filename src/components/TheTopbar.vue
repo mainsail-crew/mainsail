@@ -26,7 +26,7 @@
             <input
                 ref="fileUploadAndStart"
                 type="file"
-                :accept="validGcodeExtensions.join(', ')"
+                :accept="gcodeInputFileAccept.join(', ')"
                 style="display: none"
                 @change="uploadAndStart" />
             <v-btn
@@ -174,16 +174,18 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         fileUploadAndStart: HTMLFormElement
     }
 
+    get gcodeInputFileAccept() {
+        if (this.isIOS) return []
+
+        return validGcodeExtensions
+    }
+
     get naviDrawer() {
         return this.$store.state.naviDrawer
     }
 
     set naviDrawer(newVal) {
         this.$store.dispatch('setNaviDrawer', newVal)
-    }
-
-    get validGcodeExtensions() {
-        return validGcodeExtensions
     }
 
     get currentPage() {

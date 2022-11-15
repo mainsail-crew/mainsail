@@ -107,6 +107,17 @@
             "UpdatingDone": "Aktualisierung {software} abgeschlossen!"
         }
     },
+    "BedScrews": {
+        "Abort": "abbrechen",
+        "Adjusted": "angepasst",
+        "Accept": "bestätigen",
+        "Description": "Klick auf <b>ANGEPASST</b> wenn die aktuelle Schraube eingestellt wurde. Klick auf <b>BESTÄTIGEN</b> um fortzufahren ohne Anpassung.",
+        "Headline": "Bettschrauben",
+        "ScrewAccepted": "bestätigte Schrauben",
+        "ScrewIndex": "Index der Schraube",
+        "ScrewName": "Name der Schraube",
+        "ScrewOutput": "{current} von {max}"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Kann keine Verbindung zu Moonraker ({host}) herstellen.",
         "CheckMoonrakerLog": "Wenn diese Meldung wiederholt erscheint, schaue bitte in die Logdatei unter:",
@@ -530,6 +541,12 @@
         },
         "MiscellaneousPanel": {
             "Headline": "Sonstiges",
+            "Light": {
+                "Blue": "blau",
+                "Green": "grün",
+                "Red": "rot",
+                "White": "weiß"
+            },
             "RunoutSensor": {
                 "Detected": "erkannt",
                 "Disabled": "deaktiviert",
@@ -833,6 +850,30 @@
             "UnknownGroup": "Unbekannte Gruppe",
             "Warning": "Warnung"
         },
+        "MiscellaneousTab": {
+            "AddGroup": "Gruppe hinzufügen",
+            "AddPreset": "Voreinstellung hinzufügen",
+            "Color": "Farbe",
+            "CreateGroup": "Gruppe erstellen",
+            "CreatePreset": "Voreinstellung erstellen",
+            "End": "Ende",
+            "EndDescription": "Letzte LED von dieser Gruppe.",
+            "Groups": "Gruppen",
+            "GroupSubTitle": "Start: {start}, Ende: {end}",
+            "LightGroups": "{name} - Gruppen",
+            "LightPresets": "{name} - Voreinstellungen",
+            "Miscellaneous": "Sonstiges",
+            "Name": "Name",
+            "NoDevicesFound": "Keine Komponente gefunden",
+            "NoGroupFound": "Keine Gruppe gefunden",
+            "NoPresetFound": "Keine Voreinstellungen gefunden",
+            "Presets": "Voreinstellungen",
+            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, W: {white}",
+            "Start": "Start",
+            "StartDescription": "Erste LED von dieser Gruppe.",
+            "UnableToLoadLight": "Licht konnte nicht geladen werden",
+            "UnableToLoadPreset": "Voreinstellung konnte nicht geladen werden"
+        },
         "PresetsTab": {
             "AddPreset": "Preset hinzufügen",
             "Cooldown": "Abkühlen",
@@ -860,6 +901,7 @@
             "UpdatePrinter": "Drucker aktualisieren",
             "UseConfigJson": "InstanceDB = JSON erkannt. Bitte bearbeite die config.json um die Druckerliste zu modifizieren."
         },
+        "Store": "anlegen",
         "TimelapseTab": {
             "Autorender": "Autorender",
             "AutorenderDescription": "Wenn diese Option aktiviert ist, wird das Zeitraffervideo am Ende des Druckvorgangs automatisch gerendert",
@@ -954,6 +996,7 @@
             "ShowWebcamInNavigation": "Zeige Webcam in der Navigation",
             "UiSettings": "UI-Einstellungen"
         },
+        "Update": "speichern",
         "WebcamsTab": {
             "AddWebcam": "Webcam hinzufügen",
             "CreateWebcam": "Erstelle Webcam",
@@ -961,7 +1004,6 @@
             "EditWebcam": "Webcam bearbeiten",
             "FlipWebcam": "Webcam-Bild spiegeln:",
             "Horizontally": "horizontal",
-            "Vertically": "vertikal",
             "IconBed": "Bett",
             "IconCam": "Kamera",
             "IconDoor": "Tür",
@@ -984,6 +1026,7 @@
             "UrlSnapshot": "Schnappschuss URL",
             "UrlStream": "Stream URL",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "vertikal",
             "Webcams": "Webcams"
         }
     },
