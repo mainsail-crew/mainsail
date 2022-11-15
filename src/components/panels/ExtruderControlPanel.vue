@@ -461,7 +461,10 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get extrudedLength(): number {
-        return Math.round(this.feedamount * this.extrudeFactor * (this.filamentDiameter / this.nozzleDiameter))
+        const fd = this.filamentDiameter
+        const nd = this.nozzleDiameter
+
+        return Math.round(this.feedamount * this.extrudeFactor * (Math.pow(fd, 2) / Math.pow(nd, 2)))
     }
 
     get volumetricFlow(): number {
