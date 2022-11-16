@@ -27,7 +27,7 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     private isVisibleDocument = true
 
     @Prop({ required: true }) declare readonly camSettings: GuiWebcamStateWebcam
-    @Prop({ default: null }) declare readonly printerUrl: string | null
+    @Prop() declare printerUrl: string | undefined
 
     declare $refs: {
         webcamUv4lMjpegImage: HTMLImageElement
