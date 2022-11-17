@@ -29,7 +29,7 @@
                         <input
                             ref="fileUpload"
                             type="file"
-                            :accept="validGcodeExtensions.join(', ')"
+                            :accept="gcodeInputFileAccept.join(', ')"
                             style="display: none"
                             multiple
                             @change="uploadFile" />
@@ -585,7 +585,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiDragVertical = mdiDragVertical
 
-    validGcodeExtensions = validGcodeExtensions
     formatFilesize = formatFilesize
     formatPrintTime = formatPrintTime
     sortFiles = sortFiles
@@ -666,6 +665,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     existsFilename(name: string) {
         return this.files.findIndex((file) => file.filename === name) >= 0
+    }
+
+    get gcodeInputFileAccept() {
+        if (this.isIOS) return []
+
+        return validGcodeExtensions
     }
 
     get currentPath() {
