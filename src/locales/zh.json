@@ -192,8 +192,8 @@
         "GCodeFiles": "G-Code文件",
         "GcodesRootDirectoryDoesntExists": "未找到G-Code文件夹。请检查Klipper配置[virtual_sdcard]标签中的\"path\"项是否正确填写。",
         "HiddenFiles": "显示隐藏文件",
-        "InvalidNameEmpty": "输入值不能为空！",
         "InvalidNameAlreadyExists": "名字已经存在，请换一个名字。",
+        "InvalidNameEmpty": "输入值不能为空！",
         "LastEndTime": "上次打印结束时间",
         "LastFilamentUsed": "上次耗材使用量",
         "LastModified": "最后修改时间",
@@ -509,9 +509,9 @@
         "KlippyStatePanel": {
             "FirmwareRestart": "重启Klipper并重置主控",
             "KlipperCheck": "请检查Klipper服务是否运行。",
-            "KlippyState": "Klippy状态",
             "MoonrakerCannotConnect": "Moonraker无法连接到Klipper ！",
-            "Restart": "重启Klipper"
+            "Restart": "重启Klipper",
+            "ServiceReports": "{service} 报告"
         },
         "MachineSettingsPanel": {
             "Headline": "机器设置",
@@ -1006,8 +1006,8 @@
             "CreateWebcam": "添加摄像头",
             "EditCrowsnestConf": "编辑 crowsnest.conf",
             "EditWebcam": "编辑摄像头",
-            "FlipHorizontally": "水平翻转摄像头",
-            "FlipVertically": "垂直翻转摄像头",
+            "FlipWebcam": "翻转摄像头图像：",
+            "Horizontally": "水平",
             "IconBed": "热床",
             "IconCam": "摄像头",
             "IconDoor": "门",
