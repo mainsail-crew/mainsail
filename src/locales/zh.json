@@ -872,7 +872,6 @@
             "NoGroupFound": "未找到分组",
             "NoPresetFound": "未找到预设",
             "Presets": "预设",
-            "PresetSubTitle": "红: {red}, 绿: {green}, 蓝: {blue}, 白: {white}",
             "Start": "开始",
             "StartDescription": "分组中第一个LED",
             "UnableToLoadLight": "无法加载灯",
