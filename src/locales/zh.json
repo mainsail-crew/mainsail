@@ -13,7 +13,7 @@
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
-                "MoonrakerFailedComponentDescription": "加载moonraker组件'{component}'时检测到错误。请检查日志文件并解决问题。",
+                "MoonrakerFailedComponentDescription": "加载moonraker组件'{component}'时检测到错误。请检查日志文件并修复此问题。",
                 "MoonrakerWarning": "Moonraker警告",
                 "UnparsedConfigOption": "在[{section}]标签中检测到无法解析的配置'{option}: {value}'。这可能是一个不再可用的选项，也可能是组件加载失败的结果。在将来，这将导致启动错误。",
                 "UnparsedConfigSection": "检测到无法解析的标签[{section}]。这可能是一个不再可用的标签，也可能是组件加载失败的结果。在将来，这将导致启动错误。"
@@ -107,10 +107,21 @@
             "UpdatingDone": "{software}更新完成！"
         }
     },
+    "BedScrews": {
+        "Abort": "取消",
+        "Adjusted": "已调整",
+        "Accept": "接受",
+        "Description": "如果当前螺丝已调整，请点击<b>已调整</b>。未调整下继续请点击<b>认可</b>。",
+        "Headline": "热床螺丝",
+        "ScrewAccepted": "已认可的螺丝",
+        "ScrewIndex": "螺丝索引",
+        "ScrewName": "螺丝名称",
+        "ScrewOutput": "当前{current}/总共{max}"
+    },
     "ConnectionDialog": {
-        "CannotConnectTo": "Moonraker ({host})连接失败。",
-        "CheckMoonrakerLog": "如果此消息重复显示, 请从此处查看日志文件：",
-        "Connecting": "连接到{host}",
+        "CannotConnectTo": "无法连接Moonraker ({host})。",
+        "CheckMoonrakerLog": "如果此消息重复显示，请从此处查看日志文件：",
+        "Connecting": "连接{host}",
         "Failed": "连接失败",
         "Initializing": "正在初始化",
         "TryAgain": "重试"
@@ -128,7 +139,7 @@
             "Cancel": "取消",
             "DoYouWantToStartFilename": "是否开始打印{filename}？",
             "Headline": "开始任务",
-            "Print": "开始打印",
+            "Print": "打印",
             "Timelapse": "延时摄影"
         }
     },
@@ -191,7 +202,7 @@
         "LastTotalDuration": "上次打印总耗时",
         "LayerHeight": "层高",
         "Name": "名称",
-        "NewDirectory": "新建文件夹",
+        "NewDirectory": "新文件夹",
         "NozzleDiameter": "喷嘴直径",
         "ObjectHeight": "物体高度",
         "Preheat": "预热",
@@ -222,7 +233,7 @@
     "GCodeViewer": {
         "ClearLoadedFile": "清除",
         "ColorMode": "颜色模式",
-        "Downloading": "下载中",
+        "Downloading": "正在下载",
         "ForceLineRendering": "强制线渲染",
         "HDRendering": "高清渲染(圆形拉伸)",
         "High": "高",
@@ -232,14 +243,14 @@
         "Max": "最大",
         "Medium": "中",
         "ReloadRequired": "需要重新加载",
-        "Rendering": "渲染中",
+        "Rendering": "正在渲染",
         "RenderQuality": "渲染质量",
         "ShowObjectSelection": "显示可选对象",
         "ShowToolhead": "显示打印头",
         "ShowTravelMoves": "显示移动路径",
         "SpecularLighting": "镜面光泽",
         "Title": "G-Code预览",
-        "Tracking": "追踪",
+        "Tracking": "正在追踪",
         "Transparency": "透明度",
         "Ultra": "极致",
         "VoxelMode": "体素模式(ASMBL)"
@@ -266,7 +277,7 @@
         "InvalidNameAlreadyExists": "预设名称已经存在，请换一个名称。",
         "InvalidNameEmpty": "输入值不能为空！",
         "InvalidNameReserved": "预设 'default' 已保留，请选择其他预设名称。",
-        "Later": "Later",
+        "Later": "以后",
         "Mesh": "床网",
         "Name": "名称",
         "NoBedMeshHasBeenLoadedYet": "没有加载床网。",
@@ -457,6 +468,12 @@
             "UpToDate": "已经更新到最新"
         }
     },
+    "ManualProbe": {
+        "Abort": "取消",
+        "Accept": "接受",
+        "Advanced": "高级",
+        "Headline": "手动Probe"
+    },
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "允许",
@@ -491,9 +508,10 @@
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "重启Klipper并重置主控",
-            "KlipperCheck": "请检查Klipper服务是否运行并且已经设置UDS(Unix Domain Socket)。",
+            "KlipperCheck": "请检查Klipper服务是否运行。",
             "MoonrakerCannotConnect": "Moonraker无法连接到Klipper ！",
-            "Restart": "重启Klipper"
+            "Restart": "重启Klipper",
+            "ServiceReports": "{service} 报告"
         },
         "MachineSettingsPanel": {
             "Headline": "机器设置",
@@ -523,6 +541,12 @@
         },
         "MiscellaneousPanel": {
             "Headline": "其他设置",
+            "Light": {
+                "Blue": "蓝",
+                "Green": "绿",
+                "Red": "红",
+                "White": "白"
+            },
             "RunoutSensor": {
                 "Detected": "检测到",
                 "Disabled": "已关闭",
@@ -753,6 +777,8 @@
             "ShowAxes": "显示轴"
         },
         "GeneralTab": {
+            "12hours": "12-小时 ({time})",
+            "24hours": "24-小时 ({time})",
             "Backup": "备份",
             "BackupDialog": "请选择你想要备份的内容：",
             "CalcEstimateTime": "估算时间计算",
@@ -768,6 +794,7 @@
                 "Slicer": "切片软件 (M73)"
             },
             "CannotReadJson": "无法读取/解析备份文件。",
+            "DateFormat": "日期格式",
             "DbConsoleHistory": "控制台历史记录",
             "DbHistoryJobs": "历史任务",
             "DbHistoryTotals": "历史统计",
@@ -787,7 +814,8 @@
             "PrinterName": "打印机名称",
             "Reset": "重启",
             "Restore": "恢复",
-            "RestoreDialog": "请选择你想要恢复的项："
+            "RestoreDialog": "请选择你想要恢复的项：",
+            "TimeFormat": "时间格式"
         },
         "InterfaceSettings": "Mainsail设置",
         "MacrosTab": {
@@ -826,6 +854,29 @@
             "UnknownGroup": "未知分组",
             "Warning": "警告"
         },
+        "MiscellaneousTab": {
+            "AddGroup": "添加分组",
+            "AddPreset": "添加预设",
+            "Color": "颜色",
+            "CreateGroup": "新建分组",
+            "CreatePreset": "新建预设",
+            "End": "结束",
+            "EndDescription": "分组中最后的LED",
+            "Groups": "分组",
+            "GroupSubTitle": "开始：{start}，结束：{end}",
+            "LightGroups": "{name} - 分组",
+            "LightPresets": "{name} - 预设",
+            "Miscellaneous": "杂项",
+            "Name": "名称",
+            "NoDevicesFound": "未找到设备",
+            "NoGroupFound": "未找到分组",
+            "NoPresetFound": "未找到预设",
+            "Presets": "预设",
+            "Start": "开始",
+            "StartDescription": "分组中第一个LED",
+            "UnableToLoadLight": "无法加载灯",
+            "UnableToLoadPreset": "无法加载预设"
+        },
         "PresetsTab": {
             "AddPreset": "添加预设",
             "Cooldown": "冷却",
@@ -851,8 +902,9 @@
             "Port": "Moonraker服务端口",
             "RemotePrinters": "打印机",
             "UpdatePrinter": "更新打印机",
-            "UseConfigJson": "InstanceDB = JSON detected. 请使用 config.json 来修改打印机列表。"
+            "UseConfigJson": "检测到InstanceDB = JSON。请使用 config.json 来修改打印机列表。"
         },
+        "Store": "存储",
         "TimelapseTab": {
             "Autorender": "自动渲染",
             "AutorenderDescription": "如果开启将在打印结束后自动渲染延时摄影的视频",
@@ -947,11 +999,14 @@
             "ShowWebcamInNavigation": "在导航栏中显示摄像头",
             "UiSettings": "UI设置"
         },
+        "Update": "更新",
         "WebcamsTab": {
             "AddWebcam": "添加摄像头",
             "CreateWebcam": "添加摄像头",
             "EditCrowsnestConf": "编辑 crowsnest.conf",
             "EditWebcam": "编辑摄像头",
+            "FlipWebcam": "翻转摄像头图像：",
+            "Horizontally": "水平",
             "IconBed": "热床",
             "IconCam": "摄像头",
             "IconDoor": "门",
@@ -974,6 +1029,7 @@
             "UrlSnapshot": "快照地址(URL)",
             "UrlStream": "视频流地址(URL)",
             "Uv4lMjpeg": "UV4L-MJPEG",
+            "Vertically": "垂直",
             "Webcams": "摄像头"
         }
     },
