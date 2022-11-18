@@ -100,15 +100,13 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getPrintMaxLayers: (state) => {
-        if (state.print_stats?.info?.total_layer !== null) {
-            return state.print_stats.info.total_layer
-        } else if (state.current_file?.layer_count) {
-            return state.current_file.layer_count
-        } else if (
-            'current_file' in state &&
-            'first_layer_height' in state.current_file &&
-            'layer_height' in state.current_file &&
-            'object_height' in state.current_file
+        if ((state.print_stats?.info?.total_layer ?? null) !== null) return state.print_stats.info.total_layer
+        if (state.current_file?.layer_count) return state.current_file.layer_count
+
+        if (
+            state.current_file?.first_layer_height !== undefined &&
+            state.current_file?.layer_height !== undefined &&
+            state.current_file?.object_height !== undefined
         ) {
             const max = Math.ceil(
                 (state.current_file.object_height - state.current_file.first_layer_height) /
@@ -122,12 +120,12 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getPrintCurrentLayer: (state, getters) => {
-        if (state.print_stats?.info?.current_layer !== null) {
-            return state.print_stats.info.current_layer
-        } else if (
+        if ((state.print_stats?.info?.current_layer ?? null) !== null) return state.print_stats.info.current_layer
+
+        if (
             state.print_stats?.print_duration > 0 &&
-            'first_layer_height' in state.current_file &&
-            'layer_height' in state.current_file
+            state.current_file?.first_layer_height !== undefined &&
+            state.current_file?.layer_height !== undefined
         ) {
             const gcodePositionZ = state.gcode_move?.gcode_position[2] ?? 0
             const current_layer = Math.ceil(
