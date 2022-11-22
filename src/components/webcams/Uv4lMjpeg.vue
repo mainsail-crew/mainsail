@@ -36,8 +36,6 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     get url() {
         const baseUrl = this.camSettings.urlStream
         let url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
-        if ((this.hostPort || 80) < 7125 || (this.hostPort || 80) > 7150) url.port = this.hostPort.toString()
-
         if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
         return decodeURIComponent(url.toString())
