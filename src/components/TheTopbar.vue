@@ -256,14 +256,14 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     async uploadAndStart() {
         if (this.$refs.fileUploadAndStart?.files.length) {
-            this.$store.dispatch('socket/addLoading', { name: 'btnUploadAndStart' })
+            await this.$store.dispatch('socket/addLoading', { name: 'btnUploadAndStart' })
             let successFiles = []
             for (const file of this.$refs.fileUploadAndStart?.files || []) {
                 const result = await this.doUploadAndStart(file)
                 successFiles.push(result)
             }
 
-            this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
+            await this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
             for (const file of successFiles) {
                 const text = this.$t('App.TopBar.UploadOfFileSuccessful', { file: file }).toString()
                 this.$toast.success(text)
