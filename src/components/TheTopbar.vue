@@ -329,6 +329,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 </script>
 
 <style>
+/*noinspection CssUnusedSymbol*/
 .topbar .v-toolbar__content {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -338,13 +339,16 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 .button-min-width-auto {
     min-width: auto !important;
 }
+/*noinspection CssUnusedSymbol*/
 .topbar .v-btn {
     height: 100% !important;
     max-height: none;
 }
+/*noinspection CssUnusedSymbol*/
 .topbar .v-btn.v-btn--icon {
     width: var(--topbar-icon-btn-width) !important;
 }
+/*noinspection CssUnusedSymbol*/
 @media (min-width: 768px) {
     header.topbar {
         z-index: 8 !important;
