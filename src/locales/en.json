@@ -266,8 +266,8 @@
             "Max": "Max",
             "Min": "Min",
             "Name": "Name",
-            "Size": "Size",
-            "Variance": "Variance"
+            "Range": "Range",
+            "Size": "Size"
         },
         "DeleteBedMeshProfile": "Delete Bed Mesh Profile",
         "DoYouReallyWantToDelete": "Do you really want to delete the profile \"{name}\"?",

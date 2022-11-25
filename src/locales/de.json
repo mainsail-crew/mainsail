@@ -266,8 +266,8 @@
             "Max": "Max",
             "Min": "Min",
             "Name": "Name",
-            "Size": "Größe",
-            "Variance": "Varianz"
+            "Range": "Spannweite",
+            "Size": "Größe"
         },
         "DeleteBedMeshProfile": "Lösche Bed Mesh",
         "DoYouReallyWantToDelete": "Möchtest du das Profil \"{name}\" wirklich löschen?",
