@@ -160,7 +160,7 @@ export default class NumberInput extends Mixins(BaseMixin) {
     get inputValue(): number {
         if (this.value.toString() === '') return 0
 
-        return parseFloat(this.value)
+        return parseFloat(this.value.replace(',', '.'))
     }
 
     get invalidInput(): boolean {
