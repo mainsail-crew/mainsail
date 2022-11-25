@@ -1,7 +1,7 @@
 <template>
     <form @submit.prevent="submit">
         <v-text-field
-            v-model.number="value"
+            v-model="value"
             :label="label"
             :suffix="unit"
             :error="invalidInput"
