@@ -84,7 +84,7 @@
         </v-snackbar>
         <v-dialog v-model="showEmergencyStopDialog" width="400" :fullscreen="isMobile">
             <panel
-                :title="$t('EmergencyStopDialog.EmergencyStop')"
+                :title="$t('EmergencyStopDialog.EmergencyStop').toString()"
                 toolbar-color="error"
                 card-class="emergency-stop-dialog"
                 :icon="mdiAlertOctagonOutline"
