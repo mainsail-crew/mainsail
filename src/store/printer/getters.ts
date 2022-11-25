@@ -154,7 +154,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     type,
                     state: { ...value },
                     config: state.configfile?.config[key] ?? {},
-                    settings: state.configfile?.settings[key] ?? {},
+                    settings: state.configfile?.settings[key.toLowerCase()] ?? {},
                 })
             }
         }
