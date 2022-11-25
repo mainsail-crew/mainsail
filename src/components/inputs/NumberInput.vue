@@ -1,16 +1,3 @@
-<style scoped>
-._spin_button_group {
-    width: 24px;
-    margin-top: -6px;
-    margin-left: -6px;
-    margin-bottom: -6px;
-}
-
-.v-input--has-state {
-    margin-bottom: -18px !important;
-}
-</style>
-
 <template>
     <form @submit.prevent="submit">
         <v-text-field
@@ -199,3 +186,16 @@ export default class NumberInput extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+._spin_button_group {
+    width: 24px;
+    margin-top: -6px;
+    margin-left: -6px;
+    margin-bottom: -6px;
+}
+
+.v-input--has-state {
+    margin-bottom: -18px !important;
+}
+</style>
