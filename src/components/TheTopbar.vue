@@ -346,6 +346,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 }
 /*noinspection CssUnusedSymbol*/
 .topbar .v-btn.v-btn--icon {
+    /*noinspection CssUnresolvedCustomProperty*/
     width: var(--topbar-icon-btn-width) !important;
 }
 /*noinspection CssUnusedSymbol*/
