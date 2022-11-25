@@ -170,8 +170,6 @@ export default class NumberInput extends Mixins(BaseMixin) {
     get inputErrors() {
         if (!this.outputErrorMsg) return []
 
-        window.console.log(this.value, this.value.toString(), this.inputValue)
-
         const errors = []
         if (this.max === null && this.inputValue < this.min) {
             // "Must be grater or equal than {min}!"
