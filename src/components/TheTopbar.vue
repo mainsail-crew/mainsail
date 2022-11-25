@@ -63,7 +63,7 @@
                 class="button-min-width-auto px-3 emergency-button"
                 :loading="loadings.includes('topbarEmergencyStop')"
                 @click="btnEmergencyStop">
-                <v-icon class="mr-md-2">{{ mdiAlertCircleOutline }}</v-icon>
+                <v-icon class="mr-md-2">{{ mdiAlertOctagonOutline }}</v-icon>
                 <span class="d-none d-md-inline">{{ $t('App.TopBar.EmergencyStop') }}</span>
             </v-btn>
             <the-notification-menu></the-notification-menu>
@@ -87,7 +87,7 @@
                 :title="$t('EmergencyStopDialog.EmergencyStop')"
                 toolbar-color="error"
                 card-class="emergency-stop-dialog"
-                :icon="mdiAlertCircleOutline"
+                :icon="mdiAlertOctagonOutline"
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="showEmergencyStopDialog = false">
@@ -119,7 +119,7 @@ import PrinterSelector from '@/components/ui/PrinterSelector.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import TheNotificationMenu from '@/components/notifications/TheNotificationMenu.vue'
 import { topbarHeight } from '@/store/variables'
-import { mdiAlertCircleOutline, mdiContentSave, mdiFileUpload, mdiClose, mdiCloseThick } from '@mdi/js'
+import { mdiAlertOctagonOutline, mdiContentSave, mdiFileUpload, mdiClose, mdiCloseThick } from '@mdi/js'
 
 type uploadSnackbar = {
     status: boolean
@@ -145,7 +145,7 @@ type uploadSnackbar = {
     },
 })
 export default class TheTopbar extends Mixins(BaseMixin) {
-    mdiAlertCircleOutline = mdiAlertCircleOutline
+    mdiAlertOctagonOutline = mdiAlertOctagonOutline
     mdiContentSave = mdiContentSave
     mdiFileUpload = mdiFileUpload
     mdiClose = mdiClose
