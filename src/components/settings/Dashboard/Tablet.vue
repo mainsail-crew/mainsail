@@ -3,7 +3,7 @@
         <v-card-text>
             <v-row>
                 <v-col class="col-12 col-md-6">
-                    <settings-dashboard-sortable viewport-name="desktop" :column="1" />
+                    <settings-dashboard-sortable viewport-name="tablet" :column="1" />
                 </v-col>
                 <v-col class="col-12 col-md-6">
                     <settings-dashboard-sortable viewport-name="tablet" :column="2" />
