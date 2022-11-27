@@ -142,7 +142,8 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
 
     get mobileLayout() {
         let panels = this.$store.getters['gui/getPanels']('mobileLayout')
-        panels = panels.concat(this.missingPanelsMobile)
+        const allViewportPanels = this.$store.getters['gui/getAllPanelsFromViewport']('mobile')
+        panels = panels.concat(this.checkMissingPanels(allViewportPanels))
         panels = panels.filter(
             (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
         )
@@ -152,7 +153,8 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
 
     get tabletLayout1() {
         let panels = this.$store.getters['gui/getPanels']('tabletLayout1')
-        panels = panels.concat(this.missingPanelsTablet)
+        const allViewportPanels = this.$store.getters['gui/getAllPanelsFromViewport']('tablet')
+        panels = panels.concat(this.checkMissingPanels(allViewportPanels))
         panels = panels.filter(
             (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
         )
@@ -171,7 +173,8 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
 
     get desktopLayout1() {
         let panels = this.$store.getters['gui/getPanels']('desktopLayout1')
-        panels = panels.concat(this.missingPanelsDesktop)
+        const allViewportPanels = this.$store.getters['gui/getAllPanelsFromViewport']('desktop')
+        panels = panels.concat(this.checkMissingPanels(allViewportPanels))
         panels = panels.filter(
             (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
         )
@@ -190,7 +193,8 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
 
     get widescreenLayout1() {
         let panels = this.$store.getters['gui/getPanels']('widescreenLayout1')
-        panels = panels.concat(this.missingPanelsWidescreen)
+        const allViewportPanels = this.$store.getters['gui/getAllPanelsFromViewport']('widescreen')
+        panels = panels.concat(this.checkMissingPanels(allViewportPanels))
         panels = panels.filter(
             (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
         )
