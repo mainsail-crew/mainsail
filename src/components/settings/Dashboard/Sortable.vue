@@ -1,6 +1,6 @@
 <template>
-    <v-card class="mx-auto" max-width="300" tile>
-        <v-list dense>
+    <v-card class="mx-auto fill-height" max-width="300" tile>
+        <v-list class="fill-height" dense>
             <v-list-item v-if="column < 2">
                 <v-row>
                     <v-col class="col-auto pr-0 pl-8">
@@ -17,7 +17,7 @@
             <draggable
                 v-model="layout"
                 handle=".handle"
-                class="v-list-item-group"
+                class="v-list-item-group fill-height"
                 ghost-class="ghost"
                 :group="groupname">
                 <transition-group>
@@ -91,5 +91,10 @@ export default class SettingsDashboardSortable extends Mixins(DashboardMixin) {
 /deep/ .ghost {
     opacity: 0.5;
     background: #c8ebfb;
+}
+
+.v-list-item-group > span {
+    display: block;
+    height: 100%;
 }
 </style>
