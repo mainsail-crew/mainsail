@@ -76,61 +76,57 @@ export const getters: GetterTree<GuiState, any> = {
         return allPanels
     },
 
-    getPanels: (state, getters, rootState) => (viewport: string) => {
-        // @ts-ignore
-        let panels = state.dashboard[viewport]?.filter((element: any) => element !== null) ?? []
+    getPanels:
+        (state, getters, rootState) =>
+        (viewport: string, column: number, onlyVisible: boolean = false) => {
+            const layoutName = column ? `${viewport}Layout${column}` : `${viewport}Layout`
+            // @ts-ignore
+            let panels = state.dashboard[layoutName]?.filter((element: any) => element !== null) ?? []
 
-        if (rootState.gui.macros.mode === 'simple')
-            panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
-        else {
-            panels = panels.filter((element: any) => element.name !== 'macros')
-            const macrogroups = getters['macros/getAllMacrogroups']
-            if (macrogroups.length) {
-                panels = panels.filter((element: any) => {
-                    if (!element.name.startsWith('macrogroup_')) return true
+            if (column < 2) {
+                const allViewportPanels = getters['getAllPanelsFromViewport'](viewport)
+                const allPossiblePanels = getters['getAllPossiblePanels']
+                const missingPanels: any[] = []
 
-                    const macrogroupId = element.name.slice(11)
-                    return (
-                        macrogroups.findIndex(
-                            (macrogroup: GuiMacrosStateMacrogroup) => macrogroup.id === macrogroupId
-                        ) !== -1
-                    )
+                allPossiblePanels.forEach((panelname: string) => {
+                    if (!allViewportPanels.find((panel: any) => panel.name === panelname))
+                        missingPanels.push({
+                            name: panelname,
+                            visible: true,
+                        })
                 })
+                panels = panels.concat(missingPanels)
             }
-        }
 
-        if (getters['webcams/getWebcams'].length === 0) {
-            panels = panels.filter((element: any) => element.name !== 'webcam')
-        }
+            if (onlyVisible) {
+                panels = panels.filter((element: any) => element.visible)
+            }
 
-        //panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
+            if (rootState.gui.macros.mode === 'simple')
+                panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
+            else {
+                panels = panels.filter((element: any) => element.name !== 'macros')
+                const macrogroups = getters['macros/getAllMacrogroups']
+                if (macrogroups.length) {
+                    panels = panels.filter((element: any) => {
+                        if (!element.name.startsWith('macrogroup_')) return true
 
-        return panels
-    },
-
-    getDashboardPanels: (state, getters) => (viewport: string, column: number) => {
-        const layoutName = column ? `${viewport}Layout${column}` : `${viewport}Layout`
-        let panels = getters['getPanels'](layoutName)
-
-        if (column < 2) {
-            const allViewportPanels = getters['getAllPanelsFromViewport'](viewport)
-            const allPossiblePanels = getters['getAllPossiblePanels']
-            const missingPanels: any[] = []
-
-            allPossiblePanels.forEach((panelname: string) => {
-                if (!allViewportPanels.find((panel: any) => panel.name === panelname))
-                    missingPanels.push({
-                        name: panelname,
-                        visible: true,
+                        const macrogroupId = element.name.slice(11)
+                        return (
+                            macrogroups.findIndex(
+                                (macrogroup: GuiMacrosStateMacrogroup) => macrogroup.id === macrogroupId
+                            ) !== -1
+                        )
                     })
-            })
-            panels = panels.concat(missingPanels)
-        }
+                }
+            }
 
-        panels = panels.filter((element: any) => element.visible)
+            if (getters['webcams/getWebcams'].length === 0) {
+                panels = panels.filter((element: any) => element.name !== 'webcam')
+            }
 
-        return panels
-    },
+            return panels
+        },
 
     getAllPanelsFromViewport: (state) => (viewport: string) => {
         let panels: any = []

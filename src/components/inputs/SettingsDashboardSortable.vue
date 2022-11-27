@@ -64,20 +64,8 @@ export default class SettingsDashboardSortable extends Mixins(DashboardMixin) {
         return `${this.viewportName}Viewport`
     }
 
-    get allPossiblePanels() {
-        return this.$store.getters['gui/getAllPossiblePanels']
-    }
-
     get layout() {
-        let panels = this.$store.getters['gui/getPanels'](this.layoutname)
-        if (this.column < 2) {
-            const allViewportPanels = this.$store.getters['gui/getAllPanelsFromViewport'](this.viewportName)
-            panels = panels.concat(this.checkMissingPanels(allViewportPanels))
-        }
-
-        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
-
-        return [...panels]
+        return this.$store.getters['gui/getPanels'](this.viewportName, this.column)
     }
 
     set layout(newVal) {
