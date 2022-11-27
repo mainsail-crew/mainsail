@@ -70,7 +70,6 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import DashboardMixin from '@/components/mixins/dashboard'
 import draggable from 'vuedraggable'
-import { convertPanelnameToIcon } from '@/plugins/helpers'
 import { mdiDragVertical, mdiCheckboxBlankOutline, mdiCheckboxMarked, mdiInformation, mdiLock } from '@mdi/js'
 @Component({
     components: {
@@ -86,8 +85,6 @@ export default class SettingsDashboardTabMobile extends Mixins(DashboardMixin) {
     mdiDragVertical = mdiDragVertical
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
-
-    convertPanelnameToIcon = convertPanelnameToIcon
 
     get mobileLayout() {
         let panels = this.$store.getters['gui/getPanels']('mobileLayout')

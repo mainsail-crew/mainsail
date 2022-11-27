@@ -3,6 +3,18 @@ import BaseMixin from '@/components/mixins/base'
 import { allDashboardPanels } from '@/store/variables'
 import { capitalize } from '@/plugins/helpers'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
+import {
+    mdiArrowCollapseVertical,
+    mdiCodeTags,
+    mdiConsoleLine,
+    mdiDipSwitch,
+    mdiEngine,
+    mdiGamepad,
+    mdiInformation,
+    mdiPrinter3dNozzle,
+    mdiThermometerLines,
+    mdiWebcam,
+} from '@mdi/js'
 
 @Component
 export default class DashboardMixin extends BaseMixin {
@@ -135,5 +147,33 @@ export default class DashboardMixin extends BaseMixin {
         }
 
         return this.$t(`Panels.${capitalize(name)}Panel.Headline`)
+    }
+
+    convertPanelnameToIcon(name: string): string {
+        if (name.startsWith('macrogroup_')) return mdiCodeTags
+
+        switch (name) {
+            case 'webcam':
+                return mdiWebcam
+            case 'zoffset':
+                return mdiArrowCollapseVertical
+            case 'toolhead-control':
+                return mdiGamepad
+            case 'macros':
+                return mdiCodeTags
+            case 'miscellaneous':
+                return mdiDipSwitch
+            case 'temperature':
+                return mdiThermometerLines
+            case 'miniconsole':
+                return mdiConsoleLine
+            case 'machine-settings':
+                return mdiEngine
+            case 'extruder-control':
+                return mdiPrinter3dNozzle
+
+            default:
+                return mdiInformation
+        }
     }
 }

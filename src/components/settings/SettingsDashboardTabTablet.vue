@@ -110,7 +110,6 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import DashboardMixin from '@/components/mixins/dashboard'
 import draggable from 'vuedraggable'
-import { convertPanelnameToIcon } from '@/plugins/helpers'
 import { mdiLock, mdiInformation, mdiDragVertical, mdiCheckboxMarked, mdiCheckboxBlankOutline } from '@mdi/js'
 @Component({
     components: {
@@ -126,8 +125,6 @@ export default class SettingsDashboardTabTablet extends Mixins(DashboardMixin) {
     mdiDragVertical = mdiDragVertical
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
-
-    convertPanelnameToIcon = convertPanelnameToIcon
 
     get tabletLayout1() {
         let panels = this.$store.getters['gui/getPanels']('tabletLayout1')

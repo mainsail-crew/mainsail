@@ -109,7 +109,6 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import draggable from 'vuedraggable'
-import { convertPanelnameToIcon } from '@/plugins/helpers'
 import DashboardMixin from '@/components/mixins/dashboard'
 import { mdiInformation, mdiCheckboxMarked, mdiCheckboxBlankOutline, mdiLock, mdiDragVertical } from '@mdi/js'
 
@@ -127,8 +126,6 @@ export default class SettingsDashboardTabDesktop extends Mixins(DashboardMixin) 
     mdiDragVertical = mdiDragVertical
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
-
-    convertPanelnameToIcon = convertPanelnameToIcon
 
     get desktopLayout1() {
         let panels = this.$store.getters['gui/getPanels']('desktopLayout1')
