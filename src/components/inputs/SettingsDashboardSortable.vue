@@ -1,7 +1,7 @@
 <template>
     <v-card class="mx-auto" max-width="300" tile>
         <v-list dense>
-            <v-list-item v-if="column === 1">
+            <v-list-item v-if="column < 2">
                 <v-row>
                     <v-col class="col-auto pr-0 pl-8">
                         <v-icon>{{ mdiInformation }}</v-icon>
@@ -15,18 +15,19 @@
                 </v-row>
             </v-list-item>
             <draggable
-                :list="layout"
+                v-model="layout"
                 handle=".handle"
                 class="v-list-item-group"
                 ghost-class="ghost"
-                :group="groupname"
-                @change="update">
-                <v-list-item v-for="element in layout" :key="`item-${viewportName}-${element.name}`">
+                :group="groupname">
+                <transition-group>
                     <settings-dashboard-sortable-item
+                        v-for="element in layout"
+                        :key="`item-${element.name}`"
                         :name="element.name"
                         :visible="element.visible"
                         @change-visible="changeVisible" />
-                </v-list-item>
+                </transition-group>
             </draggable>
         </v-list>
     </v-card>
@@ -54,28 +55,36 @@ export default class SettingsDashboardSortable extends Mixins(DashboardMixin) {
     @Prop({ type: Number, required: false, default: 1 }) declare readonly column: number
 
     get layoutname() {
-        return `${this.viewportName}Layout${this.column}`
+        if (this.column) return `${this.viewportName}Layout${this.column}`
+
+        return `${this.viewportName}Layout`
     }
 
     get groupname() {
         return `${this.viewportName}Viewport`
     }
 
-    get layout() {
-        let panels = this.$store.getters['gui/getPanels'](this.layoutname)
-        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
-
-        return panels
+    get allPossiblePanels() {
+        return this.$store.getters['gui/getAllPossiblePanels']
     }
 
-    set layout(_) {}
+    get layout() {
+        let panels = this.$store.getters['gui/getPanels'](this.layoutname)
+        if (this.column < 2) {
+            const allViewportPanels = this.$store.getters['gui/getAllPanelsFromViewport'](this.viewportName)
+            panels = panels.concat(this.checkMissingPanels(allViewportPanels))
+        }
 
-    /*set layout(newVal) {
-        window.console.log(this.layoutname, newVal)
+        panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
+
+        return [...panels]
+    }
+
+    set layout(newVal) {
         newVal = newVal.filter((element: any) => element !== undefined)
 
         this.$store.dispatch('gui/saveSetting', { name: `dashboard.${this.layoutname}`, value: newVal })
-    }*/
+    }
 
     changeVisible(name: string, newVal: boolean) {
         const index = this.layout.findIndex((element: any) => element.name === name)
@@ -85,22 +94,6 @@ export default class SettingsDashboardSortable extends Mixins(DashboardMixin) {
                 name: `dashboard.${this.layoutname}`,
                 value: this.layout,
             })
-        }
-    }
-
-    update(event: any) {
-        window.console.log('update', event)
-
-        if ('added' in event) {
-            window.console.log('added')
-        }
-
-        if ('removed' in event) {
-            window.console.log('removed')
-        }
-
-        if ('moved' in event) {
-            window.console.log('moved', event.moved.element.name, event.moved.oldIndex, event.moved.newIndex)
         }
     }
 }

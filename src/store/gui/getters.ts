@@ -1,6 +1,7 @@
 import { GetterTree } from 'vuex'
 import { GuiState } from '@/store/gui/types'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
+import { allDashboardPanels } from '@/store/variables'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
@@ -33,6 +34,48 @@ export const getters: GetterTree<GuiState, any> = {
         return true
     },
 
+    getAllPossiblePanels: (state, getters, rootState, rootGetters) => {
+        let allPanels = [...allDashboardPanels]
+
+        // remove macros panel and add macrogroups panels if macroMode === expert
+        if (state.macros?.mode === 'expert') {
+            const macrogroups = getters['macros/getAllMacrogroups']
+
+            macrogroups.forEach((group: GuiMacrosStateMacrogroup) => {
+                allPanels.push('macrogroup_' + group.id)
+            })
+
+            allPanels = allPanels.filter((name) => name !== 'macros')
+        }
+
+        // remove toolhead panel, if kinematics === none
+        const printerKinematics = rootGetters['printer/getKinematics']
+        if (printerKinematics === 'none') {
+            allPanels = allPanels.filter((name) => name !== 'toolhead-control')
+        }
+
+        // remove extruder panel, if printerExtruderCount < 1
+        const printerExtruders = rootGetters['printer/getExtruders']
+        if (printerExtruders.length < 1) {
+            allPanels = allPanels.filter((name) => name !== 'extruder-control')
+        }
+
+        // remove temperature panel, if heaters & sensors < 1
+        const printerAvailableHeaters = rootGetters['printer/getAvailableHeaters']
+        const printerTemperatureSensorKeys = rootGetters['printer/getTemperatureSensorKeys']
+        if (printerAvailableHeaters.length + printerTemperatureSensorKeys.length < 1) {
+            allPanels = allPanels.filter((name) => name !== 'temperature')
+        }
+
+        // remove webcam panel, if no webcam exists
+        const webcams = getters['webcams/getWebcams']
+        if (webcams.length === 0) {
+            allPanels = allPanels.filter((name) => name !== 'webcam')
+        }
+
+        return allPanels
+    },
+
     getPanels: (state, getters, rootState) => (viewport: string) => {
         // @ts-ignore
         let panels = state.dashboard[viewport]?.filter((element: any) => element !== null) ?? []
@@ -58,6 +101,26 @@ export const getters: GetterTree<GuiState, any> = {
 
         if (getters['webcams/getWebcams'].length === 0) {
             panels = panels.filter((element: any) => element.name !== 'webcam')
+        }
+
+        //panels = panels.filter((element: any) => this.allPossiblePanels.includes(element.name))
+
+        return panels
+    },
+
+    getAllPanelsFromViewport: (state) => (viewport: string) => {
+        let panels: any = []
+
+        if (`${viewport}Layout` in state.dashboard) {
+            // @ts-ignore
+            panels = panels.concat(state.dashboard[`${viewport}Layout`])
+        }
+
+        let nr = 1
+        while (`${viewport}Layout${nr}` in state.dashboard) {
+            // @ts-ignore
+            panels = panels.concat(state.dashboard[`${viewport}Layout${nr}`])
+            nr++
         }
 
         return panels

@@ -278,72 +278,79 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return caseInsensitiveSort(fans, 'name')
     },
 
+    getTemperatureSensorKeys: (state) => {
+        return Object.keys(state).filter((name) => name.startsWith('temperature_sensor ') && !name.startsWith('_'))
+    },
+
     getTemperatureSensors: (state, getters, rootState, rootGetters) => {
         const sensors: PrinterStateTemperatureSensor[] = []
 
-        for (const [key, value] of Object.entries(state)) {
+        const tempSensors = getters['getTemperatureSensorKeys']
+        tempSensors.forEach((key: string) => {
             const nameSplit = key.split(' ')
+            const values = { ...state[key] }
+            let icon = mdiThermometer
+            const min_temp = state.configfile?.settings[key]?.min_temp ?? 0
+            const max_temp = state.configfile?.settings[key]?.max_temp ?? 210
+            const split = (max_temp - min_temp) / 3
 
-            if (nameSplit[0] === 'temperature_sensor' && !nameSplit[1].startsWith('_')) {
-                let icon = mdiThermometer
-                const min_temp = state.configfile?.settings[key]?.min_temp ?? 0
-                const max_temp = state.configfile?.settings[key]?.max_temp ?? 210
-                const split = (max_temp - min_temp) / 3
+            if (values.temperature <= min_temp + split) icon = mdiThermometerLow
+            if (values.temperature >= max_temp - split) icon = mdiThermometerHigh
 
-                if (value.temperature <= min_temp + split) icon = mdiThermometerLow
-                if (value.temperature >= max_temp - split) icon = mdiThermometerHigh
+            sensors.push({
+                name: nameSplit[1],
+                temperature: Math.round(values.temperature * 10) / 10,
+                additionalSensors: getters.getAdditionalSensors(nameSplit[1]),
+                icon: icon,
+                min_temp: min_temp,
+                max_temp: max_temp,
+                measured_min_temp: Math.round(values.measured_min_temp * 10) / 10,
+                measured_max_temp: Math.round(values.measured_max_temp * 10) / 10,
+                chartColor: getters['tempHistory/getDatasetColor'](nameSplit[1]),
+                chartSeries: getters['tempHistory/getSerieNames'](nameSplit[1]),
+            })
+        })
 
-                sensors.push({
-                    name: nameSplit[1],
-                    temperature: Math.round(value.temperature * 10) / 10,
-                    additionalSensors: getters.getAdditionalSensors(nameSplit[1]),
-                    icon: icon,
-                    min_temp: min_temp,
-                    max_temp: max_temp,
-                    measured_min_temp: Math.round(value.measured_min_temp * 10) / 10,
-                    measured_max_temp: Math.round(value.measured_max_temp * 10) / 10,
-                    chartColor: getters['tempHistory/getDatasetColor'](nameSplit[1]),
-                    chartSeries: getters['tempHistory/getSerieNames'](nameSplit[1]),
-                })
-            } else if (key === 'z_thermal_adjust') {
-                let icon = mdiThermometer
-                const min_temp = state.configfile?.settings[key]?.min_temp ?? 0
-                const max_temp = state.configfile?.settings[key]?.max_temp ?? 210
-                const split = (max_temp - min_temp) / 3
+        if ('z_thermal_adjust' in state) {
+            const key = 'z_thermal_adjust'
+            const values = state[key]
+            let icon = mdiThermometer
+            const min_temp = state.configfile?.settings[key]?.min_temp ?? 0
+            const max_temp = state.configfile?.settings[key]?.max_temp ?? 210
+            const split = (max_temp - min_temp) / 3
 
-                if (value.temperature <= min_temp + split) icon = mdiThermometerLow
-                if (value.temperature >= max_temp - split) icon = mdiThermometerHigh
+            if (values.temperature <= min_temp + split) icon = mdiThermometerLow
+            if (values.temperature >= max_temp - split) icon = mdiThermometerHigh
 
-                const additionalSensorBool = rootGetters['gui/getDatasetAdditionalSensorValue']({
-                    name: key,
-                    sensor: 'z_adjust',
-                })
+            const additionalSensorBool = rootGetters['gui/getDatasetAdditionalSensorValue']({
+                name: key,
+                sensor: 'z_adjust',
+            })
 
-                const additionalSensor: PrinterStateAdditionalSensor = {
-                    bool: additionalSensorBool,
-                    name: 'z_adjust',
-                    unit: 'μm',
-                    value: Math.round(value.current_z_adjust * 1000),
-                }
-
-                if (Math.abs(value.current_z_adjust) >= 0.1) {
-                    additionalSensor.value = Math.round(value.current_z_adjust * 1000) / 1000
-                    additionalSensor.unit = 'mm'
-                }
-
-                sensors.push({
-                    name: key,
-                    temperature: Math.round(value.temperature * 10) / 10,
-                    additionalSensors: [additionalSensor],
-                    icon,
-                    min_temp: min_temp,
-                    max_temp: max_temp,
-                    measured_min_temp: Math.round(value.measured_min_temp * 10) / 10,
-                    measured_max_temp: Math.round(value.measured_max_temp * 10) / 10,
-                    chartColor: getters['tempHistory/getDatasetColor'](key),
-                    chartSeries: getters['tempHistory/getSerieNames'](key),
-                })
+            const additionalSensor: PrinterStateAdditionalSensor = {
+                bool: additionalSensorBool,
+                name: 'z_adjust',
+                unit: 'μm',
+                value: Math.round(values.current_z_adjust * 1000),
             }
+
+            if (Math.abs(values.current_z_adjust) >= 0.1) {
+                additionalSensor.value = Math.round(values.current_z_adjust * 1000) / 1000
+                additionalSensor.unit = 'mm'
+            }
+
+            sensors.push({
+                name: key,
+                temperature: Math.round(values.temperature * 10) / 10,
+                additionalSensors: [additionalSensor],
+                icon,
+                min_temp: min_temp,
+                max_temp: max_temp,
+                measured_min_temp: Math.round(values.measured_min_temp * 10) / 10,
+                measured_max_temp: Math.round(values.measured_max_temp * 10) / 10,
+                chartColor: getters['tempHistory/getDatasetColor'](key),
+                chartSeries: getters['tempHistory/getSerieNames'](key),
+            })
         }
 
         return caseInsensitiveSort(sensors, 'name')

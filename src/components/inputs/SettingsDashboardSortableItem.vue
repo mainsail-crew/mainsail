@@ -1,19 +1,21 @@
 <template>
-    <v-row>
-        <v-col class="col-auto px-0">
-            <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
-            <v-icon>{{ icon }}</v-icon>
-        </v-col>
-        <v-col class="pr-0 text-truncate">
-            {{ panelname }}
-        </v-col>
-        <v-col class="col-auto pl-2">
-            <v-icon
-                :color="checkboxColor"
-                @click.stop="$emit('change-visible', name, !visible)"
-                v-html="checkboxIcon" />
-        </v-col>
-    </v-row>
+    <v-list-item>
+        <v-row>
+            <v-col class="col-auto px-0">
+                <v-icon class="handle pr-2">{{ mdiDragVertical }}</v-icon>
+                <v-icon>{{ icon }}</v-icon>
+            </v-col>
+            <v-col class="pr-0 text-truncate">
+                {{ panelname }}
+            </v-col>
+            <v-col class="col-auto pl-2">
+                <v-icon
+                    :color="checkboxColor"
+                    @click.stop="$emit('change-visible', name, !visible)"
+                    v-html="checkboxIcon" />
+            </v-col>
+        </v-row>
+    </v-list-item>
 </template>
 
 <script lang="ts">
