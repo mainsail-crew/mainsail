@@ -2,8 +2,11 @@
     <v-card flat>
         <v-card-text>
             <v-row>
-                <v-col>
-                    <settings-dashboard-sortable viewport-name="mobile" :column="0" />
+                <v-col class="col-12 col-md-6">
+                    <settings-dashboard-sortable viewport-name="desktop" :column="1" />
+                </v-col>
+                <v-col class="col-12 col-md-6">
+                    <settings-dashboard-sortable viewport-name="desktop" :column="2" />
                 </v-col>
             </v-row>
             <v-row>
@@ -19,16 +22,17 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import DashboardMixin from '@/components/mixins/dashboard'
-import SettingsDashboardSortable from '@/components/inputs/SettingsDashboardSortable.vue'
+import SettingsDashboardSortable from '@/components/settings/Dashboard/Sortable.vue'
 
 @Component({
     components: {
         SettingsDashboardSortable,
     },
 })
-export default class SettingsDashboardTabMobile extends Mixins(DashboardMixin) {
+export default class SettingsDashboardTabDesktop extends Mixins(DashboardMixin) {
     resetLayout() {
-        this.$store.dispatch('gui/resetLayout', 'mobileLayout')
+        this.$store.dispatch('gui/resetLayout', 'desktopLayout1')
+        this.$store.dispatch('gui/resetLayout', 'desktopLayout2')
     }
 }
 </script>

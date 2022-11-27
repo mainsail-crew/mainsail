@@ -24,13 +24,11 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
-import draggable from 'vuedraggable'
 import DashboardMixin from '@/components/mixins/dashboard'
-import SettingsDashboardSortable from '@/components/inputs/SettingsDashboardSortable.vue'
+import SettingsDashboardSortable from '@/components/settings/Dashboard/Sortable.vue'
 @Component({
     components: {
         SettingsDashboardSortable,
-        draggable,
     },
 })
 export default class SettingsDashboardTabWidescreen extends Mixins(DashboardMixin) {

@@ -49,16 +49,14 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import draggable from 'vuedraggable'
-import SettingsDashboardTabMobile from '@/components/settings/SettingsDashboardTabMobile.vue'
-import SettingsDashboardTabTablet from '@/components/settings/SettingsDashboardTabTablet.vue'
-import SettingsDashboardTabDesktop from '@/components/settings/SettingsDashboardTabDesktop.vue'
-import SettingsDashboardTabWidescreen from '@/components/settings/SettingsDashboardTabWidescreen.vue'
+import SettingsDashboardTabMobile from '@/components/settings/Dashboard/Mobile.vue'
+import SettingsDashboardTabTablet from '@/components/settings/Dashboard/Tablet.vue'
+import SettingsDashboardTabDesktop from '@/components/settings/Dashboard/Desktop.vue'
+import SettingsDashboardTabWidescreen from '@/components/settings/Dashboard/Widescreen.vue'
 import { mdiCellphone, mdiMonitorScreenshot, mdiMonitorDashboard, mdiTablet } from '@mdi/js'
 
 @Component({
     components: {
-        draggable,
         SettingsDashboardTabMobile,
         SettingsDashboardTabTablet,
         SettingsDashboardTabDesktop,

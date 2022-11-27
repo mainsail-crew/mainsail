@@ -39,7 +39,7 @@ import { Mixins, Prop } from 'vue-property-decorator'
 import draggable from 'vuedraggable'
 import { mdiInformation, mdiLock } from '@mdi/js'
 import DashboardMixin from '@/components/mixins/dashboard'
-import SettingsDashboardSortableItem from '@/components/inputs/SettingsDashboardSortableItem.vue'
+import SettingsDashboardSortableItem from '@/components/settings/Dashboard/SortableItem.vue'
 
 @Component({
     components: { SettingsDashboardSortableItem, draggable },

@@ -1,6 +1,5 @@
 import Component from 'vue-class-component'
 import BaseMixin from '@/components/mixins/base'
-import { allDashboardPanels } from '@/store/variables'
 import { capitalize } from '@/plugins/helpers'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import {
@@ -18,22 +17,6 @@ import {
 
 @Component
 export default class DashboardMixin extends BaseMixin {
-    get printerKinematics() {
-        return this.$store.getters['printer/getKinematics']
-    }
-
-    get printerExtruderCount() {
-        return this.$store.getters['printer/getExtruders'].length
-    }
-
-    get printerAvailableHeatersCount() {
-        return this.$store.getters['printer/getAvailableHeaters'].length
-    }
-
-    get printerTemperatureSensorsCount() {
-        return this.$store.getters['printer/getTemperatureSensorKeys'].length
-    }
-
     get macrogroups() {
         return this.$store.getters['gui/macros/getAllMacrogroups'] ?? []
     }
