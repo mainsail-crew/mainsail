@@ -42,21 +42,6 @@ export default class DashboardMixin extends BaseMixin {
         return this.$store.getters['gui/webcams/getWebcams'] ?? []
     }
 
-    checkMissingPanels(panels: any[]) {
-        const missingPanels: any[] = []
-        const allPossiblePanels = this.$store.getters['gui/getAllPossiblePanels']
-
-        allPossiblePanels.forEach((panelname: string) => {
-            if (!panels.find((panel) => panel.name === panelname))
-                missingPanels.push({
-                    name: panelname,
-                    visible: true,
-                })
-        })
-
-        return missingPanels
-    }
-
     getPanelName(name: string) {
         if (name.startsWith('macrogroup_')) {
             const groupId = name.split('_')[1] ?? ''

@@ -108,6 +108,30 @@ export const getters: GetterTree<GuiState, any> = {
         return panels
     },
 
+    getDashboardPanels: (state, getters) => (viewport: string, column: number) => {
+        const layoutName = column ? `${viewport}Layout${column}` : `${viewport}Layout`
+        let panels = getters['getPanels'](layoutName)
+
+        if (column < 2) {
+            const allViewportPanels = getters['getAllPanelsFromViewport'](viewport)
+            const allPossiblePanels = getters['getAllPossiblePanels']
+            const missingPanels: any[] = []
+
+            allPossiblePanels.forEach((panelname: string) => {
+                if (!allViewportPanels.find((panel: any) => panel.name === panelname))
+                    missingPanels.push({
+                        name: panelname,
+                        visible: true,
+                    })
+            })
+            panels = panels.concat(missingPanels)
+        }
+
+        panels = panels.filter((element: any) => element.visible)
+
+        return panels
+    },
+
     getAllPanelsFromViewport: (state) => (viewport: string) => {
         let panels: any = []
 
