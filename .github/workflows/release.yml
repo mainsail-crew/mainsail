@@ -20,10 +20,10 @@ jobs:
   merge-master:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
 
       - name: Merge develop -> master
-        uses: devmasx/merge-branch@v3
+        uses: devmasx/merge-branch@v1
         with:
           type: now
           from_branch: develop
