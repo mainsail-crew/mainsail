@@ -17,11 +17,27 @@ on:
         default: 'false'
 
 jobs:
+  merge-master:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Merge develop -> master
+        uses: devmasx/merge-branch@v3
+        with:
+          type: now
+          from_branch: develop
+          target_branch: master
+          github_token: ${{ github.token }}
+
   release:
+    needs: [merge-master]
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
         uses: actions/checkout@v3
+        with:
+          ref: 'master'
 
       - name: Install node
         uses: actions/setup-node@v3
