@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Merge develop -> master
-        uses: devmasx/merge-branch@v1
+        uses: devmasx/merge-branch@master
         with:
           type: now
           from_branch: develop
