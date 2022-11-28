@@ -478,7 +478,6 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         (value: string) => !this.existsProfileName(value) || this.$t('Heightmap.InvalidNameAlreadyExists'),
     ]
 
-    private heightmapScale = 0.5
     private probedOpacity = 1
     private meshOpacity = 1
     private flatOpacity = 0.5
@@ -493,6 +492,13 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     private colorVisualMap = 'rgba(255,255,255,0.8)'
     private fontSizeVisualMap = 14
+
+    get heightmapScale(): number {
+        return this.$store.state.gui.view.heightmap.scaleheight ?? 0.5
+    }
+    set heightmapScale(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleheight', value: newVal })
+    }
 
     get chartOptions() {
         return {
@@ -737,7 +743,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         const [min, max] = this.heightmapLimit
 
         const minRange = Math.round(Math.max(Math.abs(min), Math.abs(max)) * 10) / 10
-        const maxRange = Math.max(minRange, 1)
+        const maxRange = Math.max(minRange, 2)
 
         return [minRange, maxRange]
     }
