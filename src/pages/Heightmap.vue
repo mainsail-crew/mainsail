@@ -129,7 +129,7 @@
                             <v-row>
                                 <v-col>
                                     <v-slider
-                                        v-model="heightmapScale"
+                                        v-model="scale"
                                         :label="$t('Heightmap.ScaleZMax')"
                                         :min="heightmapRangeLimit[0]"
                                         :max="heightmapRangeLimit[1]"
@@ -493,13 +493,6 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     private colorVisualMap = 'rgba(255,255,255,0.8)'
     private fontSizeVisualMap = 14
 
-    get heightmapScale(): number {
-        return this.$store.state.gui.view.heightmap.scaleheight ?? 0.5
-    }
-    set heightmapScale(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleheight', value: newVal })
-    }
-
     get chartOptions() {
         return {
             tooltip: {
@@ -570,8 +563,8 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             },
             zAxis3D: {
                 type: 'value',
-                min: this.heightmapScale * -1,
-                max: this.heightmapScale,
+                min: this.scale * -1,
+                max: this.scale,
                 nameTextStyle: {
                     color: this.colorAxisName,
                 },
@@ -677,7 +670,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.wireframe', value: newVal })
     }
 
-    get scale(): boolean {
+    get scale(): number {
         return this.$store.state.gui.view.heightmap.scale ?? true
     }
 
