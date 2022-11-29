@@ -195,7 +195,6 @@ export const getDefaultState = (): GuiState => {
                 flat: false,
                 wireframe: true,
                 scale: 0.5,
-                scaleVisualMap: false,
             },
             history: {
                 countPerPage: 10,
