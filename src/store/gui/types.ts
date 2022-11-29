@@ -135,6 +135,7 @@ export interface GuiState {
             wireframe: boolean
             scale: number
             scaleVisualMap: boolean
+            heightmapScale: number
         }
         history: {
             countPerPage: number
