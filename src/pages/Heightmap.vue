@@ -743,7 +743,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         const [min, max] = this.heightmapLimit
 
         const minRange = Math.round(Math.max(Math.abs(min), Math.abs(max)) * 10) / 10
-        const maxRange = Math.max(minRange, 2)
+        const maxRange = Math.max(minRange, 1)
 
         return [minRange, maxRange]
     }
