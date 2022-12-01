@@ -80,7 +80,7 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-jsonc": "^2.2.1",
         "eslint-plugin-vue": "^9.0.0",
-        "prettier": "^2.5.1",
+        "prettier": "^2.8.0",
         "sass": "~1.32",
         "start-server-and-test": "^1.14.0",
         "typescript": "^4.5.5",
