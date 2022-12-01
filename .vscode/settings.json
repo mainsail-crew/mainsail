@@ -1,3 +1,4 @@
 {
-    "githubPullRequests.ignoredPullRequestBranches": ["develop"]
+    "githubPullRequests.ignoredPullRequestBranches": ["develop"],
+    "i18n-ally.localesPaths": ["src/locales"]
 }
