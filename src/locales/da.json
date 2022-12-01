@@ -467,7 +467,7 @@
             "Upgrade": "Opgrader",
             "UpToDate": "up-to-date"
         }
-    },    
+    },
     "ManualProbe": {
         "Abort": "Afbryd",
         "Accept": "Acceptér",
@@ -1000,7 +1000,7 @@
             "ShowWebcamInNavigation": "Vis Webcam i navigation",
             "UiSettings": "UI-indstillinger"
         },
-        "Update":"Opdater",
+        "Update": "Opdater",
         "WebcamsTab": {
             "AddWebcam": "Tilføj webcam",
             "CreateWebcam": "Nyt Webcam",
