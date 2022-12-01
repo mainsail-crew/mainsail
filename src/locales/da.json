@@ -969,9 +969,9 @@
             "VariableFps": "Variabel FPS",
             "VariableFpsDescription": "Hvis aktiv, vil framrate blive beregnet ud fra ønsket længde.",
             "VariableFpsMax": "Variabel FPS maks",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "Største værdi for variabel FPS",
             "VariableFpsMin": "Variabel FPS min",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "Mindste værdi for variabel FPS"
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Stor forhåndsvisning",
