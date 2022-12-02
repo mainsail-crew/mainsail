@@ -26,7 +26,7 @@ jobs:
         uses: devmasx/merge-branch@master
         with:
           type: now
-          from_branch: 'release-workflow'
+          from_branch: 'chore/release-workflow'
           target_branch: 'master'
           github_token: ${{ github.token }}
 
