@@ -267,7 +267,7 @@
             "Min": "Min",
             "Name": "Navn",
             "Size": "Størrelse",
-            "Variance": "Variation"
+            "Range": "Variation"
         },
         "DeleteBedMeshProfile": "Slet Bed Mesh profil",
         "DoYouReallyWantToDelete": "Vil du slette \"{name}\"?",
@@ -872,7 +872,6 @@
             "NoGroupFound": "Ingen gruppe fundet",
             "NoPresetFound": "Ingen forudindstilling fundet",
             "Presets": "Forudindstillinger",
-            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, W: {white}",
             "Start": "Første",
             "StartDescription": "Første LED i denne gruppe.",
             "UnableToLoadLight": "Kunne ikke indlæse LED",
