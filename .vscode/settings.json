@@ -1,4 +1,7 @@
 {
     "githubPullRequests.ignoredPullRequestBranches": ["develop"],
-    "i18n-ally.localesPaths": ["src/locales"]
+    "i18n-ally.localesPaths": [
+        "src/locales"
+    ],
+    "vue-i18n.i18nPaths": "src/locales"
 }
