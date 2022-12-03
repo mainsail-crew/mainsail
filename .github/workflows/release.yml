@@ -7,6 +7,11 @@ jobs:
   update-version:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Get next version
         id: get_next_version
         uses: thenativeweb/get-next-version@main
@@ -15,7 +20,6 @@ jobs:
         run: |
           echo ${{ steps.get_next_version.outputs.version }}
           echo ${{ steps.get_next_version.outputs.hasNextVersion }}
-    
 
 #  merge-master:
 #    runs-on: ubuntu-latest
