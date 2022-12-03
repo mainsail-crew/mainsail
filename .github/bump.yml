@@ -29,7 +29,6 @@ categories:
     commits:
       - 'chore'
       - 'refactor'
-      -
 bump:
   default: 'patch'
   major:

@@ -2,61 +2,66 @@ name: Release
 
 on:
   workflow_dispatch:
-    inputs:
-      bump:
-        description: 'bump type, major or minor or patch or empty string'
-        default: ''
-      dry_run:
-        description: 'dry run, true or false'
-        default: 'false'
-      draft:
-        description: 'draft, true or false'
-        default: 'false'
-      pre_release:
-        description: 'pre release, true or false'
-        default: 'false'
 
 jobs:
-  merge-master:
+  update-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Get next version
+        id: get_next_version
+        uses: thenativeweb/get-next-version@main
 
-      - name: Merge develop -> master
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          from_branch: 'chore/release-workflow'
-          target_branch: 'master'
-          github_token: ${{ github.token }}
+      - name: Show the next version
+        run: |
+          echo ${{ steps.get_next_version.outputs.version }}
+          echo ${{ steps.get_next_version.outputs.hasNextVersion }}
+    
 
-  release:
-    needs: [merge-master]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch repo
-        uses: actions/checkout@v3
-        with:
-          ref: 'master'
-
-      - name: Install node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Copy output
-        run: cp ${{ github.workspace }}/dist/mainsail.zip mainsail.zip
-
-      - uses: MeilCli/bump-release-action@v1
-        with:
-          config_path: '.github/bump.yml'
-          bump: ${{ github.event.inputs.bump }}
-          dry_run: ${{ github.event.inputs.dry_run }}
-          draft: ${{ github.event.inputs.draft }}
-          pre_release: ${{ github.event.inputs.pre_release }}
+#  merge-master:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      - name: Merge develop -> master
+#        uses: devmasx/merge-branch@master
+#        with:
+#          type: now
+#          from_branch: 'chore/release-workflow'
+#          target_branch: 'master'
+#          github_token: ${{ github.token }}
+#
+#  release:
+#    needs: [merge-master]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Fetch repo
+#        uses: actions/checkout@v3
+#        with:
+#          ref: 'master'
+#
+#      - name: Install node
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: 18
+#
+#      - name: Install dependencies
+#        run: npm ci
+#
+#      - name: Build
+#        run: npm run build
+#
+#      - name: Copy output
+#        run: cp ${{ github.workspace }}/dist/mainsail.zip mainsail.zip
+#
+#      - name: Set variables
+#        run: |
+#          VER=$(cat dist/.version)
+#          echo "version=$VER" >> $GITHUB_ENV
+#
+#      - uses: MeilCli/bump-release-action@v1
+#        with:
+#          config_path: '.github/bump.yml'
+#          bump: ${{ env.version }}
+#          dry_run: ${{ github.event.inputs.dry_run }}
+#          draft: ${{ github.event.inputs.draft }}
+#          pre_release: ${{ github.event.inputs.pre_release }}
