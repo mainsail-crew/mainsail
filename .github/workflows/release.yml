@@ -15,7 +15,7 @@ jobs:
 
       - name: Get next version
         id: get_next_version
-        uses: thenativeweb/get-next-version@v2
+        uses: thenativeweb/get-next-version@main
 
       - name: Show the next version
         run: |
