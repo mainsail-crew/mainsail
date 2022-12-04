@@ -17,10 +17,15 @@ jobs:
         with:
           ref: 'develop'
 
-      - name: Push version number
-        shell: bash
-        run: |
-          npm version ${{ github.event.inputs.version }} -m 'chore: push version number to v%s'
+      - name: Change version
+        uses: reedyuk/npm-version@1.1.1
+        with:
+          version: ${{ github.event.inputs.version }}
+          git-tag-version: 'true'
+      #      - name: Push version number
+      #        shell: bash
+      #        run: |
+      #          npm version ${{ github.event.inputs.version }} -m 'chore: push version number to v%s'
 
       #      - name: Add & Commit
       #        uses: EndBug/add-and-commit@v9
@@ -29,10 +34,10 @@ jobs:
       #          default_author: github_actions
       #          message:
       #
-      - name: git push
-        shell: bash
-        run: |
-          git push && git push --tags
+  #      - name: git push
+  #        shell: bash
+  #        run: |
+  #          git push && git push --tags
 
   update-master-branch:
     needs: ['push-version-number']
@@ -68,7 +73,7 @@ jobs:
 
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v1
-        id: git-cliff
+        id: generate-changelog
         with:
           config: cliff.toml
           args: -vv --latest --strip header
@@ -79,13 +84,20 @@ jobs:
         id: release-body
         shell: bash
         run: |
-          r=$(cat ${{ steps.git-cliff.outputs.changelog }})
+          r=$(cat ${{ steps.generate-changelog.outputs.RELEASE_BODY }})
           r="${r//'%'/'%25'}"     # Multiline escape sequences for %
           r="${r//$'\n'/'%0A'}"   # Multiline escape sequences for '\n'
           r="${r//$'\r'/'%0D'}"   # Multiline escape sequences for '\r'
           echo 'RELEASE_BODY<<EOF' >> $GITHUB_ENV
           echo "$r" >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
+
+      - name: Show result
+        shell: bash
+        env:
+          CHANGELOG: ${{ steps.generate-changelog.outputs.changelog }}
+        run: |
+          echo "$CHANGELOG"
 
       - name: Create release and upload build
         uses: softprops/action-gh-release@v1
@@ -95,4 +107,4 @@ jobs:
           tag_name: v${{ github.event.inputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
           files: ./dist/mainsail.zip
-          body: ${{ steps.git-cliff.outputs.changelog }}
+          body: ${{ steps.generate-changelog.outputs.changelog }}
