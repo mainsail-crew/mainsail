@@ -66,6 +66,14 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Create release and upload build
+        uses: softprops/action-gh-release@v1
+        with:
+          name: v${{ github.event.inputs.version }}
+          tag_name: v${{ github.event.inputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: ./dist/mainsail.zip
+
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v1
         id: git-cliff
@@ -76,7 +84,7 @@ jobs:
           OUTPUT: CHANGES.md
 
       - name: Set the release body
-        id: release
+        id: release-body
         shell: bash
         run: |
           r=$(cat ${{ steps.git-cliff.outputs.changelog }})
@@ -87,11 +95,9 @@ jobs:
           echo "$r" >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: Create release and upload build
-        uses: softprops/action-gh-release@v1
+      - name: Update release
+        uses: johnwbyrd/update-release@v1
         with:
-          name: v${{ github.event.inputs.version }}
-          tag_name: v${{ github.event.inputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: ./dist/mainsail.zip
-          body: ${{ steps.release.outputs.RELEASE_BODY }}
+          release: v${{ github.event.inputs.version }}
+          body: ${{ steps.release-body.outputs.RELEASE_BODY }}
