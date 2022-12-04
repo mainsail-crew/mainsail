@@ -17,25 +17,28 @@ jobs:
         with:
           ref: 'develop'
 
-      - name: Commit version number
-        shell: bash
-        run: |
-          npm version ${{ github.event.inputs.version }} --no-git-tag-version -m "chore: push version number to v%s"
-
       - name: Push version number
         shell: bash
         run: |
-          git push && git push --tags
+          npm version ${{ github.event.inputs.version }} --no-git-tag-version
+          git add package.json
+          git add package-lock.json
+          git commit -m "chore: push version number to v${{ github.event.inputs.version }}"
+          git push
 
   update-master-branch:
     needs: ['push-version-number']
     runs-on: ubuntu-latest
     steps:
-      - name: Merge develop -> master
+      - name: Clone develop repository
+        uses: actions/checkout@v3
+        with:
+          ref: 'develop'
+
+      - name: Merge to master
         uses: devmasx/merge-branch@master
         with:
           type: now
-          from_branch: 'develop'
           target_branch: 'master'
           github_token: ${{ github.token }}
 #
