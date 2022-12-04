@@ -76,7 +76,7 @@ jobs:
         id: release-body
         shell: bash
         run: |
-          r=$(cat ${{ steps.generate-changelog.outputs.content }})
+          r=$(cat ${{ steps.generate-changelog.outputs.changelog }})
           r="${r//'%'/'%25'}"     # Multiline escape sequences for %
           r="${r//$'\n'/'%0A'}"   # Multiline escape sequences for '\n'
           r="${r//$'\r'/'%0D'}"   # Multiline escape sequences for '\r'
