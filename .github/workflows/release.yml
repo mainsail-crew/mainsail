@@ -65,23 +65,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Create empty release
-        id: release
+      - name: Create release and upload build
         uses: softprops/action-gh-release@v1
         with:
           name: v${{ github.event.inputs.version }}
           tag_name: v${{ github.event.inputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          draft: true
-
-      - name: Upload Image to Release
-        uses: xresloader/upload-to-github-release@v1
-        with:
-          release_id: ${{ steps.release.outputs.id }}
-          file: ${{ github.workspace }}/dist/mainsail.zip
-          draft: true
-
-      - name: Publish Release
-        uses: StuYarrow/publish-release@v1
-        with:
-          id: ${{ steps.release.outputs.id }}
+          files: ./dist/mainsail.zip
