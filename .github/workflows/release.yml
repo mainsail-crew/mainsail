@@ -6,11 +6,14 @@ on:
 jobs:
   update-version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_next_version.outputs.version }}
+      hasNextVersion: ${{ steps.get_next_version.outputs.hasNextVersion }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
-          ref: 'master'
+          ref: 'develop'
           fetch-depth: 0
 
       - name: Get next version
@@ -22,18 +25,18 @@ jobs:
           echo ${{ steps.get_next_version.outputs.version }}
           echo ${{ steps.get_next_version.outputs.hasNextVersion }}
 
-#  merge-master:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - name: Merge develop -> master
-#        uses: devmasx/merge-branch@master
-#        with:
-#          type: now
-#          from_branch: 'chore/release-workflow'
-#          target_branch: 'master'
-#          github_token: ${{ github.token }}
+  update-master-branch:
+    needs: ['update-version']
+    runs-on: ubuntu-latest
+    if: needs.update-version.outputs.hasNextVersion
+    steps:
+      - name: Merge develop -> master
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: 'develop'
+          target_branch: 'master'
+          github_token: ${{ github.token }}
 #
 #  release:
 #    needs: [merge-master]
