@@ -38,20 +38,12 @@ jobs:
     needs: ['push-version-number']
     runs-on: ubuntu-latest
     steps:
-      - uses: everlytic/branch-merge@1.1.2
+      - uses: everlytic/branch-merge@1.1.5
         with:
           github_token: ${{ github.token }}
           source_ref: 'develop'
           target_branch: 'master'
           commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
-#      - name: Merge to master
-#        uses: devmasx/merge-branch@master
-#        with:
-#          type: now
-#          from_branch: develop
-#          target_branch: master
-#          github_token: ${{ github.token }}
-#
 #  release:
 #    needs: [merge-master]
 #    runs-on: ubuntu-latest
