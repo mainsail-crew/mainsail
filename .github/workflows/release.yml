@@ -46,7 +46,7 @@ jobs:
           commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
 
   release:
-    needs: [merge-master]
+    needs: ['update-master-branch']
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
