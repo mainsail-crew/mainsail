@@ -40,14 +40,30 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
-
-      - name: Merge to master
-        uses: devmasx/merge-branch@master
         with:
-          type: now
-          from_branch: develop
-          target_branch: master
-          github_token: ${{ github.token }}
+          ref: develop
+
+      - name: Merge master into develop
+        shell: bash
+        runs: |
+          git checkout origin/develop
+          git merge master
+          git push
+
+      - name: Merge develop into master
+        shell: bash
+        runs: |
+          git checkout origin/master
+          git merge --no-ff develop
+          git push
+
+#      - name: Merge to master
+#        uses: devmasx/merge-branch@master
+#        with:
+#          type: now
+#          from_branch: develop
+#          target_branch: master
+#          github_token: ${{ github.token }}
 #
 #  release:
 #    needs: [merge-master]
