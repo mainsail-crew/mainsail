@@ -72,18 +72,6 @@ jobs:
         env:
           output: CHANGES.md
 
-      - name: Set the release body
-        id: release-body
-        shell: bash
-        run: |
-          r=$(cat ${{ steps.generate-changelog.outputs.changelog }})
-          r="${r//'%'/'%25'}"     # Multiline escape sequences for %
-          r="${r//$'\n'/'%0A'}"   # Multiline escape sequences for '\n'
-          r="${r//$'\r'/'%0D'}"   # Multiline escape sequences for '\r'
-          echo 'RELEASE_BODY<<EOF' >> $GITHUB_ENV
-          echo "$r" >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-
       - name: Create release and upload build
         uses: softprops/action-gh-release@v1
         id: create-release
@@ -92,4 +80,4 @@ jobs:
           tag_name: v${{ github.event.inputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
           files: ./dist/mainsail.zip
-          body: ${{ env.RELEASE_BODY }}
+          body: ${{ steps.generate-changelog.outputs.content }}
