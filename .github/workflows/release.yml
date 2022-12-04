@@ -41,7 +41,7 @@ jobs:
           npm version ${{ needs.update-version.outputs.version }} --no-git-tag-version version -m "chore: push version number to v%s"
 
   update-master-branch:
-    needs: ['update-version-number']
+    needs: ['push-version-number']
     runs-on: ubuntu-latest
     if: needs.update-version.outputs.hasNextVersion
     steps:
