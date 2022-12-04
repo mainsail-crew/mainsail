@@ -20,7 +20,7 @@ jobs:
       - name: Commit version number
         shell: bash
         run: |
-          npm version ${{ github.event.inputs.version }} --no-git-tag-version version -m "chore: push version number to v%s"
+          npm version ${{ github.event.inputs.version }} --no-git-tag-version -m "chore: push version number to v%s"
 
       - name: Push version number
         shell: bash
