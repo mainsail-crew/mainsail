@@ -2,35 +2,17 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: New version number in vX.Y.Z
+        required: true
 
 jobs:
-  update-version:
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.get_next_version.outputs.version }}
-      hasNextVersion: ${{ steps.get_next_version.outputs.hasNextVersion }}
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-        with:
-          ref: 'develop'
-          fetch-depth: 0
-
-      - name: Get next version
-        id: get_next_version
-        uses: thenativeweb/get-next-version@main
-
-      - name: Show the next version
-        run: |
-          echo ${{ steps.get_next_version.outputs.version }}
-          echo ${{ steps.get_next_version.outputs.hasNextVersion }}
-
   push-version-number:
-    needs: ['update-version']
     runs-on: ubuntu-latest
-    if: needs.update-version.outputs.hasNextVersion
     steps:
-      - name: Checkout develop repo
+      - name: Clone develop repository
         uses: actions/checkout@v3
         with:
           ref: 'develop'
@@ -38,12 +20,16 @@ jobs:
       - name: Commit version number
         shell: bash
         run: |
-          npm version ${{ needs.update-version.outputs.version }} --no-git-tag-version version -m "chore: push version number to v%s"
+          npm version ${{ github.event.inputs.version }} --no-git-tag-version version -m "chore: push version number to v%s"
+
+      - name: Push version number
+        shell: bash
+        run: |
+          git push && git push --tags
 
   update-master-branch:
     needs: ['push-version-number']
     runs-on: ubuntu-latest
-    if: needs.update-version.outputs.hasNextVersion
     steps:
       - name: Merge develop -> master
         uses: devmasx/merge-branch@master
