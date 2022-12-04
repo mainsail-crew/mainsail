@@ -44,38 +44,44 @@ jobs:
           source_ref: 'develop'
           target_branch: 'master'
           commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
-#  release:
-#    needs: [merge-master]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Fetch repo
-#        uses: actions/checkout@v3
-#        with:
-#          ref: 'master'
-#
-#      - name: Install node
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: 18
-#
-#      - name: Install dependencies
-#        run: npm ci
-#
-#      - name: Build
-#        run: npm run build
-#
-#      - name: Copy output
-#        run: cp ${{ github.workspace }}/dist/mainsail.zip mainsail.zip
-#
-#      - name: Set variables
-#        run: |
-#          VER=$(cat dist/.version)
-#          echo "version=$VER" >> $GITHUB_ENV
-#
-#      - uses: MeilCli/bump-release-action@v1
-#        with:
-#          config_path: '.github/bump.yml'
-#          bump: ${{ env.version }}
-#          dry_run: ${{ github.event.inputs.dry_run }}
-#          draft: ${{ github.event.inputs.draft }}
-#          pre_release: ${{ github.event.inputs.pre_release }}
+
+  release:
+    needs: [merge-master]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch repo
+        uses: actions/checkout@v3
+        with:
+          ref: 'master'
+
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Create empty release
+        id: release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: v${{ github.event.inputs.version }}
+          tag_name: v${{ github.event.inputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: true
+
+      - name: Upload Image to Release
+        uses: xresloader/upload-to-github-release@v1
+        with:
+          release_id: ${{ steps.release.outputs.id }}
+          file: ${{ github.workspace }}/dist/mainsail.zip
+          draft: true
+
+      - name: Publish Release
+        uses: StuYarrow/publish-release@v1
+        with:
+          id: ${{ steps.release.outputs.id }}
