@@ -28,6 +28,7 @@ jobs:
         with:
           version: ${{ github.event.inputs.version }}
           git-tag-version: 'true'
+
       #      - name: Push version number
       #        shell: bash
       #        run: |
@@ -40,10 +41,10 @@ jobs:
       #          default_author: github_actions
       #          message:
       #
-  #      - name: git push
-  #        shell: bash
-  #        run: |
-  #          git push && git push --tags
+      - name: git push
+        shell: bash
+        run: |
+          git push && git push --tags
 
   update-master-branch:
     needs: ['push-version-number']
