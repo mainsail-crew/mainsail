@@ -41,19 +41,11 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v3
         with:
-          ref: develop
-
-      - name: Merge master into develop
-        shell: bash
-        run: |
-          git checkout origin/develop
-          git merge master
-          git push
+          ref: master
 
       - name: Merge develop into master
         shell: bash
         run: |
-          git checkout origin/master
           git merge --no-ff develop
           git push
 
