@@ -69,6 +69,8 @@ jobs:
         with:
           config: cliff.toml
           args: -vv --latest --strip header
+        env:
+          output: CHANGES.md
 
       - name: Set the release body
         id: release-body
@@ -85,7 +87,7 @@ jobs:
       - name: Show result
         shell: bash
         run: |
-          cat "${{ steps.generate-changelog.outputs.changelog }}"
+          cat "${{ steps.generate-changelog.outputs }}"
 
       - name: Create release and upload build
         uses: softprops/action-gh-release@v1
@@ -95,4 +97,4 @@ jobs:
           tag_name: v${{ github.event.inputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
           files: ./dist/mainsail.zip
-          body: ${{ steps.generate-changelog.outputs.content }}
+          body: ${{ env.RELEASE_BODY }}
