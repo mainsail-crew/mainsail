@@ -84,11 +84,6 @@ jobs:
           echo "$r" >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: Show result
-        shell: bash
-        run: |
-          cat "${{ steps.generate-changelog.outputs }}"
-
       - name: Create release and upload build
         uses: softprops/action-gh-release@v1
         id: create-release
