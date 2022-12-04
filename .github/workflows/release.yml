@@ -25,8 +25,23 @@ jobs:
           echo ${{ steps.get_next_version.outputs.version }}
           echo ${{ steps.get_next_version.outputs.hasNextVersion }}
 
-  update-master-branch:
+  push-version-number:
     needs: ['update-version']
+    runs-on: ubuntu-latest
+    if: needs.update-version.outputs.hasNextVersion
+    steps:
+      - name: Checkout develop repo
+        uses: actions/checkout@v3
+        with:
+          ref: 'develop'
+
+      - name: Commit version number
+        shell: bash
+        runs: |
+          npm version ${{ needs.update-version.outputs.version }} --no-git-tag-version version -m "chore: push version number to v%s"
+
+  update-master-branch:
+    needs: ['update-version-number']
     runs-on: ubuntu-latest
     if: needs.update-version.outputs.hasNextVersion
     steps:
