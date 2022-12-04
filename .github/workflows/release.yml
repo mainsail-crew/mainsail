@@ -45,14 +45,14 @@ jobs:
 
       - name: Merge master into develop
         shell: bash
-        runs: |
+        run: |
           git checkout origin/develop
           git merge master
           git push
 
       - name: Merge develop into master
         shell: bash
-        runs: |
+        run: |
           git checkout origin/master
           git merge --no-ff develop
           git push
