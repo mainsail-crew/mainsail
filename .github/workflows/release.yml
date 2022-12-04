@@ -69,14 +69,12 @@ jobs:
         with:
           config: cliff.toml
           args: -vv --latest --strip header
-        env:
-          OUTPUT: CHANGES.md
 
       - name: Set the release body
         id: release-body
         shell: bash
         run: |
-          r=$(cat ${{ steps.generate-changelog.outputs.RELEASE_BODY }})
+          r=$(cat ${{ steps.generate-changelog.outputs.content }})
           r="${r//'%'/'%25'}"     # Multiline escape sequences for %
           r="${r//$'\n'/'%0A'}"   # Multiline escape sequences for '\n'
           r="${r//$'\r'/'%0D'}"   # Multiline escape sequences for '\r'
@@ -86,10 +84,8 @@ jobs:
 
       - name: Show result
         shell: bash
-        env:
-          CHANGELOG: ${{ steps.generate-changelog.outputs.RELEASE_BODY }}
         run: |
-          echo "$CHANGELOG"
+          cat "${{ steps.generate-changelog.outputs.changelog }}"
 
       - name: Create release and upload build
         uses: softprops/action-gh-release@v1
@@ -99,4 +95,4 @@ jobs:
           tag_name: v${{ github.event.inputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
           files: ./dist/mainsail.zip
-          body: ${{ steps.generate-changelog.outputs.changelog }}
+          body: ${{ steps.generate-changelog.outputs.content }}
