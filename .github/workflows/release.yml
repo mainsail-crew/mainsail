@@ -5,7 +5,7 @@ on:
     inputs:
       version:
         type: string
-        description: New version number in vX.Y.Z
+        description: New version number in X.Y.Z
         required: true
 
 jobs:
