@@ -38,16 +38,15 @@ jobs:
     needs: ['push-version-number']
     runs-on: ubuntu-latest
     steps:
-      - name: Clone develop repository
+      - name: Clone repository
         uses: actions/checkout@v3
-        with:
-          ref: 'develop'
 
       - name: Merge to master
         uses: devmasx/merge-branch@master
         with:
           type: now
-          target_branch: 'master'
+          from_branch: develop
+          target_branch: master
           github_token: ${{ github.token }}
 #
 #  release:
