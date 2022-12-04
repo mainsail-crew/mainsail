@@ -38,17 +38,12 @@ jobs:
     needs: ['push-version-number']
     runs-on: ubuntu-latest
     steps:
-      - name: Clone repository
-        uses: actions/checkout@v3
+      - uses: everlytic/branch-merge@1.1.2
         with:
-          ref: master
-
-      - name: Merge develop into master
-        shell: bash
-        run: |
-          git merge --no-ff develop
-          git push
-
+          github_token: ${{ github.token }}
+          source_ref: 'develop'
+          target_branch: 'master'
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
 #      - name: Merge to master
 #        uses: devmasx/merge-branch@master
 #        with:
