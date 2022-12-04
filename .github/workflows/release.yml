@@ -101,4 +101,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           id: ${{ steps.create-release.outputs.id }}
-          body: ${{ steps.release-body.outputs.RELEASE_BODY }}
+          body: ${{ env.RELEASE_BODY }}
