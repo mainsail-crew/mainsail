@@ -68,6 +68,7 @@ jobs:
 
       - name: Create release and upload build
         uses: softprops/action-gh-release@v1
+        id: create-release
         with:
           name: v${{ github.event.inputs.version }}
           tag_name: v${{ github.event.inputs.version }}
@@ -96,8 +97,8 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
 
       - name: Update release
-        uses: johnwbyrd/update-release@v1
+        uses: irongut/EditRelease@v1.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          release: v${{ github.event.inputs.version }}
+          id: ${{ steps.create-release.outputs.id }}
           body: ${{ steps.release-body.outputs.RELEASE_BODY }}
