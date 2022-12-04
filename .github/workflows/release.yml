@@ -101,4 +101,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           id: ${{ steps.create-release.outputs.id }}
-          body: ${{ env.RELEASE_BODY }}
+          body: ${{ steps.git-cliff.outputs.changelog }}
