@@ -37,7 +37,7 @@ jobs:
 
       - name: Commit version number
         shell: bash
-        runs: |
+        run: |
           npm version ${{ needs.update-version.outputs.version }} --no-git-tag-version version -m "chore: push version number to v%s"
 
   update-master-branch:
