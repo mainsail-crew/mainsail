@@ -17,6 +17,12 @@ jobs:
         with:
           ref: 'develop'
 
+      - name: setup git config
+        shell: bash
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+
       - name: Change version
         uses: reedyuk/npm-version@1.1.1
         with:
