@@ -671,7 +671,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get scale(): number {
-        return this.$store.state.gui.view.heightmap.scale ?? true
+        return this.$store.state.gui.view.heightmap.scale ?? 0.5
     }
 
     set scale(newVal) {
