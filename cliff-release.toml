@@ -9,7 +9,7 @@ header = """
 # https://tera.netlify.app/docs/#introduction
 body = """
 {% for group, commits in commits | group_by(attribute="group") %}\
-    ### {{ group | upper_first }}
+    ### {{ group | split(pat="$") | last | upper_first }}
     {% for commit in commits
     | filter(attribute="scope")
     | sort(attribute="scope") %}
@@ -47,16 +47,16 @@ filter_unconventional = true
 # regex for parsing and grouping commits
 commit_parsers = [
     { message = "^docs\\(changelog\\):", group = "Changelog", skip = true}, # Old redundant commits
-    { message = "^feat(\\(.*\\))?:", group = "Features"},
-    { message = "^feature(\\(.*\\))?:", group = "Features"},
-    { message = "^fix(\\(.*\\))?:", group = "Bug Fixes and Improvements"},
-    { message = "^docs(\\(.*\\))?:", group = "Documentation"},
-    { message = "^perf(\\(.*\\))?:", group = "Performance"},
-    { message = "^refactor(\\(.*\\))?:", group = "Refactor"},
-    { message = "^style(\\(.*\\))?:", group = "Styling"},
-    { message = "^test(\\(.*\\))?:", group = "Testing"},
-    { message = "^locale(\\(.*\\))?:", group = "Localization"},
-    { message = "^chore(\\(.*\\))?:", group = "Other"},
+    { message = "^feat(\\(.*\\))?:", group = "1$Features"},
+    { message = "^feature(\\(.*\\))?:", group = "1$Features"},
+    { message = "^fix(\\(.*\\))?:", group = "2$Bug Fixes and Improvements"},
+    { message = "^docs(\\(.*\\))?:", group = "7$Documentation"},
+    { message = "^perf(\\(.*\\))?:", group = "3$Performance"},
+    { message = "^refactor(\\(.*\\))?:", group = "4$Refactor"},
+    { message = "^style(\\(.*\\))?:", group = "5$Styling"},
+    { message = "^test(\\(.*\\))?:", group = "9$Other"},
+    { message = "^locale(\\(.*\\))?:", group = "6$Localization"},
+    { message = "^chore(\\(.*\\))?:", group = "9$Other"},
     { body = ".*security", group = "Security"},
 ]
 # filter out the commits that are not matched by commit parsers
