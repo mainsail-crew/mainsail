@@ -1,114 +1,7 @@
-<style lang="scss" scoped>
-svg {
-    max-height: 350px;
-    min-height: 275px;
-    user-select: none;
-    filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.3));
-}
-
-svg a {
-    stroke: hsl(0, 0%, 10%);
-    stroke-width: 0.3px;
-}
-
-svg a.step {
-    transition: fill 750ms ease-out;
-}
-
-svg a.step:hover {
-    fill: hsl(215, 0%, 50%) !important;
-    transition: fill 100ms ease-in;
-}
-
-svg a.step:active {
-    fill: hsl(215, 0%, 70%) !important;
-}
-
-svg a.step.inner {
-    fill: #666;
-}
-svg a.step.inner-mid {
-    fill: #555;
-}
-svg a.step.outer-mid {
-    fill: #444;
-}
-svg a.step.outer {
-    fill: #333;
-}
-
-svg g#stepsZ,
-svg g#stepsXY {
-    pointer-events: none;
-    user-select: none;
-    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
-    font-size: 3px;
-    fill: white;
-}
-
-svg a#tilt_adjust text {
-    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
-    font-size: 3px;
-    display: none;
-}
-
-svg g#home_buttons text {
-    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
-    font-size: 5px;
-    fill: black;
-}
-
-svg g.home_button,
-svg a#home_all_center {
-    fill: var(--color-warning);
-    transition: opacity 250ms;
-}
-
-svg a#tilt_adjust,
-svg a#stepper_off {
-    transition: opacity 250ms;
-}
-
-svg a#tilt_adjust.warning,
-svg a#stepper_off.warning {
-    fill: var(--color-warning);
-}
-
-svg a#tilt_adjust.primary,
-svg a#stepper_off.primary {
-    fill: var(--color-primary);
-}
-
-svg g.home_button.homed,
-svg a#home_all_center.homed {
-    fill: var(--color-primary);
-}
-
-svg g.home_button:hover,
-svg a#home_all_center:hover,
-svg a#tilt_adjust:hover,
-svg a#stepper_off:hover {
-    opacity: 0.8;
-}
-
-svg a#tilt_adjust text,
-svg a#tilt_adjust #tilt_icon,
-svg a#stepper_off #stepper_off_icon,
-svg g#home_buttons .home-icon {
-    pointer-events: none;
-    user-select: none;
-}
-
-svg a#tilt_adjust #tilt_icon,
-svg a#stepper_off #stepper_off_icon {
-    fill: #000;
-}
-</style>
-
 <template>
     <div>
         <v-row>
-            <v-col class="pa-0">
+            <v-col class="pa-0 mt-1">
                 <svg
                     width="100%"
                     height="100%"
@@ -120,13 +13,13 @@ svg a#stepper_off #stepper_off_icon {
                         <rect x="0" y="0" width="62" height="62" style="fill: none" />
                         <g id="home_buttons" transform="matrix(0.804902,0,0,1,0.0430241,0)">
                             <!-- HOME X BUTTON -->
-                            <a @click="doHomeX">
+                            <a :class="xHomeClass" @click="doHomeX">
                                 <g
                                     id="home_x"
                                     transform="matrix(0.707107,-0.707107,0.707107,0.707107,-1.41799,4.05689)">
                                     <g
                                         id="home_button_x"
-                                        :class="'home_button' + (homedAxes.includes('x') ? ' homed' : '')"
+                                        class="home_button"
                                         transform="matrix(0.68689,0.68689,-0.68689,0.68689,3.87132,0.962447)">
                                         <path :d="pathHomeButtonTop" />
                                     </g>
@@ -135,20 +28,20 @@ svg a#stepper_off #stepper_off_icon {
                                     </g>
                                     <g
                                         id="Icon"
-                                        class="home-icon"
+                                        class="home_icon"
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
                                 </g>
                             </a>
                             <!-- HOME Y BUTTON -->
-                            <a @click="doHomeY">
+                            <a :class="yHomeClass" @click="doHomeY">
                                 <g
                                     id="home_y"
                                     transform="matrix(0.707107,0.707107,-0.707107,0.707107,57.8807,-1.41799)">
                                     <g
                                         id="home_button_y"
-                                        :class="'home_button' + (homedAxes.includes('y') ? ' homed' : '')"
+                                        class="home_button"
                                         transform="matrix(0.68689,0.68689,-0.68689,0.68689,3.87132,0.962447)">
                                         <path :d="pathHomeButtonTop" />
                                     </g>
@@ -157,20 +50,20 @@ svg a#stepper_off #stepper_off_icon {
                                     </g>
                                     <g
                                         id="icon"
-                                        class="home-icon"
+                                        class="home_icon"
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
                                 </g>
                             </a>
                             <!-- HOME Z BUTTON -->
-                            <a @click="doHomeZ">
+                            <a :class="zHomeClass" @click="doHomeZ">
                                 <g
                                     id="home_z"
                                     transform="matrix(-0.707107,0.707107,-0.707107,-0.707107,63.3555,57.8807)">
                                     <g
                                         id="home_button_z"
-                                        :class="'home_button ' + (homedAxes.includes('z') ? ' homed' : '')"
+                                        class="home_button"
                                         transform="matrix(0.68689,0.68689,-0.68689,0.68689,3.87132,0.962447)">
                                         <path :d="pathHomeButtonBottom" />
                                     </g>
@@ -179,20 +72,20 @@ svg a#stepper_off #stepper_off_icon {
                                     </g>
                                     <g
                                         id="icon1"
-                                        class="home-icon"
+                                        class="home_icon"
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
                                 </g>
                             </a>
                             <!-- HOME XY BUTTON -->
-                            <a v-if="enableXYHoming" @click="doHomeXY">
+                            <a v-if="enableXYHoming" :class="xyHomeClass" @click="doHomeXY">
                                 <g
                                     id="home_xy"
                                     transform="matrix(-0.707107,-0.707107,0.707107,-0.707107,4.05689,63.3555)">
                                     <g
                                         id="home_button_xy"
-                                        :class="'home_button' + (homedAxes.includes('xy') ? ' homed' : '')"
+                                        class="home_button"
                                         transform="matrix(0.68689,0.68689,-0.68689,0.68689,3.87132,0.962447)">
                                         <path :d="pathHomeButtonBottom" />
                                     </g>
@@ -201,35 +94,34 @@ svg a#stepper_off #stepper_off_icon {
                                     </g>
                                     <g
                                         id="icon2"
-                                        class="home-icon"
+                                        class="home_icon"
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
                                 </g>
                             </a>
                             <!-- HOME ALL BUTTON -->
-                            <a v-if="!enableXYHoming" @click="doHome">
+                            <a v-else :class="xyzHomeClass" @click="doHome">
                                 <g
                                     id="home_all"
                                     transform="matrix(-0.707107,-0.707107,0.707107,-0.707107,4.05689,63.3555)">
                                     <g
                                         id="home_button_all"
-                                        :class="'home_button' + (homedAxes.includes('xyz') ? ' homed' : '')"
+                                        class="home_button"
                                         transform="matrix(0.68689,0.68689,-0.68689,0.68689,3.87132,0.962447)">
                                         <path :d="pathHomeButtonBottom" />
                                     </g>
                                     <g
                                         id="icon3"
-                                        class="home-icon"
+                                        class="home_icon"
                                         transform="matrix(0.29377,0,0,0.29377,0.346087,1.64241)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
                                 </g>
                             </a>
-                            <a v-if="enableXYHoming" @click="doHome">
-                                <g
-                                    id="home_all_center"
-                                    :class="'home_button' + (homedAxes.includes('xyz') ? ' homed' : '')">
+                            <!-- HOME ALL BUTTON IN THE CENTER -->
+                            <a v-if="enableXYHoming" :class="xyzHomeClass" @click="doHome">
+                                <g id="home_all_center" class="home_button">
                                     <circle id="home_button_all_center" cx="31" cy="31" r="5" />
                                 </g>
                                 <g id="icon4" class="home-icon" transform="scale(0.3) translate(91.25,91.25)">
@@ -241,7 +133,10 @@ svg a#stepper_off #stepper_off_icon {
                         <g id="step_buttons" transform="matrix(0.804902,0,0,1,0.0430241,0)">
                             <!-- Z STEPS BUTTONS -->
                             <g id="Z" transform="matrix(1.24239,0,0,1,-0.0534526,0)">
-                                <g id="Bottom" transform="matrix(-1,-1.52149e-16,9.85721e-17,-1,114.34,62)">
+                                <g
+                                    id="Bottom"
+                                    :class="zStepClass"
+                                    transform="matrix(-1,-1.52149e-16,9.85721e-17,-1,114.34,62)">
                                     <a
                                         class="step inner"
                                         @click="
@@ -290,7 +185,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                 </g>
-                                <g id="Top">
+                                <g id="Top" :class="zStepClass">
                                     <a
                                         class="step inner"
                                         @click="
@@ -343,7 +238,7 @@ svg a#stepper_off #stepper_off_icon {
                                 </g>
                             </g>
                             <!-- Z STEP BUTTON TEXT -->
-                            <g id="stepsZ" transform="matrix(1,0,0,1,40,0)">
+                            <g id="stepsZ" :class="zStepClass" transform="matrix(1,0,0,1,40,0)">
                                 <g transform="matrix(1,0,0,1,0.483899,4.07983)">
                                     <text x="30.7px" y="19.056px" text-anchor="middle">
                                         {{ stepsZ.length >= 0 ? stepsZ[0] : '--' }}
@@ -367,7 +262,7 @@ svg a#stepper_off #stepper_off_icon {
                             </g>
                             <!-- XY STEP BUTTONS -->
                             <g id="XY">
-                                <g id="Right">
+                                <g id="Right" :class="xStepClass">
                                     <a
                                         class="step inner"
                                         @click="
@@ -417,7 +312,10 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                 </g>
-                                <g id="Left" transform="matrix(-1,-1.22465e-16,1.22465e-16,-1,61.9767,61.9767)">
+                                <g
+                                    id="Left"
+                                    :class="xStepClass"
+                                    transform="matrix(-1,-1.22465e-16,1.22465e-16,-1,61.9767,61.9767)">
                                     <a
                                         class="step inner"
                                         @click="
@@ -467,7 +365,10 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                 </g>
-                                <g id="Bottom1" transform="matrix(6.12323e-17,1,-1,6.12323e-17,61.9767,-1.77705e-14)">
+                                <g
+                                    id="Bottom1"
+                                    :class="yStepClass"
+                                    transform="matrix(6.12323e-17,1,-1,6.12323e-17,61.9767,-1.77705e-14)">
                                     <a
                                         class="step inner"
                                         @click="
@@ -517,7 +418,10 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                 </g>
-                                <g id="Top1" transform="matrix(6.12323e-17,-1,1,6.12323e-17,7.10543e-15,61.9767)">
+                                <g
+                                    id="Top1"
+                                    :class="yStepClass"
+                                    transform="matrix(6.12323e-17,-1,1,6.12323e-17,7.10543e-15,61.9767)">
                                     <a
                                         class="step inner"
                                         @click="
@@ -569,7 +473,7 @@ svg a#stepper_off #stepper_off_icon {
                                 </g>
                             </g>
                             <!-- XY STEP BUTTON TEXT -->
-                            <g id="stepsXY">
+                            <g id="stepsXY" :class="stepTextClass">
                                 <g transform="matrix(1,0,0,1,0.483899,4.07983)">
                                     <text x="30.5px" y="19.056px" text-anchor="middle">
                                         {{ stepsXY.length >= 0 ? stepsXY[0] : '--' }}
@@ -617,7 +521,7 @@ svg a#stepper_off #stepper_off_icon {
                             <path :d="zTiltIcon2" />
                         </g>
                     </a>
-                    <a v-else id="stepper_off" :class="homedAxes !== '' ? 'primary' : 'warning'" @click="doSend('M84')">
+                    <a v-else id="stepper_off" :class="motorsOffClass" @click="doSend('M84')">
                         <circle id="stepper_off_button" cx="70.92" cy="31" r="5" />
                         <g id="stepper_off_icon" transform="scale(0.3) translate(224,91)">
                             <path :d="engineOffIcon" />
@@ -710,10 +614,89 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
         return Array.from(new Set([...(steps ?? [])])).sort((a, b) => a - b)
     }
 
+    get isPrinting() {
+        return ['printing'].includes(this.printer_state)
+    }
+
+    get stepTextClass() {
+        if (!this.homedAxes.includes('xy') || this.isPrinting) return ['disabled']
+
+        return []
+    }
+
+    get xStepClass() {
+        if (!this.homedAxes.includes('x') || this.isPrinting) return ['disabled']
+
+        return []
+    }
+
+    get yStepClass() {
+        if (!this.homedAxes.includes('y') || this.isPrinting) return ['disabled']
+
+        return []
+    }
+
+    get zStepClass() {
+        if (!this.homedAxes.includes('z') || this.isPrinting) return ['disabled']
+
+        return []
+    }
+
+    get xHomeClass() {
+        let classes = []
+        if (this.homedAxes.includes('x')) classes.push('homed')
+        if (this.isPrinting) classes.push('disabled')
+
+        return classes
+    }
+
+    get yHomeClass() {
+        let classes = []
+        if (this.homedAxes.includes('y')) classes.push('homed')
+        if (this.isPrinting) classes.push('disabled')
+
+        return classes
+    }
+
+    get xyHomeClass() {
+        let classes = []
+        if (this.homedAxes.includes('xy')) classes.push('homed')
+        if (this.isPrinting) classes.push('disabled')
+
+        return classes
+    }
+
+    get xyzHomeClass() {
+        let classes = []
+        if (this.homedAxes.includes('xyz')) classes.push('homed')
+        if (this.isPrinting) classes.push('disabled')
+
+        return classes
+    }
+
+    get zHomeClass() {
+        let classes = []
+        if (this.homedAxes.includes('z')) classes.push('homed')
+        if (this.isPrinting) classes.push('disabled')
+
+        return classes
+    }
+
     get colorSpecialButton() {
-        if (this.existsQGL) return this.colorQuadGantryLevel
-        else if (this.existsZtilt) return this.colorZTilt
-        else return 'warning'
+        let classes = []
+        if (this.isPrinting) classes.push('disabled')
+        if (this.existsQGL) classes.push(this.colorQuadGantryLevel)
+        else if (this.existsZtilt) classes.push(this.colorZTilt)
+
+        return classes
+    }
+
+    get motorsOffClass() {
+        let classes = []
+        classes.push(this.homedAxes !== '' ? 'primary' : 'warning')
+        if (this.isPrinting) classes.push('disabled')
+
+        return classes
     }
 
     clickSpecialButton() {
@@ -722,3 +705,128 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+svg {
+    max-height: 350px;
+    min-height: 275px;
+    user-select: none;
+    filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.3));
+}
+
+svg a {
+    stroke: hsl(0, 0%, 10%);
+    stroke-width: 0.3px;
+}
+
+svg a.step {
+    transition: fill 750ms ease-out;
+}
+
+svg a.step:hover {
+    fill: hsl(215, 0%, 50%) !important;
+    transition: fill 100ms ease-in;
+}
+
+svg a.step:active {
+    fill: hsl(215, 0%, 70%) !important;
+}
+
+svg a.step.inner {
+    fill: #666;
+}
+svg a.step.inner-mid {
+    fill: #555;
+}
+svg a.step.outer-mid {
+    fill: #444;
+}
+svg a.step.outer {
+    fill: #333;
+}
+
+svg .disabled a.step {
+    pointer-events: none;
+}
+
+svg g#stepsZ,
+svg g#stepsXY {
+    pointer-events: none;
+    user-select: none;
+    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
+    font-size: 3px;
+    fill: white;
+}
+
+svg a#tilt_adjust text {
+    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
+    font-size: 3px;
+    display: none;
+}
+
+svg g#home_buttons text {
+    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
+    font-size: 5px;
+    fill: black;
+}
+
+svg g.home_button,
+svg a#home_all_center {
+    fill: var(--color-warning);
+    transition: opacity 250ms;
+}
+
+svg a.disabled {
+    pointer-events: none;
+}
+
+svg a.disabled .home_button path,
+svg a.disabled circle {
+    fill: rgb(92, 92, 92);
+}
+
+svg g#stepsXY.disabled text,
+svg g#stepsZ.disabled text {
+    fill: rgba(255, 255, 255, 0.3);
+}
+
+svg a#tilt_adjust,
+svg a#stepper_off {
+    transition: opacity 250ms;
+}
+
+svg a#tilt_adjust.warning,
+svg a#stepper_off.warning {
+    fill: var(--color-warning);
+}
+
+svg a#tilt_adjust.primary,
+svg a#stepper_off.primary {
+    fill: var(--color-primary);
+}
+
+svg .homed g.home_button,
+svg .homed a#home_all_center {
+    fill: var(--color-primary);
+}
+
+svg g.home_button:hover,
+svg a#home_all_center:hover,
+svg a#tilt_adjust:hover,
+svg a#stepper_off:hover {
+    opacity: 0.8;
+}
+
+svg a#tilt_adjust text,
+svg a#tilt_adjust #tilt_icon,
+svg a#stepper_off #stepper_off_icon,
+svg g#home_buttons .home_icon {
+    pointer-events: none;
+    user-select: none;
+}
+
+svg a#tilt_adjust #tilt_icon,
+svg a#stepper_off #stepper_off_icon {
+    fill: #000;
+}
+</style>
