@@ -333,30 +333,30 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 }
 </script>
-<style lang="scss">
-*:focus:not(.focus-visible) {
+<style lang="scss" scoped>
+::v-deep .ͼ1 .cm-panel.cm-search *:focus:not(.focus-visible) {
     outline: none;
 }
 
-[type='checkbox'] {
+::v-deep .ͼ1 .cm-panel.cm-search input[type='checkbox'] {
     width: 2.2em;
     height: 2.2em;
     color: dodgerblue;
     vertical-align: middle;
     -webkit-appearance: none;
-    background: none;
     border: 10px;
     outline: 0;
     flex-grow: 0;
     border-radius: 4px;
-    background-color: var(--v-toolbar-base);
+    background: var(--v-toolbar-base);
     transition: background 300ms;
     cursor: pointer;
+    margin-right: 0.5em;
 }
 
 /* Pseudo element for check styling */
 
-[type='checkbox']::before {
+::v-deep .ͼ1 .cm-panel.cm-search input[type='checkbox']::before {
     content: '';
     color: transparent;
     display: block;
@@ -372,11 +372,11 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
 /* Checked */
 
-[type='checkbox']:checked {
+::v-deep .ͼ1 .cm-panel.cm-search input[type='checkbox']:checked {
     background-color: var(--color-primary);
 }
 
-[type='checkbox']:checked::before {
+::v-deep .ͼ1 .cm-panel.cm-search input[type='checkbox']:checked::before {
     box-shadow: none;
     background-color: var(--color-primary);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpath d='M15.88 8.29L10 14.17l-1.88-1.88a.996.996 0 1 0-1.41 1.41l2.59 2.59c.39.39 1.02.39 1.41 0L17.3 9.7a.996.996 0 0 0 0-1.41c-.39-.39-1.03-.39-1.42 0z' fill='%23fffff'/%3E %3C/svg%3E");
