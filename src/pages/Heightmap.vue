@@ -96,7 +96,7 @@
                                 <v-col
                                     class="col-12 col-sm-auto pt-0 pb-0 pl-lg-6 d-flex justify-center justify-sm-start">
                                     <v-switch
-                                        v-model="scaleGradiant"
+                                        v-model="scaleGradient"
                                         :label="$t('Heightmap.ScaleGradient')"
                                         class="mt-0 ml-5"></v-switch>
                                 </v-col>
@@ -670,11 +670,11 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.wireframe', value: newVal })
     }
 
-    get scaleGradiant(): boolean {
+    get scaleGradient(): boolean {
         return this.$store.state.gui.view.heightmap.scaleGradient ?? false
     }
 
-    set scaleGradiant(newVal) {
+    set scaleGradient(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleGradient', value: newVal })
     }
 
@@ -910,7 +910,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get visualMapRange(): number[] {
-        if (!this.scaleGradiant) return [-0.1, 0.1]
+        if (!this.scaleGradient) return [-0.1, 0.1]
 
         return this.heightmapLimit
     }
