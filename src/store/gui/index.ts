@@ -194,7 +194,8 @@ export const getDefaultState = (): GuiState => {
                 mesh: false,
                 flat: false,
                 wireframe: true,
-                scale: 0.5,
+                scaleGradient: false,
+                scaleZMax: 0.5,
             },
             history: {
                 countPerPage: 10,
