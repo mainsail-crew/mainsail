@@ -133,8 +133,8 @@ export interface GuiState {
             mesh: boolean
             flat: boolean
             wireframe: boolean
-            scale: number
-            scaleVisualMap: boolean
+            scaleGradient: boolean
+            scaleZMax: number
         }
         history: {
             countPerPage: number
