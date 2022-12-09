@@ -267,8 +267,7 @@
             "Min": "Min",
             "Name": "İsim",
             "Range": "Menzil",
-            "Size": "Boyut",
-            "Variance": "Varyans"
+            "Size": "Boyut"
         },
         "DeleteBedMeshProfile": "Tabla Örgü Profilini Sil",
         "DoYouReallyWantToDelete": "\"{name}\" profilini gerçekten silmek istiyor musunuz?",
@@ -872,7 +871,6 @@
             "NoDevicesFound": "Hiçbir cihaz bulunamadı",
             "NoGroupFound": "Grup bulunamadı",
             "NoPresetFound": "Ön ayar bulunamadı",
-            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, W: {white}",
             "Presets": "Ön Ayarlar",
             "Start": "Başlat",
             "StartDescription": "Bu grubun ilk LED'i.",
