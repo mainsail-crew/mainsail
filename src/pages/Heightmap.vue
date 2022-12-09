@@ -186,9 +186,7 @@
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
-                            <v-col>
-                                {{ $t('Heightmap.CurrentMesh.Range') }}
-                            </v-col>
+                            <v-col>{{ $t('Heightmap.CurrentMesh.Range') }}</v-col>
                             <v-col class="text-right">{{ currentProfile.variance.toFixed(3) }} mm</v-col>
                         </v-row>
                     </v-card-text>
