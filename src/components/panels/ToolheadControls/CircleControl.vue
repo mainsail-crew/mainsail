@@ -1,159 +1,3 @@
-<style lang="scss" scoped>
-svg {
-    max-height: 350px;
-    min-height: 275px;
-    user-select: none;
-    filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.3));
-}
-
-svg a {
-    stroke: hsl(0, 0%, 10%);
-    stroke-width: 0.3px;
-}
-
-svg a.step {
-    transition: fill 750ms ease-out;
-    pointer-events: none;
-}
-
-svg a.step:hover {
-    fill: hsl(215, 0%, 50%) !important;
-    transition: fill 100ms ease-in;
-}
-
-svg a.step:active {
-    fill: hsl(215, 0%, 70%) !important;
-}
-
-svg a.step.inner,
-svg a.step.inner.homed {
-    fill: #666;
-}
-svg a.step.inner-mid,
-svg a.step.inner-mid.homed {
-    fill: #555;
-}
-svg a.step.outer-mid,
-svg a.step.outer-mid.homed {
-    fill: #444;
-}
-svg a.step.outer,
-svg a.step.outer.homed {
-    fill: #333;
-}
-
-svg a.step.homed,
-svg a.step.outer.homed {
-    transition: fill 750ms ease-out;
-    pointer-events: all;
-}
-
-svg a.step.inner.disabled {
-    fill: #666;
-    pointer-events: none;
-}
-svg a.step.inner-mid.disabled {
-    fill: #555;
-    pointer-events: none;
-}
-svg a.step.outer-mid.disabled {
-    fill: #444;
-    pointer-events: none;
-}
-svg a.step.outer.disabled {
-    fill: #333;
-    pointer-events: none;
-}
-
-svg g#stepsZ.homed,
-svg g#stepsXY.homed {
-    pointer-events: none;
-    user-select: none;
-    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
-    font-size: 3px;
-    fill: white;
-}
-
-svg g#stepsZ,
-svg g#stepsXY,
-svg g#stepsZ.disabled,
-svg g#stepsXY.disabled {
-    pointer-events: none;
-    user-select: none;
-    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
-    font-size: 3px;
-    fill: rgb(121, 121, 121);
-}
-
-svg a#tilt_adjust text {
-    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
-    font-size: 3px;
-    display: none;
-}
-
-svg g#home_buttons text {
-    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
-    font-size: 5px;
-    fill: black;
-}
-
-svg g.home_button,
-svg a.home_button,
-svg a#home_all_center {
-    fill: var(--color-warning);
-    transition: opacity 250ms;
-}
-
-svg a#tilt_adjust,
-svg a#stepper_off {
-    transition: opacity 250ms;
-}
-
-svg a#tilt_adjust.warning,
-svg a#stepper_off.warning {
-    fill: var(--color-warning);
-}
-
-svg a#tilt_adjust.primary,
-svg a#stepper_off.primary {
-    fill: var(--color-primary);
-}
-
-svg g.home_button.homed,
-svg circle.home_button,
-svg a.home_button.homed,
-svg a#home_all_center.homed {
-    fill: var(--color-primary);
-}
-
-svg g.home_button.disabled,
-svg a.home_button.disabled,
-svg a#home_all_center.disabled {
-    fill: rgb(92, 92, 92);
-    pointer-events: none;
-}
-
-svg g.home_button:hover,
-svg a#home_all_center:hover,
-svg a#tilt_adjust:hover,
-svg a#stepper_off:hover {
-    opacity: 0.8;
-}
-
-svg a#tilt_adjust text,
-svg a#tilt_adjust #tilt_icon,
-svg a#stepper_off #stepper_off_icon,
-svg g#home_buttons .home-icon {
-    pointer-events: none;
-    user-select: none;
-}
-
-svg a#tilt_adjust #tilt_icon,
-svg a#stepper_off #stepper_off_icon {
-    fill: #000;
-}
-</style>
-
 <template>
     <div>
         <v-row>
@@ -169,122 +13,115 @@ svg a#stepper_off #stepper_off_icon {
                         <rect x="0" y="0" width="62" height="62" style="fill: none" />
                         <g id="home_buttons" transform="matrix(0.804902,0,0,1,0.0430241,0)">
                             <!-- HOME X BUTTON -->
-                            <a @click="doHomeX">
+                            <a :class="xHomeClass" @click="doHomeX">
                                 <g
                                     id="home_x"
                                     transform="matrix(0.707107,-0.707107,0.707107,0.707107,-1.41799,4.05689)">
                                     <g
                                         id="home_button_x"
-                                        :class="'home_button' + isHomedX"
+                                        class="home_button"
                                         transform="matrix(0.68689,0.68689,-0.68689,0.68689,3.87132,0.962447)">
                                         <path :d="pathHomeButtonTop" />
                                     </g>
-                                    <g
-                                        :class="'home_button' + isHomedX"
-                                        transform="matrix(0.654426,0,0,0.654426,0.298666,4.01315)">
+                                    <g transform="matrix(0.654426,0,0,0.654426,0.298666,4.01315)">
                                         <text x="3.789px" y="6.089px">X</text>
                                     </g>
                                     <g
                                         id="Icon"
-                                        class="home-icon"
+                                        class="home_icon"
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
                                 </g>
                             </a>
                             <!-- HOME Y BUTTON -->
-                            <a @click="doHomeY">
+                            <a :class="yHomeClass" @click="doHomeY">
                                 <g
                                     id="home_y"
                                     transform="matrix(0.707107,0.707107,-0.707107,0.707107,57.8807,-1.41799)">
                                     <g
                                         id="home_button_y"
-                                        :class="'home_button' + isHomedY"
+                                        class="home_button"
                                         transform="matrix(0.68689,0.68689,-0.68689,0.68689,3.87132,0.962447)">
                                         <path :d="pathHomeButtonTop" />
                                     </g>
-                                    <g
-                                        :class="'home_button' + isHomedY"
-                                        transform="matrix(0.654426,0,0,0.654426,0.298666,4.01315)">
+                                    <g transform="matrix(0.654426,0,0,0.654426,0.298666,4.01315)">
                                         <text x="3.789px" y="6.089px">Y</text>
                                     </g>
                                     <g
                                         id="icon"
-                                        class="home-icon"
+                                        class="home_icon"
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
                                 </g>
                             </a>
                             <!-- HOME Z BUTTON -->
-                            <a @click="doHomeZ">
+                            <a :class="zHomeClass" @click="doHomeZ">
                                 <g
                                     id="home_z"
                                     transform="matrix(-0.707107,0.707107,-0.707107,-0.707107,63.3555,57.8807)">
                                     <g
                                         id="home_button_z"
-                                        :class="'home_button' + isHomedZ"
+                                        class="home_button"
                                         transform="matrix(0.68689,0.68689,-0.68689,0.68689,3.87132,0.962447)">
                                         <path :d="pathHomeButtonBottom" />
                                     </g>
-                                    <g
-                                        :class="'home_button' + isHomedZ"
-                                        transform="matrix(0.654426,0,0,0.654426,0.298666,4.01315)">
+                                    <g transform="matrix(0.654426,0,0,0.654426,0.298666,4.01315)">
                                         <text x="3.93px" y="6.089px">Z</text>
                                     </g>
                                     <g
                                         id="icon1"
-                                        class="home-icon"
+                                        class="home_icon"
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
                                 </g>
                             </a>
                             <!-- HOME XY BUTTON -->
-                            <a v-if="enableXYHoming" @click="doHomeXY">
+                            <a v-if="enableXYHoming" :class="xyHomeClass" @click="doHomeXY">
                                 <g
                                     id="home_xy"
                                     transform="matrix(-0.707107,-0.707107,0.707107,-0.707107,4.05689,63.3555)">
                                     <g
                                         id="home_button_xy"
-                                        :class="'home_button' + isHomedXY"
+                                        class="home_button"
                                         transform="matrix(0.68689,0.68689,-0.68689,0.68689,3.87132,0.962447)">
                                         <path :d="pathHomeButtonBottom" />
                                     </g>
-                                    <g
-                                        :class="'home_button' + isHomedXY"
-                                        transform="matrix(0.654426,0,0,0.654426,0.298666,4.01315)">
+                                    <g transform="matrix(0.654426,0,0,0.654426,0.298666,4.01315)">
                                         <text x="2.3px" y="6.089px">XY</text>
                                     </g>
                                     <g
                                         id="icon2"
-                                        class="home-icon"
+                                        class="home_icon"
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
                                 </g>
                             </a>
                             <!-- HOME ALL BUTTON -->
-                            <a v-if="!enableXYHoming" @click="doHome">
+                            <a v-else :class="xyzHomeClass" @click="doHome">
                                 <g
                                     id="home_all"
                                     transform="matrix(-0.707107,-0.707107,0.707107,-0.707107,4.05689,63.3555)">
                                     <g
                                         id="home_button_all"
-                                        :class="'home_button' + isHomedXYZ"
+                                        class="home_button"
                                         transform="matrix(0.68689,0.68689,-0.68689,0.68689,3.87132,0.962447)">
                                         <path :d="pathHomeButtonBottom" />
                                     </g>
                                     <g
                                         id="icon3"
-                                        :class="'home_button_all' + isHomedXYZ"
+                                        class="home_icon"
                                         transform="matrix(0.29377,0,0,0.29377,0.346087,1.64241)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
                                 </g>
                             </a>
-                            <a v-if="enableXYHoming" @click="doHome">
-                                <g id="home_all_center" :class="'home_button' + isHomedXYZ">
+                            <!-- HOME ALL BUTTON IN THE CENTER -->
+                            <a v-if="enableXYHoming" :class="xyzHomeClass" @click="doHome">
+                                <g id="home_all_center" class="home_button">
                                     <circle id="home_button_all_center" cx="31" cy="31" r="5" />
                                 </g>
                                 <g id="icon4" class="home-icon" transform="scale(0.3) translate(91.25,91.25)">
@@ -296,9 +133,12 @@ svg a#stepper_off #stepper_off_icon {
                         <g id="step_buttons" transform="matrix(0.804902,0,0,1,0.0430241,0)">
                             <!-- Z STEPS BUTTONS -->
                             <g id="Z" transform="matrix(1.24239,0,0,1,-0.0534526,0)">
-                                <g id="Bottom" transform="matrix(-1,-1.52149e-16,9.85721e-17,-1,114.34,62)">
+                                <g
+                                    id="Bottom"
+                                    :class="zStepClass"
+                                    transform="matrix(-1,-1.52149e-16,9.85721e-17,-1,114.34,62)">
                                     <a
-                                        :class="'step inner' + isHomedZ"
+                                        class="step inner"
                                         @click="
                                             doSendMove(
                                                 `Z${!reverseZ ? '-' : '+'}${stepsZ.length >= 0 ? stepsZ[0] : 0}`,
@@ -308,7 +148,7 @@ svg a#stepper_off #stepper_off_icon {
                                         <g transform="matrix(0.804902,0,0,1,0,0)"><path :d="zStepInner" /></g>
                                     </a>
                                     <a
-                                        :class="'step inner-mid' + isHomedZ"
+                                        class="step inner-mid"
                                         @click="
                                             doSendMove(
                                                 `Z${!reverseZ ? '-' : '+'}${stepsZ.length >= 1 ? stepsZ[1] : 0}`,
@@ -321,7 +161,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer-mid' + isHomedZ"
+                                        class="step outer-mid"
                                         @click="
                                             doSendMove(
                                                 `Z${!reverseZ ? '-' : '+'}${stepsZ.length >= 2 ? stepsZ[2] : 0}`,
@@ -333,7 +173,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer' + isHomedZ"
+                                        class="step outer"
                                         @click="
                                             doSendMove(
                                                 `Z${!reverseZ ? '-' : '+'}${stepsZ.length >= 3 ? stepsZ[3] : 0}`,
@@ -345,9 +185,9 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                 </g>
-                                <g id="Top">
+                                <g id="Top" :class="zStepClass">
                                     <a
-                                        :class="'step inner' + isHomedZ"
+                                        class="step inner"
                                         @click="
                                             doSendMove(
                                                 `Z${reverseZ ? '-' : '+'}${stepsZ.length >= 0 ? stepsZ[0] : 0}`,
@@ -359,7 +199,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step inner-mid' + isHomedZ"
+                                        class="step inner-mid"
                                         @click="
                                             doSendMove(
                                                 `Z${reverseZ ? '-' : '+'}${stepsZ.length >= 1 ? stepsZ[1] : 0}`,
@@ -372,7 +212,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer-mid' + isHomedZ"
+                                        class="step outer-mid"
                                         @click="
                                             doSendMove(
                                                 `Z${reverseZ ? '-' : '+'}${stepsZ.length >= 2 ? stepsZ[2] : 0}`,
@@ -384,7 +224,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer' + isHomedZ"
+                                        class="step outer"
                                         @click="
                                             doSendMove(
                                                 `Z${reverseZ ? '-' : '+'}${stepsZ.length >= 3 ? stepsZ[3] : 0}`,
@@ -398,7 +238,7 @@ svg a#stepper_off #stepper_off_icon {
                                 </g>
                             </g>
                             <!-- Z STEP BUTTON TEXT -->
-                            <g id="stepsZ" transform="matrix(1,0,0,1,40,0)" :class="isHomedZ">
+                            <g id="stepsZ" transform="matrix(1,0,0,1,40,0)">
                                 <g transform="matrix(1,0,0,1,0.483899,4.07983)">
                                     <text x="30.7px" y="19.056px" text-anchor="middle">
                                         {{ stepsZ.length >= 0 ? stepsZ[0] : '--' }}
@@ -422,9 +262,9 @@ svg a#stepper_off #stepper_off_icon {
                             </g>
                             <!-- XY STEP BUTTONS -->
                             <g id="XY">
-                                <g id="Right">
+                                <g id="Right" :class="xStepClass">
                                     <a
-                                        :class="'step inner' + isHomedXY"
+                                        class="step inner"
                                         @click="
                                             doSendMove(
                                                 `X${reverseX ? '-' : '+'}${stepsXY.length >= 0 ? stepsXY[0] : 0}`,
@@ -436,7 +276,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step inner-mid' + isHomedXY"
+                                        class="step inner-mid"
                                         @click="
                                             doSendMove(
                                                 `X${reverseX ? '-' : '+'}${stepsXY.length >= 1 ? stepsXY[1] : 0}`,
@@ -448,7 +288,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer-mid' + isHomedXY"
+                                        class="step outer-mid"
                                         @click="
                                             doSendMove(
                                                 `X${reverseX ? '-' : '+'}${stepsXY.length >= 2 ? stepsXY[2] : 0}`,
@@ -460,7 +300,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer' + isHomedXY"
+                                        class="step outer"
                                         @click="
                                             doSendMove(
                                                 `X${reverseX ? '-' : '+'}${stepsXY.length >= 3 ? stepsXY[3] : 0}`,
@@ -472,9 +312,12 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                 </g>
-                                <g id="Left" transform="matrix(-1,-1.22465e-16,1.22465e-16,-1,61.9767,61.9767)">
+                                <g
+                                    id="Left"
+                                    :class="xStepClass"
+                                    transform="matrix(-1,-1.22465e-16,1.22465e-16,-1,61.9767,61.9767)">
                                     <a
-                                        :class="'step inner' + isHomedXY"
+                                        class="step inner"
                                         @click="
                                             doSendMove(
                                                 `X${!reverseX ? '-' : '+'}${stepsXY.length >= 0 ? stepsXY[0] : 0}`,
@@ -486,7 +329,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step inner-mid' + isHomedXY"
+                                        class="step inner-mid"
                                         @click="
                                             doSendMove(
                                                 `X${!reverseX ? '-' : '+'}${stepsXY.length >= 1 ? stepsXY[1] : 0}`,
@@ -498,7 +341,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer-mid' + isHomedXY"
+                                        class="step outer-mid"
                                         @click="
                                             doSendMove(
                                                 `X${!reverseX ? '-' : '+'}${stepsXY.length >= 2 ? stepsXY[2] : 0}`,
@@ -510,7 +353,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer' + isHomedXY"
+                                        class="step outer"
                                         @click="
                                             doSendMove(
                                                 `X${!reverseX ? '-' : '+'}${stepsXY.length >= 3 ? stepsXY[3] : 0}`,
@@ -522,9 +365,12 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                 </g>
-                                <g id="Bottom1" transform="matrix(6.12323e-17,1,-1,6.12323e-17,61.9767,-1.77705e-14)">
+                                <g
+                                    id="Bottom1"
+                                    :class="yStepClass"
+                                    transform="matrix(6.12323e-17,1,-1,6.12323e-17,61.9767,-1.77705e-14)">
                                     <a
-                                        :class="'step inner' + isHomedXY"
+                                        class="step inner"
                                         @click="
                                             doSendMove(
                                                 `Y${!reverseY ? '-' : '+'}${stepsXY.length >= 0 ? stepsXY[0] : 0}`,
@@ -536,7 +382,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step inner-mid' + isHomedXY"
+                                        class="step inner-mid"
                                         @click="
                                             doSendMove(
                                                 `Y${!reverseY ? '-' : '+'}${stepsXY.length >= 1 ? stepsXY[1] : 0}`,
@@ -548,7 +394,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer-mid' + isHomedXY"
+                                        class="step outer-mid"
                                         @click="
                                             doSendMove(
                                                 `Y${!reverseY ? '-' : '+'}${stepsXY.length >= 2 ? stepsXY[2] : 0}`,
@@ -560,7 +406,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer' + isHomedXY"
+                                        class="step outer"
                                         @click="
                                             doSendMove(
                                                 `Y${!reverseY ? '-' : '+'}${stepsXY.length >= 3 ? stepsXY[3] : 0}`,
@@ -572,9 +418,12 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                 </g>
-                                <g id="Top1" transform="matrix(6.12323e-17,-1,1,6.12323e-17,7.10543e-15,61.9767)">
+                                <g
+                                    id="Top1"
+                                    :class="yStepClass"
+                                    transform="matrix(6.12323e-17,-1,1,6.12323e-17,7.10543e-15,61.9767)">
                                     <a
-                                        :class="'step inner' + isHomedXY"
+                                        class="step inner"
                                         @click="
                                             doSendMove(
                                                 `Y${reverseY ? '-' : '+'}${stepsXY.length >= 0 ? stepsXY[0] : 0}`,
@@ -586,7 +435,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step inner-mid' + isHomedXY"
+                                        class="step inner-mid"
                                         @click="
                                             doSendMove(
                                                 `Y${reverseY ? '-' : '+'}${stepsXY.length >= 1 ? stepsXY[1] : 0}`,
@@ -598,7 +447,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer-mid' + isHomedXY"
+                                        class="step outer-mid"
                                         @click="
                                             doSendMove(
                                                 `Y${reverseY ? '-' : '+'}${stepsXY.length >= 2 ? stepsXY[2] : 0}`,
@@ -610,7 +459,7 @@ svg a#stepper_off #stepper_off_icon {
                                         </g>
                                     </a>
                                     <a
-                                        :class="'step outer' + isHomedXY"
+                                        class="step outer"
                                         @click="
                                             doSendMove(
                                                 `Y${reverseY ? '-' : '+'}${stepsXY.length >= 3 ? stepsXY[3] : 0}`,
@@ -624,9 +473,9 @@ svg a#stepper_off #stepper_off_icon {
                                 </g>
                             </g>
                             <!-- XY STEP BUTTON TEXT -->
-                            <g id="stepsXY" :class="isHomedXY">
+                            <g id="stepsXY">
                                 <g transform="matrix(1,0,0,1,0.483899,4.07983)">
-                                    <text class="foo" x="30.5px" y="19.056px" text-anchor="middle">
+                                    <text x="30.5px" y="19.056px" text-anchor="middle">
                                         {{ stepsXY.length >= 0 ? stepsXY[0] : '--' }}
                                     </text>
                                 </g>
@@ -651,7 +500,7 @@ svg a#stepper_off #stepper_off_icon {
                     <a
                         v-if="existsQGL && actionButton === 'qgl'"
                         id="tilt_adjust"
-                        :class="'home_button' + isHomedXYZ"
+                        :class="colorSpecialButton"
                         @click="clickSpecialButton">
                         <circle id="qgl_button" cx="70.92" cy="31" r="5" />
                         <text x="66.776px" y="32.066px">QGL</text>
@@ -663,7 +512,7 @@ svg a#stepper_off #stepper_off_icon {
                     <a
                         v-else-if="existsZtilt && actionButton === 'ztilt'"
                         id="tilt_adjust"
-                        :class="'home_button' + isHomedXYZ"
+                        :class="colorSpecialButton"
                         @click="clickSpecialButton">
                         <circle id="tilt_button" cx="70.92" cy="31" r="5" />
                         <text x="66.776px" y="32.066px">Z-TILT</text>
@@ -672,7 +521,7 @@ svg a#stepper_off #stepper_off_icon {
                             <path :d="zTiltIcon2" />
                         </g>
                     </a>
-                    <a v-else id="stepper_off" :class="'home_button' + isHomedXYZ" @click="doSend('M84')">
+                    <a v-else id="stepper_off" :class="homedAxes !== '' ? 'primary' : 'warning'" @click="doSend('M84')">
                         <circle id="stepper_off_button" cx="70.92" cy="31" r="5" />
                         <g id="stepper_off_icon" transform="scale(0.3) translate(224,91)">
                             <path :d="engineOffIcon" />
@@ -765,32 +614,75 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
         return Array.from(new Set([...(steps ?? [])])).sort((a, b) => a - b)
     }
 
-    get isHomedX(): string {
-        return this.homedOrDisabled('x')
+    get isPrinting() {
+        return ['printing'].includes(this.printer_state)
     }
 
-    get isHomedY(): string {
-        return this.homedOrDisabled('y')
+    get xStepClass() {
+        if (!this.homedAxes.includes('x') || this.isPrinting) return ['disabled']
+
+        return []
     }
 
-    get isHomedZ(): string {
-        return this.homedOrDisabled('z')
+    get yStepClass() {
+        if (!this.homedAxes.includes('y') || this.isPrinting) return ['disabled']
+
+        return []
     }
 
-    get isHomedXY(): string {
-        return this.homedOrDisabled('xy')
+    get zStepClass() {
+        if (!this.homedAxes.includes('z') || this.isPrinting) return ['disabled']
+
+        return []
     }
 
-    get isHomedXYZ(): string {
-        return this.homedOrDisabled('xyz')
+    get xHomeClass() {
+        let classes = []
+        if (this.homedAxes.includes('x')) classes.push('homed')
+        if (this.isPrinting) classes.push('disabled')
+
+        return classes
     }
 
-    homedOrDisabled(axis: string) {
-        if (['printing'].includes(this.printer_state)) return ' disabled'
+    get yHomeClass() {
+        let classes = []
+        if (this.homedAxes.includes('y')) classes.push('homed')
+        if (this.isPrinting) classes.push('disabled')
 
-        if (this.homedAxes.includes(axis)) return ' homed'
+        return classes
+    }
 
-        return ''
+    get xyHomeClass() {
+        let classes = []
+        if (this.homedAxes.includes('xy')) classes.push('homed')
+        if (this.isPrinting) classes.push('disabled')
+
+        return classes
+    }
+
+    get xyzHomeClass() {
+        let classes = []
+        if (this.homedAxes.includes('xyz')) classes.push('homed')
+        if (this.isPrinting) classes.push('disabled')
+
+        return classes
+    }
+
+    get zHomeClass() {
+        let classes = []
+        if (this.homedAxes.includes('z')) classes.push('homed')
+        if (this.isPrinting) classes.push('disabled')
+
+        return classes
+    }
+
+    get colorSpecialButton() {
+        let classes = []
+        if (this.isPrinting) classes.push('disabled')
+        if (this.existsQGL) classes.push(this.colorQuadGantryLevel)
+        else if (this.existsZtilt) classes.push(this.colorZTilt)
+
+        return classes
     }
 
     clickSpecialButton() {
@@ -799,3 +691,118 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+svg {
+    max-height: 350px;
+    min-height: 275px;
+    user-select: none;
+    filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.3));
+}
+
+svg a {
+    stroke: hsl(0, 0%, 10%);
+    stroke-width: 0.3px;
+}
+
+svg a.step {
+    transition: fill 750ms ease-out;
+}
+
+svg a.step:hover {
+    fill: hsl(215, 0%, 50%) !important;
+    transition: fill 100ms ease-in;
+}
+
+svg a.step:active {
+    fill: hsl(215, 0%, 70%) !important;
+}
+
+svg a.step.inner {
+    fill: #666;
+}
+svg a.step.inner-mid {
+    fill: #555;
+}
+svg a.step.outer-mid {
+    fill: #444;
+}
+svg a.step.outer {
+    fill: #333;
+}
+
+svg .disabled a.step {
+    pointer-events: none;
+}
+
+svg g#stepsZ,
+svg g#stepsXY {
+    pointer-events: none;
+    user-select: none;
+    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
+    font-size: 3px;
+    fill: white;
+}
+
+svg a#tilt_adjust text {
+    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
+    font-size: 3px;
+    display: none;
+}
+
+svg g#home_buttons text {
+    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
+    font-size: 5px;
+    fill: black;
+}
+
+svg g.home_button,
+svg a#home_all_center {
+    fill: var(--color-warning);
+    transition: opacity 250ms;
+}
+
+svg a.disabled {
+    pointer-events: none;
+}
+
+svg a#tilt_adjust,
+svg a#stepper_off {
+    transition: opacity 250ms;
+}
+
+svg a#tilt_adjust.warning,
+svg a#stepper_off.warning {
+    fill: var(--color-warning);
+}
+
+svg a#tilt_adjust.primary,
+svg a#stepper_off.primary {
+    fill: var(--color-primary);
+}
+
+svg .homed g.home_button,
+svg .homed a#home_all_center {
+    fill: var(--color-primary);
+}
+
+svg g.home_button:hover,
+svg a#home_all_center:hover,
+svg a#tilt_adjust:hover,
+svg a#stepper_off:hover {
+    opacity: 0.8;
+}
+
+svg a#tilt_adjust text,
+svg a#tilt_adjust #tilt_icon,
+svg a#stepper_off #stepper_off_icon,
+svg g#home_buttons .home_icon {
+    pointer-events: none;
+    user-select: none;
+}
+
+svg a#tilt_adjust #tilt_icon,
+svg a#stepper_off #stepper_off_icon {
+    fill: #000;
+}
+</style>
