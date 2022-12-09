@@ -521,7 +521,7 @@
                             <path :d="zTiltIcon2" />
                         </g>
                     </a>
-                    <a v-else id="stepper_off" :class="homedAxes !== '' ? 'primary' : 'warning'" @click="doSend('M84')">
+                    <a v-else id="stepper_off" :class="motorsOffClass" @click="doSend('M84')">
                         <circle id="stepper_off_button" cx="70.92" cy="31" r="5" />
                         <g id="stepper_off_icon" transform="scale(0.3) translate(224,91)">
                             <path :d="engineOffIcon" />
@@ -691,6 +691,14 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
         return classes
     }
 
+    get motorsOffClass() {
+        let classes = []
+        classes.push(this.homedAxes !== '' ? 'primary' : 'warning')
+        if (this.isPrinting) classes.push('disabled')
+
+        return classes
+    }
+
     clickSpecialButton() {
         if (this.existsQGL) this.doQGL()
         else if (this.existsZtilt) return this.doZtilt()
@@ -777,8 +785,8 @@ svg a.disabled circle {
     fill: rgb(92, 92, 92);
 }
 
-svg g#stepsXY text,
-svg g#stepsZ text {
+svg g#stepsXY.disabled text,
+svg g#stepsZ.disabled text {
     fill: rgba(255, 255, 255, 0.3);
 }
 
