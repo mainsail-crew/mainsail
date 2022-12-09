@@ -96,7 +96,7 @@
                                 <v-col
                                     class="col-12 col-sm-auto pt-0 pb-0 pl-lg-6 d-flex justify-center justify-sm-start">
                                     <v-switch
-                                        v-model="scaleVisualMap"
+                                        v-model="scaleGradient"
                                         :label="$t('Heightmap.ScaleGradient')"
                                         class="mt-0 ml-5"></v-switch>
                                 </v-col>
@@ -129,7 +129,7 @@
                             <v-row>
                                 <v-col>
                                     <v-slider
-                                        v-model="heightmapScale"
+                                        v-model="scaleZMax"
                                         :label="$t('Heightmap.ScaleZMax')"
                                         :min="heightmapRangeLimit[0]"
                                         :max="heightmapRangeLimit[1]"
@@ -478,7 +478,6 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         (value: string) => !this.existsProfileName(value) || this.$t('Heightmap.InvalidNameAlreadyExists'),
     ]
 
-    private heightmapScale = 0.5
     private probedOpacity = 1
     private meshOpacity = 1
     private flatOpacity = 0.5
@@ -564,8 +563,8 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             },
             zAxis3D: {
                 type: 'value',
-                min: this.heightmapScale * -1,
-                max: this.heightmapScale,
+                min: this.scaleZMax * -1,
+                max: this.scaleZMax,
                 nameTextStyle: {
                     color: this.colorAxisName,
                 },
@@ -671,20 +670,20 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.wireframe', value: newVal })
     }
 
-    get scale(): boolean {
-        return this.$store.state.gui.view.heightmap.scale ?? true
+    get scaleGradient(): boolean {
+        return this.$store.state.gui.view.heightmap.scaleGradient ?? false
     }
 
-    set scale(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scale', value: newVal })
+    set scaleGradient(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleGradient', value: newVal })
     }
 
-    get scaleVisualMap(): boolean {
-        return this.$store.state.gui.view.heightmap.scaleVisualMap ?? false
+    get scaleZMax(): number {
+        return this.$store.state.gui.view.heightmap.scaleZMax ?? 0.5
     }
 
-    set scaleVisualMap(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleVisualMap', value: newVal })
+    set scaleZMax(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleZMax', value: newVal })
     }
 
     get rangeX(): number[] {
@@ -911,7 +910,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get visualMapRange(): number[] {
-        if (!this.scaleVisualMap) return [-0.1, 0.1]
+        if (!this.scaleGradient) return [-0.1, 0.1]
 
         return this.heightmapLimit
     }
