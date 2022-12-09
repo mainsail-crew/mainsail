@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-row>
-            <v-col class="pa-0">
+            <v-col class="pa-0 mt-1">
                 <svg
                     width="100%"
                     height="100%"
@@ -238,7 +238,7 @@
                                 </g>
                             </g>
                             <!-- Z STEP BUTTON TEXT -->
-                            <g id="stepsZ" transform="matrix(1,0,0,1,40,0)">
+                            <g id="stepsZ" :class="zStepClass" transform="matrix(1,0,0,1,40,0)">
                                 <g transform="matrix(1,0,0,1,0.483899,4.07983)">
                                     <text x="30.7px" y="19.056px" text-anchor="middle">
                                         {{ stepsZ.length >= 0 ? stepsZ[0] : '--' }}
@@ -473,7 +473,7 @@
                                 </g>
                             </g>
                             <!-- XY STEP BUTTON TEXT -->
-                            <g id="stepsXY">
+                            <g id="stepsXY" :class="stepTextClass">
                                 <g transform="matrix(1,0,0,1,0.483899,4.07983)">
                                     <text x="30.5px" y="19.056px" text-anchor="middle">
                                         {{ stepsXY.length >= 0 ? stepsXY[0] : '--' }}
@@ -616,6 +616,12 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
 
     get isPrinting() {
         return ['printing'].includes(this.printer_state)
+    }
+
+    get stepTextClass() {
+        if (!this.homedAxes.includes('xy') || this.isPrinting) return ['disabled']
+
+        return []
     }
 
     get xStepClass() {
@@ -764,6 +770,16 @@ svg a#home_all_center {
 
 svg a.disabled {
     pointer-events: none;
+}
+
+svg a.disabled .home_button path,
+svg a.disabled circle {
+    fill: rgb(92, 92, 92);
+}
+
+svg g#stepsXY text,
+svg g#stepsZ text {
+    fill: rgba(255, 255, 255, 0.3);
 }
 
 svg a#tilt_adjust,
