@@ -62,7 +62,7 @@
                             <span>&plus;{{ offset }}</span>
                         </v-btn>
                     </v-item-group>
-                    <v-item-group class="_btn-group mt-3">
+                    <v-item-group class="_btn-group mt-6 mt-sm-3">
                         <v-btn
                             v-for="(offset, index) in offsetsZ"
                             :key="`offsetsDown-${index}`"
