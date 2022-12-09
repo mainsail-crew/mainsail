@@ -107,6 +107,17 @@
             "UpdatingDone": "Opdatering af {software} udført!"
         }
     },
+    "BedScrews": {
+        "Abort": "Afbryd",
+        "Adjusted": "Justeret",
+        "Accept": "Acceptér",
+        "Description": "Klik på <b>Justeret</b> hvis skruen blev justeret. Klik på <b>Acceptér</b> for at fortsætte uden justering.",
+        "Headline": "Bed skruer",
+        "ScrewAccepted": "Skrue accepteret",
+        "ScrewIndex": "Skrue Index",
+        "ScrewName": "Skrue Navn",
+        "ScrewOutput": "{current} af {max}"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Kan ikke forbinde med Moonraker ({host}).",
         "CheckMoonrakerLog": "Hvis denne besked vises flere gange, kig da i logfilen her:",
@@ -179,7 +190,10 @@
         "Free": "Ledig",
         "FreeDisk": "Ledig plads",
         "GCodeFiles": "G-Code Filer",
+        "GcodesRootDirectoryDoesntExists": "Ingen mappe med g-koder fundet. Tjek at opsætning af \"path\" under [virtual_sdcard] sektionen i printer.cfg er korrekt.",
         "HiddenFiles": "Skjulte filer",
+        "InvalidNameAlreadyExists": "Navnet eksisterer allerede, vælg venligst et andet navn.",
+        "InvalidNameEmpty": "Feltet må ikke være tomt!",
         "LastEndTime": "Sidste slut tid",
         "LastFilamentUsed": "Sidste filament forbrug",
         "LastModified": "Sidst ændret",
@@ -253,7 +267,7 @@
             "Min": "Min",
             "Name": "Navn",
             "Size": "Størrelse",
-            "Variance": "Variation"
+            "Range": "Variation"
         },
         "DeleteBedMeshProfile": "Slet Bed Mesh profil",
         "DoYouReallyWantToDelete": "Vil du slette \"{name}\"?",
@@ -337,6 +351,7 @@
             "in_progress": "Igangværende",
             "klippy_disconnect": "Klippy afbrudt",
             "klippy_shutdown": "Klippy lukket ned",
+            "Others": "Andre",
             "server_exit": "Server exit"
         },
         "TitleExportHistory": "Export History",
@@ -362,6 +377,7 @@
             "AllFiles": "Alle",
             "Cancel": "Annuller",
             "ConfigFiles": "Konfigurationsfiler",
+            "ConfigRootDirectoryDoesntExists": "Ingen konfiguration fundet. Tjek venligst opsætningen af \"config_path\" under [file_manager] sektionen af Moonraker konfigurationen.",
             "Create": "Ny",
             "CreateDirectory": "Ny mappe",
             "CreateFile": "Ny Fil",
@@ -452,6 +468,12 @@
             "UpToDate": "up-to-date"
         }
     },
+    "ManualProbe": {
+        "Abort": "Afbryd",
+        "Accept": "Acceptér",
+        "Advanced": "Avanceret",
+        "Headline": "Manuel Probing"
+    },
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Tilladt",
@@ -488,7 +510,8 @@
             "FirmwareRestart": "Genstart alt",
             "KlipperCheck": "Check at Klipper service kører og at en UDS (Unix Domain Socket) er konfigureret.",
             "MoonrakerCannotConnect": "Moonraker kan ikke forbinde til Klipper!",
-            "Restart": "Genstart"
+            "Restart": "Genstart",
+            "ServiceReports": "{service} rapporter"
         },
         "MachineSettingsPanel": {
             "Headline": "Printer indstillinger",
@@ -518,6 +541,12 @@
         },
         "MiscellaneousPanel": {
             "Headline": "Diverse",
+            "Light": {
+                "Blue": "blå",
+                "Green": "grøn",
+                "Red": "rød",
+                "White": "hvid"
+            },
             "RunoutSensor": {
                 "Detected": "Fundet",
                 "Disabled": "Deaktiveret",
@@ -748,6 +777,8 @@
             "ShowAxes": "Vis akser"
         },
         "GeneralTab": {
+            "12hours": "12-timers ({time})",
+            "24hours": "24-timers ({time})",
             "Backup": "Backup",
             "BackupDialog": "Vælg de sektioner du ønsker at lave backup af:",
             "CalcEstimateTime": "Beregn estimeret printtid",
@@ -763,6 +794,7 @@
                 "Slicer": "Slicer (M73)"
             },
             "CannotReadJson": "Kan ikke læse backup-fil",
+            "DateFormat": "Datoformat",
             "DbConsoleHistory": "Terminal Historik",
             "DbHistoryJobs": "Jobhistorik",
             "DbHistoryTotals": "Totalhistorik",
@@ -782,7 +814,8 @@
             "PrinterName": "Printernavn",
             "Reset": "Nulstil",
             "Restore": "Gendan",
-            "RestoreDialog": "Vælg de sektioner du ønsker at gendanne fra backup:"
+            "RestoreDialog": "Vælg de sektioner du ønsker at gendanne fra backup:",
+            "TimeFormat": "Tidsformat"
         },
         "InterfaceSettings": "Interfaceindstillinger",
         "MacrosTab": {
@@ -821,6 +854,29 @@
             "UnknownGroup": "Ukendt gruppe",
             "Warning": "Advarsel"
         },
+        "MiscellaneousTab": {
+            "AddGroup": "Tilføj gruppe",
+            "AddPreset": "Tilføj forudindstilling",
+            "Color": "Farve",
+            "CreateGroup": "Tilføj gruppe",
+            "CreatePreset": "Tilføj forudindstilling",
+            "End": "Slut",
+            "EndDescription": "Sidste LED i denne gruppe.",
+            "Groups": "Grupper",
+            "GroupSubTitle": "Start: {start}, Slut: {end}",
+            "LightGroups": "{name} - Grupper",
+            "LightPresets": "{name} - Forudindstillinger",
+            "Miscellaneous": "Diverse",
+            "Name": "Navn",
+            "NoDevicesFound": "Ingen enheder fundet",
+            "NoGroupFound": "Ingen gruppe fundet",
+            "NoPresetFound": "Ingen forudindstilling fundet",
+            "Presets": "Forudindstillinger",
+            "Start": "Første",
+            "StartDescription": "Første LED i denne gruppe.",
+            "UnableToLoadLight": "Kunne ikke indlæse LED",
+            "UnableToLoadPreset": "Kunne ikke indlæse forudindstilling"
+        },
         "PresetsTab": {
             "AddPreset": "Tilføj forudindstilling",
             "Cooldown": "Nedkøling",
@@ -848,6 +904,7 @@
             "UpdatePrinter": "Opdater printer",
             "UseConfigJson": "InstanceDB = JSON fundet. Brug venligst config.json til at ændre på printerlisten."
         },
+        "Store": "Gem",
         "TimelapseTab": {
             "Autorender": "Autorendering",
             "AutorenderDescription": "Hvis aktiv, vil Timelapse video automatisk blive renderet efter afsluttet print.",
@@ -942,9 +999,11 @@
             "ShowWebcamInNavigation": "Vis Webcam i navigation",
             "UiSettings": "UI-indstillinger"
         },
+        "Update": "Opdater",
         "WebcamsTab": {
             "AddWebcam": "Tilføj webcam",
             "CreateWebcam": "Nyt Webcam",
+            "EditCrowsnestConf": "Redigér crowsnest.conf",
             "EditWebcam": "Rediger Webcam",
             "FlipWebcam": "Vend webcam-billedet:",
             "Horizontally": "horisontalt",
@@ -984,6 +1043,7 @@
         "Delete": "Slet",
         "DeleteDirectory": "Slet mappe",
         "DeleteDirectoryQuestion": "Vil du slette mappen \"{name}\" og alt dens indhold?",
+        "DeleteSelectedQuestion": "Er du sikker på du vil slette alle {count} valgte filer?",
         "Download": "Download",
         "DuplicateLastframe": "Dupliker sidste frame",
         "Empty": "Ingen færdige Timelapse filer fundet.",
