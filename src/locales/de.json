@@ -109,8 +109,8 @@
     },
     "BedScrews": {
         "Abort": "abbrechen",
-        "Adjusted": "angepasst",
         "Accept": "bestätigen",
+        "Adjusted": "angepasst",
         "Description": "Klick auf <b>ANGEPASST</b> wenn die aktuelle Schraube eingestellt wurde. Klick auf <b>BESTÄTIGEN</b> um fortzufahren ohne Anpassung.",
         "Headline": "Bettschrauben",
         "ScrewAccepted": "bestätigte Schrauben",

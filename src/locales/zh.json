@@ -109,8 +109,8 @@
     },
     "BedScrews": {
         "Abort": "取消",
-        "Adjusted": "已调整",
         "Accept": "接受",
+        "Adjusted": "已调整",
         "Description": "如果当前螺丝已调整，请点击<b>已调整</b>。未调整下继续请点击<b>认可</b>。",
         "Headline": "热床螺丝",
         "ScrewAccepted": "已认可的螺丝",

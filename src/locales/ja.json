@@ -109,8 +109,8 @@
     },
     "BedScrews": {
         "Abort": "中止",
-        "Adjusted": "調整済み",
         "Accept": "確認",
+        "Adjusted": "調整済み",
         "Description": "現在のスクリューの調整が済んだら<b>調整済み</b>をクリックしてください。<b>確認</b>をクリックすると調整せずに先に進みます。",
         "Headline": "ベッドスクリュー",
         "ScrewAccepted": "スクリュー確認済み",
