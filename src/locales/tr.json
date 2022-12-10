@@ -107,6 +107,17 @@
             "UpdatingDone": "{software} güncellemesi tamamlandı!"
         }
     },
+    "BedScrews": {
+        "Abort": "iptal et",
+        "Accept": "kabul et",
+        "Adjusted": "ayarlanmış",
+        "Description": "Mevcut vida ayarlandıysa <b>ADJUSTED</b> seçeneğine tıklayın. Ayarlama yapmadan devam etmek için <b>ACCEPT</b>'i tıklayın.",
+        "Headline": "Tabla Vidaları",
+        "ScrewAccepted": "Vidalar kabul edildi",
+        "ScrewIndex": "Vida Endeksi",
+        "ScrewName": "Vida İsmi",
+        "ScrewOutput": "{current} / {max}"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Moonraker'a ({host}) bağlanılamıyor.",
         "CheckMoonrakerLog": "Bu mesaj tekrar tekrar görünüyorsa, lütfen şu adreste bulunan günlük dosyasına bakın:",
@@ -144,7 +155,7 @@
         "UnsavedChanges": "Kaydedilmemiş Değişiklikler",
         "UnsavedChangesMessage": "{filename} dosyasında yaptığınız değişiklikleri kaydetmek istiyor musunuz??",
         "UnsavedChangesSubMessage": "Kaydetmezseniz değişiklikleriniz kaybolacak. Bu mesajı editör ayarlarından devre dışı bırakabilirsiniz.",
-        "Uploading": "Karşya Yükleniyor"
+        "Uploading": "Karşıya Yükleniyor"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Emin Misiniz?",
@@ -181,6 +192,8 @@
         "GCodeFiles": "G-Kod Dosyaları",
         "GcodesRootDirectoryDoesntExists": "G-Kod dizini bulunamadı. Lütfen Klipper yapılandırmasının [virtual_sdcard] bölümündeki \"path\" seçeneğini işaretleyin.",
         "HiddenFiles": "Gizli Dosyalar",
+        "InvalidNameAlreadyExists": "İsim zaten var, lütfen başka bir isim seçin.",
+        "InvalidNameEmpty": "Giriş boş olmamalıdır!",
         "LastEndTime": "Son Bitiş Zamanı",
         "LastFilamentUsed": "Son Filament Kullanımı",
         "LastModified": "Son Düzenleme",
@@ -253,8 +266,8 @@
             "Max": "Max",
             "Min": "Min",
             "Name": "İsim",
-            "Size": "Boyut",
-            "Variance": "Varyans"
+            "Range": "Menzil",
+            "Size": "Boyut"
         },
         "DeleteBedMeshProfile": "Tabla Örgü Profilini Sil",
         "DoYouReallyWantToDelete": "\"{name}\" profilini gerçekten silmek istiyor musunuz?",
@@ -338,6 +351,7 @@
             "in_progress": "Devam etmekte",
             "klippy_disconnect": "Klippy bağlantıyı kes",
             "klippy_shutdown": "Klippy kapat",
+            "Others": "Diğerleri",
             "server_exit": "Sunucu çıkışı"
         },
         "TitleExportHistory": "İhracat Geçmişi",
@@ -454,6 +468,12 @@
             "UpToDate": "güncel"
         }
     },
+    "ManualProbe": {
+        "Abort": "iptal et",
+        "Accept": "kabul et",
+        "Advanced": "Gelişmiş",
+        "Headline": "Manuel Prob"
+    },
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "İzin Verilmiş",
@@ -490,7 +510,8 @@
             "FirmwareRestart": "Firmware Yeniden Başlatma",
             "KlipperCheck": "Lütfen Klipper hizmetinin çalışıp çalışmadığını ve bir UDS'nin (Unix Etki Alanı Soketi) yapılandırılıp yapılandırılmadığını kontrol edin.",
             "MoonrakerCannotConnect": "Moonraker Klipper'a bağlanamıyor!",
-            "Restart": "Yeniden Başlat"
+            "Restart": "Yeniden Başlat",
+            "ServiceReports": "{service} raporları"
         },
         "MachineSettingsPanel": {
             "Headline": "Makine",
@@ -520,6 +541,12 @@
         },
         "MiscellaneousPanel": {
             "Headline": "Çeşitli",
+            "Light": {
+                "Blue": "mavi",
+                "Green": "yeşil",
+                "Red": "kırmızı",
+                "White": "beyaz"
+            },
             "RunoutSensor": {
                 "Detected": "algılandı",
                 "Disabled": "hizmet dışı kalmış",
@@ -750,6 +777,8 @@
             "ShowAxes": "Eksenleri Göster"
         },
         "GeneralTab": {
+            "12hours": "12 saat ({time})",
+            "24hours": "24 saat ({time})",
             "Backup": "Yedek",
             "BackupDialog": "Lütfen yedek oluşturmak istediğiniz tüm bölümleri seçin:",
             "CalcEstimateTime": "Tahmini zaman hesaplaması",
@@ -765,6 +794,7 @@
                 "Slicer": "Dilimleyici (M73)"
             },
             "CannotReadJson": "Yedekleme dosyası okunamıyor/ayrıştırılamıyor.",
+            "DateFormat": "Tarih formatı",
             "DbConsoleHistory": "Konsol Geçmişi",
             "DbHistoryJobs": "Geçmiş İşler",
             "DbHistoryTotals": "Geçmiş Toplamları",
@@ -784,7 +814,8 @@
             "PrinterName": "Yazıcı İsmi",
             "Reset": "sıfırla",
             "Restore": "Eski haline getir",
-            "RestoreDialog": "Lütfen geri yüklemek istediğiniz tüm bölümleri seçin:"
+            "RestoreDialog": "Lütfen geri yüklemek istediğiniz tüm bölümleri seçin:",
+            "TimeFormat": "Tarih formatı"
         },
         "InterfaceSettings": "Arayüz Ayarları",
         "MacrosTab": {
@@ -823,6 +854,29 @@
             "UnknownGroup": "Bilinmeyen Grup",
             "Warning": "uyarı"
         },
+        "MiscellaneousTab": {
+            "AddGroup": "grup ekle",
+            "AddPreset": "ön ayar ekle",
+            "Color": "Renk",
+            "CreateGroup": "Grup oluştur",
+            "CreatePreset": "Hazır ayar oluştur",
+            "End": "Son",
+            "EndDescription": "Bu grubun son LED'i.",
+            "Groups": "Gruplar",
+            "GroupSubTitle": "Başlangıç: {start}, Bitiş: {end}",
+            "LightGroups": "{name} - Gruplar",
+            "LightPresets": "{name} - Ön Ayarlar",
+            "Miscellaneous": "Çeşitli",
+            "Name": "İsim",
+            "NoDevicesFound": "Hiçbir cihaz bulunamadı",
+            "NoGroupFound": "Grup bulunamadı",
+            "NoPresetFound": "Ön ayar bulunamadı",
+            "Presets": "Ön Ayarlar",
+            "Start": "Başlat",
+            "StartDescription": "Bu grubun ilk LED'i.",
+            "UnableToLoadLight": "Işık yüklenemiyor",
+            "UnableToLoadPreset": "Ön ayar yüklenemiyor"
+        },
         "PresetsTab": {
             "AddPreset": "ön ayar ekle",
             "Cooldown": "Soğutma",
@@ -850,6 +904,7 @@
             "UpdatePrinter": "Yazıcıyı Güncelle",
             "UseConfigJson": "InstanceDB = JSON algılandı. Yazıcı listesini değiştirmek için lütfen config.json'u kullanın."
         },
+        "Store": "dükkan",
         "TimelapseTab": {
             "Autorender": "Otomatik Oluşturma",
             "AutorenderDescription": "Etkinleştirilirse, timelapse, baskının sonunda otomatik olarak oluşturulacaktır.",
@@ -944,6 +999,7 @@
             "ShowWebcamInNavigation": "Web kamerasını navigasyonda göster",
             "UiSettings": "Arayüz-Ayarları"
         },
+        "Update": "güncelleme",
         "WebcamsTab": {
             "AddWebcam": "web kamerası ekle",
             "CreateWebcam": "Web Kamerası Oluştur",
@@ -951,7 +1007,7 @@
             "EditWebcam": "Web Kamerası Düzenle",
             "FlipWebcam": "Web kamerasını çevirin:",
             "Horizontally": "yatay olarak",
-            "IconBed": "Yatak",
+            "IconBed": "Tabla",
             "IconCam": "Kamera",
             "IconDoor": "Kapı",
             "IconFilament": "Filament",

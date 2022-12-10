@@ -84,6 +84,14 @@ Do you need help or just want to talk? Join our active community on [Discord](ht
 Did you find a bug or did you thought of a feature?
 Please create an [Issue](https://github.com/mainsail-crew/mainsail/issues) in GitHub and let us know.
 
+## Official Sponsors
+
+<p align='center'>
+    <img src="https://raw.githubusercontent.com/mainsail-crew/docs/master/assets/img/logo-bigtreetech.png" alt='Mainsail logo' width="150">
+</p>
+
+**BIGTREETECH** is the official mainboard partner of Mainsail. BIGTREETECH is committed to developing innovative and competitive products to better serve the 3D printing community.
+
 ## Support Mainsail
 
 Mainsail is primarily developed and maintained by meteyou. To keep the project going he invests his free time, almost

@@ -95,7 +95,6 @@ import StatusPanel from '@/components/panels/StatusPanel.vue'
 import ToolheadControlPanel from '@/components/panels/ToolheadControlPanel.vue'
 import TemperaturePanel from '@/components/panels/TemperaturePanel.vue'
 import WebcamPanel from '@/components/panels/WebcamPanel.vue'
-import kebabCase from 'lodash.kebabcase'
 
 @Component({
     components: {
@@ -114,106 +113,36 @@ import kebabCase from 'lodash.kebabcase'
     },
 })
 export default class PageDashboard extends Mixins(DashboardMixin) {
-    get allComponents() {
-        let output: string[] = []
-        const components = Object.keys(this.$options.components ?? {})
-
-        components?.forEach((component) => {
-            if (component.endsWith('Panel')) output.push(kebabCase(component))
-        })
-
-        // remove toolhead panel, if kinematics === none
-        if (this.printerKinematics === 'none') {
-            output = output.filter((name) => name !== 'toolhead-control-panel')
-        }
-
-        // remove extruder panel, if printerExtruderCount < 1
-        if (this.printerExtruderCount < 1) {
-            output = output.filter((name) => name !== 'extruder-control-panel')
-        }
-
-        // remove temperature panel, if heaters & sensors < 1
-        if (this.printerAvailableHeatersCount + this.printerTemperatureSensorsCount < 1) {
-            output = output.filter((name) => name !== 'temperature-panel')
-        }
-
-        return output
-    }
-
     get mobileLayout() {
-        let panels = this.$store.getters['gui/getPanels']('mobileLayout')
-        panels = panels.concat(this.missingPanelsMobile)
-        panels = panels.filter(
-            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
-        )
-
-        return panels
+        return this.$store.getters['gui/getPanels']('mobile', 0, true)
     }
 
     get tabletLayout1() {
-        let panels = this.$store.getters['gui/getPanels']('tabletLayout1')
-        panels = panels.concat(this.missingPanelsTablet)
-        panels = panels.filter(
-            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
-        )
-
-        return panels
+        return this.$store.getters['gui/getPanels']('tablet', 1, true)
     }
 
     get tabletLayout2() {
-        let panels = this.$store.getters['gui/getPanels']('tabletLayout2')
-        panels = panels.filter(
-            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
-        )
-
-        return panels
+        return this.$store.getters['gui/getPanels']('tablet', 2, true)
     }
 
     get desktopLayout1() {
-        let panels = this.$store.getters['gui/getPanels']('desktopLayout1')
-        panels = panels.concat(this.missingPanelsDesktop)
-        panels = panels.filter(
-            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
-        )
-
-        return panels
+        return this.$store.getters['gui/getPanels']('desktop', 1, true)
     }
 
     get desktopLayout2() {
-        let panels = this.$store.getters['gui/getPanels']('desktopLayout2')
-        panels = panels.filter(
-            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
-        )
-
-        return panels
+        return this.$store.getters['gui/getPanels']('desktop', 2, true)
     }
 
     get widescreenLayout1() {
-        let panels = this.$store.getters['gui/getPanels']('widescreenLayout1')
-        panels = panels.concat(this.missingPanelsWidescreen)
-        panels = panels.filter(
-            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
-        )
-
-        return panels
+        return this.$store.getters['gui/getPanels']('widescreen', 1, true)
     }
 
     get widescreenLayout2() {
-        let panels = this.$store.getters['gui/getPanels']('widescreenLayout2')
-        panels = panels.filter(
-            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
-        )
-
-        return panels
+        return this.$store.getters['gui/getPanels']('widescreen', 2, true)
     }
 
     get widescreenLayout3() {
-        let panels = this.$store.getters['gui/getPanels']('widescreenLayout3')
-        panels = panels.filter(
-            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
-        )
-
-        return panels
+        return this.$store.getters['gui/getPanels']('widescreen', 3, true)
     }
 
     extractPanelName(name: string) {
