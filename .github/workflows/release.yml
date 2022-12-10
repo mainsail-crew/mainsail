@@ -141,5 +141,5 @@ jobs:
           cat CHANGELOG.md
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: 'chore(changelog): update changelog'
+          commit_message: 'docs(changelog): update changelog'
           file_pattern: CHANGELOG.md

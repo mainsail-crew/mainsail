@@ -53,6 +53,7 @@ filter_unconventional = false
 # regex for parsing and grouping commits
 commit_parsers = [
     { message = "^docs\\(changelog\\):", group = "Changelog", skip = true}, # Old redundant commits
+    { message = "^chore: Push version number to", group = "9$Other", skip = true}, # Old redundant commits
     { message = "^feat(\\(.*\\))?:", group = "1$Features"},
     { message = "^feature(\\(.*\\))?:", group = "1$Features"},
     { message = "^fix(\\(.*\\))?:", group = "2$Bug Fixes and Improvements"},
