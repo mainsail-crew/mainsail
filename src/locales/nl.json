@@ -107,6 +107,17 @@
             "UpdatingDone": "Updaten van {software} voltooid!"
         }
     },
+    "BedScrews": {
+        "Abort": "annuleer",
+        "Accept": "accepteer",
+        "Adjusted": "aangepast",
+        "Description": "Klik op <b>AANGEPAST</b> indien de huidige schroef aagepast is. Klik op <b>ACCEPTEER</b> om door te gaan zonder aanpassing.",
+        "Headline": "Bed Schroeven",
+        "ScrewAccepted": "Schroeven geaccepteerd",
+        "ScrewIndex": "Schroef Index",
+        "ScrewName": "Schroef Naam",
+        "ScrewOutput": "{current} van {max}"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Kan niet verbinden met Moonraker ({host}).",
         "CheckMoonrakerLog": "Als deze melding vaker getoond wordt, kijk in de logs op:",
@@ -181,6 +192,8 @@
         "GCodeFiles": "G-Code Bestanden",
         "GcodesRootDirectoryDoesntExists": "Geen G-Code directory gevonden. Controleer de optie \"path\" in de [virtual_sdcard] sectie van de Klipper configuratie.",
         "HiddenFiles": "Verborgen bestanden",
+        "InvalidNameAlreadyExists": "Naam bestaat al, kies een andere naam.",
+        "InvalidNameEmpty": "Naam mag niet leeg zijn!",
         "LastEndTime": "Laatste eindtijd",
         "LastFilamentUsed": "Laatst gebruikte filament",
         "LastModified": "Laatst bewerkt",
@@ -253,8 +266,8 @@
             "Max": "Max",
             "Min": "Min",
             "Name": "Naam",
-            "Size": "Grootte",
-            "Variance": "Variatie"
+            "Range": "Bereik",
+            "Size": "Grootte"
         },
         "DeleteBedMeshProfile": "Verwijder Bed Mesh Profiel",
         "DoYouReallyWantToDelete": "Weet je zeker dat je het profiel \"{name}\" wil verwijderen?",
@@ -455,6 +468,12 @@
             "UpToDate": "up-to-date"
         }
     },
+    "ManualProbe": {
+        "Abort": "annuleer",
+        "Accept": "accepteer",
+        "Advanced": "Geavanceerd",
+        "Headline": "Handmatige Probe"
+    },
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Toegestaan",
@@ -491,7 +510,8 @@
             "FirmwareRestart": "Firmware Herstart",
             "KlipperCheck": "Controleer of de Klipper service draait en een UDS (Unix Domain Socket) geconfigureerd is.",
             "MoonrakerCannotConnect": "Moonraker kan niet met Klipper verbinden!",
-            "Restart": "Herstart"
+            "Restart": "Herstart",
+            "ServiceReports": "{service} rapportages"
         },
         "MachineSettingsPanel": {
             "Headline": "Machine instellingen",
@@ -521,6 +541,12 @@
         },
         "MiscellaneousPanel": {
             "Headline": "Overige",
+            "Light": {
+                "Blue": "blauw",
+                "Green": "groen",
+                "Red": "rood",
+                "White": "wit"
+            },
             "RunoutSensor": {
                 "Detected": "gedetecteerd",
                 "Disabled": "uitgeschakeld",
@@ -751,6 +777,8 @@
             "ShowAxes": "Toon Assen"
         },
         "GeneralTab": {
+            "12hours": "12-uurs ({time})",
+            "24hours": "24-uurs ({time})",
             "Backup": "Backup",
             "BackupDialog": "Selecteer alle secties waarvan je een backup wilt maken:",
             "CalcEstimateTime": "Bereken geschatte tijd",
@@ -766,6 +794,7 @@
                 "Slicer": "Slicer (M73)"
             },
             "CannotReadJson": "Kan het backup bestand niet lezen/verwerken. ",
+            "DateFormat": "Datumformaat",
             "DbConsoleHistory": "Console Geschiedenis",
             "DbHistoryJobs": "Geschiedenis Jobs",
             "DbHistoryTotals": "Geschiedenis Totalen",
@@ -785,7 +814,8 @@
             "PrinterName": "Printer naam",
             "Reset": "reset",
             "Restore": "Herstellen",
-            "RestoreDialog": "Kies alle secties die je wil herstellen:"
+            "RestoreDialog": "Kies alle secties die je wil herstellen:",
+            "TimeFormat": "Tijdformaat"
         },
         "InterfaceSettings": "Interface Instellingen",
         "MacrosTab": {
@@ -824,6 +854,29 @@
             "UnknownGroup": "Onbekende Groep",
             "Warning": "waarschuwing"
         },
+        "MiscellaneousTab": {
+            "AddGroup": "voeg groep toe",
+            "AddPreset": "voeg preset toe",
+            "Color": "Kleur",
+            "CreateGroup": "Maak groep aan",
+            "CreatePreset": "Maak preset aan",
+            "End": "Einde",
+            "EndDescription": "Laatste LED van deze groep.",
+            "Groups": "Groepen",
+            "GroupSubTitle": "Start: {start}, Einde: {end}",
+            "LightGroups": "{name} - Groepen",
+            "LightPresets": "{name} - Presets",
+            "Miscellaneous": "Overige",
+            "Name": "Naam",
+            "NoDevicesFound": "Geen apparaten gevonden",
+            "NoGroupFound": "Geen groep gevonden",
+            "NoPresetFound": "Geen presets gevonden",
+            "Presets": "Presets",
+            "Start": "Start",
+            "StartDescription": "Eerste LED van deze groep.",
+            "UnableToLoadLight": "Niet gelukt het licht te laden",
+            "UnableToLoadPreset": "Niet gelukt de preset te laden"
+        },
         "PresetsTab": {
             "AddPreset": "voeg preset toe",
             "Cooldown": "Afkoelen",
@@ -851,6 +904,7 @@
             "UpdatePrinter": "Update Printer",
             "UseConfigJson": "InstanceDB = JSON gedetecteerd. Gebruik de config.json om de printerlijst aan te passen."
         },
+        "Store": "opslaan",
         "TimelapseTab": {
             "Autorender": "Autorender",
             "AutorenderDescription": "Wanneer ingeschakeld, zal de timelapse video automatisch renderen aan het eind van de print",
@@ -945,6 +999,7 @@
             "ShowWebcamInNavigation": "Toon Webcam in de navigatie",
             "UiSettings": "UI Instellingen"
         },
+        "Update": "updaten",
         "WebcamsTab": {
             "AddWebcam": "voeg webcam toe",
             "CreateWebcam": "Nieuwe Webcam",

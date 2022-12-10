@@ -109,8 +109,8 @@
     },
     "BedScrews": {
         "Abort": "Afbryd",
-        "Adjusted": "Justeret",
         "Accept": "Acceptér",
+        "Adjusted": "Justeret",
         "Description": "Klik på <b>Justeret</b> hvis skruen blev justeret. Klik på <b>Acceptér</b> for at fortsætte uden justering.",
         "Headline": "Bed skruer",
         "ScrewAccepted": "Skrue accepteret",
@@ -266,8 +266,8 @@
             "Max": "Maks",
             "Min": "Min",
             "Name": "Navn",
-            "Size": "Størrelse",
-            "Range": "Variation"
+            "Range": "Variation",
+            "Size": "Størrelse"
         },
         "DeleteBedMeshProfile": "Slet Bed Mesh profil",
         "DoYouReallyWantToDelete": "Vil du slette \"{name}\"?",
