@@ -49,6 +49,8 @@ All notable changes to Mainsail will be documented in this file.
 - Use PAT for branch merge | [78e5c16](78e5c16042eb4045d5e913663f6062853b052f52)
 - Test current setting for release changelog | [83360ab](83360ab6b3d0a3478053f4861bd977f6943f08f1)
 - Test | [ea6ba1b](ea6ba1b943c50bd921c7385acad5ee1934d1a37f)
+- Fix changelog outputs | [cb2feea](cb2feeaeb90238467effb11a95a0ec2f02d81f05)
+- Fix changelog outputs | [28d8c54](28d8c54d7550ebe292938984f48510fc108fdf7f)
 
 ## [2.4.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.4.0) - 2022-11-14
 ### Features
