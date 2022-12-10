@@ -23,10 +23,10 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@main
 
       - name: echo package.json version
-        runs: echo ${{ steps.package-version.outputs.current-version }}
+        run: echo ${{ steps.package-version.outputs.current-version }}
 
       - name: echo input version
-        runs: echo ${{ github.event.inputs.version }}
+        run: echo ${{ github.event.inputs.version }}
 
       - name: Push version number
         if: '${{ steps.package-version.outputs.current-version }}' != '${{ github.event.inputs.version }}'
