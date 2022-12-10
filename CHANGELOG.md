@@ -48,6 +48,7 @@ All notable changes to Mainsail will be documented in this file.
 - Remove commit_message_template in branch-merge | [fd9959e](fd9959e550d9825f129311778ebb78426cd1fe17)
 - Use PAT for branch merge | [78e5c16](78e5c16042eb4045d5e913663f6062853b052f52)
 - Test current setting for release changelog | [83360ab](83360ab6b3d0a3478053f4861bd977f6943f08f1)
+- Test | [ea6ba1b](ea6ba1b943c50bd921c7385acad5ee1934d1a37f)
 
 ## [2.4.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.4.0) - 2022-11-14
 ### Features
