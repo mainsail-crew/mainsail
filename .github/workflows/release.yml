@@ -46,7 +46,7 @@ jobs:
           github_token: ${{ secrets.PAT }}
           source_ref: 'develop'
           target_branch: 'master'
-          commit_message_template: Merged {source_ref} into {target_branch}.
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
 
   release:
     needs: ['update-master-branch']
