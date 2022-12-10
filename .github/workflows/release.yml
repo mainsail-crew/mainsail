@@ -18,12 +18,18 @@ jobs:
           token: ${{ secrets.PAT }}
           ref: 'develop'
 
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
+
       - name: Push version number
+        if: steps.package-version.outputs.current-version != 'v${{ github.event.inputs.version }}'
         shell: bash
         run: |
           npm version --no-git-tag-version ${{ github.event.inputs.version }}
 
       - name: git add & commit & push
+        if: steps.package-version.outputs.current-version != 'v${{ github.event.inputs.version }}'
         uses: EndBug/add-and-commit@v9
         with:
           add: 'package.json package-lock.json'
