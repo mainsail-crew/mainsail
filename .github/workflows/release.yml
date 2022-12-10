@@ -98,7 +98,7 @@ jobs:
           username: ${{ secrets.REMOTEUSER }}
           password: ${{ secrets.REMOTEPASSWORD }}
           dangerous-clean-slate: true
-          local-dir: ./dist
+          local-dir: ./dist/
 
   update-changelog:
     needs: ['release']
