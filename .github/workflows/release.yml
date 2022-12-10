@@ -99,7 +99,6 @@ jobs:
           password: ${{ secrets.REMOTEPASSWORD }}
           dangerous-clean-slate: true
           local-dir: ./dist
-          dry-run: true
 
   update-changelog:
     needs: ['release']
