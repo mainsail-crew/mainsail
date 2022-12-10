@@ -73,14 +73,18 @@ jobs:
         shell: bash
         run: mv ./dist/mainsail.zip ./mainsail.zip
 
+      - name: Get latest tag
+        id: latest_tag
+        shell: bash
+        run: |
+          echo "TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
+
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v1
         id: generate-changelog
         with:
           config: ./cliff-release.toml
-          args: --current
-        env:
-          output: CHANGES.md
+          args: ${{ steps.latest_tag.outputs.TAG_NAME }}..HEAD
 
       - name: Create release and upload build
         uses: softprops/action-gh-release@v1
@@ -122,6 +126,7 @@ jobs:
         shell: bash
         run: |
           echo "TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
+
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v1
         id: git-cliff
