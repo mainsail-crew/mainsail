@@ -64,6 +64,10 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Move build out of dist
+        shell: bash
+        run: mv ./dist/mainsail.zip ./mainsail.zip
+
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v1
         id: generate-changelog
@@ -80,8 +84,22 @@ jobs:
           name: v${{ github.event.inputs.version }}
           tag_name: v${{ github.event.inputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: ./dist/mainsail.zip
+          files: ./mainsail.zip
           body: ${{ steps.generate-changelog.outputs.content }}
+
+      - name: Copy remote configs to dist
+        shell: bash
+        run: cp ./remote/* ./dist/
+
+      - name: Upload to remote server
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.REMOTEHOST }}
+          username: ${{ secrets.REMOTEUSER }}
+          password: ${{ secrets.REMOTEPASSWORD }}
+          dangerous-clean-slate: true
+          local-dir: ./dist
+          dry-run: true
 
   update-changelog:
     needs: ['release']
