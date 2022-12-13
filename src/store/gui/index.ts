@@ -199,6 +199,7 @@ export const getDefaultState = (): GuiState => {
             },
             history: {
                 countPerPage: 10,
+                toggleChartCol2: 'chart',
                 toggleChartCol3: 'filament_usage',
                 hidePrintStatus: [],
                 hideColums: [

@@ -303,6 +303,7 @@
         "AvgPrinttime": "Print Time - Ø",
         "Cancel": "Cancel",
         "CreateNote": "Create Note",
+        "Chart": "Chart",
         "Delete": "Delete",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected jobs?",
         "Details": "Details",
@@ -354,6 +355,7 @@
             "Others": "Others",
             "server_exit": "Server exit"
         },
+        "Table": "Table",
         "TitleExportHistory": "Export History",
         "TitleRefreshHistory": "Refresh History",
         "TitleSettings": "Settings",
