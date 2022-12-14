@@ -9,6 +9,30 @@
                     xmlns="http://www.w3.org/2000/svg"
                     xml:space="preserve"
                     style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2">
+                    <defs>
+                        <pattern
+                            id="pattern"
+                            width="5"
+                            height="5"
+                            patternUnits="userSpaceOnUse"
+                            patternTransform="rotate(45)">
+                            <line
+                                x1="0"
+                                x2="100%"
+                                y1="0"
+                                y2="0"
+                                stroke-width="5"
+                                style="stroke: gold; opacity: 0.5"></line>
+                            <line
+                                x1="0"
+                                x2="100%"
+                                y1="5"
+                                y2="5"
+                                stroke-width="5"
+                                style="stroke: var(--v-secondary-lighten1); opacity: 0.3"></line>
+                        </pattern>
+                    </defs>
+
                     <g id="ArtBoard1" transform="matrix(1.24239,0,0,1,0,0)">
                         <rect x="0" y="0" width="62" height="62" style="fill: none" />
                         <g id="home_buttons" transform="matrix(0.804902,0,0,1,0.0430241,0)">
@@ -27,7 +51,7 @@
                                         <text x="3.789px" y="6.089px">X</text>
                                     </g>
                                     <g
-                                        id="Icon"
+                                        id="icon"
                                         class="home_icon"
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
@@ -124,7 +148,7 @@
                                 <g id="home_all_center" class="home_button">
                                     <circle id="home_button_all_center" cx="31" cy="31" r="5" />
                                 </g>
-                                <g id="icon4" class="home-icon" transform="scale(0.3) translate(91.25,91.25)">
+                                <g id="icon4" class="home_icon" transform="scale(0.3) translate(91.25,91.25)">
                                     <!-- transform="matrix(0.29377,0,0,0.29377,0.346087,1.64241)"-->
                                     <path :d="homeIcon" style="fill-rule: nonzero" />
                                 </g>
@@ -618,57 +642,103 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
         return ['printing'].includes(this.printer_state)
     }
 
-    get stepTextClass() {
-        if (!this.homedAxes.includes('xy') || this.isPrinting) return ['disabled']
+    get loadings(): string[] {
+        return this.$store.state.socket.loadings ?? []
+    }
 
-        return []
+    get stepTextClass() {
+        let classes = []
+        if (
+            !this.homedAxes.includes('xy') ||
+            !this.homedAxes.includes('x') ||
+            !this.homedAxes.includes('y') ||
+            this.isPrinting
+        )
+            classes.push('disabled')
+        if (
+            this.loadings.findIndex((element) => element.includes('X')) > -1 ||
+            this.loadings.findIndex((element) => element.includes('Y')) > -1 ||
+            this.loadings.findIndex((element) => element.includes('All')) > -1
+        )
+            classes.push('disabled')
+        return classes
     }
 
     get xStepClass() {
-        if (!this.homedAxes.includes('x') || this.isPrinting) return ['disabled']
-
-        return []
+        let classes = []
+        if (!this.homedAxes.includes('x') || this.isPrinting) classes.push('disabled')
+        if (
+            this.loadings.findIndex((element) => element.includes('X')) > -1 ||
+            this.loadings.findIndex((element) => element.includes('All')) > -1
+        )
+            classes.push('disabled')
+        return classes
     }
 
     get yStepClass() {
-        if (!this.homedAxes.includes('y') || this.isPrinting) return ['disabled']
-
-        return []
+        let classes = []
+        if (!this.homedAxes.includes('y') || this.isPrinting) classes.push('disabled')
+        if (
+            this.loadings.findIndex((element) => element.includes('Y')) > -1 ||
+            this.loadings.findIndex((element) => element.includes('All')) > -1
+        )
+            classes.push('disabled')
+        return classes
     }
 
     get zStepClass() {
-        if (!this.homedAxes.includes('z') || this.isPrinting) return ['disabled']
-
-        return []
+        let classes = []
+        if (!this.homedAxes.includes('z') || this.isPrinting) classes.push('disabled')
+        if (
+            this.loadings.findIndex((element) => element.includes('Z')) > -1 ||
+            this.loadings.findIndex((element) => element.includes('All')) > -1
+        )
+            classes.push('disabled')
+        return classes
     }
 
     get xHomeClass() {
         let classes = []
-        if (this.homedAxes.includes('x')) classes.push('homed')
         if (this.isPrinting) classes.push('disabled')
+        if (
+            this.loadings.findIndex((element) => element.includes('X')) > -1 ||
+            this.loadings.findIndex((element) => element.includes('All')) > -1
+        )
+            classes.push('loading')
+        else if (this.homedAxes.includes('x')) classes.push('homed')
 
         return classes
     }
 
     get yHomeClass() {
         let classes = []
-        if (this.homedAxes.includes('y')) classes.push('homed')
         if (this.isPrinting) classes.push('disabled')
-
+        if (
+            this.loadings.findIndex((element) => element.includes('Y')) > -1 ||
+            this.loadings.findIndex((element) => element.includes('All')) > -1
+        )
+            classes.push('loading')
+        else if (this.homedAxes.includes('y')) classes.push('homed')
         return classes
     }
 
     get xyHomeClass() {
         let classes = []
-        if (this.homedAxes.includes('xy')) classes.push('homed')
         if (this.isPrinting) classes.push('disabled')
-
+        if (
+            this.loadings.findIndex((element) => element.includes('X')) > -1 ||
+            this.loadings.findIndex((element) => element.includes('Y')) > -1 ||
+            this.loadings.findIndex((element) => element.includes('All')) > -1
+        )
+            classes.push('loading')
+        else if (this.homedAxes.includes('xy')) classes.push('homed')
         return classes
     }
 
     get xyzHomeClass() {
         let classes = []
-        if (this.homedAxes.includes('xyz')) classes.push('homed')
+        if (this.loadings.findIndex((element) => element.includes('home')) > -1) classes.push('loading')
+        else if (this.homedAxes.includes('xyz')) classes.push('homed')
         if (this.isPrinting) classes.push('disabled')
 
         return classes
@@ -676,15 +746,20 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
 
     get zHomeClass() {
         let classes = []
-        if (this.homedAxes.includes('z')) classes.push('homed')
         if (this.isPrinting) classes.push('disabled')
-
+        if (
+            this.loadings.findIndex((element) => element.includes('Z')) > -1 ||
+            this.loadings.findIndex((element) => element.includes('All')) > -1
+        )
+            classes.push('loading')
+        else if (this.homedAxes.includes('z')) classes.push('homed')
         return classes
     }
 
     get colorSpecialButton() {
         let classes = []
         if (this.isPrinting) classes.push('disabled')
+        if (this.loadings.includes('zTilt') || this.loadings.includes('qgl')) classes.push('loading')
         if (this.existsQGL) classes.push(this.colorQuadGantryLevel)
         else if (this.existsZtilt) classes.push(this.colorZTilt)
 
@@ -755,7 +830,7 @@ svg g#stepsXY {
     user-select: none;
     font-family: 'Roboto-Regular', 'Roboto', sans-serif;
     font-size: 3px;
-    fill: white;
+    fill: var(--v-btn-text-primary);
 }
 
 svg a#tilt_adjust text {
@@ -764,30 +839,74 @@ svg a#tilt_adjust text {
     display: none;
 }
 
+svg g#home_buttons {
+    fill: var(--v-btn-text-primary);
+    font-weight: 500;
+}
+
 svg g#home_buttons text {
     font-family: 'Roboto-Regular', 'Roboto', sans-serif;
     font-size: 5px;
-    fill: black;
+    fill: var(--v-btn-text-primary);
+    stroke: none;
 }
 
 svg g.home_button,
 svg a#home_all_center {
-    fill: var(--color-warning);
+    fill: var(--v-warning-base);
     transition: opacity 250ms;
 }
 
-svg a.disabled {
+svg a.disabled,
+svg a.loading {
     pointer-events: none;
 }
+
+svg a.homed.disabled,
+svg a#tilt_adjust.disabled g#tilt_icon {
+    fill: grey;
+}
+svg a#tilt_adjust.disabled g#tilt_icon,
+svg a#tilt_adjust.disabled.primary g#tilt_icon {
+    fill: grey;
+    stroke: grey;
+}
+
+svg a#tilt_adjust.disabled g#tilt_icon,
+svg a#stepper_off.disabled #stepper_off_icon,
+svg a.disabled g#icon.home_icon,
+svg a.disabled g#icon1.home_icon,
+svg a.disabled g#icon2.home_icon,
+svg a.disabled g#icon3.home_icon,
+svg a.disabled g#icon4.home_icon,
+svg a.disabled g#home_x text,
+svg a.disabled g#home_y text,
+svg a.disabled g#home_z text,
+svg a.disabled g#home_xy text,
+svg a.homed.disabled g#home_x text,
+svg a.homed.disabled g#home_x text,
+svg a.homed.disabled g#home_y text,
+svg a.homed.disabled g#home_z text,
+svg a.homed.disabled g#home_xy text,
+svg a.homed.disabled g#home_x text {
+    stroke: none;
+    fill: grey;
+}
+
+// svg a.homed.disabled text {
+//     stroke: grey;
+// }
 
 svg a.disabled .home_button path,
 svg a.disabled circle {
     fill: rgb(92, 92, 92);
+    stroke: none;
 }
 
 svg g#stepsXY.disabled text,
 svg g#stepsZ.disabled text {
     fill: rgba(255, 255, 255, 0.3);
+    stroke: none;
 }
 
 svg a#tilt_adjust,
@@ -797,7 +916,7 @@ svg a#stepper_off {
 
 svg a#tilt_adjust.warning,
 svg a#stepper_off.warning {
-    fill: var(--color-warning);
+    fill: var(--v-warning-base);
 }
 
 svg a#tilt_adjust.primary,
@@ -825,8 +944,42 @@ svg g#home_buttons .home_icon {
     user-select: none;
 }
 
+svg a g#icon.home_icon,
+svg a g#icon1.home_icon,
+svg a g#icon2.home_icon,
+svg a g#icon3.home_icon,
+svg a g#icon4.home_icon,
 svg a#tilt_adjust #tilt_icon,
 svg a#stepper_off #stepper_off_icon {
-    fill: #000;
+    fill: var(--v-btn-text-primary);
+    stroke: none;
+    animation: none;
+}
+
+svg a.loading g#home_x text,
+svg a.loading g#home_y text,
+svg a.loading g#home_z text,
+svg a.loading g#home_xy text,
+svg a#tilt_adjust.loading g#tilt_icon,
+svg a#stepper_off.disabled #stepper_off_icon,
+svg a.loading g#icon.home_icon,
+svg a.loading g#icon1.home_icon,
+svg a.loading g#icon2.home_icon,
+svg a.loading g#icon3.home_icon,
+svg a.loading g#icon4.home_icon {
+    fill: var(--v-btn-text-primary);
+    stroke: none;
+    animation: spin 1s ease-in-out infinite;
+}
+@keyframes spin {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 </style>
