@@ -485,6 +485,7 @@ import {
     mdiCloseThick,
     mdiLockOutline,
 } from '@mdi/js'
+import JSZip from 'jszip'
 
 interface contextMenu {
     shown: boolean
@@ -666,6 +667,17 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     get toolbarButtons() {
         return [
+            {
+                text: this.$t('Machine.ConfigFilesPanel.Download'),
+                color: 'primary',
+                icon: mdiCloudDownload,
+                loadingName: null,
+                onlyWriteable: false,
+                condition: this.selectedFiles.length > 0,
+                click: () => {
+                    this.downloadSelectedFiles()
+                },
+            },
             {
                 text: this.$t('Machine.ConfigFilesPanel.Delete'),
                 color: 'error',
@@ -929,6 +941,27 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         const filename = this.absolutePath + '/' + this.contextMenu.item.filename
         const href = `${this.apiUrl}/server/files${encodeURI(filename)}`
         window.open(href)
+    }
+
+    downloadSelectedFiles() {
+        const zip = new JSZip()
+
+        this.selectedFiles.forEach((file: FileStateFile) => {
+            const url = `${this.apiUrl}/server/files${encodeURI(this.absolutePath + '/' + file.filename)}`
+
+            const blobPromise = fetch(url).then((r) => {
+                if (r.status === 200) return r.blob()
+                return Promise.reject(new Error(r.statusText))
+            })
+            const name = url.substring(url.lastIndexOf('/') + 1)
+            zip?.file(name, blobPromise)
+        })
+
+        zip.generateAsync({ type: 'base64' }).then((content) => {
+            location.href = 'data:application/zip;base64,' + content
+        })
+
+        this.selectedFiles = []
     }
 
     createDirecotry() {

@@ -42,6 +42,7 @@
         "echarts": "^5.2.2",
         "echarts-gl": "^2.0.8",
         "js-sha256": "^0.9.0",
+        "jszip": "^3.10.1",
         "lodash.kebabcase": "^4.1.1",
         "lodash.throttle": "^4.1.1",
         "overlayscrollbars": "^1.13.1",
