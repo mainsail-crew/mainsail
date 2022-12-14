@@ -9,30 +9,6 @@
                     xmlns="http://www.w3.org/2000/svg"
                     xml:space="preserve"
                     style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2">
-                    <defs>
-                        <pattern
-                            id="pattern"
-                            width="5"
-                            height="5"
-                            patternUnits="userSpaceOnUse"
-                            patternTransform="rotate(45)">
-                            <line
-                                x1="0"
-                                x2="100%"
-                                y1="0"
-                                y2="0"
-                                stroke-width="5"
-                                style="stroke: gold; opacity: 0.5"></line>
-                            <line
-                                x1="0"
-                                x2="100%"
-                                y1="5"
-                                y2="5"
-                                stroke-width="5"
-                                style="stroke: var(--v-secondary-lighten1); opacity: 0.3"></line>
-                        </pattern>
-                    </defs>
-
                     <g id="ArtBoard1" transform="matrix(1.24239,0,0,1,0,0)">
                         <rect x="0" y="0" width="62" height="62" style="fill: none" />
                         <g id="home_buttons" transform="matrix(0.804902,0,0,1,0.0430241,0)">
@@ -872,6 +848,8 @@ svg a#tilt_adjust.disabled.primary g#tilt_icon {
     stroke: grey;
 }
 
+svg a#tilt_adjust.disabled.primary g#tilt_icon,
+svg a#stepper_off.disabled.primary #stepper_off_icon,
 svg a#tilt_adjust.disabled g#tilt_icon,
 svg a#stepper_off.disabled #stepper_off_icon,
 svg a.disabled g#icon.home_icon,
