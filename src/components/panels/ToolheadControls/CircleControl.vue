@@ -32,14 +32,16 @@
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
-                                    <circle
-                                        id="loading-circle"
-                                        class="loader-path"
-                                        transform="matrix(0.25, 0, 0, .25, -8.5, -7)"
-                                        cx="50"
-                                        cy="50"
-                                        r="8"
-                                        fill="none" />
+                                    <g class="spinner">
+                                        <circle
+                                            id="loading-circle"
+                                            class="loader-path"
+                                            transform="matrix(0.11, 0, 0, .11, -1.7, -0.05)"
+                                            cx="50"
+                                            cy="50"
+                                            r="20"
+                                            fill="none" />
+                                    </g>
                                 </g>
                             </a>
                             <!-- HOME Y BUTTON -->
@@ -62,14 +64,16 @@
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
-                                    <circle
-                                        id="loading-circle"
-                                        class="loader-path"
-                                        transform="matrix(0.25, 0, 0, .25, -8.5, -7)"
-                                        cx="50"
-                                        cy="50"
-                                        r="8"
-                                        fill="none" />
+                                    <g class="spinner">
+                                        <circle
+                                            id="loading-circle"
+                                            class="loader-path"
+                                            transform="matrix(0.11, 0, 0, .11, -1.7, -0.05)"
+                                            cx="50"
+                                            cy="50"
+                                            r="20"
+                                            fill="none" />
+                                    </g>
                                 </g>
                             </a>
                             <!-- HOME Z BUTTON -->
@@ -92,14 +96,16 @@
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
-                                    <circle
-                                        id="loading-circle"
-                                        class="loader-path"
-                                        transform="matrix(0.25, 0, 0, .25, -8.5, -7)"
-                                        cx="50"
-                                        cy="50"
-                                        r="8"
-                                        fill="none" />
+                                    <g class="spinner">
+                                        <circle
+                                            id="loading-circle"
+                                            class="loader-path"
+                                            transform="matrix(0.11, 0, 0, .11, -1.7, -0.05)"
+                                            cx="50"
+                                            cy="50"
+                                            r="20"
+                                            fill="none" />
+                                    </g>
                                 </g>
                             </a>
                             <!-- HOME XY BUTTON -->
@@ -122,14 +128,16 @@
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
-                                    <circle
-                                        id="loading-circle"
-                                        class="loader-path"
-                                        transform="matrix(0.25, 0, 0, .25, -8.5, -7)"
-                                        cx="50"
-                                        cy="50"
-                                        r="8"
-                                        fill="none" />
+                                    <g class="spinner">
+                                        <circle
+                                            id="loading-circle"
+                                            class="loader-path"
+                                            transform="matrix(0.11, 0, 0, .11, -1.7, -0.05)"
+                                            cx="50"
+                                            cy="50"
+                                            r="20"
+                                            fill="none" />
+                                    </g>
                                 </g>
                             </a>
                             <!-- HOME ALL BUTTON -->
@@ -149,14 +157,16 @@
                                         transform="matrix(0.29377,0,0,0.29377,0.346087,1.64241)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
-                                    <circle
-                                        id="loading-circle"
-                                        class="loader-path"
-                                        transform="matrix(0.25, 0, 0, .25, -8.5, -7)"
-                                        cx="50"
-                                        cy="50"
-                                        r="8"
-                                        fill="none" />
+                                    <g class="spinner">
+                                        <circle
+                                            id="loading-circle"
+                                            class="loader-path"
+                                            transform="matrix(0.25, 0, 0, .25, -8.5, -7)"
+                                            cx="50"
+                                            cy="50"
+                                            r="8"
+                                            fill="none" />
+                                    </g>
                                 </g>
                             </a>
                             <!-- HOME ALL BUTTON IN THE CENTER -->
@@ -168,15 +178,17 @@
                                     <!-- transform="matrix(0.29377,0,0,0.29377,0.346087,1.64241)"-->
                                     <path :d="homeIcon" style="fill-rule: nonzero" />
                                 </g>
-                                <circle
-                                    id="loading-circle"
-                                    class="loader-path"
-                                    transform="matrix(.4, 0, 0,0.4, 11, 11)"
-                                    cx="50"
-                                    cy="50"
-                                    r="8"
-                                    fill="none"
-                                    display="inherit" />
+                                <g class="spinner">
+                                    <circle
+                                        id="loading-circle"
+                                        class="loader-path"
+                                        transform="matrix(.17, 0, 0,0.17, 22.5, 22.5)"
+                                        cx="50"
+                                        cy="50"
+                                        r="20"
+                                        fill="none"
+                                        display="inherit" />
+                                </g>
                             </a>
                         </g>
                         <g id="step_buttons" transform="matrix(0.804902,0,0,1,0.0430241,0)">
@@ -557,6 +569,14 @@
                             <path :d="zTiltIcon1" />
                             <path :d="zTiltIcon2" />
                         </g>
+                        <circle
+                            id="loading-circle"
+                            class="loader-path"
+                            transform="matrix(.17, 0, 0,0.17, 62.5, 22.5)"
+                            cx="50"
+                            cy="50"
+                            r="20"
+                            fill="none" />
                     </a>
                     <a
                         v-else-if="existsZtilt && actionButton === 'ztilt'"
@@ -568,6 +588,16 @@
                         <g id="tilt_icon">
                             <path :d="zTiltIcon1" />
                             <path :d="zTiltIcon2" />
+                        </g>
+                        <g class="spinner">
+                            <circle
+                                id="loading-circle"
+                                class="loader-path"
+                                transform="matrix(.17, 0, 0,0.17, 62.5, 22.5)"
+                                cx="50"
+                                cy="50"
+                                r="20"
+                                fill="none" />
                         </g>
                     </a>
                     <a v-else id="stepper_off" :class="motorsOffClass" @click="doSend('M84')">
@@ -592,6 +622,8 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     /**
      * SVG paths for home buttons
      */
+
+    homeIcon = 'M10,20L10,14L14,14L14,20L19,20L19,12L22,12L12,3L2,12L5,12L5,20L10,20Z'
 
     pathHomeButtonTop =
         'M9.188,-0C9.634,0.001 10.028,0.291 10.162,0.717C10.295,1.142 10.136,1.605 9.77,1.86C6.722,4.035 4.05,6.701 1.869,9.743C1.614,10.11 1.151,10.269 0.724,10.135C0.298,10.002 0.008,9.607 0.008,9.16C0,6.418 0,2.781 0,1.029C-0,0.756 0.108,0.495 0.302,0.302C0.495,0.108 0.756,-0 1.029,0L9.188,-0Z'
@@ -687,12 +719,6 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
         )
             classes.push('disabled')
         return classes
-    }
-
-    get homeIcon(): string {
-        let icon = 'M10,20L10,14L14,14L14,20L19,20L19,12L22,12L12,3L2,12L5,12L5,20L10,20Z'
-
-        return icon
     }
 
     get xStepClass() {
@@ -993,6 +1019,7 @@ svg a circle#loading-circle {
     display: none;
 }
 
+svg a#tilt_adjust.loading circle#loading-circle,
 svg a.loading circle#loading-circle {
     display: block;
 }
@@ -1015,99 +1042,45 @@ svg a.loading g#icon4.home_icon {
     fill: var(--v-btn-text-primary);
     stroke: none;
     display: none;
-    // animation: spin 1s ease-in-out infinite;
-}
-@keyframes spin {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
 }
 
-.loader-path {
-    stroke: var(--v-btn-text-primary);
-    stroke-width: 2px;
-    stroke-dasharray: 150, 200;
-    stroke-dashoffset: -10;
-    -webkit-animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
-    animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
-    stroke-linecap: square;
-}
+.spinner {
+    animation: rotate 2s linear infinite;
+    -webkit-animation: rotate 2s linear infinite;
+    transform-origin: 50% 50%;
+    transform-box: fill-box;
+    z-index: 2;
+    position: absolute;
 
-@-webkit-keyframes rotate {
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
+    & .loader-path {
+        stroke: rgb(255, 255, 255);
+        stroke-linecap: round;
+        stroke-width: 5px;
+        animation: dash 1.5s ease-in-out infinite;
     }
 }
 
 @keyframes rotate {
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-@-webkit-keyframes dash {
     0% {
-        stroke-dasharray: 1, 200;
-        stroke-dashoffset: 0;
-    }
-    50% {
-        stroke-dasharray: 89, 200;
-        stroke-dashoffset: -35;
+        transform: rotate(0);
     }
     100% {
-        stroke-dasharray: 89, 200;
-        stroke-dashoffset: -124;
+        transform: rotate(370deg);
     }
 }
+
 @keyframes dash {
     0% {
-        stroke-dasharray: 1, 200;
+        stroke-dasharray: 1, 150;
         stroke-dashoffset: 0;
     }
     50% {
-        stroke-dasharray: 89, 200;
+        stroke-dasharray: 90, 150;
         stroke-dashoffset: -35;
     }
     100% {
-        stroke-dasharray: 89, 200;
+        stroke-dasharray: 90, 150;
         stroke-dashoffset: -124;
-    }
-}
-@-webkit-keyframes color {
-    0% {
-        stroke: var(--v-btn-text-primary);
-    }
-    40% {
-        stroke: var(--v-btn-text-primary);
-    }
-    66% {
-        stroke: var(--v-btn-text-primary);
-    }
-    80%,
-    90% {
-        stroke: var(--v-btn-text-primary);
-    }
-}
-@keyframes color {
-    0% {
-        stroke: var(--v-btn-text-primary);
-    }
-    40% {
-        stroke: var(--v-btn-text-primary);
-    }
-    66% {
-        stroke: var(--v-btn-text-primary);
-    }
-    80%,
-    90% {
-        stroke: var(--v-btn-text-primary);
     }
 }
 </style>
