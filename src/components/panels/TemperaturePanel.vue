@@ -303,7 +303,9 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get temperatureObjects() {
-        return this.$store.getters['printer/getTemperatureObjects'] ?? []
+        const sensors = this.$store.getters['printer/getTemperatureObjects'] ?? []
+
+        return sensors.filter((sensor: PrinterStateTemperatureObject) => !sensor.name.startsWith('_'))
     }
 
     preheat(preset: GuiPresetsStatePreset): void {
