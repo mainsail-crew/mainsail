@@ -714,7 +714,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                 loadingName: null,
                 onlyWriteable: true,
                 condition: true,
-                click: this.createDirecotry,
+                click: this.createDirectory,
             },
             {
                 text: this.$t('Machine.ConfigFilesPanel.RefreshDirectory'),
@@ -964,7 +964,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         this.selectedFiles = []
     }
 
-    createDirecotry() {
+    createDirectory() {
         this.dialogCreateDirectory.name = ''
         this.dialogCreateDirectory.show = true
 
