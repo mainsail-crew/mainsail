@@ -956,9 +956,26 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                     continue
                 }
 
-                await fetch(absoluteUrl + encodeURI(file.filename))
+                const CancelToken = axios.CancelToken
+                const source = CancelToken.source()
+                this.$store.commit('editor/updateCancelTokenSource', source)
+                this.$store.commit('editor/updateLoaderState', true)
+
+                this.$store.commit('editor/setFilename', file.filename)
+
+                await axios
+                    .get(absoluteUrl + encodeURI(file.filename), {
+                        cancelToken: source.token,
+                        onDownloadProgress: (progressEvent) =>
+                            this.$store.dispatch('editor/downloadProgress', {
+                                progressEvent,
+                                direction: 'downloading',
+                                filesize: file.size,
+                            }),
+                        responseType: 'blob',
+                    })
                     .then((r) => {
-                        if (r.status === 200) return r.blob()
+                        if (r.status === 200) return r.data
                         return Promise.reject(new Error(r.statusText))
                     })
                     .then((blob) => zip?.file(file.filename, blob))
@@ -967,6 +984,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
         const url = `${this.apiUrl}/server/files${encodeURI(this.absolutePath + '/')}`
         await addDirectoryToZip(zip, this.selectedFiles, url)
+
+        setTimeout(() => {
+            this.$store.dispatch('editor/clearLoader')
+        }, 100)
 
         zip.generateAsync({ type: 'blob' }).then(async (blob) => {
             saveAs(blob, 'archive.zip')
