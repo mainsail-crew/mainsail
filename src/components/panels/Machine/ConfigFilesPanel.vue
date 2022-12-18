@@ -486,6 +486,7 @@ import {
     mdiLockOutline,
 } from '@mdi/js'
 import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
 
 interface contextMenu {
     shown: boolean
@@ -943,22 +944,22 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         window.open(href)
     }
 
-    downloadSelectedFiles() {
+    async downloadSelectedFiles() {
         const zip = new JSZip()
 
-        this.selectedFiles.forEach((file: FileStateFile) => {
+        for (const file of this.selectedFiles) {
             const url = `${this.apiUrl}/server/files${encodeURI(this.absolutePath + '/' + file.filename)}`
 
-            const blobPromise = fetch(url).then((r) => {
-                if (r.status === 200) return r.blob()
-                return Promise.reject(new Error(r.statusText))
-            })
-            const name = url.substring(url.lastIndexOf('/') + 1)
-            zip?.file(name, blobPromise)
-        })
+            await fetch(url)
+                .then((r) => {
+                    if (r.status === 200) return r.blob()
+                    return Promise.reject(new Error(r.statusText))
+                })
+                .then((blob) => zip?.file(file.filename, blob))
+        }
 
-        zip.generateAsync({ type: 'base64' }).then((content) => {
-            location.href = 'data:application/zip;base64,' + content
+        zip.generateAsync({ type: 'blob' }).then(async (blob) => {
+            saveAs(blob, 'archive.zip')
         })
 
         this.selectedFiles = []
