@@ -947,16 +947,26 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     async downloadSelectedFiles() {
         const zip = new JSZip()
 
-        for (const file of this.selectedFiles) {
-            const url = `${this.apiUrl}/server/files${encodeURI(this.absolutePath + '/' + file.filename)}`
+        const addDirectoryToZip = async (zip: JSZip, directory: FileStateFile[], absoluteUrl: string) => {
+            for (const file of directory) {
+                if (file.isDirectory && file.childrens) {
+                    const url = `${absoluteUrl}${encodeURI(file.filename + '/')}`
+                    await addDirectoryToZip(zip.folder(file.filename) as JSZip, file.childrens, url)
 
-            await fetch(url)
-                .then((r) => {
-                    if (r.status === 200) return r.blob()
-                    return Promise.reject(new Error(r.statusText))
-                })
-                .then((blob) => zip?.file(file.filename, blob))
+                    continue
+                }
+
+                await fetch(absoluteUrl + encodeURI(file.filename))
+                    .then((r) => {
+                        if (r.status === 200) return r.blob()
+                        return Promise.reject(new Error(r.statusText))
+                    })
+                    .then((blob) => zip?.file(file.filename, blob))
+            }
         }
+
+        const url = `${this.apiUrl}/server/files${encodeURI(this.absolutePath + '/')}`
+        await addDirectoryToZip(zip, this.selectedFiles, url)
 
         zip.generateAsync({ type: 'blob' }).then(async (blob) => {
             saveAs(blob, 'archive.zip')
