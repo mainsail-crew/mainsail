@@ -1012,7 +1012,6 @@ svg a g#icon4.home_icon,
 svg a#tilt_adjust #tilt_icon,
 svg a#stepper_off #stepper_off_icon {
     fill: var(--v-btn-text-primary);
-    transition: transform 750ms ease-out;
     stroke: none;
     animation: none;
 }
@@ -1046,16 +1045,9 @@ svg a#tilt_adjust.loading circle#loading-circle,
 svg a.loading circle#home-loading-circle {
     stroke-width: 2px;
 }
-svg a.loading g#icon4.home_icon {
-    opacity: 0.5;
-    transition: transform 750ms ease-out;
-    transform: matrix(0.25, 0, 0, 0.25, 28, 28);
-    fill: var(--v-btn-text-primary);
-}
 
 svg a.loading g#icon4.home_icon {
     opacity: 0.5;
-    transition: transform 750ms ease-out;
     transform: matrix(0.25, 0, 0, 0.25, 28, 28);
     fill: var(--v-btn-text-primary);
 }
@@ -1063,7 +1055,6 @@ svg a.loading g#icon4.home_icon {
 svg a#tilt_adjust.loading g#tilt_icon {
     transform: matrix(0.6, 0, 0, 0.6, 28.6, 12.2);
     opacity: 0.5;
-    transition: transform 750ms ease-out;
     fill: var(--v-btn-text-primary);
 }
 
