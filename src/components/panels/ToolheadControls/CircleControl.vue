@@ -1048,7 +1048,7 @@ svg a.loading circle#home-loading-circle {
 
 svg a.loading g#icon4.home_icon {
     opacity: 0.5;
-    transform: matrix(0.25, 0, 0, 0.25, 28, 28);
+    transform: matrix(0.22, 0, 0, 0.22, 28.25, 28.2);
     fill: var(--v-btn-text-primary);
 }
 
