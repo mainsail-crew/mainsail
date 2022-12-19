@@ -36,7 +36,7 @@
                                         <circle
                                             id="loading-circle"
                                             class="loader-path"
-                                            transform="matrix(0.11, 0, 0, .11, -1.7, -0.05)"
+                                            transform="matrix(0.065, 0, 0, .065, .72, 0.45)"
                                             cx="50"
                                             cy="50"
                                             r="20"
@@ -68,7 +68,7 @@
                                         <circle
                                             id="loading-circle"
                                             class="loader-path"
-                                            transform="matrix(0.11, 0, 0, .11, -1.7, -0.05)"
+                                            transform="matrix(0.065, 0, 0, .065, .72, 0.45)"
                                             cx="50"
                                             cy="50"
                                             r="20"
@@ -100,7 +100,7 @@
                                         <circle
                                             id="loading-circle"
                                             class="loader-path"
-                                            transform="matrix(0.11, 0, 0, .11, -1.7, -0.05)"
+                                            transform="matrix(0.065, 0, 0, .065, .72, 0.45)"
                                             cx="50"
                                             cy="50"
                                             r="20"
@@ -132,7 +132,7 @@
                                         <circle
                                             id="loading-circle"
                                             class="loader-path"
-                                            transform="matrix(0.11, 0, 0, .11, -1.7, -0.05)"
+                                            transform="matrix(0.065, 0, 0, .065, .72, 0.45)"
                                             cx="50"
                                             cy="50"
                                             r="20"
@@ -161,7 +161,7 @@
                                         <circle
                                             id="loading-circle"
                                             class="loader-path"
-                                            transform="matrix(0.25, 0, 0, .25, -8.5, -7)"
+                                            transform="matrix(0.065, 0, 0, .065, .72, 0.45)"
                                             cx="50"
                                             cy="50"
                                             r="8"
@@ -1031,7 +1031,10 @@ svg a.loading g#icon.home_icon {
 svg a.loading g#home_x text,
 svg a.loading g#home_y text,
 svg a.loading g#home_z text,
-svg a.loading g#home_xy text,
+svg a.loading g#home_xy text {
+    fill: var(--v-btn-text-primary);
+    opacity: 0.7;
+}
 svg a#tilt_adjust.loading g#tilt_icon,
 svg a#stepper_off.disabled #stepper_off_icon,
 svg a.loading g#icon.home_icon,
