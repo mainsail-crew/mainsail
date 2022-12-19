@@ -180,9 +180,10 @@
                                 </g>
                                 <g class="spinner">
                                     <circle
-                                        id="loading-circle"
+                                        id="home-loading-circle"
                                         class="loader-path"
                                         transform="matrix(.17, 0, 0,0.17, 22.5, 22.5)"
+                                        storke-path="2px"
                                         cx="50"
                                         cy="50"
                                         r="20"
@@ -1011,15 +1012,20 @@ svg a g#icon4.home_icon,
 svg a#tilt_adjust #tilt_icon,
 svg a#stepper_off #stepper_off_icon {
     fill: var(--v-btn-text-primary);
+    transition: transform 750ms ease-out;
     stroke: none;
     animation: none;
 }
 
-svg a circle#loading-circle {
+// laoding styles for home buttons.
+
+svg a circle#loading-circle,
+svg a circle#home-loading-circle {
     display: none;
 }
 
 svg a#tilt_adjust.loading circle#loading-circle,
+svg a.loading circle#home-loading-circle,
 svg a.loading circle#loading-circle {
     display: block;
 }
@@ -1035,13 +1041,37 @@ svg a.loading g#home_xy text {
     fill: var(--v-btn-text-primary);
     opacity: 0.7;
 }
-svg a#tilt_adjust.loading g#tilt_icon,
+
+svg a#tilt_adjust.loading circle#loading-circle,
+svg a.loading circle#home-loading-circle {
+    stroke-width: 2px;
+}
+svg a.loading g#icon4.home_icon {
+    opacity: 0.5;
+    transition: transform 750ms ease-out;
+    transform: matrix(0.25, 0, 0, 0.25, 28, 28);
+    fill: var(--v-btn-text-primary);
+}
+
+svg a.loading g#icon4.home_icon {
+    opacity: 0.5;
+    transition: transform 750ms ease-out;
+    transform: matrix(0.25, 0, 0, 0.25, 28, 28);
+    fill: var(--v-btn-text-primary);
+}
+
+svg a#tilt_adjust.loading g#tilt_icon {
+    transform: matrix(0.6, 0, 0, 0.6, 28.6, 12.2);
+    opacity: 0.5;
+    transition: transform 750ms ease-out;
+    fill: var(--v-btn-text-primary);
+}
+
 svg a#stepper_off.disabled #stepper_off_icon,
 svg a.loading g#icon.home_icon,
 svg a.loading g#icon1.home_icon,
 svg a.loading g#icon2.home_icon,
-svg a.loading g#icon3.home_icon,
-svg a.loading g#icon4.home_icon {
+svg a.loading g#icon3.home_icon {
     fill: var(--v-btn-text-primary);
     stroke: none;
     display: none;
@@ -1062,6 +1092,8 @@ svg a.loading g#icon4.home_icon {
         animation: dash 1.5s ease-in-out infinite;
     }
 }
+
+$randomNumber: random(2);
 
 @keyframes rotate {
     0% {
