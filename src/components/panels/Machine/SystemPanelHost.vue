@@ -86,7 +86,11 @@
                     <template v-if="networkInterfaces">
                         <div v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
                             <span class="text-no-wrap">
-                                {{ interfaceName }}{{ getIpAddress(interfaceStats.details.ip_addresses) }}:
+                                {{ interfaceName }}
+                                <template v-if="'details' in interfaceStats">
+                                    {{ getIpAddress(interfaceStats.details.ip_addresses) }}
+                                </template>
+                                :
                             </span>
                             <span class="text-no-wrap">
                                 {{

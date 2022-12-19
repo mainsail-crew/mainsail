@@ -18,16 +18,19 @@
                             <v-col>
                                 <vue-load-image>
                                     <img
+                                        ref="timelapsePreview"
                                         slot="image"
                                         :src="frameUrl"
                                         :alt="$t('Timelapse.Preview')"
                                         class="w-100"
-                                        :style="webcamStyle" />
-                                    <v-progress-circular
-                                        slot="preloader"
-                                        indeterminate
-                                        color="primary"></v-progress-circular>
-                                    <v-icon slot="error">{{ mdiFile }}</v-icon>
+                                        :style="webcamStyle"
+                                        @load="calcRatio" />
+                                    <div slot="preloader">
+                                        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                                    </div>
+                                    <div slot="error">
+                                        <v-icon>{{ mdiFile }}</v-icon>
+                                    </div>
                                 </vue-load-image>
                             </v-col>
                         </v-row>
@@ -39,22 +42,24 @@
                     align-self="center">
                     <v-card-text :class="framesCount ? 'pt-0' : ''">
                         <template v-if="framesCount > 0">
-                            <settings-row :title="$t('Timelapse.Frames')">
+                            <settings-row :title="$t('Timelapse.Frames').toString()">
                                 {{ framesCount }}
                             </settings-row>
                             <v-divider class="my-2"></v-divider>
-                            <settings-row :title="$t('Timelapse.EstimatedLength')" :dynamic-slot-width="true">
+                            <settings-row
+                                :title="$t('Timelapse.EstimatedLength').toString()"
+                                :dynamic-slot-width="true">
                                 {{ estimatedVideoLength }}
                             </settings-row>
                         </template>
                         <template v-if="['printing', 'paused'].includes(printer_state)">
                             <v-divider class="my-2"></v-divider>
-                            <settings-row :title="$t('Timelapse.Enabled')" :dynamic-slot-width="true">
+                            <settings-row :title="$t('Timelapse.Enabled').toString()" :dynamic-slot-width="true">
                                 <v-switch v-model="enabled" hide-details class="mt-0"></v-switch>
                             </settings-row>
                             <template v-if="enabled">
                                 <v-divider v-if="framesCount > 0" class="my-2"></v-divider>
-                                <settings-row :title="$t('Timelapse.Autorender')" :dynamic-slot-width="true">
+                                <settings-row :title="$t('Timelapse.Autorender').toString()" :dynamic-slot-width="true">
                                     <v-switch v-model="autorender" hide-details class="mt-0"></v-switch>
                                 </settings-row>
                             </template>
@@ -91,7 +96,7 @@
         </v-card>
         <v-dialog v-model="boolDialogRendersettings" :max-width="700" :max-height="500">
             <panel
-                :title="$t('Timelapse.RenderSettings')"
+                :title="$t('Timelapse.RenderSettings').toString()"
                 :icon="mdiTextBoxSearchOutline"
                 card-class="timelapse-rendersettings-dialog"
                 :margin-bottom="false">
@@ -109,8 +114,7 @@
                                 :items="framerateTypeOptions"
                                 outlined
                                 dense
-                                hide-details
-                                attach></v-select>
+                                hide-details></v-select>
                         </v-col>
                         <v-col class="col-4">
                             <template v-if="variable_fps">
@@ -197,16 +201,22 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiFile, mdiInformation, mdiTextBoxSearchOutline } from '@mdi/js'
+import { mdiFile, mdiInformation, mdiTextBoxSearchOutline, mdiCloseThick } from '@mdi/js'
 @Component({
     components: { Panel, SettingsRow },
 })
 export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
     mdiFile = mdiFile
+    mdiCloseThick = mdiCloseThick
     mdiTextBoxSearchOutline = mdiTextBoxSearchOutline
 
     private boolDialogRendersettings = false
+    private scale = 1
+
+    declare $refs: {
+        timelapsePreview: HTMLImageElement
+    }
 
     get frameUrl() {
         const frame = this.$store.state.server.timelapse?.lastFrame?.file ?? null
@@ -308,12 +318,12 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
     }
 
     get estimatedVideoLength() {
-        let seconds = 0
+        let seconds = Math.round((this.framesCount + this.duplicatelastframe) / this.output_framerate)
 
         if (this.variable_fps) {
             seconds = Math.round((this.framesCount + this.duplicatelastframe) / this.variableTargetFps)
             if (seconds < this.targetlength) seconds = this.targetlength
-        } else seconds = Math.round((this.framesCount + this.duplicatelastframe) / this.output_framerate)
+        }
 
         return seconds > 60
             ? Math.floor(seconds / 60) + 'm ' + (seconds - Math.floor(seconds / 60) * 60) + 's'
@@ -341,14 +351,14 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
     }
 
     get webcamStyle() {
-        if (this.camSettings === undefined) return ''
+        let transforms = []
+        const scale = [0, 180].includes(this.camSettings.rotate) ? 1 : this.scale
+        this.camSettings?.flipX ? transforms.push(`scaleX(-${scale})`) : transforms.push(`scaleX(${scale})`)
+        this.camSettings?.flipY ? transforms.push(`scaleY(-${scale})`) : transforms.push(`scaleY(${scale})`)
+        if (this.camSettings.rotate !== 0) transforms.push(`rotate(${this.camSettings.rotate}deg)`)
+        if (transforms.length) return { transform: transforms.join(' ') }
 
-        let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
-
-        return ''
+        return {}
     }
 
     startRender() {
@@ -359,6 +369,15 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
 
     saveFrames() {
         this.$socket.emit('machine.timelapse.saveframes', {}, { loading: 'timelapse_saveframes' })
+    }
+
+    calcRatio() {
+        if (this.$refs.timelapsePreview) {
+            this.scale = this.$refs.timelapsePreview.naturalHeight / this.$refs.timelapsePreview.naturalWidth
+            if (this.scale > 1) {
+                this.scale = this.$refs.timelapsePreview.naturalWidth / this.$refs.timelapsePreview.naturalHeight
+            }
+        }
     }
 }
 </script>

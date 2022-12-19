@@ -3,19 +3,11 @@
 [changelog]
 # changelog header
 header = """
-<!-- THIS FILE IS UPDATED AUTOMATICALLY, ANY CHANGES WILL BE OVERRIDDEN -->
-# Changelog
-All notable changes to Mainsail will be documented in this file.\n
+# What's Changed
 """
 # template for the changelog body
 # https://tera.netlify.app/docs/#introduction
 body = """
-{% if version %}\
-    ## [{{ version | trim_start_matches(pat="v") }}](https://github.com/mainsail-crew/mainsail/releases/tag/{{version}}) - {{ timestamp | date(format="%Y-%m-%d") }}    
-\
-{% else %}\
-    ## [unreleased]
-{% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}\
     ### {{ group | split(pat="$") | last | upper_first }}
     {% for commit in commits
@@ -25,6 +17,7 @@ body = """
         {%- if commit.breaking %}
         {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
         {%- endif -%}
+
     {%- endfor -%}
     {%- for commit in commits %}
         {%- if commit.scope -%}
@@ -34,6 +27,7 @@ body = """
         {%- if commit.breaking %}
         {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
         {%- endif -%}
+
         {% endif -%}
     {% endfor -%}
     {% raw %}\n{% endraw %}
@@ -49,7 +43,7 @@ footer = """
 # allow only conventional commits
 # https://www.conventionalcommits.org
 conventional_commits = true
-filter_unconventional = false
+filter_unconventional = true
 # regex for parsing and grouping commits
 commit_parsers = [
     { message = "^docs\\(changelog\\):", group = "Changelog", skip = true}, # Old redundant commits
@@ -66,7 +60,6 @@ commit_parsers = [
     { message = "^locale(\\(.*\\))?:", group = "6$Localization"},
     { message = "^chore(\\(.*\\))?:", group = "9$Other"},
     { body = ".*security", group = "Security"},
-    { message = "release v2.1.2", group = "Release"}, # workaround for v2.1.2 release
 ]
 # filter out the commits that are not matched by commit parsers
 filter_commits = true

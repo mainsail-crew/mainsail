@@ -1,0 +1,145 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: New version number in X.Y.Z
+        required: true
+
+jobs:
+  push-version-number:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone develop repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
+          ref: 'develop'
+
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
+
+      - name: Push version number
+        if: steps.package-version.outputs.current-version != github.event.inputs.version
+        shell: bash
+        run: |
+          npm version --no-git-tag-version ${{ github.event.inputs.version }}
+
+      - name: git add & commit & push
+        if: steps.package-version.outputs.current-version != github.event.inputs.version
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'package.json package-lock.json'
+          default_author: github_actions
+          message: 'chore: push version number to v${{ github.event.inputs.version }}'
+          push: true
+
+  update-master-branch:
+    needs: ['push-version-number']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: everlytic/branch-merge@1.1.5
+        with:
+          github_token: ${{ secrets.PAT }}
+          source_ref: 'develop'
+          target_branch: 'master'
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
+
+  release:
+    needs: ['update-master-branch']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch repo
+        uses: actions/checkout@v3
+        with:
+          ref: 'master'
+          fetch-depth: 0
+
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Move build out of dist
+        shell: bash
+        run: mv ./dist/mainsail.zip ./mainsail.zip
+
+      - name: Get latest tag
+        id: latest_tag
+        shell: bash
+        run: |
+          echo "TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
+
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v1
+        id: generate-changelog
+        with:
+          config: ./cliff-release.toml
+          args: ${{ steps.latest_tag.outputs.TAG_NAME }}..HEAD
+
+      - name: Create release and upload build
+        uses: softprops/action-gh-release@v1
+        id: create-release
+        with:
+          name: v${{ github.event.inputs.version }}
+          tag_name: v${{ github.event.inputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: ./mainsail.zip
+          body: ${{ steps.generate-changelog.outputs.content }}
+
+      - name: Copy remote configs to dist
+        shell: bash
+        run: cp ./remote/* ./dist/
+
+      - name: Upload to remote server
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.REMOTEHOST }}
+          username: ${{ secrets.REMOTEUSER }}
+          password: ${{ secrets.REMOTEPASSWORD }}
+          dangerous-clean-slate: true
+          local-dir: ./dist/
+
+  update-changelog:
+    needs: ['release']
+    name: Generate changelog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: 'develop'
+          token: ${{ secrets.PAT }}
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: latest_tag
+        shell: bash
+        run: |
+          echo "TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
+
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v1
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: v0.0.4..${{ steps.latest_tag.outputs.TAG_NAME }}
+        env:
+          OUTPUT: ${{ github.workspace }}/CHANGELOG.md
+
+      - name: Show CHANGELOG
+        run: |
+          cat CHANGELOG.md
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'docs(changelog): update changelog'
+          file_pattern: CHANGELOG.md

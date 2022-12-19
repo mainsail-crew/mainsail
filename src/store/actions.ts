@@ -32,7 +32,6 @@ export const actions: ActionTree<RootState, RootState> = {
     importConfigJson({ commit }, payload: ConfigJson) {
         type RootStateInstancesDbType = 'moonraker' | 'browser' | 'json'
         let instancesDB: RootStateInstancesDbType = payload.instancesDB ?? 'moonraker'
-        if (document.location.hostname === 'my.mainsail.xyz') instancesDB = 'browser'
         if (import.meta.env.VUE_APP_INSTANCES_DB)
             instancesDB = import.meta.env.VUE_APP_INSTANCES_DB as RootStateInstancesDbType
 

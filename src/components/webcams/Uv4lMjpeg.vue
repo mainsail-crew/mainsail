@@ -27,7 +27,7 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     private isVisibleDocument = true
 
     @Prop({ required: true }) declare readonly camSettings: GuiWebcamStateWebcam
-    @Prop({ default: null }) declare readonly printerUrl: string | null
+    @Prop() declare printerUrl: string | undefined
 
     declare $refs: {
         webcamUv4lMjpegImage: HTMLImageElement
@@ -36,8 +36,6 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     get url() {
         const baseUrl = this.camSettings.urlStream
         let url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
-        url.port = this.hostPort.toString()
-
         if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
         return decodeURIComponent(url.toString())
