@@ -1041,6 +1041,11 @@ svg a.loading g#home_xy text {
     opacity: 0.7;
 }
 
+svg a.loading g#icon3.home_icon {
+    transform: matrix(0.11377, 0, 0, 0.11377, 2.346087, 3.9);
+    opacity: 0.5;
+}
+
 svg a#tilt_adjust.loading circle#loading-circle,
 svg a.loading circle#home-loading-circle {
     stroke-width: 2px;
@@ -1053,8 +1058,8 @@ svg a.loading g#icon4.home_icon {
 }
 
 svg a#tilt_adjust.loading g#tilt_icon {
-    transform: matrix(0.6, 0, 0, 0.6, 28.6, 12.2);
     opacity: 0.5;
+    transform: matrix(0.6, 0, 0, 0.6, 28.6, 12.2);
     fill: var(--v-btn-text-primary);
 }
 
