@@ -161,10 +161,10 @@
                                         <circle
                                             id="loading-circle"
                                             class="loader-path"
-                                            transform="matrix(0.065, 0, 0, .065, .72, 0.45)"
+                                            transform="matrix(0.1, 0, 0, .1, -1.12, 0.45)"
                                             cx="50"
                                             cy="50"
-                                            r="8"
+                                            r="20"
                                             fill="none" />
                                     </g>
                                 </g>
@@ -1050,7 +1050,6 @@ svg a#tilt_adjust.loading circle#loading-circle,
 svg a.loading circle#home-loading-circle {
     stroke-width: 2px;
 }
-
 svg a.loading g#icon4.home_icon {
     opacity: 0.5;
     transform: matrix(0.22, 0, 0, 0.22, 28.25, 28.2);
@@ -1066,8 +1065,7 @@ svg a#tilt_adjust.loading g#tilt_icon {
 svg a#stepper_off.disabled #stepper_off_icon,
 svg a.loading g#icon.home_icon,
 svg a.loading g#icon1.home_icon,
-svg a.loading g#icon2.home_icon,
-svg a.loading g#icon3.home_icon {
+svg a.loading g#icon2.home_icon {
     fill: var(--v-btn-text-primary);
     stroke: none;
     display: none;
