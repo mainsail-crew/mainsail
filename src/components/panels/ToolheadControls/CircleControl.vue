@@ -1073,8 +1073,8 @@ svg a.loading g#icon2.home_icon {
 }
 
 .spinner {
-    animation: rotate 4s linear infinite;
-    -webkit-animation: rotate 4s linear infinite;
+    animation: rotate 2s linear infinite;
+    -webkit-animation: rotate 2s linear infinite;
     transform-origin: 50% 50%;
     transform-box: fill-box;
     z-index: 2;
@@ -1084,7 +1084,7 @@ svg a.loading g#icon2.home_icon {
         stroke: rgb(255, 255, 255);
         stroke-linecap: round;
         stroke-width: 5px;
-        animation: dash 1.5s ease-out infinite;
+        animation: dash 1.5s ease-in-out infinite;
     }
 }
 
