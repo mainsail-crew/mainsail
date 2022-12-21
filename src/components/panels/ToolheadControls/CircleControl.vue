@@ -817,6 +817,7 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     get colorSpecialButton() {
         let classes = []
         if (this.isPrinting) classes.push('disabled')
+        if (!this.homedAxes.includes('xyz')) classes.push('disabled')
         if (this.loadings.includes('zTilt') || this.loadings.includes('qgl')) classes.push('loading')
         if (this.existsQGL) classes.push(this.colorQuadGantryLevel)
         else if (this.existsZtilt) classes.push(this.colorZTilt)
@@ -1072,8 +1073,8 @@ svg a.loading g#icon2.home_icon {
 }
 
 .spinner {
-    animation: rotate 2s linear infinite;
-    -webkit-animation: rotate 2s linear infinite;
+    animation: rotate 4s linear infinite;
+    -webkit-animation: rotate 4s linear infinite;
     transform-origin: 50% 50%;
     transform-box: fill-box;
     z-index: 2;
@@ -1083,7 +1084,7 @@ svg a.loading g#icon2.home_icon {
         stroke: rgb(255, 255, 255);
         stroke-linecap: round;
         stroke-width: 5px;
-        animation: dash 1.5s ease-in-out infinite;
+        animation: dash 1.5s ease-out infinite;
     }
 }
 
