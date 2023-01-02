@@ -25,6 +25,7 @@ All notable changes to Mainsail will be documented in this file.
 ### Localization
 
 - **da**: Update Danish localization (#1179) | [dc17ff1](dc17ff1158beb16d1a19a755d46f4c75a9f857ca)
+- **nl**: Update NL localization (#1191) | [0735ed3](0735ed37a9b173744dbf426c8c3274bcd9fe2641)
 - **tr**: Update Turkish localization (#1188) | [de23cb6](de23cb62438c1cdb0ba70e0b1617a7bcf03c7d89)
 - **zh**: Update Chinese localization (#1142) | [1a659d3](1a659d30d2c5e3a939d9fde49dee5af1e636b99e)
 
@@ -35,22 +36,7 @@ All notable changes to Mainsail will be documented in this file.
 ### Other
 
 - Add release workflow (#1185) | [3e06c5f](3e06c5fd6690e0e27f45aa12cc1b4e29ec428d31)
-- Push version number to v2.4.1 | [d96070f](d96070f336bc7ec0f51e7a5a74c95ef401302075)
-- Skip push versionnumber if package.json version is the same | [1c93a41](1c93a41621a1f12f844854aa2a08528b2721f6d4)
-- Skip push versionnumber if package.json version is the same | [82f631b](82f631b8659b16f8246b8ce8d3232fde12e7c4ab)
-- Skip push versionnumber if package.json version is the same | [c31a39a](c31a39a232093697c6452a5f06a81ef439b5ad31)
-- Skip push versionnumber if package.json version is the same | [6610a0f](6610a0f5b8e00bd527da81946d548296f9c87c8f)
-- Skip push versionnumber if package.json version is the same | [30e0f2a](30e0f2a5150edca0bd8c77b58eb9a0ffd1953d1f)
-- Skip push versionnumber if package.json version is the same | [220c03b](220c03bdbc4c72a3b3618fa896e4455ac15d08a8)
-- Skip push versionnumber if package.json version is the same | [e0bdd82](e0bdd82b613702e381b623940287dc2c86b3bb69)
-- Skip push versionnumber if package.json version is the same | [2118a44](2118a441d1c7b3e2634c0d824e7b821d94a653be)
-- Remove debug output | [c293347](c2933476f899286e365065794230d662b907d970)
-- Remove commit_message_template in branch-merge | [fd9959e](fd9959e550d9825f129311778ebb78426cd1fe17)
-- Use PAT for branch merge | [78e5c16](78e5c16042eb4045d5e913663f6062853b052f52)
-- Test current setting for release changelog | [83360ab](83360ab6b3d0a3478053f4861bd977f6943f08f1)
-- Test | [ea6ba1b](ea6ba1b943c50bd921c7385acad5ee1934d1a37f)
-- Fix changelog outputs | [cb2feea](cb2feeaeb90238467effb11a95a0ec2f02d81f05)
-- Fix changelog outputs | [28d8c54](28d8c54d7550ebe292938984f48510fc108fdf7f)
+- Fix release workflow (#1190) | [655d2fd](655d2fd339da79e2ad813238b5f300a18d93139d)
 
 ## [2.4.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.4.0) - 2022-11-14
 ### Features
@@ -98,7 +84,6 @@ All notable changes to Mainsail will be documented in this file.
 - Rename and clean up AboutModal (#1090) | [27c57ee](27c57eef68efb9e1f050a8c42b37d78f586c077f)
 - Remove LGTM workflow (#1091) | [78b9864](78b9864d1112e98ceb4a0f0b5f3fc065bc2a2806)
 - Update gcode viewer to V3.1.4 (#1119) | [128baea](128baea88c863f36edef83356a4bb24975fd4765)
-- Push version number to v2.4.0 | [da14c44](da14c448730e66a55ce963533267f97b5cb1d814)
 
 ## [2.3.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.3.1) - 2022-09-16
 ### Bug Fixes and Improvements
@@ -120,7 +105,6 @@ All notable changes to Mainsail will be documented in this file.
 
 - Update broken link to DCO (#1084) | [12dd1c9](12dd1c9e312fd0637b8b6dc60c282ba42a41b91f)
 - Lint:fix locales (#1088) | [a70bd12](a70bd12c1907fddc121c43287de6940a178d1f38)
-- Push version number to v2.3.1 | [e150a4e](e150a4ef32c91feb5591d72805f07d38bc0a5cd6)
 
 ## [2.3.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.3.0) - 2022-09-09
 ### Features
@@ -203,9 +187,7 @@ All notable changes to Mainsail will be documented in this file.
 - Add auto-analyze.yml action (#1009) | [98439b9](98439b916badc1247d444be85bc19e39c135397d)
 - Add github_token to auto-analyze.yml (#1029) | [5f2f7dd](5f2f7ddc9f59572a8883651032777980ad743be7)
 - Fix issues with auto analyze workflow (#1031) | [8e562c7](8e562c7bba54cfc3ca719f6c44d9722f4e0d7d56)
-- Push version number to v2.3.0-beta1 (#1060) | [fe04944](fe04944c79131e5bb6a626ccd347a9d22a44abdb)
 - Change cron interval stale action (#1062) | [eb4c567](eb4c5678ba1f1fa8d56032d78068b16578412714)
-- Push version number to v2.3.0 | [4e8b6de](4e8b6de72aea02876e64a3596e4f4027c63bfa99)
 
 ## [2.2.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.2.1) - 2022-06-21
 ### Bug Fixes and Improvements
@@ -237,7 +219,6 @@ All notable changes to Mainsail will be documented in this file.
 - **bug_report.yml**: Extend issue template (#911) | [de911d2](de911d21fc78e5967aedd326cf54ae59ba0d5ac8)
 - Add workflow to close issues with 'User Input' labels after 7 days (#912) | [308518a](308518a25c6d2e9059a86a75bb7164ba308ed353)
 - Add workflow to check locale files in pull requests (#917) | [753f050](753f0507950e6a1afdcf62272f3e7f2a85acd871)
-- Push version number to v2.2.1 | [6661e03](6661e031fbe8d4662fa2c838ede6668f137a1dcb)
 
 ## [2.2.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.2.0) - 2022-06-11
 ### Features
@@ -402,8 +383,6 @@ All notable changes to Mainsail will be documented in this file.
 
 ### Other
 
-- **changelog**: Update changelog | [8c55bf6](8c55bf6789379ebf9c03a139adbdf99cd0024721)
-- **changelog**: Update changelog | [4f96e16](4f96e160c8c6b000c6104247564c9172f67d254f)
 - **deps**: Regenerate lockfile because of indent change (#652) | [87c83ec](87c83ec9c38a740ef60e2bd21f7c5cef9d679c24)
 - **deps**: Update dependencies (#681) | [610f21b](610f21b1104af42ff52ac8a778c3ff12ed964d49)
 - **deps**: Update dependencies (#717) | [f5c3cf7](f5c3cf727c64831c37e89ce02a602c3f3c15d53c)
@@ -415,12 +394,6 @@ All notable changes to Mainsail will be documented in this file.
 - Remove unused getter (#698) | [4b041c0](4b041c0a55f5748550292dd940f884c06c8f763b)
 - Remove components.d.ts from git (#703) | [0da0504](0da05047a1832175aac9591d41903e0f352f37a3)
 - Some toolhead panel tweaks (#781) | [63283cd](63283cd9b412c6e6f122c040a6c8249853497a15)
-- Push version number to v2.2.0-beta1 | [2f11dd1](2f11dd1ed8a2a227b86a65ec87d993d0b419fc37)
-- Push version number to v2.2.0-beta2 | [eadf2e1](eadf2e152782e7fafc10050001d5b56277b8ace7)
-- Push version number to v2.2.0-beta3 | [35716ea](35716eae2465199ce6da0642630180937768e479)
-- Push version number to v2.2.0-beta4 | [dfaccb3](dfaccb39a5cf09e27a4fc3964c2fa10001834ced)
-- Push version number to V2.2.0-beta5 | [80206d7](80206d7b4abaa06d4c7bfb61c3948e5209c9a52f)
-- Push version number to v2.2.0 | [8adfb0f](8adfb0fdd3ffd60e039c0c1324ef9f780ce0b8c5)
 - Exclude .DS_Store files in build.zip (#886) | [8f843e4](8f843e42b11ab2f1846b4b38c800553715b6ccfa)
 - Exclude .DS_Store files in build.zip (#887) | [e251d3c](e251d3cfe0ff09a9700ff0aefe33f01acde1e2b2)
 
@@ -456,7 +429,6 @@ All notable changes to Mainsail will be documented in this file.
 ### Other
 
 - **docker**: Windows compatible, without docker-compose wrapper (#613) | [dc3f191](dc3f19168466376f467445b2870428d78cb14530)
-- Push version number to v2.2.0-alpha | [07a0e9a](07a0e9aecbb640f7ec5aae066ae9256b366caaef)
 - Add .editorconfig (#582) | [4559ffc](4559ffcbd54ba423ae890d4bc63b3c1ec19cded0)
 - Fix initial development environment (#593) | [20240fc](20240fc442828619e6adc0b71ab319be66974296)
 
@@ -496,7 +468,6 @@ All notable changes to Mainsail will be documented in this file.
 
 - **build**: Sets Node engine to version 16 (#569) | [be0063e](be0063e2a06d105e4fbc244f449da3c5f512335f)
 - Use node 16 for base docker image (#568) | [8a9bc45](8a9bc456b67e41927d727e67e9f38071d5e3cb7e)
-- Push version number to v2.1.1 | [010b3ac](010b3ac55b2886f8f91a45891921ba8e185ba950)
 
 ## [2.1.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.0) - 2022-01-19
 ### Features
@@ -881,18 +852,11 @@ All notable changes to Mainsail will be documented in this file.
 - Add CONTRIBUTING.md | [5b3e662](5b3e662062e50c3426fe50af3a1787cb999724c1)
 - Fix types from last commits | [5f784aa](5f784aa4f563dcedc78567db24b5856e4c345f21)
 - Update perfect scrollbar package in npm | [bad3a84](bad3a842e82604a7a106878574bdb453cca19b13)
-- Push version number to v2.1.0-beta2 | [ee6a603](ee6a603faed6ab205908b373039604b61e5b1cf0)
-- Push version number to v2.1.0-beta3 | [ce09984](ce0998498372cc298bfd500fe417837ea9dc0e20)
 - Update vuetify package | [0cf0311](0cf0311c54d06cb7f3ddc6a1b725194e016f2e30)
 - Add overlayscrollbars to package.json | [e68bc01](e68bc016b60b2520b8c942f7f3ad96f68f9a880e)
 - Update vuetify package (#456) | [3bfeb46](3bfeb4613ca1e01d176cb559ea9a3e5e00ad930b)
-- Push version number to v2.1.0-beta4 | [d654518](d654518c65f52627acebc3e5e7780996896764ff)
 - Update echarts packages | [5b33db4](5b33db421d1af4e066f3c91e1f763825000a2fd8)
 - Update gcode-viewer to v2.1.17 | [9df182f](9df182f44a114c51df2fe31cbc6484c553f8aad2)
-- Push version number to v2.1.0-beta5 | [6a26170](6a2617075b38b7a2f1a20d15f36682a863df2811)
-- Push version number to v2.1.0-beta6 | [64e7626](64e7626e04fcddbc6addad072d132c156466571e)
-- Push version number to v2.1.0-rc1 | [35f30ae](35f30aef4fd15ac76eacd111473b641f347f64be)
-- Push version number to v2.1.0 | [4901d49](4901d4992c89074bed3870ec6c8d863120d01a4e)
 - Update package-lock.json | [28a6f5a](28a6f5a8134222a6bc0f37bb1d99d5f2a7a4b433)
 
 ## [2.0.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.0.1) - 2021-09-08

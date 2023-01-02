@@ -109,8 +109,8 @@
     },
     "BedScrews": {
         "Abort": "abort",
-        "Adjusted": "adjusted",
         "Accept": "accept",
+        "Adjusted": "adjusted",
         "Description": "Click on <b>ADJUSTED</b> if the current screw was adjusted. Click on <b>ACCEPT</b> to continue without adjustment.",
         "Headline": "Bed Screws",
         "ScrewAccepted": "Screws accepted",
