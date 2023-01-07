@@ -63,8 +63,6 @@ export const actions: ActionTree<PrinterState, RootState> = {
     },
 
     getInitData({ dispatch }, payload) {
-        window.console.log('initial data', payload)
-
         if ('screws_tilt_adjust' in payload.status) {
             payload.status.screws_tilt_adjust.error = false
             payload.status.screws_tilt_adjust.results = []
