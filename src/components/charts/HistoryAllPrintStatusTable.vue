@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Watch } from 'vue-property-decorator'
+import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/types'
 
