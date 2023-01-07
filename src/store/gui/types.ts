@@ -138,6 +138,7 @@ export interface GuiState {
         }
         history: {
             countPerPage: number
+            toggleChartCol2: 'chart' | 'table'
             toggleChartCol3: string
             hidePrintStatus: string[]
             hideColums: string[]

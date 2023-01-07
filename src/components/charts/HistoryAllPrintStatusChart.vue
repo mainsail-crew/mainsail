@@ -5,7 +5,7 @@
         :option="chartOptions"
         :autoresize="true"
         :init-options="{ renderer: 'svg' }"
-        style="height: 250px; width: 100%"></e-chart>
+        style="height: 200px; width: 100%"></e-chart>
 </template>
 
 <script lang="ts">
@@ -19,7 +19,7 @@ import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/ty
 @Component({
     components: {},
 })
-export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
+export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin) {
     declare $refs: {
         historyAllPrintStatus: any
     }
