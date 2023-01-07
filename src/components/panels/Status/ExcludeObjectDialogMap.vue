@@ -81,7 +81,7 @@ svg {
                     stroke-width="1" />
             </g>
 
-            <g v-for="(object, index) in printing_objects" :key="index">
+            <g v-for="(object, index) in printing_objects_with_polygons" :key="index">
                 <polygon
                     :points="object.polygon.map((point) => convertX(point[0]) + ',' + convertY(point[1])).join(' ')"
                     style="cursor: pointer"
@@ -122,6 +122,10 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
 
     get printing_objects() {
         return this.$store.state.printer.exclude_object?.objects ?? []
+    }
+
+    get printing_objects_with_polygons() {
+        return this.printing_objects.filter((eobject: any) => 'polygon' in eobject)
     }
 
     get current_object() {
