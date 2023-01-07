@@ -34,6 +34,14 @@
                         <v-spacer></v-spacer>
                         <v-btn
                             v-if="selectedFiles.length"
+                            :title="$t('Timelapse.Download')"
+                            color="primary"
+                            class="px-2 minwidth-0 ml-3"
+                            @click="downloadSelectedFiles">
+                            <v-icon>{{ mdiCloudDownload }}</v-icon>
+                        </v-btn>
+                        <v-btn
+                            v-if="selectedFiles.length"
                             :title="$t('Timelapse.Delete')"
                             color="error"
                             class="px-2 minwidth-0 ml-3"
@@ -414,6 +422,9 @@ import {
     mdiRenameBox,
     mdiDelete,
 } from '@mdi/js'
+import JSZip from 'jszip'
+import axios from 'axios'
+import { saveAs } from 'file-saver'
 
 interface dialogRenameObject {
     show: boolean
@@ -690,6 +701,58 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         const href = this.apiUrl + '/server/files/' + encodeURI(path)
 
         window.open(href)
+    }
+
+    async downloadSelectedFiles() {
+        const zip = new JSZip()
+
+        const addDirectoryToZip = async (zip: JSZip, directory: FileStateFile[], absoluteUrl: string) => {
+            for (const file of directory) {
+                if (file.isDirectory && file.childrens) {
+                    const url = `${absoluteUrl}${encodeURI(file.filename + '/')}`
+                    await addDirectoryToZip(zip.folder(file.filename) as JSZip, file.childrens, url)
+
+                    continue
+                }
+
+                const CancelToken = axios.CancelToken
+                const source = CancelToken.source()
+                this.$store.commit('editor/updateCancelTokenSource', source)
+                this.$store.commit('editor/updateLoaderState', true)
+
+                this.$store.commit('editor/setFilename', file.filename)
+
+                await axios
+                    .get(absoluteUrl + encodeURI(file.filename), {
+                        cancelToken: source.token,
+                        onDownloadProgress: (progressEvent) =>
+                            this.$store.dispatch('editor/downloadProgress', {
+                                progressEvent,
+                                direction: 'downloading',
+                                filesize: file.size,
+                            }),
+                        responseType: 'blob',
+                    })
+                    .then((r) => {
+                        if (r.status === 200) return r.data
+                        return Promise.reject(new Error(r.statusText))
+                    })
+                    .then((blob) => zip?.file(file.filename, blob))
+            }
+        }
+
+        const url = `${this.apiUrl}/server/files/${encodeURI(this.currentPath + '/')}`
+        await addDirectoryToZip(zip, this.selectedFiles, url)
+
+        setTimeout(() => {
+            this.$store.dispatch('editor/clearLoader')
+        }, 100)
+
+        zip.generateAsync({ type: 'blob' }).then(async (blob) => {
+            saveAs(blob, 'archive.zip')
+        })
+
+        this.selectedFiles = []
     }
 
     renameFile(item: FileStateFile) {
