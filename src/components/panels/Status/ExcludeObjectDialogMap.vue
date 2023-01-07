@@ -144,20 +144,40 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
         )
     }
 
+    get settings() {
+        return this.$store.state.printer.configfile?.settings ?? {}
+    }
+
+    get kinematic() {
+        return this.settings.printer?.kinematics ?? 'none'
+    }
+
+    get deltaPrintRadius() {
+        return this.settings.printer?.print_radius ?? this.settings.printer?.delta_radius ?? 100
+    }
+
     get stepperXmin() {
-        return this.$store.state.printer.configfile?.settings?.stepper_x?.position_min ?? 0
+        if (this.kinematic === 'delta') return this.deltaPrintRadius * -1
+
+        return this.settings.stepper_x?.position_min ?? 0
     }
 
     get stepperXmax() {
-        return this.$store.state.printer.configfile?.settings?.stepper_x?.position_max ?? 0
+        if (this.kinematic === 'delta') return this.deltaPrintRadius
+
+        return this.settings.stepper_x?.position_max ?? 0
     }
 
     get stepperYmin() {
-        return this.$store.state.printer.configfile?.settings?.stepper_y?.position_min ?? 200
+        if (this.kinematic === 'delta') return this.deltaPrintRadius * -1
+
+        return this.settings.stepper_y?.position_min ?? 200
     }
 
     get stepperYmax() {
-        return this.$store.state.printer.configfile?.settings?.stepper_y?.position_max ?? 200
+        if (this.kinematic === 'delta') return this.deltaPrintRadius
+
+        return this.settings.stepper_y?.position_max ?? 200
     }
 
     get absoluteX() {
