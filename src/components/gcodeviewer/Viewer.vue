@@ -721,6 +721,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         const offset = 350
         if (newVal > 0 && this.printerIsPrinting && this.tracking && newVal > offset) {
             viewer.gcodeProcessor.updateFilePosition(newVal - offset)
+            this.scrubPosition = newVal - offset
         } else {
             viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
         }
