@@ -108,6 +108,11 @@ export const timelapseConsoleFilters = [
 export const hiddenRootDirectories = ['gcodes', 'timelapse', 'timelapse_frames']
 
 /*
+ * Hide directories
+ */
+export const hideDirectories = ['.git']
+
+/*
  * List of available Klipper config reference translations
  * https://www.klipper3d.org/Config_Reference.html
  */

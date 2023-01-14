@@ -9,7 +9,7 @@ import {
 } from '@/store/files/types'
 import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
-import { validGcodeExtensions } from '@/store/variables'
+import { hideDirectories, validGcodeExtensions } from '@/store/variables'
 import axios from 'axios'
 
 export const actions: ActionTree<FileState, RootState> = {
@@ -67,28 +67,30 @@ export const actions: ActionTree<FileState, RootState> = {
         }
 
         if (payload.dirs?.length) {
-            payload.dirs.forEach((dir: ApiGetDirectoryReturnDir) => {
-                if (
-                    directory?.childrens?.findIndex(
-                        (element: FileStateFile) => element.isDirectory && element.filename === dir.dirname
-                    ) === -1
-                ) {
-                    commit('setCreateDir', {
-                        item: {
-                            path: path.length ? path + '/' + dir.dirname : dir.dirname,
-                            root: root,
-                            permissions: dir.permissions,
-                            modified: dir.modified * 1000,
-                        },
-                    })
+            payload.dirs
+                .filter((dir) => !hideDirectories.includes(dir.dirname))
+                .forEach((dir: ApiGetDirectoryReturnDir) => {
+                    if (
+                        directory?.childrens?.findIndex(
+                            (element: FileStateFile) => element.isDirectory && element.filename === dir.dirname
+                        ) === -1
+                    ) {
+                        commit('setCreateDir', {
+                            item: {
+                                path: path.length ? path + '/' + dir.dirname : dir.dirname,
+                                root: root,
+                                permissions: dir.permissions,
+                                modified: dir.modified * 1000,
+                            },
+                        })
 
-                    Vue.$socket.emit(
-                        'server.files.get_directory',
-                        { path: payload.requestParams.path + '/' + dir.dirname },
-                        { action: 'files/getDirectory' }
-                    )
-                }
-            })
+                        Vue.$socket.emit(
+                            'server.files.get_directory',
+                            { path: payload.requestParams.path + '/' + dir.dirname },
+                            { action: 'files/getDirectory' }
+                        )
+                    }
+                })
         }
 
         if (payload.files?.length) {
