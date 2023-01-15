@@ -54,7 +54,8 @@ export default class CodeStream extends Vue {
         }
     }
 
-    @Watch('currentline') currentlineUpdated(to: number) {
+    @Watch('currentLineNumber')
+    currentlineUpdated(to: number) {
         if (this.view && this.shown) {
             let line = this.view.state.doc.lineAt(to)
             this.view.dispatch({
