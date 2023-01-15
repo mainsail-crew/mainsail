@@ -19,8 +19,18 @@
             </template>
             <v-card-text>
                 <v-row :class="showScrubber ? 'withScrubber' : ''">
-                    <v-col>
+                    <v-col :cols="showGCode ? 8 : 12">
                         <div ref="viewerCanvasContainer"></div>
+                    </v-col>
+                    <v-col v-show="showGCode" cols="4">
+                        <div class="viewer">
+                            <CodeStream
+                                ref="gcodestream"
+                                :shown="showGCode"
+                                :currentline.sync="scrubPosition"
+                                :document="fileData"
+                                :is-simulating="!printerIsPrinting" />
+                        </div>
                     </v-col>
                 </v-row>
                 <v-row v-show="showScrubber" class="scrubber">
@@ -123,6 +133,14 @@
                                                 hide-details
                                                 :label="$t('GCodeViewer.ShowTravelMoves')"></v-checkbox>
                                         </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox
+                                                v-model="showGCode"
+                                                class="mt-0"
+                                                hide-details
+                                                :label="$t('GCodeViewer.ShowGCode')"></v-checkbox>
+                                        </v-list-item>
+
                                         <v-list-item
                                             v-if="loadedFile === sdCardFilePath && printing_objects.length"
                                             class="minHeight36">
@@ -255,6 +273,7 @@ import GCodeViewer from '@sindarius/gcodeviewer'
 import axios from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
+import CodeStream from '@/components/gcodeviewer/CodeStream.vue'
 import {
     mdiCameraRetake,
     mdiCog,
@@ -286,7 +305,7 @@ interface downloadSnackbar {
 
 let viewer: any = null
 @Component({
-    components: { Panel },
+    components: { Panel, CodeStream },
 })
 export default class Viewer extends Mixins(BaseMixin) {
     /**
@@ -342,6 +361,8 @@ export default class Viewer extends Mixins(BaseMixin) {
         name: '',
     }
 
+    private fileData: string = ''
+
     @Prop({ type: String, default: '', required: false }) declare filename: string
     @Ref('fileInput') declare fileInput: HTMLInputElement
     @Ref('viewerCanvasContainer') declare viewerCanvasContainer: HTMLElement
@@ -366,6 +387,9 @@ export default class Viewer extends Mixins(BaseMixin) {
         await this.init()
 
         if (this.loadedFile !== null) this.scrubFileSize = viewer.fileSize
+        if (viewer) {
+            this.fileData = viewer.fileData
+        }
     }
 
     beforeDestroy() {
@@ -574,6 +598,7 @@ export default class Viewer extends Mixins(BaseMixin) {
                 this.fileSize = blob.length
                 // Do something with result
                 await viewer.processFile(blob)
+                this.fileData = viewer.fileData
             }
             this.finishLoad()
         })
@@ -621,6 +646,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
         viewer.updateRenderQuality(this.renderQuality.value)
         await viewer.processFile(text)
+        this.fileData = viewer.fileData
         this.loadingPercent = 100
         this.finishLoad()
         this.scrubFileSize = viewer.fileSize
@@ -652,6 +678,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         this.loading = true
         this.loadingPercent = 0
         await viewer.reload()
+        this.fileData = viewer.fileData
         this.loadingPercent = 100
         this.finishLoad()
     }
@@ -694,6 +721,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         const offset = 350
         if (newVal > 0 && this.printerIsPrinting && this.tracking && newVal > offset) {
             viewer.gcodeProcessor.updateFilePosition(newVal - offset)
+            this.scrubPosition = newVal - offset
         } else {
             viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
         }
@@ -737,6 +765,18 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     set showTravelMoves(newVal: boolean) {
         this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.showTravelMoves', value: newVal })
+    }
+
+    get showGCode(): boolean {
+        return this.$store.state.gui.gcodeViewer.showGCode ?? false
+    }
+
+    set showGCode(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.showGCode', value: newVal })
+        if (newVal && viewer) {
+            this.fileData = viewer.fileData
+        }
+        this.handleResize()
     }
 
     @Watch('showTravelMoves')
@@ -1044,6 +1084,7 @@ export default class Viewer extends Mixins(BaseMixin) {
             this.scrubInterval = setInterval(() => {
                 this.scrubPosition += 100 * this.scrubSpeed
                 viewer.gcodeProcessor.updateFilePosition(this.scrubPosition)
+                viewer.simulateToolPosition()
                 if (this.tracking || this.scrubPosition >= this.scrubFileSize) {
                     this.scrubPlaying = false
                 }
@@ -1062,7 +1103,10 @@ export default class Viewer extends Mixins(BaseMixin) {
     @Debounce(200)
     @Watch('scrubPosition')
     updateScrubPosition(to: number): void {
-        if (!this.tracking) viewer.gcodeProcessor.updateFilePosition(to)
+        if (!this.tracking) {
+            viewer.gcodeProcessor.updateFilePosition(to)
+            viewer.simulateToolPosition()
+        }
     }
 
     fastForward(): void {

@@ -253,7 +253,8 @@
         "Tracking": "Tracking",
         "Transparency": "Transparency",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxel Mode (ASMBL)"
+        "VoxelMode": "Voxel Mode (ASMBL)",
+        "ShowGCode": "Show G-Code"
     },
     "Heightmap": {
         "Abort": "abort",
