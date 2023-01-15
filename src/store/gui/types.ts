@@ -86,6 +86,7 @@ export interface GuiState {
             axis_minimum: number[] | null
             axis_maximum: number[] | null
         }
+        showGCodePanel: boolean
     }
     macros?: GuiMacrosState
     notifications?: GuiNotificationState
