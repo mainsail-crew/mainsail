@@ -15,11 +15,11 @@
             <v-container>
                 <v-row>
                     <v-col class="d-flex align-center justify-center">
-                        <span class="text-h5">{{ z_position_lower }}</span>
+                        <span class="text-h5">{{ y_position_lower }}</span>
                         <v-icon class="mx-2">{{ mdiChevronTripleRight }}</v-icon>
-                        <span class="text-h4">{{ z_position }}</span>
+                        <span class="text-h4">{{ y_position }}</span>
                         <v-icon class="mx-2">{{ mdiChevronTripleLeft }}</v-icon>
-                        <span class="text-h5">{{ z_position_upper }}</span>
+                        <span class="text-h5">{{ y_position_upper }}</span>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -35,12 +35,12 @@
                         </v-btn>
                     </v-col>
                     <v-col class="text-right">
-                        <v-btn class="" color="primary" @click="sendTestZ('+')">
+                        <v-btn class="" color="primary" @click="sendTestY('+')">
                             <v-icon small>{{ mdiPlusThick }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col class="text-right">
-                        <v-btn class="" color="primary" @click="sendTestZ('++')">
+                        <v-btn class="" color="primary" @click="sendTestY('++')">
                             <v-icon small>{{ mdiPlusThick }}</v-icon>
                             <v-icon small>{{ mdiPlusThick }}</v-icon>
                         </v-btn>
@@ -51,11 +51,11 @@
                 <v-container>
                     <v-item-group class="_btn-group">
                         <v-btn
-                            v-for="(offset, index) in offsetsZ"
+                            v-for="(offset, index) in offsetsY"
                             :key="`offsetsUp-${index}`"
                             small
                             class="_btn-qs flex-grow-1 px-1"
-                            @click="sendTestZ(offset.toString())">
+                            @click="sendTestY(offset.toString())">
                             <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
                                 {{ mdiArrowExpandUp }}
                             </v-icon>
@@ -64,11 +64,11 @@
                     </v-item-group>
                     <v-item-group class="_btn-group mt-6 mt-sm-3">
                         <v-btn
-                            v-for="(offset, index) in offsetsZ"
+                            v-for="(offset, index) in offsetsY"
                             :key="`offsetsDown-${index}`"
                             small
                             class="_btn-qs flex-grow-1 px-1"
-                            @click="sendTestZ((offset * -1).toString())">
+                            @click="sendTestY((offset * -1).toString())">
                             <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
                                 {{ mdiArrowCollapseDown }}
                             </v-icon>
@@ -123,25 +123,25 @@ export default class TheManualProbeDialog extends Mixins(BaseMixin) {
         return this.$store.state.printer.manual_probe?.is_active ?? false
     }
 
-    get offsetsZ() {
+    get offsetsY() {
         const offsets = [1, 0.1, 0.05, 0.01, 0.005]
 
         return offsets.sort()
     }
 
-    get z_position() {
-        return (this.$store.state.printer.manual_probe?.z_position ?? 0).toFixed(3)
+    get y_position() {
+        return (this.$store.state.printer.manual_probe?.y_position ?? 0).toFixed(3)
     }
 
-    get z_position_lower() {
-        const value = this.$store.state.printer.manual_probe?.z_position_lower ?? null
+    get y_position_lower() {
+        const value = this.$store.state.printer.manual_probe?.y_position_lower ?? null
         if (value === null) return '??????'
 
         return value.toFixed(3)
     }
 
-    get z_position_upper() {
-        const value = this.$store.state.printer.manual_probe?.z_position_upper ?? null
+    get y_position_upper() {
+        const value = this.$store.state.printer.manual_probe?.y_position_upper ?? null
         if (value === null) return '??????'
 
         return value.toFixed(3)
@@ -155,8 +155,8 @@ export default class TheManualProbeDialog extends Mixins(BaseMixin) {
         return this.loadings.includes('manualProbeAccept')
     }
 
-    sendTestZ(offset: string) {
-        const gcode = `TESTZ Z=${offset}`
+    sendTestY(offset: string) {
+        const gcode = `TESTZ Y=${offset}`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
     }
