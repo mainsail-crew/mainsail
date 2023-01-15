@@ -402,7 +402,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                         fan.target > 0
                             ? `${fan.chartColor}${opacityHeaterActive}`
                             : `${fan.chartColor}${opacityHeaterInactive}`,
-                    iconClass: fan.speed ? ' icon-rotate' : '',
+                    iconClass: '',
                     state: fan.target > 0 && fan.speed > 0 ? fan.speed + '%' : fan.target > 0 ? 'standby' : 'off',
                     avgState: fan.avgSpeed + '%',
                     temperature: fan.temperature,
