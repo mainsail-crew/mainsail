@@ -136,7 +136,7 @@
                             dense
                             :disabled="blockedsettings.includes('parkposOptions')" />
                     </settings-row>
-                    <template v-if="parkpos === 'custom'">
+                    <template v-if="['x_only', 'custom'].includes(parkpos)">
                         <v-divider class="my-2" />
                         <settings-row
                             :title="$t('Settings.TimelapseTab.PosX').toString()"
@@ -151,6 +151,8 @@
                                 :disabled="blockedsettings.includes('park_custom_pos_x')"
                                 hide-spin-buttons />
                         </settings-row>
+                    </template>
+                    <template v-if="['y_only', 'custom'].includes(parkpos)">
                         <v-divider class="my-2" />
                         <settings-row
                             :title="$t('Settings.TimelapseTab.PosY').toString()"
@@ -165,6 +167,8 @@
                                 :disabled="blockedsettings.includes('park_custom_pos_y')"
                                 hide-spin-buttons />
                         </settings-row>
+                    </template>
+                    <template v-if="['x_only', 'y_only', 'custom'].includes(parkpos)">
                         <v-divider class="my-2" />
                         <settings-row
                             :title="$t('Settings.TimelapseTab.PosDZ').toString()"
@@ -459,6 +463,14 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         {
             text: 'back_right',
             value: 'back_right',
+        },
+        {
+            text: 'x_only',
+            value: 'x_only',
+        },
+        {
+            text: 'y_only',
+            value: 'y_only',
         },
         {
             text: 'custom',
