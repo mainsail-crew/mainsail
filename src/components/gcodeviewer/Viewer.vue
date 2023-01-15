@@ -286,7 +286,7 @@ import {
     mdiPause,
     mdiFastForward,
     mdiBroom,
-    mdiSelectionRemove
+    mdiSelectionRemove,
 } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
 
@@ -305,7 +305,7 @@ interface downloadSnackbar {
 
 let viewer: any = null
 @Component({
-    components: { Panel, CodeStream }
+    components: { Panel, CodeStream },
 })
 export default class Viewer extends Mixins(BaseMixin) {
     /**
@@ -352,13 +352,13 @@ export default class Viewer extends Mixins(BaseMixin) {
         cancelTokenSource: {},
         lastProgress: {
             time: 0,
-            loaded: 0
-        }
+            loaded: 0,
+        },
     }
 
     private excludeObject = {
         bool: false,
-        name: ''
+        name: '',
     }
 
     private fileData: string = ''
@@ -377,7 +377,7 @@ export default class Viewer extends Mixins(BaseMixin) {
             { label: this.$t('GCodeViewer.Medium'), value: 3 },
             { label: this.$t('GCodeViewer.High'), value: 4 },
             { label: this.$t('GCodeViewer.Ultra'), value: 5 },
-            { label: this.$t('GCodeViewer.Max'), value: 6 }
+            { label: this.$t('GCodeViewer.Max'), value: 6 },
         ]
     }
 
@@ -580,7 +580,7 @@ export default class Viewer extends Mixins(BaseMixin) {
                     cancelled: this.excluded_objects.includes(object.name),
                     name: object.name,
                     x: [Math.min(...xValues), Math.max(...xValues)],
-                    y: [Math.min(...yValues), Math.max(...yValues)]
+                    y: [Math.min(...yValues), Math.max(...yValues)],
                 })
             })
         }
@@ -635,7 +635,7 @@ export default class Viewer extends Mixins(BaseMixin) {
                     } else this.downloadSnackbar.lastProgress.time = progressEvent.timeStamp
 
                     this.downloadSnackbar.total = progressEvent.total
-                }
+                },
             })
             .then((res) => res.data.text())
             .catch((e) => {
@@ -707,7 +707,7 @@ export default class Viewer extends Mixins(BaseMixin) {
             const position = [
                 { axes: 'X', position: newVal[0] },
                 { axes: 'Y', position: newVal[1] },
-                { axes: 'Z', position: newVal[2] }
+                { axes: 'Z', position: newVal[2] },
             ]
 
             viewer.updateToolPosition(position)
@@ -920,7 +920,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     private colorModes = [
         { text: 'Extruder', value: 0 },
         { text: 'Feed Rate', value: 1 },
-        { text: 'Feature', value: 2 }
+        { text: 'Feature', value: 2 },
     ]
 
     get colorMode(): number {

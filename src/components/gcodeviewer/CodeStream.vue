@@ -33,7 +33,7 @@ export default class CodeStream extends Vue {
         this.view = new EditorView({
             doc: this.document,
             extensions: [basicSetup, EditorState.readOnly.of(true)],
-            parent: this.$refs['view'] as HTMLElement
+            parent: this.$refs['view'] as HTMLElement,
         })
     }
 
@@ -54,27 +54,28 @@ export default class CodeStream extends Vue {
         }
     }
 
-    @Watch('document') documentUpdated() {
+    @Watch('document')
+    documentUpdated() {
         if (this.view && this.shown) {
             this.view.dispatch({
                 changes: {
                     from: 0,
                     to: this.view.state.doc.length,
-                    insert: this.document
-                }
+                    insert: this.document,
+                },
             })
         }
     }
 
     @Watch('currentline') currentlineUpdated(to: number) {
         if (this.view && this.shown) {
-            var line = this.view.state.doc.lineAt(to)
+            let line = this.view.state.doc.lineAt(to)
             this.view.dispatch({
                 selection: {
                     anchor: line.from,
-                    head: line.from
+                    head: line.from,
                 },
-                scrollIntoView: true
+                scrollIntoView: true,
             })
         }
     }
