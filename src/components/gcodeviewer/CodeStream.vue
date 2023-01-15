@@ -2,19 +2,6 @@
     <div ref="view" class="codeview" @mouseup="mouseUp" @keydown="keyPress"></div>
 </template>
 
-<style scoped></style>
-
-<style>
-.cm-activeLine {
-    background-color: #333 !important;
-}
-
-.codeview {
-    height: 100%;
-    overflow: auto;
-}
-</style>
-
 <script lang="ts">
 import { Component, PropSync, Prop, Vue, Watch } from 'vue-property-decorator'
 import { EditorView, basicSetup } from 'codemirror'
@@ -81,3 +68,14 @@ export default class CodeStream extends Vue {
     }
 }
 </script>
+
+<style scoped>
+/deep/ .cm-activeLine {
+    background-color: #333 !important;
+}
+
+.codeview {
+    height: 100%;
+    overflow: hidden;
+}
+</style>
