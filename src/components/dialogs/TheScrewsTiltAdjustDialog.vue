@@ -19,10 +19,10 @@
                     </v-col>
                 </v-row>
             </v-card-text>
-            <v-card-text v-if="results.length">
-                <template v-for="(result, index) of results">
-                    <v-divider v-if="index" :key="`result-divider-` + index" class="my-1" />
-                    <the-screws-tilt-adjust-dialog-entry :key="`result-` + index" :result="result" />
+            <v-card-text v-if="Object.keys(results).length">
+                <template v-for="(result, name, index) of results">
+                    <v-divider v-if="index" :key="`result-divider-` + name" class="my-1" />
+                    <the-screws-tilt-adjust-dialog-entry :key="`result-` + name" :name='name' :result="result" />
                 </template>
             </v-card-text>
             <v-card-actions>
@@ -61,11 +61,11 @@ export default class TheScrewsTiltAdjustDialog extends Mixins(BaseMixin, Control
     }
 
     get results() {
-        return this.state.results ?? []
+        return this.state.results ?? {}
     }
 
     get showDialog() {
-        return this.error || this.results.length
+        return this.error || Object.keys(this.results).length
     }
 
     clearScrewsTiltAdjust() {
