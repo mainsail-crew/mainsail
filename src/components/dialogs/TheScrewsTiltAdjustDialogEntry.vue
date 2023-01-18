@@ -1,5 +1,5 @@
 <template>
-    <settings-row :title="name" :sub-title="subTitle">
+    <settings-row :title="outputName" :sub-title="subTitle">
         <v-chip v-if="!(is_base ?? false)" label small>
             <v-icon v-if="sign === 'CCW'" small left>{{ mdiRotateLeft }}</v-icon>
             <v-icon v-if="sign === 'CW'" small left>{{ mdiRotateRight }}</v-icon>
@@ -20,13 +20,10 @@ import { mdiRotateLeft, mdiRotateRight, mdiCloseThick } from '@mdi/js'
 import ControlMixin from '@/components/mixins/control'
 
 interface ScrewsTiltAdjustResult {
-    name: string
-    x: number
-    y: number
     z: number
     sign?: string
-    adjust: string
-    is_base?: boolean
+    adjust?: string
+    is_base: boolean
 }
 
 @Component({
@@ -37,18 +34,27 @@ export default class TheScrewsTiltAdjustDialogEntry extends Mixins(BaseMixin, Co
     mdiCloseThick = mdiCloseThick
     mdiRotateRight = mdiRotateRight
 
+    @Prop({ required: true }) declare readonly name: string
     @Prop({ required: true }) declare readonly result: ScrewsTiltAdjustResult
 
-    get name() {
-        return this.result.name
+    get settings() {
+        return this.$store.state.printer.configfile?.settings?.screws_tilt_adjust ?? {}
+    }
+
+    get outputName() {
+        return this.settings[this.name + '_name'] ?? 'Unknown'
+    }
+
+    get coordinates() {
+        return this.settings[this.name] ?? [0, 0]
     }
 
     get x() {
-        return this.result.x.toFixed(1)
+        return this.coordinates[0] ?? 0
     }
 
     get y() {
-        return this.result.y.toFixed(1)
+        return this.coordinates[1] ?? 0
     }
 
     get z() {
@@ -68,8 +74,6 @@ export default class TheScrewsTiltAdjustDialogEntry extends Mixins(BaseMixin, Co
     }
 
     get is_base() {
-        if (!('sign' in this.result)) return true
-
         return this.result.is_base ?? false
     }
 }
