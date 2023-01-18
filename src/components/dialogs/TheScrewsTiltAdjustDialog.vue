@@ -45,6 +45,7 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiArrowCollapseDown, mdiCloseThick } from '@mdi/js'
 import ControlMixin from '@/components/mixins/control'
 import TheScrewsTiltAdjustDialogEntry from '@/components/dialogs/TheScrewsTiltAdjustDialogEntry.vue'
+
 @Component({
     components: { TheScrewsTiltAdjustDialogEntry, Panel, Responsive, SettingsRow },
 })
