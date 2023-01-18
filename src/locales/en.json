@@ -419,7 +419,8 @@
             "TRIGGERED": "TRIGGERED"
         },
         "LogfilesPanel": {
-            "Logfiles": "Log Files"
+            "Logfiles": "Log Files",
+            "Rollover": "Rollover Logs"
         },
         "SystemPanel": {
             "Constants": "Constants",
