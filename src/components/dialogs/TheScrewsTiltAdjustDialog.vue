@@ -21,8 +21,8 @@
             </v-card-text>
             <v-card-text v-if="Object.keys(results).length">
                 <template v-for="(result, name, index) of results">
-                    <v-divider v-if="index" :key="`result-divider-` + name" class="my-1" />
-                    <the-screws-tilt-adjust-dialog-entry :key="`result-` + name" :name='name' :result="result" />
+                    <v-divider v-if="index" :key="`result-divider-${name}`" class="my-1" />
+                    <the-screws-tilt-adjust-dialog-entry :key="`result-${name}`" :name="name" :result="result" />
                 </template>
             </v-card-text>
             <v-card-actions>
