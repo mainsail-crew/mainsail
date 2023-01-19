@@ -254,7 +254,8 @@
         "Transparency": "Transparency",
         "Ultra": "Ultra",
         "VoxelMode": "Voxel Mode (ASMBL)",
-        "ShowGCode": "Show G-Code"
+        "ShowGCode": "Show G-Code",
+        "CNCMode": "CNC Mode"
     },
     "Heightmap": {
         "Abort": "abort",
