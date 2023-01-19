@@ -139,6 +139,7 @@ export const getDefaultState = (): GuiState => {
                 axis_maximum: null,
             },
             showGCodePanel: false,
+            cncMode: false,
         },
         uiSettings: {
             logo: defaultLogoColor,

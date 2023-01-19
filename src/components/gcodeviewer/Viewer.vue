@@ -186,6 +186,13 @@
                                                 hide-details
                                                 :label="$t('GCodeViewer.SpecularLighting')"></v-checkbox>
                                         </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox
+                                                v-model="cncMode"
+                                                class="mt-0"
+                                                hide-details
+                                                :label="$t('GCodeViewer.CNCMode')"></v-checkbox>
+                                        </v-list-item>
                                     </v-list>
                                 </v-menu>
                             </v-col>
@@ -508,13 +515,14 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
 
         viewer.gcodeProcessor.useHighQualityExtrusion(this.hdRendering)
-        viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering)
+        viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering || this.cncMode)
         viewer.gcodeProcessor.setAlpha(this.transparency)
         viewer.gcodeProcessor.setVoxelMode(this.voxelMode)
         viewer.gcodeProcessor.voxelWidth = this.voxelWidth
         viewer.gcodeProcessor.voxelHeight = this.voxelHeight
         viewer.gcodeProcessor.useSpecularColor(this.specularLighting)
         viewer.gcodeProcessor.setLiveTracking(false)
+        viewer.gcodeProcessor.g1AsExtrusion = this.cncMode
         viewer.buildObjects.objectCallback = this.objectCallback
 
         this.loadToolColors(this.extruderColors)
@@ -824,7 +832,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     @Watch('forceLineRendering')
     async forceLineRenderingChanged(newVal: boolean) {
         if (viewer) {
-            viewer.gcodeProcessor.updateForceWireMode(newVal)
+            viewer.gcodeProcessor.updateForceWireMode(newVal || this.cncMode)
             await this.reloadViewer()
         }
     }
@@ -893,6 +901,17 @@ export default class Viewer extends Mixins(BaseMixin) {
             viewer.gcodeProcessor.useSpecularColor(newVal)
             //await this.reloadViewer()
         }
+    }
+
+    get cncMode() {
+        return this.$store.state.gui.gcodeViewer.cncMode
+    }
+
+    set cncMode(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.cncMode', value: newVal })
+        viewer.gcodeProcessor.g1AsExtrusion = newVal
+        viewer.gcodeProcessor.updateForceWireMode(true)
+        this.reloadViewer()
     }
 
     get extruderColors() {
