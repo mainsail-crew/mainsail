@@ -77,6 +77,6 @@ export default class CodeStream extends Vue {
 
 .codeview {
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
 }
 </style>
