@@ -63,6 +63,7 @@
                             :key="tool.name"
                             :class="tool.active ? 'primary--text' : {}"
                             :disabled="isPrinting"
+                            :style="'background-color: #' + tool.color + ';'"
                             dense
                             class="flex-grow-1 px-0"
                             @click="doSend(tool.name)">
