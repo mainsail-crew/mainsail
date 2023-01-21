@@ -334,8 +334,6 @@ export const actions: ActionTree<FileState, RootState> = {
     },
 
     rolloverLog(_, payload) {
-        window.console.log('rolloverLog action', payload)
-
         payload.rolled_over.forEach((name: string) => {
             Vue.$toast.success(<string>i18n.t('Machine.LogfilesPanel.RolloverToastSuccessful', { name }))
         })
