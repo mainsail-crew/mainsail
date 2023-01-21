@@ -332,4 +332,10 @@ export const actions: ActionTree<FileState, RootState> = {
     uploadSetMaxNumber({ commit }, payload) {
         commit('uploadSetMaxNumber', payload)
     },
+
+    downloadZip({ rootGetters }, payload) {
+        const apiUrl = rootGetters['socket/getUrl']
+        const url = `${apiUrl}/server/files/${payload.destination.root}/${encodeURI(payload.destination.path)}`
+        window.open(url)
+    },
 }
