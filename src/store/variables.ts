@@ -112,3 +112,8 @@ export const hiddenRootDirectories = ['gcodes', 'timelapse', 'timelapse_frames']
  * https://www.klipper3d.org/Config_Reference.html
  */
 export const availableKlipperConfigReferenceTranslations = ['it', 'hu', 'zh']
+
+/*
+ * List of all rollover logfiles
+ */
+export const rolloverLogfiles = ['klipper', 'moonraker']

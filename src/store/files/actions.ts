@@ -332,4 +332,22 @@ export const actions: ActionTree<FileState, RootState> = {
     uploadSetMaxNumber({ commit }, payload) {
         commit('uploadSetMaxNumber', payload)
     },
+
+    rolloverLog(_, payload) {
+        window.console.log('rolloverLog action', payload)
+
+        payload.rolled_over.forEach((name: string) => {
+            Vue.$toast.success(<string>i18n.t('Machine.LogfilesPanel.RolloverToastSuccessful', { name }))
+        })
+
+        Object.keys(payload.failed).forEach((name: string) => {
+            const message = payload.failed[name]
+
+            Vue.$toast.error(<string>i18n.t('Machine.LogfilesPanel.RolloverToastFailed', { name, message }))
+        })
+
+        setTimeout(() => {
+            Vue.$socket.emit('server.files.get_directory', { path: 'logs' }, { action: 'files/getDirectory' })
+        }, 500)
+    },
 }

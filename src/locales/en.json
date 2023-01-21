@@ -420,7 +420,10 @@
         },
         "LogfilesPanel": {
             "Logfiles": "Log Files",
-            "Rollover": "Rollover Logs"
+            "Rollover": "Rollover Logs",
+            "RolloverDescription": "Please select which logs should be reset:",
+            "RolloverToastSuccessful": "Log for \"{name}\"was successfully reset.",
+            "RolloverToastFailed": "Rollover log for \"{name}\": {message}"
         },
         "SystemPanel": {
             "Constants": "Constants",
