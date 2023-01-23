@@ -533,9 +533,6 @@ import {
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import ControlMixin from '@/components/mixins/control'
-import JSZip from 'jszip'
-import axios from 'axios'
-import { saveAs } from 'file-saver'
 
 interface contextMenu {
     shown: boolean

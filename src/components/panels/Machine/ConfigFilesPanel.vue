@@ -485,8 +485,6 @@ import {
     mdiCloseThick,
     mdiLockOutline,
 } from '@mdi/js'
-import JSZip from 'jszip'
-import { saveAs } from 'file-saver'
 
 interface contextMenu {
     shown: boolean
