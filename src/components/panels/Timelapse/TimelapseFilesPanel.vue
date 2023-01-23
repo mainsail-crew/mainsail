@@ -37,6 +37,7 @@
                             :title="$t('Timelapse.Download')"
                             color="primary"
                             class="px-2 minwidth-0 ml-3"
+                            :loading="loadings.includes('timelapseDownloadZip')"
                             @click="downloadSelectedFiles">
                             <v-icon>{{ mdiCloudDownload }}</v-icon>
                         </v-btn>
@@ -422,9 +423,6 @@ import {
     mdiRenameBox,
     mdiDelete,
 } from '@mdi/js'
-import JSZip from 'jszip'
-import axios from 'axios'
-import { saveAs } from 'file-saver'
 
 interface dialogRenameObject {
     show: boolean
@@ -731,7 +729,14 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         }
 
         await addElementToItems(this.currentPath, this.selectedFiles)
-        this.$socket.emit('server.files.zip', { items }, { action: 'files/downloadZip', loading: 'configDownloadZip' })
+        const date = new Date()
+        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDay()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+
+        this.$socket.emit(
+            'server.files.zip',
+            { items, dest: `timelapse/collection-${timestamp}.zip` },
+            { action: 'files/downloadZip', loading: 'timelapseDownloadZip' }
+        )
 
         this.selectedFiles = []
     }

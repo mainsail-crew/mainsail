@@ -23,6 +23,7 @@
                             :title="$t('Files.Download')"
                             color="primary"
                             class="px-2 minwidth-0 ml-3"
+                            :loading="loadings.includes('gcodeDownloadZip')"
                             @click="downloadSelectedFiles">
                             <v-icon>{{ mdiCloudDownload }}</v-icon>
                         </v-btn>
@@ -1141,53 +1142,24 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     async downloadSelectedFiles() {
-        const zip = new JSZip()
+        let items: string[] = []
 
-        const addDirectoryToZip = async (zip: JSZip, directory: FileStateFile[], absoluteUrl: string) => {
+        const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
             for (const file of directory) {
+                const filePath = `${absolutPath}/${file.filename}`
+
                 if (file.isDirectory && file.childrens) {
-                    const url = `${absoluteUrl}${encodeURI(file.filename + '/')}`
-                    await addDirectoryToZip(zip.folder(file.filename) as JSZip, file.childrens, url)
+                    await addElementToItems(filePath, file.childrens)
 
                     continue
                 }
 
-                const CancelToken = axios.CancelToken
-                const source = CancelToken.source()
-                this.$store.commit('editor/updateCancelTokenSource', source)
-                this.$store.commit('editor/updateLoaderState', true)
-
-                this.$store.commit('editor/setFilename', file.filename)
-
-                await axios
-                    .get(absoluteUrl + encodeURI(file.filename), {
-                        cancelToken: source.token,
-                        onDownloadProgress: (progressEvent) =>
-                            this.$store.dispatch('editor/downloadProgress', {
-                                progressEvent,
-                                direction: 'downloading',
-                                filesize: file.size,
-                            }),
-                        responseType: 'blob',
-                    })
-                    .then((r) => {
-                        if (r.status === 200) return r.data
-                        return Promise.reject(new Error(r.statusText))
-                    })
-                    .then((blob) => zip?.file(file.filename, blob))
+                items.push(filePath)
             }
         }
 
-        const url = `${this.apiUrl}/server/files/gcodes${encodeURI(this.currentPath + '/')}`
-        await addDirectoryToZip(zip, this.selectedFiles, url)
-
-        setTimeout(() => {
-            this.$store.dispatch('editor/clearLoader')
-        }, 100)
-
-        zip.generateAsync({ type: 'blob' }).then(async (blob) => {
-            saveAs(blob, 'archive.zip')
-        })
+        await addElementToItems('gcodes/' + this.currentPath, this.selectedFiles)
+        this.$socket.emit('server.files.zip', { items }, { action: 'files/downloadZip', loading: 'gcodeDownloadZip' })
 
         this.selectedFiles = []
     }
