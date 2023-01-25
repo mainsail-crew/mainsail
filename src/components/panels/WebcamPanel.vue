@@ -6,7 +6,8 @@
         :icon="mdiWebcam"
         :title="$t('Panels.WebcamPanel.Headline')"
         :collapsible="$route.fullPath !== '/cam'"
-        card-class="webcam-panel">
+        card-class="webcam-panel"
+        :margin-bottom="currentPage !== 'page'">
         <template v-if="webcams.length > 1" #buttons>
             <v-menu :offset-y="true" title="Webcam">
                 <template #activator="{ on, attrs }">
