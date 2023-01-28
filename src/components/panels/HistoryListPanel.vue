@@ -291,13 +291,15 @@
                         <v-divider class="my-3"></v-divider>
                         <v-row>
                             <v-col>{{ $t('History.StartTime') }}</v-col>
-                            <v-col class="text-right">{{ formatDateTime(detailsDialog.item.start_time) }}</v-col>
+                            <v-col class="text-right">{{ formatDateTime(detailsDialog.item.start_time * 1000) }}</v-col>
                         </v-row>
                         <template v-if="'end_time' in detailsDialog.item && detailsDialog.item.end_time > 0">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.EndTime') }}</v-col>
-                                <v-col class="text-right">{{ formatDateTime(detailsDialog.item.end_time) }}</v-col>
+                                <v-col class="text-right">
+                                    {{ formatDateTime(detailsDialog.item.end_time * 1000) }}
+                                </v-col>
                             </v-row>
                         </template>
                         <template
