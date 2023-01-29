@@ -12,7 +12,7 @@
     <div>
         <panel
             :icon="mdiFileDocumentMultipleOutline"
-            :title="$t('History.PrintHistory')"
+            :title="$t('History.PrintHistory').toString()"
             card-class="history-list-panel">
             <v-card-text>
                 <v-row>
@@ -246,7 +246,7 @@
             persistent
             @keydown.esc="detailsDialog.boolShow = false">
             <panel
-                :title="$t('History.JobDetails')"
+                :title="$t('History.JobDetails').toString()"
                 :icon="mdiUpdate"
                 card-class="history-detail-dialog"
                 :margin-bottom="false">
@@ -431,7 +431,10 @@
             </panel>
         </v-dialog>
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
-            <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
+            <panel
+                :title="$t('History.Delete').toString()"
+                card-class="history-delete-selected-dialog"
+                :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="deleteSelectedDialog = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
