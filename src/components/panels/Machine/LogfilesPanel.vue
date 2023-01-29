@@ -97,7 +97,7 @@
                                 v-for="log in rolloverLogfiles"
                                 :key="log"
                                 v-model="selectedRolloverLogs"
-                                :label="log"
+                                :label="capitalize(log)"
                                 :value="log"
                                 hide-details
                                 class="mt-0" />
@@ -125,6 +125,7 @@ import Panel from '@/components/ui/Panel.vue'
 import { FileStateFile } from '@/store/files/types'
 import { mdiDownload, mdiFileDocumentEdit, mdiAutorenew, mdiCloseThick } from '@mdi/js'
 import { rolloverLogfiles } from '@/store/variables'
+import { capitalize } from '@/plugins/helpers'
 @Component({
     components: { Panel },
 })
@@ -135,6 +136,7 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
 
     rolloverLogfiles = rolloverLogfiles
+    capitalize = capitalize
 
     private showRolloverDialog = false
     private selectedRolloverLogs: string[] = []
