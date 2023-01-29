@@ -273,7 +273,7 @@
                             <v-row>
                                 <v-col>{{ $t('History.LastModified') }}</v-col>
                                 <v-col class="text-right">
-                                    {{ formatDateTime(detailsDialog.item.metadata.modified) }}
+                                    {{ formatDateTime(detailsDialog.item.metadata.modified * 1000) }}
                                 </v-col>
                             </v-row>
                         </template>
