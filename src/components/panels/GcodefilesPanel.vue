@@ -319,7 +319,7 @@
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && moonrakerComponents.includes('job_queue')"
                     :disabled="!isGcodeFile(contextMenu.item)"
-                    @click="addToQueue(contextMenu.item)">
+                    @click="openAddToQueueDialog(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
                     {{ $t('Files.AddToQueue') }}
                 </v-list-item>
@@ -495,6 +495,33 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <v-dialog v-model="dialogAddToQueue.show" max-width="400">
+            <panel
+                :title="$t('Files.AddToQueue').toString()"
+                card-class="gcode-files-add-to-queue-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="dialogAddToQueue.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+
+                <v-card-text>
+                    <v-text-field
+                        ref="inputFieldAddToQueueCount"
+                        v-model="dialogAddToQueue.count"
+                        :label="$t('Files.Count')"
+                        required
+                        :rules="countInputRules"
+                        @keyup.enter="addToQueueAction"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogAddToQueue.show = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn color="error" text @click="addToQueueAction">{{ $t('Files.AddToQueue') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </div>
 </template>
 
@@ -551,6 +578,12 @@ interface draggingFile {
 
 interface dialogPrintFile {
     show: boolean
+    item: FileStateGcodefile
+}
+
+interface dialogAddToQueue {
+    show: boolean
+    count: number
     item: FileStateGcodefile
 }
 
@@ -648,6 +681,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         item: { ...this.contextMenu.item },
     }
 
+    private dialogAddToQueue: dialogAddToQueue = {
+        show: false,
+        count: 1,
+        item: { ...this.contextMenu.item },
+    }
+
     private dialogRenameFile: dialogRenameObject = {
         show: false,
         newName: '',
@@ -670,6 +709,10 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     private isInvalidName = true
     private nameInputRules = [
+        (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
+        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
+    ]
+    private countInputRules = [
         (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
         (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
     ]
@@ -1099,7 +1142,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
     }
 
-    addToQueue(item: FileStateGcodefile | FileStateFile) {
+    openAddToQueueDialog(item: FileStateGcodefile) {
+        this.dialogAddToQueue.show = true
+        this.dialogAddToQueue.count = 1
+        this.dialogAddToQueue.item = item
+    }
+
+    addToQueueAction(item: FileStateGcodefile | FileStateFile) {
         let filename = [this.currentPath, item.filename].join('/')
         if (filename.startsWith('/')) filename = filename.slice(1)
 
