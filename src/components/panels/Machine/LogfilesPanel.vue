@@ -1,11 +1,30 @@
 <template>
-    <panel
-        :title="$t('Machine.LogfilesPanel.Logfiles').toString()"
-        :icon="mdiFileDocumentEdit"
-        card-class="machine-logfiles-panel"
-        :collapsible="true">
-        <v-card-text :class="'text-center text-lg-left py-0'">
-            <v-container pb-0 px-0>
+    <div>
+        <panel
+            :title="$t('Machine.LogfilesPanel.Logfiles').toString()"
+            :icon="mdiFileDocumentEdit"
+            card-class="machine-logfiles-panel"
+            :collapsible="true">
+            <template #buttons>
+                <v-tooltip top>
+                    <template #activator="{ on, attrs }">
+                        <v-btn
+                            icon
+                            tile
+                            color="primary"
+                            :ripple="true"
+                            :loading="loadings.includes('loadingBtnRolloverLogs')"
+                            :disabled="['printing', 'paused'].includes(printer_state)"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="showRolloverDialog = true">
+                            <v-icon>{{ mdiFileSyncOutline }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>{{ $t('Machine.LogfilesPanel.Rollover') }}</span>
+                </v-tooltip>
+            </template>
+            <v-card-text :class="'text-center text-lg-left'">
                 <v-row>
                     <v-col :class="'col-12' + (klipperState !== 'ready' ? 'col-md-6' : 'col-md-12') + ''">
                         <v-btn
@@ -53,23 +72,74 @@
                         </v-btn>
                     </v-col>
                 </v-row>
-            </v-container>
-        </v-card-text>
-    </panel>
+            </v-card-text>
+        </panel>
+        <v-dialog :value="showRolloverDialog" persistent width="400" :fullscreen="isMobile">
+            <panel
+                :title="$t('Machine.LogfilesPanel.Rollover').toString()"
+                card-class="machine_rollover_logfiles-dialog"
+                :icon="mdiFileSyncOutline"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="showRolloverDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <v-row>
+                        <v-col>
+                            <p class="mb-0">{{ $t('Machine.LogfilesPanel.RolloverDescription') }}</p>
+                        </v-col>
+                    </v-row>
+                    <v-row class="mt-0">
+                        <v-col>
+                            <v-checkbox
+                                v-for="log in rolloverLogfiles"
+                                :key="log"
+                                v-model="selectedRolloverLogs"
+                                :label="capitalize(log)"
+                                :value="log"
+                                hide-details
+                                class="mt-0" />
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn text @click="btnRolloverLogs">
+                        {{ $t('Machine.LogfilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn color="primary" text @click="btnRolloverLogs">
+                        {{ $t('Machine.LogfilesPanel.Accept') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+    </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { FileStateFile } from '@/store/files/types'
-import { mdiDownload, mdiFileDocumentEdit } from '@mdi/js'
+import { mdiDownload, mdiFileDocumentEdit, mdiCloseThick, mdiFileSyncOutline } from '@mdi/js'
+import { rolloverLogfiles } from '@/store/variables'
+import { capitalize } from '@/plugins/helpers'
 @Component({
     components: { Panel },
 })
 export default class LogfilesPanel extends Mixins(BaseMixin) {
     mdiFileDocumentEdit = mdiFileDocumentEdit
     mdiDownload = mdiDownload
+    mdiCloseThick = mdiCloseThick
+    mdiFileSyncOutline = mdiFileSyncOutline
+
+    rolloverLogfiles = rolloverLogfiles
+    capitalize = capitalize
+
+    private showRolloverDialog = false
+    private selectedRolloverLogs: string[] = []
 
     get logfiles() {
         return this.$store.getters['files/getDirectory']('logs')?.childrens ?? []
@@ -85,6 +155,10 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
         return sonarLog?.size > 0
     }
 
+    get loadingRolloverLogs() {
+        return this.loadings.filter((log) => log.startsWith('rolloverLog_')).length > 0
+    }
+
     downloadLog(event: any) {
         event.preventDefault()
         let href = ''
@@ -92,6 +166,25 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
         if ('href' in event.target.parentElement.attributes) href = event.target.parentElement.attributes.href.value
 
         window.open(href)
+    }
+
+    btnRolloverLogs() {
+        if (this.selectedRolloverLogs.length === 0) return
+
+        this.selectedRolloverLogs.forEach((name) => {
+            this.$socket.emit(
+                'server.logs.rollover',
+                { application: name },
+                { loading: 'rolloverLog_' + name, action: 'files/rolloverLog' }
+            )
+        })
+
+        this.selectedRolloverLogs = []
+    }
+
+    @Watch('loadingRolloverLogs')
+    loadingRolloverLogsChanged(newVal: boolean) {
+        if (newVal) this.showRolloverDialog = false
     }
 }
 </script>
