@@ -110,7 +110,7 @@ export const hiddenRootDirectories = ['gcodes', 'timelapse', 'timelapse_frames']
 /*
  * Hide directories
  */
-export const hideDirectories = ['.git']
+export const hiddenDirectories = ['.git']
 
 /*
  * List of available Klipper config reference translations

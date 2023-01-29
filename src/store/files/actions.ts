@@ -9,7 +9,7 @@ import {
 } from '@/store/files/types'
 import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
-import { hideDirectories, validGcodeExtensions } from '@/store/variables'
+import { hiddenDirectories, validGcodeExtensions } from '@/store/variables'
 import axios from 'axios'
 
 export const actions: ActionTree<FileState, RootState> = {
@@ -68,7 +68,7 @@ export const actions: ActionTree<FileState, RootState> = {
 
         if (payload.dirs?.length) {
             payload.dirs
-                .filter((dir) => !hideDirectories.includes(dir.dirname))
+                .filter((dir) => !hiddenDirectories.includes(dir.dirname))
                 .forEach((dir: ApiGetDirectoryReturnDir) => {
                     if (
                         directory?.childrens?.findIndex(
