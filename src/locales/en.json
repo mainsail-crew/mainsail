@@ -419,6 +419,8 @@
             "TRIGGERED": "TRIGGERED"
         },
         "LogfilesPanel": {
+            "Accept": "accept",
+            "Cancel": "cancel",
             "Logfiles": "Log Files",
             "Rollover": "Rollover Logs",
             "RolloverDescription": "Please select which logs should be reset:",

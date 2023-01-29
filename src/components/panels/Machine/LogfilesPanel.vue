@@ -107,7 +107,10 @@
                 <v-card-actions>
                     <v-spacer />
                     <v-btn color="primary" text @click="btnRolloverLogs">
-                        {{ $t('Machine.LogfilesPanel.Rollover') }}
+                        {{ $t('Machine.LogfilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn color="primary" text @click="btnRolloverLogs">
+                        {{ $t('Machine.LogfilesPanel.Accept') }}
                     </v-btn>
                 </v-card-actions>
             </panel>
