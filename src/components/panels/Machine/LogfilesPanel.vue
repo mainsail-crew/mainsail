@@ -18,7 +18,7 @@
                             v-bind="attrs"
                             v-on="on"
                             @click="showRolloverDialog = true">
-                            <v-icon>{{ mdiAutorenew }}</v-icon>
+                            <v-icon>{{ mdiFileSyncOutline }}</v-icon>
                         </v-btn>
                     </template>
                     <span>{{ $t('Machine.LogfilesPanel.Rollover') }}</span>
@@ -78,7 +78,7 @@
             <panel
                 :title="$t('Machine.LogfilesPanel.Rollover').toString()"
                 card-class="machine_rollover_logfiles-dialog"
-                :icon="mdiAutorenew"
+                :icon="mdiFileSyncOutline"
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="showRolloverDialog = false">
@@ -123,7 +123,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { FileStateFile } from '@/store/files/types'
-import { mdiDownload, mdiFileDocumentEdit, mdiAutorenew, mdiCloseThick } from '@mdi/js'
+import { mdiDownload, mdiFileDocumentEdit, mdiCloseThick, mdiFileSyncOutline } from '@mdi/js'
 import { rolloverLogfiles } from '@/store/variables'
 import { capitalize } from '@/plugins/helpers'
 @Component({
@@ -132,8 +132,8 @@ import { capitalize } from '@/plugins/helpers'
 export default class LogfilesPanel extends Mixins(BaseMixin) {
     mdiFileDocumentEdit = mdiFileDocumentEdit
     mdiDownload = mdiDownload
-    mdiAutorenew = mdiAutorenew
     mdiCloseThick = mdiCloseThick
+    mdiFileSyncOutline = mdiFileSyncOutline
 
     rolloverLogfiles = rolloverLogfiles
     capitalize = capitalize
