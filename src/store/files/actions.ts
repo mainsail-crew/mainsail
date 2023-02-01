@@ -335,6 +335,12 @@ export const actions: ActionTree<FileState, RootState> = {
         commit('uploadSetMaxNumber', payload)
     },
 
+    downloadZip({ rootGetters }, payload) {
+        const apiUrl = rootGetters['socket/getUrl']
+        const url = `${apiUrl}/server/files/${payload.destination.root}/${encodeURI(payload.destination.path)}`
+        window.open(url)
+    },
+
     rolloverLog(_, payload) {
         payload.rolled_over.forEach((name: string) => {
             Vue.$toast.success(<string>i18n.t('Machine.LogfilesPanel.RolloverToastSuccessful', { name }))
