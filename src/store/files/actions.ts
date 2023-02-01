@@ -9,7 +9,7 @@ import {
 } from '@/store/files/types'
 import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
-import { validGcodeExtensions } from '@/store/variables'
+import { hiddenDirectories, validGcodeExtensions } from '@/store/variables'
 import axios from 'axios'
 
 export const actions: ActionTree<FileState, RootState> = {
@@ -67,28 +67,30 @@ export const actions: ActionTree<FileState, RootState> = {
         }
 
         if (payload.dirs?.length) {
-            payload.dirs.forEach((dir: ApiGetDirectoryReturnDir) => {
-                if (
-                    directory?.childrens?.findIndex(
-                        (element: FileStateFile) => element.isDirectory && element.filename === dir.dirname
-                    ) === -1
-                ) {
-                    commit('setCreateDir', {
-                        item: {
-                            path: path.length ? path + '/' + dir.dirname : dir.dirname,
-                            root: root,
-                            permissions: dir.permissions,
-                            modified: dir.modified * 1000,
-                        },
-                    })
+            payload.dirs
+                .filter((dir) => !hiddenDirectories.includes(dir.dirname))
+                .forEach((dir: ApiGetDirectoryReturnDir) => {
+                    if (
+                        directory?.childrens?.findIndex(
+                            (element: FileStateFile) => element.isDirectory && element.filename === dir.dirname
+                        ) === -1
+                    ) {
+                        commit('setCreateDir', {
+                            item: {
+                                path: path.length ? path + '/' + dir.dirname : dir.dirname,
+                                root: root,
+                                permissions: dir.permissions,
+                                modified: dir.modified * 1000,
+                            },
+                        })
 
-                    Vue.$socket.emit(
-                        'server.files.get_directory',
-                        { path: payload.requestParams.path + '/' + dir.dirname },
-                        { action: 'files/getDirectory' }
-                    )
-                }
-            })
+                        Vue.$socket.emit(
+                            'server.files.get_directory',
+                            { path: payload.requestParams.path + '/' + dir.dirname },
+                            { action: 'files/getDirectory' }
+                        )
+                    }
+                })
         }
 
         if (payload.files?.length) {
@@ -337,5 +339,21 @@ export const actions: ActionTree<FileState, RootState> = {
         const apiUrl = rootGetters['socket/getUrl']
         const url = `${apiUrl}/server/files/${payload.destination.root}/${encodeURI(payload.destination.path)}`
         window.open(url)
+    },
+
+    rolloverLog(_, payload) {
+        payload.rolled_over.forEach((name: string) => {
+            Vue.$toast.success(<string>i18n.t('Machine.LogfilesPanel.RolloverToastSuccessful', { name }))
+        })
+
+        Object.keys(payload.failed).forEach((name: string) => {
+            const message = payload.failed[name]
+
+            Vue.$toast.error(<string>i18n.t('Machine.LogfilesPanel.RolloverToastFailed', { name, message }))
+        })
+
+        setTimeout(() => {
+            Vue.$socket.emit('server.files.get_directory', { path: 'logs' }, { action: 'files/getDirectory' })
+        }, 500)
     },
 }

@@ -910,7 +910,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     set cncMode(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.cncMode', value: newVal })
         viewer.gcodeProcessor.g1AsExtrusion = newVal
-        viewer.gcodeProcessor.updateForceWireMode(true)
+        viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering || newVal)
         this.reloadViewer()
     }
 
