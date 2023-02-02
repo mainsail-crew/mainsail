@@ -1161,7 +1161,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
         this.$socket.emit(
             'server.files.zip',
-            { items, dest: `gcodes/collection-${timestamp}.zip` },
+            { items, dest: `gcodes/gcodes-${timestamp}.zip` },
             { action: 'files/downloadZip', loading: 'gcodeDownloadZip' }
         )
 
