@@ -1148,11 +1148,18 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         this.dialogAddToQueue.item = item
     }
 
-    addToQueueAction(item: FileStateGcodefile | FileStateFile) {
-        let filename = [this.currentPath, item.filename].join('/')
+    async addToQueueAction() {
+        let filename = [this.currentPath, this.dialogAddToQueue.item.filename].join('/')
         if (filename.startsWith('/')) filename = filename.slice(1)
 
-        this.$store.dispatch('server/jobQueue/addToQueue', [filename])
+        const array: string[] = []
+        for (let i = 0; i < this.dialogAddToQueue.count; i++) {
+            array.push(filename)
+        }
+
+        await this.$store.dispatch('server/jobQueue/addToQueue', array)
+
+        this.dialogAddToQueue.show = false
     }
 
     changeMetadataVisible(name: string, value: boolean) {
