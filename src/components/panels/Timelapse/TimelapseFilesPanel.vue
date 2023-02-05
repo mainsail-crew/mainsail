@@ -734,7 +734,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
         this.$socket.emit(
             'server.files.zip',
-            { items, dest: `timelapse/collection-${timestamp}.zip` },
+            { items, dest: `timelapse/timelapse-${timestamp}.zip` },
             { action: 'files/downloadZip', loading: 'timelapseDownloadZip' }
         )
 
