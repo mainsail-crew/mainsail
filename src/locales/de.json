@@ -510,6 +510,9 @@
             "FirmwareRestart": "Firmware Neustart",
             "KlipperCheck": "Bitte überprüfen Sie, ob der Klipper-Dienst läuft und ein UDS (Unix Domain Socket) konfiguriert ist.",
             "MoonrakerCannotConnect": "Moonraker kann keine Verbindung zu Klipper herstellen!",
+            "PowerOn": "Drucker einschalten",
+            "PrinterSwitchedOff": "Drucker ist ausgeschaltet",
+            "PrinterSwitchedOffDescription": "Der Drucker ist ausgeschaltet und es kann keine Verbindung zu Klipper hergestellt werden. Um den Drucker einzuschalten, auf die Schaltfläche unten klicken:",
             "Restart": "Neustart",
             "ServiceReports": "{service} meldet"
         },
