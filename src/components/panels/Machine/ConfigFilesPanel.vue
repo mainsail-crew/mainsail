@@ -962,7 +962,14 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         }
 
         await addElementToItems(this.absolutePath, this.selectedFiles)
-        this.$socket.emit('server.files.zip', { items }, { action: 'files/downloadZip', loading: 'configDownloadZip' })
+        const date = new Date()
+        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDay()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+
+        this.$socket.emit(
+            'server.files.zip',
+            { items, dest: `config/${this.root}-${timestamp}.zip` },
+            { action: 'files/downloadZip', loading: 'configDownloadZip' }
+        )
 
         this.selectedFiles = []
     }
