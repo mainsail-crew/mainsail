@@ -152,6 +152,13 @@
                         outlined
                         dense />
                 </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.HideSaveConfigButtonForBedMesh').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.HideSaveConfigButtonForBedMeshDescription').toString()"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="hideSaveConfigForBedMash" hide-details class="mt-0" />
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -316,6 +323,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
         })
 
         return items
+    }
+
+    get hideSaveConfigForBedMash() {
+        return this.$store.state.gui.uiSettings.hideSaveConfigForBedMash ?? false
+    }
+
+    set hideSaveConfigForBedMash(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideSaveConfigForBedMash', value: newVal })
     }
 
     clearColorObject(color: any): string {
