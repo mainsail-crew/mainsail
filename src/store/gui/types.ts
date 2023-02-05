@@ -106,6 +106,7 @@ export interface GuiState {
         boolHideUploadAndPrintButton: boolean
         boolWebcamNavi: boolean
         navigationStyle: 'iconsAndText' | 'iconsOnly'
+        powerDeviceName: string | null
     }
     view: {
         blockFileUpload: boolean
