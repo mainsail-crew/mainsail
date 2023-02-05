@@ -522,7 +522,7 @@
             "MoonrakerCannotConnect": "Moonraker can't connect to Klipper!",
             "PowerOn": "Power on",
             "PrinterSwitchedOff": "Printer is switched off",
-            "PrinterSwitchedOffDescription": "The power device \"{device}\" is switched off and the Klipper service is not connected. To start the printer, click on the following button.",
+            "PrinterSwitchedOffDescription": "The printer is currently powered off and Klipper cannot connect. To power on the printer, click the button below:",
             "Restart": "Restart",
             "ServiceReports": "{service} reports"
         },

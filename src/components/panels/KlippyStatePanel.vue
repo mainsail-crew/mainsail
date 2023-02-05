@@ -76,7 +76,7 @@
                     <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
                     {{ $t('Panels.KlippyStatePanel.PrinterSwitchedOff') }}
                 </p>
-                <p>{{ $t('Panels.KlippyStatePanel.PrinterSwitchedOffDescription', { device: printerPowerDevice }) }}</p>
+                <p>{{ $t('Panels.KlippyStatePanel.PrinterSwitchedOffDescription') }}</p>
                 <v-row>
                     <v-col class="text-center">
                         <v-btn small outlined text :class="`${messageType.color}--text my-1`" @click="powerOn">
