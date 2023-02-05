@@ -155,6 +155,7 @@ export const getDefaultState = (): GuiState => {
             boolWebcamNavi: false,
             navigationStyle: 'iconsAndText',
             powerDeviceName: null,
+            hideSaveConfigForBedMash: false,
         },
         view: {
             blockFileUpload: false,
