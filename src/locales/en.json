@@ -1010,7 +1010,7 @@
             "NavigationStyleIconsAndText": "Icons + Text",
             "NavigationStyleIconsOnly": "Icons only",
             "PowerDeviceName": "Printer power device",
-            "PowerDeviceNameDescription": "Select which Moonraker power device should be used to switch the printer on.",
+            "PowerDeviceNameDescription": "Select which Moonraker power device should be used to power on the printer.",
             "Primary": "Primary",
             "ShowWebcamInNavigation": "Show Webcam in navigation",
             "UiSettings": "UI-Settings"
