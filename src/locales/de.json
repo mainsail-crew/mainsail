@@ -987,7 +987,7 @@
             "GcodeThumbnailsDescription": "Klicke auf die Schaltfläche um zum Leitfaden zu gelangen.",
             "Guide": "Leitfaden",
             "HideSaveConfigButtonForBedMesh": "SAVE_CONFIG Schaltfläche ausblenden für bed_mesh",
-            "HideSaveConfigButtonForBedMeshDescription": "Die SAVE_CONFIG Schaltfläche nicht anzeigen, wenn nur ein bed_mesh ausständig ist in Klipper.",
+            "HideSaveConfigButtonForBedMeshDescription": "Die SAVE_CONFIG Schaltfläche nicht anzeigen, wenn nur ein bed_mesh in Klipper aussteht.",
             "LockSliders": "Sperre Schieberegler auf Touchscreen Geräten",
             "LockSlidersDelay": "Verzögerung der Sperre für Schieberegler",
             "LockSlidersDelayDescription": "Schieberegler werden nach einer bestimmten Verzögerung gesperrt. Wenn 0 oder leer, dann sperren Schieberegler nur nach wechseln/neuladen der Seite.",
