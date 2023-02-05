@@ -986,7 +986,7 @@
             "GcodeThumbnails": "G-Code Vorschaubilder",
             "GcodeThumbnailsDescription": "Klicke auf die Schaltfläche um zum Leitfaden zu gelangen.",
             "Guide": "Leitfaden",
-            "HideSaveConfigButtonForBedMesh": "SAVE_CONFIG Schaltfläche ausblenden für bed_mesh",
+            "HideSaveConfigButtonForBedMesh": "SAVE_CONFIG Schaltfläche ausblenden bei bed_mesh Änderungen",
             "HideSaveConfigButtonForBedMeshDescription": "Die SAVE_CONFIG Schaltfläche nicht anzeigen, wenn nur ein bed_mesh in Klipper aussteht.",
             "LockSliders": "Sperre Schieberegler auf Touchscreen Geräten",
             "LockSlidersDelay": "Verzögerung der Sperre für Schieberegler",
