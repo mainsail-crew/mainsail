@@ -106,7 +106,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn text @click="btnRolloverLogs">
+                    <v-btn text @click="showRolloverDialog = false">
                         {{ $t('Machine.LogfilesPanel.Cancel') }}
                     </v-btn>
                     <v-btn color="primary" text @click="btnRolloverLogs">
