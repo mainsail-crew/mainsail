@@ -86,7 +86,7 @@
                         attribute-name="S"></tool-slider>
                 </v-container>
                 <!-- PRESSURE ADVANCE SETTINGS -->
-                <template v-if="!extruderSteppers.length > 0">
+                <template v-if="!(extruderSteppers.length > 0)">
                     <v-divider></v-divider>
                     <pressure-advance-settings></pressure-advance-settings>
                 </template>
