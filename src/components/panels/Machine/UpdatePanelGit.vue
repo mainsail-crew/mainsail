@@ -71,6 +71,20 @@
                 </v-alert>
             </v-col>
         </v-row>
+        <v-row v-if="gitMessages.length" class="mt-0">
+            <v-col class="px-6">
+                <v-alert
+                    v-for="(message, index) in gitMessages"
+                    :key="'message_' + index"
+                    text
+                    dense
+                    border="left"
+                    color="orange"
+                    :icon="mdiAlertCircle">
+                    {{ message }}
+                </v-alert>
+            </v-col>
+        </v-row>
         <update-panel-git-commits-list
             :bool-show-dialog="boolShowCommitList"
             :repo="repo"
@@ -100,6 +114,7 @@ export default class UpdatePanelGit extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
     mdiMenuDown = mdiMenuDown
     mdiReload = mdiReload
+    mdiAlertCircle = mdiAlertCircle
 
     boolShowCommitList = false
 
@@ -248,7 +263,6 @@ export default class UpdatePanelGit extends Mixins(BaseMixin) {
 
     get notificationText() {
         if (this.isDetached) return this.$t('Machine.UpdatePanel.Notification.Detached')
-        if (!this.isValid) return this.$t('Machine.UpdatePanel.Notification.Invalid')
         if (this.isDirty) return this.$t('Machine.UpdatePanel.Notification.Dirty')
 
         return null
@@ -260,6 +274,10 @@ export default class UpdatePanelGit extends Mixins(BaseMixin) {
 
     get notificationIcon() {
         return this.btnIcon
+    }
+
+    get gitMessages() {
+        return this.repo.git_messages ?? []
     }
 
     doUpdate() {
