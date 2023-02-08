@@ -52,5 +52,15 @@ export default class Ipstreamer extends Mixins(BaseMixin) {
             video.play();
         });
     }
+
+    updated() {
+        let hls = new Hls();
+        let video = this.$refs["video"];
+        hls.loadSource(this.url);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+            video.play();
+        });
+    }
 }
 </script>
