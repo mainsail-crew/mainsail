@@ -939,7 +939,6 @@
             "IconNozzle": "Dysza",
             "IconPrinter": "Drukarka",
             "Ipstream": "Transmisja po IP",
-            "Hlsstream": "Transmisja HLS",
             "Mjpegstreamer": "Transmisja MJPEG",
             "MjpegstreamerAdaptive": "Adaptacyjna transmisja MJPEG *(eksperymentalne)",
             "Name": "Nazwa",

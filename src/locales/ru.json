@@ -939,7 +939,6 @@
             "IconNozzle": "Форсунка",
             "IconPrinter": "Принтер",
             "Ipstream": "IP-камера",
-            "Hlsstream": "HLS стример",
             "Mjpegstreamer": "MJPEG стример",
             "MjpegstreamerAdaptive": "Адаптивный стример MJPEG (экспериментальный)",
             "Name": "Имя",

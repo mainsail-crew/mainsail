@@ -938,7 +938,6 @@
             "IconNozzle": "Fúvóka",
             "IconPrinter": "Nyomtató",
             "Ipstream": "IP kamera",
-            "Hlsstream": "Streamelő HLS",
             "Mjpegstreamer": "MJPEG-Streamelő",
             "MjpegstreamerAdaptive": "Adaptív MJPEG-Streamelő (kísérleti)",
             "Name": "Név",

@@ -1016,7 +1016,6 @@
             "IconNozzle": "Dyse",
             "IconPrinter": "Printer",
             "Ipstream": "IP Kamera",
-            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptiv MJPEG-Streamer (eksperimental)",
             "Name": "Navn",

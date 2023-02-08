@@ -938,7 +938,6 @@
             "IconNozzle": "Boquilla",
             "IconPrinter": "Impresora",
             "Ipstream": "Cámara IP",
-            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "MJPEG-Streamer Adaptativo (experimental)",
             "Name": "Nombre",

@@ -739,7 +739,6 @@
             "IconNozzle": "噴嘴",
             "IconPrinter": "列印機",
             "Ipstream": "IP Camera",
-            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "適應 MJPEG-Streamer (實驗)",
             "Name": "名稱",
