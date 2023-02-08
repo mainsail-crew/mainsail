@@ -1016,6 +1016,7 @@
             "IconNozzle": "喷嘴",
             "IconPrinter": "打印机",
             "Ipstream": "IP摄像头",
+            "Hlsstream": "HLS视频流",
             "Mjpegstreamer": "MJPEG视频流",
             "MjpegstreamerAdaptive": "自适应MJPEG视频流(试验性)",
             "Name": "名称",

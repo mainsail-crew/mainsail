@@ -833,6 +833,7 @@
             "IconNozzle": "Munstycke (Nozzle)",
             "IconPrinter": "Skrivare",
             "Ipstream": "IP-kamera",
+            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptiv MJPEG-Streamer (experimentell)",
             "Name": "Namn",

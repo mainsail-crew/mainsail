@@ -805,6 +805,7 @@
             "IconNozzle": "Ugello",
             "IconPrinter": "Stampante",
             "Ipstream": "Webcam IP",
+            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "MJPEG-Streamer Adattivo (sperimentale)",
             "Name": "Nome",

@@ -1017,6 +1017,7 @@
             "IconNozzle": "ノズル",
             "IconPrinter": "プリンター",
             "Ipstream": "IPカメラ",
+            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (試験的)",
             "Name": "名前",

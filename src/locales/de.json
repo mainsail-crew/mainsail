@@ -1018,6 +1018,7 @@
             "IconNozzle": "Düse",
             "IconPrinter": "Drucker",
             "Ipstream": "IP Kamera",
+            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
             "Name": "Name",

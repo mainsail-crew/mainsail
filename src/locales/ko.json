@@ -938,6 +938,7 @@
             "IconNozzle": "노즐",
             "IconPrinter": "프린터",
             "Ipstream": "IP Camera",
+            "Hlsstream": "HLS 스트리머",
             "Mjpegstreamer": "MJPEG-스트리머",
             "MjpegstreamerAdaptive": "어댑티브 MJPEG-스트리머 (테스트)",
             "Name": "이름",

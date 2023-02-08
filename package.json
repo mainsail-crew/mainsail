@@ -41,6 +41,7 @@
         "core-js": "^3.16.0",
         "echarts": "^5.2.2",
         "echarts-gl": "^2.0.8",
+        "hls.js": "^1.3.3",
         "js-sha256": "^0.9.0",
         "lodash.kebabcase": "^4.1.1",
         "lodash.throttle": "^4.1.1",
