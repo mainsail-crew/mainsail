@@ -5,8 +5,12 @@
 </style>
 
 <template>
-    <video ref="video" v-observe-visibility="visibilityChanged" autoplay :style="webcamStyle" class="webcamImage">
-    </video>
+    <video
+        ref="video"
+        v-observe-visibility="visibilityChanged"
+        autoplay
+        :style="webcamStyle"
+        class="webcamImage"></video>
 </template>
 
 <script lang="ts">
@@ -15,7 +19,7 @@ import BaseMixin from '@/components/mixins/base'
 import Hls from 'hls.js'
 
 @Component
-export default class Ipstreamer extends Mixins(BaseMixin) {
+export default class Hlsstreamer extends Mixins(BaseMixin) {
     private isVisible = true
 
     @Prop({ required: true })
@@ -44,23 +48,24 @@ export default class Ipstreamer extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        let hls = new Hls();
-        let video = this.$refs["video"];
-        hls.loadSource(this.url);
-        hls.attachMedia(video);
+        let hls = new Hls()
+        let video = this.$refs['video']
+        hls.loadSource(this.url)
+        hls.attachMedia(video)
         hls.on(Hls.Events.MANIFEST_PARSED, function () {
-            video.play();
-        });
+            window.console.log('play video')
+            video.play()
+        })
     }
 
     updated() {
-        let hls = new Hls();
-        let video = this.$refs["video"];
-        hls.loadSource(this.url);
-        hls.attachMedia(video);
+        let hls = new Hls()
+        let video = this.$refs['video']
+        hls.loadSource(this.url)
+        hls.attachMedia(video)
         hls.on(Hls.Events.MANIFEST_PARSED, function () {
-            video.play();
-        });
+            video.play()
+        })
     }
 }
 </script>
