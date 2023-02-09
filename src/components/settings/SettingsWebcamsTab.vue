@@ -251,7 +251,7 @@ interface webcamForm {
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'webcam-ipstreamer': Ipstreamer,
-        'webcam-hlsstreamer': Hlsstreamer
+        'webcam-hlsstreamer': Hlsstreamer,
     },
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
