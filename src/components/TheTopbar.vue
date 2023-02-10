@@ -30,7 +30,7 @@
                 style="display: none"
                 @change="uploadAndStart" />
             <v-btn
-                v-if="klippyIsConnected && saveConfigPending"
+                v-if="showSaveConfigButton"
                 tile
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
@@ -194,6 +194,20 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     get saveConfigPending() {
         return this.$store.state.printer.configfile?.save_config_pending ?? false
+    }
+
+    get hideSaveConfigForBedMash() {
+        return this.$store.state.gui.uiSettings.hideSaveConfigForBedMash ?? false
+    }
+
+    get showSaveConfigButton() {
+        if (!this.klipperReadyForGui) return false
+        if (!this.hideSaveConfigForBedMash) return this.saveConfigPending
+
+        let pendingKeys = Object.keys(this.$store.state.printer.configfile?.save_config_pending_items ?? {})
+        pendingKeys = pendingKeys.filter((key: string) => !key.startsWith('bed_mesh '))
+
+        return pendingKeys.length > 0
     }
 
     get printerName(): string {

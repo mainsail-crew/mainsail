@@ -37,6 +37,7 @@
                             :title="$t('Timelapse.Download')"
                             color="primary"
                             class="px-2 minwidth-0 ml-3"
+                            :loading="loadings.includes('timelapseDownloadZip')"
                             @click="downloadSelectedFiles">
                             <v-icon>{{ mdiCloudDownload }}</v-icon>
                         </v-btn>
@@ -422,9 +423,6 @@ import {
     mdiRenameBox,
     mdiDelete,
 } from '@mdi/js'
-import JSZip from 'jszip'
-import axios from 'axios'
-import { saveAs } from 'file-saver'
 
 interface dialogRenameObject {
     show: boolean
@@ -704,53 +702,41 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     async downloadSelectedFiles() {
-        const zip = new JSZip()
+        let items: string[] = []
 
-        const addDirectoryToZip = async (zip: JSZip, directory: FileStateFile[], absoluteUrl: string) => {
+        const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
             for (const file of directory) {
+                const filePath = `${absolutPath}/${file.filename}`
+
                 if (file.isDirectory && file.childrens) {
-                    const url = `${absoluteUrl}${encodeURI(file.filename + '/')}`
-                    await addDirectoryToZip(zip.folder(file.filename) as JSZip, file.childrens, url)
+                    await addElementToItems(filePath, file.childrens)
 
                     continue
                 }
 
-                const CancelToken = axios.CancelToken
-                const source = CancelToken.source()
-                this.$store.commit('editor/updateCancelTokenSource', source)
-                this.$store.commit('editor/updateLoaderState', true)
+                items.push(filePath)
 
-                this.$store.commit('editor/setFilename', file.filename)
+                if (file.filename.endsWith('.mp4')) {
+                    const indexLastPoint = file.filename.lastIndexOf('.')
+                    const filenameWithoutExtension = file.filename.slice(0, indexLastPoint)
+                    const filenamePng = `${filenameWithoutExtension}.jpg`
 
-                await axios
-                    .get(absoluteUrl + encodeURI(file.filename), {
-                        cancelToken: source.token,
-                        onDownloadProgress: (progressEvent) =>
-                            this.$store.dispatch('editor/downloadProgress', {
-                                progressEvent,
-                                direction: 'downloading',
-                                filesize: file.size,
-                            }),
-                        responseType: 'blob',
-                    })
-                    .then((r) => {
-                        if (r.status === 200) return r.data
-                        return Promise.reject(new Error(r.statusText))
-                    })
-                    .then((blob) => zip?.file(file.filename, blob))
+                    if (this.files.indexOf((file: FileStateFile) => file.filename === filenamePng) !== -1) {
+                        items.push(`${absolutPath}/${filenamePng}`)
+                    }
+                }
             }
         }
 
-        const url = `${this.apiUrl}/server/files/${encodeURI(this.currentPath + '/')}`
-        await addDirectoryToZip(zip, this.selectedFiles, url)
+        await addElementToItems(this.currentPath, this.selectedFiles)
+        const date = new Date()
+        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDay()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
 
-        setTimeout(() => {
-            this.$store.dispatch('editor/clearLoader')
-        }, 100)
-
-        zip.generateAsync({ type: 'blob' }).then(async (blob) => {
-            saveAs(blob, 'archive.zip')
-        })
+        this.$socket.emit(
+            'server.files.zip',
+            { items, dest: `timelapse/timelapse-${timestamp}.zip` },
+            { action: 'files/downloadZip', loading: 'timelapseDownloadZip' }
+        )
 
         this.selectedFiles = []
     }
