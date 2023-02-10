@@ -143,4 +143,8 @@ export const actions: ActionTree<PrinterState, RootState> = {
             Vue.$socket.emit('printer.gcode.script', { script: payload }, { loading: 'sendGcode' })
         }
     },
+
+    clearScrewsTiltAdjust({ commit }) {
+        commit('clearScrewsTiltAdjust')
+    },
 }
