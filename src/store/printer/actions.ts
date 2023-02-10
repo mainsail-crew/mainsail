@@ -63,6 +63,11 @@ export const actions: ActionTree<PrinterState, RootState> = {
     },
 
     getInitData({ dispatch }, payload) {
+        if ('screws_tilt_adjust' in payload.status) {
+            payload.status.screws_tilt_adjust.error = false
+            payload.status.screws_tilt_adjust.results = {}
+        }
+
         dispatch('getData', payload)
 
         Vue.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
