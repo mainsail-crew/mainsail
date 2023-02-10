@@ -1,9 +1,3 @@
-<style scoped>
-.webcamImage {
-    width: 100%;
-}
-</style>
-
 <template>
     <video
         ref="video"
@@ -86,3 +80,9 @@ export default class Hlsstreamer extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.webcamImage {
+    width: 100%;
+}
+</style>
