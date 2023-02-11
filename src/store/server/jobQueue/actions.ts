@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
-import { ServerJobQueueState } from '@/store/server/jobQueue/types'
+import { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 
 export const actions: ActionTree<ServerJobQueueState, RootState> = {
     reset({ commit }) {
@@ -26,6 +26,31 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
 
     async addToQueue(_, filenames: string[]) {
         Vue.$socket.emit('server.job_queue.post_job', { filenames: filenames })
+    },
+
+    changeCount({ getters }, payload: { job_id: string; count: number }) {
+        const filenames: string[] = []
+        const jobs = getters['getJobs']
+
+        jobs.forEach((job: ServerJobQueueStateJob) => {
+            if (job.job_id === payload.job_id) {
+                for (let i = 0; i < payload.count; i++) {
+                    filenames.push(job.filename)
+                }
+
+                return
+            }
+
+            const count = (job.combinedIds?.length ?? 0) + 1
+            for (let i = 0; i < count; i++) {
+                filenames.push(job.filename)
+            }
+        })
+
+        Vue.$socket.emit('server.job_queue.post_job', {
+            filenames,
+            reset: true,
+        })
     },
 
     deleteFromQueue(_, job_ids: string[]) {

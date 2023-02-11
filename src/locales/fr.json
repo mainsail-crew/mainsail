@@ -962,6 +962,7 @@
             "IconNozzle": "Buse",
             "IconPrinter": "Imprimante",
             "Ipstream": "Caméra IP",
+            "Hlsstream": "Flux HLS",
             "Mjpegstreamer": "Flux-MJPEG",
             "MjpegstreamerAdaptive": "Flux-MJPEG Adaptatif (expérimental)",
             "Name": "Nom",

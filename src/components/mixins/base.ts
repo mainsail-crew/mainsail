@@ -34,6 +34,8 @@ export default class BaseMixin extends Vue {
     }
 
     get klipperState(): string {
+        if (!this.klippyIsConnected) return 'disconnected'
+
         return this.$store.state.server.klippy_state ?? ''
     }
 

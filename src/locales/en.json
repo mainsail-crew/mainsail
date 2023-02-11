@@ -164,11 +164,13 @@
         "Yes": "Yes"
     },
     "Files": {
+        "AddBatchToQueue": "Add batch to Queue",
         "AddToQueue": "Add to Queue",
         "AllFiles": "All",
         "BedTemp": "Bed Temp.",
         "Cancel": "Cancel",
         "ChamberTemp": "Chamber Temp.",
+        "Count": "Count",
         "Create": "Create",
         "CreateNewDirectory": "Create new Directory",
         "CurrentPath": "Current path",
@@ -369,7 +371,12 @@
     },
     "JobQueue": {
         "AllJobs": "All Jobs",
+        "ChangeCount": "Change count",
+        "Cancel": "Cancel",
+        "Count": "Count",
         "Empty": "Empty",
+        "InvalidCountEmpty": "Input must not be empty!",
+        "InvalidCountGreaterZero": "Input must be greater than 0!",
         "JobQueue": "Job Queue",
         "Jobs": "Jobs",
         "Pause": "Pause",
@@ -523,8 +530,8 @@
             "WebcamOff": "Off"
         },
         "KlippyStatePanel": {
+            "CheckKlippyAndUdsAddress": "Please check if the Klipper service is running and klippy_uds_address is correctly configured in the moonraker.conf.",
             "FirmwareRestart": "Firmware Restart",
-            "KlipperCheck": "Please check if the Klipper service is running.",
             "MoonrakerCannotConnect": "Moonraker can't connect to Klipper!",
             "PowerOn": "Power on",
             "PrinterSwitchedOff": "Printer is powered off",
@@ -891,7 +898,6 @@
             "NoGroupFound": "No group found",
             "NoPresetFound": "No preset found",
             "Presets": "Presets",
-            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, W: {white}",
             "Start": "Start",
             "StartDescription": "First LED of this group.",
             "UnableToLoadLight": "Unable to load light",
@@ -1040,6 +1046,7 @@
             "IconNozzle": "Nozzle",
             "IconPrinter": "Printer",
             "Ipstream": "IP Camera",
+            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
             "Name": "Name",
@@ -1056,6 +1063,12 @@
             "Vertically": "vertically",
             "Webcams": "Webcams"
         }
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "accept",
+        "Base": "Base",
+        "ErrorText": "Something went wrong during the probing process.",
+        "Headline": "Screws tilt adjust"
     },
     "Timelapse": {
         "AllFiles": "All",
