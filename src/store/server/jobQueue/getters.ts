@@ -28,6 +28,10 @@ export const getters: GetterTree<ServerJobQueueState, any> = {
         return jobs
     },
 
+    getJobsCount: (state) => {
+        return state.queued_jobs.length
+    },
+
     getSmallThumbnail: (state, getters, rootState, rootGetters) => (item: ServerJobQueueStateJob) => {
         if (item?.metadata?.thumbnails?.length) {
             const thumbnail = item?.metadata?.thumbnails.find(

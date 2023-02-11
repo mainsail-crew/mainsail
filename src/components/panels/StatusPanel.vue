@@ -133,7 +133,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get jobsCount() {
-        return this.jobs?.length ?? 0
+        return this.$store.getters['server/jobQueue/getJobsCount'] ?? 0
     }
 
     get current_filename() {
