@@ -63,9 +63,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
-import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiPlay, mdiPause, mdiTrayFull } from '@mdi/js'
 import JobqueueEntry from '@/components/panels/Status/JobqueueEntry.vue'
 @Component({
@@ -75,8 +73,6 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     mdiPlay = mdiPlay
     mdiPause = mdiPause
     mdiTrayFull = mdiTrayFull
-
-    formatFilesize = formatFilesize
 
     private contentTdWidth = 100
 
