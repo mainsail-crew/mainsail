@@ -885,7 +885,6 @@
             "NoGroupFound": "No group found",
             "NoPresetFound": "No preset found",
             "Presets": "Presets",
-            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, W: {white}",
             "Start": "Start",
             "StartDescription": "First LED of this group.",
             "UnableToLoadLight": "Unable to load light",

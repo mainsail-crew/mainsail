@@ -871,7 +871,6 @@
             "NoGroupFound": "Keine Gruppe gefunden",
             "NoPresetFound": "Keine Voreinstellungen gefunden",
             "Presets": "Voreinstellungen",
-            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, W: {white}",
             "Start": "Start",
             "StartDescription": "Erste LED von dieser Gruppe.",
             "UnableToLoadLight": "Licht konnte nicht geladen werden",
