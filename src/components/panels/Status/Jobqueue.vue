@@ -46,11 +46,12 @@
                         <template v-else-if="getSmallThumbnail(item)">
                             <vue-load-image>
                                 <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" />
-                                <v-progress-circular
-                                    slot="preloader"
-                                    indeterminate
-                                    color="primary"></v-progress-circular>
-                                <v-icon slot="error">{{ mdiFile }}</v-icon>
+                                <div slot="preloader">
+                                    <v-progress-circular indeterminate color="primary" />
+                                </div>
+                                <div slot="error">
+                                    <v-icon>{{ mdiFile }}</v-icon>
+                                </div>
                             </vue-load-image>
                         </template>
                         <template v-else>
