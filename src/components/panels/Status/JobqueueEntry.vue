@@ -220,7 +220,7 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         this.$store.dispatch('server/jobQueue/deleteFromQueue', ids)
     }
 
-    openChangeCountDialog(item: FileStateGcodefile) {
+    openChangeCountDialog(item: ServerJobQueueStateJob) {
         this.dialogChangeCount.show = true
         this.dialogChangeCount.count = 1
         this.dialogChangeCount.item = item
