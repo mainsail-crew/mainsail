@@ -64,7 +64,10 @@
                                 <v-icon>{{ mdiPlay }}</v-icon>
                             </v-btn>
                         </template>
-                        <div class="d-block text-truncate" :style="styleContentTdWidth">{{ item.filename }}</div>
+                        <div class="d-block text-truncate" :style="styleContentTdWidth">
+                            <strong v-if="item.count">{{ item.count }}x</strong>
+                            {{ item.filename }}
+                        </div>
                         <small v-if="existMetadata(item)">{{ getDescription(item) }}</small>
                     </td>
                 </tr>
