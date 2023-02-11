@@ -1,6 +1,10 @@
 <template>
     <div>
-        <panel ref="jobqueuePanel" :icon="mdiTrayFull" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
+        <panel
+            ref="jobqueuePanel"
+            :icon="mdiTrayFull"
+            :title="$t('JobQueue.JobQueue').toString()"
+            card-class="jobqueue-panel">
             <template #buttons>
                 <v-btn
                     v-if="queueState === 'paused'"
@@ -243,7 +247,7 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
 }
 </script>
 
-<style>
+<style scoped>
 .jobqueue-panel {
     position: relative;
 }
