@@ -97,7 +97,7 @@
                 </p>
                 <connection-status :moonraker="true" :klipper="false"></connection-status>
                 <p class="mt-2 mb-0 text-center">{{ $t('Panels.KlippyStatePanel.MoonrakerCannotConnect') }}</p>
-                <p class="mb-0 text-center">{{ $t('Panels.KlippyStatePanel.KlipperCheck') }}</p>
+                <p class="mb-0 text-center">{{ $t('Panels.KlippyStatePanel.KlipperCheck2') }}</p>
             </v-alert>
         </template>
     </div>
