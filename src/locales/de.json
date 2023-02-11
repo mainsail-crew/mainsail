@@ -507,8 +507,8 @@
             "WebcamOff": "Aus"
         },
         "KlippyStatePanel": {
+            "CheckKlippyAndUdsAddress": "Bitte überprüfen Sie, ob der Klipper-Dienst läuft und klippy_uds_address ist korrekt konfiguriert in der moonraker.conf.",
             "FirmwareRestart": "Firmware Neustart",
-            "KlipperCheck": "Bitte überprüfen Sie, ob der Klipper-Dienst läuft und ein UDS (Unix Domain Socket) konfiguriert ist.",
             "MoonrakerCannotConnect": "Moonraker kann keine Verbindung zu Klipper herstellen!",
             "PowerOn": "Drucker einschalten",
             "PrinterSwitchedOff": "Drucker ist ausgeschaltet",
