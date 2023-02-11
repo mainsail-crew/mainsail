@@ -222,7 +222,7 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
 
     openChangeCountDialog(item: ServerJobQueueStateJob) {
         this.dialogChangeCount.show = true
-        this.dialogChangeCount.count = 1
+        this.dialogChangeCount.count = (item.combinedIds?.length ?? 0) + 1
         this.dialogChangeCount.item = item
     }
 
