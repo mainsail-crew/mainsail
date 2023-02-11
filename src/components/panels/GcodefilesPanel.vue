@@ -520,8 +520,27 @@
                         v-model="dialogAddBatchToQueue.count"
                         :label="$t('Files.Count')"
                         required
+                        hide-spin-buttons
+                        type="number"
                         :rules="countInputRules"
-                        @keyup.enter="addBatchToQueueAction"></v-text-field>
+                        @keyup.enter="addBatchToQueueAction">
+                        <template #append-outer>
+                            <div class="_spin_button_group">
+                                <v-btn class="mt-n3" icon plain small @click="dialogAddBatchToQueue.count++">
+                                    <v-icon>{{ mdiChevronUp }}</v-icon>
+                                </v-btn>
+                                <v-btn
+                                    :disabled="dialogAddBatchToQueue.count <= 1"
+                                    class="mb-n3"
+                                    icon
+                                    plain
+                                    small
+                                    @click="dialogAddBatchToQueue.count--">
+                                    <v-icon>{{ mdiChevronDown }}</v-icon>
+                                </v-btn>
+                            </div>
+                        </template>
+                    </v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -543,6 +562,8 @@ import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import draggable from 'vuedraggable'
 import {
+    mdiChevronDown,
+    mdiChevronUp,
     mdiDragVertical,
     mdiCheckboxBlankOutline,
     mdiCheckboxMarked,
@@ -612,6 +633,8 @@ interface tableColumnSetting {
     components: { StartPrintDialog, Panel, SettingsRow, draggable },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
+    mdiChevronDown = mdiChevronDown
+    mdiChevronUp = mdiChevronUp
     mdiFile = mdiFile
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiMagnify = mdiMagnify
@@ -1405,6 +1428,15 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 }
 </script>
+
+<style scoped>
+._spin_button_group {
+    width: 24px;
+    margin-top: -6px;
+    margin-left: -6px;
+    margin-bottom: -6px;
+}
+</style>
 
 <style>
 /*noinspection CssUnusedSymbol*/
