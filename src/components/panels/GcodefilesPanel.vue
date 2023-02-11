@@ -526,7 +526,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogAddPatchToQueue.show = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn color="error" text @click="addPatchToQueueAction">{{ $t('Files.AddToQueue') }}</v-btn>
+                    <v-btn color="primary" text @click="addPatchToQueueAction">{{ $t('Files.AddToQueue') }}</v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
