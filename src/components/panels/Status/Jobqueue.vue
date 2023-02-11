@@ -65,7 +65,7 @@
                             </v-btn>
                         </template>
                         <div class="d-block text-truncate" :style="styleContentTdWidth">
-                            <strong v-if="item.count">{{ item.count }}x</strong>
+                            <strong v-if="item.combinedIds.length">{{ item.combinedIds.length + 1 }}x</strong>
                             {{ item.filename }}
                         </div>
                         <small v-if="existMetadata(item)">{{ getDescription(item) }}</small>
@@ -147,9 +147,11 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
         let printTime = 0
 
         this.jobsRest.forEach((item: ServerJobQueueStateJob) => {
-            if (item.metadata?.filament_total) filamentLength += item.metadata?.filament_total
-            if (item.metadata?.filament_weight_total) filamentWeight += item.metadata?.filament_weight_total
-            if (item.metadata?.estimated_time) printTime = item.metadata.estimated_time
+            const count = (item.combinedIds?.length ?? 0) + 1
+
+            if (item.metadata?.filament_total) filamentLength += item.metadata?.filament_total * count
+            if (item.metadata?.filament_weight_total) filamentWeight += item.metadata?.filament_weight_total * count
+            if (item.metadata?.estimated_time) printTime = item.metadata.estimated_time * count
         })
 
         let output = ''
@@ -255,7 +257,10 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
     }
 
     removeFromJobqueue(item: ServerJobQueueStateJob) {
-        this.$store.dispatch('server/jobQueue/deleteFromQueue', [item.job_id])
+        const ids = [...(item.combinedIds ?? [])]
+        ids.push(item.job_id)
+
+        this.$store.dispatch('server/jobQueue/deleteFromQueue', ids)
     }
 
     mounted() {

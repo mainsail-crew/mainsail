@@ -12,7 +12,7 @@ export const getters: GetterTree<ServerJobQueueState, any> = {
             const job = { ...queuedJob }
 
             if (jobs.length && jobs[jobs.length - 1].filename === job.filename) {
-                jobs[jobs.length - 1].count = (jobs[jobs.length - 1].count ?? 1) + 1
+                jobs[jobs.length - 1].combinedIds?.push(job.job_id)
                 return
             }
 
@@ -20,7 +20,7 @@ export const getters: GetterTree<ServerJobQueueState, any> = {
             if (!file?.metadataPulled)
                 Vue.$socket.emit('server.files.metadata', { filename: job.filename }, { action: 'files/getMetadata' })
             job.metadata = file
-            job.count = 1
+            job.combinedIds = []
 
             jobs.push(job)
         })

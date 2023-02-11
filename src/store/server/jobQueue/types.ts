@@ -10,5 +10,5 @@ export interface ServerJobQueueStateJob {
     time_in_queue: number
     metadata?: any
     isFirst?: boolean
-    count?: number
+    combinedIds?: string[]
 }

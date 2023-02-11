@@ -96,7 +96,7 @@
                         </td>
                         <td class=" ">
                             <div class="d-block text-truncate" :style="styleContentTdWidth">
-                                <strong v-if="item.count">{{ item.count }}x</strong>
+                                <strong v-if="item.combinedIds.length">{{ item.combinedIds.length + 1 }}x</strong>
                                 {{ item.filename }}
                             </div>
                             <small v-if="existMetadata(item)">{{ getDescription(item) }}</small>
@@ -184,7 +184,10 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     }
 
     deleteJob(item: ServerJobQueueStateJob) {
-        this.$store.dispatch('server/jobQueue/deleteFromQueue', [item.job_id])
+        const ids = [...(item.combinedIds ?? [])]
+        ids.push(item.job_id)
+
+        this.$store.dispatch('server/jobQueue/deleteFromQueue', ids)
     }
 
     startJobqueue() {
