@@ -164,11 +164,13 @@
         "Yes": "Yes"
     },
     "Files": {
+        "AddBatchToQueue": "Add batch to Queue",
         "AddToQueue": "Add to Queue",
         "AllFiles": "All",
         "BedTemp": "Bed Temp.",
         "Cancel": "Cancel",
         "ChamberTemp": "Chamber Temp.",
+        "Count": "Count",
         "Create": "Create",
         "CreateNewDirectory": "Create new Directory",
         "CurrentPath": "Current path",
@@ -369,7 +371,12 @@
     },
     "JobQueue": {
         "AllJobs": "All Jobs",
+        "ChangeCount": "Change count",
+        "Cancel": "Cancel",
+        "Count": "Count",
         "Empty": "Empty",
+        "InvalidCountEmpty": "Input must not be empty!",
+        "InvalidCountGreaterZero": "Input must be greater than 0!",
         "JobQueue": "Job Queue",
         "Jobs": "Jobs",
         "Pause": "Pause",
