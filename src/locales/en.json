@@ -164,6 +164,7 @@
         "Yes": "Yes"
     },
     "Files": {
+        "AddPatchToQueue": "Add patch to Queue",
         "AddToQueue": "Add to Queue",
         "AllFiles": "All",
         "BedTemp": "Bed Temp.",

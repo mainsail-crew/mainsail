@@ -320,9 +320,16 @@
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && moonrakerComponents.includes('job_queue')"
                     :disabled="!isGcodeFile(contextMenu.item)"
-                    @click="openAddToQueueDialog(contextMenu.item)">
+                    @click="addToQueue(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
                     {{ $t('Files.AddToQueue') }}
+                </v-list-item>
+                <v-list-item
+                    v-if="!contextMenu.item.isDirectory && moonrakerComponents.includes('job_queue')"
+                    :disabled="!isGcodeFile(contextMenu.item)"
+                    @click="openAddPatchToQueueDialog(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
+                    {{ $t('Files.AddPatchToQueue') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.preheat_gcode !== null"
@@ -496,13 +503,13 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <v-dialog v-model="dialogAddToQueue.show" max-width="400">
+        <v-dialog v-model="dialogAddPatchToQueue.show" max-width="400">
             <panel
                 :title="$t('Files.AddToQueue').toString()"
                 card-class="gcode-files-add-to-queue-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogAddToQueue.show = false">
+                    <v-btn icon tile @click="dialogAddPatchToQueue.show = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
@@ -510,16 +517,16 @@
                 <v-card-text>
                     <v-text-field
                         ref="inputFieldAddToQueueCount"
-                        v-model="dialogAddToQueue.count"
+                        v-model="dialogAddPatchToQueue.count"
                         :label="$t('Files.Count')"
                         required
                         :rules="countInputRules"
-                        @keyup.enter="addToQueueAction"></v-text-field>
+                        @keyup.enter="dialogAddPatchToQueue"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogAddToQueue.show = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn color="error" text @click="addToQueueAction">{{ $t('Files.AddToQueue') }}</v-btn>
+                    <v-btn color="" text @click="dialogAddPatchToQueue.show = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn color="error" text @click="addPatchToQueueAction">{{ $t('Files.AddToQueue') }}</v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -579,7 +586,7 @@ interface dialogPrintFile {
     item: FileStateGcodefile
 }
 
-interface dialogAddToQueue {
+interface dialogAddPatchToQueue {
     show: boolean
     count: number
     item: FileStateGcodefile
@@ -679,7 +686,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         item: { ...this.contextMenu.item },
     }
 
-    private dialogAddToQueue: dialogAddToQueue = {
+    private dialogAddPatchToQueue: dialogAddPatchToQueue = {
         show: false,
         count: 1,
         item: { ...this.contextMenu.item },
@@ -1140,24 +1147,31 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
     }
 
-    openAddToQueueDialog(item: FileStateGcodefile) {
-        this.dialogAddToQueue.show = true
-        this.dialogAddToQueue.count = 1
-        this.dialogAddToQueue.item = item
+    async addToQueue(item: FileStateGcodefile) {
+        let filename = [this.currentPath, this.dialogAddPatchToQueue.item.filename].join('/')
+        if (filename.startsWith('/')) filename = filename.slice(1)
+
+        await this.$store.dispatch('server/jobQueue/addToQueue', [filename])
     }
 
-    async addToQueueAction() {
-        let filename = [this.currentPath, this.dialogAddToQueue.item.filename].join('/')
+    openAddPatchToQueueDialog(item: FileStateGcodefile) {
+        this.dialogAddPatchToQueue.show = true
+        this.dialogAddPatchToQueue.count = 1
+        this.dialogAddPatchToQueue.item = item
+    }
+
+    async addPatchToQueueAction() {
+        let filename = [this.currentPath, this.dialogAddPatchToQueue.item.filename].join('/')
         if (filename.startsWith('/')) filename = filename.slice(1)
 
         const array: string[] = []
-        for (let i = 0; i < this.dialogAddToQueue.count; i++) {
+        for (let i = 0; i < this.dialogAddPatchToQueue.count; i++) {
             array.push(filename)
         }
 
         await this.$store.dispatch('server/jobQueue/addToQueue', array)
 
-        this.dialogAddToQueue.show = false
+        this.dialogAddPatchToQueue.show = false
     }
 
     changeMetadataVisible(name: string, value: boolean) {
