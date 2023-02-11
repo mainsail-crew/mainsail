@@ -1051,6 +1051,12 @@
             "Webcams": "Webcams"
         }
     },
+    "ScrewsTiltAdjust": {
+        "Accept": "accept",
+        "Base": "Base",
+        "ErrorText": "Something went wrong during the probing process.",
+        "Headline": "Screws tilt adjust"
+    },
     "Timelapse": {
         "AllFiles": "All",
         "Autorender": "Auto-render",
