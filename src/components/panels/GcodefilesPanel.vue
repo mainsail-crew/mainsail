@@ -521,7 +521,7 @@
                         :label="$t('Files.Count')"
                         required
                         :rules="countInputRules"
-                        @keyup.enter="dialogAddPatchToQueue"></v-text-field>
+                        @keyup.enter="addPatchToQueueAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
