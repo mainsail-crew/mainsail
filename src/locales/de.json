@@ -510,6 +510,9 @@
             "FirmwareRestart": "Firmware Neustart",
             "KlipperCheck": "Bitte überprüfen Sie, ob der Klipper-Dienst läuft und ein UDS (Unix Domain Socket) konfiguriert ist.",
             "MoonrakerCannotConnect": "Moonraker kann keine Verbindung zu Klipper herstellen!",
+            "PowerOn": "Drucker einschalten",
+            "PrinterSwitchedOff": "Drucker ist ausgeschaltet",
+            "PrinterSwitchedOffDescription": "Der Drucker ist ausgeschaltet und es kann keine Verbindung zu Klipper hergestellt werden. Um den Drucker einzuschalten, auf die Schaltfläche unten klicken:",
             "Restart": "Neustart",
             "ServiceReports": "{service} meldet"
         },
@@ -983,6 +986,8 @@
             "GcodeThumbnails": "G-Code Vorschaubilder",
             "GcodeThumbnailsDescription": "Klicke auf die Schaltfläche um zum Leitfaden zu gelangen.",
             "Guide": "Leitfaden",
+            "HideSaveConfigButtonForBedMesh": "SAVE_CONFIG Schaltfläche ausblenden bei bed_mesh Änderungen",
+            "HideSaveConfigButtonForBedMeshDescription": "SAVE_CONFIG nicht anzeigen, wenn nur das Speichern eines bed_mesh in Klipper aussteht.",
             "LockSliders": "Sperre Schieberegler auf Touchscreen Geräten",
             "LockSlidersDelay": "Verzögerung der Sperre für Schieberegler",
             "LockSlidersDelayDescription": "Schieberegler werden nach einer bestimmten Verzögerung gesperrt. Wenn 0 oder leer, dann sperren Schieberegler nur nach wechseln/neuladen der Seite.",

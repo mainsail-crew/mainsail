@@ -253,7 +253,9 @@
         "Tracking": "Tracking",
         "Transparency": "Transparency",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxel Mode (ASMBL)"
+        "VoxelMode": "Voxel Mode (ASMBL)",
+        "ShowGCode": "Show G-Code",
+        "CNCMode": "CNC Mode"
     },
     "Heightmap": {
         "Abort": "abort",
@@ -303,6 +305,7 @@
         "AvgPrinttime": "Print Time - Ø",
         "Cancel": "Cancel",
         "CreateNote": "Create Note",
+        "Chart": "Chart",
         "Delete": "Delete",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected jobs?",
         "Details": "Details",
@@ -354,6 +357,7 @@
             "Others": "Others",
             "server_exit": "Server exit"
         },
+        "Table": "Table",
         "TitleExportHistory": "Export History",
         "TitleRefreshHistory": "Refresh History",
         "TitleSettings": "Settings",
@@ -417,7 +421,13 @@
             "TRIGGERED": "TRIGGERED"
         },
         "LogfilesPanel": {
-            "Logfiles": "Log Files"
+            "Accept": "accept",
+            "Cancel": "cancel",
+            "Logfiles": "Log Files",
+            "Rollover": "Rollover Logs",
+            "RolloverDescription": "Please select which logs should be reset:",
+            "RolloverToastSuccessful": "Log for \"{name}\"was successfully reset.",
+            "RolloverToastFailed": "Rollover log for \"{name}\": {message}"
         },
         "SystemPanel": {
             "Constants": "Constants",
@@ -510,6 +520,9 @@
             "FirmwareRestart": "Firmware Restart",
             "KlipperCheck": "Please check if the Klipper service is running.",
             "MoonrakerCannotConnect": "Moonraker can't connect to Klipper!",
+            "PowerOn": "Power on",
+            "PrinterSwitchedOff": "Printer is powered off",
+            "PrinterSwitchedOffDescription": "The printer is currently powered off and Klipper cannot connect. To power on the printer, click the button below:",
             "Restart": "Restart",
             "ServiceReports": "{service} reports"
         },
@@ -987,6 +1000,8 @@
             "GcodeThumbnails": "G-Code thumbnails",
             "GcodeThumbnailsDescription": "Click on the button to get to the instructions.",
             "Guide": "Guide",
+            "HideSaveConfigButtonForBedMesh": "Hide SAVE_CONFIG button for bed_mesh changes",
+            "HideSaveConfigButtonForBedMeshDescription": "Hide SAVE_CONFIG, if only bed_mesh changes are pending to be saved in Klipper.",
             "LockSliders": "Lock sliders on touchscreen devices",
             "LockSlidersDelay": "Slider lock delay",
             "LockSlidersDelayDescription": "Sliders will lock after a given delay. If set to 0 or left blank, sliders will only lock on page change/reload.",
@@ -996,6 +1011,8 @@
             "NavigationStyleDescription": "Change navigation appearance",
             "NavigationStyleIconsAndText": "Icons + Text",
             "NavigationStyleIconsOnly": "Icons only",
+            "PowerDeviceName": "Printer power device",
+            "PowerDeviceNameDescription": "Select which Moonraker power device should be used to power on the printer.",
             "Primary": "Primary",
             "ShowWebcamInNavigation": "Show Webcam in navigation",
             "UiSettings": "UI-Settings"
@@ -1017,6 +1034,7 @@
             "IconNozzle": "Nozzle",
             "IconPrinter": "Printer",
             "Ipstream": "IP Camera",
+            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
             "Name": "Name",

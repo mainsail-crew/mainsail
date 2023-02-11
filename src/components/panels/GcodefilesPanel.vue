@@ -20,6 +20,15 @@
                         <v-spacer></v-spacer>
                         <v-btn
                             v-if="selectedFiles.length"
+                            :title="$t('Files.Download')"
+                            color="primary"
+                            class="px-2 minwidth-0 ml-3"
+                            :loading="loadings.includes('gcodeDownloadZip')"
+                            @click="downloadSelectedFiles">
+                            <v-icon>{{ mdiCloudDownload }}</v-icon>
+                        </v-btn>
+                        <v-btn
+                            v-if="selectedFiles.length"
                             :title="$t('Files.Delete')"
                             color="error"
                             class="px-2 minwidth-0 ml-3"
@@ -664,7 +673,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     ]
 
     existsFilename(name: string) {
-        return this.files.findIndex((file) => file.filename === name) >= 0
+        return this.files.findIndex((file: FileStateFile) => file.filename === name) >= 0
     }
 
     get gcodeInputFileAccept() {
@@ -1127,6 +1136,36 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         const href = this.apiUrl + '/server/files/gcodes' + encodeURI(filename)
 
         window.open(href)
+    }
+
+    async downloadSelectedFiles() {
+        let items: string[] = []
+
+        const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
+            for (const file of directory) {
+                const filePath = `${absolutPath}/${file.filename}`
+
+                if (file.isDirectory && file.childrens) {
+                    await addElementToItems(filePath, file.childrens)
+
+                    continue
+                }
+
+                items.push(filePath)
+            }
+        }
+
+        await addElementToItems('gcodes/' + this.currentPath, this.selectedFiles)
+        const date = new Date()
+        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDay()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+
+        this.$socket.emit(
+            'server.files.zip',
+            { items, dest: `config/gcodes-${timestamp}.zip` },
+            { action: 'files/downloadZip', loading: 'gcodeDownloadZip' }
+        )
+
+        this.selectedFiles = []
     }
 
     renameFile(item: FileStateGcodefile) {

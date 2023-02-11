@@ -34,6 +34,15 @@
                         <v-spacer></v-spacer>
                         <v-btn
                             v-if="selectedFiles.length"
+                            :title="$t('Timelapse.Download')"
+                            color="primary"
+                            class="px-2 minwidth-0 ml-3"
+                            :loading="loadings.includes('timelapseDownloadZip')"
+                            @click="downloadSelectedFiles">
+                            <v-icon>{{ mdiCloudDownload }}</v-icon>
+                        </v-btn>
+                        <v-btn
+                            v-if="selectedFiles.length"
                             :title="$t('Timelapse.Delete')"
                             color="error"
                             class="px-2 minwidth-0 ml-3"
@@ -690,6 +699,46 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         const href = this.apiUrl + '/server/files/' + encodeURI(path)
 
         window.open(href)
+    }
+
+    async downloadSelectedFiles() {
+        let items: string[] = []
+
+        const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
+            for (const file of directory) {
+                const filePath = `${absolutPath}/${file.filename}`
+
+                if (file.isDirectory && file.childrens) {
+                    await addElementToItems(filePath, file.childrens)
+
+                    continue
+                }
+
+                items.push(filePath)
+
+                if (file.filename.endsWith('.mp4')) {
+                    const indexLastPoint = file.filename.lastIndexOf('.')
+                    const filenameWithoutExtension = file.filename.slice(0, indexLastPoint)
+                    const filenamePng = `${filenameWithoutExtension}.jpg`
+
+                    if (this.files.indexOf((file: FileStateFile) => file.filename === filenamePng) !== -1) {
+                        items.push(`${absolutPath}/${filenamePng}`)
+                    }
+                }
+            }
+        }
+
+        await addElementToItems(this.currentPath, this.selectedFiles)
+        const date = new Date()
+        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDay()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+
+        this.$socket.emit(
+            'server.files.zip',
+            { items, dest: `timelapse/timelapse-${timestamp}.zip` },
+            { action: 'files/downloadZip', loading: 'timelapseDownloadZip' }
+        )
+
+        this.selectedFiles = []
     }
 
     renameFile(item: FileStateFile) {

@@ -12,6 +12,36 @@ export const actions: ActionTree<EditorState, RootState> = {
         commit('reset')
     },
 
+    downloadProgress({ state, commit }, payload: { progressEvent: any; direction: string; filesize: number | null }) {
+        let speedOutput: string = state.loaderProgress.speed
+        let lastTimestamp = state.loaderProgress.lastTimestamp
+        let lastLoaded = state.loaderProgress.lastLoaded
+
+        const diffTime = payload.progressEvent.timeStamp - state.loaderProgress.lastTimestamp
+        if (diffTime > 500) {
+            const diffData = payload.progressEvent.loaded - lastLoaded
+            let speed = diffData / diffTime
+            const unit = ['kB', 'MB', 'GB']
+            let unitSelect = 0
+            while (speed > 1024) {
+                speed /= 1024.0
+                unitSelect = Math.min(2, unitSelect + 1)
+            }
+            speedOutput = speed.toFixed(2) + unit[unitSelect]
+            lastTimestamp = payload.progressEvent.timeStamp
+            lastLoaded = payload.progressEvent.loaded
+        }
+
+        commit('updateLoader', {
+            direction: payload.direction,
+            speed: speedOutput,
+            loaded: payload.progressEvent.loaded,
+            total: payload.filesize ?? payload.progressEvent.total,
+            lastLoaded,
+            lastTimestamp,
+        })
+    },
+
     openFile({ state, dispatch, commit, rootGetters }, payload) {
         const fullFilepathArray = []
         fullFilepathArray.push(payload.root)
@@ -37,36 +67,12 @@ export const actions: ActionTree<EditorState, RootState> = {
         axios
             .get(url, {
                 cancelToken: source.token,
-                onDownloadProgress: (progressEvent) => {
-                    const total = progressEvent.total > 0 ? progressEvent.total : payload.size ?? 0
-
-                    let speedOutput: string = state.loaderProgress.speed
-                    let lastTimestamp = state.loaderProgress.lastTimestamp
-                    let lastLoaded = state.loaderProgress.lastLoaded
-                    const diffTime = progressEvent.timeStamp - state.loaderProgress.lastTimestamp
-                    if (diffTime > 500) {
-                        const diffData = progressEvent.loaded - lastLoaded
-                        let speed = diffData / diffTime
-                        const unit = ['kB', 'MB', 'GB']
-                        let unitSelect = 0
-                        while (speed > 1024) {
-                            speed /= 1024.0
-                            unitSelect = Math.min(2, unitSelect + 1)
-                        }
-                        speedOutput = speed.toFixed(2) + unit[unitSelect]
-                        lastTimestamp = progressEvent.timeStamp
-                        lastLoaded = progressEvent.loaded
-                    }
-
-                    this.commit('editor/updateLoader', {
+                onDownloadProgress: (progressEvent) =>
+                    dispatch('downloadProgress', {
+                        progressEvent,
                         direction: 'downloading',
-                        speed: speedOutput,
-                        loaded: progressEvent.loaded,
-                        total,
-                        lastLoaded,
-                        lastTimestamp,
-                    })
-                },
+                        filesize: payload.size,
+                    }),
                 responseType: 'blob',
             })
             .then((res) => res.data.text())
@@ -106,34 +112,12 @@ export const actions: ActionTree<EditorState, RootState> = {
         axios
             .post(url, formData, {
                 cancelToken: source.token,
-                onUploadProgress: (progressEvent) => {
-                    let speedOutput: string = state.loaderProgress.speed
-                    let lastTimestamp = state.loaderProgress.lastTimestamp
-                    let lastLoaded = state.loaderProgress.lastLoaded
-                    const diffTime = progressEvent.timeStamp - state.loaderProgress.lastTimestamp
-                    if (diffTime > 500) {
-                        const diffData = progressEvent.loaded - lastLoaded
-                        let speed = diffData / diffTime
-                        const unit = ['kB', 'MB', 'GB']
-                        let unitSelect = 0
-                        while (speed > 1024) {
-                            speed /= 1024.0
-                            unitSelect = Math.min(2, unitSelect + 1)
-                        }
-                        speedOutput = speed.toFixed(2) + unit[unitSelect]
-                        lastTimestamp = progressEvent.timeStamp
-                        lastLoaded = progressEvent.loaded
-                    }
-
-                    this.commit('editor/updateLoader', {
+                onUploadProgress: (progressEvent) =>
+                    dispatch('downloadProgress', {
+                        progressEvent,
                         direction: 'uploading',
-                        speed: speedOutput,
-                        loaded: progressEvent.loaded,
-                        total: progressEvent.total,
-                        lastLoaded: lastLoaded,
-                        lastTimestamp: lastTimestamp,
-                    })
-                },
+                        filesize: null,
+                    }),
             })
             .then((response) => {
                 return response.data

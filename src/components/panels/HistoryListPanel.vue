@@ -12,7 +12,7 @@
     <div>
         <panel
             :icon="mdiFileDocumentMultipleOutline"
-            :title="$t('History.PrintHistory')"
+            :title="$t('History.PrintHistory').toString()"
             card-class="history-list-panel">
             <v-card-text>
                 <v-row>
@@ -246,7 +246,7 @@
             persistent
             @keydown.esc="detailsDialog.boolShow = false">
             <panel
-                :title="$t('History.JobDetails')"
+                :title="$t('History.JobDetails').toString()"
                 :icon="mdiUpdate"
                 card-class="history-detail-dialog"
                 :margin-bottom="false">
@@ -273,7 +273,7 @@
                             <v-row>
                                 <v-col>{{ $t('History.LastModified') }}</v-col>
                                 <v-col class="text-right">
-                                    {{ formatDateTime(detailsDialog.item.metadata.modified) }}
+                                    {{ formatDateTime(detailsDialog.item.metadata.modified * 1000) }}
                                 </v-col>
                             </v-row>
                         </template>
@@ -291,13 +291,15 @@
                         <v-divider class="my-3"></v-divider>
                         <v-row>
                             <v-col>{{ $t('History.StartTime') }}</v-col>
-                            <v-col class="text-right">{{ formatDateTime(detailsDialog.item.start_time) }}</v-col>
+                            <v-col class="text-right">{{ formatDateTime(detailsDialog.item.start_time * 1000) }}</v-col>
                         </v-row>
                         <template v-if="'end_time' in detailsDialog.item && detailsDialog.item.end_time > 0">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.EndTime') }}</v-col>
-                                <v-col class="text-right">{{ formatDateTime(detailsDialog.item.end_time) }}</v-col>
+                                <v-col class="text-right">
+                                    {{ formatDateTime(detailsDialog.item.end_time * 1000) }}
+                                </v-col>
                             </v-row>
                         </template>
                         <template
@@ -429,7 +431,10 @@
             </panel>
         </v-dialog>
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
-            <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
+            <panel
+                :title="$t('History.Delete').toString()"
+                card-class="history-delete-selected-dialog"
+                :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="deleteSelectedDialog = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
