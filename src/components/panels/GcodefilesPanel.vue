@@ -507,6 +507,7 @@
             <panel
                 :title="$t('Files.AddToQueue').toString()"
                 card-class="gcode-files-add-to-queue-dialog"
+                :icon="mdiPlaylistPlus"
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogAddBatchToQueue.show = false">
