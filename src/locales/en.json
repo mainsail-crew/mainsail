@@ -517,8 +517,8 @@
             "WebcamOff": "Off"
         },
         "KlippyStatePanel": {
+            "CheckKlippyAndUdsAddress": "Please check if the Klipper service is running and klippy_uds_address is correctly configured in the moonraker.conf.",
             "FirmwareRestart": "Firmware Restart",
-            "KlipperCheck2": "Please check if the Klipper service is running and the klippy_uds_address fit in your moonraker.conf.",
             "MoonrakerCannotConnect": "Moonraker can't connect to Klipper!",
             "PowerOn": "Power on",
             "PrinterSwitchedOff": "Printer is powered off",
