@@ -5,14 +5,17 @@
             hide-default-footer
             class="dashboard-jobqueue-table"
             sort-by="time_added"
-            mobile-breakpoint="0"
-            @current-items="setFirst">
+            mobile-breakpoint="0">
             <template #no-data>
                 <div class="text-center">{{ $t('Panels.StatusPanel.EmptyJobqueue') }}</div>
             </template>
 
-            <template #item="{ item }">
-                <jobqueue-entry :key="item.job_id" :item="item" :content-td-width="contentTdWidth" />
+            <template #item="{ item, index }">
+                <jobqueue-entry
+                    :key="item.job_id"
+                    :item="item"
+                    :isFirst="index === 0"
+                    :content-td-width="contentTdWidth" />
             </template>
             <template v-if="jobsRest.length" #body.append>
                 <tr>
@@ -103,16 +106,6 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
         else output += '--'
 
         return output
-    }
-
-    setFirst(currItems: ServerJobQueueStateJob[]) {
-        // first check that actually exists values
-        if (currItems.length) {
-            // toggle all to false
-            currItems.forEach((x: ServerJobQueueStateJob) => (x.isFirst = false))
-            // just set first to true
-            currItems[0].isFirst = true
-        }
     }
 
     formatPrintTime(totalSeconds: number) {
