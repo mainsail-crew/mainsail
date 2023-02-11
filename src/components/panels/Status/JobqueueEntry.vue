@@ -78,7 +78,8 @@
                         :label="$t('JobQueue.Count')"
                         required
                         :rules="countInputRules"
-                        @keypress="isNumber($event)"
+                        hide-spin-buttons
+                        type="number"
                         @keyup.enter="changeCountAction">
                         <template #append-outer>
                             <div class="_spin_button_group">
@@ -252,16 +253,6 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
             count: this.dialogChangeCount.count,
         })
         this.dialogChangeCount.show = false
-    }
-
-    isNumber(evt: KeyboardEvent) {
-        const charCode = evt.which ? evt.which : evt.keyCode
-        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
-            evt.preventDefault()
-            return
-        }
-
-        return true
     }
 }
 </script>
