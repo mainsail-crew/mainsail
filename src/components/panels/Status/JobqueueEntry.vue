@@ -78,7 +78,25 @@
                         :label="$t('JobQueue.Count')"
                         required
                         :rules="countInputRules"
-                        @keyup.enter="changeCountAction" />
+                        @keypress="isNumber($event)"
+                        @keyup.enter="changeCountAction">
+                        <template #append-outer>
+                            <div class="_spin_button_group">
+                                <v-btn class="mt-n3" icon plain small @click="dialogChangeCount.count++">
+                                    <v-icon>{{ mdiChevronUp }}</v-icon>
+                                </v-btn>
+                                <v-btn
+                                    :disabled="dialogChangeCount.count <= 1"
+                                    class="mb-n3"
+                                    icon
+                                    plain
+                                    small
+                                    @click="dialogChangeCount.count--">
+                                    <v-icon>{{ mdiChevronDown }}</v-icon>
+                                </v-btn>
+                            </div>
+                        </template>
+                    </v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />
@@ -95,12 +113,14 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove } from '@mdi/js'
-import { FileStateGcodefile } from '@/store/files/types'
+import { mdiChevronDown, mdiChevronUp, mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove } from '@mdi/js'
+import NumberInput from '@/components/inputs/NumberInput.vue'
 @Component({
-    components: {},
+    components: { NumberInput },
 })
 export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
+    mdiChevronDown = mdiChevronDown
+    mdiChevronUp = mdiChevronUp
     mdiCloseThick = mdiCloseThick
     mdiCounter = mdiCounter
     mdiFile = mdiFile
@@ -233,11 +253,27 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         })
         this.dialogChangeCount.show = false
     }
+
+    isNumber(evt: KeyboardEvent) {
+        const charCode = evt.which ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+            evt.preventDefault()
+            return
+        }
+
+        return true
+    }
 }
 </script>
 
 <style lang="scss" scoped>
 .filesJobqueue {
     position: relative;
+}
+._spin_button_group {
+    width: 24px;
+    margin-top: -6px;
+    margin-left: -6px;
+    margin-bottom: -6px;
 }
 </style>
