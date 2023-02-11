@@ -371,7 +371,12 @@
     },
     "JobQueue": {
         "AllJobs": "All Jobs",
+        "ChangeCount": "Change count",
+        "Cancel": "Cancel",
+        "Count": "Count",
         "Empty": "Empty",
+        "InvalidCountEmpty": "Input must not be empty!",
+        "InvalidCountGreaterZero": "Input must be greater than 0!",
         "JobQueue": "Job Queue",
         "Jobs": "Jobs",
         "Pause": "Pause",

@@ -49,12 +49,44 @@
         </td>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
+                <v-list-item @click="openChangeCountDialog(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiCounter }}</v-icon>
+                    {{ $t('JobQueue.ChangeCount') }}
+                </v-list-item>
                 <v-list-item @click="removeFromJobqueue(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlaylistRemove }}</v-icon>
                     {{ $t('JobQueue.RemoveFromQueue') }}
                 </v-list-item>
             </v-list>
         </v-menu>
+        <v-dialog v-model="dialogChangeCount.show" max-width="400">
+            <panel
+                :title="$t('JobQueue.ChangeCount').toString()"
+                :icon="mdiCounter"
+                card-class="jobqueue-change-count-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="dialogChangeCount.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+
+                <v-card-text>
+                    <v-text-field
+                        ref="inputFieldAddToQueueCount"
+                        v-model="dialogChangeCount.count"
+                        :label="$t('JobQueue.Count')"
+                        required
+                        :rules="countInputRules"
+                        @keyup.enter="changeCountAction" />
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn color="" text @click="dialogChangeCount.show = false">{{ $t('JobQueue.Cancel') }}</v-btn>
+                    <v-btn color="primary" text @click="changeCountAction">{{ $t('JobQueue.ChangeCount') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </tr>
 </template>
 
@@ -63,11 +95,14 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { mdiFile, mdiPlay, mdiPlaylistRemove } from '@mdi/js'
+import { mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove } from '@mdi/js'
+import { FileStateGcodefile } from '@/store/files/types'
 @Component({
     components: {},
 })
 export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
+    mdiCloseThick = mdiCloseThick
+    mdiCounter = mdiCounter
     mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiPlaylistRemove = mdiPlaylistRemove
@@ -85,6 +120,21 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         y: 0,
         item: {},
     }
+
+    private dialogChangeCount: {
+        show: boolean
+        count: number
+        item: ServerJobQueueStateJob | any
+    } = {
+        show: false,
+        count: 1,
+        item: {},
+    }
+
+    private countInputRules = [
+        (value: string) => !!value || this.$t('JobQueue.InvalidCountEmpty'),
+        (value: string) => parseInt(value) > 0 || this.$t('JobQueue.InvalidCountGreaterZero'),
+    ]
 
     declare $refs: {
         filesJobqueue: any
@@ -168,6 +218,20 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         ids.push(item.job_id)
 
         this.$store.dispatch('server/jobQueue/deleteFromQueue', ids)
+    }
+
+    openChangeCountDialog(item: FileStateGcodefile) {
+        this.dialogChangeCount.show = true
+        this.dialogChangeCount.count = 1
+        this.dialogChangeCount.item = item
+    }
+
+    changeCountAction() {
+        this.$store.dispatch('server/jobQueue/changeCount', {
+            job_id: this.dialogChangeCount.item.job_id,
+            count: this.dialogChangeCount.count,
+        })
+        this.dialogChangeCount.show = false
     }
 }
 </script>

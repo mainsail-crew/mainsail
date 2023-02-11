@@ -718,8 +718,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
     ]
     private countInputRules = [
-        (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
-        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
+        (value: string) => !!value || this.$t('JobQueue.InvalidCountEmpty'),
+        (value: string) => parseInt(value) > 0 || this.$t('JobQueue.InvalidCountGreaterZero'),
     ]
 
     existsFilename(name: string) {
