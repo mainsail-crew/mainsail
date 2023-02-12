@@ -4,7 +4,7 @@ import { MutationTree } from 'vuex'
 import {
     ServerUpdateManagerState,
     ServerUpdateManagerStateGitRepo,
-    ServerUpdateManagerStateGitRepoCommits,
+    ServerUpdateManagerStateGitRepoCommit,
 } from '@/store/server/updateManager/types'
 
 export const mutations: MutationTree<ServerUpdateManagerState> = {
@@ -51,7 +51,11 @@ export const mutations: MutationTree<ServerUpdateManagerState> = {
             Vue.set(state.updateResponse, 'complete', payload.complete)
 
         if ('complete' in payload && payload.complete)
-            Vue.$socket.emit('machine.update.status', { refresh: false }, { action: 'server/updateManager/onUpdateStatus' })
+            Vue.$socket.emit(
+                'machine.update.status',
+                { refresh: false },
+                { action: 'server/updateManager/onUpdateStatus' }
+            )
 
         state.updateResponse.messages.push({
             date: new Date(),

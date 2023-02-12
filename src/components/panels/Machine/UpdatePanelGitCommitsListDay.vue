@@ -1,12 +1,12 @@
 <template>
     <div>
-        <v-timeline-item v-for="commit of commits" :key="commit.date.getTime()" small>
+        <v-timeline-item small>
             <v-row class="pt-0">
                 <v-col class="pr-12">
                     <h3 class="caption">
                         {{
                             $t('Machine.UpdatePanel.CommitsOnDate', {
-                                date: new Date(group.date).toLocaleDateString(language, dateOptions),
+                                date: new Date(groupedCommits.date).toLocaleDateString(language, dateOptions),
                             })
                         }}
                     </h3>
@@ -22,7 +22,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import {
     ServerUpdateManagerStateGitRepo,
-    ServerUpdateManagerStateGitRepoGroupedCommit,
+    ServerUpdateManagerStateGitRepoGroupedCommits,
 } from '@/store/server/updateManager/types'
 import Panel from '@/components/ui/Panel.vue'
 
@@ -30,7 +30,7 @@ import Panel from '@/components/ui/Panel.vue'
     components: { Panel },
 })
 export default class UpdatePanelGitCommitsListDay extends Mixins(BaseMixin) {
-    @Prop({ required: true }) readonly commits!: ServerUpdateManagerStateGitRepoGroupedCommit[]
+    @Prop({ required: true }) readonly groupedCommits!: ServerUpdateManagerStateGitRepoGroupedCommits
     @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
 }
 </script>

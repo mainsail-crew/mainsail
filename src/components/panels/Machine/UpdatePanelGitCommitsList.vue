@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="boolShowDialog" persistent max-width="800">
         <panel
-            :title="$t('Machine.UpdatePanel.Commits')"
+            :title="$t('Machine.UpdatePanel.Commits').toString()"
             :icon="mdiUpdate"
             :margin-bottom="false"
             card-class="machine-update-commits-dialog">
@@ -18,7 +18,7 @@
                                 v-for="group of groupedCommits"
                                 :key="group.date.getTime()"
                                 :repo="repo"
-                                :commits="group" />
+                                :grouped-commits="group" />
                         </v-timeline>
                     </v-col>
                 </v-row>
@@ -32,8 +32,8 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import {
     ServerUpdateManagerStateGitRepo,
-    ServerUpdateManagerStateGitRepoCommits,
-    ServerUpdateManagerStateGitRepoGroupedCommit,
+    ServerUpdateManagerStateGitRepoCommit,
+    ServerUpdateManagerStateGitRepoGroupedCommits,
 } from '@/store/server/updateManager/types'
 import { mdiUpdate, mdiCloseThick } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
@@ -42,7 +42,7 @@ import UpdatePanelGitCommitsListDay from '@/components/panels/Machine/UpdatePane
 @Component({
     components: { UpdatePanelGitCommitsListDay, Panel },
 })
-export default class UpdatePanelGitCommitsListL extends Mixins(BaseMixin) {
+export default class UpdatePanelGitCommitsList extends Mixins(BaseMixin) {
     mdiUpdate = mdiUpdate
     mdiCloseThick = mdiCloseThick
 
@@ -54,9 +54,9 @@ export default class UpdatePanelGitCommitsListL extends Mixins(BaseMixin) {
     }
 
     get groupedCommits() {
-        let output: ServerUpdateManagerStateGitRepoGroupedCommit[] = []
+        let output: ServerUpdateManagerStateGitRepoGroupedCommits[] = []
         let lastDate: null | Date = null
-        let tmpCommits: ServerUpdateManagerStateGitRepoCommits[] = []
+        let tmpCommits: ServerUpdateManagerStateGitRepoCommit[] = []
 
         this.commitsBehind.forEach((commit: any) => {
             const commitDate = new Date(commit.date * 1000)

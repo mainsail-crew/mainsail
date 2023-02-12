@@ -21,7 +21,7 @@ export interface ServerUpdateManagerStateMessages {
     message: string
 }
 
-export interface ServerUpdateManagerStateGitRepoCommits {
+export interface ServerUpdateManagerStateGitRepoCommit {
     sha: string
     author: string
     date: string
@@ -49,14 +49,14 @@ export interface ServerUpdateManagerStateGitRepo {
     is_dirty: boolean
     detached: boolean
     debug_enabled: boolean
-    commits_behind: ServerUpdateManagerStateGitRepoCommits[]
+    commits_behind: ServerUpdateManagerStateGitRepoGroupedCommits[]
     git_messages: string[]
     info_tags: string[]
 }
 
-export interface ServerUpdateManagerStateGitRepoGroupedCommit {
+export interface ServerUpdateManagerStateGitRepoGroupedCommits {
     date: Date
-    commits: ServerUpdateManagerStateGitRepoCommits[]
+    commits: ServerUpdateManagerStateGitRepoCommit[]
 }
 
 export interface ServerUpdateManagerStateWebRepo {
