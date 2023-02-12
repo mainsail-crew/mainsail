@@ -1,7 +1,7 @@
 <template>
     <div v-if="klipperState !== 'ready' && socketIsConnected">
-        <v-container v-if="klippyIsConnected" class="pa-0 pb-6">
-            <v-alert :color="messageType.color" dense text border="left" class="mb-0">
+        <template v-if="klippyIsConnected">
+            <v-alert :color="messageType.color" dense text border="left" class="mb-0 mb-6">
                 <!-- KLIPPER MESSAGE TITLE -->
                 <p class="font-weight-medium d-flex align-center">
                     <v-icon :color="messageType.color" class="pr-2">{{ messageType.icon }}</v-icon>
@@ -68,10 +68,28 @@
                     <v-progress-circular indeterminate :color="messageType.color"></v-progress-circular>
                 </v-card-text>
             </v-alert>
-        </v-container>
+        </template>
+        <!-- Power OFF panel -->
+        <template v-else-if="isPrinterPowerOff">
+            <v-alert dense text border="left" class="mb-6">
+                <p class="font-weight-medium d-flex align-center">
+                    <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
+                    {{ $t('Panels.KlippyStatePanel.PrinterSwitchedOff') }}
+                </p>
+                <p>{{ $t('Panels.KlippyStatePanel.PrinterSwitchedOffDescription') }}</p>
+                <v-row>
+                    <v-col class="text-center">
+                        <v-btn small outlined text :class="`${messageType.color}--text my-1`" @click="powerOn">
+                            <v-icon class="mr-sm-2">{{ mdiPower }}</v-icon>
+                            {{ $t('Panels.KlippyStatePanel.PowerOn') }}
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-alert>
+        </template>
         <!-- DISCONNECTED INFOGRAPHIC -->
-        <v-container v-if="klipperState === 'disconnected'" class="pa-0">
-            <v-alert dense text border="left">
+        <template v-else-if="klipperState === 'disconnected'">
+            <v-alert dense text border="left" class="mb-6">
                 <p class="font-weight-medium d-flex align-center">
                     <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
                     {{ $t('Panels.KlippyStatePanel.ServiceReports', { service: 'Moonraker' }) }}:
@@ -79,9 +97,9 @@
                 </p>
                 <connection-status :moonraker="true" :klipper="false"></connection-status>
                 <p class="mt-2 mb-0 text-center">{{ $t('Panels.KlippyStatePanel.MoonrakerCannotConnect') }}</p>
-                <p class="mb-0 text-center">{{ $t('Panels.KlippyStatePanel.KlipperCheck') }}</p>
+                <p class="mb-0 text-center">{{ $t('Panels.KlippyStatePanel.CheckKlippyAndUdsAddress') }}</p>
             </v-alert>
-        </v-container>
+        </template>
     </div>
 </template>
 
@@ -99,6 +117,7 @@ import {
     mdiRocketLaunch,
     mdiConnection,
     mdiPrinter3d,
+    mdiPower,
 } from '@mdi/js'
 
 @Component({
@@ -108,6 +127,7 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
     mdiPrinter3d = mdiPrinter3d
     mdiRestart = mdiRestart
     mdiDownload = mdiDownload
+    mdiPower = mdiPower
 
     get klippy_message() {
         return this.$store.state.server.klippy_message ?? null
@@ -143,6 +163,17 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
         if ('href' in event.target.parentElement.attributes) href = event.target.parentElement.attributes.href.value
 
         window.open(href)
+    }
+
+    powerOn() {
+        this.$socket.emit(
+            'machine.device_power.post_device',
+            {
+                device: this.printerPowerDevice,
+                action: 'on',
+            },
+            { action: 'server/power/responseToggle' }
+        )
     }
 }
 </script>

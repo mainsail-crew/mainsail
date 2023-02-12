@@ -154,6 +154,8 @@ export const getDefaultState = (): GuiState => {
             boolHideUploadAndPrintButton: false,
             boolWebcamNavi: false,
             navigationStyle: 'iconsAndText',
+            powerDeviceName: null,
+            hideSaveConfigForBedMash: false,
         },
         view: {
             blockFileUpload: false,

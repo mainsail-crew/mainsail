@@ -57,6 +57,9 @@
                     <template v-else-if="currentCam.service === 'ipstream'">
                         <webcam-ipstreamer :cam-settings="currentCam"></webcam-ipstreamer>
                     </template>
+                    <template v-else-if="currentCam.service === 'hlsstream'">
+                        <webcam-hlsstreamer :cam-settings="currentCam"></webcam-hlsstreamer>
+                    </template>
                     <template v-else>
                         <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
                     </template>
@@ -73,6 +76,7 @@
 import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
+import Hlsstreamer from '@/components/webcams/Hlsstreamer.vue'
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import WebcamGrid from '@/components/webcams/WebcamGrid.vue'
 import Component from 'vue-class-component'
@@ -89,6 +93,7 @@ import WebcamMixin from '@/components/mixins/webcam'
         'webcam-mjpegstreamer': Mjpegstreamer,
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
         'webcam-ipstreamer': Ipstreamer,
+        'webcam-hlsstreamer': Hlsstreamer,
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'webcam-grid': WebcamGrid,
     },

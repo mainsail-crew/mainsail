@@ -58,4 +58,9 @@ export const mutations: MutationTree<PrinterState> = {
             Object.assign(state.configfile.config['bed_mesh ' + payload.name], { deleted: true })
         }
     },
+
+    clearScrewsTiltAdjust(state) {
+        Vue.set(state.screws_tilt_adjust, 'error', false)
+        Vue.set(state.screws_tilt_adjust, 'results', [])
+    },
 }
