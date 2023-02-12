@@ -587,6 +587,18 @@
             "Layer": "Schicht",
             "Max": "max",
             "ObjectHeight": "Objekthöhe",
+            "PauseAtLayer": {
+                "Abort": "abbrechen",
+                "Accept": "akzeptieren",
+                "AtLayer": "bei Schicht",
+                "Call": "Ausführen",
+                "DescriptionPauseAtLayerActive": "Diese Funktion ist bereits aktiv und wird \"{call}\" bei Schicht {layer} ausführen. Wenn der Befehl nochmal ausgeführt wird, werden die Einstellungen überschreiben.",
+                "DescriptionPauseNextLayerActive": "Diese Funktion ist bereits aktiv und bei der nächsten Schicht wird \"{call}\" ausgeführt.",
+                "Layer": "Schicht",
+                "NextLayer": "nächste Schicht",
+                "PauseAtLayer": "Pause bei Schicht",
+                "Type": "Art"
+            },
             "PausePrint": "Druck pausieren",
             "Print": "Druck",
             "PrintTime": "Druckzeit",
