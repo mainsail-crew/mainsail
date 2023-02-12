@@ -110,13 +110,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
                 canvas.height = canvas.clientWidth * this.aspectRatio
             }
 
-            /*if (canvas.height > 500) {
-                window.console.log(canvas.height, this.aspectRatio)
-                canvas.clientHeight = 500
-
-                canvas.clientWidth = this.rotate ? 500 * this.aspectRatio : 500 / this.aspectRatio
-            }*/
-
             if (this.rotate) {
                 const scale = canvas.height / frame.width
                 const x = canvas.width / 2
