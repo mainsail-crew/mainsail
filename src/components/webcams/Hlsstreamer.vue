@@ -68,9 +68,6 @@ export default class Hlsstreamer extends Mixins(BaseMixin) {
         const video = this.$refs.video
         video.onplaying = () => {
             this.aspectRatio = video.videoWidth / video.videoHeight
-            window.console.log(
-                'video dimens loaded w=' + video.videoWidth + ' h=' + video.videoHeight + ' ratio=' + this.aspectRatio
-            )
         }
     }
 
