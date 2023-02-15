@@ -66,8 +66,8 @@ export default class Hlsstreamer extends Mixins(BaseMixin) {
                     "enableWorker": true,
                     "lowLatencyMode": true,
                     "maxLiveSyncPlaybackRate": 2,
-                    "liveSyncDurationCount": 1,
-                    "liveMaxLatencyDurationCount": 2
+                    "liveSyncDuration": 0.5,
+                    "liveMaxLatencyDuration": 2
                 }
             )
             this.hls.loadSource(this.url)
