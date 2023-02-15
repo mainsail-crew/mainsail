@@ -61,7 +61,15 @@ export default class Hlsstreamer extends Mixins(BaseMixin) {
         if (Hls.isSupported()) {
             this.hls?.destroy()
 
-            this.hls = new Hls()
+            this.hls = new Hls(
+                {
+                    "enableWorker": true,
+                    "lowLatencyMode": true,
+                    "maxLiveSyncPlaybackRate": 2,
+                    "liveSyncDurationCount": 1,
+                    "liveMaxLatencyDurationCount": 2
+                }
+            )
             this.hls.loadSource(this.url)
             this.hls.attachMedia(video)
             this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
