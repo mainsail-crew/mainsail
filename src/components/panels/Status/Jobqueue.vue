@@ -14,7 +14,7 @@
                 <jobqueue-entry
                     :key="item.job_id"
                     :item="item"
-                    :isFirst="index === 0"
+                    :is-first="index === 0"
                     :content-td-width="contentTdWidth" />
             </template>
             <template v-if="jobsRest.length" #body.append>
