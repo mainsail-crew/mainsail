@@ -1,17 +1,12 @@
-<style scoped>
-.webcamImage {
-    width: 100%;
-    background: lightgray;
-}
-</style>
-
 <template>
-    <img
-        ref="webcamUv4lMjpegImage"
-        v-observe-visibility="viewportVisibilityChanged"
-        :style="webcamStyle"
-        class="webcamImage"
-        @load="onload" />
+    <div class="d-flex justify-center">
+        <img
+            ref="webcamUv4lMjpegImage"
+            v-observe-visibility="viewportVisibilityChanged"
+            :style="webcamStyle"
+            class="webcamImage"
+            @load="onload" />
+    </div>
 </template>
 
 <script lang="ts">
@@ -45,6 +40,8 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
         const output = {
             transform: 'none',
             aspectRatio: 16 / 9,
+            maxHeight: window.innerHeight - 155 + 'px',
+            maxWidth: 'auto',
         }
 
         let transforms = ''
@@ -52,7 +49,10 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
         if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
-        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
+        if (this.aspectRatio) {
+            output.aspectRatio = this.aspectRatio
+            output.maxWidth = (window.innerHeight - 155) * this.aspectRatio + 'px'
+        }
 
         return output
     }
@@ -116,3 +116,10 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.webcamImage {
+    width: 100%;
+    background: lightgray;
+}
+</style>

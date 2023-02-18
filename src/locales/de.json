@@ -507,8 +507,8 @@
             "WebcamOff": "Aus"
         },
         "KlippyStatePanel": {
+            "CheckKlippyAndUdsAddress": "Bitte überprüfen, ob der Klipper-Dienst läuft und klippy_uds_address in der moonraker.conf korrekt konfiguriert ist.",
             "FirmwareRestart": "Firmware Neustart",
-            "KlipperCheck": "Bitte überprüfen Sie, ob der Klipper-Dienst läuft und ein UDS (Unix Domain Socket) konfiguriert ist.",
             "MoonrakerCannotConnect": "Moonraker kann keine Verbindung zu Klipper herstellen!",
             "PowerOn": "Drucker einschalten",
             "PrinterSwitchedOff": "Drucker ist ausgeschaltet",
@@ -587,6 +587,18 @@
             "Layer": "Schicht",
             "Max": "max",
             "ObjectHeight": "Objekthöhe",
+            "PauseAtLayer": {
+                "Abort": "abbrechen",
+                "Accept": "akzeptieren",
+                "AtLayer": "bei Schicht",
+                "Call": "Ausführen",
+                "DescriptionPauseAtLayerActive": "Diese Funktion ist bereits aktiv und wird \"{call}\" bei Schicht {layer} ausführen. Wenn der Befehl nochmal ausgeführt wird, werden die Einstellungen überschreiben.",
+                "DescriptionPauseNextLayerActive": "Diese Funktion ist bereits aktiv und bei der nächsten Schicht wird \"{call}\" ausgeführt.",
+                "Layer": "Schicht",
+                "NextLayer": "nächste Schicht",
+                "PauseAtLayer": "Pause bei Schicht",
+                "Type": "Art"
+            },
             "PausePrint": "Druck pausieren",
             "Print": "Druck",
             "PrintTime": "Druckzeit",
@@ -871,7 +883,6 @@
             "NoGroupFound": "Keine Gruppe gefunden",
             "NoPresetFound": "Keine Voreinstellungen gefunden",
             "Presets": "Voreinstellungen",
-            "PresetSubTitle": "R: {red}, G: {green}, B: {blue}, W: {white}",
             "Start": "Start",
             "StartDescription": "Erste LED von dieser Gruppe.",
             "UnableToLoadLight": "Licht konnte nicht geladen werden",
