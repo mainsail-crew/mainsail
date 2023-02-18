@@ -8,55 +8,145 @@ export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
         /* see https://tedboy.github.io/jinja2/off_doc.templates.html */
         const operators = [
-            "\\+", "-", "\\/\\/", "\\/", "%", "\\*\\*", "\\*", "\\(", "\\)",
-            "==", "!=", ">=", ">", "<=", "<", "=", "\\|", "~", ","
+            '\\+',
+            '-',
+            '\\/\\/',
+            '\\/',
+            '%',
+            '\\*\\*',
+            '\\*',
+            '\\(',
+            '\\)',
+            '==',
+            '!=',
+            '>=',
+            '>',
+            '<=',
+            '<',
+            '=',
+            '\\|',
+            '~',
+            ',',
         ]
-        const reOperator = new RegExp("^" + operators.join("|"))
-        
+        const reOperator = new RegExp('^' + operators.join('|'))
+
         const keywords = [
-            "elif", "else", "endif", "if", "endfor", "for", "loop\\.index", "loop\\.revindex",
-            "loop\\.first", "loop\\.last", "loop\\.length", "loop\\.cycle", "loop\\.depth",
-            "and", "or", "not", "in", "is", "endmacro", "macro", "endcall", "call", "endfilter",
-            "filter", "endset", "set", "extends", "block", "endblock", "include", "import", "do"
+            'elif',
+            'else',
+            'endif',
+            'if',
+            'endfor',
+            'for',
+            'loop\\.index',
+            'loop\\.revindex',
+            'loop\\.first',
+            'loop\\.last',
+            'loop\\.length',
+            'loop\\.cycle',
+            'loop\\.depth',
+            'and',
+            'or',
+            'not',
+            'in',
+            'is',
+            'endmacro',
+            'macro',
+            'endcall',
+            'call',
+            'endfilter',
+            'filter',
+            'endset',
+            'set',
+            'extends',
+            'block',
+            'endblock',
+            'include',
+            'import',
+            'do',
         ]
         const filters = [
-            "abs", "attr", "batch", "capitalize", "center", "default", "dictsort", "escape",
-            "filesizeformat", "first", "float", "forceescape", "format", "groupby", "indent",
-            "int", "join", "last", "length", "list", "lower", "map", "max", "min", "pprint",
-            "random", "reject", "rejectattr", "replace", "reverse", "round", "tojson", "safe",
-            "select", "selectattr", "slice", "sort", "string", "striptags", "sum", "title",
-            "trim", "truncate", "unique", "upper", "urlencode", "urlize", "wordcount",
-            "wordwrap", "xmlattr"
+            'abs',
+            'attr',
+            'batch',
+            'capitalize',
+            'center',
+            'default',
+            'dictsort',
+            'escape',
+            'filesizeformat',
+            'first',
+            'float',
+            'forceescape',
+            'format',
+            'groupby',
+            'indent',
+            'int',
+            'join',
+            'last',
+            'length',
+            'list',
+            'lower',
+            'map',
+            'max',
+            'min',
+            'pprint',
+            'random',
+            'reject',
+            'rejectattr',
+            'replace',
+            'reverse',
+            'round',
+            'tojson',
+            'safe',
+            'select',
+            'selectattr',
+            'slice',
+            'sort',
+            'string',
+            'striptags',
+            'sum',
+            'title',
+            'trim',
+            'truncate',
+            'unique',
+            'upper',
+            'urlencode',
+            'urlize',
+            'wordcount',
+            'wordwrap',
+            'xmlattr',
         ]
         const tests = [
-            "callable", "defined", "divisibleby", "equalto", "escaped", "even", "iterable",
-            "lower", "mapping", "none", "number", "odd", "sameas", "sequence", "string",
-            "undefined", "upper"
+            'callable',
+            'defined',
+            'divisibleby',
+            'equalto',
+            'escaped',
+            'even',
+            'iterable',
+            'lower',
+            'mapping',
+            'none',
+            'number',
+            'odd',
+            'sameas',
+            'sequence',
+            'string',
+            'undefined',
+            'upper',
         ]
-        const globalFns = [
-            "range", "lipsum", "dict", "cycler", "joiner"
-        ]
-        const cyclerMethods = [
-            "\\.reset\\(\\)", "\\.next\\(\\)"
-        ]
-        const reKeyword = new RegExp(
-            "^" + keywords.join("\\s+|") + "|" +
-            cyclerMethods.join("|") + "\\s+"
-        )
+        const globalFns = ['range', 'lipsum', 'dict', 'cycler', 'joiner']
+        const cyclerMethods = ['\\.reset\\(\\)', '\\.next\\(\\)']
+        const reKeyword = new RegExp('^' + keywords.join('\\s+|') + '|' + cyclerMethods.join('|') + '\\s+')
         const reUpdateOps = new RegExp(
-            "^" + filters.join("|") + "|" +
-            tests.join("|") + "|" +
-            globalFns.join("|") + "\\s+"
+            '^' + filters.join('|') + '|' + tests.join('|') + '|' + globalFns.join('|') + '\\s+'
         )
 
-        function jinja2Element(stream:StringStream): string {
+        function jinja2Element(stream: StringStream): string {
             const pctMatch: any = stream.match(/^%}/)
             const braceMatch: any = stream.match(/^}/)
             function notJinja(): boolean {
-                return (
-                    state.klipperMacroJinjaBraceStack.length === 0 &&
-                    state.klipperMacroJinjaPctStack.length === 0
-                )
+                return state.klipperMacroJinjaBraceStack.length === 0 && state.klipperMacroJinjaPctStack.length === 0
             }
 
             if (pctMatch || braceMatch) {
@@ -65,8 +155,8 @@ export const klipper_config: StreamParser<any> = {
                     if (notJinja()) {
                         state.klipperMacroJinja = false
                     }
-                }
-                else { // brace match
+                } else {
+                    // brace match
                     state.klipperMacroJinjaBraceStack.pop()
                     if (notJinja()) {
                         state.klipperMacroJinja = false
@@ -109,7 +199,7 @@ export const klipper_config: StreamParser<any> = {
                 return 'atom'
             }
             if (stream.match(/^[-+]?[0-9]*\.?[0-9]+/)) {
-                    state.klipperMacroJinjaHighlightNext = false
+                state.klipperMacroJinjaHighlightNext = false
                 return 'number'
             }
             if (stream.eatSpace()) {
@@ -173,8 +263,7 @@ export const klipper_config: StreamParser<any> = {
                     state.klipperMacroJinja = true
                     if (stream.string.includes('{%')) {
                         state.klipperMacroJinjaPctStack.push('{%')
-                    }
-                    else {
+                    } else {
                         state.klipperMacroJinjaBraceStack.push('{')
                     }
                     return 'tag'
@@ -184,7 +273,8 @@ export const klipper_config: StreamParser<any> = {
                 }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? 0)
             }
-        } else { // stream.indentation > 0
+        } else {
+            // stream.indentation > 0
             state.was = true
             if (state.gcode) {
                 if (stream.sol()) {
@@ -195,8 +285,7 @@ export const klipper_config: StreamParser<any> = {
                     state.klipperMacroJinja = true
                     if (stream.string.includes('{%')) {
                         state.klipperMacroJinjaPctStack.push('{%')
-                    }
-                    else {
+                    } else {
                         state.klipperMacroJinjaBraceStack.push('{')
                     }
                     return 'tag'
@@ -213,8 +302,7 @@ export const klipper_config: StreamParser<any> = {
                     state.klipperMacroJinja = true
                     if (stream.string.includes('{%')) {
                         state.klipperMacroJinjaPctStack.push('{%')
-                    }
-                    else {
+                    } else {
                         state.klipperMacroJinjaBraceStack.push('{')
                     }
                     return 'tag'
@@ -246,11 +334,9 @@ export const klipper_config: StreamParser<any> = {
         if (!state.pair && !state.gcode && !state.variable && stream.sol()) {
             if (stream.match(/^(?:[A-Za-z]*_?gcode|enable):/)) {
                 state.gcode = true
-            }
-            else if (stream.match(/^variable_[a-zA-Z]+:/)) {
+            } else if (stream.match(/^variable_[a-zA-Z]+:/)) {
                 state.variable = true
-            }
-            else {
+            } else {
                 stream.match(/^.+?:\s*/)
                 state.pair = !stream.eol()
             }
@@ -267,13 +353,12 @@ export const klipper_config: StreamParser<any> = {
                 state.klipperMacroJinja = true
                 if (stream.string.includes('{%')) {
                     state.klipperMacroJinjaPctStack.push('{%')
-                }
-                else {
+                } else {
                     state.klipperMacroJinjaBraceStack.push('{')
                 }
                 return 'tag'
-            }
-            else { // no Jinja in variable
+            } else {
+                // no Jinja in variable
                 state.pair = true
                 // state.variable = false
             }

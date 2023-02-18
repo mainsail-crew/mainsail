@@ -15,14 +15,11 @@ export const gcode = {
             // else if (stream.match(/^'|"/)) {
             else if (stream.match(/^"[^{]+"/) || stream.match(/^'[^{]+'/)) {
                 return 'string'
-            }
-            else if (stream.match(/^[-+]?[0-9]*\.?[0-9]+/)) {
+            } else if (stream.match(/^[-+]?[0-9]*\.?[0-9]+/)) {
                 return 'number'
-            }
-            else if (stream.match(/^[A-Za-z\d_]+/)) {
+            } else if (stream.match(/^[A-Za-z\d_]+/)) {
                 return 'propertyName'
-            }
-            else if (zeroPos === 0 && stream.match(/^{[^%]+}/)) {
+            } else if (zeroPos === 0 && stream.match(/^{[^%]+}/)) {
                 return 'variable'
             }
         }
