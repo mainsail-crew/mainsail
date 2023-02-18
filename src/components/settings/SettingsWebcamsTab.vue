@@ -187,6 +187,9 @@
                             <template v-else-if="form.service === 'ipstream'">
                                 <webcam-ipstreamer :cam-settings="form"></webcam-ipstreamer>
                             </template>
+                            <template v-else-if="form.service === 'hlsstream'">
+                                <webcam-hlsstreamer :cam-settings="form"></webcam-hlsstreamer>
+                            </template>
                             <template v-else-if="form.service === 'webrtc'">
                                 <webcam-webrtc :cam-settings="form"></webcam-webrtc>
                             </template>
@@ -227,6 +230,7 @@ import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import { mdiMenuDown, mdiDelete, mdiPencil, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
 import { FileStateFile } from '@/store/files/types'
+import Hlsstreamer from '../webcams/Hlsstreamer.vue'
 import Webrtc from '@/components/webcams/Webrtc.vue'
 
 interface webcamForm {
@@ -252,6 +256,7 @@ interface webcamForm {
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'webcam-ipstreamer': Ipstreamer,
         'webcam-webrtc': Webrtc,
+        'webcam-hlsstreamer': Hlsstreamer,
     },
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
@@ -316,6 +321,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'uv4l-mjpeg', text: this.$t('Settings.WebcamsTab.Uv4lMjpeg') },
             { value: 'ipstream', text: this.$t('Settings.WebcamsTab.Ipstream') },
             { value: 'webrtc', text: this.$t('Settings.WebcamsTab.Webrtc') },
+            { value: 'hlsstream', text: this.$t('Settings.WebcamsTab.Hlsstream') },
         ]
     }
 

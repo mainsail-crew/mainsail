@@ -872,7 +872,6 @@
             "NoGroupFound": "グループが見つかりませんでした。",
             "NoPresetFound": "プリセットが見つかりませんでした。",
             "Presets": "プリセット",
-            "PresetSubTitle": "赤: {red}, 緑: {green}, 青: {blue}, 白: {white}",
             "Start": "開始",
             "StartDescription": "このグループ最初のLEDです。",
             "UnableToLoadLight": "照明を読み込めませんでした。",

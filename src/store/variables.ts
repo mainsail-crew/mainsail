@@ -1,8 +1,8 @@
 export const defaultLogoColor = '#D41216'
 export const defaultPrimaryColor = '#2196f3'
 
-export const minKlipperVersion = 'v0.10.0-271'
-export const minMoonrakerVersion = 'v0.7.1-486'
+export const minKlipperVersion = 'v0.11.0-97'
+export const minMoonrakerVersion = 'v0.7.1-797'
 
 export const colorArray = ['#F44336', '#8e379d', '#03DAC5', '#3F51B5', '#ffde03', '#009688', '#E91E63']
 
@@ -108,7 +108,17 @@ export const timelapseConsoleFilters = [
 export const hiddenRootDirectories = ['gcodes', 'timelapse', 'timelapse_frames']
 
 /*
+ * Hide directories
+ */
+export const hiddenDirectories = ['.git']
+
+/*
  * List of available Klipper config reference translations
  * https://www.klipper3d.org/Config_Reference.html
  */
 export const availableKlipperConfigReferenceTranslations = ['it', 'hu', 'zh']
+
+/*
+ * List of all rollover logfiles
+ */
+export const rolloverLogfiles = ['klipper', 'moonraker']

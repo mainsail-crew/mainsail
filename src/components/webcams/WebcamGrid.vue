@@ -16,6 +16,9 @@
                 <template v-else-if="webcam.service === 'ipstream'">
                     <webcam-ipstreamer :cam-settings="webcam"></webcam-ipstreamer>
                 </template>
+                <template v-else-if="webcam.service === 'hlsstream'">
+                    <webcam-hlsstreamer :cam-settings="webcam"></webcam-hlsstreamer>
+                </template>
                 <template v-else-if="webcam.service === 'webrtc'">
                     <webcam-webrtc :cam-settings="webcam"></webcam-webrtc>
                 </template>
@@ -34,8 +37,9 @@ import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import Hlsstreamer from '@/components/webcams/Hlsstreamer.vue'
 import Webrtc from '@/components/webcams/Webrtc.vue'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 @Component({
     components: {
@@ -43,6 +47,7 @@ import Webrtc from '@/components/webcams/Webrtc.vue'
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'webcam-ipstreamer': Ipstreamer,
+        'webcam-hlsstreamer': Hlsstreamer,
         'webcam-webrtc': Webrtc,
     },
 })

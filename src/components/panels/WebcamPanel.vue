@@ -6,7 +6,8 @@
         :icon="mdiWebcam"
         :title="$t('Panels.WebcamPanel.Headline')"
         :collapsible="$route.fullPath !== '/cam'"
-        card-class="webcam-panel">
+        card-class="webcam-panel"
+        :margin-bottom="currentPage !== 'page'">
         <template v-if="webcams.length > 1" #buttons>
             <v-menu :offset-y="true" title="Webcam">
                 <template #activator="{ on, attrs }">
@@ -56,6 +57,9 @@
                     <template v-else-if="currentCam.service === 'ipstream'">
                         <webcam-ipstreamer :cam-settings="currentCam"></webcam-ipstreamer>
                     </template>
+                    <template v-else-if="currentCam.service === 'hlsstream'">
+                        <webcam-hlsstreamer :cam-settings="currentCam"></webcam-hlsstreamer>
+                    </template>
                     <template v-else-if="currentCam.service === 'webrtc'">
                         <webcam-webrtc :cam-settings="currentCam"></webcam-webrtc>
                     </template>
@@ -75,7 +79,9 @@
 import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
+import Hlsstreamer from '@/components/webcams/Hlsstreamer.vue'
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
+import Webrtc from '@/components/webcams/Webrtc.vue'
 import WebcamGrid from '@/components/webcams/WebcamGrid.vue'
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
@@ -84,7 +90,6 @@ import Panel from '@/components/ui/Panel.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { mdiMenuDown, mdiViewGrid, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
-import Webrtc from '@/components/webcams/Webrtc.vue'
 
 @Component({
     components: {
@@ -92,6 +97,7 @@ import Webrtc from '@/components/webcams/Webrtc.vue'
         'webcam-mjpegstreamer': Mjpegstreamer,
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
         'webcam-ipstreamer': Ipstreamer,
+        'webcam-hlsstreamer': Hlsstreamer,
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'webcam-webrtc': Webrtc,
         'webcam-grid': WebcamGrid,
