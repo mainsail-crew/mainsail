@@ -3,7 +3,7 @@
         <panel :icon="mdiBell" title="Reminders" card-class="history-reminders-panel" :collapsible="true">
             <v-card-text>
                 <v-row>
-                    <v-col class="offset-4 col-4 d-flex align-center justify-end">
+                    <v-col class="offset-4 d-flex align-center justify-end">
                         <template v-if="selectedReminders.length">
                             <v-btn
                                 title="Delete"
@@ -13,7 +13,7 @@
                                 <v-icon>{{ mdiDelete }}</v-icon>
                             </v-btn>
                         </template>
-                        <v-btn title="New Reminder" class="px-2 minwidth-0 ml-3" @click="createReminderDialog = true">
+                        <v-btn title="New Reminder" class="px-2 minwidth-0 ml-3" @click="openCreateReminderDialog">
                             <v-icon>{{ mdiPlus }}</v-icon>
                         </v-btn>
                     </v-col>
@@ -38,7 +38,7 @@
                     <tr
                         :key="`${index} ${item.id}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
-                        :class="'user-select-none ' + (item.exists ? '' : 'text--disabled')"
+                        :class="'user-select-none'"
                         @contextmenu="($event) => showContextMenu($event, item)">
                         <td class="pr-0">
                             <v-simple-checkbox
@@ -47,14 +47,14 @@
                                 class="pa-0 mr-0"
                                 @click.stop="select(!isSelected)"></v-simple-checkbox>
                         </td>
+                        <td class="text-no-wrap">
+                            {{ item.name }}
+                        </td>
                         <td class="text-right text-no-wrap">
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
-                                        <v-icon
-                                            small
-                                            :color="getStatusColor(item.remaining_print_time)"
-                                            :disabled="!item.exists">
+                                        <v-icon small :color="getStatusColor(item.remaining_print_time)">
                                             {{ getStatusIcon(item.remaining_print_time) }}
                                         </v-icon>
                                     </span>
@@ -82,6 +82,7 @@
                 </v-list-item>
                 <v-list-item @click="repeatReminder(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiRepeatOnce }}</v-icon>
+                    Repeat
                 </v-list-item>
                 <v-list-item @click="deleteReminder(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
@@ -126,7 +127,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="editReminder">Confirm</v-btn>
+                    <v-btn color="" text @click="createReminder">Confirm</v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -142,7 +143,12 @@
                         <v-text-field v-model="editingDisplayName" hide-details outlined dense></v-text-field>
                     </settings-row>
                     <settings-row title="Print Hours">
-                        <v-text-field v-model="displayPrintHours" hide-details outlined dense></v-text-field>
+                        <v-text-field
+                            type="Number"
+                            v-model="editingPrintHours"
+                            hide-details
+                            outlined
+                            dense></v-text-field>
                     </settings-row>
                 </v-card-text>
                 <v-card-actions>
@@ -202,6 +208,11 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
 
     headers = [
         {
+            text: 'Name',
+            value: '',
+            align: 'left',
+        },
+        {
             text: '',
             value: '',
             align: 'left',
@@ -230,6 +241,7 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
 
     get reminders() {
         const baseReminders: GuiRemindersStateReminder[] = this.$store.getters['gui/reminders/getReminders']
+        if (!baseReminders) return []
         return baseReminders.map((reminder: GuiRemindersStateReminder) => {
             let tempReminder = { ...reminder }
             tempReminder.remaining_print_time =
@@ -248,19 +260,19 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
         this.editingReminder.name = value
     }
 
-    get displayPrintHours() {
+    get editingPrintHours() {
         if (!this.editingReminder) return '0'
-        return this.formatPrintTimeForEdit(this.editingReminder.time_delta)
+        return String(this.editingReminder.time_delta)
     }
 
-    set displayPrintHours(value: string) {
+    set editingPrintHours(value: string) {
         if (!this.editingReminder) return
-        this.editingReminder.time_delta = Math.round(parseFloat(value) * 3600)
+        this.editingReminder.time_delta = parseFloat(value) || 0
     }
 
     get creatingDisplayName() {
         if (!this.creatingReminder) return ''
-        return this.createReminder.name
+        return this.creatingReminder.name
     }
 
     set creatingDisplayName(value: string) {
@@ -270,12 +282,12 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
 
     get creatingPrintHours() {
         if (!this.creatingReminder) return '0'
-        return this.formatPrintTimeForEdit(this.creatingReminder.time_delta)
+        return String(this.creatingReminder.time_delta)
     }
 
     set creatingPrintHours(value: string) {
         if (!this.creatingReminder) return
-        this.creatingReminder.time_delta = Math.round(parseFloat(value) * 3600)
+        this.creatingReminder.time_delta = parseFloat(value) || 0
     }
 
     getStatusIcon(remainingPrintTime: number) {
@@ -337,7 +349,7 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
 
     deleteSelectedReminders() {
         this.selectedReminders.forEach((item: GuiRemindersStateReminder) => {
-            this.$store.dispatch('gui/reminders/delete', item)
+            this.$store.dispatch('gui/reminders/delete', item.id)
         })
 
         this.selectedReminders = []
@@ -345,7 +357,7 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
     }
 
     deleteReminder(reminder: GuiRemindersStateReminder) {
-        this.$store.dispatch('gui/reminders/delete', reminder)
+        this.$store.dispatch('gui/reminders/delete', reminder.id)
     }
 
     openCreateReminderDialog() {
@@ -359,17 +371,25 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
     }
 
     createReminder() {
-        this.$store.dispatch('gui/reminders/store', this.creatingReminder)
+        if (!this.creatingReminder) return
+
+        this.creatingReminder.start_total_print_time = this.totalPrintTime
+        this.creatingReminder.time_delta = Math.round(this.creatingReminder.time_delta * 3600)
+        this.$store.dispatch('gui/reminders/store', { values: this.creatingReminder })
         this.createReminderDialog = false
         this.creatingReminder = null
     }
 
     openEditReminderDialog(reminder: GuiRemindersStateReminder) {
-        this.editingReminder = reminder
+        this.editingReminder = { ...reminder }
+        this.editingReminder.time_delta = Math.round(this.editingReminder.time_delta / 3600)
         this.editReminderDialog = true
     }
 
     editReminder() {
+        if (!this.editingReminder) return
+
+        this.editingReminder.time_delta = Math.round(this.editingReminder.time_delta * 3600)
         this.$store.dispatch('gui/reminders/update', this.editingReminder)
         this.editReminderDialog = false
         this.editingReminder = null

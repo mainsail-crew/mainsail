@@ -14,6 +14,7 @@ import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
 import { webcams } from '@/store/gui/webcams'
 import { notifications } from '@/store/gui/notifications'
+import { reminders } from '@/store/gui/reminders'
 
 export const getDefaultState = (): GuiState => {
     return {
@@ -266,5 +267,6 @@ export const gui: Module<GuiState, any> = {
         presets,
         remoteprinters,
         webcams,
+        reminders,
     },
 }

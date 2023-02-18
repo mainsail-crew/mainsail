@@ -11,7 +11,6 @@ import { history } from '@/store/server/history'
 import { timelapse } from '@/store/server/timelapse'
 import { jobQueue } from '@/store/server/jobQueue'
 import { announcements } from '@/store/server/announcements'
-import { reminders } from '@/store/gui/reminders'
 
 // create getDefaultState
 export const getDefaultState = (): ServerState => {
@@ -60,6 +59,5 @@ export const server: Module<ServerState, any> = {
         timelapse,
         jobQueue,
         announcements,
-        reminders,
     },
 }
