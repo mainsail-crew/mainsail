@@ -26,7 +26,7 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
-export default class Webrtc extends Mixins(BaseMixin) {
+export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
     private pc: RTCPeerConnection | null = null
     private useStun = false
     private remote_pc_id: string | null = null
