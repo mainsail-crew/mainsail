@@ -9,5 +9,5 @@ export interface GuiRemindersStateReminder {
     name: string
     start_total_print_time: number
     time_delta: number
-    time_remaining?: number
+    remaining_print_time?: number
 }
