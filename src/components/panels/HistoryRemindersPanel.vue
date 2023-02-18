@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- TODO: translate title -->
         <panel :icon="mdiBell" title="Reminders" card-class="history-reminders-panel" :collapsible="true">
             <v-card-text>
                 <v-row>
@@ -13,6 +14,7 @@
                                 <v-icon>{{ mdiDelete }}</v-icon>
                             </v-btn>
                         </template>
+                        <!-- TODO: translate title -->
                         <v-btn title="New Reminder" class="px-2 minwidth-0 ml-3" @click="openCreateReminderDialog">
                             <v-icon>{{ mdiPlus }}</v-icon>
                         </v-btn>
@@ -31,6 +33,7 @@
                 mobile-breakpoint="0"
                 show-select>
                 <template slot="no-data">
+                    <!-- TODO: translate -->
                     <div class="text-center">No Reminders</div>
                 </template>
 
@@ -78,14 +81,17 @@
             <v-list>
                 <v-list-item @click="openEditReminderDialog(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPencil }}</v-icon>
+                    <!-- TODO: translate -->
                     Edit
                 </v-list-item>
                 <v-list-item @click="repeatReminder(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiRepeatOnce }}</v-icon>
+                    <!-- TODO: translate -->
                     Repeat
                 </v-list-item>
                 <v-list-item @click="deleteReminder(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
+                    <!-- TODO: translate -->
                     Delete
                 </v-list-item>
             </v-list>
@@ -101,6 +107,7 @@
                     </v-btn>
                 </template>
                 <v-card-text>
+                    <!-- TODO: translate -->
                     <p class="mb-0">Do you really want to delete {{ selectedReminders.length }} reminders?</p>
                 </v-card-text>
                 <v-card-actions>
@@ -111,6 +118,7 @@
             </panel>
         </v-dialog>
         <v-dialog v-model="createReminderDialog" max-width="400">
+            <!-- TODO: translate title -->
             <panel title="Create Reminder" card-class="history-reminders-create-dialog" :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="createReminderDialog = false">
@@ -118,16 +126,34 @@
                     </v-btn>
                 </template>
                 <v-card-text>
+                    <!-- TODO: translate title -->
                     <settings-row title="Name">
-                        <v-text-field v-model="creatingDisplayName" hide-details outlined dense></v-text-field>
+                        <v-text-field
+                            v-model="creatingDisplayName"
+                            :rules="nameInputRules"
+                            hide-details
+                            outlined
+                            dense
+                            @update:error="isInvalidName = !isInvalidName"></v-text-field>
                     </settings-row>
+                    <!-- TODO: translate title -->
                     <settings-row title="Print Hours">
-                        <v-text-field v-model="creatingPrintHours" hide-details outlined dense></v-text-field>
+                        <v-text-field
+                            v-model="creatingPrintHours"
+                            type="Number"
+                            :rules="hoursInputRules"
+                            hide-details
+                            outlined
+                            dense
+                            @update:error="isInvalidHours = !isInvalidHours"></v-text-field>
                     </settings-row>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="createReminder">Confirm</v-btn>
+                    <v-btn :disabled="isInvalidName || isInvalidHours" color="" text @click="createReminder">
+                        <!-- TODO: translate -->
+                        Confirm
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -139,21 +165,34 @@
                     </v-btn>
                 </template>
                 <v-card-text>
+                    <!-- TODO: translate title -->
                     <settings-row title="Name">
-                        <v-text-field v-model="editingDisplayName" hide-details outlined dense></v-text-field>
-                    </settings-row>
-                    <settings-row title="Print Hours">
                         <v-text-field
-                            type="Number"
-                            v-model="editingPrintHours"
+                            v-model="editingDisplayName"
+                            :rules="nameInputRules"
                             hide-details
                             outlined
-                            dense></v-text-field>
+                            dense
+                            @update:error="isInvalidName = !isInvalidName"></v-text-field>
+                    </settings-row>
+                    <!-- TODO: translate title -->
+                    <settings-row title="Print Hours">
+                        <v-text-field
+                            v-model="editingPrintHours"
+                            type="Number"
+                            :rules="hoursInputRules"
+                            hide-details
+                            outlined
+                            dense
+                            @update:error="isInvalidHours = !isInvalidHours"></v-text-field>
                     </settings-row>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="editReminder">Confirm</v-btn>
+                    <v-btn :disabled="isInvalidName || isInvalidHours" color="" text @click="editReminder">
+                        <!-- TODO: translate -->
+                        Confirm
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -195,6 +234,13 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
     editingReminder: GuiRemindersStateReminder | null = null
     creatingReminder: GuiRemindersStateReminder | null = null
 
+    nameInputRules = [(value: string) => !!value || this.$t('Files.InvalidNameEmpty')]
+    isInvalidName = false
+
+    // TODO: translate
+    hoursInputRules = [(value: number) => value > 0 || 'Must be a postitive number']
+    isInvalidHours = false
+
     sortBy = 'remaining_print_time'
     sortDesc = false
 
@@ -206,6 +252,7 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
         item: {},
     }
 
+    // TODO: translate
     headers = [
         {
             text: 'Name',
@@ -298,6 +345,7 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
         return remainingPrintTime >= 0 ? 'orange' : 'red'
     }
 
+    // TODO: translate
     getStatusText(remainingPrintTime: number) {
         return remainingPrintTime >= 0 ? 'Active' : 'Overdue'
     }
