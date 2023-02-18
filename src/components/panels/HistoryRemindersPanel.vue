@@ -133,8 +133,7 @@
                             :rules="nameInputRules"
                             hide-details
                             outlined
-                            dense
-                            @update:error="isInvalidName = !isInvalidName"></v-text-field>
+                            dense></v-text-field>
                     </settings-row>
                     <!-- TODO: translate title -->
                     <settings-row title="Print Hours">
@@ -144,8 +143,7 @@
                             :rules="hoursInputRules"
                             hide-details
                             outlined
-                            dense
-                            @update:error="isInvalidHours = !isInvalidHours"></v-text-field>
+                            dense></v-text-field>
                     </settings-row>
                 </v-card-text>
                 <v-card-actions>
@@ -172,8 +170,7 @@
                             :rules="nameInputRules"
                             hide-details
                             outlined
-                            dense
-                            @update:error="isInvalidName = !isInvalidName"></v-text-field>
+                            dense></v-text-field>
                     </settings-row>
                     <!-- TODO: translate title -->
                     <settings-row title="Print Hours">
@@ -183,8 +180,7 @@
                             :rules="hoursInputRules"
                             hide-details
                             outlined
-                            dense
-                            @update:error="isInvalidHours = !isInvalidHours"></v-text-field>
+                            dense></v-text-field>
                     </settings-row>
                 </v-card-text>
                 <v-card-actions>
@@ -210,7 +206,7 @@ import {
     mdiCloseThick,
     mdiRepeatOnce,
 } from '@mdi/js'
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { GuiRemindersStateReminder } from '@/store/gui/reminders/types'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
@@ -238,7 +234,7 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
     isInvalidName = false
 
     // TODO: translate
-    hoursInputRules = [(value: number) => value > 0 || 'Must be a postitive number']
+    hoursInputRules = [(value: number) => value > 0 || 'Must be a positive number']
     isInvalidHours = false
 
     sortBy = 'remaining_print_time'
@@ -416,6 +412,8 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
             start_total_print_time: 0,
             time_delta: 0,
         }
+        this.isInvalidHours = true
+        this.isInvalidName = true
     }
 
     createReminder() {
@@ -431,6 +429,8 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
     openEditReminderDialog(reminder: GuiRemindersStateReminder) {
         this.editingReminder = { ...reminder }
         this.editingReminder.time_delta = Math.round(this.editingReminder.time_delta / 3600)
+        this.isInvalidHours = false
+        this.isInvalidName = false
         this.editReminderDialog = true
     }
 
@@ -441,6 +441,26 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/reminders/update', this.editingReminder)
         this.editReminderDialog = false
         this.editingReminder = null
+    }
+
+    @Watch('editingDisplayName')
+    onEditingDisplayname(val: string) {
+        this.isInvalidName = !val
+    }
+
+    @Watch('editingPrintHours')
+    onEditingPrintHours(val: string) {
+        this.isInvalidHours = parseFloat(val) <= 0
+    }
+
+    @Watch('creatingDisplayName')
+    onCreatingDisplayName(val: string) {
+        this.isInvalidName = !val
+    }
+
+    @Watch('creatingPrintHours')
+    onCreatingPrintHours(val: string) {
+        this.isInvalidHours = parseFloat(val) <= 0
     }
 }
 </script>
