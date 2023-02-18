@@ -7,14 +7,10 @@
             :style="webcamStyle"
             autoplay
             muted
-            playsinline></video>
+            playsinline />
         <v-row v-if="status !== 'connected'">
             <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
-                <v-progress-circular
-                    v-if="status === 'connecting'"
-                    indeterminate
-                    color="primary"
-                    class="mb-3"></v-progress-circular>
+                <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
                 <span class="mt-3">{{ status }}</span>
             </v-col>
         </v-row>
