@@ -1,11 +1,13 @@
 <template>
-    <video
-        ref="video"
-        v-observe-visibility="visibilityChanged"
-        autoplay
-        muted
-        :style="webcamStyle"
-        class="webcamImage" />
+    <div class="d-flex justify-center">
+        <video
+            ref="video"
+            v-observe-visibility="visibilityChanged"
+            autoplay
+            muted
+            :style="webcamStyle"
+            class="webcamImage" />
+    </div>
 </template>
 
 <script lang="ts">
@@ -15,6 +17,7 @@ import Hls from 'hls.js'
 
 @Component
 export default class Hlsstreamer extends Mixins(BaseMixin) {
+    private aspectRatio: null | number = null
     private isVisible = true
     private hls: Hls | null = null
 
@@ -35,12 +38,24 @@ export default class Hlsstreamer extends Mixins(BaseMixin) {
     }
 
     get webcamStyle() {
+        const output = {
+            transform: 'none',
+            aspectRatio: 16 / 9,
+            maxHeight: window.innerHeight - 155 + 'px',
+            maxWidth: 'auto',
+        }
+
         let transforms = ''
         if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
         if (transforms.trimStart().length) return { transform: transforms.trimStart() }
 
-        return ''
+        if (this.aspectRatio) {
+            output.aspectRatio = this.aspectRatio
+            output.maxWidth = (window.innerHeight - 155) * this.aspectRatio + 'px'
+        }
+
+        return output
     }
 
     visibilityChanged(isVisible: boolean) {
@@ -49,6 +64,11 @@ export default class Hlsstreamer extends Mixins(BaseMixin) {
 
     mounted() {
         this.play()
+
+        const video = this.$refs.video
+        video.onplaying = () => {
+            this.aspectRatio = video.videoWidth / video.videoHeight
+        }
     }
 
     updated() {
@@ -61,7 +81,14 @@ export default class Hlsstreamer extends Mixins(BaseMixin) {
         if (Hls.isSupported()) {
             this.hls?.destroy()
 
-            this.hls = new Hls()
+            this.hls = new Hls({
+                enableWorker: true,
+                lowLatencyMode: true,
+                maxLiveSyncPlaybackRate: 2,
+                liveSyncDuration: 0.5,
+                liveMaxLatencyDuration: 2,
+                backBufferLength: 5,
+            })
             this.hls.loadSource(this.url)
             this.hls.attachMedia(video)
             this.hls.on(Hls.Events.MANIFEST_PARSED, () => {

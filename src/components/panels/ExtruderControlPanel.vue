@@ -63,6 +63,7 @@
                             :key="tool.name"
                             :class="tool.active ? 'primary--text' : {}"
                             :disabled="isPrinting"
+                            :style="{ 'background-color': '#' + tool.color }"
                             dense
                             class="flex-grow-1 px-0"
                             @click="doSend(tool.name)">
@@ -85,7 +86,7 @@
                         attribute-name="S"></tool-slider>
                 </v-container>
                 <!-- PRESSURE ADVANCE SETTINGS -->
-                <template v-if="!extruderSteppers.length > 0">
+                <template v-if="!(extruderSteppers.length > 0)">
                     <v-divider></v-divider>
                     <pressure-advance-settings></pressure-advance-settings>
                 </template>

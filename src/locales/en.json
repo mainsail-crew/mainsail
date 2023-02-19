@@ -610,6 +610,18 @@
             "Layer": "Layer",
             "Max": "max",
             "ObjectHeight": "Object Height",
+            "PauseAtLayer": {
+                "Abort": "abort",
+                "Accept": "accept",
+                "AtLayer": "at Layer",
+                "Call": "Call",
+                "DescriptionPauseAtLayerActive": "This function is already active and will call \"{call}\" at layer {layer}. If you call the command again, these settings will be overwritten.",
+                "DescriptionPauseNextLayerActive": "This function is already active and will call \"{call}\" at the next layer.",
+                "Layer": "Layer",
+                "NextLayer": "next Layer",
+                "PauseAtLayer": "Pause at Layer",
+                "Type": "Type"
+            },
             "PausePrint": "Pause print",
             "Print": "Print",
             "PrintTime": "Print Time",

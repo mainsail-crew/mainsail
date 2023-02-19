@@ -1,7 +1,7 @@
 {
     "App": {
         "Notifications": {
-            "DependencyDescription": "当前版本的{name}并不支持Mainsail的全部特性。{name}需要至少更新到{neededVersion}版本。",
+            "DependencyDescription": "当前版本的{name}并不支持Mainsail的全部功能。{name}需要至少更新到{neededVersion}版本。",
             "DependencyName": "依赖：{name}",
             "DismissAll": "全部忽略",
             "KlipperWarnings": {
@@ -69,9 +69,9 @@
                 "Description": {
                     "HostReboot": "重启上位机会导致当前打印失败！",
                     "HostShutdown": "关闭上位机会导致当前打印失败！",
-                    "KlipperFirmwareRestart": "重置Klipper主控会导致当前打印失败！",
-                    "KlipperRestart": "重启klipper会导致当前打印失败！",
-                    "KlipperStop": "停止klipper会导致当前打印失败！",
+                    "KlipperFirmwareRestart": "重启Klipper固件会导致当前打印失败！",
+                    "KlipperRestart": "重启Klipper会导致当前打印失败！",
+                    "KlipperStop": "停止Klipper会导致当前打印失败！",
                     "ServiceRestart": "重启此服务可能会导致当前打印失败！",
                     "ServiceStart": "启动此服务可能会导致当前打印失败！",
                     "ServiceStop": "停止此服务可能会导致当前打印失败！"
@@ -79,7 +79,7 @@
                 "Title": {
                     "HostReboot": "重启上位机",
                     "HostShutdown": "关闭上位机",
-                    "KlipperFirmwareRestart": "重启Klipper并重置主控",
+                    "KlipperFirmwareRestart": "重启Klipper固件",
                     "KlipperRestart": "重启Klipper",
                     "ServiceRestart": "重启服务",
                     "ServiceStart": "启动服务",
@@ -88,7 +88,7 @@
             },
             "HostControl": "上位机控制",
             "KlipperControl": "Klipper控制",
-            "KlipperFirmwareRestart": "重启Klipper并重置主控",
+            "KlipperFirmwareRestart": "重启Klipper固件",
             "KlipperRestart": "重启Klipper",
             "PowerDevices": "电源设备",
             "Reboot": "重启",
@@ -112,8 +112,8 @@
         "Accept": "接受",
         "Adjusted": "已调整",
         "Description": "如果当前螺丝已调整，请点击<b>已调整</b>。未调整下继续请点击<b>认可</b>。",
-        "Headline": "热床螺丝",
-        "ScrewAccepted": "已认可的螺丝",
+        "Headline": "热床调平螺丝",
+        "ScrewAccepted": "已认可的调平螺丝",
         "ScrewIndex": "螺丝索引",
         "ScrewName": "螺丝名称",
         "ScrewOutput": "当前{current}/总共{max}"
@@ -164,11 +164,13 @@
         "Yes": "确定"
     },
     "Files": {
+        "AddBatchToQueue": "批量添加到队列",
         "AddToQueue": "添加到队列",
         "AllFiles": "所有文件",
         "BedTemp": "热床温度",
         "Cancel": "取消",
         "ChamberTemp": "仓室温度",
+        "Count": "计数",
         "Create": "新建",
         "CreateNewDirectory": "新建文件夹",
         "CurrentPath": "当前路径",
@@ -253,7 +255,9 @@
         "Tracking": "正在追踪",
         "Transparency": "透明度",
         "Ultra": "极致",
-        "VoxelMode": "体素模式(ASMBL)"
+        "VoxelMode": "体素模式(ASMBL)",
+        "ShowGCode": "显示G-Code",
+        "CNCMode": "CNC模式"
     },
     "Heightmap": {
         "Abort": "取消",
@@ -266,8 +270,8 @@
             "Max": "最高点",
             "Min": "最低点",
             "Name": "名称",
-            "Size": "尺寸",
-            "Variance": "方差"
+            "Range": "范围",
+            "Size": "尺寸"
         },
         "DeleteBedMeshProfile": "删除预设床网",
         "DoYouReallyWantToDelete": "你确定要删除预设\"{name}\"?",
@@ -303,6 +307,7 @@
         "AvgPrinttime": "平均打印时间",
         "Cancel": "取消",
         "CreateNote": "新建便条",
+        "Chart": "图表",
         "Delete": "删除",
         "DeleteSelectedQuestion": "你是否要删除已选中的{count}个任务？",
         "Details": "详情",
@@ -354,6 +359,7 @@
             "Others": "其他",
             "server_exit": "服务器退出"
         },
+        "Table": "表格",
         "TitleExportHistory": "导出历史记录",
         "TitleRefreshHistory": "刷新历史记录",
         "TitleSettings": "设置",
@@ -365,7 +371,12 @@
     },
     "JobQueue": {
         "AllJobs": "全部任务",
+        "ChangeCount": "变更计数",
+        "Cancel": "取消",
+        "Count": "计数",
         "Empty": "空",
+        "InvalidCountEmpty": "输入值不能为空！",
+        "InvalidCountGreaterZero": "输入值必须大于0！",
         "JobQueue": "任务队列",
         "Jobs": "每页显示任务数",
         "Pause": "暂停",
@@ -411,13 +422,19 @@
         },
         "EndstopPanel": {
             "Endstop": "限位开关",
-            "EndstopInfo": "点击右侧同步按钮获取限位开关状态",
+            "EndstopInfo": "点击右侧同步按钮刷新限位开关状态",
             "Endstops": "限位",
             "open": "未触发",
             "TRIGGERED": "已触发"
         },
         "LogfilesPanel": {
-            "Logfiles": "日志文件"
+            "Accept": "接受",
+            "Cancel": "取消",
+            "Logfiles": "日志文件",
+            "Rollover": "清理日志",
+            "RolloverDescription": "请选择需要重置的日志：",
+            "RolloverToastSuccessful": "日志\"{name}\"已经重置。",
+            "RolloverToastFailed": "清理日志\"{name}\": {message}"
         },
         "SystemPanel": {
             "Constants": "常量",
@@ -430,7 +447,7 @@
             "SystemLoad": "系统负载",
             "Values": {
                 "Awake": "唤醒：{awake}",
-                "Bandwidth": "带宽：{bandwidth}/s",
+                "Bandwidth": "带宽值：{bandwidth}/s",
                 "Distro": "发行版：{name} {version_id}",
                 "Frequency": "频率：{frequency}",
                 "Load": "负载：{load}",
@@ -507,9 +524,12 @@
             "WebcamOff": "关闭"
         },
         "KlippyStatePanel": {
-            "FirmwareRestart": "重启Klipper并重置主控",
-            "KlipperCheck": "请检查Klipper服务是否运行。",
+            "CheckKlippyAndUdsAddress": "请检查Klipper服务是否启动并且moonraker.conf已经添加了klippy_uds_address配置。",
+            "FirmwareRestart": "重启Klipper固件",
             "MoonrakerCannotConnect": "Moonraker无法连接到Klipper ！",
+            "PowerOn": "开启电源",
+            "PrinterSwitchedOff": "打印机电源已关闭",
+            "PrinterSwitchedOffDescription": "打印机电源已关闭，Klipper无法连接。点击下方按钮开启打印机电源：",
             "Restart": "重启Klipper",
             "ServiceReports": "{service} 报告"
         },
@@ -584,6 +604,18 @@
             "Layer": "层",
             "Max": "最高",
             "ObjectHeight": "物体高度",
+            "PauseAtLayer": {
+                "Abort": "取消",
+                "Accept": "接受",
+                "AtLayer": "所在层",
+                "Call": "调用",
+                "DescriptionPauseAtLayerActive": "此功能已激活，会在层{layer}时调用\"{call}\"。如果重复调用命令，此设置将会被覆盖。",
+                "DescriptionPauseNextLayerActive": "此功能已激活，将在下一层调用\"{call}\"。",
+                "Layer": "层",
+                "NextLayer": "下一层",
+                "PauseAtLayer": "在某层暂停",
+                "Type": "类型"
+            },
             "PausePrint": "暂停打印",
             "Print": "打印",
             "PrintTime": "打印耗时",
@@ -628,7 +660,7 @@
             "Headline": "打印头",
             "PleaseConfigureSteps": "请配置步骤",
             "Position": "位置",
-            "QGL": "四轴调平(QGL)",
+            "QGL": "QGL",
             "Relative": "相对坐标",
             "SettingsInterfaceControl": "设置 > 界面 > 控制",
             "SpeedFactor": "速度倍数",
@@ -986,6 +1018,8 @@
             "GcodeThumbnails": "G-Code缩略图",
             "GcodeThumbnailsDescription": "单击\"指南\"按钮查看说明",
             "Guide": "指南",
+            "HideSaveConfigButtonForBedMesh": "bed_mesh更改隐藏保存配置按钮",
+            "HideSaveConfigButtonForBedMeshDescription": "如果只有bed_mesh更改待保存在Klipper中，则隐藏保存配置按钮。",
             "LockSliders": "在触摸屏设备上锁定滑动条",
             "LockSlidersDelay": "滑动条锁定延迟时间",
             "LockSlidersDelayDescription": "滑动条将在给定延迟时间后锁定。如果设置为0或留空，滑动条将仅在页面更改/重新加载后锁定",
@@ -995,6 +1029,8 @@
             "NavigationStyleDescription": "更改导航栏外观",
             "NavigationStyleIconsAndText": "图标+文字",
             "NavigationStyleIconsOnly": "仅图标",
+            "PowerDeviceName": "打印机电源设备",
+            "PowerDeviceNameDescription": "请选择哪一个Moonraker电源设备可以控制打印机的供电。",
             "Primary": "高亮颜色",
             "ShowWebcamInNavigation": "在导航栏中显示摄像头",
             "UiSettings": "UI设置"
@@ -1016,6 +1052,7 @@
             "IconNozzle": "喷嘴",
             "IconPrinter": "打印机",
             "Ipstream": "IP摄像头",
+            "Hlsstream": "HLS视频流",
             "Mjpegstreamer": "MJPEG视频流",
             "MjpegstreamerAdaptive": "自适应MJPEG视频流(试验性)",
             "Name": "名称",
@@ -1032,6 +1069,12 @@
             "Vertically": "垂直",
             "Webcams": "摄像头"
         }
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "接受",
+        "Base": "底座",
+        "ErrorText": "探测过程中出现了问题。",
+        "Headline": "螺丝倾斜调整"
     },
     "Timelapse": {
         "AllFiles": "全部文件",
