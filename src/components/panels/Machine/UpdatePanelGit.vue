@@ -65,14 +65,14 @@
             </v-col>
         </v-row>
         <v-row v-if="notificationText" class="mt-0">
-            <v-col class="px-6">
+            <v-col class="px-6 pt-0">
                 <v-alert text dense :color="notificationColor" :icon="notificationIcon" border="left">
                     {{ notificationText }}
                 </v-alert>
             </v-col>
         </v-row>
         <v-row v-if="gitMessages.length" class="mt-0">
-            <v-col class="px-6">
+            <v-col class="px-6 pt-0">
                 <v-alert
                     v-for="(message, index) in gitMessages"
                     :key="'message_' + index"
