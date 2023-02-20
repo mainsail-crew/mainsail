@@ -145,6 +145,12 @@
                             outlined
                             dense></v-text-field>
                     </settings-row>
+                    <!-- TODO: translate -->
+                    <settings-row
+                        title="Repeating"
+                        sub-title="If selected, reminders will repeat beginning from when their notifications are snoozed.">
+                        <v-simple-checkbox v-model="creatingRepeating" v-ripple class="pa-0 mr-0" />
+                    </settings-row>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -181,6 +187,11 @@
                             hide-details
                             outlined
                             dense></v-text-field>
+                    </settings-row>
+                    <settings-row
+                        title="Repeating"
+                        sub-title="If selected, reminders will repeat beginning from when their notifications are snoozed.">
+                        <v-simple-checkbox v-model="editingRepeating" v-ripple :disabled="true" class="pa-0 mr-0" />
                     </settings-row>
                 </v-card-text>
                 <v-card-actions>
@@ -287,8 +298,14 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
         if (!baseReminders) return []
         return baseReminders.map((reminder: GuiRemindersStateReminder) => {
             let tempReminder = { ...reminder }
-            tempReminder.remaining_print_time =
-                reminder.time_delta - (this.totalPrintTime - reminder.start_total_print_time)
+            if (reminder.snooze_timestamps.length > 0) {
+                tempReminder.remaining_print_time =
+                    reminder.time_delta -
+                    (this.totalPrintTime - reminder.snooze_timestamps[reminder.snooze_timestamps.length - 1])
+            } else {
+                tempReminder.remaining_print_time =
+                    reminder.time_delta - (this.totalPrintTime - reminder.start_total_print_time)
+            }
             return tempReminder
         })
     }
@@ -313,6 +330,16 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
         this.editingReminder.time_delta = parseFloat(value) || 0
     }
 
+    get editingRepeating() {
+        if (!this.editingReminder) return false
+        return this.editingReminder.repeating
+    }
+
+    set editingRepeating(value: boolean) {
+        if (!this.editingReminder) return
+        this.editingReminder.repeating = value
+    }
+
     get creatingDisplayName() {
         if (!this.creatingReminder) return ''
         return this.creatingReminder.name
@@ -331,6 +358,16 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
     set creatingPrintHours(value: string) {
         if (!this.creatingReminder) return
         this.creatingReminder.time_delta = parseFloat(value) || 0
+    }
+
+    get creatingRepeating() {
+        if (!this.creatingReminder) return false
+        return this.creatingReminder.repeating
+    }
+
+    set creatingRepeating(value: boolean) {
+        if (!this.creatingReminder) return
+        this.creatingReminder.repeating = value
     }
 
     getStatusIcon(remainingPrintTime: number) {
@@ -387,7 +424,7 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
     }
 
     repeatReminder(reminder: GuiRemindersStateReminder) {
-        reminder.start_total_print_time = this.totalPrintTime
+        reminder.snooze_timestamps = [...reminder.snooze_timestamps, this.totalPrintTime]
         this.$store.dispatch('gui/reminders/update', reminder)
     }
 
@@ -410,6 +447,8 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
             id: '',
             name: '',
             start_total_print_time: 0,
+            snooze_timestamps: [],
+            repeating: true,
             time_delta: 0,
         }
         this.isInvalidHours = true
