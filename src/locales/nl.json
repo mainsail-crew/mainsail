@@ -59,9 +59,9 @@
             "CannotUploadTheFile": "Kan het bestand niet uploaden!",
             "EmergencyStop": "Noodstop",
             "SAVE_CONFIG": "CONFIG OPSLAAN",
-            "Uploading": "Uploaden",
             "UploadOfFileSuccessful": "Upload van {file} succesvol!",
-            "UploadPrint": "Upload & Print"
+            "UploadPrint": "Upload & Print",
+            "Uploading": "Uploaden"
         },
         "TopCornerMenu": {
             "Cancel": "Annuleer",
@@ -164,11 +164,13 @@
         "Yes": "Ja"
     },
     "Files": {
+        "AddBatchToQueue": "Voeg batch toe aan wachtrij",
         "AddToQueue": "Voeg aan wachtrij toe",
         "AllFiles": "Alle",
         "BedTemp": "Bed Temp.",
         "Cancel": "Annuleer",
         "ChamberTemp": "Kamer Temp.",
+        "Count": "Aantal",
         "Create": "Creëer",
         "CreateNewDirectory": "Creëer nieuwe Map",
         "CurrentPath": "Huidige pad",
@@ -206,9 +208,9 @@
         "NozzleDiameter": "Nozzle Diameter",
         "ObjectHeight": "Objecthoogte",
         "Preheat": "Voorverwarmen",
-        "PrintedFiles": "Geprinte bestanden",
         "PrintStart": "Start print",
         "PrintTime": "Printtijd",
+        "PrintedFiles": "Geprinte bestanden",
         "RefreshCurrentDirectory": "Ververs huidige map",
         "Rename": "Hernoem",
         "RenameDirectory": "Hernoem map",
@@ -231,6 +233,7 @@
         "DropFilesToUploadFiles": "Sleep bestand hier om te uploaden."
     },
     "GCodeViewer": {
+        "CNCMode": "CNC Modus",
         "ClearLoadedFile": "Leeg",
         "ColorMode": "Kleur modus",
         "Downloading": "Downloaden",
@@ -243,8 +246,9 @@
         "Max": "Max",
         "Medium": "Medium",
         "ReloadRequired": "Herladen nodig",
-        "Rendering": "Renderen",
         "RenderQuality": "Render kwaliteit",
+        "Rendering": "Renderen",
+        "ShowGCode": "Toon G-Code",
         "ShowObjectSelection": "Toon object selectie",
         "ShowToolhead": "Toon Toolhead",
         "ShowTravelMoves": "Toon bewegingen",
@@ -302,6 +306,7 @@
         "AllJobs": "Alle",
         "AvgPrinttime": "Gemiddelde printtijd",
         "Cancel": "Annuleer",
+        "Chart": "Grafiek",
         "CreateNote": "Creëer notitie",
         "Delete": "Verwijder",
         "DeleteSelectedQuestion": "Weet je zeker dat je {count} geselecteerde jobs wil verwijderen?",
@@ -345,15 +350,16 @@
         "Statistics": "Statistieken",
         "Status": "Status",
         "StatusValues": {
+            "Others": "Overige",
             "cancelled": "Geannuleerd",
             "completed": "Voltooid",
             "error": "Fout",
             "in_progress": "Bezig",
             "klippy_disconnect": "Klippy verbinding verbroken",
             "klippy_shutdown": "Klippy afgesloten",
-            "Others": "Overige",
             "server_exit": "Server exit"
         },
+        "Table": "Tabel",
         "TitleExportHistory": "Export geschiedenis",
         "TitleRefreshHistory": "Ververs geschiedenis",
         "TitleSettings": "Instellingen",
@@ -365,7 +371,12 @@
     },
     "JobQueue": {
         "AllJobs": "Alle jobs",
+        "Cancel": "Annuleer",
+        "ChangeCount": "Verander aantal",
+        "Count": "Aantal",
         "Empty": "Leeg",
+        "InvalidCountEmpty": "Invoer mag niet leeg zijn!",
+        "InvalidCountGreaterZero": "Invoer moet groter dan 0 zijn!",
         "JobQueue": "Job wachtrij",
         "Jobs": "Jobs",
         "Pause": "Pauze",
@@ -413,11 +424,17 @@
             "Endstop": "Endstop",
             "EndstopInfo": "Druk op de sync-knop rechtsoner om de huidige endstop status te laden.",
             "Endstops": "Endstops",
-            "open": "OPEN",
-            "TRIGGERED": "GETRIGGERED"
+            "TRIGGERED": "GETRIGGERED",
+            "open": "OPEN"
         },
         "LogfilesPanel": {
-            "Logfiles": "Logbestanden"
+            "Accept": "accepteer",
+            "Cancel": "annuleer",
+            "Logfiles": "Logbestanden",
+            "Rollover": "Roteer logs",
+            "RolloverDescription": "Selecteer welke logs moeten roteren:",
+            "RolloverToastFailed": "Roteren van log voor \"{name}\": {message}",
+            "RolloverToastSuccessful": "Log voor \"{name}\" was succesvol geroteerd."
         },
         "SystemPanel": {
             "Constants": "Constanten",
@@ -461,11 +478,11 @@
             "PackagesCanBeUpgraded": "pakketten kunnen worden geüpgraded",
             "System": "Systeem",
             "Unknown": "onbekend",
+            "UpToDate": "up-to-date",
             "Update": "update",
             "UpdateAll": "Update alle componenten",
             "UpdateManager": "Update Manager",
-            "Upgrade": "upgrade",
-            "UpToDate": "up-to-date"
+            "Upgrade": "upgrade"
         }
     },
     "ManualProbe": {
@@ -507,9 +524,12 @@
             "WebcamOff": "Uit"
         },
         "KlippyStatePanel": {
+            "CheckKlippyAndUdsAddress": "Controleer of de Klipper service draait en klippy_uds_address correct is geconfigureerd in moonraker.conf.",
             "FirmwareRestart": "Firmware Herstart",
-            "KlipperCheck": "Controleer of de Klipper service draait en een UDS (Unix Domain Socket) geconfigureerd is.",
             "MoonrakerCannotConnect": "Moonraker kan niet met Klipper verbinden!",
+            "PowerOn": "Printer inschakelen",
+            "PrinterSwitchedOff": "Printer is uitgeschakeld",
+            "PrinterSwitchedOffDescription": "De printer is uitgeschakeld en Klipper kan niet verbinden. Om de printer in te schakelen, klik op de onderstaande knop:",
             "Restart": "Herstart",
             "ServiceReports": "{service} rapportages"
         },
@@ -526,18 +546,18 @@
             "Headline": "Macros",
             "Send": "verstuur"
         },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Zorg dat je mainsail.cfg in je printer.cfg geïnclude hebt.",
+            "IsNotDefinedInConfig": "is niet gedefinieerd in de config.",
+            "MissingConfiguration": "Ontbrekende configuratie",
+            "MoreInformation": "meer informatie"
+        },
         "MiniconsolePanel": {
             "Headline": "Console",
             "HideTemperatures": "Verberg temperaturen",
             "HideTimelapse": "Verberg Timelapse",
             "SendCode": "Verzend code...",
             "SetupConsole": "Console Instellingen"
-        },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Zorg dat je mainsail.cfg in je printer.cfg geïnclude hebt.",
-            "IsNotDefinedInConfig": "is niet gedefinieerd in de config.",
-            "MissingConfiguration": "Ontbrekende configuratie",
-            "MoreInformation": "meer informatie"
         },
         "MiscellaneousPanel": {
             "Headline": "Overige",
@@ -563,16 +583,16 @@
             "CancelPrint": "Annuleer print",
             "ClearPrintStats": "Wis print statistieken",
             "Difference": "Verschil",
+            "ETA": "ETA",
             "EmptyGcodes": "Geen G-Code beschikbaar.",
             "EmptyJobqueue": "Er zijn geen bestanden in de wachtrij.",
             "Estimate": "Schatting",
-            "ETA": "ETA",
             "ExcludeObject": {
                 "Cancel": "annuleer",
-                "Excluded": "Uitgesloten",
                 "ExcludeObject": "Object uitsluiten",
                 "ExcludeObjectHeadline": "Object uitsluiten",
-                "ExcludeObjectText": "Weet je zeker dat je \"{name}\" wil uitsluiten?"
+                "ExcludeObjectText": "Weet je zeker dat je \"{name}\" wil uitsluiten?",
+                "Excluded": "Uitgesloten"
             },
             "Filament": "Filament",
             "File": "Bestand",
@@ -584,6 +604,18 @@
             "Layer": "Laag",
             "Max": "max",
             "ObjectHeight": "Objecthoogte",
+            "PauseAtLayer": {
+                "Abort": "annuleer",
+                "Accept": "accepteer",
+                "AtLayer": "op Laag",
+                "Call": "Uitvoeren",
+                "DescriptionPauseAtLayerActive": "Deze functie is al actief en zal \"{call}\" uitvoeren op laag {layer}. Wanneer het commando nogmaals wordt uitgevoerd, worden deze instellingen overschreven.",
+                "DescriptionPauseNextLayerActive": "Deze functie is al actief en voert \"{call}\" uit bij de volgende laag.",
+                "Layer": "Laag",
+                "NextLayer": "volgende Laag",
+                "PauseAtLayer": "Pauzeer op Laag",
+                "Type": "Type"
+            },
             "PausePrint": "Pauzeer print",
             "Print": "Print",
             "PrintTime": "Printtijd",
@@ -618,13 +650,13 @@
             "ShowNameInList": "Toon {name} in de lijst",
             "State": "Status",
             "Target": "Doel",
-            "TemperaturesInChart": "Temperatuur [°C]",
             "TempTooHigh": "Temperatuur te hoog voor {name}! (max: {max})",
-            "TempTooLow": "Temperatuur te laag voor {name}! (min: {min})"
+            "TempTooLow": "Temperatuur te laag voor {name}! (min: {min})",
+            "TemperaturesInChart": "Temperatuur [°C]"
         },
         "ToolheadControlPanel": {
-            "Absolute": "absoluut",
             "ALL": "ALLES",
+            "Absolute": "absoluut",
             "Headline": "Toolhead",
             "PleaseConfigureSteps": "Configureer steps",
             "Position": "Positie",
@@ -673,6 +705,12 @@
         "Printers": "Printers",
         "Timelapse": "Timelapse",
         "Webcam": "Webcam"
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "accepteer",
+        "Base": "basis",
+        "ErrorText": "Iets ging fout bij het proben.",
+        "Headline": "Schroef kantel-aanpassing"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Voeg printer toe",
@@ -827,8 +865,8 @@
             "CountMacros": "geen Macros toegevoegd | {count} Macro | {count} Macros",
             "Custom": "custom",
             "CustomColor": "Custom Kleur",
-            "DeletedMacro": "Verwijderde macro",
             "DeleteMacroFromGroup": "Verwijder macro uit groep.",
+            "DeletedMacro": "Verwijderde macro",
             "EditGroup": "Bewerk groep",
             "Error": "fout",
             "Expert": "Expert",
@@ -838,10 +876,10 @@
             "Macrogroups": "Groepen",
             "Macros": "Macros",
             "Management": "Beheer",
+            "NOMacros": "geen macros gevonden...",
             "Name": "Naam",
             "NoAvailableMacros": "Geen macros beschikbaar.",
             "NoGroups": "Geen groepen gevonden...",
-            "NOMacros": "geen macros gevonden...",
             "NoMacrosInGroup": "Geen macros in deze groep.",
             "Primary": "primair",
             "Secondary": "secundair",
@@ -862,8 +900,8 @@
             "CreatePreset": "Maak preset aan",
             "End": "Einde",
             "EndDescription": "Laatste LED van deze groep.",
-            "Groups": "Groepen",
             "GroupSubTitle": "Start: {start}, Einde: {end}",
+            "Groups": "Groepen",
             "LightGroups": "{name} - Groepen",
             "LightPresets": "{name} - Presets",
             "Miscellaneous": "Overige",
@@ -912,8 +950,6 @@
             "CameraDescription": "Selecteer welke camera gebruikt wordt",
             "ConstantRateFactor": "Constant Rate Factor",
             "ConstantRateFactorDescription": "Dit bepaalt de kwaliteit vs bestandsgrootte van de gerenderde video. De CRF schaal is van 0-51 waar 0 zonder verlies is, 23 de standaard en 51 de slechts mogelijke kwaliteit. Een lagere waarde geeft over het algemeen betere kwaliteit en een gangbare waarde is 17-28. Zie 17 of 18 als praktisch zonder kwaliteitsverlies.",
-            "duplicatelastframe": "duplicatelastframe",
-            "duplicatelastframeDescription": "Herhaal het laatste frame aan het eind van de video",
             "Enabled": "Ingeschakeld",
             "EnabledDescription": "Indien uitgeschakeld, worden gcode macros genegeerd en autorender overgeslagen.",
             "Extraoutputparams": "Extraoutputparams",
@@ -929,12 +965,12 @@
             "ModeDescription": "Kies tussen Layermacro en Hyperlapse (tijd gebaseerde) modus",
             "OutputFramerate": "Uitvoer Framerate",
             "OutputFramerateDescription": "Definieert  de framerate van de video. Note: dit wordt genegeerd wanneer variable_fps is ingeschakeld",
+            "ParkTime": "Parkeerduur",
+            "ParkTimeDescription": "Voeg extra tijd toe bij het parkeren.",
             "Parkhead": "Parkhead",
             "ParkheadDescription": "Indien ingeschakeld, wordt de printkop geparkeerd voor een foto te nemen.",
             "Parkpos": "Parkeer postitie",
             "ParkposDescription": "Selecteer de parkeer positie",
-            "ParkTime": "Parkeerduur",
-            "ParkTimeDescription": "Voeg extra tijd toe bij het parkeren.",
             "Pixelformat": "Pixelformat",
             "PixelformatDescription": "Definieer het pixelformaat van de video",
             "PosDZ": "Positie Z",
@@ -968,9 +1004,11 @@
             "VariableFps": "Variabele FPS",
             "VariableFpsDescription": "Indien ingeschakeld, wordt de framerate van de video berekend op basis van de beoogde lengte",
             "VariableFpsMax": "Variabele FPS max",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "Maximale waarde voor variabele FPS",
             "VariableFpsMin": "Variabele FPS max",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "Minimale waarde voor variabele FPS",
+            "duplicatelastframe": "duplicatelastframe",
+            "duplicatelastframeDescription": "Herhaal het laatste frame aan het eind van de video"
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Grote thumbnail",
@@ -986,6 +1024,8 @@
             "GcodeThumbnails": "Gcode thumbnails",
             "GcodeThumbnailsDescription": "Klik op de knop om naar de instructies te gaan.",
             "Guide": "Richtlijnen",
+            "HideSaveConfigButtonForBedMesh": "Verberg SAVE_CONFIG knop voor bed_mesh aanpassingen",
+            "HideSaveConfigButtonForBedMeshDescription": "Verberg SAVE_CONFIG,wanneer alleen bed_mesh aanpassingen opgeslagen hoeven te worden in Klipper.",
             "LockSliders": "Zet de sliders op slot op touchscreen apparaten",
             "LockSlidersDelay": "Slot vertraging",
             "LockSlidersDelayDescription": "Na de ingestelde vertraging gaan de sliders op slot. Wanneer ze op 0 worden ingesteld of leeg worden gelaten, gaan ze alleen op slot bij verversen van de pagina.",
@@ -995,6 +1035,8 @@
             "NavigationStyleDescription": "Pas de navigatiestijl aan",
             "NavigationStyleIconsAndText": "Iconen + Tekst",
             "NavigationStyleIconsOnly": "Alleen iconen",
+            "PowerDeviceName": "Printer power apparaat",
+            "PowerDeviceNameDescription": "Selecteer welk Moonraker power apparaat gebruikt moet worden om de printer te schakelen.",
             "Primary": "Primair",
             "ShowWebcamInNavigation": "Toon Webcam in de navigatie",
             "UiSettings": "UI Instellingen"
@@ -1006,6 +1048,7 @@
             "EditCrowsnestConf": "Bewerk crowsnest.conf",
             "EditWebcam": "Bewerk Webcam",
             "FlipWebcam": "Flip webcam beeld:",
+            "Hlsstream": "HLS Stream",
             "Horizontally": "horizontaal",
             "IconBed": "Bed",
             "IconCam": "Camera",
@@ -1084,5 +1127,6 @@
         "Variable": "Variable",
         "Video": "Video"
     },
+    "_last_update": "2023-02-21",
     "title": "Nederlands"
 }
