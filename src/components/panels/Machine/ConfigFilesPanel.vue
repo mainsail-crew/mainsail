@@ -667,6 +667,17 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     get toolbarButtons() {
         return [
             {
+                text: this.$t('Machine.ConfigFilesPanel.Download'),
+                color: 'primary',
+                icon: mdiCloudDownload,
+                loadingName: 'configDownloadZip',
+                onlyWriteable: false,
+                condition: this.selectedFiles.length > 0,
+                click: () => {
+                    this.downloadSelectedFiles()
+                },
+            },
+            {
                 text: this.$t('Machine.ConfigFilesPanel.Delete'),
                 color: 'error',
                 icon: mdiDelete,
@@ -702,7 +713,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                 loadingName: null,
                 onlyWriteable: true,
                 condition: true,
-                click: this.createDirecotry,
+                click: this.createDirectory,
             },
             {
                 text: this.$t('Machine.ConfigFilesPanel.RefreshDirectory'),
@@ -853,6 +864,8 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     set currentPath(newVal) {
+        this.selectedFiles = []
+
         this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.currentPath', value: newVal })
     }
 
@@ -931,7 +944,37 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         window.open(href)
     }
 
-    createDirecotry() {
+    async downloadSelectedFiles() {
+        let items: string[] = []
+
+        const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
+            for (const file of directory) {
+                const filePath = `${absolutPath}/${file.filename}`
+
+                if (file.isDirectory && file.childrens) {
+                    await addElementToItems(filePath, file.childrens)
+
+                    continue
+                }
+
+                items.push(filePath)
+            }
+        }
+
+        await addElementToItems(this.absolutePath, this.selectedFiles)
+        const date = new Date()
+        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDay()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+
+        this.$socket.emit(
+            'server.files.zip',
+            { items, dest: `config/${this.root}-${timestamp}.zip` },
+            { action: 'files/downloadZip', loading: 'configDownloadZip' }
+        )
+
+        this.selectedFiles = []
+    }
+
+    createDirectory() {
         this.dialogCreateDirectory.name = ''
         this.dialogCreateDirectory.show = true
 

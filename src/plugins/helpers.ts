@@ -1,17 +1,5 @@
 import { FileStateFile } from '@/store/files/types'
 import { PrinterStateMacroParams } from '@/store/printer/types'
-import {
-    mdiArrowCollapseVertical,
-    mdiCodeTags,
-    mdiConsoleLine,
-    mdiDipSwitch,
-    mdiEngine,
-    mdiGamepad,
-    mdiInformation,
-    mdiPrinter3dNozzle,
-    mdiThermometerLines,
-    mdiWebcam,
-} from '@mdi/js'
 import Vue from 'vue'
 
 export const setDataDeep = (currentState: any, payload: any) => {
@@ -62,34 +50,6 @@ export const caseInsensitiveSort = (values: any[], orderType: string): any[] => 
 
 export const capitalize = (str: string): string => {
     return str.charAt(0).toUpperCase() + str.slice(1)
-}
-
-export const convertPanelnameToIcon = (name: string): string => {
-    if (name.startsWith('macrogroup_')) return mdiCodeTags
-
-    switch (name) {
-        case 'webcam':
-            return mdiWebcam
-        case 'zoffset':
-            return mdiArrowCollapseVertical
-        case 'toolhead-control':
-            return mdiGamepad
-        case 'macros':
-            return mdiCodeTags
-        case 'miscellaneous':
-            return mdiDipSwitch
-        case 'temperature':
-            return mdiThermometerLines
-        case 'miniconsole':
-            return mdiConsoleLine
-        case 'machine-settings':
-            return mdiEngine
-        case 'extruder-control':
-            return mdiPrinter3dNozzle
-
-        default:
-            return mdiInformation
-    }
 }
 
 export const camelize = (str: string): string => {

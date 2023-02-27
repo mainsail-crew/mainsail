@@ -17,7 +17,7 @@ body = """
     ## [unreleased]
 {% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}\
-    ### {{ group | upper_first }}
+    ### {{ group | split(pat="$") | last | upper_first }}
     {% for commit in commits
     | filter(attribute="scope")
     | sort(attribute="scope") %}
@@ -25,7 +25,6 @@ body = """
         {%- if commit.breaking %}
         {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
         {%- endif -%}
-
     {%- endfor -%}
     {%- for commit in commits %}
         {%- if commit.scope -%}
@@ -35,7 +34,6 @@ body = """
         {%- if commit.breaking %}
         {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
         {%- endif -%}
-
         {% endif -%}
     {% endfor -%}
     {% raw %}\n{% endraw %}
@@ -55,16 +53,18 @@ filter_unconventional = false
 # regex for parsing and grouping commits
 commit_parsers = [
     { message = "^docs\\(changelog\\):", group = "Changelog", skip = true}, # Old redundant commits
-    { message = "^feat(\\(.*\\))?:", group = "Features"},
-    { message = "^feature(\\(.*\\))?:", group = "Features"},
-    { message = "^fix(\\(.*\\))?:", group = "Bug Fixes"},
-    { message = "^docs(\\(.*\\))?:", group = "Documentation"},
-    { message = "^perf(\\(.*\\))?:", group = "Performance"},
-    { message = "^refactor(\\(.*\\))?:", group = "Refactor"},
-    { message = "^style(\\(.*\\))?:", group = "Styling"},
-    { message = "^test(\\(.*\\))?:", group = "Testing"},
-    { message = "^locale(\\(.*\\))?:", group = "Localization"},
-    { message = "^chore(\\(.*\\))?:", group = "Miscellaneous Tasks", skip = true}, # chore tasks are not relevant for the changelog
+    { message = "^chore\\(changelog\\): update changelog", group = "Changelog", skip = true}, # Old redundant commits
+    { message = "^chore: push version number to", group = "9$Other", skip = true}, # Old redundant commits
+    { message = "^feat(\\(.*\\))?:", group = "1$Features"},
+    { message = "^feature(\\(.*\\))?:", group = "1$Features"},
+    { message = "^fix(\\(.*\\))?:", group = "2$Bug Fixes and Improvements"},
+    { message = "^docs(\\(.*\\))?:", group = "7$Documentation"},
+    { message = "^perf(\\(.*\\))?:", group = "3$Performance"},
+    { message = "^refactor(\\(.*\\))?:", group = "4$Refactor"},
+    { message = "^style(\\(.*\\))?:", group = "5$Styling"},
+    { message = "^test(\\(.*\\))?:", group = "9$Other"},
+    { message = "^locale(\\(.*\\))?:", group = "6$Localization"},
+    { message = "^chore(\\(.*\\))?:", group = "9$Other"},
     { body = ".*security", group = "Security"},
     { message = "release v2.1.2", group = "Release"}, # workaround for v2.1.2 release
 ]

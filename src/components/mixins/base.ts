@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { DateTimeFormatOptions } from 'vue-i18n'
+import { ServerPowerStateDevice } from '@/store/server/power/types'
 
 @Component
 export default class BaseMixin extends Vue {
@@ -33,6 +34,8 @@ export default class BaseMixin extends Vue {
     }
 
     get klipperState(): string {
+        if (!this.klippyIsConnected) return 'disconnected'
+
         return this.$store.state.server.klippy_state ?? ''
     }
 
@@ -42,6 +45,31 @@ export default class BaseMixin extends Vue {
 
     get printerIsPrinting() {
         return this.klipperReadyForGui && ['printing', 'paused'].includes(this.printer_state)
+    }
+
+    get printerPowerDevice(): string {
+        let deviceName = this.$store.state.gui.uiSettings.powerDeviceName ?? null
+        if (deviceName === null) deviceName = 'printer'
+
+        return deviceName
+    }
+
+    get isPrinterPowerOff() {
+        const devices = this.$store.getters['server/power/getDevices'] ?? []
+        if (devices.length === 0) return false
+
+        const deviceIndex = devices.findIndex(
+            (device: ServerPowerStateDevice) => device.device === this.printerPowerDevice
+        )
+        // stop if device is not found
+        if (deviceIndex === -1) return false
+
+        const device = devices[deviceIndex]
+        // Printer is on, if device status is "on" or "error"
+        if (device.status !== 'off') return false
+
+        // if klippy is not connected (service shutdown) and device.status === off
+        return !this.klippyIsConnected
     }
 
     get loadings(): string[] {

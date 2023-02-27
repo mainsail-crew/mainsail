@@ -1,6 +1,6 @@
 {
     "name": "mainsail",
-    "version": "2.4.0",
+    "version": "2.5.0-beta1",
     "private": true,
     "decription": "a klipper web interface",
     "author": {
@@ -33,7 +33,7 @@
         "@codemirror/view": "^6.0.3",
         "@jaames/iro": "^5.5.2",
         "@lezer/highlight": "^1.0.0",
-        "@sindarius/gcodeviewer": "^3.1.4",
+        "@sindarius/gcodeviewer": "^3.2.0",
         "@types/node": "^18.0.0",
         "@types/overlayscrollbars": "^1.12.1",
         "axios": "^0.27.0",
@@ -41,6 +41,7 @@
         "core-js": "^3.16.0",
         "echarts": "^5.2.2",
         "echarts-gl": "^2.0.8",
+        "hls.js": "^1.3.3",
         "js-sha256": "^0.9.0",
         "lodash.kebabcase": "^4.1.1",
         "lodash.throttle": "^4.1.1",
@@ -67,6 +68,7 @@
     "devDependencies": {
         "@intlify/vite-plugin-vue-i18n": "^2.5.0",
         "@mdi/js": "^7.0.0",
+        "@types/file-saver": "^2.0.5",
         "@types/lodash.kebabcase": "^4.1.6",
         "@types/lodash.throttle": "^4.1.6",
         "@types/semver": "^7.3.8",

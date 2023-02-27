@@ -138,6 +138,8 @@ export const getDefaultState = (): GuiState => {
                 axis_minimum: null,
                 axis_maximum: null,
             },
+            showGCodePanel: false,
+            cncMode: false,
         },
         uiSettings: {
             logo: defaultLogoColor,
@@ -152,6 +154,8 @@ export const getDefaultState = (): GuiState => {
             boolHideUploadAndPrintButton: false,
             boolWebcamNavi: false,
             navigationStyle: 'iconsAndText',
+            powerDeviceName: null,
+            hideSaveConfigForBedMash: false,
         },
         view: {
             blockFileUpload: false,
@@ -194,11 +198,12 @@ export const getDefaultState = (): GuiState => {
                 mesh: false,
                 flat: false,
                 wireframe: true,
-                scale: 0.5,
-                scaleVisualMap: false,
+                scaleGradient: false,
+                scaleZMax: 0.5,
             },
             history: {
                 countPerPage: 10,
+                toggleChartCol2: 'chart',
                 toggleChartCol3: 'filament_usage',
                 hidePrintStatus: [],
                 hideColums: [

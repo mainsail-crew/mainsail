@@ -1,6 +1,7 @@
 import { GetterTree } from 'vuex'
 import { GuiState } from '@/store/gui/types'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
+import { allDashboardPanels } from '@/store/variables'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
@@ -33,31 +34,109 @@ export const getters: GetterTree<GuiState, any> = {
         return true
     },
 
-    getPanels: (state, getters, rootState) => (viewport: string) => {
-        // @ts-ignore
-        let panels = state.dashboard[viewport]?.filter((element: any) => element !== null) ?? []
+    getAllPossiblePanels: (state, getters, rootState, rootGetters) => {
+        let allPanels = [...allDashboardPanels]
 
-        if (rootState.gui.macros.mode === 'simple')
-            panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
-        else {
-            panels = panels.filter((element: any) => element.name !== 'macros')
+        // remove macros panel and add macrogroups panels if macroMode === expert
+        if (state.macros?.mode === 'expert') {
             const macrogroups = getters['macros/getAllMacrogroups']
-            if (macrogroups.length) {
-                panels = panels.filter((element: any) => {
-                    if (!element.name.startsWith('macrogroup_')) return true
 
-                    const macrogroupId = element.name.slice(11)
-                    return (
-                        macrogroups.findIndex(
-                            (macrogroup: GuiMacrosStateMacrogroup) => macrogroup.id === macrogroupId
-                        ) !== -1
-                    )
-                })
-            }
+            macrogroups.forEach((group: GuiMacrosStateMacrogroup) => {
+                allPanels.push('macrogroup_' + group.id)
+            })
+
+            allPanels = allPanels.filter((name) => name !== 'macros')
         }
 
-        if (getters['webcams/getWebcams'].length === 0) {
-            panels = panels.filter((element: any) => element.name !== 'webcam')
+        // remove toolhead & machine-settings panel, if kinematics === none
+        const printerKinematics = rootGetters['printer/getKinematics']
+        if (printerKinematics === 'none') {
+            allPanels = allPanels.filter((name) => !['toolhead-control', 'machine-settings'].includes(name))
+        }
+
+        // remove extruder panel, if printerExtruderCount < 1
+        const printerExtruders = rootGetters['printer/getExtruders']
+        if (printerExtruders.length < 1) {
+            allPanels = allPanels.filter((name) => name !== 'extruder-control')
+        }
+
+        // remove temperature panel, if heaters & sensors < 1
+        const printerAvailableHeaters = rootGetters['printer/getAvailableHeaters']
+        const printerTemperatureSensorKeys = rootGetters['printer/getTemperatureSensorKeys']
+        if (printerAvailableHeaters.length + printerTemperatureSensorKeys.length < 1) {
+            allPanels = allPanels.filter((name) => name !== 'temperature')
+        }
+
+        // remove webcam panel, if no webcam exists
+        const webcams = getters['webcams/getWebcams']
+        if (webcams.length === 0) {
+            allPanels = allPanels.filter((name) => name !== 'webcam')
+        }
+
+        return allPanels
+    },
+
+    getPanels:
+        (state, getters, rootState) =>
+        (viewport: string, column: number, onlyVisible: boolean = false) => {
+            const layoutName = column ? `${viewport}Layout${column}` : `${viewport}Layout`
+            // @ts-ignore
+            let panels = state.dashboard[layoutName]?.filter((element: any) => element !== null) ?? []
+            const allPossiblePanels = getters['getAllPossiblePanels']
+
+            if (column < 2) {
+                const allViewportPanels = getters['getAllPanelsFromViewport'](viewport)
+                const missingPanels: any[] = []
+
+                allPossiblePanels.forEach((panelname: string) => {
+                    if (!allViewportPanels.find((panel: any) => panel.name === panelname))
+                        missingPanels.push({
+                            name: panelname,
+                            visible: true,
+                        })
+                })
+                panels = panels.concat(missingPanels)
+            }
+
+            if (onlyVisible) {
+                panels = panels.filter((element: any) => element.visible)
+            }
+
+            if (rootState.gui.macros.mode === 'simple')
+                panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
+            else {
+                panels = panels.filter((element: any) => element.name !== 'macros')
+                const macrogroups = getters['macros/getAllMacrogroups']
+                if (macrogroups.length) {
+                    panels = panels.filter((element: any) => {
+                        if (!element.name.startsWith('macrogroup_')) return true
+
+                        const macrogroupId = element.name.slice(11)
+                        return (
+                            macrogroups.findIndex(
+                                (macrogroup: GuiMacrosStateMacrogroup) => macrogroup.id === macrogroupId
+                            ) !== -1
+                        )
+                    })
+                }
+            }
+
+            return panels.filter((element: any) => allPossiblePanels.includes(element.name))
+        },
+
+    getAllPanelsFromViewport: (state) => (viewport: string) => {
+        let panels: any = []
+
+        if (`${viewport}Layout` in state.dashboard) {
+            // @ts-ignore
+            panels = panels.concat(state.dashboard[`${viewport}Layout`])
+        }
+
+        let nr = 1
+        while (`${viewport}Layout${nr}` in state.dashboard) {
+            // @ts-ignore
+            panels = panels.concat(state.dashboard[`${viewport}Layout${nr}`])
+            nr++
         }
 
         return panels

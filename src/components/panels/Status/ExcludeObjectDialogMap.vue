@@ -81,7 +81,7 @@ svg {
                     stroke-width="1" />
             </g>
 
-            <g v-for="(object, index) in printing_objects" :key="index">
+            <g v-for="(object, index) in printing_objects_with_polygons" :key="index">
                 <polygon
                     :points="object.polygon.map((point) => convertX(point[0]) + ',' + convertY(point[1])).join(' ')"
                     style="cursor: pointer"
@@ -124,6 +124,10 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
         return this.$store.state.printer.exclude_object?.objects ?? []
     }
 
+    get printing_objects_with_polygons() {
+        return this.printing_objects.filter((eobject: any) => 'polygon' in eobject)
+    }
+
     get current_object() {
         return this.$store.state.printer.exclude_object?.current_object ?? null
     }
@@ -144,20 +148,32 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
         )
     }
 
+    get toolhead() {
+        return this.$store.state.printer.toolhead ?? {}
+    }
+
+    get axis_minimum() {
+        return this.toolhead.axis_minimum ?? []
+    }
+
+    get axis_maximum() {
+        return this.toolhead.axis_maximum ?? []
+    }
+
     get stepperXmin() {
-        return this.$store.state.printer.configfile?.settings?.stepper_x?.position_min ?? 0
+        return this.axis_minimum[0] ?? 0
     }
 
     get stepperXmax() {
-        return this.$store.state.printer.configfile?.settings?.stepper_x?.position_max ?? 0
+        return this.axis_maximum[0] ?? 200
     }
 
     get stepperYmin() {
-        return this.$store.state.printer.configfile?.settings?.stepper_y?.position_min ?? 200
+        return this.axis_minimum[1] ?? 0
     }
 
     get stepperYmax() {
-        return this.$store.state.printer.configfile?.settings?.stepper_y?.position_max ?? 200
+        return this.axis_maximum[1] ?? 200
     }
 
     get absoluteX() {

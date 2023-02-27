@@ -66,9 +66,8 @@ export const getters: GetterTree<ServerHistoryState, any> = {
             : 0
     },
 
-    getAllPrintStatusArray(state, getters, rootState) {
+    getAllPrintStatusArrayAll(state, getters, rootState) {
         const output: ServerHistoryStateAllPrintStatusEntry[] = []
-        const totalCount = state.jobs.length
 
         state.jobs.forEach((current) => {
             const index = output.findIndex((element) => element.name === current.status)
@@ -112,6 +111,13 @@ export const getters: GetterTree<ServerHistoryState, any> = {
                 })
             }
         })
+
+        return output
+    },
+
+    getAllPrintStatusArray(state, getters) {
+        const output: ServerHistoryStateAllPrintStatusEntry[] = [...getters.getAllPrintStatusArrayAll]
+        const totalCount = state.jobs.length
 
         const otherLimit = totalCount * 0.05
         const others = output.filter((entry) => entry.value < otherLimit)

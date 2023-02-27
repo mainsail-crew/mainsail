@@ -1,0 +1,68 @@
+# configuration file for git-cliff (0.1.0)
+
+[changelog]
+# changelog header
+header = """
+# What's Changed
+"""
+# template for the changelog body
+# https://tera.netlify.app/docs/#introduction
+body = """
+{% for group, commits in commits | group_by(attribute="group") %}\
+    ### {{ group | split(pat="$") | last | upper_first }}
+    {% for commit in commits
+    | filter(attribute="scope")
+    | sort(attribute="scope") %}
+        - **{{commit.scope}}**: {{ commit.message | upper_first | trim }} | [{{ commit.id | truncate(length=7, end="") }}]({{ commit.id }})\
+        {%- if commit.breaking %}
+        {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
+        {%- endif -%}
+
+    {%- endfor -%}
+    {%- for commit in commits %}
+        {%- if commit.scope -%}
+        {% else -%}
+        {% raw %}\n{% endraw %}\
+        - {{ commit.message | upper_first | trim }} | [{{ commit.id | truncate(length=7, end="") }}]({{ commit.id }})\
+        {%- if commit.breaking %}
+        {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
+        {%- endif -%}
+
+        {% endif -%}
+    {% endfor -%}
+    {% raw %}\n{% endraw %}
+{% endfor %}\n\
+"""
+# remove the leading and trailing whitespaces from the template
+trim = true
+# changelog footer
+footer = """
+"""
+
+[git]
+# allow only conventional commits
+# https://www.conventionalcommits.org
+conventional_commits = true
+filter_unconventional = true
+# regex for parsing and grouping commits
+commit_parsers = [
+    { message = "^docs\\(changelog\\):", group = "Changelog", skip = true}, # Old redundant commits
+    { message = "^chore\\(changelog\\): update changelog", group = "Changelog", skip = true}, # Old redundant commits
+    { message = "^chore: push version number to", group = "9$Other", skip = true}, # Old redundant commits
+    { message = "^feat(\\(.*\\))?:", group = "1$Features"},
+    { message = "^feature(\\(.*\\))?:", group = "1$Features"},
+    { message = "^fix(\\(.*\\))?:", group = "2$Bug Fixes and Improvements"},
+    { message = "^docs(\\(.*\\))?:", group = "7$Documentation"},
+    { message = "^perf(\\(.*\\))?:", group = "3$Performance"},
+    { message = "^refactor(\\(.*\\))?:", group = "4$Refactor"},
+    { message = "^style(\\(.*\\))?:", group = "5$Styling"},
+    { message = "^test(\\(.*\\))?:", group = "9$Other"},
+    { message = "^locale(\\(.*\\))?:", group = "6$Localization"},
+    { message = "^chore(\\(.*\\))?:", group = "9$Other"},
+    { body = ".*security", group = "Security"},
+]
+# filter out the commits that are not matched by commit parsers
+filter_commits = true
+ignore_tags="v*-(beta|rc)*"
+# glob pattern for matching git tags
+tag_pattern = "v[0-9]*"
