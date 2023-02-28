@@ -63,7 +63,7 @@
                         <v-col class="py-2">
                             <span class="subtitle-2 d-block px-0 text--disabled">
                                 <v-icon class="mr-2" small>{{ mdiMessageProcessingOutline }}</v-icon>
-                                {{ print_stats_message ? print_stats_message : display_message }}
+                                {{ print_stats_message ?? display_message }}
                             </span>
                         </v-col>
                         <v-col class="col-auto py-2">
@@ -83,13 +83,13 @@
             <v-divider class="my-0"></v-divider>
             <v-tabs-items v-model="activeTab" class="_border-radius">
                 <v-tab-item v-if="current_filename" value="status">
-                    <status-panel-printstatus></status-panel-printstatus>
+                    <status-panel-printstatus />
                 </v-tab-item>
                 <v-tab-item value="files">
-                    <status-panel-gcodefiles></status-panel-gcodefiles>
+                    <status-panel-gcodefiles />
                 </v-tab-item>
                 <v-tab-item value="jobqueue">
-                    <status-panel-jobqueue></status-panel-jobqueue>
+                    <status-panel-jobqueue />
                 </v-tab-item>
             </v-tabs-items>
         </panel>
@@ -122,6 +122,7 @@ import {
     mdiLayersPlus,
     mdiDotsVertical,
 } from '@mdi/js'
+import { PrinterStateMacro } from '@/store/printer/types'
 
 @Component({
     components: {
@@ -295,10 +296,10 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 click: this.btnExcludeObject,
             },
             {
-                text: this.$t('Panels.StatusPanel.PauseAtLayer.PauseAtLayer'),
+                text: this.$t('Panels.StatusPanel.PauseAtLayer.PauseAtLayer') + ' - ' + this.displayPauseAtLayerButton,
                 loadingName: 'pauseAtLayer',
                 icon: mdiLayersPlus,
-                status: () => this.layer_count !== null,
+                status: () => this.displayPauseAtLayerButton,
                 disabled: () => ['paused', 'printing'].includes(this.printer_state),
                 click: this.btnPauseAtLayer,
             },
@@ -306,13 +307,29 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get multiFunctionMenuButtonsFiltered() {
-        return this.multiFunctionMenuButtons.filter((button) => button.status)
+        return this.multiFunctionMenuButtons.filter((button) => button.status())
     }
 
     get multiFunctionButton() {
         if (!['paused', 'printing'].includes(this.printer_state)) return false
 
         return this.multiFunctionMenuButtonsFiltered.length > 1
+    }
+
+    get macros() {
+        return this.$store.getters['printer/getMacros'] ?? []
+    }
+
+    get existsSetPauseAtLayer() {
+        return this.macros.findIndex((macro: PrinterStateMacro) => macro.name === 'SET_PAUSE_AT_LAYER') !== -1
+    }
+
+    get existsSetPauseNextLayer() {
+        return this.macros.findIndex((macro: PrinterStateMacro) => macro.name === 'SET_PAUSE_NEXT_LAYER') !== -1
+    }
+
+    get displayPauseAtLayerButton() {
+        return this.layer_count !== null && (this.existsSetPauseAtLayer || this.existsSetPauseNextLayer)
     }
 
     mounted() {
