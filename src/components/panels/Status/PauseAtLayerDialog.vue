@@ -189,12 +189,12 @@ export default class StatusPanelPauseAtLayerDialog extends Mixins(BaseMixin) {
 
     sendCommand() {
         if (this.type === 'atLayer') {
-            this.doSend(`SET_PAUSE_AT_LAYER LAYER=${this.layer} MACRO=${this.call}`)
+            this.doSend(`SET_PAUSE_AT_LAYER ENABLE=1 LAYER=${this.layer} MACRO=${this.call}`)
             this.hideDialog()
             return
         }
 
-        this.doSend(`SET_PAUSE_NEXT_LAYER MACRO=${this.call}`)
+        this.doSend(`SET_PAUSE_NEXT_LAYER ENABLE=1 MACRO=${this.call}`)
         this.hideDialog()
     }
 
