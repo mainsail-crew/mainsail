@@ -45,4 +45,16 @@ export const actions: ActionTree<GuiRemindersState, RootState> = {
         commit('delete', payload)
         Vue.$socket.emit('server.database.delete_item', { namespace: 'reminders', key: payload })
     },
+
+    repeat({ dispatch, state, rootState }, payload) {
+        if (!(payload.id in state.reminders)) return
+        const reminder = state.reminders[payload.id]
+        const new_start_time = rootState.server?.history?.job_totals.total_print_time || 0
+        const snooze_epoch_time = Date.now()
+        dispatch('update', {
+            id: reminder.id,
+            snooze_print_hours_timestamps: [...reminder.snooze_print_hours_timestamps, new_start_time],
+            snooze_epoch_timestamps: [...reminder.snooze_epoch_timestamps, snooze_epoch_time],
+        })
+    },
 }

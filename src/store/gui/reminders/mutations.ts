@@ -17,7 +17,6 @@ export const mutations: MutationTree<GuiRemindersState> = {
     },
 
     update(state, payload) {
-        console.log(payload)
         if (payload.id in state.reminders) {
             const reminder = { ...state.reminders[payload.id] }
             Object.assign(reminder, payload)

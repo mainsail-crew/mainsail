@@ -298,10 +298,11 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
         if (!baseReminders) return []
         return baseReminders.map((reminder: GuiRemindersStateReminder) => {
             let tempReminder = { ...reminder }
-            if (reminder.snooze_timestamps.length > 0) {
+            if (reminder.snooze_print_hours_timestamps.length > 0) {
                 tempReminder.remaining_print_time =
                     reminder.time_delta -
-                    (this.totalPrintTime - reminder.snooze_timestamps[reminder.snooze_timestamps.length - 1])
+                    (this.totalPrintTime -
+                        reminder.snooze_print_hours_timestamps[reminder.snooze_print_hours_timestamps.length - 1])
             } else {
                 tempReminder.remaining_print_time =
                     reminder.time_delta - (this.totalPrintTime - reminder.start_total_print_time)
@@ -424,8 +425,7 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
     }
 
     repeatReminder(reminder: GuiRemindersStateReminder) {
-        reminder.snooze_timestamps = [...reminder.snooze_timestamps, this.totalPrintTime]
-        this.$store.dispatch('gui/reminders/update', reminder)
+        this.$store.dispatch('gui/reminders/repeat', reminder)
     }
 
     deleteSelectedReminders() {
@@ -447,7 +447,8 @@ export default class HistoryRemindersPanel extends Mixins(BaseMixin) {
             id: '',
             name: '',
             start_total_print_time: 0,
-            snooze_timestamps: [],
+            snooze_print_hours_timestamps: [],
+            snooze_epoch_timestamps: [],
             repeating: true,
             time_delta: 0,
         }

@@ -10,6 +10,7 @@ export interface GuiRemindersStateReminder {
     start_total_print_time: number
     time_delta: number
     repeating: boolean
-    snooze_timestamps: number[]
+    snooze_print_hours_timestamps: number[]
+    snooze_epoch_timestamps: number[]
     remaining_print_time?: number
 }

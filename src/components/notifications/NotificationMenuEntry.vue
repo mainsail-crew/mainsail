@@ -29,6 +29,15 @@
                     <v-icon>{{ mdiClose }}</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
+                <v-btn
+                    v-if="showRepeatReminderButton"
+                    icon
+                    plain
+                    :color="alertColor"
+                    class="pb-1"
+                    @click="repeatReminder">
+                    <v-icon>{{ mdiCalendarRefreshOutline }}</v-icon>
+                </v-btn>
                 <v-btn icon plain retain-focus-on-click :color="alertColor" class="pb-1" @click="expand = !expand">
                     <v-icon>{{ mdiBellOffOutline }}</v-icon>
                 </v-btn>
@@ -99,7 +108,7 @@
 <script lang="ts">
 import BaseMixin from '@/components/mixins/base'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
-import { mdiClose, mdiLinkVariant, mdiBellOffOutline } from '@mdi/js'
+import { mdiClose, mdiLinkVariant, mdiBellOffOutline, mdiCalendarRefreshOutline } from '@mdi/js'
 import { GuiNotificationStateEntry } from '@/store/gui/notifications/types'
 
 @Component({
@@ -109,6 +118,7 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
     mdiClose = mdiClose
     mdiLinkVariant = mdiLinkVariant
     mdiBellOffOutline = mdiBellOffOutline
+    mdiCalendarRefreshOutline = mdiCalendarRefreshOutline
 
     private expand = false
 
@@ -139,12 +149,25 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
         return this.entry.id.slice(0, posFirstSlash)
     }
 
+    get showRepeatReminderButton() {
+        if (this.entryType !== 'reminder') return false
+        const reminderId = this.entry.id.replace('reminder/', '')
+        console.log(this.entry.id)
+        const reminder = this.$store.getters['gui/reminders/getReminder'](reminderId)
+        return reminder?.repeating || false
+    }
+
     close() {
         this.$store.dispatch('gui/notifications/close', { id: this.entry.id })
     }
 
     dismiss(type: 'time' | 'reboot', time: number | null) {
         this.$store.dispatch('gui/notifications/dismiss', { id: this.entry.id, type, time })
+    }
+
+    repeatReminder() {
+        const reminderId = this.entry.id.replace('reminder/', '')
+        this.$store.dispatch('gui/reminders/repeat', { id: reminderId })
     }
 
     @Watch('parentState')
