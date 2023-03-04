@@ -91,7 +91,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
             false
         )
 
-        this.pc.addEventListener('onconnectionstatechange', (event) => {
+        this.pc.addEventListener('connectionstatechange', () => {
             this.status = (this.pc?.connectionState ?? '').toString()
 
             if (['failed', 'disconnected'].includes(this.status)) {
