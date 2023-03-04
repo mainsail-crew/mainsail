@@ -75,6 +75,8 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
     }
 
     startStream() {
+        const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1
+
         this.pc = new RTCPeerConnection(this.streamConfig)
         this.pc.addTransceiver('video', { direction: 'recvonly' })
 
@@ -89,7 +91,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
             false
         )
 
-        this.pc.onconnectionstatechange = () => {
+        this.pc.addEventListener('onconnectionstatechange', (event) => {
             this.status = (this.pc?.connectionState ?? '').toString()
 
             if (['failed', 'disconnected'].includes(this.status)) {
@@ -98,7 +100,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
                     this.startStream()
                 }, 500)
             }
-        }
+        })
 
         fetch(this.url, {
             body: JSON.stringify({
@@ -133,7 +135,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
             })
             .then(() => {
                 const offer = this.pc?.localDescription
-                fetch(this.url, {
+                return fetch(this.url, {
                     body: JSON.stringify({
                         type: offer?.type,
                         id: this.remote_pc_id,
@@ -144,6 +146,10 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
                     },
                     method: 'POST',
                 })
+            })
+            .then((response: any) => {
+                if (isFirefox) this.status = 'connected'
+                return response.json()
             })
             .catch(function (e) {
                 window.console.error(e)
