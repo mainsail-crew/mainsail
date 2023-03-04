@@ -20,7 +20,6 @@ export const mutations: MutationTree<GuiRemindersState> = {
         if (payload.id in state.reminders) {
             const reminder = { ...state.reminders[payload.id] }
             Object.assign(reminder, payload)
-            console.log(reminder)
             Vue.set(state.reminders, payload.id, reminder)
         }
     },

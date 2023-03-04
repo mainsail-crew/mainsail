@@ -152,7 +152,6 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
     get showRepeatReminderButton() {
         if (this.entryType !== 'reminder') return false
         const reminderId = this.entry.id.replace('reminder/', '')
-        console.log(this.entry.id)
         const reminder = this.$store.getters['gui/reminders/getReminder'](reminderId)
         return reminder?.repeating || false
     }
