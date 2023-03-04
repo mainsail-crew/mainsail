@@ -295,7 +295,6 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                 // TODO: translate
                 const title = 'User Created Reminder'
                 const description = reminder.name
-
                 notifications.push({
                     id: `reminder/${reminder.id}`,
                     priority: 'normal',

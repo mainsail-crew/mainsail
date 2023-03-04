@@ -21,7 +21,8 @@ export const getters: GetterTree<GuiRemindersState, any> = {
 
     getOverdueReminders: (state, getters, rootState) => {
         const currentTotalPrintTime = rootState.server.history.job_totals.total_print_time
-        return Object.values(state.reminders).filter(
+        const reminders: GuiRemindersStateReminder[] = getters['getReminders'] ?? []
+        return reminders.filter(
             (reminder) => reminder.time_delta - (currentTotalPrintTime - reminder.start_total_print_time) < 0
         )
     },
