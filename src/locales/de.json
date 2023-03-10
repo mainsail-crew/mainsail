@@ -1031,7 +1031,7 @@
             "NavigationStyleIconsAndText": "Icons + Text",
             "NavigationStyleIconsOnly": "Nur Icons",
             "PowerDeviceName": "Stromversorgung für Drucker",
-            "PowerDeviceNameDescription": "Wähle aus, welches Moonraker-Stromgerät zum Einschalten des Druckers verwendet werden soll.",
+            "PowerDeviceNameDescription": "Wähle aus, welches Moonraker Power-Device zum Einschalten des Druckers verwendet werden soll.",
             "Primary": "Primärfarbe",
             "ShowWebcamInNavigation": "Zeige Webcam in der Navigation",
             "UiSettings": "UI-Einstellungen"
@@ -1074,8 +1074,8 @@
     "ScrewsTiltAdjust": {
         "Accept": "akzeptieren",
         "Base": "Basis",
-        "ErrorText": "Bei der Abtasten ist etwas nicht funktioniert.",
-        "Headline": "Schrauben Neigungsverstellung"
+        "ErrorText": "Ein Fehler ist beim Abtasten aufgetreten.",
+        "Headline": "Neigungsverstellung"
     },
     "Timelapse": {
         "AllFiles": "Alle",
