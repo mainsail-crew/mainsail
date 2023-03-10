@@ -356,8 +356,9 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return caseInsensitiveSort(sensors, 'name')
     },
 
-    getTemperatureObjects: (state, getters) => {
+    getTemperatureObjects: (state, getters, rootState) => {
         const objects: PrinterStateTemperatureObject[] = []
+        const disableFanAnimation = rootState.gui?.uiSettings.disableFanAnimation ?? false
 
         const heaters = getters['getHeaters']
         if (heaters.length) {
@@ -402,7 +403,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                         fan.target > 0
                             ? `${fan.chartColor}${opacityHeaterActive}`
                             : `${fan.chartColor}${opacityHeaterInactive}`,
-                    iconClass: '',
+                    iconClass: !disableFanAnimation && fan.speed ? ' icon-rotate' : '',
                     state: fan.target > 0 && fan.speed > 0 ? fan.speed + '%' : fan.target > 0 ? 'standby' : 'off',
                     avgState: fan.avgSpeed + '%',
                     temperature: fan.temperature,

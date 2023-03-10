@@ -108,6 +108,7 @@ export interface GuiState {
         navigationStyle: 'iconsAndText' | 'iconsOnly'
         powerDeviceName: string | null
         hideSaveConfigForBedMash: boolean
+        disableFanAnimation: boolean
     }
     view: {
         blockFileUpload: boolean

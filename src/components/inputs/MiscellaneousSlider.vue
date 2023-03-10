@@ -14,7 +14,7 @@
                     <v-icon v-else-if="type === 'led'" class="mr-2" small :retain-focus-on-click="true" @click="ledOn">
                         {{ mdiLightbulbOutline }}
                     </v-icon>
-                    <v-icon v-else-if="type !== 'output_pin'" small class="mr-2">{{ mdiFan }}</v-icon>
+                    <v-icon v-else-if="type !== 'output_pin'" small :class="fanClasses">{{ mdiFan }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
                     <small v-if="rpm !== null" :class="rpmClasses">{{ Math.round(rpm ?? 0) }} RPM</small>
@@ -276,6 +276,17 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
             errors.push(this.$t('App.NumberInput.GreaterOrEqualError', { min: this.min * 100 }))
         }
         return errors
+    }
+
+    get disableFanAnimation() {
+        return this.$store.state.gui.uiSettings.disableFanAnimation ?? false
+    }
+
+    get fanClasses() {
+        const output = ['mr-2']
+        if (!this.disableFanAnimation && this.value >= this.off_below && this.value > 0) output.push('icon-rotate')
+
+        return output
     }
 
     get rpmClasses() {
