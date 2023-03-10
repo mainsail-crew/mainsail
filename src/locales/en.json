@@ -52,6 +52,7 @@
             "Complete": "Complete - {filename}",
             "Error": "ERROR",
             "Pause": "Pause Print",
+            "PrinterOff": "Printer OFF",
             "Printing": "{percent}% Printing - {filename}",
             "PrintingETA": "{percent}% Printing - ETA: {eta} - {filename}"
         },
