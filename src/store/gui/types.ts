@@ -86,6 +86,8 @@ export interface GuiState {
             axis_minimum: number[] | null
             axis_maximum: number[] | null
         }
+        showGCodePanel: boolean
+        cncMode: boolean
     }
     macros?: GuiMacrosState
     notifications?: GuiNotificationState
@@ -104,6 +106,8 @@ export interface GuiState {
         boolHideUploadAndPrintButton: boolean
         boolWebcamNavi: boolean
         navigationStyle: 'iconsAndText' | 'iconsOnly'
+        powerDeviceName: string | null
+        hideSaveConfigForBedMash: boolean
     }
     view: {
         blockFileUpload: boolean

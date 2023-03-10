@@ -1,22 +1,5 @@
-<style scoped>
-.webcamImage {
-    width: 100%;
-    background: lightgray;
-}
-
-.webcamFpsOutput {
-    display: inline-block;
-    position: absolute;
-    bottom: 6px;
-    right: 0;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 3px 10px;
-    border-top-left-radius: 5px;
-}
-</style>
-
 <template>
-    <div style="position: relative">
+    <div style="position: relative" class="d-flex justify-center">
         <img
             ref="image"
             v-observe-visibility="viewportVisibilityChanged"
@@ -40,8 +23,10 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     private currentFPS = 0
     private streamState = false
     private aspectRatio: null | number = null
-    private timerFPS: number | null = null
-    private timerRestart: number | null = null
+    // eslint-disable-next-line no-undef
+    private timerFPS: NodeJS.Timeout | null = null
+    // eslint-disable-next-line no-undef
+    private timerRestart: NodeJS.Timeout | null = null
     private stream: ReadableStream | null = null
     private controller: AbortController | null = null
     private isVisibleViewport = false
@@ -72,6 +57,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
         const output = {
             transform: 'none',
             aspectRatio: 16 / 9,
+            maxHeight: window.innerHeight - 155 + 'px',
+            maxWidth: 'auto',
         }
 
         let transforms = ''
@@ -79,7 +66,10 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
         if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
-        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
+        if (this.aspectRatio) {
+            output.aspectRatio = this.aspectRatio
+            output.maxWidth = (window.innerHeight - 155) * this.aspectRatio + 'px'
+        }
 
         return output
     }
@@ -252,3 +242,20 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.webcamImage {
+    width: 100%;
+    background: lightgray;
+}
+
+.webcamFpsOutput {
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 3px 10px;
+    border-top-left-radius: 5px;
+}
+</style>

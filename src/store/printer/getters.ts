@@ -1097,6 +1097,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 tools.push({
                     name: macro.name,
                     active: macro.variables.active ?? false,
+                    color: macro.variables.color ?? macro.variables.colour ?? null,
                 })
             )
 
