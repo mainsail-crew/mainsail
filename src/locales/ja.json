@@ -270,8 +270,7 @@
             "Max": "最大",
             "Min": "最小",
             "Name": "名前",
-            "Size": "サイズ",
-            "Variance": "変動"
+            "Size": "サイズ"
         },
         "DeleteBedMeshProfile": "ベッドメッシュのプロファイルを削除",
         "DoYouReallyWantToDelete": "プロファイル \"{name}\"を削除します。よろしいですか？",
