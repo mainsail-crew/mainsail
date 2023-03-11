@@ -252,7 +252,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 .webcamFpsOutput {
     display: inline-block;
     position: absolute;
-    bottom: 6px;
+    bottom: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.8);
     padding: 3px 10px;
