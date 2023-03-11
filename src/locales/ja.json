@@ -52,6 +52,7 @@
             "Complete": "完了 - {filename}",
             "Error": "エラー！",
             "Pause": "一時停止",
+            "PrinterOff": "プリンター オフ",
             "Printing": "{percent}% 印刷中 - {filename}",
             "PrintingETA": "{percent}% 印刷中 - 完了時刻: {eta} - {filename}"
         },
@@ -270,6 +271,7 @@
             "Max": "最大",
             "Min": "最小",
             "Name": "名前",
+            "Range": "範囲",
             "Size": "サイズ"
         },
         "DeleteBedMeshProfile": "ベッドメッシュのプロファイルを削除",
@@ -1066,7 +1068,8 @@
             "UrlStream": "URL ストリーム",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "垂直方向",
-            "Webcams": "カメラ"
+            "Webcams": "カメラ",
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
         }
     },
     "ScrewsTiltAdjust": {
