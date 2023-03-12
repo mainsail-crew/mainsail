@@ -1014,6 +1014,8 @@
             "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
             "ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
             "ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",
+            "DisableFanAnimation": "Disable fan animation",
+            "DisableFanAnimationDescription": "This can reduce some load in your Browser.",
             "DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
             "GcodeThumbnails": "G-Code thumbnails",
