@@ -1068,7 +1068,8 @@
             "UrlStream": "Stream URL",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertikal",
-            "Webcams": "Webcams"
+            "Webcams": "Webcams",
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
         }
     },
     "ScrewsTiltAdjust": {
