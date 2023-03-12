@@ -52,6 +52,7 @@
             "Complete": "完了 - {filename}",
             "Error": "エラー！",
             "Pause": "一時停止",
+            "PrinterOff": "プリンター オフ",
             "Printing": "{percent}% 印刷中 - {filename}",
             "PrintingETA": "{percent}% 印刷中 - 完了時刻: {eta} - {filename}"
         },
@@ -164,11 +165,13 @@
         "Yes": "はい"
     },
     "Files": {
+        "AddBatchToQueue": "ジョブキューにバッチを追加",
         "AddToQueue": "ジョブキューに追加",
         "AllFiles": "すべてのファイル",
         "BedTemp": "ベッド温度",
         "Cancel": "取り消し",
         "ChamberTemp": "チャンバー温度",
+        "Count": "回数",
         "Create": "作成",
         "CreateNewDirectory": "新規ディレクトリの作成",
         "CurrentPath": "現在のパス",
@@ -253,7 +256,9 @@
         "Tracking": "トラッキング",
         "Transparency": "透明",
         "Ultra": "ウルトラ",
-        "VoxelMode": "ボクセルモード (ASMBL)"
+        "VoxelMode": "ボクセルモード (ASMBL)",
+        "ShowGCode": "Gコードを表示",
+        "CNCMode": "CNCモード"
     },
     "Heightmap": {
         "Abort": "中止",
@@ -266,8 +271,8 @@
             "Max": "最大",
             "Min": "最小",
             "Name": "名前",
-            "Size": "サイズ",
-            "Variance": "変動"
+            "Range": "範囲",
+            "Size": "サイズ"
         },
         "DeleteBedMeshProfile": "ベッドメッシュのプロファイルを削除",
         "DoYouReallyWantToDelete": "プロファイル \"{name}\"を削除します。よろしいですか？",
@@ -303,6 +308,7 @@
         "AvgPrinttime": "平均印刷時間",
         "Cancel": "取り消し",
         "CreateNote": "メモ作成",
+        "Chart": "チャート",
         "Delete": "削除",
         "DeleteSelectedQuestion": "選択された {count}個のジョブを削除します。よろしいですか？",
         "Details": "詳細",
@@ -354,6 +360,7 @@
             "Others": "その他",
             "server_exit": "サーバー終了"
         },
+        "Table": "テーブル",
         "TitleExportHistory": "履歴をエクスポート",
         "TitleRefreshHistory": "履歴を更新",
         "TitleSettings": "設定",
@@ -365,7 +372,12 @@
     },
     "JobQueue": {
         "AllJobs": "全ジョブ",
+        "ChangeCount": "回数変更",
+        "Cancel": "取り消し",
+        "Count": "回数",
         "Empty": "空",
+        "InvalidCountEmpty": "回数は空であってはなりません！",
+        "InvalidCountGreaterZero": "回数は0以上でなければなりません！",
         "JobQueue": "ジョブキュー",
         "Jobs": "ジョブ",
         "Pause": "一時停止",
@@ -417,7 +429,13 @@
             "TRIGGERED": "トリガー"
         },
         "LogfilesPanel": {
-            "Logfiles": "ログファイル"
+            "Accept": "確認",
+            "Cancel": "取り消し",
+            "Logfiles": "ログファイル",
+            "Rollover": "ログファイルのロールオーバー",
+            "RolloverDescription": "リセットするログを選んでください:",
+            "RolloverToastSuccessful": "\"{name}\"ログファイルのリセットに成功しました。",
+            "RolloverToastFailed": "\"{name}\"ログファイルのロールオーバー: {message}"
         },
         "SystemPanel": {
             "Constants": "定数",
@@ -507,9 +525,12 @@
             "WebcamOff": "オフ"
         },
         "KlippyStatePanel": {
+            "CheckKlippyAndUdsAddress": "Klipperサービスが稼働しているか、moonraker.confにklippy_uds_addressが正しく設定されているかを確認してください。",
             "FirmwareRestart": "ファームウェア再始動",
-            "KlipperCheck": "Klipperサービスが動いていて、UDS (Unix Domain Socket)が設定されているかどうか確認してください。",
             "MoonrakerCannotConnect": "MoonrakerはKlipperに接続できません!",
+            "PowerOn": "電源オン",
+            "PrinterSwitchedOff": "プリンターの電源はオフになっています",
+            "PrinterSwitchedOffDescription": "現在、プリンターの電源がオフになっており、Klipperは接続することができません。プリンターの電源を入れるには、下のボタンをクリックしてください。:",
             "Restart": "再始動",
             "ServiceReports": "{service} レポート"
         },
@@ -584,6 +605,18 @@
             "Layer": "層",
             "Max": "最大",
             "ObjectHeight": "印刷物の高さ",
+            "PauseAtLayer": {
+                "Abort": "中断",
+                "Accept": "確認",
+                "AtLayer": "層で",
+                "Call": "呼び出し",
+                "DescriptionPauseAtLayerActive": "この機能は既に有効になっており、{layer}層目で\"{call}\"が呼び出されます。再度コマンドを呼び出すと、この設定は上書きされます。",
+                "DescriptionPauseNextLayerActive": "この機能は既に有効になっており、次の層で\"{call}\"が呼び出されます。",
+                "Layer": "層",
+                "NextLayer": "次の層",
+                "PauseAtLayer": "層で一時停止",
+                "Type": "タイプ"
+            },
             "PausePrint": "印刷一時停止",
             "Print": "印刷",
             "PrintTime": "印刷時間",
@@ -872,7 +905,6 @@
             "NoGroupFound": "グループが見つかりませんでした。",
             "NoPresetFound": "プリセットが見つかりませんでした。",
             "Presets": "プリセット",
-            "PresetSubTitle": "赤: {red}, 緑: {green}, 青: {blue}, 白: {white}",
             "Start": "開始",
             "StartDescription": "このグループ最初のLEDです。",
             "UnableToLoadLight": "照明を読み込めませんでした。",
@@ -987,6 +1019,8 @@
             "GcodeThumbnails": "Gコードのサムネイル",
             "GcodeThumbnailsDescription": "ボタンをクリックすると、説明書に移動します。",
             "Guide": "ガイド",
+            "HideSaveConfigButtonForBedMesh": "ベッドメッシュ変更時の設定保存ボタンを表示しない",
+            "HideSaveConfigButtonForBedMeshDescription": "ベッドメッシュの変更のみが保存の保留をされている時に、設定保存ボタンを表示しない。",
             "LockSliders": "タッチスクリーンデバイスのスライダーをロックする",
             "LockSlidersDelay": "スライダーロックの遅延時間",
             "LockSlidersDelayDescription": "スライダーは一定時間後にロックされます。 0か空白のままに設定すると、スライダーはページの変更か再読み込み時のみロックされるようになります。",
@@ -996,6 +1030,8 @@
             "NavigationStyleDescription": "ナビゲーションの外観を変更",
             "NavigationStyleIconsAndText": "アイコン + テキスト",
             "NavigationStyleIconsOnly": "アイコンのみ",
+            "PowerDeviceName": "プリンター電源機器",
+            "PowerDeviceNameDescription": "プリンターの電源投入に使用するMoonrakerの電源デバイスを選択します。",
             "Primary": "一次",
             "ShowWebcamInNavigation": "ナビゲーションにカメラを表示",
             "UiSettings": "UI設定"
@@ -1017,6 +1053,7 @@
             "IconNozzle": "ノズル",
             "IconPrinter": "プリンター",
             "Ipstream": "IPカメラ",
+            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (試験的)",
             "Name": "名前",
@@ -1031,8 +1068,15 @@
             "UrlStream": "URL ストリーム",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "垂直方向",
-            "Webcams": "カメラ"
+            "Webcams": "カメラ",
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
         }
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "確認",
+        "Base": "ベース",
+        "ErrorText": "プロービング過程で、問題が生じました。",
+        "Headline": "スクリュー傾斜調整"
     },
     "Timelapse": {
         "AllFiles": "すべてのファイル",

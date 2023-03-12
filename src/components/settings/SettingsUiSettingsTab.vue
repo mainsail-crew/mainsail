@@ -54,7 +54,7 @@
                         color="primary"
                         href="https://docs.mainsail.xyz/quicktips/thumbnails"
                         target="_blank">
-                        {{ $t('Settings.UiSettingsTab.Guide') }}
+                        {{ $t('Settings.UiSettingsTab.Guide').toString() }}
                     </v-btn>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -130,7 +130,6 @@
                         class="mt-0"
                         hide-details
                         outlined
-                        attach
                         dense></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -139,6 +138,33 @@
                     :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription').toString()"
                     :dynamic-slot-width="true">
                     <v-switch v-model="boolHideUploadAndPrintButton" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.PowerDeviceName').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.PowerDeviceNameDescription').toString()"
+                    :dynamic-slot-width="true">
+                    <v-select
+                        v-model="powerDeviceName"
+                        :items="powerDeviceOptions"
+                        class="mt-0"
+                        hide-details
+                        outlined
+                        dense />
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.HideSaveConfigButtonForBedMesh').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.HideSaveConfigButtonForBedMeshDescription').toString()"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="hideSaveConfigForBedMash" hide-details class="mt-0" />
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.DisableFanAnimation').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.DisableFanAnimationDescription').toString()"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="disableFanAnimation" hide-details class="mt-0" />
                 </settings-row>
             </v-card-text>
         </v-card>
@@ -153,6 +179,7 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { defaultLogoColor, defaultPrimaryColor } from '@/store/variables'
 import { Debounce } from 'vue-debounce-decorator'
 import { mdiRestart, mdiTimerOutline } from '@mdi/js'
+import { ServerPowerStateDevice } from '@/store/server/power/types'
 
 @Component({
     components: { SettingsRow },
@@ -269,6 +296,56 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set boolHideUploadAndPrintButton(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolHideUploadAndPrintButton', value: newVal })
+    }
+
+    get powerDevices() {
+        return this.$store.getters['server/power/getDevices'] ?? []
+    }
+
+    get autoPowerDevice() {
+        const autoIndex = this.powerDevices.findIndex((device: ServerPowerStateDevice) => device.device === 'printer')
+        if (autoIndex === -1) return '--'
+
+        return this.powerDevices[autoIndex].device
+    }
+
+    get powerDeviceName() {
+        return this.$store.state.gui.uiSettings.powerDeviceName ?? null
+    }
+
+    set powerDeviceName(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.powerDeviceName', value: newVal })
+    }
+
+    get powerDeviceOptions() {
+        const items: { text: string; value: string | null }[] = [
+            { text: `Auto (${this.autoPowerDevice})`, value: null },
+        ]
+
+        this.powerDevices.forEach((device: ServerPowerStateDevice) => {
+            items.push({
+                text: `${device.device} (${device.type})`,
+                value: device.device.toString(),
+            })
+        })
+
+        return items
+    }
+
+    get hideSaveConfigForBedMash() {
+        return this.$store.state.gui.uiSettings.hideSaveConfigForBedMash ?? false
+    }
+
+    set hideSaveConfigForBedMash(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideSaveConfigForBedMash', value: newVal })
+    }
+
+    get disableFanAnimation() {
+        return this.$store.state.gui.uiSettings.hideSaveConfigForBedMash ?? false
+    }
+
+    set disableFanAnimation(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.disableFanAnimation', value: newVal })
     }
 
     clearColorObject(color: any): string {

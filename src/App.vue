@@ -41,6 +41,7 @@
             <the-upload-snackbar></the-upload-snackbar>
             <the-manual-probe-dialog />
             <the-bed-screws-dialog />
+            <the-screws-tilt-adjust-dialog />
         </template>
         <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'"></the-select-printer-dialog>
         <the-connecting-dialog v-else></the-connecting-dialog>
@@ -63,6 +64,9 @@ import TheFullscreenUpload from '@/components/TheFullscreenUpload.vue'
 import TheUploadSnackbar from '@/components/TheUploadSnackbar.vue'
 import TheManualProbeDialog from '@/components/dialogs/TheManualProbeDialog.vue'
 import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
+import TheScrewsTiltAdjustDialog from '@/components/dialogs/TheScrewsTiltAdjustDialog.vue'
+
+Component.registerHooks(['metaInfo'])
 
 @Component({
     components: {
@@ -77,15 +81,21 @@ import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
         TheUploadSnackbar,
         TheManualProbeDialog,
         TheBedScrewsDialog,
-    },
-    metaInfo() {
-        const title = this.$store.getters['getTitle']
-        return {
-            titleTemplate: () => title,
-        }
+        TheScrewsTiltAdjustDialog,
     },
 })
 export default class App extends Mixins(BaseMixin) {
+    public metaInfo(): any {
+        let title = this.$store.getters['getTitle']
+
+        if (this.isPrinterPowerOff) title = this.$t('App.Titles.PrinterOff')
+
+        return {
+            title,
+            titleTemplate: '%s',
+        }
+    }
+
     get title(): string {
         return this.$store.getters['getTitle']
     }

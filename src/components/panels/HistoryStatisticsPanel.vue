@@ -57,11 +57,23 @@
                     </v-simple-table>
                 </v-col>
                 <v-col class="col-12 col-sm-6 col-md-4">
-                    <history-all-print-status></history-all-print-status>
+                    <history-all-print-status-chart
+                        v-if="togglePrintStatus === 'chart'"></history-all-print-status-chart>
+                    <history-all-print-status-table v-else></history-all-print-status-table>
+                    <div class="text-center mb-3">
+                        <v-btn-toggle v-model="togglePrintStatus" small mandatory>
+                            <v-btn small value="chart">
+                                {{ $t('History.Chart') }}
+                            </v-btn>
+                            <v-btn small value="table">
+                                {{ $t('History.Table') }}
+                            </v-btn>
+                        </v-btn-toggle>
+                    </div>
                 </v-col>
                 <v-col class="col-12 col-sm-12 col-md-4">
                     <history-filament-usage v-if="toggleChart === 'filament_usage'"></history-filament-usage>
-                    <history-printtime-avg v-if="toggleChart === 'printtime_avg'"></history-printtime-avg>
+                    <history-printtime-avg v-else-if="toggleChart === 'printtime_avg'"></history-printtime-avg>
                     <div class="text-center mt-3">
                         <v-btn-toggle v-model="toggleChart" small mandatory>
                             <v-btn small value="filament_usage">
@@ -84,11 +96,11 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
 import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
-import HistoryAllPrintStatus from '@/components/charts/HistoryAllPrintStatus.vue'
+import HistoryAllPrintStatusChart from '@/components/charts/HistoryAllPrintStatusChart.vue'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { mdiChartAreaspline } from '@mdi/js'
 @Component({
-    components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatus },
+    components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatusChart },
 })
 export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     mdiChartAreaspline = mdiChartAreaspline
@@ -175,6 +187,14 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
 
     set toggleChart(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.history.toggleChartCol3', value: newVal })
+    }
+
+    get togglePrintStatus() {
+        return this.$store.state.gui.view.history.toggleChartCol2
+    }
+
+    set togglePrintStatus(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.history.toggleChartCol2', value: newVal })
     }
 
     formatPrintTime(totalSeconds: number) {

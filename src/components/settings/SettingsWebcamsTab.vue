@@ -176,16 +176,22 @@
                         </v-col>
                         <v-col class="col-12 col-sm-6 text-center" align-self="center">
                             <template v-if="form.service === 'mjpegstreamer'">
-                                <webcam-mjpegstreamer :cam-settings="form"></webcam-mjpegstreamer>
+                                <webcam-mjpegstreamer :cam-settings="form" />
                             </template>
                             <template v-else-if="form.service === 'mjpegstreamer-adaptive'">
-                                <webcam-mjpegstreamer-adaptive :cam-settings="form"></webcam-mjpegstreamer-adaptive>
+                                <webcam-mjpegstreamer-adaptive :cam-settings="form" />
                             </template>
                             <template v-else-if="form.service === 'uv4l-mjpeg'">
-                                <webcam-uv4l-mjpeg :cam-settings="form"></webcam-uv4l-mjpeg>
+                                <webcam-uv4l-mjpeg :cam-settings="form" />
                             </template>
                             <template v-else-if="form.service === 'ipstream'">
-                                <webcam-ipstreamer :cam-settings="form"></webcam-ipstreamer>
+                                <webcam-ipstreamer :cam-settings="form" />
+                            </template>
+                            <template v-else-if="form.service === 'hlsstream'">
+                                <webcam-hlsstreamer :cam-settings="form" />
+                            </template>
+                            <template v-else-if="form.service === 'webrtc-camerastreamer'">
+                                <webcam-webrtc-camerastreamer :cam-settings="form" />
                             </template>
                             <template v-else>
                                 <p class="text-center py-3 font-italic">
@@ -220,10 +226,12 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
+import WebrtcCameraStreamer from '@/components/webcams/WebrtcCameraStreamer.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import { mdiMenuDown, mdiDelete, mdiPencil, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
 import { FileStateFile } from '@/store/files/types'
+import Hlsstreamer from '../webcams/Hlsstreamer.vue'
 
 interface webcamForm {
     bool: boolean
@@ -247,6 +255,8 @@ interface webcamForm {
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'webcam-ipstreamer': Ipstreamer,
+        'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
+        'webcam-hlsstreamer': Hlsstreamer,
     },
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
@@ -310,18 +320,9 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'mjpegstreamer-adaptive', text: this.$t('Settings.WebcamsTab.MjpegstreamerAdaptive') },
             { value: 'uv4l-mjpeg', text: this.$t('Settings.WebcamsTab.Uv4lMjpeg') },
             { value: 'ipstream', text: this.$t('Settings.WebcamsTab.Ipstream') },
+            { value: 'webrtc-camerastreamer', text: this.$t('Settings.WebcamsTab.WebrtcCameraStreamer') },
+            { value: 'hlsstream', text: this.$t('Settings.WebcamsTab.Hlsstream') },
         ]
-    }
-
-    get webcamStyle() {
-        let transforms = ''
-        if (this.form.flipX) transforms += ' scaleX(-1)'
-        if (this.form.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimLeft().length) {
-            return { transform: transforms.trimLeft() }
-        }
-
-        return ''
     }
 
     get configfiles() {
