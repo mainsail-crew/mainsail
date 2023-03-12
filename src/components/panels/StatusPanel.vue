@@ -244,7 +244,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
                     return ['paused', 'printing'].includes(this.printer_state)
                 },
-                click: this.btnExcludeObject,
+                click: this.btnPauseAtLayer,
             },
             {
                 text: this.$t('Panels.StatusPanel.ClearPrintStats'),
