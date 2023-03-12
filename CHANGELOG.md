@@ -2,6 +2,66 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.5.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.5.0) - 2023-03-12
+### Features
+
+- Add multi download to ConfigFilesPanel.vue (#1194) | [712d681](712d68136b62ddb825c7620071e155571322b927)
+- Add table view for print status stats (#1192) | [7ac6a72](7ac6a723b4f2def8d46beb050457cb0ffc725be3)
+- Add new CodeStream control to Gcodeviewer (#1224) | [1a32147](1a32147d68938e9c1155b535f9212d9858947d45)
+- Add support for cnc mode in g-code viewer (#1239) | [727fc72](727fc722af2a9213670ae4a21d0a1683c24e8fc2)
+- Hide/ignore .git directories in file init process (#1227) | [051b896](051b89662b4576f6821c6b8bb66d116db6905397)
+- Log rollover function for klipper and moonraker (#1243) | [b6fe84f](b6fe84f19d66cbbcf3170855b3c19c13a3fdb135)
+- Add power button on dashboard to switch printer on (#1254) | [d29ce0a](d29ce0a4f02f7be305f337c9a27ed32d02da5d64)
+- Add button to hide SAVE_CONFIG button for pending bed_mesh (#1255) | [0f94e80](0f94e80135f426fb558a96a2c419d22180d0c328)
+- Add HLS Support for webcams (#1258) | [6b9b695](6b9b69501a6718ea9ae83037a8b43af52b826573)
+- Add helper display for screws_tilt_adjust (#1261) | [c904b7b](c904b7ba71144236fe3c6dff9fa82d636a1b9bec)
+- Add jobs to queue in batches (#1253) | [b3ce868](b3ce868dec2f9dd6fb9932650e61e219b5944c5c)
+- Add function to send PAUSE at a specific layer change (#1230) | [cec3a9f](cec3a9fe33ea931c7496ea1f4bef8af47c51566c)
+- Add x_only and y_only option in timelapse park position (#1231) | [2a924bc](2a924bcd27e539452f7c5928b339cedb87cb8d0e)
+- Support a color or colour variable from tool change macros (#1244) | [e0e90bc](e0e90bcdaf36a490dc45a505436eb6bbde04e6e5)
+- Max webcam height to fit on the screen (#1246) | [43dc843](43dc843eca753154d698f045f7e2d9433d115aa0)
+- Add WebRTC (camera streamer) support (#1275) | [6703721](67037215933acf0603a6e1130cc835b98274d3ed)
+- Allow fan animations to be disabled to save browser perf. (#1232) | [47feaef](47feaef6718c03ea4ef4130210c958fb60cb2be5)
+
+### Bug Fixes and Improvements
+
+- Hide temperature sensors with `_` at first char (#1195) | [e21439d](e21439d061e2abe566919f5c62b019bc92e89a1f)
+- Add webcam rotate to timelapse preview (#1198) | [c2ecc84](c2ecc845cadcb998875f3ab8069a5f76afe86ed9)
+- Fix ExcludeObjectDialogMap for delta printers (#1217) | [034ff81](034ff81e4970469f3b4e96ca504e091e792ec326)
+- G-Code Viewer UI fixes (#1240) | [9c4fb54](9c4fb547b55e424ca1ddd334b43b6998da32b5b4)
+- Fix dateTime output in print history detail dialog (#1248) | [2b7bf2a](2b7bf2a3f43ee8b3d8c14be2d84263abac936c4b)
+- Hide unused panels on dashboard (#1233) | [e7eb94f](e7eb94faa1696237890ef8fe546db379067cc5dc)
+- Fix cancel button in rollover logs dialog (#1256) | [c65527d](c65527ddf21ff6d5ea87dee6a29d2710e29c049a)
+- Fix output of klippy state, if UDS path/address dont fit (#1263) | [a8bf9e9](a8bf9e9559aab80747871fdbce94c429a2360596)
+- Fix position of webcam fps (#1278) | [f3c4295](f3c42954f1119157631772622786af7db28a7f98)
+- Fix browser title, when printer is off (#1300) | [3e49847](3e49847fc3668295a67c1edcbed28a5e68f2c7a3)
+- Only display PAUSE AT LAYER button, when the macros exists (#1291) | [a3a71c8](a3a71c8f15357467f85f9169dc20ef52aff2a535)
+
+### Refactor
+
+- Use moonraker zip function (#1245) | [8782c89](8782c89d71613f3552976e7d0ba60fb6138e580d)
+- Rename download zip name (#1252) | [22ccab8](22ccab831b24e2746b6dd7a775225e59b9bf5e1e)
+- HLS streamer - improve latency (#1268) | [6a2a1ba](6a2a1baaabc52e85abf6aa05b1cac9bc8fbbf8b7)
+- Change jobqueue entry attribute to hyphenated names (#1271) | [92438bf](92438bf8a7f8a0e29162460205321fa25a124ec7)
+- Add ENABLE=1 to SET_PAUSE_AT_LAYER/NEXT_LAYER (#1293) | [1a6969e](1a6969eeea2ef4df8b32a1df3b6e5b4369591dcf)
+
+### Localization
+
+- **da**: Update Danish localization (#1288) | [c42f09a](c42f09acc98ed9aba9d4911a36bc6d17e351ddf3)
+- **de**: Update German localization (#1277) | [0e4d104](0e4d104d20fd578ea8252d6791bce24e66608396)
+- **fr**: Update French localization (#1289) | [c1a5018](c1a50180d0269377b5ec67bca51aed9aedcd8f12)
+- **ja**: Update Japanese localization (#1270) | [b0cdbb4](b0cdbb48f3347e5262f24eca14788d5c248359e5)
+- **nl**: Update NL locale (#1282) | [3743023](3743023514507577b88540362bc8fbeae086add3)
+- **zh**: Update locale (#1269) | [328530a](328530a6a39a62d797c9c20aabf010dc89264152)
+- **zh**: Update Chinese (zh) localization (#1284) | [2f868b5](2f868b537d5a42dcac1d76dfc69729037ae3f450)
+- Remove unused locale `PresetSubTitle` (#1264) | [3b5d7f1](3b5d7f146b0a5a160b0586e9d9938692895ded09)
+
+### Other
+
+- Add .vscode to .gitignore (#1290) | [1bbbc0c](1bbbc0c0a8ddd8ad8bf1dc3db53c07b63590dd5d)
+- Add armv6 support for Docker image (#1285) | [52d0ea4](52d0ea4ec57b94582386666fc6389e7d260741f4)
+- Update gcodeviewer from v3.2.0 to v3.2.2 (#1303) | [9665fb9](9665fb9a387a05796b26aefa276a869425099a00)
+
 ## [2.4.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.4.1) - 2022-12-10
 ### Bug Fixes and Improvements
 
