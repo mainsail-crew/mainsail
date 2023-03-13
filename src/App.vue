@@ -66,6 +66,8 @@ import TheManualProbeDialog from '@/components/dialogs/TheManualProbeDialog.vue'
 import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
 import TheScrewsTiltAdjustDialog from '@/components/dialogs/TheScrewsTiltAdjustDialog.vue'
 
+Component.registerHooks(['metaInfo'])
+
 @Component({
     components: {
         TheTimelapseRenderingSnackbar,
@@ -81,14 +83,19 @@ import TheScrewsTiltAdjustDialog from '@/components/dialogs/TheScrewsTiltAdjustD
         TheBedScrewsDialog,
         TheScrewsTiltAdjustDialog,
     },
-    metaInfo() {
-        const title = this.$store.getters['getTitle']
-        return {
-            titleTemplate: () => title,
-        }
-    },
 })
 export default class App extends Mixins(BaseMixin) {
+    public metaInfo(): any {
+        let title = this.$store.getters['getTitle']
+
+        if (this.isPrinterPowerOff) title = this.$t('App.Titles.PrinterOff')
+
+        return {
+            title,
+            titleTemplate: '%s',
+        }
+    }
+
     get title(): string {
         return this.$store.getters['getTitle']
     }

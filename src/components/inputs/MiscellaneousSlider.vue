@@ -278,9 +278,13 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         return errors
     }
 
+    get disableFanAnimation() {
+        return this.$store.state.gui.uiSettings.disableFanAnimation ?? false
+    }
+
     get fanClasses() {
         const output = ['mr-2']
-        if (this.value >= this.off_below && this.value > 0) output.push('icon-rotate')
+        if (!this.disableFanAnimation && this.value >= this.off_below && this.value > 0) output.push('icon-rotate')
 
         return output
     }

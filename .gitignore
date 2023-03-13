@@ -10,6 +10,7 @@ temp
 .versions
 .changelog
 .idea
+.vscode
 package-lock.json
 *.local
 .env
