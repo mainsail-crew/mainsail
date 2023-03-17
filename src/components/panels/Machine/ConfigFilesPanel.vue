@@ -278,7 +278,7 @@
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="createFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -309,7 +309,7 @@
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="renameFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -340,7 +340,7 @@
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -371,7 +371,7 @@
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="renameDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
