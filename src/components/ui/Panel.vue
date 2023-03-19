@@ -1,37 +1,3 @@
-<style lang="scss" scoped>
-.expanded header.v-toolbar {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-}
-
-.btn-collapsible > * {
-    will-change: transform;
-    transition: transform 500ms;
-}
-.icon-rotate-90 {
-    transform: rotate(90deg);
-}
-</style>
-
-<style lang="scss">
-.v-card.panel .v-toolbar__content {
-    padding-right: 0;
-}
-.v-card.panel .v-toolbar__content .subheading {
-    user-select: none;
-}
-.panel-toolbar {
-    overflow-y: hidden;
-}
-.panel-toolbar .v-btn {
-    height: 100% !important;
-    max-height: none;
-}
-.panel-toolbar .v-btn.v-btn--icon {
-    width: var(--panel-toolbar-icon-btn-width) !important;
-}
-</style>
-
 <template>
     <v-card
         :class="'panel ' + cardClass + ' ' + (marginBottom ? 'mb-3 mb-md-6' : '') + ' ' + (!expand ? 'expanded' : '')"
@@ -145,3 +111,40 @@ export default class Panel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.expanded header.v-toolbar {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.btn-collapsible > * {
+    will-change: transform;
+    transition: transform 500ms;
+}
+
+.icon-rotate-90 {
+    transform: rotate(90deg);
+}
+
+.v-card.panel ::v-deep .v-toolbar__content {
+    padding-right: 0;
+}
+
+.v-card.panel ::v-deep .v-toolbar__content .subheading {
+    user-select: none;
+}
+
+::v-deep .panel-toolbar {
+    overflow-y: hidden;
+}
+
+::v-deep .panel-toolbar .v-btn {
+    height: 100% !important;
+    max-height: none;
+}
+
+::v-deep .panel-toolbar .v-btn.v-btn--icon {
+    width: var(--panel-toolbar-icon-btn-width) !important;
+}
+</style>
