@@ -5,7 +5,7 @@
                 <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.Macrogroups') }}</h3>
                 <template v-if="groups.length">
                     <div v-for="(group, index) in groups" :key="index">
-                        <v-divider v-if="index" class="my-2"></v-divider>
+                        <v-divider v-if="index" class="my-2" />
                         <settings-row
                             :title="group.name !== '' ? group.name : '<' + $t('Settings.MacrosTab.UnknownGroup') + '>'"
                             :sub-title="
@@ -44,29 +44,28 @@
         <template v-else-if="boolFormEdit">
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.EditGroup') }}</h3>
-                <settings-row :title="$t('Settings.MacrosTab.Name')">
+                <settings-row :title="$t('Settings.MacrosTab.Name').toString()">
                     <v-text-field
                         v-model="editGroup.name"
                         hide-details="auto"
                         :rules="[rules.required, rules.groupUnique]"
                         dense
                         outlined
-                        @change="updateGroupOptionName"></v-text-field>
+                        @change="updateGroupOptionName" />
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.MacrosTab.Color')">
+                <settings-row :title="$t('Settings.MacrosTab.Color').toString()">
                     <v-select
                         v-model="editGroup.color"
                         :items="groupColors"
                         outlined
                         dense
                         hide-details
-                        attach
-                        @change="updateGroupOptionColor"></v-select>
+                        @change="updateGroupOptionColor" />
                 </settings-row>
                 <template v-if="editGroup.color === 'custom'">
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.MacrosTab.CustomColor')">
+                    <settings-row :title="$t('Settings.MacrosTab.CustomColor').toString()">
                         <v-menu bottom left offset-y :close-on-content-click="false">
                             <template #activator="{ on, attrs }">
                                 <v-btn
@@ -85,7 +84,7 @@
                     </settings-row>
                 </template>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.MacrosTab.Status')">
+                <settings-row :title="$t('Settings.MacrosTab.Status').toString()">
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
                             <v-btn
@@ -324,7 +323,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     mdiDragVertical = mdiDragVertical
     mdiPalette = mdiPalette
 
-    private rules = {
+    public rules = {
         required: (value: string) => value !== '' || 'required',
         groupUnique: (value: string) => !this.existsGroupName(value) || 'Name already exists',
     }
@@ -413,7 +412,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
 
     clearColorObject(color: any): string {
         if (typeof color === 'object' && 'hex' in color) color = color.hex
-        if (color.length > 7) color = color.substr(0, 7)
+        if (color.length > 7) color = color.substring(0, 7)
         return color
     }
 
