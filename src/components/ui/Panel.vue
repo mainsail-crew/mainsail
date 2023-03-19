@@ -35,7 +35,9 @@
 <template>
     <v-card
         :class="'panel ' + cardClass + ' ' + (marginBottom ? 'mb-3 mb-md-6' : '') + ' ' + (!expand ? 'expanded' : '')"
-        :loading="loading">
+        :loading="loading"
+        @mouseover="onMouseover"
+        @mouseleave="onMouseleave">
         <v-toolbar
             flat
             dense
@@ -43,26 +45,26 @@
             :class="getToolbarClass"
             :height="panelToolbarHeight"
             class="panel-toolbar">
-            <slot name="buttons-left"></slot>
+            <slot name="buttons-left" />
             <v-toolbar-title class="d-flex align-center">
                 <slot v-if="hasIconSlot" name="icon"></slot>
                 <v-icon v-if="icon !== null && !hasIconSlot" left>{{ icon }}</v-icon>
                 <span v-if="title" class="subheading">{{ title }}</span>
             </v-toolbar-title>
-            <slot name="buttons-title"></slot>
-            <v-spacer></v-spacer>
+            <slot name="buttons-title" />
+            <v-spacer />
             <v-toolbar-items v-show="hasButtonsSlot || collapsible">
                 <div v-if="expand || !hideButtonsOnCollapse" class="d-flex align-center">
-                    <slot name="buttons"></slot>
+                    <slot name="buttons" />
                 </div>
                 <v-btn v-if="collapsible" icon class="btn-collapsible" :ripple="true" @click="expand = !expand">
-                    <v-icon :class="expand ? '' : 'icon-rotate-90'">{{ mdiChevronDown }}</v-icon>
+                    <v-icon :class="collapseState ? '' : 'icon-rotate-90'">{{ mdiChevronDown }}</v-icon>
                 </v-btn>
             </v-toolbar-items>
         </v-toolbar>
         <v-expand-transition>
-            <div v-show="expand || !collapsible">
-                <slot></slot>
+            <div v-show="collapseState">
+                <slot />
             </div>
         </v-expand-transition>
     </v-card>
@@ -73,13 +75,15 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { panelToolbarHeight } from '@/store/variables'
-import { mdiChevronDown, mdiChevronUp } from '@mdi/js'
+import { mdiChevronDown } from '@mdi/js'
 
 @Component
 export default class Panel extends Mixins(BaseMixin) {
-    mdiChevronUp = mdiChevronUp
     mdiChevronDown = mdiChevronDown
     panelToolbarHeight = panelToolbarHeight
+
+    private hoverTimer: any = null
+    private hovered = false
 
     @Prop({ default: null }) declare readonly icon: string | null
     @Prop({ required: true, default: '' }) declare readonly title: string
@@ -90,6 +94,7 @@ export default class Panel extends Mixins(BaseMixin) {
     @Prop({ default: false }) declare readonly loading: boolean
     @Prop({ default: true }) declare readonly marginBottom: boolean
     @Prop({ default: false }) declare readonly hideButtonsOnCollapse: boolean
+    @Prop({ default: false }) declare readonly autoCollapse: boolean
 
     get expand() {
         return this.$store.getters['gui/getPanelExpand'](this.cardClass, this.viewport)
@@ -97,6 +102,13 @@ export default class Panel extends Mixins(BaseMixin) {
 
     set expand(newVal) {
         this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal, viewport: this.viewport })
+    }
+
+    get collapseState() {
+        if (!this.collapsible) return true
+        if (this.autoCollapse) return this.hovered
+
+        return this.expand
     }
 
     get hasIconSlot() {
@@ -113,6 +125,23 @@ export default class Panel extends Mixins(BaseMixin) {
         if (this.collapsible) output += ' collapsible'
 
         return output
+    }
+
+    onMouseover() {
+        if (!this.autoCollapse) return
+
+        if (this.hoverTimer === null) {
+            this.hoverTimer = setTimeout(() => {
+                this.hovered = true
+            }, 500)
+        }
+    }
+
+    onMouseleave() {
+        if (!this.autoCollapse) return
+        clearTimeout(this.hoverTimer)
+        this.hovered = false
+        this.hoverTimer = null
     }
 }
 </script>

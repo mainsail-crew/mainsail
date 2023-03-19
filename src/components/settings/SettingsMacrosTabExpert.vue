@@ -63,6 +63,14 @@
                         hide-details
                         @change="updateGroupOptionColor" />
                 </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.MacrosTab.AutoCollapse').toString()">
+                    <v-switch
+                        v-model="editGroup.autoCollapse"
+                        hide-details
+                        class="mt-0"
+                        @change="(bool) => updateGroupOptionAutoCollapse(bool)" />
+                </settings-row>
                 <template v-if="editGroup.color === 'custom'">
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.MacrosTab.CustomColor').toString()">
@@ -516,6 +524,10 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
 
     updateGroupOptionColor(newVal: string) {
         this.updateMacrogroupOption('color', newVal)
+    }
+
+    updateGroupOptionAutoCollapse(newVal: boolean) {
+        this.updateMacrogroupOption('autoCollapse', newVal)
     }
 
     @Debounce(250)

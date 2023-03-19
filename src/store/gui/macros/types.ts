@@ -10,6 +10,7 @@ export interface GuiMacrosStateMacrogroup {
     id: string | null
     name: string
     color: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'custom'
+    autoCollapse?: boolean
     colorCustom?: string
     showInStandby: boolean
     showInPrinting: boolean

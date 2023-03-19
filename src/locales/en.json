@@ -854,6 +854,7 @@
         "MacrosTab": {
             "Add": "add",
             "AddGroup": "add Group",
+            "AutoCollapse": "Auto collapse",
             "AvailableMacros": "Available Macros",
             "ChangeMacroColor": "Change the color of the button.",
             "Color": "Color",

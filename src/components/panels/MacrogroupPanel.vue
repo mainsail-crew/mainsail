@@ -6,6 +6,7 @@
         :icon="mdiCodeTags"
         :title="macrogroup.name"
         :collapsible="true"
+        :auto-collapse="macrogroup.autoCollapse"
         :card-class="'macrogroup_' + panelId + '_panel'">
         <v-card-text class="py-2">
             <v-row>
