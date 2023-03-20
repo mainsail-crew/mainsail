@@ -345,6 +345,13 @@
                     <v-icon class="mr-1">{{ mdiVideo3d }}</v-icon>
                     {{ $t('Files.View3D') }}
                 </v-list-item>
+                <v-list-item
+                    v-if="!contextMenu.item.isDirectory"
+                    :disabled="!isGcodeFile(contextMenu.item)"
+                    @click="scanMeta(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiMagnify }}</v-icon>
+                    {{ $t('Files.ScanMeta') }}
+                </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="downloadFile">
                     <v-icon class="mr-1">{{ mdiCloudDownload }}</v-icon>
                     {{ $t('Files.Download') }}
@@ -589,6 +596,7 @@ import {
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import ControlMixin from '@/components/mixins/control'
+import axios from 'axios'
 
 interface contextMenu {
     shown: boolean
@@ -1374,6 +1382,38 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     view3D(item: FileStateFile) {
         this.$router.push({ path: '/viewer', query: { filename: 'gcodes' + this.currentPath + '/' + item.filename } })
+    }
+
+    scanMeta(item: FileStateFile) {
+        const filepath = this.currentPath + '/' + item.filename
+        const file = filepath.slice(0, 1) === '/' ? filepath.slice(1) : filepath
+        const data = {
+            filename: file,
+        }
+        item.small_thumbnail = undefined
+        axios
+            .post(this.apiUrl + '/server/files/metascan', data, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            })
+            .then((response) => {
+                const $this = this
+                const text = $this.$t('Files.ScanMetaSuccess').toString()
+                if (response.data.result.thumbnails) {
+                    setTimeout(function () {
+                        if (item.small_thumbnail) {
+                            return true
+                        }
+                        $this.$store.dispatch('files/requestMetadata', {
+                            filename: 'gcodes' + $this.currentPath + '/' + item.filename,
+                        })
+                    }, 500)
+                }
+                this.$toast.success(text)
+            })
+            .catch(() => {
+                const text = this.$t('Files.ScanMetaError').toString()
+                this.$toast.error(text)
+            })
     }
 
     deleteSelectedFiles() {
