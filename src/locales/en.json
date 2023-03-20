@@ -227,7 +227,10 @@
         "Total": "Total",
         "UploadNewGcode": "Upload new G-Code",
         "Used": "Used",
-        "View3D": "View 3D"
+        "View3D": "View 3D",
+        "ScanMeta": "Scan Metadata",
+        "ScanMetaSuccess": "Successfully scanned metadata.",
+        "ScanMetaError": "There was an error scanning for metadata."
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Cannot upload file!",
