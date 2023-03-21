@@ -5,7 +5,16 @@
 </style>
 
 <template>
-    <video ref="video" v-observe-visibility="visibilityChanged" :src="url" autoplay :style="webcamStyle" class="webcamImage" playsinline muted controls />
+    <video
+        ref="video"
+        v-observe-visibility="visibilityChanged"
+        :src="url"
+        autoplay
+        :style="webcamStyle"
+        class="webcamImage"
+        playsinline
+        muted
+        controls />
 </template>
 
 <script lang="ts">
@@ -15,9 +24,9 @@ import WebRtcVideoPlayer from '@/plugins/WebRtcVideoPlayer'
 
 @Component
 export default class Ipstreamer extends Mixins(BaseMixin) {
-    private isVisible = true;
+    private isVisible = true
 
-    private webRtcVideoPlayer : WebRtcVideoPlayer | null = null;
+    private webRtcVideoPlayer: WebRtcVideoPlayer | null = null
 
     @Prop({ required: true })
     camSettings: any
@@ -28,12 +37,12 @@ export default class Ipstreamer extends Mixins(BaseMixin) {
     @Ref()
     declare video: HTMLVideoElement
 
-    isWebRtcUrl() : boolean {
-        return ( this.camSettings.urlStream.startsWith("ws://") );
+    isWebRtcUrl(): boolean {
+        return this.camSettings.urlStream.startsWith('ws://')
     }
 
     get url() {
-        if ( this.isWebRtcUrl() ) return '';
+        if (this.isWebRtcUrl()) return ''
 
         if (!this.isVisible) return ''
 
@@ -50,16 +59,16 @@ export default class Ipstreamer extends Mixins(BaseMixin) {
     }
 
     terminateWebRtcVideo() {
-        if ( this.webRtcVideoPlayer ){
+        if (this.webRtcVideoPlayer) {
             try {
-                this.video.pause();
-            } catch (err){
+                this.video.pause()
+            } catch (err) {
                 // ignore - more important to shut down the sockets.
             }
-            
-            if ( this.webRtcVideoPlayer ){
-                this.webRtcVideoPlayer.terminate();
-                this.webRtcVideoPlayer = null;
+
+            if (this.webRtcVideoPlayer) {
+                this.webRtcVideoPlayer.terminate()
+                this.webRtcVideoPlayer = null
             }
         }
     }
@@ -67,22 +76,22 @@ export default class Ipstreamer extends Mixins(BaseMixin) {
     visibilityChanged(isVisible: boolean) {
         this.isVisible = isVisible
 
-        if ( this.isWebRtcUrl() ){
-            if ( !this.isVisible ){
-                this.terminateWebRtcVideo();
+        if (this.isWebRtcUrl()) {
+            if (!this.isVisible) {
+                this.terminateWebRtcVideo()
             } else {
-                this.webRtcVideoPlayer = new WebRtcVideoPlayer(this.video, this.camSettings.urlStream);
-                this.webRtcVideoPlayer.start();
+                this.webRtcVideoPlayer = new WebRtcVideoPlayer(this.video, this.camSettings.urlStream)
+                this.webRtcVideoPlayer.start()
                 // TODO: better way to detect ready to play?
                 setTimeout(() => {
-                    this.video.play();
-                }, 500);
+                    this.video.play()
+                }, 500)
             }
         }
     }
 
     beforeDestroy() {
-        this.terminateWebRtcVideo();
+        this.terminateWebRtcVideo()
     }
 }
 </script>
