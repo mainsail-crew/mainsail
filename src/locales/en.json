@@ -1006,6 +1006,8 @@
             "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
+            "BedScrewsDialog": "Bed Screws Dialog",
+            "BedScrewsDialogDescription": "Display helper dialog for BED_SCREWS_ADJUST.",
             "BoolBigThumbnail": "Large thumbnail",
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
@@ -1028,6 +1030,8 @@
             "LockSlidersDelayDescription": "Sliders will lock after a given delay. If set to 0 or left blank, sliders will only lock on page change/reload.",
             "LockSlidersDescription": "Sliders on touchscreens need to be unlocked before changes are allowed.",
             "Logo": "Logo",
+            "ManualProbeDialog": "Manual Probe Helper Dialog",
+            "ManualProbeDialogDescription": "Display helper dialog for PROBE_CALIBRATE or Z_ENDSTOP_CALIBRATE.",
             "NavigationStyle": "Navigation style",
             "NavigationStyleDescription": "Change navigation appearance",
             "NavigationStyleIconsAndText": "Icons + Text",
@@ -1035,6 +1039,8 @@
             "PowerDeviceName": "Printer power device",
             "PowerDeviceNameDescription": "Select which Moonraker power device should be used to power on the printer.",
             "Primary": "Primary",
+            "ScrewsTiltAdjustDialog": "Screws Tilt Adjust Dialog",
+            "ScrewsTiltAdjustDialogDescription": "Display helper dialog for SCREWS_TILT_CALCULATE.",
             "ShowWebcamInNavigation": "Show Webcam in navigation",
             "UiSettings": "UI-Settings"
         },

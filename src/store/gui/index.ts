@@ -157,6 +157,9 @@ export const getDefaultState = (): GuiState => {
             powerDeviceName: null,
             hideSaveConfigForBedMash: false,
             disableFanAnimation: false,
+            boolManualProbeDialog: true,
+            boolBedScrewsDialog: true,
+            boolScrewsTiltAdjustDialog: true,
         },
         view: {
             blockFileUpload: false,

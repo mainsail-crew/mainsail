@@ -83,9 +83,15 @@ export default class TheBedScrewsDialog extends Mixins(BaseMixin, ControlMixin) 
     mdiCloseThick = mdiCloseThick
 
     get showDialog() {
+        if (!this.boolBedScrewsDialog) return false
+
         const is_active = this.$store.state.printer.bed_screws?.is_active ?? false
 
         return is_active && this.homedAxes.includes('xyz')
+    }
+
+    get boolBedScrewsDialog() {
+        return this.$store.state.gui.uiSettings.boolBedScrewsDialog ?? true
     }
 
     get config() {
