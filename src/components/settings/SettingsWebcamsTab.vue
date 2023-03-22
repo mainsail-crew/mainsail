@@ -193,6 +193,9 @@
                             <template v-else-if="form.service === 'webrtc-camerastreamer'">
                                 <webcam-webrtc-camerastreamer :cam-settings="form" />
                             </template>
+                            <template v-else-if="form.service === 'webrtc-rtspsimpleserver'">
+                                <webcam-webrtc-rtspsimpleserver :cam-settings="form" />
+                            </template>
                             <template v-else>
                                 <p class="text-center py-3 font-italic">
                                     {{ $t('Panels.WebcamPanel.UnknownWebcamService') }}
@@ -227,6 +230,7 @@ import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import WebrtcCameraStreamer from '@/components/webcams/WebrtcCameraStreamer.vue'
+import WebrtcRTSPSimpleServer from '@/components/webcams/WebrtcRTSPSimpleServer.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import { mdiMenuDown, mdiDelete, mdiPencil, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
@@ -257,6 +261,7 @@ interface webcamForm {
         'webcam-ipstreamer': Ipstreamer,
         'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
         'webcam-hlsstreamer': Hlsstreamer,
+        'webcam-webrtc-rtspsimpleserver': WebrtcRTSPSimpleServer,
     },
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
@@ -321,6 +326,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'uv4l-mjpeg', text: this.$t('Settings.WebcamsTab.Uv4lMjpeg') },
             { value: 'ipstream', text: this.$t('Settings.WebcamsTab.Ipstream') },
             { value: 'webrtc-camerastreamer', text: this.$t('Settings.WebcamsTab.WebrtcCameraStreamer') },
+            { value: 'webrtc-rtspsimpleserver', text: this.$t('Settings.WebcamsTab.WebrtcRTSPSimpleServer') },
             { value: 'hlsstream', text: this.$t('Settings.WebcamsTab.Hlsstream') },
         ]
     }
