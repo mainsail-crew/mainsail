@@ -401,6 +401,8 @@
             "DeleteDirectoryQuestion": "Delete directory \"{name}\" and all its contents?",
             "DeleteSelectedQuestion": "Delete {count} selected elements?",
             "Download": "Download",
+            "Duplicate": "Duplicate",
+            "DuplicateFile": "Duplicate File",
             "EditFile": "Edit file",
             "Empty": "Empty",
             "Files": "Files",

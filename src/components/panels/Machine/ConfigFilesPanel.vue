@@ -203,6 +203,10 @@
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
+                <v-list-item v-if="!contextMenu.item.isDirectory" @click="duplicateFile(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiContentCopy }}</v-icon>
+                    {{ $t('Machine.ConfigFilesPanel.Duplicate') }}
+                </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="renameDirectory(contextMenu.item)">
@@ -319,6 +323,37 @@
                     </v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="renameFileAction">
                         {{ $t('Machine.ConfigFilesPanel.Rename') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+        <v-dialog v-model="dialogDuplicateFile.show" max-width="400">
+            <panel
+                :title="$t('Machine.ConfigFilesPanel.DuplicateFile').toString()"
+                card-class="maschine-configfiles-duplicate-file-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="dialogDuplicateFile.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <v-text-field
+                        ref="inputDialoDuplicateFileName"
+                        v-model="dialogDuplicateFile.newName"
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        required
+                        :rules="nameInputRules"
+                        @update:error="(bool) => (isInvalidName = bool)"
+                        @keyup.enter="duplicateFileAction" />
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn color="" text @click="dialogDuplicateFile.show = false">
+                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="duplicateFileAction">
+                        {{ $t('Machine.ConfigFilesPanel.Duplicate') }}
                     </v-btn>
                 </v-card-actions>
             </panel>
@@ -484,6 +519,7 @@ import {
     mdiDelete,
     mdiCloseThick,
     mdiLockOutline,
+    mdiContentCopy,
 } from '@mdi/js'
 
 interface contextMenu {
@@ -550,6 +586,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
     mdiLockOutline = mdiLockOutline
+    mdiContentCopy = mdiContentCopy
 
     sortFiles = sortFiles
     formatFilesize = formatFilesize
@@ -558,6 +595,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         fileUpload: HTMLInputElement
         inputDialogCreateFileName: HTMLInputElement
         inputDialogRenameFileName: HTMLInputElement
+        inputDialogDuplicateFileName: HTMLInputElement
         inputDialogCreateDirectoryName: HTMLInputElement
         inputDialogRenameDirectoryName: HTMLInputElement
     }
@@ -589,6 +627,16 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         name: '',
     }
     private dialogRenameFile: dialogRenameObject = {
+        show: false,
+        newName: '',
+        item: {
+            isDirectory: false,
+            filename: '',
+            permissions: '',
+            modified: new Date(),
+        },
+    }
+    private dialogDuplicateFile: dialogRenameObject = {
         show: false,
         newName: '',
         item: {
@@ -1084,6 +1132,24 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             },
             { action: 'files/getMove' }
         )
+    }
+
+    duplicateFile(item: FileStateFile) {
+        this.dialogDuplicateFile.item = item
+        this.dialogDuplicateFile.newName = item.filename
+        this.dialogDuplicateFile.show = true
+
+        setTimeout(() => {
+            this.$refs.inputDialogDuplicateFileName?.focus()
+        }, 200)
+    }
+
+    duplicateFileAction() {
+        this.dialogDuplicateFile.show = false
+        this.$socket.emit('server.files.copy', {
+            source: (this.absolutePath + '/' + this.dialogDuplicateFile.item.filename).slice(1),
+            dest: (this.absolutePath + '/' + this.dialogDuplicateFile.newName).slice(1),
+        })
     }
 
     removeFile() {
