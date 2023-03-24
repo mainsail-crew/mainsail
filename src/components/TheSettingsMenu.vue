@@ -56,8 +56,8 @@
                             :class="'settings-tabs ' + (isMobile ? '' : 'height500')"
                             :options="{ overflowBehavior: { x: 'hidden' } }">
                             <component
-                                v-if="showSettings"
                                 :is="'settings-' + activeTab + '-tab'"
+                                v-if="showSettings"
                                 @scrollToTop="scrollToTop"></component>
                         </overlay-scrollbars>
                     </v-col>
