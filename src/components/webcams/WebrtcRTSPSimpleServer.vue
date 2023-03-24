@@ -1,34 +1,18 @@
-<style scoped>
-.webcamImage {
-    width: 100%;
-}
-</style>
-
 <template>
-    <video
-        ref="video"
-        v-observe-visibility="visibilityChanged"
-        :style="webcamStyle"
-        class="webcamImage"
-        autoplay
-        playsinline
-        muted
-        controls />
+    <video ref="video" :style="webcamStyle" class="webcamImage" autoplay playsinline muted controls />
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
-    private isVisible = true
-
     @Prop({ required: true })
     camSettings: any
 
-    @Prop()
-    printerUrl: string | undefined
+    @Prop({ default: false })
+    collapsible: boolean | undefined
 
     @Ref()
     declare video: HTMLVideoElement
@@ -39,14 +23,22 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
     private webRtcPc: any
     private webRtcRestartTimeout: any
 
+    beforeMount() {
+        // if the panel is not expanded, then flag as already terminated so we don't try to start the connection
+        this.webRtcTerminated = !this.expanded
+    }
+
     mounted() {
-        this.video.onload = () => {
-            if (this.webRtcTerminated) {
-                this.terminateWebRtcVideo() // catch a potential race condition
-            } else {
-                this.video.play() // trigger autoplay for some browsers
-            }
+        if (this.webRtcTerminated) {
+            this.webRtcTerminate() // catch a potential race condition
+        } else {
+            this.webRtcStart()
         }
+    }
+
+    // stop the video and close the streams if the component is going to be destroyed so we don't leave hanging streams
+    beforeDestroy() {
+        this.webRtcTerminate()
     }
 
     get webcamStyle() {
@@ -58,36 +50,35 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
         return ''
     }
 
-    isWebRtcUrl(): boolean {
-        return this.camSettings.urlStream.startsWith('ws://') || this.camSettings.urlStream.startsWith('wss://')
+    isWebRtcUrl(val: string): boolean {
+        return val.startsWith('ws://') || val.startsWith('wss://')
     }
 
-    terminateWebRtcVideo() {
-        try {
-            this.video.pause()
-        } catch (err) {
-            // ignore - more important to shut down the sockets.
-        }
+    get url() {
+        return this.camSettings.urlStream
+    }
 
+    // stop and restart the video if the url changes
+    @Watch('url')
+    changedUrl(newUrl: any) {
         this.webRtcTerminate()
+        if (this.isWebRtcUrl(newUrl)) {
+            this.webRtcStart()
+        }
     }
 
-    visibilityChanged(isVisible: boolean) {
-        this.isVisible = isVisible
+    get expanded(): any {
+        return !this.collapsible || this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport)
+    }
 
-        if (!this.isVisible) {
-            this.terminateWebRtcVideo()
+    // start or stop the video when the expand state changes
+    @Watch('expanded')
+    expandChanged(newExpanded: any): void {
+        if (!newExpanded) {
+            this.webRtcTerminate()
         } else {
             this.webRtcStart()
-            // // TODO: better way to detect ready to play?
-            // setTimeout(() => {
-            //     this.video.play()
-            // }, 500)
         }
-    }
-
-    beforeDestroy() {
-        this.terminateWebRtcVideo()
     }
 
     // webrtc player methods
@@ -96,9 +87,15 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
         // unterminate.. we're starting again.
         this.webRtcTerminated = false
 
-        console.log('connecting')
+        // clear any potentially open restart timeout
+        clearTimeout(this.webRtcRestartTimeout)
+        this.webRtcRestartTimeout = null
 
-        if (!this.isWebRtcUrl()) {
+        console.log('[webcam-rtspsimpleserver] web socket connecting')
+
+        let url = this.url
+
+        if (!this.isWebRtcUrl(url)) {
             console.error('not a webRtcSrc url')
             return
         }
@@ -106,7 +103,7 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
         this.webRtcWs = new WebSocket(this.camSettings.urlStream)
 
         this.webRtcWs.onerror = () => {
-            console.log('ws error')
+            console.log('[webcam-rtspsimpleserver] websocket error')
             if (this.webRtcWs === null) {
                 return
             }
@@ -115,7 +112,7 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
         }
 
         this.webRtcWs.onclose = () => {
-            console.log('ws closed')
+            console.log('[webcam-rtspsimpleserver] websocket closed')
             this.webRtcWs = null
             this.webRtcScheduleRestart()
         }
@@ -126,20 +123,14 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
     webRtcTerminate() {
         this.webRtcTerminated = true
 
-        if (this.webRtcWs) {
-            try {
-                this.webRtcWs.close()
-            } catch (err) {
-                // ignore
-            }
+        try {
+            this.video.pause()
+        } catch (err) {
+            // ignore -- make sure we close down the sockets anyway
         }
-        if (this.webRtcPc) {
-            try {
-                this.webRtcPc.close()
-            } catch (err) {
-                // ignore
-            }
-        }
+
+        this.webRtcWs?.close()
+        this.webRtcPc?.close()
     }
 
     webRtcOnIceServers(msg: any) {
@@ -161,7 +152,7 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
                 return
             }
 
-            console.log('peer connection state:', this.webRtcPc.iceConnectionState)
+            console.log('[webcam-rtspsimpleserver] peer connection state:', this.webRtcPc.iceConnectionState)
 
             switch (this.webRtcPc.iceConnectionState) {
                 case 'disconnected':
@@ -170,16 +161,8 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
         }
 
         this.webRtcPc.ontrack = (evt: any) => {
-            console.log('new track ' + evt.track.kind)
+            console.log('[webcam-rtspsimpleserver] new track ' + evt.track.kind)
             this.video.srcObject = evt.streams[0]
-
-            // if ( !this.webRtcTerminated ){
-            //     setTimeout( () => {
-            //         this.video.play();
-            //     }, 500);
-            // } else {
-            //     this.webRtcTerminate(); // re-terminate in case of race condition
-            // }
         }
 
         const direction = 'sendrecv'
@@ -193,7 +176,7 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
 
             this.webRtcPc.setLocalDescription(desc)
 
-            console.log('sending offer')
+            console.log('[webcam-rtspsimpleserver] sending offer')
             this.webRtcWs.send(JSON.stringify(desc))
         })
     }
@@ -228,24 +211,25 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
     }
 
     webRtcScheduleRestart() {
-        if (this.webRtcWs !== null) {
-            this.webRtcWs.close()
-            this.webRtcWs = null
-        }
+        this.webRtcWs?.close()
+        this.webRtcWs = null
 
-        if (this.webRtcPc !== null) {
-            this.webRtcPc.close()
-            this.webRtcPc = null
-        }
+        this.webRtcPc?.close()
+        this.webRtcPc = null
 
         if (this.webRtcTerminated) {
             return
         }
 
         this.webRtcRestartTimeout = window.setTimeout(() => {
-            this.webRtcRestartTimeout = null
             this.webRtcStart()
         }, 2000)
     }
 }
 </script>
+
+<style scoped>
+.webcamImage {
+    width: 100%;
+}
+</style>
