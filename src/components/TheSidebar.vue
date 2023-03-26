@@ -131,9 +131,25 @@ export default class TheSidebar extends Mixins(BaseMixin) {
         return this.$store.getters['files/getSidebarBackground']
     }
 
-    get naviPoints(): AppRoute[] {
+    get routesNaviPoints(): AppRoute[] {
         return routes.filter((element) => {
             return element.showInNavi && this.showInNavi(element)
+        })
+    }
+
+    get naviPoints(): AppRoute[] {
+        return this.routesNaviPoints.sort((a, b) => {
+            const aPos = a.position ?? null
+            const bPos = b.position ?? null
+
+            if (aPos === null && bPos === null) {
+                if ((a.title ?? '') < (b.title ?? '')) return -1
+                if ((a.title ?? '') > (b.title ?? '')) return 1
+
+                return 0
+            }
+
+            return (aPos ?? 99) - (bPos ?? 99)
         })
     }
 
