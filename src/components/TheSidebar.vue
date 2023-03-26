@@ -1,46 +1,3 @@
-<style>
-.nav-logo {
-    height: 32px;
-}
-
-.small-list-item {
-    height: var(--sidebar-menu-item-height);
-}
-
-.no-text-decoration {
-    text-decoration: none;
-    background-color: transparent;
-}
-
-.no-background:before {
-    background-color: rgba(255, 255, 255, 0) !important;
-}
-
-.no-border {
-    border: 0 !important;
-}
-</style>
-<style scoped>
-.active-nav-item {
-    border-right: 4px solid var(--v-primary-base);
-}
-
-.menu-item-icon {
-    opacity: 0.85;
-}
-
-.menu-item-title {
-    line-height: 30px;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    opacity: 0.85;
-}
-
-.nav-scrollbar {
-    height: 100%;
-}
-</style>
 <template>
     <v-navigation-drawer
         :key="navigationStyle"
@@ -130,7 +87,7 @@
         <template #append>
             <v-list-item class="small-list-item mb-2">
                 <v-list-item-icon class="menu-item-icon">
-                    <about-dialog></about-dialog>
+                    <about-dialog />
                 </v-list-item-icon>
             </v-list-item>
         </template>
@@ -272,3 +229,46 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.no-text-decoration {
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.no-background:before {
+    background-color: rgba(255, 255, 255, 0) !important;
+}
+
+.no-border {
+    border: 0 !important;
+}
+
+.nav-logo {
+    height: 32px;
+}
+
+.small-list-item {
+    height: var(--sidebar-menu-item-height);
+}
+
+.active-nav-item {
+    border-right: 4px solid var(--v-primary-base);
+}
+
+.menu-item-icon {
+    opacity: 0.85;
+}
+
+.menu-item-title {
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.nav-scrollbar {
+    height: 100%;
+}
+</style>
