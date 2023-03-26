@@ -16,21 +16,14 @@
                         v-if="isMobile"
                         router
                         to="/"
-                        :class="
-                            'sidebar-logo no-text-decoration no-background no-border ' +
-                            (navigationStyle === 'iconsOnly' ? 'pa-0 justify-center' : '')
-                        "
+                        :class="mobileLogoClass"
                         :style="'height: ' + topbarHeight + 'px'"
                         :ripple="false">
                         <template v-if="sidebarLogo">
                             <img :src="sidebarLogo" :style="logoCssVars" class="nav-logo" alt="Logo" />
                         </template>
                         <template v-else>
-                            <mainsail-logo
-                                :color="logoColor"
-                                :style="logoCssVars"
-                                class="nav-logo"
-                                :ripple="false"></mainsail-logo>
+                            <mainsail-logo :color="logoColor" :style="logoCssVars" class="nav-logo" :ripple="false" />
                         </template>
                         <template v-if="navigationStyle !== 'iconsOnly'">
                             <span class="text-h6 font-weight-regular text-truncate">{{ printerName }}</span>
@@ -57,7 +50,7 @@
                             </template>
                             <span>{{ $t('App.Printers') }}</span>
                         </v-tooltip>
-                        <v-divider class="my-1"></v-divider>
+                        <v-divider class="my-1" />
                     </template>
                     <div v-for="(category, index) in naviPoints" :key="index">
                         <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
@@ -210,6 +203,17 @@ export default class TheSidebar extends Mixins(BaseMixin) {
             }
         }
         return {}
+    }
+
+    get mobileLogoClass() {
+        const output = ['sidebar-logo', 'no-text-decoration', 'no-background', 'no-border']
+
+        if (this.navigationStyle === 'iconsOnly') {
+            output.push('pa-0')
+            output.push('justify-center')
+        }
+
+        return output
     }
 
     showInNavi(route: AppRoute): boolean {
