@@ -28,7 +28,7 @@ const routes: AppRoute[] = [
         component: Dashboard,
         alwaysShow: true,
         showInNavi: true,
-        position: 1,
+        position: 10,
     },
     {
         title: 'Printers',
@@ -44,7 +44,7 @@ const routes: AppRoute[] = [
         component: Webcam,
         alwaysShow: true,
         showInNavi: true,
-        position: 2,
+        position: 20,
     },
     {
         title: 'Console',
@@ -54,7 +54,7 @@ const routes: AppRoute[] = [
         alwaysShow: true,
         showInNavi: true,
         klipperIsConnected: true,
-        position: 3,
+        position: 30,
     },
     {
         title: 'Heightmap',
@@ -64,7 +64,7 @@ const routes: AppRoute[] = [
         alwaysShow: false,
         showInNavi: true,
         klipperComponent: 'bed_mesh',
-        position: 4,
+        position: 40,
     },
     {
         title: 'G-Code Files',
@@ -74,7 +74,7 @@ const routes: AppRoute[] = [
         alwaysShow: true,
         showInNavi: true,
         registeredDirectory: 'gcodes',
-        position: 5,
+        position: 50,
     },
     {
         title: 'G-Code Viewer',
@@ -83,7 +83,7 @@ const routes: AppRoute[] = [
         component: () => import('../pages/Viewer.vue'),
         alwaysShow: true,
         showInNavi: true,
-        position: 6,
+        position: 60,
     },
     {
         title: 'History',
@@ -93,7 +93,7 @@ const routes: AppRoute[] = [
         alwaysShow: true,
         showInNavi: true,
         moonrakerComponent: 'history',
-        position: 7,
+        position: 70,
     },
     {
         title: 'Timelapse',
@@ -103,7 +103,7 @@ const routes: AppRoute[] = [
         alwaysShow: true,
         showInNavi: true,
         moonrakerComponent: 'timelapse',
-        position: 8,
+        position: 80,
     },
     {
         title: 'Machine',
@@ -112,7 +112,7 @@ const routes: AppRoute[] = [
         component: Machine,
         alwaysShow: true,
         showInNavi: true,
-        position: 9,
+        position: 90,
     },
     {
         title: null,

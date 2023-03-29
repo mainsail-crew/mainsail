@@ -29,51 +29,7 @@
                             <span class="text-h6 font-weight-regular text-truncate">{{ printerName }}</span>
                         </template>
                     </v-list-item>
-                    <template v-if="countPrinters">
-                        <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
-                            <template #activator="{ on, attrs }">
-                                <v-list-item
-                                    router
-                                    to="/allPrinters"
-                                    class="small-list-item mt-1"
-                                    v-bind="attrs"
-                                    v-on="on">
-                                    <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                                        <v-icon>{{ mdiViewDashboardOutline }}</v-icon>
-                                    </v-list-item-icon>
-                                    <v-list-item-content>
-                                        <v-list-item-title tile class="menu-item-title">
-                                            {{ $t('App.Printers') }}
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </template>
-                            <span>{{ $t('App.Printers') }}</span>
-                        </v-tooltip>
-                        <v-divider class="my-1" />
-                    </template>
-                    <div v-for="(category, index) in naviPoints" :key="index">
-                        <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
-                            <template #activator="{ on, attrs }">
-                                <v-list-item
-                                    router
-                                    :to="category.path"
-                                    class="small-list-item"
-                                    v-bind="attrs"
-                                    v-on="on">
-                                    <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                                        <v-icon>{{ category.icon }}</v-icon>
-                                    </v-list-item-icon>
-                                    <v-list-item-content>
-                                        <v-list-item-title tile class="menu-item-title">
-                                            {{ $t(`Router.${category.title}`) }}
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </template>
-                            <span>{{ $t(`Router.${category.title}`) }}</span>
-                        </v-tooltip>
-                    </div>
+                    <sidebar-item v-for="(category, index) in naviPoints" :key="index" :item="category" />
                 </v-list-item-group>
             </v-list>
         </overlay-scrollbars>
@@ -90,17 +46,19 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import routes, { AppRoute } from '@/routes'
-import { Mixins } from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { PrinterStateKlipperConfig } from '@/store/printer/types'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import AboutDialog from '@/components/dialogs/AboutDialog.vue'
 import { navigationWidth, topbarHeight } from '@/store/variables'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
-import { mdiViewDashboardOutline } from '@mdi/js'
+import { mdiViewDashboardOutline, mdiLinkVariant } from '@mdi/js'
+import SidebarItem, { NaviPoint } from '@/components/ui/SidebarItem.vue'
 
 @Component({
     components: {
+        SidebarItem,
         TheSelectPrinterDialog,
         AboutDialog,
         MainsailLogo,
@@ -110,10 +68,7 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     navigationWidth = navigationWidth
     topbarHeight = topbarHeight
 
-    /**
-     * Icons
-     */
-    mdiViewDashboardOutline = mdiViewDashboardOutline
+    private customNaviLinks: NaviPoint[] = []
 
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
@@ -131,26 +86,40 @@ export default class TheSidebar extends Mixins(BaseMixin) {
         return this.$store.getters['files/getSidebarBackground']
     }
 
-    get routesNaviPoints(): AppRoute[] {
-        return routes.filter((element) => {
-            return element.showInNavi && this.showInNavi(element)
-        })
+    get routesNaviPoints(): NaviPoint[] {
+        const points: NaviPoint[] = []
+
+        if (this.countPrinters) {
+            points.push({
+                title: this.$t('App.Printers'),
+                icon: mdiViewDashboardOutline,
+                path: '/allPrinters',
+                position: 0,
+            } as NaviPoint)
+        }
+
+        routes
+            .filter((element) => {
+                return element.showInNavi && this.showInNavi(element)
+            })
+            .forEach((element) => {
+                points.push({
+                    title: this.$t(`Router.${element.title}`),
+                    icon: element.icon,
+                    path: element.path,
+                    position: element.position ?? 999,
+                } as NaviPoint)
+            })
+
+        if (this.customNaviLinks.length) {
+            points.push(...this.customNaviLinks)
+        }
+
+        return points
     }
 
-    get naviPoints(): AppRoute[] {
-        return this.routesNaviPoints.sort((a, b) => {
-            const aPos = a.position ?? null
-            const bPos = b.position ?? null
-
-            if (aPos === null && bPos === null) {
-                if ((a.title ?? '') < (b.title ?? '')) return -1
-                if ((a.title ?? '') > (b.title ?? '')) return 1
-
-                return 0
-            }
-
-            return (aPos ?? 99) - (bPos ?? 99)
-        })
+    get naviPoints(): NaviPoint[] {
+        return this.routesNaviPoints.sort((a, b) => a.position - b.position)
     }
 
     get klippy_state(): string {
@@ -182,10 +151,7 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     }
 
     get boolNaviTemp(): boolean {
-        if (!this.isMobile && this.$vuetify.breakpoint.mdAndDown) {
-            return true
-        }
-        return false
+        return !this.isMobile && this.$vuetify.breakpoint.mdAndDown
     }
 
     get sidebarCssVars(): any {
@@ -200,6 +166,14 @@ export default class TheSidebar extends Mixins(BaseMixin) {
 
     get sidebarLogo(): string {
         return this.$store.getters['files/getSidebarLogo']
+    }
+
+    get sidebarNaviFile(): string {
+        const file = this.$store.getters['files/getCustomNaviPoints']
+
+        window.console.log(file)
+
+        return file
     }
 
     get logoColor(): string {
@@ -230,6 +204,27 @@ export default class TheSidebar extends Mixins(BaseMixin) {
         }
 
         return output
+    }
+
+    @Watch('sidebarNaviFile', { immediate: true })
+    async sidebarNaviFileChanged(newVal: string) {
+        this.customNaviLinks = []
+
+        const content = await fetch(newVal)
+            .then((res) => res.json())
+            .catch((err) => {
+                window.console.error('Unable to parse .theme/navi.json.')
+                throw err
+            })
+
+        content.forEach((item: { title?: string; path?: string; icon?: string; position?: number }) => {
+            this.customNaviLinks.push({
+                title: item.title ?? 'Unknown',
+                icon: item.icon ?? mdiLinkVariant,
+                path: item.path ?? '#',
+                position: item.position ?? 999,
+            } as NaviPoint)
+        })
     }
 
     showInNavi(route: AppRoute): boolean {
@@ -266,14 +261,6 @@ export default class TheSidebar extends Mixins(BaseMixin) {
 
 .nav-logo {
     height: 32px;
-}
-
-.small-list-item {
-    height: var(--sidebar-menu-item-height);
-}
-
-.active-nav-item {
-    border-right: 4px solid var(--v-primary-base);
 }
 
 .menu-item-icon {
