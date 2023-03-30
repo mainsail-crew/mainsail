@@ -93,7 +93,7 @@ export default class TheSidebar extends Mixins(BaseMixin) {
             points.push({
                 title: this.$t('App.Printers'),
                 icon: mdiViewDashboardOutline,
-                path: '/allPrinters',
+                to: '/allPrinters',
                 position: 0,
             } as NaviPoint)
         }
@@ -106,7 +106,7 @@ export default class TheSidebar extends Mixins(BaseMixin) {
                 points.push({
                     title: this.$t(`Router.${element.title}`),
                     icon: element.icon,
-                    path: element.path,
+                    to: element.path,
                     position: element.position ?? 999,
                 } as NaviPoint)
             })
@@ -217,11 +217,12 @@ export default class TheSidebar extends Mixins(BaseMixin) {
                 throw err
             })
 
-        content.forEach((item: { title?: string; path?: string; icon?: string; position?: number }) => {
+        content.forEach((item: NaviPoint) => {
             this.customNaviLinks.push({
                 title: item.title ?? 'Unknown',
                 icon: item.icon ?? mdiLinkVariant,
-                path: item.path ?? '#',
+                href: item.href ?? '#',
+                target: item.target ?? undefined,
                 position: item.position ?? 999,
             } as NaviPoint)
         })

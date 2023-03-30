@@ -2,7 +2,14 @@
     <div>
         <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
             <template #activator="{ on, attrs }">
-                <v-list-item router :to="path" class="small-list-item" v-bind="attrs" v-on="on">
+                <v-list-item
+                    router
+                    :to="to"
+                    :href="href"
+                    :target="target"
+                    class="small-list-item"
+                    v-bind="attrs"
+                    v-on="on">
                     <v-list-item-icon class="my-3 mr-3 menu-item-icon">
                         <v-icon>{{ icon }}</v-icon>
                     </v-list-item-icon>
@@ -26,7 +33,9 @@ import BaseMixin from '@/components/mixins/base'
 
 export interface NaviPoint {
     title: string
-    path: string
+    to?: string
+    href?: string
+    target?: string
     icon: string
     position: number
 }
@@ -47,12 +56,20 @@ export default class SidebarItem extends Mixins(BaseMixin) {
         return this.item.title
     }
 
-    get path() {
-        return this.item.path
+    get to() {
+        return this.item.to ?? undefined
+    }
+
+    get href() {
+        return this.item.href ?? undefined
+    }
+
+    get target() {
+        return this.item.target ?? undefined
     }
 
     get borderBottom() {
-        return this.item.path === '/allPrinters'
+        return this.item.to === '/allPrinters'
     }
 }
 </script>
