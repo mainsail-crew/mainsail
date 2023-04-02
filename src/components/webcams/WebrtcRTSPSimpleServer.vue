@@ -8,37 +8,30 @@ import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
-    @Prop({ required: true })
-    camSettings: any
-
-    @Prop({ default: false })
-    collapsible: boolean | undefined
+    @Prop({ required: true }) camSettings: any
+    @Prop({ default: false }) collapsible: boolean | undefined
 
     @Ref()
     declare video: HTMLVideoElement
 
     // webrtc player vars
-    private webRtcTerminated: boolean = false
-    private webRtcWs: any
-    private webRtcPc: any
-    private webRtcRestartTimeout: any
-
-    beforeMount() {
-        // if the panel is not expanded, then flag as already terminated so we don't try to start the connection
-        this.webRtcTerminated = !this.expanded
-    }
+    private terminated: boolean = false
+    private ws: WebSocket | null = null
+    private pc: RTCPeerConnection | null = null
+    private restartTimeoutTimer: any = null
 
     mounted() {
-        if (this.webRtcTerminated) {
-            this.webRtcTerminate() // catch a potential race condition
-        } else {
-            this.webRtcStart()
-        }
+        this.start()
     }
 
     // stop the video and close the streams if the component is going to be destroyed so we don't leave hanging streams
     beforeDestroy() {
-        this.webRtcTerminate()
+        this.terminate()
+
+        // clear any potentially open restart timeout
+        if (this.restartTimeoutTimer) {
+            clearTimeout(this.restartTimeoutTimer)
+        }
     }
 
     get webcamStyle() {
@@ -50,78 +43,68 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
         return ''
     }
 
-    isWebRtcUrl(val: string): boolean {
-        return val.startsWith('ws://') || val.startsWith('wss://')
-    }
-
     get url() {
+        if (this.camSettings.urlStream.startsWith('http')) {
+            return this.camSettings.urlStream.replace('http', 'ws') + 'ws'
+        }
+
         return this.camSettings.urlStream
     }
 
     // stop and restart the video if the url changes
     @Watch('url')
-    changedUrl(newUrl: any) {
-        this.webRtcTerminate()
-        if (this.isWebRtcUrl(newUrl)) {
-            this.webRtcStart()
-        }
+    changedUrl() {
+        this.terminate()
+        this.start()
     }
 
-    get expanded(): any {
-        return !this.collapsible || this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport)
+    get expanded(): boolean {
+        return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport)
     }
 
     // start or stop the video when the expand state changes
     @Watch('expanded')
-    expandChanged(newExpanded: any): void {
+    expandChanged(newExpanded: boolean): void {
         if (!newExpanded) {
-            this.webRtcTerminate()
-        } else {
-            this.webRtcStart()
+            this.terminate()
+            return
         }
+
+        this.start()
     }
 
     // webrtc player methods
     // adapated from sample player in https://github.com/mrlt8/docker-wyze-bridge
-    webRtcStart() {
-        // unterminate.. we're starting again.
-        this.webRtcTerminated = false
+    start() {
+        // unterminate we're starting again.
+        this.terminated = false
 
         // clear any potentially open restart timeout
-        clearTimeout(this.webRtcRestartTimeout)
-        this.webRtcRestartTimeout = null
-
-        console.log('[webcam-rtspsimpleserver] web socket connecting')
-
-        let url = this.url
-
-        if (!this.isWebRtcUrl(url)) {
-            console.error('not a webRtcSrc url')
-            return
+        if (this.restartTimeoutTimer) {
+            clearTimeout(this.restartTimeoutTimer)
+            this.restartTimeoutTimer = null
         }
 
-        this.webRtcWs = new WebSocket(this.camSettings.urlStream)
+        window.console.log('[webcam-rtspsimpleserver] web socket connecting')
+        this.ws = new WebSocket(this.url)
 
-        this.webRtcWs.onerror = () => {
-            console.log('[webcam-rtspsimpleserver] websocket error')
-            if (this.webRtcWs === null) {
-                return
-            }
-            this.webRtcWs.close()
-            this.webRtcWs = null
+        this.ws.onerror = (event) => {
+            window.console.log('[webcam-rtspsimpleserver] websocket error', event)
+            this.ws?.close()
+            this.ws = null
         }
 
-        this.webRtcWs.onclose = () => {
-            console.log('[webcam-rtspsimpleserver] websocket closed')
-            this.webRtcWs = null
-            this.webRtcScheduleRestart()
+        this.ws.onclose = (event) => {
+            console.log('[webcam-rtspsimpleserver] websocket closed', event)
+            this.ws = null
+            this.scheduleRestart()
         }
 
-        this.webRtcWs.onmessage = (msg: any) => this.webRtcOnIceServers(msg)
+        this.ws.onmessage = (msg: MessageEvent) => this.webRtcOnIceServers(msg)
     }
 
-    webRtcTerminate() {
-        this.webRtcTerminated = true
+    terminate() {
+        this.terminated = true
 
         try {
             this.video.pause()
@@ -129,100 +112,83 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
             // ignore -- make sure we close down the sockets anyway
         }
 
-        this.webRtcWs?.close()
-        this.webRtcPc?.close()
+        this.ws?.close()
+        this.pc?.close()
     }
 
-    webRtcOnIceServers(msg: any) {
-        if (this.webRtcWs === null) {
-            return
-        }
+    webRtcOnIceServers(msg: MessageEvent) {
+        if (this.ws === null) return
 
         const iceServers = JSON.parse(msg.data)
-
-        this.webRtcPc = new RTCPeerConnection({
+        this.pc = new RTCPeerConnection({
             iceServers,
         })
 
-        this.webRtcWs.onmessage = (msg: any) => this.webRtcOnRemoteDescription(msg)
-        this.webRtcPc.onicecandidate = (evt: any) => this.webRtcOnIceCandidate(evt)
+        this.ws.onmessage = (msg: MessageEvent) => this.webRtcOnRemoteDescription(msg)
+        this.pc.onicecandidate = (evt: RTCPeerConnectionIceEvent) => this.webRtcOnIceCandidate(evt)
 
-        this.webRtcPc.oniceconnectionstatechange = () => {
-            if (this.webRtcPc === null) {
-                return
-            }
+        this.pc.oniceconnectionstatechange = () => {
+            if (this.pc === null) return
 
-            console.log('[webcam-rtspsimpleserver] peer connection state:', this.webRtcPc.iceConnectionState)
+            window.console.log('[webcam-rtspsimpleserver] peer connection state:', this.pc.iceConnectionState)
 
-            switch (this.webRtcPc.iceConnectionState) {
+            switch (this.pc.iceConnectionState) {
                 case 'disconnected':
-                    this.webRtcScheduleRestart()
+                    this.scheduleRestart()
             }
         }
 
-        this.webRtcPc.ontrack = (evt: any) => {
-            console.log('[webcam-rtspsimpleserver] new track ' + evt.track.kind)
+        this.pc.ontrack = (evt: RTCTrackEvent) => {
+            window.console.log('[webcam-rtspsimpleserver] new track ' + evt.track.kind)
             this.video.srcObject = evt.streams[0]
         }
 
         const direction = 'sendrecv'
-        this.webRtcPc.addTransceiver('video', { direction })
-        this.webRtcPc.addTransceiver('audio', { direction })
+        this.pc.addTransceiver('video', { direction })
+        this.pc.addTransceiver('audio', { direction })
 
-        this.webRtcPc.createOffer().then((desc: any) => {
-            if (this.webRtcPc === null || this.webRtcWs === null) {
-                return
-            }
+        this.pc.createOffer().then((desc: any) => {
+            if (this.pc === null || this.ws === null) return
 
-            this.webRtcPc.setLocalDescription(desc)
+            this.pc.setLocalDescription(desc)
 
-            console.log('[webcam-rtspsimpleserver] sending offer')
-            this.webRtcWs.send(JSON.stringify(desc))
+            window.console.log('[webcam-rtspsimpleserver] sending offer')
+            this.ws.send(JSON.stringify(desc))
         })
     }
 
     webRtcOnRemoteDescription(msg: any) {
-        if (this.webRtcPc === null || this.webRtcWs === null) {
-            return
-        }
+        if (this.pc === null || this.ws === null) return
 
-        this.webRtcPc.setRemoteDescription(new RTCSessionDescription(JSON.parse(msg.data)))
-        this.webRtcWs.onmessage = (msg: any) => this.webRtcOnRemoteCandidate(msg)
+        this.pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(msg.data)))
+        this.ws.onmessage = (msg: any) => this.webRtcOnRemoteCandidate(msg)
     }
 
-    webRtcOnIceCandidate(evt: any) {
-        if (this.webRtcWs === null) {
-            return
-        }
+    webRtcOnIceCandidate(evt: RTCPeerConnectionIceEvent) {
+        if (this.ws === null) return
 
-        if (evt.candidate !== null) {
-            if (evt.candidate.candidate !== '') {
-                this.webRtcWs.send(JSON.stringify(evt.candidate))
-            }
+        if (evt.candidate?.candidate !== '') {
+            this.ws.send(JSON.stringify(evt.candidate))
         }
     }
 
     webRtcOnRemoteCandidate(msg: any) {
-        if (this.webRtcPc === null) {
-            return
-        }
+        if (this.pc === null) return
 
-        this.webRtcPc.addIceCandidate(JSON.parse(msg.data))
+        this.pc.addIceCandidate(JSON.parse(msg.data))
     }
 
-    webRtcScheduleRestart() {
-        this.webRtcWs?.close()
-        this.webRtcWs = null
+    scheduleRestart() {
+        this.ws?.close()
+        this.ws = null
 
-        this.webRtcPc?.close()
-        this.webRtcPc = null
+        this.pc?.close()
+        this.pc = null
 
-        if (this.webRtcTerminated) {
-            return
-        }
+        if (this.terminated) return
 
-        this.webRtcRestartTimeout = window.setTimeout(() => {
-            this.webRtcStart()
+        this.restartTimeoutTimer = setTimeout(() => {
+            this.start()
         }, 2000)
     }
 }
