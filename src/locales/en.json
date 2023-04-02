@@ -280,6 +280,7 @@
         "Flat": "Flat",
         "Heightmap": "Heightmap",
         "InvalidNameAlreadyExists": "Profile name already exists, please choose another profile name.",
+        "InvalidNameAscii": "Name is invalid. Only ascii character are allowed.",
         "InvalidNameEmpty": "Input must not be empty!",
         "InvalidNameReserved": "Profile 'default' is reserved, please choose another profile name.",
         "Later": "Later",

@@ -391,7 +391,7 @@
                         :label="$t('Files.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keypress.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -420,7 +420,7 @@
                         :label="$t('Files.Name').toString()"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="renameFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -449,7 +449,7 @@
                         :label="$t('Files.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="renameDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
