@@ -1071,7 +1071,8 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertikal",
             "Webcams": "Webcams",
-            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
     },
     "ScrewsTiltAdjust": {
