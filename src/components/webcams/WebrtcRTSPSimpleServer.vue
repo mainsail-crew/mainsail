@@ -1,5 +1,20 @@
 <template>
-    <video ref="video" :style="webcamStyle" class="webcamImage" autoplay playsinline muted controls />
+    <div>
+        <video
+            v-show="status === 'connected'"
+            ref="video"
+            :style="webcamStyle"
+            class="webcamImage"
+            autoplay
+            playsinline
+            muted />
+        <v-row v-if="status !== 'connected'">
+            <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
+                <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
+                <span class="mt-3">{{ status }}</span>
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
 <script lang="ts">
@@ -19,6 +34,7 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
     private ws: WebSocket | null = null
     private pc: RTCPeerConnection | null = null
     private restartTimeoutTimer: any = null
+    private status: string = 'connecting'
 
     mounted() {
         this.start()
@@ -132,9 +148,10 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
 
             window.console.log('[webcam-rtspsimpleserver] peer connection state:', this.pc.iceConnectionState)
 
-            switch (this.pc.iceConnectionState) {
-                case 'disconnected':
-                    this.scheduleRestart()
+            this.status = (this.pc?.iceConnectionState ?? '').toString()
+
+            if (['failed', 'disconnected'].includes(this.status)) {
+                this.scheduleRestart()
             }
         }
 
@@ -196,6 +213,14 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
 
 <style scoped>
 .webcamImage {
+    width: 100%;
+}
+
+._webcam_webrtc_output {
+    aspect-ratio: calc(3 / 2);
+}
+
+video {
     width: 100%;
 }
 </style>
