@@ -137,6 +137,28 @@ export const actions: ActionTree<FileState, RootState> = {
         }
     },
 
+    scanMetadata({ commit }, payload: { filename: string }) {
+        const rootPath = payload.filename.slice(0, payload.filename.indexOf('/'))
+        if (rootPath === 'gcodes') {
+            const requestFilename = payload.filename.slice(7)
+            commit('setMetadataRequested', { filename: requestFilename })
+            Vue.$socket.emit(
+                'server.files.metascan',
+                { filename: requestFilename },
+                { action: 'files/getScanMetadata' }
+            )
+        }
+    },
+
+    getScanMetadata({ dispatch }, payload: { filename: string }) {
+        if (payload !== undefined && payload.filename !== '') {
+            dispatch('getMetadata', payload)
+
+            const filename = payload.filename
+            Vue.$toast.success(i18n.t('Files.ScanMetaSuccess', { filename }).toString())
+        }
+    },
+
     requestMetadata({ commit }, payload: { filename: string }) {
         const rootPath = payload.filename.slice(0, payload.filename.indexOf('/'))
         if (rootPath === 'gcodes') {

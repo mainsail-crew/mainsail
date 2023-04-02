@@ -1385,35 +1385,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     scanMeta(item: FileStateFile) {
-        const filepath = this.currentPath + '/' + item.filename
-        const file = filepath.slice(0, 1) === '/' ? filepath.slice(1) : filepath
-        const data = {
-            filename: file,
-        }
-        item.small_thumbnail = undefined
-        axios
-            .post(this.apiUrl + '/server/files/metascan', data, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            })
-            .then((response) => {
-                const $this = this
-                const text = $this.$t('Files.ScanMetaSuccess').toString()
-                if (response.data.result.thumbnails) {
-                    setTimeout(function () {
-                        if (item.small_thumbnail) {
-                            return true
-                        }
-                        $this.$store.dispatch('files/requestMetadata', {
-                            filename: 'gcodes' + $this.currentPath + '/' + item.filename,
-                        })
-                    }, 500)
-                }
-                this.$toast.success(text)
-            })
-            .catch(() => {
-                const text = this.$t('Files.ScanMetaError').toString()
-                this.$toast.error(text)
-            })
+        this.$store.dispatch('files/scanMetadata', {
+            filename: 'gcodes' + this.currentPath + '/' + item.filename,
+        })
     }
 
     deleteSelectedFiles() {
