@@ -216,6 +216,8 @@
         "Rename": "Umbenennen",
         "RenameDirectory": "Verzeichnis umbenennen",
         "RenameFile": "Datei umbenennen",
+        "ScanMeta": "Metadaten scannen",
+        "ScanMetaSuccess": "Metadaten von {filename} wurden erfolgreich gescannt.",
         "Search": "Suchen",
         "SetupCurrentList": "Einstellungen",
         "Slicer": "Slicer",
