@@ -72,7 +72,7 @@ export default class Panel extends Mixins(BaseMixin) {
 
     get collapseState() {
         if (!this.collapsible) return true
-        if (this.autoCollapse) return this.hovered
+        if (this.autoCollapse && !this.isTouchDevice) return this.hovered
 
         return this.expand
     }
