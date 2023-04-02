@@ -10,9 +10,17 @@
             {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
         </v-btn>
         <template v-if="paramArray.length">
-            <v-menu v-if="!isMobile" offset-y :close-on-content-click="false">
+            <v-menu
+                v-if="!isMobile"
+                offset-y
+                offset-x
+                bottom
+                :close-on-content-click="false"
+                :attach="'#' + vMenuAttachId"
+                :width="paramsOverlayWidth">
                 <template #activator="{ on, attrs }">
                     <v-btn
+                        :id="vMenuAttachId"
                         :disabled="disabled"
                         :color="color"
                         v-bind="attrs"
@@ -22,7 +30,7 @@
                         <v-icon>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
-                <v-card :max-width="paramsOverlayWidth">
+                <v-card :width="paramsOverlayWidth">
                     <v-card-text class="py-2">
                         <v-row class="my-2">
                             <v-col v-for="(name, key) in paramArray" :key="'param_' + key" :cols="paramCssCols">
@@ -36,7 +44,7 @@
                                     dense
                                     clearable
                                     :clear-icon="mdiRefresh"
-                                    @keyup.enter="sendWithParams"></v-text-field>
+                                    @keyup.enter="sendWithParams" />
                             </v-col>
                         </v-row>
                         <v-row class="my-2">
@@ -101,6 +109,7 @@ import BaseMixin from '@/components/mixins/base'
 import { GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
 import { mdiCloseThick, mdiMenuDown, mdiRefresh } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
+import { v4 as uuidv4 } from 'uuid'
 
 interface param {
     type: 'int' | 'double' | 'string' | null
@@ -158,11 +167,17 @@ export default class MacroButton extends Mixins(BaseMixin) {
     }
 
     get paramCssCols() {
-        return 12 / this.paramCols
+        return Math.ceil(12 / this.paramCols)
     }
 
     get paramsOverlayWidth() {
         return 200 * this.paramCols
+    }
+
+    get vMenuAttachId() {
+        const uuid = uuidv4()
+
+        return `macro-params-${this.macro.name}-${uuid}`
     }
 
     @Watch('klipperMacro')
@@ -226,5 +241,9 @@ export default class MacroButton extends Mixins(BaseMixin) {
 .macroWithParameters {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+.btnMacroMenu ::v-deep .v-menu__content {
+    left: 0 !important;
 }
 </style>

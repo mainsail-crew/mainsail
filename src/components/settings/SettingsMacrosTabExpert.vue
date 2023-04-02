@@ -64,7 +64,10 @@
                         @change="updateGroupOptionColor" />
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.MacrosTab.AutoCollapse').toString()">
+                <settings-row
+                    :title="$t('Settings.MacrosTab.AutoCollapse').toString()"
+                    :sub-title="$t('Settings.MacrosTab.AutoCollapseDescription').toString()"
+                    :dynamic-slot-width="true">
                     <v-switch
                         v-model="editGroup.autoCollapse"
                         hide-details

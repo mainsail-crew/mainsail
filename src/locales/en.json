@@ -855,6 +855,7 @@
             "Add": "add",
             "AddGroup": "add Group",
             "AutoCollapse": "Auto collapse",
+            "AutoCollapseDescription": "Panel unfolds while hovering. This function is deactivated on touch devices.",
             "AvailableMacros": "Available Macros",
             "ChangeMacroColor": "Change the color of the button.",
             "Color": "Color",
