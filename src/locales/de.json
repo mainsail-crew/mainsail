@@ -3,7 +3,7 @@
         "Notifications": {
             "DependencyDescription": "Die momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}.",
             "DependencyName": "Abhängigkeit: {name}",
-            "DismissAll": "Dismiss all",
+            "DismissAll": "Alles verwerfen",
             "KlipperWarnings": {
                 "DeprecatedOption": "Option '{option}' im Abschnitt '{section}' ist veraltet und wird in einem zukünftigen Release entfernt.",
                 "DeprecatedOptionHeadline": "Veralterte Klipper Option",
@@ -52,6 +52,7 @@
             "Complete": "Fertiggestellt - {filename}",
             "Error": "FEHLER",
             "Pause": "Druck pausiert",
+            "PrinterOff": "Drucker AUS",
             "Printing": "{percent}% Drucken - {filename}",
             "PrintingETA": "{percent}% Drucken - ETA: {eta} - {filename}"
         },
@@ -164,11 +165,13 @@
         "Yes": "Ja"
     },
     "Files": {
+        "AddBatchToQueue": "Stapel zur Auftragswarteschlange hinzufügen",
         "AddToQueue": "Zur Auftragswarteschlange hinzufügen",
         "AllFiles": "Alle",
         "BedTemp": "Bett Temp.",
         "Cancel": "Abbrechen",
         "ChamberTemp": "Kammer Temp.",
+        "Count": "Anzahl",
         "Create": "Erstellen",
         "CreateNewDirectory": "Ordner erstellen",
         "CurrentPath": "Aktueller Pfad",
@@ -253,7 +256,9 @@
         "Tracking": "Tracking",
         "Transparency": "Transparenz",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxel Modus (ASMBL)"
+        "VoxelMode": "Voxel Modus (ASMBL)",
+        "ShowGCode": "Zeige G-Code",
+        "CNCMode": "CNC Modus"
     },
     "Heightmap": {
         "Abort": "abbruch",
@@ -302,6 +307,7 @@
         "AllJobs": "Alle",
         "AvgPrinttime": "Druckzeit - Ø",
         "Cancel": "abbrechen",
+        "Chart": "Diagramm",
         "CreateNote": "Notiz anlegen",
         "Delete": "Löschen",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Jobs gelöscht werden?",
@@ -354,6 +360,7 @@
             "Others": "Sonstige",
             "server_exit": "Server-Exit"
         },
+        "Table": "Tabelle",
         "TitleExportHistory": "Historie exportieren",
         "TitleRefreshHistory": "Historie aktualisieren",
         "TitleSettings": "Einstellungen",
@@ -365,7 +372,12 @@
     },
     "JobQueue": {
         "AllJobs": "Alle Aufträge",
+        "ChangeCount": "Anzahl ändern",
+        "Cancel": "abbrechen",
+        "Count": "Anzahl",
         "Empty": "Leer",
+        "InvalidCountEmpty": "Die Eingabe darf nicht leer sein!",
+        "InvalidCountGreaterZero": "Die Eingabe muss größer als 0 sein!",
         "JobQueue": "Auftragswarteschlange",
         "Jobs": "Aufträge",
         "Pause": "Pause",
@@ -417,7 +429,13 @@
             "TRIGGERED": "AUSGELÖST"
         },
         "LogfilesPanel": {
-            "Logfiles": "Logdateien"
+            "Accept": "akzeptieren",
+            "Cancel": "abbrechen",
+            "Logfiles": "Logdateien",
+            "Rollover": "Logdatei zurücksetzen",
+            "RolloverDescription": "Wähle Logs zum zurücksetzen:",
+            "RolloverToastSuccessful": "Logdatei für \"{name}\" wurde erfolgreich zurückgesetzt.",
+            "RolloverToastFailed": "Logdatei reset \"{name}\": {message}"
         },
         "SystemPanel": {
             "Constants": "Konstanten",
@@ -792,6 +810,8 @@
             "ShowAxes": "Zeige Achsen an"
         },
         "GeneralTab": {
+            "12hours": "12-Stunden ({time})",
+            "24hours": "24-Stunden ({time})",
             "Backup": "Datensicherung",
             "BackupDialog": "Bitte wähle alle Abschnitte aus, die du sichern möchtest:",
             "CalcEstimateTime": "Berechnung der geschätzten Zeit",
@@ -807,6 +827,7 @@
                 "Slicer": "Slicer (M73)"
             },
             "CannotReadJson": "Sicherungsdatei kann nicht gelesen/analysiert werden.",
+            "DateFormat": "Datumsformat",
             "DbConsoleHistory": "Verlauf der Konsole",
             "DbHistoryJobs": "Historie Druckvorgänge",
             "DbHistoryTotals": "Historie Gesamtzähler",
@@ -826,7 +847,8 @@
             "PrinterName": "Druckername",
             "Reset": "zurücksetzen",
             "Restore": "Wiederherstellung",
-            "RestoreDialog": "Bitte wähle alle Abschnitte aus, die du wiederherstellen möchtest:"
+            "RestoreDialog": "Bitte wähle alle Abschnitte aus, die du wiederherstellen möchtest:",
+            "TimeFormat": "Zeitformat"
         },
         "InterfaceSettings": "Interface Einstellungen",
         "MacrosTab": {
@@ -992,6 +1014,8 @@
             "ConfirmOnEmergencyStopDescription": "Zeige vor einem Notstop einen Bestätigungsdialog.",
             "ConfirmOnPowerDeviceChange": "Bestätigung für Änderung der Stromversorgung von Geräten",
             "ConfirmOnPowerDeviceChangeDescription": "Zeige vor Änderung der Stromversorgung von Geräten einen Bestätigungsdialog.",
+            "DisableFanAnimation": "Lüfteranimation deaktivieren",
+            "DisableFanAnimationDescription": "Dies kann die Last im Browser senken.",
             "DisplayCANCEL_PRINT": "Zeige CANCEL_PRINT an",
             "DisplayCANCEL_PRINTDescription": "Zeigt die CANCEL_PRINT Schaltfläche dauerhaft an - keine weitere Bestätigung erforderlich.",
             "GcodeThumbnails": "G-Code Vorschaubilder",
@@ -1008,6 +1032,8 @@
             "NavigationStyleDescription": "Erscheinungsbild der Navigation ändern",
             "NavigationStyleIconsAndText": "Icons + Text",
             "NavigationStyleIconsOnly": "Nur Icons",
+            "PowerDeviceName": "Stromversorgung für Drucker",
+            "PowerDeviceNameDescription": "Wähle aus, welches Moonraker Power-Device zum Einschalten des Druckers verwendet werden soll.",
             "Primary": "Primärfarbe",
             "ShowWebcamInNavigation": "Zeige Webcam in der Navigation",
             "UiSettings": "UI-Einstellungen"
@@ -1019,6 +1045,7 @@
             "EditCrowsnestConf": "crowsnest.conf bearbeiten",
             "EditWebcam": "Webcam bearbeiten",
             "FlipWebcam": "Webcam-Bild spiegeln:",
+            "Hlsstream": "HLS-Stream",
             "Horizontally": "horizontal",
             "IconBed": "Bett",
             "IconCam": "Kamera",
@@ -1043,8 +1070,15 @@
             "UrlStream": "Stream URL",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertikal",
-            "Webcams": "Webcams"
+            "Webcams": "Webcams",
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
         }
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "akzeptieren",
+        "Base": "Basis",
+        "ErrorText": "Ein Fehler ist beim Abtasten aufgetreten.",
+        "Headline": "Neigungsverstellung"
     },
     "Timelapse": {
         "AllFiles": "Alle",

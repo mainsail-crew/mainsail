@@ -164,11 +164,13 @@
         "Yes": "Ja"
     },
     "Files": {
+        "AddBatchToQueue": "tilføj batch til kø",
         "AddToQueue": "Tilføj til kø",
         "AllFiles": "Alle",
         "BedTemp": "Bed temperatur",
         "Cancel": "Annuller",
         "ChamberTemp": "Indelukke temperatur",
+        "Count": "Tæl",
         "Create": "Opret",
         "CreateNewDirectory": "Ny mappe",
         "CurrentPath": "Du er her",
@@ -189,7 +191,7 @@
         "Filesize": "Filstørrelse",
         "Free": "Ledig",
         "FreeDisk": "Ledig plads",
-        "GCodeFiles": "G-Code Filer",
+        "GCodeFiles": "G-Kode Filer",
         "GcodesRootDirectoryDoesntExists": "Ingen mappe med g-koder fundet. Tjek at opsætning af \"path\" under [virtual_sdcard] sektionen i printer.cfg er korrekt.",
         "HiddenFiles": "Skjulte filer",
         "InvalidNameAlreadyExists": "Navnet eksisterer allerede, vælg venligst et andet navn.",
@@ -253,7 +255,9 @@
         "Tracking": "Sporing",
         "Transparency": "Transparens",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxel Mode (ASMBL)"
+        "VoxelMode": "Voxel Mode (ASMBL)",
+        "ShowGCode": "Vis G-kode",
+        "CNCMode": "CNC Mode"
     },
     "Heightmap": {
         "Abort": "Afbryd",
@@ -303,6 +307,7 @@
         "AvgPrinttime": "Gns. printtid",
         "Cancel": "Annuller",
         "CreateNote": "Gem note",
+        "Chart": "Skema",
         "Delete": "Slet",
         "DeleteSelectedQuestion": "Er du sikker på du vil slette alle {count} valgte jobs?",
         "Details": "Detaljer",
@@ -354,6 +359,7 @@
             "Others": "Andre",
             "server_exit": "Server exit"
         },
+        "Table": "Tabel",
         "TitleExportHistory": "Export History",
         "TitleRefreshHistory": "Opdater historik",
         "TitleSettings": "Indstillinger",
@@ -365,7 +371,12 @@
     },
     "JobQueue": {
         "AllJobs": "Alle Jobs",
+        "ChangeCount": "Ændre antal",
+        "Cancel": "Annuller",
+        "Count": "Tæl",
         "Empty": "Tom",
+        "InvalidCountEmpty": "Input må ikke være tom!",
+        "InvalidCountGreaterZero": "Input skal være over 0!",
         "JobQueue": "Jobkø",
         "Jobs": "Jobs",
         "Pause": "Pause",
@@ -417,7 +428,13 @@
             "TRIGGERED": "Aktiveret"
         },
         "LogfilesPanel": {
-            "Logfiles": "Logfiler"
+            "Accept": "Acceptér",
+            "Cancel": "Annuller",
+            "Logfiles": "Logfiler",
+            "Rollover": "Nulstil log-filer",
+            "RolloverDescription": "Vælg hvilke log-filer der skal nulstilles",
+            "RolloverToastSuccessful": "Filen: \"{name}\" blev nulstillet.",
+            "RolloverToastFailed": "Nulstillings fejl-log for \"{name}\": {message}"
         },
         "SystemPanel": {
             "Constants": "Konstanter",
@@ -507,9 +524,12 @@
             "WebcamOff": "Sluk"
         },
         "KlippyStatePanel": {
+            "CheckKlippyAndUdsAddress": "Tjek at Klipper-servicen kører, samt at klippy_uds_address er korrekt konfigureret i moonraker.conf.",
             "FirmwareRestart": "Genstart alt",
-            "KlipperCheck": "Check at Klipper service kører og at en UDS (Unix Domain Socket) er konfigureret.",
             "MoonrakerCannotConnect": "Moonraker kan ikke forbinde til Klipper!",
+            "PowerOn": "Tænd",
+            "PrinterSwitchedOff": "Printeren er slukket",
+            "PrinterSwitchedOffDescription": "Printeren er slukket og Klipper kan ikke forbinde til den. Tryk på nedenstående knap for at tænde printeren",
             "Restart": "Genstart",
             "ServiceReports": "{service} rapporter"
         },
@@ -584,6 +604,18 @@
             "Layer": "Lag",
             "Max": "maks",
             "ObjectHeight": "Objekt Højde",
+            "PauseAtLayer": {
+                "Abort": "Afbryd",
+                "Accept": "Acceptér",
+                "AtLayer": "ved lag",
+                "Call": "Kør",
+                "DescriptionPauseAtLayerActive": "Denne funktion er allerede aktiv og vil køre \"{call}\" ved lag: {layer}. Hvis du kører kommandoen igen overskrives disse indstillinger.",
+                "DescriptionPauseNextLayerActive": "Denne funktion er allerede aktiv og vil køre \"{call}\" ved næste lag.",
+                "Layer": "Lag",
+                "NextLayer": "Næste lag",
+                "PauseAtLayer": "Pause ved lag",
+                "Type": "Type"
+            },
             "PausePrint": "Pause print",
             "Print": "Reel printtid",
             "PrintTime": "Print Tid",
@@ -983,9 +1015,11 @@
             "ConfirmOnPowerDeviceChangeDescription": "Vis bekræftelse ved ændringer på Enhedens strømtilstand",
             "DisplayCANCEL_PRINT": "Vis Afbryd print",
             "DisplayCANCEL_PRINTDescription": "Viser Afbryd print knappen konstant - ingen tofaktor godkendelse nødvendig.",
-            "GcodeThumbnails": "Gcode forhåndsvisninger",
+            "GcodeThumbnails": "G-Kode forhåndsvisninger",
             "GcodeThumbnailsDescription": "Klik på knappen for mere information.",
             "Guide": "Guide",
+            "HideSaveConfigButtonForBedMesh": "Skjul GEM KONFIGURATION knap for ændringer i højdekort",
+            "HideSaveConfigButtonForBedMeshDescription": "Skjul GEM KONFIGURATION, hvis det kun er ændringer i højdekort der venter på at blive gemt i Klipper.",
             "LockSliders": "Lås sliders på touch-enheder",
             "LockSlidersDelay": "Forsinkelse på låsning af sliders",
             "LockSlidersDelayDescription": "Sliders vil låse efter det angivne tidsrum (sek). Hvis sat til 0 eller efterladt tomt, vil Sliders kun låse ved opdatering/genindlæsning af siden.",
@@ -995,6 +1029,8 @@
             "NavigationStyleDescription": "Skift navigationens udseende",
             "NavigationStyleIconsAndText": "Ikoner + Tekst",
             "NavigationStyleIconsOnly": "Kun ikoner",
+            "PowerDeviceName": "Printer strømenhed",
+            "PowerDeviceNameDescription": "Vælg hvilken strømenhed i Moonraker der styrer printerens strøm.",
             "Primary": "Primær",
             "ShowWebcamInNavigation": "Vis Webcam i navigation",
             "UiSettings": "UI-indstillinger"
@@ -1016,6 +1052,7 @@
             "IconNozzle": "Dyse",
             "IconPrinter": "Printer",
             "Ipstream": "IP Kamera",
+            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptiv MJPEG-Streamer (eksperimental)",
             "Name": "Navn",
@@ -1032,6 +1069,12 @@
             "Vertically": "vertikalt",
             "Webcams": "Webcams"
         }
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "Acceptér",
+        "Base": "Udgangspunkt",
+        "ErrorText": "Noget gik galt under målingsprocessen",
+        "Headline": "Bed-skrue justering"
     },
     "Timelapse": {
         "AllFiles": "Alle",

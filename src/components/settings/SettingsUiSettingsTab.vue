@@ -159,6 +159,13 @@
                     :dynamic-slot-width="true">
                     <v-switch v-model="hideSaveConfigForBedMash" hide-details class="mt-0" />
                 </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.DisableFanAnimation').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.DisableFanAnimationDescription').toString()"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="disableFanAnimation" hide-details class="mt-0" />
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -331,6 +338,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set hideSaveConfigForBedMash(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideSaveConfigForBedMash', value: newVal })
+    }
+
+    get disableFanAnimation() {
+        return this.$store.state.gui.uiSettings.hideSaveConfigForBedMash ?? false
+    }
+
+    set disableFanAnimation(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.disableFanAnimation', value: newVal })
     }
 
     clearColorObject(color: any): string {

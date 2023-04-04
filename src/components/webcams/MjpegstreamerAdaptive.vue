@@ -1,21 +1,5 @@
-<style scoped>
-.webcamImage {
-    width: 100%;
-}
-
-.webcamFpsOutput {
-    display: inline-block;
-    position: absolute;
-    bottom: 6px;
-    right: 0;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 3px 10px;
-    border-top-left-radius: 5px;
-}
-</style>
-
 <template>
-    <div style="position: relative">
+    <div style="position: relative" class="d-flex justify-center">
         <div v-if="!isLoaded" class="text-center py-5">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </div>
@@ -44,7 +28,8 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     private isVisibleDocument = true
     private isVisibleViewport = false
     private isLoaded = true
-    private timer: number | undefined = undefined
+    // eslint-disable-next-line no-undef
+    private timer: NodeJS.Timeout | undefined = undefined
 
     private request_start_time = performance.now()
     private start_time = performance.now()
@@ -67,6 +52,8 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
         const output = {
             transform: 'none',
             aspectRatio: 16 / 9,
+            maxHeight: window.innerHeight - 155 + 'px',
+            maxWidth: 'auto',
         }
 
         let transforms = ''
@@ -75,7 +62,10 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
         if ((this.camSettings.rotate ?? 0) === 180) transforms += ' rotate(180deg)'
         if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
-        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
+        if (this.aspectRatio) {
+            output.aspectRatio = this.aspectRatio
+            output.maxWidth = (window.innerHeight - 155) * this.aspectRatio + 'px'
+        }
 
         return output
     }
@@ -114,10 +104,10 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
             canvas.width = canvas.clientWidth
             if (this.rotate) {
                 if (this.aspectRatio === null) this.aspectRatio = frame.height / frame.width
-                canvas.height = canvas.clientWidth / (frame.height / frame.width)
+                canvas.height = canvas.clientWidth / this.aspectRatio
             } else {
                 if (this.aspectRatio === null) this.aspectRatio = frame.width / frame.height
-                canvas.height = canvas.clientWidth * (frame.width / frame.height)
+                canvas.height = canvas.clientWidth * this.aspectRatio
             }
 
             if (this.rotate) {
@@ -223,3 +213,19 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.webcamImage {
+    width: 100%;
+}
+
+.webcamFpsOutput {
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 3px 10px;
+    border-top-left-radius: 5px;
+}
+</style>

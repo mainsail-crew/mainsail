@@ -52,6 +52,7 @@
             "Complete": "Complete - {filename}",
             "Error": "ERROR",
             "Pause": "Pause Print",
+            "PrinterOff": "Printer OFF",
             "Printing": "{percent}% Printing - {filename}",
             "PrintingETA": "{percent}% Printing - ETA: {eta} - {filename}"
         },
@@ -279,6 +280,7 @@
         "Flat": "Flat",
         "Heightmap": "Heightmap",
         "InvalidNameAlreadyExists": "Profile name already exists, please choose another profile name.",
+        "InvalidNameAscii": "Name is invalid. Only ascii character are allowed.",
         "InvalidNameEmpty": "Input must not be empty!",
         "InvalidNameReserved": "Profile 'default' is reserved, please choose another profile name.",
         "Later": "Later",
@@ -433,7 +435,7 @@
             "Logfiles": "Log Files",
             "Rollover": "Rollover Logs",
             "RolloverDescription": "Please select which logs should be reset:",
-            "RolloverToastSuccessful": "Log for \"{name}\"was successfully reset.",
+            "RolloverToastSuccessful": "Log for \"{name}\" was successfully reset.",
             "RolloverToastFailed": "Rollover log for \"{name}\": {message}"
         },
         "SystemPanel": {
@@ -1013,6 +1015,8 @@
             "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
             "ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
             "ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",
+            "DisableFanAnimation": "Disable fan animation",
+            "DisableFanAnimationDescription": "This can reduce some load in your Browser.",
             "DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
             "GcodeThumbnails": "G-Code thumbnails",
@@ -1067,7 +1071,8 @@
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertically",
-            "Webcams": "Webcams"
+            "Webcams": "Webcams",
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
         }
     },
     "ScrewsTiltAdjust": {

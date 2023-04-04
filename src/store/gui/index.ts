@@ -157,6 +157,7 @@ export const getDefaultState = (): GuiState => {
             navigationStyle: 'iconsAndText',
             powerDeviceName: null,
             hideSaveConfigForBedMash: false,
+            disableFanAnimation: false,
         },
         view: {
             blockFileUpload: false,

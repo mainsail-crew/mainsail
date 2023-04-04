@@ -264,7 +264,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     temperature: Math.round(value.temperature * 10) / 10,
                     additionalSensors: getters.getAdditionalSensors(nameSplit[1]),
                     speed: Math.round((value.speed ?? 0) * 100),
-                    avgSpeed: Math.round(getters['tempHistory/getAvgSpeed'](name) ?? 0),
+                    avgSpeed: Math.round(getters['tempHistory/getAvgSpeed'](nameSplit[1]) ?? 0),
                     rpm: value.rpm !== null ? Math.round(value.rpm) : null,
                     presets: rootGetters['gui/presets/getPresetsFromHeater']({ name: key }),
                     chartColor: getters['tempHistory/getDatasetColor'](nameSplit[1]),
@@ -356,8 +356,9 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return caseInsensitiveSort(sensors, 'name')
     },
 
-    getTemperatureObjects: (state, getters) => {
+    getTemperatureObjects: (state, getters, rootState) => {
         const objects: PrinterStateTemperatureObject[] = []
+        const disableFanAnimation = rootState.gui?.uiSettings.disableFanAnimation ?? false
 
         const heaters = getters['getHeaters']
         if (heaters.length) {
@@ -402,7 +403,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                         fan.target > 0
                             ? `${fan.chartColor}${opacityHeaterActive}`
                             : `${fan.chartColor}${opacityHeaterInactive}`,
-                    iconClass: fan.speed ? ' icon-rotate' : '',
+                    iconClass: !disableFanAnimation && fan.speed ? ' icon-rotate' : '',
                     state: fan.target > 0 && fan.speed > 0 ? fan.speed + '%' : fan.target > 0 ? 'standby' : 'off',
                     avgState: fan.avgSpeed + '%',
                     temperature: fan.temperature,
@@ -1097,6 +1098,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 tools.push({
                     name: macro.name,
                     active: macro.variables.active ?? false,
+                    color: macro.variables.color ?? macro.variables.colour ?? null,
                 })
             )
 
