@@ -17,7 +17,7 @@
                 bottom
                 :close-on-content-click="false"
                 :attach="'#' + vMenuAttachId"
-                :width="paramsOverlayWidth">
+                :min-width="paramsOverlayWidth">
                 <template #activator="{ on, attrs }">
                     <v-btn
                         :id="vMenuAttachId"
@@ -30,7 +30,7 @@
                         <v-icon>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
-                <v-card :width="paramsOverlayWidth">
+                <v-card :min-width="paramsOverlayWidth">
                     <v-card-text class="py-2">
                         <v-row class="my-2">
                             <v-col v-for="(name, key) in paramArray" :key="'param_' + key" :cols="paramCssCols">
