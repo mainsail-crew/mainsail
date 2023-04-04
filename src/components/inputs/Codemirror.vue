@@ -95,7 +95,6 @@ export default class Codemirror extends Mixins(BaseMixin) {
 
         if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(klipper_config))
         else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
-        // else if (['jinja2'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(jinja2))
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
         else if (['css', 'scss', 'sass'].includes(this.fileExtension)) extensions.push(css())
 
