@@ -1,8 +1,5 @@
-import { StreamLanguage, StreamParser, StringStream } from '@codemirror/language'
+import { StreamParser, StringStream } from '@codemirror/language'
 import { gcode } from '@/plugins/StreamParserGcode'
-import { SlowBuffer } from 'buffer'
-import { StateField } from '@codemirror/state'
-import { toInteger } from 'cypress/types/lodash'
 
 export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {

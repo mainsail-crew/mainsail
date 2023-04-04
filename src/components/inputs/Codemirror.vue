@@ -1,5 +1,5 @@
 <template>
-    <div className="vue-codemirror">
+    <div class="vue-codemirror">
         <div ref="codemirror" v-observe-visibility="visibilityChanged"></div>
     </div>
 </template>
@@ -15,7 +15,6 @@ import { EditorState } from '@codemirror/state'
 import { mainsailTheme } from '@/plugins/codemirrorTheme'
 import { StreamLanguage } from '@codemirror/language'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
-// import { jinja2 } from '@/plugins/StreamParserJinja2'
 import { gcode } from '@/plugins/StreamParserGcode'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'

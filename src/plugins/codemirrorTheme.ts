@@ -124,10 +124,6 @@ const mainsailHighlightStyle = HighlightStyle.define([
     { tag: t.updateOperator, color: '#b525d0' },
     { tag: t.operator, color: '#fc03fc' },
 ])
-const fn0 = mainsailHighlightStyle.style
-// noinspection JSConstantReassignment
-// @ts-ignore
-mainsailHighlightStyle.style = (tags) => fn0(tags || [])
 
 /// Extension to enable the Mox theme (both the editor theme and
 /// the highlight style).
