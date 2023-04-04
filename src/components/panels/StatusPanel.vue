@@ -57,13 +57,26 @@
                 :show-dialog.sync="boolShowObjects"
                 @update:showDialog="updateShowDialog"></status-panel-exclude-object>
             <status-panel-pause-at-layer-dialog :show-dialog.sync="boolShowPauseAtLayer" />
-            <template v-if="display_message || print_stats_message">
+            <template v-if="print_stats_message">
+                <v-container>
+                    <v-row>
+                        <v-col class="py-2">
+                            <span class="subtitle-2 d-block px-0 text--disabled">
+                                <v-icon class="mr-2" color="warning" small>{{ mdiAlertOutline }}</v-icon>
+                                {{ print_stats_message }}
+                            </span>
+                        </v-col>
+                    </v-row>
+                </v-container>
+                <v-divider class="mt-0 mb-0"></v-divider>
+            </template>
+            <template v-if="display_message">
                 <v-container>
                     <v-row>
                         <v-col class="py-2">
                             <span class="subtitle-2 d-block px-0 text--disabled">
                                 <v-icon class="mr-2" small>{{ mdiMessageProcessingOutline }}</v-icon>
-                                {{ print_stats_message ?? display_message }}
+                                {{ display_message }}
                             </span>
                         </v-col>
                         <v-col class="col-auto py-2">
@@ -110,6 +123,7 @@ import StatusPanelPrintstatusThumbnail from '@/components/panels/Status/Printsta
 import StatusPanelPauseAtLayerDialog from '@/components/panels/Status/PauseAtLayerDialog.vue'
 import Panel from '@/components/ui/Panel.vue'
 import {
+    mdiAlertOutline,
     mdiBroom,
     mdiInformation,
     mdiPause,
@@ -142,6 +156,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiMessageProcessingOutline = mdiMessageProcessingOutline
     mdiCloseCircle = mdiCloseCircle
     mdiDotsVertical = mdiDotsVertical
+    mdiAlertOutline = mdiAlertOutline
 
     private boolShowObjects = false
     private boolShowPauseAtLayer = false
@@ -274,11 +289,11 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get display_message() {
-        return this.$store.state.printer.display_status?.message ?? ''
+        return this.$store.state.printer.display_status?.message ?? null
     }
 
     get print_stats_message() {
-        return this.$store.state.printer.print_stats?.message ?? ''
+        return this.$store.state.printer.print_stats?.message ?? null
     }
 
     get layer_count() {
