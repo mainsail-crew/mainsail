@@ -362,11 +362,11 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get loadFilamentMacro() {
-        return this.macros.find((macro: PrinterStateMacro) => macro.name === 'LOAD_FILAMENT')
+        return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'LOAD_FILAMENT')
     }
 
     get unloadFilamentMacro() {
-        return this.macros.find((macro: PrinterStateMacro) => macro.name === 'UNLOAD_FILAMENT')
+        return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'UNLOAD_FILAMENT')
     }
 
     /**
