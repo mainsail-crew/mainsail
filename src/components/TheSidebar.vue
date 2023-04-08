@@ -268,14 +268,6 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     opacity: 0.85;
 }
 
-.menu-item-title {
-    line-height: 30px;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    opacity: 0.85;
-}
-
 .nav-scrollbar {
     height: 100%;
 }
