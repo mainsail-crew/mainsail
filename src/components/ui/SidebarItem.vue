@@ -30,15 +30,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-
-export interface NaviPoint {
-    title: string
-    to?: string
-    href?: string
-    target?: string
-    icon: string
-    position: number
-}
+import { NaviPoint } from '@/components/mixins/navigation'
 
 @Component
 export default class SidebarItem extends Mixins(BaseMixin) {

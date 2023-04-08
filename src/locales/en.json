@@ -911,6 +911,9 @@
             "UnableToLoadLight": "Unable to load light",
             "UnableToLoadPreset": "Unable to load preset"
         },
+        "NavigationTab": {
+            "Navigation": "Navigation"
+        },
         "PresetsTab": {
             "AddPreset": "add preset",
             "Cooldown": "Cooldown",
