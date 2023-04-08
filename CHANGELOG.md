@@ -2,6 +2,23 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.5.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.5.1) - 2023-04-02
+### Bug Fixes and Improvements
+
+- Missing M117 output in status panel (#1309) | [0f01a8f](0f01a8f994953c6518a0ece4870b0328387c5cb1)
+- Disallow non-ascii chars in bed_mesh name (#1311) | [7301ae9](7301ae986abea0b71281f62979098bb99b362469)
+- Fix issue of empty Screws tilt adjust helper dialog (#1329) | [44f4079](44f4079dacbe88ce84c27ea32080d95756d5e468)
+- Fix invalid name input checks (#1312) | [85ea45f](85ea45fbe9b34d9a19ed1a3fcaed95514c3977e5)
+
+### Localization
+
+- **cz**: Add Czech localization (#1327) | [531b75f](531b75fffd2e22c60764e10c4ed1786449d9cad5)
+- **de**: Update German localization (#1326) | [ec1b32e](ec1b32eaaf83222591d822b233bdcff54f428560)
+
+### Other
+
+- Update caniuse (#1330) | [c18a959](c18a9594e6c9cc61ff0a7ac68b2206aa73cce697)
+
 ## [2.5.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.5.0) - 2023-03-12
 ### Features
 

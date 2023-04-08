@@ -3,7 +3,7 @@
         "Notifications": {
             "DependencyDescription": "Die momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}.",
             "DependencyName": "Abhängigkeit: {name}",
-            "DismissAll": "Dismiss all",
+            "DismissAll": "Alles verwerfen",
             "KlipperWarnings": {
                 "DeprecatedOption": "Option '{option}' im Abschnitt '{section}' ist veraltet und wird in einem zukünftigen Release entfernt.",
                 "DeprecatedOptionHeadline": "Veralterte Klipper Option",
