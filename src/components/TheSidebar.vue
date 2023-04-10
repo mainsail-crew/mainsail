@@ -29,7 +29,7 @@
                             <span class="text-h6 font-weight-regular text-truncate">{{ printerName }}</span>
                         </template>
                     </v-list-item>
-                    <sidebar-item v-for="(category, index) in naviPoints" :key="index" :item="category" />
+                    <sidebar-item v-for="(category, index) in visibleNaviPoints" :key="index" :item="category" />
                 </v-list-item-group>
             </v-list>
         </overlay-scrollbars>

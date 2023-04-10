@@ -4,6 +4,7 @@ import { Mixins, Watch } from 'vue-property-decorator'
 import { mdiLinkVariant, mdiViewDashboardOutline } from '@mdi/js'
 import BaseMixin from '@/components/mixins/base'
 import { PrinterStateKlipperConfig } from '@/store/printer/types'
+import { GuiNavigationStateEntry } from '@/store/gui/navigation/types'
 
 export interface NaviPoint {
     type: 'link' | 'route'
@@ -41,26 +42,40 @@ export default class NavigationMixin extends Mixins(BaseMixin) {
                 return element.showInNavi && this.showInNavi(element)
             })
             .forEach((element) => {
+                const [position, visible] = this.getUiSettings({
+                    type: 'route',
+                    title: element.title ?? 'unknown',
+                    visible: true,
+                    position: element.position ?? 999,
+                })
+
                 points.push({
                     type: 'route',
                     title: this.$t(`Router.${element.title}`),
                     icon: element.icon,
                     to: element.path,
-                    position: element.position ?? 999,
-                    visible: true,
+                    position,
+                    visible,
                 } as NaviPoint)
             })
 
         if (this.customNaviLinks.length) {
             this.customNaviLinks.forEach((element) => {
+                const [position, visible] = this.getUiSettings({
+                    type: 'link',
+                    title: element.title ?? 'unknown',
+                    visible: element.visible ?? true,
+                    position: element.position ?? 999,
+                })
+
                 points.push({
                     type: 'link',
                     title: element.title,
                     icon: element.icon,
                     href: element.href,
                     target: element.target,
-                    position: element.position,
-                    visible: true,
+                    position,
+                    visible,
                 })
             })
         }
@@ -70,6 +85,14 @@ export default class NavigationMixin extends Mixins(BaseMixin) {
 
     get naviPoints(): NaviPoint[] {
         return this.routesNaviPoints.sort((a, b) => a.position - b.position)
+    }
+
+    get visibleNaviPoints(): NaviPoint[] {
+        return this.naviPoints.filter((entry) => entry.visible)
+    }
+
+    get uiSettings(): GuiNavigationStateEntry[] {
+        return this.$store.state.gui.navigation.entries
     }
 
     get klippy_state(): string {
@@ -128,5 +151,15 @@ export default class NavigationMixin extends Mixins(BaseMixin) {
         else if (route.klipperIsConnected && !this.klippyIsConnected) return false
 
         return true
+    }
+
+    getUiSettings(entry: GuiNavigationStateEntry): [number, boolean] {
+        const index = this.uiSettings.findIndex((point) => {
+            return point.title === entry.title && point.type === entry.type
+        })
+
+        if (index === -1) return [entry.position, entry.visible]
+
+        return [this.uiSettings[index].position, this.uiSettings[index].visible]
     }
 }
