@@ -119,6 +119,10 @@ export default class NavigationMixin extends Mixins(BaseMixin) {
         return this.$store.getters['files/getCustomNaviPoints']
     }
 
+    get webcamCount(): number {
+        return this.$store.getters['gui/webcams/getWebcams'].length
+    }
+
     @Watch('sidebarNaviFile', { immediate: true })
     async sidebarNaviFileChanged(newVal: string) {
         this.customNaviLinks = []
@@ -143,7 +147,7 @@ export default class NavigationMixin extends Mixins(BaseMixin) {
 
     showInNavi(route: AppRoute): boolean {
         if (['shutdown', 'error', 'disconnected'].includes(this.klippy_state) && !route.alwaysShow) return false
-        else if (route.title === 'Webcam' && !this.boolNaviWebcam) return false
+        else if (route.title === 'Webcam' && this.webcamCount === 0) return false
         else if (route.moonrakerComponent && !this.moonrakerComponents.includes(route.moonrakerComponent)) return false
         else if (route.registeredDirectory && !this.registeredDirectories.includes(route.registeredDirectory))
             return false
