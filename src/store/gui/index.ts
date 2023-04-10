@@ -156,7 +156,6 @@ export const getDefaultState = (): GuiState => {
             boolBigThumbnail: true,
             boolWideNavDrawer: false,
             boolHideUploadAndPrintButton: false,
-            boolWebcamNavi: false,
             navigationStyle: 'iconsAndText',
             powerDeviceName: null,
             hideSaveConfigForBedMash: false,
