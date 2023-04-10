@@ -596,7 +596,6 @@ import {
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import ControlMixin from '@/components/mixins/control'
-import axios from 'axios'
 
 interface contextMenu {
     shown: boolean
