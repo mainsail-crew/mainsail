@@ -52,7 +52,7 @@
                         outlined
                         small
                         color="primary"
-                        href="https://docs.mainsail.xyz/quicktips/thumbnails"
+                        href="https://docs.mainsail.xyz/overview/features/thumbnails"
                         target="_blank">
                         {{ $t('Settings.UiSettingsTab.Guide').toString() }}
                     </v-btn>
