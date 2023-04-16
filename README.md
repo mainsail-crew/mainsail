@@ -105,7 +105,7 @@ every day. To motivate him (☕🍺😜) there are several ways to support him:
 Contributions to Mainsail are always welcome!
 
 - 📥 Pull requests and 🌟 Stars are always welcome.
-- Read our [contributing guide](CONTRIBUTING.md) to get started,
+- Read our [contributing guidelines](CONTRIBUTING.md) to get started,
   or find us on [Discord](https://discord.gg/mainsail), we will take the time to guide you.
 
 Looking for a first issue to tackle?
