@@ -5,6 +5,20 @@
   For a timely review/response, please avoid force-pushing additional
   commits if your PR already received reviews or comments.
 
+  We use squash-merge to merge PRs, so the commit history is clean, but we use the PR title as the commit message.
+  So we recommend you to use the PR title with conventional commits type prefixes. We use the following prefixes for the PR title:
+    - feat: A new feature
+    - fix: A bug fix
+    - docs: Documentation only changes
+    - style: Changes that do not affect the meaning of the code (white-space, formatting, etc)
+    - refactor: A code change that neither fixes a bug nor adds a feature
+    - perf: A code change that improves performance
+    - test: Adding missing tests or correcting existing tests
+    - chore: Changes to the build process or auxiliary tools and libraries such as documentation generation
+    - locale: Changes to the translations
+
+  You can found more information about Conventional Commits here: https://www.conventionalcommits.org/en/v1.0.0/.
+
   Before submitting a Pull Request, please ensure you've done the following:
   - 📖 Read the Mainsail Contributing Guidelines: https://github.com/mainsail-crew/mainsail/blob/HEAD/CONTRIBUTING.md#-submitting-a-pull-request-pr.
   - 📖 Read the Mainsail Code of Conduct: https://github.com/mainsail-crew/mainsail/blob/HEAD/.github/CODE_OF_CONDUCT.md.
@@ -13,17 +27,6 @@
   - 📝 Use descriptive commit messages.
   - 📗 Update any related documentation and include any relevant screenshots.
 -->
-
-## What type of PR is this? (check all applicable)
-
-- [ ] 🍕 Feature
-- [ ] 🐛 Bug Fix
-- [ ] 🎨 Style
-- [ ] 🧑‍💻 Code Refactor
-- [ ] 🔥 Performance Improvements
-- [ ] ✅ Test
-- [ ] 🔁 CI
-- [ ] 📦 Chore
 
 ## Description
 
