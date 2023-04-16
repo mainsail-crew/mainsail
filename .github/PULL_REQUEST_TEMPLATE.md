@@ -45,10 +45,6 @@ https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-git
 
 ## [optional] Are there any post-deployment tasks we need to perform?
 
-
-
 ## [optional] What gif best describes this PR or how it makes you feel?
-
-
 
 <!-- note: PRs with deleted sections will be marked invalid -->
