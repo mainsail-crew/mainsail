@@ -1,6 +1,7 @@
 <template>
     <v-item-group class="d-inline-block">
         <v-btn
+            :id="vMenuAttachId"
             small
             :color="color"
             :class="paramArray.length ? 'macroWithParameters' : ''"
@@ -15,12 +16,13 @@
                 offset-y
                 offset-x
                 bottom
+                :offset-overflow="true"
+                :close-on-click="false"
                 :close-on-content-click="false"
                 :attach="'#' + vMenuAttachId"
                 :min-width="paramsOverlayWidth">
                 <template #activator="{ on, attrs }">
                     <v-btn
-                        :id="vMenuAttachId"
                         :disabled="disabled"
                         :color="color"
                         v-bind="attrs"
