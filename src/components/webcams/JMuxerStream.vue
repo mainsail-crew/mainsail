@@ -5,7 +5,7 @@
 </style>
 
 <template>
-  <video v-observe-visibility="visibilityChanged" ref="video" autoplay :style="webcamStyle" class="webcamImage" />
+  <video ref="video" v-observe-visibility="visibilityChanged" autoplay :style="webcamStyle" class="webcamImage" />
 </template>
 
 <script lang="ts">
