@@ -446,9 +446,9 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     get currentPosition() {
         return [
-            this.livePosition[0] + this.gcodeOffset[0],
-            this.livePosition[1] + this.gcodeOffset[1],
-            this.livePosition[2] + this.gcodeOffset[2],
+            this.livePosition[0] - this.gcodeOffset[0],
+            this.livePosition[1] - this.gcodeOffset[1],
+            this.livePosition[2] - this.gcodeOffset[2],
             this.livePosition[3],
         ]
     }
