@@ -1059,6 +1059,7 @@
             "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
+            "JMuxerStream": "Raw h264 stream (jmuxer)",
             "Name": "Name",
             "NameAlreadyExists": "Name already exists",
             "Required": "required",
