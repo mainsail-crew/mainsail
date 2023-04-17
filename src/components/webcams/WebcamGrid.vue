@@ -22,6 +22,9 @@
                 <template v-else-if="webcam.service === 'webrtc-camerastreamer'">
                     <webcam-webrtc-camerastreamer :cam-settings="webcam" />
                 </template>
+                <template v-else-if="webcam.service === 'jmuxer'">
+                    <webcam-jmuxer :cam-settings="webcam" />
+                </template>
                 <template v-else>
                     <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
                 </template>
