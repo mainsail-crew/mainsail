@@ -1,9 +1,3 @@
-<style scoped>
-.webcamImage {
-    width: 100%;
-}
-</style>
-
 <template>
     <video ref="video" v-observe-visibility="visibilityChanged" autoplay :style="webcamStyle" class="webcamImage" />
 </template>
@@ -94,3 +88,9 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.webcamImage {
+    width: 100%;
+}
+</style>
