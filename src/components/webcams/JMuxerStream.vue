@@ -54,7 +54,7 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
         const video = this.$refs.video
         const targetFps = this.camSettings.targetFps || 10
 
-        var jmuxer = (this.jmuxer = new JMuxer({
+        this.jmuxer = new JMuxer({
             node: video,
             mode: 'video',
             flushingTime: 0,
@@ -66,13 +66,12 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
             onError: (data: any) => {
                 console.log('jmuxer error:', data)
             },
-        }))
-        var url = this.url
+        })
 
-        var ws = new WebSocket(url)
+        const ws = new WebSocket(this.url)
         ws.binaryType = 'arraybuffer'
-        ws.addEventListener('message', function (event) {
-            jmuxer.feed({
+        ws.addEventListener('message', (event) => {
+            this.jmuxer.feed({
                 video: new Uint8Array(event.data),
             })
         })
