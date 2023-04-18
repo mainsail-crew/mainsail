@@ -45,6 +45,12 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
     play() {
         this.jmuxer?.destroy()
 
+        // Only websocket streams supported
+        if (!this.url.startsWith('ws://') && !this.url.startsWith('wss://')) {
+            console.error('jmuxer error: only websocket streams supported (ws://.. or wss://..)')
+            return
+        }
+
         const video = this.$refs.video
         const targetFps = this.camSettings.targetFps || 10
 
@@ -54,26 +60,22 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
             flushingTime: 0,
             fps: targetFps,
             // debug: true,
-            onReady: function (data) {
+            onReady: (data: any) => {
                 console.log('jmuxer ready:', data)
             },
-            onError: function (data) {
+            onError: (data: any) => {
                 console.log('jmuxer error:', data)
             },
         }))
         var url = this.url
 
-        if (url.startsWith('ws://') || url.startsWith('wss://')) {
-            var ws = new WebSocket(url)
-            ws.binaryType = 'arraybuffer'
-            ws.addEventListener('message', function (event) {
-                jmuxer.feed({
-                    video: new Uint8Array(event.data),
-                })
+        var ws = new WebSocket(url)
+        ws.binaryType = 'arraybuffer'
+        ws.addEventListener('message', function (event) {
+            jmuxer.feed({
+                video: new Uint8Array(event.data),
             })
-        } else {
-            console.error('jmuxer error: only websocket streams supported (ws://.. or wss://..)')
-        }
+        })
     }
 
     beforeUnmount() {
