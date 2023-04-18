@@ -84,9 +84,14 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
         const ws = new WebSocket(this.url)
         ws.binaryType = 'arraybuffer'
         ws.addEventListener('message', (event) => {
-            this.jmuxer.feed({
+            this.jmuxer?.feed({
                 video: new Uint8Array(event.data),
             })
+        })
+
+        ws.addEventListener('error', (event) => {
+            this.status = 'error'
+            console.log('jmuxer ws error:', event)
         })
     }
 
