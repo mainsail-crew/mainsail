@@ -48,11 +48,6 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
         this.play()
     }
 
-    updated() {
-        window.console.log('jmuxer updated')
-        this.play()
-    }
-
     play() {
         window.console.log('jmuxer play')
         this.status = 'connecting'
