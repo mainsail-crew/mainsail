@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import JMuxer from 'jmuxer'
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
@@ -93,6 +93,12 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
 
     beforeUnmount() {
         this.jmuxer?.destroy()
+    }
+
+    @Watch('camSettings', { deep: true })
+    onCamSettingsChanged() {
+        // restart stream, when camSettings change
+        this.play()
     }
 }
 </script>
