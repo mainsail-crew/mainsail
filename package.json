@@ -70,6 +70,7 @@
         "@intlify/vite-plugin-vue-i18n": "^2.5.0",
         "@mdi/js": "^7.0.0",
         "@types/file-saver": "^2.0.5",
+        "@types/jmuxer": "^2.0.3",
         "@types/lodash.kebabcase": "^4.1.6",
         "@types/lodash.throttle": "^4.1.6",
         "@types/semver": "^7.3.8",
