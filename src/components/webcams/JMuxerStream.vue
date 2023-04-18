@@ -29,7 +29,7 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
         let transforms = ''
         if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
+        if (transforms.trimStart().length) return { transform: transforms.trimStart() }
 
         return ''
     }
