@@ -1,5 +1,5 @@
 <template>
-    <video ref="video" v-observe-visibility="visibilityChanged" autoplay :style="webcamStyle" class="webcamImage" />
+    <video ref="video" autoplay :style="webcamStyle" class="webcamImage" />
 </template>
 
 <script lang="ts">
@@ -9,7 +9,6 @@ import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class JMuxerStreamer extends Mixins(BaseMixin) {
-    private isVisible = true
     private jmuxer: JMuxer | null = null
 
     @Prop({ required: true })
@@ -23,8 +22,6 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
     }
 
     get url() {
-        if (!this.isVisible) return ''
-
         return this.camSettings.urlStream || ''
     }
 
@@ -35,10 +32,6 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
         if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
 
         return ''
-    }
-
-    visibilityChanged(isVisible: boolean) {
-        this.isVisible = isVisible
     }
 
     mounted() {
