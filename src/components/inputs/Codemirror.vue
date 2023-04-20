@@ -19,6 +19,7 @@ import { gcode } from '@/plugins/StreamParserGcode'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
+import {indentUnit} from '@codemirror/language';
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin) {
@@ -83,6 +84,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
         const extensions = [
             basicSetup,
             mainsailTheme,
+            indentUnit.of(' '.repeat(this.$store.state.gui.editor.tabSize)),
             keymap.of([indentWithTab]),
             EditorView.updateListener.of((update) => {
                 this.content = update.state?.doc.toString()

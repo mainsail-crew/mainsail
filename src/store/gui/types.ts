@@ -58,6 +58,7 @@ export interface GuiState {
         escToClose: boolean
         confirmUnsavedChanges: boolean
         klipperRestartMethod: 'FIRMWARE_RESTART' | 'RESTART'
+        tabSize: number
         moonrakerRestartInstance: string | null
     }
     gcodeViewer: {
