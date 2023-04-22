@@ -797,7 +797,10 @@
             "MoonrakerRestartInstance": "Restart instance Moonrakeru",
             "MoonrakerRestartInstanceDescription": "Vyberte, která služba Moonrakeru se restartuje v \"Uložit a restartovat\", když se editují konfigurační soubory Moonrakeru.",
             "UseEscToClose": "Použít ESC pro zavření editoru",
-            "UseEscToCloseDescription": "Umožňuje použití klávesy ESC k zavření editoru"
+            "UseEscToCloseDescription": "Umožňuje použití klávesy ESC k zavření editoru",
+            "TabSize": "TAB Velikost",
+            "TabSizeDescription": "Nastavuje, kolik mezer má být odsazeno pro TAB"
+            
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Barva pozadí",

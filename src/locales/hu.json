@@ -725,7 +725,9 @@
             "MoonrakerRestartInstance": "Moonraker példány Újraindítása",
             "MoonrakerRestartInstanceDescription": "Válaszd ki melyik Moonraker szolgáltatást indítsuk újra a 'Ment és Újraindít' esetén, amikor a Moonraker konfig fájlait szerkeszted.",
             "UseEscToClose": "Kilépéshez nyomd meg az ESC gombot",
-            "UseEscToCloseDescription": "Az ESC gomb megnyomása bezárja a szerkesztőt"
+            "UseEscToCloseDescription": "Az ESC gomb megnyomása bezárja a szerkesztőt",
+            "TabSize": "TAB Méret",
+            "TabSizeDescription": "Beállítja, hogy hány szóközzel legyen behúzva a TAB-oknál"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Háttérszín",

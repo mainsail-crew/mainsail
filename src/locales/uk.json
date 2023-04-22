@@ -738,7 +738,9 @@
             "MoonrakerRestartInstance": "Інстанція перезапуску Moonraker",
             "MoonrakerRestartInstanceDescription": "Виберіть, яка послуга Moonraker перезапуститься на 'Зберегти та перезапустити' під час редагування файлів конфігурації Moonraker.",
             "UseEscToClose": "Використовуйте ESC для закриття редактора",
-            "UseEscToCloseDescription": "Дозволяє клавішу ESC закрити редактор"
+            "UseEscToCloseDescription": "Дозволяє клавішу ESC закрити редактор",
+            "TabSize": "TAB Розмір",
+            "TabSizeDescription": "Налаштовує кількість пробілів для табулятора TAB з відступом"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Колір фону",

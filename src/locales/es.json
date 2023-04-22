@@ -726,7 +726,10 @@
             "MoonrakerRestartInstance": "Instancia de Moonraker a reinicar",
             "MoonrakerRestartInstanceDescription": "Elija que instacia de moonrker se reiniciara cuando editando configuracionde monnraker presionemos \"Guardar y reiniciar\" ",
             "UseEscToClose": "Use ESC para cerrar",
-            "UseEscToCloseDescription": "Permite que la tecla ESC cierre el editor"
+            "UseEscToCloseDescription": "Permite que la tecla ESC cierre el editor",
+            "TabSize": "TAB Talla",
+            "TabSizeDescription": "Ajusta cuántos espacios deben sangrarse para TAB"
+            
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Color de fondo",

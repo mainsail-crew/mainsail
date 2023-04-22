@@ -797,7 +797,9 @@
             "MoonrakerRestartInstance": "Moonraker Neustartinstanz",
             "MoonrakerRestartInstanceDescription": "Wähle aus, welche Moonrakerinstanz neu gestartet werden soll wenn 'Speichern & Neustarten' im Editor geklickt wird.",
             "UseEscToClose": "ESC drücken um Editor zu schließen",
-            "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen."
+            "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen.",
+            "TabSize": "TAB Größe",
+            "TabSizeDescription": "Legt fest, um wie viele Leerzeichen für TAB eingerückt werden sollen"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Hintergrundfarbe",

@@ -796,7 +796,9 @@
             "MoonrakerRestartInstance": "重启Moonraker实例",
             "MoonrakerRestartInstanceDescription": "编辑完Moonraker配置文件并按下\"保存并重启\"按钮后，重启哪个Moonraker服务。",
             "UseEscToClose": "使用ESC关闭编辑器",
-            "UseEscToCloseDescription": "允许使用ESC键关闭编辑器"
+            "UseEscToCloseDescription": "允许使用ESC键关闭编辑器",
+            "TabSize": "TAB大小",
+            "TabSizeDescription": "调整TAB应该缩进多少个空格"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "背景颜色",

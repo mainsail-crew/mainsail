@@ -604,7 +604,9 @@
             "ConfirmUnsavedChangesDescription": "Se abilitato, l'editor necessita di una conferma per salvare o disdire le modifiche apportate. Se disabilitato, le modifiche saranno disdette silenziosamente.",
             "Editor": "Editor",
             "UseEscToClose": "Usa ESC per chiudere l'editor",
-            "UseEscToCloseDescription": "Permette a ESC di chiudere l'editor"
+            "UseEscToCloseDescription": "Permette a ESC di chiudere l'editor",
+            "TabSize": "TAB Dimensione",
+            "TabSizeDescription": "Regola il numero di spazi da rientrare per il TAB"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Colore Background",
