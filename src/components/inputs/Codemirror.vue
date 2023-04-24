@@ -19,6 +19,7 @@ import { gcode } from '@/plugins/StreamParserGcode'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
+import { LingWidgetPlugin } from './CodemirrorLinkWidget'
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin) {
@@ -82,6 +83,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
     get cmExtensions() {
         const extensions = [
             basicSetup,
+            LingWidgetPlugin,
             mainsailTheme,
             keymap.of([indentWithTab]),
             EditorView.updateListener.of((update) => {

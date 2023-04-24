@@ -52,7 +52,8 @@
                         ref="editor"
                         v-model="sourcecode"
                         :name="filename"
-                        :file-extension="fileExtension"></codemirror-async>
+                        :file-extension="fileExtension">
+                    </codemirror-async>
                 </v-card-text>
             </panel>
         </v-dialog>
