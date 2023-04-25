@@ -1111,7 +1111,6 @@
     "Video": "비디오",
     "DeleteSelectedQuestion": "{count}개의 파일을 정말로 삭제하시겠습니까?"
   },
-  "title": "한국어",
   "BedScrews": {
     "Abort": "취소",
     "Accept": "확인",
@@ -1134,5 +1133,6 @@
     "Base": "베이스",
     "ErrorText": "계측 중 문제가 발생했습니다",
     "Headline": "베드 스크류 틸트 교정"
-  }
+  },
+  "title": "한국어"
 }
