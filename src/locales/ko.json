@@ -1,4 +1,6 @@
 {
+  "title": "한국어 ",
+  "_last_update": "_last_update ",
   "App": {
     "Notifications": {
       "DependencyDescription": "{neededVersion} 버전 이상으로 업데이트 해야 정상 사용이 가능합니다",
@@ -1133,7 +1135,5 @@
     "Base": "베이스",
     "ErrorText": "계측 중 문제가 발생했습니다",
     "Headline": "베드 스크류 틸트 교정"
-  },
-  "title": "한국어 ",
-  "_last_update": "_last_update "
+  }
 }
