@@ -23,7 +23,7 @@ import {
 const routes: AppRoute[] = [
     {
         title: 'Dashboard',
-        path: '/',
+        path: import.meta.env.BASE_URL,
         icon: mdiMonitorDashboard,
         component: Dashboard,
         alwaysShow: true,
@@ -32,14 +32,14 @@ const routes: AppRoute[] = [
     },
     {
         title: 'Printers',
-        path: '/allPrinters',
+        path: import.meta.env.BASE_URL + 'allPrinters',
         component: Farm,
         alwaysShow: false,
         showInNavi: false,
     },
     {
         title: 'Webcam',
-        path: '/cam',
+        path: import.meta.env.BASE_URL + 'cam',
         icon: mdiWebcam,
         component: Webcam,
         alwaysShow: true,
@@ -48,7 +48,7 @@ const routes: AppRoute[] = [
     },
     {
         title: 'Console',
-        path: '/console',
+        path: import.meta.env.BASE_URL + 'console',
         icon: mdiConsoleLine,
         component: Console,
         alwaysShow: true,
@@ -58,7 +58,7 @@ const routes: AppRoute[] = [
     },
     {
         title: 'Heightmap',
-        path: '/heightmap',
+        path: import.meta.env.BASE_URL + 'heightmap',
         icon: mdiGrid,
         component: () => import('../pages/Heightmap.vue'),
         alwaysShow: false,
@@ -68,7 +68,7 @@ const routes: AppRoute[] = [
     },
     {
         title: 'G-Code Files',
-        path: '/files',
+        path: import.meta.env.BASE_URL + 'files',
         icon: mdiFileDocumentMultipleOutline,
         component: Files,
         alwaysShow: true,
@@ -78,7 +78,7 @@ const routes: AppRoute[] = [
     },
     {
         title: 'G-Code Viewer',
-        path: '/viewer',
+        path: import.meta.env.BASE_URL + 'viewer',
         icon: mdiVideo3d,
         component: () => import('../pages/Viewer.vue'),
         alwaysShow: true,
@@ -87,7 +87,7 @@ const routes: AppRoute[] = [
     },
     {
         title: 'History',
-        path: '/history',
+        path: import.meta.env.BASE_URL + 'history',
         icon: mdiHistory,
         component: History,
         alwaysShow: true,
@@ -97,7 +97,7 @@ const routes: AppRoute[] = [
     },
     {
         title: 'Timelapse',
-        path: '/timelapse',
+        path: import.meta.env.BASE_URL + 'timelapse',
         icon: mdiTimelapse,
         component: Timelapse,
         alwaysShow: true,
@@ -107,7 +107,7 @@ const routes: AppRoute[] = [
     },
     {
         title: 'Machine',
-        path: '/config',
+        path: import.meta.env.BASE_URL + 'config',
         icon: mdiWrench,
         component: Machine,
         alwaysShow: true,
@@ -119,7 +119,7 @@ const routes: AppRoute[] = [
         component: null,
         alwaysShow: false,
         showInNavi: false,
-        path: '/settings/machine',
+        path: import.meta.env.BASE_URL + 'settings/machine',
         redirect: '/config',
     },
 ]
