@@ -12,6 +12,9 @@ RUN npm install
 
 COPY ./ /app/
 
+ARG BASE="/"
+ENV VITE_BASE="$BASE"
+
 RUN npm run build
 
 #
@@ -19,5 +22,6 @@ RUN npm run build
 #
 FROM nginx:stable-alpine as runner
 
+ARG BASE="/"
 COPY --from=builder /app/.docker/nginx.conf  /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/dist/ /usr/share/nginx/html/
+COPY --from=builder /app/dist/ /usr/share/nginx/html$BASE
