@@ -234,6 +234,7 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "清除",
+        "CNCMode": "CNC模式",
         "ColorMode": "颜色模式",
         "Downloading": "正在下载",
         "ForceLineRendering": "强制线渲染",
@@ -247,6 +248,7 @@
         "ReloadRequired": "需要重新加载",
         "Rendering": "正在渲染",
         "RenderQuality": "渲染质量",
+        "ShowGCode": "显示G-Code",
         "ShowObjectSelection": "显示可选对象",
         "ShowToolhead": "显示打印头",
         "ShowTravelMoves": "显示移动路径",
@@ -255,9 +257,7 @@
         "Tracking": "正在追踪",
         "Transparency": "透明度",
         "Ultra": "极致",
-        "VoxelMode": "体素模式(ASMBL)",
-        "ShowGCode": "显示G-Code",
-        "CNCMode": "CNC模式"
+        "VoxelMode": "体素模式(ASMBL)"
     },
     "Heightmap": {
         "Abort": "取消",
@@ -306,8 +306,8 @@
         "AllJobs": "全部",
         "AvgPrinttime": "平均打印时间",
         "Cancel": "取消",
-        "CreateNote": "新建便条",
         "Chart": "图表",
+        "CreateNote": "新建便条",
         "Delete": "删除",
         "DeleteSelectedQuestion": "你是否要删除已选中的{count}个任务？",
         "Details": "详情",
@@ -371,8 +371,8 @@
     },
     "JobQueue": {
         "AllJobs": "全部任务",
-        "ChangeCount": "变更计数",
         "Cancel": "取消",
+        "ChangeCount": "变更计数",
         "Count": "计数",
         "Empty": "没有任务",
         "InvalidCountEmpty": "输入值不能为空！",
@@ -433,8 +433,8 @@
             "Logfiles": "日志文件",
             "Rollover": "清理日志",
             "RolloverDescription": "请选择需要重置的日志：",
-            "RolloverToastSuccessful": "日志\"{name}\"已经重置。",
-            "RolloverToastFailed": "清理日志\"{name}\": {message}"
+            "RolloverToastFailed": "清理日志\"{name}\": {message}",
+            "RolloverToastSuccessful": "日志\"{name}\"已经重置。"
         },
         "SystemPanel": {
             "Constants": "常量",
@@ -705,6 +705,12 @@
         "Printers": "打印机",
         "Timelapse": "延时摄影",
         "Webcam": "摄像头"
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "接受",
+        "Base": "底座",
+        "ErrorText": "探测过程中出现了问题。",
+        "Headline": "螺丝倾斜调整"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "添加打印机",
@@ -1042,6 +1048,7 @@
             "EditCrowsnestConf": "编辑 crowsnest.conf",
             "EditWebcam": "编辑摄像头",
             "FlipWebcam": "翻转摄像头图像：",
+            "Hlsstream": "HLS视频流",
             "Horizontally": "水平",
             "IconBed": "热床",
             "IconCam": "摄像头",
@@ -1052,7 +1059,6 @@
             "IconNozzle": "喷嘴",
             "IconPrinter": "打印机",
             "Ipstream": "IP摄像头",
-            "Hlsstream": "HLS视频流",
             "Mjpegstreamer": "MJPEG视频流",
             "MjpegstreamerAdaptive": "自适应MJPEG视频流(试验性)",
             "Name": "名称",
@@ -1069,12 +1075,6 @@
             "Vertically": "垂直",
             "Webcams": "摄像头"
         }
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "接受",
-        "Base": "底座",
-        "ErrorText": "探测过程中出现了问题。",
-        "Headline": "螺丝倾斜调整"
     },
     "Timelapse": {
         "AllFiles": "全部文件",

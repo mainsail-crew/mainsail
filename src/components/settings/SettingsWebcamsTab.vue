@@ -193,6 +193,9 @@
                             <template v-else-if="form.service === 'webrtc-camerastreamer'">
                                 <webcam-webrtc-camerastreamer :cam-settings="form" />
                             </template>
+                            <template v-else-if="form.service === 'janus'">
+                                <webcam-janus :cam-settings="form" />
+                            </template>
                             <template v-else>
                                 <p class="text-center py-3 font-italic">
                                     {{ $t('Panels.WebcamPanel.UnknownWebcamService') }}
@@ -232,6 +235,7 @@ import { mdiMenuDown, mdiDelete, mdiPencil, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
 import { FileStateFile } from '@/store/files/types'
 import Hlsstreamer from '../webcams/Hlsstreamer.vue'
+import JanusStreamer from '@/components/webcams/JanusStreamer.vue'
 
 interface webcamForm {
     bool: boolean
@@ -257,6 +261,7 @@ interface webcamForm {
         'webcam-ipstreamer': Ipstreamer,
         'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
         'webcam-hlsstreamer': Hlsstreamer,
+        'webcam-janus': JanusStreamer,
     },
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
@@ -322,6 +327,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'ipstream', text: this.$t('Settings.WebcamsTab.Ipstream') },
             { value: 'webrtc-camerastreamer', text: this.$t('Settings.WebcamsTab.WebrtcCameraStreamer') },
             { value: 'hlsstream', text: this.$t('Settings.WebcamsTab.Hlsstream') },
+            { value: 'janus', text: this.$t('Settings.WebcamsTab.Janus') },
         ]
     }
 

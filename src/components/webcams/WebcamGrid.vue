@@ -22,6 +22,9 @@
                 <template v-else-if="webcam.service === 'webrtc-camerastreamer'">
                     <webcam-webrtc-camerastreamer :cam-settings="webcam" />
                 </template>
+                <template v-else-if="webcam.service === 'janus'">
+                    <webcam-janus :cam-settings="webcam" />
+                </template>
                 <template v-else>
                     <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
                 </template>
@@ -40,6 +43,7 @@ import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import Hlsstreamer from '@/components/webcams/Hlsstreamer.vue'
 import WebrtcCameraStreamer from '@/components/webcams/WebrtcCameraStreamer.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import JanusStreamer from '@/components/webcams/JanusStreamer.vue'
 
 @Component({
     components: {
@@ -49,6 +53,7 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
         'webcam-ipstreamer': Ipstreamer,
         'webcam-hlsstreamer': Hlsstreamer,
         'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
+        'webcam-janus': JanusStreamer,
     },
 })
 export default class WebcamGrid extends Mixins(BaseMixin) {
