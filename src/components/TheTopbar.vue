@@ -120,7 +120,7 @@ import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import TheNotificationMenu from '@/components/notifications/TheNotificationMenu.vue'
 import { topbarHeight } from '@/store/variables'
 import { mdiAlertOctagonOutline, mdiContentSave, mdiFileUpload, mdiClose, mdiCloseThick } from '@mdi/js'
-import routes, { AppRoute } from '@/routes'
+import routes from '@/routes'
 
 type uploadSnackbar = {
     status: boolean
