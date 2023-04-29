@@ -220,7 +220,7 @@ export const getters: GetterTree<FileState, any> = {
         const acceptName = 'sidebar-background'
         const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']
 
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? '/img/sidebar-background.svg'
+        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? import.meta.env.BASE_URL + 'img/sidebar-background.svg'
     },
 
     getMainBackground: (state, getters) => {

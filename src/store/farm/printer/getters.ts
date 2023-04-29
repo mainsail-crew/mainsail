@@ -140,7 +140,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
                 )
         }
 
-        return '/img/sidebar-background.svg'
+        return import.meta.env.BASE_URL + 'img/sidebar-background.svg'
     },
 
     getThemeFileUrl: (state) => (acceptName: string, acceptExtensions: string[]) => {
