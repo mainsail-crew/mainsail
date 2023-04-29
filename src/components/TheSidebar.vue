@@ -15,7 +15,7 @@
                     <v-list-item
                         v-if="isMobile"
                         router
-                        to="/"
+                        :to="naviPath('Dashboard')"
                         :class="mobileLogoClass"
                         :style="'height: ' + topbarHeight + 'px'"
                         :ripple="false">
@@ -80,6 +80,10 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin) {
 
     get sidebarBackground(): string {
         return this.$store.getters['files/getSidebarBackground']
+    }
+
+    naviPath(title: string): string {
+        return routes.filter((element) => element.title === title)[0].path
     }
 
     get currentPage(): string {

@@ -2,7 +2,7 @@
     <div>
         <v-app-bar app elevate-on-scroll :height="topbarHeight" class="topbar pa-0" clipped-left>
             <v-app-bar-nav-icon tile @click.stop="naviDrawer = !naviDrawer"></v-app-bar-nav-icon>
-            <router-link to="/">
+            <router-link :to="naviPath('Dashboard')">
                 <template v-if="sidebarLogo">
                     <img
                         :src="sidebarLogo"
@@ -16,7 +16,7 @@
                         style="height: 32px"
                         class="nav-logo ml-4 mr-1 d-none d-sm-flex"
                         router
-                        to="/"
+                        :to="naviPath('Dashboard')"
                         :ripple="false"></mainsail-logo>
                 </template>
             </router-link>
@@ -120,6 +120,7 @@ import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import TheNotificationMenu from '@/components/notifications/TheNotificationMenu.vue'
 import { topbarHeight } from '@/store/variables'
 import { mdiAlertOctagonOutline, mdiContentSave, mdiFileUpload, mdiClose, mdiCloseThick } from '@mdi/js'
+import routes, { AppRoute } from '@/routes'
 
 type uploadSnackbar = {
     status: boolean
@@ -154,6 +155,10 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     topbarHeight = topbarHeight
 
     showEmergencyStopDialog = false
+
+    naviPath(title: string): string {
+        return routes.filter((element) => element.title === title)[0].path
+    }
 
     uploadSnackbar: uploadSnackbar = {
         status: false,
