@@ -39,7 +39,20 @@ jobs:
       - name: Copy output
         run: cp ${{ github.workspace }}/dist/mainsail.zip mainsail-latest.zip
 
+      - name: Build With Sub-Path
+        run: npm run build
+        env:
+          VITE_BASE: /mainsail/
+
+      - name: Copy output
+        run: cp ${{ github.workspace }}/dist/mainsail.zip mainsail-subpath-latest.zip
+
       - uses: actions/upload-artifact@v2.2.4
         with:
           name: mainsail-latest.zip
           path: mainsail-latest.zip
+
+      - uses: actions/upload-artifact@v2.2.4
+        with:
+          name: mainsail-subpath-latest.zip
+          path: mainsail-subpath-latest.zip
