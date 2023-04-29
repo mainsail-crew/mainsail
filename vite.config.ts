@@ -1,6 +1,6 @@
 import { createVuePlugin as vue } from 'vite-plugin-vue2'
 import loadVersion from 'vite-plugin-package-version'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 
 import Components from 'unplugin-vue-components/vite'
 import { VuetifyResolver } from 'unplugin-vue-components/resolvers'
@@ -47,40 +47,44 @@ const PWAConfig: Partial<VitePWAOptions> = {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig({
-    plugins: [
-        VitePWA(PWAConfig),
-        buildVersion(),
-        vue(),
-        loadVersion(),
-        checker({ typescript: true }),
-        Components({
-            dts: true, // enabled by default if `typescript` is installed
-            resolvers: [VuetifyResolver()],
-        }),
-    ],
-    css: {
-        preprocessorOptions: {
-            css: { charset: false },
-            scss: {
-                quietDeps: true,
+export default defineConfig(({ command, mode }) => {
+    const env = loadEnv(mode, process.cwd())
+    return {
+        base: env.VITE_BASE,
+        plugins: [
+            VitePWA(PWAConfig),
+            buildVersion(),
+            vue(),
+            loadVersion(),
+            checker({ typescript: true }),
+            Components({
+                dts: true, // enabled by default if `typescript` is installed
+                resolvers: [VuetifyResolver()],
+            }),
+        ],
+        css: {
+            preprocessorOptions: {
+                css: { charset: false },
+                scss: {
+                    quietDeps: true,
+                },
             },
         },
-    },
 
-    build: {
-        target: 'safari12',
-    },
-
-    envPrefix: 'VUE_',
-    resolve: {
-        alias: {
-            '@': path.resolve(__dirname, './src'),
+        build: {
+            target: 'safari12',
         },
-    },
 
-    server: {
-        host: '0.0.0.0',
-        port: 8080,
-    },
-})
+        envPrefix: 'VUE_',
+        resolve: {
+            alias: {
+                '@': path.resolve(__dirname, './src'),
+            },
+        },
+
+        server: {
+            host: '0.0.0.0',
+            port: 8080,
+        },
+    }
+});
