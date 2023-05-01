@@ -64,7 +64,7 @@
                         <webcam-webrtc-camerastreamer :cam-settings="currentCam" />
                     </template>
                     <template v-else-if="currentCam.service === 'janus'">
-                        <webcam-janus :cam-settings="currentCam" />
+                        <webcam-webrtc-janus :cam-settings="currentCam" />
                     </template>
                     <template v-else>
                         <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
@@ -104,7 +104,7 @@ import JanusStreamer from '@/components/webcams/JanusStreamer.vue'
         'webcam-hlsstreamer': Hlsstreamer,
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
-        'webcam-janus': JanusStreamer,
+        'webcam-webrtc-janus': JanusStreamer,
         'webcam-grid': WebcamGrid,
     },
 })

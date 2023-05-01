@@ -194,7 +194,7 @@
                                 <webcam-webrtc-camerastreamer :cam-settings="form" />
                             </template>
                             <template v-else-if="form.service === 'janus'">
-                                <webcam-janus :cam-settings="form" />
+                                <webcam-webrtc-janus :cam-settings="form" />
                             </template>
                             <template v-else>
                                 <p class="text-center py-3 font-italic">
@@ -261,7 +261,7 @@ interface webcamForm {
         'webcam-ipstreamer': Ipstreamer,
         'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
         'webcam-hlsstreamer': Hlsstreamer,
-        'webcam-janus': JanusStreamer,
+        'webcam-webrtc-janus': JanusStreamer,
     },
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
