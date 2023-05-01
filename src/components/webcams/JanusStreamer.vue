@@ -48,13 +48,16 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
 
         if (baseUrl.startsWith('ws') || baseUrl.startsWith('http')) {
             url = new URL(baseUrl)
+            const pathnameParts = url.pathname.split('/')
+            url.pathname = pathnameParts.slice(0, pathnameParts.length - 1).join('/')
         }
 
         return url
     }
 
     get streamId() {
-        return new URL(this.camSettings.urlStream).pathname.replace(/^\/+|\/+$/g, '')
+        const pathnameParts = new URL(this.camSettings.urlStream).pathname.split('/')
+        return pathnameParts[pathnameParts.length - 1]
     }
 
     get webcamStyle() {
