@@ -36,10 +36,6 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
     private restartTimeoutTimer: any = null
     private status: string = 'connecting'
 
-    mounted() {
-        this.start()
-    }
-
     // stop the video and close the streams if the component is going to be destroyed so we don't leave hanging streams
     beforeDestroy() {
         this.terminate()
@@ -75,11 +71,11 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
     }
 
     get expanded(): boolean {
-        return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport)
+        return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport) ?? false
     }
 
     // start or stop the video when the expand state changes
-    @Watch('expanded')
+    @Watch('expanded', { immediate: true })
     expandChanged(newExpanded: boolean): void {
         if (!newExpanded) {
             this.terminate()
