@@ -1,3 +1,5 @@
+import { FileStateFileThumbnail } from '@/store/files/types'
+
 export interface ServerHistoryState {
     jobs: ServerHistoryStateJob[]
     job_totals: {
@@ -17,7 +19,31 @@ export interface ServerHistoryStateJob {
     filament_used: number
     filename: string
     // eslint-disable-next-line
-    metadata: any
+    metadata: {
+        print_start_time?: number
+        job_id?: number
+        size?: number
+        slicer?: string
+        slicer_version?: string
+        layer_count?: number
+        layer_height?: number
+        first_layer_height?: number
+        object_height?: number
+        filament_total?: number
+        filament_weight_total?: number
+        estimated_time?: number
+        thumbnails?: FileStateFileThumbnail[]
+        first_layer_bed_temp?: number
+        first_layer_extr_temp?: number
+        gcode_start_byte?: number
+        gcode_end_byte?: number
+        filename?: string
+        filesize?: number
+        modified?: number
+        uuid?: string
+        nozzle_diameter?: number
+        [key: string]: any
+    }
     note?: string
     print_duration: number
     status: string
