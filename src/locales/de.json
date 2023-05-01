@@ -235,7 +235,6 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Löschen",
-        "CNCMode": "CNC Modus",
         "ColorMode": "Farbmodus",
         "Downloading": "Downloaden",
         "ForceLineRendering": "Erzwinge Liniendarstellung",
@@ -249,7 +248,6 @@
         "ReloadRequired": "Neu laden erforderlich",
         "Rendering": "Rendering",
         "RenderQuality": "Darstellungsqualität",
-        "ShowGCode": "Zeige G-Code",
         "ShowObjectSelection": "Zeige Objektauswahl",
         "ShowToolhead": "Zeige Werkzeugkopf",
         "ShowTravelMoves": "Zeige Bewegungen im Eilgang",
@@ -258,7 +256,9 @@
         "Tracking": "Tracking",
         "Transparency": "Transparenz",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxel Modus (ASMBL)"
+        "VoxelMode": "Voxel Modus (ASMBL)",
+        "ShowGCode": "Zeige G-Code",
+        "CNCMode": "CNC Modus"
     },
     "Heightmap": {
         "Abort": "abbruch",
@@ -372,8 +372,8 @@
     },
     "JobQueue": {
         "AllJobs": "Alle Aufträge",
-        "Cancel": "abbrechen",
         "ChangeCount": "Anzahl ändern",
+        "Cancel": "abbrechen",
         "Count": "Anzahl",
         "Empty": "Leer",
         "InvalidCountEmpty": "Die Eingabe darf nicht leer sein!",
@@ -434,8 +434,8 @@
             "Logfiles": "Logdateien",
             "Rollover": "Logdatei zurücksetzen",
             "RolloverDescription": "Wähle Logs zum zurücksetzen:",
-            "RolloverToastFailed": "Logdatei reset \"{name}\": {message}",
-            "RolloverToastSuccessful": "Logdatei für \"{name}\" wurde erfolgreich zurückgesetzt."
+            "RolloverToastSuccessful": "Logdatei für \"{name}\" wurde erfolgreich zurückgesetzt.",
+            "RolloverToastFailed": "Logdatei reset \"{name}\": {message}"
         },
         "SystemPanel": {
             "Constants": "Konstanten",
@@ -706,12 +706,6 @@
         "Printers": "Drucker",
         "Timelapse": "Zeitraffer",
         "Webcam": "Webcam"
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "akzeptieren",
-        "Base": "Basis",
-        "ErrorText": "Ein Fehler ist beim Abtasten aufgetreten.",
-        "Headline": "Neigungsverstellung"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Drucker hinzufügen",
@@ -1079,6 +1073,12 @@
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
         }
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "akzeptieren",
+        "Base": "Basis",
+        "ErrorText": "Ein Fehler ist beim Abtasten aufgetreten.",
+        "Headline": "Neigungsverstellung"
     },
     "Timelapse": {
         "AllFiles": "Alle",

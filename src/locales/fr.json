@@ -108,17 +108,6 @@
             "UpdatingDone": "Mise à jour {software} effectuée !"
         }
     },
-    "BedScrews": {
-        "Abort": "annuler",
-        "Accept": "accepter",
-        "Adjusted": "ajusté",
-        "Description": "Cliquez sur <b>ADJUSTED</b> si la vis courante a été ajustée. Cliquez sur <b>ACCEPT</b> pour continuer sans ajustement.",
-        "Headline": "Vis du plateau",
-        "ScrewAccepted": "Vis acceptée",
-        "ScrewIndex": "Index de la vis",
-        "ScrewName": "Nom de la vis",
-        "ScrewOutput": "{current} de {max}"
-    },
     "ConnectionDialog": {
         "CannotConnectTo": "Connection avec Moonraker ({host}) impossible",
         "CheckMoonrakerLog": "Si ce message apparait régulièrement, contrôlez le fichier log à l'adresse suivante:",
@@ -165,13 +154,11 @@
         "Yes": "Oui"
     },
     "Files": {
-        "AddBatchToQueue": "Ajouter à la queue d'impression",
         "AddToQueue": "Ajouter à la queue",
         "AllFiles": "Tous",
         "BedTemp": "Température plateau",
         "Cancel": "Annuler",
         "ChamberTemp": "Température chambre",
-        "Count": "Nombre",
         "Create": "Créer",
         "CreateNewDirectory": "Nouveau dossier",
         "CurrentPath": "Dossier actuel",
@@ -195,8 +182,6 @@
         "GCodeFiles": "Fichiers G-Code",
         "GcodesRootDirectoryDoesntExists": "Pas trouvé de dossier G-Code. Contrôlez l'option \"path\" dans la section [virtual_sdcard] de la configuration de Klipper.",
         "HiddenFiles": "Fichiers cachés",
-        "InvalidNameAlreadyExists": "Ce nom existe déjà, merci d'en choisir un autre.",
-        "InvalidNameEmpty": "L'entrée ne peut pas être vide !",
         "LastEndTime": "Dernière heure de fin d'impression",
         "LastFilamentUsed": "Dernier filament utilisé",
         "LastModified": "Dernière modification",
@@ -227,7 +212,11 @@
         "Total": "Total",
         "UploadNewGcode": "Charger nouveau G-Code",
         "Used": "Utilisé",
-        "View3D": "Vue 3D"
+        "View3D": "Vue 3D",
+        "AddBatchToQueue": "Ajouter à la queue d'impression",
+        "Count": "Nombre",
+        "InvalidNameAlreadyExists": "Ce nom existe déjà, merci d'en choisir un autre.",
+        "InvalidNameEmpty": "L'entrée ne peut pas être vide !"
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Impossible de télécharger le fichier !",
@@ -235,7 +224,6 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Effacer",
-        "CNCMode": "Mode CNC",
         "ColorMode": "Mode couleur",
         "Downloading": "Téléchargement",
         "ForceLineRendering": "Force le rendu des lignes",
@@ -249,7 +237,6 @@
         "ReloadRequired": "Rechargement requis",
         "Rendering": "Rendu",
         "RenderQuality": "Qualité du rendu",
-        "ShowGCode": "Afficher le G-Code",
         "ShowObjectSelection": "Affiche les objets séléctionnés",
         "ShowToolhead": "Affiche la tête d'impression",
         "ShowTravelMoves": "Affiche les mouvements",
@@ -258,7 +245,9 @@
         "Tracking": "Suivi",
         "Transparency": "Transparence",
         "Ultra": "Ultra",
-        "VoxelMode": "Mode Voxel (ASMBL)"
+        "VoxelMode": "Mode Voxel (ASMBL)",
+        "CNCMode": "Mode CNC",
+        "ShowGCode": "Afficher le G-Code"
     },
     "Heightmap": {
         "Abort": "Annuler",
@@ -271,8 +260,8 @@
             "Max": "Max",
             "Min": "Min",
             "Name": "Nom",
-            "Range": "Gamme",
-            "Size": "Taille"
+            "Size": "Taille",
+            "Range": "Gamme"
         },
         "DeleteBedMeshProfile": "Effacer maillage",
         "DoYouReallyWantToDelete": "Voulez-vous effacer le maillage \"{name}\" ?",
@@ -307,7 +296,6 @@
         "AllJobs": "Tous",
         "AvgPrinttime": "Temps moyen",
         "Cancel": "Annuler",
-        "Chart": "Graphique",
         "CreateNote": "Créer une note",
         "Delete": "Effacer",
         "DeleteSelectedQuestion": "Vulez-vous vraiment effacer {count} travaux ?",
@@ -360,7 +348,6 @@
             "Others": "Autres",
             "server_exit": "Serveur quitté"
         },
-        "Table": "Table",
         "TitleExportHistory": "Exporter l'historique",
         "TitleRefreshHistory": "Rafraîchir l'historique",
         "TitleSettings": "Réglages",
@@ -368,21 +355,23 @@
         "TotalFilamentUsed": "Total filament utilisé",
         "TotalJobs": "Nombre travaux",
         "TotalPrinttime": "Total temps d'impression",
-        "TotalTime": "Durée totale"
+        "TotalTime": "Durée totale",
+        "Chart": "Graphique",
+        "Table": "Table"
     },
     "JobQueue": {
         "AllJobs": "Tous",
-        "Cancel": "Annuler",
-        "ChangeCount": "Nombre de changements",
-        "Count": "Nombre",
         "Empty": "vide",
-        "InvalidCountEmpty": "L'entrée ne peut pas être vide !",
-        "InvalidCountGreaterZero": "L'entrée doit être plus grande que 0 !",
         "JobQueue": "Queue des travaux",
         "Jobs": "Travaux",
         "Pause": "Pause",
         "RemoveFromQueue": "Enlever de la queue des travaux",
-        "Start": "Impression"
+        "Start": "Impression",
+        "Cancel": "Annuler",
+        "ChangeCount": "Nombre de changements",
+        "Count": "Nombre",
+        "InvalidCountEmpty": "L'entrée ne peut pas être vide !",
+        "InvalidCountGreaterZero": "L'entrée doit être plus grande que 0 !"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -429,13 +418,13 @@
             "TRIGGERED": "actif"
         },
         "LogfilesPanel": {
+            "Logfiles": "Fichiers log",
             "Accept": "accepter",
             "Cancel": "annuler",
-            "Logfiles": "Fichiers log",
             "Rollover": "Logs glissants",
             "RolloverDescription": "Selectionnez le log qui doit être effacé",
-            "RolloverToastFailed": "Message du log \"{name}\": {message}",
-            "RolloverToastSuccessful": "Le log \"{name}\" a été effacé"
+            "RolloverToastSuccessful": "Le log \"{name}\" a été effacé",
+            "RolloverToastFailed": "Message du log \"{name}\": {message}"
         },
         "SystemPanel": {
             "Constants": "Constantes",
@@ -486,12 +475,6 @@
             "UpToDate": "à jour"
         }
     },
-    "ManualProbe": {
-        "Abort": "annuler",
-        "Accept": "accepter",
-        "Advanced": "avancé",
-        "Headline": "Mesure manuelle"
-    },
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Permis",
@@ -525,13 +508,13 @@
             "WebcamOff": "Arrêt"
         },
         "KlippyStatePanel": {
-            "CheckKlippyAndUdsAddress": "Controlez que le service Klipper est en marche et que klippy_uds_address est configuré correctement dans moonraker.conf.",
             "FirmwareRestart": "Redémarrage Firmware",
             "MoonrakerCannotConnect": "Moonraker n'arrive pas à se connecter à Klipper",
+            "Restart": "Redémarrage",
+            "CheckKlippyAndUdsAddress": "Controlez que le service Klipper est en marche et que klippy_uds_address est configuré correctement dans moonraker.conf.",
             "PowerOn": "Mise en marche",
             "PrinterSwitchedOff": "L'imprimante est hors tension",
             "PrinterSwitchedOffDescription": "L'imprimante est actuellement hors tension et Klipper ne peut se connecter. Pour mettre l'imprimante sous tension cliquez sur le bouton ci-dessous:",
-            "Restart": "Redémarrage",
             "ServiceReports": "rapport de {service}"
         },
         "MachineSettingsPanel": {
@@ -562,16 +545,16 @@
         },
         "MiscellaneousPanel": {
             "Headline": "Divers",
+            "RunoutSensor": {
+                "Detected": "détecté",
+                "Disabled": "inactif",
+                "Empty": "vide"
+            },
             "Light": {
                 "Blue": "bleu",
                 "Green": "vert",
                 "Red": "rouge",
                 "White": "blanc"
-            },
-            "RunoutSensor": {
-                "Detected": "détecté",
-                "Disabled": "inactif",
-                "Empty": "vide"
             }
         },
         "PowerControlPanel": {
@@ -605,6 +588,17 @@
             "Layer": "Couche",
             "Max": "max",
             "ObjectHeight": "hauteur objet",
+            "PausePrint": "Pause impression",
+            "Print": "Impression",
+            "PrintTime": "Durée d'impression",
+            "ReprintJob": "Ré-impression",
+            "Requested": "Requis",
+            "ResumePrint": "Reprise impression",
+            "Slicer": "Trancheur",
+            "Speed": "Vitesse",
+            "Status": "Status",
+            "Total": "Total",
+            "Unknown": "Inconnu",
             "PauseAtLayer": {
                 "Abort": "annuler",
                 "Accept": "accepter",
@@ -616,18 +610,7 @@
                 "NextLayer": "prochaine couche",
                 "PauseAtLayer": "Pause à la couche",
                 "Type": "type "
-            },
-            "PausePrint": "Pause impression",
-            "Print": "Impression",
-            "PrintTime": "Durée d'impression",
-            "ReprintJob": "Ré-impression",
-            "Requested": "Requis",
-            "ResumePrint": "Reprise impression",
-            "Slicer": "Trancheur",
-            "Speed": "Vitesse",
-            "Status": "Status",
-            "Total": "Total",
-            "Unknown": "Inconnu"
+            }
         },
         "TemperaturePanel": {
             "AutoscaleChart": "Echelle automatique",
@@ -706,12 +689,6 @@
         "Printers": "Imprimantes",
         "Timelapse": "Accéléré",
         "Webcam": "Caméra"
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "accepter",
-        "Base": "Base",
-        "ErrorText": "Quelque chose s'est mal passé durant le processus de mesure",
-        "Headline": "Ajustement de niveau par vis"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Nouvelle d'imprimante",
@@ -816,8 +793,6 @@
             "ShowAxes": "Affiche les axes"
         },
         "GeneralTab": {
-            "12hours": "12-heures ({time})",
-            "24hours": "24-heures ({time})",
             "Backup": "Sauvegarde",
             "BackupDialog": "Choisissez les sections que vous désirez sauvegarder:",
             "CalcEstimateTime": "Calcul du temps estimé",
@@ -833,7 +808,6 @@
                 "Slicer": "Trancheur (M73)"
             },
             "CannotReadJson": "Lecture/interprétation du fichier de sauvegarde impossible.",
-            "DateFormat": "Format de la date",
             "DbConsoleHistory": "Historique des commandes de console",
             "DbHistoryJobs": "Historique des travaux",
             "DbHistoryTotals": "Historique totaux",
@@ -854,6 +828,9 @@
             "Reset": "réinitalisation",
             "Restore": "Restauration",
             "RestoreDialog": "Choisissez les sections que vous désirez restaurer:",
+            "12hours": "12-heures ({time})",
+            "24hours": "24-heures ({time})",
+            "DateFormat": "Format de la date",
             "TimeFormat": "Format de l'heure"
         },
         "InterfaceSettings": "Réglages interface",
@@ -893,29 +870,6 @@
             "UnknownGroup": "Groupe inconnu",
             "Warning": "attention"
         },
-        "MiscellaneousTab": {
-            "AddGroup": "ajouter le groupe",
-            "AddPreset": "ajouter le réglage",
-            "Color": "Couleur",
-            "CreateGroup": "Nouveau groupe",
-            "CreatePreset": "Nouveau réglage",
-            "End": "Fin",
-            "EndDescription": "Dernière LED de ce groupe",
-            "Groups": "Groupes",
-            "GroupSubTitle": "Début: {start}, Fin: {end}",
-            "LightGroups": "{name} - Groupes",
-            "LightPresets": "{name} - Réglages",
-            "Miscellaneous": "Divers",
-            "Name": "Nom",
-            "NoDevicesFound": "Pas trouvé d'appareil",
-            "NoGroupFound": "Pas trouvé de groupe",
-            "NoPresetFound": "Pas trouvé de réglage",
-            "Presets": "Réglages",
-            "Start": "Début",
-            "StartDescription": "Première LED de ce groupe",
-            "UnableToLoadLight": "Impossible de charger la lumière",
-            "UnableToLoadPreset": "Impossible de charger le réglage"
-        },
         "PresetsTab": {
             "AddPreset": "nouveau préréglage",
             "Cooldown": "Refroidissement",
@@ -943,7 +897,6 @@
             "UpdatePrinter": "Mise à jour imprimante",
             "UseConfigJson": "InstanceDB = JSON trouvé dans la configuration. Utilisez le fichier config.json pour modifier la liste des imprimantes."
         },
-        "Store": "magasin",
         "TimelapseTab": {
             "Autorender": "Rendu automatique",
             "AutorenderDescription": "Si activé, la vidéo en accéléré sera automatiquement calculée à la fin de l'impression.",
@@ -1025,8 +978,6 @@
             "GcodeThumbnails": "Miniature G-Code",
             "GcodeThumbnailsDescription": "Cliquez sur le bouton pour obtenir des instructions.",
             "Guide": "Guide",
-            "HideSaveConfigButtonForBedMesh": "Cacher le bouton SAVE_CONFIG lors de changements de maillage",
-            "HideSaveConfigButtonForBedMeshDescription": "Cache le bouton SAVE_CONFIG si seulement des changements de maillages sont en attente de sauvegarde vers Klipper",
             "LockSliders": "Fige les curseurs pour les écrans tactiles",
             "LockSlidersDelay": "Délai avant de figer les curseurs",
             "LockSlidersDelayDescription": "Les curseurs seront figés après le délai. Si 0 ou non renseigné, les curseurs seront figés au changement/rafraichissement de page.",
@@ -1036,20 +987,20 @@
             "NavigationStyleDescription": "Change le style de navigation de la colonne de gauche",
             "NavigationStyleIconsAndText": "Icônes + Texte",
             "NavigationStyleIconsOnly": "Seulement Icônes",
-            "PowerDeviceName": "Nom de l'appareil de puissance",
-            "PowerDeviceNameDescription": "Choisissez quel appreil de puissance Moonraker doit utiliser pour l'alimentation de l'imprimante",
             "Primary": "Couleur primaire",
             "ShowWebcamInNavigation": "Affiche CAMÉRA dans le menu de navigation",
-            "UiSettings": "Interface"
+            "UiSettings": "Interface",
+            "HideSaveConfigButtonForBedMesh": "Cacher le bouton SAVE_CONFIG lors de changements de maillage",
+            "HideSaveConfigButtonForBedMeshDescription": "Cache le bouton SAVE_CONFIG si seulement des changements de maillages sont en attente de sauvegarde vers Klipper",
+            "PowerDeviceName": "Nom de l'appareil de puissance",
+            "PowerDeviceNameDescription": "Choisissez quel appreil de puissance Moonraker doit utiliser pour l'alimentation de l'imprimante"
         },
-        "Update": "mise à jour",
         "WebcamsTab": {
             "AddWebcam": "Nouvelle caméra",
             "CreateWebcam": "Nouvelle caméra",
             "EditCrowsnestConf": "Edition de crowsnest.conf",
             "EditWebcam": "Editer caméra",
             "FlipWebcam": "Miroir l'image de la webcam:",
-            "Hlsstream": "Flux HLS",
             "Horizontally": "horizontal",
             "IconBed": "Plateau",
             "IconCam": "Caméra",
@@ -1060,6 +1011,7 @@
             "IconNozzle": "Buse",
             "IconPrinter": "Imprimante",
             "Ipstream": "Caméra IP",
+            "Hlsstream": "Flux HLS",
             "Mjpegstreamer": "Flux-MJPEG",
             "MjpegstreamerAdaptive": "Flux-MJPEG Adaptatif (expérimental)",
             "Name": "Nom",
@@ -1075,7 +1027,32 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertical",
             "Webcams": "Caméras"
-        }
+        },
+        "MiscellaneousTab": {
+            "AddGroup": "ajouter le groupe",
+            "AddPreset": "ajouter le réglage",
+            "Color": "Couleur",
+            "CreateGroup": "Nouveau groupe",
+            "CreatePreset": "Nouveau réglage",
+            "End": "Fin",
+            "EndDescription": "Dernière LED de ce groupe",
+            "GroupSubTitle": "Début: {start}, Fin: {end}",
+            "Groups": "Groupes",
+            "LightGroups": "{name} - Groupes",
+            "LightPresets": "{name} - Réglages",
+            "Miscellaneous": "Divers",
+            "Name": "Nom",
+            "NoDevicesFound": "Pas trouvé d'appareil",
+            "NoGroupFound": "Pas trouvé de groupe",
+            "NoPresetFound": "Pas trouvé de réglage",
+            "Presets": "Réglages",
+            "Start": "Début",
+            "StartDescription": "Première LED de ce groupe",
+            "UnableToLoadLight": "Impossible de charger la lumière",
+            "UnableToLoadPreset": "Impossible de charger le réglage"
+        },
+        "Store": "magasin",
+        "Update": "mise à jour"
     },
     "Timelapse": {
         "AllFiles": "Tous",
@@ -1128,5 +1105,28 @@
         "Variable": "Variable",
         "Video": "Vidéo"
     },
-    "title": "Français"
+    "title": "Français",
+    "BedScrews": {
+        "Abort": "annuler",
+        "Accept": "accepter",
+        "Adjusted": "ajusté",
+        "Description": "Cliquez sur <b>ADJUSTED</b> si la vis courante a été ajustée. Cliquez sur <b>ACCEPT</b> pour continuer sans ajustement.",
+        "Headline": "Vis du plateau",
+        "ScrewAccepted": "Vis acceptée",
+        "ScrewIndex": "Index de la vis",
+        "ScrewName": "Nom de la vis",
+        "ScrewOutput": "{current} de {max}"
+    },
+    "ManualProbe": {
+        "Abort": "annuler",
+        "Accept": "accepter",
+        "Advanced": "avancé",
+        "Headline": "Mesure manuelle"
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "accepter",
+        "Base": "Base",
+        "ErrorText": "Quelque chose s'est mal passé durant le processus de mesure",
+        "Headline": "Ajustement de niveau par vis"
+    }
 }

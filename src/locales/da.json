@@ -234,7 +234,6 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Fjern",
-        "CNCMode": "CNC Mode",
         "ColorMode": "Farvevisning",
         "Downloading": "Downloader",
         "ForceLineRendering": "Gennemtving Linje Rendering",
@@ -248,7 +247,6 @@
         "ReloadRequired": "Opdatering påkrævet",
         "Rendering": "Rendering",
         "RenderQuality": "Renderingskvalitet",
-        "ShowGCode": "Vis G-kode",
         "ShowObjectSelection": "Vis Objekt valg",
         "ShowToolhead": "Vis nozzle",
         "ShowTravelMoves": "Vis Travel",
@@ -257,7 +255,9 @@
         "Tracking": "Sporing",
         "Transparency": "Transparens",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxel Mode (ASMBL)"
+        "VoxelMode": "Voxel Mode (ASMBL)",
+        "ShowGCode": "Vis G-kode",
+        "CNCMode": "CNC Mode"
     },
     "Heightmap": {
         "Abort": "Afbryd",
@@ -306,8 +306,8 @@
         "AllJobs": "Alle job",
         "AvgPrinttime": "Gns. printtid",
         "Cancel": "Annuller",
-        "Chart": "Skema",
         "CreateNote": "Gem note",
+        "Chart": "Skema",
         "Delete": "Slet",
         "DeleteSelectedQuestion": "Er du sikker på du vil slette alle {count} valgte jobs?",
         "Details": "Detaljer",
@@ -371,8 +371,8 @@
     },
     "JobQueue": {
         "AllJobs": "Alle Jobs",
-        "Cancel": "Annuller",
         "ChangeCount": "Ændre antal",
+        "Cancel": "Annuller",
         "Count": "Tæl",
         "Empty": "Tom",
         "InvalidCountEmpty": "Input må ikke være tom!",
@@ -433,8 +433,8 @@
             "Logfiles": "Logfiler",
             "Rollover": "Nulstil log-filer",
             "RolloverDescription": "Vælg hvilke log-filer der skal nulstilles",
-            "RolloverToastFailed": "Nulstillings fejl-log for \"{name}\": {message}",
-            "RolloverToastSuccessful": "Filen: \"{name}\" blev nulstillet."
+            "RolloverToastSuccessful": "Filen: \"{name}\" blev nulstillet.",
+            "RolloverToastFailed": "Nulstillings fejl-log for \"{name}\": {message}"
         },
         "SystemPanel": {
             "Constants": "Konstanter",
@@ -705,12 +705,6 @@
         "Printers": "Printere",
         "Timelapse": "Timelapse",
         "Webcam": "Webcam"
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "Acceptér",
-        "Base": "Udgangspunkt",
-        "ErrorText": "Noget gik galt under målingsprocessen",
-        "Headline": "Bed-skrue justering"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Tilføj Printer",
@@ -1048,7 +1042,6 @@
             "EditCrowsnestConf": "Redigér crowsnest.conf",
             "EditWebcam": "Rediger Webcam",
             "FlipWebcam": "Vend webcam-billedet:",
-            "Hlsstream": "HLS Stream",
             "Horizontally": "horisontalt",
             "IconBed": "Bed",
             "IconCam": "Kamera",
@@ -1059,6 +1052,7 @@
             "IconNozzle": "Dyse",
             "IconPrinter": "Printer",
             "Ipstream": "IP Kamera",
+            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptiv MJPEG-Streamer (eksperimental)",
             "Name": "Navn",
@@ -1075,6 +1069,12 @@
             "Vertically": "vertikalt",
             "Webcams": "Webcams"
         }
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "Acceptér",
+        "Base": "Udgangspunkt",
+        "ErrorText": "Noget gik galt under målingsprocessen",
+        "Headline": "Bed-skrue justering"
     },
     "Timelapse": {
         "AllFiles": "Alle",
