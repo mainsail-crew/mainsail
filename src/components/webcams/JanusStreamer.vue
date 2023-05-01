@@ -43,10 +43,12 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
     get url() {
         const baseUrl = this.camSettings.urlStream
         let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
-        url.port = this.hostPort.toString()
+        url.port = '8188'
         url.protocol = this.printerUrl?.startsWith('https') ? 'wss' : 'ws'
 
-        if (baseUrl.startsWith('ws')) url = new URL(baseUrl)
+        if (baseUrl.startsWith('ws') || baseUrl.startsWith('http')) {
+            url = new URL(baseUrl)
+        }
 
         return url
     }
