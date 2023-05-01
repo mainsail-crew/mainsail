@@ -127,6 +127,9 @@ export default class NavigationMixin extends Mixins(BaseMixin) {
     async sidebarNaviFileChanged(newVal: string) {
         this.customNaviLinks = []
 
+        // stop if no file is set
+        if (!newVal) return
+
         const content = await fetch(newVal)
             .then((res) => res.json())
             .catch((err) => {
