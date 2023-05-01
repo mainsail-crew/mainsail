@@ -90,17 +90,7 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
         this.handle = await this.session.attach<JanusStreamingPlugin>(JanusStreamingPlugin, {})
         this.handle?.onMessage.subscribe(async ({ message, jsep }) => {
             if (message?.result?.status) {
-                switch (message.result.status) {
-                    case 'starting':
-                        this.status = 'starting'
-                        break
-                    case 'started':
-                        this.status = 'started'
-                        break
-                    case 'stopped':
-                        this.status = 'stopped'
-                        break
-                }
+                this.status = message.result.status;
             }
             if (jsep) {
                 const answer = await this.handle?.createAnswer({ jsep })
