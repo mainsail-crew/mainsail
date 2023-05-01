@@ -106,7 +106,7 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
             else remoteStream.removeTrack(track)
         })
         this.handle.onIceState.subscribe((value) => {
-            console.log(`ICE state changed to ${value}`);
+            console.log(`ICE state changed to ${value}`)
         })
         this.handle.onError.subscribe((value) => {
             this.status = `errored: ${JSON.stringify(value)}`
