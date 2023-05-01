@@ -327,7 +327,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'ipstream', text: this.$t('Settings.WebcamsTab.Ipstream') },
             { value: 'webrtc-camerastreamer', text: this.$t('Settings.WebcamsTab.WebrtcCameraStreamer') },
             { value: 'hlsstream', text: this.$t('Settings.WebcamsTab.Hlsstream') },
-            { value: 'janus', text: this.$t('Settings.WebcamsTab.Janus') },
+            { value: 'webrtc-janus', text: this.$t('Settings.WebcamsTab.WebrtcJanus') },
         ]
     }
 
