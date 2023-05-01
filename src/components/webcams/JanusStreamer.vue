@@ -54,7 +54,7 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
     }
 
     get streamId() {
-        return /stream=(\d+)/.exec(this.camSettings.urlStream)?.pop()
+        return new URL(this.camSettings.urlStream).pathname.replace(/^\/+|\/+$/g, '')
     }
 
     get webcamStyle() {
@@ -92,7 +92,7 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
         this.handle = await this.session.attach<JanusStreamingPlugin>(JanusStreamingPlugin, {})
         this.handle?.onMessage.subscribe(async ({ message, jsep }) => {
             if (message?.result?.status) {
-                this.status = message.result.status;
+                this.status = message.result.status
             }
             if (jsep) {
                 const answer = await this.handle?.createAnswer({ jsep })
