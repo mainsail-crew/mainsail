@@ -124,7 +124,7 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
 
     @Watch('url')
     async changedUrl() {
-        await this.pc?.close()
+        await this.session?.destroy({})
         this.startStream()
     }
 }
