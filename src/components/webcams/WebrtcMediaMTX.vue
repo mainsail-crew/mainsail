@@ -98,6 +98,22 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
         }
 
         window.console.log('[webcam-rtspsimpleserver] web socket connecting')
+
+        // test if the url is valid
+        try {
+            const url = new URL(this.url)
+
+            // break if url protocol is not ws
+            if (!url.protocol.startsWith('ws')) {
+                console.log('[webcam-rtspsimpleserver] invalid URL (no ws protocol)')
+                return
+            }
+        } catch (err) {
+            console.log('[webcam-rtspsimpleserver] invalid URL')
+            return
+        }
+
+        // open websocket connection
         this.ws = new WebSocket(this.url)
 
         this.ws.onerror = (event) => {
