@@ -780,9 +780,7 @@
             "MoonrakerRestartInstance": "Redémarrage Moonraker",
             "MoonrakerRestartInstanceDescription": "Choisissez quel service Moonraker doit redémarrer lors d'un appui sur 'Save & Restart' après édition des fichiers de configuration.",
             "UseEscToClose": "Utiliser la touche \"esc\" pour fermer l'éditeur",
-            "UseEscToCloseDescription": "Autoriser la touche \"esc\" de fermer l'éditeur.",
-            "TabSize": "TAB Taille",
-            "TabSizeDescription": "Règle le nombre d'espaces qui doivent être indentés pour les TAB"
+            "UseEscToCloseDescription": "Autoriser la touche \"esc\" de fermer l'éditeur."
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Couleur de l'arrière-plan",

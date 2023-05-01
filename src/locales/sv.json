@@ -623,9 +623,7 @@
             "MoonrakerRestartInstance": "Starta om Moonraker instans",
             "MoonrakerRestartInstanceDescription": "Välj vilken Moonraker-tjänst som ska startas om under \"Spara och starta om\" när du redigerar Moonraker-konfigurationsfiler.",
             "UseEscToClose": "Använd ESC för att stänga redigeringsprogrammet",
-            "UseEscToCloseDescription": "Tillåter att ESC-tangenten stänger redigeraren",
-            "TabSize": "TAB-storlek",
-            "TabSizeDescription": "Justerar hur många mellanslag som ska indelas för TAB"
+            "UseEscToCloseDescription": "Tillåter att ESC-tangenten stänger redigeraren"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Bakgrundsfärg",

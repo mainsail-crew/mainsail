@@ -764,9 +764,7 @@
             "MoonrakerRestartInstance": "Moonraker yeniden başlatma örneği",
             "MoonrakerRestartInstanceDescription": "Moonraker yapılandırma dosyalarını düzenlerken 'Kaydet ve Yeniden Başlat'ta hangi Moonraker hizmetinin yeniden başlatılacağını seçin.",
             "UseEscToClose": "Düzenleyiciyi kapatmak için ESC'yi kullanın",
-            "UseEscToCloseDescription": "ESC tuşunun düzenleyiciyi kapatmasına izin verir",
-            "TabSize": "TAB Boyutu",
-            "TabSizeDescription": "TAB için kaç boşluk girintili olması gerektiğini ayarlar"
+            "UseEscToCloseDescription": "ESC tuşunun düzenleyiciyi kapatmasına izin verir"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Arka Plan Rengi",

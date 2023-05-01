@@ -796,9 +796,7 @@
             "MoonrakerRestartInstance": "Genstart Moonraker instans",
             "MoonrakerRestartInstanceDescription": "Vælg hvilken instans af Moonraker servicen der skal genstartes ved brug af 'Gem & Genstart' når der redigeres i Moonraker config filer.",
             "UseEscToClose": "Tryk ESC for at lukke Editor.",
-            "UseEscToCloseDescription": "Tillader at ESC lukker Editor",
-            "TabSize": "TAB Størrelse",
-            "TabSizeDescription": "Justerer, hvor mange mellemrum der skal være indrykket for TAB"
+            "UseEscToCloseDescription": "Tillader at ESC lukker Editor"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Baggrundsfarve",

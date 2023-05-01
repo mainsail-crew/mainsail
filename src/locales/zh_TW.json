@@ -547,9 +547,7 @@
             "ConfirmUnsavedChangesDescription": "如果啟用，編輯器需要確認儲存或放棄所做的更改。如果禁用，更改將被默認丟棄。",
             "Editor": "編輯器",
             "UseEscToClose": "使用 ESC 關閉編輯器",
-            "UseEscToCloseDescription": "允許 ESC 鍵關閉編輯器",
-            "TabSize": "TAB大小",
-            "TabSizeDescription": "调整TAB应该缩进多少个空格"
+            "UseEscToCloseDescription": "允許 ESC 鍵關閉編輯器"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "背景顏色",

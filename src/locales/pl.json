@@ -726,9 +726,7 @@
             "MoonrakerRestartInstance": "Ponowne uruchomienie instancji Moonrakera",
             "MoonrakerRestartInstanceDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Moonrakera.",
             "UseEscToClose": "Naciśnij ESC aby wyjść z Edytora",
-            "UseEscToCloseDescription": "Pozwala aby móc zamknąć edytor za pomocą ESC",
-            "TabSize": "Rozmiar TAB",
-            "TabSizeDescription": "Ustawia ile spacji powinno być wciętych dla TAB"
+            "UseEscToCloseDescription": "Pozwala aby móc zamknąć edytor za pomocą ESC"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Kolory tła",
