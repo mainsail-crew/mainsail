@@ -57,7 +57,7 @@
             "PrinterOff": "프린터 끄기"
         },
         "TopBar": {
-           "CannotUploadTheFile": "파일을 업로드 할 수 없습니다!",
+            "CannotUploadTheFile": "파일을 업로드 할 수 없습니다!",
             "EmergencyStop": "비상 정지!",
             "SAVE_CONFIG": "설정 저장",
             "Uploading": "업로드 중..",
@@ -159,7 +159,7 @@
         "Uploading": "업로드 중.."
     },
     "EmergencyStopDialog": {
-         "AreYouSure": "확실합니까?",
+        "AreYouSure": "확실합니까?",
         "EmergencyStop": "비상 정지",
         "No": "아니오",
         "Yes": "네"
@@ -461,7 +461,7 @@
                 "TempMin": "최저 온도: {temp}°C",
                 "Transmitted": "전송: {transmitted}",
                 "Version": "버전: {version}"
-            }   
+            }
         },
         "UpdatePanel": {
             "CheckForUpdates": "업데이트 확인",
@@ -531,7 +531,7 @@
             "MoonrakerCannotConnect": "문래커가 클리퍼로 접속할 수 없습니다!",
             "PowerOn": "전원 켜기",
             "PrinterSwitchedOff": "프린터 전원 꺼짐",
-            "PrinterSwitchedOffDescription": "프린터가 현재 꺼져 있어 Klipper를 연결할 수 없습니다 프린터 전원을 켜려면 아래 버튼을 클릭해 주세요",    
+            "PrinterSwitchedOffDescription": "프린터가 현재 꺼져 있어 Klipper를 연결할 수 없습니다 프린터 전원을 켜려면 아래 버튼을 클릭해 주세요",
             "Restart": "재시작",
             "ServiceReports": "{service} 보고"
         },
@@ -628,7 +628,7 @@
             "Speed": "출력 속도",
             "Status": "출력 상태",
             "Total": "전체",
-            "Unknown": "알 수 없음"   
+            "Unknown": "알 수 없음"
         },
         "TemperaturePanel": {
             "AutoscaleChart": "자동 변환 그래프",
@@ -910,7 +910,7 @@
             "StartDescription": "LED의 시작 열 번호를 지정합니다",
             "UnableToLoadLight": "라이트를 로드할 수 없습니다",
             "UnableToLoadPreset": "프리셋을 로드할 수 없습니다"
-          },
+        },
         "PresetsTab": {
             "AddPreset": "프리셋 추가",
             "Cooldown": "가열 중단",
@@ -1133,4 +1133,4 @@
         "Video": "비디오"
     },
     "title": "한국어"
-  }
+}
