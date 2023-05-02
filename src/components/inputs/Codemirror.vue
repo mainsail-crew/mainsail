@@ -19,7 +19,7 @@ import { gcode } from '@/plugins/StreamParserGcode'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
-import {indentUnit} from '@codemirror/language';
+import { indentUnit } from '@codemirror/language'
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin) {

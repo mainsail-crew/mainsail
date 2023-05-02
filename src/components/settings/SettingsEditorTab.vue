@@ -21,14 +21,7 @@
                     :title="$t('Settings.EditorTab.TabSize')"
                     :sub-title="$t('Settings.EditorTab.TabSizeDescription')"
                     :dynamic-slot-width="true">
-                    <v-select
-                        v-model="tabSize"
-                        :items="tabSizes"
-                        hide-details
-                        outlined
-                        dense
-                        attached>
-                    </v-select>
+                    <v-select v-model="tabSize" :items="tabSizes" hide-details outlined dense attached></v-select>
                 </settings-row>
 
                 <v-divider class="my-2"></v-divider>
@@ -85,19 +78,19 @@ export default class SettingsEditorTab extends Mixins(BaseMixin) {
 
     private tabSizes = [
         {
-            text: "Spaces: 2",
+            text: 'Spaces: 2',
             value: 2,
         },
         {
-            text: "Spaces: 4",
+            text: 'Spaces: 4',
             value: 4,
         },
         {
-            text: "Spaces: 6",
+            text: 'Spaces: 6',
             value: 6,
         },
         {
-            text: "Spaces: 8",
+            text: 'Spaces: 8',
             value: 8,
         },
     ]
