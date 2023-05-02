@@ -406,6 +406,40 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
+                    :title="$t('Settings.TimelapseTab.FlipX').toString()"
+                    :sub-title="$t('Settings.TimelapseTab.FlipXDescription').toString()"
+                    :dynamic-slot-width="true">
+                    <v-switch
+                        v-model="flip_x"
+                        hide-details
+                        class="mt-0"
+                        :disabled="blockedsettings.includes('flip_x')" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Settings.TimelapseTab.FlipY').toString()"
+                    :sub-title="$t('Settings.TimelapseTab.FlipYDescription').toString()"
+                    :dynamic-slot-width="true">
+                    <v-switch
+                        v-model="flip_y"
+                        hide-details
+                        class="mt-0"
+                        :disabled="blockedsettings.includes('flip_x')" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Settings.TimelapseTab.Rotation').toString()"
+                    :sub-title="$t('Settings.TimelapseTab.RotationDescription').toString()">
+                    <v-text-field
+                        v-model="rotation"
+                        type="number"
+                        hide-details="auto"
+                        outlined
+                        dense
+                        :disabled="blockedsettings.includes('rotation')" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
                     :title="$t('Settings.TimelapseTab.Extraoutputparams').toString()"
                     :sub-title="$t('Settings.TimelapseTab.ExtraoutputparamsDescription').toString()">
                     <v-text-field
@@ -744,6 +778,30 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
 
     set time_format_code(newVal) {
         this.$store.dispatch('server/timelapse/saveSetting', { time_format_code: newVal })
+    }
+
+    get flip_x() {
+        return this.$store.state.server.timelapse.settings.flip_x
+    }
+
+    set flip_x(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { flip_x: newVal })
+    }
+
+    get flip_y() {
+        return this.$store.state.server.timelapse.settings.flip_y
+    }
+
+    set flip_y(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { flip_y: newVal })
+    }
+
+    get rotation() {
+        return this.$store.state.server.timelapse.settings.rotation
+    }
+
+    set rotation(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { rotation: newVal })
     }
 }
 </script>
