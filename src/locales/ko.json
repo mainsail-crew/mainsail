@@ -12,7 +12,7 @@
                 "KlipperWarning": "클리퍼 : 주의"
             },
             "MoonrakerWarnings": {
-                "MoonrakerComponent": "문레이커:{component}",
+                "MoonrakerComponent": "문레이커: {component}",
                 "MoonrakerFailedComponentDescription": "문레이커 구성 요소인 '{component}'을(를) 로드하는 동안 오류가 발생했습니다 로 파일을 확인해 문제를 해결해 주세요",
                 "MoonrakerWarning": "문레이커 : 주의",
                 "UnparsedConfigOption": "[{section}]에서 사용할 수 없는 구성 옵션인 '{option}:{value}'이(가) 존재하며 이는 더 이상 사용할 수 없는 옵션 또는 모듈 로딩을 할 수 없는 경우이며 이제부터 시작 오류가 발생할 수 있습니다",
@@ -68,7 +68,7 @@
             "Cancel": "취소",
             "ConfirmationDialog": {
                 "Description": {
-                    "HostReboot": "호스트를 재부팅하면 현재 출력은 강제 정지됩니다!",
+                    "HostReboot": "호스트를 재부팅하면 현재 출력은 취소됩니다!",
                     "HostShutdown": "호스트를 종료하면 현재 출력은 취소됩니다!",
                     "KlipperFirmwareRestart": "클리퍼 펌웨어를 재시작하면 현재 출력은 취소됩니다!",
                     "KlipperRestart": "클리퍼 서비스를 재시작하면 현재 출력은 취소됩니다!",
