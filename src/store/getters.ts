@@ -25,7 +25,10 @@ export const getters: GetterTree<RootState, any> = {
 
         // return complete title
         if (state.printer?.print_stats?.state === 'complete')
-            return i18n.t('App.Titles.Complete', { filename: state.printer.print_stats.filename })
+            return i18n.t('App.Titles.Complete', {
+                filename: state.printer.print_stats.filename,
+                name: state.gui?.general.printername,
+            })
 
         // return printing title
         if (printer_state === 'printing') {
@@ -37,11 +40,13 @@ export const getters: GetterTree<RootState, any> = {
                     percent: percent,
                     filename: state.printer?.print_stats?.filename,
                     eta,
+                    name: state.gui?.general.printername,
                 })
 
             return i18n.t('App.Titles.Printing', {
                 percent: percent,
                 filename: state.printer?.print_stats?.filename,
+                name: state.gui?.general.printername,
             })
         }
 

@@ -341,7 +341,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     get disableFanAnimation() {
-        return this.$store.state.gui.uiSettings.hideSaveConfigForBedMash ?? false
+        return this.$store.state.gui.uiSettings.disableFanAnimation ?? false
     }
 
     set disableFanAnimation(newVal) {
