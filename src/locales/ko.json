@@ -21,8 +21,8 @@
             "Never": "안함",
             "NextReboot": "다음 재부팅",
             "NoNotification": "표시할 알림 없음",
-            "Remind": "재확인:",
-            "Notifications": "알림"
+            "Notifications": "알림",
+            "Remind": "재확인:"
         },
         "NumberInput": {
             "GreaterOrEqualError": "{min}의 값 이상으로 설정해 주세요",
@@ -52,9 +52,9 @@
             "Complete": "{filename} - 출력 완료",
             "Error": "오류",
             "Pause": "일시정지",
+            "PrinterOff": "프린터 끄기",
             "Printing": "{filename} 파일, 현재 {percent}% 출력 중..",
-            "PrintingETA": "{filename} 파일 현재 {percent}% 프린트 중, 완료 예정 시간 : {eta}",
-            "PrinterOff": "프린터 끄기"
+            "PrintingETA": "{filename} 파일 현재 {percent}% 프린트 중, 완료 예정 시간 : {eta}"
         },
         "TopBar": {
             "CannotUploadTheFile": "파일을 업로드 할 수 없습니다!",
@@ -124,8 +124,8 @@
         "CheckMoonrakerLog": "이 메세지가 계속 나타날 경우 해당 경로의 로그 파일을 점검해 주세요",
         "Connecting": "{host}로 접속 중..",
         "Failed": "접속 실패",
-        "TryAgain": "재접속 시도",
-        "Initializing": "초기화 중.."
+        "Initializing": "초기화 중..",
+        "TryAgain": "재접속 시도"
     },
     "Console": {
         "CommandList": "커맨드 목록",
@@ -235,6 +235,7 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "초기화",
+        "CNCMode": "CNC 모드",
         "ColorMode": "컬러 모드",
         "Downloading": "정보 다운로딩 중..",
         "ForceLineRendering": "Force line 랜더링",
@@ -248,6 +249,7 @@
         "ReloadRequired": "다시 로드해야 합니다",
         "Rendering": "랜더링 중..",
         "RenderQuality": "랜더링 품질",
+        "ShowGCode": "G-Code 보기",
         "ShowObjectSelection": "선택 도형 표시",
         "ShowToolhead": "툴 헤드 표시",
         "ShowTravelMoves": "이동 표시",
@@ -256,9 +258,7 @@
         "Tracking": "트래킹",
         "Transparency": "투명 표시",
         "Ultra": "높음",
-        "VoxelMode": "Voxel 모드 (ASMBL)",
-        "ShowGCode": "G-Code 보기",
-        "CNCMode": "CNC 모드"
+        "VoxelMode": "Voxel 모드 (ASMBL)"
     },
     "Heightmap": {
         "Abort": "취소",
@@ -271,8 +271,8 @@
             "Max": "최대",
             "Min": "최소",
             "Name": "이름",
-            "Size": "메쉬 기준",
-            "Range": "범위"
+            "Range": "범위",
+            "Size": "메쉬 기준"
         },
         "DeleteBedMeshProfile": "베드 메쉬 프로파일 삭제",
         "DoYouReallyWantToDelete": "\"{name}\"? 프로파일을 정말 삭제하시겠습니까?",
@@ -308,8 +308,8 @@
         "AllJobs": "전체",
         "AvgPrinttime": "평균 출력 시간",
         "Cancel": "취소",
-        "CreateNote": "노트 생성",
         "Chart": "차트",
+        "CreateNote": "노트 생성",
         "Delete": "삭제",
         "DeleteSelectedQuestion": "{count}개의 선택된 작업을 삭제하시겠습니까?",
         "Details": "세부정보",
@@ -373,8 +373,8 @@
     },
     "JobQueue": {
         "AllJobs": "전체 작업",
-        "ChangeCount": "카운트 변경",
         "Cancel": "취소",
+        "ChangeCount": "카운트 변경",
         "Count": "카운트",
         "Empty": "비어있음",
         "InvalidCountEmpty": "입력란을 비워둘 수 없습니다",
@@ -708,6 +708,12 @@
         "Timelapse": "타임랩스",
         "Webcam": "웹캠"
     },
+    "ScrewsTiltAdjust": {
+        "Accept": "확인",
+        "Base": "베이스",
+        "ErrorText": "계측 중 문제가 발생했습니다",
+        "Headline": "베드 스크류 틸트 교정"
+    },
     "SelectPrinterDialog": {
         "AddPrinter": "프린터 정보 추가",
         "AddPrintersToJson": "프린터를 config.json 파일에 추가해 주세요",
@@ -811,13 +817,24 @@
             "ShowAxes": "축(Axis) 보기"
         },
         "GeneralTab": {
+            "12hours": "12-시간  ({time})",
+            "24hours": "24-시간 ({time})",
             "Backup": "백업",
             "BackupDialog": "백업을 생성할 모든 섹션을 산택해 주세요:",
             "CalcEstimateTime": "완료 예상 시간 계산",
             "CalcEstimateTimeDescription": "복수 옵션을 선택할 경우 평균으로 계산해 표시합니다",
             "CalcEtaTime": "예상 완료 시각 계산",
             "CalcEtaTimeDescription": "복수 옵션을 선택할 경우 평균으로 계산해 표시합니다",
+            "CalcPrintProgress": "출력 진행율 계산",
+            "CalcPrintProgressDescription": "출력 진핼율 계산 방법",
+            "CalcPrintProgressItems": {
+                "Filament": "필라멘트",
+                "FileAbsolute": "파일 위치 (절대 값)",
+                "FileRelative": "파일 위치 (상대 값)",
+                "Slicer": "슬라이서 (M73)"
+            },
             "CannotReadJson": "백업 파일을 읽거나 구문 해석을 할 수 없습니다",
+            "DateFormat": "데이터 유형",
             "DbConsoleHistory": "콘솔 기록",
             "DbHistoryJobs": "작업 기록",
             "DbHistoryTotals": "전체 기록",
@@ -838,17 +855,6 @@
             "Reset": "재설정",
             "Restore": "복원하기",
             "RestoreDialog": "복원하고자 하는 모든 섹션을 선택해 주세요:",
-            "12hours": "12-시간  ({time})",
-            "24hours": "24-시간 ({time})",
-            "CalcPrintProgress": "출력 진행율 계산",
-            "CalcPrintProgressDescription": "출력 진핼율 계산 방법",
-            "CalcPrintProgressItems": {
-                "Filament": "필라멘트",
-                "FileAbsolute": "파일 위치 (절대 값)",
-                "FileRelative": "파일 위치 (상대 값)",
-                "Slicer": "슬라이서 (M73)"
-            },
-            "DateFormat": "데이터 유형",
             "TimeFormat": "시간 유형"
         },
         "InterfaceSettings": "인터페이스 설정",
@@ -896,8 +902,8 @@
             "CreatePreset": "프리셋 생성",
             "End": "끝 번호",
             "EndDescription": "LED의 마지막 열 번호를 지정합니다",
-            "GroupSubTitle": "시작: {start}, 끝: {end}",
             "Groups": "그룹",
+            "GroupSubTitle": "시작: {start}, 끝: {end}",
             "LightGroups": "{name} - 그룹",
             "LightPresets": "{name} - 프리셋",
             "Miscellaneous": "기타",
@@ -1043,7 +1049,11 @@
         "WebcamsTab": {
             "AddWebcam": "웹캠 추가",
             "CreateWebcam": "웹캠 장치 정보 입력",
+            "EditCrowsnestConf": "crosnest.conf 설정 수정",
             "EditWebcam": "웹캠 장치 정보 수정",
+            "FlipWebcam": "웹캠 이미지 반전:",
+            "Hlsstream": "HLS 스트림",
+            "Horizontally": "가로 반전",
             "IconBed": "베드",
             "IconCam": "캠",
             "IconDoor": "도어",
@@ -1058,6 +1068,7 @@
             "Name": "이름",
             "NameAlreadyExists": "이미 이름이 존재합니다",
             "Required": "필요합니다",
+            "Rotate": "회전",
             "SaveWebcam": "확인",
             "Service": "서비스",
             "TargetFPS": "타겟 FPS",
@@ -1065,21 +1076,10 @@
             "UrlSnapshot": "URL 스냅샷(외부 스트림시 :9999등의 포트 추가)",
             "UrlStream": "URL 스트림 (외부 스트림시 :9999등의 포트 추가)",
             "Uv4lMjpeg": "UV4L-MJPEG",
-            "Webcams": "웹캠",
-            "EditCrowsnestConf": "crosnest.conf 설정 수정",
-            "FlipWebcam": "웹캠 이미지 반전:",
-            "Hlsstream": "HLS 스트림",
-            "Horizontally": "가로 반전",
-            "Rotate": "회전",
             "Vertically": "세로 반전",
+            "Webcams": "웹캠",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
         }
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "확인",
-        "Base": "베이스",
-        "ErrorText": "계측 중 문제가 발생했습니다",
-        "Headline": "베드 스크류 틸트 교정"
     },
     "Timelapse": {
         "AllFiles": "전체",
