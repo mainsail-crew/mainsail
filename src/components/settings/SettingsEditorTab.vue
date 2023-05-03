@@ -76,24 +76,13 @@ export default class SettingsEditorTab extends Mixins(BaseMixin) {
         },
     ]
 
-    private tabSizes = [
-        {
-            text: 'Spaces: 2',
-            value: 2,
-        },
-        {
-            text: 'Spaces: 4',
-            value: 4,
-        },
-        {
-            text: 'Spaces: 6',
-            value: 6,
-        },
-        {
-            text: 'Spaces: 8',
-            value: 8,
-        },
-    ]
+    get tabSizes() {
+        const spaces = [2, 4, 6, 8]
+        return spaces.map((space) => ({
+            text: `${this.$t('Settings.EditorTab.Spaces')}: ${space}`,
+            value: space,
+        }))
+    }
 
     get escToClose() {
         return this.$store.state.gui.editor.escToClose

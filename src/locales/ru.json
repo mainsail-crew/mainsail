@@ -728,7 +728,8 @@
             "UseEscToClose": "Нажмите ESC, чтобы закрыть редактор",
             "UseEscToCloseDescription": "Позволяет закрыть редактор с помощью ESC.",
             "TabSize": "Размер TAB",
-            "TabSizeDescription": "Регулирует, сколько пробелов должно быть отступом для TAB"
+            "TabSizeDescription": "Регулирует, сколько пробелов должно быть отступом для TAB",
+            "Spaces": "Пробе́лов"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Цвет фона",

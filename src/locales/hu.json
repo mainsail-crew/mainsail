@@ -727,7 +727,8 @@
             "UseEscToClose": "Kilépéshez nyomd meg az ESC gombot",
             "UseEscToCloseDescription": "Az ESC gomb megnyomása bezárja a szerkesztőt",
             "TabSize": "TAB Méret",
-            "TabSizeDescription": "Beállítja, hogy hány szóközzel legyen behúzva a TAB-oknál"
+            "TabSizeDescription": "Beállítja, hogy hány szóközzel legyen behúzva a TAB-oknál",
+            "Spaces": "Szóközök"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Háttérszín",
