@@ -29,7 +29,6 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
     private session: JanusSession | null = null
     private handle: JanusStreamingPlugin | null = null
     private useStun = false
-    private pc: RTCPeerConnection | null = null
     private aspectRatio: null | number = null
     private status: string = 'connecting'
 
