@@ -22,7 +22,7 @@
                 <template v-else-if="webcam.service === 'webrtc-camerastreamer'">
                     <webcam-webrtc-camerastreamer :cam-settings="webcam" />
                 </template>
-                <template v-else-if="webcam.service === 'janus'">
+                <template v-else-if="webcam.service === 'webrtc-janus'">
                     <webcam-webrtc-janus :cam-settings="webcam" />
                 </template>
                 <template v-else>

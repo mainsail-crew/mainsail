@@ -193,7 +193,7 @@
                             <template v-else-if="form.service === 'webrtc-camerastreamer'">
                                 <webcam-webrtc-camerastreamer :cam-settings="form" />
                             </template>
-                            <template v-else-if="form.service === 'janus'">
+                            <template v-else-if="form.service === 'webrtc-janus'">
                                 <webcam-webrtc-janus :cam-settings="form" />
                             </template>
                             <template v-else>
