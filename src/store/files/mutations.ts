@@ -125,24 +125,20 @@ export const mutations: MutationTree<FileState> = {
         const pathOld = findDirectory(state.filetree, pathnameOld.split('/'))
         const indexFile = pathOld?.findIndex((element: FileStateFile) => element.filename === filenameOld)
 
-        if (indexFile && pathOld && pathOld[indexFile]) {
-            const file = pathOld.splice(indexFile, 1)[0]
-            file.filename = filenameNew
+        // break if old file not found
+        if (indexFile === undefined || indexFile === -1 || pathOld === null) return
 
-            //cleanup thumbnails and force reload
-            if (
-                pathnameOld !== pathnameNew &&
-                'metadataPulled' in file &&
-                file.metadataPulled &&
-                'thumbnails' in file
-            ) {
-                file.metadataPulled = false
-                delete file.thumbnails
-            }
+        const file = pathOld.splice(indexFile, 1)[0]
+        file.filename = filenameNew
 
-            const newPath = findDirectory(state.filetree, pathnameNew.split('/'))
-            newPath?.push(file)
+        //cleanup thumbnails and force reload
+        if (pathnameOld !== pathnameNew && 'metadataPulled' in file && file.metadataPulled && 'thumbnails' in file) {
+            file.metadataPulled = false
+            delete file.thumbnails
         }
+
+        const newPath = findDirectory(state.filetree, pathnameNew.split('/'))
+        newPath?.push(file)
     },
 
     setModifyFile(state, payload) {
