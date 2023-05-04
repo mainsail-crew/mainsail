@@ -222,7 +222,7 @@ export const actions: ActionTree<FileState, RootState> = {
             const filename = payload.requestParams.dest
                 .substr(payload.requestParams.dest.lastIndexOf('/'))
                 .replace('/', '')
-            const sourceDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf('/'))
+            const sourceDir = payload.requestParams.source.substr(0, payload.requestParams.source.lastIndexOf('/'))
             const destDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf('/'))
 
             if (sourceDir === destDir) Vue.$toast.success(<string>i18n.t('Files.SuccessfullyRenamed', { filename }))
