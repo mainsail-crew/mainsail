@@ -1006,7 +1006,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
             'print_duration' in state.print_stats &&
             'current_file' in state &&
             'estimated_time' in state.current_file &&
-            state.print_stats.print_duration > 0
+            state.print_stats.print_duration > 0 &&
+            state.current_file.estimated_time > 0
         ) {
             return (state.current_file.estimated_time - state.print_stats.print_duration).toFixed(0)
         }
