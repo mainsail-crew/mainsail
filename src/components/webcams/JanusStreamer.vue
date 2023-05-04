@@ -7,7 +7,8 @@
             :style="webcamStyle"
             autoplay
             muted
-            playsinline />
+            playsinline
+            @playing="updateAspectRatio"/>
         <v-row v-if="status !== 'started'">
             <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
                 <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
@@ -89,7 +90,7 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
 
     async startStream() {
         this.janusClient = new JanusJs(this.streamConfig)
-        await this.janusClient.init({ debug: false })
+        await this.janusClient.init({ debug: true })
         this.session = await this.janusClient.createSession()
         this.handle = await this.session.attach<JanusStreamingPlugin>(JanusStreamingPlugin, {})
         this.handle?.onMessage.subscribe(async ({ message, jsep }) => {
@@ -102,7 +103,7 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
             }
         })
         const remoteStream = new MediaStream()
-        JanusJs.attachMediaStream(this.$refs.stream as HTMLMediaElement, remoteStream)
+        JanusJs.attachMediaStream(this.stream as HTMLMediaElement, remoteStream)
         this.handle?.onRemoteTrack.subscribe(({ on, track }) => {
             if (on) remoteStream.addTrack(track)
             else remoteStream.removeTrack(track)
@@ -118,6 +119,10 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
 
     mounted() {
         this.startStream()
+    }
+
+    updateAspectRatio() {
+        this.aspectRatio = this.stream.videoWidth / this.stream.videoHeight
     }
 
     beforeDestroy() {
