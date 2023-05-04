@@ -90,7 +90,7 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
 
     async startStream() {
         this.janusClient = new JanusJs(this.streamConfig)
-        await this.janusClient.init({ debug: true })
+        await this.janusClient.init({ debug: false })
         this.session = await this.janusClient.createSession()
         this.handle = await this.session.attach<JanusStreamingPlugin>(JanusStreamingPlugin, {})
         this.handle?.onMessage.subscribe(async ({ message, jsep }) => {
