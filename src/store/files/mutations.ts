@@ -109,8 +109,8 @@ export const mutations: MutationTree<FileState> = {
 
         const lastSlashOld = payload.source_item.path.lastIndexOf('/')
         if (lastSlashOld !== -1) {
-            filenameOld = payload.source_item.path.substr(lastSlashOld + 1)
-            pathnameOld = payload.source_item.root + '/' + payload.source_item.path.substr(0, lastSlashOld + 1)
+            filenameOld = payload.source_item.path.substring(lastSlashOld + 1)
+            pathnameOld = payload.source_item.root + '/' + payload.source_item.path.substring(0, lastSlashOld)
         }
 
         let filenameNew = payload.item.path
@@ -118,8 +118,8 @@ export const mutations: MutationTree<FileState> = {
 
         const lastSlashNew = payload.item.path.lastIndexOf('/')
         if (lastSlashNew !== -1) {
-            filenameNew = payload.item.path.substr(lastSlashNew + 1)
-            pathnameNew = payload.item.root + '/' + payload.item.path.substr(0, lastSlashNew + 1)
+            filenameNew = payload.item.path.substring(lastSlashNew + 1)
+            pathnameNew = payload.item.root + '/' + payload.item.path.substring(0, lastSlashNew)
         }
 
         const pathOld = findDirectory(state.filetree, pathnameOld.split('/'))
