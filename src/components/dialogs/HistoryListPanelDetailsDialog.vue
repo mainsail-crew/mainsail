@@ -10,150 +10,13 @@
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
-            <v-card-text class="px-0">
+            <v-card-text class="pa-0">
                 <overlay-scrollbars style="height: 350px" class="px-6">
-                    <v-row>
-                        <v-col>{{ $t('History.Filename') }}</v-col>
-                        <v-col class="text-right">{{ job.filename }}</v-col>
-                    </v-row>
-                    <template v-if="'metadata' in job && 'size' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.Filesize') }}</v-col>
-                            <v-col class="text-right">{{ formatFilesize(job.metadata.size) }}</v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="'metadata' in job && 'modified' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.LastModified') }}</v-col>
-                            <v-col class="text-right">
-                                {{ formatDateTime(job.metadata.modified * 1000) }}
-                            </v-col>
-                        </v-row>
-                    </template>
-                    <v-divider class="my-3"></v-divider>
-                    <v-row>
-                        <v-col>{{ $t('History.Status') }}</v-col>
-                        <v-col class="text-right">
-                            {{
-                                $te(`History.StatusValues.${job.status}`, 'en')
-                                    ? $t(`History.StatusValues.${job.status}`)
-                                    : job.status
-                            }}
-                        </v-col>
-                    </v-row>
-                    <v-divider class="my-3"></v-divider>
-                    <v-row>
-                        <v-col>{{ $t('History.StartTime') }}</v-col>
-                        <v-col class="text-right">{{ formatDateTime(job.start_time * 1000) }}</v-col>
-                    </v-row>
-                    <template v-if="'end_time' in job && job.end_time > 0">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.EndTime') }}</v-col>
-                            <v-col class="text-right">
-                                {{ formatDateTime(job.end_time * 1000) }}
-                            </v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="'metadata' in job && 'estimated_time' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.EstimatedTime') }}</v-col>
-                            <v-col class="text-right">
-                                {{ formatPrintTime(job.metadata.estimated_time) }}
-                            </v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="job.print_duration > 0">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.PrintDuration') }}</v-col>
-                            <v-col class="text-right">
-                                {{ formatPrintTime(job.print_duration) }}
-                            </v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="job.total_duration > 0">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.TotalDuration') }}</v-col>
-                            <v-col class="text-right">
-                                {{ formatPrintTime(job.total_duration) }}
-                            </v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="'metadata' in job && 'filament_total' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.EstimatedFilamentWeight') }}</v-col>
-                            <v-col class="text-right">
-                                {{ Math.round(job.metadata.filament_weight_total * 100) / 100 }} g
-                            </v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="'metadata' in job && 'filament_total' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.EstimatedFilament') }}</v-col>
-                            <v-col class="text-right">{{ Math.round(job.metadata.filament_total) }} mm</v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="job.filament_used > 0">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.FilamentUsed') }}</v-col>
-                            <v-col class="text-right">{{ Math.round(job.filament_used) }} mm</v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="'metadata' in job && 'first_layer_extr_temp' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.FirstLayerExtTemp') }}</v-col>
-                            <v-col class="text-right">{{ job.metadata.first_layer_extr_temp }} °C</v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="'metadata' in job && 'first_layer_bed_temp' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.FirstLayerBedTemp') }}</v-col>
-                            <v-col class="text-right">{{ job.metadata.first_layer_bed_temp }} °C</v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="'metadata' in job && 'first_layer_height' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.FirstLayerHeight') }}</v-col>
-                            <v-col class="text-right">{{ job.metadata.first_layer_height }} mm</v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="'metadata' in job && 'layer_height' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.LayerHeight') }}</v-col>
-                            <v-col class="text-right">{{ job.metadata.layer_height }} mm</v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="'metadata' in job && 'object_height' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.ObjectHeight') }}</v-col>
-                            <v-col class="text-right">{{ job.metadata.object_height }} mm</v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="'metadata' in job && 'slicer' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.Slicer') }}</v-col>
-                            <v-col class="text-right">{{ job.metadata.slicer }}</v-col>
-                        </v-row>
-                    </template>
-                    <template v-if="'metadata' in job && 'slicer_version' in job.metadata">
-                        <v-divider class="my-3"></v-divider>
-                        <v-row>
-                            <v-col>{{ $t('History.SlicerVersion') }}</v-col>
-                            <v-col class="text-right">{{ job.metadata.slicer_version }}</v-col>
+                    <template v-for="(entry, index) in entries">
+                        <v-divider v-if="index > 0" :key="'history_detail_entry_divider_' + index" class="my-3" />
+                        <v-row :key="'history_detail_entry_' + index">
+                            <v-col>{{ entry.name }}</v-col>
+                            <v-col class="text-right">{{ entry.value }}</v-col>
                         </v-row>
                     </template>
                 </overlay-scrollbars>
@@ -199,12 +62,12 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
             },
             {
                 name: this.$t('History.Filesize').toString(),
-                value: formatFilesize(this.job.metadata.filesize ?? 0),
+                value: formatFilesize(this.job.metadata?.filesize ?? 0),
                 exists: (this.job.metadata?.filesize ?? 0) > 0,
             },
             {
                 name: this.$t('History.LastModified').toString(),
-                value: this.formatDateTime((this.job.metadata.modified ?? 0) * 1000),
+                value: this.formatDateTime((this.job.metadata?.modified ?? 0) * 1000),
                 exists: (this.job.metadata?.modified ?? 0) > 0,
             },
             {
@@ -226,8 +89,8 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
             },
             {
                 name: this.$t('History.EstimatedTime').toString(),
-                value: this.formatPrintTime(this.job.metadata.estimated_time ?? 0),
-                exists: 'estimated_time' in this.job.metadata,
+                value: this.formatPrintTime(this.job.metadata?.estimated_time ?? 0),
+                exists: this.job.metadata && 'estimated_time' in this.job.metadata,
             },
             {
                 name: this.$t('History.PrintDuration').toString(),
@@ -241,8 +104,8 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
             },
             {
                 name: this.$t('History.EstimatedFilamentWeight').toString(),
-                value: `${Math.round((this.job.metadata.filament_weight_total ?? 0) * 100) / 100} g`,
-                exists: 'filament_weight_total' in this.job.metadata,
+                value: `${Math.round((this.job.metadata?.filament_weight_total ?? 0) * 100) / 100} g`,
+                exists: this.job.metadata && 'filament_weight_total' in this.job.metadata,
             },
         ]
 
@@ -250,7 +113,17 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('closeDialog')
+        this.$emit('close-dialog')
     }
 }
 </script>
+
+<style scoped>
+::v-deep .os-content .row:first-child {
+    margin-top: 1em !important;
+}
+
+::v-deep .os-content .row:last-child {
+    margin-bottom: 1em !important;
+}
+</style>

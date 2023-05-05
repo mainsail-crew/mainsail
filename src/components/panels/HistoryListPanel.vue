@@ -243,7 +243,7 @@
         <history-list-panel-details-dialog
             :show="detailsDialog.show"
             :job="detailsDialog.item"
-            @close-dialog="contextMenu.shown = false" />
+            @close-dialog="detailsDialog.show = false" />
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
             <panel
                 :title="$t('History.Delete').toString()"
