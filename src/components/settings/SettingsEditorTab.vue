@@ -79,7 +79,7 @@ export default class SettingsEditorTab extends Mixins(BaseMixin) {
     get tabSizes() {
         const spaces = [2, 4, 6, 8]
         return spaces.map((space) => ({
-            text: `${this.$t('Settings.EditorTab.Spaces')}: ${space}`,
+            text: this.$t('Settings.EditorTab.Spaces', { count: space }),
             value: space,
         }))
     }

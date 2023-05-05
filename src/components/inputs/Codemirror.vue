@@ -84,7 +84,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
         const extensions = [
             basicSetup,
             mainsailTheme,
-            indentUnit.of(' '.repeat(this.$store.state.gui.editor.tabSize)),
+            indentUnit.of(' '.repeat(this.getTabSize())),
             keymap.of([indentWithTab]),
             EditorView.updateListener.of((update) => {
                 this.content = update.state?.doc.toString()
@@ -104,6 +104,10 @@ export default class Codemirror extends Mixins(BaseMixin) {
 
     visibilityChanged(isVisible: boolean) {
         if (isVisible) this.cminstance?.focus()
+    }
+
+    getTabSize() {
+        return this.$store.state.gui.editor.tabSize || 2
     }
 }
 </script>

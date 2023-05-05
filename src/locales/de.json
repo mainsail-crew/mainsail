@@ -800,7 +800,7 @@
             "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen.",
             "TabSize": "TAB Größe",
             "TabSizeDescription": "Legt fest, um wie viele Leerzeichen für TAB eingerückt werden sollen",
-            "Spaces": "Leerzeichen"
+            "Spaces": "Leerzeichen: {count}"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Hintergrundfarbe",
