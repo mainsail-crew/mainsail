@@ -8,7 +8,7 @@
             autoplay
             muted
             playsinline
-            @playing="updateAspectRatio"/>
+            @playing="updateAspectRatio" />
         <v-row v-if="status !== 'started'">
             <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
                 <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
