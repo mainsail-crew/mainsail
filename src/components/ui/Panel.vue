@@ -99,7 +99,7 @@ export default class Panel extends Mixins(BaseMixin) {
         if (this.hoverTimer === null) {
             this.hoverTimer = setTimeout(() => {
                 this.hovered = true
-            }, 500)
+            }, 250)
         }
     }
 
