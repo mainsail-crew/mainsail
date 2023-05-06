@@ -345,6 +345,13 @@
                     <v-icon class="mr-1">{{ mdiVideo3d }}</v-icon>
                     {{ $t('Files.View3D') }}
                 </v-list-item>
+                <v-list-item
+                    v-if="!contextMenu.item.isDirectory"
+                    :disabled="!isGcodeFile(contextMenu.item)"
+                    @click="scanMeta(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiMagnify }}</v-icon>
+                    {{ $t('Files.ScanMeta') }}
+                </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="downloadFile">
                     <v-icon class="mr-1">{{ mdiCloudDownload }}</v-icon>
                     {{ $t('Files.Download') }}
@@ -1434,6 +1441,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     view3D(item: FileStateFile) {
         this.$router.push({ path: '/viewer', query: { filename: 'gcodes' + this.currentPath + '/' + item.filename } })
+    }
+
+    scanMeta(item: FileStateFile) {
+        this.$store.dispatch('files/scanMetadata', {
+            filename: 'gcodes' + this.currentPath + '/' + item.filename,
+        })
     }
 
     deleteSelectedFiles() {

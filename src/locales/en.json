@@ -218,6 +218,8 @@
         "Rename": "Rename",
         "RenameDirectory": "Rename Directory",
         "RenameFile": "Rename File",
+        "ScanMeta": "Scan Metadata",
+        "ScanMetaSuccess": "Successfully scanned metadata from: {filename}.",
         "Search": "Search",
         "SetupCurrentList": "Setup current list",
         "Slicer": "Slicer",
