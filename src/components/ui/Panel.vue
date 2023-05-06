@@ -1,9 +1,5 @@
 <template>
-    <v-card
-        :class="'panel ' + cardClass + ' ' + (marginBottom ? 'mb-3 mb-md-6' : '') + ' ' + (!expand ? 'expanded' : '')"
-        :loading="loading"
-        @mouseover="onMouseover"
-        @mouseleave="onMouseleave">
+    <v-card :class="getCardClass" :loading="loading" @mouseover="onMouseover" @mouseleave="onMouseleave">
         <v-toolbar
             flat
             dense
@@ -83,6 +79,16 @@ export default class Panel extends Mixins(BaseMixin) {
 
     get hasButtonsSlot() {
         return !!this.$slots.buttons
+    }
+
+    get getCardClass() {
+        let output = ['panel']
+
+        if (this.cardClass) output.push(this.cardClass)
+        if (this.marginBottom) output.push('mb-3 mb-md-6')
+        if (!this.collapseState) output.push('expanded')
+
+        return output
     }
 
     get getToolbarClass() {
