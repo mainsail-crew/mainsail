@@ -22,6 +22,9 @@
                 <template v-else-if="webcam.service === 'webrtc-camerastreamer'">
                     <webcam-webrtc-camerastreamer :cam-settings="webcam" />
                 </template>
+                <template v-else-if="webcam.service === 'jmuxer-stream'">
+                    <webcam-jmuxer-stream :cam-settings="webcam" />
+                </template>
                 <template v-else>
                     <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
                 </template>
@@ -38,6 +41,7 @@ import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vu
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import Hlsstreamer from '@/components/webcams/Hlsstreamer.vue'
+import JMuxerStream from '@/components/webcams/JMuxerStream.vue'
 import WebrtcCameraStreamer from '@/components/webcams/WebrtcCameraStreamer.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
@@ -48,6 +52,7 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'webcam-ipstreamer': Ipstreamer,
         'webcam-hlsstreamer': Hlsstreamer,
+        'webcam-jmuxer-stream': JMuxerStream,
         'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
     },
 })
