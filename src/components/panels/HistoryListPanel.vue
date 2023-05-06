@@ -74,7 +74,10 @@
                                     </v-list-item>
                                     <v-divider></v-divider>
                                 </template>
-                                <v-list-item v-for="header of configHeaders" :key="header.key" class="minHeight36">
+                                <v-list-item
+                                    v-for="(header, index) of configHeaders"
+                                    :key="'history-list-panel-header-option-' + index"
+                                    class="minHeight36">
                                     <v-checkbox
                                         v-model="header.visible"
                                         class="mt-0"
@@ -194,13 +197,10 @@
                                 </span>
                             </v-tooltip>
                         </td>
-                        <td
-                            v-for="col in tableFields"
-                            :key="col.value"
-                            :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
+                        <td v-for="col in tableFields" :key="col.value" class="text-no-wrap">
                             {{ outputValue(col, item) }}
                         </td>
-                        <td v-if="headers.find((header) => header.value === 'slicer').visible" class=" ">
+                        <td v-if="headers.find((header) => header.value === 'slicer')?.visible" class=" ">
                             {{ 'slicer' in item.metadata && item.metadata.slicer ? item.metadata.slicer : '--' }}
                             <small v-if="'slicer_version' in item.metadata && item.metadata.slicer_version">
                                 <br />
@@ -266,7 +266,11 @@
         </v-dialog>
         <v-dialog v-model="noteDialog.boolShow" :max-width="600" persistent @keydown.esc="noteDialog.boolShow = false">
             <panel
-                :title="noteDialog.type === 'create' ? $t('History.CreateNote') : $t('History.EditNote')"
+                :title="
+                    noteDialog.type === 'create'
+                        ? $t('History.CreateNote').toString()
+                        : $t('History.EditNote').toString()
+                "
                 :icon="noteDialog.type === 'create' ? mdiNotebookPlus : mdiNotebookEdit"
                 card-class="history-note-dialog"
                 :margin-bottom="false">
@@ -661,7 +665,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     getSmallThumbnail(item: ServerHistoryStateJob) {
-        if ('metadata' in item && 'thumbnails' in item.metadata && item.metadata.thumbnails.length) {
+        if (item.metadata?.thumbnails?.length) {
             const thumbnail = item.metadata.thumbnails.find(
                 (thumb: any) =>
                     thumb.width >= thumbnailSmallMin &&
@@ -686,8 +690,8 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     getBigThumbnail(item: ServerHistoryStateJob) {
-        if ('metadata' in item && 'thumbnails' in item.metadata && item.metadata.thumbnails.length) {
-            const thumbnail = item.metadata.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
+        if (item.metadata?.thumbnails?.length) {
+            const thumbnail = item.metadata?.thumbnails?.find((thumb: any) => thumb.width >= thumbnailBigMin)
 
             let relative_url = ''
             if (item.filename.lastIndexOf('/') !== -1) {
@@ -705,7 +709,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     getThumbnailWidth(item: ServerHistoryStateJob) {
         if (this.getBigThumbnail(item)) {
-            const thumbnail = item.metadata.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
+            const thumbnail = item.metadata?.thumbnails?.find((thumb: any) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail) return thumbnail.width
         }
