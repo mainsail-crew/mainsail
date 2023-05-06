@@ -52,7 +52,7 @@
                         outlined
                         small
                         color="primary"
-                        href="https://docs.mainsail.xyz/quicktips/thumbnails"
+                        href="https://docs.mainsail.xyz/overview/features/thumbnails"
                         target="_blank">
                         {{ $t('Settings.UiSettingsTab.Guide').toString() }}
                     </v-btn>
@@ -63,10 +63,6 @@
                     :sub-title="$t('Settings.UiSettingsTab.BoolBigThumbnailDescription').toString()"
                     :dynamic-slot-width="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.UiSettingsTab.ShowWebcamInNavigation').toString()">
-                    <v-switch v-model="boolWebcamInNavigation" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
@@ -234,14 +230,6 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set boolBigThumbnail(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolBigThumbnail', value: newVal })
-    }
-
-    get boolWebcamInNavigation() {
-        return this.$store.state.gui.uiSettings.boolWebcamNavi ?? false
-    }
-
-    set boolWebcamInNavigation(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolWebcamNavi', value: newVal })
     }
 
     get displayCancelPrint() {

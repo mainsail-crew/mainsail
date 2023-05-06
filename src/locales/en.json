@@ -180,6 +180,8 @@
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
         "Download": "Download",
+        "Duplicate": "Duplicate",
+        "DuplicateFile": "Duplicate File",
         "EditFile": "Edit File",
         "Empty": "Empty",
         "ExtruderTemp": "Extruder Temp.",
@@ -400,6 +402,8 @@
             "DeleteDirectoryQuestion": "Delete directory \"{name}\" and all its contents?",
             "DeleteSelectedQuestion": "Delete {count} selected elements?",
             "Download": "Download",
+            "Duplicate": "Duplicate",
+            "DuplicateFile": "Duplicate File",
             "EditFile": "Edit file",
             "Empty": "Empty",
             "Files": "Files",
@@ -910,6 +914,9 @@
             "StartDescription": "First LED of this group.",
             "UnableToLoadLight": "Unable to load light",
             "UnableToLoadPreset": "Unable to load preset"
+        },
+        "NavigationTab": {
+            "Navigation": "Navigation"
         },
         "PresetsTab": {
             "AddPreset": "add preset",

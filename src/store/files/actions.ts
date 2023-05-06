@@ -169,18 +169,21 @@ export const actions: ActionTree<FileState, RootState> = {
                 break
 
             case 'move_file':
-                if (payload.source_item?.path === 'printer_autosave.cfg' && payload.source_item?.root === 'config')
+                // just create a new printer_autosave.cfg file instead of rename the printer.cfg
+                if (payload.source_item?.path === 'printer_autosave.cfg' && payload.source_item?.root === 'config') {
                     commit('setCreateFile', payload)
-                else {
-                    await commit('setMoveFile', payload)
-                    if (
-                        payload.item.root === 'gcodes' &&
-                        validGcodeExtensions.includes(payload.item.path.slice(payload.item.path.lastIndexOf('.')))
-                    ) {
-                        await dispatch('requestMetadata', {
-                            filename: 'gcodes/' + payload.item.path,
-                        })
-                    }
+                    return
+                }
+
+                // move all other files
+                await commit('setMoveFile', payload)
+                if (
+                    payload.item.root === 'gcodes' &&
+                    validGcodeExtensions.includes(payload.item.path.slice(payload.item.path.lastIndexOf('.')))
+                ) {
+                    await dispatch('requestMetadata', {
+                        filename: 'gcodes/' + payload.item.path,
+                    })
                 }
                 break
 
@@ -222,7 +225,7 @@ export const actions: ActionTree<FileState, RootState> = {
             const filename = payload.requestParams.dest
                 .substr(payload.requestParams.dest.lastIndexOf('/'))
                 .replace('/', '')
-            const sourceDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf('/'))
+            const sourceDir = payload.requestParams.source.substr(0, payload.requestParams.source.lastIndexOf('/'))
             const destDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf('/'))
 
             if (sourceDir === destDir) Vue.$toast.success(<string>i18n.t('Files.SuccessfullyRenamed', { filename }))
