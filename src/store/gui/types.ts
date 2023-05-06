@@ -110,6 +110,9 @@ export interface GuiState {
         powerDeviceName: string | null
         hideSaveConfigForBedMash: boolean
         disableFanAnimation: boolean
+        boolManualProbeDialog: boolean
+        boolBedScrewsDialog: boolean
+        boolScrewsTiltAdjustDialog: boolean
     }
     view: {
         blockFileUpload: boolean

@@ -162,6 +162,27 @@
                     :dynamic-slot-width="true">
                     <v-switch v-model="disableFanAnimation" hide-details class="mt-0" />
                 </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.ManualProbeDialog').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.ManualProbeDialogDescription').toString()"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="boolManualProbeDialog" hide-details class="mt-0" />
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.BedScrewsDialog').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.BedScrewsDialogDescription').toString()"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="boolBedScrewsDialog" hide-details class="mt-0" />
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.ScrewsTiltAdjustDialog').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.ScrewsTiltAdjustDialogDescription').toString()"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="boolScrewsTiltAdjustDialog" hide-details class="mt-0" />
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -334,6 +355,30 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set disableFanAnimation(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.disableFanAnimation', value: newVal })
+    }
+
+    get boolManualProbeDialog() {
+        return this.$store.state.gui.uiSettings.boolManualProbeDialog ?? true
+    }
+
+    set boolManualProbeDialog(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolManualProbeDialog', value: newVal })
+    }
+
+    get boolBedScrewsDialog() {
+        return this.$store.state.gui.uiSettings.boolBedScrewsDialog ?? true
+    }
+
+    set boolBedScrewsDialog(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolBedScrewsDialog', value: newVal })
+    }
+
+    get boolScrewsTiltAdjustDialog() {
+        return this.$store.state.gui.uiSettings.boolScrewsTiltAdjustDialog ?? true
+    }
+
+    set boolScrewsTiltAdjustDialog(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolScrewsTiltAdjustDialog', value: newVal })
     }
 
     clearColorObject(color: any): string {
