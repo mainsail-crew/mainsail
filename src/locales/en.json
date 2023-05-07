@@ -49,12 +49,12 @@
             "TitleUnderVoltageDetected": "Under-Voltage Detected"
         },
         "Titles": {
-            "Complete": "Complete - {filename} {name}",
+            "CompleteWithPrinterName": "Complete - {filename} {name}",
             "Error": "ERROR",
             "Pause": "Pause Print",
             "PrinterOff": "Printer OFF",
-            "Printing": "{percent}% Printing - {filename} {name}",
-            "PrintingETA": "{percent}% Printing - ETA: {eta} - {filename} {name}"
+            "PrintingWithPrinterName": "{percent}% Printing - {filename} {name}",
+            "PrintingETAWithPrinterName": "{percent}% Printing - ETA: {eta} - {filename} {name}"
         },
         "TopBar": {
             "CannotUploadTheFile": "Cannot upload the file!",
