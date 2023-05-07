@@ -804,7 +804,10 @@
             "MoonrakerRestartInstance": "Moonraker restart instance",
             "MoonrakerRestartInstanceDescription": "Select which Moonraker service will restart on 'Save & Restart' when editing Moonraker config files.",
             "UseEscToClose": "Use ESC to close editor",
-            "UseEscToCloseDescription": "Allows the ESC key to close the editor"
+            "UseEscToCloseDescription": "Allows the ESC key to close the editor",
+            "TabSize": "TAB Size",
+            "TabSizeDescription": "Adjusts how many spaces should be indented for TAB",
+            "Spaces": "Spaces: {count}"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Background Color",

@@ -15,6 +15,15 @@
                     :dynamic-slot-width="true">
                     <v-switch v-model="confirmUnsavedChanges" hide-details class="mt-0"></v-switch>
                 </settings-row>
+
+                <v-divider class="my-2"></v-divider>
+                <settings-row
+                    :title="$t('Settings.EditorTab.TabSize')"
+                    :sub-title="$t('Settings.EditorTab.TabSizeDescription')"
+                    :dynamic-slot-width="true">
+                    <v-select v-model="tabSize" :items="tabSizes" hide-details outlined dense attached></v-select>
+                </settings-row>
+
                 <v-divider class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.EditorTab.KlipperRestartMethod')"
@@ -67,6 +76,14 @@ export default class SettingsEditorTab extends Mixins(BaseMixin) {
         },
     ]
 
+    get tabSizes() {
+        const spaces = [2, 4, 6, 8]
+        return spaces.map((space) => ({
+            text: this.$t('Settings.EditorTab.Spaces', { count: space }),
+            value: space,
+        }))
+    }
+
     get escToClose() {
         return this.$store.state.gui.editor.escToClose
     }
@@ -81,6 +98,14 @@ export default class SettingsEditorTab extends Mixins(BaseMixin) {
 
     set confirmUnsavedChanges(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'editor.confirmUnsavedChanges', value: newVal })
+    }
+
+    get tabSize() {
+        return this.$store.state.gui.editor.tabSize || 2
+    }
+
+    set tabSize(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'editor.tabSize', value: newVal })
     }
 
     get klipperRestartMethod() {

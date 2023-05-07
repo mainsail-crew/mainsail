@@ -111,6 +111,7 @@ export const getDefaultState = (): GuiState => {
             escToClose: true,
             confirmUnsavedChanges: true,
             klipperRestartMethod: 'FIRMWARE_RESTART',
+            tabSize: 2,
             moonrakerRestartInstance: null,
         },
         gcodeViewer: {
