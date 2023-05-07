@@ -54,7 +54,7 @@
             "Pause": "Pause Print",
             "PrinterOff": "Printer OFF",
             "Printing": "{percent}% Printing - {filename} {name}",
-            "PrintingETA": "Complete - {filename} {name}"
+            "PrintingETA": "{percent}% Printing - ETA: {eta} - {filename} {name}"
         },
         "TopBar": {
             "CannotUploadTheFile": "Cannot upload the file!",
