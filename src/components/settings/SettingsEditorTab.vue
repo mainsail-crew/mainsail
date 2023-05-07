@@ -101,7 +101,7 @@ export default class SettingsEditorTab extends Mixins(BaseMixin) {
     }
 
     get tabSize() {
-        return this.$store.state.gui.editor.tabSize
+        return this.$store.state.gui.editor.tabSize || 2
     }
 
     set tabSize(newVal) {
