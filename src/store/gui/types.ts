@@ -5,6 +5,7 @@ import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { GuiNotificationState } from '@/store/gui/notifications/types'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
+import { GuiNavigationState } from '@/store/gui/navigation/types'
 
 export interface GuiState {
     general: {
@@ -90,6 +91,7 @@ export interface GuiState {
         cncMode: boolean
     }
     macros?: GuiMacrosState
+    navigation: GuiNavigationState
     notifications?: GuiNotificationState
     presets?: GuiPresetsState
     remoteprinters?: GuiRemoteprintersState
@@ -104,11 +106,13 @@ export interface GuiState {
         boolBigThumbnail: boolean
         boolWideNavDrawer: boolean
         boolHideUploadAndPrintButton: boolean
-        boolWebcamNavi: boolean
         navigationStyle: 'iconsAndText' | 'iconsOnly'
         powerDeviceName: string | null
         hideSaveConfigForBedMash: boolean
         disableFanAnimation: boolean
+        boolManualProbeDialog: boolean
+        boolBedScrewsDialog: boolean
+        boolScrewsTiltAdjustDialog: boolean
     }
     view: {
         blockFileUpload: boolean

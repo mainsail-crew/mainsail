@@ -53,15 +53,29 @@ import TheScrewsTiltAdjustDialogEntry from '@/components/dialogs/TheScrewsTiltAd
 export default class TheScrewsTiltAdjustDialog extends Mixins(BaseMixin, ControlMixin) {
     mdiArrowCollapseDown = mdiArrowCollapseDown
     mdiCloseThick = mdiCloseThick
+
+    get state() {
+        return this.$store.state.printer.screws_tilt_adjust ?? {}
+    }
+
     get error() {
         return this.$store.state.printer.screws_tilt_adjust?.error ?? false
     }
+
     get results() {
         return this.$store.state.printer.screws_tilt_adjust?.results ?? {}
     }
+
     get showDialog() {
+        if (!this.boolScrewsTiltAdjustDialog) return false
+
         return this.error || Object.keys(this.results).length
     }
+
+    get boolScrewsTiltAdjustDialog() {
+        return this.$store.state.gui.uiSettings.boolScrewsTiltAdjustDialog ?? true
+    }
+
     clearScrewsTiltAdjust() {
         this.$store.dispatch('printer/clearScrewsTiltAdjust')
     }

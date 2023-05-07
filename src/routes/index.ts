@@ -28,6 +28,7 @@ const routes: AppRoute[] = [
         component: Dashboard,
         alwaysShow: true,
         showInNavi: true,
+        position: 10,
     },
     {
         title: 'Printers',
@@ -43,6 +44,7 @@ const routes: AppRoute[] = [
         component: Webcam,
         alwaysShow: true,
         showInNavi: true,
+        position: 20,
     },
     {
         title: 'Console',
@@ -52,6 +54,7 @@ const routes: AppRoute[] = [
         alwaysShow: true,
         showInNavi: true,
         klipperIsConnected: true,
+        position: 30,
     },
     {
         title: 'Heightmap',
@@ -61,6 +64,7 @@ const routes: AppRoute[] = [
         alwaysShow: false,
         showInNavi: true,
         klipperComponent: 'bed_mesh',
+        position: 40,
     },
     {
         title: 'G-Code Files',
@@ -70,6 +74,7 @@ const routes: AppRoute[] = [
         alwaysShow: true,
         showInNavi: true,
         registeredDirectory: 'gcodes',
+        position: 50,
     },
     {
         title: 'G-Code Viewer',
@@ -78,6 +83,7 @@ const routes: AppRoute[] = [
         component: () => import('../pages/Viewer.vue'),
         alwaysShow: true,
         showInNavi: true,
+        position: 60,
     },
     {
         title: 'History',
@@ -87,6 +93,7 @@ const routes: AppRoute[] = [
         alwaysShow: true,
         showInNavi: true,
         moonrakerComponent: 'history',
+        position: 70,
     },
     {
         title: 'Timelapse',
@@ -96,6 +103,7 @@ const routes: AppRoute[] = [
         alwaysShow: true,
         showInNavi: true,
         moonrakerComponent: 'timelapse',
+        position: 80,
     },
     {
         title: 'Machine',
@@ -104,6 +112,7 @@ const routes: AppRoute[] = [
         component: Machine,
         alwaysShow: true,
         showInNavi: true,
+        position: 90,
     },
     {
         title: null,
@@ -130,4 +139,5 @@ export interface AppRoute {
     klipperComponent?: string
     klipperIsConnected?: boolean
     children?: AppRoute[]
+    position?: number
 }
