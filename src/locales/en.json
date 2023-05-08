@@ -1075,6 +1075,7 @@
             "IconPrinter": "Printer",
             "Ipstream": "IP Camera",
             "Hlsstream": "HLS Stream",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
             "JMuxerStream": "Raw h264 stream (jmuxer)",

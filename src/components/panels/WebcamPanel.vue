@@ -66,6 +66,9 @@
                     <template v-else-if="currentCam.service === 'webrtc-camerastreamer'">
                         <webcam-webrtc-camerastreamer :cam-settings="currentCam" />
                     </template>
+                    <template v-else-if="currentCam.service === 'webrtc-janus'">
+                        <webcam-webrtc-janus :cam-settings="currentCam" />
+                    </template>
                     <template v-else>
                         <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
                     </template>
@@ -94,6 +97,7 @@ import Panel from '@/components/ui/Panel.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { mdiMenuDown, mdiViewGrid, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
+import JanusStreamer from '@/components/webcams/JanusStreamer.vue'
 
 @Component({
     components: {
@@ -105,6 +109,7 @@ import WebcamMixin from '@/components/mixins/webcam'
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
         'webcam-jmuxer-stream': JMuxerStream,
         'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
+        'webcam-webrtc-janus': JanusStreamer,
         'webcam-grid': WebcamGrid,
     },
 })
