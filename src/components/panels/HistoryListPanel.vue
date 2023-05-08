@@ -106,98 +106,7 @@
                 </template>
 
                 <template #item="{ index, item, isSelected, select }">
-                    <tr
-                        :key="`${index} ${item.filename}`"
-                        v-longpress:600="(e) => showContextMenu(e, item)"
-                        :class="'file-list-cursor user-select-none ' + (item.exists ? '' : 'text--disabled')"
-                        @contextmenu="showContextMenu($event, item)"
-                        @click="clickRow(item)">
-                        <td class="pr-0">
-                            <v-simple-checkbox
-                                v-ripple
-                                :value="isSelected"
-                                class="pa-0 mr-0"
-                                @click.stop="select(!isSelected)"></v-simple-checkbox>
-                        </td>
-                        <td class="px-0 text-center" style="width: 32px">
-                            <template v-if="!item.exists">
-                                <v-icon class="text--disabled">{{ mdiFile }}-cancel</v-icon>
-                            </template>
-                            <template v-else-if="getSmallThumbnail(item) && getBigThumbnail(item)">
-                                <v-tooltip top>
-                                    <template #activator="{ on, attrs }">
-                                        <vue-load-image>
-                                            <img
-                                                slot="image"
-                                                :src="getSmallThumbnail(item)"
-                                                width="32"
-                                                height="32"
-                                                v-bind="attrs"
-                                                v-on="on" />
-                                            <v-progress-circular
-                                                slot="preloader"
-                                                indeterminate
-                                                color="primary"></v-progress-circular>
-                                            <v-icon slot="error">{{ mdiFile }}</v-icon>
-                                        </vue-load-image>
-                                    </template>
-                                    <span><img :src="getBigThumbnail(item)" width="250" /></span>
-                                </v-tooltip>
-                            </template>
-                            <template v-else-if="getSmallThumbnail(item)">
-                                <vue-load-image>
-                                    <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" />
-                                    <v-progress-circular
-                                        slot="preloader"
-                                        indeterminate
-                                        color="primary"></v-progress-circular>
-                                    <v-icon slot="error">{{ mdiFile }}</v-icon>
-                                </vue-load-image>
-                            </template>
-                            <template v-else>
-                                <v-icon>{{ mdiFile }}</v-icon>
-                            </template>
-                        </td>
-                        <td class=" ">{{ item.filename }}</td>
-                        <td class="text-right text-no-wrap">
-                            <template v-if="'note' in item && item.note">
-                                <v-tooltip top>
-                                    <template #activator="{ on, attrs }">
-                                        <v-icon small class="mr-2" v-bind="attrs" v-on="on">
-                                            {{ mdiNotebook }}
-                                        </v-icon>
-                                    </template>
-                                    <span v-html="item.note.replaceAll('\n', '<br />')"></span>
-                                </v-tooltip>
-                            </template>
-                            <v-tooltip top>
-                                <template #activator="{ on, attrs }">
-                                    <span v-bind="attrs" v-on="on">
-                                        <v-icon small :color="getStatusColor(item.status)" :disabled="!item.exists">
-                                            {{ getStatusIcon(item.status) }}
-                                        </v-icon>
-                                    </span>
-                                </template>
-                                <span>
-                                    {{
-                                        $te(`History.StatusValues.${item.status}`, 'en')
-                                            ? $t(`History.StatusValues.${item.status}`)
-                                            : item.status.replace(/_/g, ' ')
-                                    }}
-                                </span>
-                            </v-tooltip>
-                        </td>
-                        <td v-for="col in tableFields" :key="col.value" class="text-no-wrap">
-                            {{ outputValue(col, item) }}
-                        </td>
-                        <td v-if="headers.find((header) => header.value === 'slicer')?.visible" class=" ">
-                            {{ 'slicer' in item.metadata && item.metadata.slicer ? item.metadata.slicer : '--' }}
-                            <small v-if="'slicer_version' in item.metadata && item.metadata.slicer_version">
-                                <br />
-                                {{ item.metadata.slicer_version }}
-                            </small>
-                        </td>
-                    </tr>
+                    <history-list-entry-job :item="item" :table-fields="tableFields" />
                 </template>
             </v-data-table>
         </panel>
@@ -272,11 +181,7 @@
                 <v-card-text class="pb-0">
                     <v-row>
                         <v-col>
-                            <v-textarea
-                                v-model="noteDialog.note"
-                                outlined
-                                hide-details
-                                :label="$t('History.Note')"></v-textarea>
+                            <v-textarea v-model="noteDialog.note" outlined hide-details :label="$t('History.Note')" />
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -296,7 +201,6 @@ import BaseMixin from '@/components/mixins/base'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { caseInsensitiveSort, formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
-import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import {
     mdiDatabaseExportOutline,
     mdiDelete,
@@ -304,17 +208,27 @@ import {
     mdiCog,
     mdiPrinter,
     mdiTextBoxSearch,
-    mdiFile,
     mdiFileDocumentMultipleOutline,
     mdiMagnify,
     mdiCloseThick,
     mdiNotebookEdit,
     mdiNotebookPlus,
-    mdiNotebook,
 } from '@mdi/js'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
+import HistoryListEntryJob from '@/components/panels/HistoryList/HistoryListEntryJob.vue'
+
+export interface HistoryListPanelRow {
+    text: string
+    value: string
+    align: string
+    configable: boolean
+    visible: boolean
+    filterable?: boolean
+    outputType?: string
+}
+
 @Component({
-    components: { HistoryListPanelDetailsDialog, Panel },
+    components: { HistoryListEntryJob, HistoryListPanelDetailsDialog, Panel },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiDatabaseExportOutline = mdiDatabaseExportOutline
@@ -324,12 +238,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiPrinter = mdiPrinter
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiTextBoxSearch = mdiTextBoxSearch
-    mdiFile = mdiFile
     mdiMagnify = mdiMagnify
     mdiCloseThick = mdiCloseThick
     mdiNotebookPlus = mdiNotebookPlus
     mdiNotebookEdit = mdiNotebookEdit
-    mdiNotebook = mdiNotebook
 
     formatFilesize = formatFilesize
 
@@ -377,7 +289,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get headers() {
-        const headers = [
+        const headers: HistoryListPanelRow[] = [
             {
                 text: '',
                 value: '',
@@ -387,7 +299,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 filterable: false,
             },
             {
-                text: this.$t('History.Filename'),
+                text: this.$t('History.Filename').toString() as string,
                 value: 'filename',
                 align: 'left',
                 configable: false,
@@ -402,7 +314,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 filterable: false,
             },
             {
-                text: this.$t('History.Filesize'),
+                text: this.$t('History.Filesize').toString() as string,
                 value: 'size',
                 align: 'left',
                 configable: true,
@@ -410,7 +322,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'filesize',
             },
             {
-                text: this.$t('History.LastModified'),
+                text: this.$t('History.LastModified').toString() as string,
                 value: 'modified',
                 align: 'left',
                 configable: true,
@@ -418,7 +330,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'date',
             },
             {
-                text: this.$t('History.StartTime'),
+                text: this.$t('History.StartTime').toString() as string,
                 value: 'start_time',
                 align: 'left',
                 configable: true,
@@ -426,7 +338,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'date',
             },
             {
-                text: this.$t('History.EndTime'),
+                text: this.$t('History.EndTime').toString() as string,
                 value: 'end_time',
                 align: 'left',
                 configable: true,
@@ -434,7 +346,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'date',
             },
             {
-                text: this.$t('History.EstimatedTime'),
+                text: this.$t('History.EstimatedTime').toString() as string,
                 value: 'estimated_time',
                 align: 'left',
                 configable: true,
@@ -442,7 +354,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'time',
             },
             {
-                text: this.$t('History.PrintTime'),
+                text: this.$t('History.PrintTime').toString() as string,
                 value: 'print_duration',
                 align: 'left',
                 configable: true,
@@ -450,7 +362,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'time',
             },
             {
-                text: this.$t('History.TotalTime'),
+                text: this.$t('History.TotalTime').toString() as string,
                 value: 'total_duration',
                 align: 'left',
                 configable: true,
@@ -458,7 +370,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'time',
             },
             {
-                text: this.$t('History.FilamentCalc'),
+                text: this.$t('History.FilamentCalc').toString() as string,
                 value: 'filament_total',
                 align: 'left',
                 configable: true,
@@ -466,7 +378,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'length',
             },
             {
-                text: this.$t('History.FilamentUsed'),
+                text: this.$t('History.FilamentUsed').toString() as string,
                 value: 'filament_used',
                 align: 'left',
                 configable: true,
@@ -474,7 +386,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'length',
             },
             {
-                text: this.$t('History.FirstLayerExtTemp'),
+                text: this.$t('History.FirstLayerExtTemp').toString() as string,
                 value: 'first_layer_extr_temp',
                 align: 'left',
                 configable: true,
@@ -482,7 +394,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'temp',
             },
             {
-                text: this.$t('History.FirstLayerBedTemp'),
+                text: this.$t('History.FirstLayerBedTemp').toString() as string,
                 value: 'first_layer_bed_temp',
                 align: 'left',
                 configable: true,
@@ -490,7 +402,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'temp',
             },
             {
-                text: this.$t('History.FirstLayerHeight'),
+                text: this.$t('History.FirstLayerHeight').toString() as string,
                 value: 'first_layer_height',
                 align: 'left',
                 configable: true,
@@ -498,7 +410,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'length',
             },
             {
-                text: this.$t('History.LayerHeight'),
+                text: this.$t('History.LayerHeight').toString() as string,
                 value: 'layer_height',
                 align: 'left',
                 configable: true,
@@ -506,7 +418,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'length',
             },
             {
-                text: this.$t('History.ObjectHeight'),
+                text: this.$t('History.ObjectHeight').toString() as string,
                 value: 'object_height',
                 align: 'left',
                 configable: true,
@@ -514,7 +426,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 outputType: 'length',
             },
             {
-                text: this.$t('History.Slicer'),
+                text: this.$t('History.Slicer').toString() as string,
                 value: 'slicer',
                 align: 'left',
                 configable: true,
@@ -535,7 +447,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     get tableFields() {
         return this.filteredHeaders.filter(
-            (col: any) => !['filename', 'status', 'slicer'].includes(col.value) && col.value !== ''
+            (col: any) => !['filename', 'status'].includes(col.value) && col.value !== ''
         )
     }
 
@@ -654,59 +566,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return value != null && search != null && value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
     }
 
-    getSmallThumbnail(item: ServerHistoryStateJob) {
-        if (item.metadata?.thumbnails?.length) {
-            const thumbnail = item.metadata.thumbnails.find(
-                (thumb: any) =>
-                    thumb.width >= thumbnailSmallMin &&
-                    thumb.width <= thumbnailSmallMax &&
-                    thumb.height >= thumbnailSmallMin &&
-                    thumb.height <= thumbnailSmallMax
-            )
-
-            let relative_url = ''
-            if (item.filename.lastIndexOf('/') !== -1) {
-                relative_url = item.filename.substr(0, item.filename.lastIndexOf('/') + 1)
-            }
-
-            if (thumbnail && 'relative_path' in thumbnail) {
-                return `${this.apiUrl}/server/files/gcodes/${encodeURI(
-                    relative_url + thumbnail.relative_path
-                )}?timestamp=${item.metadata.modified}`
-            }
-        }
-
-        return false
-    }
-
-    getBigThumbnail(item: ServerHistoryStateJob) {
-        if (item.metadata?.thumbnails?.length) {
-            const thumbnail = item.metadata?.thumbnails?.find((thumb: any) => thumb.width >= thumbnailBigMin)
-
-            let relative_url = ''
-            if (item.filename.lastIndexOf('/') !== -1) {
-                relative_url = item.filename.substr(0, item.filename.lastIndexOf('/') + 1)
-            }
-
-            if (thumbnail && 'relative_path' in thumbnail)
-                return `${this.apiUrl}/server/files/gcodes/${encodeURI(
-                    relative_url + thumbnail.relative_path
-                )}?timestamp=${item.metadata.modified}`
-        }
-
-        return false
-    }
-
-    getThumbnailWidth(item: ServerHistoryStateJob) {
-        if (this.getBigThumbnail(item)) {
-            const thumbnail = item.metadata?.thumbnails?.find((thumb: any) => thumb.width >= thumbnailBigMin)
-
-            if (thumbnail) return thumbnail.width
-        }
-
-        return 400
-    }
-
     changeColumnVisible(name: string) {
         if (this.headers.filter((header) => header.value === name).length) {
             let value = this.headers.filter((header) => header.value === name)[0].visible
@@ -806,15 +665,13 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         link.remove()
     }
 
-    getStatusIcon(status: string) {
-        return this.$store.getters['server/history/getPrintStatusIcon'](status)
-    }
-
-    getStatusColor(status: string) {
-        return this.$store.getters['server/history/getPrintStatusIconColor'](status)
-    }
-
-    outputValue(col: any, item: any, format: boolean = true, escapeChar: string | null = null) {
+    outputValue(
+        col: HistoryListPanelRow,
+        item: ServerHistoryStateJob,
+        format: boolean = true,
+        escapeChar: string | null = null
+    ) {
+        //@ts-ignore
         let value = col.value in item ? item[col.value] : null
         if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
 
@@ -840,7 +697,9 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                             return value
                     }
             }
-        } else if (value > 0) {
+        }
+
+        if (value > 0) {
             switch (col.outputType) {
                 case 'filesize':
                     return formatFilesize(value)
@@ -862,7 +721,9 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 default:
                     return value
             }
-        } else return '--'
+        }
+
+        return '--'
     }
 
     createNote(item: ServerHistoryStateJob) {
