@@ -180,6 +180,8 @@
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
         "Download": "Download",
+        "Duplicate": "Duplicate",
+        "DuplicateFile": "Duplicate File",
         "EditFile": "Edit File",
         "Empty": "Empty",
         "ExtruderTemp": "Extruder Temp.",
@@ -216,6 +218,8 @@
         "Rename": "Rename",
         "RenameDirectory": "Rename Directory",
         "RenameFile": "Rename File",
+        "ScanMeta": "Scan Metadata",
+        "ScanMetaSuccess": "Successfully scanned metadata from: {filename}.",
         "Search": "Search",
         "SetupCurrentList": "Setup current list",
         "Slicer": "Slicer",
@@ -400,6 +404,8 @@
             "DeleteDirectoryQuestion": "Delete directory \"{name}\" and all its contents?",
             "DeleteSelectedQuestion": "Delete {count} selected elements?",
             "Download": "Download",
+            "Duplicate": "Duplicate",
+            "DuplicateFile": "Duplicate File",
             "EditFile": "Edit file",
             "Empty": "Empty",
             "Files": "Files",
@@ -798,7 +804,10 @@
             "MoonrakerRestartInstance": "Moonraker restart instance",
             "MoonrakerRestartInstanceDescription": "Select which Moonraker service will restart on 'Save & Restart' when editing Moonraker config files.",
             "UseEscToClose": "Use ESC to close editor",
-            "UseEscToCloseDescription": "Allows the ESC key to close the editor"
+            "UseEscToCloseDescription": "Allows the ESC key to close the editor",
+            "TabSize": "TAB Size",
+            "TabSizeDescription": "Adjusts how many spaces should be indented for TAB",
+            "Spaces": "Spaces: {count}"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Background Color",
@@ -911,6 +920,9 @@
             "UnableToLoadLight": "Unable to load light",
             "UnableToLoadPreset": "Unable to load preset"
         },
+        "NavigationTab": {
+            "Navigation": "Navigation"
+        },
         "PresetsTab": {
             "AddPreset": "add preset",
             "Cooldown": "Cooldown",
@@ -1007,6 +1019,8 @@
             "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
+            "BedScrewsDialog": "Bed Screws Dialog",
+            "BedScrewsDialogDescription": "Display helper dialog for BED_SCREWS_ADJUST.",
             "BoolBigThumbnail": "Large thumbnail",
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
@@ -1029,6 +1043,8 @@
             "LockSlidersDelayDescription": "Sliders will lock after a given delay. If set to 0 or left blank, sliders will only lock on page change/reload.",
             "LockSlidersDescription": "Sliders on touchscreens need to be unlocked before changes are allowed.",
             "Logo": "Logo",
+            "ManualProbeDialog": "Manual Probe Helper Dialog",
+            "ManualProbeDialogDescription": "Display helper dialog for PROBE_CALIBRATE or Z_ENDSTOP_CALIBRATE.",
             "NavigationStyle": "Navigation style",
             "NavigationStyleDescription": "Change navigation appearance",
             "NavigationStyleIconsAndText": "Icons + Text",
@@ -1036,6 +1052,8 @@
             "PowerDeviceName": "Printer power device",
             "PowerDeviceNameDescription": "Select which Moonraker power device should be used to power on the printer.",
             "Primary": "Primary",
+            "ScrewsTiltAdjustDialog": "Screws Tilt Adjust Dialog",
+            "ScrewsTiltAdjustDialogDescription": "Display helper dialog for SCREWS_TILT_CALCULATE.",
             "ShowWebcamInNavigation": "Show Webcam in navigation",
             "UiSettings": "UI-Settings"
         },
@@ -1060,6 +1078,7 @@
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
+            "JMuxerStream": "Raw h264 stream (jmuxer)",
             "Name": "Name",
             "NameAlreadyExists": "Name already exists",
             "Required": "required",

@@ -131,7 +131,7 @@
                                         attach></v-select>
                                 </v-col>
                             </v-row>
-                            <v-row v-if="form.service === 'mjpegstreamer-adaptive'">
+                            <v-row v-if="form.service === 'mjpegstreamer-adaptive' || form.service === 'jmuxer-stream'">
                                 <v-col class="py-2 col-6">
                                     <v-text-field
                                         v-model="form.targetFps"
@@ -190,6 +190,9 @@
                             <template v-else-if="form.service === 'hlsstream'">
                                 <webcam-hlsstreamer :cam-settings="form" />
                             </template>
+                            <template v-else-if="form.service === 'jmuxer-stream'">
+                                <webcam-jmuxer-stream :cam-settings="form" />
+                            </template>
                             <template v-else-if="form.service === 'webrtc-camerastreamer'">
                                 <webcam-webrtc-camerastreamer :cam-settings="form" />
                             </template>
@@ -231,6 +234,7 @@ import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vu
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import WebrtcCameraStreamer from '@/components/webcams/WebrtcCameraStreamer.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
+import JMuxerStream from '@/components/webcams/JMuxerStream.vue'
 import { mdiMenuDown, mdiDelete, mdiPencil, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
 import { FileStateFile } from '@/store/files/types'
@@ -261,6 +265,7 @@ interface webcamForm {
         'webcam-ipstreamer': Ipstreamer,
         'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
         'webcam-hlsstreamer': Hlsstreamer,
+        'webcam-jmuxer-stream': JMuxerStream,
         'webcam-webrtc-janus': JanusStreamer,
     },
 })
@@ -327,6 +332,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'ipstream', text: this.$t('Settings.WebcamsTab.Ipstream') },
             { value: 'webrtc-camerastreamer', text: this.$t('Settings.WebcamsTab.WebrtcCameraStreamer') },
             { value: 'hlsstream', text: this.$t('Settings.WebcamsTab.Hlsstream') },
+            { value: 'jmuxer-stream', text: this.$t('Settings.WebcamsTab.JMuxerStream') },
             { value: 'webrtc-janus', text: this.$t('Settings.WebcamsTab.WebrtcJanus') },
         ]
     }

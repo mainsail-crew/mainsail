@@ -60,6 +60,9 @@
                     <template v-else-if="currentCam.service === 'hlsstream'">
                         <webcam-hlsstreamer :cam-settings="currentCam" />
                     </template>
+                    <template v-else-if="currentCam.service === 'jmuxer-stream'">
+                        <webcam-jmuxer-stream :cam-settings="currentCam" />
+                    </template>
                     <template v-else-if="currentCam.service === 'webrtc-camerastreamer'">
                         <webcam-webrtc-camerastreamer :cam-settings="currentCam" />
                     </template>
@@ -84,6 +87,7 @@ import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vu
 import Hlsstreamer from '@/components/webcams/Hlsstreamer.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
+import JMuxerStream from '@/components/webcams/JMuxerStream.vue'
 import WebrtcCameraStreamer from '@/components/webcams/WebrtcCameraStreamer.vue'
 import WebcamGrid from '@/components/webcams/WebcamGrid.vue'
 import Component from 'vue-class-component'
@@ -103,6 +107,7 @@ import JanusStreamer from '@/components/webcams/JanusStreamer.vue'
         'webcam-ipstreamer': Ipstreamer,
         'webcam-hlsstreamer': Hlsstreamer,
         'webcam-uv4l-mjpeg': Uv4lMjpeg,
+        'webcam-jmuxer-stream': JMuxerStream,
         'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
         'webcam-webrtc-janus': JanusStreamer,
         'webcam-grid': WebcamGrid,
