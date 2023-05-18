@@ -85,7 +85,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
             EditorView.theme({}, { dark: true }),
             basicSetup,
             vscodeDark,
-            indentUnit.of(' '.repeat(this.getTabSize())),
+            indentUnit.of(' '.repeat(this.tabSize)),
             keymap.of([indentWithTab]),
             EditorView.updateListener.of((update) => {
                 this.content = update.state?.doc.toString()
@@ -107,7 +107,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
         if (isVisible) this.cminstance?.focus()
     }
 
-    getTabSize() {
+    get tabSize() {
         return this.$store.state.gui.editor.tabSize || 2
     }
 }
