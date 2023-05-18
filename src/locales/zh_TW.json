@@ -13,16 +13,12 @@
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "載入 moonraker 組件“{component}”時檢測到錯誤。請檢查日誌檔案並解決問題。",
-                "MoonrakerWarning": "Moonraker 警告",
-                "UnparsedConfigSection": ""
+                "MoonrakerWarning": "Moonraker 警告"
             },
             "NextReboot": "下次重啟",
             "NoNotification": "沒有可用的通知",
             "Notifications": "通知",
             "Remind": "提醒："
-        },
-        "NumberInput": {
-            "NoEmptyAllowedError": ""
         },
         "Printers": "列印機列表",
         "ThrottledStates": {
@@ -48,8 +44,7 @@
             "Error": "錯誤",
             "Pause": "暫停列印",
             "PrinterOff": "列印機關閉",
-            "Printing": "{percent}% 列印中 - {filename}",
-            "PrintingETA": ""
+            "Printing": "{percent}% 列印中 - {filename}"
         },
         "TopBar": {
             "CannotUploadTheFile": "無法上傳該檔案!",
@@ -474,8 +469,7 @@
     "ManualProbe": {
         "Abort": "中止",
         "Accept": "接受",
-        "Advanced": "高級",
-        "Headline": ""
+        "Advanced": "高級"
     },
     "Panels": {
         "ExtruderControlPanel": {
@@ -653,8 +647,7 @@
             "FPS": "FPS",
             "Headline": "攝影機",
             "NoWebcam": "没有可用的攝影機。在\"Mainsail設置\" -> \"攝影機\"新增攝影機。",
-            "UnknownWebcamService": "未知攝影機服務",
-            "UrlNotAvailable": ""
+            "UnknownWebcamService": "未知攝影機服務"
         },
         "ZoffsetPanel": {
             "Clear": "清除",
@@ -691,8 +684,7 @@
     },
     "ScrewsTiltAdjust": {
         "Accept": "接受",
-        "ErrorText": "探測過程中出現問題。",
-        "Headline": ""
+        "ErrorText": "探測過程中出現問題。"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "新增列印機",
@@ -898,9 +890,6 @@
             "UnableToLoadLight": "無法載入燈",
             "UnableToLoadPreset": "無法載入預設"
         },
-        "NavigationTab": {
-            "Navigation": ""
-        },
         "PresetsTab": {
             "AddPreset": "新增預設",
             "Cooldown": "冷卻",
@@ -990,8 +979,7 @@
             "VariableFps": "可變 FPS",
             "VariableFpsDescription": "如果啟用，將根據目標時長計算輸出影片的幀率",
             "VariableFpsMax": "可變 FPS 最大值",
-            "VariableFpsMin": "可變 FPS 最小值",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMin": "可變 FPS 最小值"
         },
         "UiSettingsTab": {
             "BedScrewsDialogDescription": "顯示 BED_SCREWS_ADJUST 的幫助對話框。",
@@ -1026,8 +1014,7 @@
             "PowerDeviceName": "列印機電源裝置",
             "PowerDeviceNameDescription": "選擇應使用哪個 Moonraker 電源設備為列印機供電。",
             "Primary": "高亮顏色",
-            "ScrewsTiltAdjustDialogDescription": "顯示 SCREWS_TILT_CALCULATE 的幫助程序對話框。",
-            "ShowWebcamInNavigation": "在導航欄中顯示攝影機",
+            "ScrewsTiltAdjustDialogDescription": "顯示 SCREWS_TILT_CALCULATE 的幫助程序對話框。"
             "UiSettings": "使用者介面設定"
         },
         "Update": "更新",
