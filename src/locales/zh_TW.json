@@ -1014,7 +1014,7 @@
             "PowerDeviceName": "列印機電源裝置",
             "PowerDeviceNameDescription": "選擇應使用哪個 Moonraker 電源設備為列印機供電。",
             "Primary": "高亮顏色",
-            "ScrewsTiltAdjustDialogDescription": "顯示 SCREWS_TILT_CALCULATE 的幫助程序對話框。"
+            "ScrewsTiltAdjustDialogDescription": "顯示 SCREWS_TILT_CALCULATE 的幫助程序對話框。",
             "UiSettings": "使用者介面設定"
         },
         "Update": "更新",
