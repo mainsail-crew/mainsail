@@ -5,7 +5,8 @@
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
         :autoresize="true"
-        style="height: 250px; width: 100%"></e-chart>
+        :style="tempchartStyle"
+        class="tempchart" />
 </template>
 
 <script lang="ts">
@@ -230,6 +231,16 @@ export default class TempChart extends Mixins(BaseMixin) {
         return this.hours12Format ? '{hh}:{mm}' : '{HH}:{mm}'
     }
 
+    get tempchartHeight() {
+        return this.$store.state.gui.uiSettings.tempchartHeight ?? 250
+    }
+
+    get tempchartStyle() {
+        return {
+            height: this.tempchartHeight + 'px',
+        }
+    }
+
     mounted() {
         this.initChart()
         this.chartOptions.xAxis.axisLabel.formatter = this.timeFormat
@@ -396,3 +407,9 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.tempchart {
+    width: 100%;
+}
+</style>

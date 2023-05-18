@@ -1055,6 +1055,8 @@
             "ScrewsTiltAdjustDialog": "Screws Tilt Adjust Dialog",
             "ScrewsTiltAdjustDialogDescription": "Display helper dialog for SCREWS_TILT_CALCULATE.",
             "ShowWebcamInNavigation": "Show Webcam in navigation",
+            "TempchartHeight": "Height Temperature Chart",
+            "TempchartHeightDescription": "Modify the height of the temperature chart on the Dashboard.",
             "UiSettings": "UI-Settings"
         },
         "Update": "update",
