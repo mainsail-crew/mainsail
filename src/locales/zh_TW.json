@@ -1,7 +1,6 @@
 {
     "App": {
         "Notifications": {
-            "DependencyDescription": "",
             "DependencyName": "依賴項： {name}",
             "DismissAll": "關閉所有",
             "KlipperWarnings": {
@@ -15,18 +14,14 @@
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "載入 moonraker 組件“{component}”時檢測到錯誤。請檢查日誌檔案並解決問題。",
                 "MoonrakerWarning": "Moonraker 警告",
-                "UnparsedConfigOption": "",
                 "UnparsedConfigSection": ""
             },
-            "Never": "",
             "NextReboot": "下次重啟",
             "NoNotification": "沒有可用的通知",
             "Notifications": "通知",
             "Remind": "提醒："
         },
         "NumberInput": {
-            "GreaterOrEqualError": "",
-            "MustBeBetweenError": "",
             "NoEmptyAllowedError": ""
         },
         "Printers": "列印機列表",
@@ -81,10 +76,7 @@
                     "HostReboot": "主機重啟",
                     "HostShutdown": "主機關機",
                     "KlipperFirmwareRestart": "Klipper 韌體重新啟動",
-                    "KlipperRestart": "Klipper重新啟動",
-                    "ServiceRestart": "",
-                    "ServiceStart": "",
-                    "ServiceStop": ""
+                    "KlipperRestart": "Klipper重新啟動"
                 }
             },
             "HostControl": "主機控制",
@@ -93,7 +85,6 @@
             "KlipperRestart": "Klipper 重啟",
             "PowerDevices": "功率元件",
             "Reboot": "重啟",
-            "Restart": "",
             "ServiceControl": "服務控制",
             "Shutdown": "關機",
             "Start": "開始",
@@ -111,13 +102,7 @@
     "BedScrews": {
         "Abort": "中止",
         "Accept": "接受",
-        "Adjusted": "調整後",
-        "Description": "",
-        "Headline": "",
-        "ScrewAccepted": "",
-        "ScrewIndex": "",
-        "ScrewName": "",
-        "ScrewOutput": ""
+        "Adjusted": "調整後"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "不能連接到 Moonraker ({host}).",
@@ -145,13 +130,11 @@
         }
     },
     "Editor": {
-        "Cancel": "取消",
         "ConfigReference": "設定檔參考",
         "DontSave": "不儲存",
         "Downloading": "正在下載",
         "FailedSave": "{filename} 無法上傳!",
         "FileReadOnly": "唯讀",
-        "Minimap": "",
         "SaveClose": "保存並關閉",
         "SaveRestart": "保存並重新啟動",
         "SuccessfullySaved": "{filename} 儲存成功.",
@@ -173,7 +156,6 @@
         "BedTemp": "熱床溫度",
         "Cancel": "取消",
         "ChamberTemp": "艙室溫度",
-        "Count": "",
         "Create": "建立",
         "CreateNewDirectory": "建立新目錄",
         "CurrentPath": "目前路徑",
@@ -182,9 +164,6 @@
         "DeleteDirectoryQuestion": "您真的要刪除 \"{name}\" 目錄及其所有內容嗎？",
         "DeleteSelectedQuestion": "您真的要刪除 {count} 個選定的文件嗎？",
         "Download": "下載",
-        "Downloading": "",
-        "Duplicate": "",
-        "DuplicateFile": "",
         "EditFile": "編輯檔案",
         "Empty": "空的",
         "ExtruderTemp": "擠出機溫度",
@@ -221,8 +200,6 @@
         "Rename": "重新命名",
         "RenameDirectory": "重新命名目錄",
         "RenameFile": "修改檔案名稱",
-        "ScanMeta": "",
-        "ScanMetaSuccess": "",
         "Search": "搜尋",
         "SetupCurrentList": "設置目前列表",
         "Slicer": "切片",
@@ -232,7 +209,6 @@
         "SuccessfullyRenamed": "{filename} 重新命名成功.",
         "SuccessfullyUploaded": "{filename} 更新成功!",
         "Total": "總計",
-        "Uploading": "",
         "UploadNewGcode": "上傳新 Gcode",
         "Used": "已使用",
         "View3D": "View 3D"
@@ -279,9 +255,7 @@
             "Max": "最高點",
             "Min": "最低點",
             "Name": "名稱",
-            "Range": "",
-            "Size": "尺寸",
-            "Variance": ""
+            "Size": "尺寸"
         },
         "DeleteBedMeshProfile": "刪除網床設定檔",
         "DoYouReallyWantToDelete": "你真的要刪除\"{name}\"設定檔嗎 ?",
@@ -317,7 +291,6 @@
         "AllJobs": "全部",
         "AvgPrinttime": "平均列印時間",
         "Cancel": "取消",
-        "ChamberTemp": "",
         "Chart": "圖表",
         "CreateNote": "新增備註",
         "Delete": "刪除",
@@ -478,7 +451,6 @@
         "UpdatePanel": {
             "CheckForUpdates": "檢查更新",
             "Commits": "提交",
-            "CommitsAvailable": "",
             "CommitsOnDate": "在 {date} 提交",
             "CommittedDaysAgo": "{days} 天前提交",
             "CommittedHoursAgo": "在 {hours} 小時前提交",
@@ -525,7 +497,6 @@
             "PressureAdvanceSettings": {
                 "Advance": "壓力提前",
                 "Extruder": "擠出機",
-                "PressureAdvance": "",
                 "SmoothTime": "平滑時間"
             },
             "Requested": "需要",
@@ -541,8 +512,6 @@
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "請檢查 Klipper 服務是否正在運行，以及是否在 moonraker.conf 中正確配置了 klippy_uds_address",
             "FirmwareRestart": "韌體重新啟動",
-            "KlipperCheck": "",
-            "KlippyState": "",
             "MoonrakerCannotConnect": "Moonraker 不能連接 Klipper!",
             "PowerOn": "啟動電源",
             "PrinterSwitchedOff": "列印機電源關閉",
@@ -590,12 +559,6 @@
                 "Empty": "空的"
             }
         },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "",
-            "FollowingPluginHasAnError": "",
-            "MoonrakerErrorInfo": "",
-            "MoonrakerWarnings": ""
-        },
         "PowerControlPanel": {
             "Error": "錯誤",
             "Off": "關",
@@ -630,13 +593,9 @@
             "PauseAtLayer": {
                 "Abort": "中止",
                 "Accept": "接受",
-                "AtLayer": "",
-                "Call": "",
-                "DescriptionPauseAtLayerActive": "",
                 "DescriptionPauseNextLayerActive": "此功能已啟用，將在下一層調用“{call}”。",
                 "Layer": "層",
                 "NextLayer": "下一層",
-                "PauseAtLayer": "",
                 "Type": "類型"
             },
             "PausePrint": "暫停列印",
@@ -654,7 +613,6 @@
         "TemperaturePanel": {
             "AutoscaleChart": "自動縮放圖表",
             "Avg": "平均",
-            "Color": "",
             "Cooldown": "冷卻",
             "Current": "目前",
             "Dataset": {
@@ -682,17 +640,11 @@
             "Absolute": "絕對座標",
             "ALL": "歸位所有",
             "Headline": "工具頭",
-            "Invalid": "",
-            "InvertX": "",
-            "InvertY": "",
-            "InvertZ": "",
-            "OutOfRange": "",
             "PleaseConfigureSteps": "請設定步進",
             "Position": "位置",
             "QGL": "四軸調平(QGL)",
             "Relative": "相對座標",
             "SettingsInterfaceControl": "設定 > 界面 > 控制",
-            "SetupControls": "",
             "SpeedFactor": "速度係數",
             "ZTilt": "Z軸傾斜"
         },
@@ -706,7 +658,6 @@
         },
         "ZoffsetPanel": {
             "Clear": "清除",
-            "CurrentOffset": "",
             "Headline": "Z軸偏移",
             "Later": "最後的",
             "Ok": "好",
@@ -740,7 +691,6 @@
     },
     "ScrewsTiltAdjust": {
         "Accept": "接受",
-        "Base": "",
         "ErrorText": "探測過程中出現問題。",
         "Headline": ""
     },
@@ -835,7 +785,6 @@
             "MoonrakerRestartInstanceDescription": "編輯完Moonraker設定檔案並按下\"儲存並重新啟動\"按鈕後，重新啟動哪個Moonraker服務。",
             "Spaces": "空間： {count}",
             "TabSize": "標籤大小",
-            "TabSizeDescription": "",
             "UseEscToClose": "使用 ESC 關閉編輯器",
             "UseEscToCloseDescription": "允許 ESC 鍵關閉編輯器"
         },
@@ -939,7 +888,6 @@
             "GroupSubTitle": "開始： {start}，結束： {end}",
             "LightGroups": "{name} - 群組",
             "LightPresets": "{name} - 預設",
-            "Miscellaneous": "",
             "Name": "名稱",
             "NoDevicesFound": "未找到設備",
             "NoGroupFound": "找不到群組",
@@ -980,7 +928,6 @@
             "UpdatePrinter": "更新列印機",
             "UseConfigJson": "InstanceDB = JSON detected. 請使用 config.json 來修改列印機列表。"
         },
-        "Store": "",
         "TimelapseTab": {
             "Autorender": "自動渲染",
             "AutorenderDescription": "如果啟用，延時影片將在列印結束時自動渲染",
@@ -994,7 +941,6 @@
             "EnabledDescription": "如果禁用，將忽略G-Code巨集並跳過自動渲染。",
             "Extraoutputparams": "而外的輸出參數",
             "ExtraoutputparamsDescription": "為 FFMPEG 定義額外的輸出參數。注意：在此處指定任何內容將禁用旋轉設置",
-            "FwRetract": "",
             "FwRetractDescription": "在縮時攝影的巨集裡使用G-Code詳細模式",
             "GcodeVerbose": "G-Code詳細模式",
             "GcodeVerboseDescription": "如果啟用，G-Code巨集會將訊息寫入控制台",
@@ -1044,12 +990,10 @@
             "VariableFps": "可變 FPS",
             "VariableFpsDescription": "如果啟用，將根據目標時長計算輸出影片的幀率",
             "VariableFpsMax": "可變 FPS 最大值",
-            "VariableFpsMaxDescription": "",
             "VariableFpsMin": "可變 FPS 最小值",
             "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
-            "BedScrewsDialog": "",
             "BedScrewsDialogDescription": "顯示 BED_SCREWS_ADJUST 的幫助對話框。",
             "BoolBigThumbnail": "大縮略圖",
             "BoolBigThumbnailDescription": "列印期間在狀態面板中顯示一個大縮略圖.",
@@ -1082,7 +1026,6 @@
             "PowerDeviceName": "列印機電源裝置",
             "PowerDeviceNameDescription": "選擇應使用哪個 Moonraker 電源設備為列印機供電。",
             "Primary": "高亮顏色",
-            "ScrewsTiltAdjustDialog": "",
             "ScrewsTiltAdjustDialogDescription": "顯示 SCREWS_TILT_CALCULATE 的幫助程序對話框。",
             "ShowWebcamInNavigation": "在導航欄中顯示攝影機",
             "UiSettings": "使用者介面設定"
@@ -1093,10 +1036,7 @@
             "CreateWebcam": "建立攝影機",
             "EditCrowsnestConf": "編輯 crowsnest.conf",
             "EditWebcam": "編輯攝影機",
-            "FlipHorizontally": "",
-            "FlipVertically": "",
             "FlipWebcam": "翻轉網絡攝像頭圖像：",
-            "Hlsstream": "",
             "Horizontally": "水平",
             "IconBed": "熱床",
             "IconCam": "攝影機",
@@ -1107,7 +1047,6 @@
             "IconNozzle": "噴嘴",
             "IconPrinter": "列印機",
             "Ipstream": "IP Camera",
-            "JMuxerStream": "",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "適應 MJPEG-Streamer (實驗功能)",
             "Name": "名稱",
@@ -1122,9 +1061,7 @@
             "UrlStream": "視訊流位址URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "垂直",
-            "Webcams": "攝影機",
-            "WebrtcCameraStreamer": "",
-            "WebrtcJanus": ""
+            "Webcams": "攝影機"
         }
     },
     "Timelapse": {
