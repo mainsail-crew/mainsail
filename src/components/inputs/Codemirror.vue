@@ -12,7 +12,7 @@ import BaseMixin from '../mixins/base'
 import { basicSetup } from 'codemirror'
 import { EditorView, keymap } from '@codemirror/view'
 import { EditorState } from '@codemirror/state'
-import { mainsailTheme } from '@/plugins/codemirrorTheme'
+import { vscodeDark } from '@uiw/codemirror-theme-vscode'
 import { StreamLanguage } from '@codemirror/language'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
 import { gcode } from '@/plugins/StreamParserGcode'
@@ -82,9 +82,10 @@ export default class Codemirror extends Mixins(BaseMixin) {
 
     get cmExtensions() {
         const extensions = [
+            EditorView.theme({}, { dark: true }),
             basicSetup,
-            mainsailTheme,
-            indentUnit.of(' '.repeat(this.getTabSize())),
+            vscodeDark,
+            indentUnit.of(' '.repeat(this.tabSize)),
             keymap.of([indentWithTab]),
             EditorView.updateListener.of((update) => {
                 this.content = update.state?.doc.toString()
@@ -106,7 +107,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
         if (isVisible) this.cminstance?.focus()
     }
 
-    getTabSize() {
+    get tabSize() {
         return this.$store.state.gui.editor.tabSize || 2
     }
 }
