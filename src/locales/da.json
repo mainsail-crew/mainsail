@@ -1055,6 +1055,7 @@
             "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptiv MJPEG-Streamer (eksperimental)",
+            "JMuxerStream": "Rå h264 stream (jmuxer)",
             "Name": "Navn",
             "NameAlreadyExists": "Navnet bruges allerede",
             "Required": "Krævet",

@@ -436,8 +436,21 @@ export default class Viewer extends Mixins(BaseMixin) {
         return this.$store.state.printer.print_stats?.filename ?? ''
     }
 
-    get currentPosition() {
+    get livePosition() {
         return this.$store.state.printer.motion_report?.live_position ?? [0, 0, 0, 0]
+    }
+
+    get gcodeOffset() {
+        return this.$store.state.printer?.gcode_move?.homing_origin ?? [0, 0, 0]
+    }
+
+    get currentPosition() {
+        return [
+            this.livePosition[0] - this.gcodeOffset[0],
+            this.livePosition[1] - this.gcodeOffset[1],
+            this.livePosition[2] - this.gcodeOffset[2],
+            this.livePosition[3],
+        ]
     }
 
     get showTrackingButton() {

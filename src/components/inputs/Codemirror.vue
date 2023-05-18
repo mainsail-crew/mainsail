@@ -19,6 +19,7 @@ import { gcode } from '@/plugins/StreamParserGcode'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
+import { indentUnit } from '@codemirror/language'
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin) {
@@ -84,6 +85,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
             EditorView.theme({}, { dark: true }),
             basicSetup,
             vscodeDark,
+            indentUnit.of(' '.repeat(this.getTabSize())),
             keymap.of([indentWithTab]),
             EditorView.updateListener.of((update) => {
                 this.content = update.state?.doc.toString()
@@ -103,6 +105,10 @@ export default class Codemirror extends Mixins(BaseMixin) {
 
     visibilityChanged(isVisible: boolean) {
         if (isVisible) this.cminstance?.focus()
+    }
+
+    getTabSize() {
+        return this.$store.state.gui.editor.tabSize || 2
     }
 }
 </script>
