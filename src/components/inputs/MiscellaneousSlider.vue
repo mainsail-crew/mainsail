@@ -76,7 +76,7 @@
                         </template>
 
                         <template #append>
-                            <v-icon :disabled="isLocked || sliderValue >= max" @click="increment">{{ mdiPlus }}</v-icon>
+                            <v-icon :disabled="isLocked || sliderValue >= 1" @click="increment">{{ mdiPlus }}</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>

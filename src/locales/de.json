@@ -216,6 +216,8 @@
         "Rename": "Umbenennen",
         "RenameDirectory": "Verzeichnis umbenennen",
         "RenameFile": "Datei umbenennen",
+        "ScanMeta": "Metadaten scannen",
+        "ScanMetaSuccess": "Metadaten von {filename} wurden erfolgreich gescannt.",
         "Search": "Suchen",
         "SetupCurrentList": "Einstellungen",
         "Slicer": "Slicer",
@@ -797,7 +799,10 @@
             "MoonrakerRestartInstance": "Moonraker Neustartinstanz",
             "MoonrakerRestartInstanceDescription": "Wähle aus, welche Moonrakerinstanz neu gestartet werden soll wenn 'Speichern & Neustarten' im Editor geklickt wird.",
             "UseEscToClose": "ESC drücken um Editor zu schließen",
-            "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen."
+            "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen.",
+            "TabSize": "TAB Größe",
+            "TabSizeDescription": "Legt fest, um wie viele Leerzeichen für TAB eingerückt werden sollen",
+            "Spaces": "Leerzeichen: {count}"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Hintergrundfarbe",
@@ -1036,6 +1041,8 @@
             "PowerDeviceNameDescription": "Wähle aus, welches Moonraker Power-Device zum Einschalten des Druckers verwendet werden soll.",
             "Primary": "Primärfarbe",
             "ShowWebcamInNavigation": "Zeige Webcam in der Navigation",
+            "TempchartHeight": "Temperatur-Chart Höhe",
+            "TempchartHeightDescription": "Verändert die Höhe vom Temperatur-Chart auf dem Dashboard.",
             "UiSettings": "UI-Einstellungen"
         },
         "Update": "speichern",
@@ -1058,6 +1065,7 @@
             "Ipstream": "IP Kamera",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
+            "JMuxerStream": "Roher h264 stream (jmuxer)",
             "Name": "Name",
             "NameAlreadyExists": "Name existiert bereits",
             "Required": "benötigt",

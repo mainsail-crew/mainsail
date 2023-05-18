@@ -100,6 +100,19 @@ every day. To motivate him (☕🍺😜) there are several ways to support him:
 [![patreon](https://img.shields.io/badge/patreon-participate-yellow.svg?style=flat-square)](https://www.patreon.com/meteyou)
 [![kofi](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=flat-square)](https://ko-fi.com/mainsail)
 
+## Contributing
+
+Contributions to Mainsail are always welcome!
+
+- 📥 Pull requests and 🌟 Stars are always welcome.
+- Read our [contributing guidelines](CONTRIBUTING.md) to get started,
+  or find us on [Discord](https://discord.gg/mainsail), we will take the time to guide you.
+
+Looking for a first issue to tackle?
+
+- We tag issues with [![Good First Issue](https://img.shields.io/github/issues/mainsail-crew/mainsail/good%20first%20issue.svg)](https://github.com/mainsail-crew/mainsail/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) when we think they are well suited for people who are new to the codebase or OSS in general.
+- [Talk to us](https://discord.gg/mainsail), we'll find something that suits your skills and learning interest.
+
 ## Credit, sources and inspiration
 
 - [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer firmware [Klipper](https://github.com/KevinOConnor/klipper)
