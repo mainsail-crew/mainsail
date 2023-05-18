@@ -15,7 +15,7 @@
                             outlined
                             clearable
                             hide-details
-                            dense></v-text-field>
+                            dense />
                     </v-col>
                     <v-col class="offset-4 col-4 d-flex align-center justify-end">
                         <template v-if="selectedJobs.length">
@@ -60,7 +60,7 @@
                                             hide-details
                                             :input-value="status.showInTable"
                                             :label="`${status.displayName} (${status.value})`"
-                                            @change="changeStatusVisible(status)"></v-checkbox>
+                                            @change="changeStatusVisible(status)" />
                                     </v-list-item>
                                     <v-divider></v-divider>
                                 </template>
@@ -73,20 +73,19 @@
                                         class="mt-0"
                                         hide-details
                                         :label="header.text"
-                                        @change="changeColumnVisible(header.value)"></v-checkbox>
+                                        @change="changeColumnVisible(header.value)" />
                                 </v-list-item>
                             </v-list>
                         </v-menu>
                     </v-col>
                 </v-row>
             </v-card-text>
-            <v-divider class="mb-3"></v-divider>
+            <v-divider class="mb-3" />
             <v-data-table
                 v-model="selectedJobs"
                 :items="jobs"
                 class="history-jobs-table"
                 :headers="filteredHeaders"
-                :options="options"
                 :custom-sort="sortFiles"
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
@@ -101,48 +100,20 @@
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
                 show-select>
-                <template slot="no-data">
+                <template #no-data>
                     <div class="text-center">{{ $t('History.Empty') }}</div>
                 </template>
 
                 <template #item="{ index, item, isSelected, select }">
-                    <history-list-entry-job :item="item" :table-fields="tableFields" />
+                    <history-list-entry-job
+                        :key="`${index}_${item.job_id}`"
+                        :is-selected="isSelected"
+                        :item="item"
+                        :table-fields="tableFields"
+                        @select="select" />
                 </template>
             </v-data-table>
         </panel>
-        <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
-            <v-list>
-                <v-list-item @click="clickRow(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiTextBoxSearch }}</v-icon>
-                    {{ $t('History.Details') }}
-                </v-list-item>
-                <v-list-item
-                    v-if="'note' in contextMenu.item && contextMenu.item.note"
-                    @click="editNote(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiNotebookEdit }}</v-icon>
-                    {{ $t('History.EditNote') }}
-                </v-list-item>
-                <v-list-item v-else @click="createNote(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiNotebookPlus }}</v-icon>
-                    {{ $t('History.AddNote') }}
-                </v-list-item>
-                <v-list-item
-                    v-if="contextMenu.item.exists"
-                    :disabled="printerIsPrinting || !klipperReadyForGui"
-                    @click="startPrint(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
-                    {{ $t('History.Reprint') }}
-                </v-list-item>
-                <v-list-item class="red--text" @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
-                    {{ $t('History.Delete') }}
-                </v-list-item>
-            </v-list>
-        </v-menu>
-        <history-list-panel-details-dialog
-            :show="detailsDialog.show"
-            :job="detailsDialog.item"
-            @close-dialog="detailsDialog.show = false" />
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
             <panel
                 :title="$t('History.Delete').toString()"
@@ -157,38 +128,9 @@
                     <p class="mb-0">{{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}</p>
                 </v-card-text>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <v-btn color="" text @click="deleteSelectedDialog = false">{{ $t('History.Cancel') }}</v-btn>
                     <v-btn color="error" text @click="deleteSelectedJobs">{{ $t('History.Delete') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
-        <v-dialog v-model="noteDialog.boolShow" :max-width="600" persistent @keydown.esc="noteDialog.boolShow = false">
-            <panel
-                :title="
-                    noteDialog.type === 'create'
-                        ? $t('History.CreateNote').toString()
-                        : $t('History.EditNote').toString()
-                "
-                :icon="noteDialog.type === 'create' ? mdiNotebookPlus : mdiNotebookEdit"
-                card-class="history-note-dialog"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="noteDialog.boolShow = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text class="pb-0">
-                    <v-row>
-                        <v-col>
-                            <v-textarea v-model="noteDialog.note" outlined hide-details :label="$t('History.Note')" />
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="noteDialog.boolShow = false">{{ $t('History.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="saveNote">{{ $t('History.Save') }}</v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -206,13 +148,9 @@ import {
     mdiDelete,
     mdiRefresh,
     mdiCog,
-    mdiPrinter,
-    mdiTextBoxSearch,
     mdiFileDocumentMultipleOutline,
     mdiMagnify,
     mdiCloseThick,
-    mdiNotebookEdit,
-    mdiNotebookPlus,
 } from '@mdi/js'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import HistoryListEntryJob from '@/components/panels/HistoryList/HistoryListEntryJob.vue'
@@ -235,44 +173,15 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiDelete = mdiDelete
     mdiRefresh = mdiRefresh
     mdiCog = mdiCog
-    mdiPrinter = mdiPrinter
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
-    mdiTextBoxSearch = mdiTextBoxSearch
     mdiMagnify = mdiMagnify
     mdiCloseThick = mdiCloseThick
-    mdiNotebookPlus = mdiNotebookPlus
-    mdiNotebookEdit = mdiNotebookEdit
 
     formatFilesize = formatFilesize
 
     private search = ''
     private sortBy = 'start_time'
     private sortDesc = true
-    private options = {}
-    private contextMenu = {
-        shown: false,
-        touchTimer: undefined,
-        x: 0,
-        y: 0,
-        item: {} as ServerHistoryStateJob,
-    }
-
-    private detailsDialog = {
-        item: {} as ServerHistoryStateJob,
-        show: false,
-    }
-
-    private noteDialog: {
-        item: ServerHistoryStateJob | null
-        note: string
-        boolShow: boolean
-        type: 'create' | 'edit'
-    } = {
-        item: null,
-        note: '',
-        boolShow: false,
-        type: 'create',
-    }
 
     private deleteSelectedDialog = false
 
@@ -513,24 +422,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return '--'
     }
 
-    clickRow(item: ServerHistoryStateJob) {
-        this.detailsDialog.item = item
-        this.detailsDialog.show = true
-    }
-
-    showContextMenu(e: any, item: ServerHistoryStateJob) {
-        if (!this.contextMenu.shown) {
-            e?.preventDefault()
-            this.contextMenu.shown = true
-            this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2
-            this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2
-            this.contextMenu.item = item
-            this.$nextTick(() => {
-                this.contextMenu.shown = true
-            })
-        }
-    }
-
     sortFiles(items: any[], sortBy: string[], sortDesc: boolean[]) {
         const sortByClean = sortBy.length ? sortBy[0] : 'filename'
         const sortDescClean = sortDesc[0]
@@ -575,21 +466,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     changeStatusVisible(status: any) {
-        if (status.showInTable) this.$store.dispatch('gui/hideStatusInHistoryList', status.name)
-        else this.$store.dispatch('gui/showStatusInHistoryList', status.name)
-    }
+        if (status.showInTable) {
+            this.$store.dispatch('gui/hideStatusInHistoryList', status.name)
+            return
+        }
 
-    startPrint(item: ServerHistoryStateJob) {
-        if (item.exists)
-            this.$socket.emit('printer.print.start', { filename: item.filename }, { action: 'switchToDashboard' })
-    }
-
-    deleteJob(item: ServerHistoryStateJob) {
-        this.$socket.emit(
-            'server.history.delete_job',
-            { uid: item.job_id },
-            { action: 'server/history/getDeletedJobs' }
-        )
+        this.$store.dispatch('gui/showStatusInHistoryList', status.name)
     }
 
     deleteSelectedJobs() {
@@ -641,7 +523,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 row.push(job.status)
 
                 this.tableFields.forEach((col) => {
-                    row.push(this.outputValue(col, job, false, csvSeperator))
+                    row.push(this.outputValue(col, job, csvSeperator))
                 })
 
                 if (this.headers.find((header) => header.value === 'slicer')?.visible) {
@@ -665,98 +547,42 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         link.remove()
     }
 
-    outputValue(
-        col: HistoryListPanelRow,
-        item: ServerHistoryStateJob,
-        format: boolean = true,
-        escapeChar: string | null = null
-    ) {
+    outputValue(col: HistoryListPanelRow, job: ServerHistoryStateJob, csvSeperator: string | null = null) {
         //@ts-ignore
-        let value = col.value in item ? item[col.value] : null
-        if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
+        let value = col.value in job ? job[col.value] : null
+        if (value === null) value = col.value in job.metadata ? job.metadata[col.value] : null
 
-        if (!format) {
-            switch (col.outputType) {
-                case 'date':
-                    return this.formatDateTime(value * 1000)
+        switch (col.outputType) {
+            case 'date':
+                return this.formatDateTime(value * 1000)
 
-                case 'time':
-                    return value?.toFixed() ?? ''
+            case 'time':
+                return value?.toFixed() ?? ''
 
-                default:
-                    switch (typeof value) {
-                        case 'number':
-                            return value?.toLocaleString(undefined, { useGrouping: false }) ?? 0
+            default:
+                switch (typeof value) {
+                    case 'number':
+                        return value?.toLocaleString(undefined, { useGrouping: false }) ?? 0
 
-                        case 'string':
-                            if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
+                    case 'string':
+                        if (csvSeperator !== null && value.includes(csvSeperator)) value = '"' + value + '"'
 
-                            return value
+                        return value
 
-                        default:
-                            return value
-                    }
-            }
+                    default:
+                        return value
+                }
         }
-
-        if (value > 0) {
-            switch (col.outputType) {
-                case 'filesize':
-                    return formatFilesize(value)
-
-                case 'date':
-                    return this.formatDateTime(value * 1000)
-
-                case 'time':
-                    return this.formatPrintTime(value)
-
-                case 'temp':
-                    return value?.toFixed() + ' °C'
-
-                case 'length':
-                    if (value > 1000) return (value / 1000).toFixed(2) + ' m'
-
-                    return value?.toFixed(2) + ' mm'
-
-                default:
-                    return value
-            }
-        }
-
-        return '--'
-    }
-
-    createNote(item: ServerHistoryStateJob) {
-        this.noteDialog.item = item
-        this.noteDialog.note = ''
-        this.noteDialog.type = 'create'
-        this.noteDialog.boolShow = true
-    }
-
-    editNote(item: ServerHistoryStateJob) {
-        this.noteDialog.item = item
-        this.noteDialog.note = item.note ?? ''
-        this.noteDialog.type = 'edit'
-        this.noteDialog.boolShow = true
-    }
-
-    saveNote() {
-        this.$store.dispatch('server/history/saveHistoryNote', {
-            job_id: this.noteDialog.item?.job_id,
-            note: this.noteDialog.note,
-        })
-
-        this.noteDialog.boolShow = false
     }
 }
 </script>
 
-<style>
-.history-jobs-table th {
+<style scoped>
+.history-jobs-table ::v-deep th {
     white-space: nowrap;
 }
 
-.history-jobs-table th.text-start {
+.history-jobs-table ::v-deep th.text-start {
     padding-right: 0 !important;
 }
 </style>

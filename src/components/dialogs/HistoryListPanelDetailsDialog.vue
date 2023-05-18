@@ -47,11 +47,8 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
     formatPrintTime = formatPrintTime
 
-    @Prop({ required: true, default: false })
-    declare readonly show: boolean
-
-    @Prop({ required: true })
-    declare job: ServerHistoryStateJob
+    @Prop({ type: Boolean, required: true }) readonly show!: boolean
+    @Prop({ type: Object, required: true }) readonly job!: ServerHistoryStateJob
 
     get entries() {
         let entries: { name: string; value: string | null; exists: boolean }[] = [

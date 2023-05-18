@@ -1,41 +1,56 @@
 <template>
     <tr
         :key="item.job_id"
-        v-longpress:600="(e) => showContextMenu(e, item)"
-        :class="'file-list-cursor user-select-none ' + (item.exists ? '' : 'text--disabled')"
-        @contextmenu="showContextMenu($event, item)"
-        @click="clickRow(item)">
+        v-longpress:600="(e) => showContextMenu(e)"
+        :class="cssClasses"
+        @contextmenu="showContextMenu($event)"
+        @click="detailsDialogBool = true">
         <td class="pr-0">
             <v-simple-checkbox v-ripple :value="isSelected" class="pa-0 mr-0" @click.stop="select(!isSelected)" />
         </td>
         <td class="px-0 text-center" style="width: 32px">
             <template v-if="!item.exists">
-                <v-icon class="text--disabled">{{ mdiFile }}-cancel</v-icon>
+                <v-icon class="text--disabled">{{ mdiFileCancel }}</v-icon>
             </template>
             <template v-else-if="smallThumbnail && bigThumbnail">
                 <v-tooltip top>
                     <template #activator="{ on, attrs }">
                         <vue-load-image>
-                            <img slot="image" :src="smallThumbnail" width="32" height="32" v-bind="attrs" v-on="on" />
-                            <v-progress-circular slot="preloader" indeterminate color="primary" />
-                            <v-icon slot="error">{{ mdiFile }}</v-icon>
+                            <img
+                                slot="image"
+                                :alt="item.filename"
+                                :src="smallThumbnail"
+                                width="32"
+                                height="32"
+                                v-bind="attrs"
+                                v-on="on" />
+                            <div slot="preloader">
+                                <v-progress-circular indeterminate color="primary" />
+                            </div>
+                            <div slot="error">
+                                <v-icon>{{ mdiFile }}</v-icon>
+                            </div>
                         </vue-load-image>
                     </template>
-                    <span><img :src="bigThumbnail" width="250" /></span>
+                    <span><img :alt="item.filename" :src="bigThumbnail" width="250" /></span>
                 </v-tooltip>
             </template>
             <template v-else-if="smallThumbnail">
                 <vue-load-image>
-                    <img slot="image" :src="smallThumbnail" width="32" height="32" />
-                    <v-progress-circular slot="preloader" indeterminate color="primary" />
-                    <v-icon slot="error">{{ mdiFile }}</v-icon>
+                    <img slot="image" :alt="item.filename" :src="smallThumbnail" width="32" height="32" />
+                    <div slot="preloader">
+                        <v-progress-circular indeterminate color="primary" />
+                    </div>
+                    <div slot="error">
+                        <v-icon>{{ mdiFile }}</v-icon>
+                    </div>
                 </vue-load-image>
             </template>
             <template v-else>
                 <v-icon>{{ mdiFile }}</v-icon>
             </template>
         </td>
-        <td class=" ">{{ item.filename }}</td>
+        <td>{{ item.filename }}</td>
         <td class="text-right text-no-wrap">
             <template v-if="'note' in item && item.note">
                 <v-tooltip top>
@@ -58,16 +73,46 @@
                 <span>{{ statusName }}</span>
             </v-tooltip>
         </td>
-        <td v-for="col in tableFields" :key="col.value" class="text-no-wrap">
-            {{ outputValue(col, item) }}
-        </td>
-        <td v-if="headers.find((header) => header.value === 'slicer')?.visible" class=" ">
-            {{ 'slicer' in item.metadata && item.metadata.slicer ? item.metadata.slicer : '--' }}
-            <small v-if="'slicer_version' in item.metadata && item.metadata.slicer_version">
-                <br />
-                {{ item.metadata.slicer_version }}
-            </small>
-        </td>
+        <td v-for="col in tableFields" :key="col.value" class="text-no-wrap" v-html="outputValue(col, item)" />
+        <!-- Context menu -->
+        <v-menu v-model="contextMenuBool" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
+            <v-list>
+                <v-list-item @click="detailsDialogBool = true">
+                    <v-icon class="mr-1">{{ mdiTextBoxSearch }}</v-icon>
+                    {{ $t('History.Details') }}
+                </v-list-item>
+                <v-list-item v-if="item.note" @click="editNote">
+                    <v-icon class="mr-1">{{ mdiNotebookEdit }}</v-icon>
+                    {{ $t('History.EditNote') }}
+                </v-list-item>
+                <v-list-item v-else @click="createNote">
+                    <v-icon class="mr-1">{{ mdiNotebookPlus }}</v-icon>
+                    {{ $t('History.AddNote') }}
+                </v-list-item>
+                <v-list-item
+                    v-if="item.exists"
+                    :disabled="printerIsPrinting || !klipperReadyForGui"
+                    @click="startPrint">
+                    <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
+                    {{ $t('History.Reprint') }}
+                </v-list-item>
+                <v-list-item class="red--text" @click="deleteJob">
+                    <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
+                    {{ $t('History.Delete') }}
+                </v-list-item>
+            </v-list>
+        </v-menu>
+        <!-- details dialog -->
+        <history-list-panel-details-dialog
+            :show="detailsDialogBool"
+            :job="item"
+            @close-dialog="detailsDialogBool = false" />
+        <!-- create/edit note dialog -->
+        <history-list-panel-note-dialog
+            :show="noteDialogBool"
+            :type="noteDialogType"
+            :job="item"
+            @close-dialog="noteDialogBool = false" />
     </tr>
 </template>
 <script lang="ts">
@@ -77,74 +122,86 @@ import Panel from '@/components/ui/Panel.vue'
 import BaseMixin from '@/components/mixins/base'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
-import { mdiFile, mdiNotebook } from '@mdi/js'
+import {
+    mdiCloseThick,
+    mdiDelete,
+    mdiFile,
+    mdiFileCancel,
+    mdiNotebook,
+    mdiNotebookEdit,
+    mdiNotebookPlus,
+    mdiPrinter,
+    mdiTextBoxSearch,
+} from '@mdi/js'
+import { formatFilesize } from '@/plugins/helpers'
+import { HistoryListPanelRow } from '@/components/panels/HistoryListPanel.vue'
+import HistoryListPanelNoteDialog from '@/components/dialogs/HistoryListPanelNoteDialog.vue'
 
 @Component({
-    components: { HistoryListPanelDetailsDialog, Panel },
+    components: { HistoryListPanelNoteDialog, HistoryListPanelDetailsDialog, Panel },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
+    mdiCloseThick = mdiCloseThick
+    mdiDelete = mdiDelete
     mdiFile = mdiFile
+    mdiFileCancel = mdiFileCancel
     mdiNotebook = mdiNotebook
+    mdiNotebookEdit = mdiNotebookEdit
+    mdiNotebookPlus = mdiNotebookPlus
+    mdiPrinter = mdiPrinter
+    mdiTextBoxSearch = mdiTextBoxSearch
+
+    private detailsDialogBool = false
+
+    private contextMenuBool = false
+    private contextMenuX = 0
+    private contextMenuY = 0
+
+    private noteDialogBool = false
+    private noteDialogType: 'create' | 'edit' = 'create'
 
     @Prop({ type: Object, required: true }) readonly item!: ServerHistoryStateJob
-    @Prop({ type: Array, required: true }) readonly headers!: ServerHistoryStateJob
-    @Prop({ type: Array, required: true }) readonly tableFields!: Array
-
-    mounted() {
-        window.console.log(this.item)
-    }
+    @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelRow[]
+    @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
 
     get smallThumbnail() {
-        if (this.item.metadata?.thumbnails?.length) {
-            const thumbnail = this.item.metadata?.thumbnails?.find(
-                (thumb: any) =>
-                    thumb.width >= thumbnailSmallMin &&
-                    thumb.width <= thumbnailSmallMax &&
-                    thumb.height >= thumbnailSmallMin &&
-                    thumb.height <= thumbnailSmallMax
-            )
+        if ((this.item.metadata?.thumbnails?.length ?? 0) < 1) return false
 
-            let relative_url = ''
-            if (this.item.filename.lastIndexOf('/') !== -1) {
-                relative_url = this.item.filename.substring(0, this.item.filename.lastIndexOf('/'))
-            }
+        const thumbnail = this.item.metadata?.thumbnails?.find(
+            (thumb: any) =>
+                thumb.width >= thumbnailSmallMin &&
+                thumb.width <= thumbnailSmallMax &&
+                thumb.height >= thumbnailSmallMin &&
+                thumb.height <= thumbnailSmallMax
+        )
 
-            if (thumbnail && 'relative_path' in thumbnail) {
-                return `${this.apiUrl}/server/files/gcodes/${encodeURI(
-                    relative_url + thumbnail.relative_path
-                )}?timestamp=${this.item.metadata.modified}`
-            }
+        let relative_url = ''
+        if (this.item.filename.lastIndexOf('/') !== -1) {
+            relative_url = this.item.filename.substring(0, this.item.filename.lastIndexOf('/'))
         }
 
-        return false
+        if ((thumbnail?.relative_path ?? null) === null) return false
+
+        return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url + thumbnail?.relative_path)}?timestamp=${
+            this.item.metadata.modified
+        }`
     }
 
     get bigThumbnail() {
-        if (this.item.metadata?.thumbnails?.length) {
-            const thumbnail = this.item.metadata?.thumbnails?.find((thumb: any) => thumb.width >= thumbnailBigMin)
+        if ((this.item.metadata?.thumbnails?.length ?? 0) < 1) return false
 
-            let relative_url = ''
-            if (this.item.filename.lastIndexOf('/') !== -1) {
-                relative_url = this.item.filename.substr(0, this.item.filename.lastIndexOf('/') + 1)
-            }
+        const thumbnail = this.item.metadata?.thumbnails?.find((thumb: any) => thumb.width >= thumbnailBigMin)
 
-            if (thumbnail && 'relative_path' in thumbnail)
-                return `${this.apiUrl}/server/files/gcodes/${encodeURI(
-                    relative_url + thumbnail.relative_path
-                )}?timestamp=${this.item.metadata.modified}`
+        let relative_url = ''
+        if (this.item.filename.lastIndexOf('/') !== -1) {
+            relative_url = this.item.filename.substring(0, this.item.filename.lastIndexOf('/') + 1)
         }
 
-        return false
-    }
+        if ((thumbnail?.relative_path ?? null) === null) return false
 
-    get thumbnailWidth() {
-        if (this.bigThumbnail) {
-            const thumbnail = this.item.metadata?.thumbnails?.find((thumb: any) => thumb.width >= thumbnailBigMin)
-
-            if (thumbnail) return thumbnail.width
-        }
-
-        return 400
+        return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url + thumbnail?.relative_path)}?timestamp=${
+            this.item.metadata.modified
+        }`
     }
 
     get statusIcon() {
@@ -156,9 +213,114 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get statusName() {
-        return this.$t(`History.StatusValues.${this.item.status}`, 'en')
-            ? this.$t(`History.StatusValues.${this.item.status}`)
-            : this.item.status.replace(/_/g, ' ')
+        // check if translation exists
+        if (!this.$t(`History.StatusValues.${this.item.status}`, 'en')) return this.item.status.replace(/_/g, ' ')
+
+        return this.$t(`History.StatusValues.${this.item.status}`)
+    }
+
+    get cssClasses() {
+        let output = ['file-list-cursor', 'user-select-none']
+
+        if (!this.item.exists) output.push('text--disabled')
+
+        return output
+    }
+
+    select(newVal: boolean) {
+        this.$emit('select', newVal)
+    }
+
+    showContextMenu(e: any) {
+        e?.preventDefault()
+        if (this.contextMenuBool) return
+
+        this.contextMenuBool = true
+        this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
+        this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
+
+        this.$nextTick(() => {
+            this.contextMenuBool = true
+        })
+    }
+
+    startPrint() {
+        if (!this.item.exists) return
+
+        this.$socket.emit('printer.print.start', { filename: this.item.filename }, { action: 'switchToDashboard' })
+    }
+
+    createNote() {
+        this.noteDialogType = 'create'
+        this.noteDialogBool = true
+    }
+
+    editNote() {
+        this.noteDialogType = 'edit'
+        this.noteDialogBool = true
+    }
+
+    deleteJob() {
+        this.$socket.emit(
+            'server.history.delete_job',
+            { uid: this.item.job_id },
+            { action: 'server/history/getDeletedJobs' }
+        )
+    }
+
+    outputValue(col: HistoryListPanelRow, item: ServerHistoryStateJob) {
+        //@ts-ignore
+        let value = col.value in item ? item[col.value] : null
+        if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
+        if (value === null) return '--'
+
+        if (col.value === 'slicer') value += '<br />' + item.metadata.slicer_version
+
+        switch (col.outputType) {
+            case 'filesize':
+                return formatFilesize(value)
+
+            case 'date':
+                return this.formatDateTime(value * 1000)
+
+            case 'time':
+                return this.formatPrintTime(value)
+
+            case 'temp':
+                return value?.toFixed() + ' °C'
+
+            case 'length':
+                if (value > 1000) return (value / 1000).toFixed(2) + ' m'
+
+                return value?.toFixed(2) + ' mm'
+
+            default:
+                return value
+        }
+    }
+
+    formatPrintTime(totalSeconds: number) {
+        if (!totalSeconds) return '--'
+
+        let output = ''
+
+        const days = Math.floor(totalSeconds / (3600 * 24))
+        if (days) {
+            totalSeconds %= 3600 * 24
+            output += days + 'd'
+        }
+
+        const hours = Math.floor(totalSeconds / 3600)
+        totalSeconds %= 3600
+        if (hours) output += ' ' + hours + 'h'
+
+        const minutes = Math.floor(totalSeconds / 60)
+        if (minutes) output += ' ' + minutes + 'm'
+
+        const seconds = totalSeconds % 60
+        if (seconds) output += ' ' + seconds.toFixed(0) + 's'
+
+        return output
     }
 }
 </script>
