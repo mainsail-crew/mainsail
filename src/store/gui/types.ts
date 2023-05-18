@@ -114,6 +114,7 @@ export interface GuiState {
         boolManualProbeDialog: boolean
         boolBedScrewsDialog: boolean
         boolScrewsTiltAdjustDialog: boolean
+        tempchartHeight: number
     }
     view: {
         blockFileUpload: boolean

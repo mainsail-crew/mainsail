@@ -164,6 +164,7 @@ export const getDefaultState = (): GuiState => {
             boolManualProbeDialog: true,
             boolBedScrewsDialog: true,
             boolScrewsTiltAdjustDialog: true,
+            tempchartHeight: 250,
         },
         view: {
             blockFileUpload: false,

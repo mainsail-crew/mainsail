@@ -183,6 +183,18 @@
                     :dynamic-slot-width="true">
                     <v-switch v-model="boolScrewsTiltAdjustDialog" hide-details class="mt-0" />
                 </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.TempchartHeight').toString()"
+                    :sub-title="$t('Settings.UiSettingsTab.TempchartHeightDescription').toString()">
+                    <v-slider
+                        v-model.lazy="tempchartHeight"
+                        hide-details
+                        :min="100"
+                        :max="500"
+                        :step="1"
+                        :label="tempchartHeight + 'px'" />
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -379,6 +391,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set boolScrewsTiltAdjustDialog(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolScrewsTiltAdjustDialog', value: newVal })
+    }
+
+    get tempchartHeight() {
+        return this.$store.state.gui.uiSettings.tempchartHeight ?? 250
+    }
+
+    set tempchartHeight(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.tempchartHeight', value: newVal })
     }
 
     clearColorObject(color: any): string {
