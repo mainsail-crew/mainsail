@@ -23,13 +23,17 @@ export const klipperConfigLang = LRLanguage.define({
             }),
             foldNodeProp.add({
                 ConfigBlock(tree) {
-                    let node = tree.firstChild
-                    if (node == null) return null
-                    while (node.type.name != 'Body') {
-                        node = node.nextSibling
-                        if (node == null) return null
+                    let body = tree.lastChild
+                    if (body == null) return null
+
+                    let lastOption = body.lastChild
+                    if (lastOption == null) return null
+                    while (lastOption.name == 'Comment' || lastOption.name == 'BlankLine') {
+                        lastOption = lastOption.prevSibling
+                        if (lastOption == null) return null
                     }
-                    return { from: node.from - 1, to: tree.to - 2 }
+                    
+                    return { from: body.from - 1, to: lastOption.to - 1 }
                 },
             }),
         ],
