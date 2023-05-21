@@ -74,6 +74,7 @@ import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { panelToolbarHeight } from '@/store/variables'
 import { mdiChevronDown, mdiChevronUp } from '@mdi/js'
+import { TranslateResult } from 'vue-i18n'
 
 @Component
 export default class Panel extends Mixins(BaseMixin) {
@@ -82,7 +83,7 @@ export default class Panel extends Mixins(BaseMixin) {
     panelToolbarHeight = panelToolbarHeight
 
     @Prop({ default: null }) declare readonly icon: string | null
-    @Prop({ required: true, default: '' }) declare readonly title: string
+    @Prop({ required: true, default: '' }) declare readonly title: string | TranslateResult
     @Prop({ default: false }) declare readonly collapsible: boolean
     @Prop({ required: true }) declare readonly cardClass: string
     @Prop({ default: '' }) declare readonly toolbarColor: string
