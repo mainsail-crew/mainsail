@@ -114,9 +114,7 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get totalPrintTime() {
-        return 'total_print_time' in this.$store.state.server.history.job_totals
-            ? this.$store.state.server.history.job_totals.total_print_time
-            : 0
+        return this.$store.state.server.history.job_totals?.total_print_time ?? 0
     }
 
     get selectedPrintTime() {
@@ -130,9 +128,7 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get longestPrintTime() {
-        return 'longest_print' in this.$store.state.server.history.job_totals
-            ? this.$store.state.server.history.job_totals.longest_print
-            : 0
+        return this.$store.state.server.history.job_totals?.longest_print ?? 0
     }
 
     get selectedLongestPrintTime() {
@@ -160,9 +156,7 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get totalFilamentUsed() {
-        return 'total_filament_used' in this.$store.state.server.history.job_totals
-            ? this.$store.state.server.history.job_totals.total_filament_used
-            : 0
+        return this.$store.state.server.history.job_totals?.total_filament_used ?? 0
     }
 
     get selectedFilamentUsed() {
@@ -176,9 +170,7 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get totalJobsCount() {
-        return 'total_jobs' in this.$store.state.server.history.job_totals
-            ? this.$store.state.server.history.job_totals.total_jobs
-            : 0
+        return this.$store.state.server.history.job_totals?.total_jobs ?? 0
     }
 
     get toggleChart() {

@@ -27,6 +27,7 @@
                                 <v-icon>{{ mdiDelete }}</v-icon>
                             </v-btn>
                         </template>
+                        <history-list-panel-add-maintenace />
                         <v-btn
                             :title="$t('History.TitleExportHistory')"
                             class="px-2 minwidth-0 ml-3"
@@ -62,7 +63,7 @@
                                             :label="`${status.displayName} (${status.value})`"
                                             @change="changeStatusVisible(status)" />
                                     </v-list-item>
-                                    <v-divider></v-divider>
+                                    <v-divider />
                                 </template>
                                 <v-list-item
                                     v-for="(header, index) of configHeaders"
@@ -144,16 +145,18 @@ import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { caseInsensitiveSort, formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import {
+    mdiCloseThick,
+    mdiCog,
     mdiDatabaseExportOutline,
     mdiDelete,
-    mdiRefresh,
-    mdiCog,
     mdiFileDocumentMultipleOutline,
     mdiMagnify,
-    mdiCloseThick,
+    mdiNotebookPlus,
+    mdiRefresh,
 } from '@mdi/js'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import HistoryListEntryJob from '@/components/panels/HistoryList/HistoryListEntryJob.vue'
+import HistoryListPanelAddMaintenace from '@/components/dialogs/HistoryListPanelAddMaintenace.vue'
 
 export interface HistoryListPanelRow {
     text: string
@@ -166,16 +169,17 @@ export interface HistoryListPanelRow {
 }
 
 @Component({
-    components: { HistoryListEntryJob, HistoryListPanelDetailsDialog, Panel },
+    components: { HistoryListPanelAddMaintenace, HistoryListEntryJob, HistoryListPanelDetailsDialog, Panel },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
+    mdiCloseThick = mdiCloseThick
+    mdiCog = mdiCog
     mdiDatabaseExportOutline = mdiDatabaseExportOutline
     mdiDelete = mdiDelete
-    mdiRefresh = mdiRefresh
-    mdiCog = mdiCog
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiMagnify = mdiMagnify
-    mdiCloseThick = mdiCloseThick
+    mdiNotebookPlus = mdiNotebookPlus
+    mdiRefresh = mdiRefresh
 
     formatFilesize = formatFilesize
 
