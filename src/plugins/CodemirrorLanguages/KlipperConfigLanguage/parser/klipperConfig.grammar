@@ -63,5 +63,6 @@ File {string "." string }
 @external tokens indentation from "./tokens.js" { indent, dedent }
 @external tokens newlines from "./tokens.js" { newline, blankLineStart, eof }
 
+@external propSource klipperConfigHighlighting from "./highlight"
 
 @detectDelim

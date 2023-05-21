@@ -1,7 +1,7 @@
 /* ref: https://github.com/lezer-parser/python/blob/main/src/tokens.js */
 import { ExternalTokenizer, ContextTracker } from '@lezer/lr'
 
-import { newline as newlineToken, eof, blankLineStart, indent, dedent } from './klipperConfigLang.terms.js'
+import { newline as newlineToken, eof, blankLineStart, indent, dedent } from '../parser/klipperConfigParser.terms.js'
 
 const newline = 10,
     carriageReturn = 13,

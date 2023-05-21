@@ -12,6 +12,7 @@
         "format": "npm run format:base -- --write",
         "format:base": "prettier .",
         "format:check": "npm run format:base -- --check",
+        "build-parser": "npx @lezer/generator src/plugins/CodemirrorLanguages/KlipperConfigLanguage/parser/klipperConfig.grammar -o src/plugins/CodemirrorLanguages/KlipperConfigLanguage/parser/klipperConfigParser.js",
         "lint": "eslint --ignore-path .gitignore src",
         "lint:fix": "npm run lint -- --fix",
         "build.zip": "cd ./dist && zip -r mainsail.zip ./ -x '**.DS_Store' ./ && cd ..",
