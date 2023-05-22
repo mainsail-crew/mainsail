@@ -276,7 +276,7 @@ export const getters: GetterTree<GuiNotificationState, any> = {
 
     getNotificationsOverdueReminders: (state, getters, rootState, rootGetters) => {
         const notifications: GuiNotificationStateEntry[] = []
-        let reminders: GuiRemindersStateReminder[] = rootGetters['gui/reminders/getOverdueReminders']
+        /*let reminders: GuiRemindersStateReminder[] = rootGetters['gui/reminders/getOverdueReminders']
 
         const date = rootState.server.system_boot_at ?? new Date()
 
@@ -304,7 +304,7 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                     dismissed: false,
                 })
             })
-        }
+        }*/
 
         return notifications
     },

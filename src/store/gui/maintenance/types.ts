@@ -5,15 +5,25 @@ export interface GuiMaintenanceState {
 }
 
 export interface GuiMaintenanceStateEntry {
-    id: string
+    id?: string
     name: string
     note: string
+    start_time: number
+    end_time: number | null
+
     reminder: boolean
     reminderRepeat: boolean
+
     reminderFilament: boolean
-    reminderFilamentValue: number | null
+    reminderFilamentStart: number
+    reminderFilamentTrigger: number | null
+    reminderFilamentEnd: number | null
+
     reminderPrinttime: boolean
-    reminderPrinttimeValue: number | null
+    reminderPrinttimeStart: number | null
+    reminderPrinttimeTrigger: number | null
+    reminderPrinttimeEnd: number | null
+
     reminderDate: boolean
-    reminderDateValue: number | null
+    reminderDateTrigger: number | null
 }

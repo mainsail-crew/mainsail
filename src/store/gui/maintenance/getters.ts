@@ -3,17 +3,17 @@ import { GuiMaintenanceState, GuiMaintenanceStateEntry } from '@/store/gui/maint
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiMaintenanceState, any> = {
-    /*getReminders: (state) => {
-        const reminders: GuiRemindersStateReminder[] = []
+    getEntries: (state) => {
+        const entries: GuiMaintenanceStateEntry[] = []
 
-        Object.keys(state.reminders).forEach((id: string) => {
-            reminders.push({ ...state.reminders[id], id })
+        Object.keys(state.entries).forEach((id: string) => {
+            entries.push({ ...state.entries[id], id })
         })
 
-        return reminders
+        return entries
     },
 
-    getReminder: (state, getters) => (id: string) => {
+    /*getReminder: (state, getters) => (id: string) => {
         const reminders = getters['getReminders'] ?? []
 
         return reminders.find((reminder: GuiRemindersStateReminder) => reminder.id === id)

@@ -23,17 +23,21 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
         await dispatch('socket/removeInitModule', 'gui/maintenance/init', { root: true })
     },
 
-    /*upload(_, payload) {
-        Vue.$socket.emit('server.database.post_item', { namespace: 'reminders', key: payload.id, value: payload.value })
+    upload(_, payload) {
+        Vue.$socket.emit('server.database.post_item', {
+            namespace: 'maintenance',
+            key: payload.id,
+            value: payload.value,
+        })
     },
 
     store({ commit, dispatch, state }, payload) {
         const id = uuidv4()
 
-        commit('store', { id, values: payload.values })
+        commit('store', { id, values: payload.entry })
         dispatch('upload', {
             id,
-            value: state.reminders[id],
+            value: state.entries[id],
         })
     },
 
@@ -41,11 +45,11 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
         commit('update', payload)
         dispatch('upload', {
             id: payload.id,
-            value: state.reminders[payload.id],
+            value: state.entries[payload.id],
         })
     },
 
-    delete({ commit }, payload) {
+    /*delete({ commit }, payload) {
         commit('delete', payload)
         Vue.$socket.emit('server.database.delete_item', { namespace: 'reminders', key: payload })
     },

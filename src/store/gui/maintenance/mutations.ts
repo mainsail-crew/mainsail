@@ -12,19 +12,19 @@ export const mutations: MutationTree<GuiMaintenanceState> = {
         Vue.set(state, 'entries', payload.value)
     },
 
-    /*store(state, payload) {
-        Vue.set(state.reminders, payload.id, payload.values)
+    store(state, payload) {
+        Vue.set(state.entries, payload.id, payload.values)
     },
 
     update(state, payload) {
-        if (payload.id in state.reminders) {
-            const reminder = { ...state.reminders[payload.id] }
-            Object.assign(reminder, payload)
-            Vue.set(state.reminders, payload.id, reminder)
+        if (payload.id in state.entries) {
+            const entry = { ...state.entries[payload.id] }
+            Object.assign(entry, payload)
+            Vue.set(state.entries, payload.id, entry)
         }
     },
 
-    delete(state, payload) {
+    /*delete(state, payload) {
         if (payload in state.reminders) {
             Vue.delete(state.reminders, payload)
         }
