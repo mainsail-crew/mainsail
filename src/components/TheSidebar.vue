@@ -83,7 +83,7 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin) {
     }
 
     naviPath(title: string): string {
-        return routes.filter((element) => element.title === title)[0].path
+        return this.naviPoints().filter((element) => element.title === title)[0].path
     }
 
     get currentPage(): string {
