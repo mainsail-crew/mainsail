@@ -122,7 +122,7 @@ import { mdiCloseThick, mdiNotebookPlus } from '@mdi/js'
         SettingsRow,
     },
 })
-export default class HistoryListPanelAddMaintenace extends Mixins(BaseMixin) {
+export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiNotebookPlus = mdiNotebookPlus
 

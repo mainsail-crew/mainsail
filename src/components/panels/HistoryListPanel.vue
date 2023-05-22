@@ -27,7 +27,7 @@
                                 <v-icon>{{ mdiDelete }}</v-icon>
                             </v-btn>
                         </template>
-                        <history-list-panel-add-maintenace />
+                        <history-list-panel-add-maintenance />
                         <v-btn
                             :title="$t('History.TitleExportHistory')"
                             class="px-2 minwidth-0 ml-3"
@@ -84,7 +84,7 @@
             <v-divider class="mb-3" />
             <v-data-table
                 v-model="selectedJobs"
-                :items="jobs"
+                :items="entries"
                 class="history-jobs-table"
                 :headers="filteredHeaders"
                 :custom-sort="sortFiles"
@@ -107,7 +107,15 @@
 
                 <template #item="{ index, item, isSelected, select }">
                     <history-list-entry-job
+                        v-if="item.type === 'job'"
                         :key="`${index}_${item.job_id}`"
+                        :is-selected="isSelected"
+                        :item="item"
+                        :table-fields="tableFields"
+                        @select="select" />
+                    <history-list-entry-maintenance
+                        v-else-if="item.type === 'maintenance'"
+                        :key="`${index}_${item.id}`"
                         :is-selected="isSelected"
                         :item="item"
                         :table-fields="tableFields"
@@ -156,7 +164,9 @@ import {
 } from '@mdi/js'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import HistoryListEntryJob from '@/components/panels/HistoryList/HistoryListEntryJob.vue'
-import HistoryListPanelAddMaintenace from '@/components/dialogs/HistoryListPanelAddMaintenace.vue'
+import HistoryListPanelAddMaintenance from '@/components/dialogs/HistoryListPanelAddMaintenace.vue'
+import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
+import HistoryListEntryMaintenance from '@/components/panels/HistoryList/HistoryListEntryMaintenance.vue'
 
 export interface HistoryListPanelRow {
     text: string
@@ -169,7 +179,13 @@ export interface HistoryListPanelRow {
 }
 
 @Component({
-    components: { HistoryListPanelAddMaintenace, HistoryListEntryJob, HistoryListPanelDetailsDialog, Panel },
+    components: {
+        HistoryListEntryMaintenance,
+        HistoryListPanelAddMaintenance,
+        HistoryListEntryJob,
+        HistoryListPanelDetailsDialog,
+        Panel,
+    },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
@@ -189,8 +205,35 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     private deleteSelectedDialog = false
 
+    mounted() {
+        window.console.log(this.maintenanceEntries)
+    }
+
     get jobs() {
         return this.$store.getters['server/history/getFilterdJobList'] ?? []
+    }
+
+    get maintenanceEntries() {
+        const entries = this.$store.getters['gui/maintenance/getEntries'] ?? []
+
+        window.console.log('mEntries', entries)
+
+        return entries
+    }
+
+    get entries() {
+        let entries = [...this.jobs].map((job) => {
+            return { ...job, type: 'job' }
+        })
+
+        entries = [
+            ...entries,
+            ...this.maintenanceEntries.map((entry: GuiMaintenanceStateEntry) => {
+                return { ...entry, type: 'maintenance' }
+            }),
+        ]
+
+        return entries
     }
 
     get selectedJobs() {
