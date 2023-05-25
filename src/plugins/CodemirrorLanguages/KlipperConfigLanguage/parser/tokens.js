@@ -1,7 +1,7 @@
 /* ref: https://github.com/lezer-parser/python/blob/main/src/tokens.js */
 import { ExternalTokenizer, ContextTracker } from '@lezer/lr'
 
-import { newline as newlineToken, eof, blankLineStart, indent, dedent } from '../parser/klipperConfigParser.terms.js'
+import { newline as newlineToken, eof, blankLine, indent, dedent } from '../parser/klipperConfigParser.terms.js'
 
 const newline = 10,
     carriageReturn = 13,
@@ -17,13 +17,11 @@ export const newlines = new ExternalTokenizer(
         let prev
         if (input.next < 0) {
             input.acceptToken(eof)
-        } else if (((prev = input.peek(-1)) < 0 || isLineBreak(prev)) && stack.canShift(blankLineStart)) {
-            let spaces = 0
+        } else if ((prev = input.peek(-1)) < 0 || isLineBreak(prev)) {
             while (input.next == space || input.next == tab) {
                 input.advance()
-                spaces++
             }
-            if (input.next == newline || input.next == carriageReturn) input.acceptToken(blankLineStart, -spaces)
+            if (input.next == newline || input.next == carriageReturn) input.acceptToken(blankLine, 1)
         } else if (isLineBreak(input.next)) {
             input.acceptToken(newlineToken, 1)
         }

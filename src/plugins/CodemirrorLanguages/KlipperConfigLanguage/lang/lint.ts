@@ -6,7 +6,7 @@ export const klipperConfigLint = linter((view) => {
     syntaxTree(view.state)
         .cursor()
         .iterate((node) => {
-            if (node.name == 'Number') {
+            if (node.name == '') {
                 diagnostics.push({
                     from: node.from,
                     to: node.to,
@@ -27,7 +27,7 @@ export const klipperConfigLint = linter((view) => {
                         from: node.from,
                         to: node.to,
                         severity: 'error',
-                        message: 'Syntax error',
+                        message: 'Parse error: ' + JSON.stringify(view.state.sliceDoc(node.from, node.to)),
                     })
                 }
             }

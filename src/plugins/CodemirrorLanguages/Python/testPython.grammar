@@ -17,7 +17,7 @@
 
 @top Script { statement+ }
 
-@skip { space | newlineBracketed | Comment | blankLine }
+@skip { space | Comment | blankLine }
 
 Decorator { At dottedName ArgList? newline }
 
@@ -88,7 +88,6 @@ smallStatement {
   ContinueStatement { kw<"continue"> } |
   ReturnStatement { kw<"return"> commaSep<test | "*" expression>? } |
   YieldStatement { yield } |
-  PrintStatement { printKeyword test } |
   RaiseStatement { kw<"raise"> (test (kw<"from"> test | ("," test ("," test)?))?)? } |
   ImportStatement |
   ScopeStatement { (kw<"global"> | kw<"nonlocal">) commaSep<VariableName> } |
@@ -181,8 +180,8 @@ expression[@isGroup=Expression] {
   MemberExpression { expression !trail (subscript | "." PropertyName) } |
   VariableName |
   Number |
-  String | FormatString |
-  ContinuedString { (String | FormatString) (String | FormatString)+ } |
+  String | 
+  ContinuedString { (String) (String)+ } |
   "..." |
   kw<"None"> |
   @specialize[@name=Boolean]<identifier, "True" | "False">
@@ -251,34 +250,16 @@ skw<term> { @extend[@name={term}]<identifier, term> }
     longStringStart<'"'> longString2Content* '"""'
   }
 
-  FormatString {
-    formatStringStart<"'"> (formatString1Content | FormatReplacement<formatString1Brace>)* formatString1End |
-    formatStringStart<'"'> (formatString2Content | FormatReplacement<formatString2Brace>)* formatString2End |
-    longFormatStringStart<"'"> (formatString1lContent | FormatReplacement<formatString1lBrace>)* formatString1lEnd |
-    longFormatStringStart<'"'> (formatString2lContent | FormatReplacement<formatString2lBrace>)* formatString2lEnd
-  }
-
-  formatStringSpec { FormatSpec { ":" (formatStringSpecChars | FormatReplacement<"{">)* } "}" }
-
   blankLine {
     blankLineStart space? Comment? newline
   }
 }
 
-FormatReplacement<start> { start (YieldExpression | commaSep<"*"? test>) FormatConversion? (formatStringSpec | "}") }
-
 @context trackIndent from "./tokens.js"
-
-@external tokens legacyPrint from "./tokens.js" { printKeyword[@name="print"] }
 
 @external tokens indentation from "./tokens" { indent, dedent }
 
-@external tokens newlines from "./tokens" { newline, blankLineStart, newlineBracketed, eof }
-
-@external tokens formatString1 from "./tokens" { formatString1Content, formatString1Brace[@name="{"], formatString1End }
-@external tokens formatString2 from "./tokens" { formatString2Content, formatString2Brace[@name="{"], formatString2End }
-@external tokens formatString1l from "./tokens" { formatString1lContent, formatString1lBrace[@name="{"], formatString1lEnd }
-@external tokens formatString2l from "./tokens" { formatString2lContent, formatString2lBrace[@name="{"], formatString2lEnd }
+@external tokens newlines from "./tokens" { newline, blankLineStart, eof }
 
 @tokens {
   CompareOp { "<" | ">" | $[<>=!] "=" | "<>" }
@@ -286,8 +267,8 @@ FormatReplacement<start> { start (YieldExpression | commaSep<"*"? test>) FormatC
   UpdateOp { ($[+\-@%&|^] | "<<" | ">>" | "*" "*"? | "/" "/"?) "=" }
 
   @precedence {
-    longStringStart<"'">, longStringStart<'"'>, longFormatStringStart<"'">, longFormatStringStart<'"'>,
-    shortString, formatStringStart<"'">, formatStringStart<'"'>,
+    longStringStart<"'">, longStringStart<'"'>,
+    shortString,  
     identifier
   }
 
@@ -299,15 +280,7 @@ FormatReplacement<start> { start (YieldExpression | commaSep<"*"? test>) FormatC
 
   stringPrefix { $[rRuUbB] | $[bB] $[rR] | $[rR] $[bR] }
 
-  formatPrefix { $[fF] | $[fF] $[rR] | $[rR] $[fF] }
-
   shortString { stringPrefix? ("'" (!['\\\n\r] | "\\" _)* "'"? | '"' (!["\\\n\r] | "\\" _)* '"'?) }
-
-  formatStringStart<quote> { formatPrefix quote }
-
-  FormatConversion { "!" $[sra] }
-
-  formatStringSpecChars { ![{}]+ }
 
   longStringStart<quote> { stringPrefix? quote quote quote }
 
@@ -318,8 +291,6 @@ FormatReplacement<start> { start (YieldExpression | commaSep<"*"? test>) FormatC
   longString2Content { (!["\\] | "\\" _ | '"' longString2_2)+ }
   longString2_2 { !["\\] | "\\" _ | '"' longString2_3 }
   longString2_3 { !["\\] | "\\" _ }
-
-  longFormatStringStart<quote> { formatPrefix quote quote quote }
 
   Number {
     (@digit ("_" | @digit)* ("." @digit ("_" | @digit)*)? | "." @digit ("_" | @digit)*)

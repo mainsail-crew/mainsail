@@ -1,4 +1,3 @@
-//@ts-ignore
 import { parser } from './testPython.js'
 import { LRLanguage, LanguageSupport } from '@codemirror/language'
 

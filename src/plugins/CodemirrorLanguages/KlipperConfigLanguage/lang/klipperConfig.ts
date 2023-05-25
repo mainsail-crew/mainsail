@@ -55,5 +55,5 @@ export function klipperConfig() {
 
 /* 
 to generate the parser run:
-npx @lezer/generator klipperConfig.grammar -o klipperConfigLang.js
+npx @lezer/generator klipperConfig.grammar -o klipperConfigParser.js
  */
