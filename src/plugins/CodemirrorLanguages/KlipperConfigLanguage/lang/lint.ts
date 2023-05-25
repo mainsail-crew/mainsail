@@ -6,30 +6,13 @@ export const klipperConfigLint = linter((view) => {
     syntaxTree(view.state)
         .cursor()
         .iterate((node) => {
-            if (node.name == '') {
+            if (node.type.isError) {
                 diagnostics.push({
                     from: node.from,
                     to: node.to,
-                    severity: 'warning',
-                    message: 'Numbers are bad',
-                    actions: [
-                        {
-                            name: 'Remove',
-                            apply(view, from, to) {
-                                view.dispatch({ changes: { from, to } })
-                            },
-                        },
-                    ],
+                    severity: 'error',
+                    message: 'Parse error: ' + JSON.stringify(view.state.sliceDoc(node.from, node.to)),
                 })
-            } else {
-                if (node.type.isError) {
-                    diagnostics.push({
-                        from: node.from,
-                        to: node.to,
-                        severity: 'error',
-                        message: 'Parse error: ' + JSON.stringify(view.state.sliceDoc(node.from, node.to)),
-                    })
-                }
             }
         })
     return diagnostics

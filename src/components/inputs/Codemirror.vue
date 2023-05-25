@@ -14,18 +14,13 @@ import { EditorView, keymap } from '@codemirror/view'
 import { EditorState } from '@codemirror/state'
 import { vscodeDark } from '@uiw/codemirror-theme-vscode'
 import { StreamLanguage } from '@codemirror/language'
-import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
 import { gcode } from '@/plugins/StreamParserGcode'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
 import { klipperConfig } from '../../plugins/CodemirrorLanguages/KlipperConfigLanguage/lang/klipperConfig'
 import { klipperConfigLint } from '../../plugins/CodemirrorLanguages/KlipperConfigLanguage/lang/lint'
-import { python } from '../../plugins/CodemirrorLanguages/Python/index'
-import { logTree } from '../../plugins/CodemirrorLanguages/printLezerTree'
 import { indentUnit } from '@codemirror/language'
-
-import {syntaxTree} from "@codemirror/language"
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin) {
@@ -55,20 +50,6 @@ export default class Codemirror extends Mixins(BaseMixin) {
         if (newVal !== cm_value) {
             this.setCmValue(newVal)
         }
-        const state = this.cminstance.state
-        logTree( syntaxTree(state), state.doc.toString() )
-        /* const state = this.cminstance.state
-        syntaxTree(state).iterate({
-            enter: (node) => { 
-                if (node.from >= 3600 && node.name != "BlockBody" && node.name != "Block") {
-                    if (node.name === "BodyLine") {
-                        console.log("-- " + state.doc.lineAt(node.from).text + " ----------------")
-                    } else {
-                        console.log(node.name + "  (" + state.doc.sliceString(node.from, node.to)+ ")")
-                    }
-                }
-            }}
-        ) */
     }
 
     mounted(): void {
@@ -119,7 +100,6 @@ export default class Codemirror extends Mixins(BaseMixin) {
         if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(klipperConfig())
         else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
-        else if (['py'].includes(this.fileExtension)) extensions.push(python())
         else if (['css', 'scss', 'sass'].includes(this.fileExtension)) extensions.push(css())
 
         return extensions
