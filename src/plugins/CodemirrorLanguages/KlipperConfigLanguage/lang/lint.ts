@@ -2,7 +2,7 @@ import { syntaxTree } from '@codemirror/language'
 import { linter, Diagnostic } from '@codemirror/lint'
 
 export const klipperConfigLint = linter((view) => {
-    let diagnostics: Diagnostic[] = []
+    const diagnostics: Diagnostic[] = []
     syntaxTree(view.state)
         .cursor()
         .iterate((node) => {

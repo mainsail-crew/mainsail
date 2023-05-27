@@ -11,7 +11,7 @@ export const klipperConfigLang = LRLanguage.define({
         props: [
             foldNodeProp.add({
                 ConfigBlock(tree) {
-                    let body = tree.lastChild
+                    const body = tree.lastChild
                     if (body == null) return null
                     let lastOption = body.lastChild
                     if (lastOption == null) return null
