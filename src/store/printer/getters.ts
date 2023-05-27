@@ -24,7 +24,12 @@ import {
     PrinterGetterObject,
     PrinterStateLight,
 } from '@/store/printer/types'
-import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
+import {
+    caseInsensitiveSort,
+    formatFrequency,
+    getMacroParamsFromState,
+    getMacroParamsFromConfig,
+} from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 import {
     mdiFan,
@@ -168,22 +173,21 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const settings = state.configfile?.settings ?? null
 
         Object.keys(config)
-            .filter((prop) => prop.toLowerCase().startsWith('gcode_macro'))
+            .filter((prop) => prop.startsWith('gcode_macro') && !settings[prop.toLowerCase()]?.rename_existing)
             .forEach((prop) => {
                 const name = prop.replace('gcode_macro ', '')
-                if (name.startsWith('_')) return
+                const variables = state[prop] ?? {}
+                const hints = variables?.front_end_hints
 
                 const propLower = prop.toLowerCase()
                 const propSettings = settings[propLower]
-                if ('rename_existing' in propSettings) return
-
-                const variables = state[prop] ?? {}
 
                 array.push({
                     name,
                     description: settings[propLower].description ?? null,
                     prop: propSettings,
-                    params: getMacroParams(propSettings),
+                    params: hints ? getMacroParamsFromState(hints) : getMacroParamsFromConfig(propSettings),
+                    hidden: hints && 'hidden' in hints ? hints.hidden : name.startsWith('_'),
                     variables,
                 })
             })
