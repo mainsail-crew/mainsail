@@ -2,7 +2,6 @@ import { parser } from '../parser/klipperConfigParser.js'
 import { LRLanguage, LanguageSupport, StreamLanguage, foldNodeProp } from '@codemirror/language'
 import { parseMixed } from '@lezer/common'
 import { klipper_config } from '../../../StreamParserKlipperConfig'
-import { klipperConfigCompletionSource } from './complete.js'
 
 const jinja2Parser = StreamLanguage.define(klipper_config).parser
 
@@ -33,9 +32,7 @@ export const klipperConfigLang = LRLanguage.define({
 })
 
 export function klipperConfig() {
-    return new LanguageSupport(klipperConfigLang, [
-        klipperConfigLang.data.of({ autocomplete: klipperConfigCompletionSource }),
-    ])
+    return new LanguageSupport(klipperConfigLang)
 }
 
 /* 
