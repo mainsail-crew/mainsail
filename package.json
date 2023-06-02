@@ -90,7 +90,7 @@
         "sass": "~1.32",
         "start-server-and-test": "^1.14.0",
         "typescript": "^4.5.5",
-        "unplugin-vue-components": "^0.22.0",
+        "unplugin-vue-components": "^0.22.12",
         "vite": "^3.0.0",
         "vite-plugin-checker": "^0.5.0",
         "vite-plugin-package-version": "^1.0.2",
