@@ -20,6 +20,7 @@ import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
 import { klipperCfg } from '../../plugins/Codemirror/KlipperCfgLang/lang/klipperCfg'
 import { parseErrorLint } from '../../plugins/Codemirror/parseErrorLint'
+import { klipperCfgLint } from '../../plugins/Codemirror/KlipperCfgLang/lang/lint'
 import { indentUnit } from '@codemirror/language'
 
 // for lezer grammar debugging
@@ -56,10 +57,10 @@ export default class Codemirror extends Mixins(BaseMixin) {
             this.setCmValue(newVal)
         }
         // for lezer grammar debugging
-        /* const state = this.cminstance?.state ?? EditorState.create({})
+       /*  const state = this.cminstance?.state ?? EditorState.create({})
         logTree(syntaxTree(state), state.doc.toString())
         const text = state.doc.toString()
-        console.log(parser.parse(text) + '') */
+        console.log(parser.parse(text) + '')  */
     }
 
     mounted(): void {
@@ -107,6 +108,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
             }),
         ]
 
+        if ("printer.cfg" === this.name) extensions.push(klipperCfgLint)
         if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(klipperCfg())
         else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
         else if (['json'].includes(this.fileExtension)) extensions.push(json())

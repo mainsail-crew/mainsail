@@ -1,5 +1,8 @@
-import { NodeType, Parser } from '@lezer/common'
+import { Parser } from '@lezer/common'
 import { testTree } from '@lezer/generator/dist/test'
+import { Diagnostic } from '@codemirror/lint'
+import { EditorView } from '@codemirror/view'
+import { EditorState } from '@codemirror/state'
 
 function toLineContext(file: string, index: number) {
     const endEol = file.indexOf('\n', index + 80)
@@ -13,10 +16,6 @@ function toLineContext(file: string, index: number) {
         .join('\n')
 }
 
-function defaultIgnore(type: NodeType) {
-    return /\W/.test(type.name)
-}
-
 function getLineNumber(text: string, index: number) {
     const substring = text.substring(0, index)
     const newLineRegex = /\n/g
@@ -24,13 +23,12 @@ function getLineNumber(text: string, index: number) {
     return lineCount
 }
 
-export function fileTests(file: string, fileName: string, onlyNoError = false, mayIgnore = defaultIgnore) {
+export function fileTestsParser(file: string, fileName: string, onlyNoError = false) {
     const caseExpr = /\s*#[ \t]*(.*)(?:\r\n|\r|\n)([^]*?)==+>([^]*?)(?:$|(?:\r\n|\r|\n)+(?=#))/gy
     const tests: {
         name: string
         text: string
         expected: string
-        strict: boolean
         run(parser: Parser): void
     }[] = []
     let lastIndex = 0
@@ -39,7 +37,6 @@ export function fileTests(file: string, fileName: string, onlyNoError = false, m
             name: fileName,
             text: file,
             expected: 'no parsing errors',
-            strict: true,
             run(parser: Parser) {
                 parser
                     .parse(file)
@@ -65,14 +62,13 @@ export function fileTests(file: string, fileName: string, onlyNoError = false, m
 
             const text = m[2]
             const expected = m[3].trim()
-            const [, name, configStr] = /(.*?)(\{.*?\})?$/.exec(m[1])!
+            const [, name] = /(.*?)(\{.*?\})?$/.exec(m[1])!
 
             if (expected == 'error') {
                 tests.push({
                     name,
                     text,
                     expected: 'error while parsing',
-                    strict: false,
                     run(parser: Parser) {
                         let parsingError = false
                         parser
@@ -85,17 +81,14 @@ export function fileTests(file: string, fileName: string, onlyNoError = false, m
                     },
                 })
             } else {
-                const config = configStr ? JSON.parse(configStr) : null
                 const strict = !/⚠|\.\.\./.test(expected)
                 tests.push({
                     name,
                     text,
                     expected,
-                    strict,
                     run(parser: Parser) {
-                        if ((parser as any).configure && (strict || config))
-                            parser = (parser as any).configure({ strict, ...config })
-                        testTree(parser.parse(text), expected, mayIgnore)
+                        if ((parser as any).configure && strict) parser = (parser as any).configure({ strict })
+                        testTree(parser.parse(text), expected)
                     },
                 })
             }
@@ -104,4 +97,20 @@ export function fileTests(file: string, fileName: string, onlyNoError = false, m
         }
     }
     return tests
+}
+
+export interface LintTest {
+    name: string
+    input: EditorView
+    expected: Diagnostic[]
+}
+
+export function createEditorView(inputText: string) {
+    const startState = EditorState.create({
+        doc: inputText,
+    })
+    return new EditorView({
+        state: startState,
+        parent: document.body,
+    })
 }

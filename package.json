@@ -23,7 +23,8 @@
         "start": "vite build && vite preview",
         "test": "start-server-and-test preview http://127.0.0.1:4173/ 'cypress run'",
         "test:ui": "cypress open",
-        "test:parser:klipperCfg": "mocha --config src/plugins/Codemirror/.mocharc.json src/plugins/Codemirror/KlipperCfgLang/test/test-klipperCfg.js",
+        "test:parser:klipperCfg": "mocha --config src/plugins/Codemirror/.mocharc.json src/plugins/Codemirror/KlipperCfgLang/testParser/testKlipperCfgParser.js",
+        "test:lint:klipperCfg": "mocha --config src/plugins/Codemirror/.mocharc.json src/plugins/Codemirror/KlipperCfgLang/testLint/testKlipperCfgLint.js",
         "changelog": "git cliff v0.0.4..$(git describe --tags $(git rev-list --tags --max-count=1)) --output CHANGELOG.md"
     },
     "dependencies": {
