@@ -2,7 +2,7 @@
     "App": {
         "Notifications": {
             "DependencyDescription": "Aktualna {name} wersja nie wspiera wszystkich funkcji Mainsail. Zaktualizuj {name} conajmniej do wersji {neededVersion}.",
-            "DependencyName": "Dependency: {name}",
+            "DependencyName": "Zależność: {name}",
             "DismissAll": "Odrzuć wszystko",
             "KlipperWarnings": {
                 "DeprecatedOption": "Opcja '{option}' w sekcji '{section}' jest przestarzała i zostanie usunięta w przyszłych wydaniach.",
@@ -16,12 +16,13 @@
                 "MoonrakerFailedComponentDescription": "Został wykryty błąd podczas ładowania '{component}'. Proszę sprawdzić rejestr plików i naprawić błąd.",
                 "MoonrakerWarning": "Ostrzeżenie Moonraker'a",
                 "UnparsedConfigOption": "Błędna wartość '{option}: {value}' w sekcji [{section}]. Ustawienie, które zostało użyte, może nie być już dłużej możliwe lub stało się to wskutek modułu który się nie wczytał. W przyszłości może wystąpić problem podczas startu.",
-                "UnparsedConfigSection": "Błędna wartość w sekcji [{section}] została wykryta. Może być to skutek elementu, który się nie wczytał. W przyszłości może wystąpić problem podczas startu. "
+                "UnparsedConfigSection": "Błędna wartość w sekcji [{section}] została wykryta. Może być to skutek elementu, który się nie wczytał. W przyszłości może wystąpić problem podczas startu."
             },
             "Never": "nigdy",
             "NextReboot": "przy następnym uruchomieniu",
             "NoNotification": "Brak powiadomień",
-            "Remind": "Przypomnij:"
+            "Remind": "Przypomnij:",
+            "Notifications": "Powiadomienia"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Musi być większa lub równa {min}!",
@@ -52,7 +53,8 @@
             "Error": "BŁĄD",
             "Pause": "Pauza",
             "Printing": "{percent}% Drukowanie - {filename}",
-            "PrintingETA": "{percent}% Drukowanie - ETA: {eta} - {filename}"
+            "PrintingETA": "{percent}% Drukowanie - Koniec: {eta} - {filename}",
+            "PrinterOff": "Drukarka WYŁ."
         },
         "TopBar": {
             "CannotUploadTheFile": "Błąd wgrywania pliku!",
@@ -108,17 +110,18 @@
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Połączenie ({host}) z Moonrakerem nieudane.",
-        "CheckMoonrakerLog": "Jeżeli ta wiadomość się powtarza , sprawdź plik:",
+        "CheckMoonrakerLog": "Jeżeli ta wiadomość się powtarza, sprawdź plik:",
         "Connecting": "Łączenie z {host}",
         "Failed": "Połączenie nieudane",
-        "TryAgain": "Spróbuj ponownie"
+        "TryAgain": "Spróbuj ponownie",
+        "Initializing": "Inicjowanie"
     },
     "Console": {
         "CommandList": "Lista komend",
         "Empty": "Puste",
         "HideTemperatures": "Ukryj temperatury",
         "HideTimelapse": "Ukryj timelapse",
-        "SendCode": "Wgrywanie pliku...",
+        "SendCode": "Wyślij polecenie...",
         "SetupConsole": "Konsola ustawień"
     },
     "Dialogs": {
@@ -141,7 +144,7 @@
         "SuccessfullySaved": "{filename} pomyślnie zapisano.",
         "UnsavedChanges": "Niezapisane zmiany",
         "UnsavedChangesMessage": "Chcesz zapisać zmiany w {filename}?",
-        "UnsavedChangesSubMessage": "Niezapisane zmiany zostaną utracone. Możesz wyłączyć to okno dialogowe w ustawieniach edytora",
+        "UnsavedChangesSubMessage": "Niezapisane zmiany zostaną utracone. Możesz wyłączyć to okno dialogowe w ustawieniach edytora.",
         "Uploading": "Wgrywanie"
     },
     "EmergencyStopDialog": {
@@ -205,7 +208,19 @@
         "Total": "Łącznie",
         "UploadNewGcode": "Wgraj nowy G-Code",
         "Used": "Użyte",
-        "View3D": "Zobacz w 3D"
+        "View3D": "Zobacz w 3D",
+        "AddBatchToQueue": "Dodaj serię do kolejki",
+        "GcodesRootDirectoryDoesntExists": "Nie znaleziono katalogu G-Code. Sprawdź opcję \"path\" w sekcji [virtual_sdcard] konfiguracji Klippera.",
+        "ScanMeta": "Skanuj metadane",
+        "BedTemp": "Temp. łóżka",
+        "ChamberTemp": "Temp. komory",
+        "Count": "Ilość",
+        "DuplicateFile": "Powielony plik",
+        "InvalidNameAlreadyExists": "Nazwa już istnieje, wybierz inną.",
+        "InvalidNameEmpty": "Pole wejściowe nie może być puste!",
+        "ExtruderTemp": "Temp. ekstrudera",
+        "Duplicate": "Duplikat",
+        "ScanMetaSuccess": "Pomyślnie przeskanowano metadane z: {filename}."
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Błąd wgrywania pliku!",
@@ -234,7 +249,9 @@
         "Tracking": "Śledzenie",
         "Transparency": "Transparentność",
         "Ultra": "Ultra",
-        "VoxelMode": "Tryb wokseli (ASMBL)"
+        "VoxelMode": "Tryb wokseli (ASMBL)",
+        "ShowGCode": "Pokaż kod G",
+        "CNCMode": "Tryb CNC"
     },
     "Heightmap": {
         "Abort": "Anuluj",
@@ -248,11 +265,12 @@
             "Min": "Minimalna",
             "Name": "Nazwa",
             "Size": "Rozmiar",
-            "Variance": "Różnica"
+            "Variance": "Różnica",
+            "Range": "Rozpiętość"
         },
         "DeleteBedMeshProfile": "Usuń siatkę stołu",
         "DoYouReallyWantToDelete": "Czy na pewno chcesz usunąć profil \"{name}\"?",
-        "ErrorKlipperNotReady": "Klipper nie jest gotowy. Mapa stołu wyłączona",
+        "ErrorKlipperNotReady": "Klipper nie jest gotowy. Mapa stołu wyłączona.",
         "Flat": "Stół",
         "Heightmap": "Mapa stołu",
         "Later": "Później",
@@ -271,9 +289,13 @@
         "ScaleGradient": "Skaluj gradient",
         "ScaleZMax": "Skaluj maks. poz. osi Z.",
         "TitleCalibrate": "Kalibracja nowej siatki",
-        "TitleClear": "Wyczyść siatkę stołu.",
+        "TitleClear": "Wyczyść siatkę stołu",
         "TitleHomeAll": "Pozycja zerowa wszystkich osi",
-        "Wireframe": "Szkielet"
+        "Wireframe": "Szkielet",
+        "InvalidNameAlreadyExists": "Nazwa profilu już istnieje, wybierz inną nazwę profilu.",
+        "InvalidNameAscii": "Nazwa jest nieprawidłowa. Dozwolone są tylko znaki ASCII.",
+        "InvalidNameEmpty": "Pole wejściowe nie może być puste!",
+        "InvalidNameReserved": "Profil \"default\" jest zarezerwowany, wybierz inną nazwę profilu."
     },
     "History": {
         "AddNote": "Dodaj notatkę",
@@ -295,8 +317,8 @@
         "FilamentUsed": "Zużycie filamentu",
         "Filename": "Nazwa pliku",
         "Filesize": "Rozmiar pliku",
-        "FirstLayerBedTemp": "Temperatura stołu na 1 warstwie",
-        "FirstLayerExtTemp": "Temperatura ekstrudera na 1 warstwie",
+        "FirstLayerBedTemp": "Temp. stołu 1 warstwy",
+        "FirstLayerExtTemp": "Temp. dyszy 1 warstwy",
         "FirstLayerHeight": "Wysokość pierwszej warstwy",
         "HistoryFilamentUsage": "Łączne zużycie filamentu",
         "HistoryPrinttimeAVG": "Wydruki",
@@ -329,7 +351,8 @@
             "in_progress": "W trakcie",
             "klippy_disconnect": "Klipper został rozłączony",
             "klippy_shutdown": "Zamykanie Klippera",
-            "server_exit": "Wyjście z serwera"
+            "server_exit": "Wyjście z serwera",
+            "Others": "Pozostałe"
         },
         "TitleExportHistory": "Eksportuj historię",
         "TitleRefreshHistory": "Odśwież historię",
@@ -338,7 +361,9 @@
         "TotalFilamentUsed": "Łączne zużycie filamentu",
         "TotalJobs": "Ilość wszystkich wydruków",
         "TotalPrinttime": "Łączny czas drukowania",
-        "TotalTime": "Całkowity czas druku"
+        "TotalTime": "Całkowity czas druku",
+        "Chart": "Wykres",
+        "Table": "Tabela"
     },
     "JobQueue": {
         "AllJobs": "Wszystkie wydruki",
@@ -347,7 +372,12 @@
         "Jobs": "Wydruki",
         "Pause": "Pauza",
         "RemoveFromQueue": "Usuń z kolejki",
-        "Start": "Start"
+        "Start": "Start",
+        "InvalidCountEmpty": "Pole wejściowe nie może być puste!",
+        "ChangeCount": "Zmień ilość",
+        "Cancel": "Anuluj",
+        "Count": "Ilość",
+        "InvalidCountGreaterZero": "Wprowadzona wartość musi być większa niż 0!"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -383,7 +413,10 @@
             "Total": "Łączne",
             "UploadFile": "Wgraj plik",
             "Uploading": "Wysyłanie",
-            "Used": "Używane"
+            "Used": "Używane",
+            "ConfigRootDirectoryDoesntExists": "Nie znaleziono katalogu konfiguracyjnego. Sprawdź opcję \"config_path\" w sekcji [file_manager] konfiguracji Moonrakera.",
+            "Duplicate": "Duplikat",
+            "DuplicateFile": "Powielony plik"
         },
         "EndstopPanel": {
             "Endstop": "Krańcówka",
@@ -393,7 +426,13 @@
             "TRIGGERED": "URUCHOMIONA"
         },
         "LogfilesPanel": {
-            "Logfiles": "Pliki logów"
+            "Logfiles": "Pliki logów",
+            "Accept": "Akceptuj",
+            "RolloverDescription": "Wybierz, które logi mają zostać zresetowane:",
+            "Cancel": "Anuluj",
+            "Rollover": "Zresetuj logi",
+            "RolloverToastFailed": "Nie udało się zresetować logu dla \"{name}\": {message}",
+            "RolloverToastSuccessful": "Log dla \"{name}\" został pomyślnie zresetowany."
         },
         "SystemPanel": {
             "Constants": "Stałe",
@@ -403,7 +442,7 @@
             "Load": "Obciążenie",
             "Memory": "Pamięć",
             "NoMoreInfos": "Brak informacji",
-            "SystemLoad": "Obciążenie Systemu   ",
+            "SystemLoad": "Obciążenie systemu",
             "Values": {
                 "Awake": "Wzbudzony: {awake}",
                 "Bandwidth": "Pasmo: {bandwidth}/s",
@@ -421,7 +460,7 @@
             }
         },
         "UpdatePanel": {
-            "CheckForUpdates": "Sprawdź , czy są dostępne aktualizacje",
+            "CheckForUpdates": "Sprawdź dostępność aktualizacji",
             "Commits": "Wydane",
             "CommitsAvailable": "Brak nowych wydań | {count} dostępnych wydań| {count} dostępnych wydań",
             "CommitsOnDate": "Wydano {date}",
@@ -450,7 +489,7 @@
             "EstimatedExtrusion": "Przewidywana ekstruzja:",
             "Extrude": "Wysuń",
             "ExtruderTempTooLow": "Temp. hotendu <",
-            "ExtrusionFactor": "Parametr hotendu",
+            "ExtrusionFactor": "Współczynnik ekstruzji",
             "ExtrusionFeedrate": "Prędkość wysuwania",
             "FilamentLength": "Długość filamentu",
             "FirmwareRetractionSettings": {
@@ -462,7 +501,7 @@
             "Headline": "Hotend",
             "LoadFilament": "Załadowywanie filamentu",
             "PressureAdvanceSettings": {
-                "Advance": "Wzrost nacisku",
+                "Advance": "Pressure Advance",
                 "Extruder": "Ekstruder",
                 "SmoothTime": "Czas wygładzania"
             },
@@ -480,13 +519,18 @@
             "FirmwareRestart": "Ponowne uruchomienie oprogramowania",
             "KlipperCheck": "Sprawdź , czy Klipper jest uruchomiony oraz czy UDS (Unix Domain Socket) został skonfigurowany poprawnie.",
             "MoonrakerCannotConnect": "Moonraker nie może połączyć się z Klipperem!",
-            "Restart": "Ponowne uruchomienie"
+            "Restart": "Ponowne uruchomienie",
+            "CheckKlippyAndUdsAddress": "Sprawdź, czy usługa Klipper jest uruchomiona i czy \"klippy_uds_address\" jest poprawnie skonfigurowany w pliku moonraker.conf.",
+            "PrinterSwitchedOffDescription": "Drukarka jest obecnie wyłączona i Klipper nie może się z nią połączyć. Aby włączyć drukarkę, kliknij poniższy przycisk:",
+            "PrinterSwitchedOff": "Drukarka jest wyłączona",
+            "PowerOn": "Włączone",
+            "ServiceReports": "Raporty {service}"
         },
         "MachineSettingsPanel": {
             "Headline": "Ustawienia drukarki",
             "MotionSettings": {
                 "Acceleration": "Przyspieszenie",
-                "MaxAccelToDecel": "Maks. przysp. do startu zmniejszania prędkości.",
+                "MaxAccelToDecel": "Maks. przysp. do hamowania",
                 "SquareCornerVelocity": "Prędkość na rogu kwadratu",
                 "Velocity": "Prędkość"
             }
@@ -499,11 +543,11 @@
             "Headline": "Konsola",
             "HideTemperatures": "Ukryj temperatury",
             "HideTimelapse": "Ukryj timelapse",
-            "SendCode": "Wpisz kod...",
+            "SendCode": "Wyślij polecenie...",
             "SetupConsole": "Konfiguracja konsoli"
         },
         "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Upewnij się , że printer.cfg zawiera mainsail.cfg.",
+            "IncludeMainsailCfg": "Upewnij się, że printer.cfg zawiera mainsail.cfg.",
             "IsNotDefinedInConfig": "nie jest określone w konfiguracji.",
             "MissingConfiguration": "Brakująca konfiguracja",
             "MoreInformation": "Więcej informacji"
@@ -514,6 +558,12 @@
                 "Detected": "wykryto",
                 "Disabled": "wyłączone",
                 "Empty": "Puste"
+            },
+            "Light": {
+                "Blue": "niebieski",
+                "Green": "zielony",
+                "Red": "czerwony",
+                "White": "biały"
             }
         },
         "PowerControlPanel": {
@@ -528,8 +578,8 @@
             "Difference": "Różnica",
             "EmptyGcodes": "Brak dostępnego G-Code.",
             "EmptyJobqueue": "Aktualnie nie ma żadnego pliku w kolejce wydruków.",
-            "Estimate": "Szacowana",
-            "ETA": "ETA",
+            "Estimate": "Pozostało",
+            "ETA": "Koniec",
             "ExcludeObject": {
                 "Cancel": "Anuluj",
                 "Excluded": "Wyklucz",
@@ -548,7 +598,7 @@
             "Max": "Maks.",
             "ObjectHeight": "Wysokość obiektu",
             "PausePrint": "Pauza wydruku",
-            "Print": "Drukuj",
+            "Print": "Druk",
             "PrintTime": "Czas wydruku",
             "ReprintJob": "Ponownie wydrukuj",
             "Requested": "Wymagane",
@@ -557,11 +607,23 @@
             "Speed": "Prędkość",
             "Status": "Status",
             "Total": "Całkowicie",
-            "Unknown": "Nieznany"
+            "Unknown": "Nieznany",
+            "PauseAtLayer": {
+                "Abort": "przerwij",
+                "DescriptionPauseAtLayerActive": "Funkcja jest już aktywna i spowoduje wywołanie \"{call}\" na warstwie \"{layer}\". Jeśli ponownie wywołasz to polecenie, te ustawienia zostaną nadpisane.",
+                "Accept": "Akceptuj",
+                "AtLayer": "na warstwie",
+                "Call": "Wywołaj",
+                "DescriptionPauseNextLayerActive": "Ta funkcja jest już aktywna i spowoduje wywołanie \"{call}\" na następnej warstwie.",
+                "Layer": "Warstwa",
+                "NextLayer": "Następna warstwa",
+                "PauseAtLayer": "Pauza na warstwie",
+                "Type": "Typ"
+            }
         },
         "TemperaturePanel": {
             "AutoscaleChart": "Autoskaluj wykres",
-            "Avg": "Śred.",
+            "Avg": "Średnia",
             "Cooldown": "Chłodzenie",
             "Current": "Aktualna",
             "Dataset": {
@@ -599,7 +661,7 @@
         },
         "WebcamPanel": {
             "All": "Wszystkie",
-            "FPS": "Kl/S",
+            "FPS": "kl./s",
             "Headline": "Kamera internetowa",
             "NoWebcam": "Brak dostępnej kamery. Dodaj kamerę w \"Ustawienia Interfejsu\" -> \"Kamera Internetowa\".",
             "UnknownWebcamService": "Nieznana usługa kamery"
@@ -612,7 +674,7 @@
             "Save": "Zapisz",
             "SaveConfig": "ZAPISZ KONFIGURACJĘ",
             "SaveInfoDescription": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Kliknij na \"ZAPISZ KONFIGURACJĘ\" aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
-            "SaveInfoDescriptionPrint": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Po wydrukowaniu , kliknij na \"ZAPISZ KONFIGURACJĘ\" aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
+            "SaveInfoDescriptionPrint": "Nowe przesunięcie Z zostało obliczone i zarejestrowane. Po wydrukowaniu kliknij \"ZAPISZ KONFIGURACJĘ\" na górnym pasku, aby zapisać ją w pliku printer.cfg i zrestartować Klipper.",
             "SaveInfoHeadline": "Informacja",
             "ToEndstop": "Do krańcówki",
             "ToProbe": "Do sondy"
@@ -650,24 +712,25 @@
         "HostnameRequired": "Hostname jest wymagany",
         "Port": "Port",
         "PortRequired": "Port jest wymagany",
-        "RememberToAdd": "Pamiętaj , aby dodać {cors} w moonraker.conf wewnątrz 'cors_domains'.",
+        "RememberToAdd": "Pamiętaj, aby dodać '{cors}' w sekcji 'cors_domains' pliku moonraker.conf.",
         "SelectPrinter": "Wybierz drukarkę",
         "TryAgain": "Spróbuj ponownie",
         "UpdatePrinter": "Zaktualizuj drukarkę",
-        "YouCanFindMore": "Możesz znaleźć więcej szczegółów w"
+        "YouCanFindMore": "Możesz znaleźć więcej szczegółów w",
+        "AddPrintersToJson": "Proszę dodać drukarki do pliku config.json."
     },
     "Settings": {
         "Cancel": "Anuluj",
         "Close": "Zamknij",
         "ConsoleTab": {
             "AddFilter": "Dodaj filtr",
-            "Console": "Personalizacja",
+            "Console": "Konsola",
             "CreateHeadline": "Stwórz filtr",
             "Direction": "Kierunek",
             "DirectionShell": "Ostatni wpis na dole",
             "DirectionTable": "Ostatni wpis u góry",
             "EditHeadline": "Edytuj filtr",
-            "EntryStyle": "Styl Zapisu",
+            "EntryStyle": "Styl zapisu",
             "EntryStyleCompact": "Kompaktowy",
             "EntryStyleDefault": "Domyślny",
             "Filters": "Filtry",
@@ -687,7 +750,7 @@
             "EnableXYHoming": "Włącz łączną pozycję zerową dla osi X i Y",
             "EstimatedExtrusionInfo": "Pokazuj przewidywaną długość wytłaczania filamentu",
             "EstimatedExtrusionInfoDescription": "Pokazuj / Ukryj info dla wytłaczania bazującą na ilości i feedrate",
-            "InvertXMovement": "Odwróć ruch osi X ",
+            "InvertXMovement": "Odwróć ruch osi X",
             "InvertYMovement": "Odwróć ruch osi Y",
             "InvertZMovement": "Odwróć ruch osi Z",
             "IsDefault": " (default)",
@@ -706,7 +769,7 @@
             "Style": "Styl",
             "ValueGreaterThan": "Wartość musi być większa niż {value}",
             "ZOffsetIncrements": "Wzrost offsetu osi Z (w mm)",
-            "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
+            "ZTiltAdjust": "Dostosuj Z-Tilt {isDefault}"
         },
         "DashboardTab": {
             "Dashboard": "Sterowanie",
@@ -719,32 +782,35 @@
         "Edit": "Edytuj",
         "EditorTab": {
             "ConfirmUnsavedChanges": "Potwierdź aby zapisać lub anulować niezapisane zmiany",
-            "ConfirmUnsavedChangesDescription": "Jeżeli włączone , edytor wymaga potwierdzenia zapisania zmian lub anulowania. Jeżeli wyłączone , edytor nie wymaga potwierdzenia.",
+            "ConfirmUnsavedChangesDescription": "Jeżeli włączone, edytor wymaga potwierdzenia zapisania zmian lub anulowania. Jeżeli wyłączone, edytor nie wymaga potwierdzenia.",
             "Editor": "Edytor",
             "KlipperRestartMethod": "Metoda restartu Klippera",
             "KlipperRestartMethodDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Klippera.",
             "MoonrakerRestartInstance": "Ponowne uruchomienie instancji Moonrakera",
             "MoonrakerRestartInstanceDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Moonrakera.",
             "UseEscToClose": "Naciśnij ESC aby wyjść z Edytora",
-            "UseEscToCloseDescription": "Pozwala aby móc zamknąć edytor za pomocą ESC"
+            "UseEscToCloseDescription": "Pozwala aby móc zamknąć edytor za pomocą ESC",
+            "TabSize": "Rozmiar tabulacji",
+            "TabSizeDescription": "Ustawia, ile spacji powinno być używanych do wcięcia przy użyciu tabulacji (TAB)",
+            "Spaces": "Spacje: {count}"
         },
         "GCodeViewerTab": {
-            "BackgroundColor": "Kolory tła",
-            "ExtruderColor": "Kolory Ekstrudera",
+            "BackgroundColor": "Kolor tła",
+            "ExtruderColor": "Kolor ekstrudera",
             "GCodeViewer": "3D G-Code",
-            "GridColor": "Kolory siatki",
+            "GridColor": "Kolor siatki",
             "MaxFeed": "Maksymalna prędkość feedrate",
             "MinFeed": "Minimalna prędkość feedrate",
-            "ProgressColor": "Kolor Postępu",
+            "ProgressColor": "Kolor postępu",
             "ShowAxes": "Pokazuj osie"
         },
         "GeneralTab": {
             "Backup": "Kopia zapasowa",
             "BackupDialog": "Proszę wybrać wszystkie sekcje z których ma zostać utworzona kopia zapasowa:",
             "CalcEstimateTime": "Szacowany czas ukończenia",
-            "CalcEstimateTimeDescription": "Jeżeli wiele jest zaznaczonych , średnia zostanie wyliczona.",
-            "CalcEtaTime": "Kalkulacja ETA",
-            "CalcEtaTimeDescription": "Jeżeli wiele jest zaznaczonych , średnia zostanie wyliczona.",
+            "CalcEstimateTimeDescription": "Jeśli zaznaczono wiele, zostanie obliczona średnia",
+            "CalcEtaTime": "Obliczanie godziny ukończenia",
+            "CalcEtaTimeDescription": "Po wybraniu kilku opcji zostanie obliczona średnia.",
             "CannotReadJson": "Brak możliwości przeczytania/przeanalizowania pliku kopii zapasowej.",
             "DbConsoleHistory": "Historia Konsoli",
             "DbHistoryJobs": "Historia wydruków",
@@ -761,11 +827,23 @@
             "FactoryReset": "Ustawienia fabryczne",
             "General": "Ogólny",
             "Language": "Język",
-            "MoonrakerDb": "Moonraker DB",
+            "MoonrakerDb": "Baza danych Moonraker",
             "PrinterName": "Nazwa drukarki",
             "Reset": "reset",
             "Restore": "Przywróć",
-            "RestoreDialog": "Proszę wybrać wszystkie sekcje do przywrócenia:"
+            "RestoreDialog": "Proszę wybrać wszystkie sekcje do przywrócenia:",
+            "TimeFormat": "Format czasu",
+            "12hours": "12-godzinny ({time})",
+            "24hours": "24-godzinny ({time})",
+            "CalcPrintProgress": "Obliczanie postępu drukowania",
+            "CalcPrintProgressDescription": "Metoda obliczania postępu drukowania.",
+            "CalcPrintProgressItems": {
+                "Filament": "Filament",
+                "FileAbsolute": "Pozycja pliku (absolutna)",
+                "FileRelative": "Pozycja pliku (względna)",
+                "Slicer": "Slicer (M73)"
+            },
+            "DateFormat": "Format daty"
         },
         "InterfaceSettings": "Ustawienia interfejsu",
         "MacrosTab": {
@@ -776,8 +854,8 @@
             "Color": "Kolor",
             "CountMacros": "Brak nowych makr| {count} x Makr | {count} x Makr",
             "Custom": "Personalizacja",
-            "CustomColor": "Własny Kolor",
-            "DeletedMacro": "Usunięto makro.",
+            "CustomColor": "Kolor niestandardowy",
+            "DeletedMacro": "Usunięto makro",
             "DeleteMacroFromGroup": "Usuń makro z grupy.",
             "EditGroup": "Edytuj grupę",
             "Error": "Błąd",
@@ -801,7 +879,7 @@
             "Simple": "Proste",
             "Status": "Status",
             "Success": "Sukces",
-            "UnknownGroup": "Nieznana grupa.",
+            "UnknownGroup": "Nieznana grupa",
             "Warning": "Ostrzeżenie"
         },
         "PresetsTab": {
@@ -815,8 +893,8 @@
             "ErrorNameNotUnique": "Nazwa już istnieje",
             "ErrorNameRequired": "Nazwa jest wymagana",
             "Name": "Nazwa",
-            "PreheatPresets": "Szybkie ustaw.",
-            "PresetInfo": "Musisz co najmniej podać temperaturę , albo dodać G-Code.",
+            "PreheatPresets": "Nastawy",
+            "PresetInfo": "Należy ustawić przynajmniej temperaturę docelową lub niestandardowy kod G.",
             "PresetNamePlaceholder": "Nazwa nastawy (wymagane)",
             "StoreButton": "Zapisz",
             "UpdateButton": "Zaktualizuj",
@@ -828,40 +906,41 @@
             "Hostname": "Nazwa hosta",
             "Port": "Port",
             "RemotePrinters": "Drukarki",
-            "UpdatePrinter": "Aktualizuj drukarkę"
+            "UpdatePrinter": "Aktualizuj drukarkę",
+            "UseConfigJson": "Wykryto bazę danych JSON. Aby zmodyfikować listę drukarek, proszę skorzystać z pliku config.json."
         },
         "TimelapseTab": {
             "Autorender": "Autorenderowanie",
-            "AutorenderDescription": "Jeżeli włączone, timelaps będzie automatycznie renderowany na końcu druku.",
+            "AutorenderDescription": "Jeśli opcja ta jest włączona, timelapse będzie automatycznie renderowany na końcu druku.",
             "Camera": "Kamera",
-            "CameraDescription": "Wybierz , jaka kamera powinna być używana",
+            "CameraDescription": "Wybierz kamerę, która ma być używana",
             "ConstantRateFactor": "Stała kompensacja rozmiaru",
-            "ConstantRateFactorDescription": "To ustawienie konfiguruje jakość vs rozmiar wyrenderowanego filmu. Skala CRF jest od 0-51 , gdzie 0 jest bez utraty jakości , 23 jest domyślne , a 51 jest najgorsze jakościowo. Generalnie im mniejsza liczba tym mniej utraty jakości. 17 - 18 jest praktycznie bez żadnych utrat.",
+            "ConstantRateFactorDescription": "Konfiguruje jakość w stosunku do rozmiaru pliku renderowanego wideo. Zakres skali CRF wynosi 0-51, gdzie 0 oznacza bezstratną jakość, 23 to wartość domyślna, a 51 to najgorsza możliwa jakość. Niższa wartość generalnie prowadzi do wyższej jakości, a subiektywnie rozsądny zakres to 17-28. Wartość 17 lub 18 należy uznać za wizualnie bezstratną.",
             "duplicatelastframe": "Duplikuj ostatnią klatkę na koniec filmu",
-            "duplicatelastframeDescription": "",
+            "duplicatelastframeDescription": "Powiela ostatnią klatkę na końcu filmu",
             "Enabled": "Włączone",
-            "EnabledDescription": "Jeżeli wyłączone, makra G-Code są ignorowane i autorenderowanie jest pomijane",
+            "EnabledDescription": "Jeżeli wyłączone, makra G-Code są ignorowane i automatyczne generowanie wideo jest pomijane.",
             "Extraoutputparams": "Dodatkowe parametry wyjściowe",
             "ExtraoutputparamsDescription": "Definiuje dodatkowe parametry do FFMPEG. UWAGA: Dodawanie czegokolwiek w tym miejscu wyłącza możliwość rotacji obrazu.",
             "FwRetract": "Retrakcja FW",
             "FwRetractDescription": "Używaj retrakcji firmware'owej w makro timelapse.",
             "GcodeVerbose": "Wgrywanie informacji z G-Code do konsoli",
-            "GcodeVerboseDescription": "Jeżeli włączone , makra G-Code będzie wysyłał informacje do konsoli.",
+            "GcodeVerboseDescription": "Jeżeli włączone, makra G-Code będą wypisywały informacje w konsoli.",
             "General": "Ogólne",
             "HyperlapseCycle": "Czas cyklu Hyperlapse",
             "HyperlapseCycleDescription": "Klatka zostanie uchwycona co każde X sekund",
             "Mode": "Tryb",
-            "ModeDescription": "Wybierz pomiędzy makro warstwy a Hiperlapsem.",
-            "OutputFramerate": "Stała liczba Kl/S",
-            "OutputFramerateDescription": "Definiuje kl/s w timelapse. UWAGA: jeżeli opcja zmiennych kl/s jest włączona , to ustawienie zostanie pominięte",
+            "ModeDescription": "Wybierz pomiędzy makrami warstw a trybem Hyperlapse (opartym na czasie).",
+            "OutputFramerate": "Wyjściowa liczba kl./s",
+            "OutputFramerateDescription": "Określa liczbę klatek na sekundę wideo. Uwaga: ta opcja zostanie zignorowana, jeśli włączona jest opcja variable_fps.",
             "Parkhead": "Parkuj głowicę",
-            "ParkheadDescription": "Jeżeli włączone , głowica będzie parkowana przed uchwyceniem klatki.",
+            "ParkheadDescription": "Jeżeli włączone, głowica będzie parkowana przed uchwyceniem klatki.",
             "Parkpos": "Pozycja parkowania",
-            "ParkposDescription": "Wybierz pozycję , gdzie głowica ma być parkowana",
+            "ParkposDescription": "Wybierz pozycję parkowania",
             "ParkTime": "Czas podczas parkowania",
             "ParkTimeDescription": "Dodaj dodatkowy czas bezczynny podczas parkowania.",
             "Pixelformat": "Jakość",
-            "PixelformatDescription": "Definiuje ile pikseli jest w obrazie.",
+            "PixelformatDescription": "Określa format pikseli dla wyjściowego wideo.",
             "PosDZ": "Pozycja Z",
             "PosDZDescription": "Parkowanie na osi Z (względne wartości)",
             "PosX": "Pozycja X",
@@ -875,37 +954,37 @@
             "RetractDistanceDescription": "Długość filamentu którą ekstruder będzie wytłaczać.",
             "RetractSpeed": "Prędkość wycofywania",
             "RetractSpeedDescription": "Prędkość którą ekstruder będzie wytłaczał filament.",
-            "SaveFrames": "Zapisz ramki.",
-            "SaveFramesDescription": "Zapisz klatki do pliku ZIP dla zewnętrznego renderowania.",
+            "SaveFrames": "Zapisz klatki",
+            "SaveFramesDescription": "Zapisz klatki do pliku zip w celu zewnętrznego renderowania.",
             "StreamDelayCompensation": "Kompensacja utraty jakości",
             "StreamDelayCompensationDescription": "Ulepszenie jakości timelapse",
             "Targetlength": "Docelowa długość",
-            "TargetlengthDescription": "Docelowa długość timelapse , podczas włączenia opcji Zmienne Kl/S",
+            "TargetlengthDescription": "Docelowa długość, gdy włączona jest opcja Zmienna liczba klatek na sekundę",
             "TimeFormatCode": "Format Czasu",
             "TimeFormatCodeDescription": "Ustawienie definiuje jaki format czasu powinien być zakodowany w pliku wyjściowym",
             "Timelapse": "Timelapse",
             "TravelSpeed": "Prędkość podróży",
             "TravelSpeedDescription": "Prędkość podróży podczas parkowania i wznawiania.",
             "UnretractDistance": "Długość wycofywania",
-            "UnretractDistanceDescription": "Długość filamentu wycofywanego , którą będzie używał ekstruder po wytłoczeniu filamentu.",
+            "UnretractDistanceDescription": "Długość filamentu, którą ekstruder wycofuje po retrakcji.",
             "UnretractSpeed": "Prędkość wycofywania",
             "UnretractSpeedDescription": "Prędkość jaką ekstruder będzie wycofywał filament.",
-            "VariableFps": "Zmienne Kl/S",
-            "VariableFpsDescription": "Jeżeli włączone , Kl/S będą obliczane na podstawie docelowej długości timelapse.",
-            "VariableFpsMax": "Maks Kl/S",
-            "VariableFpsMaxDescription": "Ustawienie odpowiadające za maksymalną liczbę Kl/S w timelapse",
-            "VariableFpsMin": "Min. Zmienne Kl/S",
-            "VariableFpsMinDescription": "Ustawienie odpowiadające za minimalną liczbę Kl/S w timelapse"
+            "VariableFps": "Zmienne kl./s",
+            "VariableFpsDescription": "Jeśli włączone, częstotliwość klatek wyjściowego wideo będzie obliczana na podstawie docelowej długości.",
+            "VariableFpsMax": "Maks. zmiennych kl./s",
+            "VariableFpsMaxDescription": "Maksymalnie dozwolona zmienna liczba klatek na sekundę.",
+            "VariableFpsMin": "Min. zmiennych kl./s",
+            "VariableFpsMinDescription": "Minimalnie dozwolona zmienna liczba klatek na sekundę."
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Duża miniaturka",
             "BoolBigThumbnailDescription": "Pokazuj dużą miniaturkę podczas wydruku.",
-            "BoolHideUploadAndPrintButton": "Pokazuj przycisk Wyślij i Drukuj",
-            "BoolHideUploadAndPrintButtonDescription": "Pokazuj lub ukryj przycisk \"Wyślij i Drukuj\" na górnym pasku.",
+            "BoolHideUploadAndPrintButton": "Ukryj przycisk \"Wgraj i drukuj\"",
+            "BoolHideUploadAndPrintButtonDescription": "Pokazuj lub ukrywaj przycisk \"Prześlij i drukuj\" na górnym pasku.",
             "ConfirmOnEmergencyStop": "Potwierdzenie Nagłego Zatrzymania",
             "ConfirmOnEmergencyStopDescription": "Pokazuj dialog potwierdzenia po naciśnięciu Nagłego Zatrzymania",
             "ConfirmOnPowerDeviceChange": "Potwierdzenie dla zmiany zasilania urządzenia",
-            "ConfirmOnPowerDeviceChangeDescription": "Pokazuj dialog potwierdzenia po naciśnięciu zmiany zasilania.",
+            "ConfirmOnPowerDeviceChangeDescription": "Wyświetlaj okno dialogowe potwierdzenia przy zmianach zasilania urządzenia.",
             "DisplayCANCEL_PRINT": "Pokazuj przycisk ANULUJ_WYDRUK",
             "DisplayCANCEL_PRINTDescription": "Pokazuje przycisk ANULUJ_WYDRUK permamentnie - brak potrzeby drugiej warstwy.",
             "GcodeThumbnails": "Pokazuj miniaturki",
@@ -913,7 +992,7 @@
             "Guide": "Przewodnik",
             "LockSliders": "Zablokuj suwaki na ekranie dotykowym",
             "LockSlidersDelay": "Opóźnienie blokady suwaków",
-            "LockSlidersDelayDescription": "Suwaki zablokują się po zadanym czasie blokady (dotykowe ekrany). Jeżeli ustawione na 0 lub puste , suwaki zablokują się jedynie po zmianie strony lub przeładowaniu.",
+            "LockSlidersDelayDescription": "Suwaki zostaną zablokowane po określonym opóźnieniu. Jeśli ustawione na 0 lub pozostawione puste, suwaki będą blokowane tylko podczas zmiany/odświeżenia strony.",
             "LockSlidersDescription": "Suwaki na ekranie dotykowym muszą zostać odblokowane przed wprowadzeniem zmian.",
             "Logo": "Logo",
             "NavigationStyle": "Styl paska nawigacyjnego",
@@ -922,7 +1001,21 @@
             "NavigationStyleIconsOnly": "Tylko ikony",
             "Primary": "Podstawowe",
             "ShowWebcamInNavigation": "Pokazuj kamerki internetowe",
-            "UiSettings": "Ustawienia interfejsu"
+            "UiSettings": "Ustawienia interfejsu",
+            "DisableFanAnimation": "Wyłącz animację wentylatora",
+            "DisableFanAnimationDescription": "To może zmniejszyć obciążenie przeglądarki.",
+            "HideSaveConfigButtonForBedMeshDescription": "Ukryj przycisk \"Zapisz konfigurację\", jeśli oczekują jedynie zmiany w siatce stołu do zapisania w Klipperze.",
+            "ScrewsTiltAdjustDialogDescription": "Wyświetl pomocnicze okno dialogowe do obliczania nachylenia śrubami (SCREWS_TILT_CALCULATE).",
+            "BedScrewsDialog": "Okno śrub stołu",
+            "BedScrewsDialogDescription": "Wyświetl pomocnicze okno dialogowe dla BED_SCREWS_ADJUST.",
+            "HideSaveConfigButtonForBedMesh": "Ukryj przycisk \"Zapisz konfigurację\" dla zmian w siatce stołu",
+            "ManualProbeDialog": "Okno dialogowe pomocnika ręcznego sondowania",
+            "ManualProbeDialogDescription": "Wyświetl pomocnicze okno dialogowe dla sondowania ręcznego (PROBE_CALIBRATE) lub kalibracji krańcówki Z (Z_ENDSTOP_CALIBRATE).",
+            "PowerDeviceNameDescription": "Wybierz, które urządzenie zasilające Moonraker powinno być używane do włączania drukarki.",
+            "ScrewsTiltAdjustDialog": "Okno dialogowe regulacji nachylenia śrubami",
+            "TempchartHeight": "Wykres temperatury - wysokość",
+            "TempchartHeightDescription": "Modyfikuj wysokość wykresu temperatury w panelu sterowania.",
+            "PowerDeviceName": "Urządzenie zasilające drukarkę"
         },
         "WebcamsTab": {
             "AddWebcam": "Dodaj kamerę",
@@ -946,14 +1039,48 @@
             "Required": "Wymagane",
             "SaveWebcam": "Zapisz kamerę",
             "Service": "Usługi",
-            "TargetFPS": "Docelowo Kl/S",
+            "TargetFPS": "Docelowe kl./s",
             "UpdateWebcam": "Zaktualizuj kamerę",
             "UrlSnapshot": "Migawka URL",
             "UrlStream": "Transmisja po URL",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "pionowo",
-            "Webcams": "Kamery"
-        }
+            "Webcams": "Kamery",
+            "WebrtcJanus": "WebRTC (brama janus)",
+            "EditCrowsnestConf": "Edytuj crowsnest.conf",
+            "Hlsstream": "Strumień HLS",
+            "JMuxerStream": "Nieskompresowany strumień h264 (jmuxer)",
+            "Rotate": "Obróć",
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
+        },
+        "MiscellaneousTab": {
+            "AddGroup": "dodaj grupę",
+            "EndDescription": "Ostatnia dioda LED tej grupy.",
+            "NoPresetFound": "Nie znaleziono nastawy",
+            "AddPreset": "Dodaj nastawę",
+            "Color": "Kolor",
+            "CreateGroup": "Utwórz grupę",
+            "CreatePreset": "Utwórz nastawę",
+            "End": "Koniec",
+            "Groups": "Grupy",
+            "GroupSubTitle": "Początek: {start}, Koniec: {end}",
+            "LightGroups": "{name} - Grupy świateł",
+            "LightPresets": "{name} - Nastawy",
+            "Miscellaneous": "Różne",
+            "Name": "Nazwa",
+            "NoDevicesFound": "Nie znaleziono urządzeń",
+            "NoGroupFound": "Nie znaleziono grupy",
+            "Presets": "Nastawy",
+            "Start": "Początek",
+            "StartDescription": "Pierwsza dioda LED tej grupy.",
+            "UnableToLoadLight": "Nie można wczytać światła",
+            "UnableToLoadPreset": "Nie można wczytać nastawy"
+        },
+        "Update": "aktualizuj",
+        "NavigationTab": {
+            "Navigation": "Nawigacja"
+        },
+        "Store": "zachowaj"
     },
     "Timelapse": {
         "AllFiles": "Wszystkie",
@@ -994,7 +1121,7 @@
         "Search": "Wyszukaj",
         "StartRender": "Zacznij renderowanie",
         "Status": "Status",
-        "TargetFps": "Docelowo klatek na sek.",
+        "TargetFps": "Docelowe kl./s",
         "Targetlength": "Docelowa długość",
         "TimelapseFiles": "Pliki timelapse",
         "TimelapseRendering": "Renderowanie timelapse",
@@ -1003,7 +1130,31 @@
         "Type": "Typ",
         "Used": "Używane",
         "Variable": "Zmienne",
-        "Video": "Filmy"
+        "Video": "Filmy",
+        "DeleteSelectedQuestion": "Czy na pewno chcesz usunąć {count} wybranych plików?"
     },
-    "title": "Polski"
+    "title": "Polski",
+    "BedScrews": {
+        "Abort": "przerwij",
+        "Accept": "Akceptuj",
+        "Description": "Kliknij <b>WYREGULOWANO</b>, jeśli bieżąca śruba została wyregulowana. Kliknij <b>AKCEPTUJ</b>, aby kontynuować bez regulacji.",
+        "Adjusted": "wyregulowano",
+        "Headline": "Śruby łóżka",
+        "ScrewAccepted": "Śruby zaakceptowane",
+        "ScrewIndex": "Indeks śrub",
+        "ScrewName": "Nazwa śruby",
+        "ScrewOutput": "{current} z {max}"
+    },
+    "ManualProbe": {
+        "Accept": "Akceptuj",
+        "Abort": "przerwij",
+        "Advanced": "Zaawansowane",
+        "Headline": "Ręczne sondowanie"
+    },
+    "ScrewsTiltAdjust": {
+        "ErrorText": "Wystąpił problem podczas procesu sondowania.",
+        "Accept": "Akceptuj",
+        "Base": "Podstawa",
+        "Headline": "Regulacja nachylenia śrubami"
+    }
 }
