@@ -719,14 +719,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiDragVertical = mdiDragVertical
 
-    readonly summableColumns = Object.freeze([
-        'filament_total',
-        'filament_weight_total',
-        'estimated_time',
-        'last_total_duration',
-        'last_filament_used',
-    ]);
-
     formatFilesize = formatFilesize
     formatPrintTime = formatPrintTime
     sortFiles = sortFiles
