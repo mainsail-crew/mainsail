@@ -1111,17 +1111,17 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     getColumnSum(columnValue: string) {
-        const col = this.tableColumns.find(c => c.value == columnValue);
+        const col = this.tableColumns.find((c) => c.value == columnValue)
         if (col && col.outputType) {
-            let files = this.files;
+            let files = this.files
             if (this.selectedFiles && this.selectedFiles.length > 0) {
-                files = this.selectedFiles;
+                files = this.selectedFiles
             }
 
             const sum = files.reduce((sum: number, file: FileStateGcodefile) => {
-                return sum + (file[col.value] || 0);
-            }, 0);
-            return this.formatOutputValue(sum, col.outputType);
+                return sum + (file[col.value] || 0)
+            }, 0)
+            return this.formatOutputValue(sum, col.outputType)
         }
     }
 
@@ -1506,7 +1506,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     outputValue(col: any, item: FileStateGcodefile) {
         const value = col.value in item ? item[col.value] : null
-        return this.formatOutputValue(value, col.outputType);
+        return this.formatOutputValue(value, col.outputType)
     }
 
     formatOutputValue(value: any, valueType: string) {
@@ -1603,5 +1603,4 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         display: block;
     }
 }
-
 </style>
