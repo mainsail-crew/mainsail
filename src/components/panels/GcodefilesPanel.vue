@@ -159,7 +159,7 @@
                         <template v-if="getColumnSum('filament_weight_total')">
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
-                                    <span v-bind="attrs" v-on="on" class="filament-weight-sum mr-6">
+                                    <span class="filament-weight-sum mr-6" v-bind="attrs" v-on="on">
                                         <b>{{ $t('Files.FilamentWeight') }}:</b>
                                         {{ getColumnSum('filament_weight_total') }}
                                     </span>
