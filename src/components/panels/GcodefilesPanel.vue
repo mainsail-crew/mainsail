@@ -146,12 +146,31 @@
             </v-card-text>
             <v-card-text>
                 <v-row>
-                    <v-col class="col-12 py-2 d-flex align-center">
+                    <v-col class="panel-info-bar col-12 py-2 d-flex align-center">
                         <span>
                             <b>{{ $t('Files.CurrentPath') }}:</b>
                             {{ currentPath || '/' }}
                         </span>
                         <v-spacer></v-spacer>
+                        <span class="mr-6">
+                            <b>{{ $t('Files.PrintTime') }}:</b>
+                            {{ getColumnSum('estimated_time') }}
+                        </span>
+                        <template v-if="getColumnSum('filament_weight_total')">
+                            <v-tooltip top>
+                                <template #activator="{ on, attrs }">
+                                    <span v-bind="attrs" v-on="on" class="filament-weight-sum mr-6">
+                                        <b>{{ $t('Files.FilamentWeight') }}:</b>
+                                        {{ getColumnSum('filament_weight_total') }}
+                                    </span>
+                                </template>
+                                <span>
+                                    {{ $t('Files.FilamentWeight') }}: {{ getColumnSum('filament_weight_total') }}
+                                    <br />
+                                    {{ $t('Files.FilamentUsage') }}: {{ getColumnSum('filament_total') }}
+                                </span>
+                            </v-tooltip>
+                        </template>
                         <template v-if="disk_usage !== null">
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
@@ -700,6 +719,14 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiDragVertical = mdiDragVertical
 
+    readonly summableColumns = Object.freeze([
+        'filament_total',
+        'filament_weight_total',
+        'estimated_time',
+        'last_total_duration',
+        'last_filament_used',
+    ]);
+
     formatFilesize = formatFilesize
     formatPrintTime = formatPrintTime
     sortFiles = sortFiles
@@ -1091,6 +1118,21 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         return this.$store.getters['server/history/getPrintStatusIconColor'](status)
     }
 
+    getColumnSum(columnValue: string) {
+        const col = this.tableColumns.find(c => c.value == columnValue);
+        if (col && col.outputType) {
+            let files = this.files;
+            if (this.selectedFiles && this.selectedFiles.length > 0) {
+                files = this.selectedFiles;
+            }
+
+            const sum = files.reduce((sum: number, file: FileStateGcodefile) => {
+                return sum + (file[col.value] || 0);
+            }, 0);
+            return this.formatOutputValue(sum, col.outputType);
+        }
+    }
+
     dragOverFilelist(e: any, row: any) {
         e.preventDefault()
 
@@ -1472,9 +1514,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     outputValue(col: any, item: FileStateGcodefile) {
         const value = col.value in item ? item[col.value] : null
+        return this.formatOutputValue(value, col.outputType);
+    }
 
+    formatOutputValue(value: any, valueType: string) {
         if (value !== null) {
-            switch (col.outputType) {
+            switch (valueType) {
                 case 'filesize':
                     return formatFilesize(value)
 
@@ -1552,4 +1597,19 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 .handle {
     cursor: move;
 }
+
+/*noinspection CssUnusedSymbol*/
+@media (max-width: 768px) {
+    .filament-weight-sum {
+        display: none;
+    }
+}
+
+/*noinspection CssUnusedSymbol*/
+@media (max-width: 375px) {
+    .panel-info-bar b {
+        display: block;
+    }
+}
+
 </style>
