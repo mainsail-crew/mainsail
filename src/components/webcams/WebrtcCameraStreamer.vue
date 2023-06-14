@@ -64,13 +64,13 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
 
     startStream() {
         const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1
-        const requestIceServers = this.useStun ? [ { urls: ['stun:stun.l.google.com:19302'] } ] : null;
+        const requestIceServers = this.useStun ? [{ urls: ['stun:stun.l.google.com:19302'] }] : null
 
         // This WebRTC signaling pattern is designed for camera-streamer, a common webcam server the supports WebRTC.
         fetch(this.url, {
             body: JSON.stringify({
                 type: 'request',
-                iceServers: requestIceServers
+                iceServers: requestIceServers,
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
                 }
                 // It's important to set any ICE servers returned, which could include servers we requested or servers
                 // setup by the server. But note that older versions of camera-streamer won't return this property.
-                if(answer.iceServers) {
+                if (answer.iceServers) {
                     peerConnectionConfig.iceServers = answer.iceServers
                 }
                 this.pc = new RTCPeerConnection(peerConnectionConfig)
@@ -108,24 +108,23 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
                         }, 500)
                     }
                 })
-                this.pc.addEventListener("icecandidate", (e) => {
+                this.pc.addEventListener('icecandidate', (e) => {
                     if (e.candidate) {
                         return fetch(this.url, {
                             body: JSON.stringify({
                                 type: 'remote_candidate',
                                 id: this.remote_pc_id,
-                                candidates: [e.candidate]
+                                candidates: [e.candidate],
                             }),
                             headers: {
-                                'Content-Type': 'application/json'
+                                'Content-Type': 'application/json',
                             },
                             method: 'POST',
+                        }).catch(function (error) {
+                            window.console.error(error)
                         })
-                        .catch(function(error) {
-                            window.console.error(error);
-                        });
                     }
-                });
+                })
 
                 this.remote_pc_id = answer.id
                 return this.pc?.setRemoteDescription(answer)
