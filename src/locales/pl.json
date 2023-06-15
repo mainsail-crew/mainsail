@@ -265,7 +265,6 @@
             "Min": "Minimalna",
             "Name": "Nazwa",
             "Size": "Rozmiar",
-            "Variance": "Różnica",
             "Range": "Rozpiętość"
         },
         "DeleteBedMeshProfile": "Usuń siatkę stołu",
@@ -517,7 +516,6 @@
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Ponowne uruchomienie oprogramowania",
-            "KlipperCheck": "Sprawdź , czy Klipper jest uruchomiony oraz czy UDS (Unix Domain Socket) został skonfigurowany poprawnie.",
             "MoonrakerCannotConnect": "Moonraker nie może połączyć się z Klipperem!",
             "Restart": "Ponowne uruchomienie",
             "CheckKlippyAndUdsAddress": "Sprawdź, czy usługa Klipper jest uruchomiona i czy \"klippy_uds_address\" jest poprawnie skonfigurowany w pliku moonraker.conf.",
@@ -1000,7 +998,6 @@
             "NavigationStyleIconsAndText": "Ikony + Tekst",
             "NavigationStyleIconsOnly": "Tylko ikony",
             "Primary": "Podstawowe",
-            "ShowWebcamInNavigation": "Pokazuj kamerki internetowe",
             "UiSettings": "Ustawienia interfejsu",
             "DisableFanAnimation": "Wyłącz animację wentylatora",
             "DisableFanAnimationDescription": "To może zmniejszyć obciążenie przeglądarki.",
