@@ -190,7 +190,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         const data = 'status' in payload ? { ...payload.status } : { ...payload }
         commit('setData', data)
 
-        if ('print_stats' in data && 'filename' in data.print_stats) {
+        if ((data.print_stats?.filename ?? '') !== '') {
             dispatch('sendObj', {
                 method: 'server.files.metadata',
                 params: { filename: data.print_stats?.filename },
