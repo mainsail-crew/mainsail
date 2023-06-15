@@ -1054,7 +1054,6 @@
             "Primary": "Основной цвет",
             "ScrewsTiltAdjustDialog": "Диалог регулировки винтов наклона стола",
             "ScrewsTiltAdjustDialogDescription": "Показывать диалог помощника для SCREWS_TILT_CALCULATE.",
-            "ShowWebcamInNavigation": "Показывать видеокамеры в навигации",
             "TempchartHeight": "Высота графика температуры",
             "TempchartHeightDescription": "Изменение высоты графика температуры на странице управления.",
             "UiSettings": "Внешний вид"
