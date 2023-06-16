@@ -671,12 +671,12 @@
             "FPS": "帧率",
             "Headline": "摄像头",
             "NoWebcam": "没有可用的摄像头。在\"Mainsail设置\" -> \"摄像头\"添加新的摄像头。",
-            "UnknownWebcamService": "未知摄像头服务"
+            "UnknownWebcamService": "未知的摄像头服务"
         },
         "ZoffsetPanel": {
             "Clear": "清除",
             "Headline": "Z轴偏移",
-            "Later": "最后的",
+            "Later": "稍候再说",
             "Ok": "好的",
             "Save": "保存",
             "SaveConfig": "保存配置",
@@ -710,7 +710,7 @@
         "AddPrinter": "添加打印机",
         "AddPrintersToJson": "请将打印机添加到 config.json 。",
         "CannotConnectTo": "无法连接到{host} 。",
-        "ChangePrinter": "更换打印机",
+        "ChangePrinter": "切换打印机",
         "Connecting": "正在连接到{host}",
         "ConnectionFailed": "连接失败",
         "EditPrinter": "编辑打印机",
@@ -783,7 +783,7 @@
             "Desktop": "桌面设备",
             "Mobile": "移动设备",
             "ResetLayout": "恢复默认设置",
-            "Tablet": "掌上设备",
+            "Tablet": "平板设备",
             "Widescreen": "宽屏设备"
         },
         "Edit": "编辑",
