@@ -24,36 +24,34 @@
             // need to be pulled from the server. If the server is offline or we can't connect, the JS file load fails,
             // the website just shows a black, blank, screen. The small script below binds to all of the script tags and if
             // any fail to load, add some text to the main body to indicate something is wrong.
-            var hasShownLoadFailedError = false;
-            var hasMainScriptLoaded = false;
-            function OnScriptLoadFailed()
-            {
-                if(hasShownLoadFailedError) {
-                    return;
+            var hasShownLoadFailedError = false
+            var hasMainScriptLoaded = false
+            function OnScriptLoadFailed() {
+                if (hasShownLoadFailedError) {
+                    return
                 }
-                if(hasMainScriptLoaded) {
-                    return;
+                if (hasMainScriptLoaded) {
+                    return
                 }
-                hasShownLoadFailedError = true;
-                var div = document.createElement('div');
-                div.style.cssText = 'color:white; height:100%; width:100%; font-size:20px; text-align:center; padding:20px; padding-top: 100px; font-family:Roboto, sans-serif';
-                div.innerHTML = '<span>Mainsail unable to connect.<br/>Is your Klipper device online?</span>';
-                document.body.appendChild(div);
+                hasShownLoadFailedError = true
+                var div = document.createElement('div')
+                div.style.cssText =
+                    'color:white; height:100%; width:100%; font-size:20px; text-align:center; padding:20px; padding-top: 100px; font-family:Roboto, sans-serif'
+                div.innerHTML = '<span>Mainsail unable to connect.<br/>Is your Klipper device online?</span>'
+                document.body.appendChild(div)
             }
-            var scripts = document.getElementsByTagName("script");
-            for (var i = 0; i < scripts.length; i++)
-            {
-                var scriptTag = scripts[i];
+            var scripts = document.getElementsByTagName('script')
+            for (var i = 0; i < scripts.length; i++) {
+                var scriptTag = scripts[i]
                 // Only target script tags with a src.
-                if(scriptTag.src != undefined && scriptTag.src != null)
-                {
-                    scriptTag.addEventListener('error', function() {
-                        OnScriptLoadFailed();
-                    });
-                    scriptTag.addEventListener('load', function() {
+                if (scriptTag.src != undefined && scriptTag.src != null) {
+                    scriptTag.addEventListener('error', function () {
+                        OnScriptLoadFailed()
+                    })
+                    scriptTag.addEventListener('load', function () {
                         // Once the main script loads, don't do anything for any future failures.
-                        hasMainScriptLoaded = true;
-                    });
+                        hasMainScriptLoaded = true
+                    })
                 }
             }
         </script>
