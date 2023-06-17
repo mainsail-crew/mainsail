@@ -179,6 +179,8 @@
         "DeleteDirectoryQuestion": "你确定要删除\"{name}\"和里面的所有内容吗？",
         "DeleteSelectedQuestion": "你确定要删除选中的{count}个文件？",
         "Download": "下载",
+        "Duplicate": "复制",
+        "DuplicateFile": "复制文件",
         "EditFile": "编辑文件",
         "Empty": "没有文件",
         "ExtruderTemp": "挤出机温度",
@@ -215,6 +217,8 @@
         "Rename": "重命名",
         "RenameDirectory": "重命名文件夹",
         "RenameFile": "重命名文件",
+        "ScanMeta": "扫描元数据",
+        "ScanMetaSuccess": "已成功扫描来自：{filename} 的元数据。",
         "Search": "搜索",
         "SetupCurrentList": "设置当前列表",
         "Slicer": "切片软件",
@@ -279,6 +283,7 @@
         "Flat": "平面",
         "Heightmap": "高度图",
         "InvalidNameAlreadyExists": "预设名称已经存在，请换一个名称。",
+        "InvalidNameAscii": "错误的名称，请删除所有非ascii字符后重试。",
         "InvalidNameEmpty": "输入值不能为空！",
         "InvalidNameReserved": "预设 'default' 已保留，请选择其他预设名称。",
         "Later": "以后",
@@ -398,6 +403,8 @@
             "DeleteDirectoryQuestion": "你确定删除\"{name}\"文件夹和里面的所有内容吗？",
             "DeleteSelectedQuestion": "删除已选中的{count}个项目？",
             "Download": "下载",
+            "Duplicate": "复制",
+            "DuplicateFile": "复制文件",
             "EditFile": "编辑文件",
             "Empty": "没有文件",
             "Files": "每页显示文件数",
@@ -796,7 +803,10 @@
             "MoonrakerRestartInstance": "重启Moonraker实例",
             "MoonrakerRestartInstanceDescription": "编辑完Moonraker配置文件并按下\"保存并重启\"按钮后，重启哪个Moonraker服务。",
             "UseEscToClose": "使用ESC关闭编辑器",
-            "UseEscToCloseDescription": "允许使用ESC键关闭编辑器"
+            "UseEscToCloseDescription": "允许使用ESC键关闭编辑器",
+            "TabSize": "TAB长度",
+            "TabSizeDescription": "按下TAB键时，填充空格的数量",
+            "Spaces": "{count}个空格"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "背景颜色",
@@ -909,6 +919,9 @@
             "UnableToLoadLight": "无法加载灯",
             "UnableToLoadPreset": "无法加载预设"
         },
+        "NavigationTab": {
+            "Navigation": "导航"
+        },
         "PresetsTab": {
             "AddPreset": "添加预设",
             "Cooldown": "冷却",
@@ -1005,6 +1018,8 @@
             "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
+            "BedScrewsDialog": "底板螺丝对话框",
+            "BedScrewsDialogDescription": "显示 BED_SCREWS_ADJUST 的辅助程序对话框。",
             "BoolBigThumbnail": "大缩略图",
             "BoolBigThumbnailDescription": "打印时在状态框中显示大缩略图",
             "BoolHideUploadAndPrintButton": "隐藏\"上传并打印\"按钮",
@@ -1013,6 +1028,8 @@
             "ConfirmOnEmergencyStopDescription": "在按下\"紧急停止\"时显示确认对话框",
             "ConfirmOnPowerDeviceChange": "控制设备电源时需要确认",
             "ConfirmOnPowerDeviceChangeDescription": "控制设备电源时显示确认对话框",
+            "DisableFanAnimation": "关闭风扇动画",
+            "DisableFanAnimationDescription": "这会一定程度减少浏览器的资源消耗",
             "DisplayCANCEL_PRINT": "显示\"取消打印\"按钮",
             "DisplayCANCEL_PRINTDescription": "始终显示\"取消打印\"按钮",
             "GcodeThumbnails": "G-Code缩略图",
@@ -1025,6 +1042,8 @@
             "LockSlidersDelayDescription": "滑动条将在给定延迟时间后锁定。如果设置为0或留空，滑动条将仅在页面更改/重新加载后锁定",
             "LockSlidersDescription": "在允许更改之前需要解锁触摸屏上的滑动条",
             "Logo": "Logo颜色",
+            "ManualProbeDialog": "Manual Probe Helper Dialog",
+            "ManualProbeDialogDescription": "Display helper dialog for PROBE_CALIBRATE or Z_ENDSTOP_CALIBRATE.",
             "NavigationStyle": "导航栏样式",
             "NavigationStyleDescription": "更改导航栏外观",
             "NavigationStyleIconsAndText": "图标+文字",
@@ -1032,7 +1051,11 @@
             "PowerDeviceName": "打印机电源设备",
             "PowerDeviceNameDescription": "请选择可以控制打印机供电的Moonraker电源设备。",
             "Primary": "高亮颜色",
+            "ScrewsTiltAdjustDialog": "螺丝倾斜调整对话框",
+            "ScrewsTiltAdjustDialogDescription": "显示 SCREWS_TILT_CALCULATE 的辅助程序对话框。",
             "ShowWebcamInNavigation": "在导航栏中显示摄像头",
+            "TempchartHeight": "温度图表高度",
+            "TempchartHeightDescription": "修改Dashboard上温度图表的高度。",
             "UiSettings": "UI设置"
         },
         "Update": "更新",
@@ -1053,8 +1076,10 @@
             "IconPrinter": "打印机",
             "Ipstream": "IP摄像头",
             "Hlsstream": "HLS视频流",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
             "Mjpegstreamer": "MJPEG视频流",
             "MjpegstreamerAdaptive": "自适应MJPEG视频流(试验性)",
+            "JMuxerStream": "裸h264视频流 (jmuxer)",
             "Name": "名称",
             "NameAlreadyExists": "名称已经存在",
             "Required": "需要填写名称",
@@ -1067,7 +1092,8 @@
             "UrlStream": "视频流地址(URL)",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "垂直",
-            "Webcams": "摄像头"
+            "Webcams": "摄像头",
+            "WebrtcCameraStreamer": "WebRTC (摄像头视频流)"
         }
     },
     "ScrewsTiltAdjust": {
