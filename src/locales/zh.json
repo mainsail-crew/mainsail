@@ -52,6 +52,7 @@
             "Complete": "已完成 - {filename}",
             "Error": "错误",
             "Pause": "暂停打印",
+            "PrinterOff": "关闭打印机",
             "Printing": "已打印 {percent}% - {filename}",
             "PrintingETA": "已打印 {percent}% - 预估: {eta} - {filename}"
         },
@@ -1042,8 +1043,8 @@
             "LockSlidersDelayDescription": "滑动条将在给定延迟时间后锁定。如果设置为0或留空，滑动条将仅在页面更改/重新加载后锁定",
             "LockSlidersDescription": "在允许更改之前需要解锁触摸屏上的滑动条",
             "Logo": "Logo颜色",
-            "ManualProbeDialog": "Manual Probe Helper Dialog",
-            "ManualProbeDialogDescription": "Display helper dialog for PROBE_CALIBRATE or Z_ENDSTOP_CALIBRATE.",
+            "ManualProbeDialog": "手动探针助手对话框",
+            "ManualProbeDialogDescription": "显示 PROBE_CALIBRATE 或 Z_ENDSTOP_CALIBRATE 的辅助程序对话框。",
             "NavigationStyle": "导航栏样式",
             "NavigationStyleDescription": "更改导航栏外观",
             "NavigationStyleIconsAndText": "图标+文字",
