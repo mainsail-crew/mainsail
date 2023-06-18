@@ -1040,7 +1040,6 @@
             "PowerDeviceName": "Stromversorgung für Drucker",
             "PowerDeviceNameDescription": "Wähle aus, welches Moonraker Power-Device zum Einschalten des Druckers verwendet werden soll.",
             "Primary": "Primärfarbe",
-            "ShowWebcamInNavigation": "Zeige Webcam in der Navigation",
             "TempchartHeight": "Temperatur-Chart Höhe",
             "TempchartHeightDescription": "Verändert die Höhe vom Temperatur-Chart auf dem Dashboard.",
             "UiSettings": "UI-Einstellungen"
