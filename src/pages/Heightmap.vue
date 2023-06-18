@@ -701,18 +701,28 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleGradient', value: newVal })
     }
 
-    get scaleX(): number {
-        const rangeX = this.rangeX[1] - this.rangeX[0]
-        const rangeY = this.rangeY[1] - this.rangeY[0]
+    get absRangeX(): number {
+        return this.rangeX[1] - this.rangeX[0]
+    }
 
-        return rangeX / Math.min(rangeX, rangeY)
+    get absRangeY(): number {
+        return this.rangeY[1] - this.rangeY[0]
+    }
+
+    get minRangeXY(): number {
+        return Math.min(this.absRangeX, this.absRangeY)
+    }
+
+    get scaleX(): number {
+        if (this.minRangeXY === 0) return 1
+
+        return this.absRangeX / this.minRangeXY
     }
 
     get scaleY(): number {
-        const rangeX = this.rangeX[1] - this.rangeX[0]
-        const rangeY = this.rangeY[1] - this.rangeY[0]
+        if (this.minRangeXY === 0) return 1
 
-        return rangeY / Math.min(rangeX, rangeY)
+        return this.absRangeY / this.minRangeXY
     }
 
     get scaleZMax(): number {
