@@ -175,35 +175,7 @@
                             </v-row>
                         </v-col>
                         <v-col class="col-12 col-sm-6 text-center" align-self="center">
-                            <template v-if="form.service === 'mjpegstreamer'">
-                                <webcam-mjpegstreamer :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'mjpegstreamer-adaptive'">
-                                <webcam-mjpegstreamer-adaptive :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'uv4l-mjpeg'">
-                                <webcam-uv4l-mjpeg :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'ipstream'">
-                                <webcam-ipstreamer :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'hlsstream'">
-                                <webcam-hlsstreamer :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'jmuxer-stream'">
-                                <webcam-jmuxer-stream :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'webrtc-camerastreamer'">
-                                <webcam-webrtc-camerastreamer :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'webrtc-janus'">
-                                <webcam-webrtc-janus :cam-settings="form" />
-                            </template>
-                            <template v-else>
-                                <p class="text-center py-3 font-italic">
-                                    {{ $t('Panels.WebcamPanel.UnknownWebcamService') }}
-                                </p>
-                            </template>
+                            <webcam-wrapper :webcam="form" />
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -229,17 +201,9 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
-import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
-import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
-import WebrtcCameraStreamer from '@/components/webcams/WebrtcCameraStreamer.vue'
-import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
-import JMuxerStream from '@/components/webcams/JMuxerStream.vue'
 import { mdiMenuDown, mdiDelete, mdiPencil, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
 import { FileStateFile } from '@/store/files/types'
-import Hlsstreamer from '../webcams/Hlsstreamer.vue'
-import JanusStreamer from '@/components/webcams/JanusStreamer.vue'
 
 interface webcamForm {
     bool: boolean
@@ -259,14 +223,6 @@ interface webcamForm {
 @Component({
     components: {
         SettingsRow,
-        'webcam-mjpegstreamer': Mjpegstreamer,
-        'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
-        'webcam-uv4l-mjpeg': Uv4lMjpeg,
-        'webcam-ipstreamer': Ipstreamer,
-        'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
-        'webcam-hlsstreamer': Hlsstreamer,
-        'webcam-jmuxer-stream': JMuxerStream,
-        'webcam-webrtc-janus': JanusStreamer,
     },
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
