@@ -120,7 +120,6 @@ import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
 import WebcamWrapper from '@/components/webcams/WebcamWrapper.vue'
 
