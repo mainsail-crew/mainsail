@@ -18,8 +18,8 @@ import { gcode } from '@/plugins/StreamParserGcode'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
-import { klipperConfig } from '../../plugins/CodemirrorLanguages/KlipperConfigLanguage/lang/klipperConfig'
-import { klipperConfigLint } from '../../plugins/CodemirrorLanguages/KlipperConfigLanguage/lang/lint'
+import { klipperCfg } from '../../plugins/Codemirror/KlipperCfgLang/lang/klipperCfg'
+import { parseErrorLint } from '../../plugins/Codemirror/parseErrorLint'
 import { indentUnit } from '@codemirror/language'
 
 @Component
@@ -87,7 +87,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
             basicSetup,
             vscodeDark,
             indentUnit.of(' '.repeat(this.tabSize)),
-            klipperConfigLint,
+            parseErrorLint,
             keymap.of([indentWithTab]),
             EditorView.updateListener.of((update) => {
                 this.content = update.state?.doc.toString()
@@ -97,7 +97,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
             }),
         ]
 
-        if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(klipperConfig())
+        if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(klipperCfg())
         else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
         else if (['css', 'scss', 'sass'].includes(this.fileExtension)) extensions.push(css())

@@ -61,3 +61,6 @@ FilePath {  Path "." string}
 @external propSource klipperConfigHighlighting from "./highlight"
 
 @detectDelim
+
+// to generate the parser run:
+// npx @lezer/generator klipperCfg.grammar -o klipperCfgParser.js

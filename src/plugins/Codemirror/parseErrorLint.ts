@@ -1,7 +1,7 @@
 import { syntaxTree } from '@codemirror/language'
 import { linter, Diagnostic } from '@codemirror/lint'
 
-export const klipperConfigLint = linter((view) => {
+export const parseErrorLint = linter((view) => {
     const diagnostics: Diagnostic[] = []
     syntaxTree(view.state)
         .cursor()

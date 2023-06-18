@@ -1,7 +1,7 @@
 /* ref: https://github.com/lezer-parser/python/blob/main/src/tokens.js */
 import { ExternalTokenizer, ContextTracker } from '@lezer/lr'
 
-import { newline as newlineToken, eof, blankLine, indent, dedent } from '../parser/klipperConfigParser.terms.js'
+import { newline as newlineToken, eof, blankLine, indent, dedent } from '../parser/klipperCfgParser.terms.js'
 
 const newline = 10,
     carriageReturn = 13,
@@ -44,7 +44,7 @@ export const indentation = new ExternalTokenizer((input, stack) => {
             input.advance()
             chars++
         }
-        if (depth != cDepth && input.next != newline && input.next != carriageReturn) {
+        if (depth != cDepth && !isLineBreak(input.next)) {
             if (depth < cDepth) input.acceptToken(dedent, -chars)
             else input.acceptToken(indent)
         }

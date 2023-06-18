@@ -1,11 +1,11 @@
-import { parser } from '../parser/klipperConfigParser.js'
+import { parser } from '../parser/klipperCfgParser.js'
 import { LRLanguage, LanguageSupport, StreamLanguage, foldNodeProp } from '@codemirror/language'
 import { parseMixed } from '@lezer/common'
-import { klipper_config } from '../../../StreamParserKlipperConfig'
+import { klipper_config } from '../../../StreamParserKlipperConfig.js'
 
 const jinja2Parser = StreamLanguage.define(klipper_config).parser
 
-export const klipperConfigLang = LRLanguage.define({
+export const klipperCfgLang = LRLanguage.define({
     parser: parser.configure({
         props: [
             foldNodeProp.add({
@@ -31,11 +31,11 @@ export const klipperConfigLang = LRLanguage.define({
     },
 })
 
-export function klipperConfig() {
-    return new LanguageSupport(klipperConfigLang)
+export function klipperCfg() {
+    return new LanguageSupport(klipperCfgLang)
 }
 
 /* 
 to generate the parser run:
-npx @lezer/generator klipperConfig.grammar -o klipperConfigParser.js
+npx @lezer/generator klipperCfg.grammar -o klipperCfgParser.js
  */
