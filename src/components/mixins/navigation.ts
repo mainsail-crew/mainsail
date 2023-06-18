@@ -34,6 +34,7 @@ export default class NavigationMixin extends Mixins(BaseMixin) {
                 icon: mdiViewDashboardOutline,
                 to: '/allPrinters',
                 position: 0,
+                visible: true,
             } as NaviPoint)
         }
 
