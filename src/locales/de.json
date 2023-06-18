@@ -180,6 +180,8 @@
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",
         "Download": "Herunterladen",
+        "Duplicate": "duplizieren",
+        "DuplicateFile": "Datei duplizieren",
         "EditFile": "Datei bearbeiten",
         "Empty": "Leer",
         "ExtruderTemp": "Extruder Temp.",
@@ -282,6 +284,7 @@
         "Flat": "Flach",
         "Heightmap": "Heightmap",
         "InvalidNameAlreadyExists": "Das Profil existiert bereits, bitte wähle einen anderen Profilnamen.",
+        "InvalidNameAscii": "Name ist ungültig. Nur ASCII Zeichen sind erlaubt.",
         "InvalidNameEmpty": "Feld darf nicht leer sein!",
         "InvalidNameReserved": "Das Profil 'default' ist reserviert, bitte wähle einen anderen Profilnamen.",
         "Later": "später",
@@ -401,6 +404,8 @@
             "DeleteDirectoryQuestion": "Verzeichnis \"{name}\" und den gesamten Inhalt löschen?",
             "DeleteSelectedQuestion": "{count} ausgewählte Elemente löschen?",
             "Download": "Herunterladen",
+            "Duplicate": "duplizieren",
+            "DuplicateFile": "Datei duplizieren",
             "EditFile": "Bearbeite Datei",
             "Empty": "Leer",
             "Files": "Dateien",
@@ -915,6 +920,9 @@
             "UnableToLoadLight": "Licht konnte nicht geladen werden",
             "UnableToLoadPreset": "Voreinstellung konnte nicht geladen werden"
         },
+        "NavigationTab": {
+            "Navigation": "Navigation"
+        },
         "PresetsTab": {
             "AddPreset": "Preset hinzufügen",
             "Cooldown": "Abkühlen",
@@ -1011,6 +1019,8 @@
             "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
+            "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
+            "BedScrewsDialogDescription": "Zeige ein Hilfsfenster für die Bettschraubenjustierung an.",
             "BoolBigThumbnail": "Große Vorschaubilder",
             "BoolBigThumbnailDescription": "Zeige ein großes Thumbnail in der Status-Anzeige während eines Drucks.",
             "BoolHideUploadAndPrintButton": "\"Hochladen & Drucken\" Schaltfläche ausblenden",
@@ -1033,6 +1043,8 @@
             "LockSlidersDelayDescription": "Schieberegler werden nach einer bestimmten Verzögerung gesperrt. Wenn 0 oder leer, dann sperren Schieberegler nur nach wechseln/neuladen der Seite.",
             "LockSlidersDescription": "Schieberegler müssen zuerst entsperrt werden bevor Änderungen erlaubt werden.",
             "Logo": "Logo",
+            "ManualProbeDialog": "Hilfsfenster für manuelle Messung",
+            "ManualProbeDialogDescription": "Zeige ein Hilfsfenster für PROBE_CALIBRATE oder Z_ENDSTOP_CALIBRATE an.",
             "NavigationStyle": "Stil der Navigation",
             "NavigationStyleDescription": "Erscheinungsbild der Navigation ändern",
             "NavigationStyleIconsAndText": "Icons + Text",
@@ -1040,7 +1052,8 @@
             "PowerDeviceName": "Stromversorgung für Drucker",
             "PowerDeviceNameDescription": "Wähle aus, welches Moonraker Power-Device zum Einschalten des Druckers verwendet werden soll.",
             "Primary": "Primärfarbe",
-            "ShowWebcamInNavigation": "Zeige Webcam in der Navigation",
+            "ScrewsTiltAdjustDialog": "Hilfsfenster für Schrauben Neigunganpassung",
+            "ScrewsTiltAdjustDialogDescription": "Zeige ein Hilfsfenster für SCREWS_TILT_CALCULATE an.",
             "TempchartHeight": "Temperatur-Chart Höhe",
             "TempchartHeightDescription": "Verändert die Höhe vom Temperatur-Chart auf dem Dashboard.",
             "UiSettings": "UI-Einstellungen"
@@ -1080,6 +1093,7 @@
             "Vertically": "vertikal",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
     },
