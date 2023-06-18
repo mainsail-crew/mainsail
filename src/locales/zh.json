@@ -1054,7 +1054,6 @@
             "Primary": "高亮颜色",
             "ScrewsTiltAdjustDialog": "螺丝倾斜调整对话框",
             "ScrewsTiltAdjustDialogDescription": "显示 SCREWS_TILT_CALCULATE 的辅助程序对话框。",
-            "ShowWebcamInNavigation": "在导航栏中显示摄像头",
             "TempchartHeight": "温度图表高度",
             "TempchartHeightDescription": "修改Dashboard上温度图表的高度。",
             "UiSettings": "UI设置"
