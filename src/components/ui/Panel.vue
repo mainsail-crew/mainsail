@@ -73,12 +73,11 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { panelToolbarHeight } from '@/store/variables'
-import { mdiChevronDown, mdiChevronUp } from '@mdi/js'
+import { mdiChevronDown } from '@mdi/js'
 import { TranslateResult } from 'vue-i18n'
 
 @Component
 export default class Panel extends Mixins(BaseMixin) {
-    mdiChevronUp = mdiChevronUp
     mdiChevronDown = mdiChevronDown
     panelToolbarHeight = panelToolbarHeight
 
