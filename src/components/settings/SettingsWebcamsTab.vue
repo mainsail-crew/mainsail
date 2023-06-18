@@ -4,7 +4,7 @@
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.WebcamsTab.Webcams') }}</h3>
                 <div v-for="webcam in webcams" :key="webcam.id">
-                    <v-divider class="my-2"></v-divider>
+                    <v-divider class="my-2" />
                     <settings-row
                         :title="webcam.name"
                         :icon="convertWebcamIcon(webcam.icon)"
@@ -18,7 +18,7 @@
                             outlined
                             class="ml-3 minwidth-0 px-2"
                             color="error"
-                            @click="deleteWebcam(webcam.id)">
+                            @click="deleteWebcam(webcam.id ?? '')">
                             <v-icon small>{{ mdiDelete }}</v-icon>
                         </v-btn>
                     </settings-row>
@@ -28,7 +28,7 @@
                 <v-btn v-if="existCrowsnestConf" text color="primary" @click="openCrowsnestConf">
                     {{ $t('Settings.WebcamsTab.EditCrowsnestConf') }}
                 </v-btn>
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn text color="primary" @click="createWebcam">{{ $t('Settings.WebcamsTab.AddWebcam') }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -77,7 +77,7 @@
                                                         </v-icon>
                                                     </v-list-item-icon>
                                                     <v-list-item-content>
-                                                        <v-list-item-title v-text="icon.text"></v-list-item-title>
+                                                        <v-list-item-title v-text="icon.text" />
                                                     </v-list-item-content>
                                                 </v-list-item>
                                             </v-list>
@@ -90,7 +90,7 @@
                                         outlined
                                         :rules="[rules.required, rules.unique]"
                                         class="_webcam-settings-name-field"
-                                        dense></v-text-field>
+                                        dense />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -103,7 +103,7 @@
                                         dense
                                         :rules="
                                             form.service !== 'mjpegstreamer-adaptive' ? [rules.required] : []
-                                        "></v-text-field>
+                                        " />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -116,7 +116,7 @@
                                         dense
                                         :rules="
                                             form.service === 'mjpegstreamer-adaptive' ? [rules.required] : []
-                                        "></v-text-field>
+                                        " />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -128,7 +128,7 @@
                                         outlined
                                         dense
                                         :label="$t('Settings.WebcamsTab.Service')"
-                                        attach></v-select>
+                                        attach />
                                 </v-col>
                             </v-row>
                             <v-row v-if="form.service === 'mjpegstreamer-adaptive' || form.service === 'jmuxer-stream'">
@@ -138,7 +138,7 @@
                                         outlined
                                         dense
                                         hide-details
-                                        :label="$t('Settings.WebcamsTab.TargetFPS')"></v-text-field>
+                                        :label="$t('Settings.WebcamsTab.TargetFPS')" />
                                 </v-col>
                                 <v-col class="py-2 col-6">
                                     <v-select
@@ -147,7 +147,7 @@
                                         outlined
                                         dense
                                         hide-details
-                                        :label="$t('Settings.WebcamsTab.Rotate')"></v-select>
+                                        :label="$t('Settings.WebcamsTab.Rotate')" />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -163,14 +163,14 @@
                                         v-model="form.flipX"
                                         class="mt-1"
                                         hide-details
-                                        :label="$t('Settings.WebcamsTab.Horizontally')"></v-checkbox>
+                                        :label="$t('Settings.WebcamsTab.Horizontally')" />
                                 </v-col>
                                 <v-col class="py-0">
                                     <v-checkbox
                                         v-model="form.flipY"
                                         class="mt-1"
                                         hide-details
-                                        :label="$t('Settings.WebcamsTab.Vertically')"></v-checkbox>
+                                        :label="$t('Settings.WebcamsTab.Vertically')" />
                                 </v-col>
                             </v-row>
                         </v-col>
