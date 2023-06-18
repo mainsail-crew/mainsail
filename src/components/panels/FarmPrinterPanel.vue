@@ -26,7 +26,7 @@
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item
-                        v-for="webcam of supportedPrinterWebcams"
+                        v-for="webcam of printer_webcams"
                         :key="webcam.index"
                         link
                         @click="currentCamId = webcam.id">
@@ -200,17 +200,11 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get showWebcamSwitch() {
-        return this.printer.socket.isConnected && this.supportedPrinterWebcams.length > 0
+        return this.printer.socket.isConnected && this.printer_webcams.length > 0
     }
 
     get printer_webcams() {
         return this.$store.getters['farm/' + this.printer._namespace + '/getPrinterWebcams']
-    }
-
-    get supportedPrinterWebcams() {
-        return this.printer_webcams.filter((webcam: GuiWebcamStateWebcam) =>
-            ['mjpegstreamer', 'mjpegstreamer-adaptive', 'uv4l-mjpeg'].includes(webcam.service)
-        )
     }
 
     get currentWebcam() {
