@@ -26,7 +26,7 @@
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item
-                        v-for="webcam of supportedPrinterWebcams"
+                        v-for="webcam of printer_webcams"
                         :key="webcam.index"
                         link
                         @click="currentCamId = webcam.id">
@@ -34,7 +34,7 @@
                             <v-icon small class="mt-1">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title v-text="webcam.name"></v-list-item-title>
+                            <v-list-item-title v-text="webcam.name" />
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
@@ -52,21 +52,7 @@
                                 'service' in currentWebcam
                             "
                             class="webcamContainer">
-                            <webcam-mjpegstreamer
-                                v-if="currentWebcam.service === 'mjpegstreamer'"
-                                :cam-settings="currentWebcam"
-                                :printer-url="printerUrl"
-                                :show-fps="false"></webcam-mjpegstreamer>
-                            <webcam-mjpegstreamer-adaptive
-                                v-else-if="currentWebcam.service === 'mjpegstreamer-adaptive'"
-                                :cam-settings="currentWebcam"
-                                :printer-url="printerUrl"
-                                :show-fps="false"></webcam-mjpegstreamer-adaptive>
-                            <webcam-uv4l-mjpeg
-                                v-else-if="currentWebcam.service === 'uv4l-mjpeg'"
-                                :cam-settings="currentWebcam"
-                                :printer-url="printerUrl"
-                                :show-fps="false"></webcam-uv4l-mjpeg>
+                            <webcam-wrapper :webcam="currentWebcam" :show-fps="false" />
                         </div>
                         <v-card-title
                             class="white--text py-2"
@@ -130,22 +116,18 @@
 import { Component, Mixins, Prop, Ref, Vue } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
-import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
-import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
-import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
+import WebcamWrapper from '@/components/webcams/WebcamWrapper.vue'
 
 @Component({
     components: {
         Panel,
-        'webcam-mjpegstreamer': Mjpegstreamer,
-        'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
-        'webcam-uv4l-mjpeg': Uv4lMjpeg,
+        'webcam-wrapper': WebcamWrapper,
         'mainsail-logo': MainsailLogo,
     },
 })
@@ -218,17 +200,11 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get showWebcamSwitch() {
-        return this.printer.socket.isConnected && this.supportedPrinterWebcams.length > 0
+        return this.printer.socket.isConnected && this.printer_webcams.length > 0
     }
 
     get printer_webcams() {
         return this.$store.getters['farm/' + this.printer._namespace + '/getPrinterWebcams']
-    }
-
-    get supportedPrinterWebcams() {
-        return this.printer_webcams.filter((webcam: GuiWebcamStateWebcam) =>
-            ['mjpegstreamer', 'mjpegstreamer-adaptive', 'uv4l-mjpeg'].includes(webcam.service)
-        )
     }
 
     get currentWebcam() {

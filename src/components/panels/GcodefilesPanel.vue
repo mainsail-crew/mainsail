@@ -345,6 +345,13 @@
                     <v-icon class="mr-1">{{ mdiVideo3d }}</v-icon>
                     {{ $t('Files.View3D') }}
                 </v-list-item>
+                <v-list-item
+                    v-if="!contextMenu.item.isDirectory"
+                    :disabled="!isGcodeFile(contextMenu.item)"
+                    @click="scanMeta(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiMagnify }}</v-icon>
+                    {{ $t('Files.ScanMeta') }}
+                </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="downloadFile">
                     <v-icon class="mr-1">{{ mdiCloudDownload }}</v-icon>
                     {{ $t('Files.Download') }}
@@ -360,6 +367,10 @@
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="renameFile(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
+                </v-list-item>
+                <v-list-item v-if="!contextMenu.item.isDirectory" @click="duplicateFile(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiContentCopy }}</v-icon>
+                    {{ $t('Files.Duplicate') }}
                 </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" class="red--text" @click="removeFile">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
@@ -391,7 +402,7 @@
                         :label="$t('Files.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keypress.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -420,7 +431,7 @@
                         :label="$t('Files.Name').toString()"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="renameFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -428,6 +439,35 @@
                     <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Files.Cancel') }}</v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="renameFileAction">
                         {{ $t('Files.Rename') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+        <v-dialog v-model="dialogDuplicateFile.show" :max-width="400">
+            <panel
+                :title="$t('Files.DuplicateFile').toString()"
+                card-class="gcode-files-duplicate-file-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="dialogDuplicateFile.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <v-text-field
+                        ref="inputFieldDuplicateFile"
+                        v-model="dialogDuplicateFile.newName"
+                        :label="$t('Files.Name').toString()"
+                        required
+                        :rules="nameInputRules"
+                        @update:error="(bool) => (isInvalidName = bool)"
+                        @keyup.enter="duplicateFileAction"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogDuplicateFile.show = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="duplicateFileAction">
+                        {{ $t('Files.Duplicate') }}
                     </v-btn>
                 </v-card-actions>
             </panel>
@@ -449,7 +489,7 @@
                         :label="$t('Files.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="renameDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -586,6 +626,7 @@ import {
     mdiUpload,
     mdiVideo3d,
     mdiFileDocumentEditOutline,
+    mdiContentCopy,
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import ControlMixin from '@/components/mixins/control'
@@ -636,6 +677,7 @@ interface tableColumnSetting {
 export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiChevronDown = mdiChevronDown
     mdiChevronUp = mdiChevronUp
+    mdiContentCopy = mdiContentCopy
     mdiFile = mdiFile
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiMagnify = mdiMagnify
@@ -665,6 +707,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     declare $refs: {
         fileUpload: HTMLInputElement
         inputFieldRenameFile: HTMLInputElement
+        inputFieldDuplicateFile: HTMLInputElement
         inputFieldCreateDirectory: HTMLInputElement
         inputFieldRenameDirectory: HTMLInputElement
     }
@@ -717,6 +760,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     private dialogRenameFile: dialogRenameObject = {
+        show: false,
+        newName: '',
+        item: { ...this.contextMenu.item },
+    }
+
+    private dialogDuplicateFile: dialogRenameObject = {
         show: false,
         newName: '',
         item: { ...this.contextMenu.item },
@@ -1284,6 +1333,24 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         )
     }
 
+    duplicateFile(item: FileStateGcodefile) {
+        this.dialogDuplicateFile.item = item
+        this.dialogDuplicateFile.newName = item.filename
+        this.dialogDuplicateFile.show = true
+
+        setTimeout(() => {
+            this.$refs.inputFieldDuplicateFile?.focus()
+        }, 200)
+    }
+
+    duplicateFileAction() {
+        this.dialogDuplicateFile.show = false
+        this.$socket.emit('server.files.copy', {
+            source: 'gcodes' + this.currentPath + '/' + this.dialogDuplicateFile.item.filename,
+            dest: 'gcodes' + this.currentPath + '/' + this.dialogDuplicateFile.newName,
+        })
+    }
+
     renameDirectory(item: FileStateGcodefile) {
         this.dialogRenameDirectory.item = item
         this.dialogRenameDirectory.newName = item.filename
@@ -1374,6 +1441,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     view3D(item: FileStateFile) {
         this.$router.push({ path: '/viewer', query: { filename: 'gcodes' + this.currentPath + '/' + item.filename } })
+    }
+
+    scanMeta(item: FileStateFile) {
+        this.$store.dispatch('files/scanMetadata', {
+            filename: 'gcodes' + this.currentPath + '/' + item.filename,
+        })
     }
 
     deleteSelectedFiles() {

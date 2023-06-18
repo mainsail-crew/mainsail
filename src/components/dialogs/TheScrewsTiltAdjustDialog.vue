@@ -22,7 +22,10 @@
             <v-card-text v-if="Object.keys(results).length">
                 <template v-for="(result, name, index) of results">
                     <v-divider v-if="index" :key="`result-divider-${name}`" class="my-1" />
-                    <the-screws-tilt-adjust-dialog-entry :key="`result-${name}`" :name="name" :result="result" />
+                    <the-screws-tilt-adjust-dialog-entry
+                        :key="`result-${name}-${name}`"
+                        :name="name"
+                        :result="result" />
                 </template>
             </v-card-text>
             <v-card-actions>
@@ -50,18 +53,29 @@ import TheScrewsTiltAdjustDialogEntry from '@/components/dialogs/TheScrewsTiltAd
 export default class TheScrewsTiltAdjustDialog extends Mixins(BaseMixin, ControlMixin) {
     mdiArrowCollapseDown = mdiArrowCollapseDown
     mdiCloseThick = mdiCloseThick
+
     get state() {
         return this.$store.state.printer.screws_tilt_adjust ?? {}
     }
+
     get error() {
-        return this.state.error ?? false
+        return this.$store.state.printer.screws_tilt_adjust?.error ?? false
     }
+
     get results() {
-        return this.state.results ?? {}
+        return this.$store.state.printer.screws_tilt_adjust?.results ?? {}
     }
+
     get showDialog() {
+        if (!this.boolScrewsTiltAdjustDialog) return false
+
         return this.error || Object.keys(this.results).length
     }
+
+    get boolScrewsTiltAdjustDialog() {
+        return this.$store.state.gui.uiSettings.boolScrewsTiltAdjustDialog ?? true
+    }
+
     clearScrewsTiltAdjust() {
         this.$store.dispatch('printer/clearScrewsTiltAdjust')
     }

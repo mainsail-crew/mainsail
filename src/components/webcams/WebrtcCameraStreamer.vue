@@ -62,50 +62,15 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
         return output
     }
 
-    get streamConfig() {
-        let config: any = {
-            sdpSemantics: 'unified-plan',
-        }
-
-        if (this.useStun) {
-            config.iceServers = [{ urls: ['stun:stun.l.google.com:19302'] }]
-        }
-
-        return config
-    }
-
     startStream() {
         const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1
+        const requestIceServers = this.useStun ? [{ urls: ['stun:stun.l.google.com:19302'] }] : null
 
-        this.pc = new RTCPeerConnection(this.streamConfig)
-        this.pc.addTransceiver('video', { direction: 'recvonly' })
-
-        this.pc.addEventListener(
-            'track',
-            (evt) => {
-                if (evt.track.kind == 'video' && this.$refs.stream) {
-                    // @ts-ignore
-                    this.$refs.stream.srcObject = evt.streams[0]
-                }
-            },
-            false
-        )
-
-        this.pc.addEventListener('connectionstatechange', () => {
-            this.status = (this.pc?.connectionState ?? '').toString()
-
-            if (['failed', 'disconnected'].includes(this.status)) {
-                setTimeout(async () => {
-                    await this.pc?.close()
-                    this.startStream()
-                }, 500)
-            }
-        })
-
+        // This WebRTC signaling pattern is designed for camera-streamer, a common webcam server the supports WebRTC.
         fetch(this.url, {
             body: JSON.stringify({
                 type: 'request',
-                //res: params.res
+                iceServers: requestIceServers,
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -114,25 +79,58 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
         })
             .then((response) => response.json())
             .then((answer) => {
+                let peerConnectionConfig: any = {
+                    sdpSemantics: 'unified-plan',
+                }
+                // It's important to set any ICE servers returned, which could include servers we requested or servers
+                // setup by the server. But note that older versions of camera-streamer won't return this property.
+                if (answer.iceServers) {
+                    peerConnectionConfig.iceServers = answer.iceServers
+                }
+                this.pc = new RTCPeerConnection(peerConnectionConfig)
+                this.pc.addTransceiver('video', { direction: 'recvonly' })
+                this.pc.addEventListener(
+                    'track',
+                    (evt) => {
+                        if (evt.track.kind == 'video' && this.$refs.stream) {
+                            // @ts-ignore
+                            this.$refs.stream.srcObject = evt.streams[0]
+                        }
+                    },
+                    false
+                )
+                this.pc.addEventListener('connectionstatechange', () => {
+                    this.status = (this.pc?.connectionState ?? '').toString()
+                    if (['failed', 'disconnected'].includes(this.status)) {
+                        setTimeout(async () => {
+                            await this.pc?.close()
+                            this.startStream()
+                        }, 500)
+                    }
+                })
+                this.pc.addEventListener('icecandidate', (e) => {
+                    if (e.candidate) {
+                        return fetch(this.url, {
+                            body: JSON.stringify({
+                                type: 'remote_candidate',
+                                id: this.remote_pc_id,
+                                candidates: [e.candidate],
+                            }),
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            method: 'POST',
+                        }).catch(function (error) {
+                            window.console.error(error)
+                        })
+                    }
+                })
+
                 this.remote_pc_id = answer.id
                 return this.pc?.setRemoteDescription(answer)
             })
             .then(() => this.pc?.createAnswer())
             .then((answer) => this.pc?.setLocalDescription(answer))
-            .then(() => {
-                // wait for ICE gathering to complete
-                return new Promise((resolve) => {
-                    const checkState = () => {
-                        if (this.pc?.iceGatheringState === 'complete') {
-                            this.pc?.removeEventListener('icegatheringstatechange', checkState)
-                            resolve(true)
-                        }
-                    }
-
-                    if (this.pc?.iceGatheringState === 'complete') resolve(true)
-                    else this.pc?.addEventListener('icegatheringstatechange', checkState)
-                })
-            })
             .then(() => {
                 const offer = this.pc?.localDescription
                 return fetch(this.url, {

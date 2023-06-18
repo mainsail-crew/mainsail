@@ -239,12 +239,15 @@ export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin) {
     }
 
     formatDuration(seconds: number) {
-        let h = Math.floor(seconds / 3600)
-        seconds %= 3600
-        let m = ('0' + Math.floor(seconds / 60)).slice(-2)
-        let s = ('0' + (seconds % 60).toFixed(0)).slice(-2)
+        let prefix = seconds < 0 ? '-' : ''
+        let absSeconds = Math.abs(seconds)
 
-        return h + ':' + m + ':' + s
+        let h = Math.floor(absSeconds / 3600)
+        absSeconds %= 3600
+        let m = ('0' + Math.floor(absSeconds / 60)).slice(-2)
+        let s = ('0' + (absSeconds % 60).toFixed(0)).slice(-2)
+
+        return prefix + h + ':' + m + ':' + s
     }
 }
 </script>

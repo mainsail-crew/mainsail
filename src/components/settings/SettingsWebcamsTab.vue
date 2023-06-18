@@ -4,7 +4,7 @@
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.WebcamsTab.Webcams') }}</h3>
                 <div v-for="webcam in webcams" :key="webcam.id">
-                    <v-divider class="my-2"></v-divider>
+                    <v-divider class="my-2" />
                     <settings-row
                         :title="webcam.name"
                         :icon="convertWebcamIcon(webcam.icon)"
@@ -18,7 +18,7 @@
                             outlined
                             class="ml-3 minwidth-0 px-2"
                             color="error"
-                            @click="deleteWebcam(webcam.id)">
+                            @click="deleteWebcam(webcam.id ?? '')">
                             <v-icon small>{{ mdiDelete }}</v-icon>
                         </v-btn>
                     </settings-row>
@@ -28,7 +28,7 @@
                 <v-btn v-if="existCrowsnestConf" text color="primary" @click="openCrowsnestConf">
                     {{ $t('Settings.WebcamsTab.EditCrowsnestConf') }}
                 </v-btn>
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn text color="primary" @click="createWebcam">{{ $t('Settings.WebcamsTab.AddWebcam') }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -77,7 +77,7 @@
                                                         </v-icon>
                                                     </v-list-item-icon>
                                                     <v-list-item-content>
-                                                        <v-list-item-title v-text="icon.text"></v-list-item-title>
+                                                        <v-list-item-title v-text="icon.text" />
                                                     </v-list-item-content>
                                                 </v-list-item>
                                             </v-list>
@@ -90,7 +90,7 @@
                                         outlined
                                         :rules="[rules.required, rules.unique]"
                                         class="_webcam-settings-name-field"
-                                        dense></v-text-field>
+                                        dense />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -101,9 +101,7 @@
                                         hide-details="auto"
                                         outlined
                                         dense
-                                        :rules="
-                                            form.service !== 'mjpegstreamer-adaptive' ? [rules.required] : []
-                                        "></v-text-field>
+                                        :rules="form.service !== 'mjpegstreamer-adaptive' ? [rules.required] : []" />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -114,9 +112,7 @@
                                         hide-details="auto"
                                         outlined
                                         dense
-                                        :rules="
-                                            form.service === 'mjpegstreamer-adaptive' ? [rules.required] : []
-                                        "></v-text-field>
+                                        :rules="form.service === 'mjpegstreamer-adaptive' ? [rules.required] : []" />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -128,17 +124,17 @@
                                         outlined
                                         dense
                                         :label="$t('Settings.WebcamsTab.Service')"
-                                        attach></v-select>
+                                        attach />
                                 </v-col>
                             </v-row>
-                            <v-row v-if="form.service === 'mjpegstreamer-adaptive'">
+                            <v-row v-if="form.service === 'mjpegstreamer-adaptive' || form.service === 'jmuxer-stream'">
                                 <v-col class="py-2 col-6">
                                     <v-text-field
                                         v-model="form.targetFps"
                                         outlined
                                         dense
                                         hide-details
-                                        :label="$t('Settings.WebcamsTab.TargetFPS')"></v-text-field>
+                                        :label="$t('Settings.WebcamsTab.TargetFPS')" />
                                 </v-col>
                                 <v-col class="py-2 col-6">
                                     <v-select
@@ -147,7 +143,7 @@
                                         outlined
                                         dense
                                         hide-details
-                                        :label="$t('Settings.WebcamsTab.Rotate')"></v-select>
+                                        :label="$t('Settings.WebcamsTab.Rotate')" />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -163,44 +159,19 @@
                                         v-model="form.flipX"
                                         class="mt-1"
                                         hide-details
-                                        :label="$t('Settings.WebcamsTab.Horizontally')"></v-checkbox>
+                                        :label="$t('Settings.WebcamsTab.Horizontally')" />
                                 </v-col>
                                 <v-col class="py-0">
                                     <v-checkbox
                                         v-model="form.flipY"
                                         class="mt-1"
                                         hide-details
-                                        :label="$t('Settings.WebcamsTab.Vertically')"></v-checkbox>
+                                        :label="$t('Settings.WebcamsTab.Vertically')" />
                                 </v-col>
                             </v-row>
                         </v-col>
                         <v-col class="col-12 col-sm-6 text-center" align-self="center">
-                            <template v-if="form.service === 'mjpegstreamer'">
-                                <webcam-mjpegstreamer :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'mjpegstreamer-adaptive'">
-                                <webcam-mjpegstreamer-adaptive :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'uv4l-mjpeg'">
-                                <webcam-uv4l-mjpeg :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'ipstream'">
-                                <webcam-ipstreamer :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'hlsstream'">
-                                <webcam-hlsstreamer :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'webrtc-camerastreamer'">
-                                <webcam-webrtc-camerastreamer :cam-settings="form" />
-                            </template>
-                            <template v-else-if="form.service === 'webrtc-mediamtx'">
-                                <webcam-webrtc-mediamtx :cam-settings="form" />
-                            </template>
-                            <template v-else>
-                                <p class="text-center py-3 font-italic">
-                                    {{ $t('Panels.WebcamPanel.UnknownWebcamService') }}
-                                </p>
-                            </template>
+                            <webcam-wrapper :webcam="form" />
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -226,16 +197,9 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
-import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
-import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
-import WebrtcCameraStreamer from '@/components/webcams/WebrtcCameraStreamer.vue'
-import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import { mdiMenuDown, mdiDelete, mdiPencil, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
 import { FileStateFile } from '@/store/files/types'
-import Hlsstreamer from '../webcams/Hlsstreamer.vue'
-import WebrtcMediaMTX from '@/components/webcams/WebrtcMediaMTX.vue'
 
 interface webcamForm {
     bool: boolean
@@ -255,13 +219,6 @@ interface webcamForm {
 @Component({
     components: {
         SettingsRow,
-        'webcam-mjpegstreamer': Mjpegstreamer,
-        'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
-        'webcam-uv4l-mjpeg': Uv4lMjpeg,
-        'webcam-ipstreamer': Ipstreamer,
-        'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
-        'webcam-hlsstreamer': Hlsstreamer,
-        'webcam-webrtc-mediamtx': WebrtcMediaMTX,
     },
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
@@ -328,6 +285,8 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'webrtc-camerastreamer', text: this.$t('Settings.WebcamsTab.WebrtcCameraStreamer') },
             { value: 'webrtc-mediamtx', text: this.$t('Settings.WebcamsTab.WebrtcMediaMTX') },
             { value: 'hlsstream', text: this.$t('Settings.WebcamsTab.Hlsstream') },
+            { value: 'jmuxer-stream', text: this.$t('Settings.WebcamsTab.JMuxerStream') },
+            { value: 'webrtc-janus', text: this.$t('Settings.WebcamsTab.WebrtcJanus') },
         ]
     }
 

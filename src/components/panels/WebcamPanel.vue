@@ -42,33 +42,7 @@
         <v-card-text v-if="webcams.length" class="px-0 py-0 content d-inline-block">
             <v-row>
                 <v-col class="pb-0" style="position: relative">
-                    <template v-if="currentCam.service === 'grid'">
-                        <webcam-grid :webcams="webcams" />
-                    </template>
-                    <template v-else-if="currentCam.service === 'mjpegstreamer'">
-                        <webcam-mjpegstreamer :cam-settings="currentCam" />
-                    </template>
-                    <template v-else-if="currentCam.service === 'mjpegstreamer-adaptive'">
-                        <webcam-mjpegstreamer-adaptive :cam-settings="currentCam" />
-                    </template>
-                    <template v-else-if="currentCam.service === 'uv4l-mjpeg'">
-                        <webcam-uv4l-mjpeg :cam-settings="currentCam" />
-                    </template>
-                    <template v-else-if="currentCam.service === 'ipstream'">
-                        <webcam-ipstreamer :cam-settings="currentCam" />
-                    </template>
-                    <template v-else-if="currentCam.service === 'hlsstream'">
-                        <webcam-hlsstreamer :cam-settings="currentCam" />
-                    </template>
-                    <template v-else-if="currentCam.service === 'webrtc-camerastreamer'">
-                        <webcam-webrtc-camerastreamer :cam-settings="currentCam" />
-                    </template>
-                    <template v-else-if="currentCam.service === 'webrtc-mediamtx'">
-                        <webcam-webrtc-mediamtx :cam-settings="currentCam" :collapsible="$route.fullPath !== '/cam'" />
-                    </template>
-                    <template v-else>
-                        <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
-                    </template>
+                    <webcam-wrapper :webcam="currentCam" />
                 </v-col>
             </v-row>
         </v-card-text>
@@ -79,14 +53,6 @@
 </template>
 
 <script lang="ts">
-import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
-import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
-import Hlsstreamer from '@/components/webcams/Hlsstreamer.vue'
-import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
-import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
-import WebrtcCameraStreamer from '@/components/webcams/WebrtcCameraStreamer.vue'
-import WebcamMediaMTX from '@/components/webcams/WebrtcMediaMTX.vue'
-import WebcamGrid from '@/components/webcams/WebcamGrid.vue'
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
@@ -98,14 +64,6 @@ import WebcamMixin from '@/components/mixins/webcam'
 @Component({
     components: {
         Panel,
-        'webcam-mjpegstreamer': Mjpegstreamer,
-        'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
-        'webcam-ipstreamer': Ipstreamer,
-        'webcam-hlsstreamer': Hlsstreamer,
-        'webcam-uv4l-mjpeg': Uv4lMjpeg,
-        'webcam-webrtc-camerastreamer': WebrtcCameraStreamer,
-        'webcam-webrtc-mediamtx': WebcamMediaMTX,
-        'webcam-grid': WebcamGrid,
     },
 })
 export default class WebcamPanel extends Mixins(BaseMixin, WebcamMixin) {

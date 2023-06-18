@@ -83,6 +83,7 @@ import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue
 import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab.vue'
 import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
 import SettingsTimelapseTab from '@/components/settings/SettingsTimelapseTab.vue'
+import SettingsNavigationTab from '@/components/settings/SettingsNavigationTab.vue'
 
 import Panel from '@/components/ui/Panel.vue'
 import {
@@ -101,6 +102,7 @@ import {
     mdiVideo3d,
     mdiWebcam,
     mdiDipSwitch,
+    mdiMenu,
 } from '@mdi/js'
 import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneousTab.vue'
 @Component({
@@ -119,6 +121,7 @@ import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneou
         SettingsEditorTab,
         SettingsTimelapseTab,
         SettingsMiscellaneousTab,
+        SettingsNavigationTab,
     },
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
@@ -196,6 +199,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 icon: mdiDipSwitch,
                 name: 'miscellaneous',
                 title: this.$t('Settings.MiscellaneousTab.Miscellaneous'),
+            },
+            {
+                icon: mdiMenu,
+                name: 'navigation',
+                title: this.$t('Settings.NavigationTab.Navigation'),
             },
         ]
 
