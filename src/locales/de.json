@@ -1019,8 +1019,8 @@
             "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
-            "BedScrewsDialog": "Bettschrauben Fenster",
-            "BedScrewsDialogDescription": "Zeigt ein Hilfefenster für die Bettschraubenjustierung an.",
+            "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
+            "BedScrewsDialogDescription": "Zeige ein Hilfsfenster für die Bettschraubenjustierung an.",
             "BoolBigThumbnail": "Große Vorschaubilder",
             "BoolBigThumbnailDescription": "Zeige ein großes Thumbnail in der Status-Anzeige während eines Drucks.",
             "BoolHideUploadAndPrintButton": "\"Hochladen & Drucken\" Schaltfläche ausblenden",
