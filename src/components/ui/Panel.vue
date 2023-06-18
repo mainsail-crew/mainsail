@@ -43,17 +43,17 @@
             :class="getToolbarClass"
             :height="panelToolbarHeight"
             class="panel-toolbar">
-            <slot name="buttons-left"></slot>
+            <slot name="buttons-left" />
             <v-toolbar-title class="d-flex align-center">
-                <slot v-if="hasIconSlot" name="icon"></slot>
+                <slot v-if="hasIconSlot" name="icon" />
                 <v-icon v-if="icon !== null && !hasIconSlot" left>{{ icon }}</v-icon>
                 <span v-if="title" class="subheading">{{ title }}</span>
             </v-toolbar-title>
-            <slot name="buttons-title"></slot>
-            <v-spacer></v-spacer>
+            <slot name="buttons-title" />
+            <v-spacer />
             <v-toolbar-items v-show="hasButtonsSlot || collapsible">
                 <div v-if="expand || !hideButtonsOnCollapse" class="d-flex align-center">
-                    <slot name="buttons"></slot>
+                    <slot name="buttons" />
                 </div>
                 <v-btn v-if="collapsible" icon class="btn-collapsible" :ripple="true" @click="expand = !expand">
                     <v-icon :class="expand ? '' : 'icon-rotate-90'">{{ mdiChevronDown }}</v-icon>
@@ -62,7 +62,7 @@
         </v-toolbar>
         <v-expand-transition>
             <div v-show="expand || !collapsible">
-                <slot></slot>
+                <slot />
             </div>
         </v-expand-transition>
     </v-card>
