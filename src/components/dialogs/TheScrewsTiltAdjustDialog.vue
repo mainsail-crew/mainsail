@@ -30,6 +30,9 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
+                <v-btn text @click="retryScrewsTiltAdjust">
+                    {{ $t('ScrewsTiltAdjust.Retry') }}
+                </v-btn>
                 <v-btn color="primary" text @click="clearScrewsTiltAdjust">
                     {{ $t('ScrewsTiltAdjust.Accept') }}
                 </v-btn>
@@ -78,6 +81,12 @@ export default class TheScrewsTiltAdjustDialog extends Mixins(BaseMixin, Control
 
     clearScrewsTiltAdjust() {
         this.$store.dispatch('printer/clearScrewsTiltAdjust')
+    }
+
+    async retryScrewsTiltAdjust() {
+        await this.$store.dispatch('printer/clearScrewsTiltAdjust')
+
+        this.doSend('SCREWS_TILT_CALCULATE')
     }
 }
 </script>
