@@ -30,6 +30,10 @@
             "NoEmptyAllowedError": "Input must not be empty!"
         },
         "Printers": "Printers",
+        "TheServiceWorker": {
+            "TitleNeedUpdate": "PWA needs update",
+            "DescriptionNeedUpdate": "The local cache is outdated and needs to be updated. Please click on the button below to update the cache."
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM core(s) are currently throttled down.",
             "DescriptionFrequencyCapped": "rPi ARM max frequency is currently limited to 1.2 GHz.",
