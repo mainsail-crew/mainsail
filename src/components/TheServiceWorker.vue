@@ -55,8 +55,6 @@ export default class TheServiceWorker extends Mixins(BaseMixin) {
             onRegistered: this.onRegistered,
             onRegisterError: this.onRegisterError,
         })
-
-        this.showDialog = true
     }
 }
 </script>
