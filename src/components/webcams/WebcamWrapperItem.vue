@@ -24,6 +24,9 @@
         <template v-else-if="service === 'webrtc-janus'">
             <janus-streamer :cam-settings="webcam" />
         </template>
+        <template v-else-if="service === 'webrtc-mediamtx'">
+            <webrtc-media-m-t-x :cam-settings="webcam" />
+        </template>
         <template v-else>
             <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
         </template>
@@ -40,12 +43,13 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
     components: {
         Hlsstreamer: () => import('@/components/webcams/Hlsstreamer.vue'),
         Ipstreamer: () => import('@/components/webcams/Ipstreamer.vue'),
+        JanusStreamer: () => import('@/components/webcams/JanusStreamer.vue'),
         JMuxerStream: () => import('@/components/webcams/JMuxerStream.vue'),
         Mjpegstreamer: () => import('@/components/webcams/Mjpegstreamer.vue'),
         MjpegstreamerAdaptive: () => import('@/components/webcams/MjpegstreamerAdaptive.vue'),
         Uv4lMjpeg: () => import('@/components/webcams/Uv4lMjpeg.vue'),
         WebrtcCameraStreamer: () => import('@/components/webcams/WebrtcCameraStreamer.vue'),
-        JanusStreamer: () => import('@/components/webcams/JanusStreamer.vue'),
+        WebrtcMediaMTX: () => import('@/components/webcams/WebrtcMediaMTX.vue'),
     },
 })
 export default class WebcamWrapperItem extends Mixins(BaseMixin) {
