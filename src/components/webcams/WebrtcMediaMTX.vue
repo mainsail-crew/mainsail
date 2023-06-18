@@ -24,7 +24,6 @@ import BaseMixin from '@/components/mixins/base'
 @Component
 export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
     @Prop({ required: true }) camSettings: any
-    @Prop({ default: false }) collapsible: boolean | undefined
 
     @Ref()
     declare video: HTMLVideoElement
