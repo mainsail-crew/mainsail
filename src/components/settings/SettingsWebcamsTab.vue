@@ -101,9 +101,7 @@
                                         hide-details="auto"
                                         outlined
                                         dense
-                                        :rules="
-                                            form.service !== 'mjpegstreamer-adaptive' ? [rules.required] : []
-                                        " />
+                                        :rules="form.service !== 'mjpegstreamer-adaptive' ? [rules.required] : []" />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -114,9 +112,7 @@
                                         hide-details="auto"
                                         outlined
                                         dense
-                                        :rules="
-                                            form.service === 'mjpegstreamer-adaptive' ? [rules.required] : []
-                                        " />
+                                        :rules="form.service === 'mjpegstreamer-adaptive' ? [rules.required] : []" />
                                 </v-col>
                             </v-row>
                             <v-row>
