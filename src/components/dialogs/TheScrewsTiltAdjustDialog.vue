@@ -1,7 +1,7 @@
 <template>
     <v-dialog :value="showDialog" width="400" persistent :fullscreen="isMobile">
         <panel
-            :title="$t('ScrewsTiltAdjust.Headline').toString()"
+            :title="$t('ScrewsTiltAdjust.Headline')"
             :icon="mdiArrowCollapseDown"
             card-class="manual_probe-dialog"
             :margin-bottom="false"
@@ -24,12 +24,12 @@
                     <v-divider v-if="index" :key="`result-divider-${name}`" class="my-1" />
                     <the-screws-tilt-adjust-dialog-entry
                         :key="`result-${name}-${name}`"
-                        :name="name"
+                        :name="name.toString()"
                         :result="result" />
                 </template>
             </v-card-text>
             <v-card-actions>
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn color="primary" text @click="clearScrewsTiltAdjust">
                     {{ $t('ScrewsTiltAdjust.Accept') }}
                 </v-btn>
