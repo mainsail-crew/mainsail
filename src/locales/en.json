@@ -30,6 +30,11 @@
             "NoEmptyAllowedError": "Input must not be empty!"
         },
         "Printers": "Printers",
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "The local cache is outdated and needs to be updated. Please click on the button below to update the cache.",
+            "TitleNeedUpdate": "PWA needs update",
+            "Update": "update"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM core(s) are currently throttled down.",
             "DescriptionFrequencyCapped": "rPi ARM max frequency is currently limited to 1.2 GHz.",
@@ -180,6 +185,8 @@
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
         "Download": "Download",
+        "Duplicate": "Duplicate",
+        "DuplicateFile": "Duplicate File",
         "EditFile": "Edit File",
         "Empty": "Empty",
         "ExtruderTemp": "Extruder Temp.",
@@ -216,6 +223,8 @@
         "Rename": "Rename",
         "RenameDirectory": "Rename Directory",
         "RenameFile": "Rename File",
+        "ScanMeta": "Scan Metadata",
+        "ScanMetaSuccess": "Successfully scanned metadata from: {filename}.",
         "Search": "Search",
         "SetupCurrentList": "Setup current list",
         "Slicer": "Slicer",
@@ -400,6 +409,8 @@
             "DeleteDirectoryQuestion": "Delete directory \"{name}\" and all its contents?",
             "DeleteSelectedQuestion": "Delete {count} selected elements?",
             "Download": "Download",
+            "Duplicate": "Duplicate",
+            "DuplicateFile": "Duplicate File",
             "EditFile": "Edit file",
             "Empty": "Empty",
             "Files": "Files",
@@ -798,7 +809,10 @@
             "MoonrakerRestartInstance": "Moonraker restart instance",
             "MoonrakerRestartInstanceDescription": "Select which Moonraker service will restart on 'Save & Restart' when editing Moonraker config files.",
             "UseEscToClose": "Use ESC to close editor",
-            "UseEscToCloseDescription": "Allows the ESC key to close the editor"
+            "UseEscToCloseDescription": "Allows the ESC key to close the editor",
+            "TabSize": "TAB Size",
+            "TabSizeDescription": "Adjusts how many spaces should be indented for TAB",
+            "Spaces": "Spaces: {count}"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Background Color",
@@ -911,6 +925,9 @@
             "UnableToLoadLight": "Unable to load light",
             "UnableToLoadPreset": "Unable to load preset"
         },
+        "NavigationTab": {
+            "Navigation": "Navigation"
+        },
         "PresetsTab": {
             "AddPreset": "add preset",
             "Cooldown": "Cooldown",
@@ -1007,6 +1024,8 @@
             "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
+            "BedScrewsDialog": "Bed Screws Dialog",
+            "BedScrewsDialogDescription": "Display helper dialog for BED_SCREWS_ADJUST.",
             "BoolBigThumbnail": "Large thumbnail",
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
@@ -1029,6 +1048,8 @@
             "LockSlidersDelayDescription": "Sliders will lock after a given delay. If set to 0 or left blank, sliders will only lock on page change/reload.",
             "LockSlidersDescription": "Sliders on touchscreens need to be unlocked before changes are allowed.",
             "Logo": "Logo",
+            "ManualProbeDialog": "Manual Probe Helper Dialog",
+            "ManualProbeDialogDescription": "Display helper dialog for PROBE_CALIBRATE or Z_ENDSTOP_CALIBRATE.",
             "NavigationStyle": "Navigation style",
             "NavigationStyleDescription": "Change navigation appearance",
             "NavigationStyleIconsAndText": "Icons + Text",
@@ -1036,7 +1057,10 @@
             "PowerDeviceName": "Printer power device",
             "PowerDeviceNameDescription": "Select which Moonraker power device should be used to power on the printer.",
             "Primary": "Primary",
-            "ShowWebcamInNavigation": "Show Webcam in navigation",
+            "ScrewsTiltAdjustDialog": "Screws Tilt Adjust Dialog",
+            "ScrewsTiltAdjustDialogDescription": "Display helper dialog for SCREWS_TILT_CALCULATE.",
+            "TempchartHeight": "Height Temperature Chart",
+            "TempchartHeightDescription": "Modify the height of the temperature chart on the Dashboard.",
             "UiSettings": "UI-Settings"
         },
         "Update": "update",
@@ -1057,8 +1081,10 @@
             "IconPrinter": "Printer",
             "Ipstream": "IP Camera",
             "Hlsstream": "HLS Stream",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
+            "JMuxerStream": "Raw h264 stream (jmuxer)",
             "Name": "Name",
             "NameAlreadyExists": "Name already exists",
             "Required": "required",
@@ -1072,14 +1098,16 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertically",
             "Webcams": "Webcams",
-            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
     },
     "ScrewsTiltAdjust": {
         "Accept": "accept",
         "Base": "Base",
         "ErrorText": "Something went wrong during the probing process.",
-        "Headline": "Screws tilt adjust"
+        "Headline": "Screws tilt adjust",
+        "Retry": "retry"
     },
     "Timelapse": {
         "AllFiles": "All",

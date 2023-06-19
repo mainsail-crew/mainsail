@@ -34,11 +34,12 @@
                     <router-view></router-view>
                 </v-container>
             </v-main>
-            <the-update-dialog></the-update-dialog>
-            <the-editor></the-editor>
-            <the-timelapse-rendering-snackbar></the-timelapse-rendering-snackbar>
-            <the-fullscreen-upload></the-fullscreen-upload>
-            <the-upload-snackbar></the-upload-snackbar>
+            <the-service-worker />
+            <the-update-dialog />
+            <the-editor />
+            <the-timelapse-rendering-snackbar />
+            <the-fullscreen-upload />
+            <the-upload-snackbar />
             <the-manual-probe-dialog />
             <the-bed-screws-dialog />
             <the-screws-tilt-adjust-dialog />
@@ -194,8 +195,9 @@ export default class App extends Mixins(BaseMixin) {
 
     @Watch('current_file')
     current_fileChanged(newVal: string): void {
-        if (newVal !== '')
-            this.$socket.emit('server.files.metadata', { filename: newVal }, { action: 'files/getMetadataCurrentFile' })
+        if (newVal === '') return
+
+        this.$socket.emit('server.files.metadata', { filename: newVal }, { action: 'files/getMetadataCurrentFile' })
     }
 
     @Watch('primaryColor')

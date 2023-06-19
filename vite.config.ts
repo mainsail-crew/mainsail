@@ -40,9 +40,23 @@ const PWAConfig: Partial<VitePWAOptions> = {
             },
         ],
     },
+    workbox: {
+        globPatterns: ['**/*.{js,css,html,woff,woff2,png,svg}'],
+        navigateFallbackDenylist: [/^\/(access|api|printer|server|websocket)/, /^\/webcam[2-4]?/],
+        runtimeCaching: [
+            {
+                urlPattern: (options) => options.url.pathname.startsWith('/config.json'),
+                handler: 'StaleWhileRevalidate',
+                options: {
+                    cacheName: 'config.json',
+                },
+            },
+        ],
+    },
     /* enable sw on development */
     devOptions: {
         enabled: true,
+        type: 'module',
     },
 }
 

@@ -9,12 +9,6 @@ import i18n from '@/plugins/i18n'
 import store from '@/store'
 import router from '@/plugins/router'
 import { WebSocketPlugin } from '@/plugins/webSocketClient'
-import { registerSW } from 'virtual:pwa-register'
-
-// noinspection JSUnusedGlobalSymbols
-registerSW({
-    onOfflineReady() {},
-})
 
 Vue.config.productionTip = false
 

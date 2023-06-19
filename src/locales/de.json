@@ -30,6 +30,11 @@
             "NoEmptyAllowedError": "Feld darf nicht leer sein!"
         },
         "Printers": "Drucker",
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "Der lokale Cache ist veraltet und muss aktualisiert werden. Bitte klicke auf den Button unten, um den Cache zu aktualisieren.",
+            "TitleNeedUpdate": "PWA benötigt ein Update",
+            "Update": "aktualisieren"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM-Kern(e) sind derzeit gedrosselt.",
             "DescriptionFrequencyCapped": "rPi ARM max Frequenz ist derzeit auf 1,2 GHz begrenzt.",
@@ -180,6 +185,8 @@
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",
         "Download": "Herunterladen",
+        "Duplicate": "duplizieren",
+        "DuplicateFile": "Datei duplizieren",
         "EditFile": "Datei bearbeiten",
         "Empty": "Leer",
         "ExtruderTemp": "Extruder Temp.",
@@ -216,6 +223,8 @@
         "Rename": "Umbenennen",
         "RenameDirectory": "Verzeichnis umbenennen",
         "RenameFile": "Datei umbenennen",
+        "ScanMeta": "Metadaten scannen",
+        "ScanMetaSuccess": "Metadaten von {filename} wurden erfolgreich gescannt.",
         "Search": "Suchen",
         "SetupCurrentList": "Einstellungen",
         "Slicer": "Slicer",
@@ -280,6 +289,7 @@
         "Flat": "Flach",
         "Heightmap": "Heightmap",
         "InvalidNameAlreadyExists": "Das Profil existiert bereits, bitte wähle einen anderen Profilnamen.",
+        "InvalidNameAscii": "Name ist ungültig. Nur ASCII Zeichen sind erlaubt.",
         "InvalidNameEmpty": "Feld darf nicht leer sein!",
         "InvalidNameReserved": "Das Profil 'default' ist reserviert, bitte wähle einen anderen Profilnamen.",
         "Later": "später",
@@ -399,6 +409,8 @@
             "DeleteDirectoryQuestion": "Verzeichnis \"{name}\" und den gesamten Inhalt löschen?",
             "DeleteSelectedQuestion": "{count} ausgewählte Elemente löschen?",
             "Download": "Herunterladen",
+            "Duplicate": "duplizieren",
+            "DuplicateFile": "Datei duplizieren",
             "EditFile": "Bearbeite Datei",
             "Empty": "Leer",
             "Files": "Dateien",
@@ -797,7 +809,10 @@
             "MoonrakerRestartInstance": "Moonraker Neustartinstanz",
             "MoonrakerRestartInstanceDescription": "Wähle aus, welche Moonrakerinstanz neu gestartet werden soll wenn 'Speichern & Neustarten' im Editor geklickt wird.",
             "UseEscToClose": "ESC drücken um Editor zu schließen",
-            "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen."
+            "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen.",
+            "TabSize": "TAB Größe",
+            "TabSizeDescription": "Legt fest, um wie viele Leerzeichen für TAB eingerückt werden sollen",
+            "Spaces": "Leerzeichen: {count}"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Hintergrundfarbe",
@@ -910,6 +925,9 @@
             "UnableToLoadLight": "Licht konnte nicht geladen werden",
             "UnableToLoadPreset": "Voreinstellung konnte nicht geladen werden"
         },
+        "NavigationTab": {
+            "Navigation": "Navigation"
+        },
         "PresetsTab": {
             "AddPreset": "Preset hinzufügen",
             "Cooldown": "Abkühlen",
@@ -1006,6 +1024,8 @@
             "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
+            "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
+            "BedScrewsDialogDescription": "Zeige ein Hilfsfenster für die Bettschraubenjustierung an.",
             "BoolBigThumbnail": "Große Vorschaubilder",
             "BoolBigThumbnailDescription": "Zeige ein großes Thumbnail in der Status-Anzeige während eines Drucks.",
             "BoolHideUploadAndPrintButton": "\"Hochladen & Drucken\" Schaltfläche ausblenden",
@@ -1028,6 +1048,8 @@
             "LockSlidersDelayDescription": "Schieberegler werden nach einer bestimmten Verzögerung gesperrt. Wenn 0 oder leer, dann sperren Schieberegler nur nach wechseln/neuladen der Seite.",
             "LockSlidersDescription": "Schieberegler müssen zuerst entsperrt werden bevor Änderungen erlaubt werden.",
             "Logo": "Logo",
+            "ManualProbeDialog": "Hilfsfenster für manuelle Messung",
+            "ManualProbeDialogDescription": "Zeige ein Hilfsfenster für PROBE_CALIBRATE oder Z_ENDSTOP_CALIBRATE an.",
             "NavigationStyle": "Stil der Navigation",
             "NavigationStyleDescription": "Erscheinungsbild der Navigation ändern",
             "NavigationStyleIconsAndText": "Icons + Text",
@@ -1035,7 +1057,10 @@
             "PowerDeviceName": "Stromversorgung für Drucker",
             "PowerDeviceNameDescription": "Wähle aus, welches Moonraker Power-Device zum Einschalten des Druckers verwendet werden soll.",
             "Primary": "Primärfarbe",
-            "ShowWebcamInNavigation": "Zeige Webcam in der Navigation",
+            "ScrewsTiltAdjustDialog": "Hilfsfenster für Schrauben Neigunganpassung",
+            "ScrewsTiltAdjustDialogDescription": "Zeige ein Hilfsfenster für SCREWS_TILT_CALCULATE an.",
+            "TempchartHeight": "Temperatur-Chart Höhe",
+            "TempchartHeightDescription": "Verändert die Höhe vom Temperatur-Chart auf dem Dashboard.",
             "UiSettings": "UI-Einstellungen"
         },
         "Update": "speichern",
@@ -1058,6 +1083,7 @@
             "Ipstream": "IP Kamera",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
+            "JMuxerStream": "Roher h264 stream (jmuxer)",
             "Name": "Name",
             "NameAlreadyExists": "Name existiert bereits",
             "Required": "benötigt",
@@ -1071,14 +1097,17 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertikal",
             "Webcams": "Webcams",
-            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
     },
     "ScrewsTiltAdjust": {
         "Accept": "akzeptieren",
         "Base": "Basis",
         "ErrorText": "Ein Fehler ist beim Abtasten aufgetreten.",
-        "Headline": "Neigungsverstellung"
+        "Headline": "Neigungsverstellung",
+        "Retry": "wiederholen"
     },
     "Timelapse": {
         "AllFiles": "Alle",

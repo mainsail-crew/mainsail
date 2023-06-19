@@ -629,6 +629,8 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
                         },
                     },
                 },
+                boxWidth: 100 * this.scaleX,
+                boxDepth: 100 * this.scaleY,
             },
             series: this.series,
         }
@@ -697,6 +699,30 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     set scaleGradient(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleGradient', value: newVal })
+    }
+
+    get absRangeX(): number {
+        return this.rangeX[1] - this.rangeX[0]
+    }
+
+    get absRangeY(): number {
+        return this.rangeY[1] - this.rangeY[0]
+    }
+
+    get minRangeXY(): number {
+        return Math.min(this.absRangeX, this.absRangeY)
+    }
+
+    get scaleX(): number {
+        if (this.minRangeXY === 0) return 1
+
+        return this.absRangeX / this.minRangeXY
+    }
+
+    get scaleY(): number {
+        if (this.minRangeXY === 0) return 1
+
+        return this.absRangeY / this.minRangeXY
     }
 
     get scaleZMax(): number {
