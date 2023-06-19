@@ -32,7 +32,8 @@
         "Printers": "Printers",
         "TheServiceWorker": {
             "TitleNeedUpdate": "PWA needs update",
-            "DescriptionNeedUpdate": "The local cache is outdated and needs to be updated. Please click on the button below to update the cache."
+            "DescriptionNeedUpdate": "The local cache is outdated and needs to be updated. Please click on the button below to update the cache.",
+            "Update": "update"
         },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM core(s) are currently throttled down.",

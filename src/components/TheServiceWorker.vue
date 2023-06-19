@@ -9,7 +9,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text color="primary" @click="update">update</v-btn>
+                <v-btn text color="primary" @click="update">{{ $t('App.TheServiceWorker.Update') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
