@@ -30,6 +30,11 @@
             "NoEmptyAllowedError": "Feld darf nicht leer sein!"
         },
         "Printers": "Drucker",
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "Der lokale Cache ist veraltet und muss aktualisiert werden. Bitte klicke auf den Button unten, um den Cache zu aktualisieren.",
+            "TitleNeedUpdate": "PWA benötigt ein Update",
+            "Update": "aktualisieren"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM-Kern(e) sind derzeit gedrosselt.",
             "DescriptionFrequencyCapped": "rPi ARM max Frequenz ist derzeit auf 1,2 GHz begrenzt.",
