@@ -1101,7 +1101,8 @@
         "Accept": "akzeptieren",
         "Base": "Basis",
         "ErrorText": "Ein Fehler ist beim Abtasten aufgetreten.",
-        "Headline": "Neigungsverstellung"
+        "Headline": "Neigungsverstellung",
+        "Retry": "wiederholen"
     },
     "Timelapse": {
         "AllFiles": "Alle",
