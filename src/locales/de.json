@@ -31,8 +31,8 @@
         },
         "Printers": "Drucker",
         "TheServiceWorker": {
-            "TitleNeedUpdate": "PWA benötigt ein Update",
             "DescriptionNeedUpdate": "Der lokale Cache ist veraltet und muss aktualisiert werden. Bitte klicke auf den Button unten, um den Cache zu aktualisieren.",
+            "TitleNeedUpdate": "PWA benötigt ein Update",
             "Update": "aktualisieren"
         },
         "ThrottledStates": {

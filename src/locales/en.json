@@ -31,8 +31,8 @@
         },
         "Printers": "Printers",
         "TheServiceWorker": {
-            "TitleNeedUpdate": "PWA needs update",
             "DescriptionNeedUpdate": "The local cache is outdated and needs to be updated. Please click on the button below to update the cache.",
+            "TitleNeedUpdate": "PWA needs update",
             "Update": "update"
         },
         "ThrottledStates": {
