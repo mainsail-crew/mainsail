@@ -2,7 +2,7 @@
     <div>
         <panel
             :icon="mdiFileDocumentMultipleOutline"
-            :title="$t('History.PrintHistory').toString()"
+            :title="$t('History.PrintHistory')"
             card-class="history-list-panel">
             <v-card-text>
                 <v-row>
@@ -236,7 +236,7 @@
             persistent
             @keydown.esc="detailsDialog.boolShow = false">
             <panel
-                :title="$t('History.JobDetails').toString()"
+                :title="$t('History.JobDetails')"
                 :icon="mdiUpdate"
                 card-class="history-detail-dialog"
                 :margin-bottom="false">
