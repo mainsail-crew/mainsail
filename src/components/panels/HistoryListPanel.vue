@@ -1105,12 +1105,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 }
 </script>
 
-<style>
-.history-jobs-table th {
+<style scoped>
+::v-deep .history-jobs-table th {
     white-space: nowrap;
 }
 
-.history-jobs-table th.text-start {
+::v-deep .history-jobs-table th.text-start {
     padding-right: 0 !important;
 }
 </style>
