@@ -1,7 +1,7 @@
 {
     "App": {
         "Notifications": {
-            "DependencyDescription": "Aktualna {name} wersja nie wspiera wszystkich funkcji Mainsail. Zaktualizuj {name} conajmniej do wersji {neededVersion}.",
+            "DependencyDescription": "Aktualna wersja {name} nie wspiera wszystkich funkcji Mainsail. Zaktualizuj {name} conajmniej do wersji {neededVersion}.",
             "DependencyName": "Zależność: {name}",
             "DismissAll": "Odrzuć wszystko",
             "KlipperWarnings": {
@@ -104,8 +104,13 @@
             "Empty": "Puste",
             "Recovering": "Odzyskiwanie {software}...",
             "RecoveringDone": "Odzyskiwanie {software} zakończone!",
-            "Updating": "Aktualizacja {software}...",
+            "Updating": "Aktualizowanie {software}...",
             "UpdatingDone": "Aktualizacja {software} zakończona!"
+        },
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "Lokalna pamięć podręczna jest nieaktualna i wymaga aktualizacji. Kliknij poniższy przycisk, aby zaktualizować pamięć podręczną.",
+            "TitleNeedUpdate": "PWA wymaga aktualizacji",
+            "Update": "aktualizuj"
         }
     },
     "ConnectionDialog": {
@@ -468,18 +473,18 @@
             "CommittedOnDate": "Wydano {date}",
             "CommittedYesterday": "Wydano wczoraj",
             "Detached": "Osobne",
-            "Dirty": "Brudne",
+            "Dirty": "brudny",
             "ERROR": "BŁĄD",
             "Invalid": "Nieprawidłowe",
             "OSPackages": "Pakiety systemowe",
             "PackagesCanBeUpgraded": "pakiety mogą być zaktualizowane",
             "System": "System",
-            "Unknown": "Nieznane",
+            "Unknown": "nieznany",
             "Update": "Aktualizuj",
             "UpdateAll": "Zaktualizuj wszystko",
             "UpdateManager": "Menadżer aktualizacji",
             "Upgrade": "Uaktualnij",
-            "UpToDate": "Aktualne"
+            "UpToDate": "aktualny"
         }
     },
     "Panels": {
@@ -671,7 +676,7 @@
             "Ok": "Okej",
             "Save": "Zapisz",
             "SaveConfig": "ZAPISZ KONFIGURACJĘ",
-            "SaveInfoDescription": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Kliknij na \"ZAPISZ KONFIGURACJĘ\" aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
+            "SaveInfoDescription": "Nowe przesunięcie Z zostało obliczone i zarejestrowane. Kliknij przycisk \"ZAPISZ KONFIGURACJĘ\", aby zapisać ją w pliku printer.cfg i zrestartować Klipper.",
             "SaveInfoDescriptionPrint": "Nowe przesunięcie Z zostało obliczone i zarejestrowane. Po wydrukowaniu kliknij \"ZAPISZ KONFIGURACJĘ\" na górnym pasku, aby zapisać ją w pliku printer.cfg i zrestartować Klipper.",
             "SaveInfoHeadline": "Informacja",
             "ToEndstop": "Do krańcówki",
@@ -779,15 +784,15 @@
         },
         "Edit": "Edytuj",
         "EditorTab": {
-            "ConfirmUnsavedChanges": "Potwierdź aby zapisać lub anulować niezapisane zmiany",
+            "ConfirmUnsavedChanges": "Potwierdź, aby zapisać lub anulować niezapisane zmiany",
             "ConfirmUnsavedChangesDescription": "Jeżeli włączone, edytor wymaga potwierdzenia zapisania zmian lub anulowania. Jeżeli wyłączone, edytor nie wymaga potwierdzenia.",
             "Editor": "Edytor",
             "KlipperRestartMethod": "Metoda restartu Klippera",
             "KlipperRestartMethodDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Klippera.",
             "MoonrakerRestartInstance": "Ponowne uruchomienie instancji Moonrakera",
             "MoonrakerRestartInstanceDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Moonrakera.",
-            "UseEscToClose": "Naciśnij ESC aby wyjść z Edytora",
-            "UseEscToCloseDescription": "Pozwala aby móc zamknąć edytor za pomocą ESC",
+            "UseEscToClose": "Naciśnij ESC, aby wyjść z edytora",
+            "UseEscToCloseDescription": "Umożliwia zamknięcie edytora za pomocą klawisza ESC",
             "TabSize": "Rozmiar tabulacji",
             "TabSizeDescription": "Ustawia, ile spacji powinno być używanych do wcięcia przy użyciu tabulacji (TAB)",
             "Spaces": "Spacje: {count}"
@@ -905,7 +910,7 @@
             "Port": "Port",
             "RemotePrinters": "Drukarki",
             "UpdatePrinter": "Aktualizuj drukarkę",
-            "UseConfigJson": "Wykryto bazę danych JSON. Aby zmodyfikować listę drukarek, proszę skorzystać z pliku config.json."
+            "UseConfigJson": "Wykryto bazę danych JSON. Użyj pliku config.json, aby zmodyfikować listę drukarek."
         },
         "TimelapseTab": {
             "Autorender": "Autorenderowanie",
@@ -986,7 +991,7 @@
             "DisplayCANCEL_PRINT": "Pokazuj przycisk ANULUJ_WYDRUK",
             "DisplayCANCEL_PRINTDescription": "Pokazuje przycisk ANULUJ_WYDRUK permamentnie - brak potrzeby drugiej warstwy.",
             "GcodeThumbnails": "Pokazuj miniaturki",
-            "GcodeThumbnailsDescription": "Wciśnij aby przejść na stronę z pomocnikiem dot. włączenia funkcji.",
+            "GcodeThumbnailsDescription": "Kliknij przycisk, aby przejść do instrukcji.",
             "Guide": "Przewodnik",
             "LockSliders": "Zablokuj suwaki na ekranie dotykowym",
             "LockSlidersDelay": "Opóźnienie blokady suwaków",
@@ -1048,7 +1053,8 @@
             "Hlsstream": "Strumień HLS",
             "JMuxerStream": "Nieskompresowany strumień h264 (jmuxer)",
             "Rotate": "Obróć",
-            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         },
         "MiscellaneousTab": {
             "AddGroup": "dodaj grupę",
@@ -1152,6 +1158,7 @@
         "ErrorText": "Wystąpił problem podczas procesu sondowania.",
         "Accept": "Akceptuj",
         "Base": "Podstawa",
-        "Headline": "Regulacja nachylenia śrubami"
+        "Headline": "Regulacja nachylenia śrubami",
+        "Retry": "ponów"
     }
 }
