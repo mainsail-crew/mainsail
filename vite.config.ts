@@ -12,7 +12,6 @@ import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 
 const PWAConfig: Partial<VitePWAOptions> = {
     registerType: 'autoUpdate',
-    strategies: 'injectManifest',
     srcDir: 'src',
     filename: 'sw.ts',
     includeAssets: ['fonts/**/*.woff2', 'img/**/*.svg', 'img/**/*.png'],
