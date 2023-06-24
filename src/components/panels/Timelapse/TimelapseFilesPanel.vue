@@ -1,21 +1,7 @@
-<style scoped>
-.v-data-table .v-data-table-header__icon {
-    margin-left: 7px;
-}
-
-.v-data-table th {
-    white-space: nowrap;
-}
-
-.v-data-table .file-list-cursor:hover {
-    cursor: pointer;
-}
-</style>
-
 <template>
     <div>
         <panel
-            :title="$t('Timelapse.TimelapseFiles').toString()"
+            :title="$t('Timelapse.TimelapseFiles')"
             :icon="mdiFileDocumentMultipleOutline"
             card-class="timelapse-files-panel">
             <v-card-text>
@@ -217,7 +203,7 @@
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     class="red--text"
-                    @click="removeFile">
+                    @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Timelapse.Delete') }}
                 </v-list-item>
@@ -232,7 +218,7 @@
         </v-menu>
         <v-dialog v-model="dialogRenameFile.show" max-width="400">
             <panel
-                :title="$t('Timelapse.RenameFile').toString()"
+                :title="$t('Timelapse.RenameFile')"
                 card-class="gcode-files-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -261,7 +247,7 @@
         </v-dialog>
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
             <panel
-                :title="$t('Timelapse.NewDirectory').toString()"
+                :title="$t('Timelapse.NewDirectory')"
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -292,7 +278,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel
-                :title="$t('Timelapse.RenameDirectory').toString()"
+                :title="$t('Timelapse.RenameDirectory')"
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -323,7 +309,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel
-                :title="$t('Timelapse.DeleteDirectory').toString()"
+                :title="$t('Timelapse.DeleteDirectory')"
                 card-class="gcode-files-delete-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -347,7 +333,7 @@
         </v-dialog>
         <v-dialog v-model="boolVideoDialog" :max-width="700">
             <panel
-                :title="$t('Timelapse.Video').toString()"
+                :title="$t('Timelapse.Video')"
                 :icon="mdiFileVideo"
                 card-class="timelapse-video-dialog"
                 :margin-bottom="false">
@@ -380,18 +366,47 @@
                 </v-card-text>
             </panel>
         </v-dialog>
+
+        <!-- CONFIRM DELETE SINGLE FILE DIALOG -->
+        <v-dialog v-model="deleteDialog" max-width="400">
+            <panel :title="$t('Timelapse.Delete')" card-class="timelapse-delete-dialog" :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="deleteDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">
+                        {{ $t('Timelapse.DeleteSingleFileQuestion', { name: contextMenu.item.filename }) }}
+                    </p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="deleteDialog = false">
+                        {{ $t('Timelapse.Cancel') }}
+                    </v-btn>
+                    <v-btn color="error" text @click="removeFile">
+                        {{ $t('Timelapse.Delete') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+
+        <!-- CONFIRM DELETE MULTIPLE FILES DIALOG -->
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
-            <panel
-                :title="$t('Timelapse.Delete').toString()"
-                card-class="timelapse-delete-selected-dialog"
-                :margin-bottom="false">
+            <panel :title="$t('Timelapse.Delete')" card-class="timelapse-delete-selected-dialog" :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="deleteSelectedDialog = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
-                    <p class="mb-0">{{ $t('Timelapse.DeleteSelectedQuestion', { count: selectedFiles.length }) }}</p>
+                    <p v-if="selectedFiles.length === 1" class="mb-0">
+                        {{ $t('Timelapse.DeleteSingleFileQuestion', { name: selectedFiles[0].filename }) }}
+                    </p>
+                    <p v-else class="mb-0">
+                        {{ $t('Timelapse.DeleteSelectedQuestion', { count: selectedFiles.length }) }}
+                    </p>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -513,6 +528,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         },
     }
 
+    private deleteDialog = false
     private deleteSelectedDialog = false
 
     private isInvalidName = true
@@ -837,6 +853,8 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
                 { path: this.currentPath + '/' + previewFilename },
                 { action: 'files/getDeleteFile' }
             )
+
+        this.deleteDialog = false
     }
 
     deleteDirectory(item: FileStateFile) {
@@ -893,3 +911,17 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.v-data-table .v-data-table-header__icon {
+    margin-left: 7px;
+}
+
+.v-data-table th {
+    white-space: nowrap;
+}
+
+.v-data-table .file-list-cursor:hover {
+    cursor: pointer;
+}
+</style>

@@ -112,7 +112,7 @@
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
-                <v-list-item class="red--text" @click="removeFile(contextMenu.item)">
+                <v-list-item class="red--text" @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Files.Delete') }}
                 </v-list-item>
@@ -120,7 +120,7 @@
         </v-menu>
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
             <panel
-                :title="$t('Files.RenameFile').toString()"
+                :title="$t('Files.RenameFile')"
                 card-class="dashboard-files-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -143,9 +143,35 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+
+        <!-- CONFIRM DELETE FILE DIALOG -->
+        <v-dialog v-model="deleteDialog" max-width="400">
+            <panel :title="$t('Files.Delete')" card-class="gcode-files-delete-dialog" :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="deleteDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">
+                        {{ $t('Files.DeleteSingleFileQuestion', { name: filename }) }}
+                    </p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="deleteDialog = false">
+                        {{ $t('Files.Cancel') }}
+                    </v-btn>
+                    <v-btn color="error" text @click="removeFile">
+                        {{ $t('Files.Delete') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+
         <v-dialog v-model="dialogAddBatchToQueue.show" max-width="400">
             <panel
-                :title="$t('Files.AddToQueue').toString()"
+                :title="$t('Files.AddToQueue')"
                 card-class="gcode-files-add-to-queue-dialog"
                 :icon="mdiPlaylistPlus"
                 :margin-bottom="false">
@@ -214,6 +240,7 @@ import {
     mdiDelete,
     mdiCloseThick,
 } from '@mdi/js'
+import Panel from '@/components/ui/Panel.vue'
 
 interface dialogRenameObject {
     show: boolean
@@ -229,6 +256,7 @@ interface dialogAddBatchToQueue {
 
 @Component({
     components: {
+        Panel,
         StartPrintDialog,
     },
 })
@@ -246,6 +274,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
 
+    private deleteDialog = false
     private showDialogBool = false
     private dialogFile: FileStateGcodefile = {
         isDirectory: false,
@@ -316,6 +345,11 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         })
 
         return gcodes
+    }
+
+    get filename() {
+        const filename = this.contextMenu.item.filename.split('/')
+        return filename[filename.length - 1]
     }
 
     get styleContentTdWidth() {
@@ -488,12 +522,14 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         )
     }
 
-    removeFile(item: FileStateGcodefile) {
+    removeFile() {
         this.$socket.emit(
             'server.files.delete_file',
-            { path: 'gcodes/' + item.filename },
+            { path: 'gcodes/' + this.contextMenu.item.filename },
             { action: 'files/getDeleteFile' }
         )
+
+        this.deleteDialog = false
     }
 
     mounted() {
