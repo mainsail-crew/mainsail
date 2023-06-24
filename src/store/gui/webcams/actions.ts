@@ -11,16 +11,19 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
 
     init() {
         window.console.debug('init gui/webcams')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'webcams' }, { action: 'gui/webcams/initStore' })
+        //Vue.$socket.emit('server.database.get_item', { namespace: 'webcams' }, { action: 'gui/webcams/initStore' })
+        Vue.$socket.emit('server.webcams.list', {}, { action: 'gui/webcams/initStore' })
     },
 
     async initStore({ commit, dispatch }, payload) {
-        await commit('reset')
-        await commit('initStore', payload)
+        window.console.log('initStore', payload)
+
+        //await commit('reset')
+        //await commit('initStore', payload)
         await dispatch('socket/removeInitModule', 'gui/webcam/init', { root: true })
     },
 
-    upload(_, payload) {
+    /*upload(_, payload) {
         Vue.$socket.emit('server.database.post_item', { namespace: 'webcams', key: payload.id, value: payload.value })
     },
 
@@ -52,5 +55,5 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
     delete({ commit }, payload) {
         commit('delete', payload)
         Vue.$socket.emit('server.database.delete_item', { namespace: 'webcams', key: payload })
-    },
+    },*/
 }
