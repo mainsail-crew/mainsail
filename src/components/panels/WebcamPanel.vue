@@ -77,13 +77,14 @@ export default class WebcamPanel extends Mixins(BaseMixin, WebcamMixin) {
         return this.$store.getters['gui/webcams/getWebcams']
     }
 
+    // id changed to name with the refactoring of using moonraker webcam API
     get currentCamId(): string {
-        if (this.webcams.length === 1) return this.webcams[0].id ?? 'all'
+        if (this.webcams.length === 1) return this.webcams[0].name ?? 'all'
 
         let currentCamId = this.$store.state.gui.view.webcam.currentCam[this.currentPage ?? ''] ?? 'all'
-        if (this.webcams.findIndex((webcam: GuiWebcamStateWebcam) => webcam.id === currentCamId) !== -1)
+        if (this.webcams.findIndex((webcam: GuiWebcamStateWebcam) => webcam.name === currentCamId) !== -1)
             return currentCamId
-        else if (currentCamId !== undefined && this.webcams.length === 1) return this.webcams[0].id ?? ''
+        else if (currentCamId !== undefined && this.webcams.length === 1) return this.webcams[0].name ?? ''
         else return 'all'
     }
 
@@ -92,7 +93,7 @@ export default class WebcamPanel extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get currentCam(): any {
-        const cam = this.webcams.find((cam: GuiWebcamStateWebcam) => cam.id === this.currentCamId)
+        const cam = this.webcams.find((cam: GuiWebcamStateWebcam) => cam.name === this.currentCamId)
 
         return (
             cam ?? {
