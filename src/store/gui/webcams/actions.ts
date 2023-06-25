@@ -1,7 +1,6 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { GuiWebcamState } from '@/store/gui/webcams/types'
-import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
 
 export const actions: ActionTree<GuiWebcamState, RootState> = {
@@ -16,10 +15,8 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
     },
 
     async initStore({ commit, dispatch }, payload) {
-        window.console.log('initStore', payload)
-
-        //await commit('reset')
-        //await commit('initStore', payload)
+        await commit('reset')
+        await commit('initStore', payload.webcams)
         await dispatch('socket/removeInitModule', 'gui/webcam/init', { root: true })
     },
 

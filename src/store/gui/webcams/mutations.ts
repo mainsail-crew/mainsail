@@ -9,7 +9,7 @@ export const mutations: MutationTree<GuiWebcamState> = {
     },
 
     initStore(state, payload) {
-        Vue.set(state, 'webcams', payload.value)
+        Vue.set(state, 'webcams', payload)
     },
 
     store(state, payload) {
