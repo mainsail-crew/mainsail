@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
-import { GuiWebcamState } from '@/store/gui/webcams/types'
+import { GuiWebcamState, GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import Vue from 'vue'
 
 export const actions: ActionTree<GuiWebcamState, RootState> = {
@@ -10,7 +10,6 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
 
     init() {
         window.console.debug('init gui/webcams')
-        //Vue.$socket.emit('server.database.get_item', { namespace: 'webcams' }, { action: 'gui/webcams/initStore' })
         Vue.$socket.emit('server.webcams.list', {}, { action: 'gui/webcams/initStore' })
     },
 
@@ -20,37 +19,16 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
         await dispatch('socket/removeInitModule', 'gui/webcam/init', { root: true })
     },
 
-    /*upload(_, payload) {
-        Vue.$socket.emit('server.database.post_item', { namespace: 'webcams', key: payload.id, value: payload.value })
+    store(_, payload) {
+        Vue.$socket.emit('server.webcams.post_item', payload)
     },
 
-    store({ commit, dispatch, state }, payload) {
-        const id = uuidv4()
-
-        commit('store', { id, values: payload.values })
-        dispatch('upload', {
-            id,
-            value: state.webcams[id],
-        })
+    update({ dispatch }, payload: { webcam: GuiWebcamStateWebcam; oldWebcamName: string }) {
+        Vue.$socket.emit('server.webcams.post_item', payload.webcam)
+        if (payload.webcam.name !== payload.oldWebcamName) dispatch('delete', payload.oldWebcamName)
     },
 
-    update({ commit, dispatch, state, rootState }, payload) {
-        commit('update', payload)
-        dispatch('upload', {
-            id: payload.id,
-            value: state.webcams[payload.id],
-        })
-
-        if (
-            rootState.server?.components.includes('timelapse') &&
-            rootState.server?.timelapse?.settings.camera === payload.id
-        ) {
-            dispatch('server/timelapse/saveSetting', { camera: payload.id }, { root: true })
-        }
+    delete(_, payload: string) {
+        Vue.$socket.emit('server.webcams.delete_item', { name: payload })
     },
-
-    delete({ commit }, payload) {
-        commit('delete', payload)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'webcams', key: payload })
-    },*/
 }
