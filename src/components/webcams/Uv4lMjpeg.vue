@@ -29,7 +29,7 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     }
 
     get url() {
-        const baseUrl = this.camSettings.urlStream
+        const baseUrl = this.camSettings.stream_url
         let url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
         if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
@@ -45,8 +45,8 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
         }
 
         let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
+        if ('flipX' in this.camSettings && this.camSettings.flip_horizontal) transforms += ' scaleX(-1)'
+        if ('flipX' in this.camSettings && this.camSettings.flip_vertical) transforms += ' scaleY(-1)'
         if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) {
