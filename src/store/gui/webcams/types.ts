@@ -4,7 +4,7 @@ export interface GuiWebcamState {
 
 export interface GuiWebcamStateWebcam {
     name: string
-    location: string
+    location?: string
     service:
         | 'hlsstream'
         | 'ipstream'
@@ -18,13 +18,13 @@ export interface GuiWebcamStateWebcam {
     enabled: boolean
     icon: string
     target_fps: number
-    target_fps_idle: number
+    target_fps_idle?: number
     stream_url: string
     snapshot_url: string
     flip_horizontal: boolean
     flip_vertical: boolean
     rotation: number
-    aspect_ratio: string
-    extra_data: {}
-    source: 'config' | 'database'
+    aspect_ratio?: string
+    extra_data?: {}
+    source?: 'config' | 'database'
 }
