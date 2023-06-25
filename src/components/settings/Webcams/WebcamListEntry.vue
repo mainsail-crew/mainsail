@@ -2,21 +2,23 @@
     <div>
         <v-divider v-if="boolBorderTop" class="my-2" />
         <settings-row :title="webcam.name" :icon="icon" :sub-title="subtitle">
-            <v-btn
-                class="minwidth-0 px-2"
-                small
-                outlined
-                :color="webcam.enabled ? '' : 'secondary'"
-                @click="toogleStatus">
-                <v-icon small>{{ mdiLightbulbOutline }}</v-icon>
-            </v-btn>
-            <v-btn class="ml-3" small outlined @click="edit">
-                <v-icon small left>{{ mdiPencil }}</v-icon>
-                {{ $t('Settings.Edit') }}
-            </v-btn>
-            <v-btn small outlined class="ml-3 minwidth-0 px-2" color="error" @click="deleteWebcam">
-                <v-icon small>{{ mdiDelete }}</v-icon>
-            </v-btn>
+            <template v-if="webcam.source === 'database'">
+                <v-btn
+                    class="minwidth-0 px-2"
+                    small
+                    outlined
+                    :color="webcam.enabled ? '' : 'secondary'"
+                    @click="toogleStatus">
+                    <v-icon small>{{ mdiLightbulbOutline }}</v-icon>
+                </v-btn>
+                <v-btn class="ml-3" small outlined @click="edit">
+                    <v-icon small left>{{ mdiPencil }}</v-icon>
+                    {{ $t('Settings.Edit') }}
+                </v-btn>
+                <v-btn small outlined class="ml-3 minwidth-0 px-2" color="error" @click="deleteWebcam">
+                    <v-icon small>{{ mdiDelete }}</v-icon>
+                </v-btn>
+            </template>
         </settings-row>
     </div>
 </template>
