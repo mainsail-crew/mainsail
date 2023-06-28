@@ -225,7 +225,8 @@
         "InvalidNameEmpty": "Pole wejściowe nie może być puste!",
         "ExtruderTemp": "Temp. ekstrudera",
         "Duplicate": "Duplikat",
-        "ScanMetaSuccess": "Pomyślnie przeskanowano metadane z: {filename}."
+        "ScanMetaSuccess": "Pomyślnie przeskanowano metadane z: {filename}.",
+        "DeleteSingleFileQuestion": "Czy na pewno chcesz usunąć plik \"{name}\"?"
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Błąd wgrywania pliku!",
@@ -367,7 +368,8 @@
         "TotalPrinttime": "Łączny czas drukowania",
         "TotalTime": "Całkowity czas druku",
         "Chart": "Wykres",
-        "Table": "Tabela"
+        "Table": "Tabela",
+        "DeleteSingleJobQuestion": "Czy na pewno chcesz usunąć zadanie?"
     },
     "JobQueue": {
         "AllJobs": "Wszystkie wydruki",
@@ -420,7 +422,8 @@
             "Used": "Używane",
             "ConfigRootDirectoryDoesntExists": "Nie znaleziono katalogu konfiguracyjnego. Sprawdź opcję \"config_path\" w sekcji [file_manager] konfiguracji Moonrakera.",
             "Duplicate": "Duplikat",
-            "DuplicateFile": "Powielony plik"
+            "DuplicateFile": "Powielony plik",
+            "DeleteSingleFileQuestion": "Czy na pewno chcesz usunąć plik \"{name}\"?"
         },
         "EndstopPanel": {
             "Endstop": "Krańcówka",
@@ -984,10 +987,10 @@
             "BoolBigThumbnailDescription": "Pokazuj dużą miniaturkę podczas wydruku.",
             "BoolHideUploadAndPrintButton": "Ukryj przycisk \"Wgraj i drukuj\"",
             "BoolHideUploadAndPrintButtonDescription": "Pokazuj lub ukrywaj przycisk \"Prześlij i drukuj\" na górnym pasku.",
-            "ConfirmOnEmergencyStop": "Potwierdzenie Nagłego Zatrzymania",
-            "ConfirmOnEmergencyStopDescription": "Pokazuj dialog potwierdzenia po naciśnięciu Nagłego Zatrzymania",
+            "ConfirmOnEmergencyStop": "Potwierdzenie awaryjnego zatrzymania",
+            "ConfirmOnEmergencyStopDescription": "Pokazuj dialog potwierdzenia po naciśnięciu Awaryjny STOP",
             "ConfirmOnPowerDeviceChange": "Potwierdzenie dla zmiany zasilania urządzenia",
-            "ConfirmOnPowerDeviceChangeDescription": "Wyświetlaj okno dialogowe potwierdzenia przy zmianach zasilania urządzenia.",
+            "ConfirmOnPowerDeviceChangeDescription": "Wyświetlaj okno dialogowe potwierdzenia przy zmianach zasilania urządzenia",
             "DisplayCANCEL_PRINT": "Pokazuj przycisk ANULUJ_WYDRUK",
             "DisplayCANCEL_PRINTDescription": "Pokazuje przycisk ANULUJ_WYDRUK permamentnie - brak potrzeby drugiej warstwy.",
             "GcodeThumbnails": "Pokazuj miniaturki",
@@ -1134,7 +1137,8 @@
         "Used": "Używane",
         "Variable": "Zmienne",
         "Video": "Filmy",
-        "DeleteSelectedQuestion": "Czy na pewno chcesz usunąć {count} wybranych plików?"
+        "DeleteSelectedQuestion": "Czy na pewno chcesz usunąć {count} wybranych plików?",
+        "DeleteSingleFileQuestion": "Czy na pewno chcesz usunąć plik \"{name}\"?"
     },
     "title": "Polski",
     "BedScrews": {
