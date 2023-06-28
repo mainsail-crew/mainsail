@@ -28,7 +28,7 @@
                             <v-list-item-title>{{ $t('Panels.WebcamPanel.All') }}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item v-for="webcam of webcams" :key="webcam.id" link @click="currentCamId = webcam.id">
+                    <v-list-item v-for="webcam of webcams" :key="webcam.name" link @click="currentCamId = webcam.name">
                         <v-list-item-icon class="mr-2">
                             <v-icon small class="mt-1">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
                         </v-list-item-icon>
