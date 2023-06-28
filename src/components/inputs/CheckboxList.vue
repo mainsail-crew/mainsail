@@ -1,13 +1,15 @@
 <template>
     <v-col class="pl-6">
-        <v-checkbox
-            v-model="selectAllModel"
-            :label="$t('Settings.GeneralTab.Everything')"
-            hide-details
-            class="mt-0"
-            :indeterminate="selectAllIndeterminate"
-            @change="$emit('update:selectedCheckboxes', selectedCheckboxes)"></v-checkbox>
-        <v-divider class="my-2" />
+        <template v-if="selectAll">
+            <v-checkbox
+                v-model="selectAllModel"
+                :label="$t('Settings.GeneralTab.Everything')"
+                hide-details
+                class="mt-0"
+                :indeterminate="selectAllIndeterminate"
+                @change="$emit('update:selectedCheckboxes', selectedCheckboxes)"></v-checkbox>
+            <v-divider class="my-2" />
+        </template>
         <template v-for="option in options">
             <v-checkbox
                 :key="option.value"
@@ -32,7 +34,7 @@ export default class CheckboxList extends Mixins(BaseMixin) {
     @Prop({required: true})
     declare readonly options: {label: string, value: string}[]
 
-    @Prop({required: false, default: false})
+    @Prop({type: Boolean, required: false, default: false})
     declare readonly selectAll: boolean
 
     private selectedCheckboxes: string[] = []
@@ -58,6 +60,10 @@ export default class CheckboxList extends Mixins(BaseMixin) {
         } else {
             this.selectedCheckboxes = []
         }
+    }
+
+    mounted() {
+        console.log(this.selectAll)
     }
 }
 </script>
