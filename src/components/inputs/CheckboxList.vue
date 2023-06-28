@@ -1,22 +1,22 @@
 <template>
     <v-col class="pl-6">
         <v-checkbox
+            v-model="selectAllModel"
             :label="$t('Settings.GeneralTab.Everything')"
             hide-details
             class="mt-0"
-            @change="$emit('update:selectedCheckboxes', selectedCheckboxes)"
-            v-model="selectAllModel"
-            :indeterminate="selectAllIndeterminate"></v-checkbox>
+            :indeterminate="selectAllIndeterminate"
+            @change="$emit('update:selectedCheckboxes', selectedCheckboxes)"></v-checkbox>
         <v-divider class="my-2" />
         <template v-for="option in options">
             <v-checkbox
                 :key="option.value"
+                v-model="selectedCheckboxes"
                 :label="option.label"
                 hide-details
                 class="mt-0"
-                @change="$emit('update:selectedCheckboxes', selectedCheckboxes)"
-                v-model="selectedCheckboxes"
-                :value="option.value"></v-checkbox>
+                :value="option.value"
+                @change="$emit('update:selectedCheckboxes', selectedCheckboxes)"></v-checkbox>
         </template>
     </v-col>
 </template>

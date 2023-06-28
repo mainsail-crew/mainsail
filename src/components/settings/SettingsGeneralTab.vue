@@ -116,8 +116,8 @@
                     <v-row>
                         <checkbox-list
                             :options="backupableNamespaces"
-                            @update:selectedCheckboxes="onSelectBackupCheckboxes"
-                            select-all=true>
+                            select-all=true
+                            @update:selectedCheckboxes="onSelectBackupCheckboxes">
                         </checkbox-list>
                     </v-row>
                     <v-row>
@@ -216,8 +216,8 @@
                     <v-row>
                         <checkbox-list
                             :options="restoreableNamespaces"
-                            @update:selectedCheckboxes="onSelectRestoreCheckboxes"
-                            select-all=true>
+                            select-all=true
+                            @update:selectedCheckboxes="onSelectRestoreCheckboxes">
                         </checkbox-list>
                     </v-row>
                     <v-row>
