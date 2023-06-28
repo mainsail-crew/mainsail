@@ -230,13 +230,10 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             })
         }
 
-        if (payload.namespaces.includes('webcams')) {
-            dispatch('sendObj', {
-                method: 'server.database.get_item',
-                params: { namespace: 'webcams' },
-                action: 'getWebcamsData',
-            })
-        }
+        dispatch('sendObj', {
+            method: 'server.webcams.list',
+            action: 'getWebcamsData',
+        })
     },
 
     getMainsailData({ commit }, payload) {
@@ -244,6 +241,6 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
     },
 
     getWebcamsData({ commit }, payload) {
-        commit('setWebcamsData', payload.value)
+        commit('setWebcamsData', payload.webcams)
     },
 }

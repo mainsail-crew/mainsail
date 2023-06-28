@@ -308,14 +308,6 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     getPrinterWebcams: (state) => {
-        const webcams: GuiWebcamStateWebcam[] = []
-
-        /*if (state.data.webcams) {
-            Object.keys(state.data.webcams).forEach((id: string) => {
-                webcams.push({ ...state.data?.webcams[id], id })
-            })
-        }*/
-
-        return webcams
+        return state.data.webcams.filter((webcam: GuiWebcamStateWebcam) => webcam.enabled)
     },
 }
