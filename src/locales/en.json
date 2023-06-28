@@ -863,7 +863,8 @@
             "Reset": "reset",
             "Restore": "Restore",
             "RestoreDialog": "Please select all the sections you want to restore:",
-            "TimeFormat": "Time Format"
+            "TimeFormat": "Time Format",
+            "Everything": "Everything"
         },
         "InterfaceSettings": "Interface Settings",
         "MacrosTab": {
