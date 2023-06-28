@@ -24,17 +24,16 @@
 </template>
 
 <script lang="ts">
-
-import {Component, Mixins, Prop} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import {computed} from "vue";
+import { Component, Mixins, Prop } from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import { computed } from 'vue'
 
 @Component
 export default class CheckboxList extends Mixins(BaseMixin) {
-    @Prop({required: true})
-    declare readonly options: {label: string, value: string}[]
+    @Prop({ required: true })
+    declare readonly options: { label: string; value: string }[]
 
-    @Prop({type: Boolean, required: false, default: false})
+    @Prop({ type: Boolean, required: false, default: false })
     declare readonly selectAll: boolean
 
     private selectedCheckboxes: string[] = []
@@ -42,12 +41,12 @@ export default class CheckboxList extends Mixins(BaseMixin) {
     private selectAllIndeterminate: boolean = false
     selectAllModel = computed<boolean>({
         get: this.getSelectAll,
-        set: this.setSelectAll
+        set: this.setSelectAll,
     })
 
     getSelectAll(): boolean {
         this.selectAllIndeterminate = false
-        if (0 < this.selectedCheckboxes.length && this.selectedCheckboxes.length < this.options.length){
+        if (0 < this.selectedCheckboxes.length && this.selectedCheckboxes.length < this.options.length) {
             this.selectAllIndeterminate = true
             return false
         }

@@ -117,8 +117,7 @@
                         <checkbox-list
                             :options="backupableNamespaces"
                             select-all
-                            @update:selectedCheckboxes="onSelectBackupCheckboxes">
-                        </checkbox-list>
+                            @update:selectedCheckboxes="onSelectBackupCheckboxes"></checkbox-list>
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
@@ -217,8 +216,7 @@
                         <checkbox-list
                             :options="restoreableNamespaces"
                             select-all
-                            @update:selectedCheckboxes="onSelectRestoreCheckboxes">
-                        </checkbox-list>
+                            @update:selectedCheckboxes="onSelectRestoreCheckboxes"></checkbox-list>
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
@@ -241,7 +239,7 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import Vue from 'vue'
 import { mdiCloseThick, mdiHelpCircle } from '@mdi/js'
-import CheckboxList from "@/components/inputs/CheckboxList.vue";
+import CheckboxList from '@/components/inputs/CheckboxList.vue'
 
 @Component({
     components: { Panel, SettingsRow, CheckboxList },
@@ -528,7 +526,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     }
 
     async resetMainsail() {
-        await this.refreshBackupTargets();
+        await this.refreshBackupTargets()
 
         this.backupCheckboxes = []
         this.dialogResetMainsail = true
@@ -553,21 +551,23 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         this.backupableNamespaces = []
         if (this.availableNamespaces.includes('mainsail')) {
             await this.refreshMainsailKeys()
-            this.backupableNamespaces.push(...this.mainsailKeys.map((k) => ({
-                label: k.label,
-                value: k.name
-            })))
+            this.backupableNamespaces.push(
+                ...this.mainsailKeys.map((k) => ({
+                    label: k.label,
+                    value: k.name,
+                }))
+            )
         }
         if (this.availableNamespaces.includes('timelapse')) {
             this.backupableNamespaces.push({
                 value: 'timelapase',
-                label: this.$t('Settings.GeneralTab.DbTimelapseSettings').toString()
+                label: this.$t('Settings.GeneralTab.DbTimelapseSettings').toString(),
             })
         }
         if (this.availableNamespaces.includes('webcams')) {
             this.backupableNamespaces.push({
                 value: 'webcams',
-                label: this.$t('Settings.GeneralTab.DbWebcams').toString()
+                label: this.$t('Settings.GeneralTab.DbWebcams').toString(),
             })
         }
     }
@@ -597,7 +597,12 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
 
                         Object.keys(this.restoreObjects).forEach((tmp: string) => {
                             const namespace = this.availableKeys.find((namespace) => namespace.name === tmp)
-                            const tmpNamespace = namespace ? { value: namespace.name, label: namespace.label} : { value: tmp, label: tmp }
+                            const tmpNamespace = namespace
+                                ? {
+                                      value: namespace.name,
+                                      label: namespace.label,
+                                  }
+                                : { value: tmp, label: tmp }
 
                             this.restoreableNamespaces.push(tmpNamespace)
                         })
