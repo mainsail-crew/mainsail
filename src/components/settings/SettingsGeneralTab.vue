@@ -181,12 +181,6 @@
                                 class="mt-0"
                                 @change="changeNamespace('timelapse')"></v-checkbox>
                             <v-checkbox
-                                v-if="availableNamespaces.includes('webcams')"
-                                :label="$t('Settings.GeneralTab.DbWebcams')"
-                                hide-details
-                                class="mt-0"
-                                @change="changeNamespace('webcams')"></v-checkbox>
-                            <v-checkbox
                                 v-if="moonrakerComponents.includes('history')"
                                 :label="$t('Settings.GeneralTab.DbHistoryJobs')"
                                 hide-details
