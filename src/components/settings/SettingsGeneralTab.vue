@@ -129,12 +129,6 @@
                                 hide-details
                                 class="mt-0"
                                 @change="changeNamespace('timelapse')"></v-checkbox>
-                            <v-checkbox
-                                v-if="availableNamespaces.includes('webcams')"
-                                :label="$t('Settings.GeneralTab.DbWebcams')"
-                                hide-details
-                                class="mt-0"
-                                @change="changeNamespace('webcams')"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -338,10 +332,6 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
             {
                 name: 'view',
                 label: this.$t('Settings.GeneralTab.DbView').toString(),
-            },
-            {
-                name: 'webcams',
-                label: this.$t('Settings.WebcamsTab.Webcams').toString(),
             },
         ]
     }
