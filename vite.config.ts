@@ -8,6 +8,7 @@ import checker from 'vite-plugin-checker'
 
 import path from 'path'
 import buildVersion from './src/plugins/build-version'
+import buildReleaseInfo from './src/plugins/build-release_info'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 
 const PWAConfig: Partial<VitePWAOptions> = {
@@ -66,6 +67,7 @@ export default defineConfig({
     plugins: [
         VitePWA(PWAConfig),
         buildVersion(),
+        buildReleaseInfo(),
         vue(),
         loadVersion(),
         checker({ typescript: true }),
