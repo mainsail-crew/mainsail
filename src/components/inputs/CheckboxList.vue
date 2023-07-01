@@ -36,7 +36,7 @@ export default class CheckboxList extends Mixins(BaseMixin) {
     @Prop({ type: Boolean, required: false, default: false })
     declare readonly selectAll: boolean
 
-    @Prop({type: String, required: false, default: ''})
+    @Prop({ type: String, required: false, default: '' })
     declare readonly selectAllLabel: string
 
     private selectedCheckboxes: string[] = []
