@@ -3,5 +3,3 @@ dist/
 public/
 components.d.ts
 CHANGELOG.md
-src/plugins/CodemirrorLanguages/KlipperConfigLanguage/parser/klipperConfigParser.terms.js
-src/plugins/CodemirrorLanguages/KlipperConfigLanguage/parser/klipperConfigParser.js

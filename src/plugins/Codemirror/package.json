@@ -1,0 +1,11 @@
+{
+    "name": "@lezer/klippercfg",
+    "version": "1.0",
+    "description": "Lezer-based grammar for Klipper Configuration",
+    "main": "dist/klipperCfgParser.cjs",
+    "type": "module",
+    "exports": {
+        "import": "./dist/klipperCfgParser.es.js",
+        "require": "./dist/klipperCfgParser.cjs"
+    }
+}

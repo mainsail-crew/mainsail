@@ -1,0 +1,25 @@
+# 1) block type with special characters 
+[test_-2a]
+==>
+Program(ConfigBlock(BlockType))
+
+
+
+# 2) block type with non valid characters 
+[mcu123.:%=]
+==>
+error
+
+
+
+# 3) block type and identifier with special characters
+[mcu test123_-4]
+==> 
+Program(ConfigBlock(BlockType,Identifier))
+
+
+
+# 4) block type and identifier with non valid characters
+[mcu test123.:%=]
+==>
+error

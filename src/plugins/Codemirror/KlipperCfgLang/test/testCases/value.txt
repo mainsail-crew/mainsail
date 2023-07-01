@@ -1,0 +1,296 @@
+# 1) normal Pin
+[stepper]
+pin: PE1
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Pin)))))
+
+
+
+# 2) inverted Pin
+[stepper]
+pin: !PE1
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Pin)))))
+
+
+
+# 3) pullup/low Pin
+[stepper]
+pin: ^PE1
+pin: ~PE2
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Pin)),Option(Parameter,Value(Pin)))))
+
+
+
+# 4) combination of iverted and pullup/low pin
+[stepper]
+pin: ^!PE1
+pin: ~!PE2
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Pin)),Option(Parameter,Value(Pin)))))
+
+
+
+# 5) wrong combination of iverted and pullup/low pin
+[stepper]
+pin: !^PE1
+pin: !+PE1
+pin: ~^PE2
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(String)),Option(Parameter,Value(String)),Option(Parameter,Value(String)))))
+
+
+
+# 6) lowercase Pin
+[stepper]
+pin: pe1
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(String)))))
+
+
+
+# 7) pins
+[stepper]
+pin: PE1, PE2
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Pin,Pin)))))
+
+
+
+# 8) virtual pin 
+[stepper]
+pin: rpi:None
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(VirtualPin)))))
+
+
+
+# 9) virtual pin with non valid characters
+[stepper]
+pin: rpi!:None*
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(String)))))
+
+
+
+# 10) number
+[stepper]
+microsteps: 32
+homing_speed: 30.3
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Number)),Option(Parameter,Value(Number)))))
+
+
+
+# 11)  negativ number
+[stepper]
+microsteps: -32
+homing_speed: -30.3
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Number)),Option(Parameter,Value(Number)))))
+
+
+
+# 12)  float but "," instead of "."
+[stepper]
+homing_speed: -30,3
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Cords)))))
+
+
+
+# 13) cords 
+[resonance_tester]
+points3d: 110,110,20 
+points2d: 110,-110
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Cords)),Option(Parameter,Value(Cords)))))
+
+
+
+# 14) mixing float/int in cords
+[resonance_tester]
+points3d: 110,110.23,20.6
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Cords)))))
+
+
+
+# 15) normal string
+[printer]
+kinematics: coreXY123
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(String)))))
+
+
+
+# 16) string with whitespaces
+[printer]
+kinematics: core xy
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(String)))))
+
+
+
+# 17) string with special characters
+[printer]
+kinematics: corexy!_:/-gtX
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(String)))))
+
+
+
+# 18) string with special characters 2
+[printer]
+kinematics: {'%05.1f' % (printer.toolhead)}
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(String)))))
+
+
+
+# 19) boolean 
+[tmc]
+interpolate: True
+interpolate: true
+interpolate: False
+interpolate: false
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Boolean)),Option(Parameter,Value(Boolean)),Option(Parameter,Value(Boolean)),Option(Parameter,Value(Boolean)))))
+
+
+
+# 20) Path 
+[mcu]
+serial: /tmp/klipper_host_mcu
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Path)))))
+
+
+
+# 21) FilePath 
+[mcu]
+serial: /tmp/test.txt
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(FilePath)))))
+
+
+
+# 22) path of a file in same directory
+[mcu]
+serial: test.txt
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(FilePath)))))
+
+
+
+# 23) parth starting with "./", "../", "~/" or without "/"
+[mcu]
+serial: ./tmp/test.txt
+serial: ../tmp/test.txt
+serial: ~/tmp/test.txt
+serial: tmp/test.txt
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(String)),Option(Parameter,Value(String)),Option(Parameter,Value(FilePath)),Option(Parameter,Value(String)))))
+
+
+
+# 24) Resolution 
+[display]
+resolution: 1280x720
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Resolution)))))
+
+
+
+# 25) non valid Resolution
+[display]
+resolution: 1280x720.8
+==>
+error
+
+
+
+# 26) Ipv4
+[server]
+host: 0.0.0.0
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Ipv4)))))
+
+
+
+# 27) Ipv4 with port
+[server]
+host: 0.0.0.0:8123
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Ipv4)))))
+
+
+
+# 28) ipv4 with subnetsize
+[server]
+host: 0.0.0.0/24
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Ipv4)))))
+
+
+
+# 29) Ipv4 with wrong syntax 
+[server]
+host: 0.0.0/24
+==> 
+error
+
+
+
+# 30) Ipv6
+[server]
+host: ::1
+host: FE80::
+host: FE80::1
+host: FE80:1::1:1
+host: 1:1:1:1:1:1
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Ipv6)),Option(Parameter,Value(Ipv6)),Option(Parameter,Value(Ipv6)),Option(Parameter,Value(Ipv6)),Option(Parameter,Value(Ipv6)))))
+
+
+
+# 31) ipv6 with subnetsize
+[server]
+host: ::1/128
+==> 
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Ipv6)))))
+
+
+
+# 32) Ipv6 with wrong syntax 
+[server]
+host: 1:1/128
+==> 
+error 
+
+
+
+# 33) Empty value:
+[server]
+host:
+restart_method: command
+==>
+error
+
+
+
+# 35) Empty value with whitespaces:
+[server]
+host:  
+restart_method: command
+==>
+error
+
+
+
+# 36) Value with leading and trailing whitespaces:
+[mcu]
+serial:  16x16 
+==>
+Program(ConfigBlock(BlockType,Body(Option(Parameter,Value(Resolution)))))

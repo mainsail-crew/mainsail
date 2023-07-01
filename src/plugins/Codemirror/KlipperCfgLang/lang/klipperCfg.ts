@@ -1,4 +1,4 @@
-import { parser } from '../parser/klipperCfgParser.js'
+import { parser } from '../dist/klipperCfgParser.es.js'
 import { LRLanguage, LanguageSupport, StreamLanguage, foldNodeProp } from '@codemirror/language'
 import { parseMixed } from '@lezer/common'
 import { klipper_config } from '../../../StreamParserKlipperConfig.js'
@@ -37,5 +37,5 @@ export function klipperCfg() {
 
 /* 
 to generate the parser run:
-npx @lezer/generator klipperCfg.grammar -o klipperCfgParser.js
+npx lezer-generator klipperCfg.grammar -o klipperCfgParser.js
  */

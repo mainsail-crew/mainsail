@@ -1,0 +1,86 @@
+# 1) parameter at non valid positions
+speed: 50
+[mcu]
+serial: /dev/ttyAMA0
+[include test.cfg]
+restart_method: command
+==>
+Program(
+    ConfigBlock(⚠,BlockType,⚠,Identifier,⚠),
+    ConfigBlock(BlockType,Body(
+        Option(Parameter,Value(Path)))),
+    Import(ImportKeyword,FilePath),
+    ConfigBlock(⚠,BlockType,⚠,Identifier,⚠))
+
+
+
+# 2) parameter without following ":" + value/valueBlock
+[mcu]
+serial
+[adxl345]
+==>
+error
+
+
+
+# 3) parameter-name with special characters
+[mcu]
+serial_tem-3: 1
+==>
+Program(
+    ConfigBlock(BlockType,Body(
+        Option(Parameter,Value(Number)))))
+
+
+
+# 4) parameter-name with non-valid characters
+[mcu]
+serial@: /dev/ttyAMA0
+==>
+error
+
+
+
+# 5) parameter with normal value
+[mcu]
+num: 100
+==>
+Program(
+    ConfigBlock(BlockType,Body(
+        Option(Parameter,Value(Number)))))
+
+
+
+# 6) parameter with valueBlock
+[mcu]
+cords:
+    10, 20
+    220, 210
+==>
+Program(
+    ConfigBlock(BlockType,Body(
+        Option(Parameter,Value(Cords,Cords)))))
+
+
+
+# 7) parameter ending on "gcode" + value
+[commands]
+start_gcode: M106 S0
+==>
+Program(
+    ConfigBlock(BlockType,Body(
+        Option(GcodeKeyword,Jinja2))))
+
+
+
+# 8) parameter ending on "gcode" + valueBlock
+[commands]
+end_gcode:
+    M104 S0
+    M140 S0
+# comment
+==>
+Program(
+    ConfigBlock(BlockType,
+    Body(Option(GcodeKeyword,Jinja2))),
+    Comment)

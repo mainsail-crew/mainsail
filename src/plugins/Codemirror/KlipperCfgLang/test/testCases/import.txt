@@ -1,0 +1,25 @@
+# 1) import with wrong syntax (missing bracket)
+[include test.cfg
+==>
+error
+
+
+
+# 2) import with wrong syntax (missing file path)
+[include ]
+==>
+error
+
+
+
+# 3) import with wrong syntax (wrong keyword)
+[includ test.cfg]
+==>
+Program(ConfigBlock(BlockType,Identifier))
+
+
+
+# 4) korrect import
+[include test.cfg]
+==>
+Program(Import(ImportKeyword,FilePath))

@@ -21,7 +21,7 @@ export const newlines = new ExternalTokenizer(
             while (input.next == space || input.next == tab) {
                 input.advance()
             }
-            if (input.next == newline || input.next == carriageReturn) input.acceptToken(blankLine, 1)
+            if (isLineBreak(input.next)) input.acceptToken(blankLine, 1)
         } else if (isLineBreak(input.next)) {
             input.acceptToken(newlineToken, 1)
         }
@@ -72,7 +72,7 @@ export const trackIndent = new ContextTracker({
         return context.depth < 0 ? context.parent : context
     },
     shift(context, term, stack, input) {
-        if (term == indent) return new IndentLevel(context, countIndent(input.read(input.pos, stack.pos)))
+        if (term == indent) return new IndentLevel(context, countIndent(input.read(input.pos, stack.pos)) >= 1 ? 1 : 0)
         if (term == dedent) return context.parent
         return context
     },

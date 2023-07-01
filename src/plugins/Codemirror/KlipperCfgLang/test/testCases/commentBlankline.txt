@@ -1,0 +1,121 @@
+# 1) Comment lines at the beginning with configuration underneath
+# test comment
+# test comment
+[include test.cfg]
+[include test2.cfg]
+==> 
+Program(
+    Comment,
+    Comment,
+    Import(ImportKeyword,FilePath),
+    Import(ImportKeyword,FilePath))
+
+
+
+# 2) blank lines at the beginning with configuration underneath
+
+
+[include test.cfg]
+[include test2.cfg]
+==> 
+Program(
+    Import(ImportKeyword,FilePath),
+    Import(ImportKeyword,FilePath))
+
+
+
+# 3) comment + blank line as first line with configuration underneath
+# test comment
+
+[include test.cfg]
+[include test2.cfg]
+==> 
+Program(
+    Comment,
+    Import(ImportKeyword,FilePath),
+    Import(ImportKeyword,FilePath))
+
+
+
+# 4) Comment line between config blocks / parameters 
+[mcu]
+serial: /dev/ttyAMA0
+# test comment
+restart_method: command
+# test comment
+[adxl345]
+cs_pin: rpi:None
+==> 
+Program(
+    ConfigBlock(BlockType,Body(
+        Option(Parameter,Value(Path)),
+        Comment,
+        Option(Parameter,Value(String)))),
+        Comment,
+    ConfigBlock(BlockType,Body(
+        Option(Parameter,Value(VirtualPin)))))
+
+
+
+# 5) blank line between config blocks / parameters 
+[mcu]
+serial: /dev/ttyAMA0
+
+restart_method: command
+
+[adxl345]
+cs_pin: rpi:None
+==> 
+Program(
+    ConfigBlock(BlockType,Body(
+        Option(Parameter,Value(Path)),
+        Option(Parameter,Value(String)))),
+    ConfigBlock(BlockType,Body(
+        Option(Parameter,Value(VirtualPin)))))
+
+
+
+# 6) Comment after a [Block], a parameter, and after a value
+[mcu] # test comment
+serial: /dev/ttyAMA0 # test comment
+restart_method: # test comment
+    command # test comment
+==> 
+Program(
+    ConfigBlock(BlockType,Comment,Body(
+        Option(Parameter,Value(Path,Comment)),
+        Option(Parameter,Comment,Value(String,Comment)))))
+
+
+
+
+# 7) Comment after all value types
+[test]
+path: /dev/ttyAMA0 # test comment
+filepath: /dev/test.txt # test comment
+string: command # test comment
+number: 1 # test comment
+cords: 1,2 # test comment
+pin: PE3 # test comment
+pins: PE3,PE4 # test comment
+virtualPin: rpi:None # test comment
+boolean: true # test comment
+resolution: 1x2 # test comment
+ipv4: 10.22.22.2 # test comment
+ipv6: ::1/128 # test comment
+==> 
+Program(
+    ConfigBlock(BlockType,Body(
+        Option(Parameter,Value(Path,Comment)),
+        Option(Parameter,Value(FilePath,Comment)),
+        Option(Parameter,Value(String,Comment)),
+        Option(Parameter,Value(Number,Comment)),
+        Option(Parameter,Value(Cords,Comment)),
+        Option(Parameter,Value(Pin,Comment)),
+        Option(Parameter,Value(Pin,Pin,Comment)),
+        Option(Parameter,Value(VirtualPin,Comment)),
+        Option(Parameter,Value(Boolean,Comment)),
+        Option(Parameter,Value(Resolution,Comment)),
+        Option(Parameter,Value(Ipv4,Comment)),
+        Option(Parameter,Value(Ipv6,Comment))
+        )))
