@@ -8,7 +8,7 @@
     },
     "scripts": {
         "serve": "vite serve",
-        "build": "vite build && npm run build.zip",
+        "build": "vite build && npm run build:lang && npm run build.zip",
         "build:lang": "npm run build:parser:klipperCfg && npm run build:lang:klipperCfg",
         "build:lang:klipperCfg": "rollup --config src/plugins/Codemirror/KlipperCfgLang/rollup.config.js",
         "build:parser:klipperCfg": "lezer-generator src/plugins/Codemirror/KlipperCfgLang/parser/klipperCfg.grammar -o src/plugins/Codemirror/KlipperCfgLang/parser/klipperCfgParser.js",
