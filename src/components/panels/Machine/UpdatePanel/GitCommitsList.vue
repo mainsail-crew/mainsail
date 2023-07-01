@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="boolShowDialog" persistent max-width="800">
         <panel
-            :title="$t('Machine.UpdatePanel.Commits').toString()"
+            :title="$t('Machine.UpdatePanel.Commits')"
             :icon="mdiUpdate"
             :margin-bottom="false"
             card-class="machine-update-commits-dialog">
@@ -11,17 +11,19 @@
                 </v-btn>
             </template>
             <v-card-text class="py-0 px-0">
-                <v-row>
-                    <v-col>
-                        <v-timeline class="groupedCommits" align-top dense>
-                            <update-panel-git-commits-list-day
-                                v-for="group of groupedCommits"
-                                :key="group.date.getTime()"
-                                :repo="repo"
-                                :grouped-commits="group" />
-                        </v-timeline>
-                    </v-col>
-                </v-row>
+                <overlay-scrollbars style="max-height: 400px" :options="{ overflowBehavior: { x: 'hidden' } }">
+                    <v-row>
+                        <v-col>
+                            <v-timeline class="groupedCommits" align-top dense>
+                                <git-commits-list-day
+                                    v-for="group of groupedCommits"
+                                    :key="group.date.getTime()"
+                                    :repo="repo"
+                                    :grouped-commits="group" />
+                            </v-timeline>
+                        </v-col>
+                    </v-row>
+                </overlay-scrollbars>
             </v-card-text>
         </panel>
     </v-dialog>
@@ -29,7 +31,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '../../mixins/base'
+import BaseMixin from '@/components/mixins/base'
 import {
     ServerUpdateManagerStateGitRepo,
     ServerUpdateManagerStateGitRepoCommit,
@@ -37,12 +39,12 @@ import {
 } from '@/store/server/updateManager/types'
 import { mdiUpdate, mdiCloseThick } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
-import UpdatePanelGitCommitsListDay from '@/components/panels/Machine/UpdatePanelGitCommitsListDay.vue'
+import GitCommitsListDay from '@/components/panels/Machine/UpdatePanel/GitCommitsListDay.vue'
 
 @Component({
-    components: { UpdatePanelGitCommitsListDay, Panel },
+    components: { GitCommitsListDay, Panel },
 })
-export default class UpdatePanelGitCommitsList extends Mixins(BaseMixin) {
+export default class GitCommitsList extends Mixins(BaseMixin) {
     mdiUpdate = mdiUpdate
     mdiCloseThick = mdiCloseThick
 
