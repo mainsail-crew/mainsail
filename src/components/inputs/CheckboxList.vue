@@ -3,7 +3,7 @@
         <template v-if="selectAll">
             <v-checkbox
                 v-model="selectAllModel"
-                :label="this.selectAllLabel"
+                :label="selectAllLabel"
                 hide-details
                 class="mt-0"
                 :indeterminate="selectAllIndeterminate"
