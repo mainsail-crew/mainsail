@@ -94,9 +94,10 @@
         <!-- MOVE TO CONTROL -->
         <move-to-control class="py-0 pt-3"></move-to-control>
         <!-- AXIS CONTROL -->
-        <v-container>
+        <v-container v-if="axisControlVisible">
             <component :is="`${controlStyle}-control`"></component>
         </v-container>
+        <v-container v-if="!axisControlVisible" class="py-0 pt-3"></v-container>
         <!-- Z-OFFSET CONTROL -->
         <v-divider></v-divider>
         <v-container>
@@ -163,6 +164,14 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get speedFactor(): number {
         return this.$store.state.printer?.gcode_move?.speed_factor ?? 1
+    }
+
+    get isPrinting() {
+        return ['printing'].includes(this.printer_state)
+    }
+
+    get axisControlVisible() {
+        return !(this.isPrinting && (this.$store.state.gui.control.hideDuringPrint ?? false))
     }
 }
 </script>

@@ -36,6 +36,12 @@
                         <v-divider class="my-2"></v-divider>
                     </template>
                     <settings-row
+                        :title="$t('Settings.ControlTab.HideDuringPrint').toString()"
+                        :dynamic-slot-width="true">
+                        <v-switch v-model="hideDuringPrint" hide-details class="mt-0"></v-switch>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row
                         :title="$t('Settings.ControlTab.EnableXYHoming').toString()"
                         :dynamic-slot-width="true">
                         <v-switch v-model="enableXYHoming" hide-details class="mt-0"></v-switch>
@@ -334,6 +340,14 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
 
     set controlStyle(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'control.style', value: newVal })
+    }
+
+    get hideDuringPrint(): Boolean {
+        return this.$store.state.gui.control.hideDuringPrint ?? false
+    }
+
+    set hideDuringPrint(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.hideDuringPrint', value: newVal })
     }
 
     get actionOptions() {
