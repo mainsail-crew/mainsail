@@ -11,35 +11,60 @@ export const getters: GetterTree<RootState, any> = {
     },
 
     getTitle: (state, getters) => {
-        if (state.socket?.isConnected && state.printer) {
-            let printer_state = state.printer?.print_stats?.state ?? ''
+        if (!state.socket?.isConnected) return 'Mainsail'
+        if (state.server?.klippy_state !== 'ready') return i18n.t('App.Titles.Error')
 
-            if (state.printer['gcode_macro TIMELAPSE_TAKE_FRAME']?.is_paused && printer_state === 'paused')
-                printer_state = 'printing'
+        // get printer_state
+        let printer_state = state.printer?.print_stats?.state ?? ''
+        // skip pause, if timelapse is active
+        if (state.printer && state.printer['gcode_macro TIMELAPSE_TAKE_FRAME']?.is_paused && printer_state === 'paused')
+            printer_state = 'printing'
 
-            if (state.server?.klippy_state !== 'ready') return i18n.t('App.Titles.Error')
-            else if (printer_state === 'paused') return i18n.t('App.Titles.Pause')
-            else if (printer_state === 'printing') {
-                const eta = getters['printer/getEstimatedTimeETAFormat']
+        // return pause title
+        if (printer_state === 'paused') return i18n.t('App.Titles.Pause')
 
-                if (eta !== '--')
-                    return i18n.t('App.Titles.PrintingETA', {
-                        percent: (getters['printer/getPrintPercent'] * 100).toFixed(0),
-                        filename: state.printer.print_stats?.filename,
-                        eta,
-                    })
-                else
-                    return i18n.t('App.Titles.Printing', {
-                        percent: (getters['printer/getPrintPercent'] * 100).toFixed(0),
-                        filename: state.printer.print_stats?.filename,
-                    })
-            } else if (state.printer?.print_stats?.state === 'complete')
-                return i18n.t('App.Titles.Complete', { filename: state.printer.print_stats.filename })
+        // return complete title
+        if (state.printer?.print_stats?.state === 'complete') {
+            let output = i18n.t('App.Titles.Complete', {
+                filename: state.printer.print_stats.filename,
+            })
 
-            return state.gui?.general.printername ?? state.printer?.hostname ?? 'Mainsail'
+            // add printer name to title if it exists
+            if (state.gui?.general.printername) output += `- ${state.gui?.general.printername}`
+
+            return output
         }
 
-        return 'Mainsail'
+        // return printing title
+        if (printer_state === 'printing') {
+            const eta = getters['printer/getEstimatedTimeETAFormat']
+            const percent = (getters['printer/getPrintPercent'] * 100).toFixed(0)
+
+            if (eta !== '--') {
+                let output = i18n.t('App.Titles.PrintingETA', {
+                    percent: percent,
+                    filename: state.printer?.print_stats?.filename,
+                    eta,
+                })
+
+                // add printer name to title if it exists
+                if (state.gui?.general.printername) output += `- ${state.gui?.general.printername}`
+
+                return output
+            }
+
+            let output = i18n.t('App.Titles.Printing', {
+                percent: percent,
+                filename: state.printer?.print_stats?.filename,
+            })
+
+            // add printer name to title if it exists
+            if (state.gui?.general.printername) output += `- ${state.gui?.general.printername}`
+
+            return output
+        }
+
+        return state.gui?.general.printername ?? state.printer?.hostname ?? 'Mainsail'
     },
 
     getDependencies: (state) => {

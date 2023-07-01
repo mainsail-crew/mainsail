@@ -76,7 +76,7 @@
                         </template>
 
                         <template #append>
-                            <v-icon :disabled="isLocked || sliderValue >= max" @click="increment">{{ mdiPlus }}</v-icon>
+                            <v-icon :disabled="isLocked || sliderValue >= 1" @click="increment">{{ mdiPlus }}</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>
@@ -278,9 +278,13 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         return errors
     }
 
+    get disableFanAnimation() {
+        return this.$store.state.gui.uiSettings.disableFanAnimation ?? false
+    }
+
     get fanClasses() {
         const output = ['mr-2']
-        if (this.value >= this.off_below && this.value > 0) output.push('icon-rotate')
+        if (!this.disableFanAnimation && this.value >= this.off_below && this.value > 0) output.push('icon-rotate')
 
         return output
     }

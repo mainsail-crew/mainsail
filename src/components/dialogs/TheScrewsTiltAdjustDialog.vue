@@ -1,7 +1,7 @@
 <template>
     <v-dialog :value="showDialog" width="400" persistent :fullscreen="isMobile">
         <panel
-            :title="$t('ScrewsTiltAdjust.Headline').toString()"
+            :title="$t('ScrewsTiltAdjust.Headline')"
             :icon="mdiArrowCollapseDown"
             card-class="manual_probe-dialog"
             :margin-bottom="false"
@@ -22,11 +22,17 @@
             <v-card-text v-if="Object.keys(results).length">
                 <template v-for="(result, name, index) of results">
                     <v-divider v-if="index" :key="`result-divider-${name}`" class="my-1" />
-                    <the-screws-tilt-adjust-dialog-entry :key="`result-${name}`" :name="name" :result="result" />
+                    <the-screws-tilt-adjust-dialog-entry
+                        :key="`result-${name}-${name}`"
+                        :name="name.toString()"
+                        :result="result" />
                 </template>
             </v-card-text>
             <v-card-actions>
-                <v-spacer></v-spacer>
+                <v-spacer />
+                <v-btn text @click="retryScrewsTiltAdjust">
+                    {{ $t('ScrewsTiltAdjust.Retry') }}
+                </v-btn>
                 <v-btn color="primary" text @click="clearScrewsTiltAdjust">
                     {{ $t('ScrewsTiltAdjust.Accept') }}
                 </v-btn>
@@ -50,20 +56,37 @@ import TheScrewsTiltAdjustDialogEntry from '@/components/dialogs/TheScrewsTiltAd
 export default class TheScrewsTiltAdjustDialog extends Mixins(BaseMixin, ControlMixin) {
     mdiArrowCollapseDown = mdiArrowCollapseDown
     mdiCloseThick = mdiCloseThick
+
     get state() {
         return this.$store.state.printer.screws_tilt_adjust ?? {}
     }
+
     get error() {
-        return this.state.error ?? false
+        return this.$store.state.printer.screws_tilt_adjust?.error ?? false
     }
+
     get results() {
-        return this.state.results ?? {}
+        return this.$store.state.printer.screws_tilt_adjust?.results ?? {}
     }
+
     get showDialog() {
+        if (!this.boolScrewsTiltAdjustDialog) return false
+
         return this.error || Object.keys(this.results).length
     }
+
+    get boolScrewsTiltAdjustDialog() {
+        return this.$store.state.gui.uiSettings.boolScrewsTiltAdjustDialog ?? true
+    }
+
     clearScrewsTiltAdjust() {
         this.$store.dispatch('printer/clearScrewsTiltAdjust')
+    }
+
+    async retryScrewsTiltAdjust() {
+        await this.$store.dispatch('printer/clearScrewsTiltAdjust')
+
+        this.doSend('SCREWS_TILT_CALCULATE')
     }
 }
 </script>

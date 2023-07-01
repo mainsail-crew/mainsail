@@ -101,12 +101,13 @@ jobs:
         run: cp ./remote/* ./dist/
 
       - name: Upload to remote server
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.REMOTEHOST }}
           username: ${{ secrets.REMOTEUSER }}
           password: ${{ secrets.REMOTEPASSWORD }}
           dangerous-clean-slate: true
+          exclude: .htaccess
           local-dir: ./dist/
 
   update-changelog:

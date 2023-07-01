@@ -1,9 +1,7 @@
-<style scoped></style>
-
 <template>
     <div>
         <panel
-            :title="$t('Machine.ConfigFilesPanel.ConfigFiles').toString()"
+            :title="$t('Machine.ConfigFilesPanel.ConfigFiles')"
             card-class="machine-configfiles-panel"
             :icon="mdiInformation"
             :collapsible="true">
@@ -203,6 +201,10 @@
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
+                <v-list-item v-if="!contextMenu.item.isDirectory" @click="duplicateFile(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiContentCopy }}</v-icon>
+                    {{ $t('Machine.ConfigFilesPanel.Duplicate') }}
+                </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="renameDirectory(contextMenu.item)">
@@ -212,7 +214,7 @@
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     class="red--text"
-                    @click="removeFile">
+                    @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Delete') }}
                 </v-list-item>
@@ -236,7 +238,7 @@
                 dialogImage.item.svg = null
             ">
             <panel
-                :title="dialogImage.item.name"
+                :title="dialogImage.item.name ?? ''"
                 card-class="maschine-configfiles-imageviewer-dialog"
                 style="position: relative">
                 <template #buttons>
@@ -263,7 +265,7 @@
         </v-dialog>
         <v-dialog v-model="dialogCreateFile.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.CreateFile').toString()"
+                :title="$t('Machine.ConfigFilesPanel.CreateFile')"
                 card-class="maschine-configfiles-create-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -278,7 +280,7 @@
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="createFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -294,7 +296,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.RenameFile').toString()"
+                :title="$t('Machine.ConfigFilesPanel.RenameFile')"
                 card-class="maschine-configfiles-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -309,7 +311,7 @@
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="renameFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -323,9 +325,40 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <v-dialog v-model="dialogDuplicateFile.show" max-width="400">
+            <panel
+                :title="$t('Machine.ConfigFilesPanel.DuplicateFile')"
+                card-class="maschine-configfiles-duplicate-file-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="dialogDuplicateFile.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <v-text-field
+                        ref="inputDialoDuplicateFileName"
+                        v-model="dialogDuplicateFile.newName"
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        required
+                        :rules="nameInputRules"
+                        @update:error="(bool) => (isInvalidName = bool)"
+                        @keyup.enter="duplicateFileAction" />
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn color="" text @click="dialogDuplicateFile.show = false">
+                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="duplicateFileAction">
+                        {{ $t('Machine.ConfigFilesPanel.Duplicate') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.CreateDirectory').toString()"
+                :title="$t('Machine.ConfigFilesPanel.CreateDirectory')"
                 card-class="maschine-configfiles-create-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -340,7 +373,7 @@
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -356,7 +389,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.RenameDirectory').toString()"
+                :title="$t('Machine.ConfigFilesPanel.RenameDirectory')"
                 card-class="maschine-configfiles-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -371,7 +404,7 @@
                         :label="$t('Machine.ConfigFilesPanel.Name')"
                         required
                         :rules="nameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
+                        @update:error="(bool) => (isInvalidName = bool)"
                         @keyup.enter="renameDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -387,7 +420,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.DeleteDirectory').toString()"
+                :title="$t('Machine.ConfigFilesPanel.DeleteDirectory')"
                 card-class="maschine-configfiles-delete-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -415,10 +448,42 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+
+        <!-- CONFIRM DELETE SINGLE FILE DIALOG -->
+        <v-dialog v-model="deleteDialog" max-width="400">
+            <panel
+                :title="$t('Machine.ConfigFilesPanel.Delete')"
+                card-class="maschine-configfiles-delete-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="deleteDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">
+                        {{
+                            $t('Machine.ConfigFilesPanel.DeleteSingleFileQuestion', { name: contextMenu.item.filename })
+                        }}
+                    </p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="deleteDialog = false">
+                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn color="error" text @click="removeFile">
+                        {{ $t('Machine.ConfigFilesPanel.Delete') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+
+        <!-- CONFIRM DELETE MULTIPLE FILES DIALOG -->
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
             <panel
-                :title="$t('Machine.ConfigFilesPanel.Delete').toString()"
-                card-class="gcode-files-delete-selected-dialog"
+                :title="$t('Machine.ConfigFilesPanel.Delete')"
+                card-class="maschine-configfiles-delete-selected-dialog"
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="deleteSelectedDialog = false">
@@ -426,7 +491,12 @@
                     </v-btn>
                 </template>
                 <v-card-text>
-                    <p class="mb-0">
+                    <p v-if="selectedFiles.length === 1" class="mb-0">
+                        {{
+                            $t('Machine.ConfigFilesPanel.DeleteSingleFileQuestion', { name: selectedFiles[0].filename })
+                        }}
+                    </p>
+                    <p v-else class="mb-0">
                         {{ $t('Machine.ConfigFilesPanel.DeleteSelectedQuestion', { count: selectedFiles.length }) }}
                     </p>
                 </v-card-text>
@@ -441,6 +511,7 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+
         <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
             <span v-if="uploadSnackbar.max > 1" class="mr-1">
                 ({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})
@@ -484,6 +555,7 @@ import {
     mdiDelete,
     mdiCloseThick,
     mdiLockOutline,
+    mdiContentCopy,
 } from '@mdi/js'
 
 interface contextMenu {
@@ -550,6 +622,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
     mdiLockOutline = mdiLockOutline
+    mdiContentCopy = mdiContentCopy
 
     sortFiles = sortFiles
     formatFilesize = formatFilesize
@@ -558,6 +631,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         fileUpload: HTMLInputElement
         inputDialogCreateFileName: HTMLInputElement
         inputDialogRenameFileName: HTMLInputElement
+        inputDialogDuplicateFileName: HTMLInputElement
         inputDialogCreateDirectoryName: HTMLInputElement
         inputDialogRenameDirectoryName: HTMLInputElement
     }
@@ -589,6 +663,16 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         name: '',
     }
     private dialogRenameFile: dialogRenameObject = {
+        show: false,
+        newName: '',
+        item: {
+            isDirectory: false,
+            filename: '',
+            permissions: '',
+            modified: new Date(),
+        },
+    }
+    private dialogDuplicateFile: dialogRenameObject = {
         show: false,
         newName: '',
         item: {
@@ -644,6 +728,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         },
     }
 
+    private deleteDialog = false
     private deleteSelectedDialog = false
 
     private isInvalidName = true
@@ -962,8 +1047,14 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         }
 
         await addElementToItems(this.absolutePath, this.selectedFiles)
+
         const date = new Date()
-        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDay()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+        const month = (date.getMonth() + 1).toString().padStart(2, '0')
+        const day = date.getDay().toString().padStart(2, '0')
+        const hours = date.getHours().toString().padStart(2, '0')
+        const minutes = date.getMinutes().toString().padStart(2, '0')
+        const seconds = date.getSeconds().toString().padStart(2, '0')
+        const timestamp = `${date.getFullYear()}${month}${day}-${hours}${minutes}${seconds}`
 
         this.$socket.emit(
             'server.files.zip',
@@ -1086,12 +1177,32 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         )
     }
 
+    duplicateFile(item: FileStateFile) {
+        this.dialogDuplicateFile.item = item
+        this.dialogDuplicateFile.newName = item.filename
+        this.dialogDuplicateFile.show = true
+
+        setTimeout(() => {
+            this.$refs.inputDialogDuplicateFileName?.focus()
+        }, 200)
+    }
+
+    duplicateFileAction() {
+        this.dialogDuplicateFile.show = false
+        this.$socket.emit('server.files.copy', {
+            source: (this.absolutePath + '/' + this.dialogDuplicateFile.item.filename).slice(1),
+            dest: (this.absolutePath + '/' + this.dialogDuplicateFile.newName).slice(1),
+        })
+    }
+
     removeFile() {
         this.$socket.emit(
             'server.files.delete_file',
             { path: this.absolutePath + '/' + this.contextMenu.item.filename },
             { action: 'files/getDeleteFile' }
         )
+
+        this.deleteDialog = false
     }
 
     deleteSelectedFiles() {

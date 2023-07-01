@@ -30,7 +30,7 @@
             <v-divider class="mb-2"></v-divider>
         </template>
         <v-card-actions class="justify-center pb-3">
-            <v-btn small href="https://docs.mainsail.xyz/configuration" target="_blank">
+            <v-btn small href="https://docs.mainsail.xyz/setup/configuration" target="_blank">
                 <v-icon small class="mr-1">{{ mdiInformation }}</v-icon>
                 {{ $t('Panels.MinSettingsPanel.MoreInformation') }}
             </v-btn>

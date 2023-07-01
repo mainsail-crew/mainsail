@@ -3,7 +3,7 @@
         "Notifications": {
             "DependencyDescription": "Die momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}.",
             "DependencyName": "Abhängigkeit: {name}",
-            "DismissAll": "Dismiss all",
+            "DismissAll": "Alles verwerfen",
             "KlipperWarnings": {
                 "DeprecatedOption": "Option '{option}' im Abschnitt '{section}' ist veraltet und wird in einem zukünftigen Release entfernt.",
                 "DeprecatedOptionHeadline": "Veralterte Klipper Option",
@@ -30,6 +30,11 @@
             "NoEmptyAllowedError": "Feld darf nicht leer sein!"
         },
         "Printers": "Drucker",
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "Der lokale Cache ist veraltet und muss aktualisiert werden. Bitte klicke auf den Button unten, um den Cache zu aktualisieren.",
+            "TitleNeedUpdate": "PWA benötigt ein Update",
+            "Update": "aktualisieren"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM-Kern(e) sind derzeit gedrosselt.",
             "DescriptionFrequencyCapped": "rPi ARM max Frequenz ist derzeit auf 1,2 GHz begrenzt.",
@@ -52,6 +57,7 @@
             "Complete": "Fertiggestellt - {filename}",
             "Error": "FEHLER",
             "Pause": "Druck pausiert",
+            "PrinterOff": "Drucker AUS",
             "Printing": "{percent}% Drucken - {filename}",
             "PrintingETA": "{percent}% Drucken - ETA: {eta} - {filename}"
         },
@@ -164,11 +170,13 @@
         "Yes": "Ja"
     },
     "Files": {
+        "AddBatchToQueue": "Stapel zur Auftragswarteschlange hinzufügen",
         "AddToQueue": "Zur Auftragswarteschlange hinzufügen",
         "AllFiles": "Alle",
         "BedTemp": "Bett Temp.",
         "Cancel": "Abbrechen",
         "ChamberTemp": "Kammer Temp.",
+        "Count": "Anzahl",
         "Create": "Erstellen",
         "CreateNewDirectory": "Ordner erstellen",
         "CurrentPath": "Aktueller Pfad",
@@ -176,7 +184,10 @@
         "DeleteDirectory": "Verzeichnis löschen",
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",
+        "DeleteSingleFileQuestion": "Soll die Datei \"{name}\" wirklich gelöscht werden?",
         "Download": "Herunterladen",
+        "Duplicate": "duplizieren",
+        "DuplicateFile": "Datei duplizieren",
         "EditFile": "Datei bearbeiten",
         "Empty": "Leer",
         "ExtruderTemp": "Extruder Temp.",
@@ -213,6 +224,8 @@
         "Rename": "Umbenennen",
         "RenameDirectory": "Verzeichnis umbenennen",
         "RenameFile": "Datei umbenennen",
+        "ScanMeta": "Metadaten scannen",
+        "ScanMetaSuccess": "Metadaten von {filename} wurden erfolgreich gescannt.",
         "Search": "Suchen",
         "SetupCurrentList": "Einstellungen",
         "Slicer": "Slicer",
@@ -253,7 +266,9 @@
         "Tracking": "Tracking",
         "Transparency": "Transparenz",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxel Modus (ASMBL)"
+        "VoxelMode": "Voxel Modus (ASMBL)",
+        "ShowGCode": "Zeige G-Code",
+        "CNCMode": "CNC Modus"
     },
     "Heightmap": {
         "Abort": "abbruch",
@@ -275,6 +290,7 @@
         "Flat": "Flach",
         "Heightmap": "Heightmap",
         "InvalidNameAlreadyExists": "Das Profil existiert bereits, bitte wähle einen anderen Profilnamen.",
+        "InvalidNameAscii": "Name ist ungültig. Nur ASCII Zeichen sind erlaubt.",
         "InvalidNameEmpty": "Feld darf nicht leer sein!",
         "InvalidNameReserved": "Das Profil 'default' ist reserviert, bitte wähle einen anderen Profilnamen.",
         "Later": "später",
@@ -302,9 +318,11 @@
         "AllJobs": "Alle",
         "AvgPrinttime": "Druckzeit - Ø",
         "Cancel": "abbrechen",
+        "Chart": "Diagramm",
         "CreateNote": "Notiz anlegen",
         "Delete": "Löschen",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Jobs gelöscht werden?",
+        "DeleteSingleJobQuestion": "Soll der Job wirklich gelöscht werden?",
         "Details": "Details",
         "EditNote": "Notiz bearbeiten",
         "Empty": "leer",
@@ -354,6 +372,7 @@
             "Others": "Sonstige",
             "server_exit": "Server-Exit"
         },
+        "Table": "Tabelle",
         "TitleExportHistory": "Historie exportieren",
         "TitleRefreshHistory": "Historie aktualisieren",
         "TitleSettings": "Einstellungen",
@@ -365,7 +384,12 @@
     },
     "JobQueue": {
         "AllJobs": "Alle Aufträge",
+        "ChangeCount": "Anzahl ändern",
+        "Cancel": "abbrechen",
+        "Count": "Anzahl",
         "Empty": "Leer",
+        "InvalidCountEmpty": "Die Eingabe darf nicht leer sein!",
+        "InvalidCountGreaterZero": "Die Eingabe muss größer als 0 sein!",
         "JobQueue": "Auftragswarteschlange",
         "Jobs": "Aufträge",
         "Pause": "Pause",
@@ -386,7 +410,10 @@
             "DeleteDirectory": "Verzeichnis löschen",
             "DeleteDirectoryQuestion": "Verzeichnis \"{name}\" und den gesamten Inhalt löschen?",
             "DeleteSelectedQuestion": "{count} ausgewählte Elemente löschen?",
+            "DeleteSingleFileQuestion": "Soll die Datei \"{name}\" wirklich gelöscht werden?",
             "Download": "Herunterladen",
+            "Duplicate": "duplizieren",
+            "DuplicateFile": "Datei duplizieren",
             "EditFile": "Bearbeite Datei",
             "Empty": "Leer",
             "Files": "Dateien",
@@ -417,7 +444,13 @@
             "TRIGGERED": "AUSGELÖST"
         },
         "LogfilesPanel": {
-            "Logfiles": "Logdateien"
+            "Accept": "akzeptieren",
+            "Cancel": "abbrechen",
+            "Logfiles": "Logdateien",
+            "Rollover": "Logdatei zurücksetzen",
+            "RolloverDescription": "Wähle Logs zum zurücksetzen:",
+            "RolloverToastSuccessful": "Logdatei für \"{name}\" wurde erfolgreich zurückgesetzt.",
+            "RolloverToastFailed": "Logdatei reset \"{name}\": {message}"
         },
         "SystemPanel": {
             "Constants": "Konstanten",
@@ -779,7 +812,10 @@
             "MoonrakerRestartInstance": "Moonraker Neustartinstanz",
             "MoonrakerRestartInstanceDescription": "Wähle aus, welche Moonrakerinstanz neu gestartet werden soll wenn 'Speichern & Neustarten' im Editor geklickt wird.",
             "UseEscToClose": "ESC drücken um Editor zu schließen",
-            "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen."
+            "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen.",
+            "TabSize": "TAB Größe",
+            "TabSizeDescription": "Legt fest, um wie viele Leerzeichen für TAB eingerückt werden sollen",
+            "Spaces": "Leerzeichen: {count}"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Hintergrundfarbe",
@@ -792,6 +828,8 @@
             "ShowAxes": "Zeige Achsen an"
         },
         "GeneralTab": {
+            "12hours": "12-Stunden ({time})",
+            "24hours": "24-Stunden ({time})",
             "Backup": "Datensicherung",
             "BackupDialog": "Bitte wähle alle Abschnitte aus, die du sichern möchtest:",
             "CalcEstimateTime": "Berechnung der geschätzten Zeit",
@@ -807,6 +845,7 @@
                 "Slicer": "Slicer (M73)"
             },
             "CannotReadJson": "Sicherungsdatei kann nicht gelesen/analysiert werden.",
+            "DateFormat": "Datumsformat",
             "DbConsoleHistory": "Verlauf der Konsole",
             "DbHistoryJobs": "Historie Druckvorgänge",
             "DbHistoryTotals": "Historie Gesamtzähler",
@@ -826,7 +865,8 @@
             "PrinterName": "Druckername",
             "Reset": "zurücksetzen",
             "Restore": "Wiederherstellung",
-            "RestoreDialog": "Bitte wähle alle Abschnitte aus, die du wiederherstellen möchtest:"
+            "RestoreDialog": "Bitte wähle alle Abschnitte aus, die du wiederherstellen möchtest:",
+            "TimeFormat": "Zeitformat"
         },
         "InterfaceSettings": "Interface Einstellungen",
         "MacrosTab": {
@@ -887,6 +927,9 @@
             "StartDescription": "Erste LED von dieser Gruppe.",
             "UnableToLoadLight": "Licht konnte nicht geladen werden",
             "UnableToLoadPreset": "Voreinstellung konnte nicht geladen werden"
+        },
+        "NavigationTab": {
+            "Navigation": "Navigation"
         },
         "PresetsTab": {
             "AddPreset": "Preset hinzufügen",
@@ -984,6 +1027,8 @@
             "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
+            "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
+            "BedScrewsDialogDescription": "Zeige ein Hilfsfenster für die Bettschraubenjustierung an.",
             "BoolBigThumbnail": "Große Vorschaubilder",
             "BoolBigThumbnailDescription": "Zeige ein großes Thumbnail in der Status-Anzeige während eines Drucks.",
             "BoolHideUploadAndPrintButton": "\"Hochladen & Drucken\" Schaltfläche ausblenden",
@@ -992,6 +1037,8 @@
             "ConfirmOnEmergencyStopDescription": "Zeige vor einem Notstop einen Bestätigungsdialog.",
             "ConfirmOnPowerDeviceChange": "Bestätigung für Änderung der Stromversorgung von Geräten",
             "ConfirmOnPowerDeviceChangeDescription": "Zeige vor Änderung der Stromversorgung von Geräten einen Bestätigungsdialog.",
+            "DisableFanAnimation": "Lüfteranimation deaktivieren",
+            "DisableFanAnimationDescription": "Dies kann die Last im Browser senken.",
             "DisplayCANCEL_PRINT": "Zeige CANCEL_PRINT an",
             "DisplayCANCEL_PRINTDescription": "Zeigt die CANCEL_PRINT Schaltfläche dauerhaft an - keine weitere Bestätigung erforderlich.",
             "GcodeThumbnails": "G-Code Vorschaubilder",
@@ -1004,12 +1051,19 @@
             "LockSlidersDelayDescription": "Schieberegler werden nach einer bestimmten Verzögerung gesperrt. Wenn 0 oder leer, dann sperren Schieberegler nur nach wechseln/neuladen der Seite.",
             "LockSlidersDescription": "Schieberegler müssen zuerst entsperrt werden bevor Änderungen erlaubt werden.",
             "Logo": "Logo",
+            "ManualProbeDialog": "Hilfsfenster für manuelle Messung",
+            "ManualProbeDialogDescription": "Zeige ein Hilfsfenster für PROBE_CALIBRATE oder Z_ENDSTOP_CALIBRATE an.",
             "NavigationStyle": "Stil der Navigation",
             "NavigationStyleDescription": "Erscheinungsbild der Navigation ändern",
             "NavigationStyleIconsAndText": "Icons + Text",
             "NavigationStyleIconsOnly": "Nur Icons",
+            "PowerDeviceName": "Stromversorgung für Drucker",
+            "PowerDeviceNameDescription": "Wähle aus, welches Moonraker Power-Device zum Einschalten des Druckers verwendet werden soll.",
             "Primary": "Primärfarbe",
-            "ShowWebcamInNavigation": "Zeige Webcam in der Navigation",
+            "ScrewsTiltAdjustDialog": "Hilfsfenster für Schrauben Neigunganpassung",
+            "ScrewsTiltAdjustDialogDescription": "Zeige ein Hilfsfenster für SCREWS_TILT_CALCULATE an.",
+            "TempchartHeight": "Temperatur-Chart Höhe",
+            "TempchartHeightDescription": "Verändert die Höhe vom Temperatur-Chart auf dem Dashboard.",
             "UiSettings": "UI-Einstellungen"
         },
         "Update": "speichern",
@@ -1019,6 +1073,7 @@
             "EditCrowsnestConf": "crowsnest.conf bearbeiten",
             "EditWebcam": "Webcam bearbeiten",
             "FlipWebcam": "Webcam-Bild spiegeln:",
+            "Hlsstream": "HLS-Stream",
             "Horizontally": "horizontal",
             "IconBed": "Bett",
             "IconCam": "Kamera",
@@ -1031,6 +1086,7 @@
             "Ipstream": "IP Kamera",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
+            "JMuxerStream": "Roher h264 stream (jmuxer)",
             "Name": "Name",
             "NameAlreadyExists": "Name existiert bereits",
             "Required": "benötigt",
@@ -1043,8 +1099,18 @@
             "UrlStream": "Stream URL",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertikal",
-            "Webcams": "Webcams"
+            "Webcams": "Webcams",
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "akzeptieren",
+        "Base": "Basis",
+        "ErrorText": "Ein Fehler ist beim Abtasten aufgetreten.",
+        "Headline": "Neigungsverstellung",
+        "Retry": "wiederholen"
     },
     "Timelapse": {
         "AllFiles": "Alle",
@@ -1057,6 +1123,7 @@
         "DeleteDirectory": "Verzeichnis löschen",
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",
+        "DeleteSingleFileQuestion": "Soll die Datei \"{name}\" wirklich gelöscht werden?",
         "Download": "Download",
         "DuplicateLastframe": "Letztes Bild duplizieren",
         "Empty": "Keine fertigen Zeitraffer gefunden.",

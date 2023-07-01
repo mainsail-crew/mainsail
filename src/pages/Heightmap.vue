@@ -291,8 +291,12 @@
                         :label="$t('Heightmap.Name')"
                         required
                         :rules="renameInputRules"
-                        @update:error="isInvalidName = !isInvalidName"
-                        @keyup.enter="renameProfile"></v-text-field>
+                        @update:error="
+                            (bool) => {
+                                isInvalidName = bool
+                            }
+                        "
+                        @keyup.enter="renameProfile" />
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -323,13 +327,21 @@
                         ref="inputFieldCalibrateBedMeshName"
                         v-model="calibrateDialog.name"
                         :label="$t('Heightmap.Name')"
+                        :rules="createInputRules"
                         required
-                        @keyup.enter="calibrateMesh"></v-text-field>
+                        @update:error="
+                            (bool) => {
+                                calibrateDialog.isInvalidName = bool
+                            }
+                        "
+                        @keyup.enter="calibrateMesh" />
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text @click="calibrateDialog.boolShow = false">{{ $t('Heightmap.Abort') }}</v-btn>
-                    <v-btn color="primary" text @click="calibrateMesh">{{ $t('Heightmap.Calibrate') }}</v-btn>
+                    <v-btn :disabled="calibrateDialog.isInvalidName" color="primary" text @click="calibrateMesh">
+                        {{ $t('Heightmap.Calibrate') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -465,17 +477,26 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     private calibrateDialog: {
         boolShow: boolean
         name: string
+        isInvalidName: boolean
     } = {
         boolShow: false,
         name: 'default',
+        isInvalidName: false,
     }
     private newName = ''
     private oldName = ''
     private isInvalidName = true
+    private createInputRules = [
+        (value: string) => !!value || this.$t('Heightmap.InvalidNameEmpty'),
+        // eslint-disable-next-line no-control-regex
+        (value: string) => value === value.replace(/[^\x00-\x7F]/g, '') || this.$t('Heightmap.InvalidNameAscii'),
+    ]
     private renameInputRules = [
         (value: string) => !!value || this.$t('Heightmap.InvalidNameEmpty'),
         (value: string) => value !== 'default' || this.$t('Heightmap.InvalidNameReserved'),
         (value: string) => !this.existsProfileName(value) || this.$t('Heightmap.InvalidNameAlreadyExists'),
+        // eslint-disable-next-line no-control-regex
+        (value: string) => value === value.replace(/[^\x00-\x7F]/g, '') || this.$t('Heightmap.InvalidNameAscii'),
     ]
 
     private probedOpacity = 1
@@ -608,6 +629,8 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
                         },
                     },
                 },
+                boxWidth: 100 * this.scaleX,
+                boxDepth: 100 * this.scaleY,
             },
             series: this.series,
         }
@@ -676,6 +699,30 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     set scaleGradient(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleGradient', value: newVal })
+    }
+
+    get absRangeX(): number {
+        return this.rangeX[1] - this.rangeX[0]
+    }
+
+    get absRangeY(): number {
+        return this.rangeY[1] - this.rangeY[0]
+    }
+
+    get minRangeXY(): number {
+        return Math.min(this.absRangeX, this.absRangeY)
+    }
+
+    get scaleX(): number {
+        if (this.minRangeXY === 0) return 1
+
+        return this.absRangeX / this.minRangeXY
+    }
+
+    get scaleY(): number {
+        if (this.minRangeXY === 0) return 1
+
+        return this.absRangeY / this.minRangeXY
     }
 
     get scaleZMax(): number {
@@ -1038,6 +1085,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         this.newName = this.bed_mesh?.profile_name ?? ''
         this.oldName = this.bed_mesh.profile_name
         this.renameDialog = true
+        this.isInvalidName = false
 
         setTimeout(() => {
             this.$refs.inputDialogRenameHeightmapName?.focus()
