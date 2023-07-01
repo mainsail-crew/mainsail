@@ -85,16 +85,13 @@
                 </v-alert>
             </v-col>
         </v-row>
-        <update-panel-git-commits-list
-            :bool-show-dialog="boolShowCommitList"
-            :repo="repo"
-            @close-dialog="closeCommitList" />
+        <git-commits-list :bool-show-dialog="boolShowCommitList" :repo="repo" @close-dialog="closeCommitList" />
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '../../mixins/base'
+import BaseMixin from '@/components/mixins/base'
 import { ServerUpdateManagerStateGitRepo } from '@/store/server/updateManager/types'
 import {
     mdiAlertCircle,
@@ -106,9 +103,9 @@ import {
     mdiReload,
 } from '@mdi/js'
 import semver from 'semver'
-import UpdatePanelGitCommitsList from '@/components/panels/Machine/UpdatePanelGitCommitsList.vue'
+import GitCommitsList from '@/components/panels/Machine/UpdatePanel/GitCommitsList.vue'
 @Component({
-    components: { UpdatePanelGitCommitsList },
+    components: { GitCommitsList },
 })
 export default class UpdatePanelGit extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation

@@ -55,7 +55,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import UpdatePanelGit from '@/components/panels/Machine/UpdatePanelGit.vue'
+import UpdatePanelGit from '@/components/panels/Machine/UpdatePanel/Git.vue'
 import { mdiRefresh, mdiInformation, mdiProgressUpload, mdiCloseThick, mdiUpdate } from '@mdi/js'
 
 @Component({
