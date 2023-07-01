@@ -117,6 +117,7 @@
                         <checkbox-list
                             :options="backupableNamespaces"
                             select-all
+                            :select-all-label="$t('Settings.GeneralTab.Everything')"
                             @update:selectedCheckboxes="onSelectBackupCheckboxes"></checkbox-list>
                     </v-row>
                     <v-row>
@@ -216,6 +217,7 @@
                         <checkbox-list
                             :options="restoreableNamespaces"
                             select-all
+                            :select-all-label="$t('Settings.GeneralTab.Everything')"
                             @update:selectedCheckboxes="onSelectRestoreCheckboxes"></checkbox-list>
                     </v-row>
                     <v-row>

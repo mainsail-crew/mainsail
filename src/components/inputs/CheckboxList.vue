@@ -3,7 +3,7 @@
         <template v-if="selectAll">
             <v-checkbox
                 v-model="selectAllModel"
-                :label="$t('Settings.GeneralTab.Everything')"
+                :label="this.selectAllLabel"
                 hide-details
                 class="mt-0"
                 :indeterminate="selectAllIndeterminate"
@@ -36,6 +36,9 @@ export default class CheckboxList extends Mixins(BaseMixin) {
     @Prop({ type: Boolean, required: false, default: false })
     declare readonly selectAll: boolean
 
+    @Prop({type: String, required: false, default: ''})
+    declare readonly selectAllLabel: string
+
     private selectedCheckboxes: string[] = []
 
     private selectAllIndeterminate: boolean = false
@@ -59,10 +62,6 @@ export default class CheckboxList extends Mixins(BaseMixin) {
         } else {
             this.selectedCheckboxes = []
         }
-    }
-
-    mounted() {
-        console.log(this.selectAll)
     }
 }
 </script>
