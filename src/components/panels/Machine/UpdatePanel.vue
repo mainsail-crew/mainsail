@@ -2,7 +2,7 @@
     <div>
         <panel
             v-if="enableUpdateManager"
-            :title="$t('Machine.UpdatePanel.UpdateManager').toString()"
+            :title="$t('Machine.UpdatePanel.UpdateManager')"
             :icon="mdiUpdate"
             card-class="machine-update-panel"
             :collapsible="true">
@@ -28,7 +28,7 @@
             <v-card-text class="px-0 py-0">
                 <template v-for="(module, index) in modules">
                     <v-divider v-if="index" :key="'divider_' + module.name" class="my-0" />
-                    <update-panel-git v-if="module.type === 'git'" :key="module.name" :repo="module.data" />
+                    <update-panel-entry :key="module.name" :repo="module.data" />
                 </template>
                 <template v-if="showUpdateAll">
                     <v-divider class="mb-0 mt-2 border-top-2"></v-divider>
@@ -55,11 +55,11 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import UpdatePanelGit from '@/components/panels/Machine/UpdatePanel/Git.vue'
+import UpdatePanelEntry from '@/components/panels/Machine/UpdatePanel/Entry.vue'
 import { mdiRefresh, mdiInformation, mdiProgressUpload, mdiCloseThick, mdiUpdate } from '@mdi/js'
 
 @Component({
-    components: { Panel, UpdatePanelGit },
+    components: { Panel, UpdatePanelEntry },
 })
 export default class UpdatePanel extends Mixins(BaseMixin) {
     mdiRefresh = mdiRefresh

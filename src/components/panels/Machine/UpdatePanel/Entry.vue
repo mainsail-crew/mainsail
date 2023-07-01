@@ -14,7 +14,7 @@
             </v-col>
             <v-col class="col-auto pr-6 text-right" align-self="center">
                 <template v-if="needsRecovery">
-                    <v-menu :offset-y="true" title="Webcam">
+                    <v-menu :offset-y="true">
                         <template #activator="{ on, attrs }">
                             <v-chip
                                 small
@@ -107,7 +107,7 @@ import GitCommitsList from '@/components/panels/Machine/UpdatePanel/GitCommitsLi
 @Component({
     components: { GitCommitsList },
 })
-export default class UpdatePanelGit extends Mixins(BaseMixin) {
+export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
     mdiMenuDown = mdiMenuDown
     mdiReload = mdiReload
