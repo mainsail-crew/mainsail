@@ -251,7 +251,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get restartServiceNameExists() {
-        if (this.restartServiceName) return true
+        if (!this.restartServiceName) return true
 
         return this.availableServices.includes(this.restartServiceName)
     }
