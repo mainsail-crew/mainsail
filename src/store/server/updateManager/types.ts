@@ -49,7 +49,7 @@ export interface ServerUpdateManagerStateGitRepo {
     is_dirty: boolean
     detached: boolean
     debug_enabled: boolean
-    commits_behind: ServerUpdateManagerStateGitRepoGroupedCommits[]
+    commits_behind: ServerUpdateManagerStateGitRepoCommit[]
     git_messages: string[]
     info_tags: string[]
 }

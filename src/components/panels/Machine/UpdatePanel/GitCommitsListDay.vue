@@ -46,35 +46,7 @@ export default class GitCommitsListDay extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
-.git-commit-list-day ::v-deep .v-timeline-item__dot--small {
-    width: 18px;
-    height: 15px;
-    margin-top: 2px;
-
-    &:before {
-        display: block;
-        content: ' ';
-        position: relative;
-        width: 18px;
-        height: 2px;
-        top: 7px;
-        background: rgba(255, 255, 255, 0.5);
-        z-index: 1;
-    }
-}
-
-.git-commit-list-day ::v-deep .v-timeline-item__inner-dot {
-    background-color: #1e1e1e !important;
-    border: 2px solid rgba(255, 255, 255, 0.5) !important;
-    width: 8px;
-    height: 8px;
-    position: relative;
-    z-index: 2;
-    margin-left: 5px;
-    margin-top: 2px;
-}
-
+<style scoped>
 ul.commits {
     list-style: none;
 }

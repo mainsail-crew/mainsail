@@ -491,6 +491,8 @@
             "ERROR": "ERROR",
             "HardRecovery": "Hard Recovery",
             "Invalid": "invalid",
+            "LinkToGithub": "Link to GitHub",
+            "MoreCommitsInfo": "A maximum of 30 commits can be displayed here. To see all commits, please click on the following link:",
             "Notification": {
                 "Detached": "Detached state is not an error nor is it a problem. It only means that additional commits exist in the local repository that do not exist in the remote repository.",
                 "Dirty": "Your local repository has been modified and cannot be updated in this state. Please recovery your this repository. (Caution! Unsaved files in this directory will be deleted!)"
