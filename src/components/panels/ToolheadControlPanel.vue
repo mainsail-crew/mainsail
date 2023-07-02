@@ -97,9 +97,8 @@
         <v-container v-if="axisControlVisible">
             <component :is="`${controlStyle}-control`"></component>
         </v-container>
-        <v-container v-if="!axisControlVisible" class="py-0 pt-3"></v-container>
         <!-- Z-OFFSET CONTROL -->
-        <v-divider></v-divider>
+        <v-divider :class="{ 'mt-3': !axisControlVisible }"></v-divider>
         <v-container>
             <zoffset-control></zoffset-control>
         </v-container>
