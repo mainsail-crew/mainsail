@@ -62,6 +62,8 @@ import Panel from '@/components/ui/Panel.vue'
 import UpdatePanelEntry from '@/components/panels/Machine/UpdatePanel/Entry.vue'
 import UpdatePanelEntrySystem from '@/components/panels/Machine/UpdatePanel/EntrySystem.vue'
 import { mdiRefresh, mdiInformation, mdiProgressUpload, mdiCloseThick, mdiUpdate } from '@mdi/js'
+import { ServerUpdateManagerStateGuiList } from '@/store/server/updateManager/types'
+import semver from 'semver'
 
 @Component({
     components: { Panel, UpdatePanelEntry, UpdatePanelEntrySystem },
@@ -85,25 +87,36 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         return 'system' in this.$store.state.server.updateManager
     }
 
-    get showUpdateAll() {
-        /*let updateableModuls = 0
+    get systemPackagesCount() {
+        return this.$store.state.server.updateManager?.system?.package_count ?? 0
+    }
 
-        Object.keys(this.updateableSoftwares).forEach((modulename) => {
-            const module = this.updateableSoftwares[modulename]
+    get showUpdateAll() {
+        let count = 0
+
+        this.modules.forEach((module: ServerUpdateManagerStateGuiList) => {
+            // check git repos for updates
+            if (module.type === 'git' && module.data?.commits_behind?.length) {
+                count++
+                return
+            }
+
+            // check client web for updates
             if (
-                'version' in module &&
-                'remote_version' in module &&
-                semver.valid(module.remote_version) &&
-                semver.valid(module.version) &&
-                semver.gt(module.remote_version, module.version)
-            )
-                updateableModuls++
+                module.type === 'web' &&
+                semver.valid(module.data?.remote_version) &&
+                semver.valid(module.data?.version) &&
+                semver.gt(module.data?.remote_version, module.data?.version)
+            ) {
+                count++
+                return
+            }
         })
 
-        if (this.version_info?.system?.package_count > 0) updateableModuls++
-        return updateableModuls > 1*/
+        // check system packages for upgrades
+        if (this.systemPackagesCount > 0) count++
 
-        return false
+        return count > 1
     }
 
     btnSync() {

@@ -5,7 +5,7 @@ import { caseInsensitiveSort } from '@/plugins/helpers'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerUpdateManagerState, any> = {
-    getUpdateManagerList(state) {
+    getUpdateManagerList(state): ServerUpdateManagerStateGuiList[] {
         const output: ServerUpdateManagerStateGuiList[] = []
 
         state.git_repos.forEach((repo) => {
