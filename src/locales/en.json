@@ -479,6 +479,7 @@
         },
         "UpdatePanel": {
             "CheckForUpdates": "Check for updates",
+            "Close": "Close",
             "Commits": "Commits",
             "CommitsAvailable": "no commits available | {count} commit available | {count} commits available",
             "CommitsOnDate": "Commits on {date}",
@@ -486,6 +487,7 @@
             "CommittedHoursAgo": "committed {hours} hours ago",
             "CommittedOnDate": "committed on {date}",
             "CommittedYesterday": "committed yesterday",
+            "CountPackagesCanBeUpgraded": "{count} packages can be upgraded",
             "Detached": "detached",
             "Dirty": "dirty",
             "ERROR": "ERROR",
@@ -498,14 +500,15 @@
                 "Dirty": "Your local repository has been modified and cannot be updated in this state. Please recover this repository."
             },
             "OSPackages": "OS-Packages",
-            "PackagesCanBeUpgraded": "packages can be upgraded",
             "SoftRecovery": "Soft Recovery",
             "System": "System",
+            "ThesePackagesCanBeUpgrade": "These system packages can be upgraded:",
             "Unknown": "unknown",
             "Update": "update",
             "UpdateAll": "Update all components",
             "UpdateManager": "Update Manager",
             "Upgrade": "upgrade",
+            "UpgradeableSystemPackages": "Upgradeable System Packages",
             "UpToDate": "up-to-date"
         }
     },

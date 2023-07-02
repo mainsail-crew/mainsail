@@ -25,13 +25,17 @@
                     <span>{{ $t('Machine.UpdatePanel.CheckForUpdates') }}</span>
                 </v-tooltip>
             </template>
-            <v-card-text class="px-0 py-0">
+            <v-card-text class="px-0 py-0 update-manager-list">
                 <template v-for="(module, index) in modules">
                     <v-divider v-if="index" :key="'divider_' + module.name" class="my-0" />
                     <update-panel-entry :key="module.name" :repo="module.data" />
                 </template>
+                <template v-if="existsSystemModul">
+                    <v-divider v-if="modules.length" class="my-0" />
+                    <update-panel-entry-system />
+                </template>
                 <template v-if="showUpdateAll">
-                    <v-divider class="mb-0 mt-2 border-top-2"></v-divider>
+                    <v-divider class="mb-0 mt-2 border-top-2" />
                     <v-row class="pt-3">
                         <v-col class="text-center">
                             <v-btn
@@ -56,10 +60,11 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import UpdatePanelEntry from '@/components/panels/Machine/UpdatePanel/Entry.vue'
+import UpdatePanelEntrySystem from '@/components/panels/Machine/UpdatePanel/EntrySystem.vue'
 import { mdiRefresh, mdiInformation, mdiProgressUpload, mdiCloseThick, mdiUpdate } from '@mdi/js'
 
 @Component({
-    components: { Panel, UpdatePanelEntry },
+    components: { Panel, UpdatePanelEntry, UpdatePanelEntrySystem },
 })
 export default class UpdatePanel extends Mixins(BaseMixin) {
     mdiRefresh = mdiRefresh
@@ -74,6 +79,10 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
 
     get modules() {
         return this.$store.getters['server/updateManager/getUpdateManagerList'] ?? []
+    }
+
+    get existsSystemModul() {
+        return 'system' in this.$store.state.server.updateManager
     }
 
     get showUpdateAll() {
@@ -110,3 +119,9 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+::v-deep .update-manager-list > div:last-child > div.row {
+    padding-bottom: 0 !important;
+}
+</style>
