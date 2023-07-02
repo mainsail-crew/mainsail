@@ -102,7 +102,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { ServerUpdateManagerStateGitRepo, ServerUpdateManagerStateWebRepo } from '@/store/server/updateManager/types'
+import { ServerUpdateManagerStateGitRepo } from '@/store/server/updateManager/types'
 import {
     mdiAlertCircle,
     mdiCheck,
@@ -125,7 +125,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
 
     boolShowCommitList = false
 
-    @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo | ServerUpdateManagerStateWebRepo
+    @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
 
     get name() {
         return this.repo.name ?? 'UNKNOWN'
