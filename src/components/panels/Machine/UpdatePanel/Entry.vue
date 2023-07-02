@@ -4,8 +4,14 @@
             <v-col class="pl-6">
                 <strong>{{ repo.name }}</strong>
                 <br />
-                <template v-if="commitsBehind.length">
+                <template v-if="type === 'git_repo' && commitsBehind.length">
                     <a class="primary--text cursor--pointer" @click="boolShowCommitList = true">
+                        <v-icon small color="primary" class="mr-1">{{ mdiInformation }}</v-icon>
+                        {{ versionOutput }}
+                    </a>
+                </template>
+                <template v-else-if="type === 'web' && webUpdatable">
+                    <a class="primary--text text-decoration-none" :href="webLinkRelease" target="_blank">
                         <v-icon small color="primary" class="mr-1">{{ mdiInformation }}</v-icon>
                         {{ versionOutput }}
                     </a>
@@ -85,14 +91,18 @@
                 </v-alert>
             </v-col>
         </v-row>
-        <git-commits-list :bool-show-dialog="boolShowCommitList" :repo="repo" @close-dialog="closeCommitList" />
+        <git-commits-list
+            v-if="type === 'git_repo'"
+            :bool-show-dialog="boolShowCommitList"
+            :repo="repo"
+            @close-dialog="closeCommitList" />
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { ServerUpdateManagerStateGitRepo } from '@/store/server/updateManager/types'
+import { ServerUpdateManagerStateGitRepo, ServerUpdateManagerStateWebRepo } from '@/store/server/updateManager/types'
 import {
     mdiAlertCircle,
     mdiCheck,
@@ -115,10 +125,14 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
 
     boolShowCommitList = false
 
-    @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
+    @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo | ServerUpdateManagerStateWebRepo
 
     get name() {
         return this.repo.name ?? 'UNKNOWN'
+    }
+
+    get type() {
+        return this.repo.configured_type
     }
 
     get localVersion() {
@@ -275,6 +289,17 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
 
     get gitMessages() {
         return this.repo.git_messages ?? []
+    }
+
+    get webUpdatable() {
+        if (!this.localVersion) return false
+        if (!this.remoteVersion) return false
+
+        return semver.gt(this.remoteVersion, this.localVersion)
+    }
+
+    get webLinkRelease() {
+        return `https://github.com/${this.repo.owner}/${this.repo.name}/releases/tag/${this.repo.remote_version}`
     }
 
     doUpdate() {
