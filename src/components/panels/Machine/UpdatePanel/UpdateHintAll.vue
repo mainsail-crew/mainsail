@@ -32,7 +32,7 @@
             <v-card-actions>
                 <v-spacer />
                 <v-btn text @click="closeDialog">{{ $t('Machine.UpdatePanel.Abort') }}</v-btn>
-                <v-btn text color="primary" :disabled="!checkboxUpdateQuestion">
+                <v-btn text color="primary" :disabled="!checkboxUpdateQuestion" @click="updateAll">
                     {{ $t('Machine.UpdatePanel.StartUpdate') }}
                 </v-btn>
             </v-card-actions>
@@ -96,6 +96,10 @@ export default class UpdateHintAll extends Mixins(BaseMixin) {
 
     closeDialog() {
         this.$emit('close-dialog')
+    }
+
+    updateAll() {
+        this.$emit('update-all')
     }
 }
 </script>

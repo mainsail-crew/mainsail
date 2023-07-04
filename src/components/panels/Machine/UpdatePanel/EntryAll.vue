@@ -13,7 +13,10 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <update-hint-all :bool-show-dialog="boolShowDialog" @close-dialog="boolShowDialog = false" />
+        <update-hint-all
+            :bool-show-dialog="boolShowDialog"
+            @close-dialog="boolShowDialog = false"
+            @update-all="updateAll" />
     </div>
 </template>
 
