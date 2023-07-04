@@ -64,7 +64,7 @@
                     :color="btnColor"
                     :disabled="btnDisabled"
                     class="minwidth-0 px-2 text-uppercase"
-                    @click="boolShowUpdateHint = true">
+                    @click="clickUpdate">
                     <v-icon small class="mr-1">{{ btnIcon }}</v-icon>
                     {{ btnText }}
                 </v-chip>
@@ -308,6 +308,19 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
 
     get webLinkRelease() {
         return `https://github.com/${this.repo.owner}/${this.repo.name}/releases/tag/${this.repo.remote_version}`
+    }
+
+    get hideUpdateWarning() {
+        return this.$store.state.gui.uiSettings.hideUpdateWarnings ?? false
+    }
+
+    clickUpdate() {
+        if (this.hideUpdateWarning) {
+            this.doUpdate()
+            return
+        }
+
+        this.boolShowUpdateHint = true
     }
 
     doUpdate() {

@@ -7,7 +7,7 @@
                     color="primary"
                     small
                     :disabled="['printing', 'paused'].includes(printer_state)"
-                    @click="boolShowDialog = true">
+                    @click="clickUpdate">
                     <v-icon left>{{ mdiProgressUpload }}</v-icon>
                     {{ $t('Machine.UpdatePanel.UpdateAll') }}
                 </v-btn>
@@ -32,6 +32,19 @@ export default class UpdatePanelEntryAll extends Mixins(BaseMixin) {
     mdiProgressUpload = mdiProgressUpload
 
     boolShowDialog = false
+
+    get hideUpdateWarning() {
+        return this.$store.state.gui.uiSettings.hideUpdateWarnings ?? false
+    }
+
+    clickUpdate() {
+        if (this.hideUpdateWarning) {
+            this.updateAll()
+            return
+        }
+
+        this.boolShowDialog = true
+    }
 
     updateAll() {
         this.$socket.emit('machine.update.full', {})
