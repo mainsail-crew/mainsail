@@ -478,8 +478,11 @@
             }
         },
         "UpdatePanel": {
+            "Abort": "Abort",
+            "AreYouSure": "Are you sure?",
             "CheckForUpdates": "Check for updates",
             "Close": "Close",
+            "CommitHistory": "Commit History",
             "Commits": "Commits",
             "CommitsAvailable": "no commits available | {count} commit available | {count} commits available",
             "CommitsOnDate": "Commits on {date}",
@@ -487,29 +490,40 @@
             "CommittedHoursAgo": "committed {hours} hours ago",
             "CommittedOnDate": "committed on {date}",
             "CommittedYesterday": "committed yesterday",
+            "ConfigChanges": "Config Changes",
             "CountPackagesCanBeUpgraded": "{count} packages can be upgraded",
             "Detached": "detached",
             "Dirty": "dirty",
             "ERROR": "ERROR",
+            "GenericUpdateQuestion": "Check the commit history (if available) and the GitHub page for this project to see if any manual adjustments are necessary for this update.",
+            "GitHubPage": "GitHub Page",
             "HardRecovery": "Hard Recovery",
             "Invalid": "invalid",
+            "IUnderstandTheRisks": "I understand the risks",
             "LinkToGithub": "Link to GitHub",
+            "KlipperUpdateQuestionFirmware": "This will update the host Klipper software. Control boards that you have flashed the Klipper firmware onto may need to be recompiled and reflashed before you can continue using your machine.",
+            "KlipperUpdateQuestionConfig": "This update may also contain changes to config parameters that would need to be modified in your printer.cfg file, see the change log for details.",
+            "MoonrakerUpdateQuestion": "This will update the Moonraker API. Changes to your moonraker.conf file may be required to continue using your machine.",
             "MoreCommitsInfo": "A maximum of 30 commits can be displayed here. To see all commits, please click on the following link:",
             "Notification": {
                 "Detached": "Detached state is not an error nor is it a problem. It only means that additional commits exist in the local repository that do not exist in the remote repository.",
                 "Dirty": "Your local repository has been modified and cannot be updated in this state. Please recover this repository."
             },
             "OSPackages": "OS-Packages",
+            "ReleaseNotes": "Release Notes",
             "SoftRecovery": "Soft Recovery",
+            "StartUpdate": "Start Update",
             "System": "System",
             "ThesePackagesCanBeUpgrade": "These system packages can be upgraded:",
             "Unknown": "unknown",
             "Update": "update",
             "UpdateAll": "Update all components",
             "UpdateManager": "Update Manager",
+            "UpdateWarning": "Update warning: {name}",
             "Upgrade": "upgrade",
             "UpgradeableSystemPackages": "Upgradeable System Packages",
-            "UpToDate": "up-to-date"
+            "UpToDate": "up-to-date",
+            "WebClientUpdateQuestion": "In some cases updating the web client could have changes that may cause incompatibility. See the release notes for more information."
         }
     },
     "ManualProbe": {

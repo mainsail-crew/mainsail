@@ -64,7 +64,7 @@
                     :color="btnColor"
                     :disabled="btnDisabled"
                     class="minwidth-0 px-2 text-uppercase"
-                    @click="doUpdate">
+                    @click="boolShowUpdateHint = true">
                     <v-icon small class="mr-1">{{ btnIcon }}</v-icon>
                     {{ btnText }}
                 </v-chip>
@@ -96,6 +96,11 @@
             :bool-show-dialog="boolShowCommitList"
             :repo="repo"
             @close-dialog="closeCommitList" />
+        <update-hint
+            :bool-show-dialog="boolShowUpdateHint"
+            :repo="repo"
+            @open-commit-history="boolShowCommitList = true"
+            @close-dialog="closeShowUpdateHint" />
     </div>
 </template>
 
@@ -114,8 +119,9 @@ import {
 } from '@mdi/js'
 import semver from 'semver'
 import GitCommitsList from '@/components/panels/Machine/UpdatePanel/GitCommitsList.vue'
+import UpdateHint from '@/components/panels/Machine/UpdatePanel/UpdateHint.vue'
 @Component({
-    components: { GitCommitsList },
+    components: { GitCommitsList, UpdateHint },
 })
 export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
@@ -124,6 +130,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     mdiAlertCircle = mdiAlertCircle
 
     boolShowCommitList = false
+    boolShowUpdateHint = false
 
     @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
 
@@ -317,6 +324,10 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
 
     closeCommitList() {
         this.boolShowCommitList = false
+    }
+
+    closeShowUpdateHint() {
+        this.boolShowUpdateHint = false
     }
 }
 </script>

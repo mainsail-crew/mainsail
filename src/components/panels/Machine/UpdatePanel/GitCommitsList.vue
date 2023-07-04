@@ -66,10 +66,10 @@ export default class GitCommitsList extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
 
     @Prop({ required: true }) readonly boolShowDialog!: boolean
-    @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
+    @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo | null
 
     get commitsBehind(): ServerUpdateManagerStateGitRepoCommit[] {
-        return this.repo.commits_behind ?? []
+        return this.repo?.commits_behind ?? []
     }
 
     get groupedCommits() {
@@ -107,7 +107,7 @@ export default class GitCommitsList extends Mixins(BaseMixin) {
     }
 
     get linkToGithub() {
-        return `https://github.com/${this.repo.owner}/${this.repo.name}/commits/${this.repo.branch}/?after=${this.lastCommit?.sha}+0`
+        return `https://github.com/${this.repo?.owner}/${this.repo?.name}/commits/${this.repo?.branch}/?after=${this.lastCommit?.sha}+0`
     }
 
     closeDialog() {

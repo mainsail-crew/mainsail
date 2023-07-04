@@ -36,19 +36,7 @@
                 </template>
                 <template v-if="showUpdateAll">
                     <v-divider class="mb-0 mt-2 border-top-2" />
-                    <v-row class="pt-3">
-                        <v-col class="text-center">
-                            <v-btn
-                                text
-                                color="primary"
-                                small
-                                :disabled="['printing', 'paused'].includes(printer_state)"
-                                @click="updateAll">
-                                <v-icon left>{{ mdiProgressUpload }}</v-icon>
-                                {{ $t('Machine.UpdatePanel.UpdateAll') }}
-                            </v-btn>
-                        </v-col>
-                    </v-row>
+                    <update-panel-entry-all />
                 </template>
             </v-card-text>
         </panel>
@@ -61,17 +49,17 @@ import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import UpdatePanelEntry from '@/components/panels/Machine/UpdatePanel/Entry.vue'
 import UpdatePanelEntrySystem from '@/components/panels/Machine/UpdatePanel/EntrySystem.vue'
-import { mdiRefresh, mdiInformation, mdiProgressUpload, mdiCloseThick, mdiUpdate } from '@mdi/js'
+import UpdatePanelEntryAll from '@/components/panels/Machine/UpdatePanel/EntryAll.vue'
+import { mdiRefresh, mdiInformation, mdiCloseThick, mdiUpdate } from '@mdi/js'
 import { ServerUpdateManagerStateGuiList } from '@/store/server/updateManager/types'
 import semver from 'semver'
 
 @Component({
-    components: { Panel, UpdatePanelEntry, UpdatePanelEntrySystem },
+    components: { Panel, UpdatePanelEntry, UpdatePanelEntrySystem, UpdatePanelEntryAll },
 })
 export default class UpdatePanel extends Mixins(BaseMixin) {
     mdiRefresh = mdiRefresh
     mdiInformation = mdiInformation
-    mdiProgressUpload = mdiProgressUpload
     mdiCloseThick = mdiCloseThick
     mdiUpdate = mdiUpdate
 
@@ -125,10 +113,6 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
             { refresh: true },
             { action: 'server/updateManager/onUpdateStatus', loading: 'loadingBtnSyncUpdateManager' }
         )
-    }
-
-    updateAll() {
-        this.$socket.emit('machine.update.full', {})
     }
 }
 </script>
