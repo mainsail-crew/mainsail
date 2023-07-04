@@ -27,7 +27,7 @@
             <v-card-actions>
                 <v-spacer />
                 <v-btn text @click="closeDialog">{{ $t('Machine.UpdatePanel.Abort') }}</v-btn>
-                <v-btn text color="primary" :disabled="!checkboxUpdateQuestion">
+                <v-btn text color="primary" :disabled="!checkboxUpdateQuestion" @click="doUpdate">
                     {{ $t('Machine.UpdatePanel.StartUpdate') }}
                 </v-btn>
             </v-card-actions>
@@ -55,6 +55,10 @@ export default class UpdateHint extends Mixins(BaseMixin) {
 
     @Prop({ required: true }) readonly boolShowDialog!: boolean
     @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
+
+    doUpdate() {
+        this.$emit('do-update')
+    }
 
     openCommitHistory() {
         this.$emit('open-commit-history')

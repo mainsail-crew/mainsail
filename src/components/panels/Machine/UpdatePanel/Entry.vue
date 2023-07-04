@@ -100,6 +100,7 @@
             :bool-show-dialog="boolShowUpdateHint"
             :repo="repo"
             @open-commit-history="boolShowCommitList = true"
+            @do-update="doUpdate"
             @close-dialog="closeShowUpdateHint" />
     </div>
 </template>
