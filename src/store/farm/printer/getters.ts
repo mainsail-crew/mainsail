@@ -52,7 +52,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
             if (state.data.print_stats.state === 'printing') {
                 const percent = getters['getPrintPercent']
 
-                return Math.round(percent * 100) + '% Printing'
+                return Math.floor(percent * 100) + '% Printing'
             }
 
             return state.data.print_stats.state.charAt(0).toUpperCase() + state.data.print_stats.state.slice(1)
