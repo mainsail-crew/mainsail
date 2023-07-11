@@ -494,7 +494,6 @@
             "CountPackagesCanBeUpgraded": "{count} packages can be upgraded",
             "Detached": "detached",
             "Dirty": "dirty",
-            "ERROR": "ERROR",
             "GenericUpdateQuestion": "Check the commit history (if available) and the GitHub page for this project to see if any manual adjustments are necessary for this update.",
             "GitHubPage": "GitHub Page",
             "HardRecovery": "Hard Recovery",
