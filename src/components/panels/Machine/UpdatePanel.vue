@@ -26,17 +26,28 @@
                 </v-tooltip>
             </template>
             <v-card-text class="px-0 py-0 update-manager-list">
-                <template v-for="(module, index) in modules">
-                    <v-divider v-if="index" :key="'divider_' + module.name" class="my-0" />
-                    <update-panel-entry :key="module.name" :repo="module.data" />
+                <template v-if="checkInitState">
+                    <template v-for="(module, index) in modules">
+                        <v-divider v-if="index" :key="'divider_' + module.name" class="my-0" />
+                        <update-panel-entry :key="module.name" :repo="module.data" />
+                    </template>
+                    <template v-if="existsSystemModul">
+                        <v-divider v-if="modules.length" class="my-0" />
+                        <update-panel-entry-system />
+                    </template>
+                    <template v-if="showUpdateAll">
+                        <v-divider class="mb-0 mt-2 border-top-2" />
+                        <update-panel-entry-all />
+                    </template>
                 </template>
-                <template v-if="existsSystemModul">
-                    <v-divider v-if="modules.length" class="my-0" />
-                    <update-panel-entry-system />
-                </template>
-                <template v-if="showUpdateAll">
-                    <v-divider class="mb-0 mt-2 border-top-2" />
-                    <update-panel-entry-all />
+                <template v-else>
+                    <v-row class="mt-0 mb-0">
+                        <v-col class="px-6">
+                            <v-alert class="mb-0" text dense type="info" border="left">
+                                {{ $t('Machine.UpdatePanel.InitUpdateManager') }}
+                            </v-alert>
+                        </v-col>
+                    </v-row>
                 </template>
             </v-card-text>
         </panel>
@@ -77,6 +88,14 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
 
     get systemPackagesCount() {
         return this.$store.state.server.updateManager?.system?.package_count ?? 0
+    }
+
+    get checkInitState() {
+        const initModules = this.modules.filter(
+            (module: ServerUpdateManagerStateGuiList) => module.data.remote_version !== '?'
+        )
+
+        return initModules.length > 0
     }
 
     get showUpdateAll() {

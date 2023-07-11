@@ -498,6 +498,7 @@
             "GenericUpdateQuestion": "Check the commit history (if available) and the GitHub page for this project to see if any manual adjustments are necessary for this update.",
             "GitHubPage": "GitHub Page",
             "HardRecovery": "Hard Recovery",
+            "InitUpdateManager": "The Update Manager has not been initialized yet. This is normal when you start the system for the first time. Please click on the refresh button to initialize all components.",
             "Invalid": "invalid",
             "IUnderstandTheRisks": "I understand the risks",
             "LinkToGithub": "Link to GitHub",
