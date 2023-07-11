@@ -510,7 +510,6 @@
                 "Dirty": "Your local repository has been modified and cannot be updated in this state. Please recover this repository."
             },
             "OSPackages": "OS-Packages",
-            "ReleaseNotes": "Release Notes",
             "SoftRecovery": "Soft Recovery",
             "StartUpdate": "Start Update",
             "System": "System",

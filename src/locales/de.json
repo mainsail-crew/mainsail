@@ -510,7 +510,6 @@
                 "Dirty": "Ihr lokales Repository wurde geändert und kann in diesem Zustand nicht aktualisiert werden. Bitte stellen Sie dieses Repository wieder her."
             },
             "OSPackages": "OS-Pakete",
-            "ReleaseNotes": "Anmerkungen zur Veröffentlichung",
             "SoftRecovery": "einfache Wiederherstellung",
             "StartUpdate": "Aktualisierung starten",
             "System": "System",
