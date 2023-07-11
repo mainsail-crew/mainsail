@@ -85,6 +85,19 @@
                     text
                     dense
                     border="left"
+                    type="info">
+                    {{ message }}
+                </v-alert>
+            </v-col>
+        </v-row>
+        <v-row v-if="warnings.length" class="mt-0">
+            <v-col class="px-6 pt-0">
+                <v-alert
+                    v-for="(message, index) in warnings"
+                    :key="'warnings_' + index"
+                    text
+                    dense
+                    border="left"
                     color="orange"
                     :icon="mdiAlertCircle">
                     {{ message }}
@@ -297,6 +310,10 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
 
     get gitMessages() {
         return this.repo.git_messages ?? []
+    }
+
+    get warnings() {
+        return this.repo.warnings ?? []
     }
 
     get webUpdatable() {
