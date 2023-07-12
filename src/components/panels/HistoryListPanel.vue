@@ -962,7 +962,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     exportHistory() {
-        const checkString = parseFloat('1.23').toLocaleString()
+        const checkString = parseFloat('1.23').toLocaleString(this.browserLocale)
         const decimalSeparator = checkString.indexOf(',') >= 0 ? ',' : '.'
         const csvSeperator = decimalSeparator === ',' ? ';' : ','
 
@@ -1011,7 +1011,19 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             })
         }
 
-        const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(csvSeperator)).join('\n')
+        const csvContent =
+            'data:text/csv;charset=utf-8,' +
+            content
+                .map((entry) =>
+                    entry
+                        .map((field) => {
+                            if (field.indexOf(csvSeperator) === -1) return field
+
+                            return `"${field}"`
+                        })
+                        .join(csvSeperator)
+                )
+                .join('\n')
         const link = document.createElement('a')
         link.setAttribute('href', encodeURI(csvContent))
         link.setAttribute('download', 'print_history.csv')
