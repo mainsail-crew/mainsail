@@ -19,7 +19,7 @@
                             :value="logoColor"
                             hide-mode-switch
                             mode="rgba"
-                            @update:color="updateLogoColor"></v-color-picker>
+                            @update:color="updateLogoColor" />
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2" />
@@ -69,7 +69,7 @@
                     :title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINT')"
                     :sub-title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINTDescription')"
                     :dynamic-slot-width="true">
-                    <v-switch v-model="displayCancelPrint" hide-details class="mt-0"></v-switch>
+                    <v-switch v-model="displayCancelPrint" hide-details class="mt-0" />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
@@ -135,7 +135,7 @@
                     :dynamic-slot-width="true">
                     <v-switch v-model="boolHideUploadAndPrintButton" hide-details class="mt-0" />
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
+                <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.PowerDeviceName')"
                     :sub-title="$t('Settings.UiSettingsTab.PowerDeviceNameDescription')"
@@ -217,8 +217,8 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     mdiRestart = mdiRestart
     mdiTimerOutline = mdiTimerOutline
 
-    private defaultLogoColor = defaultLogoColor
-    private defaultPrimaryColor = defaultPrimaryColor
+    defaultLogoColor = defaultLogoColor
+    defaultPrimaryColor = defaultPrimaryColor
 
     get logoColor() {
         return this.$store.state.gui.uiSettings.logo
