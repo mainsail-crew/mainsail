@@ -30,6 +30,11 @@
             "NoEmptyAllowedError": "输入值不能为空！"
         },
         "Printers": "打印机集群",
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "本地缓存已过时，需要进行更新。请点击下面的按钮来更新缓存。",
+            "TitleNeedUpdate": "PWA需要更新",
+            "Update": "更新"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "树莓派ARM核心当前被限制。",
             "DescriptionFrequencyCapped": "树莓派ARM最高频率目前限制在1.2 GHz。",
@@ -52,7 +57,7 @@
             "Complete": "已完成 - {filename}",
             "Error": "错误",
             "Pause": "暂停打印",
-            "PrinterOff": "关闭打印机",
+            "PrinterOff": "打印机已关闭",
             "Printing": "已打印 {percent}% - {filename}",
             "PrintingETA": "已打印 {percent}% - 预估: {eta} - {filename}"
         },
@@ -179,6 +184,7 @@
         "DeleteDirectory": "删除文件夹",
         "DeleteDirectoryQuestion": "你确定要删除\"{name}\"和里面的所有内容吗？",
         "DeleteSelectedQuestion": "你确定要删除选中的{count}个文件？",
+        "DeleteSingleFileQuestion": "你确定要删除文件\"{name}\"吗？",
         "Download": "下载",
         "Duplicate": "复制",
         "DuplicateFile": "复制文件",
@@ -316,6 +322,7 @@
         "Chart": "图表",
         "Delete": "删除",
         "DeleteSelectedQuestion": "你是否要删除已选中的{count}个任务？",
+        "DeleteSingleJobQuestion": "你是否要删除这个任务？",
         "Details": "详情",
         "EditNote": "编辑便条",
         "Empty": "没有内容",
@@ -403,6 +410,7 @@
             "DeleteDirectory": "删除文件夹",
             "DeleteDirectoryQuestion": "你确定删除\"{name}\"文件夹和里面的所有内容吗？",
             "DeleteSelectedQuestion": "删除已选中的{count}个项目？",
+            "DeleteSingleFileQuestion": "你确定要删除文件\"{name}\"吗？",
             "Download": "下载",
             "Duplicate": "复制",
             "DuplicateFile": "复制文件",
@@ -728,7 +736,7 @@
         "HostnameRequired": "需要配置主机名称/IP地址",
         "Port": "Moonraker服务端口",
         "PortRequired": "需要配置Moonraker服务端口",
-        "RememberToAdd": "请在moonraker.conf的'cors_domains'标签中添加{cors}",
+        "RememberToAdd": "请在moonraker.conf的'cors_domains'标签中添加'{cors}'",
         "SelectPrinter": "选择打印机",
         "TryAgain": "重试",
         "UpdatePrinter": "更新打印机",
@@ -948,7 +956,7 @@
             "Port": "Moonraker服务端口",
             "RemotePrinters": "打印机",
             "UpdatePrinter": "更新打印机",
-            "UseConfigJson": "检测到InstanceDB = JSON。请使用 config.json 来修改打印机列表。"
+            "UseConfigJson": "检测到InstanceDB参数为JSON。请使用 config.json 来修改打印机列表。"
         },
         "Store": "存储",
         "TimelapseTab": {
@@ -1043,7 +1051,7 @@
             "LockSlidersDelayDescription": "滑动条将在给定延迟时间后锁定。如果设置为0或留空，滑动条将仅在页面更改/重新加载后锁定",
             "LockSlidersDescription": "在允许更改之前需要解锁触摸屏上的滑动条",
             "Logo": "Logo颜色",
-            "ManualProbeDialog": "手动探针助手对话框",
+            "ManualProbeDialog": "手动Probe助手对话框",
             "ManualProbeDialogDescription": "显示 PROBE_CALIBRATE 或 Z_ENDSTOP_CALIBRATE 的辅助程序对话框。",
             "NavigationStyle": "导航栏样式",
             "NavigationStyleDescription": "更改导航栏外观",
@@ -1077,9 +1085,9 @@
             "Ipstream": "IP摄像头",
             "Hlsstream": "HLS视频流",
             "WebrtcJanus": "WebRTC (janus-gateway)",
-            "Mjpegstreamer": "MJPEG视频流",
-            "MjpegstreamerAdaptive": "自适应MJPEG视频流(试验性)",
-            "JMuxerStream": "裸h264视频流 (jmuxer)",
+            "Mjpegstreamer": "MJPEG-Streamer",
+            "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (试验性)",
+            "JMuxerStream": "原始h264视频流 (jmuxer)",
             "Name": "名称",
             "NameAlreadyExists": "名称已经存在",
             "Required": "需要填写名称",
@@ -1093,14 +1101,16 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "垂直",
             "Webcams": "摄像头",
-            "WebrtcCameraStreamer": "WebRTC (摄像头视频流)"
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
     },
     "ScrewsTiltAdjust": {
         "Accept": "接受",
         "Base": "底座",
         "ErrorText": "探测过程中出现了问题。",
-        "Headline": "螺丝倾斜调整"
+        "Headline": "螺丝倾斜调整",
+        "Retry": "重试"
     },
     "Timelapse": {
         "AllFiles": "全部文件",
@@ -1113,6 +1123,7 @@
         "DeleteDirectory": "删除文件夹",
         "DeleteDirectoryQuestion": "你确定要删除\"{name}\"文件夹和里面所有的文件吗？",
         "DeleteSelectedQuestion": "你确定要删除选中的{count}个文件吗？",
+        "DeleteSingleFileQuestion": "你确定要删除文件\"{name}\"吗？",
         "Download": "下载",
         "DuplicateLastframe": "重复最后一帧",
         "Empty": "没有已完成的延时摄影文件",
