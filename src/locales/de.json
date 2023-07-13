@@ -1041,6 +1041,7 @@
             "DefaultNavigationStateAlwaysClosed": "immer geschlossen",
             "DefaultNavigationStateAlwaysOpen": "immer geöffnet",
             "DefaultNavigationStateDescription": "Welchen zustand soll die Navigation normalerweise haben?",
+            "DefaultNavigationStateLastState": "letzter Zustand",
             "DisableFanAnimation": "Lüfteranimation deaktivieren",
             "DisableFanAnimationDescription": "Dies kann die Last im Browser senken.",
             "DisplayCANCEL_PRINT": "Zeige CANCEL_PRINT an",
