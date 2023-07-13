@@ -130,6 +130,18 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
+                    :title="$t('Settings.UiSettingsTab.DefaultNavigationState')"
+                    :sub-title="$t('Settings.UiSettingsTab.DefaultNavigationStateDescription')">
+                    <v-select
+                        v-model="defaultNavigationStateSetting"
+                        :items="defaultNavigationStateSettings"
+                        class="mt-0"
+                        hide-details
+                        outlined
+                        dense />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
                     :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton')"
                     :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription')"
                     :dynamic-slot-width="true">
@@ -307,6 +319,31 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
             {
                 text: this.$t('Settings.UiSettingsTab.NavigationStyleIconsAndText'),
                 value: 'iconsAndText',
+            },
+        ]
+    }
+
+    get defaultNavigationStateSetting() {
+        return this.$store.state.gui.uiSettings.defaultNavigationStateSetting
+    }
+
+    set defaultNavigationStateSetting(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.defaultNavigationStateSetting', value: newVal })
+    }
+
+    get defaultNavigationStateSettings() {
+        return [
+            {
+                text: this.$t('Settings.UiSettingsTab.DefaultNavigationStateAlwaysOpen'),
+                value: 'alwaysOpen',
+            },
+            {
+                text: this.$t('Settings.UiSettingsTab.DefaultNavigationStateAlwaysClosed'),
+                value: 'alwaysClosed',
+            },
+            {
+                text: this.$t('Settings.UiSettingsTab.DefaultNavigationStateLastState'),
+                value: 'lastState',
             },
         ]
     }

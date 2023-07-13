@@ -245,6 +245,26 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         )
     }
 
+    get defaultNavigationStateSetting() {
+        return this.$store.state.gui?.uiSettings?.defaultNavigationStateSetting ?? 'alwaysOpen'
+    }
+
+    mounted() {
+        //this.naviDrawer = this.$vuetify.breakpoint.lgAndUp
+        switch (this.defaultNavigationStateSetting) {
+            case 'alwaysClosed':
+                this.naviDrawer = false
+                break
+
+            case 'lastState':
+                this.naviDrawer = (localStorage.getItem('naviDrawer') ?? 'true') === 'true'
+                break
+
+            default:
+                this.naviDrawer = this.$vuetify.breakpoint.lgAndUp
+        }
+    }
+
     btnEmergencyStop() {
         const confirmOnEmergencyStop = this.$store.state.gui.uiSettings.confirmOnEmergencyStop
         if (!confirmOnEmergencyStop) this.emergencyStop()

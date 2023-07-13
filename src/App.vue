@@ -79,12 +79,26 @@ export default class App extends Mixins(BaseMixin) {
         return this.$store.getters['files/getMainBackground']
     }
 
+    get naviDrawer(): boolean {
+        return this.$store.state.naviDrawer
+    }
+
+    get navigationStyle() {
+        return this.$store.state.gui.uiSettings.navigationStyle
+    }
+
     get mainStyle() {
-        let style = ''
+        let style: any = {
+            paddingLeft: '0',
+        }
 
         if (this.mainBackground !== null) {
-            style = 'background-image: url(' + this.mainBackground + ');'
+            style.backgroundImage = 'url(' + this.mainBackground + ')'
         }
+
+        // overwrite padding left for the sidebar
+        if (this.naviDrawer && this.navigationStyle === 'iconsAndText') style.paddingLeft = '220px'
+        if (this.naviDrawer && this.navigationStyle === 'iconsOnly') style.paddingLeft = '56px'
 
         return style
     }

@@ -108,6 +108,7 @@ export interface GuiState {
         boolWideNavDrawer: boolean
         boolHideUploadAndPrintButton: boolean
         navigationStyle: 'iconsAndText' | 'iconsOnly'
+        defaultNavigationStateSetting: 'alwaysOpen' | 'alwaysClosed' | 'lastState'
         powerDeviceName: string | null
         hideSaveConfigForBedMash: boolean
         disableFanAnimation: boolean
