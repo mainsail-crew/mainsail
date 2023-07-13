@@ -26,12 +26,11 @@
 <template>
     <v-app dark :style="cssVars">
         <template v-if="socketIsConnected && guiIsReady">
-            <the-sidebar></the-sidebar>
-            <the-topbar></the-topbar>
-
+            <the-sidebar />
+            <the-topbar />
             <v-main id="content" :style="mainStyle">
                 <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
-                    <router-view></router-view>
+                    <router-view />
                 </v-container>
             </v-main>
             <the-service-worker />
@@ -44,8 +43,8 @@
             <the-bed-screws-dialog />
             <the-screws-tilt-adjust-dialog />
         </template>
-        <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'"></the-select-printer-dialog>
-        <the-connecting-dialog v-else></the-connecting-dialog>
+        <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'" />
+        <the-connecting-dialog v-else />
     </v-app>
 </template>
 
