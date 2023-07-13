@@ -24,7 +24,8 @@
                     <temperature-panel-list-item
                         v-for="objectName in tempObjects"
                         :key="objectName"
-                        :object-name="objectName" />
+                        :object-name="objectName"
+                        :is-responsive-mobile="el.is.mobile ?? false" />
                 </tbody>
             </v-simple-table>
         </template>

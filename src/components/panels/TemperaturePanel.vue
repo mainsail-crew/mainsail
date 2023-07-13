@@ -88,7 +88,7 @@ import TempChart from '@/components/charts/TempChart.vue'
 import TemperatureInput from '@/components/inputs/TemperatureInput.vue'
 import Panel from '@/components/ui/Panel.vue'
 import Responsive from '@/components/ui/Responsive.vue'
-import { mdiCloseThick, mdiCog, mdiThermometerLines } from '@mdi/js'
+import { mdiCloseThick, mdiThermometerLines } from '@mdi/js'
 import TemperaturePanelPresets from '@/components/panels/Temperature/TemperaturePanelPresets.vue'
 
 @Component({
@@ -168,9 +168,5 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
 <style scoped>
 .canvasjs-chart-tooltip > div {
     border-radius: 10px !important;
-}
-
-.v-icon._no-focus-style:focus::after {
-    opacity: 0 !important;
 }
 </style>
