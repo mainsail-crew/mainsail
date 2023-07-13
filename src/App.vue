@@ -1,28 +1,3 @@
-<style>
-@import './assets/styles/fonts.css';
-@import './assets/styles/toastr.css';
-@import './assets/styles/page.scss';
-@import './assets/styles/sidebar.scss';
-@import './assets/styles/utils.scss';
-@import './assets/styles/updateManager.scss';
-
-:root {
-    --app-height: 100%;
-}
-
-#content {
-    background-attachment: fixed;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-/*noinspection CssUnusedSymbol*/
-.v-btn:not(.v-btn--outlined).primary {
-    /*noinspection CssUnresolvedCustomProperty*/
-    color: var(--v-btn-text-primary);
-}
-</style>
-
 <template>
     <v-app dark :style="cssVars">
         <template v-if="socketIsConnected && guiIsReady">
@@ -310,3 +285,28 @@ export default class App extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style>
+@import './assets/styles/fonts.css';
+@import './assets/styles/toastr.css';
+@import './assets/styles/page.scss';
+@import './assets/styles/sidebar.scss';
+@import './assets/styles/utils.scss';
+@import './assets/styles/updateManager.scss';
+
+:root {
+    --app-height: 100%;
+}
+
+#content {
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*noinspection CssUnusedSymbol*/
+.v-btn:not(.v-btn--outlined).primary {
+    /*noinspection CssUnresolvedCustomProperty*/
+    color: var(--v-btn-text-primary);
+}
+</style>
