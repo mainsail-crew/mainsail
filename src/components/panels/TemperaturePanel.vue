@@ -3,80 +3,13 @@
         <panel
             v-if="klipperReadyForGui"
             :icon="mdiThermometerLines"
-            :title="$t('Panels.TemperaturePanel.Headline').toString()"
+            :title="$t('Panels.TemperaturePanel.Headline')"
             :collapsible="true"
             card-class="temperature-panel">
             <!-- PRESET MENU -->
             <template #buttons>
-                <v-menu v-if="presets.length" :offset-y="true" left title="Preheat">
-                    <template #activator="{ on, attrs }">
-                        <v-btn
-                            text
-                            tile
-                            color="primary"
-                            v-bind="attrs"
-                            :disabled="['printing', 'paused'].includes(printer_state)"
-                            class="pa-1"
-                            v-on="on">
-                            <span class="d-none ml-1 d-md-block">{{ $t('Panels.TemperaturePanel.Presets') }}</span>
-                            <v-icon class="d-md-none">{{ mdiFire }}</v-icon>
-                            <v-icon>{{ mdiMenuDown }}</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-list dense class="py-0">
-                        <v-list-item v-for="preset of presets" :key="preset.index" link @click="preheat(preset)">
-                            <div class="d-flex align-center _preset-title">
-                                <v-icon small class="mr-1">{{ mdiFire }}</v-icon>
-                                <span style="padding-top: 2px">{{ preset.name }}</span>
-                            </div>
-                        </v-list-item>
-                    </v-list>
-                    <v-divider class="_fix_transparency"></v-divider>
-                    <v-list dense class="py-0">
-                        <v-list-item link @click="cooldown()">
-                            <div class="d-flex align-center _preset-title">
-                                <v-icon small color="primary" class="mr-1">{{ mdiSnowflake }}</v-icon>
-                                <span class="primary--text">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
-                            </div>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-                <v-btn
-                    v-if="presets.length === 0"
-                    :icon="$vuetify.breakpoint.smAndDown"
-                    :text="$vuetify.breakpoint.mdAndUp"
-                    tile
-                    color="primary"
-                    @click="cooldown()">
-                    <v-icon small>{{ mdiSnowflake }}</v-icon>
-                    <span class="d-none ml-1 d-md-inline">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
-                </v-btn>
-                <v-menu
-                    :offset-y="true"
-                    :close-on-content-click="false"
-                    :title="$t('Panels.TemperaturePanel.SetupTemperatures')">
-                    <template #activator="{ on, attrs }">
-                        <v-btn icon tile v-bind="attrs" v-on="on">
-                            <v-icon small>{{ mdiCog }}</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-list>
-                        <v-list-item class="minHeight36">
-                            <v-checkbox
-                                v-model="boolTempchart"
-                                class="mt-0"
-                                hide-details
-                                :label="$t('Panels.TemperaturePanel.ShowChart')"></v-checkbox>
-                        </v-list-item>
-                        <v-list-item class="minHeight36">
-                            <v-checkbox
-                                v-model="autoscaleTempchart"
-                                class="mt-0"
-                                hide-details
-                                :label="$t('Panels.TemperaturePanel.AutoscaleChart')"></v-checkbox>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
+                <temperature-panel-presets />
+                <temperature-panel-settings />
             </template>
             <v-card-text class="pa-0">
                 <responsive
@@ -176,10 +109,10 @@
                 </responsive>
             </v-card-text>
             <v-card-text v-if="boolTempchart" class="pa-0 d-inline-block">
-                <v-divider class="mt-0 mb-2"></v-divider>
+                <v-divider class="mt-0 mb-2" />
                 <v-row>
                     <v-col class="py-0">
-                        <temp-chart></temp-chart>
+                        <temp-chart />
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -228,7 +161,7 @@
                                 mode="hexa"
                                 :value="editHeater.color"
                                 class="mx-auto"
-                                @update:color="setChartColor"></v-color-picker>
+                                @update:color="setChartColor" />
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -242,7 +175,6 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import { capitalize, convertName } from '@/plugins/helpers'
 import { Debounce } from 'vue-debounce-decorator'
-import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
 import { PrinterStateAdditionalSensor, PrinterStateTemperatureObject } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
@@ -250,17 +182,15 @@ import TempChart from '@/components/charts/TempChart.vue'
 import TemperatureInput from '@/components/inputs/TemperatureInput.vue'
 import Panel from '@/components/ui/Panel.vue'
 import Responsive from '@/components/ui/Responsive.vue'
-import { mdiCloseThick, mdiCog, mdiSnowflake, mdiFire, mdiMenuDown, mdiThermometerLines } from '@mdi/js'
+import { mdiCloseThick, mdiCog, mdiThermometerLines } from '@mdi/js'
+import TemperaturePanelPresets from '@/components/panels/Temperature/TemperaturePanelPresets.vue'
 
 @Component({
-    components: { Panel, TempChart, TemperatureInput, Responsive },
+    components: { Panel, TempChart, TemperatureInput, Responsive, TemperaturePanelPresets },
 })
 export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
-    mdiSnowflake = mdiSnowflake
     mdiCloseThick = mdiCloseThick
     mdiCog = mdiCog
-    mdiFire = mdiFire
-    mdiMenuDown = mdiMenuDown
     mdiThermometerLines = mdiThermometerLines
 
     convertName = convertName
@@ -278,62 +208,14 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
         color: '',
     }
 
-    get presets(): GuiPresetsStatePreset[] {
-        return this.$store.getters['gui/presets/getPresets'] ?? []
-    }
-
-    get cooldownGcode(): string {
-        return this.$store.getters['gui/presets/getCooldownGcode']
-    }
-
     get boolTempchart(): boolean {
         return this.$store.state.gui.view.tempchart.boolTempchart ?? false
-    }
-
-    set boolTempchart(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.boolTempchart', value: newVal })
-    }
-
-    get autoscaleTempchart(): boolean {
-        return this.$store.state.gui.view.tempchart.autoscale ?? false
-    }
-
-    set autoscaleTempchart(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.autoscale', value: newVal })
     }
 
     get temperatureObjects() {
         const sensors = this.$store.getters['printer/getTemperatureObjects'] ?? []
 
         return sensors.filter((sensor: PrinterStateTemperatureObject) => !sensor.name.startsWith('_'))
-    }
-
-    preheat(preset: GuiPresetsStatePreset): void {
-        for (const [name, attributes] of Object.entries(preset.values)) {
-            if (attributes.bool) {
-                let gcode = `SET_HEATER_TEMPERATURE HEATER=${name} TARGET=${attributes.value}`
-
-                if (attributes.type === 'temperature_fan') {
-                    const fanName = name.replace('temperature_fan ', '')
-                    gcode = `SET_TEMPERATURE_FAN_TARGET temperature_fan=${fanName} TARGET=${attributes.value}`
-                }
-
-                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: gcode })
-            }
-        }
-
-        if (preset.gcode !== '') {
-            setTimeout(() => {
-                this.$store.dispatch('server/addEvent', { message: preset.gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: preset.gcode })
-            }, 100)
-        }
-    }
-
-    cooldown(): void {
-        this.$store.dispatch('server/addEvent', { message: this.cooldownGcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: this.cooldownGcode })
     }
 
     openHeater(object: PrinterStateTemperatureObject): void {
@@ -381,11 +263,6 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
 <style scoped>
 .canvasjs-chart-tooltip > div {
     border-radius: 10px !important;
-}
-
-._preset-title {
-    font-size: 0.8125rem;
-    font-weight: 500;
 }
 
 .v-icon._no-focus-style:focus::after {
