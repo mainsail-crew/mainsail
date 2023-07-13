@@ -96,6 +96,15 @@ export default class Panel extends Mixins(BaseMixin) {
 .icon-rotate-90 {
     transform: rotate(90deg);
 }
+
+.panel-toolbar {
+    overflow-y: hidden;
+}
+
+::v-deep .panel-toolbar .v-btn {
+    height: 100% !important;
+    max-height: none;
+}
 </style>
 
 <style lang="scss">
@@ -104,13 +113,6 @@ export default class Panel extends Mixins(BaseMixin) {
 }
 .v-card.panel .v-toolbar__content .subheading {
     user-select: none;
-}
-.panel-toolbar {
-    overflow-y: hidden;
-}
-.panel-toolbar .v-btn {
-    height: 100% !important;
-    max-height: none;
 }
 .panel-toolbar .v-btn.v-btn--icon {
     width: var(--panel-toolbar-icon-btn-width) !important;
