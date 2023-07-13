@@ -102,4 +102,12 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
     font-size: 0.8125rem;
     font-weight: 500;
 }
+
+/*
+workaround for fixing a transparency issue
+which is assumingly a vuetify bug
+*/
+._fix_transparency {
+    background-color: #1e1e1e;
+}
 </style>
