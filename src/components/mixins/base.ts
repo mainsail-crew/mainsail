@@ -175,7 +175,7 @@ export default class BaseMixin extends Vue {
     }
 
     get browserLocale() {
-        return navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
+        return navigator.language
     }
 
     get hours12Format() {
