@@ -1040,7 +1040,7 @@
             "DefaultNavigationState": "Navigation default state",
             "DefaultNavigationStateAlwaysClosed": "always closed",
             "DefaultNavigationStateAlwaysOpen": "always open",
-            "DefaultNavigationStateDescription": "Which state should have the navigation after open it.",
+            "DefaultNavigationStateDescription": "Which state should have the navigation per default.",
             "DefaultNavigationStateLastState": "last state",
             "DisableFanAnimation": "Disable fan animation",
             "DisableFanAnimationDescription": "This can reduce some load in your Browser.",
