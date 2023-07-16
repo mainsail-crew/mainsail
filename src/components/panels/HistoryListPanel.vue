@@ -962,7 +962,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     exportHistory() {
-        const checkString = parseFloat('1.23').toLocaleString()
+        const checkString = parseFloat('1.23').toLocaleString(this.browserLocale)
         const decimalSeparator = checkString.indexOf(',') >= 0 ? ',' : '.'
         const csvSeperator = decimalSeparator === ',' ? ';' : ','
 
@@ -1011,7 +1011,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             })
         }
 
-        const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(csvSeperator)).join('\n')
+        // escape fields with the csvSeperator in the content
+        // prettier-ignore
+        const csvContent =
+            'data:text/csv;charset=utf-8,' +
+            content.map((entry) =>
+                entry.map((field) => (field.indexOf(csvSeperator) === -1 ? field : `"${field}"`)).join(csvSeperator)
+            ).join('\n')
+
         const link = document.createElement('a')
         link.setAttribute('href', encodeURI(csvContent))
         link.setAttribute('download', 'print_history.csv')
@@ -1044,7 +1051,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 default:
                     switch (typeof value) {
                         case 'number':
-                            return value?.toLocaleString(undefined, { useGrouping: false }) ?? 0
+                            return value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
 
                         case 'string':
                             if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
