@@ -24,7 +24,7 @@ export interface ServerUpdateManagerStateMessages {
 export interface ServerUpdateManagerStateGitRepoCommit {
     sha: string
     author: string
-    date: number
+    date: string
     subject: string
     message: string
     tag: string | null
