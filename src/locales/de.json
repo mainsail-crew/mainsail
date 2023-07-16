@@ -485,7 +485,7 @@
             "CommitHistory": "Commit Verlauf",
             "Commits": "Commits",
             "CommitsAvailable": "keine Einreichung verfügbar | {count} Einreichung verfügbar | {count} Einreichungen verfügbar",
-            "CommitsOnDate": "Engereicht am {date}",
+            "CommitsOnDate": "Eingereicht am {date}",
             "CommittedDaysAgo": "eingereicht vor {days} Tagen",
             "CommittedHoursAgo": "eingereicht vor {hours} Stunden",
             "CommittedOnDate": "eingereicht am {date}",
