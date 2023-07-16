@@ -468,4 +468,41 @@ export const actions: ActionTree<GuiState, RootState> = {
     announcementDismissFlag(_, payload) {
         window.console.log(payload)
     },
+
+    setChartDatasetStatus(
+        { commit, dispatch, state },
+        payload: { objectName: string; dataset: string; value: boolean }
+    ) {
+        commit('setChartDatasetStatus', payload)
+
+        dispatch('updateSettings', {
+            keyName: 'view.tempchart.datasetSettings',
+            newVal: state.view.tempchart.datasetSettings,
+        })
+    },
+
+    setDatasetAdditionalSensorStatus(
+        { commit, dispatch, state },
+        payload: { objectName: string; dataset: string; value: boolean }
+    ) {
+        commit('setDatasetAdditionalSensorStatus', payload)
+
+        dispatch('updateSettings', {
+            keyName: 'view.tempchart.datasetSettings',
+            newVal: state.view.tempchart.datasetSettings,
+        })
+    },
+
+    setChartColor({ commit, dispatch, state }, payload: { objectName: string; value: boolean }) {
+        commit('setChartDatasetStatus', {
+            objectName: payload.objectName,
+            dataset: 'color',
+            value: payload.value,
+        })
+
+        dispatch('updateSettings', {
+            keyName: 'view.tempchart.datasetSettings',
+            newVal: state.view.tempchart.datasetSettings,
+        })
+    },
 }

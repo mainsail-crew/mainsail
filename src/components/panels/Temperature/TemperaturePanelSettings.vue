@@ -51,5 +51,3 @@ export default class TemperaturePanelSettings extends Mixins(BaseMixin) {
     }
 }
 </script>
-
-<style lang="scss" scoped></style>
