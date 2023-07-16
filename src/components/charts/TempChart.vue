@@ -252,9 +252,7 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     get gridRight() {
-        if (this.boolDisplayPwmAxis) return 25
-
-        return 15
+        return this.boolDisplayPwmAxis ? 25 : 15
     }
 
     get optionGridRight() {
