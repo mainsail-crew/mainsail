@@ -53,7 +53,6 @@ export interface ServerUpdateManagerStateGitRepo {
     git_messages?: string[]
     warnings?: string[]
     info_tags?: string[]
-    last_error?: string
 }
 
 export interface ServerUpdateManagerStateGitRepoGroupedCommits {
