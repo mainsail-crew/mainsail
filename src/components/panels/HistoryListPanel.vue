@@ -1011,19 +1011,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             })
         }
 
+        // escape fields with the csvSeperator in the content
+        // prettier-ignore
         const csvContent =
             'data:text/csv;charset=utf-8,' +
-            content
-                .map((entry) =>
-                    entry
-                        .map((field) => {
-                            if (field.indexOf(csvSeperator) === -1) return field
+            content.map((entry) =>
+                entry.map((field) => (field.indexOf(csvSeperator) === -1 ? field : `"${field}"`)).join(csvSeperator)
+            ).join('\n')
 
-                            return `"${field}"`
-                        })
-                        .join(csvSeperator)
-                )
-                .join('\n')
         const link = document.createElement('a')
         link.setAttribute('href', encodeURI(csvContent))
         link.setAttribute('download', 'print_history.csv')
