@@ -81,9 +81,6 @@ export default class TemperaturePanelListItemEdit extends Mixins(BaseMixin) {
         })
 
         this.$store.dispatch('printer/tempHistory/setColor', { name: this.objectName, value })
-
-        /*const name = 'view.tempchart.datasetSettings.' + this.objectName + '.color'
-        this.$store.dispatch('gui/saveSetting', { name, value })*/
     }
 
     closeDialog() {
