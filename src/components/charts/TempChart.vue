@@ -51,9 +51,6 @@ export default class TempChart extends Mixins(BaseMixin) {
                 show: false,
                 selected: this.selectedLegends,
             },
-            /*dataZoom: [{
-                type: 'inside',
-            }],*/
             xAxis: {
                 type: 'time',
                 splitNumber: 5,
