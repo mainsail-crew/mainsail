@@ -6,7 +6,7 @@ export interface ServerUpdateManagerState {
     git_repos: ServerUpdateManagerStateGitRepo[]
     web_repos: ServerUpdateManagerStateGitRepo[]
     system: {
-        package_count: 0
+        package_count: number
         package_list: string[]
     }
     updateResponse: {
