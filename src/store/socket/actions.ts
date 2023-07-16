@@ -124,6 +124,10 @@ export const actions: ActionTree<SocketState, RootState> = {
                 dispatch('server/announcements/getWaked', payload.params[0], { root: true })
                 break
 
+            case 'notify_webcams_changed':
+                dispatch('gui/webcams/initStore', payload.params[0], { root: true })
+                break
+
             default:
                 window.console.debug(payload)
         }
