@@ -1,7 +1,6 @@
 import { GetterTree } from 'vuex'
 import { ServerUpdateManagerState, ServerUpdateManagerStateGuiList } from '@/store/server/updateManager/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
-//import semver from 'semver'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerUpdateManagerState, any> = {
