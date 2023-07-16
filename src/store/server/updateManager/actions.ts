@@ -34,7 +34,6 @@ export const actions: ActionTree<ServerUpdateManagerState, RootState> = {
             }
         }
 
-        //await commit('setStatus', payload)
         await dispatch('socket/removeInitModule', 'server/updateManager/init', { root: true })
     },
 }
