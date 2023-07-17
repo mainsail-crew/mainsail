@@ -12,12 +12,16 @@ export default class Ipstreamer extends Mixins(BaseMixin) {
     private isVisible = true
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop() printerUrl: string | undefined
+    @Prop({ default: null }) readonly printerUrl!: string | null
 
     get url() {
         if (!this.isVisible) return ''
 
-        return this.camSettings.stream_url || ''
+        const baseUrl = this.camSettings.stream_url
+        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
+        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
+
+        return decodeURIComponent(url.toString())
     }
 
     get webcamStyle() {

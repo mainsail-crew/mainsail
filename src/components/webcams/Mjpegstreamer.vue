@@ -34,7 +34,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     private isVisibleDocument = true
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop() printerUrl: string | undefined
+    @Prop({ default: null }) readonly printerUrl!: string | null
 
     @Prop({ default: true }) declare showFps: boolean
 
@@ -45,7 +45,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
     get url() {
         const baseUrl = this.camSettings.stream_url
-        let url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
+        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
         if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
         return decodeURIComponent(url.toString())
