@@ -21,10 +21,12 @@
 import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
+export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin, WebcamMixin) {
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
+    @Prop({ default: null }) readonly printerUrl!: string | null
     @Ref() declare video: HTMLVideoElement
 
     // webrtc player vars
@@ -54,11 +56,12 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin) {
     }
 
     get url() {
-        if (this.camSettings.stream_url.startsWith('http')) {
-            return this.camSettings.stream_url.replace('http', 'ws') + 'ws'
+        let baseUrl = this.camSettings.stream_url
+        if (baseUrl.startsWith('http')) {
+            baseUrl = baseUrl.replace('http', 'ws') + 'ws'
         }
 
-        return this.camSettings.stream_url
+        return this.convertUrl(baseUrl, this.printerUrl)
     }
 
     // stop and restart the video if the url changes

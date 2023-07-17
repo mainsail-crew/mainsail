@@ -6,22 +6,17 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class Ipstreamer extends Mixins(BaseMixin) {
+export default class Ipstreamer extends Mixins(BaseMixin, WebcamMixin) {
     private isVisible = true
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
 
     get url() {
-        if (!this.isVisible) return ''
-
-        const baseUrl = this.camSettings.stream_url
-        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
-        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
-
-        return decodeURIComponent(url.toString())
+        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
     }
 
     get webcamStyle() {

@@ -10,9 +10,23 @@ import {
     mdiRaspberryPi,
     mdiWebcam,
 } from '@mdi/js'
+import { Mixins } from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
 
 @Component
-export default class WebcamMixin extends Vue {
+export default class WebcamMixin extends Mixins(BaseMixin) {
+    convertUrl(baseUrl: string, printerUrl: string | null) {
+        let url = new URL(baseUrl, this.hostUrl.toString())
+
+        // use printerURL if it exists
+        if (printerUrl !== null) url = new URL(baseUrl, printerUrl)
+
+        // overwrite url to baseUrl, if it is an absolute URL
+        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
+
+        return decodeURIComponent(url.toString())
+    }
+
     convertWebcamIcon(iconName: string): string {
         switch (iconName) {
             case 'mdiAlbum':

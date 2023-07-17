@@ -15,9 +15,10 @@ import JMuxer from 'jmuxer'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class JMuxerStreamer extends Mixins(BaseMixin) {
+export default class JMuxerStreamer extends Mixins(BaseMixin, WebcamMixin) {
     private jmuxer: JMuxer | null = null
     private status: string = 'connecting'
 
@@ -29,11 +30,7 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
     }
 
     get url() {
-        const baseUrl = this.camSettings.stream_url
-        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
-        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
-
-        return decodeURIComponent(url.toString())
+        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
     }
 
     get webcamStyle() {

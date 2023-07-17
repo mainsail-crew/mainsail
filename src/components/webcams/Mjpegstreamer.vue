@@ -15,12 +15,13 @@ import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 const CONTENT_LENGTH = 'content-length'
 const TYPE_JPEG = 'image/jpeg'
 
 @Component
-export default class Mjpegstreamer extends Mixins(BaseMixin) {
+export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     private currentFPS = 0
     private streamState = false
     private aspectRatio: null | number = null
@@ -44,11 +45,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 
     get url() {
-        const baseUrl = this.camSettings.stream_url
-        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
-        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
-
-        return decodeURIComponent(url.toString())
+        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
     }
 
     get webcamStyle() {

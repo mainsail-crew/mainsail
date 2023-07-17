@@ -15,9 +15,10 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Hls from 'hls.js'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class Hlsstreamer extends Mixins(BaseMixin) {
+export default class Hlsstreamer extends Mixins(BaseMixin, WebcamMixin) {
     private aspectRatio: null | number = null
     private isVisible = true
     private hls: Hls | null = null
@@ -30,13 +31,7 @@ export default class Hlsstreamer extends Mixins(BaseMixin) {
     }
 
     get url() {
-        if (!this.isVisible) return ''
-
-        const baseUrl = this.camSettings.stream_url
-        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
-        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
-
-        return decodeURIComponent(url.toString())
+        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
     }
 
     get webcamStyle() {
