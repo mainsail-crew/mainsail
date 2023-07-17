@@ -494,7 +494,7 @@
             "CountPackagesCanBeUpgraded": "{count} Pakete können aktualisiert werden",
             "Detached": "abgetrennt",
             "Dirty": "kompromittiert",
-            "GenericUpdateQuestion": "Überprüfen Sie den Commit-Verlauf (falls verfügbar) und die GitHub-Projektseite von diesem Projekt, um festzustellen, ob manuelle Anpassungen nach dieser Aktualisierung erforderlich sind.",
+            "GenericUpdateQuestion": "Überprüfe den Commit-Verlauf (falls verfügbar) und die GitHub-Projektseite von diesem Projekt, um festzustellen, ob manuelle Anpassungen nach dieser Aktualisierung erforderlich sind.",
             "GitHubPage": "GitHub Projektseite",
             "HardRecovery": "Harte Wiederherstellung",
             "InitUpdateManager": "Der Update Manager ist noch nicht initialisiert. Dies ist normal, wenn das System zum ersten Mal gestartet wird. Bitte klicke auf die Aktualisierungsschaltfläche, um alle Komponenten zu initialisieren.",
@@ -507,7 +507,7 @@
             "MoreCommitsInfo": "Hier können maximal 30 Commits angezeigt werden. Um alle Commits zu sehen, klicke bitte auf den folgenden Link:",
             "Notification": {
                 "Detached": "Ein abgetrennter Zustand ist weder ein Fehler noch ein Problem. Es bedeutet nur, dass im lokalen Repository zusätzliche Commits existieren, die im entfernten Repository nicht vorhanden sind.",
-                "Dirty": "Ihr lokales Repository wurde geändert und kann in diesem Zustand nicht aktualisiert werden. Bitte stell wieder ein saubers Repository her."
+                "Dirty": "Das lokales Repository wurde geändert und kann in diesem Zustand nicht aktualisiert werden. Bitte stelle wieder ein saubers Repository her."
             },
             "OSPackages": "OS-Pakete",
             "SoftRecovery": "einfache Wiederherstellung",
