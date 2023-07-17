@@ -14,9 +14,9 @@
                 <v-icon left small>{{ mdiEye }}</v-icon>
                 {{ $t('Machine.UpdatePanel.CommitHistory') }}
             </v-btn>
-            <v-btn v-if="externelLink" class="mx-2 mt-3 mt-sm-0" :href="externelLink" target="_blank">
+            <v-btn v-if="externalLink" class="mx-2 mt-3 mt-sm-0" :href="externalLink" target="_blank">
                 <v-icon left small>{{ mdiOpenInNew }}</v-icon>
-                {{ externelLinkText }}
+                {{ externalLinkText }}
             </v-btn>
         </div>
     </v-alert>
@@ -69,7 +69,7 @@ export default class UpdateHintAlert extends Mixins(BaseMixin) {
         return null
     }
 
-    get externelLink() {
+    get externalLink() {
         if (this.name === 'klipper') return '//www.klipper3d.org/Config_Changes.html'
         if (this.name === 'moonraker') return '//moonraker.readthedocs.io/en/latest/changelog/'
         if (this.repo?.configured_type === 'web')
@@ -78,7 +78,7 @@ export default class UpdateHintAlert extends Mixins(BaseMixin) {
         return `//github.com/${this.repo.owner}/${this.repo.name}`
     }
 
-    get externelLinkText() {
+    get externalLinkText() {
         if (['klipper', 'moonraker'].includes(this.name)) return this.$t('Machine.UpdatePanel.ConfigChanges')
 
         return this.$t('Machine.UpdatePanel.GitHubPage')
