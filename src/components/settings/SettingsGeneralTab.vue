@@ -62,7 +62,7 @@
                         attach />
                 </settings-row>
                 <v-divider class="my-2" />
-                <settings-row :title="$t('Settings.GeneralTab.MoonrakerDb')" :dynamic-slot-width="true">
+                <settings-row :title="$t('Settings.GeneralTab.MainsailSettingsMoonrakerDb')" :dynamic-slot-width="true">
                     <input
                         ref="uploadBackupFile"
                         type="file"
