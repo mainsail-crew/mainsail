@@ -65,12 +65,17 @@ export default class TheScrewsTiltAdjustDialog extends Mixins(BaseMixin, Control
         return this.$store.state.printer.screws_tilt_adjust?.error ?? false
     }
 
+    get max_diff() {
+        return this.$store.state.printer.screws_tilt_adjust?.max_diff ?? null
+    }
+
     get results() {
         return this.$store.state.printer.screws_tilt_adjust?.results ?? {}
     }
 
     get showDialog() {
         if (!this.boolScrewsTiltAdjustDialog) return false
+        if (this.max_diff !== null) return false
 
         return this.error || Object.keys(this.results).length
     }
