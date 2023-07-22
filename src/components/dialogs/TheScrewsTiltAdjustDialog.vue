@@ -74,7 +74,10 @@ export default class TheScrewsTiltAdjustDialog extends Mixins(BaseMixin, Control
     }
 
     get showDialog() {
+        // don't display the dialog, if the user disabled it in the UI settings
         if (!this.boolScrewsTiltAdjustDialog) return false
+
+        // don't display the dialog, if the user add the MAX_DEVIATION attribute to the SCREWS_TILT_CALCULATE command
         if (this.max_diff !== null) return false
 
         return this.error || Object.keys(this.results).length
