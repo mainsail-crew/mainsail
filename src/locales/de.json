@@ -501,13 +501,13 @@
             "Invalid": "ungültig",
             "IUnderstandTheRisks": "Ich habe die Risiken verstanden",
             "LinkToGithub": "Link zu GitHub",
-            "KlipperUpdateQuestionFirmware": "Dadurch wird die Klipper-Host-Software aktualisiert. Steuerplatinen, auf die du die Klipper-Firmware geflasht hast, müssen möglicherweise neu kompiliert und geflasht werden, bevor du deine Maschine wieder benutzen kannst.",
-            "KlipperUpdateQuestionConfig": "Dieses Update kann auch Änderungen an den Konfigurationsparametern enthalten, die in der Datei printer.cfg geändert werden müssen; Informationen hierzu findest du im Änderungsprotokoll.",
-            "MoonrakerUpdateQuestion": "Dadurch wird die Moonraker-API aktualisiert. Möglicherweise sind Änderungen an der Datei moonraker.conf erforderlich, damit du deinen Drucker wieder verwenden kannst.",
+            "KlipperUpdateQuestionFirmware": "Dadurch wird die Klipper-Host-Software aktualisiert. Steuerplatinen, auf denen die Klipper-Firmware läuft, müssen möglicherweise mit einer neu kompilierten Firmware geflasht werden, bevor die Maschine wieder in Betrieb genommen werden kann.",
+            "KlipperUpdateQuestionConfig": "Dieses Update kann Änderungen an den Konfigurationsparametern enthalten, die in der Datei printer.cfg geändert werden müssen; Informationen hierzu findest du im Änderungsprotokoll.",
+            "MoonrakerUpdateQuestion": "Dadurch wird die Moonraker-API aktualisiert. Möglicherweise sind Änderungen an der Datei moonraker.conf erforderlich, damit die Maschine wieder verwendet werden kann.",
             "MoreCommitsInfo": "Hier können maximal 30 Commits angezeigt werden. Um alle Commits zu sehen, klicke bitte auf den folgenden Link:",
             "Notification": {
                 "Detached": "Ein abgetrennter Zustand ist weder ein Fehler noch ein Problem. Es bedeutet nur, dass im lokalen Repository zusätzliche Commits existieren, die im entfernten Repository nicht vorhanden sind.",
-                "Dirty": "Das lokales Repository wurde geändert und kann in diesem Zustand nicht aktualisiert werden. Bitte stelle wieder ein saubers Repository her."
+                "Dirty": "Das lokale Repository wurde geändert und kann in diesem Zustand nicht aktualisiert werden. Bitte stelle wieder ein saubers Repository her."
             },
             "OSPackages": "OS-Pakete",
             "SoftRecovery": "einfache Wiederherstellung",
@@ -522,7 +522,7 @@
             "Upgrade": "upgrade",
             "UpgradeableSystemPackages": "Aktualisierbare Systempakete",
             "UpToDate": "aktuell",
-            "WebClientUpdateQuestion": "In einigen Fällen kann die Aktualisierung des Webclients Änderungen mit sich bringen, die zu Inkompatibilitäten führen können. Weitere Informationen findest du in den Veröffentlichungshinweisen."
+            "WebClientUpdateQuestion": "In einigen Fällen kann die Aktualisierung des Webclients Änderungen mit sich bringen, die zu Inkompatibilitäten führen können. Weitere Informationen sind in den Veröffentlichungshinweisen zu finden."
         }
     },
     "ManualProbe": {

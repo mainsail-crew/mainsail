@@ -501,13 +501,13 @@
             "Invalid": "invalid",
             "IUnderstandTheRisks": "I understand the risks",
             "LinkToGithub": "Link to GitHub",
-            "KlipperUpdateQuestionFirmware": "This will update the host Klipper software. Control boards that you have flashed the Klipper firmware onto may need to be recompiled and reflashed before you can continue using your machine.",
-            "KlipperUpdateQuestionConfig": "This update may also contain changes to config parameters that would need to be modified in your printer.cfg file, see the change log for details.",
-            "MoonrakerUpdateQuestion": "This will update the Moonraker API. Changes to your moonraker.conf file may be required to continue using your machine.",
+            "KlipperUpdateQuestionFirmware": "This will update the Klipper host software. Control boards running the Klipper firmware may need to be flashed with recompiled firmware before the machine can be put back into service.",
+            "KlipperUpdateQuestionConfig": "This update may also contain changes to config parameters that would need to be modified in the printer.cfg file, see the change log for details.",
+            "MoonrakerUpdateQuestion": "This will update the Moonraker API. Changes to the moonraker.conf file may be required to continue using the machine.",
             "MoreCommitsInfo": "A maximum of 30 commits can be displayed here. To see all commits, please click on the following link:",
             "Notification": {
                 "Detached": "Detached state is not an error nor is it a problem. It only means that additional commits exist in the local repository that do not exist in the remote repository.",
-                "Dirty": "Your local repository has been modified and cannot be updated in this state. Please recover this repository."
+                "Dirty": "The local repository has been modified and cannot be updated in this state. Please recover this repository."
             },
             "OSPackages": "OS-Packages",
             "SoftRecovery": "Soft Recovery",
