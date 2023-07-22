@@ -46,7 +46,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     }
 
     @Prop({ required: true }) declare camSettings: GuiWebcamStateWebcam
-    @Prop() declare printerUrl: string | undefined
+    @Prop({ default: null }) readonly printerUrl!: string | null
     @Prop({ default: true }) declare showFps: boolean
 
     get webcamStyle() {
@@ -89,7 +89,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     async setFrame() {
         const baseUrl = this.camSettings.snapshot_url
 
-        let url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
+        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
         if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
         url.searchParams.append('bypassCache', this.refresh.toString())
