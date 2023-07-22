@@ -38,47 +38,65 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
             const importData: any = {}
 
             objectKeys.forEach((key: string) => {
-                if (allSensors.includes(key)) {
-                    const datasetValues = payload[key]
-                    datasetTypes.forEach((datasetKey) => {
-                        if (datasetKey + 's' in datasetValues) {
-                            const length = maxHistory - datasetValues[datasetKey + 's'].length
-                            datasetValues[datasetKey + 's'] = [
-                                ...Array.from({ length }, () => 0),
-                                ...datasetValues[datasetKey + 's'],
-                            ]
-                        }
-                    })
+                let nameOnly = key
+                if (nameOnly.indexOf(' ') !== -1) {
+                    nameOnly = nameOnly.substring(nameOnly.indexOf(' ') + 1)
+                }
 
-                    importData[key] = { ...datasetValues }
-                } else delete payload[key]
+                // break if sensor doesn't exist anymore or start with a _
+                if (!allSensors.includes(key) || nameOnly.startsWith('_')) {
+                    delete payload[key]
+                    return
+                }
+
+                const datasetValues = payload[key]
+                datasetTypes.forEach((datasetKey) => {
+                    if (datasetKey + 's' in datasetValues) {
+                        const length = maxHistory - datasetValues[datasetKey + 's'].length
+                        datasetValues[datasetKey + 's'] = [
+                            ...Array.from({ length }, () => 0),
+                            ...datasetValues[datasetKey + 's'],
+                        ]
+                    }
+                })
+
+                importData[key] = { ...datasetValues }
             })
 
-            //add missing heaters/sensors
+            // add missing heaters/sensors
             allSensors.forEach((key: string) => {
-                if (!(key in payload)) {
-                    const keySplits = key.split(' ')
-                    const sensorType = keySplits[0]
+                // break if sensor is already in the cache
+                if (key in payload) return
 
-                    const addValues: {
-                        temperatures: number[]
-                        targets?: number[]
-                        powers?: number[]
-                        speeds?: number[]
-                    } = {
-                        temperatures: Array(maxHistory).fill(0),
-                    }
-
-                    if (allHeaters.includes(key)) {
-                        addValues.targets = Array(maxHistory).fill(0)
-                        addValues.powers = Array(maxHistory).fill(0)
-                    } else if (['temperature_fan'].includes(sensorType)) {
-                        addValues.targets = Array(maxHistory).fill(0)
-                        addValues.speeds = Array(maxHistory).fill(0)
-                    }
-
-                    importData[key] = { ...addValues }
+                let nameOnly = key
+                let sensorType = key
+                const indexOfFirstSpace = key.indexOf(' ')
+                if (indexOfFirstSpace !== -1) {
+                    nameOnly = key.substring(indexOfFirstSpace + 1)
+                    sensorType = key.substring(0, indexOfFirstSpace)
                 }
+
+                // break if sensorName starts with a _
+                if (nameOnly.startsWith('_')) return
+
+                const addValues: {
+                    temperatures: number[]
+                    targets?: number[]
+                    powers?: number[]
+                    speeds?: number[]
+                } = {
+                    temperatures: Array(maxHistory).fill(0),
+                }
+
+                if (allHeaters.includes(key)) {
+                    addValues.targets = Array(maxHistory).fill(0)
+                    addValues.powers = Array(maxHistory).fill(0)
+                } else if (['temperature_fan'].includes(sensorType)) {
+                    addValues.targets = Array(maxHistory).fill(0)
+                    addValues.speeds = Array(maxHistory).fill(0)
+                }
+
+                importData[key] = { ...addValues }
             })
 
             const tempDataset = []
@@ -87,14 +105,12 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                     date: new Date(now.getTime() - 1000 * (maxHistory - i)),
                 }
 
-                Object.keys(importData).forEach((key) => {
-                    let name = key
-                    if (key.includes(' ')) name = key.split(' ')[1]
-
+                Object.keys(importData).forEach((objectName) => {
                     datasetTypes.forEach((attrKey) => {
-                        if (attrKey === 'temperature') tmpDataset[name] = importData[key]['temperatures'][i]
-                        else if (attrKey + 's' in importData[key])
-                            tmpDataset[name + '-' + attrKey] = importData[key][attrKey + 's'][i]
+                        const importDatasetName = `${attrKey}s`
+
+                        if (importDatasetName in importData[objectName])
+                            tmpDataset[`${objectName}-${attrKey}`] = importData[objectName][importDatasetName][i]
                     })
                 })
 
@@ -105,36 +121,28 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
             const tempDatasetKeys = Object.keys(tempDataset[0]).filter((tmp) => tmp !== 'date')
             const masterDatasetKeys = tempDatasetKeys
-                .filter((tmp) => {
-                    if (tmp.startsWith('_')) return false
-
-                    const lastIndex = tmp.lastIndexOf('-')
-                    if (lastIndex === -1) return true
-
-                    const suffix = tmp.slice(lastIndex + 1)
-                    return !['target', 'power', 'speed'].includes(suffix)
-                })
+                .filter((name) => name.endsWith('-temperature'))
+                .map((name) => name.slice(0, name.length - 12))
                 .sort()
             const series: PrinterTempHistoryStateSerie[] = []
             let colorNumber = 0
 
             masterDatasetKeys.forEach((name: string) => {
+                // get color from store (if exists)
                 let color = rootGetters['gui/getDatasetValue']({ name: name, type: 'color' })
 
+                // set color if there is no entry in the store
                 if (!color) {
-                    switch (name) {
-                        case 'heater_bed':
-                            color = colorHeaterBed
-                            break
+                    // set heater_bed color
+                    if (name === 'heater_bed') color = colorHeaterBed
 
-                        case 'chamber':
-                            color = colorChamber
-                            break
+                    // set color for chamber elements
+                    if (name.endsWith(' chamber')) color = colorChamber
 
-                        default:
-                            color = colorArray[colorNumber]
-                            colorNumber++
-                            break
+                    // fallback -> get random color from colorArray
+                    if (!color) {
+                        color = colorArray[colorNumber]
+                        colorNumber++
                     }
                 }
 
@@ -142,8 +150,8 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                     id: series.length + 1,
                     color: color,
                     type: 'line',
-                    name: name,
-                    encode: { x: 'date', y: name },
+                    name: `${name}-temperature`,
+                    encode: { x: 'date', y: `${name}-temperature` },
                     animation: false,
                     yAxisIndex: 0,
                     lineStyle: {
@@ -161,61 +169,55 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                     },
                 }
 
+                // add main serie to series
                 series.push(serie)
 
                 datasetTypes.forEach((attrKey) => {
+                    // break if datasetTypes is temperature, because its already in the array
+                    if (attrKey === 'temperature') return
+
                     const subName = name + '-' + attrKey
 
-                    if (tempDatasetKeys.includes(subName)) {
-                        const subSerie: PrinterTempHistoryStateSerie = {
-                            id: series.length + 1,
+                    // break if datasetType (target, speed, power) doesn't exist
+                    if (!tempDatasetKeys.includes(subName)) return
+
+                    // copy serie from temperature and change name
+                    // I have to use the JSON copy method, to have no issues with deep attributes
+                    const subSerie: PrinterTempHistoryStateSerie = JSON.parse(JSON.stringify(serie))
+                    subSerie.id = series.length + 1
+                    subSerie.name = subName
+                    subSerie.encode.y = subName
+
+                    // change settings for target datasets
+                    if (attrKey === 'target') {
+                        subSerie.lineStyle.width = 0
+                        subSerie.emphasis.lineStyle.width = 0
+
+                        subSerie.areaStyle = {
                             color: color,
-                            type: 'line',
-                            name: subName,
-                            encode: { x: 'date', y: subName },
-                            animation: false,
-                            yAxisIndex: 0,
-                            lineStyle: {
-                                color: color,
-                                width: 2,
-                                opacity: 0.1,
-                            },
-                            showSymbol: false,
-                            emphasis: {
-                                lineStyle: {
-                                    color: color,
-                                    width: 2,
-                                    opacity: 0.1,
-                                },
-                            },
+                            opacity: 0.1,
                         }
 
-                        if (attrKey === 'target') {
-                            subSerie.lineStyle.width = 0
-                            subSerie.emphasis.lineStyle.width = 0
-
-                            subSerie.areaStyle = {
-                                color: color,
-                                opacity: 0.1,
-                            }
-
-                            subSerie.emphasis.areaStyle = {
-                                color: color,
-                                opacity: 0.1,
-                            }
-                        } else if (datasetTypesInPercents.includes(attrKey)) {
-                            subSerie.yAxisIndex = 1
-
-                            subSerie.lineStyle.width = 1.5
-                            subSerie.lineStyle.opacity = 0.75
-                            subSerie.lineStyle.type = 'dotted'
-                            subSerie.emphasis.lineStyle.width = 1.5
-                            subSerie.emphasis.lineStyle.opacity = 0.75
-                            subSerie.emphasis.lineStyle.type = 'dotted'
+                        subSerie.emphasis.areaStyle = {
+                            color: color,
+                            opacity: 0.1,
                         }
-
-                        series.push(subSerie)
                     }
+
+                    // change axis & line settings for percent datasets
+                    if (datasetTypesInPercents.includes(attrKey)) {
+                        subSerie.yAxisIndex = 1
+
+                        subSerie.lineStyle.width = 1.5
+                        subSerie.lineStyle.opacity = 0.75
+                        subSerie.lineStyle.type = 'dotted'
+                        subSerie.emphasis.lineStyle.width = 1.5
+                        subSerie.emphasis.lineStyle.opacity = 0.75
+                        subSerie.emphasis.lineStyle.type = 'dotted'
+                    }
+
+                    // add sub serie to series
+                    series.push(subSerie)
                 })
             })
 
@@ -253,27 +255,31 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                 date: now,
             }
 
-            rootState.printer.heaters.available_sensors.forEach((key: string) => {
-                let name = key
-                if (key.includes(' ')) name = key.split(' ')[1]
+            rootState.printer.heaters.available_sensors.forEach((name: string) => {
+                if (!(rootState.printer && name in rootState.printer)) return
+                const printerObject = { ...rootState.printer[name] }
 
-                if (rootState.printer && rootState.printer[key]) {
-                    if ('temperature' in rootState.printer[key]) data[name] = rootState.printer[key].temperature
-                    if ('target' in rootState.printer[key])
-                        data[name + '-target'] = Math.round(rootState.printer[key].target * 10) / 10
-                    if ('power' in rootState.printer[key])
-                        data[name + '-power'] = Math.round(rootState.printer[key].power * 1000) / 1000
-                    if ('speed' in rootState.printer[key])
-                        data[name + '-speed'] = Math.round(rootState.printer[key].speed * 1000) / 1000
-                }
+                datasetTypes.forEach((attrKey) => {
+                    if (!(attrKey in printerObject)) return
+
+                    let value = Math.round(printerObject[attrKey] * 10) / 10
+                    if (datasetTypesInPercents.includes(attrKey))
+                        value = Math.round(printerObject[attrKey] * 1000) / 1000
+
+                    data[`${name}-${attrKey}`] = value
+                })
             })
 
-            await commit('addToSource', {
+            commit('addToSource', {
                 data: data,
                 maxHistory: rootGetters['printer/tempHistory/getTemperatureStoreSize'],
             })
         }
 
         //commit('saveLastDate', performance.now())
+    },
+
+    setColor({ commit }, payload) {
+        commit('setColor', payload)
     },
 }
