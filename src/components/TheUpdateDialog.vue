@@ -161,10 +161,14 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
             this.complete &&
             ['client', 'mainsail', 'full'].includes(this.application.toLowerCase())
         )
-            window.location.reload(true)
+            window.location.reload()
         else {
             this.$store.commit('server/updateManager/resetUpdateResponse')
-            this.$socket.emit('machine.update.status', { refresh: false }, { action: 'server/updateManager/getStatus' })
+            this.$socket.emit(
+                'machine.update.status',
+                { refresh: false },
+                { action: 'server/updateManager/onUpdateStatus' }
+            )
         }
     }
 
