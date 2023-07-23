@@ -1,3 +1,5 @@
+// based on https://github.com/lezer-parser/generator/blob/main/src/test.ts
+
 import { NodeType, Parser } from '@lezer/common'
 import { testTree } from '@lezer/generator/dist/test'
 
