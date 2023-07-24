@@ -52,7 +52,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
             if (state.data.print_stats.state === 'printing') {
                 const percent = getters['getPrintPercent']
 
-                return Math.round(percent * 100) + '% Printing'
+                return Math.floor(percent * 100) + '% Printing'
             }
 
             return state.data.print_stats.state.charAt(0).toUpperCase() + state.data.print_stats.state.slice(1)
@@ -308,14 +308,6 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     getPrinterWebcams: (state) => {
-        const webcams: GuiWebcamStateWebcam[] = []
-
-        if (state.data.webcams) {
-            Object.keys(state.data.webcams).forEach((id: string) => {
-                webcams.push({ ...state.data?.webcams[id], id })
-            })
-        }
-
-        return webcams
+        return state.data.webcams.filter((webcam: GuiWebcamStateWebcam) => webcam.enabled)
     },
 }

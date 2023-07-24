@@ -8,11 +8,11 @@ import checker from 'vite-plugin-checker'
 
 import path from 'path'
 import buildVersion from './src/plugins/build-version'
+import buildReleaseInfo from './src/plugins/build-release_info'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 
 const PWAConfig: Partial<VitePWAOptions> = {
     registerType: 'autoUpdate',
-    strategies: 'injectManifest',
     srcDir: 'src',
     filename: 'sw.ts',
     includeAssets: ['fonts/**/*.woff2', 'img/**/*.svg', 'img/**/*.png'],
@@ -52,11 +52,13 @@ const PWAConfig: Partial<VitePWAOptions> = {
                 },
             },
         ],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
     },
     /* enable sw on development */
     devOptions: {
         enabled: true,
         type: 'module',
+        suppressWarnings: true,
     },
 }
 
@@ -65,6 +67,7 @@ export default defineConfig({
     plugins: [
         VitePWA(PWAConfig),
         buildVersion(),
+        buildReleaseInfo(),
         vue(),
         loadVersion(),
         checker({ typescript: true }),

@@ -291,22 +291,6 @@ export const klipper_config: StreamParser<any> = {
                     return jinja2Element(stream)
                 }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? stream.pos)
-            } else if (state.variable) {
-                if (stream.sol()) {
-                    stream.eatSpace()
-                }
-                if (stream.match(/^\s*{[%#]?/)) {
-                    state.klipperMacroJinja = true
-                    if (stream.string.includes('{%')) {
-                        state.klipperMacroJinjaPctStack.push('{%')
-                    } else {
-                        state.klipperMacroJinjaBraceStack.push('{')
-                    }
-                    return 'tag'
-                }
-                if (state.klipperMacroJinja) {
-                    return jinja2Element(stream)
-                }
             } else if (state.pair) {
                 stream.eatSpace()
                 if (ch !== ',') {
@@ -324,45 +308,18 @@ export const klipper_config: StreamParser<any> = {
         if (state.was && stream.indentation() === 0) {
             state.pair = false
             state.gcode = false
-            state.variable = false
             state.was = false
         }
 
-        if (!state.pair && !state.gcode && !state.variable && stream.sol()) {
+        if (!state.pair && !state.gcode && stream.sol()) {
             if (stream.match(/^(?:[A-Za-z]*_?gcode|enable):/)) {
                 state.gcode = true
-            } else if (stream.match(/^variable_[a-zA-Z]+:/)) {
-                state.variable = true
             } else {
                 stream.match(/^.+?:\s*/)
                 state.pair = !stream.eol()
             }
 
             return 'atom'
-        }
-
-        if (state.variable) {
-            if (stream.sol() || stream.eol()) {
-                state.variable = false
-                return null
-            }
-            if (stream.match(/^\s*{[%#]?/)) {
-                state.klipperMacroJinja = true
-                if (stream.string.includes('{%')) {
-                    state.klipperMacroJinjaPctStack.push('{%')
-                } else {
-                    state.klipperMacroJinjaBraceStack.push('{')
-                }
-                return 'tag'
-            } else {
-                // no Jinja in variable
-                state.pair = true
-                // state.variable = false
-            }
-            if (state.klipperMacroJinja) {
-                stream.eatSpace()
-                return jinja2Element(stream)
-            }
         }
 
         if (state.pair) {
@@ -395,7 +352,6 @@ export const klipper_config: StreamParser<any> = {
             pair: false,
             was: false,
             gcode: false,
-            variable: false,
             klipperMacro: false,
             gcodeZeroPos: null,
             klipperMacroJinja: false,
@@ -414,7 +370,6 @@ interface StreamParserKlipperConfigState {
     pair: boolean
     was: boolean
     gcode: boolean
-    variable: boolean
     gcodeZeroPos: number | null
     klipperMacro: boolean
     klipperMacroJinja: boolean

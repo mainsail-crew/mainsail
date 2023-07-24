@@ -1,18 +1,8 @@
-<style>
-.history-jobs-table th {
-    white-space: nowrap;
-}
-
-.history-jobs-table th.text-start {
-    padding-right: 0 !important;
-}
-</style>
-
 <template>
     <div>
         <panel
             :icon="mdiFileDocumentMultipleOutline"
-            :title="$t('History.PrintHistory').toString()"
+            :title="$t('History.PrintHistory')"
             card-class="history-list-panel">
             <v-card-text>
                 <v-row>
@@ -234,7 +224,7 @@
                     <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
                     {{ $t('History.Reprint') }}
                 </v-list-item>
-                <v-list-item class="red--text" @click="deleteJob(contextMenu.item)">
+                <v-list-item class="red--text" @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('History.Delete') }}
                 </v-list-item>
@@ -246,7 +236,7 @@
             persistent
             @keydown.esc="detailsDialog.boolShow = false">
             <panel
-                :title="$t('History.JobDetails').toString()"
+                :title="$t('History.JobDetails')"
                 :icon="mdiUpdate"
                 card-class="history-detail-dialog"
                 :margin-bottom="false">
@@ -430,18 +420,47 @@
                 </v-card-text>
             </panel>
         </v-dialog>
+
+        <!-- CONFIRM DELETE SINGLE FILE DIALOG -->
+        <v-dialog v-model="deleteDialog" max-width="400">
+            <panel :title="$t('History.Delete')" card-class="history-delete-dialog" :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="deleteDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">
+                        {{ $t('History.DeleteSingleJobQuestion') }}
+                    </p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="deleteDialog = false">
+                        {{ $t('History.Cancel') }}
+                    </v-btn>
+                    <v-btn color="error" text @click="deleteJob">
+                        {{ $t('History.Delete') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+
+        <!-- CONFIRM DELETE MULTIPLE FILES DIALOG -->
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
-            <panel
-                :title="$t('History.Delete').toString()"
-                card-class="history-delete-selected-dialog"
-                :margin-bottom="false">
+            <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="deleteSelectedDialog = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
-                    <p class="mb-0">{{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}</p>
+                    <p v-if="selectedJobs.length === 1" class="mb-0">
+                        {{ $t('History.DeleteSingleJobQuestion') }}
+                    </p>
+                    <p v-else class="mb-0">
+                        {{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}
+                    </p>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -555,6 +574,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         type: 'create',
     }
 
+    private deleteDialog = false
     private deleteSelectedDialog = false
 
     get jobs() {
@@ -918,12 +938,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             this.$socket.emit('printer.print.start', { filename: item.filename }, { action: 'switchToDashboard' })
     }
 
-    deleteJob(item: ServerHistoryStateJob) {
+    deleteJob() {
         this.$socket.emit(
             'server.history.delete_job',
-            { uid: item.job_id },
+            { uid: this.contextMenu.item.job_id },
             { action: 'server/history/getDeletedJobs' }
         )
+
+        this.deleteDialog = false
     }
 
     deleteSelectedJobs() {
@@ -940,7 +962,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     exportHistory() {
-        const checkString = parseFloat('1.23').toLocaleString()
+        const checkString = parseFloat('1.23').toLocaleString(this.browserLocale)
         const decimalSeparator = checkString.indexOf(',') >= 0 ? ',' : '.'
         const csvSeperator = decimalSeparator === ',' ? ';' : ','
 
@@ -989,7 +1011,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             })
         }
 
-        const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(csvSeperator)).join('\n')
+        // escape fields with the csvSeperator in the content
+        // prettier-ignore
+        const csvContent =
+            'data:text/csv;charset=utf-8,' +
+            content.map((entry) =>
+                entry.map((field) => (field.indexOf(csvSeperator) === -1 ? field : `"${field}"`)).join(csvSeperator)
+            ).join('\n')
+
         const link = document.createElement('a')
         link.setAttribute('href', encodeURI(csvContent))
         link.setAttribute('download', 'print_history.csv')
@@ -1022,7 +1051,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 default:
                     switch (typeof value) {
                         case 'number':
-                            return value?.toLocaleString(undefined, { useGrouping: false }) ?? 0
+                            return value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
 
                         case 'string':
                             if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
@@ -1082,3 +1111,13 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+::v-deep .history-jobs-table th {
+    white-space: nowrap;
+}
+
+::v-deep .history-jobs-table th.text-start {
+    padding-right: 0 !important;
+}
+</style>

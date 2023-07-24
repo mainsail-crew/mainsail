@@ -1,9 +1,4 @@
-import {
-    additionalSensors,
-    checkKlipperConfigModules,
-    opacityHeaterActive,
-    opacityHeaterInactive,
-} from '@/store/variables'
+import { checkKlipperConfigModules } from '@/store/variables'
 import { GetterTree } from 'vuex'
 import {
     PrinterState,
@@ -12,31 +7,15 @@ import {
     PrinterStateExtruderStepper,
     PrinterStateFan,
     PrinterStateFilamentSensors,
-    PrinterStateHeater,
-    PrinterStateTemperatureFan,
     PrinterStateMiscellaneous,
     PrinterStateMcu,
     PrinterStateMacro,
-    PrinterStateTemperatureObject,
-    PrinterStateTemperatureSensor,
     PrinterStateToolchangeMacro,
-    PrinterStateAdditionalSensor,
     PrinterGetterObject,
     PrinterStateLight,
 } from '@/store/printer/types'
 import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
-import {
-    mdiFan,
-    mdiFire,
-    mdiPrinter3dNozzle,
-    mdiPrinter3dNozzleAlert,
-    mdiRadiator,
-    mdiRadiatorDisabled,
-    mdiThermometer,
-    mdiThermometerHigh,
-    mdiThermometerLow,
-} from '@mdi/js'
 
 export const getters: GetterTree<PrinterState, RootState> = {
     getPrintPercent: (state, getters, rootState) => {
@@ -194,266 +173,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
     getMacro: (state, getters) => (name: string) => {
         const nameLower = name.toLowerCase()
         return getters['getMacros'].find((macro: PrinterStateMacro) => macro.name.toLowerCase() === nameLower)
-    },
-
-    getHeaters: (state, getters, rootState, rootGetters) => {
-        const heaters: PrinterStateHeater[] = []
-        const colorOff = 'grey darken-2'
-        const colorHot = 'grey lighten-5'
-
-        if (state.heaters?.available_heaters) {
-            for (const [key, value] of Object.entries(state)) {
-                if (state.heaters.available_heaters.includes(key)) {
-                    let name = key
-                    const nameSplit = key.split(' ')
-
-                    if (nameSplit.length > 1 && nameSplit[0] === 'heater_generic') name = nameSplit[1]
-
-                    let icon = mdiPrinter3dNozzleAlert
-                    let color = colorOff
-                    if (value.target) color = colorHot
-
-                    if (nameSplit[0].startsWith('extruder')) {
-                        const min_extrude_temp =
-                            key in state.configfile.config && 'min_extrude_temp' in state.configfile.config[key]
-                                ? parseFloat(state.configfile.config[key].min_extrude_temp)
-                                : 170
-                        if (value.temperature >= min_extrude_temp) icon = mdiPrinter3dNozzle
-                    } else if (nameSplit[0] === 'heater_bed') {
-                        icon = mdiRadiatorDisabled
-                        if (value.temperature > 50 || (value.target && value.temperature > value.target - 5))
-                            icon = mdiRadiator
-                    } else if (nameSplit[0].startsWith('heater_generic')) icon = mdiFire
-
-                    if (!name.startsWith('_')) {
-                        heaters.push({
-                            name: name,
-                            type: nameSplit[0] as PrinterStateHeater['type'],
-                            icon: icon,
-                            iconColor: color,
-                            target: Math.round(value.target * 10) / 10,
-                            temperature: Math.round(value.temperature * 10) / 10,
-                            additionalSensors: getters.getAdditionalSensors(nameSplit[1]),
-                            power: Math.round((value.power ?? 0) * 100),
-                            avgPower: Math.round(getters['tempHistory/getAvgPower'](name) ?? 0),
-                            presets: rootGetters['gui/presets/getPresetsFromHeater']({ name: key }),
-                            chartColor: getters['tempHistory/getDatasetColor'](name),
-                            chartSeries: getters['tempHistory/getSerieNames'](name),
-                            min_temp: parseInt(state.configfile?.config[key]?.min_temp ?? 0),
-                            max_temp: parseInt(state.configfile?.config[key]?.max_temp ?? 0),
-                        })
-                    }
-                }
-            }
-        }
-
-        return caseInsensitiveSort(heaters, 'name')
-    },
-
-    getTemperatureFans: (state, getters, rootState, rootGetters) => {
-        const fans: PrinterStateTemperatureFan[] = []
-
-        for (const [key, value] of Object.entries(state)) {
-            const nameSplit = key.split(' ')
-
-            if (nameSplit[0] === 'temperature_fan' && !nameSplit[1].startsWith('_')) {
-                fans.push({
-                    name: nameSplit[1],
-                    icon: mdiFan,
-                    target: Math.round(value.target * 10) / 10,
-                    temperature: Math.round(value.temperature * 10) / 10,
-                    additionalSensors: getters.getAdditionalSensors(nameSplit[1]),
-                    speed: Math.round((value.speed ?? 0) * 100),
-                    avgSpeed: Math.round(getters['tempHistory/getAvgSpeed'](nameSplit[1]) ?? 0),
-                    rpm: value.rpm !== null ? Math.round(value.rpm) : null,
-                    presets: rootGetters['gui/presets/getPresetsFromHeater']({ name: key }),
-                    chartColor: getters['tempHistory/getDatasetColor'](nameSplit[1]),
-                    chartSeries: getters['tempHistory/getSerieNames'](nameSplit[1]),
-                    min_temp: parseInt(state.configfile?.config[key]?.min_temp ?? 0),
-                    max_temp: parseInt(state.configfile?.config[key]?.max_temp ?? 0),
-                })
-            }
-        }
-
-        return caseInsensitiveSort(fans, 'name')
-    },
-
-    getTemperatureSensorKeys: (state) => {
-        return Object.keys(state).filter((name) => name.startsWith('temperature_sensor ') && !name.startsWith('_'))
-    },
-
-    getTemperatureSensors: (state, getters, rootState, rootGetters) => {
-        const sensors: PrinterStateTemperatureSensor[] = []
-
-        const tempSensors = getters['getTemperatureSensorKeys']
-        tempSensors.forEach((key: string) => {
-            const nameSplit = key.split(' ')
-            const values = { ...state[key] }
-            let icon = mdiThermometer
-            const min_temp = state.configfile?.settings[key]?.min_temp ?? 0
-            const max_temp = state.configfile?.settings[key]?.max_temp ?? 210
-            const split = (max_temp - min_temp) / 3
-
-            if (values.temperature <= min_temp + split) icon = mdiThermometerLow
-            if (values.temperature >= max_temp - split) icon = mdiThermometerHigh
-
-            sensors.push({
-                name: nameSplit[1],
-                temperature: Math.round(values.temperature * 10) / 10,
-                additionalSensors: getters.getAdditionalSensors(nameSplit[1]),
-                icon: icon,
-                min_temp: min_temp,
-                max_temp: max_temp,
-                measured_min_temp: Math.round(values.measured_min_temp * 10) / 10,
-                measured_max_temp: Math.round(values.measured_max_temp * 10) / 10,
-                chartColor: getters['tempHistory/getDatasetColor'](nameSplit[1]),
-                chartSeries: getters['tempHistory/getSerieNames'](nameSplit[1]),
-            })
-        })
-
-        if ('z_thermal_adjust' in state) {
-            const key = 'z_thermal_adjust'
-            const values = state[key]
-            let icon = mdiThermometer
-            const min_temp = state.configfile?.settings[key]?.min_temp ?? 0
-            const max_temp = state.configfile?.settings[key]?.max_temp ?? 210
-            const split = (max_temp - min_temp) / 3
-
-            if (values.temperature <= min_temp + split) icon = mdiThermometerLow
-            if (values.temperature >= max_temp - split) icon = mdiThermometerHigh
-
-            const additionalSensorBool = rootGetters['gui/getDatasetAdditionalSensorValue']({
-                name: key,
-                sensor: 'z_adjust',
-            })
-
-            const additionalSensor: PrinterStateAdditionalSensor = {
-                bool: additionalSensorBool,
-                name: 'z_adjust',
-                unit: 'μm',
-                value: Math.round(values.current_z_adjust * 1000),
-            }
-
-            if (Math.abs(values.current_z_adjust) >= 0.1) {
-                additionalSensor.value = Math.round(values.current_z_adjust * 1000) / 1000
-                additionalSensor.unit = 'mm'
-            }
-
-            sensors.push({
-                name: key,
-                temperature: Math.round(values.temperature * 10) / 10,
-                additionalSensors: [additionalSensor],
-                icon,
-                min_temp: min_temp,
-                max_temp: max_temp,
-                measured_min_temp: Math.round(values.measured_min_temp * 10) / 10,
-                measured_max_temp: Math.round(values.measured_max_temp * 10) / 10,
-                chartColor: getters['tempHistory/getDatasetColor'](key),
-                chartSeries: getters['tempHistory/getSerieNames'](key),
-            })
-        }
-
-        return caseInsensitiveSort(sensors, 'name')
-    },
-
-    getTemperatureObjects: (state, getters, rootState) => {
-        const objects: PrinterStateTemperatureObject[] = []
-        const disableFanAnimation = rootState.gui?.uiSettings.disableFanAnimation ?? false
-
-        const heaters = getters['getHeaters']
-        if (heaters.length) {
-            heaters.forEach((heater: PrinterStateHeater) => {
-                objects.push({
-                    name: heater.name,
-                    type: heater.type,
-                    icon: heater.icon,
-                    iconColor:
-                        heater.target > 0
-                            ? `${heater.chartColor}${opacityHeaterActive}`
-                            : `${heater.chartColor}${opacityHeaterInactive}`,
-                    iconClass: '',
-                    state: heater.target > 0 ? heater.power + '%' : 'off',
-                    avgState: heater.avgPower + '%',
-                    temperature: heater.temperature,
-                    additionalSensors: heater.additionalSensors,
-                    target: heater.target,
-                    presets: heater.presets,
-                    min_temp: heater.min_temp,
-                    max_temp: heater.max_temp,
-                    measured_min_temp: null,
-                    measured_max_temp: null,
-                    rpm: null,
-                    rpmClass: '',
-                    command: 'SET_HEATER_TEMPERATURE',
-                    commandAttributeName: 'HEATER',
-                    chartColor: heater.chartColor,
-                    chartSeries: heater.chartSeries,
-                })
-            })
-        }
-
-        const temperature_fans = getters['getTemperatureFans']
-        if (temperature_fans.length) {
-            temperature_fans.forEach((fan: PrinterStateTemperatureFan) => {
-                objects.push({
-                    name: fan.name,
-                    type: 'temperature_fan',
-                    icon: fan.icon,
-                    iconColor:
-                        fan.target > 0
-                            ? `${fan.chartColor}${opacityHeaterActive}`
-                            : `${fan.chartColor}${opacityHeaterInactive}`,
-                    iconClass: !disableFanAnimation && fan.speed ? ' icon-rotate' : '',
-                    state: fan.target > 0 && fan.speed > 0 ? fan.speed + '%' : fan.target > 0 ? 'standby' : 'off',
-                    avgState: fan.avgSpeed + '%',
-                    temperature: fan.temperature,
-                    additionalSensors: fan.additionalSensors,
-                    target: fan.target,
-                    presets: fan.presets,
-                    min_temp: fan.min_temp,
-                    max_temp: fan.max_temp,
-                    measured_min_temp: null,
-                    measured_max_temp: null,
-                    rpm: fan.rpm,
-                    rpmClass: fan.rpm === 0 && fan.speed > 0 ? 'red--text' : '',
-                    command: 'SET_TEMPERATURE_FAN_TARGET',
-                    commandAttributeName: 'TEMPERATURE_FAN',
-                    chartColor: fan.chartColor,
-                    chartSeries: fan.chartSeries,
-                })
-            })
-        }
-
-        const temperature_sensors = getters['getTemperatureSensors']
-        if (temperature_sensors.length) {
-            temperature_sensors.forEach((sensor: PrinterStateTemperatureSensor) => {
-                objects.push({
-                    name: sensor.name,
-                    type: 'temperature_sensor',
-                    icon: sensor.icon,
-                    iconColor: `${sensor.chartColor}${opacityHeaterActive}`,
-                    iconClass: '',
-                    state: null,
-                    avgState: '',
-                    temperature: sensor.temperature,
-                    additionalSensors: sensor.additionalSensors,
-                    target: null,
-                    presets: [],
-                    min_temp: sensor.min_temp,
-                    max_temp: sensor.max_temp,
-                    measured_min_temp: sensor.measured_min_temp,
-                    measured_max_temp: sensor.measured_max_temp,
-                    rpm: null,
-                    rpmClass: '',
-                    command: null,
-                    commandAttributeName: null,
-                    chartColor: sensor.chartColor,
-                    chartSeries: sensor.chartSeries,
-                })
-            })
-        }
-
-        return objects
     },
 
     getPartFanSpeed: (state) => {
@@ -644,39 +363,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
             return 0
         })
-    },
-
-    getAdditionalSensors: (state, getters, rootState, rootGetters) => (name: string) => {
-        const additionValues: PrinterStateAdditionalSensor[] = []
-
-        additionalSensors.forEach((sensorName) => {
-            if (sensorName + ' ' + name in state) {
-                Object.keys(state[sensorName + ' ' + name]).forEach((key) => {
-                    if (key !== 'temperature') {
-                        const bool = rootGetters['gui/getDatasetAdditionalSensorValue']({
-                            name: name,
-                            sensor: key,
-                        })
-
-                        let unit = ''
-                        if (key === 'pressure') unit = 'hPa'
-                        if (key === 'humidity') unit = '%'
-
-                        // eslint-disable-next-line
-                        const tmp: PrinterStateAdditionalSensor = {
-                            name: key,
-                            value: state[sensorName + ' ' + name][key].toFixed(1),
-                            bool,
-                            unit,
-                        }
-
-                        additionValues.push(tmp)
-                    }
-                })
-            }
-        })
-
-        return additionValues
     },
 
     getAvailableHeaters: (state) => {
@@ -1071,10 +757,9 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const date = new Date(eta)
         let am = true
         let h: string | number = date.getHours()
-        if (hours12Format && h > 12) {
-            am = false
-            h -= 12
-        }
+
+        if (hours12Format && h > 11) am = false
+        if (hours12Format && h > 12) h -= 12
         if (h < 10) h = '0' + h
 
         const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()

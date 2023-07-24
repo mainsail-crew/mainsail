@@ -14,30 +14,29 @@
 import JMuxer from 'jmuxer'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class JMuxerStreamer extends Mixins(BaseMixin) {
+export default class JMuxerStreamer extends Mixins(BaseMixin, WebcamMixin) {
     private jmuxer: JMuxer | null = null
     private status: string = 'connecting'
 
-    @Prop({ required: true })
-    camSettings: any
-
-    @Prop()
-    printerUrl: string | undefined
+    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
+    @Prop({ default: null }) readonly printerUrl!: string | null
 
     declare $refs: {
         video: HTMLVideoElement
     }
 
     get url() {
-        return this.camSettings.urlStream || ''
+        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
     }
 
     get webcamStyle() {
         let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
+        if ('flipX' in this.camSettings && this.camSettings.flip_horizontal) transforms += ' scaleX(-1)'
+        if ('flipX' in this.camSettings && this.camSettings.flip_vertical) transforms += ' scaleY(-1)'
         if (transforms.trimStart().length) return { transform: transforms.trimStart() }
 
         return ''
@@ -59,7 +58,7 @@ export default class JMuxerStreamer extends Mixins(BaseMixin) {
         }
 
         const video = this.$refs.video
-        const targetFps = this.camSettings.targetFps || 10
+        const targetFps = this.camSettings.target_fps || 10
 
         this.jmuxer = new JMuxer({
             node: video,

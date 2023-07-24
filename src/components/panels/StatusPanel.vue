@@ -185,7 +185,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get printPercent() {
-        return Math.round(this.$store.getters['printer/getPrintPercent'] * 100)
+        return Math.floor(this.$store.getters['printer/getPrintPercent'] * 100)
     }
 
     get printerStateOutput() {

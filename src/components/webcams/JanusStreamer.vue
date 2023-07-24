@@ -23,6 +23,7 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import { JanusJs, JanusSession, JanusStreamingPlugin } from 'typed_janus_js'
 import BaseMixin from '@/components/mixins/base'
 import { ConstructorOptions } from 'typed_janus_js/src/interfaces/janus'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 @Component
 export default class JanusStreamer extends Mixins(BaseMixin) {
@@ -33,15 +34,12 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
     private aspectRatio: null | number = null
     private status: string = 'connecting'
 
-    @Prop({ required: true })
-    camSettings: any
-
+    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) declare readonly printerUrl: string | null
-
     @Ref() declare stream: HTMLVideoElement
 
     get url() {
-        const baseUrl = this.camSettings.urlStream
+        const baseUrl = this.camSettings.stream_url
         let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
         url.port = '8188'
         url.protocol = this.printerUrl?.startsWith('https') ? 'wss' : 'ws'
@@ -56,7 +54,7 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
     }
 
     get streamId() {
-        const pathnameParts = new URL(this.camSettings.urlStream).pathname.split('/')
+        const pathnameParts = new URL(this.camSettings.stream_url).pathname.split('/')
         return pathnameParts[pathnameParts.length - 1]
     }
 
@@ -67,8 +65,8 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
         }
 
         let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
+        if ('flipX' in this.camSettings && this.camSettings.flip_horizontal) transforms += ' scaleX(-1)'
+        if ('flipX' in this.camSettings && this.camSettings.flip_vertical) transforms += ' scaleY(-1)'
         if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) output.aspectRatio = this.aspectRatio
@@ -132,7 +130,7 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
     @Watch('url')
     async changedUrl() {
         await this.session?.destroy({})
-        this.startStream()
+        await this.startStream()
     }
 }
 </script>

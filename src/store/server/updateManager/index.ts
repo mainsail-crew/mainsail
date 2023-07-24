@@ -1,12 +1,21 @@
 import { Module } from 'vuex'
-import { ServerUpdateMangerState } from '@/store/server/updateManager/types'
+import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 import { actions } from '@/store/server/updateManager/actions'
 import { mutations } from '@/store/server/updateManager/mutations'
 import { getters } from '@/store/server/updateManager/getters'
 
-export const getDefaultState = (): ServerUpdateMangerState => {
+export const getDefaultState = (): ServerUpdateManagerState => {
     return {
-        version_info: {},
+        busy: false,
+        github_rate_limit: null,
+        github_requests_remaining: null,
+        github_limit_reset_time: null,
+        git_repos: [],
+        web_repos: [],
+        system: {
+            package_count: 0,
+            package_list: [],
+        },
         updateResponse: {
             application: '',
             complete: true,
@@ -19,7 +28,7 @@ export const getDefaultState = (): ServerUpdateMangerState => {
 const state = getDefaultState()
 
 // eslint-disable-next-line
-export const updateManager: Module<ServerUpdateMangerState, any> = {
+export const updateManager: Module<ServerUpdateManagerState, any> = {
     namespaced: true,
     state,
     getters,
