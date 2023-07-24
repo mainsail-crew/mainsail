@@ -6,25 +6,23 @@
                     :title="$t('Settings.EditorTab.UseEscToClose')"
                     :sub-title="$t('Settings.EditorTab.UseEscToCloseDescription')"
                     :dynamic-slot-width="true">
-                    <v-switch v-model="escToClose" hide-details class="mt-0"></v-switch>
+                    <v-switch v-model="escToClose" hide-details class="mt-0" />
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
+                <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.EditorTab.ConfirmUnsavedChanges')"
                     :sub-title="$t('Settings.EditorTab.ConfirmUnsavedChangesDescription')"
                     :dynamic-slot-width="true">
-                    <v-switch v-model="confirmUnsavedChanges" hide-details class="mt-0"></v-switch>
+                    <v-switch v-model="confirmUnsavedChanges" hide-details class="mt-0" />
                 </settings-row>
-
-                <v-divider class="my-2"></v-divider>
+                <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.EditorTab.TabSize')"
                     :sub-title="$t('Settings.EditorTab.TabSizeDescription')"
                     :dynamic-slot-width="true">
-                    <v-select v-model="tabSize" :items="tabSizes" hide-details outlined dense attached></v-select>
+                    <v-select v-model="tabSize" :items="tabSizes" hide-details outlined dense attached />
                 </settings-row>
-
-                <v-divider class="my-2"></v-divider>
+                <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.EditorTab.KlipperRestartMethod')"
                     :sub-title="$t('Settings.EditorTab.KlipperRestartMethodDescription')">
@@ -34,7 +32,7 @@
                         hide-details
                         outlined
                         dense
-                        attached></v-select>
+                        attached />
                 </settings-row>
             </v-card-text>
         </v-card>
