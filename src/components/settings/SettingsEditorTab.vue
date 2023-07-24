@@ -36,21 +36,6 @@
                         dense
                         attached></v-select>
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <template v-if="availableMoonrakerInstances.length > 1">
-                    <settings-row
-                        :title="$t('Settings.EditorTab.MoonrakerRestartInstance')"
-                        :sub-title="$t('Settings.EditorTab.MoonrakerRestartInstanceDescription')">
-                        <v-select
-                            v-model="moonrakerRestartInstance"
-                            :items="availableMoonrakerInstances"
-                            hide-details
-                            outlined
-                            dense
-                            attached></v-select>
-                    </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                </template>
             </v-card-text>
         </v-card>
     </div>
@@ -114,20 +99,6 @@ export default class SettingsEditorTab extends Mixins(BaseMixin) {
 
     set klipperRestartMethod(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'editor.klipperRestartMethod', value: newVal })
-    }
-
-    get moonrakerRestartInstance() {
-        return this.$store.state.gui.editor.moonrakerRestartInstance
-    }
-
-    set moonrakerRestartInstance(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'editor.moonrakerRestartInstance', value: newVal })
-    }
-
-    get availableMoonrakerInstances() {
-        const available_instances = this.$store.state.server.system_info?.available_services ?? []
-
-        return available_instances.filter((name: string) => name.startsWith('moonraker')).sort()
     }
 }
 </script>

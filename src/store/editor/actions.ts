@@ -127,11 +127,9 @@ export const actions: ActionTree<EditorState, RootState> = {
                 Vue.$toast.success(i18n.t('Editor.SuccessfullySaved', { filename: data.item.path }).toString())
                 if (payload.restartServiceName === 'klipper') {
                     const klipperRestartMethod = getters['getKlipperRestartMethod']
-                    //dispatch('server/addEvent', { message: 'FIRMWARE_RESTART', type: 'command' })
                     Vue.$socket.emit('printer.gcode.script', { script: klipperRestartMethod })
                 } else if (payload.restartServiceName === 'moonraker') {
-                    const moonrakerRestartInstance = getters['getMoonrakerRestartInstance']
-                    Vue.$socket.emit('machine.services.restart', { service: moonrakerRestartInstance })
+                    Vue.$socket.emit('server.restart', {})
                 } else if (payload.restartServiceName !== null) {
                     Vue.$socket.emit('machine.services.restart', { service: payload.restartServiceName })
                 }
