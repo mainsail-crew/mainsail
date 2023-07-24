@@ -3,7 +3,7 @@
         <v-col :class="firstColClasses">
             <v-row class="d-flex flex-row">
                 <v-col v-if="loading" class="col-auto d-flex justify-center align-center pr-0">
-                    <v-progress-circular indeterminate color="primary" :size="24"></v-progress-circular>
+                    <v-progress-circular indeterminate color="primary" :size="24" />
                 </v-col>
                 <v-col v-else-if="icon" class="col-auto d-flex justify-center align-center pr-0">
                     <v-icon>{{ icon }}</v-icon>
@@ -15,7 +15,7 @@
             </v-row>
         </v-col>
         <v-col :class="secondColClasses">
-            <slot></slot>
+            <slot />
         </v-col>
     </v-row>
 </template>
@@ -23,6 +23,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
+import { TranslateResult } from 'vue-i18n'
 
 @Component
 export default class SettingsRow extends Mixins(BaseMixin) {
@@ -33,10 +34,10 @@ export default class SettingsRow extends Mixins(BaseMixin) {
     declare readonly icon: string
 
     @Prop({ required: true })
-    declare readonly title: string
+    declare readonly title: string | TranslateResult
 
     @Prop({ required: false })
-    declare readonly subTitle: string
+    declare readonly subTitle: string | TranslateResult
 
     @Prop({ required: false, default: false })
     declare readonly dynamicSlotWidth: boolean
