@@ -807,8 +807,6 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Método para reiniciar Klipper",
             "KlipperRestartMethodDescription": "Selecione o método de reinicialização que será usado em 'Salvar e Reiniciar' ao editar arquivos de configuração do Klipper.",
-            "MoonrakerRestartInstance": "Reiniciar a instância do Moonraker",
-            "MoonrakerRestartInstanceDescription": "Selecione qual serviço do Moonraker será reiniciado em 'Salvar e Reiniciar' ao editar arquivos de configuração do Moonraker.",
             "Spaces": "Espaços: {count}",
             "TabSize": "Tamanho TAB",
             "TabSizeDescription": "Ajusta quantos espaços devem ser usados para a indentação de TAB.",

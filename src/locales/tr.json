@@ -833,8 +833,6 @@
             "Editor": "Editör",
             "KlipperRestartMethod": "Klipper yeniden başlatma yöntemi",
             "KlipperRestartMethodDescription": "Klipper yapılandırma dosyalarını düzenlerken 'Kaydet ve Yeniden Başlat' seçildiğinde hangi yeniden başlatma yönteminin kullanılacağını seçin.",
-            "MoonrakerRestartInstance": "Moonraker örnek yeniden başlatma",
-            "MoonrakerRestartInstanceDescription": "Moonraker yapılandırma dosyalarını düzenlerken 'Kaydet ve Yeniden Başlat' seçildiğinde hangi Moonraker hizmetinin yeniden başlayacağını seçin.",
             "UseEscToClose": "Editörü kapatmak için ESC tuşunu kullan",
             "UseEscToCloseDescription": "ESC tuşunun editörü kapatmasına izin verir",
             "TabSize": "TAB Boyutu",

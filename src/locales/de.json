@@ -833,8 +833,6 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Klipper Neustartmethode",
             "KlipperRestartMethodDescription": "Wähle aus, welche Neustartmethode verwendet werden soll wenn 'Speichern & Neustarten' geklickt wir im Editor.",
-            "MoonrakerRestartInstance": "Moonraker Neustartinstanz",
-            "MoonrakerRestartInstanceDescription": "Wähle aus, welche Moonrakerinstanz neu gestartet werden soll wenn 'Speichern & Neustarten' im Editor geklickt wird.",
             "UseEscToClose": "ESC drücken um Editor zu schließen",
             "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen.",
             "TabSize": "TAB Größe",
