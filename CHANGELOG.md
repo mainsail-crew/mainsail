@@ -2,6 +2,39 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.6.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.6.1) - 2023-07-24
+### Bug Fixes and Improvements
+
+- Show delete dialog for single files too (#1442) | [7da3352](7da33523d1ec7c4a3206400fb92803685176167e)
+- Remove variable check in klipper config StreamParser (#1435) | [6e7ef65](6e7ef6554ec88ceb29f66b4d6a5d5f21ef77671b)
+- Fix condition in restartServiceNameExists check (#1450) | [a7e70c7](a7e70c75d0009ffed14e8717ad8286f91e4e7e8a)
+- Avoid hitting 100% before print is complete (#1455) | [3959000](39590004da7ca22fef82fbd148b31683c462bb13)
+- Fix issue with ETA and 12h time format (#1463) | [039a446](039a446944f05ea241574c65040d520bbbef0e9b)
+- Fix issue with CSV separator in contents (#1460) | [1895d2d](1895d2d90591946c792faaf3f62c52865f27cd62)
+- Fix issue with webcams in farm printers (#1469) | [5b2bea5](5b2bea51aab79aabfab02825cdce45be351c1c6f)
+
+### Refactor
+
+- Build version file for moonraker (#1449) | [21d3d39](21d3d395039ec855d062a5ee5e5b43e2d858f402)
+- Use moonraker webcam api instead of direct DB access (#1445) | [7c81690](7c81690c1e299c804edb4ede0acab7d77d1dedbe)
+- Change SettingsGeneralTab file (#1475) | [db09bbe](db09bbe043b2e43053779709f5260c7275bc4969)
+- Extract Presets and Settings from TemperaturePanel (#1465) | [be25316](be253165a003c50fd992f43c586ce5315dc2352d)
+- Display errors and warnings in the update_manager (#1453) | [0cefa24](0cefa24e766c568a56127bfd55272735383cb45e)
+
+### Localization
+
+- **pl**: Update Polish translation (#1434) | [73e503f](73e503fc6448ae174dd7f9d59236c820bd4b6631)
+- **pl**: Update Polish translation (#1447) | [d844125](d8441254db04d672fe2137f64e39127f524c4769)
+- **pl**: Update polish locale (#1471) | [a58bef2](a58bef2a03479262b4ee5db2b5d103e8dc2194c5)
+- **pl**: Update Polish translation (#1476) | [6758049](6758049d29c7410bcdedec689eaca503952b2c7e)
+- **tr**: Update turkish locale (#1480) | [f52b94c](f52b94c459ad759e160a568d3b6f366b0e65f484)
+- **zh**: Update Chinese (zh) localization (#1459) | [bcbef2f](bcbef2f19af4746b941ddcb29c98ff5f071611d0)
+
+### Other
+
+- **pwa**: Remove debug warnings in browser console (#1441) | [2962df2](2962df21e512baad6976dc502d6234c2969da686)
+- Add dev-dist to .gitignore (#1451) | [ef2d17c](ef2d17cadde566e8b713031cb7292d65ca1bec12)
+
 ## [2.6.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.6.0) - 2023-06-19
 ### Features
 
