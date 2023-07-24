@@ -70,13 +70,6 @@
                 </v-chip>
             </v-col>
         </v-row>
-        <v-row v-if="notificationText" class="mt-0">
-            <v-col class="px-6 pt-0">
-                <v-alert text dense :color="notificationColor" :icon="notificationIcon" border="left">
-                    {{ notificationText }}
-                </v-alert>
-            </v-col>
-        </v-row>
         <v-row v-if="gitMessages.length" class="mt-0">
             <v-col class="px-6 pt-0">
                 <v-alert
@@ -291,21 +284,6 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         if (this.localVersion === null || this.remoteVersion === null) return this.$t('Machine.UpdatePanel.Unknown')
 
         return this.$t('Machine.UpdatePanel.UpToDate')
-    }
-
-    get notificationText() {
-        if (this.isDetached) return this.$t('Machine.UpdatePanel.Notification.Detached')
-        if (this.isDirty) return this.$t('Machine.UpdatePanel.Notification.Dirty')
-
-        return null
-    }
-
-    get notificationColor() {
-        return this.btnColor
-    }
-
-    get notificationIcon() {
-        return this.btnIcon
     }
 
     get gitMessages() {
