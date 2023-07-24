@@ -620,8 +620,6 @@
             "Editor": "Redigerare",
             "KlipperRestartMethod": "Klipper omstartsmetod",
             "KlipperRestartMethodDescription": "Välj vilken omstartsmetod som ska användas på 'Spara och starta om' vid redigering av Klipper-konfigurationsfiler.",
-            "MoonrakerRestartInstance": "Starta om Moonraker instans",
-            "MoonrakerRestartInstanceDescription": "Välj vilken Moonraker-tjänst som ska startas om under \"Spara och starta om\" när du redigerar Moonraker-konfigurationsfiler.",
             "UseEscToClose": "Använd ESC för att stänga redigeringsprogrammet",
             "UseEscToCloseDescription": "Tillåter att ESC-tangenten stänger redigeraren"
         },

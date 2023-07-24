@@ -801,8 +801,6 @@
             "Editor": "파일 편집기",
             "KlipperRestartMethod": "클리퍼 재시작 방법",
             "KlipperRestartMethodDescription": "printer.cfg 파일을 수정 후, '저장 및 다시 시작'을 클릭할 때 사용할 다시 시작 방법을 선택합니다",
-            "MoonrakerRestartInstance": "문래커 재시작 방법",
-            "MoonrakerRestartInstanceDescription": "moonraker.conf 파일을 수정할 때 '저장 및 다시 시작'을 클릭할 때 사용할 문래커 서비스를 선택합니다",
             "UseEscToClose": "ESC키를 눌러 종료",
             "UseEscToCloseDescription": "ESC 키를 눌렀을 때 파일 편집기를 종료하며 만약 비활성화 했을 경우 ESC 키를 누르는 즉시 기존 입력 값은 모두 취소됩니다"
         },

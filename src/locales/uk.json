@@ -735,8 +735,6 @@
             "Editor": "Редактор",
             "KlipperRestartMethod": "Метод перезапуску Klipper",
             "KlipperRestartMethodDescription": "Виберіть, який метод перезавантаження буде використовуватися на 'Зберегти та перезапустити' під час редагування файлів конфігурації Klipper..",
-            "MoonrakerRestartInstance": "Інстанція перезапуску Moonraker",
-            "MoonrakerRestartInstanceDescription": "Виберіть, яка послуга Moonraker перезапуститься на 'Зберегти та перезапустити' під час редагування файлів конфігурації Moonraker.",
             "UseEscToClose": "Використовуйте ESC для закриття редактора",
             "UseEscToCloseDescription": "Дозволяє клавішу ESC закрити редактор"
         },

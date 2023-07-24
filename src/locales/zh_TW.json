@@ -773,8 +773,6 @@
             "Editor": "編輯器",
             "KlipperRestartMethod": "Klipper重新啟動方法",
             "KlipperRestartMethodDescription": "編輯完Klipper設定檔案並按下\"儲存並重新啟動\"按鈕後，使用哪種重新啟動方法。",
-            "MoonrakerRestartInstance": "重新啟動Moonraker",
-            "MoonrakerRestartInstanceDescription": "編輯完Moonraker設定檔案並按下\"儲存並重新啟動\"按鈕後，重新啟動哪個Moonraker服務。",
             "Spaces": "空間： {count}",
             "TabSize": "標籤大小",
             "UseEscToClose": "使用 ESC 關閉編輯器",

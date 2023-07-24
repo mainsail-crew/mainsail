@@ -801,8 +801,6 @@
             "Editor": "Редактор",
             "KlipperRestartMethod": "Способ перезапуска Klipper",
             "KlipperRestartMethodDescription": "Выберите какой способ перезапуска Klipper будет использоваться, после нажатия 'СОХРАНИТЬ И ПЕРЕЗАПУСТИТЬ' при редактировании конфигурационных файлов Klipper.",
-            "MoonrakerRestartInstance": "Способ перезапуска Moonraker",
-            "MoonrakerRestartInstanceDescription": "Выберите какой способ перезапуска Moonraker будет использоваться, после нажатия 'СОХРАНИТЬ И ПЕРЕЗАПУСТИТЬ' при редактировании конфигурационных файлов Moonraker.",
             "UseEscToClose": "Использование клавиши ESC",
             "UseEscToCloseDescription": "Позволяет использовать клавишу ESC для закрытия редактора",
             "TabSize": "Размер табуляции",

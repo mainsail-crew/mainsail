@@ -816,8 +816,6 @@
             "Editor": "Edytor",
             "KlipperRestartMethod": "Metoda restartu Klippera",
             "KlipperRestartMethodDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Klippera.",
-            "MoonrakerRestartInstance": "Ponowne uruchomienie instancji Moonrakera",
-            "MoonrakerRestartInstanceDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Moonrakera.",
             "UseEscToClose": "Naciśnij ESC, aby wyjść z edytora",
             "UseEscToCloseDescription": "Umożliwia zamknięcie edytora za pomocą klawisza ESC",
             "TabSize": "Rozmiar tabulacji",

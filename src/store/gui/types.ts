@@ -60,7 +60,6 @@ export interface GuiState {
         confirmUnsavedChanges: boolean
         klipperRestartMethod: 'FIRMWARE_RESTART' | 'RESTART'
         tabSize: number
-        moonrakerRestartInstance: string | null
     }
     gcodeViewer: {
         extruderColors: string[]

@@ -833,8 +833,6 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Klipper restart method",
             "KlipperRestartMethodDescription": "Select which restart method will be used on 'Save & Restart' when editing Klipper config files.",
-            "MoonrakerRestartInstance": "Moonraker restart instance",
-            "MoonrakerRestartInstanceDescription": "Select which Moonraker service will restart on 'Save & Restart' when editing Moonraker config files.",
             "UseEscToClose": "Use ESC to close editor",
             "UseEscToCloseDescription": "Allows the ESC key to close the editor",
             "TabSize": "TAB Size",
