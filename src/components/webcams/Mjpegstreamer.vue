@@ -57,8 +57,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         }
 
         let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flip_horizontal) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flip_vertical) transforms += ' scaleY(-1)'
+        if (this.camSettings?.flip_horizontal ?? false) transforms += ' scaleX(-1)'
+        if (this.camSettings?.flip_vertical ?? false) transforms += ' scaleY(-1)'
         if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) {
