@@ -70,6 +70,20 @@
                 </v-chip>
             </v-col>
         </v-row>
+        <v-row v-if="anomalies.length" class="mt-0">
+            <v-col class="px-6 pt-0">
+                <v-alert
+                    v-for="(message, index) in anomalies"
+                    :key="'anomalies_' + index"
+                    text
+                    dense
+                    border="left"
+                    type="info"
+                    :icon="mdiAlertCircle">
+                    {{ message }}
+                </v-alert>
+            </v-col>
+        </v-row>
         <v-row v-if="gitMessages.length" class="mt-0">
             <v-col class="px-6 pt-0">
                 <v-alert
@@ -288,6 +302,10 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
 
     get gitMessages() {
         return this.repo.git_messages ?? []
+    }
+
+    get anomalies() {
+        return this.repo.anomalies ?? []
     }
 
     get warnings() {

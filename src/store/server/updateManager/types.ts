@@ -51,6 +51,7 @@ export interface ServerUpdateManagerStateGitRepo {
     debug_enabled?: boolean
     commits_behind?: ServerUpdateManagerStateGitRepoCommit[]
     git_messages?: string[]
+    anomalies?: string[]
     warnings?: string[]
     info_tags?: string[]
 }
