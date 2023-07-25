@@ -47,6 +47,7 @@ export interface ServerUpdateManagerStateGitRepo {
     remote_hash?: string
     is_valid?: boolean
     is_dirty?: boolean
+    corrupt?: boolean
     detached?: boolean
     debug_enabled?: boolean
     commits_behind?: ServerUpdateManagerStateGitRepoCommit[]
@@ -54,6 +55,7 @@ export interface ServerUpdateManagerStateGitRepo {
     anomalies?: string[]
     warnings?: string[]
     info_tags?: string[]
+    recovery_url?: string
 }
 
 export interface ServerUpdateManagerStateGitRepoGroupedCommits {

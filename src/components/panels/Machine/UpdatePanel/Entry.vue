@@ -19,7 +19,17 @@
                 <span v-else>{{ versionOutput }}</span>
             </v-col>
             <v-col class="col-auto pr-6 text-right" align-self="center">
-                <template v-if="needsRecovery">
+                <v-chip
+                    v-if="anomalies.length > 0"
+                    small
+                    label
+                    outlined
+                    color="primary"
+                    class="minwidth-0 px-1 mr-2"
+                    @click="toggleAnomalies = !toggleAnomalies">
+                    <v-icon small>{{ mdiInformation }}</v-icon>
+                </v-chip>
+                <template v-if="!isValid">
                     <v-menu :offset-y="true">
                         <template #activator="{ on, attrs }">
                             <v-chip
@@ -37,16 +47,16 @@
                             </v-chip>
                         </template>
                         <v-list dense class="py-0">
-                            <v-list-item @click="doRecovery(false)">
-                                <v-list-item-icon class="mr-0">
+                            <v-list-item v-if="!isCorrupt" @click="doRecovery(false)">
+                                <v-list-item-icon class="mr-0 pt-1">
                                     <v-icon small>{{ mdiReload }}</v-icon>
                                 </v-list-item-icon>
                                 <v-list-item-content>
                                     <v-list-item-title>{{ $t('Machine.UpdatePanel.SoftRecovery') }}</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item @click="doRecovery(true)">
-                                <v-list-item-icon class="mr-0">
+                            <v-list-item :disabled="!existsRecoveryUrl" @click="doRecovery(true)">
+                                <v-list-item-icon class="mr-0 pt-1">
                                     <v-icon small>{{ mdiReload }}</v-icon>
                                 </v-list-item-icon>
                                 <v-list-item-content>
@@ -70,33 +80,6 @@
                 </v-chip>
             </v-col>
         </v-row>
-        <v-row v-if="anomalies.length" class="mt-0">
-            <v-col class="px-6 pt-0">
-                <v-alert
-                    v-for="(message, index) in anomalies"
-                    :key="'anomalies_' + index"
-                    text
-                    dense
-                    border="left"
-                    type="info"
-                    :icon="mdiAlertCircle">
-                    {{ message }}
-                </v-alert>
-            </v-col>
-        </v-row>
-        <v-row v-if="gitMessages.length" class="mt-0">
-            <v-col class="px-6 pt-0">
-                <v-alert
-                    v-for="(message, index) in gitMessages"
-                    :key="'message_' + index"
-                    text
-                    dense
-                    border="left"
-                    type="info">
-                    {{ message }}
-                </v-alert>
-            </v-col>
-        </v-row>
         <v-row v-if="warnings.length" class="mt-0">
             <v-col class="px-6 pt-0">
                 <v-alert
@@ -106,7 +89,21 @@
                     dense
                     border="left"
                     color="orange"
-                    :icon="mdiAlertCircle">
+                    :icon="mdiCloseCircle">
+                    {{ message }}
+                </v-alert>
+            </v-col>
+        </v-row>
+        <v-row v-show="toggleAnomalies" class="mt-0">
+            <v-col class="px-6 pt-0">
+                <v-alert
+                    v-for="(message, index) in anomalies"
+                    :key="'anomalies_' + index"
+                    text
+                    dense
+                    border="left"
+                    color="info"
+                    :icon="mdiInformation">
                     {{ message }}
                 </v-alert>
             </v-col>
@@ -130,7 +127,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerUpdateManagerStateGitRepo } from '@/store/server/updateManager/types'
 import {
-    mdiAlertCircle,
+    mdiCloseCircle,
     mdiCheck,
     mdiHelpCircleOutline,
     mdiInformation,
@@ -148,10 +145,12 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
     mdiMenuDown = mdiMenuDown
     mdiReload = mdiReload
-    mdiAlertCircle = mdiAlertCircle
+    mdiCloseCircle = mdiCloseCircle
 
     boolShowCommitList = false
     boolShowUpdateHint = false
+
+    toggleAnomalies = false
 
     @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
 
@@ -237,6 +236,10 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         return this.repo.is_dirty ?? false
     }
 
+    get isCorrupt() {
+        return this.repo.corrupt ?? false
+    }
+
     get debugEnabled() {
         return this.repo.debug_enabled ?? false
     }
@@ -247,19 +250,21 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         return !this.debugEnabled && (this.repo.detached ?? false)
     }
 
-    get needsRecovery() {
-        return !this.isValid || this.isDirty
+    get existsRecoveryUrl() {
+        const url = this.repo.recovery_url ?? '?'
+
+        return url !== '?'
     }
 
     get btnDisabled() {
         if (['printing', 'paused'].includes(this.printer_state)) return true
-        if (!this.isValid || this.isDirty || this.commitsBehind.length) return false
+        if (!this.isValid || this.isCorrupt || this.isDirty || this.commitsBehind.length) return false
 
         return !(this.localVersion && this.remoteVersion && semver.gt(this.remoteVersion, this.localVersion))
     }
 
     get btnIcon() {
-        if (this.isDetached || !this.isValid || this.isDirty) return mdiAlertCircle
+        if (this.isDetached || !this.isValid || this.isCorrupt || this.isDirty) return mdiCloseCircle
 
         if (
             this.commitsBehind.length ||
@@ -273,8 +278,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     }
 
     get btnColor() {
-        if (this.isDetached || !this.isValid) return 'orange'
-        if (this.isDirty) return 'red'
+        if (this.isCorrupt || this.isDetached || this.isDirty || !this.isValid) return 'orange'
 
         if (
             this.commitsBehind.length ||
@@ -286,9 +290,10 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     }
 
     get btnText() {
+        if (this.isCorrupt) return this.$t('Machine.UpdatePanel.Corrupt')
         if (this.isDetached) return this.$t('Machine.UpdatePanel.Detached')
-        if (!this.isValid) return this.$t('Machine.UpdatePanel.Invalid')
         if (this.isDirty) return this.$t('Machine.UpdatePanel.Dirty')
+        if (!this.isValid) return this.$t('Machine.UpdatePanel.Invalid')
         if (
             this.commitsBehind.length ||
             (this.localVersion && this.remoteVersion && semver.gt(this.remoteVersion, this.localVersion))
@@ -298,10 +303,6 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         if (this.localVersion === null || this.remoteVersion === null) return this.$t('Machine.UpdatePanel.Unknown')
 
         return this.$t('Machine.UpdatePanel.UpToDate')
-    }
-
-    get gitMessages() {
-        return this.repo.git_messages ?? []
     }
 
     get anomalies() {

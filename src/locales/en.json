@@ -490,6 +490,7 @@
             "CommittedHoursAgo": "committed {hours} hours ago",
             "CommittedOnDate": "committed on {date}",
             "CommittedYesterday": "committed yesterday",
+            "Corrupt": "corrupt",
             "ConfigChanges": "Config Changes",
             "CountPackagesCanBeUpgraded": "{count} packages can be upgraded",
             "Detached": "detached",
