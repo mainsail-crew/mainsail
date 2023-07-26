@@ -102,6 +102,15 @@
                                 :label="$t('Settings.WebcamsTab.Rotate')" />
                         </v-col>
                     </v-row>
+                    <v-row v-if="hasFpsCounter">
+                        <v-col class="pt-1 pb-3">
+                            <v-checkbox
+                                v-model="hideFps"
+                                class="mt-1"
+                                hide-details
+                                :label="$t('Settings.WebcamsTab.HideFps')" />
+                        </v-col>
+                    </v-row>
                     <v-row>
                         <v-col class="pt-1 pb-3">
                             <div class="v-label v-label--active theme--dark text-subtitle-1">
@@ -248,6 +257,27 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         if (this.selectIcon) classes.push('_rotate-180')
 
         return classes
+    }
+
+    get hasFpsCounter() {
+        return ['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(this.webcam.service)
+    }
+
+    get hideFps() {
+        return this.webcam.extra_data?.hideFps ?? false
+    }
+
+    set hideFps(newVal) {
+        if (!('extra_data' in this.webcam)) {
+            this.webcam.extra_data = {
+                hideFps: newVal,
+            }
+
+            return
+        }
+
+        // @ts-ignore
+        this.webcam.extra_data.hideFps = newVal
     }
 
     mounted() {

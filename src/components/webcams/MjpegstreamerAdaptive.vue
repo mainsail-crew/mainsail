@@ -10,7 +10,7 @@
             height="400"
             :style="webcamStyle"
             :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')"></canvas>
-        <span v-if="isLoaded && showFps" class="webcamFpsOutput">
+        <span v-if="isLoaded && showFpsCounter" class="webcamFpsOutput">
             {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
         </span>
     </div>
@@ -73,6 +73,12 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
 
     get fpsOutput() {
         return this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS
+    }
+
+    get showFpsCounter() {
+        if (!this.showFps) return false
+
+        return !(this.camSettings.extra_data?.hideFps ?? false)
     }
 
     get rotate() {
