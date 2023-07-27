@@ -231,7 +231,10 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
     }
 
     get rpm() {
-        if (!('rpm' in this.printerObject)) return null
+        const rpm = this.printerObject.rpm ?? null
+
+        // return null when rpm doesn't exist
+        if (rpm === null) return null
 
         return parseInt(this.printerObject.rpm)
     }
