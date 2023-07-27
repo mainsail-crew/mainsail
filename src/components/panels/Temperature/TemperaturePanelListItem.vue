@@ -90,9 +90,12 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
     }
 
     get printerObjectSettings() {
-        if (!(this.objectName in (this.$store.state.printer?.configfile?.settings ?? {}))) return {}
+        // convert objectName to lowercase, because klipper only user lowercase in configfile.settings
+        const lowerCaseObjectName = this.objectName.toLowerCase()
 
-        return this.$store.state.printer?.configfile?.settings[this.objectName]
+        if (!(lowerCaseObjectName in (this.$store.state.printer?.configfile?.settings ?? {}))) return {}
+
+        return this.$store.state.printer?.configfile?.settings[lowerCaseObjectName]
     }
 
     get name() {
