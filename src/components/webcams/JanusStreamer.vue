@@ -24,9 +24,10 @@ import { JanusJs, JanusSession, JanusStreamingPlugin } from 'typed_janus_js'
 import BaseMixin from '@/components/mixins/base'
 import { ConstructorOptions } from 'typed_janus_js/src/interfaces/janus'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class JanusStreamer extends Mixins(BaseMixin) {
+export default class JanusStreamer extends Mixins(BaseMixin, WebcamMixin) {
     private janusClient: JanusJs | null = null
     private session: JanusSession | null = null
     private handle: JanusStreamingPlugin | null = null
@@ -60,14 +61,13 @@ export default class JanusStreamer extends Mixins(BaseMixin) {
 
     get webcamStyle() {
         const output = {
-            transform: 'none',
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
             aspectRatio: 16 / 9,
         }
-
-        let transforms = ''
-        if (this.camSettings?.flip_horizontal ?? false) transforms += ' scaleX(-1)'
-        if (this.camSettings?.flip_vertical ?? false) transforms += ' scaleY(-1)'
-        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) output.aspectRatio = this.aspectRatio
 

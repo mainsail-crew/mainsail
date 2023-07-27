@@ -47,12 +47,13 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin, WebcamMixi
     }
 
     get webcamStyle() {
-        let transforms = ''
-        if (this.camSettings?.flip_horizontal ?? false) transforms += ' scaleX(-1)'
-        if (this.camSettings?.flip_vertical ?? false) transforms += ' scaleY(-1)'
-        if (transforms.trimStart().length) return { transform: transforms.trimStart() }
-
-        return ''
+        return {
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
+        }
     }
 
     get url() {

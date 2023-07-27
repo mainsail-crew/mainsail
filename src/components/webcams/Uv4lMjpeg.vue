@@ -35,16 +35,15 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin, WebcamMixin) {
 
     get webcamStyle() {
         const output = {
-            transform: 'none',
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
             aspectRatio: 16 / 9,
             maxHeight: window.innerHeight - 155 + 'px',
             maxWidth: 'auto',
         }
-
-        let transforms = ''
-        if (this.camSettings?.flip_horizontal ?? false) transforms += ' scaleX(-1)'
-        if (this.camSettings?.flip_vertical ?? false) transforms += ' scaleY(-1)'
-        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) {
             output.aspectRatio = this.aspectRatio
