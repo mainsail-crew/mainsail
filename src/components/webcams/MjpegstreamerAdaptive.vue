@@ -21,9 +21,10 @@ import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
+export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin) {
     private refresh = Math.ceil(Math.random() * Math.pow(10, 12))
     private isVisible = true
     private isVisibleDocument = true
@@ -51,17 +52,15 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
 
     get webcamStyle() {
         const output = {
-            transform: 'none',
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
             aspectRatio: 16 / 9,
             maxHeight: window.innerHeight - 155 + 'px',
             maxWidth: 'auto',
         }
-
-        let transforms = ''
-        if (this.camSettings.flip_horizontal ?? false) transforms += ' scaleX(-1)'
-        if (this.camSettings.flip_vertical ?? false) transforms += ' scaleY(-1)'
-        if ((this.camSettings.rotation ?? 0) === 180) transforms += ' rotate(180deg)'
-        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) {
             output.aspectRatio = this.aspectRatio

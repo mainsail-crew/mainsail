@@ -34,12 +34,13 @@ export default class JMuxerStreamer extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get webcamStyle() {
-        let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flip_horizontal) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flip_vertical) transforms += ' scaleY(-1)'
-        if (transforms.trimStart().length) return { transform: transforms.trimStart() }
-
-        return ''
+        return {
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
+        }
     }
 
     mounted() {

@@ -47,4 +47,17 @@ export default class WebcamMixin extends Mixins(BaseMixin) {
                 return mdiWebcam
         }
     }
+
+    generateTransform(flip_horizontal: boolean, flip_vertical: boolean, rotation: number) {
+        let transforms = ''
+        if (flip_horizontal) transforms += ' scaleX(-1)'
+        if (flip_vertical) transforms += ' scaleY(-1)'
+        if (rotation === 180) transforms += ' rotate(180deg)'
+
+        // return transform when exist
+        if (transforms.trimStart().length) return transforms.trimStart()
+
+        // return none as fallback
+        return 'none'
+    }
 }
