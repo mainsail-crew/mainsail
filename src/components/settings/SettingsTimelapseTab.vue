@@ -483,11 +483,11 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         const output: any = []
 
         webcams
-            .filter((webcam: GuiWebcamStateWebcam) => webcam.urlSnapshot !== '')
+            .filter((webcam: GuiWebcamStateWebcam) => webcam.snapshot_url !== '')
             .forEach((webcam: GuiWebcamStateWebcam) => {
                 output.push({
                     text: webcam.name,
-                    value: webcam.id,
+                    value: webcam.name,
                 })
             })
 
