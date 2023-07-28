@@ -30,7 +30,11 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
         // check if timelapse plugin is active, if not stop here
         if (!rootState.server?.components.includes('timelapse')) return
 
-        dispatch('server/timelapse/updateCamSettings', {}, { root: true })
+        dispatch(
+            'server/timelapse/updateCamSettings',
+            { newName: payload.webcam.name, oldName: payload.oldWebcamName },
+            { root: true }
+        )
     },
 
     delete(_, payload: string) {
