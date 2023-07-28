@@ -23,9 +23,14 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
         Vue.$socket.emit('server.webcams.post_item', payload)
     },
 
-    update({ dispatch }, payload: { webcam: GuiWebcamStateWebcam; oldWebcamName: string }) {
+    update({ dispatch, rootState }, payload: { webcam: GuiWebcamStateWebcam; oldWebcamName: string }) {
         Vue.$socket.emit('server.webcams.post_item', payload.webcam)
         if (payload.webcam.name !== payload.oldWebcamName) dispatch('delete', payload.oldWebcamName)
+
+        // check if timelapse plugin is active, if not stop here
+        if (!rootState.server?.components.includes('timelapse')) return
+
+        dispatch('server/timelapse/updateCamSettings', {}, { root: true })
     },
 
     delete(_, payload: string) {

@@ -52,6 +52,10 @@ export const actions: ActionTree<ServerTimelapseState, RootState> = {
         Vue.$socket.emit('machine.timelapse.post_settings', payload, { action: 'server/timelapse/initSettings' })
     },
 
+    updateCamSettings({ dispatch, state }) {
+        dispatch('saveSetting', { camera: state.settings.camera })
+    },
+
     resetSnackbar({ commit }) {
         commit('resetSnackbar')
     },
