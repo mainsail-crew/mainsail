@@ -65,11 +65,18 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
             .sort(this.sortObjectName)
     }
 
+    get hideMcuHostSensors(): boolean {
+        return this.$store.state.gui.view.tempchart.hideMcuHostSensors ?? false
+    }
+
     get temperature_sensors() {
         return this.available_sensors
             .filter((fullName: string) => {
                 if (this.available_heaters.includes(fullName)) return false
                 if (this.temperature_fans.includes(fullName)) return false
+
+                // hide MCU & Host sensors, if the function is enabled
+                if (this.hideMcuHostSensors && this.checkMcuHostSensor(fullName)) return false
 
                 const splits = fullName.split(' ')
                 let name = splits[0]
@@ -82,6 +89,17 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
 
     get tempObjects() {
         return [...this.filteredHeaters, ...this.temperature_fans, ...this.temperature_sensors]
+    }
+
+    get settings() {
+        return this.$store.state.printer?.configfile?.settings ?? {}
+    }
+
+    checkMcuHostSensor(fullName: string) {
+        const settingsObject = this.settings[fullName.toLowerCase()] ?? {}
+        const sensor_type = settingsObject.sensor_type ?? ''
+
+        return ['temperature_mcu', 'temperature_host'].includes(sensor_type)
     }
 
     sortObjectName(a: string, b: string) {
