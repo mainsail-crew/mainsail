@@ -680,6 +680,7 @@
                 "Temperature": "Aktuelle Temperatur"
             },
             "Headline": "Temperaturen",
+            "HideMcuHostSensors": "Host/MCU Sensoren ausblenden",
             "Max": "max",
             "Min": "min",
             "Name": "Name",
