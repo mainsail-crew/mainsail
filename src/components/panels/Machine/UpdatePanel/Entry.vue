@@ -320,8 +320,12 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         return semver.gt(this.remoteVersion, this.localVersion)
     }
 
+    get repo_name() {
+        return this.repo.repo_name ?? this.repo.name ?? ''
+    }
+
     get webLinkRelease() {
-        return `https://github.com/${this.repo.owner}/${this.repo.name}/releases/tag/${this.repo.remote_version}`
+        return `https://github.com/${this.repo.owner}/${this.repo_name}/releases/tag/${this.repo.remote_version}`
     }
 
     get hideUpdateWarning() {

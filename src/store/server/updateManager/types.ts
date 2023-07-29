@@ -32,6 +32,7 @@ export interface ServerUpdateManagerStateGitRepoCommit {
 
 export interface ServerUpdateManagerStateGitRepo {
     name: string
+    repo_name?: string
     configured_type: string
     detected_type?: string
     channel?: string

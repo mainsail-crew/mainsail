@@ -69,13 +69,17 @@ export default class UpdateHintAlert extends Mixins(BaseMixin) {
         return null
     }
 
+    get repo_name() {
+        return this.repo.repo_name ?? this.repo.name ?? ''
+    }
+
     get externalLink() {
         if (this.name === 'klipper') return '//www.klipper3d.org/Config_Changes.html'
         if (this.name === 'moonraker') return '//moonraker.readthedocs.io/en/latest/changelog/'
         if (this.repo?.configured_type === 'web')
-            return `//github.com/${this.repo.owner}/${this.repo.name}/releases/tag/${this.repo.remote_version}`
+            return `//github.com/${this.repo.owner}/${this.repo_name}/releases/tag/${this.repo.remote_version}`
 
-        return `//github.com/${this.repo.owner}/${this.repo.name}`
+        return `//github.com/${this.repo.owner}/${this.repo_name}`
     }
 
     get externalLinkText() {
