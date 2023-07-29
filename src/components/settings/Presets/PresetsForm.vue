@@ -19,7 +19,7 @@
                 </settings-row>
                 <div v-for="(value, key) of preset.values" :key="key">
                     <v-divider class="my-2" />
-                    <settings-row :title="convertName(key)">
+                    <settings-row :title="converNameObject(key)">
                         <v-checkbox v-model="value.bool" hide-details class="shrink mt-0" />
                         <v-text-field
                             v-model="value.value"
@@ -64,7 +64,6 @@ import { mdiDelete, mdiPencil } from '@mdi/js'
 export default class PresetsForm extends Mixins(BaseMixin) {
     mdiPencil = mdiPencil
     mdiDelete = mdiDelete
-    convertName = convertName
 
     @Prop({ required: true }) readonly preset!: GuiPresetsStatePreset
 
@@ -145,6 +144,10 @@ export default class PresetsForm extends Mixins(BaseMixin) {
                 (preset: GuiPresetsStatePreset) => preset.name === name && preset.id !== this.preset.id
             ) !== -1
         )
+    }
+
+    converNameObject(name: string) {
+        return convertName(name.replace('temperature_fan ', ''))
     }
 
     closeForm() {
