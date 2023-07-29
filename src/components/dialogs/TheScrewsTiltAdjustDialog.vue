@@ -65,8 +65,8 @@ export default class TheScrewsTiltAdjustDialog extends Mixins(BaseMixin, Control
         return this.$store.state.printer.screws_tilt_adjust?.error ?? false
     }
 
-    get max_diff() {
-        return this.$store.state.printer.screws_tilt_adjust?.max_diff ?? null
+    get max_deviation() {
+        return this.$store.state.printer.screws_tilt_adjust?.max_deviation ?? null
     }
 
     get results() {
@@ -78,7 +78,7 @@ export default class TheScrewsTiltAdjustDialog extends Mixins(BaseMixin, Control
         if (!this.boolScrewsTiltAdjustDialog) return false
 
         // don't display the dialog, if the user add the MAX_DEVIATION attribute to the SCREWS_TILT_CALCULATE command
-        if (this.max_diff !== null) return false
+        if (this.max_deviation !== null) return false
 
         return this.error || Object.keys(this.results).length
     }
