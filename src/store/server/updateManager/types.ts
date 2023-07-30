@@ -32,6 +32,7 @@ export interface ServerUpdateManagerStateGitRepoCommit {
 
 export interface ServerUpdateManagerStateGitRepo {
     name: string
+    repo_name?: string
     configured_type: string
     detected_type?: string
     channel?: string
@@ -47,12 +48,15 @@ export interface ServerUpdateManagerStateGitRepo {
     remote_hash?: string
     is_valid?: boolean
     is_dirty?: boolean
+    corrupt?: boolean
     detached?: boolean
     debug_enabled?: boolean
     commits_behind?: ServerUpdateManagerStateGitRepoCommit[]
     git_messages?: string[]
+    anomalies?: string[]
     warnings?: string[]
     info_tags?: string[]
+    recovery_url?: string
 }
 
 export interface ServerUpdateManagerStateGitRepoGroupedCommits {
