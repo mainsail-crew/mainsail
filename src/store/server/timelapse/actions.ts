@@ -52,6 +52,14 @@ export const actions: ActionTree<ServerTimelapseState, RootState> = {
         Vue.$socket.emit('machine.timelapse.post_settings', payload, { action: 'server/timelapse/initSettings' })
     },
 
+    updateCamSettings({ dispatch, state }, payload) {
+        // check if the changed webcam is the timelapse webcam, if not stop here
+        if (state.settings.camera !== payload.oldName) return
+
+        // send the new webcam name; if it is the same name, it will only update the settings
+        dispatch('saveSetting', { camera: payload.newName })
+    },
+
     resetSnackbar({ commit }) {
         commit('resetSnackbar')
     },
