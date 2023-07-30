@@ -522,7 +522,8 @@
             "Upgrade": "升级",
             "UpgradeableSystemPackages": "可以升级的系统包",
             "UpToDate": "最新",
-            "WebClientUpdateQuestion": "在某些情况下，更新 Web 客户端可能会发生更改，从而导致不兼容。 请参阅发行说明以获取更多信息。"        }
+            "WebClientUpdateQuestion": "在某些情况下，更新 Web 客户端可能会发生更改，从而导致不兼容。 请参阅发行说明以获取更多信息。"
+        }
     },
     "ManualProbe": {
         "Abort": "取消",
