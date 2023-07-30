@@ -85,8 +85,12 @@ export default class GitCommitsListDayCommit extends Mixins(BaseMixin) {
             })
     }
 
+    get repo_name() {
+        return this.repo.repo_name ?? this.repo.name ?? ''
+    }
+
     get commitHref() {
-        return `https://github.com/${this.repo.owner}/${this.repo.name}/commit/${this.commit.sha}`
+        return `https://github.com/${this.repo.owner}/${this.repo_name}/commit/${this.commit.sha}`
     }
 
     get commitShortSha() {

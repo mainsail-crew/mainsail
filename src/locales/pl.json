@@ -153,7 +153,7 @@
         "Uploading": "Wgrywanie"
     },
     "EmergencyStopDialog": {
-        "AreYouSure": "Jesteś pewien?",
+        "AreYouSure": "Czy na pewno?",
         "EmergencyStop": "Awaryjny STOP",
         "No": "Nie",
         "Yes": "Tak"
@@ -477,17 +477,41 @@
             "CommittedYesterday": "Wydano wczoraj",
             "Detached": "Osobne",
             "Dirty": "brudny",
-            "ERROR": "BŁĄD",
             "Invalid": "Nieprawidłowe",
             "OSPackages": "Pakiety systemowe",
-            "PackagesCanBeUpgraded": "pakiety mogą być zaktualizowane",
             "System": "System",
             "Unknown": "nieznany",
             "Update": "Aktualizuj",
             "UpdateAll": "Zaktualizuj wszystko",
             "UpdateManager": "Menadżer aktualizacji",
             "Upgrade": "Uaktualnij",
-            "UpToDate": "aktualny"
+            "UpToDate": "aktualny",
+            "Abort": "Przerwij",
+            "GenericUpdateQuestion": "Sprawdź historię zmian (jeśli jest dostępna) i stronę GitHub dla tego projektu, aby sprawdzić, czy konieczne są jakiekolwiek ręczne korekty dla tej aktualizacji.",
+            "InitUpdateManager": "Menedżer aktualizacji nie został jeszcze zainicjowany. Jest to normalne zjawisko podczas pierwszego uruchomienia systemu. Kliknij przycisk odświeżania, aby zainicjować wszystkie komponenty.",
+            "MoonrakerUpdateQuestion": "Spowoduje to aktualizację API Moonraker. Zmiany w pliku moonraker.conf mogą być wymagane do dalszego korzystania z urządzenia.",
+            "Notification": {
+                "Dirty": "Lokalne repozytorium zostało zmodyfikowane i nie można go zaktualizować w tym stanie. Przywróć to repozytorium.",
+                "Detached": "Stan odłączony nie jest błędem ani problemem. Oznacza jedynie, że w lokalnym repozytorium istnieją dodatkowe zmiany, które nie istnieją w zdalnym repozytorium."
+            },
+            "StartUpdate": "Rozpocznij aktualizację",
+            "ThesePackagesCanBeUpgrade": "Te pakiety systemowe mogą być zaktualizowane:",
+            "WebClientUpdateQuestion": "W niektórych przypadkach aktualizacja klienta sieciowego może spowodować zmiany, które mogą spowodować niezgodność. Więcej informacji można znaleźć w uwagach wydania.",
+            "AreYouSure": "Czy na pewno?",
+            "Close": "Zamknij",
+            "CommitHistory": "Historia zmian",
+            "ConfigChanges": "Zmiany konfiguracji",
+            "CountPackagesCanBeUpgraded": "Można uaktualnić {count} pakietów",
+            "GitHubPage": "Strona GitHub",
+            "HardRecovery": "Przywróć twardo",
+            "IUnderstandTheRisks": "Rozumiem ryzyko",
+            "LinkToGithub": "Link do GitHub",
+            "KlipperUpdateQuestionFirmware": "Spowoduje to aktualizację oprogramowania hosta Klipper. Płyty sterujące z działającym firmware Klipper mogą wymagać flashowania ponownie skompilowanym firmware przed przywróceniem urządzenia do pracy.",
+            "KlipperUpdateQuestionConfig": "Ta aktualizacja może również zawierać zmiany w parametrach konfiguracyjnych, które będą musiały zostać zmodyfikowane w pliku printer.cfg, szczegóły można znaleźć w dzienniku zmian.",
+            "MoreCommitsInfo": "Można tu wyświetlić maksymalnie 30 zmian. Aby zobaczyć wszystkie zmiany, kliknij poniższy link:",
+            "SoftRecovery": "Przywróć miękko",
+            "UpdateWarning": "Ostrzeżenie o aktualizacji: {name}",
+            "UpgradeableSystemPackages": "Pakiety systemowe, które można uaktualnić"
         }
     },
     "Panels": {
@@ -687,7 +711,7 @@
         }
     },
     "PowerDeviceChangeDialog": {
-        "AreYouSure": "Jesteś pewien?",
+        "AreYouSure": "Czy na pewno?",
         "No": "Nie",
         "TurnDeviceOff": "Wyłącz {device}",
         "TurnDeviceOn": "Włącz {device}",
@@ -792,8 +816,6 @@
             "Editor": "Edytor",
             "KlipperRestartMethod": "Metoda restartu Klippera",
             "KlipperRestartMethodDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Klippera.",
-            "MoonrakerRestartInstance": "Ponowne uruchomienie instancji Moonrakera",
-            "MoonrakerRestartInstanceDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Moonrakera.",
             "UseEscToClose": "Naciśnij ESC, aby wyjść z edytora",
             "UseEscToCloseDescription": "Umożliwia zamknięcie edytora za pomocą klawisza ESC",
             "TabSize": "Rozmiar tabulacji",
@@ -832,7 +854,6 @@
             "FactoryReset": "Ustawienia fabryczne",
             "General": "Ogólny",
             "Language": "Język",
-            "MoonrakerDb": "Baza danych Moonraker",
             "PrinterName": "Nazwa drukarki",
             "Reset": "reset",
             "Restore": "Przywróć",
@@ -848,7 +869,8 @@
                 "FileRelative": "Pozycja pliku (względna)",
                 "Slicer": "Slicer (M73)"
             },
-            "DateFormat": "Format daty"
+            "DateFormat": "Format daty",
+            "MainsailSettingsMoonrakerDb": "Ustawienia Mainsail w bazie danych Moonraker"
         },
         "InterfaceSettings": "Ustawienia interfejsu",
         "MacrosTab": {
@@ -1019,7 +1041,9 @@
             "ScrewsTiltAdjustDialog": "Okno dialogowe regulacji nachylenia śrubami",
             "TempchartHeight": "Wykres temperatury - wysokość",
             "TempchartHeightDescription": "Modyfikuj wysokość wykresu temperatury w panelu sterowania.",
-            "PowerDeviceName": "Urządzenie zasilające drukarkę"
+            "PowerDeviceName": "Urządzenie zasilające drukarkę",
+            "HideUpdateWarnings": "Ukryj ostrzeżenia o aktualizacji",
+            "HideUpdateWarningsDescription": "Ta opcja ukryje wszystkie ostrzeżenia o aktualizacjach w menedżerze aktualizacji."
         },
         "WebcamsTab": {
             "AddWebcam": "Dodaj kamerę",
