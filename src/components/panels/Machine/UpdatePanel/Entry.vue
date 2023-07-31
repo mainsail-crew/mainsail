@@ -5,14 +5,14 @@
                 <strong>{{ repo.name }}</strong>
                 <br />
                 <template v-if="type === 'git_repo' && commitsBehind.length">
-                    <a class="primary--text cursor--pointer" @click="boolShowCommitList = true">
-                        <v-icon small color="primary" class="mr-1">{{ mdiInformation }}</v-icon>
+                    <a class="info--text cursor--pointer" @click="boolShowCommitList = true">
+                        <v-icon small color="info" class="mr-1">{{ mdiInformation }}</v-icon>
                         {{ versionOutput }}
                     </a>
                 </template>
                 <template v-else-if="type === 'web' && webUpdatable">
-                    <a class="primary--text text-decoration-none" :href="webLinkRelease" target="_blank">
-                        <v-icon small color="primary" class="mr-1">{{ mdiInformation }}</v-icon>
+                    <a class="info--text text-decoration-none" :href="webLinkRelease" target="_blank">
+                        <v-icon small color="info" class="mr-1">{{ mdiInformation }}</v-icon>
                         {{ versionOutput }}
                     </a>
                 </template>
@@ -24,7 +24,7 @@
                     small
                     label
                     outlined
-                    color="primary"
+                    color="info"
                     class="minwidth-0 px-1 mr-2"
                     @click="toggleAnomalies = !toggleAnomalies">
                     <v-icon small>{{ mdiInformation }}</v-icon>
