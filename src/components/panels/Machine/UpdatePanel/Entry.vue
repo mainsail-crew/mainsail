@@ -5,14 +5,14 @@
                 <strong>{{ repo.name }}</strong>
                 <br />
                 <template v-if="type === 'git_repo' && commitsBehind.length">
-                    <a class="primary--text cursor--pointer" @click="boolShowCommitList = true">
-                        <v-icon small color="primary" class="mr-1">{{ mdiInformation }}</v-icon>
+                    <a class="info--text cursor--pointer" @click="boolShowCommitList = true">
+                        <v-icon small color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
                     </a>
                 </template>
                 <template v-else-if="type === 'web' && webUpdatable">
-                    <a class="primary--text text-decoration-none" :href="webLinkRelease" target="_blank">
-                        <v-icon small color="primary" class="mr-1">{{ mdiInformation }}</v-icon>
+                    <a class="info--text text-decoration-none" :href="webLinkRelease" target="_blank">
+                        <v-icon small color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
                     </a>
                 </template>
@@ -23,11 +23,11 @@
                     v-if="anomalies.length > 0"
                     small
                     label
-                    outlined
-                    color="primary"
+                    :outlined="!toggleAnomalies"
+                    color="grey"
                     class="minwidth-0 px-1 mr-2"
                     @click="toggleAnomalies = !toggleAnomalies">
-                    <v-icon small>{{ mdiInformation }}</v-icon>
+                    <v-icon small>{{ toggleAnomalies ? mdiInformationOutline : mdiInformation }}</v-icon>
                 </v-chip>
                 <template v-if="!isValid">
                     <v-menu :offset-y="true">
@@ -89,6 +89,7 @@
                     dense
                     border="left"
                     color="orange"
+                    colored-border
                     :icon="mdiCloseCircle">
                     {{ message }}
                 </v-alert>
@@ -102,7 +103,8 @@
                     text
                     dense
                     border="left"
-                    color="info"
+                    color="grey"
+                    colored-border
                     :icon="mdiInformation">
                     {{ message }}
                 </v-alert>
@@ -131,9 +133,11 @@ import {
     mdiCheck,
     mdiHelpCircleOutline,
     mdiInformation,
+    mdiInformationOutline,
     mdiMenuDown,
     mdiProgressUpload,
     mdiReload,
+    mdiUpdate,
 } from '@mdi/js'
 import semver from 'semver'
 import GitCommitsList from '@/components/panels/Machine/UpdatePanel/GitCommitsList.vue'
@@ -146,6 +150,8 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     mdiMenuDown = mdiMenuDown
     mdiReload = mdiReload
     mdiCloseCircle = mdiCloseCircle
+    mdiUpdate = mdiUpdate
+    mdiInformationOutline = mdiInformationOutline
 
     boolShowCommitList = false
     boolShowUpdateHint = false
