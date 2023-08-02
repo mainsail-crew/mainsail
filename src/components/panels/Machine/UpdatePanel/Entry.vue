@@ -85,13 +85,12 @@
                 <v-alert
                     v-for="(message, index) in warnings"
                     :key="'warnings_' + index"
-                    text
                     dense
-                    border="left"
+                    text
                     color="orange"
-                    colored-border
+                    border="left"
                     :icon="mdiCloseCircle">
-                    {{ message }}
+                    <p class="text--disabled mb-0">{{ message }}</p>
                 </v-alert>
             </v-col>
         </v-row>
@@ -100,11 +99,10 @@
                 <v-alert
                     v-for="(message, index) in anomalies"
                     :key="'anomalies_' + index"
-                    text
                     dense
-                    border="left"
+                    text
                     color="grey"
-                    colored-border
+                    border="left"
                     :icon="mdiInformation">
                     {{ message }}
                 </v-alert>
