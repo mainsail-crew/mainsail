@@ -478,11 +478,11 @@
             }
         },
         "UpdatePanel": {
-            "Abort": "中止",
+            "Abort": "放弃",
             "AreYouSure": "你确定吗？",
             "CheckForUpdates": "检查更新",
             "Close": "关闭",
-            "CommitHistory": "提交历史",
+            "CommitHistory": "查看提交记录",
             "Commits": "提交",
             "CommitsAvailable": "没有新的提交 | 有{count}个提交 | 有{count}个提交",
             "CommitsOnDate": "提交于{date}",
@@ -491,7 +491,7 @@
             "CommittedOnDate": "提交于{date}",
             "CommittedYesterday": "昨天提交",
             "Corrupt": "破坏",
-            "ConfigChanges": "配置更改",
+            "ConfigChanges": "查看变更日志",
             "CountPackagesCanBeUpgraded": "有{count}个软件包可以更新",
             "Detached": "独立分支",
             "Dirty": "被修改",
