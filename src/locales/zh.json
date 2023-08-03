@@ -514,14 +514,14 @@
             "SoftRecovery": "版本回退(保留修改内容)",
             "StartUpdate": "开始更新",
             "System": "系统",
-            "ThesePackagesCanBeUpgrade": "这些系统软件包可以更新：",
+            "ThesePackagesCanBeUpgrade": "这些系统软件包可以升级：",
             "Unknown": "未知",
             "Update": "更新",
             "UpdateAll": "更新全部组件",
             "UpdateManager": "更新管理",
             "UpdateWarning": "更新警告： {name}",
-            "Upgrade": "更新",
-            "UpgradeableSystemPackages": "可更新的系统软件包",
+            "Upgrade": "升级",
+            "UpgradeableSystemPackages": "可升级的系统软件包",
             "UpToDate": "已是最新版本",
             "WebClientUpdateQuestion": "在某些情况下，更新Web客户端可能会有导致不兼容的更改。有关详细信息，请参阅发行说明。"
         }
