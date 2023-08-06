@@ -89,7 +89,7 @@ export default class TemperaturePanelListItemNevermoreValue extends Mixins(BaseM
     }
 
     get digits() {
-        return this.keyName === 'gas' ? 0 : 1
+        return ['gas', 'pressure'].includes(this.keyName) ? 0 : 1
     }
 
     get formatValue() {
