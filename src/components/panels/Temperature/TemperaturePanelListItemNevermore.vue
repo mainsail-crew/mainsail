@@ -8,7 +8,7 @@
         <td class="name">
             <span class="cursor-pointer" @click="showEditDialog = true">Nevermore</span>
         </td>
-        <td class="text-no-wrap text-right" colspan="2">
+        <td class="text-no-wrap text-center" colspan="3">
             <temperature-panel-list-item-nevermore-value
                 :printer-object="printerObject"
                 :small="false"
@@ -24,7 +24,6 @@
                 <small :class="rpmClass">{{ rpm }} RPM</small>
             </div>
         </td>
-        <td>&nbsp;</td>
         <temperature-panel-list-item-edit
             :bool-show="showEditDialog"
             object-name="nevermore"
