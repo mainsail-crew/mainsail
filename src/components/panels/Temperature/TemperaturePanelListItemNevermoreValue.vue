@@ -88,9 +88,13 @@ export default class TemperaturePanelListItemNevermoreValue extends Mixins(BaseM
         return null
     }
 
+    get digits() {
+        return this.keyName === 'gas' ? 0 : 1
+    }
+
     get formatValue() {
-        let intake_value = this.intake_value?.toFixed(1)
-        let exhaust_value = this.exhaust_value?.toFixed(1)
+        let intake_value = this.intake_value?.toFixed(this.digits)
+        let exhaust_value = this.exhaust_value?.toFixed(this.digits)
         if (this.intake_value === null) intake_value = '--'
         if (this.exhaust_value === null) exhaust_value = '--'
 
@@ -101,8 +105,8 @@ export default class TemperaturePanelListItemNevermoreValue extends Mixins(BaseM
     }
 
     get formatValue_min() {
-        let intake_value = this.intake_value_min?.toFixed(1)
-        let exhaust_value = this.exhaust_value_min?.toFixed(1)
+        let intake_value = this.intake_value_min?.toFixed(this.digits)
+        let exhaust_value = this.exhaust_value_min?.toFixed(this.digits)
         if (this.intake_value === null) intake_value = '--'
         if (this.exhaust_value === null) exhaust_value = '--'
 
@@ -113,8 +117,8 @@ export default class TemperaturePanelListItemNevermoreValue extends Mixins(BaseM
     }
 
     get formatValue_max() {
-        let intake_value = this.intake_value_max?.toFixed(1)
-        let exhaust_value = this.exhaust_value_max?.toFixed(1)
+        let intake_value = this.intake_value_max?.toFixed(this.digits)
+        let exhaust_value = this.exhaust_value_max?.toFixed(this.digits)
         if (this.intake_value === null) intake_value = '--'
         if (this.exhaust_value === null) exhaust_value = '--'
 
