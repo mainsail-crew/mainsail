@@ -22,7 +22,15 @@
                 </thead>
                 <tbody>
                     <temperature-panel-list-item
-                        v-for="objectName in tempObjects"
+                        v-for="objectName in heaterObjects"
+                        :key="objectName"
+                        :object-name="objectName"
+                        :is-responsive-mobile="el.is.mobile ?? false" />
+                    <temperature-panel-list-item-nevermore
+                        v-if="existsNevermoreFilter"
+                        :is-responsive-mobile="el.is.mobile ?? false" />
+                    <temperature-panel-list-item
+                        v-for="objectName in temperature_sensors"
                         :key="objectName"
                         :object-name="objectName"
                         :is-responsive-mobile="el.is.mobile ?? false" />
@@ -36,8 +44,11 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import TemperaturePanelListItemNevermore from '@/components/panels/Temperature/TemperaturePanelListItemNevermore.vue'
 
-@Component
+@Component({
+    components: { TemperaturePanelListItemNevermore },
+})
 export default class TemperaturePanelList extends Mixins(BaseMixin) {
     get available_heaters() {
         return this.$store.state.printer?.heaters?.available_heaters ?? []
@@ -65,6 +76,10 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
             .sort(this.sortObjectName)
     }
 
+    get existsNevermoreFilter() {
+        return 'nevermore' in this.$store.state.printer
+    }
+
     get temperature_sensors() {
         return this.available_sensors
             .filter((fullName: string) => {
@@ -80,8 +95,8 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
             .sort(this.sortObjectName)
     }
 
-    get tempObjects() {
-        return [...this.filteredHeaters, ...this.temperature_fans, ...this.temperature_sensors]
+    get heaterObjects() {
+        return [...this.filteredHeaters, ...this.temperature_fans]
     }
 
     sortObjectName(a: string, b: string) {
