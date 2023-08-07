@@ -490,10 +490,6 @@
             "GenericUpdateQuestion": "Sprawdź historię zmian (jeśli jest dostępna) i stronę GitHub dla tego projektu, aby sprawdzić, czy konieczne są jakiekolwiek ręczne korekty dla tej aktualizacji.",
             "InitUpdateManager": "Menedżer aktualizacji nie został jeszcze zainicjowany. Jest to normalne zjawisko podczas pierwszego uruchomienia systemu. Kliknij przycisk odświeżania, aby zainicjować wszystkie komponenty.",
             "MoonrakerUpdateQuestion": "Spowoduje to aktualizację API Moonraker. Zmiany w pliku moonraker.conf mogą być wymagane do dalszego korzystania z urządzenia.",
-            "Notification": {
-                "Dirty": "Lokalne repozytorium zostało zmodyfikowane i nie można go zaktualizować w tym stanie. Przywróć to repozytorium.",
-                "Detached": "Stan odłączony nie jest błędem ani problemem. Oznacza jedynie, że w lokalnym repozytorium istnieją dodatkowe zmiany, które nie istnieją w zdalnym repozytorium."
-            },
             "StartUpdate": "Rozpocznij aktualizację",
             "ThesePackagesCanBeUpgrade": "Te pakiety systemowe mogą być zaktualizowane:",
             "WebClientUpdateQuestion": "W niektórych przypadkach aktualizacja klienta sieciowego może spowodować zmiany, które mogą spowodować niezgodność. Więcej informacji można znaleźć w uwagach wydania.",
