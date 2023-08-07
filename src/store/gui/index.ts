@@ -236,6 +236,7 @@ export const getDefaultState = (): GuiState => {
             tempchart: {
                 boolTempchart: true,
                 hiddenDataset: [],
+                hideMcuHostSensors: false,
                 autoscale: false,
                 datasetSettings: {},
             },
