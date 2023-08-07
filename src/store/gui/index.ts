@@ -30,6 +30,7 @@ export const getDefaultState = (): GuiState => {
         control: {
             style: 'bars',
             actionButton: null,
+            hideDuringPrint: false,
             enableXYHoming: false,
             feedrateXY: 100,
             stepsXY: [100, 10, 1],

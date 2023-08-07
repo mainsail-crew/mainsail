@@ -20,6 +20,7 @@ export interface GuiState {
     console?: GuiConsoleState
     control: {
         style: 'bars' | 'circle' | 'cross'
+        hideDuringPrint: boolean
         actionButton: null | 'm84' | 'qgl' | 'ztilt'
         enableXYHoming: boolean
         feedrateXY: number

@@ -795,6 +795,7 @@
             "Circle": "Kreis",
             "Control": "Steuerung",
             "Cross": "Kreuz",
+            "HideDuringPrint": "Achsensteuerung während des Drucks ausblenden",
             "EnableXYHoming": "Aktiviere kombiniertes X & Y homing",
             "EstimatedExtrusionInfo": "Zeige Info zur geschätzten Extrusion",
             "EstimatedExtrusionInfoDescription": "Anzeigen/ausblenden der Info zur geschätzten Extrusion, basierend auf Extrusionmenge und Extrusionsgeschwindigkeit",
