@@ -506,10 +506,6 @@
             "KlipperUpdateQuestionConfig": "此更新还可能包含对配置参数的更改，这些更改需要修改printer.cfg文件，有关详细信息请参阅更改日志。",
             "MoonrakerUpdateQuestion": "此操作将更新Moonraker API。可能需要更改moonraker.conf文件才能继续使用打印机。",
             "MoreCommitsInfo": "这里最多可以显示30个提交。要查看所有提交，请单击以下链接：",
-            "Notification": {
-                "Detached": "独立分支状态不是错误，也不是问题。这只意味着本地存储库中存在远程存储库中不存在的其他提交。",
-                "Dirty": "本地存储库已被修改，无法在此状态下更新。请先对此存储库进行版本回退。"
-            },
             "OSPackages": "操作系统软件包",
             "SoftRecovery": "版本回退(保留修改内容)",
             "StartUpdate": "开始更新",
