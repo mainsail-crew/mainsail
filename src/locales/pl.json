@@ -1,7 +1,7 @@
 {
     "App": {
         "Notifications": {
-            "DependencyDescription": "Aktualna {name} wersja nie wspiera wszystkich funkcji Mainsail. Zaktualizuj {name} conajmniej do wersji {neededVersion}.",
+            "DependencyDescription": "Aktualna wersja {name} nie wspiera wszystkich funkcji Mainsail. Zaktualizuj {name} conajmniej do wersji {neededVersion}.",
             "DependencyName": "Zależność: {name}",
             "DismissAll": "Odrzuć wszystko",
             "KlipperWarnings": {
@@ -104,8 +104,13 @@
             "Empty": "Puste",
             "Recovering": "Odzyskiwanie {software}...",
             "RecoveringDone": "Odzyskiwanie {software} zakończone!",
-            "Updating": "Aktualizacja {software}...",
+            "Updating": "Aktualizowanie {software}...",
             "UpdatingDone": "Aktualizacja {software} zakończona!"
+        },
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "Lokalna pamięć podręczna jest nieaktualna i wymaga aktualizacji. Kliknij poniższy przycisk, aby zaktualizować pamięć podręczną.",
+            "TitleNeedUpdate": "PWA wymaga aktualizacji",
+            "Update": "aktualizuj"
         }
     },
     "ConnectionDialog": {
@@ -129,7 +134,7 @@
             "Cancel": "Anuluj",
             "DoYouWantToStartFilename": "Czy chcesz rozpocząć druk {filename}?",
             "Headline": "Rozpocznij",
-            "Print": "wydruk",
+            "Print": "drukuj",
             "Timelapse": "Timelapse"
         }
     },
@@ -148,7 +153,7 @@
         "Uploading": "Wgrywanie"
     },
     "EmergencyStopDialog": {
-        "AreYouSure": "Jesteś pewien?",
+        "AreYouSure": "Czy na pewno?",
         "EmergencyStop": "Awaryjny STOP",
         "No": "Nie",
         "Yes": "Tak"
@@ -220,7 +225,8 @@
         "InvalidNameEmpty": "Pole wejściowe nie może być puste!",
         "ExtruderTemp": "Temp. ekstrudera",
         "Duplicate": "Duplikat",
-        "ScanMetaSuccess": "Pomyślnie przeskanowano metadane z: {filename}."
+        "ScanMetaSuccess": "Pomyślnie przeskanowano metadane z: {filename}.",
+        "DeleteSingleFileQuestion": "Czy na pewno chcesz usunąć plik \"{name}\"?"
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Błąd wgrywania pliku!",
@@ -362,7 +368,8 @@
         "TotalPrinttime": "Łączny czas drukowania",
         "TotalTime": "Całkowity czas druku",
         "Chart": "Wykres",
-        "Table": "Tabela"
+        "Table": "Tabela",
+        "DeleteSingleJobQuestion": "Czy na pewno chcesz usunąć zadanie?"
     },
     "JobQueue": {
         "AllJobs": "Wszystkie wydruki",
@@ -415,7 +422,8 @@
             "Used": "Używane",
             "ConfigRootDirectoryDoesntExists": "Nie znaleziono katalogu konfiguracyjnego. Sprawdź opcję \"config_path\" w sekcji [file_manager] konfiguracji Moonrakera.",
             "Duplicate": "Duplikat",
-            "DuplicateFile": "Powielony plik"
+            "DuplicateFile": "Powielony plik",
+            "DeleteSingleFileQuestion": "Czy na pewno chcesz usunąć plik \"{name}\"?"
         },
         "EndstopPanel": {
             "Endstop": "Krańcówka",
@@ -468,18 +476,42 @@
             "CommittedOnDate": "Wydano {date}",
             "CommittedYesterday": "Wydano wczoraj",
             "Detached": "Osobne",
-            "Dirty": "Brudne",
-            "ERROR": "BŁĄD",
+            "Dirty": "brudny",
             "Invalid": "Nieprawidłowe",
             "OSPackages": "Pakiety systemowe",
-            "PackagesCanBeUpgraded": "pakiety mogą być zaktualizowane",
             "System": "System",
-            "Unknown": "Nieznane",
+            "Unknown": "nieznany",
             "Update": "Aktualizuj",
             "UpdateAll": "Zaktualizuj wszystko",
             "UpdateManager": "Menadżer aktualizacji",
             "Upgrade": "Uaktualnij",
-            "UpToDate": "Aktualne"
+            "UpToDate": "aktualny",
+            "Abort": "Przerwij",
+            "GenericUpdateQuestion": "Sprawdź historię zmian (jeśli jest dostępna) i stronę GitHub dla tego projektu, aby sprawdzić, czy konieczne są jakiekolwiek ręczne korekty dla tej aktualizacji.",
+            "InitUpdateManager": "Menedżer aktualizacji nie został jeszcze zainicjowany. Jest to normalne zjawisko podczas pierwszego uruchomienia systemu. Kliknij przycisk odświeżania, aby zainicjować wszystkie komponenty.",
+            "MoonrakerUpdateQuestion": "Spowoduje to aktualizację API Moonraker. Zmiany w pliku moonraker.conf mogą być wymagane do dalszego korzystania z urządzenia.",
+            "Notification": {
+                "Dirty": "Lokalne repozytorium zostało zmodyfikowane i nie można go zaktualizować w tym stanie. Przywróć to repozytorium.",
+                "Detached": "Stan odłączony nie jest błędem ani problemem. Oznacza jedynie, że w lokalnym repozytorium istnieją dodatkowe zmiany, które nie istnieją w zdalnym repozytorium."
+            },
+            "StartUpdate": "Rozpocznij aktualizację",
+            "ThesePackagesCanBeUpgrade": "Te pakiety systemowe mogą być zaktualizowane:",
+            "WebClientUpdateQuestion": "W niektórych przypadkach aktualizacja klienta sieciowego może spowodować zmiany, które mogą spowodować niezgodność. Więcej informacji można znaleźć w uwagach wydania.",
+            "AreYouSure": "Czy na pewno?",
+            "Close": "Zamknij",
+            "CommitHistory": "Historia zmian",
+            "ConfigChanges": "Zmiany konfiguracji",
+            "CountPackagesCanBeUpgraded": "Można uaktualnić {count} pakietów",
+            "GitHubPage": "Strona GitHub",
+            "HardRecovery": "Przywróć twardo",
+            "IUnderstandTheRisks": "Rozumiem ryzyko",
+            "LinkToGithub": "Link do GitHub",
+            "KlipperUpdateQuestionFirmware": "Spowoduje to aktualizację oprogramowania hosta Klipper. Płyty sterujące z działającym firmware Klipper mogą wymagać flashowania ponownie skompilowanym firmware przed przywróceniem urządzenia do pracy.",
+            "KlipperUpdateQuestionConfig": "Ta aktualizacja może również zawierać zmiany w parametrach konfiguracyjnych, które będą musiały zostać zmodyfikowane w pliku printer.cfg, szczegóły można znaleźć w dzienniku zmian.",
+            "MoreCommitsInfo": "Można tu wyświetlić maksymalnie 30 zmian. Aby zobaczyć wszystkie zmiany, kliknij poniższy link:",
+            "SoftRecovery": "Przywróć miękko",
+            "UpdateWarning": "Ostrzeżenie o aktualizacji: {name}",
+            "UpgradeableSystemPackages": "Pakiety systemowe, które można uaktualnić"
         }
     },
     "Panels": {
@@ -671,7 +703,7 @@
             "Ok": "Okej",
             "Save": "Zapisz",
             "SaveConfig": "ZAPISZ KONFIGURACJĘ",
-            "SaveInfoDescription": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Kliknij na \"ZAPISZ KONFIGURACJĘ\" aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
+            "SaveInfoDescription": "Nowe przesunięcie Z zostało obliczone i zarejestrowane. Kliknij przycisk \"ZAPISZ KONFIGURACJĘ\", aby zapisać ją w pliku printer.cfg i zrestartować Klipper.",
             "SaveInfoDescriptionPrint": "Nowe przesunięcie Z zostało obliczone i zarejestrowane. Po wydrukowaniu kliknij \"ZAPISZ KONFIGURACJĘ\" na górnym pasku, aby zapisać ją w pliku printer.cfg i zrestartować Klipper.",
             "SaveInfoHeadline": "Informacja",
             "ToEndstop": "Do krańcówki",
@@ -679,7 +711,7 @@
         }
     },
     "PowerDeviceChangeDialog": {
-        "AreYouSure": "Jesteś pewien?",
+        "AreYouSure": "Czy na pewno?",
         "No": "Nie",
         "TurnDeviceOff": "Wyłącz {device}",
         "TurnDeviceOn": "Włącz {device}",
@@ -779,15 +811,13 @@
         },
         "Edit": "Edytuj",
         "EditorTab": {
-            "ConfirmUnsavedChanges": "Potwierdź aby zapisać lub anulować niezapisane zmiany",
+            "ConfirmUnsavedChanges": "Potwierdź, aby zapisać lub anulować niezapisane zmiany",
             "ConfirmUnsavedChangesDescription": "Jeżeli włączone, edytor wymaga potwierdzenia zapisania zmian lub anulowania. Jeżeli wyłączone, edytor nie wymaga potwierdzenia.",
             "Editor": "Edytor",
             "KlipperRestartMethod": "Metoda restartu Klippera",
             "KlipperRestartMethodDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Klippera.",
-            "MoonrakerRestartInstance": "Ponowne uruchomienie instancji Moonrakera",
-            "MoonrakerRestartInstanceDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Moonrakera.",
-            "UseEscToClose": "Naciśnij ESC aby wyjść z Edytora",
-            "UseEscToCloseDescription": "Pozwala aby móc zamknąć edytor za pomocą ESC",
+            "UseEscToClose": "Naciśnij ESC, aby wyjść z edytora",
+            "UseEscToCloseDescription": "Umożliwia zamknięcie edytora za pomocą klawisza ESC",
             "TabSize": "Rozmiar tabulacji",
             "TabSizeDescription": "Ustawia, ile spacji powinno być używanych do wcięcia przy użyciu tabulacji (TAB)",
             "Spaces": "Spacje: {count}"
@@ -815,7 +845,6 @@
             "DbHistoryTotals": "Historia łącznie",
             "DbTimelapseSettings": "Ustawienia timelapse",
             "DbView": "Ustawienia",
-            "DbWebcams": "Kamery",
             "EstimateValues": {
                 "Filament": "Filament",
                 "File": "Plik",
@@ -825,7 +854,6 @@
             "FactoryReset": "Ustawienia fabryczne",
             "General": "Ogólny",
             "Language": "Język",
-            "MoonrakerDb": "Baza danych Moonraker",
             "PrinterName": "Nazwa drukarki",
             "Reset": "reset",
             "Restore": "Przywróć",
@@ -841,7 +869,8 @@
                 "FileRelative": "Pozycja pliku (względna)",
                 "Slicer": "Slicer (M73)"
             },
-            "DateFormat": "Format daty"
+            "DateFormat": "Format daty",
+            "MainsailSettingsMoonrakerDb": "Ustawienia Mainsail w bazie danych Moonraker"
         },
         "InterfaceSettings": "Ustawienia interfejsu",
         "MacrosTab": {
@@ -905,7 +934,7 @@
             "Port": "Port",
             "RemotePrinters": "Drukarki",
             "UpdatePrinter": "Aktualizuj drukarkę",
-            "UseConfigJson": "Wykryto bazę danych JSON. Aby zmodyfikować listę drukarek, proszę skorzystać z pliku config.json."
+            "UseConfigJson": "Wykryto bazę danych JSON. Użyj pliku config.json, aby zmodyfikować listę drukarek."
         },
         "TimelapseTab": {
             "Autorender": "Autorenderowanie",
@@ -979,14 +1008,14 @@
             "BoolBigThumbnailDescription": "Pokazuj dużą miniaturkę podczas wydruku.",
             "BoolHideUploadAndPrintButton": "Ukryj przycisk \"Wgraj i drukuj\"",
             "BoolHideUploadAndPrintButtonDescription": "Pokazuj lub ukrywaj przycisk \"Prześlij i drukuj\" na górnym pasku.",
-            "ConfirmOnEmergencyStop": "Potwierdzenie Nagłego Zatrzymania",
-            "ConfirmOnEmergencyStopDescription": "Pokazuj dialog potwierdzenia po naciśnięciu Nagłego Zatrzymania",
+            "ConfirmOnEmergencyStop": "Potwierdzenie awaryjnego zatrzymania",
+            "ConfirmOnEmergencyStopDescription": "Pokazuj dialog potwierdzenia po naciśnięciu Awaryjny STOP",
             "ConfirmOnPowerDeviceChange": "Potwierdzenie dla zmiany zasilania urządzenia",
-            "ConfirmOnPowerDeviceChangeDescription": "Wyświetlaj okno dialogowe potwierdzenia przy zmianach zasilania urządzenia.",
+            "ConfirmOnPowerDeviceChangeDescription": "Wyświetlaj okno dialogowe potwierdzenia przy zmianach zasilania urządzenia",
             "DisplayCANCEL_PRINT": "Pokazuj przycisk ANULUJ_WYDRUK",
             "DisplayCANCEL_PRINTDescription": "Pokazuje przycisk ANULUJ_WYDRUK permamentnie - brak potrzeby drugiej warstwy.",
             "GcodeThumbnails": "Pokazuj miniaturki",
-            "GcodeThumbnailsDescription": "Wciśnij aby przejść na stronę z pomocnikiem dot. włączenia funkcji.",
+            "GcodeThumbnailsDescription": "Kliknij przycisk, aby przejść do instrukcji.",
             "Guide": "Przewodnik",
             "LockSliders": "Zablokuj suwaki na ekranie dotykowym",
             "LockSlidersDelay": "Opóźnienie blokady suwaków",
@@ -1012,7 +1041,9 @@
             "ScrewsTiltAdjustDialog": "Okno dialogowe regulacji nachylenia śrubami",
             "TempchartHeight": "Wykres temperatury - wysokość",
             "TempchartHeightDescription": "Modyfikuj wysokość wykresu temperatury w panelu sterowania.",
-            "PowerDeviceName": "Urządzenie zasilające drukarkę"
+            "PowerDeviceName": "Urządzenie zasilające drukarkę",
+            "HideUpdateWarnings": "Ukryj ostrzeżenia o aktualizacji",
+            "HideUpdateWarningsDescription": "Ta opcja ukryje wszystkie ostrzeżenia o aktualizacjach w menedżerze aktualizacji."
         },
         "WebcamsTab": {
             "AddWebcam": "Dodaj kamerę",
@@ -1048,7 +1079,8 @@
             "Hlsstream": "Strumień HLS",
             "JMuxerStream": "Nieskompresowany strumień h264 (jmuxer)",
             "Rotate": "Obróć",
-            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         },
         "MiscellaneousTab": {
             "AddGroup": "dodaj grupę",
@@ -1128,7 +1160,8 @@
         "Used": "Używane",
         "Variable": "Zmienne",
         "Video": "Filmy",
-        "DeleteSelectedQuestion": "Czy na pewno chcesz usunąć {count} wybranych plików?"
+        "DeleteSelectedQuestion": "Czy na pewno chcesz usunąć {count} wybranych plików?",
+        "DeleteSingleFileQuestion": "Czy na pewno chcesz usunąć plik \"{name}\"?"
     },
     "title": "Polski",
     "BedScrews": {
@@ -1152,6 +1185,7 @@
         "ErrorText": "Wystąpił problem podczas procesu sondowania.",
         "Accept": "Akceptuj",
         "Base": "Podstawa",
-        "Headline": "Regulacja nachylenia śrubami"
+        "Headline": "Regulacja nachylenia śrubami",
+        "Retry": "ponów"
     }
 }

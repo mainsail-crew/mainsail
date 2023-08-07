@@ -793,8 +793,6 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Metode for genstart af Klipper",
             "KlipperRestartMethodDescription": "Vælg hvilken metode der skal bruges ved brug af 'Gem & Genstart' når der redigeres i Klipper config filer.",
-            "MoonrakerRestartInstance": "Genstart Moonraker instans",
-            "MoonrakerRestartInstanceDescription": "Vælg hvilken instans af Moonraker servicen der skal genstartes ved brug af 'Gem & Genstart' når der redigeres i Moonraker config filer.",
             "UseEscToClose": "Tryk ESC for at lukke Editor.",
             "UseEscToCloseDescription": "Tillader at ESC lukker Editor"
         },

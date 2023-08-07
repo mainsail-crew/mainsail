@@ -1,21 +1,42 @@
 import { getDefaultState } from './index'
 import Vue from 'vue'
 import { MutationTree } from 'vuex'
-import { ServerUpdateMangerState } from '@/store/server/updateManager/types'
+import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 
-export const mutations: MutationTree<ServerUpdateMangerState> = {
+export const mutations: MutationTree<ServerUpdateManagerState> = {
     reset(state) {
         Object.assign(state, getDefaultState())
     },
 
-    setStatus(state, payload) {
-        if ('version_info' in payload) {
-            Object.entries(payload.version_info).forEach(([key, value]) => {
-                Vue.set(state.version_info, key, value)
-            })
-        }
+    resetRepos(state) {
+        Vue.set(state, 'git_repos', [])
+        Vue.set(state, 'web_repos', [])
+        Vue.set(state, 'system', {
+            package_count: 0,
+            package_list: [],
+        })
+    },
 
-        if (!payload.busy) Vue.set(state.updateResponse, 'complete', true)
+    storeGitRepo(state, payload) {
+        const newGitRepos = [...state.git_repos]
+        newGitRepos.push({ ...payload })
+
+        Vue.set(state, 'git_repos', newGitRepos)
+    },
+
+    storeWebRepo(state, payload) {
+        const newWebRepos = [...state.web_repos]
+        newWebRepos.push({ ...payload })
+
+        Vue.set(state, 'web_repos', newWebRepos)
+    },
+
+    updateSystem(state, payload) {
+        const newSystem = { ...state.system }
+        newSystem.package_count = payload.package_count
+        newSystem.package_list = payload.package_list
+
+        Vue.set(state, 'system', newSystem)
     },
 
     addUpdateResponse(state, payload) {
@@ -26,7 +47,11 @@ export const mutations: MutationTree<ServerUpdateMangerState> = {
             Vue.set(state.updateResponse, 'complete', payload.complete)
 
         if ('complete' in payload && payload.complete)
-            Vue.$socket.emit('machine.update.status', { refresh: false }, { action: 'server/updateManager/getStatus' })
+            Vue.$socket.emit(
+                'machine.update.status',
+                { refresh: false },
+                { action: 'server/updateManager/onUpdateStatus' }
+            )
 
         state.updateResponse.messages.push({
             date: new Date(),

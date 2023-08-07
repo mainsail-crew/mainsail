@@ -794,8 +794,6 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Metoda restartu Klipperu",
             "KlipperRestartMethodDescription": "Vyberte metodu restartu, která se použije při editaci konfiguračních souborů Klipperu v \"Uložit a restartovat\".",
-            "MoonrakerRestartInstance": "Restart instance Moonrakeru",
-            "MoonrakerRestartInstanceDescription": "Vyberte, která služba Moonrakeru se restartuje v \"Uložit a restartovat\", když se editují konfigurační soubory Moonrakeru.",
             "UseEscToClose": "Použít ESC pro zavření editoru",
             "UseEscToCloseDescription": "Umožňuje použití klávesy ESC k zavření editoru"
         },

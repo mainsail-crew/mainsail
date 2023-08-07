@@ -112,7 +112,6 @@ export const getDefaultState = (): GuiState => {
             confirmUnsavedChanges: true,
             klipperRestartMethod: 'FIRMWARE_RESTART',
             tabSize: 2,
-            moonrakerRestartInstance: null,
         },
         gcodeViewer: {
             extruderColors: ['#E76F51FF', '#F4A261FF', '#E9C46AFF', '#2A9D8FFF', '#264653FF'],
@@ -165,6 +164,7 @@ export const getDefaultState = (): GuiState => {
             boolBedScrewsDialog: true,
             boolScrewsTiltAdjustDialog: true,
             tempchartHeight: 250,
+            hideUpdateWarnings: false,
         },
         view: {
             blockFileUpload: false,

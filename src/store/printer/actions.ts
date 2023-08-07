@@ -71,6 +71,10 @@ export const actions: ActionTree<PrinterState, RootState> = {
         dispatch('getData', payload)
 
         Vue.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
+
+        setTimeout(() => {
+            dispatch('initExtruderCanExtrude')
+        }, 200)
     },
 
     getData({ commit, dispatch, state }, payload) {
@@ -123,6 +127,17 @@ export const actions: ActionTree<PrinterState, RootState> = {
         }
 
         commit('setData', payload)
+    },
+
+    initExtruderCanExtrude({ state }) {
+        const extruderList: string[] = Object.keys(state).filter((name) => name.startsWith('extruder'))
+        const reInitList: { [key: string]: string[] } = {}
+
+        extruderList.forEach((extruderName) => {
+            reInitList[extruderName] = ['can_extrude']
+        })
+
+        Vue.$socket.emit('printer.objects.query', { objects: reInitList }, { action: 'printer/getData' })
     },
 
     initHelpList({ commit, dispatch }, payload) {

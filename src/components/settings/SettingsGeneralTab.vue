@@ -2,55 +2,43 @@
     <div>
         <v-card flat>
             <v-card-text>
-                <settings-row :title="$t('Settings.GeneralTab.PrinterName').toString()">
+                <settings-row :title="$t('Settings.GeneralTab.PrinterName')">
                     <v-text-field v-model="printerName" hide-details outlined dense></v-text-field>
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.Language').toString()">
+                <v-divider class="my-2" />
+                <settings-row :title="$t('Settings.GeneralTab.Language')">
                     <v-select
                         v-model="currentLanguage"
                         :items="availableLanguages"
                         hide-details
                         outlined
                         dense
-                        attach></v-select>
+                        attach />
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.DateFormat').toString()">
-                    <v-select
-                        v-model="dateFormat"
-                        :items="dateFormatItems"
-                        hide-details
-                        outlined
-                        dense
-                        attach></v-select>
+                <v-divider class="my-2" />
+                <settings-row :title="$t('Settings.GeneralTab.DateFormat')">
+                    <v-select v-model="dateFormat" :items="dateFormatItems" hide-details outlined dense attach />
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.TimeFormat').toString()">
-                    <v-select
-                        v-model="timeFormat"
-                        :items="timeFormatItems"
-                        hide-details
-                        outlined
-                        dense
-                        attach></v-select>
+                <v-divider class="my-2" />
+                <settings-row :title="$t('Settings.GeneralTab.TimeFormat')">
+                    <v-select v-model="timeFormat" :items="timeFormatItems" hide-details outlined dense attach />
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
+                <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.GeneralTab.CalcPrintProgress').toString()"
-                    :sub-title="$t('Settings.GeneralTab.CalcPrintProgressDescription').toString()">
+                    :title="$t('Settings.GeneralTab.CalcPrintProgress')"
+                    :sub-title="$t('Settings.GeneralTab.CalcPrintProgressDescription')">
                     <v-select
                         v-model="calcPrintProgress"
                         :items="calcPrintProgressItems"
                         hide-details
                         dense
                         outlined
-                        attach></v-select>
+                        attach />
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
+                <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.GeneralTab.CalcEstimateTime').toString()"
-                    :sub-title="$t('Settings.GeneralTab.CalcEstimateTimeDescription').toString()">
+                    :title="$t('Settings.GeneralTab.CalcEstimateTime')"
+                    :sub-title="$t('Settings.GeneralTab.CalcEstimateTimeDescription')">
                     <v-select
                         v-model="calcEstimateTime"
                         :items="calcEstimateItems"
@@ -58,12 +46,12 @@
                         hide-details
                         dense
                         outlined
-                        attach></v-select>
+                        attach />
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
+                <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.GeneralTab.CalcEtaTime').toString()"
-                    :sub-title="$t('Settings.GeneralTab.CalcEtaTimeDescription').toString()">
+                    :title="$t('Settings.GeneralTab.CalcEtaTime')"
+                    :sub-title="$t('Settings.GeneralTab.CalcEtaTimeDescription')">
                     <v-select
                         v-model="calcEtaTime"
                         :items="calcEtaTimeItems"
@@ -71,10 +59,10 @@
                         hide-details
                         dense
                         outlined
-                        attach></v-select>
+                        attach />
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.MoonrakerDb').toString()" :dynamic-slot-width="true">
+                <v-divider class="my-2" />
+                <settings-row :title="$t('Settings.GeneralTab.MainsailSettingsMoonrakerDb')" :dynamic-slot-width="true">
                     <input
                         ref="uploadBackupFile"
                         type="file"
@@ -88,8 +76,8 @@
                         {{ $t('Settings.GeneralTab.Restore') }}
                     </v-btn>
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.FactoryReset').toString()" :dynamic-slot-width="true">
+                <v-divider class="my-2" />
+                <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamic-slot-width="true">
                     <v-btn color="error" small @click="resetMainsail">
                         {{ $t('Settings.GeneralTab.FactoryReset') }}
                     </v-btn>
@@ -98,7 +86,7 @@
         </v-card>
         <v-dialog v-model="dialogBackupMainsail" persistent :width="360">
             <panel
-                :title="$t('Settings.GeneralTab.Backup').toString()"
+                :title="$t('Settings.GeneralTab.Backup')"
                 card-class="mainsail-backup-dialog"
                 :margin-bottom="false"
                 :icon="mdiHelpCircle">
@@ -132,7 +120,7 @@
         </v-dialog>
         <v-dialog v-model="dialogResetMainsail" persistent :width="360">
             <panel
-                :title="$t('Settings.GeneralTab.FactoryReset').toString()"
+                :title="$t('Settings.GeneralTab.FactoryReset')"
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
                 :icon="mdiHelpCircle">
@@ -155,32 +143,26 @@
                                     :label="db.label"
                                     hide-details
                                     class="mt-0"
-                                    @change="changeNamespace(db.name)"></v-checkbox>
+                                    @change="changeNamespace(db.name)" />
                             </template>
                             <v-checkbox
                                 v-if="availableNamespaces.includes('timelapse')"
                                 :label="$t('Settings.GeneralTab.DbTimelapseSettings')"
                                 hide-details
                                 class="mt-0"
-                                @change="changeNamespace('timelapse')"></v-checkbox>
-                            <v-checkbox
-                                v-if="availableNamespaces.includes('webcams')"
-                                :label="$t('Settings.GeneralTab.DbWebcams')"
-                                hide-details
-                                class="mt-0"
-                                @change="changeNamespace('webcams')"></v-checkbox>
+                                @change="changeNamespace('timelapse')" />
                             <v-checkbox
                                 v-if="moonrakerComponents.includes('history')"
                                 :label="$t('Settings.GeneralTab.DbHistoryJobs')"
                                 hide-details
                                 class="mt-0"
-                                @change="changeNamespace('history_jobs')"></v-checkbox>
+                                @change="changeNamespace('history_jobs')" />
                             <v-checkbox
                                 v-if="moonrakerComponents.includes('history')"
                                 :label="$t('Settings.GeneralTab.DbHistoryTotals')"
                                 hide-details
                                 class="mt-0"
-                                @change="changeNamespace('history_totals')"></v-checkbox>
+                                @change="changeNamespace('history_totals')" />
                         </v-col>
                     </v-row>
                     <v-row>
@@ -198,7 +180,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRestoreMainsail" persistent :width="360">
             <panel
-                :title="$t('Settings.GeneralTab.Restore').toString()"
+                :title="$t('Settings.GeneralTab.Restore')"
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
                 :icon="mdiHelpCircle">
@@ -218,7 +200,7 @@
                             :options="restoreableNamespaces"
                             select-all
                             :select-all-label="$t('Settings.GeneralTab.Everything')"
-                            @update:selectedCheckboxes="onSelectRestoreCheckboxes"></checkbox-list>
+                            @update:selectedCheckboxes="onSelectRestoreCheckboxes" />
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
@@ -271,63 +253,59 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         return [
             {
                 name: 'general',
-                label: this.$t('Settings.GeneralTab.General').toString(),
+                label: this.$t('Settings.GeneralTab.General'),
             },
             {
                 name: 'console',
-                label: this.$t('Settings.ConsoleTab.Console').toString(),
+                label: this.$t('Settings.ConsoleTab.Console'),
             },
             {
                 name: 'control',
-                label: this.$t('Settings.ControlTab.Control').toString(),
+                label: this.$t('Settings.ControlTab.Control'),
             },
             {
                 name: 'dashboard',
-                label: this.$t('Settings.DashboardTab.Dashboard').toString(),
+                label: this.$t('Settings.DashboardTab.Dashboard'),
             },
             {
                 name: 'editor',
-                label: this.$t('Settings.EditorTab.Editor').toString(),
+                label: this.$t('Settings.EditorTab.Editor'),
             },
             {
                 name: 'gcodeViewer',
-                label: this.$t('Settings.GCodeViewerTab.GCodeViewer').toString(),
+                label: this.$t('Settings.GCodeViewerTab.GCodeViewer'),
             },
             {
                 name: 'gcodehistory',
-                label: this.$t('Settings.GeneralTab.DbConsoleHistory').toString(),
+                label: this.$t('Settings.GeneralTab.DbConsoleHistory'),
             },
             {
                 name: 'macros',
-                label: this.$t('Settings.MacrosTab.Macros').toString(),
+                label: this.$t('Settings.MacrosTab.Macros'),
             },
             {
                 name: 'notifications',
-                label: this.$t('App.Notifications.Notifications').toString(),
+                label: this.$t('App.Notifications.Notifications'),
             },
             {
                 name: 'presets',
-                label: this.$t('Settings.PresetsTab.PreheatPresets').toString(),
+                label: this.$t('Settings.PresetsTab.PreheatPresets'),
             },
             {
                 name: 'remoteprinters',
-                label: this.$t('Settings.RemotePrintersTab.RemotePrinters').toString(),
+                label: this.$t('Settings.RemotePrintersTab.RemotePrinters'),
             },
             {
                 name: 'timelapse',
-                label: this.$t('Settings.TimelapseTab.Timelapse').toString(),
+                label: this.$t('Settings.TimelapseTab.Timelapse'),
             },
             {
                 name: 'uiSettings',
-                label: this.$t('Settings.UiSettingsTab.UiSettings').toString(),
+                label: this.$t('Settings.UiSettingsTab.UiSettings'),
             },
             {
                 name: 'view',
-                label: this.$t('Settings.GeneralTab.DbView').toString(),
-            },
-            {
-                name: 'webcams',
-                label: this.$t('Settings.WebcamsTab.Webcams').toString(),
+                label: this.$t('Settings.GeneralTab.DbView'),
             },
         ]
     }
@@ -409,13 +387,13 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
                 value: '24hours',
                 text: this.$t('Settings.GeneralTab.24hours', {
                     time: date.toLocaleTimeString(userLocale, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }),
-                }).toString(),
+                }),
             },
             {
                 value: '12hours',
                 text: this.$t('Settings.GeneralTab.12hours', {
                     time: date.toLocaleTimeString(userLocale, { hour: '2-digit', minute: '2-digit', hourCycle: 'h12' }),
-                }).toString(),
+                }),
             },
         ]
     }

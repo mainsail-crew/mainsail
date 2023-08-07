@@ -799,8 +799,6 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Klipper restart methode",
             "KlipperRestartMethodDescription": "Selecteerd welke herstart methode gebruikt wordt bij 'Save & Restart' na het bewerken van de Klipper config files.",
-            "MoonrakerRestartInstance": "Moonraker instantie herstarten",
-            "MoonrakerRestartInstanceDescription": "Selecteer welke Moonraker service herstart na 'Save & Restart' bij het bewerken van Moonraker config bestanden.",
             "UseEscToClose": "Gebruik ESC om de editor te sluiten",
             "UseEscToCloseDescription": "Laat de ESC toets de editor sluiten"
         },

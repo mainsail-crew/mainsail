@@ -723,8 +723,6 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Metodo de reinicio de klipper",
             "KlipperRestartMethodDescription": "Elija metodo de reinicio que sera usado cuando editamos configuracion de klipper y presionamos \"Guardar y Reiniciar\"",
-            "MoonrakerRestartInstance": "Instancia de Moonraker a reinicar",
-            "MoonrakerRestartInstanceDescription": "Elija que instacia de moonrker se reiniciara cuando editando configuracionde monnraker presionemos \"Guardar y reiniciar\" ",
             "UseEscToClose": "Use ESC para cerrar",
             "UseEscToCloseDescription": "Permite que la tecla ESC cierre el editor"
         },

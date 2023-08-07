@@ -170,7 +170,7 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     get print_percent(): number {
-        return Math.round(this.$store.getters['printer/getPrintPercent'] * 100)
+        return Math.floor(this.$store.getters['printer/getPrintPercent'] * 100)
     }
 
     @Watch('language')

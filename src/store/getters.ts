@@ -38,7 +38,7 @@ export const getters: GetterTree<RootState, any> = {
         // return printing title
         if (printer_state === 'printing') {
             const eta = getters['printer/getEstimatedTimeETAFormat']
-            const percent = (getters['printer/getPrintPercent'] * 100).toFixed(0)
+            const percent = Math.floor(getters['printer/getPrintPercent'] * 100)
 
             if (eta !== '--') {
                 let output = i18n.t('App.Titles.PrintingETA', {

@@ -4,8 +4,8 @@
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.TimelapseTab.General') }}</h3>
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.Enabled').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.EnabledDescription').toString()"
+                    :title="$t('Settings.TimelapseTab.Enabled')"
+                    :sub-title="$t('Settings.TimelapseTab.EnabledDescription')"
                     :dynamic-slot-width="true">
                     <v-switch
                         v-model="enabled"
@@ -15,8 +15,8 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.Autorender').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.AutorenderDescription').toString()"
+                    :title="$t('Settings.TimelapseTab.Autorender')"
+                    :sub-title="$t('Settings.TimelapseTab.AutorenderDescription')"
                     :dynamic-slot-width="true">
                     <v-switch
                         v-model="autorender"
@@ -26,8 +26,8 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.Camera').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.CameraDescription').toString()">
+                    :title="$t('Settings.TimelapseTab.Camera')"
+                    :sub-title="$t('Settings.TimelapseTab.CameraDescription')">
                     <v-select
                         v-model="camera"
                         :items="cameraOptions"
@@ -38,8 +38,8 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.Mode').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.ModeDescription').toString()">
+                    :title="$t('Settings.TimelapseTab.Mode')"
+                    :sub-title="$t('Settings.TimelapseTab.ModeDescription')">
                     <v-select
                         v-model="mode"
                         :items="modeOptions"
@@ -51,8 +51,8 @@
                 <template v-if="mode === 'hyperlapse'">
                     <v-divider class="my-2" />
                     <settings-row
-                        :title="$t('Settings.TimelapseTab.HyperlapseCycle').toString()"
-                        :sub-title="$t('Settings.TimelapseTab.HyperlapseCycleDescription').toString()">
+                        :title="$t('Settings.TimelapseTab.HyperlapseCycle')"
+                        :sub-title="$t('Settings.TimelapseTab.HyperlapseCycleDescription')">
                         <v-text-field
                             v-model="hyperlapseCycle"
                             type="number"
@@ -66,8 +66,8 @@
                 </template>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.PreviewImage').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.PreviewImageDescription').toString()"
+                    :title="$t('Settings.TimelapseTab.PreviewImage')"
+                    :sub-title="$t('Settings.TimelapseTab.PreviewImageDescription')"
                     :dynamic-slot-width="true">
                     <v-switch
                         v-model="previewimage"
@@ -77,8 +77,8 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.SaveFrames').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.SaveFramesDescription').toString()"
+                    :title="$t('Settings.TimelapseTab.SaveFrames')"
+                    :sub-title="$t('Settings.TimelapseTab.SaveFramesDescription')"
                     :dynamic-slot-width="true">
                     <v-switch
                         v-model="saveframes"
@@ -88,8 +88,8 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.StreamDelayCompensation').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.StreamDelayCompensationDescription').toString()">
+                    :title="$t('Settings.TimelapseTab.StreamDelayCompensation')"
+                    :sub-title="$t('Settings.TimelapseTab.StreamDelayCompensationDescription')">
                     <v-text-field
                         v-model="stream_delay_compensation"
                         type="number"
@@ -102,8 +102,8 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.GcodeVerbose').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.GcodeVerboseDescription').toString()"
+                    :title="$t('Settings.TimelapseTab.GcodeVerbose')"
+                    :sub-title="$t('Settings.TimelapseTab.GcodeVerboseDescription')"
                     :dynamic-slot-width="true">
                     <v-switch
                         v-model="gcode_verbose"
@@ -114,8 +114,8 @@
                 <v-divider class="my-2" />
                 <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.TimelapseTab.Parkhead') }}</h3>
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.Parkhead').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.ParkheadDescription').toString()"
+                    :title="$t('Settings.TimelapseTab.Parkhead')"
+                    :sub-title="$t('Settings.TimelapseTab.ParkheadDescription')"
                     :dynamic-slot-width="true">
                     <v-switch
                         v-model="parkhead"
@@ -126,8 +126,8 @@
                 <template v-if="parkhead">
                     <v-divider class="my-2" />
                     <settings-row
-                        :title="$t('Settings.TimelapseTab.Parkpos').toString()"
-                        :sub-title="$t('Settings.TimelapseTab.ParkposDescription').toString()">
+                        :title="$t('Settings.TimelapseTab.Parkpos')"
+                        :sub-title="$t('Settings.TimelapseTab.ParkposDescription')">
                         <v-select
                             v-model="parkpos"
                             :items="parkposOptions"
@@ -139,8 +139,8 @@
                     <template v-if="['x_only', 'custom'].includes(parkpos)">
                         <v-divider class="my-2" />
                         <settings-row
-                            :title="$t('Settings.TimelapseTab.PosX').toString()"
-                            :sub-title="$t('Settings.TimelapseTab.PosXDescription').toString()">
+                            :title="$t('Settings.TimelapseTab.PosX')"
+                            :sub-title="$t('Settings.TimelapseTab.PosXDescription')">
                             <v-text-field
                                 v-model="park_custom_pos_x"
                                 type="number"
@@ -155,8 +155,8 @@
                     <template v-if="['y_only', 'custom'].includes(parkpos)">
                         <v-divider class="my-2" />
                         <settings-row
-                            :title="$t('Settings.TimelapseTab.PosY').toString()"
-                            :sub-title="$t('Settings.TimelapseTab.PosYDescription').toString()">
+                            :title="$t('Settings.TimelapseTab.PosY')"
+                            :sub-title="$t('Settings.TimelapseTab.PosYDescription')">
                             <v-text-field
                                 v-model="park_custom_pos_y"
                                 type="number"
@@ -171,8 +171,8 @@
                     <template v-if="['x_only', 'y_only', 'custom'].includes(parkpos)">
                         <v-divider class="my-2" />
                         <settings-row
-                            :title="$t('Settings.TimelapseTab.PosDZ').toString()"
-                            :sub-title="$t('Settings.TimelapseTab.PosDZDescription').toString()">
+                            :title="$t('Settings.TimelapseTab.PosDZ')"
+                            :sub-title="$t('Settings.TimelapseTab.PosDZDescription')">
                             <v-text-field
                                 v-model="park_custom_pos_dz"
                                 type="number"
@@ -186,8 +186,8 @@
                     </template>
                     <v-divider class="my-2" />
                     <settings-row
-                        :title="$t('Settings.TimelapseTab.TravelSpeed').toString()"
-                        :sub-title="$t('Settings.TimelapseTab.TravelSpeedDescription').toString()">
+                        :title="$t('Settings.TimelapseTab.TravelSpeed')"
+                        :sub-title="$t('Settings.TimelapseTab.TravelSpeedDescription')">
                         <v-text-field
                             v-model="park_travel_speed"
                             type="number"
@@ -200,8 +200,8 @@
                     </settings-row>
                     <v-divider class="my-2" />
                     <settings-row
-                        :title="$t('Settings.TimelapseTab.FwRetract').toString()"
-                        :sub-title="$t('Settings.TimelapseTab.FwRetractDescription').toString()"
+                        :title="$t('Settings.TimelapseTab.FwRetract')"
+                        :sub-title="$t('Settings.TimelapseTab.FwRetractDescription')"
                         :dynamic-slot-width="true">
                         <v-switch
                             v-model="fw_retract"
@@ -212,8 +212,8 @@
                     <template v-if="!fw_retract">
                         <v-divider class="my-2" />
                         <settings-row
-                            :title="$t('Settings.TimelapseTab.RetractSpeed').toString()"
-                            :sub-title="$t('Settings.TimelapseTab.RetractSpeedDescription').toString()">
+                            :title="$t('Settings.TimelapseTab.RetractSpeed')"
+                            :sub-title="$t('Settings.TimelapseTab.RetractSpeedDescription')">
                             <v-text-field
                                 v-model="park_retract_speed"
                                 type="number"
@@ -226,8 +226,8 @@
                         </settings-row>
                         <v-divider class="my-2" />
                         <settings-row
-                            :title="$t('Settings.TimelapseTab.RetractDistance').toString()"
-                            :sub-title="$t('Settings.TimelapseTab.RetractDistanceDescription').toString()">
+                            :title="$t('Settings.TimelapseTab.RetractDistance')"
+                            :sub-title="$t('Settings.TimelapseTab.RetractDistanceDescription')">
                             <v-text-field
                                 v-model="park_retract_distance"
                                 type="number"
@@ -236,12 +236,12 @@
                                 outlined
                                 dense
                                 :disabled="blockedsettings.includes('park_retract_distance')"
-                                hide-spin-buttons></v-text-field>
+                                hide-spin-buttons />
                         </settings-row>
                         <v-divider class="my-2" />
                         <settings-row
-                            :title="$t('Settings.TimelapseTab.UnretractSpeed').toString()"
-                            :sub-title="$t('Settings.TimelapseTab.UnretractSpeedDescription').toString()">
+                            :title="$t('Settings.TimelapseTab.UnretractSpeed')"
+                            :sub-title="$t('Settings.TimelapseTab.UnretractSpeedDescription')">
                             <v-text-field
                                 v-model="park_extrude_speed"
                                 type="number"
@@ -254,8 +254,8 @@
                         </settings-row>
                         <v-divider class="my-2" />
                         <settings-row
-                            :title="$t('Settings.TimelapseTab.UnretractDistance').toString()"
-                            :sub-title="$t('Settings.TimelapseTab.UnretractDistanceDescription').toString()">
+                            :title="$t('Settings.TimelapseTab.UnretractDistance')"
+                            :sub-title="$t('Settings.TimelapseTab.UnretractDistanceDescription')">
                             <v-text-field
                                 v-model="park_extrude_distance"
                                 type="number"
@@ -269,8 +269,8 @@
                     </template>
                     <v-divider class="my-2" />
                     <settings-row
-                        :title="$t('Settings.TimelapseTab.ParkTime').toString()"
-                        :sub-title="$t('Settings.TimelapseTab.ParkTimeDescription').toString()">
+                        :title="$t('Settings.TimelapseTab.ParkTime')"
+                        :sub-title="$t('Settings.TimelapseTab.ParkTimeDescription')">
                         <v-text-field
                             v-model="park_time"
                             type="number"
@@ -285,8 +285,8 @@
                 <v-divider class="my-2" />
                 <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.TimelapseTab.RenderingOptions') }}</h3>
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.VariableFps').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.VariableFpsDescription').toString()"
+                    :title="$t('Settings.TimelapseTab.VariableFps')"
+                    :sub-title="$t('Settings.TimelapseTab.VariableFpsDescription')"
                     :dynamic-slot-width="true">
                     <v-switch
                         v-model="variable_fps"
@@ -297,8 +297,8 @@
                 <template v-if="variable_fps">
                     <v-divider class="my-2" />
                     <settings-row
-                        :title="$t('Settings.TimelapseTab.Targetlength').toString()"
-                        :sub-title="$t('Settings.TimelapseTab.TargetlengthDescription').toString()">
+                        :title="$t('Settings.TimelapseTab.Targetlength')"
+                        :sub-title="$t('Settings.TimelapseTab.TargetlengthDescription')">
                         <v-text-field
                             v-model="targetlength"
                             type="number"
@@ -307,12 +307,12 @@
                             outlined
                             dense
                             :disabled="blockedsettings.includes('targetlength')"
-                            hide-spin-buttons></v-text-field>
+                            hide-spin-buttons />
                     </settings-row>
                     <v-divider class="my-2" />
                     <settings-row
-                        :title="$t('Settings.TimelapseTab.VariableFpsMin').toString()"
-                        :sub-title="$t('Settings.TimelapseTab.VariableFpsMinDescription').toString()">
+                        :title="$t('Settings.TimelapseTab.VariableFpsMin')"
+                        :sub-title="$t('Settings.TimelapseTab.VariableFpsMinDescription')">
                         <v-text-field
                             v-model="variable_fps_min"
                             type="number"
@@ -325,8 +325,8 @@
                     </settings-row>
                     <v-divider class="my-2" />
                     <settings-row
-                        :title="$t('Settings.TimelapseTab.VariableFpsMax').toString()"
-                        :sub-title="$t('Settings.TimelapseTab.VariableFpsMaxDescription').toString()">
+                        :title="$t('Settings.TimelapseTab.VariableFpsMax')"
+                        :sub-title="$t('Settings.TimelapseTab.VariableFpsMaxDescription')">
                         <v-text-field
                             v-model="variable_fps_max"
                             type="number"
@@ -341,8 +341,8 @@
                 <template v-else>
                     <v-divider class="my-2" />
                     <settings-row
-                        :title="$t('Settings.TimelapseTab.OutputFramerate').toString()"
-                        :sub-title="$t('Settings.TimelapseTab.OutputFramerateDescription').toString()">
+                        :title="$t('Settings.TimelapseTab.OutputFramerate')"
+                        :sub-title="$t('Settings.TimelapseTab.OutputFramerateDescription')">
                         <v-text-field
                             v-model="output_framerate"
                             type="number"
@@ -356,8 +356,8 @@
                 </template>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.duplicatelastframe').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.duplicatelastframeDescription').toString()">
+                    :title="$t('Settings.TimelapseTab.duplicatelastframe')"
+                    :sub-title="$t('Settings.TimelapseTab.duplicatelastframeDescription')">
                     <v-text-field
                         v-model="duplicatelastframe"
                         type="number"
@@ -369,8 +369,8 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.ConstantRateFactor').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.ConstantRateFactorDescription').toString()">
+                    :title="$t('Settings.TimelapseTab.ConstantRateFactor')"
+                    :sub-title="$t('Settings.TimelapseTab.ConstantRateFactorDescription')">
                     <v-text-field
                         v-model="constant_rate_factor"
                         type="number"
@@ -382,8 +382,8 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.Pixelformat').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.PixelformatDescription').toString()">
+                    :title="$t('Settings.TimelapseTab.Pixelformat')"
+                    :sub-title="$t('Settings.TimelapseTab.PixelformatDescription')">
                     <v-text-field
                         v-model="pixelformat"
                         type="text"
@@ -394,8 +394,8 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.TimeFormatCode').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.TimeFormatCodeDescription').toString()">
+                    :title="$t('Settings.TimelapseTab.TimeFormatCode')"
+                    :sub-title="$t('Settings.TimelapseTab.TimeFormatCodeDescription')">
                     <v-text-field
                         v-model="time_format_code"
                         type="text"
@@ -406,8 +406,8 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.TimelapseTab.Extraoutputparams').toString()"
-                    :sub-title="$t('Settings.TimelapseTab.ExtraoutputparamsDescription').toString()">
+                    :title="$t('Settings.TimelapseTab.Extraoutputparams')"
+                    :sub-title="$t('Settings.TimelapseTab.ExtraoutputparamsDescription')">
                     <v-text-field
                         v-model="extraoutputparams"
                         type="text"
@@ -483,11 +483,11 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         const output: any = []
 
         webcams
-            .filter((webcam: GuiWebcamStateWebcam) => webcam.urlSnapshot !== '')
+            .filter((webcam: GuiWebcamStateWebcam) => webcam.snapshot_url !== '')
             .forEach((webcam: GuiWebcamStateWebcam) => {
                 output.push({
                     text: webcam.name,
-                    value: webcam.id,
+                    value: webcam.name,
                 })
             })
 
