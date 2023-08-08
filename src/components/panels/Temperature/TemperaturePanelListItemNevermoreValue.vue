@@ -93,18 +93,17 @@ export default class TemperaturePanelListItemNevermoreValue extends Mixins(BaseM
     }
 
     get formatValue() {
-        return getFormatedValue(this.intake_value, this.exhaust_value)
+        return this.getFormatedValue(this.intake_value, this.exhaust_value)
     }
 
-    get formatValue_min() {        
-        return getFormatedValue(this.intake_value_min, this.exhaust_value_min)
+    get formatValue_min() {
+        return this.getFormatedValue(this.intake_value_min, this.exhaust_value_min)
     }
 
-    get formatValue_max() {   
-        return getFormatedValue(this.intake_value_max, this.exhaust_value_max)
+    get formatValue_max() {
+        return this.getFormatedValue(this.intake_value_max, this.exhaust_value_max)
     }
 
-    
     getFormatedValue(intake: number | null, exhaust: number | null): string {
         let intake_value = intake?.toFixed(this.digits)
         let exhaust_value = exhaust?.toFixed(this.digits)
