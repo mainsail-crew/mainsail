@@ -6,7 +6,7 @@
             </v-icon>
         </td>
         <td class="name">
-            <span @click="showEditDialog = true">{{ formatName }}</span>
+            <span class="cursor-pointer" @click="showEditDialog = true">{{ formatName }}</span>
         </td>
         <td v-if="!isResponsiveMobile" class="state">
             <v-tooltip v-if="state !== null" top>
