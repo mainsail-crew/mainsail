@@ -76,7 +76,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     get showFpsCounter() {
         if (!this.showFps) return false
 
-        return this.camSettings.extra_data?.hideFps ?? true
+        return !(this.camSettings.extra_data?.hideFps ?? false)
     }
 
     startStream() {
