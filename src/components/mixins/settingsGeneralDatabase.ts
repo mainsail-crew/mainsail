@@ -6,59 +6,59 @@ export default class SettingsGeneralDatabase extends BaseMixin {
     get availableKeys() {
         return [
             {
-                name: 'general',
+                value: 'general',
                 label: this.$t('Settings.GeneralTab.General'),
             },
             {
-                name: 'console',
+                value: 'console',
                 label: this.$t('Settings.ConsoleTab.Console'),
             },
             {
-                name: 'control',
+                value: 'control',
                 label: this.$t('Settings.ControlTab.Control'),
             },
             {
-                name: 'dashboard',
+                value: 'dashboard',
                 label: this.$t('Settings.DashboardTab.Dashboard'),
             },
             {
-                name: 'editor',
+                value: 'editor',
                 label: this.$t('Settings.EditorTab.Editor'),
             },
             {
-                name: 'gcodeViewer',
+                value: 'gcodeViewer',
                 label: this.$t('Settings.GCodeViewerTab.GCodeViewer'),
             },
             {
-                name: 'gcodehistory',
+                value: 'gcodehistory',
                 label: this.$t('Settings.GeneralTab.DbConsoleHistory'),
             },
             {
-                name: 'macros',
+                value: 'macros',
                 label: this.$t('Settings.MacrosTab.Macros'),
             },
             {
-                name: 'notifications',
+                value: 'notifications',
                 label: this.$t('App.Notifications.Notifications'),
             },
             {
-                name: 'presets',
+                value: 'presets',
                 label: this.$t('Settings.PresetsTab.PreheatPresets'),
             },
             {
-                name: 'remoteprinters',
+                value: 'remoteprinters',
                 label: this.$t('Settings.RemotePrintersTab.RemotePrinters'),
             },
             {
-                name: 'timelapse',
+                value: 'timelapse',
                 label: this.$t('Settings.TimelapseTab.Timelapse'),
             },
             {
-                name: 'uiSettings',
+                value: 'uiSettings',
                 label: this.$t('Settings.UiSettingsTab.UiSettings'),
             },
             {
-                name: 'view',
+                value: 'view',
                 label: this.$t('Settings.GeneralTab.DbView'),
             },
         ]

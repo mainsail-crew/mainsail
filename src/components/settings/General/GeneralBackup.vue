@@ -1,37 +1,42 @@
 <template>
-    <v-dialog :value="showDialog" persistent :width="360">
-        <panel
-            :title="$t('Settings.GeneralTab.Backup')"
-            card-class="mainsail-backup-dialog"
-            :margin-bottom="false"
-            :icon="mdiHelpCircle">
-            <template #buttons>
-                <v-btn icon tile @click="closeDialog">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
-            </template>
-            <v-card-text>
-                <v-row>
-                    <v-col>
-                        <p class="mb-0">{{ $t('Settings.GeneralTab.BackupDialog') }}</p>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <checkbox-list
-                        :options="backupableNamespaces"
-                        select-all
-                        @update:selectedCheckboxes="onSelectBackupCheckboxes" />
-                </v-row>
-                <v-row>
-                    <v-col class="text-center">
-                        <v-btn color="red" :loading="loadings.includes('backupMainsail')" @click="backupMainsail">
-                            {{ $t('Settings.GeneralTab.Backup') }}
-                        </v-btn>
-                    </v-col>
-                </v-row>
-            </v-card-text>
-        </panel>
-    </v-dialog>
+    <div>
+        <v-btn :loading="loadings.includes('backupDbButton')" small @click="openDialog">
+            {{ $t('Settings.GeneralTab.Backup') }}
+        </v-btn>
+        <v-dialog v-model="showDialog" persistent :width="360">
+            <panel
+                :title="$t('Settings.GeneralTab.Backup')"
+                card-class="mainsail-backup-dialog"
+                :margin-bottom="false"
+                :icon="mdiHelpCircle">
+                <template #buttons>
+                    <v-btn icon tile @click="closeDialog">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <v-row>
+                        <v-col>
+                            <p class="mb-0">{{ $t('Settings.GeneralTab.BackupDialog') }}</p>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <checkbox-list
+                            :options="backupableNamespaces"
+                            select-all
+                            @update:selectedCheckboxes="onSelectBackupCheckboxes" />
+                    </v-row>
+                    <v-row>
+                        <v-col class="text-center">
+                            <v-btn color="red" :loading="loadings.includes('backupMainsail')" @click="backupMainsail">
+                                {{ $t('Settings.GeneralTab.Backup') }}
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </panel>
+        </v-dialog>
+    </div>
 </template>
 
 <script lang="ts">
@@ -52,9 +57,7 @@ export default class SettingsGeneralTabBackupDatabase extends Mixins(BaseMixin, 
     mdiHelpCircle = mdiHelpCircle
     mdiCloseThick = mdiCloseThick
 
-    @Prop({ type: Boolean, required: true })
-    declare readonly showDialog: boolean
-
+    showDialog = false
     backupableNamespaces: { value: string; label: string | TranslateResult }[] = []
     backupCheckboxes: string[] = []
 
@@ -94,8 +97,8 @@ export default class SettingsGeneralTabBackupDatabase extends Mixins(BaseMixin, 
                 // convert to locale
                 .then((keys) =>
                     keys.map((key) => {
-                        const namespace = this.availableKeys.find((namespace) => namespace.name === key)
-                        if (namespace) return { value: namespace.name, label: namespace.label }
+                        const namespace = this.availableKeys.find((namespace) => namespace.value === key)
+                        if (namespace) return namespace
 
                         // fallback return key name
                         return { value: key, label: key }
@@ -144,13 +147,13 @@ export default class SettingsGeneralTabBackupDatabase extends Mixins(BaseMixin, 
         this.closeDialog()
     }
 
-    closeDialog() {
-        this.$emit('close-dialog')
+    openDialog() {
+        this.loadBackupableNamespaces()
+        this.showDialog = true
     }
 
-    @Watch('showDialog')
-    showDialogChanged(newVal: boolean) {
-        if (newVal) this.loadBackupableNamespaces()
+    closeDialog() {
+        this.showDialog = false
     }
 }
 </script>
