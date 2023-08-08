@@ -93,32 +93,21 @@ export default class TemperaturePanelListItemNevermoreValue extends Mixins(BaseM
     }
 
     get formatValue() {
-        let intake_value = this.intake_value?.toFixed(this.digits)
-        let exhaust_value = this.exhaust_value?.toFixed(this.digits)
-        if (this.intake_value === null) intake_value = '--'
-        if (this.exhaust_value === null) exhaust_value = '--'
-
-        // return only the value, if unit is null
-        if (this.unit === null) return `${intake_value} > ${exhaust_value}`
-
-        return `${intake_value} ${this.unit} > ${exhaust_value} ${this.unit}`
+        return getFormatedValue(this.intake_value, this.exhaust_value)
     }
 
-    get formatValue_min() {
-        let intake_value = this.intake_value_min?.toFixed(this.digits)
-        let exhaust_value = this.exhaust_value_min?.toFixed(this.digits)
-        if (this.intake_value === null) intake_value = '--'
-        if (this.exhaust_value === null) exhaust_value = '--'
-
-        // return only the value, if unit is null
-        if (this.unit === null) return `${intake_value} > ${exhaust_value}`
-
-        return `${intake_value} ${this.unit} > ${exhaust_value} ${this.unit}`
+    get formatValue_min() {        
+        return getFormatedValue(this.intake_value_min, this.exhaust_value_min)
     }
 
-    get formatValue_max() {
-        let intake_value = this.intake_value_max?.toFixed(this.digits)
-        let exhaust_value = this.exhaust_value_max?.toFixed(this.digits)
+    get formatValue_max() {   
+        return getFormatedValue(this.intake_value_max, this.exhaust_value_max)
+    }
+
+    
+    getFormatedValue(intake: number | null, exhaust: number | null): string {
+        let intake_value = intake?.toFixed(this.digits)
+        let exhaust_value = exhaust?.toFixed(this.digits)
         if (this.intake_value === null) intake_value = '--'
         if (this.exhaust_value === null) exhaust_value = '--'
 
