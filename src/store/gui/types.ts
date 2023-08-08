@@ -20,6 +20,7 @@ export interface GuiState {
     console?: GuiConsoleState
     control: {
         style: 'bars' | 'circle' | 'cross'
+        hideDuringPrint: boolean
         actionButton: null | 'm84' | 'qgl' | 'ztilt'
         enableXYHoming: boolean
         feedrateXY: number
@@ -107,6 +108,7 @@ export interface GuiState {
         boolWideNavDrawer: boolean
         boolHideUploadAndPrintButton: boolean
         navigationStyle: 'iconsAndText' | 'iconsOnly'
+        defaultNavigationStateSetting: 'alwaysOpen' | 'alwaysClosed' | 'lastState'
         powerDeviceName: string | null
         hideSaveConfigForBedMash: boolean
         disableFanAnimation: boolean
@@ -162,6 +164,7 @@ export interface GuiState {
         tempchart: {
             boolTempchart: boolean
             hiddenDataset: string[]
+            hideMcuHostSensors: boolean
             autoscale: boolean
             datasetSettings: any
         }

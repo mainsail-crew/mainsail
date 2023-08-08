@@ -1,37 +1,11 @@
-<style>
-@import './assets/styles/fonts.css';
-@import './assets/styles/toastr.css';
-@import './assets/styles/page.scss';
-@import './assets/styles/sidebar.scss';
-@import './assets/styles/utils.scss';
-@import './assets/styles/updateManager.scss';
-
-:root {
-    --app-height: 100%;
-}
-
-#content {
-    background-attachment: fixed;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-/*noinspection CssUnusedSymbol*/
-.v-btn:not(.v-btn--outlined).primary {
-    /*noinspection CssUnresolvedCustomProperty*/
-    color: var(--v-btn-text-primary);
-}
-</style>
-
 <template>
     <v-app dark :style="cssVars">
         <template v-if="socketIsConnected && guiIsReady">
-            <the-sidebar></the-sidebar>
-            <the-topbar></the-topbar>
-
+            <the-sidebar />
+            <the-topbar />
             <v-main id="content" :style="mainStyle">
                 <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
-                    <router-view></router-view>
+                    <router-view />
                 </v-container>
             </v-main>
             <the-service-worker />
@@ -44,8 +18,8 @@
             <the-bed-screws-dialog />
             <the-screws-tilt-adjust-dialog />
         </template>
-        <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'"></the-select-printer-dialog>
-        <the-connecting-dialog v-else></the-connecting-dialog>
+        <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'" />
+        <the-connecting-dialog v-else />
     </v-app>
 </template>
 
@@ -105,12 +79,26 @@ export default class App extends Mixins(BaseMixin) {
         return this.$store.getters['files/getMainBackground']
     }
 
+    get naviDrawer(): boolean {
+        return this.$store.state.naviDrawer
+    }
+
+    get navigationStyle() {
+        return this.$store.state.gui.uiSettings.navigationStyle
+    }
+
     get mainStyle() {
-        let style = ''
+        let style: any = {
+            paddingLeft: '0',
+        }
 
         if (this.mainBackground !== null) {
-            style = 'background-image: url(' + this.mainBackground + ');'
+            style.backgroundImage = 'url(' + this.mainBackground + ')'
         }
+
+        // overwrite padding left for the sidebar
+        if (this.naviDrawer && this.navigationStyle === 'iconsAndText') style.paddingLeft = '220px'
+        if (this.naviDrawer && this.navigationStyle === 'iconsOnly') style.paddingLeft = '56px'
 
         return style
     }
@@ -311,3 +299,28 @@ export default class App extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style>
+@import './assets/styles/fonts.css';
+@import './assets/styles/toastr.css';
+@import './assets/styles/page.scss';
+@import './assets/styles/sidebar.scss';
+@import './assets/styles/utils.scss';
+@import './assets/styles/updateManager.scss';
+
+:root {
+    --app-height: 100%;
+}
+
+#content {
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*noinspection CssUnusedSymbol*/
+.v-btn:not(.v-btn--outlined).primary {
+    /*noinspection CssUnresolvedCustomProperty*/
+    color: var(--v-btn-text-primary);
+}
+</style>

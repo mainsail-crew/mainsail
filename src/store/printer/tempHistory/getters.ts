@@ -70,7 +70,29 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
         return getters['getAvg'](name, 'speed')
     },
 
-    getSelectedLegends: (state, _, rootState) => {
+    getHostMcuSensors: (state, getters, rootState) => {
+        const settings = rootState.printer?.configfile?.settings ?? {}
+        const available_heaters = rootState.printer?.heaters?.available_heaters ?? []
+        const available_sensors = rootState.printer?.heaters?.available_sensors ?? []
+
+        return available_sensors.filter((fullName: string) => {
+            // stop when the current sensor is a heater
+            if (available_heaters.includes(fullName)) return false
+            // stop when the current sensor is a temperature_fan
+            if (fullName.startsWith('temperature_fan')) return false
+
+            // get printer settings object from the current sensor
+            const settingsObject = settings[fullName.toLowerCase()]
+            if (!settingsObject) return false
+
+            // get the sensor type of the current sensor
+            const sensor_type = settingsObject.sensor_type ?? ''
+
+            return ['temperature_mcu', 'temperature_host'].includes(sensor_type)
+        })
+    },
+
+    getSelectedLegends: (state, getters, rootState) => {
         interface legends {
             [key: string]: boolean
         }
@@ -107,6 +129,21 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
             // add default value for this datasetType; all percent series are hidden per default
             selected[serie.name] = !datasetTypesInPercents.includes(datasetType)
         })
+
+        // hide MCU & Host sensors, if the option is set to true
+        const hideMcuHostSensors = rootState.gui?.view?.tempchart?.hideMcuHostSensors ?? false
+        if (hideMcuHostSensors) {
+            const mcuHostSensors = getters.getHostMcuSensors ?? []
+
+            Object.keys(selected)
+                .filter((seriesName) => {
+                    const datasetName = seriesName.slice(0, seriesName.lastIndexOf('-'))
+                    return mcuHostSensors.includes(datasetName)
+                })
+                .forEach((seriesName) => {
+                    selected[seriesName] = false
+                })
+        }
 
         return selected
     },
