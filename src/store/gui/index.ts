@@ -158,6 +158,7 @@ export const getDefaultState = (): GuiState => {
             boolWideNavDrawer: false,
             boolHideUploadAndPrintButton: false,
             navigationStyle: 'iconsAndText',
+            defaultNavigationStateSetting: 'alwaysOpen',
             powerDeviceName: null,
             hideSaveConfigForBedMash: false,
             disableFanAnimation: false,
