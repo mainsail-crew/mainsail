@@ -84,40 +84,10 @@
                 </settings-row>
             </v-card-text>
         </v-card>
-        <v-dialog v-model="dialogBackupMainsail" persistent :width="360">
-            <panel
-                :title="$t('Settings.GeneralTab.Backup')"
-                card-class="mainsail-backup-dialog"
-                :margin-bottom="false"
-                :icon="mdiHelpCircle">
-                <template #buttons>
-                    <v-btn icon tile @click="dialogBackupMainsail = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <v-row>
-                        <v-col>
-                            <p class="mb-0">{{ $t('Settings.GeneralTab.BackupDialog') }}</p>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <checkbox-list
-                            :options="backupableNamespaces"
-                            select-all
-                            :select-all-label="$t('Settings.GeneralTab.Everything')"
-                            @update:selectedCheckboxes="onSelectBackupCheckboxes"></checkbox-list>
-                    </v-row>
-                    <v-row>
-                        <v-col class="text-center">
-                            <v-btn color="red" :loading="loadings.includes('backupMainsail')" @click="backupMainsail">
-                                {{ $t('Settings.GeneralTab.Backup') }}
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-            </panel>
-        </v-dialog>
+        <settings-general-tab-backup-database
+            :show-dialog="dialogBackupMainsail"
+            @close-dialog="dialogBackupMainsail = false" />
+
         <v-dialog v-model="dialogResetMainsail" persistent :width="360">
             <panel
                 :title="$t('Settings.GeneralTab.FactoryReset')"
@@ -224,26 +194,28 @@ import Panel from '@/components/ui/Panel.vue'
 import Vue from 'vue'
 import { mdiCloseThick, mdiHelpCircle } from '@mdi/js'
 import CheckboxList from '@/components/inputs/CheckboxList.vue'
+import { TranslateResult } from 'vue-i18n'
+import SettingsGeneralTabBackupDatabase from '@/components/settings/General/GeneralBackup.vue'
 
 @Component({
-    components: { Panel, SettingsRow, CheckboxList },
+    components: { Panel, SettingsRow, CheckboxList, SettingsGeneralTabBackupDatabase },
 })
 export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     mdiHelpCircle = mdiHelpCircle
     mdiCloseThick = mdiCloseThick
 
-    private dialogBackupMainsail = false
-    private dialogResetMainsail = false
-    private dialogRestoreMainsail = false
+    dialogBackupMainsail = false
+    dialogResetMainsail = false
+    dialogRestoreMainsail = false
 
-    private restoreableNamespaces: { value: string; label: string }[] = []
-    private restoreObjects: any = {}
-    private restoreCheckboxes: string[] = []
+    restoreableNamespaces: { value: string; label: string | TranslateResult }[] = []
+    restoreObjects: any = {}
+    restoreCheckboxes: string[] = []
 
-    private backupableNamespaces: { value: string; label: string }[] = []
-    private mainsailKeys: { name: string; label: string }[] = []
-    private availableNamespaces: string[] = []
-    private backupCheckboxes: string[] = []
+    backupableNamespaces: { value: string; label: string | TranslateResult }[] = []
+    mainsailKeys: { name: string; label: string | TranslateResult }[] = []
+    availableNamespaces: string[] = []
+    backupCheckboxes: string[] = []
 
     declare $refs: {
         uploadBackupFile: HTMLInputElement
@@ -517,39 +489,9 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         await this.$store.dispatch('gui/resetMoonrakerDB', this.backupCheckboxes)
     }
 
-    async backupDb() {
-        await this.$store.dispatch('socket/addLoading', 'backupDbButton')
-        await this.refreshBackupTargets()
-
-        this.backupCheckboxes = []
+    backupDb() {
+        this.$store.dispatch('socket/addLoading', 'backupDbButton')
         this.dialogBackupMainsail = true
-    }
-
-    async refreshBackupTargets() {
-        await this.refreshNamespaces()
-
-        this.backupableNamespaces = []
-        if (this.availableNamespaces.includes('mainsail')) {
-            await this.refreshMainsailKeys()
-            this.backupableNamespaces.push(
-                ...this.mainsailKeys.map((k) => ({
-                    label: k.label,
-                    value: k.name,
-                }))
-            )
-        }
-        if (this.availableNamespaces.includes('timelapse')) {
-            this.backupableNamespaces.push({
-                value: 'timelapase',
-                label: this.$t('Settings.GeneralTab.DbTimelapseSettings').toString(),
-            })
-        }
-        if (this.availableNamespaces.includes('webcams')) {
-            this.backupableNamespaces.push({
-                value: 'webcams',
-                label: this.$t('Settings.GeneralTab.DbWebcams').toString(),
-            })
-        }
     }
 
     async backupMainsail() {

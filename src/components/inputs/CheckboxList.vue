@@ -3,7 +3,7 @@
         <template v-if="selectAll">
             <v-checkbox
                 v-model="selectAllModel"
-                :label="selectAllLabel"
+                :label="$t('Settings.GeneralTab.Everything')"
                 hide-details
                 class="mt-0"
                 :indeterminate="selectAllIndeterminate"
@@ -27,21 +27,18 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import { computed } from 'vue'
+import { TranslateResult } from 'vue-i18n'
 
 @Component
 export default class CheckboxList extends Mixins(BaseMixin) {
     @Prop({ required: true })
-    declare readonly options: { label: string; value: string }[]
+    declare readonly options: { label: string | TranslateResult; value: string }[]
 
     @Prop({ type: Boolean, required: false, default: false })
     declare readonly selectAll: boolean
 
-    @Prop({ type: String, required: false, default: '' })
-    declare readonly selectAllLabel: string
-
-    private selectedCheckboxes: string[] = []
-
-    private selectAllIndeterminate: boolean = false
+    selectedCheckboxes: (string | TranslateResult)[] = []
+    selectAllIndeterminate: boolean = false
     selectAllModel = computed<boolean>({
         get: this.getSelectAll,
         set: this.setSelectAll,
@@ -53,15 +50,17 @@ export default class CheckboxList extends Mixins(BaseMixin) {
             this.selectAllIndeterminate = true
             return false
         }
+
         return this.selectedCheckboxes.length == this.options.length
     }
 
     setSelectAll(state: boolean) {
         if (state) {
             this.selectedCheckboxes = this.options.map((o) => o.value)
-        } else {
-            this.selectedCheckboxes = []
+            return
         }
+
+        this.selectedCheckboxes = []
     }
 }
 </script>
