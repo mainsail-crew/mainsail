@@ -7,33 +7,21 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.Language')">
-                    <v-select
-                        v-model="currentLanguage"
-                        :items="availableLanguages"
-                        hide-details
-                        outlined
-                        dense
-                        attach />
+                    <v-select v-model="currentLanguage" :items="availableLanguages" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.DateFormat')">
-                    <v-select v-model="dateFormat" :items="dateFormatItems" hide-details outlined dense attach />
+                    <v-select v-model="dateFormat" :items="dateFormatItems" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.TimeFormat')">
-                    <v-select v-model="timeFormat" :items="timeFormatItems" hide-details outlined dense attach />
+                    <v-select v-model="timeFormat" :items="timeFormatItems" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.GeneralTab.CalcPrintProgress')"
                     :sub-title="$t('Settings.GeneralTab.CalcPrintProgressDescription')">
-                    <v-select
-                        v-model="calcPrintProgress"
-                        :items="calcPrintProgressItems"
-                        hide-details
-                        dense
-                        outlined
-                        attach />
+                    <v-select v-model="calcPrintProgress" :items="calcPrintProgressItems" hide-details dense outlined />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
@@ -45,21 +33,13 @@
                         multiple
                         hide-details
                         dense
-                        outlined
-                        attach />
+                        outlined />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.GeneralTab.CalcEtaTime')"
                     :sub-title="$t('Settings.GeneralTab.CalcEtaTimeDescription')">
-                    <v-select
-                        v-model="calcEtaTime"
-                        :items="calcEtaTimeItems"
-                        multiple
-                        hide-details
-                        dense
-                        outlined
-                        attach />
+                    <v-select v-model="calcEtaTime" :items="calcEtaTimeItems" multiple hide-details dense outlined />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.MainsailSettingsMoonrakerDb')" :dynamic-slot-width="true">
@@ -68,73 +48,10 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamic-slot-width="true">
-                    <v-btn color="error" small @click="resetMainsail">
-                        {{ $t('Settings.GeneralTab.FactoryReset') }}
-                    </v-btn>
+                    <settings-general-tab-reset-database />
                 </settings-row>
             </v-card-text>
         </v-card>
-
-        <v-dialog v-model="dialogResetMainsail" persistent :width="360">
-            <panel
-                :title="$t('Settings.GeneralTab.FactoryReset')"
-                card-class="factory-reset-dialog"
-                :margin-bottom="false"
-                :icon="mdiHelpCircle">
-                <template #buttons>
-                    <v-btn icon tile @click="dialogResetMainsail = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <v-row>
-                        <v-col>
-                            <p class="mb-0">{{ $t('Settings.GeneralTab.FactoryDialog') }}</p>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="pl-6">
-                            <template v-for="db in mainsailKeys">
-                                <v-checkbox
-                                    :key="db.name"
-                                    :label="db.label"
-                                    hide-details
-                                    class="mt-0"
-                                    @change="changeNamespace(db.name)" />
-                            </template>
-                            <v-checkbox
-                                v-if="availableNamespaces.includes('timelapse')"
-                                :label="$t('Settings.GeneralTab.DbTimelapseSettings')"
-                                hide-details
-                                class="mt-0"
-                                @change="changeNamespace('timelapse')" />
-                            <v-checkbox
-                                v-if="moonrakerComponents.includes('history')"
-                                :label="$t('Settings.GeneralTab.DbHistoryJobs')"
-                                hide-details
-                                class="mt-0"
-                                @change="changeNamespace('history_jobs')" />
-                            <v-checkbox
-                                v-if="moonrakerComponents.includes('history')"
-                                :label="$t('Settings.GeneralTab.DbHistoryTotals')"
-                                hide-details
-                                class="mt-0"
-                                @change="changeNamespace('history_totals')" />
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="text-center">
-                            <v-btn
-                                color="red"
-                                :loading="loadings.includes('resetMainsail')"
-                                @click="resetMainsailAction">
-                                {{ $t('Settings.GeneralTab.Reset') }}
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-            </panel>
-        </v-dialog>
     </div>
 </template>
 
@@ -146,9 +63,9 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiHelpCircle } from '@mdi/js'
 import CheckboxList from '@/components/inputs/CheckboxList.vue'
-import { TranslateResult } from 'vue-i18n'
 import SettingsGeneralTabBackupDatabase from '@/components/settings/General/GeneralBackup.vue'
 import SettingsGeneralTabRestoreDatabase from '@/components/settings/General/GeneralRestore.vue'
+import SettingsGeneralTabResetDatabase from '@/components/settings/General/GeneralReset.vue'
 import SettingsGeneralDatabase from '@/components/mixins/settingsGeneralDatabase'
 
 @Component({
@@ -158,17 +75,12 @@ import SettingsGeneralDatabase from '@/components/mixins/settingsGeneralDatabase
         CheckboxList,
         SettingsGeneralTabBackupDatabase,
         SettingsGeneralTabRestoreDatabase,
+        SettingsGeneralTabResetDatabase,
     },
 })
 export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGeneralDatabase) {
     mdiHelpCircle = mdiHelpCircle
     mdiCloseThick = mdiCloseThick
-
-    dialogResetMainsail = false
-
-    mainsailKeys: { name: string; label: string | TranslateResult }[] = []
-    availableNamespaces: string[] = []
-    backupCheckboxes: string[] = []
 
     get printerName() {
         return this.$store.state.gui.general.printername
@@ -304,11 +216,6 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
 
     set calcEtaTime(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'general.calcEtaTime', value: newVal })
-    }
-
-    async resetMainsailAction() {
-        await this.$store.dispatch('socket/addLoading', 'resetMainsail')
-        await this.$store.dispatch('gui/resetMoonrakerDB', this.backupCheckboxes)
     }
 }
 </script>
