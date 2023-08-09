@@ -6,7 +6,7 @@
             class="webcamImage"
             :style="webcamStyle"
             @load="onload" />
-        <span v-if="showFps" class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span>
+        <span v-if="showFpsCounter" class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span>
     </div>
 </template>
 
@@ -70,6 +70,12 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
     get fpsOutput() {
         return this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS
+    }
+
+    get showFpsCounter() {
+        if (!this.showFps) return false
+
+        return !(this.camSettings.extra_data?.hideFps ?? false)
     }
 
     startStream() {

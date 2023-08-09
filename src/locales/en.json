@@ -1104,6 +1104,7 @@
             "EditCrowsnestConf": "Edit crowsnest.conf",
             "EditWebcam": "Edit Webcam",
             "FlipWebcam": "Flip webcam image:",
+            "HideFps": "Hide FPS counter",
             "Horizontally": "horizontally",
             "IconBed": "Bed",
             "IconCam": "Cam",
