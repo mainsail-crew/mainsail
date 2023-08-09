@@ -7,33 +7,21 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.Language')">
-                    <v-select
-                        v-model="currentLanguage"
-                        :items="availableLanguages"
-                        hide-details
-                        outlined
-                        dense
-                        attach />
+                    <v-select v-model="currentLanguage" :items="availableLanguages" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.DateFormat')">
-                    <v-select v-model="dateFormat" :items="dateFormatItems" hide-details outlined dense attach />
+                    <v-select v-model="dateFormat" :items="dateFormatItems" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.TimeFormat')">
-                    <v-select v-model="timeFormat" :items="timeFormatItems" hide-details outlined dense attach />
+                    <v-select v-model="timeFormat" :items="timeFormatItems" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.GeneralTab.CalcPrintProgress')"
                     :sub-title="$t('Settings.GeneralTab.CalcPrintProgressDescription')">
-                    <v-select
-                        v-model="calcPrintProgress"
-                        :items="calcPrintProgressItems"
-                        hide-details
-                        dense
-                        outlined
-                        attach />
+                    <v-select v-model="calcPrintProgress" :items="calcPrintProgressItems" hide-details dense outlined />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
@@ -45,189 +33,25 @@
                         multiple
                         hide-details
                         dense
-                        outlined
-                        attach />
+                        outlined />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.GeneralTab.CalcEtaTime')"
                     :sub-title="$t('Settings.GeneralTab.CalcEtaTimeDescription')">
-                    <v-select
-                        v-model="calcEtaTime"
-                        :items="calcEtaTimeItems"
-                        multiple
-                        hide-details
-                        dense
-                        outlined
-                        attach />
+                    <v-select v-model="calcEtaTime" :items="calcEtaTimeItems" multiple hide-details dense outlined />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.MainsailSettingsMoonrakerDb')" :dynamic-slot-width="true">
-                    <input
-                        ref="uploadBackupFile"
-                        type="file"
-                        :accept="['.json']"
-                        class="d-none"
-                        @change="uploadRestore" />
-                    <v-btn :loading="loadings.includes('backupDbButton')" small @click="backupDb">
-                        {{ $t('Settings.GeneralTab.Backup') }}
-                    </v-btn>
-                    <v-btn small :loading="loadings.includes('restoreUploadButton')" class="ml-3" @click="restoreDb">
-                        {{ $t('Settings.GeneralTab.Restore') }}
-                    </v-btn>
+                    <settings-general-tab-backup-database />
+                    <settings-general-tab-restore-database />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamic-slot-width="true">
-                    <v-btn color="error" small @click="resetMainsail">
-                        {{ $t('Settings.GeneralTab.FactoryReset') }}
-                    </v-btn>
+                    <settings-general-tab-reset-database />
                 </settings-row>
             </v-card-text>
         </v-card>
-        <v-dialog v-model="dialogBackupMainsail" persistent :width="360">
-            <panel
-                :title="$t('Settings.GeneralTab.Backup')"
-                card-class="mainsail-backup-dialog"
-                :margin-bottom="false"
-                :icon="mdiHelpCircle">
-                <template #buttons>
-                    <v-btn icon tile @click="dialogBackupMainsail = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <v-row>
-                        <v-col>
-                            <p class="mb-0">{{ $t('Settings.GeneralTab.BackupDialog') }}</p>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="pl-6">
-                            <template v-for="db in mainsailKeys">
-                                <v-checkbox
-                                    :key="db.name"
-                                    :label="db.label"
-                                    hide-details
-                                    class="mt-0"
-                                    @change="changeNamespace(db.name)" />
-                            </template>
-                            <v-checkbox
-                                v-if="availableNamespaces.includes('timelapse')"
-                                :label="$t('Settings.GeneralTab.DbTimelapseSettings')"
-                                hide-details
-                                class="mt-0"
-                                @change="changeNamespace('timelapse')" />
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="text-center">
-                            <v-btn color="red" :loading="loadings.includes('backupMainsail')" @click="backupMainsail">
-                                {{ $t('Settings.GeneralTab.Backup') }}
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-            </panel>
-        </v-dialog>
-        <v-dialog v-model="dialogResetMainsail" persistent :width="360">
-            <panel
-                :title="$t('Settings.GeneralTab.FactoryReset')"
-                card-class="factory-reset-dialog"
-                :margin-bottom="false"
-                :icon="mdiHelpCircle">
-                <template #buttons>
-                    <v-btn icon tile @click="dialogResetMainsail = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <v-row>
-                        <v-col>
-                            <p class="mb-0">{{ $t('Settings.GeneralTab.FactoryDialog') }}</p>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="pl-6">
-                            <template v-for="db in mainsailKeys">
-                                <v-checkbox
-                                    :key="db.name"
-                                    :label="db.label"
-                                    hide-details
-                                    class="mt-0"
-                                    @change="changeNamespace(db.name)" />
-                            </template>
-                            <v-checkbox
-                                v-if="availableNamespaces.includes('timelapse')"
-                                :label="$t('Settings.GeneralTab.DbTimelapseSettings')"
-                                hide-details
-                                class="mt-0"
-                                @change="changeNamespace('timelapse')" />
-                            <v-checkbox
-                                v-if="moonrakerComponents.includes('history')"
-                                :label="$t('Settings.GeneralTab.DbHistoryJobs')"
-                                hide-details
-                                class="mt-0"
-                                @change="changeNamespace('history_jobs')" />
-                            <v-checkbox
-                                v-if="moonrakerComponents.includes('history')"
-                                :label="$t('Settings.GeneralTab.DbHistoryTotals')"
-                                hide-details
-                                class="mt-0"
-                                @change="changeNamespace('history_totals')" />
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="text-center">
-                            <v-btn
-                                color="red"
-                                :loading="loadings.includes('resetMainsail')"
-                                @click="resetMainsailAction">
-                                {{ $t('Settings.GeneralTab.Reset') }}
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-            </panel>
-        </v-dialog>
-        <v-dialog v-model="dialogRestoreMainsail" persistent :width="360">
-            <panel
-                :title="$t('Settings.GeneralTab.Restore')"
-                card-class="factory-reset-dialog"
-                :margin-bottom="false"
-                :icon="mdiHelpCircle">
-                <template #buttons>
-                    <v-btn icon tile @click="dialogRestoreMainsail = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <v-row>
-                        <v-col>
-                            <p class="mb-0">{{ $t('Settings.GeneralTab.RestoreDialog') }}</p>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="pl-6">
-                            <template v-for="db in restoreableNamespaces">
-                                <v-checkbox
-                                    :key="db.name"
-                                    :label="db.label"
-                                    hide-details
-                                    class="mt-0"
-                                    @change="changeNamespace(db.name)" />
-                            </template>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="text-center">
-                            <v-btn color="red" :loading="loadings.includes('restoreMainsail')" @click="restoreDbAction">
-                                {{ $t('Settings.GeneralTab.Restore') }}
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-            </panel>
-        </v-dialog>
     </div>
 </template>
 
@@ -237,92 +61,26 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
-import Vue from 'vue'
 import { mdiCloseThick, mdiHelpCircle } from '@mdi/js'
+import CheckboxList from '@/components/inputs/CheckboxList.vue'
+import SettingsGeneralTabBackupDatabase from '@/components/settings/General/GeneralBackup.vue'
+import SettingsGeneralTabRestoreDatabase from '@/components/settings/General/GeneralRestore.vue'
+import SettingsGeneralTabResetDatabase from '@/components/settings/General/GeneralReset.vue'
+import SettingsGeneralDatabase from '@/components/mixins/settingsGeneralDatabase'
 
 @Component({
-    components: { Panel, SettingsRow },
+    components: {
+        Panel,
+        SettingsRow,
+        CheckboxList,
+        SettingsGeneralTabBackupDatabase,
+        SettingsGeneralTabRestoreDatabase,
+        SettingsGeneralTabResetDatabase,
+    },
 })
-export default class SettingsGeneralTab extends Mixins(BaseMixin) {
+export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGeneralDatabase) {
     mdiHelpCircle = mdiHelpCircle
     mdiCloseThick = mdiCloseThick
-
-    private dialogBackupMainsail = false
-    private dialogResetMainsail = false
-    private dialogRestoreMainsail = false
-
-    private dbCheckboxes: string[] = []
-
-    private restoreableNamespaces: { name: string; label: string }[] = []
-    private restoreObjects: any = {}
-
-    private mainsailKeys: { name: string; label: string }[] = []
-    private availableNamespaces: string[] = []
-
-    declare $refs: {
-        uploadBackupFile: HTMLInputElement
-    }
-
-    get availableKeys() {
-        return [
-            {
-                name: 'general',
-                label: this.$t('Settings.GeneralTab.General'),
-            },
-            {
-                name: 'console',
-                label: this.$t('Settings.ConsoleTab.Console'),
-            },
-            {
-                name: 'control',
-                label: this.$t('Settings.ControlTab.Control'),
-            },
-            {
-                name: 'dashboard',
-                label: this.$t('Settings.DashboardTab.Dashboard'),
-            },
-            {
-                name: 'editor',
-                label: this.$t('Settings.EditorTab.Editor'),
-            },
-            {
-                name: 'gcodeViewer',
-                label: this.$t('Settings.GCodeViewerTab.GCodeViewer'),
-            },
-            {
-                name: 'gcodehistory',
-                label: this.$t('Settings.GeneralTab.DbConsoleHistory'),
-            },
-            {
-                name: 'macros',
-                label: this.$t('Settings.MacrosTab.Macros'),
-            },
-            {
-                name: 'notifications',
-                label: this.$t('App.Notifications.Notifications'),
-            },
-            {
-                name: 'presets',
-                label: this.$t('Settings.PresetsTab.PreheatPresets'),
-            },
-            {
-                name: 'remoteprinters',
-                label: this.$t('Settings.RemotePrintersTab.RemotePrinters'),
-            },
-            {
-                name: 'timelapse',
-                label: this.$t('Settings.TimelapseTab.Timelapse'),
-            },
-            {
-                name: 'uiSettings',
-                label: this.$t('Settings.UiSettingsTab.UiSettings'),
-            },
-            {
-                name: 'view',
-                label: this.$t('Settings.GeneralTab.DbView'),
-            },
-        ]
-    }
 
     get printerName() {
         return this.$store.state.gui.general.printername
@@ -458,155 +216,6 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
 
     set calcEtaTime(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'general.calcEtaTime', value: newVal })
-    }
-
-    get moonrakerDbNamespaces() {
-        return this.$store.state.server.dbNamespaces ?? []
-    }
-
-    get moonrakerComponents() {
-        return this.$store.state.server.components ?? []
-    }
-
-    async refreshNamespaces() {
-        this.availableNamespaces = []
-
-        const url = this.$store.getters['socket/getUrl'] + '/server/database/list'
-        const response = await fetch(url)
-        if (response) {
-            const objects = await response.json()
-            this.availableNamespaces = [...(objects.result?.namespaces || {})] ?? []
-        }
-    }
-
-    async refreshMainsailKeys() {
-        this.mainsailKeys = []
-
-        const url = this.$store.getters['socket/getUrl'] + '/server/database/item?namespace=mainsail'
-        const response = await fetch(url)
-        if (response) {
-            const objects = await response.json()
-            if (objects?.result?.value) {
-                Object.keys(objects?.result?.value).forEach((tmp: string) => {
-                    if (tmp !== 'initVersion') {
-                        const namespace = this.availableKeys.find((namespace) => namespace.name === tmp)
-                        const tmpNamespace = namespace ? namespace : { name: tmp, label: tmp }
-                        this.mainsailKeys.push(tmpNamespace)
-                    }
-                })
-
-                this.mainsailKeys = this.mainsailKeys.sort((a, b) => {
-                    if (a.name === 'general') return -1
-                    if (b.name === 'general') return 1
-
-                    const stringA = a.label.toString().toLowerCase()
-                    const stringB = b.label.toString().toLowerCase()
-
-                    if (stringA < stringB) return -1
-                    if (stringA > stringB) return 1
-
-                    return 0
-                })
-            }
-        }
-    }
-
-    changeNamespace(name: string) {
-        if (this.dbCheckboxes.includes(name)) {
-            const index = this.dbCheckboxes.indexOf(name)
-            if (index >= 0) this.dbCheckboxes.splice(index, 1)
-        } else this.dbCheckboxes.push(name)
-    }
-
-    async resetMainsail() {
-        await this.refreshNamespaces()
-        if (this.availableNamespaces.includes('mainsail')) await this.refreshMainsailKeys()
-        else this.mainsailKeys = []
-
-        this.dbCheckboxes = []
-        this.dialogResetMainsail = true
-    }
-
-    async resetMainsailAction() {
-        await this.$store.dispatch('socket/addLoading', 'resetMainsail')
-        await this.$store.dispatch('gui/resetMoonrakerDB', this.dbCheckboxes)
-    }
-
-    async backupDb() {
-        await this.$store.dispatch('socket/addLoading', 'backupDbButton')
-        await this.refreshNamespaces()
-        if (this.availableNamespaces.includes('mainsail')) await this.refreshMainsailKeys()
-        else this.mainsailKeys = []
-
-        this.dbCheckboxes = []
-        this.dialogBackupMainsail = true
-    }
-
-    async backupMainsail() {
-        await this.$store.dispatch('socket/addLoading', 'backupMainsail')
-        await this.$store.dispatch('gui/backupMoonrakerDB', this.dbCheckboxes)
-        await this.$store.dispatch('socket/removeLoading', 'backupMainsail')
-        this.dialogBackupMainsail = false
-    }
-
-    async restoreDb() {
-        await this.$store.dispatch('socket/addLoading', 'restoreUploadButton')
-        this.$refs?.uploadBackupFile?.click()
-    }
-
-    uploadRestore() {
-        if (this.$refs.uploadBackupFile.files?.length) {
-            const backup = this.$refs.uploadBackupFile.files[0]
-            if (backup) {
-                const reader = new FileReader()
-                reader.readAsText(backup, 'UTF-8')
-                reader.onload = (evt) => {
-                    this.restoreableNamespaces = []
-                    try {
-                        this.restoreObjects = JSON.parse(evt?.target?.result + '')
-
-                        Object.keys(this.restoreObjects).forEach((tmp: string) => {
-                            const namespace = this.availableKeys.find((namespace) => namespace.name === tmp)
-                            const tmpNamespace = namespace ? namespace : { name: tmp, label: tmp }
-
-                            this.restoreableNamespaces.push(tmpNamespace)
-                        })
-
-                        this.restoreableNamespaces = this.restoreableNamespaces.sort((a, b) => {
-                            if (a.name === 'general') return -1
-                            if (b.name === 'general') return 1
-
-                            const stringA = a.label.toString().toLowerCase()
-                            const stringB = b.label.toString().toLowerCase()
-
-                            if (stringA < stringB) return -1
-                            if (stringA > stringB) return 1
-
-                            return 0
-                        })
-
-                        this.dbCheckboxes = []
-                        this.dialogRestoreMainsail = true
-                    } catch (e) {
-                        Vue.$toast.error(this.$t('Settings.GeneralTab.CannotReadJson') + '')
-                    }
-                }
-                reader.onerror = (evt) => {
-                    window.console.error(evt)
-                }
-            }
-
-            this.$refs.uploadBackupFile.value = ''
-        }
-    }
-
-    async restoreDbAction() {
-        this.$store.dispatch('socket/addLoading', 'restoreDbAction')
-
-        this.$store.dispatch('gui/restoreMoonrakerDB', {
-            dbCheckboxes: this.dbCheckboxes,
-            restoreObjects: this.restoreObjects,
-        })
     }
 }
 </script>

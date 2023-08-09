@@ -32,21 +32,13 @@ export const actions: ActionTree<GuiState, RootState> = {
         }
 
         // delete currentPath if exists
-        if (
-            'view' in payload.value &&
-            'gcodefiles' in payload.value.view &&
-            'currentPath' in payload.value.view.gcodefiles
-        ) {
+        if (payload.value?.view?.gcodefiles?.currentPath) {
             window.console.debug('remove currentPath from gui namespace')
             await fetch(mainsailUrl + '&key=view.gcodefiles.currentPath', { method: 'DELETE' })
         }
 
         // delete currentPath if exists
-        if (
-            'view' in payload.value &&
-            'configfiles' in payload.value.view &&
-            'currentPath' in payload.value.view.configfiles
-        ) {
+        if (payload.value?.view?.configfiles?.currentPath) {
             window.console.debug('remove currentPath from gui namespace')
             await fetch(mainsailUrl + '&key=view.configfiles.currentPath', { method: 'DELETE' })
         }

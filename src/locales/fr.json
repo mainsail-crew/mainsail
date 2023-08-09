@@ -829,7 +829,8 @@
             "12hours": "12-heures ({time})",
             "24hours": "24-heures ({time})",
             "DateFormat": "Format de la date",
-            "TimeFormat": "Format de l'heure"
+            "TimeFormat": "Format de l'heure",
+            "Everything": "Tout"
         },
         "InterfaceSettings": "Réglages interface",
         "MacrosTab": {

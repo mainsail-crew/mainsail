@@ -874,6 +874,7 @@
             "DbConsoleHistory": "Console History",
             "DbHistoryJobs": "History Jobs",
             "DbHistoryTotals": "History Totals",
+            "DBNavigation": "Navigation",
             "DbTimelapseSettings": "Timelapse Settings",
             "DbView": "View Settings",
             "EstimateValues": {
@@ -890,7 +891,8 @@
             "Reset": "reset",
             "Restore": "Restore",
             "RestoreDialog": "Please select all the sections you want to restore:",
-            "TimeFormat": "Time Format"
+            "TimeFormat": "Time Format",
+            "Everything": "Everything"
         },
         "InterfaceSettings": "Interface Settings",
         "MacrosTab": {
