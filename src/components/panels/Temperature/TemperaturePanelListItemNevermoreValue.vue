@@ -5,9 +5,9 @@
                 <span :style="cssStyle" v-bind="attrs" v-on="on">{{ formatValue }}</span>
             </template>
             <span>
-                {{ $t('Panels.TemperaturePanel.Max') }}: {{ formatValue_min }}
+                {{ $t('Panels.TemperaturePanel.Max') }}: {{ formatValue_max }}
                 <br />
-                {{ $t('Panels.TemperaturePanel.Min') }}: {{ formatValue_max }}
+                {{ $t('Panels.TemperaturePanel.Min') }}: {{ formatValue_min }}
             </span>
         </v-tooltip>
     </div>
