@@ -102,18 +102,7 @@ export default class SettingsGeneralTabRestoreDatabase extends Mixins(BaseMixin,
                 })
 
                 // sort restoreableNamespaces
-                this.restoreableNamespaces = this.restoreableNamespaces.sort((a, b) => {
-                    if (a.value === 'general') return -1
-                    if (b.value === 'general') return 1
-
-                    const stringA = a.label.toString().toLowerCase()
-                    const stringB = b.label.toString().toLowerCase()
-
-                    if (stringA < stringB) return -1
-                    if (stringA > stringB) return 1
-
-                    return 0
-                })
+                this.restoreableNamespaces = this.restoreableNamespaces.sort(this.sortNamespaces)
 
                 this.openDialog()
             } catch (e) {
