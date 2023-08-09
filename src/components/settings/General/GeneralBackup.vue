@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -61,79 +61,8 @@ export default class SettingsGeneralTabBackupDatabase extends Mixins(BaseMixin, 
     backupableNamespaces: { value: string; label: string | TranslateResult }[] = []
     backupCheckboxes: string[] = []
 
-    mounted() {
-        this.loadBackupableNamespaces()
-    }
-
-    async loadBackupableNamespaces() {
-        // reset namespaces
-        this.backupableNamespaces = []
-
-        // load DB namespaces from moonraker
-        const urlRequestDbList = this.$store.getters['socket/getUrl'] + '/server/database/list'
-        const availableNamespaces = await fetch(urlRequestDbList)
-            // read json
-            .then((response) => response?.json())
-            // extract result namespaces
-            .then((response) => response?.result?.namespaces ?? [])
-            .catch(() => {
-                window.console.error('Cannot load Moonraker DB namespaces')
-                return []
-            })
-
-        // load mainsail keys, if mainsail namespace exists
-        if (availableNamespaces.includes('mainsail')) {
-            const urlRequestMainsailNamespace =
-                this.$store.getters['socket/getUrl'] + '/server/database/item?namespace=mainsail'
-            this.backupableNamespaces = await fetch(urlRequestMainsailNamespace)
-                // read json
-                .then((response) => response?.json())
-                // extract result object
-                .then((response) => response?.result?.value ?? {})
-                // extract keys from mainsail gui object
-                .then((objects) => Object.keys(objects))
-                // filter initVersion
-                .then((keys) => keys.filter((key) => key !== 'initVersion'))
-                // convert to locale
-                .then((keys) =>
-                    keys.map((key) => {
-                        const namespace = this.availableKeys.find((namespace) => namespace.value === key)
-                        if (namespace) return namespace
-
-                        // fallback return key name
-                        return { value: key, label: key }
-                    })
-                )
-
-            this.backupableNamespaces = this.backupableNamespaces.sort((a, b) => {
-                if (a.value === 'general') return -1
-                if (b.value === 'general') return 1
-
-                const stringA = a.label.toString().toLowerCase()
-                const stringB = b.label.toString().toLowerCase()
-
-                if (stringA < stringB) return -1
-                if (stringA > stringB) return 1
-
-                return 0
-            })
-        }
-
-        // add timelapse if exists
-        if (availableNamespaces.includes('timelapse')) {
-            this.backupableNamespaces.push({
-                value: 'timelapse',
-                label: this.$t('Settings.GeneralTab.DbTimelapseSettings'),
-            })
-        }
-
-        // add webcams if exists
-        if (availableNamespaces.includes('webcams')) {
-            this.backupableNamespaces.push({
-                value: 'webcams',
-                label: this.$t('Settings.GeneralTab.DbWebcams'),
-            })
-        }
+    async mounted() {
+        this.backupableNamespaces = await this.loadBackupableNamespaces()
     }
 
     onSelectBackupCheckboxes(backupCheckboxes: string[]) {
@@ -147,8 +76,8 @@ export default class SettingsGeneralTabBackupDatabase extends Mixins(BaseMixin, 
         this.closeDialog()
     }
 
-    openDialog() {
-        this.loadBackupableNamespaces()
+    async openDialog() {
+        this.backupableNamespaces = await this.loadBackupableNamespaces()
         this.showDialog = true
     }
 
