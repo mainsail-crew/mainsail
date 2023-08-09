@@ -133,7 +133,7 @@ export default class TemperaturePanelListItemNevermoreValue extends Mixins(BaseM
     }
 
     get isVisible() {
-        //if (this.intake_value === null && this.exhaust_value === null) return false
+        if (this.intake_value === null && this.exhaust_value === null) return false
 
         return this.guiSetting
     }
