@@ -508,7 +508,11 @@
             "SoftRecovery": "Przywróć miękko",
             "UpdateWarning": "Ostrzeżenie o aktualizacji: {name}",
             "UpgradeableSystemPackages": "Pakiety systemowe, które można uaktualnić",
-            "Corrupt": "uszkodzone"
+            "Corrupt": "uszkodzone",
+            "Notification": {
+                "Detached": "Stan odłączony nie jest błędem ani problemem. Oznacza jedynie, że w lokalnym repozytorium istnieją dodatkowe zmiany, które nie istnieją w zdalnym repozytorium.",
+                "Dirty": "Lokalne repozytorium zostało zmodyfikowane i nie można go zaktualizować w tym stanie. Spróbuj przywrócić to repozytorium."
+            }
         }
     },
     "Panels": {
@@ -672,7 +676,8 @@
             "Target": "Docelowa",
             "TemperaturesInChart": "Temperatura [°C]",
             "TempTooHigh": "Temperatura zbyt wysoka dla {name}! (max: {max})",
-            "TempTooLow": "Temperatura zbyt mała dla {name}! (min: {min})"
+            "TempTooLow": "Temperatura zbyt mała dla {name}! (min: {min})",
+            "HideMcuHostSensors": "Ukryj czujniki hosta/MCU"
         },
         "ToolheadControlPanel": {
             "Absolute": "Absolutna",
@@ -796,7 +801,8 @@
             "Style": "Styl",
             "ValueGreaterThan": "Wartość musi być większa niż {value}",
             "ZOffsetIncrements": "Wzrost offsetu osi Z (w mm)",
-            "ZTiltAdjust": "Dostosuj Z-Tilt {isDefault}"
+            "ZTiltAdjust": "Dostosuj Z-Tilt {isDefault}",
+            "HideDuringPrint": "Ukryj sterowanie osiami podczas drukowania"
         },
         "DashboardTab": {
             "Dashboard": "Sterowanie",
@@ -867,7 +873,9 @@
                 "Slicer": "Slicer (M73)"
             },
             "DateFormat": "Format daty",
-            "MainsailSettingsMoonrakerDb": "Ustawienia Mainsail w bazie danych Moonraker"
+            "MainsailSettingsMoonrakerDb": "Ustawienia Mainsail w bazie danych Moonraker",
+            "DBNavigation": "Nawigacja",
+            "Everything": "Wszystko"
         },
         "InterfaceSettings": "Ustawienia interfejsu",
         "MacrosTab": {
@@ -1040,7 +1048,12 @@
             "TempchartHeightDescription": "Modyfikuj wysokość wykresu temperatury w panelu sterowania.",
             "PowerDeviceName": "Urządzenie zasilające drukarkę",
             "HideUpdateWarnings": "Ukryj ostrzeżenia o aktualizacji",
-            "HideUpdateWarningsDescription": "Ta opcja ukryje wszystkie ostrzeżenia o aktualizacjach w menedżerze aktualizacji."
+            "HideUpdateWarningsDescription": "Ta opcja ukryje wszystkie ostrzeżenia o aktualizacjach w menedżerze aktualizacji.",
+            "DefaultNavigationState": "Domyślny stan nawigacji",
+            "DefaultNavigationStateAlwaysClosed": "zawsze zamknięty",
+            "DefaultNavigationStateDescription": "Który stan powinien mieć domyślną nawigację?",
+            "DefaultNavigationStateAlwaysOpen": "zawsze otwarty",
+            "DefaultNavigationStateLastState": "ostatni stan"
         },
         "WebcamsTab": {
             "AddWebcam": "Dodaj kamerę",
@@ -1077,7 +1090,8 @@
             "JMuxerStream": "Nieskompresowany strumień h264 (jmuxer)",
             "Rotate": "Obróć",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)",
+            "HideFps": "Ukryj wskaźnik kl./s"
         },
         "MiscellaneousTab": {
             "AddGroup": "dodaj grupę",
