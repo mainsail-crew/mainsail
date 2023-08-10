@@ -508,11 +508,7 @@
             "SoftRecovery": "Przywróć miękko",
             "UpdateWarning": "Ostrzeżenie o aktualizacji: {name}",
             "UpgradeableSystemPackages": "Pakiety systemowe, które można uaktualnić",
-            "Corrupt": "uszkodzone",
-            "Notification": {
-                "Detached": "Stan odłączony nie jest błędem ani problemem. Oznacza jedynie, że w lokalnym repozytorium istnieją dodatkowe zmiany, które nie istnieją w zdalnym repozytorium.",
-                "Dirty": "Lokalne repozytorium zostało zmodyfikowane i nie można go zaktualizować w tym stanie. Spróbuj przywrócić to repozytorium."
-            }
+            "Corrupt": "uszkodzone"
         }
     },
     "Panels": {
@@ -844,8 +840,6 @@
             "CalcEtaTimeDescription": "Po wybraniu kilku opcji zostanie obliczona średnia.",
             "CannotReadJson": "Brak możliwości przeczytania/przeanalizowania pliku kopii zapasowej.",
             "DbConsoleHistory": "Historia Konsoli",
-            "DbHistoryJobs": "Historia wydruków",
-            "DbHistoryTotals": "Historia łącznie",
             "DbTimelapseSettings": "Ustawienia timelapse",
             "DbView": "Ustawienia",
             "EstimateValues": {
