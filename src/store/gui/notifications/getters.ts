@@ -5,6 +5,7 @@ import i18n from '@/plugins/i18n.js'
 import { RootStateDependency } from '@/store/types'
 import { sha256 } from 'js-sha256'
 import { PrinterStateKlipperConfigWarning } from '@/store/printer/types'
+import { browserDetect } from '@/plugins/BrowserDetect'
 
 export const getters: GetterTree<GuiNotificationState, any> = {
     getNotifications: (state, getters) => {
@@ -27,6 +28,9 @@ export const getters: GetterTree<GuiNotificationState, any> = {
 
         // klipper warnings
         notifications = notifications.concat(getters['getNotificationsKlipperWarnings'])
+
+        // browser warnings
+        notifications = notifications.concat(getters['getNotificationsBrowserWarnings'])
 
         const mapType = {
             normal: 2,
@@ -266,6 +270,14 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                 } as GuiNotificationStateEntry)
             })
         }
+
+        return notifications
+    },
+
+    getNotificationsBrowserWarnings: (state, getters, rootState, rootGetters) => {
+        const notifications: GuiNotificationStateEntry[] = []
+
+        window.console.log(browserDetect())
 
         return notifications
     },
