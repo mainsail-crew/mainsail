@@ -34,6 +34,11 @@
                         :key="objectName"
                         :object-name="objectName"
                         :is-responsive-mobile="el.is.mobile ?? false" />
+                    <temperature-panel-list-item
+                        v-for="objectName in available_monitors"
+                        :key="objectName"
+                        :object-name="objectName"
+                        :is-responsive-mobile="el.is.mobile ?? false" />
                 </tbody>
             </v-simple-table>
         </template>
@@ -68,6 +73,10 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
 
     get available_sensors() {
         return this.$store.state.printer?.heaters?.available_sensors ?? []
+    }
+
+    get available_monitors() {
+        return this.$store.state.printer?.heaters?.available_monitors ?? []
     }
 
     get temperature_fans() {

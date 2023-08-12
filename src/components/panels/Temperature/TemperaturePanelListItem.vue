@@ -68,6 +68,7 @@ import { convertName } from '@/plugins/helpers'
 import {
     mdiFan,
     mdiFire,
+    mdiMemory,
     mdiPrinter3dNozzle,
     mdiPrinter3dNozzleAlert,
     mdiRadiator,
@@ -130,6 +131,9 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
 
         // show heater_generic icon
         if (this.objectName.startsWith('heater_generic')) return mdiFire
+
+        // show heater_generic icon
+        if (this.objectName.startsWith('tmc')) return mdiMemory
 
         // show fan icon, if it is a fan
         if (this.isFan) return mdiFan
