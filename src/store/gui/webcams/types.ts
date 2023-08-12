@@ -23,11 +23,11 @@ export interface GuiWebcamStateWebcam {
     snapshot_url: string
     flip_horizontal: boolean
     flip_vertical: boolean
-    nozzle_calibration: boolean
     rotation: number
     aspect_ratio?: string
     extra_data?: {
         hideFps?: boolean
+        nozzle_calibration?: boolean
     }
     source?: 'config' | 'database'
 }
