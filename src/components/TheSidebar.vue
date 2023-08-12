@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer
         :key="navigationStyle"
-        v-model="naviDrawer"
+        :value="naviDrawer"
         :src="sidebarBackground"
         :mini-variant="navigationStyle === 'iconsOnly'"
         :width="navigationWidth"
@@ -70,10 +70,6 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin) {
         return this.$store.state.naviDrawer
     }
 
-    set naviDrawer(newVal: boolean) {
-        this.$store.dispatch('setNaviDrawer', newVal)
-    }
-
     get navigationStyle() {
         return this.$store.state.gui.uiSettings.navigationStyle
     }
@@ -132,10 +128,6 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin) {
         }
 
         return output
-    }
-
-    mounted() {
-        this.naviDrawer = this.$vuetify.breakpoint.lgAndUp
     }
 }
 </script>

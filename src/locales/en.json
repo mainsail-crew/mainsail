@@ -681,6 +681,7 @@
                 "Temperature": "current temperature"
             },
             "Headline": "Temperatures",
+            "HideMcuHostSensors": "Hide Host/MCU Sensors",
             "Max": "max",
             "Min": "min",
             "Name": "Name",
@@ -795,6 +796,7 @@
             "Circle": "Circle",
             "Control": "Control",
             "Cross": "Cross",
+            "HideDuringPrint": "Hide axis controls during print",
             "EnableXYHoming": "Enable combined X & Y axes homing",
             "EstimatedExtrusionInfo": "Show estimated extrusion info",
             "EstimatedExtrusionInfoDescription": "Show / Hide info for estimated extrusions based on extrusion amount and feedrate",
@@ -872,6 +874,7 @@
             "DbConsoleHistory": "Console History",
             "DbHistoryJobs": "History Jobs",
             "DbHistoryTotals": "History Totals",
+            "DBNavigation": "Navigation",
             "DbTimelapseSettings": "Timelapse Settings",
             "DbView": "View Settings",
             "EstimateValues": {
@@ -888,7 +891,8 @@
             "Reset": "reset",
             "Restore": "Restore",
             "RestoreDialog": "Please select all the sections you want to restore:",
-            "TimeFormat": "Time Format"
+            "TimeFormat": "Time Format",
+            "Everything": "Everything"
         },
         "InterfaceSettings": "Interface Settings",
         "MacrosTab": {
@@ -1059,6 +1063,11 @@
             "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
             "ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
             "ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",
+            "DefaultNavigationState": "Navigation default state",
+            "DefaultNavigationStateAlwaysClosed": "always closed",
+            "DefaultNavigationStateAlwaysOpen": "always open",
+            "DefaultNavigationStateDescription": "Which state should have the navigation per default.",
+            "DefaultNavigationStateLastState": "last state",
             "DisableFanAnimation": "Disable fan animation",
             "DisableFanAnimationDescription": "This can reduce some load in your Browser.",
             "DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
@@ -1097,6 +1106,7 @@
             "EditCrowsnestConf": "Edit crowsnest.conf",
             "EditWebcam": "Edit Webcam",
             "FlipWebcam": "Flip webcam image:",
+            "HideFps": "Hide FPS counter",
             "Horizontally": "horizontally",
             "IconBed": "Bed",
             "IconCam": "Cam",

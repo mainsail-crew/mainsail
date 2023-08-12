@@ -2,6 +2,27 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.6.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.6.2) - 2023-07-30
+### Bug Fixes and Improvements
+
+- Fix editor save & restart button behavior (#1483) | [8447be2](8447be2ecee64fa4a3c0211ac57f42c3adf1d050)
+- Hide rpm in temperature_fans without tachometer_pin (#1489) | [e929c7c](e929c7cc0f45074f40407420b3585d9c02284fa1)
+- Fix flip function in several webcam clients (#1487) | [5c40820](5c4082010890e0b341754f42673affe7d1ca9d99)
+- Fix issue with camel-case object names in temperature panel (#1491) | [aeee198](aeee1982398acca803f7f4eae7b7b39a29253179)
+- Use webcam name instead of UUID for timelapse plugin (#1492) | [d67ef3a](d67ef3aa908601b6bb87353957bcc97ea4f829ea)
+- Fix issue with create/edit presets and refactor settings (#1499) | [6a4cca7](6a4cca751c88e89ddf5f2cc0f09a58f097a461af)
+- Fix multiple issues in the refactored update manager (#1497) | [9eb133b](9eb133bd85530ac08416e94f02ebe19f060bc095)
+- Fix issue with cannot extrude after a Klipper restart (#1495) | [cda3098](cda3098c9e09a054aa7baa69a3195e0a73f43e54)
+
+### Refactor
+
+- Refactor SettingsRow (#1484) | [0b47a80](0b47a80b133e6093aecdb0d7d87b718899dff0c7)
+
+### Localization
+
+- **pl**: Update Polish translation (#1482) | [0c5aca8](0c5aca8baffb65198f43a7d3b2b57571d8e911c9)
+- **zh**: Update chinese locale (#1486) | [7251a8c](7251a8c6bae2b92395de4c8c23e8e8e3900df66a)
+
 ## [2.6.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.6.1) - 2023-07-24
 ### Bug Fixes and Improvements
 

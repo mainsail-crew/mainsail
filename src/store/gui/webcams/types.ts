@@ -25,6 +25,8 @@ export interface GuiWebcamStateWebcam {
     flip_vertical: boolean
     rotation: number
     aspect_ratio?: string
-    extra_data?: {}
+    extra_data?: {
+        hideFps?: boolean
+    }
     source?: 'config' | 'database'
 }

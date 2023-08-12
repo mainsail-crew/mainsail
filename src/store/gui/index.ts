@@ -30,6 +30,7 @@ export const getDefaultState = (): GuiState => {
         control: {
             style: 'bars',
             actionButton: null,
+            hideDuringPrint: false,
             enableXYHoming: false,
             feedrateXY: 100,
             stepsXY: [100, 10, 1],
@@ -157,6 +158,7 @@ export const getDefaultState = (): GuiState => {
             boolWideNavDrawer: false,
             boolHideUploadAndPrintButton: false,
             navigationStyle: 'iconsAndText',
+            defaultNavigationStateSetting: 'alwaysOpen',
             powerDeviceName: null,
             hideSaveConfigForBedMash: false,
             disableFanAnimation: false,
@@ -236,6 +238,7 @@ export const getDefaultState = (): GuiState => {
             tempchart: {
                 boolTempchart: true,
                 hiddenDataset: [],
+                hideMcuHostSensors: false,
                 autoscale: false,
                 datasetSettings: {},
             },
