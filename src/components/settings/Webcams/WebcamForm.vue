@@ -134,6 +134,15 @@
                                 :label="$t('Settings.WebcamsTab.Vertically')" />
                         </v-col>
                     </v-row>
+                    <v-row class="mt-5">
+                        <v-col class="py-0">
+                            <v-checkbox
+                                v-model="webcam.nozzleCalib"
+                                class="mt-1"
+                                hide-details
+                                :label="$t('Settings.WebcamsTab.EnableNozzleCalibrationOverlay')"></v-checkbox>
+                        </v-col>
+                    </v-row>
                 </v-col>
                 <v-col class="col-12 col-sm-6 text-center" align-self="center">
                     <webcam-wrapper :webcam="webcam" />
