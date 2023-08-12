@@ -389,45 +389,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         await ctx?.moveTo(canvasCenterX - Math.round(crosshairsLengthX / 2), canvasCenterY);
         await ctx?.lineTo(canvasCenterX + Math.round(crosshairsLengthX / 2), canvasCenterY);
         
-        // ----------------------------------------------------------------
-        // draw scale
-        // ----------------------------------------------------------------
-        let scaleSizeMin = 5 
-        let scaleSizeMedium = 10  
-        let scaleSizeMax = 20  
-        ctx.lineWidth = 1;
-        for (let p = 0; p < 6 / 2; p++) {
-            let primary_step = Math.round(canvas.height / (this.imageSizeY) / (p * this.pixelPerMM))
-            if (this.rotate){
-                primary_step = Math.round(canvas.height / (this.imageSizeX) / (p * this.pixelPerMM))
-            }
-            await ctx?.moveTo(canvas.width, canvasCenterY - primary_step);
-            await ctx?.lineTo(canvas.width - scaleSizeMax, canvasCenterY - primary_step);
-            await ctx?.moveTo(canvas.width, canvasCenterY + primary_step);
-            await ctx?.lineTo(canvas.width - scaleSizeMax, canvasCenterY + primary_step);
-            await ctx?.moveTo(0, canvasCenterY - primary_step);
-            await ctx?.lineTo(scaleSizeMax, canvasCenterY - primary_step);
-            await ctx?.moveTo(0, canvasCenterY + primary_step);
-            await ctx?.lineTo(scaleSizeMax, canvasCenterY + primary_step);
-            await ctx?.stroke();
-            for (let s = 1; s < 10; s++) {
-                let sub_step = Math.round(canvas.height / (this.imageSizeY / ((s * 0.1) * this.pixelPerMM)))
-                if (this.rotate){
-                    sub_step = Math.round(canvas.height / (this.imageSizeX / ((s * 0.1) * this.pixelPerMM)))
-                }
-                await ctx?.moveTo(canvas.width, canvasCenterY - primary_step - sub_step);
-                await ctx?.lineTo(canvas.width - (s == 5 ? scaleSizeMedium : scaleSizeMin), canvasCenterY - primary_step - sub_step);
-                await ctx?.moveTo(canvas.width, canvasCenterY + primary_step + sub_step);
-                await ctx?.lineTo(canvas.width - (s == 5 ? scaleSizeMedium : scaleSizeMin), canvasCenterY + primary_step + sub_step);
-                await ctx?.moveTo(0, canvasCenterY - primary_step - sub_step);
-                await ctx?.lineTo(s == 5 ? scaleSizeMedium : scaleSizeMin, canvasCenterY - primary_step - sub_step);
-                await ctx?.moveTo(0, canvasCenterY + primary_step + sub_step);
-                await ctx?.lineTo(s == 5 ? scaleSizeMedium : scaleSizeMin, canvasCenterY + primary_step + sub_step);
-                await ctx?.stroke();
-            }
-        }
         await ctx?.stroke();
-
         this.isLoaded = true
     }
 
