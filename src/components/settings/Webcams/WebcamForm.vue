@@ -289,6 +289,23 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         this.webcam.extra_data.hideFps = newVal
     }
 
+    get nozzleCalibration() {
+        return this.webcam.extra_data?.nozzle_calibration ?? false
+    }
+
+    set hideFps(newVal) {
+        if (!('extra_data' in this.webcam)) {
+            this.webcam.extra_data = {
+                nozzle_calibration: newVal,
+            }
+
+            return
+        }
+
+        // @ts-ignore
+        this.webcam.extra_data.nozzle_calibration = newVal
+    }
+
     mounted() {
         this.oldWebcamName = this.webcam.name
     }
