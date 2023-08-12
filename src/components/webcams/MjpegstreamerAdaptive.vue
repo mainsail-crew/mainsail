@@ -161,9 +161,8 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         return 'MOVE'
     }
     
-    private status = ''
     get fpsOutput() {
-        return `${this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS}${this.status}` 
+        return `${this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS}` 
     }
 
     get showFpsCounter() {
@@ -279,20 +278,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
             this.imageOffsetX = this.canvasPixelToFramePixel(this.distancePixels.x)
             this.imageOffsetY = this.canvasPixelToFramePixel(this.distancePixels.y) 
 
-            this.status = ''
-            // this.status += ` cw: ${canvas.width}`
-            // this.status += ` ch: ${canvas.height}`
-            // this.status += ` fw: ${imgWidth}`
-            // this.status += ` fh: ${imgHeight}`
-            // this.status += ` r: ${(this.aspectRatio ?? 1).toFixed(1)}`
-            // this.status += ` pr: ${this.pixelRatio.toFixed(2)}`
-            // this.status += ` iox: ${this.imageOffsetX.toFixed(1)}`
-            // this.status += ` ioy: ${this.imageOffsetY.toFixed(1)}`
-            // this.status += ` isx: ${this.imageStartX.toFixed(1)}`
-            // this.status += ` isy: ${this.imageStartY.toFixed(1)}`
-            // this.status += ` iw: ${this.imageSizeX.toFixed(1)}`
-            // this.status += ` ih: ${this.imageSizeY.toFixed(1)}`
-
             if (this.rotate) {
                 let scale = (canvas.height / frame.width) * this.zoomFactor
 
@@ -303,13 +288,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
                 let y1 = (-frame.height / 2) * scale
                 let x2 = frame.width * scale
                 let y2 = frame.height * scale
-
-                this.status += ` x: ${x.toFixed(1)}`        // 383      383
-                this.status += ` y: ${y.toFixed(1)}`        // 510.5    510.5
-                this.status += ` x1: ${x1.toFixed(1)}`      // -1021    -510.5
-                this.status += ` y1: ${y1.toFixed(1)}`      // -765.8   -383
-                this.status += ` x2: ${x2.toFixed(1)}`      // 2042     1021    
-                this.status += ` y2: ${y2.toFixed(1)}`      // 1531.5   765.8
 
                 ctx.translate(x, y)
                 ctx.rotate((this.camSettings.rotation * Math.PI) / 180)
@@ -338,8 +316,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
                 await ctx?.drawImage(frame, this.imageStartX, this.imageStartY, this.imageSizeX, this.imageSizeY, 0, 0, canvas.width, canvas.height)
             } 
-
-            this.status += this.pointerStats
 
             if (this.nozzleCalib) this.drawOverlay(ctx, canvas)
 
