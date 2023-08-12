@@ -3,14 +3,14 @@
         <div v-if="!isLoaded" class="text-center py-5">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </div>
-        <canvas ref="mjpegstreamerAdaptive"
+        <canvas
+            ref="mjpegstreamerAdaptive"
             v-observe-visibility="viewportVisibilityChanged"
             width="600"
             height="400"
             :style="webcamStyle"
-            :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')">
-        </canvas>
-        <span v-if="isLoaded && showFps" class="webcamFpsOutput">
+            :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')"></canvas>
+        <span v-if="isLoaded && showFpsCounter" class="webcamFpsOutput">
             {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
         </span>
         <span v-if="isLoaded && nozzleCalib" class="cmdButtonsControl">
@@ -31,20 +31,6 @@
                     :style="{ 'background-color': xyzMoveMode ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': xyzMoveMode ? 'var(--v-btn-text-primary)' : 'white' }"
                     @click="toggleXYZMove()">
                     {{ XYZMoveOutput }}
-                </v-btn>
-                <v-btn
-                    small
-                    class="cmdButton"
-                    :style="{ 'background-color': renderMethod == 'a' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': renderMethod == 'a' ? 'var(--v-btn-text-primary)' : 'white', 'min-width': '0px' }"
-                    @click="setRenderMethod('a')">
-                    A
-                </v-btn>
-                <v-btn
-                    small
-                    class="cmdButton"
-                    :style="{ 'background-color': renderMethod == 'b' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': renderMethod == 'b' ? 'var(--v-btn-text-primary)' : 'white', 'border-top-right-radius': '5px', 'min-width': '0px' }"
-                    @click="setRenderMethod('b')">
-                    B
                 </v-btn>
             </v-item-group>
         </span>
@@ -94,15 +80,17 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
-import ControlMixin from '@/components/mixins/control'
 import BaseMixin from '@/components/mixins/base'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
+import ControlMixin from '@/components/mixins/control'
 
 import {
     PrinterStateToolchangeMacro,
 } from '@/store/printer/types'
 
 @Component
-export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixin) {
+export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin, ControlMixin) {
     private refresh = Math.ceil(Math.random() * Math.pow(10, 12))
     private isVisible = true
     private isVisibleDocument = true
@@ -124,8 +112,8 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixi
         mjpegstreamerAdaptive: any
     }
 
-    @Prop({ required: true }) declare camSettings: any
-    @Prop() declare printerUrl: string | undefined
+    @Prop({ required: true }) declare camSettings: GuiWebcamStateWebcam
+    @Prop({ default: null }) readonly printerUrl!: string | null
     @Prop({ default: true }) declare showFps: boolean
 
     get activeTool(): string {
@@ -148,17 +136,15 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixi
 
     get webcamStyle() {
         const output = {
-            transform: 'none',
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
             aspectRatio: 16 / 9,
             maxHeight: window.innerHeight - 155 + 'px',
             maxWidth: 'auto',
         }
-
-        let transforms = ''
-        if (this.camSettings.flipX ?? false) transforms += ' scaleX(-1)'
-        if (this.camSettings.flipY ?? false) transforms += ' scaleY(-1)'
-        if ((this.camSettings.rotate ?? 0) === 180) transforms += ' rotate(180deg)'
-        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) {
             output.aspectRatio = this.aspectRatio
@@ -174,14 +160,20 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixi
         }
         return 'MOVE'
     }
-
+    
     private status = ''
     get fpsOutput() {
         return `${this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS}${this.status}` 
     }
 
+    get showFpsCounter() {
+        if (!this.showFps) return false
+
+        return !(this.camSettings.extra_data?.hideFps ?? false)
+    }
+
     get nozzleCalib() {
-        return this.camSettings.nozzleCalib
+        return this.camSettings.extra_data?.nozzle_calibration ?? false
     }
 
     get currentZoomFactor() {
@@ -191,9 +183,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixi
     get maxZoomFactor() {
         return this.zoomFactorMax.toString()
     }
-
+    
     get rotate() {
-        return [90, 270].includes(this.camSettings.rotate ?? 0)
+        return [90, 270].includes(this.camSettings.rotation ?? 0)
     }
 
     get activeExtruder(): string {
@@ -234,15 +226,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixi
         return this.xyzMove
     }
 
-    get renderMethod() {
-        return this.actRenderMethod.toString()
-    }
-
-    private actRenderMethod = `a`
-    setRenderMethod(method: string) {
-        this.actRenderMethod = method
-    }
-
     refreshFrame() {
         if (this.isVisible) {
             this.refresh = new Date().getTime()
@@ -251,9 +234,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixi
     }
 
     async setFrame() {
-        const baseUrl = this.camSettings.urlSnapshot
+        const baseUrl = this.camSettings.snapshot_url
 
-        let url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
+        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
         if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
         url.searchParams.append('bypassCache', this.refresh.toString())
@@ -325,9 +308,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixi
                 this.status += ` y2: ${y2.toFixed(1)}`      // 1531.5   765.8
 
                 ctx.translate(x, y)
-                ctx.rotate((this.camSettings.rotate * Math.PI) / 180)
+                ctx.rotate((this.camSettings.rotation * Math.PI) / 180)
                 await ctx?.drawImage(frame, x1, y1, x2, y2)
-                ctx.rotate(-((this.camSettings.rotate * Math.PI) / 180))
+                ctx.rotate(-((this.camSettings.rotation * Math.PI) / 180))
                 ctx.translate(-x, -y)
             } else{
                 // get frame to canvas pixel ratio
@@ -460,12 +443,11 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixi
     mmToCanvasPixel(canvas: any, mm: any): number {
         return (canvas.width / (mm / this.pixelPerMM) / 2)
     }
-
+    
     onLoad() {
-
         this.isLoaded = true
 
-        const targetFps = this.camSettings.targetFps || 10
+        const targetFps = this.camSettings.target_fps || 10
         const end_time = performance.now()
         const current_time = end_time - this.start_time
         this.time = this.time * this.time_smoothing + current_time * (1.0 - this.time_smoothing)
@@ -573,7 +555,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixi
         this.distanceMM = { x: 0, y: 0 }    
         this.doSend('NOZZLE_CALIBRATION_SET_TOOL')
     }
-
+    
     @Watch('camSettings', { immediate: true, deep: true })
     camSettingsChanged() {
         this.aspectRatio = null
@@ -629,17 +611,17 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixi
             this.distancePixels.y = this.getEventLocation(e).y - this.dragStart.y
             this.distanceMM.x = this.canvasPixelToMM(this.distancePixels.x)
             this.distanceMM.y = this.canvasPixelToMM(this.distancePixels.y)
-            if ((this.camSettings.rotate ?? 0) == 0){
+            if ((this.camSettings.rotation ?? 0) == 0){
             }
-            else if ((this.camSettings.rotate ?? 0) == 90){
+            else if ((this.camSettings.rotation ?? 0) == 90){
             }
-            else if ((this.camSettings.rotate ?? 0) == 180){
+            else if ((this.camSettings.rotation ?? 0) == 180){
                 // this.distancePixels.x = -this.distancePixels.x
                 // this.distancePixels.y = -this.distancePixels.y
                 // this.distanceMM.x = -this.distanceMM.x
                 // this.distanceMM.y = -this.distanceMM.y
             }
-            else if ((this.camSettings.rotate ?? 0) == 270){
+            else if ((this.camSettings.rotation ?? 0) == 270){
             }
             // this.pointerStats = ` dpx: ${this.distancePixels.x}`
             // this.pointerStats += ` dpy: ${this.distancePixels.y}`
@@ -688,7 +670,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixi
         }
     }
 }
-</script>  
+</script>
 
 <style scoped>
 .webcamImage {
