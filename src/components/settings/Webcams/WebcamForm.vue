@@ -140,7 +140,7 @@
                                 v-model="webcam.nozzle_calibration"
                                 class="mt-1"
                                 hide-details
-                                :label="$t('Settings.WebcamsTab.EnableNozzleCalibrationOverlay')"></v-checkbox>
+                                :label="$t('Settings.WebcamsTab.EnableNozzleCalibrationOverlay')" />
                         </v-col>
                     </v-row>
                 </v-col>

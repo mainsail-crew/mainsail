@@ -90,6 +90,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             flip_horizontal: false,
             flip_vertical: false,
             extra_data: {},
+            nozzle_calibration: false,
         }
 
         this.typeForm = 'create'
