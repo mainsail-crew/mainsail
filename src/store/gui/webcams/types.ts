@@ -28,5 +28,6 @@ export interface GuiWebcamStateWebcam {
     extra_data?: {
         hideFps?: boolean
     }
-    source?: 'config' | 'database'
+    source?: 'config' | 'database',
+    nozzleCalib: boolean
 }
