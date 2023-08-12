@@ -3,15 +3,90 @@
         <div v-if="!isLoaded" class="text-center py-5">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </div>
-        <canvas
-            ref="mjpegstreamerAdaptive"
+        <canvas ref="mjpegstreamerAdaptive"
             v-observe-visibility="viewportVisibilityChanged"
             width="600"
             height="400"
             :style="webcamStyle"
-            :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')"></canvas>
-        <span v-if="isLoaded && showFpsCounter" class="webcamFpsOutput">
+            :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')">
+        </canvas>
+        <span v-if="isLoaded && showFps" class="webcamFpsOutput">
             {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
+        </span>
+        <span v-if="isLoaded && nozzleCalib" class="cmdButtonsControl">
+            <v-item-group class="ma-0">
+                <v-btn
+                    small
+                    :disabled="isPrinting || !homedAxes.includes('xyz')"
+                    class="cmdButton"
+                    :style="{ 'background-color': 'rgba(0,0,0,0.8)', 'min-width': '0' }"
+                    :loading="loadings.includes('set_cp')"
+                    @click="doSet()">
+                    SET
+                </v-btn>
+                <v-btn
+                    small
+                    class="cmdButton"
+                    :disabled="isPrinting || !homedAxes.includes('xyz')"
+                    :style="{ 'background-color': xyzMoveMode ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': xyzMoveMode ? 'var(--v-btn-text-primary)' : 'white' }"
+                    @click="toggleXYZMove()">
+                    {{ XYZMoveOutput }}
+                </v-btn>
+                <v-btn
+                    small
+                    class="cmdButton"
+                    :style="{ 'background-color': renderMethod == 'a' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': renderMethod == 'a' ? 'var(--v-btn-text-primary)' : 'white', 'min-width': '0px' }"
+                    @click="setRenderMethod('a')">
+                    A
+                </v-btn>
+                <v-btn
+                    small
+                    class="cmdButton"
+                    :style="{ 'background-color': renderMethod == 'b' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': renderMethod == 'b' ? 'var(--v-btn-text-primary)' : 'white', 'border-top-right-radius': '5px', 'min-width': '0px' }"
+                    @click="setRenderMethod('b')">
+                    B
+                </v-btn>
+            </v-item-group>
+        </span>
+        <span v-if="isLoaded && nozzleCalib" class="cmdButtonsZoom">
+            <v-item-group class="ma-0">
+                <v-btn
+                    small
+                    class="cmdButton"
+                    :style="{ 'background-color': currentZoomFactor == '1' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': currentZoomFactor == '1' ? 'var(--v-btn-text-primary)' : 'white', 'border-bottom-left-radius': '5px', 'min-width': '0px' }"
+                    @click="zoom('1')">
+                    1X
+                </v-btn>
+                <v-btn
+                    small
+                    class="cmdButton"
+                    :style="{ 'background-color': currentZoomFactor == '2' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': currentZoomFactor == '2' ? 'var(--v-btn-text-primary)' : 'white' }"
+                    @click="zoom('2')">
+                    2X
+                </v-btn>
+                <v-btn
+                    small
+                    class="cmdButton"
+                    :style="{ 'background-color': currentZoomFactor == maxZoomFactor ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': currentZoomFactor == maxZoomFactor ? 'var(--v-btn-text-primary)' : 'white' }"
+                    @click="zoom('0')">
+                    MAX
+                </v-btn>
+            </v-item-group> 
+        </span>
+        <span v-if="isLoaded && nozzleCalib" class="cmdButtonsTools">
+            <v-item-group class="ma-0 _btn-group">
+                <v-btn
+                    v-for="tool in toolchangeMacros"
+                    small
+                    :key="tool.name"
+                    :disabled="isPrinting || !homedAxes.includes('xyz')"
+                    class='cmdButton'
+                    :loading="loadings.includes('set_' + tool.name.toLowerCase())"
+                    :style="{ 'background-color': tool.name == activeTool ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': tool.name == activeTool ? 'var(--v-btn-text-primary)' : 'white' }"
+                    @click="doT('NOZZLE_CALIBRATION_LOAD_TOOL T=' + tool.name.replace('T', ''))">
+                    {{ tool.name }}
+                </v-btn>
+            </v-item-group>
         </span>
     </div>
 </template>
@@ -19,17 +94,20 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
+import ControlMixin from '@/components/mixins/control'
 import BaseMixin from '@/components/mixins/base'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import WebcamMixin from '@/components/mixins/webcam'
+
+import {
+    PrinterStateToolchangeMacro,
+} from '@/store/printer/types'
 
 @Component
-export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin) {
+export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, ControlMixin) {
     private refresh = Math.ceil(Math.random() * Math.pow(10, 12))
     private isVisible = true
     private isVisibleDocument = true
     private isVisibleViewport = false
-    private isLoaded = true
+    private isLoaded = false
     // eslint-disable-next-line no-undef
     private timer: NodeJS.Timeout | undefined = undefined
 
@@ -46,21 +124,41 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         mjpegstreamerAdaptive: any
     }
 
-    @Prop({ required: true }) declare camSettings: GuiWebcamStateWebcam
-    @Prop({ default: null }) readonly printerUrl!: string | null
+    @Prop({ required: true }) declare camSettings: any
+    @Prop() declare printerUrl: string | undefined
     @Prop({ default: true }) declare showFps: boolean
+
+    get activeTool(): string {
+        let t = this.$store.state.printer.toolhead?.extruder.replace("extruder", "T"); 
+        if (t == 'T') t = t + '0'
+        return t;
+    }
+
+    get toolchangeMacros(): PrinterStateToolchangeMacro[] {
+        return this.$store.getters['printer/getToolchangeMacros']
+    }
+
+    get isPrinting(): boolean {
+        return ['printing'].includes(this.printer_state)
+    }
+
+    get homedAxes(): string {
+        return this.$store.state.printer?.toolhead?.homed_axes ?? ''
+    }
 
     get webcamStyle() {
         const output = {
-            transform: this.generateTransform(
-                this.camSettings.flip_horizontal ?? false,
-                this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
-            ),
+            transform: 'none',
             aspectRatio: 16 / 9,
             maxHeight: window.innerHeight - 155 + 'px',
             maxWidth: 'auto',
         }
+
+        let transforms = ''
+        if (this.camSettings.flipX ?? false) transforms += ' scaleX(-1)'
+        if (this.camSettings.flipY ?? false) transforms += ' scaleY(-1)'
+        if ((this.camSettings.rotate ?? 0) === 180) transforms += ' rotate(180deg)'
+        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) {
             output.aspectRatio = this.aspectRatio
@@ -70,18 +168,79 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         return output
     }
 
-    get fpsOutput() {
-        return this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS
+    get XYZMoveOutput() {
+        if (this.xyzMove && !this.isPrinting && this.homedAxes.includes('xyz')){
+            return 'x' + this.gcodePositions.x.toString() + ' y' + this.gcodePositions.y.toString() + ' z' + this.gcodePositions.z.toString()
+        }
+        return 'MOVE'
     }
 
-    get showFpsCounter() {
-        if (!this.showFps) return false
+    private status = ''
+    get fpsOutput() {
+        return `${this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS}${this.status}` 
+    }
 
-        return !(this.camSettings.extra_data?.hideFps ?? false)
+    get nozzleCalib() {
+        return this.camSettings.nozzleCalib
+    }
+
+    get currentZoomFactor() {
+        return this.zoomFactor.toString()
+    }
+
+    get maxZoomFactor() {
+        return this.zoomFactorMax.toString()
     }
 
     get rotate() {
-        return [90, 270].includes(this.camSettings.rotation ?? 0)
+        return [90, 270].includes(this.camSettings.rotate ?? 0)
+    }
+
+    get activeExtruder(): string {
+        return this.$store.state.printer.toolhead?.extruder
+    }
+
+    get nozzleDiameter(): number {
+        return this.$store.state.printer.configfile?.settings?.[this.activeExtruder]?.nozzle_diameter ?? 0.4
+    }
+
+    get primaryColor(): string {
+        return this.$store.state.gui.uiSettings.primary
+    }
+
+    get positionAbsolute() {
+        return this.$store.state.printer.gcode_move?.absolute_coordinates ?? true
+    }
+    
+    get livePositions() {
+        const pos = this.$store.state.printer.motion_report?.live_position ?? [0, 0, 0]
+        return {
+            x: pos[0]?.toFixed(2) ?? '--',
+            y: pos[1]?.toFixed(2) ?? '--',
+            z: pos[2]?.toFixed(3) ?? '--',
+        }
+    }
+
+    get gcodePositions() {
+        const pos = this.$store.state.printer.gcode_move?.gcode_position ?? [0, 0, 0]
+        return {
+            x: pos[0]?.toFixed(2) ?? '--',
+            y: pos[1]?.toFixed(2) ?? '--',
+            z: pos[2]?.toFixed(3) ?? '--',
+        }
+    }
+
+    get xyzMoveMode(): boolean {
+        return this.xyzMove
+    }
+
+    get renderMethod() {
+        return this.actRenderMethod.toString()
+    }
+
+    private actRenderMethod = `a`
+    setRenderMethod(method: string) {
+        this.actRenderMethod = method
     }
 
     refreshFrame() {
@@ -92,9 +251,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     }
 
     async setFrame() {
-        const baseUrl = this.camSettings.snapshot_url
+        const baseUrl = this.camSettings.urlSnapshot
 
-        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
+        let url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
         if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
         url.searchParams.append('bypassCache', this.refresh.toString())
@@ -113,25 +272,89 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
                 canvas.height = canvas.clientWidth / this.aspectRatio
             } else {
                 if (this.aspectRatio === null) this.aspectRatio = frame.width / frame.height
-                canvas.height = canvas.clientWidth * this.aspectRatio
+                canvas.height = canvas.clientWidth / this.aspectRatio
             }
 
+            let imgWidth = frame.width
+            let imgHeight = frame.height
             if (this.rotate) {
-                const scale = canvas.height / frame.width
-                const x = canvas.width / 2
-                const y = canvas.height / 2
+                imgWidth = frame.height
+                imgHeight = frame.width
+            }
+
+            // calculate max zoom
+            if (this.zoomFactor == 0) {
+                this.zoomFactor = (this.rotate ? imgWidth : imgHeight) / (1.4 * this.pixelPerMM) 
+                this.zoomFactorMax = this.zoomFactor
+            }
+
+            // get image offset 
+            this.imageOffsetX = this.canvasPixelToFramePixel(this.distancePixels.x)
+            this.imageOffsetY = this.canvasPixelToFramePixel(this.distancePixels.y) 
+
+            this.status = ''
+            // this.status += ` cw: ${canvas.width}`
+            // this.status += ` ch: ${canvas.height}`
+            // this.status += ` fw: ${imgWidth}`
+            // this.status += ` fh: ${imgHeight}`
+            // this.status += ` r: ${(this.aspectRatio ?? 1).toFixed(1)}`
+            // this.status += ` pr: ${this.pixelRatio.toFixed(2)}`
+            // this.status += ` iox: ${this.imageOffsetX.toFixed(1)}`
+            // this.status += ` ioy: ${this.imageOffsetY.toFixed(1)}`
+            // this.status += ` isx: ${this.imageStartX.toFixed(1)}`
+            // this.status += ` isy: ${this.imageStartY.toFixed(1)}`
+            // this.status += ` iw: ${this.imageSizeX.toFixed(1)}`
+            // this.status += ` ih: ${this.imageSizeY.toFixed(1)}`
+
+            if (this.rotate) {
+                let scale = (canvas.height / frame.width) * this.zoomFactor
+
+                let x = (canvas.width / 2) + this.imageOffsetX
+                let y = (canvas.height / 2) + this.imageOffsetY
+
+                let x1 = (-frame.width / 2) * scale
+                let y1 = (-frame.height / 2) * scale
+                let x2 = frame.width * scale
+                let y2 = frame.height * scale
+
+                this.status += ` x: ${x.toFixed(1)}`        // 383      383
+                this.status += ` y: ${y.toFixed(1)}`        // 510.5    510.5
+                this.status += ` x1: ${x1.toFixed(1)}`      // -1021    -510.5
+                this.status += ` y1: ${y1.toFixed(1)}`      // -765.8   -383
+                this.status += ` x2: ${x2.toFixed(1)}`      // 2042     1021    
+                this.status += ` y2: ${y2.toFixed(1)}`      // 1531.5   765.8
+
                 ctx.translate(x, y)
-                ctx.rotate((this.camSettings.rotation * Math.PI) / 180)
-                await ctx?.drawImage(
-                    frame,
-                    (-frame.width / 2) * scale,
-                    (-frame.height / 2) * scale,
-                    frame.width * scale,
-                    frame.height * scale
-                )
-                ctx.rotate(-((this.camSettings.rotation * Math.PI) / 180))
+                ctx.rotate((this.camSettings.rotate * Math.PI) / 180)
+                await ctx?.drawImage(frame, x1, y1, x2, y2)
+                ctx.rotate(-((this.camSettings.rotate * Math.PI) / 180))
                 ctx.translate(-x, -y)
-            } else await ctx?.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvas.width, canvas.height)
+            } else{
+                // get frame to canvas pixel ratio
+                this.pixelRatio = imgWidth / canvas.width
+
+                // get image start XY coordinates
+                this.imageStartX = ((imgWidth - (imgWidth / this.zoomFactor)) / 2) - this.imageOffsetX
+                this.imageStartY = ((imgHeight - (imgHeight / this.zoomFactor)) / 2) - this.imageOffsetY
+
+                // get image size
+                this.imageSizeX = imgWidth / this.zoomFactor
+                this.imageSizeY = imgHeight / this.zoomFactor
+
+                // make sure image stays within canvas area
+                if (!this.xyzMove){
+                    this.imageStartX = Math.max(0, this.imageStartX)
+                    this.imageStartY = Math.max(0, this.imageStartY)   
+                    if (this.imageStartX + this.imageSizeX > imgWidth) this.imageStartX = this.imageStartX + (imgWidth - this.imageStartX - this.imageSizeX)
+                    if (this.imageStartY + this.imageSizeY > imgHeight) this.imageStartY = this.imageStartY + (imgHeight - this.imageStartY - this.imageSizeY)
+                }
+
+                await ctx?.drawImage(frame, this.imageStartX, this.imageStartY, this.imageSizeX, this.imageSizeY, 0, 0, canvas.width, canvas.height)
+            } 
+
+            this.status += this.pointerStats
+
+            if (this.nozzleCalib) this.drawOverlay(ctx, canvas)
 
             this.isLoaded = true
         }
@@ -141,10 +364,108 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         })
     }
 
+    private imageOffsetX = 0
+    private imageOffsetY = 0
+    private imageStartX = 0
+    private imageStartY = 0
+    private imageSizeX = 0
+    private imageSizeY = 0
+
+    async drawOverlay(ctx: any, canvas: any) {
+
+        // canvas center
+        let canvasCenterX = Math.round(canvas.width / 2);
+        let canvasCenterY = Math.round(canvas.height / 2);
+
+        // ----------------------------------------------------------------
+        // Overlay
+        // ----------------------------------------------------------------
+        await ctx?.beginPath(); 
+        ctx.lineWidth = 3;
+        ctx.fillStyle = 'transparent';
+        ctx.strokeStyle = this.primaryColor ;
+
+        // ----------------------------------------------------------------
+        // draw crosshairs circles
+        // ----------------------------------------------------------------
+        let innerCircleRX = (canvas.width / (this.imageSizeX / (this.nozzleDiameter * this.pixelPerMM)) / 2)
+        let innerCircleRY = (canvas.height / (this.imageSizeY / (this.nozzleDiameter * this.pixelPerMM)) / 2)
+        let outerCircleRX = (canvas.width / (this.imageSizeX / (1.0 * this.pixelPerMM)) / 2)
+        let outerCircleRY = (canvas.height / (this.imageSizeY / (1.0 * this.pixelPerMM)) / 2)
+        await ctx?.ellipse(canvasCenterX, canvasCenterY, innerCircleRX, innerCircleRY, 0, 0, 360);
+        await ctx?.ellipse(canvasCenterX, canvasCenterY, outerCircleRX, outerCircleRY, 0, 0, 360);
+        await ctx?.fill();
+
+        // ----------------------------------------------------------------
+        // draw crosshairs lines
+        // ----------------------------------------------------------------
+        let crosshairsLengthX = Math.round(canvas.width / (this.imageSizeX / (1.5 * this.pixelPerMM)))
+        let crosshairsLengthY = Math.round(canvas.height / (this.imageSizeY / (1.5 * this.pixelPerMM)))
+        await ctx?.moveTo(canvasCenterX, canvasCenterY - crosshairsLengthY / 2);
+        await ctx?.lineTo(canvasCenterX, canvasCenterY + crosshairsLengthY / 2);
+        await ctx?.moveTo(canvasCenterX - Math.round(crosshairsLengthX / 2), canvasCenterY);
+        await ctx?.lineTo(canvasCenterX + Math.round(crosshairsLengthX / 2), canvasCenterY);
+        
+        // ----------------------------------------------------------------
+        // draw scale
+        // ----------------------------------------------------------------
+        let scaleSizeMin = 5 
+        let scaleSizeMedium = 10  
+        let scaleSizeMax = 20  
+        ctx.lineWidth = 1;
+        for (let p = 0; p < 6 / 2; p++) {
+            let primary_step = Math.round(canvas.height / (this.imageSizeY) / (p * this.pixelPerMM))
+            if (this.rotate){
+                primary_step = Math.round(canvas.height / (this.imageSizeX) / (p * this.pixelPerMM))
+            }
+            await ctx?.moveTo(canvas.width, canvasCenterY - primary_step);
+            await ctx?.lineTo(canvas.width - scaleSizeMax, canvasCenterY - primary_step);
+            await ctx?.moveTo(canvas.width, canvasCenterY + primary_step);
+            await ctx?.lineTo(canvas.width - scaleSizeMax, canvasCenterY + primary_step);
+            await ctx?.moveTo(0, canvasCenterY - primary_step);
+            await ctx?.lineTo(scaleSizeMax, canvasCenterY - primary_step);
+            await ctx?.moveTo(0, canvasCenterY + primary_step);
+            await ctx?.lineTo(scaleSizeMax, canvasCenterY + primary_step);
+            await ctx?.stroke();
+            for (let s = 1; s < 10; s++) {
+                let sub_step = Math.round(canvas.height / (this.imageSizeY / ((s * 0.1) * this.pixelPerMM)))
+                if (this.rotate){
+                    sub_step = Math.round(canvas.height / (this.imageSizeX / ((s * 0.1) * this.pixelPerMM)))
+                }
+                await ctx?.moveTo(canvas.width, canvasCenterY - primary_step - sub_step);
+                await ctx?.lineTo(canvas.width - (s == 5 ? scaleSizeMedium : scaleSizeMin), canvasCenterY - primary_step - sub_step);
+                await ctx?.moveTo(canvas.width, canvasCenterY + primary_step + sub_step);
+                await ctx?.lineTo(canvas.width - (s == 5 ? scaleSizeMedium : scaleSizeMin), canvasCenterY + primary_step + sub_step);
+                await ctx?.moveTo(0, canvasCenterY - primary_step - sub_step);
+                await ctx?.lineTo(s == 5 ? scaleSizeMedium : scaleSizeMin, canvasCenterY - primary_step - sub_step);
+                await ctx?.moveTo(0, canvasCenterY + primary_step + sub_step);
+                await ctx?.lineTo(s == 5 ? scaleSizeMedium : scaleSizeMin, canvasCenterY + primary_step + sub_step);
+                await ctx?.stroke();
+            }
+        }
+        await ctx?.stroke();
+
+        this.isLoaded = true
+    }
+
+    canvasPixelToFramePixel(canvasPixel: any): number {
+        return ((canvasPixel * this.pixelRatio) / this.zoomFactor) 
+    }
+
+    canvasPixelToMM(canvasPixel: any): number {
+        // mm to canvas pixel          (canvas.width / (imageSizeX / pixelPerMM) / 2)
+        return this.canvasPixelToFramePixel(canvasPixel) / this.pixelPerMM
+    }
+
+    mmToCanvasPixel(canvas: any, mm: any): number {
+        return (canvas.width / (mm / this.pixelPerMM) / 2)
+    }
+
     onLoad() {
+
         this.isLoaded = true
 
-        const targetFps = this.camSettings.target_fps || 10
+        const targetFps = this.camSettings.targetFps || 10
         const end_time = performance.now()
         const current_time = end_time - this.start_time
         this.time = this.time * this.time_smoothing + current_time * (1.0 - this.time_smoothing)
@@ -172,11 +493,21 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     }
 
     mounted() {
+        let canvas = this.$refs.mjpegstreamerAdaptive
+        canvas.addEventListener('mousedown', this.onPointerDown)
+        canvas.addEventListener('mouseup', this.onPointerUp)
+        canvas.addEventListener('mousemove', this.onPointerMove)
+        canvas.addEventListener( 'wheel', (e: any) => this.adjustZ(e.deltaY * this.zoomSensitivity))
         document.addEventListener('visibilitychange', this.documentVisibilityChanged)
         this.refreshFrame()
     }
 
     beforeDestroy() {
+        let canvas = this.$refs.mjpegstreamerAdaptive
+        canvas.removeEventListener('mousedown', this.onPointerDown)
+        canvas.removeEventListener('mouseup', this.onPointerUp)
+        canvas.removeEventListener('mousemove', this.onPointerMove)
+        canvas.removeEventListener( 'wheel', (e: any) => this.adjustZ(e.deltaY * this.zoomSensitivity))
         document.removeEventListener('visibilitychange', this.documentVisibilityChanged)
     }
 
@@ -213,12 +544,151 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.timer = undefined
     }
 
+    zoom(zoom: string): void {
+        let z = Number(zoom)
+        this.zoomFactor = z
+        this.zoomFactorMax = -1
+        this.dragStart = { x: 0, y: 0 }
+        this.distancePixels = { x: 0, y: 0 }    
+        this.distanceMM = { x: 0, y: 0 }    
+    }
+
+    doSend(gcode: string): void {
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: gcode.toLowerCase() })
+    }
+
+    doT(gcode: string) {
+        this.xyzMove = false
+        this.dragStart = { x: 0, y: 0 }
+        this.distancePixels = { x: 0, y: 0 }
+        this.distanceMM = { x: 0, y: 0 }    
+        this.doSend(gcode)
+    }
+
+    doSet() {
+        this.xyzMove = false
+        this.dragStart = { x: 0, y: 0 }
+        this.distancePixels = { x: 0, y: 0 }
+        this.distanceMM = { x: 0, y: 0 }    
+        this.doSend('NOZZLE_CALIBRATION_SET_TOOL')
+    }
+
     @Watch('camSettings', { immediate: true, deep: true })
     camSettingsChanged() {
         this.aspectRatio = null
     }
+
+    private pixelPerMM = 345
+    private zoomFactor = 1
+    private pixelRatio = 1
+    private zoomFactorMax = -1
+    private maxZoom = 10
+    private minZoom = 1
+    private zoomSensitivity = 0.0001
+    private isDragging = false
+    private dragStart = { x: 0, y: 0 }
+    private distancePixels = { x: 0, y: 0 }
+    private distanceMM = { x: 0, y: 0 }
+    private xyzMove = false
+
+    getEventLocation(e: any)
+    {
+        let canvas = this.$refs.mjpegstreamerAdaptive
+        const rect = canvas.getBoundingClientRect()
+        return { x: e?.clientX - rect.left, y: e?.clientY - rect.top }   
+    }
+
+    onPointerDown(e: any)
+    {
+        this.isDragging = true
+        this.dragStart.x = this.getEventLocation(e).x - this.distancePixels.x
+        this.dragStart.y = this.getEventLocation(e).y - this.distancePixels.y
+    }
+
+    onPointerUp(e: any)
+    {
+        this.isDragging = false
+        if (this.xyzMove){
+            if (!this.isPrinting && this.homedAxes.includes('xyz')){
+                this.doSendMove(`X${this.distanceMM.x.toFixed(3)} Y${this.distanceMM.y.toFixed(3)}`, 300);
+                this.doSend('G90');
+            }
+            this.dragStart = { x: 0, y: 0 }
+            this.distancePixels = { x: 0, y: 0 }
+            this.distanceMM = { x: 0, y: 0 }    
+        }
+    }
+
+    private pointerStats = ''
+    onPointerMove(e: any)
+    {
+        if (this.isDragging)
+        {
+            this.distancePixels.x = this.getEventLocation(e).x - this.dragStart.x
+            this.distancePixels.y = this.getEventLocation(e).y - this.dragStart.y
+            this.distanceMM.x = this.canvasPixelToMM(this.distancePixels.x)
+            this.distanceMM.y = this.canvasPixelToMM(this.distancePixels.y)
+            if ((this.camSettings.rotate ?? 0) == 0){
+            }
+            else if ((this.camSettings.rotate ?? 0) == 90){
+            }
+            else if ((this.camSettings.rotate ?? 0) == 180){
+                // this.distancePixels.x = -this.distancePixels.x
+                // this.distancePixels.y = -this.distancePixels.y
+                // this.distanceMM.x = -this.distanceMM.x
+                // this.distanceMM.y = -this.distanceMM.y
+            }
+            else if ((this.camSettings.rotate ?? 0) == 270){
+            }
+            // this.pointerStats = ` dpx: ${this.distancePixels.x}`
+            // this.pointerStats += ` dpy: ${this.distancePixels.y}`
+            // this.pointerStats += ` mmx: ${this.distanceMM.x.toFixed(2)}`
+            // this.pointerStats += ` mmy: ${this.distanceMM.y.toFixed(2)}`
+        }
+    }
+
+    toggleXYZMove() {
+        this.xyzMove = !this.xyzMove
+        this.dragStart = { x: 0, y: 0 }
+        this.distancePixels = { x: 0, y: 0 }
+        this.distanceMM = { x: 0, y: 0 }    
+    }
+
+    private actZMove = 0    
+    private stepZMove = 0.005    
+    private zMoveMax = 1 
+
+    adjustZ(zoomAmount: any)
+    {
+        if (!this.isDragging)
+        {
+            if (this.xyzMove && !this.isPrinting && this.homedAxes.includes('xyz')){
+                if (zoomAmount < 0) {
+                    if (this.actZMove > -this.zMoveMax) {
+                        this.actZMove -= this.stepZMove
+                        this.doSendMove('Z-0.005', 100);
+                        this.doSend('G90');
+                    }
+                } 
+                else if (zoomAmount > 0) {
+                    if (this.actZMove < this.zMoveMax) {
+                        this.actZMove += this.stepZMove
+                        this.doSendMove('Z+0.005', 100);
+                        this.doSend('G90');
+                    }
+                } 
+            }
+            else{
+                this.zoomFactorMax = -1
+                this.zoomFactor += zoomAmount
+                this.zoomFactor = Math.min(this.zoomFactor, this.maxZoom)
+                this.zoomFactor = Math.max(this.zoomFactor, this.minZoom)
+            }
+        }
+    }
 }
-</script>
+</script>  
 
 <style scoped>
 .webcamImage {
@@ -234,4 +704,60 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     padding: 3px 10px;
     border-top-left-radius: 5px;
 }
+
+.cmdButtonsTools {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0px 0px;
+}
+
+.cmdButtonsZoom {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0px 0px;
+}
+
+.cmdButtonsControl {
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 0px 0px;
+}
+
+.cmdButton {
+    margin: 0px;
+    padding: 0px;
+    border-radius: 0;
+    border-width: 0;
+    box-shadow: none;
+    font-size: 0.8rem !important;
+    height: 28px;
+    max-height: 28px;
+}
+
+</style>
+
+<style lang="scss" scoped>
+._btn-group {
+
+    .v-btn {
+        border-radius: 0;
+    }
+
+    .v-btn:first-child {
+        border-top-left-radius: inherit;
+        border-bottom-left-radius: inherit;
+    }
+
+    .v-btn:last-child {
+        border-top-right-radius: inherit;
+        border-bottom-right-radius: 5px;
+    }
+}
+
 </style>
