@@ -602,7 +602,8 @@
             "FPS": "FPS",
             "Headline": "Cámara web",
             "NoWebcam": "No hay cámara web disponible. Agregue una cámara web en \"Configuración\" -> \"Cámaras web\".",
-            "UnknownWebcamService": "Servicio de cámara web desconocido"
+            "UnknownWebcamService": "Servicio de cámara web desconocido",
+            "NozzleCalibrationHeadline": "Nozzle Calibration"
         },
         "ZoffsetPanel": {
             "Clear": "Limpiar",
@@ -949,7 +950,8 @@
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "verticalmente",
-            "Webcams": "Cámaras web"
+            "Webcams": "Cámaras web",
+            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
         }
     },
     "Timelapse": {

@@ -672,7 +672,8 @@
             "FPS": "FPS",
             "Headline": "カメラ",
             "NoWebcam": "カメラがありません。\"インターフェース設定\" -> \"カメラ\"からカメラを追加してください。",
-            "UnknownWebcamService": "不明なカメラサービス"
+            "UnknownWebcamService": "不明なカメラサービス",
+            "NozzleCalibrationHeadline": "Nozzle Calibration"
         },
         "ZoffsetPanel": {
             "Clear": "初期化",
@@ -1067,7 +1068,8 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "垂直方向",
             "Webcams": "カメラ",
-            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
         }
     },
     "ScrewsTiltAdjust": {

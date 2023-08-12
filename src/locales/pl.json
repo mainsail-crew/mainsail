@@ -692,7 +692,8 @@
             "FPS": "kl./s",
             "Headline": "Kamera internetowa",
             "NoWebcam": "Brak dostępnej kamery. Dodaj kamerę w \"Ustawienia Interfejsu\" -> \"Kamera Internetowa\".",
-            "UnknownWebcamService": "Nieznana usługa kamery"
+            "UnknownWebcamService": "Nieznana usługa kamery",
+            "NozzleCalibrationHeadline": "Nozzle Calibration"
         },
         "ZoffsetPanel": {
             "Clear": "Wyczyść",
@@ -1085,7 +1086,8 @@
             "Rotate": "Obróć",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)",
-            "HideFps": "Ukryj wskaźnik kl./s"
+            "HideFps": "Ukryj wskaźnik kl./s",
+            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
         },
         "MiscellaneousTab": {
             "AddGroup": "dodaj grupę",

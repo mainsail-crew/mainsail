@@ -510,7 +510,8 @@
             "FPS": "FPS",
             "Headline": "Webbkamera",
             "NoWebcam": "Ingen webbkamera tillgänglig. Lägg till en webbkamera under \"Gränssnittsinställningar\" -> \"Webbkameror\".",
-            "UnknownWebcamService": "Okänd webbkameratjänst"
+            "UnknownWebcamService": "Okänd webbkameratjänst",
+            "NozzleCalibrationHeadline": "Nozzle Calibration"
         },
         "ZoffsetPanel": {
             "Headline": "Z-Offset",
@@ -844,7 +845,8 @@
             "UrlStream": "Webbadressström",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertikalt",
-            "Webcams": "Webbkameror"
+            "Webcams": "Webbkameror",
+            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
         }
     },
     "Timelapse": {

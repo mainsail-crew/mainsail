@@ -671,7 +671,8 @@
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "Intet webcam tilgængeligt. Tilføj et under \"Interfaceindstillinger\" -> \"Webcams\".",
-            "UnknownWebcamService": "Ukendt Webcam service"
+            "UnknownWebcamService": "Ukendt Webcam service",
+            "NozzleCalibrationHeadline": "Nozzle Calibration"
         },
         "ZoffsetPanel": {
             "Clear": "Nulstil",
@@ -1066,7 +1067,8 @@
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertikalt",
-            "Webcams": "Webcams"
+            "Webcams": "Webcams",
+            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
         }
     },
     "ScrewsTiltAdjust": {

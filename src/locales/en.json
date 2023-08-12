@@ -713,7 +713,8 @@
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "No webcam available. Add a webcam under \"Interface Settings\" -> \"Webcams\".",
-            "UnknownWebcamService": "Unknown Webcam Service"
+            "UnknownWebcamService": "Unknown Webcam Service",
+            "NozzleCalibrationHeadline": "Nozzle Calibration"
         },
         "ZoffsetPanel": {
             "Clear": "Clear",
@@ -1136,7 +1137,8 @@
             "Vertically": "vertically",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)",
+            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
         }
     },
     "ScrewsTiltAdjust": {

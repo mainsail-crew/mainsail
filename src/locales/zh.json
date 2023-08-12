@@ -708,7 +708,8 @@
             "FPS": "帧率",
             "Headline": "摄像头",
             "NoWebcam": "没有可用的摄像头。在\"Mainsail设置\" -> \"摄像头\"添加新的摄像头。",
-            "UnknownWebcamService": "未知的摄像头服务"
+            "UnknownWebcamService": "未知的摄像头服务",
+            "NozzleCalibrationHeadline": "Nozzle Calibration"
         },
         "ZoffsetPanel": {
             "Clear": "清除",
@@ -1122,7 +1123,8 @@
             "Vertically": "垂直",
             "Webcams": "摄像头",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)",
+            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
         }
     },
     "ScrewsTiltAdjust": {

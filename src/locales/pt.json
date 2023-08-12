@@ -679,7 +679,8 @@
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "Nenhuma webcam disponível. Adicione uma webcam em \"Configurações da Interface\" -> \"Webcams\".",
-            "UnknownWebcamService": "Serviço Webcam Desconhecido"
+            "UnknownWebcamService": "Serviço Webcam Desconhecido",
+            "NozzleCalibrationHeadline": "Nozzle Calibration"
         },
         "ZoffsetPanel": {
             "Clear": "Limpar",
@@ -1097,7 +1098,8 @@
             "Vertically": "vertical",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
-            "WebrtcJanus": "WebRTC (janus-gateway)"
+            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
         }
     },
     "Timelapse": {
