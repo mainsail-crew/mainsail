@@ -1099,7 +1099,9 @@
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
-            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
+            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
+            "EnableNozzleCalibrationOverlay": "Enable",
+            "PixelPerMM": "Pixel per MM"
         }
     },
     "Timelapse": {

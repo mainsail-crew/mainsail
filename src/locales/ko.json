@@ -1078,7 +1078,9 @@
             "Vertically": "세로 반전",
             "Webcams": "웹캠",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
-            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
+            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
+            "EnableNozzleCalibrationOverlay": "Enable",
+            "PixelPerMM": "Pixel per MM"
         }
     },
     "Timelapse": {

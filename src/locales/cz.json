@@ -1071,7 +1071,9 @@
             "Vertically": "vertikálně",
             "Webcams": "Webkamery",
             "WebrtcCameraStreamer": "WebRTC (streamer z kamery)",
-            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
+            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
+            "EnableNozzleCalibrationOverlay": "Enable",
+            "PixelPerMM": "Pixel per MM"
         }
     },
     "ScrewsTiltAdjust": {

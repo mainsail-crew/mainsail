@@ -176,6 +176,10 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         return this.camSettings.extra_data?.nozzle_calibration ?? false
     }
 
+    get pixelPerMM() {
+        return this.camSettings.extra_data?.pixel_per_mm ?? 0
+    }
+
     get currentZoomFactor() {
         return this.zoomFactor.toString()
     }
@@ -523,7 +527,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.aspectRatio = null
     }
 
-    private pixelPerMM = 345
     private zoomFactor = 1
     private pixelRatio = 1
     private zoomFactorMax = -1

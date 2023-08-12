@@ -1087,7 +1087,9 @@
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)",
             "HideFps": "Ukryj wskaźnik kl./s",
-            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
+            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
+            "EnableNozzleCalibrationOverlay": "Enable",
+            "PixelPerMM": "Pixel per MM"
         },
         "MiscellaneousTab": {
             "AddGroup": "dodaj grupę",

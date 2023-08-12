@@ -1124,7 +1124,9 @@
             "Webcams": "摄像头",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)",
-            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
+            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
+            "EnableNozzleCalibrationOverlay": "Enable",
+            "PixelPerMM": "Pixel per MM"
         }
     },
     "ScrewsTiltAdjust": {

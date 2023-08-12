@@ -1048,7 +1048,9 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "垂直",
             "Webcams": "攝影機",
-            "EnableNozzleCalibrationOverlay": "Enable nozzle calibration overlay"
+            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
+            "EnableNozzleCalibrationOverlay": "Enable",
+            "PixelPerMM": "Pixel per MM"
         }
     },
     "Timelapse": {

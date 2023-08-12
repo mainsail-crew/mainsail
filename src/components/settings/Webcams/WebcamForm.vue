@@ -134,13 +134,28 @@
                                 :label="$t('Settings.WebcamsTab.Vertically')" />
                         </v-col>
                     </v-row>
+                    <v-row>
+                        <v-col class="pt-1 pb-3">
+                            <div class="v-label v-label--active theme--dark text-subtitle-1">
+                                {{ $t('Settings.WebcamsTab.NozzleCalibrationOverlay') }}
+                            </div>
+                        </v-col>
+                    </v-row>
                     <v-row class="mt-5">
-                        <v-col class="py-0">
+                        <v-col class="py-2 col-6">
                             <v-checkbox
                                 v-model="nozzleCalibration"
                                 class="mt-1"
                                 hide-details
                                 :label="$t('Settings.WebcamsTab.EnableNozzleCalibrationOverlay')" />
+                        </v-col>
+                        <v-col class="py-2 col-6">
+                            <v-text-field
+                                v-model="pixelPerMM"
+                                outlined
+                                dense
+                                hide-details
+                                :label="$t('Settings.WebcamsTab.PixelPerMM')" />
                         </v-col>
                     </v-row>
                 </v-col>
@@ -304,6 +319,23 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
         // @ts-ignore
         this.webcam.extra_data.nozzle_calibration = newVal
+    }
+
+    get pixelPerMM() {
+        return this.webcam.extra_data?.pixel_per_mm ?? 0
+    }
+
+    set pixelPerMM(newVal) {
+        if (!('extra_data' in this.webcam)) {
+            this.webcam.extra_data = {
+                pixel_per_mm: newVal,
+            }
+
+            return
+        }
+
+        // @ts-ignore
+        this.webcam.extra_data.pixel_per_mm = newVal
     }
 
     mounted() {
