@@ -137,7 +137,7 @@
                     <v-row class="mt-5">
                         <v-col class="py-0">
                             <v-checkbox
-                                v-model="nozzle_calibration"
+                                v-model="nozzleCalibration"
                                 class="mt-1"
                                 hide-details
                                 :label="$t('Settings.WebcamsTab.EnableNozzleCalibrationOverlay')" />
