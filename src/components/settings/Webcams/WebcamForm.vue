@@ -134,14 +134,14 @@
                                 :label="$t('Settings.WebcamsTab.Vertically')" />
                         </v-col>
                     </v-row>
-                    <v-row class="mt-8">
+                    <v-row class="mt-6">
                         <v-col class="pt-1 pb-3">
                             <div class="v-label v-label--active theme--dark text-subtitle-1">
                                 {{ $t('Settings.WebcamsTab.NozzleCalibrationOverlay') }}
                             </div>
                         </v-col>
                     </v-row>
-                    <v-row class="mt-0">
+                    <v-row class="mt-2">
                         <v-col class="py-2 col-6">
                             <v-text-field
                                 v-model="pixelPerMM"
