@@ -4,7 +4,7 @@
     <panel
         v-if="socketIsConnected"
         :icon="mdiWebcam"
-        :title="$t('Panels.WebcamPanel.Headline')"
+        :title="$t(currentCam.nozzleCalib ? 'Panels.WebcamPanel.NozzleCalibrationHeadline' : 'Panels.WebcamPanel.Headline')"
         :collapsible="$route.fullPath !== '/cam'"
         card-class="webcam-panel"
         :margin-bottom="currentPage !== 'page'">
