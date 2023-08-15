@@ -106,7 +106,7 @@ import BaseMixin from '@/components/mixins/base'
 import { CommandHelp, VTextareaType } from '@/store/printer/types'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import Panel from '@/components/ui/Panel.vue'
-import {mdiChevronDoubleRight, mdiCog, mdiConsoleLine, mdiSend, mdiTrashCan} from '@mdi/js'
+import { mdiChevronDoubleRight, mdiCog, mdiConsoleLine, mdiSend, mdiTrashCan } from '@mdi/js'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
 
 @Component({
