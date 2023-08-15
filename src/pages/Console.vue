@@ -1,14 +1,3 @@
-<style scoped>
-.consoleScrollContainer {
-    min-height: 200px;
-    height: calc(var(--app-height) - 180px);
-}
-
-.gcode-command-field {
-    font-family: 'Roboto Mono', monospace;
-}
-</style>
-
 <template>
     <div class="d-flex flex-column">
         <v-row :class="consoleDirection === 'table' ? 'order-0' : 'order-1 mt-3'">
@@ -304,3 +293,14 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.consoleScrollContainer {
+    min-height: 200px;
+    height: calc(var(--app-height) - 180px);
+}
+
+.gcode-command-field {
+    font-family: 'Roboto Mono', monospace;
+}
+</style>
