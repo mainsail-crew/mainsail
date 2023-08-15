@@ -148,6 +148,11 @@ export default class PageConsole extends Mixins(BaseMixin) {
         }
     }
 
+    @Watch('autoscroll')
+    autoscrollChanged(newVal: boolean) {
+        if (newVal) this.scrollToBottom()
+    }
+
     get hideWaitTemperatures(): boolean {
         return this.$store.state.gui.console.hideWaitTemperatures
     }

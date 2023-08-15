@@ -159,6 +159,11 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         }
     }
 
+    @Watch('autoscroll')
+    autoscrollChanged(newVal: boolean) {
+        if (newVal) this.scrollToBottom()
+    }
+
     clearConsole() {
         this.$store.dispatch('gui/console/clear')
     }
