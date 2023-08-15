@@ -30,7 +30,7 @@
                 <v-btn class="mr-3 px-2 minwidth-0" color="lightgray" @click="clearConsole">
                     <v-icon>{{ mdiTrashCan }}</v-icon>
                 </v-btn>
-                <command-help-modal @onCommand="gcode = $event"></command-help-modal>
+                <command-help-modal @onCommand="gcode = $event" />
                 <v-menu
                     offset-y
                     :top="consoleDirection === 'shell'"
@@ -47,14 +47,14 @@
                                 v-model="hideWaitTemperatures"
                                 class="mt-0"
                                 hide-details
-                                :label="$t('Console.HideTemperatures')"></v-checkbox>
+                                :label="$t('Console.HideTemperatures')" />
                         </v-list-item>
                         <v-list-item v-if="moonrakerComponents.includes('timelapse')" class="minHeight36">
                             <v-checkbox
                                 v-model="hideTlCommands"
                                 class="mt-0"
                                 hide-details
-                                :label="$t('Console.HideTimelapse')"></v-checkbox>
+                                :label="$t('Console.HideTimelapse')" />
                         </v-list-item>
                         <v-list-item v-for="(filter, index) in customFilters" :key="index" class="minHeight36">
                             <v-checkbox
@@ -62,7 +62,7 @@
                                 class="mt-0"
                                 hide-details
                                 :label="filter.name"
-                                @change="toggleFilter(filter)"></v-checkbox>
+                                @change="toggleFilter(filter)" />
                         </v-list-item>
                     </v-list>
                 </v-menu>
