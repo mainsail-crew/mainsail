@@ -1,13 +1,3 @@
-<style scoped lang="scss">
-.consoleTable {
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.gcode-command-field {
-    font-family: 'Roboto Mono', monospace;
-}
-</style>
-
 <template>
     <panel
         v-if="socketIsConnected && klipperState !== 'disconnected'"
@@ -325,3 +315,13 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.consoleTable {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.gcode-command-field {
+    font-family: 'Roboto Mono', monospace;
+}
+</style>
