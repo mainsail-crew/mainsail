@@ -2,6 +2,31 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.7.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.7.0) - 2023-08-12
+### Features
+
+- Hide screws tilt adjust dialog, when using MAX_DEVIATION (#1474) | [15371ad](15371adc3d550817663aabca6c2f4b76fd585e4f)
+- Add option to hide MCU/Host sensors in the temp panel (#1496) | [9883457](9883457e9d622c16f6edb8e368c77b99e6728085)
+- Hide axis controls during print (#1452) | [da15789](da157891a44bc6a6b9cdec87e0e8fb2c0f060dba)
+- Add an option to set the sidebar default state (#1462) | [e9c22d3](e9c22d32bc3615360407caf544ed5751f30adb09)
+- Add option to hide FPS counter in webcams (#1488) | [69eaeb6](69eaeb65573c5dda5773c5f9c60fa249d136c213)
+- Add a select all option on the backup and restore dialogs (#1448) | [0c4b9e7](0c4b9e75516c55bfe6678ce3a66ed8e281295ace)
+- Add nevermore to temperature panel (#1511) | [1cd2541](1cd2541d6f2f7d567f33b00708fe055b929df3dd)
+
+### Bug Fixes and Improvements
+
+- Fix cursor style for item name to be a pointer (#1514) | [98d9b0a](98d9b0aa597ab482314876b11d261c81aae1bbf9)
+
+### Refactor
+
+- Soft down info buttons in update manager (#1513) | [16165ec](16165ec85f05a92edcd52f57be869ea31f8b0460)
+
+### Localization
+
+- **pl**: Update Polish translation (#1502) | [fe7aee9](fe7aee9307cca63ae993c062e2d9a84a6f215856)
+- **pl**: Update Polish translation (#1515) | [90d76c1](90d76c1ffeea42bc59f6d7dcc9374eee600f2cc7)
+- **zh**: Update Chinese (zh) localization (#1503) | [dbb5f81](dbb5f81206d4d161eb0593b9d5e8c7b5189ffc2d)
+
 ## [2.6.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.6.2) - 2023-07-30
 ### Bug Fixes and Improvements
 
