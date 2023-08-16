@@ -868,8 +868,6 @@
             "CannotReadJson": "无法读取/解析备份文件。",
             "DateFormat": "日期格式",
             "DbConsoleHistory": "控制台历史记录",
-            "DbHistoryJobs": "历史任务",
-            "DbHistoryTotals": "历史统计",
             "DBNavigation": "侧边栏",
             "DbTimelapseSettings": "延时摄影设置",
             "DbView": "视图设置",
