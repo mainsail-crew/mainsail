@@ -201,6 +201,12 @@
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
+                <v-list-item
+                    v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    @click="moveFile(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiMoveBox }}</v-icon>
+                    {{ $t('Machine.ConfigFilesPanel.Move') }}
+                </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="duplicateFile(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiContentCopy }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Duplicate') }}
@@ -210,6 +216,12 @@
                     @click="renameDirectory(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Rename') }}
+                </v-list-item>
+                <v-list-item
+                    v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    @click="moveDirectory(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiMoveDirectoryBox }}</v-icon>
+                    {{ $t('Machine.ConfigFilesPanel.MoveDirectory') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
@@ -325,6 +337,37 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <v-dialog v-model="dialogMoveFile.show" max-width="400">
+            <panel
+                :title="$t('Machine.ConfigFilesPanel.MoveFile')"
+                card-class="maschine-configfiles-rename-file-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="dialogMoveFile.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <v-text-field
+                        ref="inputDialogMoveFileName"
+                        v-model="dialogMoveFile.newName"
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        required
+                        :rules="nameInputRules"
+                        @update:error="(bool) => (isInvalidName = bool)"
+                        @keyup.enter="moveFileAction"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogMoveFile.show = false">
+                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="moveFileAction">
+                        {{ $t('Machine.ConfigFilesPanel.Move') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
         <v-dialog v-model="dialogDuplicateFile.show" max-width="400">
             <panel
                 :title="$t('Machine.ConfigFilesPanel.DuplicateFile')"
@@ -413,6 +456,37 @@
                         {{ $t('Machine.ConfigFilesPanel.Cancel') }}
                     </v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="renameDirectoryAction">
+                        {{ $t('Machine.ConfigFilesPanel.Rename') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+        <v-dialog v-model="dialogMoveDirectory.show" max-width="400">
+            <panel
+                :title="$t('Machine.ConfigFilesPanel.MoveDirectory')"
+                card-class="maschine-configfiles-rename-directory-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="dialogMoveDirectory.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <v-text-field
+                        ref="inputDialogRenameDirectoryName"
+                        v-model="dialogMoveDirectory.newName"
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        required
+                        :rules="nameInputRules"
+                        @update:error="(bool) => (isInvalidName = bool)"
+                        @keyup.enter="moveDirectoryAction"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogMoveDirectory.show = false">
+                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="moveDirectoryAction">
                         {{ $t('Machine.ConfigFilesPanel.Rename') }}
                     </v-btn>
                 </v-card-actions>
@@ -552,6 +626,8 @@ import {
     mdiFileDocumentEditOutline,
     mdiCloudDownload,
     mdiRenameBox,
+    mdiFileMove,
+    mdiFolderMove,
     mdiDelete,
     mdiCloseThick,
     mdiLockOutline,
@@ -577,6 +653,12 @@ interface dialogImageObject {
 }
 
 interface dialogRenameObject {
+    show: boolean
+    newName: string
+    item: FileStateFile
+}
+
+interface dialogMoveObject {
     show: boolean
     newName: string
     item: FileStateFile
@@ -619,6 +701,8 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     mdiFile = mdiFile
     mdiCloudDownload = mdiCloudDownload
     mdiRenameBox = mdiRenameBox
+    mdiMoveDirectoryBox = mdiFolderMove
+    mdiMoveBox = mdiFileMove
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
     mdiLockOutline = mdiLockOutline
@@ -631,9 +715,11 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         fileUpload: HTMLInputElement
         inputDialogCreateFileName: HTMLInputElement
         inputDialogRenameFileName: HTMLInputElement
+        inputDialogMoveFileName: HTMLInputElement
         inputDialogDuplicateFileName: HTMLInputElement
         inputDialogCreateDirectoryName: HTMLInputElement
         inputDialogRenameDirectoryName: HTMLInputElement
+        inputDialogMoveDirectoryName: HTMLInputElement
     }
 
     private currentPage = 1
@@ -672,6 +758,16 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             modified: new Date(),
         },
     }
+    private dialogMoveFile: dialogRenameObject = {
+        show: false,
+        newName: '',
+        item: {
+            isDirectory: false,
+            filename: '',
+            permissions: '',
+            modified: new Date(),
+        },
+    }
     private dialogDuplicateFile: dialogRenameObject = {
         show: false,
         newName: '',
@@ -687,6 +783,16 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         name: '',
     }
     private dialogRenameDirectory: dialogRenameObject = {
+        show: false,
+        newName: '',
+        item: {
+            isDirectory: false,
+            filename: '',
+            permissions: '',
+            modified: new Date(),
+        },
+    }
+    private dialogMoveDirectory: dialogMoveObject = {
         show: false,
         newName: '',
         item: {
@@ -1108,6 +1214,28 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         )
     }
 
+    moveDirectory(item: FileStateFile) {
+        this.dialogMoveDirectory.item = item
+        this.dialogMoveDirectory.newName = item.filename
+        this.dialogMoveDirectory.show = true
+
+        setTimeout(() => {
+            this.$refs.inputDialogMoveDirectoryName?.focus()
+        }, 200)
+    }
+
+    moveDirectoryAction() {
+        this.dialogRenameDirectory.show = false
+        this.$socket.emit(
+            'server.files.move',
+            {
+                source: (this.absolutePath + '/' + this.dialogMoveDirectory.item.filename).slice(1),
+                dest: (this.absolutePath + '/' + this.dialogMoveDirectory.newName).slice(1),
+            },
+            { action: 'files/getMove' }
+        )
+    }
+
     deleteDirectory(item: FileStateFile) {
         this.dialogDeleteDirectory.item = item
         this.dialogDeleteDirectory.show = true
@@ -1172,6 +1300,28 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             {
                 source: (this.absolutePath + '/' + this.dialogRenameFile.item.filename).slice(1),
                 dest: (this.absolutePath + '/' + this.dialogRenameFile.newName).slice(1),
+            },
+            { action: 'files/getMove' }
+        )
+    }
+
+    moveFile(item: FileStateFile) {
+        this.dialogMoveFile.item = item
+        this.dialogMoveFile.newName = item.filename
+        this.dialogMoveFile.show = true
+
+        setTimeout(() => {
+            this.$refs.inputDialogMoveFileName?.focus()
+        }, 200)
+    }
+
+    moveFileAction() {
+        this.dialogMoveFile.show = false
+        this.$socket.emit(
+            'server.files.move',
+            {
+                source: (this.absolutePath + '/' + this.dialogMoveFile.item.filename).slice(1),
+                dest: (this.absolutePath + '/' + this.dialogMoveFile.newName).slice(1),
             },
             { action: 'files/getMove' }
         )

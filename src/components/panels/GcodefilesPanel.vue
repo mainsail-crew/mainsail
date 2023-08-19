@@ -357,6 +357,10 @@
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
+                <v-list-item v-if="contextMenu.item.isDirectory" @click="moveDirectory(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiDirectoryBox }}</v-icon>
+                    {{ $t('Files.MoveDirectory') }}
+                </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="editFile(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiFileDocumentEditOutline }}</v-icon>
                     {{ $t('Files.EditFile') }}
@@ -364,6 +368,10 @@
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="renameFile(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
+                </v-list-item>
+                <v-list-item v-if="!contextMenu.item.isDirectory" @click="renameFile(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiMoveBox }}</v-icon>
+                    {{ $t('Files.Move') }}
                 </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="duplicateFile(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiContentCopy }}</v-icon>
@@ -437,6 +445,32 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <v-dialog v-model="dialogMoveFile.show" :max-width="400">
+            <panel :title="$t('Files.MoveFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="dialogMoveFile.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <v-text-field
+                        ref="inputFieldMoveFile"
+                        v-model="dialogMoveFile.newName"
+                        :label="$t('Files.Name')"
+                        required
+                        :rules="nameInputRules"
+                        @update:error="(bool) => (isInvalidName = bool)"
+                        @keyup.enter="moveFileAction"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogMoveFile.show = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="moveFileAction">
+                        {{ $t('Files.Move') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
         <v-dialog v-model="dialogDuplicateFile.show" :max-width="400">
             <panel
                 :title="$t('Files.DuplicateFile')"
@@ -491,6 +525,35 @@
                     <v-btn color="" text @click="dialogRenameDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="renameDirectoryAction">
                         {{ $t('Files.Rename') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+        <v-dialog v-model="dialogMoveDirectory.show" max-width="400">
+            <panel
+                :title="$t('Files.MoveDirectory')"
+                card-class="gcode-files-rename-directory-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="dialogMoveDirectory.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <v-text-field
+                        ref="inputFieldMoveDirectory"
+                        v-model="dialogMoveDirectory.newName"
+                        :label="$t('Files.Name')"
+                        required
+                        :rules="nameInputRules"
+                        @update:error="(bool) => (isInvalidName = bool)"
+                        @keyup.enter="moveDirectoryAction"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogMoveDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn :disabled="isInvalidName" color="primary" text @click="moveDirectoryAction">
+                        {{ $t('Files.MoveDirectory') }}
                     </v-btn>
                 </v-card-actions>
             </panel>
@@ -648,6 +711,8 @@ import {
     mdiVideo3d,
     mdiFileDocumentEditOutline,
     mdiContentCopy,
+    mdiFileMove,
+    mdiFolderMove,
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import ControlMixin from '@/components/mixins/control'
@@ -677,6 +742,12 @@ interface dialogAddBatchToQueue {
 }
 
 interface dialogRenameObject {
+    show: boolean
+    newName: string
+    item: FileStateGcodefile
+}
+
+interface dialogMoveObject {
     show: boolean
     newName: string
     item: FileStateGcodefile
@@ -714,6 +785,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiVideo3d = mdiVideo3d
     mdiCloudDownload = mdiCloudDownload
     mdiRenameBox = mdiRenameBox
+    mdiMoveBox = mdiFileMove
+    mdiDirectoryBox = mdiFolderMove
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
@@ -728,9 +801,11 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     declare $refs: {
         fileUpload: HTMLInputElement
         inputFieldRenameFile: HTMLInputElement
+        inputFieldMoveFile: HTMLInputElement
         inputFieldDuplicateFile: HTMLInputElement
         inputFieldCreateDirectory: HTMLInputElement
         inputFieldRenameDirectory: HTMLInputElement
+        inputFieldMoveDirectory: HTMLInputElement
     }
 
     private search = ''
@@ -786,6 +861,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         item: { ...this.contextMenu.item },
     }
 
+    private dialogMoveFile: dialogMoveObject = {
+        show: false,
+        newName: '',
+        item: { ...this.contextMenu.item },
+    }
+
     private dialogDuplicateFile: dialogRenameObject = {
         show: false,
         newName: '',
@@ -793,6 +874,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     private dialogRenameDirectory: dialogRenameObject = {
+        show: false,
+        newName: '',
+        item: { ...this.contextMenu.item },
+    }
+
+    private dialogMoveDirectory: dialogMoveObject = {
         show: false,
         newName: '',
         item: { ...this.contextMenu.item },
@@ -1355,6 +1442,28 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         )
     }
 
+    moveFile(item: FileStateGcodefile) {
+        this.dialogMoveFile.item = item
+        this.dialogMoveFile.newName = item.filename
+        this.dialogMoveFile.show = true
+
+        setTimeout(() => {
+            this.$refs.inputFieldMoveFile?.focus()
+        }, 200)
+    }
+
+    moveFileAction() {
+        this.dialogMoveFile.show = false
+        this.$socket.emit(
+            'server.files.move',
+            {
+                source: 'gcodes' + this.currentPath + '/' + this.dialogMoveFile.item.filename,
+                dest: 'gcodes' + this.currentPath + '/' + this.dialogMoveFile.newName,
+            },
+            { action: 'files/getMove' }
+        )
+    }
+
     duplicateFile(item: FileStateGcodefile) {
         this.dialogDuplicateFile.item = item
         this.dialogDuplicateFile.newName = item.filename
@@ -1390,6 +1499,28 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
             {
                 source: 'gcodes' + this.currentPath + '/' + this.dialogRenameDirectory.item.filename,
                 dest: 'gcodes' + this.currentPath + '/' + this.dialogRenameDirectory.newName,
+            },
+            { action: 'files/getMove' }
+        )
+    }
+
+    moveDirectory(item: FileStateGcodefile) {
+        this.dialogMoveDirectory.item = item
+        this.dialogMoveDirectory.newName = item.filename
+        this.dialogMoveDirectory.show = true
+
+        setTimeout(() => {
+            this.$refs.inputFieldMoveDirectory?.focus()
+        }, 200)
+    }
+
+    moveDirectoryAction() {
+        this.dialogMoveDirectory.show = false
+        this.$socket.emit(
+            'server.files.move',
+            {
+                source: 'gcodes' + this.currentPath + '/' + this.dialogMoveDirectory.item.filename,
+                dest: 'gcodes' + this.currentPath + '/' + this.dialogMoveDirectory.newName,
             },
             { action: 'files/getMove' }
         )

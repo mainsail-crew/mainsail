@@ -112,6 +112,10 @@
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
+                <v-list-item @click="moveFile(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiMoveBox }}</v-icon>
+                    {{ $t('Files.Move') }}
+                </v-list-item>
                 <v-list-item class="red--text" @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Files.Delete') }}
@@ -143,7 +147,28 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-
+        <v-dialog v-model="dialogMoveFile.show" :max-width="400">
+            <panel :title="$t('Files.MoveFile')" card-class="dashboard-files-rename-file-dialog" :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="dialogMoveFile.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <v-text-field
+                        ref="inputFieldMoveFile"
+                        v-model="dialogMoveFile.newName"
+                        :label="$t('Files.Name')"
+                        required
+                        @keyup.enter="moveFileAction"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogMoveFile.show = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn color="primary" text @click="moveFileAction">{{ $t('Files.Move') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
         <!-- CONFIRM DELETE FILE DIALOG -->
         <v-dialog v-model="deleteDialog" max-width="400">
             <panel :title="$t('Files.Delete')" card-class="gcode-files-delete-dialog" :margin-bottom="false">
@@ -237,12 +262,19 @@ import {
     mdiCloudDownload,
     mdiFileDocumentEditOutline,
     mdiRenameBox,
+    mdiFileMove,
     mdiDelete,
     mdiCloseThick,
 } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
 
 interface dialogRenameObject {
+    show: boolean
+    newName: string
+    item: FileStateGcodefile
+}
+
+interface dialogMoveObject {
     show: boolean
     newName: string
     item: FileStateGcodefile
@@ -271,6 +303,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     mdiCloudDownload = mdiCloudDownload
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiRenameBox = mdiRenameBox
+    mdiMoveBox = mdiFileMove
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
 
@@ -299,6 +332,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     declare $refs: {
         filesGcodeCard: any
         inputFieldRenameFile: HTMLInputElement
+        inputFieldMoveFile: HTMLInputElement
     }
 
     private contextMenu = {
@@ -310,6 +344,12 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     }
 
     private dialogRenameFile: dialogRenameObject = {
+        show: false,
+        newName: '',
+        item: { ...this.dialogFile },
+    }
+
+    private dialogMoveFile: dialogMoveObject = {
         show: false,
         newName: '',
         item: { ...this.dialogFile },
@@ -517,6 +557,32 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
             {
                 source: 'gcodes/' + this.dialogRenameFile.item.filename,
                 dest: 'gcodes/' + path + this.dialogRenameFile.newName,
+            },
+            { action: 'files/getMove' }
+        )
+    }
+
+    moveFile(item: FileStateGcodefile) {
+        this.dialogMoveFile.item = item
+        const pos = item.filename.lastIndexOf('/')
+        this.dialogMoveFile.newName = pos > 0 ? item.filename.slice(pos + 1) : item.filename
+        this.dialogMoveFile.show = true
+
+        setTimeout(() => {
+            this.$refs.inputFieldMoveFile?.focus()
+        }, 200)
+    }
+
+    moveFileAction() {
+        this.dialogMoveFile.show = false
+        const pos = this.dialogMoveFile.item.filename.lastIndexOf('/')
+        const path = pos > 0 ? this.dialogMoveFile.item.filename.slice(0, pos + 1) : ''
+
+        this.$socket.emit(
+            'server.files.move',
+            {
+                source: 'gcodes/' + this.dialogMoveFile.item.filename,
+                dest: 'gcodes/' + path + this.dialogMoveFile.newName,
             },
             { action: 'files/getMove' }
         )
