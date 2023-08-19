@@ -758,7 +758,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             modified: new Date(),
         },
     }
-    private dialogMoveFile: dialogRenameObject = {
+    private dialogMoveFile: dialogMoveObject = {
         show: false,
         newName: '',
         item: {
