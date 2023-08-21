@@ -267,9 +267,11 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     btnEmergencyStop() {
         const confirmOnEmergencyStop = this.$store.state.gui.uiSettings.confirmOnEmergencyStop
-        if (!confirmOnEmergencyStop) this.emergencyStop()
-
-        this.showEmergencyStopDialog = true
+        if (!confirmOnEmergencyStop) {
+            this.emergencyStop() 
+         } else {
+            this.showEmergencyStopDialog = true
+         } 
     }
 
     emergencyStop() {
