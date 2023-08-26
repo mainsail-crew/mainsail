@@ -131,12 +131,9 @@ import Responsive from '@/components/ui/Responsive.vue'
 
 import {
     mdiBroom,
-    mdiElectricSwitch,
-    mdiElevator,
     mdiContentSave,
     mdiArrowCollapseDown,
     mdiInformation,
-    mdiMenuDown,
     mdiArrowExpandUp,
     mdiLayersOutline,
 } from '@mdi/js'
@@ -145,16 +142,13 @@ import {
 })
 export default class ZoffsetControl extends Mixins(BaseMixin) {
     mdiBroom = mdiBroom
-    mdiElectricSwitch = mdiElectricSwitch
-    mdiElevator = mdiElevator
     mdiContentSave = mdiContentSave
     mdiArrowCollapseDown = mdiArrowCollapseDown
     mdiInformation = mdiInformation
-    mdiMenuDown = mdiMenuDown
     mdiArrowExpandUp = mdiArrowExpandUp
     mdiLayersOutline = mdiLayersOutline
 
-    private saveOffsetDialog = false
+    saveOffsetDialog = false
 
     get homing_origin() {
         return this.$store.state.printer?.gcode_move?.homing_origin ?? []
