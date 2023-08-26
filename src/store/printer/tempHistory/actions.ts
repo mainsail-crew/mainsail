@@ -55,7 +55,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                     if (datasetKey + 's' in datasetValues) {
                         const length = maxHistory - datasetValues[datasetKey + 's'].length
                         datasetValues[datasetKey + 's'] = [
-                            ...Array.from({ length }, () => 0),
+                            ...Array.from({ length }, () => null),
                             ...datasetValues[datasetKey + 's'],
                         ]
                     }
@@ -65,7 +65,8 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
             })
 
             // add missing heaters/sensors
-            allSensors.forEach((key: string) => {
+            const allEntries = allSensors.concat(allMonitors)
+            allEntries.forEach((key: string) => {
                 // break if sensor is already in the cache
                 if (key in payload) return
 
@@ -86,15 +87,15 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                     powers?: number[]
                     speeds?: number[]
                 } = {
-                    temperatures: Array(maxHistory).fill(0),
+                    temperatures: Array(maxHistory).fill(null),
                 }
 
                 if (allHeaters.includes(key)) {
-                    addValues.targets = Array(maxHistory).fill(0)
-                    addValues.powers = Array(maxHistory).fill(0)
+                    addValues.targets = Array(maxHistory).fill(null)
+                    addValues.powers = Array(maxHistory).fill(null)
                 } else if (['temperature_fan'].includes(sensorType)) {
-                    addValues.targets = Array(maxHistory).fill(0)
-                    addValues.speeds = Array(maxHistory).fill(0)
+                    addValues.targets = Array(maxHistory).fill(null)
+                    addValues.speeds = Array(maxHistory).fill(null)
                 }
 
                 importData[key] = { ...addValues }
@@ -267,7 +268,8 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                 datasetTypes.forEach((attrKey) => {
                     if (!(attrKey in printerObject)) return
 
-                    let value = Math.round(printerObject[attrKey] * 10) / 10
+                    let value = printerObject[attrKey]
+                    if (value !== null) value = Math.round(printerObject[attrKey] * 10) / 10
                     if (datasetTypesInPercents.includes(attrKey))
                         value = Math.round(printerObject[attrKey] * 1000) / 1000
 
