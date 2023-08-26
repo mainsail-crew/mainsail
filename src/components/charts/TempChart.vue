@@ -317,14 +317,19 @@ export default class TempChart extends Mixins(BaseMixin) {
                 const value = dataset.value[seriesNameTemperature]
                 output += value !== null ? value.toFixed(1) : '--'
             }
-            if (seriesNameTarget in dataset.value) output += ' / ' + dataset.value[seriesNameTarget].toFixed(1)
+            if (seriesNameTarget in dataset.value) {
+                output += ' / '
+                const value = dataset.value[seriesNameTemperature]
+                output += value !== null ? value.toFixed(1) : '--'
+            }
             output += '°C'
 
             datasetTypesInPercents.forEach((attrKey) => {
                 const seriesName = `${baseSeriesName}-${attrKey}`
                 if (!(seriesName in dataset.value)) return
 
-                const value = (dataset.value[seriesName] * 100).toFixed(0)
+                let value = dataset.value[seriesName]
+                value = value !== null ? (dataset.value[seriesName] * 100).toFixed(0) : '--'
                 output += ` [ ${value}% ]`
             })
 
@@ -359,7 +364,11 @@ export default class TempChart extends Mixins(BaseMixin) {
 
         // reset tempHistory if working sources are smaller than 80%
         if (newVal.length > 0 && newSource.length < this.maxHistory * 0.8) {
-            this.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
+            this.$socket.emit(
+                'server.temperature_store',
+                { include_monitors: true },
+                { action: 'printer/tempHistory/init' }
+            )
         }
     }
 }
