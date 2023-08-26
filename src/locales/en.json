@@ -682,6 +682,7 @@
             },
             "Headline": "Temperatures",
             "HideMcuHostSensors": "Hide Host/MCU Sensors",
+            "HideMonitors": "Hide Monitors",
             "Max": "max",
             "Min": "min",
             "Name": "Name",
