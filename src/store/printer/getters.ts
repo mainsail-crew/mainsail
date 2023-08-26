@@ -373,6 +373,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return state.heaters?.available_sensors ?? []
     },
 
+    getAvailableMonitors: (state) => {
+        return state.heaters?.available_monitors ?? []
+    },
+
     getFilamentSensors: (state) => {
         const sensorObjectNames = ['filament_switch_sensor', 'filament_motion_sensor']
         const sensors: PrinterStateFilamentSensors[] = []

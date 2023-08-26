@@ -28,6 +28,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
         const now = new Date()
         const allHeaters = rootGetters['printer/getAvailableHeaters'] ?? []
         const allSensors = rootGetters['printer/getAvailableSensors'] ?? []
+        const allMonitors = rootGetters['printer/getAvailableMonitors'] ?? []
         const maxHistory = rootGetters['printer/tempHistory/getTemperatureStoreSize']
 
         if (payload !== undefined) {
@@ -44,7 +45,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                 }
 
                 // break if sensor doesn't exist anymore or start with a _
-                if (!allSensors.includes(key) || nameOnly.startsWith('_')) {
+                if (!(allSensors.includes(key) || allMonitors.includes(key)) || nameOnly.startsWith('_')) {
                     delete payload[key]
                     return
                 }
@@ -239,7 +240,11 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
             window.console.debug('update Source', t0-state.timeLastUpdate)
         }*/
 
-        if (rootState?.printer?.heaters?.available_sensors?.length) {
+        const allSensors = rootGetters['printer/getAvailableSensors'] ?? []
+        const allMonitors = rootGetters['printer/getAvailableMonitors'] ?? []
+        const items = allSensors.concat(allMonitors)
+
+        if (items.length) {
             const now = new Date()
 
             if (state.source.length) {
@@ -255,7 +260,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                 date: now,
             }
 
-            rootState.printer.heaters.available_sensors.forEach((name: string) => {
+            items.forEach((name: string) => {
                 if (!(rootState.printer && name in rootState.printer)) return
                 const printerObject = { ...rootState.printer[name] }
 
