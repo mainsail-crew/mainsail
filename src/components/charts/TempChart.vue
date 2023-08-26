@@ -313,7 +313,10 @@ export default class TempChart extends Mixins(BaseMixin) {
             const seriesNameTemperature = `${baseSeriesName}-temperature`
             const seriesNameTarget = `${baseSeriesName}-target`
 
-            if (seriesNameTemperature in dataset.value) output += dataset.value[seriesNameTemperature].toFixed(1)
+            if (seriesNameTemperature in dataset.value) {
+                const value = dataset.value[seriesNameTemperature]
+                output += value !== null ? value.toFixed(1) : '--'
+            }
             if (seriesNameTarget in dataset.value) output += ' / ' + dataset.value[seriesNameTarget].toFixed(1)
             output += '°C'
 
