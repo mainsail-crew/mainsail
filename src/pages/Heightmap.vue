@@ -971,6 +971,24 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         return output
     }
 
+    get probed_matrix() {
+        return this.bed_mesh.probed_matrix ?? [[]]
+    }
+
+    get bedMeshXLength() {
+        let x_length = this.probed_matrix[0].length - 1
+        if (x_length < 1) x_length = 1
+
+        return x_length
+    }
+
+    get bedMeshYLength() {
+        let y_length = this.probed_matrix.length - 1
+        if (y_length < 1) y_length = 1
+
+        return y_length
+    }
+
     get bedMeshMaxPoint() {
         if (this.bed_mesh.profile_name === '') return { row: 0, col: 0, positionX: 0, positionY: 0, value: 0 }
 
@@ -988,15 +1006,13 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         const positionX =
             Math.round(
                 (this.bed_mesh.mesh_min[0] +
-                    ((this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bed_mesh.probed_matrix[0].length) *
-                        (col - 1)) *
+                    ((this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bedMeshXLength) * (col - 1)) *
                     10
             ) / 10
         const positionY =
             Math.round(
                 (this.bed_mesh.mesh_min[1] +
-                    ((this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bed_mesh.probed_matrix.length) *
-                        (row - 1)) *
+                    ((this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bedMeshYLength) * (row - 1)) *
                     10
             ) / 10
 
@@ -1026,15 +1042,13 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         const positionX =
             Math.round(
                 (this.bed_mesh.mesh_min[0] +
-                    ((this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bed_mesh.probed_matrix[0].length) *
-                        (col - 1)) *
+                    ((this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bedMeshXLength) * (col - 1)) *
                     10
             ) / 10
         const positionY =
             Math.round(
                 (this.bed_mesh.mesh_min[1] +
-                    ((this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bed_mesh.probed_matrix.length) *
-                        (row - 1)) *
+                    ((this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bedMeshYLength) * (row - 1)) *
                     10
             ) / 10
 
