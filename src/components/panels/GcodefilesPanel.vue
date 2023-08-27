@@ -240,6 +240,7 @@
                                 <v-tooltip
                                     top
                                     content-class="tooltip__content-opacity1"
+                                    :color="bigThumbnailTooltipColor"
                                     :disabled="!item.big_thumbnail">
                                     <template #activator="{ on, attrs }">
                                         <vue-load-image>
@@ -252,16 +253,16 @@
                                                 v-bind="attrs"
                                                 v-on="on" />
                                             <div slot="preloader">
-                                                <v-progress-circular
-                                                    indeterminate
-                                                    color="primary"></v-progress-circular>
+                                                <v-progress-circular indeterminate color="primary" />
                                             </div>
                                             <div slot="error">
                                                 <v-icon>{{ mdiFile }}</v-icon>
                                             </div>
                                         </vue-load-image>
                                     </template>
-                                    <span><img :src="item.big_thumbnail" width="250" :alt="item.filename" /></span>
+                                    <span>
+                                        <img :src="item.big_thumbnail" width="250" :alt="item.filename" />
+                                    </span>
                                 </v-tooltip>
                             </template>
                             <template v-else>
@@ -304,7 +305,7 @@
             :bool="dialogPrintFile.show"
             :file="dialogPrintFile.item"
             :current-path="currentPath"
-            @closeDialog="closeStartPrint"></start-print-dialog>
+            @closeDialog="closeStartPrint" />
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item
@@ -617,7 +618,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { validGcodeExtensions } from '@/store/variables'
+import { defaultBigThumbnailBackground, validGcodeExtensions } from '@/store/variables'
 import { formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
@@ -1099,6 +1100,18 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     set countPerPage(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.countPerPage', value: newVal })
+    }
+
+    get bigThumbnailBackground() {
+        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+    }
+
+    get bigThumbnailTooltipColor() {
+        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
+            return undefined
+        }
+
+        return this.bigThumbnailBackground
     }
 
     getStatusIcon(status: string | null) {

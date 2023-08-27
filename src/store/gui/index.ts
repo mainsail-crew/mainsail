@@ -3,7 +3,7 @@ import { Module } from 'vuex'
 import { actions } from '@/store/gui/actions'
 import { mutations } from '@/store/gui/mutations'
 import { getters } from '@/store/gui/getters'
-import { defaultLogoColor, defaultPrimaryColor } from '@/store/variables'
+import { defaultLogoColor, defaultPrimaryColor, defaultBigThumbnailBackground } from '@/store/variables'
 
 // load modules
 import { console } from '@/store/gui/console'
@@ -155,6 +155,7 @@ export const getDefaultState = (): GuiState => {
             confirmOnEmergencyStop: false,
             confirmOnPowerDeviceChange: false,
             boolBigThumbnail: true,
+            bigThumbnailBackground: defaultBigThumbnailBackground,
             boolWideNavDrawer: false,
             boolHideUploadAndPrintButton: false,
             navigationStyle: 'iconsAndText',
