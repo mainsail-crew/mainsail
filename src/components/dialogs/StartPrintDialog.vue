@@ -1,22 +1,22 @@
 <template>
     <v-dialog v-model="bool" :max-width="dialogWidth">
         <v-card>
-            <v-img v-if="file.big_thumbnail" contain :src="file.big_thumbnail"></v-img>
+            <v-img v-if="file.big_thumbnail" contain :src="file.big_thumbnail" :style="bigThumbnailStyle" />
             <v-card-title class="headline">{{ $t('Dialogs.StartPrint.Headline') }}</v-card-title>
             <v-card-text class="pb-0">
                 {{ $t('Dialogs.StartPrint.DoYouWantToStartFilename', { filename: file.filename }) }}
             </v-card-text>
             <template v-if="moonrakerComponents.includes('timelapse')">
-                <v-divider class="mt-3 mb-2"></v-divider>
+                <v-divider class="mt-3 mb-2" />
                 <v-card-text class="pb-0">
                     <settings-row :title="$t('Dialogs.StartPrint.Timelapse')">
-                        <v-switch v-model="timelapseEnabled" hide-details class="mt-0"></v-switch>
+                        <v-switch v-model="timelapseEnabled" hide-details class="mt-0" />
                     </settings-row>
                 </v-card-text>
-                <v-divider class="mt-2 mb-0"></v-divider>
+                <v-divider class="mt-2 mb-0" />
             </template>
             <v-card-actions>
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn color="" text @click="closeDialog">{{ $t('Dialogs.StartPrint.Cancel') }}</v-btn>
                 <v-btn
                     color="primary"
@@ -35,6 +35,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FileStateGcodefile } from '@/store/files/types'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+import { defaultBigThumbnailBackground } from '@/store/variables'
 
 @Component({
     components: {
@@ -65,6 +66,18 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
 
     get dialogWidth() {
         return this.file.big_thumbnail_width ?? 400
+    }
+
+    get bigThumbnailBackground() {
+        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+    }
+
+    get bigThumbnailStyle() {
+        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
+            return {}
+        }
+
+        return { backgroundColor: this.bigThumbnailBackground }
     }
 
     startPrint(filename = '') {
