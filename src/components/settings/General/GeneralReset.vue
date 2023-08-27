@@ -65,7 +65,7 @@ export default class SettingsGeneralTabResetDatabase extends Mixins(BaseMixin, S
     resetCheckboxes: string[] = []
 
     async mounted() {
-        this.resetableNamespaces = await this.loadBackupableNamespaces()
+        await this.loadResetableNamespaces()
     }
 
     onSelectResetCheckboxes(resetCheckboxes: string[]) {
@@ -78,8 +78,24 @@ export default class SettingsGeneralTabResetDatabase extends Mixins(BaseMixin, S
     }
 
     async openDialog() {
-        this.resetableNamespaces = await this.loadBackupableNamespaces()
+        await this.loadResetableNamespaces()
         this.showDialog = true
+    }
+
+    async loadResetableNamespaces() {
+        this.resetableNamespaces = await this.loadBackupableNamespaces()
+
+        if (this.moonrakerComponents.includes('history')) {
+            this.resetableNamespaces.push({
+                value: 'history_jobs',
+                label: this.$t('Settings.GeneralTab.DbHistoryJobs'),
+            })
+
+            this.resetableNamespaces.push({
+                value: 'history_totals',
+                label: this.$t('Settings.GeneralTab.DbHistoryTotals'),
+            })
+        }
     }
 
     closeDialog() {
