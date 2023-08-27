@@ -1055,7 +1055,7 @@
         "UiSettingsTab": {
             "BedScrewsDialog": "Bed Screws Dialog",
             "BedScrewsDialogDescription": "Display helper dialog for BED_SCREWS_ADJUST.",
-            "BigThumbnailBackground": "Large thumbnail background",
+            "BigThumbnailBackground": "Large thumbnail background color",
             "BoolBigThumbnail": "Large thumbnail",
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
