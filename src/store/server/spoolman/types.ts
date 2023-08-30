@@ -1,4 +1,5 @@
 export interface ServerSpoolmanState {
+    health: string
     info: {
         automatic_backups: boolean
         backups_dir: string

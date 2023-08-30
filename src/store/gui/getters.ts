@@ -72,6 +72,11 @@ export const getters: GetterTree<GuiState, any> = {
             allPanels = allPanels.filter((name) => name !== 'webcam')
         }
 
+        // remove spoolman panel, if no spoolman component exists in moonraker
+        if (!rootState.server.components.includes('spoolman')) {
+            allPanels = allPanels.filter((name) => name !== 'spoolman')
+        }
+
         return allPanels
     },
 

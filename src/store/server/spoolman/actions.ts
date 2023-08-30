@@ -22,12 +22,21 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
             'server.spoolman.proxy',
             {
                 request_method: 'GET',
+                path: '/v1/health',
+            },
+            { action: 'server/spoolman/getHealth' }
+        )
+        Vue.$socket.emit(
+            'server.spoolman.proxy',
+            {
+                request_method: 'GET',
                 path: '/v1/vendor',
             },
             { action: 'server/spoolman/getVendors' }
         )
 
         dispatch('socket/addInitModule', 'server/spoolman/getSpoolId', { root: true })
+        dispatch('socket/addInitModule', 'server/spoolman/getHealth', { root: true })
         dispatch('socket/addInitModule', 'server/spoolman/getInfo', { root: true })
         dispatch('socket/addInitModule', 'server/spoolman/getVendors', { root: true })
 
@@ -37,6 +46,12 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
     getSpoolId({ commit, dispatch }, payload) {
         commit('setSpoolId', payload.spool_id)
         dispatch('socket/removeInitModule', 'server/spoolman/getSpoolId', { root: true })
+    },
+
+    getHealth({ commit, dispatch }, payload) {
+        delete payload.requestParams
+        commit('setHealth', payload.status)
+        dispatch('socket/removeInitModule', 'server/spoolman/getHealth', { root: true })
     },
 
     getInfo({ commit, dispatch }, payload) {

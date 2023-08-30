@@ -6,6 +6,7 @@ import { getters } from '@/store/server/spoolman/getters'
 
 export const getDefaultState = (): ServerSpoolmanState => {
     return {
+        health: '',
         info: {
             automatic_backups: false,
             backups_dir: '',

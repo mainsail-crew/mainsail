@@ -12,6 +12,10 @@ export const mutations: MutationTree<ServerSpoolmanState> = {
         Vue.set(state, 'spool_id', payload)
     },
 
+    setHealth(state, payload) {
+        Vue.set(state, 'health', payload)
+    },
+
     setInfo(state, payload) {
         Vue.set(state, 'info', payload)
     },

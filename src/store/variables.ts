@@ -85,6 +85,7 @@ export const allDashboardPanels = [
     'machine-settings',
     'miniconsole',
     'miscellaneous',
+    'spoolman',
     'temperature',
     'webcam',
 ]
