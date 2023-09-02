@@ -1,6 +1,12 @@
 <template>
     <div>
-        <panel :icon="mdiAdjust" :title="title" card-class="spoolman-panel">bla</panel>
+        <panel :icon="mdiAdjust" :title="title" card-class="spoolman-panel">
+            <v-row>
+                <v-col>
+                    <v-icon></v-icon>
+                </v-col>
+            </v-row>
+        </panel>
     </div>
 </template>
 
