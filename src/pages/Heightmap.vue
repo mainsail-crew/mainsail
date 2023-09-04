@@ -2,7 +2,7 @@
     <div>
         <v-row v-if="klipperReadyForGui">
             <v-col class="col-12 col-md-8 pb-0">
-                <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap').toString()" :icon="mdiGrid">
+                <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" :icon="mdiGrid">
                     <template #buttons>
                         <v-btn
                             icon
@@ -89,7 +89,7 @@
                                         ref="heightmap"
                                         :option="chartOptions"
                                         :init-options="{ renderer: 'canvas' }"
-                                        style="height: 400px; width: 100%; overflow: hidden"></e-chart>
+                                        style="height: 400px; width: 100%; overflow: hidden" />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -98,33 +98,33 @@
                                     <v-switch
                                         v-model="scaleGradient"
                                         :label="$t('Heightmap.ScaleGradient')"
-                                        class="mt-0 ml-5"></v-switch>
+                                        class="mt-0 ml-5" />
                                 </v-col>
                                 <v-col class="d-flex justify-center pt-0 pb-6 pb-lg-3">
                                     <v-checkbox
                                         v-model="showProbed"
                                         :label="$t('Heightmap.Probed')"
                                         hide-details
-                                        class="mx-3 mt-0"></v-checkbox>
+                                        class="mx-3 mt-0" />
                                     <v-checkbox
                                         v-model="showMesh"
                                         :label="$t('Heightmap.Mesh')"
                                         hide-details
-                                        class="mx-3 mt-0"></v-checkbox>
+                                        class="mx-3 mt-0" />
                                     <v-checkbox
                                         v-model="showFlat"
                                         :label="$t('Heightmap.Flat')"
                                         hide-details
-                                        class="mx-3 mt-0"></v-checkbox>
+                                        class="mx-3 mt-0" />
                                     <v-checkbox
                                         v-model="wireframe"
                                         :label="$t('Heightmap.Wireframe')"
                                         hide-details
-                                        class="mx-3 mt-0"></v-checkbox>
+                                        class="mx-3 mt-0" />
                                 </v-col>
                             </v-row>
                         </v-card-text>
-                        <v-divider></v-divider>
+                        <v-divider />
                         <v-card-text class="pt-0 pb-3">
                             <v-row>
                                 <v-col>
@@ -136,7 +136,7 @@
                                         :step="0.1"
                                         ticks="always"
                                         class="mt-4"
-                                        hide-details></v-slider>
+                                        hide-details />
                                 </v-col>
                             </v-row>
                         </v-card-text>
@@ -146,7 +146,7 @@
             <v-col class="col-12 col-md-4">
                 <panel
                     v-if="currentProfile"
-                    :title="$t('Heightmap.CurrentMesh.Headline').toString()"
+                    :title="$t('Heightmap.CurrentMesh.Headline')"
                     card-class="heightmap-current-mesh-panel"
                     :icon="mdiInformation"
                     :collapsible="true"
@@ -161,14 +161,14 @@
                                 </span>
                             </v-col>
                         </v-row>
-                        <v-divider class="my-3"></v-divider>
+                        <v-divider class="my-3" />
                         <v-row v-if="'data' in currentProfile" class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Size') }}</v-col>
                             <v-col class="text-right">
                                 {{ currentProfile.data.x_count }}x{{ currentProfile.data.y_count }}
                             </v-col>
                         </v-row>
-                        <v-divider class="my-3"></v-divider>
+                        <v-divider class="my-3" />
                         <v-row class="px-3">
                             <v-col>
                                 {{ $t('Heightmap.CurrentMesh.Max') }} [{{ bedMeshMaxPoint.positionX }},
@@ -176,7 +176,7 @@
                             </v-col>
                             <v-col class="text-right">{{ currentProfile.max.toFixed(3) }} mm</v-col>
                         </v-row>
-                        <v-divider class="my-3"></v-divider>
+                        <v-divider class="my-3" />
                         <v-row class="px-3">
                             <v-col>
                                 {{ $t('Heightmap.CurrentMesh.Min') }} [{{ bedMeshMinPoint.positionX }},
@@ -184,7 +184,7 @@
                             </v-col>
                             <v-col class="text-right">{{ currentProfile.min.toFixed(3) }} mm</v-col>
                         </v-row>
-                        <v-divider class="my-3"></v-divider>
+                        <v-divider class="my-3" />
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Range') }}</v-col>
                             <v-col class="text-right">{{ currentProfile.variance.toFixed(3) }} mm</v-col>
@@ -192,14 +192,14 @@
                     </v-card-text>
                 </panel>
                 <panel
-                    :title="$t('Heightmap.Profiles').toString()"
+                    :title="$t('Heightmap.Profiles')"
                     card-class="heightmap-profiles-panel"
                     :icon="mdiStackOverflow"
                     :collapsible="true"
                     class="mt-6 mt-md-0">
                     <v-card-text v-if="profiles.length" class="px-0 py-3">
                         <template v-for="(profile, index) in profiles">
-                            <v-divider v-if="index" :key="'deliver_' + index" class="my-3"></v-divider>
+                            <v-divider v-if="index" :key="'deliver_' + index" class="my-3" />
                             <v-row :key="index" class="rowProfile">
                                 <v-col class="pl-6 py-0 colName">
                                     <span
@@ -275,7 +275,7 @@
         </v-row>
         <v-dialog v-model="renameDialog" persistent :max-width="400" @keydown.esc="renameDialog = false">
             <panel
-                :title="$t('Heightmap.RenameBedMeshProfile').toString()"
+                :title="$t('Heightmap.RenameBedMeshProfile')"
                 :icon="mdiGrid"
                 card-class="heightmap-rename-dialog"
                 :margin-bottom="false">
@@ -299,7 +299,7 @@
                         @keyup.enter="renameProfile" />
                 </v-card-text>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <v-btn text @click="renameDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="renameProfile">
                         {{ $t('Heightmap.Rename') }}
@@ -313,7 +313,7 @@
             :max-width="400"
             @keydown.esc="calibrateDialog.boolShow = false">
             <panel
-                :title="$t('Heightmap.BedMeshCalibrate').toString()"
+                :title="$t('Heightmap.BedMeshCalibrate')"
                 :icon="mdiGrid"
                 card-class="heightmap-calibrate-dialog"
                 :margin-bottom="false">
@@ -337,7 +337,7 @@
                         @keyup.enter="calibrateMesh" />
                 </v-card-text>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <v-btn text @click="calibrateDialog.boolShow = false">{{ $t('Heightmap.Abort') }}</v-btn>
                     <v-btn :disabled="calibrateDialog.isInvalidName" color="primary" text @click="calibrateMesh">
                         {{ $t('Heightmap.Calibrate') }}
@@ -347,7 +347,7 @@
         </v-dialog>
         <v-dialog v-model="removeDialog" persistent :max-width="400" @keydown.esc="removeDialog = false">
             <panel
-                :title="$t('Heightmap.BedMeshRemove').toString()"
+                :title="$t('Heightmap.BedMeshRemove')"
                 :icon="mdiGrid"
                 card-class="heightmap-remove-dialog"
                 :margin-bottom="false">
@@ -360,7 +360,7 @@
                     <p class="mb-0">{{ $t('Heightmap.DoYouReallyWantToDelete', { name: removeDialogProfile }) }}</p>
                 </v-card-text>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <v-btn text @click="removeDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
                     <v-btn color="error" text @click="removeProfile">{{ $t('Heightmap.Remove') }}</v-btn>
                 </v-card-actions>
@@ -368,7 +368,7 @@
         </v-dialog>
         <v-dialog v-model="saveConfigDialog" persistent :max-width="400" @keydown.esc="saveConfigDialog = false">
             <panel
-                :title="$t('Heightmap.SAVE_CONFIG').toString()"
+                :title="$t('Heightmap.SAVE_CONFIG')"
                 :icon="mdiGrid"
                 card-class="heightmap-remove-save-dialog"
                 :margin-bottom="false">
@@ -381,7 +381,7 @@
                     <p class="mb-0">{{ $t('Heightmap.RemoveSaveDescription') }}</p>
                 </v-card-text>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <template v-if="printerIsPrinting">
                         <v-btn text @click="saveConfigDialog = false">{{ $t('Heightmap.Ok') }}</v-btn>
                     </template>
@@ -971,6 +971,24 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         return output
     }
 
+    get probed_matrix() {
+        return this.bed_mesh.probed_matrix ?? [[]]
+    }
+
+    get bedMeshXLength() {
+        let x_length = this.probed_matrix[0].length - 1
+        if (x_length < 1) x_length = 1
+
+        return x_length
+    }
+
+    get bedMeshYLength() {
+        let y_length = this.probed_matrix.length - 1
+        if (y_length < 1) y_length = 1
+
+        return y_length
+    }
+
     get bedMeshMaxPoint() {
         if (this.bed_mesh.profile_name === '') return { row: 0, col: 0, positionX: 0, positionY: 0, value: 0 }
 
@@ -988,15 +1006,13 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         const positionX =
             Math.round(
                 (this.bed_mesh.mesh_min[0] +
-                    ((this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bed_mesh.probed_matrix[0].length) *
-                        (col - 1)) *
+                    ((this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bedMeshXLength) * (col - 1)) *
                     10
             ) / 10
         const positionY =
             Math.round(
                 (this.bed_mesh.mesh_min[1] +
-                    ((this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bed_mesh.probed_matrix.length) *
-                        (row - 1)) *
+                    ((this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bedMeshYLength) * (row - 1)) *
                     10
             ) / 10
 
@@ -1026,15 +1042,13 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         const positionX =
             Math.round(
                 (this.bed_mesh.mesh_min[0] +
-                    ((this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bed_mesh.probed_matrix[0].length) *
-                        (col - 1)) *
+                    ((this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bedMeshXLength) * (col - 1)) *
                     10
             ) / 10
         const positionY =
             Math.round(
                 (this.bed_mesh.mesh_min[1] +
-                    ((this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bed_mesh.probed_matrix.length) *
-                        (row - 1)) *
+                    ((this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bedMeshYLength) * (row - 1)) *
                     10
             ) / 10
 
