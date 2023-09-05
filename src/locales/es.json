@@ -21,6 +21,7 @@
             "Never": "nunca",
             "NextReboot": "próximo reinicio",
             "NoNotification": "No hay notificación disponible",
+            "Notifications": "Notificaciones",
             "Remind": "Recordar:"
         },
         "NumberInput": {
@@ -29,6 +30,11 @@
             "NoEmptyAllowedError": "¡No puede estar vacío!"
         },
         "Printers": "Impresoras",
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "El caché local necesita ser actualizado. Por favor, haga click en el botón de abajo para actualizar el caché.",
+            "TitleNeedUpdate": "PWA necesita actualizarse",
+            "Update": "actualizar"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Los núcleos rPi ARM tienen la frecuencia reducida.",
             "DescriptionFrequencyCapped": "La frecuencia máxima de los núcleos rPi ARM está actualmente limitada a 1.2 GHz.",
@@ -51,6 +57,7 @@
             "Complete": "Completado - {filename}",
             "Error": "ERROR",
             "Pause": "Pausar impresión",
+            "PrinterOff": "Impresora Apagada",
             "Printing": "{percent}% impreso - {filename}",
             "PrintingETA": "{percent}% impreso - ETA: {eta} - {filename}"
         },
@@ -148,11 +155,15 @@
         "AreYouSure": "¿Está seguro?",
         "EmergencyStop": "Parada de emergencia",
         "No": "No",
-        "Yes": "Si"
+        "Yes": "Sí"
     },
     "Files": {
+        "AddBatchToQueue": "Añadir lote a la fila",
         "AddToQueue": "Añadir a la fila",
         "AllFiles": "Todos",
+        "BedTemp": "Temp. Cama",
+        "ChamberTemp": "Temp. Cámara",
+        "Count": "Contador",
         "Cancel": "Cancelar",
         "Create": "Crear",
         "CreateNewDirectory": "Crear nuevo directorio",
@@ -161,9 +172,13 @@
         "DeleteDirectory": "Borrar directorio",
         "DeleteDirectoryQuestion": "¿Realmente quiere borrar la carpeta \"{name}\" con todo su contenido?",
         "DeleteSelectedQuestion": "¿Realmente desea eliminar {count} archivos seleccionados?",
+        "DeleteSingleFileQuestion": "¿Realmente quiere eliminar el archivo \"{name}\"?",
         "Download": "Descargar",
+        "Duplicate": "Duplicar",
+        "DuplicateFile": "Duplicar Archivo",
         "EditFile": "Editar archivo",
         "Empty": "Vacío",
+        "ExtruderTemp": "Temp. Extructor",
         "Filament": "Filamento",
         "FilamentName": "Nombre del filamento",
         "FilamentType": "Tipo de filamento",
@@ -174,7 +189,10 @@
         "Free": "Libre",
         "FreeDisk": "Espacio libre en disco",
         "GCodeFiles": "Archivos G-Code",
+        "GcodesRootDirectoryDoesntExists": "No existe un directorio de archivos G-Code. Por favor, habilita la opción \"path\" en la sección [virtual_sdcard] de la configuración de Klipper.",
         "HiddenFiles": "Archivos ocultos",
+        "InvalidNameAlreadyExists": "El nombre ya existe, por favor escoge otro nombre.",
+        "InvalidNameEmpty": "¡La entrada no puede estar vacía!",
         "LastEndTime": "Ultima hora de finalización",
         "LastFilamentUsed": "Ultimo filamento usado",
         "LastModified": "Ultima modificación",
@@ -194,6 +212,8 @@
         "Rename": "Renombrar",
         "RenameDirectory": "Renombrar directorio",
         "RenameFile": "Renombrar archivo",
+        "ScanMeta": "Escanear Metadatos",
+        "ScanMetaSuccess": "Los metadatos de {filename} han sido escaneados de forma exitosa.",
         "Search": "Buscar",
         "SetupCurrentList": "Configurar lista actual",
         "Slicer": "Laminador",
@@ -255,6 +275,10 @@
         "ErrorKlipperNotReady": "Klipper no disponible. Mapa de altura deshabilitado.",
         "Flat": "Plana",
         "Heightmap": "Mapa de altura",
+        "InvalidNameAlreadyExists": "El nombre del perfil ya existe, por favor escoge otro nombre de perfil.",
+        "InvalidNameAscii": "El nombre es inválido. Solo caracteres ascii son permitidos.",
+        "InvalidNameEmpty": "¡La entrada no puede estar vacía!",
+        "InvalidNameReserved": "El perfil 'default' está reservado, por favor escoge otro nombre de perfil.",
         "Later": "Más tarde",
         "Mesh": "Malla",
         "Name": "Nombre",
@@ -283,6 +307,7 @@
         "CreateNote": "Crear Nota",
         "Delete": "Eliminar",
         "DeleteSelectedQuestion": "¿Está seguro de que desea eliminar los {count} trabajos seleccionados?",
+        "DeleteSingleJobQuestion": "¿Está seguro de que desea eliminar este trabajo?",
         "Details": "Detalles",
         "EditNote": "Editar Nota",
         "Empty": "Vacío",
@@ -329,8 +354,10 @@
             "in_progress": "En progreso",
             "klippy_disconnect": "Klippy desconectado",
             "klippy_shutdown": "Klippy apagado",
+            "Others": "Otros",
             "server_exit": "salida del servidor"
         },
+        "Table": "Tabla",
         "TitleExportHistory": "Exportar historial",
         "TitleRefreshHistory": "Actualizar historial",
         "TitleSettings": "Configuración",
@@ -342,6 +369,11 @@
     },
     "JobQueue": {
         "AllJobs": "Todas las tareas",
+        "ChangeCount": "Cambiar contador",
+        "Cancel": "Cancelar",
+        "Count": "Contador",
+        "InvalidCountEmpty": "¡La entrada no puede estar vacía!",
+        "InvalidCountGreaterZero": "¡La entrada debe ser mayor que 0!",
         "Empty": "Vacía",
         "JobQueue": "Cola de tareas",
         "Jobs": "Tareas",
@@ -354,6 +386,7 @@
             "AllFiles": "Todos",
             "Cancel": "Cancelar",
             "ConfigFiles": "Archivos de configuración",
+            "ConfigRootDirectoryDoesntExists": "Ningún directorio encontrado. Por favor habilita la opción \"config_path\" en la sección [file_manager] de la configuración de Moonraker.",
             "Create": "Crear",
             "CreateDirectory": "Crear directorio",
             "CreateFile": "Crear archivo",
@@ -363,6 +396,8 @@
             "DeleteDirectoryQuestion": "¿Realmente quiere eliminar \"{name}\" con todo su contenido?",
             "DeleteSelectedQuestion": "¿Eliminar {count} elementos seleccionados?",
             "Download": "Descargar",
+            "Duplicate": "Duplicar",
+            "DuplicateFile": "Duplicar Archivo",
             "EditFile": "Editar archivo",
             "Empty": "Vacío",
             "Files": "Archivos",
@@ -393,7 +428,13 @@
             "TRIGGERED": "ACTIVADO"
         },
         "LogfilesPanel": {
-            "Logfiles": "Archivos de registro"
+            "Accept": "Aceptar",
+            "Cancel": "Cancelar",
+            "Logfiles": "Archivos de registro",
+            "Rollover": "Registros de Rotación",
+            "RolloverDescription": "Por favor seleciona los registros que deben ser reseteados:",
+            "RolloverToastSuccessful": "El registro de \"{name}\" ha sido reseteado exitosamente",
+            "RolloverToastFailed": "Registros de rotación de \"{name}\": {message}"
         },
         "SystemPanel": {
             "Constants": "Constantes",
@@ -477,10 +518,14 @@
             "WebcamOff": "Apagar"
         },
         "KlippyStatePanel": {
+            "CheckKlippyAndUdsAddress": "Por favor comprueba si el servicio de Klipper se está ejecutando y klippy_uds_address está correctamente configurado en moonraker.conf.",
             "FirmwareRestart": "Reiniciar Firmware",
+            "PrinterSwitchedOff": "La impresora está apagada",
+            "PrinterSwitchedOffDescription": "La impresora está actualmente apagada y Klipper no se puede conectar. Para encender la impresora, haz click en el botón de abajo:",
             "KlipperCheck": "Verifique que el servicio Klipper está corriendo y que un  UDS (Unix Domain Socket) esta configurado.",
             "MoonrakerCannotConnect": "¡Moonraker no se pudo conectar a Klipper!",
-            "Restart": "Reiniciar"
+            "Restart": "Reiniciar",
+            "ServiceReports": "reporta {service}"
         },
         "MachineSettingsPanel": {
             "Headline": "Configuración de impresora",
@@ -547,6 +592,18 @@
             "Layer": "Capa",
             "Max": "max",
             "ObjectHeight": "Altura del objeto",
+            "PauseAtLayer": {
+                "Abort": "Abortar",
+                "Accept": "Aceptar",
+                "AtLayer": "a La Capa",
+                "Call": "Llamar",
+                "DescriptionPauseAtLayerActive": "Esta función ya está activa y va a llamar \"{call}\" a la capa {layer}. Si vuelves a ejecutar el comando, estas opciones se sobrescribirán.",
+                "DescriptionPauseNextLayerActive": "Esta función ya está activa y llamará \"{call}\" en la siguiente capa.",
+                "Layer": "Capa",
+                "NextLayer": "siguiente Capa",
+                "PauseAtLayer": "Para en la Capa",
+                "Type": "Tipo"
+            },
             "PausePrint": "Pausar impresión",
             "Print": "Imprimir",
             "PrintTime": "Tiempo de impresion",
