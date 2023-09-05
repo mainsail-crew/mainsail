@@ -1,3 +1,5 @@
+// This plugin is from https://www.geeksforgeeks.org/how-to-detect-the-version-of-a-browser/
+
 export const browserDetect = () => {
     const browserAgent = navigator.userAgent
     let browserName = navigator.appName
