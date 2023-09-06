@@ -180,8 +180,9 @@ export interface PrinterStateBedMesh {
 }
 
 export interface PrinterStateMacroParam {
-    type: 'int' | 'double' | 'string' | null
+    type: 'int' | 'float' | 'string' | 'select' | 'checkbox' | null
     default: string | null
+    hints?: { [key: string]: any }
 }
 
 export type PrinterStateMacroParams = {
@@ -200,6 +201,7 @@ export interface PrinterStateMacro {
         [key: string]: any
     }
     params: PrinterStateMacroParams
+    hidden: boolean
 }
 
 export interface PrinterStateKlipperConfig {

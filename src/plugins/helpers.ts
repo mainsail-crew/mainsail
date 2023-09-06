@@ -189,9 +189,9 @@ export function formatTime(date: Date): string {
     return hours + ':' + minutes + ':' + seconds
 }
 
-export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParams {
+export function getMacroParamsFromConfig(macro: { gcode: string }): PrinterStateMacroParams {
     const paramRegex =
-        /{%?.*?params\.([A-Za-z_0-9]+)(?:\|(int|string|double))?(?:\|default\('?"?(.*?)"?'?\))?(?:\|(int|string))?.*?%?}/
+        /{%?.*?params\.([A-Za-z_0-9]+)(?:\|(int|string|float))?(?:\|default\('?"?(.*?)"?'?\))?(?:\|(int|string))?.*?%?}/
 
     let params = paramRegex.exec(macro.gcode)
     let currentMatch = macro.gcode
@@ -201,10 +201,10 @@ export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParam
             ret = {}
         }
         const name = params[1]
-        const t: 'int' | 'string' | 'double' | null = (params[2] ?? params[4] ?? null) as
+        const t: 'int' | 'string' | 'float' | null = (params[2] ?? params[4] ?? null) as
             | 'int'
             | 'string'
-            | 'double'
+            | 'float'
             | null
         const def = params[3] ?? null
         ret[`${name}`] = {
@@ -235,6 +235,25 @@ export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParam
     }
 
     return ret
+}
+
+export function getMacroParamsFromState(hints: any): PrinterStateMacroParams {
+    if (!hints.params) return null
+    const allowedTypes = ['int', 'float', 'string', 'select', 'checkbox']
+    const newParams: PrinterStateMacroParams = {}
+    Object.keys(hints.params).forEach((name: string) => {
+        newParams![name.toUpperCase()] = {
+            // The type list here is from PrinterStateMacroParam
+            type: !Array.isArray(hints.params[name].type)
+                ? hints.params[name].type
+                : hints.params[name].type.find((type: string) => allowedTypes.includes(type)),
+            default: hints.params[name].default ? String(hints.params[name].default) : null,
+            hints: Object.fromEntries(
+                Object.entries(hints.params[name]).filter(([key]) => !['type', 'default'].includes(key))
+            ),
+        }
+    })
+    return newParams
 }
 
 export function windowBeforeUnloadFunction(e: BeforeUnloadEvent) {
