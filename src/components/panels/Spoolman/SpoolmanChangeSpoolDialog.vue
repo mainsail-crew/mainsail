@@ -14,14 +14,23 @@
                 <v-card-title>
                     <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details />
                 </v-card-title>
-                <v-card-text>
+                <v-card-text class="px-0 pb-0">
                     <v-data-table
                         :headers="headers"
                         :items="spools"
                         item-key="name"
                         class="elevation-1"
-                        :search="search"
-                        :custom-filter="filterOnlyCapsText"></v-data-table>
+                        :search="search">
+                        <template #no-data>
+                            <div class="text-center">{{ $t('Panels.Spoolman.NoSpools') }}</div>
+                        </template>
+
+                        <template #item="{ item }">
+                            <tr :key="item.filename" class="cursor-pointer">
+                                <td></td>
+                            </tr>
+                        </template>
+                    </v-data-table>
                 </v-card-text>
             </panel>
         </v-dialog>
@@ -30,7 +39,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiAdjust } from '@mdi/js'
@@ -52,12 +61,21 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     get headers() {
         return [
             {
-                text: 'Name',
+                text: this.$t('Panels.Spoolman.Filament'),
                 align: 'start',
                 filterable: false,
                 value: 'name',
             },
         ]
+    }
+
+    @Watch('spools')
+    onSpoolsChanged(newVal: any) {
+        window.console.log(newVal)
+    }
+
+    refresh() {
+        this.$store.dispatch('server/spoolman/refreshSpools')
     }
 
     close() {

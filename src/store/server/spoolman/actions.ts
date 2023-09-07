@@ -68,4 +68,23 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
         )
         dispatch('socket/removeInitModule', 'server/spoolman/getVendors', { root: true })
     },
+
+    refreshSpools({ commit, dispatch }) {
+        Vue.$socket.emit(
+            'server.spoolman.proxy',
+            {
+                request_method: 'GET',
+                path: '/v1/spool',
+            },
+            { action: 'server/spoolman/getSpools' }
+        )
+
+        dispatch('socket/addLoading', 'refreshSpools', { root: true })
+    },
+
+    getSpools({ dispatch }, payload) {
+        window.console.log(payload)
+
+        dispatch('socket/removeLoading', 'refreshSpools', { root: true })
+    },
 }
