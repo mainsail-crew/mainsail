@@ -24,11 +24,11 @@ import BaseMixin from '../mixins/base'
 
 @Component
 export default class SpoolIcon extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: '' })
+    @Prop({ required: false, default: '#ff0' })
     declare readonly color: string
 
     get styleCircle1() {
-        return { fill: '#ff0' }
+        return { fill: this.color }
     }
 
     get styleCircle2() {

@@ -620,6 +620,15 @@
             "On": "On",
             "PowerControl": "Power Control"
         },
+        "Spoolman": {
+            "ChangeSpool": "Change Spool",
+            "Filament": "Filament",
+            "LastUsed": "Last Used",
+            "Location": "Location",
+            "Material": "Material",
+            "Never": "Never",
+            "Weight": "Weight"
+        },
         "StatusPanel": {
             "CancelPrint": "Cancel print",
             "ClearPrintStats": "Clear print stats",

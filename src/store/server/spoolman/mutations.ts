@@ -23,4 +23,8 @@ export const mutations: MutationTree<ServerSpoolmanState> = {
     setVendors(state, payload) {
         Vue.set(state, 'vendors', payload)
     },
+
+    setSpools(state, payload) {
+        Vue.set(state, 'spools', payload)
+    },
 }

@@ -23,4 +23,29 @@ export interface ServerSpoolmanStateFilament {
     registered: string
     name: string
     comment?: string
+    color_hex: string
+    density: number
+    diameter: number
+    material: string
+    price: number
+    settings_bed_temp: number
+    settings_extruder_temp: number
+    spool_weight: number
+    weight: number
+    vendor: ServerSpoolmanStateVendor
+}
+
+export interface ServerSpoolmanStateSpool {
+    id: number
+    registered: string
+    archived: boolean
+    filament: ServerSpoolmanStateFilament
+    first_used: string
+    last_used: string
+    remaining_length: number
+    remaining_weight: number
+    used_length: number
+    used_weight: number
+    location?: string
+    comment?: string
 }

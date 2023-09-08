@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
-import { ServerSpoolmanState } from './types'
+import { ServerSpoolmanState } from '@/store/server/spoolman/types'
 
 export const actions: ActionTree<ServerSpoolmanState, RootState> = {
     reset({ commit }) {
@@ -69,7 +69,7 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
         dispatch('socket/removeInitModule', 'server/spoolman/getVendors', { root: true })
     },
 
-    refreshSpools({ commit, dispatch }) {
+    refreshSpools({ dispatch }) {
         Vue.$socket.emit(
             'server.spoolman.proxy',
             {
@@ -82,8 +82,10 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
         dispatch('socket/addLoading', 'refreshSpools', { root: true })
     },
 
-    getSpools({ dispatch }, payload) {
-        window.console.log(payload)
+    getSpools({ commit, dispatch }, payload) {
+        if ('requestParams' in payload) delete payload.requestParams
+        const spools = Object.entries(payload).map((value) => value[1])
+        commit('setSpools', spools)
 
         dispatch('socket/removeLoading', 'refreshSpools', { root: true })
     },

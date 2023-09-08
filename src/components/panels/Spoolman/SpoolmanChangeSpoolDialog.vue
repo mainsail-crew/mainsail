@@ -26,9 +26,7 @@
                         </template>
 
                         <template #item="{ item }">
-                            <tr :key="item.filename" class="cursor-pointer">
-                                <td></td>
-                            </tr>
+                            <SpoolmanChangeSpoolDialogRow :key="item.id" :spool="item" />
                         </template>
                     </v-data-table>
                 </v-card-text>
@@ -39,12 +37,14 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiAdjust } from '@mdi/js'
+import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
+import SpoolmanChangeSpoolDialogRow from '@/components/panels/Spoolman/SpoolmanChangeSpoolDialogRow.vue'
 @Component({
-    components: { Panel },
+    components: { SpoolmanChangeSpoolDialogRow, Panel },
 })
 export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     mdiAdjust = mdiAdjust
@@ -54,7 +54,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
 
     search = ''
 
-    get spools() {
+    get spools(): ServerSpoolmanStateSpool[] {
         return this.$store.state.server.spoolman.spools ?? []
     }
 
@@ -64,14 +64,27 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
                 text: this.$t('Panels.Spoolman.Filament'),
                 align: 'start',
                 filterable: false,
-                value: 'name',
+            },
+            {
+                text: this.$t('Panels.Spoolman.Material'),
+                align: 'center',
+                filterable: false,
+            },
+            {
+                text: this.$t('Panels.Spoolman.LastUsed'),
+                align: 'end',
+                filterable: false,
+            },
+            {
+                text: this.$t('Panels.Spoolman.Weight'),
+                align: 'end',
+                filterable: false,
             },
         ]
     }
 
-    @Watch('spools')
-    onSpoolsChanged(newVal: any) {
-        window.console.log(newVal)
+    mounted() {
+        this.refresh()
     }
 
     refresh() {
