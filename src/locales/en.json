@@ -622,12 +622,25 @@
         },
         "Spoolman": {
             "ChangeSpool": "Change Spool",
+            "DaysAgo": "{days} days ago",
             "Filament": "Filament",
+            "FirstUsedOutput": "First used: {firstUsed}",
             "LastUsed": "Last Used",
             "Location": "Location",
             "Material": "Material",
+            "MaterialOutput": "Material: {material}",
             "Never": "Never",
-            "Weight": "Weight"
+            "NoActiveSpool": "Filament tracking is inactive. To get started, please select a spool.",
+            "NoResults": "No spool found with the current search criteria.",
+            "NoSpools": "No spools available",
+            "OpenSpoolManager": "open Spool Manager",
+            "Refresh": "refresh",
+            "Search": "Search",
+            "SelectSpool": "Select Spool",
+            "Today": "Today",
+            "Weight": "Weight",
+            "WeightOutput": "Weight: {remaining} / {total} g",
+            "Yesterday": "Yesterday"
         },
         "StatusPanel": {
             "CancelPrint": "Cancel print",

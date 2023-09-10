@@ -7,7 +7,8 @@ export interface ServerSpoolmanState {
         debug_mode: boolean
         version: string
     }
-    spool_id: number | null
+    active_spool_id: number | null
+    active_spool: number | null
     vendors: ServerSpoolmanStateVendor[]
     feeds: string[]
 }

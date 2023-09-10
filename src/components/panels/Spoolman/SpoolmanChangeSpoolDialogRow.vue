@@ -1,18 +1,18 @@
 <template>
-    <tr class="cursor-pointer">
-        <td class="py-2">
+    <tr class="cursor-pointer" @click="setSpoolRow">
+        <td style="width: 50px" class="pr-0 py-2">
             <spool-icon :color="color" style="width: 50px; float: left" class="mr-3" />
-            <div>
-                <strong>{{ vendor }} - {{ name }}</strong>
-                <template v-if="location">
-                    <br />
-                    {{ $t('Panels.Spoolman.Location') }}: {{ location }}
-                </template>
-                <template v-if="spool.comment">
-                    <br />
-                    {{ spool.comment }}
-                </template>
-            </div>
+        </td>
+        <td class="py-2">
+            <strong>{{ vendor }} - {{ name }}</strong>
+            <template v-if="location">
+                <br />
+                {{ $t('Panels.Spoolman.Location') }}: {{ location }}
+            </template>
+            <template v-if="spool.comment">
+                <br />
+                {{ spool.comment }}
+            </template>
         </td>
         <td class="text-center">{{ material }}</td>
         <td class="text-right">{{ last_used }}</td>
@@ -75,8 +75,22 @@ export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
         if (!last_used) return this.$t('Panels.Spoolman.Never')
 
         const date = new Date(this.spool.last_used)
+        const now = new Date()
+        const diff = now.getTime() - date.getTime()
+
+        if (diff <= 1000 * 60 * 60 * 24) return this.$t('Panels.Spoolman.Today')
+        if (diff <= 1000 * 60 * 60 * 24 * 2) return this.$t('Panels.Spoolman.Yesterday')
+        if (diff <= 1000 * 60 * 60 * 24 * 14) {
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+
+            return this.$t('Panels.Spoolman.DaysAgo', { days })
+        }
 
         return date.toLocaleDateString()
+    }
+
+    setSpoolRow() {
+        this.$emit('set-spool', this.spool)
     }
 }
 </script>
