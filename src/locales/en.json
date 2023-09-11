@@ -628,7 +628,6 @@
             "LastUsed": "Last Used",
             "Location": "Location",
             "Material": "Material",
-            "MaterialOutput": "Material: {material}",
             "Never": "Never",
             "NoActiveSpool": "Filament tracking is inactive. To get started, please select a spool.",
             "NoResults": "No spool found with the current search criteria.",
@@ -639,7 +638,6 @@
             "SelectSpool": "Select Spool",
             "Today": "Today",
             "Weight": "Weight",
-            "WeightOutput": "Weight: {remaining} / {total} g",
             "Yesterday": "Yesterday"
         },
         "StatusPanel": {

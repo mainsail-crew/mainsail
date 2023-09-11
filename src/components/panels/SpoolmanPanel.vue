@@ -18,7 +18,7 @@
             </v-card-text>
             <v-list-item v-else three-line>
                 <v-list-item-content>
-                    <div class="text-overline mb-1">{{ vendor }}</div>
+                    <div class="text-overline mb-1">#{{ id }} | {{ vendor }}</div>
                     <v-list-item-title class="text-h5 mb-1">
                         {{ name }}
                     </v-list-item-title>
@@ -56,7 +56,7 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
     }
 
     get title() {
-        if (this.health === '') return 'Spoolman'
+        if (this.health === '' || this.health === 'healthy') return 'Spoolman'
 
         return `Spoolman (${this.health})`
     }
@@ -72,6 +72,10 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
         return `#${color}`
     }
 
+    get id() {
+        return this.active_spool?.id ?? 'XX'
+    }
+
     get vendor() {
         return this.active_spool?.filament?.vendor?.name ?? 'Unknown'
     }
@@ -84,45 +88,39 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
         const material = this.active_spool?.filament.material ?? null
         if (material === null) return null
 
-        return this.$t('Panels.Spoolman.MaterialOutput', { material })
+        return material
     }
 
     get weightOutput() {
         const remaining = this.active_spool?.remaining_weight ?? null
-        const total = this.active_spool?.filament.weight ?? null
+        let total = this.active_spool?.filament.weight ?? null
+        let unit = 'g'
 
         if (remaining === null || total === null) return null
+        let totalRound = Math.floor(total / 1000)
 
-        return this.$t('Panels.Spoolman.WeightOutput', { remaining, total })
-    }
+        if (total >= 1000) {
+            if (totalRound !== total / 1000) {
+                totalRound = Math.round(total / 100) / 10
+            }
 
-    get firstUsedString() {
-        const first_used = this.active_spool?.first_used ?? null
-        if (first_used === null) return null
-
-        const date = new Date(first_used)
-        const now = new Date()
-        const diff = now.getTime() - date.getTime()
-
-        if (diff <= 1000 * 60 * 60 * 24) return this.$t('Panels.Spoolman.Today')
-        if (diff <= 1000 * 60 * 60 * 24 * 2) return this.$t('Panels.Spoolman.Yesterday')
-        if (diff <= 1000 * 60 * 60 * 24 * 14) {
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-
-            return this.$t('Panels.Spoolman.DaysAgo', { days })
+            return `${remaining} g / ${totalRound} kg`
         }
 
-        return date.toLocaleDateString()
+        return `${remaining} / ${total} ${unit}`
     }
 
-    get firstUsedOutput() {
-        if (this.firstUsedString === null) return null
+    get lengthOutput() {
+        let remaining = this.active_spool?.remaining_length ?? null
 
-        return this.$t('Panels.Spoolman.FirstUsedOutput', { firstUsed: this.firstUsedString })
+        if (remaining === null) return null
+        remaining = Math.round(remaining / 1000)
+
+        return `${remaining} m`
     }
 
     get subtitle() {
-        return [this.materialOutput, this.weightOutput, this.firstUsedOutput].filter((v) => v !== null).join(', ')
+        return [this.materialOutput, this.weightOutput, this.lengthOutput].filter((v) => v !== null).join(' | ')
     }
 }
 </script>
