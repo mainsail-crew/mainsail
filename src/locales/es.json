@@ -129,6 +129,7 @@
         "CheckMoonrakerLog": "Si este mensaje aparece repetidamente, por favor dé un vistazo al archivo de registro ubicado en:",
         "Connecting": "Conectando a {host}",
         "Failed": "Conexión Fallida",
+        "Initializing": "Inicializando",
         "TryAgain": "Intentar nuevamente"
     },
     "Console": {
@@ -318,6 +319,7 @@
         "AvgPrinttime": "Tiempo promedio de imp.",
         "Cancel": "Cancelar",
         "CreateNote": "Crear Nota",
+        "Chart": "Gráfico",
         "Delete": "Eliminar",
         "DeleteSelectedQuestion": "¿Está seguro de que desea eliminar los {count} trabajos seleccionados?",
         "DeleteSingleJobQuestion": "¿Está seguro de que desea eliminar este trabajo?",
@@ -408,6 +410,7 @@
             "DeleteDirectory": "Eliminar carpeta",
             "DeleteDirectoryQuestion": "¿Realmente quiere eliminar \"{name}\" con todo su contenido?",
             "DeleteSelectedQuestion": "¿Eliminar {count} elementos seleccionados?",
+            "DeleteSingleFileQuestion": "¿Realmente quieres borrar el archivo \"{name}\"?",
             "Download": "Descargar",
             "Duplicate": "Duplicar",
             "DuplicateFile": "Duplicar Archivo",
