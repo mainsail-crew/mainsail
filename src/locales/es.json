@@ -281,6 +281,7 @@
             "Max": "Max",
             "Min": "Min",
             "Name": "Nombre",
+            "Range": "Rango",
             "Size": "Tamaño",
             "Variance": "Variación"
         },
@@ -567,6 +568,7 @@
             "PrinterSwitchedOffDescription": "La impresora está actualmente apagada y Klipper no se puede conectar. Para encender la impresora, haz click en el botón de abajo:",
             "KlipperCheck": "Verifique que el servicio Klipper está corriendo y que un  UDS (Unix Domain Socket) esta configurado.",
             "MoonrakerCannotConnect": "¡Moonraker no se pudo conectar a Klipper!",
+            "PowerOn": "Encender",
             "Restart": "Reiniciar",
             "ServiceReports": "reporta {service}"
         },
@@ -883,6 +885,7 @@
             "FactoryReset": "Restablecimiento de fábrica",
             "General": "General",
             "Language": "Idioma",
+            "MainsailSettingsMoonrakerDb": "Ajustes de Mainsail en Moonraker DB",
             "MoonrakerDb": "Moonraker DB",
             "PrinterName": "Nombre de la impresora",
             "Reset": "Reiniciar",
