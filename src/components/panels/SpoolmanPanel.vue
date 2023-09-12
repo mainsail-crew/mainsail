@@ -104,10 +104,10 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
                 totalRound = Math.round(total / 100) / 10
             }
 
-            return `${remaining} g / ${totalRound} kg`
+            return `${remaining}g / ${totalRound}kg`
         }
 
-        return `${remaining} / ${total} ${unit}`
+        return `${remaining} / ${total}${unit}`
     }
 
     get lengthOutput() {
@@ -116,7 +116,7 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
         if (remaining === null) return null
         remaining = Math.round(remaining / 1000)
 
-        return `${remaining} m`
+        return `${remaining}m`
     }
 
     get subtitle() {
