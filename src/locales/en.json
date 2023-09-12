@@ -634,6 +634,7 @@
             "NoSpools": "No spools available",
             "OpenSpoolManager": "open Spool Manager",
             "Refresh": "refresh",
+            "RemoveSpool": "Remove spool",
             "Search": "Search",
             "SelectSpool": "Select Spool",
             "Today": "Today",
