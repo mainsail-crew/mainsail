@@ -2,37 +2,19 @@
     <div>
         <panel :icon="mdiAdjust" :title="title" card-class="spoolman-panel" :collapsible="true">
             <template #buttons>
-                <v-menu left offset-y :close-on-content-click="true" class="pa-0">
-                    <template #activator="{ on, attrs }">
-                        <v-btn icon tile v-bind="attrs" :disabled="['printing'].includes(printer_state)" v-on="on">
-                            <v-icon>{{ mdiDotsVertical }}</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-list dense>
-                        <template v-if="active_spool === null">
-                            <v-list-item>
-                                <v-btn small style="width: 100%" @click="showChangeSpoolDialog = true">
-                                    <v-icon left small>{{ mdiAdjust }}</v-icon>
-                                    {{ $t('Panels.Spoolman.SelectSpool') }}
-                                </v-btn>
-                            </v-list-item>
-                        </template>
-                        <template v-else>
-                            <v-list-item>
-                                <v-btn small style="width: 100%" @click="showChangeSpoolDialog = true">
-                                    <v-icon left small>{{ mdiSync }}</v-icon>
-                                    {{ $t('Panels.Spoolman.ChangeSpool') }}
-                                </v-btn>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-btn small style="width: 100%" @click="removeSpool">
-                                    <v-icon left small>{{ mdiMinusCircleOutline }}</v-icon>
-                                    {{ $t('Panels.Spoolman.RemoveSpool') }}
-                                </v-btn>
-                            </v-list-item>
-                        </template>
-                    </v-list>
-                </v-menu>
+                <template v-if="active_spool === null">
+                    <v-btn icon tile :title="$t('Panels.Spoolman.SelectSpool')" @click="showChangeSpoolDialog = true">
+                        <v-icon>{{ mdiSwapVertical }}</v-icon>
+                    </v-btn>
+                </template>
+                <template v-else>
+                    <v-btn icon tile :title="$t('Panels.Spoolman.ChangeSpool')" @click="showChangeSpoolDialog = true">
+                        <v-icon>{{ mdiSwapVertical }}</v-icon>
+                    </v-btn>
+                    <v-btn icon tile :title="$t('Panels.Spoolman.EjectSpool')" @click="showEjectSpoolDialog = true">
+                        <v-icon>{{ mdiEject }}</v-icon>
+                    </v-btn>
+                </template>
             </template>
             <v-card-text v-if="active_spool === null">
                 <v-row>
@@ -59,6 +41,7 @@
             </v-list-item>
         </panel>
         <spoolman-change-spool-dialog :show-dialog="showChangeSpoolDialog" @close="showChangeSpoolDialog = false" />
+        <spoolman-eject-spool-dialog :show-dialog="showEjectSpoolDialog" @close="showEjectSpoolDialog = false" />
     </div>
 </template>
 
@@ -66,20 +49,21 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiAdjust, mdiDotsVertical, mdiMinusCircleOutline, mdiSync } from '@mdi/js'
+import { mdiAdjust, mdiEject, mdiSwapVertical } from '@mdi/js'
 import SpoolmanChangeSpoolDialog from '@/components/panels/Spoolman/SpoolmanChangeSpoolDialog.vue'
+import SpoolmanEjectSpoolDialog from '@/components/panels/Spoolman/SpoolmanEjectSpoolDialog.vue'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
 @Component({
-    components: { Panel, SpoolmanChangeSpoolDialog },
+    components: { Panel, SpoolmanChangeSpoolDialog, SpoolmanEjectSpoolDialog },
 })
 export default class SpoolmanPanel extends Mixins(BaseMixin) {
     mdiAdjust = mdiAdjust
-    mdiDotsVertical = mdiDotsVertical
-    mdiMinusCircleOutline = mdiMinusCircleOutline
-    mdiSync = mdiSync
+    mdiEject = mdiEject
+    mdiSwapVertical = mdiSwapVertical
 
     showChangeSpoolDialog = false
+    showEjectSpoolDialog = false
 
     get health() {
         return this.$store.state.server.spoolman.health ?? ''
@@ -151,10 +135,6 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
 
     get subtitle() {
         return [this.materialOutput, this.weightOutput, this.lengthOutput].filter((v) => v !== null).join(' | ')
-    }
-
-    removeSpool() {
-        this.$store.dispatch('server/spoolman/setActiveSpool', 0)
     }
 }
 </script>
