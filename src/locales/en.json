@@ -144,6 +144,7 @@
         "StartPrint": {
             "Cancel": "Cancel",
             "DoYouWantToStartFilename": "Do you want to start {filename}?",
+            "DoYouWantToStartFilenameFilament": "Do you want to start {filename} with the filament {filament}?",
             "Headline": "Start Job",
             "Print": "print",
             "Timelapse": "Timelapse"

@@ -11,7 +11,11 @@
                 </v-btn>
             </template>
             <v-card-text>
-                <p>{{ $t('Panels.Spoolman.EjectSpoolQuestion') }}</p>
+                <v-row>
+                    <v-col>
+                        <p class="body-2">{{ $t('Panels.Spoolman.EjectSpoolQuestion') }}</p>
+                    </v-col>
+                </v-row>
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
