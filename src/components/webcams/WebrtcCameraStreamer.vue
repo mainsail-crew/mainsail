@@ -171,6 +171,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
 
     beforeDestroy() {
         this.pc?.close()
+        if (this.restartTimer) window.clearTimeout(this.restartTimer)
     }
 
     restartStream() {
