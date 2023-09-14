@@ -1,29 +1,27 @@
 <template>
-    <div>
-        <v-dialog v-model="showDialog" width="400" persistent :fullscreen="isMobile">
-            <panel
-                :title="$t('Panels.Spoolman.EjectSpool')"
-                :icon="mdiEject"
-                card-class="spoolman-eject-spool-dialog"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="close">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <p>{{ $t('Panels.Spoolman.EjectSpoolQuestion') }}</p>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn text @click="close">{{ $t('Panels.Spoolman.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="removeSpool">
-                        {{ $t('Panels.Spoolman.EjectSpool') }}
-                    </v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
-    </div>
+    <v-dialog v-model="showDialog" width="400" persistent :fullscreen="isMobile">
+        <panel
+            :title="$t('Panels.Spoolman.EjectSpool')"
+            :icon="mdiEject"
+            card-class="spoolman-eject-spool-dialog"
+            :margin-bottom="false">
+            <template #buttons>
+                <v-btn icon tile @click="close">
+                    <v-icon>{{ mdiCloseThick }}</v-icon>
+                </v-btn>
+            </template>
+            <v-card-text>
+                <p>{{ $t('Panels.Spoolman.EjectSpoolQuestion') }}</p>
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer />
+                <v-btn text @click="close">{{ $t('Panels.Spoolman.Cancel') }}</v-btn>
+                <v-btn color="primary" text @click="removeSpool">
+                    {{ $t('Panels.Spoolman.EjectSpool') }}
+                </v-btn>
+            </v-card-actions>
+        </panel>
+    </v-dialog>
 </template>
 
 <script lang="ts">
