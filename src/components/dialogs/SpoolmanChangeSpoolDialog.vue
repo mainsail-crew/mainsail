@@ -68,7 +68,7 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiAdjust, mdiDatabase, mdiMagnify, mdiRefresh } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
-import SpoolmanChangeSpoolDialogRow from '@/components/panels/Spoolman/SpoolmanChangeSpoolDialogRow.vue'
+import SpoolmanChangeSpoolDialogRow from '@/components/dialogs/SpoolmanChangeSpoolDialogRow.vue'
 @Component({
     components: { SpoolmanChangeSpoolDialogRow, Panel },
 })

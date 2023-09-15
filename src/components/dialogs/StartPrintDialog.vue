@@ -1,8 +1,8 @@
 <template>
-    <v-dialog v-model="bool" :max-width="dialogWidth" @click:outside="closeDialog">
+    <v-dialog v-model="bool" :max-width="dialogWidth" @click:outside="closeDialog" @keydown.esc="closeDialog">
         <v-card>
             <v-img v-if="file.big_thumbnail" contain :src="file.big_thumbnail" />
-            <v-card-title>
+            <v-card-title class="text-h5">
                 {{ $t('Dialogs.StartPrint.Headline') }}
             </v-card-title>
             <v-card-text class="pb-0">
@@ -10,8 +10,9 @@
                     {{ question }}
                 </p>
             </v-card-text>
-            <template v-if="moonrakerComponents.includes('timelapse')">
-                <v-divider class="mt-3 mb-2" />
+            <start-print-dialog-spoolman v-if="moonrakerComponents.includes('spoolman')" />
+            <template v-if="moonrakerComponents.includes('timelapse') || true">
+                <v-divider v-if="!moonrakerComponents.includes('spoolman')" class="mt-3 mb-2" />
                 <v-card-text class="py-0">
                     <settings-row :title="$t('Dialogs.StartPrint.Timelapse')">
                         <v-switch v-model="timelapseEnabled" hide-details class="mt-0" />
@@ -95,7 +96,6 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
         if (this.active_spool)
             return this.$t('Dialogs.StartPrint.DoYouWantToStartFilenameFilament', {
                 filename: this.file?.filename ?? 'unknown',
-                filament: this.filament,
             })
 
         return this.$t('Dialogs.StartPrint.DoYouWantToStartFilename', { filename: this.file?.filename ?? 'unknown' })

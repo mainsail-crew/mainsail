@@ -2,19 +2,30 @@
     <div>
         <panel :icon="mdiAdjust" :title="title" card-class="spoolman-panel" :collapsible="true">
             <template #buttons>
-                <template v-if="active_spool === null">
-                    <v-btn icon tile :title="$t('Panels.Spoolman.SelectSpool')" @click="showChangeSpoolDialog = true">
-                        <v-icon>{{ mdiSwapVertical }}</v-icon>
-                    </v-btn>
-                </template>
-                <template v-else>
-                    <v-btn icon tile :title="$t('Panels.Spoolman.ChangeSpool')" @click="showChangeSpoolDialog = true">
-                        <v-icon>{{ mdiSwapVertical }}</v-icon>
-                    </v-btn>
-                    <v-btn icon tile :title="$t('Panels.Spoolman.EjectSpool')" @click="showEjectSpoolDialog = true">
-                        <v-icon>{{ mdiEject }}</v-icon>
-                    </v-btn>
-                </template>
+                <v-btn icon tile :title="changeSpoolTooltip" @click="showChangeSpoolDialog = true">
+                    <v-icon>{{ mdiSwapVertical }}</v-icon>
+                </v-btn>
+                <v-menu :offset-y="true" :close-on-content-click="false" left>
+                    <template #activator="{ on, attrs }">
+                        <v-btn icon tile v-bind="attrs" v-on="on">
+                            <v-icon>{{ mdiDotsVertical }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list dense>
+                        <v-list-item>
+                            <v-btn small style="width: 100%" @click="showEjectSpoolDialog = true">
+                                <v-icon left>{{ mdiEject }}</v-icon>
+                                {{ $t('Panels.Spoolman.EjectSpool') }}
+                            </v-btn>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-btn small style="width: 100%" @click="openSpoolManager">
+                                <v-icon left>{{ mdiOpenInNew }}</v-icon>
+                                {{ $t('Panels.Spoolman.OpenSpoolManager') }}
+                            </v-btn>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
             </template>
             <v-card-text v-if="active_spool === null">
                 <v-row>
@@ -26,19 +37,7 @@
                     </v-col>
                 </v-row>
             </v-card-text>
-            <v-list-item v-else three-line>
-                <v-list-item-content>
-                    <div class="text-overline mb-1">#{{ id }} | {{ vendor }}</div>
-                    <v-list-item-title class="text-h5 mb-1">
-                        {{ name }}
-                    </v-list-item-title>
-                    <v-list-item-subtitle>{{ subtitle }}</v-list-item-subtitle>
-                </v-list-item-content>
-
-                <v-list-item-avatar tile size="80">
-                    <spool-icon :color="color" />
-                </v-list-item-avatar>
-            </v-list-item>
+            <spoolman-panel-active-spool v-else />
         </panel>
         <spoolman-change-spool-dialog :show-dialog="showChangeSpoolDialog" @close="showChangeSpoolDialog = false" />
         <spoolman-eject-spool-dialog :show-dialog="showEjectSpoolDialog" @close="showEjectSpoolDialog = false" />
@@ -49,17 +48,20 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiAdjust, mdiEject, mdiSwapVertical } from '@mdi/js'
-import SpoolmanChangeSpoolDialog from '@/components/panels/Spoolman/SpoolmanChangeSpoolDialog.vue'
-import SpoolmanEjectSpoolDialog from '@/components/panels/Spoolman/SpoolmanEjectSpoolDialog.vue'
+import { mdiAdjust, mdiDotsVertical, mdiEject, mdiOpenInNew, mdiSwapVertical } from '@mdi/js'
+import SpoolmanChangeSpoolDialog from '@/components/dialogs/SpoolmanChangeSpoolDialog.vue'
+import SpoolmanEjectSpoolDialog from '@/components/dialogs/SpoolmanEjectSpoolDialog.vue'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
+import SpoolmanPanelActiveSpool from '@/components/panels/Spoolman/SpoolmanPanelActiveSpool.vue'
 
 @Component({
-    components: { Panel, SpoolmanChangeSpoolDialog, SpoolmanEjectSpoolDialog },
+    components: { SpoolmanPanelActiveSpool, Panel, SpoolmanChangeSpoolDialog, SpoolmanEjectSpoolDialog },
 })
 export default class SpoolmanPanel extends Mixins(BaseMixin) {
     mdiAdjust = mdiAdjust
+    mdiDotsVertical = mdiDotsVertical
     mdiEject = mdiEject
+    mdiOpenInNew = mdiOpenInNew
     mdiSwapVertical = mdiSwapVertical
 
     showChangeSpoolDialog = false
@@ -73,6 +75,12 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
         if (this.health === '' || this.health === 'healthy') return 'Spoolman'
 
         return `Spoolman (${this.health})`
+    }
+
+    get changeSpoolTooltip(): string {
+        if (this.active_spool === null) return this.$t('Panels.Spoolman.SelectSpool') as string
+
+        return this.$t('Panels.Spoolman.ChangeSpool') as string
     }
 
     get active_spool(): ServerSpoolmanStateSpool | null {
@@ -136,6 +144,14 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
 
     get subtitle() {
         return [this.materialOutput, this.weightOutput, this.lengthOutput].filter((v) => v !== null).join(' | ')
+    }
+
+    get spoolManagerUrl() {
+        return this.$store.state.server.config.config?.spoolman?.server ?? null
+    }
+
+    openSpoolManager() {
+        window.open(this.spoolManagerUrl, '_blank')
     }
 }
 </script>

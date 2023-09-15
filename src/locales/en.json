@@ -144,8 +144,9 @@
         "StartPrint": {
             "Cancel": "Cancel",
             "DoYouWantToStartFilename": "Do you want to start {filename}?",
-            "DoYouWantToStartFilenameFilament": "Do you want to start {filename} with the filament {filament}?",
+            "DoYouWantToStartFilenameFilament": "Do you want to start {filename} with the following filament?",
             "Headline": "Start Job",
+            "NoSpoolSelected": "No spool selected. Please select a spool or this print will not be tracked.",
             "Print": "print",
             "Timelapse": "Timelapse"
         }
