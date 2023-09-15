@@ -116,4 +116,17 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
             spool_id: id,
         })
     },
+
+    refreshActiveSpool({ state }) {
+        if (state.active_spool_id === null) return
+
+        Vue.$socket.emit(
+            'server.spoolman.proxy',
+            {
+                request_method: 'GET',
+                path: `/v1/spool/${state.active_spool_id}`,
+            },
+            { action: 'server/spoolman/getActiveSpool' }
+        )
+    },
 }
