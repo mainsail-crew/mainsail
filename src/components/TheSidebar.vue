@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer
         :key="navigationStyle"
-        :value="naviDrawer"
+        v-model="naviDrawer"
         :src="sidebarBackground"
         :mini-variant="navigationStyle === 'iconsOnly'"
         :width="navigationWidth"
@@ -68,6 +68,10 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin) {
 
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
+    }
+
+    set naviDrawer(newVal) {
+        this.$store.dispatch('setNaviDrawer', newVal)
     }
 
     get navigationStyle() {

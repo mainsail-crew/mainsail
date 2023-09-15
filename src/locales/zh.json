@@ -44,14 +44,14 @@
             "DescriptionPreviouslyUnderVolted": "自从开机以来树莓派供电电压至少有一次低于4.65V。",
             "DescriptionTemperatureLimitActive": "树莓派uC(仅3A+/3B+)温度目前超过软件限值(默认60C)。",
             "DescriptionUnderVoltageDetected": "树莓派供电电压目前低于4.65V",
-            "TitleCurrentlyThrottled": "当前受到限制",
-            "TitleFrequencyCapped": "频率上限",
-            "TitlePreviouslyFrequencyCapped": "历史频率上限",
-            "TitlePreviouslyTemperatureLimited": "历史温度限制",
-            "TitlePreviouslyThrottled": "历史限制",
-            "TitlePreviouslyUnderVolted": "历史电压过低",
-            "TitleTemperatureLimitActive": "温度限制",
-            "TitleUnderVoltageDetected": "检测到电压过低"
+            "TitleCurrentlyThrottled": "受限提醒",
+            "TitleFrequencyCapped": "频率上限提醒",
+            "TitlePreviouslyFrequencyCapped": "频率上限提醒",
+            "TitlePreviouslyTemperatureLimited": "温度限制提醒",
+            "TitlePreviouslyThrottled": "受限提醒",
+            "TitlePreviouslyUnderVolted": "电压过低提醒",
+            "TitleTemperatureLimitActive": "温度限制提醒",
+            "TitleUnderVoltageDetected": "电压过低提醒"
         },
         "Titles": {
             "Complete": "已完成 - {filename}",
@@ -677,6 +677,7 @@
                 "Temperature": "当前温度"
             },
             "Headline": "温度",
+            "HideMcuHostSensors": "隐藏Host/MCU传感器",
             "Max": "最高",
             "Min": "最低",
             "Name": "名称",
@@ -792,6 +793,7 @@
             "Circle": "圆形",
             "Control": "控制",
             "Cross": "交叉",
+            "HideDuringPrint": "打印期间隐藏轴控制",
             "EnableXYHoming": "显示X&Y轴归零按钮",
             "EstimatedExtrusionInfo": "显示预估的挤出信息",
             "EstimatedExtrusionInfoDescription": "显示/隐藏根据挤出量和进给速度预估的挤出信息",
@@ -867,8 +869,7 @@
             "CannotReadJson": "无法读取/解析备份文件。",
             "DateFormat": "日期格式",
             "DbConsoleHistory": "控制台历史记录",
-            "DbHistoryJobs": "历史任务",
-            "DbHistoryTotals": "历史统计",
+            "DBNavigation": "侧边栏",
             "DbTimelapseSettings": "延时摄影设置",
             "DbView": "视图设置",
             "EstimateValues": {
@@ -885,7 +886,8 @@
             "Reset": "重启",
             "Restore": "恢复",
             "RestoreDialog": "请选择你想要恢复的项：",
-            "TimeFormat": "时间格式"
+            "TimeFormat": "时间格式",
+            "Everything": "全部"
         },
         "InterfaceSettings": "Mainsail设置",
         "MacrosTab": {
@@ -1056,6 +1058,11 @@
             "ConfirmOnEmergencyStopDescription": "在按下\"紧急停止\"时显示确认对话框",
             "ConfirmOnPowerDeviceChange": "控制设备电源时需要确认",
             "ConfirmOnPowerDeviceChangeDescription": "控制设备电源时显示确认对话框",
+            "DefaultNavigationState": "侧边栏默认状态",
+            "DefaultNavigationStateAlwaysClosed": "始终隐藏",
+            "DefaultNavigationStateAlwaysOpen": "始终显示",
+            "DefaultNavigationStateDescription": "侧边栏默认显示状态。",
+            "DefaultNavigationStateLastState": "上一次的状态",
             "DisableFanAnimation": "关闭风扇动画",
             "DisableFanAnimationDescription": "这会一定程度减少浏览器的资源消耗",
             "DisplayCANCEL_PRINT": "显示\"取消打印\"按钮",
@@ -1094,6 +1101,7 @@
             "EditCrowsnestConf": "编辑 crowsnest.conf",
             "EditWebcam": "编辑摄像头",
             "FlipWebcam": "翻转摄像头图像：",
+            "HideFps": "隐藏FPS数值显示",
             "Horizontally": "水平",
             "IconBed": "热床",
             "IconCam": "摄像头",
