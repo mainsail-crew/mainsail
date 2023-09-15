@@ -17,8 +17,8 @@
         <td class="text-center">{{ material }}</td>
         <td class="text-right">{{ last_used }}</td>
         <td class="text-right">
-            <strong>{{ rest_weight_format }} g</strong>
-            <small class="ml-1">/ {{ total_weight_format }} g</small>
+            <strong>{{ rest_weight_format }}</strong>
+            <small class="ml-1">/ {{ total_weight_format }}</small>
         </td>
     </tr>
 </template>
@@ -63,11 +63,20 @@ export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
     }
 
     get rest_weight_format() {
-        return (this.total_weight - this.used_weight).toFixed(0)
+        return `${(this.total_weight - this.used_weight).toFixed(0)}g`
     }
 
     get total_weight_format() {
-        return this.total_weight.toFixed(0)
+        if (this.total_weight < 1000) {
+            return `${this.total_weight.toFixed(0)}g`
+        }
+
+        let totalRound = Math.round(this.total_weight / 1000)
+        if (totalRound !== this.total_weight / 1000) {
+            totalRound = Math.round(this.total_weight / 100) / 10
+        }
+
+        return `${totalRound}kg`
     }
 
     get last_used() {
