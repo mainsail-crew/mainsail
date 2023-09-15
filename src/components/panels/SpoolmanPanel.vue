@@ -106,11 +106,12 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
     }
 
     get weightOutput() {
-        const remaining = this.active_spool?.remaining_weight ?? null
+        let remaining = this.active_spool?.remaining_weight ?? null
         let total = this.active_spool?.filament.weight ?? null
         let unit = 'g'
 
         if (remaining === null || total === null) return null
+        remaining = Math.round(remaining)
         let totalRound = Math.floor(total / 1000)
 
         if (total >= 1000) {
