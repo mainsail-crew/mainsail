@@ -23,26 +23,37 @@ import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
 
+interface OfferData {
+    iceUfrag: string
+    icePwd: string
+    medias: string[]
+}
+
 @Component
-export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin, WebcamMixin) {
+export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
     @Ref() declare video: HTMLVideoElement
 
-    // webrtc player vars
-    private terminated: boolean = false
-    private ws: WebSocket | null = null
     private pc: RTCPeerConnection | null = null
-    private restartTimeoutTimer: any = null
+    private restartTimeout: any = null
     private status: string = 'connecting'
+    private eTag: string | null = null
+    private queuedCandidates: RTCIceCandidate[] = []
+    private offerData: OfferData = {
+        iceUfrag: '',
+        icePwd: '',
+        medias: [],
+    }
+    private RESTART_PAUSE = 2000
 
     // stop the video and close the streams if the component is going to be destroyed so we don't leave hanging streams
     beforeDestroy() {
         this.terminate()
 
         // clear any potentially open restart timeout
-        if (this.restartTimeoutTimer) {
-            clearTimeout(this.restartTimeoutTimer)
+        if (this.restartTimeout) {
+            clearTimeout(this.restartTimeout)
         }
     }
 
@@ -57,10 +68,7 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin, WebcamMixi
     }
 
     get url() {
-        let baseUrl = this.camSettings.stream_url
-        if (baseUrl.startsWith('http')) {
-            baseUrl = baseUrl.replace('http', 'ws') + 'ws'
-        }
+        let baseUrl = new URL('whep', this.camSettings.stream_url).toString()
 
         return this.convertUrl(baseUrl, this.printerUrl)
     }
@@ -87,140 +95,245 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin, WebcamMixi
         this.start()
     }
 
-    // webrtc player methods
-    // adapated from sample player in https://github.com/mrlt8/docker-wyze-bridge
-    start() {
-        // unterminate we're starting again.
-        this.terminated = false
-
-        // clear any potentially open restart timeout
-        if (this.restartTimeoutTimer) {
-            clearTimeout(this.restartTimeoutTimer)
-            this.restartTimeoutTimer = null
-        }
-
-        window.console.log('[webcam-rtspsimpleserver] web socket connecting')
-
-        // test if the url is valid
-        try {
-            const url = new URL(this.url)
-
-            // break if url protocol is not ws
-            if (!url.protocol.startsWith('ws')) {
-                console.log('[webcam-rtspsimpleserver] invalid URL (no ws protocol)')
-                return
-            }
-        } catch (err) {
-            console.log('[webcam-rtspsimpleserver] invalid URL')
+    log(msg: string, obj?: any) {
+        if (obj) {
+            window.console.log(`[WebRTC mediamtx] ${msg}`, obj)
             return
         }
 
-        // open websocket connection
-        this.ws = new WebSocket(this.url)
-
-        this.ws.onerror = (event) => {
-            window.console.log('[webcam-rtspsimpleserver] websocket error', event)
-            this.ws?.close()
-            this.ws = null
-        }
-
-        this.ws.onclose = (event) => {
-            console.log('[webcam-rtspsimpleserver] websocket closed', event)
-            this.ws = null
-            this.scheduleRestart()
-        }
-
-        this.ws.onmessage = (msg: MessageEvent) => this.webRtcOnIceServers(msg)
+        window.console.log(`[WebRTC mediamtx] ${msg}`)
     }
 
-    terminate() {
-        this.terminated = true
+    // webrtc player methods
+    // adapated from https://github.com/bluenviron/mediamtx/blob/main/internal/core/webrtc_read_index.html
 
-        try {
-            this.video.pause()
-        } catch (err) {
-            // ignore -- make sure we close down the sockets anyway
-        }
+    unquoteCredential = (v: any) => JSON.parse(`"${v}"`)
 
-        this.ws?.close()
-        this.pc?.close()
-    }
+    // eslint-disable-next-line no-undef
+    linkToIceServers(links: string | null): RTCIceServer[] {
+        if (links === null) return []
 
-    webRtcOnIceServers(msg: MessageEvent) {
-        if (this.ws === null) return
+        return links.split(', ').map((link) => {
+            const m: RegExpMatchArray | null = link.match(
+                /^<(.+?)>; rel="ice-server"(; username="(.*?)"; credential="(.*?)"; credential-type="password")?/i
+            )
 
-        const iceServers = JSON.parse(msg.data)
-        this.pc = new RTCPeerConnection({
-            iceServers,
+            // break if match is null
+            if (m === null) return { urls: '' }
+
+            // eslint-disable-next-line no-undef
+            const ret: RTCIceServer = {
+                urls: [m[1]],
+            }
+
+            if (m.length > 3) {
+                ret.username = this.unquoteCredential(m[3])
+                ret.credential = this.unquoteCredential(m[4])
+                ret.credentialType = 'password'
+            }
+
+            return ret
         })
+    }
 
-        this.ws.onmessage = (msg: MessageEvent) => this.webRtcOnRemoteDescription(msg)
-        this.pc.onicecandidate = (evt: RTCPeerConnectionIceEvent) => this.webRtcOnIceCandidate(evt)
+    parseOffer(offer: string) {
+        const ret: OfferData = {
+            iceUfrag: '',
+            icePwd: '',
+            medias: [],
+        }
 
-        this.pc.oniceconnectionstatechange = () => {
-            if (this.pc === null) return
-
-            window.console.log('[webcam-rtspsimpleserver] peer connection state:', this.pc.iceConnectionState)
-
-            this.status = (this.pc?.iceConnectionState ?? '').toString()
-
-            if (['failed', 'disconnected'].includes(this.status)) {
-                this.scheduleRestart()
+        for (const line of offer.split('\r\n')) {
+            if (line.startsWith('m=')) {
+                ret.medias.push(line.slice('m='.length))
+            } else if (ret.iceUfrag === '' && line.startsWith('a=ice-ufrag:')) {
+                ret.iceUfrag = line.slice('a=ice-ufrag:'.length)
+            } else if (ret.icePwd === '' && line.startsWith('a=ice-pwd:')) {
+                ret.icePwd = line.slice('a=ice-pwd:'.length)
             }
         }
 
-        this.pc.ontrack = (evt: RTCTrackEvent) => {
-            window.console.log('[webcam-rtspsimpleserver] new track ' + evt.track.kind)
-            this.video.srcObject = evt.streams[0]
+        return ret
+    }
+
+    generateSdpFragment(offerData: OfferData, candidates: RTCIceCandidate[]) {
+        // I don't found a specification for this, but it seems to be the only way to make it work
+        const candidatesByMedia: any = {}
+        for (const candidate of candidates) {
+            const mid = candidate.sdpMLineIndex
+            if (mid === null) continue
+
+            // create the array if it doesn't exist
+            if (!(mid in candidatesByMedia)) candidatesByMedia[mid] = []
+            candidatesByMedia[mid].push(candidate)
         }
+
+        let frag = 'a=ice-ufrag:' + offerData.iceUfrag + '\r\n' + 'a=ice-pwd:' + offerData.icePwd + '\r\n'
+        let mid = 0
+
+        for (const media of offerData.medias) {
+            if (candidatesByMedia[mid] !== undefined) {
+                frag += 'm=' + media + '\r\n' + 'a=mid:' + mid + '\r\n'
+
+                for (const candidate of candidatesByMedia[mid]) {
+                    frag += 'a=' + candidate.candidate + '\r\n'
+                }
+            }
+
+            mid++
+        }
+
+        return frag
+    }
+
+    start() {
+        this.log('requesting ICE servers from ' + this.url)
+
+        fetch(this.url, {
+            method: 'OPTIONS',
+        })
+            .then((res) => this.onIceServers(res))
+            .catch((err) => {
+                this.log('error: ' + err)
+                //this.scheduleRestart();
+            })
+    }
+
+    onIceServers(res: Response) {
+        const iceServers = this.linkToIceServers(res.headers.get('Link'))
+        this.log('ice servers:', iceServers)
+
+        this.pc = new RTCPeerConnection({
+            iceServers,
+        })
 
         const direction = 'sendrecv'
         this.pc.addTransceiver('video', { direction })
         this.pc.addTransceiver('audio', { direction })
 
-        this.pc.createOffer().then((desc: any) => {
-            if (this.pc === null || this.ws === null) return
+        this.pc.onicecandidate = (evt: RTCPeerConnectionIceEvent) => this.onLocalCandidate(evt)
+        this.pc.oniceconnectionstatechange = () => this.onConnectionState()
 
-            this.pc.setLocalDescription(desc)
+        this.pc.ontrack = (evt) => {
+            this.log('new track:', evt.track.kind)
+            this.video.srcObject = evt.streams[0]
+        }
 
-            window.console.log('[webcam-rtspsimpleserver] sending offer')
-            this.ws.send(JSON.stringify(desc))
+        this.pc.createOffer().then((offer) => this.onLocalOffer(offer))
+    }
+
+    // eslint-disable-next-line no-undef
+    onLocalOffer(offer: RTCSessionDescriptionInit) {
+        this.offerData = this.parseOffer(offer.sdp ?? '')
+        this.pc?.setLocalDescription(offer)
+
+        this.log('sending offer', offer)
+
+        fetch(this.url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/sdp',
+            },
+            body: offer.sdp,
         })
+            .then((res) => {
+                if (res.status !== 201) {
+                    throw new Error('bad status code')
+                }
+                this.eTag = res.headers.get('E-Tag')
+                return res.text()
+            })
+            .then((sdp) => {
+                this.onRemoteAnswer(
+                    new RTCSessionDescription({
+                        type: 'answer',
+                        sdp,
+                    })
+                )
+            })
+            .catch((err) => {
+                this.log('error: ' + err)
+                //this.scheduleRestart()
+            })
     }
 
-    webRtcOnRemoteDescription(msg: any) {
-        if (this.pc === null || this.ws === null) return
+    onRemoteAnswer(answer: RTCSessionDescription) {
+        if (this.restartTimeout !== null) return
 
-        this.pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(msg.data)))
-        this.ws.onmessage = (msg: any) => this.webRtcOnRemoteCandidate(msg)
-    }
+        // this.pc.setRemoteDescription(new RTCSessionDescription(answer));
+        this.pc?.setRemoteDescription(answer)
 
-    webRtcOnIceCandidate(evt: RTCPeerConnectionIceEvent) {
-        if (this.ws === null) return
-
-        if (evt.candidate?.candidate !== '') {
-            this.ws.send(JSON.stringify(evt.candidate))
+        if (this.queuedCandidates.length !== 0) {
+            this.sendLocalCandidates(this.queuedCandidates)
+            this.queuedCandidates = []
         }
     }
 
-    webRtcOnRemoteCandidate(msg: any) {
-        if (this.pc === null) return
+    onConnectionState() {
+        if (this.restartTimeout !== null) return
 
-        this.pc.addIceCandidate(JSON.parse(msg.data))
+        this.status = this.pc?.iceConnectionState ?? ''
+        this.log('peer connection state:', this.status)
+
+        switch (this.status) {
+            case 'disconnected':
+                this.scheduleRestart()
+        }
+    }
+
+    onLocalCandidate(evt: RTCPeerConnectionIceEvent) {
+        if (this.restartTimeout !== null) return
+
+        if (evt.candidate !== null) {
+            if (this.eTag === '') {
+                this.queuedCandidates.push(evt.candidate)
+                return
+            }
+
+            this.sendLocalCandidates([evt.candidate])
+        }
+    }
+
+    sendLocalCandidates(candidates: RTCIceCandidate[]) {
+        fetch(this.url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/trickle-ice-sdpfrag',
+                'If-Match': this.eTag,
+                // eslint-disable-next-line no-undef
+            } as HeadersInit,
+            body: this.generateSdpFragment(this.offerData, candidates),
+        })
+            .then((res) => {
+                if (res.status !== 204) throw new Error('bad status code')
+            })
+            .catch((err) => {
+                this.log('error: ' + err)
+                //this.scheduleRestart()
+            })
+    }
+
+    terminate() {
+        this.log('terminating')
+
+        if (this.pc !== null) {
+            this.pc.close()
+            this.pc = null
+        }
     }
 
     scheduleRestart() {
-        this.ws?.close()
-        this.ws = null
+        if (this.restartTimeout !== null) return
 
-        this.pc?.close()
-        this.pc = null
+        this.terminate()
 
-        if (this.terminated) return
-
-        this.restartTimeoutTimer = setTimeout(() => {
+        this.restartTimeout = window.setTimeout(() => {
+            this.restartTimeout = null
             this.start()
-        }, 2000)
+        }, this.RESTART_PAUSE)
+
+        this.eTag = ''
+        this.queuedCandidates = []
     }
 }
 </script>
