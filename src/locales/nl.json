@@ -671,8 +671,7 @@
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "Geen webcam beschikbaar. Voeg een webcam toe onder \"Interface Settings\" -> \"Webcams\".",
-            "UnknownWebcamService": "Onbekende Webcam Service",
-            "NozzleCalibrationHeadline": "Nozzle Calibration"
+            "UnknownWebcamService": "Onbekende Webcam Service"
         },
         "ZoffsetPanel": {
             "Clear": "Wissen",
@@ -1072,10 +1071,7 @@
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "verticaal",
-            "Webcams": "Webcams",
-            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
-            "EnableNozzleCalibrationOverlay": "Enable",
-            "PixelPerMM": "Pixel per MM"
+            "Webcams": "Webcams"
         }
     },
     "Timelapse": {

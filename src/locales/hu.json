@@ -602,8 +602,7 @@
             "All": "Mind",
             "FPS": "FPS",
             "Headline": "Webkamera",
-            "UnknownWebcamService": "Ismeretlen webkamera szolg.",
-            "NozzleCalibrationHeadline": "Nozzle Calibration"
+            "UnknownWebcamService": "Ismeretlen webkamera szolg."
         },
         "ZoffsetPanel": {
             "Headline": "Z-eltolás",
@@ -953,10 +952,7 @@
             "UrlStream": "Stream URL-je ",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "függőleges",
-            "Webcams": "Webkamerák",
-            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
-            "EnableNozzleCalibrationOverlay": "Enable",
-            "PixelPerMM": "Pixel per MM"
+            "Webcams": "Webkamerák"
         }
     },
     "Timelapse": {

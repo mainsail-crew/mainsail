@@ -679,8 +679,7 @@
             "FPS": "к/сек",
             "Headline": "Видеокамера",
             "NoWebcam": "Нет видеокамер. Добавьте видеокамеру через \"Настройки интерфейса\" -> \"Видеокамеры\".",
-            "UnknownWebcamService": "Неизвестный сервис видеокамеры",
-            "NozzleCalibrationHeadline": "Nozzle Calibration"
+            "UnknownWebcamService": "Неизвестный сервис видеокамеры"
         },
         "ZoffsetPanel": {
             "Clear": "Очистить",
@@ -1092,10 +1091,7 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "вертикально",
             "Webcams": "Видеокамеры",
-            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
-            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
-            "EnableNozzleCalibrationOverlay": "Enable",
-            "PixelPerMM": "Pixel per MM"
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
         }
     },
     "ScrewsTiltAdjust": {

@@ -613,8 +613,7 @@
             "FPS": "ФПС",
             "Headline": "Веб-камера",
             "NoWebcam": "Немає веб-камери. Додайте веб -камеру \"Налаштування Інтерфейсу\" -> \"Веб-камери\".",
-            "UnknownWebcamService": "Невідома служба веб-камери",
-            "NozzleCalibrationHeadline": "Nozzle Calibration"
+            "UnknownWebcamService": "Невідома служба веб-камери"
         },
         "ZoffsetPanel": {
             "Clear": "Очистити",
@@ -974,10 +973,7 @@
             "UrlStream": "URL-адреса Потоку",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "вертикально",
-            "Webcams": "Веб-камери",
-            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
-            "EnableNozzleCalibrationOverlay": "Enable",
-            "PixelPerMM": "Pixel per MM"
+            "Webcams": "Веб-камери"
         }
     },
     "Timelapse": {

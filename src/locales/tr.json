@@ -711,8 +711,7 @@
             "FPS": "FPS",
             "Headline": "Web Kamerası",
             "NoWebcam": "Kullanılabilir bir web kamerası yok. \"Arayüz Ayarları\" -> \"Web Kameraları\" altından bir web kamerası ekleyin.",
-            "UnknownWebcamService": "Bilinmeyen Web Kamerası Hizmeti",
-            "NozzleCalibrationHeadline": "Nozzle Calibration"
+            "UnknownWebcamService": "Bilinmeyen Web Kamerası Hizmeti"
         },
         "ZoffsetPanel": {
             "Clear": "Temizle",
@@ -1126,10 +1125,7 @@
             "Vertically": "dikey",
             "Webcams": "Web Kameraları",
             "WebrtcCameraStreamer": "WebRTC (kamera-streamer)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)",
-            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
-            "EnableNozzleCalibrationOverlay": "Enable",
-            "PixelPerMM": "Pixel per MM"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
     },
     "ScrewsTiltAdjust": {

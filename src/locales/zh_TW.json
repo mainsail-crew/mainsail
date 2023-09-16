@@ -647,8 +647,7 @@
             "FPS": "FPS",
             "Headline": "攝影機",
             "NoWebcam": "没有可用的攝影機。在\"Mainsail設置\" -> \"攝影機\"新增攝影機。",
-            "UnknownWebcamService": "未知攝影機服務",
-            "NozzleCalibrationHeadline": "Nozzle Calibration"
+            "UnknownWebcamService": "未知攝影機服務"
         },
         "ZoffsetPanel": {
             "Clear": "清除",
@@ -1047,10 +1046,7 @@
             "UrlStream": "視訊流位址URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "垂直",
-            "Webcams": "攝影機",
-            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
-            "EnableNozzleCalibrationOverlay": "Enable",
-            "PixelPerMM": "Pixel per MM"
+            "Webcams": "攝影機"
         }
     },
     "Timelapse": {

@@ -673,7 +673,6 @@
             "Headline": "Webkamera",
             "NoWebcam": "Žádná webkamera není k dispozici. Přidejte webkameru v sekci \"Nastavení rozhraní\" -> \"Webkamery\".",
             "UnknownWebcamService": "Neznámá služba webkamery",
-            "NozzleCalibrationHeadline": "Nozzle Calibration"
         },
         "ZoffsetPanel": {
             "Clear": "Smazat",
@@ -1070,10 +1069,7 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertikálně",
             "Webcams": "Webkamery",
-            "WebrtcCameraStreamer": "WebRTC (streamer z kamery)",
-            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
-            "EnableNozzleCalibrationOverlay": "Enable",
-            "PixelPerMM": "Pixel per MM"
+            "WebrtcCameraStreamer": "WebRTC (streamer z kamery)"
         }
     },
     "ScrewsTiltAdjust": {

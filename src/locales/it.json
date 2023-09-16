@@ -496,8 +496,7 @@
             "All": "Tutto",
             "FPS": "FPS",
             "Headline": "Webcam",
-            "UnknownWebcamService": "Servizio Webcam Sconosciuto",
-            "NozzleCalibrationHeadline": "Nozzle Calibration"
+            "UnknownWebcamService": "Servizio Webcam Sconosciuto"
         },
         "ZoffsetPanel": {
             "Headline": "Z-Offset",
@@ -819,10 +818,7 @@
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "verticalmente",
-            "Webcams": "Webcam",
-            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
-            "EnableNozzleCalibrationOverlay": "Enable",
-            "PixelPerMM": "Pixel per MM"
+            "Webcams": "Webcam"
         }
     },
     "Timelapse": {

@@ -655,8 +655,7 @@
             "FPS": "IPS",
             "Headline": "Caméra",
             "NoWebcam": "Pas de caméra disponible. Ajoutez une caméra dans \"Réglages interface\" > \"Caméras\"",
-            "UnknownWebcamService": "Service Caméra inconnu",
-            "NozzleCalibrationHeadline": "Nozzle Calibration"
+            "UnknownWebcamService": "Service Caméra inconnu"
         },
         "ZoffsetPanel": {
             "Clear": "Effacer",
@@ -1026,10 +1025,7 @@
             "UrlStream": "URL du flux",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertical",
-            "Webcams": "Caméras",
-            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
-            "EnableNozzleCalibrationOverlay": "Enable",
-            "PixelPerMM": "Pixel per MM"
+            "Webcams": "Caméras"
         },
         "MiscellaneousTab": {
             "AddGroup": "ajouter le groupe",
