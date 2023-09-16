@@ -712,7 +712,7 @@
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "Keine Webcam verfügbar. Füge eine Webcam unter \"Interface Einstellungen\" -> \"Webcams\".",
-            "UnknownWebcamService": "Unbekannter Webcam Dienst",
+            "UnknownWebcamService": "Unbekannter Webcam Dienst"
         },
         "ZoffsetPanel": {
             "Clear": "Löschen",

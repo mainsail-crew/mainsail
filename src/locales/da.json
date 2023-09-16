@@ -671,7 +671,7 @@
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "Intet webcam tilgængeligt. Tilføj et under \"Interfaceindstillinger\" -> \"Webcams\".",
-            "UnknownWebcamService": "Ukendt Webcam service",
+            "UnknownWebcamService": "Ukendt Webcam service"
         },
         "ZoffsetPanel": {
             "Clear": "Nulstil",

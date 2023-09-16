@@ -4,7 +4,7 @@
     <panel
         v-if="socketIsConnected"
         :icon="mdiWebcam"
-        :title="$t(nozzleCalibration ? 'Panels.WebcamPanel.NozzleCalibrationHeadline' : 'Panels.WebcamPanel.Headline')"
+        :title="$t('Panels.WebcamPanel.Headline')"
         :collapsible="$route.fullPath !== '/cam'"
         card-class="webcam-panel"
         :margin-bottom="currentPage !== 'page'">
@@ -102,10 +102,6 @@ export default class WebcamPanel extends Mixins(BaseMixin, WebcamMixin) {
                 icon: mdiViewGrid,
             }
         )
-    }
-
-    get nozzleCalibration() {
-        return this.currentCam.extra_data?.nozzle_calibration ?? false
     }
 }
 </script>

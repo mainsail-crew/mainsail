@@ -20,7 +20,6 @@ import WebcamMixin from '@/components/mixins/webcam'
 const CONTENT_LENGTH = 'content-length'
 const TYPE_JPEG = 'image/jpeg'
 
-@Component
 export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     private currentFPS = 0
     private streamState = false

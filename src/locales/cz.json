@@ -672,7 +672,7 @@
             "FPS": "FPS",
             "Headline": "Webkamera",
             "NoWebcam": "Žádná webkamera není k dispozici. Přidejte webkameru v sekci \"Nastavení rozhraní\" -> \"Webkamery\".",
-            "UnknownWebcamService": "Neznámá služba webkamery",
+            "UnknownWebcamService": "Neznámá služba webkamery"
         },
         "ZoffsetPanel": {
             "Clear": "Smazat",

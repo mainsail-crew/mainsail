@@ -602,7 +602,7 @@
             "FPS": "FPS",
             "Headline": "Cámara web",
             "NoWebcam": "No hay cámara web disponible. Agregue una cámara web en \"Configuración\" -> \"Cámaras web\".",
-            "UnknownWebcamService": "Servicio de cámara web desconocido",
+            "UnknownWebcamService": "Servicio de cámara web desconocido"
         },
         "ZoffsetPanel": {
             "Clear": "Limpiar",
