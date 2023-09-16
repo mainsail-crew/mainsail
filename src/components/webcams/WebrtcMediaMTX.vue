@@ -68,7 +68,10 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get url() {
-        let baseUrl = new URL('whep', this.camSettings.stream_url).toString()
+        let baseUrl = this.camSettings.stream_url
+        if (!baseUrl.endsWith('/')) baseUrl += '/'
+
+        baseUrl = new URL('whep', baseUrl).toString()
 
         return this.convertUrl(baseUrl, this.printerUrl)
     }
