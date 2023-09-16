@@ -1132,7 +1132,7 @@
             "Vertically": "vertically",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
     },
     "ScrewsTiltAdjust": {

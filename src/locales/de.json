@@ -1133,7 +1133,7 @@
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
     },
     "ScrewsTiltAdjust": {

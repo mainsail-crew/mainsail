@@ -1125,7 +1125,7 @@
             "Vertically": "dikey",
             "Webcams": "Web Kameraları",
             "WebrtcCameraStreamer": "WebRTC (kamera-streamer)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
     },
     "ScrewsTiltAdjust": {
