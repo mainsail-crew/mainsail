@@ -52,9 +52,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         this.terminate()
 
         // clear any potentially open restart timeout
-        if (this.restartTimeout) {
-            clearTimeout(this.restartTimeout)
-        }
+        if (this.restartTimeout) clearTimeout(this.restartTimeout)
     }
 
     get webcamStyle() {
@@ -198,7 +196,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
             .then((res) => this.onIceServers(res))
             .catch((err) => {
                 this.log('error: ' + err)
-                //this.scheduleRestart();
+                this.scheduleRestart()
             })
     }
 
@@ -230,8 +228,6 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         this.offerData = this.parseOffer(offer.sdp ?? '')
         this.pc?.setLocalDescription(offer)
 
-        this.log('sending offer', offer)
-
         fetch(this.url, {
             method: 'POST',
             headers: {
@@ -240,9 +236,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
             body: offer.sdp,
         })
             .then((res) => {
-                if (res.status !== 201) {
-                    throw new Error('bad status code')
-                }
+                if (res.status !== 201) throw new Error('bad status code')
                 this.eTag = res.headers.get('E-Tag')
                 return res.text()
             })
@@ -255,8 +249,8 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
                 )
             })
             .catch((err) => {
-                this.log('error: ' + err)
-                //this.scheduleRestart()
+                this.log(err)
+                this.scheduleRestart()
             })
     }
 
@@ -311,8 +305,8 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
                 if (res.status !== 204) throw new Error('bad status code')
             })
             .catch((err) => {
-                this.log('error: ' + err)
-                //this.scheduleRestart()
+                this.log(err)
+                this.scheduleRestart()
             })
     }
 
@@ -331,6 +325,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         this.terminate()
 
         this.restartTimeout = window.setTimeout(() => {
+            this.log('scheduling restart')
             this.restartTimeout = null
             this.start()
         }, this.RESTART_PAUSE)
