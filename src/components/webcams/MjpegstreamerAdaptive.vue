@@ -13,115 +13,132 @@
         <span v-if="isLoaded && showFpsCounter" class="webcamFpsOutput">
             {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
         </span>
-        <span v-if="isLoaded && nozzleCalib" class="cmdButtonsControl">
-            <v-item-group class="ma-0">
-                <v-btn
-                    small
-                    :disabled="isPrinting || !homedAxes.includes('xyz')"
-                    class="cmdButton"
-                    :style="{ 'background-color': 'rgba(0,0,0,0.8)', 'min-width': '0' }"
-                    :loading="loadings.includes('set_cp')"
-                    @click="doSet()">
-                    SET
-                </v-btn>
-                <v-btn
-                    small
-                    class="cmdButton"
-                    :disabled="isPrinting || !homedAxes.includes('xyz')"
-                    :style="{
-                        'background-color': xyzMoveMode ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
-                        color: xyzMoveMode ? 'var(--v-btn-text-primary)' : 'white',
-                    }"
-                    @click="toggleXYZMove()">
-                    {{ XYZMoveOutput }}
-                </v-btn>
-                <v-btn
-                    v-if="hasZProbe"
-                    small
-                    class="cmdButton"
-                    :disabled="!allowZProbe || !homedAxes.includes('xyz')"
-                    :style="{
-                        'background-color': 'rgba(255,86,86,1.0)',
-                        'min-width': '0',
-                        'border-top-right-radius': '5px',
-                    }"
-                    @click="probeZ()">
-                    Z-PROBE
-                </v-btn>
-            </v-item-group>
-        </span>
-        <span v-if="isLoaded && nozzleCalib" class="cmdButtonsZoom">
-            <v-item-group class="ma-0">
-                <v-btn
-                    small
-                    class="cmdButton"
-                    :style="{
-                        'background-color': currentZoomFactor == '1' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
-                        color: currentZoomFactor == '1' ? 'var(--v-btn-text-primary)' : 'white',
-                        'border-bottom-left-radius': '5px',
-                        'min-width': '0px',
-                    }"
-                    @click="zoom('1')">
-                    1X
-                </v-btn>
-                <v-btn
-                    small
-                    class="cmdButton"
-                    :style="{
-                        'background-color': currentZoomFactor == '2' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
-                        color: currentZoomFactor == '2' ? 'var(--v-btn-text-primary)' : 'white',
-                    }"
-                    @click="zoom('2')">
-                    2X
-                </v-btn>
-                <v-btn
-                    small
-                    class="cmdButton"
-                    :style="{
-                        'background-color':
-                            currentZoomFactor == maxZoomFactor ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
-                        color: currentZoomFactor == maxZoomFactor ? 'var(--v-btn-text-primary)' : 'white',
-                    }"
-                    @click="zoom('0')">
-                    MAX
-                </v-btn>
-                <v-btn
-                    v-if="hasLED"
-                    small
-                    class="cmdButton"
-                    :style="{
-                        'background-color': isLEDTurnedOn ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
-                        color: isLEDTurnedOn ? 'var(--v-btn-text-primary)' : 'white',
-                        'min-width': '0',
-                    }"
-                    @click="switchLED()">
-                    <v-icon v-if="isLEDTurnedOn" small>
-                        {{ mdiLightbulbOnOutline }}
-                    </v-icon>
-                    <v-icon v-else-if="!isLEDTurnedOn" small>
-                        {{ mdiLightbulbOutline }}
-                    </v-icon>
-                </v-btn>
-            </v-item-group>
-        </span>
-        <span v-if="isLoaded && nozzleCalib" class="cmdButtonsTools">
-            <v-item-group class="ma-0 _btn-group">
-                <v-btn
-                    v-for="tool in toolchangeMacros"
-                    :key="tool.name"
-                    small
-                    :disabled="isPrinting || !homedAxes.includes('xyz')"
-                    class="cmdButton"
-                    :loading="loadings.includes('set_' + tool.name.toLowerCase())"
-                    :style="{
-                        'background-color': tool.name == activeTool ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
-                        color: tool.name == activeTool ? 'var(--v-btn-text-primary)' : 'white',
-                    }"
-                    @click="doT('_NOZZLE_CALIBRATION_LOAD_TOOL T=' + tool.name.replace('T', ''))">
-                    {{ tool.name }}
-                </v-btn>
-            </v-item-group>
-        </span>
+        <v-container v-if="isLoaded && nozzleCalib" class="ma-0 pa-0">
+            <v-row align="top" class="ma-0 pa-0">
+                <v-col align="left" class="ma-0 pa-0">
+                    <span class="cmdButtonsTools">
+                        <v-item-group class="ma-0 _btn-group">
+                            <v-btn
+                                v-for="tool in toolchangeMacros"
+                                :key="tool.name"
+                                small
+                                :disabled="isPrinting || !homedAxes.includes('xyz')"
+                                class="cmdButton"
+                                :loading="loadings.includes('set_' + tool.name.toLowerCase())"
+                                :style="{
+                                    'background-color':
+                                        tool.name == activeTool ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                                    color: tool.name == activeTool ? 'var(--v-btn-text-primary)' : 'white',
+                                }"
+                                @click="doT('_NOZZLE_CALIBRATION_LOAD_TOOL T=' + tool.name.replace('T', ''))">
+                                {{ tool.name }}
+                            </v-btn>
+                        </v-item-group>
+                    </span>
+                </v-col>
+                <v-col align="right" class="ma-0 pa-0">
+                    <span class="cmdButtonsZoom">
+                        <v-item-group class="ma-0">
+                            <v-btn
+                                small
+                                class="cmdButton"
+                                :style="{
+                                    'background-color':
+                                        currentZoomFactor == '1' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                                    color: currentZoomFactor == '1' ? 'var(--v-btn-text-primary)' : 'white',
+                                    'border-bottom-left-radius': '5px',
+                                    'min-width': '0px',
+                                }"
+                                @click="zoom('1')">
+                                {{ $t('Panels.WebcamPanel.NozzleCalibrationOverlayZoom1X') }}
+                            </v-btn>
+                            <v-btn
+                                small
+                                class="cmdButton"
+                                :style="{
+                                    'background-color':
+                                        currentZoomFactor == '2' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                                    color: currentZoomFactor == '2' ? 'var(--v-btn-text-primary)' : 'white',
+                                }"
+                                @click="zoom('2')">
+                                {{ $t('Panels.WebcamPanel.NozzleCalibrationOverlayZoom2X') }}
+                            </v-btn>
+                            <v-btn
+                                small
+                                class="cmdButton"
+                                :style="{
+                                    'background-color':
+                                        currentZoomFactor == maxZoomFactor ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                                    color: currentZoomFactor == maxZoomFactor ? 'var(--v-btn-text-primary)' : 'white',
+                                }"
+                                @click="zoom('0')">
+                                {{ $t('Panels.WebcamPanel.NozzleCalibrationOverlayZoomMAX') }}
+                            </v-btn>
+                            <v-btn
+                                v-if="hasLED"
+                                small
+                                class="cmdButton"
+                                :style="{
+                                    'background-color': isLEDTurnedOn ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                                    color: isLEDTurnedOn ? 'var(--v-btn-text-primary)' : 'white',
+                                    'min-width': '0',
+                                }"
+                                @click="switchLED()">
+                                <v-icon v-if="isLEDTurnedOn" small>
+                                    {{ mdiLightbulbOnOutline }}
+                                </v-icon>
+                                <v-icon v-else-if="!isLEDTurnedOn" small>
+                                    {{ mdiLightbulbOutline }}
+                                </v-icon>
+                            </v-btn>
+                        </v-item-group>
+                    </span>
+                </v-col>
+            </v-row>
+            <v-row align="bottom" class="ma-0 pa-0">
+                <span class="cmdButtonsControl">
+                    <v-item-group class="ma-0">
+                        <v-btn
+                            small
+                            :disabled="isPrinting || !homedAxes.includes('xyz')"
+                            class="cmdButton"
+                            :style="{ 'background-color': 'rgba(0,0,0,0.8)', 'min-width': '0' }"
+                            :loading="loadings.includes('set_cp')"
+                            @click="doSet()">
+                            {{ $t('Panels.WebcamPanel.NozzleCalibrationOverlaySet') }}
+                        </v-btn>
+                        <v-btn
+                            small
+                            class="cmdButton"
+                            :disabled="isPrinting || !homedAxes.includes('xyz')"
+                            :style="{
+                                'background-color': xyzMoveMode ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                                color: xyzMoveMode ? 'var(--v-btn-text-primary)' : 'white',
+                            }"
+                            @click="toggleXYZMove()">
+                            {{
+                                XYZMoveOutput == 'MOVE'
+                                    ? $t('Panels.WebcamPanel.NozzleCalibrationOverlayMove')
+                                    : XYZMoveOutput
+                            }}
+                        </v-btn>
+                        <v-btn
+                            v-if="hasZProbe"
+                            small
+                            class="cmdButton"
+                            :disabled="!allowZProbe || !homedAxes.includes('xyz')"
+                            :style="{
+                                'background-color': 'rgba(255,86,86,1.0)',
+                                'min-width': '0',
+                                'border-top-right-radius': '5px',
+                            }"
+                            @click="probeZ()">
+                            {{ $t('Panels.WebcamPanel.NozzleCalibrationOverlayZProbe') }}
+                        </v-btn>
+                    </v-item-group>
+                </span>
+            </v-row>
+        </v-container>
     </div>
 </template>
 
@@ -134,7 +151,6 @@ import WebcamMixin from '@/components/mixins/webcam'
 import ControlMixin from '@/components/mixins/control'
 import { PrinterStateLight } from '@/store/printer/types'
 import { mdiLightbulbOutline, mdiLightbulbOnOutline } from '@mdi/js'
-
 import { PrinterStateToolchangeMacro } from '@/store/printer/types'
 
 @Component
@@ -599,14 +615,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     get XYZMoveOutput() {
         if (this.xyzMove && !this.isPrinting && this.homedAxes.includes('xyz')) {
-            return (
-                'x' +
-                this.gcodePositions.x.toString() +
-                ' y' +
-                this.gcodePositions.y.toString() +
-                ' z' +
-                this.gcodePositions.z.toString()
-            )
+            return 'x' + this.gcodePositions.x.toString() + ' y' + this.gcodePositions.y.toString()
         }
         return 'MOVE'
     }

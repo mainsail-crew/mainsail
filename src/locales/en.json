@@ -709,7 +709,13 @@
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "No webcam available. Add a webcam under \"Interface Settings\" -> \"Webcams\".",
-            "UnknownWebcamService": "Unknown Webcam Service"
+            "UnknownWebcamService": "Unknown Webcam Service",
+            "NozzleCalibrationOverlayZoom1X": "1X",
+            "NozzleCalibrationOverlayZoom2X": "2X",
+            "NozzleCalibrationOverlayZoomMAX": "MAX",
+            "NozzleCalibrationOverlaySet": "SET",
+            "NozzleCalibrationOverlayMove": "MOVE",
+            "NozzleCalibrationOverlayZProbe": "Z-PROBE"
         },
         "ZoffsetPanel": {
             "Clear": "Clear",
