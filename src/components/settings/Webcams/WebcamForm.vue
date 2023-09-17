@@ -135,7 +135,9 @@
                         </v-col>
                     </v-row>
                     <v-row class="mt-10 ml-0">
-                        <v-card-title class="ma-0 pa-0">{{ $t('Settings.WebcamsTab.NozzleCalibrationOverlay') }}</v-card-title>
+                        <v-card-title class="ma-0 pa-0">
+                            {{ $t('Settings.WebcamsTab.NozzleCalibrationOverlay') }}
+                        </v-card-title>
                     </v-row>
                     <v-row>
                         <v-col class="pt-1 pb-3">

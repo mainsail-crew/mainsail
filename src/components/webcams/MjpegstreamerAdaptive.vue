@@ -584,8 +584,14 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.isDragging = false
         if (this.xyMove) {
             if (!this.isPrinting && this.homedAxes.includes('xyz')) {
-                let x = this.dragStart.x < this.getEventLocation(e).x ? Math.abs(this.distanceMM.x) : -Math.abs(this.distanceMM.x)
-                let y = this.dragStart.y < this.getEventLocation(e).y ? -Math.abs(this.distanceMM.y) : Math.abs(this.distanceMM.y)
+                let x =
+                    this.dragStart.x < this.getEventLocation(e).x
+                        ? Math.abs(this.distanceMM.x)
+                        : -Math.abs(this.distanceMM.x)
+                let y =
+                    this.dragStart.y < this.getEventLocation(e).y
+                        ? -Math.abs(this.distanceMM.y)
+                        : Math.abs(this.distanceMM.y)
                 this.doSendMove(`X${x.toFixed(5)} Y${y.toFixed(5)}`, 300)
                 this.doSend('G90')
             }
