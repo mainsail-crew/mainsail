@@ -28,16 +28,23 @@
                     small
                     class="cmdButton"
                     :disabled="isPrinting || !homedAxes.includes('xyz')"
-                    :style="{ 'background-color': xyzMoveMode ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': xyzMoveMode ? 'var(--v-btn-text-primary)' : 'white' }"
+                    :style="{
+                        'background-color': xyzMoveMode ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                        color: xyzMoveMode ? 'var(--v-btn-text-primary)' : 'white',
+                    }"
                     @click="toggleXYZMove()">
                     {{ XYZMoveOutput }}
                 </v-btn>
-                <v-btn 
+                <v-btn
                     v-if="hasZProbe"
                     small
                     class="cmdButton"
                     :disabled="!allowZProbe || !homedAxes.includes('xyz')"
-                    :style="{ 'background-color': 'rgba(255,86,86,1.0)', 'min-width': '0', 'border-top-right-radius': '5px' }"
+                    :style="{
+                        'background-color': 'rgba(255,86,86,1.0)',
+                        'min-width': '0',
+                        'border-top-right-radius': '5px',
+                    }"
                     @click="probeZ()">
                     Z-PROBE
                 </v-btn>
@@ -48,29 +55,45 @@
                 <v-btn
                     small
                     class="cmdButton"
-                    :style="{ 'background-color': currentZoomFactor == '1' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': currentZoomFactor == '1' ? 'var(--v-btn-text-primary)' : 'white', 'border-bottom-left-radius': '5px', 'min-width': '0px' }"
+                    :style="{
+                        'background-color': currentZoomFactor == '1' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                        color: currentZoomFactor == '1' ? 'var(--v-btn-text-primary)' : 'white',
+                        'border-bottom-left-radius': '5px',
+                        'min-width': '0px',
+                    }"
                     @click="zoom('1')">
                     1X
                 </v-btn>
                 <v-btn
                     small
                     class="cmdButton"
-                    :style="{ 'background-color': currentZoomFactor == '2' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': currentZoomFactor == '2' ? 'var(--v-btn-text-primary)' : 'white' }"
+                    :style="{
+                        'background-color': currentZoomFactor == '2' ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                        color: currentZoomFactor == '2' ? 'var(--v-btn-text-primary)' : 'white',
+                    }"
                     @click="zoom('2')">
                     2X
                 </v-btn>
                 <v-btn
                     small
                     class="cmdButton"
-                    :style="{ 'background-color': currentZoomFactor == maxZoomFactor ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': currentZoomFactor == maxZoomFactor ? 'var(--v-btn-text-primary)' : 'white' }"
+                    :style="{
+                        'background-color':
+                            currentZoomFactor == maxZoomFactor ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                        color: currentZoomFactor == maxZoomFactor ? 'var(--v-btn-text-primary)' : 'white',
+                    }"
                     @click="zoom('0')">
                     MAX
                 </v-btn>
-                <v-btn 
+                <v-btn
                     v-if="hasLED"
                     small
                     class="cmdButton"
-                    :style="{ 'background-color': isLEDTurnedOn ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': isLEDTurnedOn ? 'var(--v-btn-text-primary)' : 'white', 'min-width': '0' }"
+                    :style="{
+                        'background-color': isLEDTurnedOn ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                        color: isLEDTurnedOn ? 'var(--v-btn-text-primary)' : 'white',
+                        'min-width': '0',
+                    }"
                     @click="switchLED()">
                     <v-icon v-if="isLEDTurnedOn" small>
                         {{ mdiLightbulbOnOutline }}
@@ -79,7 +102,7 @@
                         {{ mdiLightbulbOutline }}
                     </v-icon>
                 </v-btn>
-            </v-item-group> 
+            </v-item-group>
         </span>
         <span v-if="isLoaded && nozzleCalib" class="cmdButtonsTools">
             <v-item-group class="ma-0 _btn-group">
@@ -88,9 +111,12 @@
                     :key="tool.name"
                     small
                     :disabled="isPrinting || !homedAxes.includes('xyz')"
-                    class='cmdButton'
+                    class="cmdButton"
                     :loading="loadings.includes('set_' + tool.name.toLowerCase())"
-                    :style="{ 'background-color': tool.name == activeTool ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': tool.name == activeTool ? 'var(--v-btn-text-primary)' : 'white' }"
+                    :style="{
+                        'background-color': tool.name == activeTool ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
+                        color: tool.name == activeTool ? 'var(--v-btn-text-primary)' : 'white',
+                    }"
                     @click="doT('_NOZZLE_CALIBRATION_LOAD_TOOL T=' + tool.name.replace('T', ''))">
                     {{ tool.name }}
                 </v-btn>
@@ -109,13 +135,10 @@ import ControlMixin from '@/components/mixins/control'
 import { PrinterStateLight } from '@/store/printer/types'
 import { mdiLightbulbOutline, mdiLightbulbOnOutline } from '@mdi/js'
 
-import {
-    PrinterStateToolchangeMacro,
-} from '@/store/printer/types'
+import { PrinterStateToolchangeMacro } from '@/store/printer/types'
 
 @Component
 export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin, ControlMixin) {
-
     mdiLightbulbOutline = mdiLightbulbOutline
     mdiLightbulbOnOutline = mdiLightbulbOnOutline
 
@@ -142,9 +165,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     }
 
     get activeTool(): string {
-        let t = this.$store.state.printer.toolhead?.extruder.replace("extruder", "T"); 
+        let t = this.$store.state.printer.toolhead?.extruder.replace('extruder', 'T')
         if (t == 'T') t = t + '0'
-        return t;
+        return t
     }
 
     get toolchangeMacros(): PrinterStateToolchangeMacro[] {
@@ -162,7 +185,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     get positionAbsolute() {
         return this.$store.state.printer.gcode_move?.absolute_coordinates ?? true
     }
-    
+
     get livePositions() {
         const pos = this.$store.state.printer.motion_report?.live_position ?? [0, 0, 0]
         return {
@@ -200,7 +223,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.xyzMove = false
         this.dragStart = { x: 0, y: 0 }
         this.distancePixels = { x: 0, y: 0 }
-        this.distanceMM = { x: 0, y: 0 }    
+        this.distanceMM = { x: 0, y: 0 }
         this.doSend('_NOZZLE_CALIBRATION_SET_TOOL')
     }
 
@@ -209,7 +232,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.xyzMove = false
         this.dragStart = { x: 0, y: 0 }
         this.distancePixels = { x: 0, y: 0 }
-        this.distanceMM = { x: 0, y: 0 }    
+        this.distanceMM = { x: 0, y: 0 }
         this.doSend(gcode)
     }
 
@@ -230,7 +253,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     // ----------------------------------------------
     private ledActive = 0
     switchLED() {
-        this.ledActive = this.ledActive == 0 ? 1 : 0 
+        this.ledActive = this.ledActive == 0 ? 1 : 0
         this.doSend('_NOZZLE_CALIBRATION_SWITCH_LED STATE=' + this.ledActive)
     }
 
@@ -240,7 +263,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     get hasLED(): boolean {
         try {
-            let nozzle_calibration_led = this.lights.filter((light: PrinterStateLight) => light.name.includes('nozzle_calibration_led'))
+            let nozzle_calibration_led = this.lights.filter((light: PrinterStateLight) =>
+                light.name.includes('nozzle_calibration_led')
+            )
             return nozzle_calibration_led?.length == 1
         } catch {}
         return false
@@ -324,19 +349,19 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
             // calculate max zoom
             if (this.zoomFactor == 0) {
-                this.zoomFactor = (this.rotate ? imgWidth : imgHeight) / (1.4 * this.pixelPerMM) 
+                this.zoomFactor = (this.rotate ? imgWidth : imgHeight) / (1.4 * this.pixelPerMM)
                 this.zoomFactorMax = this.zoomFactor
             }
 
-            // get image offset 
+            // get image offset
             this.imageOffsetX = this.canvasPixelToFramePixel(this.distancePixels.x)
-            this.imageOffsetY = this.canvasPixelToFramePixel(this.distancePixels.y) 
+            this.imageOffsetY = this.canvasPixelToFramePixel(this.distancePixels.y)
 
             if (this.rotate) {
                 let scale = (canvas.height / frame.width) * this.zoomFactor
 
-                let x = (canvas.width / 2) + this.imageOffsetX
-                let y = (canvas.height / 2) + this.imageOffsetY
+                let x = canvas.width / 2 + this.imageOffsetX
+                let y = canvas.height / 2 + this.imageOffsetY
 
                 let x1 = (-frame.width / 2) * scale
                 let y1 = (-frame.height / 2) * scale
@@ -348,20 +373,30 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
                 await ctx?.drawImage(frame, x1, y1, x2, y2)
                 ctx.rotate(-((this.camSettings.rotation * Math.PI) / 180))
                 ctx.translate(-x, -y)
-            } else{
+            } else {
                 // get frame to canvas pixel ratio
                 this.pixelRatio = imgWidth / canvas.width
 
                 // get image start XY coordinates
-                this.imageStartX = ((imgWidth - (imgWidth / this.zoomFactor)) / 2) - this.imageOffsetX
-                this.imageStartY = ((imgHeight - (imgHeight / this.zoomFactor)) / 2) - this.imageOffsetY
+                this.imageStartX = (imgWidth - imgWidth / this.zoomFactor) / 2 - this.imageOffsetX
+                this.imageStartY = (imgHeight - imgHeight / this.zoomFactor) / 2 - this.imageOffsetY
 
                 // get image size
                 this.imageSizeX = imgWidth / this.zoomFactor
                 this.imageSizeY = imgHeight / this.zoomFactor
 
-                await ctx?.drawImage(frame, this.imageStartX, this.imageStartY, this.imageSizeX, this.imageSizeY, 0, 0, canvas.width, canvas.height)
-            } 
+                await ctx?.drawImage(
+                    frame,
+                    this.imageStartX,
+                    this.imageStartY,
+                    this.imageSizeX,
+                    this.imageSizeY,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                )
+            }
 
             if (this.nozzleCalib) this.drawOverlay(ctx, canvas)
 
@@ -414,7 +449,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     private currentFPS = 0
     get fpsOutput() {
-        return `${this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS}` 
+        return `${this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS}`
     }
 
     // ----------------------------------------------
@@ -424,46 +459,45 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     private zoomFactorMax = -1
 
     async drawOverlay(ctx: any, canvas: any) {
-
         // canvas center
-        let canvasCenterX = Math.round(canvas.width / 2);
-        let canvasCenterY = Math.round(canvas.height / 2);
+        let canvasCenterX = Math.round(canvas.width / 2)
+        let canvasCenterY = Math.round(canvas.height / 2)
 
         // ----------------------------------------------------------------
         // Overlay
         // ----------------------------------------------------------------
-        await ctx?.beginPath(); 
-        ctx.lineWidth = 3;
-        ctx.fillStyle = 'transparent';
-        ctx.strokeStyle = this.isPrinting || !this.homedAxes.includes('xyz') ? '#aaaaaa' : this.primaryColor;
+        await ctx?.beginPath()
+        ctx.lineWidth = 3
+        ctx.fillStyle = 'transparent'
+        ctx.strokeStyle = this.isPrinting || !this.homedAxes.includes('xyz') ? '#aaaaaa' : this.primaryColor
 
         // ----------------------------------------------------------------
         // draw crosshairs circles
         // ----------------------------------------------------------------
-        let innerCircleRX = (canvas.width / (this.imageSizeX / (this.nozzleDiameter * this.pixelPerMM)) / 2)
-        let innerCircleRY = (canvas.height / (this.imageSizeY / (this.nozzleDiameter * this.pixelPerMM)) / 2)
-        let outerCircleRX = (canvas.width / (this.imageSizeX / (1.0 * this.pixelPerMM)) / 2)
-        let outerCircleRY = (canvas.height / (this.imageSizeY / (1.0 * this.pixelPerMM)) / 2)
-        await ctx?.ellipse(canvasCenterX, canvasCenterY, innerCircleRX, innerCircleRY, 0, 0, 360);
-        await ctx?.ellipse(canvasCenterX, canvasCenterY, outerCircleRX, outerCircleRY, 0, 0, 360);
-        await ctx?.fill();
+        let innerCircleRX = canvas.width / (this.imageSizeX / (this.nozzleDiameter * this.pixelPerMM)) / 2
+        let innerCircleRY = canvas.height / (this.imageSizeY / (this.nozzleDiameter * this.pixelPerMM)) / 2
+        let outerCircleRX = canvas.width / (this.imageSizeX / (1.0 * this.pixelPerMM)) / 2
+        let outerCircleRY = canvas.height / (this.imageSizeY / (1.0 * this.pixelPerMM)) / 2
+        await ctx?.ellipse(canvasCenterX, canvasCenterY, innerCircleRX, innerCircleRY, 0, 0, 360)
+        await ctx?.ellipse(canvasCenterX, canvasCenterY, outerCircleRX, outerCircleRY, 0, 0, 360)
+        await ctx?.fill()
 
         // ----------------------------------------------------------------
         // draw crosshairs lines
         // ----------------------------------------------------------------
         let crosshairsLengthX = Math.round(canvas.width / (this.imageSizeX / (1.5 * this.pixelPerMM)))
         let crosshairsLengthY = Math.round(canvas.height / (this.imageSizeY / (1.5 * this.pixelPerMM)))
-        await ctx?.moveTo(canvasCenterX, canvasCenterY - crosshairsLengthY / 2);
-        await ctx?.lineTo(canvasCenterX, canvasCenterY + crosshairsLengthY / 2);
-        await ctx?.moveTo(canvasCenterX - Math.round(crosshairsLengthX / 2), canvasCenterY);
-        await ctx?.lineTo(canvasCenterX + Math.round(crosshairsLengthX / 2), canvasCenterY);
-        
-        await ctx?.stroke();
+        await ctx?.moveTo(canvasCenterX, canvasCenterY - crosshairsLengthY / 2)
+        await ctx?.lineTo(canvasCenterX, canvasCenterY + crosshairsLengthY / 2)
+        await ctx?.moveTo(canvasCenterX - Math.round(crosshairsLengthX / 2), canvasCenterY)
+        await ctx?.lineTo(canvasCenterX + Math.round(crosshairsLengthX / 2), canvasCenterY)
+
+        await ctx?.stroke()
         this.isLoaded = true
     }
 
     canvasPixelToFramePixel(canvasPixel: any): number {
-        return ((canvasPixel * this.pixelRatio) / this.zoomFactor) 
+        return (canvasPixel * this.pixelRatio) / this.zoomFactor
     }
 
     canvasPixelToMM(canvasPixel: any): number {
@@ -472,7 +506,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     }
 
     mmToCanvasPixel(canvas: any, mm: any): number {
-        return (canvas.width / (mm / this.pixelPerMM) / 2)
+        return canvas.width / (mm / this.pixelPerMM) / 2
     }
 
     zoom(zoom: string): void {
@@ -480,8 +514,8 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.zoomFactor = z
         this.zoomFactorMax = -1
         this.dragStart = { x: 0, y: 0 }
-        this.distancePixels = { x: 0, y: 0 }    
-        this.distanceMM = { x: 0, y: 0 }    
+        this.distancePixels = { x: 0, y: 0 }
+        this.distanceMM = { x: 0, y: 0 }
     }
 
     get currentZoomFactor() {
@@ -507,56 +541,48 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.xyzMove = !this.xyzMove
         this.dragStart = { x: 0, y: 0 }
         this.distancePixels = { x: 0, y: 0 }
-        this.distanceMM = { x: 0, y: 0 }    
+        this.distanceMM = { x: 0, y: 0 }
     }
 
-    getEventLocation(e: any)
-    {
+    getEventLocation(e: any) {
         let canvas = this.$refs.mjpegstreamerAdaptive
         const rect = canvas.getBoundingClientRect()
-        return { x: e?.clientX - rect.left, y: e?.clientY - rect.top }   
+        return { x: e?.clientX - rect.left, y: e?.clientY - rect.top }
     }
 
-    onPointerDown(e: any)
-    {
-        if (this.xyzMove){
+    onPointerDown(e: any) {
+        if (this.xyzMove) {
             this.isDragging = true
             this.dragStart.x = this.getEventLocation(e).x - this.distancePixels.x
             this.dragStart.y = this.getEventLocation(e).y - this.distancePixels.y
         }
     }
 
-    onPointerUp(e: any)
-    {
+    onPointerUp(e: any) {
         this.isDragging = false
-        if (this.xyzMove){
-            if (!this.isPrinting && this.homedAxes.includes('xyz')){
-                this.doSendMove(`X${this.distanceMM.x.toFixed(5)} Y${this.distanceMM.y.toFixed(5)}`, 300);
-                this.doSend('G90');
+        if (this.xyzMove) {
+            if (!this.isPrinting && this.homedAxes.includes('xyz')) {
+                this.doSendMove(`X${this.distanceMM.x.toFixed(5)} Y${this.distanceMM.y.toFixed(5)}`, 300)
+                this.doSend('G90')
             }
             this.dragStart = { x: 0, y: 0 }
             this.distancePixels = { x: 0, y: 0 }
-            this.distanceMM = { x: 0, y: 0 }    
+            this.distanceMM = { x: 0, y: 0 }
         }
     }
 
-    onPointerMove(e: any)
-    {
-        if (this.isDragging && this.xyzMove)
-        {
+    onPointerMove(e: any) {
+        if (this.isDragging && this.xyzMove) {
             this.distancePixels.x = this.getEventLocation(e).x - this.dragStart.x
             this.distancePixels.y = this.getEventLocation(e).y - this.dragStart.y
             this.distanceMM.x = this.canvasPixelToMM(this.distancePixels.x)
             this.distanceMM.y = this.canvasPixelToMM(this.distancePixels.y)
-            if ((this.camSettings.rotation ?? 0) == 0){
-            }
-            else if ((this.camSettings.rotation ?? 0) == 90){
-            }
-            else if ((this.camSettings.rotation ?? 0) == 180){
+            if ((this.camSettings.rotation ?? 0) == 0) {
+            } else if ((this.camSettings.rotation ?? 0) == 90) {
+            } else if ((this.camSettings.rotation ?? 0) == 180) {
                 this.distancePixels.x = -this.distancePixels.x
                 this.distancePixels.y = -this.distancePixels.y
-            }
-            else if ((this.camSettings.rotation ?? 0) == 270){
+            } else if ((this.camSettings.rotation ?? 0) == 270) {
             }
         }
     }
@@ -566,8 +592,15 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     }
 
     get XYZMoveOutput() {
-        if (this.xyzMove && !this.isPrinting && this.homedAxes.includes('xyz')){
-            return 'x' + this.gcodePositions.x.toString() + ' y' + this.gcodePositions.y.toString() + ' z' + this.gcodePositions.z.toString()
+        if (this.xyzMove && !this.isPrinting && this.homedAxes.includes('xyz')) {
+            return (
+                'x' +
+                this.gcodePositions.x.toString() +
+                ' y' +
+                this.gcodePositions.y.toString() +
+                ' z' +
+                this.gcodePositions.z.toString()
+            )
         }
         return 'MOVE'
     }
@@ -708,12 +741,10 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     height: 28px;
     max-height: 28px;
 }
-
 </style>
 
 <style lang="scss" scoped>
 ._btn-group {
-
     .v-btn {
         border-radius: 0;
     }
@@ -728,5 +759,4 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         border-bottom-right-radius: 5px;
     }
 }
-
 </style>
