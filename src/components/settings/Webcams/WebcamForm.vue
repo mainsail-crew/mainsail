@@ -134,15 +134,27 @@
                                 :label="$t('Settings.WebcamsTab.Vertically')" />
                         </v-col>
                     </v-row>
-                    <v-row class="mt-6">
+                    <v-row class="mt-10 ml-0">
+                        <v-card-title class="ma-0 pa-0">{{ $t('Settings.WebcamsTab.NozzleCalibrationOverlay') }}</v-card-title>
+                    </v-row>
+                    <v-row>
                         <v-col class="pt-1 pb-3">
                             <div class="v-label v-label--active theme--dark text-subtitle-1">
-                                {{ $t('Settings.WebcamsTab.NozzleCalibrationOverlay') }}
+                                {{ $t('Settings.WebcamsTab.InfoNozzleCalibrationOverlay') }}
                             </div>
                         </v-col>
                     </v-row>
-                    <v-row class="mt-2">
-                        <v-col class="py-2 col-6">
+                    <v-row class="mt-0">
+                        <v-col class="pt-1 pb-3">
+                            <v-checkbox
+                                v-model="nozzleCalibration"
+                                class="mt-1"
+                                hide-details
+                                :label="$t('Settings.WebcamsTab.EnableNozzleCalibrationOverlay')" />
+                        </v-col>
+                    </v-row>
+                    <v-row class="mt-5">
+                        <v-col class="pt-1 pb-3">
                             <v-text-field
                                 v-model="pixelPerMM"
                                 outlined
@@ -150,12 +162,28 @@
                                 hide-details
                                 :label="$t('Settings.WebcamsTab.PixelPerMM')" />
                         </v-col>
-                        <v-col class="py-2 col-6">
+                    </v-row>
+                    <v-row>
+                        <v-col class="pt-1 pb-3">
+                            <div class="v-label v-label--active theme--dark text-subtitle-1">
+                                {{ $t('Settings.WebcamsTab.FlipNozzle') }}
+                            </div>
+                        </v-col>
+                    </v-row>
+                    <v-row class="mt-0">
+                        <v-col class="py-0">
                             <v-checkbox
-                                v-model="nozzleCalibration"
+                                v-model="nozzleFlipX"
                                 class="mt-1"
                                 hide-details
-                                :label="$t('Settings.WebcamsTab.EnableNozzleCalibrationOverlay')" />
+                                :label="$t('Settings.WebcamsTab.FlipNozzleHorizontally')" />
+                        </v-col>
+                        <v-col class="py-0">
+                            <v-checkbox
+                                v-model="nozzleFlipY"
+                                class="mt-1"
+                                hide-details
+                                :label="$t('Settings.WebcamsTab.FlipNozzleVertically')" />
                         </v-col>
                     </v-row>
                 </v-col>
@@ -319,6 +347,40 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
         // @ts-ignore
         this.webcam.extra_data.nozzle_calibration = newVal
+    }
+
+    get nozzleFlipX() {
+        return this.webcam.extra_data?.nozzle_flip_x ?? false
+    }
+
+    set nozzleFlipX(newVal) {
+        if (!('extra_data' in this.webcam)) {
+            this.webcam.extra_data = {
+                nozzle_flip_x: newVal,
+            }
+
+            return
+        }
+
+        // @ts-ignore
+        this.webcam.extra_data.nozzle_flip_x = newVal
+    }
+
+    get nozzleFlipY() {
+        return this.webcam.extra_data?.nozzle_flip_y ?? false
+    }
+
+    set nozzleFlipY(newVal) {
+        if (!('extra_data' in this.webcam)) {
+            this.webcam.extra_data = {
+                nozzle_flip_y: newVal,
+            }
+
+            return
+        }
+
+        // @ts-ignore
+        this.webcam.extra_data.nozzle_flip_y = newVal
     }
 
     get pixelPerMM() {

@@ -1139,9 +1139,13 @@
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)",
-            "NozzleCalibrationOverlay": "Nozzle calibration overlay",
-            "EnableNozzleCalibrationOverlay": "Enable",
-            "PixelPerMM": "Pixel per MM"
+            "NozzleCalibrationOverlay": "Visual assisted offset calibration",
+            "EnableNozzleCalibrationOverlay": "Enable offset calibration overlay",
+            "InfoNozzleCalibrationOverlay": "Calibrate toolhead offsets for IDEX printer or toolchanger.",
+            "PixelPerMM": "Pixel per MM",
+            "FlipNozzle": "Flip drag and drop direction:",
+            "FlipNozzleHorizontally": "horizontally",
+            "FlipNozzleVertically": "vertically"
         }
     },
     "ScrewsTiltAdjust": {
