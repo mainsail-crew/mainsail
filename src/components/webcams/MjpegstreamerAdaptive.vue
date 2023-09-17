@@ -205,18 +205,18 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     get livePositions() {
         const pos = this.$store.state.printer.motion_report?.live_position ?? [0, 0, 0]
         return {
-            x: pos[0]?.toFixed(2) ?? '--',
-            y: pos[1]?.toFixed(2) ?? '--',
-            z: pos[2]?.toFixed(3) ?? '--',
+            x: pos[0]?.toFixed(5) ?? '--',
+            y: pos[1]?.toFixed(5) ?? '--',
+            z: pos[2]?.toFixed(5) ?? '--',
         }
     }
 
     get gcodePositions() {
         const pos = this.$store.state.printer.gcode_move?.gcode_position ?? [0, 0, 0]
         return {
-            x: pos[0]?.toFixed(2) ?? '--',
-            y: pos[1]?.toFixed(2) ?? '--',
-            z: pos[2]?.toFixed(3) ?? '--',
+            x: pos[0]?.toFixed(5) ?? '--',
+            y: pos[1]?.toFixed(5) ?? '--',
+            z: pos[2]?.toFixed(5) ?? '--',
         }
     }
 
@@ -615,9 +615,17 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     get XYZMoveOutput() {
         if (this.xyzMove && !this.isPrinting && this.homedAxes.includes('xyz')) {
-            return 'x' + this.gcodePositions.x.toString() + ' y' + this.gcodePositions.y.toString()
+            return 'Y:' + this.gcodePositions.x.toString() + ' - X:' + this.gcodePositions.y.toString()
         }
         return 'MOVE'
+    }
+
+    get nozzleFlipX() {
+        return this.camSettings.extra_data?.nozzle_flip_x ?? false
+    }
+
+    get nozzleFlipY() {
+        return this.camSettings.extra_data?.nozzle_flip_y ?? false
     }
 
     // ----------------------------------------------
