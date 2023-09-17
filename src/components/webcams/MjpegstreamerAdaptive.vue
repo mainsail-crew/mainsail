@@ -240,8 +240,10 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         try {
             const zoffsetprobe = this.$store.state.printer.configfile?.settings?.zoffsetprobe
             if (zoffsetprobe.z_offset > 0) return true
-        } catch {}
-        return false
+            return false
+        } catch { 
+            return false 
+        }
     }
 
     get nozzleCalib() {
@@ -267,8 +269,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
                 light.name.includes('nozzle_calibration_led')
             )
             return nozzle_calibration_led?.length == 1
-        } catch {}
-        return false
+        } catch { 
+            return false 
+        }
     }
 
     get isLEDTurnedOn(): boolean {
@@ -577,13 +580,16 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
             this.distancePixels.y = this.getEventLocation(e).y - this.dragStart.y
             this.distanceMM.x = this.canvasPixelToMM(this.distancePixels.x)
             this.distanceMM.y = this.canvasPixelToMM(this.distancePixels.y)
-            if ((this.camSettings.rotation ?? 0) == 0) {
-            } else if ((this.camSettings.rotation ?? 0) == 90) {
-            } else if ((this.camSettings.rotation ?? 0) == 180) {
+            if ((this.camSettings.rotation ?? 0) == 180) {
                 this.distancePixels.x = -this.distancePixels.x
                 this.distancePixels.y = -this.distancePixels.y
-            } else if ((this.camSettings.rotation ?? 0) == 270) {
-            }
+            } 
+            // ToDo
+            // if ((this.camSettings.rotation ?? 0) == 0) {
+            // } else if ((this.camSettings.rotation ?? 0) == 90) {
+            // } else if ((this.camSettings.rotation ?? 0) == 180) {
+            // } else if ((this.camSettings.rotation ?? 0) == 270) {
+            // }
         }
     }
 
