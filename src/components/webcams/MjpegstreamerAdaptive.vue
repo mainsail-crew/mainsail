@@ -32,7 +32,8 @@
                     @click="toggleXYZMove()">
                     {{ XYZMoveOutput }}
                 </v-btn>
-                <v-btn v-if="hasZProbe"
+                <v-btn 
+                    v-if="hasZProbe"
                     small
                     class="cmdButton"
                     :disabled="!allowZProbe || !homedAxes.includes('xyz')"
@@ -65,7 +66,8 @@
                     @click="zoom('0')">
                     MAX
                 </v-btn>
-                <v-btn v-if="hasLED"
+                <v-btn 
+                    v-if="hasLED"
                     small
                     class="cmdButton"
                     :style="{ 'background-color': isLEDTurnedOn ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)', 'color': isLEDTurnedOn ? 'var(--v-btn-text-primary)' : 'white', 'min-width': '0' }"
@@ -83,8 +85,8 @@
             <v-item-group class="ma-0 _btn-group">
                 <v-btn
                     v-for="tool in toolchangeMacros"
-                    small
                     :key="tool.name"
+                    small
                     :disabled="isPrinting || !homedAxes.includes('xyz')"
                     class='cmdButton'
                     :loading="loadings.includes('set_' + tool.name.toLowerCase())"
