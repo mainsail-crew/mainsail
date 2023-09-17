@@ -241,8 +241,8 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
             const zoffsetprobe = this.$store.state.printer.configfile?.settings?.zoffsetprobe
             if (zoffsetprobe.z_offset > 0) return true
             return false
-        } catch { 
-            return false 
+        } catch {
+            return false
         }
     }
 
@@ -269,8 +269,8 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
                 light.name.includes('nozzle_calibration_led')
             )
             return nozzle_calibration_led?.length == 1
-        } catch { 
-            return false 
+        } catch {
+            return false
         }
     }
 
@@ -583,7 +583,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
             if ((this.camSettings.rotation ?? 0) == 180) {
                 this.distancePixels.x = -this.distancePixels.x
                 this.distancePixels.y = -this.distancePixels.y
-            } 
+            }
             // ToDo
             // if ((this.camSettings.rotation ?? 0) == 0) {
             // } else if ((this.camSettings.rotation ?? 0) == 90) {
