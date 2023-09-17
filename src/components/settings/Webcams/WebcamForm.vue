@@ -153,13 +153,13 @@
                                 :label="$t('Settings.WebcamsTab.PixelPerMM')" />
                         </v-col>
                     </v-row>
-                    <v-row v-if="nozzleCalibration" >
+                    <v-row v-if="nozzleCalibration">
                         <v-col class="pt-1 pb-3">
                             <div class="v-label v-label--active theme--dark text-subtitle-1">
                                 {{ $t('Settings.WebcamsTab.FlipNozzle') }}
                             </div>
                         </v-col>
-                    </v-row >
+                    </v-row>
                     <v-row v-if="nozzleCalibration" class="mt-0">
                         <v-col class="py-0">
                             <v-checkbox
