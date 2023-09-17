@@ -72,9 +72,11 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
     }
 
     get title() {
-        if (this.health === '' || this.health === 'healthy') return 'Spoolman'
+        const headline = this.$t('Panels.Spoolman.Headline') as string
 
-        return `Spoolman (${this.health})`
+        if (this.health === '' || this.health === 'healthy') return headline
+
+        return `${headline} (${this.health})`
     }
 
     get changeSpoolTooltip(): string {

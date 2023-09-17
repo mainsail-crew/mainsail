@@ -630,6 +630,7 @@
             "EjectSpoolQuestion": "Are you sure to eject the filament spool?",
             "Filament": "Filament",
             "FirstUsedOutput": "First used: {firstUsed}",
+            "Headline": "Spoolman",
             "LastUsed": "Last Used",
             "Location": "Location",
             "Material": "Material",
