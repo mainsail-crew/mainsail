@@ -134,19 +134,7 @@
                                 :label="$t('Settings.WebcamsTab.Vertically')" />
                         </v-col>
                     </v-row>
-                    <v-row class="mt-10 ml-0">
-                        <v-card-title class="ma-0 pa-0">
-                            {{ $t('Settings.WebcamsTab.NozzleCalibrationOverlay') }}
-                        </v-card-title>
-                    </v-row>
-                    <v-row>
-                        <v-col class="pt-1 pb-3">
-                            <div class="v-label v-label--active theme--dark text-subtitle-1">
-                                {{ $t('Settings.WebcamsTab.InfoNozzleCalibrationOverlay') }}
-                            </div>
-                        </v-col>
-                    </v-row>
-                    <v-row class="mt-0">
+                    <v-row class="mt-5">
                         <v-col class="pt-1 pb-3">
                             <v-checkbox
                                 v-model="nozzleCalibration"
@@ -155,7 +143,7 @@
                                 :label="$t('Settings.WebcamsTab.EnableNozzleCalibrationOverlay')" />
                         </v-col>
                     </v-row>
-                    <v-row class="mt-5">
+                    <v-row v-if="nozzleCalibration" class="mt-5">
                         <v-col class="pt-1 pb-3">
                             <v-text-field
                                 v-model="pixelPerMM"
@@ -165,14 +153,14 @@
                                 :label="$t('Settings.WebcamsTab.PixelPerMM')" />
                         </v-col>
                     </v-row>
-                    <v-row>
+                    <v-row v-if="nozzleCalibration" >
                         <v-col class="pt-1 pb-3">
                             <div class="v-label v-label--active theme--dark text-subtitle-1">
                                 {{ $t('Settings.WebcamsTab.FlipNozzle') }}
                             </div>
                         </v-col>
-                    </v-row>
-                    <v-row class="mt-0">
+                    </v-row >
+                    <v-row v-if="nozzleCalibration" class="mt-0">
                         <v-col class="py-0">
                             <v-checkbox
                                 v-model="nozzleFlipX"
