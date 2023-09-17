@@ -622,7 +622,7 @@
             "On": "On",
             "PowerControl": "Power Control"
         },
-        "Spoolman": {
+        "SpoolmanPanel": {
             "Cancel": "Cancel",
             "ChangeSpool": "Change Spool",
             "DaysAgo": "{days} days ago",

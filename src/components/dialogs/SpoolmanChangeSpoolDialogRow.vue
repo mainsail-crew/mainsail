@@ -7,7 +7,7 @@
             <strong>{{ vendor }} - {{ name }}</strong>
             <template v-if="location">
                 <br />
-                {{ $t('Panels.Spoolman.Location') }}: {{ location }}
+                {{ $t('Panels.SpoolmanPanel.Location') }}: {{ location }}
             </template>
             <template v-if="spool.comment">
                 <br />
@@ -81,18 +81,18 @@ export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
 
     get last_used() {
         const last_used = this.spool.last_used ?? null
-        if (!last_used) return this.$t('Panels.Spoolman.Never')
+        if (!last_used) return this.$t('Panels.SpoolmanPanel.Never')
 
         const date = new Date(this.spool.last_used)
         const now = new Date()
         const diff = now.getTime() - date.getTime()
 
-        if (diff <= 1000 * 60 * 60 * 24) return this.$t('Panels.Spoolman.Today')
-        if (diff <= 1000 * 60 * 60 * 24 * 2) return this.$t('Panels.Spoolman.Yesterday')
+        if (diff <= 1000 * 60 * 60 * 24) return this.$t('Panels.SpoolmanPanel.Today')
+        if (diff <= 1000 * 60 * 60 * 24 * 2) return this.$t('Panels.SpoolmanPanel.Yesterday')
         if (diff <= 1000 * 60 * 60 * 24 * 14) {
             const days = Math.floor(diff / (1000 * 60 * 60 * 24))
 
-            return this.$t('Panels.Spoolman.DaysAgo', { days })
+            return this.$t('Panels.SpoolmanPanel.DaysAgo', { days })
         }
 
         return date.toLocaleDateString()

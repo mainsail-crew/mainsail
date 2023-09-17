@@ -2,7 +2,7 @@
     <div>
         <v-dialog v-model="showDialog" width="800" persistent :fullscreen="isMobile">
             <panel
-                :title="$t('Panels.Spoolman.ChangeSpool')"
+                :title="$t('Panels.SpoolmanPanel.ChangeSpool')"
                 :icon="mdiAdjust"
                 card-class="spoolman-change-spool-dialog"
                 :margin-bottom="false">
@@ -15,21 +15,21 @@
                     <v-text-field
                         v-model="search"
                         :append-icon="mdiMagnify"
-                        :label="$t('Panels.Spoolman.Search')"
+                        :label="$t('Panels.SpoolmanPanel.Search')"
                         outlined
                         dense
                         hide-details
                         style="max-width: 300px" />
                     <v-spacer />
                     <v-btn
-                        :title="$t('Panels.Spoolman.Refresh')"
+                        :title="$t('Panels.SpoolmanPanel.Refresh')"
                         class="px-2 minwidth-0 ml-3"
                         :loading="loadings.includes('refreshSpools')"
                         @click="refreshSpools">
                         <v-icon>{{ mdiRefresh }}</v-icon>
                     </v-btn>
                     <v-btn
-                        :title="$t('Panels.Spoolman.OpenSpoolManager')"
+                        :title="$t('Panels.SpoolmanPanel.OpenSpoolManager')"
                         class="px-2 minwidth-0 ml-3"
                         @click="openSpoolManager">
                         <v-icon>{{ mdiDatabase }}</v-icon>
@@ -45,10 +45,10 @@
                         :custom-filter="customFilter"
                         :disable-sort="true">
                         <template #no-data>
-                            <div class="text-center">{{ $t('Panels.Spoolman.NoSpools') }}</div>
+                            <div class="text-center">{{ $t('Panels.SpoolmanPanel.NoSpools') }}</div>
                         </template>
                         <template #no-results>
-                            <div class="text-center">{{ $t('Panels.Spoolman.NoResults') }}</div>
+                            <div class="text-center">{{ $t('Panels.SpoolmanPanel.NoResults') }}</div>
                         </template>
 
                         <template #item="{ item }">
@@ -98,19 +98,19 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
                 align: 'start',
             },
             {
-                text: this.$t('Panels.Spoolman.Filament'),
+                text: this.$t('Panels.SpoolmanPanel.Filament'),
                 align: 'start',
             },
             {
-                text: this.$t('Panels.Spoolman.Material'),
+                text: this.$t('Panels.SpoolmanPanel.Material'),
                 align: 'center',
             },
             {
-                text: this.$t('Panels.Spoolman.LastUsed'),
+                text: this.$t('Panels.SpoolmanPanel.LastUsed'),
                 align: 'end',
             },
             {
-                text: this.$t('Panels.Spoolman.Weight'),
+                text: this.$t('Panels.SpoolmanPanel.Weight'),
                 align: 'end',
             },
         ]

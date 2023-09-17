@@ -15,13 +15,13 @@
                         <v-list-item>
                             <v-btn small style="width: 100%" @click="showEjectSpoolDialog = true">
                                 <v-icon left>{{ mdiEject }}</v-icon>
-                                {{ $t('Panels.Spoolman.EjectSpool') }}
+                                {{ $t('Panels.SpoolmanPanel.EjectSpool') }}
                             </v-btn>
                         </v-list-item>
                         <v-list-item>
                             <v-btn small style="width: 100%" @click="openSpoolManager">
                                 <v-icon left>{{ mdiOpenInNew }}</v-icon>
-                                {{ $t('Panels.Spoolman.OpenSpoolManager') }}
+                                {{ $t('Panels.SpoolmanPanel.OpenSpoolManager') }}
                             </v-btn>
                         </v-list-item>
                     </v-list>
@@ -30,9 +30,9 @@
             <v-card-text v-if="active_spool === null">
                 <v-row>
                     <v-col class="text-center">
-                        <p class="text--disabled">{{ $t('Panels.Spoolman.NoActiveSpool') }}</p>
+                        <p class="text--disabled">{{ $t('Panels.SpoolmanPanel.NoActiveSpool') }}</p>
                         <v-btn small color="primary" @click="showChangeSpoolDialog = true">
-                            {{ $t('Panels.Spoolman.SelectSpool') }}
+                            {{ $t('Panels.SpoolmanPanel.SelectSpool') }}
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -72,7 +72,7 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
     }
 
     get title() {
-        const headline = this.$t('Panels.Spoolman.Headline') as string
+        const headline = this.$t('Panels.SpoolmanPanel.Headline') as string
 
         if (this.health === '' || this.health === 'healthy') return headline
 
@@ -80,9 +80,9 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
     }
 
     get changeSpoolTooltip(): string {
-        if (this.active_spool === null) return this.$t('Panels.Spoolman.SelectSpool') as string
+        if (this.active_spool === null) return this.$t('Panels.SpoolmanPanel.SelectSpool') as string
 
-        return this.$t('Panels.Spoolman.ChangeSpool') as string
+        return this.$t('Panels.SpoolmanPanel.ChangeSpool') as string
     }
 
     get active_spool(): ServerSpoolmanStateSpool | null {
