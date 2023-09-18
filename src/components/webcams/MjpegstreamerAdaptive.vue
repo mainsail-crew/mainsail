@@ -739,6 +739,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     top: 0;
     left: 0;
     padding: 0px 0px;
+    margin-right: 200px;
 }
 
 .cmdButtonsZoom {
