@@ -134,7 +134,7 @@
                                 :label="$t('Settings.WebcamsTab.Vertically')" />
                         </v-col>
                     </v-row>
-                    <v-row class="mt-5">
+                    <v-row v-if="['mjpegstreamer-adaptive'].includes(webcam.service)" class="mt-5">
                         <v-col class="pt-1 pb-3">
                             <v-checkbox
                                 v-model="nozzleCalibration"
@@ -143,7 +143,7 @@
                                 :label="$t('Settings.WebcamsTab.EnableNozzleCalibrationOverlay')" />
                         </v-col>
                     </v-row>
-                    <v-row v-if="nozzleCalibration" class="mt-5">
+                    <v-row v-if="nozzleCalibration && ['mjpegstreamer-adaptive'].includes(webcam.service)" class="mt-5">
                         <v-col class="pt-1 pb-3">
                             <v-text-field
                                 v-model="pixelPerMM"
@@ -153,14 +153,14 @@
                                 :label="$t('Settings.WebcamsTab.PixelPerMM')" />
                         </v-col>
                     </v-row>
-                    <v-row v-if="nozzleCalibration">
+                    <v-row v-if="nozzleCalibration && ['mjpegstreamer-adaptive'].includes(webcam.service)">
                         <v-col class="pt-1 pb-3">
                             <div class="v-label v-label--active theme--dark text-subtitle-1">
                                 {{ $t('Settings.WebcamsTab.FlipNozzle') }}
                             </div>
                         </v-col>
                     </v-row>
-                    <v-row v-if="nozzleCalibration" class="mt-0">
+                    <v-row v-if="nozzleCalibration && ['mjpegstreamer-adaptive'].includes(webcam.service)" class="mt-0">
                         <v-col class="py-0">
                             <v-checkbox
                                 v-model="nozzleFlipX"
