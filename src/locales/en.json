@@ -137,6 +137,7 @@
         "TryAgain": "try again"
     },
     "Console": {
+        "Autoscroll": "Autoscroll",
         "CommandList": "Command list",
         "Empty": "Empty",
         "HideTemperatures": "Hide temperatures",
@@ -588,6 +589,7 @@
             "Send": "send"
         },
         "MiniconsolePanel": {
+            "Autoscroll": "Autoscroll",
             "Headline": "Console",
             "HideTemperatures": "Hide temperatures",
             "HideTimelapse": "Hide Timelapse",
