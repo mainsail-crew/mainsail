@@ -5,6 +5,9 @@ import i18n from '@/plugins/i18n.js'
 import { RootStateDependency } from '@/store/types'
 import { sha256 } from 'js-sha256'
 import { PrinterStateKlipperConfigWarning } from '@/store/printer/types'
+import { detect } from 'detect-browser'
+import semver from 'semver'
+import { minBrowserVersions } from '@/store/variables'
 
 export const getters: GetterTree<GuiNotificationState, any> = {
     getNotifications: (state, getters) => {
@@ -22,11 +25,14 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         // moonraker warnings
         notifications = notifications.concat(getters['getNotificationsMoonrakerWarnings'])
 
-        // moonraker failed compontents
+        // moonraker failed components
         notifications = notifications.concat(getters['getNotificationsMoonrakerFailedComponents'])
 
         // klipper warnings
         notifications = notifications.concat(getters['getNotificationsKlipperWarnings'])
+
+        // browser warnings
+        notifications = notifications.concat(getters['getNotificationsBrowserWarnings'])
 
         const mapType = {
             normal: 2,
@@ -265,6 +271,50 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                     dismissed: false,
                 } as GuiNotificationStateEntry)
             })
+        }
+
+        return notifications
+    },
+
+    getNotificationsBrowserWarnings: (state, getters, rootState) => {
+        const notifications: GuiNotificationStateEntry[] = []
+
+        const browser = detect()
+        const date = rootState.server.system_boot_at ?? new Date()
+
+        // stop here, because no browser detected
+        if (browser === null) return notifications
+
+        // output browser information to console
+        window.console.debug(`Browser: ${browser.name} ${browser.version}, OS: ${browser.os}`)
+
+        // find browser requirement
+        const minBrowserVersion = minBrowserVersions.find(
+            (entry) => entry.name.toLowerCase() === browser.name.toLowerCase()
+        )
+
+        // stop here, because no browser requirement found
+        if (minBrowserVersion === undefined) return notifications
+
+        if (
+            semver.valid(browser.version) &&
+            semver.valid(minBrowserVersion.version) &&
+            semver.gt(minBrowserVersion.version, browser.version ?? '0.0.0')
+        ) {
+            notifications.push({
+                id: `browserWarning/${minBrowserVersion.name}/${minBrowserVersion.version}`,
+                priority: 'critical',
+                title: i18n.t('App.Notifications.BrowserWarnings.Headline').toString(),
+                description: i18n
+                    .t('App.Notifications.BrowserWarnings.Description', {
+                        name: minBrowserVersion.name,
+                        version: browser.version,
+                        minVersion: minBrowserVersion.version,
+                    })
+                    .toString(),
+                date,
+                dismissed: false,
+            } as GuiNotificationStateEntry)
         }
 
         return notifications
