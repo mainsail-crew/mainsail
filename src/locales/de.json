@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Headline": "Veralteter Browser",
+                "Description": "Die verwendete {name} Version ({version}) ist veraltet und wird nicht vollständig unterstützt. Mainsail benötigt die Version {minVersion} oder höher."
+            },
             "DependencyDescription": "Die momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}.",
             "DependencyName": "Abhängigkeit: {name}",
             "DismissAll": "Alles verwerfen",
