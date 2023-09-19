@@ -146,7 +146,6 @@
             "DoYouWantToStartFilename": "Do you want to start {filename}?",
             "DoYouWantToStartFilenameFilament": "Do you want to start {filename} with the following filament?",
             "Headline": "Start Job",
-            "NoSpoolSelected": "No spool selected. Please select a spool or this print will not be tracked.",
             "Print": "print",
             "Timelapse": "Timelapse"
         }
@@ -629,6 +628,7 @@
             "EjectSpool": "Eject spool",
             "EjectSpoolQuestion": "Are you sure to eject the filament spool?",
             "Filament": "Filament",
+            "FilamentTypeMismatch": "The material of the active spool ({spoolType}) does not match the material of the G-Code ({fileType}).",
             "FirstUsedOutput": "First used: {firstUsed}",
             "Headline": "Spoolman",
             "LastUsed": "Last Used",
@@ -638,11 +638,13 @@
             "NoActiveSpool": "Filament tracking is inactive. To get started, please select a spool.",
             "NoResults": "No spool found with the current search criteria.",
             "NoSpools": "No spools available",
+            "NoSpoolSelected": "No spool selected. Please select a spool or this print will not be tracked.",
             "OpenSpoolManager": "open Spool Manager",
             "Refresh": "refresh",
             "Search": "Search",
             "SelectSpool": "Select Spool",
             "Today": "Today",
+            "TooLessFilament": "The current spool may not have enough filament for this print. ({spoolWeight}g of {fileWeight}g)",
             "Weight": "Weight",
             "Yesterday": "Yesterday"
         },
