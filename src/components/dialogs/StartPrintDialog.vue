@@ -10,7 +10,7 @@
                     {{ question }}
                 </p>
             </v-card-text>
-            <start-print-dialog-spoolman v-if="moonrakerComponents.includes('spoolman')" />
+            <start-print-dialog-spoolman v-if="moonrakerComponents.includes('spoolman')" :file="file" />
             <template v-if="moonrakerComponents.includes('timelapse') || true">
                 <v-divider v-if="!moonrakerComponents.includes('spoolman')" class="mt-3 mb-2" />
                 <v-card-text class="py-0">

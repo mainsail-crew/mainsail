@@ -8,7 +8,7 @@ export interface ServerSpoolmanState {
         version: string
     }
     active_spool_id: number | null
-    active_spool: number | null
+    active_spool: ServerSpoolmanStateSpool | null
     vendors: ServerSpoolmanStateVendor[]
     feeds: string[]
 }
