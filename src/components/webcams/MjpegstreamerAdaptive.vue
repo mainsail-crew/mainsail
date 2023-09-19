@@ -21,7 +21,11 @@
                             v-for="tool in toolchangeMacros"
                             :key="tool.name"
                             small
-                            :disabled="isPrinting || !homedAxes.includes('xyz')"
+                            :disabled="
+                                isPrinting ||
+                                !homedAxes.includes('xyz') ||
+                                (isIdex && (idexMode == 'copy' || idexMode == 'mirror'))
+                            "
                             class="cmdButton"
                             :loading="loadings.includes('set_' + tool.name.toLowerCase())"
                             :style="{
@@ -99,7 +103,11 @@
                 <v-item-group class="ma-0">
                     <v-btn
                         small
-                        :disabled="isPrinting || !homedAxes.includes('xyz')"
+                        :disabled="
+                            isPrinting ||
+                            !homedAxes.includes('xyz') ||
+                            (isIdex && (idexMode == 'copy' || idexMode == 'mirror'))
+                        "
                         class="cmdButton"
                         :style="{ 'background-color': 'rgba(0,0,0,0.8)', 'min-width': '0' }"
                         :loading="loadings.includes('set_cp')"
@@ -109,7 +117,11 @@
                     <v-btn
                         small
                         class="cmdButton"
-                        :disabled="isPrinting || !homedAxes.includes('xyz')"
+                        :disabled="
+                            isPrinting ||
+                            !homedAxes.includes('xyz') ||
+                            (isIdex && (idexMode == 'copy' || idexMode == 'mirror'))
+                        "
                         :style="{
                             'background-color': xyMoveMode ? 'var(--color-primary)' : 'rgba(0,0,0,0.8)',
                             color: xyMoveMode ? 'var(--v-btn-text-primary)' : 'white',
@@ -125,7 +137,11 @@
                         v-if="hasZProbe"
                         small
                         class="cmdButton"
-                        :disabled="!allowZProbe || !homedAxes.includes('xyz')"
+                        :disabled="
+                            !allowZProbe ||
+                            !homedAxes.includes('xyz') ||
+                            (isIdex && (idexMode == 'copy' || idexMode == 'mirror'))
+                        "
                         :style="{
                             'background-color': 'rgba(255,86,86,1.0)',
                             'min-width': '0',
@@ -220,6 +236,10 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     get isIdex(): boolean {
         return 'dual_carriage' in this.$store.state.printer
+    }
+
+    get idexMode(): string {
+        return this.$store.state.printer.dual_carriage?.carriage_1?.toString().toLowerCase()
     }
 
     // ----------------------------------------------
