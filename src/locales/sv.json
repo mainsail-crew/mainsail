@@ -424,6 +424,23 @@
         }
     },
     "Panels": {
+        "ExtruderControlPanel": {
+            "Allowed": "Tillåten",
+            "Extrude": "Extrudera",
+            "ExtrusionFactor": "Extrusion faktor",
+            "ExtrusionFeedrate": "Extrudering Matningshastighet",
+            "FilamentLength": "Filament Längd",
+            "LoadFilament": "Ladda Filament",
+            "Requested": "Begärd",
+            "TooLargeExtrusion": "Extrusion too large!",
+            "UnloadFilament": "Ladda ur Filament",
+            "ToolChanging": {
+                "Tool": "Verktyg",
+                "Dropoff": "Lämna av",
+                "Lock": "Lås",
+                "Unlock": "Lås upp"
+            }
+        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Återanslut",
             "SwitchToPrinter": "Byt till skrivare",

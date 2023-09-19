@@ -553,7 +553,13 @@
             "Requested": "Requested",
             "Retract": "Retract",
             "TooLargeExtrusion": "Extrusion too large!",
-            "UnloadFilament": "Unload Filament"
+            "UnloadFilament": "Unload Filament",
+            "ToolChanging": {
+                "Tool": "Tool",
+                "Dropoff": "DropOff",
+                "Lock": "Lock",
+                "Unlock": "Unlock"
+            }
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Reconnect",

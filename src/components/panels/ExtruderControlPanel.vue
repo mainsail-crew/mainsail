@@ -71,6 +71,38 @@
                         </v-btn>
                     </v-item-group>
                 </v-container>
+                <!-- TOOL DROPOFF BUTTONS -->
+                <v-container v-if="toolDroppoffMacro || toolLockMacro || toolUnLockMacro" class="pb-1" label="$t('Panels.ExtruderControlPanel.ExtrusionFactor').toString()">
+                    <v-item-group class="_btn-group py-0" label="$t('Panels.ExtruderControlPanel.ExtrusionFactor').toString()">
+                        <div class="flex-shrink-1 pr-3">{{ $t('Panels.ExtruderControlPanel.ToolChanging.Tool') }}-</div>
+                        <v-btn
+                            v-if="toolDroppoffMacro"
+                            dense
+                            class="flex-grow-1 px-0"
+                            :disabled="isPrinting"
+                            :style="{ 'background-color': '#272727' }"
+                            @click="doSend('TOOL_DROPOFF')">
+                            {{ $t('Panels.ExtruderControlPanel.ToolChanging.Dropoff') }}
+                        </v-btn>
+                        <v-btn
+                            v-if="toolLockMacro"
+                            dense
+                            class="flex-grow-1 px-0"
+                            :disabled="isPrinting"
+                            :style="{ 'background-color': '#272727' }"
+                            @click="doSend('TOOL_LOCK')">
+                            {{ $t('Panels.ExtruderControlPanel.ToolChanging.Lock') }}
+                        </v-btn>
+                        <v-btn
+                            v-if="toolUnLockMacro"
+                            dense
+                            class="flex-grow-1 px-0"
+                            :disabled="isPrinting"
+                            @click="doSend('TOOL_UNLOCK')">
+                            {{ $t('Panels.ExtruderControlPanel.ToolChanging.Unlock') }}
+                        </v-btn>
+                    </v-item-group>
+                </v-container>
                 <!-- EXTRUSION FACTOR SLIDER -->
                 <v-container class="pb-1">
                     <tool-slider
@@ -367,6 +399,16 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get unloadFilamentMacro() {
         return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'UNLOAD_FILAMENT')
+    }
+
+    get toolDroppoffMacro() {
+        return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'TOOL_DROPOFF')
+    }
+    get toolLockMacro() {
+        return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'TOOL_LOCK')
+    }
+    get toolUnLockMacro() {
+        return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'TOOL_UNLOCK')
     }
 
     /**
