@@ -218,6 +218,10 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         }
     }
 
+    get isIdex(): boolean {
+        return 'dual_carriage' in this.$store.state.printer
+    }
+
     // ----------------------------------------------
     // Nozzle Calibration
     // ----------------------------------------------
