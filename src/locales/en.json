@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Headline": "Outdated Browser",
+                "Description": "{name} is outdated and not fully supported. The current version is {version}, but Mainsail requires version {minVersion} or higher."
+            },
             "DependencyDescription": "The current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}.",
             "DependencyName": "Dependency: {name}",
             "DismissAll": "Dismiss all",
@@ -133,6 +137,7 @@
         "TryAgain": "try again"
     },
     "Console": {
+        "Autoscroll": "Autoscroll",
         "CommandList": "Command list",
         "Empty": "Empty",
         "HideTemperatures": "Hide temperatures",
@@ -584,6 +589,7 @@
             "Send": "send"
         },
         "MiniconsolePanel": {
+            "Autoscroll": "Autoscroll",
             "Headline": "Console",
             "HideTemperatures": "Hide temperatures",
             "HideTimelapse": "Hide Timelapse",
