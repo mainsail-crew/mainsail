@@ -70,42 +70,33 @@
                             {{ tool.name }}
                         </v-btn>
                     </v-item-group>
-                </v-container>
-                <!-- TOOL DROPOFF BUTTONS -->
-                <v-container v-if="toolDroppoffCommand || toolLockCommand || toolUnLockCommand" label="$t('Panels.ExtruderControlPanel.ToolChanging.Tool').toString()">
-                    <v-row class="align-center">
-                        <v-col class="shrink pl-4">
-                            <div>{{ $t('Panels.ExtruderControlPanel.ToolChanging.Tool') }}-</div>
-                        </v-col>
-                        <v-col class="flex-grow pl-0">
-                            <v-item-group class="_btn-group py-0">
-                                <v-btn
-                                    v-if="toolLockCommand"
-                                    dense
-                                    class="flex-grow-1 px-0"
-                                    :disabled="isPrinting"
-                                    @click="doSend(toolLockCommand.command)">
-                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Lock') }}
-                                </v-btn>
-                                <v-btn
-                                    v-if="toolUnLockCommand"
-                                    dense
-                                    class="flex-grow-1 px-0"
-                                    :disabled="isPrinting"
-                                    @click="doSend(toolUnLockCommand.command)">
-                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Unlock') }}
-                                </v-btn>
-                                <v-btn
-                                    v-if="toolDroppoffCommand"
-                                    dense
-                                    class="flex-grow-1 px-0"
-                                    :disabled="isPrinting"
-                                    @click="doSend(toolDroppoffCommand.command)">
-                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Dropoff') }}
-                                </v-btn>
-                            </v-item-group>
-                        </v-col>
-                    </v-row>
+                     <!-- TOOL DROPOFF BUTTONS -->
+                    <v-item-group v-if="toolDroppoffCommand || toolLockCommand || toolUnLockCommand" label="$t('Panels.ExtruderControlPanel.ToolChanging.Tool').toString()" class="_btn-group py-0" >
+                        <v-btn
+                            v-if="toolLockCommand"
+                            dense
+                            class="flex-grow-1 px-0"
+                            :disabled="isPrinting || toolSelected"
+                            @click="doSend(toolLockCommand.command)">
+                            {{ $t('Panels.ExtruderControlPanel.ToolChanging.Lock') }}
+                        </v-btn>
+                        <v-btn
+                            v-if="toolUnLockCommand"
+                            dense
+                            class="flex-grow-1 px-0"
+                            :disabled="isPrinting"
+                            @click="doSend(toolUnLockCommand.command)">
+                            {{ $t('Panels.ExtruderControlPanel.ToolChanging.Unlock') }}
+                        </v-btn>
+                        <v-btn
+                            v-if="toolDroppoffCommand"
+                            dense
+                            class="flex-grow-1 px-0"
+                            :disabled="isPrinting || !toolSelected"
+                            @click="doSend(toolDroppoffCommand.command)">
+                            {{ $t('Panels.ExtruderControlPanel.ToolChanging.Dropoff') }}
+                        </v-btn>
+                    </v-item-group>
                 </v-container>
                 <!-- EXTRUSION FACTOR SLIDER -->
                 <v-container class="pb-1">
@@ -557,6 +548,15 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
     }
+
+    get toolSelected(): boolean {
+        if (this.toolchangeMacros.length > 0) {
+            const selectedtool = this.toolchangeMacros.find((tool: PrinterStateToolchangeMacro) => tool.active  == true)
+            if (selectedtool) return true
+        }
+        return false
+    }
+
 }
 </script>
 
