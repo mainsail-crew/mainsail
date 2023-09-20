@@ -561,9 +561,12 @@
             "UnloadFilament": "Unload Filament",
             "ToolChanging": {
                 "Tool": "Tool",
+                "Toolchanger": "Toolchanger",
                 "Dropoff": "DropOff",
                 "Lock": "Lock",
-                "Unlock": "Unlock"
+                "Unlock": "Unlock",
+                "Locked": "Locked",
+                "Unlocked": "Unlocked"
             }
         },
         "FarmPrinterPanel": {

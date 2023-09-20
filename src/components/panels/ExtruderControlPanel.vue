@@ -56,48 +56,80 @@
         <responsive :breakpoints="{ large: (el) => el.width >= 640 }">
             <template #default="{ el }">
                 <!-- TOOL SELECTOR BUTTONS -->
-                <v-container v-if="toolchangeMacros.length > 1" class="pb-1">
-                    <v-item-group class="_btn-group py-0">
-                        <v-btn
-                            v-for="tool in toolchangeMacros"
-                            :key="tool.name"
-                            :class="tool.active ? 'primary--text' : {}"
-                            :disabled="isPrinting"
-                            :style="{ 'background-color': '#' + tool.color }"
-                            dense
-                            class="flex-grow-1 px-0"
-                            @click="doSend(tool.name)">
-                            {{ tool.name }}
-                        </v-btn>
-                    </v-item-group>
+                <v-container>
+                    <v-row>
+                        <v-col class="flex-grow">
+                            <v-item-group class="_btn-group py-0">
+                                <v-btn
+                                    v-for="tool in toolchangeMacros"
+                                    :key="tool.name"
+                                    :class="tool.active ? 'primary--text' : {}"
+                                    :disabled="isPrinting"
+                                    :style="{ 'background-color': '#' + tool.color }"
+                                    dense
+                                    class="flex-grow-1 px-0"
+                                    @click="doSend(tool.name)">
+                                    {{ tool.name }}
+                                </v-btn>
+                            </v-item-group>
+                        </v-col>
+                    </v-row>
                      <!-- TOOL DROPOFF BUTTONS -->
-                    <v-item-group v-if="toolDroppoffCommand || toolLockCommand || toolUnLockCommand" label="$t('Panels.ExtruderControlPanel.ToolChanging.Tool').toString()" class="_btn-group py-0" >
-                        <v-btn
-                            v-if="toolLockCommand"
-                            dense
-                            class="flex-grow-1 px-0"
-                            :disabled="isPrinting || toolSelected"
-                            @click="doSend(toolLockCommand.command)">
-                            {{ $t('Panels.ExtruderControlPanel.ToolChanging.Lock') }}
-                        </v-btn>
-                        <v-btn
-                            v-if="toolUnLockCommand"
-                            dense
-                            class="flex-grow-1 px-0"
-                            :disabled="isPrinting"
-                            @click="doSend(toolUnLockCommand.command)">
-                            {{ $t('Panels.ExtruderControlPanel.ToolChanging.Unlock') }}
-                        </v-btn>
-                        <v-btn
-                            v-if="toolDroppoffCommand"
-                            dense
-                            class="flex-grow-1 px-0"
-                            :disabled="isPrinting || !toolSelected"
-                            @click="doSend(toolDroppoffCommand.command)">
-                            {{ $t('Panels.ExtruderControlPanel.ToolChanging.Dropoff') }}
-                        </v-btn>
-                    </v-item-group>
+                     <v-row v-if="toolDroppoffCommand || toolLockCommand || toolUnLockCommand" class="align-center">
+                        <v-col v-if="toolchangeMacros.length > 0" class="shrink pt-0">
+                            <v-tooltip left color="secondary">
+                                <template #activator="{ on }">
+                                    <div v-on="on">
+                                        <v-icon v-if="toolSelected" class="medium" >
+                                            {{ mdiLock }}
+                                        </v-icon>
+                                        <v-icon v-if="!toolSelected" class="medium">
+                                            {{ mdiLockOpenVariant }}
+                                        </v-icon>
+                                    </div>
+                                </template>
+                                <span v-show="toolSelected">
+                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Toolchanger') }}
+                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Locked') }}
+                                </span>
+                                <span v-show="!toolSelected">
+                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Toolchanger') }}
+                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Unlocked') }}
+                                </span>
+                            </v-tooltip>
+                        </v-col>
+                        <v-col class="flex-grow pt-0 pl-0">
+                            <v-item-group class="_btn-group py-0" >
+                                <v-btn
+                                    v-if="toolLockCommand"
+                                    dense
+                                    class="flex-grow-1 px-0"
+                                    :disabled="isPrinting || toolSelected"
+                                    @click="doSend(toolLockCommand.command)">
+                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Lock') }}
+                                </v-btn>
+                                <v-btn
+                                    v-if="toolUnLockCommand"
+                                    dense
+                                    class="flex-grow-1 px-0"
+                                    :disabled="isPrinting"
+                                    @click="doSend(toolUnLockCommand.command)">
+                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Unlock') }}
+                                </v-btn>
+                                <v-btn
+                                    v-if="toolDroppoffCommand"
+                                    dense
+                                    class="flex-grow-1 px-0"
+                                    :disabled="isPrinting || !toolSelected"
+                                    @click="doSend(toolDroppoffCommand.command)">
+                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Dropoff') }}
+                                </v-btn>
+                            </v-item-group>
+                        </v-col>
+                    </v-row>
                 </v-container>
+                <v-divider></v-divider>
+
                 <!-- EXTRUSION FACTOR SLIDER -->
                 <v-container class="pb-1">
                     <tool-slider
@@ -339,6 +371,8 @@ import {
     mdiPrinter3dNozzleOutline,
     mdiDotsVertical,
     mdiDiameterVariant,
+    mdiLock,
+    mdiLockOpenVariant,
 } from '@mdi/js'
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import {
@@ -374,6 +408,8 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     mdiPrinter3dNozzleOutline = mdiPrinter3dNozzleOutline
     mdiDotsVertical = mdiDotsVertical
     mdiDiameterVariant = mdiDiameterVariant
+    mdiLock = mdiLock
+    mdiLockOpenVariant = mdiLockOpenVariant
 
     private heatWaitGcodes = ['printer.extruder.can_extrude', 'TEMPERATURE_WAIT', 'M109']
 
@@ -551,8 +587,8 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get toolSelected(): boolean {
         if (this.toolchangeMacros.length > 0) {
-            const selectedtool = this.toolchangeMacros.find((tool: PrinterStateToolchangeMacro) => tool.active  == true)
-            if (selectedtool) return true
+            const selectedTool = this.toolchangeMacros.find((tool: PrinterStateToolchangeMacro) => tool.active  == true)
+            if (selectedTool) return true
         }
         return false
     }
