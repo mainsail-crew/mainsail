@@ -706,7 +706,12 @@
             "Relative": "relative",
             "SettingsInterfaceControl": "Settings > Interface > Control",
             "SpeedFactor": "Speed factor",
-            "ZTilt": "Z-Tilt"
+            "ZTilt": "Z-Tilt",
+            "IdexHeadline": "Idex Toolhead",
+            "SingleMode": "SINGLE MODE",
+            "CopyMode": "COPY MODE",
+            "MirrorMode": "MIRROR MODE",
+            "Park": "PARK"
         },
         "WebcamPanel": {
             "All": "All",
