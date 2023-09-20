@@ -74,10 +74,10 @@
                 <!-- TOOL DROPOFF BUTTONS -->
                 <v-container v-if="toolDroppoffCommand || toolLockCommand || toolUnLockCommand" label="$t('Panels.ExtruderControlPanel.ToolChanging.Tool').toString()">
                     <v-row class="align-center">
-                        <v-col class="shrink px-3">
+                        <v-col class="shrink pl-4">
                             <div>{{ $t('Panels.ExtruderControlPanel.ToolChanging.Tool') }}-</div>
                         </v-col>
-                        <v-col class="flex-grow px-0">
+                        <v-col class="flex-grow pl-0">
                             <v-item-group class="_btn-group py-0">
                                 <v-btn
                                     v-if="toolDroppoffCommand"
