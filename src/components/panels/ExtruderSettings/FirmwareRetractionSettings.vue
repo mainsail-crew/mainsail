@@ -8,9 +8,7 @@
                 <v-row>
                     <v-col :class="{ 'col-12': el.is.small }">
                         <number-input
-                            :label="
-                                $t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.RetractLength').toString()
-                            "
+                            :label="$t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.RetractLength')"
                             param="RETRACT_LENGTH"
                             :target="retractLength"
                             :default-value="defaultRetractLength"
@@ -22,13 +20,11 @@
                             :max="null"
                             :dec="2"
                             unit="mm"
-                            @submit="sendCmd"></number-input>
+                            @submit="sendCmd" />
                     </v-col>
                     <v-col :class="{ 'col-12': el.is.small }">
                         <number-input
-                            :label="
-                                $t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.RetractSpeed').toString()
-                            "
+                            :label="$t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.RetractSpeed')"
                             param="RETRACT_SPEED"
                             :target="retractSpeed"
                             :default-value="defaultRetractSpeed"
@@ -40,17 +36,13 @@
                             :max="null"
                             :dec="0"
                             unit="mm/s"
-                            @submit="sendCmd"></number-input>
+                            @submit="sendCmd" />
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col :class="{ 'col-12': el.is.small }">
                         <number-input
-                            :label="
-                                $t(
-                                    'Panels.ExtruderControlPanel.FirmwareRetractionSettings.UnretractExtraLength'
-                                ).toString()
-                            "
+                            :label="$t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.UnretractExtraLength')"
                             param="UNRETRACT_EXTRA_LENGTH"
                             :target="unretractExtraLength"
                             :default-value="defaultUnretractExtraLength"
@@ -62,13 +54,11 @@
                             :max="null"
                             :dec="2"
                             unit="mm"
-                            @submit="sendCmd"></number-input>
+                            @submit="sendCmd" />
                     </v-col>
                     <v-col :class="{ 'col-12': el.is.small }">
                         <number-input
-                            :label="
-                                $t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.UnretractSpeed').toString()
-                            "
+                            :label="$t('Panels.ExtruderControlPanel.FirmwareRetractionSettings.UnretractSpeed')"
                             param="UNRETRACT_SPEED"
                             :target="unretractSpeed"
                             :default-value="defaultUnretractSpeed"
@@ -80,7 +70,7 @@
                             :max="null"
                             :dec="0"
                             unit="mm/s"
-                            @submit="sendCmd"></number-input>
+                            @submit="sendCmd" />
                     </v-col>
                 </v-row>
             </template>
