@@ -2,7 +2,7 @@
     <panel
         v-if="klipperReadyForGui && extruders.length"
         :icon="mdiPrinter3dNozzle"
-        :title="$t('Panels.ExtruderControlPanel.Headline').toString()"
+        :title="$t('Panels.ExtruderControlPanel.Headline')"
         :collapsible="true"
         card-class="extruder-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
@@ -21,7 +21,7 @@
                                 <div v-on="on">
                                     <macro-button
                                         :macro="unloadFilamentMacro"
-                                        :alias="$t('Panels.ExtruderControlPanel.UnloadFilament').toString()"
+                                        :alias="$t('Panels.ExtruderControlPanel.UnloadFilament')"
                                         :disabled="!canExecuteUnloadMacro || isPrinting"
                                         color="#272727" />
                                 </div>
@@ -39,7 +39,7 @@
                                 <div v-on="on">
                                     <macro-button
                                         :macro="loadFilamentMacro"
-                                        :alias="$t('Panels.ExtruderControlPanel.LoadFilament').toString()"
+                                        :alias="$t('Panels.ExtruderControlPanel.LoadFilament')"
                                         :disabled="!canExecuteLoadMacro || isPrinting"
                                         color="#272727" />
                                 </div>
@@ -74,7 +74,7 @@
                 <!-- EXTRUSION FACTOR SLIDER -->
                 <v-container class="pb-1">
                     <tool-slider
-                        :label="$t('Panels.ExtruderControlPanel.ExtrusionFactor').toString()"
+                        :label="$t('Panels.ExtruderControlPanel.ExtrusionFactor')"
                         :icon="mdiPrinter3dNozzleOutline"
                         :target="extrudeFactor"
                         :min="1"
@@ -83,7 +83,7 @@
                         :step="1"
                         :has-input-field="true"
                         command="M221"
-                        attribute-name="S"></tool-slider>
+                        attribute-name="S" />
                 </v-container>
                 <!-- PRESSURE ADVANCE SETTINGS -->
                 <template v-if="!(extruderSteppers.length > 0)">
@@ -101,7 +101,7 @@
                     <v-row>
                         <v-col>
                             <number-input
-                                :label="$t('Panels.ExtruderControlPanel.FilamentLength').toString()"
+                                :label="$t('Panels.ExtruderControlPanel.FilamentLength')"
                                 param="feedamount"
                                 :target="feedamount"
                                 :disabled="isPrinting"
@@ -129,7 +129,7 @@
                         </v-col>
                         <v-col>
                             <number-input
-                                :label="$t('Panels.ExtruderControlPanel.ExtrusionFeedrate').toString()"
+                                :label="$t('Panels.ExtruderControlPanel.ExtrusionFeedrate')"
                                 param="feedrate"
                                 :target="feedrate"
                                 :disabled="isPrinting"
@@ -361,11 +361,11 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         return this.$store.getters['printer/getToolchangeMacros']
     }
 
-    get loadFilamentMacro() {
+    get loadFilamentMacro(): PrinterStateMacro | undefined {
         return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'LOAD_FILAMENT')
     }
 
-    get unloadFilamentMacro() {
+    get unloadFilamentMacro(): PrinterStateMacro | undefined {
         return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'UNLOAD_FILAMENT')
     }
 
@@ -376,13 +376,13 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     get canExecuteLoadMacro(): boolean {
         if (this.extrudePossible) return true
 
-        return this.heatWaitGcodes.some((gcode) => this.loadFilamentMacro.prop.gcode.includes(gcode))
+        return this.heatWaitGcodes.some((gcode) => this.loadFilamentMacro?.prop.gcode.includes(gcode))
     }
 
     get canExecuteUnloadMacro(): boolean {
         if (this.extrudePossible) return true
 
-        return this.heatWaitGcodes.some((gcode) => this.unloadFilamentMacro.prop.gcode.includes(gcode))
+        return this.heatWaitGcodes.some((gcode) => this.unloadFilamentMacro?.prop.gcode.includes(gcode))
     }
 
     get showFilamentMacros(): boolean {
