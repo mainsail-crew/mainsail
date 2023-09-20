@@ -47,6 +47,10 @@ export default class BaseMixin extends Vue {
         return this.klipperReadyForGui && ['printing', 'paused'].includes(this.printer_state)
     }
 
+    get printerIsPrintingOnly() {
+        return this.klipperReadyForGui && this.printer_state === 'printing'
+    }
+
     get printerPowerDevice(): string {
         let deviceName = this.$store.state.gui.uiSettings.powerDeviceName ?? null
         if (deviceName === null) deviceName = 'printer'
