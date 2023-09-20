@@ -80,14 +80,6 @@
                         <v-col class="flex-grow pl-0">
                             <v-item-group class="_btn-group py-0">
                                 <v-btn
-                                    v-if="toolDroppoffCommand"
-                                    dense
-                                    class="flex-grow-1 px-0"
-                                    :disabled="isPrinting"
-                                    @click="doSend(toolDroppoffCommand.command)">
-                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Dropoff') }}
-                                </v-btn>
-                                <v-btn
                                     v-if="toolLockCommand"
                                     dense
                                     class="flex-grow-1 px-0"
@@ -102,6 +94,14 @@
                                     :disabled="isPrinting"
                                     @click="doSend(toolUnLockCommand.command)">
                                     {{ $t('Panels.ExtruderControlPanel.ToolChanging.Unlock') }}
+                                </v-btn>
+                                <v-btn
+                                    v-if="toolDroppoffCommand"
+                                    dense
+                                    class="flex-grow-1 px-0"
+                                    :disabled="isPrinting"
+                                    @click="doSend(toolDroppoffCommand.command)">
+                                    {{ $t('Panels.ExtruderControlPanel.ToolChanging.Dropoff') }}
                                 </v-btn>
                             </v-item-group>
                         </v-col>
