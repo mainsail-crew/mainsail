@@ -128,7 +128,7 @@
                         </v-col>
                     </v-row>
                 </v-container>
-                <v-divider></v-divider>
+                <v-divider v-if="toolDroppoffCommand || toolLockCommand || toolUnLockCommand"></v-divider>
 
                 <!-- EXTRUSION FACTOR SLIDER -->
                 <v-container class="pb-1">
