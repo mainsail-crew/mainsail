@@ -2,7 +2,7 @@
     <panel
         v-if="klipperReadyForGui"
         :icon="mdiGamepad"
-        :title="$t('Panels.ToolheadControlPanel.Headline')"
+        :title="$t(headline)"
         :collapsible="true"
         card-class="toolhead-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
@@ -87,25 +87,19 @@
         <idex-control v-if="isIdex" class="py-0 pt-3" />
         <!-- MOVE TO CONTROL -->
         <move-to-control class="py-0 pt-3" />
-        <move-to-control class="py-0 pt-3" />
         <!-- AXIS CONTROL -->
         <v-container v-if="axisControlVisible">
-            <component :is="`${controlStyle}-control`" />
             <component :is="`${controlStyle}-control`" />
         </v-container>
         <!-- Z-OFFSET CONTROL -->
         <v-divider :class="{ 'mt-3': !axisControlVisible }" />
-        <v-divider :class="{ 'mt-3': !axisControlVisible }" />
         <v-container>
-            <zoffset-control />
             <zoffset-control />
         </v-container>
         <!-- SPEED FACTOR -->
         <v-divider />
-        <v-divider />
         <v-container>
             <tool-slider
-                :label="$t('Panels.ToolheadControlPanel.SpeedFactor')"
                 :label="$t('Panels.ToolheadControlPanel.SpeedFactor')"
                 :icon="mdiSpeedometer"
                 :target="speedFactor"
