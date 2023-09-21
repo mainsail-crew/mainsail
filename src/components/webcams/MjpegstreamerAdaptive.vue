@@ -219,18 +219,18 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     get livePositions() {
         const pos = this.$store.state.printer.motion_report?.live_position ?? [0, 0, 0]
         return {
-            x: pos[0]?.toFixed(5) ?? '--',
-            y: pos[1]?.toFixed(5) ?? '--',
-            z: pos[2]?.toFixed(5) ?? '--',
+            x: pos[0] ?? '--',
+            y: pos[1] ?? '--',
+            z: pos[2] ?? '--',
         }
     }
 
     get gcodePositions() {
         const pos = this.$store.state.printer.gcode_move?.gcode_position ?? [0, 0, 0]
         return {
-            x: pos[0]?.toFixed(5) ?? '--',
-            y: pos[1]?.toFixed(5) ?? '--',
-            z: pos[2]?.toFixed(5) ?? '--',
+            x: pos[0] ?? '--',
+            y: pos[1] ?? '--',
+            z: pos[2] ?? '--',
         }
     }
 
@@ -616,7 +616,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
                     this.dragStart.y < this.getEventLocation(e).y
                         ? -Math.abs(this.distanceMM.y)
                         : Math.abs(this.distanceMM.y)
-                this.doSendMove(`X${x.toFixed(5)} Y${y.toFixed(5)}`, 300)
+                this.doSendMove(`X${x} Y${y}`, 300)
                 this.doSend('G90')
             }
             this.dragStart = { x: 0, y: 0 }
@@ -642,7 +642,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     get XYMoveOutput() {
         if (this.xyMove && !this.isPrinting && this.homedAxes.includes('xyz')) {
-            return 'Y:' + this.gcodePositions.x.toString() + ' - X:' + this.gcodePositions.y.toString()
+            return 'Y:' + this.gcodePositions.x.toFixed(5).toString() + ' - X:' + this.gcodePositions.y.toFixed(5).toString()
         }
         return 'MOVE'
     }
