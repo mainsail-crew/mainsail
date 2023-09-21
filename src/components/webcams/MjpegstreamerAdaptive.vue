@@ -96,6 +96,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
         let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
         if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
+        url.port = this.hostPort.toString()
 
         url.searchParams.append('bypassCache', this.refresh.toString())
 
