@@ -80,19 +80,19 @@
                             <v-tooltip left color="secondary">
                                 <template #activator="{ on }">
                                     <div v-on="on">
-                                        <v-icon v-if="toolSelected" class="medium" >
+                                        <v-icon v-if="toolLocked" class="medium" >
                                             {{ mdiLock }}
                                         </v-icon>
-                                        <v-icon v-if="!toolSelected" class="medium">
+                                        <v-icon v-if="!toolLocked" class="medium">
                                             {{ mdiLockOpenVariant }}
                                         </v-icon>
                                     </div>
                                 </template>
-                                <span v-show="toolSelected">
+                                <span v-show="toolLocked">
                                     {{ $t('Panels.ExtruderControlPanel.ToolChanging.Toolchanger') }}
                                     {{ $t('Panels.ExtruderControlPanel.ToolChanging.Locked') }}
                                 </span>
-                                <span v-show="!toolSelected">
+                                <span v-show="!toolLocked">
                                     {{ $t('Panels.ExtruderControlPanel.ToolChanging.Toolchanger') }}
                                     {{ $t('Panels.ExtruderControlPanel.ToolChanging.Unlocked') }}
                                 </span>
@@ -104,7 +104,7 @@
                                     v-if="toolLockCommand"
                                     dense
                                     class="flex-grow-1 px-0"
-                                    :disabled="isPrinting || toolSelected"
+                                    :disabled="isPrinting || toolLocked"
                                     @click="doSend(toolLockCommand.command)">
                                     {{ $t('Panels.ExtruderControlPanel.ToolChanging.Lock') }}
                                 </v-btn>
@@ -120,7 +120,7 @@
                                     v-if="toolDroppoffCommand"
                                     dense
                                     class="flex-grow-1 px-0"
-                                    :disabled="isPrinting || !toolSelected"
+                                    :disabled="isPrinting || !toolLocked"
                                     @click="doSend(toolDroppoffCommand.command)">
                                     {{ $t('Panels.ExtruderControlPanel.ToolChanging.Dropoff') }}
                                 </v-btn>
@@ -561,6 +561,14 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         return this.$store.state.gui.control.extruder.showEstimatedExtrusionInfo
     }
 
+    get toolLocked(): boolean {
+        if (this.toolchangeMacros.length > 0) {
+            const selectedTool = this.toolchangeMacros.find((tool: PrinterStateToolchangeMacro) => tool.active  == true)
+            if (selectedTool) return true
+        }
+        return false
+    }
+
     @Watch('maxExtrudeOnlyDistance', { immediate: true })
     onMaxExtrudeOnlyDistanceChange(): void {
         /**
@@ -583,14 +591,6 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         const gcode = `M83\nG1 E${this.feedamount} F${this.feedrate * 60}`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
-    }
-
-    get toolSelected(): boolean {
-        if (this.toolchangeMacros.length > 0) {
-            const selectedTool = this.toolchangeMacros.find((tool: PrinterStateToolchangeMacro) => tool.active  == true)
-            if (selectedTool) return true
-        }
-        return false
     }
 
 }

@@ -436,7 +436,6 @@
             "UnloadFilament": "Ladda ur Filament",
             "ToolChanging": {
                 "Tool": "Verktyg",
-                "Toolchanger": "Toolchanger",
                 "Dropoff": "Lämna av",
                 "Lock": "Lås",
                 "Unlock": "Lås upp",
