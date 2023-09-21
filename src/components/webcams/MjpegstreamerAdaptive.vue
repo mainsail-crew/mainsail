@@ -642,7 +642,12 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     get XYMoveOutput() {
         if (this.xyMove && !this.isPrinting && this.homedAxes.includes('xyz')) {
-            return 'Y:' + this.gcodePositions.x.toFixed(5).toString() + ' - X:' + this.gcodePositions.y.toFixed(5).toString()
+            return (
+                'Y:' +
+                this.gcodePositions.x.toFixed(5).toString() +
+                ' - X:' +
+                this.gcodePositions.y.toFixed(5).toString()
+            )
         }
         return 'MOVE'
     }
