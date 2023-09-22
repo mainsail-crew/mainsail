@@ -56,34 +56,36 @@
         <responsive :breakpoints="{ large: (el) => el.width >= 640 }">
             <template #default="{ el }">
                 <!-- TOOL SELECTOR BUTTONS -->
-                <v-container v-if="toolchangeMacros.length > 1" class="pb-1">
-                    <v-item-group class="_btn-group py-0">
-                        <v-btn
-                            v-for="tool in toolchangeMacros"
-                            :key="tool.name"
-                            :disabled="isPrinting"
-                            :loading="loadings.includes(tool.name.toLowerCase())"
-                            class="flex-grow-1 px-0"
-                            :style="{
-                                'background-color': tool.active
-                                    ? homedAxes.includes('xyz')
-                                        ? primaryColor
-                                        : warningColor
-                                    : '',
-                                color: tool.active ? primaryTextColor : '',
-                            }"
-                            dense
-                            @click="doSend(tool.name)">
-                            <span
-                                v-if="tool.color != null"
-                                class="_extruderColorState mr-1"
+                <v-container v-if="toolchangeMacros.length > 1" class="pl-6 pr-6 pt-6 pb-0 mb-3">
+                    <v-row v-for="(row, index) in wrappedToolchangeMacros" :key="index">
+                        <v-item-group class="_btn-group py-0 mb-3">
+                            <v-btn
+                                v-for="tool in row"
+                                :key="tool.name"
+                                :disabled="isPrinting"
+                                :loading="loadings.includes(tool.name.toLowerCase())"
+                                class="flex-grow-1 px-0"
                                 :style="{
-                                    'border-color': tool.active ? primaryTextColor : '',
-                                    'background-color': '#' + tool.color,
-                                }"></span>
-                            {{ tool.name }}
-                        </v-btn>
-                    </v-item-group>
+                                    'background-color': tool.active
+                                        ? homedAxes.includes('xyz')
+                                            ? primaryColor
+                                            : warningColor
+                                        : '',
+                                    color: tool.active ? primaryTextColor : '',
+                                }"
+                                dense
+                                @click="doSend(tool.name)">
+                                <span
+                                    v-if="tool.color != null"
+                                    class="_extruderColorState mr-1"
+                                    :style="{
+                                        'border-color': tool.active ? primaryTextColor : '',
+                                        'background-color': '#' + tool.color,
+                                    }"></span>
+                                {{ !isIdex ? tool.name : tool.title == null ? tool.name : tool.title }}
+                            </v-btn>
+                        </v-item-group>
+                    </v-row>
                 </v-container>
                 <!-- EXTRUSION FACTOR SLIDER -->
                 <v-container class="pb-1">
@@ -342,6 +344,7 @@ import PressureAdvanceSettings from '@/components/panels/ExtruderSettings/Pressu
 import FirmwareRetractionSettings from '@/components/panels/ExtruderSettings/FirmwareRetractionSettings.vue'
 import Responsive from '@/components/ui/Responsive.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
+import TheScrewsTiltAdjustDialog from '../dialogs/TheScrewsTiltAdjustDialog.vue'
 
 @Component({
     components: {
@@ -369,6 +372,25 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get macros() {
         return this.$store.getters['printer/getMacros']
+    }
+
+    get wrappedToolchangeMacros(): any[] {
+        const rows: any[] = []
+
+        let maxCols = 6
+        let rowIndex = 0
+        let row: PrinterStateToolchangeMacro[] = []
+        rows.push(row)
+        for (const macro of this.toolchangeMacros) {
+            if (rows[rowIndex].length == maxCols) {
+                rowIndex = rowIndex + 1
+                let row: PrinterStateToolchangeMacro[] = []
+                rows.push(row)
+            }
+            rows[rowIndex].push(macro)
+        }
+
+        return rows
     }
 
     get toolchangeMacros(): PrinterStateToolchangeMacro[] {
