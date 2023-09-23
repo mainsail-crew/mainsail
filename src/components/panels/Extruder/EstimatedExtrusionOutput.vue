@@ -24,9 +24,7 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin, ExtruderM
     mdiDiameterVariant = mdiDiameterVariant
 
     get showEstimatedExtrusion() {
-        const showBool = this.$store.state.gui.control.extruder.showEstimatedExtrusionInfo ?? true
-
-        return showBool && this.filamentDiameter && this.nozzleDiameter
+        return this.$store.state.gui.control.extruder.showEstimatedExtrusionInfo ?? true
     }
 
     get extrudedLength(): number {
