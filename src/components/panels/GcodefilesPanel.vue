@@ -1322,7 +1322,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
         await addElementToItems('gcodes/' + this.currentPath, this.selectedFiles)
         const date = new Date()
-        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDay()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDate()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
 
         this.$socket.emit(
             'server.files.zip',
