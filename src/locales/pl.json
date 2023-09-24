@@ -1,7 +1,7 @@
 {
     "App": {
         "Notifications": {
-            "DependencyDescription": "Aktualna wersja {name} nie wspiera wszystkich funkcji Mainsail. Zaktualizuj {name} conajmniej do wersji {neededVersion}.",
+            "DependencyDescription": "Aktualna wersja {name} nie wspiera wszystkich funkcji Mainsail. Zaktualizuj {name} co najmniej do wersji {neededVersion}.",
             "DependencyName": "Zależność: {name}",
             "DismissAll": "Odrzuć wszystko",
             "KlipperWarnings": {
@@ -869,7 +869,9 @@
             "DateFormat": "Format daty",
             "MainsailSettingsMoonrakerDb": "Ustawienia Mainsail w bazie danych Moonraker",
             "DBNavigation": "Nawigacja",
-            "Everything": "Wszystko"
+            "Everything": "Wszystko",
+            "DbHistoryJobs": "Historia wydruków",
+            "DbHistoryTotals": "Łączna historia"
         },
         "InterfaceSettings": "Ustawienia interfejsu",
         "MacrosTab": {
