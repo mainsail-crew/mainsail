@@ -53,6 +53,7 @@ import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiChevronDown, mdiChevronUp, mdiRestart } from '@mdi/js'
+import { TranslateResult } from 'vue-i18n'
 
 @Component
 export default class NumberInput extends Mixins(BaseMixin) {
@@ -65,48 +66,23 @@ export default class NumberInput extends Mixins(BaseMixin) {
     private invalidChars: string[] = ['e', 'E', '+']
 
     // input field name and identifier
-    @Prop({ type: String, required: true })
-    declare readonly label: string
-
-    @Prop({ type: String, required: true })
-    declare readonly param: string
-
+    @Prop({ required: true }) declare readonly label: TranslateResult | string
+    @Prop({ type: String, required: true }) declare readonly param: string
     // props defining incoming data
-    @Prop({ type: Number, required: true })
-    declare readonly target: number
-
-    @Prop({ type: Number, required: false })
-    declare readonly defaultValue: number
-
+    @Prop({ type: Number, required: true }) declare readonly target: number
+    @Prop({ type: Number, required: false }) declare readonly defaultValue: number
     // props for internal processing
-    @Prop({ type: Number, required: true })
-    declare readonly min: number
-
-    @Prop({ type: Number, default: null })
-    declare readonly max: number | null
-
-    @Prop({ type: Number, required: true })
-    declare readonly dec: number
-
-    @Prop({ type: Number, required: false, default: 1 })
-    declare readonly step: number
-
-    @Prop({ type: String, required: false })
-    declare readonly unit: string
-
+    @Prop({ type: Number, required: true }) declare readonly min: number
+    @Prop({ default: null }) declare readonly max: number | null
+    @Prop({ type: Number, required: true }) declare readonly dec: number
+    @Prop({ type: Number, required: false, default: 1 }) declare readonly step: number
+    @Prop({ type: String, required: false }) declare readonly unit: string
     // spinner related props
-    @Prop({ type: Boolean, required: false, default: false })
-    declare readonly hasSpinner: boolean
-
-    @Prop({ type: Number, required: false, default: 1 })
-    declare readonly spinnerFactor: number
-
+    @Prop({ type: Boolean, required: false, default: false }) declare readonly hasSpinner: boolean
+    @Prop({ type: Number, required: false, default: 1 }) declare readonly spinnerFactor: number
     // props for general internal behaviour
-    @Prop({ type: Boolean, required: false, default: false })
-    declare readonly disabled: boolean
-
-    @Prop({ type: Boolean, required: false, default: false })
-    declare readonly outputErrorMsg: boolean
+    @Prop({ type: Boolean, required: false, default: false }) declare readonly disabled: boolean
+    @Prop({ type: Boolean, required: false, default: false }) declare readonly outputErrorMsg: boolean
 
     created(): void {
         this.value = this.target.toString()

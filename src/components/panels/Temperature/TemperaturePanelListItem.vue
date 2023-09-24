@@ -138,7 +138,7 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
     }
 
     get color() {
-        return this.$store.getters['printer/tempHistory/getDatasetColor'](this.objectName)
+        return this.$store.getters['printer/tempHistory/getDatasetColor'](this.objectName) ?? ''
     }
 
     get iconColor() {
