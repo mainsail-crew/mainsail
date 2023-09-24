@@ -202,7 +202,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     get macros() {
         return this.$store.getters['printer/getMacros']
     }
-    
+
     get toolchangeMacros(): PrinterStateToolchangeMacro[] {
         const tools: PrinterStateToolchangeMacro[] = []
         this.macros
