@@ -3,8 +3,8 @@
         <td style="width: 50px" class="pr-0 py-2">
             <spool-icon :color="color" style="width: 50px; float: left" class="mr-3" />
         </td>
-        <td class="py-2">
-            <strong>{{ vendor }} - {{ name }}</strong>
+        <td class="py-2" style="min-width: 300px">
+            <strong class="text-no-wrap">{{ vendor }} - {{ name }}</strong>
             <template v-if="location">
                 <br />
                 {{ $t('Panels.SpoolmanPanel.Location') }}: {{ location }}
@@ -14,9 +14,9 @@
                 {{ spool.comment }}
             </template>
         </td>
-        <td class="text-center">{{ material }}</td>
-        <td class="text-right">{{ last_used }}</td>
-        <td class="text-right">
+        <td class="text-center text-no-wrap">{{ material }}</td>
+        <td class="text-right text-no-wrap">{{ last_used }}</td>
+        <td class="text-right text-no-wrap">
             <strong>{{ rest_weight_format }}</strong>
             <small class="ml-1">/ {{ total_weight_format }}</small>
         </td>
