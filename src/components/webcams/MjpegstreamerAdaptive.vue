@@ -133,23 +133,6 @@
                                 : XYMoveOutput
                         }}
                     </v-btn>
-                    <v-btn
-                        v-if="hasZProbe"
-                        small
-                        class="cmdButton"
-                        :disabled="
-                            !allowZProbe ||
-                            !homedAxes.includes('xyz') ||
-                            (isIdex && (idexMode == 'copy' || idexMode == 'mirror'))
-                        "
-                        :style="{
-                            'background-color': 'rgba(255,86,86,1.0)',
-                            'min-width': '0',
-                            'border-top-right-radius': '5px',
-                        }"
-                        @click="probeZ()">
-                        {{ $t('Panels.WebcamPanel.NozzleCalibrationOverlayZProbe') }}
-                    </v-btn>
                 </v-item-group>
             </span>
         </v-row>
@@ -262,19 +245,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     // ----------------------------------------------
     // Nozzle Calibration
     // ----------------------------------------------
-    private zProbeActive = false
-
-    get allowZProbe(): boolean {
-        return this.zProbeActive
-    }
-
-    probeZ() {
-        this.zProbeActive = false
-        this.doSend('_NOZZLE_CALIBRATION_PROBE_Z_OFFSET')
-    }
-
     doSet() {
-        this.zProbeActive = true
         this.xyMove = false
         this.dragStart = { x: 0, y: 0 }
         this.distancePixels = { x: 0, y: 0 }
@@ -283,22 +254,11 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     }
 
     doT(gcode: string) {
-        this.zProbeActive = false
         this.xyMove = false
         this.dragStart = { x: 0, y: 0 }
         this.distancePixels = { x: 0, y: 0 }
         this.distanceMM = { x: 0, y: 0 }
         this.doSend(gcode)
-    }
-
-    get hasZProbe(): boolean {
-        try {
-            const zoffsetprobe = this.$store.state.printer.configfile?.settings?.zoffsetprobe
-            if (zoffsetprobe.z_offset > 0) return true
-            return false
-        } catch {
-            return false
-        }
     }
 
     get nozzleCalib() {
@@ -307,7 +267,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     get bigEnough() {
         let canvas = this.$refs.mjpegstreamerAdaptive
-        return canvas?.clientWidth >= 480
+        return canvas?.clientWidth >= 400
     }
 
     // ----------------------------------------------
@@ -600,7 +560,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     private xyMove = false
 
     togglexyMove() {
-        this.zProbeActive = false
         this.xyMove = !this.xyMove
         this.dragStart = { x: 0, y: 0 }
         this.distancePixels = { x: 0, y: 0 }
