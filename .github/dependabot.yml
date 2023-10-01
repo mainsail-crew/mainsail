@@ -12,7 +12,10 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
-    ignore:
+    allow:
       # Ignore major updates to all dependencies. We're using old versions of some packages that are incompatible with newer versions of other packages.
       - dependency-name: '*'
-        update-type: 'semver:major'
+        update-type: 'semver:non-major'
+        dependency-type: 'direct'
+    assignees:
+      - "meteyou"
