@@ -2,7 +2,11 @@
     <div>
         <v-divider class="mt-3 mb-0" />
         <v-card-text class="py-0 px-2">
-            <spoolman-panel-active-spool v-if="activeSpoolId !== null" :small="true" class="my-0" />
+            <spoolman-panel-active-spool
+                v-if="activeSpoolId !== null"
+                :small="true"
+                class="my-0"
+                @change-spool="showChangeSpoolDialog = true" />
             <v-alert v-for="alert in alerts" :key="alert.text" text :color="alert.color" class="mt-4 mx-3">
                 {{ alert.text }}
             </v-alert>
