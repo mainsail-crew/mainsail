@@ -31,7 +31,7 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin, ExtruderM
         return Math.round(
             this.feedamount *
                 this.extrudeFactor *
-                (Math.pow(this.filamentDiameter, 2) / Math.pow(this.nozzleDiameter, 2))
+                (Math.pow(this.filamentDiameter, 2) / Math.pow(this.nozzleDiameter, 2)),
         )
     }
 

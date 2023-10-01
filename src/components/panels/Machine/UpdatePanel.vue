@@ -92,7 +92,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
 
     get checkInitState() {
         const initModules = this.modules.filter(
-            (module: ServerUpdateManagerStateGuiList) => module.data.remote_version !== '?'
+            (module: ServerUpdateManagerStateGuiList) => module.data.remote_version !== '?',
         )
 
         return initModules.length > 0
@@ -130,7 +130,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'machine.update.status',
             { refresh: true },
-            { action: 'server/updateManager/onUpdateStatus', loading: 'loadingBtnSyncUpdateManager' }
+            { action: 'server/updateManager/onUpdateStatus', loading: 'loadingBtnSyncUpdateManager' },
         )
     }
 }

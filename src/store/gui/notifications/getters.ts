@@ -82,7 +82,7 @@ export const getters: GetterTree<GuiNotificationState, any> = {
             const flagDismisses = rootGetters['gui/notifications/getDismissByCategory']('flag').map(
                 (dismiss: GuiNotificationStateDismissEntry) => {
                     return dismiss.id
-                }
+                },
             )
 
             // filter all dismissed flags
@@ -115,13 +115,13 @@ export const getters: GetterTree<GuiNotificationState, any> = {
             const flagDismisses = rootGetters['gui/notifications/getDismissByCategory']('dependency').map(
                 (dismiss: GuiNotificationStateDismissEntry) => {
                     return dismiss.id
-                }
+                },
             )
 
             // filter all dismissed dependencies
             dependencies = dependencies.filter(
                 (dependency: RootStateDependency) =>
-                    !flagDismisses.includes(`${dependency.serviceName}/${dependency.neededVersion}`)
+                    !flagDismisses.includes(`${dependency.serviceName}/${dependency.neededVersion}`),
             )
 
             dependencies.forEach((dependency: RootStateDependency) => {
@@ -156,7 +156,7 @@ export const getters: GetterTree<GuiNotificationState, any> = {
             const warningsDismisses = rootGetters['gui/notifications/getDismissByCategory']('moonrakerWarning').map(
                 (dismiss: GuiNotificationStateDismissEntry) => {
                     return dismiss.id
-                }
+                },
             )
 
             // filter all dismissed warnings
@@ -201,7 +201,7 @@ export const getters: GetterTree<GuiNotificationState, any> = {
             const flagDismisses = rootGetters['gui/notifications/getDismissByCategory']('moonrakerFailedComponent').map(
                 (dismiss: GuiNotificationStateDismissEntry) => {
                     return dismiss.id
-                }
+                },
             )
 
             // filter all dismissed failed components
@@ -235,7 +235,7 @@ export const getters: GetterTree<GuiNotificationState, any> = {
             const warningsDismisses = rootGetters['gui/notifications/getDismissByCategory']('klipperWarning').map(
                 (dismiss: GuiNotificationStateDismissEntry) => {
                     return dismiss.id
-                }
+                },
             )
 
             // filter all dismissed warnings
@@ -290,7 +290,7 @@ export const getters: GetterTree<GuiNotificationState, any> = {
 
         // find browser requirement
         const minBrowserVersion = minBrowserVersions.find(
-            (entry) => entry.name.toLowerCase() === browser.name.toLowerCase()
+            (entry) => entry.name.toLowerCase() === browser.name.toLowerCase(),
         )
 
         // stop here, because no browser requirement found

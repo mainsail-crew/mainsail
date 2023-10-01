@@ -32,7 +32,7 @@ export const actions: ActionTree<GuiConsoleState, RootState> = {
                 name: 'console.' + payload.name,
                 value: payload.value,
             },
-            { root: true }
+            { root: true },
         )
     },
 

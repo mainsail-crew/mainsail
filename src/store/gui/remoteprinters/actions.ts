@@ -41,7 +41,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
                     port: printer.port ?? 7125,
                     settings: printer.settings ?? {},
                 },
-                { root: true }
+                { root: true },
             )
         })
     },
@@ -85,7 +85,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
                 hostname: payload.values.hostname ?? '',
                 port: payload.values.port ?? 7125,
             },
-            { root: true }
+            { root: true },
         )
 
         dispatch('upload', id)

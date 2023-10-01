@@ -142,7 +142,7 @@
                                         @click="
                                             doSendMove(
                                                 `Z${!reverseZ ? '-' : '+'}${stepsZ.length >= 0 ? stepsZ[0] : 0}`,
-                                                feedrateZ
+                                                feedrateZ,
                                             )
                                         ">
                                         <g transform="matrix(0.804902,0,0,1,0,0)"><path :d="zStepInner" /></g>
@@ -152,7 +152,7 @@
                                         @click="
                                             doSendMove(
                                                 `Z${!reverseZ ? '-' : '+'}${stepsZ.length >= 1 ? stepsZ[1] : 0}`,
-                                                feedrateZ
+                                                feedrateZ,
                                             )
                                         ">
                                         <g
@@ -165,7 +165,7 @@
                                         @click="
                                             doSendMove(
                                                 `Z${!reverseZ ? '-' : '+'}${stepsZ.length >= 2 ? stepsZ[2] : 0}`,
-                                                feedrateZ
+                                                feedrateZ,
                                             )
                                         ">
                                         <g transform="matrix(0.804902,0,0,1,0,0)">
@@ -177,7 +177,7 @@
                                         @click="
                                             doSendMove(
                                                 `Z${!reverseZ ? '-' : '+'}${stepsZ.length >= 3 ? stepsZ[3] : 0}`,
-                                                feedrateZ
+                                                feedrateZ,
                                             )
                                         ">
                                         <g transform="matrix(0.804902,0,0,1,0,0)">
@@ -191,7 +191,7 @@
                                         @click="
                                             doSendMove(
                                                 `Z${reverseZ ? '-' : '+'}${stepsZ.length >= 0 ? stepsZ[0] : 0}`,
-                                                feedrateZ
+                                                feedrateZ,
                                             )
                                         ">
                                         <g transform="matrix(0.804902,0,0,1,0,0)">
@@ -203,7 +203,7 @@
                                         @click="
                                             doSendMove(
                                                 `Z${reverseZ ? '-' : '+'}${stepsZ.length >= 1 ? stepsZ[1] : 0}`,
-                                                feedrateZ
+                                                feedrateZ,
                                             )
                                         ">
                                         <g
@@ -216,7 +216,7 @@
                                         @click="
                                             doSendMove(
                                                 `Z${reverseZ ? '-' : '+'}${stepsZ.length >= 2 ? stepsZ[2] : 0}`,
-                                                feedrateZ
+                                                feedrateZ,
                                             )
                                         ">
                                         <g transform="matrix(0.804902,0,0,1,0,0)">
@@ -228,7 +228,7 @@
                                         @click="
                                             doSendMove(
                                                 `Z${reverseZ ? '-' : '+'}${stepsZ.length >= 3 ? stepsZ[3] : 0}`,
-                                                feedrateZ
+                                                feedrateZ,
                                             )
                                         ">
                                         <g transform="matrix(0.804902,0,0,1,0,0)">
@@ -268,7 +268,7 @@
                                         @click="
                                             doSendMove(
                                                 `X${reverseX ? '-' : '+'}${stepsXY.length >= 0 ? stepsXY[0] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.48,0,0,0.48,19,19)">
@@ -280,7 +280,7 @@
                                         @click="
                                             doSendMove(
                                                 `X${reverseX ? '-' : '+'}${stepsXY.length >= 1 ? stepsXY[1] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.72,0,0,0.72,13,13)">
@@ -292,7 +292,7 @@
                                         @click="
                                             doSendMove(
                                                 `X${reverseX ? '-' : '+'}${stepsXY.length >= 2 ? stepsXY[2] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.96,0,0,0.96,7,7)">
@@ -304,7 +304,7 @@
                                         @click="
                                             doSendMove(
                                                 `X${reverseX ? '-' : '+'}${stepsXY.length >= 3 ? stepsXY[3] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(1.2,0,0,1.2,1,1)">
@@ -321,7 +321,7 @@
                                         @click="
                                             doSendMove(
                                                 `X${!reverseX ? '-' : '+'}${stepsXY.length >= 0 ? stepsXY[0] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.48,0,0,0.48,19,19)">
@@ -333,7 +333,7 @@
                                         @click="
                                             doSendMove(
                                                 `X${!reverseX ? '-' : '+'}${stepsXY.length >= 1 ? stepsXY[1] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.72,0,0,0.72,13,13)">
@@ -345,7 +345,7 @@
                                         @click="
                                             doSendMove(
                                                 `X${!reverseX ? '-' : '+'}${stepsXY.length >= 2 ? stepsXY[2] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.96,0,0,0.96,7,7)">
@@ -357,7 +357,7 @@
                                         @click="
                                             doSendMove(
                                                 `X${!reverseX ? '-' : '+'}${stepsXY.length >= 3 ? stepsXY[3] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(1.2,0,0,1.2,1,1)">
@@ -374,7 +374,7 @@
                                         @click="
                                             doSendMove(
                                                 `Y${!reverseY ? '-' : '+'}${stepsXY.length >= 0 ? stepsXY[0] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.48,0,0,0.48,19,19)">
@@ -386,7 +386,7 @@
                                         @click="
                                             doSendMove(
                                                 `Y${!reverseY ? '-' : '+'}${stepsXY.length >= 1 ? stepsXY[1] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.72,0,0,0.72,13,13)">
@@ -398,7 +398,7 @@
                                         @click="
                                             doSendMove(
                                                 `Y${!reverseY ? '-' : '+'}${stepsXY.length >= 2 ? stepsXY[2] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.96,0,0,0.96,7,7)">
@@ -410,7 +410,7 @@
                                         @click="
                                             doSendMove(
                                                 `Y${!reverseY ? '-' : '+'}${stepsXY.length >= 3 ? stepsXY[3] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(1.2,0,0,1.2,1,1)">
@@ -427,7 +427,7 @@
                                         @click="
                                             doSendMove(
                                                 `Y${reverseY ? '-' : '+'}${stepsXY.length >= 0 ? stepsXY[0] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.48,0,0,0.48,19,19)">
@@ -439,7 +439,7 @@
                                         @click="
                                             doSendMove(
                                                 `Y${reverseY ? '-' : '+'}${stepsXY.length >= 1 ? stepsXY[1] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.72,0,0,0.72,13,13)">
@@ -451,7 +451,7 @@
                                         @click="
                                             doSendMove(
                                                 `Y${reverseY ? '-' : '+'}${stepsXY.length >= 2 ? stepsXY[2] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(0.96,0,0,0.96,7,7)">
@@ -463,7 +463,7 @@
                                         @click="
                                             doSendMove(
                                                 `Y${reverseY ? '-' : '+'}${stepsXY.length >= 3 ? stepsXY[3] : 0}`,
-                                                feedrateXY
+                                                feedrateXY,
                                             )
                                         ">
                                         <g transform="matrix(1.2,0,0,1.2,1,1)">

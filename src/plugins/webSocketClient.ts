@@ -129,7 +129,7 @@ export class WebSocketClient {
                 method,
                 params,
                 id,
-            })
+            }),
         )
     }
 }

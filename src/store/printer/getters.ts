@@ -10,7 +10,6 @@ import {
     PrinterStateMiscellaneous,
     PrinterStateMcu,
     PrinterStateMacro,
-    PrinterStateToolchangeMacro,
     PrinterGetterObject,
     PrinterStateLight,
 } from '@/store/printer/types'
@@ -90,7 +89,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
             const max = Math.ceil(
                 (state.current_file.object_height - state.current_file.first_layer_height) /
                     state.current_file.layer_height +
-                    1
+                    1,
             )
             return max > 0 ? max : 0
         }
@@ -108,7 +107,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         ) {
             const gcodePositionZ = state.gcode_move?.gcode_position[2] ?? 0
             const current_layer = Math.ceil(
-                (gcodePositionZ - state.current_file.first_layer_height) / state.current_file.layer_height + 1
+                (gcodePositionZ - state.current_file.first_layer_height) / state.current_file.layer_height + 1,
             )
 
             if (current_layer > getters.getPrintMaxLayers) return getters.getPrintMaxLayers

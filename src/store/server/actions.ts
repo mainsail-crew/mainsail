@@ -45,7 +45,7 @@ export const actions: ActionTree<ServerState, RootState> = {
                 type: 'web',
                 url: 'https://github.com/mainsail-crew/mainsail',
             },
-            { action: 'server/setConnectionId' }
+            { action: 'server/setConnectionId' },
         )
     },
 

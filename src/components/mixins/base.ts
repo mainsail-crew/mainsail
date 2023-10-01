@@ -63,7 +63,7 @@ export default class BaseMixin extends Vue {
         if (devices.length === 0) return false
 
         const deviceIndex = devices.findIndex(
-            (device: ServerPowerStateDevice) => device.device === this.printerPowerDevice
+            (device: ServerPowerStateDevice) => device.device === this.printerPowerDevice,
         )
         // stop if device is not found
         if (deviceIndex === -1) return false

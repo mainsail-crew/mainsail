@@ -50,7 +50,7 @@ export const mutations: MutationTree<ServerUpdateManagerState> = {
             Vue.$socket.emit(
                 'machine.update.status',
                 { refresh: false },
-                { action: 'server/updateManager/onUpdateStatus' }
+                { action: 'server/updateManager/onUpdateStatus' },
             )
 
         state.updateResponse.messages.push({

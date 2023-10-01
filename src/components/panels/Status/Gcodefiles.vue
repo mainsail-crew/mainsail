@@ -336,7 +336,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
             .slice(0, 5)
 
         const requestItems = gcodes.filter(
-            (file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled
+            (file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled,
         )
         requestItems.forEach((file: FileStateGcodefile) => {
             this.$store.dispatch('files/requestMetadata', {
@@ -518,7 +518,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
                 source: 'gcodes/' + this.dialogRenameFile.item.filename,
                 dest: 'gcodes/' + path + this.dialogRenameFile.newName,
             },
-            { action: 'files/getMove' }
+            { action: 'files/getMove' },
         )
     }
 
@@ -526,7 +526,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         this.$socket.emit(
             'server.files.delete_file',
             { path: 'gcodes/' + this.contextMenu.item.filename },
-            { action: 'files/getDeleteFile' }
+            { action: 'files/getDeleteFile' },
         )
 
         this.deleteDialog = false

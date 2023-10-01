@@ -121,7 +121,7 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
     get formatedText() {
         return this.entry.description.replace(
             /(\bhttps?:\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim,
-            '<a href="$1" target="_blank" class="' + this.alertColor + '--text">$1</a>'
+            '<a href="$1" target="_blank" class="' + this.alertColor + '--text">$1</a>',
         )
     }
 

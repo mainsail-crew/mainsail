@@ -77,12 +77,12 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
         if (this.value > this.max_temp) {
             this.value = { value: this.target, text: this.target }
             this.$toast.error(
-                this.$t('Panels.TemperaturePanel.TempTooHigh', { name: this.name, max: this.max_temp }) + ''
+                this.$t('Panels.TemperaturePanel.TempTooHigh', { name: this.name, max: this.max_temp }) + '',
             )
         } else if (this.value < this.min_temp && this.value != 0) {
             this.value = { value: this.target, text: this.target }
             this.$toast.error(
-                this.$t('Panels.TemperaturePanel.TempTooLow', { name: this.name, min: this.min_temp }) + ''
+                this.$t('Panels.TemperaturePanel.TempTooLow', { name: this.name, min: this.min_temp }) + '',
             )
         } else if (this.target !== parseFloat(this.value)) {
             const gcode = this.command + ' ' + this.attributeName + '=' + this.name + ' TARGET=' + this.value

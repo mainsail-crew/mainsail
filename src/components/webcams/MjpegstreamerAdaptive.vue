@@ -55,7 +55,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
             ),
             aspectRatio: 16 / 9,
             maxHeight: window.innerHeight - 155 + 'px',
@@ -127,7 +127,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
                     (-frame.width / 2) * scale,
                     (-frame.height / 2) * scale,
                     frame.width * scale,
-                    frame.height * scale
+                    frame.height * scale,
                 )
                 ctx.rotate(-((this.camSettings.rotation * Math.PI) / 180))
                 ctx.translate(-x, -y)

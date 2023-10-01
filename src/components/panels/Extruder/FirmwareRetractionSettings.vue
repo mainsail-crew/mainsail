@@ -115,7 +115,7 @@ export default class FirmwareRetractionSettings extends Mixins(BaseMixin, Contro
     get defaultRetractLength(): number {
         return (
             Math.floor(
-                (this.$store.state.printer?.configfile?.settings?.firmware_retraction?.retract_length ?? 0) * 100
+                (this.$store.state.printer?.configfile?.settings?.firmware_retraction?.retract_length ?? 0) * 100,
             ) / 100
         )
     }
@@ -128,7 +128,7 @@ export default class FirmwareRetractionSettings extends Mixins(BaseMixin, Contro
         return (
             Math.floor(
                 (this.$store.state.printer?.configfile?.settings?.firmware_retraction?.unretract_extra_length ?? 0) *
-                    100
+                    100,
             ) / 100
         )
     }

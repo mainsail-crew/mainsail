@@ -1142,7 +1142,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                 source: 'gcodes' + this.currentPath + '/' + this.draggingFile.item.filename,
                 dest: 'gcodes' + dest,
             },
-            { action: 'files/getMove' }
+            { action: 'files/getMove' },
         )
     }
 
@@ -1190,7 +1190,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
             this.$socket.emit(
                 'server.files.post_directory',
                 { path: 'gcodes' + this.currentPath + '/' + this.dialogCreateDirectory.name },
-                { action: 'files/getCreateDir' }
+                { action: 'files/getCreateDir' },
             )
         }
     }
@@ -1199,7 +1199,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         this.$socket.emit(
             'server.files.get_directory',
             { path: 'gcodes' + this.currentPath },
-            { action: 'files/getDirectory' }
+            { action: 'files/getDirectory' },
         )
     }
 
@@ -1327,7 +1327,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         this.$socket.emit(
             'server.files.zip',
             { items, dest: `config/gcodes-${timestamp}.zip` },
-            { action: 'files/downloadZip', loading: 'gcodeDownloadZip' }
+            { action: 'files/downloadZip', loading: 'gcodeDownloadZip' },
         )
 
         this.selectedFiles = []
@@ -1351,7 +1351,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                 source: 'gcodes' + this.currentPath + '/' + this.dialogRenameFile.item.filename,
                 dest: 'gcodes' + this.currentPath + '/' + this.dialogRenameFile.newName,
             },
-            { action: 'files/getMove' }
+            { action: 'files/getMove' },
         )
     }
 
@@ -1391,7 +1391,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                 source: 'gcodes' + this.currentPath + '/' + this.dialogRenameDirectory.item.filename,
                 dest: 'gcodes' + this.currentPath + '/' + this.dialogRenameDirectory.newName,
             },
-            { action: 'files/getMove' }
+            { action: 'files/getMove' },
         )
     }
 
@@ -1399,7 +1399,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         this.$socket.emit(
             'server.files.delete_file',
             { path: 'gcodes' + this.currentPath + '/' + this.contextMenu.item.filename },
-            { action: 'files/getDeleteFile' }
+            { action: 'files/getDeleteFile' },
         )
 
         this.deleteDialog = false
@@ -1415,7 +1415,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         this.$socket.emit(
             'server.files.delete_directory',
             { path: 'gcodes' + this.currentPath + '/' + this.contextMenu.item.filename, force: true },
-            { action: 'files/getDeleteDir' }
+            { action: 'files/getDeleteDir' },
         )
     }
 
@@ -1479,13 +1479,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                 this.$socket.emit(
                     'server.files.delete_directory',
                     { path: 'gcodes' + this.currentPath + '/' + item.filename, force: true },
-                    { action: 'files/getDeleteDir' }
+                    { action: 'files/getDeleteDir' },
                 )
             } else {
                 this.$socket.emit(
                     'server.files.delete_file',
                     { path: 'gcodes' + this.currentPath + '/' + item.filename },
-                    { action: 'files/getDeleteFile' }
+                    { action: 'files/getDeleteFile' },
                 )
             }
         })

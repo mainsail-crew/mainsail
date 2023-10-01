@@ -102,7 +102,7 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin) {
                 },
             },
             false,
-            true
+            true,
         )
     }
 

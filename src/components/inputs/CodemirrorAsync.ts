@@ -6,5 +6,5 @@ import Vue from 'vue'
 export default Vue.component(
     'CodemirrorAsync',
     // A dynamic import returns a Promise.
-    () => import('@/components/inputs/Codemirror.vue')
+    () => import('@/components/inputs/Codemirror.vue'),
 )

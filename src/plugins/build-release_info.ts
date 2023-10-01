@@ -15,14 +15,14 @@ export default function buildReleaseInfo(): PluginOption {
                 const versionIdentifier = version.toString()
                 const releaseInfoFile = await fs.promises.open(
                     path.resolve(__dirname, '../../dist/release_info.json'),
-                    'w'
+                    'w',
                 )
                 await releaseInfoFile.writeFile(
                     JSON.stringify({
                         project_name: 'mainsail',
                         project_owner: 'mainsail-crew',
                         version: `v${versionIdentifier}`,
-                    })
+                    }),
                 )
                 await releaseInfoFile.close()
             })

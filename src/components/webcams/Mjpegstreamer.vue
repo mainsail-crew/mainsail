@@ -53,7 +53,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
             ),
             aspectRatio: 16 / 9,
             maxHeight: window.innerHeight - 155 + 'px',
@@ -159,7 +159,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                                         else {
                                             if (img) {
                                                 img.src = URL.createObjectURL(
-                                                    new Blob([imageBuffer], { type: TYPE_JPEG })
+                                                    new Blob([imageBuffer], { type: TYPE_JPEG }),
                                                 )
                                                 img.onload = () => URL.revokeObjectURL(img.src)
                                             }

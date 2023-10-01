@@ -109,7 +109,7 @@ export default class SettingsGeneralDatabase extends BaseMixin {
 
                         // fallback return key name
                         return { value: key, label: key }
-                    })
+                    }),
                 )
 
             backupableNamespaces = backupableNamespaces.sort(this.sortNamespaces)
@@ -136,7 +136,7 @@ export default class SettingsGeneralDatabase extends BaseMixin {
 
     sortNamespaces(
         a: { value: string; label: string | TranslateResult },
-        b: { value: string; label: string | TranslateResult }
+        b: { value: string; label: string | TranslateResult },
     ) {
         if (a.value === 'general') return -1
         if (b.value === 'general') return 1

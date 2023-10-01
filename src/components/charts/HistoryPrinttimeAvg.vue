@@ -117,7 +117,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
                 },
             },
             false,
-            true
+            true,
         )
     }
 

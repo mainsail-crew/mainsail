@@ -32,7 +32,7 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
                     start: payload.requestParams.start + payload.requestParams.limit,
                     limit: payload.requestParams.limit,
                 },
-                { action: 'server/history/getHistory' }
+                { action: 'server/history/getHistory' },
             )
         else await dispatch('loadHistoryNotes')
     },
@@ -42,7 +42,7 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
             Vue.$socket.emit(
                 'server.database.get_item',
                 { namespace: 'history_notes' },
-                { action: 'server/history/initHistoryNotes' }
+                { action: 'server/history/initHistoryNotes' },
             )
         else dispatch('socket/removeInitModule', 'server/history/init', { root: true })
     },

@@ -110,7 +110,7 @@ export default class CommandHelpModal extends Mixins(BaseMixin) {
             .filter(
                 (cmd) =>
                     typeof cmd.description === 'string' &&
-                    (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase()))
+                    (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase())),
             )
             .sort((a, b) => a.commandLow.localeCompare(b.commandLow))
     }

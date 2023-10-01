@@ -53,7 +53,7 @@ export const actions: ActionTree<FileState, RootState> = {
                 } else if (
                     !item?.isDirectory &&
                     payload.files?.findIndex(
-                        (element: ApiGetDirectoryReturnFile) => element.filename === item.filename
+                        (element: ApiGetDirectoryReturnFile) => element.filename === item.filename,
                     ) < 0
                 ) {
                     commit('setDeleteFile', {
@@ -72,7 +72,7 @@ export const actions: ActionTree<FileState, RootState> = {
                 .forEach((dir: ApiGetDirectoryReturnDir) => {
                     if (
                         directory?.childrens?.findIndex(
-                            (element: FileStateFile) => element.isDirectory && element.filename === dir.dirname
+                            (element: FileStateFile) => element.isDirectory && element.filename === dir.dirname,
                         ) === -1
                     ) {
                         commit('setCreateDir', {
@@ -87,7 +87,7 @@ export const actions: ActionTree<FileState, RootState> = {
                         Vue.$socket.emit(
                             'server.files.get_directory',
                             { path: payload.requestParams.path + '/' + dir.dirname },
-                            { action: 'files/getDirectory' }
+                            { action: 'files/getDirectory' },
                         )
                     }
                 })
@@ -96,7 +96,7 @@ export const actions: ActionTree<FileState, RootState> = {
         if (payload.files?.length) {
             payload.files.forEach((file: ApiGetDirectoryReturnFile) => {
                 const existingFile = directory?.childrens?.find(
-                    (element: FileStateFile) => !element.isDirectory && element.filename === file.filename
+                    (element: FileStateFile) => !element.isDirectory && element.filename === file.filename,
                 )
 
                 if (
@@ -145,7 +145,7 @@ export const actions: ActionTree<FileState, RootState> = {
             Vue.$socket.emit(
                 'server.files.metascan',
                 { filename: requestFilename },
-                { action: 'files/getScanMetadata' }
+                { action: 'files/getScanMetadata' },
             )
         }
     },

@@ -16,7 +16,7 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
                 name: 'macros.' + payload.name,
                 value: payload.value,
             },
-            { root: true }
+            { root: true },
         )
     },
 
@@ -86,7 +86,7 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
                         // @ts-ignore
                         newVal: rootState.gui?.dashboard[layoutname],
                     },
-                    { root: true }
+                    { root: true },
                 )
             }
         })

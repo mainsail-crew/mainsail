@@ -209,7 +209,7 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin, WebcamMixin) {
 
     get currentWebcam(): GuiWebcamStateWebcam | null {
         const currentCam = this.printer_webcams?.find(
-            (webcam: GuiWebcamStateWebcam) => webcam.name === this.currentCamName
+            (webcam: GuiWebcamStateWebcam) => webcam.name === this.currentCamName,
         )
         if (currentCam) return currentCam
 

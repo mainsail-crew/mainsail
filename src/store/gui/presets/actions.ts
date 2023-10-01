@@ -16,7 +16,7 @@ export const actions: ActionTree<GuiPresetsState, RootState> = {
                 name: 'presets.' + payload.name,
                 value: payload.value,
             },
-            { root: true }
+            { root: true },
         )
     },
 

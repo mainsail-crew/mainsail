@@ -231,7 +231,7 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
     get services() {
         const services =
             this.$store.state.server.system_info?.available_services?.filter(
-                (name: string) => name !== 'klipper_mcu'
+                (name: string) => name !== 'klipper_mcu',
             ) ?? []
         services.sort()
         return services
@@ -340,7 +340,7 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
         this.$socket.emit(
             rpc,
             { [this.dialogPowerDeviceChange.device]: null },
-            { action: 'server/power/responseToggle' }
+            { action: 'server/power/responseToggle' },
         )
     }
 

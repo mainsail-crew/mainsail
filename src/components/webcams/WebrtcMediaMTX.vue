@@ -51,7 +51,7 @@ export default class WebrtcRTSPSimpleServer extends Mixins(BaseMixin, WebcamMixi
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
             ),
         }
     }

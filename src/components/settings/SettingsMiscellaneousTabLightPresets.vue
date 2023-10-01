@@ -251,7 +251,7 @@ export default class SettingsMiscellaneousTabLightPresets extends Mixins(BaseMix
 
     get colorRGB() {
         return `rgb(${Math.round(this.form.red ?? 0)}, ${Math.round(this.form.green ?? 0)}, ${Math.round(
-            this.form.blue ?? 0
+            this.form.blue ?? 0,
         )})`
     }
 
@@ -409,7 +409,7 @@ export default class SettingsMiscellaneousTabLightPresets extends Mixins(BaseMix
     existsPresetName(name: string) {
         return (
             this.presets.findIndex(
-                (group: GuiMiscellaneousStateEntryPreset) => group.name === name && group.id != this.form.id
+                (group: GuiMiscellaneousStateEntryPreset) => group.name === name && group.id != this.form.id,
             ) >= 0
         )
     }

@@ -111,7 +111,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                     method: payload.method,
                     params: payload.params || {},
                     id: id,
-                })
+                }),
             )
         }
     },
@@ -207,7 +207,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 id: state._namespace,
                 values: state.settings,
             },
-            { root: true }
+            { root: true },
         )
     },
 
