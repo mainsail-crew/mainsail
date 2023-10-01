@@ -22,7 +22,11 @@
             "NextReboot": "przy następnym uruchomieniu",
             "NoNotification": "Brak powiadomień",
             "Remind": "Przypomnij:",
-            "Notifications": "Powiadomienia"
+            "Notifications": "Powiadomienia",
+            "BrowserWarnings": {
+                "Headline": "Nieaktualna przeglądarka",
+                "Description": "{name} jest nieaktualny i nie jest w pełni obsługiwany. Aktualna wersja to {version}, lecz Mainsail wymaga wersji {minVersion} lub wyższej."
+            }
         },
         "NumberInput": {
             "GreaterOrEqualError": "Musi być większa lub równa {min}!",
@@ -127,7 +131,8 @@
         "HideTemperatures": "Ukryj temperatury",
         "HideTimelapse": "Ukryj timelapse",
         "SendCode": "Wyślij polecenie...",
-        "SetupConsole": "Konsola ustawień"
+        "SetupConsole": "Konsola ustawień",
+        "Autoscroll": "Autoprzewijanie"
     },
     "Dialogs": {
         "StartPrint": {
@@ -571,7 +576,8 @@
             "HideTemperatures": "Ukryj temperatury",
             "HideTimelapse": "Ukryj timelapse",
             "SendCode": "Wyślij polecenie...",
-            "SetupConsole": "Konfiguracja konsoli"
+            "SetupConsole": "Konfiguracja konsoli",
+            "Autoscroll": "Autoprzewijanie"
         },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Upewnij się, że printer.cfg zawiera mainsail.cfg.",
@@ -951,7 +957,7 @@
             "Extraoutputparams": "Dodatkowe parametry wyjściowe",
             "ExtraoutputparamsDescription": "Definiuje dodatkowe parametry do FFMPEG. UWAGA: Dodawanie czegokolwiek w tym miejscu wyłącza możliwość rotacji obrazu.",
             "FwRetract": "Retrakcja FW",
-            "FwRetractDescription": "Używaj retrakcji firmware'owej w makro timelapse.",
+            "FwRetractDescription": "Używaj retrakcji z firmware w makro timelapse.",
             "GcodeVerbose": "Wgrywanie informacji z G-Code do konsoli",
             "GcodeVerboseDescription": "Jeżeli włączone, makra G-Code będą wypisywały informacje w konsoli.",
             "General": "Ogólne",
