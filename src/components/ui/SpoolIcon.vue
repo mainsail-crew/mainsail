@@ -6,7 +6,9 @@
         x="0px"
         y="0px"
         viewBox="0 0 487.04 487.04"
-        xml:space="preserve">
+        xml:space="preserve"
+        class="cursor-pointer"
+        @click="clickSpool">
         <g>
             <circle :style="styleCircle1" cx="243.52" cy="243.52" r="232.97" />
             <circle :style="styleCircle2" cx="243.52" cy="243.52" r="112.5" />
@@ -20,9 +22,9 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+import BaseMixin from '@/components/mixins/base'
 
-@Component
+@Component({})
 export default class SpoolIcon extends Mixins(BaseMixin) {
     @Prop({ required: false, default: '#ff0' })
     declare readonly color: string
@@ -37,6 +39,10 @@ export default class SpoolIcon extends Mixins(BaseMixin) {
 
     get styleCircle3() {
         return { fill: '#343434' }
+    }
+
+    clickSpool() {
+        this.$emit('click-spool')
     }
 }
 </script>

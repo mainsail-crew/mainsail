@@ -3,13 +3,13 @@
         <v-list-item-content :class="listItemContentClass">
             <div :class="overlineClass">#{{ id }} | {{ vendor }}</div>
             <v-list-item-title :class="listItemTitleClass">
-                {{ name }}
+                <span class="cursor-pointer" @click="clickSpool">{{ name }}</span>
             </v-list-item-title>
             <v-list-item-subtitle>{{ subtitle }}</v-list-item-subtitle>
         </v-list-item-content>
 
         <v-list-item-avatar tile :size="avatarSize">
-            <spool-icon :color="color" />
+            <spool-icon :color="color" @click-spool="clickSpool" />
         </v-list-item-avatar>
     </v-list-item>
 </template>
@@ -114,6 +114,10 @@ export default class SpoolmanPanelActiveSpool extends Mixins(BaseMixin) {
 
     get subtitle() {
         return [this.materialOutput, this.weightOutput, this.lengthOutput].filter((v) => v !== null).join(' | ')
+    }
+
+    clickSpool() {
+        this.$emit('change-spool')
     }
 }
 </script>
