@@ -166,7 +166,7 @@ import {
 } from '@mdi/js'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import HistoryListEntryJob from '@/components/panels/HistoryList/HistoryListEntryJob.vue'
-import HistoryListPanelAddMaintenance from '@/components/dialogs/HistoryListPanelAddMaintenace.vue'
+import HistoryListPanelAddMaintenance from '@/components/dialogs/HistoryListPanelAddMaintenance.vue'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListEntryMaintenance from '@/components/panels/HistoryList/HistoryListEntryMaintenance.vue'
 
@@ -201,15 +201,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     formatFilesize = formatFilesize
 
-    private search = ''
-    private sortBy = 'start_time'
-    private sortDesc = true
+    search = ''
+    sortBy = 'start_time'
+    sortDesc = true
 
-    private deleteSelectedDialog = false
-
-    mounted() {
-        window.console.log(this.maintenanceEntries)
-    }
+    deleteSelectedDialog = false
 
     get jobs() {
         return this.$store.getters['server/history/getFilterdJobList'] ?? []
