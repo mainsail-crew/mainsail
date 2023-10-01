@@ -52,7 +52,7 @@ Before you work on a PR and submit it, please pay attention to the following gui
 1. Search the [pull requests](https://github.com/mainsail-crew/mainsail/pulls) for an open or closed PR related to your submission.
    - You don't want to duplicate existing efforts or work on something unlikely to be merged into the project.
 2. Do not submit PRs against the `master` branch. PRs need to be submitted against the `develop` branch.
-3. Follow our [Code Standards](https://docs.mainsail.xyz/development/code-standards)
+3. Follow our [Code Standards](https://docs.mainsail.xyz/overview/developement/code-standards)
 4. If there is an issue describing the problem you're fixing or a discussion of a feature you are implementing, make sure to link it in the PRs body.
 
    - You can also add `fix #<id>` or `fixes #<id>` in the PR body where `<id>` is the issue id.

@@ -47,6 +47,10 @@ export default class BaseMixin extends Vue {
         return this.klipperReadyForGui && ['printing', 'paused'].includes(this.printer_state)
     }
 
+    get printerIsPrintingOnly() {
+        return this.klipperReadyForGui && this.printer_state === 'printing'
+    }
+
     get printerPowerDevice(): string {
         let deviceName = this.$store.state.gui.uiSettings.powerDeviceName ?? null
         if (deviceName === null) deviceName = 'printer'
@@ -175,13 +179,13 @@ export default class BaseMixin extends Vue {
     }
 
     get browserLocale() {
-        return navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
+        return navigator.language
     }
 
     get hours12Format() {
         const setting = this.$store.state.gui.general.timeFormat
         if (setting === '12hours') return true
-        if (setting === null && this.browserLocale === 'en_us') return true
+        if (setting === null && this.browserLocale === 'en-US') return true
 
         return false
     }

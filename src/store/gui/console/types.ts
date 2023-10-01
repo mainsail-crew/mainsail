@@ -5,6 +5,7 @@ export interface GuiConsoleState {
     direction: 'table' | 'shell'
     entryStyle: 'default' | 'compact'
     height: number
+    autoscroll: boolean
     consolefilters: {
         [key: string]: GuiConsoleStateFilter
     }

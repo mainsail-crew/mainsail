@@ -8,10 +8,10 @@ import {
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
-    getDatasetColor: (state) => (name: string) => {
-        const dataset = state.series.find((element) => element.name === name)
+    getDatasetColor: (_, getters) => (name: string) => {
+        const dataset = getters.getSeries(`${name}-temperature`)
 
-        return dataset && 'lineStyle' in dataset ? dataset.lineStyle.color : null
+        return dataset?.lineStyle?.color ?? null
     },
 
     getSeries: (state) => (name: string) => {
@@ -22,17 +22,10 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
         const output: string[] = []
         const seriesKeys = state.series
             .map((serie: PrinterTempHistoryStateSerie) => serie.name)
-            .filter((serieName) => serieName.startsWith(name))
+            .filter((serieName) => serieName.startsWith(`${name}-`))
 
         seriesKeys.forEach((seriesKey) => {
-            if (seriesKey === name) {
-                output.push('temperature')
-                return
-            }
-
-            if (seriesKey.startsWith(name + '-')) {
-                output.push(seriesKey.slice(name.length + 1))
-            }
+            output.push(seriesKey.slice(name.length + 1))
         })
 
         return output
@@ -69,35 +62,87 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
         return 0
     },
 
-    getAvgPower: (state, getters) => (name: string) => {
+    getAvgPower: (_, getters) => (name: string) => {
         return getters['getAvg'](name, 'power')
     },
 
-    getAvgSpeed: (state, getters) => (name: string) => {
+    getAvgSpeed: (_, getters) => (name: string) => {
         return getters['getAvg'](name, 'speed')
     },
 
-    getSelectedLegends: (state, getters, rootState, rootGetters) => {
+    getHostMcuSensors: (state, getters, rootState) => {
+        const settings = rootState.printer?.configfile?.settings ?? {}
+        const available_heaters = rootState.printer?.heaters?.available_heaters ?? []
+        const available_sensors = rootState.printer?.heaters?.available_sensors ?? []
+
+        return available_sensors.filter((fullName: string) => {
+            // stop when the current sensor is a heater
+            if (available_heaters.includes(fullName)) return false
+            // stop when the current sensor is a temperature_fan
+            if (fullName.startsWith('temperature_fan')) return false
+
+            // get printer settings object from the current sensor
+            const settingsObject = settings[fullName.toLowerCase()]
+            if (!settingsObject) return false
+
+            // get the sensor type of the current sensor
+            const sensor_type = settingsObject.sensor_type ?? ''
+
+            return ['temperature_mcu', 'temperature_host'].includes(sensor_type)
+        })
+    },
+
+    getSelectedLegends: (state, getters, rootState) => {
         interface legends {
             [key: string]: boolean
         }
 
         const selected: legends = {}
+        const available_sensors = rootState.printer?.heaters?.available_sensors ?? []
+        const viewSettings = rootState.gui?.view?.tempchart?.datasetSettings ?? {}
 
-        if (rootState.printer?.heaters?.available_sensors?.length) {
-            rootState.printer?.heaters?.available_sensors.forEach((key: string) => {
-                if (rootState.printer && key in rootState.printer) {
-                    let name = key
-                    if (key.includes(' ')) name = key.split(' ')[1]
+        Object.keys(viewSettings).forEach((key) => {
+            // break if this element doesn't exist in available_sensors
+            if (!available_sensors.includes(key)) return
 
-                    datasetTypes.forEach((datasetType: string) => {
-                        if (rootState?.printer && rootState?.printer[key] && datasetType in rootState.printer[key]) {
-                            const tmpName = datasetType === 'temperature' ? name : name + '-' + datasetType
-                            selected[tmpName] = rootGetters['gui/getDatasetValue']({ name: name, type: datasetType })
-                        }
-                    })
-                }
+            Object.keys(viewSettings[key]).forEach((attrKey) => {
+                // break if this element isn't a valid datasetType
+                if (!datasetTypes.includes(attrKey)) return
+
+                const serieName = `${key}-${attrKey}`
+
+                // break if serie in tempchart doesn't exist
+                if (state.series.findIndex((serie) => serie.name === serieName) === -1) return
+
+                // add to selected
+                selected[serieName] = viewSettings[key][attrKey]
             })
+        })
+
+        state.series.forEach((serie) => {
+            // break if object is already in the selected list
+            if (Object.keys(selected).includes(serie.name)) return
+
+            // get datasetType from the serie name
+            const datasetType = serie.name.slice(serie.name.lastIndexOf('-') + 1)
+
+            // add default value for this datasetType; all percent series are hidden per default
+            selected[serie.name] = !datasetTypesInPercents.includes(datasetType)
+        })
+
+        // hide MCU & Host sensors, if the option is set to true
+        const hideMcuHostSensors = rootState.gui?.view?.tempchart?.hideMcuHostSensors ?? false
+        if (hideMcuHostSensors) {
+            const mcuHostSensors = getters.getHostMcuSensors ?? []
+
+            Object.keys(selected)
+                .filter((seriesName) => {
+                    const datasetName = seriesName.slice(0, seriesName.lastIndexOf('-'))
+                    return mcuHostSensors.includes(datasetName)
+                })
+                .forEach((seriesName) => {
+                    selected[seriesName] = false
+                })
         }
 
         return selected

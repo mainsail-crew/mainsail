@@ -93,7 +93,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_update_refreshed':
-                commit('server/updateManager/setStatus', payload.params[0], { root: true })
+                dispatch('server/updateManager/onUpdateStatus', payload.params[0], { root: true })
                 break
 
             case 'notify_history_changed':
@@ -122,6 +122,10 @@ export const actions: ActionTree<SocketState, RootState> = {
 
             case 'notify_announcement_wake':
                 dispatch('server/announcements/getWaked', payload.params[0], { root: true })
+                break
+
+            case 'notify_webcams_changed':
+                dispatch('gui/webcams/initStore', payload.params[0], { root: true })
                 break
 
             default:

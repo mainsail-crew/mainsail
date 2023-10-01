@@ -85,6 +85,7 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Debounce } from 'vue-debounce-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiLockOpenVariantOutline, mdiLockOutline, mdiMinus, mdiPlus, mdiRestart } from '@mdi/js'
+import { TranslateResult } from 'vue-i18n'
 
 @Component
 export default class ToolSlider extends Mixins(BaseMixin) {
@@ -107,7 +108,7 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     @Prop({ type: Number, required: true }) declare readonly target: number
     @Prop({ type: String, required: true }) declare readonly command: string
     @Prop({ type: String, default: '' }) declare readonly attributeName: string
-    @Prop({ type: String, default: '' }) declare readonly label: string
+    @Prop({ default: '' }) declare readonly label: string | TranslateResult
     @Prop({ type: String, default: '' }) declare readonly icon: string
     @Prop({ type: String, default: '%' }) declare readonly unit: string
     @Prop({ type: Number, default: 1 }) declare readonly attributeScale: number

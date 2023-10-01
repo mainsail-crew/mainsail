@@ -238,7 +238,9 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
     }
 
     get powerDevices() {
-        return this.$store.getters['server/power/getDevices']
+        const devices = this.$store.getters['server/power/getDevices'] ?? []
+
+        return devices.filter((device: ServerPowerStateDevice) => !device.device.startsWith('_'))
     }
 
     get service_states() {

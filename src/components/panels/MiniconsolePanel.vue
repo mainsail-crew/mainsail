@@ -1,13 +1,3 @@
-<style scoped lang="scss">
-.consoleTable {
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.gcode-command-field {
-    font-family: 'Roboto Mono', monospace;
-}
-</style>
-
 <template>
     <panel
         v-if="socketIsConnected && klipperState !== 'disconnected'"
@@ -20,30 +10,37 @@
             <v-btn icon tile @click="clearConsole">
                 <v-icon small>{{ mdiTrashCan }}</v-icon>
             </v-btn>
-            <command-help-modal :in-toolbar="true" @onCommand="gcode = $event"></command-help-modal>
+            <command-help-modal :in-toolbar="true" @onCommand="gcode = $event" />
             <v-menu
                 :offset-y="true"
                 :close-on-content-click="false"
                 :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                 <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" v-on="on">
-                        <v-icon small>{{ mdiFilter }}</v-icon>
+                        <v-icon small>{{ mdiCog }}</v-icon>
                     </v-btn>
                 </template>
                 <v-list>
+                    <v-list-item v-if="consoleDirection === 'shell'" class="minHeight36">
+                        <v-checkbox
+                            v-model="autoscroll"
+                            class="mt-0"
+                            hide-details
+                            :label="$t('Panels.MiniconsolePanel.Autoscroll')" />
+                    </v-list-item>
                     <v-list-item class="minHeight36">
                         <v-checkbox
                             v-model="hideWaitTemperatures"
                             class="mt-0"
                             hide-details
-                            :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
+                            :label="$t('Panels.MiniconsolePanel.HideTemperatures')" />
                     </v-list-item>
                     <v-list-item v-if="moonrakerComponents.includes('timelapse')" class="minHeight36">
                         <v-checkbox
                             v-model="hideTlCommands"
                             class="mt-0"
                             hide-details
-                            :label="$t('Panels.MiniconsolePanel.HideTimelapse')"></v-checkbox>
+                            :label="$t('Panels.MiniconsolePanel.HideTimelapse')" />
                     </v-list-item>
                     <v-list-item v-for="(filter, index) in customFilters" :key="index" class="minHeight36">
                         <v-checkbox
@@ -51,7 +48,7 @@
                             class="mt-0"
                             hide-details
                             :label="filter.name"
-                            @change="toggleFilter(filter)"></v-checkbox>
+                            @change="toggleFilter(filter)" />
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -93,7 +90,7 @@
                                 :events="events"
                                 :is-mini="true"
                                 @command-click="commandClick" />
-                            <v-divider></v-divider>
+                            <v-divider />
                         </overlay-scrollbars>
                     </v-col>
                 </v-row>
@@ -109,7 +106,7 @@ import BaseMixin from '@/components/mixins/base'
 import { CommandHelp, VTextareaType } from '@/store/printer/types'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiChevronDoubleRight, mdiConsoleLine, mdiFilter, mdiSend, mdiTrashCan } from '@mdi/js'
+import { mdiChevronDoubleRight, mdiCog, mdiConsoleLine, mdiSend, mdiTrashCan } from '@mdi/js'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
 
 @Component({
@@ -122,7 +119,7 @@ import CommandHelpModal from '@/components/CommandHelpModal.vue'
 export default class MiniconsolePanel extends Mixins(BaseMixin) {
     mdiTrashCan = mdiTrashCan
     mdiConsoleLine = mdiConsoleLine
-    mdiFilter = mdiFilter
+    mdiCog = mdiCog
     mdiSend = mdiSend
     mdiChevronDoubleRight = mdiChevronDoubleRight
 
@@ -155,11 +152,16 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
 
     @Watch('events')
     eventsChanged() {
-        if (this.consoleDirection === 'shell') {
+        if (this.consoleDirection === 'shell' && this.autoscroll) {
             setTimeout(() => {
                 this.scrollToBottom()
             }, 50)
         }
+    }
+
+    @Watch('autoscroll')
+    autoscrollChanged(newVal: boolean) {
+        if (newVal) this.scrollToBottom()
     }
 
     clearConsole() {
@@ -192,6 +194,14 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
 
     get lastCommands(): string[] {
         return this.$store.state.gui.gcodehistory.entries ?? []
+    }
+
+    get autoscroll(): boolean {
+        return this.$store.state.gui.console.autoscroll ?? true
+    }
+
+    set autoscroll(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'console.autoscroll', value: newVal })
     }
 
     commandClick(msg: string): void {
@@ -325,3 +335,13 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.consoleTable {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.gcode-command-field {
+    font-family: 'Roboto Mono', monospace;
+}
+</style>

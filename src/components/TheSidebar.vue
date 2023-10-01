@@ -70,7 +70,7 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin) {
         return this.$store.state.naviDrawer
     }
 
-    set naviDrawer(newVal: boolean) {
+    set naviDrawer(newVal) {
         this.$store.dispatch('setNaviDrawer', newVal)
     }
 
@@ -132,10 +132,6 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin) {
         }
 
         return output
-    }
-
-    mounted() {
-        this.naviDrawer = this.$vuetify.breakpoint.lgAndUp
     }
 }
 </script>

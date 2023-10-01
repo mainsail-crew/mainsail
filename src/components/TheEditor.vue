@@ -239,25 +239,33 @@ export default class TheEditor extends Mixins(BaseMixin) {
         if (!this.isWriteable) return null
         if (['printing', 'paused'].includes(this.printer_state)) return null
 
+        // check for generic services <service>.conf (like moonraker.conf, crowsnest.conf, sonar.conf)
         if (this.availableServices.includes(this.filenameWithoutExtension) && this.fileExtension === 'conf')
             return this.filenameWithoutExtension
-        if (this.filename.startsWith('webcam') && ['conf', 'txt'].includes(this.fileExtension)) return 'webcamd'
-        if (this.filename.startsWith('mooncord') && this.fileExtension === 'json') return 'mooncord'
-        if (this.filename === 'moonraker.conf') return this.moonrakerRestartInstance ?? 'moonraker'
 
+        // old webcam service DEPRECATED
+        if (this.filename.startsWith('webcam') && ['conf', 'txt'].includes(this.fileExtension)) return 'webcamd'
+
+        // check for mooncord config files
+        if (this.filename.startsWith('mooncord') && this.fileExtension === 'json') return 'mooncord'
+
+        // fallback for moonraker with multi instances
+        if (this.filename === 'moonraker.conf') return 'moonraker'
+
+        // all .cfg files will be klipper config files
         if (this.fileExtension === 'cfg') return 'klipper'
 
         return null
     }
 
     get restartServiceNameExists() {
-        if (this.restartServiceName) return true
+        // hide the button, if there is no service found
+        if (this.restartServiceName === null) return false
+
+        // klipper and moonraker uses specific api calls instead of generic service restart
+        if (['klipper', 'moonraker'].includes(this.restartServiceName)) return true
 
         return this.availableServices.includes(this.restartServiceName)
-    }
-
-    get moonrakerRestartInstance() {
-        return this.$store.state.gui.editor.moonrakerRestartInstance
     }
 
     get confirmUnsavedChanges() {

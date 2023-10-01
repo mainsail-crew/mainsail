@@ -10,7 +10,7 @@
             height="400"
             :style="webcamStyle"
             :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')"></canvas>
-        <span v-if="isLoaded && showFps" class="webcamFpsOutput">
+        <span v-if="isLoaded && showFpsCounter" class="webcamFpsOutput">
             {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
         </span>
     </div>
@@ -20,9 +20,11 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
+export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin) {
     private refresh = Math.ceil(Math.random() * Math.pow(10, 12))
     private isVisible = true
     private isVisibleDocument = true
@@ -44,23 +46,21 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
         mjpegstreamerAdaptive: any
     }
 
-    @Prop({ required: true }) declare camSettings: any
-    @Prop() declare printerUrl: string | undefined
+    @Prop({ required: true }) declare camSettings: GuiWebcamStateWebcam
+    @Prop({ default: null }) readonly printerUrl!: string | null
     @Prop({ default: true }) declare showFps: boolean
 
     get webcamStyle() {
         const output = {
-            transform: 'none',
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
             aspectRatio: 16 / 9,
             maxHeight: window.innerHeight - 155 + 'px',
             maxWidth: 'auto',
         }
-
-        let transforms = ''
-        if (this.camSettings.flipX ?? false) transforms += ' scaleX(-1)'
-        if (this.camSettings.flipY ?? false) transforms += ' scaleY(-1)'
-        if ((this.camSettings.rotate ?? 0) === 180) transforms += ' rotate(180deg)'
-        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) {
             output.aspectRatio = this.aspectRatio
@@ -74,8 +74,14 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
         return this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS
     }
 
+    get showFpsCounter() {
+        if (!this.showFps) return false
+
+        return !(this.camSettings.extra_data?.hideFps ?? false)
+    }
+
     get rotate() {
-        return [90, 270].includes(this.camSettings.rotate ?? 0)
+        return [90, 270].includes(this.camSettings.rotation ?? 0)
     }
 
     refreshFrame() {
@@ -86,9 +92,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     }
 
     async setFrame() {
-        const baseUrl = this.camSettings.urlSnapshot
+        const baseUrl = this.camSettings.snapshot_url
 
-        let url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
+        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
         if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
         url.searchParams.append('bypassCache', this.refresh.toString())
@@ -115,7 +121,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
                 const x = canvas.width / 2
                 const y = canvas.height / 2
                 ctx.translate(x, y)
-                ctx.rotate((this.camSettings.rotate * Math.PI) / 180)
+                ctx.rotate((this.camSettings.rotation * Math.PI) / 180)
                 await ctx?.drawImage(
                     frame,
                     (-frame.width / 2) * scale,
@@ -123,7 +129,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
                     frame.width * scale,
                     frame.height * scale
                 )
-                ctx.rotate(-((this.camSettings.rotate * Math.PI) / 180))
+                ctx.rotate(-((this.camSettings.rotation * Math.PI) / 180))
                 ctx.translate(-x, -y)
             } else await ctx?.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvas.width, canvas.height)
 
@@ -138,7 +144,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     onLoad() {
         this.isLoaded = true
 
-        const targetFps = this.camSettings.targetFps || 10
+        const targetFps = this.camSettings.target_fps || 10
         const end_time = performance.now()
         const current_time = end_time - this.start_time
         this.time = this.time * this.time_smoothing + current_time * (1.0 - this.time_smoothing)

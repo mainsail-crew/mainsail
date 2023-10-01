@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Headline": "Outdated Browser",
+                "Description": "{name} is outdated and not fully supported. The current version is {version}, but Mainsail requires version {minVersion} or higher."
+            },
             "DependencyDescription": "The current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}.",
             "DependencyName": "Dependency: {name}",
             "DismissAll": "Dismiss all",
@@ -30,6 +34,11 @@
             "NoEmptyAllowedError": "Input must not be empty!"
         },
         "Printers": "Printers",
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "The local cache is outdated and needs to be updated. Please click on the button below to update the cache.",
+            "TitleNeedUpdate": "PWA needs update",
+            "Update": "update"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM core(s) are currently throttled down.",
             "DescriptionFrequencyCapped": "rPi ARM max frequency is currently limited to 1.2 GHz.",
@@ -128,6 +137,7 @@
         "TryAgain": "try again"
     },
     "Console": {
+        "Autoscroll": "Autoscroll",
         "CommandList": "Command list",
         "Empty": "Empty",
         "HideTemperatures": "Hide temperatures",
@@ -179,6 +189,7 @@
         "DeleteDirectory": "Delete Directory",
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
+        "DeleteSingleFileQuestion": "Do you really want to delete the file \"{name}\"?",
         "Download": "Download",
         "Duplicate": "Duplicate",
         "DuplicateFile": "Duplicate File",
@@ -320,6 +331,7 @@
         "DateBasedReminderDescription": "This reminder is based on the date.",
         "Delete": "Delete",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected jobs?",
+        "DeleteSingleJobQuestion": "Do you really want to delete the job?",
         "Details": "Details",
         "Days": "days",
         "EditNote": "Edit Note",
@@ -417,6 +429,7 @@
             "DeleteDirectory": "Delete Directory",
             "DeleteDirectoryQuestion": "Delete directory \"{name}\" and all its contents?",
             "DeleteSelectedQuestion": "Delete {count} selected elements?",
+            "DeleteSingleFileQuestion": "Do you really want to delete the file \"{name}\"?",
             "Download": "Download",
             "Duplicate": "Duplicate",
             "DuplicateFile": "Duplicate File",
@@ -484,7 +497,11 @@
             }
         },
         "UpdatePanel": {
+            "Abort": "Abort",
+            "AreYouSure": "Are you sure?",
             "CheckForUpdates": "Check for updates",
+            "Close": "Close",
+            "CommitHistory": "Commit History",
             "Commits": "Commits",
             "CommitsAvailable": "no commits available | {count} commit available | {count} commits available",
             "CommitsOnDate": "Commits on {date}",
@@ -492,19 +509,36 @@
             "CommittedHoursAgo": "committed {hours} hours ago",
             "CommittedOnDate": "committed on {date}",
             "CommittedYesterday": "committed yesterday",
+            "Corrupt": "corrupt",
+            "ConfigChanges": "Config Changes",
+            "CountPackagesCanBeUpgraded": "{count} packages can be upgraded",
             "Detached": "detached",
             "Dirty": "dirty",
-            "ERROR": "ERROR",
+            "GenericUpdateQuestion": "Check the commit history (if available) and the GitHub page for this project to see if any manual adjustments are necessary for this update.",
+            "GitHubPage": "GitHub Page",
+            "HardRecovery": "Hard Recovery",
+            "InitUpdateManager": "The Update Manager has not been initialized yet. This is normal when you start the system for the first time. Please click on the refresh button to initialize all components.",
             "Invalid": "invalid",
+            "IUnderstandTheRisks": "I understand the risks",
+            "LinkToGithub": "Link to GitHub",
+            "KlipperUpdateQuestionFirmware": "This will update the Klipper host software. Control boards running the Klipper firmware may need to be flashed with recompiled firmware before the machine can be put back into service.",
+            "KlipperUpdateQuestionConfig": "This update may also contain changes to config parameters that would need to be modified in the printer.cfg file, see the change log for details.",
+            "MoonrakerUpdateQuestion": "This will update the Moonraker API. Changes to the moonraker.conf file may be required to continue using the machine.",
+            "MoreCommitsInfo": "A maximum of 30 commits can be displayed here. To see all commits, please click on the following link:",
             "OSPackages": "OS-Packages",
-            "PackagesCanBeUpgraded": "packages can be upgraded",
+            "SoftRecovery": "Soft Recovery",
+            "StartUpdate": "Start Update",
             "System": "System",
+            "ThesePackagesCanBeUpgrade": "These system packages can be upgraded:",
             "Unknown": "unknown",
             "Update": "update",
             "UpdateAll": "Update all components",
             "UpdateManager": "Update Manager",
+            "UpdateWarning": "Update warning: {name}",
             "Upgrade": "upgrade",
-            "UpToDate": "up-to-date"
+            "UpgradeableSystemPackages": "Upgradeable System Packages",
+            "UpToDate": "up-to-date",
+            "WebClientUpdateQuestion": "In some cases updating the web client could have changes that may cause incompatibility. See the release notes for more information."
         }
     },
     "ManualProbe": {
@@ -569,6 +603,7 @@
             "Send": "send"
         },
         "MiniconsolePanel": {
+            "Autoscroll": "Autoscroll",
             "Headline": "Console",
             "HideTemperatures": "Hide temperatures",
             "HideTimelapse": "Hide Timelapse",
@@ -662,6 +697,7 @@
                 "Temperature": "current temperature"
             },
             "Headline": "Temperatures",
+            "HideMcuHostSensors": "Hide Host/MCU Sensors",
             "Max": "max",
             "Min": "min",
             "Name": "Name",
@@ -776,6 +812,7 @@
             "Circle": "Circle",
             "Control": "Control",
             "Cross": "Cross",
+            "HideDuringPrint": "Hide axis controls during print",
             "EnableXYHoming": "Enable combined X & Y axes homing",
             "EstimatedExtrusionInfo": "Show estimated extrusion info",
             "EstimatedExtrusionInfoDescription": "Show / Hide info for estimated extrusions based on extrusion amount and feedrate",
@@ -815,8 +852,6 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Klipper restart method",
             "KlipperRestartMethodDescription": "Select which restart method will be used on 'Save & Restart' when editing Klipper config files.",
-            "MoonrakerRestartInstance": "Moonraker restart instance",
-            "MoonrakerRestartInstanceDescription": "Select which Moonraker service will restart on 'Save & Restart' when editing Moonraker config files.",
             "UseEscToClose": "Use ESC to close editor",
             "UseEscToCloseDescription": "Allows the ESC key to close the editor",
             "TabSize": "TAB Size",
@@ -855,9 +890,9 @@
             "DbConsoleHistory": "Console History",
             "DbHistoryJobs": "History Jobs",
             "DbHistoryTotals": "History Totals",
+            "DBNavigation": "Navigation",
             "DbTimelapseSettings": "Timelapse Settings",
             "DbView": "View Settings",
-            "DbWebcams": "Webcams",
             "EstimateValues": {
                 "Filament": "Filament",
                 "File": "File",
@@ -867,12 +902,13 @@
             "FactoryReset": "Factory reset",
             "General": "General",
             "Language": "Language",
-            "MoonrakerDb": "Moonraker DB",
+            "MainsailSettingsMoonrakerDb": "Mainsail Settings in Moonraker DB",
             "PrinterName": "Printer Name",
             "Reset": "reset",
             "Restore": "Restore",
             "RestoreDialog": "Please select all the sections you want to restore:",
-            "TimeFormat": "Time Format"
+            "TimeFormat": "Time Format",
+            "Everything": "Everything"
         },
         "InterfaceSettings": "Interface Settings",
         "MacrosTab": {
@@ -1043,6 +1079,11 @@
             "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
             "ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
             "ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",
+            "DefaultNavigationState": "Navigation default state",
+            "DefaultNavigationStateAlwaysClosed": "always closed",
+            "DefaultNavigationStateAlwaysOpen": "always open",
+            "DefaultNavigationStateDescription": "Which state should have the navigation per default.",
+            "DefaultNavigationStateLastState": "last state",
             "DisableFanAnimation": "Disable fan animation",
             "DisableFanAnimationDescription": "This can reduce some load in your Browser.",
             "DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
@@ -1052,6 +1093,8 @@
             "Guide": "Guide",
             "HideSaveConfigButtonForBedMesh": "Hide SAVE_CONFIG button for bed_mesh changes",
             "HideSaveConfigButtonForBedMeshDescription": "Hide SAVE_CONFIG, if only bed_mesh changes are pending to be saved in Klipper.",
+            "HideUpdateWarnings": "Hide Update Warnings",
+            "HideUpdateWarningsDescription": "This option will hide all update warnings in the update manager.",
             "LockSliders": "Lock sliders on touchscreen devices",
             "LockSlidersDelay": "Slider lock delay",
             "LockSlidersDelayDescription": "Sliders will lock after a given delay. If set to 0 or left blank, sliders will only lock on page change/reload.",
@@ -1068,7 +1111,6 @@
             "Primary": "Primary",
             "ScrewsTiltAdjustDialog": "Screws Tilt Adjust Dialog",
             "ScrewsTiltAdjustDialogDescription": "Display helper dialog for SCREWS_TILT_CALCULATE.",
-            "ShowWebcamInNavigation": "Show Webcam in navigation",
             "TempchartHeight": "Height Temperature Chart",
             "TempchartHeightDescription": "Modify the height of the temperature chart on the Dashboard.",
             "UiSettings": "UI-Settings"
@@ -1080,6 +1122,7 @@
             "EditCrowsnestConf": "Edit crowsnest.conf",
             "EditWebcam": "Edit Webcam",
             "FlipWebcam": "Flip webcam image:",
+            "HideFps": "Hide FPS counter",
             "Horizontally": "horizontally",
             "IconBed": "Bed",
             "IconCam": "Cam",
@@ -1108,14 +1151,16 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertically",
             "Webcams": "Webcams",
-            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
     },
     "ScrewsTiltAdjust": {
         "Accept": "accept",
         "Base": "Base",
         "ErrorText": "Something went wrong during the probing process.",
-        "Headline": "Screws tilt adjust"
+        "Headline": "Screws tilt adjust",
+        "Retry": "retry"
     },
     "Timelapse": {
         "AllFiles": "All",
@@ -1128,6 +1173,7 @@
         "DeleteDirectory": "Delete Directory",
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
+        "DeleteSingleFileQuestion": "Do you really want to delete the file \"{name}\"?",
         "Download": "Download",
         "DuplicateLastframe": "Duplicate last frame",
         "Empty": "No finished timelapse found.",

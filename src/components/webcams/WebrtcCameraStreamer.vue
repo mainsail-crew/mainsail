@@ -20,24 +20,24 @@
 <script lang="ts">
 import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
+export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin) {
     private pc: RTCPeerConnection | null = null
     private useStun = false
     private remote_pc_id: string | null = null
     private aspectRatio: null | number = null
     private status: string = 'connecting'
+    private restartTimer: number | null = null
 
-    @Prop({ required: true })
-    camSettings: any
-
+    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) declare readonly printerUrl: string | null
-
     @Ref() declare stream: HTMLVideoElement
 
     get url() {
-        const baseUrl = this.camSettings.urlStream
+        const baseUrl = this.camSettings.stream_url
         let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
         url.port = this.hostPort.toString()
 
@@ -48,64 +48,28 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
 
     get webcamStyle() {
         const output = {
-            transform: 'none',
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
             aspectRatio: 16 / 9,
         }
-
-        let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) output.aspectRatio = this.aspectRatio
 
         return output
     }
 
-    get streamConfig() {
-        let config: any = {
-            sdpSemantics: 'unified-plan',
-        }
-
-        if (this.useStun) {
-            config.iceServers = [{ urls: ['stun:stun.l.google.com:19302'] }]
-        }
-
-        return config
-    }
-
     startStream() {
         const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1
+        const requestIceServers = this.useStun ? [{ urls: ['stun:stun.l.google.com:19302'] }] : null
 
-        this.pc = new RTCPeerConnection(this.streamConfig)
-        this.pc.addTransceiver('video', { direction: 'recvonly' })
-
-        this.pc.addEventListener(
-            'track',
-            (evt) => {
-                if (evt.track.kind == 'video' && this.$refs.stream) {
-                    // @ts-ignore
-                    this.$refs.stream.srcObject = evt.streams[0]
-                }
-            },
-            false
-        )
-
-        this.pc.addEventListener('connectionstatechange', () => {
-            this.status = (this.pc?.connectionState ?? '').toString()
-
-            if (['failed', 'disconnected'].includes(this.status)) {
-                setTimeout(async () => {
-                    await this.pc?.close()
-                    this.startStream()
-                }, 500)
-            }
-        })
-
+        // This WebRTC signaling pattern is designed for camera-streamer, a common webcam server the supports WebRTC.
         fetch(this.url, {
             body: JSON.stringify({
                 type: 'request',
-                //res: params.res
+                iceServers: requestIceServers,
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -114,25 +78,62 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
         })
             .then((response) => response.json())
             .then((answer) => {
+                let peerConnectionConfig: any = {
+                    sdpSemantics: 'unified-plan',
+                }
+                // It's important to set any ICE servers returned, which could include servers we requested or servers
+                // setup by the server. But note that older versions of camera-streamer won't return this property.
+                if (answer.iceServers) {
+                    peerConnectionConfig.iceServers = answer.iceServers
+                }
+                this.pc = new RTCPeerConnection(peerConnectionConfig)
+                this.pc.addTransceiver('video', { direction: 'recvonly' })
+                this.pc.addEventListener(
+                    'track',
+                    (evt) => {
+                        if (evt.track.kind == 'video' && this.$refs.stream) {
+                            // @ts-ignore
+                            this.$refs.stream.srcObject = evt.streams[0]
+                        }
+                    },
+                    false
+                )
+                this.pc.addEventListener('connectionstatechange', () => {
+                    this.status = (this.pc?.connectionState ?? '').toString()
+
+                    // clear restartTimer if it is set
+                    if (this.restartTimer) window.clearTimeout(this.restartTimer)
+
+                    if (['failed', 'disconnected'].includes(this.status)) {
+                        // set restartTimer to restart stream after 5 seconds
+                        this.restartTimer = window.setTimeout(() => {
+                            this.restartStream()
+                        }, 5000)
+                    }
+                })
+                this.pc.addEventListener('icecandidate', (e) => {
+                    if (e.candidate) {
+                        return fetch(this.url, {
+                            body: JSON.stringify({
+                                type: 'remote_candidate',
+                                id: this.remote_pc_id,
+                                candidates: [e.candidate],
+                            }),
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            method: 'POST',
+                        }).catch(function (error) {
+                            window.console.error(error)
+                        })
+                    }
+                })
+
                 this.remote_pc_id = answer.id
                 return this.pc?.setRemoteDescription(answer)
             })
             .then(() => this.pc?.createAnswer())
             .then((answer) => this.pc?.setLocalDescription(answer))
-            .then(() => {
-                // wait for ICE gathering to complete
-                return new Promise((resolve) => {
-                    const checkState = () => {
-                        if (this.pc?.iceGatheringState === 'complete') {
-                            this.pc?.removeEventListener('icegatheringstatechange', checkState)
-                            resolve(true)
-                        }
-                    }
-
-                    if (this.pc?.iceGatheringState === 'complete') resolve(true)
-                    else this.pc?.addEventListener('icegatheringstatechange', checkState)
-                })
-            })
             .then(() => {
                 const offer = this.pc?.localDescription
                 return fetch(this.url, {
@@ -151,8 +152,16 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
                 if (isFirefox) this.status = 'connected'
                 return response.json()
             })
-            .catch(function (e) {
+            .catch((e) => {
                 window.console.error(e)
+
+                // clear restartTimer if it is set
+                if (this.restartTimer) window.clearTimeout(this.restartTimer)
+
+                // set restartTimer to restart stream after 5 seconds
+                this.restartTimer = window.setTimeout(() => {
+                    this.restartStream()
+                }, 5000)
             })
     }
 
@@ -162,12 +171,19 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin) {
 
     beforeDestroy() {
         this.pc?.close()
+        if (this.restartTimer) window.clearTimeout(this.restartTimer)
+    }
+
+    restartStream() {
+        this.pc?.close()
+        setTimeout(async () => {
+            this.startStream()
+        }, 500)
     }
 
     @Watch('url')
     async changedUrl() {
-        await this.pc?.close()
-        this.startStream()
+        this.restartStream()
     }
 }
 </script>

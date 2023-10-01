@@ -6,7 +6,7 @@
             class="webcamImage"
             :style="webcamStyle"
             @load="onload" />
-        <span v-if="showFps" class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span>
+        <span v-if="showFpsCounter" class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span>
     </div>
 </template>
 
@@ -14,12 +14,14 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 const CONTENT_LENGTH = 'content-length'
 const TYPE_JPEG = 'image/jpeg'
 
 @Component
-export default class Mjpegstreamer extends Mixins(BaseMixin) {
+export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     private currentFPS = 0
     private streamState = false
     private aspectRatio: null | number = null
@@ -32,11 +34,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     private isVisibleViewport = false
     private isVisibleDocument = true
 
-    @Prop({ required: true })
-    camSettings: any
-
-    @Prop()
-    printerUrl: string | undefined
+    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
+    @Prop({ default: null }) readonly printerUrl!: string | null
 
     @Prop({ default: true }) declare showFps: boolean
 
@@ -46,25 +45,20 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 
     get url() {
-        const baseUrl = this.camSettings.urlStream
-        let url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
-        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
-
-        return decodeURIComponent(url.toString())
+        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
     }
 
     get webcamStyle() {
         const output = {
-            transform: 'none',
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
             aspectRatio: 16 / 9,
             maxHeight: window.innerHeight - 155 + 'px',
             maxWidth: 'auto',
         }
-
-        let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimStart().length) output.transform = transforms.trimStart()
 
         if (this.aspectRatio) {
             output.aspectRatio = this.aspectRatio
@@ -76,6 +70,12 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
     get fpsOutput() {
         return this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS
+    }
+
+    get showFpsCounter() {
+        if (!this.showFps) return false
+
+        return !(this.camSettings.extra_data?.hideFps ?? false)
     }
 
     startStream() {

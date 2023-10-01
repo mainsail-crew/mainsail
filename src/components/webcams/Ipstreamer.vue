@@ -1,9 +1,3 @@
-<style scoped>
-.webcamImage {
-    width: 100%;
-}
-</style>
-
 <template>
     <video v-observe-visibility="visibilityChanged" :src="url" autoplay :style="webcamStyle" class="webcamImage" />
 </template>
@@ -11,30 +5,28 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class Ipstreamer extends Mixins(BaseMixin) {
+export default class Ipstreamer extends Mixins(BaseMixin, WebcamMixin) {
     private isVisible = true
 
-    @Prop({ required: true })
-    camSettings: any
-
-    @Prop()
-    printerUrl: string | undefined
+    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
+    @Prop({ default: null }) readonly printerUrl!: string | null
 
     get url() {
-        if (!this.isVisible) return ''
-
-        return this.camSettings.urlStream || ''
+        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
     }
 
     get webcamStyle() {
-        let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
-
-        return ''
+        return {
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
+        }
     }
 
     visibilityChanged(isVisible: boolean) {
@@ -42,3 +34,9 @@ export default class Ipstreamer extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.webcamImage {
+    width: 100%;
+}
+</style>

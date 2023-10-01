@@ -2,6 +2,160 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.7.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.7.1) - 2023-08-16
+### Bug Fixes and Improvements
+
+- Fix issue on tablet and smaller devices with the sidebar (#1518) | [218f85c](218f85c81feafecc80043e26e880f45be5bc5e3d)
+
+### Localization
+
+- **zh**: Update Chinese (zh) localization (#1521) | [caaf5e1](caaf5e16062d12f765d2e7d6c985dbc351e34336)
+
+## [2.7.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.7.0) - 2023-08-12
+### Features
+
+- Hide screws tilt adjust dialog, when using MAX_DEVIATION (#1474) | [15371ad](15371adc3d550817663aabca6c2f4b76fd585e4f)
+- Add option to hide MCU/Host sensors in the temp panel (#1496) | [9883457](9883457e9d622c16f6edb8e368c77b99e6728085)
+- Hide axis controls during print (#1452) | [da15789](da157891a44bc6a6b9cdec87e0e8fb2c0f060dba)
+- Add an option to set the sidebar default state (#1462) | [e9c22d3](e9c22d32bc3615360407caf544ed5751f30adb09)
+- Add option to hide FPS counter in webcams (#1488) | [69eaeb6](69eaeb65573c5dda5773c5f9c60fa249d136c213)
+- Add a select all option on the backup and restore dialogs (#1448) | [0c4b9e7](0c4b9e75516c55bfe6678ce3a66ed8e281295ace)
+- Add nevermore to temperature panel (#1511) | [1cd2541](1cd2541d6f2f7d567f33b00708fe055b929df3dd)
+
+### Bug Fixes and Improvements
+
+- Fix cursor style for item name to be a pointer (#1514) | [98d9b0a](98d9b0aa597ab482314876b11d261c81aae1bbf9)
+
+### Refactor
+
+- Soft down info buttons in update manager (#1513) | [16165ec](16165ec85f05a92edcd52f57be869ea31f8b0460)
+
+### Localization
+
+- **pl**: Update Polish translation (#1502) | [fe7aee9](fe7aee9307cca63ae993c062e2d9a84a6f215856)
+- **pl**: Update Polish translation (#1515) | [90d76c1](90d76c1ffeea42bc59f6d7dcc9374eee600f2cc7)
+- **zh**: Update Chinese (zh) localization (#1503) | [dbb5f81](dbb5f81206d4d161eb0593b9d5e8c7b5189ffc2d)
+
+## [2.6.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.6.2) - 2023-07-30
+### Bug Fixes and Improvements
+
+- Fix editor save & restart button behavior (#1483) | [8447be2](8447be2ecee64fa4a3c0211ac57f42c3adf1d050)
+- Hide rpm in temperature_fans without tachometer_pin (#1489) | [e929c7c](e929c7cc0f45074f40407420b3585d9c02284fa1)
+- Fix flip function in several webcam clients (#1487) | [5c40820](5c4082010890e0b341754f42673affe7d1ca9d99)
+- Fix issue with camel-case object names in temperature panel (#1491) | [aeee198](aeee1982398acca803f7f4eae7b7b39a29253179)
+- Use webcam name instead of UUID for timelapse plugin (#1492) | [d67ef3a](d67ef3aa908601b6bb87353957bcc97ea4f829ea)
+- Fix issue with create/edit presets and refactor settings (#1499) | [6a4cca7](6a4cca751c88e89ddf5f2cc0f09a58f097a461af)
+- Fix multiple issues in the refactored update manager (#1497) | [9eb133b](9eb133bd85530ac08416e94f02ebe19f060bc095)
+- Fix issue with cannot extrude after a Klipper restart (#1495) | [cda3098](cda3098c9e09a054aa7baa69a3195e0a73f43e54)
+
+### Refactor
+
+- Refactor SettingsRow (#1484) | [0b47a80](0b47a80b133e6093aecdb0d7d87b718899dff0c7)
+
+### Localization
+
+- **pl**: Update Polish translation (#1482) | [0c5aca8](0c5aca8baffb65198f43a7d3b2b57571d8e911c9)
+- **zh**: Update chinese locale (#1486) | [7251a8c](7251a8c6bae2b92395de4c8c23e8e8e3900df66a)
+
+## [2.6.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.6.1) - 2023-07-24
+### Bug Fixes and Improvements
+
+- Show delete dialog for single files too (#1442) | [7da3352](7da33523d1ec7c4a3206400fb92803685176167e)
+- Remove variable check in klipper config StreamParser (#1435) | [6e7ef65](6e7ef6554ec88ceb29f66b4d6a5d5f21ef77671b)
+- Fix condition in restartServiceNameExists check (#1450) | [a7e70c7](a7e70c75d0009ffed14e8717ad8286f91e4e7e8a)
+- Avoid hitting 100% before print is complete (#1455) | [3959000](39590004da7ca22fef82fbd148b31683c462bb13)
+- Fix issue with ETA and 12h time format (#1463) | [039a446](039a446944f05ea241574c65040d520bbbef0e9b)
+- Fix issue with CSV separator in contents (#1460) | [1895d2d](1895d2d90591946c792faaf3f62c52865f27cd62)
+- Fix issue with webcams in farm printers (#1469) | [5b2bea5](5b2bea51aab79aabfab02825cdce45be351c1c6f)
+
+### Refactor
+
+- Build version file for moonraker (#1449) | [21d3d39](21d3d395039ec855d062a5ee5e5b43e2d858f402)
+- Use moonraker webcam api instead of direct DB access (#1445) | [7c81690](7c81690c1e299c804edb4ede0acab7d77d1dedbe)
+- Change SettingsGeneralTab file (#1475) | [db09bbe](db09bbe043b2e43053779709f5260c7275bc4969)
+- Extract Presets and Settings from TemperaturePanel (#1465) | [be25316](be253165a003c50fd992f43c586ce5315dc2352d)
+- Display errors and warnings in the update_manager (#1453) | [0cefa24](0cefa24e766c568a56127bfd55272735383cb45e)
+
+### Localization
+
+- **pl**: Update Polish translation (#1434) | [73e503f](73e503fc6448ae174dd7f9d59236c820bd4b6631)
+- **pl**: Update Polish translation (#1447) | [d844125](d8441254db04d672fe2137f64e39127f524c4769)
+- **pl**: Update polish locale (#1471) | [a58bef2](a58bef2a03479262b4ee5db2b5d103e8dc2194c5)
+- **pl**: Update Polish translation (#1476) | [6758049](6758049d29c7410bcdedec689eaca503952b2c7e)
+- **tr**: Update turkish locale (#1480) | [f52b94c](f52b94c459ad759e160a568d3b6f366b0e65f484)
+- **zh**: Update Chinese (zh) localization (#1459) | [bcbef2f](bcbef2f19af4746b941ddcb29c98ff5f071611d0)
+
+### Other
+
+- **pwa**: Remove debug warnings in browser console (#1441) | [2962df2](2962df21e512baad6976dc502d6234c2969da686)
+- Add dev-dist to .gitignore (#1451) | [ef2d17c](ef2d17cadde566e8b713031cb7292d65ca1bec12)
+
+## [2.6.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.6.0) - 2023-06-19
+### Features
+
+- Allow negative time estimate in slicer (#1372) | [e6505fe](e6505fe55a30878045cea6611c119b9f3601ab33)
+- Customize sidebar navi (#1336) | [a3316eb](a3316eb23bf35eb139c9ba183cfc3a731d013c1d)
+- Add AHT10 to additionalSensors (#1378) | [ec53b97](ec53b974fd3e3d32bfa01e06919c8f51014545e4)
+- Add function to duplicate gcode files (#1321) | [4d7ffbe](4d7ffbe090611fb82e1524c8428ea3fc4290c410)
+- Add jmuxer-stream webcam type, supporting raw h264 (#1342) | [40e8f9c](40e8f9cd63d685b611935e1ceee70e2dfd331eda)
+- Add options to disable klipper helper dialogs (#1319) | [74816c5](74816c5c2126d8320028602aa55b075bfd9db647)
+- Add facility to Scan Metadata from G-code Files (#1316) | [8bbd5bd](8bbd5bdb0f2ea26b57e1b4977b222c023f7ffa44)
+- Allows adjustable tab size in file editor (#1354) | [ea274c6](ea274c6d4a4445ff47c1b5c60d0dca94e5c8cdcd)
+- Add printer name to browser tab while printing or complete (#1371) | [140d796](140d796f518cbb2eb72b2394a02c9dfa504fe1fd)
+- Add an option to change the height of the temperatur chart (#1391) | [d578c2a](d578c2a107a5b6d4026699d165ab597587c300a4)
+- Updating WebRTC with camera-streamer signaling protocol (#1417) | [b948407](b94840736fa26fbb9b5690e40c2ebf87c7f3ec32)
+- Add portuguese/brazil translate (#1407) | [630d67e](630d67efc50766857e6b1b8a69605fd7c502dbe6)
+- Add bed aspect ratio to heightmap graph (#1420) | [2b4b881](2b4b881c5529834ca1bd4c3f14db44c997b935ba)
+- Add WebRTC (MediaMTX / rtsp-simple-server) webcam mode (#1318) | [8682dd7](8682dd785551ac10cec7783fd455f56b9ae340c0)
+- Add retry button to ScrewsTiltAdjust helper dialog (#1429) | [2752cfc](2752cfc975bfe4391657bf03e62db5f5317c523b)
+
+### Bug Fixes and Improvements
+
+- Find LOAD & UNLOAD_FILAMENT macros case-insensitive (#1335) | [df83c9d](df83c9d8cc61ecd11c320ec90a9083fdd675d3bf)
+- Fix thumbnail guide link in settings (#1337) | [ad8d8ef](ad8d8efb6a41f1d4162ef9d08720a3a19442b1e6)
+- Fix configuration guide link for thumbnails (#1338) | [faf09f2](faf09f24f9765397acbde3b6af8c9a521e3616d4)
+- Fix miscellaneous slider + button for fans/outputs with max power (#1344) | [c598d62](c598d6260dca0f107f219ee67600c0b969addc6a)
+- Add gcode offset to live position in gcodeviewer (#1341) | [ab777d5](ab777d5e04be5bda396096293bd974a6d96307bf)
+- Fix zip file timestamp (#1375) | [f701dfb](f701dfbcf8e1a5aec5aefb6abee7854a61257eb2)
+- Make the correct notification appear on gcode file move (#1376) | [bb71079](bb710794d277e7116628386250e2b8cb3d3122c1)
+- Fix issue when moving a file to the root directory (#1377) | [6484a41](6484a41eca007920495d07d7c009dee720b4f1c6)
+- DisableFanAnimation getter getting wrong value (#1381) | [a08f9ac](a08f9ac9a5709ad624274cf4a322a55b81d1b347)
+- Check only not empty filename for metadata in farm printers (#1392) | [f9556e2](f9556e27b34489d3abd5d62429c1d908c60dc946)
+- Fix navigation to display allPrinters (#1423) | [8a34656](8a34656e82603940197ddc5f399b28eb32848cb1)
+
+### Refactor
+
+- Improve syntax highlighting and change theme in editor (#1200) | [080a713](080a713f4cbd8a994099c2ebaf802d43a06e2ad9)
+- Add webcam-wrapper component (#1422) | [cff7b32](cff7b32f02a8dc81eda2b101ffbf7354cd88a886)
+- Refactor Panel.vue (#1427) | [5abf417](5abf4173031fe8fb23ded02679d0997d0620ecc7)
+- Remove unused import in FarmPrinterPanel.vue (#1428) | [6ce0f4f](6ce0f4f0748fea887acc4767098d2ddae3635245)
+
+### Styling
+
+- Fix eslint issue in SettingsNavigationTabItem (#1383) | [23da881](23da8818c344eb8f77366f16cac6ca1237d3cda8)
+
+### Localization
+
+- **de**: Update German localization (#1424) | [4a41430](4a41430f4006f1d4d131c6aa4cf0d6e26adef4b6)
+- **en**: Remove unused key (#1425) | [5b55727](5b55727485e276e714d69a83cabff0a959a8389d)
+- **ko**: Update Korean localization (#1368) | [0e86652](0e86652d1c0cd0b933c77599658461f4764cc931)
+- **pl**: Update Polish language (#1411) | [a85ec9d](a85ec9d0d746d5c8ea9838a71656e11af676196b)
+- **ru**: Update russian localization (#1394) | [7468f88](7468f882c1b0c45051edb64ab8cb90ab82616feb)
+- **zh**: Fix translation (#1418) | [30efd64](30efd6496ec2475e68a022e37bd006340a168049)
+- **zh_TW**: Update Chinese localization (#1386) | [8481408](84814080291e6f037230491c3e273ddd49ed6e53)
+
+### Documentation
+
+- Add Contributing section in README.md (#1339) | [dd262f7](dd262f74b0a82761de04180c7baf730c9854f71f)
+- Fix broken coding standards link in contributing doc (#1415) | [d4f1bf2](d4f1bf209d15763e45f67dfec799fbee78090e47)
+
+### Other
+
+- Exclude htaccess file on upload to my.mainsail.xyz (#1347) | [370d7d4](370d7d414287bd12a1aa7ffa18a5c6ef4f746d4a)
+- Add PULL_REQUEST_TEMPLATE (#1340) | [301e838](301e8386b823c4c005172f33cfb0969d4e1b8d20)
+- Add PWA caching and cache updater (#1421) | [8fc2750](8fc275086addfc55ff805452b8f8fa4ccb6feb2a)
+- Update ftp upload action in release workflow (#1430) | [7966270](7966270ea783f5c79549ba325c9bb11e6a0e3447)
+
 ## [2.5.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.5.1) - 2023-04-02
 ### Bug Fixes and Improvements
 

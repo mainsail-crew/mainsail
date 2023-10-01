@@ -32,21 +32,13 @@ export const actions: ActionTree<GuiState, RootState> = {
         }
 
         // delete currentPath if exists
-        if (
-            'view' in payload.value &&
-            'gcodefiles' in payload.value.view &&
-            'currentPath' in payload.value.view.gcodefiles
-        ) {
+        if (payload.value?.view?.gcodefiles?.currentPath) {
             window.console.debug('remove currentPath from gui namespace')
             await fetch(mainsailUrl + '&key=view.gcodefiles.currentPath', { method: 'DELETE' })
         }
 
         // delete currentPath if exists
-        if (
-            'view' in payload.value &&
-            'configfiles' in payload.value.view &&
-            'currentPath' in payload.value.view.configfiles
-        ) {
+        if (payload.value?.view?.configfiles?.currentPath) {
             window.console.debug('remove currentPath from gui namespace')
             await fetch(mainsailUrl + '&key=view.configfiles.currentPath', { method: 'DELETE' })
         }
@@ -467,5 +459,42 @@ export const actions: ActionTree<GuiState, RootState> = {
 
     announcementDismissFlag(_, payload) {
         window.console.log(payload)
+    },
+
+    setChartDatasetStatus(
+        { commit, dispatch, state },
+        payload: { objectName: string; dataset: string; value: boolean }
+    ) {
+        commit('setChartDatasetStatus', payload)
+
+        dispatch('updateSettings', {
+            keyName: 'view.tempchart.datasetSettings',
+            newVal: state.view.tempchart.datasetSettings,
+        })
+    },
+
+    setDatasetAdditionalSensorStatus(
+        { commit, dispatch, state },
+        payload: { objectName: string; dataset: string; value: boolean }
+    ) {
+        commit('setDatasetAdditionalSensorStatus', payload)
+
+        dispatch('updateSettings', {
+            keyName: 'view.tempchart.datasetSettings',
+            newVal: state.view.tempchart.datasetSettings,
+        })
+    },
+
+    setChartColor({ commit, dispatch, state }, payload: { objectName: string; value: boolean }) {
+        commit('setChartDatasetStatus', {
+            objectName: payload.objectName,
+            dataset: 'color',
+            value: payload.value,
+        })
+
+        dispatch('updateSettings', {
+            keyName: 'view.tempchart.datasetSettings',
+            newVal: state.view.tempchart.datasetSettings,
+        })
     },
 }

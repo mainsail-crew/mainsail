@@ -60,10 +60,9 @@ export const getters: GetterTree<GuiState, any> = {
             allPanels = allPanels.filter((name) => name !== 'extruder-control')
         }
 
-        // remove temperature panel, if heaters & sensors < 1
-        const printerAvailableHeaters = rootGetters['printer/getAvailableHeaters']
-        const printerTemperatureSensorKeys = rootGetters['printer/getTemperatureSensorKeys']
-        if (printerAvailableHeaters.length + printerTemperatureSensorKeys.length < 1) {
+        // remove temperature panel, if sensors < 1
+        const printerTemperatureSensors = rootState.printer?.heaters?.available_sensors ?? []
+        if (printerTemperatureSensors.length < 1) {
             allPanels = allPanels.filter((name) => name !== 'temperature')
         }
 
@@ -153,10 +152,8 @@ export const getters: GetterTree<GuiState, any> = {
         const setting = state.general.timeFormat
         if (setting === '12hours') return true
         if (setting === null) {
-            const browserLocale =
-                navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
-
-            if (browserLocale === 'en_us') return true
+            const timestring = new Date().toLocaleTimeString().split(' ')
+            return timestring.includes('AM') || timestring.includes('PM')
         }
 
         return false

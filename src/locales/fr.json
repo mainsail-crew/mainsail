@@ -777,8 +777,6 @@
             "Editor": "Editeur",
             "KlipperRestartMethod": "Méthode de redémarrage de Klipper",
             "KlipperRestartMethodDescription": "Choisissez la méthode utilisée pour redémarrer Klipper lors d'un appui sur 'Save & Restart' après édition des fichiers de configuration.",
-            "MoonrakerRestartInstance": "Redémarrage Moonraker",
-            "MoonrakerRestartInstanceDescription": "Choisissez quel service Moonraker doit redémarrer lors d'un appui sur 'Save & Restart' après édition des fichiers de configuration.",
             "UseEscToClose": "Utiliser la touche \"esc\" pour fermer l'éditeur",
             "UseEscToCloseDescription": "Autoriser la touche \"esc\" de fermer l'éditeur."
         },
@@ -831,7 +829,8 @@
             "12hours": "12-heures ({time})",
             "24hours": "24-heures ({time})",
             "DateFormat": "Format de la date",
-            "TimeFormat": "Format de l'heure"
+            "TimeFormat": "Format de l'heure",
+            "Everything": "Tout"
         },
         "InterfaceSettings": "Réglages interface",
         "MacrosTab": {

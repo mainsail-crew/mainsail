@@ -2,7 +2,7 @@
     <div>
         <panel
             :icon="mdiFileDocumentMultipleOutline"
-            :title="$t('History.PrintHistory').toString()"
+            :title="$t('History.PrintHistory')"
             card-class="history-list-panel">
             <v-card-text>
                 <v-row>
@@ -124,17 +124,19 @@
             </v-data-table>
         </panel>
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
-            <panel
-                :title="$t('History.Delete').toString()"
-                card-class="history-delete-selected-dialog"
-                :margin-bottom="false">
+            <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="deleteSelectedDialog = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
-                    <p class="mb-0">{{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}</p>
+                    <p v-if="selectedJobs.length === 1" class="mb-0">
+                        {{ $t('History.DeleteSingleJobQuestion') }}
+                    </p>
+                    <p v-else class="mb-0">
+                        {{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}
+                    </p>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />
@@ -535,7 +537,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     exportHistory() {
-        const checkString = parseFloat('1.23').toLocaleString()
+        const checkString = parseFloat('1.23').toLocaleString(this.browserLocale)
         const decimalSeparator = checkString.indexOf(',') >= 0 ? ',' : '.'
         const csvSeperator = decimalSeparator === ',' ? ';' : ','
 
@@ -584,7 +586,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             })
         }
 
-        const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(csvSeperator)).join('\n')
+        // escape fields with the csvSeperator in the content
+        // prettier-ignore
+        const csvContent =
+            'data:text/csv;charset=utf-8,' +
+            content.map((entry) =>
+                entry.map((field) => (field.indexOf(csvSeperator) === -1 ? field : `"${field}"`)).join(csvSeperator)
+            ).join('\n')
+
         const link = document.createElement('a')
         link.setAttribute('href', encodeURI(csvContent))
         link.setAttribute('download', 'print_history.csv')
@@ -609,7 +618,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             default:
                 switch (typeof value) {
                     case 'number':
-                        return value?.toLocaleString(undefined, { useGrouping: false }) ?? 0
+                        return value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
 
                     case 'string':
                         if (csvSeperator !== null && value.includes(csvSeperator)) value = '"' + value + '"'

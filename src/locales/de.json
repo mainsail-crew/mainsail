@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Headline": "Veralteter Browser",
+                "Description": "Die verwendete {name} Version ({version}) ist veraltet und wird nicht vollständig unterstützt. Mainsail benötigt die Version {minVersion} oder höher."
+            },
             "DependencyDescription": "Die momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}.",
             "DependencyName": "Abhängigkeit: {name}",
             "DismissAll": "Alles verwerfen",
@@ -30,6 +34,11 @@
             "NoEmptyAllowedError": "Feld darf nicht leer sein!"
         },
         "Printers": "Drucker",
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "Der lokale Cache ist veraltet und muss aktualisiert werden. Bitte klicke auf den Button unten, um den Cache zu aktualisieren.",
+            "TitleNeedUpdate": "PWA benötigt ein Update",
+            "Update": "aktualisieren"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM-Kern(e) sind derzeit gedrosselt.",
             "DescriptionFrequencyCapped": "rPi ARM max Frequenz ist derzeit auf 1,2 GHz begrenzt.",
@@ -179,7 +188,10 @@
         "DeleteDirectory": "Verzeichnis löschen",
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",
+        "DeleteSingleFileQuestion": "Soll die Datei \"{name}\" wirklich gelöscht werden?",
         "Download": "Herunterladen",
+        "Duplicate": "duplizieren",
+        "DuplicateFile": "Datei duplizieren",
         "EditFile": "Datei bearbeiten",
         "Empty": "Leer",
         "ExtruderTemp": "Extruder Temp.",
@@ -282,6 +294,7 @@
         "Flat": "Flach",
         "Heightmap": "Heightmap",
         "InvalidNameAlreadyExists": "Das Profil existiert bereits, bitte wähle einen anderen Profilnamen.",
+        "InvalidNameAscii": "Name ist ungültig. Nur ASCII Zeichen sind erlaubt.",
         "InvalidNameEmpty": "Feld darf nicht leer sein!",
         "InvalidNameReserved": "Das Profil 'default' ist reserviert, bitte wähle einen anderen Profilnamen.",
         "Later": "später",
@@ -313,6 +326,7 @@
         "CreateNote": "Notiz anlegen",
         "Delete": "Löschen",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Jobs gelöscht werden?",
+        "DeleteSingleJobQuestion": "Soll der Job wirklich gelöscht werden?",
         "Details": "Details",
         "EditNote": "Notiz bearbeiten",
         "Empty": "leer",
@@ -400,7 +414,10 @@
             "DeleteDirectory": "Verzeichnis löschen",
             "DeleteDirectoryQuestion": "Verzeichnis \"{name}\" und den gesamten Inhalt löschen?",
             "DeleteSelectedQuestion": "{count} ausgewählte Elemente löschen?",
+            "DeleteSingleFileQuestion": "Soll die Datei \"{name}\" wirklich gelöscht werden?",
             "Download": "Herunterladen",
+            "Duplicate": "duplizieren",
+            "DuplicateFile": "Datei duplizieren",
             "EditFile": "Bearbeite Datei",
             "Empty": "Leer",
             "Files": "Dateien",
@@ -465,27 +482,51 @@
             }
         },
         "UpdatePanel": {
-            "CheckForUpdates": "auf aktualisierungen prüfen",
+            "Abort": "abbrechen",
+            "AreYouSure": "Bist du dir sicher?",
+            "CheckForUpdates": "auf Aktualisierungen prüfen",
+            "Close": "schließen",
+            "CommitHistory": "Commit Verlauf",
             "Commits": "Commits",
             "CommitsAvailable": "keine Einreichung verfügbar | {count} Einreichung verfügbar | {count} Einreichungen verfügbar",
-            "CommitsOnDate": "Engereicht am {date}",
+            "CommitsOnDate": "Eingereicht am {date}",
             "CommittedDaysAgo": "eingereicht vor {days} Tagen",
             "CommittedHoursAgo": "eingereicht vor {hours} Stunden",
             "CommittedOnDate": "eingereicht am {date}",
             "CommittedYesterday": "eingereicht gestern",
+            "ConfigChanges": "Konfigurationsänderungen",
+            "CountPackagesCanBeUpgraded": "{count} Pakete können aktualisiert werden",
             "Detached": "abgetrennt",
             "Dirty": "kompromittiert",
-            "ERROR": "FEHLER",
+            "GenericUpdateQuestion": "Überprüfe den Commit-Verlauf (falls verfügbar) und die GitHub-Projektseite von diesem Projekt, um festzustellen, ob manuelle Anpassungen nach dieser Aktualisierung erforderlich sind.",
+            "GitHubPage": "GitHub Projektseite",
+            "HardRecovery": "Harte Wiederherstellung",
+            "InitUpdateManager": "Der Update Manager ist noch nicht initialisiert. Dies ist normal, wenn das System zum ersten Mal gestartet wird. Bitte klicke auf die Aktualisierungsschaltfläche, um alle Komponenten zu initialisieren.",
             "Invalid": "ungültig",
+            "IUnderstandTheRisks": "Ich habe die Risiken verstanden",
+            "LinkToGithub": "Link zu GitHub",
+            "KlipperUpdateQuestionFirmware": "Dadurch wird die Klipper-Host-Software aktualisiert. Steuerplatinen, auf denen die Klipper-Firmware läuft, müssen möglicherweise mit einer neu kompilierten Firmware geflasht werden, bevor die Maschine wieder in Betrieb genommen werden kann.",
+            "KlipperUpdateQuestionConfig": "Dieses Update kann Änderungen an den Konfigurationsparametern enthalten, die in der Datei printer.cfg geändert werden müssen; Informationen hierzu findest du im Änderungsprotokoll.",
+            "MoonrakerUpdateQuestion": "Dadurch wird die Moonraker-API aktualisiert. Möglicherweise sind Änderungen an der Datei moonraker.conf erforderlich, damit die Maschine wieder verwendet werden kann.",
+            "MoreCommitsInfo": "Hier können maximal 30 Commits angezeigt werden. Um alle Commits zu sehen, klicke bitte auf den folgenden Link:",
+            "Notification": {
+                "Detached": "Ein abgetrennter Zustand ist weder ein Fehler noch ein Problem. Es bedeutet nur, dass im lokalen Repository zusätzliche Commits existieren, die im entfernten Repository nicht vorhanden sind.",
+                "Dirty": "Das lokale Repository wurde geändert und kann in diesem Zustand nicht aktualisiert werden. Bitte stelle wieder ein saubers Repository her."
+            },
             "OSPackages": "OS-Pakete",
-            "PackagesCanBeUpgraded": "Paketupdates sind verfügbar",
+            "SoftRecovery": "einfache Wiederherstellung",
+            "StartUpdate": "Aktualisierung starten",
             "System": "System",
+            "ThesePackagesCanBeUpgrade": "Diese Systempakete können aktualisiert werden:",
             "Unknown": "unbekannt",
             "Update": "update",
             "UpdateAll": "Alle Komponenten updaten",
             "UpdateManager": "Update Manager",
+            "UpdateWarning": "Aktualisierungswarnung: {name}",
             "Upgrade": "upgrade",
-            "UpToDate": "aktuell"
+            "UpgradeableSystemPackages": "Aktualisierbare Systempakete",
+            "UpToDate": "aktuell",
+            "WebClientUpdateQuestion": "In einigen Fällen kann die Aktualisierung des Webclients Änderungen mit sich bringen, die zu Inkompatibilitäten führen können. Weitere Informationen sind in den Veröffentlichungshinweisen zu finden."
         }
     },
     "ManualProbe": {
@@ -643,6 +684,7 @@
                 "Temperature": "Aktuelle Temperatur"
             },
             "Headline": "Temperaturen",
+            "HideMcuHostSensors": "Host/MCU Sensoren ausblenden",
             "Max": "max",
             "Min": "min",
             "Name": "Name",
@@ -757,6 +799,7 @@
             "Circle": "Kreis",
             "Control": "Steuerung",
             "Cross": "Kreuz",
+            "HideDuringPrint": "Achsensteuerung während des Drucks ausblenden",
             "EnableXYHoming": "Aktiviere kombiniertes X & Y homing",
             "EstimatedExtrusionInfo": "Zeige Info zur geschätzten Extrusion",
             "EstimatedExtrusionInfoDescription": "Anzeigen/ausblenden der Info zur geschätzten Extrusion, basierend auf Extrusionmenge und Extrusionsgeschwindigkeit",
@@ -796,8 +839,6 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Klipper Neustartmethode",
             "KlipperRestartMethodDescription": "Wähle aus, welche Neustartmethode verwendet werden soll wenn 'Speichern & Neustarten' geklickt wir im Editor.",
-            "MoonrakerRestartInstance": "Moonraker Neustartinstanz",
-            "MoonrakerRestartInstanceDescription": "Wähle aus, welche Moonrakerinstanz neu gestartet werden soll wenn 'Speichern & Neustarten' im Editor geklickt wird.",
             "UseEscToClose": "ESC drücken um Editor zu schließen",
             "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen.",
             "TabSize": "TAB Größe",
@@ -838,7 +879,6 @@
             "DbHistoryTotals": "Historie Gesamtzähler",
             "DbTimelapseSettings": "Zeitraffer Einstellungen",
             "DbView": "Ansichtseinstellungen",
-            "DbWebcams": "Webcams",
             "EstimateValues": {
                 "Filament": "Filament",
                 "File": "Datei",
@@ -848,7 +888,7 @@
             "FactoryReset": "Werkseinstellungen",
             "General": "Allgemein",
             "Language": "Sprache",
-            "MoonrakerDb": "Moonraker Datenbank",
+            "MainsailSettingsMoonrakerDb": "Mainsail Einstellungen in Moonraker DB",
             "PrinterName": "Druckername",
             "Reset": "zurücksetzen",
             "Restore": "Wiederherstellung",
@@ -914,6 +954,9 @@
             "StartDescription": "Erste LED von dieser Gruppe.",
             "UnableToLoadLight": "Licht konnte nicht geladen werden",
             "UnableToLoadPreset": "Voreinstellung konnte nicht geladen werden"
+        },
+        "NavigationTab": {
+            "Navigation": "Navigation"
         },
         "PresetsTab": {
             "AddPreset": "Preset hinzufügen",
@@ -1011,6 +1054,8 @@
             "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
+            "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
+            "BedScrewsDialogDescription": "Zeige ein Hilfsfenster für die Bettschraubenjustierung an.",
             "BoolBigThumbnail": "Große Vorschaubilder",
             "BoolBigThumbnailDescription": "Zeige ein großes Thumbnail in der Status-Anzeige während eines Drucks.",
             "BoolHideUploadAndPrintButton": "\"Hochladen & Drucken\" Schaltfläche ausblenden",
@@ -1019,6 +1064,11 @@
             "ConfirmOnEmergencyStopDescription": "Zeige vor einem Notstop einen Bestätigungsdialog.",
             "ConfirmOnPowerDeviceChange": "Bestätigung für Änderung der Stromversorgung von Geräten",
             "ConfirmOnPowerDeviceChangeDescription": "Zeige vor Änderung der Stromversorgung von Geräten einen Bestätigungsdialog.",
+            "DefaultNavigationState": "Standard Navigationszustand",
+            "DefaultNavigationStateAlwaysClosed": "immer geschlossen",
+            "DefaultNavigationStateAlwaysOpen": "immer geöffnet",
+            "DefaultNavigationStateDescription": "Welchen zustand soll die Navigation normalerweise haben?",
+            "DefaultNavigationStateLastState": "letzter Zustand",
             "DisableFanAnimation": "Lüfteranimation deaktivieren",
             "DisableFanAnimationDescription": "Dies kann die Last im Browser senken.",
             "DisplayCANCEL_PRINT": "Zeige CANCEL_PRINT an",
@@ -1028,11 +1078,15 @@
             "Guide": "Leitfaden",
             "HideSaveConfigButtonForBedMesh": "SAVE_CONFIG Schaltfläche ausblenden bei bed_mesh Änderungen",
             "HideSaveConfigButtonForBedMeshDescription": "SAVE_CONFIG nicht anzeigen, wenn nur das Speichern eines bed_mesh in Klipper aussteht.",
+            "HideUpdateWarnings": "Aktualisierungswarnungen ausblenden",
+            "HideUpdateWarningsDescription": "Mit dieser Option werden alle Aktualisierungswarnungen im Aktualisierungsmanager ausgeblendet.",
             "LockSliders": "Sperre Schieberegler auf Touchscreen Geräten",
             "LockSlidersDelay": "Verzögerung der Sperre für Schieberegler",
             "LockSlidersDelayDescription": "Schieberegler werden nach einer bestimmten Verzögerung gesperrt. Wenn 0 oder leer, dann sperren Schieberegler nur nach wechseln/neuladen der Seite.",
             "LockSlidersDescription": "Schieberegler müssen zuerst entsperrt werden bevor Änderungen erlaubt werden.",
             "Logo": "Logo",
+            "ManualProbeDialog": "Hilfsfenster für manuelle Messung",
+            "ManualProbeDialogDescription": "Zeige ein Hilfsfenster für PROBE_CALIBRATE oder Z_ENDSTOP_CALIBRATE an.",
             "NavigationStyle": "Stil der Navigation",
             "NavigationStyleDescription": "Erscheinungsbild der Navigation ändern",
             "NavigationStyleIconsAndText": "Icons + Text",
@@ -1040,7 +1094,8 @@
             "PowerDeviceName": "Stromversorgung für Drucker",
             "PowerDeviceNameDescription": "Wähle aus, welches Moonraker Power-Device zum Einschalten des Druckers verwendet werden soll.",
             "Primary": "Primärfarbe",
-            "ShowWebcamInNavigation": "Zeige Webcam in der Navigation",
+            "ScrewsTiltAdjustDialog": "Hilfsfenster für Schrauben Neigunganpassung",
+            "ScrewsTiltAdjustDialogDescription": "Zeige ein Hilfsfenster für SCREWS_TILT_CALCULATE an.",
             "TempchartHeight": "Temperatur-Chart Höhe",
             "TempchartHeightDescription": "Verändert die Höhe vom Temperatur-Chart auf dem Dashboard.",
             "UiSettings": "UI-Einstellungen"
@@ -1053,6 +1108,7 @@
             "EditWebcam": "Webcam bearbeiten",
             "FlipWebcam": "Webcam-Bild spiegeln:",
             "Hlsstream": "HLS-Stream",
+            "HideFps": "FPS-Anzeige verstecken",
             "Horizontally": "horizontal",
             "IconBed": "Bett",
             "IconCam": "Kamera",
@@ -1079,14 +1135,17 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertikal",
             "Webcams": "Webcams",
-            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
     },
     "ScrewsTiltAdjust": {
         "Accept": "akzeptieren",
         "Base": "Basis",
         "ErrorText": "Ein Fehler ist beim Abtasten aufgetreten.",
-        "Headline": "Neigungsverstellung"
+        "Headline": "Neigungsverstellung",
+        "Retry": "wiederholen"
     },
     "Timelapse": {
         "AllFiles": "Alle",
@@ -1099,6 +1158,7 @@
         "DeleteDirectory": "Verzeichnis löschen",
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",
+        "DeleteSingleFileQuestion": "Soll die Datei \"{name}\" wirklich gelöscht werden?",
         "Download": "Download",
         "DuplicateLastframe": "Letztes Bild duplizieren",
         "Empty": "Keine fertigen Zeitraffer gefunden.",

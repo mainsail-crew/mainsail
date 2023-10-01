@@ -14,41 +14,37 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Hls from 'hls.js'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class Hlsstreamer extends Mixins(BaseMixin) {
+export default class Hlsstreamer extends Mixins(BaseMixin, WebcamMixin) {
     private aspectRatio: null | number = null
     private isVisible = true
     private hls: Hls | null = null
 
-    @Prop({ required: true })
-    camSettings: any
-
-    @Prop()
-    printerUrl: string | undefined
+    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
+    @Prop({ default: null }) readonly printerUrl!: string | null
 
     declare $refs: {
         video: HTMLVideoElement
     }
 
     get url() {
-        if (!this.isVisible) return ''
-
-        return this.camSettings.urlStream || ''
+        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
     }
 
     get webcamStyle() {
         const output = {
-            transform: 'none',
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
             aspectRatio: 16 / 9,
             maxHeight: window.innerHeight - 155 + 'px',
             maxWidth: 'auto',
         }
-
-        let transforms = ''
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimStart().length) return { transform: transforms.trimStart() }
 
         if (this.aspectRatio) {
             output.aspectRatio = this.aspectRatio

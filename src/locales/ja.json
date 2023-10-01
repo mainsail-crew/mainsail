@@ -794,8 +794,6 @@
             "Editor": "エディター",
             "KlipperRestartMethod": "Klipper再始動の方法",
             "KlipperRestartMethodDescription": "Klipperの設定ファイルを編集する際に'保存して再始動'での再始動方法を選択してください。",
-            "MoonrakerRestartInstance": "Moonraker インスタンスの再始動",
-            "MoonrakerRestartInstanceDescription": "Moonrakerの設定ファイルを編集する際に'保存して再始動'で、どのMoonrakerサービスを再始動するか選択してください。",
             "UseEscToClose": "ESCキーでエディターを終了します。",
             "UseEscToCloseDescription": "ESCキーでエディターを終了できます。"
         },
