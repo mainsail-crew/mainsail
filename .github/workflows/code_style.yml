@@ -43,4 +43,4 @@ jobs:
           eslint: true
           prettier: true
           eslint_dir: src
-          eslint_extensions: ts,vue
+          eslint_extensions: ts,vue,json
