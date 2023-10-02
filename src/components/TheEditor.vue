@@ -341,7 +341,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 }
 </script>
-<style lang="scss" scoped>
+<style scoped>
 ::v-deep .ͼ1 .cm-panel.cm-search *:focus:not(.focus-visible) {
     outline: none;
 }

@@ -40,6 +40,7 @@ import TheUploadSnackbar from '@/components/TheUploadSnackbar.vue'
 import TheManualProbeDialog from '@/components/dialogs/TheManualProbeDialog.vue'
 import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
 import TheScrewsTiltAdjustDialog from '@/components/dialogs/TheScrewsTiltAdjustDialog.vue'
+import { setAndLoadLocale } from './plugins/i18n'
 
 Component.registerHooks(['metaInfo'])
 
@@ -162,8 +163,8 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     @Watch('language')
-    languageChanged(newVal: string): void {
-        this.$i18n.locale = newVal
+    async languageChanged(newVal: string): Promise<void> {
+        await setAndLoadLocale(newVal)
     }
 
     @Watch('customStylesheet')
@@ -310,10 +311,10 @@ export default class App extends Mixins(BaseMixin) {
 <style>
 @import './assets/styles/fonts.css';
 @import './assets/styles/toastr.css';
-@import './assets/styles/page.scss';
-@import './assets/styles/sidebar.scss';
-@import './assets/styles/utils.scss';
-@import './assets/styles/updateManager.scss';
+@import './assets/styles/page.css';
+@import './assets/styles/sidebar.css';
+@import './assets/styles/utils.css';
+@import './assets/styles/updateManager.css';
 
 :root {
     --app-height: 100%;

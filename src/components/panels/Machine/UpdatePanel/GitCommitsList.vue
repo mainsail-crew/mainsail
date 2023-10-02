@@ -116,7 +116,7 @@ export default class GitCommitsList extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .groupedCommits {
     padding-top: 0;
 }

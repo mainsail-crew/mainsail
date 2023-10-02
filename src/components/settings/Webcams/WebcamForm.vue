@@ -322,7 +322,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 ::v-deep ._transition svg {
     transition: transform 500ms;
 }

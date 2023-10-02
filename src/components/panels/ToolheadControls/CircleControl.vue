@@ -706,7 +706,7 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 svg {
     max-height: 350px;
     min-height: 275px;

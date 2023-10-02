@@ -223,7 +223,7 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .statusPanel-big-thumbnail {
     transition: height 0.25s ease-out;
 }

@@ -83,7 +83,7 @@ export default class Panel extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .expanded header.v-toolbar {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
@@ -107,7 +107,7 @@ export default class Panel extends Mixins(BaseMixin) {
 }
 </style>
 
-<style lang="scss">
+<style>
 .v-card.panel .v-toolbar__content {
     padding-right: 0;
 }
