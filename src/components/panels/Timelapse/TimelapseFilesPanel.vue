@@ -643,7 +643,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             {
                 path: this.currentPath + '/' + this.dialogCreateDirectory.name,
             },
-            { action: 'files/getCreateDir' },
+            { action: 'files/getCreateDir' }
         )
     }
 
@@ -665,7 +665,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         const preview = this.files?.find((file) => file.filename === filename + '.jpg')
         if (preview) {
             return `${this.apiUrl}/server/files/${encodeURI(this.currentPath)}/${encodeURI(
-                preview.filename,
+                preview.filename
             )}?timestamp=${preview.modified.getTime()}`
         }
 
@@ -751,7 +751,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'server.files.zip',
             { items, dest: `timelapse/timelapse-${timestamp}.zip` },
-            { action: 'files/downloadZip', loading: 'timelapseDownloadZip' },
+            { action: 'files/downloadZip', loading: 'timelapseDownloadZip' }
         )
 
         this.selectedFiles = []
@@ -785,7 +785,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
                 source: `${this.currentPath}/${this.dialogRenameFile.item.filename}`,
                 dest: `${this.currentPath}/${this.dialogRenameFile.newName}.${fileExtension}`,
             },
-            { action: 'files/getMove' },
+            { action: 'files/getMove' }
         )
 
         if (fileExtension !== 'mp4') return
@@ -822,7 +822,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
                 source: this.currentPath + '/' + this.dialogRenameDirectory.item.filename,
                 dest: this.currentPath + '/' + this.dialogRenameDirectory.newName,
             },
-            { action: 'files/getMove' },
+            { action: 'files/getMove' }
         )
     }
 
@@ -836,7 +836,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'server.files.delete_file',
             { path: this.currentPath + '/' + this.contextMenu.item.filename },
-            { action: 'files/getDeleteFile' },
+            { action: 'files/getDeleteFile' }
         )
 
         if (fileExtension !== 'mp4') return
@@ -851,7 +851,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             this.$socket.emit(
                 'server.files.delete_file',
                 { path: this.currentPath + '/' + previewFilename },
-                { action: 'files/getDeleteFile' },
+                { action: 'files/getDeleteFile' }
             )
 
         this.deleteDialog = false
@@ -867,7 +867,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'server.files.delete_directory',
             { path: this.currentPath + '/' + this.contextMenu.item.filename, force: true },
-            { action: 'files/getDeleteDir' },
+            { action: 'files/getDeleteDir' }
         )
     }
 
@@ -877,7 +877,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
                 this.$socket.emit(
                     'server.files.delete_directory',
                     { path: this.currentPath + '/' + item.filename, force: true },
-                    { action: 'files/getDeleteDir' },
+                    { action: 'files/getDeleteDir' }
                 )
             } else {
                 const filename = item.filename.slice(0, item.filename.lastIndexOf('.'))
@@ -886,7 +886,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
                 this.$socket.emit(
                     'server.files.delete_file',
                     { path: this.currentPath + '/' + item.filename },
-                    { action: 'files/getDeleteFile' },
+                    { action: 'files/getDeleteFile' }
                 )
 
                 if (fileExtension !== 'mp4') return
@@ -901,7 +901,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
                     this.$socket.emit(
                         'server.files.delete_file',
                         { path: this.currentPath + '/' + previewFilename },
-                        { action: 'files/getDeleteFile' },
+                        { action: 'files/getDeleteFile' }
                     )
             }
         })

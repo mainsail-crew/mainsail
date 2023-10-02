@@ -240,7 +240,7 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'machine.timelapse.post_settings',
             { enabled: newVal },
-            { action: 'server/timelapse/initSettings' },
+            { action: 'server/timelapse/initSettings' }
         )
     }
 
@@ -252,7 +252,7 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'machine.timelapse.post_settings',
             { autorender: newVal },
-            { action: 'server/timelapse/initSettings' },
+            { action: 'server/timelapse/initSettings' }
         )
     }
 

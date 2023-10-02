@@ -215,7 +215,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
             jobsFiltered = [
                 ...rootState.gui.view.history.selectedJobs.filter(
                     (job: ServerHistoryStateJob) =>
-                        new Date(job.start_time * 1000) >= startDate && job.filament_used > 0,
+                        new Date(job.start_time * 1000) >= startDate && job.filament_used > 0
                 ),
             ]
 
@@ -252,7 +252,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
             jobsFiltered = [
                 ...rootState.gui.view.history.selectedJobs.filter(
                     (job: ServerHistoryStateJob) =>
-                        new Date(job.start_time * 1000) >= startDate && job.status === 'completed',
+                        new Date(job.start_time * 1000) >= startDate && job.status === 'completed'
                 ),
             ]
 
@@ -292,7 +292,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
             modified: number,
             filesize: number,
             uuid: string | null,
-            job_id: string | null,
+            job_id: string | null
         ): ServerHistoryStateJob[] => {
             if (state.jobs.length === 0) return []
 

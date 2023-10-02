@@ -319,7 +319,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
 
     get colorRGB() {
         return `rgb(${Math.round(this.current.red ?? 0)}, ${Math.round(this.current.green ?? 0)}, ${Math.round(
-            this.current.blue ?? 0,
+            this.current.blue ?? 0
         )})`
     }
 

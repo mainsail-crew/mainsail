@@ -59,7 +59,7 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
         this.$socket.emit(
             'machine.timelapse.post_settings',
             { enabled: newVal },
-            { action: 'server/timelapse/initSettings' },
+            { action: 'server/timelapse/initSettings' }
         )
     }
 

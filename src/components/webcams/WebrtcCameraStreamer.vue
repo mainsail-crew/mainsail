@@ -51,7 +51,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0,
+                this.camSettings.rotation ?? 0
             ),
             aspectRatio: 16 / 9,
         }
@@ -96,7 +96,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
                             this.$refs.stream.srcObject = evt.streams[0]
                         }
                     },
-                    false,
+                    false
                 )
                 this.pc.addEventListener('connectionstatechange', () => {
                     this.status = (this.pc?.connectionState ?? '').toString()

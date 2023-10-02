@@ -958,7 +958,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'server.files.get_directory',
             { path: this.absolutePath.substring(1) },
-            { action: 'files/getDirectory' },
+            { action: 'files/getDirectory' }
         )
     }
 
@@ -973,7 +973,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             if (!item.isDirectory) {
                 if (
                     ['png', 'jpeg', 'jpg', 'gif', 'bmp', 'tif', 'svg'].includes(
-                        item.filename.split('.').pop()?.toLowerCase() ?? '',
+                        item.filename.split('.').pop()?.toLowerCase() ?? ''
                     )
                 ) {
                     const url = `${this.apiUrl}/server/files${this.absolutePath}/${item.filename}?t=${Date.now()}`
@@ -1059,7 +1059,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'server.files.zip',
             { items, dest: `config/${this.root}-${timestamp}.zip` },
-            { action: 'files/downloadZip', loading: 'configDownloadZip' },
+            { action: 'files/downloadZip', loading: 'configDownloadZip' }
         )
 
         this.selectedFiles = []
@@ -1082,7 +1082,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             {
                 path: this.absolutePath.substring(1) + '/' + this.dialogCreateDirectory.name,
             },
-            { action: 'files/getCreateDir' },
+            { action: 'files/getCreateDir' }
         )
     }
 
@@ -1104,7 +1104,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                 source: (this.absolutePath + '/' + this.dialogRenameDirectory.item.filename).slice(1),
                 dest: (this.absolutePath + '/' + this.dialogRenameDirectory.newName).slice(1),
             },
-            { action: 'files/getMove' },
+            { action: 'files/getMove' }
         )
     }
 
@@ -1118,7 +1118,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'server.files.delete_directory',
             { path: this.absolutePath + '/' + this.dialogDeleteDirectory.item.filename, force: true },
-            { action: 'files/getDeleteDir' },
+            { action: 'files/getDeleteDir' }
         )
     }
 
@@ -1145,7 +1145,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             })
             .then(() => {
                 this.$toast.success(
-                    this.$t('Files.SuccessfullyCreated', { filename: this.dialogCreateFile.name }).toString(),
+                    this.$t('Files.SuccessfullyCreated', { filename: this.dialogCreateFile.name }).toString()
                 )
                 this.dialogCreateFile.show = false
                 this.dialogCreateFile.name = ''
@@ -1173,7 +1173,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                 source: (this.absolutePath + '/' + this.dialogRenameFile.item.filename).slice(1),
                 dest: (this.absolutePath + '/' + this.dialogRenameFile.newName).slice(1),
             },
-            { action: 'files/getMove' },
+            { action: 'files/getMove' }
         )
     }
 
@@ -1199,7 +1199,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'server.files.delete_file',
             { path: this.absolutePath + '/' + this.contextMenu.item.filename },
-            { action: 'files/getDeleteFile' },
+            { action: 'files/getDeleteFile' }
         )
 
         this.deleteDialog = false
@@ -1211,13 +1211,13 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                 this.$socket.emit(
                     'server.files.delete_directory',
                     { path: this.absolutePath + '/' + item.filename, force: true },
-                    { action: 'files/getDeleteDir' },
+                    { action: 'files/getDeleteDir' }
                 )
             } else {
                 this.$socket.emit(
                     'server.files.delete_file',
                     { path: this.absolutePath + '/' + item.filename },
-                    { action: 'files/getDeleteFile' },
+                    { action: 'files/getDeleteFile' }
                 )
             }
         })
@@ -1313,7 +1313,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                     source: this.absolutePath.slice(1) + '/' + this.draggingFile.item.filename,
                     dest: dest,
                 },
-                { action: 'files/getMove' },
+                { action: 'files/getMove' }
             )
         }
     }

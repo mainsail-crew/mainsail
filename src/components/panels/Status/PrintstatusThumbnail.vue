@@ -112,7 +112,7 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
 
                 if (thumbnail && 'relative_path' in thumbnail) {
                     return `${this.apiUrl}/server/files/gcodes/${encodeURI(
-                        relative_url + thumbnail.relative_path,
+                        relative_url + thumbnail.relative_path
                     )}?timestamp=${this.current_file.modified}`
                 }
             }
@@ -152,7 +152,7 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
                     thumb.width >= thumbnailSmallMin &&
                     thumb.width <= thumbnailSmallMax &&
                     thumb.height >= thumbnailSmallMin &&
-                    thumb.height <= thumbnailSmallMax,
+                    thumb.height <= thumbnailSmallMax
             )
 
             if (thumbnail && 'relative_path' in thumbnail) {
@@ -163,7 +163,7 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
 
                 if (thumbnail && 'relative_path' in thumbnail) {
                     return `${this.apiUrl}/server/files/gcodes/${encodeURI(
-                        relative_url + thumbnail.relative_path,
+                        relative_url + thumbnail.relative_path
                     )}?timestamp=${this.current_file.modified}`
                 }
             }

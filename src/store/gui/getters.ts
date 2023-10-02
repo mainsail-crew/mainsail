@@ -113,7 +113,7 @@ export const getters: GetterTree<GuiState, any> = {
                         const macrogroupId = element.name.slice(11)
                         return (
                             macrogroups.findIndex(
-                                (macrogroup: GuiMacrosStateMacrogroup) => macrogroup.id === macrogroupId,
+                                (macrogroup: GuiMacrosStateMacrogroup) => macrogroup.id === macrogroupId
                             ) !== -1
                         )
                     })

@@ -1007,13 +1007,13 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             Math.round(
                 (this.bed_mesh.mesh_min[0] +
                     ((this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bedMeshXLength) * (col - 1)) *
-                    10,
+                    10
             ) / 10
         const positionY =
             Math.round(
                 (this.bed_mesh.mesh_min[1] +
                     ((this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bedMeshYLength) * (row - 1)) *
-                    10,
+                    10
             ) / 10
 
         return {
@@ -1043,13 +1043,13 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             Math.round(
                 (this.bed_mesh.mesh_min[0] +
                     ((this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bedMeshXLength) * (col - 1)) *
-                    10,
+                    10
             ) / 10
         const positionY =
             Math.round(
                 (this.bed_mesh.mesh_min[1] +
                     ((this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bedMeshYLength) * (row - 1)) *
-                    10,
+                    10
             ) / 10
 
         return {
@@ -1081,7 +1081,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
                         axisName.toUpperCase() +
                         '</b>: ' +
                         data.data[data.encode[axisName][0]].toFixed(axisName === 'z' ? 3 : 1) +
-                        ' mm',
+                        ' mm'
                 )
             })
 
@@ -1151,7 +1151,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
                 action: 'printer/removeBedMeshProfile',
                 actionPayload: { name: this.removeDialogProfile },
                 loading: 'bedMeshRename_' + this.removeDialogProfile,
-            },
+            }
         )
         this.removeDialogProfile = ''
 

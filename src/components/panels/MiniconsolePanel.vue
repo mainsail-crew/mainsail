@@ -282,7 +282,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
                         check,
                         commands.reduce((acc, val) => {
                             return strLongestEqual(acc, val.command)
-                        }, commands[0].command),
+                        }, commands[0].command)
                     )
                 } else {
                     this.gcode = commands.reduce((acc, val) => {
@@ -298,7 +298,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
                                 command.command +
                                 '</a>: ' +
                                 command.description +
-                                '<br />'),
+                                '<br />')
                     )
 
                     this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' })

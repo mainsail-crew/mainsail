@@ -175,7 +175,7 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
             this.$socket.emit(
                 'server.logs.rollover',
                 { application: name },
-                { loading: 'rolloverLog_' + name, action: 'files/rolloverLog' },
+                { loading: 'rolloverLog_' + name, action: 'files/rolloverLog' }
             )
         })
 

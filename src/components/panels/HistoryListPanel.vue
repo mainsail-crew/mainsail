@@ -748,7 +748,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     get tableFields() {
         return this.filteredHeaders.filter(
-            (col: any) => !['filename', 'status', 'slicer'].includes(col.value) && col.value !== '',
+            (col: any) => !['filename', 'status', 'slicer'].includes(col.value) && col.value !== ''
         )
     }
 
@@ -874,7 +874,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     thumb.width >= thumbnailSmallMin &&
                     thumb.width <= thumbnailSmallMax &&
                     thumb.height >= thumbnailSmallMin &&
-                    thumb.height <= thumbnailSmallMax,
+                    thumb.height <= thumbnailSmallMax
             )
 
             let relative_url = ''
@@ -884,7 +884,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
             if (thumbnail && 'relative_path' in thumbnail) {
                 return `${this.apiUrl}/server/files/gcodes/${encodeURI(
-                    relative_url + thumbnail.relative_path,
+                    relative_url + thumbnail.relative_path
                 )}?timestamp=${item.metadata.modified}`
             }
         }
@@ -903,7 +903,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
             if (thumbnail && 'relative_path' in thumbnail)
                 return `${this.apiUrl}/server/files/gcodes/${encodeURI(
-                    relative_url + thumbnail.relative_path,
+                    relative_url + thumbnail.relative_path
                 )}?timestamp=${item.metadata.modified}`
         }
 
@@ -942,7 +942,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.$socket.emit(
             'server.history.delete_job',
             { uid: this.contextMenu.item.job_id },
-            { action: 'server/history/getDeletedJobs' },
+            { action: 'server/history/getDeletedJobs' }
         )
 
         this.deleteDialog = false
@@ -953,7 +953,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             this.$socket.emit(
                 'server.history.delete_job',
                 { uid: item.job_id },
-                { action: 'server/history/getDeletedJobs' },
+                { action: 'server/history/getDeletedJobs' }
             )
         })
 

@@ -226,7 +226,7 @@ export default class SettingsMiscellaneousTabLightGroups extends Mixins(BaseMixi
     existsGroupName(name: string) {
         return (
             this.groups.findIndex(
-                (group: GuiMacrosStateMacrogroup) => group.name === name && group.id != this.form.id,
+                (group: GuiMacrosStateMacrogroup) => group.name === name && group.id != this.form.id
             ) >= 0
         )
     }

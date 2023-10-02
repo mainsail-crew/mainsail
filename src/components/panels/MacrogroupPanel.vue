@@ -52,7 +52,7 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
         macros = macros.filter((macro: GuiMacrosStateMacrogroupMacro) => {
             if (
                 !this.allMacros.find(
-                    (existMacro: PrinterStateMacro) => existMacro.name.toLowerCase() === macro.name.toLowerCase(),
+                    (existMacro: PrinterStateMacro) => existMacro.name.toLowerCase() === macro.name.toLowerCase()
                 )
             )
                 return false

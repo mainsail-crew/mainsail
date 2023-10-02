@@ -18,7 +18,7 @@ export const getters: GetterTree<FileState, any> = {
         const findDirectory = function (filetree: FileStateFile, pathArray: string[]): FileStateFile | null {
             if (pathArray.length) {
                 const newFiletree = filetree?.childrens?.find(
-                    (element: FileStateFile) => element.isDirectory && element.filename === pathArray[0],
+                    (element: FileStateFile) => element.isDirectory && element.filename === pathArray[0]
                 )
                 if (newFiletree) {
                     pathArray.shift()
@@ -130,12 +130,12 @@ export const getters: GetterTree<FileState, any> = {
                             thumb.width >= thumbnailSmallMin &&
                             thumb.width <= thumbnailSmallMax &&
                             thumb.height >= thumbnailSmallMin &&
-                            thumb.height <= thumbnailSmallMax,
+                            thumb.height <= thumbnailSmallMax
                     )
 
                     if (small_thumbnail && 'relative_path' in small_thumbnail) {
                         tmp.small_thumbnail = `${baseURL + subdirectory}/${encodeURI(
-                            small_thumbnail.relative_path,
+                            small_thumbnail.relative_path
                         )}?timestamp=${fileTimestamp}`
                     }
 
@@ -143,7 +143,7 @@ export const getters: GetterTree<FileState, any> = {
 
                     if (big_thumbnail && 'relative_path' in big_thumbnail) {
                         tmp.big_thumbnail = `${baseURL + subdirectory}/${encodeURI(
-                            big_thumbnail.relative_path,
+                            big_thumbnail.relative_path
                         )}?timestamp=${fileTimestamp}`
 
                         tmp.big_thumbnail_width = big_thumbnail.width
@@ -156,16 +156,16 @@ export const getters: GetterTree<FileState, any> = {
                     fileTimestamp,
                     file.size,
                     file.uuid ?? null,
-                    file.job_id,
+                    file.job_id
                 )
 
                 if (histories && histories.length) {
                     histories = histories.sort(
-                        (a: ServerHistoryStateJob, b: ServerHistoryStateJob) => b.start_time - a.start_time,
+                        (a: ServerHistoryStateJob, b: ServerHistoryStateJob) => b.start_time - a.start_time
                     )
 
                     const histories_completed = histories.filter(
-                        (history: ServerHistoryStateJob) => history.status === 'completed',
+                        (history: ServerHistoryStateJob) => history.status === 'completed'
                     )
 
                     const last_history = [...histories].shift()
@@ -200,7 +200,7 @@ export const getters: GetterTree<FileState, any> = {
         const file = directory?.childrens?.find(
             (element: FileStateFile) =>
                 element.filename?.slice(0, element.filename?.lastIndexOf('.')) === acceptName &&
-                acceptExtensions.includes(element.filename?.slice(element.filename?.lastIndexOf('.') + 1)),
+                acceptExtensions.includes(element.filename?.slice(element.filename?.lastIndexOf('.') + 1))
         )
         if (!file) return null
 
@@ -274,7 +274,7 @@ export const getters: GetterTree<FileState, any> = {
 
         return (
             directory?.childrens?.findIndex(
-                (element: FileStateFile) => element.filename !== undefined && element.filename === acceptName,
+                (element: FileStateFile) => element.filename !== undefined && element.filename === acceptName
             ) !== -1
         )
     },
@@ -286,12 +286,12 @@ export const getters: GetterTree<FileState, any> = {
                     thumb.width >= thumbnailSmallMin &&
                     thumb.width <= thumbnailSmallMax &&
                     thumb.height >= thumbnailSmallMin &&
-                    thumb.height <= thumbnailSmallMax,
+                    thumb.height <= thumbnailSmallMax
             )
 
             if (thumbnail && 'relative_path' in thumbnail) {
                 return `${rootGetters['socket/getUrl']}/server/files/${currentPath}/${encodeURI(
-                    thumbnail.relative_path,
+                    thumbnail.relative_path
                 )}?timestamp=${item.modified.getTime()}`
             }
         }
@@ -305,7 +305,7 @@ export const getters: GetterTree<FileState, any> = {
 
             if (thumbnail && 'relative_path' in thumbnail) {
                 return `${rootGetters['socket/getUrl']}/server/files/${encodeURI(currentPath)}/${encodeURI(
-                    thumbnail.relative_path,
+                    thumbnail.relative_path
                 )}?timestamp=${item.modified.getTime()}`
             }
         }

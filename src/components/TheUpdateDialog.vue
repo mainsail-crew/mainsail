@@ -167,7 +167,7 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
             this.$socket.emit(
                 'machine.update.status',
                 { refresh: false },
-                { action: 'server/updateManager/onUpdateStatus' },
+                { action: 'server/updateManager/onUpdateStatus' }
             )
         }
     }

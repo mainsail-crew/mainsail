@@ -70,7 +70,7 @@ export const mutations: MutationTree<FileState> = {
 
         if (parent) {
             const indexFile = parent.findIndex(
-                (element: FileStateFile) => !element.isDirectory && element.filename === filename,
+                (element: FileStateFile) => !element.isDirectory && element.filename === filename
             )
 
             if (indexFile === -1) {
@@ -96,7 +96,7 @@ export const mutations: MutationTree<FileState> = {
                     Vue.$socket.emit(
                         'server.files.metadata',
                         { filename: payload.item.path },
-                        { action: 'files/getMetadata' },
+                        { action: 'files/getMetadata' }
                     )
                 }
             }

@@ -33,7 +33,7 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
         dispatch(
             'server/timelapse/updateCamSettings',
             { newName: payload.webcam.name, oldName: payload.oldWebcamName },
-            { root: true },
+            { root: true }
         )
     },
 

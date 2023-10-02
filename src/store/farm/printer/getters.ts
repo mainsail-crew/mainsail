@@ -147,7 +147,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         const file = state.theme_files.find(
             (element: string) =>
                 element.substr(0, element.lastIndexOf('.')) === themeDir + '/' + acceptName &&
-                acceptExtensions.includes(element.substr(element.lastIndexOf('.') + 1)),
+                acceptExtensions.includes(element.substr(element.lastIndexOf('.') + 1))
         )
 
         return file ? '//' + state.socket.hostname + ':' + state.socket.port + '/server/files/config/' + file : null

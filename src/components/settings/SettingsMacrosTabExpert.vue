@@ -184,7 +184,7 @@
                                                         updateMacroFromGroup(
                                                             macro,
                                                             'showInStandby',
-                                                            !macro.showInStandby,
+                                                            !macro.showInStandby
                                                         )
                                                     ">
                                                     <v-icon small>{{ mdiSleep }}</v-icon>
@@ -222,7 +222,7 @@
                                                         updateMacroFromGroup(
                                                             macro,
                                                             'showInPrinting',
-                                                            !macro.showInPrinting,
+                                                            !macro.showInPrinting
                                                         )
                                                     ">
                                                     <v-icon small>{{ mdiPrinter3dNozzle }}</v-icon>
@@ -406,7 +406,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     existsGroupName(name: string) {
         return (
             this.groups.findIndex(
-                (group: GuiMacrosStateMacrogroup) => group.name === name && group.id != this.editGroupId,
+                (group: GuiMacrosStateMacrogroup) => group.name === name && group.id != this.editGroupId
             ) >= 0
         )
     }

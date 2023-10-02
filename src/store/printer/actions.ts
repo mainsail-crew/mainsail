@@ -33,7 +33,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
                 klippy_state: payload.state,
                 klippy_message: payload.state_message,
             },
-            { root: true },
+            { root: true }
         )
 
         commit('setData', {
@@ -85,7 +85,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
             this.dispatch(
                 'server/getData',
                 { klippy_state: payload.webhooks.state, klippy_message: payload.webhooks.state_message },
-                { root: true },
+                { root: true }
             )
             delete payload.webhooks
         }
@@ -102,7 +102,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
                 {
                     kinematics: payload.configfile?.settings?.printer?.kinematics,
                 },
-                { root: true },
+                { root: true }
             )
         }
 
@@ -112,7 +112,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
                 {
                     axis_maximum: payload.toolhead?.axis_maximum,
                 },
-                { root: true },
+                { root: true }
             )
         }
 
@@ -122,7 +122,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
                 {
                     axis_minimum: payload.toolhead?.axis_minimum,
                 },
-                { root: true },
+                { root: true }
             )
         }
 

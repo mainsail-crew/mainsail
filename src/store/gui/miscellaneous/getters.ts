@@ -27,7 +27,7 @@ export const getters: GetterTree<GuiMiscellaneousState, any> = {
 
     getEntry: (state, getters) => (payload: { type: string; name: string }) => {
         return getters.getEntries.find(
-            (entry: GuiMiscellaneousStateEntry) => entry.name === payload.name && entry.type === payload.type,
+            (entry: GuiMiscellaneousStateEntry) => entry.name === payload.name && entry.type === payload.type
         ) as GuiMiscellaneousStateEntry
     },
 

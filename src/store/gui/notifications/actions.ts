@@ -58,7 +58,7 @@ export const actions: ActionTree<GuiNotificationState, RootState> = {
 
     async storeDismiss(
         { commit, dispatch, state },
-        payload: { entry_id: string; category: string; type: string; time: number | null },
+        payload: { entry_id: string; category: string; type: string; time: number | null }
     ) {
         let date = new Date().getTime()
         if (payload.type === 'time') {
@@ -77,7 +77,7 @@ export const actions: ActionTree<GuiNotificationState, RootState> = {
                 (dismiss) =>
                     dismiss.id === newDismiss.id &&
                     dismiss.category === newDismiss.category &&
-                    dismiss.type === newDismiss.type,
+                    dismiss.type === newDismiss.type
             ).length
         ) {
             await commit('removeDismiss', newDismiss)

@@ -93,7 +93,7 @@ export const actions: ActionTree<EditorState, RootState> = {
 
     async saveFile(
         { state, commit, getters, rootGetters, dispatch },
-        payload: { content: string; restartServiceName: string | null },
+        payload: { content: string; restartServiceName: string | null }
     ) {
         const content = new Blob([payload.content], { type: 'text/plain' })
         const formData = new FormData()

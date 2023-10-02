@@ -39,7 +39,7 @@ export const getters: GetterTree<ServerJobQueueState, any> = {
                     thumb.width >= thumbnailSmallMin &&
                     thumb.width <= thumbnailSmallMax &&
                     thumb.height >= thumbnailSmallMin &&
-                    thumb.height <= thumbnailSmallMax,
+                    thumb.height <= thumbnailSmallMax
             )
             const path =
                 item.filename.lastIndexOf('/') !== -1

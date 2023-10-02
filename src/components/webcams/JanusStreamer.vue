@@ -64,7 +64,7 @@ export default class JanusStreamer extends Mixins(BaseMixin, WebcamMixin) {
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0,
+                this.camSettings.rotation ?? 0
             ),
             aspectRatio: 16 / 9,
         }

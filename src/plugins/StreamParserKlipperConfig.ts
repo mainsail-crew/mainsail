@@ -136,7 +136,7 @@ export const klipper_config: StreamParser<any> = {
         const cyclerMethods = ['\\.reset\\(\\)', '\\.next\\(\\)']
         const reKeyword = new RegExp('^' + keywords.join('\\s+|') + '|' + cyclerMethods.join('|') + '\\s+')
         const reUpdateOps = new RegExp(
-            '^' + filters.join('|') + '|' + tests.join('|') + '|' + globalFns.join('|') + '\\s+',
+            '^' + filters.join('|') + '|' + tests.join('|') + '|' + globalFns.join('|') + '\\s+'
         )
 
         function jinja2Element(stream: StringStream): string {

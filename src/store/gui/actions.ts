@@ -463,7 +463,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
     setChartDatasetStatus(
         { commit, dispatch, state },
-        payload: { objectName: string; dataset: string; value: boolean },
+        payload: { objectName: string; dataset: string; value: boolean }
     ) {
         commit('setChartDatasetStatus', payload)
 
@@ -475,7 +475,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
     setDatasetAdditionalSensorStatus(
         { commit, dispatch, state },
-        payload: { objectName: string; dataset: string; value: boolean },
+        payload: { objectName: string; dataset: string; value: boolean }
     ) {
         commit('setDatasetAdditionalSensorStatus', payload)
 

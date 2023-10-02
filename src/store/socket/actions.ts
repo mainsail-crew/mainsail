@@ -20,7 +20,7 @@ export const actions: ActionTree<SocketState, RootState> = {
         if ('$socket' in Vue.prototype) {
             await Vue.prototype.$socket.close()
             await Vue.prototype.$socket.setUrl(
-                state.protocol + '://' + payload.hostname + ':' + payload.port + '/websocket',
+                state.protocol + '://' + payload.hostname + ':' + payload.port + '/websocket'
             )
             await Vue.prototype.$socket.connect()
         }

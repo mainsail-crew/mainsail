@@ -172,7 +172,7 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
                 device: this.printerPowerDevice,
                 action: 'on',
             },
-            { action: 'server/power/responseToggle' },
+            { action: 'server/power/responseToggle' }
         )
     }
 }

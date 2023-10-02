@@ -131,7 +131,7 @@ export default class PresetsForm extends Mixins(BaseMixin) {
         presetValues
             .filter(
                 (name: string) =>
-                    !this.available_heaters.includes(name) && !this.available_temperature_fans.includes(name),
+                    !this.available_heaters.includes(name) && !this.available_temperature_fans.includes(name)
             )
             .forEach((name) => {
                 delete this.preset.values[name]
@@ -141,7 +141,7 @@ export default class PresetsForm extends Mixins(BaseMixin) {
     existsPresetName(name: string) {
         return (
             this.presets.findIndex(
-                (preset: GuiPresetsStatePreset) => preset.name === name && preset.id !== this.preset.id,
+                (preset: GuiPresetsStatePreset) => preset.name === name && preset.id !== this.preset.id
             ) !== -1
         )
     }

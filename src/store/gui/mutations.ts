@@ -125,7 +125,7 @@ export const mutations: MutationTree<GuiState> = {
         Vue.set(
             state.view.tempchart.datasetSettings[payload.objectName].additionalSensors,
             payload.dataset,
-            payload.value,
+            payload.value
         )
     },
 }
