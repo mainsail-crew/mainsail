@@ -59,7 +59,7 @@
                     <v-icon>{{ mdiMenuDown }}</v-icon>
                 </v-btn>
                 <v-dialog v-model="paramsDialog">
-                    <panel :title="macro.name" :card-class="`macro-params-mobile-${macro.name}`" :margin-bottom="0">
+                    <panel :title="macro.name" :card-class="`macro-params-mobile-${macro.name}`" :margin-bottom="false">
                         <template #buttons>
                             <v-btn icon tile @click="paramsDialog = false">
                                 <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -101,6 +101,8 @@ import BaseMixin from '@/components/mixins/base'
 import { GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
 import { mdiCloseThick, mdiMenuDown, mdiRefresh } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
+import { TranslateResult } from 'vue-i18n'
+import { PrinterStateMacro } from '@/store/printer/types'
 
 interface param {
     type: 'int' | 'double' | 'string' | null
@@ -128,13 +130,13 @@ export default class MacroButton extends Mixins(BaseMixin) {
     private paramsDialog = false
 
     @Prop({ required: true })
-    declare readonly macro: GuiMacrosStateMacrogroupMacro
+    declare readonly macro: GuiMacrosStateMacrogroupMacro | PrinterStateMacro
 
     @Prop({ default: 'primary' })
     declare readonly color: string
 
     @Prop({ default: null })
-    declare readonly alias: string
+    declare readonly alias: string | TranslateResult
 
     @Prop({ default: false })
     declare readonly disabled: boolean

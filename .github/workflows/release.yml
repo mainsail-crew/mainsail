@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone develop repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
           ref: 'develop'
@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: 'master'
           fetch-depth: 0
@@ -61,7 +61,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
         run: npm ci
@@ -80,7 +80,7 @@ jobs:
           echo "TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
 
       - name: Generate a changelog
-        uses: orhun/git-cliff-action@v1
+        uses: orhun/git-cliff-action@v2
         id: generate-changelog
         with:
           config: ./cliff-release.toml
@@ -101,7 +101,7 @@ jobs:
         run: cp ./remote/* ./dist/
 
       - name: Upload to remote server
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        uses: SamKirkland/FTP-Deploy-Action@v4
         with:
           server: ${{ secrets.REMOTEHOST }}
           username: ${{ secrets.REMOTEUSER }}

@@ -78,16 +78,16 @@
         "@types/lodash.throttle": "^4.1.6",
         "@types/semver": "^7.3.8",
         "@types/uuid": "^8.3.1",
-        "@typescript-eslint/eslint-plugin": "^5.11.0",
-        "@typescript-eslint/parser": "^5.11.0",
-        "@vue/eslint-config-typescript": "^11.0.0",
+        "@typescript-eslint/eslint-plugin": "^6.0.0",
+        "@typescript-eslint/parser": "^6.0.0",
+        "@vue/eslint-config-typescript": "^12.0.0",
         "autoprefixer": "^10.4.2",
         "cypress": "^13.2.0",
         "eslint": "^8.9.0",
-        "eslint-config-prettier": "^8.3.0",
+        "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-jsonc": "^2.2.1",
         "eslint-plugin-vue": "^9.0.0",
-        "prettier": "^2.5.1",
+        "prettier": "^3.0.0",
         "sass": "~1.32",
         "start-server-and-test": "^1.14.0",
         "typescript": "^4.5.5",
@@ -119,6 +119,6 @@
         "last 2 edge major versions"
     ],
     "engines": {
-        "node": "^16 || ^18"
+        "node": "^18 || ^20"
     }
 }

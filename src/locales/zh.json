@@ -245,6 +245,7 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "清除",
+        "CNCMode": "CNC模式",
         "ColorMode": "颜色模式",
         "Downloading": "正在下载",
         "ForceLineRendering": "强制线渲染",
@@ -258,6 +259,7 @@
         "ReloadRequired": "需要重新加载",
         "Rendering": "正在渲染",
         "RenderQuality": "渲染质量",
+        "ShowGCode": "显示G-Code",
         "ShowObjectSelection": "显示可选对象",
         "ShowToolhead": "显示打印头",
         "ShowTravelMoves": "显示移动路径",
@@ -266,9 +268,7 @@
         "Tracking": "正在追踪",
         "Transparency": "透明度",
         "Ultra": "极致",
-        "VoxelMode": "体素模式(ASMBL)",
-        "ShowGCode": "显示G-Code",
-        "CNCMode": "CNC模式"
+        "VoxelMode": "体素模式(ASMBL)"
     },
     "Heightmap": {
         "Abort": "取消",
@@ -318,8 +318,8 @@
         "AllJobs": "全部",
         "AvgPrinttime": "平均打印时间",
         "Cancel": "取消",
-        "CreateNote": "新建便条",
         "Chart": "图表",
+        "CreateNote": "新建便条",
         "Delete": "删除",
         "DeleteSelectedQuestion": "你是否要删除已选中的{count}个任务？",
         "DeleteSingleJobQuestion": "你是否要删除这个任务？",
@@ -384,8 +384,8 @@
     },
     "JobQueue": {
         "AllJobs": "全部任务",
-        "ChangeCount": "变更计数",
         "Cancel": "取消",
+        "ChangeCount": "变更计数",
         "Count": "计数",
         "Empty": "没有任务",
         "InvalidCountEmpty": "输入值不能为空！",
@@ -449,8 +449,8 @@
             "Logfiles": "日志文件",
             "Rollover": "清理日志",
             "RolloverDescription": "请选择需要重置的日志：",
-            "RolloverToastSuccessful": "日志\"{name}\"已经重置。",
-            "RolloverToastFailed": "清理日志\"{name}\": {message}"
+            "RolloverToastFailed": "清理日志\"{name}\": {message}",
+            "RolloverToastSuccessful": "日志\"{name}\"已经重置。"
         },
         "SystemPanel": {
             "Constants": "常量",
@@ -490,8 +490,8 @@
             "CommittedHoursAgo": "{hours}小时前提交",
             "CommittedOnDate": "提交于{date}",
             "CommittedYesterday": "昨天提交",
-            "Corrupt": "破坏",
             "ConfigChanges": "查看变更日志",
+            "Corrupt": "破坏",
             "CountPackagesCanBeUpgraded": "有{count}个软件包可以更新",
             "Detached": "独立分支",
             "Dirty": "被修改",
@@ -501,9 +501,9 @@
             "InitUpdateManager": "更新管理器尚未初始化。这是在您首次启动系统时的正常现象。请点击刷新按钮来初始化所有组件。",
             "Invalid": "无效",
             "IUnderstandTheRisks": "我已了解此风险",
-            "LinkToGithub": "链接到GitHub",
-            "KlipperUpdateQuestionFirmware": "此操作将更新Klipper主机软件。运行Klipper固件的打印机控制板，可能需要更新到最新编译的固件后才能使用。",
             "KlipperUpdateQuestionConfig": "此更新还可能包含对配置参数的更改，这些更改需要修改printer.cfg文件，有关详细信息请参阅更改日志。",
+            "KlipperUpdateQuestionFirmware": "此操作将更新Klipper主机软件。运行Klipper固件的打印机控制板，可能需要更新到最新编译的固件后才能使用。",
+            "LinkToGithub": "链接到GitHub",
             "MoonrakerUpdateQuestion": "此操作将更新Moonraker API。可能需要更改moonraker.conf文件才能继续使用打印机。",
             "MoreCommitsInfo": "这里最多可以显示30个提交。要查看所有提交，请单击以下链接：",
             "OSPackages": "操作系统软件包",
@@ -744,6 +744,13 @@
         "Timelapse": "延时摄影",
         "Webcam": "摄像头"
     },
+    "ScrewsTiltAdjust": {
+        "Accept": "接受",
+        "Base": "底座",
+        "ErrorText": "探测过程中出现了问题。",
+        "Headline": "螺丝倾斜调整",
+        "Retry": "重试"
+    },
     "SelectPrinterDialog": {
         "AddPrinter": "添加打印机",
         "AddPrintersToJson": "请将打印机添加到 config.json 。",
@@ -792,10 +799,10 @@
             "Circle": "圆形",
             "Control": "控制",
             "Cross": "交叉",
-            "HideDuringPrint": "打印期间隐藏轴控制",
             "EnableXYHoming": "显示X&Y轴归零按钮",
             "EstimatedExtrusionInfo": "显示预估的挤出信息",
             "EstimatedExtrusionInfoDescription": "显示/隐藏根据挤出量和进给速度预估的挤出信息",
+            "HideDuringPrint": "打印期间隐藏轴控制",
             "InvertXMovement": "翻转X轴移动方向",
             "InvertYMovement": "翻转Y轴移动方向",
             "InvertZMovement": "翻转Z轴移动方向",
@@ -832,11 +839,11 @@
             "Editor": "编辑器",
             "KlipperRestartMethod": "Klipper重启方法",
             "KlipperRestartMethodDescription": "编辑完Klipper配置文件并按下\"保存并重启\"按钮后，使用哪种重启方法。",
-            "UseEscToClose": "使用ESC关闭编辑器",
-            "UseEscToCloseDescription": "允许使用ESC键关闭编辑器",
+            "Spaces": "{count}个空格",
             "TabSize": "TAB长度",
             "TabSizeDescription": "按下TAB键时，填充空格的数量",
-            "Spaces": "{count}个空格"
+            "UseEscToClose": "使用ESC关闭编辑器",
+            "UseEscToCloseDescription": "允许使用ESC键关闭编辑器"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "背景颜色",
@@ -876,6 +883,7 @@
                 "File": "Gcode文件",
                 "Slicer": "切片软件"
             },
+            "Everything": "全部",
             "FactoryDialog": "请选择想要恢复到默认值的项：",
             "FactoryReset": "恢复默认设置",
             "General": "通用",
@@ -885,8 +893,7 @@
             "Reset": "重启",
             "Restore": "恢复",
             "RestoreDialog": "请选择你想要恢复的项：",
-            "TimeFormat": "时间格式",
-            "Everything": "全部"
+            "TimeFormat": "时间格式"
         },
         "InterfaceSettings": "Mainsail设置",
         "MacrosTab": {
@@ -1101,6 +1108,7 @@
             "EditWebcam": "编辑摄像头",
             "FlipWebcam": "翻转摄像头图像：",
             "HideFps": "隐藏FPS数值显示",
+            "Hlsstream": "HLS视频流",
             "Horizontally": "水平",
             "IconBed": "热床",
             "IconCam": "摄像头",
@@ -1111,11 +1119,9 @@
             "IconNozzle": "喷嘴",
             "IconPrinter": "打印机",
             "Ipstream": "IP摄像头",
-            "Hlsstream": "HLS视频流",
-            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "JMuxerStream": "原始h264视频流 (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (试验性)",
-            "JMuxerStream": "原始h264视频流 (jmuxer)",
             "Name": "名称",
             "NameAlreadyExists": "名称已经存在",
             "Required": "需要填写名称",
@@ -1130,15 +1136,9 @@
             "Vertically": "垂直",
             "Webcams": "摄像头",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "接受",
-        "Base": "底座",
-        "ErrorText": "探测过程中出现了问题。",
-        "Headline": "螺丝倾斜调整",
-        "Retry": "重试"
     },
     "Timelapse": {
         "AllFiles": "全部文件",

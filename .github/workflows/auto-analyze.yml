@@ -12,7 +12,7 @@ jobs:
   auto-analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-node@v3
         if: contains(steps.changed-file-package-json.outputs.modified_files, 'package.json')
         with:
-          node-version: '16'
+          node-version: 20
           cache: 'npm'
 
       - uses: preactjs/compressed-size-action@v2

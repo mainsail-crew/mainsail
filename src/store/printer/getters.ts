@@ -10,7 +10,6 @@ import {
     PrinterStateMiscellaneous,
     PrinterStateMcu,
     PrinterStateMacro,
-    PrinterStateToolchangeMacro,
     PrinterGetterObject,
     PrinterStateLight,
 } from '@/store/printer/types'
@@ -770,28 +769,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
         if (diff > 60 * 60 * 24 * 1000) output += `+${Math.trunc(diff / (60 * 60 * 24 * 1000))}`
 
         return output
-    },
-
-    getToolchangeMacros: (state, getters) => {
-        const macros = getters['getMacros']
-        const tools: PrinterStateToolchangeMacro[] = []
-
-        macros
-            .filter((macro: any) => macro.name.toUpperCase().match(/^T\d+/))
-            .forEach((macro: any) =>
-                tools.push({
-                    name: macro.name,
-                    active: macro.variables.active ?? false,
-                    color: macro.variables.color ?? macro.variables.colour ?? null,
-                })
-            )
-
-        return tools.sort((a, b) => {
-            const numberA = parseInt(a.name.slice(1))
-            const numberB = parseInt(b.name.slice(1))
-
-            return numberA - numberB
-        })
     },
 
     getKinematics: (state) => {
