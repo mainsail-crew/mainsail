@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiAdjust, mdiDatabase, mdiMagnify, mdiRefresh } from '@mdi/js'
@@ -158,6 +158,11 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     setSpool(spool: ServerSpoolmanStateSpool) {
         this.$store.dispatch('server/spoolman/setActiveSpool', spool.id)
         this.close()
+    }
+
+    @Watch('showDialog')
+    onShowDialogChanged(newVal: boolean) {
+        if (newVal) this.search = ''
     }
 }
 </script>
