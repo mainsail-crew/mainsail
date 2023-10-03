@@ -89,65 +89,6 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
         return this.$store.state.server.spoolman.active_spool ?? null
     }
 
-    get color() {
-        const color = this.active_spool?.filament.color_hex ?? null
-        if (color === null) return '#000'
-
-        return `#${color}`
-    }
-
-    get id() {
-        return this.active_spool?.id ?? 'XX'
-    }
-
-    get vendor() {
-        return this.active_spool?.filament?.vendor?.name ?? 'Unknown'
-    }
-
-    get name() {
-        return this.active_spool?.filament.name ?? 'Unknown'
-    }
-
-    get materialOutput() {
-        const material = this.active_spool?.filament.material ?? null
-        if (material === null) return null
-
-        return material
-    }
-
-    get weightOutput() {
-        let remaining = this.active_spool?.remaining_weight ?? null
-        let total = this.active_spool?.filament.weight ?? null
-        let unit = 'g'
-
-        if (remaining === null || total === null) return null
-        remaining = Math.round(remaining)
-        let totalRound = Math.floor(total / 1000)
-
-        if (total >= 1000) {
-            if (totalRound !== total / 1000) {
-                totalRound = Math.round(total / 100) / 10
-            }
-
-            return `${remaining}g / ${totalRound}kg`
-        }
-
-        return `${remaining} / ${total}${unit}`
-    }
-
-    get lengthOutput() {
-        let remaining = this.active_spool?.remaining_length ?? null
-
-        if (remaining === null) return null
-        remaining = Math.round(remaining / 1000)
-
-        return `${remaining}m`
-    }
-
-    get subtitle() {
-        return [this.materialOutput, this.weightOutput, this.lengthOutput].filter((v) => v !== null).join(' | ')
-    }
-
     get spoolManagerUrl() {
         return this.$store.state.server.config.config?.spoolman?.server ?? null
     }
