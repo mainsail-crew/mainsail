@@ -49,7 +49,7 @@ export default class StartPrintDialogSpoolman extends Mixins(BaseMixin) {
     get classSecondDivider() {
         const classes = ['mt-4']
 
-        classes.push(this.moonrakerComponents.includes('spoolman') ? 'mb-2' : 'mb-0')
+        classes.push(this.moonrakerComponents.includes('timelapse') ? 'mb-2' : 'mb-0')
 
         return classes
     }
