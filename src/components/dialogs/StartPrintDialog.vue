@@ -11,7 +11,7 @@
                 </p>
             </v-card-text>
             <start-print-dialog-spoolman v-if="moonrakerComponents.includes('spoolman')" :file="file" />
-            <template v-if="moonrakerComponents.includes('timelapse') || true">
+            <template v-if="moonrakerComponents.includes('timelapse')">
                 <v-divider v-if="!moonrakerComponents.includes('spoolman')" class="mt-3 mb-2" />
                 <v-card-text class="py-0">
                     <settings-row :title="$t('Dialogs.StartPrint.Timelapse')">
