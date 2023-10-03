@@ -84,11 +84,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     search = ''
 
     get spools(): ServerSpoolmanStateSpool[] {
-        const spools = this.$store.state.server.spoolman.spools ?? []
-
-        return spools.filter((spool: ServerSpoolmanStateSpool) => {
-            return spool.filament !== null
-        })
+        return this.$store.state.server.spoolman.spools ?? []
     }
 
     get headers() {
