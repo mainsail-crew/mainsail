@@ -17,7 +17,7 @@
         <td class="text-center text-no-wrap">{{ material }}</td>
         <td class="text-right text-no-wrap">{{ last_used }}</td>
         <td class="text-right text-no-wrap">
-            <strong>{{ rest_weight_format }}</strong>
+            <strong>{{ remaining_weight_format }}</strong>
             <small class="ml-1">/ {{ total_weight_format }}</small>
         </td>
     </tr>
@@ -31,6 +31,10 @@ import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 @Component({})
 export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
     @Prop({ required: true }) declare readonly spool: ServerSpoolmanStateSpool
+
+    mounted() {
+        window.console.log(this.spool)
+    }
 
     get color() {
         const color = this.spool.filament?.color_hex ?? '000'
@@ -54,16 +58,16 @@ export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
         return this.spool.filament?.material ?? '--'
     }
 
-    get used_weight() {
-        return this.spool.used_weight ?? 0
+    get remaining_weight() {
+        return this.spool.remaining_weight ?? 0
     }
 
     get total_weight() {
         return this.spool.filament?.weight ?? 0
     }
 
-    get rest_weight_format() {
-        return `${(this.total_weight - this.used_weight).toFixed(0)}g`
+    get remaining_weight_format() {
+        return `${this.remaining_weight.toFixed(0)}g`
     }
 
     get total_weight_format() {
