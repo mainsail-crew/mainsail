@@ -2,7 +2,7 @@
 
 <template>
     <v-dialog v-model="showDialog" persistent :width="400">
-        <v-card dark>
+        <v-card>
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading">
@@ -28,7 +28,7 @@
                 </div>
             </v-card-text>
             <v-card-text v-else class="pt-5">
-                <v-progress-linear color="white" indeterminate></v-progress-linear>
+                <v-progress-linear indeterminate></v-progress-linear>
             </v-card-text>
         </v-card>
     </v-dialog>

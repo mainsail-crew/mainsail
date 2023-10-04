@@ -2,13 +2,16 @@
     <v-navigation-drawer
         :key="navigationStyle"
         v-model="naviDrawer"
-        :src="sidebarBackground"
         :mini-variant="navigationStyle === 'iconsOnly'"
         :width="navigationWidth"
         :temporary="boolNaviTemp"
         clipped
         app
         :style="sidebarCssVars">
+        <template #img>
+            <v-img :src="sidebarBackground" height="100%" :style="backgroundImageStyle" />
+        </template>
+
         <overlay-scrollbars class="nav-scrollbar">
             <v-list class="pr-0 pt-0 ml-0">
                 <v-list-item-group active-class="active-nav-item">
@@ -53,6 +56,7 @@ import { navigationWidth, topbarHeight } from '@/store/variables'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import SidebarItem from '@/components/ui/SidebarItem.vue'
 import NavigationMixin from '@/components/mixins/navigation'
+import { CSSProperties } from 'vue/types/jsx'
 
 @Component({
     components: {
@@ -90,14 +94,17 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin) {
         return !this.isMobile && this.$vuetify.breakpoint.mdAndDown
     }
 
-    get sidebarCssVars(): any {
-        if (this.boolNaviTemp) {
-            return {
-                top: `${topbarHeight}px !important`,
-                'padding-bottom': `${topbarHeight}px`,
-            }
+    get sidebarCssVars(): CSSProperties {
+        let vars: CSSProperties = {
+            ...(this.boolNaviTemp && { top: `${topbarHeight}px !important` }),
+            ...(this.boolNaviTemp && { paddingBottom: `${topbarHeight}px` }),
         }
-        return {}
+
+        return vars
+    }
+
+    get backgroundImageStyle(): CSSProperties {
+        return !this.$vuetify.theme.dark ? { filter: 'invert(1)' } : {}
     }
 
     get sidebarLogo(): string {

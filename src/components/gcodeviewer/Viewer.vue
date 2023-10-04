@@ -209,7 +209,7 @@
             </v-card-text>
             <resize-observer @notify="handleResize" />
         </panel>
-        <v-snackbar v-model="loading" :timeout="-1" :value="true" fixed right bottom dark>
+        <v-snackbar v-model="loading" :timeout="-1" :value="true" fixed right bottom>
             <div>
                 {{ $t('GCodeViewer.Rendering') }} - {{ loadingPercent }}%
                 <br />
@@ -222,7 +222,7 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
+        <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" :value="true" fixed right bottom>
             <template v-if="downloadSnackbar.total > 0">
                 <div>
                     {{ $t('GCodeViewer.Downloading') }} - {{ Math.round(downloadSnackbar.percent) }} % @

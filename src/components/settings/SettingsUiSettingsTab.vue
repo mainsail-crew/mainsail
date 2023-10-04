@@ -2,6 +2,12 @@
     <div>
         <v-card flat>
             <v-card-text>
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.Theme')"
+                    :sub-title="$t('Settings.UiSettingsTab.ThemeDescription')">
+                    <v-select v-model="theme" :items="themes" class="mt-0" hide-details outlined dense />
+                </settings-row>
+                <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.UiSettingsTab.Logo')">
                     <v-btn
                         v-if="logoColor.toLowerCase() !== defaultLogoColor.toLowerCase()"
@@ -238,6 +244,27 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     defaultLogoColor = defaultLogoColor
     defaultPrimaryColor = defaultPrimaryColor
+
+    get theme() {
+        return this.$store.state.gui.uiSettings.theme
+    }
+
+    set theme(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.theme', value: newVal })
+    }
+
+    get themes() {
+        return [
+            {
+                text: this.$t('Settings.UiSettingsTab.ThemeDark'),
+                value: 'dark',
+            },
+            {
+                text: this.$t('Settings.UiSettingsTab.ThemeLight'),
+                value: 'light',
+            },
+        ]
+    }
 
     get logoColor() {
         return this.$store.state.gui.uiSettings.logo

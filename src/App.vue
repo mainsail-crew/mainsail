@@ -1,5 +1,5 @@
 <template>
-    <v-app dark :style="cssVars">
+    <v-app :style="cssVars">
         <template v-if="socketIsConnected && guiIsReady">
             <the-sidebar />
             <the-topbar />
@@ -119,6 +119,10 @@ export default class App extends Mixins(BaseMixin) {
         return this.$store.state.printer.print_stats?.filename ?? ''
     }
 
+    get theme(): string {
+        return this.$store.state.gui.uiSettings.theme
+    }
+
     get logoColor(): string {
         return this.$store.state.gui.uiSettings.logo
     }
@@ -193,6 +197,11 @@ export default class App extends Mixins(BaseMixin) {
         this.$nextTick(() => {
             this.$vuetify.theme.currentTheme.primary = newVal
         })
+    }
+
+    @Watch('theme')
+    themeChanged(newVal: string): void {
+        this.$vuetify.theme.dark = newVal == 'dark' ? true : false
     }
 
     drawFavicon(val: number): void {
