@@ -1,7 +1,13 @@
 <template>
-    <v-item-group v-if="toolchangeMacros.length > 1" class="_btn-group py-0 px-3 mt-3">
-        <extruder-control-panel-tools-item v-for="macro in toolchangeMacros" :key="macro.name" :macro="macro" />
-    </v-item-group>
+    <div v-if="toolchangeMacros.length > 1">
+        <v-row v-for="(row, index) in rows" :key="'row_' + index" class="mt-0">
+            <v-col>
+                <v-item-group class="_btn-group py-0 px-3">
+                    <extruder-control-panel-tools-item v-for="macro in row" :key="macro.name" :macro="macro" />
+                </v-item-group>
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
 <script lang="ts">
@@ -28,6 +34,17 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
 
                 return numberA - numberB
             })
+    }
+
+    get rows() {
+        const cols = 6
+        let rows = []
+
+        for (let i = 0; i < this.toolchangeMacros.length; i += cols) {
+            rows.push(this.toolchangeMacros.slice(i, i + cols))
+        }
+
+        return rows
     }
 }
 </script>
