@@ -31,11 +31,6 @@ import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 @Component({})
 export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
     @Prop({ required: true }) declare readonly spool: ServerSpoolmanStateSpool
-
-    mounted() {
-        window.console.log(this.spool)
-    }
-
     get color() {
         const color = this.spool.filament?.color_hex ?? '000'
 
