@@ -40,10 +40,10 @@
                         :headers="headers"
                         :items="spools"
                         item-key="id"
-                        class="elevation-1"
                         :search="search"
-                        :custom-filter="customFilter"
-                        :disable-sort="true">
+                        sort-by="last_used"
+                        :sort-desc="true"
+                        :custom-filter="customFilter">
                         <template #no-data>
                             <div class="text-center">{{ $t('Panels.SpoolmanPanel.NoSpools') }}</div>
                         </template>
@@ -92,22 +92,28 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
             {
                 text: ' ',
                 align: 'start',
+                sortable: false,
             },
             {
                 text: this.$t('Panels.SpoolmanPanel.Filament'),
                 align: 'start',
+                value: 'filament.name',
+                sortable: false,
             },
             {
                 text: this.$t('Panels.SpoolmanPanel.Material'),
                 align: 'center',
+                value: 'filament.material',
             },
             {
                 text: this.$t('Panels.SpoolmanPanel.LastUsed'),
                 align: 'end',
+                value: 'last_used',
             },
             {
                 text: this.$t('Panels.SpoolmanPanel.Weight'),
                 align: 'end',
+                value: 'remaining_weight',
             },
         ]
     }
