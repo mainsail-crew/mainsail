@@ -145,6 +145,21 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
                 })
         }
 
+        // hide Monitors, if the option is set to true
+        const hideMonitors = rootState.gui?.view?.tempchart?.hideMonitors ?? false
+        if (hideMonitors) {
+            const monitors = rootState.printer?.heaters?.available_monitors ?? []
+
+            Object.keys(selected)
+                .filter((seriesName) => {
+                    const datasetName = seriesName.slice(0, seriesName.lastIndexOf('-'))
+                    return monitors.includes(datasetName)
+                })
+                .forEach((seriesName) => {
+                    selected[seriesName] = false
+                })
+        }
+
         return selected
     },
 
