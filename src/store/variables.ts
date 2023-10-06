@@ -25,7 +25,15 @@ export const validGcodeExtensions = ['.gcode', '.g', '.gco', '.ufp', '.nc']
 /*
  * List of initable server components
  */
-export const initableServerComponents = ['history', 'power', 'updateManager', 'timelapse', 'jobQueue', 'announcements']
+export const initableServerComponents = [
+    'history',
+    'power',
+    'updateManager',
+    'timelapse',
+    'jobQueue',
+    'announcements',
+    'spoolman',
+]
 
 /*
  * List of required klipper config modules
@@ -78,6 +86,7 @@ export const allDashboardPanels = [
     'machine-settings',
     'miniconsole',
     'miscellaneous',
+    'spoolman',
     'temperature',
     'webcam',
 ]
