@@ -239,6 +239,7 @@ export const getDefaultState = (): GuiState => {
                 boolTempchart: true,
                 hiddenDataset: [],
                 hideMcuHostSensors: false,
+                hideMonitors: false,
                 autoscale: false,
                 datasetSettings: {},
             },
