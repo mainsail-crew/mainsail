@@ -630,7 +630,6 @@
             "EjectSpoolQuestion": "Sind Sie sicher, dass Sie die Filamentrolle auswerfen wollen?",
             "Filament": "Filament",
             "FilamentTypeMismatch": "Das Material der aktiven Filamentrolle ({spoolType}) stimmt nicht mit dem Material des G-Codes ({fileType}) überein.",
-            "FirstUsedOutput": "Erstmals verwendet: {firstUsed}",
             "Headline": "Spoolman",
             "LastUsed": "Zuletzt verwendet",
             "Location": "Standort",
