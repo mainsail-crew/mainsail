@@ -8,8 +8,8 @@
         :collapsible="$route.fullPath !== '/cam'"
         card-class="webcam-panel"
         :margin-bottom="currentPage !== 'page'">
-        <template v-if="showSwitch" #buttons>
-            <v-menu :offset-y="true">
+        <template #buttons>
+            <v-menu v-if="showSwitch" :offset-y="true">
                 <template #activator="{ on, attrs }">
                     <v-btn text tile v-bind="attrs" v-on="on">
                         <v-icon v-if="'icon' in currentCam" small class="mr-2">
