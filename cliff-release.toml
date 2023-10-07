@@ -66,6 +66,9 @@ commit_parsers = [
 
     { body = ".*security", group = "Security"},
 ]
+link_parsers = [
+    { pattern = "#(\\d+)", href = "https://github.com/mainsail-crew/mainsail/issues/$1"},
+]
 # filter out the commits that are not matched by commit parsers
 filter_commits = true
 ignore_tags="v*-(beta|rc)*"
