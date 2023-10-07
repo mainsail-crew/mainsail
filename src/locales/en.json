@@ -137,7 +137,6 @@
         "TryAgain": "try again"
     },
     "Console": {
-        "Autoscroll": "Autoscroll",
         "CommandList": "Command list",
         "Empty": "Empty",
         "HideTemperatures": "Hide temperatures",
@@ -631,7 +630,6 @@
             "EjectSpoolQuestion": "Are you sure to eject the filament spool?",
             "Filament": "Filament",
             "FilamentTypeMismatch": "The material of the active spool ({spoolType}) does not match the material of the G-Code ({fileType}).",
-            "FirstUsedOutput": "First used: {firstUsed}",
             "Headline": "Spoolman",
             "LastUsed": "Last Used",
             "Location": "Location",
@@ -755,9 +753,7 @@
             "SaveConfig": "SAVE CONFIG",
             "SaveInfoDescription": "The new Z-Offset has been calculated and registered. Click on \"SAVE CONFIG\" to save it to the printer.cfg and restart Klipper.",
             "SaveInfoDescriptionPrint": "The new Z-Offset has been calculated and registered. After printing, click on \"SAVE CONFIG\" in the top bar to save it to the printer.cfg and restart Klipper.",
-            "SaveInfoHeadline": "Information",
-            "ToEndstop": "to Endstop",
-            "ToProbe": "to Probe"
+            "SaveInfoHeadline": "Information"
         }
     },
     "PowerDeviceChangeDialog": {
