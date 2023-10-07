@@ -11,6 +11,7 @@ export const getDefaultState = (): GuiConsoleState => {
         direction: 'table',
         entryStyle: 'default',
         height: 300,
+        autoscroll: true,
         consolefilters: {},
     }
 }

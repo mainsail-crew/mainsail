@@ -128,6 +128,10 @@ export const actions: ActionTree<SocketState, RootState> = {
                 dispatch('gui/webcams/initStore', payload.params[0], { root: true })
                 break
 
+            case 'notify_active_spool_set':
+                dispatch('server/spoolman/getActiveSpoolId', payload.params[0], { root: true })
+                break
+
             default:
                 window.console.debug(payload)
         }

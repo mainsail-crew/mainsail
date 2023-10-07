@@ -116,8 +116,14 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
     z-index: 99999;
     visibility: hidden;
     opacity: 0;
-    transition: visibility 200ms, opacity 200ms;
-    font: bold 42px Oswald, DejaVu Sans, Tahoma, sans-serif;
+    transition:
+        visibility 200ms,
+        opacity 200ms;
+    font:
+        bold 42px Oswald,
+        DejaVu Sans,
+        Tahoma,
+        sans-serif;
 }
 
 /*noinspection CssUnusedSymbol*/

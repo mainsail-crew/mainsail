@@ -166,6 +166,7 @@ export interface GuiState {
             boolTempchart: boolean
             hiddenDataset: string[]
             hideMcuHostSensors: boolean
+            hideMonitors: boolean
             autoscale: boolean
             datasetSettings: any
         }
