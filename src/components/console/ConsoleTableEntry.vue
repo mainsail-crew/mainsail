@@ -1,4 +1,4 @@
-<style scoped lang="scss">
+<style scoped>
 .consoleTableRow {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.95em;

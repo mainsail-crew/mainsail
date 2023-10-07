@@ -99,7 +99,7 @@ export default class GitCommitsListDayCommit extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 li.commit {
     border-color: rgb(48, 54, 61);
     border-style: solid;

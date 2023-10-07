@@ -1,4 +1,4 @@
-<style lang="scss" scoped></style>
+<style scoped></style>
 
 <template>
     <v-card-text class="pa-0">

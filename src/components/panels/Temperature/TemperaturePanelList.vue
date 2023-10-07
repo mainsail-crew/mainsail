@@ -155,7 +155,7 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .temperature-panel-table th,
 .temperature-panel-table ::v-deep td {
     padding-top: 5px !important;

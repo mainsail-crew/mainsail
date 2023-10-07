@@ -49,14 +49,13 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 ._btn-group {
     border-radius: 4px;
     display: inline-flex;
     flex-wrap: nowrap;
     max-width: 100%;
     min-width: 100%;
-    width: 100%;
 
     .v-btn {
         border-radius: 0;
