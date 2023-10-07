@@ -2,6 +2,15 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.7.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.7.1) - 2023-08-16
+### Bug Fixes and Improvements
+
+- Fix issue on tablet and smaller devices with the sidebar (#1518) | [218f85c](218f85c81feafecc80043e26e880f45be5bc5e3d)
+
+### Localization
+
+- **zh**: Update Chinese (zh) localization (#1521) | [caaf5e1](caaf5e16062d12f765d2e7d6c985dbc351e34336)
+
 ## [2.7.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.7.0) - 2023-08-12
 ### Features
 

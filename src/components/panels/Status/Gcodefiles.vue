@@ -20,7 +20,11 @@
                     @click="showDialog(item)">
                     <td class="pr-0 text-center" style="width: 32px">
                         <template v-if="item.small_thumbnail">
-                            <v-tooltip top content-class="tooltip__content-opacity1" :disabled="!item.big_thumbnail">
+                            <v-tooltip
+                                top
+                                content-class="tooltip__content-opacity1"
+                                :disabled="!item.big_thumbnail"
+                                :color="bigThumbnailTooltipColor">
                                 <template #activator="{ on, attrs }">
                                     <vue-load-image class="d-flex">
                                         <img
@@ -72,7 +76,7 @@
             :bool="showDialogBool"
             :file="dialogFile"
             :current-path="currentPath"
-            @closeDialog="closeDialog"></start-print-dialog>
+            @closeDialog="closeDialog" />
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item :disabled="printerIsPrinting || !klipperReadyForGui" @click="showDialog(contextMenu.item)">
@@ -241,6 +245,7 @@ import {
     mdiCloseThick,
 } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
+import { defaultBigThumbnailBackground } from '@/store/variables'
 
 interface dialogRenameObject {
     show: boolean
@@ -354,6 +359,18 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
 
     get styleContentTdWidth() {
         return `width: ${this.contentTdWidth}px;`
+    }
+
+    get bigThumbnailBackground() {
+        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+    }
+
+    get bigThumbnailTooltipColor() {
+        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
+            return undefined
+        }
+
+        return this.bigThumbnailBackground
     }
 
     showContextMenu(e: any, item: FileStateGcodefile) {

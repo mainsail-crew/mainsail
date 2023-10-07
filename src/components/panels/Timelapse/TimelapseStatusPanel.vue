@@ -202,10 +202,11 @@ import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiFile, mdiInformation, mdiTextBoxSearchOutline, mdiCloseThick } from '@mdi/js'
+import WebcamMixin from '@/components/mixins/webcam'
 @Component({
     components: { Panel, SettingsRow },
 })
-export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
+export default class TimelapseStatusPanel extends Mixins(BaseMixin, WebcamMixin) {
     mdiInformation = mdiInformation
     mdiFile = mdiFile
     mdiCloseThick = mdiCloseThick
@@ -351,14 +352,13 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
     }
 
     get webcamStyle() {
-        let transforms = []
-        const scale = [0, 180].includes(this.camSettings.rotate) ? 1 : this.scale
-        this.camSettings?.flipX ? transforms.push(`scaleX(-${scale})`) : transforms.push(`scaleX(${scale})`)
-        this.camSettings?.flipY ? transforms.push(`scaleY(-${scale})`) : transforms.push(`scaleY(${scale})`)
-        if (this.camSettings.rotate !== 0) transforms.push(`rotate(${this.camSettings.rotate}deg)`)
-        if (transforms.length) return { transform: transforms.join(' ') }
-
-        return {}
+        return {
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0
+            ),
+        }
     }
 
     startRender() {

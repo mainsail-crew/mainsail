@@ -72,6 +72,11 @@ export const getters: GetterTree<GuiState, any> = {
             allPanels = allPanels.filter((name) => name !== 'webcam')
         }
 
+        // remove spoolman panel, if no spoolman component exists in moonraker
+        if (!rootState.server.components.includes('spoolman')) {
+            allPanels = allPanels.filter((name) => name !== 'spoolman')
+        }
+
         return allPanels
     },
 
@@ -152,10 +157,8 @@ export const getters: GetterTree<GuiState, any> = {
         const setting = state.general.timeFormat
         if (setting === '12hours') return true
         if (setting === null) {
-            const browserLocale =
-                navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
-
-            if (browserLocale === 'en_us') return true
+            const timestring = new Date().toLocaleTimeString().split(' ')
+            return timestring.includes('AM') || timestring.includes('PM')
         }
 
         return false

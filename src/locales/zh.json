@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Description": "{name} 已过时且没有完整支持。当前版本是{version}，但是Mainsail需要{minVersion}或更高版本。",
+                "Headline": "过时的浏览器"
+            },
             "DependencyDescription": "当前版本的{name}并不支持Mainsail的全部功能。{name}需要至少更新到{neededVersion}版本。",
             "DependencyName": "依赖：{name}",
             "DismissAll": "全部忽略",
@@ -29,7 +33,7 @@
             "MustBeBetweenError": "必须在{min}和{max}之间！",
             "NoEmptyAllowedError": "输入值不能为空！"
         },
-        "Printers": "打印机集群",
+        "Printers": "打印机群组",
         "TheServiceWorker": {
             "DescriptionNeedUpdate": "本地缓存已过时，需要进行更新。请点击下面的按钮来更新缓存。",
             "TitleNeedUpdate": "PWA需要更新",
@@ -144,6 +148,7 @@
         "StartPrint": {
             "Cancel": "取消",
             "DoYouWantToStartFilename": "是否开始打印{filename}？",
+            "DoYouWantToStartFilenameFilament": "是否用以下耗材开始打印{filename}？",
             "Headline": "开始任务",
             "Print": "打印",
             "Timelapse": "延时摄影"
@@ -193,7 +198,7 @@
         "ExtruderTemp": "挤出机温度",
         "Filament": "耗材",
         "FilamentName": "耗材名称",
-        "FilamentType": "耗材规格",
+        "FilamentType": "耗材类型",
         "FilamentUsage": "耗材用量",
         "FilamentWeight": "耗材重量",
         "Files": "每页显示文件数",
@@ -219,7 +224,7 @@
         "Preheat": "预热",
         "PrintedFiles": "已打印文件",
         "PrintStart": "开始打印",
-        "PrintTime": "打印时间",
+        "PrintTime": "打印时长",
         "RefreshCurrentDirectory": "刷新当前路径",
         "Rename": "重命名",
         "RenameDirectory": "重命名文件夹",
@@ -245,6 +250,7 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "清除",
+        "CNCMode": "CNC模式",
         "ColorMode": "颜色模式",
         "Downloading": "正在下载",
         "ForceLineRendering": "强制线渲染",
@@ -258,6 +264,7 @@
         "ReloadRequired": "需要重新加载",
         "Rendering": "正在渲染",
         "RenderQuality": "渲染质量",
+        "ShowGCode": "显示G-Code",
         "ShowObjectSelection": "显示可选对象",
         "ShowToolhead": "显示打印头",
         "ShowTravelMoves": "显示移动路径",
@@ -266,9 +273,7 @@
         "Tracking": "正在追踪",
         "Transparency": "透明度",
         "Ultra": "极致",
-        "VoxelMode": "体素模式(ASMBL)",
-        "ShowGCode": "显示G-Code",
-        "CNCMode": "CNC模式"
+        "VoxelMode": "体素模式(ASMBL)"
     },
     "Heightmap": {
         "Abort": "取消",
@@ -316,10 +321,10 @@
     "History": {
         "AddNote": "添加便条",
         "AllJobs": "全部",
-        "AvgPrinttime": "平均打印时间",
+        "AvgPrinttime": "平均打印时长",
         "Cancel": "取消",
-        "CreateNote": "新建便条",
         "Chart": "图表",
+        "CreateNote": "新建便条",
         "Delete": "删除",
         "DeleteSelectedQuestion": "你是否要删除已选中的{count}个任务？",
         "DeleteSingleJobQuestion": "你是否要删除这个任务？",
@@ -329,63 +334,63 @@
         "EndTime": "结束时间",
         "EstimatedFilament": "预估耗材用量",
         "EstimatedFilamentWeight": "预估耗材重量",
-        "EstimatedTime": "预估时长",
+        "EstimatedTime": "预估打印时长",
         "FilamentCalc": "耗材预估长度",
         "FilamentUsage": "耗材用量",
-        "FilamentUsed": "耗材使用长度",
+        "FilamentUsed": "实际耗材用量",
         "Filename": "文件名",
         "Filesize": "文件大小",
         "FirstLayerBedTemp": "首层热床温度",
-        "FirstLayerExtTemp": "首层仓内温度",
+        "FirstLayerExtTemp": "首层挤出温度",
         "FirstLayerHeight": "首层高度",
         "HistoryFilamentUsage": "耗材用量",
-        "HistoryPrinttimeAVG": "打印时间",
+        "HistoryPrinttimeAVG": "打印时长",
         "JobDetails": "任务详情",
         "Jobs": "每页显示任务数",
-        "LastModified": "上次修改",
+        "LastModified": "修改日期",
         "LayerHeight": "层高",
-        "LongestPrinttime": "最长打印时间",
+        "LongestPrinttime": "最长打印时长",
         "Note": "便条",
         "ObjectHeight": "物体高度",
         "PrintDuration": "打印耗时",
         "PrintHistory": "打印历史",
-        "PrintTime": "打印时长",
-        "PrinttimeAvg": "平均打印时间",
+        "PrintTime": "实际打印时长",
+        "PrinttimeAvg": "平均打印时长",
         "Reprint": "重新打印",
         "Save": "保存",
         "Search": "搜索",
         "SelectedFilamentUsed": "已选中的任务耗材使用量",
         "SelectedJobs": "已选中的任务",
-        "SelectedPrinttime": "已选中的任务打印时间",
+        "SelectedPrinttime": "已选中的任务打印时长",
         "Slicer": "切片软件",
         "SlicerVersion": "切片软件版本",
         "StartTime": "开始时间",
         "Statistics": "统计",
-        "Status": "状态",
+        "Status": "任务状态",
         "StatusValues": {
-            "cancelled": "取消",
-            "completed": "完成",
-            "error": "错误",
+            "cancelled": "取消打印",
+            "completed": "完成打印",
+            "error": "故障",
             "in_progress": "打印中",
             "klippy_disconnect": "Klippy失去连接",
-            "klippy_shutdown": "Klippy已关闭",
+            "klippy_shutdown": "Klippy关闭",
             "Others": "其他",
-            "server_exit": "服务器退出"
+            "server_exit": "服务终止"
         },
         "Table": "表格",
         "TitleExportHistory": "导出历史记录",
         "TitleRefreshHistory": "刷新历史记录",
         "TitleSettings": "设置",
-        "TotalDuration": "总时间",
+        "TotalDuration": "总消耗时长",
         "TotalFilamentUsed": "耗材使用总量",
         "TotalJobs": "任务次数",
-        "TotalPrinttime": "总打印时间",
-        "TotalTime": "总消耗时间"
+        "TotalPrinttime": "总打印时长",
+        "TotalTime": "总消耗时长"
     },
     "JobQueue": {
         "AllJobs": "全部任务",
-        "ChangeCount": "变更计数",
         "Cancel": "取消",
+        "ChangeCount": "变更计数",
         "Count": "计数",
         "Empty": "没有任务",
         "InvalidCountEmpty": "输入值不能为空！",
@@ -422,7 +427,7 @@
             "FreeDisk": "剩余磁盘空间",
             "HiddenFiles": "显示隐藏文件",
             "HideBackupFiles": "隐藏备份文件",
-            "LastModified": "上次修改",
+            "LastModified": "修改日期",
             "Name": "名称",
             "RefreshDirectory": "刷新文件夹",
             "Rename": "重命名",
@@ -449,8 +454,8 @@
             "Logfiles": "日志文件",
             "Rollover": "清理日志",
             "RolloverDescription": "请选择需要重置的日志：",
-            "RolloverToastSuccessful": "日志\"{name}\"已经重置。",
-            "RolloverToastFailed": "清理日志\"{name}\": {message}"
+            "RolloverToastFailed": "清理日志\"{name}\": {message}",
+            "RolloverToastSuccessful": "日志\"{name}\"已经重置。"
         },
         "SystemPanel": {
             "Constants": "常量",
@@ -490,8 +495,8 @@
             "CommittedHoursAgo": "{hours}小时前提交",
             "CommittedOnDate": "提交于{date}",
             "CommittedYesterday": "昨天提交",
-            "Corrupt": "破坏",
             "ConfigChanges": "查看变更日志",
+            "Corrupt": "异常",
             "CountPackagesCanBeUpgraded": "有{count}个软件包可以更新",
             "Detached": "独立分支",
             "Dirty": "被修改",
@@ -501,9 +506,9 @@
             "InitUpdateManager": "更新管理器尚未初始化。这是在您首次启动系统时的正常现象。请点击刷新按钮来初始化所有组件。",
             "Invalid": "无效",
             "IUnderstandTheRisks": "我已了解此风险",
-            "LinkToGithub": "链接到GitHub",
-            "KlipperUpdateQuestionFirmware": "此操作将更新Klipper主机软件。运行Klipper固件的打印机控制板，可能需要更新到最新编译的固件后才能使用。",
             "KlipperUpdateQuestionConfig": "此更新还可能包含对配置参数的更改，这些更改需要修改printer.cfg文件，有关详细信息请参阅更改日志。",
+            "KlipperUpdateQuestionFirmware": "此操作将更新Klipper主机软件。运行Klipper固件的打印机控制板，可能需要更新到最新编译的固件后才能使用。",
+            "LinkToGithub": "链接到GitHub",
             "MoonrakerUpdateQuestion": "此操作将更新Moonraker API。可能需要更改moonraker.conf文件才能继续使用打印机。",
             "MoreCommitsInfo": "这里最多可以显示30个提交。要查看所有提交，请单击以下链接：",
             "OSPackages": "操作系统软件包",
@@ -540,8 +545,8 @@
             "FirmwareRetractionSettings": {
                 "RetractLength": "回抽长度",
                 "RetractSpeed": "回抽速度",
-                "UnretractExtraLength": "回料长度",
-                "UnretractSpeed": "回料速度"
+                "UnretractExtraLength": "装填长度",
+                "UnretractSpeed": "装填速度"
             },
             "Headline": "挤出机",
             "LoadFilament": "装载耗材",
@@ -561,7 +566,7 @@
             "WebcamOff": "关闭"
         },
         "KlippyStatePanel": {
-            "CheckKlippyAndUdsAddress": "请检查Klipper服务是否启动并且moonraker.conf已经添加了klippy_uds_address配置。",
+            "CheckKlippyAndUdsAddress": "请检查Klipper服务是否启动。",
             "FirmwareRestart": "重启Klipper固件",
             "MoonrakerCannotConnect": "Moonraker无法连接到Klipper ！",
             "PowerOn": "开启电源",
@@ -584,6 +589,7 @@
             "Send": "发送"
         },
         "MiniconsolePanel": {
+            "Autoscroll": "自动滚动",
             "Headline": "控制台",
             "HideTemperatures": "隐藏温度变化消息",
             "HideTimelapse": "隐藏延时摄影消息",
@@ -615,6 +621,32 @@
             "Off": "关闭",
             "On": "打开",
             "PowerControl": "电源控制"
+        },
+        "SpoolmanPanel": {
+            "Cancel": "取消",
+            "ChangeSpool": "更换料盘",
+            "DaysAgo": "{days}天前",
+            "EjectSpool": "弹出料盘",
+            "EjectSpoolQuestion": "你确定要弹出耗材料盘吗？",
+            "Filament": "耗材",
+            "FilamentTypeMismatch": "已激活料盘的材料({spoolType})与G-Code的材料({fileType})不匹配。",
+            "Headline": "Spoolman",
+            "LastUsed": "最后使用",
+            "Location": "位置",
+            "Material": "材料",
+            "Never": "从未",
+            "NoActiveSpool": "耗材跟踪未激活。要开始，请选择一个料盘。",
+            "NoResults": "未找到符合当前搜索条件的料盘。",
+            "NoSpools": "没有可用料盘",
+            "NoSpoolSelected": "没有选择料盘。请选择一个料盘，否则将无法跟踪此打印。",
+            "OpenSpoolManager": "打开料盘管理器",
+            "Refresh": "刷新",
+            "Search": "搜索",
+            "SelectSpool": "选择料盘",
+            "Today": "今天",
+            "TooLessFilament": "当前料盘可能没有足够的耗材用于此次打印。(剩余{spoolWeight}克/需要{fileWeight}克)",
+            "Weight": "重量",
+            "Yesterday": "昨天"
         },
         "StatusPanel": {
             "CancelPrint": "取消打印",
@@ -678,6 +710,7 @@
             },
             "Headline": "温度",
             "HideMcuHostSensors": "隐藏Host/MCU传感器",
+            "HideMonitors": "隐藏监视器",
             "Max": "最高",
             "Min": "最低",
             "Name": "名称",
@@ -720,9 +753,7 @@
             "SaveConfig": "保存配置",
             "SaveInfoDescription": "已经计算生成新的Z轴偏移。点击\"保存配置\"后会自动保存到printer.cfg中并重启Klipper。",
             "SaveInfoDescriptionPrint": "已经计算生成新的Z轴偏移。打印完成后点击\"保存配置\"后会自动保存到printer.cfg中并重启Klipper。",
-            "SaveInfoHeadline": "信息",
-            "ToEndstop": "距离限位",
-            "ToProbe": "距离Probe传感器"
+            "SaveInfoHeadline": "信息"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -743,6 +774,13 @@
         "Printers": "打印机",
         "Timelapse": "延时摄影",
         "Webcam": "摄像头"
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "接受",
+        "Base": "底座",
+        "ErrorText": "探测过程中出现了问题。",
+        "Headline": "螺丝倾斜调整",
+        "Retry": "重试"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "添加打印机",
@@ -792,10 +830,10 @@
             "Circle": "圆形",
             "Control": "控制",
             "Cross": "交叉",
-            "HideDuringPrint": "打印期间隐藏轴控制",
             "EnableXYHoming": "显示X&Y轴归零按钮",
             "EstimatedExtrusionInfo": "显示预估的挤出信息",
             "EstimatedExtrusionInfoDescription": "显示/隐藏根据挤出量和进给速度预估的挤出信息",
+            "HideDuringPrint": "打印期间隐藏轴控制",
             "InvertXMovement": "翻转X轴移动方向",
             "InvertYMovement": "翻转Y轴移动方向",
             "InvertZMovement": "翻转Z轴移动方向",
@@ -832,11 +870,11 @@
             "Editor": "编辑器",
             "KlipperRestartMethod": "Klipper重启方法",
             "KlipperRestartMethodDescription": "编辑完Klipper配置文件并按下\"保存并重启\"按钮后，使用哪种重启方法。",
-            "UseEscToClose": "使用ESC关闭编辑器",
-            "UseEscToCloseDescription": "允许使用ESC键关闭编辑器",
+            "Spaces": "{count}个空格",
             "TabSize": "TAB长度",
             "TabSizeDescription": "按下TAB键时，填充空格的数量",
-            "Spaces": "{count}个空格"
+            "UseEscToClose": "使用ESC关闭编辑器",
+            "UseEscToCloseDescription": "允许使用ESC键关闭编辑器"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "背景颜色",
@@ -868,6 +906,8 @@
             "CannotReadJson": "无法读取/解析备份文件。",
             "DateFormat": "日期格式",
             "DbConsoleHistory": "控制台历史记录",
+            "DbHistoryJobs": "历史任务",
+            "DbHistoryTotals": "历史总计",
             "DBNavigation": "侧边栏",
             "DbTimelapseSettings": "延时摄影设置",
             "DbView": "视图设置",
@@ -876,6 +916,7 @@
                 "File": "Gcode文件",
                 "Slicer": "切片软件"
             },
+            "Everything": "全部",
             "FactoryDialog": "请选择想要恢复到默认值的项：",
             "FactoryReset": "恢复默认设置",
             "General": "通用",
@@ -885,8 +926,7 @@
             "Reset": "重启",
             "Restore": "恢复",
             "RestoreDialog": "请选择你想要恢复的项：",
-            "TimeFormat": "时间格式",
-            "Everything": "全部"
+            "TimeFormat": "时间格式"
         },
         "InterfaceSettings": "Mainsail设置",
         "MacrosTab": {
@@ -949,7 +989,7 @@
             "UnableToLoadPreset": "无法加载预设"
         },
         "NavigationTab": {
-            "Navigation": "导航"
+            "Navigation": "侧边栏"
         },
         "PresetsTab": {
             "AddPreset": "添加预设",
@@ -1035,10 +1075,10 @@
             "Timelapse": "延时摄影",
             "TravelSpeed": "移动速度",
             "TravelSpeedDescription": "打印头移动到停靠位置和恢复到打印位置时的运动速度",
-            "UnretractDistance": "回料长度",
-            "UnretractDistanceDescription": "挤出机回抽后重新回料的长度",
-            "UnretractSpeed": "回料速度",
-            "UnretractSpeedDescription": "挤出机回抽后重新回料的速度",
+            "UnretractDistance": "装填长度",
+            "UnretractDistanceDescription": "挤出机回抽后重新装填的长度",
+            "UnretractSpeed": "装填速度",
+            "UnretractSpeedDescription": "挤出机回抽后重新装填的速度",
             "VariableFps": "可变FPS",
             "VariableFpsDescription": "如果开启，输出视频的帧率会根据目标时长来计算",
             "VariableFpsMax": "可变FPS最大值",
@@ -1048,7 +1088,8 @@
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "底板螺丝对话框",
-            "BedScrewsDialogDescription": "显示 BED_SCREWS_ADJUST 的辅助程序对话框。",
+            "BedScrewsDialogDescription": "显示BED_SCREWS_ADJUST辅助对话框。",
+            "BigThumbnailBackground": "大缩略图背景颜色",
             "BoolBigThumbnail": "大缩略图",
             "BoolBigThumbnailDescription": "打印时在状态框中显示大缩略图",
             "BoolHideUploadAndPrintButton": "隐藏\"上传并打印\"按钮",
@@ -1079,18 +1120,18 @@
             "LockSlidersDescription": "在允许更改之前需要解锁触摸屏上的滑动条",
             "Logo": "Logo颜色",
             "ManualProbeDialog": "手动Probe助手对话框",
-            "ManualProbeDialogDescription": "显示 PROBE_CALIBRATE 或 Z_ENDSTOP_CALIBRATE 的辅助程序对话框。",
-            "NavigationStyle": "导航栏样式",
-            "NavigationStyleDescription": "更改导航栏外观",
+            "ManualProbeDialogDescription": "显示PROBE_CALIBRATE或Z_ENDSTOP_CALIBRATE辅助对话框。",
+            "NavigationStyle": "侧边栏样式",
+            "NavigationStyleDescription": "更改侧边栏外观",
             "NavigationStyleIconsAndText": "图标+文字",
             "NavigationStyleIconsOnly": "仅图标",
             "PowerDeviceName": "打印机电源设备",
             "PowerDeviceNameDescription": "请选择可以控制打印机供电的Moonraker电源设备。",
             "Primary": "高亮颜色",
             "ScrewsTiltAdjustDialog": "螺丝倾斜调整对话框",
-            "ScrewsTiltAdjustDialogDescription": "显示 SCREWS_TILT_CALCULATE 的辅助程序对话框。",
+            "ScrewsTiltAdjustDialogDescription": "显示SCREWS_TILT_CALCULATE辅助对话框。",
             "TempchartHeight": "温度图表高度",
-            "TempchartHeightDescription": "修改Dashboard上温度图表的高度。",
+            "TempchartHeightDescription": "修改控制面板上温度图表的高度。",
             "UiSettings": "UI设置"
         },
         "Update": "更新",
@@ -1101,6 +1142,7 @@
             "EditWebcam": "编辑摄像头",
             "FlipWebcam": "翻转摄像头图像：",
             "HideFps": "隐藏FPS数值显示",
+            "Hlsstream": "HLS视频流",
             "Horizontally": "水平",
             "IconBed": "热床",
             "IconCam": "摄像头",
@@ -1111,11 +1153,9 @@
             "IconNozzle": "喷嘴",
             "IconPrinter": "打印机",
             "Ipstream": "IP摄像头",
-            "Hlsstream": "HLS视频流",
-            "WebrtcJanus": "WebRTC (janus-gateway)",
-            "Mjpegstreamer": "MJPEG-Streamer",
-            "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (试验性)",
             "JMuxerStream": "原始h264视频流 (jmuxer)",
+            "Mjpegstreamer": "MJPEG-Streamer",
+            "MjpegstreamerAdaptive": "自适应MJPEG-Streamer(试验性)",
             "Name": "名称",
             "NameAlreadyExists": "名称已经存在",
             "Required": "需要填写名称",
@@ -1124,21 +1164,15 @@
             "Service": "服务",
             "TargetFPS": "目标FPS",
             "UpdateWebcam": "更新摄像头",
-            "UrlSnapshot": "快照地址(URL)",
-            "UrlStream": "视频流地址(URL)",
+            "UrlSnapshot": "快照URL",
+            "UrlStream": "视频流URL",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "垂直",
             "Webcams": "摄像头",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "接受",
-        "Base": "底座",
-        "ErrorText": "探测过程中出现了问题。",
-        "Headline": "螺丝倾斜调整",
-        "Retry": "重试"
     },
     "Timelapse": {
         "AllFiles": "全部文件",

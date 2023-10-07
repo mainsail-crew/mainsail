@@ -22,12 +22,9 @@ export const mutations: MutationTree<GuiPresetsState> = {
     },
 
     update(state, payload) {
-        if (payload.id in state.presets) {
-            const preset = { ...state.presets[payload.id] }
-            Object.assign(preset, payload.values)
+        if (!(payload.id in state.presets)) return
 
-            Vue.set(state.presets, payload.id, preset)
-        }
+        Vue.set(state.presets, payload.id, payload.values)
     },
 
     updateCooldownGcode(state, payload) {

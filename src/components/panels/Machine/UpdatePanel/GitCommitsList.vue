@@ -83,7 +83,7 @@ export default class GitCommitsList extends Mixins(BaseMixin) {
             if (
                 commitDate.getFullYear() !== lastCommitDate.getFullYear() ||
                 commitDate.getMonth() !== lastCommitDate.getMonth() ||
-                commitDate.getDay() !== lastCommitDate.getDay()
+                commitDate.getDate() !== lastCommitDate.getDate()
             ) {
                 output.push({
                     date: commitDate,
