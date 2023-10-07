@@ -509,10 +509,6 @@
             "LinkToGithub": "Link zu GitHub",
             "MoonrakerUpdateQuestion": "Dadurch wird die Moonraker-API aktualisiert. Möglicherweise sind Änderungen an der Datei moonraker.conf erforderlich, damit die Maschine wieder verwendet werden kann.",
             "MoreCommitsInfo": "Hier können maximal 30 Commits angezeigt werden. Um alle Commits zu sehen, klicke bitte auf den folgenden Link:",
-            "Notification": {
-                "Detached": "Ein abgetrennter Zustand ist weder ein Fehler noch ein Problem. Es bedeutet nur, dass im lokalen Repository zusätzliche Commits existieren, die im entfernten Repository nicht vorhanden sind.",
-                "Dirty": "Das lokale Repository wurde geändert und kann in diesem Zustand nicht aktualisiert werden. Bitte stelle wieder ein saubers Repository her."
-            },
             "OSPackages": "OS-Pakete",
             "SoftRecovery": "einfache Wiederherstellung",
             "StartUpdate": "Aktualisierung starten",
@@ -727,9 +723,7 @@
             "SaveConfig": "SAVE CONFIG",
             "SaveInfoDescription": "Der neue Z-Versatz wurde berechnet und registriert. Auf \"SAVE CONFIG\", klicken um den neuen Z-Versatz in der printer.cfg zu speichern und Klipper neu zu starten.",
             "SaveInfoDescriptionPrint": "Der neue Z-Versatz wurde berechnet und registriert. Nach dem Drucken auf \"SAVE CONFIG\" in der oberen Leiste klicken um den neuen Z-Versatz in der printer.cfg zu speichern und Klipper neu zu starten.",
-            "SaveInfoHeadline": "Information",
-            "ToEndstop": "bis Endschalter",
-            "ToProbe": "bis Sensor"
+            "SaveInfoHeadline": "Information"
         }
     },
     "PowerDeviceChangeDialog": {
