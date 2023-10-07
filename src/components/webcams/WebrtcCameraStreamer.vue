@@ -39,7 +39,6 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
     get url() {
         const baseUrl = this.camSettings.stream_url
         let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
-        url.port = this.hostPort.toString()
 
         if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
