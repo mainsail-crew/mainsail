@@ -1,10 +1,8 @@
 <template>
     <v-dialog v-model="bool" :max-width="dialogWidth" @click:outside="closeDialog" @keydown.esc="closeDialog">
         <v-card>
-            <v-img v-if="file.big_thumbnail" contain :src="file.big_thumbnail" />
-            <v-card-title class="text-h5">
-                {{ $t('Dialogs.StartPrint.Headline') }}
-            </v-card-title>
+            <v-img v-if="file.big_thumbnail" contain :src="file.big_thumbnail" :style="bigThumbnailStyle" />
+            <v-card-title class="text-h5">{{ $t('Dialogs.StartPrint.Headline') }}</v-card-title>
             <v-card-text class="pb-0">
                 <p class="body-2">
                     {{ question }}
@@ -42,6 +40,7 @@ import { FileStateGcodefile } from '@/store/files/types'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiPrinter3d } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
+import { defaultBigThumbnailBackground } from '@/store/variables'
 
 @Component({
     components: {
@@ -74,6 +73,18 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
 
     get dialogWidth() {
         return this.file.big_thumbnail_width ?? 400
+    }
+
+    get bigThumbnailBackground() {
+        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+    }
+
+    get bigThumbnailStyle() {
+        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
+            return {}
+        }
+
+        return { backgroundColor: this.bigThumbnailBackground }
     }
 
     get active_spool(): ServerSpoolmanStateSpool | null {
