@@ -239,7 +239,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
                 if (res.status !== 201) throw new Error('bad status code')
                 this.eTag = res.headers.get('ETag')
 
-                // fallback for MediaMTX v1.1.0 with broken ETag header
+                // fallback for MediaMTX v1.0.x with broken ETag header
                 if (res.headers.has('E-Tag')) this.eTag = res.headers.get('E-Tag')
 
                 return res.text()
