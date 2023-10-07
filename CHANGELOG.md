@@ -2,6 +2,57 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.8.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.8.0) - 2023-10-07
+### Features
+
+- Add warning for outdated browsers (#1537) | [5007646](5007646ff06b6fe4c4f1cb1820712df9f5210eda)
+- Automatic selection of the gcode offset save gcode (#1531) | [9a2328b](9a2328ba69e6ec9eb3102b88d7261d5a73889a3c)
+- Hide Moonraker power devices with a `_` as first char (#1545) | [a0ad7e8](a0ad7e84ab454407d39010157b10e76eff3366c7)
+- Add option to block autoscroll in console (#1519) | [09c2526](09c25266422ba295c5b2a397df81c7a3b9f0d6a4)
+- Add 12-hour time format in printers overview (#1571) | [a28c6fd](a28c6fdb03098e0cd87fb97c6ac6903efdd8d9fb)
+- Add monitors (like TMC2240) to Temperature Panel (#1532) | [5734f1c](5734f1cd1dcc7e5a4602a7d039771a22e3639bfd)
+- Add spoolman support (#1542) | [d8430f5](d8430f54edafb5efcadbfc8547a2ce0e96f48352)
+- Add optional background color for big gcode thumbnails (#1535) | [82e3dd8](82e3dd8b182c50a719b611c103028b3693bc4841)
+
+### Bug Fixes and Improvements
+
+- Show confirm emergency stop dialog only when turned on (#1526) | [871688f](871688f3c8951c0be97685f162797fcd13bce514)
+- Eta time format detection from browser (#1522) | [18a5c73](18a5c732b28ba36391fba4b41535981e922fa95d)
+- Fix min/max positions in heightmap current mesh data panel (#1533) | [1aa9f34](1aa9f341fa19f9273f05ec257c21fb46c4b1c562)
+- Fix autorestart of webcam camerastreamer (#1546) | [fd293d2](fd293d21ec31a33252fee902f1b8e7e5fd248366)
+- Fix missing reset options for print history data (#1534) | [9f08afc](9f08afc138a429c3c114a75b2038ca06e985bcc9)
+- Fix some issues with the presets (#1529) | [e0f5166](e0f51667eb19505cccc34d858218f403d4d8d31c)
+- Fix macro parameter with spaces (#1551) | [c87586a](c87586aebbdd6e7eb4b1505ce286d69955899f04)
+- Fix type issue in TemperaturePanelListItem (#1563) | [e1dd59d](e1dd59db15f289621fc6d73d43afcf989400b128)
+- Fix webcam (camera-streamer) stop autorestart beforeDestory (#1556) | [2b73cce](2b73cce47ac9768bb50d0bdf6fcf950e36763e39)
+- Fix gcode command for generic_heater in presets (#1569) | [b7914f8](b7914f8de6ae5ad2513dd941167b5b66246ce409)
+- Fix wrong date function in multiple files (#1568) | [7d86df0](7d86df0c81fe47563bd50a3ab1ba959f0835d16c)
+- Fix WebRTC (camera-streamer) port with external instance (#1586) | [a3e74aa](a3e74aa57a684ff2e73c1f22e2c253f592d9f8e4)
+- Fix webcam flip in timelapse preview (#1587) | [1a7aca6](1a7aca6680cd7ef2a9834e15ebcb26e42b986d1d)
+- Fix webcam switch button (#1589) | [e445fbe](e445fbe5cc918e5a38754f3e2cbe5d2b73b19636)
+
+### Refactor
+
+- Refactor ToolheadControlPanel (#1530) | [ecaa894](ecaa894fbb7ae9cb2ebc1dbb9688b7eef312b740)
+- Split ExtruderControlPanel.vue in multiple SFC (#1565) | [890b996](890b9969aeb7e417fc733543bb486217c4c9eeed)
+- Remove unused import in store/printer/getters.ts (#1574) | [5eb50bb](5eb50bbcec1aea8e2a5b935ee0e278bffb80d189)
+- Rework tool color in extruder panel (#1576) | [2670eb6](2670eb6447a9b0fc5cb779f385b586ad117c1ec1)
+- Update webcam "WebRTC MediaMTX" client (#1558) | [3994a8e](3994a8ebe8601c005d2b43afa0c974e58bbad498)
+
+### Localization
+
+- **de**: Update german translations (#1583) | [4970d02](4970d0218a923a7338f5b31ff3cd49070fe95a5b)
+- **en**: Remove unused keys in english locale (#1585) | [cd1b9b8](cd1b9b85bdd74b2cca622848625b333d8a1538e9)
+- **es**: Update spanish locale (#1548) | [79014ac](79014acf7f720e1b1953d628fcdd2f14183cefa7)
+- **pl**: Update Polish translations (#1544) | [98d99d2](98d99d2d118ac52d622c3f9980c199a5a5b7e498)
+- **pl**: Update polish locale (#1554) | [f3fcce3](f3fcce32526a25b232220d9d79ee199a53efe215)
+- **pl**: Update Polish translations (#1573) | [8fc0d5c](8fc0d5c23c3217022aab0c142da1b1231d1e8ef2)
+- **zh**: Update Chinese (zh) localization (#1588) | [09a994d](09a994d85445aefc93128260af7f7df772e8eb53)
+
+### Other
+
+- Fix ftp upload in release workflow (#1590) | [5b62b97](5b62b9742023f19e30b41ba8bcf999a1b0104749)
+
 ## [2.7.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.7.1) - 2023-08-16
 ### Bug Fixes and Improvements
 
