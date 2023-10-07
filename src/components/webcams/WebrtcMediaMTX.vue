@@ -106,7 +106,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     // webrtc player methods
-    // adapated from https://github.com/bluenviron/mediamtx/blob/main/internal/core/webrtc_read_index.html
+    // adapted from https://github.com/bluenviron/mediamtx/blob/main/internal/core/webrtc_read_index.html
 
     unquoteCredential = (v: any) => JSON.parse(`"${v}"`)
 
