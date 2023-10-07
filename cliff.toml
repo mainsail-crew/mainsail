@@ -21,7 +21,7 @@ body = """
     {% for commit in commits
     | filter(attribute="scope")
     | sort(attribute="scope") %}
-        - **{{commit.scope}}**: {{ commit.message | upper_first | trim }} | [{{ commit.id | truncate(length=7, end="") }}]({{ commit.id }})\
+        - **{{commit.scope}}**: {{ commit.message | upper_first | trim }}\
         {%- if commit.breaking %}
         {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
         {%- endif -%}
@@ -30,7 +30,7 @@ body = """
         {%- if commit.scope -%}
         {% else -%}
         {% raw %}\n{% endraw %}\
-        - {{ commit.message | upper_first | trim }} | [{{ commit.id | truncate(length=7, end="") }}]({{ commit.id }})\
+        - {{ commit.message | upper_first | trim }}\
         {%- if commit.breaking %}
         {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
         {%- endif -%}

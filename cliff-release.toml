@@ -13,7 +13,7 @@ body = """
     {% for commit in commits
     | filter(attribute="scope")
     | sort(attribute="scope") %}
-        - **{{commit.scope}}**: {{ commit.message | upper_first | trim }} | [{{ commit.id | truncate(length=7, end="") }}]({{ commit.id }})\
+        - **{{commit.scope}}**: {{ commit.message | upper_first | trim }}\
         {%- if commit.breaking %}
         {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
         {%- endif -%}
@@ -23,7 +23,7 @@ body = """
         {%- if commit.scope -%}
         {% else -%}
         {% raw %}\n{% endraw %}\
-        - {{ commit.message | upper_first | trim }} | [{{ commit.id | truncate(length=7, end="") }}]({{ commit.id }})\
+        - {{ commit.message | upper_first | trim }}\
         {%- if commit.breaking %}
         {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
         {%- endif -%}
@@ -38,6 +38,12 @@ trim = true
 # changelog footer
 footer = """
 """
+
+# postprocessors
+postprocessors = [
+    { pattern = '<REPO>', replace = "https://github.com/mainsail-crew/mainsail" }, # replace repository URL
+]
+
 
 [git]
 # allow only conventional commits
@@ -66,8 +72,8 @@ commit_parsers = [
 
     { body = ".*security", group = "Security"},
 ]
-link_parsers = [
-    { pattern = "#(\\d+)", href = "https://github.com/mainsail-crew/mainsail/issues/$1"},
+commit_preprocessors = [
+    { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "([#${2}](<REPO>/issues/${2}))" },
 ]
 # filter out the commits that are not matched by commit parsers
 filter_commits = true
