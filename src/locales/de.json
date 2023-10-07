@@ -148,6 +148,7 @@
         "StartPrint": {
             "Cancel": "abbrechen",
             "DoYouWantToStartFilename": "Willst du {filename} starten?",
+            "DoYouWantToStartFilenameFilament": "Willst du {filename} mit dem folgenden Filament starten?",
             "Headline": "Starte Job",
             "Print": "drucken",
             "Timelapse": "Zeitraffer"
@@ -496,6 +497,7 @@
             "CommittedYesterday": "eingereicht gestern",
             "ConfigChanges": "Konfigurationsänderungen",
             "CountPackagesCanBeUpgraded": "{count} Pakete können aktualisiert werden",
+            "Corrupt": "Korrupt",
             "Detached": "abgetrennt",
             "Dirty": "kompromittiert",
             "GenericUpdateQuestion": "Überprüfe den Commit-Verlauf (falls verfügbar) und die GitHub-Projektseite von diesem Projekt, um festzustellen, ob manuelle Anpassungen nach dieser Aktualisierung erforderlich sind.",
@@ -587,6 +589,7 @@
             "Send": "senden"
         },
         "MiniconsolePanel": {
+            "Autoscroll": "Autoscroll",
             "Headline": "Konsole",
             "HideTemperatures": "Temperaturmeldungen ausblenden",
             "HideTimelapse": "Timelapse ausblenden",
@@ -618,6 +621,33 @@
             "Off": "Aus",
             "On": "An",
             "PowerControl": "Stromversorgung"
+        },
+        "SpoolmanPanel": {
+            "Cancel": "Abbrechen",
+            "ChangeSpool": "Rolle wechseln",
+            "DaysAgo": "vor {days} Tagen",
+            "EjectSpool": "Rolle auswerfen",
+            "EjectSpoolQuestion": "Sind Sie sicher, dass Sie die Filamentrolle auswerfen wollen?",
+            "Filament": "Filament",
+            "FilamentTypeMismatch": "Das Material des aktiven Filamentrolle ({spoolType}) stimmt nicht mit dem Material des G-Codes ({fileType}) überein.",
+            "FirstUsedOutput": "Erstmals verwendet: {firstUsed}",
+            "Headline": "Spoolman",
+            "LastUsed": "Zuletzt verwendet",
+            "Location": "Standort",
+            "Material": "Material",
+            "Never": "Nie",
+            "NoActiveSpool": "Die Filamentverfolgung ist inaktiv. Um zu beginnen, wählen Sie bitte eine Rolle aus.",
+            "NoResults": "Keine Rolle mit den aktuellen Suchkriterien gefunden.",
+            "NoSpools": "Keine Rolle verfügbar",
+            "NoSpoolSelected": "Keine Rolle ausgewählt. Bitte wählen Sie eine Spule aus, sonst kann dieser Druck nicht verfolgt werden.",
+            "OpenSpoolManager": "Rollenverwaltung öffnen",
+            "Refresh": "aktualisieren",
+            "Search": "Suchen",
+            "SelectSpool": "Rolle auswählen",
+            "Today": "Heute",
+            "TooLessFilament": "Die aktuelle Rolle hat möglicherweise nicht genug Filament für diesen Druck. ({spoolWeight}g von {fileWeight}g)",
+            "Weight": "Gewicht",
+            "Yesterday": "Gestern"
         },
         "StatusPanel": {
             "CancelPrint": "Druck abbrechen",
@@ -681,6 +711,7 @@
             },
             "Headline": "Temperaturen",
             "HideMcuHostSensors": "Host/MCU Sensoren ausblenden",
+            "HideMonitors": "Monitors ausblenden",
             "Max": "max",
             "Min": "min",
             "Name": "Name",
@@ -878,6 +909,7 @@
             "DbConsoleHistory": "Verlauf der Konsole",
             "DbHistoryJobs": "Historie Druckvorgänge",
             "DbHistoryTotals": "Historie Gesamtzähler",
+            "DBNavigation": "Navigation",
             "DbTimelapseSettings": "Zeitraffer Einstellungen",
             "DbView": "Ansichtseinstellungen",
             "EstimateValues": {
@@ -885,6 +917,7 @@
                 "File": "Datei",
                 "Slicer": "Slicer"
             },
+            "Everything": "Alle",
             "FactoryDialog": "Bitte wähle alle Abschnitte die du zurücksetzen möchtest:",
             "FactoryReset": "Werkseinstellungen",
             "General": "Allgemein",
@@ -1057,6 +1090,7 @@
         "UiSettingsTab": {
             "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
             "BedScrewsDialogDescription": "Zeige ein Hilfsfenster für die Bettschraubenjustierung an.",
+            "BigThumbnailBackground": "Hintergrundfarbe vom großen Vorschaubild",
             "BoolBigThumbnail": "Große Vorschaubilder",
             "BoolBigThumbnailDescription": "Zeige ein großes Thumbnail in der Status-Anzeige während eines Drucks.",
             "BoolHideUploadAndPrintButton": "\"Hochladen & Drucken\" Schaltfläche ausblenden",
