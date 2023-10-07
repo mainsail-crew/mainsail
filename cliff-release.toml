@@ -9,7 +9,7 @@ header = """
 # https://tera.netlify.app/docs/#introduction
 body = """
 {% for group, commits in commits | group_by(attribute="group") %}\
-    ### {{ group | split(pat="$") | last | upper_first }}
+    ### {{ group | striptags | trim | upper_first }}
     {% for commit in commits
     | filter(attribute="scope")
     | sort(attribute="scope") %}
@@ -46,19 +46,24 @@ conventional_commits = true
 filter_unconventional = true
 # regex for parsing and grouping commits
 commit_parsers = [
+
+    # Commits to skip
     { message = "^docs\\(changelog\\):", group = "Changelog", skip = true}, # Old redundant commits
-    { message = "^chore\\(changelog\\): update changelog", group = "Changelog", skip = true}, # Old redundant commits
     { message = "^chore: push version number to", group = "9$Other", skip = true}, # Old redundant commits
-    { message = "^feat(\\(.*\\))?:", group = "1$Features"},
-    { message = "^feature(\\(.*\\))?:", group = "1$Features"},
-    { message = "^fix(\\(.*\\))?:", group = "2$Bug Fixes and Improvements"},
-    { message = "^docs(\\(.*\\))?:", group = "7$Documentation"},
-    { message = "^perf(\\(.*\\))?:", group = "3$Performance"},
-    { message = "^refactor(\\(.*\\))?:", group = "4$Refactor"},
-    { message = "^style(\\(.*\\))?:", group = "5$Styling"},
-    { message = "^test(\\(.*\\))?:", group = "9$Other"},
-    { message = "^locale(\\(.*\\))?:", group = "6$Localization"},
-    { message = "^chore(\\(.*\\))?:", group = "9$Other"},
+    { message = "^chore\\(changelog\\): update changelog", group = "Changelog", skip = true}, # Old redundant commits
+
+    # Commits to parse
+    { message = "^feat(\\(.*\\))?:", group = "<!-- 1 -->Features"},
+    { message = "^feature(\\(.*\\))?:", group = "<!-- 1 -->Features"},
+    { message = "^fix(\\(.*\\))?:", group = "<!-- 2 -->Bug Fixes and Improvements"},
+    { message = "^perf(\\(.*\\))?:", group = "<!-- 3 -->Performance"},
+    { message = "^refactor(\\(.*\\))?:", group = "<!-- 4 -->Refactor"},
+    { message = "^style(\\(.*\\))?:", group = "<!-- 5 -->Styling"},
+    { message = "^locale(\\(.*\\))?:", group = "<!-- 6 -->Localization"},
+    { message = "^docs(\\(.*\\))?:", group = "<!-- 7 -->Documentation"},
+    { message = "^test(\\(.*\\))?:", group = "<!-- 8 -->Other"},
+    { message = "^chore(\\(.*\\))?:", group = "<!-- 8 -->Other"},
+
     { body = ".*security", group = "Security"},
 ]
 # filter out the commits that are not matched by commit parsers
