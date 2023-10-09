@@ -1,5 +1,5 @@
 {
-    "_last_update": "28.02.2023",
+    "_last_update": "09.10.2023",
     "App": {
         "Notifications": {
             "DependencyDescription": "La version actuelle de {name} ne supporte pas toutes les fonctionalités de Mainsail. Mettez {name} a jour vers la version {neededVersion}.",
