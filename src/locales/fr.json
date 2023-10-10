@@ -293,7 +293,7 @@
         "InvalidNameAlreadyExists": "Ce profil existe déjà, choisissez-en un autre.",
         "InvalidNameAscii": "Le nom n'est pas valide. Seuls les caractères ascii sont autorisés.",
         "InvalidNameEmpty": "L'entrée ne doit pas être vide !",
-        "InvalidNameReserved": "Le profil "par défaut" est réservé, veuillez choisir un autre nom de profil.",
+        "InvalidNameReserved": "Le profil 'par défaut' est réservé, veuillez choisir un autre nom de profil.",
         "Later": "Plus tard",
         "Mesh": "Calculé",
         "Name": "Nom",
