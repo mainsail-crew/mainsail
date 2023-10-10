@@ -1,12 +1,8 @@
 {
-    "_last_update": "10.10.2023",								 
+    "_last_update": "08.10.2023",
     "App": {
         "Notifications": {
-            "BrowserWarnings": {
-                "Description": "{name} est obsolète et n'est pas entièrement pris en charge. La version actuelle est {version}, mais Mainsail nécessite la version {minVersion} ou plus.",
-                "Headline": "Navigateur obsolète"
-            },
-            "DependencyDescription": "La version actuelle de {name} ne supporte pas toutes les fonctionalités de Mainsail. Mettez {name} à jour vers la version {neededVersion}.",
+            "DependencyDescription": "La version actuelle de {name} ne supporte pas toutes les fonctionalités de Mainsail. Mettez {name} a jour vers la version {neededVersion}.",
             "DependencyName": "Dépendance: {name}",
             "DismissAll": "Annuler tout",
             "KlipperWarnings": {
@@ -30,9 +26,9 @@
             "Remind": "Rappel:"
         },
         "NumberInput": {
-            "GreaterOrEqualError": "Doit être supérieur ou égal à {min} !",
+            "GreaterOrEqualError": "Doit être plus grand ou égal à {min} !",
             "MustBeBetweenError": "Doit être compris entre {min} et {max} !",
-            "NoEmptyAllowedError": "Une valeur est nécessaire!"
+            "NoEmptyAllowedError": "Une valeur est nécessaire !"
         },
         "Printers": "Imprimantes",
         "ThrottledStates": {
@@ -57,11 +53,10 @@
             "Complete": "Terminé - {filename}",
             "Error": "ERREUR",
             "Pause": "Pause impression",
-            "PrinterOff": "Imprimante éteinte",
             "Printing": "{percent}% imprimé - {filename}",
             "PrintingETA": "{percent}% imprimé - TEA: {eta} - {filename}"
         },
-        "TopBar": {				   
+        "TopBar": {
             "CannotUploadTheFile": "Chargement du fichier impossible",
             "EmergencyStop": "Arrêt d'urgence",
             "SAVE_CONFIG": "Sauvegarde de la configuration",
@@ -73,23 +68,23 @@
             "Cancel": "Annuler",
             "ConfirmationDialog": {
                 "Description": {
-                    "HostReboot": "Si vous redémarrez l'hôte maintenant, votre impression sera annulée.",
-                    "HostShutdown": "Si vous éteignez le l'hôte maintenant, votre impression sera annulée.",
+                    "HostReboot": "Si vous redémarez le \"host\" maintenant, votre impression sera annulée.",
+                    "HostShutdown": "Si vous éteignez le \"host\" maintenant, votre impression sera annulée.",
                     "KlipperFirmwareRestart": "Si vous redémarrez le firmware Klipper maintenant, votre impression sera annulée.",
                     "KlipperRestart": "Si vous redémarrez Klipper maintenant, votre impression sera annulée.",
                     "KlipperStop": "Si vous arrêtez Klipper maintenant, votre impression sera annulée.",
-                    "ServiceRestart": "Si vous redémarrez ce service maintenant, il y a de fortes chances que votre impression soit annulée.",
-                    "ServiceStart": "Si vous démarrez ce service maintenant, il y a de fortes chances que votre impression soit annulée.",
-                    "ServiceStop": "Si vous arrêtez ce service maintenant, il y a de fortes chances que votre impression soit annulée."
+                    "ServiceRestart": "Si vous redémarrez ce service maintenant, il y a de fortes chances que votre impression sera annulée.",
+                    "ServiceStart": "Si vous démarrez ce service maintenant, il y a de fortes chances que votre impression sera annulée.",
+                    "ServiceStop": "Si vous arrêtez ce service maintenant, il y a de fortes chances que votre impression sera annulée."
                 },
                 "Title": {
-                    "HostReboot": "Redémarrer l'hôte",
-                    "HostShutdown": "Eteindre l'hôte",
+                    "HostReboot": "Redémarrer \"host\"",
+                    "HostShutdown": "Eteindre \"host\"",
                     "KlipperFirmwareRestart": "Redémarrer firmware Klipper",
                     "KlipperRestart": "Redémarrer Klipper",
-                    "ServiceRestart": "Redémarrer le service",
-                    "ServiceStart": "Démarrer le service",
-                    "ServiceStop": "Arrêter le service"
+                    "ServiceRestart": "Redémarrer ce service",
+                    "ServiceStart": "Démarrer ce service",
+                    "ServiceStop": "Arrêter ce service"
                 }
             },
             "HostControl": "Contrôle de l'hôte",
@@ -117,7 +112,7 @@
         "Abort": "annuler",
         "Accept": "accepter",
         "Adjusted": "ajusté",
-        "Description": "Cliquez sur <b>AJUSTÉ</b> si la vis courante a été ajustée. Cliquez sur <b>ACCEPTER</b> pour continuer sans ajustement.",
+        "Description": "Cliquez sur <b>ADJUSTED</b> si la vis courante a été ajustée. Cliquez sur <b>ACCEPT</b> pour continuer sans ajustement.",
         "Headline": "Vis du plateau",
         "ScrewAccepted": "Vis acceptée",
         "ScrewIndex": "Index de la vis",
@@ -130,13 +125,13 @@
         "Connecting": "Connection avec {host}",
         "Failed": "Connection échouée",
         "Initializing": "Initialisation",
-        "TryAgain": " réessayez"
+        "TryAgain": " répétez"
     },
     "Console": {
         "CommandList": "Liste des commandes",
         "Empty": "vide",
         "HideTemperatures": "Cacher les températures",
-        "HideTimelapse": "Cacher le timelapse",
+        "HideTimelapse": "Cacher accéléré",
         "SendCode": "Envoyer la commande",
         "SetupConsole": "Configuration console"
     },
@@ -144,10 +139,9 @@
         "StartPrint": {
             "Cancel": "Annuler",
             "DoYouWantToStartFilename": "Désirez-vous imprimer {filename} ?",
-																											   
             "Headline": "Démarrage Impression",
             "Print": "Impression",
-            "Timelapse": "Timelapse"
+            "Timelapse": "Accéléré"
         }
     },
     "Editor": {
@@ -161,7 +155,7 @@
         "SuccessfullySaved": "Le fichier {filename} a été sauvegardé",
         "UnsavedChanges": "Changements non sauvegardés",
         "UnsavedChangesMessage": "Désirez-vous sauvegarder les changements dans {filename} ?",
-        "UnsavedChangesSubMessage": "Vos changements seront perdus si vous ne les sauvegardez pas. Vous pouvez désactiver ce message dans les réglages de l'éditeur.",
+        "UnsavedChangesSubMessage": "Vos changements seront perdus si vous ne les sauvegardez pas. Vous pouvez desactiver ce message dans les réglages de l'éditeur.",
         "Uploading": "Téléchargement"
     },
     "EmergencyStopDialog": {
@@ -185,12 +179,9 @@
         "DeleteDirectory": "Effacer le dossier",
         "DeleteDirectoryQuestion": "Voulez vous vraiment effacer le dossier \"{name}\" et tout son contenu ?",
         "DeleteSelectedQuestion": "Désirez-vous supprimer {count} fichiers ?",
-        "DeleteSingleFileQuestion": "Voulez-vous vraiment supprimer le fichier \"{name}\"?",
         "Download": "Téléchargement",
-        "Duplicate": "Dupliquer",
-        "DuplicateFile": "Fichier en double",
         "EditFile": "Editer Fichier",
-        "Empty": "Vide",
+        "Empty": "vide",
         "ExtruderTemp": "Température extrudeur",
         "Filament": "Filament",
         "FilamentName": "Nom du filament",
@@ -202,7 +193,7 @@
         "Free": "Libre",
         "FreeDisk": "Disque libre",
         "GCodeFiles": "Fichiers G-Code",
-        "GcodesRootDirectoryDoesntExists": "Aucun dossier G-Code trouvé. Contrôlez l'option \"path\" dans la section [virtual_sdcard] de la configuration de Klipper.",
+        "GcodesRootDirectoryDoesntExists": "Pas trouvé de dossier G-Code. Contrôlez l'option \"path\" dans la section [virtual_sdcard] de la configuration de Klipper.",
         "HiddenFiles": "Fichiers cachés",
         "InvalidNameAlreadyExists": "Ce nom existe déjà, merci d'en choisir un autre.",
         "InvalidNameEmpty": "L'entrée ne peut pas être vide !",
@@ -225,13 +216,11 @@
         "Rename": "Renommer",
         "RenameDirectory": "Renommer le dossier",
         "RenameFile": "Renommer le fichier",
-        "ScanMeta": "Scanner les métadonnées",
-        "ScanMetaSuccess": "Succès de l'analyse des métadonnées de: {filename}.",
         "Search": "Rechercher",
         "SetupCurrentList": "Configurer liste",
         "Slicer": "Trancheur",
         "SuccessfullyCreated": "Fichier {filename} créé",
-        "SuccessfullyDeleted": "Fichier {filename} effacé",
+        "SuccessfullyDeleted": "Fichier {filename} éffacé",
         "SuccessfullyMoved": "Fichier {filename} déplacé",
         "SuccessfullyRenamed": "Fichier {filename} renommé",
         "SuccessfullyUploaded": "Fichier {filename} mis à jour",
@@ -286,14 +275,13 @@
             "Size": "Taille"
         },
         "DeleteBedMeshProfile": "Effacer maillage",
-        "DoYouReallyWantToDelete": "Voulez-vous vraiment effacer le maillage \"{name}\" ?",
-        "ErrorKlipperNotReady": "Klipper n'est pas prêt, maillage désactivé",
+        "DoYouReallyWantToDelete": "Voulez-vous effacer le maillage \"{name}\" ?",
+        "ErrorKlipperNotReady": "Klipper pas prêt, maillage désactivé",
         "Flat": "Plat",
         "Heightmap": "Maillage de hauteur",
         "InvalidNameAlreadyExists": "Ce profil existe déjà, choisissez-en un autre.",
-        "InvalidNameAscii": "Le nom n'est pas valide. Seuls les caractères ascii sont autorisés.",
         "InvalidNameEmpty": "L'entrée ne doit pas être vide !",
-        "InvalidNameReserved": "Le profil 'par défaut' est réservé, veuillez choisir un autre nom de profil.",
+        "InvalidNameReserved": "Le nom de profil \"default\" est réservé, choisissez-en un autre.",
         "Later": "Plus tard",
         "Mesh": "Calculé",
         "Name": "Nom",
@@ -323,7 +311,6 @@
         "CreateNote": "Créer une note",
         "Delete": "Effacer",
         "DeleteSelectedQuestion": "Vulez-vous vraiment effacer {count} travaux ?",
-																		   
         "Details": "Details",
         "EditNote": "Editer note",
         "Empty": "vide",
@@ -411,10 +398,7 @@
             "DeleteDirectory": "Effacer dossier",
             "DeleteDirectoryQuestion": "Voulez-vous vraiment effacer le dossier \"{name}\" et tout son contenu ?",
             "DeleteSelectedQuestion": "Effacer {count} éléments sélectionnés",
-            "DeleteSingleFileQuestion": "Voulez-vous vraiment supprimer le fichier \"{name}\"?",
-            "Download": "Download",
-            "Duplicate": "Dupliquer",
-            "DuplicateFile": "Fichiers en double",
+            "Download": "Téléchargement",
             "EditFile": "Editer fichier",
             "Empty": "vide",
             "Files": "Fichiers",
@@ -479,11 +463,7 @@
             }
         },
         "UpdatePanel": {
-            "Abort": "Abandonner",
-            "AreYouSure": "Etes-vous sûr?",
             "CheckForUpdates": "Contrôle de disponibilité de mises à jour",
-            "Close": "Fermer",
-            "CommitHistory": "Historique des publications",
             "Commits": "publié",
             "CommitsAvailable": "pas de mise à jour disponible | {count} mise à jour disponible | {count} mises à jour disponibles",
             "CommitsOnDate": "Publié le {date}",
@@ -491,36 +471,19 @@
             "CommittedHoursAgo": "Publié il y a {hours} heures",
             "CommittedOnDate": "Publié le {date}",
             "CommittedYesterday": "Publié hier",
-            "ConfigChanges": "Changements de configuration",
-            "Corrupt": "corrompu",
-            "CountPackagesCanBeUpgraded": "{count} paquets peuvent être mis à jour",
             "Detached": "détaché",
             "Dirty": "différent",
-            "GenericUpdateQuestion": "Vérifiez l'historique des publications (s'il est disponible) et la page GitHub de ce projet pour voir si des ajustements manuels sont nécessaires pour cette mise à jour.",
-            "GitHubPage": "Page GitHub",
-            "HardRecovery": "Récupération difficile",
-            "InitUpdateManager": "Le gestionnaire de mise à jour n'a pas encore été initialisé. C'est normal lorsque vous démarrez le système pour la première fois. Veuillez cliquer sur le bouton d'actualisation pour initialiser tous les composants.",
+            "ERROR": "Erreur",
             "Invalid": "invalide",
-            "IUnderstandTheRisks": "Je comprends les risques",
-            "KlipperUpdateQuestionConfig": "Cette mise à jour peut également contenir des changements dans les paramètres de configuration qui devront être modifiés dans le fichier printer.cfg, voir le journal des changements pour plus de détails.",
-            "KlipperUpdateQuestionFirmware": "Cette opération met à jour le logiciel hôte de Klipper. Les cartes de contrôle fonctionnant avec le micrologiciel Klipper peuvent avoir besoin d'être flashées avec un micrologiciel recompilé avant que la machine ne puisse être remise en service..",
-            "LinkToGithub": "Lien vers GitHub",
-            "MoonrakerUpdateQuestion": "Cette opération met à jour l'API Moonraker. Des modifications du fichier moonraker.conf peuvent être nécessaires pour continuer à utiliser la machine.",
-            "MoreCommitsInfo": "Un maximum de 30 publications peuvent être affichées ici. Pour voir toutes les publications, veuillez cliquer sur le lien suivant :",
-            "OSPackages": "Paquets OS",
-            "SoftRecovery": "Récupération douce",
-            "StartUpdate": "Démarrer la mise à jour",
+            "OSPackages": "Paquets système",
+            "PackagesCanBeUpgraded": " paquets peuvent être mis à jour",
             "System": "Système",
-            "ThesePackagesCanBeUpgrade": "Ces paquets système peuvent être mis à jour:",
             "Unknown": "inconnu",
             "Update": "mise à jour",
-            "UpdateAll": "Mise à jour de tous les composants",
-            "UpdateManager": "Gestionnaire de mise à jour",
-            "UpdateWarning": "Avertissement de mise à jour: {name}",
-            "Upgrade": "mise à niveau",
-            "UpgradeableSystemPackages": "Packs de systèmes évolutifs",
-            "UpToDate": "à jour",
-            "WebClientUpdateQuestion": "Dans certains cas, la mise à jour du client web peut entraîner des modifications susceptibles de provoquer une incompatibilité. Voir les notes de version pour plus d'informations."
+            "UpdateAll": "Mettre tout à jour",
+            "UpdateManager": "Gestionnaire de mises à jour",
+            "Upgrade": "mise à jour",
+            "UpToDate": "à jour"
         }
     },
     "ManualProbe": {
@@ -585,7 +548,6 @@
             "Send": "envoi"
         },
         "MiniconsolePanel": {
-            "Autoscroll": "Défilement automatique",
             "Headline": "Console",
             "HideTemperatures": "Cacher températures",
             "HideTimelapse": "Cacher accéléré",
@@ -650,7 +612,7 @@
             "ClearPrintStats": "Effacer les statistiques d'impression",
             "Difference": "Différence",
             "EmptyGcodes": "Pas de G-Codes disponibles",
-            "EmptyJobqueue": "Pas de fichier dans la queue d'impression.",
+            "EmptyJobqueue": "Pas de fichier dans la queue d'impression",
             "Estimate": "Estimation",
             "ETA": "TEA",
             "ExcludeObject": {
@@ -706,8 +668,6 @@
                 "Temperature": "température actuelle"
             },
             "Headline": "Températures",
-            "HideMcuHostSensors": "Cacher les capteurs hôte/MCU",
-            "HideMonitors": "Cacher les moniteurs",
             "Max": "max",
             "Min": "min",
             "Name": "Nom",
@@ -738,7 +698,7 @@
             "All": "Tous",
             "FPS": "IPS",
             "Headline": "Caméra",
-            "NoWebcam": "Pas de caméra disponible. Ajoutez une caméra dans \"Réglages interface\" > \"Caméras\".",
+            "NoWebcam": "Pas de caméra disponible. Ajoutez une caméra dans \"Réglages interface\" > \"Caméras\"",
             "UnknownWebcamService": "Service Caméra inconnu"
         },
         "ZoffsetPanel": {
@@ -751,10 +711,12 @@
             "SaveInfoDescription": "Le nouvel offset Z a été calculé et enregistré. Cliquez sur \"SAVE CONFIG\" afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
             "SaveInfoDescriptionPrint": "Le nouvel offset Z a été calculé et enregistré. Après l'impression cliquez sur \"SAVE CONFIG\" dans la barre du haut afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
             "SaveInfoHeadline": "Information",
+            "ToEndstop": "jusqu'au fin de course",
+            "ToProbe": "jusqu'à la sonde"
         }
     },
     "PowerDeviceChangeDialog": {
-        "AreYouSure": "Etes-vous sûr?",
+        "AreYouSure": "Etes-vous sûr ?",
         "No": "Non",
         "TurnDeviceOff": "Arrêter {device}",
         "TurnDeviceOn": "Mettre en marche {device}",
@@ -775,9 +737,8 @@
     "ScrewsTiltAdjust": {
         "Accept": "accepter",
         "Base": "Base",
-        "ErrorText": "Quelque chose s'est mal passé durant le processus de mesure.",
-        "Headline": "Ajustement de niveau par vis",
-        "Retry": "réessayez"
+        "ErrorText": "Quelque chose s'est mal passé durant le processus de mesure",
+        "Headline": "Ajustement de niveau par vis"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Nouvelle d'imprimante",
@@ -830,7 +791,6 @@
             "EnableXYHoming": "Activer les m.a.z. simultanées des axes X & Y",
             "EstimatedExtrusionInfo": "Afficher les estimations d'extrusion",
             "EstimatedExtrusionInfoDescription": "Afficher / Cacher les estimations d'extrusions basées sur la quantité et le débit.",
-            "HideDuringPrint": "Masquer les commandes d'axe pendant l'impression",
             "InvertXMovement": "Inversion X",
             "InvertYMovement": "Inversion Y",
             "InvertZMovement": "Inversion Z",
@@ -867,10 +827,7 @@
             "Editor": "Editeur",
             "KlipperRestartMethod": "Méthode de redémarrage de Klipper",
             "KlipperRestartMethodDescription": "Choisissez la méthode utilisée pour redémarrer Klipper lors d'un appui sur 'Save & Restart' après édition des fichiers de configuration.",
-            "Spaces": "Espaces: {count}",
-            "TabSize": "Taille de TAB",
-            "TabSizeDescription": "Règle le nombre d'espaces qui doivent être indentés pour les TAB",
-            "UseEscToClose": "Utiliser ESC pour fermer l'éditeur",
+            "UseEscToClose": "Utiliser la touche \"esc\" pour fermer l'éditeur",
             "UseEscToCloseDescription": "Autoriser la touche \"esc\" de fermer l'éditeur."
         },
         "GCodeViewerTab": {
@@ -905,9 +862,9 @@
             "DbConsoleHistory": "Historique des commandes de console",
             "DbHistoryJobs": "Historique des travaux",
             "DbHistoryTotals": "Historique totaux",
-            "DBNavigation": "Navigation",
-            "DbTimelapseSettings": "Paramètres Timelapse",
-            "DbView": "Voir les paramètres",
+            "DbTimelapseSettings": "Accéléré",
+            "DbView": "Réglages de visualisation",
+            "DbWebcams": "Caméras",
             "EstimateValues": {
                 "Filament": "Filament",
                 "File": "Fichier",
@@ -984,9 +941,6 @@
             "StartDescription": "Première LED de ce groupe",
             "UnableToLoadLight": "Impossible de charger la lumière",
             "UnableToLoadPreset": "Impossible de charger le réglage"
-        },
-        "NavigationTab": {
-            "Navigation": "Navigation"
         },
         "PresetsTab": {
             "AddPreset": "nouveau préréglage",
@@ -1084,9 +1038,6 @@
             "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
-            "BedScrewsDialog": "Dialogue sur les vis de lit",
-            "BedScrewsDialogDescription": "Afficher la boîte de dialogue d'aide pour BED_SCREWS_ADJUST.",
-            "BigThumbnailBackground": "Couleur d'arrière-plan de la grande vignette",
             "BoolBigThumbnail": "Grande miniature",
             "BoolBigThumbnailDescription": "Affiche une grande miniature dans l'écran de status durant l'impression.",
             "BoolHideUploadAndPrintButton": "Cacher le bouton CHARGEMENT & IMPRESSION",
@@ -1095,41 +1046,27 @@
             "ConfirmOnEmergencyStopDescription": "Affiche une demande de confirmation en cas d'arrêt d'urgence.",
             "ConfirmOnPowerDeviceChange": "Requiert une confirmation pour changement de mode de modules de puissance",
             "ConfirmOnPowerDeviceChangeDescription": "Affiche une demande de confirmation pour changement de mode de modules de puissance.",
-            "DefaultNavigationState": "État par défaut de la navigation",
-            "DefaultNavigationStateAlwaysClosed": "toujours fermé",
-            "DefaultNavigationStateAlwaysOpen": "toujours ouvert",
-            "DefaultNavigationStateDescription": "Quel état devrait avoir la navigation par défaut.",
-            "DefaultNavigationStateLastState": "dernier état",
-            "DisableFanAnimation": "Désactiver l'animation du ventilateur",
-            "DisableFanAnimationDescription": "Cela peut réduire la charge de votre navigateur.",
-            "DisplayCANCEL_PRINT": "Affichage de CANCEL_PRINT",
-            "DisplayCANCEL_PRINTDescription": "Affiche le bouton CANCEL_PRINT de manière permanente - aucune confirmation n'est nécessaire.",
-            "GcodeThumbnails": "Miniatures G-Code",
-            "GcodeThumbnailsDescription": "Cliquez sur le bouton pour accéder aux instructions.",
+            "DisplayCANCEL_PRINT": "Affiche CANCEL_PRINT",
+            "DisplayCANCEL_PRINTDescription": "Affiche le bouton CANCEL_PRINT de manière permanente. Pas de confirmation demandée.",
+            "GcodeThumbnails": "Miniature G-Code",
+            "GcodeThumbnailsDescription": "Cliquez sur le bouton pour obtenir des instructions.",
             "Guide": "Guide",
-            "HideSaveConfigButtonForBedMesh": "Cacher le bouton SAVE_CONFIG pour les changements de mailles de lit",
-            "HideSaveConfigButtonForBedMeshDescription": "Masquer SAVE_CONFIG, si seuls les changements de mailles du lit doivent être sauvegardés dans Klipper.",
-            "HideUpdateWarnings": "Masquer les avertissements de mise à jour",
-            "HideUpdateWarningsDescription": "Cette option permet de masquer tous les avertissements de mise à jour dans le gestionnaire de mise à jour.",
-            "LockSliders": "Verrouiller les curseurs sur les appareils à écran tactile",
-            "LockSlidersDelay": "Délai de verrouillage du curseur",
-            "LockSlidersDelayDescription": "Les curseurs se verrouillent après un délai donné. S'ils sont réglés sur 0 ou laissés vides, les curseurs ne se verrouilleront que lors du changement ou du chargement de la page.",
-            "LockSlidersDescription": "Les curseurs des écrans tactiles doivent être déverrouillés avant que les modifications ne soient autorisées.",
-            "Logo": "Logo",
-            "ManualProbeDialog": "Dialogue Manual Probe Helper",
-            "ManualProbeDialogDescription": "Affiche une boîte de dialogue d'aide pour PROBE_CALIBRATE ou Z_ENDSTOP_CALIBRATE.",
+            "HideSaveConfigButtonForBedMesh": "Cacher le bouton SAVE_CONFIG lors de changements de maillage",
+            "HideSaveConfigButtonForBedMeshDescription": "Cache le bouton SAVE_CONFIG si seulement des changements de maillages sont en attente de sauvegarde vers Klipper",
+            "LockSliders": "Fige les curseurs pour les écrans tactiles",
+            "LockSlidersDelay": "Délai avant de figer les curseurs",
+            "LockSlidersDelayDescription": "Les curseurs seront figés après le délai. Si 0 ou non renseigné, les curseurs seront figés au changement/rafraichissement de page.",
+            "LockSlidersDescription": "Sur écrans tactiles, les curseurs doivent être libres avant que les chagements soient autorisés.",
+            "Logo": "Couleur du Logo",
             "NavigationStyle": "Style de navigation",
-            "NavigationStyleDescription": "Modifier l'apparence de la navigation",
+            "NavigationStyleDescription": "Change le style de navigation de la colonne de gauche",
             "NavigationStyleIconsAndText": "Icônes + Texte",
             "NavigationStyleIconsOnly": "Seulement Icônes",
             "PowerDeviceName": "Nom de l'appareil de puissance",
-            "PowerDeviceNameDescription": "Choisissez quel appreil de puissance Moonraker doit utiliser pour l'alimentation de l'imprimante.",
+            "PowerDeviceNameDescription": "Choisissez quel appreil de puissance Moonraker doit utiliser pour l'alimentation de l'imprimante",
             "Primary": "Couleur primaire",
-            "ScrewsTiltAdjustDialog": "Dialogue Screws Tilt Adjust",
-            "ScrewsTiltAdjustDialogDescription": "Affiche le dialogue d'aide pour SCREWS_TILT_CALCULATE.",
-            "TempchartHeight": "Tableau des températures en hauteur",
-            "TempchartHeightDescription": "Modifier la hauteur du graphique de température sur le tableau de bord.",
-            "UiSettings": "Paramètres de l'interface utilisateur"
+            "ShowWebcamInNavigation": "Affiche CAMÉRA dans le menu de navigation",
+            "UiSettings": "Interface"
         },
         "Update": "mise à jour",
         "WebcamsTab": {
@@ -1138,7 +1075,6 @@
             "EditCrowsnestConf": "Edition de crowsnest.conf",
             "EditWebcam": "Editer caméra",
             "FlipWebcam": "Miroir l'image de la webcam:",
-            "HideFps": "Cacher le compteur de FPS",
             "Hlsstream": "Flux HLS",
             "Horizontally": "horizontal",
             "IconBed": "Plateau",
@@ -1150,7 +1086,6 @@
             "IconNozzle": "Buse",
             "IconPrinter": "Imprimante",
             "Ipstream": "Caméra IP",
-            "JMuxerStream": "Flux h264 brut (jmuxer)",
             "Mjpegstreamer": "Flux-MJPEG",
             "MjpegstreamerAdaptive": "Flux-MJPEG Adaptatif (expérimental)",
             "Name": "Nom",
@@ -1166,9 +1101,6 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertical",
             "Webcams": "Caméras"
-            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
-            "WebrtcJanus": "WebRTC (janus-gateway)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
     },
     "Timelapse": {
@@ -1182,7 +1114,6 @@
         "DeleteDirectory": "Effacer dossier",
         "DeleteDirectoryQuestion": "Voulez-vous vraiment effacer le dossier \"{name}\" et tout son contenu ?",
         "DeleteSelectedQuestion": "Voulez-vous vraiment effacer les {count} fichiers sélectionnées ?",
-        "DeleteSingleFileQuestion": "Voulez-vous vraiment supprimer le fichier \"{name}\"?",
         "Download": "Téléchargement",
         "DuplicateLastframe": "Multiplie la dernière image",
         "Empty": "Pas de fichier vidéo trouvé",
