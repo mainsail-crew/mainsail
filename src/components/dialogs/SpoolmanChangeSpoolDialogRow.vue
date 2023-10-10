@@ -1,18 +1,25 @@
 <template>
     <tr class="cursor-pointer" @click="setSpoolRow">
         <td style="width: 50px" class="pr-0 py-2">
-            <spool-icon :color="color" style="width: 50px; float: left" class="mr-3" />
-        </td>
+
+                    <spool-icon :color="color" style="width: 50px; float: left" class="mr-3" v-bind="attrs" v-on="on" />
+
         <td class="py-2" style="min-width: 300px">
-            <strong class="text-no-wrap">{{ vendor }} - {{ name }}</strong>
-            <template v-if="location">
-                <br />
-                {{ $t('Panels.SpoolmanPanel.Location') }}: {{ location }}
-            </template>
-            <template v-if="spool.comment">
-                <br />
-                {{ spool.comment }}
-            </template>
+            <v-tooltip right color="primary">
+                <template v-slot:activator="{ on, attrs }">
+                    <strong class="text-no-wrap" v-bind="attrs" v-on="on">{{ vendor }} - {{ name }}</strong>
+                    <template v-if="location">
+                        <br />
+                        {{ $t('Panels.SpoolmanPanel.Location') }}: {{ location }}
+                    </template>
+                    <template v-if="spool.comment">
+                        <br />
+                        {{ spool.comment }}
+                    </template>       
+                    </template>
+                <span>Spool #{{ id }}</span>
+            </v-tooltip>
+        </td>                             
         </td>
         <td class="text-center text-no-wrap">{{ material }}</td>
         <td class="text-right text-no-wrap">{{ last_used }}</td>
@@ -35,6 +42,10 @@ export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
         const color = this.spool.filament?.color_hex ?? '000'
 
         return `#${color}`
+    }
+
+    get id() {
+        return this.spool.id
     }
 
     get vendor() {
