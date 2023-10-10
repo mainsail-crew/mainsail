@@ -119,7 +119,9 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     }
 
     get spoolManagerUrl() {
-        return this.$store.state.server.config.config?.spoolman?.server ?? null
+        return this.$store.state.gui.general.spoolmanUrl === ''
+            ? this.$store.state.server.config.config?.spoolman?.server ?? null
+            : this.$store.state.gui.general.spoolmanUrl ?? null
     }
 
     openSpoolManager() {

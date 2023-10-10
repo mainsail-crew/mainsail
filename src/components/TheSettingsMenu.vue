@@ -100,8 +100,10 @@ import {
     mdiWebcam,
     mdiDipSwitch,
     mdiMenu,
+    mdiAdjust,
 } from '@mdi/js'
 import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneousTab.vue'
+import SettingsSpoolmanTab from '@/components/settings/SettingsSpoolmanTab.vue'
 @Component({
     components: {
         Panel,
@@ -113,6 +115,7 @@ import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneou
         SettingsMacrosTab,
         SettingsWebcamsTab,
         SettingsGeneralTab,
+        SettingsSpoolmanTab,
         SettingsDashboardTab,
         SettingsGCodeViewerTab,
         SettingsEditorTab,
@@ -209,6 +212,14 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 icon: mdiTimelapse,
                 name: 'timelapse',
                 title: this.$t('Settings.TimelapseTab.Timelapse'),
+            })
+        }
+
+        if (this.moonrakerComponents.includes('spoolman')) {
+            tabs.push({
+                icon: mdiAdjust,
+                name: 'spoolman',
+                title: this.$t('Settings.SpoolmanTab.Spoolman'),
             })
         }
 

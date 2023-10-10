@@ -1018,6 +1018,10 @@
             "UpdatePrinter": "Update Printer",
             "UseConfigJson": "InstanceDB = JSON detected. Please use the config.json to modify the printers list."
         },
+        "SpoolmanTab": {
+            "Spoolman": "Spoolman",
+            "WebURL": "URL of the Spoolman Frontend"
+        },
         "Store": "store",
         "TimelapseTab": {
             "Autorender": "Autorender",
