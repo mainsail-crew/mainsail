@@ -137,7 +137,6 @@
         "TryAgain": "Spróbuj ponownie"
     },
     "Console": {
-        "Autoscroll": "Autoprzewijanie",
         "CommandList": "Lista komend",
         "Empty": "Puste",
         "HideTemperatures": "Ukryj temperatury",
@@ -149,6 +148,7 @@
         "StartPrint": {
             "Cancel": "Anuluj",
             "DoYouWantToStartFilename": "Czy chcesz rozpocząć druk {filename}?",
+            "DoYouWantToStartFilenameFilament": "Rozpocząć {filename} z następującym filamentem?",
             "Headline": "Rozpocznij",
             "Print": "drukuj",
             "Timelapse": "Timelapse"
@@ -465,20 +465,20 @@
             "Load": "Obciążenie",
             "Memory": "Pamięć",
             "NoMoreInfos": "Brak informacji",
-            "SystemLoad": "Obciążenie systemu",
+            "SystemLoad": "Obciążenia systemowe",
             "Values": {
-                "Awake": "Wzbudzony: {awake}",
-                "Bandwidth": "Pasmo: {bandwidth}/s",
+                "Awake": "Aktywność: {awake}",
+                "Bandwidth": "Przepustowość: {bandwidth}/s",
                 "Distro": "Dystrybucja: {name} {version_id}",
                 "Frequency": "Częstotliwość: {frequency}",
                 "Load": "Obciążenie: {load}",
                 "Memory": "Pamięć: {memory}",
-                "Os": "OS: {os}",
-                "Received": "Odebrane: {received}",
+                "Os": "System: {os}",
+                "Received": "Odebrano: {received}",
                 "Temp": "Temp.: {temp}°C",
                 "TempMax": "max: {temp}°C",
                 "TempMin": "min: {temp}°C",
-                "Transmitted": "Przekazywane: {transmitted}",
+                "Transmitted": "Przesłano: {transmitted}",
                 "Version": "Wersja: {version}"
             }
         },
@@ -622,6 +622,32 @@
             "On": "Wł.",
             "PowerControl": "Kontrola zasilania"
         },
+        "SpoolmanPanel": {
+            "Cancel": "Anuluj",
+            "ChangeSpool": "Zmień szpulę",
+            "DaysAgo": "{days} dni temu",
+            "EjectSpool": "Wysuń szpulę",
+            "EjectSpoolQuestion": "Czy na pewno wysunąć szpulę filamentu?",
+            "Filament": "Filament",
+            "FilamentTypeMismatch": "Materiał aktywnej szpuli ({spoolType}) nie jest zgodny z materiałem G-Code ({fileType}).",
+            "Headline": "Spoolman",
+            "LastUsed": "Ostatnie użycie",
+            "Location": "Lokalizacja",
+            "Material": "Materiał",
+            "Never": "Nigdy",
+            "NoActiveSpool": "Śledzenie filamentu nie jest aktywne. Aby rozpocząć, wybierz szpulę.",
+            "NoResults": "Nie znaleziono szpuli z bieżącymi kryteriami wyszukiwania.",
+            "NoSpools": "Brak dostępnych szpul",
+            "NoSpoolSelected": "Nie wybrano szpuli. Wybierz szpulę, w przeciwnym razie wydruk nie będzie śledzony.",
+            "OpenSpoolManager": "Otwórz menedżer szpul",
+            "Refresh": "Odśwież",
+            "Search": "Szukaj",
+            "SelectSpool": "Wybierz szpulę",
+            "Today": "Dzisiaj",
+            "TooLessFilament": "Bieżąca szpula może nie mieć wystarczającej ilości filamentu dla tego wydruku. ({spoolWeight}g z {fileWeight}g)",
+            "Weight": "Waga",
+            "Yesterday": "Wczoraj"
+        },
         "StatusPanel": {
             "CancelPrint": "Anuluj wydruk",
             "ClearPrintStats": "Wyczyść statystyki drukarki",
@@ -684,6 +710,7 @@
             },
             "Headline": "Temperatury",
             "HideMcuHostSensors": "Ukryj czujniki hosta/MCU",
+            "HideMonitors": "Ukryj monitory",
             "Max": "Maks.",
             "Min": "Min.",
             "Name": "Nazwa",
@@ -726,9 +753,7 @@
             "SaveConfig": "ZAPISZ KONFIGURACJĘ",
             "SaveInfoDescription": "Nowe przesunięcie Z zostało obliczone i zarejestrowane. Kliknij przycisk \"ZAPISZ KONFIGURACJĘ\", aby zapisać ją w pliku printer.cfg i zrestartować Klipper.",
             "SaveInfoDescriptionPrint": "Nowe przesunięcie Z zostało obliczone i zarejestrowane. Po wydrukowaniu kliknij \"ZAPISZ KONFIGURACJĘ\" na górnym pasku, aby zapisać ją w pliku printer.cfg i zrestartować Klipper.",
-            "SaveInfoHeadline": "Informacja",
-            "ToEndstop": "Do krańcówki",
-            "ToProbe": "Do sondy"
+            "SaveInfoHeadline": "Informacja"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -1064,6 +1089,7 @@
         "UiSettingsTab": {
             "BedScrewsDialog": "Okno śrub stołu",
             "BedScrewsDialogDescription": "Wyświetl pomocnicze okno dialogowe dla BED_SCREWS_ADJUST.",
+            "BigThumbnailBackground": "Kolor tła dużej miniatury",
             "BoolBigThumbnail": "Duża miniaturka",
             "BoolBigThumbnailDescription": "Pokazuj dużą miniaturkę podczas wydruku.",
             "BoolHideUploadAndPrintButton": "Ukryj przycisk \"Wgraj i drukuj\"",
@@ -1145,7 +1171,7 @@
             "Webcams": "Kamery",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcJanus": "WebRTC (brama janus)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
     },
     "Timelapse": {
