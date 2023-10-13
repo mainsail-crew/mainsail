@@ -52,7 +52,11 @@
                         </template>
 
                         <template #item="{ item }">
-                            <SpoolmanChangeSpoolDialogRow :key="item.id" :spool="item" @set-spool="setSpool" />
+                            <SpoolmanChangeSpoolDialogRow
+                                :key="item.id"
+                                :spool="item"
+                                :max_id="max_spool_id"
+                                @set-spool="setSpool" />
                         </template>
                     </v-data-table>
                 </v-card-text>
@@ -85,6 +89,13 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
 
     get spools(): ServerSpoolmanStateSpool[] {
         return this.$store.state.server.spoolman.spools ?? []
+    }
+
+    get max_spool_id(): number {
+        return this.$store.state.server.spoolman.spools.reduce(
+            (x: number, s: ServerSpoolmanStateSpool) => Math.max(x, s.id),
+            0
+        )
     }
 
     get headers() {
