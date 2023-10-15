@@ -1,5 +1,5 @@
 <template>
-    <v-app :style="cssVars">
+    <v-app :dark="darkAttribute" :style="cssVars">
         <template v-if="socketIsConnected && guiIsReady">
             <the-sidebar />
             <the-topbar />
@@ -27,6 +27,7 @@
 import Component from 'vue-class-component'
 import TheSidebar from '@/components/TheSidebar.vue'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from './components/mixins/theme'
 import TheTopbar from '@/components/TheTopbar.vue'
 import { Mixins, Watch } from 'vue-property-decorator'
 import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
@@ -59,7 +60,7 @@ Component.registerHooks(['metaInfo'])
         TheScrewsTiltAdjustDialog,
     },
 })
-export default class App extends Mixins(BaseMixin) {
+export default class App extends Mixins(BaseMixin, ThemeMixin) {
     public metaInfo(): any {
         let title = this.$store.getters['getTitle']
 

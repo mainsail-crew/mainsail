@@ -31,4 +31,17 @@ export default class ThemeMixin extends Vue {
     get machineButtonCol() {
         return this.$vuetify.theme.dark ? 'grey darken-3' : 'grey lighten-1'
     }
+
+    get draggableBgStyle() {
+        const col = this.$vuetify.theme.dark ? '#282828' : '#e7e7e7'
+        return `background-color: ${col}`
+    }
+
+    get progressBarColor() {
+        return this.$vuetify.theme.dark ? 'white' : 'primary'
+    }
+
+    get darkAttribute() {
+        return this.$vuetify.theme.dark
+    }
 }

@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar v-if="show" :timeout="-1" :value="true" fixed right bottom dark>
+    <v-snackbar v-if="show" :timeout="-1" :value="true" fixed right bottom :dark="darkAttribute">
         <span v-if="maxNumber > 1" class="mr-1">({{ currentNumber }}/{{ maxNumber }})</span>
         <strong>{{ $t('Editor.Uploading') + ' ' + filename }}</strong>
         <br />
@@ -18,13 +18,14 @@
 import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from '@/components/mixins/theme'
 import { mdiClose } from '@mdi/js'
 import { formatFilesize } from '@/plugins/helpers'
 
 @Component({
     components: {},
 })
-export default class TheUploadSnackbar extends Mixins(BaseMixin) {
+export default class TheUploadSnackbar extends Mixins(BaseMixin, ThemeMixin) {
     mdiClose = mdiClose
     formatFilesize = formatFilesize
 

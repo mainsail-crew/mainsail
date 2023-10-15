@@ -6,7 +6,8 @@
                 <settings-navigation-tab-item
                     v-for="(naviPoint, index) in sortableNaviPoints"
                     :key="index"
-                    class="dragable-item my-2 mx-0"
+                    class="my-2 mx-0"
+                    :style="draggableBgStyle"
                     :navi-point="naviPoint" />
             </draggable>
         </v-card-text>
@@ -17,6 +18,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import NavigationMixin, { NaviPoint } from '@/components/mixins/navigation'
+import ThemeMixin from '@/components/mixins/theme'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import draggable from 'vuedraggable'
 import SettingsNavigationTabItem from '@/components/settings/SettingsNavigationTabItem.vue'
@@ -24,7 +26,7 @@ import SettingsNavigationTabItem from '@/components/settings/SettingsNavigationT
 @Component({
     components: { SettingsNavigationTabItem, SettingsRow, draggable },
 })
-export default class SettingsNavigationTab extends Mixins(NavigationMixin, BaseMixin) {
+export default class SettingsNavigationTab extends Mixins(NavigationMixin, BaseMixin, ThemeMixin) {
     get sortableNaviPoints() {
         return this.naviPoints.filter((naviPoint) => naviPoint.position > 0)
     }
@@ -45,9 +47,3 @@ export default class SettingsNavigationTab extends Mixins(NavigationMixin, BaseM
     }
 }
 </script>
-
-<style scoped>
-.dragable-item {
-    background-color: #282828;
-}
-</style>

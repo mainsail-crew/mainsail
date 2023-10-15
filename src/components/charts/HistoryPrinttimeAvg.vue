@@ -22,7 +22,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
         historyPrinttimeAvg: any
     }
 
-    private chartOptions(): any {
+    get chartOptions(): any {
         return {
             animation: false,
             grid: {
@@ -83,7 +83,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
             series: [
                 {
                     type: 'bar',
-                    data: [],
+                    data: this.printtimeAvgArray,
                     itemStyle: {
                         color: '#BDBDBD',
                     },
@@ -98,12 +98,6 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
 
     get chart(): ECharts | null {
         return this.$refs.historyPrinttimeAvg?.chart ?? null
-    }
-
-    mounted() {
-        let chart = this.chartOptions()
-        chart.series[0].data = this.printtimeAvgArray
-        this.chart?.setOption(chart)
     }
 
     beforeDestroy() {

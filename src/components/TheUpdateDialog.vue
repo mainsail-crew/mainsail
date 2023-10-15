@@ -17,7 +17,7 @@
 
 <template>
     <v-dialog :value="application !== ''" persistent max-width="800" class="mx-0">
-        <v-card :loading="!complete">
+        <v-card :dark="darkAttribute" :loading="!complete">
             <template slot="progress">
                 <v-progress-linear color="primary" indeterminate></v-progress-linear>
             </template>
@@ -91,12 +91,13 @@
 import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from '@/components/mixins/theme'
 import { mdiUpdate } from '@mdi/js'
 
 @Component({
     components: {},
 })
-export default class TheUpdateDialog extends Mixins(BaseMixin) {
+export default class TheUpdateDialog extends Mixins(BaseMixin, ThemeMixin) {
     mdiUpdate = mdiUpdate
 
     declare $refs: {

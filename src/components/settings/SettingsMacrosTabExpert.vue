@@ -141,10 +141,8 @@
                         ghost-class="ghost"
                         group="macros"
                         @change="updateMacroOrder">
-                        <v-row
-                            v-for="(macro, index) in editGroupMacros"
-                            :key="macro.name"
-                            class="dragable-item my-2 mx-0">
+                        <v-row v-for="(macro, index) in editGroupMacros" :key="macro.name" class="my-2 mx-0">
+                            :style="draggableBgStyle"
                             <v-col class="col-auto pr-0 d-flex py-2">
                                 <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
                             </v-col>
@@ -292,6 +290,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
+import ThemeMixin from '@/components/mixins/theme'
 import draggable from 'vuedraggable'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { Debounce } from 'vue-debounce-decorator'
@@ -311,7 +310,7 @@ import {
 @Component({
     components: { SettingsRow, draggable },
 })
-export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
+export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixin) {
     /**
      * Icons
      */
@@ -547,9 +546,3 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 }
 </script>
-
-<style scoped>
-.dragable-item {
-    background-color: #282828;
-}
-</style>

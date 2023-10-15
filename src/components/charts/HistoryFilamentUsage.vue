@@ -21,7 +21,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
         historyFilamentUsage: any
     }
 
-    private chartOptions(): any {
+    get chartOptions(): any {
         return {
             animation: false,
             grid: {
@@ -100,7 +100,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
             series: [
                 {
                     type: 'bar',
-                    data: [],
+                    data: this.filamentUsageArray,
                     showSymbol: false,
                 },
             ],
@@ -113,12 +113,6 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
 
     get chart(): ECharts | null {
         return this.$refs.historyFilamentUsage?.chart ?? null
-    }
-
-    mounted() {
-        let chart = this.chartOptions()
-        chart.series[0].data = this.filamentUsageArray
-        this.chart?.setOption(chart)
     }
 
     beforeDestroy() {

@@ -88,7 +88,7 @@
                 </v-container>
                 <v-divider class="mt-0 mb-0"></v-divider>
             </template>
-            <v-tabs v-model="activeTab" fixed-tabs>
+            <v-tabs v-model="activeTab" fixed-tabs :dark="darkAttribute">
                 <v-tab v-if="current_filename" href="#status">{{ $t('Panels.StatusPanel.Status') }}</v-tab>
                 <v-tab href="#files">{{ $t('Panels.StatusPanel.Files') }}</v-tab>
                 <v-tab href="#jobqueue">{{ $t('Panels.StatusPanel.Jobqueue', { count: jobsCount }) }}</v-tab>
@@ -113,6 +113,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from '@/components/mixins/theme'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import StatusPanelPrintstatus from '@/components/panels/Status/Printstatus.vue'
@@ -151,7 +152,7 @@ import { PrinterStateMacro } from '@/store/printer/types'
         StatusPanelPauseAtLayerDialog,
     },
 })
-export default class StatusPanel extends Mixins(BaseMixin) {
+export default class StatusPanel extends Mixins(BaseMixin, ThemeMixin) {
     mdiInformation = mdiInformation
     mdiMessageProcessingOutline = mdiMessageProcessingOutline
     mdiCloseCircle = mdiCloseCircle

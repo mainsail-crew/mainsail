@@ -25,7 +25,7 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
         historyAllPrintStatus: any
     }
 
-    private get chartOptions(): ECBasicOption {
+    get chartOptions(): ECBasicOption {
         return {
             animation: false,
             grid: {
@@ -41,15 +41,14 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
             series: [
                 {
                     type: 'pie',
-                    data: [],
+                    data: this.printStatusArray,
                     avoidLabelOverlap: false,
                     radius: ['35%', '60%'],
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
                             shadowOffsetX: 0,
-                            // shadowColor: 'rgba(0, 0, 0, 0.5)',
-                            shadowColor: 'red',
+                            shadowColor: 'rgba(0, 0, 0, 0.5)',
                         },
                     },
                     label: {
@@ -87,11 +86,6 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
 
     get chart(): ECharts | null {
         return this.$refs.historyAllPrintStatus?.chart ?? null
-    }
-
-    mounted() {
-        this.chartOptions.series[0].data = this.printStatusArray
-        this.chart?.setOption(this.chartOptions)
     }
 
     beforeDestroy() {

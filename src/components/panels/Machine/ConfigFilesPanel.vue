@@ -512,7 +512,14 @@
             </panel>
         </v-dialog>
 
-        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom>
+        <v-snackbar
+            v-model="uploadSnackbar.status"
+            :timeout="-1"
+            :value="true"
+            fixed
+            right
+            bottom
+            :dark="darkAttribute">
             <span v-if="uploadSnackbar.max > 1" class="mr-1">
                 ({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})
             </span>

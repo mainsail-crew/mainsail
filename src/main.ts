@@ -66,6 +66,7 @@ Vue.component('EChart', ECharts)
 import 'vue-resize/dist/vue-resize.css'
 // @ts-ignore
 import VueResize from 'vue-resize'
+import { defaultTheme } from './store/variables'
 Vue.use(VueResize)
 
 const initLoad = async () => {
@@ -75,24 +76,33 @@ const initLoad = async () => {
         .then(async (file) => {
             window.console.debug('Loaded config.json')
 
-            await store.dispatch('importConfigJson', file)
+            store.dispatch('importConfigJson', file)
             if ('defaultLocale' in file) i18n.locale = file.defaultLocale
+
+            // Handle theme outside of store init and before vue mount for consistency in dialog
+            let theme = file.defaultTheme ?? defaultTheme
+            const uiSettingsUrl =
+                store.getters['socket/getUrl'] + '/server/database/item?namespace=mainsail&key=uiSettings'
+            const response = await fetch(uiSettingsUrl)
+                .then((response) => response?.json())
+                .catch(() => undefined)
+            if (response.result?.value && Object.keys(response.result?.value).includes('theme'))
+                theme = response.result?.value['theme']
+            vuetify.framework.theme.dark = theme == 'light' ? false : true
         })
-        .catch(() => {
-            window.console.error('config.json not found or cannot be decoded!')
-        })
+        .catch(() => window.console.error('config.json not found or cannot be decoded!'))
 
     const url = store.getters['socket/getWebsocketUrl']
     Vue.use(WebSocketPlugin, { url, store })
     if (store?.state?.instancesDB === 'moonraker') Vue.$socket.connect()
 }
 
-initLoad()
-
-new Vue({
-    vuetify,
-    router,
-    store,
-    i18n,
-    render: (h) => h(App),
-}).$mount('#app')
+initLoad().then(() =>
+    new Vue({
+        vuetify,
+        router,
+        store,
+        i18n,
+        render: (h) => h(App),
+    }).$mount('#app')
+)

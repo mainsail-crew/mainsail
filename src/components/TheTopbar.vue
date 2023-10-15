@@ -70,7 +70,14 @@
             <the-settings-menu />
             <the-top-corner-menu />
         </v-app-bar>
-        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom>
+        <v-snackbar
+            v-model="uploadSnackbar.status"
+            :timeout="-1"
+            :value="true"
+            fixed
+            right
+            bottom
+            :dark="darkAttribute">
             <strong>{{ $t('App.TopBar.Uploading') }} {{ uploadSnackbar.filename }}</strong>
             <br />
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
@@ -108,6 +115,7 @@
 <script lang="ts">
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from '@/components/mixins/theme'
 import { validGcodeExtensions } from '@/store/variables'
 import Component from 'vue-class-component'
 import axios from 'axios'
@@ -144,7 +152,7 @@ type uploadSnackbar = {
         TheNotificationMenu,
     },
 })
-export default class TheTopbar extends Mixins(BaseMixin) {
+export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
     mdiAlertOctagonOutline = mdiAlertOctagonOutline
     mdiContentSave = mdiContentSave
     mdiFileUpload = mdiFileUpload
