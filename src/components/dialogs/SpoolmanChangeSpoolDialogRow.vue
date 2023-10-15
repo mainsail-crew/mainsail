@@ -39,7 +39,7 @@ import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 @Component({})
 export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
     @Prop({ required: true }) declare readonly spool: ServerSpoolmanStateSpool
-    @Prop({ required: false }) declare readonly max_id: number
+    @Prop({ required: false }) declare readonly max_id_digits: number
 
     get color() {
         const color = this.spool.filament?.color_hex ?? '000'
@@ -49,10 +49,9 @@ export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
 
     get id() {
         // add leading zeros depending on max_id digit count
-        const digits: number = this.max_id.toString().length ?? 1
         let id: string = this.spool.id.toString()
 
-        while (id.length < digits) {
+        while (id.length < this.max_id_digits) {
             id = '0' + id
         }
 

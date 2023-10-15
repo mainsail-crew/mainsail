@@ -55,7 +55,7 @@
                             <SpoolmanChangeSpoolDialogRow
                                 :key="item.id"
                                 :spool="item"
-                                :max_id="max_spool_id"
+                                :max_id_digits="max_spool_id_digits"
                                 @set-spool="setSpool" />
                         </template>
                     </v-data-table>
@@ -91,11 +91,13 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
         return this.$store.state.server.spoolman.spools ?? []
     }
 
-    get max_spool_id(): number {
-        return this.$store.state.server.spoolman.spools.reduce(
+    get max_spool_id_digits(): number {
+        const max_id = this.$store.state.server.spoolman.spools.reduce(
             (x: number, s: ServerSpoolmanStateSpool) => Math.max(x, s.id),
             0
         )
+
+        return max_id.toString().length
     }
 
     get headers() {
