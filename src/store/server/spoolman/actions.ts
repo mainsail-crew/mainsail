@@ -47,8 +47,8 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
         commit('setActiveSpoolId', payload.spool_id)
         dispatch('socket/removeInitModule', 'server/spoolman/getActiveSpoolId', { root: true })
 
-        // also set active spool to null, if spool_id is 0
-        if (payload.spool_id === 0) {
+        // also set active spool to null, if spool_id is 0 or null
+        if ([null, 0].includes(payload.spool_id)) {
             commit('setActiveSpool', null)
             return
         }
