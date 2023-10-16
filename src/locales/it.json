@@ -248,10 +248,6 @@
         "CannotUploadFile": "Impossibile caricare file!",
         "DropFilesToUploadFiles": "Rilascia i file da caricare"
     },
-    "FullscreenUpload": {
-        "CannotUploadFile": "Impossibile caricare file!",
-        "DropFilesToUploadFiles": "Rilascia i file da caricare"
-    },
     "GCodeViewer": {
         "ClearLoadedFile": "Rimuovi",
         "CNCMode": "CNC Mode",
