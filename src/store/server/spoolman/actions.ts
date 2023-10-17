@@ -112,9 +112,10 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
     },
 
     setActiveSpool(_, id: number | null) {
-        Vue.$socket.emit('server.spoolman.post_spool_id', {
-            spool_id: id,
-        })
+        const params: { spool_id?: number } = {}
+        if (id !== null) params['spool_id'] = id
+
+        Vue.$socket.emit('server.spoolman.post_spool_id', params)
     },
 
     refreshActiveSpool({ state }) {
