@@ -48,7 +48,7 @@ export default class SpoolmanEjectSpoolDialog extends Mixins(BaseMixin) {
     }
 
     removeSpool() {
-        this.$store.dispatch('server/spoolman/setActiveSpool', 0)
+        this.$store.dispatch('server/spoolman/setActiveSpool', null)
         this.close()
     }
 }

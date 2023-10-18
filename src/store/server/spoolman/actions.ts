@@ -47,8 +47,8 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
         commit('setActiveSpoolId', payload.spool_id)
         dispatch('socket/removeInitModule', 'server/spoolman/getActiveSpoolId', { root: true })
 
-        // also set active spool to null, if spool_id is 0
-        if (payload.spool_id === 0) {
+        // also set active spool to null, if spool_id is 0 or null
+        if ([null, 0].includes(payload.spool_id)) {
             commit('setActiveSpool', null)
             return
         }
@@ -112,9 +112,10 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
     },
 
     setActiveSpool(_, id: number | null) {
-        Vue.$socket.emit('server.spoolman.post_spool_id', {
-            spool_id: id,
-        })
+        const params: { spool_id?: number } = {}
+        if (id !== null) params['spool_id'] = id
+
+        Vue.$socket.emit('server.spoolman.post_spool_id', params)
     },
 
     refreshActiveSpool({ state }) {
