@@ -1127,7 +1127,7 @@
             "NavigationStyleIconsAndText": "Icônes + Textes",
             "NavigationStyleIconsOnly": "Icônes uniquement",
             "PowerDeviceName": "Dispositif d'alimentation de l'imprimante",
-            "PowerDeviceNameDescription": "Choisissez quel appreil de puissance Moonraker doit utiliser pour l'alimentation de l'imprimante.",
+            "PowerDeviceNameDescription": "Choisissez quel appareil de puissance Moonraker doit utiliser pour l'alimentation de l'imprimante.",
             "Primary": "Primaire",
             "ScrewsTiltAdjustDialog": "Screws Tilt Adjust",
             "ScrewsTiltAdjustDialogDescription": "Affiche une boîte de dialogue d'aide pour SCREWS_TILT_CALCULATE.",
