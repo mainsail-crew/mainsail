@@ -1,12 +1,12 @@
 {
-    "_last_update": "17.10.2023",
+    "_last_update": "18.10.2023",
     "App": {
         "Notifications": {
             "BrowserWarnings": {
                 "Description": "{name} est obsolète et n'est pas entièrement pris en charge. La version actuelle est {version}, mais Mainsail requiert la version {minVersion} ou une version supérieure.",
                 "Headline": "Navigateur obsolète"
             },
-            "DependencyDescription": "La version actuelle de {name} ne supporte pas toutes les fonctionalités de Mainsail. Mettez {name} à jour vers la version {neededVersion}.",
+            "DependencyDescription": "La version actuelle de {name} ne supporte pas toutes les fonctionnalités de Mainsail. Mettez {name} à jour vers la version {neededVersion}.",
             "DependencyName": "Dépendance: {name}",
             "DismissAll": "Annuler tout",
             "KlipperWarnings": {
@@ -27,7 +27,7 @@
             "NextReboot": "prochain redémarrage",
             "NoNotification": "Pas de notification disponible",
             "Notifications": "Notifications",
-            "Remind": "Rappeler:"
+            "Remind": "Rappel:"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Doit être supérieur ou égal à {min}!",
@@ -150,7 +150,7 @@
             "Cancel": "Annuler",
             "DoYouWantToStartFilename": "Voulez-vous commencer {filename}?",
             "DoYouWantToStartFilenameFilament": "Voulez-vous démarrer {filename} avec le filament suivant?",
-            "Headline": "Démarrage de l'impression",
+            "Headline": "Démarrage Impression",
             "Print": "imprimer",
             "Timelapse": "Timelapse"
         }
@@ -294,7 +294,7 @@
         "DoYouReallyWantToDelete": "Voulez-vous vraiment supprimer le profil \"{name}\"?",
         "ErrorKlipperNotReady": "Klipper n'est pas prêt. Maillage désactivé.",
         "Flat": "Plat",
-        "Heightmap": "Maillage de hauteur",
+        "Heightmap": "Maillage",
         "InvalidNameAlreadyExists": "Le nom du profil existe déjà, veuillez choisir un autre nom de profil.",
         "InvalidNameAscii": "Le nom n'est pas valide. Seuls les caractères ascii sont autorisés.",
         "InvalidNameEmpty": "L'entrée ne doit pas être vide!",
@@ -643,7 +643,7 @@
             "OpenSpoolManager": "ouvrir le gestionnaire de bobines",
             "Refresh": "rafraîchir",
             "Search": "Recherche",
-            "SelectSpool": "Sélectionner la bobine",
+            "SelectSpool": "Sélectionner une bobine",
             "Today": "Aujourd'hui",
             "TooLessFilament": "Il se peut que la bobine actuelle ne contienne pas assez de filament pour cette impression. ({spoolWeight}g pour {fileWeight}g)",
             "Weight": "Poids",
@@ -1022,7 +1022,7 @@
         "Store": "magasin",
         "TimelapseTab": {
             "Autorender": "Rendu automatique",
-            "AutorenderDescription": "Si cette option est activée, la vidéo du timelapse sera automatiquement rendue à la fin de l'impression.",
+            "AutorenderDescription": "Si cette option est activée, la vidéo du timelapse sera automatiquement calculée à la fin de l'impression.",
             "Camera": "Caméra",
             "CameraDescription": "Sélectionner la caméra à utiliser",
             "ConstantRateFactor": "Facteur d'échantillonnage",
@@ -1089,16 +1089,16 @@
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Bed Screws",
-            "BedScrewsDialogDescription": "Afficher la boîte de dialogue d'aide pour BED_SCREWS_ADJUST.",
+            "BedScrewsDialogDescription": "Affiche la boîte de dialogue d'aide pour BED_SCREWS_ADJUST.",
             "BigThumbnailBackground": "Couleur d'arrière-plan de la grande miniature",
             "BoolBigThumbnail": "Grande miniature",
             "BoolBigThumbnailDescription": "Affichage d'une grande miniature dans le panneau d'état lors d'une impression.",
-            "BoolHideUploadAndPrintButton": "Masquer le bouton de téléchargement et d'impression",
-            "BoolHideUploadAndPrintButtonDescription": "Afficher ou masquer le bouton 'Télécharger et imprimer' dans la barre supérieure.",
+            "BoolHideUploadAndPrintButton": "Masquer le bouton de Chargement et d'impression",
+            "BoolHideUploadAndPrintButtonDescription": "Afficher ou masquer le bouton 'Charger et imprimer' dans la barre supérieure.",
             "ConfirmOnEmergencyStop": "Confirmation obligatoire de l'arrêt d'urgence",
-            "ConfirmOnEmergencyStopDescription": "Afficher un dialogue de confirmation sur l'arrêt d'urgence",
+            "ConfirmOnEmergencyStopDescription": "Affiche un dialogue de confirmation sur l'arrêt d'urgence",
             "ConfirmOnPowerDeviceChange": "Requiert une confirmation pour changement de mode de modules de puissance",
-            "ConfirmOnPowerDeviceChangeDescription": "Afficher une boîte de dialogue de confirmation en cas de modification de l'alimentation de l'appareil",
+            "ConfirmOnPowerDeviceChangeDescription": "Affiche une boîte de dialogue de confirmation en cas de modification de l'alimentation de l'appareil",
             "DefaultNavigationState": "État par défaut de la navigation",
             "DefaultNavigationStateAlwaysClosed": "toujours fermé",
             "DefaultNavigationStateAlwaysOpen": "toujours ouvert",
@@ -1123,16 +1123,16 @@
             "ManualProbeDialog": "Aide à la sonde manuelle",
             "ManualProbeDialogDescription": "Affiche une boîte de dialogue d'aide pour PROBE_CALIBRATE ou Z_ENDSTOP_CALIBRATE.",
             "NavigationStyle": "Style de navigation",
-            "NavigationStyleDescription": "Modifier l'apparence de la navigation",
+            "NavigationStyleDescription": "Modifie l'apparence de la navigation",
             "NavigationStyleIconsAndText": "Icônes + Textes",
             "NavigationStyleIconsOnly": "Icônes uniquement",
             "PowerDeviceName": "Dispositif d'alimentation de l'imprimante",
-            "PowerDeviceNameDescription": "Sélectionnez le dispositif d'alimentation Moonraker à utiliser pour mettre l'imprimante sous tension.",
+            "PowerDeviceNameDescription": "Choisissez quel appreil de puissance Moonraker doit utiliser pour l'alimentation de l'imprimante.",
             "Primary": "Primaire",
             "ScrewsTiltAdjustDialog": "Screws Tilt Adjust",
-            "ScrewsTiltAdjustDialogDescription": "Affiche le dialogue d'aide pour SCREWS_TILT_CALCULATE.",
+            "ScrewsTiltAdjustDialogDescription": "Affiche une boîte de dialogue d'aide pour SCREWS_TILT_CALCULATE.",
             "TempchartHeight": "Hauteur dans le tableau des températures",
-            "TempchartHeightDescription": "Modifier la hauteur du graphique de température sur le tableau de bord.",
+            "TempchartHeightDescription": "Modifie la hauteur du graphique de température sur le tableau de bord.",
             "UiSettings": "Interface"
         },
         "Update": "mise à jour",
@@ -1209,10 +1209,10 @@
         "RefreshCurrentDirectory": "rafraîchir le répertoire",
         "Rename": "Renommer",
         "RenameDirectory": "Renommer le répertoire",
-        "RenameFile": "Renommer un fichier",
-        "Render": "rendu",
-        "RenderSettings": "Paramètres de rendu",
-        "SaveFrames": "Sauvegarder les cadres",
+        "RenameFile": "Renommer le fichier",
+        "Render": "calculer",
+        "RenderSettings": "Paramètres de calcul de la vidéo",
+        "SaveFrames": "Sauvegarder les images",
         "Search": "recherche",
         "StartRender": "commencer le rendu",
         "Status": "Statut",
@@ -1225,7 +1225,7 @@
         "Type": "Type",
         "Used": "Utilisé",
         "Variable": "Variable",
-        "Video": "Video"
+        "Video": "Vidéo"
     },
     "title": "Français"
 }
