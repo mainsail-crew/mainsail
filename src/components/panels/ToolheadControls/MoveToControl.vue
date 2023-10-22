@@ -8,7 +8,7 @@
         }">
         <template #default="{ el }">
             <v-container class="py-0">
-                <v-row class="flex-nowrap pb-1">
+                <v-row v-if="showPosition" class="flex-nowrap pb-1">
                     <v-col
                         :class="{
                             'col-5': el.is.small,
@@ -35,7 +35,7 @@
                         </span>
                     </v-col>
                 </v-row>
-                <v-row dense>
+                <v-row v-if="showCoordinates" dense>
                     <v-col :class="el.is.xsmall ? 'col-12' : 'col-4'">
                         <move-to-input
                             v-model="input.x.pos"
@@ -151,6 +151,14 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
 
     get currentProfileName() {
         return this.bed_mesh?.profile_name ?? ''
+    }
+
+    get showPosition() {
+        return this.$store.state.gui.view.toolhead.showPosition ?? true
+    }
+
+    get showCoordinates() {
+        return this.$store.state.gui.view.toolhead.showCoordinates ?? true
     }
 
     sendCmd(): void {

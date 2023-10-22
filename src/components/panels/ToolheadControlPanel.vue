@@ -82,6 +82,7 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
+            <toolhead-panel-settings />
         </template>
         <!-- MOVE TO CONTROL -->
         <move-to-control class="py-0 pt-3" />
@@ -90,13 +91,13 @@
             <component :is="`${controlStyle}-control`" />
         </v-container>
         <!-- Z-OFFSET CONTROL -->
-        <v-divider :class="{ 'mt-3': !axisControlVisible }" />
-        <v-container>
+        <v-divider v-if="showZOffset" :class="{ 'mt-3': !axisControlVisible }" />
+        <v-container v-if="showZOffset">
             <zoffset-control />
         </v-container>
         <!-- SPEED FACTOR -->
-        <v-divider />
-        <v-container>
+        <v-divider v-if="showSpeedFactor" />
+        <v-container v-if="showSpeedFactor">
             <tool-slider
                 :label="$t('Panels.ToolheadControlPanel.SpeedFactor')"
                 :icon="mdiSpeedometer"
@@ -162,6 +163,8 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get axisControlVisible() {
+        if (!this.showControl) return false
+
         return !(this.isPrinting && (this.$store.state.gui.control.hideDuringPrint ?? false))
     }
 
@@ -169,6 +172,18 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
         if (this.controlStyle !== 'bars' && (this.existsZtilt || this.existsQGL)) return true
 
         return this.existsBedScrews || this.existsBedTilt || this.existsDeltaCalibrate || this.existsScrewsTilt
+    }
+
+    get showControl() {
+        return this.$store.state.gui.view.toolhead.showControl ?? true
+    }
+
+    get showZOffset() {
+        return this.$store.state.gui.view.toolhead.showZOffset ?? true
+    }
+
+    get showSpeedFactor() {
+        return this.$store.state.gui.view.toolhead.showSpeedFactor ?? true
     }
 }
 </script>
