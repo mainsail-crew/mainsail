@@ -1,5 +1,5 @@
 <template>
-    <v-menu :offset-y="true" :close-on-content-click="false">
+    <v-menu :offset-y="true" :left="true" :close-on-content-click="false">
         <template #activator="{ on, attrs }">
             <v-btn icon tile v-bind="attrs" v-on="on">
                 <v-icon small>{{ mdiCog }}</v-icon>
@@ -11,35 +11,35 @@
                     v-model="showPosition"
                     class="mt-0"
                     hide-details
-                    :label="$t('Panels.ToolheadPanel.ShowPosition')" />
+                    :label="$t('Panels.ToolheadControlPanel.PositionOutput')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
                     v-model="showCoordinates"
                     class="mt-0"
                     hide-details
-                    :label="$t('Panels.ToolheadPanel.ShowCoordinates')" />
+                    :label="$t('Panels.ToolheadControlPanel.CoordinateFields')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
                     v-model="showControl"
                     class="mt-0"
                     hide-details
-                    :label="$t('Panels.ToolheadPanel.ShowControl')" />
+                    :label="$t('Panels.ToolheadControlPanel.ControlButtons')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
                     v-model="showZOffset"
                     class="mt-0"
                     hide-details
-                    :label="$t('Panels.ToolheadPanel.ShowZOffset')" />
+                    :label="$t('Panels.ToolheadControlPanel.ZOffset')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
                     v-model="showSpeedFactor"
                     class="mt-0"
                     hide-details
-                    :label="$t('Panels.ToolheadPanel.ShowSpeedFactor')" />
+                    :label="$t('Panels.ToolheadControlPanel.SpeedFactor')" />
             </v-list-item>
         </v-list>
     </v-menu>
