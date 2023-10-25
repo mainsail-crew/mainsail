@@ -85,13 +85,13 @@
             <toolhead-panel-settings />
         </template>
         <!-- MOVE TO CONTROL -->
-        <move-to-control class="py-0 pt-3" />
+        <move-to-control />
         <!-- AXIS CONTROL -->
         <v-container v-if="axisControlVisible">
             <component :is="`${controlStyle}-control`" />
         </v-container>
         <!-- Z-OFFSET CONTROL -->
-        <v-divider v-if="showZOffset" :class="{ 'mt-3': !axisControlVisible }" />
+        <v-divider v-if="showZOffset" />
         <v-container v-if="showZOffset">
             <zoffset-control />
         </v-container>
@@ -174,15 +174,15 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
         return this.existsBedScrews || this.existsBedTilt || this.existsDeltaCalibrate || this.existsScrewsTilt
     }
 
-    get showControl() {
+    get showControl(): boolean {
         return this.$store.state.gui.view.toolhead.showControl ?? true
     }
 
-    get showZOffset() {
+    get showZOffset(): boolean {
         return this.$store.state.gui.view.toolhead.showZOffset ?? true
     }
 
-    get showSpeedFactor() {
+    get showSpeedFactor(): boolean {
         return this.$store.state.gui.view.toolhead.showSpeedFactor ?? true
     }
 }
