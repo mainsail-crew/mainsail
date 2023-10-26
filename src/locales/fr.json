@@ -1,5 +1,5 @@
 {
-    "_last_update": "18.10.2023",
+    "_last_update": "26.10.2023",
     "App": {
         "Notifications": {
             "BrowserWarnings": {
@@ -546,8 +546,8 @@
             "FirmwareRetractionSettings": {
                 "RetractLength": "Longueur de rétraction",
                 "RetractSpeed": "Vitesse de rétraction",
-                "UnretractExtraLength": "Distance d'extrusion supplémentaire",
-                "UnretractSpeed": "Vitesse d'extrusion"
+                "UnretractExtraLength": "Distance de dérétraction supplémentaire",
+                "UnretractSpeed": "Vitesse de dérétraction"
             },
             "Headline": "Contrôles d'Extrudeur",
             "LoadFilament": "Chargement du filament",
@@ -1076,10 +1076,10 @@
             "Timelapse": "Timelapse",
             "TravelSpeed": "Vitesse de déplacement",
             "TravelSpeedDescription": "Vitesse de déplacement pour se rendre à la position de parking et pour reprendre l'impression.",
-            "UnretractDistance": "Distance d'extrusion",
-            "UnretractDistanceDescription": "Distance d'extrusion du filament après parking et avant reprise d'impression.",
-            "UnretractSpeed": "Vitesse d'extrusion",
-            "UnretractSpeedDescription": "Vitesse d'extrusion du filament après parking et avant reprise d'impression.",
+            "UnretractDistance": "Distance de dérétraction",
+            "UnretractDistanceDescription": "Distance de dérétraction du filament après parking et avant reprise d'impression.",
+            "UnretractSpeed": "Vitesse de dérétraction",
+            "UnretractSpeedDescription": "Vitesse de dérétraction du filament après parking et avant reprise d'impression.",
             "VariableFps": "IPS variable",
             "VariableFpsDescription": "Si activé, le nombre d'images par seconde (IPS) sera calculé tenant compte de la taille du fichier de sortie.",
             "VariableFpsMax": "IPS variable max",
