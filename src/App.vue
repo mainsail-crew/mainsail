@@ -17,6 +17,7 @@
             <the-manual-probe-dialog />
             <the-bed-screws-dialog />
             <the-screws-tilt-adjust-dialog />
+            <the-action-command-prompt />
         </template>
         <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'" />
         <the-connecting-dialog v-else />
@@ -41,11 +42,13 @@ import TheManualProbeDialog from '@/components/dialogs/TheManualProbeDialog.vue'
 import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
 import TheScrewsTiltAdjustDialog from '@/components/dialogs/TheScrewsTiltAdjustDialog.vue'
 import { setAndLoadLocale } from './plugins/i18n'
+import TheActionCommandPrompt from '@/components/dialogs/TheActionCommandPrompt.vue'
 
 Component.registerHooks(['metaInfo'])
 
 @Component({
     components: {
+        TheActionCommandPrompt,
         TheTimelapseRenderingSnackbar,
         TheEditor,
         TheSelectPrinterDialog,
