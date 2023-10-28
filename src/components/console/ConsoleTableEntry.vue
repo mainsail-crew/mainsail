@@ -1,10 +1,7 @@
 <template>
-    <v-row :class="'ma-0 ' + entryStyle">
+    <v-row :class="entryStyle">
         <v-col class="col-auto pr-0 text--disabled console-time">{{ entryFormatTime }}</v-col>
-        <v-col
-            :class="colorConsoleMessage(event) + ' ' + 'console-message'"
-            @click.capture="commandClick"
-            v-html="event.formatMessage"></v-col>
+        <v-col :class="messageClass" @click.capture="commandClick" v-html="event.formatMessage" />
     </v-row>
 </template>
 
@@ -20,17 +17,25 @@ export default class ConsoleTableEntry extends Mixins(BaseMixin) {
     declare readonly event: ServerStateEvent
 
     get entryStyle() {
-        return this.$store.state.gui.console.entryStyle ?? 'default'
+        const classes = ['ma-0']
+        classes.push(this.$store.state.gui.console.entryStyle ?? 'default')
+        if (this.event.type === 'action') classes.push('text--disabled')
+
+        return classes
     }
 
     get entryFormatTime() {
         return this.formatTime(this.event.date.getTime(), true)
     }
 
-    colorConsoleMessage(item: ServerStateEvent): string {
-        if (item.message.startsWith('!! ')) return 'error--text'
+    get messageClass() {
+        const classes = ['console-message']
 
-        return 'text--primary'
+        if (this.event.type === 'action') classes.push('text--disabled')
+        else if (this.event.message.startsWith('!! ')) classes.push('error--text')
+        else classes.push('text--primary')
+
+        return classes
     }
 
     commandClick(event: Event) {

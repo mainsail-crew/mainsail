@@ -247,6 +247,8 @@ export const actions: ActionTree<ServerState, RootState> = {
         let message = payload
         let type = 'response'
 
+        window.console.log(payload)
+
         if (typeof payload === 'object' && 'type' in payload) type = payload.type
 
         if ('message' in payload) message = payload.message
@@ -254,6 +256,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         else if ('error' in payload) message = message.error.message
 
         let formatMessage = formatConsoleMessage(message)
+        if (type === 'response' && message.startsWith('// action:')) type = 'action'
 
         const filters = rootGetters['gui/console/getConsolefilterRules']
         let boolImport = true
