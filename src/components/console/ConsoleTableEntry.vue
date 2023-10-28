@@ -1,28 +1,3 @@
-<style scoped>
-.consoleTableRow {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.95em;
-
-    &.default {
-        .col {
-            padding-top: 8px !important;
-            padding-bottom: 8px !important;
-        }
-
-        & + .consoleTableRow .col {
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
-        }
-    }
-
-    &.compact {
-        .col {
-            padding-top: 2px !important;
-            padding-bottom: 2px !important;
-        }
-    }
-}
-</style>
-
 <template>
     <v-row :class="'ma-0 ' + entryStyle">
         <v-col class="col-auto pr-0 text--disabled console-time">{{ entryFormatTime }}</v-col>
@@ -68,3 +43,28 @@ export default class ConsoleTableEntry extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.consoleTableRow {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.95em;
+
+    &.default {
+        .col {
+            padding-top: 8px !important;
+            padding-bottom: 8px !important;
+        }
+
+        & + .consoleTableRow .col {
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+        }
+    }
+
+    &.compact {
+        .col {
+            padding-top: 2px !important;
+            padding-bottom: 2px !important;
+        }
+    }
+}
+</style>
