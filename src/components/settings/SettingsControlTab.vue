@@ -40,7 +40,7 @@
                     <settings-row :title="$t('Settings.ControlTab.InvertZMovement')" :dynamic-slot-width="true">
                         <v-switch v-model="reverseZ" hide-details class="mt-0" />
                     </settings-row>
-                    <v-divider class="my-2"></v-divider>
+                    <v-divider class="my-2" />
                 </template>
                 <settings-row :title="$t('Settings.ControlTab.SpeedXY')">
                     <v-text-field
@@ -153,9 +153,9 @@
                             ]"
                             dense
                             outlined
-                            hide-spin-buttons></v-combobox>
+                            hide-spin-buttons />
                     </settings-row>
-                    <v-divider class="my-2"></v-divider>
+                    <v-divider class="my-2" />
                     <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
                         <v-combobox
                             v-model="stepsZ"
