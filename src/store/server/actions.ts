@@ -247,8 +247,6 @@ export const actions: ActionTree<ServerState, RootState> = {
         let message = payload
         let type = 'response'
 
-        window.console.log(payload)
-
         if (typeof payload === 'object' && 'type' in payload) type = payload.type
 
         if ('message' in payload) message = payload.message
