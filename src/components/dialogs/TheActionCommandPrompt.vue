@@ -14,9 +14,8 @@
             </template>
             <v-card-text>
                 <template v-for="(event, index) in activePromptContent">
-                    <v-row :key="index">
-                        <v-col>{{ event.message }}</v-col>
-                    </v-row>
+                    <action-command-prompt-text v-if="event.type === 'text'" :key="index" :event="event" />
+                    <action-command-prompt-button v-if="event.type === 'button'" :key="index" :event="event" />
                 </template>
             </v-card-text>
             <v-card-actions v-if="buttonPrimary || buttonSecondary">
@@ -34,11 +33,13 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 
 import { mdiCloseThick, mdiInformation } from '@mdi/js'
-import { ServerStateEvent } from '@/store/server/types'
+import { ServerStateEvent, ServerStateEventPromptContent } from '@/store/server/types'
 import ActionCommandPromptActionButton from '@/components/dialogs/ActionCommandPromptActionButton.vue'
+import ActionCommandPromptText from '@/components/dialogs/ActionCommandPromptText.vue'
+import ActionCommandPromptButton from '@/components/dialogs/ActionCommandPromptButton.vue'
 
 @Component({
-    components: { ActionCommandPromptActionButton, Panel },
+    components: { ActionCommandPromptButton, ActionCommandPromptText, ActionCommandPromptActionButton, Panel },
 })
 export default class TheActionCommandPrompt extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
@@ -87,12 +88,30 @@ export default class TheActionCommandPrompt extends Mixins(BaseMixin) {
 
     get activePromptContent() {
         const allowedTypes = ['button', 'text']
+        const activePromptContent: ServerStateEventPromptContent[] = this.activePrompt.map(
+            (event: ServerStateEvent) => {
+                const type = event.message.replace('// action:prompt_', '').split(' ')[0].trim()
+                const message = (event.message ?? '').replace(`// action:prompt_${type}`, '').replace(/"/g, '').trim()
 
-        return this.activePrompt.filter((event: ServerStateEvent) => {
-            let type = event.message.replace('// action:prompt_', '').split(' ')[0].trim()
+                const promptContent: ServerStateEventPromptContent = {
+                    date: event.date,
+                    type,
+                    message,
+                }
 
-            return allowedTypes.includes(type)
-        })
+                return promptContent
+            }
+        )
+
+        window.console.log(activePromptContent)
+
+        const output = activePromptContent.filter((event: ServerStateEventPromptContent) =>
+            allowedTypes.includes(event.type)
+        )
+
+        window.console.log(output)
+
+        return output
     }
 
     get headline() {
