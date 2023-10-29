@@ -57,7 +57,7 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
 
     get events() {
-        return this.$store.state.server.events
+        return this.$store.state.server.events.slice(-100)
     }
 
     get macroPromptEvents() {
