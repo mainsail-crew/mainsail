@@ -10,7 +10,7 @@ import BaseMixin from '@/components/mixins/base'
 import { ServerStateEvent } from '@/store/server/types'
 
 @Component({})
-export default class TheActionCommandPromptActionButton extends Mixins(BaseMixin) {
+export default class ActionCommandPromptActionButton extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly event!: ServerStateEvent
     @Prop({ type: String, required: true }) readonly type!: 'primary' | 'secondary'
 

@@ -21,11 +21,8 @@
             </v-card-text>
             <v-card-actions v-if="buttonPrimary || buttonSecondary">
                 <v-spacer />
-                <the-action-command-prompt-action-button
-                    v-if="buttonSecondary"
-                    :event="buttonSecondary"
-                    type="secondary" />
-                <the-action-command-prompt-action-button v-if="buttonPrimary" :event="buttonPrimary" type="primary" />
+                <action-command-prompt-action-button v-if="buttonSecondary" :event="buttonSecondary" type="secondary" />
+                <action-command-prompt-action-button v-if="buttonPrimary" :event="buttonPrimary" type="primary" />
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -38,9 +35,10 @@ import Panel from '@/components/ui/Panel.vue'
 
 import { mdiCloseThick, mdiInformation } from '@mdi/js'
 import { ServerStateEvent } from '@/store/server/types'
+import ActionCommandPromptActionButton from '@/components/dialogs/ActionCommandPromptActionButton.vue'
 
 @Component({
-    components: { Panel },
+    components: { ActionCommandPromptActionButton, Panel },
 })
 export default class TheActionCommandPrompt extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
