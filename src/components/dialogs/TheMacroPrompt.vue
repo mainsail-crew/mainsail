@@ -60,25 +60,22 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
         return this.$store.state.server.events
     }
 
-    get actions() {
-        return this.events.filter(
-            (event: ServerStateEvent) => event.type === 'action' && event.message.startsWith('// action:prompt_')
-        )
-    }
-
     get macroPromptEvents() {
-        return this.actions.map((event: ServerStateEvent) => {
-            const type = (event.message ?? '').replace('// action:prompt_', '').split(' ')[0].trim()
-            const message = (event.message ?? '').replace(`// action:prompt_${type}`, '').replace(/"/g, '').trim()
+        return this.events
+            .filter((event: ServerStateEvent) => event.type === 'action')
+            .filter((event: ServerStateEvent) => event.message.startsWith('// action:prompt_'))
+            .map((event: ServerStateEvent) => {
+                const type = (event.message ?? '').replace('// action:prompt_', '').split(' ')[0].trim()
+                const message = (event.message ?? '').replace(`// action:prompt_${type}`, '').replace(/"/g, '').trim()
 
-            const promptContent: ServerStateEventPrompt = {
-                date: event.date,
-                type,
-                message,
-            }
+                const promptContent: ServerStateEventPrompt = {
+                    date: event.date,
+                    type,
+                    message,
+                }
 
-            return promptContent
-        })
+                return promptContent
+            })
     }
 
     get lastPromptBeginPos() {
@@ -101,7 +98,7 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     get showDialog() {
         if (this.lastPromptBeginPos === -1) return false
 
-        return this.lastPromptBeginPos > this.lastPromptClosePos
+        return this.lastPromptBeginPos > this.lastPromptClosePos && this.activePromptContent.length > 0
     }
 
     get activePrompt() {
