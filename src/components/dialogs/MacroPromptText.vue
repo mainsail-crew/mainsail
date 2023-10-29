@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col>
-            <p>{{ text }}</p>
+            <p class="mb-0">{{ text }}</p>
         </v-col>
     </v-row>
 </template>
