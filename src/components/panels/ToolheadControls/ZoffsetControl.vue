@@ -158,6 +158,10 @@ export default class ZoffsetControl extends Mixins(BaseMixin, ZoffsetMixin) {
         return this.$store.state.printer.toolhead?.homed_axes ?? ''
     }
 
+    get offsetZSaveOption() {
+        return this.$store.state.gui.control.offsetZSaveOption ?? null
+    }
+
     sendBabyStepDown(offset: number): void {
         const gcode = `SET_GCODE_OFFSET Z_ADJUST=-${offset} ${this.homed_axis === 'xyz' ? 'MOVE=1' : ''}`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
@@ -177,23 +181,9 @@ export default class ZoffsetControl extends Mixins(BaseMixin, ZoffsetMixin) {
     }
 
     saveZOffset(): void {
-        if (this.isEndstopProbe && this.existZOffsetApplyProbe) {
-            this.saveZOffsetToProbe()
-            return
-        }
+        let gcode = this.offsetZSaveOption
+        if (gcode === null) gcode = this.autoSaveZOffsetOption
 
-        this.saveZOffsetToEndstop()
-    }
-
-    saveZOffsetToEndstop(): void {
-        const gcode = 'Z_OFFSET_APPLY_ENDSTOP'
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
-        this.saveOffsetDialog = true
-    }
-
-    saveZOffsetToProbe(): void {
-        const gcode = 'Z_OFFSET_APPLY_PROBE'
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
         this.saveOffsetDialog = true
