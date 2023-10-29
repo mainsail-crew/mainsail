@@ -1,9 +1,5 @@
 <template>
-    <v-row>
-        <v-col>
-            <v-btn @click="sendCommand">{{ text }}</v-btn>
-        </v-col>
-    </v-row>
+    <v-btn :color="color" class="mx-2" @click="sendCommand">{{ text }}</v-btn>
 </template>
 
 <script lang="ts">
@@ -25,6 +21,10 @@ export default class MacroPromptButton extends Mixins(BaseMixin) {
 
     get command() {
         return this.splits[1] ?? this.text
+    }
+
+    get color() {
+        return this.splits[2] ?? ''
     }
 
     sendCommand() {

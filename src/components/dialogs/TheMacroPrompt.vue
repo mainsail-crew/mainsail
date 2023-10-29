@@ -15,7 +15,11 @@
             <v-card-text>
                 <template v-for="(event, index) in activePromptContent">
                     <macro-prompt-text v-if="event.type === 'text'" :key="index" :event="event" />
-                    <macro-prompt-button v-if="event.type === 'button'" :key="index" :event="event" />
+                    <macro-prompt-button-group
+                        v-if="event.type === 'button_group'"
+                        :key="index"
+                        :children="event.children ?? []" />
+                    <macro-prompt-button-group v-if="event.type === 'button'" :key="index" :children="[event]" />
                 </template>
             </v-card-text>
             <v-card-actions v-if="buttonPrimary || buttonSecondary">
@@ -87,7 +91,7 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     }
 
     get activePromptContent() {
-        const allowedTypes = ['button', 'text']
+        const allowedTypes = ['button', 'text', 'button_group_start', 'button_group_end']
         const activePromptContent: ServerStateEventPromptContent[] = this.activePrompt.map(
             (event: ServerStateEvent) => {
                 const type = event.message.replace('// action:prompt_', '').split(' ')[0].trim()
@@ -103,13 +107,25 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
             }
         )
 
-        window.console.log(activePromptContent)
-
         const output = activePromptContent.filter((event: ServerStateEventPromptContent) =>
             allowedTypes.includes(event.type)
         )
 
-        window.console.log(output)
+        while (output.findIndex((event) => event.type === 'button_group_start') !== -1) {
+            const start = output.findIndex((event) => event.type === 'button_group_start')
+            const end = output.findIndex((event) => event.type === 'button_group_end')
+
+            const buttons = output.slice(start + 1, end)
+
+            output[start] = {
+                date: buttons[0].date,
+                type: 'button_group',
+                message: '',
+                children: buttons,
+            }
+
+            output.splice(start + 1, buttons.length + 1)
+        }
 
         return output
     }

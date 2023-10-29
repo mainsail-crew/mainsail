@@ -75,6 +75,7 @@ export interface ServerStateEventPromptContent {
     date: Date
     type: string
     message: string
+    children?: ServerStateEventPromptContent[]
 }
 
 export interface ServerStateCpuInfo {
