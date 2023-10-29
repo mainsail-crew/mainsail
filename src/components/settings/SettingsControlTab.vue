@@ -178,6 +178,20 @@
                     </settings-row>
                     <v-divider class="my-2" />
                 </template>
+                <template>
+                    <settings-row
+                        :title="$t('Settings.ControlTab.ZOffsetSaveOption')"
+                        :sub-title="$t('Settings.ControlTab.ZOffsetSaveOptionDescription')">
+                        <v-select
+                            v-model="offsetZSaveOption"
+                            :items="offsetZSaveOptions"
+                            class="mt-0"
+                            hide-details
+                            outlined
+                            dense />
+                    </settings-row>
+                    <v-divider class="my-2" />
+                </template>
                 <settings-row :title="$t('Settings.ControlTab.ZOffsetIncrements')" :mobile-second-row="true">
                     <v-combobox
                         v-model="offsetsZ"
@@ -259,11 +273,12 @@ import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiPrinter3dNozzle, mdiGamepad } from '@mdi/js'
+import ZoffsetMixin from '@/components/mixins/zoffset'
 
 @Component({
     components: { SettingsRow },
 })
-export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) {
+export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin, ZoffsetMixin) {
     mdiGamepad = mdiGamepad
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
 
@@ -517,6 +532,41 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
 
     set showEstimatedExtrusionInfo(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.showEstimatedExtrusionInfo', value: newVal })
+    }
+
+    get offsetZSaveOption() {
+        return this.$store.state.gui.control.offsetZSaveOption ?? null
+    }
+
+    set offsetZSaveOption(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.offsetZSaveOption', value: newVal })
+    }
+
+    get offsetZSaveOptions() {
+        const defaultValue = this.autoSaveZOffsetOption.replace(/Z_OFFSET_APPLY_/g, '')
+
+        const output: { value: string | null; text: string }[] = [
+            {
+                value: null,
+                text: `Auto (${defaultValue})`,
+            },
+        ]
+
+        if (this.existZOffsetApplyEndstop) {
+            output.push({
+                value: 'Z_OFFSET_APPLY_ENDSTOP',
+                text: 'ENDSTOP',
+            })
+        }
+
+        if (this.existZOffsetApplyProbe) {
+            output.push({
+                value: 'Z_OFFSET_APPLY_PROBE',
+                text: 'PROBE',
+            })
+        }
+
+        return output
     }
 
     blurFeedrateXY() {
