@@ -3,7 +3,7 @@
         <panel
             :title="headline"
             :icon="mdiInformation"
-            card-class="action_command_prompt-dialog"
+            card-class="macro_prompt-dialog"
             :margin-bottom="false"
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
@@ -14,14 +14,14 @@
             </template>
             <v-card-text>
                 <template v-for="(event, index) in activePromptContent">
-                    <action-command-prompt-text v-if="event.type === 'text'" :key="index" :event="event" />
-                    <action-command-prompt-button v-if="event.type === 'button'" :key="index" :event="event" />
+                    <macro-prompt-text v-if="event.type === 'text'" :key="index" :event="event" />
+                    <macro-prompt-button v-if="event.type === 'button'" :key="index" :event="event" />
                 </template>
             </v-card-text>
             <v-card-actions v-if="buttonPrimary || buttonSecondary">
                 <v-spacer />
-                <action-command-prompt-action-button v-if="buttonSecondary" :event="buttonSecondary" type="secondary" />
-                <action-command-prompt-action-button v-if="buttonPrimary" :event="buttonPrimary" type="primary" />
+                <macro-prompt-action-button v-if="buttonSecondary" :event="buttonSecondary" type="secondary" />
+                <macro-prompt-action-button v-if="buttonPrimary" :event="buttonPrimary" type="primary" />
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -34,14 +34,14 @@ import Panel from '@/components/ui/Panel.vue'
 
 import { mdiCloseThick, mdiInformation } from '@mdi/js'
 import { ServerStateEvent, ServerStateEventPromptContent } from '@/store/server/types'
-import ActionCommandPromptActionButton from '@/components/dialogs/ActionCommandPromptActionButton.vue'
-import ActionCommandPromptText from '@/components/dialogs/ActionCommandPromptText.vue'
-import ActionCommandPromptButton from '@/components/dialogs/ActionCommandPromptButton.vue'
+import MacroPromptActionButton from '@/components/dialogs/MacroPromptActionButton.vue'
+import MacroPromptText from '@/components/dialogs/MacroPromptText.vue'
+import MacroPromptButton from '@/components/dialogs/MacroPromptButton.vue'
 
 @Component({
-    components: { ActionCommandPromptButton, ActionCommandPromptText, ActionCommandPromptActionButton, Panel },
+    components: { MacroPromptButton, MacroPromptText, MacroPromptActionButton, Panel },
 })
-export default class TheActionCommandPrompt extends Mixins(BaseMixin) {
+export default class TheMacroPrompt extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
     mdiCloseThick = mdiCloseThick
 

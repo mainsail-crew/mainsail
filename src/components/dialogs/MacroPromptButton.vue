@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col>
-            <p>{{ text }}</p>
+            <v-btn @click="sendCommand">{{ text }}</v-btn>
         </v-col>
     </v-row>
 </template>
@@ -12,11 +12,23 @@ import BaseMixin from '@/components/mixins/base'
 import { ServerStateEventPromptContent } from '@/store/server/types'
 
 @Component({})
-export default class ActionCommandPromptText extends Mixins(BaseMixin) {
+export default class MacroPromptButton extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly event!: ServerStateEventPromptContent
 
+    get splits() {
+        return this.event.message.split('|')
+    }
+
     get text() {
-        return this.event.message
+        return this.splits[0]
+    }
+
+    get command() {
+        return this.splits[1] ?? this.text
+    }
+
+    sendCommand() {
+        window.console.log('send command: ', this.command)
     }
 }
 </script>
