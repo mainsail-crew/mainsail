@@ -7,31 +7,26 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { ServerStateEvent } from '@/store/server/types'
+import { ServerStateEventPrompt } from '@/store/server/types'
 
 @Component({})
 export default class MacroPromptActionButton extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) readonly event!: ServerStateEvent
-    @Prop({ type: String, required: true }) readonly type!: 'primary' | 'secondary'
+    @Prop({ type: Object, required: true }) readonly event!: ServerStateEventPrompt
 
-    get filtertedMessageSplits() {
-        return (this.event.message ?? '')
-            .replace(`// action:prompt_button_${this.type}`, '')
-            .replace(/"/g, '')
-            .trim()
-            .split('|')
+    get splits() {
+        return this.event.message.split('|')
     }
 
     get text() {
-        return this.filtertedMessageSplits[0]
+        return this.splits[0]
     }
 
     get command() {
-        return this.filtertedMessageSplits[1] ?? this.text
+        return this.splits[1] ?? this.text
     }
 
     get color() {
-        return this.type === 'primary' ? 'primary' : ''
+        return this.splits[2] ?? ''
     }
 
     clickButton() {

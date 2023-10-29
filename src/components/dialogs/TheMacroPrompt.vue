@@ -27,10 +27,12 @@
                         :children="[event]" />
                 </template>
             </v-card-text>
-            <v-card-actions v-if="buttonPrimary || buttonSecondary">
+            <v-card-actions v-if="footerButtons.length">
                 <v-spacer />
-                <macro-prompt-action-button v-if="buttonSecondary" :event="buttonSecondary" type="secondary" />
-                <macro-prompt-action-button v-if="buttonPrimary" :event="buttonPrimary" type="primary" />
+                <macro-prompt-footer-button
+                    v-for="(button, index) in footerButtons"
+                    :key="'prompt_footer_' + index"
+                    :event="button" />
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -42,14 +44,13 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 
 import { mdiCloseThick, mdiInformation } from '@mdi/js'
-import { ServerStateEvent, ServerStateEventPromptContent } from '@/store/server/types'
-import MacroPromptActionButton from '@/components/dialogs/MacroPromptActionButton.vue'
 import { ServerStateEvent, ServerStateEventPrompt } from '@/store/server/types'
+import MacroPromptFooterButton from '@/components/dialogs/MacroPromptFooterButton.vue'
 import MacroPromptText from '@/components/dialogs/MacroPromptText.vue'
 import MacroPromptButton from '@/components/dialogs/MacroPromptButton.vue'
 
 @Component({
-    components: { MacroPromptButton, MacroPromptText, MacroPromptActionButton, Panel },
+    components: { MacroPromptButton, MacroPromptText, MacroPromptFooterButton, Panel },
 })
 export default class TheMacroPrompt extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
@@ -142,24 +143,10 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
         return this.activePrompt[this.lastPromptBeginPos].message ?? ''
     }
 
-    get buttonPrimary() {
-        const index = this.activePrompt.findLastIndex((event: ServerStateEvent) =>
-            event.message.startsWith('// action:prompt_button_primary')
-        )
+    get footerButtons() {
+        if (!this.showDialog || this.lastPromptBeginPos === -1) return []
 
-        if (index === -1) return null
-
-        return this.activePrompt[index]
-    }
-
-    get buttonSecondary() {
-        const index = this.activePrompt.findLastIndex((event: ServerStateEvent) =>
-            event.message.startsWith('// action:prompt_button_secondary')
-        )
-
-        if (index === -1) return null
-
-        return this.activePrompt[index]
+        return this.activePrompt.filter((event: ServerStateEventPrompt) => event.type === 'footer_button')
     }
 
     closePrompt() {
