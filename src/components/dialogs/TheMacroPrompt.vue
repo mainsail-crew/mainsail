@@ -14,12 +14,17 @@
             </template>
             <v-card-text>
                 <template v-for="(event, index) in activePromptContent">
-                    <macro-prompt-text v-if="event.type === 'text'" :key="index" :event="event" />
+                    <macro-prompt-text v-if="event.type === 'text'" :key="'prompt_' + index" :event="event" />
                     <macro-prompt-button-group
                         v-if="event.type === 'button_group'"
-                        :key="index"
+                        :key="'prompt_' + index"
+                        :group-index="index"
                         :children="event.children ?? []" />
-                    <macro-prompt-button-group v-if="event.type === 'button'" :key="index" :children="[event]" />
+                    <macro-prompt-button-group
+                        v-if="event.type === 'button'"
+                        :key="'prompt_' + index"
+                        :group-index="index"
+                        :children="[event]" />
                 </template>
             </v-card-text>
             <v-card-actions v-if="buttonPrimary || buttonSecondary">
@@ -39,6 +44,7 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiInformation } from '@mdi/js'
 import { ServerStateEvent, ServerStateEventPromptContent } from '@/store/server/types'
 import MacroPromptActionButton from '@/components/dialogs/MacroPromptActionButton.vue'
+import { ServerStateEvent, ServerStateEventPrompt } from '@/store/server/types'
 import MacroPromptText from '@/components/dialogs/MacroPromptText.vue'
 import MacroPromptButton from '@/components/dialogs/MacroPromptButton.vue'
 
@@ -57,25 +63,38 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
         return this.events.filter((event: ServerStateEvent) => event.type === 'action')
     }
 
+    get macroPromptEvents() {
+        return this.actions
+            .filter((event: ServerStateEvent) => event.message.startsWith('// action:prompt_'))
+            .map((event: ServerStateEvent) => {
+                const type = event.message.replace('// action:prompt_', '').split(' ')[0].trim()
+                const message = (event.message ?? '').replace(`// action:prompt_${type}`, '').replace(/"/g, '').trim()
+
+                const promptContent: ServerStateEventPromptContent = {
+                    date: event.date,
+                    type,
+                    message,
+                }
+
+                return promptContent
+            })
+    }
+
     get lastPromptBeginPos() {
         if (this.lastPromptShowPos === -1) return -1
 
-        return this.actions.findLastIndex(
-            (event: ServerStateEvent) => event.message.startsWith('// action:prompt_begin'),
+        return this.macroPromptEvents.findLastIndex(
+            (event: ServerStateEventPrompt) => event.type === 'begin',
             this.lastPromptShowPos
         )
     }
 
     get lastPromptShowPos() {
-        return this.actions.findLastIndex((event: ServerStateEvent) =>
-            event.message.startsWith('// action:prompt_show')
-        )
+        return this.macroPromptEvents.findLastIndex((event: ServerStateEventPrompt) => event.type === 'show')
     }
 
     get lastPromptClosePos() {
-        return this.actions.findLastIndex((event: ServerStateEvent) =>
-            event.message.startsWith('// action:prompt_close')
-        )
+        return this.macroPromptEvents.findLastIndex((event: ServerStateEventPrompt) => event.type === 'close')
     }
 
     get showDialog() {
@@ -87,33 +106,20 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     get activePrompt() {
         if (this.lastPromptShowPos === -1) return []
 
-        return this.actions.slice(this.lastPromptBeginPos, this.lastPromptShowPos)
+        return this.macroPromptEvents.slice(this.lastPromptBeginPos, this.lastPromptShowPos)
     }
 
-    get activePromptContent() {
+    get activePromptContent(): ServerStateEventPrompt[] {
         const allowedTypes = ['button', 'text', 'button_group_start', 'button_group_end']
-        const activePromptContent: ServerStateEventPromptContent[] = this.activePrompt.map(
-            (event: ServerStateEvent) => {
-                const type = event.message.replace('// action:prompt_', '').split(' ')[0].trim()
-                const message = (event.message ?? '').replace(`// action:prompt_${type}`, '').replace(/"/g, '').trim()
 
-                const promptContent: ServerStateEventPromptContent = {
-                    date: event.date,
-                    type,
-                    message,
-                }
+        const output = this.activePrompt.filter((event: ServerStateEventPrompt) => allowedTypes.includes(event.type))
 
-                return promptContent
-            }
-        )
-
-        const output = activePromptContent.filter((event: ServerStateEventPromptContent) =>
-            allowedTypes.includes(event.type)
-        )
-
-        while (output.findIndex((event) => event.type === 'button_group_start') !== -1) {
-            const start = output.findIndex((event) => event.type === 'button_group_start')
-            const end = output.findIndex((event) => event.type === 'button_group_end')
+        while (
+            output.findIndex((event: ServerStateEventPrompt) => event.type === 'button_group_start') !== -1 &&
+            output.findIndex((event: ServerStateEventPrompt) => event.type === 'button_group_end') !== -1
+        ) {
+            const start = output.findIndex((event: ServerStateEventPrompt) => event.type === 'button_group_start')
+            const end = output.findIndex((event: ServerStateEventPrompt) => event.type === 'button_group_end')
 
             const buttons = output.slice(start + 1, end)
 
@@ -133,10 +139,7 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     get headline() {
         if (!this.showDialog || this.lastPromptBeginPos === -1) return ''
 
-        return (this.actions[this.lastPromptBeginPos].message ?? '')
-            .replace('// action:prompt_begin', '')
-            .replace(/"/g, '')
-            .trim()
+        return this.activePrompt[this.lastPromptBeginPos].message ?? ''
     }
 
     get buttonPrimary() {

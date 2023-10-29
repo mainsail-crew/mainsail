@@ -71,11 +71,11 @@ export interface ServerStateEvent {
     formatMessage: string | string[]
 }
 
-export interface ServerStateEventPromptContent {
+export interface ServerStateEventPrompt {
     date: Date
     type: string
     message: string
-    children?: ServerStateEventPromptContent[]
+    children?: ServerStateEventPrompt[]
 }
 
 export interface ServerStateCpuInfo {
