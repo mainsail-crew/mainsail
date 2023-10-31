@@ -121,7 +121,7 @@
         "Abort": "Afbryd",
         "Accept": "Acceptér",
         "Adjusted": "Justeret",
-        "Description": "Klik på <b>Justeret</b> hvis proben blev justeret. Klik på <b>Acceptér</b> for at fortsætte uden justering.",
+        "Description": "Klik på <b>Justeret</b> hvis skruen blev justeret. Klik på <b>Acceptér</b> for at fortsætte uden justering.",
         "Headline": "Bed skruer",
         "ScrewAccepted": "Skrue accepteret",
         "ScrewIndex": "Skrue Index",
