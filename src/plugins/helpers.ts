@@ -68,9 +68,6 @@ export function formatConsoleMessage(message: string): string {
     message = message.replace(/\n\/\/ /g, '\n')
     message = message.replace('\n// ', '<br>')
     message = message.replace(/\r\n|\r|\n/g, '<br>')
-    //message = message.replaceAll('<br />', '<br>')
-    //return message.split('<br>');
-
     return message
 }
 
