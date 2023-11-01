@@ -62,10 +62,15 @@ export const camelize = (str: string): string => {
 }
 
 export function formatConsoleMessage(message: string): string {
+    // remove !! at error msg start
     message = message.replace(/^!! /g, '')
+    // remove !! after \n new line
     message = message.replace(/\n!! /g, '\n')
+    // remove // at command msg start
     message = message.replace(/^\/\/ /g, '')
+    // remove // at \n new line
     message = message.replace(/\n\/\/ /g, '\n')
+    // replace linebreaks with html <br>
     message = message.replace('\n// ', '<br>')
     message = message.replace(/\r\n|\r|\n/g, '<br>')
     return message
