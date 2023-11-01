@@ -92,7 +92,7 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     }
 
     get lastPromptClosePos() {
-        return this.macroPromptEvents.findLastIndex((event: ServerStateEventPrompt) => event.type === 'close')
+        return this.macroPromptEvents.findLastIndex((event: ServerStateEventPrompt) => event.type === 'end')
     }
 
     get showDialog() {
@@ -147,7 +147,7 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     }
 
     closePrompt() {
-        const gcode = `RESPOND type="command" msg="action:prompt_close"`
+        const gcode = `RESPOND type="command" msg="action:prompt_end"`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
     }
