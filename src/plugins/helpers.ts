@@ -70,6 +70,9 @@ export function formatConsoleMessage(message: string): string {
     message = message.replace(/^\/\/ /g, '')
     // remove // at \n new line
     message = message.replace(/\n\/\/ /g, '\n')
+    // remove echo
+    message = message.replace(/^echo:/g, '')
+    message = message.replace(/^echo: /g, '')
     // replace linebreaks with html <br>
     message = message.replace('\n// ', '<br>')
     message = message.replace(/\r\n|\r|\n/g, '<br>')
