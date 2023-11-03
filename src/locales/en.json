@@ -536,6 +536,7 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
+            "CleanNozzle": "Clean Nozzle",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrude",
             "ExtruderTempTooLow": "Extruder temp. <",
@@ -550,6 +551,7 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Load Filament",
+            "PurgeFilament": "Purge Filament",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
