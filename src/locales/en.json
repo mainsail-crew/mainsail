@@ -551,12 +551,12 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Load Filament",
-            "PurgeFilament": "Purge Filament",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "SmoothTime": "Smooth Time"
             },
+            "PurgeFilament": "Purge Filament",
             "Requested": "Requested",
             "Retract": "Retract",
             "TooLargeExtrusion": "Extrusion too large!",

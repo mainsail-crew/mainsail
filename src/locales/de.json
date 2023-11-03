@@ -551,12 +551,12 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Filament laden",
-            "PurgeFilament": "Filament reinigen",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "SmoothTime": "Smooth Time"
             },
+            "PurgeFilament": "Filament reinigen",
             "Requested": "Angefordert",
             "Retract": "Rückzug",
             "TooLargeExtrusion": "Extrusion zu groß!",
