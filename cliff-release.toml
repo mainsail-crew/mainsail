@@ -73,7 +73,7 @@ commit_parsers = [
     { body = ".*security", group = "Security"},
 ]
 commit_preprocessors = [
-    { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "([#${2}](<REPO>/issues/${2}))" },
+    { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "([#${2}](<REPO>/pull/${2}))" },
 ]
 # filter out the commits that are not matched by commit parsers
 filter_commits = true
