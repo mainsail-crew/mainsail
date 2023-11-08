@@ -9,6 +9,7 @@ import { GuiNavigationStateEntry } from '@/store/gui/navigation/types'
 export interface NaviPoint {
     type: 'link' | 'route'
     title: string
+    orgTitle?: string
     to?: string
     href?: string
     target?: string
@@ -53,6 +54,7 @@ export default class NavigationMixin extends Mixins(BaseMixin) {
                 points.push({
                     type: 'route',
                     title: this.$t(`Router.${element.title}`),
+                    orgTitle: element.title,
                     icon: element.icon,
                     to: element.path,
                     position,
