@@ -62,7 +62,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
         const url = new URL('api/ws' + urlSearch, this.camSettings.stream_url)
         url.searchParams.set('media', 'video+audio')
         // change protocol to ws
-        url.protocol = 'ws:'
+        url.protocol = this.$store.state.socket.protocol + ':'
 
         // output a warning, if no src is set in the url
         if (!url.searchParams.has('src')) {
