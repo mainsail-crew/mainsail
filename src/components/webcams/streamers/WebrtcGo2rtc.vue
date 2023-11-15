@@ -132,6 +132,11 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
         this.log('open')
         this.status = 'connected'
 
+        if (this.restartTimeout !== null) {
+            clearTimeout(this.restartTimeout)
+            this.restartTimeout = null
+        }
+
         this.pc?.addEventListener('icecandidate', (ev) => {
             if (!ev.candidate) return
             const msg = { type: 'webrtc/candidate', value: ev.candidate.candidate }
