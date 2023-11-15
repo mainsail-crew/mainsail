@@ -13,6 +13,7 @@
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
                     <small :class="'mr-3 ' + statusColor + '--text'">{{ statusText }}</small>
+                    <small v-if="!enabled" :class="'mr-3 ' + statusColor + '--text'">({{ disabledText }})</small>
                     <v-icon @click="changeSensor">
                         {{ enabled ? mdiToggleSwitch : mdiToggleSwitchOffOutline }}
                     </v-icon>
@@ -51,9 +52,13 @@ export default class FilamentSensor extends Mixins(BaseMixin) {
     }
 
     get statusText() {
-        if (!this.enabled) return this.$t('Panels.MiscellaneousPanel.RunoutSensor.Disabled')
-        else if (this.filament_detected) return this.$t('Panels.MiscellaneousPanel.RunoutSensor.Detected')
+        if (this.filament_detected) return this.$t('Panels.MiscellaneousPanel.RunoutSensor.Detected')
         else return this.$t('Panels.MiscellaneousPanel.RunoutSensor.Empty')
+    }
+
+    get disabledText() {
+        if (!this.enabled) return this.$t('Panels.MiscellaneousPanel.RunoutSensor.Disabled')
+        else return null
     }
 
     changeSensor() {
