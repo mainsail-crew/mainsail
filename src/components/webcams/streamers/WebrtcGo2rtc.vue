@@ -31,7 +31,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
 
     pc: RTCPeerConnection | null = null
     ws: WebSocket | null = null
-    restartPause = 5000
+    restartPause = 2000
     restartTimeout: any = null
     status: string = 'connecting'
 
@@ -107,6 +107,11 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
     // adapted from https://github.com/AlexxIT/go2rtc/blob/master/www/webrtc.html
 
     start() {
+        if (!this.video) {
+            this.scheduleRestart()
+            return
+        }
+
         this.log('connecting to ' + this.url)
         this.status = 'connecting'
 
