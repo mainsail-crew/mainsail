@@ -31,7 +31,7 @@ export const actions: ActionTree<GuiPresetsState, RootState> = {
     store({ commit, dispatch, state }, payload) {
         const id = uuidv4()
 
-        commit('store', { id, values: payload.values })
+        commit('store', { id, values: { ...payload.values } })
         dispatch('upload', {
             id,
             value: state.presets[id],
