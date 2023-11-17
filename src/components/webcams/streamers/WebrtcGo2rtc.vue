@@ -130,7 +130,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
         this.ws = new WebSocket(this.url)
         this.ws.addEventListener('open', () => this.onWebSocketOpen())
         this.ws.addEventListener('message', (ev) => this.onWebSocketMessage(ev))
-        this.ws.addEventListener('close', () => this.onWebSocketClose())
+        this.ws.addEventListener('close', (ev) => this.onWebSocketClose(ev))
     }
 
     onWebSocketOpen() {
@@ -167,10 +167,11 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
         }
     }
 
-    onWebSocketClose() {
+    onWebSocketClose(ev: CloseEvent) {
         this.log('close')
         this.status = 'disconnected'
-        this.scheduleRestart()
+
+        if (!ev.wasClean) this.scheduleRestart()
     }
 
     terminate() {
