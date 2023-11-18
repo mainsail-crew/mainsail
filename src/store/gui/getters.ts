@@ -157,8 +157,9 @@ export const getters: GetterTree<GuiState, any> = {
         const setting = state.general.timeFormat
         if (setting === '12hours') return true
         if (setting === null) {
-            const timestring = new Date().toLocaleTimeString().split(' ')
-            return timestring.includes('AM') || timestring.includes('PM')
+            // create a time string, cut the last 2 chars and check if it contains AM or PM
+            const timeString = new Date().toLocaleString(navigator.language, { timeStyle: 'short' }).slice(-2)
+            if (['AM', 'PM'].includes(timeString)) return true
         }
 
         return false
