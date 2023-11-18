@@ -145,8 +145,10 @@
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
-                            <b>{{ $t('Files.CurrentPath') }}:</b>
-                            {{ currentPath || '/' }}
+                            <b class="mr-1">{{ $t('Files.CurrentPath') }}:</b>
+                            <path-navigation :path="currentPath" :on-segment-click="clickPathNavGoToDirectory">
+                                <template #rootElement>{{ '/gcodes' }}</template>
+                            </path-navigation>
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
@@ -652,6 +654,7 @@ import {
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import ControlMixin from '@/components/mixins/control'
+import PathNavigation from '@/components/ui/PathNavigation.vue'
 
 interface contextMenu {
     shown: boolean
@@ -694,7 +697,7 @@ interface tableColumnSetting {
 }
 
 @Component({
-    components: { StartPrintDialog, Panel, SettingsRow, draggable },
+    components: { StartPrintDialog, Panel, SettingsRow, PathNavigation, draggable },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiChevronDown = mdiChevronDown
@@ -1253,6 +1256,10 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     clickRowGoBack() {
         this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
+    }
+
+    clickPathNavGoToDirectory(segment: { location: string }) {
+        this.currentPath = segment.location
     }
 
     async addToQueue(item: FileStateGcodefile) {
