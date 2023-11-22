@@ -747,7 +747,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
             timeCount++
         }
 
-        if (time && timeCount) return Date.now() + (time / timeCount) * 1000
+        if (time && timeCount) return Math.round(Date.now() + (time / timeCount) * 1000)
 
         return 0
     },

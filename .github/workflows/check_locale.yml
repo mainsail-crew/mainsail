@@ -43,7 +43,7 @@ jobs:
             npm run i18n-extract -- --languageFiles=src/locales/${file##*/} --output=i18n-extract/${file##*/}
             MISSING=$(cat i18n-extract/${file##*/} | jq '.missingKeys | length')
             UNUSED=$(cat i18n-extract/${file##*/} | jq '.unusedKeys | length')
-            echo "::set-output name=$file::|${file##*/}|${MISSING}|${UNUSED}|"
+            echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
           done
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v2
