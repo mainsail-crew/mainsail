@@ -537,6 +537,7 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Autorisé",
+            "CleanNozzle": "Nettoyage de la buse",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrusion",
             "ExtruderTempTooLow": "Température d'extrusion trop basse",
@@ -556,6 +557,7 @@
                 "Extruder": "Extrudeur",
                 "SmoothTime": "Temps de lissage"
             },
+            "PurgeFilament": "Purge du filament",
             "Requested": "Demandé",
             "Retract": "Rétraction",
             "TooLargeExtrusion": "Extrusion trop importante!",
