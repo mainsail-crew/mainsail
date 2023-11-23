@@ -763,6 +763,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         if (hours12Format && h > 11) am = false
         if (hours12Format && h > 12) h -= 12
+        if (hours12Format && h == 0) h += 12
         if (h < 10) h = '0' + h
 
         const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
