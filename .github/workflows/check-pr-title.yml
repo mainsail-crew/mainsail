@@ -28,6 +28,8 @@ jobs:
             test
             chore
             build
+            ci
+            revert
           requireScope: false
           ignoreLabels: |
             bot
