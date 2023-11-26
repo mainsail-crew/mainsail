@@ -854,6 +854,18 @@
             "RestoreDialog": "Kies alle secties die je wil herstellen:",
             "TimeFormat": "Tijdformaat"
         },
+        "HeightmapTab": {
+            "ColorSchemes": "kleurenschema's",
+            "IsDefault": "(Standaard)",
+            "Navigation": "Hoogtekaart",
+            "Schemes": {
+                "GrayScale": "Grijstinten",
+                "Hot": "Heet",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Lente"
+            }
+        },
         "InterfaceSettings": "Interface Instellingen",
         "MacrosTab": {
             "Add": "voeg toe",
@@ -1073,18 +1085,6 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "verticaal",
             "Webcams": "Webcams"
-        },
-        "HeightmapTab": {
-            "Navigation": "Hoogtekaart",
-            "ColorSchemes": "kleurenschema's",
-            "IsDefault": "(Standaard)",
-            "Schemes": {
-                "Portland": "Portland",
-                "Hot": "Heet",
-                "GrayScale": "Grijstinten",
-                "Spring": "Lente",
-                "Hsv": "Hsv"
-            }
         }
     },
     "Timelapse": {

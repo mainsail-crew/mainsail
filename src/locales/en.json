@@ -930,6 +930,18 @@
             "RestoreDialog": "Please select all the sections you want to restore:",
             "TimeFormat": "Time Format"
         },
+        "HeightmapTab": {
+            "ColorSchemes": "Color Schemes",
+            "IsDefault": "(Default)",
+            "Navigation": "Heightmap",
+            "Schemes": {
+                "GrayScale": "Grayscale",
+                "Hot": "Hot",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Spring"
+            }
+        },
         "InterfaceSettings": "Interface Settings",
         "MacrosTab": {
             "Add": "add",
@@ -1174,18 +1186,6 @@
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)"
-        },
-        "HeightmapTab": {
-            "Navigation": "Heightmap",
-            "ColorSchemes": "Color Schemes",
-            "IsDefault": "(Default)",
-            "Schemes": {
-                "Portland": "Portland",
-                "Hot": "Hot",
-                "GrayScale": "Grayscale",
-                "Spring": "Spring",
-                "Hsv": "Hsv"
-            }
         }
     },
     "Timelapse": {

@@ -103,7 +103,8 @@ import {
     mdiGrid,
 } from '@mdi/js'
 import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneousTab.vue'
-import SettingsHeightmapTab from "@/components/settings/SettingsHeightmapTab.vue";
+import SettingsHeightmapTab from '@/components/settings/SettingsHeightmapTab.vue'
+
 @Component({
     components: {
         Panel,

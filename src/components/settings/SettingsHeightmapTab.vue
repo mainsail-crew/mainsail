@@ -25,11 +25,11 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {Mixins, Watch} from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
-import {mdiGrid} from '@mdi/js'
+import { mdiGrid } from '@mdi/js'
 
 @Component({
     components: {
@@ -43,7 +43,7 @@ export default class SettingsHeightmapTab extends Mixins(BaseMixin) {
     availableLanguages: { text: string; value: string }[] = []
 
     async created() {
-        const locales = import.meta.glob<string>('../../locales/*.json', {import: 'title'})
+        const locales = import.meta.glob<string>('../../locales/*.json', { import: 'title' })
         const languages: { text: string; value: string }[] = []
 
         for (const file in locales) {
@@ -62,7 +62,10 @@ export default class SettingsHeightmapTab extends Mixins(BaseMixin) {
     get availableColorSchemes() {
         return [
             {
-                text: this.$t('Settings.HeightmapTab.Schemes.Portland') + " " + this.$t('Settings.HeightmapTab.IsDefault'),
+                text:
+                    this.$t('Settings.HeightmapTab.Schemes.Portland') +
+                    ' ' +
+                    this.$t('Settings.HeightmapTab.IsDefault'),
                 value: 'portland',
             },
             {
@@ -85,11 +88,11 @@ export default class SettingsHeightmapTab extends Mixins(BaseMixin) {
     }
 
     get colorScheme() {
-        return this.$store.state.gui.heightmap.activecolorscheme;
+        return this.$store.state.gui.heightmap.activecolorscheme
     }
 
     set colorScheme(newVal) {
-        this.$store.dispatch('gui/heightmap/saveSetting', {name: 'activecolorscheme', value: newVal})
+        this.$store.dispatch('gui/heightmap/saveSetting', { name: 'activecolorscheme', value: newVal })
     }
 
     @Watch('colorScheme')

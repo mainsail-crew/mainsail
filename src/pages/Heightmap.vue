@@ -539,7 +539,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
                 calculable: true,
                 dimension: 2,
                 inRange: {
-                    color: this.$store.getters["gui/heightmap/getActiveColorSchemeList"],
+                    color: this.$store.getters['gui/heightmap/getActiveColorSchemeList'],
                 },
                 seriesIndex: this.visualMapSeriesIndex,
                 left: this.isMobile ? 10 : 30,
