@@ -71,6 +71,10 @@ export default class SettingsHeightmapTab extends Mixins(BaseMixin) {
                 value: 'default',
             },
             {
+                text: this.$t('Settings.HeightmapTab.Schemes.GrayScale'),
+                value: 'grayScale',
+            },
+            {
                 text: this.$t('Settings.HeightmapTab.Schemes.RedGreenBlue'),
                 value: 'redGreenBlue',
             },

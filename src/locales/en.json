@@ -1180,6 +1180,7 @@
             "ColorSchemes": "Color Schemes",
             "Schemes": {
                 "Default": "Default",
+                "GrayScale": "Grayscale",
                 "RedGreenBlue":"Red, green and blue"
             }
         }
