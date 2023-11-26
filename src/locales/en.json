@@ -1174,6 +1174,14 @@
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)"
+        },
+        "HeightmapTab": {
+            "Navigation": "Heightmap",
+            "ColorSchemes": "Color Schemes",
+            "Schemes": {
+                "Default": "Default",
+                "RedGreenBlue":"Red, green and blue"
+            }
         }
     },
     "Timelapse": {

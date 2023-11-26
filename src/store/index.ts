@@ -14,6 +14,7 @@ import { gui } from '@/store/gui'
 import { farm } from '@/store/farm'
 import { editor } from '@/store/editor'
 import { gcodeviewer } from '@/store/gcodeviewer'
+import {heightmap} from "src/store/gui/heightmap";
 
 Vue.use(Vuex)
 
