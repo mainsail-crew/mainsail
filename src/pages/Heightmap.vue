@@ -538,7 +538,6 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
                 max: this.visualMapRange[1],
                 calculable: true,
                 dimension: 2,
-                // Todo: Added the list based on store state gui.heightmap.activecolorscheme
                 inRange: {
                     color: this.$store.getters["gui/heightmap/getActiveColorSchemeList"],
                 },

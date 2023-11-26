@@ -1178,10 +1178,13 @@
         "HeightmapTab": {
             "Navigation": "Heightmap",
             "ColorSchemes": "Color Schemes",
+            "IsDefault": "(Default)",
             "Schemes": {
-                "Default": "Default",
+                "Portland": "Portland",
+                "Hot": "Hot",
                 "GrayScale": "Grayscale",
-                "RedGreenBlue":"Red, green and blue"
+                "Spring": "Spring",
+                "Hsv": "Hsv"
             }
         }
     },

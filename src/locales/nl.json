@@ -1073,6 +1073,18 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "verticaal",
             "Webcams": "Webcams"
+        },
+        "HeightmapTab": {
+            "Navigation": "Hoogtekaart",
+            "ColorSchemes": "kleurenschema's",
+            "IsDefault": "(Standaard)",
+            "Schemes": {
+                "Portland": "Portland",
+                "Hot": "Heet",
+                "GrayScale": "Grijstinten",
+                "Spring": "Lente",
+                "Hsv": "Hsv"
+            }
         }
     },
     "Timelapse": {

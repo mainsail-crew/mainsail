@@ -30,11 +30,6 @@ import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import {mdiGrid} from '@mdi/js'
-import CheckboxList from '@/components/inputs/CheckboxList.vue'
-import SettingsGeneralTabBackupDatabase from '@/components/settings/General/GeneralBackup.vue'
-import SettingsGeneralTabRestoreDatabase from '@/components/settings/General/GeneralRestore.vue'
-import SettingsGeneralTabResetDatabase from '@/components/settings/General/GeneralReset.vue'
-import SettingsGeneralDatabase from '@/components/mixins/settingsGeneralDatabase'
 
 @Component({
     components: {
@@ -67,17 +62,26 @@ export default class SettingsHeightmapTab extends Mixins(BaseMixin) {
     get availableColorSchemes() {
         return [
             {
-                text: this.$t('Settings.HeightmapTab.Schemes.Default'),
-                value: 'default',
+                text: this.$t('Settings.HeightmapTab.Schemes.Portland') + " " + this.$t('Settings.HeightmapTab.IsDefault'),
+                value: 'portland',
+            },
+            {
+                text: this.$t('Settings.HeightmapTab.Schemes.Spring'),
+                value: 'spring',
+            },
+            {
+                text: this.$t('Settings.HeightmapTab.Schemes.Hot'),
+                value: 'hot',
+            },
+            {
+                text: this.$t('Settings.HeightmapTab.Schemes.Hsv'),
+                value: 'hsv',
             },
             {
                 text: this.$t('Settings.HeightmapTab.Schemes.GrayScale'),
                 value: 'grayScale',
             },
-            {
-                text: this.$t('Settings.HeightmapTab.Schemes.RedGreenBlue'),
-                value: 'redGreenBlue',
-            },
+
         ]
     }
 
