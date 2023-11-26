@@ -2,7 +2,6 @@ import {Module} from "vuex";
 import {HeightmapState} from "./types";
 import {getters} from "./getters";
 import {actions} from "./actions";
-import {mutations} from "./mutations";
 
 export const getDefaultState = (): HeightmapState => {
     return {
@@ -17,5 +16,4 @@ export const heightmap: Module<HeightmapState, any> = {
     state,
     getters,
     actions,
-    mutations,
 }

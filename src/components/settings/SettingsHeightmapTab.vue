@@ -81,7 +81,6 @@ export default class SettingsHeightmapTab extends Mixins(BaseMixin) {
                 text: this.$t('Settings.HeightmapTab.Schemes.GrayScale'),
                 value: 'grayScale',
             },
-
         ]
     }
 
