@@ -856,8 +856,8 @@
         },
         "HeightmapTab": {
             "ColorSchemes": "kleurenschema's",
+            "Heightmap": "Hoogtekaart",
             "IsDefault": "(Standaard)",
-            "Navigation": "Hoogtekaart",
             "Schemes": {
                 "GrayScale": "Grijstinten",
                 "Hot": "Heet",

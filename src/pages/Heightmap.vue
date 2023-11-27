@@ -539,7 +539,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
                 calculable: true,
                 dimension: 2,
                 inRange: {
-                    color: this.$store.getters['gui/heightmap/getActiveColorSchemeList'],
+                    color: this.colorMap,
                 },
                 seriesIndex: this.visualMapSeriesIndex,
                 left: this.isMobile ? 10 : 30,
@@ -1055,6 +1055,10 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         } else {
             return false
         }
+    }
+
+    get colorMap(): string[] {
+        return this.$store.getters['gui/heightmap/getActiveColorSchemeList']
     }
 
     tooltipFormatter(data: any): string {

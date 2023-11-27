@@ -932,8 +932,8 @@
         },
         "HeightmapTab": {
             "ColorSchemes": "Color Schemes",
+            "Heightmap": "Heightmap",
             "IsDefault": "(Default)",
-            "Navigation": "Heightmap",
             "Schemes": {
                 "GrayScale": "Grayscale",
                 "Hot": "Hot",

@@ -5,7 +5,7 @@
                 <div class="d-flex align-center">
                     <v-icon style="opacity: 0.7">{{ mdiGrid }}</v-icon>
                     <v-card-title class="mx-n2">
-                        {{ $t('Settings.HeightmapTab.Navigation') }}
+                        {{ $t('Settings.HeightmapTab.Heightmap') }}
                     </v-card-title>
                     <v-divider class="ml-3"></v-divider>
                 </div>
@@ -39,26 +39,6 @@ import { mdiGrid } from '@mdi/js'
 })
 export default class SettingsHeightmapTab extends Mixins(BaseMixin) {
     mdiGrid = mdiGrid
-
-    availableLanguages: { text: string; value: string }[] = []
-
-    async created() {
-        const locales = import.meta.glob<string>('../../locales/*.json', { import: 'title' })
-        const languages: { text: string; value: string }[] = []
-
-        for (const file in locales) {
-            const langKey = file.slice(file.lastIndexOf('.') - 2, file.lastIndexOf('.'))
-            const title = await locales[file]()
-
-            languages.push({
-                text: title,
-                value: langKey,
-            })
-        }
-
-        this.availableLanguages = languages
-    }
-
     get availableColorSchemes() {
         return [
             {
