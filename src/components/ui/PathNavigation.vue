@@ -29,8 +29,23 @@ interface pathSegment {
 
 @Component
 export default class PathNavigation extends Mixins(BaseMixin) {
+    /**
+     * Current path to be displayed in the breadcrumbs.
+     */
     @Prop({ default: false }) declare readonly path: string
+    /**
+     * Display label for the first directory in the path passed in absolute format
+     * (a path starting with `/` character). Useful for local paths, where
+     * the navigator deals with routes in some context (eg. all paths in the `/gcodes` directory).
+     */
     @Prop({ default: false }) declare readonly baseDirectoryLabel: string
+    /**
+     * Event handler triggered on breadcrumb segment interaction.
+     *
+     * @param segment.location Full location of the selected path segment,
+     * eg. for path `/foo/bar/baz`, when `bar` has been selected, `location` is equal to
+     * `/foo/bar`.
+     */
     @Prop({ default: false }) declare readonly onSegmentClick: (segment: { location: string }) => void
 
     private readonly segmentSeparator = '/'
