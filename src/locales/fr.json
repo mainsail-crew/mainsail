@@ -1174,7 +1174,8 @@
             "Webcams": "Caméras",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX)"        
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
+        }
     },
     "HeightmapTab": {
             "Navigation": "Maillage",
