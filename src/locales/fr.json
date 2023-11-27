@@ -1,5 +1,5 @@
 {
-    "_last_update": "26.10.2023",
+    "_last_update": "27.11.2023",
     "App": {
         "Notifications": {
             "BrowserWarnings": {
@@ -1174,7 +1174,21 @@
             "Webcams": "Caméras",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"        
+    },
+    "HeightmapTab": {
+            "Navigation": "Maillage",
+            "ColorSchemes": "Schémas de couleurs",
+            "IsDefault": "(Standard)",
+            "Schemes": {
+                "Default": "Défaut",
+                "Portland": "Portland",
+                "Hot": "Chaud",
+                "GrayScale": "Niveaux de gris",
+                "RedGreenBlue":"Rouge, vert et bleu"
+                "Spring": "Printemps",
+                "Hsv": "Hsv"
+            }
         }
     },
     "Timelapse": {
