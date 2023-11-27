@@ -11,13 +11,7 @@
                 @click="onSegmentClick({ location })"
                 @keyup.enter="onSegmentClick({ location })">
                 <template v-if="directoryName">{{ directoryName }}</template>
-                <template v-else>
-                    <slot name="rootElement">
-                        <v-icon small>
-                            {{ mdiHome }}
-                        </v-icon>
-                    </slot>
-                </template>
+                <template v-else>{{ baseDirectoryLabel }}</template>
             </span>
         </span>
     </span>
@@ -27,7 +21,6 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { mdiHome } from '@mdi/js'
 
 interface pathSegment {
     directoryName: string
@@ -37,11 +30,10 @@ interface pathSegment {
 @Component
 export default class PathNavigation extends Mixins(BaseMixin) {
     @Prop({ default: false }) declare readonly path: string
+    @Prop({ default: false }) declare readonly baseDirectoryLabel: string
     @Prop({ default: false }) declare readonly onSegmentClick: (segment: { location: string }) => void
 
     private readonly segmentSeparator = '/'
-
-    mdiHome = mdiHome
 
     get pathSegments(): pathSegment[] {
         const [firstSegment, ...restOfSegments] = (this.path || '').split(this.segmentSeparator)

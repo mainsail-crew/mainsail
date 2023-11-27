@@ -66,9 +66,10 @@
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
                             <b class="mr-1">{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b>
-                            <path-navigation :path="currentPath" :on-segment-click="clickPathNavGoToDirectory">
-                                <template #rootElement>{{ '/' + root }}</template>
-                            </path-navigation>
+                            <path-navigation
+                                :path="currentPath"
+                                :base-directory-label="`/${root}`"
+                                :on-segment-click="clickPathNavGoToDirectory" />
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null && !showMissingConfigRootWarning">

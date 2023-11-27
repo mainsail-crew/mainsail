@@ -146,9 +146,10 @@
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
                             <b class="mr-1">{{ $t('Files.CurrentPath') }}:</b>
-                            <path-navigation :path="currentPath" :on-segment-click="clickPathNavGoToDirectory">
-                                <template #rootElement>{{ '/gcodes' }}</template>
-                            </path-navigation>
+                            <path-navigation
+                                :path="currentPath"
+                                :base-directory-label="'/gcodes'"
+                                :on-segment-click="clickPathNavGoToDirectory" />
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
