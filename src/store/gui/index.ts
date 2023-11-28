@@ -254,6 +254,13 @@ export const getDefaultState = (): GuiState => {
                 currentPath: 'timelapse',
                 selectedFiles: [],
             },
+            toolhead: {
+                showPosition: true,
+                showCoordinates: true,
+                showControl: true,
+                showZOffset: true,
+                showSpeedFactor: true,
+            },
             webcam: {
                 currentCam: {
                     dashboard: 'all',

@@ -1,14 +1,14 @@
 <template>
-    <responsive
-        :breakpoints="{
-            xsmall: (el) => el.width <= 320,
-            small: (el) => el.width > 320 && el.width <= 460,
-            medium: (el) => el.width > 460 && el.width <= 560,
-            large: (el) => el.width > 560,
-        }">
-        <template #default="{ el }">
-            <v-container class="py-0">
-                <v-row class="flex-nowrap pb-1">
+    <v-container v-if="showCoordinates || showPosition" :class="containerClass">
+        <responsive
+            :breakpoints="{
+                xsmall: (el) => el.width <= 320,
+                small: (el) => el.width > 320 && el.width <= 460,
+                medium: (el) => el.width > 460 && el.width <= 560,
+                large: (el) => el.width > 560,
+            }">
+            <template #default="{ el }">
+                <v-row v-if="showPosition" class="flex-nowrap pb-1">
                     <v-col
                         :class="{
                             'col-5': el.is.small,
@@ -35,7 +35,7 @@
                         </span>
                     </v-col>
                 </v-row>
-                <v-row dense>
+                <v-row v-if="showCoordinates" dense>
                     <v-col :class="el.is.xsmall ? 'col-12' : 'col-4'">
                         <move-to-input
                             v-model="input.x.pos"
@@ -70,9 +70,9 @@
                             @submit="sendCmd"></move-to-input>
                     </v-col>
                 </v-row>
-            </v-container>
-        </template>
-    </responsive>
+            </template>
+        </responsive>
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -151,6 +151,22 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
 
     get currentProfileName() {
         return this.bed_mesh?.profile_name ?? ''
+    }
+
+    get showPosition() {
+        return this.$store.state.gui.view.toolhead.showPosition ?? true
+    }
+
+    get showCoordinates() {
+        return this.$store.state.gui.view.toolhead.showCoordinates ?? true
+    }
+
+    get showControl() {
+        return this.$store.state.gui.view.toolhead.showControl ?? true
+    }
+
+    get containerClass() {
+        return this.showControl ? 'pb-0' : ''
     }
 
     sendCmd(): void {

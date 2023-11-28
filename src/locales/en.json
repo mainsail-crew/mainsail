@@ -730,13 +730,17 @@
         "ToolheadControlPanel": {
             "Absolute": "absolute",
             "ALL": "ALL",
+            "ControlButtons": "Control buttons",
+            "CoordinateFields": "Coordinate fields",
             "Headline": "Toolhead",
             "PleaseConfigureSteps": "Please configure steps",
             "Position": "Position",
+            "PositionOutput": "Position output",
             "QGL": "QGL",
             "Relative": "relative",
             "SettingsInterfaceControl": "Settings > Interface > Control",
             "SpeedFactor": "Speed factor",
+            "ZOffset": "Z-Offset",
             "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {

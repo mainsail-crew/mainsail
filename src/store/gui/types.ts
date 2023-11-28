@@ -179,6 +179,13 @@ export interface GuiState {
             currentPath: string
             selectedFiles: FileStateFile[]
         }
+        toolhead: {
+            showPosition: boolean
+            showCoordinates: boolean
+            showControl: boolean
+            showZOffset: boolean
+            showSpeedFactor: boolean
+        }
         webcam: {
             currentCam: {
                 dashboard: string
