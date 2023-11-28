@@ -12,21 +12,8 @@ export const getters: GetterTree<HeightmapState, any> = {
                 return ['#000000', '#ff0000', '#ffff00', '#ffffff']
             case 'grayscale':
                 return ['#ffffff', '#000000']
-            case 'portland':
-                return [
-                    '#313695',
-                    '#4575b4',
-                    '#74add1',
-                    '#abd9e9',
-                    '#e0f3f8',
-                    '#ffffbf',
-                    '#fee090',
-                    '#fdae61',
-                    '#f46d43',
-                    '#d73027',
-                    '#a50026',
-                ]
             default:
+                // Portland colorscheme is being used as default.
                 return [
                     '#313695',
                     '#4575b4',
@@ -40,8 +27,6 @@ export const getters: GetterTree<HeightmapState, any> = {
                     '#d73027',
                     '#a50026',
                 ]
-                break
         }
-        return []
     },
 }
