@@ -209,7 +209,7 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
             {
                 icon: mdiGrid,
                 name: 'heightmap',
-                title: this.$t('Settings.HeightmapTab.Navigation'),
+                title: this.$t('Settings.HeightmapTab.Heightmap'),
             },
         ]
 
