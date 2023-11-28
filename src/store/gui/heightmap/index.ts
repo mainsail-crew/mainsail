@@ -5,7 +5,7 @@ import { actions } from './actions'
 
 export const getDefaultState = (): HeightmapState => {
     return {
-        activecolorscheme: 'default',
+        activecolorscheme: 'portland',
     }
 }
 
