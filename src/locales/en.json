@@ -930,6 +930,18 @@
             "RestoreDialog": "Please select all the sections you want to restore:",
             "TimeFormat": "Time Format"
         },
+        "HeightmapTab": {
+            "ColorSchemes": "Color Schemes",
+            "Heightmap": "Heightmap",
+            "IsDefault": "(Default)",
+            "Schemes": {
+                "GrayScale": "Grayscale",
+                "Hot": "Hot",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Spring"
+            }
+        },
         "InterfaceSettings": "Interface Settings",
         "MacrosTab": {
             "Add": "add",
