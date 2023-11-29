@@ -4,15 +4,23 @@
             <template v-if="index !== 0">
                 <span class="navigation-divider text--disabled">{{ segmentSeparator }}</span>
             </template>
-            <span
-                class="cursor-pointer navigation-segment"
-                tabindex="0"
-                role="button"
-                @click="onSegmentClick({ location })"
-                @keyup.enter="onSegmentClick({ location })">
-                <template v-if="directoryName">{{ directoryName }}</template>
-                <template v-else>{{ baseDirectoryLabel }}</template>
-            </span>
+            <template v-if="index !== pathSegments.length - 1">
+                <span
+                    class="cursor-pointer navigation-segment"
+                    tabindex="0"
+                    role="button"
+                    @click="onSegmentClick({ location })"
+                    @keyup.enter="onSegmentClick({ location })">
+                    <template v-if="directoryName">{{ directoryName }}</template>
+                    <template v-else>{{ baseDirectoryLabel }}</template>
+                </span>
+            </template>
+            <template v-else>
+                <span>
+                    <template v-if="directoryName">{{ directoryName }}</template>
+                    <template v-else>{{ baseDirectoryLabel }}</template>
+                </span>
+            </template>
         </span>
     </span>
 </template>
