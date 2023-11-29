@@ -6,8 +6,8 @@
         :collapsible="true"
         card-class="toolhead-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
-        <template v-if="showButtons" #buttons>
-            <v-menu left offset-y :close-on-content-click="false" class="pa-0">
+        <template #buttons>
+            <v-menu v-if="showButtons" left offset-y :close-on-content-click="false" class="pa-0">
                 <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" :disabled="['printing'].includes(printer_state)" v-on="on">
                         <v-icon>{{ mdiDotsVertical }}</v-icon>
@@ -82,21 +82,22 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
+            <toolhead-panel-settings />
         </template>
         <!-- MOVE TO CONTROL -->
-        <move-to-control class="py-0 pt-3" />
+        <move-to-control />
         <!-- AXIS CONTROL -->
         <v-container v-if="axisControlVisible">
             <component :is="`${controlStyle}-control`" />
         </v-container>
         <!-- Z-OFFSET CONTROL -->
-        <v-divider :class="{ 'mt-3': !axisControlVisible }" />
-        <v-container>
+        <v-divider v-if="showZOffset" />
+        <v-container v-if="showZOffset">
             <zoffset-control />
         </v-container>
         <!-- SPEED FACTOR -->
-        <v-divider />
-        <v-container>
+        <v-divider v-if="showSpeedFactor" />
+        <v-container v-if="showSpeedFactor">
             <tool-slider
                 :label="$t('Panels.ToolheadControlPanel.SpeedFactor')"
                 :icon="mdiSpeedometer"
@@ -162,6 +163,8 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get axisControlVisible() {
+        if (!this.showControl) return false
+
         return !(this.isPrinting && (this.$store.state.gui.control.hideDuringPrint ?? false))
     }
 
@@ -169,6 +172,18 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
         if (this.controlStyle !== 'bars' && (this.existsZtilt || this.existsQGL)) return true
 
         return this.existsBedScrews || this.existsBedTilt || this.existsDeltaCalibrate || this.existsScrewsTilt
+    }
+
+    get showControl(): boolean {
+        return this.$store.state.gui.view.toolhead.showControl ?? true
+    }
+
+    get showZOffset(): boolean {
+        return this.$store.state.gui.view.toolhead.showZOffset ?? true
+    }
+
+    get showSpeedFactor(): boolean {
+        return this.$store.state.gui.view.toolhead.showSpeedFactor ?? true
     }
 }
 </script>

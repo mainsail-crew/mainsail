@@ -854,6 +854,18 @@
             "RestoreDialog": "Kies alle secties die je wil herstellen:",
             "TimeFormat": "Tijdformaat"
         },
+        "HeightmapTab": {
+            "ColorSchemes": "kleurenschema's",
+            "Heightmap": "Hoogtekaart",
+            "IsDefault": "(Standaard)",
+            "Schemes": {
+                "GrayScale": "Grijstinten",
+                "Hot": "Heet",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Lente"
+            }
+        },
         "InterfaceSettings": "Interface Instellingen",
         "MacrosTab": {
             "Add": "voeg toe",
