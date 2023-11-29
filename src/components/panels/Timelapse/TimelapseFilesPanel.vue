@@ -55,8 +55,11 @@
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
-                            <b>{{ $t('Timelapse.CurrentPath') }}:</b>
-                            {{ currentPath !== 'timelapse' ? '/' + currentPath.substring(10) : '/' }}
+                            <b class="mr-1">{{ $t('Timelapse.CurrentPath') }}:</b>
+                            <path-navigation
+                                :path="currentPathForNavigation"
+                                :base-directory-label="`/${rootDirectory}`"
+                                :on-segment-click="clickPathNavGoToDirectory" />
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
@@ -423,6 +426,7 @@ import BaseMixin from '@/components/mixins/base'
 import { formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
+import PathNavigation from '@/components/ui/PathNavigation.vue'
 import {
     mdiFolderPlus,
     mdiCloseThick,
@@ -446,7 +450,7 @@ interface dialogRenameObject {
 }
 
 @Component({
-    components: { Panel },
+    components: { Panel, PathNavigation },
 })
 export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
@@ -537,6 +541,8 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
     ]
 
+    private rootDirectory = 'timelapse'
+
     existsFilename(name: string) {
         return this.files.findIndex((file) => file.filename === name) >= 0
     }
@@ -614,6 +620,14 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         return this.$store.state.gui.view.timelapse.currentPath
     }
 
+    get currentPathForNavigation() {
+        if (this.currentPath === this.rootDirectory) {
+            return '';
+        }
+
+        return this.currentPath.substring(this.rootDirectory.length);
+    }
+
     set currentPath(newVal) {
         this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.timelapse.currentPath', value: newVal })
     }
@@ -688,6 +702,10 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     clickRowGoBack() {
         this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
+    }
+
+    clickPathNavGoToDirectory(segment: { location: string }) {
+        this.currentPath = `${this.rootDirectory}${segment.location}`;
     }
 
     showContextMenu(e: any, item: FileStateFile) {
