@@ -110,7 +110,7 @@
                     <div class="text-center font-italic">{{ $t('Timelapse.Empty') }}</div>
                 </template>
 
-                <template v-if="currentPath !== 'timelapse'" slot="body.prepend">
+                <template v-if="currentPath !== rootDirectory" slot="body.prepend">
                     <tr class="file-list-cursor" @click="clickRowGoBack">
                         <td class="pr-0 text-center" style="width: 32px">
                             <v-icon>{{ mdiFolderUpload }}</v-icon>
