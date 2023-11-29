@@ -730,17 +730,17 @@
         "ToolheadControlPanel": {
             "Absolute": "absolue",
             "ALL": "Tous",
-			"ControlButtons": "Boutons de commande",
+            "ControlButtons": "Boutons de commande",
             "CoordinateFields": "Champs de coordonnées",
             "Headline": "Tête d'impression",
             "PleaseConfigureSteps": "Veuillez configurer les Pas",
-			"Position": "Position",
-			"PositionOutput": "Position de sortie",									
+            "Position": "Position",
+            "PositionOutput": "Position de sortie",
             "QGL": "QGL",
             "Relative": "relative",
             "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
             "SpeedFactor": "Facteur de vitesse",
-			"ZOffset": "Offset Z",				  
+            "ZOffset": "Offset Z",
             "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {
@@ -859,8 +859,8 @@
             "Style": "Style",
             "ValueGreaterThan": "La valeur doit être supérieure à {value}",
             "ZOffsetIncrements": "Increments Offset Z (en mm)",
-			"ZOffsetSaveOption": "Option de sauvegarde de l'Offset Z",
-            "ZOffsetSaveOptionDescription": "Modifier l'option d'enregistrement de l'Offset Z",																			 
+            "ZOffsetSaveOption": "Option de sauvegarde de l'Offset Z",
+            "ZOffsetSaveOptionDescription": "Modifier l'option d'enregistrement de l'Offset Z",
             "ZTiltAdjust": "Réglage du Z-Tilt{isDefault}"
         },
         "DashboardTab": {
@@ -947,7 +947,7 @@
                 "Portland": "Portland",
                 "Spring": "Printemps"
             }
-        },						 
+        },
         "InterfaceSettings": "Réglages interface",
         "MacrosTab": {
             "Add": "ajouter",
