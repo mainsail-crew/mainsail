@@ -622,10 +622,10 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     get currentPathForNavigation() {
         if (this.currentPath === this.rootDirectory) {
-            return '';
+            return ''
         }
 
-        return this.currentPath.substring(this.rootDirectory.length);
+        return this.currentPath.substring(this.rootDirectory.length)
     }
 
     set currentPath(newVal) {
@@ -705,7 +705,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     clickPathNavGoToDirectory(segment: { location: string }) {
-        this.currentPath = `${this.rootDirectory}${segment.location}`;
+        this.currentPath = `${this.rootDirectory}${segment.location}`
     }
 
     showContextMenu(e: any, item: FileStateFile) {
