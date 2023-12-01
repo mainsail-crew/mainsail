@@ -157,8 +157,7 @@ export const getters: GetterTree<GuiState, any> = {
         const setting = state.general.timeFormat
         if (setting === '12hours') return true
         if (setting === null) {
-            const timestring = new Date().toLocaleTimeString().split(' ')
-            return timestring.includes('AM') || timestring.includes('PM')
+            return Intl.DateTimeFormat(navigator.language, { hour: 'numeric' }).resolvedOptions().hour12
         }
 
         return false

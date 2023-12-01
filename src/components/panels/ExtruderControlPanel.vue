@@ -51,6 +51,32 @@
                             </span>
                         </v-tooltip>
                     </v-list-item>
+                    <!-- FILAMENT PURGE -->
+                    <v-list-item v-if="purgeFilamentMacro">
+                        <v-tooltip top :disabled="canExecutePurgeMacro" color="secondary">
+                            <template #activator="{ on }">
+                                <div v-on="on">
+                                    <macro-button
+                                        :macro="purgeFilamentMacro"
+                                        :alias="$t('Panels.ExtruderControlPanel.PurgeFilament')"
+                                        :disabled="!canExecutePurgeMacro || printerIsPrintingOnly"
+                                        color="#272727" />
+                                </div>
+                            </template>
+                            <span>
+                                {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
+                                {{ minExtrudeTemp }} °C
+                            </span>
+                        </v-tooltip>
+                    </v-list-item>
+                    <!-- NOZZLE CLEAN -->
+                    <v-list-item v-if="cleanNozzleMacro">
+                        <macro-button
+                            :macro="cleanNozzleMacro"
+                            :alias="$t('Panels.ExtruderControlPanel.CleanNozzle')"
+                            :disabled="printerIsPrintingOnly"
+                            color="#272727" />
+                    </v-list-item>
                 </v-list>
             </v-menu>
         </template>
@@ -99,11 +125,27 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get loadFilamentMacro(): PrinterStateMacro | undefined {
-        return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'LOAD_FILAMENT')
+        const macros = ['LOAD_FILAMENT', 'FILAMENT_LOAD']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
     }
 
     get unloadFilamentMacro(): PrinterStateMacro | undefined {
-        return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'UNLOAD_FILAMENT')
+        const macros = ['UNLOAD_FILAMENT', 'FILAMENT_UNLOAD']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
+    }
+
+    get purgeFilamentMacro(): PrinterStateMacro | undefined {
+        const macros = ['PURGE_FILAMENT', 'FILAMENT_PURGE']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
+    }
+
+    get cleanNozzleMacro(): PrinterStateMacro | undefined {
+        const macros = ['CLEAN_NOZZLE', 'NOZZLE_CLEAN', 'WIPE_NOZZLE', 'NOZZLE_WIPE']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
     }
 
     /**
@@ -120,6 +162,12 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         if (this.extrudePossible) return true
 
         return this.heatWaitGcodes.some((gcode) => this.unloadFilamentMacro?.prop.gcode.includes(gcode))
+    }
+
+    get canExecutePurgeMacro(): boolean {
+        if (this.extrudePossible) return true
+
+        return this.heatWaitGcodes.some((gcode) => this.purgeFilamentMacro?.prop.gcode.includes(gcode))
     }
 
     get showFilamentMacros(): boolean {
