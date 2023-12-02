@@ -19,9 +19,7 @@
                 </v-subheader>
             </v-col>
         </v-row>
-        <template v-if="root && groups.length">
-            <miscellaneous-light v-for="group in groups" :key="group.id" :object="object" :group="group" />
-        </template>
+        <miscellaneous-light v-for="group in groups" :key="group.id" :object="object" :group="group" />
         <v-dialog v-model="boolDialog" persistent :width="400">
             <panel
                 :title="name"
@@ -157,6 +155,7 @@ interface ColorData {
 @Component({
     components: {
         ColorPicker,
+        MiscellaneousLight: () => import('@/components/inputs/MiscellaneousLight.vue'),
     },
 })
 export default class MiscellaneousLight extends Mixins(BaseMixin) {
@@ -344,6 +343,8 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     }
 
     get groups() {
+        if (!this.root) return []
+
         return (
             this.$store.getters['gui/miscellaneous/getEntryLightgroups']({
                 type: this.object.type,
