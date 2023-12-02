@@ -10,12 +10,12 @@
                         {{ mdiLightbulbOutline }}
                     </v-icon>
                     <span>{{ name }}</span>
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <span
                         v-if="!root || groups.length === 0"
                         class="_currentState"
                         :style="currentStateStyle"
-                        @click="boolDialog = true"></span>
+                        @click="boolDialog = true" />
                 </v-subheader>
             </v-col>
         </v-row>
@@ -41,13 +41,13 @@
                                             :style="presetStyle(preset)"
                                             v-bind="attrs"
                                             v-on="on"
-                                            @click="usePreset(preset)"></div>
+                                            @click="usePreset(preset)" />
                                     </template>
                                     <span>{{ preset.name }}</span>
                                 </v-tooltip>
                             </v-col>
                         </v-row>
-                        <v-divider class="my-3"></v-divider>
+                        <v-divider class="my-3" />
                     </template>
                     <v-row>
                         <v-col class="text-center">
