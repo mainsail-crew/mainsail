@@ -57,6 +57,8 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
     mdiCloseThick = mdiCloseThick
 
+    private internalCloseCommand: number | null = null
+
     get events() {
         return this.$store.state.server.events.slice(-100)
     }
@@ -98,6 +100,7 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
 
     get showDialog() {
         if (this.lastPromptBeginPos === -1) return false
+        if (this.internalCloseCommand !== null && this.internalCloseCommand == this.lastPromptBeginPos) return false
 
         return this.lastPromptBeginPos > this.lastPromptClosePos && this.activePromptContent.length > 0
     }
@@ -148,6 +151,9 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     }
 
     closePrompt() {
+        // close prompt immediately, because klipper could be busy
+        this.internalCloseCommand = this.lastPromptBeginPos
+
         const gcode = `RESPOND type="command" msg="action:prompt_end"`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
