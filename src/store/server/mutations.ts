@@ -101,13 +101,15 @@ export const mutations: MutationTree<ServerState> = {
             const date = new Date(message.time * 1000)
             let formatMessage = formatConsoleMessage(message.message)
 
-            if (message.type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
+            let type = message.type
+            if (type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
+            if (type === 'response' && message.message.startsWith('// action:')) type = 'action'
 
             state.events.push({
-                date: date,
+                date,
                 message: message.message,
                 formatMessage: formatMessage,
-                type: message.type,
+                type,
             })
         })
 

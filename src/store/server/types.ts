@@ -71,6 +71,13 @@ export interface ServerStateEvent {
     formatMessage: string | string[]
 }
 
+export interface ServerStateEventPrompt {
+    date: Date
+    type: string
+    message: string
+    children?: ServerStateEventPrompt[]
+}
+
 export interface ServerStateCpuInfo {
     bits: string
     cpu_count: number
