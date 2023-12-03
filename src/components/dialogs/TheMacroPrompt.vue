@@ -48,9 +48,10 @@ import { ServerStateEvent, ServerStateEventPrompt } from '@/store/server/types'
 import MacroPromptFooterButton from '@/components/dialogs/MacroPromptFooterButton.vue'
 import MacroPromptText from '@/components/dialogs/MacroPromptText.vue'
 import MacroPromptButton from '@/components/dialogs/MacroPromptButton.vue'
+import MacroPromptButtonGroup from '@/components/dialogs/MacroPromptButtonGroup.vue'
 
 @Component({
-    components: { MacroPromptButton, MacroPromptText, MacroPromptFooterButton, Panel },
+    components: { MacroPromptButtonGroup, MacroPromptButton, MacroPromptText, MacroPromptFooterButton, Panel },
 })
 export default class TheMacroPrompt extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
