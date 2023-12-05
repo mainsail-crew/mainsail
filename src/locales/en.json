@@ -582,6 +582,7 @@
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. to Decel.",
+                "MinimumCruiseRatio": "Min. Cruise Ratio",
                 "SquareCornerVelocity": "Square Corner Velocity",
                 "Velocity": "Velocity"
             }

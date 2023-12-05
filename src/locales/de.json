@@ -582,6 +582,7 @@
             "MotionSettings": {
                 "Acceleration": "Beschleunigung",
                 "MaxAccelToDecel": "Max. Beschl. zu Verz.",
+                "MinimumCruiseRatio": "Min. Kreuzfahr Quote",
                 "SquareCornerVelocity": "Eck-Geschwindigkeit",
                 "Velocity": "Geschwindigkeit"
             }
