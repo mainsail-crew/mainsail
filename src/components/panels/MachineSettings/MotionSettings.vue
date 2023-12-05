@@ -82,7 +82,7 @@
                             :has-spinner="true"
                             :spinner-factor="5"
                             :step="0.01"
-                            :min="0.01"
+                            :min="0.0"
                             :max="0.99"
                             :dec="2"
                             @submit="sendCmd" />
