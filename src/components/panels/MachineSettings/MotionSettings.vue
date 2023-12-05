@@ -117,8 +117,12 @@ export default class MotionSettings extends Mixins(BaseMixin) {
         return Math.trunc(this.$store.state.printer?.toolhead?.max_accel_to_decel ?? this.accel / 2)
     }
 
-    get minimumCruiseRatio(): number {
-        return this.$store.state.printer?.toolhead?.minimum_cruise_ratio ?? null
+    get minimumCruiseRatio(): number | null {
+        const value = this.$store.state.printer?.toolhead?.minimum_cruise_ratio ?? null
+
+        if (value === null) return null
+
+        return Math.round(value * 100) / 100
     }
 
     get squareCornerVelocity(): number {
