@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="bool" :max-width="dialogWidth" @click:outside="closeDialog" @keydown.esc="closeDialog">
+    <v-dialog v-model="bool" :max-width="400" @click:outside="closeDialog" @keydown.esc="closeDialog">
         <v-card>
             <v-img v-if="file.big_thumbnail" contain :src="file.big_thumbnail" :style="bigThumbnailStyle" />
             <v-card-title class="text-h5">{{ $t('Dialogs.StartPrint.Headline') }}</v-card-title>
@@ -69,10 +69,6 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
             { enabled: newVal },
             { action: 'server/timelapse/initSettings' }
         )
-    }
-
-    get dialogWidth() {
-        return this.file.big_thumbnail_width ?? 400
     }
 
     get bigThumbnailBackground() {
