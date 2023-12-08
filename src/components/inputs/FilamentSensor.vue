@@ -47,7 +47,8 @@ export default class FilamentSensor extends Mixins(BaseMixin) {
 
     get statusText() {
         if (this.filament_detected) return this.$t('Panels.MiscellaneousPanel.RunoutSensor.Detected')
-        else return this.$t('Panels.MiscellaneousPanel.RunoutSensor.Empty')
+
+        return this.$t('Panels.MiscellaneousPanel.RunoutSensor.Empty')
     }
 
     changeSensor() {
