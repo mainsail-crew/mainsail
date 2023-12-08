@@ -42,7 +42,7 @@ export default class FilamentSensor extends Mixins(BaseMixin) {
         if (!this.enabled) return 'gray'
         else if (this.filament_detected) return 'success'
 
-        return 'error'
+        return 'warning'
     }
 
     get statusText() {
