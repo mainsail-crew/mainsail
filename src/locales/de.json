@@ -614,7 +614,7 @@
             },
             "RunoutSensor": {
                 "Detected": "erkannt",
-                "Empty": "Leer"
+                "Empty": "leer"
             }
         },
         "PowerControlPanel": {
