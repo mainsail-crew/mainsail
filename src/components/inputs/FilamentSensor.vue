@@ -1,9 +1,3 @@
-<style scoped>
-._filamentRunout-subheader {
-    height: auto;
-}
-</style>
-
 <template>
     <v-container class="px-0 py-2">
         <v-row>
@@ -11,7 +5,7 @@
                 <v-subheader class="_filamentRunout-subheader">
                     <v-icon small class="mr-2">{{ mdiPrinter3dNozzleAlert }}</v-icon>
                     <span>{{ convertName(name) }}</span>
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <small :class="'mr-3 ' + statusColor + '--text'">{{ statusText }}</small>
                     <v-icon @click="changeSensor">
                         {{ enabled ? mdiToggleSwitch : mdiToggleSwitchOffOutline }}
@@ -62,3 +56,9 @@ export default class FilamentSensor extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+._filamentRunout-subheader {
+    height: auto;
+}
+</style>
