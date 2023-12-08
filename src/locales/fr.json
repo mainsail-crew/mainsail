@@ -670,7 +670,7 @@
             "Files": "Fichiers",
             "Flow": "Débit",
             "Headline": "Statut",
-            "Jobqueue": "File d'attente ({count})",
+            "Jobqueue": "File d'attente",
             "JobqueueMoreFiles": "pas de travaux | un travail | {count} travaux",
             "Layer": "Couche",
             "Max": "max",

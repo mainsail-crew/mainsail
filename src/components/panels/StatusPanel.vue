@@ -91,7 +91,11 @@
             <v-tabs v-model="activeTab" fixed-tabs dark>
                 <v-tab v-if="current_filename" href="#status">{{ $t('Panels.StatusPanel.Status') }}</v-tab>
                 <v-tab href="#files">{{ $t('Panels.StatusPanel.Files') }}</v-tab>
-                <v-tab href="#jobqueue">{{ $t('Panels.StatusPanel.Jobqueue', { count: jobsCount }) }}</v-tab>
+                <v-tab href="#jobqueue">
+                    <v-badge :color="jobsCount > 0 ? 'blue darken-2' : 'grey darken-2'" :content="jobsCount || '0'">
+                        {{ $t('Panels.StatusPanel.Jobqueue') }}
+                    </v-badge>
+                </v-tab>
             </v-tabs>
             <v-divider class="my-0"></v-divider>
             <v-tabs-items v-model="activeTab" class="_border-radius">

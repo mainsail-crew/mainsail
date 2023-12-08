@@ -670,7 +670,7 @@
             "Files": "Dateien",
             "Flow": "Fluss",
             "Headline": "Status",
-            "Jobqueue": "Warteschlange ({count})",
+            "Jobqueue": "Warteschlange",
             "JobqueueMoreFiles": "keine weiteren Aufträge | einen weiteren Auftrag | {count} weitere Aufträge",
             "Layer": "Schicht",
             "Max": "max",
