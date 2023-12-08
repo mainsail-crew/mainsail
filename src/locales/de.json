@@ -614,7 +614,6 @@
             },
             "RunoutSensor": {
                 "Detected": "erkannt",
-                "Disabled": "deaktiviert",
                 "Empty": "Leer"
             }
         },
