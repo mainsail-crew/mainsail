@@ -1,7 +1,13 @@
 <template>
-    <v-dialog v-model="bool" :max-width="dialogWidth" @click:outside="closeDialog" @keydown.esc="closeDialog">
+    <v-dialog v-model="bool" :max-width="400" @click:outside="closeDialog" @keydown.esc="closeDialog">
         <v-card>
-            <v-img v-if="file.big_thumbnail" contain :src="file.big_thumbnail" :style="bigThumbnailStyle" />
+            <div v-if="file.big_thumbnail" class="d-flex align-center justify-center" style="min-height: 200px">
+                <v-img
+                    :src="file.big_thumbnail"
+                    :max-width="maxThumbnailWidth"
+                    class="d-inline-block"
+                    :style="bigThumbnailStyle" />
+            </div>
             <v-card-title class="text-h5">{{ $t('Dialogs.StartPrint.Headline') }}</v-card-title>
             <v-card-text class="pb-0">
                 <p class="body-2">
@@ -71,10 +77,6 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
         )
     }
 
-    get dialogWidth() {
-        return this.file.big_thumbnail_width ?? 400
-    }
-
     get bigThumbnailBackground() {
         return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
     }
@@ -110,6 +112,10 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
             })
 
         return this.$t('Dialogs.StartPrint.DoYouWantToStartFilename', { filename: this.file?.filename ?? 'unknown' })
+    }
+
+    get maxThumbnailWidth() {
+        return this.file?.big_thumbnail_width ?? 400
     }
 
     startPrint(filename = '') {
