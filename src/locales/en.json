@@ -615,8 +615,7 @@
             },
             "RunoutSensor": {
                 "Detected": "detected",
-                "Disabled": "disabled",
-                "Empty": "Empty"
+                "Empty": "empty"
             }
         },
         "PowerControlPanel": {
