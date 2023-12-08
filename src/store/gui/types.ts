@@ -132,6 +132,13 @@ export interface GuiState {
             rootPath: string
             selectedFiles: FileStateFile[]
         }
+        extruder: {
+            showTools: boolean
+            showExtrusionFactor: boolean
+            showPressureAdvance: boolean
+            showFirmwareRetraction: boolean
+            showExtruderControl: boolean
+        }
         gcodefiles: {
             countPerPage: number
             sortBy: string

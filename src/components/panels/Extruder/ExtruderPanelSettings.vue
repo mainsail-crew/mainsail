@@ -8,10 +8,38 @@
         <v-list>
             <v-list-item class="minHeight36">
                 <v-checkbox
-                    v-model="showPosition"
+                    v-model="showTools"
                     class="mt-0"
                     hide-details
-                    :label="$t('Panels.ToolheadControlPanel.PositionOutput')" />
+                    :label="$t('Panels.ExtruderControlPanel.Tools')" />
+            </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="showExtrusionFactor"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.ExtruderControlPanel.ExtrusionFactor')" />
+            </v-list-item>
+            <v-list-item v-if="existsPressureAdvance" class="minHeight36">
+                <v-checkbox
+                    v-model="showPressureAdvance"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.ExtruderControlPanel.PressureAdvance')" />
+            </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="showFirmwareRetraction"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.ExtruderControlPanel.FirmwareRetraction')" />
+            </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="showExtruderControl"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.ExtruderControlPanel.ExtruderControl')" />
             </v-list-item>
         </v-list>
     </v-menu>
@@ -26,12 +54,48 @@ import { mdiCog } from '@mdi/js'
 export default class ExtruderPanelSettings extends Mixins(BaseMixin) {
     mdiCog = mdiCog
 
-    get showPosition(): boolean {
-        return this.$store.state.gui.view.toolhead.showPosition ?? true
+    get showTools(): boolean {
+        return this.$store.state.gui.view.extruder.showTools ?? true
     }
 
-    set showPosition(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.toolhead.showPosition', value: newVal })
+    set showTools(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.extruder.showTools', value: newVal })
+    }
+
+    get showExtrusionFactor(): boolean {
+        return this.$store.state.gui.view.extruder.showExtrusionFactor ?? true
+    }
+
+    set showExtrusionFactor(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.extruder.showExtrusionFactor', value: newVal })
+    }
+
+    get existsPressureAdvance(): boolean {
+        return !(this.$store.getters['printer/getExtruderSteppers'].length > 0)
+    }
+
+    get showPressureAdvance(): boolean {
+        return this.$store.state.gui.view.extruder.showPressureAdvance ?? true
+    }
+
+    set showPressureAdvance(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.extruder.showPressureAdvance', value: newVal })
+    }
+
+    get showFirmwareRetraction(): boolean {
+        return this.$store.state.gui.view.extruder.showFirmwareRetraction ?? true
+    }
+
+    set showFirmwareRetraction(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.extruder.showFirmwareRetraction', value: newVal })
+    }
+
+    get showExtruderControl(): boolean {
+        return this.$store.state.gui.view.extruder.showExtruderControl ?? true
+    }
+
+    set showExtruderControl(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.extruder.showExtruderControl', value: newVal })
     }
 }
 </script>

@@ -539,10 +539,12 @@
             "CleanNozzle": "Düse reinigen",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrudieren",
+            "ExtruderControl": "Extruder Control",
             "ExtruderTempTooLow": "Extruder Temp. <",
             "ExtrusionFactor": "Extrusionsfaktor",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
             "FilamentLength": "Filamentlänge",
+            "FirmwareRetraction": "Firmware Rückzug",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Rückzugslänge",
                 "RetractSpeed": "Rückzuggeschwindigkeit",
@@ -551,6 +553,7 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Filament laden",
+            "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
@@ -560,6 +563,7 @@
             "Requested": "Angefordert",
             "Retract": "Rückzug",
             "TooLargeExtrusion": "Extrusion zu groß!",
+            "Tools": "Werkzeuge",
             "UnloadFilament": "Filament entladen"
         },
         "FarmPrinterPanel": {

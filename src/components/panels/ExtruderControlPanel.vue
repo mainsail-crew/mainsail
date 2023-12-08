@@ -4,8 +4,7 @@
         :icon="mdiPrinter3dNozzle"
         :title="$t('Panels.ExtruderControlPanel.Headline')"
         :collapsible="true"
-        card-class="extruder-control-panel"
-        class="pb-1">
+        card-class="extruder-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
         <template #buttons>
             <v-menu v-if="showFilamentMacros" :offset-y="true" :close-on-content-click="false" left>
@@ -79,20 +78,30 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
+            <extruder-panel-settings />
         </template>
         <!-- TOOL SELECTOR BUTTONS -->
-        <extruder-control-panel-tools />
+        <extruder-control-panel-tools v-if="showTools" />
         <!-- EXTRUSION FACTOR SLIDER -->
-        <extrusion-factor-settings />
+        <template v-if="showExtrusionFactor">
+            <v-divider v-if="showTools" />
+            <extrusion-factor-settings />
+        </template>
         <!-- PRESSURE ADVANCE SETTINGS -->
-        <pressure-advance-settings />
+        <template v-if="showPressureAdvance">
+            <v-divider v-if="showTools || showExtrusionFactor" />
+            <pressure-advance-settings />
+        </template>
         <!-- FIRMWARE RETRACTION SETTINGS -->
-        <firmware-retraction-settings />
-        <v-divider class="pb-1" />
+        <template v-if="showFirmwareRetraction">
+            <v-divider v-if="showTools || showExtrusionFactor || showPressureAdvance" />
+            <firmware-retraction-settings />
+        </template>
         <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
-        <extruder-control-panel-control />
-        <!-- EXTRUSION ESTIMATION NOTE -->
-        <estimated-extrusion-output />
+        <template v-if="showExtruderControl">
+            <v-divider v-if="showTools || showExtrusionFactor || showPressureAdvance || showFirmwareRetraction" />
+            <extruder-control-panel-control />
+        </template>
     </panel>
 </template>
 
@@ -176,6 +185,36 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get extruders(): PrinterStateExtruder[] {
         return this.$store.getters['printer/getExtruders']
+    }
+
+    get showTools(): boolean {
+        if (this.toolchangeMacros.length < 1) return false
+
+        return this.$store.state.gui.view.extruder.showTools ?? true
+    }
+
+    get showExtrusionFactor(): boolean {
+        return this.$store.state.gui.view.extruder.showExtrusionFactor ?? true
+    }
+
+    get existsPressureAdvance(): boolean {
+        return !(this.$store.getters['printer/getExtruderSteppers'].length > 0)
+    }
+
+    get showPressureAdvance(): boolean {
+        if (!this.existsPressureAdvance) return false
+
+        return this.$store.state.gui.view.extruder.showPressureAdvance ?? true
+    }
+
+    get showFirmwareRetraction(): boolean {
+        if (!this.existsFirmwareRetraction) return false
+
+        return this.$store.state.gui.view.extruder.showFirmwareRetraction ?? true
+    }
+
+    get showExtruderControl(): boolean {
+        return this.$store.state.gui.view.extruder.showExtruderControl ?? true
     }
 }
 </script>
