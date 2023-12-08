@@ -536,6 +536,7 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Erlaubt",
+            "CleanNozzle": "Düse reinigen",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrudieren",
             "ExtruderTempTooLow": "Extruder Temp. <",
@@ -555,6 +556,7 @@
                 "Extruder": "Extruder",
                 "SmoothTime": "Smooth Time"
             },
+            "PurgeFilament": "Filament reinigen",
             "Requested": "Angefordert",
             "Retract": "Rückzug",
             "TooLargeExtrusion": "Extrusion zu groß!",
@@ -580,6 +582,7 @@
             "MotionSettings": {
                 "Acceleration": "Beschleunigung",
                 "MaxAccelToDecel": "Max. Beschl. zu Verz.",
+                "MinimumCruiseRatio": "Min. Kreuzfahr Quote",
                 "SquareCornerVelocity": "Eck-Geschwindigkeit",
                 "Velocity": "Geschwindigkeit"
             }
@@ -612,8 +615,7 @@
             },
             "RunoutSensor": {
                 "Detected": "erkannt",
-                "Disabled": "deaktiviert",
-                "Empty": "Leer"
+                "Empty": "leer"
             }
         },
         "PowerControlPanel": {
