@@ -147,7 +147,6 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
 
     onWebSocketOpen() {
         this.log('open')
-        this.status = 'connected'
 
         if (this.restartTimeout !== null) {
             clearTimeout(this.restartTimeout)
@@ -158,6 +157,15 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
             if (!ev.candidate) return
             const msg = { type: 'webrtc/candidate', value: ev.candidate.candidate }
             this.ws?.send(JSON.stringify(msg))
+        })
+
+        this.pc?.addEventListener('connectionstatechange', () => {
+            this.status = (this.pc?.connectionState ?? '').toString()
+            this.log('connection state changed', this.status)
+
+            if (['failed', 'disconnected'].includes(this.status)) {
+                this.scheduleRestart()
+            }
         })
 
         this.pc
