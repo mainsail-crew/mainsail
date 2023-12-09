@@ -58,8 +58,15 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get url() {
-        const urlSearch = new URL(this.camSettings.stream_url).search.toString()
-        const url = new URL('api/ws' + urlSearch, this.camSettings.stream_url)
+        let urlSearch = ''
+        let url = new URL(location.href)
+
+        try {
+            urlSearch = new URL(this.camSettings.stream_url).search.toString()
+            url = new URL('api/ws' + urlSearch, this.camSettings.stream_url)
+        } catch (e) {
+            this.log('invalid url', this.camSettings.stream_url)
+        }
 
         // create media types array
         const media = ['video']
