@@ -536,12 +536,15 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
+            "CleanNozzle": "Clean Nozzle",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrude",
+            "ExtruderControl": "Extruder Control",
             "ExtruderTempTooLow": "Extruder temp. <",
             "ExtrusionFactor": "Extrusion factor",
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filament Length",
+            "FirmwareRetraction": "Firmware Retraction",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Retract Length",
                 "RetractSpeed": "Retract Speed",
@@ -550,14 +553,17 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Load Filament",
+            "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "SmoothTime": "Smooth Time"
             },
+            "PurgeFilament": "Purge Filament",
             "Requested": "Requested",
             "Retract": "Retract",
             "TooLargeExtrusion": "Extrusion too large!",
+            "Tools": "Tools",
             "UnloadFilament": "Unload Filament"
         },
         "FarmPrinterPanel": {
@@ -580,6 +586,7 @@
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. to Decel.",
+                "MinimumCruiseRatio": "Min. Cruise Ratio",
                 "SquareCornerVelocity": "Square Corner Velocity",
                 "Velocity": "Velocity"
             }
@@ -612,8 +619,7 @@
             },
             "RunoutSensor": {
                 "Detected": "detected",
-                "Disabled": "disabled",
-                "Empty": "Empty"
+                "Empty": "empty"
             }
         },
         "PowerControlPanel": {
@@ -728,13 +734,17 @@
         "ToolheadControlPanel": {
             "Absolute": "absolute",
             "ALL": "ALL",
+            "ControlButtons": "Control buttons",
+            "CoordinateFields": "Coordinate fields",
             "Headline": "Toolhead",
             "PleaseConfigureSteps": "Please configure steps",
             "Position": "Position",
+            "PositionOutput": "Position output",
             "QGL": "QGL",
             "Relative": "relative",
             "SettingsInterfaceControl": "Settings > Interface > Control",
             "SpeedFactor": "Speed factor",
+            "ZOffset": "Z-Offset",
             "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {
@@ -853,6 +863,8 @@
             "Style": "Style",
             "ValueGreaterThan": "Value has to be greater than {value}",
             "ZOffsetIncrements": "Z-Offset increments (in mm)",
+            "ZOffsetSaveOption": "Z-Offset save option",
+            "ZOffsetSaveOptionDescription": "Change the option to save the Z-Offset",
             "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
@@ -927,6 +939,18 @@
             "Restore": "Restore",
             "RestoreDialog": "Please select all the sections you want to restore:",
             "TimeFormat": "Time Format"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Color Schemes",
+            "Heightmap": "Heightmap",
+            "IsDefault": "(Default)",
+            "Schemes": {
+                "GrayScale": "Grayscale",
+                "Hot": "Hot",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Spring"
+            }
         },
         "InterfaceSettings": "Interface Settings",
         "MacrosTab": {

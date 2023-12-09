@@ -100,8 +100,11 @@ import {
     mdiWebcam,
     mdiDipSwitch,
     mdiMenu,
+    mdiGrid,
 } from '@mdi/js'
 import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneousTab.vue'
+import SettingsHeightmapTab from '@/components/settings/SettingsHeightmapTab.vue'
+
 @Component({
     components: {
         Panel,
@@ -119,6 +122,7 @@ import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneou
         SettingsTimelapseTab,
         SettingsMiscellaneousTab,
         SettingsNavigationTab,
+        SettingsHeightmapTab,
     },
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
@@ -201,6 +205,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 icon: mdiMenu,
                 name: 'navigation',
                 title: this.$t('Settings.NavigationTab.Navigation'),
+            },
+            {
+                icon: mdiGrid,
+                name: 'heightmap',
+                title: this.$t('Settings.HeightmapTab.Heightmap'),
             },
         ]
 

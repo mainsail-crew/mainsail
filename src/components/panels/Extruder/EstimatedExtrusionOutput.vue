@@ -1,5 +1,5 @@
 <template>
-    <v-container v-if="showEstimatedExtrusion" class="pa-0 ma-0 pb-1">
+    <v-container v-if="showEstimatedExtrusion" class="pa-0 ma-0 pb-2">
         <div style="font-size: 0.8em" class="text--disabled text-caption font-weight-light d-flex justify-center">
             <span>
                 {{ $t('Panels.ExtruderControlPanel.EstimatedExtrusion') }} ~ {{ extrudedLength }} mm @
