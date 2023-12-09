@@ -1146,6 +1146,7 @@
             "CreateWebcam": "Erstelle Webcam",
             "EditCrowsnestConf": "crowsnest.conf bearbeiten",
             "EditWebcam": "Webcam bearbeiten",
+            "EnableAudio": "Ton einschalten",
             "FlipWebcam": "Webcam-Bild spiegeln:",
             "HideFps": "FPS-Anzeige verstecken",
             "Hlsstream": "HLS-Stream",

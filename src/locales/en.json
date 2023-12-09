@@ -1164,6 +1164,7 @@
             "CreateWebcam": "Create Webcam",
             "EditCrowsnestConf": "Edit crowsnest.conf",
             "EditWebcam": "Edit Webcam",
+            "EnableAudio": "Enable audio",
             "FlipWebcam": "Flip webcam image:",
             "HideFps": "Hide FPS counter",
             "Hlsstream": "HLS Stream",
