@@ -187,6 +187,8 @@
                     </v-col>
                 </v-row>
             </v-container>
+            <!-- EXTRUSION ESTIMATION NOTE -->
+            <estimated-extrusion-output />
         </template>
     </responsive>
 </template>
