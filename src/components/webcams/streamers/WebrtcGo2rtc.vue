@@ -70,7 +70,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
 
         // create media types array
         const media = ['video']
-        if (this.camSettings.extra_data?.enableAudio ?? false) media.push('audio')
+        if (this.enableAudio) media.push('audio')
 
         url.searchParams.set('media', media.join('+'))
         // change protocol to ws
@@ -84,9 +84,20 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
         return this.convertUrl(url.toString(), this.printerUrl)
     }
 
+    get enableAudio() {
+        return this.camSettings.extra_data?.enableAudio ?? false
+    }
+
     // stop and restart the video if the url changes
     @Watch('url')
     changedUrl() {
+        this.terminate()
+        this.start()
+    }
+
+    // stop and restart the video if enableAudio changes
+    @Watch('enableAudio')
+    changedEnableAudio() {
         this.terminate()
         this.start()
     }
