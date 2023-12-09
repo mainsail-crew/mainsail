@@ -61,4 +61,22 @@ export const mutations: MutationTree<SocketState> = {
         list.splice(index, 1)
         Vue.set(state, 'initializationList', list)
     },
+
+    removeInitComponent(state, payload) {
+        const list = [...state.initializationList]
+
+        // remove all components witch starts with payload
+        const indexes = list.reduce((acc: number[], item, index) => {
+            if (item.startsWith(payload)) acc.push(index)
+            return acc
+        }, [])
+
+        // stop if no items found
+        if (!indexes.length) return
+
+        // remove all items
+        indexes.forEach((index) => list.splice(index, 1))
+
+        Vue.set(state, 'initializationList', list)
+    },
 }

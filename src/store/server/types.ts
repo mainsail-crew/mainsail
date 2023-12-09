@@ -11,6 +11,7 @@ export interface ServerState {
     klippy_message: string
     components: string[]
     failed_components: string[]
+    failed_init_components: string[]
     warnings: string[]
     registered_directories: string[]
     events: ServerStateEvent[]

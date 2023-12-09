@@ -17,7 +17,9 @@
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the log file and fix the issue.",
+                "MoonrakerFailedInitComponentDescription": "An error was detected during initialization the moonraker component '{component}'. Please check the log file and fix the issue.",
                 "MoonrakerWarning": "Moonraker warning",
                 "UnparsedConfigOption": "Unparsed config option '{option}: {value}' detected in section [{section}]. This may be an option no longer available or could be the result of a module that failed to load. In the future this will result in a startup error.",
                 "UnparsedConfigSection": "Unparsed config section [{section}] detected. This may be the result of a component that failed to load. In the future this will result in a startup error."
