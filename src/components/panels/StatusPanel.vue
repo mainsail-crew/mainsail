@@ -398,7 +398,7 @@ export default class StatusPanel extends Mixins(BaseMixin, ThemeMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 ._border-radius {
     border-bottom-left-radius: inherit;
     border-bottom-right-radius: inherit;

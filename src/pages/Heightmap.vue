@@ -531,19 +531,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin, Theme
                 calculable: true,
                 dimension: 2,
                 inRange: {
-                    color: [
-                        '#313695',
-                        '#4575b4',
-                        '#74add1',
-                        '#abd9e9',
-                        '#e0f3f8',
-                        '#ffffbf',
-                        '#fee090',
-                        '#fdae61',
-                        '#f46d43',
-                        '#d73027',
-                        '#a50026',
-                    ],
+                    color: this.colorMap,
                 },
                 seriesIndex: this.visualMapSeriesIndex,
                 left: this.isMobile ? 10 : 30,
@@ -1059,6 +1047,10 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin, Theme
         } else {
             return false
         }
+    }
+
+    get colorMap(): string[] {
+        return this.$store.getters['gui/heightmap/getActiveColorSchemeList']
     }
 
     tooltipFormatter(data: any): string {

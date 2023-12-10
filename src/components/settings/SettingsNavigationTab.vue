@@ -36,7 +36,7 @@ export default class SettingsNavigationTab extends Mixins(NavigationMixin, BaseM
         newVal.forEach((naviPoint, index) => {
             this.$store.dispatch('gui/navigation/updatePos', {
                 type: naviPoint.type,
-                title: naviPoint.title,
+                title: naviPoint.orgTitle ?? naviPoint.title,
                 visible: naviPoint.visible,
                 position: index + 1,
             })

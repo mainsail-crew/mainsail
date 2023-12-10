@@ -148,6 +148,7 @@
         "StartPrint": {
             "Cancel": "abbrechen",
             "DoYouWantToStartFilename": "Willst du {filename} starten?",
+            "DoYouWantToStartFilenameFilament": "Willst du {filename} mit dem folgenden Filament starten?",
             "Headline": "Starte Job",
             "Print": "drucken",
             "Timelapse": "Zeitraffer"
@@ -495,6 +496,7 @@
             "CommittedOnDate": "eingereicht am {date}",
             "CommittedYesterday": "eingereicht gestern",
             "ConfigChanges": "Konfigurationsänderungen",
+            "Corrupt": "Korrupt",
             "CountPackagesCanBeUpgraded": "{count} Pakete können aktualisiert werden",
             "Detached": "abgetrennt",
             "Dirty": "kompromittiert",
@@ -509,10 +511,6 @@
             "LinkToGithub": "Link zu GitHub",
             "MoonrakerUpdateQuestion": "Dadurch wird die Moonraker-API aktualisiert. Möglicherweise sind Änderungen an der Datei moonraker.conf erforderlich, damit die Maschine wieder verwendet werden kann.",
             "MoreCommitsInfo": "Hier können maximal 30 Commits angezeigt werden. Um alle Commits zu sehen, klicke bitte auf den folgenden Link:",
-            "Notification": {
-                "Detached": "Ein abgetrennter Zustand ist weder ein Fehler noch ein Problem. Es bedeutet nur, dass im lokalen Repository zusätzliche Commits existieren, die im entfernten Repository nicht vorhanden sind.",
-                "Dirty": "Das lokale Repository wurde geändert und kann in diesem Zustand nicht aktualisiert werden. Bitte stelle wieder ein saubers Repository her."
-            },
             "OSPackages": "OS-Pakete",
             "SoftRecovery": "einfache Wiederherstellung",
             "StartUpdate": "Aktualisierung starten",
@@ -538,12 +536,15 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Erlaubt",
+            "CleanNozzle": "Düse reinigen",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrudieren",
+            "ExtruderControl": "Extruder Control",
             "ExtruderTempTooLow": "Extruder Temp. <",
             "ExtrusionFactor": "Extrusionsfaktor",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
             "FilamentLength": "Filamentlänge",
+            "FirmwareRetraction": "Firmware Rückzug",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Rückzugslänge",
                 "RetractSpeed": "Rückzuggeschwindigkeit",
@@ -552,14 +553,17 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Filament laden",
+            "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "SmoothTime": "Smooth Time"
             },
+            "PurgeFilament": "Filament reinigen",
             "Requested": "Angefordert",
             "Retract": "Rückzug",
             "TooLargeExtrusion": "Extrusion zu groß!",
+            "Tools": "Werkzeuge",
             "UnloadFilament": "Filament entladen"
         },
         "FarmPrinterPanel": {
@@ -582,6 +586,7 @@
             "MotionSettings": {
                 "Acceleration": "Beschleunigung",
                 "MaxAccelToDecel": "Max. Beschl. zu Verz.",
+                "MinimumCruiseRatio": "Min. Kreuzfahr Quote",
                 "SquareCornerVelocity": "Eck-Geschwindigkeit",
                 "Velocity": "Geschwindigkeit"
             }
@@ -591,6 +596,7 @@
             "Send": "senden"
         },
         "MiniconsolePanel": {
+            "Autoscroll": "Autoscroll",
             "Headline": "Konsole",
             "HideTemperatures": "Temperaturmeldungen ausblenden",
             "HideTimelapse": "Timelapse ausblenden",
@@ -613,8 +619,7 @@
             },
             "RunoutSensor": {
                 "Detected": "erkannt",
-                "Disabled": "deaktiviert",
-                "Empty": "Leer"
+                "Empty": "leer"
             }
         },
         "PowerControlPanel": {
@@ -622,6 +627,32 @@
             "Off": "Aus",
             "On": "An",
             "PowerControl": "Stromversorgung"
+        },
+        "SpoolmanPanel": {
+            "Cancel": "Abbrechen",
+            "ChangeSpool": "Rolle wechseln",
+            "DaysAgo": "vor {days} Tagen",
+            "EjectSpool": "Rolle auswerfen",
+            "EjectSpoolQuestion": "Sind Sie sicher, dass Sie die Filamentrolle auswerfen wollen?",
+            "Filament": "Filament",
+            "FilamentTypeMismatch": "Das Material der aktiven Filamentrolle ({spoolType}) stimmt nicht mit dem Material des G-Codes ({fileType}) überein.",
+            "Headline": "Spoolman",
+            "LastUsed": "Zuletzt verwendet",
+            "Location": "Standort",
+            "Material": "Material",
+            "Never": "Nie",
+            "NoActiveSpool": "Die Filamentverfolgung ist inaktiv. Um zu beginnen, wählen Sie bitte eine Rolle aus.",
+            "NoResults": "Keine Rolle mit den aktuellen Suchkriterien gefunden.",
+            "NoSpools": "Keine Rolle verfügbar",
+            "NoSpoolSelected": "Keine Rolle ausgewählt. Bitte wählen Sie eine Spule aus, sonst kann dieser Druck nicht verfolgt werden.",
+            "OpenSpoolManager": "Rollenverwaltung öffnen",
+            "Refresh": "aktualisieren",
+            "Search": "Suchen",
+            "SelectSpool": "Rolle auswählen",
+            "Today": "Heute",
+            "TooLessFilament": "Die aktuelle Rolle hat möglicherweise nicht genug Filament für diesen Druck. ({spoolWeight}g von {fileWeight}g)",
+            "Weight": "Gewicht",
+            "Yesterday": "Gestern"
         },
         "StatusPanel": {
             "CancelPrint": "Druck abbrechen",
@@ -685,6 +716,7 @@
             },
             "Headline": "Temperaturen",
             "HideMcuHostSensors": "Host/MCU Sensoren ausblenden",
+            "HideMonitors": "Monitore ausblenden",
             "Max": "max",
             "Min": "min",
             "Name": "Name",
@@ -727,9 +759,7 @@
             "SaveConfig": "SAVE CONFIG",
             "SaveInfoDescription": "Der neue Z-Versatz wurde berechnet und registriert. Auf \"SAVE CONFIG\", klicken um den neuen Z-Versatz in der printer.cfg zu speichern und Klipper neu zu starten.",
             "SaveInfoDescriptionPrint": "Der neue Z-Versatz wurde berechnet und registriert. Nach dem Drucken auf \"SAVE CONFIG\" in der oberen Leiste klicken um den neuen Z-Versatz in der printer.cfg zu speichern und Klipper neu zu starten.",
-            "SaveInfoHeadline": "Information",
-            "ToEndstop": "bis Endschalter",
-            "ToProbe": "bis Sensor"
+            "SaveInfoHeadline": "Information"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -884,6 +914,7 @@
             "DbConsoleHistory": "Verlauf der Konsole",
             "DbHistoryJobs": "Historie Druckvorgänge",
             "DbHistoryTotals": "Historie Gesamtzähler",
+            "DBNavigation": "Navigation",
             "DbTimelapseSettings": "Zeitraffer Einstellungen",
             "DbView": "Ansichtseinstellungen",
             "EstimateValues": {
@@ -891,6 +922,7 @@
                 "File": "Datei",
                 "Slicer": "Slicer"
             },
+            "Everything": "Alle",
             "FactoryDialog": "Bitte wähle alle Abschnitte die du zurücksetzen möchtest:",
             "FactoryReset": "Werkseinstellungen",
             "General": "Allgemein",
@@ -1063,6 +1095,7 @@
         "UiSettingsTab": {
             "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
             "BedScrewsDialogDescription": "Zeige ein Hilfsfenster für die Bettschraubenjustierung an.",
+            "BigThumbnailBackground": "Hintergrundfarbe vom großen Vorschaubild",
             "BoolBigThumbnail": "Große Vorschaubilder",
             "BoolBigThumbnailDescription": "Zeige ein großes Thumbnail in der Status-Anzeige während eines Drucks.",
             "BoolHideUploadAndPrintButton": "\"Hochladen & Drucken\" Schaltfläche ausblenden",
@@ -1113,6 +1146,7 @@
             "CreateWebcam": "Erstelle Webcam",
             "EditCrowsnestConf": "crowsnest.conf bearbeiten",
             "EditWebcam": "Webcam bearbeiten",
+            "EnableAudio": "Ton einschalten",
             "FlipWebcam": "Webcam-Bild spiegeln:",
             "HideFps": "FPS-Anzeige verstecken",
             "Hlsstream": "HLS-Stream",
@@ -1144,7 +1178,7 @@
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
     },
     "Timelapse": {

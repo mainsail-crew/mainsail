@@ -1,4 +1,4 @@
-<style lang="scss" scoped>
+<style scoped>
 .btnHomeAxis {
     width: 36px;
     min-width: 36px !important;

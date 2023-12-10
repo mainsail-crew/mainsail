@@ -65,8 +65,11 @@
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
-                            <b>{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b>
-                            {{ absolutePath }}
+                            <b class="mr-1">{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b>
+                            <path-navigation
+                                :path="currentPath"
+                                :base-directory-label="`/${root}`"
+                                :on-segment-click="clickPathNavGoToDirectory" />
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null && !showMissingConfigRootWarning">
@@ -545,6 +548,7 @@ import { formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
+import PathNavigation from '@/components/ui/PathNavigation.vue'
 import { hiddenRootDirectories } from '@/store/variables'
 import {
     mdiFilePlus,
@@ -615,7 +619,7 @@ interface draggingFile {
 }
 
 @Component({
-    components: { Panel },
+    components: { Panel, PathNavigation },
 })
 export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     mdiInformation = mdiInformation
@@ -1017,6 +1021,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
     }
 
+    clickPathNavGoToDirectory(segment: { location: string }) {
+        this.currentPath = segment.location
+    }
+
     showContextMenu(e: any, item: FileStateFile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
@@ -1058,7 +1066,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
 
         const date = new Date()
         const month = (date.getMonth() + 1).toString().padStart(2, '0')
-        const day = date.getDay().toString().padStart(2, '0')
+        const day = date.getDate().toString().padStart(2, '0')
         const hours = date.getHours().toString().padStart(2, '0')
         const minutes = date.getMinutes().toString().padStart(2, '0')
         const seconds = date.getSeconds().toString().padStart(2, '0')

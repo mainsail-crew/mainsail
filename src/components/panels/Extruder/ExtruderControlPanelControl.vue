@@ -187,6 +187,8 @@
                     </v-col>
                 </v-row>
             </v-container>
+            <!-- EXTRUSION ESTIMATION NOTE -->
+            <estimated-extrusion-output />
         </template>
     </responsive>
 </template>
@@ -274,7 +276,7 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 ._btn-group {
     border-radius: 4px;
     display: inline-flex;

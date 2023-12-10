@@ -1,4 +1,4 @@
-<style lang="scss" scoped>
+<style scoped>
 .btn-collapsible > * {
     will-change: transform;
     transition: transform 500ms;

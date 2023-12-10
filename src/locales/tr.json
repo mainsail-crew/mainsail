@@ -1132,7 +1132,7 @@
             "Webcams": "Web Kameraları",
             "WebrtcCameraStreamer": "WebRTC (kamera-streamer)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
     },
     "Timelapse": {

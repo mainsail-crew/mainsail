@@ -8,8 +8,8 @@
         :collapsible="$route.fullPath !== '/cam'"
         card-class="webcam-panel"
         :margin-bottom="currentPage !== 'page'">
-        <template v-if="webcams.length > 1" #buttons>
-            <v-menu :offset-y="true" title="Webcam">
+        <template #buttons>
+            <v-menu v-if="showSwitch" :offset-y="true">
                 <template #activator="{ on, attrs }">
                     <v-btn text tile v-bind="attrs" v-on="on">
                         <v-icon v-if="'icon' in currentCam" small class="mr-2">
@@ -33,7 +33,7 @@
                             <v-icon small class="mt-1">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title v-text="webcam.name"></v-list-item-title>
+                            <v-list-item-title v-text="webcam.name" />
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
@@ -75,6 +75,10 @@ export default class WebcamPanel extends Mixins(BaseMixin, WebcamMixin) {
 
     get webcams(): GuiWebcamStateWebcam[] {
         return this.$store.getters['gui/webcams/getWebcams']
+    }
+
+    get showSwitch() {
+        return this.webcams.length > 1
     }
 
     // id changed to name with the refactoring of using moonraker webcam API

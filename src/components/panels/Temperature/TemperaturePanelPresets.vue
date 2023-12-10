@@ -107,7 +107,7 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 ._preset-title {
     font-size: 0.8125rem;
     font-weight: 500;

@@ -17,6 +17,7 @@
             <the-manual-probe-dialog />
             <the-bed-screws-dialog />
             <the-screws-tilt-adjust-dialog />
+            <the-macro-prompt />
         </template>
         <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'" />
         <the-connecting-dialog v-else />
@@ -41,11 +42,14 @@ import TheUploadSnackbar from '@/components/TheUploadSnackbar.vue'
 import TheManualProbeDialog from '@/components/dialogs/TheManualProbeDialog.vue'
 import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
 import TheScrewsTiltAdjustDialog from '@/components/dialogs/TheScrewsTiltAdjustDialog.vue'
+import { setAndLoadLocale } from './plugins/i18n'
+import TheMacroPrompt from '@/components/dialogs/TheMacroPrompt.vue'
 
 Component.registerHooks(['metaInfo'])
 
 @Component({
     components: {
+        TheMacroPrompt,
         TheTimelapseRenderingSnackbar,
         TheEditor,
         TheSelectPrinterDialog,
@@ -167,8 +171,8 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     @Watch('language')
-    languageChanged(newVal: string): void {
-        this.$i18n.locale = newVal
+    async languageChanged(newVal: string): Promise<void> {
+        await setAndLoadLocale(newVal)
     }
 
     @Watch('customStylesheet')
@@ -287,11 +291,18 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
     @Watch('print_percent')
     print_percentChanged(newVal: number): void {
         this.drawFavicon(newVal)
+        this.refreshSpoolman()
     }
 
     @Watch('printerIsPrinting')
     printerIsPrintingChanged(): void {
         this.drawFavicon(this.print_percent)
+    }
+
+    refreshSpoolman(): void {
+        if (this.moonrakerComponents.includes('spoolman')) {
+            this.$store.dispatch('server/spoolman/refreshActiveSpool', null, { root: true })
+        }
     }
 
     appHeight() {
@@ -313,10 +324,10 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
 <style>
 @import './assets/styles/fonts.css';
 @import './assets/styles/toastr.css';
-@import './assets/styles/page.scss';
-@import './assets/styles/sidebar.scss';
-@import './assets/styles/utils.scss';
-@import './assets/styles/updateManager.scss';
+@import './assets/styles/page.css';
+@import './assets/styles/sidebar.css';
+@import './assets/styles/utils.css';
+@import './assets/styles/updateManager.css';
 
 :root {
     --app-height: 100%;
