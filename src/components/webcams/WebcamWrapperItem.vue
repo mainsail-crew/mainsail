@@ -27,6 +27,9 @@
         <template v-else-if="service === 'webrtc-mediamtx'">
             <webrtc-media-m-t-x-async :cam-settings="webcam" :printer-url="printerUrl" />
         </template>
+        <template v-else-if="service === 'webrtc-go2rtc'">
+            <webrtc-go2rtc-async :cam-settings="webcam" :printer-url="printerUrl" />
+        </template>
         <template v-else>
             <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
         </template>
@@ -51,6 +54,7 @@ import { DynamicCamLoader } from '@/components/webcams/streamers/DynamicCamLoade
         Uv4lMjpegAsync: DynamicCamLoader('Uv4lMjpeg'),
         WebrtcCameraStreamerAsync: DynamicCamLoader('WebrtcCameraStreamer'),
         WebrtcMediaMTXAsync: DynamicCamLoader('WebrtcMediaMTX'),
+        WebrtcGo2rtcAsync: DynamicCamLoader('WebrtcGo2rtc'),
     },
 })
 export default class WebcamWrapperItem extends Mixins(BaseMixin) {
