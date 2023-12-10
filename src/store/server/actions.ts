@@ -292,4 +292,9 @@ export const actions: ActionTree<ServerState, RootState> = {
     serviceStateChanged({ commit }, payload) {
         commit('updateServiceState', payload)
     },
+
+    addFailedInitComponent({ commit }, payload) {
+        commit('removeComponent', payload)
+        commit('addFailedInitComponent', payload)
+    },
 }

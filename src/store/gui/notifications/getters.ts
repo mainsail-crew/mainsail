@@ -28,6 +28,9 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         // moonraker failed components
         notifications = notifications.concat(getters['getNotificationsMoonrakerFailedComponents'])
 
+        // moonraker failed init components
+        notifications = notifications.concat(getters['getNotificationsMoonrakerFailedInitComponents'])
+
         // klipper warnings
         notifications = notifications.concat(getters['getNotificationsKlipperWarnings'])
 
@@ -214,6 +217,44 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                     title: i18n.t('App.Notifications.MoonrakerWarnings.MoonrakerComponent', { component }).toString(),
                     description: i18n
                         .t('App.Notifications.MoonrakerWarnings.MoonrakerFailedComponentDescription', { component })
+                        .toString(),
+                    date,
+                    dismissed: false,
+                } as GuiNotificationStateEntry)
+            })
+        }
+
+        return notifications
+    },
+
+    getNotificationsMoonrakerFailedInitComponents: (state, getters, rootState, rootGetters) => {
+        const notifications: GuiNotificationStateEntry[] = []
+
+        let failedInitCompontents = rootState.server.failed_init_components ?? []
+        if (failedInitCompontents.length) {
+            const date = rootState.server.system_boot_at ?? new Date()
+
+            // get all dismissed failed components and convert it to a string[]
+            const flagDismisses = rootGetters['gui/notifications/getDismissByCategory'](
+                'moonrakerFailedInitComponent'
+            ).map((dismiss: GuiNotificationStateDismissEntry) => {
+                return dismiss.id
+            })
+
+            // filter all dismissed failed init components
+            failedInitCompontents = failedInitCompontents.filter(
+                (component: string) => !flagDismisses.includes(component)
+            )
+
+            failedInitCompontents.forEach((component: string) => {
+                notifications.push({
+                    id: `moonrakerFailedInitComponent/${component}`,
+                    priority: 'high',
+                    title: i18n
+                        .t('App.Notifications.MoonrakerWarnings.MoonrakerInitComponent', { component })
+                        .toString(),
+                    description: i18n
+                        .t('App.Notifications.MoonrakerWarnings.MoonrakerFailedInitComponentDescription', { component })
                         .toString(),
                     date,
                     dismissed: false,

@@ -160,4 +160,21 @@ export const mutations: MutationTree<ServerState> = {
 
         if (state.system_info?.service_state) Vue.set(state.system_info.service_state, name, payload[name])
     },
+
+    addFailedInitComponent(state, payload) {
+        const failed_init_components = state.failed_init_components
+        if (!failed_init_components.includes(payload)) failed_init_components.push(payload)
+
+        Vue.set(state, 'failed_init_components', failed_init_components)
+    },
+
+    removeComponent(state, payload) {
+        const components = state.components
+        const index = components.indexOf(payload)
+
+        if (index === -1) return
+
+        components.splice(index, 1)
+        Vue.set(state, 'components', components)
+    },
 }
