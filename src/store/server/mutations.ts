@@ -167,4 +167,14 @@ export const mutations: MutationTree<ServerState> = {
 
         Vue.set(state, 'failed_init_components', failed_init_components)
     },
+
+    removeComponent(state, payload) {
+        const components = state.components
+        const index = components.indexOf(payload)
+
+        if (index === -1) return
+
+        components.splice(index, 1)
+        Vue.set(state, 'components', components)
+    },
 }

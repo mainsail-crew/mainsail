@@ -294,6 +294,7 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     addFailedInitComponent({ commit }, payload) {
+        commit('removeComponent', payload)
         commit('addFailedInitComponent', payload)
     },
 }
