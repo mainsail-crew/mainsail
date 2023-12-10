@@ -78,15 +78,8 @@ const initLoad = async () => {
         }
 
         // Handle theme outside of store init and before vue mount for consistency in dialog
-        let theme = file.defaultTheme ?? defaultTheme
-        const uiSettingsUrl =
-            store.getters['socket/getUrl'] + '/server/database/item?namespace=mainsail&key=uiSettings'
-        const response = await fetch(uiSettingsUrl)
-        .then((response) => response?.json())
-        .catch(() => undefined)
-        if (response.result?.value && Object.keys(response.result?.value).includes('theme'))
-            theme = response.result?.value['theme']
-        vuetify.framework.theme.dark = theme == 'light' ? false : true
+        const theme = file.defaultTheme ?? defaultTheme
+        vuetify.framework.theme.dark = theme !== 'light'
     } catch (e) {
         window.console.error('Failed to load config.json')
         window.console.error(e)
