@@ -2,7 +2,7 @@
 
 <template>
     <v-dialog v-model="showDialog" persistent :width="400">
-        <v-card :dark="darkAttribute">
+        <v-card>
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading">

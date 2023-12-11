@@ -17,7 +17,7 @@
 
 <template>
     <v-dialog :value="application !== ''" persistent max-width="800" class="mx-0">
-        <v-card :dark="darkAttribute" :loading="!complete">
+        <v-card :loading="!complete">
             <template slot="progress">
                 <v-progress-linear color="primary" indeterminate></v-progress-linear>
             </template>

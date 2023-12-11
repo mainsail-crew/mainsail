@@ -1,5 +1,5 @@
 <template>
-    <v-app :dark="darkAttribute" :style="cssVars">
+    <v-app :style="cssVars">
         <template v-if="socketIsConnected && guiIsReady">
             <the-sidebar />
             <the-topbar />
