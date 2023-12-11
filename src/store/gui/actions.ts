@@ -199,6 +199,22 @@ export const actions: ActionTree<GuiState, RootState> = {
         Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
     },
 
+    addPinnedFile({ commit, dispatch, state }, value) {
+        commit('addPinnedFile', value)
+        dispatch('updateSettings', {
+            keyName: 'gcodefiles.pinnedFiles',
+            newVal: state.view.gcodefiles.pinnedFiles,
+        })
+    },
+
+    removePinnedFile({ commit, dispatch, state }, value) {
+        commit('removePinnedFile', value)
+        dispatch('updateSettings', {
+            keyName: 'gcodefiles.pinnedFiles',
+            newVal: state.view.gcodefiles.pinnedFiles,
+        })
+    },
+
     setGcodefilesMetadata({ commit, dispatch, state }, data) {
         commit('setGcodefilesMetadata', data)
         dispatch('updateSettings', {

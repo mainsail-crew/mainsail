@@ -239,6 +239,9 @@
                             <template v-if="item.isDirectory">
                                 <v-icon>{{ mdiFolder }}</v-icon>
                             </template>
+                            <template v-else-if="item.isPinned">
+                                <v-icon>{{ mdiPin }}</v-icon>
+                            </template>
                             <template v-else-if="item.small_thumbnail">
                                 <v-tooltip
                                     top
@@ -311,6 +314,16 @@
             @closeDialog="closeStartPrint" />
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
+                <v-list-item
+                    v-if="!contextMenu.item.isPinned && !contextMenu.item.isDirectory"
+                    @click="pinFile(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiPin }}</v-icon>
+                    Pin
+                </v-list-item>
+                <v-list-item v-else-if="!contextMenu.item.isDirectory" @click="unPinFile(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiPinOff }}</v-icon>
+                    Unpin
+                </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory"
                     :disabled="printerIsPrinting || !klipperReadyForGui || !isGcodeFile(contextMenu.item)"
@@ -652,6 +665,8 @@ import {
     mdiVideo3d,
     mdiFileDocumentEditOutline,
     mdiContentCopy,
+    mdiPin,
+    mdiPinOff,
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import ControlMixin from '@/components/mixins/control'
@@ -725,6 +740,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiDragVertical = mdiDragVertical
+    mdiPin = mdiPin
+    mdiPinOff = mdiPinOff
 
     formatFilesize = formatFilesize
     formatPrintTime = formatPrintTime
@@ -1305,6 +1322,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                 this.contextMenu.shown = true
             })
         }
+    }
+
+    pinFile(item: FileStateFile) {
+        this.$store.dispatch('gui/addPinnedFile', item.filename)
+    }
+    unPinFile(item: FileStateFile) {
+        this.$store.dispatch('gui/removePinnedFile', item.filename)
     }
 
     editFile(item: FileStateGcodefile) {

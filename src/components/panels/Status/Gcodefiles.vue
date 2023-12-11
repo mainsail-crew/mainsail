@@ -4,6 +4,7 @@
             :items="gcodeFiles"
             hide-default-footer
             class="dashboard-gcodes-table"
+            :custom-sort="sortFiles"
             sort-by="time_added"
             mobile-breakpoint="0"
             @current-items="setFirst">
@@ -19,7 +20,10 @@
                     @contextmenu="showContextMenu($event, item)"
                     @click="showDialog(item)">
                     <td class="pr-0 text-center" style="width: 32px">
-                        <template v-if="item.small_thumbnail">
+                        <template v-if="item.isPinned">
+                            <v-icon>{{ mdiPin }}</v-icon>
+                        </template>
+                        <template v-else-if="item.small_thumbnail">
                             <v-tooltip
                                 top
                                 content-class="tooltip__content-opacity1"
@@ -79,6 +83,14 @@
             @closeDialog="closeDialog" />
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
+                <v-list-item v-if="!contextMenu.item.isPinned" @click="pinFile(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiPin }}</v-icon>
+                    Pin
+                </v-list-item>
+                <v-list-item v-else @click="unPinFile(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiPinOff }}</v-icon>
+                    Unpin
+                </v-list-item>
                 <v-list-item :disabled="printerIsPrinting || !klipperReadyForGui" @click="showDialog(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlay }}</v-icon>
                     {{ $t('Files.PrintStart') }}
@@ -228,7 +240,7 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
-import { FileStateGcodefile } from '@/store/files/types'
+import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import {
     mdiChevronDown,
@@ -243,9 +255,12 @@ import {
     mdiRenameBox,
     mdiDelete,
     mdiCloseThick,
+    mdiPin,
+    mdiPinOff,
 } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
 import { defaultBigThumbnailBackground } from '@/store/variables'
+import { sortFiles } from '@/plugins/helpers'
 
 interface dialogRenameObject {
     show: boolean
@@ -260,6 +275,7 @@ interface dialogAddBatchToQueue {
 }
 
 @Component({
+    methods: { sortFiles },
     components: {
         Panel,
         StartPrintDialog,
@@ -278,6 +294,8 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     mdiRenameBox = mdiRenameBox
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
+    mdiPin = mdiPin
+    mdiPinOff = mdiPinOff
 
     private deleteDialog = false
     private showDialogBool = false
@@ -497,6 +515,14 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         const href = this.apiUrl + '/server/files/gcodes/' + encodeURI(item.filename)
 
         window.open(href)
+    }
+
+    pinFile(item: FileStateFile) {
+        this.$store.dispatch('gui/addPinnedFile', item.filename)
+    }
+
+    unPinFile(item: FileStateFile) {
+        this.$store.dispatch('gui/removePinnedFile', item.filename)
     }
 
     editFile(item: FileStateGcodefile) {

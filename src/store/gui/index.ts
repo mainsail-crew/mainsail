@@ -206,6 +206,7 @@ export const getDefaultState = (): GuiState => {
                 ],
                 currentPath: '',
                 selectedFiles: [],
+                pinnedFiles: [],
             },
             heightmap: {
                 probed: true,

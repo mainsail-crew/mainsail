@@ -160,6 +160,9 @@ export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortD
 
         // Then make sure directories come first
         items.sort((a: any, b: any) => (a.isDirectory === b.isDirectory ? 0 : a.isDirectory ? -1 : 1))
+
+        // Place pinned files on top
+        items.sort((a: any, b: any) => (a.isPinned === b.isPinned ? 0 : a.isPinned ? -1 : 1))
     }
 
     return items ?? []

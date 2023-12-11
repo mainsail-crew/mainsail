@@ -11,6 +11,7 @@ import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
 import { hiddenDirectories, validGcodeExtensions } from '@/store/variables'
 import axios from 'axios'
+import store from '@/store'
 
 export const actions: ActionTree<FileState, RootState> = {
     reset({ commit }) {
@@ -279,6 +280,7 @@ export const actions: ActionTree<FileState, RootState> = {
         if (payload.error) {
             Vue.$toast.error(payload.error.message)
         } else {
+            store.dispatch('gui/removePinnedFile', payload.item.path)
             const delPath = payload.item.path.substr(payload.item.path.lastIndexOf('/') + 1)
             const fileExtension = payload.item.path.substr(payload.item.path.lastIndexOf('.') + 1)
 
