@@ -56,7 +56,7 @@
                 </v-card-text>
             </panel>
         </v-dialog>
-        <v-snackbar v-model="loaderBool" :timeout="-1" :value="true" fixed right bottom :dark="darkAttribute">
+        <v-snackbar v-model="loaderBool" :timeout="-1" :value="true" fixed right bottom>
             <div>
                 {{ snackbarHeadline }}
                 <br />
