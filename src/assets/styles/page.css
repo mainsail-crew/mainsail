@@ -103,3 +103,7 @@ html.theme--light .os-theme-light > .os-scrollbar > .os-scrollbar-track > .os-sc
 html.theme--light .os-theme-light > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle:hover {
     background: rgba(0, 0, 0, 0.55) !important;
 }
+
+html.theme--light .consoleTableRow.default + .consoleTableRow .col {
+    border-top-color: rgba(0, 0, 0, 0.12) !important;
+}
