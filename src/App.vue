@@ -206,7 +206,11 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
 
     @Watch('theme')
     themeChanged(newVal: string): void {
-        this.$vuetify.theme.dark = newVal == 'dark' ? true : false
+        const dark = newVal !== 'light'
+        this.$vuetify.theme.dark = dark
+
+        const doc = document.documentElement
+        doc.className = dark ? 'theme--dark' : 'theme--light'
     }
 
     drawFavicon(val: number): void {

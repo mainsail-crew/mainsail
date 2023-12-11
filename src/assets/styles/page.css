@@ -77,3 +77,29 @@ body {
     min-width: 100px;
     min-height: 100px;
 }
+
+/* Light theme */
+html.theme--light {
+    scrollbar-color: rgba(0, 0, 0, 0.55) #ffffff;
+}
+
+html.theme--light body {
+    background: #ffffff !important;
+}
+
+html.theme--light ::-webkit-scrollbar {
+    background-color: #ffffff;
+}
+
+html.theme--light ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: #ffffff;
+}
+
+html.theme--light .os-theme-light > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
+    background: rgba(0, 0, 0, 0.4) !important;
+}
+
+html.theme--light .os-theme-light > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle:hover {
+    background: rgba(0, 0, 0, 0.55) !important;
+}
