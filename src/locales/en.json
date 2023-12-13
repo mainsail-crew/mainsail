@@ -18,6 +18,8 @@
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the log file and fix the issue.",
+                "MoonrakerFailedInitComponentDescription": "An error was detected during initialization the moonraker component '{component}'. Please check the log file and fix the issue.",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}",
                 "MoonrakerWarning": "Moonraker warning",
                 "UnparsedConfigOption": "Unparsed config option '{option}: {value}' detected in section [{section}]. This may be an option no longer available or could be the result of a module that failed to load. In the future this will result in a startup error.",
                 "UnparsedConfigSection": "Unparsed config section [{section}] detected. This may be the result of a component that failed to load. In the future this will result in a startup error."
@@ -539,10 +541,12 @@
             "CleanNozzle": "Clean Nozzle",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrude",
+            "ExtruderControl": "Extruder Control",
             "ExtruderTempTooLow": "Extruder temp. <",
             "ExtrusionFactor": "Extrusion factor",
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filament Length",
+            "FirmwareRetraction": "Firmware Retraction",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Retract Length",
                 "RetractSpeed": "Retract Speed",
@@ -551,6 +555,7 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Load Filament",
+            "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
@@ -560,6 +565,7 @@
             "Requested": "Requested",
             "Retract": "Retract",
             "TooLargeExtrusion": "Extrusion too large!",
+            "Tools": "Tools",
             "UnloadFilament": "Unload Filament"
         },
         "FarmPrinterPanel": {
@@ -582,6 +588,7 @@
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. to Decel.",
+                "MinimumCruiseRatio": "Min. Cruise Ratio",
                 "SquareCornerVelocity": "Square Corner Velocity",
                 "Velocity": "Velocity"
             }
@@ -614,8 +621,7 @@
             },
             "RunoutSensor": {
                 "Detected": "detected",
-                "Disabled": "disabled",
-                "Empty": "Empty"
+                "Empty": "empty"
             }
         },
         "PowerControlPanel": {
@@ -1160,6 +1166,7 @@
             "CreateWebcam": "Create Webcam",
             "EditCrowsnestConf": "Edit crowsnest.conf",
             "EditWebcam": "Edit Webcam",
+            "EnableAudio": "Enable audio",
             "FlipWebcam": "Flip webcam image:",
             "HideFps": "Hide FPS counter",
             "Hlsstream": "HLS Stream",
@@ -1190,6 +1197,7 @@
             "Vertically": "vertically",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }

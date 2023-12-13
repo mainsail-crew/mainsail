@@ -23,6 +23,7 @@ export const getDefaultState = (): ServerState => {
         klippy_message: '',
         components: [],
         failed_components: [],
+        failed_init_components: [],
         warnings: [],
         registered_directories: [],
         events: [],
