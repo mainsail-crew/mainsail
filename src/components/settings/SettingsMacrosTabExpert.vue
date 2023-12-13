@@ -141,8 +141,11 @@
                         ghost-class="ghost"
                         group="macros"
                         @change="updateMacroOrder">
-                        <v-row v-for="(macro, index) in editGroupMacros" :key="macro.name" class="my-2 mx-0">
-                            :style="draggableBgStyle"
+                        <v-row
+                            v-for="(macro, index) in editGroupMacros"
+                            :key="macro.name"
+                            class="my-2 mx-0"
+                            :style="draggableBgStyle">
                             <v-col class="col-auto pr-0 d-flex py-2">
                                 <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
                             </v-col>
