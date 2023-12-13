@@ -237,6 +237,10 @@ export default class ZoffsetControl extends Mixins(BaseMixin, ZoffsetMixin) {
     }
 }
 
+html.theme--light ._btn-group .v-btn {
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
 ._btn-qs {
     font-size: 0.8rem !important;
     font-weight: 400;
