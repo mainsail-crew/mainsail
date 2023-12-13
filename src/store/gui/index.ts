@@ -183,6 +183,13 @@ export const getDefaultState = (): GuiState => {
                 rootPath: 'config',
                 selectedFiles: [],
             },
+            extruder: {
+                showTools: true,
+                showExtrusionFactor: true,
+                showPressureAdvance: true,
+                showFirmwareRetraction: true,
+                showExtruderControl: true,
+            },
             gcodefiles: {
                 countPerPage: 10,
                 sortBy: 'modified',

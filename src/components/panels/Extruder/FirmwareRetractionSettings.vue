@@ -1,6 +1,5 @@
 <template>
     <div v-if="existsFirmwareRetraction">
-        <v-divider />
         <v-container>
             <responsive
                 :breakpoints="{

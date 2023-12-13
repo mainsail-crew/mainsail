@@ -17,7 +17,9 @@
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
-                "MoonrakerFailedComponentDescription": "Beim Laden der Moonraker-Komponenten wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
+                "MoonrakerFailedComponentDescription": "Beim Laden der Moonraker-Komponente '{component}' wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
+                "MoonrakerFailedInitComponentDescription": "Beim Initialisieren der Moonraker-Komponente '{component}' wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}",
                 "MoonrakerWarning": "Moonraker Warnung",
                 "UnparsedConfigOption": "Nicht erkannte Config-Option '{option}: {value}' in Abschnitt [{section}] entdeckt. Dies kann eine Option sein, die nicht mehr verfügbar ist, oder das Ergebnis eines Moduls sein, das nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen.",
                 "UnparsedConfigSection": "Nicht erkannter Config-Abschnitt [{section}] gefunden. Dies kann das Ergebnis einer Komponente sein, die nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen."
@@ -539,10 +541,12 @@
             "CleanNozzle": "Düse reinigen",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrudieren",
+            "ExtruderControl": "Extruder Control",
             "ExtruderTempTooLow": "Extruder Temp. <",
             "ExtrusionFactor": "Extrusionsfaktor",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
             "FilamentLength": "Filamentlänge",
+            "FirmwareRetraction": "Firmware Rückzug",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Rückzugslänge",
                 "RetractSpeed": "Rückzuggeschwindigkeit",
@@ -551,6 +555,7 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Filament laden",
+            "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
@@ -560,6 +565,7 @@
             "Requested": "Angefordert",
             "Retract": "Rückzug",
             "TooLargeExtrusion": "Extrusion zu groß!",
+            "Tools": "Werkzeuge",
             "UnloadFilament": "Filament entladen"
         },
         "FarmPrinterPanel": {
@@ -582,6 +588,7 @@
             "MotionSettings": {
                 "Acceleration": "Beschleunigung",
                 "MaxAccelToDecel": "Max. Beschl. zu Verz.",
+                "MinimumCruiseRatio": "Min. Kreuzfahr Quote",
                 "SquareCornerVelocity": "Eck-Geschwindigkeit",
                 "Velocity": "Geschwindigkeit"
             }
@@ -614,8 +621,7 @@
             },
             "RunoutSensor": {
                 "Detected": "erkannt",
-                "Disabled": "deaktiviert",
-                "Empty": "Leer"
+                "Empty": "leer"
             }
         },
         "PowerControlPanel": {
@@ -1142,6 +1148,7 @@
             "CreateWebcam": "Erstelle Webcam",
             "EditCrowsnestConf": "crowsnest.conf bearbeiten",
             "EditWebcam": "Webcam bearbeiten",
+            "EnableAudio": "Ton einschalten",
             "FlipWebcam": "Webcam-Bild spiegeln:",
             "HideFps": "FPS-Anzeige verstecken",
             "Hlsstream": "HLS-Stream",
