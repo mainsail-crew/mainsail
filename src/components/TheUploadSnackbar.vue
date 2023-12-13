@@ -18,14 +18,13 @@
 import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import ThemeMixin from '@/components/mixins/theme'
 import { mdiClose } from '@mdi/js'
 import { formatFilesize } from '@/plugins/helpers'
 
 @Component({
     components: {},
 })
-export default class TheUploadSnackbar extends Mixins(BaseMixin, ThemeMixin) {
+export default class TheUploadSnackbar extends Mixins(BaseMixin) {
     mdiClose = mdiClose
     formatFilesize = formatFilesize
 

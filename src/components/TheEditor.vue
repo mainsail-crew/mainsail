@@ -122,7 +122,6 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import ThemeMixin from '@/components/mixins/theme'
 import { capitalize, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { availableKlipperConfigReferenceTranslations } from '@/store/variables'
@@ -142,7 +141,7 @@ import type Codemirror from '@/components/inputs/Codemirror.vue'
 @Component({
     components: { Panel, CodemirrorAsync },
 })
-export default class TheEditor extends Mixins(BaseMixin, ThemeMixin) {
+export default class TheEditor extends Mixins(BaseMixin) {
     private dialogConfirmChange = false
 
     formatFilesize = formatFilesize

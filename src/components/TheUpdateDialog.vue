@@ -1,20 +1,3 @@
-<style scoped>
-.updaterLogScroll {
-    height: 350px;
-    max-height: 350px;
-    overflow-x: hidden;
-}
-
-.updaterLog .title-cell {
-    white-space: nowrap;
-    vertical-align: top;
-}
-
-.updaterLog.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
-    height: auto;
-}
-</style>
-
 <template>
     <v-dialog :value="application !== ''" persistent max-width="800" class="mx-0">
         <v-card :loading="!complete">
@@ -91,13 +74,12 @@
 import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import ThemeMixin from '@/components/mixins/theme'
 import { mdiUpdate } from '@mdi/js'
 
 @Component({
     components: {},
 })
-export default class TheUpdateDialog extends Mixins(BaseMixin, ThemeMixin) {
+export default class TheUpdateDialog extends Mixins(BaseMixin) {
     mdiUpdate = mdiUpdate
 
     declare $refs: {
@@ -186,3 +168,20 @@ export default class TheUpdateDialog extends Mixins(BaseMixin, ThemeMixin) {
     }
 }
 </script>
+
+<style scoped>
+.updaterLogScroll {
+    height: 350px;
+    max-height: 350px;
+    overflow-x: hidden;
+}
+
+.updaterLog .title-cell {
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+.updaterLog.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
+    height: auto;
+}
+</style>

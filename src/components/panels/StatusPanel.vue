@@ -113,7 +113,6 @@
 import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import ThemeMixin from '@/components/mixins/theme'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import StatusPanelPrintstatus from '@/components/panels/Status/Printstatus.vue'
@@ -152,7 +151,7 @@ import { PrinterStateMacro } from '@/store/printer/types'
         StatusPanelPauseAtLayerDialog,
     },
 })
-export default class StatusPanel extends Mixins(BaseMixin, ThemeMixin) {
+export default class StatusPanel extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
     mdiMessageProcessingOutline = mdiMessageProcessingOutline
     mdiCloseCircle = mdiCloseCircle

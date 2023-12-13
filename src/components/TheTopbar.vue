@@ -108,7 +108,6 @@
 <script lang="ts">
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import ThemeMixin from '@/components/mixins/theme'
 import { validGcodeExtensions } from '@/store/variables'
 import Component from 'vue-class-component'
 import axios from 'axios'
@@ -145,7 +144,7 @@ type uploadSnackbar = {
         TheNotificationMenu,
     },
 })
-export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
+export default class TheTopbar extends Mixins(BaseMixin) {
     mdiAlertOctagonOutline = mdiAlertOctagonOutline
     mdiContentSave = mdiContentSave
     mdiFileUpload = mdiFileUpload
