@@ -260,6 +260,10 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
     height: 100%;
 }
 
+html.theme--light .settings-tabs-bar {
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
 .settings-tabs.height500 {
     height: 500px;
     max-height: calc(var(--app-height) - 111px);
