@@ -311,6 +311,10 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
     }
 }
 
+html.theme--light ._btn-group .v-btn {
+    border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
 ._btn-qs {
     font-size: 0.8rem !important;
     max-height: 24px;
