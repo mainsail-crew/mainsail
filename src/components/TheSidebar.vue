@@ -56,6 +56,7 @@ import { navigationWidth, topbarHeight } from '@/store/variables'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import SidebarItem from '@/components/ui/SidebarItem.vue'
 import NavigationMixin from '@/components/mixins/navigation'
+import ThemeMixin from '@/components/mixins/theme'
 
 @Component({
     components: {
@@ -65,7 +66,7 @@ import NavigationMixin from '@/components/mixins/navigation'
         MainsailLogo,
     },
 })
-export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin) {
+export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin, ThemeMixin) {
     navigationWidth = navigationWidth
     topbarHeight = topbarHeight
 
@@ -82,8 +83,7 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin) {
     }
 
     get sidebarBackground(): string {
-        const defaultBg = this.$vuetify.theme.dark ? '/img/sidebar-background.svg' : '/img/sidebar-background-light.svg'
-        return this.$store.getters['files/getCustomSidebarBackground'] ?? defaultBg
+        return this.$store.getters['files/getCustomSidebarBackground'] ?? this.sidebarBgImage
     }
 
     get currentPage(): string {

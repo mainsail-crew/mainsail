@@ -125,7 +125,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     getImage: (state) => {
         if (state.current_file.filename && state.current_file.thumbnails?.length) {
             const indexLastDir = state.current_file.filename.lastIndexOf('/')
-            const dir = indexLastDir !== -1 ? state.current_file.filename.substr(0, indexLastDir) + '/' : ''
+            const dir = indexLastDir !== -1 ? state.current_file.filename.substring(0, indexLastDir) + '/' : ''
             const thumbnail = state.current_file.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail)
@@ -140,7 +140,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
                 )
         }
 
-        return '/img/sidebar-background.svg'
+        return null
     },
 
     getThemeFileUrl: (state) => (acceptName: string, acceptExtensions: string[]) => {

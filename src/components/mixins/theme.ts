@@ -40,4 +40,8 @@ export default class ThemeMixin extends Vue {
     get progressBarColor() {
         return this.$vuetify.theme.dark ? 'white' : 'primary'
     }
+
+    get sidebarBgImage() {
+        return this.$vuetify.theme.dark ? '/img/sidebar-background.svg' : '/img/sidebar-background-light.svg'
+    }
 }
