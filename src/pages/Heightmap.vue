@@ -619,6 +619,9 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
                 },
                 boxWidth: 100 * this.scaleX,
                 boxDepth: 100 * this.scaleY,
+                viewControl: {
+                    distance: 150,
+                },
             },
             series: this.series,
         }
