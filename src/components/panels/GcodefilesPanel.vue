@@ -318,11 +318,11 @@
                     v-if="!contextMenu.item.isPinned && !contextMenu.item.isDirectory"
                     @click="pinFile(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPin }}</v-icon>
-                    Pin
+                    {{ $t('Files.Pin') }}
                 </v-list-item>
                 <v-list-item v-else-if="!contextMenu.item.isDirectory" @click="unPinFile(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPinOff }}</v-icon>
-                    Unpin
+                    {{ $t('Files.Unpin') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory"

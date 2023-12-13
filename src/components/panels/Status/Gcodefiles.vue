@@ -85,11 +85,11 @@
             <v-list>
                 <v-list-item v-if="!contextMenu.item.isPinned" @click="pinFile(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPin }}</v-icon>
-                    Pin
+                    {{ $t('Files.Pin') }}
                 </v-list-item>
                 <v-list-item v-else @click="unPinFile(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPinOff }}</v-icon>
-                    Unpin
+                    {{ $t('Files.Unpin') }}
                 </v-list-item>
                 <v-list-item :disabled="printerIsPrinting || !klipperReadyForGui" @click="showDialog(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlay }}</v-icon>

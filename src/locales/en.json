@@ -221,6 +221,7 @@
         "NewDirectory": "New Directory",
         "NozzleDiameter": "Nozzle Diameter",
         "ObjectHeight": "Object Height",
+        "Pin": "Pin",
         "Preheat": "Preheat",
         "PrintedFiles": "Printed files",
         "PrintStart": "Print start",
@@ -240,6 +241,7 @@
         "SuccessfullyRenamed": "Successfully renamed {filename}.",
         "SuccessfullyUploaded": "Upload of {filename} successful!",
         "Total": "Total",
+        "Unpin": "Unpin",
         "UploadNewGcode": "Upload new G-Code",
         "Used": "Used",
         "View3D": "View 3D"
