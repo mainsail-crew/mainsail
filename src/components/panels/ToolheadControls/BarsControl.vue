@@ -238,11 +238,7 @@ export default class BarsControl extends Mixins(BaseMixin, ControlMixin) {
     }
 }
 
-html.theme--light {
-    ._btn-group {
-        .v-btn {
-            border-color: rgba(0, 0, 0, 0.12);
-        }
-    }
+html.theme--light ._btn-group .v-btn {
+    border-color: rgba(0, 0, 0, 0.12);
 }
 </style>
