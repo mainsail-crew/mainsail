@@ -89,7 +89,7 @@
                                         ref="heightmap"
                                         :option="chartOptions"
                                         :init-options="{ renderer: 'canvas' }"
-                                        style="height: 400px; width: 100%; overflow: hidden" />
+                                        style="height: 600px; width: 100%; overflow: hidden" />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -546,7 +546,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
                 top: 20,
                 bottom: 0,
                 itemWidth: this.isMobile ? 10 : 30,
-                itemHeight: 350,
+                itemHeight: 550,
                 precision: 3,
                 textStyle: {
                     color: this.colorVisualMap,
