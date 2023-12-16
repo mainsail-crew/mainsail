@@ -125,7 +125,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     getImage: (state) => {
         if (state.current_file.filename && state.current_file.thumbnails?.length) {
             const indexLastDir = state.current_file.filename.lastIndexOf('/')
-            const dir = indexLastDir !== -1 ? state.current_file.filename.substr(0, indexLastDir) + '/' : ''
+            const dir = indexLastDir !== -1 ? state.current_file.filename.substring(0, indexLastDir) + '/' : ''
             const thumbnail = state.current_file.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail)
@@ -140,7 +140,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
                 )
         }
 
-        return '/img/sidebar-background.svg'
+        return null
     },
 
     getThemeFileUrl: (state) => (acceptName: string, acceptExtensions: string[]) => {
@@ -166,7 +166,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         return []
     },
 
-    getPrinterPreview: (state, getters) => {
+    getPrinterPreview: (state, getters, rootState, rootGetters) => {
         if (!state.server.klippy_connected) return []
 
         const output = []
@@ -215,19 +215,28 @@ export const getters: GetterTree<FarmPrinterState, any> = {
             })
         }
 
-        if (
-            'print_stats' in state.data &&
-            'state' in state.data.print_stats &&
-            state.data.print_stats.state === 'printing' &&
-            getters['getPrintPercent'] > 0
-        ) {
+        if ((state.data?.print_stats?.state ?? '') === 'printing' && getters['getPrintPercent'] > 0) {
+            const hours12Format = rootGetters['gui/getHours12Format'] ?? false
             const eta = new Date(getters.estimated_time_eta)
-            const h = eta.getHours() >= 10 ? eta.getHours() : '0' + eta.getHours()
-            const m = eta.getMinutes() >= 10 ? eta.getMinutes() : '0' + eta.getMinutes()
+
+            const date = new Date(eta)
+            let am = true
+            let h: string | number = date.getHours()
+
+            if (hours12Format && h > 11) am = false
+            if (hours12Format && h > 12) h -= 12
+            if (h < 10) h = '0' + h
+
+            const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
+
+            const diff = date.getTime() - new Date().getTime()
+            let outputOutput = h + ':' + m
+            if (hours12Format) outputOutput += ` ${am ? 'AM' : 'PM'}`
+            if (diff > 60 * 60 * 24 * 1000) outputOutput += `+${Math.trunc(diff / (60 * 60 * 24 * 1000))}`
 
             output.push({
                 name: 'ETA',
-                value: getters.estimated_time_eta > 0 ? h + ':' + m : '--',
+                value: getters.estimated_time_eta > 0 ? outputOutput : '--',
                 file: getters.estimated_time_file,
                 filament: getters.estimated_time_filament,
                 slicer: getters.estimated_time_slicer,

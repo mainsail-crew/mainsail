@@ -70,12 +70,22 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
     preheat(preset: GuiPresetsStatePreset): void {
         for (const [name, attributes] of Object.entries(preset.values)) {
             if (attributes.bool) {
-                let gcode = `SET_HEATER_TEMPERATURE HEATER=${name} TARGET=${attributes.value}`
+                const splits = name.split(' ')
+                const printerObject = splits[0]
+                let printerObjectName = splits[1] ?? splits[0]
 
-                if (attributes.type === 'temperature_fan') {
-                    const fanName = name.replace('temperature_fan ', '')
-                    gcode = `SET_TEMPERATURE_FAN_TARGET temperature_fan=${fanName} TARGET=${attributes.value}`
+                // set default heater command
+                let command = 'SET_HEATER_TEMPERATURE'
+                let commandAttribute = 'HEATER'
+
+                // override command for temperature_fan
+                if (printerObject === 'temperature_fan') {
+                    command = 'SET_TEMPERATURE_FAN_TARGET'
+                    commandAttribute = 'TEMPERATURE_FAN'
                 }
+
+                // build gcode
+                const gcode = `${command} ${commandAttribute}=${printerObjectName} TARGET=${attributes.value}`
 
                 this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
                 this.$socket.emit('printer.gcode.script', { script: gcode })
@@ -97,7 +107,7 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 ._preset-title {
     font-size: 0.8125rem;
     font-weight: 500;

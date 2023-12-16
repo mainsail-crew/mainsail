@@ -82,6 +82,25 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
     mdiHelpCircle = mdiHelpCircle
     mdiCloseThick = mdiCloseThick
 
+    availableLanguages: { text: string; value: string }[] = []
+
+    async created() {
+        const locales = import.meta.glob<string>('../../locales/*.json', { import: 'title' })
+        const languages: { text: string; value: string }[] = []
+
+        for (const file in locales) {
+            const langKey = file.slice(file.lastIndexOf('.') - 2, file.lastIndexOf('.'))
+            const title = await locales[file]()
+
+            languages.push({
+                text: title,
+                value: langKey,
+            })
+        }
+
+        this.availableLanguages = languages
+    }
+
     get printerName() {
         return this.$store.state.gui.general.printername
     }
@@ -96,22 +115,6 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
 
     set currentLanguage(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'general.language', value: newVal })
-    }
-
-    get availableLanguages() {
-        const locales = import.meta.glob('../../locales/*.json', { eager: true }) as { [key: string]: any }
-        const languages: { text: string; value: string }[] = []
-
-        Object.keys(locales).map((file: string) => {
-            const langKey = file.slice(file.lastIndexOf('.') - 2, file.lastIndexOf('.'))
-
-            languages.push({
-                text: locales[file].title,
-                value: langKey,
-            })
-        })
-
-        return languages
     }
 
     get dateFormat() {

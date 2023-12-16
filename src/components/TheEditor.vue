@@ -56,7 +56,7 @@
                 </v-card-text>
             </panel>
         </v-dialog>
-        <v-snackbar v-model="loaderBool" :timeout="-1" :value="true" fixed right bottom dark>
+        <v-snackbar v-model="loaderBool" :timeout="-1" :value="true" fixed right bottom>
             <div>
                 {{ snackbarHeadline }}
                 <br />
@@ -341,7 +341,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 }
 </script>
-<style lang="scss" scoped>
+<style scoped>
 ::v-deep .ͼ1 .cm-panel.cm-search *:focus:not(.focus-visible) {
     outline: none;
 }

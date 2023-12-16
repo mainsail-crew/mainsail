@@ -373,6 +373,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return state.heaters?.available_sensors ?? []
     },
 
+    getAvailableMonitors: (state) => {
+        return state.heaters?.available_monitors ?? []
+    },
+
     getFilamentSensors: (state) => {
         const sensorObjectNames = ['filament_switch_sensor', 'filament_motion_sensor']
         const sensors: PrinterStateFilamentSensors[] = []
@@ -744,7 +748,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
             timeCount++
         }
 
-        if (time && timeCount) return Date.now() + (time / timeCount) * 1000
+        if (time && timeCount) return Math.round(Date.now() + (time / timeCount) * 1000)
 
         return 0
     },
@@ -760,6 +764,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         if (hours12Format && h > 11) am = false
         if (hours12Format && h > 12) h -= 12
+        if (hours12Format && h == 0) h += 12
         if (h < 10) h = '0' + h
 
         const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
@@ -770,28 +775,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
         if (diff > 60 * 60 * 24 * 1000) output += `+${Math.trunc(diff / (60 * 60 * 24 * 1000))}`
 
         return output
-    },
-
-    getToolchangeMacros: (state, getters) => {
-        const macros = getters['getMacros']
-        const tools: PrinterStateToolchangeMacro[] = []
-
-        macros
-            .filter((macro: any) => macro.name.toUpperCase().match(/^T\d+/))
-            .forEach((macro: any) =>
-                tools.push({
-                    name: macro.name,
-                    active: macro.variables.active ?? false,
-                    color: macro.variables.color ?? macro.variables.colour ?? null,
-                })
-            )
-
-        return tools.sort((a, b) => {
-            const numberA = parseInt(a.name.slice(1))
-            const numberB = parseInt(b.name.slice(1))
-
-            return numberA - numberB
-        })
     },
 
     getKinematics: (state) => {

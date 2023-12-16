@@ -1,11 +1,11 @@
 <template>
-    <v-container>
-        <responsive
-            :breakpoints="{
-                small: (el) => el.width <= 350,
-                medium: (el) => el.width > 350 && el.width <= 500,
-            }">
-            <template #default="{ el }">
+    <responsive
+        :breakpoints="{
+            small: (el) => el.width <= 350,
+            medium: (el) => el.width > 350 && el.width <= 500,
+        }">
+        <template #default="{ el }">
+            <v-container>
                 <v-row>
                     <v-col v-if="allExtruders.length > 1" :class="{ 'col-12': el.is.small || el.is.medium }">
                         <div class="d-flex align-center">
@@ -14,17 +14,17 @@
                             </v-btn>
                             <v-select
                                 v-model="selectedExtruder"
-                                :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Extruder').toString()"
+                                :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Extruder')"
                                 :items="allExtruders"
                                 :value="activeExtruder"
                                 hide-details
                                 outlined
-                                dense></v-select>
+                                dense />
                         </div>
                     </v-col>
                     <v-col :class="{ 'col-12': el.is.small }">
                         <number-input
-                            :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Advance').toString()"
+                            :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Advance')"
                             param="ADVANCE"
                             :target="pressureAdvance"
                             :default-value="defaultPressureAdvance"
@@ -36,11 +36,11 @@
                             :step="0.001"
                             :dec="3"
                             unit="s"
-                            @submit="sendCmd"></number-input>
+                            @submit="sendCmd" />
                     </v-col>
                     <v-col :class="{ 'col-12': el.is.small }">
                         <number-input
-                            :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.SmoothTime').toString()"
+                            :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.SmoothTime')"
                             param="SMOOTH_TIME"
                             :target="smoothTime"
                             :default-value="defaultSmoothTime"
@@ -53,12 +53,12 @@
                             :step="0.001"
                             :dec="3"
                             unit="s"
-                            @submit="sendCmd"></number-input>
+                            @submit="sendCmd" />
                     </v-col>
                 </v-row>
-            </template>
-        </responsive>
-    </v-container>
+            </v-container>
+        </template>
+    </responsive>
 </template>
 
 <script lang="ts">

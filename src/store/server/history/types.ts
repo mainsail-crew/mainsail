@@ -37,7 +37,4 @@ export interface ServerHistoryStateAllPrintStatusEntry {
         borderWidth: number
         borderRadius: number
     }
-    label: {
-        color: string
-    }
 }

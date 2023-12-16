@@ -88,7 +88,7 @@
                 </v-container>
                 <v-divider class="mt-0 mb-0"></v-divider>
             </template>
-            <v-tabs v-model="activeTab" fixed-tabs dark>
+            <v-tabs v-model="activeTab" fixed-tabs>
                 <v-tab v-if="current_filename" href="#status">{{ $t('Panels.StatusPanel.Status') }}</v-tab>
                 <v-tab href="#files">{{ $t('Panels.StatusPanel.Files') }}</v-tab>
                 <v-tab href="#jobqueue">{{ $t('Panels.StatusPanel.Jobqueue', { count: jobsCount }) }}</v-tab>
@@ -397,7 +397,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 ._border-radius {
     border-bottom-left-radius: inherit;
     border-bottom-right-radius: inherit;

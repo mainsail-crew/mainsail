@@ -5,7 +5,11 @@
         @contextmenu="showContextMenu($event, item)">
         <td class="pr-0 text-center" style="width: 32px">
             <template v-if="smallThumbnail && bigThumbnail">
-                <v-tooltip v-if="smallThumbnail && bigThumbnail" top content-class="tooltip__content-opacity1">
+                <v-tooltip
+                    v-if="smallThumbnail && bigThumbnail"
+                    top
+                    content-class="tooltip__content-opacity1"
+                    :color="bigThumbnailTooltipColor">
                     <template #activator="{ on, attrs }">
                         <vue-load-image>
                             <img slot="image" :src="smallThumbnail" width="32" height="32" v-bind="attrs" v-on="on" />
@@ -116,6 +120,7 @@ import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiChevronDown, mdiChevronUp, mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove } from '@mdi/js'
 import NumberInput from '@/components/inputs/NumberInput.vue'
+import { defaultBigThumbnailBackground } from '@/store/variables'
 @Component({
     components: { NumberInput },
 })
@@ -192,6 +197,18 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         return output
     }
 
+    get bigThumbnailBackground() {
+        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+    }
+
+    get bigThumbnailTooltipColor() {
+        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
+            return undefined
+        }
+
+        return this.bigThumbnailBackground
+    }
+
     formatPrintTime(totalSeconds: number) {
         if (totalSeconds) {
             let output = ''
@@ -258,7 +275,7 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .filesJobqueue {
     position: relative;
 }

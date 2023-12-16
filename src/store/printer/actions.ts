@@ -57,7 +57,12 @@ export const actions: ActionTree<PrinterState, RootState> = {
 
         if (Object.keys(subscripts).length > 0)
             Vue.$socket.emit('printer.objects.subscribe', { objects: subscripts }, { action: 'printer/getInitData' })
-        else Vue.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
+        else
+            Vue.$socket.emit(
+                'server.temperature_store',
+                { include_monitors: true },
+                { action: 'printer/tempHistory/init' }
+            )
 
         dispatch('socket/removeInitModule', 'printer/initSubscripts', { root: true })
     },
@@ -70,7 +75,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
 
         dispatch('getData', payload)
 
-        Vue.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
+        Vue.$socket.emit('server.temperature_store', { include_monitors: true }, { action: 'printer/tempHistory/init' })
 
         setTimeout(() => {
             dispatch('initExtruderCanExtrude')

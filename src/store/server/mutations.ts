@@ -101,13 +101,15 @@ export const mutations: MutationTree<ServerState> = {
             const date = new Date(message.time * 1000)
             let formatMessage = formatConsoleMessage(message.message)
 
-            if (message.type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
+            let type = message.type
+            if (type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
+            if (type === 'response' && message.message.startsWith('// action:')) type = 'action'
 
             state.events.push({
-                date: date,
+                date,
                 message: message.message,
                 formatMessage: formatMessage,
-                type: message.type,
+                type,
             })
         })
 
@@ -157,5 +159,22 @@ export const mutations: MutationTree<ServerState> = {
         const name = Object.keys(payload)[0]
 
         if (state.system_info?.service_state) Vue.set(state.system_info.service_state, name, payload[name])
+    },
+
+    addFailedInitComponent(state, payload) {
+        const failed_init_components = state.failed_init_components
+        if (!failed_init_components.includes(payload)) failed_init_components.push(payload)
+
+        Vue.set(state, 'failed_init_components', failed_init_components)
+    },
+
+    removeComponent(state, payload) {
+        const components = state.components
+        const index = components.indexOf(payload)
+
+        if (index === -1) return
+
+        components.splice(index, 1)
+        Vue.set(state, 'components', components)
     },
 }

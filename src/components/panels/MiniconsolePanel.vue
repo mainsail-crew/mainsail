@@ -341,6 +341,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
+html.theme--light .consoleTable {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
 .gcode-command-field {
     font-family: 'Roboto Mono', monospace;
 }

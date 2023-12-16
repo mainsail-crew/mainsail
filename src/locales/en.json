@@ -2,8 +2,8 @@
     "App": {
         "Notifications": {
             "BrowserWarnings": {
-                "Headline": "Outdated Browser",
-                "Description": "{name} is outdated and not fully supported. The current version is {version}, but Mainsail requires version {minVersion} or higher."
+                "Description": "{name} is outdated and not fully supported. The current version is {version}, but Mainsail requires version {minVersion} or higher.",
+                "Headline": "Outdated Browser"
             },
             "DependencyDescription": "The current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}.",
             "DependencyName": "Dependency: {name}",
@@ -18,6 +18,8 @@
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the log file and fix the issue.",
+                "MoonrakerFailedInitComponentDescription": "An error was detected during initialization the moonraker component '{component}'. Please check the log file and fix the issue.",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}",
                 "MoonrakerWarning": "Moonraker warning",
                 "UnparsedConfigOption": "Unparsed config option '{option}: {value}' detected in section [{section}]. This may be an option no longer available or could be the result of a module that failed to load. In the future this will result in a startup error.",
                 "UnparsedConfigSection": "Unparsed config section [{section}] detected. This may be the result of a component that failed to load. In the future this will result in a startup error."
@@ -137,7 +139,6 @@
         "TryAgain": "try again"
     },
     "Console": {
-        "Autoscroll": "Autoscroll",
         "CommandList": "Command list",
         "Empty": "Empty",
         "HideTemperatures": "Hide temperatures",
@@ -149,6 +150,7 @@
         "StartPrint": {
             "Cancel": "Cancel",
             "DoYouWantToStartFilename": "Do you want to start {filename}?",
+            "DoYouWantToStartFilenameFilament": "Do you want to start {filename} with the following filament?",
             "Headline": "Start Job",
             "Print": "print",
             "Timelapse": "Timelapse"
@@ -250,6 +252,7 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Clear",
+        "CNCMode": "CNC Mode",
         "ColorMode": "Color Mode",
         "Downloading": "Downloading",
         "ForceLineRendering": "Force Line Rendering",
@@ -263,6 +266,7 @@
         "ReloadRequired": "Reload required",
         "Rendering": "Rendering",
         "RenderQuality": "Render Quality",
+        "ShowGCode": "Show G-Code",
         "ShowObjectSelection": "Show Object Selection",
         "ShowToolhead": "Show Toolhead",
         "ShowTravelMoves": "Show Travel Moves",
@@ -271,9 +275,7 @@
         "Tracking": "Tracking",
         "Transparency": "Transparency",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxel Mode (ASMBL)",
-        "ShowGCode": "Show G-Code",
-        "CNCMode": "CNC Mode"
+        "VoxelMode": "Voxel Mode (ASMBL)"
     },
     "Heightmap": {
         "Abort": "abort",
@@ -323,8 +325,8 @@
         "AllJobs": "All",
         "AvgPrinttime": "Print Time - Ø",
         "Cancel": "Cancel",
-        "CreateNote": "Create Note",
         "Chart": "Chart",
+        "CreateNote": "Create Note",
         "Delete": "Delete",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected jobs?",
         "DeleteSingleJobQuestion": "Do you really want to delete the job?",
@@ -389,8 +391,8 @@
     },
     "JobQueue": {
         "AllJobs": "All Jobs",
-        "ChangeCount": "Change count",
         "Cancel": "Cancel",
+        "ChangeCount": "Change count",
         "Count": "Count",
         "Empty": "Empty",
         "InvalidCountEmpty": "Input must not be empty!",
@@ -454,8 +456,8 @@
             "Logfiles": "Log Files",
             "Rollover": "Rollover Logs",
             "RolloverDescription": "Please select which logs should be reset:",
-            "RolloverToastSuccessful": "Log for \"{name}\" was successfully reset.",
-            "RolloverToastFailed": "Rollover log for \"{name}\": {message}"
+            "RolloverToastFailed": "Rollover log for \"{name}\": {message}",
+            "RolloverToastSuccessful": "Log for \"{name}\" was successfully reset."
         },
         "SystemPanel": {
             "Constants": "Constants",
@@ -495,8 +497,8 @@
             "CommittedHoursAgo": "committed {hours} hours ago",
             "CommittedOnDate": "committed on {date}",
             "CommittedYesterday": "committed yesterday",
-            "Corrupt": "corrupt",
             "ConfigChanges": "Config Changes",
+            "Corrupt": "corrupt",
             "CountPackagesCanBeUpgraded": "{count} packages can be upgraded",
             "Detached": "detached",
             "Dirty": "dirty",
@@ -506,9 +508,9 @@
             "InitUpdateManager": "The Update Manager has not been initialized yet. This is normal when you start the system for the first time. Please click on the refresh button to initialize all components.",
             "Invalid": "invalid",
             "IUnderstandTheRisks": "I understand the risks",
-            "LinkToGithub": "Link to GitHub",
-            "KlipperUpdateQuestionFirmware": "This will update the Klipper host software. Control boards running the Klipper firmware may need to be flashed with recompiled firmware before the machine can be put back into service.",
             "KlipperUpdateQuestionConfig": "This update may also contain changes to config parameters that would need to be modified in the printer.cfg file, see the change log for details.",
+            "KlipperUpdateQuestionFirmware": "This will update the Klipper host software. Control boards running the Klipper firmware may need to be flashed with recompiled firmware before the machine can be put back into service.",
+            "LinkToGithub": "Link to GitHub",
             "MoonrakerUpdateQuestion": "This will update the Moonraker API. Changes to the moonraker.conf file may be required to continue using the machine.",
             "MoreCommitsInfo": "A maximum of 30 commits can be displayed here. To see all commits, please click on the following link:",
             "OSPackages": "OS-Packages",
@@ -536,12 +538,15 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
+            "CleanNozzle": "Clean Nozzle",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrude",
+            "ExtruderControl": "Extruder Control",
             "ExtruderTempTooLow": "Extruder temp. <",
             "ExtrusionFactor": "Extrusion factor",
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filament Length",
+            "FirmwareRetraction": "Firmware Retraction",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Retract Length",
                 "RetractSpeed": "Retract Speed",
@@ -550,14 +555,17 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Load Filament",
+            "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "SmoothTime": "Smooth Time"
             },
+            "PurgeFilament": "Purge Filament",
             "Requested": "Requested",
             "Retract": "Retract",
             "TooLargeExtrusion": "Extrusion too large!",
+            "Tools": "Tools",
             "UnloadFilament": "Unload Filament"
         },
         "FarmPrinterPanel": {
@@ -580,6 +588,7 @@
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. to Decel.",
+                "MinimumCruiseRatio": "Min. Cruise Ratio",
                 "SquareCornerVelocity": "Square Corner Velocity",
                 "Velocity": "Velocity"
             }
@@ -612,8 +621,7 @@
             },
             "RunoutSensor": {
                 "Detected": "detected",
-                "Disabled": "disabled",
-                "Empty": "Empty"
+                "Empty": "empty"
             }
         },
         "PowerControlPanel": {
@@ -621,6 +629,32 @@
             "Off": "Off",
             "On": "On",
             "PowerControl": "Power Control"
+        },
+        "SpoolmanPanel": {
+            "Cancel": "Cancel",
+            "ChangeSpool": "Change Spool",
+            "DaysAgo": "{days} days ago",
+            "EjectSpool": "Eject spool",
+            "EjectSpoolQuestion": "Are you sure to eject the filament spool?",
+            "Filament": "Filament",
+            "FilamentTypeMismatch": "The material of the active spool ({spoolType}) does not match the material of the G-Code ({fileType}).",
+            "Headline": "Spoolman",
+            "LastUsed": "Last Used",
+            "Location": "Location",
+            "Material": "Material",
+            "Never": "Never",
+            "NoActiveSpool": "Filament tracking is inactive. To get started, please select a spool.",
+            "NoResults": "No spool found with the current search criteria.",
+            "NoSpools": "No spools available",
+            "NoSpoolSelected": "No spool selected. Please select a spool or this print will not be tracked.",
+            "OpenSpoolManager": "open Spool Manager",
+            "Refresh": "refresh",
+            "Search": "Search",
+            "SelectSpool": "Select Spool",
+            "Today": "Today",
+            "TooLessFilament": "The current spool may not have enough filament for this print. ({spoolWeight}g of {fileWeight}g)",
+            "Weight": "Weight",
+            "Yesterday": "Yesterday"
         },
         "StatusPanel": {
             "CancelPrint": "Cancel print",
@@ -684,6 +718,7 @@
             },
             "Headline": "Temperatures",
             "HideMcuHostSensors": "Hide Host/MCU Sensors",
+            "HideMonitors": "Hide Monitors",
             "Max": "max",
             "Min": "min",
             "Name": "Name",
@@ -701,13 +736,17 @@
         "ToolheadControlPanel": {
             "Absolute": "absolute",
             "ALL": "ALL",
+            "ControlButtons": "Control buttons",
+            "CoordinateFields": "Coordinate fields",
             "Headline": "Toolhead",
             "PleaseConfigureSteps": "Please configure steps",
             "Position": "Position",
+            "PositionOutput": "Position output",
             "QGL": "QGL",
             "Relative": "relative",
             "SettingsInterfaceControl": "Settings > Interface > Control",
             "SpeedFactor": "Speed factor",
+            "ZOffset": "Z-Offset",
             "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {
@@ -726,9 +765,7 @@
             "SaveConfig": "SAVE CONFIG",
             "SaveInfoDescription": "The new Z-Offset has been calculated and registered. Click on \"SAVE CONFIG\" to save it to the printer.cfg and restart Klipper.",
             "SaveInfoDescriptionPrint": "The new Z-Offset has been calculated and registered. After printing, click on \"SAVE CONFIG\" in the top bar to save it to the printer.cfg and restart Klipper.",
-            "SaveInfoHeadline": "Information",
-            "ToEndstop": "to Endstop",
-            "ToProbe": "to Probe"
+            "SaveInfoHeadline": "Information"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -749,6 +786,13 @@
         "Printers": "Printers",
         "Timelapse": "Timelapse",
         "Webcam": "Webcam"
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "accept",
+        "Base": "Base",
+        "ErrorText": "Something went wrong during the probing process.",
+        "Headline": "Screws tilt adjust",
+        "Retry": "retry"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Add Printer",
@@ -798,10 +842,10 @@
             "Circle": "Circle",
             "Control": "Control",
             "Cross": "Cross",
-            "HideDuringPrint": "Hide axis controls during print",
             "EnableXYHoming": "Enable combined X & Y axes homing",
             "EstimatedExtrusionInfo": "Show estimated extrusion info",
             "EstimatedExtrusionInfoDescription": "Show / Hide info for estimated extrusions based on extrusion amount and feedrate",
+            "HideDuringPrint": "Hide axis controls during print",
             "InvertXMovement": "Invert X axis movement direction",
             "InvertYMovement": "Invert Y axis movement direction",
             "InvertZMovement": "Invert Z axis movement direction",
@@ -821,6 +865,8 @@
             "Style": "Style",
             "ValueGreaterThan": "Value has to be greater than {value}",
             "ZOffsetIncrements": "Z-Offset increments (in mm)",
+            "ZOffsetSaveOption": "Z-Offset save option",
+            "ZOffsetSaveOptionDescription": "Change the option to save the Z-Offset",
             "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
@@ -838,11 +884,11 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Klipper restart method",
             "KlipperRestartMethodDescription": "Select which restart method will be used on 'Save & Restart' when editing Klipper config files.",
-            "UseEscToClose": "Use ESC to close editor",
-            "UseEscToCloseDescription": "Allows the ESC key to close the editor",
+            "Spaces": "Spaces: {count}",
             "TabSize": "TAB Size",
             "TabSizeDescription": "Adjusts how many spaces should be indented for TAB",
-            "Spaces": "Spaces: {count}"
+            "UseEscToClose": "Use ESC to close editor",
+            "UseEscToCloseDescription": "Allows the ESC key to close the editor"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Background Color",
@@ -884,6 +930,7 @@
                 "File": "File",
                 "Slicer": "Slicer"
             },
+            "Everything": "Everything",
             "FactoryDialog": "Please select all the sections you want to reset:",
             "FactoryReset": "Factory reset",
             "General": "General",
@@ -893,8 +940,19 @@
             "Reset": "reset",
             "Restore": "Restore",
             "RestoreDialog": "Please select all the sections you want to restore:",
-            "TimeFormat": "Time Format",
-            "Everything": "Everything"
+            "TimeFormat": "Time Format"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Color Schemes",
+            "Heightmap": "Heightmap",
+            "IsDefault": "(Default)",
+            "Schemes": {
+                "GrayScale": "Grayscale",
+                "Hot": "Hot",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Spring"
+            }
         },
         "InterfaceSettings": "Interface Settings",
         "MacrosTab": {
@@ -1057,6 +1115,7 @@
         "UiSettingsTab": {
             "BedScrewsDialog": "Bed Screws Dialog",
             "BedScrewsDialogDescription": "Display helper dialog for BED_SCREWS_ADJUST.",
+            "BigThumbnailBackground": "Large thumbnail background color",
             "BoolBigThumbnail": "Large thumbnail",
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
@@ -1099,6 +1158,10 @@
             "ScrewsTiltAdjustDialogDescription": "Display helper dialog for SCREWS_TILT_CALCULATE.",
             "TempchartHeight": "Height Temperature Chart",
             "TempchartHeightDescription": "Modify the height of the temperature chart on the Dashboard.",
+            "Theme": "Theme",
+            "ThemeDark": "Dark",
+            "ThemeDescription": "Change the overall look and feel of the application",
+            "ThemeLight": "Light",
             "UiSettings": "UI-Settings"
         },
         "Update": "update",
@@ -1107,8 +1170,10 @@
             "CreateWebcam": "Create Webcam",
             "EditCrowsnestConf": "Edit crowsnest.conf",
             "EditWebcam": "Edit Webcam",
+            "EnableAudio": "Enable audio",
             "FlipWebcam": "Flip webcam image:",
             "HideFps": "Hide FPS counter",
+            "Hlsstream": "HLS Stream",
             "Horizontally": "horizontally",
             "IconBed": "Bed",
             "IconCam": "Cam",
@@ -1119,11 +1184,9 @@
             "IconNozzle": "Nozzle",
             "IconPrinter": "Printer",
             "Ipstream": "IP Camera",
-            "Hlsstream": "HLS Stream",
-            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "JMuxerStream": "Raw h264 stream (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
-            "JMuxerStream": "Raw h264 stream (jmuxer)",
             "Name": "Name",
             "NameAlreadyExists": "Name already exists",
             "Required": "required",
@@ -1138,15 +1201,10 @@
             "Vertically": "vertically",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "accept",
-        "Base": "Base",
-        "ErrorText": "Something went wrong during the probing process.",
-        "Headline": "Screws tilt adjust",
-        "Retry": "retry"
     },
     "Timelapse": {
         "AllFiles": "All",

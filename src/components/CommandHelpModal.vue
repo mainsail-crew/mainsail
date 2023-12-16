@@ -124,7 +124,7 @@ export default class CommandHelpModal extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .command-help-content {
     overflow-x: hidden;
 
