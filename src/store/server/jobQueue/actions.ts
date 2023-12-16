@@ -57,7 +57,7 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
         const filenames: string[] = []
         const jobs = getters['getJobs'] as ServerJobQueueStateJob[]
 
-        const jobToMoveIndex = jobs.findIndex((job: ServerJobQueueStateJob) => job.job_id === payload.job_id)
+        const jobToMoveIndex = jobs.findIndex((job) => job.job_id === payload.job_id)
 
         if (jobToMoveIndex === -1) {
             return
@@ -68,7 +68,7 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
         jobs.splice(jobToMoveIndex, 1)
         jobs.splice(payload.positionIndex, 0, jobToMove)
 
-        jobs.forEach((job: ServerJobQueueStateJob) => {
+        jobs.forEach((job) => {
             const count = (job.combinedIds?.length ?? 0) + 1
             for (let i = 0; i < count; i++) {
                 filenames.push(job.filename)
