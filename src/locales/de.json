@@ -736,13 +736,17 @@
         "ToolheadControlPanel": {
             "Absolute": "absolut",
             "ALL": "ALLE",
+            "ControlButtons": "Kontrollknöpfe",
+            "CoordinateFields": "Koordinatenfelder",
             "Headline": "Werkzeugkopf",
             "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
             "Position": "Position",
+            "PositionOutput": "Positionsausgabe",
             "QGL": "QGL",
             "Relative": "relativ",
             "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
             "SpeedFactor": "Geschwindigkeitsfaktor",
+            "ZOffset": "Z-Versatz",
             "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
@@ -861,6 +865,8 @@
             "Style": "Stil",
             "ValueGreaterThan": "Wert muss größer als {value} sein",
             "ZOffsetIncrements": "Schrittweiten Z-Versatz (in mm)",
+            "ZOffsetSaveOption": "Z-Versatz Speicheroption",
+            "ZOffsetSaveOptionDescription": "Wechsel die Option zum Speichern des Z-Versatzes.",
             "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
@@ -935,6 +941,18 @@
             "Restore": "Wiederherstellung",
             "RestoreDialog": "Bitte wähle alle Abschnitte aus, die du wiederherstellen möchtest:",
             "TimeFormat": "Zeitformat"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Farbschemen",
+            "Heightmap": "Höhenkarte",
+            "IsDefault": "(Standard)",
+            "Schemes": {
+                "GrayScale": "Graustufen",
+                "Hot": "Heiß",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Frühling"
+            }
         },
         "InterfaceSettings": "Interface Einstellungen",
         "MacrosTab": {
@@ -1140,6 +1158,10 @@
             "ScrewsTiltAdjustDialogDescription": "Zeige ein Hilfsfenster für SCREWS_TILT_CALCULATE an.",
             "TempchartHeight": "Temperatur-Chart Höhe",
             "TempchartHeightDescription": "Verändert die Höhe vom Temperatur-Chart auf dem Dashboard.",
+            "Theme": "Theme",
+            "ThemeDark": "Dunkel",
+            "ThemeDescription": "Ändern Sie das allgemeine Erscheinungsbild der Anwendung.",
+            "ThemeLight": "Hell",
             "UiSettings": "UI-Einstellungen"
         },
         "Update": "speichern",
@@ -1179,6 +1201,7 @@
             "Vertically": "vertikal",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
