@@ -600,7 +600,7 @@
             "Files": "Bestanden",
             "Flow": "Flow",
             "Headline": "Status",
-            "Jobqueue": "Wachtrij ({count})",
+            "Jobqueue": "Wachtrij",
             "JobqueueMoreFiles": "geen jobs meer | nog een job |  {count} jobs",
             "Layer": "Laag",
             "Max": "max",
@@ -853,6 +853,18 @@
             "Restore": "Herstellen",
             "RestoreDialog": "Kies alle secties die je wil herstellen:",
             "TimeFormat": "Tijdformaat"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "kleurenschema's",
+            "Heightmap": "Hoogtekaart",
+            "IsDefault": "(Standaard)",
+            "Schemes": {
+                "GrayScale": "Grijstinten",
+                "Hot": "Heet",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Lente"
+            }
         },
         "InterfaceSettings": "Interface Instellingen",
         "MacrosTab": {

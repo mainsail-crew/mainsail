@@ -64,7 +64,7 @@
                         attach
                         @change="updateGroupOptionColor"></v-select>
                 </settings-row>
-                <template v-if="editGroup.color === 'custom'">
+                <template v-if="editGroup?.color === 'custom'">
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.MacrosTab.CustomColor')">
                         <v-menu bottom left offset-y :close-on-content-click="false">
@@ -93,9 +93,9 @@
                                 outlined
                                 v-bind="attrs"
                                 class="ml-3 minwidth-0 px-2"
-                                :color="editGroup.showInStandby ? '' : 'secondary'"
+                                :color="editGroup?.showInStandby ? '' : 'secondary'"
                                 v-on="on"
-                                @click="updateGroupOptionShowInStandby(!editGroup.showInStandby)">
+                                @click="updateGroupOptionShowInStandby(!editGroup?.showInStandby)">
                                 <v-icon small>{{ mdiSleep }}</v-icon>
                             </v-btn>
                         </template>
@@ -108,9 +108,9 @@
                                 outlined
                                 v-bind="attrs"
                                 class="ml-3 minwidth-0 px-2"
-                                :color="editGroup.showInPause ? '' : 'secondary'"
+                                :color="editGroup?.showInPause ? '' : 'secondary'"
                                 v-on="on"
-                                @click="updateGroupOptionShowInPause(!editGroup.showInPause)">
+                                @click="updateGroupOptionShowInPause(!editGroup?.showInPause)">
                                 <v-icon small>{{ mdiPause }}</v-icon>
                             </v-btn>
                         </template>
@@ -123,9 +123,9 @@
                                 outlined
                                 v-bind="attrs"
                                 class="ml-3 minwidth-0 px-2"
-                                :color="editGroup.showInPrinting ? '' : 'secondary'"
+                                :color="editGroup?.showInPrinting ? '' : 'secondary'"
                                 v-on="on"
-                                @click="updateGroupOptionShowInPrinting(!editGroup.showInPrinting)">
+                                @click="updateGroupOptionShowInPrinting(!editGroup?.showInPrinting)">
                                 <v-icon small>{{ mdiPrinter3dNozzle }}</v-icon>
                             </v-btn>
                         </template>
@@ -134,7 +134,7 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.GroupMacros') }}</h3>
-                <template v-if="editGroup.macros && editGroup.macros.length">
+                <template v-if="editGroup?.macros && editGroup?.macros?.length">
                     <draggable
                         v-model="editGroupMacros"
                         handle=".handle"
@@ -144,7 +144,8 @@
                         <v-row
                             v-for="(macro, index) in editGroupMacros"
                             :key="macro.name"
-                            class="dragable-item my-2 mx-0">
+                            class="my-2 mx-0"
+                            :style="draggableBgStyle">
                             <v-col class="col-auto pr-0 d-flex py-2">
                                 <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
                             </v-col>
@@ -292,6 +293,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
+import ThemeMixin from '@/components/mixins/theme'
 import draggable from 'vuedraggable'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { Debounce } from 'vue-debounce-decorator'
@@ -311,7 +313,7 @@ import {
 @Component({
     components: { SettingsRow, draggable },
 })
-export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
+export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixin) {
     /**
      * Icons
      */
@@ -547,9 +549,3 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 }
 </script>
-
-<style scoped>
-.dragable-item {
-    background-color: #282828;
-}
-</style>

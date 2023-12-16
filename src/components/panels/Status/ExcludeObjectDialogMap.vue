@@ -1,6 +1,5 @@
-<style lang="scss" scoped>
+<style scoped>
 svg {
-    //background: rgba(200, 200, 200);
     border: 2px solid #888;
 }
 

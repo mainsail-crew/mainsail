@@ -111,6 +111,15 @@
                                 :label="$t('Settings.WebcamsTab.HideFps')" />
                         </v-col>
                     </v-row>
+                    <v-row v-if="hasAudioOption">
+                        <v-col class="pt-1 pb-3">
+                            <v-checkbox
+                                v-model="enableAudio"
+                                class="mt-1"
+                                hide-details
+                                :label="$t('Settings.WebcamsTab.EnableAudio')" />
+                        </v-col>
+                    </v-row>
                     <v-row>
                         <v-col class="pt-1 pb-3">
                             <div class="v-label v-label--active theme--dark text-subtitle-1">
@@ -231,6 +240,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'uv4l-mjpeg', text: this.$t('Settings.WebcamsTab.Uv4lMjpeg') },
             { value: 'ipstream', text: this.$t('Settings.WebcamsTab.Ipstream') },
             { value: 'webrtc-camerastreamer', text: this.$t('Settings.WebcamsTab.WebrtcCameraStreamer') },
+            { value: 'webrtc-go2rtc', text: this.$t('Settings.WebcamsTab.WebrtcGo2rtc') },
             { value: 'webrtc-mediamtx', text: this.$t('Settings.WebcamsTab.WebrtcMediaMTX') },
             { value: 'hlsstream', text: this.$t('Settings.WebcamsTab.Hlsstream') },
             { value: 'jmuxer-stream', text: this.$t('Settings.WebcamsTab.JMuxerStream') },
@@ -263,6 +273,10 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         return ['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(this.webcam.service)
     }
 
+    get hasAudioOption() {
+        return ['webrtc-go2rtc'].includes(this.webcam.service)
+    }
+
     get hideFps() {
         return this.webcam.extra_data?.hideFps ?? false
     }
@@ -278,6 +292,23 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
         // @ts-ignore
         this.webcam.extra_data.hideFps = newVal
+    }
+
+    get enableAudio() {
+        return this.webcam.extra_data?.enableAudio ?? false
+    }
+
+    set enableAudio(newVal) {
+        if (!('extra_data' in this.webcam)) {
+            this.webcam.extra_data = {
+                enableAudio: newVal,
+            }
+
+            return
+        }
+
+        // @ts-ignore
+        this.webcam.extra_data.enableAudio = newVal
     }
 
     mounted() {
@@ -322,7 +353,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 ::v-deep ._transition svg {
     transition: transform 500ms;
 }

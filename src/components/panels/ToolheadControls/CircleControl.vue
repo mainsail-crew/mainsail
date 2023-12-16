@@ -706,7 +706,7 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 svg {
     max-height: 350px;
     min-height: 275px;
@@ -745,6 +745,22 @@ svg a.step.outer {
     fill: #333;
 }
 
+html.theme--light svg a.step.inner {
+    fill: #ccc;
+}
+
+html.theme--light svg a.step.inner-mid {
+    fill: #ddd;
+}
+
+html.theme--light svg a.step.outer-mid {
+    fill: #eee;
+}
+
+html.theme--light svg a.step.outer {
+    fill: #fff;
+}
+
 svg .disabled a.step {
     pointer-events: none;
 }
@@ -756,6 +772,11 @@ svg g#stepsXY {
     font-family: 'Roboto-Regular', 'Roboto', sans-serif;
     font-size: 3px;
     fill: white;
+}
+
+html.theme--light svg g#stepsZ,
+html.theme--light svg g#stepsXY {
+    fill: black;
 }
 
 svg a#tilt_adjust text {
@@ -788,6 +809,11 @@ svg a.disabled circle {
 svg g#stepsXY.disabled text,
 svg g#stepsZ.disabled text {
     fill: rgba(255, 255, 255, 0.3);
+}
+
+html.theme--light svg g#stepsXY.disabled text,
+html.theme--light svg g#stepsZ.disabled text {
+    fill: rgba(0, 0, 0, 0.5);
 }
 
 svg a#tilt_adjust,

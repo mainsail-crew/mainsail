@@ -639,7 +639,7 @@
             "Files": "Dosyalar",
             "Flow": "Akış",
             "Headline": "Durum",
-            "Jobqueue": "İş Kuyruğu ({count})",
+            "Jobqueue": "İş Kuyruğu",
             "JobqueueMoreFiles": "daha fazla iş yok | bir iş daha var | {count} iş daha var",
             "Layer": "Katman",
             "Max": "maks.",

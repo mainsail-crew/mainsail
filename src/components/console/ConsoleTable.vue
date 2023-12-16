@@ -1,4 +1,4 @@
-<style scoped lang="scss"></style>
+<style scoped></style>
 
 <template>
     <div :class="'consoleTable ' + (isMini ? 'mini' : '')">

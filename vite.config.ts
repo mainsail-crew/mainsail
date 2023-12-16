@@ -13,8 +13,6 @@ import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 
 const PWAConfig: Partial<VitePWAOptions> = {
     registerType: 'autoUpdate',
-    srcDir: 'src',
-    filename: 'sw.ts',
     includeAssets: ['fonts/**/*.woff2', 'img/**/*.svg', 'img/**/*.png'],
     manifest: {
         name: 'Mainsail',
@@ -76,17 +74,35 @@ export default defineConfig({
             resolvers: [VuetifyResolver()],
         }),
     ],
+
     css: {
-        preprocessorOptions: {
-            css: { charset: false },
-            scss: {
-                quietDeps: true,
-            },
+        postcss: {
+            plugins: [require('postcss-nesting')()],
         },
     },
 
     build: {
         target: 'safari12',
+        rollupOptions: {
+            output: {
+                manualChunks: (id: string) => {
+                    if (id.includes('node_modules')) {
+                        // split codemirror into its own chunk
+                        if (id.includes('/codemirror/') || id.includes('/@codemirror/')) {
+                            return 'codemirror'
+                        }
+
+                        // split these libs into their own chunks
+                        const chunkedLibs = ['vuetify', 'echarts', 'overlayscrollbars']
+                        for (const lib of chunkedLibs) {
+                            if (id.includes(`/node_modules/${lib}/`)) {
+                                return lib.replace('.js', '')
+                            }
+                        }
+                    }
+                },
+            },
+        },
     },
 
     envPrefix: 'VUE_',

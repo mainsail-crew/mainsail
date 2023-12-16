@@ -4,7 +4,7 @@ on:
   push:
     branches: ['master', 'develop']
     tags:
-      - '*'
+      - 'v*'
   pull_request:
     branches:
       - '*'
@@ -39,7 +39,9 @@ jobs:
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
             type=edge,branch=develop
-            type=ref,event=tag
+            type=semver,pattern=v{{major}}
+            type=semver,pattern=v{{major}}.{{minor}}
+            type=semver,pattern=v{{major}}.{{minor}}.{{patch}}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 

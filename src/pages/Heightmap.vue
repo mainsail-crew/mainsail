@@ -89,7 +89,7 @@
                                         ref="heightmap"
                                         :option="chartOptions"
                                         :init-options="{ renderer: 'canvas' }"
-                                        style="height: 400px; width: 100%; overflow: hidden" />
+                                        style="height: 600px; width: 100%; overflow: hidden" />
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -400,6 +400,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
+import ThemeMixin from '@/components/mixins/theme'
 
 import Panel from '@/components/ui/Panel.vue'
 import {
@@ -449,7 +450,7 @@ interface HeightmapSerie {
         Panel,
     },
 })
-export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
+export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin, ThemeMixin) {
     declare $refs: {
         // eslint-disable-next-line
         heightmap: any
@@ -503,30 +504,21 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     private meshOpacity = 1
     private flatOpacity = 0.5
 
-    private colorAxisName = 'rgba(255,255,255,0.5)'
-    private colorAxisLabel = 'rgba(255,255,255,0.5)'
-    private colorAxisLine = 'rgba(255,255,255,0.2)'
-    private colorAxisTick = 'rgba(255,255,255,0.2)'
-    private colorSplitLine = 'rgba(255,255,255,0.2)'
-
-    private colorAxisPointer = 'rgba(255,255,255,0.8)'
-
-    private colorVisualMap = 'rgba(255,255,255,0.8)'
     private fontSizeVisualMap = 14
 
     get chartOptions() {
         return {
             tooltip: {
-                backgroundColor: 'rgba(0,0,0,0.9)',
+                backgroundColor: this.bgColor(0.9),
                 borderWidth: 0,
                 textStyle: {
-                    color: '#fff',
+                    color: this.fgColor(1),
                     fontSize: '14px',
                 },
                 padding: 15,
                 formatter: this.tooltipFormatter,
             },
-            darkMode: true,
+            darkMode: this.$vuetify.theme.dark,
             animation: false,
             legend: {
                 show: false,
@@ -539,36 +531,24 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
                 calculable: true,
                 dimension: 2,
                 inRange: {
-                    color: [
-                        '#313695',
-                        '#4575b4',
-                        '#74add1',
-                        '#abd9e9',
-                        '#e0f3f8',
-                        '#ffffbf',
-                        '#fee090',
-                        '#fdae61',
-                        '#f46d43',
-                        '#d73027',
-                        '#a50026',
-                    ],
+                    color: this.colorMap,
                 },
                 seriesIndex: this.visualMapSeriesIndex,
                 left: this.isMobile ? 10 : 30,
                 top: 20,
                 bottom: 0,
                 itemWidth: this.isMobile ? 10 : 30,
-                itemHeight: 350,
+                itemHeight: 550,
                 precision: 3,
                 textStyle: {
-                    color: this.colorVisualMap,
+                    color: this.fgColorHi,
                     fontSize: this.fontSizeVisualMap,
                 },
             },
             xAxis3D: {
                 type: 'value',
                 nameTextStyle: {
-                    color: this.colorAxisName,
+                    color: this.fgColorMid,
                 },
                 min: this.rangeX[0],
                 max: this.rangeX[1],
@@ -577,7 +557,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             yAxis3D: {
                 type: 'value',
                 nameTextStyle: {
-                    color: this.colorAxisName,
+                    color: this.fgColorMid,
                 },
                 min: this.rangeY[0],
                 max: this.rangeY[1],
@@ -587,7 +567,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
                 min: this.scaleZMax * -1,
                 max: this.scaleZMax,
                 nameTextStyle: {
-                    color: this.colorAxisName,
+                    color: this.fgColorMid,
                 },
                 axisPointer: {
                     label: {
@@ -601,36 +581,39 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             grid3D: {
                 axisLabel: {
                     textStyle: {
-                        color: this.colorAxisLabel,
+                        color: this.fgColorMid,
                     },
                 },
                 axisLine: {
                     lineStyle: {
-                        color: this.colorAxisLine,
+                        color: this.fgColorLow,
                     },
                 },
                 axisTick: {
                     lineStyle: {
-                        color: this.colorAxisTick,
+                        color: this.fgColorLow,
                     },
                 },
                 splitLine: {
                     lineStyle: {
-                        color: this.colorSplitLine,
+                        color: this.fgColorLow,
                     },
                 },
                 axisPointer: {
                     lineStyle: {
-                        color: this.colorAxisPointer,
+                        color: this.fgColorHi,
                     },
                     label: {
                         textStyle: {
-                            color: this.colorAxisPointer,
+                            color: this.fgColorHi,
                         },
                     },
                 },
                 boxWidth: 100 * this.scaleX,
                 boxDepth: 100 * this.scaleY,
+                viewControl: {
+                    distance: 150,
+                },
             },
             series: this.series,
         }
@@ -1067,6 +1050,10 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         } else {
             return false
         }
+    }
+
+    get colorMap(): string[] {
+        return this.$store.getters['gui/heightmap/getActiveColorSchemeList']
     }
 
     tooltipFormatter(data: any): string {

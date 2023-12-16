@@ -89,7 +89,7 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
 
             if (item.metadata?.filament_total) filamentLength += item.metadata?.filament_total * count
             if (item.metadata?.filament_weight_total) filamentWeight += item.metadata?.filament_weight_total * count
-            if (item.metadata?.estimated_time) printTime = item.metadata.estimated_time * count
+            if (item.metadata?.estimated_time) printTime += item.metadata.estimated_time * count
         })
 
         let output = ''
@@ -156,7 +156,7 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .filesJobqueue {
     position: relative;
 }

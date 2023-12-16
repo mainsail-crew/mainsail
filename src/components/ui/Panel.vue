@@ -8,7 +8,8 @@
             :color="toolbarColor"
             :class="getToolbarClass"
             :height="panelToolbarHeight"
-            class="panel-toolbar">
+            class="panel-toolbar"
+            :style="additionalStyle">
             <slot name="buttons-left" />
             <v-toolbar-title class="d-flex align-center">
                 <slot v-if="hasIconSlot" name="icon" />
@@ -80,10 +81,14 @@ export default class Panel extends Mixins(BaseMixin) {
 
         return output
     }
+
+    get additionalStyle() {
+        return this.$vuetify.theme.dark ? '' : 'border-bottom: 1px solid #A8A8A8'
+    }
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .expanded header.v-toolbar {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
@@ -107,7 +112,7 @@ export default class Panel extends Mixins(BaseMixin) {
 }
 </style>
 
-<style lang="scss">
+<style>
 .v-card.panel .v-toolbar__content {
     padding-right: 0;
 }

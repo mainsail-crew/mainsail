@@ -20,6 +20,7 @@ import type { ECharts } from 'echarts/core'
 import type { ECBasicOption } from 'echarts/types/dist/shared.d'
 import { mdiClock } from '@mdi/js'
 import { datasetTypesInPercents } from '@/store/variables'
+import ThemeMixin from '../mixins/theme'
 
 interface echartsTooltipObj {
     [key: string]: any
@@ -28,7 +29,7 @@ interface echartsTooltipObj {
 @Component({
     components: {},
 })
-export default class TempChart extends Mixins(BaseMixin) {
+export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     declare $refs: {
         tempchart: any
     }
@@ -36,7 +37,6 @@ export default class TempChart extends Mixins(BaseMixin) {
     private isVisible = true
     get chartOptions(): ECBasicOption {
         return {
-            darkMode: true,
             renderer: 'svg',
             animation: false,
             tooltip: this.tooltip,
@@ -58,11 +58,11 @@ export default class TempChart extends Mixins(BaseMixin) {
                 splitLine: {
                     show: true,
                     lineStyle: {
-                        color: 'rgba(255, 255, 255, 0.06)',
+                        color: this.fgColorFaint,
                     },
                 },
                 axisLabel: {
-                    color: 'rgba(255, 255, 255, 0.24)',
+                    color: this.fgColorLow,
                     margin: 10,
                     formatter: this.timeFormat,
                 },
@@ -78,10 +78,10 @@ export default class TempChart extends Mixins(BaseMixin) {
         return {
             animation: false,
             trigger: 'axis',
-            backgroundColor: 'rgba(0,0,0,0.9)',
+            backgroundColor: this.bgColor(1),
             borderWidth: 0,
             textStyle: {
-                color: '#fff',
+                color: this.fgColorHi,
                 fontSize: '14px',
             },
             padding: 15,
@@ -114,16 +114,16 @@ export default class TempChart extends Mixins(BaseMixin) {
                 nameLocation: 'end',
                 nameGap: 5,
                 nameTextStyle: {
-                    color: 'rgba(255, 255, 255, 0.24)',
+                    color: this.fgColorMid,
                     align: 'left',
                 },
                 splitLine: {
                     lineStyle: {
-                        color: 'rgba(255, 255, 255, 0.12)',
+                        color: this.fgColorFaint,
                     },
                 },
                 axisLabel: {
-                    color: 'rgba(255, 255, 255, 0.24)',
+                    color: this.fgColorMid,
                     formatter: '{value}',
                     rotate: 90,
                     //showMaxLabel: false,
@@ -133,7 +133,7 @@ export default class TempChart extends Mixins(BaseMixin) {
                 axisLine: {
                     show: true,
                     lineStyle: {
-                        color: 'rgba(255, 255, 255, 0.12)',
+                        color: this.fgColorLow,
                     },
                 },
             },
@@ -147,14 +147,14 @@ export default class TempChart extends Mixins(BaseMixin) {
                 nameLocation: 'end',
                 nameGap: 5,
                 nameTextStyle: {
-                    color: 'rgba(255, 255, 255, 0.24)',
+                    color: this.fgColorMid,
                     align: 'right',
                 },
                 splitLine: {
                     show: false,
                 },
                 axisLabel: {
-                    color: 'rgba(255, 255, 255, 0.24)',
+                    color: this.fgColorMid,
                     formatter: (value: number) => {
                         return value * 100
                     },
@@ -165,7 +165,7 @@ export default class TempChart extends Mixins(BaseMixin) {
                 axisLine: {
                     show: true,
                     lineStyle: {
-                        color: 'rgba(255, 255, 255, 0.12)',
+                        color: this.fgColorLow,
                     },
                 },
             },
@@ -277,11 +277,12 @@ export default class TempChart extends Mixins(BaseMixin) {
         if (datasets.length) {
             let outputTime = datasets[0]['axisValueLabel']
             outputTime = outputTime.substring(outputTime.indexOf(' '))
+            let theme = $vuetify.theme.dark ? 'theme-dark' : ''
 
             output +=
                 '<div class="row">' +
                 '<div class="col py-1" style=\'border-bottom: 1px solid rgba(255, 255, 255, 0.24);\'>' +
-                '<span class="v-icon mdi theme-dark" style="margin-right: 5px;">' +
+                `<span class="v-icon mdi ${theme}" style="margin-right: 5px;">` +
                 '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" viewBox="0 0 24 24" class="v-icon__svg" style="font-size: 12px; width: 12px; height: 12px;">' +
                 `<path d="${mdiClock}">` +
                 '</path>' +
@@ -319,7 +320,7 @@ export default class TempChart extends Mixins(BaseMixin) {
             }
             if (seriesNameTarget in dataset.value) {
                 output += ' / '
-                const value = dataset.value[seriesNameTemperature]
+                const value = dataset.value[seriesNameTarget]
                 output += value !== null ? value.toFixed(1) : '--'
             }
             output += '°C'

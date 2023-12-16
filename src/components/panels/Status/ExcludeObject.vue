@@ -1,4 +1,4 @@
-<style lang="scss" scoped></style>
+<style scoped></style>
 
 <template>
     <div v-if="['printing', 'paused'].includes(printer_state) && printing_objects.length">

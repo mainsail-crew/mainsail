@@ -747,7 +747,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
             timeCount++
         }
 
-        if (time && timeCount) return Date.now() + (time / timeCount) * 1000
+        if (time && timeCount) return Math.round(Date.now() + (time / timeCount) * 1000)
 
         return 0
     },
@@ -763,6 +763,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         if (hours12Format && h > 11) am = false
         if (hours12Format && h > 12) h -= 12
+        if (hours12Format && h == 0) h += 12
         if (h < 10) h = '0' + h
 
         const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()

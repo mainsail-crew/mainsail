@@ -1,71 +1,64 @@
 <template>
-    <div v-if="show">
-        <v-divider />
-        <v-container>
-            <responsive
-                :breakpoints="{
-                    small: (el) => el.width <= 350,
-                    medium: (el) => el.width > 350 && el.width <= 500,
-                }">
-                <template #default="{ el }">
-                    <v-row>
-                        <v-col v-if="allExtruders.length > 1" :class="{ 'col-12': el.is.small || el.is.medium }">
-                            <div class="d-flex align-center">
-                                <v-btn
-                                    v-if="selectedExtruder !== activeExtruder"
-                                    icon
-                                    plain
-                                    @click="resetToActiveExtruder">
-                                    <v-icon>{{ mdiRestart }}</v-icon>
-                                </v-btn>
-                                <v-select
-                                    v-model="selectedExtruder"
-                                    :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Extruder')"
-                                    :items="allExtruders"
-                                    :value="activeExtruder"
-                                    hide-details
-                                    outlined
-                                    dense />
-                            </div>
-                        </v-col>
-                        <v-col :class="{ 'col-12': el.is.small }">
-                            <number-input
-                                :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Advance')"
-                                param="ADVANCE"
-                                :target="pressureAdvance"
-                                :default-value="defaultPressureAdvance"
-                                :extruder="selectedExtruder"
-                                :output-error-msg="true"
-                                :has-spinner="true"
-                                :min="0"
-                                :max="null"
-                                :step="0.001"
-                                :dec="3"
-                                unit="s"
-                                @submit="sendCmd" />
-                        </v-col>
-                        <v-col :class="{ 'col-12': el.is.small }">
-                            <number-input
-                                :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.SmoothTime')"
-                                param="SMOOTH_TIME"
-                                :target="smoothTime"
-                                :default-value="defaultSmoothTime"
-                                :extruder="selectedExtruder"
-                                :output-error-msg="true"
-                                :has-spinner="true"
-                                :spinner-factor="10"
-                                :min="0"
-                                :max="0.2"
-                                :step="0.001"
-                                :dec="3"
-                                unit="s"
-                                @submit="sendCmd" />
-                        </v-col>
-                    </v-row>
-                </template>
-            </responsive>
-        </v-container>
-    </div>
+    <responsive
+        :breakpoints="{
+            small: (el) => el.width <= 350,
+            medium: (el) => el.width > 350 && el.width <= 500,
+        }">
+        <template #default="{ el }">
+            <v-container>
+                <v-row>
+                    <v-col v-if="allExtruders.length > 1" :class="{ 'col-12': el.is.small || el.is.medium }">
+                        <div class="d-flex align-center">
+                            <v-btn v-if="selectedExtruder !== activeExtruder" icon plain @click="resetToActiveExtruder">
+                                <v-icon>{{ mdiRestart }}</v-icon>
+                            </v-btn>
+                            <v-select
+                                v-model="selectedExtruder"
+                                :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Extruder')"
+                                :items="allExtruders"
+                                :value="activeExtruder"
+                                hide-details
+                                outlined
+                                dense />
+                        </div>
+                    </v-col>
+                    <v-col :class="{ 'col-12': el.is.small }">
+                        <number-input
+                            :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Advance')"
+                            param="ADVANCE"
+                            :target="pressureAdvance"
+                            :default-value="defaultPressureAdvance"
+                            :extruder="selectedExtruder"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :min="0"
+                            :max="null"
+                            :step="0.001"
+                            :dec="3"
+                            unit="s"
+                            @submit="sendCmd" />
+                    </v-col>
+                    <v-col :class="{ 'col-12': el.is.small }">
+                        <number-input
+                            :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.SmoothTime')"
+                            param="SMOOTH_TIME"
+                            :target="smoothTime"
+                            :default-value="defaultSmoothTime"
+                            :extruder="selectedExtruder"
+                            :output-error-msg="true"
+                            :has-spinner="true"
+                            :spinner-factor="10"
+                            :min="0"
+                            :max="0.2"
+                            :step="0.001"
+                            :dec="3"
+                            unit="s"
+                            @submit="sendCmd" />
+                    </v-col>
+                </v-row>
+            </v-container>
+        </template>
+    </responsive>
 </template>
 
 <script lang="ts">
@@ -88,10 +81,6 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
 
     resetToActiveExtruder(): void {
         this.selectedExtruder = this.$store.state.printer.toolhead?.extruder
-    }
-
-    get show(): boolean {
-        return !(this.$store.getters['printer/getExtruderSteppers'].length > 0)
     }
 
     get allExtruders(): string[] {
