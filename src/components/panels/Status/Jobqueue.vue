@@ -14,6 +14,7 @@
                 <jobqueue-entry
                     :key="item.job_id"
                     :item="item"
+                    :item-queue-index="index"
                     :is-first="index === 0"
                     :content-td-width="contentTdWidth" />
             </template>

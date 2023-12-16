@@ -51,8 +51,8 @@
                     <div class="text-center">{{ $t('JobQueue.Empty') }}</div>
                 </template>
 
-                <template #item="{ item }">
-                    <jobqueue-entry :key="item.job_id" :item="item" :content-td-width="contentTdWidth" />
+                <template #item="{ item, index }">
+                    <jobqueue-entry :key="item.job_id" :item="item" :item-queue-index="index" :content-td-width="contentTdWidth" />
                 </template>
             </v-data-table>
             <resize-observer @notify="handleResize" />

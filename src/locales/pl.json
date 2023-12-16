@@ -391,6 +391,7 @@
         "AllJobs": "Wszystkie wydruki",
         "Cancel": "Anuluj",
         "MoveToJobQueueTop": "Przenieś na początek kolejki",
+        "MoveQueueItemUp": "Przenieś wyżej",
         "ChangeCount": "Zmień ilość",
         "Count": "Ilość",
         "Empty": "Puste",

@@ -1,8 +1,8 @@
 <template>
     <tr
-        v-longpress:600="(e) => showContextMenu(e, item)"
+        v-longpress:600="(e) => showContextMenu(e, item, itemQueueIndex)"
         class="cursor-pointer"
-        @contextmenu="showContextMenu($event, item)">
+        @contextmenu="showContextMenu($event, item, itemQueueIndex)">
         <td class="pr-0 text-center" style="width: 32px">
             <template v-if="smallThumbnail && bigThumbnail">
                 <v-tooltip
@@ -57,9 +57,13 @@
                     <v-icon class="mr-1">{{ mdiCounter }}</v-icon>
                     {{ $t('JobQueue.ChangeCount') }}
                 </v-list-item>
-                <v-list-item v-if="!isFirst" @click="moveToJobQueueTop(contextMenu.item)">
+                <v-list-item v-if="!isFirst" @click="changeQueueItemPosition(contextMenu.item, 0)">
                     <v-icon class="mr-1">{{ mdiFormatVerticalAlignTop }}</v-icon>
                     {{ $t('JobQueue.MoveToJobQueueTop') }}
+                </v-list-item>
+                <v-list-item v-if="!isFirst" @click="changeQueueItemPosition(contextMenu.item, contextMenu.itemQueueIndex - 1)">
+                    <v-icon class="mr-1">{{ mdiArrowUpThin }}</v-icon>
+                    {{ $t('JobQueue.MoveQueueItemUp') }}
                 </v-list-item>
                 <v-list-item @click="removeFromJobqueue(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlaylistRemove }}</v-icon>
@@ -122,7 +126,7 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { mdiChevronDown, mdiChevronUp, mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove, mdiFormatVerticalAlignTop } from '@mdi/js'
+import { mdiChevronDown, mdiChevronUp, mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove, mdiFormatVerticalAlignTop, mdiArrowUpThin } from '@mdi/js'
 import NumberInput from '@/components/inputs/NumberInput.vue'
 import { defaultBigThumbnailBackground } from '@/store/variables'
 @Component({
@@ -137,8 +141,10 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
     mdiPlay = mdiPlay
     mdiPlaylistRemove = mdiPlaylistRemove
     mdiFormatVerticalAlignTop = mdiFormatVerticalAlignTop
+    mdiArrowUpThin = mdiArrowUpThin
 
     @Prop({ type: Object, required: true }) declare item: ServerJobQueueStateJob
+    @Prop({ type: Number, required: true }) declare itemQueueIndex: number
     @Prop({ type: Number, required: true }) declare contentTdWidth: number
     @Prop({ type: Boolean, default: false }) declare isFirst: boolean
     private contextMenu: {
@@ -146,11 +152,13 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         x: number
         y: number
         item: ServerJobQueueStateJob | any
+        itemQueueIndex: number | undefined
     } = {
         shown: false,
         x: 0,
         y: 0,
         item: {},
+        itemQueueIndex: undefined,
     }
 
     private dialogChangeCount: {
@@ -240,13 +248,14 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         return '--'
     }
 
-    showContextMenu(e: any, item: ServerJobQueueStateJob) {
+    showContextMenu(e: any, item: ServerJobQueueStateJob, itemQueueIndex: number) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true
             this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2
             this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2
             this.contextMenu.item = item
+            this.contextMenu.itemQueueIndex = itemQueueIndex
             this.$nextTick(() => {
                 this.contextMenu.shown = true
             })
@@ -264,10 +273,10 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         this.$store.dispatch('server/jobQueue/deleteFromQueue', ids)
     }
 
-    moveToJobQueueTop(item: ServerJobQueueStateJob) {
+    changeQueueItemPosition(item: ServerJobQueueStateJob, positionIndex: number) {
         this.$store.dispatch('server/jobQueue/changePosition', {
             job_id: item.job_id,
-            positionIndex: 0,
+            positionIndex,
         })
     }
 
