@@ -53,6 +53,34 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
         })
     },
 
+    changePosition({ getters }, payload: { job_id: string; positionIndex: number }) {
+        const filenames: string[] = []
+        const jobs = getters['getJobs'] as ServerJobQueueStateJob[];
+
+        const jobToMoveIndex = jobs.findIndex((job: ServerJobQueueStateJob) => job.job_id === payload.job_id)
+
+        if (jobToMoveIndex === -1) {
+            return
+        }
+
+        const jobToMove = jobs[jobToMoveIndex]
+
+        jobs.splice(jobToMoveIndex, 1)
+        jobs.splice(payload.positionIndex, 0, jobToMove)
+
+        jobs.forEach((job: ServerJobQueueStateJob) => {
+            const count = (job.combinedIds?.length ?? 0) + 1
+            for (let i = 0; i < count; i++) {
+                filenames.push(job.filename)
+            }
+        })
+
+        Vue.$socket.emit('server.job_queue.post_job', {
+            filenames,
+            reset: true,
+        })
+    },
+
     deleteFromQueue(_, job_ids: string[]) {
         Vue.$socket.emit('server.job_queue.delete_job', { job_ids })
     },
