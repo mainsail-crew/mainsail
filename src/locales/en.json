@@ -392,6 +392,7 @@
     "JobQueue": {
         "AllJobs": "All Jobs",
         "Cancel": "Cancel",
+        "MoveToJobQueueTop": "Move to Queue's top",
         "ChangeCount": "Change count",
         "Count": "Count",
         "Empty": "Empty",

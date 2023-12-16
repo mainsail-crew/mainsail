@@ -390,6 +390,7 @@
     "JobQueue": {
         "AllJobs": "Wszystkie wydruki",
         "Cancel": "Anuluj",
+        "MoveToJobQueueTop": "Przenieś na początek kolejki",
         "ChangeCount": "Zmień ilość",
         "Count": "Ilość",
         "Empty": "Puste",

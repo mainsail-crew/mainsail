@@ -57,6 +57,10 @@
                     <v-icon class="mr-1">{{ mdiCounter }}</v-icon>
                     {{ $t('JobQueue.ChangeCount') }}
                 </v-list-item>
+                <v-list-item v-if="!isFirst" @click="moveToJobQueueTop(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiFormatVerticalAlignTop }}</v-icon>
+                    {{ $t('JobQueue.MoveToJobQueueTop') }}
+                </v-list-item>
                 <v-list-item @click="removeFromJobqueue(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlaylistRemove }}</v-icon>
                     {{ $t('JobQueue.RemoveFromQueue') }}
@@ -118,7 +122,7 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { mdiChevronDown, mdiChevronUp, mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove } from '@mdi/js'
+import { mdiChevronDown, mdiChevronUp, mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove, mdiFormatVerticalAlignTop } from '@mdi/js'
 import NumberInput from '@/components/inputs/NumberInput.vue'
 import { defaultBigThumbnailBackground } from '@/store/variables'
 @Component({
@@ -132,6 +136,7 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
     mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiPlaylistRemove = mdiPlaylistRemove
+    mdiFormatVerticalAlignTop = mdiFormatVerticalAlignTop
 
     @Prop({ type: Object, required: true }) declare item: ServerJobQueueStateJob
     @Prop({ type: Number, required: true }) declare contentTdWidth: number
@@ -257,6 +262,13 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         ids.push(item.job_id)
 
         this.$store.dispatch('server/jobQueue/deleteFromQueue', ids)
+    }
+
+    moveToJobQueueTop(item: ServerJobQueueStateJob) {
+        this.$store.dispatch('server/jobQueue/changePosition', {
+            job_id: item.job_id,
+            positionIndex: 0,
+        })
     }
 
     openChangeCountDialog(item: ServerJobQueueStateJob) {
