@@ -393,6 +393,7 @@
         "AllJobs": "All Jobs",
         "Cancel": "Cancel",
         "MoveToJobQueueTop": "Move to Queue's top",
+        "MoveToJobQueueBottom": "Move to Queue's bottom",
         "MoveQueueItemUp" :"Move up",
         "MoveQueueItemDown" :"Move down",
         "ChangeCount": "Change count",

@@ -69,6 +69,10 @@
                     <v-icon class="mr-1">{{ mdiArrowDownThin }}</v-icon>
                     {{ $t('JobQueue.MoveQueueItemDown') }}
                 </v-list-item>
+                <v-list-item v-if="!isLast" @click="changeQueueItemPosition(contextMenu.item, Infinity)">
+                    <v-icon class="mr-1">{{ mdiFormatVerticalAlignBottom }}</v-icon>
+                    {{ $t('JobQueue.MoveToJobQueueBottom') }}
+                </v-list-item>
                 <v-list-item @click="removeFromJobqueue(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlaylistRemove }}</v-icon>
                     {{ $t('JobQueue.RemoveFromQueue') }}
@@ -130,7 +134,7 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { mdiChevronDown, mdiChevronUp, mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove, mdiFormatVerticalAlignTop, mdiArrowUpThin, mdiArrowDownThin } from '@mdi/js'
+import { mdiChevronDown, mdiChevronUp, mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove, mdiFormatVerticalAlignTop, mdiFormatVerticalAlignBottom, mdiArrowUpThin, mdiArrowDownThin } from '@mdi/js'
 import NumberInput from '@/components/inputs/NumberInput.vue'
 import { defaultBigThumbnailBackground } from '@/store/variables'
 @Component({
@@ -145,6 +149,7 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
     mdiPlay = mdiPlay
     mdiPlaylistRemove = mdiPlaylistRemove
     mdiFormatVerticalAlignTop = mdiFormatVerticalAlignTop
+    mdiFormatVerticalAlignBottom = mdiFormatVerticalAlignBottom
     mdiArrowUpThin = mdiArrowUpThin
     mdiArrowDownThin = mdiArrowDownThin
 
