@@ -98,6 +98,7 @@ export interface GuiState {
     presets?: GuiPresetsState
     remoteprinters?: GuiRemoteprintersState
     uiSettings: {
+        theme: 'dark' | 'light'
         logo: string
         primary: string
         displayCancelPrint: boolean

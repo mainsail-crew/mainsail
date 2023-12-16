@@ -1158,6 +1158,10 @@
             "ScrewsTiltAdjustDialogDescription": "Display helper dialog for SCREWS_TILT_CALCULATE.",
             "TempchartHeight": "Height Temperature Chart",
             "TempchartHeightDescription": "Modify the height of the temperature chart on the Dashboard.",
+            "Theme": "Theme",
+            "ThemeDark": "Dark",
+            "ThemeDescription": "Change the overall look and feel of the application",
+            "ThemeLight": "Light",
             "UiSettings": "UI-Settings"
         },
         "Update": "update",

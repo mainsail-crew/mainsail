@@ -1,5 +1,5 @@
 <template>
-    <v-app dark :style="cssVars">
+    <v-app :style="cssVars">
         <template v-if="socketIsConnected && guiIsReady">
             <the-sidebar />
             <the-topbar />
@@ -28,6 +28,7 @@
 import Component from 'vue-class-component'
 import TheSidebar from '@/components/TheSidebar.vue'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from './components/mixins/theme'
 import TheTopbar from '@/components/TheTopbar.vue'
 import { Mixins, Watch } from 'vue-property-decorator'
 import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
@@ -63,7 +64,7 @@ Component.registerHooks(['metaInfo'])
         TheScrewsTiltAdjustDialog,
     },
 })
-export default class App extends Mixins(BaseMixin) {
+export default class App extends Mixins(BaseMixin, ThemeMixin) {
     public metaInfo(): any {
         let title = this.$store.getters['getTitle']
 
@@ -121,6 +122,10 @@ export default class App extends Mixins(BaseMixin) {
 
     get current_file(): string {
         return this.$store.state.printer.print_stats?.filename ?? ''
+    }
+
+    get theme(): string {
+        return this.$store.state.gui.uiSettings.theme
     }
 
     get logoColor(): string {
@@ -197,6 +202,15 @@ export default class App extends Mixins(BaseMixin) {
         this.$nextTick(() => {
             this.$vuetify.theme.currentTheme.primary = newVal
         })
+    }
+
+    @Watch('theme')
+    themeChanged(newVal: string): void {
+        const dark = newVal !== 'light'
+        this.$vuetify.theme.dark = dark
+
+        const doc = document.documentElement
+        doc.className = dark ? 'theme--dark' : 'theme--light'
     }
 
     drawFavicon(val: number): void {

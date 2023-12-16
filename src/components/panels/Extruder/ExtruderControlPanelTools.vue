@@ -66,4 +66,8 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         border-left-width: 0;
     }
 }
+
+html.theme--light ._btn-group .v-btn {
+    border-color: rgba(0, 0, 0, 0.12);
+}
 </style>

@@ -35,6 +35,7 @@ import { DatasetComponent, GridComponent, LegendComponent, TooltipComponent } fr
 import 'vue-resize/dist/vue-resize.css'
 // @ts-ignore
 import VueResize from 'vue-resize'
+import { defaultTheme } from './store/variables'
 
 Vue.config.productionTip = false
 
@@ -75,6 +76,10 @@ const initLoad = async () => {
         if ('defaultLocale' in file) {
             await setAndLoadLocale(file.defaultLocale as string)
         }
+
+        // Handle theme outside of store init and before vue mount for consistency in dialog
+        const theme = file.defaultTheme ?? defaultTheme
+        vuetify.framework.theme.dark = theme !== 'light'
     } catch (e) {
         window.console.error('Failed to load config.json')
         window.console.error(e)
@@ -85,12 +90,12 @@ const initLoad = async () => {
     if (store?.state?.instancesDB === 'moonraker') Vue.$socket.connect()
 }
 
-initLoad()
-
-new Vue({
-    vuetify,
-    router,
-    store,
-    i18n,
-    render: (h) => h(App),
-}).$mount('#app')
+initLoad().then(() =>
+    new Vue({
+        vuetify,
+        router,
+        store,
+        i18n,
+        render: (h) => h(App),
+    }).$mount('#app')
+)
