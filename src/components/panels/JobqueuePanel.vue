@@ -52,7 +52,13 @@
                 </template>
 
                 <template #item="{ item, index }">
-                    <jobqueue-entry :key="item.job_id" :item="item" :item-queue-index="index" :queue-length="jobs.length" :show-print-button-for-first="false" :content-td-width="contentTdWidth" />
+                    <jobqueue-entry
+                        :key="item.job_id"
+                        :item="item"
+                        :item-queue-index="index"
+                        :queue-length="jobs.length"
+                        :show-print-button-for-first="false"
+                        :content-td-width="contentTdWidth" />
                 </template>
             </v-data-table>
             <resize-observer @notify="handleResize" />

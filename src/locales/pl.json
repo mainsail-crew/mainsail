@@ -390,10 +390,6 @@
     "JobQueue": {
         "AllJobs": "Wszystkie wydruki",
         "Cancel": "Anuluj",
-        "MoveToJobQueueStart": "Przenieś na początek kolejki",
-        "MoveToJobQueueEnd": "Przenieś na koniec kolejki",
-        "MoveQueueItemUp": "Przenieś wyżej",
-        "MoveQueueItemDown": "Przenieś niżej",
         "ChangeCount": "Zmień ilość",
         "Count": "Ilość",
         "Empty": "Puste",
@@ -401,6 +397,10 @@
         "InvalidCountGreaterZero": "Wprowadzona wartość musi być większa niż 0!",
         "JobQueue": "Kolejka wydruków",
         "Jobs": "Wydruki",
+        "MoveQueueItemDown": "Przenieś niżej",
+        "MoveQueueItemUp": "Przenieś wyżej",
+        "MoveToJobQueueEnd": "Przenieś na koniec kolejki",
+        "MoveToJobQueueStart": "Przenieś na początek kolejki",
         "Pause": "Pauza",
         "RemoveFromQueue": "Usuń z kolejki",
         "Start": "Start"
