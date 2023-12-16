@@ -59,7 +59,7 @@
                 </v-list-item>
                 <v-list-item v-if="!isFirst" @click="changeQueueItemPosition(contextMenu.item, 0)">
                     <v-icon class="mr-1">{{ mdiFormatVerticalAlignTop }}</v-icon>
-                    {{ $t('JobQueue.MoveToJobQueueTop') }}
+                    {{ $t('JobQueue.MoveToJobQueueStart') }}
                 </v-list-item>
                 <v-list-item v-if="!isFirst" @click="changeQueueItemPosition(contextMenu.item, contextMenu.itemQueueIndex - 1)">
                     <v-icon class="mr-1">{{ mdiArrowUpThin }}</v-icon>
@@ -71,7 +71,7 @@
                 </v-list-item>
                 <v-list-item v-if="!isLast" @click="changeQueueItemPosition(contextMenu.item, Infinity)">
                     <v-icon class="mr-1">{{ mdiFormatVerticalAlignBottom }}</v-icon>
-                    {{ $t('JobQueue.MoveToJobQueueBottom') }}
+                    {{ $t('JobQueue.MoveToJobQueueEnd') }}
                 </v-list-item>
                 <v-list-item @click="removeFromJobqueue(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlaylistRemove }}</v-icon>
