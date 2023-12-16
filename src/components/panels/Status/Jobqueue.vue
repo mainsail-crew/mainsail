@@ -16,6 +16,7 @@
                     :item="item"
                     :item-queue-index="index"
                     :is-first="index === 0"
+                    :is-last="index === (jobsTable.length + jobsRest.length) - 1"
                     :show-print-button-for-first="true"
                     :content-td-width="contentTdWidth" />
             </template>

@@ -394,6 +394,7 @@
         "Cancel": "Cancel",
         "MoveToJobQueueTop": "Move to Queue's top",
         "MoveQueueItemUp" :"Move up",
+        "MoveQueueItemDown" :"Move down",
         "ChangeCount": "Change count",
         "Count": "Count",
         "Empty": "Empty",

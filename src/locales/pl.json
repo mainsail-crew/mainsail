@@ -392,6 +392,7 @@
         "Cancel": "Anuluj",
         "MoveToJobQueueTop": "Przenieś na początek kolejki",
         "MoveQueueItemUp": "Przenieś wyżej",
+        "MoveQueueItemDown": "Przenieś niżej",
         "ChangeCount": "Zmień ilość",
         "Count": "Ilość",
         "Empty": "Puste",

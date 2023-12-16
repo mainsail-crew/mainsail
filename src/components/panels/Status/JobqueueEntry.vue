@@ -65,6 +65,10 @@
                     <v-icon class="mr-1">{{ mdiArrowUpThin }}</v-icon>
                     {{ $t('JobQueue.MoveQueueItemUp') }}
                 </v-list-item>
+                <v-list-item v-if="!isLast" @click="changeQueueItemPosition(contextMenu.item, contextMenu.itemQueueIndex + 1)">
+                    <v-icon class="mr-1">{{ mdiArrowDownThin }}</v-icon>
+                    {{ $t('JobQueue.MoveQueueItemDown') }}
+                </v-list-item>
                 <v-list-item @click="removeFromJobqueue(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlaylistRemove }}</v-icon>
                     {{ $t('JobQueue.RemoveFromQueue') }}
@@ -126,7 +130,7 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { mdiChevronDown, mdiChevronUp, mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove, mdiFormatVerticalAlignTop, mdiArrowUpThin } from '@mdi/js'
+import { mdiChevronDown, mdiChevronUp, mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove, mdiFormatVerticalAlignTop, mdiArrowUpThin, mdiArrowDownThin } from '@mdi/js'
 import NumberInput from '@/components/inputs/NumberInput.vue'
 import { defaultBigThumbnailBackground } from '@/store/variables'
 @Component({
@@ -142,11 +146,13 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
     mdiPlaylistRemove = mdiPlaylistRemove
     mdiFormatVerticalAlignTop = mdiFormatVerticalAlignTop
     mdiArrowUpThin = mdiArrowUpThin
+    mdiArrowDownThin = mdiArrowDownThin
 
     @Prop({ type: Object, required: true }) declare item: ServerJobQueueStateJob
     @Prop({ type: Number, required: true }) declare itemQueueIndex: number
     @Prop({ type: Number, required: true }) declare contentTdWidth: number
     @Prop({ type: Boolean, default: false }) declare isFirst: boolean
+    @Prop({ type: Boolean, default: false }) declare isLast: boolean
     @Prop({ type: Boolean, default: false }) declare showPrintButtonForFirst: boolean
     private contextMenu: {
         shown: boolean
