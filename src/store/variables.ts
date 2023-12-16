@@ -131,6 +131,11 @@ export const hiddenDirectories = ['.git']
 export const availableKlipperConfigReferenceTranslations = ['it', 'hu', 'zh']
 
 /*
+ * List of all downloadable logfiles
+ */
+export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sonar']
+
+/*
  * List of all rollover logfiles
  */
 export const rolloverLogfiles = ['klipper', 'moonraker']
