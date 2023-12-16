@@ -3,6 +3,17 @@ import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 
+const convertJobToFilenames = (job: ServerJobQueueStateJob) => {
+    const filenames: string[] = []
+
+    const count = (job.combinedIds?.length ?? 0) + 1
+    for (let i = 0; i < count; i++) {
+        filenames.push(job.filename)
+    }
+
+    return filenames
+}
+
 export const actions: ActionTree<ServerJobQueueState, RootState> = {
     reset({ commit }) {
         commit('reset')
@@ -41,10 +52,7 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
                 return
             }
 
-            const count = (job.combinedIds?.length ?? 0) + 1
-            for (let i = 0; i < count; i++) {
-                filenames.push(job.filename)
-            }
+            filenames.push(...convertJobToFilenames(job))
         })
 
         Vue.$socket.emit('server.job_queue.post_job', {
@@ -69,10 +77,7 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
         jobs.splice(payload.positionIndex, 0, jobToMove)
 
         jobs.forEach((job) => {
-            const count = (job.combinedIds?.length ?? 0) + 1
-            for (let i = 0; i < count; i++) {
-                filenames.push(job.filename)
-            }
+            filenames.push(...convertJobToFilenames(job))
         })
 
         Vue.$socket.emit('server.job_queue.post_job', {
