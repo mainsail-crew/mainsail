@@ -16,6 +16,7 @@
                     :item="item"
                     :item-queue-index="index"
                     :is-first="index === 0"
+                    :show-print-button-for-first="true"
                     :content-td-width="contentTdWidth" />
             </template>
             <template v-if="jobsRest.length" #body.append>

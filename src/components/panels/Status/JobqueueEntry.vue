@@ -40,7 +40,7 @@
             </template>
         </td>
         <td class="pr-2">
-            <template v-if="isFirst && !printerIsPrinting">
+            <template v-if="isFirst && showPrintButtonForFirst && !printerIsPrinting">
                 <v-btn icon color="success" class="float-right minwidth-0 mt-1" @click="startJobqueue">
                     <v-icon>{{ mdiPlay }}</v-icon>
                 </v-btn>
@@ -147,6 +147,7 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
     @Prop({ type: Number, required: true }) declare itemQueueIndex: number
     @Prop({ type: Number, required: true }) declare contentTdWidth: number
     @Prop({ type: Boolean, default: false }) declare isFirst: boolean
+    @Prop({ type: Boolean, default: false }) declare showPrintButtonForFirst: boolean
     private contextMenu: {
         shown: boolean
         x: number
