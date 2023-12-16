@@ -40,7 +40,7 @@
             </template>
         </td>
         <td class="pr-2">
-            <template v-if="isFirst && showPrintButtonForFirst && !printerIsPrinting">
+            <template v-if="isFirstQueueItem && showPrintButtonForFirst && !printerIsPrinting">
                 <v-btn icon color="success" class="float-right minwidth-0 mt-1" @click="startJobqueue">
                     <v-icon>{{ mdiPlay }}</v-icon>
                 </v-btn>
@@ -57,19 +57,19 @@
                     <v-icon class="mr-1">{{ mdiCounter }}</v-icon>
                     {{ $t('JobQueue.ChangeCount') }}
                 </v-list-item>
-                <v-list-item v-if="!isFirst" @click="changeQueueItemPosition(contextMenu.item, 0)">
+                <v-list-item v-if="!isFirstQueueItem" @click="changeQueueItemPosition(contextMenu.item, 0)">
                     <v-icon class="mr-1">{{ mdiFormatVerticalAlignTop }}</v-icon>
                     {{ $t('JobQueue.MoveToJobQueueStart') }}
                 </v-list-item>
-                <v-list-item v-if="!isFirst" @click="changeQueueItemPosition(contextMenu.item, contextMenu.itemQueueIndex - 1)">
+                <v-list-item v-if="!isFirstQueueItem && !isSecondQueueItem" @click="changeQueueItemPosition(contextMenu.item, contextMenu.itemQueueIndex - 1)">
                     <v-icon class="mr-1">{{ mdiArrowUpThin }}</v-icon>
                     {{ $t('JobQueue.MoveQueueItemUp') }}
                 </v-list-item>
-                <v-list-item v-if="!isLast" @click="changeQueueItemPosition(contextMenu.item, contextMenu.itemQueueIndex + 1)">
+                <v-list-item v-if="!isLastQueueItem && !isNextToLastQueueItem" @click="changeQueueItemPosition(contextMenu.item, contextMenu.itemQueueIndex + 1)">
                     <v-icon class="mr-1">{{ mdiArrowDownThin }}</v-icon>
                     {{ $t('JobQueue.MoveQueueItemDown') }}
                 </v-list-item>
-                <v-list-item v-if="!isLast" @click="changeQueueItemPosition(contextMenu.item, Infinity)">
+                <v-list-item v-if="!isLastQueueItem" @click="changeQueueItemPosition(contextMenu.item, Infinity)">
                     <v-icon class="mr-1">{{ mdiFormatVerticalAlignBottom }}</v-icon>
                     {{ $t('JobQueue.MoveToJobQueueEnd') }}
                 </v-list-item>
@@ -155,9 +155,8 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
 
     @Prop({ type: Object, required: true }) declare item: ServerJobQueueStateJob
     @Prop({ type: Number, required: true }) declare itemQueueIndex: number
+    @Prop({ type: Number, required: true }) declare queueLength: number
     @Prop({ type: Number, required: true }) declare contentTdWidth: number
-    @Prop({ type: Boolean, default: false }) declare isFirst: boolean
-    @Prop({ type: Boolean, default: false }) declare isLast: boolean
     @Prop({ type: Boolean, default: false }) declare showPrintButtonForFirst: boolean
     private contextMenu: {
         shown: boolean
@@ -190,6 +189,22 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
 
     declare $refs: {
         filesJobqueue: any
+    }
+
+    get isFirstQueueItem() {
+        return this.itemQueueIndex === 0
+    }
+
+    get isSecondQueueItem() {
+        return this.itemQueueIndex === 1
+    }
+
+    get isLastQueueItem() {
+        return this.itemQueueIndex === (this.queueLength - 1)
+    }
+
+    get isNextToLastQueueItem() {
+        return this.itemQueueIndex === (this.queueLength - 2)
     }
 
     get styleContentTdWidth() {
