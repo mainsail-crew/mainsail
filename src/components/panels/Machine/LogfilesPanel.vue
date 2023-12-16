@@ -47,30 +47,7 @@
                             Moonraker
                         </v-btn>
                     </v-col>
-                    <v-col
-                        v-if="existsCrowsnestLog"
-                        :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
-                        <v-btn
-                            :href="apiUrl + '/server/files/logs/crowsnest.log'"
-                            block
-                            class="primary--text"
-                            @click="downloadLog">
-                            <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
-                            Crowsnest
-                        </v-btn>
-                    </v-col>
-                    <v-col
-                        v-if="existsSonarLog"
-                        :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
-                        <v-btn
-                            :href="apiUrl + '/server/files/logs/sonar.log'"
-                            block
-                            class="primary--text"
-                            @click="downloadLog">
-                            <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
-                            Sonar
-                        </v-btn>
-                    </v-col>
+                    <logfiles-panel-generic-log v-for="logfile in genericLogfiles" :key="logfile" :name="logfile" />
                 </v-row>
             </v-card-text>
         </panel>
@@ -124,10 +101,11 @@ import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { FileStateFile } from '@/store/files/types'
 import { mdiDownload, mdiFileDocumentEdit, mdiCloseThick, mdiFileSyncOutline } from '@mdi/js'
-import { rolloverLogfiles } from '@/store/variables'
+import { rolloverLogfiles, genericLogfiles } from '@/store/variables'
 import { capitalize } from '@/plugins/helpers'
+import LogfilesPanelGenericLog from '@/components/panels/Machine/LogfilesPanel/LogfilesPanelGenericLog.vue'
 @Component({
-    components: { Panel },
+    components: { LogfilesPanelGenericLog, Panel },
 })
 export default class LogfilesPanel extends Mixins(BaseMixin) {
     mdiFileDocumentEdit = mdiFileDocumentEdit
@@ -136,6 +114,7 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
     mdiFileSyncOutline = mdiFileSyncOutline
 
     rolloverLogfiles = rolloverLogfiles
+    genericLogfiles = genericLogfiles
     capitalize = capitalize
 
     private showRolloverDialog = false
