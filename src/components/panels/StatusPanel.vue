@@ -92,7 +92,7 @@
                 <v-tab v-if="current_filename" href="#status">{{ $t('Panels.StatusPanel.Status') }}</v-tab>
                 <v-tab href="#files">{{ $t('Panels.StatusPanel.Files') }}</v-tab>
                 <v-tab href="#jobqueue">
-                    <v-badge :color="jobQueueBadgeColor" :content="jobsCount.toString()">
+                    <v-badge :color="jobQueueBadgeColor" :content="jobsCount.toString()" :inline="true">
                         {{ $t('Panels.StatusPanel.Jobqueue') }}
                     </v-badge>
                 </v-tab>
