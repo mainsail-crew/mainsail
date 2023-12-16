@@ -25,14 +25,21 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
         return this.$store.getters['files/getDirectory']('logs')?.childrens ?? []
     }
 
-    get exists(): boolean {
-        const filename = this.name + '.log'
+    get filename() {
+        return this.name + '.log'
+    }
 
-        return this.logfiles.findIndex((log: FileStateFile) => log.filename === filename) !== -1
+    get exists(): boolean {
+        if (['klippy', 'moonraker'].includes(this.name)) return true
+
+        return this.logfiles.findIndex((log: FileStateFile) => log.filename === this.filename) !== -1
     }
 
     get href() {
-        return this.apiUrl + '/server/files/logs/' + this.name
+        let path = '/server/files/logs/'
+        if (['klippy', 'moonraker'].includes(this.name)) path = '/server/files/'
+
+        return this.apiUrl + path + this.filename
     }
 
     get classes() {
