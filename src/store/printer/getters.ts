@@ -10,7 +10,6 @@ import {
     PrinterStateMiscellaneous,
     PrinterStateMcu,
     PrinterStateMacro,
-    PrinterStateToolchangeMacro,
     PrinterGetterObject,
     PrinterStateLight,
 } from '@/store/printer/types'
