@@ -668,7 +668,7 @@
             "Files": "文件",
             "Flow": "流量",
             "Headline": "状态",
-            "Jobqueue": "任务队列({count})",
+            "Jobqueue": "任务队列",
             "JobqueueMoreFiles": "没有任务 | 一个任务 | {count}个任务",
             "Layer": "打印层",
             "Max": "最高",

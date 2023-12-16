@@ -579,7 +579,7 @@
             "Files": "檔案",
             "Flow": "流量",
             "Headline": "狀態",
-            "Jobqueue": "任務隊列({count})",
+            "Jobqueue": "任務隊列",
             "JobqueueMoreFiles": "沒有任務 | 一個任務 | {count}個任務",
             "Layer": "層",
             "Max": "最高",

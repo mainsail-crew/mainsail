@@ -600,7 +600,7 @@
             "Files": "ファイル",
             "Flow": "フロー",
             "Headline": "状態",
-            "Jobqueue": "ジョブキュー ({count})",
+            "Jobqueue": "ジョブキュー",
             "JobqueueMoreFiles": "ジョブなし | あとひとつのジョブ | あと {count}個のジョブ",
             "Layer": "層",
             "Max": "最大",
