@@ -84,6 +84,10 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         return [90, 270].includes(this.camSettings.rotation ?? 0)
     }
 
+    get url() {
+        return this.convertUrl(this.camSettings?.snapshot_url, this.printerUrl)
+    }
+
     refreshFrame() {
         if (this.isVisible) {
             this.refresh = new Date().getTime()
@@ -92,12 +96,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     }
 
     async setFrame() {
-        const baseUrl = this.camSettings.snapshot_url
-
-        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
-        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
-        url.port = this.hostPort.toString()
-
+        let url = new URL(this.url)
         url.searchParams.append('bypassCache', this.refresh.toString())
 
         this.request_start_time = performance.now()
