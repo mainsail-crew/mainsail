@@ -1,5 +1,5 @@
 <template>
-    <v-row class="dragable-item my-2 mx-0">
+    <v-row class="my-2 mx-0" :style="draggableBgStyle">
         <v-col class="col-auto pr-0 d-flex py-2">
             <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
         </v-col>
@@ -15,6 +15,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import NavigationMixin, { NaviPoint } from '@/components/mixins/navigation'
+import ThemeMixin from '@/components/mixins/theme'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import draggable from 'vuedraggable'
 import { mdiDragVertical, mdiCheckboxMarked, mdiCheckboxBlankOutline } from '@mdi/js'
@@ -22,7 +23,7 @@ import { mdiDragVertical, mdiCheckboxMarked, mdiCheckboxBlankOutline } from '@md
 @Component({
     components: { SettingsRow, draggable },
 })
-export default class SettingsNavigationTab extends Mixins(NavigationMixin, BaseMixin) {
+export default class SettingsNavigationTab extends Mixins(NavigationMixin, BaseMixin, ThemeMixin) {
     mdiDragVertical = mdiDragVertical
 
     @Prop({ type: Object, required: true }) naviPoint!: NaviPoint
@@ -54,9 +55,3 @@ export default class SettingsNavigationTab extends Mixins(NavigationMixin, BaseM
     }
 }
 </script>
-
-<style scoped>
-.dragable-item {
-    background-color: #282828;
-}
-</style>

@@ -88,10 +88,14 @@
                 </v-container>
                 <v-divider class="mt-0 mb-0"></v-divider>
             </template>
-            <v-tabs v-model="activeTab" fixed-tabs dark>
+            <v-tabs v-model="activeTab" fixed-tabs>
                 <v-tab v-if="current_filename" href="#status">{{ $t('Panels.StatusPanel.Status') }}</v-tab>
                 <v-tab href="#files">{{ $t('Panels.StatusPanel.Files') }}</v-tab>
-                <v-tab href="#jobqueue">{{ $t('Panels.StatusPanel.Jobqueue', { count: jobsCount }) }}</v-tab>
+                <v-tab href="#jobqueue">
+                    <v-badge :color="jobQueueBadgeColor" :content="jobsCount.toString()" :inline="true">
+                        {{ $t('Panels.StatusPanel.Jobqueue') }}
+                    </v-badge>
+                </v-tab>
             </v-tabs>
             <v-divider class="my-0"></v-divider>
             <v-tabs-items v-model="activeTab" class="_border-radius">
@@ -173,7 +177,11 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get jobsCount() {
-        return this.$store.getters['server/jobQueue/getJobsCount'] ?? 0
+        return this.jobs.length ?? 0
+    }
+
+    get jobQueueBadgeColor() {
+        return this.jobsCount > 0 ? 'primary darken-2' : 'grey darken-2'
     }
 
     get current_filename() {

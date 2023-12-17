@@ -1,5 +1,6 @@
 {
     "defaultLocale": "en",
+    "defaultTheme": "dark",
     "hostname": null,
     "port": null,
     "instancesDB": "browser",

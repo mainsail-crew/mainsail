@@ -668,7 +668,7 @@
             "Files": "Pliki",
             "Flow": "Przepływ",
             "Headline": "Status",
-            "Jobqueue": "W kolejce ({count})",
+            "Jobqueue": "W kolejce",
             "JobqueueMoreFiles": "brak więcej wydruków | jeszcze jeden wydruk | {count} więcej wydruków",
             "Layer": "Warstwa",
             "Max": "Maks.",

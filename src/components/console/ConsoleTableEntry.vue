@@ -72,4 +72,8 @@ export default class ConsoleTableEntry extends Mixins(BaseMixin) {
         }
     }
 }
+
+html.theme--light .consoleTableRow.default + .consoleTableRow .col {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
 </style>

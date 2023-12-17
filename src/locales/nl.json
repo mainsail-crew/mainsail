@@ -600,7 +600,7 @@
             "Files": "Bestanden",
             "Flow": "Flow",
             "Headline": "Status",
-            "Jobqueue": "Wachtrij ({count})",
+            "Jobqueue": "Wachtrij",
             "JobqueueMoreFiles": "geen jobs meer | nog een job |  {count} jobs",
             "Layer": "Laag",
             "Max": "max",

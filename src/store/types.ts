@@ -25,6 +25,7 @@ export interface RootStateDependency {
 }
 
 export interface ConfigJson {
+    defaultTheme?: 'dark' | 'light'
     hostname?: string | null
     port?: string | number | null
     instancesDB?: 'moonraker' | 'browser' | 'json'

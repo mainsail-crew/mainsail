@@ -1,3 +1,4 @@
+export const defaultTheme = 'dark'
 export const defaultLogoColor = '#D41216'
 export const defaultPrimaryColor = '#2196f3'
 export const defaultBigThumbnailBackground = '#1e1e1e'
@@ -128,6 +129,11 @@ export const hiddenDirectories = ['.git']
  * https://www.klipper3d.org/Config_Reference.html
  */
 export const availableKlipperConfigReferenceTranslations = ['it', 'hu', 'zh']
+
+/*
+ * List of all downloadable logfiles
+ */
+export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sonar']
 
 /*
  * List of all rollover logfiles

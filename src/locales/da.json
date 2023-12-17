@@ -668,7 +668,7 @@
             "Files": "Filer",
             "Flow": "Flow",
             "Headline": "Status",
-            "Jobqueue": "Jobkø: ({count})",
+            "Jobqueue": "Jobkø",
             "JobqueueMoreFiles": "Ikke flere jobs | Et job til | {count} jobs tilbage",
             "Layer": "Lag",
             "Max": "maks",

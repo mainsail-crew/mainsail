@@ -668,7 +668,7 @@
             "Files": "Files",
             "Flow": "Flusso",
             "Headline": "Stato",
-            "Jobqueue": "Coda di lavoro ({count})",
+            "Jobqueue": "Coda di lavoro",
             "JobqueueMoreFiles": "niente più lavori | resta un lavoro | restano {count} lavori",
             "Layer": "Layer",
             "Max": "max",
