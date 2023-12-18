@@ -235,12 +235,9 @@
                                 class="pa-0 mr-0"
                                 @click.stop="select(!isSelected)"></v-simple-checkbox>
                         </td>
-                        <td class="px-0 text-center" style="width: 32px">
+                        <td class="px-0 text-center fileicon-container" style="width: 32px">
                             <template v-if="item.isDirectory">
                                 <v-icon>{{ mdiFolder }}</v-icon>
-                            </template>
-                            <template v-else-if="item.isPinned">
-                                <v-icon>{{ mdiPin }}</v-icon>
                             </template>
                             <template v-else-if="item.small_thumbnail">
                                 <v-tooltip
@@ -274,6 +271,10 @@
                             <template v-else>
                                 <v-icon>{{ mdiFile }}</v-icon>
                             </template>
+
+                            <span v-if="item.isPinned" class="pin">
+                                <v-icon>{{ mdiPin }}</v-icon>
+                            </span>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-right text-no-wrap">
@@ -1620,5 +1621,16 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
 .handle {
     cursor: move;
+}
+
+.fileicon-container {
+    position: relative;
+}
+
+.pin {
+    position: absolute;
+    top: 0;
+    right: 0;
+    filter: drop-shadow(0 0 4px black);
 }
 </style>

@@ -89,12 +89,18 @@
                 <v-divider class="mt-0 mb-0"></v-divider>
             </template>
             <v-tabs v-model="activeTab" fixed-tabs>
-                <v-tab v-if="current_filename" href="#status">{{ $t('Panels.StatusPanel.Status') }}</v-tab>
-                <v-tab href="#files">{{ $t('Panels.StatusPanel.Files') }}</v-tab>
+                <v-tab v-if="current_filename" href="#status">
+                    <v-icon>{{ mdiPrinter3d }}</v-icon>
+                </v-tab>
+                <v-tab href="#files">
+                    <v-icon>{{ mdiFile }}</v-icon>
+                </v-tab>
+                <v-tab v-if="$store.state.gui.view.gcodefiles.pinnedFiles?.length" href="#pinnedfiles">
+                    <v-icon>{{ mdiPin }}</v-icon>
+                </v-tab>
                 <v-tab href="#jobqueue">
-                    <v-badge :color="jobQueueBadgeColor" :content="jobsCount.toString()" :inline="true">
-                        {{ $t('Panels.StatusPanel.Jobqueue') }}
-                    </v-badge>
+                    <v-icon>{{ mdiFormatListCheckbox }}</v-icon>
+                    <v-badge :color="jobQueueBadgeColor" :content="jobsCount.toString()" :inline="true"></v-badge>
                 </v-tab>
             </v-tabs>
             <v-divider class="my-0"></v-divider>
@@ -104,6 +110,9 @@
                 </v-tab-item>
                 <v-tab-item value="files">
                     <status-panel-gcodefiles />
+                </v-tab-item>
+                <v-tab-item v-if="$store.state.gui.view.gcodefiles.pinnedFiles?.length" value="pinnedfiles">
+                    <status-panel-pinned-gcodefiles />
                 </v-tab-item>
                 <v-tab-item value="jobqueue">
                     <status-panel-jobqueue />
@@ -121,6 +130,7 @@ import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import StatusPanelPrintstatus from '@/components/panels/Status/Printstatus.vue'
 import StatusPanelGcodefiles from '@/components/panels/Status/Gcodefiles.vue'
+import StatusPanelPinnedGcodefiles from '@/components/panels/Status/PinnedGcodefiles.vue'
 import StatusPanelJobqueue from '@/components/panels/Status/Jobqueue.vue'
 import StatusPanelExcludeObject from '@/components/panels/Status/ExcludeObject.vue'
 import StatusPanelPrintstatusThumbnail from '@/components/panels/Status/PrintstatusThumbnail.vue'
@@ -139,6 +149,10 @@ import {
     mdiCloseCircle,
     mdiLayersPlus,
     mdiDotsVertical,
+    mdiFile,
+    mdiPin,
+    mdiFormatListCheckbox,
+    mdiPrinter3d,
 } from '@mdi/js'
 import { PrinterStateMacro } from '@/store/printer/types'
 
@@ -149,6 +163,7 @@ import { PrinterStateMacro } from '@/store/printer/types'
         Panel,
         StatusPanelExcludeObject,
         StatusPanelGcodefiles,
+        StatusPanelPinnedGcodefiles,
         StatusPanelJobqueue,
         StatusPanelPrintstatus,
         StatusPanelPrintstatusThumbnail,
@@ -161,6 +176,10 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiCloseCircle = mdiCloseCircle
     mdiDotsVertical = mdiDotsVertical
     mdiAlertOutline = mdiAlertOutline
+    mdiPin = mdiPin
+    mdiFile = mdiFile
+    mdiFormatListCheckbox = mdiFormatListCheckbox
+    mdiPrinter3d = mdiPrinter3d
 
     private boolShowObjects = false
     private boolShowPauseAtLayer = false
