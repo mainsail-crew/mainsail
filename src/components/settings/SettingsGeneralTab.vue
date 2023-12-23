@@ -61,7 +61,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiCloseThick, mdiHelpCircle } from '@mdi/js'
+import { mdiCloseThick } from '@mdi/js'
 import CheckboxList from '@/components/inputs/CheckboxList.vue'
 import SettingsGeneralTabBackupDatabase from '@/components/settings/General/GeneralBackup.vue'
 import SettingsGeneralTabRestoreDatabase from '@/components/settings/General/GeneralRestore.vue'
@@ -79,7 +79,6 @@ import SettingsGeneralDatabase from '@/components/mixins/settingsGeneralDatabase
     },
 })
 export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGeneralDatabase) {
-    mdiHelpCircle = mdiHelpCircle
     mdiCloseThick = mdiCloseThick
 
     availableLanguages: { text: string; value: string }[] = []
