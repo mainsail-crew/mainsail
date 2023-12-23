@@ -277,7 +277,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
         if (datasets.length) {
             let outputTime = datasets[0]['axisValueLabel']
             outputTime = outputTime.substring(outputTime.indexOf(' '))
-            let theme = $vuetify.theme.dark ? 'theme-dark' : ''
+            const theme = this.$vuetify.theme.dark ? 'theme-dark' : ''
 
             output +=
                 '<div class="row">' +
