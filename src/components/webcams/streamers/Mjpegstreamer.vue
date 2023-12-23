@@ -133,7 +133,6 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                             return reader?.read().then(({ done, value }) => {
                                 // If there is no more data to read
                                 if (done) {
-                                    window.console.log('done')
                                     controller.close()
                                     return
                                 }
@@ -205,8 +204,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         this.startStream()
     }
 
-    @Watch('url')
-    urlChanged() {
+    @Watch('camSettings', { immediate: true, deep: true })
+    camSettingsChanged() {
         this.aspectRatio = null
         this.restartStream()
     }
@@ -236,9 +235,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     onload() {
-        if (this.aspectRatio === null && this.$refs.image) {
-            this.aspectRatio = this.$refs.image.naturalWidth / this.$refs.image.naturalHeight
-        }
+        if (this.aspectRatio !== null || !this.$refs.image) return
+
+        this.aspectRatio = this.$refs.image.naturalWidth / this.$refs.image.naturalHeight
     }
 }
 </script>
