@@ -118,7 +118,7 @@
                         </td>
                         <td class="px-0 text-center" style="width: 32px">
                             <template v-if="!item.exists">
-                                <v-icon class="text--disabled">{{ mdiFile }}-cancel</v-icon>
+                                <v-icon class="text--disabled">{{ mdiFileCancel }}</v-icon>
                             </template>
                             <template v-else-if="getSmallThumbnail(item) && getBigThumbnail(item)">
                                 <v-tooltip top>
@@ -523,6 +523,7 @@ import {
     mdiNotebookEdit,
     mdiNotebookPlus,
     mdiNotebook,
+    mdiFileCancel,
 } from '@mdi/js'
 @Component({
     components: { Panel },
@@ -542,6 +543,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiNotebookPlus = mdiNotebookPlus
     mdiNotebookEdit = mdiNotebookEdit
     mdiNotebook = mdiNotebook
+    mdiFileCancel = mdiFileCancel
 
     formatFilesize = formatFilesize
 
