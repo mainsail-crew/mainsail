@@ -107,12 +107,12 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
             const ctx = canvas.getContext('2d')
             const frame: any = await this.loadImage(url.toString())
 
-            if (this.rotate) this.aspectRatio = frame.naturalHeight / frame.naturalWidth
-            else this.aspectRatio = frame.naturalWidth / frame.naturalHeight
+            this.aspectRatio = frame.naturalWidth / frame.naturalHeight
+            if (this.rotate) this.aspectRatio = 1 / this.aspectRatio
 
             // set canvas sizes
             canvas.width = canvas.clientWidth
-            canvas.height = canvas.clientWidth * (this.aspectRatio ?? 1.33)
+            canvas.height = canvas.clientWidth / this.aspectRatio
 
             if (this.rotate) {
                 const scale = canvas.height / frame.width
