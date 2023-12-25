@@ -8,6 +8,7 @@ export interface ServerHistoryState {
         longest_job: number
         longest_print: number
     }
+    all_loaded: boolean
 }
 
 export interface ServerHistoryStateJob {

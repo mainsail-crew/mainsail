@@ -28,16 +28,18 @@
                             </v-btn>
                         </template>
                         <v-btn
+                            :title="$t('History.TitleRefreshHistory')"
+                            :loading="loadings.includes('historyLoadAll')"
+                            :class="classButtonRefresh"
+                            @click="refreshHistory">
+                            <v-icon :left="!allLoaded">{{ iconButtonRefresh }}</v-icon>
+                            <span v-if="!allLoaded">All</span>
+                        </v-btn>
+                        <v-btn
                             :title="$t('History.TitleExportHistory')"
                             class="px-2 minwidth-0 ml-3"
                             @click="exportHistory">
                             <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
-                        </v-btn>
-                        <v-btn
-                            :title="$t('History.TitleRefreshHistory')"
-                            class="px-2 minwidth-0 ml-3"
-                            @click="refreshHistory">
-                            <v-icon>{{ mdiRefresh }}</v-icon>
                         </v-btn>
                         <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
                             <template #activator="{ on, attrs }">
@@ -513,6 +515,7 @@ import {
     mdiNotebookEdit,
     mdiNotebookPlus,
     mdiNotebook,
+    mdiDownload,
 } from '@mdi/js'
 @Component({
     components: { Panel },
@@ -566,6 +569,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     private deleteDialog = false
     private deleteSelectedDialog = false
+
+    get allLoaded() {
+        return this.$store.state.server.history.all_loaded ?? false
+    }
 
     get jobs() {
         return this.$store.getters['server/history/getFilterdJobList'] ?? []
@@ -774,7 +781,23 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return this.$store.state.gui.general?.language ?? 'en'
     }
 
+    get classButtonRefresh() {
+        const classes = ['minwidth-0', 'ml-3']
+
+        if (this.allLoaded || this.loadings.includes('historyLoadAll')) classes.push('px-2')
+
+        return classes
+    }
+
+    get iconButtonRefresh() {
+        if (this.allLoaded) return mdiRefresh
+
+        return mdiDownload
+    }
+
     refreshHistory() {
+        this.$store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
+
         this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
     }
 
