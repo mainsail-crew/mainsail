@@ -27,27 +27,30 @@
                                 <v-icon>{{ mdiDelete }}</v-icon>
                             </v-btn>
                         </template>
-                        <v-btn
-                            :title="$t('History.TitleRefreshHistory')"
-                            :loading="loadings.includes('historyLoadAll')"
-                            :class="classButtonRefresh"
-                            @click="refreshHistory">
-                            <v-icon :left="!allLoaded">{{ iconButtonRefresh }}</v-icon>
-                            <span v-if="!allLoaded">{{ $t('History.AllJobs') }}</span>
-                        </v-btn>
-                        <v-btn
-                            :title="$t('History.TitleExportHistory')"
-                            class="px-2 minwidth-0 ml-3"
-                            @click="exportHistory">
-                            <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
-                        </v-btn>
-                        <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
+                        <v-tooltip v-if="!allLoaded" top>
                             <template #activator="{ on, attrs }">
                                 <v-btn
+                                    :loading="loadings.includes('historyLoadAll')"
                                     class="px-2 minwidth-0 ml-3"
-                                    :title="$t('History.TitleSettings')"
                                     v-bind="attrs"
-                                    v-on="on">
+                                    v-on="on"
+                                    @click="refreshHistory">
+                                    <v-icon>{{ mdiDatabaseArrowDownOutline }}</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>{{ $t('History.LoadCompleteHistory') }}</span>
+                        </v-tooltip>
+                        <v-tooltip top>
+                            <template #activator="{ on, attrs }">
+                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on" @click="exportHistory">
+                                    <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>{{ $t('History.TitleExportHistory') }}</span>
+                        </v-tooltip>
+                        <v-menu :offset-y="true" :close-on-content-click="false">
+                            <template #activator="{ on, attrs }">
+                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
                                     <v-icon>{{ mdiCog }}</v-icon>
                                 </v-btn>
                             </template>
@@ -503,7 +506,7 @@ import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/v
 import {
     mdiDatabaseExportOutline,
     mdiDelete,
-    mdiRefresh,
+    mdiDatabaseArrowDownOutline,
     mdiCog,
     mdiPrinter,
     mdiTextBoxSearch,
@@ -523,7 +526,7 @@ import {
 export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiDatabaseExportOutline = mdiDatabaseExportOutline
     mdiDelete = mdiDelete
-    mdiRefresh = mdiRefresh
+    mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
     mdiCog = mdiCog
     mdiPrinter = mdiPrinter
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
@@ -779,20 +782,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     get currentLanguage() {
         return this.$store.state.gui.general?.language ?? 'en'
-    }
-
-    get classButtonRefresh() {
-        const classes = ['minwidth-0', 'ml-3']
-
-        if (this.allLoaded || this.loadings.includes('historyLoadAll')) classes.push('px-2')
-
-        return classes
-    }
-
-    get iconButtonRefresh() {
-        if (this.allLoaded) return mdiRefresh
-
-        return mdiDownload
     }
 
     refreshHistory() {
