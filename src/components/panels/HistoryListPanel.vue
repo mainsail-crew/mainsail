@@ -33,7 +33,7 @@
                             :class="classButtonRefresh"
                             @click="refreshHistory">
                             <v-icon :left="!allLoaded">{{ iconButtonRefresh }}</v-icon>
-                            <span v-if="!allLoaded">All</span>
+                            <span v-if="!allLoaded">{{ $t('History.AllJobs') }}</span>
                         </v-btn>
                         <v-btn
                             :title="$t('History.TitleExportHistory')"
