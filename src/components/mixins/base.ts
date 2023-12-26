@@ -14,7 +14,7 @@ export default class BaseMixin extends Vue {
     }
 
     get hostPort(): number {
-        return this.$store.state.socket.port ?? 80
+        return parseInt(this.$store.state.socket.port ?? 80)
     }
 
     get instancesDB() {
