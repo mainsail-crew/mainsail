@@ -529,11 +529,11 @@
             "Upgrade": "uppgradera",
             "UpgradeableSystemPackages": "Uppgraderbara systempaket",
             "UpToDate": "aktuell",
-            "WebClientUpdateQuestion": "I vissa fall kan uppdatering av webbklienten ha ändringar som kan orsaka inkompatibilitet. Se versionskommentarerna för mer information.",
             "Notification": {
                 "Detached": "Diskret status är inte ett fel och är inte ett problem. Det betyder bara att det finns ytterligare commits i det lokala förvaret som inte finns i fjärrlagret.",
                 "Dirty": "Det lokala arkivet har ändrats och kan inte uppdateras i det här fallet. Vänligen återställ detta arkiv."
-            }
+            },
+            "WebClientUpdateQuestion": "I vissa fall kan uppdatering av webbklienten ha ändringar som kan orsaka inkompatibilitet. Se versionskommentarerna för mer information."
         }
     },
     "ManualProbe": {
@@ -1272,6 +1272,6 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Svenska",
-    "_last_update": "2023-12-28"
+    "_last_update": "2023-12-28",
+    "title": "Svenska"
 }
