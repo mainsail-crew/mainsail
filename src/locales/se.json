@@ -515,6 +515,10 @@
             "LinkToGithub": "Länk till GitHub",
             "MoonrakerUpdateQuestion": "Detta kommer att uppdatera Moonraker API. Ändringar av filen moonraker.conf kan behövas för att fortsätta använda maskinen.",
             "MoreCommitsInfo": "Maximalt 30 commits kan visas här. För att se alla commits, klicka på följande länk:",
+            "Notification": {
+                "Detached": "Diskret status är inte ett fel och är inte ett problem. Det betyder bara att det finns ytterligare commits i det lokala förvaret som inte finns i fjärrlagret.",
+                "Dirty": "Det lokala arkivet har ändrats och kan inte uppdateras i det här fallet. Vänligen återställ detta arkiv."
+            },
             "OSPackages": "Operativsystems-Paket",
             "PackagesCanBeUpgraded": "paketen kan uppgraderas",
             "SoftRecovery": "Mjuk återställning",
@@ -529,10 +533,6 @@
             "Upgrade": "uppgradera",
             "UpgradeableSystemPackages": "Uppgraderbara systempaket",
             "UpToDate": "aktuell",
-            "Notification": {
-                "Detached": "Diskret status är inte ett fel och är inte ett problem. Det betyder bara att det finns ytterligare commits i det lokala förvaret som inte finns i fjärrlagret.",
-                "Dirty": "Det lokala arkivet har ändrats och kan inte uppdateras i det här fallet. Vänligen återställ detta arkiv."
-            },
             "WebClientUpdateQuestion": "I vissa fall kan uppdatering av webbklienten ha ändringar som kan orsaka inkompatibilitet. Se versionskommentarerna för mer information."
         }
     },
@@ -1272,6 +1272,5 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "_last_update": "2023-12-28",
     "title": "Svenska"
 }
