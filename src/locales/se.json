@@ -19,7 +19,7 @@
                 "MoonrakerComponent": "Moonraker: {komponent}",
                 "MoonrakerFailedComponentDescription": "Ett fel upptäcktes vid laddning av moonraker-komponenten '{component}'. Kontrollera loggfilen och åtgärda problemet.",
                 "MoonrakerFailedInitComponentDescription": "Ett fel upptäcktes under initieringen av moonraker-komponenten '{component}'. Kontrollera loggfilen och åtgärda problemet.",
-                "MoonrakerInitComponent": "",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}",
                 "MoonrakerWarning": "Moonraker varning",
                 "UnparsedConfigOption": "Otolkat konfigurationsalternativ '{option}: {value}' upptäcktes i avsnittet [{sektion}]. Detta kan vara ett alternativ som inte längre är tillgängligt eller kan vara resultatet av en modul som inte kunde laddas. I framtiden kommer detta att resultera i ett startfel.",
                 "UnparsedConfigSection": "Otolkat konfigurationsavsnitt [{sektion}] upptäcktes. Detta kan vara resultatet av en komponent som inte kunde laddas. I framtiden kommer detta att resultera i ett startfel."
@@ -124,11 +124,11 @@
         "Accept": "godkänn",
         "Adjusted": "justerad",
         "Description": "Klicka på <b>JUSTERAD</b> om den aktuella skruven justerades. Klicka på <b>GODKÄNN</b> för att fortsätta utan justering.",
-        "Headline": "",
-        "ScrewAccepted": "",
-        "ScrewIndex": "",
-        "ScrewName": "",
-        "ScrewOutput": ""
+        "Headline": "Bädd skruvar",
+        "ScrewAccepted": "Skruvar accepteras",
+        "ScrewIndex": "Skruvindex",
+        "ScrewName": "Skruvnamn",
+        "ScrewOutput": "{current} av {max}"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Kan inte ansluta till Moonraker ({host}).",
@@ -529,7 +529,11 @@
             "Upgrade": "uppgradera",
             "UpgradeableSystemPackages": "Uppgraderbara systempaket",
             "UpToDate": "aktuell",
-            "WebClientUpdateQuestion": "I vissa fall kan uppdatering av webbklienten ha ändringar som kan orsaka inkompatibilitet. Se versionskommentarerna för mer information."
+            "WebClientUpdateQuestion": "I vissa fall kan uppdatering av webbklienten ha ändringar som kan orsaka inkompatibilitet. Se versionskommentarerna för mer information.",
+            "Notification": {
+                "Detached": "Diskret status är inte ett fel och är inte ett problem. Det betyder bara att det finns ytterligare commits i det lokala förvaret som inte finns i fjärrlagret.",
+                "Dirty": "Det lokala arkivet har ändrats och kan inte uppdateras i det här fallet. Vänligen återställ detta arkiv."
+            }
         }
     },
     "ManualProbe": {
@@ -723,7 +727,7 @@
             },
             "Headline": "Temperaturer",
             "HideMcuHostSensors": "Dölj värd/MCU-sensorer",
-            "HideMonitors": "",
+            "HideMonitors": "Dölj övervakare",
             "Max": "max",
             "Min": "min",
             "Name": "Namn",
@@ -1117,12 +1121,12 @@
             "VariableFps": "Variable FPS",
             "VariableFpsDescription": "Om det är aktiverat kommer bildhastigheten för utmatningsvideon att beräknas baserat på mållängden",
             "VariableFpsMax": "Variable FPS max",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "Maximalt värde för variabel FPS",
             "VariableFpsMin": "Variable FPS min",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "Minsta värde för variabel FPS"
         },
         "UiSettingsTab": {
-            "BedScrewsDialog": "",
+            "BedScrewsDialog": "Bäddskruvar dialog",
             "BedScrewsDialogDescription": "Visa hjälpdialog för BED_SCREWS_ADJUST.",
             "BigThumbnailBackground": "Stor miniatyrbild bakgrundsfärg",
             "BoolBigThumbnail": "Stor miniatyrbild",
@@ -1163,7 +1167,7 @@
             "PowerDeviceName": "Strömenhet skrivare",
             "PowerDeviceNameDescription": "Välj vilken Moonraker-strömenhet som ska användas för att slå på skrivaren.",
             "Primary": "Primär",
-            "ScrewsTiltAdjustDialog": "",
+            "ScrewsTiltAdjustDialog": "Skruvar Lutningsjusteringsdialog",
             "ScrewsTiltAdjustDialogDescription": "Visa hjälpdialog för SCREWS_TILT_CALCULATE.",
             "ShowWebcamInNavigation": "Visa webbkamera i navigering",
             "TempchartHeight": "Höjd Temperaturdiagram",
@@ -1268,5 +1272,6 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Svenska"
+    "title": "Svenska",
+    "_last_update": "2023-12-28"
 }
