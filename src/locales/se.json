@@ -289,8 +289,7 @@
             "Min": "Min",
             "Name": "Namn",
             "Range": "Intervall",
-            "Size": "Storlek",
-            "Variance": "Variation"
+            "Size": "Storlek"
         },
         "DeleteBedMeshProfile": "Radera sängnätsprofil (Bed Mesh Profile)",
         "DoYouReallyWantToDelete": "Vill du verkligen radera profilen \"{name}\"?",
@@ -503,7 +502,6 @@
             "CountPackagesCanBeUpgraded": "{count} paket kan uppgraderas",
             "Detached": "friliggande",
             "Dirty": "smutsig",
-            "ERROR": "FEL",
             "GenericUpdateQuestion": "Kontrollera commit-historiken (om tillgänglig) och GitHub-sidan för det här projektet för att se om några manuella justeringar är nödvändiga för den här uppdateringen.",
             "GitHubPage": "GitHub-sida",
             "HardRecovery": "Hård återställning",
@@ -515,12 +513,7 @@
             "LinkToGithub": "Länk till GitHub",
             "MoonrakerUpdateQuestion": "Detta kommer att uppdatera Moonraker API. Ändringar av filen moonraker.conf kan behövas för att fortsätta använda maskinen.",
             "MoreCommitsInfo": "Maximalt 30 commits kan visas här. För att se alla commits, klicka på följande länk:",
-            "Notification": {
-                "Detached": "Diskret status är inte ett fel och är inte ett problem. Det betyder bara att det finns ytterligare commits i det lokala förvaret som inte finns i fjärrlagret.",
-                "Dirty": "Det lokala arkivet har ändrats och kan inte uppdateras i det här fallet. Vänligen återställ detta arkiv."
-            },
             "OSPackages": "Operativsystems-Paket",
-            "PackagesCanBeUpgraded": "paketen kan uppgraderas",
             "SoftRecovery": "Mjuk återställning",
             "StartUpdate": "Påbörja uppdatering",
             "System": "System",
@@ -583,7 +576,6 @@
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "Kontrollera om Klipper-tjänsten körs och klippy_uds_address är korrekt konfigurerad i moonraker.conf.",
             "FirmwareRestart": "Omstart av Firmware",
-            "KlipperCheck": "Kontrollera om Klipper-tjänsten körs och en UDS (Unix Domain Socket) är konfigurerad.",
             "MoonrakerCannotConnect": "Moonraker kan inte ansluta till Klipper!",
             "PowerOn": "Ström på",
             "PrinterSwitchedOff": "Skrivaren är avstängd",
@@ -629,7 +621,6 @@
             },
             "RunoutSensor": {
                 "Detected": "upptäckt",
-                "Disabled": "inaktiverad",
                 "Empty": "Tom"
             }
         },
@@ -774,9 +765,7 @@
             "SaveConfig": "SPARA KONFIG",
             "SaveInfoDescription": "Den nya z-offset har beräknats och registrerats. Klicka på SAVE_CONFIG för att lagra den nya z-offset i din printer.cfg och starta om Klipper.",
             "SaveInfoDescriptionPrint": "Den nya Z-offseten har beräknats och registrerats. Efter utskrift, klicka på SAVE_CONFIG i den övre raden för att lagra den i printer.cfg och starta om Klipper.",
-            "SaveInfoHeadline": "Information",
-            "ToEndstop": "Endstop",
-            "ToProbe": "till Sond"
+            "SaveInfoHeadline": "Information"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -936,7 +925,6 @@
             "DBNavigation": "Navigering",
             "DbTimelapseSettings": "Timelapse inställningar",
             "DbView": "Visa inställningar",
-            "DbWebcams": "Webbkameror",
             "EstimateValues": {
                 "Filament": "Filament",
                 "File": "Fil",
@@ -948,7 +936,6 @@
             "General": "Allmän",
             "Language": "Språk",
             "MainsailSettingsMoonrakerDb": "Mainsail inställningar i Moonraker DB",
-            "MoonrakerDb": "Moonraker DB",
             "PrinterName": "Skrivarens namn",
             "Reset": "Nollställ",
             "Restore": "Återställ",
@@ -1169,7 +1156,6 @@
             "Primary": "Primär",
             "ScrewsTiltAdjustDialog": "Skruvar Lutningsjusteringsdialog",
             "ScrewsTiltAdjustDialogDescription": "Visa hjälpdialog för SCREWS_TILT_CALCULATE.",
-            "ShowWebcamInNavigation": "Visa webbkamera i navigering",
             "TempchartHeight": "Höjd Temperaturdiagram",
             "TempchartHeightDescription": "Ändra höjden på temperaturdiagrammet på instrumentpanelen.",
             "Theme": "Tema",
