@@ -40,9 +40,10 @@ export const getters: GetterTree<GuiPresetsState, any> = {
             const preset = state.presets[id]
 
             if (
-                payload.name in preset.values &&
-                preset.values[payload.name].bool &&
-                output.findIndex((entry: preset) => entry.value === preset.values[payload.name].value) === -1
+                preset.values[payload.name]?.bool &&
+                output.findIndex(
+                    (entry: preset) => entry.value === parseFloat(preset.values[payload.name]?.value?.toString() ?? '0')
+                ) === -1
             ) {
                 output.push({
                     // @ts-ignore
