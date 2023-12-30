@@ -8,26 +8,19 @@ on:
         description: New version number in X.Y.Z
         required: true
 
-jobs:
-  update-master-branch:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: everlytic/branch-merge@1.1.5
-        with:
-          github_token: ${{ secrets.PAT }}
-          source_ref: 'develop'
-          target_branch: 'master'
-          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
+jobs:
   push-version-number:
-    needs: ['update-master-branch']
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout master branch
+      - name: Checkout develop branch
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
-          ref: 'master'
+          ref: 'develop'
 
       - name: get-npm-version
         id: package-version
@@ -48,8 +41,19 @@ jobs:
           message: 'chore: push version number to v${{ github.event.inputs.version }}'
           push: true
 
-  release:
+  update-master-branch:
     needs: ['push-version-number']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: everlytic/branch-merge@1.1.5
+        with:
+          github_token: ${{ secrets.PAT }}
+          source_ref: 'develop'
+          target_branch: 'master'
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
+
+  release:
+    needs: ['update-master-branch']
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
@@ -110,16 +114,50 @@ jobs:
           exclude: .htaccess
           local-dir: ./dist/
 
-  update-develop-branch:
+  build-and-push-image:
     needs: ['release']
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
-      - uses: everlytic/branch-merge@1.1.5
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          github_token: ${{ secrets.PAT }}
-          source_ref: 'master'
-          target_branch: 'develop'
-          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
+          ref: 'refs/tags/v${{ github.event.inputs.version }}'
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=semver,pattern=v{{major}}
+            type=semver,pattern=v{{major}}.{{minor}}
+            type=semver,pattern=v{{major}}.{{minor}}.{{patch}}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
   update-changelog:
     needs: ['update-develop-branch']

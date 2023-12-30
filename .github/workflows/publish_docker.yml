@@ -2,9 +2,7 @@ name: Create and publish a Docker image
 
 on:
   push:
-    branches: ['master', 'develop']
-    tags:
-      - 'v*'
+    branches: ['develop']
   pull_request:
     branches:
       - '*'
@@ -38,12 +36,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
             type=edge,branch=develop
-            type=semver,pattern={{version}}
-            type=semver,pattern=v{{major}}
-            type=semver,pattern=v{{major}}.{{minor}}
-            type=semver,pattern=v{{major}}.{{minor}}.{{patch}}
             type=sha
 
       - name: Set up QEMU
