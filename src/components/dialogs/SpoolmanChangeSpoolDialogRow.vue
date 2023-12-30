@@ -10,17 +10,17 @@
                     <div class="text--disabled mb-1">#{{ id }} | {{ vendor }}</div>
                     <v-list-item-title class="mb-1">
                         <span class="text--filament">{{ name }}</span>
+                        <template v-if="location">
+                            <br />
+                            <small>{{ $t('Panels.SpoolmanPanel.Location') }}: {{ location }}</small>
+                        </template>
+                        <template v-if="spool.comment">
+                            <br />
+                            <small>{{ spool.comment }}</small>
+                        </template>
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
-            <template v-if="location">
-                <br />
-                {{ $t('Panels.SpoolmanPanel.Location') }}: {{ location }}
-            </template>
-            <template v-if="spool.comment">
-                <br />
-                {{ spool.comment }}
-            </template>
         </td>
         <td class="text-center text-no-wrap">{{ material }}</td>
         <td class="text-right text-no-wrap">{{ last_used }}</td>
