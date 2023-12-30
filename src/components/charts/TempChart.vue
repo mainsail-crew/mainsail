@@ -6,7 +6,9 @@
         :init-options="{ renderer: 'svg' }"
         :autoresize="true"
         :style="tempchartStyle"
-        class="tempchart" />
+        class="tempchart"
+        @mouseenter.native="hoverChart = true"
+        @mouseleave.native="hoverChart = false" />
 </template>
 
 <script lang="ts">
@@ -34,6 +36,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
         tempchart: any
     }
 
+    hoverChart = false
     private isVisible = true
     get chartOptions(): ECBasicOption {
         return {
@@ -69,7 +72,9 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
             },
             yAxis: this.yAxis,
             media: this.media,
-            dataset: { source: this.source },
+            dataset: {
+                source: [],
+            },
             series: this.series,
         }
     }
@@ -355,8 +360,14 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
 
     @Watch('source')
     sourceChanged(newVal: PrinterTempHistoryStateSourceEntry[]) {
-        // break if chart isn't initialized or not visible
-        if (!this.chart || !this.isVisible) return
+        // break if the chart isn't initialized or not visible or is hovered
+        if (!this.chart || !this.isVisible || this.hoverChart) return
+
+        this.chart?.setOption({
+            dataset: {
+                source: newVal,
+            },
+        })
 
         const limitDate = new Date(Date.now() - this.maxHistory * 1000)
         let newSource = newVal.filter((entry: PrinterTempHistoryStateSourceEntry) => {
