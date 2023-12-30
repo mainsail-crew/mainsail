@@ -1,32 +1,3 @@
-<style scoped>
-svg {
-    border: 2px solid #888;
-}
-
-#tooltipObjectMap {
-    display: none;
-    position: absolute;
-    background: black;
-    border-radius: 3px;
-    color: white;
-    padding: 3px 7px;
-    z-index: 100;
-
-    &:before {
-        display: block;
-        content: ' ';
-        width: 0;
-        height: 0;
-        position: absolute;
-        bottom: -10px;
-        left: 10px;
-        border-top: 10px solid black;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-    }
-}
-</style>
-
 <template>
     <div style="position: relative">
         <div id="tooltipObjectMap" ref="tooltipObjectMap"></div>
@@ -250,3 +221,32 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+svg {
+    border: 2px solid #888;
+}
+
+#tooltipObjectMap {
+    display: none;
+    position: absolute;
+    background: black;
+    border-radius: 3px;
+    color: white;
+    padding: 3px 7px;
+    z-index: 100;
+
+    &:before {
+        display: block;
+        content: ' ';
+        width: 0;
+        height: 0;
+        position: absolute;
+        bottom: -10px;
+        left: 10px;
+        border-top: 10px solid black;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+    }
+}
+</style>
