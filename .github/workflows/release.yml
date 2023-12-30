@@ -160,7 +160,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   update-changelog:
-    needs: ['update-develop-branch']
+    needs: ['release']
     name: Generate changelog
     runs-on: ubuntu-latest
     steps:
