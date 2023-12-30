@@ -9,14 +9,25 @@ on:
         required: true
 
 jobs:
-  push-version-number:
+  update-master-branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Clone develop repository
+      - uses: everlytic/branch-merge@1.1.5
+        with:
+          github_token: ${{ secrets.PAT }}
+          source_ref: 'develop'
+          target_branch: 'master'
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
+
+  push-version-number:
+    needs: ['update-master-branch']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master branch
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
-          ref: 'develop'
+          ref: 'master'
 
       - name: get-npm-version
         id: package-version
@@ -37,19 +48,8 @@ jobs:
           message: 'chore: push version number to v${{ github.event.inputs.version }}'
           push: true
 
-  update-master-branch:
-    needs: ['push-version-number']
-    runs-on: ubuntu-latest
-    steps:
-      - uses: everlytic/branch-merge@1.1.5
-        with:
-          github_token: ${{ secrets.PAT }}
-          source_ref: 'develop'
-          target_branch: 'master'
-          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
-
   release:
-    needs: ['update-master-branch']
+    needs: ['push-version-number']
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
@@ -109,6 +109,16 @@ jobs:
           dangerous-clean-slate: true
           exclude: .htaccess
           local-dir: ./dist/
+
+  update-develop-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: everlytic/branch-merge@1.1.5
+        with:
+          github_token: ${{ secrets.PAT }}
+          source_ref: 'master'
+          target_branch: 'develop'
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
 
   update-changelog:
     needs: ['release']
