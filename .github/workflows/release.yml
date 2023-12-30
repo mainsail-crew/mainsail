@@ -111,6 +111,7 @@ jobs:
           local-dir: ./dist/
 
   update-develop-branch:
+    needs: ['release']
     runs-on: ubuntu-latest
     steps:
       - uses: everlytic/branch-merge@1.1.5
@@ -121,7 +122,7 @@ jobs:
           commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
 
   update-changelog:
-    needs: ['release']
+    needs: ['update-develop-branch']
     name: Generate changelog
     runs-on: ubuntu-latest
     steps:
