@@ -278,12 +278,9 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     tooltipFormatter(datasets: any) {
         let output = ''
 
-        //window.console.log('tempchartFix', datasets)
-
         const mainDatasets = datasets.filter((dataset: any) => dataset.seriesName.endsWith('-temperature'))
         if (datasets.length) {
             let outputTime = datasets[0]['axisValueLabel']
-            //window.console.log('tempchartFix', outputTime)
             outputTime = outputTime.substring(outputTime.indexOf(' '))
             const theme = this.$vuetify.theme.dark ? 'theme-dark' : ''
 
