@@ -8,7 +8,7 @@ RUN apk add zip
 WORKDIR /app
 COPY package*.json /app/
 
-RUN npm install
+RUN npm ci
 
 COPY ./ /app/
 
