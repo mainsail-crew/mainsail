@@ -214,27 +214,28 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     }
 
     showObjectTooltip(text: string) {
-        if (this.$refs.tooltipObjectMap) {
-            this.$refs.tooltipObjectMap.innerHTML = text
-            this.$refs.tooltipObjectMap.style.display = 'block'
-        }
+        if (!this.$refs.tooltipObjectMap) return
+
+        this.$refs.tooltipObjectMap.innerHTML = text
+        this.$refs.tooltipObjectMap.style.display = 'block'
 
         window.addEventListener('mousemove', this.moveTooltip)
     }
 
     hideObjectTooltip() {
-        if (this.$refs.tooltipObjectMap) {
-            this.$refs.tooltipObjectMap.style.display = 'none'
-        }
+        if (!this.$refs.tooltipObjectMap) return
+
+        this.$refs.tooltipObjectMap.style.display = 'none'
 
         window.removeEventListener('mousemove', this.moveTooltip)
     }
 
-    moveTooltip(event: any) {
-        if (this.$refs.tooltipObjectMap) {
-            this.$refs.tooltipObjectMap.style.left = event.layerX - 20 + 'px'
-            this.$refs.tooltipObjectMap.style.top = event.layerY - 45 + 'px'
-        }
+    moveTooltip(event: MouseEvent) {
+        if (!this.$refs.tooltipObjectMap) return
+
+        const top = event.offsetY - this.$refs.tooltipObjectMap.clientHeight - 15
+        this.$refs.tooltipObjectMap.style.left = `${event.offsetX - 20}px`
+        this.$refs.tooltipObjectMap.style.top = `${top}px`
     }
 
     openExcludeObjectDialog(name: string) {
