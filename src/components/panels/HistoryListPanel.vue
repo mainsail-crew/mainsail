@@ -518,7 +518,6 @@ import {
     mdiNotebookEdit,
     mdiNotebookPlus,
     mdiNotebook,
-    mdiDownload,
 } from '@mdi/js'
 @Component({
     components: { Panel },
