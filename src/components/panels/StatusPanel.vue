@@ -1,7 +1,7 @@
 <template>
     <div>
-        <min-settings-panel></min-settings-panel>
-        <klippy-state-panel></klippy-state-panel>
+        <min-settings-panel />
+        <klippy-state-panel />
         <panel
             v-if="klipperReadyForGui"
             :icon="mdiInformation"
@@ -16,7 +16,7 @@
                     :width="5"
                     :value="printPercent"
                     color="primary"
-                    class="mr-3"></v-progress-circular>
+                    class="mr-3" />
             </template>
             <template #buttons>
                 <v-btn
@@ -52,10 +52,8 @@
                     </v-list>
                 </v-menu>
             </template>
-            <status-panel-printstatus-thumbnail></status-panel-printstatus-thumbnail>
-            <status-panel-exclude-object
-                :show-dialog.sync="boolShowObjects"
-                @update:showDialog="updateShowDialog"></status-panel-exclude-object>
+            <status-panel-printstatus-thumbnail />
+            <status-panel-exclude-object :show-dialog.sync="boolShowObjects" @update:showDialog="updateShowDialog" />
             <status-panel-pause-at-layer-dialog :show-dialog.sync="boolShowPauseAtLayer" />
             <template v-if="print_stats_message">
                 <v-container>
@@ -68,7 +66,7 @@
                         </v-col>
                     </v-row>
                 </v-container>
-                <v-divider class="mt-0 mb-0"></v-divider>
+                <v-divider class="mt-0 mb-0" />
             </template>
             <template v-if="display_message">
                 <v-container>
@@ -86,7 +84,7 @@
                         </v-col>
                     </v-row>
                 </v-container>
-                <v-divider class="mt-0 mb-0"></v-divider>
+                <v-divider class="mt-0 mb-0" />
             </template>
             <v-tabs v-model="activeTab" fixed-tabs>
                 <v-tab v-if="current_filename" href="#status">{{ $t('Panels.StatusPanel.Status') }}</v-tab>
@@ -97,7 +95,7 @@
                     </v-badge>
                 </v-tab>
             </v-tabs>
-            <v-divider class="my-0"></v-divider>
+            <v-divider class="my-0" />
             <v-tabs-items v-model="activeTab" class="_border-radius">
                 <v-tab-item v-if="current_filename" value="status">
                     <status-panel-printstatus />

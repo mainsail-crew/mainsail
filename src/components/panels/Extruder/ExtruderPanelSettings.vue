@@ -6,7 +6,7 @@
             </v-btn>
         </template>
         <v-list>
-            <v-list-item class="minHeight36">
+            <v-list-item v-if="toolchangeMacros.length" class="minHeight36">
                 <v-checkbox
                     v-model="showTools"
                     class="mt-0"
@@ -27,7 +27,7 @@
                     hide-details
                     :label="$t('Panels.ExtruderControlPanel.PressureAdvance')" />
             </v-list-item>
-            <v-list-item class="minHeight36">
+            <v-list-item v-if="existsFirmwareRetraction" class="minHeight36">
                 <v-checkbox
                     v-model="showFirmwareRetraction"
                     class="mt-0"
@@ -50,8 +50,9 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiCog } from '@mdi/js'
+import ControlMixin from '@/components/mixins/control'
 @Component
-export default class ExtruderPanelSettings extends Mixins(BaseMixin) {
+export default class ExtruderPanelSettings extends Mixins(BaseMixin, ControlMixin) {
     mdiCog = mdiCog
 
     get showTools(): boolean {
