@@ -19,7 +19,7 @@ jobs:
 
       - name: Check package.json was changed
         id: changed-file-package-json
-        uses: tj-actions/changed-files@v23
+        uses: tj-actions/changed-files@v41
         with:
           sha: ${{ github.event.pull_request.head.sha }}
 
