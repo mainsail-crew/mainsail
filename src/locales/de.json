@@ -375,6 +375,7 @@
             "completed": "Abgeschlossen",
             "error": "Fehler",
             "in_progress": "In Arbeit",
+            "interrupted": "Unterbrochen",
             "klippy_disconnect": "Klippy getrennt",
             "klippy_shutdown": "Klippy heruntergefahren",
             "Others": "Sonstige",

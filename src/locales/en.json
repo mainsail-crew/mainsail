@@ -375,6 +375,7 @@
             "completed": "Completed",
             "error": "Error",
             "in_progress": "In progress",
+            "interrupted": "Interrupted",
             "klippy_disconnect": "Klippy disconnect",
             "klippy_shutdown": "Klippy shutdown",
             "Others": "Others",
