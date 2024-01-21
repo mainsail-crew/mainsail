@@ -79,11 +79,7 @@
             @closeDialog="closeDialog" />
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item v-if="!contextMenu.item.isPinned" @click="pinFile(contextMenu.item)">
-                    <v-icon class="mr-1">{{ mdiPin }}</v-icon>
-                    {{ $t('Files.Pin') }}
-                </v-list-item>
-                <v-list-item v-else @click="unPinFile(contextMenu.item)">
+                <v-list-item @click="unPinFile(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPinOff }}</v-icon>
                     {{ $t('Files.Unpin') }}
                 </v-list-item>
@@ -251,7 +247,6 @@ import {
     mdiRenameBox,
     mdiDelete,
     mdiCloseThick,
-    mdiPin,
     mdiPinOff,
 } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
@@ -288,7 +283,6 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     mdiRenameBox = mdiRenameBox
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
-    mdiPin = mdiPin
     mdiPinOff = mdiPinOff
 
     private deleteDialog = false
@@ -345,16 +339,18 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
 
     get gcodeFiles() {
         let gcodes = this.$store.getters['files/getAllGcodes'] ?? []
+        let pinnedFilenames = this.$store.state.gui.view.gcodefiles.pinnedFiles
         gcodes = gcodes
             .slice()
             .sort((a: FileStateGcodefile, b: FileStateGcodefile) => {
                 return b.modified.getTime() - a.modified.getTime()
             })
-            .slice(0, 5)
+            .filter((f: FileStateGcodefile) => pinnedFilenames.includes(f.filename))
 
         const requestItems = gcodes.filter(
             (file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled
         )
+
         requestItems.forEach((file: FileStateGcodefile) => {
             this.$store.dispatch('files/requestMetadata', {
                 filename: 'gcodes/' + file.filename,
@@ -509,10 +505,6 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         const href = this.apiUrl + '/server/files/gcodes/' + encodeURI(item.filename)
 
         window.open(href)
-    }
-
-    pinFile(item: FileStateFile) {
-        this.$store.dispatch('gui/addPinnedFile', item.filename)
     }
 
     unPinFile(item: FileStateFile) {

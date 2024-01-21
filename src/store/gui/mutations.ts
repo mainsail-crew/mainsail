@@ -43,6 +43,16 @@ export const mutations: MutationTree<GuiState> = {
         Vue.set(state.view.gcodefiles, 'hideMetadataColumns', array)
     },
 
+    addPinnedFile(state, value) {
+        const array = [value, ...state.view.gcodefiles.pinnedFiles]
+        Vue.set(state.view.gcodefiles, 'pinnedFiles', array)
+    },
+
+    removePinnedFile(state, value) {
+        const array = state.view.gcodefiles.pinnedFiles.filter((n) => n !== value)
+        Vue.set(state.view.gcodefiles, 'pinnedFiles', array)
+    },
+
     setGcodefilesShowHiddenFiles(state, value) {
         Vue.set(state.view.gcodefiles, 'showHiddenFiles', value)
     },

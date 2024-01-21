@@ -8,6 +8,7 @@ import {
 import { GetterTree } from 'vuex'
 import { FileState, FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
+import store from '@/store'
 
 // eslint-disable-next-line
 export const getters: GetterTree<FileState, any> = {
@@ -183,6 +184,7 @@ export const getters: GetterTree<FileState, any> = {
                     }
                 }
 
+                tmp.isPinned = store?.state?.gui?.view.gcodefiles.pinnedFiles.some((f) => f === tmp.filename) || false
                 if (boolShowPrintedFiles) output.push(tmp)
                 else if (tmp.count_printed === 0) output.push(tmp)
             })

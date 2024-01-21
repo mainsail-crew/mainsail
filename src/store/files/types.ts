@@ -43,6 +43,7 @@ export interface FileStateFile {
 }
 
 export interface FileStateGcodefile extends FileStateFile {
+    isPinned?: boolean
     preheat_gcode: string | null
     small_thumbnail: string | null
     big_thumbnail: string | null
