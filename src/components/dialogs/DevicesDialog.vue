@@ -30,18 +30,22 @@
                 </v-btn>
             </template>
             <v-tabs v-model="tab" fixed-tabs>
-                <v-tab v-for="tab in tabs" :key="tab.name">{{ tab.content }}</v-tab>
+                <v-tab v-for="tab in tabs" :key="tab.tab">{{ tab.title }}</v-tab>
             </v-tabs>
-            <v-tabs-items v-model="tab">
-                <v-tab-item key="usb">
-                    <devices-dialog-usb :hide-system-entries="hideSystemEntries" />
-                </v-tab-item>
-                <v-tab-item key="serial">
-                    <devices-dialog-serial :hide-system-entries="hideSystemEntries" />
-                </v-tab-item>
-                <v-tab-item key="can">can</v-tab-item>
-                <v-tab-item key="video">video</v-tab-item>
-            </v-tabs-items>
+            <overlay-scrollbars style="max-height: 400px; overflow-x: hidden">
+                <v-tabs-items v-model="tab">
+                    <v-tab-item v-for="canInterface in canInterfaces" :key="canInterface">
+                        <devices-dialog-can :hide-system-entries="hideSystemEntries" :name="canInterface" />
+                    </v-tab-item>
+                    <v-tab-item key="serial">
+                        <devices-dialog-serial :hide-system-entries="hideSystemEntries" />
+                    </v-tab-item>
+                    <v-tab-item key="usb">
+                        <devices-dialog-usb :hide-system-entries="hideSystemEntries" />
+                    </v-tab-item>
+                    <v-tab-item key="video">video</v-tab-item>
+                </v-tabs-items>
+            </overlay-scrollbars>
         </panel>
     </v-dialog>
 </template>
@@ -61,31 +65,39 @@ export default class DevicesDialog extends Mixins(BaseMixin) {
     mdiUsb = mdiUsb
     mdiCloseThick = mdiCloseThick
 
-    tab = 'usb'
+    tab = 'serial'
     hideSystemEntries = true
 
     @Prop({ type: Boolean, default: false }) showDialog!: boolean
 
     get tabs() {
-        return [
+        const output: { tab: string; title: string }[] = [
             {
-                name: 'usb',
-                content: 'USB',
+                tab: 'serial',
+                title: 'Serial',
             },
             {
-                name: 'serial',
-                content: 'Serial',
-            },
-            // only show CAN, when a device exists
-            {
-                name: 'can',
-                content: 'CAN',
+                tab: 'usb',
+                title: 'USB',
             },
             {
-                name: 'video',
-                content: 'Video',
+                tab: 'video',
+                title: 'Video',
             },
         ]
+
+        this.canInterfaces.forEach((name) => {
+            output.push({
+                tab: name,
+                title: name.toUpperCase(),
+            })
+        })
+
+        return output.sort((a, b) => a.title.localeCompare(b.title))
+    }
+
+    get canInterfaces() {
+        return Object.keys(this.$store.state.server.system_info?.canbus ?? {})
     }
 
     closePrompt() {

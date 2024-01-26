@@ -1,21 +1,29 @@
 <template>
-    <overlay-scrollbars style="max-height: 400px; overflow-x: hidden">
-        <v-card-text>
-            <v-row>
-                <v-col class="text-center">
-                    <v-btn :loading="loading" color="primary" @click="refresh">{{ $t('DevicesDialog.Refresh') }}</v-btn>
-                </v-col>
-            </v-row>
-            <v-row v-if="devices.length" class="mt-0">
-                <v-col>
-                    <devices-dialog-usb-device
-                        v-for="device in filteredDevices"
-                        :key="device.usb_location"
-                        :device="device" />
-                </v-col>
-            </v-row>
-        </v-card-text>
-    </overlay-scrollbars>
+    <v-card-text>
+        <v-row>
+            <v-col class="text-center">
+                <v-btn :loading="loading" color="primary" @click="refresh">{{ $t('DevicesDialog.Refresh') }}</v-btn>
+            </v-col>
+        </v-row>
+        <v-row v-if="filteredDevices.length" class="mt-0">
+            <v-col>
+                <devices-dialog-usb-device
+                    v-for="device in filteredDevices"
+                    :key="device.usb_location"
+                    :device="device" />
+            </v-col>
+        </v-row>
+        <v-row v-else-if="loaded" class="mt-0">
+            <v-col class="col-8 mx-auto">
+                <p class="text-center text--disabled mb-0">{{ $t('DevicesDialog.NoDeviceFound') }}</p>
+            </v-col>
+        </v-row>
+        <v-row v-else class="mt-0">
+            <v-col class="col-8 mx-auto">
+                <p class="text-center text--disabled mb-0">{{ $t('DevicesDialog.ClickRefresh') }}</p>
+            </v-col>
+        </v-row>
+    </v-card-text>
 </template>
 
 <script lang="ts">
@@ -40,6 +48,7 @@ export interface UsbDevice {
 export default class DevicesDialogUsb extends Mixins(BaseMixin) {
     devices: UsbDevice[] = []
     loading = false
+    loaded = false
 
     @Prop({ type: Boolean, default: false }) hideSystemEntries!: boolean
 
@@ -60,9 +69,8 @@ export default class DevicesDialogUsb extends Mixins(BaseMixin) {
             .then((res) => res.json())
             .then((res) => res.result?.usb_devices ?? [])
 
-        window.console.log(this.devices)
-
         this.loading = false
+        this.loaded = true
     }
 }
 </script>
