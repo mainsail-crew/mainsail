@@ -351,7 +351,7 @@
         "Jobs": "Job",
         "LastModified": "Sidst ændret",
         "LayerHeight": "Laghøjde",
-        "LoadCompleteHistory":"Indlæs komplet historik",
+        "LoadCompleteHistory": "Indlæs komplet historik",
         "LongestPrinttime": "Længste print",
         "Note": "Note",
         "ObjectHeight": "Objekt Højde",
@@ -545,7 +545,7 @@
             "ExtrusionFactor": "Ekstruderingsfaktor",
             "ExtrusionFeedrate": "Ekstruderingsfødehastighed",
             "FilamentLength": "Filamentlængde",
-            "FirmwareRetraction":"Firwmare Retraction",
+            "FirmwareRetraction": "Firwmare Retraction",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Retract længde",
                 "RetractSpeed": "Retract hastighed",
