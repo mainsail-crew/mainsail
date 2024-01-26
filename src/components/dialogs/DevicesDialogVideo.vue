@@ -66,6 +66,8 @@ export default class DevicesDialogVideo extends Mixins(BaseMixin) {
     get filteredV4l2Devices() {
         return this.v4l2Devices.filter((device) => {
             if (this.hideSystemEntries) {
+                if (this.libcameraDevices.length === 0 && device.hardware_bus.endsWith('csi')) return true
+
                 return !device.hardware_bus.startsWith('platform:')
             }
 
@@ -82,8 +84,6 @@ export default class DevicesDialogVideo extends Mixins(BaseMixin) {
 
         this.v4l2Devices = result.v4l2_devices ?? []
         this.libcameraDevices = result.libcamera_devices ?? []
-
-        window.console.log(result)
 
         this.loading = false
         this.loaded = true
