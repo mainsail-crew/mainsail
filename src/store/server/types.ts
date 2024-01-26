@@ -11,6 +11,7 @@ export interface ServerState {
     klippy_message: string
     components: string[]
     failed_components: string[]
+    failed_init_components: string[]
     warnings: string[]
     registered_directories: string[]
     events: ServerStateEvent[]
@@ -69,6 +70,13 @@ export interface ServerStateEvent {
     type: string
     message: string
     formatMessage: string | string[]
+}
+
+export interface ServerStateEventPrompt {
+    date: Date
+    type: string
+    message: string
+    children?: ServerStateEventPrompt[]
 }
 
 export interface ServerStateCpuInfo {

@@ -1,223 +1,78 @@
-<style scoped></style>
-
 <template>
-    <div>
-        <v-card flat>
-            <v-card-text>
-                <v-form ref="formControlExtruder">
-                    <!-- TOOLHEAD CONTROL SETTINGS -->
-                    <div class="d-flex align-center">
-                        <v-icon style="opacity: 0.7">{{ mdiGamepad }}</v-icon>
-                        <v-card-title class="mx-n2">
-                            {{ $t('Panels.ToolheadControlPanel.Headline') }}
-                        </v-card-title>
-                        <v-divider class="ml-3"></v-divider>
-                    </div>
-                    <settings-row :title="$t('Settings.ControlTab.Style').toString()">
-                        <v-select
-                            v-model="controlStyle"
-                            :items="controlStyles"
-                            outlined
-                            dense
-                            hide-details
-                            attach></v-select>
+    <v-card flat>
+        <v-card-text>
+            <v-form ref="formControlExtruder">
+                <!-- TOOLHEAD CONTROL SETTINGS -->
+                <div class="d-flex align-center">
+                    <v-icon style="opacity: 0.7">{{ mdiGamepad }}</v-icon>
+                    <v-card-title class="mx-n2">
+                        {{ $t('Panels.ToolheadControlPanel.Headline') }}
+                    </v-card-title>
+                    <v-divider class="ml-3" />
+                </div>
+                <settings-row :title="$t('Settings.ControlTab.Style')">
+                    <v-select v-model="controlStyle" :items="controlStyles" outlined dense hide-details attach />
+                </settings-row>
+                <v-divider class="my-2" />
+                <template v-if="['circle', 'cross'].includes(controlStyle) && actionOptions.length > 1">
+                    <settings-row :title="'Overwrite action button'">
+                        <v-select v-model="actionButton" :items="actionOptions" outlined dense hide-details attach />
                     </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                    <template v-if="['circle', 'cross'].includes(controlStyle) && actionOptions.length > 1">
-                        <settings-row :title="'Overwrite action button'">
-                            <v-select
-                                v-model="actionButton"
-                                :items="actionOptions"
-                                outlined
-                                dense
-                                hide-details
-                                attach></v-select>
-                        </settings-row>
-                        <v-divider class="my-2"></v-divider>
-                    </template>
-                    <settings-row
-                        :title="$t('Settings.ControlTab.HideDuringPrint').toString()"
-                        :dynamic-slot-width="true">
-                        <v-switch v-model="hideDuringPrint" hide-details class="mt-0"></v-switch>
+                    <v-divider class="my-2" />
+                </template>
+                <settings-row :title="$t('Settings.ControlTab.HideDuringPrint')" :dynamic-slot-width="true">
+                    <v-switch v-model="hideDuringPrint" hide-details class="mt-0" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row :title="$t('Settings.ControlTab.EnableXYHoming')" :dynamic-slot-width="true">
+                    <v-switch v-model="enableXYHoming" hide-details class="mt-0" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <template v-if="['circle', 'cross'].includes(controlStyle)">
+                    <settings-row :title="$t('Settings.ControlTab.InvertXMovement')" :dynamic-slot-width="true">
+                        <v-switch v-model="reverseX" hide-details class="mt-0" />
                     </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                    <settings-row
-                        :title="$t('Settings.ControlTab.EnableXYHoming').toString()"
-                        :dynamic-slot-width="true">
-                        <v-switch v-model="enableXYHoming" hide-details class="mt-0"></v-switch>
+                    <v-divider class="my-2" />
+                    <settings-row :title="$t('Settings.ControlTab.InvertYMovement')" :dynamic-slot-width="true">
+                        <v-switch v-model="reverseY" hide-details class="mt-0" />
                     </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                    <template v-if="['circle', 'cross'].includes(controlStyle)">
-                        <settings-row
-                            :title="$t('Settings.ControlTab.InvertXMovement').toString()"
-                            :dynamic-slot-width="true">
-                            <v-switch v-model="reverseX" hide-details class="mt-0"></v-switch>
-                        </settings-row>
-                        <v-divider class="my-2"></v-divider>
-                        <settings-row
-                            :title="$t('Settings.ControlTab.InvertYMovement').toString()"
-                            :dynamic-slot-width="true">
-                            <v-switch v-model="reverseY" hide-details class="mt-0"></v-switch>
-                        </settings-row>
-                        <v-divider class="my-2"></v-divider>
-                        <settings-row
-                            :title="$t('Settings.ControlTab.InvertZMovement').toString()"
-                            :dynamic-slot-width="true">
-                            <v-switch v-model="reverseZ" hide-details class="mt-0"></v-switch>
-                        </settings-row>
-                        <v-divider class="my-2"></v-divider>
-                    </template>
-                    <settings-row :title="$t('Settings.ControlTab.SpeedXY').toString()">
-                        <v-text-field
-                            v-model="feedrateXY"
-                            type="number"
-                            suffix="mm/s"
-                            hide-details="auto"
-                            :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
-                            outlined
-                            dense
-                            hide-spin-buttons
-                            @blur="blurFeedrateXY"></v-text-field>
+                    <v-divider class="my-2" />
+                    <settings-row :title="$t('Settings.ControlTab.InvertZMovement')" :dynamic-slot-width="true">
+                        <v-switch v-model="reverseZ" hide-details class="mt-0" />
                     </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.SpeedZ').toString()">
-                        <v-text-field
-                            v-model="feedrateZ"
-                            type="number"
-                            suffix="mm/s"
-                            hide-details="auto"
-                            :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
-                            outlined
-                            dense
-                            hide-spin-buttons
-                            @blur="blurFeedrateZ"></v-text-field>
-                    </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                    <!-- CONTROL STYLE CROSS SPECIFICS -->
-                    <template v-if="controlStyle === 'cross'">
-                        <settings-row
-                            :title="$t('Settings.ControlTab.MoveDistancesInMm').toString()"
-                            :mobile-second-row="true">
-                            <v-combobox
-                                v-model="stepsAll"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
-                                    (v) =>
-                                        v.length <= 9 ||
-                                        $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '9' }),
-                                ]"
-                                dense
-                                outlined
-                                hide-spin-buttons></v-combobox>
-                        </settings-row>
-                        <v-divider class="my-2"></v-divider>
-                    </template>
-                    <!-- CONTROL STYLE CIRCLE SPECIFICS -->
-                    <template v-else-if="controlStyle === 'circle'">
-                        <settings-row
-                            :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()"
-                            :mobile-second-row="true">
-                            <v-combobox
-                                v-model="stepsCircleXY"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
-                                    (v) => v.length <= 4 || $t('Settings.ControlTab.MaximumValues', { maximum: '4' }),
-                                ]"
-                                dense
-                                outlined
-                                hide-spin-buttons></v-combobox>
-                        </settings-row>
-                        <v-divider class="my-2"></v-divider>
-                        <settings-row
-                            :title="$t('Settings.ControlTab.MoveDistancesZInMm').toString()"
-                            :mobile-second-row="true">
-                            <v-combobox
-                                v-model="stepsCircleZ"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
-                                    (v) => v.length <= 4 || $t('Settings.ControlTab.MaximumValues', { maximum: '4' }),
-                                ]"
-                                dense
-                                outlined
-                                hide-spin-buttons></v-combobox>
-                        </settings-row>
-                        <v-divider class="my-2"></v-divider>
-                    </template>
-                    <!-- CONTROL STYLE BARS SPECIFICS -->
-                    <template v-else>
-                        <settings-row
-                            :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()"
-                            :mobile-second-row="true">
-                            <v-combobox
-                                v-model="stepsXY"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
-                                    (v) =>
-                                        v.length <= 3 ||
-                                        $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '3' }),
-                                ]"
-                                dense
-                                outlined
-                                hide-spin-buttons></v-combobox>
-                        </settings-row>
-                        <v-divider class="my-2"></v-divider>
-                        <settings-row
-                            :title="$t('Settings.ControlTab.MoveDistancesZInMm').toString()"
-                            :mobile-second-row="true">
-                            <v-combobox
-                                v-model="stepsZ"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
-                                    (v) =>
-                                        v.length <= 3 ||
-                                        $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '3' }),
-                                ]"
-                                dense
-                                outlined
-                                hide-spin-buttons></v-combobox>
-                        </settings-row>
-                        <v-divider class="my-2"></v-divider>
-                    </template>
-                    <settings-row
-                        :title="$t('Settings.ControlTab.ZOffsetIncrements').toString()"
-                        :mobile-second-row="true">
+                    <v-divider class="my-2" />
+                </template>
+                <settings-row :title="$t('Settings.ControlTab.SpeedXY')">
+                    <v-text-field
+                        v-model="feedrateXY"
+                        type="number"
+                        suffix="mm/s"
+                        hide-details="auto"
+                        :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
+                        outlined
+                        dense
+                        hide-spin-buttons
+                        @blur="blurFeedrateXY" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row :title="$t('Settings.ControlTab.SpeedZ')">
+                    <v-text-field
+                        v-model="feedrateZ"
+                        type="number"
+                        suffix="mm/s"
+                        hide-details="auto"
+                        :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
+                        outlined
+                        dense
+                        hide-spin-buttons
+                        @blur="blurFeedrateZ" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <!-- CONTROL STYLE CROSS SPECIFICS -->
+                <template v-if="controlStyle === 'cross'">
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesInMm')" :mobile-second-row="true">
                         <v-combobox
-                            v-model="offsetsZ"
+                            v-model="stepsAll"
                             hide-selected
                             hide-details="auto"
                             multiple
@@ -228,26 +83,61 @@
                             :rules="[
                                 (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
                                 (v) =>
-                                    v.length <= 4 ||
-                                    $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '4' }),
+                                    v.length <= 9 ||
+                                    $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '9' }),
                             ]"
                             dense
                             outlined
                             hide-spin-buttons />
                     </settings-row>
-                    <!-- EXTRUDER CONTROL SETTINGS -->
-                    <div class="d-flex align-center">
-                        <v-icon style="opacity: 0.7">{{ mdiPrinter3dNozzle }}</v-icon>
-                        <v-card-title class="mx-n2">
-                            {{ $t('Panels.ExtruderControlPanel.Headline') }}
-                        </v-card-title>
-                        <v-divider class="ml-3"></v-divider>
-                    </div>
-                    <settings-row
-                        :title="$t('Settings.ControlTab.MoveDistancesEInMm').toString()"
-                        :mobile-second-row="true">
+                    <v-divider class="my-2" />
+                </template>
+                <!-- CONTROL STYLE CIRCLE SPECIFICS -->
+                <template v-else-if="controlStyle === 'circle'">
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
                         <v-combobox
-                            v-model="feedamountsE"
+                            v-model="stepsCircleXY"
+                            hide-selected
+                            hide-details="auto"
+                            multiple
+                            small-chips
+                            :deletable-chips="true"
+                            append-icon=""
+                            type="number"
+                            :rules="[
+                                (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
+                                (v) => v.length <= 4 || $t('Settings.ControlTab.MaximumValues', { maximum: '4' }),
+                            ]"
+                            dense
+                            outlined
+                            hide-spin-buttons />
+                    </settings-row>
+                    <v-divider class="my-2" />
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
+                        <v-combobox
+                            v-model="stepsCircleZ"
+                            hide-selected
+                            hide-details="auto"
+                            multiple
+                            small-chips
+                            :deletable-chips="true"
+                            append-icon=""
+                            type="number"
+                            :rules="[
+                                (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
+                                (v) => v.length <= 4 || $t('Settings.ControlTab.MaximumValues', { maximum: '4' }),
+                            ]"
+                            dense
+                            outlined
+                            hide-spin-buttons />
+                    </settings-row>
+                    <v-divider class="my-2" />
+                </template>
+                <!-- CONTROL STYLE BARS SPECIFICS -->
+                <template v-else>
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
+                        <v-combobox
+                            v-model="stepsXY"
                             hide-selected
                             hide-details="auto"
                             multiple
@@ -258,17 +148,17 @@
                             :rules="[
                                 (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
                                 (v) =>
-                                    v.length <= 5 ||
-                                    $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '5' }),
+                                    v.length <= 3 ||
+                                    $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '3' }),
                             ]"
                             dense
                             outlined
-                            hide-spin-buttons></v-combobox>
+                            hide-spin-buttons />
                     </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.SpeedEInMms').toString()" :mobile-second-row="true">
+                    <v-divider class="my-2" />
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
                         <v-combobox
-                            v-model="feedratesE"
+                            v-model="stepsZ"
                             hide-selected
                             hide-details="auto"
                             multiple
@@ -279,24 +169,100 @@
                             :rules="[
                                 (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
                                 (v) =>
-                                    v.length <= 5 ||
-                                    $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '5' }),
+                                    v.length <= 3 ||
+                                    $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '3' }),
                             ]"
                             dense
                             outlined
-                            hide-spin-buttons></v-combobox>
+                            hide-spin-buttons />
                     </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                    <settings-row
-                        :title="$t('Settings.ControlTab.EstimatedExtrusionInfo').toString()"
-                        :sub-title="$t('Settings.ControlTab.EstimatedExtrusionInfoDescription').toString()"
-                        :dynamic-slot-width="true">
-                        <v-switch v-model="showEstimatedExtrusionInfo" hide-details class="mt-0"></v-switch>
-                    </settings-row>
-                </v-form>
-            </v-card-text>
-        </v-card>
-    </div>
+                    <v-divider class="my-2" />
+                </template>
+                <settings-row
+                    :title="$t('Settings.ControlTab.ZOffsetSaveOption')"
+                    :sub-title="$t('Settings.ControlTab.ZOffsetSaveOptionDescription')">
+                    <v-select
+                        v-model="offsetZSaveOption"
+                        :items="offsetZSaveOptions"
+                        class="mt-0"
+                        hide-details
+                        outlined
+                        dense />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row :title="$t('Settings.ControlTab.ZOffsetIncrements')" :mobile-second-row="true">
+                    <v-combobox
+                        v-model="offsetsZ"
+                        hide-selected
+                        hide-details="auto"
+                        multiple
+                        small-chips
+                        :deletable-chips="true"
+                        append-icon=""
+                        type="number"
+                        :rules="[
+                            (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
+                            (v) => v.length <= 4 || $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '4' }),
+                        ]"
+                        dense
+                        outlined
+                        hide-spin-buttons />
+                </settings-row>
+                <!-- EXTRUDER CONTROL SETTINGS -->
+                <div class="d-flex align-center">
+                    <v-icon style="opacity: 0.7">{{ mdiPrinter3dNozzle }}</v-icon>
+                    <v-card-title class="mx-n2">
+                        {{ $t('Panels.ExtruderControlPanel.Headline') }}
+                    </v-card-title>
+                    <v-divider class="ml-3" />
+                </div>
+                <settings-row :title="$t('Settings.ControlTab.MoveDistancesEInMm')" :mobile-second-row="true">
+                    <v-combobox
+                        v-model="feedamountsE"
+                        hide-selected
+                        hide-details="auto"
+                        multiple
+                        small-chips
+                        :deletable-chips="true"
+                        append-icon=""
+                        type="number"
+                        :rules="[
+                            (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
+                            (v) => v.length <= 5 || $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '5' }),
+                        ]"
+                        dense
+                        outlined
+                        hide-spin-buttons />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row :title="$t('Settings.ControlTab.SpeedEInMms')" :mobile-second-row="true">
+                    <v-combobox
+                        v-model="feedratesE"
+                        hide-selected
+                        hide-details="auto"
+                        multiple
+                        small-chips
+                        :deletable-chips="true"
+                        append-icon=""
+                        type="number"
+                        :rules="[
+                            (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
+                            (v) => v.length <= 5 || $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '5' }),
+                        ]"
+                        dense
+                        outlined
+                        hide-spin-buttons />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Settings.ControlTab.EstimatedExtrusionInfo')"
+                    :sub-title="$t('Settings.ControlTab.EstimatedExtrusionInfoDescription')"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="showEstimatedExtrusionInfo" hide-details class="mt-0" />
+                </settings-row>
+            </v-form>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script lang="ts">
@@ -305,11 +271,12 @@ import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiPrinter3dNozzle, mdiGamepad } from '@mdi/js'
+import ZoffsetMixin from '@/components/mixins/zoffset'
 
 @Component({
     components: { SettingsRow },
 })
-export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) {
+export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin, ZoffsetMixin) {
     mdiGamepad = mdiGamepad
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
 
@@ -563,6 +530,41 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
 
     set showEstimatedExtrusionInfo(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.showEstimatedExtrusionInfo', value: newVal })
+    }
+
+    get offsetZSaveOption() {
+        return this.$store.state.gui.control.offsetZSaveOption ?? null
+    }
+
+    set offsetZSaveOption(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.offsetZSaveOption', value: newVal })
+    }
+
+    get offsetZSaveOptions() {
+        const defaultValue = this.autoSaveZOffsetOption.replace(/Z_OFFSET_APPLY_/g, '')
+
+        const output: { value: string | null; text: string }[] = [
+            {
+                value: null,
+                text: `Auto (${defaultValue})`,
+            },
+        ]
+
+        if (this.existZOffsetApplyEndstop) {
+            output.push({
+                value: 'Z_OFFSET_APPLY_ENDSTOP',
+                text: 'ENDSTOP',
+            })
+        }
+
+        if (this.existZOffsetApplyProbe) {
+            output.push({
+                value: 'Z_OFFSET_APPLY_PROBE',
+                text: 'PROBE',
+            })
+        }
+
+        return output
     }
 
     blurFeedrateXY() {

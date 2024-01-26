@@ -145,6 +145,12 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                     if (!color) {
                         color = colorArray[colorNumber]
                         colorNumber++
+
+                        // fallback -> get random color
+                        if (color === undefined) {
+                            // color generator from https://css-tricks.com/snippets/javascript/random-hex-color/
+                            color = '#' + Math.floor(0xffffff * Math.random()).toString(16)
+                        }
                     }
                 }
 

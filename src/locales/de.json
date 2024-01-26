@@ -17,7 +17,9 @@
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
-                "MoonrakerFailedComponentDescription": "Beim Laden der Moonraker-Komponenten wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
+                "MoonrakerFailedComponentDescription": "Beim Laden der Moonraker-Komponente '{component}' wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
+                "MoonrakerFailedInitComponentDescription": "Beim Initialisieren der Moonraker-Komponente '{component}' wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}",
                 "MoonrakerWarning": "Moonraker Warnung",
                 "UnparsedConfigOption": "Nicht erkannte Config-Option '{option}: {value}' in Abschnitt [{section}] entdeckt. Dies kann eine Option sein, die nicht mehr verfügbar ist, oder das Ergebnis eines Moduls sein, das nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen.",
                 "UnparsedConfigSection": "Nicht erkannter Config-Abschnitt [{section}] gefunden. Dies kann das Ergebnis einer Komponente sein, die nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen."
@@ -349,6 +351,7 @@
         "Jobs": "Drucke",
         "LastModified": "Zuletzt geändert",
         "LayerHeight": "Schichthöhe",
+        "LoadCompleteHistory": "Lade vollständige Historie",
         "LongestPrinttime": "Druckzeit - längste",
         "Note": "Notiz",
         "ObjectHeight": "Objekthöhe",
@@ -379,8 +382,6 @@
         },
         "Table": "Tabelle",
         "TitleExportHistory": "Historie exportieren",
-        "TitleRefreshHistory": "Historie aktualisieren",
-        "TitleSettings": "Einstellungen",
         "TotalDuration": "Gesamtdauer",
         "TotalFilamentUsed": "Filament verwendet - gesamt",
         "TotalJobs": "Druckvorgänge - gesamt",
@@ -536,12 +537,15 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Erlaubt",
+            "CleanNozzle": "Düse reinigen",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrudieren",
+            "ExtruderControl": "Extruder Control",
             "ExtruderTempTooLow": "Extruder Temp. <",
             "ExtrusionFactor": "Extrusionsfaktor",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
             "FilamentLength": "Filamentlänge",
+            "FirmwareRetraction": "Firmware Rückzug",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Rückzugslänge",
                 "RetractSpeed": "Rückzuggeschwindigkeit",
@@ -550,14 +554,17 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Filament laden",
+            "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "SmoothTime": "Smooth Time"
             },
+            "PurgeFilament": "Filament reinigen",
             "Requested": "Angefordert",
             "Retract": "Rückzug",
             "TooLargeExtrusion": "Extrusion zu groß!",
+            "Tools": "Werkzeuge",
             "UnloadFilament": "Filament entladen"
         },
         "FarmPrinterPanel": {
@@ -580,6 +587,7 @@
             "MotionSettings": {
                 "Acceleration": "Beschleunigung",
                 "MaxAccelToDecel": "Max. Beschl. zu Verz.",
+                "MinimumCruiseRatio": "Min. Kreuzfahr Quote",
                 "SquareCornerVelocity": "Eck-Geschwindigkeit",
                 "Velocity": "Geschwindigkeit"
             }
@@ -612,8 +620,7 @@
             },
             "RunoutSensor": {
                 "Detected": "erkannt",
-                "Disabled": "deaktiviert",
-                "Empty": "Leer"
+                "Empty": "leer"
             }
         },
         "PowerControlPanel": {
@@ -668,7 +675,7 @@
             "Files": "Dateien",
             "Flow": "Fluss",
             "Headline": "Status",
-            "Jobqueue": "Warteschlange ({count})",
+            "Jobqueue": "Warteschlange",
             "JobqueueMoreFiles": "keine weiteren Aufträge | einen weiteren Auftrag | {count} weitere Aufträge",
             "Layer": "Schicht",
             "Max": "max",
@@ -728,13 +735,17 @@
         "ToolheadControlPanel": {
             "Absolute": "absolut",
             "ALL": "ALLE",
+            "ControlButtons": "Kontrollknöpfe",
+            "CoordinateFields": "Koordinatenfelder",
             "Headline": "Werkzeugkopf",
             "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
             "Position": "Position",
+            "PositionOutput": "Positionsausgabe",
             "QGL": "QGL",
             "Relative": "relativ",
             "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
             "SpeedFactor": "Geschwindigkeitsfaktor",
+            "ZOffset": "Z-Versatz",
             "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
@@ -853,6 +864,8 @@
             "Style": "Stil",
             "ValueGreaterThan": "Wert muss größer als {value} sein",
             "ZOffsetIncrements": "Schrittweiten Z-Versatz (in mm)",
+            "ZOffsetSaveOption": "Z-Versatz Speicheroption",
+            "ZOffsetSaveOptionDescription": "Wechsel die Option zum Speichern des Z-Versatzes.",
             "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
@@ -927,6 +940,18 @@
             "Restore": "Wiederherstellung",
             "RestoreDialog": "Bitte wähle alle Abschnitte aus, die du wiederherstellen möchtest:",
             "TimeFormat": "Zeitformat"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Farbschemen",
+            "Heightmap": "Höhenkarte",
+            "IsDefault": "(Standard)",
+            "Schemes": {
+                "GrayScale": "Graustufen",
+                "Hot": "Heiß",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Frühling"
+            }
         },
         "InterfaceSettings": "Interface Einstellungen",
         "MacrosTab": {
@@ -1132,6 +1157,10 @@
             "ScrewsTiltAdjustDialogDescription": "Zeige ein Hilfsfenster für SCREWS_TILT_CALCULATE an.",
             "TempchartHeight": "Temperatur-Chart Höhe",
             "TempchartHeightDescription": "Verändert die Höhe vom Temperatur-Chart auf dem Dashboard.",
+            "Theme": "Theme",
+            "ThemeDark": "Dunkel",
+            "ThemeDescription": "Ändern Sie das allgemeine Erscheinungsbild der Anwendung.",
+            "ThemeLight": "Hell",
             "UiSettings": "UI-Einstellungen"
         },
         "Update": "speichern",
@@ -1140,6 +1169,7 @@
             "CreateWebcam": "Erstelle Webcam",
             "EditCrowsnestConf": "crowsnest.conf bearbeiten",
             "EditWebcam": "Webcam bearbeiten",
+            "EnableAudio": "Ton einschalten",
             "FlipWebcam": "Webcam-Bild spiegeln:",
             "HideFps": "FPS-Anzeige verstecken",
             "Hlsstream": "HLS-Stream",
@@ -1170,6 +1200,7 @@
             "Vertically": "vertikal",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }

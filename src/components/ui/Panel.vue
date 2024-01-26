@@ -8,7 +8,8 @@
             :color="toolbarColor"
             :class="getToolbarClass"
             :height="panelToolbarHeight"
-            class="panel-toolbar">
+            class="panel-toolbar"
+            :style="additionalStyle">
             <slot name="buttons-left" />
             <v-toolbar-title class="d-flex align-center">
                 <slot v-if="hasIconSlot" name="icon" />
@@ -79,6 +80,10 @@ export default class Panel extends Mixins(BaseMixin) {
         if (this.collapsible) output += ' collapsible'
 
         return output
+    }
+
+    get additionalStyle() {
+        return this.$vuetify.theme.dark ? '' : 'border-bottom: 1px solid #A8A8A8'
     }
 }
 </script>

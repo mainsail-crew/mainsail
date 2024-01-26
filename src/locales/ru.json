@@ -607,7 +607,7 @@
             "Files": "Файлы",
             "Flow": "Поток",
             "Headline": "Статус",
-            "Jobqueue": "Очередь ({count})",
+            "Jobqueue": "Очередь",
             "JobqueueMoreFiles": "Нет больше задач | Еще одна задача | Еще {count} задач(и)",
             "Layer": "Слой",
             "Max": "макс.",

@@ -10,6 +10,7 @@ type StreamerTypes =
     | 'Uv4lMjpeg'
     | 'WebrtcCameraStreamer'
     | 'WebrtcMediaMTX'
+    | 'WebrtcGo2rtc'
 
 function getDynamicCamImport(componentName: StreamerTypes) {
     // split each webcam streamer into its own chunk
@@ -32,6 +33,8 @@ function getDynamicCamImport(componentName: StreamerTypes) {
             return () => import('@/components/webcams/streamers/WebrtcCameraStreamer.vue')
         case 'WebrtcMediaMTX':
             return () => import('@/components/webcams/streamers/WebrtcMediaMTX.vue')
+        case 'WebrtcGo2rtc':
+            return () => import('@/components/webcams/streamers/WebrtcGo2rtc.vue')
     }
 }
 

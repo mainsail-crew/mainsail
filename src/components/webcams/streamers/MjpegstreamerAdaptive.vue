@@ -1,15 +1,15 @@
 <template>
     <div style="position: relative" class="d-flex justify-center">
         <div v-if="!isLoaded" class="text-center py-5">
-            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            <v-progress-circular indeterminate color="primary" />
         </div>
         <canvas
-            ref="mjpegstreamerAdaptive"
+            ref="image"
             v-observe-visibility="viewportVisibilityChanged"
             width="600"
             height="400"
             :style="webcamStyle"
-            :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')"></canvas>
+            :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')" />
         <span v-if="isLoaded && showFpsCounter" class="webcamFpsOutput">
             {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
         </span>
@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
@@ -43,7 +43,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     private aspectRatio: null | number = null
 
     declare $refs: {
-        mjpegstreamerAdaptive: any
+        image: any
     }
 
     @Prop({ required: true }) declare camSettings: GuiWebcamStateWebcam
@@ -84,37 +84,35 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         return [90, 270].includes(this.camSettings.rotation ?? 0)
     }
 
+    get url() {
+        return this.convertUrl(this.camSettings?.snapshot_url, this.printerUrl)
+    }
+
     refreshFrame() {
-        if (this.isVisible) {
-            this.refresh = new Date().getTime()
-            this.setFrame()
-        }
+        if (!this.isVisible) return
+
+        this.refresh = new Date().getTime()
+        this.setFrame()
     }
 
     async setFrame() {
-        const baseUrl = this.camSettings.snapshot_url
-
-        let url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
-        if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
-
+        let url = new URL(this.url)
         url.searchParams.append('bypassCache', this.refresh.toString())
 
         this.request_start_time = performance.now()
         this.currentFPS = this.time > 0 ? Math.round(1000 / this.time) : 0
 
-        let canvas = this.$refs.mjpegstreamerAdaptive
+        let canvas = this.$refs.image
         if (canvas) {
             const ctx = canvas.getContext('2d')
             const frame: any = await this.loadImage(url.toString())
 
+            this.aspectRatio = frame.naturalWidth / frame.naturalHeight
+            if (this.rotate) this.aspectRatio = 1 / this.aspectRatio
+
+            // set canvas sizes
             canvas.width = canvas.clientWidth
-            if (this.rotate) {
-                if (this.aspectRatio === null) this.aspectRatio = frame.height / frame.width
-                canvas.height = canvas.clientWidth / this.aspectRatio
-            } else {
-                if (this.aspectRatio === null) this.aspectRatio = frame.width / frame.height
-                canvas.height = canvas.clientWidth * this.aspectRatio
-            }
+            canvas.height = canvas.clientWidth / this.aspectRatio
 
             if (this.rotate) {
                 const scale = canvas.height / frame.width
@@ -211,11 +209,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.isVisible = false
         clearTimeout(this.timer)
         this.timer = undefined
-    }
-
-    @Watch('camSettings', { immediate: true, deep: true })
-    camSettingsChanged() {
-        this.aspectRatio = null
     }
 }
 </script>

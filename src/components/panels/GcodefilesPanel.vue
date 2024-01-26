@@ -145,8 +145,11 @@
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
-                            <b>{{ $t('Files.CurrentPath') }}:</b>
-                            {{ currentPath || '/' }}
+                            <b class="mr-1">{{ $t('Files.CurrentPath') }}:</b>
+                            <path-navigation
+                                :path="currentPath"
+                                :base-directory-label="'/gcodes'"
+                                :on-segment-click="clickPathNavGoToDirectory" />
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
@@ -652,6 +655,7 @@ import {
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import ControlMixin from '@/components/mixins/control'
+import PathNavigation from '@/components/ui/PathNavigation.vue'
 
 interface contextMenu {
     shown: boolean
@@ -694,7 +698,7 @@ interface tableColumnSetting {
 }
 
 @Component({
-    components: { StartPrintDialog, Panel, SettingsRow, draggable },
+    components: { StartPrintDialog, Panel, SettingsRow, PathNavigation, draggable },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiChevronDown = mdiChevronDown
@@ -1231,11 +1235,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     refreshMetadata(data: FileStateGcodefile[]) {
         const items = data.filter((file) => !file.isDirectory && !file.metadataRequested && !file.metadataPulled)
-        items.forEach((file: FileStateGcodefile) => {
-            this.$store.dispatch('files/requestMetadata', {
+        this.$store.dispatch(
+            'files/requestMetadata',
+            items.map((file: FileStateGcodefile) => ({
                 filename: 'gcodes' + this.currentPath + '/' + file.filename,
-            })
-        })
+            }))
+        )
     }
 
     clickRow(item: FileStateGcodefile, force = false) {
@@ -1253,6 +1258,10 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     clickRowGoBack() {
         this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
+    }
+
+    clickPathNavGoToDirectory(segment: { location: string }) {
+        this.currentPath = segment.location
     }
 
     async addToQueue(item: FileStateGcodefile) {

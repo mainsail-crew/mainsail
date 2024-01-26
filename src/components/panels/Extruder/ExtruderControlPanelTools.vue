@@ -1,5 +1,5 @@
 <template>
-    <div v-if="toolchangeMacros.length > 1">
+    <div class="mb-3">
         <v-row v-for="(row, index) in rows" :key="'row_' + index" class="mt-0">
             <v-col>
                 <v-item-group class="_btn-group py-0 px-3">
@@ -13,28 +13,12 @@
 <script lang="ts">
 import { mdiPrinter3dNozzle } from '@mdi/js'
 import { Component, Mixins } from 'vue-property-decorator'
-import { PrinterStateMacro, PrinterStateToolchangeMacro } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 
 @Component({})
 export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
-
-    get macros() {
-        return this.$store.getters['printer/getMacros']
-    }
-
-    get toolchangeMacros(): PrinterStateToolchangeMacro[] {
-        return this.macros
-            .filter((macro: PrinterStateMacro) => macro.name.toUpperCase().match(/^T\d+/))
-            .sort((a: PrinterStateMacro, b: PrinterStateMacro) => {
-                const numberA = parseInt(a.name.slice(1))
-                const numberB = parseInt(b.name.slice(1))
-
-                return numberA - numberB
-            })
-    }
 
     get rows() {
         const cols = 6
@@ -81,5 +65,9 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     .v-btn:not(:first-child) {
         border-left-width: 0;
     }
+}
+
+html.theme--light ._btn-group .v-btn {
+    border-color: rgba(0, 0, 0, 0.12);
 }
 </style>

@@ -18,6 +18,8 @@
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the log file and fix the issue.",
+                "MoonrakerFailedInitComponentDescription": "An error was detected during initialization the moonraker component '{component}'. Please check the log file and fix the issue.",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}",
                 "MoonrakerWarning": "Moonraker warning",
                 "UnparsedConfigOption": "Unparsed config option '{option}: {value}' detected in section [{section}]. This may be an option no longer available or could be the result of a module that failed to load. In the future this will result in a startup error.",
                 "UnparsedConfigSection": "Unparsed config section [{section}] detected. This may be the result of a component that failed to load. In the future this will result in a startup error."
@@ -349,6 +351,7 @@
         "Jobs": "Jobs",
         "LastModified": "Last Modified",
         "LayerHeight": "Layer Height",
+        "LoadCompleteHistory": "Load complete history",
         "LongestPrinttime": "Longest Print Time",
         "Note": "Note",
         "ObjectHeight": "Object Height",
@@ -379,8 +382,6 @@
         },
         "Table": "Table",
         "TitleExportHistory": "Export History",
-        "TitleRefreshHistory": "Refresh History",
-        "TitleSettings": "Settings",
         "TotalDuration": "Total Time",
         "TotalFilamentUsed": "Total Filament Used",
         "TotalJobs": "Total Jobs",
@@ -536,12 +537,15 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
+            "CleanNozzle": "Clean Nozzle",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrude",
+            "ExtruderControl": "Extruder Control",
             "ExtruderTempTooLow": "Extruder temp. <",
             "ExtrusionFactor": "Extrusion factor",
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filament Length",
+            "FirmwareRetraction": "Firmware Retraction",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Retract Length",
                 "RetractSpeed": "Retract Speed",
@@ -550,14 +554,17 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Load Filament",
+            "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "SmoothTime": "Smooth Time"
             },
+            "PurgeFilament": "Purge Filament",
             "Requested": "Requested",
             "Retract": "Retract",
             "TooLargeExtrusion": "Extrusion too large!",
+            "Tools": "Tools",
             "UnloadFilament": "Unload Filament"
         },
         "FarmPrinterPanel": {
@@ -580,6 +587,7 @@
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. to Decel.",
+                "MinimumCruiseRatio": "Min. Cruise Ratio",
                 "SquareCornerVelocity": "Square Corner Velocity",
                 "Velocity": "Velocity"
             }
@@ -612,8 +620,7 @@
             },
             "RunoutSensor": {
                 "Detected": "detected",
-                "Disabled": "disabled",
-                "Empty": "Empty"
+                "Empty": "empty"
             }
         },
         "PowerControlPanel": {
@@ -668,7 +675,7 @@
             "Files": "Files",
             "Flow": "Flow",
             "Headline": "Status",
-            "Jobqueue": "Job Queue ({count})",
+            "Jobqueue": "Job Queue",
             "JobqueueMoreFiles": "no more jobs | one more job | {count} more jobs",
             "Layer": "Layer",
             "Max": "max",
@@ -728,13 +735,17 @@
         "ToolheadControlPanel": {
             "Absolute": "absolute",
             "ALL": "ALL",
+            "ControlButtons": "Control buttons",
+            "CoordinateFields": "Coordinate fields",
             "Headline": "Toolhead",
             "PleaseConfigureSteps": "Please configure steps",
             "Position": "Position",
+            "PositionOutput": "Position output",
             "QGL": "QGL",
             "Relative": "relative",
             "SettingsInterfaceControl": "Settings > Interface > Control",
             "SpeedFactor": "Speed factor",
+            "ZOffset": "Z-Offset",
             "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {
@@ -853,6 +864,8 @@
             "Style": "Style",
             "ValueGreaterThan": "Value has to be greater than {value}",
             "ZOffsetIncrements": "Z-Offset increments (in mm)",
+            "ZOffsetSaveOption": "Z-Offset save option",
+            "ZOffsetSaveOptionDescription": "Change the option to save the Z-Offset",
             "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
@@ -927,6 +940,18 @@
             "Restore": "Restore",
             "RestoreDialog": "Please select all the sections you want to restore:",
             "TimeFormat": "Time Format"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Color Schemes",
+            "Heightmap": "Heightmap",
+            "IsDefault": "(Default)",
+            "Schemes": {
+                "GrayScale": "Grayscale",
+                "Hot": "Hot",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Spring"
+            }
         },
         "InterfaceSettings": "Interface Settings",
         "MacrosTab": {
@@ -1132,6 +1157,10 @@
             "ScrewsTiltAdjustDialogDescription": "Display helper dialog for SCREWS_TILT_CALCULATE.",
             "TempchartHeight": "Height Temperature Chart",
             "TempchartHeightDescription": "Modify the height of the temperature chart on the Dashboard.",
+            "Theme": "Theme",
+            "ThemeDark": "Dark",
+            "ThemeDescription": "Change the overall look and feel of the application",
+            "ThemeLight": "Light",
             "UiSettings": "UI-Settings"
         },
         "Update": "update",
@@ -1140,6 +1169,7 @@
             "CreateWebcam": "Create Webcam",
             "EditCrowsnestConf": "Edit crowsnest.conf",
             "EditWebcam": "Edit Webcam",
+            "EnableAudio": "Enable audio",
             "FlipWebcam": "Flip webcam image:",
             "HideFps": "Hide FPS counter",
             "Hlsstream": "HLS Stream",
@@ -1170,6 +1200,7 @@
             "Vertically": "vertically",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }

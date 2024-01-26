@@ -2,6 +2,7 @@ import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { GuiNavigationState, GuiNavigationStateEntry } from './types'
 import Vue from 'vue'
+import { NaviPoint } from '@/components/mixins/navigation'
 
 export const mutations: MutationTree<GuiNavigationState> = {
     reset(state) {
@@ -34,9 +35,11 @@ export const mutations: MutationTree<GuiNavigationState> = {
         Vue.set(state, 'entries', entries)
     },
 
-    changeVisibility(state, payload: GuiNavigationStateEntry) {
+    changeVisibility(state, payload: NaviPoint) {
+        const title = payload.orgTitle ?? payload.title
+
         const index = state.entries.findIndex((entry) => {
-            return entry.type === payload.type && entry.title === payload.title
+            return entry.type === payload.type && entry.title === title
         })
 
         // update existing entry
@@ -48,7 +51,7 @@ export const mutations: MutationTree<GuiNavigationState> = {
         // create new entry
         const newEntry: GuiNavigationStateEntry = {
             type: payload.type,
-            title: payload.title,
+            title,
             visible: !payload.visible,
             position: payload.position,
         }

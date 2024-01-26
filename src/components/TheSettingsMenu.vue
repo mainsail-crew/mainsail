@@ -100,8 +100,11 @@ import {
     mdiWebcam,
     mdiDipSwitch,
     mdiMenu,
+    mdiGrid,
 } from '@mdi/js'
 import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneousTab.vue'
+import SettingsHeightmapTab from '@/components/settings/SettingsHeightmapTab.vue'
+
 @Component({
     components: {
         Panel,
@@ -119,6 +122,7 @@ import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneou
         SettingsTimelapseTab,
         SettingsMiscellaneousTab,
         SettingsNavigationTab,
+        SettingsHeightmapTab,
     },
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
@@ -202,6 +206,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 name: 'navigation',
                 title: this.$t('Settings.NavigationTab.Navigation'),
             },
+            {
+                icon: mdiGrid,
+                name: 'heightmap',
+                title: this.$t('Settings.HeightmapTab.Heightmap'),
+            },
         ]
 
         if (this.moonrakerComponents.includes('timelapse')) {
@@ -249,6 +258,10 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
 .settings-tabs-bar {
     border-right: 1px solid rgba(255, 255, 255, 0.12);
     height: 100%;
+}
+
+html.theme--light .settings-tabs-bar {
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .settings-tabs.height500 {

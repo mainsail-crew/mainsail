@@ -1,5 +1,4 @@
 {
-    "_last_update": "26.10.2023",
     "App": {
         "Notifications": {
             "BrowserWarnings": {
@@ -537,6 +536,7 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Autorisé",
+            "CleanNozzle": "Nettoyage de la buse",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrusion",
             "ExtruderTempTooLow": "Température d'extrusion trop basse",
@@ -556,6 +556,7 @@
                 "Extruder": "Extrudeur",
                 "SmoothTime": "Temps de lissage"
             },
+            "PurgeFilament": "Purge du filament",
             "Requested": "Demandé",
             "Retract": "Rétraction",
             "TooLargeExtrusion": "Extrusion trop importante!",
@@ -669,7 +670,7 @@
             "Files": "Fichiers",
             "Flow": "Débit",
             "Headline": "Statut",
-            "Jobqueue": "File d'attente ({count})",
+            "Jobqueue": "File d'attente",
             "JobqueueMoreFiles": "pas de travaux | un travail | {count} travaux",
             "Layer": "Couche",
             "Max": "max",
@@ -729,13 +730,17 @@
         "ToolheadControlPanel": {
             "Absolute": "absolue",
             "ALL": "Tous",
+            "ControlButtons": "Boutons de commande",
+            "CoordinateFields": "Champs de coordonnées",
             "Headline": "Tête d'impression",
             "PleaseConfigureSteps": "Veuillez configurer les Pas",
             "Position": "Position",
+            "PositionOutput": "Position de sortie",
             "QGL": "QGL",
             "Relative": "relative",
             "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
             "SpeedFactor": "Facteur de vitesse",
+            "ZOffset": "Offset Z",
             "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {
@@ -838,7 +843,7 @@
             "InvertXMovement": "Inverser le sens de déplacement de l'axe X",
             "InvertYMovement": "Inverser le sens de déplacement de l'axe Y",
             "InvertZMovement": "Inverser le sens de déplacement de l'axe Z",
-            "IsDefault": " (default)",
+            "IsDefault": " (défaut)",
             "MaximumValues": "Valeurs maximales: {maximum}",
             "MaximumValuesVisibility": "Maximum de {maximum} est recommandée pour une meilleure visibilité",
             "MinimumValues": "Valeurs minimales: {minimum}",
@@ -854,6 +859,8 @@
             "Style": "Style",
             "ValueGreaterThan": "La valeur doit être supérieure à {value}",
             "ZOffsetIncrements": "Increments Offset Z (en mm)",
+            "ZOffsetSaveOption": "Option de sauvegarde de l'Offset Z",
+            "ZOffsetSaveOptionDescription": "Modifier l'option d'enregistrement de l'Offset Z",
             "ZTiltAdjust": "Réglage du Z-Tilt{isDefault}"
         },
         "DashboardTab": {
@@ -928,6 +935,18 @@
             "Restore": "Restaurer",
             "RestoreDialog": "Veuillez sélectionner toutes les sections que vous souhaitez restaurer:",
             "TimeFormat": "Format de l'heure"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Schémas de couleurs",
+            "Heightmap": "Maillage",
+            "IsDefault": "(Défaut)",
+            "Schemes": {
+                "GrayScale": "Niveaux de gris",
+                "Hot": "Chaud",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Printemps"
+            }
         },
         "InterfaceSettings": "Réglages interface",
         "MacrosTab": {

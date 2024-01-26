@@ -1,5 +1,5 @@
 <template>
-    <v-container class="pb-1">
+    <v-container>
         <tool-slider
             :label="$t('Panels.ExtruderControlPanel.ExtrusionFactor')"
             :icon="mdiPrinter3dNozzleOutline"
