@@ -43,7 +43,9 @@
                     <v-tab-item key="usb">
                         <devices-dialog-usb :hide-system-entries="hideSystemEntries" />
                     </v-tab-item>
-                    <v-tab-item key="video">video</v-tab-item>
+                    <v-tab-item key="video">
+                        <devices-dialog-video :hide-system-entries="hideSystemEntries" />
+                    </v-tab-item>
                 </v-tabs-items>
             </overlay-scrollbars>
         </panel>
