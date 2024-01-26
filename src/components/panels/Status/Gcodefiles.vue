@@ -343,12 +343,12 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         const requestItems = gcodes.filter(
             (file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled
         )
-        requestItems.forEach((file: FileStateGcodefile) => {
-            this.$store.dispatch('files/requestMetadata', {
+        this.$store.dispatch(
+            'files/requestMetadata',
+            requestItems.map((file: FileStateGcodefile) => ({
                 filename: 'gcodes/' + file.filename,
-            })
-        })
-
+            }))
+        )
         return gcodes
     }
 
