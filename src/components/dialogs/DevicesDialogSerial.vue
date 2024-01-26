@@ -1,11 +1,11 @@
 <template>
     <v-card-text>
         <v-row>
-            <v-col>
-                <v-btn @click="refresh">Refresh</v-btn>
+            <v-col class="text-center">
+                <v-btn :loading="loading" color="primary" @click="refresh">{{ $t('DevicesDialog.Refresh') }}</v-btn>
             </v-col>
         </v-row>
-        <v-row v-if="devices.length">
+        <v-row v-if="filteredDevices.length" class="mt-0">
             <v-col>
                 <v-expansion-panels accordion>
                     <devices-dialog-serial-device
@@ -13,6 +13,16 @@
                         :key="device.path_by_hardware ?? device.device_path"
                         :device="device" />
                 </v-expansion-panels>
+            </v-col>
+        </v-row>
+        <v-row v-else-if="loaded" class="mt-0">
+            <v-col class="col-8 mx-auto">
+                <p class="text-center text--disabled mb-0">{{ $t('DevicesDialog.NoDeviceFound') }}</p>
+            </v-col>
+        </v-row>
+        <v-row v-else class="mt-0">
+            <v-col class="col-8 mx-auto">
+                <p class="text-center text--disabled mb-0">{{ $t('DevicesDialog.ClickRefresh') }}</p>
             </v-col>
         </v-row>
     </v-card-text>
@@ -35,6 +45,8 @@ export interface SerialDevice {
 @Component
 export default class DevicesDialogSerial extends Mixins(BaseMixin) {
     devices: SerialDevice[] = []
+    loading = false
+    loaded = false
 
     @Prop({ type: Boolean, default: false }) hideSystemEntries!: boolean
 
@@ -49,9 +61,14 @@ export default class DevicesDialogSerial extends Mixins(BaseMixin) {
     }
 
     async refresh() {
+        this.loading = true
+
         this.devices = await fetch(this.apiUrl + '/machine/peripherals/serial')
             .then((res) => res.json())
             .then((res) => res.result?.serial_devices ?? [])
+
+        this.loading = false
+        this.loaded = true
     }
 }
 </script>

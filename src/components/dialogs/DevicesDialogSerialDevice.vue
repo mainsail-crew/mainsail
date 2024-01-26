@@ -1,40 +1,73 @@
 <template>
-    <v-expansion-panel>
-        <v-expansion-panel-header>{{ name }}</v-expansion-panel-header>
-        <v-expansion-panel-content>
-            <v-row v-for="key in filteredKeys" :key="key">
-                <v-col cols="4" class="py-1">{{ key }}</v-col>
-                <v-col cols="8" class="py-1 text-right">{{ device[key] }}</v-col>
+    <v-card outlined class="mt-3 w-100">
+        <v-list-item three-line>
+            <v-list-item-content>
+                <div class="text-overline mb-2 d-flex flex-row">
+                    <span>{{ device.device_type.toUpperCase().replaceAll('_', ' ') }}</span>
+                    <v-spacer />
+                    <span>{{ device.driver_name }}</span>
+                </div>
+                <v-list-item-title class="text-h5 mb-0">{{ device.device_name }}</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+        <v-card-text>
+            <v-row>
+                <v-col>
+                    <v-text-field
+                        readonly
+                        dense
+                        outlined
+                        hide-details
+                        :append-icon="mdiContentCopy"
+                        :label="$t('DevicesDialog.DevicePath')"
+                        :value="device.device_path"
+                        @click:append="copy(device.device_path)" />
+                </v-col>
             </v-row>
-        </v-expansion-panel-content>
-    </v-expansion-panel>
+            <v-row v-if="device.path_by_id ?? false">
+                <v-col>
+                    <v-text-field
+                        readonly
+                        dense
+                        outlined
+                        hide-details
+                        :append-icon="mdiContentCopy"
+                        :label="$t('DevicesDialog.PathById')"
+                        :value="device.path_by_id"
+                        @click:append="copy(device.path_by_id)" />
+                </v-col>
+            </v-row>
+            <v-row v-if="device.path_by_hardware ?? false">
+                <v-col>
+                    <v-text-field
+                        readonly
+                        dense
+                        outlined
+                        hide-details
+                        :append-icon="mdiContentCopy"
+                        :label="$t('DevicesDialog.PathByHardware')"
+                        :value="device.path_by_hardware"
+                        @click:append="copy(device.path_by_hardware)" />
+                </v-col>
+            </v-row>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { SerialDevice } from '@/components/dialogs/DevicesDialogSerial.vue'
+import { mdiContentCopy } from '@mdi/js'
 
 @Component
 export default class DevicesDialogSerialDevice extends Mixins(BaseMixin) {
+    mdiContentCopy = mdiContentCopy
+
     @Prop({ type: Object, required: true }) device!: SerialDevice
 
-    get name() {
-        return this.device.device_name
-    }
-
-    get filteredKeys() {
-        const hiddenKeys = ['device_name']
-        let keys = Object.keys(this.device)
-
-        // filter hidden keys
-        keys = keys.filter((key) => !hiddenKeys.includes(key))
-
-        // filter empty values
-        //@ts-ignore
-        keys = keys.filter((key) => this.device[key])
-
-        return keys
+    copy(text: string) {
+        navigator.clipboard.writeText(text)
     }
 }
 </script>

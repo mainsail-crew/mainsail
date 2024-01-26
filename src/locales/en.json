@@ -147,8 +147,13 @@
         "SetupConsole": "Setup Console"
     },
     "DevicesDialog": {
+        "ClickRefresh": "Click on the refresh button to search for devices.",
+        "DevicePath": "Device path",
         "Headline": "Devices",
         "HideSystemEntries": "Hide system entries",
+        "NoDeviceFound": "No device found. Please check the connection and click on the refresh button.",
+        "PathByHardware": "Path by hardware",
+        "PathById": "Path by ID",
         "Refresh": "refresh"
     },
     "Dialogs": {
