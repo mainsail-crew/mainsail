@@ -146,6 +146,11 @@
         "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
     },
+    "DevicesDialog": {
+        "Headline": "Devices",
+        "HideSystemEntries": "Hide system entries",
+        "Refresh": "refresh"
+    },
     "Dialogs": {
         "StartPrint": {
             "Cancel": "Cancel",
@@ -158,6 +163,7 @@
     },
     "Editor": {
         "ConfigReference": "Config Reference",
+        "DeviceDialog": "Devices",
         "DontSave": "Don't save",
         "Downloading": "Downloading",
         "FailedSave": "{filename} could not be uploaded!",
