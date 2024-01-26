@@ -18,6 +18,8 @@
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "Der blev fundet en fejl under indlæsning af Moonraker komponenten '{component}'. Tjek logfilen og løs problemet.",
+                "MoonrakerFailedInitComponentDescription": "Der blev fundet en fejl under opstart af Moonraker komponenten '{component}'. Tjek logfilen og løs problemet.",
+                "MoonrakerInitComponent": "Starter Moonraker: {component}",
                 "MoonrakerWarning": "Moonraker advarsel",
                 "UnparsedConfigOption": "Upareret mulighed '{option}: {value}' fundet i sektionen: [{section}]. Denne mulighed er måske ikke længere tilgængelig, eller der kan være et problem under indlæsning af et modul. Dette vil resultere i en opstartsfejl.",
                 "UnparsedConfigSection": "Upareret konfigurationssektion [{section}] fundet. Dette kan være på grund af en fejl under indlæsning af en komponent. Dette vil resultere i en opstartsfejl."
@@ -349,6 +351,7 @@
         "Jobs": "Job",
         "LastModified": "Sidst ændret",
         "LayerHeight": "Laghøjde",
+        "LoadCompleteHistory":"Indlæs komplet historik",
         "LongestPrinttime": "Længste print",
         "Note": "Note",
         "ObjectHeight": "Objekt Højde",
@@ -379,8 +382,6 @@
         },
         "Table": "Tabel",
         "TitleExportHistory": "Export History",
-        "TitleRefreshHistory": "Opdater historik",
-        "TitleSettings": "Indstillinger",
         "TotalDuration": "Total varighed",
         "TotalFilamentUsed": "Filament brugt ialt",
         "TotalJobs": "Totale antal print",
@@ -536,12 +537,15 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Tilladt",
+            "CleanNozzle": "Rens dyse",
             "EstimatedExtrusion": "Estimeret ekstrudering",
             "Extrude": "Extrude",
+            "ExtruderControl": "Esktruder-kontrol",
             "ExtruderTempTooLow": "Hotend temp. <",
             "ExtrusionFactor": "Ekstruderingsfaktor",
             "ExtrusionFeedrate": "Ekstruderingsfødehastighed",
             "FilamentLength": "Filamentlængde",
+            "FirmwareRetraction":"Firwmare Retraction",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Retract længde",
                 "RetractSpeed": "Retract hastighed",
@@ -550,14 +554,17 @@
             },
             "Headline": "Ekstruder Kontrolpanel",
             "LoadFilament": "Fød filament",
+            "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
                 "Advance": "Advance",
                 "Extruder": "Ekstruder",
                 "SmoothTime": "Smooth Time"
             },
+            "PurgeFilament": "Udrens filament",
             "Requested": "Anmodet",
             "Retract": "Retract",
             "TooLargeExtrusion": "Ekstruderingen er for lang!",
+            "Tools": "Printhoveder",
             "UnloadFilament": "Fjern filament"
         },
         "FarmPrinterPanel": {
@@ -580,6 +587,7 @@
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Maks. accel. til decel.",
+                "MinimumCruiseRatio": "Minimum rulle forhold",
                 "SquareCornerVelocity": "Hastighed for 90° hjørne",
                 "Velocity": "Hastighed (Feedrate)"
             }
@@ -612,7 +620,6 @@
             },
             "RunoutSensor": {
                 "Detected": "Fundet",
-                "Disabled": "Deaktiveret",
                 "Empty": "Tom"
             }
         },
@@ -728,14 +735,18 @@
         "ToolheadControlPanel": {
             "Absolute": "absolut",
             "ALL": "Alle",
+            "ControlButtons": "Kontrol-knapper",
+            "CoordinateFields": "Koordinatfelter",
             "Headline": "Kontrolpanel",
             "PleaseConfigureSteps": "Konfigurer steps",
             "Position": "Position",
+            "PositionOutput": "Positionsoutput",
             "QGL": "QGL",
             "Relative": "relativ",
             "SettingsInterfaceControl": "Indstillinger > Interface > Control",
             "SpeedFactor": "Hastighed",
-            "ZTilt": "Z Tilt"
+            "ZOffset": "Z-Offset",
+            "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {
             "All": "Alle",
@@ -853,6 +864,8 @@
             "Style": "Stil",
             "ValueGreaterThan": "Værdi større end {value}",
             "ZOffsetIncrements": "Z-offset trin (i mm)",
+            "ZOffsetSaveOption": "Z-Offset Gem-mulighed",
+            "ZOffsetSaveOptionDescription": "Ændr metoden for 'gem Z-Offset'",
             "ZTiltAdjust": "Z-Tilt justering{isDefault}"
         },
         "DashboardTab": {
@@ -927,6 +940,18 @@
             "Restore": "Gendan",
             "RestoreDialog": "Vælg de sektioner du ønsker at gendanne fra backup:",
             "TimeFormat": "Tidsformat"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Farvetemaer",
+            "Heightmap": "Højdekort",
+            "IsDefault": "(Standard)",
+            "Schemes": {
+                "GrayScale": "Gråskala",
+                "Hot": "Varm",
+                "Hsv": "TMV",
+                "Portland": "Portland",
+                "Spring": "Forår"
+            }
         },
         "InterfaceSettings": "Interfaceindstillinger",
         "MacrosTab": {
@@ -1132,6 +1157,10 @@
             "ScrewsTiltAdjustDialogDescription": "Viser vindue til hjælp med Bed-skrue justeringer ved brug af proben.",
             "TempchartHeight": "Temperaturgrafens højde",
             "TempchartHeightDescription": "Ændrer højden på grafen i Temperaturvisningen.",
+            "Theme": "Tema",
+            "ThemeDark": "Mørkt",
+            "ThemeDescription": "Ændr grundfarverne og tonen af applikationen",
+            "ThemeLight": "Lyst",
             "UiSettings": "UI-indstillinger"
         },
         "Update": "Opdater",
@@ -1140,6 +1169,7 @@
             "CreateWebcam": "Nyt Webcam",
             "EditCrowsnestConf": "Redigér crowsnest.conf",
             "EditWebcam": "Rediger Webcam",
+            "EnableAudio": "Aktivér lyd",
             "FlipWebcam": "Vend webcam-billedet:",
             "HideFps": "Skjul FPS",
             "Hlsstream": "HLS Stream",
@@ -1170,6 +1200,7 @@
             "Vertically": "vertikalt",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
