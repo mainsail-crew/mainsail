@@ -4,6 +4,7 @@
             <v-list-item-content>
                 <div class="text-overline mb-2 d-flex flex-row">V4L2</div>
                 <v-list-item-title class="text-h5 mb-0">{{ device.camera_name }}</v-list-item-title>
+                <v-list-item-subtitle v-if="show_alt_name">{{ device.alt_name }}</v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
         <v-card-text>
@@ -61,6 +62,12 @@ export default class DevicesDialogVideoDeviceLibcamera extends Mixins(BaseMixin)
     mdiContentCopy = mdiContentCopy
 
     @Prop({ type: Object, required: true }) device!: V4l2Device
+
+    get show_alt_name() {
+        if (this.device.alt_name === null) return false
+
+        return this.device.alt_name !== this.device.camera_name
+    }
 
     copy(text: string) {
         navigator.clipboard.writeText(text)
