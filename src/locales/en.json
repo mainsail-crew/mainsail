@@ -1093,7 +1093,7 @@
             "RulesMin": "This value has to be minimum {min}!",
             "RulesPositive": "This value has to be positive!",
             "RulesRequired": "This value is required!",
-            "RulesZeroAndPositive": "This value has to be 0 or above!",
+            "RulesZeroAndPositive": "Value must be 0 or greater!",
             "SaveFrames": "Save Frames",
             "SaveFramesDescription": "Save the frames to a zip-file for external rendering",
             "StreamDelayCompensation": "Stream Delay Compensation",
