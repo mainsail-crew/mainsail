@@ -1235,11 +1235,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     refreshMetadata(data: FileStateGcodefile[]) {
         const items = data.filter((file) => !file.isDirectory && !file.metadataRequested && !file.metadataPulled)
-        items.forEach((file: FileStateGcodefile) => {
-            this.$store.dispatch('files/requestMetadata', {
+        this.$store.dispatch(
+            'files/requestMetadata',
+            items.map((file: FileStateGcodefile) => ({
                 filename: 'gcodes' + this.currentPath + '/' + file.filename,
-            })
-        })
+            }))
+        )
     }
 
     clickRow(item: FileStateGcodefile, force = false) {

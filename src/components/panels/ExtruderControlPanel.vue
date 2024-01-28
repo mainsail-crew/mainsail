@@ -180,7 +180,12 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get showFilamentMacros(): boolean {
-        return this.loadFilamentMacro !== undefined || this.unloadFilamentMacro !== undefined
+        return (
+            this.loadFilamentMacro !== undefined ||
+            this.unloadFilamentMacro !== undefined ||
+            this.purgeFilamentMacro !== undefined ||
+            this.cleanNozzleMacro !== undefined
+        )
     }
 
     get showTools(): boolean {
