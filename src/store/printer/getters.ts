@@ -2,7 +2,6 @@ import { checkKlipperConfigModules } from '@/store/variables'
 import { GetterTree } from 'vuex'
 import {
     PrinterState,
-    PrinterStateBedMesh,
     PrinterStateExtruder,
     PrinterStateExtruderStepper,
     PrinterStateFan,
