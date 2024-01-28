@@ -8,12 +8,12 @@
         <v-row v-if="libcameraDevices.length || filteredV4l2Devices.length" class="mt-0">
             <v-col>
                 <devices-dialog-video-device-libcamera
-                    v-for="device in libcameraDevices"
-                    :key="device.libcamera_id"
+                    v-for="(device, index) in libcameraDevices"
+                    :key="`libcamera_${device.libcamera_id}_${index}`"
                     :device="device" />
                 <devices-dialog-video-device-v4l2
-                    v-for="device in filteredV4l2Devices"
-                    :key="device.hardware_bus"
+                    v-for="(device, index) in filteredV4l2Devices"
+                    :key="`v4l2_${device.hardware_bus}_${index}`"
                     :device="device" />
             </v-col>
         </v-row>
