@@ -22,8 +22,8 @@
                 "UnparsedConfigOption": "Opzione di configurazione non inviata '{opzione}: {valore}' rilevata nella sezione [{sezione}]. Questa potrebbe essere un'opzione non più disponibile o potrebbe essere il risultato di un modulo che non riesce a caricarsi. In futuro questo comporterà un errore di avvio.",
                 "UnparsedConfigSection": "Rilevata la sezione di configurazione non inviata [{sezione}]. Questo potrebbe essere il risultato di un componente che non è riuscito a caricare. In futuro questo comporterà un errore di avvio."
             },
-            "Never": "mai",
-            "NextReboot": "prossimo riavvio",
+            "Never": "Mai",
+            "NextReboot": "Prossimo riavvio",
             "NoNotification": "Nessuna notifica disponibile",
             "Notifications": "Notifica",
             "Remind": "Ricorda:"
@@ -35,19 +35,19 @@
         },
         "Printers": "Stampanti",
         "TheServiceWorker": {
-            "DescriptionNeedUpdate": "La cache locale è obsoleta e deve essere aggiornata. Fare clic sul pulsante sottostante per aggiornare la cache.",
-            "TitleNeedUpdate": "PWA ha bisogno di aggiornamento",
-            "Update": "update"
+            "DescriptionNeedUpdate": "La cache locale è obsoleta e deve essere aggiornata. Clicca sul pulsante sottostante per aggiornare la cache.",
+            "TitleNeedUpdate": "PWA necessita di aggiornamento",
+            "Update": "Aggiornamento"
         },
         "ThrottledStates": {
-            "DescriptionCurrentlyThrottled": "Uno o più core ARM dell'rPI sono attualmente rallentati.",
-            "DescriptionFrequencyCapped": "La frequenza massima del processore ARM dell'rPI è attualmente limitata a 1,2 GHz.",
-            "DescriptionPreviouslyFrequencyCapped": "La frequenza massima del processore ARM dell'rPI è stata limitata almeno una volta a 1,2 GHz dall'ultima accensione.",
-            "DescriptionPreviouslyTemperatureLimited": "La temperatura del microcontrollore rPI (solo 3A+/3B+) è stata almeno una volta sopra il limite minimo (predefinito 60C) dall'ultima accensione.",
-            "DescriptionPreviouslyThrottled": "Uno o più core ARM dell'rPI sono stati rallentati almeno una volta dall'ultima accensione.",
-            "DescriptionPreviouslyUnderVolted": "La tensione di alimentazione dell'rPI è scesa al di sotto di 4,65V almeno una volta dall'ultima accensione.",
-            "DescriptionTemperatureLimitActive": "La temperatura del microcontrollore rPI (solo 3A+/3B+) è attualmente sopra il limite minimo (predefinito 60C).",
-            "DescriptionUnderVoltageDetected": "Tensione di alimentazione dell'rPI attualmente inferiore a 4,65V",
+            "DescriptionCurrentlyThrottled": "Uno o più core ARM dell'RPI sono attualmente rallentati.",
+            "DescriptionFrequencyCapped": "La frequenza massima del processore ARM dell'RPI è attualmente limitata a 1,2 GHz.",
+            "DescriptionPreviouslyFrequencyCapped": "La frequenza massima del processore ARM dell'RPI è stata limitata almeno una volta a 1,2 GHz dall'ultima accensione.",
+            "DescriptionPreviouslyTemperatureLimited": "La temperatura del microcontrollore RPI (solo 3A+/3B+) è stata almeno una volta sopra il limite minimo (predefinito 60C) dall'ultima accensione.",
+            "DescriptionPreviouslyThrottled": "Uno o più core ARM dell'RPI sono stati rallentati almeno una volta dall'ultima accensione.",
+            "DescriptionPreviouslyUnderVolted": "La tensione di alimentazione dell'RPI è scesa al di sotto di 4,65V almeno una volta dall'ultima accensione.",
+            "DescriptionTemperatureLimitActive": "La temperatura del microcontrollore RPI (solo 3A+/3B+) è attualmente sopra il limite minimo (predefinito 60C).",
+            "DescriptionUnderVoltageDetected": "Tensione di alimentazione dell'RPI attualmente inferiore a 4,65V",
             "TitleCurrentlyThrottled": "Attualmente Rallentato",
             "TitleFrequencyCapped": "Frequenza Limitata",
             "TitlePreviouslyFrequencyCapped": "Frequenza limitata in precedenza",
@@ -62,13 +62,13 @@
             "Error": "ERRORE",
             "Pause": "Pausa Stampa",
             "PrinterOff": "Spegni Stampante",
-            "Printing": "{percent}% Stampando - {filename}",
-            "PrintingETA": "{percent}% Stampando - ETA: {eta} - {filename}"
+            "Printing": "{percent}% stampato - {filename}",
+            "PrintingETA": "{percent}% stampato - ETA: {eta} - {filename}"
         },
         "TopBar": {
             "CannotUploadTheFile": "Impossibile caricare il file!",
             "EmergencyStop": "Arresto di Emergenza",
-            "SAVE_CONFIG": "SALVA CONFIG",
+            "SAVE_CONFIG": "SAVE_CONFIG",
             "Uploading": "Caricamento",
             "UploadOfFileSuccessful": "Caricamento di {file} riuscito!",
             "UploadPrint": "Carica e stampa"
@@ -150,7 +150,7 @@
             "DoYouWantToStartFilename": "Vuoi cominciare {filename}?",
             "DoYouWantToStartFilenameFilament": "Vuoi cominciare {filename} con il seguente filamento?",
             "Headline": "Inizio Lavoro",
-            "Print": "stampa",
+            "Print": "Stampa",
             "Timelapse": "Timelapse"
         }
     },
@@ -276,11 +276,11 @@
         "VoxelMode": "Modalità Voxel (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "interrompi",
+        "Abort": "Interrompi",
         "BedMeshCalibrate": "Calibrazione Bed Mesh",
         "BedMeshRemove": "Rimuovi Bed Mesh",
-        "Calibrate": "calibra",
-        "Clear": "cancella",
+        "Calibrate": "Calibra",
+        "Clear": "Cancella",
         "CurrentMesh": {
             "Headline": "Mesh Attuale",
             "Max": "Max",
@@ -306,13 +306,13 @@
         "Ok": "OK",
         "Probed": "Analizzato",
         "Profiles": "Profili",
-        "Remove": "eliminare",
-        "RemoveSaveDescription": "Il profilo bed_mesh è stato registrato come cancellato. Fare clic su SAVE_CONFIG per rimuoverlo dalla stampante.cfg e riavviare Klipper.",
+        "Remove": "Eliminare",
+        "RemoveSaveDescription": "Il profilo bed_mesh è stato registrato come cancellato. Clicca su SAVE_CONFIG per rimuoverlo dalla stampante.cfg e riavviare Klipper.",
         "Rename": "rinominare",
         "RenameBedMeshProfile": "Rinomina Profilo Bed Mesh",
         "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Scala gradiente",
-        "ScaleZMax": "Scala z-max.",
+        "ScaleZMax": "Scala Z-Max.",
         "TitleCalibrate": "Calibra nuova Bed Mesh",
         "TitleClear": "Cancella Bed Mesh",
         "TitleHomeAll": "Home - Tutti gli assi",
@@ -330,7 +330,7 @@
         "DeleteSingleJobQuestion": "Vuoi davvero eliminare il lavoro?",
         "Details": "Dettagli",
         "EditNote": "Modifica Nota",
-        "Empty": "vuota",
+        "Empty": "Vuota",
         "EndTime": "Ora di fine",
         "EstimatedFilament": "Filamento stimato",
         "EstimatedFilamentWeight": "Peso del Filamento stimato",
@@ -357,8 +357,8 @@
         "PrintTime": "Tempo Stampa",
         "PrinttimeAvg": "Tempo di stampa medio",
         "Reprint": "Ristampa",
-        "Save": "salva",
-        "Search": "cerca",
+        "Save": "Salva",
+        "Search": "Cerca",
         "SelectedFilamentUsed": "Utilizzo del Filamento selezionato",
         "SelectedJobs": "Lavori selezionati",
         "SelectedPrinttime": "Tempo di stampa selezionato",
@@ -439,7 +439,7 @@
             "Total": "Totale",
             "UploadFile": "Carica un File",
             "Uploading": "Caricamento",
-            "Used": "Usato"
+            "Used": "Utilizzato"
         },
         "EndstopPanel": {
             "Endstop": "Endstop",
@@ -449,8 +449,8 @@
             "TRIGGERED": "ATTIVATO"
         },
         "LogfilesPanel": {
-            "Accept": "accetta",
-            "Cancel": "cancella",
+            "Accept": "Accetta",
+            "Cancel": "Cancella",
             "Logfiles": "File di registro",
             "Rollover": "Reimposta i file registro",
             "RolloverDescription": "Selezionare i file di registro da inizializzare:",
@@ -478,7 +478,7 @@
                 "Temp": "Temp: {temp}°C",
                 "TempMax": "max: {temp}°C",
                 "TempMin": "min: {temp}°C",
-                "Transmitted": "Transmessi: {transmitted}",
+                "Transmitted": "Trasmessi: {transmitted}",
                 "Version": "Versione: {version}"
             }
         },
@@ -489,28 +489,28 @@
             "Close": "Chiudi",
             "CommitHistory": "Cronologia Commit",
             "Commits": "Commits",
-            "CommitsAvailable": "nessun commit disponibile | {count} commit disponibile | {count} commits disponibile",
+            "CommitsAvailable": "Nessun commit disponibile | {count} commit disponibile | {count} commits disponibile",
             "CommitsOnDate": "Commits in {date}",
-            "CommittedDaysAgo": "committed {days} giorni fa",
-            "CommittedHoursAgo": "committed {hours} ore fa",
-            "CommittedOnDate": "committed in {date}",
-            "CommittedYesterday": "committed ieri",
+            "CommittedDaysAgo": "Committed {days} giorni fa",
+            "CommittedHoursAgo": "Committed {hours} ore fa",
+            "CommittedOnDate": "Committed in {date}",
+            "CommittedYesterday": "Committed ieri",
             "ConfigChanges": "Config Changes",
-            "Corrupt": "corrotto",
+            "Corrupt": "Corrotto",
             "CountPackagesCanBeUpgraded": "{count} pacchetti possono essere aggiornati",
             "Detached": "detached",
             "Dirty": "dirty",
             "GenericUpdateQuestion": "Controllare la cronologia dei commit (se disponibile) e la pagina GitHub di questo progetto per vedere se sono necessarie modifiche manuali per questo aggiornamento.",
             "GitHubPage": "Pagina GitHub",
             "HardRecovery": "Hard Recovery",
-            "InitUpdateManager": "Il Gestore aggiornamenti non è ancora stato inizializzato. Questo è normale quando si avvia il sistema per la prima volta. Fare clic sul pulsante di aggiornamento per inizializzare tutti i componenti.",
+            "InitUpdateManager": "Il Gestore aggiornamenti non è ancora stato inizializzato. Questo è normale quando si avvia il sistema per la prima volta. Clicca sul pulsante di aggiornamento per inizializzare tutti i componenti.",
             "Invalid": "invalido",
             "IUnderstandTheRisks": "Sono a conoscenza dei rischi",
             "KlipperUpdateQuestionConfig": "Questo aggiornamento può contenere anche modifiche ai parametri di configurazione che devono essere modificati nel file printer.cfg; per i dettagli, consultare il registro delle modifiche.",
             "KlipperUpdateQuestionFirmware": "In questo modo si aggiorna il software host di Klipper. Le schede di controllo che eseguono il firmware di Klipper potrebbero dover essere flashate con un firmware ricompilato prima che la macchina possa essere rimessa in servizio.",
             "LinkToGithub": "Collegamento a GitHub",
             "MoonrakerUpdateQuestion": "Questa operazione aggiornerà l'API di Moonraker. Potrebbe essere necessario modificare il file moonraker.conf per continuare a utilizzare la macchina.",
-            "MoreCommitsInfo": "Qui possono essere visualizzati al massimo 30 commit. Per vedere tutti i commit, fare clic sul seguente collegamento:",
+            "MoreCommitsInfo": "Qui possono essere visualizzati al massimo 30 commit. Per vedere tutti i commit, clicca sul seguente collegamento:",
             "OSPackages": "Pacchetti OS",
             "SoftRecovery": "Soft Recovery",
             "StartUpdate": "Avviare l'aggiornamento",
@@ -521,15 +521,15 @@
             "UpdateAll": "Aggiorna tutti i componenti",
             "UpdateManager": "Update Manager",
             "UpdateWarning": "Avviso di aggiornamento: {name}",
-            "Upgrade": "upgrade",
+            "Upgrade": "Upgrade",
             "UpgradeableSystemPackages": "Pacchetti di sistema aggiornabili",
-            "UpToDate": "aggiornato",
+            "UpToDate": "Aggiornato",
             "WebClientUpdateQuestion": "In alcuni casi, l'aggiornamento del client Web potrebbe comportare modifiche che potrebbero causare incompatibilità. Per ulteriori informazioni, consultare le note di rilascio."
         }
     },
     "ManualProbe": {
-        "Abort": "interrompi",
-        "Accept": "accetta",
+        "Abort": "Interrompi",
+        "Accept": "Acetta",
         "Advanced": "Avanzato",
         "Headline": "Probe Manuale"
     },
@@ -551,9 +551,9 @@
             "Headline": "Estrusore",
             "LoadFilament": "Carica Filamento",
             "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
+                "Advance": "Pressure-Advance",
                 "Extruder": "Estrusore",
-                "SmoothTime": "Smooth Time"
+                "SmoothTime": "Smooth-Time"
             },
             "Requested": "Richiesto",
             "Retract": "Retrazione",
@@ -571,7 +571,7 @@
             "MoonrakerCannotConnect": "Moonraker non riesce a connettersi a Klipper!",
             "PowerOn": "Accensione",
             "PrinterSwitchedOff": "La stampante è spenta",
-            "PrinterSwitchedOffDescription": "La stampante è attualmente spenta e Klipper non può connettersi. Per accendere la stampante, fare clic sul pulsante qui sotto:",
+            "PrinterSwitchedOffDescription": "La stampante è attualmente spenta e Klipper non può connettersi. Per accendere la stampante, clicca sul pulsante qui sotto:",
             "Restart": "Riavvia",
             "ServiceReports": "Rapporti {service}"
         },
@@ -586,7 +586,7 @@
         },
         "MacrosPanel": {
             "Headline": "Macro",
-            "Send": "invia"
+            "Send": "Invia"
         },
         "MiniconsolePanel": {
             "Autoscroll": "Autoscorrimento",
@@ -640,10 +640,10 @@
             "NoSpools": "Nessuna bobina disponibile",
             "NoSpoolSelected": "Nessuna bobina selezionata. Selezionare una bobina o questa stampa non verrà tracciata.",
             "OpenSpoolManager": "apri il gestore delle bobine",
-            "Refresh": "aggiorna",
+            "Refresh": "Aggiorna",
             "Search": "Trova",
             "SelectSpool": "Seleziona Bobina",
-            "Today": "Today",
+            "Today": "Oggi",
             "TooLessFilament": "La bobina corrente potrebbe non avere abbastanza filamento per questa stampa. ({spoolWeight}g su {fileWeight}g)",
             "Weight": "Peso",
             "Yesterday": "Ieri"
@@ -657,7 +657,7 @@
             "Estimate": "Stima",
             "ETA": "Tempo stimato di fine stampa",
             "ExcludeObject": {
-                "Cancel": "cancella",
+                "Cancel": "Cancella",
                 "Excluded": "Escluso",
                 "ExcludeObject": "Escludi Oggetto",
                 "ExcludeObjectHeadline": "Escludi Oggetto",
@@ -671,12 +671,12 @@
             "Jobqueue": "Coda di lavoro",
             "JobqueueMoreFiles": "niente più lavori | resta un lavoro | restano {count} lavori",
             "Layer": "Layer",
-            "Max": "max",
+            "Max": "Max",
             "ObjectHeight": "Altezza Oggetto",
             "PauseAtLayer": {
-                "Abort": "interrompi",
-                "Accept": "accetta",
-                "AtLayer": "al Layer",
+                "Abort": "Interrompi",
+                "Accept": "Accetta",
+                "AtLayer": "Al Layer",
                 "Call": "Richiama",
                 "DescriptionPauseAtLayerActive": "Questa funzione è già attiva e chiamerà \"{call}\" al layer {layer}. Se si richiama nuovamente il comando, queste impostazioni verranno sovrascritte.",
                 "DescriptionPauseNextLayerActive": "Questa funzione è già attiva e chiamerà\"{call}\" al prossimo layer.",
@@ -751,8 +751,8 @@
             "Ok": "OK",
             "Save": "Salva",
             "SaveConfig": "SAVE CONFIG",
-            "SaveInfoDescription": "Il nuovo z-offset è stato calcolato e registrato. Fai clic su \"SAVE CONFIG\" per memorizzare il nuovo z-offset nel tuo printer.cfg e riavviare Klipper.",
-            "SaveInfoDescriptionPrint": "Il nuovo Z offset è stato calcolato e registrato. Dopo la stampa, fai clic su \"SAVE CONFIG\" nella barra in alto per salvarlo in printer.cfg e riavviare Klipper.",
+            "SaveInfoDescription": "Il nuovo z-offset è stato calcolato e registrato. Clicca su \"SAVE CONFIG\" per memorizzare il nuovo z-offset nel tuo printer.cfg e riavviare Klipper.",
+            "SaveInfoDescriptionPrint": "Il nuovo Z offset è stato calcolato e registrato. Dopo la stampa, clicca su \"SAVE CONFIG\" nella barra in alto per salvarlo in printer.cfg e riavviare Klipper.",
             "SaveInfoHeadline": "Informazione"
         }
     },
@@ -765,7 +765,7 @@
     },
     "Router": {
         "Console": "Console",
-        "Dashboard": "Cruscotto",
+        "Dashboard": "Dashboard",
         "G-Code Files": "File G-Code",
         "G-Code Viewer": "Visualizzatore G-Code",
         "Heightmap": "Mappa dell'altezza",
@@ -776,11 +776,11 @@
         "Webcam": "Webcam"
     },
     "ScrewsTiltAdjust": {
-        "Accept": "accetta",
+        "Accept": "Accetta",
         "Base": "Base",
         "ErrorText": "Qualcosa è andato storto durante il processo di rilevamento.",
         "Headline": "Screws tilt adjust",
-        "Retry": "riprova"
+        "Retry": "Riprova"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Aggiungi Stampante",
@@ -798,7 +798,7 @@
         "PortRequired": "Porta richiesta",
         "RememberToAdd": "Ricordati di aggiungere {cors} in moonraker.conf all'interno di 'cors_domains'.",
         "SelectPrinter": "Seleziona Stampante",
-        "TryAgain": "riprovare",
+        "TryAgain": "Riprova",
         "UpdatePrinter": "Aggiorna Stampante",
         "YouCanFindMore": "Puoi trovare maggiori dettagli su"
     },
@@ -806,7 +806,7 @@
         "Cancel": "Annulla",
         "Close": "Chiudi",
         "ConsoleTab": {
-            "AddFilter": "aggiungi filtro",
+            "AddFilter": "Aggiungi filtro",
             "Console": "Console",
             "CreateHeadline": "Crea filtro",
             "Direction": "Direzione",
@@ -832,8 +832,8 @@
             "Cross": "Croce",
             "EnableXYHoming": "Abilita l'homing combinato degli assi X e Y",
             "EstimatedExtrusionInfo": "Mostra informazioni stimate sull'estrusione",
-            "EstimatedExtrusionInfoDescription": "Mostra / Nascondi informazioni stimate in base alla quantità di estrusione e alla velocità di avanzamento",
-            "HideDuringPrint": "Hide axis controls during print",
+            "EstimatedExtrusionInfoDescription": "Mostra/Nascondi informazioni stimate in base alla quantità di estrusione e alla velocità di avanzamento",
+            "HideDuringPrint": "Nascondi il controllo degli assi durante la stampa",
             "InvertXMovement": "Inverti il movimento per l'asse X",
             "InvertYMovement": "Inverti il movimento per l'asse Y",
             "InvertZMovement": "Inverti il movimento per l'asse Z",
@@ -930,8 +930,8 @@
         },
         "InterfaceSettings": "Impostazioni dell'Interfaccia",
         "MacrosTab": {
-            "Add": "aggiungi",
-            "AddGroup": "aggiungi Gruppo",
+            "Add": "Aggiungi",
+            "AddGroup": "Aggiungi Gruppo",
             "AvailableMacros": "Macro Disponibili",
             "ChangeMacroColor": "Cambia il colore del bottone.",
             "Color": "Colore",
@@ -941,7 +941,7 @@
             "DeletedMacro": "Macro eliminata",
             "DeleteMacroFromGroup": "Elimina macro dal gruppo.",
             "EditGroup": "Modifica Gruppo",
-            "Error": "errore",
+            "Error": "Errore",
             "Expert": "Esperto",
             "General": "Generale",
             "Group": "Gruppo",
@@ -961,13 +961,13 @@
             "ShowInStateStandby": "Mostra/Nascondi se la stampante e in standby.",
             "Simple": "Semplice",
             "Status": "Stato",
-            "Success": "successo",
+            "Success": "Successo",
             "UnknownGroup": "Gruppo Sconosciuto",
-            "Warning": "attenzione"
+            "Warning": "Attenzione"
         },
         "MiscellaneousTab": {
-            "AddGroup": "aggiungi gruppo",
-            "AddPreset": "aggiungi preset",
+            "AddGroup": "Aggiungi gruppo",
+            "AddPreset": "Aggiungi preset",
             "Color": "Colore",
             "CreateGroup": "Crea grouppo",
             "CreatePreset": "Crea preset",
@@ -1093,7 +1093,7 @@
             "BoolBigThumbnail": "Grande anteprima",
             "BoolBigThumbnailDescription": "Mostra una grande anteprima nel pannello di stato durante una stampa.",
             "BoolHideUploadAndPrintButton": "Nascondi Bottone Carica e Stampa",
-            "BoolHideUploadAndPrintButtonDescription": "Mostra o nascondi il bottone \"Carica e Stampa\" nella barra in alto.",
+            "BoolHideUploadAndPrintButtonDescription": "Mostra/Nascondi il bottone \"Carica e Stampa\" nella barra in alto.",
             "ConfirmOnEmergencyStop": "Richiedi conferma all'arresto di emergenza",
             "ConfirmOnEmergencyStopDescription": "Mostra dialogo di conferma all'arresto di emergenza",
             "ConfirmOnPowerDeviceChange": "Richiedi conferma alle modifiche di alimentazione dispositivo",
@@ -1131,12 +1131,12 @@
             "ScrewsTiltAdjustDialog": "Finestra di dialogo per lo Screws Tilt Adjust",
             "ScrewsTiltAdjustDialogDescription": "Mostra dialoghi di aiuto per lo SCREWS_TILT_CALCULATE.",
             "TempchartHeight": "Grafico della temperatura in altezza",
-            "TempchartHeightDescription": "Modificare l'altezza del grafico della temperatura sul cruscotto.",
+            "TempchartHeightDescription": "Modificare l'altezza del grafico della temperatura sulla dashboard.",
             "UiSettings": "Impostazioni UI"
         },
-        "Update": "update",
+        "Update": "Update",
         "WebcamsTab": {
-            "AddWebcam": "aggiungi webcam",
+            "AddWebcam": "Aggiungi webcam",
             "CreateWebcam": "Crea Webcam",
             "EditCrowsnestConf": "Modifica crowsnest.conf",
             "EditWebcam": "Modifica Webcam",
@@ -1158,7 +1158,7 @@
             "MjpegstreamerAdaptive": "MJPEG-Streamer Adattivo (sperimentale)",
             "Name": "Nome",
             "NameAlreadyExists": "Nome già esistente",
-            "Required": "richiesto",
+            "Required": "Richiesto",
             "Rotate": "Ruota",
             "SaveWebcam": "Salva Webcam",
             "Service": "Servizio",
@@ -1209,11 +1209,11 @@
         "Rename": "Rinomina",
         "RenameDirectory": "Rinomina Directory",
         "RenameFile": "Rinomina File",
-        "Render": "render",
+        "Render": "Render",
         "RenderSettings": "Impostazioni Render",
         "SaveFrames": "Salva frames",
-        "Search": "cerca",
-        "StartRender": "avvia render",
+        "Search": "Cerca",
+        "StartRender": "Avvia Render",
         "Status": "Stato",
         "TargetFps": "FPS Target",
         "Targetlength": "Lunghezza target",
