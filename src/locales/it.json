@@ -478,7 +478,7 @@
                 "Temp": "Temp: {temp}°C",
                 "TempMax": "max: {temp}°C",
                 "TempMin": "min: {temp}°C",
-                "Transmitted": "Transmessi: {transmitted}",
+                "Transmitted": "Trasmessi: {transmitted}",
                 "Version": "Versione: {version}"
             }
         },
@@ -832,7 +832,7 @@
             "Cross": "Croce",
             "EnableXYHoming": "Abilita l'homing combinato degli assi X e Y",
             "EstimatedExtrusionInfo": "Mostra informazioni stimate sull'estrusione",
-            "EstimatedExtrusionInfoDescription": "Mostra / Nascondi informazioni stimate in base alla quantità di estrusione e alla velocità di avanzamento",
+            "EstimatedExtrusionInfoDescription": "Mostra/Nascondi informazioni stimate in base alla quantità di estrusione e alla velocità di avanzamento",
             "HideDuringPrint": "Hide axis controls during print",
             "InvertXMovement": "Inverti il movimento per l'asse X",
             "InvertYMovement": "Inverti il movimento per l'asse Y",
@@ -1093,7 +1093,7 @@
             "BoolBigThumbnail": "Grande anteprima",
             "BoolBigThumbnailDescription": "Mostra una grande anteprima nel pannello di stato durante una stampa.",
             "BoolHideUploadAndPrintButton": "Nascondi Bottone Carica e Stampa",
-            "BoolHideUploadAndPrintButtonDescription": "Mostra o nascondi il bottone \"Carica e Stampa\" nella barra in alto.",
+            "BoolHideUploadAndPrintButtonDescription": "Mostra/Nascondi il bottone \"Carica e Stampa\" nella barra in alto.",
             "ConfirmOnEmergencyStop": "Richiedi conferma all'arresto di emergenza",
             "ConfirmOnEmergencyStopDescription": "Mostra dialogo di conferma all'arresto di emergenza",
             "ConfirmOnPowerDeviceChange": "Richiedi conferma alle modifiche di alimentazione dispositivo",
