@@ -865,8 +865,8 @@
             "Style": "Stile",
             "ValueGreaterThan": "Il valore deve essere più grande di {value}",
             "ZOffsetIncrements": "Z-Offset incremento (in mm)",
-			"ZOffsetSaveOption": "Opzione salvataggio Z-Offset",
-            "ZOffsetSaveOptionDescription": Modificare l'opzione per salvare lo Z-Offset",
+            "ZOffsetSaveOption": "Opzione salvataggio Z-Offset",
+            "ZOffsetSaveOptionDescription": "Modificare l'opzione per salvare lo Z-Offset",
             "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
