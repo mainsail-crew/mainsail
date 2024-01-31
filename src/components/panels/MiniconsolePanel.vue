@@ -294,7 +294,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
                     commands.forEach(
                         (command) =>
                             (output +=
-                                '<a class="command blue--text font-weight-bold">' +
+                                '<a class="command font-weight-bold">' +
                                 command.command +
                                 '</a>: ' +
                                 command.description +

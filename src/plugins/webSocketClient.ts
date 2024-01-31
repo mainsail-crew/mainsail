@@ -32,14 +32,19 @@ export class WebSocketClient {
         // report error messages
         if (data.error?.message) {
             // only report errors, if not disconnected and no init component
-            if (data.error?.message !== 'Klippy Disconnected' && !wait?.action?.startsWith('server/')) {
+            if (data.error?.message !== 'Klippy Disconnected') {
                 window.console.error(`Response Error: ${data.error.message} (${wait?.action ?? 'no action'})`)
             }
 
             if (wait?.id) {
                 const modulename = wait.action?.split('/')[1] ?? null
 
-                if (modulename && wait.action?.startsWith('server/') && initableServerComponents.includes(modulename)) {
+                if (
+                    modulename &&
+                    wait.action?.startsWith('server/') &&
+                    initableServerComponents.includes(modulename) &&
+                    this.store?.state.socket?.initializationList.length
+                ) {
                     const component = wait.action.replace('server/', '').split('/')[0]
                     window.console.error(`init server component ${component} failed`)
                     this.store?.dispatch('server/addFailedInitComponent', component)
