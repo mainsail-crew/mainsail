@@ -21,11 +21,11 @@
                 </v-col>
             </v-row>
             <template v-if="identicalResolutions">
-                <v-row>
+                <v-row class="mt-0">
                     <v-col class="py-2" cols="4">{{ $t('DevicesDialog.Formats') }}</v-col>
                     <v-col class="py-2">{{ formats }}</v-col>
                 </v-row>
-                <v-row>
+                <v-row class="mt-0">
                     <v-col class="py-2" cols="4">{{ $t('DevicesDialog.Resolutions') }}</v-col>
                     <v-col class="py-2">{{ resolutions }}</v-col>
                 </v-row>
