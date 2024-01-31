@@ -45,6 +45,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiContentCopy } from '@mdi/js'
 import { LibcameraDevice } from '@/components/dialogs/DevicesDialogVideo.vue'
+import { copyToClipboard } from '@/plugins/helpers'
 
 @Component
 export default class DevicesDialogVideoDeviceLibcamera extends Mixins(BaseMixin) {
@@ -66,7 +67,7 @@ export default class DevicesDialogVideoDeviceLibcamera extends Mixins(BaseMixin)
     }
 
     copy(text: string) {
-        navigator.clipboard.writeText(text)
+        copyToClipboard(text)
     }
 }
 </script>

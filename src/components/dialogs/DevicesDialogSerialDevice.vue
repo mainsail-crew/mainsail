@@ -59,6 +59,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { SerialDevice } from '@/components/dialogs/DevicesDialogSerial.vue'
 import { mdiContentCopy } from '@mdi/js'
+import { copyToClipboard } from '@/plugins/helpers'
 
 @Component
 export default class DevicesDialogSerialDevice extends Mixins(BaseMixin) {
@@ -67,7 +68,7 @@ export default class DevicesDialogSerialDevice extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) device!: SerialDevice
 
     copy(text: string) {
-        navigator.clipboard.writeText(text)
+        copyToClipboard(text)
     }
 }
 </script>
