@@ -351,9 +351,9 @@
         "Jobs": "Processi di stampa",
         "LastModified": "Ultima Modifica",
         "LayerHeight": "Altezza del Layer",
-		"LoadCompleteHistory": "Carica la cronologia completa",
+        "LoadCompleteHistory": "Carica la cronologia completa",
         "LongestPrinttime": "Tempo di stampa più lungo",
-		"Note": "Nota",
+        "Note": "Nota",
         "ObjectHeight": "Altezza Oggetto",
         "PrintDuration": "Tempo Stampa",
         "PrintHistory": "Cronologia Stampa",
@@ -375,7 +375,7 @@
             "completed": "Completato",
             "error": "Errore",
             "in_progress": "In corso",
-			"interrupted": "Interrotto",
+            "interrupted": "Interrotto",
             "klippy_disconnect": "Klippy disconnesso",
             "klippy_shutdown": "Klippy spento",
             "Others": "Altro",
@@ -538,15 +538,15 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Consentito",
-			"CleanNozzle": "Pulisci Ugello",
+            "CleanNozzle": "Pulisci Ugello",
             "EstimatedExtrusion": "Estrusione:",
             "Extrude": "Estrudi",
-			"ExtruderControl": "Controllo Estrusore",
+            "ExtruderControl": "Controllo Estrusore",
             "ExtruderTempTooLow": "Temp. Estrusore <",
             "ExtrusionFactor": "Fattore di estrusione",
             "ExtrusionFeedrate": "Feedrate Estrusione",
             "FilamentLength": "Lunghezza Filamento",
-			"FirmwareRetraction": "Retrazione Firmware",											
+            "FirmwareRetraction": "Retrazione Firmware",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Lunghezza Retrazione",
                 "RetractSpeed": "Velocità Retrazione",
@@ -555,17 +555,17 @@
             },
             "Headline": "Estrusore",
             "LoadFilament": "Carica Filamento",
-			"PressureAdvance": "Pressure-Advance",
+            "PressureAdvance": "Pressure-Advance",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure-Advance",
                 "Extruder": "Estrusore",
                 "SmoothTime": "Smooth-Time"
             },
-			"PurgeFilament": "Spurga Filamento",
+            "PurgeFilament": "Spurga Filamento",
             "Requested": "Richiesto",
             "Retract": "Retrazione",
             "TooLargeExtrusion": "Estrusione troppo grande!",
-			"Tools": "Utensili",				 
+            "Tools": "Utensili",
             "UnloadFilament": "Scarica Filamento"
         },
         "FarmPrinterPanel": {
@@ -588,7 +588,7 @@
             "MotionSettings": {
                 "Acceleration": "Accelerazione",
                 "MaxAccelToDecel": "Max Accel. a Decel.",
-				"MinimumCruiseRatio": "Min. Ratio Spostamento",
+                "MinimumCruiseRatio": "Min. Ratio Spostamento",
                 "SquareCornerVelocity": "Velocità Angolo Retto",
                 "Velocity": "Velocità"
             }
@@ -736,17 +736,17 @@
         "ToolheadControlPanel": {
             "Absolute": "assoluto",
             "ALL": "TUTTI",
-			"ControlButtons": "Pulsanti di controllo",
+            "ControlButtons": "Pulsanti di controllo",
             "CoordinateFields": "Campo Coordinate",
-			"Headline": "Toolhead",
+            "Headline": "Toolhead",
             "PleaseConfigureSteps": "Configura gli steps",
             "Position": "Posizione",
-			"PositionOutput": "Posizione output",
+            "PositionOutput": "Posizione output",
             "QGL": "QGL",
             "Relative": "relativo",
             "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
             "SpeedFactor": "Fattore di velocità",
-			"ZOffset": "Z-Offset",
+            "ZOffset": "Z-Offset",
             "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {
@@ -942,7 +942,7 @@
             "RestoreDialog": "Seleziona tutte le sezioni che vuoi ripristinare:",
             "TimeFormat": "Formato Data"
         },
-		     "HeightmapTab": {
+        "HeightmapTab": {
             "ColorSchemes": "Schemi Colore",
             "Heightmap": "Mappa dell'Altezza",
             "IsDefault": "(Default)",
@@ -953,8 +953,8 @@
                 "Portland": "Portland",
                 "Spring": "Spring"
             }
-        }, 
-		"InterfaceSettings": "Impostazioni Interfaccia",
+        },
+        "InterfaceSettings": "Impostazioni Interfaccia",
         "MacrosTab": {
             "Add": "aggiungi",
             "AddGroup": "aggiungi Gruppo",
@@ -1090,7 +1090,7 @@
             "RetractDistanceDescription": "Lunghezza del filamento retratto dall'estrusore",
             "RetractSpeed": "Velocità Retrazione",
             "RetractSpeedDescription": "Velocità di retrazione del filamento dall'estrusore.",
-			"RulesBetweenMinMax": "Il valore deve essere compreso tra {min} e {max}!",
+            "RulesBetweenMinMax": "Il valore deve essere compreso tra {min} e {max}!",
             "RulesMin": "Il valore deve essere almeno di {min}!",
             "RulesPositive": "Il valore deve essere positivo!",
             "RulesRequired": "È necessario inserire un valore!",
@@ -1176,8 +1176,8 @@
             "EditCrowsnestConf": "Modifica crowsnest.conf",
             "EditWebcam": "Modifica Webcam",
             "FlipWebcam": "Specchia immagine della webcam:",
-			"FlipWebcam": "Ruota immagine della webcam:",								   
-			"HideFps": "Nascondi contatore FPS",
+            "FlipWebcam": "Ruota immagine della webcam:",
+            "HideFps": "Nascondi contatore FPS",
             "Hlsstream": "HLS Stream",
             "Horizontally": "orizzontalmente",
             "IconBed": "Bed",
@@ -1206,7 +1206,7 @@
             "Vertically": "verticalmente",
             "Webcams": "Webcam",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
-			"WebrtcGo2rtc": "WebRTC (go2rtc)",
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
