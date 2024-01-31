@@ -152,6 +152,7 @@
         "Formats": "Formats",
         "Headline": "Devices",
         "HideSystemEntries": "Hide system entries",
+        "LibcameraId": "Libcamera ID",
         "NoDeviceFound": "No device found. Please check the connection and click on the refresh button.",
         "PathByHardware": "Path by hardware",
         "PathById": "Path by ID",
