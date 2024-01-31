@@ -20,10 +20,22 @@
                         @click:append="copy(device.libcamera_id)" />
                 </v-col>
             </v-row>
-            <v-row v-for="mode in device.modes" :key="mode.format" class="mt-0">
-                <v-col class="py-2" cols="4">{{ mode.format }}</v-col>
-                <v-col class="py-2">{{ mode.resolutions.join(', ') }}</v-col>
-            </v-row>
+            <template v-if="identicalResolutions">
+                <v-row>
+                    <v-col class="py-2" cols="4">{{ $t('DevicesDialog.Formats') }}</v-col>
+                    <v-col class="py-2">{{ formats }}</v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="py-2" cols="4">{{ $t('DevicesDialog.Resolutions') }}</v-col>
+                    <v-col class="py-2">{{ resolutions }}</v-col>
+                </v-row>
+            </template>
+            <template v-else>
+                <v-row v-for="mode in device.modes" :key="mode.format" class="mt-0">
+                    <v-col class="py-2" cols="4">{{ mode.format }}</v-col>
+                    <v-col class="py-2">{{ mode.resolutions.join(', ') }}</v-col>
+                </v-row>
+            </template>
         </v-card-text>
     </v-card>
 </template>
@@ -39,6 +51,19 @@ export default class DevicesDialogVideoDeviceLibcamera extends Mixins(BaseMixin)
     mdiContentCopy = mdiContentCopy
 
     @Prop({ type: Object, required: true }) device!: LibcameraDevice
+
+    get identicalResolutions() {
+        const resolutions = this.device.modes.map((mode) => mode.resolutions.join(','))
+        return resolutions.every((resolution) => resolution === resolutions[0])
+    }
+
+    get resolutions() {
+        return this.device.modes[0].resolutions.join(', ')
+    }
+
+    get formats() {
+        return this.device.modes.map((mode) => mode.format).join(', ')
+    }
 
     copy(text: string) {
         navigator.clipboard.writeText(text)
