@@ -256,8 +256,16 @@ export function copyToClipboard(text: string) {
     }
 
     const textArea = document.createElement('textarea')
+    let element = document.getElementById('devices-dialog')
+    if (!element) element = document.body
+
     textArea.value = text
-    document.body.appendChild(textArea)
+    textArea.style.position = 'absolute'
+    textArea.style.top = '0'
+    textArea.style.left = '0'
+    textArea.style.zIndex = '100000'
+    textArea.style.opacity = '0'
+    element.appendChild(textArea)
     textArea.focus()
     textArea.select()
     try {
@@ -265,5 +273,5 @@ export function copyToClipboard(text: string) {
     } catch (err) {
         console.error('Unable to copy to clipboard', err)
     }
-    document.body.removeChild(textArea)
+    textArea.remove()
 }
