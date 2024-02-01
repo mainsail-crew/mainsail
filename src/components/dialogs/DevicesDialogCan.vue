@@ -8,10 +8,17 @@
             </v-row>
             <v-row v-if="devices.length" class="mt-0">
                 <v-col>
-                    <devices-dialog-usb-device
-                        v-for="device in filteredDevices"
-                        :key="device.usb_location"
-                        :device="device" />
+                    <devices-dialog-can-device v-for="device in devices" :key="device.uuid" :device="device" />
+                </v-col>
+            </v-row>
+            <v-row v-else-if="loaded" class="mt-0">
+                <v-col class="col-8 mx-auto">
+                    <p class="text-center text--disabled mb-0">{{ $t('DevicesDialog.NoDeviceFound') }}</p>
+                </v-col>
+            </v-row>
+            <v-row v-else class="mt-0">
+                <v-col class="col-8 mx-auto">
+                    <p class="text-center text--disabled mb-0">{{ $t('DevicesDialog.ClickRefresh') }}</p>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -21,49 +28,33 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import DevicesDialogCanDevice from '@/components/dialogs/DevicesDialogCanDevice.vue'
 
 export interface CanDevice {
-    bus_num: number
-    device_num: number
-    usb_location: string
-    vendor_id: string
-    product_id: string
-    manufacturer?: string
-    product?: string
-    class?: string
-    subclass?: string
-    protocol?: string
-    description?: string
+    application: string
+    uuid: string
 }
 
-@Component
+@Component({
+    components: { DevicesDialogCanDevice },
+})
 export default class DevicesDialogCan extends Mixins(BaseMixin) {
     devices: CanDevice[] = []
     loading = false
+    loaded = false
 
     @Prop({ type: String, required: true }) name!: string
     @Prop({ type: Boolean, default: false }) hideSystemEntries!: boolean
-
-    get filteredDevices() {
-        if (!this.hideSystemEntries) return this.devices
-
-        return this.devices.filter((device) => {
-            if (device.class === 'Hub') return false
-
-            return true
-        })
-    }
 
     async refresh() {
         this.loading = true
 
         this.devices = await fetch(`${this.apiUrl}/machine/peripherals/canbus?interface=${this.name}`)
             .then((res) => res.json())
-            .then((res) => res.result ?? [])
-
-        window.console.log(this.devices)
+            .then((res) => res.result.can_uuids ?? [])
 
         this.loading = false
+        this.loaded = true
     }
 }
 </script>
