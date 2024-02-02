@@ -21,6 +21,25 @@
                     <p class="text-center text--disabled mb-0">{{ $t('DevicesDialog.ClickRefresh') }}</p>
                 </v-col>
             </v-row>
+            <v-row v-if="devices.length === 0">
+                <v-col>
+                    <v-alert dense outlined type="info" :icon="mdiInformationVariantCircle">
+                        {{ $t('DevicesDialog.CanBusInfo') }}
+                        <v-row class="my-0">
+                            <v-col class="text-center">
+                                <v-btn
+                                    href="https://docs.mainsail.xyz/overview/features/query-devices#can-devices"
+                                    color="info"
+                                    outlined
+                                    text
+                                    small>
+                                    open guide
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-alert>
+                </v-col>
+            </v-row>
         </v-card-text>
     </overlay-scrollbars>
 </template>
@@ -29,6 +48,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import DevicesDialogCanDevice from '@/components/dialogs/DevicesDialogCanDevice.vue'
+import { mdiInformationVariantCircle } from '@mdi/js'
 
 export interface CanDevice {
     application: string
@@ -39,6 +59,8 @@ export interface CanDevice {
     components: { DevicesDialogCanDevice },
 })
 export default class DevicesDialogCan extends Mixins(BaseMixin) {
+    mdiInformationVariantCircle = mdiInformationVariantCircle
+
     devices: CanDevice[] = []
     loading = false
     loaded = false

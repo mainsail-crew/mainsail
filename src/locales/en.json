@@ -147,6 +147,7 @@
         "SetupConsole": "Setup Console"
     },
     "DevicesDialog": {
+        "CanBusInfo": "Only unassigned nodes can be detected. It’s recommended to have only one unassigned device connected to the can bus to avoid communication issues. For more details, please click on the link:",
         "ClickRefresh": "Click on the refresh button to search for devices.",
         "DevicePath": "Device path",
         "Formats": "Formats",
