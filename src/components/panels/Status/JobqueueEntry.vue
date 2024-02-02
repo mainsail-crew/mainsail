@@ -46,7 +46,7 @@
                 </v-btn>
             </template>
             <div class="d-block text-truncate" :style="styleContentTdWidth">
-                <strong v-if="item.combinedIds.length">{{ item.combinedIds.length + 1 }}x</strong>
+                <strong v-if="item.combinedIds?.length">{{ item.combinedIds.length + 1 }}x</strong>
                 {{ item.filename }}
             </div>
             <small v-if="item?.metadata?.metadataPulled">{{ description }}</small>
@@ -85,7 +85,7 @@
         </v-menu>
         <v-dialog v-model="dialogChangeCount.show" max-width="400">
             <panel
-                :title="$t('JobQueue.ChangeCount').toString()"
+                :title="$t('JobQueue.ChangeCount')"
                 :icon="mdiCounter"
                 card-class="jobqueue-change-count-dialog"
                 :margin-bottom="false">
@@ -174,7 +174,8 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
     @Prop({ type: Number, required: true }) declare queueLength: number
     @Prop({ type: Number, required: true }) declare contentTdWidth: number
     @Prop({ type: Boolean, default: false }) declare showPrintButtonForFirst: boolean
-    private contextMenu: {
+
+    contextMenu: {
         shown: boolean
         x: number
         y: number
@@ -188,7 +189,7 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         itemQueueIndex: undefined,
     }
 
-    private dialogChangeCount: {
+    dialogChangeCount: {
         show: boolean
         count: number
         item: ServerJobQueueStateJob | any
@@ -198,14 +199,10 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         item: {},
     }
 
-    private countInputRules = [
+    countInputRules = [
         (value: string) => !!value || this.$t('JobQueue.InvalidCountEmpty'),
         (value: string) => parseInt(value) > 0 || this.$t('JobQueue.InvalidCountGreaterZero'),
     ]
-
-    declare $refs: {
-        filesJobqueue: any
-    }
 
     get isFirstQueueItem() {
         return this.itemQueueIndex === 0
@@ -340,9 +337,6 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
 </script>
 
 <style scoped>
-.filesJobqueue {
-    position: relative;
-}
 ._spin_button_group {
     width: 24px;
     margin-top: -6px;
