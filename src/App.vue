@@ -102,8 +102,10 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         }
 
         // overwrite padding left for the sidebar
-        if (this.naviDrawer && this.navigationStyle === 'iconsAndText') style.paddingLeft = '220px'
-        if (this.naviDrawer && this.navigationStyle === 'iconsOnly') style.paddingLeft = '56px'
+        if (this.naviDrawer && !this.$vuetify.breakpoint.mdAndDown) {
+            if (this.navigationStyle === 'iconsAndText') style.paddingLeft = '220px'
+            if (this.navigationStyle === 'iconsOnly') style.paddingLeft = '56px'
+        }
 
         return style
     }

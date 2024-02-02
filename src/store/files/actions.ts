@@ -11,6 +11,7 @@ import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
 import { hiddenDirectories, validGcodeExtensions } from '@/store/variables'
 import axios from 'axios'
+import { BatchMessage } from '@/plugins/webSocketClient'
 
 export const actions: ActionTree<FileState, RootState> = {
     reset({ commit }) {
@@ -159,13 +160,26 @@ export const actions: ActionTree<FileState, RootState> = {
         }
     },
 
-    requestMetadata({ commit }, payload: { filename: string }) {
-        const rootPath = payload.filename.slice(0, payload.filename.indexOf('/'))
-        if (rootPath === 'gcodes') {
-            const requestFilename = payload.filename.slice(7)
-            commit('setMetadataRequested', { filename: requestFilename })
-            Vue.$socket.emit('server.files.metadata', { filename: requestFilename }, { action: 'files/getMetadata' })
+    requestMetadata({ commit }, payload: { filename: string }[]) {
+        // request file metadata in batches to reduce the number of table re-renders when responses are received
+        let messages: BatchMessage[] = []
+        for (const { filename } of payload) {
+            if (messages.length >= 100) {
+                Vue.$socket.emitBatch(messages)
+                messages = []
+            }
+            const rootPath = filename.slice(0, filename.indexOf('/'))
+            if (rootPath === 'gcodes') {
+                const requestFilename = filename.slice(7)
+                commit('setMetadataRequested', { filename: requestFilename })
+                messages.push({
+                    method: 'server.files.metadata',
+                    params: { filename: requestFilename },
+                    emitOptions: { action: 'files/getMetadata' },
+                })
+            }
         }
+        Vue.$socket.emitBatch(messages)
     },
 
     getMetadata({ commit, rootState }, payload) {
@@ -203,9 +217,11 @@ export const actions: ActionTree<FileState, RootState> = {
                     payload.item.root === 'gcodes' &&
                     validGcodeExtensions.includes(payload.item.path.slice(payload.item.path.lastIndexOf('.')))
                 ) {
-                    await dispatch('requestMetadata', {
-                        filename: 'gcodes/' + payload.item.path,
-                    })
+                    await dispatch('requestMetadata', [
+                        {
+                            filename: 'gcodes/' + payload.item.path,
+                        },
+                    ])
                 }
                 break
 

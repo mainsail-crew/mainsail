@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Description": "{name} är föråldrad och stöds inte fullt ut. Den nuvarande versionen är {version}, men Mainsail kräver version {minVersion} eller högre.",
+                "Headline": "Föråldrad webbläsare"
+            },
             "DependencyDescription": "Den nuvarande versionen av {name} stöder inte alla funktioner i Mainsail. \nUppdatera {name} till minst {neededVersion}.",
             "DependencyName": "Beroende: {name}",
             "DismissAll": "Avfärda alla",
@@ -14,6 +18,8 @@
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {komponent}",
                 "MoonrakerFailedComponentDescription": "Ett fel upptäcktes vid laddning av moonraker-komponenten '{component}'. Kontrollera loggfilen och åtgärda problemet.",
+                "MoonrakerFailedInitComponentDescription": "Ett fel upptäcktes under initieringen av moonraker-komponenten '{component}'. Kontrollera loggfilen och åtgärda problemet.",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}",
                 "MoonrakerWarning": "Moonraker varning",
                 "UnparsedConfigOption": "Otolkat konfigurationsalternativ '{option}: {value}' upptäcktes i avsnittet [{sektion}]. Detta kan vara ett alternativ som inte längre är tillgängligt eller kan vara resultatet av en modul som inte kunde laddas. I framtiden kommer detta att resultera i ett startfel.",
                 "UnparsedConfigSection": "Otolkat konfigurationsavsnitt [{sektion}] upptäcktes. Detta kan vara resultatet av en komponent som inte kunde laddas. I framtiden kommer detta att resultera i ett startfel."
@@ -21,6 +27,7 @@
             "Never": "aldrig",
             "NextReboot": "nästa omstart",
             "NoNotification": "Ingen avisering tillgänglig",
+            "Notifications": "Aviseringar",
             "Remind": "Påminn:"
         },
         "NumberInput": {
@@ -29,6 +36,11 @@
             "NoEmptyAllowedError": "Indata får inte vara tom!"
         },
         "Printers": "Skrivare",
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "Den lokala cachen är föråldrad och behöver uppdateras. Vänligen klicka på knappen nedan för att uppdatera cachen.",
+            "TitleNeedUpdate": "PWA behöver uppdateras",
+            "Update": "uppdatera"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM-kärnorna är för närvarande strypta.",
             "DescriptionFrequencyCapped": "rPi ARM max frekvens är för närvarande begränsad till 1,2 GHz.",
@@ -51,6 +63,7 @@
             "Complete": "Färdig – {filename}",
             "Error": "FEL",
             "Pause": "Pausa utskrift",
+            "PrinterOff": "Skrivaren AV",
             "Printing": "{percent}% Skriver ut - {filename}",
             "PrintingETA": "{percent}% Skriver ut - ETA: {eta} - {filename}"
         },
@@ -106,11 +119,23 @@
             "UpdatingDone": "Uppdatering av {software} klar!"
         }
     },
+    "BedScrews": {
+        "Abort": "avbryt",
+        "Accept": "godkänn",
+        "Adjusted": "justerad",
+        "Description": "Klicka på <b>JUSTERAD</b> om den aktuella skruven justerades. Klicka på <b>GODKÄNN</b> för att fortsätta utan justering.",
+        "Headline": "Bädd skruvar",
+        "ScrewAccepted": "Skruvar accepteras",
+        "ScrewIndex": "Skruvindex",
+        "ScrewName": "Skruvnamn",
+        "ScrewOutput": "{current} av {max}"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Kan inte ansluta till Moonraker ({host}).",
         "CheckMoonrakerLog": "Om det här meddelandet visas upprepade gånger, vänligen ta en titt i loggfilen som finns på:",
         "Connecting": "Ansluter till {host}",
         "Failed": "Anslutningen misslyckades",
+        "Initializing": "Initierar",
         "TryAgain": "försök igen"
     },
     "Console": {
@@ -120,6 +145,16 @@
         "HideTimelapse": "Dölj Timelapse",
         "SendCode": "Skicka kod...",
         "SetupConsole": "Installationskonsol"
+    },
+    "Dialogs": {
+        "StartPrint": {
+            "Cancel": "Avbryt",
+            "DoYouWantToStartFilename": "Vill du starta {filename}?",
+            "DoYouWantToStartFilenameFilament": "Vill du starta {filename} med följande filament?",
+            "Headline": "Starta jobb",
+            "Print": "skriv ut",
+            "Timelapse": "Timelapse"
+        }
     },
     "Editor": {
         "ConfigReference": "Referens för konfiguration",
@@ -142,18 +177,27 @@
         "Yes": "Ja"
     },
     "Files": {
+        "AddBatchToQueue": "Lägg till omgång till kö",
         "AddToQueue": "Lägg till i kö",
         "AllFiles": "Alla",
+        "BedTemp": "Bäddtemp.",
         "Cancel": "Avbryt",
+        "ChamberTemp": "Kammartemp.",
+        "Count": "Räkna",
         "Create": "Skapa",
         "CreateNewDirectory": "Skapa ny katalog",
         "CurrentPath": "Nuvarande sökväg",
         "Delete": "Radera",
         "DeleteDirectory": "Radera katalog",
         "DeleteDirectoryQuestion": "Vill du verkligen ta bort katalogen \"{name}\" med allt dess innehåll?",
+        "DeleteSelectedQuestion": "Vill du verkligen ta bort {count} valda filer?",
+        "DeleteSingleFileQuestion": "Vill du verkligen ta bort filen \"{name}\"?",
         "Download": "Ladda ner",
+        "Duplicate": "Duplicera",
+        "DuplicateFile": "Duplicera fil",
         "EditFile": "Redigera fil",
         "Empty": "Tom",
+        "ExtruderTemp": "Extruder Temp.",
         "Filament": "Filament",
         "FilamentName": "Filament Namn",
         "FilamentType": "Filament Typ",
@@ -164,8 +208,16 @@
         "Free": "Tillgängligt",
         "FreeDisk": "Tillgänglig disk",
         "GCodeFiles": "G-Code Filer",
+        "GcodesRootDirectoryDoesntExists": "Ingen G-Code-katalog hittades. Kontrollera alternativet \"sökväg\" i avsnittet [virtual_sdcard] i Klipper-konfigurationen.",
         "HiddenFiles": "Dolda filer",
+        "InvalidNameAlreadyExists": "Namnet finns redan, välj ett annat namn.",
+        "InvalidNameEmpty": "Inmatning får inte vara tom!",
+        "LastEndTime": "Senaste Sluttid",
+        "LastFilamentUsed": "Senast Använda Filament",
         "LastModified": "Senast ändrad",
+        "LastPrintDuration": "Senaste Utskriftstid",
+        "LastStartTime": "Senaste Starttid",
+        "LastTotalDuration": "Senaste Totala Varaktighet",
         "LayerHeight": "Lagerhöjd",
         "Name": "Namn",
         "NewDirectory": "Ny katalog",
@@ -179,6 +231,8 @@
         "Rename": "Ändra namn",
         "RenameDirectory": "Byt namn på katalogen",
         "RenameFile": "Byt namn på fil",
+        "ScanMeta": "Skanna Metadata",
+        "ScanMetaSuccess": "Skannade metadata från: {filename}.",
         "Search": "Sök",
         "SetupCurrentList": "Ställ in aktuell lista",
         "Slicer": "Slicer",
@@ -192,8 +246,13 @@
         "Used": "Använt",
         "View3D": "Visa 3D"
     },
+    "FullscreenUpload": {
+        "CannotUploadFile": "Kan inte ladda upp filen!",
+        "DropFilesToUploadFiles": "Släpp filer för att ladda upp"
+    },
     "GCodeViewer": {
         "ClearLoadedFile": "Rensa",
+        "CNCMode": "CNC-läge",
         "ColorMode": "Färgläge",
         "Downloading": "Laddar ner",
         "ForceLineRendering": "Tvinga linjerendering",
@@ -207,6 +266,7 @@
         "ReloadRequired": "Omladdning krävs",
         "Rendering": "Rendering",
         "RenderQuality": "Renderingskvalitet",
+        "ShowGCode": "Visa G-kod",
         "ShowObjectSelection": "Visa objektval",
         "ShowToolhead": "Visa verktygshuvud",
         "ShowTravelMoves": "Visa reserörelser",
@@ -228,14 +288,18 @@
             "Max": "Max",
             "Min": "Min",
             "Name": "Namn",
-            "Size": "Storlek",
-            "Variance": "Variation"
+            "Range": "Intervall",
+            "Size": "Storlek"
         },
         "DeleteBedMeshProfile": "Radera sängnätsprofil (Bed Mesh Profile)",
         "DoYouReallyWantToDelete": "Vill du verkligen radera profilen \"{name}\"?",
         "ErrorKlipperNotReady": "Klipper inte redo. Höjdkarta (Heightmap) inaktiverad.",
         "Flat": "Plan",
         "Heightmap": "Höjdkarta (Heightmap)",
+        "InvalidNameAlreadyExists": "Profilnamnet finns redan, välj ett annat profilnamn.",
+        "InvalidNameAscii": "Namnet är ogiltigt. Endast ascii-tecken är tillåtna.",
+        "InvalidNameEmpty": "Inmatning får inte vara tom!",
+        "InvalidNameReserved": "Profilen \"default\" är reserverad, välj ett annat profilnamn.",
         "Later": "Senare",
         "Mesh": "Nät (Mesh)",
         "Name": "Namn",
@@ -261,9 +325,11 @@
         "AllJobs": "Alla",
         "AvgPrinttime": "Utskriftstid - Ø",
         "Cancel": "Avbryt",
+        "Chart": "Diagram",
         "CreateNote": "Skapa anteckning",
         "Delete": "Radera",
         "DeleteSelectedQuestion": "Vill du verkligen ta bort {count} markerade jobb?",
+        "DeleteSingleJobQuestion": "Vill du verkligen ta bort jobbet?",
         "Details": "Detaljer",
         "EditNote": "Redigera anteckning",
         "Empty": "tom",
@@ -310,8 +376,10 @@
             "in_progress": "Pågående",
             "klippy_disconnect": "Klippy koppla bort",
             "klippy_shutdown": "Avstängning av Klippy",
+            "Others": "Övrigt",
             "server_exit": "Avsluta servern"
         },
+        "Table": "Tabell",
         "TitleExportHistory": "Exportera historik",
         "TitleRefreshHistory": "Uppdatera historik",
         "TitleSettings": "Inställningar",
@@ -323,10 +391,16 @@
     },
     "JobQueue": {
         "AllJobs": "Alla jobb",
+        "Cancel": "Avbryt",
+        "ChangeCount": "Ändra räkning",
+        "Count": "Räkna",
         "Empty": "Tom",
+        "InvalidCountEmpty": "Inmatning får inte vara tom!",
+        "InvalidCountGreaterZero": "Inmatningen måste vara större än 0!",
         "JobQueue": "Jobbkö",
         "Jobs": "Jobb",
         "Pause": "Pausa",
+        "RemoveFromQueue": "Ta bort från kö",
         "Start": "Starta"
     },
     "Machine": {
@@ -334,6 +408,7 @@
             "AllFiles": "Alla",
             "Cancel": "Avbryt",
             "ConfigFiles": "Konfigurationsfiler",
+            "ConfigRootDirectoryDoesntExists": "Ingen konfigurationskatalog hittades. Kontrollera alternativet \"config_path\" i avsnittet [file_hanterare] i Moonraker-konfigurationen.",
             "Create": "Skapa",
             "CreateDirectory": "Skapa katalog",
             "CreateFile": "Skapa fil",
@@ -341,7 +416,11 @@
             "Delete": "Radera",
             "DeleteDirectory": "Radera historik",
             "DeleteDirectoryQuestion": "Vill du verkligen radera katalogen \"{name}\" med allt dess innehåll?",
+            "DeleteSelectedQuestion": "Vill du ta bort {count} markerade element?",
+            "DeleteSingleFileQuestion": "Vill du verkligen ta bort filen \"{name}\"?",
             "Download": "Ladda ner",
+            "Duplicate": "Duplicera",
+            "DuplicateFile": "Duplicera fil",
             "EditFile": "Redigera filen",
             "Empty": "Tom",
             "Files": "Filer",
@@ -372,7 +451,13 @@
             "TRIGGERED": "UTLÖSTES"
         },
         "LogfilesPanel": {
-            "Logfiles": "Loggfiler"
+            "Accept": "godkänn",
+            "Cancel": "avbryt",
+            "Logfiles": "Loggfiler",
+            "Rollover": "Överrullningsloggar",
+            "RolloverDescription": "Välj vilka loggar som ska återställas:",
+            "RolloverToastFailed": "Överrullningsloggar för \"{name}\": {meddelande}",
+            "RolloverToastSuccessful": "Loggen för \"{name}\" har återställts."
         },
         "SystemPanel": {
             "Constants": "Konstanter",
@@ -400,7 +485,11 @@
             }
         },
         "UpdatePanel": {
+            "Abort": "Avbryt",
+            "AreYouSure": "Är du säker?",
             "CheckForUpdates": "Sök efter uppdateringar",
+            "Close": "Stäng",
+            "CommitHistory": "Commit Historik",
             "Commits": "Commits",
             "CommitsAvailable": "inga commits tillgängliga | {count} commit tillgänglig | {count} commits tillgängliga",
             "CommitsOnDate": "Commits den {date}",
@@ -408,38 +497,98 @@
             "CommittedHoursAgo": "committed för {hours} timmar sedan",
             "CommittedOnDate": "committed den {date}",
             "CommittedYesterday": "committed igår",
+            "ConfigChanges": "Konfigurationsändringar",
+            "Corrupt": "korrupt",
+            "CountPackagesCanBeUpgraded": "{count} paket kan uppgraderas",
             "Detached": "friliggande",
             "Dirty": "smutsig",
-            "ERROR": "FEL",
+            "GenericUpdateQuestion": "Kontrollera commit-historiken (om tillgänglig) och GitHub-sidan för det här projektet för att se om några manuella justeringar är nödvändiga för den här uppdateringen.",
+            "GitHubPage": "GitHub-sida",
+            "HardRecovery": "Hård återställning",
+            "InitUpdateManager": "Uppdateringshanteraren har inte initierats ännu. Detta är normalt när du startar systemet för första gången. Klicka på uppdateringsknappen för att initiera alla komponenter.",
             "Invalid": "ogiltig",
+            "IUnderstandTheRisks": "Jag förstår riskerna",
+            "KlipperUpdateQuestionConfig": "Den här uppdateringen kan också innehålla ändringar av konfigurationsparametrar som skulle behöva ändras i filen printer.cfg, se ändringsloggen för detaljer.",
+            "KlipperUpdateQuestionFirmware": "Detta kommer att uppdatera Klippers värdprogramvara. Styrkort som kör Klippers firmware kan behöva flashas med omkompilerad firmware innan maskinen kan tas i drift igen.",
+            "LinkToGithub": "Länk till GitHub",
+            "MoonrakerUpdateQuestion": "Detta kommer att uppdatera Moonraker API. Ändringar av filen moonraker.conf kan behövas för att fortsätta använda maskinen.",
+            "MoreCommitsInfo": "Maximalt 30 commits kan visas här. För att se alla commits, klicka på följande länk:",
             "OSPackages": "Operativsystems-Paket",
-            "PackagesCanBeUpgraded": "paketen kan uppgraderas",
+            "SoftRecovery": "Mjuk återställning",
+            "StartUpdate": "Påbörja uppdatering",
             "System": "System",
+            "ThesePackagesCanBeUpgrade": "Dessa systempaket kan uppgraderas:",
             "Unknown": "okänd",
             "Update": "uppdatera",
             "UpdateAll": "Uppdatera alla komponenter",
             "UpdateManager": "Uppdateringshanterare",
+            "UpdateWarning": "Uppdatera varning: {name}",
             "Upgrade": "uppgradera",
-            "UpToDate": "aktuell"
+            "UpgradeableSystemPackages": "Uppgraderbara systempaket",
+            "UpToDate": "aktuell",
+            "WebClientUpdateQuestion": "I vissa fall kan uppdatering av webbklienten ha ändringar som kan orsaka inkompatibilitet. Se versionskommentarerna för mer information."
         }
     },
+    "ManualProbe": {
+        "Abort": "avbryt",
+        "Accept": "godkänn",
+        "Advanced": "Avancerad",
+        "Headline": "Manuell sond"
+    },
     "Panels": {
+        "ExtruderControlPanel": {
+            "Allowed": "Tillåten",
+            "CleanNozzle": "Rengör munstycket",
+            "EstimatedExtrusion": "Extrudering:",
+            "Extrude": "Extrudera",
+            "ExtruderControl": "Extruderkontroll",
+            "ExtruderTempTooLow": "Extruder temp. <",
+            "ExtrusionFactor": "Extruderingsfaktor",
+            "ExtrusionFeedrate": "Extruderingsmatningshastighet",
+            "FilamentLength": "Filamentlängd",
+            "FirmwareRetraction": "Firmware indragning",
+            "FirmwareRetractionSettings": {
+                "RetractLength": "Retract längd",
+                "RetractSpeed": "Retract hastighet",
+                "UnretractExtraLength": "Unretract extra längd",
+                "UnretractSpeed": "Unretract hastighet"
+            },
+            "Headline": "Extruder",
+            "LoadFilament": "Ladda filament",
+            "PressureAdvance": "Pressure Advance",
+            "PressureAdvanceSettings": {
+                "Advance": "Pressure Advance",
+                "Extruder": "Extruder",
+                "SmoothTime": "Smooth Tid"
+            },
+            "PurgeFilament": "Rensa filament",
+            "Requested": "Begärda",
+            "Retract": "Dra tillbaka",
+            "TooLargeExtrusion": "Extrudering för stor!",
+            "Tools": "Verktyg",
+            "UnloadFilament": "Lossa filament"
+        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Återanslut",
             "SwitchToPrinter": "Byt till skrivare",
             "WebcamOff": "Av"
         },
         "KlippyStatePanel": {
+            "CheckKlippyAndUdsAddress": "Kontrollera om Klipper-tjänsten körs och klippy_uds_address är korrekt konfigurerad i moonraker.conf.",
             "FirmwareRestart": "Omstart av Firmware",
-            "KlipperCheck": "Kontrollera om Klipper-tjänsten körs och en UDS (Unix Domain Socket) är konfigurerad.",
             "MoonrakerCannotConnect": "Moonraker kan inte ansluta till Klipper!",
-            "Restart": "Starta om"
+            "PowerOn": "Ström på",
+            "PrinterSwitchedOff": "Skrivaren är avstängd",
+            "PrinterSwitchedOffDescription": "Skrivaren är för närvarande avstängd och Klipper kan inte ansluta. För att slå på skrivaren, klicka på knappen nedan:",
+            "Restart": "Starta om",
+            "ServiceReports": "{service} rapporter"
         },
         "MachineSettingsPanel": {
             "Headline": "Maskininställningar",
             "MotionSettings": {
                 "Acceleration": "Acceleration",
                 "MaxAccelToDecel": "Max Accel. till Decel.",
+                "MinimumCruiseRatio": "Min. Cruise Ratio",
                 "SquareCornerVelocity": "Skarpa hörn Velocitet",
                 "Velocity": "Velocitet"
             }
@@ -449,6 +598,7 @@
             "Send": "skicka"
         },
         "MiniconsolePanel": {
+            "Autoscroll": "Auto-scrolla",
             "Headline": "Konsol",
             "HideTemperatures": "Dölj temperaturer",
             "HideTimelapse": "Dölj Timelapse",
@@ -463,9 +613,14 @@
         },
         "MiscellaneousPanel": {
             "Headline": "Övrigt",
+            "Light": {
+                "Blue": "blå",
+                "Green": "grön",
+                "Red": "röd",
+                "White": "vit"
+            },
             "RunoutSensor": {
                 "Detected": "upptäckt",
-                "Disabled": "inaktiverad",
                 "Empty": "Tom"
             }
         },
@@ -475,10 +630,38 @@
             "On": "På",
             "PowerControl": "Strömstyrning"
         },
+        "SpoolmanPanel": {
+            "Cancel": "Avbryt",
+            "ChangeSpool": "Byt spole",
+            "DaysAgo": "för {days} dagar sedan",
+            "EjectSpool": "Mata ut spolen",
+            "EjectSpoolQuestion": "Är du säker på att du matar ut filamentspolen?",
+            "Filament": "Filament",
+            "FilamentTypeMismatch": "Materialet i den aktiva spoolen ({spoolType}) matchar inte materialet i G-koden ({fileType}).",
+            "Headline": "Spoolman",
+            "LastUsed": "Senast använd",
+            "Location": "Plats",
+            "Material": "Material",
+            "Never": "Aldrig",
+            "NoActiveSpool": "Filamentspårning är inaktiv. För att komma igång, välj en spole.",
+            "NoResults": "Ingen spole hittades med de aktuella sökkriterierna.",
+            "NoSpools": "Inga spolar tillgängliga",
+            "NoSpoolSelected": "Ingen spole vald. Välj en spole annars kommer denna utskrift inte att spåras.",
+            "OpenSpoolManager": "öppna Spool Manager",
+            "Refresh": "uppdatera",
+            "Search": "Sök",
+            "SelectSpool": "Välj spole",
+            "Today": "I dag",
+            "TooLessFilament": "Den aktuella spolen kanske inte har tillräckligt med filament för denna utskrift. ({spoolWeight}g av {fileWeight}g)",
+            "Weight": "Vikt",
+            "Yesterday": "I går"
+        },
         "StatusPanel": {
             "CancelPrint": "Avbryt utskrift",
             "ClearPrintStats": "Rensa utskriftsstatistik",
             "Difference": "Differens",
+            "EmptyGcodes": "Ingen G-kod tillgänglig.",
+            "EmptyJobqueue": "Det finns för närvarande ingen fil i jobbkön.",
             "Estimate": "Uppskattning",
             "ETA": "Beräknad tid",
             "ExcludeObject": {
@@ -490,20 +673,81 @@
             },
             "Filament": "Filament",
             "File": "Fil",
+            "Files": "Filer",
             "Flow": "Flöde (Flow)",
             "Headline": "Status",
+            "Jobqueue": "Jobbkö",
+            "JobqueueMoreFiles": "inga fler jobb | ett jobb till | {count} jobb till",
             "Layer": "Lager",
             "Max": "max",
             "ObjectHeight": "Objekts höjd",
+            "PauseAtLayer": {
+                "Abort": "avbryt",
+                "Accept": "godkänn",
+                "AtLayer": "vid Lager",
+                "Call": "Anrop",
+                "DescriptionPauseAtLayerActive": "Den här funktionen är redan aktiv och anropar \"{call}\" vid lager {lager}. Om du anropar kommandot igen kommer dessa inställningar att skrivas över.",
+                "DescriptionPauseNextLayerActive": "Denna funktion är redan aktiv och kommer att anropa \"{call}\" vid nästa lager.",
+                "Layer": "Lager",
+                "NextLayer": "nästa Lager",
+                "PauseAtLayer": "Paus vid Lager",
+                "Type": "Typ"
+            },
             "PausePrint": "Pausa utskrift",
             "Print": "Skriv ut",
+            "PrintTime": "Utskriftstid",
             "ReprintJob": "Skriv ut jobb på nytt",
             "Requested": "Begärt",
             "ResumePrint": "Fortsätt utskrift",
             "Slicer": "Slicer",
             "Speed": "Hastighet",
+            "Status": "Status",
             "Total": "Totalt",
             "Unknown": "Okänd"
+        },
+        "TemperaturePanel": {
+            "AutoscaleChart": "Autoskala diagram",
+            "Avg": "Medel",
+            "Cooldown": "Nedkylning",
+            "Current": "Nuvarande",
+            "Dataset": {
+                "Power": "PWM-kraft",
+                "Speed": "PWM-hastighet",
+                "Target": "måltemperatur",
+                "Temperature": "aktuell temperatur"
+            },
+            "Headline": "Temperaturer",
+            "HideMcuHostSensors": "Dölj värd/MCU-sensorer",
+            "HideMonitors": "Dölj övervakare",
+            "Max": "max",
+            "Min": "min",
+            "Name": "Namn",
+            "Presets": "Förinställningar",
+            "SetupTemperatures": "Ställ in temperaturer",
+            "ShowChart": "Visa diagram",
+            "ShowNameInChart": "Visa {name} i diagrammet",
+            "ShowNameInList": "Visa {name} i listan",
+            "State": "Läge",
+            "Target": "Mål",
+            "TemperaturesInChart": "Temperatur [°C]",
+            "TempTooHigh": "Temperaturen är för hög för {name}! (max: {max})",
+            "TempTooLow": "Temperaturen är för låg för {name}! (min: {min})"
+        },
+        "ToolheadControlPanel": {
+            "Absolute": "absolut",
+            "ALL": "ALLA",
+            "ControlButtons": "Kontrollknappar",
+            "CoordinateFields": "Koordinatfält",
+            "Headline": "Verktygshuvud",
+            "PleaseConfigureSteps": "Vänligen konfigurera steg",
+            "Position": "Position",
+            "PositionOutput": "Positionsutmatning",
+            "QGL": "QGL",
+            "Relative": "relativ",
+            "SettingsInterfaceControl": "Inställningar > Gränssnitt > Kontroll",
+            "SpeedFactor": "Hastighetsfaktor",
+            "ZOffset": "Z-offset",
+            "ZTilt": "Z-lutning"
         },
         "WebcamPanel": {
             "All": "Alla",
@@ -513,15 +757,15 @@
             "UnknownWebcamService": "Okänd webbkameratjänst"
         },
         "ZoffsetPanel": {
+            "Clear": "Rensa",
             "Headline": "Z-Offset",
             "Later": "Senare",
             "Ok": "OK",
             "Save": "Spara",
+            "SaveConfig": "SPARA KONFIG",
             "SaveInfoDescription": "Den nya z-offset har beräknats och registrerats. Klicka på SAVE_CONFIG för att lagra den nya z-offset i din printer.cfg och starta om Klipper.",
             "SaveInfoDescriptionPrint": "Den nya Z-offseten har beräknats och registrerats. Efter utskrift, klicka på SAVE_CONFIG i den övre raden för att lagra den i printer.cfg och starta om Klipper.",
-            "SaveInfoHeadline": "Information",
-            "ToEndstop": "Endstop",
-            "ToProbe": "till Sond"
+            "SaveInfoHeadline": "Information"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -543,8 +787,16 @@
         "Timelapse": "Timelapse",
         "Webcam": "Webbkamera"
     },
+    "ScrewsTiltAdjust": {
+        "Accept": "godkänn",
+        "Base": "Bas",
+        "ErrorText": "Något gick fel under sonderingsprocessen.",
+        "Headline": "Skruvarnas lutning justeras",
+        "Retry": "försök igen"
+    },
     "SelectPrinterDialog": {
         "AddPrinter": "Lägg till skrivare",
+        "AddPrintersToJson": "Lägg till skrivarna i config.json.",
         "CannotConnectTo": "Kan inte ansluta till {host}.",
         "ChangePrinter": "Byt skrivare",
         "Connecting": "Ansluter till {host}",
@@ -576,6 +828,7 @@
             "EntryStyle": "Ingångsdesign (Entry-Design)",
             "EntryStyleCompact": "kompakt",
             "EntryStyleDefault": "standard",
+            "Filters": "Filter",
             "Height": "Höjd",
             "HideTemperatures": "Dölj temperaturer",
             "HideTimelapse": "Dölj Timelapse",
@@ -589,21 +842,32 @@
             "Circle": "Cirkel",
             "Control": "Kontroll",
             "Cross": "Korsa",
+            "EnableXYHoming": "Aktivera kombinerad X- och Y-hemvändande",
+            "EstimatedExtrusionInfo": "Visa uppskattad extruderingsinformation",
+            "EstimatedExtrusionInfoDescription": "Visa/dölj information för uppskattade profiler baserat på extruderingsmängd och matningshastighet",
+            "HideDuringPrint": "Dölj axelkontroller under utskrift",
             "InvertXMovement": "Invertera X-rörelsen",
             "InvertYMovement": "Invertera Y-rörelsen",
             "InvertZMovement": "Invertera Z-rörelsen",
+            "IsDefault": "(standard)",
             "MaximumValues": "Maxvärden: {maximum}",
             "MaximumValuesVisibility": "Maximalt {maximum} värden rekommenderas för bästa synlighet",
             "MinimumValues": "Minsta värden: {minimum}",
+            "MotorsOff": "Motorer avstängda{isDefault}",
             "MoveDistancesEInMm": "Flytta avstånden E i mm",
             "MoveDistancesInMm": "Flytta avstånd i mm",
             "MoveDistancesXYInMm": "Flytta avstånd XY i mm",
             "MoveDistancesZInMm": "Flytta avstånd Z i mm",
+            "QuadGantryLevel": "Quad Gantry Level{isDefault}",
             "SpeedEInMms": "Hastighet E i mm/s",
             "SpeedXY": "Hastighet XY",
             "SpeedZ": "Hastighet Z",
             "Style": "Stil",
-            "ValueGreaterThan": "Värdet måste vara större än {value}"
+            "ValueGreaterThan": "Värdet måste vara större än {value}",
+            "ZOffsetIncrements": "Z-offset steg (i mm)",
+            "ZOffsetSaveOption": "Sparalternativ för Z-Offset",
+            "ZOffsetSaveOptionDescription": "Ändra alternativet för att spara Z-Offset",
+            "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
             "Dashboard": "Instrumentpanel",
@@ -620,6 +884,9 @@
             "Editor": "Redigerare",
             "KlipperRestartMethod": "Klipper omstartsmetod",
             "KlipperRestartMethodDescription": "Välj vilken omstartsmetod som ska användas på 'Spara och starta om' vid redigering av Klipper-konfigurationsfiler.",
+            "Spaces": "Mellanslag: {count}",
+            "TabSize": "TAB Storlek",
+            "TabSizeDescription": "Justerar hur många blanksteg som ska dras in för TAB",
             "UseEscToClose": "Använd ESC för att stänga redigeringsprogrammet",
             "UseEscToCloseDescription": "Tillåter att ESC-tangenten stänger redigeraren"
         },
@@ -630,36 +897,62 @@
             "GridColor": "Rutnätsfärg",
             "MaxFeed": "Max matningshastighet (Feed Rate)",
             "MinFeed": "Min matningshastighet (Feed Rate)",
+            "ProgressColor": "Framstegsfärg",
             "ShowAxes": "Visa axlar"
         },
         "GeneralTab": {
+            "12hours": "12 timmar ({time})",
+            "24hours": "24 timmar ({time})",
             "Backup": "Säkerhetskopiering",
             "BackupDialog": "Vänligen välj alla sektioner som du vill skapa en säkerhetskopia:",
             "CalcEstimateTime": "Uppskatta tidsberäkning",
             "CalcEstimateTimeDescription": "Om flera väljs kommer ett medelvärde att beräknas",
             "CalcEtaTime": "Beräkning av ETA",
             "CalcEtaTimeDescription": "Om flera väljs kommer ett medelvärde att beräknas",
+            "CalcPrintProgress": "Utskriftsförlopp framstegsberäkning",
+            "CalcPrintProgressDescription": "Metod för att beräkna utskriftsförloppet.",
+            "CalcPrintProgressItems": {
+                "Filament": "Filament",
+                "FileAbsolute": "Filposition (absolut)",
+                "FileRelative": "Filposition (relativ)",
+                "Slicer": "Slicer (M73)"
+            },
             "CannotReadJson": "Det går inte att läsa/tolka säkerhetskopia.",
+            "DateFormat": "Datumformat",
             "DbConsoleHistory": "Konsolhistorik",
             "DbHistoryJobs": "Jobbhistorik",
             "DbHistoryTotals": "Historik totalt",
+            "DBNavigation": "Navigering",
             "DbTimelapseSettings": "Timelapse inställningar",
             "DbView": "Visa inställningar",
-            "DbWebcams": "Webbkameror",
             "EstimateValues": {
                 "Filament": "Filament",
                 "File": "Fil",
                 "Slicer": "Slicer"
             },
+            "Everything": "Allt",
             "FactoryDialog": "Vänligen välj alla sektioner du vill återställa:",
             "FactoryReset": "Fabriksåterställning",
             "General": "Allmän",
             "Language": "Språk",
-            "MoonrakerDb": "Moonraker DB",
+            "MainsailSettingsMoonrakerDb": "Mainsail inställningar i Moonraker DB",
             "PrinterName": "Skrivarens namn",
             "Reset": "Nollställ",
             "Restore": "Återställ",
-            "RestoreDialog": "Välj alla sektioner som du vill återställa:"
+            "RestoreDialog": "Välj alla sektioner som du vill återställa:",
+            "TimeFormat": "Tidsformat"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Färgscheman",
+            "Heightmap": "Höjdkarta",
+            "IsDefault": "(Standard)",
+            "Schemes": {
+                "GrayScale": "Gråskala",
+                "Hot": "Varm",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Fjäder"
+            }
         },
         "InterfaceSettings": "Gränssnittsinställningar",
         "MacrosTab": {
@@ -698,6 +991,32 @@
             "UnknownGroup": "Okänd grupp",
             "Warning": "varning"
         },
+        "MiscellaneousTab": {
+            "AddGroup": "lägg till grupp",
+            "AddPreset": "lägg till förinställning",
+            "Color": "Färg",
+            "CreateGroup": "Skapa grupp",
+            "CreatePreset": "Skapa förinställning",
+            "End": "Slutet",
+            "EndDescription": "Sista lysdioden för denna grupp.",
+            "Groups": "Grupper",
+            "GroupSubTitle": "Start: {start}, Slut: {end}",
+            "LightGroups": "{name} – grupper",
+            "LightPresets": "{name} - Förinställningar",
+            "Miscellaneous": "Diverse",
+            "Name": "Namn",
+            "NoDevicesFound": "Inga enheter hittades",
+            "NoGroupFound": "Ingen grupp hittades",
+            "NoPresetFound": "Ingen förinställning hittades",
+            "Presets": "Förinställningar",
+            "Start": "Start",
+            "StartDescription": "Första lysdioden i denna grupp.",
+            "UnableToLoadLight": "Det går inte att ladda ljus",
+            "UnableToLoadPreset": "Det gick inte att ladda förinställningen"
+        },
+        "NavigationTab": {
+            "Navigation": "Navigering"
+        },
         "PresetsTab": {
             "AddPreset": "lägg till förinställning",
             "Cooldown": "Nedkylning",
@@ -722,8 +1041,10 @@
             "Hostname": "Värdnamn",
             "Port": "Port",
             "RemotePrinters": "Skrivare",
-            "UpdatePrinter": "Uppdatera skrivaren"
+            "UpdatePrinter": "Uppdatera skrivaren",
+            "UseConfigJson": "InstanceDB = JSON upptäckt. Använd config.json för att ändra skrivarlistan."
         },
+        "Store": "lagra",
         "TimelapseTab": {
             "Autorender": "Automatisk rendering",
             "AutorenderDescription": "Om det är aktiverat renderas timelapse-videon automatiskt i slutet av utskriften",
@@ -787,9 +1108,14 @@
             "VariableFps": "Variable FPS",
             "VariableFpsDescription": "Om det är aktiverat kommer bildhastigheten för utmatningsvideon att beräknas baserat på mållängden",
             "VariableFpsMax": "Variable FPS max",
-            "VariableFpsMin": "Variable FPS min"
+            "VariableFpsMaxDescription": "Maximalt värde för variabel FPS",
+            "VariableFpsMin": "Variable FPS min",
+            "VariableFpsMinDescription": "Minsta värde för variabel FPS"
         },
         "UiSettingsTab": {
+            "BedScrewsDialog": "Bäddskruvar dialog",
+            "BedScrewsDialogDescription": "Visa hjälpdialog för BED_SCREWS_ADJUST.",
+            "BigThumbnailBackground": "Stor miniatyrbild bakgrundsfärg",
             "BoolBigThumbnail": "Stor miniatyrbild",
             "BoolBigThumbnailDescription": "Visa en stor miniatyrbild i statuspanelen under en utskrift.",
             "BoolHideUploadAndPrintButton": "Dölj knappen Ladda upp och skriv ut",
@@ -798,29 +1124,56 @@
             "ConfirmOnEmergencyStopDescription": "Visa en bekräftelsedialogruta vid nödstopp",
             "ConfirmOnPowerDeviceChange": "Kräv bekräftelse på ändringar av enhetsström",
             "ConfirmOnPowerDeviceChangeDescription": "Visa en bekräftelsedialogruta för ändringar av enhetsström",
+            "DefaultNavigationState": "Navigations standardläge",
+            "DefaultNavigationStateAlwaysClosed": "alltid stängd",
+            "DefaultNavigationStateAlwaysOpen": "alltid öppen",
+            "DefaultNavigationStateDescription": "Vilket tillstånd ska ha navigeringen som standard.",
+            "DefaultNavigationStateLastState": "senaste läge",
+            "DisableFanAnimation": "Inaktivera fläktanimering",
+            "DisableFanAnimationDescription": "Detta kan minska belastningen i din webbläsare.",
             "DisplayCANCEL_PRINT": "Visa CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Visar CANCEL_PRINT-knappen permanent – ingen ytterliggare bekräftelse behövs.",
             "GcodeThumbnails": "G-Code miniatyrbilder",
             "GcodeThumbnailsDescription": "Klicka på knappen för att komma till instruktionerna.",
             "Guide": "Guide",
+            "HideSaveConfigButtonForBedMesh": "Dölj SAVE_CONFIG-knappen för bed_mesh-ändringar",
+            "HideSaveConfigButtonForBedMeshDescription": "Dölj SAVE_CONFIG, om endast bed_mesh-ändringar väntar på att sparas i Klipper.",
+            "HideUpdateWarnings": "Dölj uppdateringsvarningar",
+            "HideUpdateWarningsDescription": "Det här alternativet kommer att dölja alla uppdateringsvarningar i uppdateringshanteraren.",
             "LockSliders": "Lås skjutreglage på enheter med pekskärm",
             "LockSlidersDelay": "Fördröjning av skjutreglage",
             "LockSlidersDelayDescription": "Reglagen kommer att låsas efter en viss fördröjning. Om den är inställd på 0 eller lämnas tom, kommer skjutreglagen endast att låsas vid sidbyte/återladdning.",
             "LockSlidersDescription": "Skjutreglage på pekskärmar måste låsas upp innan ändringar tillåts.",
             "Logo": "Logotyp",
+            "ManualProbeDialog": "Manuell Sond Hjälpdialog",
+            "ManualProbeDialogDescription": "Visa hjälpdialog för PROBE_CALIBRATE eller Z_ENDSTOP_CALIBRATE.",
             "NavigationStyle": "Navigeringsstil",
             "NavigationStyleDescription": "Ändra navigeringsutseende",
             "NavigationStyleIconsAndText": "Ikoner + text",
             "NavigationStyleIconsOnly": "Endast ikoner",
+            "PowerDeviceName": "Strömenhet skrivare",
+            "PowerDeviceNameDescription": "Välj vilken Moonraker-strömenhet som ska användas för att slå på skrivaren.",
             "Primary": "Primär",
-            "ShowWebcamInNavigation": "Visa webbkamera i navigering",
+            "ScrewsTiltAdjustDialog": "Skruvar Lutningsjusteringsdialog",
+            "ScrewsTiltAdjustDialogDescription": "Visa hjälpdialog för SCREWS_TILT_CALCULATE.",
+            "TempchartHeight": "Höjd Temperaturdiagram",
+            "TempchartHeightDescription": "Ändra höjden på temperaturdiagrammet på instrumentpanelen.",
+            "Theme": "Tema",
+            "ThemeDark": "Mörk",
+            "ThemeDescription": "Ändra applikationens övergripande utseende och känsla",
+            "ThemeLight": "Ljus",
             "UiSettings": "Användargränssnittsinställningar"
         },
+        "Update": "uppdatering",
         "WebcamsTab": {
             "AddWebcam": "lägg till webbkamera",
             "CreateWebcam": "Skapa webbkamera",
+            "EditCrowsnestConf": "Redigera crowsnest.conf",
             "EditWebcam": "Redigera webbkamera",
+            "EnableAudio": "Aktivera ljud",
             "FlipWebcam": "Vänd webbkamerabilden",
+            "HideFps": "Dölj FPS-räknare",
+            "Hlsstream": "HLS-ström",
             "Horizontally": "horisontellt",
             "IconBed": "Bädd",
             "IconCam": "Kamera",
@@ -831,11 +1184,13 @@
             "IconNozzle": "Munstycke (Nozzle)",
             "IconPrinter": "Skrivare",
             "Ipstream": "IP-kamera",
+            "JMuxerStream": "Raw h264-ström (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptiv MJPEG-Streamer (experimentell)",
             "Name": "Namn",
             "NameAlreadyExists": "Namnet finns redan",
             "Required": "krävs",
+            "Rotate": "Rotera",
             "SaveWebcam": "Spara webbkamera",
             "Service": "Tjänst",
             "TargetFPS": "Mål FPS",
@@ -844,7 +1199,11 @@
             "UrlStream": "Webbadressström",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertikalt",
-            "Webcams": "Webbkameror"
+            "Webcams": "Webbkameror",
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
     },
     "Timelapse": {
@@ -857,6 +1216,8 @@
         "Delete": "Radera",
         "DeleteDirectory": "Radera katalog",
         "DeleteDirectoryQuestion": "Vill du verkligen ta bort katalogen \"{name}\" med allt dess innehåll?",
+        "DeleteSelectedQuestion": "Vill du verkligen ta bort {count} valda filer?",
+        "DeleteSingleFileQuestion": "Vill du verkligen ta bort filen \"{name}\"?",
         "Download": "Ladda ner",
         "DuplicateLastframe": "Duplicera sista bildrutan",
         "Empty": "Ingen avslutad timelapse hittades.",

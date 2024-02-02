@@ -81,7 +81,7 @@
             <extruder-panel-settings />
         </template>
         <!-- TOOL SELECTOR BUTTONS -->
-        <extruder-control-panel-tools v-if="showTools" />
+        <extruder-control-panel-tools v-if="showTools && toolchangeMacros.length" />
         <!-- EXTRUSION FACTOR SLIDER -->
         <template v-if="showExtrusionFactor">
             <v-divider v-if="showTools" />
@@ -108,7 +108,7 @@
 <script lang="ts">
 import { mdiPrinter3dNozzle, mdiDotsVertical } from '@mdi/js'
 import { Component, Mixins } from 'vue-property-decorator'
-import { PrinterStateExtruder, PrinterStateMacro } from '@/store/printer/types'
+import { PrinterStateMacro } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import Panel from '@/components/ui/Panel.vue'
@@ -180,11 +180,12 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get showFilamentMacros(): boolean {
-        return this.loadFilamentMacro !== undefined || this.unloadFilamentMacro !== undefined
-    }
-
-    get extruders(): PrinterStateExtruder[] {
-        return this.$store.getters['printer/getExtruders']
+        return (
+            this.loadFilamentMacro !== undefined ||
+            this.unloadFilamentMacro !== undefined ||
+            this.purgeFilamentMacro !== undefined ||
+            this.cleanNozzleMacro !== undefined
+        )
     }
 
     get showTools(): boolean {
