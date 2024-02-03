@@ -3,17 +3,6 @@ import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 
-const convertJobToFilenames = (job: ServerJobQueueStateJob) => {
-    const filenames: string[] = []
-
-    const count = (job.combinedIds?.length ?? 0) + 1
-    for (let i = 0; i < count; i++) {
-        filenames.push(job.filename)
-    }
-
-    return filenames
-}
-
 export const actions: ActionTree<ServerJobQueueState, RootState> = {
     reset({ commit }) {
         commit('reset')
@@ -29,8 +18,8 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
     },
 
     async getStatus({ commit, dispatch }, payload) {
-        if ('queued_jobs' in payload) await commit('setQueuedJobs', payload.queued_jobs)
-        if ('queue_state' in payload) await commit('setQueueState', payload.queue_state)
+        if ('queued_jobs' in payload) commit('setQueuedJobs', payload.queued_jobs)
+        if ('queue_state' in payload) commit('setQueueState', payload.queue_state)
 
         await dispatch('socket/removeInitModule', 'server/jobQueue/init', { root: true })
     },
@@ -39,46 +28,37 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
         Vue.$socket.emit('server.job_queue.post_job', { filenames: filenames })
     },
 
-    changeCount({ getters }, payload: { job_id: string; count: number }) {
-        const filenames: string[] = []
-        const jobs = getters['getJobs']
+    changeCount({ dispatch, getters }, payload: { job_id: string; count: number }) {
+        const jobs: ServerJobQueueStateJob[] = getters['getJobs']
 
-        jobs.forEach((job: ServerJobQueueStateJob) => {
-            if (job.job_id === payload.job_id) {
-                for (let i = 0; i < payload.count; i++) {
-                    filenames.push(job.filename)
-                }
+        const index = jobs.findIndex((job) => job.job_id === payload.job_id)
+        if (index === -1) return
 
-                return
-            }
+        jobs[index].combinedIds = Array(payload.count - 1).fill(payload.job_id)
 
-            filenames.push(...convertJobToFilenames(job))
-        })
-
-        Vue.$socket.emit('server.job_queue.post_job', {
-            filenames,
-            reset: true,
-        })
+        dispatch('sendNewQueueList', jobs)
     },
 
-    changePosition({ getters }, payload: { job_id: string; positionIndex: number }) {
-        const filenames: string[] = []
-        const jobs = getters['getJobs'] as ServerJobQueueStateJob[]
+    changePosition({ dispatch, getters }, payload: { oldIndex: number; newIndex: number }) {
+        const jobs: ServerJobQueueStateJob[] = getters['getJobs']
 
-        const jobToMoveIndex = jobs.findIndex((job) => job.job_id === payload.job_id)
+        const job = jobs.splice(payload.oldIndex, 1)[0]
+        jobs.splice(payload.newIndex, 0, job)
 
-        if (jobToMoveIndex === -1) {
-            return
-        }
+        dispatch('sendNewQueueList', jobs)
+    },
 
-        const jobToMove = jobs[jobToMoveIndex]
+    sendNewQueueList(_, jobs: ServerJobQueueStateJob[]) {
+        const filenames = jobs
+            .map((job) => {
+                const numJobs = (job.combinedIds?.length ?? 0) + 1
+                // return job.filename if the job will be only printed one time
+                if (numJobs === 1) return job.filename
 
-        jobs.splice(jobToMoveIndex, 1)
-        jobs.splice(payload.positionIndex, 0, jobToMove)
-
-        jobs.forEach((job) => {
-            filenames.push(...convertJobToFilenames(job))
-        })
+                // return an array of job.filename if the job will be printed multiple times
+                return Array(numJobs).fill(job.filename)
+            })
+            .flat()
 
         Vue.$socket.emit('server.job_queue.post_job', {
             filenames,

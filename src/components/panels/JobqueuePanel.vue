@@ -1,5 +1,5 @@
 <template>
-    <panel ref="jobqueuePanel" :icon="mdiTrayFull" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
+    <panel :icon="mdiTrayFull" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
         <template #buttons>
             <v-btn
                 v-if="queueState === 'paused'"
@@ -31,32 +31,27 @@
                 </v-tooltip>
             </v-btn>
         </template>
-        <v-data-table
-            :items="jobs"
-            class="jobqueue-table"
-            sort-by="time_added"
-            :items-per-page.sync="countPerPage"
-            :footer-props="{
-                itemsPerPageText: $t('JobQueue.Jobs'),
-                itemsPerPageAllText: $t('JobQueue.AllJobs'),
-                itemsPerPageOptions: [10, 25, 50, 100, -1],
-            }"
-            mobile-breakpoint="0">
-            <template #no-data>
-                <div class="text-center">{{ $t('JobQueue.Empty') }}</div>
-            </template>
-
-            <template #item="{ item, index }">
-                <jobqueue-entry
-                    :key="item.job_id"
-                    :item="item"
-                    :item-queue-index="index"
-                    :queue-length="jobs.length"
-                    :show-print-button-for-first="false"
-                    :content-td-width="contentTdWidth" />
-            </template>
-        </v-data-table>
-        <resize-observer @notify="handleResize" />
+        <v-row v-if="jobs.length" class="mx-0 mt-0">
+            <v-col>
+                <draggable
+                    v-model="joblist"
+                    handle=".handle"
+                    class="jobqueue-list"
+                    ghost-class="ghost"
+                    group="jobs"
+                    @end="updateOrder">
+                    <jobqueue-entry
+                        v-for="(job, index) in jobs"
+                        :key="job.job_id"
+                        :job="job"
+                        :show-handle="true"
+                        :show-print-button="index === 0" />
+                </draggable>
+            </v-col>
+        </v-row>
+        <v-card-text v-else>
+            <p>{{ $t('JobQueue.Empty') }}</p>
+        </v-card-text>
     </panel>
 </template>
 
@@ -66,19 +61,16 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiPlay, mdiPause, mdiTrayFull } from '@mdi/js'
 import JobqueueEntry from '@/components/panels/Status/JobqueueEntry.vue'
+import draggable from 'vuedraggable'
 @Component({
-    components: { JobqueueEntry, Panel },
+    components: { draggable, JobqueueEntry, Panel },
 })
 export default class JobqueuePanel extends Mixins(BaseMixin) {
     mdiPlay = mdiPlay
     mdiPause = mdiPause
     mdiTrayFull = mdiTrayFull
 
-    contentTdWidth = 100
-
-    declare $refs: {
-        jobqueuePanel: any
-    }
+    joblist = []
 
     get jobs() {
         return this.$store.getters['server/jobQueue/getJobs']
@@ -86,14 +78,6 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
 
     get queueState() {
         return this.$store.state.server.jobQueue.queue_state ?? ''
-    }
-
-    get countPerPage() {
-        return this.$store.state.gui.view.jobqueue.countPerPage
-    }
-
-    set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.jobqueue.countPerPage', value: newVal })
     }
 
     startJobqueue() {
@@ -104,24 +88,21 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
         this.$store.dispatch('server/jobQueue/pause')
     }
 
-    mounted() {
-        this.calcContentTdWidth()
-    }
-
-    calcContentTdWidth() {
-        this.contentTdWidth = this.$refs.jobqueuePanel?.$el?.clientWidth - 48 - 32
-    }
-
-    handleResize() {
-        this.$nextTick(() => {
-            this.calcContentTdWidth()
+    updateOrder(event: { oldIndex: number; newIndex: number }) {
+        this.$store.dispatch('server/jobQueue/changePosition', {
+            newIndex: event.newIndex,
+            oldIndex: event.oldIndex,
         })
     }
 }
 </script>
 
-<style scoped>
-.jobqueue-panel {
-    position: relative;
+<style lang="scss">
+.jobqueue-list > div + div {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.jobqueue-list > div.ghost {
+    background-color: rgba(255, 255, 255, 0.12);
 }
 </style>
