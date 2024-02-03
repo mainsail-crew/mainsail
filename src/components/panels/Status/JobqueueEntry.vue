@@ -209,12 +209,3 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
     }
 }
 </script>
-
-<style scoped>
-._spin_button_group {
-    width: 24px;
-    margin-top: -6px;
-    margin-left: -6px;
-    margin-bottom: -6px;
-}
-</style>
