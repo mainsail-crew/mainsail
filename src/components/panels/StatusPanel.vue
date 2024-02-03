@@ -160,22 +160,22 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiDotsVertical = mdiDotsVertical
     mdiAlertOutline = mdiAlertOutline
 
-    private boolShowObjects = false
-    private boolShowPauseAtLayer = false
-
     declare $refs: {
         bigThumbnail: any
     }
 
-    private activeTab = 'files'
-    private lastFilename = ''
+    boolShowObjects = false
+    boolShowPauseAtLayer = false
+
+    activeTab = 'files'
+    lastFilename = ''
 
     get jobs() {
         return this.$store.getters['server/jobQueue/getJobs']
     }
 
     get jobsCount() {
-        return this.jobs.length ?? 0
+        return this.$store.getters['server/jobQueue/getJobsCount']
     }
 
     get jobQueueBadgeColor() {
