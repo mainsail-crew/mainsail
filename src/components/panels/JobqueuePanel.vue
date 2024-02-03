@@ -40,12 +40,7 @@
                     ghost-class="ghost"
                     group="jobs"
                     @end="updateOrder">
-                    <jobqueue-entry
-                        v-for="(job, index) in jobs"
-                        :key="job.job_id"
-                        :job="job"
-                        :show-handle="true"
-                        :show-print-button="index === 0" />
+                    <jobqueue-entry v-for="job in jobs" :key="job.job_id" :job="job" :show-handle="true" />
                 </draggable>
             </v-col>
         </v-row>
