@@ -51,6 +51,10 @@
         </v-col>
         <v-menu v-model="showContextMenu" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
             <v-list>
+                <v-list-item @click="printJob">
+                    <v-icon class="mr-1">{{ mdiPlay }}</v-icon>
+                    {{ $t('JobQueue.StartPrint') }}
+                </v-list-item>
                 <v-list-item @click="showChangeCountDialog = true">
                     <v-icon class="mr-1">{{ mdiCounter }}</v-icon>
                     {{ $t('JobQueue.ChangeCount') }}
@@ -188,6 +192,10 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         this.showContextMenu = true
         this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
         this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
+    }
+
+    printJob() {
+        this.$store.dispatch('server/jobQueue/startByJobId', this.job.job_id)
     }
 
     startJobqueue() {

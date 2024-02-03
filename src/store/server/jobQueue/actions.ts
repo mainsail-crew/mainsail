@@ -36,7 +36,7 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
 
         jobs[index].combinedIds = Array(payload.count - 1).fill(payload.job_id)
 
-        dispatch('sendNewQueueList', jobs)
+        dispatch('sendNewQueueList', { jobs })
     },
 
     changePosition({ dispatch, getters }, payload: { oldIndex: number; newIndex: number }) {
@@ -45,11 +45,23 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
         const job = jobs.splice(payload.oldIndex, 1)[0]
         jobs.splice(payload.newIndex, 0, job)
 
-        dispatch('sendNewQueueList', jobs)
+        dispatch('sendNewQueueList', { jobs })
     },
 
-    sendNewQueueList(_, jobs: ServerJobQueueStateJob[]) {
-        const filenames = jobs
+    startByJobId({ dispatch, getters }, job_id: string) {
+        const jobs: ServerJobQueueStateJob[] = getters['getJobs']
+
+        const index = jobs.findIndex((job) => job.job_id === job_id)
+        if (index === -1) return
+
+        const job = jobs.splice(index, 1)[0]
+        jobs.splice(0, 0, job)
+
+        dispatch('sendNewQueueList', { jobs, printStart: true })
+    },
+
+    sendNewQueueList(_, payload: { jobs: ServerJobQueueStateJob[]; printStart?: boolean }) {
+        const filenames = payload.jobs
             .map((job) => {
                 const numJobs = (job.combinedIds?.length ?? 0) + 1
                 // return job.filename if the job will be only printed one time
@@ -60,10 +72,17 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
             })
             .flat()
 
-        Vue.$socket.emit('server.job_queue.post_job', {
-            filenames,
-            reset: true,
-        })
+        const emitOptions: { action?: string } = {}
+        if (payload.printStart) emitOptions.action = 'server/jobQueue/start'
+
+        Vue.$socket.emit(
+            'server.job_queue.post_job',
+            {
+                filenames,
+                reset: true,
+            },
+            emitOptions
+        )
     },
 
     deleteFromQueue(_, job_ids: string[]) {

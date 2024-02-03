@@ -405,7 +405,8 @@
         "MoveToJobQueueStart": "Move to Queue's start",
         "Pause": "Pause",
         "RemoveFromQueue": "Remove from Queue",
-        "Start": "Start"
+        "Start": "Start",
+        "StartPrint": "Start Job"
     },
     "Machine": {
         "ConfigFilesPanel": {
