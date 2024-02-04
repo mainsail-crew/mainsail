@@ -46,6 +46,7 @@ export interface V4l2Device {
     path_by_hardware: string | null
     path_by_id: string | null
     usb_location: string | null
+    modes: { description: string; format: string; flags: string[]; resolutions: string[] }[]
 }
 
 export interface LibcameraDevice {

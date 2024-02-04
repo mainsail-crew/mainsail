@@ -45,7 +45,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiContentCopy } from '@mdi/js'
 import { LibcameraDevice } from '@/components/dialogs/DevicesDialogVideo.vue'
-import { copyToClipboard } from '@/plugins/helpers'
+import { copyToClipboard, sortResolutions } from '@/plugins/helpers'
 
 @Component
 export default class DevicesDialogVideoDeviceLibcamera extends Mixins(BaseMixin) {
@@ -54,7 +54,7 @@ export default class DevicesDialogVideoDeviceLibcamera extends Mixins(BaseMixin)
     @Prop({ type: Object, required: true }) device!: LibcameraDevice
 
     get identicalResolutions() {
-        const resolutions = this.device.modes.map((mode) => mode.resolutions.join(','))
+        const resolutions = this.device.modes.map((mode) => mode.resolutions.sort(sortResolutions).join(','))
         return resolutions.every((resolution) => resolution === resolutions[0])
     }
 

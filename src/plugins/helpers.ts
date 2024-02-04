@@ -275,3 +275,10 @@ export function copyToClipboard(text: string) {
     }
     textArea.remove()
 }
+
+export function sortResolutions(a: string, b: string) {
+    const aSplit = parseInt(a.split('x')[0])
+    const bSplit = parseInt(b.split('x')[0])
+
+    return aSplit - bSplit
+}
