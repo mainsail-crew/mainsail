@@ -36,12 +36,13 @@
                 <draggable
                     v-model="joblist"
                     handle=".handle"
-                    class="jobqueue-list"
+                    class="jobqueue-list mb-3"
                     ghost-class="ghost"
                     group="jobs"
                     @end="updateOrder">
                     <jobqueue-entry v-for="job in jobs" :key="job.job_id" :job="job" :show-handle="true" />
                 </draggable>
+                <jobqueue-entry-sum :jobs="jobs" />
             </v-col>
         </v-row>
         <v-card-text v-else>
@@ -57,8 +58,9 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiPlay, mdiPause, mdiTrayFull } from '@mdi/js'
 import JobqueueEntry from '@/components/panels/Status/JobqueueEntry.vue'
 import draggable from 'vuedraggable'
+import JobqueueEntrySum from '@/components/panels/Status/JobqueueEntrySum.vue'
 @Component({
-    components: { draggable, JobqueueEntry, Panel },
+    components: { JobqueueEntrySum, draggable, JobqueueEntry, Panel },
 })
 export default class JobqueuePanel extends Mixins(BaseMixin) {
     mdiPlay = mdiPlay
