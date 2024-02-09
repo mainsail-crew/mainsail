@@ -399,8 +399,7 @@
         "Pause": "Pause",
         "RemoveFromQueue": "Remove from Queue",
         "Start": "Start",
-        "StartPrint": "Start Job",
-        "SumFilesHeadline": "no jobs in queue | one job in queue | {count} jobs in queue"
+        "StartPrint": "Start Job"
     },
     "Machine": {
         "ConfigFilesPanel": {
