@@ -1,7 +1,7 @@
 <template>
     <v-row
         v-longpress:600="(e) => openContextMenu(e)"
-        class="d-flex flex-row flex-nowrap cursor-pointer"
+        class="jobqueue-list-entry d-flex flex-row flex-nowrap cursor-pointer"
         @contextmenu="openContextMenu($event)">
         <v-col v-if="showHandle" class="col-auto d-flex flex-column justify-center pr-0 py-0">
             <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
