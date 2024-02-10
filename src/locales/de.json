@@ -1094,7 +1094,7 @@
             "RulesMin": "Der Wert muss mindestens {min} sein!",
             "RulesPositive": "Der Wert muss positiv sein!",
             "RulesRequired": "Der Wert ist erforderlich!",
-            "RulesZeroAndPositive": "Der wert muss 0 oder größer sein!",
+            "RulesZeroAndPositive": "Der Wert muss 0 oder größer sein!",
             "SaveFrames": "Bilder speichern",
             "SaveFramesDescription": "Speichern der Bilder in einer Zip-Datei für externes Rendern",
             "StreamDelayCompensation": "Stream-Verzögerungs-Kompensation",
