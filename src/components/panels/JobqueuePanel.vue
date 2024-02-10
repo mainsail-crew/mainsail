@@ -36,12 +36,13 @@
                 <draggable
                     v-model="joblist"
                     handle=".handle"
-                    class="jobqueue-list"
+                    class="jobqueue-list mb-3"
                     ghost-class="ghost"
                     group="jobs"
                     @end="updateOrder">
                     <jobqueue-entry v-for="job in jobs" :key="job.job_id" :job="job" :show-handle="true" />
                 </draggable>
+                <jobqueue-entry-sum :jobs="jobs" />
             </v-col>
         </v-row>
         <v-card-text v-else>
@@ -57,8 +58,9 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiPlay, mdiPause, mdiTrayFull } from '@mdi/js'
 import JobqueueEntry from '@/components/panels/Status/JobqueueEntry.vue'
 import draggable from 'vuedraggable'
+import JobqueueEntrySum from '@/components/panels/Status/JobqueueEntrySum.vue'
 @Component({
-    components: { draggable, JobqueueEntry, Panel },
+    components: { JobqueueEntrySum, draggable, JobqueueEntry, Panel },
 })
 export default class JobqueuePanel extends Mixins(BaseMixin) {
     mdiPlay = mdiPlay
@@ -93,11 +95,15 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
 </script>
 
 <style lang="scss">
-.jobqueue-list > div + div {
+.jobqueue-list > .jobqueue-list-entry + .jobqueue-list-entry {
     border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .jobqueue-list > div.ghost {
     background-color: rgba(255, 255, 255, 0.12);
+}
+
+.theme--light .jobqueue-list > .jobqueue-list-entry + .jobqueue-list-entry {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 </style>

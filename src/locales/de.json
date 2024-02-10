@@ -198,7 +198,6 @@
         "EditFile": "Datei bearbeiten",
         "Empty": "Leer",
         "ExtruderTemp": "Extruder Temp.",
-        "Filament": "Filament",
         "FilamentName": "Filament Name",
         "FilamentType": "Filament Typ",
         "FilamentUsage": "Filamentverbrauch",
@@ -390,7 +389,6 @@
         "TotalTime": "Gesamtzeit"
     },
     "JobQueue": {
-        "AllJobs": "Alle Aufträge",
         "Cancel": "abbrechen",
         "ChangeCount": "Anzahl ändern",
         "Count": "Anzahl",
@@ -398,10 +396,10 @@
         "InvalidCountEmpty": "Die Eingabe darf nicht leer sein!",
         "InvalidCountGreaterZero": "Die Eingabe muss größer als 0 sein!",
         "JobQueue": "Auftragswarteschlange",
-        "Jobs": "Aufträge",
         "Pause": "Pause",
         "RemoveFromQueue": "Von Auftragswarteschlange entfernen",
-        "Start": "Start"
+        "Start": "Start",
+        "StartPrint": "Auftrag starten"
     },
     "Machine": {
         "ConfigFilesPanel": {
