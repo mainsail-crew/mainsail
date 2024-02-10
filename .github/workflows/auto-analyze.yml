@@ -24,7 +24,7 @@ jobs:
           sha: ${{ github.event.pull_request.head.sha }}
 
       - name: Install node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         if: contains(steps.changed-file-package-json.outputs.modified_files, 'package.json')
         with:
           node-version: 20
