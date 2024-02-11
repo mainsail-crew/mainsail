@@ -8,9 +8,7 @@ export interface FarmPrinterState {
     server: FarmPrinterStateServer
     data: {
         gui: GuiState
-        webcams: {
-            [key: string]: GuiWebcamStateWebcam
-        }
+        webcams: GuiWebcamStateWebcam[]
         // eslint-disable-next-line
         [key: string]: any
     }

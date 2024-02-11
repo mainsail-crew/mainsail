@@ -27,11 +27,7 @@
                                 <span v-if="!el.is.xsmall" class="ml-1">{{ $t('Panels.ZoffsetPanel.Clear') }}</span>
                             </v-btn>
                             <v-btn
-                                v-if="
-                                    z_gcode_offset !== 0 &&
-                                    ((existZOffsetApplyProbe && !existZOffsetApplyEndstop) ||
-                                        (!existZOffsetApplyProbe && existZOffsetApplyEndstop))
-                                "
+                                v-if="showSaveButton"
                                 color="primary"
                                 text
                                 small
@@ -41,31 +37,6 @@
                                 <v-icon small>{{ mdiContentSave }}</v-icon>
                                 <span v-if="!el.is.xsmall" class="ml-1">{{ $t('Panels.ZoffsetPanel.Save') }}</span>
                             </v-btn>
-                            <v-menu v-else-if="z_gcode_offset !== 0" offset-y left :close-on-content-click="false">
-                                <template #activator="{ on, attrs }">
-                                    <v-btn plain text small color="primary" v-bind="attrs" class="pl-2 pr-0" v-on="on">
-                                        <v-icon small>{{ mdiContentSave }}</v-icon>
-                                        <span v-if="!el.is.xsmall" class="ml-1">
-                                            {{ $t('Panels.ZoffsetPanel.Save') }}
-                                        </span>
-                                        <v-icon small>{{ mdiMenuDown }}</v-icon>
-                                    </v-btn>
-                                </template>
-                                <v-list dense>
-                                    <v-list-item>
-                                        <v-btn small style="width: 100%" @click="saveZOffsetToEndstop">
-                                            <v-icon left small>{{ mdiElectricSwitch }}</v-icon>
-                                            {{ $t('Panels.ZoffsetPanel.ToEndstop') }}
-                                        </v-btn>
-                                    </v-list-item>
-                                    <v-list-item>
-                                        <v-btn small style="width: 100%" @click="saveZOffsetToProbe">
-                                            <v-icon left small>{{ mdiElevator }}</v-icon>
-                                            {{ $t('Panels.ZoffsetPanel.ToProbe') }}
-                                        </v-btn>
-                                    </v-list-item>
-                                </v-list>
-                            </v-menu>
                         </div>
                     </v-col>
                 </v-row>
@@ -123,7 +94,7 @@
 
                 <v-dialog v-model="saveOffsetDialog" max-width="290">
                     <panel
-                        :title="$t('Panels.ZoffsetPanel.SaveInfoHeadline').toString()"
+                        :title="$t('Panels.ZoffsetPanel.SaveInfoHeadline')"
                         :icon="mdiInformation"
                         card-class="zoffset-saveinfo-dialog"
                         :margin-bottom="false">
@@ -153,68 +124,42 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { CommandHelp } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import Responsive from '@/components/ui/Responsive.vue'
 
 import {
     mdiBroom,
-    mdiElectricSwitch,
-    mdiElevator,
     mdiContentSave,
     mdiArrowCollapseDown,
     mdiInformation,
-    mdiMenuDown,
     mdiArrowExpandUp,
     mdiLayersOutline,
 } from '@mdi/js'
+import ZoffsetMixin from '@/components/mixins/zoffset'
 @Component({
     components: { Panel, Responsive },
 })
-export default class ZoffsetControl extends Mixins(BaseMixin) {
+export default class ZoffsetControl extends Mixins(BaseMixin, ZoffsetMixin) {
     mdiBroom = mdiBroom
-    mdiElectricSwitch = mdiElectricSwitch
-    mdiElevator = mdiElevator
     mdiContentSave = mdiContentSave
     mdiArrowCollapseDown = mdiArrowCollapseDown
     mdiInformation = mdiInformation
-    mdiMenuDown = mdiMenuDown
     mdiArrowExpandUp = mdiArrowExpandUp
     mdiLayersOutline = mdiLayersOutline
 
-    private saveOffsetDialog = false
-
-    get homing_origin() {
-        return this.$store.state.printer?.gcode_move?.homing_origin ?? []
-    }
-
-    get z_gcode_offset() {
-        return this.homing_origin.length > 1 ? Math.round(this.homing_origin[2] * 1000) / 1000 : 0
-    }
+    saveOffsetDialog = false
 
     get offsetsZ() {
         return this.$store.state.gui.control.offsetsZ
     }
 
     get homed_axis() {
-        return this.$store.state.printer.toolhead.homed_axes ?? ''
+        return this.$store.state.printer.toolhead?.homed_axes ?? ''
     }
 
-    get helplist() {
-        return this.$store.state.printer.helplist ?? []
-    }
-
-    get existZOffsetApplyProbe() {
-        return this.helplist.findIndex((gcode: CommandHelp) => gcode.commandLow === 'z_offset_apply_probe') !== -1
-    }
-
-    get existZOffsetApplyEndstop() {
-        return this.helplist.findIndex((gcode: CommandHelp) => gcode.commandLow === 'z_offset_apply_endstop') !== -1
-    }
-
-    get zOffset(): number {
-        return this.$store.state.printer?.gcode_move?.homing_origin[2].toFixed(3)
+    get offsetZSaveOption() {
+        return this.$store.state.gui.control.offsetZSaveOption ?? null
     }
 
     sendBabyStepDown(offset: number): void {
@@ -236,23 +181,9 @@ export default class ZoffsetControl extends Mixins(BaseMixin) {
     }
 
     saveZOffset(): void {
-        if (this.existZOffsetApplyProbe && !this.existZOffsetApplyEndstop) {
-            this.saveZOffsetToProbe()
-        }
-        if (!this.existZOffsetApplyProbe && this.existZOffsetApplyEndstop) {
-            this.saveZOffsetToEndstop()
-        }
-    }
+        let gcode = this.offsetZSaveOption
+        if (gcode === null) gcode = this.autoSaveZOffsetOption
 
-    saveZOffsetToEndstop(): void {
-        const gcode = 'Z_OFFSET_APPLY_ENDSTOP'
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
-        this.saveOffsetDialog = true
-    }
-
-    saveZOffsetToProbe(): void {
-        const gcode = 'Z_OFFSET_APPLY_PROBE'
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
         this.saveOffsetDialog = true
@@ -267,7 +198,7 @@ export default class ZoffsetControl extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .v-btn-toggle {
     width: 100%;
 }
@@ -304,6 +235,10 @@ export default class ZoffsetControl extends Mixins(BaseMixin) {
     .v-btn:not(:first-child) {
         border-left-width: 0;
     }
+}
+
+html.theme--light ._btn-group .v-btn {
+    border-color: rgba(0, 0, 0, 0.12);
 }
 
 ._btn-qs {

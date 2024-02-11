@@ -120,7 +120,13 @@ export default class TheManualProbeDialog extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
 
     get showDialog() {
+        if (!this.boolManualProbeDialog) return false
+
         return this.$store.state.printer.manual_probe?.is_active ?? false
+    }
+
+    get boolManualProbeDialog() {
+        return this.$store.state.gui.uiSettings.boolManualProbeDialog ?? true
     }
 
     get offsetsZ() {
@@ -175,7 +181,7 @@ export default class TheManualProbeDialog extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .v-btn-toggle {
     width: 100%;
 }

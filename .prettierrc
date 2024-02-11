@@ -4,6 +4,7 @@
     "semi": false,
     "printWidth": 120,
     "bracketSameLine": true,
+    "trailingComma": "es5",
     "htmlWhitespaceSensitivity": "ignore",
     "overrides": [
         {

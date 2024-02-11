@@ -7,6 +7,7 @@
             tabindex="-1"
             class="d-flex align-end statusPanel-big-thumbnail"
             height="200"
+            :style="thumbnailStyle"
             @focus="focusBigThumbnail"
             @blur="blurBigThumbnail">
             <v-card-title
@@ -43,26 +44,34 @@
                                             :src="thumbnailSmall"
                                             width="32"
                                             height="32"
+                                            :alt="current_filename"
                                             v-bind="attrs"
                                             v-on="on" />
-                                        <v-progress-circular
-                                            slot="preloader"
-                                            indeterminate
-                                            color="primary"></v-progress-circular>
-                                        <v-icon slot="error">{{ mdiFile }}</v-icon>
+                                        <div slot="preloader">
+                                            <v-progress-circular indeterminate color="primary" />
+                                        </div>
+                                        <div slot="error">
+                                            <v-icon>{{ mdiFile }}</v-icon>
+                                        </div>
                                     </vue-load-image>
                                 </template>
-                                <span><img :src="thumbnailBig" width="250" /></span>
+                                <span><img :src="thumbnailBig" width="250" :alt="current_filename" /></span>
                             </v-tooltip>
                         </template>
                         <template v-else-if="thumbnailSmall">
                             <vue-load-image>
-                                <img slot="image" :src="thumbnailSmall" width="32" height="32" />
-                                <v-progress-circular
-                                    slot="preloader"
-                                    indeterminate
-                                    color="primary"></v-progress-circular>
-                                <v-icon slot="error">{{ mdiFile }}</v-icon>
+                                <img
+                                    slot="image"
+                                    :src="thumbnailSmall"
+                                    width="32"
+                                    height="32"
+                                    :alt="current_filename" />
+                                <div slot="preloader">
+                                    <v-progress-circular indeterminate color="primary" />
+                                </div>
+                                <div slot="error">
+                                    <v-icon>{{ mdiFile }}</v-icon>
+                                </div>
                             </vue-load-image>
                         </template>
                     </v-col>
@@ -77,13 +86,11 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
+import { defaultBigThumbnailBackground, thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { mdiFileOutline, mdiFile } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
 
-@Component({
-    components: {},
-})
+@Component({})
 export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
     mdiFileOutline = mdiFileOutline
     mdiFile = mdiFile
@@ -178,6 +185,18 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
         return this.current_filename && setting && this.thumbnailBig
     }
 
+    get bigThumbnailBackground() {
+        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+    }
+
+    get thumbnailStyle() {
+        if (defaultBigThumbnailBackground.toLowerCase() !== this.bigThumbnailBackground.toLowerCase()) {
+            return { backgroundColor: this.bigThumbnailBackground }
+        }
+
+        return {}
+    }
+
     focusBigThumbnail() {
         if (this.$refs.bigThumbnail) {
             const clientWidth = this.$refs.bigThumbnail.$el.clientWidth
@@ -204,7 +223,7 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .statusPanel-big-thumbnail {
     transition: height 0.25s ease-out;
 }

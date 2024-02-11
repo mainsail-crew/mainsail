@@ -12,6 +12,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from '@/components/mixins/theme'
 import type { ECharts } from 'echarts/core'
 import { ECBasicOption } from 'echarts/types/dist/shared.d'
 import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/types'
@@ -19,39 +20,43 @@ import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/ty
 @Component({
     components: {},
 })
-export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin) {
+export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeMixin) {
     declare $refs: {
         historyAllPrintStatus: any
     }
 
-    private chartOptions: ECBasicOption = {
-        darkMode: true,
-        animation: false,
-        grid: {
-            top: 10,
-            right: 0,
-            bottom: 0,
-            left: 10,
-        },
-        tooltip: {
-            trigger: 'item',
-            borderWidth: 0,
-        },
-        series: [
-            {
-                type: 'pie',
-                data: [],
-                avoidLabelOverlap: false,
-                radius: ['35%', '60%'],
-                emphasis: {
-                    itemStyle: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)',
+    get chartOptions(): ECBasicOption {
+        return {
+            animation: false,
+            grid: {
+                top: 10,
+                right: 0,
+                bottom: 0,
+                left: 10,
+            },
+            tooltip: {
+                trigger: 'item',
+                borderWidth: 0,
+            },
+            series: [
+                {
+                    type: 'pie',
+                    data: this.printStatusArray,
+                    avoidLabelOverlap: false,
+                    radius: ['35%', '60%'],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)',
+                        },
+                    },
+                    label: {
+                        color: this.fgColorHi,
                     },
                 },
-            },
-        ],
+            ],
+        }
     }
 
     get selectedJobs() {
@@ -81,11 +86,6 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin) {
 
     get chart(): ECharts | null {
         return this.$refs.historyAllPrintStatus?.chart ?? null
-    }
-
-    mounted() {
-        this.chartOptions.series[0].data = this.printStatusArray
-        this.chart?.setOption(this.chartOptions)
     }
 
     beforeDestroy() {

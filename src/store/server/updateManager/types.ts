@@ -1,21 +1,27 @@
-export interface ServerUpdateMangerState {
-    version_info: {
-        // eslint-disable-next-line
-        [key: string]: any
+export interface ServerUpdateManagerState {
+    busy: boolean
+    github_rate_limit: number | null
+    github_requests_remaining: number | null
+    github_limit_reset_time: number | null
+    git_repos: ServerUpdateManagerStateGitRepo[]
+    web_repos: ServerUpdateManagerStateGitRepo[]
+    system: {
+        package_count: number
+        package_list: string[]
     }
     updateResponse: {
         application: string
         complete: boolean
-        messages: ServerUpdateMangerStateMessages[]
+        messages: ServerUpdateManagerStateMessages[]
     }
 }
 
-export interface ServerUpdateMangerStateMessages {
+export interface ServerUpdateManagerStateMessages {
     date: Date
     message: string
 }
 
-export interface ServerUpdateMangerStateVersionInfoGitRepoCommits {
+export interface ServerUpdateManagerStateGitRepoCommit {
     sha: string
     author: string
     date: string
@@ -24,38 +30,42 @@ export interface ServerUpdateMangerStateVersionInfoGitRepoCommits {
     tag: string | null
 }
 
-export interface ServerUpdateMangerStateVersionInfoGitRepo {
-    branch: string
-    channel: string
-    commits_behind: ServerUpdateMangerStateVersionInfoGitRepoCommits[]
-    configured_type: string
-    current_hash: string
-    debug_enabled: boolean
-    detached: boolean
-    detected_type: string
-    full_version_string: string
-    git_messages: string[]
-    is_dirty: boolean
-    is_valid: boolean
-    need_channel_update: boolean
-    owner: string
-    pristine: boolean
-    remote_alias: string
-    remote_hash: string
-    remote_version: string
-    version: string
-}
-
-export interface ServerUpdateMangerStateVersionInfoWeb {
-    channel: string
-    configured_type: string
+export interface ServerUpdateManagerStateGitRepo {
     name: string
+    repo_name?: string
+    configured_type: string
+    detected_type?: string
+    channel?: string
+    need_channel_update?: boolean
+    pristine?: boolean
     owner: string
-    remote_version: string
+    branch?: string
+    remote_alias?: string
     version: string
+    remote_version: string
+    full_version_string?: string
+    current_hash?: string
+    remote_hash?: string
+    is_valid?: boolean
+    is_dirty?: boolean
+    corrupt?: boolean
+    detached?: boolean
+    debug_enabled?: boolean
+    commits_behind?: ServerUpdateManagerStateGitRepoCommit[]
+    git_messages?: string[]
+    anomalies?: string[]
+    warnings?: string[]
+    info_tags?: string[]
+    recovery_url?: string
 }
 
-export interface ServerUpdateMangerStateVersionInfoSystem {
-    package_count: number
-    package_list: string[]
+export interface ServerUpdateManagerStateGitRepoGroupedCommits {
+    date: Date
+    commits: ServerUpdateManagerStateGitRepoCommit[]
+}
+
+export interface ServerUpdateManagerStateGuiList {
+    name: string
+    type: 'git' | 'web'
+    data: ServerUpdateManagerStateGitRepo
 }

@@ -1,21 +1,7 @@
-<style scoped>
-.v-data-table .v-data-table-header__icon {
-    margin-left: 7px;
-}
-
-.v-data-table th {
-    white-space: nowrap;
-}
-
-.v-data-table .file-list-cursor:hover {
-    cursor: pointer;
-}
-</style>
-
 <template>
     <div>
         <panel
-            :title="$t('Timelapse.TimelapseFiles').toString()"
+            :title="$t('Timelapse.TimelapseFiles')"
             :icon="mdiFileDocumentMultipleOutline"
             card-class="timelapse-files-panel">
             <v-card-text>
@@ -69,8 +55,11 @@
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
-                            <b>{{ $t('Timelapse.CurrentPath') }}:</b>
-                            {{ currentPath !== 'timelapse' ? '/' + currentPath.substring(10) : '/' }}
+                            <b class="mr-1">{{ $t('Timelapse.CurrentPath') }}:</b>
+                            <path-navigation
+                                :path="currentPathForNavigation"
+                                :base-directory-label="`/${rootDirectory}`"
+                                :on-segment-click="clickPathNavGoToDirectory" />
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
@@ -121,7 +110,7 @@
                     <div class="text-center font-italic">{{ $t('Timelapse.Empty') }}</div>
                 </template>
 
-                <template v-if="currentPath !== 'timelapse'" slot="body.prepend">
+                <template v-if="currentPath !== rootDirectory" slot="body.prepend">
                     <tr class="file-list-cursor" @click="clickRowGoBack">
                         <td class="pr-0 text-center" style="width: 32px">
                             <v-icon>{{ mdiFolderUpload }}</v-icon>
@@ -217,7 +206,7 @@
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     class="red--text"
-                    @click="removeFile">
+                    @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Timelapse.Delete') }}
                 </v-list-item>
@@ -232,7 +221,7 @@
         </v-menu>
         <v-dialog v-model="dialogRenameFile.show" max-width="400">
             <panel
-                :title="$t('Timelapse.RenameFile').toString()"
+                :title="$t('Timelapse.RenameFile')"
                 card-class="gcode-files-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -261,7 +250,7 @@
         </v-dialog>
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
             <panel
-                :title="$t('Timelapse.NewDirectory').toString()"
+                :title="$t('Timelapse.NewDirectory')"
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -292,7 +281,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel
-                :title="$t('Timelapse.RenameDirectory').toString()"
+                :title="$t('Timelapse.RenameDirectory')"
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -323,7 +312,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel
-                :title="$t('Timelapse.DeleteDirectory').toString()"
+                :title="$t('Timelapse.DeleteDirectory')"
                 card-class="gcode-files-delete-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -347,7 +336,7 @@
         </v-dialog>
         <v-dialog v-model="boolVideoDialog" :max-width="700">
             <panel
-                :title="$t('Timelapse.Video').toString()"
+                :title="$t('Timelapse.Video')"
                 :icon="mdiFileVideo"
                 card-class="timelapse-video-dialog"
                 :margin-bottom="false">
@@ -380,18 +369,47 @@
                 </v-card-text>
             </panel>
         </v-dialog>
+
+        <!-- CONFIRM DELETE SINGLE FILE DIALOG -->
+        <v-dialog v-model="deleteDialog" max-width="400">
+            <panel :title="$t('Timelapse.Delete')" card-class="timelapse-delete-dialog" :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="deleteDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">
+                        {{ $t('Timelapse.DeleteSingleFileQuestion', { name: contextMenu.item.filename }) }}
+                    </p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="deleteDialog = false">
+                        {{ $t('Timelapse.Cancel') }}
+                    </v-btn>
+                    <v-btn color="error" text @click="removeFile">
+                        {{ $t('Timelapse.Delete') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+
+        <!-- CONFIRM DELETE MULTIPLE FILES DIALOG -->
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
-            <panel
-                :title="$t('Timelapse.Delete').toString()"
-                card-class="timelapse-delete-selected-dialog"
-                :margin-bottom="false">
+            <panel :title="$t('Timelapse.Delete')" card-class="timelapse-delete-selected-dialog" :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="deleteSelectedDialog = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
-                    <p class="mb-0">{{ $t('Timelapse.DeleteSelectedQuestion', { count: selectedFiles.length }) }}</p>
+                    <p v-if="selectedFiles.length === 1" class="mb-0">
+                        {{ $t('Timelapse.DeleteSingleFileQuestion', { name: selectedFiles[0].filename }) }}
+                    </p>
+                    <p v-else class="mb-0">
+                        {{ $t('Timelapse.DeleteSelectedQuestion', { count: selectedFiles.length }) }}
+                    </p>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -408,6 +426,7 @@ import BaseMixin from '@/components/mixins/base'
 import { formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
+import PathNavigation from '@/components/ui/PathNavigation.vue'
 import {
     mdiFolderPlus,
     mdiCloseThick,
@@ -431,7 +450,7 @@ interface dialogRenameObject {
 }
 
 @Component({
-    components: { Panel },
+    components: { Panel, PathNavigation },
 })
 export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
@@ -513,6 +532,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         },
     }
 
+    private deleteDialog = false
     private deleteSelectedDialog = false
 
     private isInvalidName = true
@@ -520,6 +540,8 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
         (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
     ]
+
+    private rootDirectory = 'timelapse'
 
     existsFilename(name: string) {
         return this.files.findIndex((file) => file.filename === name) >= 0
@@ -598,6 +620,14 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         return this.$store.state.gui.view.timelapse.currentPath
     }
 
+    get currentPathForNavigation() {
+        if (this.currentPath === this.rootDirectory) {
+            return ''
+        }
+
+        return this.currentPath.substring(this.rootDirectory.length)
+    }
+
     set currentPath(newVal) {
         this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.timelapse.currentPath', value: newVal })
     }
@@ -674,6 +704,10 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
     }
 
+    clickPathNavGoToDirectory(segment: { location: string }) {
+        this.currentPath = `${this.rootDirectory}${segment.location}`
+    }
+
     showContextMenu(e: any, item: FileStateFile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
@@ -730,7 +764,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
         await addElementToItems(this.currentPath, this.selectedFiles)
         const date = new Date()
-        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDay()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDate()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
 
         this.$socket.emit(
             'server.files.zip',
@@ -837,6 +871,8 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
                 { path: this.currentPath + '/' + previewFilename },
                 { action: 'files/getDeleteFile' }
             )
+
+        this.deleteDialog = false
     }
 
     deleteDirectory(item: FileStateFile) {
@@ -893,3 +929,17 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.v-data-table .v-data-table-header__icon {
+    margin-left: 7px;
+}
+
+.v-data-table th {
+    white-space: nowrap;
+}
+
+.v-data-table .file-list-cursor:hover {
+    cursor: pointer;
+}
+</style>

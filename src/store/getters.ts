@@ -24,25 +24,44 @@ export const getters: GetterTree<RootState, any> = {
         if (printer_state === 'paused') return i18n.t('App.Titles.Pause')
 
         // return complete title
-        if (state.printer?.print_stats?.state === 'complete')
-            return i18n.t('App.Titles.Complete', { filename: state.printer.print_stats.filename })
+        if (state.printer?.print_stats?.state === 'complete') {
+            let output = i18n.t('App.Titles.Complete', {
+                filename: state.printer.print_stats.filename,
+            })
+
+            // add printer name to title if it exists
+            if (state.gui?.general.printername) output += `- ${state.gui?.general.printername}`
+
+            return output
+        }
 
         // return printing title
         if (printer_state === 'printing') {
             const eta = getters['printer/getEstimatedTimeETAFormat']
-            const percent = (getters['printer/getPrintPercent'] * 100).toFixed(0)
+            const percent = Math.floor(getters['printer/getPrintPercent'] * 100)
 
-            if (eta !== '--')
-                return i18n.t('App.Titles.PrintingETA', {
+            if (eta !== '--') {
+                let output = i18n.t('App.Titles.PrintingETA', {
                     percent: percent,
                     filename: state.printer?.print_stats?.filename,
                     eta,
                 })
 
-            return i18n.t('App.Titles.Printing', {
+                // add printer name to title if it exists
+                if (state.gui?.general.printername) output += `- ${state.gui?.general.printername}`
+
+                return output
+            }
+
+            let output = i18n.t('App.Titles.Printing', {
                 percent: percent,
                 filename: state.printer?.print_stats?.filename,
             })
+
+            // add printer name to title if it exists
+            if (state.gui?.general.printername) output += `- ${state.gui?.general.printername}`
+
+            return output
         }
 
         return state.gui?.general.printername ?? state.printer?.hostname ?? 'Mainsail'

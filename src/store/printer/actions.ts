@@ -57,7 +57,12 @@ export const actions: ActionTree<PrinterState, RootState> = {
 
         if (Object.keys(subscripts).length > 0)
             Vue.$socket.emit('printer.objects.subscribe', { objects: subscripts }, { action: 'printer/getInitData' })
-        else Vue.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
+        else
+            Vue.$socket.emit(
+                'server.temperature_store',
+                { include_monitors: true },
+                { action: 'printer/tempHistory/init' }
+            )
 
         dispatch('socket/removeInitModule', 'printer/initSubscripts', { root: true })
     },
@@ -70,7 +75,11 @@ export const actions: ActionTree<PrinterState, RootState> = {
 
         dispatch('getData', payload)
 
-        Vue.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
+        Vue.$socket.emit('server.temperature_store', { include_monitors: true }, { action: 'printer/tempHistory/init' })
+
+        setTimeout(() => {
+            dispatch('initExtruderCanExtrude')
+        }, 200)
     },
 
     getData({ commit, dispatch, state }, payload) {
@@ -123,6 +132,17 @@ export const actions: ActionTree<PrinterState, RootState> = {
         }
 
         commit('setData', payload)
+    },
+
+    initExtruderCanExtrude({ state }) {
+        const extruderList: string[] = Object.keys(state).filter((name) => name.startsWith('extruder'))
+        const reInitList: { [key: string]: string[] } = {}
+
+        extruderList.forEach((extruderName) => {
+            reInitList[extruderName] = ['can_extrude']
+        })
+
+        Vue.$socket.emit('printer.objects.query', { objects: reInitList }, { action: 'printer/getData' })
     },
 
     initHelpList({ commit, dispatch }, payload) {

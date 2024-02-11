@@ -20,7 +20,11 @@
                     @click="showDialog(item)">
                     <td class="pr-0 text-center" style="width: 32px">
                         <template v-if="item.small_thumbnail">
-                            <v-tooltip top content-class="tooltip__content-opacity1" :disabled="!item.big_thumbnail">
+                            <v-tooltip
+                                top
+                                content-class="tooltip__content-opacity1"
+                                :disabled="!item.big_thumbnail"
+                                :color="bigThumbnailTooltipColor">
                                 <template #activator="{ on, attrs }">
                                     <vue-load-image class="d-flex">
                                         <img
@@ -72,7 +76,7 @@
             :bool="showDialogBool"
             :file="dialogFile"
             :current-path="currentPath"
-            @closeDialog="closeDialog"></start-print-dialog>
+            @closeDialog="closeDialog" />
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item :disabled="printerIsPrinting || !klipperReadyForGui" @click="showDialog(contextMenu.item)">
@@ -112,7 +116,7 @@
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
-                <v-list-item class="red--text" @click="removeFile(contextMenu.item)">
+                <v-list-item class="red--text" @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Files.Delete') }}
                 </v-list-item>
@@ -120,7 +124,7 @@
         </v-menu>
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
             <panel
-                :title="$t('Files.RenameFile').toString()"
+                :title="$t('Files.RenameFile')"
                 card-class="dashboard-files-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -143,9 +147,35 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+
+        <!-- CONFIRM DELETE FILE DIALOG -->
+        <v-dialog v-model="deleteDialog" max-width="400">
+            <panel :title="$t('Files.Delete')" card-class="gcode-files-delete-dialog" :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="deleteDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">
+                        {{ $t('Files.DeleteSingleFileQuestion', { name: filename }) }}
+                    </p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="deleteDialog = false">
+                        {{ $t('Files.Cancel') }}
+                    </v-btn>
+                    <v-btn color="error" text @click="removeFile">
+                        {{ $t('Files.Delete') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+
         <v-dialog v-model="dialogAddBatchToQueue.show" max-width="400">
             <panel
-                :title="$t('Files.AddToQueue').toString()"
+                :title="$t('Files.AddToQueue')"
                 card-class="gcode-files-add-to-queue-dialog"
                 :icon="mdiPlaylistPlus"
                 :margin-bottom="false">
@@ -214,6 +244,8 @@ import {
     mdiDelete,
     mdiCloseThick,
 } from '@mdi/js'
+import Panel from '@/components/ui/Panel.vue'
+import { defaultBigThumbnailBackground } from '@/store/variables'
 
 interface dialogRenameObject {
     show: boolean
@@ -229,6 +261,7 @@ interface dialogAddBatchToQueue {
 
 @Component({
     components: {
+        Panel,
         StartPrintDialog,
     },
 })
@@ -246,6 +279,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     mdiDelete = mdiDelete
     mdiCloseThick = mdiCloseThick
 
+    private deleteDialog = false
     private showDialogBool = false
     private dialogFile: FileStateGcodefile = {
         isDirectory: false,
@@ -309,17 +343,34 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         const requestItems = gcodes.filter(
             (file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled
         )
-        requestItems.forEach((file: FileStateGcodefile) => {
-            this.$store.dispatch('files/requestMetadata', {
+        this.$store.dispatch(
+            'files/requestMetadata',
+            requestItems.map((file: FileStateGcodefile) => ({
                 filename: 'gcodes/' + file.filename,
-            })
-        })
-
+            }))
+        )
         return gcodes
+    }
+
+    get filename() {
+        const filename = this.contextMenu.item.filename.split('/')
+        return filename[filename.length - 1]
     }
 
     get styleContentTdWidth() {
         return `width: ${this.contentTdWidth}px;`
+    }
+
+    get bigThumbnailBackground() {
+        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+    }
+
+    get bigThumbnailTooltipColor() {
+        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
+            return undefined
+        }
+
+        return this.bigThumbnailBackground
     }
 
     showContextMenu(e: any, item: FileStateGcodefile) {
@@ -488,12 +539,14 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         )
     }
 
-    removeFile(item: FileStateGcodefile) {
+    removeFile() {
         this.$socket.emit(
             'server.files.delete_file',
-            { path: 'gcodes/' + item.filename },
+            { path: 'gcodes/' + this.contextMenu.item.filename },
             { action: 'files/getDeleteFile' }
         )
+
+        this.deleteDialog = false
     }
 
     mounted() {

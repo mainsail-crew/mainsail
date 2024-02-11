@@ -199,11 +199,14 @@ export const getters: GetterTree<FileState, any> = {
 
         const file = directory?.childrens?.find(
             (element: FileStateFile) =>
-                element.filename !== undefined &&
-                element.filename.substr(0, element.filename.lastIndexOf('.')) === acceptName &&
-                acceptExtensions.includes(element.filename.substr(element.filename.lastIndexOf('.') + 1))
+                element.filename?.slice(0, element.filename?.lastIndexOf('.')) === acceptName &&
+                acceptExtensions.includes(element.filename?.slice(element.filename?.lastIndexOf('.') + 1))
         )
-        return file ? rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/' + file.filename : null
+        if (!file) return null
+
+        return `${rootGetters['socket/getUrl']}/server/files/config/${themeDir}/${
+            file.filename
+        }?timestamp=${file.modified.getTime()}`
     },
 
     getSidebarLogo: (state, getters) => {
@@ -213,11 +216,11 @@ export const getters: GetterTree<FileState, any> = {
         return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? ''
     },
 
-    getSidebarBackground: (state, getters) => {
+    getCustomSidebarBackground: (state, getters) => {
         const acceptName = 'sidebar-background'
         const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']
 
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? '/img/sidebar-background.svg'
+        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
     },
 
     getMainBackground: (state, getters) => {
@@ -230,6 +233,13 @@ export const getters: GetterTree<FileState, any> = {
     getCustomStylesheet: (state, getters) => {
         const acceptName = 'custom'
         const acceptExtensions = ['css']
+
+        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
+    },
+
+    getCustomNaviPoints: (state, getters) => {
+        const acceptName = 'navi'
+        const acceptExtensions = ['json']
 
         return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
     },

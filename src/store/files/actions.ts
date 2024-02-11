@@ -11,6 +11,7 @@ import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
 import { hiddenDirectories, validGcodeExtensions } from '@/store/variables'
 import axios from 'axios'
+import { BatchMessage } from '@/plugins/webSocketClient'
 
 export const actions: ActionTree<FileState, RootState> = {
     reset({ commit }) {
@@ -137,13 +138,48 @@ export const actions: ActionTree<FileState, RootState> = {
         }
     },
 
-    requestMetadata({ commit }, payload: { filename: string }) {
+    scanMetadata({ commit }, payload: { filename: string }) {
         const rootPath = payload.filename.slice(0, payload.filename.indexOf('/'))
         if (rootPath === 'gcodes') {
             const requestFilename = payload.filename.slice(7)
             commit('setMetadataRequested', { filename: requestFilename })
-            Vue.$socket.emit('server.files.metadata', { filename: requestFilename }, { action: 'files/getMetadata' })
+            Vue.$socket.emit(
+                'server.files.metascan',
+                { filename: requestFilename },
+                { action: 'files/getScanMetadata' }
+            )
         }
+    },
+
+    getScanMetadata({ dispatch }, payload: { filename: string }) {
+        if (payload !== undefined && payload.filename !== '') {
+            dispatch('getMetadata', payload)
+
+            const filename = payload.filename
+            Vue.$toast.success(i18n.t('Files.ScanMetaSuccess', { filename }).toString())
+        }
+    },
+
+    requestMetadata({ commit }, payload: { filename: string }[]) {
+        // request file metadata in batches to reduce the number of table re-renders when responses are received
+        let messages: BatchMessage[] = []
+        for (const { filename } of payload) {
+            if (messages.length >= 100) {
+                Vue.$socket.emitBatch(messages)
+                messages = []
+            }
+            const rootPath = filename.slice(0, filename.indexOf('/'))
+            if (rootPath === 'gcodes') {
+                const requestFilename = filename.slice(7)
+                commit('setMetadataRequested', { filename: requestFilename })
+                messages.push({
+                    method: 'server.files.metadata',
+                    params: { filename: requestFilename },
+                    emitOptions: { action: 'files/getMetadata' },
+                })
+            }
+        }
+        Vue.$socket.emitBatch(messages)
     },
 
     getMetadata({ commit, rootState }, payload) {
@@ -169,18 +205,23 @@ export const actions: ActionTree<FileState, RootState> = {
                 break
 
             case 'move_file':
-                if (payload.source_item?.path === 'printer_autosave.cfg' && payload.source_item?.root === 'config')
+                // just create a new printer_autosave.cfg file instead of rename the printer.cfg
+                if (payload.source_item?.path === 'printer_autosave.cfg' && payload.source_item?.root === 'config') {
                     commit('setCreateFile', payload)
-                else {
-                    await commit('setMoveFile', payload)
-                    if (
-                        payload.item.root === 'gcodes' &&
-                        validGcodeExtensions.includes(payload.item.path.slice(payload.item.path.lastIndexOf('.')))
-                    ) {
-                        await dispatch('requestMetadata', {
+                    return
+                }
+
+                // move all other files
+                await commit('setMoveFile', payload)
+                if (
+                    payload.item.root === 'gcodes' &&
+                    validGcodeExtensions.includes(payload.item.path.slice(payload.item.path.lastIndexOf('.')))
+                ) {
+                    await dispatch('requestMetadata', [
+                        {
                             filename: 'gcodes/' + payload.item.path,
-                        })
-                    }
+                        },
+                    ])
                 }
                 break
 
@@ -222,7 +263,7 @@ export const actions: ActionTree<FileState, RootState> = {
             const filename = payload.requestParams.dest
                 .substr(payload.requestParams.dest.lastIndexOf('/'))
                 .replace('/', '')
-            const sourceDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf('/'))
+            const sourceDir = payload.requestParams.source.substr(0, payload.requestParams.source.lastIndexOf('/'))
             const destDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf('/'))
 
             if (sourceDir === destDir) Vue.$toast.success(<string>i18n.t('Files.SuccessfullyRenamed', { filename }))

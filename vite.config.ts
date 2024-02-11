@@ -8,13 +8,11 @@ import checker from 'vite-plugin-checker'
 
 import path from 'path'
 import buildVersion from './src/plugins/build-version'
+import buildReleaseInfo from './src/plugins/build-release_info'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 
 const PWAConfig: Partial<VitePWAOptions> = {
     registerType: 'autoUpdate',
-    strategies: 'injectManifest',
-    srcDir: 'src',
-    filename: 'sw.ts',
     includeAssets: ['fonts/**/*.woff2', 'img/**/*.svg', 'img/**/*.png'],
     manifest: {
         name: 'Mainsail',
@@ -40,9 +38,25 @@ const PWAConfig: Partial<VitePWAOptions> = {
             },
         ],
     },
+    workbox: {
+        globPatterns: ['**/*.{js,css,html,woff,woff2,png,svg}'],
+        navigateFallbackDenylist: [/^\/(access|api|printer|server|websocket)/, /^\/webcam[2-4]?/],
+        runtimeCaching: [
+            {
+                urlPattern: (options) => options.url.pathname.startsWith('/config.json'),
+                handler: 'StaleWhileRevalidate',
+                options: {
+                    cacheName: 'config.json',
+                },
+            },
+        ],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+    },
     /* enable sw on development */
     devOptions: {
         enabled: true,
+        type: 'module',
+        suppressWarnings: true,
     },
 }
 
@@ -51,6 +65,7 @@ export default defineConfig({
     plugins: [
         VitePWA(PWAConfig),
         buildVersion(),
+        buildReleaseInfo(),
         vue(),
         loadVersion(),
         checker({ typescript: true }),
@@ -59,17 +74,35 @@ export default defineConfig({
             resolvers: [VuetifyResolver()],
         }),
     ],
+
     css: {
-        preprocessorOptions: {
-            css: { charset: false },
-            scss: {
-                quietDeps: true,
-            },
+        postcss: {
+            plugins: [require('postcss-nesting')()],
         },
     },
 
     build: {
         target: 'safari12',
+        rollupOptions: {
+            output: {
+                manualChunks: (id: string) => {
+                    if (id.includes('node_modules')) {
+                        // split codemirror into its own chunk
+                        if (id.includes('/codemirror/') || id.includes('/@codemirror/')) {
+                            return 'codemirror'
+                        }
+
+                        // split these libs into their own chunks
+                        const chunkedLibs = ['vuetify', 'echarts', 'overlayscrollbars']
+                        for (const lib of chunkedLibs) {
+                            if (id.includes(`/node_modules/${lib}/`)) {
+                                return lib.replace('.js', '')
+                            }
+                        }
+                    }
+                },
+            },
+        },
     },
 
     envPrefix: 'VUE_',

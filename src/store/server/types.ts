@@ -1,5 +1,5 @@
 import { ServerPowerState } from '@/store/server/power/types'
-import { ServerUpdateMangerState } from '@/store/server/updateManager/types'
+import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 import { ServerHistoryState } from '@/store/server/history/types'
 import { ServerTimelapseState } from '@/store/server/timelapse/types'
 
@@ -11,6 +11,7 @@ export interface ServerState {
     klippy_message: string
     components: string[]
     failed_components: string[]
+    failed_init_components: string[]
     warnings: string[]
     registered_directories: string[]
     events: ServerStateEvent[]
@@ -58,7 +59,7 @@ export interface ServerState {
     console_cleared_this_session?: boolean
 
     power?: ServerPowerState
-    updateManager?: ServerUpdateMangerState
+    updateManager?: ServerUpdateManagerState
     history?: ServerHistoryState
     timelapse?: ServerTimelapseState
 }
@@ -69,6 +70,13 @@ export interface ServerStateEvent {
     type: string
     message: string
     formatMessage: string | string[]
+}
+
+export interface ServerStateEventPrompt {
+    date: Date
+    type: string
+    message: string
+    children?: ServerStateEventPrompt[]
 }
 
 export interface ServerStateCpuInfo {

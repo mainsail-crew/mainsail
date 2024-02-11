@@ -1,10 +1,8 @@
-<style scoped></style>
-
 <template>
     <div>
         <v-row>
             <v-col>
-                <history-statistics-panel></history-statistics-panel>
+                <history-statistics-panel />
             </v-col>
         </v-row>
         <v-row>
@@ -14,7 +12,7 @@
         </v-row>
         <v-row class="mt-0">
             <v-col>
-                <history-list-panel></history-list-panel>
+                <history-list-panel />
             </v-col>
         </v-row>
     </div>

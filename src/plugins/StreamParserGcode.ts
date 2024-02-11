@@ -9,11 +9,19 @@ export const gcode = {
         /* Klipper macro attributes */
         if (stream.pos > zeroPos && state.klipperMacro) {
             stream.eatSpace()
-            if (stream.match(/^(".+"|true|false)/i)) {
+            if (stream.match(/^{/)) {
+                return 'tag'
+            }
+            // else if (stream.match(/^'|"/)) {
+            else if (stream.match(/^"[^{]+"/) || stream.match(/^'[^{]+'/)) {
                 return 'string'
-            } else if (stream.match(/^\d+/)) return 'number'
-            else if (stream.match(/^[A-Za-z\d_]+/)) return 'propertyName'
-            else if (zeroPos === 0 && stream.match(/^{[^%]+}/)) return 'variable'
+            } else if (stream.match(/^[-+]?[0-9]*\.?[0-9]+/)) {
+                return 'number'
+            } else if (stream.match(/^[A-Za-z\d_]+/)) {
+                return 'propertyName'
+            } else if (zeroPos === 0 && stream.match(/^{[^%]+}/)) {
+                return 'variable'
+            }
         }
 
         /* comments */
@@ -29,7 +37,7 @@ export const gcode = {
             return 'namespace'
         }
 
-        if (stream.string.substr(zeroPos).toLowerCase().startsWith('m117')) {
+        if (stream.string.substring(zeroPos).toLowerCase().startsWith('m117')) {
             stream.skipToEnd()
             return 'string'
         }

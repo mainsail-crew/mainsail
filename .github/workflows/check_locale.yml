@@ -13,7 +13,7 @@ jobs:
         run: sudo apt install -y jq
 
       - name: Fetch repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
@@ -21,14 +21,14 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
 
       - name: Install dependencies
         run: npm ci
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v23
+        uses: tj-actions/changed-files@v41
         with:
           sha: ${{ github.event.pull_request.head.sha }}
           files: 'src/locales/*.json'
@@ -43,10 +43,10 @@ jobs:
             npm run i18n-extract -- --languageFiles=src/locales/${file##*/} --output=i18n-extract/${file##*/}
             MISSING=$(cat i18n-extract/${file##*/} | jq '.missingKeys | length')
             UNUSED=$(cat i18n-extract/${file##*/} | jq '.unusedKeys | length')
-            echo "::set-output name=$file::|${file##*/}|${MISSING}|${UNUSED}|"
+            echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
           done
       - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v1
+        uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
             Language file analysis report:

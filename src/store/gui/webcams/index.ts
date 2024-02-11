@@ -6,7 +6,7 @@ import { GuiWebcamState } from '@/store/gui/webcams/types'
 
 export const getDefaultState = (): GuiWebcamState => {
     return {
-        webcams: {},
+        webcams: [],
     }
 }
 

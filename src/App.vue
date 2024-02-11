@@ -1,50 +1,26 @@
-<style>
-@import './assets/styles/fonts.css';
-@import './assets/styles/toastr.css';
-@import './assets/styles/page.scss';
-@import './assets/styles/sidebar.scss';
-@import './assets/styles/utils.scss';
-@import './assets/styles/updateManager.scss';
-
-:root {
-    --app-height: 100%;
-}
-
-#content {
-    background-attachment: fixed;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-/*noinspection CssUnusedSymbol*/
-.v-btn:not(.v-btn--outlined).primary {
-    /*noinspection CssUnresolvedCustomProperty*/
-    color: var(--v-btn-text-primary);
-}
-</style>
-
 <template>
-    <v-app dark :style="cssVars">
+    <v-app :style="cssVars">
         <template v-if="socketIsConnected && guiIsReady">
-            <the-sidebar></the-sidebar>
-            <the-topbar></the-topbar>
-
+            <the-sidebar />
+            <the-topbar />
             <v-main id="content" :style="mainStyle">
                 <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
-                    <router-view></router-view>
+                    <router-view />
                 </v-container>
             </v-main>
-            <the-update-dialog></the-update-dialog>
-            <the-editor></the-editor>
-            <the-timelapse-rendering-snackbar></the-timelapse-rendering-snackbar>
-            <the-fullscreen-upload></the-fullscreen-upload>
-            <the-upload-snackbar></the-upload-snackbar>
+            <the-service-worker />
+            <the-update-dialog />
+            <the-editor />
+            <the-timelapse-rendering-snackbar />
+            <the-fullscreen-upload />
+            <the-upload-snackbar />
             <the-manual-probe-dialog />
             <the-bed-screws-dialog />
             <the-screws-tilt-adjust-dialog />
+            <the-macro-prompt />
         </template>
-        <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'"></the-select-printer-dialog>
-        <the-connecting-dialog v-else></the-connecting-dialog>
+        <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'" />
+        <the-connecting-dialog v-else />
     </v-app>
 </template>
 
@@ -52,6 +28,7 @@
 import Component from 'vue-class-component'
 import TheSidebar from '@/components/TheSidebar.vue'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from './components/mixins/theme'
 import TheTopbar from '@/components/TheTopbar.vue'
 import { Mixins, Watch } from 'vue-property-decorator'
 import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
@@ -65,11 +42,14 @@ import TheUploadSnackbar from '@/components/TheUploadSnackbar.vue'
 import TheManualProbeDialog from '@/components/dialogs/TheManualProbeDialog.vue'
 import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
 import TheScrewsTiltAdjustDialog from '@/components/dialogs/TheScrewsTiltAdjustDialog.vue'
+import { setAndLoadLocale } from './plugins/i18n'
+import TheMacroPrompt from '@/components/dialogs/TheMacroPrompt.vue'
 
 Component.registerHooks(['metaInfo'])
 
 @Component({
     components: {
+        TheMacroPrompt,
         TheTimelapseRenderingSnackbar,
         TheEditor,
         TheSelectPrinterDialog,
@@ -84,7 +64,7 @@ Component.registerHooks(['metaInfo'])
         TheScrewsTiltAdjustDialog,
     },
 })
-export default class App extends Mixins(BaseMixin) {
+export default class App extends Mixins(BaseMixin, ThemeMixin) {
     public metaInfo(): any {
         let title = this.$store.getters['getTitle']
 
@@ -104,11 +84,27 @@ export default class App extends Mixins(BaseMixin) {
         return this.$store.getters['files/getMainBackground']
     }
 
+    get naviDrawer(): boolean {
+        return this.$store.state.naviDrawer
+    }
+
+    get navigationStyle() {
+        return this.$store.state.gui.uiSettings.navigationStyle
+    }
+
     get mainStyle() {
-        let style = ''
+        let style: any = {
+            paddingLeft: '0',
+        }
 
         if (this.mainBackground !== null) {
-            style = 'background-image: url(' + this.mainBackground + ');'
+            style.backgroundImage = 'url(' + this.mainBackground + ')'
+        }
+
+        // overwrite padding left for the sidebar
+        if (this.naviDrawer && !this.$vuetify.breakpoint.mdAndDown) {
+            if (this.navigationStyle === 'iconsAndText') style.paddingLeft = '220px'
+            if (this.navigationStyle === 'iconsOnly') style.paddingLeft = '56px'
         }
 
         return style
@@ -128,6 +124,10 @@ export default class App extends Mixins(BaseMixin) {
 
     get current_file(): string {
         return this.$store.state.printer.print_stats?.filename ?? ''
+    }
+
+    get theme(): string {
+        return this.$store.state.gui.uiSettings.theme
     }
 
     get logoColor(): string {
@@ -169,12 +169,12 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     get print_percent(): number {
-        return Math.round(this.$store.getters['printer/getPrintPercent'] * 100)
+        return Math.floor(this.$store.getters['printer/getPrintPercent'] * 100)
     }
 
     @Watch('language')
-    languageChanged(newVal: string): void {
-        this.$i18n.locale = newVal
+    async languageChanged(newVal: string): Promise<void> {
+        await setAndLoadLocale(newVal)
     }
 
     @Watch('customStylesheet')
@@ -194,8 +194,9 @@ export default class App extends Mixins(BaseMixin) {
 
     @Watch('current_file')
     current_fileChanged(newVal: string): void {
-        if (newVal !== '')
-            this.$socket.emit('server.files.metadata', { filename: newVal }, { action: 'files/getMetadataCurrentFile' })
+        if (newVal === '') return
+
+        this.$socket.emit('server.files.metadata', { filename: newVal }, { action: 'files/getMetadataCurrentFile' })
     }
 
     @Watch('primaryColor')
@@ -203,6 +204,15 @@ export default class App extends Mixins(BaseMixin) {
         this.$nextTick(() => {
             this.$vuetify.theme.currentTheme.primary = newVal
         })
+    }
+
+    @Watch('theme')
+    themeChanged(newVal: string): void {
+        const dark = newVal !== 'light'
+        this.$vuetify.theme.dark = dark
+
+        const doc = document.documentElement
+        doc.className = dark ? 'theme--dark' : 'theme--light'
     }
 
     drawFavicon(val: number): void {
@@ -287,11 +297,18 @@ export default class App extends Mixins(BaseMixin) {
     @Watch('print_percent')
     print_percentChanged(newVal: number): void {
         this.drawFavicon(newVal)
+        this.refreshSpoolman()
     }
 
     @Watch('printerIsPrinting')
     printerIsPrintingChanged(): void {
         this.drawFavicon(this.print_percent)
+    }
+
+    refreshSpoolman(): void {
+        if (this.moonrakerComponents.includes('spoolman')) {
+            this.$store.dispatch('server/spoolman/refreshActiveSpool', null, { root: true })
+        }
     }
 
     appHeight() {
@@ -309,3 +326,28 @@ export default class App extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style>
+@import './assets/styles/fonts.css';
+@import './assets/styles/toastr.css';
+@import './assets/styles/page.css';
+@import './assets/styles/sidebar.css';
+@import './assets/styles/utils.css';
+@import './assets/styles/updateManager.css';
+
+:root {
+    --app-height: 100%;
+}
+
+#content {
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/*noinspection CssUnusedSymbol*/
+.v-btn:not(.v-btn--outlined).primary {
+    /*noinspection CssUnresolvedCustomProperty*/
+    color: var(--v-btn-text-primary);
+}
+</style>

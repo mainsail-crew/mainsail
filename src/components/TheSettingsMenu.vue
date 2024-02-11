@@ -55,7 +55,7 @@
                             ref="settingsScroll"
                             :class="'settings-tabs ' + (isMobile ? '' : 'height500')"
                             :options="{ overflowBehavior: { x: 'hidden' } }">
-                            <component :is="'settings-' + activeTab + '-tab'" @scrollToTop="scrollToTop"></component>
+                            <component :is="'settings-' + activeTab + '-tab'" @scrollToTop="scrollToTop" />
                         </overlay-scrollbars>
                     </v-col>
                 </v-row>
@@ -80,6 +80,7 @@ import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue
 import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab.vue'
 import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
 import SettingsTimelapseTab from '@/components/settings/SettingsTimelapseTab.vue'
+import SettingsNavigationTab from '@/components/settings/SettingsNavigationTab.vue'
 
 import Panel from '@/components/ui/Panel.vue'
 import {
@@ -98,8 +99,12 @@ import {
     mdiVideo3d,
     mdiWebcam,
     mdiDipSwitch,
+    mdiMenu,
+    mdiGrid,
 } from '@mdi/js'
 import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneousTab.vue'
+import SettingsHeightmapTab from '@/components/settings/SettingsHeightmapTab.vue'
+
 @Component({
     components: {
         Panel,
@@ -116,6 +121,8 @@ import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneou
         SettingsEditorTab,
         SettingsTimelapseTab,
         SettingsMiscellaneousTab,
+        SettingsNavigationTab,
+        SettingsHeightmapTab,
     },
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
@@ -194,6 +201,16 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 name: 'miscellaneous',
                 title: this.$t('Settings.MiscellaneousTab.Miscellaneous'),
             },
+            {
+                icon: mdiMenu,
+                name: 'navigation',
+                title: this.$t('Settings.NavigationTab.Navigation'),
+            },
+            {
+                icon: mdiGrid,
+                name: 'heightmap',
+                title: this.$t('Settings.HeightmapTab.Heightmap'),
+            },
         ]
 
         if (this.moonrakerComponents.includes('timelapse')) {
@@ -241,6 +258,10 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
 .settings-tabs-bar {
     border-right: 1px solid rgba(255, 255, 255, 0.12);
     height: 100%;
+}
+
+html.theme--light .settings-tabs-bar {
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .settings-tabs.height500 {

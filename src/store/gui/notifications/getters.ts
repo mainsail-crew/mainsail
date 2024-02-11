@@ -5,6 +5,9 @@ import i18n from '@/plugins/i18n.js'
 import { RootStateDependency } from '@/store/types'
 import { sha256 } from 'js-sha256'
 import { PrinterStateKlipperConfigWarning } from '@/store/printer/types'
+import { detect } from 'detect-browser'
+import semver from 'semver'
+import { minBrowserVersions } from '@/store/variables'
 import { GuiRemindersStateReminder } from '../reminders/types'
 
 export const getters: GetterTree<GuiNotificationState, any> = {
@@ -23,11 +26,17 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         // moonraker warnings
         notifications = notifications.concat(getters['getNotificationsMoonrakerWarnings'])
 
-        // moonraker failed compontents
+        // moonraker failed components
         notifications = notifications.concat(getters['getNotificationsMoonrakerFailedComponents'])
+
+        // moonraker failed init components
+        notifications = notifications.concat(getters['getNotificationsMoonrakerFailedInitComponents'])
 
         // klipper warnings
         notifications = notifications.concat(getters['getNotificationsKlipperWarnings'])
+
+        // browser warnings
+        notifications = notifications.concat(getters['getNotificationsBrowserWarnings'])
 
         // user-created reminders
         notifications = notifications.concat(getters['getNotificationsOverdueReminders'])
@@ -222,6 +231,44 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         return notifications
     },
 
+    getNotificationsMoonrakerFailedInitComponents: (state, getters, rootState, rootGetters) => {
+        const notifications: GuiNotificationStateEntry[] = []
+
+        let failedInitCompontents = rootState.server.failed_init_components ?? []
+        if (failedInitCompontents.length) {
+            const date = rootState.server.system_boot_at ?? new Date()
+
+            // get all dismissed failed components and convert it to a string[]
+            const flagDismisses = rootGetters['gui/notifications/getDismissByCategory'](
+                'moonrakerFailedInitComponent'
+            ).map((dismiss: GuiNotificationStateDismissEntry) => {
+                return dismiss.id
+            })
+
+            // filter all dismissed failed init components
+            failedInitCompontents = failedInitCompontents.filter(
+                (component: string) => !flagDismisses.includes(component)
+            )
+
+            failedInitCompontents.forEach((component: string) => {
+                notifications.push({
+                    id: `moonrakerFailedInitComponent/${component}`,
+                    priority: 'high',
+                    title: i18n
+                        .t('App.Notifications.MoonrakerWarnings.MoonrakerInitComponent', { component })
+                        .toString(),
+                    description: i18n
+                        .t('App.Notifications.MoonrakerWarnings.MoonrakerFailedInitComponentDescription', { component })
+                        .toString(),
+                    date,
+                    dismissed: false,
+                } as GuiNotificationStateEntry)
+            })
+        }
+
+        return notifications
+    },
+
     getNotificationsKlipperWarnings: (state, getters, rootState, rootGetters) => {
         const notifications: GuiNotificationStateEntry[] = []
 
@@ -269,6 +316,50 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                     dismissed: false,
                 } as GuiNotificationStateEntry)
             })
+        }
+
+        return notifications
+    },
+
+    getNotificationsBrowserWarnings: (state, getters, rootState) => {
+        const notifications: GuiNotificationStateEntry[] = []
+
+        const browser = detect()
+        const date = rootState.server.system_boot_at ?? new Date()
+
+        // stop here, because no browser detected
+        if (browser === null) return notifications
+
+        // output browser information to console
+        window.console.debug(`Browser: ${browser.name} ${browser.version}, OS: ${browser.os}`)
+
+        // find browser requirement
+        const minBrowserVersion = minBrowserVersions.find(
+            (entry) => entry.name.toLowerCase() === browser.name.toLowerCase()
+        )
+
+        // stop here, because no browser requirement found
+        if (minBrowserVersion === undefined) return notifications
+
+        if (
+            semver.valid(browser.version) &&
+            semver.valid(minBrowserVersion.version) &&
+            semver.gt(minBrowserVersion.version, browser.version ?? '0.0.0')
+        ) {
+            notifications.push({
+                id: `browserWarning/${minBrowserVersion.name}/${minBrowserVersion.version}`,
+                priority: 'critical',
+                title: i18n.t('App.Notifications.BrowserWarnings.Headline').toString(),
+                description: i18n
+                    .t('App.Notifications.BrowserWarnings.Description', {
+                        name: minBrowserVersion.name,
+                        version: browser.version,
+                        minVersion: minBrowserVersion.version,
+                    })
+                    .toString(),
+                date,
+                dismissed: false,
+            } as GuiNotificationStateEntry)
         }
 
         return notifications

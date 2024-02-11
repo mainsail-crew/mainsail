@@ -10,18 +10,16 @@
                         {{ mdiLightbulbOutline }}
                     </v-icon>
                     <span>{{ name }}</span>
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <span
                         v-if="!root || groups.length === 0"
                         class="_currentState"
                         :style="currentStateStyle"
-                        @click="boolDialog = true"></span>
+                        @click="boolDialog = true" />
                 </v-subheader>
             </v-col>
         </v-row>
-        <template v-if="root && groups.length">
-            <miscellaneous-light v-for="group in groups" :key="group.id" :object="object" :group="group" />
-        </template>
+        <miscellaneous-light v-for="group in groups" :key="group.id" :object="object" :group="group" />
         <v-dialog v-model="boolDialog" persistent :width="400">
             <panel
                 :title="name"
@@ -43,13 +41,13 @@
                                             :style="presetStyle(preset)"
                                             v-bind="attrs"
                                             v-on="on"
-                                            @click="usePreset(preset)"></div>
+                                            @click="usePreset(preset)" />
                                     </template>
                                     <span>{{ preset.name }}</span>
                                 </v-tooltip>
                             </v-col>
                         </v-row>
-                        <v-divider class="my-3"></v-divider>
+                        <v-divider class="my-3" />
                     </template>
                     <v-row>
                         <v-col class="text-center">
@@ -157,6 +155,7 @@ interface ColorData {
 @Component({
     components: {
         ColorPicker,
+        MiscellaneousLight: () => import('@/components/inputs/MiscellaneousLight.vue'),
     },
 })
 export default class MiscellaneousLight extends Mixins(BaseMixin) {
@@ -344,6 +343,8 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     }
 
     get groups() {
+        if (!this.root) return []
+
         return (
             this.$store.getters['gui/miscellaneous/getEntryLightgroups']({
                 type: this.object.type,

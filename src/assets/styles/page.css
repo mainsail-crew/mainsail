@@ -1,0 +1,105 @@
+html {
+    overflow: auto;
+    scrollbar-color: #6b6b6b #272727;
+}
+
+body {
+    background: #121212;
+}
+
+#page-container {
+    max-width: 1800px;
+}
+
+.overflowingContentWidgets {
+    visibility: hidden;
+}
+
+.fill-width {
+    width: 100%;
+}
+
+.mb-fix-2 {
+    margin-bottom: -8px !important;
+}
+.mr-fix-2 {
+    margin-right: -8px !important;
+}
+.mr-fix-1 {
+    margin-right: -4px !important;
+}
+
+.gutter-2 {
+    margin: -2px !important;
+}
+.gutter-2 > .col,
+.gutter-2 > [class*='col-'] {
+    padding: 1px !important;
+}
+
+.w-100 {
+    width: 100% !important;
+}
+.h-100 {
+    height: 100% !important;
+}
+
+.p-abs {
+    position: absolute !important;
+}
+
+.p-rel {
+    position: relative !important;
+}
+
+.settings-tabs {
+    height: 500px;
+}
+
+.settings-tabs .v-window {
+    overflow-y: auto !important;
+}
+
+.editor-dialog .cm-editor {
+    height: calc(100vh - 48px);
+}
+
+::-webkit-scrollbar {
+    background-color: #272727;
+    width: 14px;
+    height: 14px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #6b6b6b;
+    border-radius: 7px;
+    border: 4px solid #272727;
+    min-width: 100px;
+    min-height: 100px;
+}
+
+/* Light theme */
+html.theme--light {
+    scrollbar-color: rgba(0, 0, 0, 0.55) #ffffff;
+}
+
+html.theme--light body {
+    background: #ffffff !important;
+}
+
+html.theme--light ::-webkit-scrollbar {
+    background-color: #ffffff;
+}
+
+html.theme--light ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: #ffffff;
+}
+
+html.theme--light .os-theme-light > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
+    background: rgba(0, 0, 0, 0.4) !important;
+}
+
+html.theme--light .os-theme-light > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle:hover {
+    background: rgba(0, 0, 0, 0.55) !important;
+}

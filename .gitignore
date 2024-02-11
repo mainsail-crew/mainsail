@@ -4,6 +4,7 @@ design
 *.log
 packages/test
 dist
+dev-dist
 temp
 .vuerc
 .version
@@ -14,6 +15,7 @@ temp
 package-lock.json
 *.local
 .env
+.vscode
 
 cypress/screenshots/
 cypress/videos/

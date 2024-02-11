@@ -5,6 +5,7 @@ import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { GuiNotificationState } from '@/store/gui/notifications/types'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
+import { GuiNavigationState } from '@/store/gui/navigation/types'
 
 export interface GuiState {
     general: {
@@ -19,12 +20,14 @@ export interface GuiState {
     console?: GuiConsoleState
     control: {
         style: 'bars' | 'circle' | 'cross'
+        hideDuringPrint: boolean
         actionButton: null | 'm84' | 'qgl' | 'ztilt'
         enableXYHoming: boolean
         feedrateXY: number
         stepsXY: number[]
         feedrateZ: number
         offsetsZ: number[]
+        offsetZSaveOption: null | 'Z_OFFSET_APPLY_ENDSTOP' | 'Z_OFFSET_APPLY_PROBE'
         stepsZ: number[]
         stepsAll: number[]
         stepsCircleXY: number[]
@@ -58,7 +61,7 @@ export interface GuiState {
         escToClose: boolean
         confirmUnsavedChanges: boolean
         klipperRestartMethod: 'FIRMWARE_RESTART' | 'RESTART'
-        moonrakerRestartInstance: string | null
+        tabSize: number
     }
     gcodeViewer: {
         extruderColors: string[]
@@ -90,10 +93,12 @@ export interface GuiState {
         cncMode: boolean
     }
     macros?: GuiMacrosState
+    navigation: GuiNavigationState
     notifications?: GuiNotificationState
     presets?: GuiPresetsState
     remoteprinters?: GuiRemoteprintersState
     uiSettings: {
+        theme: 'dark' | 'light'
         logo: string
         primary: string
         displayCancelPrint: boolean
@@ -102,13 +107,19 @@ export interface GuiState {
         confirmOnEmergencyStop: boolean
         confirmOnPowerDeviceChange: boolean
         boolBigThumbnail: boolean
+        bigThumbnailBackground: string
         boolWideNavDrawer: boolean
         boolHideUploadAndPrintButton: boolean
-        boolWebcamNavi: boolean
         navigationStyle: 'iconsAndText' | 'iconsOnly'
+        defaultNavigationStateSetting: 'alwaysOpen' | 'alwaysClosed' | 'lastState'
         powerDeviceName: string | null
         hideSaveConfigForBedMash: boolean
         disableFanAnimation: boolean
+        boolManualProbeDialog: boolean
+        boolBedScrewsDialog: boolean
+        boolScrewsTiltAdjustDialog: boolean
+        tempchartHeight: number
+        hideUpdateWarnings: boolean
     }
     view: {
         blockFileUpload: boolean
@@ -121,6 +132,13 @@ export interface GuiState {
             currentPath: string
             rootPath: string
             selectedFiles: FileStateFile[]
+        }
+        extruder: {
+            showTools: boolean
+            showExtrusionFactor: boolean
+            showPressureAdvance: boolean
+            showFirmwareRetraction: boolean
+            showExtruderControl: boolean
         }
         gcodefiles: {
             countPerPage: number
@@ -156,6 +174,8 @@ export interface GuiState {
         tempchart: {
             boolTempchart: boolean
             hiddenDataset: string[]
+            hideMcuHostSensors: boolean
+            hideMonitors: boolean
             autoscale: boolean
             datasetSettings: any
         }
@@ -166,6 +186,13 @@ export interface GuiState {
             showHiddenFiles: boolean
             currentPath: string
             selectedFiles: FileStateFile[]
+        }
+        toolhead: {
+            showPosition: boolean
+            showCoordinates: boolean
+            showControl: boolean
+            showZOffset: boolean
+            showSpeedFactor: boolean
         }
         webcam: {
             currentCam: {

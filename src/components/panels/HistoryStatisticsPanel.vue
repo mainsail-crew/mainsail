@@ -69,6 +69,22 @@
                                 {{ $t('History.Table') }}
                             </v-btn>
                         </v-btn-toggle>
+                        <v-tooltip v-if="!allLoaded" top>
+                            <template #activator="{ on, attrs }">
+                                <v-btn
+                                    outlined
+                                    small
+                                    :loading="loadings.includes('historyLoadAll')"
+                                    class="ml-3 minwidth-0 px-2"
+                                    color="primary"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    @click="refreshHistory">
+                                    <v-icon small>{{ mdiDatabaseArrowDownOutline }}</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>{{ $t('History.LoadCompleteHistory') }}</span>
+                        </v-tooltip>
                     </div>
                 </v-col>
                 <v-col class="col-12 col-sm-12 col-md-4">
@@ -98,12 +114,13 @@ import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
 import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
 import HistoryAllPrintStatusChart from '@/components/charts/HistoryAllPrintStatusChart.vue'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
-import { mdiChartAreaspline } from '@mdi/js'
+import { mdiChartAreaspline, mdiDatabaseArrowDownOutline } from '@mdi/js'
 @Component({
     components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatusChart },
 })
 export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     mdiChartAreaspline = mdiChartAreaspline
+    mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
 
     get selectedJobs() {
         return this.$store.state.gui.view.history.selectedJobs ?? []
@@ -195,6 +212,16 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
 
     set togglePrintStatus(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.history.toggleChartCol2', value: newVal })
+    }
+
+    get allLoaded() {
+        return this.$store.state.server.history.all_loaded ?? false
+    }
+
+    refreshHistory() {
+        this.$store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
+
+        this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
     }
 
     formatPrintTime(totalSeconds: number) {

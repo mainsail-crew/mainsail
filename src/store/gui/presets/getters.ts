@@ -33,22 +33,25 @@ export const getters: GetterTree<GuiPresetsState, any> = {
             text: '0 °C',
         })
 
-        if ('presets' in state) {
-            Object.keys(state.presets).forEach((id: string) => {
-                const preset = state.presets[id]
+        // return only 0 entry, if there is no presets set
+        if (!('presets' in state)) return output
 
-                if (
-                    payload.name in preset.values &&
-                    preset.values[payload.name].bool &&
-                    output.findIndex((entry: preset) => entry.value === preset.values[payload.name].value) === -1
-                ) {
-                    output.push({
-                        value: preset.values[payload.name].value,
-                        text: preset.values[payload.name].value + ' °C',
-                    })
-                }
-            })
-        }
+        Object.keys(state.presets).forEach((id: string) => {
+            const preset = state.presets[id]
+
+            if (
+                preset.values[payload.name]?.bool &&
+                output.findIndex(
+                    (entry: preset) => entry.value === parseFloat(preset.values[payload.name]?.value?.toString() ?? '0')
+                ) === -1
+            ) {
+                output.push({
+                    // @ts-ignore
+                    value: parseFloat(preset.values[payload.name].value),
+                    text: preset.values[payload.name].value + ' °C',
+                })
+            }
+        })
 
         return output.sort((a: preset, b: preset) => {
             if (a.value > b.value) return -1
