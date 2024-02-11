@@ -10,41 +10,17 @@
         <v-card-text>
             <v-row>
                 <v-col>
-                    <v-text-field
-                        readonly
-                        dense
-                        outlined
-                        hide-details
-                        :append-icon="mdiContentCopy"
-                        :label="$t('DevicesDialog.DevicePath')"
-                        :value="device.device_path"
-                        @click:append="copy(device.device_path)" />
+                    <textfield-with-copy :label="$t('DevicesDialog.DevicePath')" :value="device.device_path" />
                 </v-col>
             </v-row>
             <v-row v-if="device.path_by_id">
                 <v-col>
-                    <v-text-field
-                        readonly
-                        dense
-                        outlined
-                        hide-details
-                        :append-icon="mdiContentCopy"
-                        :label="$t('DevicesDialog.PathById')"
-                        :value="device.path_by_id"
-                        @click:append="copy(device.path_by_id)" />
+                    <textfield-with-copy :label="$t('DevicesDialog.PathById')" :value="device.path_by_id" />
                 </v-col>
             </v-row>
             <v-row v-if="device.path_by_hardware">
                 <v-col>
-                    <v-text-field
-                        readonly
-                        dense
-                        outlined
-                        hide-details
-                        :append-icon="mdiContentCopy"
-                        :label="$t('DevicesDialog.PathByHardware')"
-                        :value="device.path_by_hardware"
-                        @click:append="copy(device.path_by_hardware)" />
+                    <textfield-with-copy :label="$t('DevicesDialog.PathByHardware')" :value="device.path_by_hardware" />
                 </v-col>
             </v-row>
             <template v-if="identicalResolutions">
@@ -74,14 +50,14 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { mdiContentCopy } from '@mdi/js'
 import { V4l2Device } from '@/components/dialogs/DevicesDialogVideo.vue'
-import { copyToClipboard, sortResolutions } from '@/plugins/helpers'
+import { sortResolutions } from '@/plugins/helpers'
+import TextfieldWithCopy from '@/components/inputs/TextfieldWithCopy.vue'
 
-@Component
+@Component({
+    components: { TextfieldWithCopy },
+})
 export default class DevicesDialogVideoDeviceLibcamera extends Mixins(BaseMixin) {
-    mdiContentCopy = mdiContentCopy
-
     @Prop({ type: Object, required: true }) device!: V4l2Device
 
     get identicalResolutions() {
@@ -101,10 +77,6 @@ export default class DevicesDialogVideoDeviceLibcamera extends Mixins(BaseMixin)
         if (this.device.alt_name === null) return false
 
         return this.device.alt_name !== this.device.camera_name
-    }
-
-    copy(text: string) {
-        copyToClipboard(text)
     }
 }
 </script>

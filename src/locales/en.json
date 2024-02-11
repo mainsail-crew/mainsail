@@ -36,6 +36,9 @@
             "NoEmptyAllowedError": "Input must not be empty!"
         },
         "Printers": "Printers",
+        "TextfieldWithCopy": {
+            "Copied": "Copied"
+        },
         "TheServiceWorker": {
             "DescriptionNeedUpdate": "The local cache is outdated and needs to be updated. Please click on the button below to update the cache.",
             "TitleNeedUpdate": "PWA needs update",

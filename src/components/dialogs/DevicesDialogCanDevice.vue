@@ -10,15 +10,7 @@
             </v-row>
             <v-row class="mt-0">
                 <v-col>
-                    <v-text-field
-                        readonly
-                        dense
-                        outlined
-                        hide-details
-                        :append-icon="mdiContentCopy"
-                        label="UUID"
-                        :value="device.uuid"
-                        @click:append="copy(device.uuid)" />
+                    <textfield-with-copy label="UUID" :value="device.uuid" />
                 </v-col>
             </v-row>
         </v-card-text>
@@ -28,18 +20,13 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { mdiContentCopy } from '@mdi/js'
-import { copyToClipboard } from '@/plugins/helpers'
 import { CanDevice } from '@/components/dialogs/DevicesDialogCan.vue'
+import TextfieldWithCopy from '@/components/inputs/TextfieldWithCopy.vue'
 
-@Component
+@Component({
+    components: { TextfieldWithCopy },
+})
 export default class DevicesDialogCanDevice extends Mixins(BaseMixin) {
-    mdiContentCopy = mdiContentCopy
-
     @Prop({ type: Object, required: true }) device!: CanDevice
-
-    copy(text: string) {
-        copyToClipboard(text)
-    }
 }
 </script>
