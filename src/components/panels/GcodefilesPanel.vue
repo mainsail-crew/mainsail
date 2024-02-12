@@ -727,7 +727,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiDragVertical = mdiDragVertical
 
     formatFilesize = formatFilesize
-    formatPrintTime = formatPrintTime
     sortFiles = sortFiles
 
     declare $refs: {
@@ -1519,32 +1518,32 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     outputValue(col: any, item: FileStateGcodefile) {
         const value = col.value in item ? item[col.value] : null
 
-        if (value !== null) {
-            switch (col.outputType) {
-                case 'filesize':
-                    return formatFilesize(value)
+        if (value === null) return '--'
 
-                case 'date':
-                    return this.formatDateTime(value)
+        switch (col.outputType) {
+            case 'filesize':
+                return formatFilesize(value)
 
-                case 'time':
-                    return this.formatPrintTime(value)
+            case 'date':
+                return this.formatDateTime(value)
 
-                case 'temp':
-                    return value.toFixed() + ' °C'
+            case 'time':
+                return formatPrintTime(value)
 
-                case 'length':
-                    if (value > 1000) return (value / 1000).toFixed(2) + ' m'
+            case 'temp':
+                return value.toFixed() + ' °C'
 
-                    return value.toFixed(2) + ' mm'
+            case 'length':
+                if (value > 1000) return (value / 1000).toFixed(2) + ' m'
 
-                case 'weight':
-                    return value.toFixed(2) + ' g'
+                return value.toFixed(2) + ' mm'
 
-                default:
-                    return value
-            }
-        } else return '--'
+            case 'weight':
+                return value.toFixed(2) + ' g'
+
+            default:
+                return value
+        }
     }
 }
 </script>

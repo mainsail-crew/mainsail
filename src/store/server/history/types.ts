@@ -1,3 +1,5 @@
+import { FileStateFileThumbnail } from '@/store/files/types'
+
 export interface ServerHistoryState {
     jobs: ServerHistoryStateJob[]
     job_totals: {
@@ -17,13 +19,18 @@ export interface ServerHistoryStateJob {
     end_time: number
     filament_used: number
     filename: string
-    // eslint-disable-next-line
-    metadata: any
+    // @ts-ignore
+    metadata?: {
+        modified: number
+        thumbnails: FileStateFileThumbnail[]
+        [key: string]: any
+    }
     note?: string
     print_duration: number
     status: string
     start_time: number
     total_duration: number
+    [key: string]: any
 }
 
 export interface ServerHistoryStateAllPrintStatusEntry {

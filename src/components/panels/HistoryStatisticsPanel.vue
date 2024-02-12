@@ -115,12 +115,15 @@ import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
 import HistoryAllPrintStatusChart from '@/components/charts/HistoryAllPrintStatusChart.vue'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { mdiChartAreaspline, mdiDatabaseArrowDownOutline } from '@mdi/js'
+import { formatPrintTime } from '@/plugins/helpers'
 @Component({
     components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatusChart },
 })
 export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     mdiChartAreaspline = mdiChartAreaspline
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
+
+    formatPrintTime = formatPrintTime
 
     get selectedJobs() {
         return this.$store.state.gui.view.history.selectedJobs ?? []
@@ -222,26 +225,6 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
 
         this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
-    }
-
-    formatPrintTime(totalSeconds: number) {
-        if (totalSeconds) {
-            let output = ''
-
-            const hours = Math.floor(totalSeconds / 3600)
-            totalSeconds %= 3600
-            if (hours) output += ' ' + hours + 'h'
-
-            const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += ' ' + minutes + 'm'
-
-            const seconds = totalSeconds % 60
-            if (seconds) output += ' ' + seconds.toFixed(0) + 's'
-
-            return output
-        }
-
-        return '--'
     }
 }
 </script>
