@@ -321,6 +321,8 @@
     },
     "History": {
         "AddNote": "Add note",
+        "AddToQueue": "Add to Queue",
+        "AddToQueueSuccessful": "File {filename} added to Queue.",
         "AllJobs": "All",
         "AvgPrinttime": "Print Time - Ø",
         "Cancel": "Cancel",

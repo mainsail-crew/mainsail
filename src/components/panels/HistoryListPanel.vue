@@ -223,6 +223,12 @@
                     <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
                     {{ $t('History.Reprint') }}
                 </v-list-item>
+                <v-list-item
+                    v-if="contextMenu.item.exists && isJobQueueAvailable"
+                    @click="addToQueue(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
+                    {{ $t('History.AddToQueue') }}
+                </v-list-item>
                 <v-list-item class="red--text" @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('History.Delete') }}
@@ -509,6 +515,7 @@ import {
     mdiDatabaseArrowDownOutline,
     mdiCog,
     mdiPrinter,
+    mdiPlaylistPlus,
     mdiTextBoxSearch,
     mdiFile,
     mdiFileDocumentMultipleOutline,
@@ -529,6 +536,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
     mdiCog = mdiCog
     mdiPrinter = mdiPrinter
+    mdiPlaylistPlus = mdiPlaylistPlus
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiTextBoxSearch = mdiTextBoxSearch
     mdiFile = mdiFile
@@ -785,6 +793,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return this.$store.state.gui.general?.language ?? 'en'
     }
 
+    get isJobQueueAvailable() {
+        return this.moonrakerComponents.includes('job_queue')
+    }
+
     refreshHistory() {
         this.$store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
 
@@ -939,6 +951,16 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     startPrint(item: ServerHistoryStateJob) {
         if (item.exists)
             this.$socket.emit('printer.print.start', { filename: item.filename }, { action: 'switchToDashboard' })
+    }
+
+    async addToQueue(item: ServerHistoryStateJob) {
+        if (!item.exists || !this.isJobQueueAvailable) {
+            return
+        }
+
+        await this.$store.dispatch('server/jobQueue/addToQueue', [item.filename])
+
+        this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: item.filename }).toString())
     }
 
     deleteJob() {
