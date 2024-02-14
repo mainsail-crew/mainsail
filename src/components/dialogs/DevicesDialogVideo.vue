@@ -8,7 +8,7 @@
         <v-row v-if="libcameraDevices.length || filteredV4l2Devices.length" class="mt-0">
             <v-col>
                 <devices-dialog-video-device-libcamera
-                    v-for="(device, index) in libcameraDevices"
+                    v-for="(device, index) in filteredLibcameraDevices"
                     :key="`libcamera_${device.libcamera_id}_${index}`"
                     :device="device" />
                 <devices-dialog-video-device-v4l2
@@ -63,6 +63,14 @@ export default class DevicesDialogVideo extends Mixins(BaseMixin) {
     loaded = false
 
     @Prop({ type: Boolean, default: false }) hideSystemEntries!: boolean
+
+    get filteredLibcameraDevices() {
+        if (this.hideSystemEntries) {
+            return this.libcameraDevices.filter((device) => !device.libcamera_id.includes('usb@'))
+        }
+
+        return this.libcameraDevices
+    }
 
     get filteredV4l2Devices() {
         return this.v4l2Devices.filter((device) => {
