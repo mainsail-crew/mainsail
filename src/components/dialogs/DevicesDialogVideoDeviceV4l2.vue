@@ -59,7 +59,7 @@ import TextfieldWithCopy from '@/components/inputs/TextfieldWithCopy.vue'
 @Component({
     components: { TextfieldWithCopy },
 })
-export default class DevicesDialogVideoDeviceLibcamera extends Mixins(BaseMixin) {
+export default class DevicesDialogVideoDeviceV4l2 extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) device!: V4l2Device
 
     get identicalResolutions() {
