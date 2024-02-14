@@ -23,25 +23,27 @@
                     <textfield-with-copy :label="$t('DevicesDialog.PathByHardware')" :value="device.path_by_hardware" />
                 </v-col>
             </v-row>
-            <template v-if="identicalResolutions">
-                <v-row class="mt-0">
-                    <v-col class="py-2" cols="4">{{ $t('DevicesDialog.Formats') }}</v-col>
-                    <v-col class="py-2">{{ formats }}</v-col>
-                </v-row>
-                <v-row class="mt-0">
-                    <v-col class="py-2" cols="4">{{ $t('DevicesDialog.Resolutions') }}</v-col>
-                    <v-col class="py-2">{{ resolutions }}</v-col>
-                </v-row>
-            </template>
-            <template v-else>
-                <v-row v-for="mode in device.modes" :key="mode.format" class="mt-0">
-                    <v-col class="py-2" cols="4">
-                        {{ mode.description }}
-                        <br />
-                        <small>{{ mode.format }}</small>
-                    </v-col>
-                    <v-col class="py-2">{{ mode.resolutions.join(', ') }}</v-col>
-                </v-row>
+            <template v-if="device.modes.length">
+                <template v-if="identicalResolutions">
+                    <v-row class="mt-0">
+                        <v-col class="py-2" cols="4">{{ $t('DevicesDialog.Formats') }}</v-col>
+                        <v-col class="py-2">{{ formats }}</v-col>
+                    </v-row>
+                    <v-row class="mt-0">
+                        <v-col class="py-2" cols="4">{{ $t('DevicesDialog.Resolutions') }}</v-col>
+                        <v-col class="py-2">{{ resolutions }}</v-col>
+                    </v-row>
+                </template>
+                <template v-else>
+                    <v-row v-for="mode in device.modes" :key="mode.format" class="mt-0">
+                        <v-col class="py-2" cols="4">
+                            {{ mode.description }}
+                            <br />
+                            <small>{{ mode.format }}</small>
+                        </v-col>
+                        <v-col class="py-2">{{ mode.resolutions.join(', ') }}</v-col>
+                    </v-row>
+                </template>
             </template>
         </v-card-text>
     </v-card>
@@ -66,7 +68,7 @@ export default class DevicesDialogVideoDeviceLibcamera extends Mixins(BaseMixin)
     }
 
     get resolutions() {
-        return this.device.modes[0].resolutions.join(', ')
+        return this.device.modes[0]?.resolutions?.join(', ') ?? ''
     }
 
     get formats() {
