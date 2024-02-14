@@ -53,11 +53,7 @@ export default class DevicesDialogSerial extends Mixins(BaseMixin) {
     get filteredDevices() {
         if (!this.hideSystemEntries) return this.devices
 
-        return this.devices.filter((device) => {
-            if (device.device_type === 'hardware_uart') return false
-
-            return true
-        })
+        return this.devices.filter((device) => device.device_type !== 'hardware_uart')
     }
 
     async refresh() {

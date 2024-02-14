@@ -55,11 +55,7 @@ export default class DevicesDialogUsb extends Mixins(BaseMixin) {
     get filteredDevices() {
         if (!this.hideSystemEntries) return this.devices
 
-        return this.devices.filter((device) => {
-            if (device.class === 'Hub') return false
-
-            return true
-        })
+        return this.devices.filter((device) => device.class !== 'Hub')
     }
 
     async refresh() {
