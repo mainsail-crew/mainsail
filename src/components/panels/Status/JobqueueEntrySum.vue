@@ -103,10 +103,18 @@ export default class StatusPanelJobqueueEntrySum extends Mixins(BaseMixin) {
     }
 
     get currentPrintEta() {
-        const eta = this.$store.getters['printer/getEstimatedTimeETA']
-        if (eta === 0) return Date.now()
+        let eta = this.$store.getters['printer/getEstimatedTimeETA']
+        if (eta) return eta
 
-        return eta
+        // if no eta and printer is printing, use the estimated time from the current file + now.
+        // this is a fallback for the case when the printer is in the preheating time, and the
+        // estimated time is not yet available
+        if (this.printerIsPrinting && this.$store.state.printer.print_stats?.print_duration === 0) {
+            return Date.now() + (this.$store.state.printer.current_file?.estimated_time ?? 0) * 1000
+        }
+
+        // fallback current time
+        return Date.now()
     }
 
     get eta() {
