@@ -154,6 +154,11 @@
             "Headline": "Start Job",
             "Print": "print",
             "Timelapse": "Timelapse"
+        },
+        "AddBatchToQueue": {
+            "AddToQueue": "Add to Queue",
+            "Count": "Count",
+            "Cancel": "Cancel"
         }
     },
     "Editor": {
