@@ -36,6 +36,9 @@
             "NoEmptyAllowedError": "Input must not be empty!"
         },
         "Printers": "Printers",
+        "TextfieldWithCopy": {
+            "Copied": "Copied"
+        },
         "TheServiceWorker": {
             "DescriptionNeedUpdate": "The local cache is outdated and needs to be updated. Please click on the button below to update the cache.",
             "TitleNeedUpdate": "PWA needs update",
@@ -146,6 +149,20 @@
         "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
     },
+    "DevicesDialog": {
+        "CanBusInfo": "Only unassigned nodes can be detected. It’s recommended to have only one unassigned device connected to the can bus to avoid communication issues. For more details, please click on the link:",
+        "ClickRefresh": "Click on the refresh button to search for devices.",
+        "DevicePath": "Device path",
+        "Formats": "Formats",
+        "Headline": "Devices",
+        "HideSystemEntries": "Hide system entries",
+        "LibcameraId": "Libcamera ID",
+        "NoDeviceFound": "No device found. Please check the connection and click on the refresh button.",
+        "PathByHardware": "Path by hardware",
+        "PathById": "Path by ID",
+        "Refresh": "refresh",
+        "Resolutions": "Resolutions"
+    },
     "Dialogs": {
         "StartPrint": {
             "Cancel": "Cancel",
@@ -158,6 +175,7 @@
     },
     "Editor": {
         "ConfigReference": "Config Reference",
+        "DeviceDialog": "Devices",
         "DontSave": "Don't save",
         "Downloading": "Downloading",
         "FailedSave": "{filename} could not be uploaded!",

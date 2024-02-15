@@ -13,6 +13,10 @@
                 :icon="isWriteable ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"
                 :title="title">
                 <template #buttons>
+                    <v-btn text tile class="d-none d-md-flex" @click="dialogDevices = true">
+                        <v-icon small class="mr-1">{{ mdiUsb }}</v-icon>
+                        {{ $t('Editor.DeviceDialog') }}
+                    </v-btn>
                     <v-btn
                         v-if="restartServiceName === 'klipper'"
                         text
@@ -116,6 +120,7 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <devices-dialog :show-dialog="dialogDevices" @close="dialogDevices = false" />
     </div>
 </template>
 
@@ -135,14 +140,17 @@ import {
     mdiHelp,
     mdiHelpCircle,
     mdiRestart,
+    mdiUsb,
 } from '@mdi/js'
 import type Codemirror from '@/components/inputs/Codemirror.vue'
+import DevicesDialog from '@/components/dialogs/DevicesDialog.vue'
 
 @Component({
-    components: { Panel, CodemirrorAsync },
+    components: { DevicesDialog, Panel, CodemirrorAsync },
 })
 export default class TheEditor extends Mixins(BaseMixin) {
-    private dialogConfirmChange = false
+    dialogConfirmChange = false
+    dialogDevices = false
 
     formatFilesize = formatFilesize
 
@@ -157,6 +165,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiHelpCircle = mdiHelpCircle
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiFileDocumentOutline = mdiFileDocumentOutline
+    mdiUsb = mdiUsb
 
     private scrollbarOptions = { scrollbars: { autoHide: 'never' } }
 
