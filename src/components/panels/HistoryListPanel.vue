@@ -508,7 +508,8 @@
         <add-batch-to-queue-dialog
             :is-visible="dialogAddBatchToQueue.isVisible"
             :filename="dialogAddBatchToQueue.filename"
-            @closeDialog="closeAddBatchToQueueDialog" />
+            @closeDialog="closeAddBatchToQueueDialog"
+            @addToQueue="showAddBatchToQueueFeedbackToast" />
     </div>
 </template>
 
@@ -537,7 +538,10 @@ import {
     mdiNotebook,
     mdiFileCancel,
 } from '@mdi/js'
-import AddBatchToQueueDialog, { addBatchToQueueDialogProps } from '@/components/dialogs/AddBatchToQueueDialog.vue'
+import AddBatchToQueueDialog, {
+    addBatchToQueueDialogProps,
+    addBatchToQueueEventData,
+} from '@/components/dialogs/AddBatchToQueueDialog.vue'
 
 @Component({
     components: { Panel, AddBatchToQueueDialog },
@@ -983,6 +987,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     openAddBatchToQueueDialog(item: ServerHistoryStateJob) {
         this.dialogAddBatchToQueue.isVisible = true
         this.dialogAddBatchToQueue.filename = item.filename
+    }
+
+    showAddBatchToQueueFeedbackToast(eventData: addBatchToQueueEventData) {
+        this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: eventData.filename }).toString())
     }
 
     closeAddBatchToQueueDialog() {

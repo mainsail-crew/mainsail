@@ -55,6 +55,10 @@ export interface addBatchToQueueDialogProps {
     filename: string
 }
 
+export interface addBatchToQueueEventData {
+    filename: string
+}
+
 const defaultCount = 1
 
 @Component
@@ -90,7 +94,12 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
 
         await this.$store.dispatch('server/jobQueue/addToQueue', array)
 
+        this.emitAddToQueueEvent({ filename })
         this.closeDialog()
+    }
+
+    emitAddToQueueEvent(eventData: addBatchToQueueEventData) {
+        this.$emit('addToQueue', eventData)
     }
 
     closeDialog() {
