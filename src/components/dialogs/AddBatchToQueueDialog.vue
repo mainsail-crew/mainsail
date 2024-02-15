@@ -67,6 +67,7 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
      * Should there be a toast message after the file was added to the queue?
      */
     @Prop({ type: Boolean, default: false }) declare readonly showToast: boolean
+
     /**
      * Filename of the model to be added to the Queue.
      */
