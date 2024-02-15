@@ -173,53 +173,10 @@
             </panel>
         </v-dialog>
 
-        <v-dialog v-model="dialogAddBatchToQueue.show" max-width="400">
-            <panel
-                :title="$t('Files.AddToQueue')"
-                card-class="gcode-files-add-to-queue-dialog"
-                :icon="mdiPlaylistPlus"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="dialogAddBatchToQueue.show = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-
-                <v-card-text>
-                    <v-text-field
-                        ref="inputFieldAddToQueueCount"
-                        v-model="dialogAddBatchToQueue.count"
-                        :label="$t('Files.Count')"
-                        required
-                        hide-spin-buttons
-                        type="number"
-                        :rules="countInputRules"
-                        @keyup.enter="addBatchToQueueAction">
-                        <template #append-outer>
-                            <div class="_spin_button_group">
-                                <v-btn class="mt-n3" icon plain small @click="dialogAddBatchToQueue.count++">
-                                    <v-icon>{{ mdiChevronUp }}</v-icon>
-                                </v-btn>
-                                <v-btn
-                                    :disabled="dialogAddBatchToQueue.count <= 1"
-                                    class="mb-n3"
-                                    icon
-                                    plain
-                                    small
-                                    @click="dialogAddBatchToQueue.count--">
-                                    <v-icon>{{ mdiChevronDown }}</v-icon>
-                                </v-btn>
-                            </div>
-                        </template>
-                    </v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogAddBatchToQueue.show = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="addBatchToQueueAction">{{ $t('Files.AddToQueue') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+        <add-batch-to-queue-dialog
+            :is-visible="dialogAddBatchToQueue.isVisible"
+            :filename="dialogAddBatchToQueue.filename"
+            @closeDialog="closeAddBatchToQueueDialog" />
     </v-card>
 </template>
 
@@ -246,6 +203,7 @@ import {
 } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
 import { defaultBigThumbnailBackground } from '@/store/variables'
+import AddBatchToQueueDialog, { addBatchToQueueDialogProps } from '@/components/dialogs/AddBatchToQueueDialog.vue'
 
 interface dialogRenameObject {
     show: boolean
@@ -253,16 +211,11 @@ interface dialogRenameObject {
     item: FileStateGcodefile
 }
 
-interface dialogAddBatchToQueue {
-    show: boolean
-    count: number
-    item: FileStateGcodefile
-}
-
 @Component({
     components: {
         Panel,
         StartPrintDialog,
+        AddBatchToQueueDialog,
     },
 })
 export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixin) {
@@ -320,10 +273,9 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         item: { ...this.dialogFile },
     }
 
-    private dialogAddBatchToQueue: dialogAddBatchToQueue = {
-        show: false,
-        count: 1,
-        item: { ...this.contextMenu.item },
+    private dialogAddBatchToQueue: addBatchToQueueDialogProps = {
+        isVisible: false,
+        filename: '',
     }
 
     private countInputRules = [
@@ -470,23 +422,12 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     }
 
     openAddBatchToQueueDialog(item: FileStateGcodefile) {
-        this.dialogAddBatchToQueue.show = true
-        this.dialogAddBatchToQueue.count = 1
-        this.dialogAddBatchToQueue.item = item
+        this.dialogAddBatchToQueue.isVisible = true
+        this.dialogAddBatchToQueue.filename = item.filename
     }
 
-    async addBatchToQueueAction() {
-        let filename = [this.currentPath, this.dialogAddBatchToQueue.item.filename].join('/')
-        if (filename.startsWith('/')) filename = filename.slice(1)
-
-        const array: string[] = []
-        for (let i = 0; i < this.dialogAddBatchToQueue.count; i++) {
-            array.push(filename)
-        }
-
-        await this.$store.dispatch('server/jobQueue/addToQueue', array)
-
-        this.dialogAddBatchToQueue.show = false
+    closeAddBatchToQueueDialog() {
+        this.dialogAddBatchToQueue.isVisible = false
     }
 
     view3D(item: FileStateGcodefile) {
@@ -570,12 +511,5 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
 <style scoped>
 .filesGcodeCard {
     position: relative;
-}
-
-._spin_button_group {
-    width: 24px;
-    margin-top: -6px;
-    margin-left: -6px;
-    margin-bottom: -6px;
 }
 </style>
