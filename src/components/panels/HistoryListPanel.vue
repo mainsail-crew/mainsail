@@ -985,6 +985,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     openAddBatchToQueueDialog(item: ServerHistoryStateJob) {
+        if (!item.exists || !this.isJobQueueAvailable) {
+            return
+        }
+
         this.dialogAddBatchToQueue.isVisible = true
         this.dialogAddBatchToQueue.filename = item.filename
     }
