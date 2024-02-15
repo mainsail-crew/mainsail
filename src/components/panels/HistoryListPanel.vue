@@ -223,6 +223,18 @@
                     <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
                     {{ $t('History.Reprint') }}
                 </v-list-item>
+                <v-list-item
+                    v-if="contextMenu.item.exists && isJobQueueAvailable"
+                    @click="addToQueue(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
+                    {{ $t('Files.AddToQueue') }}
+                </v-list-item>
+                <v-list-item
+                    v-if="contextMenu.item.exists && isJobQueueAvailable"
+                    @click="openAddBatchToQueueDialog(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
+                    {{ $t('Files.AddBatchToQueue') }}
+                </v-list-item>
                 <v-list-item class="red--text" @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('History.Delete') }}
@@ -493,6 +505,11 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <add-batch-to-queue-dialog
+            :is-visible="dialogAddBatchToQueue.isVisible"
+            :show-toast="true"
+            :filename="dialogAddBatchToQueue.filename"
+            @close="closeAddBatchToQueueDialog" />
     </div>
 </template>
 
@@ -509,6 +526,7 @@ import {
     mdiDatabaseArrowDownOutline,
     mdiCog,
     mdiPrinter,
+    mdiPlaylistPlus,
     mdiTextBoxSearch,
     mdiFile,
     mdiFileDocumentMultipleOutline,
@@ -520,8 +538,10 @@ import {
     mdiNotebook,
     mdiFileCancel,
 } from '@mdi/js'
+import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
+
 @Component({
-    components: { Panel },
+    components: { Panel, AddBatchToQueueDialog },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiDatabaseExportOutline = mdiDatabaseExportOutline
@@ -529,6 +549,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
     mdiCog = mdiCog
     mdiPrinter = mdiPrinter
+    mdiPlaylistPlus = mdiPlaylistPlus
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiTextBoxSearch = mdiTextBoxSearch
     mdiFile = mdiFile
@@ -557,6 +578,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     private detailsDialog = {
         item: {},
         boolShow: false,
+    }
+
+    dialogAddBatchToQueue: { isVisible: boolean; filename: string } = {
+        isVisible: false,
+        filename: '',
     }
 
     private noteDialog: {
@@ -785,6 +811,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return this.$store.state.gui.general?.language ?? 'en'
     }
 
+    get isJobQueueAvailable() {
+        return this.moonrakerComponents.includes('job_queue')
+    }
+
     refreshHistory() {
         this.$store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
 
@@ -939,6 +969,21 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     startPrint(item: ServerHistoryStateJob) {
         if (item.exists)
             this.$socket.emit('printer.print.start', { filename: item.filename }, { action: 'switchToDashboard' })
+    }
+
+    async addToQueue(item: ServerHistoryStateJob) {
+        await this.$store.dispatch('server/jobQueue/addToQueue', [item.filename])
+
+        this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: item.filename }).toString())
+    }
+
+    openAddBatchToQueueDialog(item: ServerHistoryStateJob) {
+        this.dialogAddBatchToQueue.isVisible = true
+        this.dialogAddBatchToQueue.filename = item.filename
+    }
+
+    closeAddBatchToQueueDialog() {
+        this.dialogAddBatchToQueue.isVisible = false
     }
 
     deleteJob() {
