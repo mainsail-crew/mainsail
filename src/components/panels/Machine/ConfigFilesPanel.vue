@@ -601,10 +601,6 @@ interface uploadSnackbar {
     number: number
     max: number
     cancelTokenSource: any
-    lastProgress: {
-        time: number
-        loaded: number
-    }
 }
 
 interface draggingFile {
@@ -719,10 +715,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         number: 0,
         max: 0,
         cancelTokenSource: {},
-        lastProgress: {
-            time: 0,
-            loaded: 0,
-        },
     }
     private draggingFile: draggingFile = {
         item: {
