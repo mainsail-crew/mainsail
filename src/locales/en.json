@@ -36,6 +36,9 @@
             "NoEmptyAllowedError": "Input must not be empty!"
         },
         "Printers": "Printers",
+        "TextfieldWithCopy": {
+            "Copied": "Copied"
+        },
         "TheServiceWorker": {
             "DescriptionNeedUpdate": "The local cache is outdated and needs to be updated. Please click on the button below to update the cache.",
             "TitleNeedUpdate": "PWA needs update",
@@ -46,7 +49,7 @@
             "DescriptionFrequencyCapped": "rPi ARM max frequency is currently limited to 1.2 GHz.",
             "DescriptionPreviouslyFrequencyCapped": "rPi ARM max frequency was at least once limited to 1.2 GHz since last power-on.",
             "DescriptionPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) temperature was at least once above the soft limit (default 60C) since last power-on.",
-            "DescriptionPreviouslyThrottled": "rPI ARM core(s) where throttled down at least once since last power-on.",
+            "DescriptionPreviouslyThrottled": "rPI ARM core(s) were throttled down at least once since last power-on.",
             "DescriptionPreviouslyUnderVolted": "rPI supply voltage dropped below 4.65V at least once since the last power-on.",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperature is currently above the soft limit (default 60C).",
             "DescriptionUnderVoltageDetected": "rPI supply voltage currently below 4.65V",
@@ -146,6 +149,20 @@
         "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
     },
+    "DevicesDialog": {
+        "CanBusInfo": "Only unassigned nodes can be detected. It’s recommended to have only one unassigned device connected to the can bus to avoid communication issues. For more details, please click on the link:",
+        "ClickRefresh": "Click on the refresh button to search for devices.",
+        "DevicePath": "Device path",
+        "Formats": "Formats",
+        "Headline": "Devices",
+        "HideSystemEntries": "Hide system entries",
+        "LibcameraId": "Libcamera ID",
+        "NoDeviceFound": "No device found. Please check the connection and click on the refresh button.",
+        "PathByHardware": "Path by hardware",
+        "PathById": "Path by ID",
+        "Refresh": "refresh",
+        "Resolutions": "Resolutions"
+    },
     "Dialogs": {
         "StartPrint": {
             "Cancel": "Cancel",
@@ -158,6 +175,7 @@
     },
     "Editor": {
         "ConfigReference": "Config Reference",
+        "DeviceDialog": "Devices",
         "DontSave": "Don't save",
         "Downloading": "Downloading",
         "FailedSave": "{filename} could not be uploaded!",
@@ -198,7 +216,6 @@
         "EditFile": "Edit File",
         "Empty": "Empty",
         "ExtruderTemp": "Extruder Temp.",
-        "Filament": "Filament",
         "FilamentName": "Filament Name",
         "FilamentType": "Filament Type",
         "FilamentUsage": "Filament Usage",
@@ -322,6 +339,7 @@
     },
     "History": {
         "AddNote": "Add note",
+        "AddToQueueSuccessful": "File {filename} added to Queue.",
         "AllJobs": "All",
         "AvgPrinttime": "Print Time - Ø",
         "Cancel": "Cancel",
@@ -375,6 +393,7 @@
             "completed": "Completed",
             "error": "Error",
             "in_progress": "In progress",
+            "interrupted": "Interrupted",
             "klippy_disconnect": "Klippy disconnect",
             "klippy_shutdown": "Klippy shutdown",
             "Others": "Others",
@@ -389,7 +408,6 @@
         "TotalTime": "Total Time"
     },
     "JobQueue": {
-        "AllJobs": "All Jobs",
         "Cancel": "Cancel",
         "ChangeCount": "Change count",
         "Count": "Count",
@@ -397,10 +415,10 @@
         "InvalidCountEmpty": "Input must not be empty!",
         "InvalidCountGreaterZero": "Input must be greater than 0!",
         "JobQueue": "Job Queue",
-        "Jobs": "Jobs",
         "Pause": "Pause",
         "RemoveFromQueue": "Remove from Queue",
-        "Start": "Start"
+        "Start": "Start",
+        "StartPrint": "Start Job"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -1089,6 +1107,11 @@
             "RetractDistanceDescription": "The length of filament that the extruder retracts.",
             "RetractSpeed": "Retract Speed",
             "RetractSpeedDescription": "Speed at which the extruder retracts the filament.",
+            "RulesBetweenMinMax": "Value must be between {min} and {max}!",
+            "RulesMin": "Value must be minimum {min}!",
+            "RulesPositive": "Value must be positive!",
+            "RulesRequired": "Value is required!",
+            "RulesZeroAndPositive": "Value must be 0 or greater!",
             "SaveFrames": "Save Frames",
             "SaveFramesDescription": "Save the frames to a zip-file for external rendering",
             "StreamDelayCompensation": "Stream Delay Compensation",

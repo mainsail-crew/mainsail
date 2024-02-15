@@ -388,7 +388,6 @@
         "TotalTime": "Całkowity czas druku"
     },
     "JobQueue": {
-        "AllJobs": "Wszystkie wydruki",
         "Cancel": "Anuluj",
         "ChangeCount": "Zmień ilość",
         "Count": "Ilość",
@@ -396,7 +395,6 @@
         "InvalidCountEmpty": "Pole wejściowe nie może być puste!",
         "InvalidCountGreaterZero": "Wprowadzona wartość musi być większa niż 0!",
         "JobQueue": "Kolejka wydruków",
-        "Jobs": "Wydruki",
         "Pause": "Pauza",
         "RemoveFromQueue": "Usuń z kolejki",
         "Start": "Start"

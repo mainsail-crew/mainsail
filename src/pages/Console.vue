@@ -281,7 +281,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
                     commands.forEach(
                         (command) =>
                             (output +=
-                                "<a class='command blue--text'>" +
+                                "<a class='command font-weight-bold'>" +
                                 command.command +
                                 '</a>: ' +
                                 command.description +

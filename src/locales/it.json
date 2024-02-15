@@ -17,7 +17,9 @@
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
-                "MoonrakerFailedComponentDescription": "È stato rilevato un errore durante il caricamento del componente Moonraker '{component}'. Controllare il file di registro e risolvere il problema.",
+                "MoonrakerFailedComponentDescription": "È stato rilevato un errore durante il caricamento del componente '{component}' di Moonraker. Controllare il file di registro e risolvere il problema.",
+                "MoonrakerFailedInitComponentDescription": "È stato rilevato un errore durante l'inizializzazione del componente '{component}' di Moonraker. Controllare il file di registro e risolvere il problema.",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}",
                 "MoonrakerWarning": "Avviso di Moonraker",
                 "UnparsedConfigOption": "Opzione di configurazione non inviata '{opzione}: {valore}' rilevata nella sezione [{sezione}]. Questa potrebbe essere un'opzione non più disponibile o potrebbe essere il risultato di un modulo che non riesce a caricarsi. In futuro questo comporterà un errore di avvio.",
                 "UnparsedConfigSection": "Rilevata la sezione di configurazione non inviata [{sezione}]. Questo potrebbe essere il risultato di un componente che non è riuscito a caricare. In futuro questo comporterà un errore di avvio."
@@ -25,7 +27,7 @@
             "Never": "mai",
             "NextReboot": "prossimo riavvio",
             "NoNotification": "Nessuna notifica disponibile",
-            "Notifications": "Notifica",
+            "Notifications": "Notifiche",
             "Remind": "Ricorda:"
         },
         "NumberInput": {
@@ -287,7 +289,7 @@
             "Min": "Min",
             "Name": "Nome",
             "Range": "Range",
-            "Size": "Grandezza"
+            "Size": "Dimensione"
         },
         "DeleteBedMeshProfile": "Elimina il Profilo",
         "DoYouReallyWantToDelete": "Vuoi davvero eliminare il profilo \"{name}\"?",
@@ -301,7 +303,7 @@
         "Later": "in seguito",
         "Mesh": "Mesh",
         "Name": "Nome",
-        "NoBedMeshHasBeenLoadedYet": "Non è stato ancora caricato nessuna bed_mesh.",
+        "NoBedMeshHasBeenLoadedYet": "Nessuna bed-mesh è stata caricata.",
         "NoProfile": "Nessun profilo disponibile",
         "Ok": "OK",
         "Probed": "Analizzato",
@@ -349,6 +351,7 @@
         "Jobs": "Processi di stampa",
         "LastModified": "Ultima Modifica",
         "LayerHeight": "Altezza del Layer",
+        "LoadCompleteHistory": "Carica la cronologia completa",
         "LongestPrinttime": "Tempo di stampa più lungo",
         "Note": "Nota",
         "ObjectHeight": "Altezza Oggetto",
@@ -372,6 +375,7 @@
             "completed": "Completato",
             "error": "Errore",
             "in_progress": "In corso",
+            "interrupted": "Interrotto",
             "klippy_disconnect": "Klippy disconnesso",
             "klippy_shutdown": "Klippy spento",
             "Others": "Altro",
@@ -379,8 +383,6 @@
         },
         "Table": "Tabella",
         "TitleExportHistory": "Esporta Cronologia",
-        "TitleRefreshHistory": "Aggiorna Cronologia",
-        "TitleSettings": "Impostazioni",
         "TotalDuration": "Tempo Totale",
         "TotalFilamentUsed": "Filamento Totale Utilizzato",
         "TotalJobs": "Processi Totali",
@@ -478,7 +480,7 @@
                 "Temp": "Temp: {temp}°C",
                 "TempMax": "max: {temp}°C",
                 "TempMin": "min: {temp}°C",
-                "Transmitted": "Transmessi: {transmitted}",
+                "Transmitted": "Trasmessi: {transmitted}",
                 "Version": "Versione: {version}"
             }
         },
@@ -536,12 +538,15 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Consentito",
+            "CleanNozzle": "Pulisci Ugello",
             "EstimatedExtrusion": "Estrusione:",
             "Extrude": "Estrudi",
+            "ExtruderControl": "Controllo Estrusore",
             "ExtruderTempTooLow": "Temp. Estrusore <",
-            "ExtrusionFactor": "Fattore di estrusione",
+            "ExtrusionFactor": "Fattore di Estrusione",
             "ExtrusionFeedrate": "Feedrate Estrusione",
             "FilamentLength": "Lunghezza Filamento",
+            "FirmwareRetraction": "Retrazione Firmware",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Lunghezza Retrazione",
                 "RetractSpeed": "Velocità Retrazione",
@@ -550,14 +555,17 @@
             },
             "Headline": "Estrusore",
             "LoadFilament": "Carica Filamento",
+            "PressureAdvance": "Pressure-Advance",
             "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
+                "Advance": "Pressure-Advance",
                 "Extruder": "Estrusore",
-                "SmoothTime": "Smooth Time"
+                "SmoothTime": "Smooth-Time"
             },
+            "PurgeFilament": "Spurga Filamento",
             "Requested": "Richiesto",
             "Retract": "Retrazione",
             "TooLargeExtrusion": "Estrusione troppo grande!",
+            "Tools": "Utensili",
             "UnloadFilament": "Scarica Filamento"
         },
         "FarmPrinterPanel": {
@@ -580,6 +588,7 @@
             "MotionSettings": {
                 "Acceleration": "Accelerazione",
                 "MaxAccelToDecel": "Max Accel. a Decel.",
+                "MinimumCruiseRatio": "Min. Ratio Spostamento",
                 "SquareCornerVelocity": "Velocità Angolo Retto",
                 "Velocity": "Velocità"
             }
@@ -605,15 +614,14 @@
         "MiscellaneousPanel": {
             "Headline": "Miscellanea",
             "Light": {
-                "Blue": "blue",
-                "Green": "green",
-                "Red": "red",
-                "White": "white"
+                "Blue": "blu",
+                "Green": "verde",
+                "Red": "rosso",
+                "White": "bianco"
             },
             "RunoutSensor": {
                 "Detected": "rilevato",
-                "Disabled": "disabilitato",
-                "Empty": "Vuoto"
+                "Empty": "vuoto"
             }
         },
         "PowerControlPanel": {
@@ -643,7 +651,7 @@
             "Refresh": "aggiorna",
             "Search": "Trova",
             "SelectSpool": "Seleziona Bobina",
-            "Today": "Today",
+            "Today": "Oggi",
             "TooLessFilament": "La bobina corrente potrebbe non avere abbastanza filamento per questa stampa. ({spoolWeight}g su {fileWeight}g)",
             "Weight": "Peso",
             "Yesterday": "Ieri"
@@ -709,7 +717,7 @@
                 "Temperature": "temperatura attuale"
             },
             "Headline": "Temperature",
-            "HideMcuHostSensors": "Nascondi i sensoriHide di Host/MCU",
+            "HideMcuHostSensors": "Nascondi i sensori di Host/MCU",
             "HideMonitors": "Nascondi il monitoraggio",
             "Max": "max",
             "Min": "min",
@@ -728,14 +736,18 @@
         "ToolheadControlPanel": {
             "Absolute": "assoluto",
             "ALL": "TUTTI",
+            "ControlButtons": "Pulsanti di controllo",
+            "CoordinateFields": "Campo Coordinate",
             "Headline": "Toolhead",
             "PleaseConfigureSteps": "Configura gli steps",
             "Position": "Posizione",
+            "PositionOutput": "Posizione output",
             "QGL": "QGL",
             "Relative": "relativo",
             "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
             "SpeedFactor": "Fattore di velocità",
-            "ZTilt": "Inclinazione Z"
+            "ZOffset": "Z-Offset",
+            "ZTilt": "Z-Tilt"
         },
         "WebcamPanel": {
             "All": "Tutto",
@@ -832,7 +844,7 @@
             "Cross": "Croce",
             "EnableXYHoming": "Abilita l'homing combinato degli assi X e Y",
             "EstimatedExtrusionInfo": "Mostra informazioni stimate sull'estrusione",
-            "EstimatedExtrusionInfoDescription": "Mostra / Nascondi informazioni stimate in base alla quantità di estrusione e alla velocità di avanzamento",
+            "EstimatedExtrusionInfoDescription": "Mostra/Nascondi informazioni stimate in base alla quantità di estrusione e alla velocità di avanzamento",
             "HideDuringPrint": "Hide axis controls during print",
             "InvertXMovement": "Inverti il movimento per l'asse X",
             "InvertYMovement": "Inverti il movimento per l'asse Y",
@@ -853,6 +865,8 @@
             "Style": "Stile",
             "ValueGreaterThan": "Il valore deve essere più grande di {value}",
             "ZOffsetIncrements": "Z-Offset incremento (in mm)",
+            "ZOffsetSaveOption": "Opzione salvataggio Z-Offset",
+            "ZOffsetSaveOptionDescription": "Modificare l'opzione per salvare lo Z-Offset",
             "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
@@ -883,7 +897,7 @@
             "GridColor": "Colore Griglia",
             "MaxFeed": "Max Feed Rate",
             "MinFeed": "Min Feed Rate",
-            "ProgressColor": "colore di avanzamento",
+            "ProgressColor": "Colore Avanzamento",
             "ShowAxes": "Mostra Assi"
         },
         "GeneralTab": {
@@ -928,7 +942,19 @@
             "RestoreDialog": "Seleziona tutte le sezioni che vuoi ripristinare:",
             "TimeFormat": "Formato Data"
         },
-        "InterfaceSettings": "Impostazioni dell'Interfaccia",
+        "HeightmapTab": {
+            "ColorSchemes": "Schemi Colore",
+            "Heightmap": "Mappa dell'Altezza",
+            "IsDefault": "(Default)",
+            "Schemes": {
+                "GrayScale": "Scala di Grigi",
+                "Hot": "Hot",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Spring"
+            }
+        },
+        "InterfaceSettings": "Impostazioni Interfaccia",
         "MacrosTab": {
             "Add": "aggiungi",
             "AddGroup": "aggiungi Gruppo",
@@ -1064,7 +1090,12 @@
             "RetractDistanceDescription": "Lunghezza del filamento retratto dall'estrusore",
             "RetractSpeed": "Velocità Retrazione",
             "RetractSpeedDescription": "Velocità di retrazione del filamento dall'estrusore.",
-            "SaveFrames": "Salva Frame",
+            "RulesBetweenMinMax": "Il valore deve essere compreso tra {min} e {max}!",
+            "RulesMin": "Il valore deve essere almeno di {min}!",
+            "RulesPositive": "Il valore deve essere positivo!",
+            "RulesRequired": "È necessario inserire un valore!",
+            "RulesZeroAndPositive": "Il valore deve essere uguale o maggiore di 0!",
+            "SaveFrames": "Salva Frames",
             "SaveFramesDescription": "Salva i Frame in un file zip per rendering esterno",
             "StreamDelayCompensation": "Compensazione Ritardo Stream",
             "StreamDelayCompensationDescription": "Ritarda cattura frame",
@@ -1075,10 +1106,10 @@
             "Timelapse": "Timelapse",
             "TravelSpeed": "Velocità Spostamento",
             "TravelSpeedDescription": "Velocità spostamento verso la posizione di parcheggio e ripresa",
-            "UnretractDistance": "Distanza di ri-estrusione",
+            "UnretractDistance": "Distanza di deretrazione",
             "UnretractDistanceDescription": "La lunghezza di filamento che l'estrusore ri-estrude dopo una retrazione.",
-            "UnretractSpeed": "Velocità di ri-estrusione",
-            "UnretractSpeedDescription": "Velocità dell'estrusore a ri-estrudere dopo una retrazione.",
+            "UnretractSpeed": "Velocità di deretrazione",
+            "UnretractSpeedDescription": "Velocità dell'estrusore a riestrudere dopo una retrazione.",
             "VariableFps": "FPS Variabili",
             "VariableFpsDescription": "Se abilitato, il framerate del video di output sarà calcolato in base alla lunghezza target",
             "VariableFpsMax": "FPS Variabili max",
@@ -1125,22 +1156,27 @@
             "NavigationStyleDescription": "Cambia l'aspetto di navigazione",
             "NavigationStyleIconsAndText": "Icone + Testo",
             "NavigationStyleIconsOnly": "Solo icone",
-            "PowerDeviceName": "Dispositivo alimentazione stampantePrinter",
+            "PowerDeviceName": "Dispositivo Alimentazione Stampante",
             "PowerDeviceNameDescription": "Selezionare quale dispositivo di alimentazione Moonraker deve essere utilizzato per accendere la stampante.",
             "Primary": "Primario",
             "ScrewsTiltAdjustDialog": "Finestra di dialogo per lo Screws Tilt Adjust",
             "ScrewsTiltAdjustDialogDescription": "Mostra dialoghi di aiuto per lo SCREWS_TILT_CALCULATE.",
-            "TempchartHeight": "Grafico della temperatura in altezza",
-            "TempchartHeightDescription": "Modificare l'altezza del grafico della temperatura sul cruscotto.",
-            "UiSettings": "Impostazioni UI"
+            "TempchartHeight": "Altezza grafico della temperatura",
+            "TempchartHeightDescription": "Modifica l'altezza del grafico della temperatura sulla dashboard.",
+            "Theme": "Tema",
+            "ThemeDark": "Scuro",
+            "ThemeDescription": "Modifica l'aspetto generale dell'applicazionen",
+            "ThemeLight": "Chiaro",
+            "UiSettings": "Impostazioni Interfaccia Utente"
         },
         "Update": "update",
         "WebcamsTab": {
-            "AddWebcam": "aggiungi webcam",
+            "AddWebcam": "Aggiungi Webcam",
             "CreateWebcam": "Crea Webcam",
             "EditCrowsnestConf": "Modifica crowsnest.conf",
             "EditWebcam": "Modifica Webcam",
-            "FlipWebcam": "Specchia immagine della webcam:",
+            "EnableAudio": "Abilita Audio",
+            "FlipWebcam": "Ruota immagine della webcam:",
             "HideFps": "Nascondi contatore FPS",
             "Hlsstream": "HLS Stream",
             "Horizontally": "orizzontalmente",
@@ -1170,6 +1206,7 @@
             "Vertically": "verticalmente",
             "Webcams": "Webcam",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
@@ -1192,7 +1229,7 @@
         "Enabled": "Abilitato",
         "EstimatedLength": "Lunghezza stimata",
         "Files": "File",
-        "Filesize": "Grandezza",
+        "Filesize": "Dimensione",
         "Fixed": "fisso",
         "Framerate": "Framerate",
         "Frames": "Frames",

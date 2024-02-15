@@ -2,7 +2,6 @@ import { checkKlipperConfigModules } from '@/store/variables'
 import { GetterTree } from 'vuex'
 import {
     PrinterState,
-    PrinterStateBedMesh,
     PrinterStateExtruder,
     PrinterStateExtruderStepper,
     PrinterStateFan,
@@ -524,38 +523,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
         })
 
         return output
-    },
-
-    getBedMeshProfiles: (state) => {
-        const profiles: PrinterStateBedMesh[] = []
-        let currentProfile = ''
-        if (state.bed_mesh) currentProfile = state.bed_mesh.profile_name
-
-        if (state.bed_mesh && 'profiles' in state.bed_mesh) {
-            Object.keys(state.bed_mesh?.profiles).forEach((key) => {
-                const value: any = state.bed_mesh.profiles[key]
-
-                let points: number[] = []
-                value.points.forEach((row: number[]) => {
-                    points = points.concat(row)
-                })
-
-                const min = Math.min(...points)
-                const max = Math.max(...points)
-
-                profiles.push({
-                    name: key,
-                    data: { ...value.mesh_params, points: value.points },
-                    points: points,
-                    min: min,
-                    max: max,
-                    variance: Math.abs(min - max),
-                    is_active: currentProfile === key,
-                })
-            })
-        }
-
-        return caseInsensitiveSort(profiles, 'name')
     },
 
     getExtruders: (state) => {

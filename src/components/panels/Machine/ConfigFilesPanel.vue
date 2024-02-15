@@ -260,7 +260,7 @@
                     <img
                         v-if="dialogImage.item.url"
                         :src="dialogImage.item.url"
-                        style="max-height: 100%; width: auto"
+                        style="max-height: 100%; width: auto; object-fit: contain"
                         alt="image" />
                     <div v-else-if="dialogImage.item.svg" class="fill-width" v-html="dialogImage.item.svg"></div>
                 </div>
@@ -601,10 +601,6 @@ interface uploadSnackbar {
     number: number
     max: number
     cancelTokenSource: any
-    lastProgress: {
-        time: number
-        loaded: number
-    }
 }
 
 interface draggingFile {
@@ -719,10 +715,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         number: 0,
         max: 0,
         cancelTokenSource: {},
-        lastProgress: {
-            time: 0,
-            loaded: 0,
-        },
     }
     private draggingFile: draggingFile = {
         item: {
