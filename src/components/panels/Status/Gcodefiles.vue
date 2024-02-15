@@ -176,7 +176,7 @@
         <add-batch-to-queue-dialog
             :is-visible="dialogAddBatchToQueue.isVisible"
             :filename="dialogAddBatchToQueue.filename"
-            @closeDialog="closeAddBatchToQueueDialog" />
+            @close="closeAddBatchToQueueDialog" />
     </v-card>
 </template>
 
@@ -188,8 +188,6 @@ import ControlMixin from '@/components/mixins/control'
 import { FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import {
-    mdiChevronDown,
-    mdiChevronUp,
     mdiFile,
     mdiPlay,
     mdiPlaylistPlus,
@@ -203,7 +201,7 @@ import {
 } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
 import { defaultBigThumbnailBackground } from '@/store/variables'
-import AddBatchToQueueDialog, { addBatchToQueueDialogProps } from '@/components/dialogs/AddBatchToQueueDialog.vue'
+import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 
 interface dialogRenameObject {
     show: boolean
@@ -219,8 +217,6 @@ interface dialogRenameObject {
     },
 })
 export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixin) {
-    mdiChevronDown = mdiChevronDown
-    mdiChevronUp = mdiChevronUp
     mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiPlaylistPlus = mdiPlaylistPlus
@@ -273,7 +269,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         item: { ...this.dialogFile },
     }
 
-    private dialogAddBatchToQueue: addBatchToQueueDialogProps = {
+    dialogAddBatchToQueue: { isVisible: boolean; filename: string } = {
         isVisible: false,
         filename: '',
     }

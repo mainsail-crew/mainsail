@@ -571,7 +571,7 @@
         <add-batch-to-queue-dialog
             :is-visible="dialogAddBatchToQueue.isVisible"
             :filename="dialogAddBatchToQueue.filename"
-            @closeDialog="closeAddBatchToQueueDialog" />
+            @close="closeAddBatchToQueueDialog" />
     </div>
 </template>
 
@@ -609,7 +609,7 @@ import {
     mdiContentCopy,
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
-import AddBatchToQueueDialog, { addBatchToQueueDialogProps } from '@/components/dialogs/AddBatchToQueueDialog.vue'
+import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 import ControlMixin from '@/components/mixins/control'
 import PathNavigation from '@/components/ui/PathNavigation.vue'
 
@@ -727,7 +727,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         item: { ...this.contextMenu.item },
     }
 
-    private dialogAddBatchToQueue: addBatchToQueueDialogProps = {
+    dialogAddBatchToQueue: { isVisible: boolean; filename: string } = {
         isVisible: false,
         filename: '',
     }

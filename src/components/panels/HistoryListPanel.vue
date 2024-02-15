@@ -227,13 +227,13 @@
                     v-if="contextMenu.item.exists && isJobQueueAvailable"
                     @click="addToQueue(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
-                    {{ $t('History.AddToQueue') }}
+                    {{ $t('Files.AddToQueue') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.exists && isJobQueueAvailable"
                     @click="openAddBatchToQueueDialog(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
-                    {{ $t('History.AddBatchToQueue') }}
+                    {{ $t('Files.AddBatchToQueue') }}
                 </v-list-item>
                 <v-list-item class="red--text" @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
@@ -507,9 +507,9 @@
         </v-dialog>
         <add-batch-to-queue-dialog
             :is-visible="dialogAddBatchToQueue.isVisible"
+            :show-toast="true"
             :filename="dialogAddBatchToQueue.filename"
-            @closeDialog="closeAddBatchToQueueDialog"
-            @addToQueue="showAddBatchToQueueFeedbackToast" />
+            @close="closeAddBatchToQueueDialog" />
     </div>
 </template>
 
@@ -538,10 +538,7 @@ import {
     mdiNotebook,
     mdiFileCancel,
 } from '@mdi/js'
-import AddBatchToQueueDialog, {
-    addBatchToQueueDialogProps,
-    addBatchToQueueEventData,
-} from '@/components/dialogs/AddBatchToQueueDialog.vue'
+import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 
 @Component({
     components: { Panel, AddBatchToQueueDialog },
@@ -583,7 +580,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         boolShow: false,
     }
 
-    private dialogAddBatchToQueue: addBatchToQueueDialogProps = {
+    dialogAddBatchToQueue: { isVisible: boolean; filename: string } = {
         isVisible: false,
         filename: '',
     }
@@ -975,26 +972,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     async addToQueue(item: ServerHistoryStateJob) {
-        if (!item.exists || !this.isJobQueueAvailable) {
-            return
-        }
-
         await this.$store.dispatch('server/jobQueue/addToQueue', [item.filename])
 
         this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: item.filename }).toString())
     }
 
     openAddBatchToQueueDialog(item: ServerHistoryStateJob) {
-        if (!item.exists || !this.isJobQueueAvailable) {
-            return
-        }
-
         this.dialogAddBatchToQueue.isVisible = true
         this.dialogAddBatchToQueue.filename = item.filename
-    }
-
-    showAddBatchToQueueFeedbackToast(eventData: addBatchToQueueEventData) {
-        this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: eventData.filename }).toString())
     }
 
     closeAddBatchToQueueDialog() {
