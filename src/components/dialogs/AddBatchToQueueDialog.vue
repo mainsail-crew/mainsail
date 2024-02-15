@@ -11,35 +11,42 @@
                 </v-btn>
             </template>
 
-            <v-card-text>
-                <v-text-field
-                    ref="inputFieldAddToQueueCount"
-                    v-model="count"
-                    :label="$t('Dialogs.AddBatchToQueue.Count')"
-                    required
-                    hide-spin-buttons
-                    type="number"
-                    :rules="countInputRules"
-                    @keyup.enter="addBatchToQueueAction">
-                    <template #append-outer>
-                        <div class="_spin_button_group">
-                            <v-btn class="mt-n3" icon plain small @click="count++">
-                                <v-icon>{{ mdiChevronUp }}</v-icon>
-                            </v-btn>
-                            <v-btn :disabled="count <= 1" class="mb-n3" icon plain small @click="count--">
-                                <v-icon>{{ mdiChevronDown }}</v-icon>
-                            </v-btn>
-                        </div>
-                    </template>
-                </v-text-field>
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="" text @click="closeDialog">{{ $t('Dialogs.AddBatchToQueue.Cancel') }}</v-btn>
-                <v-btn color="primary" text @click="addBatchToQueueAction">
-                    {{ $t('Dialogs.AddBatchToQueue.AddToQueue') }}
-                </v-btn>
-            </v-card-actions>
+            <v-form v-model="form.isValid" @submit.prevent="addBatchToQueueAction">
+                <v-card-text>
+                    <v-text-field
+                        ref="inputFieldAddToQueueCount"
+                        v-model="form.inputs.count"
+                        :label="$t('Dialogs.AddBatchToQueue.Count')"
+                        required
+                        hide-spin-buttons
+                        type="number"
+                        :rules="rules.count">
+                        <template #append-outer>
+                            <div class="_spin_button_group">
+                                <v-btn class="mt-n3" icon plain small @click="form.inputs.count++">
+                                    <v-icon>{{ mdiChevronUp }}</v-icon>
+                                </v-btn>
+                                <v-btn
+                                    :disabled="form.inputs.count <= 1"
+                                    class="mb-n3"
+                                    icon
+                                    plain
+                                    small
+                                    @click="form.inputs.count--">
+                                    <v-icon>{{ mdiChevronDown }}</v-icon>
+                                </v-btn>
+                            </div>
+                        </template>
+                    </v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="closeDialog">{{ $t('Dialogs.AddBatchToQueue.Cancel') }}</v-btn>
+                    <v-btn color="primary" text type="submit" :disabled="!form.isValid">
+                        {{ $t('Dialogs.AddBatchToQueue.AddToQueue') }}
+                    </v-btn>
+                </v-card-actions>
+            </v-form>
         </panel>
     </v-dialog>
 </template>
@@ -59,7 +66,23 @@ export interface addBatchToQueueEventData {
     filename: string
 }
 
-const defaultCount = 1
+interface formState {
+    isValid: boolean
+    inputs: {
+        count: number
+    }
+}
+
+const defaultFormInputs: formState['inputs'] = {
+    count: 1,
+}
+
+const defaultFormState: formState = {
+    isValid: false,
+    inputs: {
+        ...defaultFormInputs,
+    },
+}
 
 @Component
 export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
@@ -77,18 +100,20 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
      */
     @Prop({ required: true }) declare readonly filename: addBatchToQueueDialogProps['filename']
 
-    private count: number = defaultCount
+    private form: formState = defaultFormState
 
-    private countInputRules = [
-        (value: string) => !!value || this.$t('JobQueue.InvalidCountEmpty'),
-        (value: string) => parseInt(value, 10) > 0 || this.$t('JobQueue.InvalidCountGreaterZero'),
-    ]
+    private rules = {
+        count: [
+            (value: string) => !!value || this.$t('JobQueue.InvalidCountEmpty'),
+            (value: string) => parseInt(value, 10) > 0 || this.$t('JobQueue.InvalidCountGreaterZero'),
+        ],
+    }
 
     async addBatchToQueueAction() {
         const filename = this.filename
 
         const array: string[] = []
-        for (let i = 0; i < this.count; i++) {
+        for (let i = 0; i < this.form.inputs.count; i++) {
             array.push(filename)
         }
 
@@ -106,10 +131,19 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
         this.$emit('closeDialog')
     }
 
+    resetFormState() {
+        this.form = {
+            ...defaultFormState,
+            inputs: {
+                ...defaultFormInputs,
+            },
+        }
+    }
+
     @Watch('isVisible')
     isVisibleChanged(newIsVisible: boolean) {
         if (newIsVisible) {
-            this.count = defaultCount
+            this.resetFormState()
         }
     }
 }
