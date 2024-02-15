@@ -326,6 +326,7 @@
     },
     "History": {
         "AddNote": "Add note",
+        "AddBatchToQueue": "Add batch to Queue",
         "AddToQueue": "Add to Queue",
         "AddToQueueSuccessful": "File {filename} added to Queue.",
         "AllJobs": "All",

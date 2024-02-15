@@ -229,6 +229,12 @@
                     <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
                     {{ $t('History.AddToQueue') }}
                 </v-list-item>
+                <v-list-item
+                    v-if="contextMenu.item.exists && isJobQueueAvailable"
+                    @click="openAddBatchToQueueDialog(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
+                    {{ $t('History.AddBatchToQueue') }}
+                </v-list-item>
                 <v-list-item class="red--text" @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('History.Delete') }}
@@ -499,6 +505,10 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <add-batch-to-queue-dialog
+            :is-visible="dialogAddBatchToQueue.isVisible"
+            :filename="dialogAddBatchToQueue.filename"
+            @closeDialog="closeAddBatchToQueueDialog" />
     </div>
 </template>
 
@@ -527,8 +537,10 @@ import {
     mdiNotebook,
     mdiFileCancel,
 } from '@mdi/js'
+import AddBatchToQueueDialog, { addBatchToQueueDialogProps } from '@/components/dialogs/AddBatchToQueueDialog.vue'
+
 @Component({
-    components: { Panel },
+    components: { Panel, AddBatchToQueueDialog },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiDatabaseExportOutline = mdiDatabaseExportOutline
@@ -565,6 +577,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     private detailsDialog = {
         item: {},
         boolShow: false,
+    }
+
+    private dialogAddBatchToQueue: addBatchToQueueDialogProps = {
+        isVisible: false,
+        filename: '',
     }
 
     private noteDialog: {
@@ -961,6 +978,15 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         await this.$store.dispatch('server/jobQueue/addToQueue', [item.filename])
 
         this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: item.filename }).toString())
+    }
+
+    openAddBatchToQueueDialog(item: ServerHistoryStateJob) {
+        this.dialogAddBatchToQueue.isVisible = true
+        this.dialogAddBatchToQueue.filename = item.filename
+    }
+
+    closeAddBatchToQueueDialog() {
+        this.dialogAddBatchToQueue.isVisible = false
     }
 
     deleteJob() {
