@@ -147,6 +147,11 @@
         "SetupConsole": "Setup Console"
     },
     "Dialogs": {
+        "AddBatchToQueue": {
+            "AddToQueue": "Add to Queue",
+            "Cancel": "Cancel",
+            "Count": "Count"
+        },
         "StartPrint": {
             "Cancel": "Cancel",
             "DoYouWantToStartFilename": "Do you want to start {filename}?",
@@ -154,11 +159,6 @@
             "Headline": "Start Job",
             "Print": "print",
             "Timelapse": "Timelapse"
-        },
-        "AddBatchToQueue": {
-            "AddToQueue": "Add to Queue",
-            "Count": "Count",
-            "Cancel": "Cancel"
         }
     },
     "Editor": {
@@ -325,8 +325,8 @@
         "Wireframe": "Wireframe"
     },
     "History": {
-        "AddNote": "Add note",
         "AddBatchToQueue": "Add batch to Queue",
+        "AddNote": "Add note",
         "AddToQueue": "Add to Queue",
         "AddToQueueSuccessful": "File {filename} added to Queue.",
         "AllJobs": "All",
