@@ -74,7 +74,8 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
     @Prop({ type: String, required: true }) declare readonly filename: string
 
     isValid = false
-    input: number = 1
+    // because of the text field, the input is always a string
+    input: string = '1'
 
     rules = {
         count: [
@@ -84,7 +85,7 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
     }
 
     async addBatchToQueueAction() {
-        const array: string[] = new Array(this.input).fill(this.filename)
+        const array = Array(parseInt(this.input)).fill(this.filename)
 
         await this.$store.dispatch('server/jobQueue/addToQueue', array)
 
@@ -99,7 +100,7 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
     }
 
     resetFormState() {
-        this.input = 1
+        this.input = '1'
     }
 
     @Watch('isVisible')
