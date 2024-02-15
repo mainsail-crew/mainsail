@@ -1219,8 +1219,11 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     openAddBatchToQueueDialog(item: FileStateGcodefile) {
+        let filename = [this.currentPath, item.filename].join('/')
+        if (filename.startsWith('/')) filename = filename.slice(1)
+
         this.dialogAddBatchToQueue.isVisible = true
-        this.dialogAddBatchToQueue.filename = item.filename
+        this.dialogAddBatchToQueue.filename = filename
     }
 
     closeAddBatchToQueueDialog() {
@@ -1484,15 +1487,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 }
 </script>
-
-<style scoped>
-._spin_button_group {
-    width: 24px;
-    margin-top: -6px;
-    margin-left: -6px;
-    margin-bottom: -6px;
-}
-</style>
 
 <style>
 /*noinspection CssUnusedSymbol*/
