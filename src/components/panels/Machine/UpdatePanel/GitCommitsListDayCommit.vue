@@ -1,6 +1,6 @@
 <template>
     <li class="commit px-3 py-2">
-        <v-row>
+        <v-row class="flex-column flex-sm-row">
             <v-col>
                 <h4 class="subtitle-2 text--white mb-0">
                     {{ title }}
@@ -20,7 +20,7 @@
                     <span>{{ commitFormatDate }}</span>
                 </p>
             </v-col>
-            <v-col class="col-auto pt-4">
+            <v-col class="col-auto pt-0 pt-sm-4">
                 <v-chip outlined label small :href="commitHref" target="_blank">
                     {{ commitShortSha }}
                 </v-chip>

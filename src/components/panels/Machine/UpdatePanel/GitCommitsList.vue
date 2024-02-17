@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="boolShowDialog" persistent :max-width="800">
+    <v-dialog v-model="boolShowDialog" persistent :max-width="800" :fullscreen="isMobile">
         <panel
             :title="$t('Machine.UpdatePanel.Commits')"
             :icon="mdiUpdate"
@@ -11,8 +11,8 @@
                 </v-btn>
             </template>
             <v-card-text class="py-0 px-0">
-                <overlay-scrollbars style="height: 400px" :options="{ overflowBehavior: { x: 'hidden' } }">
-                    <v-timeline class="groupedCommits" align-top dense style="min-height: 100%">
+                <overlay-scrollbars :style="overlayScrollbarsStyle" :options="{ overflowBehavior: { x: 'hidden' } }">
+                    <v-timeline :class="timelineClassName" align-top dense style="min-height: 100%">
                         <git-commits-list-day
                             v-for="group of groupedCommits"
                             :key="group.date.getTime()"
@@ -106,6 +106,24 @@ export default class GitCommitsList extends Mixins(BaseMixin) {
         return `https://github.com/${this.repo?.owner}/${this.repo?.name}/commits/${this.repo?.branch}/?after=${this.lastCommit?.sha}+0`
     }
 
+    get overlayScrollbarsStyle() {
+        if (this.isMobile) {
+            return {
+                height: 'calc(100vh - 48px)',
+            }
+        }
+
+        return {
+            height: '400px',
+        }
+    }
+
+    get timelineClassName() {
+        if (this.isMobile) return ['groupedCommits', 'mobile']
+
+        return ['groupedCommits']
+    }
+
     closeDialog() {
         this.$emit('close-dialog')
     }
@@ -155,6 +173,20 @@ export default class GitCommitsList extends Mixins(BaseMixin) {
                 margin-top: 10px;
             }
         }
+    }
+}
+
+::v-deep .groupedCommits.mobile {
+    &:before {
+        left: 20px;
+    }
+
+    .v-timeline-item__body {
+        max-width: calc(100% - 41px);
+    }
+
+    .v-timeline-item__divider {
+        min-width: 41px;
     }
 }
 </style>
