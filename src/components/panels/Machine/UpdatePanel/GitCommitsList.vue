@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="boolShowDialog" persistent max-width="800">
+    <v-dialog v-model="boolShowDialog" persistent :max-width="800" :fullscreen="isMobile">
         <panel
             :title="$t('Machine.UpdatePanel.Commits')"
             :icon="mdiUpdate"
@@ -11,35 +11,31 @@
                 </v-btn>
             </template>
             <v-card-text class="py-0 px-0">
-                <overlay-scrollbars style="max-height: 400px" :options="{ overflowBehavior: { x: 'hidden' } }">
-                    <v-row>
-                        <v-col>
-                            <v-timeline class="groupedCommits" align-top dense>
-                                <git-commits-list-day
-                                    v-for="group of groupedCommits"
-                                    :key="group.date.getTime()"
-                                    :repo="repo"
-                                    :grouped-commits="group" />
-                                <v-timeline-item
-                                    v-if="displayFullHistoryWaring"
-                                    small
-                                    class="git-commit-list-day git-commit-list-warning">
-                                    <v-row class="pt-0">
-                                        <v-col class="pr-12">
-                                            <v-alert dense text type="info">
-                                                <p>{{ $t('Machine.UpdatePanel.MoreCommitsInfo') }}</p>
-                                                <div class="text-center mb-3">
-                                                    <v-btn :href="linkToGithub" target="_blank">
-                                                        {{ $t('Machine.UpdatePanel.LinkToGithub') }}
-                                                    </v-btn>
-                                                </div>
-                                            </v-alert>
-                                        </v-col>
-                                    </v-row>
-                                </v-timeline-item>
-                            </v-timeline>
-                        </v-col>
-                    </v-row>
+                <overlay-scrollbars :style="overlayScrollbarsStyle" :options="{ overflowBehavior: { x: 'hidden' } }">
+                    <v-timeline :class="timelineClassName" align-top dense style="min-height: 100%">
+                        <git-commits-list-day
+                            v-for="group of groupedCommits"
+                            :key="group.date.getTime()"
+                            :repo="repo"
+                            :grouped-commits="group" />
+                        <v-timeline-item
+                            v-if="displayFullHistoryWaring"
+                            small
+                            class="git-commit-list-day git-commit-list-warning">
+                            <v-row class="pt-0">
+                                <v-col class="pr-12">
+                                    <v-alert dense text type="info">
+                                        <p>{{ $t('Machine.UpdatePanel.MoreCommitsInfo') }}</p>
+                                        <div class="text-center mb-3">
+                                            <v-btn :href="linkToGithub" target="_blank">
+                                                {{ $t('Machine.UpdatePanel.LinkToGithub') }}
+                                            </v-btn>
+                                        </div>
+                                    </v-alert>
+                                </v-col>
+                            </v-row>
+                        </v-timeline-item>
+                    </v-timeline>
                 </overlay-scrollbars>
             </v-card-text>
         </panel>
@@ -110,6 +106,24 @@ export default class GitCommitsList extends Mixins(BaseMixin) {
         return `https://github.com/${this.repo?.owner}/${this.repo?.name}/commits/${this.repo?.branch}/?after=${this.lastCommit?.sha}+0`
     }
 
+    get overlayScrollbarsStyle() {
+        if (this.isMobile) {
+            return {
+                height: 'calc(100vh - 48px)',
+            }
+        }
+
+        return {
+            height: '400px',
+        }
+    }
+
+    get timelineClassName() {
+        if (this.isMobile) return ['groupedCommits', 'mobile']
+
+        return ['groupedCommits']
+    }
+
     closeDialog() {
         this.$emit('close-dialog')
     }
@@ -159,6 +173,20 @@ export default class GitCommitsList extends Mixins(BaseMixin) {
                 margin-top: 10px;
             }
         }
+    }
+}
+
+::v-deep .groupedCommits.mobile {
+    &:before {
+        left: 20px;
+    }
+
+    .v-timeline-item__body {
+        max-width: calc(100% - 41px);
+    }
+
+    .v-timeline-item__divider {
+        min-width: 41px;
     }
 }
 </style>
