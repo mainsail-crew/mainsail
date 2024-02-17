@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="boolShowDialog" persistent max-width="800">
+    <v-dialog v-model="boolShowDialog" persistent :max-width="800">
         <panel
             :title="$t('Machine.UpdatePanel.Commits')"
             :icon="mdiUpdate"
@@ -11,35 +11,31 @@
                 </v-btn>
             </template>
             <v-card-text class="py-0 px-0">
-                <overlay-scrollbars style="max-height: 400px" :options="{ overflowBehavior: { x: 'hidden' } }">
-                    <v-row>
-                        <v-col>
-                            <v-timeline class="groupedCommits" align-top dense>
-                                <git-commits-list-day
-                                    v-for="group of groupedCommits"
-                                    :key="group.date.getTime()"
-                                    :repo="repo"
-                                    :grouped-commits="group" />
-                                <v-timeline-item
-                                    v-if="displayFullHistoryWaring"
-                                    small
-                                    class="git-commit-list-day git-commit-list-warning">
-                                    <v-row class="pt-0">
-                                        <v-col class="pr-12">
-                                            <v-alert dense text type="info">
-                                                <p>{{ $t('Machine.UpdatePanel.MoreCommitsInfo') }}</p>
-                                                <div class="text-center mb-3">
-                                                    <v-btn :href="linkToGithub" target="_blank">
-                                                        {{ $t('Machine.UpdatePanel.LinkToGithub') }}
-                                                    </v-btn>
-                                                </div>
-                                            </v-alert>
-                                        </v-col>
-                                    </v-row>
-                                </v-timeline-item>
-                            </v-timeline>
-                        </v-col>
-                    </v-row>
+                <overlay-scrollbars style="height: 400px" :options="{ overflowBehavior: { x: 'hidden' } }">
+                    <v-timeline class="groupedCommits" align-top dense style="min-height: 100%">
+                        <git-commits-list-day
+                            v-for="group of groupedCommits"
+                            :key="group.date.getTime()"
+                            :repo="repo"
+                            :grouped-commits="group" />
+                        <v-timeline-item
+                            v-if="displayFullHistoryWaring"
+                            small
+                            class="git-commit-list-day git-commit-list-warning">
+                            <v-row class="pt-0">
+                                <v-col class="pr-12">
+                                    <v-alert dense text type="info">
+                                        <p>{{ $t('Machine.UpdatePanel.MoreCommitsInfo') }}</p>
+                                        <div class="text-center mb-3">
+                                            <v-btn :href="linkToGithub" target="_blank">
+                                                {{ $t('Machine.UpdatePanel.LinkToGithub') }}
+                                            </v-btn>
+                                        </div>
+                                    </v-alert>
+                                </v-col>
+                            </v-row>
+                        </v-timeline-item>
+                    </v-timeline>
                 </overlay-scrollbars>
             </v-card-text>
         </panel>
