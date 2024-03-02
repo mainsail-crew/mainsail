@@ -843,7 +843,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
 
         if (this.hideBackupFiles) {
             const backupFileMatcher = /.*\/?printer-\d{8}_\d{6}\.cfg$/
-            files = files.filter((file) => !file.filename.match(backupFileMatcher))
+            files = files.filter((file) => !file.filename.match(backupFileMatcher) && !file.filename.endsWith('.bkp'))
         }
 
         return files
