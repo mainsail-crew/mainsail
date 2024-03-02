@@ -1,7 +1,7 @@
 <template>
     <v-row :class="entryStyle">
         <v-col class="col-auto pr-0 text--disabled console-time">{{ entryFormatTime }}</v-col>
-        <v-col :class="messageClass" @click.capture="commandClick" v-html="event.formatMessage" />
+        <v-col :class="messageClass" style="min-width: 0" @click.capture="commandClick" v-html="event.formatMessage" />
     </v-row>
 </template>
 
@@ -17,7 +17,7 @@ export default class ConsoleTableEntry extends Mixins(BaseMixin) {
     declare readonly event: ServerStateEvent
 
     get entryStyle() {
-        const classes = ['ma-0']
+        const classes = ['ma-0', 'flex-nowrap']
         classes.push(this.$store.state.gui.console.entryStyle ?? 'default')
         if (this.event.type === 'action') classes.push('text--disabled')
 
