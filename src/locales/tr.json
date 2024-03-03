@@ -500,9 +500,9 @@
             "InitUpdateManager": "Güncelleme Yöneticisi henüz başlatılmamış. Sistemi ilk kez başlattığınızda bu normaldir. Tüm bileşenleri başlatmak için lütfen yenileme düğmesine tıklayın.",
             "Invalid": "geçersiz",
             "IUnderstandTheRisks": "Riskleri anlıyorum",
-            "LinkToGithub": "GitHub Bağlantısı",
-            "KlipperUpdateQuestionFirmware": "Bu, Klipper ana yazılımını güncelleyecek. Klipper firmware'i çalıştıran kontrol kartları, makineyi tekrar kullanıma sokmadan önce derlenmiş firmware ile yeniden yazılması gerekebilir.",
             "KlipperUpdateQuestionConfig": "Bu güncelleme, config parametrelerinde değişiklikler içerebilir ve bu değişiklikleri printer.cfg dosyasında düzenlemeniz gerekebilir. Detaylar için değişiklik günlüğüne bakın.",
+            "KlipperUpdateQuestionFirmware": "Bu, Klipper ana yazılımını güncelleyecek. Klipper firmware'i çalıştıran kontrol kartları, makineyi tekrar kullanıma sokmadan önce derlenmiş firmware ile yeniden yazılması gerekebilir.",
+            "LinkToGithub": "GitHub Bağlantısı",
             "MoonrakerUpdateQuestion": "Bu, Moonraker API'sini güncelleyecek. Makineyi kullanmaya devam etmek için moonraker.conf dosyasında değişiklikler yapmanız gerekebilir.",
             "MoreCommitsInfo": "Burada maksimum 30 commit gösterilebilir. Tüm commit'leri görmek için lütfen aşağıdaki bağlantıya tıklayın:",
             "Notification": {
@@ -639,7 +639,7 @@
             "Files": "Dosyalar",
             "Flow": "Akış",
             "Headline": "Durum",
-            "Jobqueue": "İş Kuyruğu ({count})",
+            "Jobqueue": "İş Kuyruğu",
             "JobqueueMoreFiles": "daha fazla iş yok | bir iş daha var | {count} iş daha var",
             "Layer": "Katman",
             "Max": "maks.",
@@ -746,6 +746,13 @@
         "Timelapse": "Timelapse",
         "Webcam": "Web Kamerası"
     },
+    "ScrewsTiltAdjust": {
+        "Accept": "Kabul Et",
+        "Base": "Taban",
+        "ErrorText": "Prob işlemi sırasında bir sorun oluştu.",
+        "Headline": "Vidaların Eğim Ayarını Yap",
+        "Retry": "Yeniden Dene"
+    },
     "SelectPrinterDialog": {
         "AddPrinter": "Yazıcı Ekle",
         "AddPrintersToJson": "Lütfen yazıcıları config.json'a ekleyin.",
@@ -833,11 +840,11 @@
             "Editor": "Editör",
             "KlipperRestartMethod": "Klipper yeniden başlatma yöntemi",
             "KlipperRestartMethodDescription": "Klipper yapılandırma dosyalarını düzenlerken 'Kaydet ve Yeniden Başlat' seçildiğinde hangi yeniden başlatma yönteminin kullanılacağını seçin.",
-            "UseEscToClose": "Editörü kapatmak için ESC tuşunu kullan",
-            "UseEscToCloseDescription": "ESC tuşunun editörü kapatmasına izin verir",
+            "Spaces": "Boşluklar: {count}",
             "TabSize": "TAB Boyutu",
             "TabSizeDescription": "TAB için kaç boşluk kullanılacağını ayarlar",
-            "Spaces": "Boşluklar: {count}"
+            "UseEscToClose": "Editörü kapatmak için ESC tuşunu kullan",
+            "UseEscToCloseDescription": "ESC tuşunun editörü kapatmasına izin verir"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Arka Plan Rengi",
@@ -1096,6 +1103,7 @@
             "EditCrowsnestConf": "crowsnest.conf Dosyasını Düzenle",
             "EditWebcam": "Webcam Düzenle",
             "FlipWebcam": "Webcam Görüntüsünü Çevir:",
+            "Hlsstream": "HLS Akışı",
             "Horizontally": "yatay",
             "IconBed": "Tabla",
             "IconCam": "Kamera",
@@ -1106,11 +1114,9 @@
             "IconNozzle": "Nozul",
             "IconPrinter": "Yazıcı",
             "Ipstream": "IP Kamerası",
-            "Hlsstream": "HLS Akışı",
-            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "JMuxerStream": "Ham h264 akışı (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Uyarlamalı MJPEG-Streamer (deneysel)",
-            "JMuxerStream": "Ham h264 akışı (jmuxer)",
             "Name": "Ad",
             "NameAlreadyExists": "Ad zaten var",
             "Required": "zorunlu",
@@ -1125,15 +1131,9 @@
             "Vertically": "dikey",
             "Webcams": "Web Kameraları",
             "WebrtcCameraStreamer": "WebRTC (kamera-streamer)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "Kabul Et",
-        "Base": "Taban",
-        "ErrorText": "Prob işlemi sırasında bir sorun oluştu.",
-        "Headline": "Vidaların Eğim Ayarını Yap",
-        "Retry": "Yeniden Dene"
     },
     "Timelapse": {
         "AllFiles": "Tümü",

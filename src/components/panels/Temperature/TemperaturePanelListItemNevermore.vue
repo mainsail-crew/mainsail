@@ -99,7 +99,7 @@ export default class TemperaturePanelListItemNevermore extends Mixins(BaseMixin)
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 ::v-deep .v-icon._no-focus-style:focus::after {
     opacity: 0 !important;
 }

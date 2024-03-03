@@ -1,0 +1,21 @@
+# Set update schedule for GitHub Actions
+
+version: 2
+updates:
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      # Check for updates to GitHub Actions every week
+      interval: 'weekly'
+
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    allow:
+      # Ignore major updates to all dependencies. We're using old versions of some packages that are incompatible with newer versions of other packages.
+      - dependency-name: '*'
+        update-type: 'semver:non-major'
+        dependency-type: 'direct'
+    assignees:
+      - 'meteyou'

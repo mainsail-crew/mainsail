@@ -1,5 +1,5 @@
 <template>
-    <v-app dark :style="cssVars">
+    <v-app :style="cssVars">
         <template v-if="socketIsConnected && guiIsReady">
             <the-sidebar />
             <the-topbar />
@@ -17,6 +17,7 @@
             <the-manual-probe-dialog />
             <the-bed-screws-dialog />
             <the-screws-tilt-adjust-dialog />
+            <the-macro-prompt />
         </template>
         <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'" />
         <the-connecting-dialog v-else />
@@ -27,6 +28,7 @@
 import Component from 'vue-class-component'
 import TheSidebar from '@/components/TheSidebar.vue'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from './components/mixins/theme'
 import TheTopbar from '@/components/TheTopbar.vue'
 import { Mixins, Watch } from 'vue-property-decorator'
 import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
@@ -40,11 +42,14 @@ import TheUploadSnackbar from '@/components/TheUploadSnackbar.vue'
 import TheManualProbeDialog from '@/components/dialogs/TheManualProbeDialog.vue'
 import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
 import TheScrewsTiltAdjustDialog from '@/components/dialogs/TheScrewsTiltAdjustDialog.vue'
+import { setAndLoadLocale } from './plugins/i18n'
+import TheMacroPrompt from '@/components/dialogs/TheMacroPrompt.vue'
 
 Component.registerHooks(['metaInfo'])
 
 @Component({
     components: {
+        TheMacroPrompt,
         TheTimelapseRenderingSnackbar,
         TheEditor,
         TheSelectPrinterDialog,
@@ -59,7 +64,7 @@ Component.registerHooks(['metaInfo'])
         TheScrewsTiltAdjustDialog,
     },
 })
-export default class App extends Mixins(BaseMixin) {
+export default class App extends Mixins(BaseMixin, ThemeMixin) {
     public metaInfo(): any {
         let title = this.$store.getters['getTitle']
 
@@ -97,8 +102,10 @@ export default class App extends Mixins(BaseMixin) {
         }
 
         // overwrite padding left for the sidebar
-        if (this.naviDrawer && this.navigationStyle === 'iconsAndText') style.paddingLeft = '220px'
-        if (this.naviDrawer && this.navigationStyle === 'iconsOnly') style.paddingLeft = '56px'
+        if (this.naviDrawer && !this.$vuetify.breakpoint.mdAndDown) {
+            if (this.navigationStyle === 'iconsAndText') style.paddingLeft = '220px'
+            if (this.navigationStyle === 'iconsOnly') style.paddingLeft = '56px'
+        }
 
         return style
     }
@@ -117,6 +124,10 @@ export default class App extends Mixins(BaseMixin) {
 
     get current_file(): string {
         return this.$store.state.printer.print_stats?.filename ?? ''
+    }
+
+    get theme(): string {
+        return this.$store.state.gui.uiSettings.theme
     }
 
     get logoColor(): string {
@@ -162,8 +173,8 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     @Watch('language')
-    languageChanged(newVal: string): void {
-        this.$i18n.locale = newVal
+    async languageChanged(newVal: string): Promise<void> {
+        await setAndLoadLocale(newVal)
     }
 
     @Watch('customStylesheet')
@@ -193,6 +204,15 @@ export default class App extends Mixins(BaseMixin) {
         this.$nextTick(() => {
             this.$vuetify.theme.currentTheme.primary = newVal
         })
+    }
+
+    @Watch('theme')
+    themeChanged(newVal: string): void {
+        const dark = newVal !== 'light'
+        this.$vuetify.theme.dark = dark
+
+        const doc = document.documentElement
+        doc.className = dark ? 'theme--dark' : 'theme--light'
     }
 
     drawFavicon(val: number): void {
@@ -277,11 +297,18 @@ export default class App extends Mixins(BaseMixin) {
     @Watch('print_percent')
     print_percentChanged(newVal: number): void {
         this.drawFavicon(newVal)
+        this.refreshSpoolman()
     }
 
     @Watch('printerIsPrinting')
     printerIsPrintingChanged(): void {
         this.drawFavicon(this.print_percent)
+    }
+
+    refreshSpoolman(): void {
+        if (this.moonrakerComponents.includes('spoolman')) {
+            this.$store.dispatch('server/spoolman/refreshActiveSpool', null, { root: true })
+        }
     }
 
     appHeight() {
@@ -303,10 +330,10 @@ export default class App extends Mixins(BaseMixin) {
 <style>
 @import './assets/styles/fonts.css';
 @import './assets/styles/toastr.css';
-@import './assets/styles/page.scss';
-@import './assets/styles/sidebar.scss';
-@import './assets/styles/utils.scss';
-@import './assets/styles/updateManager.scss';
+@import './assets/styles/page.css';
+@import './assets/styles/sidebar.css';
+@import './assets/styles/utils.css';
+@import './assets/styles/updateManager.css';
 
 :root {
     --app-height: 100%;

@@ -1,6 +1,6 @@
 <template>
     <li class="commit px-3 py-2">
-        <v-row>
+        <v-row class="flex-column flex-sm-row">
             <v-col>
                 <h4 class="subtitle-2 text--white mb-0">
                     {{ title }}
@@ -20,7 +20,7 @@
                     <span>{{ commitFormatDate }}</span>
                 </p>
             </v-col>
-            <v-col class="col-auto pt-4">
+            <v-col class="col-auto pt-0 pt-sm-4">
                 <v-chip outlined label small :href="commitHref" target="_blank">
                     {{ commitShortSha }}
                 </v-chip>
@@ -67,7 +67,7 @@ export default class GitCommitsListDayCommit extends Mixins(BaseMixin) {
         commitDay.setHours(0, 0, 0, 0)
         const todayDay = new Date()
         todayDay.setHours(0, 0, 0, 0)
-        const diff = Math.floor(todayDay.getTime() - commitDay.getTime()) / (1000 * 60 * 60 * 24)
+        const diff = Math.floor((todayDay.getTime() - commitDay.getTime()) / (1000 * 60 * 60 * 24))
 
         if (diff === 0) {
             const diffHours = Math.floor((new Date().getTime() - this.commit.date * 1000) / (1000 * 60 * 60))
@@ -99,7 +99,7 @@ export default class GitCommitsListDayCommit extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 li.commit {
     border-color: rgb(48, 54, 61);
     border-style: solid;

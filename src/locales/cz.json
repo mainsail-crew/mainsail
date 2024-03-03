@@ -235,6 +235,7 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Vymazat",
+        "CNCMode": "Režim CNC",
         "ColorMode": "Režim barev",
         "Downloading": "Stahování",
         "ForceLineRendering": "Vynutit vykreslování čar",
@@ -248,6 +249,7 @@
         "ReloadRequired": "Je nutné znovu načíst",
         "Rendering": "Vykreslování",
         "RenderQuality": "Kvalita vykreslování",
+        "ShowGCode": "Zobrazit G-Code",
         "ShowObjectSelection": "Zobrazit výběr objektu",
         "ShowToolhead": "Zobrazit nástrojovou hlavu",
         "ShowTravelMoves": "Zobrazit přesuny",
@@ -256,9 +258,7 @@
         "Tracking": "Sledování",
         "Transparency": "Průhlednost",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxelový režim (ASMBL)",
-        "ShowGCode": "Zobrazit G-Code",
-        "CNCMode": "Režim CNC"
+        "VoxelMode": "Voxelový režim (ASMBL)"
     },
     "Heightmap": {
         "Abort": "Zrušit",
@@ -307,8 +307,8 @@
         "AllJobs": "Všechny",
         "AvgPrinttime": "Průměrný čas tisku",
         "Cancel": "Zrušit",
-        "CreateNote": "Vytvořit poznámku",
         "Chart": "Graf",
+        "CreateNote": "Vytvořit poznámku",
         "Delete": "Smazat",
         "DeleteSelectedQuestion": "Opravdu chcete smazat {count} vybraných tisků?",
         "Details": "Detaily",
@@ -372,8 +372,8 @@
     },
     "JobQueue": {
         "AllJobs": "Všechny tisky",
-        "ChangeCount": "Změnit počet",
         "Cancel": "Zrušit",
+        "ChangeCount": "Změnit počet",
         "Count": "Počet",
         "Empty": "Prázdné",
         "InvalidCountEmpty": "Vstup nemůže být prázdný!",
@@ -434,8 +434,8 @@
             "Logfiles": "Log soubory",
             "Rollover": "Převést logy",
             "RolloverDescription": "Vyberte, které logy by měly být resetovány:",
-            "RolloverToastSuccessful": "Log pro \"{name}\" byl úspěšně resetován.",
-            "RolloverToastFailed": "Chyba při převodu logu pro \"{name}\": {message}"
+            "RolloverToastFailed": "Chyba při převodu logu pro \"{name}\": {message}",
+            "RolloverToastSuccessful": "Log pro \"{name}\" byl úspěšně resetován."
         },
         "SystemPanel": {
             "Constants": "Konstanty",
@@ -600,7 +600,7 @@
             "Files": "Soubory",
             "Flow": "Průtok",
             "Headline": "Stav",
-            "Jobqueue": "Seznam úloh ({count})",
+            "Jobqueue": "Seznam úloh",
             "JobqueueMoreFiles": "žádné další úlohy | jedna další úloha | {count} dalších úloh",
             "Layer": "Vrstva",
             "Max": "max",
@@ -706,6 +706,12 @@
         "Printers": "Tiskárny",
         "Timelapse": "Time-lapse",
         "Webcam": "Webkamera"
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "Přijmout",
+        "Base": "Základna",
+        "ErrorText": "Při procesu sondování došlo k chybě.",
+        "Headline": "Naklonění šroubů"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Přidat tiskárnu",
@@ -1043,6 +1049,7 @@
             "EditCrowsnestConf": "Upravit crowsnest.conf",
             "EditWebcam": "Upravit webkameru",
             "FlipWebcam": "Obrátit obrázek kamery:",
+            "Hlsstream": "HLS stream",
             "Horizontally": "horizontálně",
             "IconBed": "Postel",
             "IconCam": "Kamera",
@@ -1053,7 +1060,6 @@
             "IconNozzle": "Tryska",
             "IconPrinter": "Tiskárna",
             "Ipstream": "IP kamera",
-            "Hlsstream": "HLS stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptivní MJPEG-Streamer (experimentální)",
             "Name": "Jméno",
@@ -1071,12 +1077,6 @@
             "Webcams": "Webkamery",
             "WebrtcCameraStreamer": "WebRTC (streamer z kamery)"
         }
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "Přijmout",
-        "Base": "Základna",
-        "ErrorText": "Při procesu sondování došlo k chybě.",
-        "Headline": "Naklonění šroubů"
     },
     "Timelapse": {
         "AllFiles": "Všechny",

@@ -258,6 +258,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         else if ('error' in payload) message = message.error.message
 
         let formatMessage = formatConsoleMessage(message)
+        if (type === 'response' && message.startsWith('// action:')) type = 'action'
 
         const filters = rootGetters['gui/console/getConsolefilterRules']
         let boolImport = true
@@ -294,5 +295,10 @@ export const actions: ActionTree<ServerState, RootState> = {
 
     serviceStateChanged({ commit }, payload) {
         commit('updateServiceState', payload)
+    },
+
+    addFailedInitComponent({ commit }, payload) {
+        commit('removeComponent', payload)
+        commit('addFailedInitComponent', payload)
     },
 }

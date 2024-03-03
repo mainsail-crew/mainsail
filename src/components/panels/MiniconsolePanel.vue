@@ -294,7 +294,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
                     commands.forEach(
                         (command) =>
                             (output +=
-                                '<a class="command blue--text font-weight-bold">' +
+                                '<a class="command font-weight-bold">' +
                                 command.command +
                                 '</a>: ' +
                                 command.description +
@@ -339,6 +339,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
 <style scoped>
 .consoleTable {
     border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+html.theme--light .consoleTable {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .gcode-command-field {

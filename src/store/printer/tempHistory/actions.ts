@@ -28,6 +28,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
         const now = new Date()
         const allHeaters = rootGetters['printer/getAvailableHeaters'] ?? []
         const allSensors = rootGetters['printer/getAvailableSensors'] ?? []
+        const allMonitors = rootGetters['printer/getAvailableMonitors'] ?? []
         const maxHistory = rootGetters['printer/tempHistory/getTemperatureStoreSize']
 
         if (payload !== undefined) {
@@ -44,7 +45,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                 }
 
                 // break if sensor doesn't exist anymore or start with a _
-                if (!allSensors.includes(key) || nameOnly.startsWith('_')) {
+                if (!(allSensors.includes(key) || allMonitors.includes(key)) || nameOnly.startsWith('_')) {
                     delete payload[key]
                     return
                 }
@@ -54,7 +55,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                     if (datasetKey + 's' in datasetValues) {
                         const length = maxHistory - datasetValues[datasetKey + 's'].length
                         datasetValues[datasetKey + 's'] = [
-                            ...Array.from({ length }, () => 0),
+                            ...Array.from({ length }, () => null),
                             ...datasetValues[datasetKey + 's'],
                         ]
                     }
@@ -64,7 +65,8 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
             })
 
             // add missing heaters/sensors
-            allSensors.forEach((key: string) => {
+            const allEntries = allSensors.concat(allMonitors)
+            allEntries.forEach((key: string) => {
                 // break if sensor is already in the cache
                 if (key in payload) return
 
@@ -85,15 +87,15 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                     powers?: number[]
                     speeds?: number[]
                 } = {
-                    temperatures: Array(maxHistory).fill(0),
+                    temperatures: Array(maxHistory).fill(null),
                 }
 
                 if (allHeaters.includes(key)) {
-                    addValues.targets = Array(maxHistory).fill(0)
-                    addValues.powers = Array(maxHistory).fill(0)
+                    addValues.targets = Array(maxHistory).fill(null)
+                    addValues.powers = Array(maxHistory).fill(null)
                 } else if (['temperature_fan'].includes(sensorType)) {
-                    addValues.targets = Array(maxHistory).fill(0)
-                    addValues.speeds = Array(maxHistory).fill(0)
+                    addValues.targets = Array(maxHistory).fill(null)
+                    addValues.speeds = Array(maxHistory).fill(null)
                 }
 
                 importData[key] = { ...addValues }
@@ -143,6 +145,12 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                     if (!color) {
                         color = colorArray[colorNumber]
                         colorNumber++
+
+                        // fallback -> get random color
+                        if (color === undefined) {
+                            // color generator from https://css-tricks.com/snippets/javascript/random-hex-color/
+                            color = '#' + Math.floor(0xffffff * Math.random()).toString(16)
+                        }
                     }
                 }
 
@@ -239,7 +247,11 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
             window.console.debug('update Source', t0-state.timeLastUpdate)
         }*/
 
-        if (rootState?.printer?.heaters?.available_sensors?.length) {
+        const allSensors = rootGetters['printer/getAvailableSensors'] ?? []
+        const allMonitors = rootGetters['printer/getAvailableMonitors'] ?? []
+        const items = allSensors.concat(allMonitors)
+
+        if (items.length) {
             const now = new Date()
 
             if (state.source.length) {
@@ -255,14 +267,15 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                 date: now,
             }
 
-            rootState.printer.heaters.available_sensors.forEach((name: string) => {
+            items.forEach((name: string) => {
                 if (!(rootState.printer && name in rootState.printer)) return
                 const printerObject = { ...rootState.printer[name] }
 
                 datasetTypes.forEach((attrKey) => {
                     if (!(attrKey in printerObject)) return
 
-                    let value = Math.round(printerObject[attrKey] * 10) / 10
+                    let value = printerObject[attrKey]
+                    if (value !== null) value = Math.round(printerObject[attrKey] * 10) / 10
                     if (datasetTypesInPercents.includes(attrKey))
                         value = Math.round(printerObject[attrKey] * 1000) / 1000
 

@@ -98,6 +98,10 @@
                         hide-details="auto"
                         outlined
                         dense
+                        :rules="[
+                            (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                            (v) => v >= 0 || $t('Settings.TimelapseTab.RulesZeroAndPositive'),
+                        ]"
                         :disabled="blockedsettings.includes('stream_delay_compensation')" />
                 </settings-row>
                 <v-divider class="my-2" />
@@ -148,6 +152,15 @@
                                 hide-details="auto"
                                 outlined
                                 dense
+                                :rules="[
+                                    (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                    (v) =>
+                                        (v >= stepperXmin && v <= stepperXmax) ||
+                                        $t('Settings.TimelapseTab.RulesBetweenMinMax', {
+                                            min: stepperXmin,
+                                            max: stepperXmax,
+                                        }),
+                                ]"
                                 :disabled="blockedsettings.includes('park_custom_pos_x')"
                                 hide-spin-buttons />
                         </settings-row>
@@ -164,6 +177,15 @@
                                 hide-details="auto"
                                 outlined
                                 dense
+                                :rules="[
+                                    (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                    (v) =>
+                                        (v >= stepperYmin && v <= stepperYmax) ||
+                                        $t('Settings.TimelapseTab.RulesBetweenMinMax', {
+                                            min: stepperYmin,
+                                            max: stepperYmax,
+                                        }),
+                                ]"
                                 :disabled="blockedsettings.includes('park_custom_pos_y')"
                                 hide-spin-buttons />
                         </settings-row>
@@ -180,6 +202,10 @@
                                 hide-details="auto"
                                 outlined
                                 dense
+                                :rules="[
+                                    (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                    (v) => v >= 0 || $t('Settings.TimelapseTab.RulesZeroAndPositive'),
+                                ]"
                                 :disabled="blockedsettings.includes('park_custom_pos_dz')"
                                 hide-spin-buttons />
                         </settings-row>
@@ -195,6 +221,10 @@
                             hide-details="auto"
                             outlined
                             dense
+                            :rules="[
+                                (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                (v) => v >= 0 || $t('Settings.TimelapseTab.RulesZeroAndPositive'),
+                            ]"
                             :disabled="blockedsettings.includes('park_travel_speed')"
                             hide-spin-buttons />
                     </settings-row>
@@ -221,6 +251,10 @@
                                 hide-details="auto"
                                 outlined
                                 dense
+                                :rules="[
+                                    (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                    (v) => v > 0 || $t('Settings.TimelapseTab.RulesPositive'),
+                                ]"
                                 :disabled="blockedsettings.includes('park_retract_speed')"
                                 hide-spin-buttons />
                         </settings-row>
@@ -235,6 +269,10 @@
                                 hide-details="auto"
                                 outlined
                                 dense
+                                :rules="[
+                                    (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                    (v) => v >= 0 || $t('Settings.TimelapseTab.RulesZeroAndPositive'),
+                                ]"
                                 :disabled="blockedsettings.includes('park_retract_distance')"
                                 hide-spin-buttons />
                         </settings-row>
@@ -249,6 +287,10 @@
                                 hide-details="auto"
                                 outlined
                                 dense
+                                :rules="[
+                                    (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                    (v) => v > 0 || $t('Settings.TimelapseTab.RulesPositive'),
+                                ]"
                                 :disabled="blockedsettings.includes('park_extrude_speed')"
                                 hide-spin-buttons />
                         </settings-row>
@@ -263,6 +305,10 @@
                                 hide-details="auto"
                                 outlined
                                 dense
+                                :rules="[
+                                    (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                    (v) => v >= 0 || $t('Settings.TimelapseTab.RulesZeroAndPositive'),
+                                ]"
                                 :disabled="blockedsettings.includes('park_extrude_distance')"
                                 hide-spin-buttons />
                         </settings-row>
@@ -279,6 +325,10 @@
                             step="0.1"
                             outlined
                             dense
+                            :rules="[
+                                (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                (v) => v >= 0 || $t('Settings.TimelapseTab.RulesZeroAndPositive'),
+                            ]"
                             :disabled="blockedsettings.includes('park_time')" />
                     </settings-row>
                 </template>
@@ -306,6 +356,10 @@
                             hide-details="auto"
                             outlined
                             dense
+                            :rules="[
+                                (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                (v) => v > 0 || $t('Settings.TimelapseTab.RulesPositive'),
+                            ]"
                             :disabled="blockedsettings.includes('targetlength')"
                             hide-spin-buttons />
                     </settings-row>
@@ -320,6 +374,10 @@
                             hide-details="auto"
                             outlined
                             dense
+                            :rules="[
+                                (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                (v) => v > 0 || $t('Settings.TimelapseTab.RulesPositive'),
+                            ]"
                             :disabled="blockedsettings.includes('variable_fps_min')"
                             hide-spin-buttons />
                     </settings-row>
@@ -334,6 +392,10 @@
                             hide-details="auto"
                             outlined
                             dense
+                            :rules="[
+                                (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                (v) => v > variable_fps_min || $t('Settings.TimelapseTab.RulesMin'),
+                            ]"
                             :disabled="blockedsettings.includes('variable_fps_max')"
                             hide-spin-buttons />
                     </settings-row>
@@ -350,6 +412,10 @@
                             hide-details="auto"
                             outlined
                             dense
+                            :rules="[
+                                (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                                (v) => v > 0 || $t('Settings.TimelapseTab.RulesPositive'),
+                            ]"
                             :disabled="blockedsettings.includes('output_framerate')"
                             hide-spin-buttons />
                     </settings-row>
@@ -364,6 +430,10 @@
                         hide-details="auto"
                         outlined
                         dense
+                        :rules="[
+                            (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                            (v) => v >= 0 || $t('Settings.TimelapseTab.RulesZeroAndPositive'),
+                        ]"
                         :disabled="blockedsettings.includes('duplicatelastframe')"
                         hide-spin-buttons />
                 </settings-row>
@@ -377,6 +447,10 @@
                         hide-details="auto"
                         outlined
                         dense
+                        :rules="[
+                            (v) => !!v || $t('Settings.TimelapseTab.RulesRequired'),
+                            (v) => v > 0 || $t('Settings.TimelapseTab.RulesPositive'),
+                        ]"
                         :disabled="blockedsettings.includes('constant_rate_factor')"
                         hide-spin-buttons />
                 </settings-row>
@@ -542,7 +616,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.stream_delay_compensation
     }
 
-    set stream_delay_compensation(newVal) {
+    set stream_delay_compensation(newVal: number | string) {
+        if (newVal === '') newVal = 0
+
         this.$store.dispatch('server/timelapse/saveSetting', { stream_delay_compensation: newVal })
     }
 
@@ -582,23 +658,45 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.park_custom_pos_x
     }
 
-    set park_custom_pos_x(newVal) {
+    set park_custom_pos_x(newVal: number | string) {
+        if (newVal === '' || newVal < this.stepperXmin || newVal > this.stepperXmax) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { park_custom_pos_x: newVal })
+    }
+
+    get stepperXmin() {
+        return this.$store.state.printer.configfile?.settings?.stepper_x?.position_min ?? 0
+    }
+
+    get stepperXmax() {
+        return this.$store.state.printer.configfile?.settings?.stepper_x?.position_max ?? 200
     }
 
     get park_custom_pos_y() {
         return this.$store.state.server.timelapse.settings.park_custom_pos_y
     }
 
-    set park_custom_pos_y(newVal) {
+    set park_custom_pos_y(newVal: number | string) {
+        if (newVal === '' || newVal < this.stepperYmin || newVal > this.stepperYmax) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { park_custom_pos_y: newVal })
+    }
+
+    get stepperYmin() {
+        return this.$store.state.printer.configfile?.settings?.stepper_y?.position_min ?? 0
+    }
+
+    get stepperYmax() {
+        return this.$store.state.printer.configfile?.settings?.stepper_y?.position_max ?? 200
     }
 
     get park_custom_pos_dz() {
         return this.$store.state.server.timelapse.settings.park_custom_pos_dz
     }
 
-    set park_custom_pos_dz(newVal) {
+    set park_custom_pos_dz(newVal: number | string) {
+        if (newVal === '' || newVal < 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { park_custom_pos_dz: newVal })
     }
 
@@ -606,7 +704,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.park_travel_speed
     }
 
-    set park_travel_speed(newVal) {
+    set park_travel_speed(newVal: number | string) {
+        if (newVal === '' || newVal < 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { park_travel_speed: newVal })
     }
 
@@ -614,7 +714,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.park_retract_speed
     }
 
-    set park_retract_speed(newVal) {
+    set park_retract_speed(newVal: number | string) {
+        if (newVal === '' || newVal <= 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { park_retract_speed: newVal })
     }
 
@@ -622,7 +724,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.park_extrude_speed
     }
 
-    set park_extrude_speed(newVal) {
+    set park_extrude_speed(newVal: number | string) {
+        if (newVal === '' || newVal <= 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { park_extrude_speed: newVal })
     }
 
@@ -630,7 +734,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.park_retract_distance
     }
 
-    set park_retract_distance(newVal) {
+    set park_retract_distance(newVal: number | string) {
+        if (newVal === '' || newVal < 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { park_retract_distance: newVal })
     }
 
@@ -638,7 +744,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.park_extrude_distance
     }
 
-    set park_extrude_distance(newVal) {
+    set park_extrude_distance(newVal: number | string) {
+        if (newVal === '' || newVal < 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { park_extrude_distance: newVal })
     }
 
@@ -646,7 +754,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.park_time
     }
 
-    set park_time(newVal) {
+    set park_time(newVal: number | string) {
+        if (newVal === '' || newVal < 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { park_time: newVal })
     }
 
@@ -662,7 +772,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.constant_rate_factor
     }
 
-    set constant_rate_factor(newVal) {
+    set constant_rate_factor(newVal: number | string) {
+        if (newVal === '' || newVal <= 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { constant_rate_factor: newVal })
     }
 
@@ -670,7 +782,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.output_framerate
     }
 
-    set output_framerate(newVal) {
+    set output_framerate(newVal: number | string) {
+        if (newVal === '' || newVal <= 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { output_framerate: newVal })
     }
 
@@ -702,7 +816,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.targetlength
     }
 
-    set targetlength(newVal) {
+    set targetlength(newVal: number | string) {
+        if (newVal === '' || newVal <= 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { targetlength: newVal })
     }
 
@@ -710,7 +826,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.variable_fps_min
     }
 
-    set variable_fps_min(newVal) {
+    set variable_fps_min(newVal: number | string) {
+        if (newVal === '' || newVal <= 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { variable_fps_min: newVal })
     }
 
@@ -718,7 +836,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.variable_fps_max
     }
 
-    set variable_fps_max(newVal) {
+    set variable_fps_max(newVal: number | string) {
+        if (newVal === '' || newVal <= this.variable_fps_min) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { variable_fps_max: newVal })
     }
 
@@ -726,7 +846,9 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         return this.$store.state.server.timelapse.settings.duplicatelastframe
     }
 
-    set duplicatelastframe(newVal) {
+    set duplicatelastframe(newVal: number | string) {
+        if (newVal === '' || newVal < 0) return
+
         this.$store.dispatch('server/timelapse/saveSetting', { duplicatelastframe: newVal })
     }
 

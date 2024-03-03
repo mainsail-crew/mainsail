@@ -105,9 +105,6 @@ export const getters: GetterTree<ServerHistoryState, any> = {
                     value: 1,
                     itemStyle,
                     showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
-                    label: {
-                        color: '#fff',
-                    },
                 })
             }
         })
@@ -144,9 +141,6 @@ export const getters: GetterTree<ServerHistoryState, any> = {
                     borderRadius: 3,
                 },
                 showInTable: true,
-                label: {
-                    color: '#fff',
-                },
             })
         }
 
@@ -191,9 +185,6 @@ export const getters: GetterTree<ServerHistoryState, any> = {
                     value: 1,
                     itemStyle: itemStyle,
                     showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
-                    label: {
-                        color: '#fff',
-                    },
                 })
             }
         })

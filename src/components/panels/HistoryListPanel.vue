@@ -28,25 +28,30 @@
                             </v-btn>
                         </template>
                         <history-list-panel-add-maintenance />
-                        <v-btn
-                            :title="$t('History.TitleExportHistory')"
-                            class="px-2 minwidth-0 ml-3"
-                            @click="exportHistory">
-                            <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
-                        </v-btn>
-                        <v-btn
-                            :title="$t('History.TitleRefreshHistory')"
-                            class="px-2 minwidth-0 ml-3"
-                            @click="refreshHistory">
-                            <v-icon>{{ mdiRefresh }}</v-icon>
-                        </v-btn>
-                        <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
+                        <v-tooltip v-if="!allLoaded" top>
                             <template #activator="{ on, attrs }">
                                 <v-btn
+                                    :loading="loadings.includes('historyLoadAll')"
                                     class="px-2 minwidth-0 ml-3"
-                                    :title="$t('History.TitleSettings')"
                                     v-bind="attrs"
-                                    v-on="on">
+                                    v-on="on"
+                                    @click="refreshHistory">
+                                    <v-icon>{{ mdiDatabaseArrowDownOutline }}</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>{{ $t('History.LoadCompleteHistory') }}</span>
+                        </v-tooltip>
+                        <v-tooltip top>
+                            <template #activator="{ on, attrs }">
+                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on" @click="exportHistory">
+                                    <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>{{ $t('History.TitleExportHistory') }}</span>
+                        </v-tooltip>
+                        <v-menu :offset-y="true" :close-on-content-click="false">
+                            <template #activator="{ on, attrs }">
+                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
                                     <v-icon>{{ mdiCog }}</v-icon>
                                 </v-btn>
                             </template>
@@ -65,10 +70,7 @@
                                     </v-list-item>
                                     <v-divider />
                                 </template>
-                                <v-list-item
-                                    v-for="(header, index) of configHeaders"
-                                    :key="'history-list-panel-header-option-' + index"
-                                    class="minHeight36">
+                                <v-list-item v-for="header of configHeaders" :key="header.key" class="minHeight36">
                                     <v-checkbox
                                         v-model="header.visible"
                                         class="mt-0"
@@ -145,6 +147,11 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <add-batch-to-queue-dialog
+            :is-visible="dialogAddBatchToQueue.isVisible"
+            :show-toast="true"
+            :filename="dialogAddBatchToQueue.filename"
+            @close="closeAddBatchToQueueDialog" />
     </div>
 </template>
 
@@ -180,6 +187,8 @@ export interface HistoryListPanelRow {
     outputType?: string
 }
 
+import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
+
 @Component({
     components: {
         HistoryListEntryMaintenance,
@@ -187,6 +196,7 @@ export interface HistoryListPanelRow {
         HistoryListEntryJob,
         HistoryListPanelDetailsDialog,
         Panel,
+        AddBatchToQueueDialog
     },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
@@ -206,6 +216,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     sortDesc = true
 
     deleteSelectedDialog = false
+
+    get allLoaded() {
+        return this.$store.state.server.history.all_loaded ?? false
+    }
 
     get jobs() {
         return this.$store.getters['server/history/getFilterdJobList'] ?? []
@@ -437,7 +451,13 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return this.$store.state.gui.general?.language ?? 'en'
     }
 
+    get isJobQueueAvailable() {
+        return this.moonrakerComponents.includes('job_queue')
+    }
+
     refreshHistory() {
+        this.$store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
+
         this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
     }
 

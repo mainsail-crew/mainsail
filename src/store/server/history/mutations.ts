@@ -37,4 +37,8 @@ export const mutations: MutationTree<ServerHistoryState> = {
         const index = state.jobs.findIndex((job) => job.job_id === payload)
         if (index !== -1) state.jobs.splice(index, 1)
     },
+
+    setAllLoaded(state) {
+        Vue.set(state, 'all_loaded', true)
+    },
 }

@@ -34,6 +34,13 @@
                         :key="objectName"
                         :object-name="objectName"
                         :is-responsive-mobile="el.is.mobile ?? false" />
+                    <template v-if="!hideMonitors">
+                        <temperature-panel-list-item
+                            v-for="objectName in monitors"
+                            :key="objectName"
+                            :object-name="objectName"
+                            :is-responsive-mobile="el.is.mobile ?? false" />
+                    </template>
                 </tbody>
             </v-simple-table>
         </template>
@@ -70,6 +77,14 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
         return this.$store.state.printer?.heaters?.available_sensors ?? []
     }
 
+    get available_monitors() {
+        return this.$store.state.printer?.heaters?.available_monitors ?? []
+    }
+
+    get monitors() {
+        return this.available_monitors.sort(this.sortObjectName)
+    }
+
     get temperature_fans() {
         return this.available_sensors
             .filter((name: string) => name.startsWith('temperature_fan') && !name.startsWith('temperature_fan _'))
@@ -82,6 +97,10 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
 
     get hideMcuHostSensors(): boolean {
         return this.$store.state.gui.view.tempchart.hideMcuHostSensors ?? false
+    }
+
+    get hideMonitors(): boolean {
+        return this.$store.state.gui.view.tempchart.hideMonitors ?? false
     }
 
     get temperature_sensors() {
@@ -136,7 +155,7 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .temperature-panel-table th,
 .temperature-panel-table ::v-deep td {
     padding-top: 5px !important;

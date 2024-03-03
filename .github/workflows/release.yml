@@ -12,8 +12,8 @@ jobs:
   push-version-number:
     runs-on: ubuntu-latest
     steps:
-      - name: Clone develop repository
-        uses: actions/checkout@v3
+      - name: Checkout develop branch
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
           ref: 'develop'
@@ -50,10 +50,11 @@ jobs:
 
   release:
     needs: ['update-master-branch']
+    name: Build and release
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: 'master'
           fetch-depth: 0
@@ -61,7 +62,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
         run: npm ci
@@ -80,7 +81,7 @@ jobs:
           echo "TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
 
       - name: Generate a changelog
-        uses: orhun/git-cliff-action@v1
+        uses: orhun/git-cliff-action@v2
         id: generate-changelog
         with:
           config: ./cliff-release.toml
@@ -92,7 +93,7 @@ jobs:
         with:
           name: v${{ github.event.inputs.version }}
           tag_name: v${{ github.event.inputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
           files: ./mainsail.zip
           body: ${{ steps.generate-changelog.outputs.content }}
 
@@ -129,7 +130,7 @@ jobs:
           echo "TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
 
       - name: Generate a changelog
-        uses: orhun/git-cliff-action@v1
+        uses: orhun/git-cliff-action@v2
         id: git-cliff
         with:
           config: cliff.toml

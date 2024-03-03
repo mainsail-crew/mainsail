@@ -1,8 +1,10 @@
+export const defaultTheme = 'dark'
 export const defaultLogoColor = '#D41216'
 export const defaultPrimaryColor = '#2196f3'
+export const defaultBigThumbnailBackground = '#1e1e1e'
 
-export const minKlipperVersion = 'v0.11.0-97'
-export const minMoonrakerVersion = 'v0.8.0-38'
+export const minKlipperVersion = 'v0.11.0-257'
+export const minMoonrakerVersion = 'v0.8.0-306'
 export const minBrowserVersions = [{ name: 'safari', version: '16.5.2' }]
 
 export const colorArray = ['#F44336', '#8e379d', '#03DAC5', '#3F51B5', '#ffde03', '#009688', '#E91E63']
@@ -25,7 +27,15 @@ export const validGcodeExtensions = ['.gcode', '.g', '.gco', '.ufp', '.nc']
 /*
  * List of initable server components
  */
-export const initableServerComponents = ['history', 'power', 'updateManager', 'timelapse', 'jobQueue', 'announcements']
+export const initableServerComponents = [
+    'history',
+    'power',
+    'updateManager',
+    'timelapse',
+    'jobQueue',
+    'announcements',
+    'spoolman',
+]
 
 /*
  * List of required klipper config modules
@@ -78,13 +88,14 @@ export const allDashboardPanels = [
     'machine-settings',
     'miniconsole',
     'miscellaneous',
+    'spoolman',
     'temperature',
     'webcam',
 ]
 
-export const thumbnailSmallMin = 32
+export const thumbnailSmallMin = 30
 export const thumbnailSmallMax = 64
-export const thumbnailBigMin = 256
+export const thumbnailBigMin = 128
 
 export const navigationWidth = 220
 export const navigationItemHeight = 48
@@ -118,6 +129,11 @@ export const hiddenDirectories = ['.git']
  * https://www.klipper3d.org/Config_Reference.html
  */
 export const availableKlipperConfigReferenceTranslations = ['it', 'hu', 'zh']
+
+/*
+ * List of all downloadable logfiles
+ */
+export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sonar']
 
 /*
  * List of all rollover logfiles

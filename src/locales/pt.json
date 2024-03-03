@@ -607,7 +607,7 @@
             "Files": "Arquivos",
             "Flow": "Fluxo",
             "Headline": "Status",
-            "Jobqueue": "Fila de trabalhos ({count})",
+            "Jobqueue": "Fila de trabalhos",
             "JobqueueMoreFiles": "nenhum trabalho | mais um trabalho | {count} mais trabalhos",
             "Layer": "Camada",
             "Max": "max",

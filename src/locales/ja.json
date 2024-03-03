@@ -235,6 +235,7 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "クリア",
+        "CNCMode": "CNCモード",
         "ColorMode": "カラーモード",
         "Downloading": "ダウンロード中",
         "ForceLineRendering": "強制ラインレンダリング",
@@ -248,6 +249,7 @@
         "ReloadRequired": "リロードが必要",
         "Rendering": "レンダリング",
         "RenderQuality": "レンダークオリティー",
+        "ShowGCode": "Gコードを表示",
         "ShowObjectSelection": "オブジェクト選択表示",
         "ShowToolhead": "ツールヘッド表示",
         "ShowTravelMoves": "トラベル表示",
@@ -256,9 +258,7 @@
         "Tracking": "トラッキング",
         "Transparency": "透明",
         "Ultra": "ウルトラ",
-        "VoxelMode": "ボクセルモード (ASMBL)",
-        "ShowGCode": "Gコードを表示",
-        "CNCMode": "CNCモード"
+        "VoxelMode": "ボクセルモード (ASMBL)"
     },
     "Heightmap": {
         "Abort": "中止",
@@ -307,8 +307,8 @@
         "AllJobs": "全ジョブ",
         "AvgPrinttime": "平均印刷時間",
         "Cancel": "取り消し",
-        "CreateNote": "メモ作成",
         "Chart": "チャート",
+        "CreateNote": "メモ作成",
         "Delete": "削除",
         "DeleteSelectedQuestion": "選択された {count}個のジョブを削除します。よろしいですか？",
         "Details": "詳細",
@@ -372,8 +372,8 @@
     },
     "JobQueue": {
         "AllJobs": "全ジョブ",
-        "ChangeCount": "回数変更",
         "Cancel": "取り消し",
+        "ChangeCount": "回数変更",
         "Count": "回数",
         "Empty": "空",
         "InvalidCountEmpty": "回数は空であってはなりません！",
@@ -434,8 +434,8 @@
             "Logfiles": "ログファイル",
             "Rollover": "ログファイルのロールオーバー",
             "RolloverDescription": "リセットするログを選んでください:",
-            "RolloverToastSuccessful": "\"{name}\"ログファイルのリセットに成功しました。",
-            "RolloverToastFailed": "\"{name}\"ログファイルのロールオーバー: {message}"
+            "RolloverToastFailed": "\"{name}\"ログファイルのロールオーバー: {message}",
+            "RolloverToastSuccessful": "\"{name}\"ログファイルのリセットに成功しました。"
         },
         "SystemPanel": {
             "Constants": "定数",
@@ -600,7 +600,7 @@
             "Files": "ファイル",
             "Flow": "フロー",
             "Headline": "状態",
-            "Jobqueue": "ジョブキュー ({count})",
+            "Jobqueue": "ジョブキュー",
             "JobqueueMoreFiles": "ジョブなし | あとひとつのジョブ | あと {count}個のジョブ",
             "Layer": "層",
             "Max": "最大",
@@ -706,6 +706,12 @@
         "Printers": "プリンター",
         "Timelapse": "タイムラプス",
         "Webcam": "カメラ"
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "確認",
+        "Base": "ベース",
+        "ErrorText": "プロービング過程で、問題が生じました。",
+        "Headline": "スクリュー傾斜調整"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "プリンター追加",
@@ -1041,6 +1047,7 @@
             "EditCrowsnestConf": "crowsnest.confを編集",
             "EditWebcam": "カメラ編集",
             "FlipWebcam": "カメラ画像の反転:",
+            "Hlsstream": "HLS Stream",
             "Horizontally": "水平方向",
             "IconBed": "ベッド",
             "IconCam": "カメラ",
@@ -1051,7 +1058,6 @@
             "IconNozzle": "ノズル",
             "IconPrinter": "プリンター",
             "Ipstream": "IPカメラ",
-            "Hlsstream": "HLS Stream",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (試験的)",
             "Name": "名前",
@@ -1069,12 +1075,6 @@
             "Webcams": "カメラ",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
         }
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "確認",
-        "Base": "ベース",
-        "ErrorText": "プロービング過程で、問題が生じました。",
-        "Headline": "スクリュー傾斜調整"
     },
     "Timelapse": {
         "AllFiles": "すべてのファイル",

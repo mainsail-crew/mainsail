@@ -543,7 +543,7 @@
             "Files": "Fájlok",
             "Flow": "Anyagáramlás",
             "Headline": "Állapot",
-            "Jobqueue": "Várólista ({count})",
+            "Jobqueue": "Várólista",
             "JobqueueMoreFiles": "Nincs több munka | Még egy munka | {count} munka hátra",
             "Layer": "Réteg",
             "Max": "max",
@@ -722,11 +722,11 @@
             "Editor": "Szerkesztő",
             "KlipperRestartMethod": "Klipper újraindítási mód",
             "KlipperRestartMethodDescription": "Válaszd ki milyen újraindítási módot használjunk a 'Ment és Újraindít' esetén, amikor a klipper konfig fájlait szerkeszted.",
-            "UseEscToClose": "Kilépéshez nyomd meg az ESC gombot",
-            "UseEscToCloseDescription": "Az ESC gomb megnyomása bezárja a szerkesztőt",
+            "Spaces": "Szóközök: {count}",
             "TabSize": "TAB Méret",
             "TabSizeDescription": "Beállítja, hogy hány szóközzel legyen behúzva a TAB-oknál",
-            "Spaces": "Szóközök: {count}"
+            "UseEscToClose": "Kilépéshez nyomd meg az ESC gombot",
+            "UseEscToCloseDescription": "Az ESC gomb megnyomása bezárja a szerkesztőt"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Háttérszín",

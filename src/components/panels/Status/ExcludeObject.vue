@@ -1,4 +1,4 @@
-<style lang="scss" scoped></style>
+<style scoped></style>
 
 <template>
     <div v-if="['printing', 'paused'].includes(printer_state) && printing_objects.length">
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </v-container>
-        <v-divider class="mt-0 mb-0"></v-divider>
+        <v-divider class="mt-0 mb-0" />
         <v-dialog v-model="boolShowExcludeObjectDialog" max-width="400">
             <v-card>
                 <v-toolbar flat dense>
@@ -36,7 +36,7 @@
                     {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectText', { name: excludeObjectDialogName }) }}
                 </v-card-text>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <v-btn text @click="boolShowExcludeObjectDialog = false">
                         {{ $t('Panels.StatusPanel.ExcludeObject.Cancel') }}
                     </v-btn>
@@ -51,7 +51,7 @@
             :exclude-object-dialog-name.sync="excludeObjectDialogName"
             :exclude-object-dialog-bool.sync="boolShowExcludeObjectDialog"
             @update:name="updateExcludeObjectDialogName"
-            @update:bool="updateExcludeObjectDialogBool"></status-panel-exclude-object-dialog>
+            @update:bool="updateExcludeObjectDialogBool" />
     </div>
 </template>
 

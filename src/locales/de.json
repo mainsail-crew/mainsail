@@ -2,8 +2,8 @@
     "App": {
         "Notifications": {
             "BrowserWarnings": {
-                "Headline": "Veralteter Browser",
-                "Description": "Die verwendete {name} Version ({version}) ist veraltet und wird nicht vollständig unterstützt. Mainsail benötigt die Version {minVersion} oder höher."
+                "Description": "Die verwendete {name} Version ({version}) ist veraltet und wird nicht vollständig unterstützt. Mainsail benötigt die Version {minVersion} oder höher.",
+                "Headline": "Veralteter Browser"
             },
             "DependencyDescription": "Die momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}.",
             "DependencyName": "Abhängigkeit: {name}",
@@ -17,7 +17,9 @@
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
-                "MoonrakerFailedComponentDescription": "Beim Laden der Moonraker-Komponenten wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
+                "MoonrakerFailedComponentDescription": "Beim Laden der Moonraker-Komponente '{component}' wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
+                "MoonrakerFailedInitComponentDescription": "Beim Initialisieren der Moonraker-Komponente '{component}' wurde ein Fehler festgestellt. Bitte prüfe die Logdatei und behebe das Problem.",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}",
                 "MoonrakerWarning": "Moonraker Warnung",
                 "UnparsedConfigOption": "Nicht erkannte Config-Option '{option}: {value}' in Abschnitt [{section}] entdeckt. Dies kann eine Option sein, die nicht mehr verfügbar ist, oder das Ergebnis eines Moduls sein, das nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen.",
                 "UnparsedConfigSection": "Nicht erkannter Config-Abschnitt [{section}] gefunden. Dies kann das Ergebnis einer Komponente sein, die nicht geladen werden konnte. In Zukunft wird dies zu einem Startfehler führen."
@@ -148,6 +150,7 @@
         "StartPrint": {
             "Cancel": "abbrechen",
             "DoYouWantToStartFilename": "Willst du {filename} starten?",
+            "DoYouWantToStartFilenameFilament": "Willst du {filename} mit dem folgenden Filament starten?",
             "Headline": "Starte Job",
             "Print": "drucken",
             "Timelapse": "Zeitraffer"
@@ -195,7 +198,6 @@
         "EditFile": "Datei bearbeiten",
         "Empty": "Leer",
         "ExtruderTemp": "Extruder Temp.",
-        "Filament": "Filament",
         "FilamentName": "Filament Name",
         "FilamentType": "Filament Typ",
         "FilamentUsage": "Filamentverbrauch",
@@ -249,6 +251,7 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Löschen",
+        "CNCMode": "CNC Modus",
         "ColorMode": "Farbmodus",
         "Downloading": "Downloaden",
         "ForceLineRendering": "Erzwinge Liniendarstellung",
@@ -262,6 +265,7 @@
         "ReloadRequired": "Neu laden erforderlich",
         "Rendering": "Rendering",
         "RenderQuality": "Darstellungsqualität",
+        "ShowGCode": "Zeige G-Code",
         "ShowObjectSelection": "Zeige Objektauswahl",
         "ShowToolhead": "Zeige Werkzeugkopf",
         "ShowTravelMoves": "Zeige Bewegungen im Eilgang",
@@ -270,9 +274,7 @@
         "Tracking": "Tracking",
         "Transparency": "Transparenz",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxel Modus (ASMBL)",
-        "ShowGCode": "Zeige G-Code",
-        "CNCMode": "CNC Modus"
+        "VoxelMode": "Voxel Modus (ASMBL)"
     },
     "Heightmap": {
         "Abort": "abbruch",
@@ -297,19 +299,15 @@
         "InvalidNameAscii": "Name ist ungültig. Nur ASCII Zeichen sind erlaubt.",
         "InvalidNameEmpty": "Feld darf nicht leer sein!",
         "InvalidNameReserved": "Das Profil 'default' ist reserviert, bitte wähle einen anderen Profilnamen.",
-        "Later": "später",
         "Mesh": "Mesh",
         "Name": "Name",
         "NoBedMeshHasBeenLoadedYet": "Es wurde noch kein Bed Mesh geladen.",
         "NoProfile": "Kein Profil verfügbar",
-        "Ok": "Ok",
         "Probed": "Abgetastet",
         "Profiles": "Profile",
         "Remove": "löschen",
-        "RemoveSaveDescription": "Das Löschen des Höhenprofils wurde registriert. Mit einem Klick auf SAVE_CONFIG wird es aus der printer.cfg gelöscht und Klipper neu gestartet.",
         "Rename": "umbenennen",
         "RenameBedMeshProfile": "Bed Mesh umbenennen",
-        "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Farbverlauf skalieren",
         "ScaleZMax": "Skaliere z-max.",
         "TitleCalibrate": "Neues Bed Mesh kalibrieren",
@@ -348,6 +346,7 @@
         "Jobs": "Drucke",
         "LastModified": "Zuletzt geändert",
         "LayerHeight": "Schichthöhe",
+        "LoadCompleteHistory": "Lade vollständige Historie",
         "LongestPrinttime": "Druckzeit - längste",
         "Note": "Notiz",
         "ObjectHeight": "Objekthöhe",
@@ -371,6 +370,7 @@
             "completed": "Abgeschlossen",
             "error": "Fehler",
             "in_progress": "In Arbeit",
+            "interrupted": "Unterbrochen",
             "klippy_disconnect": "Klippy getrennt",
             "klippy_shutdown": "Klippy heruntergefahren",
             "Others": "Sonstige",
@@ -378,8 +378,6 @@
         },
         "Table": "Tabelle",
         "TitleExportHistory": "Historie exportieren",
-        "TitleRefreshHistory": "Historie aktualisieren",
-        "TitleSettings": "Einstellungen",
         "TotalDuration": "Gesamtdauer",
         "TotalFilamentUsed": "Filament verwendet - gesamt",
         "TotalJobs": "Druckvorgänge - gesamt",
@@ -387,18 +385,17 @@
         "TotalTime": "Gesamtzeit"
     },
     "JobQueue": {
-        "AllJobs": "Alle Aufträge",
-        "ChangeCount": "Anzahl ändern",
         "Cancel": "abbrechen",
+        "ChangeCount": "Anzahl ändern",
         "Count": "Anzahl",
         "Empty": "Leer",
         "InvalidCountEmpty": "Die Eingabe darf nicht leer sein!",
         "InvalidCountGreaterZero": "Die Eingabe muss größer als 0 sein!",
         "JobQueue": "Auftragswarteschlange",
-        "Jobs": "Aufträge",
         "Pause": "Pause",
         "RemoveFromQueue": "Von Auftragswarteschlange entfernen",
-        "Start": "Start"
+        "Start": "Start",
+        "StartPrint": "Auftrag starten"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -453,8 +450,8 @@
             "Logfiles": "Logdateien",
             "Rollover": "Logdatei zurücksetzen",
             "RolloverDescription": "Wähle Logs zum zurücksetzen:",
-            "RolloverToastSuccessful": "Logdatei für \"{name}\" wurde erfolgreich zurückgesetzt.",
-            "RolloverToastFailed": "Logdatei reset \"{name}\": {message}"
+            "RolloverToastFailed": "Logdatei reset \"{name}\": {message}",
+            "RolloverToastSuccessful": "Logdatei für \"{name}\" wurde erfolgreich zurückgesetzt."
         },
         "SystemPanel": {
             "Constants": "Konstanten",
@@ -495,6 +492,7 @@
             "CommittedOnDate": "eingereicht am {date}",
             "CommittedYesterday": "eingereicht gestern",
             "ConfigChanges": "Konfigurationsänderungen",
+            "Corrupt": "Korrupt",
             "CountPackagesCanBeUpgraded": "{count} Pakete können aktualisiert werden",
             "Detached": "abgetrennt",
             "Dirty": "kompromittiert",
@@ -504,15 +502,11 @@
             "InitUpdateManager": "Der Update Manager ist noch nicht initialisiert. Dies ist normal, wenn das System zum ersten Mal gestartet wird. Bitte klicke auf die Aktualisierungsschaltfläche, um alle Komponenten zu initialisieren.",
             "Invalid": "ungültig",
             "IUnderstandTheRisks": "Ich habe die Risiken verstanden",
-            "LinkToGithub": "Link zu GitHub",
-            "KlipperUpdateQuestionFirmware": "Dadurch wird die Klipper-Host-Software aktualisiert. Steuerplatinen, auf denen die Klipper-Firmware läuft, müssen möglicherweise mit einer neu kompilierten Firmware geflasht werden, bevor die Maschine wieder in Betrieb genommen werden kann.",
             "KlipperUpdateQuestionConfig": "Dieses Update kann Änderungen an den Konfigurationsparametern enthalten, die in der Datei printer.cfg geändert werden müssen; Informationen hierzu findest du im Änderungsprotokoll.",
+            "KlipperUpdateQuestionFirmware": "Dadurch wird die Klipper-Host-Software aktualisiert. Steuerplatinen, auf denen die Klipper-Firmware läuft, müssen möglicherweise mit einer neu kompilierten Firmware geflasht werden, bevor die Maschine wieder in Betrieb genommen werden kann.",
+            "LinkToGithub": "Link zu GitHub",
             "MoonrakerUpdateQuestion": "Dadurch wird die Moonraker-API aktualisiert. Möglicherweise sind Änderungen an der Datei moonraker.conf erforderlich, damit die Maschine wieder verwendet werden kann.",
             "MoreCommitsInfo": "Hier können maximal 30 Commits angezeigt werden. Um alle Commits zu sehen, klicke bitte auf den folgenden Link:",
-            "Notification": {
-                "Detached": "Ein abgetrennter Zustand ist weder ein Fehler noch ein Problem. Es bedeutet nur, dass im lokalen Repository zusätzliche Commits existieren, die im entfernten Repository nicht vorhanden sind.",
-                "Dirty": "Das lokale Repository wurde geändert und kann in diesem Zustand nicht aktualisiert werden. Bitte stelle wieder ein saubers Repository her."
-            },
             "OSPackages": "OS-Pakete",
             "SoftRecovery": "einfache Wiederherstellung",
             "StartUpdate": "Aktualisierung starten",
@@ -538,12 +532,15 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Erlaubt",
+            "CleanNozzle": "Düse reinigen",
             "EstimatedExtrusion": "Extrusion:",
             "Extrude": "Extrudieren",
+            "ExtruderControl": "Extruder Control",
             "ExtruderTempTooLow": "Extruder Temp. <",
             "ExtrusionFactor": "Extrusionsfaktor",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
             "FilamentLength": "Filamentlänge",
+            "FirmwareRetraction": "Firmware Rückzug",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Rückzugslänge",
                 "RetractSpeed": "Rückzuggeschwindigkeit",
@@ -552,14 +549,17 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Filament laden",
+            "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "SmoothTime": "Smooth Time"
             },
+            "PurgeFilament": "Filament reinigen",
             "Requested": "Angefordert",
             "Retract": "Rückzug",
             "TooLargeExtrusion": "Extrusion zu groß!",
+            "Tools": "Werkzeuge",
             "UnloadFilament": "Filament entladen"
         },
         "FarmPrinterPanel": {
@@ -582,6 +582,7 @@
             "MotionSettings": {
                 "Acceleration": "Beschleunigung",
                 "MaxAccelToDecel": "Max. Beschl. zu Verz.",
+                "MinimumCruiseRatio": "Min. Kreuzfahr Quote",
                 "SquareCornerVelocity": "Eck-Geschwindigkeit",
                 "Velocity": "Geschwindigkeit"
             }
@@ -591,6 +592,7 @@
             "Send": "senden"
         },
         "MiniconsolePanel": {
+            "Autoscroll": "Autoscroll",
             "Headline": "Konsole",
             "HideTemperatures": "Temperaturmeldungen ausblenden",
             "HideTimelapse": "Timelapse ausblenden",
@@ -613,8 +615,7 @@
             },
             "RunoutSensor": {
                 "Detected": "erkannt",
-                "Disabled": "deaktiviert",
-                "Empty": "Leer"
+                "Empty": "leer"
             }
         },
         "PowerControlPanel": {
@@ -622,6 +623,32 @@
             "Off": "Aus",
             "On": "An",
             "PowerControl": "Stromversorgung"
+        },
+        "SpoolmanPanel": {
+            "Cancel": "Abbrechen",
+            "ChangeSpool": "Rolle wechseln",
+            "DaysAgo": "vor {days} Tagen",
+            "EjectSpool": "Rolle auswerfen",
+            "EjectSpoolQuestion": "Sind Sie sicher, dass Sie die Filamentrolle auswerfen wollen?",
+            "Filament": "Filament",
+            "FilamentTypeMismatch": "Das Material der aktiven Filamentrolle ({spoolType}) stimmt nicht mit dem Material des G-Codes ({fileType}) überein.",
+            "Headline": "Spoolman",
+            "LastUsed": "Zuletzt verwendet",
+            "Location": "Standort",
+            "Material": "Material",
+            "Never": "Nie",
+            "NoActiveSpool": "Die Filamentverfolgung ist inaktiv. Um zu beginnen, wählen Sie bitte eine Rolle aus.",
+            "NoResults": "Keine Rolle mit den aktuellen Suchkriterien gefunden.",
+            "NoSpools": "Keine Rolle verfügbar",
+            "NoSpoolSelected": "Keine Rolle ausgewählt. Bitte wählen Sie eine Spule aus, sonst kann dieser Druck nicht verfolgt werden.",
+            "OpenSpoolManager": "Rollenverwaltung öffnen",
+            "Refresh": "aktualisieren",
+            "Search": "Suchen",
+            "SelectSpool": "Rolle auswählen",
+            "Today": "Heute",
+            "TooLessFilament": "Die aktuelle Rolle hat möglicherweise nicht genug Filament für diesen Druck. ({spoolWeight}g von {fileWeight}g)",
+            "Weight": "Gewicht",
+            "Yesterday": "Gestern"
         },
         "StatusPanel": {
             "CancelPrint": "Druck abbrechen",
@@ -643,7 +670,7 @@
             "Files": "Dateien",
             "Flow": "Fluss",
             "Headline": "Status",
-            "Jobqueue": "Warteschlange ({count})",
+            "Jobqueue": "Warteschlange",
             "JobqueueMoreFiles": "keine weiteren Aufträge | einen weiteren Auftrag | {count} weitere Aufträge",
             "Layer": "Schicht",
             "Max": "max",
@@ -685,6 +712,7 @@
             },
             "Headline": "Temperaturen",
             "HideMcuHostSensors": "Host/MCU Sensoren ausblenden",
+            "HideMonitors": "Monitore ausblenden",
             "Max": "max",
             "Min": "min",
             "Name": "Name",
@@ -702,13 +730,17 @@
         "ToolheadControlPanel": {
             "Absolute": "absolut",
             "ALL": "ALLE",
+            "ControlButtons": "Kontrollknöpfe",
+            "CoordinateFields": "Koordinatenfelder",
             "Headline": "Werkzeugkopf",
             "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
             "Position": "Position",
+            "PositionOutput": "Positionsausgabe",
             "QGL": "QGL",
             "Relative": "relativ",
             "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
             "SpeedFactor": "Geschwindigkeitsfaktor",
+            "ZOffset": "Z-Versatz",
             "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
@@ -727,9 +759,7 @@
             "SaveConfig": "SAVE CONFIG",
             "SaveInfoDescription": "Der neue Z-Versatz wurde berechnet und registriert. Auf \"SAVE CONFIG\", klicken um den neuen Z-Versatz in der printer.cfg zu speichern und Klipper neu zu starten.",
             "SaveInfoDescriptionPrint": "Der neue Z-Versatz wurde berechnet und registriert. Nach dem Drucken auf \"SAVE CONFIG\" in der oberen Leiste klicken um den neuen Z-Versatz in der printer.cfg zu speichern und Klipper neu zu starten.",
-            "SaveInfoHeadline": "Information",
-            "ToEndstop": "bis Endschalter",
-            "ToProbe": "bis Sensor"
+            "SaveInfoHeadline": "Information"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -750,6 +780,13 @@
         "Printers": "Drucker",
         "Timelapse": "Zeitraffer",
         "Webcam": "Webcam"
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "akzeptieren",
+        "Base": "Basis",
+        "ErrorText": "Ein Fehler ist beim Abtasten aufgetreten.",
+        "Headline": "Neigungsverstellung",
+        "Retry": "wiederholen"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Drucker hinzufügen",
@@ -799,10 +836,10 @@
             "Circle": "Kreis",
             "Control": "Steuerung",
             "Cross": "Kreuz",
-            "HideDuringPrint": "Achsensteuerung während des Drucks ausblenden",
             "EnableXYHoming": "Aktiviere kombiniertes X & Y homing",
             "EstimatedExtrusionInfo": "Zeige Info zur geschätzten Extrusion",
             "EstimatedExtrusionInfoDescription": "Anzeigen/ausblenden der Info zur geschätzten Extrusion, basierend auf Extrusionmenge und Extrusionsgeschwindigkeit",
+            "HideDuringPrint": "Achsensteuerung während des Drucks ausblenden",
             "InvertXMovement": "Bewegung der X-Achse invertieren",
             "InvertYMovement": "Bewegung der Y-Achse invertieren",
             "InvertZMovement": "Bewegung der Z-Achse invertieren",
@@ -822,6 +859,8 @@
             "Style": "Stil",
             "ValueGreaterThan": "Wert muss größer als {value} sein",
             "ZOffsetIncrements": "Schrittweiten Z-Versatz (in mm)",
+            "ZOffsetSaveOption": "Z-Versatz Speicheroption",
+            "ZOffsetSaveOptionDescription": "Wechsel die Option zum Speichern des Z-Versatzes.",
             "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
@@ -839,11 +878,11 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Klipper Neustartmethode",
             "KlipperRestartMethodDescription": "Wähle aus, welche Neustartmethode verwendet werden soll wenn 'Speichern & Neustarten' geklickt wir im Editor.",
-            "UseEscToClose": "ESC drücken um Editor zu schließen",
-            "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen.",
+            "Spaces": "Leerzeichen: {count}",
             "TabSize": "TAB Größe",
             "TabSizeDescription": "Legt fest, um wie viele Leerzeichen für TAB eingerückt werden sollen",
-            "Spaces": "Leerzeichen: {count}"
+            "UseEscToClose": "ESC drücken um Editor zu schließen",
+            "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen."
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Hintergrundfarbe",
@@ -877,6 +916,7 @@
             "DbConsoleHistory": "Verlauf der Konsole",
             "DbHistoryJobs": "Historie Druckvorgänge",
             "DbHistoryTotals": "Historie Gesamtzähler",
+            "DBNavigation": "Navigation",
             "DbTimelapseSettings": "Zeitraffer Einstellungen",
             "DbView": "Ansichtseinstellungen",
             "EstimateValues": {
@@ -884,6 +924,7 @@
                 "File": "Datei",
                 "Slicer": "Slicer"
             },
+            "Everything": "Alle",
             "FactoryDialog": "Bitte wähle alle Abschnitte die du zurücksetzen möchtest:",
             "FactoryReset": "Werkseinstellungen",
             "General": "Allgemein",
@@ -894,6 +935,18 @@
             "Restore": "Wiederherstellung",
             "RestoreDialog": "Bitte wähle alle Abschnitte aus, die du wiederherstellen möchtest:",
             "TimeFormat": "Zeitformat"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Farbschemen",
+            "Heightmap": "Höhenkarte",
+            "IsDefault": "(Standard)",
+            "Schemes": {
+                "GrayScale": "Graustufen",
+                "Hot": "Heiß",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Frühling"
+            }
         },
         "InterfaceSettings": "Interface Einstellungen",
         "MacrosTab": {
@@ -1031,6 +1084,11 @@
             "RetractDistanceDescription": "Die Länge an Filament die der Extruder zurückzieht.",
             "RetractSpeed": "Rückzuggeschwindigkeit",
             "RetractSpeedDescription": "Geschwindigkeit mit der der Extruder das Filament zurückzieht.",
+            "RulesBetweenMinMax": "Der Wert muss zwischen {min} und {max} sein!",
+            "RulesMin": "Der Wert muss mindestens {min} sein!",
+            "RulesPositive": "Der Wert muss positiv sein!",
+            "RulesRequired": "Der Wert ist erforderlich!",
+            "RulesZeroAndPositive": "Der Wert muss 0 oder größer sein!",
             "SaveFrames": "Bilder speichern",
             "SaveFramesDescription": "Speichern der Bilder in einer Zip-Datei für externes Rendern",
             "StreamDelayCompensation": "Stream-Verzögerungs-Kompensation",
@@ -1056,6 +1114,7 @@
         "UiSettingsTab": {
             "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
             "BedScrewsDialogDescription": "Zeige ein Hilfsfenster für die Bettschraubenjustierung an.",
+            "BigThumbnailBackground": "Hintergrundfarbe vom großen Vorschaubild",
             "BoolBigThumbnail": "Große Vorschaubilder",
             "BoolBigThumbnailDescription": "Zeige ein großes Thumbnail in der Status-Anzeige während eines Drucks.",
             "BoolHideUploadAndPrintButton": "\"Hochladen & Drucken\" Schaltfläche ausblenden",
@@ -1098,6 +1157,10 @@
             "ScrewsTiltAdjustDialogDescription": "Zeige ein Hilfsfenster für SCREWS_TILT_CALCULATE an.",
             "TempchartHeight": "Temperatur-Chart Höhe",
             "TempchartHeightDescription": "Verändert die Höhe vom Temperatur-Chart auf dem Dashboard.",
+            "Theme": "Theme",
+            "ThemeDark": "Dunkel",
+            "ThemeDescription": "Ändern Sie das allgemeine Erscheinungsbild der Anwendung.",
+            "ThemeLight": "Hell",
             "UiSettings": "UI-Einstellungen"
         },
         "Update": "speichern",
@@ -1106,9 +1169,10 @@
             "CreateWebcam": "Erstelle Webcam",
             "EditCrowsnestConf": "crowsnest.conf bearbeiten",
             "EditWebcam": "Webcam bearbeiten",
+            "EnableAudio": "Ton einschalten",
             "FlipWebcam": "Webcam-Bild spiegeln:",
-            "Hlsstream": "HLS-Stream",
             "HideFps": "FPS-Anzeige verstecken",
+            "Hlsstream": "HLS-Stream",
             "Horizontally": "horizontal",
             "IconBed": "Bett",
             "IconCam": "Kamera",
@@ -1119,9 +1183,9 @@
             "IconNozzle": "Düse",
             "IconPrinter": "Drucker",
             "Ipstream": "IP Kamera",
+            "JMuxerStream": "Roher h264 stream (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
-            "JMuxerStream": "Roher h264 stream (jmuxer)",
             "Name": "Name",
             "NameAlreadyExists": "Name existiert bereits",
             "Required": "benötigt",
@@ -1136,16 +1200,10 @@
             "Vertically": "vertikal",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "akzeptieren",
-        "Base": "Basis",
-        "ErrorText": "Ein Fehler ist beim Abtasten aufgetreten.",
-        "Headline": "Neigungsverstellung",
-        "Retry": "wiederholen"
     },
     "Timelapse": {
         "AllFiles": "Alle",

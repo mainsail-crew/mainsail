@@ -55,8 +55,11 @@
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
-                            <b>{{ $t('Timelapse.CurrentPath') }}:</b>
-                            {{ currentPath !== 'timelapse' ? '/' + currentPath.substring(10) : '/' }}
+                            <b class="mr-1">{{ $t('Timelapse.CurrentPath') }}:</b>
+                            <path-navigation
+                                :path="currentPathForNavigation"
+                                :base-directory-label="`/${rootDirectory}`"
+                                :on-segment-click="clickPathNavGoToDirectory" />
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
@@ -107,7 +110,7 @@
                     <div class="text-center font-italic">{{ $t('Timelapse.Empty') }}</div>
                 </template>
 
-                <template v-if="currentPath !== 'timelapse'" slot="body.prepend">
+                <template v-if="currentPath !== rootDirectory" slot="body.prepend">
                     <tr class="file-list-cursor" @click="clickRowGoBack">
                         <td class="pr-0 text-center" style="width: 32px">
                             <v-icon>{{ mdiFolderUpload }}</v-icon>
@@ -423,6 +426,7 @@ import BaseMixin from '@/components/mixins/base'
 import { formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
+import PathNavigation from '@/components/ui/PathNavigation.vue'
 import {
     mdiFolderPlus,
     mdiCloseThick,
@@ -446,7 +450,7 @@ interface dialogRenameObject {
 }
 
 @Component({
-    components: { Panel },
+    components: { Panel, PathNavigation },
 })
 export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
@@ -537,6 +541,8 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
     ]
 
+    private rootDirectory = 'timelapse'
+
     existsFilename(name: string) {
         return this.files.findIndex((file) => file.filename === name) >= 0
     }
@@ -612,6 +618,14 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     get currentPath() {
         return this.$store.state.gui.view.timelapse.currentPath
+    }
+
+    get currentPathForNavigation() {
+        if (this.currentPath === this.rootDirectory) {
+            return ''
+        }
+
+        return this.currentPath.substring(this.rootDirectory.length)
     }
 
     set currentPath(newVal) {
@@ -690,6 +704,10 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
     }
 
+    clickPathNavGoToDirectory(segment: { location: string }) {
+        this.currentPath = `${this.rootDirectory}${segment.location}`
+    }
+
     showContextMenu(e: any, item: FileStateFile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
@@ -746,7 +764,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
         await addElementToItems(this.currentPath, this.selectedFiles)
         const date = new Date()
-        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDay()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDate()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
 
         this.$socket.emit(
             'server.files.zip',

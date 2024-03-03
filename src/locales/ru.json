@@ -239,6 +239,7 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Очистить",
+        "CNCMode": "ЧПУ-режим",
         "ColorMode": "Цветовая схема",
         "Downloading": "Загрузка",
         "ForceLineRendering": "Принуд. рендеринг линий",
@@ -252,6 +253,7 @@
         "ReloadRequired": "Требуется перезагрузка",
         "Rendering": "Рендеринг",
         "RenderQuality": "Качество рендеринга",
+        "ShowGCode": "Показать G-код",
         "ShowObjectSelection": "Показать выбор детали",
         "ShowToolhead": "Показать сопло",
         "ShowTravelMoves": "Показать перемещения",
@@ -260,9 +262,7 @@
         "Tracking": "Слежение",
         "Transparency": "Прозрачность",
         "Ultra": "Ультра",
-        "VoxelMode": "Воксельный режим (ASMBL)",
-        "ShowGCode": "Показать G-код",
-        "CNCMode": "ЧПУ-режим"
+        "VoxelMode": "Воксельный режим (ASMBL)"
     },
     "Heightmap": {
         "Abort": "отказаться",
@@ -312,8 +312,8 @@
         "AllJobs": "Все",
         "AvgPrinttime": "Средняя длительность печати",
         "Cancel": "Отмена",
-        "CreateNote": "Добавить примечание",
         "Chart": "Диаграмма",
+        "CreateNote": "Добавить примечание",
         "Delete": "Удалить",
         "DeleteSelectedQuestion": "Удалить выбранные задачи ({count} шт.)?",
         "Details": "Подробности",
@@ -377,8 +377,8 @@
     },
     "JobQueue": {
         "AllJobs": "Все задачи",
-        "ChangeCount": "Изменить количество",
         "Cancel": "Отмена",
+        "ChangeCount": "Изменить количество",
         "Count": "Количество",
         "Empty": "Пусто",
         "InvalidCountEmpty": "Ввод не должен быть пустым!",
@@ -441,8 +441,8 @@
             "Logfiles": "Файлы журналов (log-файлы)",
             "Rollover": "Сброс log-файлов",
             "RolloverDescription": "Выберите какие log-файлы должны быть сброшены:",
-            "RolloverToastSuccessful": "Log-файлы \"{name}\" успешно сброшены.",
-            "RolloverToastFailed": "Сброс log-файлов \"{name}\": {message}"
+            "RolloverToastFailed": "Сброс log-файлов \"{name}\": {message}",
+            "RolloverToastSuccessful": "Log-файлы \"{name}\" успешно сброшены."
         },
         "SystemPanel": {
             "Constants": "Постоянные",
@@ -607,7 +607,7 @@
             "Files": "Файлы",
             "Flow": "Поток",
             "Headline": "Статус",
-            "Jobqueue": "Очередь ({count})",
+            "Jobqueue": "Очередь",
             "JobqueueMoreFiles": "Нет больше задач | Еще одна задача | Еще {count} задач(и)",
             "Layer": "Слой",
             "Max": "макс.",
@@ -714,6 +714,12 @@
         "Timelapse": "Таймлапсы",
         "Webcam": "Видеокамеры"
     },
+    "ScrewsTiltAdjust": {
+        "Accept": "Принять",
+        "Base": "База",
+        "ErrorText": "Что-то пошло не так в процессе зондирования.",
+        "Headline": "Регулировка винтов наклона"
+    },
     "SelectPrinterDialog": {
         "AddPrinter": "Добавить принтер",
         "AddPrintersToJson": "Добавьте принтеры в config.json.",
@@ -801,11 +807,11 @@
             "Editor": "Редактор",
             "KlipperRestartMethod": "Способ перезапуска Klipper",
             "KlipperRestartMethodDescription": "Выберите какой способ перезапуска Klipper будет использоваться, после нажатия 'СОХРАНИТЬ И ПЕРЕЗАПУСТИТЬ' при редактировании конфигурационных файлов Klipper.",
-            "UseEscToClose": "Использование клавиши ESC",
-            "UseEscToCloseDescription": "Позволяет использовать клавишу ESC для закрытия редактора",
+            "Spaces": "{count} пробела",
             "TabSize": "Размер табуляции",
             "TabSizeDescription": "Настройка количества пробелов для табуляции клавишей TAB",
-            "Spaces": "{count} пробела"
+            "UseEscToClose": "Использование клавиши ESC",
+            "UseEscToCloseDescription": "Позволяет использовать клавишу ESC для закрытия редактора"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Цвет фона",
@@ -1063,6 +1069,7 @@
             "EditCrowsnestConf": "Редактировать crowsnest.conf",
             "EditWebcam": "Редактировать видеокамеру",
             "FlipWebcam": "Отразить картинку видеокамеры:",
+            "Hlsstream": "HLS Stream",
             "Horizontally": "горизонтально",
             "IconBed": "Стол",
             "IconCam": "Камера",
@@ -1073,11 +1080,9 @@
             "IconNozzle": "Сопло",
             "IconPrinter": "Принтер",
             "Ipstream": "IP-камера",
-            "Hlsstream": "HLS Stream",
-            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "JMuxerStream": "Сырой h264 поток (jmuxer)",
             "Mjpegstreamer": "MJPEG-поток",
             "MjpegstreamerAdaptive": "Адаптивный MJPEG-поток",
-            "JMuxerStream": "Сырой h264 поток (jmuxer)",
             "Name": "Название",
             "NameAlreadyExists": "Название уже существует",
             "Required": "требуется",
@@ -1091,14 +1096,9 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "вертикально",
             "Webcams": "Видеокамеры",
-            "WebrtcCameraStreamer": "WebRTC (camera-streamer)"
+            "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcJanus": "WebRTC (janus-gateway)"
         }
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "Принять",
-        "Base": "База",
-        "ErrorText": "Что-то пошло не так в процессе зондирования.",
-        "Headline": "Регулировка винтов наклона"
     },
     "Timelapse": {
         "AllFiles": "Все",

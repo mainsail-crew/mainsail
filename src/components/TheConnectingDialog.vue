@@ -2,7 +2,7 @@
 
 <template>
     <v-dialog v-model="showDialog" persistent :width="400">
-        <v-card dark>
+        <v-card>
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading">
@@ -28,7 +28,7 @@
                 </div>
             </v-card-text>
             <v-card-text v-else class="pt-5">
-                <v-progress-linear color="white" indeterminate></v-progress-linear>
+                <v-progress-linear :color="progressBarColor" indeterminate></v-progress-linear>
             </v-card-text>
         </v-card>
     </v-dialog>
@@ -38,6 +38,8 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+
+import ThemeMixin from '@/components/mixins/theme'
 import ConnectionStatus from '@/components/ui/ConnectionStatus.vue'
 import { mdiConnection } from '@mdi/js'
 
@@ -46,7 +48,7 @@ import { mdiConnection } from '@mdi/js'
         ConnectionStatus,
     },
 })
-export default class TheConnectingDialog extends Mixins(BaseMixin) {
+export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
     mdiConnection = mdiConnection
 
     counter = 0

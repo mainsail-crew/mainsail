@@ -174,9 +174,9 @@
         "AddToQueue": "Añadir a la fila",
         "AllFiles": "Todos",
         "BedTemp": "Temp. Cama",
+        "Cancel": "Cancelar",
         "ChamberTemp": "Temp. Cámara",
         "Count": "Contador",
-        "Cancel": "Cancelar",
         "Create": "Crear",
         "CreateNewDirectory": "Crear nuevo directorio",
         "CurrentPath": "Ruta actual",
@@ -245,6 +245,7 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Borrar",
+        "CNCMode": "Modo CNC",
         "ColorMode": "Modo de color",
         "Downloading": "Descargando",
         "ForceLineRendering": "Forzar renderizado de líneas ",
@@ -258,6 +259,7 @@
         "ReloadRequired": "Recarga requerida",
         "Rendering": "Renderizando",
         "RenderQuality": "Calidad de render",
+        "ShowGCode": "Mostrar G-Code",
         "ShowObjectSelection": "Mostrar selección de objeto",
         "ShowToolhead": "Mostrar cabezal",
         "ShowTravelMoves": "Mostrar desplazamientos",
@@ -266,9 +268,7 @@
         "Tracking": "Seguimiento",
         "Transparency": "Transparencia",
         "Ultra": "Ultra",
-        "VoxelMode": "Modo Voxel (ASMBL)",
-        "ShowGCode": "Mostrar G-Code",
-        "CNCMode": "Modo CNC"
+        "VoxelMode": "Modo Voxel (ASMBL)"
     },
     "Heightmap": {
         "Abort": "Abortar",
@@ -319,8 +319,8 @@
         "AllJobs": "Todos",
         "AvgPrinttime": "Tiempo promedio de imp.",
         "Cancel": "Cancelar",
-        "CreateNote": "Crear Nota",
         "Chart": "Gráfico",
+        "CreateNote": "Crear Nota",
         "Delete": "Eliminar",
         "DeleteSelectedQuestion": "¿Está seguro de que desea eliminar los {count} trabajos seleccionados?",
         "DeleteSingleJobQuestion": "¿Está seguro de que desea eliminar este trabajo?",
@@ -385,12 +385,12 @@
     },
     "JobQueue": {
         "AllJobs": "Todas las tareas",
-        "ChangeCount": "Cambiar contador",
         "Cancel": "Cancelar",
+        "ChangeCount": "Cambiar contador",
         "Count": "Contador",
+        "Empty": "Vacía",
         "InvalidCountEmpty": "¡La entrada no puede estar vacía!",
         "InvalidCountGreaterZero": "¡La entrada debe ser mayor que 0!",
-        "Empty": "Vacía",
         "JobQueue": "Cola de tareas",
         "Jobs": "Tareas",
         "Pause": "Pausar",
@@ -450,8 +450,8 @@
             "Logfiles": "Archivos de registro",
             "Rollover": "Registros de Rotación",
             "RolloverDescription": "Por favor seleciona los registros que deben ser reseteados:",
-            "RolloverToastSuccessful": "El registro de \"{name}\" ha sido reseteado exitosamente",
-            "RolloverToastFailed": "Registros de rotación de \"{name}\": {message}"
+            "RolloverToastFailed": "Registros de rotación de \"{name}\": {message}",
+            "RolloverToastSuccessful": "El registro de \"{name}\" ha sido reseteado exitosamente"
         },
         "SystemPanel": {
             "Constants": "Constantes",
@@ -491,8 +491,8 @@
             "CommittedHoursAgo": "Hizo commits hace {hours} horas",
             "CommittedOnDate": "Hizo commits el día {date}",
             "CommittedYesterday": "Hizo commits ayer",
-            "Corrupt": "corrupto",
             "ConfigChanges": "Configurar Cambios",
+            "Corrupt": "corrupto",
             "CountPackagesCanBeUpgraded": "{count} paquetes pueden ser actualizados",
             "Detached": "separado",
             "Dirty": "sucio",
@@ -502,9 +502,9 @@
             "InitUpdateManager": "El Mánager de Actualizaciones no ha sido iniciado. Esto suele pasar cuando inicias el sistema por primera vez. Por favor haz click en el botón de refrescar para iniciar todos los componentes.",
             "Invalid": "inválido",
             "IUnderstandTheRisks": "Entiendo los riesgos",
-            "LinkToGithub": "Link a GitHub",
-            "KlipperUpdateQuestionFirmware": "Esto va a actualizar el software cliente de Klipper. Tal vez se necesite resetear las placas de control que ejecuten Klipper con el firmware compilado antes de que la máquina pueda volver a funcionar.",
             "KlipperUpdateQuestionConfig": "This update may also contain changes to config parameters that would need to be modified in the printer.cfg file, see the change log for details.",
+            "KlipperUpdateQuestionFirmware": "Esto va a actualizar el software cliente de Klipper. Tal vez se necesite resetear las placas de control que ejecuten Klipper con el firmware compilado antes de que la máquina pueda volver a funcionar.",
+            "LinkToGithub": "Link a GitHub",
             "MoonrakerUpdateQuestion": "This will update the Moonraker API. Changes to the moonraker.conf file may be required to continue using the machine.",
             "MoreCommitsInfo": "A maximum of 30 commits can be displayed here. To see all commits, please click on the following link:",
             "OSPackages": "Paquetes del sistema",
@@ -564,11 +564,11 @@
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "Por favor comprueba si el servicio de Klipper se está ejecutando y klippy_uds_address está correctamente configurado en moonraker.conf.",
             "FirmwareRestart": "Reiniciar Firmware",
-            "PrinterSwitchedOff": "La impresora está apagada",
-            "PrinterSwitchedOffDescription": "La impresora está actualmente apagada y Klipper no se puede conectar. Para encender la impresora, haz click en el botón de abajo:",
             "KlipperCheck": "Verifique que el servicio Klipper está corriendo y que un  UDS (Unix Domain Socket) esta configurado.",
             "MoonrakerCannotConnect": "¡Moonraker no se pudo conectar a Klipper!",
             "PowerOn": "Encender",
+            "PrinterSwitchedOff": "La impresora está apagada",
+            "PrinterSwitchedOffDescription": "La impresora está actualmente apagada y Klipper no se puede conectar. Para encender la impresora, haz click en el botón de abajo:",
             "Restart": "Reiniciar",
             "ServiceReports": "reporta {service}"
         },
@@ -638,7 +638,7 @@
             "Files": "Archivos",
             "Flow": "Flujo",
             "Headline": "Estado",
-            "Jobqueue": "Cola de trabajo ({count})",
+            "Jobqueue": "Cola de trabajo",
             "JobqueueMoreFiles": "no mas trabajos | un trabajo mas | {count} trabajos mas",
             "Layer": "Capa",
             "Max": "max",
@@ -746,6 +746,13 @@
         "Timelapse": "Timelapse",
         "Webcam": "Cámara web"
     },
+    "ScrewsTiltAdjust": {
+        "Accept": "aceptar",
+        "Base": "Base",
+        "ErrorText": "Algo salió mal durante el proceso de sondeo.",
+        "Headline": "Ajuste de inclinación de tornillos",
+        "Retry": "reintentar"
+    },
     "SelectPrinterDialog": {
         "AddPrinter": "Agregar impresora",
         "AddPrintersToJson": "Por favor, añade Impresoras al config.json.",
@@ -794,10 +801,10 @@
             "Circle": "Círculo",
             "Control": "Control",
             "Cross": "Cruz",
-            "HideDuringPrint": "Ocultar los controles de los ejes durante la impresión",
             "EnableXYHoming": "Habilitar homing X Y combinado ",
             "EstimatedExtrusionInfo": "Mostrar info de extrusion estimada",
             "EstimatedExtrusionInfoDescription": "Mostrar / Ocultar informacion de extrusion estimada basado en la candidad de extrusion y el avance",
+            "HideDuringPrint": "Ocultar los controles de los ejes durante la impresión",
             "InvertXMovement": "Invertir movimiento X",
             "InvertYMovement": "Invertir movimiento Y",
             "InvertZMovement": "Invertir movimiento Z",
@@ -834,11 +841,11 @@
             "Editor": "Editor",
             "KlipperRestartMethod": "Metodo de reinicio de klipper",
             "KlipperRestartMethodDescription": "Elija metodo de reinicio que sera usado cuando editamos configuracion de klipper y presionamos \"Guardar y Reiniciar\"",
-            "UseEscToClose": "Use ESC para cerrar",
-            "UseEscToCloseDescription": "Permite que la tecla ESC cierre el editor",
+            "Spaces": "Espacios: {count}",
             "TabSize": "Tamaño TAB",
             "TabSizeDescription": "Ajusta cuántos espacios deben sangrarse para TAB",
-            "Spaces": "Espacios: {count}"
+            "UseEscToClose": "Use ESC para cerrar",
+            "UseEscToCloseDescription": "Permite que la tecla ESC cierre el editor"
         },
         "GCodeViewerTab": {
             "BackgroundColor": "Color de fondo",
@@ -881,6 +888,7 @@
                 "File": "Archivo",
                 "Slicer": "Slicer"
             },
+            "Everything": "Todo",
             "FactoryDialog": "Elija las secciones que quiere reiniciar:",
             "FactoryReset": "Restablecimiento de fábrica",
             "General": "General",
@@ -891,8 +899,7 @@
             "Reset": "Reiniciar",
             "Restore": "Restaurar",
             "RestoreDialog": "Elija las secciones que quiere restaurar:",
-            "TimeFormat": "Formato de Tiempo",
-            "Everything": "Todo"
+            "TimeFormat": "Formato de Tiempo"
         },
         "InterfaceSettings": "Configuración de la interfaz",
         "MacrosTab": {
@@ -1107,6 +1114,7 @@
             "EditWebcam": "Editar cámara web",
             "FlipWebcam": "Voltear la imagen de la cámara web:",
             "HideFps": "Ocultar contador de FPS",
+            "Hlsstream": "Stream HLS",
             "Horizontally": "horizontalmente",
             "IconBed": "Cama",
             "IconCam": "Cámara",
@@ -1117,11 +1125,9 @@
             "IconNozzle": "Boquilla",
             "IconPrinter": "Impresora",
             "Ipstream": "Cámara IP",
-            "Hlsstream": "Stream HLS",
-            "WebrtcJanus": "WebRTC (janus-gateway)",
+            "JMuxerStream": "stream h264 crudo (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "MJPEG-Streamer Adaptativo (experimental)",
-            "JMuxerStream": "stream h264 crudo (jmuxer)",
             "Name": "Nombre",
             "NameAlreadyExists": "El nombre ya existe",
             "Required": "Requerido",
@@ -1136,15 +1142,9 @@
             "Vertically": "verticalmente",
             "Webcams": "Cámaras web",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "aceptar",
-        "Base": "Base",
-        "ErrorText": "Algo salió mal durante el proceso de sondeo.",
-        "Headline": "Ajuste de inclinación de tornillos",
-        "Retry": "reintentar"
     },
     "Timelapse": {
         "AllFiles": "Todos",

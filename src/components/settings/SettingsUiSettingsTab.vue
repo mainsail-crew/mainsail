@@ -2,6 +2,12 @@
     <div>
         <v-card flat>
             <v-card-text>
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.Theme')"
+                    :sub-title="$t('Settings.UiSettingsTab.ThemeDescription')">
+                    <v-select v-model="theme" :items="themes" class="mt-0" hide-details outlined dense />
+                </settings-row>
+                <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.UiSettingsTab.Logo')">
                     <v-btn
                         v-if="logoColor.toLowerCase() !== defaultLogoColor.toLowerCase()"
@@ -63,6 +69,32 @@
                     :sub-title="$t('Settings.UiSettingsTab.BoolBigThumbnailDescription')"
                     :dynamic-slot-width="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row :title="$t('Settings.UiSettingsTab.BigThumbnailBackground')">
+                    <v-btn
+                        v-if="bigThumbnailBackground.toLowerCase() !== defaultBigThumbnailBackground.toLowerCase()"
+                        small
+                        text
+                        class="minwidth-0"
+                        @click="bigThumbnailBackground = defaultBigThumbnailBackground">
+                        <v-icon small>{{ mdiRestart }}</v-icon>
+                    </v-btn>
+                    <v-menu bottom left offset-y :close-on-content-click="false">
+                        <template #activator="{ on, attrs }">
+                            <v-btn
+                                v-bind="attrs"
+                                :color="bigThumbnailBackground"
+                                class="minwidth-0 px-5"
+                                small
+                                v-on="on" />
+                        </template>
+                        <v-color-picker
+                            :value="bigThumbnailBackground"
+                            hide-mode-switch
+                            mode="rgba"
+                            @update:color="updateBigThumbnailBackground" />
+                    </v-menu>
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
@@ -209,8 +241,8 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
-                    :title="$t('Settings.UiSettingsTab.HideUpdateWarnings').toString()"
-                    :sub-title="$t('Settings.UiSettingsTab.HideUpdateWarningsDescription').toString()"
+                    :title="$t('Settings.UiSettingsTab.HideUpdateWarnings')"
+                    :sub-title="$t('Settings.UiSettingsTab.HideUpdateWarningsDescription')"
                     :dynamic-slot-width="true">
                     <v-switch v-model="hideUpdateWarnings" hide-details class="mt-0" />
                 </settings-row>
@@ -224,7 +256,7 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { defaultLogoColor, defaultPrimaryColor } from '@/store/variables'
+import { defaultLogoColor, defaultPrimaryColor, defaultBigThumbnailBackground } from '@/store/variables'
 import { Debounce } from 'vue-debounce-decorator'
 import { mdiRestart, mdiTimerOutline } from '@mdi/js'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
@@ -238,6 +270,28 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     defaultLogoColor = defaultLogoColor
     defaultPrimaryColor = defaultPrimaryColor
+    defaultBigThumbnailBackground = defaultBigThumbnailBackground
+
+    get theme() {
+        return this.$store.state.gui.uiSettings.theme
+    }
+
+    set theme(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.theme', value: newVal })
+    }
+
+    get themes() {
+        return [
+            {
+                text: this.$t('Settings.UiSettingsTab.ThemeDark'),
+                value: 'dark',
+            },
+            {
+                text: this.$t('Settings.UiSettingsTab.ThemeLight'),
+                value: 'light',
+            },
+        ]
+    }
 
     get logoColor() {
         return this.$store.state.gui.uiSettings.logo
@@ -261,6 +315,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set boolBigThumbnail(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolBigThumbnail', value: newVal })
+    }
+
+    get bigThumbnailBackground() {
+        return this.$store.state.gui.uiSettings.bigThumbnailBackground
+    }
+
+    set bigThumbnailBackground(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.bigThumbnailBackground', value: newVal })
     }
 
     get displayCancelPrint() {
@@ -467,6 +529,11 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     @Debounce(500)
     updatePrimaryColor(newVal: any) {
         this.primaryColor = this.clearColorObject(newVal)
+    }
+
+    @Debounce(500)
+    updateBigThumbnailBackground(newVal: any) {
+        this.bigThumbnailBackground = this.clearColorObject(newVal)
     }
 }
 </script>

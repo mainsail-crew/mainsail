@@ -1,6 +1,7 @@
 import { Store } from 'vuex'
 import _Vue from 'vue'
 import { RootState } from '@/store/types'
+import { initableServerComponents } from '@/store/variables'
 
 export class WebSocketClient {
     url = ''
@@ -9,6 +10,7 @@ export class WebSocketClient {
     reconnectInterval = 1000
     reconnects = 0
     keepAliveTimeout = 1000
+    messageId: number = 0
     timerId: number | null = null
     store: Store<RootState> | null = null
     waits: Wait[] = []
@@ -22,6 +24,59 @@ export class WebSocketClient {
 
     setUrl(url: string): void {
         this.url = url
+    }
+
+    handleMessage(data: any) {
+        const wait = this.getWaitById(data.id)
+
+        // report error messages
+        if (data.error?.message) {
+            // only report errors, if not disconnected and no init component
+            if (data.error?.message !== 'Klippy Disconnected') {
+                window.console.error(`Response Error: ${data.error.message} (${wait?.action ?? 'no action'})`)
+            }
+
+            if (wait?.id) {
+                const modulename = wait.action?.split('/')[1] ?? null
+
+                if (
+                    modulename &&
+                    wait.action?.startsWith('server/') &&
+                    initableServerComponents.includes(modulename) &&
+                    this.store?.state.socket?.initializationList.length
+                ) {
+                    const component = wait.action.replace('server/', '').split('/')[0]
+                    window.console.error(`init server component ${component} failed`)
+                    this.store?.dispatch('server/addFailedInitComponent', component)
+                    this.store?.dispatch('socket/removeInitComponent', `server/${component}/`)
+                }
+
+                this.removeWaitById(wait.id)
+            }
+
+            return
+        }
+
+        // pass it to socket/onMessage, if no wait exists
+        if (!wait) {
+            this.store?.dispatch('socket/onMessage', data)
+            return
+        }
+
+        // pass result to action
+        if (wait?.action) {
+            let result = data.result
+            if (result === 'ok') result = { result: result }
+            if (typeof result === 'string') result = { result: result }
+
+            const preload = {}
+            if (wait.actionPayload) Object.assign(preload, wait.actionPayload)
+            Object.assign(preload, { requestParams: wait.params })
+            Object.assign(preload, result)
+            this.store?.dispatch(wait.action, preload)
+        }
+
+        this.removeWaitById(wait.id)
     }
 
     async connect() {
@@ -57,38 +112,13 @@ export class WebSocketClient {
             if (this.store === null) return
 
             const data = JSON.parse(msg.data)
-            const wait = this.getWaitById(data.id)
-
-            // report error messages
-            if (data.error?.message) {
-                if (data.error?.message !== 'Klippy Disconnected')
-                    window.console.error(`Response Error: ${data.error.message} (${wait?.action ?? 'no action'})`)
-
-                if (wait?.id) this.removeWaitById(wait.id)
-
-                return
+            if (Array.isArray(data)) {
+                for (const message of data) {
+                    this.handleMessage(message)
+                }
+            } else {
+                this.handleMessage(data)
             }
-
-            // pass it to socket/onMessage, if no wait exists
-            if (!wait) {
-                this.store?.dispatch('socket/onMessage', data)
-                return
-            }
-
-            // pass result to action
-            if (wait?.action) {
-                let result = data.result
-                if (result === 'ok') result = { result: result }
-                if (typeof result === 'string') result = { result: result }
-
-                const preload = {}
-                if (wait.actionPayload) Object.assign(preload, wait.actionPayload)
-                Object.assign(preload, { requestParams: wait.params })
-                Object.assign(preload, result)
-                this.store?.dispatch(wait.action, preload)
-            }
-
-            this.removeWaitById(wait.id)
         }
     }
 
@@ -112,7 +142,7 @@ export class WebSocketClient {
     emit(method: string, params: Params, options: emitOptions = {}): void {
         if (this.instance?.readyState !== WebSocket.OPEN) return
 
-        const id = Math.floor(Math.random() * 10000) + 1
+        const id = this.messageId++
         this.waits.push({
             id: id,
             params: params,
@@ -131,6 +161,33 @@ export class WebSocketClient {
                 id,
             })
         )
+    }
+
+    emitBatch(messages: BatchMessage[]): void {
+        if (messages.length === 0) return
+        if (this.instance?.readyState !== WebSocket.OPEN) return
+
+        const body = []
+        for (const { method, params, emitOptions = {} } of messages) {
+            const id = this.messageId++
+            this.waits.push({
+                id: id,
+                params: params,
+                action: emitOptions.action ?? null,
+                actionPayload: emitOptions.actionPayload ?? {},
+                loading: emitOptions.loading ?? null,
+            })
+
+            if (emitOptions.loading) this.store?.dispatch('socket/addLoading', { name: emitOptions.loading })
+            body.push({
+                jsonrpc: '2.0',
+                method,
+                params,
+                id,
+            })
+        }
+
+        this.instance.send(JSON.stringify(body))
     }
 }
 
@@ -151,6 +208,13 @@ export interface WebSocketClient {
     connect(): void
     close(): void
     emit(method: string, params: Params, emitOptions: emitOptions): void
+    emitBatch(messages: BatchMessage[]): void
+}
+
+export interface BatchMessage {
+    method: string
+    params: Params
+    emitOptions: emitOptions
 }
 
 export interface Wait {

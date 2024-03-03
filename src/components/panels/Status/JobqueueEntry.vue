@@ -1,112 +1,75 @@
 <template>
-    <tr
-        v-longpress:600="(e) => showContextMenu(e, item)"
-        class="cursor-pointer"
-        @contextmenu="showContextMenu($event, item)">
-        <td class="pr-0 text-center" style="width: 32px">
-            <template v-if="smallThumbnail && bigThumbnail">
-                <v-tooltip v-if="smallThumbnail && bigThumbnail" top content-class="tooltip__content-opacity1">
-                    <template #activator="{ on, attrs }">
-                        <vue-load-image>
-                            <img slot="image" :src="smallThumbnail" width="32" height="32" v-bind="attrs" v-on="on" />
-                            <div slot="preloader">
-                                <v-progress-circular indeterminate color="primary" />
-                            </div>
-                            <div slot="error">
-                                <v-icon>{{ mdiFile }}</v-icon>
-                            </div>
-                        </vue-load-image>
-                    </template>
-                    <span><img :src="bigThumbnail" width="250" /></span>
-                </v-tooltip>
-            </template>
-            <template v-else-if="smallThumbnail">
-                <vue-load-image>
-                    <img slot="image" :src="smallThumbnail" width="32" height="32" />
-                    <div slot="preloader">
-                        <v-progress-circular indeterminate color="primary" />
-                    </div>
-                    <div slot="error">
-                        <v-icon>{{ mdiFile }}</v-icon>
-                    </div>
-                </vue-load-image>
-            </template>
-            <template v-else>
-                <v-icon>{{ mdiFile }}</v-icon>
-            </template>
-        </td>
-        <td class="pr-2">
-            <template v-if="isFirst && !printerIsPrinting">
-                <v-btn icon color="success" class="float-right minwidth-0 mt-1" @click="startJobqueue">
-                    <v-icon>{{ mdiPlay }}</v-icon>
-                </v-btn>
-            </template>
-            <div class="d-block text-truncate" :style="styleContentTdWidth">
-                <strong v-if="item.combinedIds.length">{{ item.combinedIds.length + 1 }}x</strong>
-                {{ item.filename }}
+    <v-row
+        v-longpress:600="(e) => openContextMenu(e)"
+        class="jobqueue-list-entry d-flex flex-row flex-nowrap cursor-pointer"
+        @contextmenu="openContextMenu($event)">
+        <v-col v-if="showHandle" class="col-auto d-flex flex-column justify-center pr-0 py-0">
+            <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
+        </v-col>
+        <v-col class="col-auto d-flex flex-column justify-center pr-0 py-0">
+            <v-tooltip
+                v-if="smallThumbnail"
+                top
+                :disabled="!bigThumbnail"
+                content-class="tooltip__content-opacity1"
+                :color="bigThumbnailTooltipColor">
+                <template #activator="{ on, attrs }">
+                    <vue-load-image>
+                        <img
+                            slot="image"
+                            :src="smallThumbnail"
+                            :width="32"
+                            :height="32"
+                            :alt="job.filename"
+                            v-bind="attrs"
+                            v-on="on" />
+                        <div slot="preloader">
+                            <v-progress-circular indeterminate color="primary" />
+                        </div>
+                        <div slot="error">
+                            <v-icon>{{ mdiFile }}</v-icon>
+                        </div>
+                    </vue-load-image>
+                </template>
+                <span><img :src="bigThumbnail" :width="250" :alt="job.filename" /></span>
+            </v-tooltip>
+            <v-icon v-else>{{ mdiFile }}</v-icon>
+        </v-col>
+        <v-col class="py-1" style="min-width: 0; font-size: 0.875em">
+            <div class="text-truncate">
+                <strong v-if="job.combinedIds?.length">{{ job.combinedIds.length + 1 }}x</strong>
+                {{ job.filename }}
             </div>
-            <small v-if="item?.metadata?.metadataPulled">{{ description }}</small>
-        </td>
-        <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
+            <small v-if="description" class="text-truncate">{{ description }}</small>
+        </v-col>
+        <v-col
+            v-if="showPrintButton && !printerIsPrinting"
+            class="col-auto d-flex flex-column justify-center pa-0 pr-1">
+            <v-btn icon color="success" class="minwidth-0" @click="startJobqueue">
+                <v-icon>{{ mdiPlay }}</v-icon>
+            </v-btn>
+        </v-col>
+        <v-menu v-model="showContextMenu" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
             <v-list>
-                <v-list-item @click="openChangeCountDialog(contextMenu.item)">
+                <v-list-item @click="printJob">
+                    <v-icon class="mr-1">{{ mdiPlay }}</v-icon>
+                    {{ $t('JobQueue.StartPrint') }}
+                </v-list-item>
+                <v-list-item @click="showChangeCountDialog = true">
                     <v-icon class="mr-1">{{ mdiCounter }}</v-icon>
                     {{ $t('JobQueue.ChangeCount') }}
                 </v-list-item>
-                <v-list-item @click="removeFromJobqueue(contextMenu.item)">
+                <v-list-item @click="removeFromJobqueue">
                     <v-icon class="mr-1">{{ mdiPlaylistRemove }}</v-icon>
                     {{ $t('JobQueue.RemoveFromQueue') }}
                 </v-list-item>
             </v-list>
         </v-menu>
-        <v-dialog v-model="dialogChangeCount.show" max-width="400">
-            <panel
-                :title="$t('JobQueue.ChangeCount').toString()"
-                :icon="mdiCounter"
-                card-class="jobqueue-change-count-dialog"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="dialogChangeCount.show = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-
-                <v-card-text>
-                    <v-text-field
-                        ref="inputFieldAddToQueueCount"
-                        v-model="dialogChangeCount.count"
-                        :label="$t('JobQueue.Count')"
-                        required
-                        :rules="countInputRules"
-                        hide-spin-buttons
-                        type="number"
-                        @keyup.enter="changeCountAction">
-                        <template #append-outer>
-                            <div class="_spin_button_group">
-                                <v-btn class="mt-n3" icon plain small @click="dialogChangeCount.count++">
-                                    <v-icon>{{ mdiChevronUp }}</v-icon>
-                                </v-btn>
-                                <v-btn
-                                    :disabled="dialogChangeCount.count <= 1"
-                                    class="mb-n3"
-                                    icon
-                                    plain
-                                    small
-                                    @click="dialogChangeCount.count--">
-                                    <v-icon>{{ mdiChevronDown }}</v-icon>
-                                </v-btn>
-                            </div>
-                        </template>
-                    </v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn color="" text @click="dialogChangeCount.show = false">{{ $t('JobQueue.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="changeCountAction">{{ $t('JobQueue.ChangeCount') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
-    </tr>
+        <jobqueue-entry-change-count-dialog
+            :show="showChangeCountDialog"
+            :job="job"
+            @close="showChangeCountDialog = false" />
+    </v-row>
 </template>
 
 <script lang="ts">
@@ -114,158 +77,135 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { mdiChevronDown, mdiChevronUp, mdiCloseThick, mdiCounter, mdiFile, mdiPlay, mdiPlaylistRemove } from '@mdi/js'
-import NumberInput from '@/components/inputs/NumberInput.vue'
-@Component({
-    components: { NumberInput },
-})
+import { mdiCloseThick, mdiCounter, mdiDragVertical, mdiFile, mdiPlay, mdiPlaylistRemove } from '@mdi/js'
+import { defaultBigThumbnailBackground } from '@/store/variables'
+@Component
 export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
-    mdiChevronDown = mdiChevronDown
-    mdiChevronUp = mdiChevronUp
     mdiCloseThick = mdiCloseThick
     mdiCounter = mdiCounter
+    mdiDragVertical = mdiDragVertical
     mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiPlaylistRemove = mdiPlaylistRemove
 
-    @Prop({ type: Object, required: true }) declare item: ServerJobQueueStateJob
-    @Prop({ type: Number, required: true }) declare contentTdWidth: number
-    @Prop({ type: Boolean, default: false }) declare isFirst: boolean
-    private contextMenu: {
-        shown: boolean
-        x: number
-        y: number
-        item: ServerJobQueueStateJob | any
-    } = {
-        shown: false,
-        x: 0,
-        y: 0,
-        item: {},
-    }
+    @Prop({ type: Object, required: true }) job!: ServerJobQueueStateJob
+    @Prop({ type: Boolean, default: false }) showPrintButton!: boolean
+    @Prop({ type: Boolean, default: false }) showHandle!: boolean
 
-    private dialogChangeCount: {
-        show: boolean
-        count: number
-        item: ServerJobQueueStateJob | any
-    } = {
-        show: false,
-        count: 1,
-        item: {},
-    }
+    showContextMenu = false
+    contextMenuX = 0
+    contextMenuY = 0
 
-    private countInputRules = [
-        (value: string) => !!value || this.$t('JobQueue.InvalidCountEmpty'),
-        (value: string) => parseInt(value) > 0 || this.$t('JobQueue.InvalidCountGreaterZero'),
-    ]
-
-    declare $refs: {
-        filesJobqueue: any
-    }
-
-    get styleContentTdWidth() {
-        return `width: ${this.contentTdWidth}px;`
-    }
+    showChangeCountDialog = false
 
     get smallThumbnail() {
-        return this.$store.getters['server/jobQueue/getSmallThumbnail'](this.item)
+        return this.$store.getters['server/jobQueue/getSmallThumbnail'](this.job)
     }
 
     get bigThumbnail() {
-        return this.$store.getters['server/jobQueue/getBigThumbnail'](this.item)
+        return this.$store.getters['server/jobQueue/getBigThumbnail'](this.job)
     }
 
     get description() {
-        let output = ''
+        if (!this.job?.metadata?.metadataPulled) return false
 
-        output += this.$t('Panels.StatusPanel.Filament') + ': '
-        if (this.item.metadata?.filament_total || this.item.metadata.filament_weight_total) {
-            if (this.item.metadata?.filament_total) output += this.item.metadata.filament_total.toFixed() + ' mm'
-            if (this.item.metadata?.filament_total && this.item.metadata.filament_weight_total) output += ' / '
-            if (this.item.metadata?.filament_weight_total)
-                output += this.item.metadata.filament_weight_total.toFixed(2) + ' g'
-        } else output += '--'
+        const filamentArray = []
+        let filament = '--'
+        if (this.filamentLength) filamentArray.push(this.filamentLength)
+        if (this.filamentWeight) filamentArray.push(this.filamentWeight)
+        if (filamentArray.length) filament = filamentArray.join(' / ')
 
-        output += ', ' + this.$t('Panels.StatusPanel.PrintTime') + ': '
-        if (this.item.metadata?.estimated_time) output += this.formatPrintTime(this.item.metadata.estimated_time)
-        else output += '--'
+        let time = '--'
+        if (this.estimatedTime) time = this.estimatedTime
 
-        return output
+        return `${this.$t('Panels.StatusPanel.Filament')}: ${filament}, ${this.$t(
+            'Panels.StatusPanel.PrintTime'
+        )}: ${time}`
     }
 
-    formatPrintTime(totalSeconds: number) {
-        if (totalSeconds) {
-            let output = ''
+    get filamentLength() {
+        const length = this.job.metadata?.filament_total ?? 0
+        if (length === 0) return null
 
-            const days = Math.floor(totalSeconds / (3600 * 24))
-            if (days) {
-                totalSeconds %= 3600 * 24
-                output += days + 'd'
-            }
+        if (length >= 1000) return (length / 1000).toFixed(1) + ' m'
 
-            const hours = Math.floor(totalSeconds / 3600)
-            totalSeconds %= 3600
-            if (hours) output += ' ' + hours + 'h'
-
-            const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += ' ' + minutes + 'm'
-
-            const seconds = totalSeconds % 60
-            if (seconds) output += ' ' + seconds.toFixed(0) + 's'
-
-            return output
-        }
-
-        return '--'
+        return length.toFixed(0) + ' mm'
     }
 
-    showContextMenu(e: any, item: ServerJobQueueStateJob) {
-        if (!this.contextMenu.shown) {
-            e?.preventDefault()
-            this.contextMenu.shown = true
-            this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2
-            this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2
-            this.contextMenu.item = item
-            this.$nextTick(() => {
-                this.contextMenu.shown = true
-            })
+    get filamentWeight() {
+        const weight = this.job.metadata?.filament_weight_total ?? 0
+        if (weight === 0) return null
+
+        if (weight >= 1000) return (length / 1000).toFixed(1) + ' kg'
+
+        return weight.toFixed(0) + ' g'
+    }
+
+    get estimatedTime() {
+        let totalSeconds = this.job.metadata?.estimated_time ?? 0
+        if (totalSeconds == 0) return '--'
+
+        const output = []
+
+        const days = Math.floor(totalSeconds / (3600 * 24))
+        if (days) {
+            totalSeconds %= 3600 * 24
+            output.push(days + 'd')
         }
+
+        const hours = Math.floor(totalSeconds / 3600)
+        totalSeconds %= 3600
+        if (hours) output.push(hours + 'h')
+
+        const minutes = Math.floor(totalSeconds / 60)
+        if (minutes) output.push(minutes + 'm')
+
+        // skip seconds if there are hours
+        if (hours > 0) return output.join(' ')
+
+        const seconds = totalSeconds % 60
+        if (seconds) output.push(seconds.toFixed(0) + 's')
+
+        return output.join(' ')
+    }
+
+    get bigThumbnailBackground() {
+        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+    }
+
+    get bigThumbnailTooltipColor() {
+        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
+            return undefined
+        }
+
+        return this.bigThumbnailBackground
+    }
+
+    openContextMenu(e: any) {
+        e?.preventDefault()
+
+        if (this.showContextMenu) {
+            this.showContextMenu = false
+            return
+        }
+
+        this.showContextMenu = true
+        this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
+        this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
+    }
+
+    printJob() {
+        this.$store.dispatch('server/jobQueue/startByJobId', this.job.job_id)
     }
 
     startJobqueue() {
         this.$store.dispatch('server/jobQueue/start')
     }
 
-    removeFromJobqueue(item: ServerJobQueueStateJob) {
-        const ids = [...(item.combinedIds ?? [])]
-        ids.push(item.job_id)
+    removeFromJobqueue() {
+        const ids = [...(this.job.combinedIds ?? []), this.job.job_id]
 
         this.$store.dispatch('server/jobQueue/deleteFromQueue', ids)
     }
-
-    openChangeCountDialog(item: ServerJobQueueStateJob) {
-        this.dialogChangeCount.show = true
-        this.dialogChangeCount.count = (item.combinedIds?.length ?? 0) + 1
-        this.dialogChangeCount.item = item
-    }
-
-    changeCountAction() {
-        this.$store.dispatch('server/jobQueue/changeCount', {
-            job_id: this.dialogChangeCount.item.job_id,
-            count: this.dialogChangeCount.count,
-        })
-        this.dialogChangeCount.show = false
-    }
 }
 </script>
-
-<style lang="scss" scoped>
-.filesJobqueue {
-    position: relative;
-}
-._spin_button_group {
-    width: 24px;
-    margin-top: -6px;
-    margin-left: -6px;
-    margin-bottom: -6px;
-}
-</style>

@@ -1,13 +1,18 @@
 <template>
-    <v-item-group v-if="toolchangeMacros.length > 1" class="_btn-group py-0 px-3 mt-3">
-        <extruder-control-panel-tools-item v-for="macro in toolchangeMacros" :key="macro.name" :macro="macro" />
-    </v-item-group>
+    <div class="mb-3">
+        <v-row v-for="(row, index) in rows" :key="'row_' + index" class="mt-0">
+            <v-col>
+                <v-item-group class="_btn-group py-0 px-3">
+                    <extruder-control-panel-tools-item v-for="macro in row" :key="macro.name" :macro="macro" />
+                </v-item-group>
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
 <script lang="ts">
 import { mdiPrinter3dNozzle } from '@mdi/js'
 import { Component, Mixins } from 'vue-property-decorator'
-import { PrinterStateMacro, PrinterStateToolchangeMacro } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 
@@ -15,31 +20,26 @@ import ControlMixin from '@/components/mixins/control'
 export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
 
-    get macros() {
-        return this.$store.getters['printer/getMacros']
-    }
+    get rows() {
+        const cols = 6
+        let rows = []
 
-    get toolchangeMacros(): PrinterStateToolchangeMacro[] {
-        return this.macros
-            .filter((macro: PrinterStateMacro) => macro.name.toUpperCase().match(/^T\d+/))
-            .sort((a: PrinterStateMacro, b: PrinterStateMacro) => {
-                const numberA = parseInt(a.name.slice(1))
-                const numberB = parseInt(b.name.slice(1))
+        for (let i = 0; i < this.toolchangeMacros.length; i += cols) {
+            rows.push(this.toolchangeMacros.slice(i, i + cols))
+        }
 
-                return numberA - numberB
-            })
+        return rows
     }
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 ._btn-group {
     border-radius: 4px;
     display: inline-flex;
     flex-wrap: nowrap;
     max-width: 100%;
     min-width: 100%;
-    width: 100%;
 
     .v-btn {
         border-radius: 0;
@@ -65,5 +65,9 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     .v-btn:not(:first-child) {
         border-left-width: 0;
     }
+}
+
+html.theme--light ._btn-group .v-btn {
+    border-color: rgba(0, 0, 0, 0.12);
 }
 </style>

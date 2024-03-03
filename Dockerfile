@@ -1,14 +1,14 @@
 #
 # Builder stage, builds the application in node
 #
-FROM --platform=$BUILDPLATFORM node:18-alpine as builder
+FROM --platform=$BUILDPLATFORM node:20-alpine as builder
 
 RUN apk add zip
 
 WORKDIR /app
 COPY package*.json /app/
 
-RUN npm install
+RUN npm ci
 
 COPY ./ /app/
 

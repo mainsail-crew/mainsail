@@ -70,7 +70,7 @@
             <the-settings-menu />
             <the-top-corner-menu />
         </v-app-bar>
-        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
+        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom>
             <strong>{{ $t('App.TopBar.Uploading') }} {{ uploadSnackbar.filename }}</strong>
             <br />
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
@@ -110,7 +110,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { validGcodeExtensions } from '@/store/variables'
 import Component from 'vue-class-component'
-import axios from 'axios'
+import axios, { AxiosProgressEvent } from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
 import TheTopCornerMenu from '@/components/TheTopCornerMenu.vue'
 import TheSettingsMenu from '@/components/TheSettingsMenu.vue'
@@ -128,10 +128,6 @@ type uploadSnackbar = {
     speed: number
     total: number
     cancelTokenSource: any
-    lastProgress: {
-        time: number
-        loaded: number
-    }
 }
 
 @Component({
@@ -162,10 +158,6 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         speed: 0,
         total: 0,
         cancelTokenSource: null,
-        lastProgress: {
-            time: 0,
-            loaded: 0,
-        },
     }
 
     formatFilesize = formatFilesize
@@ -317,8 +309,6 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         this.uploadSnackbar.status = true
         this.uploadSnackbar.percent = 0
         this.uploadSnackbar.speed = 0
-        this.uploadSnackbar.lastProgress.loaded = 0
-        this.uploadSnackbar.lastProgress.time = 0
 
         formData.append('file', file, filename)
         formData.append('print', 'true')
@@ -329,18 +319,10 @@ export default class TheTopbar extends Mixins(BaseMixin) {
                 .post(this.apiUrl + '/server/files/upload', formData, {
                     cancelToken: this.uploadSnackbar.cancelTokenSource.token,
                     headers: { 'Content-Type': 'multipart/form-data' },
-                    onUploadProgress: (progressEvent: ProgressEvent) => {
-                        this.uploadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
-                        if (this.uploadSnackbar.lastProgress.time) {
-                            const time = progressEvent.timeStamp - this.uploadSnackbar.lastProgress.time
-                            const data = progressEvent.loaded - this.uploadSnackbar.lastProgress.loaded
-
-                            if (time) this.uploadSnackbar.speed = data / (time / 1000)
-                        }
-
-                        this.uploadSnackbar.lastProgress.time = progressEvent.timeStamp
-                        this.uploadSnackbar.lastProgress.loaded = progressEvent.loaded
-                        this.uploadSnackbar.total = progressEvent.total
+                    onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+                        this.uploadSnackbar.percent = (progressEvent.progress ?? 0) * 100
+                        this.uploadSnackbar.speed = progressEvent.rate ?? 0
+                        this.uploadSnackbar.total = progressEvent.total ?? 0
                     },
                 })
                 .then((result) => {

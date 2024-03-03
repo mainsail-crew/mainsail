@@ -1,7 +1,7 @@
 <template>
     <div>
-        <min-settings-panel></min-settings-panel>
-        <klippy-state-panel></klippy-state-panel>
+        <min-settings-panel />
+        <klippy-state-panel />
         <panel
             v-if="klipperReadyForGui"
             :icon="mdiInformation"
@@ -16,7 +16,7 @@
                     :width="5"
                     :value="printPercent"
                     color="primary"
-                    class="mr-3"></v-progress-circular>
+                    class="mr-3" />
             </template>
             <template #buttons>
                 <v-btn
@@ -52,10 +52,8 @@
                     </v-list>
                 </v-menu>
             </template>
-            <status-panel-printstatus-thumbnail></status-panel-printstatus-thumbnail>
-            <status-panel-exclude-object
-                :show-dialog.sync="boolShowObjects"
-                @update:showDialog="updateShowDialog"></status-panel-exclude-object>
+            <status-panel-printstatus-thumbnail />
+            <status-panel-exclude-object :show-dialog.sync="boolShowObjects" @update:showDialog="updateShowDialog" />
             <status-panel-pause-at-layer-dialog :show-dialog.sync="boolShowPauseAtLayer" />
             <template v-if="print_stats_message">
                 <v-container>
@@ -68,7 +66,7 @@
                         </v-col>
                     </v-row>
                 </v-container>
-                <v-divider class="mt-0 mb-0"></v-divider>
+                <v-divider class="mt-0 mb-0" />
             </template>
             <template v-if="display_message">
                 <v-container>
@@ -86,14 +84,18 @@
                         </v-col>
                     </v-row>
                 </v-container>
-                <v-divider class="mt-0 mb-0"></v-divider>
+                <v-divider class="mt-0 mb-0" />
             </template>
-            <v-tabs v-model="activeTab" fixed-tabs dark>
+            <v-tabs v-model="activeTab" fixed-tabs>
                 <v-tab v-if="current_filename" href="#status">{{ $t('Panels.StatusPanel.Status') }}</v-tab>
                 <v-tab href="#files">{{ $t('Panels.StatusPanel.Files') }}</v-tab>
-                <v-tab href="#jobqueue">{{ $t('Panels.StatusPanel.Jobqueue', { count: jobsCount }) }}</v-tab>
+                <v-tab href="#jobqueue">
+                    <v-badge :color="jobQueueBadgeColor" :content="jobsCount.toString()" :inline="true">
+                        {{ $t('Panels.StatusPanel.Jobqueue') }}
+                    </v-badge>
+                </v-tab>
             </v-tabs>
-            <v-divider class="my-0"></v-divider>
+            <v-divider class="my-0" />
             <v-tabs-items v-model="activeTab" class="_border-radius">
                 <v-tab-item v-if="current_filename" value="status">
                     <status-panel-printstatus />
@@ -158,22 +160,26 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiDotsVertical = mdiDotsVertical
     mdiAlertOutline = mdiAlertOutline
 
-    private boolShowObjects = false
-    private boolShowPauseAtLayer = false
-
     declare $refs: {
         bigThumbnail: any
     }
 
-    private activeTab = 'files'
-    private lastFilename = ''
+    boolShowObjects = false
+    boolShowPauseAtLayer = false
+
+    activeTab = 'files'
+    lastFilename = ''
 
     get jobs() {
         return this.$store.getters['server/jobQueue/getJobs']
     }
 
     get jobsCount() {
-        return this.$store.getters['server/jobQueue/getJobsCount'] ?? 0
+        return this.$store.getters['server/jobQueue/getJobsCount']
+    }
+
+    get jobQueueBadgeColor() {
+        return this.jobsCount > 0 ? 'primary darken-2' : 'grey darken-2'
     }
 
     get current_filename() {
@@ -397,7 +403,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 ._border-radius {
     border-bottom-left-radius: inherit;
     border-bottom-right-radius: inherit;

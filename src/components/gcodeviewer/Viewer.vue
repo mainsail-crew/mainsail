@@ -209,7 +209,7 @@
             </v-card-text>
             <resize-observer @notify="handleResize" />
         </panel>
-        <v-snackbar v-model="loading" :timeout="-1" :value="true" fixed right bottom dark>
+        <v-snackbar v-model="loading" :timeout="-1" :value="true" fixed right bottom>
             <div>
                 {{ $t('GCodeViewer.Rendering') }} - {{ loadingPercent }}%
                 <br />
@@ -222,7 +222,7 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
+        <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" :value="true" fixed right bottom>
             <template v-if="downloadSnackbar.total > 0">
                 <div>
                     {{ $t('GCodeViewer.Downloading') }} - {{ Math.round(downloadSnackbar.percent) }} % @
@@ -277,7 +277,7 @@
 import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import GCodeViewer from '@sindarius/gcodeviewer'
-import axios from 'axios'
+import axios, { AxiosProgressEvent } from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import CodeStream from '@/components/gcodeviewer/CodeStream.vue'
@@ -304,10 +304,6 @@ interface downloadSnackbar {
     speed: number
     total: number
     cancelTokenSource: any
-    lastProgress: {
-        time: number
-        loaded: number
-    }
 }
 
 let viewer: any = null
@@ -357,10 +353,6 @@ export default class Viewer extends Mixins(BaseMixin) {
         speed: 0,
         total: 0,
         cancelTokenSource: {},
-        lastProgress: {
-            time: 0,
-            loaded: 0,
-        },
     }
 
     private excludeObject = {
@@ -634,7 +626,6 @@ export default class Viewer extends Mixins(BaseMixin) {
     async loadFile(filename: string) {
         this.downloadSnackbar.status = true
         this.downloadSnackbar.speed = 0
-        this.downloadSnackbar.lastProgress.time = 0
         this.downloadSnackbar.filename = filename.startsWith('gcodes/') ? filename.slice(7) : filename
         const CancelToken = axios.CancelToken
         this.downloadSnackbar.cancelTokenSource = CancelToken.source()
@@ -642,20 +633,10 @@ export default class Viewer extends Mixins(BaseMixin) {
             .get(this.apiUrl + '/server/files/' + encodeURI(filename), {
                 cancelToken: this.downloadSnackbar.cancelTokenSource.token,
                 responseType: 'blob',
-                onDownloadProgress: (progressEvent) => {
-                    this.downloadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
-                    if (this.downloadSnackbar.lastProgress.time) {
-                        const time = progressEvent.timeStamp - this.downloadSnackbar.lastProgress.time
-                        const data = progressEvent.loaded - this.downloadSnackbar.lastProgress.loaded
-
-                        if (time > 1000 || this.downloadSnackbar.speed === 0) {
-                            this.downloadSnackbar.speed = data / (time / 1000)
-                            this.downloadSnackbar.lastProgress.time = progressEvent.timeStamp
-                            this.downloadSnackbar.lastProgress.loaded = progressEvent.loaded
-                        }
-                    } else this.downloadSnackbar.lastProgress.time = progressEvent.timeStamp
-
-                    this.downloadSnackbar.total = progressEvent.total
+                onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
+                    this.downloadSnackbar.percent = (progressEvent.progress ?? 0) * 100
+                    this.downloadSnackbar.speed = progressEvent.rate ?? 0
+                    this.downloadSnackbar.total = progressEvent.total ?? 0
                 },
             })
             .then((res) => res.data.text())

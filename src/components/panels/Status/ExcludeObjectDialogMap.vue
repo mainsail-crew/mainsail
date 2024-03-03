@@ -1,36 +1,6 @@
-<style lang="scss" scoped>
-svg {
-    //background: rgba(200, 200, 200);
-    border: 2px solid #888;
-}
-
-#tooltipObjectMap {
-    display: none;
-    position: absolute;
-    background: black;
-    border-radius: 3px;
-    color: white;
-    padding: 3px 7px;
-    z-index: 100;
-
-    &:before {
-        display: block;
-        content: ' ';
-        width: 0;
-        height: 0;
-        position: absolute;
-        bottom: -10px;
-        left: 10px;
-        border-top: 10px solid black;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-    }
-}
-</style>
-
 <template>
     <div style="position: relative">
-        <div id="tooltipObjectMap" ref="tooltipObjectMap"></div>
+        <div id="tooltipObjectMap" ref="tooltipObjectMap" />
         <svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
@@ -121,11 +91,34 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     }
 
     get printing_objects() {
-        return this.$store.state.printer.exclude_object?.objects ?? []
+        return (
+            (this.$store.state.printer.exclude_object?.objects ?? [])
+                .map((object: any) => {
+                    let total = 0
+
+                    if ('polygon' in object) {
+                        for (let i = 0; i < object.polygon.length; i++) {
+                            const pointA = object.polygon[i]
+                            const pointB = i === object.polygon.length - 1 ? object.polygon[0] : object.polygon[i + 1]
+
+                            total += pointA[0] * pointB[1] - pointA[1] * pointB[0]
+                        }
+                    }
+
+                    return {
+                        center: object.center,
+                        name: object.name,
+                        polygon: object.polygon,
+                        size: Math.abs(total),
+                    }
+                })
+                // sort all objects by size
+                .sort((a: any, b: any) => b.size - a.size)
+        )
     }
 
     get printing_objects_with_polygons() {
-        return this.printing_objects.filter((eobject: any) => 'polygon' in eobject)
+        return this.printing_objects.filter((object: any) => 'polygon' in object)
     }
 
     get current_object() {
@@ -221,27 +214,28 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     }
 
     showObjectTooltip(text: string) {
-        if (this.$refs.tooltipObjectMap) {
-            this.$refs.tooltipObjectMap.innerHTML = text
-            this.$refs.tooltipObjectMap.style.display = 'block'
-        }
+        if (!this.$refs.tooltipObjectMap) return
+
+        this.$refs.tooltipObjectMap.innerHTML = text
+        this.$refs.tooltipObjectMap.style.display = 'block'
 
         window.addEventListener('mousemove', this.moveTooltip)
     }
 
     hideObjectTooltip() {
-        if (this.$refs.tooltipObjectMap) {
-            this.$refs.tooltipObjectMap.style.display = 'none'
-        }
+        if (!this.$refs.tooltipObjectMap) return
+
+        this.$refs.tooltipObjectMap.style.display = 'none'
 
         window.removeEventListener('mousemove', this.moveTooltip)
     }
 
-    moveTooltip(event: any) {
-        if (this.$refs.tooltipObjectMap) {
-            this.$refs.tooltipObjectMap.style.left = event.layerX - 20 + 'px'
-            this.$refs.tooltipObjectMap.style.top = event.layerY - 45 + 'px'
-        }
+    moveTooltip(event: MouseEvent) {
+        if (!this.$refs.tooltipObjectMap) return
+
+        const top = event.offsetY - this.$refs.tooltipObjectMap.clientHeight - 15
+        this.$refs.tooltipObjectMap.style.left = `${event.offsetX - 20}px`
+        this.$refs.tooltipObjectMap.style.top = `${top}px`
     }
 
     openExcludeObjectDialog(name: string) {
@@ -250,3 +244,32 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+svg {
+    border: 2px solid #888;
+}
+
+#tooltipObjectMap {
+    display: none;
+    position: absolute;
+    background: black;
+    border-radius: 3px;
+    color: white;
+    padding: 3px 7px;
+    z-index: 100;
+
+    &:before {
+        display: block;
+        content: ' ';
+        width: 0;
+        height: 0;
+        position: absolute;
+        bottom: -10px;
+        left: 10px;
+        border-top: 10px solid black;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+    }
+}
+</style>

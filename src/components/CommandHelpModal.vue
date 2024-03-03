@@ -54,7 +54,7 @@
                                         two-line>
                                         <v-list-item-content class="px-0">
                                             <v-list-item-title
-                                                class="blue--text font-weight-bold cursor-pointer"
+                                                class="primary--text font-weight-bold cursor-pointer"
                                                 @click="
                                                     $emit('onCommand', cmd.command)
                                                     isOpen = false
@@ -124,7 +124,7 @@ export default class CommandHelpModal extends Mixins(BaseMixin) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .command-help-content {
     overflow-x: hidden;
 
