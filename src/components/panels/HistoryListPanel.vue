@@ -70,7 +70,10 @@
                                     </v-list-item>
                                     <v-divider />
                                 </template>
-                                <v-list-item v-for="header of configHeaders" :key="header.key" class="minHeight36">
+                                <v-list-item
+                                    v-for="(header, index) of configHeaders"
+                                    :key="'history-list-panel-header-option-' + index"
+                                    class="minHeight36">
                                     <v-checkbox
                                         v-model="header.visible"
                                         class="mt-0"
@@ -147,11 +150,6 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <add-batch-to-queue-dialog
-            :is-visible="dialogAddBatchToQueue.isVisible"
-            :show-toast="true"
-            :filename="dialogAddBatchToQueue.filename"
-            @close="closeAddBatchToQueueDialog" />
     </div>
 </template>
 
@@ -164,12 +162,11 @@ import Panel from '@/components/ui/Panel.vue'
 import {
     mdiCloseThick,
     mdiCog,
+    mdiDatabaseArrowDownOutline,
     mdiDatabaseExportOutline,
     mdiDelete,
     mdiFileDocumentMultipleOutline,
     mdiMagnify,
-    mdiNotebookPlus,
-    mdiRefresh,
 } from '@mdi/js'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import HistoryListEntryJob from '@/components/panels/HistoryList/HistoryListEntryJob.vue'
@@ -187,8 +184,6 @@ export interface HistoryListPanelRow {
     outputType?: string
 }
 
-import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
-
 @Component({
     components: {
         HistoryListEntryMaintenance,
@@ -196,7 +191,6 @@ import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vu
         HistoryListEntryJob,
         HistoryListPanelDetailsDialog,
         Panel,
-        AddBatchToQueueDialog
     },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
@@ -206,8 +200,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiDelete = mdiDelete
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiMagnify = mdiMagnify
-    mdiNotebookPlus = mdiNotebookPlus
-    mdiRefresh = mdiRefresh
+    mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
 
     formatFilesize = formatFilesize
 
@@ -445,14 +438,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     set hideColums(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value: newVal })
-    }
-
-    get currentLanguage() {
-        return this.$store.state.gui.general?.language ?? 'en'
-    }
-
-    get isJobQueueAvailable() {
-        return this.moonrakerComponents.includes('job_queue')
     }
 
     refreshHistory() {

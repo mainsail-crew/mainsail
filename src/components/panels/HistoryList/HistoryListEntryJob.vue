@@ -96,6 +96,14 @@
                     <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
                     {{ $t('History.Reprint') }}
                 </v-list-item>
+                <v-list-item v-if="item.exists && isJobQueueAvailable" @click="addToQueue">
+                    <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
+                    {{ $t('Files.AddToQueue') }}
+                </v-list-item>
+                <v-list-item v-if="item.exists && isJobQueueAvailable" @click="addBatchToQueueDialogBool = true">
+                    <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
+                    {{ $t('Files.AddBatchToQueue') }}
+                </v-list-item>
                 <v-list-item class="red--text" @click="deleteJob">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('History.Delete') }}
@@ -113,6 +121,12 @@
             :type="noteDialogType"
             :job="item"
             @close-dialog="noteDialogBool = false" />
+        <!-- add to queue dialog -->
+        <add-batch-to-queue-dialog
+            :is-visible="addBatchToQueueDialogBool"
+            :show-toast="true"
+            :filename="item.filename"
+            @close="addBatchToQueueDialogBool = false" />
     </tr>
 </template>
 <script lang="ts">
@@ -130,15 +144,17 @@ import {
     mdiNotebook,
     mdiNotebookEdit,
     mdiNotebookPlus,
+    mdiPlaylistPlus,
     mdiPrinter,
     mdiTextBoxSearch,
 } from '@mdi/js'
 import { formatFilesize } from '@/plugins/helpers'
 import { HistoryListPanelRow } from '@/components/panels/HistoryListPanel.vue'
 import HistoryListPanelNoteDialog from '@/components/dialogs/HistoryListPanelNoteDialog.vue'
+import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 
 @Component({
-    components: { HistoryListPanelNoteDialog, HistoryListPanelDetailsDialog, Panel },
+    components: { AddBatchToQueueDialog, HistoryListPanelNoteDialog, HistoryListPanelDetailsDialog, Panel },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
@@ -150,15 +166,18 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiNotebookPlus = mdiNotebookPlus
     mdiPrinter = mdiPrinter
     mdiTextBoxSearch = mdiTextBoxSearch
+    mdiPlaylistPlus = mdiPlaylistPlus
 
-    private detailsDialogBool = false
+    detailsDialogBool = false
 
-    private contextMenuBool = false
-    private contextMenuX = 0
-    private contextMenuY = 0
+    contextMenuBool = false
+    contextMenuX = 0
+    contextMenuY = 0
 
-    private noteDialogBool = false
-    private noteDialogType: 'create' | 'edit' = 'create'
+    noteDialogBool = false
+    noteDialogType: 'create' | 'edit' = 'create'
+
+    addBatchToQueueDialogBool = false
 
     @Prop({ type: Object, required: true }) readonly item!: ServerHistoryStateJob
     @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelRow[]
@@ -227,6 +246,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return output
     }
 
+    get isJobQueueAvailable() {
+        return this.moonrakerComponents.includes('job_queue')
+    }
+
     select(newVal: boolean) {
         this.$emit('select', newVal)
     }
@@ -258,6 +281,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     editNote() {
         this.noteDialogType = 'edit'
         this.noteDialogBool = true
+    }
+
+    addToQueue() {
+        this.$store.dispatch('server/jobQueue/addToQueue', [this.item.filename])
+        this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.item.filename }).toString())
     }
 
     deleteJob() {
