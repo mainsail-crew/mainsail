@@ -6,7 +6,7 @@
                 "Headline": "浏览器已过时"
             },
             "DependencyDescription": "当前版本的{name}并不支持Mainsail的全部功能。{name}需要至少更新到{neededVersion}版本。",
-            "DependencyName": "{name}依赖",
+            "DependencyName": "依赖：{name}",
             "DismissAll": "忽略全部",
             "KlipperWarnings": {
                 "DeprecatedOption": "在'{section}'标签中的'{option}'选项已被弃用，将在未来的版本中删除。",
@@ -16,17 +16,17 @@
                 "KlipperWarning": "Klipper警告"
             },
             "MoonrakerWarnings": {
-                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerComponent": "Moonraker：{component}",
                 "MoonrakerFailedComponentDescription": "加载moonraker组件'{component}'时发生错误。请检查日志文件并修复此问题。",
                 "MoonrakerFailedInitComponentDescription": "初始化moonraker组件'{component}'时发生错误。请检查日志文件并修复此问题。",
-                "MoonrakerInitComponent": "初始化 Moonraker: {component}",
+                "MoonrakerInitComponent": "初始化 Moonraker：{component}",
                 "MoonrakerWarning": "Moonraker警告",
                 "UnparsedConfigOption": "在[{section}]标签中检测到无法解析的配置'{option}: {value}'。这可能是一个不再可用的选项，也可能是组件加载失败的结果。在将来，这将导致启动错误。",
                 "UnparsedConfigSection": "检测到无法解析的标签[{section}]。这可能是一个不再可用的标签，也可能是组件加载失败的结果。在未来，这将导致启动错误。"
             },
             "Never": "永不",
             "NextReboot": "下次重启",
-            "NoNotification": "没有通知",
+            "NoNotification": "没有可用的通知",
             "Notifications": "通知",
             "Remind": "提醒："
         },
@@ -36,6 +36,9 @@
             "NoEmptyAllowedError": "输入值不能为空！"
         },
         "Printers": "打印机列表",
+        "TextfieldWithCopy": {
+            "Copied": "复制"
+        },
         "TheServiceWorker": {
             "DescriptionNeedUpdate": "本地缓存已过时，需要进行更新。请点击下面的按钮来更新缓存。",
             "TitleNeedUpdate": "PWA需要更新",
@@ -63,7 +66,7 @@
             "Complete": "已完成 - {filename}",
             "Error": "错误",
             "Pause": "暂停打印",
-            "PrinterOff": "打印机已关闭",
+            "PrinterOff": "打印机关闭",
             "Printing": "已打印 {percent}% - {filename}",
             "PrintingETA": "已打印 {percent}% - 预估: {eta} - {filename}"
         },
@@ -120,13 +123,13 @@
         }
     },
     "BedScrews": {
-        "Abort": "取消",
+        "Abort": "中止",
         "Accept": "接受",
         "Adjusted": "已调整",
-        "Description": "如果当前螺丝已调整，请点击<b>已调整</b>。未调整下继续请点击<b>认可</b>。",
+        "Description": "如果当前螺丝已调整，请点击<b>已调整</b>。如果不需要调整，请点击<b>接受</b>继续。",
         "Headline": "热床调平螺丝",
         "ScrewAccepted": "已接受的调平螺丝",
-        "ScrewIndex": "螺丝索引",
+        "ScrewIndex": "螺丝编号",
         "ScrewName": "螺丝名称",
         "ScrewOutput": "{current}/{max}"
     },
@@ -146,6 +149,20 @@
         "SendCode": "输入要执行的代码...",
         "SetupConsole": "设置控制台"
     },
+    "DevicesDialog": {
+        "CanBusInfo": "只有未分配的节点才能被检测到。建议仅连接一个未分配的设备到CAN总线，以避免通信问题。更多详情，请点击链接：",
+        "ClickRefresh": "点击刷新按钮以搜索设备。",
+        "DevicePath": "设备路径",
+        "Formats": "格式",
+        "Headline": "设备",
+        "HideSystemEntries": "隐藏系统条目",
+        "LibcameraId": "Libcamera标识符",
+        "NoDeviceFound": "未发现设备。请检查连接并点击刷新按钮。",
+        "PathByHardware": "硬件路径",
+        "PathById": "标识符路径",
+        "Refresh": "刷新",
+        "Resolutions": "分辨率"
+    },
     "Dialogs": {
         "StartPrint": {
             "Cancel": "取消",
@@ -153,11 +170,12 @@
             "DoYouWantToStartFilenameFilament": "是否使用以下耗材开始打印文件{filename}？",
             "Headline": "开始任务",
             "Print": "打印",
-            "Timelapse": "延时摄像"
+            "Timelapse": "延时摄影"
         }
     },
     "Editor": {
         "ConfigReference": "配置参考",
+        "DeviceDialog": "设备",
         "DontSave": "不保存",
         "Downloading": "正在下载",
         "FailedSave": "上传{filename}失败！",
@@ -274,10 +292,10 @@
         "Tracking": "正在追踪",
         "Transparency": "透明度",
         "Ultra": "极致",
-        "VoxelMode": "体素模式(ASMBL)"
+        "VoxelMode": "三维像素模式(ASMBL)"
     },
     "Heightmap": {
-        "Abort": "取消",
+        "Abort": "中止",
         "BedMeshCalibrate": "校准床网",
         "BedMeshRemove": "移除床网",
         "Calibrate": "测量",
@@ -298,20 +316,16 @@
         "InvalidNameAlreadyExists": "预设名称已经存在，请换一个名称。",
         "InvalidNameAscii": "错误的名称，请删除所有非ascii字符后重试。",
         "InvalidNameEmpty": "输入值不能为空！",
-        "InvalidNameReserved": "预设 'default' 已保留，请选择其他预设名称。",
-        "Later": "以后",
+        "InvalidNameReserved": "预设'default'已保留，请选择其他预设名称。",
         "Mesh": "网格",
         "Name": "名称",
         "NoBedMeshHasBeenLoadedYet": "没有加载床网。",
         "NoProfile": "没有预设可用",
-        "Ok": "好的",
         "Probed": "测量结果",
         "Profiles": "预设",
         "Remove": "删除",
-        "RemoveSaveDescription": "预设床网已标记需删除。点击\"保存配置\"将会从printer.cfg中移除并重启Klipper。",
         "Rename": "重命名",
         "RenameBedMeshProfile": "重命名预设床网",
-        "SAVE_CONFIG": "保存配置",
         "ScaleGradient": "尺度梯度",
         "ScaleZMax": "Z最大标度",
         "TitleCalibrate": "校准新床网",
@@ -321,6 +335,7 @@
     },
     "History": {
         "AddNote": "添加便条",
+        "AddToQueueSuccessful": "文件{filename}已添加到队列。",
         "AllJobs": "全部",
         "AvgPrinttime": "平均打印时长",
         "Cancel": "取消",
@@ -483,7 +498,7 @@
             }
         },
         "UpdatePanel": {
-            "Abort": "放弃",
+            "Abort": "中止",
             "AreYouSure": "你确定吗？",
             "CheckForUpdates": "检查更新",
             "Close": "关闭",
@@ -528,7 +543,7 @@
         }
     },
     "ManualProbe": {
-        "Abort": "取消",
+        "Abort": "中止",
         "Accept": "接受",
         "Advanced": "高级",
         "Headline": "手动Probe"
@@ -680,7 +695,7 @@
             "Max": "最高",
             "ObjectHeight": "物体高度",
             "PauseAtLayer": {
-                "Abort": "取消",
+                "Abort": "中止",
                 "Accept": "接受",
                 "AtLayer": "所在层",
                 "Call": "调用",
@@ -776,8 +791,8 @@
     "Router": {
         "Console": "控制台",
         "Dashboard": "控制面板",
-        "G-Code Files": "G-Code 文件",
-        "G-Code Viewer": "G-Code 预览",
+        "G-Code Files": "G-Code文件",
+        "G-Code Viewer": "G-Code预览",
         "Heightmap": "高度图",
         "History": "历史记录",
         "Machine": "机器",
@@ -794,8 +809,8 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "添加打印机",
-        "AddPrintersToJson": "请将打印机添加到 config.json 。",
-        "CannotConnectTo": "无法连接到{host} 。",
+        "AddPrintersToJson": "请将打印机添加到config.json。",
+        "CannotConnectTo": "无法连接到{host}。",
         "ChangePrinter": "切换打印机",
         "Connecting": "正在连接到{host}",
         "ConnectionFailed": "连接失败",
@@ -891,7 +906,7 @@
         "GCodeViewerTab": {
             "BackgroundColor": "背景颜色",
             "ExtruderColor": "喷嘴颜色",
-            "GCodeViewer": "G-Code 预览",
+            "GCodeViewer": "G-Code预览",
             "GridColor": "网格颜色",
             "MaxFeed": "最大挤出速度",
             "MinFeed": "最小挤出速度",
@@ -1040,7 +1055,7 @@
             "Port": "Moonraker服务端口",
             "RemotePrinters": "打印机",
             "UpdatePrinter": "更新打印机",
-            "UseConfigJson": "检测到InstanceDB参数为JSON。请使用 config.json 来修改打印机列表。"
+            "UseConfigJson": "检测到InstanceDB参数为JSON。请使用config.json来修改打印机列表。"
         },
         "Store": "存储",
         "TimelapseTab": {
@@ -1064,7 +1079,7 @@
             "HyperlapseCycle": "Hyperlapse周期时间",
             "HyperlapseCycleDescription": "每隔X秒获取一张快照",
             "Mode": "模式",
-            "ModeDescription": "选择Layermacro(基于层变化)或者Hyperlapse(基于时间)模式",
+            "ModeDescription": "选择Layermacro模式(基于层变化)或者Hyperlapse模式(基于时间)",
             "OutputFramerate": "输出帧率",
             "OutputFramerateDescription": "设置视频帧率。注意：如果可变FPS设置开启，此设置会被忽略",
             "Parkhead": "放置打印头到停靠位置",
