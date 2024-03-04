@@ -1,159 +1,133 @@
 <template>
-    <div>
-        <panel
-            :icon="mdiFileDocumentMultipleOutline"
-            :title="$t('History.PrintHistory')"
-            card-class="history-list-panel">
-            <v-card-text>
-                <v-row>
-                    <v-col class="col-4 d-flex align-center">
-                        <v-text-field
-                            v-model="search"
-                            :append-icon="mdiMagnify"
-                            :label="$t('History.Search')"
-                            single-line
-                            outlined
-                            clearable
-                            hide-details
-                            dense />
-                    </v-col>
-                    <v-col class="offset-4 col-4 d-flex align-center justify-end">
-                        <template v-if="selectedJobs.length">
+    <panel :icon="mdiFileDocumentMultipleOutline" :title="$t('History.PrintHistory')" card-class="history-list-panel">
+        <v-card-text>
+            <v-row>
+                <v-col class="col-4 d-flex align-center">
+                    <v-text-field
+                        v-model="search"
+                        :append-icon="mdiMagnify"
+                        :label="$t('History.Search')"
+                        single-line
+                        outlined
+                        clearable
+                        hide-details
+                        dense />
+                </v-col>
+                <v-col class="offset-4 col-4 d-flex align-center justify-end">
+                    <template v-if="selectedJobs.length">
+                        <v-btn
+                            :title="$t('History.Delete')"
+                            color="error"
+                            class="px-2 minwidth-0 ml-3"
+                            @click="deleteSelectedDialog = true">
+                            <v-icon>{{ mdiDelete }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-btn class="px-2 minwidth-0 ml-3" @click="addMaintenanceDialog = true">
+                        <v-icon>{{ mdiNotebookPlus }}</v-icon>
+                    </v-btn>
+                    <v-tooltip v-if="!allLoaded" top>
+                        <template #activator="{ on, attrs }">
                             <v-btn
-                                :title="$t('History.Delete')"
-                                color="error"
+                                :loading="loadings.includes('historyLoadAll')"
                                 class="px-2 minwidth-0 ml-3"
-                                @click="deleteSelectedDialog = true">
-                                <v-icon>{{ mdiDelete }}</v-icon>
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="refreshHistory">
+                                <v-icon>{{ mdiDatabaseArrowDownOutline }}</v-icon>
                             </v-btn>
                         </template>
-                        <v-btn class="px-2 minwidth-0 ml-3" @click="addMaintenanceDialog = true">
-                            <v-icon>{{ mdiNotebookPlus }}</v-icon>
-                        </v-btn>
-                        <v-tooltip v-if="!allLoaded" top>
-                            <template #activator="{ on, attrs }">
-                                <v-btn
-                                    :loading="loadings.includes('historyLoadAll')"
-                                    class="px-2 minwidth-0 ml-3"
-                                    v-bind="attrs"
-                                    v-on="on"
-                                    @click="refreshHistory">
-                                    <v-icon>{{ mdiDatabaseArrowDownOutline }}</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>{{ $t('History.LoadCompleteHistory') }}</span>
-                        </v-tooltip>
-                        <v-tooltip top>
-                            <template #activator="{ on, attrs }">
-                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on" @click="exportHistory">
-                                    <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>{{ $t('History.TitleExportHistory') }}</span>
-                        </v-tooltip>
-                        <v-menu :offset-y="true" :close-on-content-click="false">
-                            <template #activator="{ on, attrs }">
-                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
-                                    <v-icon>{{ mdiCog }}</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list>
-                                <template v-if="allPrintStatusArray.length">
-                                    <v-list-item
-                                        v-for="status of allPrintStatusArray"
-                                        :key="status.key"
-                                        class="minHeight36">
-                                        <v-checkbox
-                                            class="mt-0"
-                                            hide-details
-                                            :input-value="status.showInTable"
-                                            :label="`${status.displayName} (${status.value})`"
-                                            @change="changeStatusVisible(status)" />
-                                    </v-list-item>
-                                    <v-divider />
-                                </template>
+                        <span>{{ $t('History.LoadCompleteHistory') }}</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                        <template #activator="{ on, attrs }">
+                            <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on" @click="exportHistory">
+                                <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>{{ $t('History.TitleExportHistory') }}</span>
+                    </v-tooltip>
+                    <v-menu :offset-y="true" :close-on-content-click="false">
+                        <template #activator="{ on, attrs }">
+                            <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
+                                <v-icon>{{ mdiCog }}</v-icon>
+                            </v-btn>
+                        </template>
+                        <v-list>
+                            <template v-if="allPrintStatusArray.length">
                                 <v-list-item
-                                    v-for="(header, index) of configHeaders"
-                                    :key="'history-list-panel-header-option-' + index"
+                                    v-for="status of allPrintStatusArray"
+                                    :key="status.key"
                                     class="minHeight36">
                                     <v-checkbox
-                                        v-model="header.visible"
                                         class="mt-0"
                                         hide-details
-                                        :label="header.text"
-                                        @change="changeColumnVisible(header.value)" />
+                                        :input-value="status.showInTable"
+                                        :label="`${status.displayName} (${status.value})`"
+                                        @change="changeStatusVisible(status)" />
                                 </v-list-item>
-                            </v-list>
-                        </v-menu>
-                    </v-col>
-                </v-row>
-            </v-card-text>
-            <v-divider class="mb-3" />
-            <v-data-table
-                v-model="selectedJobs"
-                :items="entries"
-                class="history-jobs-table"
-                :headers="filteredHeaders"
-                :custom-sort="sortFiles"
-                :sort-by.sync="sortBy"
-                :sort-desc.sync="sortDesc"
-                :items-per-page.sync="countPerPage"
-                :footer-props="{
-                    itemsPerPageText: $t('History.Jobs'),
-                    itemsPerPageAllText: $t('History.AllJobs'),
-                    itemsPerPageOptions: [10, 25, 50, 100, -1],
-                }"
-                item-key="job_id"
-                :search="search"
-                :custom-filter="advancedSearch"
-                mobile-breakpoint="0"
-                show-select>
-                <template #no-data>
-                    <div class="text-center">{{ $t('History.Empty') }}</div>
-                </template>
+                                <v-divider />
+                            </template>
+                            <v-list-item
+                                v-for="(header, index) of configHeaders"
+                                :key="'history-list-panel-header-option-' + index"
+                                class="minHeight36">
+                                <v-checkbox
+                                    v-model="header.visible"
+                                    class="mt-0"
+                                    hide-details
+                                    :label="header.text"
+                                    @change="changeColumnVisible(header.value)" />
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </v-col>
+            </v-row>
+        </v-card-text>
+        <v-divider class="mb-3" />
+        <v-data-table
+            v-model="selectedJobs"
+            :items="entries"
+            class="history-jobs-table"
+            :headers="filteredHeaders"
+            :custom-sort="sortFiles"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
+            :items-per-page.sync="countPerPage"
+            :footer-props="{
+                itemsPerPageText: $t('History.Jobs'),
+                itemsPerPageAllText: $t('History.AllJobs'),
+                itemsPerPageOptions: [10, 25, 50, 100, -1],
+            }"
+            item-key="job_id"
+            :search="search"
+            :custom-filter="advancedSearch"
+            mobile-breakpoint="0"
+            show-select>
+            <template #no-data>
+                <div class="text-center">{{ $t('History.Empty') }}</div>
+            </template>
 
-                <template #item="{ index, item, isSelected, select }">
-                    <history-list-entry-job
-                        v-if="item.type === 'job'"
-                        :key="`${index}_${item.job_id}`"
-                        :is-selected="isSelected"
-                        :item="item"
-                        :table-fields="tableFields"
-                        @select="select" />
-                    <history-list-entry-maintenance
-                        v-else-if="item.type === 'maintenance'"
-                        :key="`${index}_${item.id}`"
-                        :is-selected="isSelected"
-                        :item="item"
-                        :table-fields="tableFields"
-                        @select="select" />
-                </template>
-            </v-data-table>
-        </panel>
-        <v-dialog v-model="deleteSelectedDialog" max-width="400">
-            <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="deleteSelectedDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <p v-if="selectedJobs.length === 1" class="mb-0">
-                        {{ $t('History.DeleteSingleJobQuestion') }}
-                    </p>
-                    <p v-else class="mb-0">
-                        {{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}
-                    </p>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn color="" text @click="deleteSelectedDialog = false">{{ $t('History.Cancel') }}</v-btn>
-                    <v-btn color="error" text @click="deleteSelectedJobs">{{ $t('History.Delete') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+            <template #item="{ index, item, isSelected, select }">
+                <history-list-entry-job
+                    v-if="item.type === 'job'"
+                    :key="`${index}_${item.job_id}`"
+                    :is-selected="isSelected"
+                    :item="item"
+                    :table-fields="tableFields"
+                    @select="select" />
+                <history-list-entry-maintenance
+                    v-else-if="item.type === 'maintenance'"
+                    :key="`${index}_${item.id}`"
+                    :is-selected="isSelected"
+                    :item="item"
+                    :table-fields="tableFields"
+                    @select="select" />
+            </template>
+        </v-data-table>
+        <history-list-panel-delete-selected-dialog :show="deleteSelectedDialog" @close="deleteSelectedDialog = false" />
         <history-list-panel-add-maintenance :show="addMaintenanceDialog" @close="addMaintenanceDialog = false" />
-    </div>
+    </panel>
 </template>
 
 <script lang="ts">
@@ -177,6 +151,7 @@ import HistoryListEntryJob from '@/components/panels/HistoryList/HistoryListEntr
 import HistoryListPanelAddMaintenance from '@/components/dialogs/HistoryListPanelAddMaintenance.vue'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListEntryMaintenance from '@/components/panels/HistoryList/HistoryListEntryMaintenance.vue'
+import HistoryListPanelDeleteSelectedDialog from '@/components/dialogs/HistoryListPanelDeleteSelectedDialog.vue'
 
 export interface HistoryListPanelRow {
     text: string
@@ -190,6 +165,7 @@ export interface HistoryListPanelRow {
 
 @Component({
     components: {
+        HistoryListPanelDeleteSelectedDialog,
         HistoryListEntryMaintenance,
         HistoryListPanelAddMaintenance,
         HistoryListEntryJob,
@@ -452,32 +428,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
     }
 
-    formatPrintTime(totalSeconds: number) {
-        if (totalSeconds) {
-            let output = ''
-
-            const days = Math.floor(totalSeconds / (3600 * 24))
-            if (days) {
-                totalSeconds %= 3600 * 24
-                output += days + 'd'
-            }
-
-            const hours = Math.floor(totalSeconds / 3600)
-            totalSeconds %= 3600
-            if (hours) output += ' ' + hours + 'h'
-
-            const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += ' ' + minutes + 'm'
-
-            const seconds = totalSeconds % 60
-            if (seconds) output += ' ' + seconds.toFixed(0) + 's'
-
-            return output
-        }
-
-        return '--'
-    }
-
     sortFiles(items: any[], sortBy: string[], sortDesc: boolean[]) {
         const sortByClean = sortBy.length ? sortBy[0] : 'filename'
         const sortDescClean = sortDesc[0]
@@ -528,19 +478,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         }
 
         this.$store.dispatch('gui/showStatusInHistoryList', status.name)
-    }
-
-    deleteSelectedJobs() {
-        this.selectedJobs.forEach((item: ServerHistoryStateJob) => {
-            this.$socket.emit(
-                'server.history.delete_job',
-                { uid: item.job_id },
-                { action: 'server/history/getDeletedJobs' }
-            )
-        })
-
-        this.selectedJobs = []
-        this.deleteSelectedDialog = false
     }
 
     exportHistory() {
