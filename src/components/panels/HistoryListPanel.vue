@@ -221,7 +221,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get jobs() {
-        return this.$store.getters['server/history/getFilterdJobList'] ?? []
+        return this.$store.getters['server/history/getFilteredJobList'] ?? []
     }
 
     get maintenanceEntries() {

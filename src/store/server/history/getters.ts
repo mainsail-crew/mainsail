@@ -354,7 +354,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         }
     },
 
-    getFilterdJobList: (state, getters, rootState) => {
+    getFilteredJobList: (state, getters, rootState) => {
         const hideStatus = rootState.gui.view.history.hidePrintStatus
 
         return state.jobs.filter((job: ServerHistoryStateJob) => {
