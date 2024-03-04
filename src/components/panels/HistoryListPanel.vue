@@ -27,7 +27,9 @@
                                 <v-icon>{{ mdiDelete }}</v-icon>
                             </v-btn>
                         </template>
-                        <history-list-panel-add-maintenance />
+                        <v-btn class="px-2 minwidth-0 ml-3" @click="addMaintenanceDialog = true">
+                            <v-icon>{{ mdiNotebookPlus }}</v-icon>
+                        </v-btn>
                         <v-tooltip v-if="!allLoaded" top>
                             <template #activator="{ on, attrs }">
                                 <v-btn
@@ -150,6 +152,7 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <history-list-panel-add-maintenance :show="addMaintenanceDialog" @close="addMaintenanceDialog = false" />
     </div>
 </template>
 
@@ -167,6 +170,7 @@ import {
     mdiDelete,
     mdiFileDocumentMultipleOutline,
     mdiMagnify,
+    mdiNotebookPlus,
 } from '@mdi/js'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import HistoryListEntryJob from '@/components/panels/HistoryList/HistoryListEntryJob.vue'
@@ -196,11 +200,12 @@ export interface HistoryListPanelRow {
 export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiCog = mdiCog
+    mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
     mdiDatabaseExportOutline = mdiDatabaseExportOutline
     mdiDelete = mdiDelete
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiMagnify = mdiMagnify
-    mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
+    mdiNotebookPlus = mdiNotebookPlus
 
     formatFilesize = formatFilesize
 
@@ -208,6 +213,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     sortBy = 'start_time'
     sortDesc = true
 
+    addMaintenanceDialog = false
     deleteSelectedDialog = false
 
     get allLoaded() {
