@@ -194,6 +194,12 @@
         "No": "No",
         "Yes": "Yes"
     },
+    "CoolDownDialog": {
+        "AreYouSure": "Are you sure?",
+        "CoolDown": "CoolDown",
+        "No": "No",
+        "Yes": "Yes"
+    },
     "Files": {
         "AddBatchToQueue": "Add batch to Queue",
         "AddToQueue": "Add to Queue",
@@ -1144,6 +1150,8 @@
             "BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the top bar.",
             "ConfirmOnEmergencyStop": "Require confirm on Emergency Stop",
             "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
+            "ConfirmOnCoolDown": "Require confirm on CoolDown",
+            "ConfirmOnCoolDownDescription": "Show a confirmation dialog on CoolDown",
             "ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
             "ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",
             "DefaultNavigationState": "Navigation default state",

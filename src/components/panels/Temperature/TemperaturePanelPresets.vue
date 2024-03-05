@@ -39,10 +39,30 @@
             :text="$vuetify.breakpoint.mdAndUp"
             tile
             color="primary"
-            @click="cooldown">
+            @click="btnCoolDown">
             <v-icon small>{{ mdiSnowflake }}</v-icon>
             <span class="d-none ml-1 d-md-inline">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
         </v-btn>
+        <v-dialog v-model="showCoolDownDialog" width="400" :fullscreen="isMobile">
+            <panel
+                :title="$t('CoolDownDialog.CoolDown')"
+                toolbar-color="info"
+                card-class="emergency-stop-dialog"
+                :icon="mdiAlertOctagonOutline"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="showCoolDownDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>{{ $t('CoolDownDialog.AreYouSure') }}</v-card-text>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn text @click="showCoolDownDialog = false">{{ $t('CoolDownDialog.No') }}</v-btn>
+                    <v-btn color="primary" text @click="cooldown">{{ $t('CoolDownDialog.Yes') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </div>
 </template>
 
@@ -51,13 +71,17 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
-import { mdiFire, mdiMenuDown, mdiSnowflake } from '@mdi/js'
+import { mdiFire, mdiMenuDown, mdiSnowflake, mdiAlertOctagonOutline, mdiCloseThick } from '@mdi/js'
 
 @Component
 export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
     mdiFire = mdiFire
     mdiMenuDown = mdiMenuDown
     mdiSnowflake = mdiSnowflake
+    mdiAlertOctagonOutline = mdiAlertOctagonOutline
+    mdiCloseThick = mdiCloseThick
+
+    showCoolDownDialog = false
 
     get presets(): GuiPresetsStatePreset[] {
         return this.$store.getters['gui/presets/getPresets'] ?? []
@@ -100,7 +124,18 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
         }
     }
 
+    btnCoolDown(): void {
+        const confirmOnCoolDown = this.$store.state.gui.uiSettings.confirmOnCoolDown
+        if (confirmOnCoolDown) {
+            this.showCoolDownDialog = true
+            return
+        }
+
+        this.cooldown();
+    }
+
     cooldown(): void {
+        this.showCoolDownDialog = false
         this.$store.dispatch('server/addEvent', { message: this.cooldownGcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: this.cooldownGcode })
     }

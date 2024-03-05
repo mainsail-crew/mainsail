@@ -105,6 +105,7 @@ export interface GuiState {
         lockSlidersOnTouchDevices: boolean
         lockSlidersDelay: number
         confirmOnEmergencyStop: boolean
+        confirmOnCoolDown: boolean
         confirmOnPowerDeviceChange: boolean
         boolBigThumbnail: boolean
         bigThumbnailBackground: string
