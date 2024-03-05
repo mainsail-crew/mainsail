@@ -133,12 +133,6 @@
         "ScrewName": "Screw Name",
         "ScrewOutput": "{current} of {max}"
     },
-    "CoolDownDialog": {
-        "AreYouSure": "Are you sure?",
-        "CoolDown": "CoolDown",
-        "No": "No",
-        "Yes": "Yes"
-    },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
@@ -154,6 +148,12 @@
         "HideTimelapse": "Hide Timelapse",
         "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
+    },
+    "CoolDownDialog": {
+        "AreYouSure": "Are you sure?",
+        "CoolDown": "CoolDown",
+        "No": "No",
+        "Yes": "Yes"
     },
     "DevicesDialog": {
         "CanBusInfo": "Only unassigned nodes can be detected. It’s recommended to have only one unassigned device connected to the can bus to avoid communication issues. For more details, please click on the link:",
