@@ -188,15 +188,15 @@
         "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
         "Uploading": "Uploading"
     },
-    "EmergencyStopDialog": {
-        "AreYouSure": "Are you sure?",
-        "EmergencyStop": "Emergency Stop",
-        "No": "No",
-        "Yes": "Yes"
-    },
     "CoolDownDialog": {
         "AreYouSure": "Are you sure?",
         "CoolDown": "CoolDown",
+        "No": "No",
+        "Yes": "Yes"
+    },
+    "EmergencyStopDialog": {
+        "AreYouSure": "Are you sure?",
+        "EmergencyStop": "Emergency Stop",
         "No": "No",
         "Yes": "Yes"
     },
@@ -1149,8 +1149,8 @@
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
             "BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the top bar.",
             "ConfirmOnEmergencyStop": "Require confirm on Emergency Stop",
-            "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
             "ConfirmOnCoolDown": "Require confirm on CoolDown",
+            "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
             "ConfirmOnCoolDownDescription": "Show a confirmation dialog on CoolDown",
             "ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
             "ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",

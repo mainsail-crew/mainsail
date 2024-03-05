@@ -131,7 +131,7 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
             return
         }
 
-        this.cooldown();
+        this.cooldown()
     }
 
     cooldown(): void {
