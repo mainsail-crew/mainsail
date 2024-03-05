@@ -133,6 +133,12 @@
         "ScrewName": "Screw Name",
         "ScrewOutput": "{current} of {max}"
     },
+    "CoolDownDialog": {
+        "AreYouSure": "Are you sure?",
+        "CoolDown": "CoolDown",
+        "No": "No",
+        "Yes": "Yes"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
@@ -187,12 +193,6 @@
         "UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
         "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
         "Uploading": "Uploading"
-    },
-    "CoolDownDialog": {
-        "AreYouSure": "Are you sure?",
-        "CoolDown": "CoolDown",
-        "No": "No",
-        "Yes": "Yes"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Are you sure?",
@@ -1148,10 +1148,10 @@
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
             "BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the top bar.",
-            "ConfirmOnEmergencyStop": "Require confirm on Emergency Stop",
             "ConfirmOnCoolDown": "Require confirm on CoolDown",
-            "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
             "ConfirmOnCoolDownDescription": "Show a confirmation dialog on CoolDown",
+            "ConfirmOnEmergencyStop": "Require confirm on Emergency Stop",
+            "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
             "ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
             "ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",
             "DefaultNavigationState": "Navigation default state",
