@@ -272,6 +272,8 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         if (warnings.length) {
             const date = rootState.server.system_boot_at ?? new Date()
 
+            window.console.log(warnings)
+
             // get all dismissed klipper warnings and convert it to a string[]
             const warningsDismisses = rootGetters['gui/notifications/getDismissByCategory']('klipperWarning').map(
                 (dismiss: GuiNotificationStateDismissEntry) => {
@@ -293,6 +295,8 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                 } else if (warning.type === 'deprecated_option') {
                     title = i18n.t('App.Notifications.KlipperWarnings.DeprecatedOptionHeadline').toString()
                     description = i18n.t('App.Notifications.KlipperWarnings.DeprecatedOption', warning).toString()
+                } else if (warning.type === 'runtime_warning') {
+                    title = i18n.t('App.Notifications.KlipperWarnings.KlipperRuntimeWarning').toString()
                 }
 
                 // generate url to mainsail docs to fix this warning
