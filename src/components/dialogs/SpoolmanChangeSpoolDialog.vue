@@ -156,6 +156,11 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     }
 
     customFilter(value: any, search: string, item: ServerSpoolmanStateSpool): boolean {
+        if (search.trim().startsWith('web+spoolman:s-')) {
+            const spoolId = parseInt(search.split('-')[1] ?? -1)
+            return item.id === spoolId
+        }
+
         const querySplits = search.toLowerCase().split(' ')
         const searchArray = [
             item.comment,

@@ -4,7 +4,7 @@
             <the-sidebar />
             <the-topbar />
             <v-main id="content" :style="mainStyle">
-                <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
+                <v-container id="page-container" fluid :class="containerClasses">
                     <router-view />
                 </v-container>
             </v-main>
@@ -44,6 +44,7 @@ import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
 import TheScrewsTiltAdjustDialog from '@/components/dialogs/TheScrewsTiltAdjustDialog.vue'
 import { setAndLoadLocale } from './plugins/i18n'
 import TheMacroPrompt from '@/components/dialogs/TheMacroPrompt.vue'
+import { AppRoute } from '@/routes'
 
 Component.registerHooks(['metaInfo'])
 
@@ -170,6 +171,20 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
 
     get print_percent(): number {
         return Math.floor(this.$store.getters['printer/getPrintPercent'] * 100)
+    }
+
+    get containerClasses() {
+        const currentRouteOptions = this.$router.options.routes?.find(
+            (route) => route.name === this.$route.name
+        ) as AppRoute
+
+        return {
+            'px-3': true,
+            'px-sm-6': true,
+            'py-sm-6': true,
+            'mx-auto': true,
+            fullscreen: currentRouteOptions?.fullscreen ?? false,
+        }
     }
 
     @Watch('language')

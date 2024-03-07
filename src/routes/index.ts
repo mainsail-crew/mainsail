@@ -22,6 +22,7 @@ import {
 
 const routes: AppRoute[] = [
     {
+        name: 'dashboard',
         title: 'Dashboard',
         path: '/',
         icon: mdiMonitorDashboard,
@@ -31,6 +32,7 @@ const routes: AppRoute[] = [
         position: 10,
     },
     {
+        name: 'farm',
         title: 'Printers',
         path: '/allPrinters',
         component: Farm,
@@ -38,6 +40,7 @@ const routes: AppRoute[] = [
         showInNavi: false,
     },
     {
+        name: 'webcam',
         title: 'Webcam',
         path: '/cam',
         icon: mdiWebcam,
@@ -45,8 +48,10 @@ const routes: AppRoute[] = [
         alwaysShow: true,
         showInNavi: true,
         position: 20,
+        fullscreen: true,
     },
     {
+        name: 'console',
         title: 'Console',
         path: '/console',
         icon: mdiConsoleLine,
@@ -57,6 +62,7 @@ const routes: AppRoute[] = [
         position: 30,
     },
     {
+        name: 'heightmap',
         title: 'Heightmap',
         path: '/heightmap',
         icon: mdiGrid,
@@ -67,6 +73,7 @@ const routes: AppRoute[] = [
         position: 40,
     },
     {
+        name: 'gcodefiles',
         title: 'G-Code Files',
         path: '/files',
         icon: mdiFileDocumentMultipleOutline,
@@ -75,8 +82,10 @@ const routes: AppRoute[] = [
         showInNavi: true,
         registeredDirectory: 'gcodes',
         position: 50,
+        fullscreen: true,
     },
     {
+        name: 'gcodeviewer',
         title: 'G-Code Viewer',
         path: '/viewer',
         icon: mdiVideo3d,
@@ -84,8 +93,10 @@ const routes: AppRoute[] = [
         alwaysShow: true,
         showInNavi: true,
         position: 60,
+        fullscreen: true,
     },
     {
+        name: 'history',
         title: 'History',
         path: '/history',
         icon: mdiHistory,
@@ -96,6 +107,7 @@ const routes: AppRoute[] = [
         position: 70,
     },
     {
+        name: 'timelapse',
         title: 'Timelapse',
         path: '/timelapse',
         icon: mdiTimelapse,
@@ -106,6 +118,7 @@ const routes: AppRoute[] = [
         position: 80,
     },
     {
+        name: 'machine',
         title: 'Machine',
         path: '/config',
         icon: mdiWrench,
@@ -127,6 +140,7 @@ const routes: AppRoute[] = [
 export default routes
 
 export interface AppRoute {
+    name?: string
     title: string | null
     path: string
     redirect?: string
@@ -140,4 +154,5 @@ export interface AppRoute {
     klipperIsConnected?: boolean
     children?: AppRoute[]
     position?: number
+    fullscreen?: boolean
 }
