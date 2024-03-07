@@ -11,6 +11,10 @@ body {
     max-width: 1800px;
 }
 
+#page-container.fullscreen {
+    max-width: none;
+}
+
 .overflowingContentWidgets {
     visibility: hidden;
 }
