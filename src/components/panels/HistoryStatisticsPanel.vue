@@ -57,17 +57,12 @@
                     </v-simple-table>
                 </v-col>
                 <v-col class="col-12 col-sm-6 col-md-4">
-                    <history-all-print-status-chart
-                        v-if="togglePrintStatus === 'chart'"></history-all-print-status-chart>
-                    <history-all-print-status-table v-else></history-all-print-status-table>
+                    <history-all-print-status-chart v-if="togglePrintStatus === 'chart'" />
+                    <history-all-print-status-table v-else />
                     <div class="text-center mb-3">
                         <v-btn-toggle v-model="togglePrintStatus" small mandatory>
-                            <v-btn small value="chart">
-                                {{ $t('History.Chart') }}
-                            </v-btn>
-                            <v-btn small value="table">
-                                {{ $t('History.Table') }}
-                            </v-btn>
+                            <v-btn small value="chart">{{ $t('History.Chart') }}</v-btn>
+                            <v-btn small value="table">{{ $t('History.Table') }}</v-btn>
                         </v-btn-toggle>
                         <v-tooltip v-if="!allLoaded" top>
                             <template #activator="{ on, attrs }">
@@ -88,16 +83,12 @@
                     </div>
                 </v-col>
                 <v-col class="col-12 col-sm-12 col-md-4">
-                    <history-filament-usage v-if="toggleChart === 'filament_usage'"></history-filament-usage>
-                    <history-printtime-avg v-else-if="toggleChart === 'printtime_avg'"></history-printtime-avg>
+                    <history-filament-usage v-if="toggleChart === 'filament_usage'" />
+                    <history-printtime-avg v-else-if="toggleChart === 'printtime_avg'" />
                     <div class="text-center mt-3">
                         <v-btn-toggle v-model="toggleChart" small mandatory>
-                            <v-btn small value="filament_usage">
-                                {{ $t('History.FilamentUsage') }}
-                            </v-btn>
-                            <v-btn small value="printtime_avg">
-                                {{ $t('History.PrinttimeAvg') }}
-                            </v-btn>
+                            <v-btn small value="filament_usage">{{ $t('History.FilamentUsage') }}</v-btn>
+                            <v-btn small value="printtime_avg">{{ $t('History.PrinttimeAvg') }}</v-btn>
                         </v-btn-toggle>
                     </div>
                 </v-col>
