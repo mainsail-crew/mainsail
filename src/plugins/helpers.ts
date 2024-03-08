@@ -113,7 +113,7 @@ export const formatFrequency = (frequency: number): string => {
 }
 
 export const formatPrintTime = (totalSeconds: number, boolDays: boolean = true): string => {
-    if (totalSeconds) return '--'
+    if (!totalSeconds) return '--'
 
     const output: string[] = []
 
