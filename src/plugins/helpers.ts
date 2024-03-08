@@ -112,7 +112,7 @@ export const formatFrequency = (frequency: number): string => {
     return Math.max(frequency, 0.1).toFixed() + units[i]
 }
 
-export const formatPrintTime = (totalSeconds: number, boolDays: boolean = true): string => {
+export const formatPrintTime = (totalSeconds: number, boolDays = true): string => {
     if (!totalSeconds) return '--'
 
     const output: string[] = []

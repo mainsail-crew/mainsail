@@ -201,17 +201,15 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get maintenanceEntries() {
-        const entries = this.$store.getters['gui/maintenance/getEntries'] ?? []
-
-        window.console.log('mEntries', entries)
-
-        return entries
+        return this.$store.getters['gui/maintenance/getEntries'] ?? []
     }
 
     get entries() {
         let entries = [...this.jobs].map((job) => {
             return { ...job, type: 'job' }
         })
+
+        if (this.sortBy !== 'start_time') return entries
 
         entries = [
             ...entries,

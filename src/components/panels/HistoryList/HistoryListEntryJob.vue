@@ -148,7 +148,7 @@ import {
     mdiPrinter,
     mdiTextBoxSearch,
 } from '@mdi/js'
-import { formatFilesize } from '@/plugins/helpers'
+import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import { HistoryListPanelRow } from '@/components/panels/HistoryListPanel.vue'
 import HistoryListPanelNoteDialog from '@/components/dialogs/HistoryListPanelNoteDialog.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
@@ -312,7 +312,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 return this.formatDateTime(value * 1000)
 
             case 'time':
-                return this.formatPrintTime(value)
+                return formatPrintTime(value, false)
 
             case 'temp':
                 return value?.toFixed() + ' °C'
@@ -325,30 +325,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             default:
                 return value
         }
-    }
-
-    formatPrintTime(totalSeconds: number) {
-        if (!totalSeconds) return '--'
-
-        let output = ''
-
-        const days = Math.floor(totalSeconds / (3600 * 24))
-        if (days) {
-            totalSeconds %= 3600 * 24
-            output += days + 'd'
-        }
-
-        const hours = Math.floor(totalSeconds / 3600)
-        totalSeconds %= 3600
-        if (hours) output += ' ' + hours + 'h'
-
-        const minutes = Math.floor(totalSeconds / 60)
-        if (minutes) output += ' ' + minutes + 'm'
-
-        const seconds = totalSeconds % 60
-        if (seconds) output += ' ' + seconds.toFixed(0) + 's'
-
-        return output
     }
 }
 </script>

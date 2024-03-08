@@ -49,12 +49,12 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
         })
     },
 
-    /*delete({ commit }, payload) {
+    delete({ commit }, payload) {
         commit('delete', payload)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'reminders', key: payload })
+        Vue.$socket.emit('server.database.delete_item', { namespace: 'maintenance', key: payload })
     },
 
-    repeat({ dispatch, getters, state, rootState }, payload) {
+    /*repeat({ dispatch, getters, state, rootState }, payload) {
         if (!(payload.id in state.reminders)) return
         const reminder = getters['getReminder'](payload.id)
         const new_start_time = rootState.server?.history?.job_totals.total_print_time || 0

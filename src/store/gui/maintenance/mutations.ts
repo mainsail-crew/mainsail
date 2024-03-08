@@ -24,9 +24,9 @@ export const mutations: MutationTree<GuiMaintenanceState> = {
         }
     },
 
-    /*delete(state, payload) {
-        if (payload in state.reminders) {
-            Vue.delete(state.reminders, payload)
+    delete(state, payload) {
+        if (payload in state.entries) {
+            Vue.delete(state.entries, payload)
         }
-    },*/
+    },
 }

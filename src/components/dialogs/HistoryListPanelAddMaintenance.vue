@@ -105,7 +105,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -172,28 +172,56 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
             entry: {
                 name: this.name,
                 note: this.note,
-                start_time: date.getTime(),
+                // divided by 1000 to get seconds, because history entries are also in seconds
+                start_time: date.getTime() / 1000,
                 end_time: null,
+                start_filament: this.totalFilamentUsed,
+                start_total_print_time: this.totalPrinttime,
 
-                reminder: this.reminder,
-                reminderRepeat: this.reminderRepeat,
+                reminder: {
+                    bool: this.reminder,
+                    repeat: this.reminderRepeat,
 
-                reminderFilament: this.reminderFilament,
-                reminderFilamentStart: this.totalFilamentUsed,
-                reminderFilamentTrigger: reminderFilamentTrigger,
-                reminderFilamentEnd: null,
+                    filament: {
+                        bool: this.reminderFilament,
+                        trigger: reminderFilamentTrigger,
+                        end: null,
+                    },
 
-                reminderPrinttime: this.reminderPrinttime,
-                reminderPrinttimeStart: this.totalPrinttime,
-                reminderPrinttimeTrigger: reminderPrinttimeTrigger,
-                reminderPrinttimeEnd: null,
+                    printtime: {
+                        bool: this.reminderPrinttime,
+                        trigger: reminderPrinttimeTrigger,
+                        end: null,
+                    },
 
-                reminderDate: this.reminderDate,
-                reminderDateTrigger: reminderDateTrigger,
+                    date: {
+                        bool: this.reminderDate,
+                        trigger: reminderDateTrigger,
+                        end: null,
+                    },
+                },
             },
         })
 
         this.closeDialog()
+    }
+
+    resetValues() {
+        this.name = ''
+        this.note = ''
+        this.reminder = false
+        this.reminderRepeat = false
+        this.reminderFilament = false
+        this.reminderFilamentValue = 0
+        this.reminderPrinttime = false
+        this.reminderPrinttimeValue = 0
+        this.reminderDate = false
+        this.reminderDateValue = 0
+    }
+
+    @Watch('show')
+    onShowChanged() {
+        if (this.show) this.resetValues()
     }
 }
 </script>
