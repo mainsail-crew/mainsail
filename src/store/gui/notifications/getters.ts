@@ -272,8 +272,6 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         if (warnings.length) {
             const date = rootState.server.system_boot_at ?? new Date()
 
-            window.console.log(warnings)
-
             // get all dismissed klipper warnings and convert it to a string[]
             const warningsDismisses = rootGetters['gui/notifications/getDismissByCategory']('klipperWarning').map(
                 (dismiss: GuiNotificationStateDismissEntry) => {
