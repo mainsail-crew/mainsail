@@ -74,6 +74,10 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
         return this.$store.getters['gui/presets/getCooldownGcode']
     }
 
+    get confirmOnCoolDown(): boolean {
+        return this.$store.state.gui.uiSettings.confirmOnCoolDown
+    }
+
     preheat(preset: GuiPresetsStatePreset): void {
         for (const [name, attributes] of Object.entries(preset.values)) {
             if (attributes.bool) {
@@ -108,8 +112,7 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
     }
 
     btnCoolDown(): void {
-        const confirmOnCoolDown = this.$store.state.gui.uiSettings.confirmOnCoolDown
-        if (confirmOnCoolDown) {
+        if (this.confirmOnCoolDown) {
             this.showCoolDownDialog = true
             return
         }
