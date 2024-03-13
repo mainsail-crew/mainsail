@@ -25,7 +25,7 @@
             </v-list>
             <v-divider class="_fix_transparency" />
             <v-list dense class="py-0">
-                <v-list-item link @click="cooldown">
+                <v-list-item link @click="btnCoolDown">
                     <div class="d-flex align-center _preset-title">
                         <v-icon small color="primary" class="mr-1">{{ mdiSnowflake }}</v-icon>
                         <span class="primary--text">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
@@ -43,26 +43,7 @@
             <v-icon small>{{ mdiSnowflake }}</v-icon>
             <span class="d-none ml-1 d-md-inline">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
         </v-btn>
-        <v-dialog v-model="showCoolDownDialog" width="400" :fullscreen="isMobile">
-            <panel
-                :title="$t('CoolDownDialog.CoolDown')"
-                toolbar-color="info"
-                card-class="emergency-stop-dialog"
-                :icon="mdiAlertOctagonOutline"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="showCoolDownDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>{{ $t('CoolDownDialog.AreYouSure') }}</v-card-text>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn text @click="showCoolDownDialog = false">{{ $t('CoolDownDialog.No') }}</v-btn>
-                    <v-btn color="primary" text @click="cooldown">{{ $t('CoolDownDialog.Yes') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+        <cool-down-dialog :show-dialog="showCoolDownDialog" @close="showCoolDownDialog = false" />
     </div>
 </template>
 
@@ -71,14 +52,16 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
-import { mdiFire, mdiMenuDown, mdiSnowflake, mdiAlertOctagonOutline, mdiCloseThick } from '@mdi/js'
+import { mdiFire, mdiMenuDown, mdiSnowflake, mdiCloseThick } from '@mdi/js'
+import CoolDownDialog from '@/components/dialogs/CoolDownDialog.vue'
 
-@Component
+@Component({
+    components: { CoolDownDialog },
+})
 export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
     mdiFire = mdiFire
     mdiMenuDown = mdiMenuDown
     mdiSnowflake = mdiSnowflake
-    mdiAlertOctagonOutline = mdiAlertOctagonOutline
     mdiCloseThick = mdiCloseThick
 
     showCoolDownDialog = false
