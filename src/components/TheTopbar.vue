@@ -82,7 +82,7 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-dialog v-model="showEmergencyStopDialog" width="400" :fullscreen="isMobile">
+        <v-dialog v-model="showEmergencyStopDialog" width="400" persistent>
             <panel
                 :title="$t('EmergencyStopDialog.EmergencyStop')"
                 toolbar-color="error"
