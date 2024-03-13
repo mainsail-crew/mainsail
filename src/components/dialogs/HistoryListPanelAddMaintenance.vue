@@ -3,7 +3,7 @@
         <panel
             :title="$t('History.AddMaintenance')"
             :icon="mdiNotebookPlus"
-            card-class="history-note-dialog"
+            card-class="history-add-maintenance-dialog"
             :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="closeDialog">
@@ -29,27 +29,27 @@
                 </v-row>
                 <v-row>
                     <v-col>
-                        <settings-row :title="$t('History.AddReminder')">
-                            <v-switch v-model="reminder" hide-details class="mt-0" />
+                        <settings-row :title="$t('History.Reminder')">
+                            <v-select
+                                v-model="reminder"
+                                :items="reminderItems"
+                                outlined
+                                dense
+                                hide-details
+                                class="mt-0" />
                         </settings-row>
                     </v-col>
                 </v-row>
                 <template v-if="reminder">
                     <v-row>
                         <v-col>
-                            <settings-row :title="$t('History.Repeat')">
-                                <v-switch v-model="reminderRepeat" hide-details class="mt-0" />
-                            </settings-row>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
                             <settings-row
+                                :icon="mdiAdjust"
                                 :title="$t('History.FilamentBasedReminder')"
                                 :sub-title="$t('History.FilamentBasedReminderDescription')">
                                 <v-checkbox v-model="reminderFilament" hide-details class="mt-0" />
                                 <v-text-field
-                                    v-model="reminderFilamentValue"
+                                    v-model.number="reminderFilamentValue"
                                     hide-details="auto"
                                     type="number"
                                     class="mt-0"
@@ -62,11 +62,12 @@
                     <v-row>
                         <v-col>
                             <settings-row
+                                :icon="mdiAlarm"
                                 :title="$t('History.PrinttimeBasedReminder')"
                                 :sub-title="$t('History.PrinttimeBasedReminderDescription')">
                                 <v-checkbox v-model="reminderPrinttime" hide-details class="mt-0" />
                                 <v-text-field
-                                    v-model="reminderPrinttimeValue"
+                                    v-model.number="reminderPrinttimeValue"
                                     hide-details="auto"
                                     type="number"
                                     class="mt-0"
@@ -79,11 +80,12 @@
                     <v-row>
                         <v-col>
                             <settings-row
+                                :icon="mdiCalendar"
                                 :title="$t('History.DateBasedReminder')"
                                 :sub-title="$t('History.DateBasedReminderDescription')">
                                 <v-checkbox v-model="reminderDate" hide-details class="mt-0" />
                                 <v-text-field
-                                    v-model="reminderDateValue"
+                                    v-model.number="reminderDateValue"
                                     hide-details="auto"
                                     type="number"
                                     class="mt-0"
@@ -98,7 +100,7 @@
             <v-card-actions>
                 <v-spacer />
                 <v-btn text @click="closeDialog">{{ $t('History.Cancel') }}</v-btn>
-                <v-btn color="primary" text @click="save">{{ $t('History.Save') }}</v-btn>
+                <v-btn color="primary" text :disabled="!isValid" @click="save">{{ $t('History.Save') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -109,7 +111,7 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiCloseThick, mdiNotebookPlus } from '@mdi/js'
+import { mdiAdjust, mdiAlarm, mdiCalendar, mdiCloseThick, mdiNotebookPlus } from '@mdi/js'
 
 @Component({
     components: {
@@ -118,6 +120,9 @@ import { mdiCloseThick, mdiNotebookPlus } from '@mdi/js'
     },
 })
 export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
+    mdiAdjust = mdiAdjust
+    mdiAlarm = mdiAlarm
+    mdiCalendar = mdiCalendar
     mdiCloseThick = mdiCloseThick
     mdiNotebookPlus = mdiNotebookPlus
 
@@ -125,8 +130,7 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
 
     name: string = ''
     note: string = ''
-    reminder: boolean = false
-    reminderRepeat: boolean = false
+    reminder: 'one-time' | 'repeat' | null = null
 
     reminderFilament: boolean = false
     reminderFilamentValue: number = 0
@@ -137,7 +141,26 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
     reminderDate: boolean = false
     reminderDateValue: number = 0
 
+    formWarning = ''
+
     nameInputRules = [(value: string) => !!value || this.$t('History.InvalidNameEmpty')]
+
+    get reminderItems() {
+        return [
+            {
+                text: this.$t('History.NoReminder').toString(),
+                value: null,
+            },
+            {
+                text: this.$t('History.OneTime').toString(),
+                value: 'one-time',
+            },
+            {
+                text: this.$t('History.Repeat').toString(),
+                value: 'repeat',
+            },
+        ]
+    }
 
     get totalFilamentUsed() {
         return this.$store.state.server.history.job_totals?.total_filament_used ?? 0
@@ -147,12 +170,26 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
         return this.$store.state.server.history.job_totals?.total_print_time ?? 0
     }
 
+    get isValid() {
+        if (this.name === '') return false
+
+        if (this.reminder !== null) {
+            if (!this.reminderFilament && !this.reminderPrinttime && !this.reminderDate) return false
+
+            if (this.reminderFilament && !this.reminderFilamentValue) return false
+            if (this.reminderPrinttime && !this.reminderPrinttimeValue) return false
+            if (this.reminderDate && !this.reminderDateValue) return false
+        }
+
+        return true
+    }
+
     closeDialog() {
         this.$emit('close')
     }
 
     save() {
-        let reminderFilamentTrigger: number | null = null
+        /*let reminderFilamentTrigger: number | null = null
         if (this.reminderFilament) {
             reminderFilamentTrigger = this.totalFilamentUsed + this.reminderFilamentValue * 100
         }
@@ -162,12 +199,12 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
             reminderPrinttimeTrigger = this.totalPrinttime + this.reminderPrinttimeValue * 60 * 60
         }
 
-        const date = new Date()
         let reminderDateTrigger: number | null = null
         if (this.reminderDate) {
             reminderDateTrigger = date.getTime() + this.reminderDateValue * 24 * 60 * 60 * 1000
-        }
+        }*/
 
+        const date = new Date()
         this.$store.dispatch('gui/maintenance/store', {
             entry: {
                 name: this.name,
@@ -176,27 +213,26 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
                 start_time: date.getTime() / 1000,
                 end_time: null,
                 start_filament: this.totalFilamentUsed,
-                start_total_print_time: this.totalPrinttime,
+                start_printtime: this.totalPrinttime,
 
                 reminder: {
-                    bool: this.reminder,
-                    repeat: this.reminderRepeat,
+                    type: this.reminder,
 
                     filament: {
                         bool: this.reminderFilament,
-                        trigger: reminderFilamentTrigger,
+                        value: this.reminderFilamentValue,
                         end: null,
                     },
 
                     printtime: {
                         bool: this.reminderPrinttime,
-                        trigger: reminderPrinttimeTrigger,
+                        value: this.reminderPrinttimeValue,
                         end: null,
                     },
 
                     date: {
                         bool: this.reminderDate,
-                        trigger: reminderDateTrigger,
+                        value: this.reminderDateValue,
                         end: null,
                     },
                 },
@@ -209,8 +245,7 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
     resetValues() {
         this.name = ''
         this.note = ''
-        this.reminder = false
-        this.reminderRepeat = false
+        this.reminder = null
         this.reminderFilament = false
         this.reminderFilamentValue = 0
         this.reminderPrinttime = false

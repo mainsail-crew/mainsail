@@ -9,29 +9,30 @@ export interface GuiMaintenanceStateEntry {
     name: string
     note: string
     start_time: number
-    start_filament: number
-    start_printtime: number
     end_time: number | null
+    start_filament: number
+    end_filament: number | null
+    start_printtime: number
+    end_printtime: number | null
 
     reminder: {
-        bool: boolean
-        repeat: boolean
+        type: null | 'one-time' | 'repeat'
 
         filament: {
             bool: boolean
-            trigger: number | null
+            value: number | null
             end: number | null
         }
 
         printtime: {
             bool: boolean
-            trigger: number | null
+            value: number | null
             end: number | null
         }
 
         date: {
             bool: boolean
-            trigger: number | null
+            value: number | null
         }
     }
 }

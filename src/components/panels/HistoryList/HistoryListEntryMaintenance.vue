@@ -13,25 +13,27 @@
         </td>
         <td>{{ item.name }}</td>
         <td class="text-right text-no-wrap">
-            <template v-if="item.reminder?.bool">
-                <v-tooltip top>
-                    <template #activator="{ on, attrs }">
-                        <v-icon small color="primary" v-bind="attrs" v-on="on">
-                            {{ mdiAlarm }}
-                        </v-icon>
-                    </template>
-                    <div>
-                        <div v-if="item.reminder.filament.bool">
-                            <v-icon small class="mr-1">{{ mdiAlarm }}</v-icon>
-                            {{ (item.reminder.filament.trigger / 1000).toFixed(1) }}m
-                        </div>
-                        <div v-if="item.reminder.printtime.bool">
-                            <v-icon small class="mr-1">{{ mdiAlarm }}</v-icon>
-                            {{ formatPrintTime(item.reminder.printtime.trigger, false) }}
-                        </div>
+            <v-tooltip top :disabled="item.reminder?.type === null">
+                <template #activator="{ on, attrs }">
+                    <v-icon small color="primary" v-bind="attrs" v-on="on">
+                        {{ mdiAlarm }}
+                    </v-icon>
+                </template>
+                <div>
+                    <div v-if="restTextFilament">
+                        <v-icon small class="mr-1">{{ mdiAdjust }}</v-icon>
+                        {{ restTextFilament }}
                     </div>
-                </v-tooltip>
-            </template>
+                    <div v-if="restTextPrinttime">
+                        <v-icon small class="mr-1">{{ mdiAlarm }}</v-icon>
+                        {{ restTextPrinttime }}
+                    </div>
+                    <div v-if="restTextDays">
+                        <v-icon small class="mr-1">{{ mdiCalendar }}</v-icon>
+                        {{ restTextDays }}
+                    </div>
+                </div>
+            </v-tooltip>
         </td>
         <td class="text-left text-no-wrap">
             {{ formatDateTime(item.start_time * 1000, false) }}
@@ -39,33 +41,41 @@
         <td :colspan="tableFields.length - 1" />
         <v-menu v-model="contextMenuBool" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
             <v-list>
+                <v-list-item @click="detailsDialogBool = true">
+                    <v-icon class="mr-1">{{ mdiTextBoxSearch }}</v-icon>
+                    {{ $t('History.Details') }}
+                </v-list-item>
                 <v-list-item class="red--text" @click="deleteEntry">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('History.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
+        <history-list-panel-detail-maintenance
+            :show="detailsDialogBool"
+            :item="item"
+            @close="detailsDialogBool = false" />
     </tr>
 </template>
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import Panel from '@/components/ui/Panel.vue'
 import BaseMixin from '@/components/mixins/base'
-import { mdiAlarm, mdiDelete, mdiNotebook } from '@mdi/js'
+import { mdiAdjust, mdiAlarm, mdiCalendar, mdiDelete, mdiNotebook, mdiTextBoxSearch } from '@mdi/js'
 import { HistoryListPanelRow } from '@/components/panels/HistoryListPanel.vue'
-import HistoryListPanelNoteDialog from '@/components/dialogs/HistoryListPanelNoteDialog.vue'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
-import { formatPrintTime } from '@/plugins/helpers'
+import HistoryListPanelDetailMaintenance from '@/components/dialogs/HistoryListPanelDetailMaintenance.vue'
 
 @Component({
-    components: { HistoryListPanelNoteDialog, HistoryListPanelDetailsDialog, Panel },
+    components: { HistoryListPanelDetailMaintenance, Panel },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
+    mdiAdjust = mdiAdjust
     mdiAlarm = mdiAlarm
+    mdiCalendar = mdiCalendar
     mdiDelete = mdiDelete
     mdiNotebook = mdiNotebook
-    formatPrintTime = formatPrintTime
+    mdiTextBoxSearch = mdiTextBoxSearch
 
     detailsDialogBool = false
 
@@ -81,6 +91,75 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         let output = ['file-list-cursor', 'user-select-none']
 
         return output
+    }
+
+    get restFilament() {
+        const start = this.item?.start_filament ?? 0
+        const end = this.item.end_filament ?? 0
+        const current = this.$store.state.server.history.job_totals?.total_filament_used ?? 0
+
+        // calc filament since start
+        // if end is not null, calc used filament until end
+        let used = current - start
+        if (end) used = end - start
+
+        // convert to m
+        used /= 1000
+
+        return used
+    }
+
+    get restTextFilament() {
+        if (!this.item.reminder.filament.bool) return false
+
+        const value = this.item.reminder.filament?.value ?? 0
+
+        return `${this.restFilament.toFixed(0)} / ${value} m`
+    }
+
+    get restPrinttime() {
+        const start = this.item.start_printtime ?? 0
+        const end = this.item.end_printtime ?? 0
+        const current = this.$store.state.server.history.job_totals?.total_print_time ?? 0
+
+        // calc filament since start
+        // if end is not null, calc used filament until end
+        let used = current - start
+        if (end) used = end - start
+
+        // convert to h
+        used /= 3600
+
+        return used
+    }
+
+    get restTextPrinttime() {
+        if (!this.item.reminder.printtime.bool) return false
+
+        const value = this.item.reminder.printtime?.value ?? 0
+
+        return `${this.restPrinttime.toFixed(1)} / ${value} h`
+    }
+
+    get restDays() {
+        const start = this.item.start_time ?? 0
+        const end = this.item.end_time ?? 0
+        const current = new Date().getTime() / 1000
+
+        // calc days since start
+        // if end is not null, calc used days until end
+        let used = current - start
+        if (end) used = end - start
+
+        return used / (60 * 60 * 24)
+    }
+
+    get restTextDays() {
+        if (!this.item.reminder.date.bool) return false
+
+        const value = this.item.reminder.date?.value ?? 0
+
+        return `${this.restDays.toFixed(0)} / ${value} days`
     }
 
     select(newVal: boolean) {
