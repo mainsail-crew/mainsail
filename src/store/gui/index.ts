@@ -156,6 +156,7 @@ export const getDefaultState = (): GuiState => {
             lockSlidersOnTouchDevices: true,
             lockSlidersDelay: 1.5,
             confirmOnEmergencyStop: false,
+            confirmOnCoolDown: false,
             confirmOnPowerDeviceChange: false,
             boolBigThumbnail: true,
             bigThumbnailBackground: defaultBigThumbnailBackground,

@@ -149,6 +149,12 @@
         "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
     },
+    "CoolDownDialog": {
+        "AreYouSure": "Are you sure?",
+        "CoolDown": "CoolDown",
+        "No": "No",
+        "Yes": "Yes"
+    },
     "DevicesDialog": {
         "CanBusInfo": "Only unassigned nodes can be detected. It’s recommended to have only one unassigned device connected to the can bus to avoid communication issues. For more details, please click on the link:",
         "ClickRefresh": "Click on the refresh button to search for devices.",
@@ -1142,6 +1148,8 @@
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
             "BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the top bar.",
+            "ConfirmOnCoolDown": "Require confirm on CoolDown",
+            "ConfirmOnCoolDownDescription": "Show a confirmation dialog on CoolDown",
             "ConfirmOnEmergencyStop": "Require confirm on Emergency Stop",
             "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
             "ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
