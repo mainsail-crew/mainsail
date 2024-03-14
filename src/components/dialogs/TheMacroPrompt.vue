@@ -15,6 +15,7 @@
             <v-card-text>
                 <template v-for="(event, index) in activePromptContent">
                     <macro-prompt-text v-if="event.type === 'text'" :key="'prompt_' + index" :event="event" />
+                    <macro-prompt-input v-if="event.type === 'input'" :key="'prompt_' + index" :event="event" />
                     <macro-prompt-button-group
                         v-if="event.type === 'button_group'"
                         :key="'prompt_' + index"
@@ -49,9 +50,17 @@ import MacroPromptFooterButton from '@/components/dialogs/MacroPromptFooterButto
 import MacroPromptText from '@/components/dialogs/MacroPromptText.vue'
 import MacroPromptButton from '@/components/dialogs/MacroPromptButton.vue'
 import MacroPromptButtonGroup from '@/components/dialogs/MacroPromptButtonGroup.vue'
+import MacroPromptInput from '@/components/dialogs/MacroPromptInput.vue'
 
 @Component({
-    components: { MacroPromptButtonGroup, MacroPromptButton, MacroPromptText, MacroPromptFooterButton, Panel },
+    components: {
+        MacroPromptButtonGroup,
+        MacroPromptButton,
+        MacroPromptText,
+        MacroPromptInput,
+        MacroPromptFooterButton,
+        Panel,
+    },
 })
 export default class TheMacroPrompt extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
@@ -112,7 +121,7 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     }
 
     get activePromptContent(): ServerStateEventPrompt[] {
-        const allowedTypes = ['button', 'text', 'button_group_start', 'button_group_end']
+        const allowedTypes = ['button', 'text', 'button_group_start', 'button_group_end', 'input']
 
         const output = this.activePrompt.filter((event: ServerStateEventPrompt) => allowedTypes.includes(event.type))
 
