@@ -14,35 +14,35 @@
                 <v-card-text class="pb-0">
                     <v-row>
                         <v-col>
-                            <div>Word of the Day</div>
+                            <div>{{ date }}</div>
                             <p class="text-h4 text--primary">{{ item.name }}</p>
                             <div v-if="note" class="text--primary" v-html="note" />
                         </v-col>
                     </v-row>
                 </v-card-text>
-                <v-divider class="my-3" />
+                <v-divider class="mt-3" />
                 <v-card-text class="pb-0">
                     <template v-if="item.reminder">
-                        <v-row v-if="restTextFilament">
+                        <v-row v-if="restFilamentText">
                             <v-col>
                                 <v-icon small class="mr-1">{{ mdiAdjust }}</v-icon>
                                 {{ $t('History.FilamentBasedReminder') }}
                             </v-col>
-                            <v-col class="text-right">{{ restTextFilament }}</v-col>
+                            <v-col :class="restFilamentClass">{{ restFilamentText }}</v-col>
                         </v-row>
-                        <v-row v-if="restTextPrinttime">
+                        <v-row v-if="restPrinttimeText">
                             <v-col>
                                 <v-icon small class="mr-1">{{ mdiAlarm }}</v-icon>
                                 {{ $t('History.PrinttimeBasedReminder') }}
                             </v-col>
-                            <v-col class="text-right">{{ restTextPrinttime }}</v-col>
+                            <v-col :class="restPrinttimeClass">{{ restPrinttimeText }}</v-col>
                         </v-row>
-                        <v-row v-if="restTextDays">
+                        <v-row v-if="restDaysText">
                             <v-col>
                                 <v-icon small class="mr-1">{{ mdiCalendar }}</v-icon>
                                 {{ $t('History.DateBasedReminder') }}
                             </v-col>
-                            <v-col class="text-right">{{ restTextDays }}</v-col>
+                            <v-col :class="restDaysClass">{{ restDaysText }}</v-col>
                         </v-row>
                     </template>
                 </v-card-text>
@@ -71,6 +71,10 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
     @Prop({ type: Boolean, default: false }) readonly show!: boolean
     @Prop({ type: Object, default: false }) readonly item!: GuiMaintenanceStateEntry
 
+    get date() {
+        return this.formatDateTime(this.item.start_time * 1000, false)
+    }
+
     get note() {
         return this.item.note.replaceAll('\n', '<br>')
     }
@@ -91,12 +95,23 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
         return used
     }
 
-    get restTextFilament() {
+    get restFilamentText() {
         if (!this.item.reminder.filament.bool) return false
 
         const value = this.item.reminder.filament?.value ?? 0
 
         return `${this.restFilament.toFixed(0)} / ${value} m`
+    }
+
+    get restFilamentClass() {
+        const output = ['text-right']
+
+        if (!this.item.reminder.filament.bool) return output
+
+        const value = this.item.reminder.filament?.value ?? 0
+        if (this.restFilament > value) return [...output, 'error--text']
+
+        return output
     }
 
     get restPrinttime() {
@@ -115,12 +130,23 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
         return used
     }
 
-    get restTextPrinttime() {
+    get restPrinttimeText() {
         if (!this.item.reminder.printtime.bool) return false
 
         const value = this.item.reminder.printtime?.value ?? 0
 
         return `${this.restPrinttime.toFixed(1)} / ${value} h`
+    }
+
+    get restPrinttimeClass() {
+        const output = ['text-right']
+
+        if (!this.item.reminder.printtime.bool) return output
+
+        const value = this.item.reminder.printtime?.value ?? 0
+        if (this.restPrinttime > value) return [...output, 'error--text']
+
+        return output
     }
 
     get restDays() {
@@ -136,12 +162,23 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
         return used / (60 * 60 * 24)
     }
 
-    get restTextDays() {
+    get restDaysText() {
         if (!this.item.reminder.date.bool) return false
 
         const value = this.item.reminder.date?.value ?? 0
 
         return `${this.restDays.toFixed(0)} / ${value} days`
+    }
+
+    get restDaysClass() {
+        const output = ['text-right']
+
+        if (!this.item.reminder.date.bool) return output
+
+        const value = this.item.reminder.date?.value ?? 0
+        if (this.restDays > value) return [...output, 'error--text']
+
+        return output
     }
 
     closeDialog() {
