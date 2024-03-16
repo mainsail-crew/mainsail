@@ -1,10 +1,10 @@
 <template>
     <v-alert :class="`notification-menu-entry--priority-${entry.priority}`" text :color="alertColor" border="left">
-        <v-row align="start">
+        <v-row align="start" class="flex-nowrap">
             <v-col class="grow">
                 <div class="notification-menu-entry__headline mb-1 text-subtitle-1">
                     <template v-if="'url' in entry">
-                        <a :class="`text-decoration-none ${alertColor}--text`" :href="entry.url" target="_blank">
+                        <a :class="`text-decoration-none ${alertColor}--text `" :href="entry.url" target="_blank">
                             <v-icon small :class="`${alertColor}--text pb-1`">
                                 {{ mdiLinkVariant }}
                             </v-icon>
@@ -28,7 +28,7 @@
                 <v-btn v-else icon plain :color="alertColor" class="mb-2" @click="dismiss('reboot', null)">
                     <v-icon>{{ mdiClose }}</v-icon>
                 </v-btn>
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn
                     v-if="showRepeatReminderButton"
                     icon
@@ -179,10 +179,12 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
 <style scoped>
 .notification-menu-entry__headline {
     line-height: 1.2;
+    overflow-wrap: anywhere;
 }
 
 .notification-menu-entry__description {
     max-width: 292px;
+    overflow-wrap: anywhere;
 }
 
 .notification-menu-entry--priority-critical .notification-menu-entry__description {
