@@ -292,7 +292,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 
             // find jobs via metadata
             const jobs = state.jobs.filter((job) => {
-                return job.metadata?.size === filesize && Math.round(job.metadata?.modified * 1000) === modified
+                return job.metadata?.size === filesize && Math.round((job.metadata?.modified ?? 0) * 1000) === modified
             })
             if (jobs.length) return jobs
             if (job_id) return jobs.filter((job) => job.job_id === job_id)

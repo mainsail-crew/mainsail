@@ -16,7 +16,7 @@
                         </template>
                         <template v-if="spool.comment">
                             <br />
-                            <small>{{ spool.comment }}</small>
+                            <small class="comment">{{ spool.comment }}</small>
                         </template>
                     </v-list-item-title>
                 </v-list-item-content>
@@ -130,5 +130,10 @@ export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
 
 .no--padding {
     padding: 0;
+}
+
+.comment {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 </style>

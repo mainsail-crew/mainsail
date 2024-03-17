@@ -1,6 +1,6 @@
 {
     "name": "mainsail",
-    "version": "2.9.1",
+    "version": "2.10.0",
     "private": true,
     "decription": "a klipper web interface",
     "author": {
@@ -33,7 +33,7 @@
         "@codemirror/view": "^6.0.3",
         "@jaames/iro": "^5.5.2",
         "@lezer/highlight": "^1.0.0",
-        "@sindarius/gcodeviewer": "^3.7.6",
+        "@sindarius/gcodeviewer": "^3.7.8",
         "@uiw/codemirror-theme-vscode": "^4.19.11",
         "axios": "^1.6.0",
         "codemirror": "^6.0.1",

@@ -2,6 +2,47 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.10.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.10.0) - 2024-02-15
+### Features
+
+- **history**: Add interrupted state to history job ([#1738](https://github.com/mainsail-crew/mainsail/pull/1738))
+- Add ability to re-arrange job queue's items ([#1692](https://github.com/mainsail-crew/mainsail/pull/1692))
+- Add sum + eta in jobqueue panel ([#1770](https://github.com/mainsail-crew/mainsail/pull/1770))
+- Add devices dialog in editor ([#1765](https://github.com/mainsail-crew/mainsail/pull/1765))
+- Add ability to add history items to job queue ([#1778](https://github.com/mainsail-crew/mainsail/pull/1778))
+
+### Bug Fixes and Improvements
+
+- **console**: Fix color of autocomplete and command list ([#1733](https://github.com/mainsail-crew/mainsail/pull/1733))
+- **timelapse**: Fix issue with changing timelapse settings ([#1745](https://github.com/mainsail-crew/mainsail/pull/1745))
+- Incorrect scaling of images in dialogImage ([#1746](https://github.com/mainsail-crew/mainsail/pull/1746))
+- Show extruder extra menu without load/unload macros ([#1747](https://github.com/mainsail-crew/mainsail/pull/1747))
+- Fix ETA calculation from jobqueue during print preheat ([#1773](https://github.com/mainsail-crew/mainsail/pull/1773))
+- File upload rate displays `NaN` instead of an actual value ([#1777](https://github.com/mainsail-crew/mainsail/pull/1777))
+
+### Performance
+
+- Batch gcode file metadata requests ([#1737](https://github.com/mainsail-crew/mainsail/pull/1737))
+
+### Refactor
+
+- Refactor spoolman integration to support v2 response ([#1749](https://github.com/mainsail-crew/mainsail/pull/1749))
+- Refactor heightmap page ([#1759](https://github.com/mainsail-crew/mainsail/pull/1759))
+
+### Localization
+
+- **da**: Update danish translation ([#1757](https://github.com/mainsail-crew/mainsail/pull/1757))
+- **de**: Update german locale ([#1772](https://github.com/mainsail-crew/mainsail/pull/1772))
+- **en**: Fix typo in DescriptionPreviouslyThrottled ([#1776](https://github.com/mainsail-crew/mainsail/pull/1776))
+- **it**: Update italian translation ([#1763](https://github.com/mainsail-crew/mainsail/pull/1763))
+- **zh**: Update chinese locale ([#1767](https://github.com/mainsail-crew/mainsail/pull/1767))
+
+### Other
+
+- **deps**: Update @sindarius/gcodeviewer ([#1755](https://github.com/mainsail-crew/mainsail/pull/1755))
+- Update github issue bot text ([#1743](https://github.com/mainsail-crew/mainsail/pull/1743))
+- Fix typo in bot text ([#1748](https://github.com/mainsail-crew/mainsail/pull/1748))
+
 ## [2.9.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.9.1) - 2023-12-31
 ### Bug Fixes and Improvements
 

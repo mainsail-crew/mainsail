@@ -10,7 +10,7 @@ import {
 import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
 import { hiddenDirectories, validGcodeExtensions } from '@/store/variables'
-import axios from 'axios'
+import axios, { AxiosProgressEvent } from 'axios'
 import { BatchMessage } from '@/plugins/webSocketClient'
 
 export const actions: ActionTree<FileState, RootState> = {
@@ -316,34 +316,17 @@ export const actions: ActionTree<FileState, RootState> = {
         await commit('uploadSetFilename', payload.file.name)
         await commit('uploadSetShow', true)
 
-        let lastTime = 0
-        let lastLoaded = 0
-
         return new Promise((resolve) => {
             axios
                 .post(apiUrl + '/server/files/upload', formData, {
                     cancelToken: cancelTokenSource.token,
                     headers: { 'Content-Type': 'multipart/form-data' },
-                    onUploadProgress: (progressEvent: any) => {
-                        const percent = (progressEvent.loaded * 100) / progressEvent.total
+                    onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+                        const percent = (progressEvent.progress ?? 0) * 100
                         commit('uploadSetPercent', percent)
 
-                        if (lastTime === 0) {
-                            lastTime = progressEvent.timeStamp
-                            lastLoaded = progressEvent.loaded
-
-                            return
-                        }
-
-                        const time = progressEvent.timeStamp - lastTime
-                        if (time < 1000) return
-
-                        const data = progressEvent.loaded - lastLoaded
-                        const speed = data / (time / 1000)
-                        commit('uploadSetSpeed', speed)
-
-                        lastTime = progressEvent.timeStamp
-                        lastLoaded = progressEvent.loaded
+                        const rate = progressEvent.rate ?? 0
+                        commit('uploadSetSpeed', rate)
                     },
                 })
                 .then((result: any) => {

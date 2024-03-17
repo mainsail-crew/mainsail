@@ -14,9 +14,9 @@ import { navigation } from '@/store/gui/navigation'
 import { notifications } from '@/store/gui/notifications'
 import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
+import { maintenance } from '@/store/gui/maintenance'
 import { webcams } from '@/store/gui/webcams'
 import { heightmap } from '@/store/gui/heightmap'
-import { reminders } from '@/store/gui/reminders'
 
 export const getDefaultState = (): GuiState => {
     return {
@@ -293,6 +293,7 @@ export const gui: Module<GuiState, any> = {
         console,
         gcodehistory,
         macros,
+        maintenance,
         miscellaneous,
         navigation,
         notifications,
@@ -300,6 +301,5 @@ export const gui: Module<GuiState, any> = {
         remoteprinters,
         webcams,
         heightmap,
-        reminders,
     },
 }

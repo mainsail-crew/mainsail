@@ -19,10 +19,30 @@ export interface ServerHistoryStateJob {
     end_time: number
     filament_used: number
     filename: string
-    // @ts-ignore
-    metadata?: {
-        modified: number
-        thumbnails: FileStateFileThumbnail[]
+    // eslint-disable-next-line
+    metadata: {
+        print_start_time?: number
+        job_id?: number
+        size?: number
+        slicer?: string
+        slicer_version?: string
+        layer_count?: number
+        layer_height?: number
+        first_layer_height?: number
+        object_height?: number
+        filament_total?: number
+        filament_weight_total?: number
+        estimated_time?: number
+        thumbnails?: FileStateFileThumbnail[]
+        first_layer_bed_temp?: number
+        first_layer_extr_temp?: number
+        gcode_start_byte?: number
+        gcode_end_byte?: number
+        filename?: string
+        filesize?: number
+        modified?: number
+        uuid?: string
+        nozzle_diameter?: number
         [key: string]: any
     }
     note?: string
@@ -30,7 +50,6 @@ export interface ServerHistoryStateJob {
     status: string
     start_time: number
     total_duration: number
-    [key: string]: any
 }
 
 export interface ServerHistoryStateAllPrintStatusEntry {
