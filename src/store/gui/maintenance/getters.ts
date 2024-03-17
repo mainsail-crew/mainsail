@@ -13,17 +13,35 @@ export const getters: GetterTree<GuiMaintenanceState, any> = {
         return entries
     },
 
-    /*getReminder: (state, getters) => (id: string) => {
-        const reminders = getters['getReminders'] ?? []
+    getOverdueEntries: (state, getters, rootState) => {
+        const currentTotalPrintTime = rootState.server.history.job_totals.total_print_time ?? 0
+        const currentTotalFilamentUsed = rootState.server.history.job_totals.total_filament_used ?? 0
+        const currentDate = new Date().getTime() / 1000
 
-        return reminders.find((reminder: GuiRemindersStateReminder) => reminder.id === id)
+        const entries: GuiMaintenanceStateEntry[] = getters['getEntries'] ?? []
+
+        return entries.filter((entry) => {
+            if (entry.reminder.type === null && entry.end_time !== null) return false
+
+            if (entry.reminder.filament.bool) {
+                const end = entry.start_filament + (entry.reminder.filament.value ?? 0)
+
+                if (end <= currentTotalFilamentUsed) return true
+            }
+
+            if (entry.reminder.printtime.bool) {
+                const end = entry.start_printtime + (entry.reminder.printtime.value ?? 0)
+
+                if (end <= currentTotalPrintTime) return true
+            }
+
+            if (entry.reminder.date.bool) {
+                const end = entry.start_time + (entry.reminder.date.value ?? 0)
+
+                if (end <= currentDate) return true
+            }
+
+            return false
+        })
     },
-
-    getOverdueReminders: (state, getters, rootState) => {
-        const currentTotalPrintTime = rootState.server.history.job_totals.total_print_time
-        const reminders: GuiRemindersStateReminder[] = getters['getReminders'] ?? []
-        return reminders.filter(
-            (reminder) => reminder.time_delta - (currentTotalPrintTime - reminder.start_total_print_time) < 0
-        )
-    },*/
 }

@@ -9,6 +9,7 @@ import { GuiRemindersStateReminder } from '../reminders/types'
 import { detect } from 'detect-browser'
 import semver from 'semver'
 import { minBrowserVersions } from '@/store/variables'
+import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 
 export const getters: GetterTree<GuiNotificationState, any> = {
     getNotifications: (state, getters) => {
@@ -36,7 +37,7 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         notifications = notifications.concat(getters['getNotificationsKlipperWarnings'])
 
         // user-created reminders
-        notifications = notifications.concat(getters['getNotificationsOverdueReminders'])
+        notifications = notifications.concat(getters['getNotificationsOverdueMaintenance'])
 
         // browser warnings
         notifications = notifications.concat(getters['getNotificationsBrowserWarnings'])
@@ -365,37 +366,33 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         return notifications
     },
 
-    getNotificationsOverdueReminders: (state, getters, rootState, rootGetters) => {
+    getNotificationsOverdueMaintenance: (state, getters, rootState, rootGetters) => {
         const notifications: GuiNotificationStateEntry[] = []
-        /*let reminders: GuiRemindersStateReminder[] = rootGetters['gui/reminders/getOverdueReminders']
+        let entries: GuiMaintenanceStateEntry[] = rootGetters['gui/maintenance/getOverdueEntries']
+        if (entries.length == 0) return []
 
         const date = rootState.server.system_boot_at ?? new Date()
 
-        if (reminders.length) {
-            // get all dismissed reminders and convert it to a string[]
-            const remindersDismisses = rootGetters['gui/notifications/getDismissByCategory']('reminder').map(
-                (dismiss: GuiNotificationStateDismissEntry) => {
-                    return dismiss.id
-                }
-            )
+        // get all dismissed reminders and convert it to a string[]
+        const remindersDismisses = rootGetters['gui/notifications/getDismissByCategory']('maintenance').map(
+            (dismiss: GuiNotificationStateDismissEntry) => {
+                return dismiss.id
+            }
+        )
 
-            // filter all dismissed reminders
-            reminders = reminders.filter((reminder) => !remindersDismisses.includes(reminder.id))
+        // filter all dismissed reminders
+        entries = entries.filter((entry) => !remindersDismisses.includes(entry.id))
 
-            reminders.forEach((reminder) => {
-                // TODO: translate
-                const title = 'User Created Reminder'
-                const description = reminder.name
-                notifications.push({
-                    id: `reminder/${reminder.id}`,
-                    priority: 'normal',
-                    title: title,
-                    description: description,
-                    date,
-                    dismissed: false,
-                })
+        entries.forEach((entry) => {
+            notifications.push({
+                id: `maintenance/${entry.id}`,
+                priority: 'high',
+                title: i18n.t('App.Notifications.MaintenanceReminder').toString(),
+                description: i18n.t('App.Notifications.MaintenanceReminderText', { name: entry.name }).toString(),
+                date,
+                dismissed: false,
             })
-        }*/
+        })
 
         return notifications
     },

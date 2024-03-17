@@ -15,6 +15,8 @@
                 "DeprecatedValueHeadline": "Deprecated Klipper Value",
                 "KlipperWarning": "Klipper warning"
             },
+            "MaintenanceReminder": "Maintenance Reminder",
+            "MaintenanceReminderText": "Maintenance \"{name}\" is due.",
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the log file and fix the issue.",
@@ -28,6 +30,9 @@
             "NextReboot": "next reboot",
             "NoNotification": "No Notification available",
             "Notifications": "Notifications",
+            "OneHourShort": "1H",
+            "OneDayShort": "1D",
+            "OneWeekShort": "1W",
             "Remind": "Remind:"
         },
         "NumberInput": {
