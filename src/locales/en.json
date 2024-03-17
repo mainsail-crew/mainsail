@@ -33,7 +33,8 @@
             "OneHourShort": "1H",
             "OneDayShort": "1D",
             "OneWeekShort": "1W",
-            "Remind": "Remind:"
+            "Remind": "Remind:",
+            "ShowDetails": "show details"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Must be greater or equal than {min}!",
@@ -392,6 +393,8 @@
         "Note": "Note",
         "ObjectHeight": "Object Height",
         "OneTime": "One-Time",
+        "PerformedAndReschedule": "performed and reschedule",
+        "Performed": "performed",
         "PrintDuration": "Print Time",
         "PrintHistory": "Print History",
         "PrintTime": "Print Time",

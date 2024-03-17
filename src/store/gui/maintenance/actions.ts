@@ -54,15 +54,37 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
         Vue.$socket.emit('server.database.delete_item', { namespace: 'maintenance', key: payload })
     },
 
-    /*repeat({ dispatch, getters, state, rootState }, payload) {
-        if (!(payload.id in state.reminders)) return
-        const reminder = getters['getReminder'](payload.id)
-        const new_start_time = rootState.server?.history?.job_totals.total_print_time || 0
-        const snooze_epoch_time = Date.now()
-        dispatch('update', {
-            id: reminder.id,
-            snooze_print_hours_timestamps: [...reminder.snooze_print_hours_timestamps, new_start_time],
-            snooze_epoch_timestamps: [...reminder.snooze_epoch_timestamps, snooze_epoch_time],
-        })
-    },*/
+    perform({ dispatch, state, rootState }, payload: { id: string }) {
+        const entry = state.entries[payload.id]
+        if (!entry) return
+
+        const totalFilament = rootState.server?.history?.job_totals?.total_filament_used ?? 0
+        const totalPrintTime = rootState.server?.history?.job_totals?.total_print_time ?? 0
+
+        entry.end_time = Date.now() / 1000
+        entry.end_filament = totalFilament
+        entry.end_printtime = totalPrintTime
+
+        dispatch('update', entry)
+
+        if (entry.reminder.type === 'repeat') {
+            const date = new Date()
+
+            dispatch('store', {
+                entry: {
+                    name: entry.name,
+                    note: entry.note,
+                    // divided by 1000 to get seconds, because history entries are also in seconds
+                    start_time: date.getTime() / 1000,
+                    end_time: null,
+                    start_filament: totalFilament,
+                    end_filament: null,
+                    start_printtime: totalPrintTime,
+                    end_printtime: null,
+
+                    reminder: { ...entry.reminder },
+                },
+            })
+        }
+    },
 }

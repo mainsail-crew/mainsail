@@ -47,6 +47,12 @@
                     </template>
                 </v-card-text>
             </overlay-scrollbars>
+            <v-divider class="mt-n3" />
+            <v-card-actions>
+                <v-spacer />
+                <v-btn text @click="closeDialog">{{ $t('History.Cancel') }}</v-btn>
+                <v-btn v-if="showPerformButton" text color="primary" @click="perform">{{ performButtonText }}</v-btn>
+            </v-card-actions>
         </panel>
     </v-dialog>
 </template>
@@ -181,8 +187,24 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
         return output
     }
 
+    get showPerformButton() {
+        if (this.item.end_time) return false
+
+        return this.item.reminder?.type ?? false
+    }
+
+    get performButtonText() {
+        if (this.item.reminder?.type === 'repeat') return this.$t('History.PerformedAndReschedule')
+
+        return this.$t('History.Performed')
+    }
+
     closeDialog() {
         this.$emit('close')
+    }
+
+    perform() {
+        this.$store.dispatch('gui/maintenance/perform', { id: this.item.id })
     }
 }
 </script>

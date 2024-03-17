@@ -25,7 +25,7 @@
                     :color="alertColor"
                     class="mt-3 mb-0 w-100"
                     @click="showMaintenanceDetails = true">
-                    details
+                    {{ $t('App.Notifications.ShowDetails') }}
                 </v-btn>
             </v-col>
             <v-col

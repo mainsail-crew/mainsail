@@ -189,21 +189,6 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
     }
 
     save() {
-        /*let reminderFilamentTrigger: number | null = null
-        if (this.reminderFilament) {
-            reminderFilamentTrigger = this.totalFilamentUsed + this.reminderFilamentValue * 100
-        }
-
-        let reminderPrinttimeTrigger: number | null = null
-        if (this.reminderPrinttime) {
-            reminderPrinttimeTrigger = this.totalPrinttime + this.reminderPrinttimeValue * 60 * 60
-        }
-
-        let reminderDateTrigger: number | null = null
-        if (this.reminderDate) {
-            reminderDateTrigger = date.getTime() + this.reminderDateValue * 24 * 60 * 60 * 1000
-        }*/
-
         const date = new Date()
         this.$store.dispatch('gui/maintenance/store', {
             entry: {
@@ -213,7 +198,9 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
                 start_time: date.getTime() / 1000,
                 end_time: null,
                 start_filament: this.totalFilamentUsed,
+                end_filament: null,
                 start_printtime: this.totalPrinttime,
+                end_printtime: null,
 
                 reminder: {
                     type: this.reminder,
@@ -221,19 +208,16 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
                     filament: {
                         bool: this.reminderFilament,
                         value: this.reminderFilamentValue,
-                        end: null,
                     },
 
                     printtime: {
                         bool: this.reminderPrinttime,
                         value: this.reminderPrinttimeValue,
-                        end: null,
                     },
 
                     date: {
                         bool: this.reminderDate,
                         value: this.reminderDateValue,
-                        end: null,
                     },
                 },
             },

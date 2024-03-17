@@ -21,13 +21,11 @@ export interface GuiMaintenanceStateEntry {
         filament: {
             bool: boolean
             value: number | null
-            end: number | null
         }
 
         printtime: {
             bool: boolean
             value: number | null
-            end: number | null
         }
 
         date: {
