@@ -21,7 +21,7 @@ export const getters: GetterTree<GuiMaintenanceState, any> = {
         const entries: GuiMaintenanceStateEntry[] = getters['getEntries'] ?? []
 
         return entries.filter((entry) => {
-            if (entry.reminder.type === null && entry.end_time !== null) return false
+            if (entry.reminder.type === null || entry.end_time !== null) return false
 
             if (entry.reminder.filament.bool) {
                 const end = entry.start_filament + (entry.reminder.filament.value ?? 0)
@@ -36,7 +36,7 @@ export const getters: GetterTree<GuiMaintenanceState, any> = {
             }
 
             if (entry.reminder.date.bool) {
-                const end = entry.start_time + (entry.reminder.date.value ?? 0)
+                const end = entry.start_time + (entry.reminder.date.value ?? 0) * 24 * 60 * 60
 
                 if (end <= currentDate) return true
             }
