@@ -17,11 +17,11 @@ export const mutations: MutationTree<GuiMaintenanceState> = {
     },
 
     update(state, payload) {
-        if (payload.id in state.entries) {
-            const entry = { ...state.entries[payload.id] }
-            Object.assign(entry, payload)
-            Vue.set(state.entries, payload.id, entry)
-        }
+        if (!(payload.id in state.entries)) return
+
+        const entry = { ...state.entries[payload.id] }
+        Object.assign(entry, payload.entry)
+        Vue.set(state.entries, payload.id, entry)
     },
 
     delete(state, payload) {

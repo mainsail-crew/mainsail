@@ -41,11 +41,17 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
         })
     },
 
-    update({ commit, dispatch, state }, payload) {
-        commit('update', payload)
+    update({ commit, dispatch }, payload) {
+        const id = payload.id
+        delete payload.id
+
+        commit('update', {
+            id: id,
+            entry: payload,
+        })
         dispatch('upload', {
-            id: payload.id,
-            value: state.entries[payload.id],
+            id: id,
+            value: payload,
         })
     },
 
@@ -61,6 +67,7 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
         const totalFilament = rootState.server?.history?.job_totals?.total_filament_used ?? 0
         const totalPrintTime = rootState.server?.history?.job_totals?.total_print_time ?? 0
 
+        entry.id = payload.id
         entry.end_time = Date.now() / 1000
         entry.end_filament = totalFilament
         entry.end_printtime = totalPrintTime
