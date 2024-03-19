@@ -842,7 +842,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         }
 
         if (this.hideBackupFiles) {
-            const klipperBackupFileMatcher = /.*\/?printer-\d{8}_\d{6}\.cfg$/
+            const klipperBackupFileMatcher = /^printer-\d{8}_\d{6}\.cfg$/
             const crowsnestBackupFileMatcher = /^crowsnest\.conf\.\d{4}-\d{2}-\d{2}-\d{4}$/
 
             files = files.filter(
