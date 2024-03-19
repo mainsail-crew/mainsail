@@ -164,10 +164,10 @@ import {
     mdiNotebookPlus,
 } from '@mdi/js'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
-import HistoryListEntryJob from '@/components/panels/HistoryList/HistoryListEntryJob.vue'
+import HistoryListEntryJob from '@/components/panels/History/HistoryListEntryJob.vue'
 import HistoryListPanelAddMaintenance from '@/components/dialogs/HistoryListPanelAddMaintenance.vue'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
-import HistoryListEntryMaintenance from '@/components/panels/HistoryList/HistoryListEntryMaintenance.vue'
+import HistoryListEntryMaintenance from '@/components/panels/History/HistoryListEntryMaintenance.vue'
 import HistoryListPanelDeleteSelectedDialog from '@/components/dialogs/HistoryListPanelDeleteSelectedDialog.vue'
 
 export interface HistoryListPanelCol {
