@@ -242,6 +242,8 @@ export const getDefaultState = (): GuiState => {
                     'object_height',
                 ],
                 selectedJobs: [],
+                showMaintenanceEntries: true,
+                showPrintJobs: true,
             },
             jobqueue: {
                 countPerPage: 10,

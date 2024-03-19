@@ -54,6 +54,23 @@
                             </v-btn>
                         </template>
                         <v-list>
+                            <v-list-item class="minHeight36">
+                                <v-checkbox
+                                    class="mt-0"
+                                    hide-details
+                                    :input-value="showMaintenanceEntries"
+                                    :label="$t('History.MaintenanceEntries')"
+                                    @change="showMaintenanceEntries = !showMaintenanceEntries" />
+                            </v-list-item>
+                            <v-list-item class="minHeight36">
+                                <v-checkbox
+                                    class="mt-0"
+                                    hide-details
+                                    :input-value="showPrintJobs"
+                                    :label="$t('History.PrintJobs')"
+                                    @change="showPrintJobs = !showPrintJobs" />
+                            </v-list-item>
+                            <v-divider />
                             <template v-if="allPrintStatusArray.length">
                                 <v-list-item
                                     v-for="status of allPrintStatusArray"
@@ -205,18 +222,24 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get entries() {
-        let entries = [...this.jobs].map((job) => {
-            return { ...job, type: 'job' }
-        })
+        let entries = []
+
+        if (this.showPrintJobs) {
+            entries = [...this.jobs].map((job) => {
+                return { ...job, type: 'job' }
+            })
+        }
 
         if (this.sortBy !== 'start_time') return entries
 
-        entries = [
-            ...entries,
-            ...this.maintenanceEntries.map((entry: GuiMaintenanceStateEntry) => {
-                return { ...entry, type: 'maintenance' }
-            }),
-        ]
+        if (this.showMaintenanceEntries) {
+            entries = [
+                ...entries,
+                ...this.maintenanceEntries.map((entry: GuiMaintenanceStateEntry) => {
+                    return { ...entry, type: 'maintenance' }
+                }),
+            ]
+        }
 
         return entries
     }
@@ -418,6 +441,25 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     set hideColums(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value: newVal })
+    }
+
+    get showMaintenanceEntries() {
+        return this.$store.state.gui.view.history.showMaintenanceEntries
+    }
+
+    set showMaintenanceEntries(newVal) {
+        this.$store.dispatch('gui/saveSetting', {
+            name: 'view.history.showMaintenanceEntries',
+            value: newVal,
+        })
+    }
+
+    get showPrintJobs() {
+        return this.$store.state.gui.view.history.showPrintJobs
+    }
+
+    set showPrintJobs(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.history.showPrintJobs', value: newVal })
     }
 
     refreshHistory() {
