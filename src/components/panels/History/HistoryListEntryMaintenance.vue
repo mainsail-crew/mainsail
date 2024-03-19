@@ -9,14 +9,14 @@
             <v-simple-checkbox v-ripple :value="isSelected" class="pa-0 mr-0" @click.stop="select(!isSelected)" />
         </td>
         <td class="px-0 text-center" style="width: 32px">
-            <v-icon color="primary">{{ mdiNotebook }}</v-icon>
+            <v-icon color="primary">{{ icon }}</v-icon>
         </td>
         <td>{{ item.name }}</td>
         <td class="text-right text-no-wrap">
-            <v-tooltip top :disabled="item.reminder?.type === null">
+            <v-tooltip v-if="reminder !== null" top>
                 <template #activator="{ on, attrs }">
                     <v-icon small color="primary" v-bind="attrs" v-on="on">
-                        {{ mdiAlarm }}
+                        {{ alarmIcon }}
                     </v-icon>
                 </template>
                 <div>
@@ -61,8 +61,17 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import Panel from '@/components/ui/Panel.vue'
 import BaseMixin from '@/components/mixins/base'
-import { mdiAdjust, mdiAlarm, mdiCalendar, mdiDelete, mdiNotebook, mdiTextBoxSearch } from '@mdi/js'
-import { HistoryListPanelRow } from '@/components/panels/HistoryListPanel.vue'
+import {
+    mdiAdjust,
+    mdiAlarm,
+    mdiAlarmMultiple,
+    mdiCalendar,
+    mdiDelete,
+    mdiNotebook,
+    mdiNotebookCheck,
+    mdiTextBoxSearch,
+} from '@mdi/js'
+import { HistoryListPanelCol } from '@/components/panels/HistoryListPanel.vue'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListPanelDetailMaintenance from '@/components/dialogs/HistoryListPanelDetailMaintenance.vue'
 
@@ -84,7 +93,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     contextMenuY = 0
 
     @Prop({ type: Object, required: true }) readonly item!: GuiMaintenanceStateEntry
-    @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelRow[]
+    @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelCol[]
     @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
 
     get cssClasses() {
@@ -160,6 +169,22 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         const value = this.item.reminder.date?.value ?? 0
 
         return `${this.restDays.toFixed(0)} / ${value} days`
+    }
+
+    get reminder() {
+        return this.item.reminder?.type ?? null
+    }
+
+    get alarmIcon() {
+        if (this.reminder === 'repeat') return mdiAlarmMultiple
+
+        return mdiAlarm
+    }
+
+    get icon() {
+        if (this.item.end_time !== null) return mdiNotebookCheck
+
+        return mdiNotebook
     }
 
     select(newVal: boolean) {
