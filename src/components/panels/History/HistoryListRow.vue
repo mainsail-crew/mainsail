@@ -94,7 +94,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
-import { HistoryListHeadertype } from '@/components/panels/HistoryListPanel.vue'
+import { HistoryListPanelCol } from '@/components/panels/HistoryListPanel.vue'
 import {
     mdiDelete,
     mdiFile,
@@ -123,7 +123,7 @@ export default class HistoryListRow extends Mixins(BaseMixin) {
     mdiTextBoxSearch = mdiTextBoxSearch
 
     @Prop({ type: Object, required: true }) job!: ServerHistoryStateJob
-    @Prop({ type: Array, required: true }) tableFields!: HistoryListHeadertype[]
+    @Prop({ type: Array, required: true }) tableFields!: HistoryListPanelCol[]
     @Prop({ type: Boolean, required: true }) isSelected!: boolean
     @Prop({ type: Boolean, required: true }) existsSlicerCol!: boolean
 

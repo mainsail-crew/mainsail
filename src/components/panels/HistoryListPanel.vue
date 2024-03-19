@@ -153,7 +153,7 @@ import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListEntryMaintenance from '@/components/panels/HistoryList/HistoryListEntryMaintenance.vue'
 import HistoryListPanelDeleteSelectedDialog from '@/components/dialogs/HistoryListPanelDeleteSelectedDialog.vue'
 
-export interface HistoryListPanelRow {
+export interface HistoryListPanelCol {
     text: string
     value: string
     align: string
@@ -230,7 +230,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get headers() {
-        const headers: HistoryListPanelRow[] = [
+        const headers: HistoryListPanelCol[] = [
             {
                 text: '',
                 value: '',
