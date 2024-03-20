@@ -105,6 +105,13 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
+                    :title="$t('Settings.UiSettingsTab.ProgressAsFavicon')"
+                    :sub-title="$t('Settings.UiSettingsTab.ProgressAsFaviconDescription')"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="progressAsFavicon" hide-details class="mt-0" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
                     :title="$t('Settings.UiSettingsTab.LockSliders')"
                     :sub-title="$t('Settings.UiSettingsTab.LockSlidersDescription')"
                     :dynamic-slot-width="true">
@@ -338,6 +345,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set displayCancelPrint(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.displayCancelPrint', value: newVal })
+    }
+
+    get progressAsFavicon() {
+        return this.$store.state.gui.uiSettings.progressAsFavicon
+    }
+
+    set progressAsFavicon(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.progressAsFavicon', value: newVal })
     }
 
     get confirmOnEmergencyStop() {
