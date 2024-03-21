@@ -14,6 +14,7 @@ export interface GuiMaintenanceStateEntry {
     end_filament: number | null
     start_printtime: number
     end_printtime: number | null
+    last_entry: string | null
 
     reminder: {
         type: null | 'one-time' | 'repeat'

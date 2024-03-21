@@ -88,6 +88,7 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
                     end_filament: null,
                     start_printtime: totalPrintTime,
                     end_printtime: null,
+                    last_entry: payload.id,
 
                     reminder: { ...entry.reminder },
                 },

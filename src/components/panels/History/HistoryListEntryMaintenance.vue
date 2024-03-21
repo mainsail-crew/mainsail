@@ -83,7 +83,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiAlarm = mdiAlarm
     mdiCalendar = mdiCalendar
     mdiDelete = mdiDelete
-    mdiNotebook = mdiNotebook
     mdiTextBoxSearch = mdiTextBoxSearch
 
     detailsDialogBool = false

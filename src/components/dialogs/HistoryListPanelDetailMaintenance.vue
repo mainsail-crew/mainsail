@@ -46,8 +46,36 @@
                         </v-row>
                     </template>
                 </v-card-text>
+                <v-divider class="mt-3 mb-0" />
+                <v-card-text class="pt-0 mb-0 pb-0">
+                    <v-timeline align-top dense>
+                        <history-list-panel-detail-maintenance-history-entry
+                            v-for="entry in history"
+                            :key="entry.id"
+                            :item="entry" />
+                    </v-timeline>
+                </v-card-text>
+                <v-divider class="mt-3 mb-0" />
+                <v-card-text class="pt-0 mb-0 pb-0">
+                    <v-simple-table>
+                        <thead>
+                            <tr>
+                                <th class="text-left">Date</th>
+                                <th v-if="restFilamentText" class="text-center">{{ restFilamentText }}</th>
+                                <th v-if="restPrinttimeText" class="text-center">{{ restPrinttimeText }}</th>
+                                <th v-if="restDaysText" class="text-center">{{ restDaysText }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <history-list-panel-detail-maintenance-history-tr
+                                v-for="entry in history"
+                                :key="entry.id"
+                                :item="entry" />
+                        </tbody>
+                    </v-simple-table>
+                </v-card-text>
             </overlay-scrollbars>
-            <v-divider class="mt-n3" />
+            <v-divider class="mt-0" />
             <v-card-actions>
                 <v-spacer />
                 <v-btn text @click="closeDialog">{{ $t('History.Cancel') }}</v-btn>
@@ -63,9 +91,11 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiAdjust, mdiAlarm, mdiCalendar, mdiCloseThick, mdiNotebook } from '@mdi/js'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
+import HistoryListPanelDetailMaintenanceHistoryEntry from '@/components/dialogs/HistoryListPanelDetailMaintenanceHistoryEntry.vue'
+import HistoryListPanelDetailMaintenanceHistoryTr from '@/components/dialogs/HistoryListPanelDetailMaintenanceHistoryTr.vue'
 
 @Component({
-    components: { Panel },
+    components: { Panel, HistoryListPanelDetailMaintenanceHistoryEntry, HistoryListPanelDetailMaintenanceHistoryTr },
 })
 export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin) {
     mdiAdjust = mdiAdjust
@@ -197,6 +227,26 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
         if (this.item.reminder?.type === 'repeat') return this.$t('History.PerformedAndReschedule')
 
         return this.$t('History.Performed')
+    }
+
+    get allEntries() {
+        return this.$store.getters['gui/maintenance/getEntries'] ?? []
+    }
+
+    get history() {
+        const array = []
+
+        let latest_entry_id = this.item.id
+        while (latest_entry_id) {
+            const entry = this.allEntries.find((entry: GuiMaintenanceStateEntry) => entry.id === latest_entry_id)
+            if (!entry) break
+            array.push(entry)
+            latest_entry_id = entry.last_entry
+        }
+
+        window.console.log(array)
+
+        return array
     }
 
     closeDialog() {
