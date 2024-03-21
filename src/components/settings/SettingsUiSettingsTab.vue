@@ -445,10 +445,10 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     get autoPowerDevice() {
-        const autoIndex = this.powerDevices.findIndex((device: ServerPowerStateDevice) => device.device === 'printer')
-        if (autoIndex === -1) return '--'
-
-        return this.powerDevices[autoIndex].device
+        return (
+            this.powerDevices.find((device: ServerPowerStateDevice) => device.device.toLowerCase() === 'printer')
+                ?.device ?? '--'
+        )
     }
 
     get powerDeviceName() {
