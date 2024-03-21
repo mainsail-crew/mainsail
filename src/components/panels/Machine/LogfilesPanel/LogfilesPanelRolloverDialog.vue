@@ -65,7 +65,7 @@ export default class LogfilesPanelRolloverDialog extends Mixins(BaseMixin) {
     selectedRolloverLogs: string[] = []
 
     get loadingRolloverLogs() {
-        return this.loadings.filter((log) => log.startsWith('rolloverLog_')).length > 0
+        return this.loadings.filter((log) => log?.startsWith('rolloverLog_')).length > 0
     }
 
     @Watch('loadingRolloverLogs')

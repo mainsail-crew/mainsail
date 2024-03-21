@@ -236,11 +236,13 @@ export const actions: ActionTree<GuiState, RootState> = {
 
         const urlDefault =
             rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
-        const responseDefault = await fetch(urlDefault)
+
         let defaults: any = {}
-        if (responseDefault) {
-            defaults = await responseDefault.json()
-            if (defaults.error?.code === 404) defaults = {}
+        try {
+            defaults = await fetch(urlDefault).then((result) => result.json())
+        } catch (error) {
+            window.console.error('Error while fetching/parsing default.json', error)
+            defaults = {}
         }
 
         for (const key of payload) {
