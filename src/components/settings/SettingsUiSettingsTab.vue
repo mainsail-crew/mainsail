@@ -143,6 +143,13 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
+                    :title="$t('Settings.UiSettingsTab.ConfirmOnCoolDown')"
+                    :sub-title="$t('Settings.UiSettingsTab.ConfirmOnCoolDownDescription')"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="confirmOnCoolDown" hide-details class="mt-0" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
                     :title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChange')"
                     :sub-title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChangeDescription')"
                     :dynamic-slot-width="true">
@@ -339,6 +346,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set confirmOnEmergencyStop(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnEmergencyStop', value: newVal })
+    }
+
+    get confirmOnCoolDown() {
+        return this.$store.state.gui.uiSettings.confirmOnCoolDown
+    }
+
+    set confirmOnCoolDown(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnCoolDown', value: newVal })
     }
 
     get confirmOnPowerDeviceChange() {
