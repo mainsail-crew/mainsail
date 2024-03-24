@@ -1,25 +1,25 @@
 <template>
-    <v-timeline-item small>
-        <v-row class="pt-1">
-            <v-col>
-                <strong>{{ date }}</strong>
-                <div>
-                    <span v-if="restFilamentText" class="mr-3">
-                        <v-icon small>{{ mdiAdjust }}</v-icon>
-                        {{ restFilamentText }}
-                    </span>
-                    <span v-if="restPrinttimeText" class="mr-3">
-                        <v-icon small left>{{ mdiAlarm }}</v-icon>
-                        {{ restPrinttimeText }}
-                    </span>
-                    <span v-if="restDaysText" class="mr-3">
-                        <v-icon small left>{{ mdiCalendar }}</v-icon>
-                        {{ restDaysText }}
-                    </span>
-                </div>
-            </v-col>
-        </v-row>
-    </v-timeline-item>
+    <div>
+        <v-timeline-item class="pb-2" small hide-dot>
+            <div>
+                <span v-if="restFilamentText" :class="restFilamentClass">
+                    <v-icon small>{{ mdiAdjust }}</v-icon>
+                    {{ restFilamentText }}
+                </span>
+                <span v-if="restPrinttimeText" :class="restPrinttimeClass">
+                    <v-icon small>{{ mdiAlarm }}</v-icon>
+                    {{ restPrinttimeText }}
+                </span>
+                <span v-if="restDaysText" :class="restDaysClass">
+                    <v-icon small>{{ mdiCalendar }}</v-icon>
+                    {{ restDaysText }}
+                </span>
+            </div>
+        </v-timeline-item>
+        <v-timeline-item :class="classDateItem" small>
+            <strong>{{ dateText }}</strong>
+        </v-timeline-item>
+    </div>
 </template>
 
 <script lang="ts">
@@ -39,9 +39,21 @@ export default class HistoryListPanelDetailMaintenanceHistoryEntry extends Mixin
     mdiCloseThick = mdiCloseThick
 
     @Prop({ type: Object, default: false }) readonly item!: GuiMaintenanceStateEntry
+    @Prop({ type: Boolean, default: false }) readonly current!: boolean
+    @Prop({ type: Boolean, default: false }) readonly last!: boolean
 
     get date() {
-        return this.formatDate(this.item.start_time * 1000, false)
+        return this.formatDateTime(this.item.start_time * 1000, false)
+    }
+
+    get dateText() {
+        if (this.last) return this.$t('History.EntryCreatedAt', { date: this.date })
+
+        return this.$t('History.EntryPerformedAt', { date: this.date })
+    }
+
+    get showGoals() {
+        return this.current && this.item.end_time === null
     }
 
     get restFilament() {
@@ -61,20 +73,20 @@ export default class HistoryListPanelDetailMaintenanceHistoryEntry extends Mixin
     }
 
     get restFilamentText() {
-        if (!this.item.reminder.filament.bool) return false
-
         const value = this.item.reminder.filament?.value ?? 0
+        if (!this.showGoals) return `${this.restFilament.toFixed(0)} m`
+
+        if (!this.item.reminder.filament.bool) return false
 
         return `${this.restFilament.toFixed(0)} / ${value} m`
     }
 
     get restFilamentClass() {
-        const output = ['text-right']
-
-        if (!this.item.reminder.filament.bool) return output
+        const output = ['mr-3']
+        if (!this.showGoals || !this.item.reminder.filament.bool) return output
 
         const value = this.item.reminder.filament?.value ?? 0
-        if (this.restFilament > value) return [...output, 'error--text']
+        if (this.restFilament > value) return [...output, 'error--text', 'font-weight-bold']
 
         return output
     }
@@ -96,20 +108,18 @@ export default class HistoryListPanelDetailMaintenanceHistoryEntry extends Mixin
     }
 
     get restPrinttimeText() {
-        if (!this.item.reminder.printtime.bool) return false
-
         const value = this.item.reminder.printtime?.value ?? 0
+        if (!this.showGoals) return `${this.restPrinttime.toFixed(1)} h`
 
         return `${this.restPrinttime.toFixed(1)} / ${value} h`
     }
 
     get restPrinttimeClass() {
-        const output = ['text-right']
-
-        if (!this.item.reminder.printtime.bool) return output
+        const output = ['mr-3']
+        if (!this.showGoals || !this.item.reminder.printtime.bool) return output
 
         const value = this.item.reminder.printtime?.value ?? 0
-        if (this.restPrinttime > value) return [...output, 'error--text']
+        if (this.restPrinttime > value) return [...output, 'error--text', 'font-weight-bold']
 
         return output
     }
@@ -128,62 +138,28 @@ export default class HistoryListPanelDetailMaintenanceHistoryEntry extends Mixin
     }
 
     get restDaysText() {
-        if (!this.item.reminder.date.bool) return false
-
         const value = this.item.reminder.date?.value ?? 0
+
+        if (!this.showGoals) return `${this.restDays.toFixed(0)} days`
 
         return `${this.restDays.toFixed(0)} / ${value} days`
     }
 
     get restDaysClass() {
-        const output = ['text-right']
-
-        if (!this.item.reminder.date.bool) return output
+        const output = ['mr-3']
+        if (!this.showGoals || !this.item.reminder.date.bool) return output
 
         const value = this.item.reminder.date?.value ?? 0
-        if (this.restDays > value) return [...output, 'error--text']
+        if (this.restDays > value) return [...output, 'error--text', 'font-weight-bold']
 
         return output
     }
 
-    get showPerformButton() {
-        if (this.item.end_time) return false
-
-        return this.item.reminder?.type ?? false
-    }
-
-    get performButtonText() {
-        if (this.item.reminder?.type === 'repeat') return this.$t('History.PerformedAndReschedule')
-
-        return this.$t('History.Performed')
-    }
-
-    get allEntries() {
-        return this.$store.getters['gui/maintenance/getEntries'] ?? []
-    }
-
-    get history() {
-        const array = []
-
-        let latest_entry_id = this.item.id
-        while (latest_entry_id) {
-            const entry = this.allEntries.find((entry: GuiMaintenanceStateEntry) => entry.id === latest_entry_id)
-            if (!entry) break
-            array.push(entry)
-            latest_entry_id = entry.last_entry
+    get classDateItem() {
+        return {
+            'pb-2': !this.last,
+            'pb-5': this.last,
         }
-
-        window.console.log(array)
-
-        return array
-    }
-
-    closeDialog() {
-        this.$emit('close')
-    }
-
-    perform() {
-        this.$store.dispatch('gui/maintenance/perform', { id: this.item.id })
     }
 }
 </script>

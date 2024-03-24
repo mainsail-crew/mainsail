@@ -20,59 +20,19 @@
                         </v-col>
                     </v-row>
                 </v-card-text>
-                <v-divider class="mt-3" />
-                <v-card-text class="pb-0">
-                    <template v-if="item.reminder">
-                        <v-row v-if="restFilamentText">
-                            <v-col>
-                                <v-icon small class="mr-1">{{ mdiAdjust }}</v-icon>
-                                {{ $t('History.FilamentBasedReminder') }}
-                            </v-col>
-                            <v-col :class="restFilamentClass">{{ restFilamentText }}</v-col>
-                        </v-row>
-                        <v-row v-if="restPrinttimeText">
-                            <v-col>
-                                <v-icon small class="mr-1">{{ mdiAlarm }}</v-icon>
-                                {{ $t('History.PrinttimeBasedReminder') }}
-                            </v-col>
-                            <v-col :class="restPrinttimeClass">{{ restPrinttimeText }}</v-col>
-                        </v-row>
-                        <v-row v-if="restDaysText">
-                            <v-col>
-                                <v-icon small class="mr-1">{{ mdiCalendar }}</v-icon>
-                                {{ $t('History.DateBasedReminder') }}
-                            </v-col>
-                            <v-col :class="restDaysClass">{{ restDaysText }}</v-col>
-                        </v-row>
-                    </template>
-                </v-card-text>
                 <v-divider class="mt-3 mb-0" />
                 <v-card-text class="pt-0 mb-0 pb-0">
                     <v-timeline align-top dense>
+                        <v-timeline-item class="pb-1" small>
+                            <strong>{{ outputFirstPointOfHistory }}</strong>
+                        </v-timeline-item>
                         <history-list-panel-detail-maintenance-history-entry
                             v-for="entry in history"
                             :key="entry.id"
-                            :item="entry" />
+                            :item="entry"
+                            :current="entry.id === item.id"
+                            :last="entry.id === history[history.length - 1].id" />
                     </v-timeline>
-                </v-card-text>
-                <v-divider class="mt-3 mb-0" />
-                <v-card-text class="pt-0 mb-0 pb-0">
-                    <v-simple-table>
-                        <thead>
-                            <tr>
-                                <th class="text-left">Date</th>
-                                <th v-if="restFilamentText" class="text-center">{{ restFilamentText }}</th>
-                                <th v-if="restPrinttimeText" class="text-center">{{ restPrinttimeText }}</th>
-                                <th v-if="restDaysText" class="text-center">{{ restDaysText }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <history-list-panel-detail-maintenance-history-tr
-                                v-for="entry in history"
-                                :key="entry.id"
-                                :item="entry" />
-                        </tbody>
-                    </v-simple-table>
                 </v-card-text>
             </overlay-scrollbars>
             <v-divider class="mt-0" />
@@ -89,18 +49,14 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiAdjust, mdiAlarm, mdiCalendar, mdiCloseThick, mdiNotebook } from '@mdi/js'
+import { mdiCloseThick, mdiNotebook } from '@mdi/js'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListPanelDetailMaintenanceHistoryEntry from '@/components/dialogs/HistoryListPanelDetailMaintenanceHistoryEntry.vue'
-import HistoryListPanelDetailMaintenanceHistoryTr from '@/components/dialogs/HistoryListPanelDetailMaintenanceHistoryTr.vue'
 
 @Component({
-    components: { Panel, HistoryListPanelDetailMaintenanceHistoryEntry, HistoryListPanelDetailMaintenanceHistoryTr },
+    components: { Panel, HistoryListPanelDetailMaintenanceHistoryEntry },
 })
 export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin) {
-    mdiAdjust = mdiAdjust
-    mdiAlarm = mdiAlarm
-    mdiCalendar = mdiCalendar
     mdiCloseThick = mdiCloseThick
     mdiNotebook = mdiNotebook
 
@@ -113,108 +69,6 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
 
     get note() {
         return this.item.note.replaceAll('\n', '<br>')
-    }
-
-    get restFilament() {
-        const start = this.item?.start_filament ?? 0
-        const end = this.item.end_filament ?? 0
-        const current = this.$store.state.server.history.job_totals?.total_filament_used ?? 0
-
-        // calc filament since start
-        // if end is not null, calc used filament until end
-        let used = current - start
-        if (end) used = end - start
-
-        // convert to m
-        used /= 1000
-
-        return used
-    }
-
-    get restFilamentText() {
-        if (!this.item.reminder.filament.bool) return false
-
-        const value = this.item.reminder.filament?.value ?? 0
-
-        return `${this.restFilament.toFixed(0)} / ${value} m`
-    }
-
-    get restFilamentClass() {
-        const output = ['text-right']
-
-        if (!this.item.reminder.filament.bool) return output
-
-        const value = this.item.reminder.filament?.value ?? 0
-        if (this.restFilament > value) return [...output, 'error--text']
-
-        return output
-    }
-
-    get restPrinttime() {
-        const start = this.item.start_printtime ?? 0
-        const end = this.item.end_printtime ?? 0
-        const current = this.$store.state.server.history.job_totals?.total_print_time ?? 0
-
-        // calc filament since start
-        // if end is not null, calc used filament until end
-        let used = current - start
-        if (end) used = end - start
-
-        // convert to h
-        used /= 3600
-
-        return used
-    }
-
-    get restPrinttimeText() {
-        if (!this.item.reminder.printtime.bool) return false
-
-        const value = this.item.reminder.printtime?.value ?? 0
-
-        return `${this.restPrinttime.toFixed(1)} / ${value} h`
-    }
-
-    get restPrinttimeClass() {
-        const output = ['text-right']
-
-        if (!this.item.reminder.printtime.bool) return output
-
-        const value = this.item.reminder.printtime?.value ?? 0
-        if (this.restPrinttime > value) return [...output, 'error--text']
-
-        return output
-    }
-
-    get restDays() {
-        const start = this.item.start_time ?? 0
-        const end = this.item.end_time ?? 0
-        const current = new Date().getTime() / 1000
-
-        // calc days since start
-        // if end is not null, calc used days until end
-        let used = current - start
-        if (end) used = end - start
-
-        return used / (60 * 60 * 24)
-    }
-
-    get restDaysText() {
-        if (!this.item.reminder.date.bool) return false
-
-        const value = this.item.reminder.date?.value ?? 0
-
-        return `${this.restDays.toFixed(0)} / ${value} days`
-    }
-
-    get restDaysClass() {
-        const output = ['text-right']
-
-        if (!this.item.reminder.date.bool) return output
-
-        const value = this.item.reminder.date?.value ?? 0
-        if (this.restDays > value) return [...output, 'error--text']
-
-        return output
     }
 
     get showPerformButton() {
@@ -244,9 +98,13 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
             latest_entry_id = entry.last_entry
         }
 
-        window.console.log(array)
-
         return array
+    }
+
+    get outputFirstPointOfHistory() {
+        if (this.item.end_time === null) return this.$t('History.EntryNextPerform')
+
+        return this.$t('History.EntryPerformedAt', { date: this.formatDateTime(this.item.end_time * 1000) })
     }
 
     closeDialog() {
