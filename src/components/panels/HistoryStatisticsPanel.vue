@@ -115,8 +115,6 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
     formatPrintTime = formatPrintTime
 
-    formatPrintTime = formatPrintTime
-
     get selectedJobs() {
         return this.$store.state.gui.view.history.selectedJobs ?? []
     }
