@@ -28,15 +28,6 @@
                         {{ $t('Editor.ConfigReference') }}
                     </v-btn>
                     <v-btn
-                        v-if="isWriteable"
-                        text
-                        tile
-                        :color="restartServiceName === null ? 'primary' : ''"
-                        @click="save(null)">
-                        <v-icon small class="mr-1">{{ mdiContentSave }}</v-icon>
-                        <span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span>
-                    </v-btn>
-                    <v-btn
                         v-if="restartServiceNameExists"
                         color="primary"
                         text
@@ -45,6 +36,14 @@
                         @click="save(restartServiceName)">
                         <v-icon small class="mr-1">{{ mdiRestart }}</v-icon>
                         {{ $t('Editor.SaveRestart') }}
+                    </v-btn>
+                    <v-btn
+                        v-if="isWriteable"
+                        icon
+                        tile
+                        :color="restartServiceName === null ? 'primary' : ''"
+                        @click="save(null)">
+                        <v-icon>{{ mdiContentSave }}</v-icon>
                     </v-btn>
                     <v-btn icon tile @click="close">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -56,7 +55,7 @@
                         ref="editor"
                         v-model="sourcecode"
                         :name="filename"
-                        :file-extension="fileExtension"></codemirror-async>
+                        :file-extension="fileExtension" />
                 </v-card-text>
             </panel>
         </v-dialog>
@@ -105,7 +104,7 @@
                     </v-row>
                 </v-card-text>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <v-btn text @click="discardChanges">
                         {{ $t('Editor.DontSave') }}
                     </v-btn>
@@ -166,8 +165,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiFileDocumentOutline = mdiFileDocumentOutline
     mdiUsb = mdiUsb
-
-    private scrollbarOptions = { scrollbars: { autoHide: 'never' } }
 
     declare $refs: {
         editor: Codemirror
@@ -343,10 +340,14 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     @Watch('changed')
     changedChanged(newVal: boolean) {
-        if (this.confirmUnsavedChanges) {
-            if (newVal) window.addEventListener('beforeunload', windowBeforeUnloadFunction)
-            else window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
+        if (!this.confirmUnsavedChanges) return
+
+        if (newVal) {
+            window.addEventListener('beforeunload', windowBeforeUnloadFunction)
+            return
         }
+
+        window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
     }
 }
 </script>

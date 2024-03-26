@@ -133,7 +133,10 @@ export const actions: ActionTree<EditorState, RootState> = {
                 } else if (payload.restartServiceName !== null) {
                     Vue.$socket.emit('machine.services.restart', { service: payload.restartServiceName })
                 }
-                dispatch('close')
+
+                commit('updateLoadedHash', payload.content)
+
+                if (payload.restartServiceName !== null) dispatch('close')
             })
             .catch((error) => {
                 window.console.log(error.response?.data.error)
