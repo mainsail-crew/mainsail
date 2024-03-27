@@ -6,6 +6,9 @@
             card-class="history-maintenance-dialog"
             :margin-bottom="false">
             <template #buttons>
+                <v-btn icon tile @click="showEditDialog = true">
+                    <v-icon>{{ mdiPencil }}</v-icon>
+                </v-btn>
                 <v-btn icon tile @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
@@ -48,6 +51,7 @@
             :show="showPerformDialog"
             :item="item"
             @close="showPerformDialog = false" />
+        <history-list-panel-edit-maintenance :show="showEditDialog" :item="item" @close="showEditDialog = false" />
     </v-dialog>
 </template>
 
@@ -55,7 +59,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiCloseThick, mdiNotebook } from '@mdi/js'
+import { mdiCloseThick, mdiNotebook, mdiPencil } from '@mdi/js'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListPanelDetailMaintenanceHistoryEntry from '@/components/dialogs/HistoryListPanelDetailMaintenanceHistoryEntry.vue'
 import HistoryListPanelPerformMaintenance from '@/components/dialogs/HistoryListPanelPerformMaintenance.vue'
@@ -66,10 +70,12 @@ import HistoryListPanelPerformMaintenance from '@/components/dialogs/HistoryList
 export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiNotebook = mdiNotebook
+    mdiPencil = mdiPencil
 
     @Prop({ type: Boolean, default: false }) readonly show!: boolean
     @Prop({ type: Object, default: false }) readonly item!: GuiMaintenanceStateEntry
 
+    showEditDialog = false
     showPerformDialog = false
 
     get date() {
