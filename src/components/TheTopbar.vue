@@ -82,26 +82,7 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-dialog v-model="showEmergencyStopDialog" width="400" :fullscreen="isMobile">
-            <panel
-                :title="$t('EmergencyStopDialog.EmergencyStop')"
-                toolbar-color="error"
-                card-class="emergency-stop-dialog"
-                :icon="mdiAlertOctagonOutline"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="showEmergencyStopDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn text @click="showEmergencyStopDialog = false">{{ $t('EmergencyStopDialog.No') }}</v-btn>
-                    <v-btn color="primary" text @click="emergencyStop">{{ $t('EmergencyStopDialog.Yes') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+        <emergency-stop-dialog :show-dialog="showEmergencyStopDialog" @close="showEmergencyStopDialog = false" />
     </div>
 </template>
 
@@ -120,6 +101,7 @@ import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import TheNotificationMenu from '@/components/notifications/TheNotificationMenu.vue'
 import { topbarHeight } from '@/store/variables'
 import { mdiAlertOctagonOutline, mdiContentSave, mdiFileUpload, mdiClose, mdiCloseThick } from '@mdi/js'
+import EmergencyStopDialog from '@/components/dialogs/EmergencyStopDialog.vue'
 
 type uploadSnackbar = {
     status: boolean
@@ -132,6 +114,7 @@ type uploadSnackbar = {
 
 @Component({
     components: {
+        EmergencyStopDialog,
         Panel,
         TheSettingsMenu,
         TheTopCornerMenu,
