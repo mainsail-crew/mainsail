@@ -4,7 +4,7 @@ import { RootState } from '@/store/types'
 
 export const getters: GetterTree<SocketState, RootState> = {
     getUrl: (state) => {
-        return '//' + state.hostname + (state.port !== 80 ? ':' + state.port : '')
+        return '//' + state.hostname + (state.port !== 80 ? ':' + state.port : '') + state.path
     },
 
     getHostUrl: (state) => {

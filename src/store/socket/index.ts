@@ -9,10 +9,12 @@ export const getDefaultState = (): SocketState => {
     const hostname = (import.meta.env.VUE_APP_HOSTNAME as string) || window.location.hostname
     const defaultPort = window.location.port || (window.location.protocol === 'https:' ? 443 : 80)
     const port = import.meta.env.VUE_APP_PORT ? Number(import.meta.env.VUE_APP_PORT) : Number(defaultPort)
+    const path = ''
 
     return {
         hostname,
         port,
+        path,
         protocol: document.location.protocol === 'https:' ? 'wss' : 'ws',
         reconnectInterval: Number(import.meta.env.VUE_APP_RECONNECT_INTERVAL || 2000),
         isConnected: false,

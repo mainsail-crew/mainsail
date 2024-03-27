@@ -36,6 +36,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
             dispatch(
                 'farm/registerPrinter',
                 {
+                    id: printerId,
                     hostname: printer.hostname ?? '',
                     port: printer.port ?? 7125,
                     path: printer.path ?? '',
