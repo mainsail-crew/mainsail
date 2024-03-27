@@ -52,10 +52,14 @@ export default class BaseMixin extends Vue {
     }
 
     get printerPowerDevice(): string {
-        let deviceName = this.$store.state.gui.uiSettings.powerDeviceName ?? null
-        if (deviceName === null) deviceName = 'printer'
+        const deviceName = this.$store.state.gui.uiSettings.powerDeviceName ?? null
+        if (deviceName !== null) return deviceName
 
-        return deviceName
+        const devices = this.$store.getters['server/power/getDevices'] ?? []
+        return (
+            devices.find((device: ServerPowerStateDevice) => device.device.toLowerCase() === 'printer')?.device ??
+            'printer'
+        )
     }
 
     get isPrinterPowerOff() {
