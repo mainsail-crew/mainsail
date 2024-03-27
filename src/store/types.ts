@@ -35,4 +35,6 @@ export interface ConfigJson {
 export interface ConfigJsonInstance {
     hostname: string
     port?: number
+    path?: string
+    id?: string
 }

@@ -66,6 +66,36 @@
                         dense
                         outlined></v-text-field>
                 </settings-row>
+                <sub-panel
+                    :title="$t('Settings.RemotePrintersTab.AdvancedSettings')"
+                    sub-panel-class="remote-printer-advanced"
+                    expand="false">
+                    <settings-row :title="$t('Settings.RemotePrintersTab.Id')">
+                        <v-text-field
+                            v-if="form.id === null"
+                            v-model="form.customId"
+                            :label="$t('Settings.RemotePrintersTab.Id')"
+                            outlined
+                            hide-details="auto"
+                            dense></v-text-field>
+                        <v-text-field
+                            v-else
+                            v-model="form.id"
+                            :label="$t('Settings.RemotePrintersTab.Id')"
+                            outlined
+                            disabled
+                            hide-details="auto"
+                            dense></v-text-field>
+                    </settings-row>
+                    <settings-row :title="$t('Settings.RemotePrintersTab.Path')">
+                        <v-text-field
+                            v-model="form.path"
+                            :label="$t('Settings.RemotePrintersTab.Path')"
+                            hide-details="auto"
+                            outlined
+                            dense></v-text-field>
+                    </settings-row>
+                </sub-panel>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
                 <v-btn text @click="form.bool = false">{{ $t('Settings.Cancel') }}</v-btn>
@@ -91,6 +121,8 @@ interface printerForm {
     bool: boolean
     hostname: string
     port: number
+    path: string | null
+    customId: string | null
     id: string | null
     namespace: string | null
 }
@@ -109,6 +141,8 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         bool: false,
         hostname: '',
         port: 7125,
+        path: '',
+        customId: null,
         id: null,
         namespace: null,
     }
@@ -126,12 +160,14 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     }
 
     formatPrinterName(printer: GuiRemoteprintersStatePrinter) {
-        return printer.hostname + (printer.port !== 80 ? ':' + printer.port : '')
+        return printer.hostname + (printer.port !== 80 ? ':' + printer.port : '') + (printer.path ?? '')
     }
 
     createPrinter() {
         this.form.hostname = ''
         this.form.port = 7125
+        this.form.path = ''
+        this.form.customId = null
         this.form.id = null
         this.form.namespace = null
         this.form.bool = true
@@ -139,10 +175,13 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
 
     storePrinter() {
         const printer = {
+            id: this.form.customId,
             hostname: this.form.hostname,
             port: this.form.port,
+            path: this.form.path,
         }
 
+        window.console.debug(printer)
         this.$store.dispatch('gui/remoteprinters/store', { values: printer })
 
         this.form.hostname = ''
@@ -155,13 +194,16 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.id = printer.id ?? null
         this.form.hostname = printer.hostname
         this.form.port = printer.port
+        this.form.path = printer.path ?? null
         this.form.bool = true
     }
 
     updatePrinter() {
         const values = {
+            id: this.form.id,
             hostname: this.form.hostname,
             port: this.form.port,
+            path: this.form.path,
         }
 
         this.$store.dispatch('gui/remoteprinters/update', { id: this.form.id, values })
@@ -169,6 +211,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.id = null
         this.form.hostname = ''
         this.form.port = 7125
+        this.form.path = ''
         this.form.bool = false
     }
 

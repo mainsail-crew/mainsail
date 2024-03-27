@@ -83,6 +83,29 @@
                                     dense></v-text-field>
                             </v-col>
                         </v-row>
+                        <sub-panel
+                            :title="$t('SelectPrinterDialog.AdvancedSettings')"
+                            sub-panel-class="add-printer-advanced"
+                            expand="false">
+                            <v-row>
+                                <v-col class="col-6">
+                                    <v-text-field
+                                        v-model="dialogAddPrinter.id"
+                                        :label="$t('SelectPrinterDialog.Id')"
+                                        outlined
+                                        hide-details="auto"
+                                        dense></v-text-field>
+                                </v-col>
+                                <v-col class="col-6">
+                                    <v-text-field
+                                        v-model="dialogAddPrinter.path"
+                                        :label="$t('SelectPrinterDialog.Path')"
+                                        hide-details="auto"
+                                        outlined
+                                        dense></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </sub-panel>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -121,6 +144,30 @@
                                     hide-details="auto"></v-text-field>
                             </v-col>
                         </v-row>
+                        <sub-panel
+                            :title="$t('SelectPrinterDialog.AdvancedSettings')"
+                            sub-panel-class="edit-printer-advanced"
+                            expand="false">
+                            <v-row>
+                                <v-col class="col-6">
+                                    <v-text-field
+                                        v-model="dialogEditPrinter.id"
+                                        :label="$t('SelectPrinterDialog.Id')"
+                                        outlined
+                                        disabled
+                                        hide-details="auto"
+                                        dense></v-text-field>
+                                </v-col>
+                                <v-col class="col-6">
+                                    <v-text-field
+                                        v-model="dialogEditPrinter.path"
+                                        :label="$t('SelectPrinterDialog.Path')"
+                                        hide-details="auto"
+                                        outlined
+                                        dense></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </sub-panel>
                     </v-card-text>
                     <v-card-actions>
                         <v-btn color="red" icon tile class="minwidth-0 rounded" @click="delPrinter">
@@ -238,6 +285,8 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         bool: false,
         hostname: '',
         port: 7125,
+        path: '',
+        id: '',
     }
     private editPrinterValid = false
     private dialogEditPrinter = {
@@ -245,6 +294,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         id: '',
         hostname: '',
         port: 0,
+        path: '',
     }
 
     /**
@@ -282,8 +332,16 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         return this.$store.state.socket.port
     }
 
+    get id() {
+        return '????'
+    }
+
+    get path() {
+        return this.$store.state.socket.path
+    }
+
     get formatHostname() {
-        return parseInt(this.port) !== 80 && this.port !== '' ? this.hostname + ':' + this.port : this.hostname
+        return this.hostname + (this.port !== '' ? ':' + this.port : '') + (this.path !== '' ? this.path : '')
     }
 
     get isConnected() {
@@ -345,6 +403,8 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         const values = {
             hostname: this.dialogAddPrinter.hostname,
             port: this.dialogAddPrinter.port,
+            path: this.dialogAddPrinter.path,
+            id: this.dialogAddPrinter.id,
         }
         this.$store.dispatch('gui/remoteprinters/store', { values })
 
@@ -356,6 +416,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         this.dialogEditPrinter.hostname = printer.hostname
         this.dialogEditPrinter.port = printer.port
         this.dialogEditPrinter.id = printer.id ?? ''
+        this.dialogEditPrinter.path = printer.path ?? ''
         this.dialogEditPrinter.bool = true
     }
 
@@ -363,6 +424,8 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         const values = {
             hostname: this.dialogEditPrinter.hostname,
             port: this.dialogEditPrinter.port,
+            path: this.dialogEditPrinter.path,
+            id: this.dialogEditPrinter.id,
         }
         this.$store.dispatch('gui/remoteprinters/update', {
             id: this.dialogEditPrinter.id,
@@ -381,8 +444,17 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         this.$store.dispatch('socket/setData', {
             hostname: printer.socket.hostname,
             port: printer.socket.port,
+            path: printer.socket.path,
         })
-        this.$socket.setUrl(this.protocol + '://' + printer.socket.hostname + ':' + printer.socket.port + '/websocket')
+        this.$socket.setUrl(
+            this.protocol +
+                '://' +
+                printer.socket.hostname +
+                ':' +
+                printer.socket.port +
+                printer.socket.path +
+                '/websocket'
+        )
         this.$socket.connect()
     }
 
