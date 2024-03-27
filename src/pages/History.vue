@@ -17,11 +17,9 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import HistoryListPanel from '@/components/panels/HistoryListPanel.vue'
 import HistoryStatisticsPanel from '@/components/panels/HistoryStatisticsPanel.vue'
+
 @Component({
-    components: {
-        HistoryStatisticsPanel,
-        HistoryListPanel,
-    },
+    components: { HistoryListPanel, HistoryStatisticsPanel },
 })
 export default class PageHistory extends Mixins(BaseMixin) {}
 </script>

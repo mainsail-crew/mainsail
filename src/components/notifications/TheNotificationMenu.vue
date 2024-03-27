@@ -34,9 +34,9 @@
                     </v-card-text>
                 </overlay-scrollbars>
                 <template v-if="notifications.length > 1">
-                    <v-divider></v-divider>
+                    <v-divider />
                     <v-card-actions>
-                        <v-spacer></v-spacer>
+                        <v-spacer />
                         <v-btn text color="primary" class="mr-2" @click="dismissAll">
                             <v-icon left>{{ mdiCloseBoxMultipleOutline }}</v-icon>
                             {{ $t('App.Notifications.DismissAll') }}
@@ -44,11 +44,9 @@
                     </v-card-actions>
                 </template>
             </template>
-            <template v-else>
-                <v-card-text class="text-center">
-                    <span class="text-disabled">{{ $t('App.Notifications.NoNotification') }}</span>
-                </v-card-text>
-            </template>
+            <v-card-text v-else class="text-center">
+                <span class="text-disabled">{{ $t('App.Notifications.NoNotification') }}</span>
+            </v-card-text>
         </v-card>
     </v-menu>
 </template>
@@ -68,7 +66,7 @@ export default class TheNotificationMenu extends Mixins(BaseMixin) {
     mdiBellOutline = mdiBellOutline
     mdiCloseBoxMultipleOutline = mdiCloseBoxMultipleOutline
 
-    private boolMenu = false
+    boolMenu = false
 
     get notifications() {
         return this.$store.getters['gui/notifications/getNotifications'] ?? []
@@ -97,9 +95,9 @@ export default class TheNotificationMenu extends Mixins(BaseMixin) {
         this.notifications.forEach(async (entry: GuiNotificationStateEntry) => {
             if (entry.id.startsWith('announcement')) {
                 await this.$store.dispatch('gui/notifications/close', { id: entry.id })
-            } else {
-                await this.$store.dispatch('gui/notifications/dismiss', { id: entry.id, type: 'reboot', time: null })
             }
+
+            await this.$store.dispatch('gui/notifications/dismiss', { id: entry.id, type: 'reboot', time: null })
         })
     }
 }
