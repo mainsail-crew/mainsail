@@ -37,12 +37,7 @@
                         <v-icon small class="mr-1">{{ mdiRestart }}</v-icon>
                         {{ $t('Editor.SaveRestart') }}
                     </v-btn>
-                    <v-btn
-                        v-if="isWriteable"
-                        icon
-                        tile
-                        :color="restartServiceName === null ? 'primary' : ''"
-                        @click="save(null)">
+                    <v-btn v-if="isWriteable" icon tile @click="save(null)">
                         <v-icon>{{ mdiContentSave }}</v-icon>
                     </v-btn>
                     <v-btn icon tile @click="close">
