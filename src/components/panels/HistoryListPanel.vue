@@ -23,7 +23,7 @@
                             <v-icon>{{ mdiDelete }}</v-icon>
                         </v-btn>
                     </template>
-                    <v-tooltip v-if="!allLoaded" top>
+                    <v-tooltip top>
                         <template #activator="{ on, attrs }">
                             <v-btn
                                 class="px-2 minwidth-0 ml-3"
