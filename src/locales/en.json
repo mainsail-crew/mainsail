@@ -351,6 +351,7 @@
     },
     "History": {
         "AddMaintenance": "Add Maintenance",
+        "AddANote": "Add a note",
         "AddNote": "Add note",
         "AddToQueueSuccessful": "File {filename} added to Queue.",
         "AddReminder": "Add Reminder",
@@ -404,6 +405,8 @@
         "ObjectHeight": "Object Height",
         "OneTime": "One-Time",
         "PerformedAndReschedule": "performed and reschedule",
+        "Perform": "perform",
+        "PerformMaintenance": "Perform Maintenance",
         "Performed": "performed",
         "PrintDuration": "Print Time",
         "PrintHistory": "Print History",

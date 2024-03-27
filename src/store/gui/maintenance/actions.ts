@@ -60,7 +60,7 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
         Vue.$socket.emit('server.database.delete_item', { namespace: 'maintenance', key: payload })
     },
 
-    perform({ dispatch, state, rootState }, payload: { id: string }) {
+    perform({ dispatch, state, rootState }, payload: { id: string; note: string }) {
         const entry = state.entries[payload.id]
         if (!entry) return
 
@@ -71,6 +71,7 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
         entry.end_time = Date.now() / 1000
         entry.end_filament = totalFilament
         entry.end_printtime = totalPrintTime
+        entry.perform_note = payload.note.trim() || null
 
         dispatch('update', entry)
 

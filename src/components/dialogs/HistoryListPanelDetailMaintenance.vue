@@ -39,9 +39,15 @@
             <v-card-actions>
                 <v-spacer />
                 <v-btn text @click="closeDialog">{{ $t('History.Cancel') }}</v-btn>
-                <v-btn v-if="showPerformButton" text color="primary" @click="perform">{{ performButtonText }}</v-btn>
+                <v-btn v-if="showPerformButton" text color="primary" @click="showPerformDialog = true">
+                    {{ $t('History.Perform') }}
+                </v-btn>
             </v-card-actions>
         </panel>
+        <history-list-panel-perform-maintenance
+            :show="showPerformDialog"
+            :item="item"
+            @close="showPerformDialog = false" />
     </v-dialog>
 </template>
 
@@ -52,9 +58,10 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiNotebook } from '@mdi/js'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListPanelDetailMaintenanceHistoryEntry from '@/components/dialogs/HistoryListPanelDetailMaintenanceHistoryEntry.vue'
+import HistoryListPanelPerformMaintenance from '@/components/dialogs/HistoryListPanelPerformMaintenance.vue'
 
 @Component({
-    components: { Panel, HistoryListPanelDetailMaintenanceHistoryEntry },
+    components: { HistoryListPanelPerformMaintenance, Panel, HistoryListPanelDetailMaintenanceHistoryEntry },
 })
 export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
@@ -62,6 +69,8 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
 
     @Prop({ type: Boolean, default: false }) readonly show!: boolean
     @Prop({ type: Object, default: false }) readonly item!: GuiMaintenanceStateEntry
+
+    showPerformDialog = false
 
     get date() {
         return this.formatDateTime(this.item.start_time * 1000, false)
@@ -75,12 +84,6 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
         if (this.item.end_time) return false
 
         return this.item.reminder?.type ?? false
-    }
-
-    get performButtonText() {
-        if (this.item.reminder?.type === 'repeat') return this.$t('History.PerformedAndReschedule')
-
-        return this.$t('History.Performed')
     }
 
     get allEntries() {
@@ -109,10 +112,6 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
 
     closeDialog() {
         this.$emit('close')
-    }
-
-    perform() {
-        this.$store.dispatch('gui/maintenance/perform', { id: this.item.id })
     }
 }
 </script>

@@ -15,6 +15,7 @@
                     {{ restDaysText }}
                 </span>
             </div>
+            <p v-if="note" class="mt-2 mb-0" v-html="note" />
         </v-timeline-item>
         <v-timeline-item :class="classDateItem" small>
             <strong>{{ dateText }}</strong>
@@ -160,6 +161,10 @@ export default class HistoryListPanelDetailMaintenanceHistoryEntry extends Mixin
             'pb-2': !this.last,
             'pb-5': this.last,
         }
+    }
+
+    get note() {
+        return this.item.perform_note?.replaceAll('\n', '<br>')
     }
 }
 </script>

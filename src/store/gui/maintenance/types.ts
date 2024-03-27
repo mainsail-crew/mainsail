@@ -8,6 +8,7 @@ export interface GuiMaintenanceStateEntry {
     id?: string
     name: string
     note: string
+    perform_note: string | null
     start_time: number
     end_time: number | null
     start_filament: number
