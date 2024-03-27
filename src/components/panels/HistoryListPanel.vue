@@ -23,9 +23,18 @@
                             <v-icon>{{ mdiDelete }}</v-icon>
                         </v-btn>
                     </template>
-                    <v-btn class="px-2 minwidth-0 ml-3" @click="addMaintenanceDialog = true">
-                        <v-icon>{{ mdiNotebookPlus }}</v-icon>
-                    </v-btn>
+                    <v-tooltip v-if="!allLoaded" top>
+                        <template #activator="{ on, attrs }">
+                            <v-btn
+                                class="px-2 minwidth-0 ml-3"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="addMaintenanceDialog = true">
+                                <v-icon>{{ mdiNotebookPlus }}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>{{ $t('History.AddMaintenance') }}</span>
+                    </v-tooltip>
                     <v-tooltip v-if="!allLoaded" top>
                         <template #activator="{ on, attrs }">
                             <v-btn
