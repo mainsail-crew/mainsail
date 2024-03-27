@@ -1,105 +1,83 @@
 <template>
     <div v-if="klipperState !== 'ready' && socketIsConnected">
-        <template v-if="klippyIsConnected">
-            <v-alert :color="messageType.color" dense text border="left" class="mb-0 mb-6">
-                <!-- KLIPPER MESSAGE TITLE -->
-                <p class="font-weight-medium d-flex align-center">
-                    <v-icon :color="messageType.color" class="pr-2">{{ messageType.icon }}</v-icon>
-                    {{ $t('Panels.KlippyStatePanel.ServiceReports', { service: 'Klipper' }) }}:
-                    {{ klipperState.toUpperCase() }}
-                </p>
-                <!-- KLIPPER MESSAGE -->
-                <div v-if="klippy_message !== null">
-                    <pre style="white-space: pre-wrap">{{ klippy_message.trim() }}</pre>
-                    <v-divider class="mt-2 pb-3"></v-divider>
-                    <v-row>
-                        <!-- RESTART BUTTONS -->
-                        <v-col>
-                            <v-btn
-                                small
-                                outlined
-                                text
-                                :class="`${messageType.color}--text my-1`"
-                                style="width: 100%"
-                                @click="restart">
-                                <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
-                                {{ $t('Panels.KlippyStatePanel.Restart') }}
-                            </v-btn>
-                            <v-btn
-                                small
-                                outlined
-                                text
-                                :class="`${messageType.color}--text my-1`"
-                                style="width: 100%"
-                                @click="firmwareRestart">
-                                <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
-                                {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
-                            </v-btn>
-                        </v-col>
-                        <!-- LOG DOWNLOAD BUTTONS -->
-                        <v-col>
-                            <v-btn
-                                :href="apiUrl + '/server/files/klippy.log'"
-                                small
-                                outlined
-                                text
-                                :class="`${messageType.color}--text my-1`"
-                                style="width: 100%"
-                                @click="downloadLog">
-                                <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
-                                Klipper Log
-                            </v-btn>
-                            <v-btn
-                                :href="apiUrl + '/server/files/moonraker.log'"
-                                small
-                                outlined
-                                text
-                                :class="`${messageType.color}--text my-1`"
-                                style="width: 100%"
-                                @click="downloadLog">
-                                <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
-                                Moonraker Log
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </div>
-                <!-- LOADER -->
-                <v-card-text v-else class="text-center py-3">
-                    <v-progress-circular indeterminate :color="messageType.color"></v-progress-circular>
-                </v-card-text>
-            </v-alert>
-        </template>
-        <!-- Power OFF panel -->
-        <template v-else-if="isPrinterPowerOff">
-            <v-alert dense text border="left" class="mb-6">
-                <p class="font-weight-medium d-flex align-center">
-                    <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
-                    {{ $t('Panels.KlippyStatePanel.PrinterSwitchedOff') }}
-                </p>
-                <p>{{ $t('Panels.KlippyStatePanel.PrinterSwitchedOffDescription') }}</p>
+        <v-alert v-if="klippyIsConnected" :color="messageType.color" dense text border="left" class="mb-0 mb-6">
+            <!-- KLIPPER MESSAGE TITLE -->
+            <p class="font-weight-medium d-flex align-center">
+                <v-icon :color="messageType.color" class="pr-2">{{ messageType.icon }}</v-icon>
+                {{ serviceReportsKlipper }}
+            </p>
+            <!-- KLIPPER MESSAGE -->
+            <div v-if="klippy_message !== null">
+                <pre style="white-space: pre-wrap">{{ klippy_message.trim() }}</pre>
+                <v-divider class="mt-2 pb-3" />
                 <v-row>
-                    <v-col class="text-center">
-                        <v-btn small outlined text :class="`${messageType.color}--text my-1`" @click="powerOn">
-                            <v-icon class="mr-sm-2">{{ mdiPower }}</v-icon>
-                            {{ $t('Panels.KlippyStatePanel.PowerOn') }}
+                    <!-- RESTART BUTTONS -->
+                    <v-col>
+                        <v-btn small outlined text :class="buttonClasses" @click="restart">
+                            <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
+                            {{ $t('Panels.KlippyStatePanel.Restart') }}
+                        </v-btn>
+                        <v-btn small outlined text :class="buttonClasses" @click="firmwareRestart">
+                            <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
+                            {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
+                        </v-btn>
+                    </v-col>
+                    <!-- LOG DOWNLOAD BUTTONS -->
+                    <v-col>
+                        <v-btn
+                            :href="apiUrl + '/server/files/klippy.log'"
+                            small
+                            outlined
+                            text
+                            :class="buttonClasses"
+                            @click="downloadLog">
+                            <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
+                            {{ $t('Panels.KlippyStatePanel.KlipperLog') }}
+                        </v-btn>
+                        <v-btn
+                            :href="apiUrl + '/server/files/moonraker.log'"
+                            small
+                            outlined
+                            text
+                            :class="buttonClasses"
+                            @click="downloadLog">
+                            <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
+                            {{ $t('Panels.KlippyStatePanel.MoonrakerLog') }}
                         </v-btn>
                     </v-col>
                 </v-row>
-            </v-alert>
-        </template>
+            </div>
+            <!-- LOADER -->
+            <v-card-text v-else class="text-center py-3">
+                <v-progress-circular indeterminate :color="messageType.color" />
+            </v-card-text>
+        </v-alert>
+        <!-- Power OFF panel -->
+        <v-alert v-else-if="isPrinterPowerOff" dense text border="left" class="mb-6">
+            <p class="font-weight-medium d-flex align-center">
+                <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
+                {{ $t('Panels.KlippyStatePanel.PrinterSwitchedOff') }}
+            </p>
+            <p>{{ $t('Panels.KlippyStatePanel.PrinterSwitchedOffDescription') }}</p>
+            <v-row>
+                <v-col class="text-center">
+                    <v-btn small outlined text :class="`${messageType.color}--text my-1`" @click="powerOn">
+                        <v-icon class="mr-sm-2">{{ mdiPower }}</v-icon>
+                        {{ $t('Panels.KlippyStatePanel.PowerOn') }}
+                    </v-btn>
+                </v-col>
+            </v-row>
+        </v-alert>
         <!-- DISCONNECTED INFOGRAPHIC -->
-        <template v-else-if="klipperState === 'disconnected'">
-            <v-alert dense text border="left" class="mb-6">
-                <p class="font-weight-medium d-flex align-center">
-                    <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
-                    {{ $t('Panels.KlippyStatePanel.ServiceReports', { service: 'Moonraker' }) }}:
-                    {{ klipperState.toUpperCase() }}
-                </p>
-                <connection-status :moonraker="true" :klipper="false"></connection-status>
-                <p class="mt-2 mb-0 text-center">{{ $t('Panels.KlippyStatePanel.MoonrakerCannotConnect') }}</p>
-                <p class="mb-0 text-center">{{ $t('Panels.KlippyStatePanel.CheckKlippyAndUdsAddress') }}</p>
-            </v-alert>
-        </template>
+        <v-alert v-else-if="klipperState === 'disconnected'" dense text border="left" class="mb-6">
+            <p class="font-weight-medium d-flex align-center">
+                <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
+                {{ serviceReportsMoonraker }}
+            </p>
+            <connection-status :moonraker="true" :klipper="false" />
+            <p class="mt-2 mb-0 text-center">{{ $t('Panels.KlippyStatePanel.MoonrakerCannotConnect') }}</p>
+            <p class="mb-0 text-center">{{ $t('Panels.KlippyStatePanel.CheckKlippyAndUdsAddress') }}</p>
+        </v-alert>
     </div>
 </template>
 
@@ -129,7 +107,7 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
     mdiDownload = mdiDownload
     mdiPower = mdiPower
 
-    get klippy_message() {
+    get klippy_message(): string | null {
         return this.$store.state.server.klippy_message ?? null
     }
 
@@ -146,6 +124,22 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
             default:
                 return { color: '', icon: mdiMessageOutline }
         }
+    }
+
+    get buttonClasses() {
+        return [this.messageType.color + '--text', 'my-1', 'w-100']
+    }
+
+    get serviceReportsKlipper() {
+        return `${this.$t('Panels.KlippyStatePanel.ServiceReports', {
+            service: 'Klipper',
+        })}: ${this.klipperState.toUpperCase()}`
+    }
+
+    get serviceReportsMoonraker() {
+        return `${this.$t('Panels.KlippyStatePanel.ServiceReports', {
+            service: 'Moonraker',
+        })}: ${this.klipperState.toUpperCase()}`
     }
 
     restart() {

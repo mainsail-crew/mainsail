@@ -599,7 +599,9 @@
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "Please check if the Klipper service is running and klippy_uds_address is correctly configured in the moonraker.conf.",
             "FirmwareRestart": "Firmware Restart",
+            "KlipperLog": "Klipper Log",
             "MoonrakerCannotConnect": "Moonraker can't connect to Klipper!",
+            "MoonrakerLog": "Moonraker Log",
             "PowerOn": "Power on",
             "PrinterSwitchedOff": "Printer is powered off",
             "PrinterSwitchedOffDescription": "The printer is currently powered off and Klipper cannot connect. To power on the printer, click the button below:",
