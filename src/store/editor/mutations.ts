@@ -68,4 +68,9 @@ export const mutations: MutationTree<EditorState> = {
 
         state.changed = sha256(payload) != state.loadedHash
     },
+
+    updateLoadedHash(state, payload) {
+        Vue.set(state, 'loadedHash', sha256(payload.replace(/(?:\r\n|\r|\n)/g, '\n')))
+        Vue.set(state, 'changed', false)
+    },
 }
