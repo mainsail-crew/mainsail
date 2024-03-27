@@ -187,6 +187,10 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         }
     }
 
+    get progressAsFavicon() {
+        return this.$store.state.gui.uiSettings.progressAsFavicon
+    }
+
     @Watch('language')
     async languageChanged(newVal: string): Promise<void> {
         await setAndLoadLocale(newVal)
@@ -235,7 +239,7 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         const favicon32: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='32x32']")
 
         if (favicon16 && favicon32) {
-            if (this.printerIsPrinting) {
+            if (this.progressAsFavicon && this.printerIsPrinting) {
                 let faviconSize = 64
 
                 let canvas = document.createElement('canvas')
@@ -301,6 +305,11 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
 
     @Watch('customFavicons')
     customFaviconsChanged(): void {
+        this.drawFavicon(this.print_percent)
+    }
+
+    @Watch('progressAsFavicon')
+    progressAsFaviconChanged(): void {
         this.drawFavicon(this.print_percent)
     }
 
