@@ -13,7 +13,7 @@ export const getDefaultState = (): SocketState => {
     return {
         hostname,
         port,
-        protocol: document.location.protocol === 'https:' ? 'wss' : 'wss',
+        protocol: document.location.protocol === 'https:' ? 'wss' : 'ws',
         reconnectInterval: Number(import.meta.env.VUE_APP_RECONNECT_INTERVAL || 2000),
         isConnected: false,
         isConnecting: false,

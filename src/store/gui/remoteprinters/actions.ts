@@ -20,10 +20,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
             const printers: any = {}
 
             value.forEach((printer) => {
-                const id = printer.id ?? uuidv4()
-                if (id in printers) {
-                    window.console.error(`Duplicate printer id: "${id}"`)
-                }
+                const id = uuidv4()
                 printers[id] = printer
             })
 
@@ -39,7 +36,6 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
             dispatch(
                 'farm/registerPrinter',
                 {
-                    id: printerId,
                     hostname: printer.hostname ?? '',
                     port: printer.port ?? 7125,
                     path: printer.path ?? '',
@@ -56,7 +52,6 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
 
             Object.keys(state.printers).forEach((id: string) => {
                 printers.push({
-                    id: id,
                     hostname: state.printers[id].hostname,
                     port: state.printers[id].port,
                     path: state.printers[id].path,
@@ -82,7 +77,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
     },
 
     store({ commit, dispatch }, payload) {
-        const id = payload.values.id ?? uuidv4()
+        const id = uuidv4()
 
         commit('store', { id, values: payload.values })
         dispatch(

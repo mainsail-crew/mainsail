@@ -90,14 +90,6 @@
                             <v-row>
                                 <v-col class="col-6">
                                     <v-text-field
-                                        v-model="dialogAddPrinter.id"
-                                        :label="$t('SelectPrinterDialog.Id')"
-                                        outlined
-                                        hide-details="auto"
-                                        dense></v-text-field>
-                                </v-col>
-                                <v-col class="col-6">
-                                    <v-text-field
                                         v-model="dialogAddPrinter.path"
                                         :label="$t('SelectPrinterDialog.Path')"
                                         hide-details="auto"
@@ -149,15 +141,6 @@
                             sub-panel-class="edit-printer-advanced"
                             expand="false">
                             <v-row>
-                                <v-col class="col-6">
-                                    <v-text-field
-                                        v-model="dialogEditPrinter.id"
-                                        :label="$t('SelectPrinterDialog.Id')"
-                                        outlined
-                                        disabled
-                                        hide-details="auto"
-                                        dense></v-text-field>
-                                </v-col>
                                 <v-col class="col-6">
                                     <v-text-field
                                         v-model="dialogEditPrinter.path"
@@ -286,7 +269,6 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         hostname: '',
         port: 7125,
         path: '',
-        id: '',
     }
     private editPrinterValid = false
     private dialogEditPrinter = {
@@ -330,10 +312,6 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
     get port() {
         return this.$store.state.socket.port
-    }
-
-    get id() {
-        return '????'
     }
 
     get path() {
@@ -404,7 +382,6 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
             hostname: this.dialogAddPrinter.hostname,
             port: this.dialogAddPrinter.port,
             path: this.dialogAddPrinter.path,
-            id: this.dialogAddPrinter.id,
         }
         this.$store.dispatch('gui/remoteprinters/store', { values })
 
