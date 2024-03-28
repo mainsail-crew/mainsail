@@ -10,6 +10,7 @@ export interface GuiRemoteprintersStatePrinter {
     id?: string | null
     hostname: string
     port: number
+    name?: string | null
     socket?: FarmPrinterStateSocket
     settings?: {
         [key: string]: any

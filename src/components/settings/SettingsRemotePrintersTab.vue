@@ -66,6 +66,19 @@
                         dense
                         outlined></v-text-field>
                 </settings-row>
+                <sub-panel
+                    :title="$t('Settings.RemotePrintersTab.AdvancedSettings')"
+                    sub-panel-class="remote-printer-advanced"
+                    expand="false">
+                    <settings-row :title="$t('Settings.RemotePrintersTab.Name')">
+                        <v-text-field
+                            v-model="form.name"
+                            :label="$t('Settings.RemotePrintersTab.Name')"
+                            outlined
+                            hide-details="auto"
+                            dense></v-text-field>
+                    </settings-row>
+                </sub-panel>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
                 <v-btn text @click="form.bool = false">{{ $t('Settings.Cancel') }}</v-btn>
@@ -91,6 +104,7 @@ interface printerForm {
     bool: boolean
     hostname: string
     port: number
+    name: string
     id: string | null
     namespace: string | null
 }
@@ -109,6 +123,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         bool: false,
         hostname: '',
         port: 7125,
+        name: '',
         id: null,
         namespace: null,
     }
@@ -132,6 +147,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     createPrinter() {
         this.form.hostname = ''
         this.form.port = 7125
+        this.form.name = ''
         this.form.id = null
         this.form.namespace = null
         this.form.bool = true
@@ -141,12 +157,14 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         const printer = {
             hostname: this.form.hostname,
             port: this.form.port,
+            name: this.form.name
         }
 
         this.$store.dispatch('gui/remoteprinters/store', { values: printer })
 
         this.form.hostname = ''
         this.form.port = 7125
+        this.form.name = ''
         this.form.id = null
         this.form.bool = false
     }
@@ -155,6 +173,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.id = printer.id ?? null
         this.form.hostname = printer.hostname
         this.form.port = printer.port
+        this.form.name = printer.name ?? ''
         this.form.bool = true
     }
 
@@ -162,6 +181,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         const values = {
             hostname: this.form.hostname,
             port: this.form.port,
+            name: this.form.name
         }
 
         this.$store.dispatch('gui/remoteprinters/update', { id: this.form.id, values })
@@ -169,6 +189,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.id = null
         this.form.hostname = ''
         this.form.port = 7125
+        this.form.name = ''
         this.form.bool = false
     }
 

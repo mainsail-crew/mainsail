@@ -83,6 +83,21 @@
                                     dense></v-text-field>
                             </v-col>
                         </v-row>
+                        <sub-panel
+                            :title="$t('SelectPrinterDialog.AdvancedSettings')"
+                            sub-panel-class="add-printer-advanced"
+                            expand="false">
+                            <v-row>
+                                <v-col class="col-6">
+                                    <v-text-field
+                                        v-model="dialogAddPrinter.name"
+                                        :label="$t('SelectPrinterDialog.Name')"
+                                        outlined
+                                        hide-details="auto"
+                                        dense></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </sub-panel>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -121,6 +136,21 @@
                                     hide-details="auto"></v-text-field>
                             </v-col>
                         </v-row>
+                        <sub-panel
+                            :title="$t('SelectPrinterDialog.AdvancedSettings')"
+                            sub-panel-class="edit-printer-advanced"
+                            expand="false">
+                            <v-row>
+                                <v-col class="col-6">
+                                    <v-text-field
+                                        v-model="dialogEditPrinter.name"
+                                        :label="$t('SelectPrinterDialog.Name')"
+                                        outlined
+                                        hide-details="auto"
+                                        dense></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </sub-panel>
                     </v-card-text>
                     <v-card-actions>
                         <v-btn color="red" icon tile class="minwidth-0 rounded" @click="delPrinter">
@@ -238,6 +268,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         bool: false,
         hostname: '',
         port: 7125,
+        name: ''
     }
     private editPrinterValid = false
     private dialogEditPrinter = {
@@ -245,6 +276,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         id: '',
         hostname: '',
         port: 0,
+        name: ''
     }
 
     /**
@@ -280,6 +312,10 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
     get port() {
         return this.$store.state.socket.port
+    }
+
+    get name() {
+        return this.$store.state.printer
     }
 
     get formatHostname() {
@@ -345,17 +381,20 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         const values = {
             hostname: this.dialogAddPrinter.hostname,
             port: this.dialogAddPrinter.port,
+            name: this.dialogAddPrinter.name
         }
         this.$store.dispatch('gui/remoteprinters/store', { values })
 
         this.dialogAddPrinter.hostname = ''
         this.dialogAddPrinter.bool = false
+        this.dialogAddPrinter.name = ''
     }
 
     editPrinter(printer: GuiRemoteprintersStatePrinter) {
         this.dialogEditPrinter.hostname = printer.hostname
         this.dialogEditPrinter.port = printer.port
         this.dialogEditPrinter.id = printer.id ?? ''
+        this.dialogEditPrinter.name = printer.name ?? ''
         this.dialogEditPrinter.bool = true
     }
 
@@ -363,6 +402,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         const values = {
             hostname: this.dialogEditPrinter.hostname,
             port: this.dialogEditPrinter.port,
+            name: this.dialogEditPrinter.name
         }
         this.$store.dispatch('gui/remoteprinters/update', {
             id: this.dialogEditPrinter.id,
@@ -404,7 +444,17 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        this.$store.dispatch('gui/remoteprinters/initFromLocalstorage')
+        this.$store.dispatch('gui/remoteprinters/initFromLocalstorage').then(
+            () => {
+                window.console.log({printers: this.printers, gui: this.guiIsReady})
+                if ("printer" in this.$route.query) {
+                    let matching = this.printers.filter((printer) => printer.name === this.$route.query.printer)
+                    if (matching.length > 0) {
+                        this.connect(matching[0])
+                    }
+                }
+            }
+        )
     }
 }
 </script>

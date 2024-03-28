@@ -54,6 +54,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
                 printers.push({
                     hostname: state.printers[id].hostname,
                     port: state.printers[id].port,
+                    name: state.printers[id].name,
                     settings: state.printers[id].settings,
                 })
             })
@@ -84,6 +85,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
                 id,
                 hostname: payload.values.hostname ?? '',
                 port: payload.values.port ?? 7125,
+                name: payload.values.name
             },
             { root: true }
         )
