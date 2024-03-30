@@ -268,7 +268,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         bool: false,
         hostname: '',
         port: 7125,
-        name: ''
+        name: '',
     }
     private editPrinterValid = false
     private dialogEditPrinter = {
@@ -276,7 +276,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         id: '',
         hostname: '',
         port: 0,
-        name: ''
+        name: '',
     }
 
     /**
@@ -381,7 +381,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         const values = {
             hostname: this.dialogAddPrinter.hostname,
             port: this.dialogAddPrinter.port,
-            name: this.dialogAddPrinter.name
+            name: this.dialogAddPrinter.name,
         }
         this.$store.dispatch('gui/remoteprinters/store', { values })
 
@@ -402,7 +402,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         const values = {
             hostname: this.dialogEditPrinter.hostname,
             port: this.dialogEditPrinter.port,
-            name: this.dialogEditPrinter.name
+            name: this.dialogEditPrinter.name,
         }
         this.$store.dispatch('gui/remoteprinters/update', {
             id: this.dialogEditPrinter.id,
@@ -444,17 +444,15 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        this.$store.dispatch('gui/remoteprinters/initFromLocalstorage').then(
-            () => {
-                window.console.log({printers: this.printers, gui: this.guiIsReady})
-                if ("printer" in this.$route.query) {
-                    let matching = this.printers.filter((printer) => printer.name === this.$route.query.printer)
-                    if (matching.length > 0) {
-                        this.connect(matching[0])
-                    }
+        this.$store.dispatch('gui/remoteprinters/initFromLocalstorage').then(() => {
+            window.console.log({ printers: this.printers, gui: this.guiIsReady })
+            if ('printer' in this.$route.query) {
+                let matching = this.printers.filter((printer) => printer.name === this.$route.query.printer)
+                if (matching.length > 0) {
+                    this.connect(matching[0])
                 }
             }
-        )
+        })
     }
 }
 </script>

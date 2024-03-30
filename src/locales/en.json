@@ -1062,7 +1062,7 @@
         },
         "RemotePrintersTab": {
             "AddPrinter": "Add Printer",
-            "AdvancedSettings":"Advanced Settings",
+            "AdvancedSettings": "Advanced Settings",
             "EditPrinter": "Edit Printer",
             "Hostname": "Hostname",
             "Name": "Name",
