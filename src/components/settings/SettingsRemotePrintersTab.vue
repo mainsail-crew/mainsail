@@ -73,7 +73,7 @@
                     <settings-row :title="$t('Settings.RemotePrintersTab.Path')">
                         <v-text-field
                             v-model="form.path"
-                            :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /',]"
+                            :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
                             hide-details="auto"
                             outlined
                             dense></v-text-field>

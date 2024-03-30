@@ -91,7 +91,7 @@
                                 <v-col class="col-6">
                                     <v-text-field
                                         v-model="dialogAddPrinter.path"
-                                        :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /',]"
+                                        :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
                                         :label="$t('SelectPrinterDialog.Path')"
                                         hide-details="auto"
                                         outlined
@@ -145,7 +145,7 @@
                                 <v-col class="col-6">
                                     <v-text-field
                                         v-model="dialogEditPrinter.path"
-                                        :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /',]"
+                                        :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
                                         :label="$t('SelectPrinterDialog.Path')"
                                         hide-details="auto"
                                         outlined
