@@ -66,19 +66,15 @@
                         dense
                         outlined></v-text-field>
                 </settings-row>
-                <sub-panel
-                    :title="$t('Settings.RemotePrintersTab.AdvancedSettings')"
-                    sub-panel-class="remote-printer-advanced"
-                    expand="false">
-                    <settings-row :title="$t('Settings.RemotePrintersTab.Path')">
-                        <v-text-field
-                            v-model="form.path"
-                            :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
-                            hide-details="auto"
-                            outlined
-                            dense></v-text-field>
-                    </settings-row>
-                </sub-panel>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.RemotePrintersTab.Path')">
+                    <v-text-field
+                        v-model="form.path"
+                        :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
+                        hide-details="auto"
+                        outlined
+                        dense></v-text-field>
+                </settings-row>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
                 <v-btn text @click="form.bool = false">{{ $t('Settings.Cancel') }}</v-btn>
@@ -123,7 +119,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         bool: false,
         hostname: '',
         port: 7125,
-        path: '',
+        path: '/',
         id: null,
         namespace: null,
     }
@@ -147,7 +143,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     createPrinter() {
         this.form.hostname = ''
         this.form.port = 7125
-        this.form.path = ''
+        this.form.path = '/'
         this.form.id = null
         this.form.namespace = null
         this.form.bool = true
@@ -172,7 +168,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.id = printer.id ?? null
         this.form.hostname = printer.hostname
         this.form.port = printer.port
-        this.form.path = printer.path ?? null
+        this.form.path = printer.path ?? '/'
         this.form.bool = true
     }
 
@@ -188,7 +184,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.id = null
         this.form.hostname = ''
         this.form.port = 7125
-        this.form.path = ''
+        this.form.path = '/'
         this.form.bool = false
     }
 

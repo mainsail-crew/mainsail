@@ -83,24 +83,26 @@
                                     dense></v-text-field>
                             </v-col>
                         </v-row>
-                        <sub-panel
-                            :title="$t('SelectPrinterDialog.AdvancedSettings')"
-                            sub-panel-class="add-printer-advanced"
-                            expand="false">
-                            <v-row>
-                                <v-col class="col-6">
-                                    <v-text-field
-                                        v-model="dialogAddPrinter.path"
-                                        :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
-                                        :label="$t('SelectPrinterDialog.Path')"
-                                        hide-details="auto"
-                                        outlined
-                                        dense></v-text-field>
-                                </v-col>
-                            </v-row>
-                        </sub-panel>
+                        <v-row v-if="showOptionalSettings">
+                            <v-col class="col-12">
+                                <v-text-field
+                                    v-model="dialogAddPrinter.path"
+                                    :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
+                                    :label="$t('SelectPrinterDialog.Path')"
+                                    hide-details="auto"
+                                    outlined
+                                    dense></v-text-field>
+                            </v-col>
+                        </v-row>
                     </v-card-text>
                     <v-card-actions>
+                        <v-checkbox
+                            class="ml-2"
+                            :on-icon="mdiShowOptional"
+                            :off-icon="mdiHideOptional"
+                            :true-value="false"
+                            :false-value="true"
+                            v-model="showOptionalSettings"></v-checkbox>
                         <v-spacer></v-spacer>
                         <v-btn color="primary" text class="middle" type="submit" :disabled="!addPrinterValid">
                             {{ $t('SelectPrinterDialog.AddPrinter') }}
@@ -137,27 +139,32 @@
                                     hide-details="auto"></v-text-field>
                             </v-col>
                         </v-row>
-                        <sub-panel
-                            :title="$t('SelectPrinterDialog.AdvancedSettings')"
-                            sub-panel-class="edit-printer-advanced"
-                            expand="false">
-                            <v-row>
-                                <v-col class="col-6">
-                                    <v-text-field
-                                        v-model="dialogEditPrinter.path"
-                                        :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
-                                        :label="$t('SelectPrinterDialog.Path')"
-                                        hide-details="auto"
-                                        outlined
-                                        dense></v-text-field>
-                                </v-col>
-                            </v-row>
-                        </sub-panel>
+                        <v-row v-if="showOptionalSettings">
+                            <v-col class="col-12">
+                                <v-text-field
+                                    v-model="dialogEditPrinter.path"
+                                    :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
+                                    :label="$t('SelectPrinterDialog.Path')"
+                                    hide-details="auto"
+                                    outlined
+                                    dense></v-text-field>
+                            </v-col>
+                        </v-row>
                     </v-card-text>
                     <v-card-actions>
                         <v-btn color="red" icon tile class="minwidth-0 rounded" @click="delPrinter">
                             <v-icon small>{{ mdiDelete }}</v-icon>
                         </v-btn>
+                        <v-checkbox
+                            class="ml-2"
+                            icon
+                            tile
+                            small
+                            :on-icon="mdiShowOptional"
+                            :off-icon="mdiHideOptional"
+                            :true-value="false"
+                            :false-value="true"
+                            v-model="showOptionalSettings"></v-checkbox>
                         <v-spacer></v-spacer>
                         <v-btn color="primary" text type="submit" :disabled="!editPrinterValid">
                             {{ $t('SelectPrinterDialog.UpdatePrinter') }}
@@ -257,6 +264,8 @@ import {
     mdiCloseThick,
     mdiConnection,
     mdiDelete,
+    mdiCog,
+    mdiCogOff,
     mdiPencil,
     mdiSync,
 } from '@mdi/js'
@@ -270,7 +279,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         bool: false,
         hostname: '',
         port: 7125,
-        path: '',
+        path: '/',
     }
     private editPrinterValid = false
     private dialogEditPrinter = {
@@ -278,8 +287,9 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         id: '',
         hostname: '',
         port: 0,
-        path: '',
+        path: '/',
     }
+    private showOptionalSettings = false
 
     /**
      * Icons
@@ -291,6 +301,8 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     mdiPencil = mdiPencil
     mdiCheckboxMarkedCircle = mdiCheckboxMarkedCircle
     mdiCancel = mdiCancel
+    mdiShowOptional = mdiCog
+    mdiHideOptional = mdiCogOff
 
     get printers() {
         return this.$store.getters['gui/remoteprinters/getRemoteprinters'] ?? []
@@ -389,14 +401,14 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
         this.dialogAddPrinter.hostname = ''
         this.dialogAddPrinter.bool = false
-        this.dialogAddPrinter.path = ''
+        this.dialogAddPrinter.path = '/'
     }
 
     editPrinter(printer: GuiRemoteprintersStatePrinter) {
         this.dialogEditPrinter.hostname = printer.hostname
         this.dialogEditPrinter.port = printer.port
         this.dialogEditPrinter.id = printer.id ?? ''
-        this.dialogEditPrinter.path = printer.path ?? ''
+        this.dialogEditPrinter.path = printer.path ?? '/'
         this.dialogEditPrinter.bool = true
     }
 
