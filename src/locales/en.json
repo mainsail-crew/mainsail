@@ -820,7 +820,6 @@
     "SelectPrinterDialog": {
         "AddPrinter": "Add Printer",
         "AddPrintersToJson": "Please add the Printers to the config.json.",
-        "AdvancedSettings": "Advanced Settings",
         "CannotConnectTo": "Cannot connect to {host}.",
         "ChangePrinter": "Change Printer",
         "Connecting": "Connecting to {host}",
