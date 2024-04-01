@@ -66,19 +66,10 @@
                         dense
                         outlined></v-text-field>
                 </settings-row>
-                <sub-panel
-                    :title="$t('Settings.RemotePrintersTab.AdvancedSettings')"
-                    sub-panel-class="remote-printer-advanced"
-                    expand="false">
-                    <settings-row :title="$t('Settings.RemotePrintersTab.Name')">
-                        <v-text-field
-                            v-model="form.name"
-                            :label="$t('Settings.RemotePrintersTab.Name')"
-                            outlined
-                            hide-details="auto"
-                            dense></v-text-field>
-                    </settings-row>
-                </sub-panel>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.RemotePrintersTab.Name')">
+                    <v-text-field v-model="form.name" outlined hide-details="auto" dense></v-text-field>
+                </settings-row>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
                 <v-btn text @click="form.bool = false">{{ $t('Settings.Cancel') }}</v-btn>

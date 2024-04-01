@@ -83,23 +83,25 @@
                                     dense></v-text-field>
                             </v-col>
                         </v-row>
-                        <sub-panel
-                            :title="$t('SelectPrinterDialog.AdvancedSettings')"
-                            sub-panel-class="add-printer-advanced"
-                            expand="false">
-                            <v-row>
-                                <v-col class="col-6">
-                                    <v-text-field
-                                        v-model="dialogAddPrinter.name"
-                                        :label="$t('SelectPrinterDialog.Name')"
-                                        outlined
-                                        hide-details="auto"
-                                        dense></v-text-field>
-                                </v-col>
-                            </v-row>
-                        </sub-panel>
+                        <v-row v-if="showOptionalSettings">
+                            <v-col class="col-12">
+                                <v-text-field
+                                    v-model="dialogAddPrinter.name"
+                                    :label="$t('SelectPrinterDialog.Name')"
+                                    outlined
+                                    hide-details="auto"
+                                    dense></v-text-field>
+                            </v-col>
+                        </v-row>
                     </v-card-text>
                     <v-card-actions>
+                        <v-checkbox
+                            v-model="showOptionalSettings"
+                            class="ml-2"
+                            :on-icon="mdiShowOptional"
+                            :off-icon="mdiHideOptional"
+                            :true-value="false"
+                            :false-value="true"></v-checkbox>
                         <v-spacer></v-spacer>
                         <v-btn color="primary" text class="middle" type="submit" :disabled="!addPrinterValid">
                             {{ $t('SelectPrinterDialog.AddPrinter') }}
@@ -136,26 +138,28 @@
                                     hide-details="auto"></v-text-field>
                             </v-col>
                         </v-row>
-                        <sub-panel
-                            :title="$t('SelectPrinterDialog.AdvancedSettings')"
-                            sub-panel-class="edit-printer-advanced"
-                            expand="false">
-                            <v-row>
-                                <v-col class="col-6">
-                                    <v-text-field
-                                        v-model="dialogEditPrinter.name"
-                                        :label="$t('SelectPrinterDialog.Name')"
-                                        outlined
-                                        hide-details="auto"
-                                        dense></v-text-field>
-                                </v-col>
-                            </v-row>
-                        </sub-panel>
+                        <v-row v-if="showOptionalSettings">
+                            <v-col class="col-12">
+                                <v-text-field
+                                    v-model="dialogEditPrinter.name"
+                                    :label="$t('SelectPrinterDialog.Name')"
+                                    outlined
+                                    hide-details="auto"
+                                    dense></v-text-field>
+                            </v-col>
+                        </v-row>
                     </v-card-text>
                     <v-card-actions>
                         <v-btn color="red" icon tile class="minwidth-0 rounded" @click="delPrinter">
                             <v-icon small>{{ mdiDelete }}</v-icon>
                         </v-btn>
+                        <v-checkbox
+                            v-model="showOptionalSettings"
+                            class="ml-2"
+                            :on-icon="mdiShowOptional"
+                            :off-icon="mdiHideOptional"
+                            :true-value="false"
+                            :false-value="true"></v-checkbox>
                         <v-spacer></v-spacer>
                         <v-btn color="primary" text type="submit" :disabled="!editPrinterValid">
                             {{ $t('SelectPrinterDialog.UpdatePrinter') }}
@@ -253,6 +257,8 @@ import {
     mdiCancel,
     mdiCheckboxMarkedCircle,
     mdiCloseThick,
+    mdiCog,
+    mdiCogOff,
     mdiConnection,
     mdiDelete,
     mdiPencil,
@@ -278,6 +284,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         port: 0,
         name: '',
     }
+    private showOptionalSettings = false
 
     /**
      * Icons
@@ -289,6 +296,8 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     mdiPencil = mdiPencil
     mdiCheckboxMarkedCircle = mdiCheckboxMarkedCircle
     mdiCancel = mdiCancel
+    mdiShowOptional = mdiCog
+    mdiHideOptional = mdiCogOff
 
     get printers() {
         return this.$store.getters['gui/remoteprinters/getRemoteprinters'] ?? []
@@ -396,6 +405,8 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         this.dialogEditPrinter.id = printer.id ?? ''
         this.dialogEditPrinter.name = printer.name ?? ''
         this.dialogEditPrinter.bool = true
+
+        this.showOptionalSettings = printer.name ? printer.name.length > 0 : false
     }
 
     updatePrinter() {
@@ -445,11 +456,19 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
     mounted() {
         this.$store.dispatch('gui/remoteprinters/initFromLocalstorage').then(() => {
-            window.console.log({ printers: this.printers, gui: this.guiIsReady })
             if ('printer' in this.$route.query) {
-                let matching = this.printers.filter((printer) => printer.name === this.$route.query.printer)
-                if (matching.length > 0) {
+                let name = this.$route.query.printer
+                let matching = this.printers.filter((printer) => printer.name === name)
+                if (matching.length == 0) {
+                    window.console.error(
+                        `No printer with given name '${name}' found. Showing selection dialog instead.`
+                    )
+                } else if (matching.length == 1) {
                     this.connect(matching[0])
+                } else {
+                    window.console.error(
+                        `Multiple printers with name '${name}' found. Showing selection dialog instead.`
+                    )
                 }
             }
         })
