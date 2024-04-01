@@ -97,12 +97,12 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-checkbox
+                            v-model="showOptionalSettings"
                             class="ml-2"
                             :on-icon="mdiShowOptional"
                             :off-icon="mdiHideOptional"
                             :true-value="false"
-                            :false-value="true"
-                            v-model="showOptionalSettings"></v-checkbox>
+                            :false-value="true"></v-checkbox>
                         <v-spacer></v-spacer>
                         <v-btn color="primary" text class="middle" type="submit" :disabled="!addPrinterValid">
                             {{ $t('SelectPrinterDialog.AddPrinter') }}
@@ -156,15 +156,12 @@
                             <v-icon small>{{ mdiDelete }}</v-icon>
                         </v-btn>
                         <v-checkbox
+                            v-model="showOptionalSettings"
                             class="ml-2"
-                            icon
-                            tile
-                            small
                             :on-icon="mdiShowOptional"
                             :off-icon="mdiHideOptional"
                             :true-value="false"
-                            :false-value="true"
-                            v-model="showOptionalSettings"></v-checkbox>
+                            :false-value="true"></v-checkbox>
                         <v-spacer></v-spacer>
                         <v-btn color="primary" text type="submit" :disabled="!editPrinterValid">
                             {{ $t('SelectPrinterDialog.UpdatePrinter') }}
