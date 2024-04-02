@@ -24,7 +24,7 @@
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.SelectedFilamentUsed') }}</td>
-                                    <td class="text-right">{{ Math.round(selectedFilamentUsed / 100) / 10 }} m</td>
+                                    <td class="text-right">{{ selectedFilamentUsedFormat }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.SelectedJobs') }}</td>
@@ -46,7 +46,7 @@
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.TotalFilamentUsed') }}</td>
-                                    <td class="text-right">{{ Math.round(totalFilamentUsed / 100) / 10 }} m</td>
+                                    <td class="text-right">{{ totalFilamentUsedFormat }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.TotalJobs') }}</td>
@@ -169,6 +169,12 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
         return this.$store.state.server.history.job_totals?.total_filament_used ?? 0
     }
 
+    get totalFilamentUsedFormat() {
+        const value = Math.round(this.totalFilamentUsed / 100) / 10
+
+        return `${value} m`
+    }
+
     get selectedFilamentUsed() {
         let filamentUsed = 0
 
@@ -177,6 +183,12 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
         })
 
         return filamentUsed
+    }
+
+    get selectedFilamentUsedFormat() {
+        const value = Math.round(this.selectedFilamentUsed / 100) / 10
+
+        return `${value} m`
     }
 
     get totalJobsCount() {
