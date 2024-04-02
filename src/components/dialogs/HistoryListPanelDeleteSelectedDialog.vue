@@ -28,7 +28,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
-import { ServerHistoryStateJob } from '@/store/server/history/types'
+import { HistoryListPanelRow } from '@/components/panels/HistoryListPanel.vue'
 
 @Component({
     components: { Panel },
@@ -51,7 +51,15 @@ export default class HistoryListPanelDeleteSelectedDialog extends Mixins(BaseMix
     }
 
     deleteSelectedJobs() {
-        this.selectedJobs.forEach((item: ServerHistoryStateJob) => {
+        this.selectedJobs.forEach((item: HistoryListPanelRow) => {
+            if (item.type === 'maintenance') {
+                this.$store.dispatch('gui/maintenance/delete', item.id)
+                return
+            }
+
+            // break if job_id is not present
+            if (!('job_id' in item)) return
+
             this.$socket.emit(
                 'server.history.delete_job',
                 { uid: item.job_id },
