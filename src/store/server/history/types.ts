@@ -52,6 +52,11 @@ export interface ServerHistoryStateJob {
     total_duration: number
 }
 
+export interface HistoryListRowJob extends ServerHistoryStateJob {
+    type: 'job'
+    select_id: string
+}
+
 export interface ServerHistoryStateAllPrintStatusEntry {
     name: string
     displayName: string

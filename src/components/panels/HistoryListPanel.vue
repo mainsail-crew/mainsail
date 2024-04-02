@@ -125,7 +125,7 @@
                 itemsPerPageAllText: $t('History.AllJobs'),
                 itemsPerPageOptions: [10, 25, 50, 100, -1],
             }"
-            item-key="job_id"
+            item-key="select_id"
             :search="search"
             :custom-filter="advancedSearch"
             mobile-breakpoint="0"
@@ -134,17 +134,17 @@
                 <div class="text-center">{{ $t('History.Empty') }}</div>
             </template>
 
-            <template #item="{ index, item, isSelected, select }">
+            <template #item="{ item, isSelected, select }">
                 <history-list-entry-job
                     v-if="item.type === 'job'"
-                    :key="`${index}_${item.job_id}`"
+                    :key="item.select_id"
                     :is-selected="isSelected"
                     :item="item"
                     :table-fields="tableFields"
                     @select="select" />
                 <history-list-entry-maintenance
                     v-else-if="item.type === 'maintenance'"
-                    :key="`${index}_${item.id}`"
+                    :key="item.select_id"
                     :is-selected="isSelected"
                     :item="item"
                     :table-fields="tableFields"
@@ -159,7 +159,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { ServerHistoryStateJob } from '@/store/server/history/types'
+import { HistoryListRowJob, ServerHistoryStateJob } from '@/store/server/history/types'
 import { caseInsensitiveSort, formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import {
@@ -175,9 +175,11 @@ import {
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import HistoryListEntryJob from '@/components/panels/History/HistoryListEntryJob.vue'
 import HistoryListPanelAddMaintenance from '@/components/dialogs/HistoryListPanelAddMaintenance.vue'
-import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
+import { GuiMaintenanceStateEntry, HistoryListRowMaintenance } from '@/store/gui/maintenance/types'
 import HistoryListEntryMaintenance from '@/components/panels/History/HistoryListEntryMaintenance.vue'
 import HistoryListPanelDeleteSelectedDialog from '@/components/dialogs/HistoryListPanelDeleteSelectedDialog.vue'
+
+export type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance
 
 export interface HistoryListPanelCol {
     text: string
@@ -231,11 +233,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get entries() {
-        let entries = []
+        let entries: HistoryListPanelRow[] = []
 
         if (this.showPrintJobs) {
             entries = [...this.jobs].map((job) => {
-                return { ...job, type: 'job' }
+                return { ...job, type: 'job', select_id: `job_${job.job_id}` }
             })
         }
 
@@ -245,7 +247,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             entries = [
                 ...entries,
                 ...this.maintenanceEntries.map((entry: GuiMaintenanceStateEntry) => {
-                    return { ...entry, type: 'maintenance' }
+                    return { ...entry, type: 'maintenance', select_id: `maintenance_${entry.id}` }
                 }),
             ]
         }
@@ -596,7 +598,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         link.remove()
     }
 
-    outputValue(col: HistoryListPanelRow, job: ServerHistoryStateJob, csvSeperator: string | null = null) {
+    outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, csvSeperator: string | null = null) {
         //@ts-ignore
         let value = col.value in job ? job[col.value] : null
         if (value === null) value = col.value in job.metadata ? job.metadata[col.value] : null

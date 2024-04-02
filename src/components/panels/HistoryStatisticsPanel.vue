@@ -116,7 +116,7 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     formatPrintTime = formatPrintTime
 
     get selectedJobs() {
-        return this.$store.state.gui.view.history.selectedJobs ?? []
+        return this.$store.getters['server/history/getSelectedJobs']
     }
 
     get existsSelectedJobs() {

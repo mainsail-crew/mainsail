@@ -149,7 +149,7 @@ import {
     mdiTextBoxSearch,
 } from '@mdi/js'
 import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
-import { HistoryListPanelRow } from '@/components/panels/HistoryListPanel.vue'
+import { HistoryListPanelCol } from '@/components/panels/HistoryListPanel.vue'
 import HistoryListPanelNoteDialog from '@/components/dialogs/HistoryListPanelNoteDialog.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 
@@ -180,7 +180,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     addBatchToQueueDialogBool = false
 
     @Prop({ type: Object, required: true }) readonly item!: ServerHistoryStateJob
-    @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelRow[]
+    @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelCol[]
     @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
 
     get smallThumbnail() {
@@ -296,7 +296,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         )
     }
 
-    outputValue(col: HistoryListPanelRow, item: ServerHistoryStateJob) {
+    outputValue(col: HistoryListPanelCol, item: ServerHistoryStateJob) {
         //@ts-ignore
         let value = col.value in item ? item[col.value] : null
         if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null

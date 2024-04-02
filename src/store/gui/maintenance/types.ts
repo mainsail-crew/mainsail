@@ -36,3 +36,8 @@ export interface GuiMaintenanceStateEntry {
         }
     }
 }
+
+export interface HistoryListRowMaintenance extends GuiMaintenanceStateEntry {
+    type: 'maintenance'
+    select_id: string
+}

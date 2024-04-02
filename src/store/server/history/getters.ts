@@ -1,14 +1,25 @@
 import { GetterTree } from 'vuex'
 import {
+    HistoryListRowJob,
     ServerHistoryState,
     ServerHistoryStateAllPrintStatusEntry,
     ServerHistoryStateJob,
 } from '@/store/server/history/types'
 import { mdiAlertOutline, mdiCheckboxMarkedCircleOutline, mdiCloseCircleOutline, mdiProgressClock } from '@mdi/js'
 import i18n from '@/plugins/i18n'
+import { HistoryListRowMaintenance } from '@/store/gui/maintenance/types'
+
+// I don't know why I cannot import the type from the HistoryListPanel, that's why I have to define it here again
+type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerHistoryState, any> = {
+    getSelectedJobs: (state, getters, rootState): ServerHistoryStateJob[] => {
+        const entries: HistoryListPanelRow[] = rootState.gui.view.history.selectedJobs ?? []
+
+        return entries.filter((entry) => entry.type === 'job') as ServerHistoryStateJob[]
+    },
+
     getTotalPrintTime(state) {
         let output = 0
 
@@ -150,11 +161,11 @@ export const getters: GetterTree<ServerHistoryState, any> = {
     getSelectedPrintStatusArray(state, getters, rootState) {
         const output: ServerHistoryStateAllPrintStatusEntry[] = []
 
-        rootState.gui.view.history.selectedJobs.forEach((current: ServerHistoryStateJob) => {
+        getters.getSelectedJobs.forEach((current: ServerHistoryStateJob) => {
             const index = output.findIndex((element) => element.name === current.status)
             if (index !== -1) output[index].value += 1
             else {
-                const displayName = i18n.te(`History.StatusValues.${current.status}`, 'en')
+                const displayName = i18n.te(`History.StatusValues.${current.status}`, 'en').toString()
                     ? i18n.t(`History.StatusValues.${current.status}`).toString()
                     : current.status
                 const itemStyle = {
@@ -192,7 +203,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         return output
     },
 
-    getFilamentUsageArray(state, getters, rootState) {
+    getFilamentUsageArray(state, getters) {
         // eslint-disable-next-line
         const output: any = []
         const startDate = new Date()
@@ -202,9 +213,9 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         let jobsFiltered = [
             ...state.jobs.filter((job) => new Date(job.start_time * 1000) >= startDate && job.filament_used > 0),
         ]
-        if (rootState.gui.view.history.selectedJobs.length)
+        if (getters.getSelectedJobs.length)
             jobsFiltered = [
-                ...rootState.gui.view.history.selectedJobs.filter(
+                ...getters.getSelectedJobs.filter(
                     (job: ServerHistoryStateJob) =>
                         new Date(job.start_time * 1000) >= startDate && job.filament_used > 0
                 ),
@@ -239,9 +250,9 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         let jobsFiltered = [
             ...state.jobs.filter((job) => new Date(job.start_time * 1000) >= startDate && job.status === 'completed'),
         ]
-        if (rootState.gui.view.history.selectedJobs.length)
+        if (getters.getSelectedJobs.length)
             jobsFiltered = [
-                ...rootState.gui.view.history.selectedJobs.filter(
+                ...getters.getSelectedJobs.filter(
                     (job: ServerHistoryStateJob) =>
                         new Date(job.start_time * 1000) >= startDate && job.status === 'completed'
                 ),
