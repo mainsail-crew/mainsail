@@ -1185,7 +1185,7 @@
             "PowerDeviceNameDescription": "Select which Moonraker power device should be used to power on the printer.",
             "Primary": "Primary",
             "ProgressAsFavicon": "Show progress as favicon",
-            "ProgressAsFaviconDescription": "Switch from the Mainsail logo to a progress circle in the favicon.",
+            "ProgressAsFaviconDescription": "Change the Mainsail logo favicon to a progress circle.",
             "ScrewsTiltAdjustDialog": "Screws Tilt Adjust Dialog",
             "ScrewsTiltAdjustDialogDescription": "Display helper dialog for SCREWS_TILT_CALCULATE.",
             "TempchartHeight": "Height Temperature Chart",
