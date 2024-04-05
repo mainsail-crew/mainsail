@@ -70,7 +70,9 @@ export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get formatHostname() {
-        return parseInt(this.port) !== 80 && this.port !== '' ? this.hostname + ':' + this.port + this.path : this.hostname + this.path
+        return parseInt(this.port) !== 80 && this.port !== ''
+            ? this.hostname + ':' + this.port + this.path
+            : this.hostname + this.path
     }
 
     get isConnecting() {

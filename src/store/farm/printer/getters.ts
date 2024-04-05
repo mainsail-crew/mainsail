@@ -7,17 +7,9 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 // eslint-disable-next-line
 export const getters: GetterTree<FarmPrinterState, any> = {
     getSocketUrl: (state) => {
-        const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, "")
+        const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
         const path = normPath.length > 0 ? `/${normPath}` : ''
-        return (
-            state.socket.protocol +
-            '://' +
-            state.socket.hostname +
-            ':' +
-            state.socket.port +
-            path +
-            '/websocket'
-        )
+        return state.socket.protocol + '://' + state.socket.hostname + ':' + state.socket.port + path + '/websocket'
     },
 
     getSocketData: (state) => {
@@ -138,7 +130,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
             const dir = indexLastDir !== -1 ? state.current_file.filename.substring(0, indexLastDir) + '/' : ''
             const thumbnail = state.current_file.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
 
-            const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, "")
+            const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
             const path = normPath.length > 0 ? `/${normPath}` : ''
             if (thumbnail && 'relative_path' in thumbnail)
                 return (
@@ -163,10 +155,12 @@ export const getters: GetterTree<FarmPrinterState, any> = {
                 acceptExtensions.includes(element.substr(element.lastIndexOf('.') + 1))
         )
 
-        const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, "")
+        const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
         const path = normPath.length > 0 ? `/${normPath}` : ''
 
-        return file ? '//' + state.socket.hostname + ':' + state.socket.port + path + '/server/files/config/' + file : null
+        return file
+            ? '//' + state.socket.hostname + ':' + state.socket.port + path + '/server/files/config/' + file
+            : null
     },
 
     getLogo: (state, getters) => {
@@ -284,7 +278,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         ) {
             return (
                 state.data.print_stats.print_duration /
-                (state.data.print_stats.filament_used / state.current_file.filament_total) -
+                    (state.data.print_stats.filament_used / state.current_file.filament_total) -
                 state.data.print_stats.print_duration
             ).toFixed(0)
         }

@@ -435,14 +435,15 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
             port: printer.socket.port,
             path: printer.socket.path,
         })
-        let normPath = printer.socket.path.replaceAll(/(^\/*)|(\/*$)/g, "")
-        let url = this.protocol +
-                '://' +
-                printer.socket.hostname +
-                ':' +
-                printer.socket.port +
-                (normPath.length > 0 ? `/${normPath}` : '') +
-                '/websocket'
+        const normPath = printer.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
+        const url =
+            this.protocol +
+            '://' +
+            printer.socket.hostname +
+            ':' +
+            printer.socket.port +
+            (normPath.length > 0 ? `/${normPath}` : '') +
+            '/websocket'
         this.$socket.setUrl(url)
         this.$socket.connect()
     }
