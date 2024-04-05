@@ -13,6 +13,7 @@
                 "DeprecatedOptionHeadline": "Deprecated Klipper Option",
                 "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
                 "DeprecatedValueHeadline": "Deprecated Klipper Value",
+                "KlipperRuntimeWarning": "Klipper runtime warning",
                 "KlipperWarning": "Klipper warning"
             },
             "MoonrakerWarnings": {
