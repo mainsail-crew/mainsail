@@ -9,7 +9,7 @@ export const getDefaultState = (): SocketState => {
     const hostname = (import.meta.env.VUE_APP_HOSTNAME as string) || window.location.hostname
     const defaultPort = window.location.port || (window.location.protocol === 'https:' ? 443 : 80)
     const port = import.meta.env.VUE_APP_PORT ? Number(import.meta.env.VUE_APP_PORT) : Number(defaultPort)
-    const path = ''
+    const path = (import.meta.env.VUE_APP_PATH as string) || ''
 
     return {
         hostname,

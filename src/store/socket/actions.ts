@@ -20,6 +20,7 @@ export const actions: ActionTree<SocketState, RootState> = {
         if ('$socket' in Vue.prototype) {
             const normPath = payload.path.replaceAll(/(^\/*)|(\/*$)/g, '')
             const path = normPath.length > 0 ? `/${normPath}` : ''
+
             await Vue.prototype.$socket.close()
             await Vue.prototype.$socket.setUrl(
                 state.protocol + '://' + payload.hostname + ':' + payload.port + path + '/websocket'
