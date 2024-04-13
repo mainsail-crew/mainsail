@@ -105,6 +105,13 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
+                    :title="$t('Settings.UiSettingsTab.ProgressAsFavicon')"
+                    :sub-title="$t('Settings.UiSettingsTab.ProgressAsFaviconDescription')"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="progressAsFavicon" hide-details class="mt-0" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
                     :title="$t('Settings.UiSettingsTab.LockSliders')"
                     :sub-title="$t('Settings.UiSettingsTab.LockSlidersDescription')"
                     :dynamic-slot-width="true">
@@ -340,6 +347,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.displayCancelPrint', value: newVal })
     }
 
+    get progressAsFavicon() {
+        return this.$store.state.gui.uiSettings.progressAsFavicon
+    }
+
+    set progressAsFavicon(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.progressAsFavicon', value: newVal })
+    }
+
     get confirmOnEmergencyStop() {
         return this.$store.state.gui.uiSettings.confirmOnEmergencyStop
     }
@@ -445,10 +460,10 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     get autoPowerDevice() {
-        const autoIndex = this.powerDevices.findIndex((device: ServerPowerStateDevice) => device.device === 'printer')
-        if (autoIndex === -1) return '--'
-
-        return this.powerDevices[autoIndex].device
+        return (
+            this.powerDevices.find((device: ServerPowerStateDevice) => device.device.toLowerCase() === 'printer')
+                ?.device ?? '--'
+        )
     }
 
     get powerDeviceName() {

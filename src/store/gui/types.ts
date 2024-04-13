@@ -114,6 +114,7 @@ export interface GuiState {
         navigationStyle: 'iconsAndText' | 'iconsOnly'
         defaultNavigationStateSetting: 'alwaysOpen' | 'alwaysClosed' | 'lastState'
         powerDeviceName: string | null
+        progressAsFavicon: boolean
         hideSaveConfigForBedMash: boolean
         disableFanAnimation: boolean
         boolManualProbeDialog: boolean
