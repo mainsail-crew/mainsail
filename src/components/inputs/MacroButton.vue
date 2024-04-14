@@ -1,14 +1,21 @@
 <template>
     <v-item-group class="d-inline-block">
-        <v-btn
-            small
-            :color="color"
-            :class="paramArray.length ? 'macroWithParameters' : ''"
-            :loading="loadings.includes('macro_' + macro.name)"
-            :disabled="disabled"
-            @click="doSendMacro(macro.name)">
-            {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
-        </v-btn>
+        <v-tooltip :disabled="!hasDescription" top>
+            <template #activator="{ on, attrs }">
+                <v-btn
+                    small
+                    :color="color"
+                    :class="paramArray.length ? 'macroWithParameters' : ''"
+                    :loading="loadings.includes('macro_' + macro.name)"
+                    :disabled="disabled"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="doSendMacro(macro.name)">
+                    {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
+                </v-btn>
+            </template>
+            <span>{{ klipperMacro.description }}</span>
+        </v-tooltip>
         <template v-if="paramArray.length">
             <v-menu v-if="!isMobile" offset-y :close-on-content-click="false">
                 <template #activator="{ on, attrs }">
@@ -118,6 +125,8 @@ interface params {
     components: { Panel },
 })
 export default class MacroButton extends Mixins(BaseMixin) {
+    DEFAULT_DESC = 'G-Code macro'
+
     /**
      * Icons
      */
@@ -165,6 +174,10 @@ export default class MacroButton extends Mixins(BaseMixin) {
 
     get paramsOverlayWidth() {
         return 200 * this.paramCols
+    }
+
+    get hasDescription(): boolean {
+        return this.klipperMacro.description && this.klipperMacro.description !== this.DEFAULT_DESC
     }
 
     @Watch('klipperMacro')
