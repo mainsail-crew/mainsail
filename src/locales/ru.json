@@ -13,6 +13,7 @@
                 "DeprecatedOptionHeadline": "Устаревший параметр Klipper",
                 "DeprecatedValue": "Значение '{value}' в параметре '{option}' раздела '{section}' устарело и будет удалено в следующем релизе.",
                 "DeprecatedValueHeadline": "Устаревшее значение Klipper",
+                "KlipperRuntimeWarning": "Предупреждение при запуске Klipper",
                 "KlipperWarning": "Предупреждение Klipper"
             },
             "MoonrakerWarnings": {
@@ -181,7 +182,7 @@
     },
     "Editor": {
         "ConfigReference": "Документация по настройке",
-        "DeviceDialog": "Devices",
+        "DeviceDialog": "Устройства",
         "DontSave": "Не сохранять",
         "Downloading": "Загрузка",
         "FailedSave": "Не удалось сохранить файл {filename}!",
@@ -599,7 +600,9 @@
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "Проверьте, запущена ли служба Klipper и правильно ли задан klippy_uds_address в файле moonraker.conf.",
             "FirmwareRestart": "Перезапустить прошивку",
+            "KlipperLog": "Журнал Klipper",
             "MoonrakerCannotConnect": "Moonraker не может подключиться к Klipper!",
+            "MoonrakerLog": "Журнал Moonraker",
             "PowerOn": "Включить принтер",
             "PrinterSwitchedOff": "Принтер выключен",
             "PrinterSwitchedOffDescription": "Сейчас принтер выключен и Klipper не может подключиться. Чтобы включить принтер, нажмите кнопку ниже:",
@@ -1184,6 +1187,8 @@
             "PowerDeviceName": "Источник питания принтера",
             "PowerDeviceNameDescription": "Выбор устройства питания Moonraker, которое будет использоваться для питания принтера.",
             "Primary": "Основной цвет",
+            "ProgressAsFavicon": "Прогресс печати во вкладке бразузера",
+            "ProgressAsFaviconDescription": "Изменение значка логотипа Mainsail на кружок прогресса печати.",
             "ScrewsTiltAdjustDialog": "Окно регулировки поворота винтов стола",
             "ScrewsTiltAdjustDialogDescription": "Отображать вспомогательное диалоговое окно для регулировки поворота винтов стола (SCREWS_TILT_CALCULATE).",
             "TempchartHeight": "Высота графика температуры",
@@ -1232,7 +1237,7 @@
             "Webcams": "Видеокамеры",
             "WebrtcCameraStreamer": "WebRTC-поток",
             "WebrtcGo2rtc": "WebRTC (go2rtc)",
-             "WebrtcJanus": "WebRTC (janus-gateway)",
+            "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
     },
