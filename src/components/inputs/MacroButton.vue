@@ -125,9 +125,9 @@ export default class MacroButton extends Mixins(BaseMixin) {
     mdiMenuDown = mdiMenuDown
     mdiRefresh = mdiRefresh
 
-    private paramArray: string[] = []
-    private params: params = {}
-    private paramsDialog = false
+    paramArray: string[] = []
+    params: params = {}
+    paramsDialog = false
 
     @Prop({ required: true })
     declare readonly macro: GuiMacrosStateMacrogroupMacro | PrinterStateMacro
