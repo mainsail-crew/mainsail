@@ -504,17 +504,13 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
             // no printers found with this name
             if (matching.length == 0) {
-                window.console.error(
-                    `No printer with given name '${name}' found. Showing selection dialog instead.`
-                )
+                window.console.error(`No printer with given name '${name}' found. Showing selection dialog instead.`)
                 return
             }
 
             // multiple printers found with this name
             if (matching.length > 1) {
-                window.console.error(
-                    `Multiple printers with name '${name}' found. Showing selection dialog instead.`
-                )
+                window.console.error(`Multiple printers with name '${name}' found. Showing selection dialog instead.`)
                 return
             }
 
