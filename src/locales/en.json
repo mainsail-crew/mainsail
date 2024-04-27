@@ -1068,6 +1068,7 @@
             "EditPrinter": "Edit Printer",
             "Hostname": "Hostname",
             "Name": "Name",
+            "NameDescription": "This name will not be displayed in the GUI and will only used for redirects.",
             "Path": "Path",
             "Port": "Port",
             "RemotePrinters": "Printers",

@@ -75,10 +75,14 @@
                         outlined
                         dense />
                 </settings-row>
-                <v-divider class="my-2" />
-                <settings-row :title="$t('Settings.RemotePrintersTab.Name')">
-                    <v-text-field v-model="form.name" outlined hide-details="auto" dense />
-                </settings-row>
+                <template v-if="instancesDB !== 'moonraker'">
+                    <v-divider class="my-2" />
+                    <settings-row
+                        :title="$t('Settings.RemotePrintersTab.Name')"
+                        :sub-title="$t('Settings.RemotePrintersTab.NameDescription')">
+                        <v-text-field v-model="form.name" outlined hide-details="auto" dense />
+                    </settings-row>
+                </template>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
                 <v-btn text @click="form.bool = false">{{ $t('Settings.Cancel') }}</v-btn>
