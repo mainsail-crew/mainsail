@@ -293,6 +293,8 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                 } else if (warning.type === 'deprecated_option') {
                     title = i18n.t('App.Notifications.KlipperWarnings.DeprecatedOptionHeadline').toString()
                     description = i18n.t('App.Notifications.KlipperWarnings.DeprecatedOption', warning).toString()
+                } else if (warning.type === 'runtime_warning') {
+                    title = i18n.t('App.Notifications.KlipperWarnings.KlipperRuntimeWarning').toString()
                 }
 
                 // generate url to mainsail docs to fix this warning

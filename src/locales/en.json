@@ -13,6 +13,7 @@
                 "DeprecatedOptionHeadline": "Deprecated Klipper Option",
                 "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
                 "DeprecatedValueHeadline": "Deprecated Klipper Value",
+                "KlipperRuntimeWarning": "Klipper runtime warning",
                 "KlipperWarning": "Klipper warning"
             },
             "MoonrakerWarnings": {
@@ -599,7 +600,9 @@
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "Please check if the Klipper service is running and klippy_uds_address is correctly configured in the moonraker.conf.",
             "FirmwareRestart": "Firmware Restart",
+            "KlipperLog": "Klipper Log",
             "MoonrakerCannotConnect": "Moonraker can't connect to Klipper!",
+            "MoonrakerLog": "Moonraker Log",
             "PowerOn": "Power on",
             "PrinterSwitchedOff": "Printer is powered off",
             "PrinterSwitchedOffDescription": "The printer is currently powered off and Klipper cannot connect. To power on the printer, click the button below:",
@@ -830,6 +833,7 @@
         "HostnameIp": "Hostname/IP",
         "HostnameRequired": "Hostname is required",
         "Name": "Name",
+        "Path": "Path",
         "Port": "Port",
         "PortRequired": "Port is required",
         "RememberToAdd": "Please remember to add '{cors}' in moonraker.conf within 'cors_domains'.",
@@ -1064,6 +1068,7 @@
             "EditPrinter": "Edit Printer",
             "Hostname": "Hostname",
             "Name": "Name",
+            "Path": "Path",
             "Port": "Port",
             "RemotePrinters": "Printers",
             "UpdatePrinter": "Update Printer",
@@ -1186,6 +1191,8 @@
             "PowerDeviceName": "Printer power device",
             "PowerDeviceNameDescription": "Select which Moonraker power device should be used to power on the printer.",
             "Primary": "Primary",
+            "ProgressAsFavicon": "Show progress as favicon",
+            "ProgressAsFaviconDescription": "Change the Mainsail logo favicon to a progress circle.",
             "ScrewsTiltAdjustDialog": "Screws Tilt Adjust Dialog",
             "ScrewsTiltAdjustDialogDescription": "Display helper dialog for SCREWS_TILT_CALCULATE.",
             "TempchartHeight": "Height Temperature Chart",

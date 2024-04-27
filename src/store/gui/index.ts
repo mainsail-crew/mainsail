@@ -165,6 +165,7 @@ export const getDefaultState = (): GuiState => {
             navigationStyle: 'iconsAndText',
             defaultNavigationStateSetting: 'alwaysOpen',
             powerDeviceName: null,
+            progressAsFavicon: true,
             hideSaveConfigForBedMash: false,
             disableFanAnimation: false,
             boolManualProbeDialog: true,

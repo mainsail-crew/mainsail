@@ -39,6 +39,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     private restartTimeout: any = null
     private status: string = 'connecting'
     private eTag: string | null = null
+    private sessionUuid: string | null = null
     private queuedCandidates: RTCIceCandidate[] = []
     private offerData: OfferData = {
         iceUfrag: '',
@@ -206,6 +207,9 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
 
         this.pc = new RTCPeerConnection({
             iceServers,
+            // https://webrtc.org/getting-started/unified-plan-transition-guide
+            // @ts-ignore
+            sdpSemantics: 'unified-plan',
         })
 
         const direction = 'sendrecv'
@@ -238,6 +242,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
             .then((res) => {
                 if (res.status !== 201) throw new Error('bad status code')
                 this.eTag = res.headers.get('ETag')
+                this.sessionUuid = res.headers.get('location')
 
                 // fallback for MediaMTX v1.0.x with broken ETag header
                 if (res.headers.has('E-Tag')) this.eTag = res.headers.get('E-Tag')
@@ -296,7 +301,8 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     sendLocalCandidates(candidates: RTCIceCandidate[]) {
-        fetch(this.url, {
+        const url = new URL(this.sessionUuid ?? '', this.url).toString()
+        fetch(url, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/trickle-ice-sdpfrag',
@@ -306,7 +312,14 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
             body: this.generateSdpFragment(this.offerData, candidates),
         })
             .then((res) => {
-                if (res.status !== 204) throw new Error('bad status code')
+                switch (res.status) {
+                    case 204:
+                        break
+                    case 404:
+                        throw new Error('stream not found')
+                    default:
+                        throw new Error(`bad status code ${res.status}`)
+                }
             })
             .catch((err) => {
                 this.log(err)
