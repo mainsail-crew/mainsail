@@ -7,12 +7,7 @@
                 </v-btn>
             </template>
             <v-card-text>
-                <p v-if="selectedJobs.length === 1" class="mb-0">
-                    {{ $t('History.DeleteSingleJobQuestion') }}
-                </p>
-                <p v-else class="mb-0">
-                    {{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}
-                </p>
+                <p class="mb-0">{{ question }}</p>
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
@@ -44,6 +39,12 @@ export default class HistoryListPanelDeleteSelectedDialog extends Mixins(BaseMix
 
     set selectedJobs(newVal) {
         this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.history.selectedJobs', value: newVal })
+    }
+
+    get question() {
+        if (this.selectedJobs.length === 1) return this.$t('History.DeleteSingleJobQuestion')
+
+        return this.$t('History.DeleteSelectedQuestion', { count: this.selectedJobs.length })
     }
 
     closeDialog() {
