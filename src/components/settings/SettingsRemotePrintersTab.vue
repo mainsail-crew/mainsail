@@ -7,7 +7,7 @@
                     {{ $t('Settings.RemotePrintersTab.UseConfigJson') }}
                 </v-alert>
                 <div v-for="(printer, index) in printers" :key="printer.id">
-                    <v-divider v-if="index" class="my-2"></v-divider>
+                    <v-divider v-if="index" class="my-2" />
                     <settings-row
                         :title="formatPrinterName(printer)"
                         :loading="printer.socket.isConnecting"
@@ -47,33 +47,33 @@
                     <v-text-field
                         v-model="form.hostname"
                         :rules="[
-                            (v) => !!v || 'Hostname is required',
-                            (v) => !v.startsWith('http:') || 'invalid hostname/IP',
-                            (v) => !v.startsWith('https:') || 'invalid hostname/IP',
+                            (v: string) => !!v || 'Hostname is required',
+                            (v: string) => !v.startsWith('http:') || 'invalid hostname/IP',
+                            (v: string) => !v.startsWith('https:') || 'invalid hostname/IP',
                         ]"
                         hide-details="auto"
                         required
                         dense
-                        outlined></v-text-field>
+                        outlined />
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
+                <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.RemotePrintersTab.Port')">
                     <v-text-field
                         v-model="form.port"
-                        :rules="[(v) => !!v || 'Port is required']"
+                        :rules="[(v: string) => !!v || 'Port is required']"
                         hide-details="auto"
                         required
                         dense
-                        outlined></v-text-field>
+                        outlined />
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
+                <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.RemotePrintersTab.Path')">
                     <v-text-field
                         v-model="form.path"
-                        :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
+                        :rules="[(v: string) => !v || v.startsWith('/') || 'Path must start with /']"
                         hide-details="auto"
                         outlined
-                        dense></v-text-field>
+                        dense />
                 </settings-row>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
@@ -115,7 +115,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     mdiDelete = mdiDelete
     mdiAlertOutline = mdiAlertOutline
 
-    private form: printerForm = {
+    form: printerForm = {
         bool: false,
         hostname: '',
         port: 7125,
