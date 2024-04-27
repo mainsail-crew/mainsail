@@ -47,9 +47,9 @@
                     <v-text-field
                         v-model="form.hostname"
                         :rules="[
-                            (v: string) => !!v || 'Hostname is required',
-                            (v: string) => !v.startsWith('http:') || 'invalid hostname/IP',
-                            (v: string) => !v.startsWith('https:') || 'invalid hostname/IP',
+                            (v) => !!v || 'Hostname is required',
+                            (v) => !v.startsWith('http:') || 'invalid hostname/IP',
+                            (v) => !v.startsWith('https:') || 'invalid hostname/IP',
                         ]"
                         hide-details="auto"
                         required
@@ -60,7 +60,7 @@
                 <settings-row :title="$t('Settings.RemotePrintersTab.Port')">
                     <v-text-field
                         v-model="form.port"
-                        :rules="[(v: string) => !!v || 'Port is required']"
+                        :rules="[(v) => !!v || 'Port is required']"
                         hide-details="auto"
                         required
                         dense
@@ -70,7 +70,7 @@
                 <settings-row :title="$t('Settings.RemotePrintersTab.Path')">
                     <v-text-field
                         v-model="form.path"
-                        :rules="[(v: string) => !v || v.startsWith('/') || 'Path must start with /']"
+                        :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
                         hide-details="auto"
                         outlined
                         dense />

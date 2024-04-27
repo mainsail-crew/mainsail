@@ -60,11 +60,9 @@
                                 <v-text-field
                                     v-model="dialogAddPrinter.hostname"
                                     :rules="[
-                                        (v: string) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
-                                        (v: string) =>
-                                            !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
-                                        (v: string) =>
-                                            !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                        (v) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
+                                        (v) => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                        (v) => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
                                     ]"
                                     :label="$t('SelectPrinterDialog.HostnameIp')"
                                     required
@@ -75,7 +73,7 @@
                             <v-col class="col-4">
                                 <v-text-field
                                     v-model="dialogAddPrinter.port"
-                                    :rules="[(v: string) => !!v || $t('SelectPrinterDialog.PortRequired')]"
+                                    :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
                                     :label="$t('SelectPrinterDialog.Port')"
                                     hide-details="auto"
                                     required
@@ -87,7 +85,7 @@
                             <v-col class="col-12">
                                 <v-text-field
                                     v-model="dialogAddPrinter.path"
-                                    :rules="[(v: string) => !v || v.startsWith('/') || 'Path must start with /']"
+                                    :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
                                     :label="$t('SelectPrinterDialog.Path')"
                                     hide-details="auto"
                                     outlined
@@ -118,11 +116,9 @@
                                 <v-text-field
                                     v-model="dialogEditPrinter.hostname"
                                     :rules="[
-                                        (v: string) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
-                                        (v: string) =>
-                                            !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
-                                        (v: string) =>
-                                            !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                        (v) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
+                                        (v) => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                        (v) => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
                                     ]"
                                     :label="$t('SelectPrinterDialog.HostnameIp')"
                                     required
@@ -133,7 +129,7 @@
                             <v-col class="col-4">
                                 <v-text-field
                                     v-model="dialogEditPrinter.port"
-                                    :rules="[(v: string) => !!v || $t('SelectPrinterDialog.PortRequired')]"
+                                    :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
                                     :label="$t('SelectPrinterDialog.Port')"
                                     required
                                     outlined
@@ -145,7 +141,7 @@
                             <v-col class="col-12">
                                 <v-text-field
                                     v-model="dialogEditPrinter.path"
-                                    :rules="[(v: string) => !v || v.startsWith('/') || 'Path must start with /']"
+                                    :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
                                     :label="$t('SelectPrinterDialog.Path')"
                                     hide-details="auto"
                                     outlined
