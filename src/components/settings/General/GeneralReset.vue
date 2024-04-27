@@ -86,7 +86,7 @@ export default class SettingsGeneralTabResetDatabase extends Mixins(BaseMixin, S
         this.resetableNamespaces = await this.loadBackupableNamespaces()
 
         // stop if history is not enabled
-        if (this.moonrakerComponents.includes('history')) return
+        if (!this.moonrakerComponents.includes('history')) return
 
         this.resetableNamespaces.push({
             value: 'history_jobs',
