@@ -983,7 +983,8 @@
             "DbConsoleHistory": "Console History",
             "DbHistoryJobs": "History Jobs",
             "DbHistoryTotals": "History Totals",
-            "DBNavigation": "Navigation",
+            "DbMaintenance": "Maintenance",
+            "DbNavigation": "Navigation",
             "DbTimelapseSettings": "Timelapse Settings",
             "DbView": "View Settings",
             "EstimateValues": {

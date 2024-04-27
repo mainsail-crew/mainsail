@@ -41,3 +41,27 @@ export interface HistoryListRowMaintenance extends GuiMaintenanceStateEntry {
     type: 'maintenance'
     select_id: string
 }
+
+export interface MaintenanceJson {
+    entries: MaintenanceJsonEntry[]
+}
+
+interface MaintenanceJsonEntry {
+    name: string
+    note?: string
+    reminder?: {
+        type: null | 'one-time' | 'repeat'
+        filament?: {
+            bool: boolean
+            value: number | null
+        }
+        printtime?: {
+            bool: boolean
+            value: number | null
+        }
+        date?: {
+            bool: boolean
+            value: number | null
+        }
+    }
+}

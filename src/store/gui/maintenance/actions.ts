@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
-import { GuiMaintenanceState } from '@/store/gui/maintenance/types'
+import { GuiMaintenanceState, MaintenanceJson } from '@/store/gui/maintenance/types'
 import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
+import { themeDir } from '@/store/variables'
 
 export const actions: ActionTree<GuiMaintenanceState, RootState> = {
     reset({ commit }) {
@@ -15,6 +16,78 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
             { namespace: 'maintenance' },
             { action: 'gui/maintenance/initStore' }
         )
+    },
+
+    async initDb({ dispatch, rootGetters }) {
+        const baseUrl = rootGetters['socket/getUrl']
+        const url = `${baseUrl}/server/files/config/${themeDir}/maintenance.json?time=${Date.now()}`
+
+        const defaults: MaintenanceJson = await fetch(url)
+            .then((response) => {
+                if (response.status !== 200) return { entries: [] }
+
+                return response.json()
+            })
+            .catch((e) => {
+                window.console.error('maintenance.json cannot be parsed', e)
+                return { entries: [] }
+            })
+
+        // stop, when no entries are available/found
+        const entries = defaults.entries ?? []
+        if (entries?.length === 0) {
+            return
+        }
+
+        const totals = await fetch(`${baseUrl}/server/history/totals`)
+            .then((response) => {
+                if (response.status !== 200) return {}
+
+                return response.json()
+            })
+            .then((response: any) => response.result?.job_totals ?? {})
+            .catch((e) => {
+                window.console.debug('History totals could not be loaded', e)
+            })
+
+        const total_filament = totals.total_filament_used ?? 0
+        const total_print_time = totals.total_print_time ?? 0
+        const date = new Date().getTime() / 1000
+
+        entries.forEach((entry) => {
+            dispatch('store', {
+                entry: {
+                    name: entry.name,
+                    note: entry.note ?? '',
+                    start_time: date,
+                    end_time: null,
+                    start_filament: total_filament,
+                    end_filament: null,
+                    start_printtime: total_print_time,
+                    end_printtime: null,
+                    last_entry: null,
+
+                    reminder: {
+                        type: entry.reminder?.type ?? null,
+
+                        filament: {
+                            bool: entry.reminder?.filament?.bool ?? false,
+                            value: entry.reminder?.filament?.value ?? null,
+                        },
+
+                        printtime: {
+                            bool: entry.reminder?.printtime?.bool ?? false,
+                            value: entry.reminder?.printtime?.value ?? null,
+                        },
+
+                        date: {
+                            bool: entry.reminder?.date?.bool ?? false,
+                            value: entry.reminder?.date?.value ?? null,
+                        },
+                    },
+                },
+            })
+        })
     },
 
     async initStore({ commit, dispatch }, payload) {

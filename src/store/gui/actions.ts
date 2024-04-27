@@ -244,7 +244,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         }
 
         for (const key of payload) {
-            if (['webcams', 'timelapse'].includes(key)) {
+            if (['maintenance', 'timelapse', 'webcams'].includes(key)) {
                 const url = baseUrl + '?namespace=' + key
 
                 const response = await fetch(url)
