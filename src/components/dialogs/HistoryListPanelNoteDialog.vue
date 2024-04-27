@@ -14,7 +14,7 @@
                 </v-row>
             </v-card-text>
             <v-card-actions>
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn color="" text @click="closeDialog">{{ $t('History.Cancel') }}</v-btn>
                 <v-btn color="primary" text @click="saveNote">{{ $t('History.Save') }}</v-btn>
             </v-card-actions>
@@ -39,7 +39,7 @@ import { mdiCloseThick, mdiNotebookEdit, mdiNotebookPlus } from '@mdi/js'
 export default class HistoryListPanelNoteDialog extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
 
-    private note: string = ''
+    note: string = ''
 
     @Prop({ type: Boolean, required: true }) readonly show!: boolean
     @Prop({ type: String, required: true }) readonly type!: 'create' | 'edit'
