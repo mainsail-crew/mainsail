@@ -160,6 +160,7 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
     get cssVars(): { [key: string]: string } {
         return {
             '--v-btn-text-primary': this.primaryTextColor,
+            '--color-logo': this.logoColor,
             '--color-primary': this.primaryColor,
             '--color-warning': this.warningColor,
             '--panel-toolbar-icon-btn-width': panelToolbarHeight + 'px',
