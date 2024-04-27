@@ -99,7 +99,7 @@
                                     :label="$t('SelectPrinterDialog.Name')"
                                     outlined
                                     hide-details="auto"
-                                    dense></v-text-field>
+                                    dense />
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -148,7 +148,7 @@
                             </v-col>
                         </v-row>
                         <v-row v-if="showOptionalSettings">
-                            <v-col class="col-12">
+                            <v-col :cols="12">
                                 <v-text-field
                                     v-model="dialogEditPrinter.path"
                                     :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
@@ -499,8 +499,10 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/remoteprinters/initFromLocalstorage').then(() => {
             if (!('printer' in this.$route.query)) return
 
-            let name = this.$route.query.printer
-            let matching = this.printers.filter((printer) => printer.name === name)
+            let name = this.$route.query.printer.toString().toLowerCase()
+            let matching = this.printers.filter(
+                (printer: GuiRemoteprintersStatePrinter) => printer.name?.toLowerCase() === name
+            )
 
             // no printers found with this name
             if (matching.length == 0) {
