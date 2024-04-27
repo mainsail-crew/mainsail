@@ -1,6 +1,7 @@
 export interface SocketState {
     hostname: string
     port: number
+    path: string
     protocol: string
     reconnectInterval: number
     isConnected: boolean
