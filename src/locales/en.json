@@ -375,6 +375,7 @@
         "EntryCreatedAt": "Created at {date}.",
         "EntryNextPerform": "Next perform:",
         "EntryPerformedAt": "Performed at {date}.",
+        "EntrySince": "Used since:",
         "EstimatedFilament": "Estimated Filament",
         "EstimatedFilamentWeight": "Estimated Filament Weight",
         "EstimatedTime": "Estimated Time",

@@ -54,6 +54,8 @@ export default class HistoryListPanelDetailMaintenanceHistoryEntry extends Mixin
     }
 
     get showGoals() {
+        if (this.item.reminder.type === null) return false
+
         return this.current && this.item.end_time === null
     }
 
@@ -112,6 +114,8 @@ export default class HistoryListPanelDetailMaintenanceHistoryEntry extends Mixin
         const value = this.item.reminder.printtime?.value ?? 0
         if (!this.showGoals) return `${this.restPrinttime.toFixed(1)} h`
 
+        if (!this.item.reminder.printtime.bool) return false
+
         return `${this.restPrinttime.toFixed(1)} / ${value} h`
     }
 
@@ -142,6 +146,8 @@ export default class HistoryListPanelDetailMaintenanceHistoryEntry extends Mixin
         const value = this.item.reminder.date?.value ?? 0
 
         if (!this.showGoals) return `${this.restDays.toFixed(0)} days`
+
+        if (!this.item.reminder.date.bool) return false
 
         return `${this.restDays.toFixed(0)} / ${value} days`
     }
