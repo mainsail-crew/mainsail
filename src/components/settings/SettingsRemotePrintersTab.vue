@@ -75,6 +75,14 @@
                         outlined
                         dense />
                 </settings-row>
+                <template v-if="instancesDB !== 'moonraker'">
+                    <v-divider class="my-2" />
+                    <settings-row
+                        :title="$t('Settings.RemotePrintersTab.Name')"
+                        :sub-title="$t('Settings.RemotePrintersTab.NameDescription')">
+                        <v-text-field v-model="form.name" outlined hide-details="auto" dense />
+                    </settings-row>
+                </template>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
                 <v-btn text @click="form.bool = false">{{ $t('Settings.Cancel') }}</v-btn>
@@ -99,6 +107,7 @@ import { mdiCancel, mdiCheckboxMarkedCircle, mdiDelete, mdiPencil, mdiAlertOutli
 interface printerForm {
     bool: boolean
     hostname: string
+    name: string
     port: number
     path: string | null
     id: string | null
@@ -120,6 +129,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         hostname: '',
         port: 7125,
         path: '/',
+        name: '',
         id: null,
         namespace: null,
     }
@@ -144,6 +154,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.hostname = ''
         this.form.port = 7125
         this.form.path = '/'
+        this.form.name = ''
         this.form.id = null
         this.form.namespace = null
         this.form.bool = true
@@ -153,6 +164,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         const printer = {
             hostname: this.form.hostname,
             port: this.form.port,
+            name: this.form.name,
             path: this.form.path,
         }
 
@@ -160,6 +172,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
 
         this.form.hostname = ''
         this.form.port = 7125
+        this.form.name = ''
         this.form.id = null
         this.form.bool = false
     }
@@ -169,6 +182,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.hostname = printer.hostname
         this.form.port = printer.port
         this.form.path = printer.path ?? '/'
+        this.form.name = printer.name ?? ''
         this.form.bool = true
     }
 
@@ -176,6 +190,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         const values = {
             hostname: this.form.hostname,
             port: this.form.port,
+            name: this.form.name,
             path: this.form.path,
         }
 
@@ -185,6 +200,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.hostname = ''
         this.form.port = 7125
         this.form.path = '/'
+        this.form.name = ''
         this.form.bool = false
     }
 

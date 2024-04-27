@@ -5,7 +5,10 @@ import { RootState } from '@/store/types'
 export const getters: GetterTree<SocketState, RootState> = {
     getUrl: (state) => {
         const port = state.port !== 80 ? ':' + state.port : ''
-        const path = '/' + state.path.replace(/^\/|\/$/g, '')
+        let path = '/' + state.path.replace(/^\/|\/$/g, '')
+
+        // remove last / in path
+        if (path.endsWith('/')) path = path.slice(0, -1)
 
         return `//${state.hostname}${port}${path}`
     },
