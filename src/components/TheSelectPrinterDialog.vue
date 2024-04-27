@@ -82,7 +82,7 @@
                             </v-col>
                         </v-row>
                         <v-row v-if="showOptionalSettings">
-                            <v-col class="col-12">
+                            <v-col :cols="6">
                                 <v-text-field
                                     v-model="dialogAddPrinter.path"
                                     :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
@@ -91,9 +91,7 @@
                                     outlined
                                     dense />
                             </v-col>
-                        </v-row>
-                        <v-row v-if="showOptionalSettings">
-                            <v-col class="col-12">
+                            <v-col :cols="6">
                                 <v-text-field
                                     v-model="dialogAddPrinter.name"
                                     :label="$t('SelectPrinterDialog.Name')"
@@ -148,7 +146,7 @@
                             </v-col>
                         </v-row>
                         <v-row v-if="showOptionalSettings">
-                            <v-col :cols="12">
+                            <v-col :cols="6">
                                 <v-text-field
                                     v-model="dialogEditPrinter.path"
                                     :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
@@ -157,9 +155,7 @@
                                     outlined
                                     dense />
                             </v-col>
-                        </v-row>
-                        <v-row v-if="showOptionalSettings">
-                            <v-col class="col-12">
+                            <v-col :cols="6">
                                 <v-text-field
                                     v-model="dialogEditPrinter.name"
                                     :label="$t('SelectPrinterDialog.Name')"
