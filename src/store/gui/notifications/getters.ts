@@ -8,6 +8,7 @@ import { PrinterStateKlipperConfigWarning } from '@/store/printer/types'
 import { detect } from 'detect-browser'
 import semver from 'semver'
 import { minBrowserVersions } from '@/store/variables'
+import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 
 export const getters: GetterTree<GuiNotificationState, any> = {
     getNotifications: (state, getters) => {
@@ -33,6 +34,9 @@ export const getters: GetterTree<GuiNotificationState, any> = {
 
         // klipper warnings
         notifications = notifications.concat(getters['getNotificationsKlipperWarnings'])
+
+        // user-created reminders
+        notifications = notifications.concat(getters['getNotificationsOverdueMaintenance'])
 
         // browser warnings
         notifications = notifications.concat(getters['getNotificationsBrowserWarnings'])
@@ -359,6 +363,37 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                 dismissed: false,
             } as GuiNotificationStateEntry)
         }
+
+        return notifications
+    },
+
+    getNotificationsOverdueMaintenance: (state, getters, rootState, rootGetters) => {
+        const notifications: GuiNotificationStateEntry[] = []
+        let entries: GuiMaintenanceStateEntry[] = rootGetters['gui/maintenance/getOverdueEntries']
+        if (entries.length == 0) return []
+
+        const date = rootState.server.system_boot_at ?? new Date()
+
+        // get all dismissed reminders and convert it to a string[]
+        const remindersDismisses = rootGetters['gui/notifications/getDismissByCategory']('maintenance').map(
+            (dismiss: GuiNotificationStateDismissEntry) => {
+                return dismiss.id
+            }
+        )
+
+        // filter all dismissed reminders
+        entries = entries.filter((entry) => !remindersDismisses.includes(entry.id))
+
+        entries.forEach((entry) => {
+            notifications.push({
+                id: `maintenance/${entry.id}`,
+                priority: 'high',
+                title: i18n.t('App.Notifications.MaintenanceReminder').toString(),
+                description: i18n.t('App.Notifications.MaintenanceReminderText', { name: entry.name }).toString(),
+                date,
+                dismissed: false,
+            })
+        })
 
         return notifications
     },

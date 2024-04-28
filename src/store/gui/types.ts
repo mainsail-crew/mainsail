@@ -168,6 +168,8 @@ export interface GuiState {
             hidePrintStatus: string[]
             hideColums: string[]
             selectedJobs: ServerHistoryStateJob[]
+            showMaintenanceEntries: boolean
+            showPrintJobs: boolean
         }
         jobqueue: {
             countPerPage: number

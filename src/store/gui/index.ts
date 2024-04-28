@@ -14,6 +14,7 @@ import { navigation } from '@/store/gui/navigation'
 import { notifications } from '@/store/gui/notifications'
 import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
+import { maintenance } from '@/store/gui/maintenance'
 import { webcams } from '@/store/gui/webcams'
 import { heightmap } from '@/store/gui/heightmap'
 
@@ -243,6 +244,8 @@ export const getDefaultState = (): GuiState => {
                     'object_height',
                 ],
                 selectedJobs: [],
+                showMaintenanceEntries: true,
+                showPrintJobs: true,
             },
             jobqueue: {
                 countPerPage: 10,
@@ -294,6 +297,7 @@ export const gui: Module<GuiState, any> = {
         console,
         gcodehistory,
         macros,
+        maintenance,
         miscellaneous,
         navigation,
         notifications,
