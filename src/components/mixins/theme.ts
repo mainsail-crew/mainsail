@@ -12,6 +12,14 @@ export default class ThemeMixin extends Vue {
         return this.fgColor(alpha, !this.$vuetify.theme.dark)
     }
 
+    get theme() {
+        return this.$store.getters['gui/theme']
+    }
+
+    get themeMode() {
+        return this.$store.state.gui.uiSettings.mode ?? 'dark'
+    }
+
     get fgColorHi() {
         return this.fgColor(0.8)
     }

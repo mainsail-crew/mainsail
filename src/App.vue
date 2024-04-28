@@ -127,8 +127,8 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         return this.$store.state.printer.print_stats?.filename ?? ''
     }
 
-    get theme(): string {
-        return this.$store.state.gui.uiSettings.theme
+    get mode(): string {
+        return this.$store.state.gui.uiSettings.mode
     }
 
     get logoColor(): string {
@@ -226,8 +226,8 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         })
     }
 
-    @Watch('theme')
-    themeChanged(newVal: string): void {
+    @Watch('mode')
+    modeChanged(newVal: string): void {
         const dark = newVal !== 'light'
         this.$vuetify.theme.dark = dark
 

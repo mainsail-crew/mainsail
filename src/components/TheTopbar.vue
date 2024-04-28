@@ -76,7 +76,7 @@
 <script lang="ts">
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { validGcodeExtensions } from '@/store/variables'
+import { themes, validGcodeExtensions } from '@/store/variables'
 import Component from 'vue-class-component'
 import axios, { AxiosProgressEvent } from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
@@ -90,6 +90,7 @@ import { topbarHeight } from '@/store/variables'
 import { mdiAlertOctagonOutline, mdiContentSave, mdiFileUpload, mdiClose, mdiCloseThick } from '@mdi/js'
 import EmergencyStopDialog from '@/components/dialogs/EmergencyStopDialog.vue'
 import InlineSvg from 'vue-inline-svg'
+import ThemeMixin from '@/components/mixins/theme'
 
 type uploadSnackbar = {
     status: boolean
@@ -112,7 +113,7 @@ type uploadSnackbar = {
         TheNotificationMenu,
     },
 })
-export default class TheTopbar extends Mixins(BaseMixin) {
+export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
     mdiAlertOctagonOutline = mdiAlertOctagonOutline
     mdiContentSave = mdiContentSave
     mdiFileUpload = mdiFileUpload
@@ -192,8 +193,23 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         return this.$store.state.gui.uiSettings.boolHideUploadAndPrintButton ?? false
     }
 
+    get themeObject() {
+        return themes.find((t) => t.name === this.theme) ?? null
+    }
+
     get sidebarLogo(): string {
-        return this.$store.getters['files/getSidebarLogo']
+        let url = this.$store.getters['files/getSidebarLogo']
+        if (url !== '' || this.theme === 'mainsail') return url
+
+        // if no theme is set, return empty string to load the default logo
+        if (this.themeObject === null || (this.themeObject.sidebarLogo ?? false) === false) return ''
+
+        // return light logo if theme is light and sidebarLogo is set to both
+        if (this.themeObject.sidebarLogo === 'both' && this.themeMode === 'light')
+            return `/img/themes/sidebarLogo-${this.theme}-light.svg`
+
+        // return dark/generic theme logo
+        return `/img/themes/sidebarLogo-${this.theme}.svg`
     }
 
     get isSvgLogo() {

@@ -38,3 +38,13 @@ export interface ConfigJsonInstance {
     port?: number
     path?: string
 }
+
+export interface Theme {
+    type: 'community' | 'vendor'
+    name: string
+    displayName: string
+    colorLogo?: string
+    colorPrimary?: string
+    sidebarLogo?: false | true | 'both' // both means that it also has a light version
+    sidebarBackground?: false | true | 'both' // both means that it also has a light version
+}

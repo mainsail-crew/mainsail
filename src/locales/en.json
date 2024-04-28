@@ -1152,6 +1152,7 @@
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
             "BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the top bar.",
+            "CommunityTheme": "Community - {name}",
             "ConfirmOnCoolDown": "Require confirm on CoolDown",
             "ConfirmOnCoolDownDescription": "Show a confirmation dialog on CoolDown",
             "ConfirmOnEmergencyStop": "Require confirm on Emergency Stop",
@@ -1181,6 +1182,8 @@
             "Logo": "Logo",
             "ManualProbeDialog": "Manual Probe Helper Dialog",
             "ManualProbeDialogDescription": "Display helper dialog for PROBE_CALIBRATE or Z_ENDSTOP_CALIBRATE.",
+            "Mode": "Mode",
+            "ModeDescription": "Change the overall look and feel of the application.",
             "NavigationStyle": "Navigation style",
             "NavigationStyleDescription": "Change navigation appearance",
             "NavigationStyleIconsAndText": "Icons + Text",
@@ -1196,9 +1199,10 @@
             "TempchartHeightDescription": "Modify the height of the temperature chart on the Dashboard.",
             "Theme": "Theme",
             "ThemeDark": "Dark",
-            "ThemeDescription": "Change the overall look and feel of the application",
+            "ThemeDescription": "Change the overall look and feel of the application.",
             "ThemeLight": "Light",
-            "UiSettings": "UI-Settings"
+            "UiSettings": "UI-Settings",
+            "VendorTheme": "Vendor - {name}"
         },
         "Update": "update",
         "WebcamsTab": {
