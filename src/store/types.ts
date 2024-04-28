@@ -40,7 +40,6 @@ export interface ConfigJsonInstance {
 }
 
 export interface Theme {
-    type: 'community' | 'vendor'
     name: string
     displayName: string
     colorLogo?: string

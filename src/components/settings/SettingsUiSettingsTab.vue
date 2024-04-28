@@ -323,16 +323,8 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
 
     get themes() {
         return themes.map((theme) => {
-            let text = theme.displayName
-
-            if (theme.type === 'community' && theme.name !== 'mainsail')
-                text = this.$t('Settings.UiSettingsTab.CommunityTheme', { name: theme.displayName }).toString()
-
-            if (theme.type === 'vendor')
-                text = this.$t('Settings.UiSettingsTab.VendorTheme', { name: theme.displayName }).toString()
-
             return {
-                text,
+                text: theme.displayName,
                 value: theme.name,
             }
         })
