@@ -174,9 +174,9 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
         if (this.reminder !== null) {
             if (!this.reminderFilament && !this.reminderPrinttime && !this.reminderDate) return false
 
-            if (this.reminderFilament && !this.reminderFilamentValue) return false
-            if (this.reminderPrinttime && !this.reminderPrinttimeValue) return false
-            if (this.reminderDate && !this.reminderDateValue) return false
+            if (this.reminderFilament && this.reminderFilamentValue <= 0) return false
+            if (this.reminderPrinttime && this.reminderPrinttimeValue <= 0) return false
+            if (this.reminderDate && this.reminderDateValue <= 0) return false
         }
 
         return true
