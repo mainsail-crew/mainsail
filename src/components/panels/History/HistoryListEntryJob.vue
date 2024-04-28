@@ -56,7 +56,7 @@
                 <v-tooltip top>
                     <template #activator="{ on, attrs }">
                         <v-icon small class="mr-2" v-bind="attrs" v-on="on">
-                            {{ mdiNotebook }}
+                            {{ mdiNoteTextOutline }}
                         </v-icon>
                     </template>
                     <span v-html="item.note.replaceAll('\n', '<br />')" />
@@ -82,11 +82,11 @@
                     {{ $t('History.Details') }}
                 </v-list-item>
                 <v-list-item v-if="item.note" @click="editNote">
-                    <v-icon class="mr-1">{{ mdiNotebookEdit }}</v-icon>
+                    <v-icon class="mr-1">{{ mdiNoteEditOutline }}</v-icon>
                     {{ $t('History.EditNote') }}
                 </v-list-item>
                 <v-list-item v-else @click="createNote">
-                    <v-icon class="mr-1">{{ mdiNotebookPlus }}</v-icon>
+                    <v-icon class="mr-1">{{ mdiNotePlusOutline }}</v-icon>
                     {{ $t('History.AddNote') }}
                 </v-list-item>
                 <v-list-item
@@ -141,9 +141,9 @@ import {
     mdiDelete,
     mdiFile,
     mdiFileCancel,
-    mdiNotebook,
-    mdiNotebookEdit,
-    mdiNotebookPlus,
+    mdiNoteEditOutline,
+    mdiNotePlusOutline,
+    mdiNoteTextOutline,
     mdiPlaylistPlus,
     mdiPrinter,
     mdiTextBoxSearch,
@@ -161,9 +161,9 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiDelete = mdiDelete
     mdiFile = mdiFile
     mdiFileCancel = mdiFileCancel
-    mdiNotebook = mdiNotebook
-    mdiNotebookEdit = mdiNotebookEdit
-    mdiNotebookPlus = mdiNotebookPlus
+    mdiNoteEditOutline = mdiNoteEditOutline
+    mdiNotePlusOutline = mdiNotePlusOutline
+    mdiNoteTextOutline = mdiNoteTextOutline
     mdiPrinter = mdiPrinter
     mdiTextBoxSearch = mdiTextBoxSearch
     mdiPlaylistPlus = mdiPlaylistPlus

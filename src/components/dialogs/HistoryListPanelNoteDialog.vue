@@ -1,6 +1,6 @@
 <template>
     <v-dialog v-model="show" :max-width="600" persistent @keydown.esc="closeDialog">
-        <panel :title="panelTitle" :icon="panelIcon" card-class="history-note-dialog" :margin-bottom="false">
+        <panel :title="panelTitle" :icon="icon" card-class="history-note-dialog" :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -28,7 +28,7 @@ import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
-import { mdiCloseThick, mdiNotebookEdit, mdiNotebookPlus } from '@mdi/js'
+import { mdiCloseThick, mdiNoteEditOutline, mdiNotePlusOutline } from '@mdi/js'
 
 @Component({
     components: {
@@ -51,10 +51,10 @@ export default class HistoryListPanelNoteDialog extends Mixins(BaseMixin) {
         return this.$t('History.EditNote').toString()
     }
 
-    get panelIcon() {
-        if (this.type === 'create') return mdiNotebookPlus
+    get icon() {
+        if (this.type === 'create') return mdiNotePlusOutline
 
-        return mdiNotebookEdit
+        return mdiNoteEditOutline
     }
 
     saveNote() {
