@@ -163,7 +163,7 @@
         "Yes": "Ja"
     },
     "DevicesDialog": {
-        "CanBusInfo": "Nur nicht zugewiesene Knoten können erkannt werden. Es wird empfohlen, nur ein nicht zugewiesenes Gerät an den Can-Bus anzuschließen, um Kommunikationsprobleme zu vermeiden. Weitere Informationen finden Sie unter:",
+        "CanBusInfo": "Nur nicht zugewiesene Knoten können erkannt werden. Es wird empfohlen, nur ein nicht zugewiesenes Gerät an den Can-Bus anzuschließen, um Kommunikationsprobleme zu vermeiden. Klicke hier für weitere Informationen:",
         "ClickRefresh": "Klicke auf den Aktualisieren-Button, um die Geräte zu aktualisieren.",
         "DevicePath": "Gerätepfad",
         "Formats": "Formate",
