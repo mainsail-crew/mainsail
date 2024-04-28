@@ -981,8 +981,8 @@
             "DbConsoleHistory": "Verlauf der Konsole",
             "DbHistoryJobs": "Historie Druckvorgänge",
             "DbHistoryTotals": "Historie Gesamtzähler",
-            "DbNavigation": "Navigation",
             "DbMaintenance": "Wartung",
+            "DbNavigation": "Navigation",
             "DbTimelapseSettings": "Zeitraffer Einstellungen",
             "DbView": "Ansichtseinstellungen",
             "EstimateValues": {
@@ -1101,8 +1101,8 @@
             "Hostname": "Hostname",
             "Name": "Name",
             "NameDescription": "Dieser Name wird nicht im GUI angezeigt und wird nur für Weiterleitungen verwendet.",
-            "Port": "Port",
             "Path": "Pfad",
+            "Port": "Port",
             "RemotePrinters": "Remote Drucker",
             "UpdatePrinter": "Drucker aktualisieren",
             "UseConfigJson": "InstanceDB = JSON erkannt. Bitte bearbeite die config.json um die Druckerliste zu modifizieren."
