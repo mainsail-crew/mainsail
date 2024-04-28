@@ -243,7 +243,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         })
     },
 
-    getPrinttimeAvgArray(state, getters, rootState) {
+    getPrinttimeAvgArray(state, getters) {
         const output = [0, 0, 0, 0, 0]
         const startDate = new Date(new Date().getTime() - 60 * 60 * 24 * 14 * 1000)
 
