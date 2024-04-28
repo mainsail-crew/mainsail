@@ -34,7 +34,7 @@
             "OneDayShort": "1T",
             "OneHourShort": "1Std",
             "OneWeekShort": "1W",
-            "Remind": "Errinnere:",
+            "Remind": "Erinnere:",
             "ShowDetails": "Details anzeigen"
         },
         "NumberInput": {
@@ -347,7 +347,7 @@
         "Wireframe": "Drahtgitter"
     },
     "History": {
-        "AddANote": "Eine Nitiz hinzufügen",
+        "AddANote": "Eine Notiz hinzufügen",
         "AddMaintenance": "Wartung hinzufügen",
         "AddNote": "Notiz hinzufügen",
         "AddToQueueSuccessful": "Datei {filename} zur Warteschlange hinzugefügt.",
