@@ -64,6 +64,7 @@ export default class HistoryListPanelPerformMaintenance extends Mixins(BaseMixin
 
     perform() {
         this.$store.dispatch('gui/maintenance/perform', { id: this.item.id, note: this.note })
+        this.$emit('close-both')
     }
 
     @Watch('show')
