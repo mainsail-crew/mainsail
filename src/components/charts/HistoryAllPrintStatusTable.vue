@@ -20,7 +20,7 @@ import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/ty
 })
 export default class HistoryAllPrintStatusTable extends Mixins(BaseMixin) {
     get selectedJobs() {
-        return this.$store.state.gui.view.history.selectedJobs ?? []
+        return this.$store.getters['server/history/getSelectedJobs']
     }
 
     get allPrintStatusArray() {

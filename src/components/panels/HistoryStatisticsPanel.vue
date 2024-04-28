@@ -12,19 +12,19 @@
                             <template v-if="existsSelectedJobs">
                                 <tr>
                                     <td>{{ $t('History.SelectedPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(selectedPrintTime) }}</td>
+                                    <td class="text-right">{{ formatPrintTime(selectedPrintTime, false) }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.LongestPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(selectedLongestPrintTime) }}</td>
+                                    <td class="text-right">{{ formatPrintTime(selectedLongestPrintTime, false) }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.AvgPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(selectedAvgPrintTime) }}</td>
+                                    <td class="text-right">{{ formatPrintTime(selectedAvgPrintTime, false) }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.SelectedFilamentUsed') }}</td>
-                                    <td class="text-right">{{ Math.round(selectedFilamentUsed / 100) / 10 }} m</td>
+                                    <td class="text-right">{{ selectedFilamentUsedFormat }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.SelectedJobs') }}</td>
@@ -34,19 +34,19 @@
                             <template v-else>
                                 <tr>
                                     <td>{{ $t('History.TotalPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(totalPrintTime) }}</td>
+                                    <td class="text-right">{{ formatPrintTime(totalPrintTime, false) }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.LongestPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(longestPrintTime) }}</td>
+                                    <td class="text-right">{{ formatPrintTime(longestPrintTime, false) }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.AvgPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(avgPrintTime) }}</td>
+                                    <td class="text-right">{{ formatPrintTime(avgPrintTime, false) }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.TotalFilamentUsed') }}</td>
-                                    <td class="text-right">{{ Math.round(totalFilamentUsed / 100) / 10 }} m</td>
+                                    <td class="text-right">{{ totalFilamentUsedFormat }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ $t('History.TotalJobs') }}</td>
@@ -57,17 +57,12 @@
                     </v-simple-table>
                 </v-col>
                 <v-col class="col-12 col-sm-6 col-md-4">
-                    <history-all-print-status-chart
-                        v-if="togglePrintStatus === 'chart'"></history-all-print-status-chart>
-                    <history-all-print-status-table v-else></history-all-print-status-table>
+                    <history-all-print-status-chart v-if="togglePrintStatus === 'chart'" />
+                    <history-all-print-status-table v-else />
                     <div class="text-center mb-3">
                         <v-btn-toggle v-model="togglePrintStatus" small mandatory>
-                            <v-btn small value="chart">
-                                {{ $t('History.Chart') }}
-                            </v-btn>
-                            <v-btn small value="table">
-                                {{ $t('History.Table') }}
-                            </v-btn>
+                            <v-btn small value="chart">{{ $t('History.Chart') }}</v-btn>
+                            <v-btn small value="table">{{ $t('History.Table') }}</v-btn>
                         </v-btn-toggle>
                         <v-tooltip v-if="!allLoaded" top>
                             <template #activator="{ on, attrs }">
@@ -88,16 +83,12 @@
                     </div>
                 </v-col>
                 <v-col class="col-12 col-sm-12 col-md-4">
-                    <history-filament-usage v-if="toggleChart === 'filament_usage'"></history-filament-usage>
-                    <history-printtime-avg v-else-if="toggleChart === 'printtime_avg'"></history-printtime-avg>
+                    <history-filament-usage v-if="toggleChart === 'filament_usage'" />
+                    <history-printtime-avg v-else-if="toggleChart === 'printtime_avg'" />
                     <div class="text-center mt-3">
                         <v-btn-toggle v-model="toggleChart" small mandatory>
-                            <v-btn small value="filament_usage">
-                                {{ $t('History.FilamentUsage') }}
-                            </v-btn>
-                            <v-btn small value="printtime_avg">
-                                {{ $t('History.PrinttimeAvg') }}
-                            </v-btn>
+                            <v-btn small value="filament_usage">{{ $t('History.FilamentUsage') }}</v-btn>
+                            <v-btn small value="printtime_avg">{{ $t('History.PrinttimeAvg') }}</v-btn>
                         </v-btn-toggle>
                     </div>
                 </v-col>
@@ -115,15 +106,17 @@ import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
 import HistoryAllPrintStatusChart from '@/components/charts/HistoryAllPrintStatusChart.vue'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { mdiChartAreaspline, mdiDatabaseArrowDownOutline } from '@mdi/js'
+import { formatPrintTime } from '@/plugins/helpers'
 @Component({
     components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatusChart },
 })
 export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     mdiChartAreaspline = mdiChartAreaspline
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
+    formatPrintTime = formatPrintTime
 
     get selectedJobs() {
-        return this.$store.state.gui.view.history.selectedJobs ?? []
+        return this.$store.getters['server/history/getSelectedJobs']
     }
 
     get existsSelectedJobs() {
@@ -131,9 +124,7 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get totalPrintTime() {
-        return 'total_print_time' in this.$store.state.server.history.job_totals
-            ? this.$store.state.server.history.job_totals.total_print_time
-            : 0
+        return this.$store.state.server.history.job_totals?.total_print_time ?? 0
     }
 
     get selectedPrintTime() {
@@ -147,9 +138,7 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get longestPrintTime() {
-        return 'longest_print' in this.$store.state.server.history.job_totals
-            ? this.$store.state.server.history.job_totals.longest_print
-            : 0
+        return this.$store.state.server.history.job_totals?.longest_print ?? 0
     }
 
     get selectedLongestPrintTime() {
@@ -177,9 +166,13 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get totalFilamentUsed() {
-        return 'total_filament_used' in this.$store.state.server.history.job_totals
-            ? this.$store.state.server.history.job_totals.total_filament_used
-            : 0
+        return this.$store.state.server.history.job_totals?.total_filament_used ?? 0
+    }
+
+    get totalFilamentUsedFormat() {
+        const value = Math.round(this.totalFilamentUsed / 100) / 10
+
+        return `${value} m`
     }
 
     get selectedFilamentUsed() {
@@ -192,10 +185,14 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
         return filamentUsed
     }
 
+    get selectedFilamentUsedFormat() {
+        const value = Math.round(this.selectedFilamentUsed / 100) / 10
+
+        return `${value} m`
+    }
+
     get totalJobsCount() {
-        return 'total_jobs' in this.$store.state.server.history.job_totals
-            ? this.$store.state.server.history.job_totals.total_jobs
-            : 0
+        return this.$store.state.server.history.job_totals?.total_jobs ?? 0
     }
 
     get toggleChart() {
@@ -222,26 +219,6 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
 
         this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
-    }
-
-    formatPrintTime(totalSeconds: number) {
-        if (totalSeconds) {
-            let output = ''
-
-            const hours = Math.floor(totalSeconds / 3600)
-            totalSeconds %= 3600
-            if (hours) output += ' ' + hours + 'h'
-
-            const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += ' ' + minutes + 'm'
-
-            const seconds = totalSeconds % 60
-            if (seconds) output += ' ' + seconds.toFixed(0) + 's'
-
-            return output
-        }
-
-        return '--'
     }
 }
 </script>

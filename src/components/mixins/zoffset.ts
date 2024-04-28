@@ -32,14 +32,15 @@ export default class ZoffsetMixin extends Vue {
     get endstop_pin() {
         const stepperConfig = this.settings[this.stepper_name] ?? {}
 
-        return stepperConfig?.endstop_pin
+        return stepperConfig?.endstop_pin.trim()
     }
 
     get zOffset(): number {
         return this.$store.state.printer?.gcode_move?.homing_origin[2].toFixed(3)
     }
     get isEndstopProbe() {
-        return this.endstop_pin.search('probe:z_virtual_endstop') !== -1
+        // remove spaces and search for probe:z_virtual_endstop
+        return this.endstop_pin.replaceAll(' ', '').search('probe:z_virtual_endstop') !== -1
     }
 
     get existZOffsetApplyProbe() {

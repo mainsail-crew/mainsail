@@ -12,6 +12,7 @@ export const getDefaultState = (): FarmPrinterState => {
             instance: null,
             hostname: '',
             port: 7125,
+            path: '',
             webPort: 80,
             protocol: document.location.protocol === 'https:' ? 'wss' : 'ws',
             isConnected: false,

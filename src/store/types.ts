@@ -28,6 +28,7 @@ export interface ConfigJson {
     defaultTheme?: 'dark' | 'light'
     hostname?: string | null
     port?: string | number | null
+    path?: string | null
     instancesDB?: 'moonraker' | 'browser' | 'json'
     instances?: ConfigJsonInstance[]
 }
@@ -35,4 +36,5 @@ export interface ConfigJson {
 export interface ConfigJsonInstance {
     hostname: string
     port?: number
+    path?: string
 }

@@ -3,6 +3,7 @@
     "defaultTheme": "dark",
     "hostname": null,
     "port": null,
+    "path": null,
     "instancesDB": "moonraker",
     "instances": []
 }

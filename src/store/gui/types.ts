@@ -105,6 +105,7 @@ export interface GuiState {
         lockSlidersOnTouchDevices: boolean
         lockSlidersDelay: number
         confirmOnEmergencyStop: boolean
+        confirmOnCoolDown: boolean
         confirmOnPowerDeviceChange: boolean
         boolBigThumbnail: boolean
         bigThumbnailBackground: string
@@ -113,6 +114,7 @@ export interface GuiState {
         navigationStyle: 'iconsAndText' | 'iconsOnly'
         defaultNavigationStateSetting: 'alwaysOpen' | 'alwaysClosed' | 'lastState'
         powerDeviceName: string | null
+        progressAsFavicon: boolean
         hideSaveConfigForBedMash: boolean
         disableFanAnimation: boolean
         boolManualProbeDialog: boolean
@@ -166,6 +168,8 @@ export interface GuiState {
             hidePrintStatus: string[]
             hideColums: string[]
             selectedJobs: ServerHistoryStateJob[]
+            showMaintenanceEntries: boolean
+            showPrintJobs: boolean
         }
         jobqueue: {
             countPerPage: number
