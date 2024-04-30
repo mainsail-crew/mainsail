@@ -228,8 +228,14 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin, ThemeMixin, Webc
     }
 
     clickPrinter() {
-        if (this.printer.socket.isConnected) this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
-        else this.$store.dispatch('farm/' + this.printer._namespace + '/reconnect')
+        // If the printer is already connected, just switch to it
+        if (this.printer.socket.isConnected) {
+            this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
+            return
+        }
+
+        // Otherwise, reconnect to the printer
+        this.$store.dispatch('farm/' + this.printer._namespace + '/reconnect')
     }
 
     mounted() {
