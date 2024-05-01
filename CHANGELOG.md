@@ -2,6 +2,11 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.11.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.11.1) - 2024-05-01
+### Bug Fixes and Improvements
+
+- **farm**: Fix switching to other printer function ([#1865](https://github.com/mainsail-crew/mainsail/pull/1865))
+
 ## [2.11.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.11.0) - 2024-04-28
 ### Features
 
