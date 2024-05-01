@@ -2,6 +2,59 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.11.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.11.0) - 2024-04-28
+### Features
+
+- **miscellaneous**: Add support for pwm_tool and pwm_cycle_time ([#1804](https://github.com/mainsail-crew/mainsail/pull/1804))
+- Add fullscreen size for gcodefiles, gcodeviewer and webcam ([#1803](https://github.com/mainsail-crew/mainsail/pull/1803))
+- Add qr search function in the spoolman change spool dialog ([#1802](https://github.com/mainsail-crew/mainsail/pull/1802))
+- Add confirmation dialog to cooldown button ([#1808](https://github.com/mainsail-crew/mainsail/pull/1808))
+- Add only save button to editor ([#1835](https://github.com/mainsail-crew/mainsail/pull/1835))
+- Add option to disable favicon progress circle ([#1825](https://github.com/mainsail-crew/mainsail/pull/1825))
+- Add support for klipper runtime warnings ([#1809](https://github.com/mainsail-crew/mainsail/pull/1809))
+- Show macro description as tooltip when hovering a macro ([#1849](https://github.com/mainsail-crew/mainsail/pull/1849))
+- Connect to Moonraker via subdirectory/path ([#1836](https://github.com/mainsail-crew/mainsail/pull/1836))
+- Direct link to specific printer via query parameter ([#1837](https://github.com/mainsail-crew/mainsail/pull/1837))
+- Expose css variable for changing theme logo color ([#1856](https://github.com/mainsail-crew/mainsail/pull/1856))
+- Reminders panel on the History page ([#1274](https://github.com/mainsail-crew/mainsail/pull/1274))
+
+### Bug Fixes and Improvements
+
+- **spoolman**: Break long comments & support multiline comments ([#1781](https://github.com/mainsail-crew/mainsail/pull/1781))
+- Fix commit list view on desktop and mobile devices ([#1785](https://github.com/mainsail-crew/mainsail/pull/1785))
+- Fix long M117 outputs in the status panel ([#1800](https://github.com/mainsail-crew/mainsail/pull/1800))
+- Fix long content lines in console ([#1799](https://github.com/mainsail-crew/mainsail/pull/1799))
+- Hide moonraker backups when "Hide backup files" is enabled ([#1801](https://github.com/mainsail-crew/mainsail/pull/1801))
+- Hide crowsnest backups when "Hide backup files" is enabled ([#1824](https://github.com/mainsail-crew/mainsail/pull/1824))
+- Fix typo issues with save zoffset for probes ([#1821](https://github.com/mainsail-crew/mainsail/pull/1821))
+- Fix case sensibility for printer power device ([#1827](https://github.com/mainsail-crew/mainsail/pull/1827))
+- Fix WebRTC(MediaMTX) webcam client ([#1843](https://github.com/mainsail-crew/mainsail/pull/1843))
+- Ignore wrong default.json file while resetting moonraker db ([#1829](https://github.com/mainsail-crew/mainsail/pull/1829))
+
+### Refactor
+
+- **e-stop**: Remove fullscreen mode on mobile devices ([#1816](https://github.com/mainsail-crew/mainsail/pull/1816))
+- Refactor KlippyStatePanel ([#1826](https://github.com/mainsail-crew/mainsail/pull/1826))
+- Remove unused attribute in getPrinttimeAvgArray getter ([#1861](https://github.com/mainsail-crew/mainsail/pull/1861))
+
+### Localization
+
+- **de**: Update german translation ([#1860](https://github.com/mainsail-crew/mainsail/pull/1860))
+- **en**: Remove unused keys ([#1855](https://github.com/mainsail-crew/mainsail/pull/1855))
+- **ru**: Update russian translation ([#1846](https://github.com/mainsail-crew/mainsail/pull/1846))
+- **uk**: Update ukrainian translation ([#1788](https://github.com/mainsail-crew/mainsail/pull/1788))
+- **zh**: Update chinese locale ([#1791](https://github.com/mainsail-crew/mainsail/pull/1791))
+
+### Documentation
+
+- Add github sponsor link ([#1844](https://github.com/mainsail-crew/mainsail/pull/1844))
+
+### Other
+
+- **ci**: Update caniuse browser list ([#1832](https://github.com/mainsail-crew/mainsail/pull/1832))
+- **deps**: Update @sindarius/gcodeviewer ([#1755](https://github.com/mainsail-crew/mainsail/pull/1755)) ([#1783](https://github.com/mainsail-crew/mainsail/pull/1783))
+- Fix typo/reword some parts of the pull request template ([#1850](https://github.com/mainsail-crew/mainsail/pull/1850))
+
 ## [2.10.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.10.0) - 2024-02-15
 ### Features
 
