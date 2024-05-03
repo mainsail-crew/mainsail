@@ -66,8 +66,11 @@ Vue.use(VueResize)
 
 const initLoad = async () => {
     try {
+        // get base url. by default, it is '/'
+        const base = import.meta.env.BASE_URL ?? '/'
+
         //load config.json
-        const res = await fetch('/config.json')
+        const res = await fetch(`${base}config.json`)
         const file = (await res.json()) as Record<string, unknown>
 
         window.console.debug('Loaded config.json')
