@@ -30,7 +30,7 @@ export const getters: GetterTree<GuiMaintenanceState, any> = {
             }
 
             if (entry.reminder.printtime.bool) {
-                const end = entry.start_printtime + (entry.reminder.printtime.value ?? 0)
+                const end = entry.start_printtime + (entry.reminder.printtime.value ?? 0) * 3600
 
                 if (end <= currentTotalPrintTime) return true
             }
