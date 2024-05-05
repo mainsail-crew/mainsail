@@ -263,7 +263,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 icon: mdiLayersPlus,
                 loadingName: 'pauseAtLayer',
                 status: () => {
-                    if (this.multiFunctionButton || this.layer_count === null) return false
+                    if (this.multiFunctionButton || !this.displayPauseAtLayerButton) return false
 
                     return ['paused', 'printing'].includes(this.printer_state)
                 },
@@ -319,7 +319,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 click: this.btnExcludeObject,
             },
             {
-                text: this.$t('Panels.StatusPanel.PauseAtLayer.PauseAtLayer') + ' - ' + this.displayPauseAtLayerButton,
+                text: this.$t('Panels.StatusPanel.PauseAtLayer.PauseAtLayer'),
                 loadingName: 'pauseAtLayer',
                 icon: mdiLayersPlus,
                 status: () => this.displayPauseAtLayerButton,
