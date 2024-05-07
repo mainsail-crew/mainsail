@@ -156,11 +156,11 @@
         "SendCode": "输入要执行的代码...",
         "SetupConsole": "设置控制台"
     },
-        "CoolDownDialog": {
-            "AreYouSure": "是否确定？",
-            "CoolDown": "降温",
-            "No": "取消",
-            "Yes": "确定"
+    "CoolDownDialog": {
+        "AreYouSure": "是否确定？",
+        "CoolDown": "降温",
+        "No": "取消",
+        "Yes": "确定"
     },
     "DevicesDialog": {
         "CanBusInfo": "只有未分配的节点才能被检测到。建议仅连接一个未分配的设备到CAN总线，以避免通信问题。更多详情，请点击链接：",
