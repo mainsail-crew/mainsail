@@ -106,6 +106,22 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
             },
         ]
 
+        if ('auxiliary_data' in this.job) {
+            this.job.auxiliary_data?.forEach((data) => {
+                let value = data.value.toString()
+                if (!Array.isArray(data.value)) {
+                    value = `${Math.round(data.value * 1000) / 1000} ${data.units}`
+                }
+                if (value === '') value = '--'
+
+                entries.push({
+                    name: data.description,
+                    value,
+                    exists: true,
+                })
+            })
+        }
+
         return entries.filter((entry) => entry.exists)
     }
 

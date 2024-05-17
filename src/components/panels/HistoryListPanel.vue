@@ -409,6 +409,16 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             },
         ]
 
+        this.moonrakerSensors.forEach((sensor) => {
+            headers.push({
+                text: sensor.desc,
+                value: sensor.name,
+                align: 'left',
+                configable: true,
+                visible: false,
+            })
+        })
+
         headers.forEach((header) => {
             if (header.visible && this.hideColums.includes(header.value)) {
                 header.visible = false
@@ -418,6 +428,32 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         })
 
         return headers
+    }
+
+    get moonrakerSensors() {
+        const config = this.$store.state.server.config?.config ?? {}
+        const sensors = Object.keys(config).filter((key) => key.startsWith('sensor '))
+        const historyFields: { desc: string; unit: string; provider: string; name: string; parameter: string }[] = []
+
+        sensors.forEach((configName) => {
+            const sensor = config[configName] ?? {}
+
+            Object.keys(sensor)
+                .filter((key) => key.startsWith('history_field_'))
+                .forEach((key) => {
+                    const historyField = sensor[key]
+
+                    historyFields.push({
+                        desc: historyField.desc,
+                        unit: historyField.units,
+                        provider: configName,
+                        parameter: historyField.parameter,
+                        name: key,
+                    })
+                })
+        })
+
+        return historyFields
     }
 
     get tableFields() {

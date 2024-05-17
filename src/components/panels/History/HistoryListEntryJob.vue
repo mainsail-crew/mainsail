@@ -300,6 +300,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         //@ts-ignore
         let value = col.value in item ? item[col.value] : null
         if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
+        if (col.value.startsWith('history_field_')) {
+            const fieldName = col.value.replace('history_field_', '')
+            const field = item.auxiliary_data?.find((field: any) => field.name === fieldName)
+            if (field && !Array.isArray(field.value)) return `${Math.round(field.value * 1000) / 1000} ${field.units}`
+        }
         if (value === null) return '--'
 
         if (col.value === 'slicer') value += '<br />' + item.metadata.slicer_version
