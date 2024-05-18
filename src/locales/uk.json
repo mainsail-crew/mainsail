@@ -139,7 +139,7 @@
         "Connecting": "Підключення до {host}",
         "Failed": "Підключення не вдалося",
         "Initializing": "Ініціалізація",
-        "TryAgain": "спробуйте ще раз"
+        "TryAgain": "Спробуйте ще раз"
     },
     "Console": {
         "CommandList": "Список команд",
@@ -160,7 +160,7 @@
         "NoDeviceFound": "Пристрій не знайдено. Перевірте підключення та натисніть кнопку оновити.",
         "PathByHardware": "Фізичний шлях",
         "PathById": "Шлях за ID",
-        "Refresh": "оновити",
+        "Refresh": "Оновити",
         "Resolutions": "Резолюції"
     },
     "Dialogs": {
@@ -169,7 +169,7 @@
             "DoYouWantToStartFilename": "Ви хочете роздрукувати {filename}?",
             "DoYouWantToStartFilenameFilament": "Хочете почати друк {filename} з наявного філаменту?",
             "Headline": "Почати друк",
-            "Print": "друк",
+            "Print": "Друк",
             "Timelapse": "Таймлапс"
         }
     },
@@ -316,7 +316,7 @@
         "InvalidNameAlreadyExists": "Ім'я профілю вже існує, будь ласка, виберіть інше ім'я профілю.",
         "InvalidNameAscii": "Ім'я недійсне. Дозволяється лише символи ascii.",
         "InvalidNameEmpty": "Введення не повинно бути порожнім!",
-        "InvalidNameReserved": "Profile 'default' зарезервовано, будь ласка, виберіть інше ім'я профілю.",
+        "InvalidNameReserved": "Профіль 'default' зарезервовано, будь ласка, виберіть інше ім'я профілю.",
         "Mesh": "Сітка",
         "Name": "Ім'я",
         "NoBedMeshHasBeenLoadedYet": "Жодна сітка для ліжка ще не була завантажена.",
@@ -608,7 +608,7 @@
         },
         "MacrosPanel": {
             "Headline": "Макрос",
-            "Send": "відправити"
+            "Send": "Відправити"
         },
         "MiniconsolePanel": {
             "Autoscroll": "Автопрокручування",
@@ -620,9 +620,9 @@
         },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Переконайтеся, що ви включили mainsail.cfg у свій файл printer.cfg.",
-            "IsNotDefinedInConfig": "не визначається в конфігурації.",
+            "IsNotDefinedInConfig": "Відсутній імпорт в конфігурації.",
             "MissingConfiguration": "Відсутня конфігурація",
-            "MoreInformation": "більше інформації"
+            "MoreInformation": "Більше інформації"
         },
         "MiscellaneousPanel": {
             "Headline": "Різне",
