@@ -13,7 +13,8 @@
                 "DeprecatedOptionHeadline": "Застаріла опція Klipper",
                 "DeprecatedValue": "Значення '{value}' опції '{option}' у секції '{section}' застаріла і буде видалена у майбутньому випуску.",
                 "DeprecatedValueHeadline": "Застаріле значення Klipper",
-                "KlipperWarning": "Попередження Klipper"
+                "KlipperWarning": "Попередження Klipper",
+                "KlipperRuntimeWarning": "Попередження під час роботи Klipper"
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
@@ -28,7 +29,13 @@
             "NextReboot": "наступне перезавантаження",
             "NoNotification": "Нема Повідомлень",
             "Notifications": "Повідомлення",
-            "Remind": "Нагадування:"
+            "Remind": "Нагадування:",
+            "MaintenanceReminder": "Нагадування про технічне обслуговування",
+            "MaintenanceReminderText": "Термін технічного обслуговування \"{name}\".",
+            "OneDayShort": "1д",
+            "OneHourShort": "1год",
+            "OneWeekShort": "1тиж",
+            "ShowDetails": "показати деталі"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Повинен бути більшим або рівним, ніж {min}!",
@@ -401,7 +408,36 @@
         "TotalFilamentUsed": "Використано філаменту",
         "TotalJobs": "Всі завдання",
         "TotalPrinttime": "Загальний Час Друку",
-        "TotalTime": "Загальний Час"
+        "TotalTime": "Загальний Час",
+        "AddANote": "Додати примітку",
+        "AddMaintenance": "Додати обслуговування",
+        "DateBasedReminder": "Дата",
+        "DateBasedReminderDescription": "Це нагадування базується на даті.",
+        "Days": "днів",
+        "EditMaintenance": "Редагувати технічне обслуговування",
+        "EntryCreatedAt": "Створено {date}.",
+        "EntryNextPerform": "Наступне виконання:",
+        "EntryPerformedAt": "Виконано {date}.",
+        "EntrySince": "Використовується з:",
+        "FilamentBasedReminder": "Філамент",
+        "FilamentBasedReminderDescription": "Це нагадування базується на використанні філаменту.",
+        "Hours": "годин",
+        "InvalidNameEmpty": "Недійсне ім'я. Поле не повинно бути пустим!",
+        "Maintenance": "Технічне обслуговування",
+        "MaintenanceEntries": "Записи технічного обслуговування",
+        "Meter": "метр",
+        "Name": "Назва",
+        "NoReminder": "Нагадування відсутні",
+        "OneTime": "Одноразовий",
+        "Perform": "виконати",
+        "PerformMaintenance": "Виконати технічне обслуговування",
+        "Performed": "виконано",
+        "PerformedAndReschedule": "виконано та переплановано",
+        "PrintJobs": "Завдання друку",
+        "PrinttimeBasedReminder": "Час друку",
+        "PrinttimeBasedReminderDescription": "Це нагадування базується на часу друку.",
+        "Reminder": "Нагадування",
+        "Repeat": "Повторити"
     },
     "JobQueue": {
         "Cancel": "Скасувати",
@@ -594,7 +630,9 @@
             "PrinterSwitchedOff": "Принтер вимкнений",
             "PrinterSwitchedOffDescription": "Принтер наразі вимкнено, і Klipper не може підключитися. Щоб увімкнути принтер, натисніть кнопку нижче:",
             "Restart": "Перезапустити",
-            "ServiceReports": "{service} повідомляє"
+            "ServiceReports": "{service} повідомляє",
+            "KlipperLog": "Журнал Klipper",
+            "MoonrakerLog": "Журнал Moonraker"
         },
         "MachineSettingsPanel": {
             "Headline": "Машина",
@@ -825,7 +863,9 @@
         "SelectPrinter": "Виберіть принтер",
         "TryAgain": "спробуйте ще раз",
         "UpdatePrinter": "Оновіть Принтер",
-        "YouCanFindMore": "Ви можете знайти більше деталей на"
+        "YouCanFindMore": "Ви можете знайти більше деталей на",
+        "Path": "Шлях",
+        "Name": "Назва"
     },
     "Settings": {
         "Cancel": "Скасувати",
@@ -935,7 +975,6 @@
             "DbConsoleHistory": "Історія Консолі",
             "DbHistoryJobs": "Історія завдань",
             "DbHistoryTotals": "Загальна Історія",
-            "DBNavigation": "Навігація",
             "DbTimelapseSettings": "Налаштування Таймлапсу",
             "DbView": "Налаштування перегляду",
             "EstimateValues": {
@@ -953,7 +992,9 @@
             "Reset": "скинути",
             "Restore": "Відновити",
             "RestoreDialog": "Будь ласка, виберіть усі розділи, які ви хочете відновити:",
-            "TimeFormat": "Формат часу"
+            "TimeFormat": "Формат часу",
+            "DbNavigation": "Навігація",
+            "DbMaintenance": "Технічне обслуговування"
         },
         "HeightmapTab": {
             "ColorSchemes": "Палітри кольорів",
@@ -1055,7 +1096,10 @@
             "Port": "Порт",
             "RemotePrinters": "Принтери",
             "UpdatePrinter": "Оновити принтер",
-            "UseConfigJson": "InstanceDB = JSON виявлений. Будь ласка, використовуйте config.json щоб змінити список принтерів."
+            "UseConfigJson": "InstanceDB = JSON виявлений. Будь ласка, використовуйте config.json щоб змінити список принтерів.",
+            "Name": "Назва",
+            "NameDescription": "Це ім’я не відображатиметься в графічному інтерфейсі і використовуватиметься лише для перенаправлення.",
+            "Path": "Шлях"
         },
         "Store": "зберегти",
         "TimelapseTab": {
@@ -1180,7 +1224,11 @@
             "ThemeDark": "Темна",
             "ThemeDescription": "Змініть загальний вигляд програми",
             "ThemeLight": "Світла",
-            "UiSettings": "Налаштування в інтерфейсі"
+            "UiSettings": "Налаштування в інтерфейсі",
+            "ConfirmOnCoolDown": "Вимагати підтвердження для Охолодження",
+            "ConfirmOnCoolDownDescription": "Показати діалогове вікно підтвердження для Охолодження",
+            "ProgressAsFavicon": "Показати прогрес у вкладці браузера",
+            "ProgressAsFaviconDescription": "Змініть іконку логотипу Mainsail на іконку прогресу."
         },
         "Update": "оновлення",
         "WebcamsTab": {
@@ -1276,5 +1324,11 @@
         "Variable": "Змінна",
         "Video": "Відео"
     },
-    "title": "Українська"
+    "title": "Українська",
+    "CoolDownDialog": {
+        "AreYouSure": "Ти впевнений?",
+        "CoolDown": "Охолодження",
+        "No": "Ні",
+        "Yes": "Так"
+    }
 }
