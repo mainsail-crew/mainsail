@@ -10,6 +10,7 @@ export interface ServerHistoryState {
         longest_job: number
         longest_print: number
     }
+    auxiliary_totals: ServerHistoryStateJobAuxiliaryTotal[]
     all_loaded: boolean
 }
 
@@ -50,15 +51,22 @@ export interface ServerHistoryStateJob {
     status: string
     start_time: number
     total_duration: number
-    auxiliary_data?: ServerHistoryStateJobAxiliaryData[]
+    auxiliary_data?: ServerHistoryStateJobAuxiliaryData[]
 }
 
-export interface ServerHistoryStateJobAxiliaryData {
+export interface ServerHistoryStateJobAuxiliaryData {
     description: string
     name: string
     provider: string
     units: string
     value: number | number[]
+}
+
+export interface ServerHistoryStateJobAuxiliaryTotal {
+    field: string
+    maximum: number
+    provider: string
+    total: number
 }
 
 export interface HistoryListRowJob extends ServerHistoryStateJob {
