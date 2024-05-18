@@ -702,7 +702,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
             // return value, when it is not an array
             if (sensor && !Array.isArray(sensor.value)) {
-                value = `${Math.round(sensor.value * 1000) / 1000} ${sensor.units}`
+                value = sensor.value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
             }
 
             // return empty string, when value is null
