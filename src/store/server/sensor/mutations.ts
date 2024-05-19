@@ -13,6 +13,8 @@ export const mutations: MutationTree<ServerSensorState> = {
     },
 
     updateSensor(state, payload) {
-        Vue.set(state.sensors, payload.key, payload.value)
+        if (!(payload.key in state.sensors)) return
+
+        Vue.set(state.sensors[payload.key], 'values', payload.value)
     },
 }
