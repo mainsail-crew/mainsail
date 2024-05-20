@@ -1184,9 +1184,9 @@
             "VariableFps": "Variable FPS",
             "VariableFpsDescription": "Wenn diese Option aktiviert ist, wird die Framerate des Ausgabevideos anhand der Zieldauer berechnet.",
             "VariableFpsMax": "Max. Variable FPS",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "Maximaler variabler FPS-Wert",
             "VariableFpsMin": "Min. Variable FPS",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "Minimaler variabler FPS-Wert"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
