@@ -142,11 +142,13 @@ export const getters: GetterTree<PrinterState, RootState> = {
     getMacros: (state) => {
         const array: PrinterStateMacro[] = []
         const settings = state.configfile?.settings ?? null
+        const printerGcodes = state.gcode?.commands ?? {}
 
         Object.keys(state)
             .filter((prop) => prop.toLowerCase().startsWith('gcode_macro '))
             .forEach((prop) => {
-                const name = prop.replace('gcode_macro ', '')
+                const name = prop.slice(12)
+                const printerGcode = printerGcodes[name.toUpperCase()] ?? {}
 
                 // remove macros with a '_' as first char
                 if (name.startsWith('_')) return
@@ -160,7 +162,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
                 array.push({
                     name,
-                    description: settings[propLower]?.description ?? null,
+                    description: printerGcode?.help ?? null,
                     prop: propSettings,
                     params: getMacroParams(propSettings),
                     variables,
