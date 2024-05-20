@@ -141,17 +141,19 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getMacros: (state) => {
         const array: PrinterStateMacro[] = []
-        const config = state.configfile?.config ?? {}
         const settings = state.configfile?.settings ?? null
 
-        Object.keys(config)
-            .filter((prop) => prop.toLowerCase().startsWith('gcode_macro'))
+        Object.keys(state)
+            .filter((prop) => prop.toLowerCase().startsWith('gcode_macro '))
             .forEach((prop) => {
                 const name = prop.replace('gcode_macro ', '')
+
+                // remove macros with a '_' as first char
                 if (name.startsWith('_')) return
 
+                // remove macros with rename_existing in the config
                 const propLower = prop.toLowerCase()
-                const propSettings = settings[propLower]
+                const propSettings = settings[propLower] ?? {}
                 if ('rename_existing' in propSettings) return
 
                 const variables = state[prop] ?? {}
