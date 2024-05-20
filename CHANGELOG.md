@@ -2,6 +2,13 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.11.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.11.2) - 2024-05-04
+### Bug Fixes and Improvements
+
+- **maintenance**: Fix overdue check from printtime based entries ([#1871](https://github.com/mainsail-crew/mainsail/pull/1871))
+- **spoolman**: Fix search for spool-id ([#1872](https://github.com/mainsail-crew/mainsail/pull/1872))
+- Calc multiplicator for set_pin gcode ([#1870](https://github.com/mainsail-crew/mainsail/pull/1870))
+
 ## [2.11.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.11.1) - 2024-05-01
 ### Bug Fixes and Improvements
 
