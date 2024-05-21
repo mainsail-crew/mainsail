@@ -1,5 +1,9 @@
 <template>
-    <div class="text-right">{{ output }}</div>
+    <tr>
+        <td class="text-right">{{ name }}:</td>
+        <td class="text-right pl-3">{{ value }}</td>
+        <td>{{ unit }}</td>
+    </tr>
 </template>
 
 <script lang="ts">
@@ -48,11 +52,8 @@ export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
         return Math.round(this.sensorData[this.valueName] * 1000) / 1000
     }
 
-    get output() {
-        const name = this.convertName(this.valueName)
-        if (this.unit === null) return `${name}: ${this.value}`
-
-        return `${name}: ${this.value} ${this.unit}`
+    get name() {
+        return this.convertName(this.valueName)
     }
 }
 </script>

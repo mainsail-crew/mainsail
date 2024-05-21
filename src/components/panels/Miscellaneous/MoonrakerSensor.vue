@@ -6,11 +6,15 @@
                     <span>{{ convertName(name) }}</span>
                     <v-spacer />
                     <div class="flex-column">
-                        <moonraker-sensor-value
-                            v-for="(valueName, index) of valueNames"
-                            :key="'moonraker_sensor_value_' + index"
-                            :sensor="name"
-                            :value-name="valueName" />
+                        <table>
+                            <tbody>
+                                <moonraker-sensor-value
+                                    v-for="(valueName, index) of valueNames"
+                                    :key="'moonraker_sensor_value_' + index"
+                                    :sensor="name"
+                                    :value-name="valueName" />
+                            </tbody>
+                        </table>
                     </div>
                 </v-subheader>
             </v-col>
