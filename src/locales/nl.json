@@ -23,7 +23,10 @@
             "NextReboot": "volgende reboot",
             "NoNotification": "Geen notificaties beschikbaar",
             "Notifications": "Notificaties",
-            "Remind": "Herinnering:"
+            "Remind": "Herinnering:",
+            "OneDayShort": "1D",
+            "OneHourShort": "1U",
+            "OneWeekShort": "1W"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Moet groter of gelijk zijn dan {min}!",
@@ -106,6 +109,12 @@
             "RecoveringDone": "Herstellen van {software} voltooid!",
             "Updating": "Updating {software}..",
             "UpdatingDone": "Updaten van {software} voltooid!"
+        },
+        "TextfieldWithCopy": {
+            "Copied": "Gekopieerd"
+        },
+        "TheServiceWorker": {
+            "Update": "Werk bij"
         }
     },
     "BedScrews": {
@@ -156,7 +165,8 @@
         "UnsavedChanges": "Niet opgeslagen wijzigingen",
         "UnsavedChangesMessage": "Wil je de aanpassingen opslaan naar {filename}?",
         "UnsavedChangesSubMessage": "Je aanpassingen zullen verloren gaan als je ze niet opslaat. Je kunt deze melding uitschakelen in de instellingen.",
-        "Uploading": "Uploaden"
+        "Uploading": "Uploaden",
+        "DeviceDialog": "Apparaten"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Weet je het zeker?",
@@ -227,7 +237,8 @@
         "Total": "Totaal",
         "UploadNewGcode": "Upload nieuwe G-Code",
         "Used": "Gebruikt",
-        "View3D": "Bekijk in 3D"
+        "View3D": "Bekijk in 3D",
+        "Duplicate": "Duplikaat"
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Kan bestand niet uploaden!",
@@ -368,7 +379,19 @@
         "TotalFilamentUsed": "Totaal Filament Verbruikt",
         "TotalJobs": "Totaal Jobs",
         "TotalPrinttime": "Totale Printtijd",
-        "TotalTime": "Totale Tijd"
+        "TotalTime": "Totale Tijd",
+        "Days": "Dagen",
+        "Hours": "Uren",
+        "Meter": "meter",
+        "Name": "Naam",
+        "Perform": "Voeruit",
+        "Performed": "Voerde uit",
+        "Reminder": "Herinnering",
+        "Repeat": "Herhaal",
+        "DateBasedReminder": "Datum",
+        "FilamentBasedReminder": "Filament",
+        "Maintenance": "Onderhoud",
+        "OneTime": "Een keer"
     },
     "JobQueue": {
         "AllJobs": "Alle jobs",
@@ -1138,5 +1161,16 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Nederlands"
+    "title": "Nederlands",
+    "CoolDownDialog": {
+        "No": "Nee",
+        "Yes": "Ja",
+        "CoolDown": "Koel af"
+    },
+    "DevicesDialog": {
+        "Resolutions": "Resoluties",
+        "Formats": "Formats",
+        "Headline": "Apparaten",
+        "Refresh": "Herlaad"
+    }
 }
