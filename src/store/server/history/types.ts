@@ -50,10 +50,10 @@ export interface ServerHistoryStateJob {
     status: string
     start_time: number
     total_duration: number
-    auxiliary_data?: ServerHistoryStateJobAxiliaryData[]
+    auxiliary_data?: ServerHistoryStateJobAuxiliaryData[]
 }
 
-export interface ServerHistoryStateJobAxiliaryData {
+export interface ServerHistoryStateJobAuxiliaryData {
     description: string
     name: string
     provider: string
