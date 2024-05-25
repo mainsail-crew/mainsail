@@ -1176,9 +1176,9 @@
             "VariableFps": "Variable FPS",
             "VariableFpsDescription": "If enabled, the framerate of the output video will be calculated based on target length",
             "VariableFpsMax": "Variable FPS max",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "Maximum variable FPS value",
             "VariableFpsMin": "Variable FPS min",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "Minimum variable FPS value"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Bed Screws Dialog",
