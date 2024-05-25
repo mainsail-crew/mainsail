@@ -9,50 +9,10 @@
                 <v-col class="col-12 col-sm-6 col-md-4">
                     <v-simple-table>
                         <tbody>
-                            <template v-if="existsSelectedJobs">
-                                <tr>
-                                    <td>{{ $t('History.SelectedPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(selectedPrintTime, false) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ $t('History.LongestPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(selectedLongestPrintTime, false) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ $t('History.AvgPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(selectedAvgPrintTime, false) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ $t('History.SelectedFilamentUsed') }}</td>
-                                    <td class="text-right">{{ selectedFilamentUsedFormat }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ $t('History.SelectedJobs') }}</td>
-                                    <td class="text-right">{{ selectedJobs.length }}</td>
-                                </tr>
-                            </template>
-                            <template v-else>
-                                <tr>
-                                    <td>{{ $t('History.TotalPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(totalPrintTime, false) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ $t('History.LongestPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(longestPrintTime, false) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ $t('History.AvgPrinttime') }}</td>
-                                    <td class="text-right">{{ formatPrintTime(avgPrintTime, false) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ $t('History.TotalFilamentUsed') }}</td>
-                                    <td class="text-right">{{ totalFilamentUsedFormat }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ $t('History.TotalJobs') }}</td>
-                                    <td class="text-right">{{ totalJobsCount }}</td>
-                                </tr>
-                            </template>
+                            <tr v-for="total in totals" :key="total.title">
+                                <td>{{ total.title }}</td>
+                                <td class="text-right">{{ total.value }}</td>
+                            </tr>
                         </tbody>
                     </v-simple-table>
                 </v-col>
@@ -104,13 +64,14 @@ import Panel from '@/components/ui/Panel.vue'
 import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
 import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
 import HistoryAllPrintStatusChart from '@/components/charts/HistoryAllPrintStatusChart.vue'
-import { ServerHistoryStateJob } from '@/store/server/history/types'
+import { ServerHistoryStateJob, ServerHistoryStateJobAuxiliaryTotal } from '@/store/server/history/types'
 import { mdiChartAreaspline, mdiDatabaseArrowDownOutline } from '@mdi/js'
 import { formatPrintTime } from '@/plugins/helpers'
+import HistoryMixin from '@/components/mixins/history'
 @Component({
     components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatusChart },
 })
-export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
+export default class HistoryStatisticsPanel extends Mixins(BaseMixin, HistoryMixin) {
     mdiChartAreaspline = mdiChartAreaspline
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
     formatPrintTime = formatPrintTime
@@ -213,6 +174,112 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
 
     get allLoaded() {
         return this.$store.state.server.history.all_loaded ?? false
+    }
+
+    get selectedTotals() {
+        const output: { title: string; value: string }[] = [
+            {
+                title: this.$t('History.SelectedPrinttime') as string,
+                value: this.formatPrintTime(this.selectedPrintTime, false),
+            },
+            {
+                title: this.$t('History.LongestPrinttime') as string,
+                value: this.formatPrintTime(this.selectedLongestPrintTime, false),
+            },
+            {
+                title: this.$t('History.AvgPrinttime') as string,
+                value: this.formatPrintTime(this.selectedAvgPrintTime, false),
+            },
+            {
+                title: this.$t('History.SelectedFilamentUsed') as string,
+                value: this.selectedFilamentUsedFormat,
+            },
+            {
+                title: this.$t('History.SelectedJobs') as string,
+                value: this.selectedJobs.length.toString(),
+            },
+        ]
+
+        output.push(...this.auxiliarySelectedTotals)
+
+        return output
+    }
+
+    get auxiliarySelectedTotals() {
+        const output: { title: string; value: string }[] = []
+        this.moonrakerHistoryFields.forEach((historyField) => {
+            const value = this.selectedJobs.reduce((acc: number, job: ServerHistoryStateJob) => {
+                const historyFieldName = historyField.name.replace('history_field_', '')
+                const auxiliary_data = job.auxiliary_data?.find(
+                    (auxiliary) => auxiliary.provider === historyField.provider && auxiliary.name === historyFieldName
+                )
+
+                if (!auxiliary_data || typeof auxiliary_data.value !== 'number') return acc
+
+                return acc + auxiliary_data.value
+            }, 0)
+
+            output.push({
+                title: historyField.desc,
+                value: `${Math.round(value * 1000) / 1000} ${historyField.unit}`,
+            })
+        })
+
+        return output
+    }
+
+    get genericTotals() {
+        const output: { title: string; value: string }[] = [
+            {
+                title: this.$t('History.TotalPrinttime') as string,
+                value: this.formatPrintTime(this.totalPrintTime, false),
+            },
+            {
+                title: this.$t('History.LongestPrinttime') as string,
+                value: this.formatPrintTime(this.longestPrintTime, false),
+            },
+            {
+                title: this.$t('History.AvgPrinttime') as string,
+                value: this.formatPrintTime(this.avgPrintTime, false),
+            },
+            {
+                title: this.$t('History.TotalFilamentUsed') as string,
+                value: this.totalFilamentUsedFormat,
+            },
+            {
+                title: this.$t('History.TotalJobs') as string,
+                value: this.totalJobsCount.toString(),
+            },
+        ]
+
+        // Add auxiliary totals
+        output.push(...this.auxiliaryTotals)
+
+        return output
+    }
+
+    get auxiliaryTotals() {
+        const auxiliaries = this.$store.state.server.history.auxiliary_totals ?? []
+        const output: { title: string; value: string }[] = []
+
+        auxiliaries.forEach((auxiliary: ServerHistoryStateJobAuxiliaryTotal) => {
+            const historyFieldName = `history_field_${auxiliary.field}`
+            const historyField = this.moonrakerHistoryFields.find(
+                (historyField) => historyField.provider === auxiliary.provider && historyField.name === historyFieldName
+            )
+            const value = Math.round((auxiliary.total ?? 0) * 1000) / 1000
+
+            output.push({
+                title: historyField?.desc ?? auxiliary.field,
+                value: `${value} ${historyField?.unit}`,
+            })
+        })
+
+        return output
+    }
+
+    get totals() {
+        return this.existsSelectedJobs ? this.selectedTotals : this.genericTotals
     }
 
     refreshHistory() {
