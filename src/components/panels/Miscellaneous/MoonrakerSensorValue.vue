@@ -1,6 +1,6 @@
 <template>
     <tr>
-        <td class="text-right">{{ name }}:</td>
+        <td class="text-left"><v-icon>{{ symbol }}</v-icon> {{ name }}:</td>
         <td class="text-right pl-3">{{ value }}</td>
         <td>{{ unit }}</td>
     </tr>
@@ -10,6 +10,13 @@
 import { convertName } from '@/plugins/helpers'
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import {
+    mdiGauge,
+    mdiLightningBoltOutline,
+    mdiFlash,
+    mdiThermometer,
+    mdiMeterElectricOutline
+} from '@mdi/js'
 
 @Component
 export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
@@ -17,6 +24,12 @@ export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
 
     @Prop({ type: String, required: true }) declare readonly sensor: string
     @Prop({ type: String, required: true }) declare readonly valueName: string
+
+    mdiGauge = mdiGauge
+    mdiLightningBoltOutline = mdiLightningBoltOutline
+    mdiFlash = mdiFlash
+    mdiThermometer = mdiThermometer
+    mdiMeterElectricOutline = mdiMeterElectricOutline
 
     get sensorData() {
         const sensors = this.$store.state.server.sensor.sensors
@@ -54,6 +67,26 @@ export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
 
     get name() {
         return this.convertName(this.valueName)
+    }
+
+    get symbol() {
+        if (["wh", "kwh", "mwh", "j"].includes(this.unit?.toLowerCase())) {
+            return this.mdiLightningBoltOutline
+        }
+
+        if (["w", "v"].includes(this.unit?.toLowerCase())) {
+            return this.mdiFlash
+        }
+
+        if (this.unit?.toLowerCase() === "a") {
+            return this.mdiMeterElectricOutline
+        }
+
+        if (["°c", "c", "°f", "f", "°"].includes(this.unit?.toLowerCase())) {
+            return this.mdiThermometer
+        }
+
+        return this.mdiGauge
     }
 }
 </script>

@@ -2,11 +2,9 @@
     <v-container class="px-0 py-2">
         <v-row>
             <v-col class="pb-3">
-                <v-subheader class="_moonraker-sensor-subheader">
-                    <span>{{ convertName(name) }}</span>
-                    <v-spacer />
-                    <div class="flex-column">
-                        <table>
+                <div>{{ convertName(name) }}</div>    
+                <v-subheader class="_moonraker-sensor-subheader">                                                                                
+                    <table width="100%">
                             <tbody>
                                 <moonraker-sensor-value
                                     v-for="(valueName, index) of valueNames"
@@ -14,8 +12,7 @@
                                     :sensor="name"
                                     :value-name="valueName" />
                             </tbody>
-                        </table>
-                    </div>
+                        </table>                    
                 </v-subheader>
             </v-col>
         </v-row>
@@ -27,6 +24,9 @@ import { convertName } from '@/plugins/helpers'
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MoonrakerSensorValue from '@/components/panels/Miscellaneous/MoonrakerSensorValue.vue'
+import {
+
+} from '@mdi/js'
 
 @Component({
     components: { MoonrakerSensorValue },
@@ -48,5 +48,10 @@ export default class MoonrakerSensor extends Mixins(BaseMixin) {
 <style lang="scss">
 ._moonraker-sensor-subheader {
     height: auto;
+
+.sensor-name {
+    font-weight: bold;
+    padding-left: 10px;
+}
 }
 </style>
