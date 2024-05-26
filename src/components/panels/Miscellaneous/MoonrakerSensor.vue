@@ -2,17 +2,15 @@
     <v-container class="px-0 py-2">
         <v-row>
             <v-col class="pb-3">
-                <div>{{ convertName(name) }}</div>    
-                <v-subheader class="_moonraker-sensor-subheader">                                                                                
-                    <table width="100%">
-                            <tbody>
-                                <moonraker-sensor-value
-                                    v-for="(valueName, index) of valueNames"
-                                    :key="'moonraker_sensor_value_' + index"
-                                    :sensor="name"
-                                    :value-name="valueName" />
-                            </tbody>
-                        </table>                    
+                <v-subheader class="sensor-name _moonraker-sensor-subheader">
+                    {{ convertName(name) }}
+                </v-subheader>                    
+                <v-subheader class="_moonraker-sensor-subheader">                    
+                        <moonraker-sensor-value
+                        v-for="(valueName, index) of valueNames"
+                        :key="'moonraker_sensor_value_' + index"
+                        :sensor="name"
+                        :value-name="valueName" />                                                                                                                         
                 </v-subheader>
             </v-col>
         </v-row>
@@ -48,10 +46,12 @@ export default class MoonrakerSensor extends Mixins(BaseMixin) {
 <style lang="scss">
 ._moonraker-sensor-subheader {
     height: auto;
+    display: block;
+}
 
 .sensor-name {
     font-weight: bold;
-    padding-left: 10px;
+    margin-bottom: 5px;     
 }
-}
+
 </style>

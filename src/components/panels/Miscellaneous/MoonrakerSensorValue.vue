@@ -1,9 +1,9 @@
 <template>
-    <tr>
-        <td class="text-left"><v-icon>{{ symbol }}</v-icon> {{ name }}:</td>
-        <td class="text-right pl-3">{{ value }}</td>
-        <td>{{ unit }}</td>
-    </tr>
+    <div class="moonraker-sensor-container">
+        <span class="text-left moonraker-sensor-value-name"><v-icon small>{{ symbol }}</v-icon> {{ name }}:</span>
+        <span class="text-right moonraker-sensor-value">{{ value }}</span>
+        <span class="moonraker-sensor-unit">{{ unit }}</span>
+    </div>
 </template>
 
 <script lang="ts">
@@ -90,3 +90,27 @@ export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style lang="scss">
+.moonraker-sensor-container {
+    display: flex;
+    width: 100%;
+
+}
+
+.moonraker-sensor-value-name {
+    align-self: flex-start;
+    flex: 1 1 auto;
+}
+
+.moonraker-sensor-value {
+    align-self: flex-end;    
+    flex: 1 1 auto;
+}
+
+.moonraker-sensor-unit {
+    align-self: flex-end;   
+    padding-left: 3px; 
+}
+</style>
+
