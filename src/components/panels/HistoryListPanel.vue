@@ -178,6 +178,7 @@ import HistoryListPanelAddMaintenance from '@/components/dialogs/HistoryListPane
 import { GuiMaintenanceStateEntry, HistoryListRowMaintenance } from '@/store/gui/maintenance/types'
 import HistoryListEntryMaintenance from '@/components/panels/History/HistoryListEntryMaintenance.vue'
 import HistoryListPanelDeleteSelectedDialog from '@/components/dialogs/HistoryListPanelDeleteSelectedDialog.vue'
+import HistoryMixin from '@/components/mixins/history'
 
 export type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance
 
@@ -201,7 +202,7 @@ export interface HistoryListPanelCol {
         Panel,
     },
 })
-export default class HistoryListPanel extends Mixins(BaseMixin) {
+export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin) {
     mdiCloseThick = mdiCloseThick
     mdiCog = mdiCog
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
@@ -409,6 +410,16 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             },
         ]
 
+        this.moonrakerHistoryFields.forEach((sensor) => {
+            headers.push({
+                text: sensor.desc,
+                value: sensor.name,
+                align: 'left',
+                configable: true,
+                visible: false,
+            })
+        })
+
         headers.forEach((header) => {
             if (header.visible && this.hideColums.includes(header.value)) {
                 header.visible = false
@@ -544,6 +555,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         row.push('status')
 
         this.tableFields.forEach((col) => {
+            if (col.value.startsWith('history_field_')) {
+                const sensorName = col.value.replace('history_field_', '')
+                row.push(sensorName)
+                return
+            }
+
             row.push(col.value)
         })
 
@@ -612,18 +629,9 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 row.push('job')
                 row.push(job.status)
 
-                this.tableFields
-                    .filter((header) => header.value !== 'slicer')
-                    .forEach((col) => {
-                        row.push(this.outputValue(col, job, csvSeperator))
-                    })
-
-                if (this.tableFields.find((header) => header.value === 'slicer')?.visible) {
-                    let slicerString = 'slicer' in job.metadata && job.metadata.slicer ? job.metadata.slicer : '--'
-                    if ('slicer_version' in job.metadata && job.metadata.slicer_version)
-                        slicerString += ' ' + job.metadata.slicer_version
-                    row.push(slicerString)
-                }
+                this.tableFields.forEach((col) => {
+                    row.push(this.outputValue(col, job, csvSeperator))
+                })
 
                 content.push(row)
             })
@@ -634,7 +642,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         const csvContent =
             'data:text/csv;charset=utf-8,' +
             content.map((entry) =>
-                entry.map((field) => (field.indexOf(csvSeperator) === -1 ? field : `"${field}"`)).join(csvSeperator)
+                entry.map((field) => (field?.indexOf(csvSeperator) === -1 ? field : `"${field}"`)).join(csvSeperator)
             ).join('\n')
 
         const link = document.createElement('a')
@@ -650,6 +658,36 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         //@ts-ignore
         let value = col.value in job ? job[col.value] : null
         if (value === null) value = col.value in job.metadata ? job.metadata[col.value] : null
+
+        if (col.value === 'slicer') {
+            let slicerString = 'slicer' in job.metadata && job.metadata.slicer ? job.metadata.slicer : '--'
+            if ('slicer_version' in job.metadata && job.metadata.slicer_version)
+                slicerString += ' ' + job.metadata.slicer_version
+
+            if (csvSeperator !== null && value.includes(csvSeperator)) return '"' + slicerString + '"'
+
+            return slicerString
+        }
+
+        if (col.value.startsWith('history_field_')) {
+            const sensorName = col.value.replace('history_field_', '')
+            const sensor = job.auxiliary_data?.find((sensor) => sensor.name === sensorName)
+
+            let value = sensor?.value?.toString()
+
+            // return value, when it is not an array
+            if (sensor && !Array.isArray(sensor.value)) {
+                value = sensor.value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
+            }
+
+            // return empty string, when value is null
+            if (!value) return '--'
+
+            // escape fields with the csvSeperator in the content
+            if (csvSeperator !== null && value?.includes(csvSeperator)) return `"${value}"`
+
+            return value
+        }
 
         switch (col.outputType) {
             case 'date':

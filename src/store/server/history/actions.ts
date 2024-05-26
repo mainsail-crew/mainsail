@@ -19,6 +19,11 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
 
     getTotals({ commit }, payload) {
         commit('setTotals', payload.job_totals)
+
+        const auxiliary_totals = payload.auxiliary_totals ?? []
+        if (auxiliary_totals.length) {
+            commit('setAuxiliaryTotals', auxiliary_totals)
+        }
     },
 
     async getHistory({ commit, dispatch, state }, payload) {

@@ -16,6 +16,10 @@ export const mutations: MutationTree<ServerHistoryState> = {
         Vue.set(state, 'job_totals', payload)
     },
 
+    setAuxiliaryTotals(state, payload) {
+        Vue.set(state, 'auxiliary_totals', payload)
+    },
+
     setHistoryNotes(state, payload) {
         const job = state.jobs.find((job) => job.job_id === payload.job_id)
         if (job) Vue.set(job, 'note', payload.text)
