@@ -1,6 +1,9 @@
 <template>
     <div class="moonraker-sensor-container">
-        <span class="text-left moonraker-sensor-value-name"><v-icon small class="mr-2">{{ symbol }}</v-icon>{{ name }}:</span>
+        <span class="text-left moonraker-sensor-value-name">
+            <v-icon small class="mr-2">{{ symbol }}</v-icon>
+            {{ name }}:
+        </span>
         <span class="text-right moonraker-sensor-value">{{ value }}</span>
         <span class="moonraker-sensor-unit">{{ unit }}</span>
     </div>
@@ -10,13 +13,7 @@
 import { convertName } from '@/plugins/helpers'
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {
-    mdiGauge,
-    mdiLightningBoltOutline,
-    mdiFlash,
-    mdiThermometer,
-    mdiMeterElectricOutline
-} from '@mdi/js'
+import { mdiGauge, mdiLightningBoltOutline, mdiFlash, mdiThermometer, mdiMeterElectricOutline } from '@mdi/js'
 
 @Component
 export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
@@ -70,19 +67,19 @@ export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
     }
 
     get symbol() {
-        if (["wh", "kwh", "mwh", "j"].includes(this.unit?.toLowerCase())) {
+        if (['wh', 'kwh', 'mwh', 'j'].includes(this.unit?.toLowerCase())) {
             return this.mdiLightningBoltOutline
         }
 
-        if (["w", "v"].includes(this.unit?.toLowerCase())) {
+        if (['w', 'v'].includes(this.unit?.toLowerCase())) {
             return this.mdiFlash
         }
 
-        if (this.unit?.toLowerCase() === "a") {
+        if (this.unit?.toLowerCase() === 'a') {
             return this.mdiMeterElectricOutline
         }
 
-        if (["°c", "c", "°f", "f", "°"].includes(this.unit?.toLowerCase())) {
+        if (['°c', 'c', '°f', 'f', '°'].includes(this.unit?.toLowerCase())) {
             return this.mdiThermometer
         }
 
@@ -95,7 +92,6 @@ export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
 .moonraker-sensor-container {
     display: flex;
     width: 100%;
-
 }
 
 .moonraker-sensor-value-name {
@@ -104,13 +100,12 @@ export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
 }
 
 .moonraker-sensor-value {
-    align-self: flex-end;    
+    align-self: flex-end;
     flex: 1 1 auto;
 }
 
 .moonraker-sensor-unit {
-    align-self: flex-end;   
-    padding-left: 3px; 
+    align-self: flex-end;
+    padding-left: 3px;
 }
 </style>
-
