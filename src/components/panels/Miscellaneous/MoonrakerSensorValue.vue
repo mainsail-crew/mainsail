@@ -1,10 +1,8 @@
 <template>
-    <div class="d-flex w-100">
-        <span class="text-left flex-grow-1">
-            <v-icon small left>{{ symbol }}</v-icon>
-            {{ name }}:
-        </span>
-        <span class="text-right flex-shrink-1">{{ output }}</span>
+    <div class="d-flex w-100 flex-row align-center">
+        <v-icon small left>{{ symbol }}</v-icon>
+        <span class="flex-grow-1">{{ name }}:</span>
+        <span>{{ output }}</span>
     </div>
 </template>
 

@@ -2,7 +2,7 @@
     <v-container class="px-0 py-2">
         <v-row>
             <v-col class="pb-3">
-                <v-subheader class="font-weight-bold mb-1 d-block _moonraker-sensor-subheader">
+                <v-subheader class="mb-1 d-block _moonraker-sensor-subheader">
                     {{ convertName(name) }}
                 </v-subheader>
                 <v-subheader class="d-block _moonraker-sensor-subheader">
