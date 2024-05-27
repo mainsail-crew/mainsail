@@ -1,11 +1,10 @@
 <template>
-    <div class="moonraker-sensor-container">
-        <span class="text-left moonraker-sensor-value-name">
-            <v-icon small class="mr-2">{{ symbol }}</v-icon>
+    <div class="d-flex w-100">
+        <span class="text-left flex-grow-1">
+            <v-icon small left>{{ symbol }}</v-icon>
             {{ name }}:
         </span>
-        <span class="text-right moonraker-sensor-value">{{ value }}</span>
-        <span class="moonraker-sensor-unit">{{ unit }}</span>
+        <span class="text-right flex-shrink-1">{{ output }}</span>
     </div>
 </template>
 
@@ -62,6 +61,12 @@ export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
         return Math.round(this.sensorData[this.valueName] * 1000) / 1000
     }
 
+    get output() {
+        if (this.unit === null) return this.value
+
+        return `${this.value} ${this.unit}`
+    }
+
     get name() {
         return this.convertName(this.valueName)
     }
@@ -87,25 +92,3 @@ export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
     }
 }
 </script>
-
-<style lang="scss">
-.moonraker-sensor-container {
-    display: flex;
-    width: 100%;
-}
-
-.moonraker-sensor-value-name {
-    align-self: flex-start;
-    flex: 1 1 auto;
-}
-
-.moonraker-sensor-value {
-    align-self: flex-end;
-    flex: 1 1 auto;
-}
-
-.moonraker-sensor-unit {
-    align-self: flex-end;
-    padding-left: 3px;
-}
-</style>
