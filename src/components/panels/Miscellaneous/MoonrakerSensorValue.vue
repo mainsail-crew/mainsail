@@ -1,6 +1,6 @@
 <template>
     <div class="moonraker-sensor-container">
-        <span class="text-left moonraker-sensor-value-name"><v-icon small>{{ symbol }}</v-icon> {{ name }}:</span>
+        <span class="text-left moonraker-sensor-value-name"><v-icon small class="mr-2">{{ symbol }}</v-icon>{{ name }}:</span>
         <span class="text-right moonraker-sensor-value">{{ value }}</span>
         <span class="moonraker-sensor-unit">{{ unit }}</span>
     </div>
