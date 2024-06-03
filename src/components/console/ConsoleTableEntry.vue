@@ -53,6 +53,7 @@ export default class ConsoleTableEntry extends Mixins(BaseMixin) {
 .consoleTableRow {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.95em;
+    white-space: pre-wrap;
 
     &.default {
         .col {
