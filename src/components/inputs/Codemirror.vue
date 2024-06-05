@@ -17,7 +17,7 @@ import { vscodeDark, vscodeLight } from '@uiw/codemirror-theme-vscode'
 import { HighlightStyle, indentUnit, StreamLanguage, syntaxHighlighting } from '@codemirror/language'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
 import { gcode } from '@/plugins/StreamParserGcode'
-import { KlipperDocsTooltipPlugin } from "@/plugins/CodeMirrorPluginKlipperDocsTooltips"
+import { KlipperDocsTooltipPlugin } from '@/plugins/CodeMirrorPluginKlipperDocsTooltips'
 import { insertTab, indentLess } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
