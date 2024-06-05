@@ -16,7 +16,7 @@ import { vscodeDark } from '@uiw/codemirror-theme-vscode'
 import { StreamLanguage } from '@codemirror/language'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
 import { gcode } from '@/plugins/StreamParserGcode'
-import { KlipperDocsTooltipPlugin } from "@/plugins/CodeMirrorPluginKlipperDocsTooltips"
+import { KlipperDocsTooltipPlugin } from '@/plugins/CodeMirrorPluginKlipperDocsTooltips'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
@@ -93,7 +93,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
                 if (this.$emit) {
                     this.$emit('input', this.content)
                 }
-            })
+            }),
         ]
 
         if (this.tooltipsPluginEnabled) extensions.push(KlipperDocsTooltipPlugin())
