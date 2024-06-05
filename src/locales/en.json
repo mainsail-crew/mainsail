@@ -946,6 +946,8 @@
             "Spaces": "Spaces: {count}",
             "TabSize": "TAB Size",
             "TabSizeDescription": "Adjusts how many spaces should be indented for TAB",
+            "ToggleDocumentationTooltips": "Enable tooltips to Klipper Docs",
+            "ToggleDocumentationTooltipsDescription": "When enabled, you can hover over config section headers and get a link to the documentation.",
             "UseEscToClose": "Use ESC to close editor",
             "UseEscToCloseDescription": "Allows the ESC key to close the editor"
         },
