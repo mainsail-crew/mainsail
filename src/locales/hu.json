@@ -9,19 +9,33 @@
                 "DeprecatedOptionHeadline": "Elavult Klipper Opció",
                 "DeprecatedValue": "'{section}' / '{option}' / Value '{value}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
                 "DeprecatedValueHeadline": "Elavult Klipper Érték",
-                "KlipperWarning": "Klipper figyelmeztetés"
+                "KlipperWarning": "Klipper figyelmeztetés",
+                "KlipperRuntimeWarning": "Klipper futásidejű figyelmeztetés"
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "Hiba a betöltés során, Moonraker '{component}'. Kérlek ellenőrizd a logokat, és javítsd a hibát.",
                 "MoonrakerWarning": "Moonraker figyelmeztetés",
                 "UnparsedConfigOption": "A [{section}] szekcióban helytelen konfig opciót '{option}: {value}' detektáltam. Ez lehet egy már nem elérhető opció, vagy egy hibásan betöltődő modul is okozhatja. A jövőben ez egy indítási hibaként fog jelentkezni.",
-                "UnparsedConfigSection": "Helytelen konfig szekciót [{section}] detektáltam. Ezt egy egy hibásan betöltődő komponens okozhatja. A jövőben ez egy indítási hibaként fog jelentkezni."
+                "UnparsedConfigSection": "Helytelen konfig szekciót [{section}] detektáltam. Ezt egy egy hibásan betöltődő komponens okozhatja. A jövőben ez egy indítási hibaként fog jelentkezni.",
+                "MoonrakerFailedInitComponentDescription": "Hiba történt a moonraker komponens inicializálása során '{component}'. Kérjük, ellenőrizd a naplófájlt, és javítsd ki a problémát.",
+                "MoonrakerInitComponent": "Itt. Moonraker: {component}"
             },
             "Never": "Soha",
             "NextReboot": "Következő reboot",
             "NoNotification": "Értesítés nem elérhető",
-            "Remind": "Emlékeztető:"
+            "Remind": "Emlékeztető:",
+            "BrowserWarnings": {
+                "Description": "{name} elavult és nem teljesen támogatott. A jelenlegi verzió {version}, de a Mainsail-hez {minVersion} vagy újabb verzió szükséges.",
+                "Headline": "Elavult böngésző"
+            },
+            "MaintenanceReminder": "Karbantartási emlékeztető",
+            "OneDayShort": "1N",
+            "MaintenanceReminderText": "„{name}” karbantartás esedékes.",
+            "Notifications": "Értesítések",
+            "OneHourShort": "1Ó",
+            "OneWeekShort": "1H",
+            "ShowDetails": "részletek mutatása"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Nagyobbnak vagy egyenlőnek kell lennie mint {min}!",
@@ -52,7 +66,8 @@
             "Error": "HIBA",
             "Pause": "Nyomtatás Állj",
             "Printing": "{percent}% Nyomtatás - {filename}",
-            "PrintingETA": "{percent}% Nyomtatás - IDŐ: {eta} - {filename}"
+            "PrintingETA": "{percent}% Nyomtatás - IDŐ: {eta} - {filename}",
+            "PrinterOff": "Nyomtató KI"
         },
         "TopBar": {
             "CannotUploadTheFile": "A fájl nem feltölthető!",
@@ -104,6 +119,14 @@
             "RecoveringDone": "{software} helyreállítása kész!",
             "Updating": "{software} frissítése ...",
             "UpdatingDone": "{software} frissítése kész!"
+        },
+        "TheServiceWorker": {
+            "Update": "frissítés",
+            "TitleNeedUpdate": "A PWA frissítést igényel",
+            "DescriptionNeedUpdate": "A helyi gyorsítótár elavult, és frissítésre szorul. Kérjük, kattints az alábbi gombra a gyorsítótár frissítéséhez."
+        },
+        "TextfieldWithCopy": {
+            "Copied": "Másolva"
         }
     },
     "ConnectionDialog": {
