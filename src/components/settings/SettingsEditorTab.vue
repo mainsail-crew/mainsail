@@ -17,6 +17,13 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
+                    :title="$t('Settings.EditorTab.ToggleDocumentationTooltips')"
+                    :sub-title="$t('Settings.EditorTab.ToggleDocumentationTooltipsDescription')"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="toggleTooltips" hide-details class="mt-0" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
                     :title="$t('Settings.EditorTab.TabSize')"
                     :sub-title="$t('Settings.EditorTab.TabSizeDescription')"
                     :dynamic-slot-width="true">
@@ -73,6 +80,14 @@ export default class SettingsEditorTab extends Mixins(BaseMixin) {
 
     set escToClose(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'editor.escToClose', value: newVal })
+    }
+
+    get toggleTooltips() {
+        return this.$store.state.gui.editor.tooltipsEnabled
+    }
+
+    set toggleTooltips(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'editor.tooltipsEnabled', value: newVal })
     }
 
     get confirmUnsavedChanges() {
