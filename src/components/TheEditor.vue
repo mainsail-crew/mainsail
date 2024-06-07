@@ -7,7 +7,9 @@
             hide-overlay
             :transition="false"
             @close="close"
-            @keydown.esc="escClose">
+            @keydown.esc="escClose"
+            @keydown.ctrl.s.prevent="hotkeySave()"
+            @keydown.meta.s.prevent="hotkeySave()">
             <panel
                 card-class="editor-dialog"
                 :icon="isWriteable ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"
@@ -331,6 +333,10 @@ export default class TheEditor extends Mixins(BaseMixin) {
             content: this.sourcecode,
             restartServiceName: restartServiceName,
         })
+    }
+
+    hotkeySave() {
+        if (this.isWriteable) this.save(null)
     }
 
     @Watch('changed')
