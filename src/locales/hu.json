@@ -151,7 +151,8 @@
             "DoYouWantToStartFilename": "{filename} kezdése?",
             "Headline": "Feladat kezdése",
             "Print": "nyomtat",
-            "Timelapse": "Idővonal"
+            "Timelapse": "Idővonal",
+            "DoYouWantToStartFilenameFilament": "Szeretnéd a {filename} fájlt a következő nyomtatószállal indítani?"
         }
     },
     "Editor": {
@@ -166,7 +167,8 @@
         "UnsavedChanges": "Mentetlen Változások",
         "UnsavedChangesMessage": "Szeretnéd menteni a következőn végzett változtatásokat: {filename}?",
         "UnsavedChangesSubMessage": "A változtatásaid elvesznek ha nem mented őket. Ezt az üzenetet az Editor beállításokban kikapcsolhatod.",
-        "Uploading": "Feltöltés"
+        "Uploading": "Feltöltés",
+        "DeviceDialog": "Eszközök"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Biztos?",
@@ -229,7 +231,16 @@
         "Total": "Összesen",
         "UploadNewGcode": "Új Gcode feltöltése",
         "Used": "Felhasznált",
-        "View3D": "3D nézet"
+        "View3D": "3D nézet",
+        "AddBatchToQueue": "Tétel hozzáadása a várólistához",
+        "BedTemp": "Ágy hőmérs.",
+        "ChamberTemp": "Kamra hőmérs.",
+        "Count": "Számol",
+        "DeleteSingleFileQuestion": "Biztos törölni szeretnéd a \"{name}\" fájlt?",
+        "Duplicate": "Duplikált",
+        "DuplicateFile": "Duplikált fájl",
+        "ExtruderTemp": "Adagoló hőmérs.",
+        "GcodesRootDirectoryDoesntExists": "Nem találtunk G-kód könyvtárat. Kérjük, ellenőrizd a Klipper konfiguráció [virtual_sdcard] szakaszának „path” opcióját."
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Nem tudom feltölteni a fájlt!",
@@ -1045,5 +1056,19 @@
         "CoolDown": "Visszahűtés",
         "No": "Nem",
         "Yes": "Igen"
+    },
+    "DevicesDialog": {
+        "CanBusInfo": "Csak a nem hozzárendelt csomópontok észlelhetők. A kommunikációs problémák elkerülése érdekében ajánlott, hogy csak egy nem hozzárendelt eszköz csatlakozzon a CANbus-hoz. További részletekért kattints a linkre:",
+        "ClickRefresh": "Kattints a frissítés gombra az eszközök kereséséhez.",
+        "DevicePath": "Eszköz elérési útja",
+        "Formats": "Formátumok",
+        "Headline": "Eszközök",
+        "HideSystemEntries": "Rendszerbejegyzések elrejtése",
+        "LibcameraId": "Libcamera ID",
+        "Refresh": "frissítés",
+        "Resolutions": "Felbontások",
+        "PathByHardware": "Útvonal hardver szerint",
+        "PathById": "Útvonal ID szerint",
+        "NoDeviceFound": "Nem található eszköz. Kérjük, ellenőrizd a kapcsolatot, és kattints a frissítés gombra."
     }
 }
