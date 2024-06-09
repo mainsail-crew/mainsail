@@ -240,7 +240,11 @@
         "Duplicate": "Duplikált",
         "DuplicateFile": "Duplikált fájl",
         "ExtruderTemp": "Adagoló hőmérs.",
-        "GcodesRootDirectoryDoesntExists": "Nem találtunk G-kód könyvtárat. Kérjük, ellenőrizd a Klipper konfiguráció [virtual_sdcard] szakaszának „path” opcióját."
+        "GcodesRootDirectoryDoesntExists": "Nem találtunk G-kód könyvtárat. Kérjük, ellenőrizd a Klipper konfiguráció [virtual_sdcard] szakaszának „path” opcióját.",
+        "InvalidNameAlreadyExists": "A név már létezik, kérjük válassz másik nevet.",
+        "InvalidNameEmpty": "A bemenet nem lehet üres!",
+        "ScanMeta": "Metaadatok beolvasása",
+        "ScanMetaSuccess": "Sikeresen beolvasta a metaadatokat: {filename}."
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Nem tudom feltölteni a fájlt!",
@@ -269,7 +273,9 @@
         "Tracking": "Követés",
         "Transparency": "Áttetszőség",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxel Mód (ASMBL)"
+        "VoxelMode": "Voxel Mód (ASMBL)",
+        "CNCMode": "CNC mód",
+        "ShowGCode": "G-kód mutatása"
     },
     "Heightmap": {
         "Abort": "megszakítás",
@@ -283,7 +289,8 @@
             "Min": "Min",
             "Name": "Név",
             "Size": "Méret",
-            "Variance": "Eltérés"
+            "Variance": "Eltérés",
+            "Range": "Távolság"
         },
         "DeleteBedMeshProfile": "Síkrács profil törlése",
         "DoYouReallyWantToDelete": "Tényleg törölni akarod a profilt: \"{name}\"?",
@@ -308,7 +315,11 @@
         "TitleCalibrate": "Új síkrács kalibrálása",
         "TitleClear": "Síkrács kinullázása",
         "TitleHomeAll": "Kezdőpontba áll",
-        "Wireframe": "Drótháló"
+        "Wireframe": "Drótháló",
+        "InvalidNameAlreadyExists": "A profil neve már létezik, kérjük válassz másik profilnevet.",
+        "InvalidNameAscii": "A név érvénytelen. Csak ascii karakterek engedélyezettek.",
+        "InvalidNameEmpty": "A bemenet nem lehet üres!",
+        "InvalidNameReserved": "Az „alapértelmezett” profil foglalt, kérjük válassz másik profilnevet."
     },
     "History": {
         "AddNote": "Megjegyzés hozzáadása",
@@ -373,7 +384,37 @@
         "TotalFilamentUsed": "Összes elhasznált filament",
         "TotalJobs": "Összes munka",
         "TotalPrinttime": "Össznyomtatott idő",
-        "TotalTime": "Teljes idő"
+        "TotalTime": "Teljes idő",
+        "AddANote": "Jegyzet hozzáadása",
+        "AddMaintenance": "Karbantartás hozzáadása",
+        "AddToQueueSuccessful": "Fájl {filename} hozzáadva a várólistához.",
+        "Chart": "Diagram",
+        "DateBasedReminder": "Dátum",
+        "Days": "napok",
+        "DeleteSingleJobQuestion": "Tényleg törölni szeretnéd a munkát?",
+        "EditMaintenance": "Karbantartás szerkesztése",
+        "EntryPerformedAt": "Végrehajtva {date}.",
+        "EntryCreatedAt": "Létrehozva {date}.",
+        "EntrySince": "Azóta használt:",
+        "FilamentBasedReminder": "Nyomtatószál",
+        "EntryNextPerform": "Következő elvégzés:",
+        "Hours": "órák",
+        "InvalidNameEmpty": "Érvénytelen név. A név nem lehet üres!",
+        "LoadCompleteHistory": "Teljes előzmény betöltése",
+        "Maintenance": "Karbantartás",
+        "MaintenanceEntries": "Karbantartási bejegyzések",
+        "Meter": "méter",
+        "Name": "Név",
+        "NoReminder": "Nincs emlékeztető",
+        "OneTime": "Egyszeri",
+        "Perform": "végezzük",
+        "Performed": "elvégzett",
+        "PerformedAndReschedule": "elvégzett és átütemezett",
+        "PerformMaintenance": "Karbantartás elvégzése",
+        "PrintJobs": "Nyomtatási munkák",
+        "PrinttimeBasedReminder": "Nyomtatási idő",
+        "DateBasedReminderDescription": "Ez az emlékeztető a dátumon alapul.",
+        "FilamentBasedReminderDescription": "Ez az emlékeztető a nyomtatószál felhasználáson alapul."
     },
     "JobQueue": {
         "AllJobs": "Minden Feladat",
