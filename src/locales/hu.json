@@ -375,7 +375,9 @@
             "in_progress": "Folyamatban",
             "klippy_disconnect": "Klippy lecsatlakotatás",
             "klippy_shutdown": "Klippy leállítás",
-            "server_exit": "Szerverből kilépés"
+            "server_exit": "Szerverből kilépés",
+            "interrupted": "Megszakított",
+            "Others": "Egyebek"
         },
         "TitleExportHistory": "Export Előzmények",
         "TitleRefreshHistory": "Előzmények frissítése",
@@ -414,7 +416,11 @@
         "PrintJobs": "Nyomtatási munkák",
         "PrinttimeBasedReminder": "Nyomtatási idő",
         "DateBasedReminderDescription": "Ez az emlékeztető a dátumon alapul.",
-        "FilamentBasedReminderDescription": "Ez az emlékeztető a nyomtatószál felhasználáson alapul."
+        "FilamentBasedReminderDescription": "Ez az emlékeztető a nyomtatószál felhasználáson alapul.",
+        "PrinttimeBasedReminderDescription": "Ez az emlékeztető a nyomtatási időn alapul.",
+        "Reminder": "Emlékeztető",
+        "Repeat": "Ismétlés",
+        "Table": "Táblázat"
     },
     "JobQueue": {
         "AllJobs": "Minden Feladat",
@@ -423,7 +429,13 @@
         "Jobs": "Feladatok",
         "Pause": "Szünet",
         "RemoveFromQueue": "Eltávolítás a Listáról",
-        "Start": "Start"
+        "Start": "Start",
+        "Cancel": "Mégsem",
+        "ChangeCount": "Számlálás módosítása",
+        "Count": "Számol",
+        "InvalidCountEmpty": "A bemenet nem lehet üres!",
+        "StartPrint": "Munkakezdés",
+        "InvalidCountGreaterZero": "A bemenetnek nagyobbnak kell lennie 0-nál!"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -459,7 +471,11 @@
             "Total": "Összesen",
             "UploadFile": "Fájl feltöltése",
             "Uploading": "Feltöltés",
-            "Used": "Felhasznált"
+            "Used": "Felhasznált",
+            "ConfigRootDirectoryDoesntExists": "Nem találtunk konfigurációs könyvtárat. Kérjük, ellenőrizd a „config_path” opciót a Moonraker konfiguráció [file_manager] szakaszában.",
+            "Duplicate": "Duplikált",
+            "DuplicateFile": "Duplikált fájl",
+            "DeleteSingleFileQuestion": "Tényleg törölni szeretnéd a fájlt \"{name}\"?"
         },
         "EndstopPanel": {
             "Endstop": "Végállás",
@@ -469,7 +485,13 @@
             "TRIGGERED": "AKTÍV"
         },
         "LogfilesPanel": {
-            "Logfiles": "Logfájlok"
+            "Logfiles": "Logfájlok",
+            "Accept": "elfogad",
+            "Cancel": "mégsem",
+            "Rollover": "Átfordulási naplók",
+            "RolloverDescription": "Kérjük, válaszd ki, mely naplókat kell visszaállítani:",
+            "RolloverToastFailed": "Görgetett napló: \"{name}\": {message}",
+            "RolloverToastSuccessful": "A \"{name}\" napló sikeresen visszaállítva."
         },
         "SystemPanel": {
             "Constants": "Állandók",
@@ -517,7 +539,16 @@
             "UpdateAll": "Minden elem frissítése",
             "UpdateManager": "Frissítéskezelő",
             "Upgrade": "upgradelés",
-            "UpToDate": "legfrissebb"
+            "UpToDate": "legfrissebb",
+            "Abort": "Megszakítás",
+            "AreYouSure": "Biztos vagy benne?",
+            "Close": "Bezár",
+            "CommitHistory": "Történet rögzítése",
+            "ConfigChanges": "Konfigurációs változások",
+            "Corrupt": "sérült",
+            "CountPackagesCanBeUpgraded": "{count} csomagok frissíthetők",
+            "GenericUpdateQuestion": "Ellenőrizd a rögzített történeteket (ha elérhető) és a projekt GitHub oldalát, hogy lásd, szükséges-e bármilyen manuális módosítás a frissítéshez.",
+            "GitHubPage": "GitHub oldal"
         }
     },
     "Panels": {
