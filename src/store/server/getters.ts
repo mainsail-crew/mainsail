@@ -77,6 +77,10 @@ export const getters: GetterTree<ServerState, any> = {
                 version = rootState.printer?.software_version.split('-').slice(0, 4).join('-')
             }
 
+            if (rootState.printer?.app_name) {
+                version = rootState.printer?.app_name + ' ' + version
+            }
+
             let pythonVersion: null | string = null
             if (state.system_info?.python?.version_string) {
                 const firstSpace = state.system_info?.python?.version_string.indexOf(' ')
