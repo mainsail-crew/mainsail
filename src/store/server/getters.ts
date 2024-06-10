@@ -108,7 +108,7 @@ export const getters: GetterTree<ServerState, any> = {
             else if (memUsage && memUsage > 80) memUsageColor = 'warning'
 
             let tempSensor = rootGetters['printer/getHostTempSensor']
-            if (tempSensor === null) {
+            if (tempSensor === null && state.cpu_temp !== null) {
                 tempSensor = {
                     temperature: state.cpu_temp?.toFixed(0),
                     measured_min_temp: null,
