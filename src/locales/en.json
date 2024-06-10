@@ -1224,6 +1224,8 @@
             "PowerDeviceName": "Printer power device",
             "PowerDeviceNameDescription": "Select which Moonraker power device should be used to power on the printer.",
             "Primary": "Primary",
+            "PrintstatusThumbnailZoom": "Large thumbnail zoom",
+            "PrintstatusThumbnailZoomDescription": "This will deactivate the zoom effect on the thumbnail in the status panel.",
             "ProgressAsFavicon": "Show progress as favicon",
             "ProgressAsFaviconDescription": "Change the Mainsail logo favicon to a progress circle.",
             "ScrewsTiltAdjustDialog": "Screws Tilt Adjust Dialog",

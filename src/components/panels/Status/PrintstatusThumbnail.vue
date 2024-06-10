@@ -195,7 +195,9 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
             height: '200px',
         }
 
-        if (this.focus && this.thumbnailBlurHeight > 0) {
+        if (!this.printstatusThumbnailZoom) {
+            output.height = '100%'
+        } else if (this.focus && this.thumbnailBlurHeight > 0) {
             output.height = `${this.thumbnailBlurHeight}px`
         }
 
@@ -212,6 +214,10 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
         if (this.thumbnailFactor === 0) return 0
 
         return (this.thumbnailBigHeight * this.thumbnailFactor).toFixed()
+    }
+
+    get printstatusThumbnailZoom() {
+        return this.$store.state.gui.uiSettings.printstatusThumbnailZoom ?? true
     }
 
     calcThumbnailFactor() {

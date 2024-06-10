@@ -70,32 +70,41 @@
                     :dynamic-slot-width="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0" />
                 </settings-row>
-                <v-divider class="my-2" />
-                <settings-row :title="$t('Settings.UiSettingsTab.BigThumbnailBackground')">
-                    <v-btn
-                        v-if="bigThumbnailBackground.toLowerCase() !== defaultBigThumbnailBackground.toLowerCase()"
-                        small
-                        text
-                        class="minwidth-0"
-                        @click="bigThumbnailBackground = defaultBigThumbnailBackground">
-                        <v-icon small>{{ mdiRestart }}</v-icon>
-                    </v-btn>
-                    <v-menu bottom left offset-y :close-on-content-click="false">
-                        <template #activator="{ on, attrs }">
-                            <v-btn
-                                v-bind="attrs"
-                                :color="bigThumbnailBackground"
-                                class="minwidth-0 px-5"
-                                small
-                                v-on="on" />
-                        </template>
-                        <v-color-picker
-                            :value="bigThumbnailBackground"
-                            hide-mode-switch
-                            mode="rgba"
-                            @update:color="updateBigThumbnailBackground" />
-                    </v-menu>
-                </settings-row>
+                <template v-if="boolBigThumbnail">
+                    <v-divider class="my-2" />
+                    <settings-row
+                        :title="$t('Settings.UiSettingsTab.PrintstatusThumbnailZoom')"
+                        :sub-title="$t('Settings.UiSettingsTab.PrintstatusThumbnailZoomDescription')"
+                        :dynamic-slot-width="true">
+                        <v-switch v-model="printstatusThumbnailZoom" hide-details class="mt-0" />
+                    </settings-row>
+                    <v-divider class="my-2" />
+                    <settings-row :title="$t('Settings.UiSettingsTab.BigThumbnailBackground')">
+                        <v-btn
+                            v-if="bigThumbnailBackground.toLowerCase() !== defaultBigThumbnailBackground.toLowerCase()"
+                            small
+                            text
+                            class="minwidth-0"
+                            @click="bigThumbnailBackground = defaultBigThumbnailBackground">
+                            <v-icon small>{{ mdiRestart }}</v-icon>
+                        </v-btn>
+                        <v-menu bottom left offset-y :close-on-content-click="false">
+                            <template #activator="{ on, attrs }">
+                                <v-btn
+                                    v-bind="attrs"
+                                    :color="bigThumbnailBackground"
+                                    class="minwidth-0 px-5"
+                                    small
+                                    v-on="on" />
+                            </template>
+                            <v-color-picker
+                                :value="bigThumbnailBackground"
+                                hide-mode-switch
+                                mode="rgba"
+                                @update:color="updateBigThumbnailBackground" />
+                        </v-menu>
+                    </settings-row>
+                </template>
                 <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINT')"
@@ -527,6 +536,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set boolScrewsTiltAdjustDialog(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolScrewsTiltAdjustDialog', value: newVal })
+    }
+
+    get printstatusThumbnailZoom() {
+        return this.$store.state.gui.uiSettings.printstatusThumbnailZoom ?? true
+    }
+
+    set printstatusThumbnailZoom(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.printstatusThumbnailZoom', value: newVal })
     }
 
     get tempchartHeight() {
