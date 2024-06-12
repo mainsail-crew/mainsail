@@ -650,6 +650,9 @@
                 "Velocity": "Velocity"
             }
         },
+        "SensorPanel" : {
+            "Headline": "SGP40/SHT31 Air Quality"
+        },
         "MacrosPanel": {
             "Headline": "Macros",
             "Send": "send"
@@ -1176,9 +1179,9 @@
             "VariableFps": "Variable FPS",
             "VariableFpsDescription": "If enabled, the framerate of the output video will be calculated based on target length",
             "VariableFpsMax": "Variable FPS max",
-            "VariableFpsMaxDescription": "Maximum variable FPS value",
+            "VariableFpsMaxDescription": "",
             "VariableFpsMin": "Variable FPS min",
-            "VariableFpsMinDescription": "Minimum variable FPS value"
+            "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Bed Screws Dialog",
