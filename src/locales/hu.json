@@ -488,7 +488,7 @@
             "Logfiles": "Logfájlok",
             "Accept": "elfogad",
             "Cancel": "mégsem",
-            "Rollover": "Átfordulási naplók",
+            "Rollover": "Görgetett naplók",
             "RolloverDescription": "Kérjük, válaszd ki, mely naplókat kell visszaállítani:",
             "RolloverToastFailed": "Görgetett napló: \"{name}\": {message}",
             "RolloverToastSuccessful": "A \"{name}\" napló sikeresen visszaállítva."
@@ -548,7 +548,20 @@
             "Corrupt": "sérült",
             "CountPackagesCanBeUpgraded": "{count} csomagok frissíthetők",
             "GenericUpdateQuestion": "Ellenőrizd a rögzített történeteket (ha elérhető) és a projekt GitHub oldalát, hogy lásd, szükséges-e bármilyen manuális módosítás a frissítéshez.",
-            "GitHubPage": "GitHub oldal"
+            "GitHubPage": "GitHub oldal",
+            "HardRecovery": "Teljes visszaállítás",
+            "InitUpdateManager": "A Frissítéskezelő még nem lett inicializálva. Ez a rendszer első indításakor normális. Kérjük, kattints a frissítés gombra az összes komponens inicializálásához.",
+            "IUnderstandTheRisks": "Megértem a kockázatokat",
+            "KlipperUpdateQuestionConfig": "Ez a frissítés a konfigurációs paraméterek olyan módosításait is tartalmazhatja, amelyeket módosítani kell a printer.cfg fájlban, a részletekért lásd a változásnaplót.",
+            "KlipperUpdateQuestionFirmware": "Ez frissíti a Klipper gazdaszoftvert. A Klipper firmware-t futtató alaplapokat esetleg újrafordított firmware-rel kell feltölteni, mielőtt a gép újra üzembe helyezhető.",
+            "LinkToGithub": "Link a GitHub-hoz",
+            "MoonrakerUpdateQuestion": "Ez frissíti a Moonraker API-t. A gép további használatához szükség lehet a moonraker.conf fájl módosítására.",
+            "MoreCommitsInfo": "Itt legfeljebb 30 megbízás jeleníthető meg. Az összes megbízás megtekintéséhez kattints az alábbi linkre:",
+            "StartUpdate": "Frissítés indítása",
+            "ThesePackagesCanBeUpgrade": "Ezek a rendszercsomagok frissíthetők:",
+            "UpdateWarning": "Frissítési figyelmeztetés: {name}",
+            "UpgradeableSystemPackages": "Frissíthető rendszercsomagok",
+            "WebClientUpdateQuestion": "Bizonyos esetekben a webes kliens frissítése olyan változásokat eredményezhet, amelyek inkompatibilitást okozhatnak. További információkat lásd a kiadási jegyzékben."
         }
     },
     "Panels": {
@@ -576,7 +589,13 @@
             "Requested": "Kért",
             "Retract": "Visszahúzás",
             "TooLargeExtrusion": "A visszahúzás túl nagy!",
-            "UnloadFilament": "Filament kihúzása"
+            "UnloadFilament": "Filament kihúzása",
+            "CleanNozzle": "Fúvóka tisztítása",
+            "ExtruderControl": "Adagoló vezérlő",
+            "FirmwareRetraction": "Firmware-es visszahúzás",
+            "PressureAdvance": "Nyomás előtolás",
+            "PurgeFilament": "Tisztítószál",
+            "Tools": "Eszközök"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Újracsatlakozás",
@@ -587,7 +606,14 @@
             "FirmwareRestart": "Firmware újraindítása",
             "KlipperCheck": "Kérjük, ellenőrizd, a Klipper szolgáltatás fut-e, konfigurálva van-e UDS (Unix Domain Socket).",
             "MoonrakerCannotConnect": "A Moonraker nem tud csatlakozni a Klipperhez!",
-            "Restart": "Újraindítás"
+            "Restart": "Újraindítás",
+            "PrinterSwitchedOff": "Nyomtató kikapcsolva",
+            "PrinterSwitchedOffDescription": "A nyomtató jelenleg ki van kapcsolva, és a Klipper nem tud csatlakozni. A nyomtató bekapcsolásához kattints az alábbi gombra:",
+            "ServiceReports": "{service} jelentések",
+            "CheckKlippyAndUdsAddress": "Ellenőrizd, hogy a Klipper szolgáltatás fut-e, és a klippy_uds_address helyesen van-e beállítva a moonraker.conf állományban.",
+            "KlipperLog": "Klipper napló",
+            "MoonrakerLog": "Moonraker napló",
+            "PowerOn": "Bekapcsolás"
         },
         "MachineSettingsPanel": {
             "Headline": "Gép beállításai",
@@ -595,7 +621,8 @@
                 "Acceleration": "Gyorsulás",
                 "MaxAccelToDecel": "Lassulás Max Gyorsulása.",
                 "SquareCornerVelocity": "Sebesség a sarkokban",
-                "Velocity": "Gyorsaság"
+                "Velocity": "Gyorsaság",
+                "MinimumCruiseRatio": "Min. haladási arány"
             }
         },
         "MacrosPanel": {
@@ -607,7 +634,8 @@
             "HideTemperatures": "Hőmérséklet elrejtése",
             "HideTimelapse": "Idővonal elrejtése",
             "SendCode": "Kód küldése...",
-            "SetupConsole": "Konzol beállítása"
+            "SetupConsole": "Konzol beállítása",
+            "Autoscroll": "Automatikus görgetés"
         },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Tedd bele a mainsail.cfg fájlt a printer.cfg fájlba.",
@@ -621,6 +649,12 @@
                 "Detected": "érzékelt",
                 "Disabled": "letiltott",
                 "Empty": "Üres"
+            },
+            "Light": {
+                "Blue": "kék",
+                "Green": "zöld",
+                "Red": "vörös",
+                "White": "fehér"
             }
         },
         "PowerControlPanel": {
@@ -664,7 +698,19 @@
             "Speed": "Sebesség",
             "Status": "Státusz",
             "Total": "Összesen",
-            "Unknown": "Ismeretlen"
+            "Unknown": "Ismeretlen",
+            "PauseAtLayer": {
+                "Abort": "megszakít",
+                "Accept": "elfogad",
+                "AtLayer": "Rétegben",
+                "DescriptionPauseAtLayerActive": "Ez a funkció már aktív, és a \"{call}\" funkciót hívja meg a {layer} rétegen. Ha újra elküldöd a parancsot, ezek a beállítások felülíródnak.",
+                "Layer": "Réteg",
+                "PauseAtLayer": "Szünet a rétegnél",
+                "Type": "Típus",
+                "Call": "Hívás",
+                "DescriptionPauseNextLayerActive": "Ez a funkció már aktív, és a következő rétegnél meghívja a \"{call}\"-t.",
+                "NextLayer": "következő réteg"
+            }
         },
         "TemperaturePanel": {
             "AutoscaleChart": "Grafikon automatikus méretezése",
@@ -690,7 +736,9 @@
             "Target": "Cél",
             "TemperaturesInChart": "Hőmérséklet [°C]",
             "TempTooHigh": "A {name} hőmérséklete túl magas! (max: {max})",
-            "TempTooLow": "A {name} hőmérséklete túl alacsony! (min: {min})"
+            "TempTooLow": "A {name} hőmérséklete túl alacsony! (min: {min})",
+            "HideMcuHostSensors": "Gazdagép/MCU érzékelők elrejtése",
+            "HideMonitors": "Monitorok elrejtése"
         },
         "ToolheadControlPanel": {
             "Absolute": "abszolút",
@@ -702,13 +750,18 @@
             "Relative": "relatív",
             "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
             "SpeedFactor": "Sebességállítás",
-            "ZTilt": "Z-dőlésszög"
+            "ZTilt": "Z-dőlésszög",
+            "ControlButtons": "Vezérlőgombok",
+            "CoordinateFields": "Koordinátamezők",
+            "PositionOutput": "Pozíció kimenet",
+            "ZOffset": "Z-eltolás"
         },
         "WebcamPanel": {
             "All": "Mind",
             "FPS": "FPS",
             "Headline": "Webkamera",
-            "UnknownWebcamService": "Ismeretlen webkamera szolgáltatás"
+            "UnknownWebcamService": "Ismeretlen webkamera szolgáltatás",
+            "NoWebcam": "Nincs webkamera. Adj hozzá webkamerát a \"Felület beállításai\" -> \"Webkamerák\" menüpont alatt."
         },
         "ZoffsetPanel": {
             "Headline": "Z-eltolás",
@@ -720,7 +773,34 @@
             "SaveInfoDescriptionPrint": "Új Z-eltolás kiszámítva és regisztrálva. Nyomtatás után kattints a \"BÁLLÍTÁS MENTÉSE\" gombra a felső sávban, a printer.cfg-be való mentéshez és a Klipper újraindításához.",
             "SaveInfoHeadline": "Információ",
             "ToEndstop": "a végállásig",
-            "ToProbe": "szondáig"
+            "ToProbe": "szondáig",
+            "Clear": "Tisztítás"
+        },
+        "SpoolmanPanel": {
+            "Cancel": "Mégsem",
+            "ChangeSpool": "Orsó cseréje",
+            "DaysAgo": "{days} nappal ezelőtt",
+            "EjectSpool": "Orsó kiadása",
+            "EjectSpoolQuestion": "Biztos, hogy kiveszed az orsót?",
+            "Filament": "Nyomtatószál",
+            "FilamentTypeMismatch": "Az aktív orsón lévő anyag ({spoolType}) nem egyezik a G-kódban lévő anyaggal ({fileType}).",
+            "Headline": "Orsó segéd",
+            "Never": "Soha",
+            "NoActiveSpool": "A szálkövetés inaktív. A kezdéshez válassz ki egy orsót.",
+            "NoResults": "Az aktuális keresési feltételeknek megfelelő orsó nem található.",
+            "NoSpools": "Nincs elérhető orsó",
+            "NoSpoolSelected": "Nincs kiválasztott orsó. Kérjük, válassz ki egy orsót, különben a nyomtatás nem lesz nyomonkövethető.",
+            "OpenSpoolManager": "Orsókezelő megnyitása",
+            "Refresh": "frissítés",
+            "Search": "Keresés",
+            "Today": "Ma",
+            "TooLessFilament": "Lehet, hogy a jelenlegi orsón nincs elég nyomtatószál ehhez a nyomtatáshoz. ({spoolWeight}g - {fileWeight}g)",
+            "Weight": "Súly",
+            "LastUsed": "Legutóbb használt",
+            "Location": "Elhelyezkedés",
+            "Material": "Anyag",
+            "SelectSpool": "Válassz orsót",
+            "Yesterday": "Tegnap"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -759,7 +839,10 @@
         "SelectPrinter": "Nyomtató választása",
         "TryAgain": "próbáld újra",
         "UpdatePrinter": "Nyomtató frissítése",
-        "YouCanFindMore": "További részleteket itt találsz"
+        "YouCanFindMore": "További részleteket itt találsz",
+        "AddPrintersToJson": "Kérjük, add hozzá a nyomtatókat a config.json fájlhoz.",
+        "Path": "Útvonal",
+        "Name": "Név"
     },
     "Settings": {
         "Cancel": "Mégsem",
@@ -811,7 +894,10 @@
             "Style": "Stílus",
             "ValueGreaterThan": "Az értéknek nagyobbnak kell lennie mint {value}",
             "ZOffsetIncrements": "Z-Eltolás mérései (in mm)",
-            "ZTiltAdjust": "Z-dőlésszög Beállítása{isDefault}"
+            "ZTiltAdjust": "Z-dőlésszög Beállítása{isDefault}",
+            "HideDuringPrint": "Tengelyvezérlők elrejtése nyomtatás közben",
+            "ZOffsetSaveOption": "Z-eltolás mentési opció",
+            "ZOffsetSaveOptionDescription": "A Z-eltolás mentésének beállítása"
         },
         "DashboardTab": {
             "Dashboard": "Irányítópult",
@@ -871,7 +957,23 @@
             "PrinterName": "Nyomtató neve",
             "Reset": "Visszaállítás",
             "Restore": "Helyreállítás",
-            "RestoreDialog": "Kérlek jelöld ki az összes helyreállításra kijelölt szekciót:"
+            "RestoreDialog": "Kérlek jelöld ki az összes helyreállításra kijelölt szekciót:",
+            "24hours": "24-órás ({time})",
+            "12hours": "12-órás ({time})",
+            "CalcPrintProgress": "Nyomtatás előrehaladás számítás",
+            "CalcPrintProgressDescription": "A nyomtatás előrehaladásának számítási módja.",
+            "CalcPrintProgressItems": {
+                "Filament": "Nyomtatószál",
+                "FileAbsolute": "Fájl pozíció (abszolút)",
+                "FileRelative": "Fájl pozíció (relatív)",
+                "Slicer": "Szeletelő (M73)"
+            },
+            "DbMaintenance": "Karbantartás",
+            "DbNavigation": "Navigáció",
+            "Everything": "Mindent",
+            "MainsailSettingsMoonrakerDb": "Mainsail beállítások a Moonraker DB-ben",
+            "TimeFormat": "Idő formátum",
+            "DateFormat": "Dátum formátum"
         },
         "InterfaceSettings": "Interfész beállításai",
         "MacrosTab": {
@@ -1059,6 +1161,39 @@
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "függőleges",
             "Webcams": "Webkamerák"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Színsémák",
+            "Heightmap": "Magasságtérkép",
+            "IsDefault": "(Alapértelmezett)",
+            "Schemes": {
+                "GrayScale": "Szürkeárnyalat",
+                "Hot": "Forró",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Tavaszi"
+            }
+        },
+        "MiscellaneousTab": {
+            "AddGroup": "csoport felvétele",
+            "AddPreset": "előbeállítás hozzáadása",
+            "Color": "Szín",
+            "End": "Vége",
+            "EndDescription": "A csoport utolsó LED-je.",
+            "Groups": "Csoportok",
+            "GroupSubTitle": "Kezdés: {start}, Vége: {end}",
+            "LightGroups": "{name} - Csoportok",
+            "NoGroupFound": "Nem található csoport",
+            "NoPresetFound": "Nem található előbeállítás",
+            "Presets": "Előbeállítások",
+            "Start": "Indítás",
+            "StartDescription": "A csoport első LED-je.",
+            "CreateGroup": "Csoport létrehozása",
+            "CreatePreset": "Előbeállítás készítése",
+            "Miscellaneous": "Kiegészítők",
+            "NoDevicesFound": "Nem találhatóak eszközök",
+            "Name": "Név",
+            "LightPresets": "{name} - Előbeállítások"
         }
     },
     "Timelapse": {
@@ -1142,5 +1277,18 @@
         "PathByHardware": "Útvonal hardver szerint",
         "PathById": "Útvonal ID szerint",
         "NoDeviceFound": "Nem található eszköz. Kérjük, ellenőrizd a kapcsolatot, és kattints a frissítés gombra."
+    },
+    "ManualProbe": {
+        "Abort": "megszakít",
+        "Accept": "elfogad",
+        "Advanced": "Haladó",
+        "Headline": "Kézi szintezés"
+    },
+    "ScrewsTiltAdjust": {
+        "Accept": "elfogad",
+        "Base": "Alap",
+        "ErrorText": "Valami rosszul sült el a szintezés során.",
+        "Headline": "Csavarok dőlésbeállítás",
+        "Retry": "újra"
     }
 }
