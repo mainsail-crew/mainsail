@@ -7,7 +7,7 @@
             "KlipperWarnings": {
                 "DeprecatedOption": "'{section}' / '{option}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
                 "DeprecatedOptionHeadline": "Elavult Klipper Opció",
-                "DeprecatedValue": "'{section}' / '{option}' / Value '{value}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
+                "DeprecatedValue": "A '{value}' érték az '{option}' opcióban a '{section}' szakaszban elavult, és egy későbbi kiadásban eltávolításra kerül.",
                 "DeprecatedValueHeadline": "Elavult Klipper Érték",
                 "KlipperWarning": "Klipper figyelmeztetés",
                 "KlipperRuntimeWarning": "Klipper futásidejű figyelmeztetés"
@@ -21,8 +21,8 @@
                 "MoonrakerFailedInitComponentDescription": "Hiba történt a moonraker komponens inicializálása során '{component}'. Kérjük, ellenőrizd a naplófájlt, és javítsd ki a problémát.",
                 "MoonrakerInitComponent": "Itt. Moonraker: {component}"
             },
-            "Never": "Soha",
-            "NextReboot": "Következő reboot",
+            "Never": "soha",
+            "NextReboot": "Következő újraindítás",
             "NoNotification": "Értesítés nem elérhető",
             "Remind": "Emlékeztető:",
             "BrowserWarnings": {
@@ -31,7 +31,7 @@
             },
             "MaintenanceReminder": "Karbantartási emlékeztető",
             "OneDayShort": "1N",
-            "MaintenanceReminderText": "„{name}” karbantartás esedékes.",
+            "MaintenanceReminderText": "\"{name}\" karbantartás esedékes.",
             "Notifications": "Értesítések",
             "OneHourShort": "1Ó",
             "OneWeekShort": "1H",
@@ -48,7 +48,7 @@
             "DescriptionFrequencyCapped": "Az rPi ARM max frekvenciája jelenleg 1,2 GHz -re korlátozódik.",
             "DescriptionPreviouslyFrequencyCapped": "Az rPi ARM maximális frekvenciája legalább egyszer 1,2 GHz-re korlátozódott az utolsó bekapcsolás óta.",
             "DescriptionPreviouslyTemperatureLimited": "rPi uC(csak 3A+/3B+) hőmérséklete legalább egyszer meghaladta az első korlátot (alapértelmezett 60C) az utolsó bekapcsolás óta.",
-            "DescriptionPreviouslyThrottled": "rPI ARM magot(okat), ahol az utolsó bekapcsolás óta legalább egyszer túlterhelték.",
+            "DescriptionPreviouslyThrottled": "Az rPI ARM-mag(ok) a legutóbbi bekapcsolás óta legalább egyszer túlterhelődtek.",
             "DescriptionPreviouslyUnderVolted": "Az rPI tápfeszültsége az utolsó bekapcsolás óta legalább egyszer 4,65 V alá esett.",
             "DescriptionTemperatureLimitActive": "Az rPi uC(csak 3A+/3B+) hőmérséklete jelenleg az első határérték felett van (alapértelmezett 60C).",
             "DescriptionUnderVoltageDetected": "Az rPI tápfeszültsége jelenleg 4,65 V alatt van",
@@ -561,7 +561,8 @@
             "ThesePackagesCanBeUpgrade": "Ezek a rendszercsomagok frissíthetők:",
             "UpdateWarning": "Frissítési figyelmeztetés: {name}",
             "UpgradeableSystemPackages": "Frissíthető rendszercsomagok",
-            "WebClientUpdateQuestion": "Bizonyos esetekben a webes kliens frissítése olyan változásokat eredményezhet, amelyek inkompatibilitást okozhatnak. További információkat lásd a kiadási jegyzékben."
+            "WebClientUpdateQuestion": "Bizonyos esetekben a webes kliens frissítése olyan változásokat eredményezhet, amelyek inkompatibilitást okozhatnak. További információkat lásd a kiadási jegyzékben.",
+            "SoftRecovery": "Alaphelyzetbe állítás"
         }
     },
     "Panels": {
@@ -1036,7 +1037,11 @@
             "Hostname": "Gazdagép neve",
             "Port": "Port",
             "RemotePrinters": "Nyomtatók",
-            "UpdatePrinter": "Nyomtató frissítése"
+            "UpdatePrinter": "Nyomtató frissítése",
+            "Name": "Név",
+            "NameDescription": "Ez a név nem jelenik meg a felhasználói felületen, és csak az átirányításhoz használatos.",
+            "Path": "Útvonal",
+            "UseConfigJson": "InstanceDB = JSON észlelve. Kérjük, használd a config.json-t a nyomtatók listájának módosításához."
         },
         "TimelapseTab": {
             "Autorender": "Auto renderelés",
@@ -1101,9 +1106,14 @@
             "VariableFps": "Állítható FPS",
             "VariableFpsDescription": "Bekapcsolva a célhossz alapján kalkulálja a kimeneti videó képsebességét",
             "VariableFpsMax": "Állítható maxFPS",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "Maximális változó FPS érték",
             "VariableFpsMin": "Állítható minFPS",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "Minimális változó FPS érték",
+            "RulesBetweenMinMax": "Az értéknek {min} és {max} között kell lennie!",
+            "RulesMin": "Az értéknek minimumnak {min} kell lennie!",
+            "RulesPositive": "Az értéknek pozitívnak kell lennie!",
+            "RulesRequired": "Érték szükséges!",
+            "RulesZeroAndPositive": "Az értéknek legalább 0-nak kell lennie!"
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Nagy előnézet",
@@ -1130,7 +1140,37 @@
             "NavigationStyleIconsOnly": "Csak ikonok",
             "Primary": "Elsődleges",
             "ShowWebcamInNavigation": "Webkamera mutatása a menüben",
-            "UiSettings": "Nézet beállítások"
+            "UiSettings": "Nézet beállítások",
+            "BedScrewsDialog": "Ágycsavarok párbeszédpanel",
+            "BedScrewsDialogDescription": "A BED_SCREWS_ADJUST segéddialógus megjelenítése.",
+            "BigThumbnailBackground": "Nagyméretű miniatűrök háttérszíne",
+            "ConfirmOnCoolDown": "A visszahűtés megerősítést kér",
+            "ConfirmOnCoolDownDescription": "Megerősítő párbeszédpanel megjelenítése visszahűtés esetén",
+            "DefaultNavigationState": "Navigáció alapállapot",
+            "DefaultNavigationStateAlwaysClosed": "mindig zárva",
+            "DefaultNavigationStateAlwaysOpen": "mindig nyitva",
+            "DefaultNavigationStateDescription": "Alapértelmezés szerinti navigációs állapot.",
+            "DefaultNavigationStateLastState": "utolsó állapot",
+            "DisableFanAnimation": "Ventilátor animáció letiltása",
+            "HideSaveConfigButtonForBedMesh": "SAVE_CONFIG gomb elrejtése a bed_mesh módosításoknál",
+            "HideSaveConfigButtonForBedMeshDescription": "A SAVE_CONFIG elrejtése, ha csak a bed_mesh módosításokat kell elmenteni a Klipperben.",
+            "HideUpdateWarnings": "Frissítési figyelmeztetések elrejtése",
+            "HideUpdateWarningsDescription": "Ez a beállítás elrejti az összes frissítési figyelmeztetést a frissítéskezelőben.",
+            "ManualProbeDialog": "Kézi szintezés segéddialógusa",
+            "PowerDeviceName": "Nyomtató tápellátó eszköz",
+            "ProgressAsFavicon": "Haladás megjelenítése faviconként",
+            "ProgressAsFaviconDescription": "A Mainsail logó faviconjának megváltoztatása egy haladás körre.",
+            "ScrewsTiltAdjustDialog": "Csavar dőlésbeállítás párbeszédpanel",
+            "TempchartHeightDescription": "Módosíthatod a hőmérséklet-diagram magasságát a műszerfalon.",
+            "Theme": "Téma",
+            "DisableFanAnimationDescription": "Ez csökkentheti a böngésző terheltségét.",
+            "ManualProbeDialogDescription": "A PROBE_CALIBRATE vagy Z_ENDSTOP_CALIBRATE segéddialógus megjelenítése.",
+            "PowerDeviceNameDescription": "Válaszd ki, hogy melyik Moonraker tápegységet kívánod használni a nyomtató bekapcsolásához.",
+            "ScrewsTiltAdjustDialogDescription": "A SCREWS_TILT_CALCULATE segéddialógus megjelenítése.",
+            "ThemeLight": "Világos",
+            "TempchartHeight": "Magassági hőmérséklet diagram",
+            "ThemeDark": "Sötét",
+            "ThemeDescription": "Az alkalmazás általános megjelenésének megváltoztatása"
         },
         "WebcamsTab": {
             "AddWebcam": "Webkamera hozzáadása",
@@ -1160,7 +1200,17 @@
             "UrlStream": "Stream URL-je",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "függőleges",
-            "Webcams": "Webkamerák"
+            "Webcams": "Webkamerák",
+            "EditCrowsnestConf": "crowsnest.conf szerkesztő",
+            "EnableAudio": "Hang engedélyezése",
+            "Hlsstream": "HLS Sugárzás",
+            "JMuxerStream": "Raw h264 sugárzás (jmuxer)",
+            "Rotate": "Forgatás",
+            "WebrtcCameraStreamer": "WebRTC (kamera-sugárzás)",
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
+            "WebrtcJanus": "WebRTC (janus-átjáró)",
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)",
+            "HideFps": "FPS számláló elrejtése"
         },
         "HeightmapTab": {
             "ColorSchemes": "Színsémák",
@@ -1193,8 +1243,15 @@
             "Miscellaneous": "Kiegészítők",
             "NoDevicesFound": "Nem találhatóak eszközök",
             "Name": "Név",
-            "LightPresets": "{name} - Előbeállítások"
-        }
+            "LightPresets": "{name} - Előbeállítások",
+            "UnableToLoadLight": "Nem lehet betölteni a fényt",
+            "UnableToLoadPreset": "Előbeállítás betöltése nem lehetséges"
+        },
+        "NavigationTab": {
+            "Navigation": "Navigáció"
+        },
+        "Store": "áruház",
+        "Update": "frissítés"
     },
     "Timelapse": {
         "AllFiles": "Mind",
@@ -1244,7 +1301,9 @@
         "Type": "Típus",
         "Used": "Felhasznált",
         "Variable": "Variálható",
-        "Video": "Videó"
+        "Video": "Videó",
+        "DeleteSingleFileQuestion": "Tényleg törölni szeretnéd a fájlt \"{name}\"?",
+        "DeleteSelectedQuestion": "Tényleg törölni szeretnéd a kiválasztott fájlokat {count}?"
     },
     "title": "Magyar",
     "BedScrews": {
