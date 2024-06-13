@@ -651,7 +651,7 @@
             }
         },
         "SensorPanel" : {
-            "Headline": "SGP40/SHT31 Air Quality"
+            "Headline": "Sensor Data"
         },
         "MacrosPanel": {
             "Headline": "Macros",
