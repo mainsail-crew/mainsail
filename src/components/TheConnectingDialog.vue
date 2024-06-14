@@ -18,8 +18,7 @@
                     <v-divider class="my-3"></v-divider>
                     <p>{{ $t('ConnectionDialog.CheckMoonrakerLog') }}</p>
                     <ul>
-                        <li>~/klipper_logs/moonraker.log</li>
-                        <li>/tmp/moonraker.log</li>
+                        <li>~/printer_data/logs/moonraker.log</li>
                     </ul>
                     <v-divider class="mt-4 mb-5"></v-divider>
                 </template>
