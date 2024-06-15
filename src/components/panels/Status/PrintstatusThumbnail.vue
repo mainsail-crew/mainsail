@@ -10,9 +10,7 @@
             :style="thumbnailStyle"
             @focus="focusBigThumbnail"
             @blur="blurBigThumbnail">
-            <v-card-title
-                class="white--text py-2 px-2"
-                style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(3px)">
+            <v-card-title class="white--text py-2 px-2" :style="styleThumbnailOverlay">
                 <v-row>
                     <v-col style="width: 100px">
                         <span class="subtitle-2 text-truncate px-0 text--disabled d-block">
@@ -195,6 +193,19 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
         }
 
         return {}
+    }
+
+    get styleThumbnailOverlay() {
+        const style = {
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            backdropFilter: 'blur(3px)',
+        }
+
+        if (!this.$vuetify.theme.dark) {
+            style.backgroundColor = 'rgba(255, 255, 255, 0.3)'
+        }
+
+        return style
     }
 
     focusBigThumbnail() {
