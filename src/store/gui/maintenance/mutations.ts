@@ -9,7 +9,7 @@ export const mutations: MutationTree<GuiMaintenanceState> = {
     },
 
     initStore(state, payload) {
-        Vue.set(state, 'entries', payload.value)
+        Vue.set(state, 'entries', payload)
     },
 
     store(state, payload) {
