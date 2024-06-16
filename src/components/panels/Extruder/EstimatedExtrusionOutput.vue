@@ -10,7 +10,7 @@
                 {{ nozzleDiameter }} mm
                 <v-tooltip v-if="showTooltip" top>
                     <template #activator="{ on, attrs }">
-                        <v-icon small color="red" v-bind="attrs" v-on="on">
+                        <v-icon small color="warning" v-bind="attrs" v-on="on">
                             {{ mdiInformationOutline }}
                         </v-icon>
                     </template>
