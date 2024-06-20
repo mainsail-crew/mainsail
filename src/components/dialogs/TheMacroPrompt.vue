@@ -100,7 +100,13 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
 
     get showDialog() {
         if (this.lastPromptBeginPos === -1) return false
-        if (this.internalCloseCommand !== null && this.internalCloseCommand == this.lastPromptBeginPos) return false
+
+        const lastBeginEvent = this.macroPromptEvents[this.lastPromptBeginPos] ?? null
+        if (
+            this.internalCloseCommand !== null &&
+            this.internalCloseCommand == (lastBeginEvent?.date?.getTime() ?? null)
+        )
+            return false
 
         return this.lastPromptBeginPos > this.lastPromptClosePos && this.activePromptContent.length > 0
     }
@@ -152,7 +158,7 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
 
     closePrompt() {
         // close prompt immediately, because klipper could be busy
-        this.internalCloseCommand = this.lastPromptBeginPos
+        this.internalCloseCommand = this.macroPromptEvents[this.lastPromptBeginPos]?.date?.getTime() ?? null
 
         const gcode = `RESPOND type="command" msg="action:prompt_end"`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
