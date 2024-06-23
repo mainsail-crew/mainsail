@@ -416,7 +416,9 @@ export const getters: GetterTree<PrinterState, RootState> = {
         Object.keys(state).forEach((key) => {
             if (key === 'mcu' || key.startsWith('mcu ')) {
                 const mcu = state[key]
-                const versionOutput = (mcu.mcu_version ?? 'unknown').split('-').slice(0, 4).join('-')
+                let versionOutput = (mcu.mcu_version ?? 'unknown').split('-').slice(0, 4).join('-')
+
+                if ('app' in mcu && mcu.app !== 'Klipper') versionOutput = mcu.app + ' ' + versionOutput
 
                 let load = 0
                 if (mcu.last_stats?.mcu_task_avg && mcu.last_stats?.mcu_task_stddev) {
