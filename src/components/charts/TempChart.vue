@@ -347,15 +347,8 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     @Watch('selectedLegends')
-    selectedLegendsChanged(newVal: any, oldVal: any) {
-        if (this.chart?.isDisposed() !== true) {
-            Object.keys(newVal).forEach((key) => {
-                if (newVal[key] !== oldVal[key]) {
-                    const actionType = newVal[key] ? 'legendSelect' : 'legendUnSelect'
-                    this.chart?.dispatchAction({ type: actionType, name: key })
-                }
-            })
-        }
+    selectedLegendsChanged(newVal: any) {
+        if (this.chart?.isDisposed() !== true) this.chart?.setOption({ legend: { selected: newVal } })
     }
 
     @Watch('source')
