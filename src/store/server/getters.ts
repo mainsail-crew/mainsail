@@ -77,6 +77,10 @@ export const getters: GetterTree<ServerState, any> = {
                 version = rootState.printer?.software_version.split('-').slice(0, 4).join('-')
             }
 
+            if (rootState.printer?.app_name) {
+                version = rootState.printer?.app_name + ' ' + version
+            }
+
             let pythonVersion: null | string = null
             if (state.system_info?.python?.version_string) {
                 const firstSpace = state.system_info?.python?.version_string.indexOf(' ')
@@ -108,7 +112,7 @@ export const getters: GetterTree<ServerState, any> = {
             else if (memUsage && memUsage > 80) memUsageColor = 'warning'
 
             let tempSensor = rootGetters['printer/getHostTempSensor']
-            if (tempSensor === null) {
+            if (tempSensor === null && state.cpu_temp !== null) {
                 tempSensor = {
                     temperature: state.cpu_temp?.toFixed(0),
                     measured_min_temp: null,
