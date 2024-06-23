@@ -8,11 +8,11 @@
             class="d-flex align-end statusPanel-big-thumbnail"
             height="200"
             :style="thumbnailStyle"
-            @focus="focusBigThumbnail"
-            @blur="blurBigThumbnail">
+            @focus="focus = true"
+            @blur="focus = false">
             <v-card-title class="white--text py-2 px-2" :style="styleThumbnailOverlay">
                 <v-row>
-                    <v-col style="width: 100px">
+                    <v-col>
                         <span class="subtitle-2 text-truncate px-0 text--disabled d-block">
                             <v-icon small class="mr-2">{{ mdiFileOutline }}</v-icon>
                             {{ current_filename }}
@@ -92,6 +92,9 @@ import { Debounce } from 'vue-debounce-decorator'
 export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
     mdiFileOutline = mdiFileOutline
     mdiFile = mdiFile
+
+    focus = false
+    thumbnailFactor = 0
 
     declare $refs: {
         bigThumbnail: any
@@ -188,11 +191,23 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
     }
 
     get thumbnailStyle() {
-        if (defaultBigThumbnailBackground.toLowerCase() !== this.bigThumbnailBackground.toLowerCase()) {
-            return { backgroundColor: this.bigThumbnailBackground }
+        let output: { height: string; backgroundColor?: string } = {
+            height: '200px',
         }
 
-        return {}
+        if (!this.printstatusThumbnailZoom) {
+            output.height = '100%'
+        } else if (this.focus && this.thumbnailBlurHeight > 0) {
+            output.height = `${this.thumbnailBlurHeight}px`
+        }
+
+        if (defaultBigThumbnailBackground.toLowerCase() !== this.bigThumbnailBackground.toLowerCase()) {
+            output.backgroundColor = this.bigThumbnailBackground
+
+            return output
+        }
+
+        return output
     }
 
     get styleThumbnailOverlay() {
@@ -208,27 +223,27 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
         return style
     }
 
-    focusBigThumbnail() {
-        if (this.$refs.bigThumbnail) {
-            const clientWidth = this.$refs.bigThumbnail.$el.clientWidth
-            const thumbnailWidth = this.thumbnailBigWidth
-            const factor = clientWidth / thumbnailWidth
+    get thumbnailBlurHeight() {
+        if (this.thumbnailFactor === 0) return 0
 
-            this.$refs.bigThumbnail.$el.style.height = (this.thumbnailBigHeight * factor).toFixed() + 'px'
-        }
+        return (this.thumbnailBigHeight * this.thumbnailFactor).toFixed()
     }
 
-    blurBigThumbnail() {
-        if (this.$refs.bigThumbnail) {
-            this.$refs.bigThumbnail.$el.style.height = '200px'
-        }
+    get printstatusThumbnailZoom() {
+        return this.$store.state.gui.uiSettings.printstatusThumbnailZoom ?? true
+    }
+
+    calcThumbnailFactor() {
+        const thumbnailClientWidth = this.$refs.bigThumbnail?.$el.clientWidth ?? 0
+        if (!thumbnailClientWidth || !this.thumbnailBigWidth) this.thumbnailFactor = 0
+
+        return (this.thumbnailFactor = thumbnailClientWidth / this.thumbnailBigWidth)
     }
 
     @Debounce(200)
     handleResize() {
         this.$nextTick(() => {
-            const isFocused = document.activeElement === this.$refs.bigThumbnail?.$el
-            if (isFocused) this.focusBigThumbnail()
+            this.calcThumbnailFactor()
         })
     }
 }
@@ -241,5 +256,10 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
 
 .statusPanel-printstatus-thumbnail {
     position: relative;
+}
+
+.statusPanel-thumbnail-overlay {
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(3px);
 }
 </style>
