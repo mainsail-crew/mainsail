@@ -871,17 +871,14 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         this.$store.dispatch('server/timelapse/saveSetting', { duplicatelastframe: newVal })
     }
 
-    get rawCamera() {
-        return this.$store.state.server.timelapse.settings.camera ?? null
-    }
-
     get camera() {
-        if (this.rawCamera === null) return null
+        const value = this.$store.state.server.timelapse.settings.camera ?? null
 
         if (
+            value === null ||
             this.blockedsettings.includes('snapshoturl') ||
             this.availableSnapshotWebcams.length === 0 ||
-            this.availableSnapshotWebcams.find((webcam) => webcam.name === this.rawCamera) === undefined
+            this.availableSnapshotWebcams.find((webcam) => webcam.name === value) === undefined
         ) {
             return null
         }
