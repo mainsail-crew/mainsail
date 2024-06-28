@@ -1112,7 +1112,7 @@
             "Autorender": "Autorender",
             "AutorenderDescription": "If enabled, the timelapse video will automatically render at the end of the print",
             "Camera": "Camera",
-            "CameraDescriptionWithSnapshotUrl": "Select which camera should be used (with snapshot URL)",
+            "CameraDescriptionWithSnapshotUrl": "Select which camera (with snapshot URL) should be used",
             "CameraWarningAlreadySet": "This value is already set in the Moonraker configuration file.",
             "CameraWarningAlreadySetSmall": "snapshoturl in the [timelapse] section",
             "ConstantRateFactor": "Constant Rate Factor",
