@@ -566,10 +566,6 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
     get cameraOptions() {
         const output: any = []
 
-        if (this.blockedsettings.includes('camera') || this.blockedsettings.includes('snapshoturl')) {
-            return [{ value: null, text: this.$t('Settings.TimelapseTab.SetInMoonrakerConf') }]
-        }
-
         if (this.availableSnapshotWebcams.length === 0) {
             return [{ value: null, text: this.$t('Settings.TimelapseTab.NoWebcamFound') }]
         }

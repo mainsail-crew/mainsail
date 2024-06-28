@@ -1163,7 +1163,6 @@
             "RulesZeroAndPositive": "Value must be 0 or greater!",
             "SaveFrames": "Save Frames",
             "SaveFramesDescription": "Save the frames to a zip-file for external rendering",
-            "SetInMoonrakerConf": "Set in moonraker.conf",
             "StreamDelayCompensation": "Stream Delay Compensation",
             "StreamDelayCompensationDescription": "Delay frame capture",
             "Targetlength": "Target Length",
