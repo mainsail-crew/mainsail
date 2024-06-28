@@ -1163,6 +1163,7 @@
             "RulesZeroAndPositive": "Value must be 0 or greater!",
             "SaveFrames": "Save Frames",
             "SaveFramesDescription": "Save the frames to a zip-file for external rendering",
+            "SelectWebcam": "Select webcam...",
             "StreamDelayCompensation": "Stream Delay Compensation",
             "StreamDelayCompensationDescription": "Delay frame capture",
             "Targetlength": "Target Length",
