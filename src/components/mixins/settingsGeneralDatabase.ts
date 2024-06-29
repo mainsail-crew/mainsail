@@ -29,7 +29,7 @@ export default class SettingsGeneralDatabase extends BaseMixin {
             },
             {
                 value: 'navigation',
-                label: this.$t('Settings.GeneralTab.DBNavigation'),
+                label: this.$t('Settings.GeneralTab.DbNavigation'),
             },
             {
                 value: 'uiSettings',
@@ -113,6 +113,14 @@ export default class SettingsGeneralDatabase extends BaseMixin {
                 )
 
             backupableNamespaces = backupableNamespaces.sort(this.sortNamespaces)
+        }
+
+        // add maintenance if exists
+        if (availableNamespaces.includes('maintenance')) {
+            backupableNamespaces.push({
+                value: 'maintenance',
+                label: this.$t('Settings.GeneralTab.DbMaintenance'),
+            })
         }
 
         // add timelapse if exists

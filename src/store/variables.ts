@@ -38,6 +38,7 @@ export const initableServerComponents = [
     'jobQueue',
     'announcements',
     'spoolman',
+    'sensor',
 ]
 
 /*

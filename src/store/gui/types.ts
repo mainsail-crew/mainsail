@@ -123,6 +123,7 @@ export interface GuiState {
         boolScrewsTiltAdjustDialog: boolean
         tempchartHeight: number
         hideUpdateWarnings: boolean
+        printstatusThumbnailZoom: boolean
     }
     view: {
         blockFileUpload: boolean
@@ -169,6 +170,8 @@ export interface GuiState {
             hidePrintStatus: string[]
             hideColums: string[]
             selectedJobs: ServerHistoryStateJob[]
+            showMaintenanceEntries: boolean
+            showPrintJobs: boolean
         }
         jobqueue: {
             countPerPage: number

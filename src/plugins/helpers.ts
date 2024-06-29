@@ -112,30 +112,30 @@ export const formatFrequency = (frequency: number): string => {
     return Math.max(frequency, 0.1).toFixed() + units[i]
 }
 
-export const formatPrintTime = (totalSeconds: number): string => {
-    if (totalSeconds) {
-        let output = ''
+export const formatPrintTime = (totalSeconds: number, boolDays = true): string => {
+    if (!totalSeconds) return '--'
 
+    const output: string[] = []
+
+    if (boolDays) {
         const days = Math.floor(totalSeconds / (3600 * 24))
         if (days) {
             totalSeconds %= 3600 * 24
-            output += days + 'd'
+            output.push(`${days}d`)
         }
-
-        const hours = Math.floor(totalSeconds / 3600)
-        totalSeconds %= 3600
-        if (hours) output += ' ' + hours + 'h'
-
-        const minutes = Math.floor(totalSeconds / 60)
-        if (minutes) output += ' ' + minutes + 'm'
-
-        const seconds = totalSeconds % 60
-        if (seconds) output += ' ' + seconds.toFixed(0) + 's'
-
-        return output
     }
 
-    return '--'
+    const hours = Math.floor(totalSeconds / 3600)
+    totalSeconds %= 3600
+    if (hours) output.push(`${hours}h`)
+
+    const minutes = Math.floor(totalSeconds / 60)
+    if (minutes) output.push(`${minutes}m`)
+
+    const seconds = totalSeconds % 60
+    if (seconds) output.push(`${seconds.toFixed(0)}s`)
+
+    return output.join(' ')
 }
 
 export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortDesc: boolean[]): FileStateFile[] => {

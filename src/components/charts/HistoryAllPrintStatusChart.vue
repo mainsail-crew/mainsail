@@ -60,7 +60,7 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
     }
 
     get selectedJobs() {
-        return this.$store.state.gui.view.history.selectedJobs ?? []
+        return this.$store.getters['server/history/getSelectedJobs']
     }
 
     get allPrintStatusArray() {

@@ -27,14 +27,19 @@
                 <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.TimelapseTab.Camera')"
-                    :sub-title="$t('Settings.TimelapseTab.CameraDescription')">
+                    :sub-title="$t('Settings.TimelapseTab.CameraDescriptionWithSnapshotUrl')">
+                    <v-alert v-if="blockedsettings.includes('snapshoturl')" dense text type="warning" class="mb-0">
+                        {{ $t('Settings.TimelapseTab.CameraWarningAlreadySet') }}
+                        <small>({{ $t('Settings.TimelapseTab.CameraWarningAlreadySetSmall') }})</small>
+                    </v-alert>
                     <v-select
+                        v-else
                         v-model="camera"
                         :items="cameraOptions"
                         hide-details
                         outlined
                         dense
-                        :disabled="blockedsettings.includes('camera') || blockedsettings.includes('snapshoturl')" />
+                        :disabled="blockedsettings.includes('camera') || availableSnapshotWebcams.length === 0" />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
@@ -502,6 +507,7 @@ import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import { TranslateResult } from 'vue-i18n'
 @Component({
     components: { SettingsRow },
 })
@@ -552,20 +558,33 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         },
     ]
 
+    get availableSnapshotWebcams(): GuiWebcamStateWebcam[] {
+        return this.$store.getters['gui/webcams/getWebcams'].filter(
+            (webcam: GuiWebcamStateWebcam) => webcam.snapshot_url !== ''
+        )
+    }
+
     get cameraOptions() {
-        const webcams = this.$store.getters['gui/webcams/getWebcams']
-        const output: any = []
+        let output: { text: string | TranslateResult; value: string | null }[] = []
 
-        webcams
-            .filter((webcam: GuiWebcamStateWebcam) => webcam.snapshot_url !== '')
-            .forEach((webcam: GuiWebcamStateWebcam) => {
-                output.push({
-                    text: webcam.name,
-                    value: webcam.name,
-                })
+        if (this.availableSnapshotWebcams.length === 0) {
+            return [{ value: null, text: this.$t('Settings.TimelapseTab.NoWebcamFound') }]
+        }
+
+        this.availableSnapshotWebcams.forEach((webcam: GuiWebcamStateWebcam) => {
+            output.push({
+                text: webcam.name,
+                value: webcam.name,
             })
+        })
 
-        return caseInsensitiveSort(output, 'text')
+        output = caseInsensitiveSort(output, 'text')
+
+        if (this.camera === null) {
+            output.unshift({ value: null, text: this.$t('Settings.TimelapseTab.SelectWebcam') })
+        }
+
+        return output
     }
 
     get blockedsettings() {
@@ -853,6 +872,17 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
     }
 
     get camera() {
+        const value = this.$store.state.server.timelapse.settings.camera ?? null
+
+        if (
+            value === null ||
+            this.blockedsettings.includes('snapshoturl') ||
+            this.availableSnapshotWebcams.length === 0 ||
+            this.availableSnapshotWebcams.find((webcam) => webcam.name === value) === undefined
+        ) {
+            return null
+        }
+
         return this.$store.state.server.timelapse.settings.camera
     }
 

@@ -19,6 +19,7 @@ export const actions: ActionTree<RootState, RootState> = {
         dispatch('socket/setSocket', {
             hostname: printerSocket.hostname,
             port: printerSocket.port,
+            path: printerSocket.path,
         })
     },
 

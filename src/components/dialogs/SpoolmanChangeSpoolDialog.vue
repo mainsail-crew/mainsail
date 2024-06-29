@@ -163,6 +163,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
 
         const querySplits = search.toLowerCase().split(' ')
         const searchArray = [
+            item.id.toString(),
             item.comment,
             item.filament.name,
             item.filament.vendor.name,

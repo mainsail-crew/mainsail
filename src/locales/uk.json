@@ -13,8 +13,11 @@
                 "DeprecatedOptionHeadline": "Застаріла опція Klipper",
                 "DeprecatedValue": "Значення '{value}' опції '{option}' у секції '{section}' застаріла і буде видалена у майбутньому випуску.",
                 "DeprecatedValueHeadline": "Застаріле значення Klipper",
+                "KlipperRuntimeWarning": "Попередження під час роботи Klipper",
                 "KlipperWarning": "Попередження Klipper"
             },
+            "MaintenanceReminder": "Нагадування про технічне обслуговування",
+            "MaintenanceReminderText": "Термін технічного обслуговування \"{name}\".",
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "Помилка була виявлена під час завантаження компонента Moonraker '{component}'. Будь ласка, перевірте файл журналу та виправте проблему.",
@@ -28,7 +31,11 @@
             "NextReboot": "наступне перезавантаження",
             "NoNotification": "Нема Повідомлень",
             "Notifications": "Повідомлення",
-            "Remind": "Нагадування:"
+            "OneDayShort": "1д",
+            "OneHourShort": "1год",
+            "OneWeekShort": "1тиж",
+            "Remind": "Нагадування:",
+            "ShowDetails": "показати деталі"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Повинен бути більшим або рівним, ніж {min}!",
@@ -123,14 +130,14 @@
         }
     },
     "BedScrews": {
-        "Abort": "перервати",
-        "Accept": "прийняти",
-        "Adjusted": "відрегульований",
-        "Description": "Натисніть <b>ADJUSTED</b>, якщо поточний гвинт було відрегульовано. Натисніть <b>ACCEPT</b>, щоб продовжити без коригування.",
+        "Abort": "Перервати",
+        "Accept": "Прийняти",
+        "Adjusted": "Відкореговано",
+        "Description": "Натисніть <b>ВІДКОРЕГОВАНО</b>, якщо поточний гвинт було відрегульовано. Натисніть <b>ПРИЙНЯТИ</b>, щоб продовжити без коригування.",
         "Headline": "Гвинти столу",
         "ScrewAccepted": "Готові гвинти",
-        "ScrewIndex": "Індекс гвинта",
-        "ScrewName": "Ім'я гвинта",
+        "ScrewIndex": "Номер гвинта",
+        "ScrewName": "Назва гвинта",
         "ScrewOutput": "{current} з {max}"
     },
     "ConnectionDialog": {
@@ -139,7 +146,7 @@
         "Connecting": "Підключення до {host}",
         "Failed": "Підключення не вдалося",
         "Initializing": "Ініціалізація",
-        "TryAgain": "спробуйте ще раз"
+        "TryAgain": "Спробуйте ще раз"
     },
     "Console": {
         "CommandList": "Список команд",
@@ -148,6 +155,12 @@
         "HideTimelapse": "Сховати Таймлапс",
         "SendCode": "Надіслати код...",
         "SetupConsole": "Консоль налаштування"
+    },
+    "CoolDownDialog": {
+        "AreYouSure": "Ти впевнений?",
+        "CoolDown": "Охолодження",
+        "No": "Ні",
+        "Yes": "Так"
     },
     "DevicesDialog": {
         "CanBusInfo": "Можна виявити лише непризначені вузли. Рекомендується мати лише один непризначений пристрій, підключений до шини can, щоб уникнути проблем зі зв’язком. Щоб отримати детальнішу інформацію, натисніть на посилання:",
@@ -160,7 +173,7 @@
         "NoDeviceFound": "Пристрій не знайдено. Перевірте підключення та натисніть кнопку оновити.",
         "PathByHardware": "Фізичний шлях",
         "PathById": "Шлях за ID",
-        "Refresh": "оновити",
+        "Refresh": "Оновити",
         "Resolutions": "Резолюції"
     },
     "Dialogs": {
@@ -169,7 +182,7 @@
             "DoYouWantToStartFilename": "Ви хочете роздрукувати {filename}?",
             "DoYouWantToStartFilenameFilament": "Хочете почати друк {filename} з наявного філаменту?",
             "Headline": "Почати друк",
-            "Print": "друк",
+            "Print": "Друк",
             "Timelapse": "Таймлапс"
         }
     },
@@ -316,7 +329,7 @@
         "InvalidNameAlreadyExists": "Ім'я профілю вже існує, будь ласка, виберіть інше ім'я профілю.",
         "InvalidNameAscii": "Ім'я недійсне. Дозволяється лише символи ascii.",
         "InvalidNameEmpty": "Введення не повинно бути порожнім!",
-        "InvalidNameReserved": "Profile 'default' зарезервовано, будь ласка, виберіть інше ім'я профілю.",
+        "InvalidNameReserved": "Профіль 'default' зарезервовано, будь ласка, виберіть інше ім'я профілю.",
         "Mesh": "Сітка",
         "Name": "Ім'я",
         "NoBedMeshHasBeenLoadedYet": "Жодна сітка для ліжка ще не була завантажена.",
@@ -334,6 +347,8 @@
         "Wireframe": "Каркас"
     },
     "History": {
+        "AddANote": "Додати примітку",
+        "AddMaintenance": "Додати обслуговування",
         "AddNote": "Додати коментар",
         "AddToQueueSuccessful": "Файл {filename} додано до черги.",
         "AllJobs": "ВСІ",
@@ -341,16 +356,26 @@
         "Cancel": "Скасувати",
         "Chart": "Графік",
         "CreateNote": "Створити Примітку",
+        "DateBasedReminder": "Дата",
+        "DateBasedReminderDescription": "Це нагадування базується на даті.",
+        "Days": "днів",
         "Delete": "Видалити",
         "DeleteSelectedQuestion": "Ви дійсно хочете видалити {count} вибране завдання?",
         "DeleteSingleJobQuestion": "Ви справді хочете видалити завдання?",
         "Details": "Деталі",
+        "EditMaintenance": "Редагувати технічне обслуговування",
         "EditNote": "Редагувати Примітку",
         "Empty": "порожньо",
         "EndTime": "Час Закінчення",
+        "EntryCreatedAt": "Створено {date}.",
+        "EntryNextPerform": "Наступне виконання:",
+        "EntryPerformedAt": "Виконано {date}.",
+        "EntrySince": "Використовується з:",
         "EstimatedFilament": "Орієнтовна довжина прутка",
         "EstimatedFilamentWeight": "Орієнтовна вага прутка",
         "EstimatedTime": "Орієнтовний Час",
+        "FilamentBasedReminder": "Філамент",
+        "FilamentBasedReminderDescription": "Це нагадування базується на використанні філаменту.",
         "FilamentCalc": "Калькулятор Прутка",
         "FilamentUsage": "Використання Прутка",
         "FilamentUsed": "Використано Прутка",
@@ -361,18 +386,36 @@
         "FirstLayerHeight": "Висота першого шару",
         "HistoryFilamentUsage": "Пруток",
         "HistoryPrinttimeAVG": "Друк",
+        "Hours": "годин",
+        "InvalidNameEmpty": "Недійсне ім'я. Поле не повинно бути пустим!",
         "JobDetails": "Деталі Завдань",
         "Jobs": "Завдання",
         "LastModified": "Дата Створення",
         "LayerHeight": "Висота Шару",
         "LoadCompleteHistory": "Завантажити повну історію",
         "LongestPrinttime": "Найдовший Час Друку",
+        "Maintenance": "Технічне обслуговування",
+        "MaintenanceEntries": "Записи технічного обслуговування",
+        "Meter": "метр",
+        "Name": "Назва",
+        "NoReminder": "Нагадування відсутні",
         "Note": "Примітка",
         "ObjectHeight": "Висота Об'єкта",
+
+        "OneTime": "Одноразовий",
+        "Perform": "виконати",
+        "Performed": "виконано",
+        "PerformedAndReschedule": "виконано та переплановано",
+        "PerformMaintenance": "Виконати технічне обслуговування",
         "PrintDuration": "Час Друку",
         "PrintHistory": "Історія друку",
+        "PrintJobs": "Завдання друку",
         "PrintTime": "Час Друку",
         "PrinttimeAvg": "Час Друку - Ø",
+        "PrinttimeBasedReminder": "Час друку",
+        "PrinttimeBasedReminderDescription": "Це нагадування базується на часу друку.",
+        "Reminder": "Нагадування",
+        "Repeat": "Повторити",
         "Reprint": "Передрукувати",
         "Save": "зберегти",
         "Search": "пошук",
@@ -589,7 +632,9 @@
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "Будь ласка, перевірте, чи працює служба Klipper і чи правильно налаштовано klippy_uds_address у файлі moonraker.conf.",
             "FirmwareRestart": "Перезапуск Прошивки",
+            "KlipperLog": "Журнал Klipper",
             "MoonrakerCannotConnect": "Moonraker не може підключитися до Klipper!",
+            "MoonrakerLog": "Журнал Moonraker",
             "PowerOn": "Увімкнено",
             "PrinterSwitchedOff": "Принтер вимкнений",
             "PrinterSwitchedOffDescription": "Принтер наразі вимкнено, і Klipper не може підключитися. Щоб увімкнути принтер, натисніть кнопку нижче:",
@@ -608,7 +653,7 @@
         },
         "MacrosPanel": {
             "Headline": "Макрос",
-            "Send": "відправити"
+            "Send": "Відправити"
         },
         "MiniconsolePanel": {
             "Autoscroll": "Автопрокручування",
@@ -620,9 +665,9 @@
         },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Переконайтеся, що ви включили mainsail.cfg у свій файл printer.cfg.",
-            "IsNotDefinedInConfig": "не визначається в конфігурації.",
+            "IsNotDefinedInConfig": "Відсутній імпорт в конфігурації.",
             "MissingConfiguration": "Відсутня конфігурація",
-            "MoreInformation": "більше інформації"
+            "MoreInformation": "Більше інформації"
         },
         "MiscellaneousPanel": {
             "Headline": "Різне",
@@ -801,11 +846,11 @@
         "Webcam": "Веб-камера"
     },
     "ScrewsTiltAdjust": {
-        "Accept": "прийняти",
-        "Base": "Основа",
-        "ErrorText": "Щось пішло не так під час процесу взяття проби.",
-        "Headline": "Гвинти регулювання нахилу",
-        "Retry": "повторити спробу"
+        "Accept": "Прийняти",
+        "Base": "Базовий",
+        "ErrorText": "Щось пішло не так під час взяття проби.",
+        "Headline": "Регулювання нахилу взяттям проби",
+        "Retry": "Повторити спробу"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Додати Принтер",
@@ -819,6 +864,8 @@
         "HostnameInvalid": "Недійсне ім'я хоста/IP",
         "HostnameIp": "Ім'я хоста/IP",
         "HostnameRequired": "Необхідне ім'я хоста",
+        "Name": "Назва",
+        "Path": "Шлях",
         "Port": "Порт",
         "PortRequired": "Потрібен порт",
         "RememberToAdd": "Будь ласка, не забудьте додати '{cors}' у moonraker.conf всередині 'cors_domains'.",
@@ -935,7 +982,8 @@
             "DbConsoleHistory": "Історія Консолі",
             "DbHistoryJobs": "Історія завдань",
             "DbHistoryTotals": "Загальна Історія",
-            "DBNavigation": "Навігація",
+            "DbMaintenance": "Технічне обслуговування",
+            "DbNavigation": "Навігація",
             "DbTimelapseSettings": "Налаштування Таймлапсу",
             "DbView": "Налаштування перегляду",
             "EstimateValues": {
@@ -1052,6 +1100,9 @@
             "AddPrinter": "Додати принтер",
             "EditPrinter": "Редагувати принтер",
             "Hostname": "Ім'я хоста/ІР-адреса",
+            "Name": "Назва",
+            "NameDescription": "Це ім’я не відображатиметься в графічному інтерфейсі і використовуватиметься лише для перенаправлення.",
+            "Path": "Шлях",
             "Port": "Порт",
             "RemotePrinters": "Принтери",
             "UpdatePrinter": "Оновити принтер",
@@ -1138,6 +1189,8 @@
             "BoolBigThumbnailDescription": "Відобразити велику мініатюру на панелі статусу під час друку.",
             "BoolHideUploadAndPrintButton": "Приховати кнопку завантаження та друк",
             "BoolHideUploadAndPrintButtonDescription": "Показати або приховати кнопку «Завантажити та друканути» у верхній панелі.",
+            "ConfirmOnCoolDown": "Вимагати підтвердження для Охолодження",
+            "ConfirmOnCoolDownDescription": "Показати діалогове вікно підтвердження для Охолодження",
             "ConfirmOnEmergencyStop": "Вимагати підтвердження на АВАРІЙНУ ЗУПИНКУ",
             "ConfirmOnEmergencyStopDescription": "Показати діалогове вікно підтвердження АВАРІЙНОЇ ЗУПИНКИ",
             "ConfirmOnPowerDeviceChange": "Вимагати підтвердження змін живлення пристрою",
@@ -1172,6 +1225,8 @@
             "PowerDeviceName": "Пристрій живлення принтера",
             "PowerDeviceNameDescription": "Виберіть, який пристрій живлення Moonraker слід використовувати для живлення принтера.",
             "Primary": "Основний Колір",
+            "ProgressAsFavicon": "Показати прогрес у вкладці браузера",
+            "ProgressAsFaviconDescription": "Змініть іконку логотипу Mainsail на іконку прогресу.",
             "ScrewsTiltAdjustDialog": "Вікно налаштування гвинтів нахилу стола",
             "ScrewsTiltAdjustDialogDescription": "Відобразити допоміжне вікно для SCREWS_TILT_CALCULATE.",
             "TempchartHeight": "Висота графіку температур",
