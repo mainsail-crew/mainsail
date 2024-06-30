@@ -348,7 +348,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
     }
 
     get defaultLogoColor() {
-        return themes.find((theme) => theme.name === this.theme)?.colorLogo ?? defaultLogoColor
+        return themes.find((theme) => theme.name === this.themeName)?.colorLogo ?? defaultLogoColor
     }
 
     get primaryColor() {

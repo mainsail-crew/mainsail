@@ -193,25 +193,6 @@ export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
         return this.$store.state.gui.uiSettings.boolHideUploadAndPrintButton ?? false
     }
 
-    get themeObject() {
-        return themes.find((t) => t.name === this.theme) ?? null
-    }
-
-    get sidebarLogo(): string {
-        let url = this.$store.getters['files/getSidebarLogo']
-        if (url !== '' || this.theme === 'mainsail') return url
-
-        // if no theme is set, return empty string to load the default logo
-        if (this.themeObject === null || (this.themeObject.sidebarLogo ?? false) === false) return ''
-
-        // return light logo if theme is light and sidebarLogo is set to both
-        if (this.themeObject.sidebarLogo === 'both' && this.themeMode === 'light')
-            return `/img/themes/sidebarLogo-${this.theme}-light.svg`
-
-        // return dark/generic theme logo
-        return `/img/themes/sidebarLogo-${this.theme}.svg`
-    }
-
     get isSvgLogo() {
         return this.sidebarLogo.includes('.svg?timestamp=') || this.sidebarLogo.endsWith('.svg')
     }

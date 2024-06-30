@@ -12,8 +12,12 @@ export default class ThemeMixin extends Vue {
         return this.fgColor(alpha, !this.$vuetify.theme.dark)
     }
 
-    get theme() {
+    get themeName() {
         return this.$store.getters['gui/theme']
+    }
+
+    get theme() {
+        return this.$store.getters['gui/getTheme']
     }
 
     get themeMode() {
@@ -51,5 +55,20 @@ export default class ThemeMixin extends Vue {
 
     get sidebarBgImage() {
         return this.$vuetify.theme.dark ? '/img/sidebar-background.svg' : '/img/sidebar-background-light.svg'
+    }
+
+    get sidebarLogo(): string {
+        const url = this.$store.getters['files/getSidebarLogo']
+        if (url !== '' || this.themeName === 'mainsail') return url
+
+        // if no theme is set, return empty string to load the default logo
+        if ((this.theme.sidebarLogo ?? false) === false) return ''
+
+        // return light logo if theme is light and sidebarLogo is set to both
+        if (this.theme.sidebarLogo === 'both' && this.themeMode === 'light')
+            return `/img/themes/sidebarLogo-${this.themeName}-light.svg`
+
+        // return dark/generic theme logo
+        return `/img/themes/sidebarLogo-${this.themeName}.svg`
     }
 }

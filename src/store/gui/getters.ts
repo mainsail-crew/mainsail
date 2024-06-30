@@ -6,13 +6,17 @@ import { Theme } from '@/store/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
-    theme: (state) => {
+    theme: (state): string => {
         const theme = state.uiSettings.theme
 
         // return defaultTheme, if theme doesnt exists
         if (themes.findIndex((tmp: Theme) => tmp.name === theme) === -1) return defaultTheme
 
         return theme
+    },
+
+    getTheme: (state, getters): Theme => {
+        return themes.find((theme: Theme) => theme.name === getters.theme) ?? themes[0]
     },
 
     getDatasetValue: (state) => (payload: { name: string; type: string }) => {
