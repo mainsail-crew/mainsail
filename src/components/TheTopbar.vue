@@ -76,7 +76,7 @@
 <script lang="ts">
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { themes, validGcodeExtensions } from '@/store/variables'
+import { validGcodeExtensions } from '@/store/variables'
 import Component from 'vue-class-component'
 import axios, { AxiosProgressEvent } from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
