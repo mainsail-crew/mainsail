@@ -57,7 +57,7 @@
             <the-settings-menu />
             <the-top-corner-menu />
         </v-app-bar>
-        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom>
+        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" fixed right bottom>
             <strong>{{ $t('App.TopBar.Uploading') }} {{ uploadSnackbar.filename }}</strong>
             <br />
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
@@ -178,10 +178,6 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         if (this.$store.state.gui.general.printername.length) return this.$store.state.gui.general.printername
 
         return this.$store.state.printer.hostname
-    }
-
-    get boolWideNavDrawer() {
-        return this.$store.state.gui.uiSettings.boolWideNavDrawer ?? false
     }
 
     get countPrinters() {
