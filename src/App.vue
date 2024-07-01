@@ -81,10 +81,6 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         return this.$store.getters['getTitle']
     }
 
-    get mainBackground(): string {
-        return this.$store.getters['files/getMainBackground']
-    }
-
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
     }
@@ -98,8 +94,8 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
             paddingLeft: '0',
         }
 
-        if (this.mainBackground !== null) {
-            style.backgroundImage = 'url(' + this.mainBackground + ')'
+        if (this.mainBgImage !== null) {
+            style.backgroundImage = 'url(' + this.mainBgImage + ')'
         }
 
         // overwrite padding left for the sidebar

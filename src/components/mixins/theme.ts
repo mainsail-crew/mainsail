@@ -54,6 +54,13 @@ export default class ThemeMixin extends Vue {
     }
 
     get sidebarBgImage() {
+        if (this.theme.sidebarBackground?.bool) {
+            if (this.theme.sidebarBackground?.light && this.themeMode === 'light')
+                return `/img/themes/sidebarBackground-${this.themeName}-light.png`
+
+            return `/img/themes/sidebarBackground-${this.themeName}.png`
+        }
+
         return this.$vuetify.theme.dark ? '/img/sidebar-background.svg' : '/img/sidebar-background-light.svg'
     }
 
@@ -62,13 +69,25 @@ export default class ThemeMixin extends Vue {
         if (url !== '' || this.themeName === 'mainsail') return url
 
         // if no theme is set, return empty string to load the default logo
-        if ((this.theme.sidebarLogo ?? false) === false) return ''
+        if (!(this.theme.logo?.bool ?? false)) return ''
 
         // return light logo if theme is light and sidebarLogo is set to both
-        if (this.theme.sidebarLogo === 'both' && this.themeMode === 'light')
+        if (this.theme.logo?.light && this.themeMode === 'light')
             return `/img/themes/sidebarLogo-${this.themeName}-light.svg`
 
         // return dark/generic theme logo
         return `/img/themes/sidebarLogo-${this.themeName}.svg`
+    }
+
+    get mainBgImage() {
+        const url = this.$store.getters['files/getMainBackground']
+        if (url || this.themeName === 'mainsail') return url
+
+        if (!this.theme.mainBackground?.bool) return null
+
+        if (this.theme.mainBackground?.light && this.themeMode === 'light')
+            return `/img/themes/mainBackground-${this.themeName}-light.png`
+
+        return `/img/themes/mainBackground-${this.themeName}.png`
     }
 }

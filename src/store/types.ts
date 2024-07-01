@@ -42,8 +42,18 @@ export interface ConfigJsonInstance {
 export interface Theme {
     name: string
     displayName: string
-    colorLogo?: string
+    colorLogo: string
     colorPrimary?: string
-    sidebarLogo?: false | true | 'both' // both means that it also has a light version
-    sidebarBackground?: false | true | 'both' // both means that it also has a light version
+    logo?: {
+        bool: boolean
+        light: boolean
+    }
+    sidebarBackground?: {
+        bool: boolean
+        light: boolean
+    }
+    mainBackground?: {
+        bool: boolean
+        light: boolean
+    }
 }
