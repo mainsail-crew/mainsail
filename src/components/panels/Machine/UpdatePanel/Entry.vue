@@ -285,11 +285,8 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     get btnColor() {
         if (this.isCorrupt || this.isDetached || this.isDirty || !this.isValid) return 'orange'
 
-        if (
-            this.commitsBehind.length ||
-            (this.localVersion && this.remoteVersion && semver.gt(this.remoteVersion, this.localVersion))
-        )
-            return 'primary'
+        if (this.type === 'web' && this.webUpdatable) return 'primary'
+        if (this.type === 'git_repo' && this.commitsBehind.length) return 'primary'
 
         return 'green'
     }
