@@ -33,7 +33,7 @@
         "@codemirror/view": "^6.0.3",
         "@jaames/iro": "^5.5.2",
         "@lezer/highlight": "^1.0.0",
-        "@sindarius/gcodeviewer": "^3.7.8",
+        "@sindarius/gcodeviewer": "^3.7.11",
         "@uiw/codemirror-theme-vscode": "^4.19.11",
         "axios": "^1.6.0",
         "codemirror": "^6.0.1",
