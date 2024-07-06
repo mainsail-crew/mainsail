@@ -158,7 +158,7 @@ export const themes: Theme[] = [
     {
         name: 'voron',
         displayName: 'Voron Design',
-        colorLogo: '#b12f35',
+        colorLogo: '#FF2300',
         logo: { show: true, light: false },
     },
 ]
