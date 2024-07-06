@@ -294,7 +294,7 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         }
 
         // if a theme sidebar logo is set, use it
-        if ((this.theme.sidebarLogo ?? false) !== false && this.sidebarLogo.endsWith('.svg')) {
+        if ((this.theme?.logo?.show ?? false) && this.sidebarLogo.endsWith('.svg')) {
             const response = await fetch(this.sidebarLogo)
             if (!response.ok) return
 

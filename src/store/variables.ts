@@ -153,6 +153,6 @@ export const themes: Theme[] = [
         name: 'klipper',
         displayName: 'Klipper',
         colorLogo: '#b12f35',
-        logo: { bool: true, light: false },
+        logo: { show: true, light: false },
     },
 ]

@@ -45,15 +45,15 @@ export interface Theme {
     colorLogo: string
     colorPrimary?: string
     logo?: {
-        bool: boolean
+        show: boolean
         light: boolean
     }
     sidebarBackground?: {
-        bool: boolean
+        show: boolean
         light: boolean
     }
     mainBackground?: {
-        bool: boolean
+        show: boolean
         light: boolean
     }
 }
