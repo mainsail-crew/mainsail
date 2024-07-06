@@ -39,7 +39,7 @@
             "TmcOtFlag": "Stepper driver error: OT flag set",
             "TmcOtFlagText": "The stepper driver '{name}' has triggered the OT flag and stopped working. This can be caused by a too high current. Please check the stepper driver settings and cooling.",
             "TmcOtpwFlag": "Stepper driver warning: OTPW flag set",
-            "TmcOtpwFlagText": "The stepper driver '{name}' has triggered the OTPW flag and will stop working in a short time if it gets any hotter. This is an indication of an over temperature condition. This can be caused by a too high current. Please check the stepper driver settings and cooling."
+            "TmcOtpwFlagText": "The stepper driver '{name}' has triggered the OTPW flag and may stop working if it gets any hotter. This is an indication of an over temperature condition. This can be caused by a too high current. Please check the stepper driver settings and cooling."
         },
         "NumberInput": {
             "GreaterOrEqualError": "Must be greater or equal than {min}!",
