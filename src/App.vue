@@ -81,10 +81,6 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         return this.$store.getters['getTitle']
     }
 
-    get mainBackground(): string {
-        return this.$store.getters['files/getMainBackground']
-    }
-
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
     }
@@ -98,8 +94,8 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
             paddingLeft: '0',
         }
 
-        if (this.mainBackground !== null) {
-            style.backgroundImage = 'url(' + this.mainBackground + ')'
+        if (this.mainBgImage !== null) {
+            style.backgroundImage = 'url(' + this.mainBgImage + ')'
         }
 
         // overwrite padding left for the sidebar
@@ -127,8 +123,8 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         return this.$store.state.printer.print_stats?.filename ?? ''
     }
 
-    get theme(): string {
-        return this.$store.state.gui.uiSettings.theme
+    get mode(): string {
+        return this.$store.state.gui.uiSettings.mode
     }
 
     get logoColor(): string {
@@ -226,8 +222,8 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         })
     }
 
-    @Watch('theme')
-    themeChanged(newVal: string): void {
+    @Watch('mode')
+    modeChanged(newVal: string): void {
         const dark = newVal !== 'light'
         this.$vuetify.theme.dark = dark
 
@@ -235,73 +231,105 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         doc.className = dark ? 'theme--dark' : 'theme--light'
     }
 
-    drawFavicon(val: number): void {
+    async drawFavicon(val: number): Promise<void> {
         const favicon16: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='16x16']")
         const favicon32: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='32x32']")
 
-        if (favicon16 && favicon32) {
-            if (this.progressAsFavicon && this.printerIsPrinting) {
-                let faviconSize = 64
+        // if no favicon is found, stop
+        if (!favicon16 || !favicon32) return
 
-                let canvas = document.createElement('canvas')
-                canvas.width = faviconSize
-                canvas.height = faviconSize
-                const context = canvas.getContext('2d')
-                const centerX = canvas.width / 2
-                const centerY = canvas.height / 2
-                const radius = 32
+        // if progressAsFavicon is enabled and the printer is printing, draw the progress as favicon
+        if (this.progressAsFavicon && this.printerIsPrinting) {
+            let faviconSize = 64
 
-                // draw the grey circle
-                if (context) {
-                    context.beginPath()
-                    context.moveTo(centerX, centerY)
-                    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
-                    context.closePath()
-                    context.fillStyle = '#ddd'
-                    context.fill()
-                    context.strokeStyle = 'rgba(200, 208, 218, 0.66)'
-                    context.stroke()
+            let canvas = document.createElement('canvas')
+            canvas.width = faviconSize
+            canvas.height = faviconSize
+            const context = canvas.getContext('2d')
+            const centerX = canvas.width / 2
+            const centerY = canvas.height / 2
+            const radius = 32
 
-                    // draw the green circle based on percentage
-                    let startAngle = 1.5 * Math.PI
-                    let endAngle = 0
-                    let unitValue = (Math.PI - 0.5 * Math.PI) / 25
-                    if (val >= 0 && val <= 25) endAngle = startAngle + val * unitValue
-                    else if (val > 25 && val <= 50) endAngle = startAngle + val * unitValue
-                    else if (val > 50 && val <= 75) endAngle = startAngle + val * unitValue
-                    else if (val > 75 && val <= 100) endAngle = startAngle + val * unitValue
+            if (!context) return
 
-                    context.beginPath()
-                    context.moveTo(centerX, centerY)
-                    context.arc(centerX, centerY, radius, startAngle, endAngle, false)
-                    context.closePath()
-                    context.fillStyle = this.logoColor
-                    context.fill()
+            // draw the grey circle
+            context.beginPath()
+            context.moveTo(centerX, centerY)
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
+            context.closePath()
+            context.fillStyle = '#ddd'
+            context.fill()
+            context.strokeStyle = 'rgba(200, 208, 218, 0.66)'
+            context.stroke()
 
-                    favicon16.href = canvas.toDataURL('image/png')
-                    favicon32.href = canvas.toDataURL('image/png')
-                }
-            } else if (this.customFavicons) {
-                const [favicon16Path, favicon32Path] = this.customFavicons
-                favicon16.href = favicon16Path
-                favicon32.href = favicon32Path
-            } else {
-                const favicon =
-                    'data:image/svg+xml;base64,' +
-                    window.btoa(`
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">
-                            <g>
-                                <path style="fill:${this.logoColor};" d="M382.29,142.98L132.98,522.82L0,522.68L344.3,0l0,0C352.18,49.06,365.2,97.68,382.29,142.98"/>
-                                <path style="fill:${this.logoColor};" d="M413.28,213.54L208.5,522.92l132.94,0.19l135.03-206.33l0,0C452.69,284.29,431.53,249.77,413.28,213.54 L413.28,213.54"/>
-                                <path style="fill:${this.logoColor};" d="M599.38,447.69l-49.25,75.42L417,522.82l101.6-153.67l0,0C543.48,397.35,570.49,423.61,599.38,447.69 L599.38,447.69z"/>
-                            </g>
-                        </svg>
-                    `)
+            // draw the green circle based on percentage
+            let startAngle = 1.5 * Math.PI
+            let endAngle = 0
+            let unitValue = (Math.PI - 0.5 * Math.PI) / 25
+            if (val >= 0 && val <= 25) endAngle = startAngle + val * unitValue
+            else if (val > 25 && val <= 50) endAngle = startAngle + val * unitValue
+            else if (val > 50 && val <= 75) endAngle = startAngle + val * unitValue
+            else if (val > 75 && val <= 100) endAngle = startAngle + val * unitValue
 
-                favicon16.href = favicon
-                favicon32.href = favicon
-            }
+            context.beginPath()
+            context.moveTo(centerX, centerY)
+            context.arc(centerX, centerY, radius, startAngle, endAngle, false)
+            context.closePath()
+            context.fillStyle = this.logoColor
+            context.fill()
+
+            favicon16.href = canvas.toDataURL('image/png')
+            favicon32.href = canvas.toDataURL('image/png')
+
+            return
         }
+
+        // if custom favicons are set, use them
+        if (this.customFavicons) {
+            const [favicon16Path, favicon32Path] = this.customFavicons
+            favicon16.href = favicon16Path
+            favicon32.href = favicon32Path
+
+            return
+        }
+
+        // if a theme sidebar logo is set, use it
+        if ((this.theme?.logo?.show ?? false) && this.sidebarLogo.endsWith('.svg')) {
+            const response = await fetch(this.sidebarLogo)
+            if (!response.ok) return
+
+            const text = await response.text()
+            const modifiedSvg = text.replace(/fill="var\(--color-logo, #[0-9a-fA-F]{6}\)"/g, `fill="${this.logoColor}"`)
+
+            const blob = new Blob([modifiedSvg], { type: 'image/svg+xml' })
+            const reader = new FileReader()
+
+            reader.onloadend = () => {
+                const base64data = reader.result as string
+                favicon16.href = base64data
+                favicon32.href = base64data
+            }
+
+            reader.readAsDataURL(blob)
+
+            return
+        }
+
+        // if no custom favicon is set, use the default one
+        const favicon =
+            'data:image/svg+xml;base64,' +
+            window.btoa(`
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">
+                <g>
+                    <path style="fill:${this.logoColor};" d="M382.29,142.98L132.98,522.82L0,522.68L344.3,0l0,0C352.18,49.06,365.2,97.68,382.29,142.98"/>
+                    <path style="fill:${this.logoColor};" d="M413.28,213.54L208.5,522.92l132.94,0.19l135.03-206.33l0,0C452.69,284.29,431.53,249.77,413.28,213.54 L413.28,213.54"/>
+                    <path style="fill:${this.logoColor};" d="M599.38,447.69l-49.25,75.42L417,522.82l101.6-153.67l0,0C543.48,397.35,570.49,423.61,599.38,447.69 L599.38,447.69z"/>
+                </g>
+            </svg>
+        `)
+
+        favicon16.href = favicon
+        favicon32.href = favicon
     }
 
     @Watch('customFavicons')

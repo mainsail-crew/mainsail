@@ -1,4 +1,7 @@
-export const defaultTheme = 'dark'
+import { Theme } from '@/store/types'
+
+export const defaultMode = 'dark'
+export const defaultTheme = 'mainsail'
 export const defaultLogoColor = '#D41216'
 export const defaultPrimaryColor = '#2196f3'
 export const defaultBigThumbnailBackground = '#1e1e1e'
@@ -140,3 +143,16 @@ export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sona
  * List of all rollover logfiles
  */
 export const rolloverLogfiles = ['klipper', 'moonraker']
+
+/*
+ * List of all Themes
+ */
+export const themes: Theme[] = [
+    { name: 'mainsail', displayName: 'Mainsail', colorLogo: defaultLogoColor },
+    {
+        name: 'klipper',
+        displayName: 'Klipper',
+        colorLogo: '#b12f35',
+        logo: { show: true, light: false },
+    },
+]

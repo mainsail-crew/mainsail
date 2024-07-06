@@ -1221,6 +1221,8 @@
             "Logo": "Logo",
             "ManualProbeDialog": "Manual Probe Helper Dialog",
             "ManualProbeDialogDescription": "Display helper dialog for PROBE_CALIBRATE or Z_ENDSTOP_CALIBRATE.",
+            "Mode": "Mode",
+            "ModeDescription": "Change the overall look and feel of the application.",
             "NavigationStyle": "Navigation style",
             "NavigationStyleDescription": "Change navigation appearance",
             "NavigationStyleIconsAndText": "Icons + Text",
@@ -1238,7 +1240,7 @@
             "TempchartHeightDescription": "Modify the height of the temperature chart on the Dashboard.",
             "Theme": "Theme",
             "ThemeDark": "Dark",
-            "ThemeDescription": "Change the overall look and feel of the application",
+            "ThemeDescription": "Customizes the branding of the interface.",
             "ThemeLight": "Light",
             "UiSettings": "UI-Settings"
         },
