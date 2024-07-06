@@ -161,4 +161,11 @@ export const themes: Theme[] = [
         colorLogo: '#FF2300',
         logo: { show: true, light: false },
     },
+    {
+        name: 'ldo',
+        displayName: 'LDO Motion (Sponsor)',
+        colorLogo: '#326799',
+        colorPrimary: '#326799',
+        logo: { show: true, light: false },
+    },
 ]
