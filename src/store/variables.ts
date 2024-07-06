@@ -161,4 +161,11 @@ export const themes: Theme[] = [
         colorLogo: '#FF2300',
         logo: { show: true, light: false },
     },
+    {
+        name: 'prusa',
+        displayName: 'Prusa Research (Sponsor)',
+        colorLogo: '#fa6831',
+        colorPrimary: '#fa6831',
+        logo: { show: true, light: false },
+    },
 ]
