@@ -355,7 +355,6 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
     }
 
     get defaultLogoColor() {
-        window.console.log(this.theme?.colorLogo ?? defaultLogoColor)
         return this.theme?.colorLogo ?? defaultLogoColor
     }
 
