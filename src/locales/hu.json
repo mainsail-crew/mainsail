@@ -1177,7 +1177,9 @@
             "ThemeDark": "Sötét",
             "ThemeDescription": "Az alkalmazás általános megjelenésének megváltoztatása",
             "PrintstatusThumbnailZoomDescription": "Ezzel kikapcsolod a miniatűrkép nagyítását az állapotpanelen.",
-            "PrintstatusThumbnailZoom": "Nagyobb miniatűr nagyítás"
+            "PrintstatusThumbnailZoom": "Nagyobb miniatűr nagyítás",
+            "Mode": "Mód",
+            "ModeDescription": "Az alkalmazás általános megjelenésének megváltoztatása."
         },
         "WebcamsTab": {
             "AddWebcam": "Webkamera hozzáadása",
