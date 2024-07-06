@@ -37,9 +37,9 @@
             "Remind": "Erinnere:",
             "ShowDetails": "Details anzeigen",
             "TmcOtFlag": "Stepper-Treiber Fehler: OT-Flag ist gesetzt",
-            "TmcOtFlagText": "Der Stepper-Treiber '{Name}' hat das OT-Flag ausgelöst und funktioniert nicht mehr. Dies kann durch einen zu hohen Strom verursacht werden. Bitte überprüfen Sie die Einstellungen und die Kühlung des Steppertreibers.",
+            "TmcOtFlagText": "Der Stepper-Treiber '{Name}' hat das OT-Flag ausgelöst und funktioniert nicht mehr. Dies kann durch einen zu hohen Strom verursacht werden. Bitte überprüfe die Einstellungen und die Kühlung des Steppertreibers.",
             "TmcOtpwFlag": "Stepper-Treiber Fehler: OTPW-Flag ist gesetzt",
-            "TmcOtpwFlagText": "Der Stepper-Treiber '{Name}' hat das OTPW-Flag ausgelöst und funktioniert möglicherweise nicht mehr, wenn er noch heißer wird. Dies ist ein Hinweis auf einen Überhitzungszustand. Dies kann durch einen zu hohen Strom verursacht werden. Bitte überprüfen Sie die Einstellungen und die Kühlung des Steppertreibers."
+            "TmcOtpwFlagText": "Der Stepper-Treiber '{Name}' hat das OTPW-Flag ausgelöst und funktioniert möglicherweise nicht mehr, wenn er noch heißer wird. Dies ist ein Hinweis auf einen Überhitzungszustand. Dies kann durch einen zu hohen Strom verursacht werden. Bitte überprüfe die Einstellungen und die Kühlung des Steppertreibers."
         },
         "NumberInput": {
             "GreaterOrEqualError": "Muss größer oder gleich {min} sein!",
@@ -1114,7 +1114,7 @@
             "Autorender": "Autorender",
             "AutorenderDescription": "Wenn diese Option aktiviert ist, wird das Zeitraffervideo am Ende des Druckvorgangs automatisch gerendert",
             "Camera": "Kamera",
-            "CameraDescriptionWithSnapshotUrl": "Wählen aus welche Kamera (mit Schnappschuss URL) verwendet werden soll.",
+            "CameraDescriptionWithSnapshotUrl": "Wähle aus, welche Kamera (mit Schnappschuss URL) verwendet werden soll.",
             "CameraWarningAlreadySet": "Dieser Wert ist bereits in der Moonraker-Konfigurationsdatei festgelegt.",
             "CameraWarningAlreadySetSmall": "snapshoturl ist in der [timelapse] Sektion",
             "ConstantRateFactor": "Constant Rate Factor",
