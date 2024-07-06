@@ -9,20 +9,33 @@
                 "DeprecatedOptionHeadline": "Opción de Klipper en desuso",
                 "DeprecatedValue": "El valor '{value}' en la opción '{option}' en la sección '{section}' está discontinuado y será removido en la próxima versión.",
                 "DeprecatedValueHeadline": "Valor de Klipper en desuso",
-                "KlipperWarning": "Advertencia de Klipper"
+                "KlipperWarning": "Advertencia de Klipper",
+                "KlipperRuntimeWarning": "Elimina la advertencia de tiempo de ejecución"
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "Se detectó un error al cargar el componente moonraker '{componente}'. Verifique el archivo de registro y solucione el problema.",
                 "MoonrakerWarning": "Advertencia de Moonraker",
                 "UnparsedConfigOption": "Opción de configuración no analizada '{option}: {value}' detectada en la sección [{section}]. Esta puede ser una opción que ya no está disponible o puede ser el resultado de un módulo que no se pudo cargar. En el futuro, esto dará un error de inicio.",
-                "UnparsedConfigSection": "Sección de configuración no analizada [{section}] detectada. Esto puede ser por un componente que no se pudo cargar. En el futuro, esto dará un error de inicio."
+                "UnparsedConfigSection": "Sección de configuración no analizada [{section}] detectada. Esto puede ser por un componente que no se pudo cargar. En el futuro, esto dará un error de inicio.",
+                "MoonrakerInitComponent": "Inicializar Moonraker: {component}",
+                "MoonrakerFailedInitComponentDescription": "Se detectó un error durante la inicialización del componente moonraker '{component}'. Verifique el archivo de registro y solucione el problema."
             },
             "Never": "nunca",
             "NextReboot": "próximo reinicio",
             "NoNotification": "No hay notificación disponible",
             "Notifications": "Notificaciones",
-            "Remind": "Recordar:"
+            "Remind": "Recordar:",
+            "BrowserWarnings": {
+                "Headline": "Navegador obsoleto",
+                "Description": "{name} está desactualizado y no es totalmente compatible. La versión actual es {version}, pero Mainsail requiere la versión {minVersion} o superior."
+            },
+            "MaintenanceReminder": "Recordatorio de mantenimiento",
+            "MaintenanceReminderText": "Se debe realizar el mantenimiento a \"{name}\".",
+            "OneDayShort": "1D",
+            "OneHourShort": "1H",
+            "OneWeekShort": "1Sem.",
+            "ShowDetails": "Mostrar detalles"
         },
         "NumberInput": {
             "GreaterOrEqualError": "¡Debe ser mayor o igual a {min}!",
@@ -111,6 +124,9 @@
             "RecoveringDone": "¡Recuperación de {software} realizada!",
             "Updating": "Actualizando {software}...",
             "UpdatingDone": "¡Actualización de {software} realizada!"
+        },
+        "TextfieldWithCopy": {
+            "Copied": "Copiado"
         }
     },
     "BedScrews": {
@@ -146,7 +162,8 @@
             "DoYouWantToStartFilename": "¿Desea iniciar {filename}?",
             "Headline": "Iniciar trabajo",
             "Print": "imprimir",
-            "Timelapse": "Lapso de tiempo"
+            "Timelapse": "Lapso de tiempo",
+            "DoYouWantToStartFilenameFilament": "¿Quieres iniciar {filename} con el siguiente filamento?"
         }
     },
     "Editor": {
@@ -161,7 +178,8 @@
         "UnsavedChanges": "Cambios sin guardar",
         "UnsavedChangesMessage": "¿Quiere guardar los cambios realizados al archivo {filename}?",
         "UnsavedChangesSubMessage": "Sus cambios se perderán si no los guarda. Puede desactivar este mensaje en la configuración del editor.",
-        "Uploading": "Cargando"
+        "Uploading": "Cargando",
+        "DeviceDialog": "Dispositivos"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "¿Está seguro?",
@@ -371,7 +389,8 @@
             "klippy_disconnect": "Klippy desconectado",
             "klippy_shutdown": "Klippy apagado",
             "Others": "Otros",
-            "server_exit": "salida del servidor"
+            "server_exit": "salida del servidor",
+            "interrupted": "Interrumpido"
         },
         "Table": "Tabla",
         "TitleExportHistory": "Exportar historial",
@@ -381,7 +400,38 @@
         "TotalFilamentUsed": "Filamento utilizado en total",
         "TotalJobs": "Trabajos totales",
         "TotalPrinttime": "Tiempo total de impresión",
-        "TotalTime": "Tiempo total"
+        "TotalTime": "Tiempo total",
+        "AddANote": "Añadir una nota",
+        "AddMaintenance": "Agregar mantenimiento",
+        "AddToQueueSuccessful": "El archivo {filename} está añadido a la cola.",
+        "DateBasedReminderDescription": "Este recordatorio se basa en la fecha.",
+        "EntryCreatedAt": "Creado en {date}.",
+        "EntryNextPerform": "Próxima actuación:",
+        "EntryPerformedAt": "Realizado en {date}.",
+        "EntrySince": "Utilizado desde:",
+        "FilamentBasedReminder": "Filamento",
+        "Hours": "horas",
+        "LoadCompleteHistory": "Cargar historial completo",
+        "Maintenance": "Mantenimiento",
+        "MaintenanceEntries": "Entradas de mantenimiento",
+        "Meter": "metro",
+        "Name": "Nombre",
+        "NoReminder": "Sin recordatorio",
+        "OneTime": "Una vez",
+        "Perform": "Realizar",
+        "Performed": "Realizado",
+        "PerformedAndReschedule": "Realizado y reprogramado",
+        "PerformMaintenance": "Realizar mantenimiento",
+        "PrintJobs": "Trabajos de impresión",
+        "PrinttimeBasedReminder": "Tiempo de impresión",
+        "PrinttimeBasedReminderDescription": "Este recordatorio se basa en el tiempo de impresión.",
+        "Reminder": "Recordatorio",
+        "Repeat": "Repetir",
+        "Days": "días",
+        "DateBasedReminder": "Fecha",
+        "EditMaintenance": "Editar mantenimiento",
+        "FilamentBasedReminderDescription": "Este recordatorio se basa en el uso del filamento.",
+        "InvalidNameEmpty": "Nombre inválido. ¡El nombre no debe estar vacío!"
     },
     "JobQueue": {
         "AllJobs": "Todas las tareas",
@@ -395,7 +445,8 @@
         "Jobs": "Tareas",
         "Pause": "Pausar",
         "RemoveFromQueue": "Remover de la cola",
-        "Start": "Iniciar"
+        "Start": "Iniciar",
+        "StartPrint": "Iniciar tarea"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -554,7 +605,13 @@
             "Requested": "Solicitada",
             "Retract": "Retraer",
             "TooLargeExtrusion": "¡Extrusión muy grande!",
-            "UnloadFilament": "Descargar Filamento"
+            "UnloadFilament": "Descargar Filamento",
+            "ExtruderControl": "Control del extrusor",
+            "FirmwareRetraction": "Reversión del firmware",
+            "PressureAdvance": "Avance de presión de extrusión",
+            "PurgeFilament": "Purgar filamento",
+            "Tools": "Herramientas",
+            "CleanNozzle": "Limpiar la boquilla"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Reconectar",
@@ -570,7 +627,9 @@
             "PrinterSwitchedOff": "La impresora está apagada",
             "PrinterSwitchedOffDescription": "La impresora está actualmente apagada y Klipper no se puede conectar. Para encender la impresora, haz click en el botón de abajo:",
             "Restart": "Reiniciar",
-            "ServiceReports": "reporta {service}"
+            "ServiceReports": "reporta {service}",
+            "KlipperLog": "Registro de Klipper",
+            "MoonrakerLog": "Registro de Moonraker"
         },
         "MachineSettingsPanel": {
             "Headline": "Configuración de impresora",
@@ -1198,5 +1257,25 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Español"
+    "title": "Español",
+    "DevicesDialog": {
+        "Resolutions": "Resoluciones",
+        "CanBusInfo": "Solo se pueden detectar los nodos no asignados. Se recomienda tener solo un dispositivo no asignado conectado al bus CAN para evitar problemas de comunicación. Para obtener más detalles, haga clic en el enlace:",
+        "ClickRefresh": "Haz clic en el botón actualizar para buscar dispositivos.",
+        "Headline": "Dispositivos",
+        "DevicePath": "Ruta del dispositivo",
+        "Formats": "Formatos",
+        "HideSystemEntries": "Ocultar entradas del sistema",
+        "NoDeviceFound": "No se encontró ningún dispositivo. Verifique la conexión y haga clic en el botón Actualizar.",
+        "PathById": "Ruta por ID",
+        "Refresh": "Refrescar",
+        "LibcameraId": "Id de Libcamera",
+        "PathByHardware": "Ruta por hardware"
+    },
+    "CoolDownDialog": {
+        "CoolDown": "Enfriarse",
+        "No": "No",
+        "Yes": "Sí",
+        "AreYouSure": "¿Estás seguro?"
+    }
 }
