@@ -161,4 +161,11 @@ export const themes: Theme[] = [
         colorLogo: '#FF2300',
         logo: { show: true, light: false },
     },
+    {
+        name: 'wanhao',
+        displayName: 'Wanhao France (Sponsor)',
+        colorLogo: '#F6CF3D',
+        colorPrimary: '#F6CF3D',
+        logo: { show: true, light: false },
+    },
 ]
