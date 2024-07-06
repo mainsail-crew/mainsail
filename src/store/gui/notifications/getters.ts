@@ -41,6 +41,9 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         // browser warnings
         notifications = notifications.concat(getters['getNotificationsBrowserWarnings'])
 
+        // TMC overheat warnings
+        notifications = notifications.concat(getters['getNotificationsOverheatDrivers'])
+
         const mapType = {
             normal: 2,
             high: 1,
@@ -394,6 +397,44 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                 dismissed: false,
             })
         })
+
+        return notifications
+    },
+
+    getNotificationsOverheatDrivers: (state, getters, rootState) => {
+        const notifications: GuiNotificationStateEntry[] = []
+        const date = rootState.server.system_boot_at ?? new Date()
+
+        Object.keys(rootState.printer)
+            .filter((key) => key.startsWith('tmc'))
+            .forEach((key) => {
+                const printerObject = rootState.printer[key]
+                const name = key.split(' ')[1]
+
+                if ((printerObject.drv_status?.ot ?? null) === 1) {
+                    notifications.push({
+                        id: `tmcwarning/${key}-ot`,
+                        priority: 'critical',
+                        title: i18n.t('App.Notifications.TmcOtFlag').toString(),
+                        description: i18n.t('App.Notifications.TmcOtFlagText', { name }).toString(),
+                        date,
+                        dismissed: false,
+                        url: 'https://www.klipper3d.org/TMC_Drivers.html#tmc-reports-error-ot1overtemperror',
+                    })
+                }
+
+                if ((printerObject.drv_status?.otpw ?? null) === 1) {
+                    notifications.push({
+                        id: `tmcwarning/${key}-otpw`,
+                        priority: 'high',
+                        title: i18n.t('App.Notifications.TmcOtpwFlag').toString(),
+                        description: i18n.t('App.Notifications.TmcOtpwFlagText', { name }).toString(),
+                        date,
+                        dismissed: false,
+                        url: 'https://www.klipper3d.org/TMC_Drivers.html#tmc-reports-error-ot1overtemperror',
+                    })
+                }
+            })
 
         return notifications
     },
