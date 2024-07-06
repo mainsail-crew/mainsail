@@ -1240,7 +1240,7 @@
             "TempchartHeightDescription": "Modify the height of the temperature chart on the Dashboard.",
             "Theme": "Theme",
             "ThemeDark": "Dark",
-            "ThemeDescription": "Change the overall look and feel of the application.",
+            "ThemeDescription": "Customizes the branding of the interface.",
             "ThemeLight": "Light",
             "UiSettings": "UI-Settings"
         },
