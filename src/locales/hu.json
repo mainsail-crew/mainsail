@@ -1113,7 +1113,12 @@
             "RulesMin": "Az értéknek minimumnak {min} kell lennie!",
             "RulesPositive": "Az értéknek pozitívnak kell lennie!",
             "RulesRequired": "Érték szükséges!",
-            "RulesZeroAndPositive": "Az értéknek legalább 0-nak kell lennie!"
+            "RulesZeroAndPositive": "Az értéknek legalább 0-nak kell lennie!",
+            "CameraDescriptionWithSnapshotUrl": "Válaszd ki a kamerát (a pillanatfelvétel URL-címével) kívánt használatra",
+            "CameraWarningAlreadySetSmall": "pillanatképek a [timelapse] szakaszban",
+            "SelectWebcam": "Válassz webkamerát...",
+            "CameraWarningAlreadySet": "Ez az érték már be van állítva a Moonraker konfigurációs fájljában.",
+            "NoWebcamFound": "Nincs elérhető webkamera"
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Nagy előnézet",
@@ -1170,7 +1175,9 @@
             "ThemeLight": "Világos",
             "TempchartHeight": "Magassági hőmérséklet diagram",
             "ThemeDark": "Sötét",
-            "ThemeDescription": "Az alkalmazás általános megjelenésének megváltoztatása"
+            "ThemeDescription": "Az alkalmazás általános megjelenésének megváltoztatása",
+            "PrintstatusThumbnailZoomDescription": "Ezzel kikapcsolod a miniatűrkép nagyítását az állapotpanelen.",
+            "PrintstatusThumbnailZoom": "Nagyobb miniatűr nagyítás"
         },
         "WebcamsTab": {
             "AddWebcam": "Webkamera hozzáadása",
