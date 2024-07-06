@@ -264,19 +264,20 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         if (['printing', 'paused'].includes(this.printer_state)) return true
         if (!this.isValid || this.isCorrupt || this.isDirty || this.commitsBehind.length) return false
 
-        return !(this.localVersion && this.remoteVersion && semver.gt(this.remoteVersion, this.localVersion))
+        if (this.type === 'web') return !this.webUpdatable
+
+        return this.commitsBehind.length === 0
     }
 
     get btnIcon() {
         if (this.isDetached || !this.isValid || this.isCorrupt || this.isDirty) return mdiCloseCircle
 
-        if (
-            this.commitsBehind.length ||
-            (this.localVersion && this.remoteVersion && semver.gt(this.remoteVersion, this.localVersion))
-        )
-            return mdiProgressUpload
+        if (this.type === 'web') {
+            if (this.webUpdatable) return mdiProgressUpload
+            else if (this.localVersion === null || this.remoteVersion === null) return mdiHelpCircleOutline
+        }
 
-        if (this.localVersion === null || this.remoteVersion === null) return mdiHelpCircleOutline
+        if (this.type === 'git_repo' && this.commitsBehind.length) return mdiProgressUpload
 
         return mdiCheck
     }
@@ -284,11 +285,8 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     get btnColor() {
         if (this.isCorrupt || this.isDetached || this.isDirty || !this.isValid) return 'orange'
 
-        if (
-            this.commitsBehind.length ||
-            (this.localVersion && this.remoteVersion && semver.gt(this.remoteVersion, this.localVersion))
-        )
-            return 'primary'
+        if (this.type === 'web' && this.webUpdatable) return 'primary'
+        if (this.type === 'git_repo' && this.commitsBehind.length) return 'primary'
 
         return 'green'
     }
@@ -298,13 +296,14 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         if (this.isDetached) return this.$t('Machine.UpdatePanel.Detached')
         if (this.isDirty) return this.$t('Machine.UpdatePanel.Dirty')
         if (!this.isValid) return this.$t('Machine.UpdatePanel.Invalid')
-        if (
-            this.commitsBehind.length ||
-            (this.localVersion && this.remoteVersion && semver.gt(this.remoteVersion, this.localVersion))
-        )
-            return this.$t('Machine.UpdatePanel.Update')
 
-        if (this.localVersion === null || this.remoteVersion === null) return this.$t('Machine.UpdatePanel.Unknown')
+        if (this.type === 'web') {
+            if (this.webUpdatable) return this.$t('Machine.UpdatePanel.Update')
+            else if (this.localVersion === null || this.remoteVersion === null)
+                return this.$t('Machine.UpdatePanel.Unknown')
+        }
+
+        if (this.type === 'git_repo' && this.commitsBehind.length) return this.$t('Machine.UpdatePanel.Update')
 
         return this.$t('Machine.UpdatePanel.UpToDate')
     }
