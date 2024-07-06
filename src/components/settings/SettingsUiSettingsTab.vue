@@ -3,6 +3,12 @@
         <v-card flat>
             <v-card-text>
                 <settings-row
+                    :title="$t('Settings.UiSettingsTab.Mode')"
+                    :sub-title="$t('Settings.UiSettingsTab.ModeDescription')">
+                    <v-select v-model="mode" :items="modes" class="mt-0" hide-details outlined dense />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
                     :title="$t('Settings.UiSettingsTab.Theme')"
                     :sub-title="$t('Settings.UiSettingsTab.ThemeDescription')">
                     <v-select v-model="theme" :items="themes" class="mt-0" hide-details outlined dense />
@@ -70,32 +76,41 @@
                     :dynamic-slot-width="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0" />
                 </settings-row>
-                <v-divider class="my-2" />
-                <settings-row :title="$t('Settings.UiSettingsTab.BigThumbnailBackground')">
-                    <v-btn
-                        v-if="bigThumbnailBackground.toLowerCase() !== defaultBigThumbnailBackground.toLowerCase()"
-                        small
-                        text
-                        class="minwidth-0"
-                        @click="bigThumbnailBackground = defaultBigThumbnailBackground">
-                        <v-icon small>{{ mdiRestart }}</v-icon>
-                    </v-btn>
-                    <v-menu bottom left offset-y :close-on-content-click="false">
-                        <template #activator="{ on, attrs }">
-                            <v-btn
-                                v-bind="attrs"
-                                :color="bigThumbnailBackground"
-                                class="minwidth-0 px-5"
-                                small
-                                v-on="on" />
-                        </template>
-                        <v-color-picker
-                            :value="bigThumbnailBackground"
-                            hide-mode-switch
-                            mode="rgba"
-                            @update:color="updateBigThumbnailBackground" />
-                    </v-menu>
-                </settings-row>
+                <template v-if="boolBigThumbnail">
+                    <v-divider class="my-2" />
+                    <settings-row
+                        :title="$t('Settings.UiSettingsTab.PrintstatusThumbnailZoom')"
+                        :sub-title="$t('Settings.UiSettingsTab.PrintstatusThumbnailZoomDescription')"
+                        :dynamic-slot-width="true">
+                        <v-switch v-model="printstatusThumbnailZoom" hide-details class="mt-0" />
+                    </settings-row>
+                    <v-divider class="my-2" />
+                    <settings-row :title="$t('Settings.UiSettingsTab.BigThumbnailBackground')">
+                        <v-btn
+                            v-if="bigThumbnailBackground.toLowerCase() !== defaultBigThumbnailBackground.toLowerCase()"
+                            small
+                            text
+                            class="minwidth-0"
+                            @click="bigThumbnailBackground = defaultBigThumbnailBackground">
+                            <v-icon small>{{ mdiRestart }}</v-icon>
+                        </v-btn>
+                        <v-menu bottom left offset-y :close-on-content-click="false">
+                            <template #activator="{ on, attrs }">
+                                <v-btn
+                                    v-bind="attrs"
+                                    :color="bigThumbnailBackground"
+                                    class="minwidth-0 px-5"
+                                    small
+                                    v-on="on" />
+                            </template>
+                            <v-color-picker
+                                :value="bigThumbnailBackground"
+                                hide-mode-switch
+                                mode="rgba"
+                                @update:color="updateBigThumbnailBackground" />
+                        </v-menu>
+                    </settings-row>
+                </template>
                 <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINT')"
@@ -267,34 +282,42 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { defaultLogoColor, defaultPrimaryColor, defaultBigThumbnailBackground } from '@/store/variables'
+import { defaultLogoColor, defaultPrimaryColor, defaultBigThumbnailBackground, themes } from '@/store/variables'
 import { Debounce } from 'vue-debounce-decorator'
 import { mdiRestart, mdiTimerOutline } from '@mdi/js'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
+import ThemeMixin from '@/components/mixins/theme'
 
 @Component({
     components: { SettingsRow },
 })
-export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
+export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin) {
     mdiRestart = mdiRestart
     mdiTimerOutline = mdiTimerOutline
 
-    defaultLogoColor = defaultLogoColor
     defaultPrimaryColor = defaultPrimaryColor
     defaultBigThumbnailBackground = defaultBigThumbnailBackground
 
-    get theme() {
-        return this.$store.state.gui.uiSettings.theme
+    get mode() {
+        return this.$store.state.gui.uiSettings.mode
     }
 
-    set theme(newVal) {
+    set mode(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.mode', value: newVal })
+    }
+
+    get theme() {
+        return this.$store.getters['gui/theme']
+    }
+
+    set theme(newVal: string) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.theme', value: newVal })
     }
 
-    get themes() {
+    get modes() {
         return [
             {
                 text: this.$t('Settings.UiSettingsTab.ThemeDark'),
@@ -307,12 +330,25 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
         ]
     }
 
+    get themes() {
+        return themes.map((theme) => {
+            return {
+                text: theme.displayName,
+                value: theme.name,
+            }
+        })
+    }
+
     get logoColor() {
         return this.$store.state.gui.uiSettings.logo
     }
 
     set logoColor(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.logo', value: newVal })
+    }
+
+    get defaultLogoColor() {
+        return themes.find((theme) => theme.name === this.themeName)?.colorLogo ?? defaultLogoColor
     }
 
     get primaryColor() {
@@ -529,6 +565,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolScrewsTiltAdjustDialog', value: newVal })
     }
 
+    get printstatusThumbnailZoom() {
+        return this.$store.state.gui.uiSettings.printstatusThumbnailZoom ?? true
+    }
+
+    set printstatusThumbnailZoom(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.printstatusThumbnailZoom', value: newVal })
+    }
+
     get tempchartHeight() {
         return this.$store.state.gui.uiSettings.tempchartHeight ?? 250
     }
@@ -564,6 +608,17 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     @Debounce(500)
     updateBigThumbnailBackground(newVal: any) {
         this.bigThumbnailBackground = this.clearColorObject(newVal)
+    }
+
+    @Watch('theme')
+    onThemeChanged(newVal: string) {
+        const theme = themes.find((theme) => theme.name === newVal)
+
+        // stop here when no theme was found with this name
+        if (!theme) return
+
+        // update logo color to theme logo color if the theme has a colorLogo
+        if (theme.colorLogo) this.logoColor = theme.colorLogo
     }
 }
 </script>

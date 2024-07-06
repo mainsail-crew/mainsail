@@ -7,7 +7,11 @@
             hide-overlay
             :transition="false"
             @close="close"
-            @keydown.esc="escClose">
+            @keydown.esc="escClose"
+            @keydown.ctrl.shift.s.prevent="restartServiceNameExists && save(restartServiceName)"
+            @keydown.meta.shift.s.prevent="restartServiceNameExists && save(restartServiceName)"
+            @keydown.ctrl.s.prevent="save(null)"
+            @keydown.meta.s.prevent="save(null)">
             <panel
                 card-class="editor-dialog"
                 :icon="isWriteable ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"

@@ -99,11 +99,12 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
 
         const selected: legends = {}
         const available_sensors = rootState.printer?.heaters?.available_sensors ?? []
+        const available_monitors = rootState.printer?.heaters?.available_monitors ?? []
         const viewSettings = rootState.gui?.view?.tempchart?.datasetSettings ?? {}
 
         Object.keys(viewSettings).forEach((key) => {
             // break if this element doesn't exist in available_sensors
-            if (!available_sensors.includes(key)) return
+            if (!available_sensors.includes(key) && !available_monitors.includes(key)) return
 
             Object.keys(viewSettings[key]).forEach((attrKey) => {
                 // break if this element isn't a valid datasetType

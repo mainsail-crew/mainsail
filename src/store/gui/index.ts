@@ -3,7 +3,13 @@ import { Module } from 'vuex'
 import { actions } from '@/store/gui/actions'
 import { mutations } from '@/store/gui/mutations'
 import { getters } from '@/store/gui/getters'
-import { defaultTheme, defaultLogoColor, defaultPrimaryColor, defaultBigThumbnailBackground } from '@/store/variables'
+import {
+    defaultTheme,
+    defaultLogoColor,
+    defaultPrimaryColor,
+    defaultBigThumbnailBackground,
+    defaultMode,
+} from '@/store/variables'
 
 // load modules
 import { console } from '@/store/gui/console'
@@ -150,6 +156,7 @@ export const getDefaultState = (): GuiState => {
             entries: [],
         },
         uiSettings: {
+            mode: defaultMode,
             theme: defaultTheme,
             logo: defaultLogoColor,
             primary: defaultPrimaryColor,
@@ -174,6 +181,7 @@ export const getDefaultState = (): GuiState => {
             boolScrewsTiltAdjustDialog: true,
             tempchartHeight: 250,
             hideUpdateWarnings: false,
+            printstatusThumbnailZoom: true,
         },
         view: {
             blockFileUpload: false,
