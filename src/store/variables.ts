@@ -156,6 +156,12 @@ export const themes: Theme[] = [
         logo: { show: true, light: false },
     },
     {
+        name: 'voron',
+        displayName: 'Voron Design',
+        colorLogo: '#FF2300',
+        logo: { show: true, light: false },
+    },
+    {
         name: 'btt',
         displayName: 'BigTreeTech (Sponsor)',
         colorLogo: '#ef0025',

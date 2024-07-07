@@ -11,7 +11,7 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.Theme')"
                     :sub-title="$t('Settings.UiSettingsTab.ThemeDescription')">
-                    <v-select v-model="theme" :items="themes" class="mt-0" hide-details outlined dense />
+                    <v-select v-model="themeName" :items="themes" class="mt-0" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.UiSettingsTab.Logo')">
@@ -298,7 +298,6 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
     mdiRestart = mdiRestart
     mdiTimerOutline = mdiTimerOutline
 
-    defaultPrimaryColor = defaultPrimaryColor
     defaultBigThumbnailBackground = defaultBigThumbnailBackground
 
     get mode() {
@@ -309,11 +308,19 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.mode', value: newVal })
     }
 
-    get theme() {
+    get themeName() {
         return this.$store.getters['gui/theme']
     }
 
-    set theme(newVal: string) {
+    set themeName(newVal: string) {
+        const newTheme = themes.find((theme) => theme.name === newVal)
+        if (this.logoColor === this.defaultLogoColor) {
+            this.logoColor = newTheme?.colorLogo ?? defaultLogoColor
+        }
+        if (this.primaryColor === this.defaultPrimaryColor) {
+            this.primaryColor = newTheme?.colorPrimary ?? defaultPrimaryColor
+        }
+
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.theme', value: newVal })
     }
 
@@ -348,7 +355,11 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
     }
 
     get defaultLogoColor() {
-        return themes.find((theme) => theme.name === this.themeName)?.colorLogo ?? defaultLogoColor
+        return this.theme?.colorLogo ?? defaultLogoColor
+    }
+
+    get defaultPrimaryColor() {
+        return this.theme?.colorPrimary ?? defaultPrimaryColor
     }
 
     get primaryColor() {
