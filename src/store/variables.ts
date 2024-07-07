@@ -162,8 +162,8 @@ export const themes: Theme[] = [
         logo: { show: true, light: false },
     },
     {
-        name: 'wanhao',
-        displayName: 'Wanhao France (Sponsor)',
+        name: 'yumi',
+        displayName: 'YUMI (Sponsor)',
         colorLogo: '#F6CF3D',
         colorPrimary: '#F6CF3D',
         logo: { show: true, light: false },
