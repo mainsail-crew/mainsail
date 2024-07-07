@@ -168,4 +168,11 @@ export const themes: Theme[] = [
         colorPrimary: '#326799',
         logo: { show: true, light: false },
     },
+    {
+        name: 'yumi',
+        displayName: 'YUMI (Sponsor)',
+        colorLogo: '#F6CF3D',
+        colorPrimary: '#F6CF3D',
+        logo: { show: true, light: false },
+    },
 ]
