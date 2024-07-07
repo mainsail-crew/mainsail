@@ -175,4 +175,11 @@ export const themes: Theme[] = [
         colorPrimary: '#F6CF3D',
         logo: { show: true, light: false },
     },
+    {
+        name: 'vzbot',
+        displayName: 'VzBot',
+        colorLogo: '#FF0000',
+        logo: { show: true, light: false },
+        sidebarBackground: { show: true, light: false },
+    },
 ]
