@@ -161,4 +161,10 @@ export const themes: Theme[] = [
         colorLogo: '#FF2300',
         logo: { show: true, light: false },
     },
+    {
+        name: 'vzbot',
+        displayName: 'VzBot',
+        colorLogo: '#FF0000',
+        logo: { show: true, light: false },
+    },
 ]
