@@ -162,6 +162,20 @@ export const themes: Theme[] = [
         logo: { show: true, light: false },
     },
     {
+        name: 'ldo',
+        displayName: 'LDO Motion (Sponsor)',
+        colorLogo: '#326799',
+        colorPrimary: '#326799',
+        logo: { show: true, light: false },
+    },
+    {
+        name: 'yumi',
+        displayName: 'YUMI (Sponsor)',
+        colorLogo: '#F6CF3D',
+        colorPrimary: '#F6CF3D',
+        logo: { show: true, light: false },
+    },
+    {
         name: 'vzbot',
         displayName: 'VzBot',
         colorLogo: '#FF0000',
