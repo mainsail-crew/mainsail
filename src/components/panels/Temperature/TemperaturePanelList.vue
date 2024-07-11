@@ -62,15 +62,7 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
     }
 
     get filteredHeaters() {
-        return this.available_heaters
-            .filter((fullName: string) => {
-                const splits = fullName.split(' ')
-                let name = splits[0]
-                if (splits.length > 1) name = splits[1]
-
-                return !name.startsWith('_')
-            })
-            .sort(this.sortObjectName)
+        return this.filterNamesAndSort(this.available_heaters)
     }
 
     get available_sensors() {
@@ -104,21 +96,15 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
     }
 
     get temperature_sensors() {
-        return this.available_sensors
-            .filter((fullName: string) => {
+        return this.filterNamesAndSort(this.available_sensors).filter((fullName: string) => {
                 if (this.available_heaters.includes(fullName)) return false
                 if (this.temperature_fans.includes(fullName)) return false
 
                 // hide MCU & Host sensors, if the function is enabled
                 if (this.hideMcuHostSensors && this.checkMcuHostSensor(fullName)) return false
 
-                const splits = fullName.split(' ')
-                let name = splits[0]
-                if (splits.length > 1) name = splits[1]
-
-                return !name.startsWith('_')
+            return true
             })
-            .sort(this.sortObjectName)
     }
 
     get heaterObjects() {
@@ -136,21 +122,27 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
         return ['temperature_mcu', 'temperature_host'].includes(sensor_type)
     }
 
-    sortObjectName(a: string, b: string) {
-        const splitsA = a.split(' ')
-        let nameA = splitsA[0]
-        if (splitsA.length > 1) nameA = splitsA[1]
-        nameA = nameA.toUpperCase()
+    filterNamesAndSort(fullNames: string[]) {
+        return fullNames.filter(this.isVisibleName).sort(this.sortObjectName)
+    }
 
-        const splitsB = b.split(' ')
-        let nameB = splitsB[0]
-        if (splitsB.length > 1) nameB = splitsB[1]
-        nameB = nameB.toUpperCase()
+    isVisibleName(fullName: string) {
+        return !this.shortName(fullName).startsWith('_')
+    }
+
+    sortObjectName(a: string, b: string) {
+        const nameA = this.shortName(a).toUpperCase()
+        const nameB = this.shortName(b).toUpperCase()
 
         if (nameA < nameB) return -1
         if (nameA > nameB) return 1
 
         return 0
+    }
+
+    shortName(fullName: string) {
+        const splits = fullName.split(' ')
+        return splits.length == 1 ? splits[0] : splits[1]
     }
 }
 </script>
