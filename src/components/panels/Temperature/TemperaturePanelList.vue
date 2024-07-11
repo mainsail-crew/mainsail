@@ -27,7 +27,9 @@
                         :object-name="objectName"
                         :is-responsive-mobile="el.is.mobile ?? false" />
                     <temperature-panel-list-item-nevermore
-                        v-if="existsNevermoreFilter"
+                        v-for="objectName in nevermoreObjects"
+                        :key="objectName"
+                        :object-name="objectName"
                         :is-responsive-mobile="el.is.mobile ?? false" />
                     <temperature-panel-list-item
                         v-for="objectName in temperature_sensors"
@@ -73,6 +75,12 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
         return this.$store.state.printer?.heaters?.available_monitors ?? []
     }
 
+    get available_nevermores() {
+        return Object.keys(this.$store.state.printer).filter(
+            (name) => name === 'nevermore' || name.startsWith('nevermore ')
+        )
+    }
+
     get monitors() {
         return this.available_monitors.sort(this.sortObjectName)
     }
@@ -81,10 +89,6 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
         return this.available_sensors
             .filter((name: string) => name.startsWith('temperature_fan') && !name.startsWith('temperature_fan _'))
             .sort(this.sortObjectName)
-    }
-
-    get existsNevermoreFilter() {
-        return 'nevermore' in this.$store.state.printer
     }
 
     get hideMcuHostSensors(): boolean {
@@ -97,18 +101,22 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
 
     get temperature_sensors() {
         return this.filterNamesAndSort(this.available_sensors).filter((fullName: string) => {
-                if (this.available_heaters.includes(fullName)) return false
-                if (this.temperature_fans.includes(fullName)) return false
+            if (this.available_heaters.includes(fullName)) return false
+            if (this.temperature_fans.includes(fullName)) return false
 
-                // hide MCU & Host sensors, if the function is enabled
-                if (this.hideMcuHostSensors && this.checkMcuHostSensor(fullName)) return false
+            // hide MCU & Host sensors, if the function is enabled
+            if (this.hideMcuHostSensors && this.checkMcuHostSensor(fullName)) return false
 
             return true
-            })
+        })
     }
 
     get heaterObjects() {
         return [...this.filteredHeaters, ...this.temperature_fans]
+    }
+
+    get nevermoreObjects() {
+        return this.filterNamesAndSort(this.available_nevermores)
     }
 
     get settings() {
