@@ -189,4 +189,10 @@ export const themes: Theme[] = [
         colorPrimary: '#fa6831',
         logo: { show: true, light: false },
     },
+    {
+        name: 'btt',
+        displayName: 'BigTreeTech (Sponsor)',
+        colorLogo: '#ef0025',
+        logo: { show: true, light: false },
+    },
 ]
