@@ -190,6 +190,12 @@ export const themes: Theme[] = [
         logo: { show: true, light: false },
     },
     {
+        name: 'btt',
+        displayName: 'BigTreeTech (Sponsor)',
+        colorLogo: '#ef0025',
+        logo: { show: true, light: false },
+    },
+    {
         name: 'multec',
         displayName: 'Multec GmbH (Sponsor)',
         colorLogo: '#234D7A',
