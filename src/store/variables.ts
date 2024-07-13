@@ -195,4 +195,11 @@ export const themes: Theme[] = [
         colorLogo: '#ef0025',
         logo: { show: true, light: false },
     },
+    {
+        name: 'multec',
+        displayName: 'Multec GmbH (Sponsor)',
+        colorLogo: '#234D7A',
+        colorPrimary: '#234D7A',
+        logo: { show: true, light: false },
+    },
 ]
