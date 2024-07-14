@@ -104,6 +104,51 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
                 value: `${Math.round((this.job.metadata?.filament_weight_total ?? 0) * 100) / 100} g`,
                 exists: this.job.metadata && 'filament_weight_total' in this.job.metadata,
             },
+            {
+                name: this.$t('History.EstimatedFilament').toString(),
+                value: `${Math.round(this.job.metadata?.filament_total ?? 0)} mm`,
+                exists: this.job.metadata && 'filament_total' in this.job.metadata,
+            },
+            {
+                name: this.$t('History.FilamentUsed').toString(),
+                value: `${Math.round(this.job.metadata?.filament_used ?? 0)} mm`,
+                exists: this.job.metadata && 'filament_used' in this.job.metadata,
+            },
+            {
+                name: this.$t('History.FirstLayerExtTemp').toString(),
+                value: `${this.job.metadata?.first_layer_extr_temp ?? 0} °C`,
+                exists: this.job.metadata && 'first_layer_extr_temp' in this.job.metadata,
+            },
+            {
+                name: this.$t('History.FirstLayerBedTemp').toString(),
+                value: `${this.job.metadata?.first_layer_bed_temp ?? 0} °C`,
+                exists: this.job.metadata && 'first_layer_bed_temp' in this.job.metadata,
+            },
+            {
+                name: this.$t('History.FirstLayerHeight').toString(),
+                value: `${this.job.metadata?.first_layer_height ?? 0} mm`,
+                exists: this.job.metadata && 'first_layer_height' in this.job.metadata,
+            },
+            {
+                name: this.$t('History.LayerHeight').toString(),
+                value: `${this.job.metadata?.layer_height ?? 0} mm`,
+                exists: this.job.metadata && 'layer_height' in this.job.metadata,
+            },
+            {
+                name: this.$t('History.ObjectHeight').toString(),
+                value: `${this.job.metadata?.object_height ?? 0} mm`,
+                exists: this.job.metadata && 'object_height' in this.job.metadata,
+            },
+            {
+                name: this.$t('History.Slicer').toString(),
+                value: this.job.metadata?.slicer ?? '--',
+                exists: this.job.metadata && 'slicer' in this.job.metadata,
+            },
+            {
+                name: this.$t('History.SlicerVersion').toString(),
+                value: this.job.metadata?.slicer_version ?? '--',
+                exists: this.job.metadata && 'slicer_version' in this.job.metadata,
+            },
         ]
 
         if ('auxiliary_data' in this.job) {
