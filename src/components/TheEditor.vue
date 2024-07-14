@@ -72,10 +72,10 @@
                                 :items="configFileStructure"
                                 @update:active="activeChanges"
                             >
-                                <template v-slot:label="{ item }">
+                                <template #label="{ item }">
                                     <div :class="item.type == 'item' ? 'ͼp' : 'ͼt'">{{ item.name }}</div>
                                 </template>
-                                <template v-slot:append="{ item }" v-if="restartServiceName === 'klipper'">
+                                <template v-if="restartServiceName === 'klipper'" #append="{ item }">
                                     <v-btn
                                         v-if="item.type == 'section'"
                                         icon

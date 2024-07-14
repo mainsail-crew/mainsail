@@ -193,14 +193,14 @@
         "Downloading": "正在下载",
         "FailedSave": "上传{filename}失败！",
         "FileReadOnly": "只读文件",
+        "FileStructure": "结构",
         "SaveClose": "保存并关闭",
         "SaveRestart": "保存并重启",
         "SuccessfullySaved": "{filename}保存成功！",
         "UnsavedChanges": "有未保存的更改",
         "UnsavedChangesMessage": "是否保存对{filename}的更改？",
         "UnsavedChangesSubMessage": "如果不保存，您的更改将丢失。您可以在编辑器设置中关闭此提示。",
-        "Uploading": "正在上传",
-        "FileStructure": "结构"
+        "Uploading": "正在上传"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "确定要执行此操作吗？",
