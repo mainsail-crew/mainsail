@@ -59,8 +59,10 @@
                     </v-btn>
                 </template>
                 <v-card-text class="pa-0">
-                    <div v-if="fileStructureSidebar" class="d-none d-md-flex float-right structure-sidebar cm-editor ͼo">
-                        <div class="cm-scroller" style="width: 100%;">
+                    <div
+                        v-if="fileStructureSidebar"
+                        class="d-none d-md-flex float-right structure-sidebar cm-editor ͼo">
+                        <div class="cm-scroller" style="width: 100%">
                             <v-treeview
                                 activatable
                                 open-on-click
@@ -70,8 +72,7 @@
                                 :open="structureOpen"
                                 item-key="line"
                                 :items="configFileStructure"
-                                @update:active="activeChanges"
-                            >
+                                @update:active="activeChanges">
                                 <template #label="{ item }">
                                     <div :class="item.type == 'item' ? 'ͼp' : 'ͼt'">{{ item.name }}</div>
                                 </template>
@@ -90,7 +91,7 @@
                             </v-treeview>
                         </div>
                     </div>
-                    <div :class="fileStructureSidebar?'structure':''">
+                    <div :class="fileStructureSidebar ? 'structure' : ''">
                         <codemirror-async
                             v-if="show"
                             ref="editor"
@@ -512,7 +513,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
 @media screen and (min-width: 960px) {
     .structure {
-        margin-right: 300px
+        margin-right: 300px;
     }
     .structure-sidebar {
         width: 300px;

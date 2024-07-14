@@ -119,7 +119,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
         const l: any = this.cminstance?.state?.doc.line(line)
         this.cminstance?.dispatch({
             selection: { head: l.from, anchor: l.to },
-            scrollIntoView: true
+            scrollIntoView: true,
         })
     }
 }
