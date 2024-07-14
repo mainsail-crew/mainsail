@@ -199,7 +199,8 @@
         "UnsavedChanges": "有未保存的更改",
         "UnsavedChangesMessage": "是否保存对{filename}的更改？",
         "UnsavedChangesSubMessage": "如果不保存，您的更改将丢失。您可以在编辑器设置中关闭此提示。",
-        "Uploading": "正在上传"
+        "Uploading": "正在上传",
+        "FileStructure": "结构"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "确定要执行此操作吗？",

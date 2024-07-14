@@ -203,7 +203,8 @@
         "UnsavedChanges": "Unsaved Changes",
         "UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
         "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
-        "Uploading": "Uploading"
+        "Uploading": "Uploading",
+        "FileStructure": "File Structure"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Are you sure?",
@@ -375,7 +376,6 @@
         "EntryNextPerform": "Next perform:",
         "EntryPerformedAt": "Performed at {date}.",
         "EntrySince": "Used since:",
-        "EstimatedFilament": "Estimated Filament",
         "EstimatedFilamentWeight": "Estimated Filament Weight",
         "EstimatedTime": "Estimated Time",
         "FilamentBasedReminder": "Filament",
@@ -426,7 +426,6 @@
         "SelectedJobs": "Selected Jobs",
         "SelectedPrinttime": "Selected Print Time",
         "Slicer": "Slicer",
-        "SlicerVersion": "Slicer Version",
         "StartTime": "Start Time",
         "Statistics": "Statistics",
         "Status": "Status",

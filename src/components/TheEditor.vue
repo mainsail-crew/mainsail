@@ -32,6 +32,16 @@
                         {{ $t('Editor.ConfigReference') }}
                     </v-btn>
                     <v-btn
+                        v-if="configFileStructure"
+                        text
+                        tile
+                        target="_blank"
+                        class="d-none d-md-flex"
+                        @click="showFileStructure()">
+                        <v-icon small class="mr-1">{{ mdiFormatListCheckbox }}</v-icon>
+                        {{ $t('Editor.FileStructure') }}
+                    </v-btn>
+                    <v-btn
                         v-if="restartServiceNameExists"
                         color="primary"
                         text
@@ -49,12 +59,46 @@
                     </v-btn>
                 </template>
                 <v-card-text class="pa-0">
-                    <codemirror-async
-                        v-if="show"
-                        ref="editor"
-                        v-model="sourcecode"
-                        :name="filename"
-                        :file-extension="fileExtension" />
+                    <div v-if="fileStructureSidebar" class="d-none d-md-flex float-right structure-sidebar cm-editor ͼo">
+                        <div class="cm-scroller" style="width: 100%;">
+                            <v-treeview
+                                activatable
+                                open-on-click
+                                dense
+                                dark
+                                :active="structureActive"
+                                :open="structureOpen"
+                                item-key="line"
+                                :items="configFileStructure"
+                                @update:active="activeChanges"
+                            >
+                                <template v-slot:label="{ item }">
+                                    <div :class="item.type == 'item' ? 'ͼp' : 'ͼt'">{{ item.name }}</div>
+                                </template>
+                                <template v-slot:append="{ item }" v-if="restartServiceName === 'klipper'">
+                                    <v-btn
+                                        v-if="item.type == 'section'"
+                                        icon
+                                        small
+                                        plain
+                                        color="grey darken-2"
+                                        :href="klipperConfigReference + '#' + item.name.split(' ')[0]"
+                                        target="_blank">
+                                        <v-icon small class="mr-1">{{ mdiHelpCircle }}</v-icon>
+                                    </v-btn>
+                                </template>
+                            </v-treeview>
+                        </div>
+                    </div>
+                    <div :class="fileStructureSidebar?'structure':''">
+                        <codemirror-async
+                            v-if="show"
+                            ref="editor"
+                            v-model="sourcecode"
+                            :name="filename"
+                            :file-extension="fileExtension"
+                            @lineChange="lineChanges"/>
+                    </div>
                 </v-card-text>
             </panel>
         </v-dialog>
@@ -139,9 +183,11 @@ import {
     mdiHelpCircle,
     mdiRestart,
     mdiUsb,
+    mdiFormatListCheckbox,
 } from '@mdi/js'
 import type Codemirror from '@/components/inputs/Codemirror.vue'
 import DevicesDialog from '@/components/dialogs/DevicesDialog.vue'
+import { ConfigFileSection } from '@/store/files/types'
 
 @Component({
     components: { DevicesDialog, Panel, CodemirrorAsync },
@@ -149,6 +195,9 @@ import DevicesDialog from '@/components/dialogs/DevicesDialog.vue'
 export default class TheEditor extends Mixins(BaseMixin) {
     dialogConfirmChange = false
     dialogDevices = false
+    fileStructureSidebar = true
+    structureActive: number[] = []
+    structureOpen: number[] = []
 
     formatFilesize = formatFilesize
 
@@ -164,6 +213,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiFileDocumentOutline = mdiFileDocumentOutline
     mdiUsb = mdiUsb
+    mdiFormatListCheckbox = mdiFormatListCheckbox
 
     declare $refs: {
         editor: Codemirror
@@ -305,6 +355,44 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return url
     }
 
+    get configFileStructure() {
+        if (['conf', 'cfg'].includes(this.fileExtension)) {
+            const sourcecode = this.sourcecode
+            const lines = sourcecode.split(/\n/gi)
+            const regex = /^[^#\S]*?(\[(?<section>.*?)]|(?<name>\w+)\s*?[:=])/gim
+            let section = null
+            let name = null
+            let structure: ConfigFileSection[] = []
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i]
+                const matches = [...line.matchAll(regex)]
+                if (matches.length > 0) {
+                    const match = matches[0]
+                    if (match['groups']['section']) {
+                        section = match['groups']['section']
+                        structure.push({
+                            name: section,
+                            type: 'section',
+                            line: i + 1,
+                            children: [],
+                        })
+                    } else if (match['groups']['name']) {
+                        name = match['groups']['name']
+                        structure[structure.length - 1]['children'].push({
+                            name: name,
+                            type: 'item',
+                            line: i + 1,
+                        })
+                    }
+                }
+            }
+            this.fileStructureSidebar = true
+            return structure
+        }
+        this.fileStructureSidebar = false
+        return null
+    }
+
     cancelDownload() {
         this.$store.dispatch('editor/cancelLoad')
     }
@@ -334,6 +422,29 @@ export default class TheEditor extends Mixins(BaseMixin) {
         this.$store.dispatch('editor/saveFile', {
             content: this.sourcecode,
             restartServiceName: restartServiceName,
+        })
+    }
+
+    showFileStructure() {
+        this.fileStructureSidebar = !this.fileStructureSidebar
+    }
+
+    activeChanges(key: any) {
+        this.$refs.editor.gotoLine(key)
+    }
+
+    lineChanges(line: number) {
+        this.configFileStructure?.map((item) => {
+            if (item.line == line) {
+                this.structureActive = [line]
+            } else {
+                item.children?.map((child) => {
+                    if (child.line == line) {
+                        this.structureActive = [line]
+                        if (!this.structureOpen.includes(item.line)) this.structureOpen.push(item.line)
+                    }
+                })
+            }
         })
     }
 
@@ -398,4 +509,15 @@ export default class TheEditor extends Mixins(BaseMixin) {
     background-color: var(--color-primary);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpath d='M15.88 8.29L10 14.17l-1.88-1.88a.996.996 0 1 0-1.41 1.41l2.59 2.59c.39.39 1.02.39 1.41 0L17.3 9.7a.996.996 0 0 0 0-1.41c-.39-.39-1.03-.39-1.42 0z' fill='%23fffff'/%3E %3C/svg%3E");
 }
+
+@media screen and (min-width: 960px) {
+    .structure {
+        margin-right: 300px
+    }
+    .structure-sidebar {
+        width: 300px;
+        overflow-y: auto;
+    }
+}
+
 </style>
