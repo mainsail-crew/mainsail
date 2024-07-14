@@ -1,6 +1,7 @@
 {
     "defaultLocale": "en",
-    "defaultTheme": "dark",
+    "defaultMode": "dark",
+    "defaultTheme": "mainsail",
     "hostname": null,
     "port": null,
     "path": null,

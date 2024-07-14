@@ -257,4 +257,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     padding: 3px 10px;
     border-top-left-radius: 5px;
 }
+
+html.theme--light .webcamFpsOutput {
+    background: rgba(255, 255, 255, 0.7);
+}
 </style>

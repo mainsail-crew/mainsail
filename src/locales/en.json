@@ -35,7 +35,11 @@
             "OneHourShort": "1H",
             "OneWeekShort": "1W",
             "Remind": "Remind:",
-            "ShowDetails": "show details"
+            "ShowDetails": "show details",
+            "TmcOtFlag": "Stepper driver error: OT flag set",
+            "TmcOtFlagText": "The stepper driver '{name}' has triggered the OT flag and stopped working. This can be caused by a too high current. Please check the stepper driver settings and cooling.",
+            "TmcOtpwFlag": "Stepper driver warning: OTPW flag set",
+            "TmcOtpwFlagText": "The stepper driver '{name}' has triggered the OTPW flag and may stop working if it gets any hotter. This is an indication of an over temperature condition. This can be caused by a too high current. Please check the stepper driver settings and cooling."
         },
         "NumberInput": {
             "GreaterOrEqualError": "Must be greater or equal than {min}!",
@@ -1112,7 +1116,9 @@
             "Autorender": "Autorender",
             "AutorenderDescription": "If enabled, the timelapse video will automatically render at the end of the print",
             "Camera": "Camera",
-            "CameraDescription": "Select which camera should be used",
+            "CameraDescriptionWithSnapshotUrl": "Select which camera (with snapshot URL) should be used",
+            "CameraWarningAlreadySet": "This value is already set in the Moonraker configuration file.",
+            "CameraWarningAlreadySetSmall": "snapshoturl in the [timelapse] section",
             "ConstantRateFactor": "Constant Rate Factor",
             "ConstantRateFactorDescription": "This configure quality vs file size of the rendered video. The range of the CRF scale is 0–51, where 0 is lossless, 23 is the default and 51 is worst quality possible. A lower value generally leads to higher quality and a subjectively sane range is 17–28. Consider 17 or 18 to be visually lossless.",
             "duplicatelastframe": "Duplicate Last Frame",
@@ -1130,6 +1136,7 @@
             "HyperlapseCycleDescription": "A snapshot will be taken any X seconds",
             "Mode": "Mode",
             "ModeDescription": "Select between Layer macro and Hyperlapse (time-based) mode",
+            "NoWebcamFound": "No Webcam available",
             "OutputFramerate": "Output Framerate",
             "OutputFramerateDescription": "Defines the framerate of the video. Note: this will be ignored if variable_fps is enabled",
             "Parkhead": "Park Toolhead",
@@ -1160,6 +1167,7 @@
             "RulesZeroAndPositive": "Value must be 0 or greater!",
             "SaveFrames": "Save Frames",
             "SaveFramesDescription": "Save the frames to a zip-file for external rendering",
+            "SelectWebcam": "Select webcam...",
             "StreamDelayCompensation": "Stream Delay Compensation",
             "StreamDelayCompensationDescription": "Delay frame capture",
             "Targetlength": "Target Length",
@@ -1176,9 +1184,9 @@
             "VariableFps": "Variable FPS",
             "VariableFpsDescription": "If enabled, the framerate of the output video will be calculated based on target length",
             "VariableFpsMax": "Variable FPS max",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "Maximum variable FPS value",
             "VariableFpsMin": "Variable FPS min",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "Minimum variable FPS value"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Bed Screws Dialog",
@@ -1217,6 +1225,8 @@
             "Logo": "Logo",
             "ManualProbeDialog": "Manual Probe Helper Dialog",
             "ManualProbeDialogDescription": "Display helper dialog for PROBE_CALIBRATE or Z_ENDSTOP_CALIBRATE.",
+            "Mode": "Mode",
+            "ModeDescription": "Change the overall look and feel of the application.",
             "NavigationStyle": "Navigation style",
             "NavigationStyleDescription": "Change navigation appearance",
             "NavigationStyleIconsAndText": "Icons + Text",
@@ -1224,6 +1234,8 @@
             "PowerDeviceName": "Printer power device",
             "PowerDeviceNameDescription": "Select which Moonraker power device should be used to power on the printer.",
             "Primary": "Primary",
+            "PrintstatusThumbnailZoom": "Large thumbnail zoom",
+            "PrintstatusThumbnailZoomDescription": "This will deactivate the zoom effect of the thumbnail in the status panel.",
             "ProgressAsFavicon": "Show progress as favicon",
             "ProgressAsFaviconDescription": "Change the Mainsail logo favicon to a progress circle.",
             "ScrewsTiltAdjustDialog": "Screws Tilt Adjust Dialog",
@@ -1232,7 +1244,7 @@
             "TempchartHeightDescription": "Modify the height of the temperature chart on the Dashboard.",
             "Theme": "Theme",
             "ThemeDark": "Dark",
-            "ThemeDescription": "Change the overall look and feel of the application",
+            "ThemeDescription": "Customizes the branding of the interface.",
             "ThemeLight": "Light",
             "UiSettings": "UI-Settings"
         },

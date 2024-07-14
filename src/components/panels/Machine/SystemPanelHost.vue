@@ -39,7 +39,7 @@
                             {{ $t('Machine.SystemPanel.Values.Load', { load: hostStats.load }) }},
                         </span>
                         <span v-if="hostStats.memoryFormat" class="d-inline-block text-no-wrap">
-                            {{ $t('Machine.SystemPanel.Values.Memory', { memory: hostStats.memoryFormat }) }},
+                            {{ $t('Machine.SystemPanel.Values.Memory', { memory: hostStats.memoryFormat }) }}
                         </span>
                         <span class="text-no-wrap">
                             <template v-if="hostStats.tempSensor">
@@ -51,6 +51,7 @@
                                     <v-tooltip top>
                                         <template #activator="{ on, attrs }">
                                             <span v-bind="attrs" v-on="on">
+                                                ,
                                                 {{
                                                     $t('Machine.SystemPanel.Values.Temp', {
                                                         temp: hostStats.tempSensor.temperature,
@@ -74,6 +75,7 @@
                                     </v-tooltip>
                                 </template>
                                 <span v-else>
+                                    ,
                                     {{
                                         $t('Machine.SystemPanel.Values.Temp', {
                                             temp: hostStats.tempSensor.temperature,

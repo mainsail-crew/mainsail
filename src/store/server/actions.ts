@@ -59,14 +59,14 @@ export const actions: ActionTree<ServerState, RootState> = {
             dispatch('socket/addInitModule', 'gui/init', { root: true })
             dispatch('gui/init', null, { root: true })
         } else dispatch('gui/initDb', null, { root: true })
-        if (payload.namespaces?.includes('webcams')) {
-            dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
-            dispatch('gui/webcams/init', null, { root: true })
-        }
         if (payload.namespaces?.includes('maintenance')) {
             dispatch('socket/addInitModule', 'gui/maintenance/init', { root: true })
             dispatch('gui/maintenance/init', null, { root: true })
         } else dispatch('gui/maintenance/initDb', null, { root: true })
+
+        // init webcams
+        dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
+        dispatch('gui/webcams/init', null, { root: true })
 
         commit('saveDbNamespaces', payload.namespaces)
 

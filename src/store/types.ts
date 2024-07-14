@@ -38,3 +38,22 @@ export interface ConfigJsonInstance {
     port?: number
     path?: string
 }
+
+export interface Theme {
+    name: string
+    displayName: string
+    colorLogo: string
+    colorPrimary?: string
+    logo?: {
+        show: boolean
+        light: boolean
+    }
+    sidebarBackground?: {
+        show: boolean
+        light: boolean
+    }
+    mainBackground?: {
+        show: boolean
+        light: boolean
+    }
+}

@@ -36,6 +36,14 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
         // stop, when no entries are available/found
         const entries = defaults.entries ?? []
         if (entries?.length === 0) {
+            Vue.$socket.emit('server.database.post_item', {
+                namespace: 'maintenance',
+                key: uuidv4(),
+                value: {
+                    name: 'MAINTENANCE_INIT',
+                },
+            })
+
             return
         }
 
@@ -92,7 +100,12 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
 
     async initStore({ commit, dispatch }, payload) {
         await commit('reset')
-        await commit('initStore', payload)
+
+        const entries = payload.value ?? {}
+        const initKey = Object.keys(entries).find((key) => entries[key]?.name === 'MAINTENANCE_INIT')
+        if (initKey) delete entries[initKey]
+
+        await commit('initStore', entries)
         await dispatch('socket/removeInitModule', 'gui/maintenance/init', { root: true })
     },
 
