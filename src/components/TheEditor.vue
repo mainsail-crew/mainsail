@@ -59,7 +59,8 @@
                     </v-btn>
                 </template>
                 <v-card-text class="pa-0">
-                    <div v-if="fileStructureSidebar" class="d-none d-md-flex float-right structure-sidebar cm-editor ͼo">
+                    <div v-if="fileStructureSidebar"
+                         class="d-none d-md-flex float-right structure-sidebar cm-editor ͼo">
                         <div class="cm-scroller" style="width: 100%;">
                             <v-treeview
                                 activatable
@@ -105,7 +106,7 @@
         <v-snackbar v-model="loaderBool" :timeout="-1" :value="true" fixed right bottom>
             <div>
                 {{ snackbarHeadline }}
-                <br />
+                <br/>
                 <strong>{{ filename }}</strong>
             </div>
             <template v-if="loaderProgress.total > 0">
@@ -113,7 +114,7 @@
                     ({{ formatFilesize(loaderProgress.loaded) }}/{{ formatFilesize(loaderProgress.total) }})
                 </span>
                 {{ Math.round((100 * loaderProgress.loaded) / loaderProgress.total) }} % @ {{ loaderProgress.speed }}/s
-                <br />
+                <br/>
                 <v-progress-linear
                     class="mt-2"
                     :value="(100 * loaderProgress.loaded) / loaderProgress.total"></v-progress-linear>
@@ -147,7 +148,7 @@
                     </v-row>
                 </v-card-text>
                 <v-card-actions>
-                    <v-spacer />
+                    <v-spacer/>
                     <v-btn text @click="discardChanges">
                         {{ $t('Editor.DontSave') }}
                     </v-btn>
@@ -162,7 +163,7 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <devices-dialog :show-dialog="dialogDevices" @close="dialogDevices = false" />
+        <devices-dialog :show-dialog="dialogDevices" @close="dialogDevices = false"/>
     </div>
 </template>
 
@@ -219,87 +220,87 @@ export default class TheEditor extends Mixins(BaseMixin) {
         editor: Codemirror
     }
 
-    get changed() {
+    get changed () {
         return this.$store.state.editor.changed ?? false
     }
 
-    get changedOutput() {
+    get changedOutput () {
         return this.changed ? '*' : ''
     }
 
-    get show() {
+    get show () {
         return this.$store.state.editor.bool ?? false
     }
 
-    get filepath(): string {
+    get filepath (): string {
         return this.$store.state.editor.filepath ?? ''
     }
 
-    get filename(): string {
+    get filename (): string {
         return this.$store.state.editor.filename ?? ''
     }
 
-    get filenameWithoutExtension(): string {
+    get filenameWithoutExtension (): string {
         if (this.filename.lastIndexOf('.')) return this.filename.slice(0, this.filename.lastIndexOf('.'))
 
         return this.filename
     }
 
-    get fileExtension() {
+    get fileExtension () {
         if (this.filename.lastIndexOf('.')) return this.filename.slice(this.filename.lastIndexOf('.') + 1)
 
         return ''
     }
 
-    get fileroot() {
+    get fileroot () {
         return this.$store.state.editor.fileroot ?? 'gcodes'
     }
 
-    get permissions(): string {
+    get permissions (): string {
         return this.$store.state.editor.permissions ?? 'r'
     }
 
-    get isWriteable() {
+    get isWriteable () {
         return this.permissions.includes('w')
     }
 
-    get sourcecode() {
+    get sourcecode () {
         return this.$store.state.editor.sourcecode ?? ''
     }
 
-    set sourcecode(newVal) {
+    set sourcecode (newVal) {
         this.$store.dispatch('editor/updateSourcecode', newVal)
     }
 
-    get loaderBool() {
+    get loaderBool () {
         return this.$store.state.editor.loaderBool ?? false
     }
 
-    get loaderProgress() {
+    get loaderProgress () {
         return this.$store.state.editor.loaderProgress ?? {}
     }
 
-    get snackbarHeadline() {
+    get snackbarHeadline () {
         let directionUppercase = this.$t('Editor.Downloading')
         if (this.loaderProgress.direction) directionUppercase = capitalize(this.loaderProgress.direction)
 
-        return this.$t(`Editor.${directionUppercase}`)
+        return this.$t(`Editor.${ directionUppercase }`)
     }
 
-    get availableServices() {
+    get availableServices () {
         return this.$store.state.server.system_info?.available_services ?? []
     }
 
-    get restartServiceName() {
+    get restartServiceName () {
         if (!this.isWriteable) return null
-        if (['printing', 'paused'].includes(this.printer_state)) return null
+        if ([ 'printing', 'paused' ].includes(this.printer_state)) return null
 
         // check for generic services <service>.conf (like moonraker.conf, crowsnest.conf, sonar.conf)
         if (this.availableServices.includes(this.filenameWithoutExtension) && this.fileExtension === 'conf')
             return this.filenameWithoutExtension
 
         // old webcam service DEPRECATED
-        if (this.filename.startsWith('webcam') && ['conf', 'txt'].includes(this.fileExtension)) return 'webcamd'
+        if (this.filename.startsWith('webcam') && [ 'conf', 'txt' ].includes(this.fileExtension)) return 'webcamd'
 
         // check for mooncord config files
         if (this.filename.startsWith('mooncord') && this.fileExtension === 'json') return 'mooncord'
@@ -313,50 +314,50 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return null
     }
 
-    get restartServiceNameExists() {
+    get restartServiceNameExists () {
         // hide the button, if there is no service found
         if (this.restartServiceName === null) return false
 
         // klipper and moonraker uses specific api calls instead of generic service restart
-        if (['klipper', 'moonraker'].includes(this.restartServiceName)) return true
+        if ([ 'klipper', 'moonraker' ].includes(this.restartServiceName)) return true
 
         return this.availableServices.includes(this.restartServiceName)
     }
 
-    get confirmUnsavedChanges() {
+    get confirmUnsavedChanges () {
         return this.$store.state.gui.editor.confirmUnsavedChanges ?? false
     }
 
-    get escToClose() {
+    get escToClose () {
         return this.$store.state.gui.editor.escToClose ?? false
     }
 
-    get title() {
-        const title = this.filepath ? `${this.filepath}/${this.filename}` : this.filename
+    get title () {
+        const title = this.filepath ? `${ this.filepath }/${ this.filename }` : this.filename
 
-        if (!this.isWriteable) return `${title} (${this.$t('Editor.FileReadOnly')})`
+        if (!this.isWriteable) return `${ title } (${ this.$t('Editor.FileReadOnly') })`
 
-        return `${title} ${this.changedOutput}`
+        return `${ title } ${ this.changedOutput }`
     }
 
-    get currentLanguage() {
+    get currentLanguage () {
         return this.$store.state.gui.general.language
     }
 
-    get klipperConfigReference(): string {
+    get klipperConfigReference (): string {
         const currentLanguage = this.currentLanguage
         const translations = availableKlipperConfigReferenceTranslations
         let url = 'https://www.klipper3d.org/Config_Reference.html'
 
         if (translations.includes(currentLanguage)) {
-            url = `https://www.klipper3d.org/${currentLanguage}/Config_Reference.html`
+            url = `https://www.klipper3d.org/${ currentLanguage }/Config_Reference.html`
         }
 
         return url
     }
 
-    get configFileStructure() {
-        if (['conf', 'cfg'].includes(this.fileExtension)) {
+    get configFileStructure () {
+        if ([ 'conf', 'cfg' ].includes(this.fileExtension)) {
             const sourcecode = this.sourcecode
             const lines = sourcecode.split(/\n/gi)
             const regex = /^[^#\S]*?(\[(?<section>.*?)]|(?<name>\w+)\s*?[:=])/gim
@@ -365,7 +366,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
             let structure: ConfigFileSection[] = []
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i]
-                const matches = [...line.matchAll(regex)]
+                const matches = [ ...line.matchAll(regex) ]
                 if (matches.length > 0) {
                     const match = matches[0]
                     if (match['groups']['section']) {
@@ -393,30 +394,30 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return null
     }
 
-    cancelDownload() {
+    cancelDownload () {
         this.$store.dispatch('editor/cancelLoad')
     }
 
-    escClose() {
+    escClose () {
         if (this.escToClose) this.close()
     }
 
-    close() {
+    close () {
         if (this.confirmUnsavedChanges) this.promptUnsavedChanges()
         else this.$store.dispatch('editor/close')
     }
 
-    discardChanges() {
+    discardChanges () {
         this.dialogConfirmChange = false
         this.$store.dispatch('editor/close')
     }
 
-    promptUnsavedChanges() {
+    promptUnsavedChanges () {
         if (!this.changed || !this.isWriteable) this.$store.dispatch('editor/close')
         else this.dialogConfirmChange = true
     }
 
-    save(restartServiceName: string | null = null) {
+    save (restartServiceName: string | null = null) {
         this.dialogConfirmChange = false
 
         this.$store.dispatch('editor/saveFile', {
@@ -425,22 +426,22 @@ export default class TheEditor extends Mixins(BaseMixin) {
         })
     }
 
-    showFileStructure() {
+    showFileStructure () {
         this.fileStructureSidebar = !this.fileStructureSidebar
     }
 
-    activeChanges(key: any) {
+    activeChanges (key: any) {
         this.$refs.editor.gotoLine(key)
     }
 
-    lineChanges(line: number) {
+    lineChanges (line: number) {
         this.configFileStructure?.map((item) => {
             if (item.line == line) {
-                this.structureActive = [line]
+                this.structureActive = [ line ]
             } else {
                 item.children?.map((child) => {
                     if (child.line == line) {
-                        this.structureActive = [line]
+                        this.structureActive = [ line ]
                         if (!this.structureOpen.includes(item.line)) this.structureOpen.push(item.line)
                     }
                 })
@@ -449,7 +450,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     @Watch('changed')
-    changedChanged(newVal: boolean) {
+    changedChanged (newVal: boolean) {
         if (!this.confirmUnsavedChanges) return
 
         if (newVal) {
@@ -514,6 +515,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     .structure {
         margin-right: 300px
     }
+
     .structure-sidebar {
         width: 300px;
         overflow-y: auto;
