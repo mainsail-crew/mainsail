@@ -35,7 +35,11 @@
             "Notifications": "Értesítések",
             "OneHourShort": "1Ó",
             "OneWeekShort": "1H",
-            "ShowDetails": "részletek mutatása"
+            "ShowDetails": "részletek mutatása",
+            "TmcOtFlag": "Motorvezérlő hiba: OT jelző beállítva",
+            "TmcOtpwFlag": "Motorvezérlő figyelmeztetés: OTPW jelző beállítva",
+            "TmcOtFlagText": "A '{name}' motorvezérlő aktiválta az OT-jelzőt és leállt. Ezt a túl nagy áram okozhatja. Kérjük, ellenőrizd a motorvezérlő beállításait és a hűtését.",
+            "TmcOtpwFlagText": "A '{name}' motorvezérlő aktiválta az OTPW jelzőt, és ha tovább melegszik, leállhat a működése. Ez egy túlmelegedési állapotot jelez. Melyet okozhat a túl nagy áram. Kérjük, ellenőrizd a motorvezérlő beállításait és a hűtését."
         },
         "NumberInput": {
             "GreaterOrEqualError": "Nagyobbnak vagy egyenlőnek kell lennie mint {min}!",
