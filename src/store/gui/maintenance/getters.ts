@@ -24,7 +24,7 @@ export const getters: GetterTree<GuiMaintenanceState, any> = {
             if (entry.reminder.type === null || entry.end_time !== null) return false
 
             if (entry.reminder.filament.bool) {
-                const end = entry.start_filament + (entry.reminder.filament.value ?? 0)
+                const end = entry.start_filament + (entry.reminder.filament.value ?? 0) * 1000
 
                 if (end <= currentTotalFilamentUsed) return true
             }
