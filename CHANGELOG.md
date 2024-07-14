@@ -2,6 +2,61 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.12.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.12.0) - 2024-07-14
+### Features
+
+- **dashboard**: Add support for moonraker sensor ([#1888](https://github.com/mainsail-crew/mainsail/pull/1888))
+- **history**: Add support for Moonraker sensor history_fields ([#1884](https://github.com/mainsail-crew/mainsail/pull/1884))
+- **history**: Add moonraker sensors to total statistic ([#1886](https://github.com/mainsail-crew/mainsail/pull/1886))
+- **notification**: Add TMC overheating warnings ([#1919](https://github.com/mainsail-crew/mainsail/pull/1919))
+- **statusPanel**: Add option to disable the thumbnail zoom ([#1905](https://github.com/mainsail-crew/mainsail/pull/1905))
+- **systemLoads**: Add function to output app name in system loads panel ([#1906](https://github.com/mainsail-crew/mainsail/pull/1906))
+- **systemLoads**: Add firmware name, when it is not Klipper ([#1911](https://github.com/mainsail-crew/mainsail/pull/1911))
+- **theme**: Add voron build-in theme ([#1930](https://github.com/mainsail-crew/mainsail/pull/1930))
+- **theme**: Add LDO Motion theme ([#1932](https://github.com/mainsail-crew/mainsail/pull/1932))
+- **theme**: Add YUMI theme ([#1936](https://github.com/mainsail-crew/mainsail/pull/1936))
+- **theme**: Add VzBot theme ([#1937](https://github.com/mainsail-crew/mainsail/pull/1937))
+- **theme**: Add Prusa Research theme ([#1935](https://github.com/mainsail-crew/mainsail/pull/1935))
+- **theme**: Add bigtreetech theme ([#1931](https://github.com/mainsail-crew/mainsail/pull/1931))
+- **theme**: Add Multec theme ([#1934](https://github.com/mainsail-crew/mainsail/pull/1934))
+- Add support for base url ([#1873](https://github.com/mainsail-crew/mainsail/pull/1873))
+- Add hotkeys tied to Save, Save + Restart ([#1902](https://github.com/mainsail-crew/mainsail/pull/1902))
+- Add support for build-in themes and add a Klipper theme ([#1859](https://github.com/mainsail-crew/mainsail/pull/1859))
+
+### Bug Fixes and Improvements
+
+- **extruderPanel**: Add speed_factor to estimate extrusion calc ([#1913](https://github.com/mainsail-crew/mainsail/pull/1913))
+- **gcodeviewer**: Update gcodeviewer to fix rendering issues ([#1926](https://github.com/mainsail-crew/mainsail/pull/1926))
+- **history**: Add missing fields in detail dialog ([#1940](https://github.com/mainsail-crew/mainsail/pull/1940))
+- **macroPromts**: Fix internal close function ([#1918](https://github.com/mainsail-crew/mainsail/pull/1918))
+- **maintenance**: Add init entry to init store only one time ([#1914](https://github.com/mainsail-crew/mainsail/pull/1914))
+- **maintenance**: Fix filament trigger for maintenance entries ([#1941](https://github.com/mainsail-crew/mainsail/pull/1941))
+- **screwsTiltCalculate**: Use the same direction on retry ([#1920](https://github.com/mainsail-crew/mainsail/pull/1920))
+- **statusPanel**: Fix the thumbnail overlay in the light theme ([#1912](https://github.com/mainsail-crew/mainsail/pull/1912))
+- **systemLoads**: Fix temp output when no temp sensor was found in klipper ([#1907](https://github.com/mainsail-crew/mainsail/pull/1907))
+- **tempchart**: Fix select/unselect monitor sensors in tempchart ([#1903](https://github.com/mainsail-crew/mainsail/pull/1903))
+- **theme**: Fix color change on theme change ([#1933](https://github.com/mainsail-crew/mainsail/pull/1933))
+- **timelapse**: Add warning if snapshoturl is set in moonraker ([#1921](https://github.com/mainsail-crew/mainsail/pull/1921))
+- **updateManager**: Fix updatr for git_repos without semver ([#1925](https://github.com/mainsail-crew/mainsail/pull/1925))
+- **webcam**: Fix fps output in light mode ([#1901](https://github.com/mainsail-crew/mainsail/pull/1901))
+- Consecutive and leading whitespace is not shown in console ([#1896](https://github.com/mainsail-crew/mainsail/pull/1896))
+- Fix duration format function ([#1894](https://github.com/mainsail-crew/mainsail/pull/1894))
+- Update moonraker log path in TheConnectingDialog.vue ([#1909](https://github.com/mainsail-crew/mainsail/pull/1909))
+- Display "pause on layer"-button only when the macros exists ([#1876](https://github.com/mainsail-crew/mainsail/pull/1876))
+
+### Refactor
+
+- **macros**: Refactor gcode_macros getter ([#1889](https://github.com/mainsail-crew/mainsail/pull/1889))
+- Refactor TheTopbar, remove unused gette, fix snackbar ([#1923](https://github.com/mainsail-crew/mainsail/pull/1923))
+
+### Localization
+
+- **de**: Update german locale ([#1928](https://github.com/mainsail-crew/mainsail/pull/1928))
+- **en**: Add missing english locale ([#1890](https://github.com/mainsail-crew/mainsail/pull/1890))
+- **en**: Remove unused keys in english locale ([#1929](https://github.com/mainsail-crew/mainsail/pull/1929))
+- **uk**: Update ukrainian locale ([#1885](https://github.com/mainsail-crew/mainsail/pull/1885))
+- **zh**: Update chinese locale ([#1877](https://github.com/mainsail-crew/mainsail/pull/1877))
+
 ## [2.11.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.11.2) - 2024-05-04
 ### Bug Fixes and Improvements
 
