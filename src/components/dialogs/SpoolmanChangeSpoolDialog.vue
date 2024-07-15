@@ -84,6 +84,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     mdiRefresh = mdiRefresh
 
     @Prop({ required: true }) declare readonly showDialog: boolean
+    @Prop({ required: false, default: null }) declare readonly tool?: string
 
     search = ''
 
@@ -181,6 +182,14 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     }
 
     setSpool(spool: ServerSpoolmanStateSpool) {
+        if (this.tool) {
+            const gcode = `SET_GCODE_VARIABLE MACRO=${this.tool} VARIABLE=spool_id VALUE=${spool.id}`
+            this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+            this.$socket.emit('printer.gcode.script', { script: gcode })
+            this.close()
+            return
+        }
+
         this.$store.dispatch('server/spoolman/setActiveSpool', spool.id)
         this.close()
     }
