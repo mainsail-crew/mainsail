@@ -1022,7 +1022,7 @@
             "Add": "添加",
             "AddGroup": "添加分组",
             "AvailableMacros": "可用宏",
-            "MacroAlisaName": "宏别名",
+            "MacroAliasName": "宏别名",
             "ChangeMacroColor": "修改按钮颜色。",
             "Color": "颜色",
             "CountMacros": "没有添加宏 | {count}个宏 | {count}个宏",

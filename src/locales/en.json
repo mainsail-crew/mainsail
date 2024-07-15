@@ -1026,7 +1026,7 @@
             "Add": "add",
             "AddGroup": "add Group",
             "AvailableMacros": "Available Macros",
-            "MacroAlisaName": "Macro Alisa Name",
+            "MacroAliasName": "Macro Alias Name",
             "ChangeMacroColor": "Change the color of the button.",
             "Color": "Color",
             "CountMacros": "no Macros added | {count} Macro | {count} Macros",

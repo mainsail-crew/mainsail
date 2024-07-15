@@ -180,11 +180,11 @@
                                                     v-bind="attrs"
                                                     class="ml-3 minwidth-0 px-2"
                                                     v-on="on"
-                                                    @click="editMacroAlisaName(macro)">
+                                                    @click="editMacroAliasName(macro)">
                                                     <v-icon small>{{ mdiRename }}</v-icon>
                                                 </v-btn>
                                             </template>
-                                            <span>{{ $t('Settings.MacrosTab.macroAlisaName') }}</span>
+                                            <span>{{ $t('Settings.MacrosTab.macroAliasName') }}</span>
                                         </v-tooltip>
                                         <v-tooltip top>
                                             <template #activator="{ on, attrs }">
@@ -303,7 +303,7 @@
             <v-dialog v-model="macroAliasNameDialog" max-width="600px">
                 <v-card>
                     <v-card-title>
-                        {{ $t('Settings.MacrosTab.MacroAlisaName') }}
+                        {{ $t('Settings.MacrosTab.MacroAliasName') }}
                     </v-card-title>
                     <v-card-text>
                         <settings-row :title="editMacro?.name">
@@ -601,7 +601,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         this.$emit('scrollToTop')
     }
 
-    editMacroAlisaName(macro: GuiMacrosStateMacrogroupMacro) {
+    editMacroAliasName(macro: GuiMacrosStateMacrogroupMacro) {
         this.editMacro = macro
         this.macroAliasNameDialog = true
     }
