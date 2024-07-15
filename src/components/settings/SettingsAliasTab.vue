@@ -54,11 +54,11 @@ export default class SettingsAliasTab extends Mixins(BaseMixin) {
 
     @Watch('aliasNames', { deep: true })
     onAliasNames(val: any) {
-        val = _.omitBy(val, (value)=>value == null || false || _.isEmpty(value))
+        val = _.omitBy(val, (value) => value == null || false || _.isEmpty(value))
         this.$store.dispatch('gui/saveSetting', { name: 'aliasNames', value: val })
     }
 
-    mounted(){
+    mounted() {
         this.aliasNames = this.$store.state.gui.aliasNames
     }
 

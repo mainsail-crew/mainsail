@@ -300,17 +300,18 @@
             <v-card-actions class="d-flex justify-end">
                 <v-btn text @click="cancelEditMacrogroup">{{ $t('Settings.Close') }}</v-btn>
             </v-card-actions>
-            <v-dialog
-                v-model="macroAliasNameDialog"
-                max-width="600px"
-            >
+            <v-dialog v-model="macroAliasNameDialog" max-width="600px">
                 <v-card>
                     <v-card-title>
                         {{ $t('Settings.MacrosTab.MacroAlisaName') }}
                     </v-card-title>
                     <v-card-text>
                         <settings-row :title="editMacro?.name">
-                            <v-text-field v-model="macroAliasNames[editMacro?.name]" hide-details outlined dense></v-text-field>
+                            <v-text-field
+                                v-model="macroAliasNames[editMacro?.name]"
+                                hide-details
+                                outlined
+                                dense></v-text-field>
                         </settings-row>
                     </v-card-text>
                 </v-card>
@@ -372,10 +373,9 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
 
     @Watch('macroAliasNames', { deep: true })
     onMacroAliasNames(val: any) {
-        val = _.omitBy(val, (value)=>value == null || false || _.isEmpty(value))
+        val = _.omitBy(val, (value) => value == null || false || _.isEmpty(value))
         this.$store.dispatch('gui/saveSetting', { name: 'macroAliasNames', value: val })
     }
-
 
     mounted(): void {
         this.macroAliasNames = this.$store.state.gui.macroAliasNames
@@ -542,9 +542,9 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         )
     }
 
-    getMacroName(macroname:string){
+    getMacroName(macroname: string) {
         const aliasMacroName = this.macroAliasNames[macroname]
-        if (aliasMacroName) return aliasMacroName + " (" + macroname + ")"
+        if (aliasMacroName) return aliasMacroName + ' (' + macroname + ')'
         return macroname
     }
 

@@ -81,7 +81,7 @@ import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab
 import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
 import SettingsTimelapseTab from '@/components/settings/SettingsTimelapseTab.vue'
 import SettingsNavigationTab from '@/components/settings/SettingsNavigationTab.vue'
-import SettingsAliasTab from "@/components/settings/SettingsAliasTab.vue"
+import SettingsAliasTab from '@/components/settings/SettingsAliasTab.vue'
 
 import Panel from '@/components/ui/Panel.vue'
 import {
