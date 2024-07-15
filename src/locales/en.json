@@ -878,6 +878,9 @@
         "YouCanFindMore": "You can find more details at"
     },
     "Settings": {
+        "AliasTab": {
+            "AliasName": "Alias Name"
+        },
         "Cancel": "Cancel",
         "Close": "Close",
         "ConsoleTab": {
@@ -1023,6 +1026,7 @@
             "Add": "add",
             "AddGroup": "add Group",
             "AvailableMacros": "Available Macros",
+            "MacroAlisaName": "Macro Alisa Name",
             "ChangeMacroColor": "Change the color of the button.",
             "Color": "Color",
             "CountMacros": "no Macros added | {count} Macro | {count} Macros",

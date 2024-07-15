@@ -289,6 +289,8 @@ export const getDefaultState = (): GuiState => {
                 },
             },
         },
+        aliasNames: {},
+        macroAliasNames: {},
     }
 }
 

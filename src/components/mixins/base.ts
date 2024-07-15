@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { DateTimeFormatOptions } from 'vue-i18n'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
+import { convertName } from '@/plugins/helpers'
 
 @Component
 export default class BaseMixin extends Vue {
@@ -223,5 +224,11 @@ export default class BaseMixin extends Vue {
         const time = this.formatTime(value, boolSeconds)
 
         return `${date} ${time}`
+    }
+
+    alisaName(name: string): string {
+        const aliasNames = this.$store.state.gui.aliasNames
+        if(aliasNames[name] !== undefined) return aliasNames[name]
+        return convertName(name)
     }
 }

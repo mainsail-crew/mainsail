@@ -15,7 +15,7 @@
                         {{ mdiLightbulbOutline }}
                     </v-icon>
                     <v-icon v-else-if="type.includes('fan')" small :class="fanClasses">{{ mdiFan }}</v-icon>
-                    <span>{{ convertName(name) }}</span>
+                    <span>{{ aliasName(name) }}</span>
                     <v-spacer />
                     <small v-if="rpm !== null" :class="rpmClasses">{{ Math.round(rpm ?? 0) }} RPM</small>
                     <span v-if="!controllable" class="font-weight-bold">

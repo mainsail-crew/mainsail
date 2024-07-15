@@ -175,7 +175,7 @@ export default class MiscellaneousLight extends Mixins(BaseMixin) {
     get name() {
         if (this.group) return convertName(this.group.name)
 
-        return convertName(this.object.name)
+        return this.aliasName(this.object.name)
     }
 
     get colorPickerOptions() {

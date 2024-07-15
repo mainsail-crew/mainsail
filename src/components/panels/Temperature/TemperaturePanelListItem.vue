@@ -107,7 +107,7 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
     }
 
     get formatName() {
-        return convertName(this.name)
+        return this.aliasName(this.objectName)
     }
 
     get icon() {

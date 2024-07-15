@@ -207,6 +207,12 @@ export interface GuiState {
             }
         }
     }
+    aliasNames: {
+        [index: string]: string
+    }
+    macroAliasNames: {
+        [index: string]: string
+    }
 }
 
 export interface GuiStateLayoutoption {

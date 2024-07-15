@@ -302,7 +302,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
 
         mainDatasets.forEach((dataset: any) => {
             const baseSeriesName = dataset.seriesName.substring(0, dataset.seriesName.lastIndexOf('-'))
-            let displayName = baseSeriesName
+            let displayName = this.aliasName(baseSeriesName)
             if (displayName.indexOf(' ') !== -1) {
                 displayName = displayName.substring(displayName.indexOf(' ') + 1)
             }

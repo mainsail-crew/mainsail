@@ -152,7 +152,7 @@
                             <v-col class="py-2">
                                 <settings-row
                                     :key="'groupMacro_macro_' + index"
-                                    :title="macro.name"
+                                    :title="getMacroName(macro.name)"
                                     :sub-title="getMacroDescription(macro.name)"
                                     :dynamic-slot-width="true">
                                     <template v-if="existsMacro(macro.name)">
@@ -171,6 +171,20 @@
                                                 </v-btn>
                                             </template>
                                             <span>{{ $t('Settings.MacrosTab.ChangeMacroColor') }}</span>
+                                        </v-tooltip>
+                                        <v-tooltip top>
+                                            <template #activator="{ on, attrs }">
+                                                <v-btn
+                                                    small
+                                                    outlined
+                                                    v-bind="attrs"
+                                                    class="ml-3 minwidth-0 px-2"
+                                                    v-on="on"
+                                                    @click="editMacroAlisaName(macro)">
+                                                    <v-icon small>{{ mdiRename }}</v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>{{ $t('Settings.MacrosTab.macroAlisaName') }}</span>
                                         </v-tooltip>
                                         <v-tooltip top>
                                             <template #activator="{ on, attrs }">
@@ -286,6 +300,21 @@
             <v-card-actions class="d-flex justify-end">
                 <v-btn text @click="cancelEditMacrogroup">{{ $t('Settings.Close') }}</v-btn>
             </v-card-actions>
+            <v-dialog
+                v-model="macroAliasNameDialog"
+                max-width="600px"
+            >
+                <v-card>
+                    <v-card-title>
+                        {{ $t('Settings.MacrosTab.MacroAlisaName') }}
+                    </v-card-title>
+                    <v-card-text>
+                        <settings-row :title="editMacro?.name">
+                            <v-text-field v-model="macroAliasNames[editMacro?.name]" hide-details outlined dense></v-text-field>
+                        </settings-row>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
         </template>
     </div>
 </template>
@@ -308,6 +337,7 @@ import {
     mdiDragVertical,
     mdiPalette,
     mdiPencil,
+    mdiRename,
 } from '@mdi/js'
 
 @Component({
@@ -325,6 +355,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
     mdiPlus = mdiPlus
     mdiDragVertical = mdiDragVertical
     mdiPalette = mdiPalette
+    mdiRename = mdiRename
 
     private rules = {
         required: (value: string) => value !== '' || 'required',
@@ -333,6 +364,18 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
 
     private boolFormEdit = false
     private editGroupId: string | null = ''
+    private macroAliasNameDialog = false
+    private editMacro: GuiMacrosStateMacrogroupMacro | null = null
+
+    get macroAliasNames() {
+        return this.$store.state.gui.macroAliasNames
+    }
+
+    @Watch('macroAliasNames', { deep: true })
+    onMacroAliasNames(val: string[]) {
+        val.filter(i=>i && i.trim())
+        this.$store.dispatch('gui/saveSetting', { name: 'macroAliasNames', value: val })
+    }
 
     get groupColors() {
         return [
@@ -495,6 +538,12 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         )
     }
 
+    getMacroName(macroname:string){
+        const aliasMacroName = this.macroAliasNames[macroname]
+        if (aliasMacroName) return aliasMacroName + " (" + macroname + ")"
+        return macroname
+    }
+
     getMacroDescription(macroname: string) {
         const macro = this.allMacros.find((m: PrinterStateMacro) => m.name.toLowerCase() === macroname.toLowerCase())
         if (!macro) return this.$t('Settings.MacrosTab.DeletedMacro')
@@ -546,6 +595,11 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
     cancelEditMacrogroup() {
         this.boolFormEdit = false
         this.$emit('scrollToTop')
+    }
+
+    editMacroAlisaName(macro: GuiMacrosStateMacrogroupMacro) {
+        this.editMacro = macro
+        this.macroAliasNameDialog = true
     }
 }
 </script>

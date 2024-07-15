@@ -4,7 +4,7 @@
             <v-col class="pb-3">
                 <v-subheader class="_filamentRunout-subheader">
                     <v-icon small class="mr-2">{{ mdiPrinter3dNozzleAlert }}</v-icon>
-                    <span>{{ convertName(name) }}</span>
+                    <span>{{ aliasName(name) }}</span>
                     <v-spacer />
                     <small :class="'mr-3 ' + statusColor + '--text'">{{ statusText }}</small>
                     <v-icon @click="changeSensor">

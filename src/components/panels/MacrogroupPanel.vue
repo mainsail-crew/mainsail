@@ -14,6 +14,7 @@
                         v-for="(macro, index) in macros"
                         :key="'macroparam_' + index"
                         :macro="macro"
+                        :alias="macroAliasNames[macro.name]"
                         :color="getColor(macro)"
                         class="mx-1 my-1" />
                 </v-col>
@@ -37,6 +38,10 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
     mdiCodeTags = mdiCodeTags
 
     @Prop({ required: true }) declare panelId: string
+
+    get macroAliasNames() {
+        return this.$store.state.gui.macroAliasNames
+    }
 
     get macrogroup() {
         return this.$store.getters['gui/macros/getMacrogroup'](this.panelId)
