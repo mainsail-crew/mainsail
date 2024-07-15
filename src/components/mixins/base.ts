@@ -226,7 +226,7 @@ export default class BaseMixin extends Vue {
         return `${date} ${time}`
     }
 
-    alisaName(name: string): string {
+    aliasName(name: string): string {
         const aliasNames = this.$store.state.gui.aliasNames
         if(aliasNames[name] !== undefined) return aliasNames[name]
         return convertName(name)

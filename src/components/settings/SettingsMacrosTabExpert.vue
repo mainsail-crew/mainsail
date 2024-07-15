@@ -328,6 +328,7 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { Debounce } from 'vue-debounce-decorator'
 import { PrinterStateMacro } from '@/store/printer/types'
 import { GuiMacrosStateMacrogroup, GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
+import _ from 'lodash'
 import {
     mdiDelete,
     mdiSleep,
@@ -344,6 +345,8 @@ import {
     components: { SettingsRow, draggable },
 })
 export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixin) {
+    private macroAliasNames = {}
+
     /**
      * Icons
      */
@@ -367,14 +370,15 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
     private macroAliasNameDialog = false
     private editMacro: GuiMacrosStateMacrogroupMacro | null = null
 
-    get macroAliasNames() {
-        return this.$store.state.gui.macroAliasNames
+    @Watch('macroAliasNames', { deep: true })
+    onMacroAliasNames(val: any) {
+        val = _.omitBy(val, (value)=>value == null || false || _.isEmpty(value))
+        this.$store.dispatch('gui/saveSetting', { name: 'macroAliasNames', value: val })
     }
 
-    @Watch('macroAliasNames', { deep: true })
-    onMacroAliasNames(val: string[]) {
-        val.filter(i=>i && i.trim())
-        this.$store.dispatch('gui/saveSetting', { name: 'macroAliasNames', value: val })
+
+    mounted(): void {
+        this.macroAliasNames = this.$store.state.gui.macroAliasNames
     }
 
     get groupColors() {

@@ -43,20 +43,23 @@ import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { convertName } from '@/plugins/helpers'
+import _ from 'lodash'
 
 @Component({
     methods: { convertName },
     components: {},
 })
 export default class SettingsAliasTab extends Mixins(BaseMixin) {
-    get aliasNames() {
-        return this.$store.state.gui.aliasNames
-    }
+    private aliasNames = {}
 
     @Watch('aliasNames', { deep: true })
-    onAliasNames(val: string[]) {
-        val.filter(i=>i && i.trim())
+    onAliasNames(val: any) {
+        val = _.omitBy(val, (value)=>value == null || false || _.isEmpty(value))
         this.$store.dispatch('gui/saveSetting', { name: 'aliasNames', value: val })
+    }
+
+    mounted(){
+        this.aliasNames = this.$store.state.gui.aliasNames
     }
 
     get available_heaters() {
