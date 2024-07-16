@@ -184,7 +184,7 @@
                                                     <v-icon small>{{ mdiRename }}</v-icon>
                                                 </v-btn>
                                             </template>
-                                            <span>{{ $t('Settings.MacrosTab.macroAliasName') }}</span>
+                                            <span>{{ $t('Settings.MacrosTab.MacroAliasName') }}</span>
                                         </v-tooltip>
                                         <v-tooltip top>
                                             <template #activator="{ on, attrs }">
