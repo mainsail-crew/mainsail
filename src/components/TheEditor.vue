@@ -62,10 +62,9 @@
                     <div
                         v-if="fileStructureSidebar"
                         class="d-none d-md-flex float-right structure-sidebar cm-editor ͼo">
-                        <div class="cm-scroller" style="width: 100%">
+                        <div class="cm-scroller cursor-pointer" style="width: 100%">
                             <v-treeview
                                 activatable
-                                open-on-click
                                 dense
                                 dark
                                 :active="structureActive"
