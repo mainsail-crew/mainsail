@@ -31,13 +31,7 @@
                         <v-icon small class="mr-1">{{ mdiHelp }}</v-icon>
                         {{ $t('Editor.ConfigReference') }}
                     </v-btn>
-                    <v-btn
-                        v-if="configFileStructure"
-                        text
-                        tile
-                        target="_blank"
-                        class="d-none d-md-flex"
-                        @click="showFileStructure()">
+                    <v-btn v-if="configFileStructure" text tile class="d-none d-md-flex" @click="showFileStructure()">
                         <v-icon small class="mr-1">{{ mdiFormatListCheckbox }}</v-icon>
                         {{ $t('Editor.FileStructure') }}
                     </v-btn>
@@ -58,46 +52,43 @@
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
-                <v-card-text class="pa-0">
+                <v-card-text class="pa-0 d-flex">
+                    <codemirror-async
+                        class="codemirror"
+                        v-if="show"
+                        ref="editor"
+                        v-model="sourcecode"
+                        :name="filename"
+                        :file-extension="fileExtension"
+                        @lineChange="lineChanges" />
                     <div
                         v-if="fileStructureSidebar"
-                        class="d-none d-md-flex float-right structure-sidebar cm-editor ͼo">
-                        <div class="cm-scroller cursor-pointer" style="width: 100%">
-                            <v-treeview
-                                activatable
-                                dense
-                                dark
-                                :active="structureActive"
-                                :open="structureOpen"
-                                item-key="line"
-                                :items="configFileStructure"
-                                @update:active="activeChanges">
-                                <template #label="{ item }">
-                                    <div :class="item.type == 'item' ? 'ͼp' : 'ͼt'">{{ item.name }}</div>
-                                </template>
-                                <template v-if="restartServiceName === 'klipper'" #append="{ item }">
-                                    <v-btn
-                                        v-if="item.type == 'section'"
-                                        icon
-                                        small
-                                        plain
-                                        color="grey darken-2"
-                                        :href="klipperConfigReference + '#' + item.name.split(' ')[0]"
-                                        target="_blank">
-                                        <v-icon small class="mr-1">{{ mdiHelpCircle }}</v-icon>
-                                    </v-btn>
-                                </template>
-                            </v-treeview>
-                        </div>
-                    </div>
-                    <div :class="fileStructureSidebar ? 'structure' : ''">
-                        <codemirror-async
-                            v-if="show"
-                            ref="editor"
-                            v-model="sourcecode"
-                            :name="filename"
-                            :file-extension="fileExtension"
-                            @lineChange="lineChanges" />
+                        class="d-none d-md-flex cursor-pointer cm-editor ͼo structure-sidebar">
+                        <v-treeview
+                            activatable
+                            dense
+                            dark
+                            :active="structureActive"
+                            :open="structureOpen"
+                            item-key="line"
+                            :items="configFileStructure"
+                            @update:active="activeChanges">
+                            <template #label="{ item }">
+                                <div :class="item.type == 'item' ? 'ͼp' : 'ͼt'">{{ item.name }}</div>
+                            </template>
+                            <template v-if="restartServiceName === 'klipper'" #append="{ item }">
+                                <v-btn
+                                    v-if="item.type == 'section'"
+                                    icon
+                                    small
+                                    plain
+                                    color="grey darken-2"
+                                    :href="klipperConfigReference + '#' + item.name.split(' ')[0]"
+                                    target="_blank">
+                                    <v-icon small class="mr-1">{{ mdiHelpCircle }}</v-icon>
+                                </v-btn>
+                            </template>
+                        </v-treeview>
                     </div>
                 </v-card-text>
             </panel>
@@ -511,12 +502,12 @@ export default class TheEditor extends Mixins(BaseMixin) {
 }
 
 @media screen and (min-width: 960px) {
-    .structure {
-        margin-right: 300px;
+    .codemirror {
+        width: calc(100% - 300px);
     }
-    .structure-sidebar {
-        width: 300px;
-        overflow-y: auto;
-    }
+}
+.structure-sidebar {
+    width: 300px;
+    overflow-y: auto;
 }
 </style>
