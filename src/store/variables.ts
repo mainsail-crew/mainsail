@@ -202,4 +202,10 @@ export const themes: Theme[] = [
         colorPrimary: '#234D7A',
         logo: { show: true, light: false },
     },
+    {
+        name: 'fysetc',
+        displayName: 'Fysetc',
+        colorLogo: '#FF2800',
+        logo: { show: true, light: false },
+    },
 ]
