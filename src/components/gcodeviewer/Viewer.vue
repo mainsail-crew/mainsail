@@ -209,7 +209,7 @@
             </v-card-text>
             <resize-observer @notify="handleResize" />
         </panel>
-        <v-snackbar v-model="loading" :timeout="-1" :value="true" fixed right bottom>
+        <v-snackbar v-model="loading" :timeout="-1" fixed right bottom>
             <div>
                 {{ $t('GCodeViewer.Rendering') }} - {{ loadingPercent }}%
                 <br />
@@ -222,7 +222,7 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" :value="true" fixed right bottom>
+        <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" fixed right bottom>
             <template v-if="downloadSnackbar.total > 0">
                 <div>
                     {{ $t('GCodeViewer.Downloading') }} - {{ Math.round(downloadSnackbar.percent) }} % @
@@ -329,24 +329,24 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     formatFilesize = formatFilesize
 
-    private isBusy = false
-    private loading = false
-    private loadingPercent = 0
+    isBusy = false
+    loading = false
+    loadingPercent = 0
 
-    private tracking = false
-    private loadedFile: string | null = null
+    tracking = false
+    loadedFile: string | null = null
 
-    private reloadRequired = false
-    private fileSize = 0
-    private renderQuality = this.renderQualities[2]
+    reloadRequired = false
+    fileSize = 0
+    renderQuality = this.renderQualities[2]
 
-    private scrubPosition = 0
-    private scrubPlaying = false
-    private scrubSpeed = 1
-    private scrubInterval: ReturnType<typeof setInterval> | undefined = undefined
-    private scrubFileSize = 0
+    scrubPosition = 0
+    scrubPlaying = false
+    scrubSpeed = 1
+    scrubInterval: ReturnType<typeof setInterval> | undefined = undefined
+    scrubFileSize = 0
 
-    private downloadSnackbar: downloadSnackbar = {
+    downloadSnackbar: downloadSnackbar = {
         status: false,
         filename: '',
         percent: 0,
@@ -355,12 +355,12 @@ export default class Viewer extends Mixins(BaseMixin) {
         cancelTokenSource: {},
     }
 
-    private excludeObject = {
+    excludeObject = {
         bool: false,
         name: '',
     }
 
-    private fileData: string = ''
+    fileData: string = ''
 
     @Prop({ type: String, default: '', required: false }) declare filename: string
     @Ref('fileInput') declare fileInput: HTMLInputElement
@@ -705,42 +705,45 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('currentPosition')
     currentPositionChanged(newVal: number[]) {
-        if (viewer) {
-            const position = [
-                { axes: 'X', position: newVal[0] },
-                { axes: 'Y', position: newVal[1] },
-                { axes: 'Z', position: newVal[2] },
-            ]
+        if (!viewer || !this.tracking || this.scrubPlaying) return
 
-            viewer.updateToolPosition(position)
-        }
+        const position = [
+            { axes: 'X', position: newVal[0] },
+            { axes: 'Y', position: newVal[1] },
+            { axes: 'Z', position: newVal[2] },
+        ]
+
+        viewer.updateToolPosition(position)
     }
 
     @Watch('filePosition')
     filePositionChanged(newVal: number) {
-        if (!viewer) return
+        if (!viewer || !this.tracking || this.scrubPlaying) return
 
         const offset = 350
         if (newVal > 0 && this.printerIsPrinting && this.tracking && newVal > offset) {
             viewer.gcodeProcessor.updateFilePosition(newVal - offset)
             this.scrubPosition = newVal - offset
-        } else {
-            viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
+            return
         }
+
+        viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
     }
 
     @Watch('tracking')
     async trackingChanged(newVal: boolean) {
         if (!viewer) return
+
         if (newVal) {
             this.scrubPlaying = false
             //Force renderers reload.
             viewer.gcodeProcessor.updateFilePosition(0)
             viewer?.forceRender()
-        } else {
-            viewer.gcodeProcessor.setLiveTracking(false)
-            await this.reloadViewer()
+            return
         }
+
+        viewer.gcodeProcessor.setLiveTracking(false)
+        await this.reloadViewer()
     }
 
     @Watch('printerIsPrinting')
@@ -930,7 +933,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
     }
 
-    private colorModes = [
+    colorModes = [
         { text: 'Extruder', value: 0 },
         { text: 'Feed Rate', value: 1 },
         { text: 'Feature', value: 2 },
