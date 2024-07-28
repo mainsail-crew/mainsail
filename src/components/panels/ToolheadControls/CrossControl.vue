@@ -379,10 +379,10 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
     get actionButton(): string {
         const button = this.$store.state.gui.control.actionButton ?? this.defaultActionButton
 
-        if (button === 'qgl' && !this.$store.getters['printer/existsQGL']) {
-            return this.defaultActionButton
-        }
-        if (button === 'ztilt' && !this.$store.getters['printer/existsZTilt']) {
+        if (
+            (button === 'qgl' && !this.$store.getters['printer/existsQGL']) ||
+            (button === 'ztilt' && !this.$store.getters['printer/existsZTilt'])
+        ) {
             return this.defaultActionButton
         }
 
