@@ -162,7 +162,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         const info_tags = this.repo.info_tags ?? []
         const description = info_tags.find((tag) => tag.startsWith('desc='))
 
-        if (description) return description.replace('desc=', '')
+        if (description && description.trim() !== 'desc=') return description.replace('desc=', '').trim()
 
         return this.repo.name ?? 'UNKNOWN'
     }
