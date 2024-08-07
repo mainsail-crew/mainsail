@@ -16,6 +16,7 @@ import { vscodeDark } from '@uiw/codemirror-theme-vscode'
 import { StreamLanguage } from '@codemirror/language'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
 import { gcode } from '@/plugins/StreamParserGcode'
+import { KlipperDocsTooltipPlugin } from '@/plugins/CodeMirrorPluginKlipperDocsTooltips'
 import { indentWithTab } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
@@ -95,6 +96,8 @@ export default class Codemirror extends Mixins(BaseMixin) {
             }),
         ]
 
+        if (this.tooltipsPluginEnabled) extensions.push(KlipperDocsTooltipPlugin())
+
         if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(klipper_config))
         else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
@@ -109,6 +112,10 @@ export default class Codemirror extends Mixins(BaseMixin) {
 
     get tabSize() {
         return this.$store.state.gui.editor.tabSize || 2
+    }
+
+    get tooltipsPluginEnabled() {
+        return this.$store.state.gui.editor.tooltipsEnabled || false
     }
 }
 </script>
