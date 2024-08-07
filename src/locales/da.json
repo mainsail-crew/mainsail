@@ -13,7 +13,8 @@
                 "DeprecatedOptionHeadline": "Forældet Klipper mulighed",
                 "DeprecatedValue": "Værdien \"{value}\" i muligheden \"{option}\" i sektion \"{section}\" er forældet.",
                 "DeprecatedValueHeadline": "Forældet Klipper værdi",
-                "KlipperWarning": "Klipper advarsel"
+                "KlipperWarning": "Klipper advarsel",
+                "KlipperRuntimeWarning": "Klipper runtime advarsel"
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
@@ -28,7 +29,13 @@
             "NextReboot": "næste genstart",
             "NoNotification": "Ingen tilgængelig notifikationer",
             "Notifications": "Notifikationer",
-            "Remind": "Påmind mig om:"
+            "Remind": "Påmind mig om:",
+            "OneWeekShort": "1W",
+            "ShowDetails": "vis detaljer",
+            "MaintenanceReminder": "Vedligeholdelsespåmindelse",
+            "MaintenanceReminderText": "Vedligeholdelse \"{name}\" forfalder.",
+            "OneDayShort": "1D",
+            "OneHourShort": "1H"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Skal være større eller lig med {min}!",
@@ -72,21 +79,21 @@
             "EmergencyStop": "Nødstop",
             "SAVE_CONFIG": "GEM KONFIGURATION",
             "Uploading": "Uploader",
-            "UploadOfFileSuccessful": "Upload af {file} udført",
+            "UploadOfFileSuccessful": "Upload af {file} udført!",
             "UploadPrint": "Upload & Print"
         },
         "TopCornerMenu": {
             "Cancel": "Annuller",
             "ConfirmationDialog": {
                 "Description": {
-                    "HostReboot": "Hvis du genstarter værten nu, vil det igangværende print fejle.",
-                    "HostShutdown": "Hvis du lukker værten ned nu, vil det igangværende print fejle.",
-                    "KlipperFirmwareRestart": "Hvis du genstarter Klipper firmware nu, vil det igangværende print fejle.",
-                    "KlipperRestart": "Hvis du genstarter Klipper nu, vil det igangværende print fejle.",
-                    "KlipperStop": "Hvis du stopper Klipper nu, vil det igangværende print fejle.",
-                    "ServiceRestart": "Hvis du genstarter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
-                    "ServiceStart": "Hvis du starter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
-                    "ServiceStop": "Hvis du stopper denne service nu, er der stor risiko for at dit igangværende print vil fejle."
+                    "HostReboot": "Hvis du genstarter værten nu, vil det igangværende print fejle!",
+                    "HostShutdown": "Hvis du lukker værten ned nu, vil det igangværende print fejle!",
+                    "KlipperFirmwareRestart": "Hvis du genstarter Klipper firmware nu, vil det igangværende print fejle!",
+                    "KlipperRestart": "Hvis du genstarter Klipper nu, vil det igangværende print fejle!",
+                    "KlipperStop": "Hvis du stopper Klipper nu, vil det igangværende print fejle!",
+                    "ServiceRestart": "Hvis du genstarter denne service nu, er der stor risiko for at dit igangværende print vil fejle!",
+                    "ServiceStart": "Hvis du starter denne service nu, er der stor risiko for at dit igangværende print vil fejle!",
+                    "ServiceStop": "Hvis du stopper denne service nu, er der stor risiko for at dit igangværende print vil fejle!"
                 },
                 "Title": {
                     "HostReboot": "Genstart vært",
@@ -117,6 +124,9 @@
             "RecoveringDone": "Gendannelse af {software} udført!",
             "Updating": "Opdaterer {software}...",
             "UpdatingDone": "Opdatering af {software} udført!"
+        },
+        "TextfieldWithCopy": {
+            "Copied": "Kopieret"
         }
     },
     "BedScrews": {
@@ -152,7 +162,7 @@
             "DoYouWantToStartFilename": "Vil du begynde at printe: {filename}?",
             "DoYouWantToStartFilenameFilament": "Vil du begynde at printe {filename} med dette filament?",
             "Headline": "Start print",
-            "Print": "print",
+            "Print": "Print",
             "Timelapse": "Timelapse"
         }
     },
@@ -168,7 +178,8 @@
         "UnsavedChanges": "Ugemte ændringer",
         "UnsavedChangesMessage": "Ønsker du at gemme ændringerne i filen {filename}?",
         "UnsavedChangesSubMessage": "Dine ændringer går tabt hvis du ikke gemmer. Du kan deaktivere denne besked i \"editor-settings\".",
-        "Uploading": "Uploader"
+        "Uploading": "Uploader",
+        "DeviceDialog": "Enheder"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Er du sikker?",
@@ -180,9 +191,9 @@
         "AddBatchToQueue": "tilføj batch til kø",
         "AddToQueue": "Tilføj til kø",
         "AllFiles": "Alle",
-        "BedTemp": "Bed temperatur",
+        "BedTemp": "Bed temperatur.",
         "Cancel": "Annuller",
-        "ChamberTemp": "Indelukke temperatur",
+        "ChamberTemp": "Indelukke temperatur.",
         "Count": "Tæl",
         "Create": "Opret",
         "CreateNewDirectory": "Ny mappe",
@@ -197,7 +208,7 @@
         "DuplicateFile": "Dupliker fil",
         "EditFile": "Rediger Fil",
         "Empty": "Tom",
-        "ExtruderTemp": "Hotend temperatur",
+        "ExtruderTemp": "Hotend temperatur.",
         "Filament": "Filament",
         "FilamentName": "Filament navn",
         "FilamentType": "Filament type",
@@ -297,9 +308,9 @@
         "Flat": "Fladt",
         "Heightmap": "Højdekort",
         "InvalidNameAlreadyExists": "Profilnavnet bruges allerede, vælg venligst et andet profilnavn.",
-        "InvalidNameAscii": "Navnet er ugyldigt. Der kan kun bruges ascii karakterer",
+        "InvalidNameAscii": "Navnet er ugyldigt. Der kan kun bruges ascii karakterer.",
         "InvalidNameEmpty": "Feltet må ikke være tomt!",
-        "InvalidNameReserved": "Profilnavnet 'default' er reserveret af systemet, vælg venligst et andet profilnavn",
+        "InvalidNameReserved": "Profilnavnet 'default' er reserveret af systemet, vælg venligst et andet profilnavn.",
         "Later": "Senere",
         "Mesh": "Mesh",
         "Name": "Navn",
@@ -358,7 +369,7 @@
         "PrintDuration": "Print varighed",
         "PrintHistory": "Print historik",
         "PrintTime": "Print Tid",
-        "PrinttimeAvg": "Printtid gns.",
+        "PrinttimeAvg": "Printtid gennemsnit",
         "Reprint": "Print igen",
         "Save": "Gem",
         "Search": "Søg",
@@ -378,15 +389,46 @@
             "klippy_disconnect": "Klippy afbrudt",
             "klippy_shutdown": "Klippy lukket ned",
             "Others": "Andre",
-            "server_exit": "Server exit"
+            "server_exit": "Server afslutning",
+            "interrupted": "Afbrudt"
         },
         "Table": "Tabel",
-        "TitleExportHistory": "Export History",
+        "TitleExportHistory": "Export historik",
         "TotalDuration": "Total varighed",
         "TotalFilamentUsed": "Filament brugt ialt",
         "TotalJobs": "Totale antal print",
         "TotalPrinttime": "Total printtid",
-        "TotalTime": "Total Tid"
+        "TotalTime": "Total Tid",
+        "AddToQueueSuccessful": "Filen {filename} tilføjet til Køen.",
+        "AddANote": "Tilføj note",
+        "AddMaintenance": "Tilføj vedligeholdelse",
+        "DateBasedReminder": "Dato",
+        "EntryCreatedAt": "Oprettet d. {date}.",
+        "EntryPerformedAt": "Udført d. {date}.",
+        "Hours": "timer",
+        "EntryNextPerform": "Udføres næste gang:",
+        "FilamentBasedReminder": "Filament baseret",
+        "InvalidNameEmpty": "Ugyldigt navn. Navnet må ikke være tomt!",
+        "MaintenanceEntries": "Vedligeholdelsesposter",
+        "Perform": "Udfør",
+        "EntrySince": "Brugt siden:",
+        "FilamentBasedReminderDescription": "Denne påmindelse er baseret på filament forbrug.",
+        "Maintenance": "Vedligeholdelse",
+        "Performed": "Udført",
+        "PerformedAndReschedule": "Udført og planlagt",
+        "PerformMaintenance": "Udfør Vedligeholdelse",
+        "Reminder": "Påmindelse",
+        "PrintJobs": "Print job",
+        "PrinttimeBasedReminder": "Print tid",
+        "PrinttimeBasedReminderDescription": "Denne påmindelse er baseret på print tiden.",
+        "Repeat": "Gentag",
+        "DateBasedReminderDescription": "Denne påmindelse er baseret på datoen.",
+        "Days": "dage",
+        "EditMaintenance": "Redigér Vedligeholdelse",
+        "Meter": "meter",
+        "Name": "Navn",
+        "NoReminder": "Ingen påmindelse",
+        "OneTime": "Éngangs"
     },
     "JobQueue": {
         "AllJobs": "Alle Jobs",
@@ -400,7 +442,8 @@
         "Jobs": "Jobs",
         "Pause": "Pause",
         "RemoveFromQueue": "Fjern fra køen",
-        "Start": "Start"
+        "Start": "Start",
+        "StartPrint": "Start job"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -443,9 +486,9 @@
             "Used": "Brugt"
         },
         "EndstopPanel": {
-            "Endstop": "Endstop",
+            "Endstop": "Endestop",
             "EndstopInfo": "Klik på \"Sync\"-knappen nederst til højre for at opdatere Endstop status.",
-            "Endstops": "Endstops",
+            "Endstops": "Endestops",
             "open": "Åben",
             "TRIGGERED": "Aktiveret"
         },
@@ -454,7 +497,7 @@
             "Cancel": "Annuller",
             "Logfiles": "Logfiler",
             "Rollover": "Nulstil log-filer",
-            "RolloverDescription": "Vælg hvilke log-filer der skal nulstilles",
+            "RolloverDescription": "Vælg hvilke log-filer der skal nulstilles:",
             "RolloverToastFailed": "Nulstillings fejl-log for \"{name}\": {message}",
             "RolloverToastSuccessful": "Filen: \"{name}\" blev nulstillet."
         },
@@ -476,7 +519,7 @@
                 "Memory": "Hukkommelse: {memory}",
                 "Os": "OS: {os}",
                 "Received": "Modtaget: {received}",
-                "Temp": "Temp: {temp}°C",
+                "Temp": "Temperatur: {temp}°C",
                 "TempMax": "maks: {temp}°C",
                 "TempMin": "min: {temp}°C",
                 "Transmitted": "Sendt: {transmitted}",
@@ -491,7 +534,7 @@
             "CommitHistory": "Forpligtelseshistorik",
             "Commits": "Forpligtelse",
             "CommitsAvailable": "Ingen commits tilgængelige | {count} commits tilgængelige | {count} commits tilgængelige",
-            "CommitsOnDate": " Forpligtelse af {date}",
+            "CommitsOnDate": "Forpligtelse af {date}",
             "CommittedDaysAgo": "Forpligtelse delt for {days} dage siden",
             "CommittedHoursAgo": "Forpligtelse delt for {hours} timer siden",
             "CommittedOnDate": "Forpligtelse delt d. {date}",
@@ -507,7 +550,7 @@
             "InitUpdateManager": "Opdateringsmanageren er ikke initialiseret endnu. Dette er normalt ved første opstart. Klik venligst på \"Opdater\" for at initialisere alle komponenter.",
             "Invalid": "Ugyldig",
             "IUnderstandTheRisks": "Jeg forstår risisci",
-            "KlipperUpdateQuestionConfig": "Denne opdatering kan indeholde ændringer til konfigurationsparametre, som efterfølgende skal modificeres i printer.cfg filen. Tjek ændringsloggen for yderligere detaljer",
+            "KlipperUpdateQuestionConfig": "Denne opdatering kan indeholde ændringer til konfigurationsparametre, som efterfølgende skal modificeres i printer.cfg filen. Tjek ændringsloggen for yderligere detaljer.",
             "KlipperUpdateQuestionFirmware": "Denne opdatering kan indeholde ændringer til værts-firmwaren. Bundkortet skal muligvis flashes med opdateret firmware før printeren kan bruges igen.",
             "LinkToGithub": "Link til GitHub",
             "MoonrakerUpdateQuestion": "Dette vil opdatere Moonraker API. Det kan være nødvendigt at ændre i moonraker.conf filen før printeren kan bruges igen.",
@@ -516,7 +559,7 @@
             "SoftRecovery": "Blød nulstilling",
             "StartUpdate": "Start opdatering",
             "System": "System",
-            "ThesePackagesCanBeUpgrade": "Pakker kan opgraderes",
+            "ThesePackagesCanBeUpgrade": "Disse pakker kan opgraderes:",
             "Unknown": "Ukendt",
             "Update": "Opdater",
             "UpdateAll": "Opdater alle komponenter",
@@ -525,7 +568,7 @@
             "Upgrade": "Opgrader",
             "UpgradeableSystemPackages": "Systempakker med opdateringer",
             "UpToDate": "up-to-date",
-            "WebClientUpdateQuestion": "I visse tilfælde kan opdateringer til webklienten forårsage problemer med inkompatibilitet. Se ændingsloggen for yderligere information"
+            "WebClientUpdateQuestion": "I visse tilfælde kan opdateringer til webklienten forårsage problemer med inkompatibilitet. Se ændingsloggen for yderligere information."
         }
     },
     "ManualProbe": {
@@ -538,8 +581,8 @@
         "ExtruderControlPanel": {
             "Allowed": "Tilladt",
             "CleanNozzle": "Rens dyse",
-            "EstimatedExtrusion": "Estimeret ekstrudering",
-            "Extrude": "Extrude",
+            "EstimatedExtrusion": "Estimeret ekstrudering:",
+            "Extrude": "Extrudér",
             "ExtruderControl": "Esktruder-kontrol",
             "ExtruderTempTooLow": "Hotend temp. <",
             "ExtrusionFactor": "Ekstruderingsfaktor",
@@ -578,9 +621,11 @@
             "MoonrakerCannotConnect": "Moonraker kan ikke forbinde til Klipper!",
             "PowerOn": "Tænd",
             "PrinterSwitchedOff": "Printeren er slukket",
-            "PrinterSwitchedOffDescription": "Printeren er slukket og Klipper kan ikke forbinde til den. Tryk på nedenstående knap for at tænde printeren",
+            "PrinterSwitchedOffDescription": "Printeren er slukket og Klipper kan ikke forbinde til den. Tryk på nedenstående knap for at tænde printeren:",
             "Restart": "Genstart",
-            "ServiceReports": "{service} rapporter"
+            "ServiceReports": "{service} rapporter",
+            "MoonrakerLog": "Moonraker-log",
+            "KlipperLog": "Klipper-Log"
         },
         "MachineSettingsPanel": {
             "Headline": "Printer indstillinger",
@@ -692,7 +737,7 @@
                 "PauseAtLayer": "Pause ved lag",
                 "Type": "Type"
             },
-            "PausePrint": "Pause print",
+            "PausePrint": "Sæt print på pause",
             "Print": "Reel printtid",
             "PrintTime": "Print Tid",
             "ReprintJob": "Print job igen",
@@ -789,7 +834,7 @@
     "ScrewsTiltAdjust": {
         "Accept": "Acceptér",
         "Base": "Udgangspunkt",
-        "ErrorText": "Noget gik galt under målingsprocessen",
+        "ErrorText": "Noget gik galt under målingsprocessen.",
         "Headline": "Bed-skrue justering",
         "Retry": "Forsøg igen"
     },
@@ -811,7 +856,9 @@
         "SelectPrinter": "Vælg printer",
         "TryAgain": "Prøv igen",
         "UpdatePrinter": "Opdater Printer",
-        "YouCanFindMore": "Du kan finde flere detaljer her"
+        "YouCanFindMore": "Du kan finde flere detaljer her",
+        "Path": "Sti",
+        "Name": "Navn"
     },
     "Settings": {
         "Cancel": "Annuller",
@@ -848,7 +895,7 @@
             "InvertXMovement": "Invertér X",
             "InvertYMovement": "Invertér Y",
             "InvertZMovement": "Invertér Z",
-            "IsDefault": "Standard",
+            "IsDefault": " Standard",
             "MaximumValues": "Maksimumværdier",
             "MaximumValuesVisibility": "Vis maksimumværdier",
             "MinimumValues": "Minimumsværdier",
@@ -886,7 +933,7 @@
             "Spaces": "Mellemrum: {count}",
             "TabSize": "Tabuleringsstørrelse",
             "TabSizeDescription": "Juster hvor mange mellemrum der skal tilføjes ved tryk på TAB",
-            "UseEscToClose": "Tryk ESC for at lukke Editor.",
+            "UseEscToClose": "Tryk ESC for at lukke Editor",
             "UseEscToCloseDescription": "Tillader at ESC lukker Editor"
         },
         "GCodeViewerTab": {
@@ -939,7 +986,9 @@
             "Reset": "Nulstil",
             "Restore": "Gendan",
             "RestoreDialog": "Vælg de sektioner du ønsker at gendanne fra backup:",
-            "TimeFormat": "Tidsformat"
+            "TimeFormat": "Tidsformat",
+            "DbNavigation": "Navigation",
+            "DbMaintenance": "Vedligeholdelse"
         },
         "HeightmapTab": {
             "ColorSchemes": "Farvetemaer",
@@ -1041,12 +1090,15 @@
             "Port": "Port",
             "RemotePrinters": "Printere",
             "UpdatePrinter": "Opdater printer",
-            "UseConfigJson": "InstanceDB = JSON fundet. Brug venligst config.json til at ændre på printerlisten."
+            "UseConfigJson": "InstanceDB = JSON fundet. Brug venligst config.json til at ændre på printerlisten.",
+            "Path": "Sti",
+            "Name": "Navn",
+            "NameDescription": "Dette navn er ikke synligt i GUI og vil kun blive brugt til redirects."
         },
         "Store": "Gem",
         "TimelapseTab": {
             "Autorender": "Autorendering",
-            "AutorenderDescription": "Hvis aktiv, vil Timelapse video automatisk blive renderet efter afsluttet print.",
+            "AutorenderDescription": "Hvis aktiv, vil Timelapse video automatisk blive renderet efter afsluttet print",
             "Camera": "Kamera",
             "CameraDescription": "Vælg hvilket kamera der skal bruges",
             "ConstantRateFactor": "Constant Rate Faktor",
@@ -1105,11 +1157,21 @@
             "UnretractSpeed": "Unretract hastighed",
             "UnretractSpeedDescription": "Hastigheden der bruges til unretracts.",
             "VariableFps": "Variabel FPS",
-            "VariableFpsDescription": "Hvis aktiv, vil framrate blive beregnet ud fra ønsket længde.",
+            "VariableFpsDescription": "Hvis aktiv, vil framerate blive beregnet ud fra ønsket længde",
             "VariableFpsMax": "Variabel FPS maks",
             "VariableFpsMaxDescription": "Største værdi for variabel FPS",
             "VariableFpsMin": "Variabel FPS min",
-            "VariableFpsMinDescription": "Mindste værdi for variabel FPS"
+            "VariableFpsMinDescription": "Mindste værdi for variabel FPS",
+            "CameraDescriptionWithSnapshotUrl": "Vælg hvilket kamera (med snapshot url) der skal bruges",
+            "CameraWarningAlreadySet": "Denne værdi er allerede indstillet i Moonrakers konfigurationsfil.",
+            "RulesMin": "Værdien skal være minimum {min}!",
+            "RulesPositive": "Værdien skal være positiv!",
+            "RulesRequired": "Værdi påkrævet!",
+            "RulesZeroAndPositive": "Værdien skal være 0 eller højere!",
+            "SelectWebcam": "Vælg Webcam...",
+            "CameraWarningAlreadySetSmall": "snapshot url i [timelapse] sektionen",
+            "NoWebcamFound": "Intet Webcam tilgængeligt",
+            "RulesBetweenMinMax": "Værdien skal være mellem {min} og {max}!"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Bed-skrue justeringsvindue",
@@ -1145,7 +1207,7 @@
             "LockSlidersDescription": "Sliders skal låses op på touchenheder før de kan ændres.",
             "Logo": "Logo",
             "ManualProbeDialog": "Probe justeringsvindue",
-            "ManualProbeDialogDescription": "Viser vindue til hjælp med justering af Proge/Z-offset",
+            "ManualProbeDialogDescription": "Viser vindue til hjælp med justering af Probe/Z-offset",
             "NavigationStyle": "Navigationsstil",
             "NavigationStyleDescription": "Skift navigationens udseende",
             "NavigationStyleIconsAndText": "Ikoner + Tekst",
@@ -1161,7 +1223,13 @@
             "ThemeDark": "Mørkt",
             "ThemeDescription": "Ændr grundfarverne og tonen af applikationen",
             "ThemeLight": "Lyst",
-            "UiSettings": "UI-indstillinger"
+            "UiSettings": "UI-indstillinger",
+            "ConfirmOnCoolDownDescription": "Vis en dialogboks ved Nedkøling",
+            "ProgressAsFavicon": "Vis fremgang som favicon",
+            "ProgressAsFaviconDescription": "Skift Mainsail logo favicon til fremgangscirkel.",
+            "ConfirmOnCoolDown": "Kræv bekræftelse på Nedkøling",
+            "PrintstatusThumbnailZoom": "Stort thumbnail zoom",
+            "PrintstatusThumbnailZoomDescription": "Dette vil deaktivere zoom-effekten på thumbnails i status panelet."
         },
         "Update": "Opdater",
         "WebcamsTab": {
@@ -1234,7 +1302,7 @@
         "MinFramerate": "Min. framerate",
         "Name": "Navn",
         "NewDirectory": "Ny mappe",
-        "NoActiveTimelapse": "Ingen aktive Timelapse",
+        "NoActiveTimelapse": "Ingen Timelapses.",
         "Preview": "Forhåndsvisning",
         "RefreshCurrentDirectory": "Opdater mappe",
         "Rename": "Omdøb",
@@ -1257,5 +1325,25 @@
         "Variable": "Variabel",
         "Video": "Video"
     },
-    "title": "Dansk"
+    "title": "Dansk",
+    "CoolDownDialog": {
+        "No": "Nej",
+        "Yes": "Ja",
+        "AreYouSure": "Er du sikker?",
+        "CoolDown": "Nedkøling"
+    },
+    "DevicesDialog": {
+        "CanBusInfo": "Kun ikke tildelte nodes kan findes. Det anbefales kun at have én ikke tildelt enhed forbundet til CanBus for at undgå kommunikationsproblemer. For flere detaljer, klik på linket:",
+        "ClickRefresh": "Klik på Opdatér for at søge efter enheder.",
+        "DevicePath": "Enhedssti",
+        "Headline": "Enheder",
+        "Formats": "Formater",
+        "HideSystemEntries": "Skjul systemenheder",
+        "LibcameraId": "LibCamera ID",
+        "PathById": "Sti via ID",
+        "NoDeviceFound": "Ingen enhed fundet. Tjek forbindelsen og klik på Opdatér.",
+        "PathByHardware": "Sti via hardware",
+        "Resolutions": "Opløsninger",
+        "Refresh": "Opdatér"
+    }
 }

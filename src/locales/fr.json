@@ -26,7 +26,8 @@
             "NextReboot": "prochain redémarrage",
             "NoNotification": "Pas de notification disponible",
             "Notifications": "Notifications",
-            "Remind": "Rappel:"
+            "Remind": "Rappel:",
+            "ShowDetails": "afficher les détails"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Doit être supérieur ou égal à {min}!",
@@ -115,6 +116,9 @@
             "RecoveringDone": "Récupération {software} effectuée!",
             "Updating": "Mise à jour {software}...",
             "UpdatingDone": "Mise à jour {software} effectuée!"
+        },
+        "TextfieldWithCopy": {
+            "Copied": "Copié"
         }
     },
     "BedScrews": {
@@ -1246,5 +1250,16 @@
         "Variable": "Variable",
         "Video": "Vidéo"
     },
-    "title": "Français"
+    "title": "Français",
+    "CoolDownDialog": {
+        "AreYouSure": "Êtes-vous sûr·e ?",
+        "No": "Non",
+        "Yes": "Oui"
+    },
+    "DevicesDialog": {
+        "Formats": "Formats",
+        "Headline": "Appareils",
+        "HideSystemEntries": "Masquer les entrées système",
+        "Resolutions": "Résolutions"
+    }
 }
