@@ -88,6 +88,10 @@ export default class Codemirror extends Mixins(BaseMixin) {
             indentUnit.of(' '.repeat(this.tabSize)),
             keymap.of([indentWithTab]),
             EditorView.updateListener.of((update) => {
+                if (update.selectionSet) {
+                    const line = this.cminstance?.state?.doc.lineAt(this.cminstance?.state?.selection.main.head).number
+                    this.$emit('lineChange', line)
+                }
                 this.content = update.state?.doc.toString()
                 if (this.$emit) {
                     this.$emit('input', this.content)
@@ -109,6 +113,14 @@ export default class Codemirror extends Mixins(BaseMixin) {
 
     get tabSize() {
         return this.$store.state.gui.editor.tabSize || 2
+    }
+
+    gotoLine(line: number) {
+        const l: any = this.cminstance?.state?.doc.line(line)
+        this.cminstance?.dispatch({
+            selection: { head: l.from, anchor: l.to },
+            scrollIntoView: true,
+        })
     }
 }
 </script>

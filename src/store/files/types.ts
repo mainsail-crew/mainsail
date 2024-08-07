@@ -97,3 +97,13 @@ export interface ApiGetDirectoryReturnFile {
     filename: string
     permissions: string
 }
+
+export interface ConfigFileKey {
+    name: string
+    type: string
+    line: number
+}
+
+export interface ConfigFileSection extends ConfigFileKey {
+    children: ConfigFileKey[]
+}
