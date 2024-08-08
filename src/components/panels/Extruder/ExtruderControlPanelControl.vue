@@ -261,15 +261,17 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
             this.setFeedamount({ value: this.maxExtrudeOnlyDistance })
         }
     }
-
+    private counter: number = 0;
     sendRetract(): void {
-        const gcode = `M83\nG1 E-${this.feedamount} F${this.feedrate * 60}`
+        this.counter++;
+        const gcode = `SAVE_GCODE_STATE NAME=mainsail_ui_retract${this.counter}\nM83\nG1 E-${this.feedamount} F${this.feedrate * 60}\nRESTORE_GCODE_STATE NAME=mainsail_ui_retract${this.counter}`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnRetract' })
     }
 
     sendExtrude(): void {
-        const gcode = `M83\nG1 E${this.feedamount} F${this.feedrate * 60}`
+        this.counter++;
+        const gcode = `SAVE_GCODE_STATE NAME=mainsail_ui_extrude${this.counter}\nM83\nG1 E${this.feedamount} F${this.feedrate * 60}\nRESTORE_GCODE_STATE NAME=mainsail_ui_extrude${this.counter}`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
     }
