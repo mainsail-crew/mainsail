@@ -263,13 +263,21 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
     }
 
     sendRetract(): void {
-        const gcode = `SAVE_GCODE_STATE NAME=ui_retract\nM83\nG1 E-${this.feedamount} F${this.feedrate * 60}\nRESTORE_GCODE_STATE NAME=ui_retract`
+        const gcode =
+            `SAVE_GCODE_STATE NAME=ui_retract\n` +
+            `M83\n` +
+            `G1 E-${this.feedamount} F${this.feedrate * 60}\n` +
+            `RESTORE_GCODE_STATE NAME=ui_retract`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnRetract' })
     }
 
     sendExtrude(): void {
-        const gcode = `SAVE_GCODE_STATE NAME=ui_extrude\nM83\nG1 E${this.feedamount} F${this.feedrate * 60}\nRESTORE_GCODE_STATE NAME=ui_extrude`
+        const gcode =
+            `SAVE_GCODE_STATE NAME=ui_extrude\n` +
+            `M83\n` +
+            `G1 E${this.feedamount} F${this.feedrate * 60}\n` +
+            `RESTORE_GCODE_STATE NAME=ui_extrude`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
     }
