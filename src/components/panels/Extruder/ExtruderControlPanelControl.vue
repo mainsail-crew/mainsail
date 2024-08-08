@@ -261,17 +261,15 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
             this.setFeedamount({ value: this.maxExtrudeOnlyDistance })
         }
     }
-    private counter: number = 0;
+
     sendRetract(): void {
-        this.counter++;
-        const gcode = `SAVE_GCODE_STATE NAME=mainsail_ui_retract${this.counter}\nM83\nG1 E-${this.feedamount} F${this.feedrate * 60}\nRESTORE_GCODE_STATE NAME=mainsail_ui_retract${this.counter}`
+        const gcode = `SAVE_GCODE_STATE NAME=ui_retract\nM83\nG1 E-${this.feedamount} F${this.feedrate * 60}\nRESTORE_GCODE_STATE NAME=ui_retract`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnRetract' })
     }
 
     sendExtrude(): void {
-        this.counter++;
-        const gcode = `SAVE_GCODE_STATE NAME=mainsail_ui_extrude${this.counter}\nM83\nG1 E${this.feedamount} F${this.feedrate * 60}\nRESTORE_GCODE_STATE NAME=mainsail_ui_extrude${this.counter}`
+        const gcode = `SAVE_GCODE_STATE NAME=ui_extrude\nM83\nG1 E${this.feedamount} F${this.feedrate * 60}\nRESTORE_GCODE_STATE NAME=ui_extrude`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
     }
