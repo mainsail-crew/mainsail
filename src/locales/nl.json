@@ -1,5 +1,4 @@
 {
-    "_last_update": "2023-02-21",
     "App": {
         "Notifications": {
             "DependencyDescription": "De huidige {name} versie ondersteunt niet alle functies van Mainsail. Update {name} naar ten minste {neededVersion}.",
@@ -1138,5 +1137,6 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Nederlands"
+    "title": "Nederlands",
+    "_last_update": "2023-02-21"
 }
