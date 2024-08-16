@@ -13,9 +13,11 @@
                 "DeprecatedOptionHeadline": "Forældet Klipper mulighed",
                 "DeprecatedValue": "Værdien \"{value}\" i muligheden \"{option}\" i sektion \"{section}\" er forældet.",
                 "DeprecatedValueHeadline": "Forældet Klipper værdi",
-                "KlipperWarning": "Klipper advarsel",
-                "KlipperRuntimeWarning": "Klipper runtime advarsel"
+                "KlipperRuntimeWarning": "Klipper runtime advarsel",
+                "KlipperWarning": "Klipper advarsel"
             },
+            "MaintenanceReminder": "Vedligeholdelsespåmindelse",
+            "MaintenanceReminderText": "Vedligeholdelse \"{name}\" forfalder.",
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "Der blev fundet en fejl under indlæsning af Moonraker komponenten '{component}'. Tjek logfilen og løs problemet.",
@@ -29,13 +31,11 @@
             "NextReboot": "næste genstart",
             "NoNotification": "Ingen tilgængelig notifikationer",
             "Notifications": "Notifikationer",
-            "Remind": "Påmind mig om:",
-            "OneWeekShort": "1W",
-            "ShowDetails": "vis detaljer",
-            "MaintenanceReminder": "Vedligeholdelsespåmindelse",
-            "MaintenanceReminderText": "Vedligeholdelse \"{name}\" forfalder.",
             "OneDayShort": "1D",
-            "OneHourShort": "1H"
+            "OneHourShort": "1H",
+            "OneWeekShort": "1W",
+            "Remind": "Påmind mig om:",
+            "ShowDetails": "vis detaljer"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Skal være større eller lig med {min}!",
@@ -43,6 +43,9 @@
             "NoEmptyAllowedError": "Må ikke være tom!"
         },
         "Printers": "Printere",
+        "TextfieldWithCopy": {
+            "Copied": "Kopieret"
+        },
         "TheServiceWorker": {
             "DescriptionNeedUpdate": "Den lokale cahce er forældet og skal opdateres. Tryk venligst nedenfor for at opdatere.",
             "TitleNeedUpdate": "PWA skal opdateres",
@@ -124,9 +127,6 @@
             "RecoveringDone": "Gendannelse af {software} udført!",
             "Updating": "Opdaterer {software}...",
             "UpdatingDone": "Opdatering af {software} udført!"
-        },
-        "TextfieldWithCopy": {
-            "Copied": "Kopieret"
         }
     },
     "BedScrews": {
@@ -156,6 +156,26 @@
         "SendCode": "Send kode...",
         "SetupConsole": "Terminalindstillinger"
     },
+    "CoolDownDialog": {
+        "AreYouSure": "Er du sikker?",
+        "CoolDown": "Nedkøling",
+        "No": "Nej",
+        "Yes": "Ja"
+    },
+    "DevicesDialog": {
+        "CanBusInfo": "Kun ikke tildelte nodes kan findes. Det anbefales kun at have én ikke tildelt enhed forbundet til CanBus for at undgå kommunikationsproblemer. For flere detaljer, klik på linket:",
+        "ClickRefresh": "Klik på Opdatér for at søge efter enheder.",
+        "DevicePath": "Enhedssti",
+        "Formats": "Formater",
+        "Headline": "Enheder",
+        "HideSystemEntries": "Skjul systemenheder",
+        "LibcameraId": "LibCamera ID",
+        "NoDeviceFound": "Ingen enhed fundet. Tjek forbindelsen og klik på Opdatér.",
+        "PathByHardware": "Sti via hardware",
+        "PathById": "Sti via ID",
+        "Refresh": "Opdatér",
+        "Resolutions": "Opløsninger"
+    },
     "Dialogs": {
         "StartPrint": {
             "Cancel": "Annuller",
@@ -168,6 +188,7 @@
     },
     "Editor": {
         "ConfigReference": "Konfigurationsreference",
+        "DeviceDialog": "Enheder",
         "DontSave": "Gem ikke",
         "Downloading": "Downloader",
         "FailedSave": "{filename} blev IKKE gemt!",
@@ -178,8 +199,7 @@
         "UnsavedChanges": "Ugemte ændringer",
         "UnsavedChangesMessage": "Ønsker du at gemme ændringerne i filen {filename}?",
         "UnsavedChangesSubMessage": "Dine ændringer går tabt hvis du ikke gemmer. Du kan deaktivere denne besked i \"editor-settings\".",
-        "Uploading": "Uploader",
-        "DeviceDialog": "Enheder"
+        "Uploading": "Uploader"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Er du sikker?",
@@ -332,19 +352,27 @@
         "Wireframe": "Wireframe"
     },
     "History": {
+        "AddANote": "Tilføj note",
+        "AddMaintenance": "Tilføj vedligeholdelse",
         "AddNote": "Tilføj note",
+        "AddToQueueSuccessful": "Filen {filename} tilføjet til Køen.",
         "AllJobs": "Alle job",
         "AvgPrinttime": "Gns. printtid",
         "Cancel": "Annuller",
         "Chart": "Skema",
         "CreateNote": "Gem note",
+        "DateBasedReminder": "Dato",
+        "DateBasedReminderDescription": "Denne påmindelse er baseret på datoen.",
+        "Days": "dage",
         "Delete": "Slet",
         "DeleteSelectedQuestion": "Er du sikker på du vil slette alle {count} valgte jobs?",
         "DeleteSingleJobQuestion": "Er du sikker på du vil slette dette job?",
         "Details": "Detaljer",
+        "EditMaintenance": "Redigér Vedligeholdelse",
         "EditNote": "Redigér note",
         "Empty": "Tom",
         "EndTime": "Sluttid",
+        "EntryCreatedAt": "Oprettet d. {date}.",
         "EstimatedFilament": "Estimeret filament",
         "EstimatedFilamentWeight": "Estimeret filament vægt",
         "EstimatedTime": "Estimeret tid",
@@ -399,36 +427,28 @@
         "TotalJobs": "Totale antal print",
         "TotalPrinttime": "Total printtid",
         "TotalTime": "Total Tid",
-        "AddToQueueSuccessful": "Filen {filename} tilføjet til Køen.",
-        "AddANote": "Tilføj note",
-        "AddMaintenance": "Tilføj vedligeholdelse",
-        "DateBasedReminder": "Dato",
-        "EntryCreatedAt": "Oprettet d. {date}.",
-        "EntryPerformedAt": "Udført d. {date}.",
-        "Hours": "timer",
         "EntryNextPerform": "Udføres næste gang:",
+        "EntryPerformedAt": "Udført d. {date}.",
+        "EntrySince": "Brugt siden:",
         "FilamentBasedReminder": "Filament baseret",
+        "FilamentBasedReminderDescription": "Denne påmindelse er baseret på filament forbrug.",
+        "Hours": "timer",
         "InvalidNameEmpty": "Ugyldigt navn. Navnet må ikke være tomt!",
+        "Maintenance": "Vedligeholdelse",
         "MaintenanceEntries": "Vedligeholdelsesposter",
         "Perform": "Udfør",
-        "EntrySince": "Brugt siden:",
-        "FilamentBasedReminderDescription": "Denne påmindelse er baseret på filament forbrug.",
-        "Maintenance": "Vedligeholdelse",
-        "Performed": "Udført",
-        "PerformedAndReschedule": "Udført og planlagt",
-        "PerformMaintenance": "Udfør Vedligeholdelse",
-        "Reminder": "Påmindelse",
-        "PrintJobs": "Print job",
-        "PrinttimeBasedReminder": "Print tid",
-        "PrinttimeBasedReminderDescription": "Denne påmindelse er baseret på print tiden.",
-        "Repeat": "Gentag",
-        "DateBasedReminderDescription": "Denne påmindelse er baseret på datoen.",
-        "Days": "dage",
-        "EditMaintenance": "Redigér Vedligeholdelse",
         "Meter": "meter",
         "Name": "Navn",
         "NoReminder": "Ingen påmindelse",
-        "OneTime": "Éngangs"
+        "OneTime": "Éngangs",
+        "Performed": "Udført",
+        "PerformedAndReschedule": "Udført og planlagt",
+        "PerformMaintenance": "Udfør Vedligeholdelse",
+        "PrintJobs": "Print job",
+        "Reminder": "Påmindelse",
+        "PrinttimeBasedReminder": "Print tid",
+        "PrinttimeBasedReminderDescription": "Denne påmindelse er baseret på print tiden.",
+        "Repeat": "Gentag"
     },
     "JobQueue": {
         "AllJobs": "Alle Jobs",
@@ -618,14 +638,14 @@
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "Tjek at Klipper-servicen kører, samt at klippy_uds_address er korrekt konfigureret i moonraker.conf.",
             "FirmwareRestart": "Genstart alt",
+            "KlipperLog": "Klipper-Log",
             "MoonrakerCannotConnect": "Moonraker kan ikke forbinde til Klipper!",
+            "MoonrakerLog": "Moonraker-log",
             "PowerOn": "Tænd",
             "PrinterSwitchedOff": "Printeren er slukket",
             "PrinterSwitchedOffDescription": "Printeren er slukket og Klipper kan ikke forbinde til den. Tryk på nedenstående knap for at tænde printeren:",
             "Restart": "Genstart",
-            "ServiceReports": "{service} rapporter",
-            "MoonrakerLog": "Moonraker-log",
-            "KlipperLog": "Klipper-Log"
+            "ServiceReports": "{service} rapporter"
         },
         "MachineSettingsPanel": {
             "Headline": "Printer indstillinger",
@@ -850,15 +870,15 @@
         "HostnameInvalid": "Ugyldigt værtsnavn/IP",
         "HostnameIp": "Værtsnavn/IP",
         "HostnameRequired": "Værtsnavn er påkrævet",
+        "Name": "Navn",
+        "Path": "Sti",
         "Port": "Port",
         "PortRequired": "Port er påkrævet",
         "RememberToAdd": "Husk at tilføje {cors} i moonraker.conf under \"cors_domains\".",
         "SelectPrinter": "Vælg printer",
         "TryAgain": "Prøv igen",
         "UpdatePrinter": "Opdater Printer",
-        "YouCanFindMore": "Du kan finde flere detaljer her",
-        "Path": "Sti",
-        "Name": "Navn"
+        "YouCanFindMore": "Du kan finde flere detaljer her"
     },
     "Settings": {
         "Cancel": "Annuller",
@@ -968,7 +988,9 @@
             "DbConsoleHistory": "Terminal Historik",
             "DbHistoryJobs": "Jobhistorik",
             "DbHistoryTotals": "Totalhistorik",
+            "DbMaintenance": "Vedligeholdelse",
             "DBNavigation": "Navigation",
+            "DbNavigation": "Navigation",
             "DbTimelapseSettings": "Timelapse indstillinger",
             "DbView": "Vis indstillinger",
             "EstimateValues": {
@@ -986,9 +1008,7 @@
             "Reset": "Nulstil",
             "Restore": "Gendan",
             "RestoreDialog": "Vælg de sektioner du ønsker at gendanne fra backup:",
-            "TimeFormat": "Tidsformat",
-            "DbNavigation": "Navigation",
-            "DbMaintenance": "Vedligeholdelse"
+            "TimeFormat": "Tidsformat"
         },
         "HeightmapTab": {
             "ColorSchemes": "Farvetemaer",
@@ -1087,13 +1107,13 @@
             "AddPrinter": "Tilføj printer",
             "EditPrinter": "Rediger printer",
             "Hostname": "Værtsnavn",
+            "Name": "Navn",
+            "NameDescription": "Dette navn er ikke synligt i GUI og vil kun blive brugt til redirects.",
+            "Path": "Sti",
             "Port": "Port",
             "RemotePrinters": "Printere",
             "UpdatePrinter": "Opdater printer",
-            "UseConfigJson": "InstanceDB = JSON fundet. Brug venligst config.json til at ændre på printerlisten.",
-            "Path": "Sti",
-            "Name": "Navn",
-            "NameDescription": "Dette navn er ikke synligt i GUI og vil kun blive brugt til redirects."
+            "UseConfigJson": "InstanceDB = JSON fundet. Brug venligst config.json til at ændre på printerlisten."
         },
         "Store": "Gem",
         "TimelapseTab": {
@@ -1101,6 +1121,9 @@
             "AutorenderDescription": "Hvis aktiv, vil Timelapse video automatisk blive renderet efter afsluttet print",
             "Camera": "Kamera",
             "CameraDescription": "Vælg hvilket kamera der skal bruges",
+            "CameraDescriptionWithSnapshotUrl": "Vælg hvilket kamera (med snapshot url) der skal bruges",
+            "CameraWarningAlreadySet": "Denne værdi er allerede indstillet i Moonrakers konfigurationsfil.",
+            "CameraWarningAlreadySetSmall": "snapshot url i [timelapse] sektionen",
             "ConstantRateFactor": "Constant Rate Faktor",
             "ConstantRateFactorDescription": "Konfigurerer Kvalitet / Filstørrelse af den renderede video. Kan justeres mellem 0-51, Hvor 0 er tabsfri, 23 er standard og 51 er værste kvalitet (mindste filstørrelse). En lavere værdi giver højere kvalitet, og et \"normalt\" område er 17-28. 17 eller 18 kan betragtes som visuelt tabsfrit.",
             "duplicatelastframe": "Kopier sidste frame",
@@ -1118,6 +1141,7 @@
             "HyperlapseCycleDescription": "Frames optages med det angivne tidsmellemrum (sek.)",
             "Mode": "Modus",
             "ModeDescription": "Vælg mellem \"Layermacro\" og \"Hyperlapse\" (tidsbaseret) modus",
+            "NoWebcamFound": "Intet Webcam tilgængeligt",
             "OutputFramerate": "Output Framerate",
             "OutputFramerateDescription": "Definerer framerate i videoen. Bemærk: Dette ignoreres hvis \"variable_fps\" er aktiveret",
             "Parkhead": "Parker Hotend",
@@ -1141,6 +1165,10 @@
             "RetractDistanceDescription": "Længden af retractions.",
             "RetractSpeed": "Retract hastighed",
             "RetractSpeedDescription": "Hastighed der bruges til retractions.",
+            "RulesBetweenMinMax": "Værdien skal være mellem {min} og {max}!",
+            "RulesMin": "Værdien skal være minimum {min}!",
+            "RulesPositive": "Værdien skal være positiv!",
+            "RulesRequired": "Værdi påkrævet!",
             "SaveFrames": "Gem Frames",
             "SaveFramesDescription": "Gem frames til zip-fil for ekstern rendering",
             "StreamDelayCompensation": "Kompensering for \"Stream-Delay\" forsinkelse",
@@ -1162,16 +1190,8 @@
             "VariableFpsMaxDescription": "Største værdi for variabel FPS",
             "VariableFpsMin": "Variabel FPS min",
             "VariableFpsMinDescription": "Mindste værdi for variabel FPS",
-            "CameraDescriptionWithSnapshotUrl": "Vælg hvilket kamera (med snapshot url) der skal bruges",
-            "CameraWarningAlreadySet": "Denne værdi er allerede indstillet i Moonrakers konfigurationsfil.",
-            "RulesMin": "Værdien skal være minimum {min}!",
-            "RulesPositive": "Værdien skal være positiv!",
-            "RulesRequired": "Værdi påkrævet!",
             "RulesZeroAndPositive": "Værdien skal være 0 eller højere!",
-            "SelectWebcam": "Vælg Webcam...",
-            "CameraWarningAlreadySetSmall": "snapshot url i [timelapse] sektionen",
-            "NoWebcamFound": "Intet Webcam tilgængeligt",
-            "RulesBetweenMinMax": "Værdien skal være mellem {min} og {max}!"
+            "SelectWebcam": "Vælg Webcam..."
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Bed-skrue justeringsvindue",
@@ -1181,6 +1201,8 @@
             "BoolBigThumbnailDescription": "Vis et stort billede i statuspanelet under print.",
             "BoolHideUploadAndPrintButton": "Skjul \"Upload og Print\" knap",
             "BoolHideUploadAndPrintButtonDescription": "Vis eller skjul \"Upload and Print\" knappen i top-baren.",
+            "ConfirmOnCoolDown": "Kræv bekræftelse på Nedkøling",
+            "ConfirmOnCoolDownDescription": "Vis en dialogboks ved Nedkøling",
             "ConfirmOnEmergencyStop": "Kræv bekræftelse før Nødstop",
             "ConfirmOnEmergencyStopDescription": "Viser en bekræftelses dialogboks ved tryk på Nødstop",
             "ConfirmOnPowerDeviceChange": "Kræv bekræftelse ved ændringer på Enhedens strømtilstand",
@@ -1215,6 +1237,10 @@
             "PowerDeviceName": "Printer strømenhed",
             "PowerDeviceNameDescription": "Vælg hvilken strømenhed i Moonraker der styrer printerens strøm.",
             "Primary": "Primær",
+            "PrintstatusThumbnailZoom": "Stort thumbnail zoom",
+            "PrintstatusThumbnailZoomDescription": "Dette vil deaktivere zoom-effekten på thumbnails i status panelet.",
+            "ProgressAsFavicon": "Vis fremgang som favicon",
+            "ProgressAsFaviconDescription": "Skift Mainsail logo favicon til fremgangscirkel.",
             "ScrewsTiltAdjustDialog": "Bed-skrue justeringsvindue til Probe",
             "ScrewsTiltAdjustDialogDescription": "Viser vindue til hjælp med Bed-skrue justeringer ved brug af proben.",
             "TempchartHeight": "Temperaturgrafens højde",
@@ -1223,13 +1249,7 @@
             "ThemeDark": "Mørkt",
             "ThemeDescription": "Ændr grundfarverne og tonen af applikationen",
             "ThemeLight": "Lyst",
-            "UiSettings": "UI-indstillinger",
-            "ConfirmOnCoolDownDescription": "Vis en dialogboks ved Nedkøling",
-            "ProgressAsFavicon": "Vis fremgang som favicon",
-            "ProgressAsFaviconDescription": "Skift Mainsail logo favicon til fremgangscirkel.",
-            "ConfirmOnCoolDown": "Kræv bekræftelse på Nedkøling",
-            "PrintstatusThumbnailZoom": "Stort thumbnail zoom",
-            "PrintstatusThumbnailZoomDescription": "Dette vil deaktivere zoom-effekten på thumbnails i status panelet."
+            "UiSettings": "UI-indstillinger"
         },
         "Update": "Opdater",
         "WebcamsTab": {
@@ -1325,25 +1345,5 @@
         "Variable": "Variabel",
         "Video": "Video"
     },
-    "title": "Dansk",
-    "CoolDownDialog": {
-        "No": "Nej",
-        "Yes": "Ja",
-        "AreYouSure": "Er du sikker?",
-        "CoolDown": "Nedkøling"
-    },
-    "DevicesDialog": {
-        "CanBusInfo": "Kun ikke tildelte nodes kan findes. Det anbefales kun at have én ikke tildelt enhed forbundet til CanBus for at undgå kommunikationsproblemer. For flere detaljer, klik på linket:",
-        "ClickRefresh": "Klik på Opdatér for at søge efter enheder.",
-        "DevicePath": "Enhedssti",
-        "Headline": "Enheder",
-        "Formats": "Formater",
-        "HideSystemEntries": "Skjul systemenheder",
-        "LibcameraId": "LibCamera ID",
-        "PathById": "Sti via ID",
-        "NoDeviceFound": "Ingen enhed fundet. Tjek forbindelsen og klik på Opdatér.",
-        "PathByHardware": "Sti via hardware",
-        "Resolutions": "Opløsninger",
-        "Refresh": "Opdatér"
-    }
+    "title": "Dansk"
 }

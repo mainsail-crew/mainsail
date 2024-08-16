@@ -35,6 +35,9 @@
             "NoEmptyAllowedError": "L'entrée ne doit pas être vide !"
         },
         "Printers": "Imprimantes",
+        "TextfieldWithCopy": {
+            "Copied": "Copié"
+        },
         "TheServiceWorker": {
             "DescriptionNeedUpdate": "Le cache local est obsolète et doit être mis à jour. Veuillez cliquer sur le bouton ci-dessous pour mettre à jour le cache.",
             "TitleNeedUpdate": "PWA a besoin d'une mise à jour",
@@ -116,9 +119,6 @@
             "RecoveringDone": "Récupération {software} effectuée!",
             "Updating": "Mise à jour {software}...",
             "UpdatingDone": "Mise à jour {software} effectuée!"
-        },
-        "TextfieldWithCopy": {
-            "Copied": "Copié"
         }
     },
     "BedScrews": {
@@ -147,6 +147,17 @@
         "HideTimelapse": "Cacher le timelapse",
         "SendCode": "Envoyer le code...",
         "SetupConsole": "Configuration console"
+    },
+    "CoolDownDialog": {
+        "AreYouSure": "Êtes-vous sûr·e ?",
+        "No": "Non",
+        "Yes": "Oui"
+    },
+    "DevicesDialog": {
+        "Formats": "Formats",
+        "Headline": "Appareils",
+        "HideSystemEntries": "Masquer les entrées système",
+        "Resolutions": "Résolutions"
     },
     "Dialogs": {
         "StartPrint": {
@@ -1250,16 +1261,5 @@
         "Variable": "Variable",
         "Video": "Vidéo"
     },
-    "title": "Français",
-    "CoolDownDialog": {
-        "AreYouSure": "Êtes-vous sûr·e ?",
-        "No": "Non",
-        "Yes": "Oui"
-    },
-    "DevicesDialog": {
-        "Formats": "Formats",
-        "Headline": "Appareils",
-        "HideSystemEntries": "Masquer les entrées système",
-        "Resolutions": "Résolutions"
-    }
+    "title": "Français"
 }

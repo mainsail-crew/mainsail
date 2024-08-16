@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Description": "{name} elavult és nem teljesen támogatott. A jelenlegi verzió {version}, de a Mainsail-hez {minVersion} vagy újabb verzió szükséges.",
+                "Headline": "Elavult böngésző"
+            },
             "DependencyDescription": "Ez a verzió {name} nem támogat minden Mainsail funkciót. Frissítsd az újra {neededVersion} a jelenlegit {name}.",
             "DependencyName": "Függőség: {name}",
             "DismissAll": "Mind elvetése",
@@ -9,36 +13,32 @@
                 "DeprecatedOptionHeadline": "Elavult Klipper Opció",
                 "DeprecatedValue": "A '{value}' érték az '{option}' opcióban a '{section}' szakaszban elavult, és egy későbbi kiadásban eltávolításra kerül.",
                 "DeprecatedValueHeadline": "Elavult Klipper Érték",
-                "KlipperWarning": "Klipper figyelmeztetés",
-                "KlipperRuntimeWarning": "Klipper futásidejű figyelmeztetés"
+                "KlipperRuntimeWarning": "Klipper futásidejű figyelmeztetés",
+                "KlipperWarning": "Klipper figyelmeztetés"
             },
+            "MaintenanceReminder": "Karbantartási emlékeztető",
+            "MaintenanceReminderText": "\"{name}\" karbantartás esedékes.",
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "Hiba a betöltés során, Moonraker '{component}'. Kérlek ellenőrizd a logokat, és javítsd a hibát.",
+                "MoonrakerFailedInitComponentDescription": "Hiba történt a moonraker komponens inicializálása során '{component}'. Kérjük, ellenőrizd a naplófájlt, és javítsd ki a problémát.",
+                "MoonrakerInitComponent": "Itt. Moonraker: {component}",
                 "MoonrakerWarning": "Moonraker figyelmeztetés",
                 "UnparsedConfigOption": "A [{section}] szekcióban helytelen konfig opciót '{option}: {value}' detektáltam. Ez lehet egy már nem elérhető opció, vagy egy hibásan betöltődő modul is okozhatja. A jövőben ez egy indítási hibaként fog jelentkezni.",
-                "UnparsedConfigSection": "Helytelen konfig szekciót [{section}] detektáltam. Ezt egy hibásan betöltődő komponens okozhatja. A jövőben ez egy indítási hibaként fog jelentkezni.",
-                "MoonrakerFailedInitComponentDescription": "Hiba történt a moonraker komponens inicializálása során '{component}'. Kérjük, ellenőrizd a naplófájlt, és javítsd ki a problémát.",
-                "MoonrakerInitComponent": "Itt. Moonraker: {component}"
+                "UnparsedConfigSection": "Helytelen konfig szekciót [{section}] detektáltam. Ezt egy hibásan betöltődő komponens okozhatja. A jövőben ez egy indítási hibaként fog jelentkezni."
             },
             "Never": "soha",
             "NextReboot": "Következő újraindítás",
             "NoNotification": "Értesítés nem elérhető",
-            "Remind": "Emlékeztető:",
-            "BrowserWarnings": {
-                "Description": "{name} elavult és nem teljesen támogatott. A jelenlegi verzió {version}, de a Mainsail-hez {minVersion} vagy újabb verzió szükséges.",
-                "Headline": "Elavult böngésző"
-            },
-            "MaintenanceReminder": "Karbantartási emlékeztető",
-            "OneDayShort": "1N",
-            "MaintenanceReminderText": "\"{name}\" karbantartás esedékes.",
             "Notifications": "Értesítések",
+            "OneDayShort": "1N",
             "OneHourShort": "1Ó",
             "OneWeekShort": "1H",
+            "Remind": "Emlékeztető:",
             "ShowDetails": "részletek mutatása",
             "TmcOtFlag": "Motorvezérlő hiba: OT jelző beállítva",
-            "TmcOtpwFlag": "Motorvezérlő figyelmeztetés: OTPW jelző beállítva",
             "TmcOtFlagText": "A '{name}' motorvezérlő aktiválta az OT-jelzőt és leállt. Ezt a túl nagy áram okozhatja. Kérjük, ellenőrizd a motorvezérlő beállításait és a hűtését.",
+            "TmcOtpwFlag": "Motorvezérlő figyelmeztetés: OTPW jelző beállítva",
             "TmcOtpwFlagText": "A '{name}' motorvezérlő aktiválta az OTPW jelzőt, és ha tovább melegszik, leállhat a működése. Ez egy túlmelegedési állapotot jelez. Melyet okozhat a túl nagy áram. Kérjük, ellenőrizd a motorvezérlő beállításait és a hűtését."
         },
         "NumberInput": {
@@ -47,6 +47,14 @@
             "NoEmptyAllowedError": "Nem lehet üres a bemenet!"
         },
         "Printers": "Nyomtatók",
+        "TextfieldWithCopy": {
+            "Copied": "Másolva"
+        },
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "A helyi gyorsítótár elavult, és frissítésre szorul. Kérjük, kattints az alábbi gombra a gyorsítótár frissítéséhez.",
+            "TitleNeedUpdate": "A PWA frissítést igényel",
+            "Update": "frissítés"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Az rPi ARM mag(ok) jelenleg túlterheltek.",
             "DescriptionFrequencyCapped": "Az rPi ARM max frekvenciája jelenleg 1,2 GHz -re korlátozódik.",
@@ -69,9 +77,9 @@
             "Complete": "Elkészült - {filename}",
             "Error": "HIBA",
             "Pause": "Nyomtatás Állj",
+            "PrinterOff": "Nyomtató KI",
             "Printing": "{percent}% Nyomtatás - {filename}",
-            "PrintingETA": "{percent}% Nyomtatás - IDŐ: {eta} - {filename}",
-            "PrinterOff": "Nyomtató KI"
+            "PrintingETA": "{percent}% Nyomtatás - IDŐ: {eta} - {filename}"
         },
         "TopBar": {
             "CannotUploadTheFile": "A fájl nem feltölthető!",
@@ -123,15 +131,18 @@
             "RecoveringDone": "{software} helyreállítása kész!",
             "Updating": "{software} frissítése ...",
             "UpdatingDone": "{software} frissítése kész!"
-        },
-        "TheServiceWorker": {
-            "Update": "frissítés",
-            "TitleNeedUpdate": "A PWA frissítést igényel",
-            "DescriptionNeedUpdate": "A helyi gyorsítótár elavult, és frissítésre szorul. Kérjük, kattints az alábbi gombra a gyorsítótár frissítéséhez."
-        },
-        "TextfieldWithCopy": {
-            "Copied": "Másolva"
         }
+    },
+    "BedScrews": {
+        "Abort": "megszakít",
+        "Accept": "elfogadás",
+        "Adjusted": "beállított",
+        "Description": "Kattints a <b>BEÁLLÍTVA</b> gombra, ha a jelenlegi csavart beállítottad. Kattints az <b>ELFOGAD</b> gombra ha nem történt állítás.",
+        "Headline": "Ágycsavarok",
+        "ScrewAccepted": "Csavarok elfogadva",
+        "ScrewIndex": "Csavar index",
+        "ScrewName": "Csavar neve",
+        "ScrewOutput": "{current} / {max}"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Nem lehet csatlakozni a Moonrakerhez ({host}).",
@@ -149,18 +160,39 @@
         "SendCode": "Kód küldése...",
         "SetupConsole": "Konzol beállítás"
     },
+    "CoolDownDialog": {
+        "AreYouSure": "Biztos vagy benne?",
+        "CoolDown": "Visszahűtés",
+        "No": "Nem",
+        "Yes": "Igen"
+    },
+    "DevicesDialog": {
+        "CanBusInfo": "Csak a nem hozzárendelt csomópontok észlelhetők. A kommunikációs problémák elkerülése érdekében ajánlott, hogy csak egy nem hozzárendelt eszköz csatlakozzon a CANbus-hoz. További részletekért kattints a linkre:",
+        "ClickRefresh": "Kattints a frissítés gombra az eszközök kereséséhez.",
+        "DevicePath": "Eszköz elérési útja",
+        "Formats": "Formátumok",
+        "Headline": "Eszközök",
+        "HideSystemEntries": "Rendszerbejegyzések elrejtése",
+        "LibcameraId": "Libcamera ID",
+        "NoDeviceFound": "Nem található eszköz. Kérjük, ellenőrizd a kapcsolatot, és kattints a frissítés gombra.",
+        "PathByHardware": "Útvonal hardver szerint",
+        "PathById": "Útvonal ID szerint",
+        "Refresh": "frissítés",
+        "Resolutions": "Felbontások"
+    },
     "Dialogs": {
         "StartPrint": {
             "Cancel": "Mégsem",
             "DoYouWantToStartFilename": "Elkezded a {filename} nyomtatását?",
+            "DoYouWantToStartFilenameFilament": "Szeretnéd a {filename} fájlt a következő nyomtatószállal indítani?",
             "Headline": "Feladat kezdése",
             "Print": "nyomtatás",
-            "Timelapse": "Idővonal",
-            "DoYouWantToStartFilenameFilament": "Szeretnéd a {filename} fájlt a következő nyomtatószállal indítani?"
+            "Timelapse": "Idővonal"
         }
     },
     "Editor": {
         "ConfigReference": "Konfigurációs refencia",
+        "DeviceDialog": "Eszközök",
         "DontSave": "Ne mentsd",
         "Downloading": "Letöltés",
         "FailedSave": "Nem tölthető fel: {filename}!",
@@ -171,8 +203,7 @@
         "UnsavedChanges": "Mentetlen Változások",
         "UnsavedChangesMessage": "Szeretnéd menteni a következőn végzett változtatásokat: {filename}?",
         "UnsavedChangesSubMessage": "A változtatásaid elvesznek ha nem mented őket. Ezt az üzenetet az Editor beállításokban kikapcsolhatod.",
-        "Uploading": "Feltöltés",
-        "DeviceDialog": "Eszközök"
+        "Uploading": "Feltöltés"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Biztos?",
@@ -181,9 +212,13 @@
         "Yes": "Igen"
     },
     "Files": {
+        "AddBatchToQueue": "Tétel hozzáadása a várólistához",
         "AddToQueue": "Várólistához adva",
         "AllFiles": "Mind",
+        "BedTemp": "Ágy hőmérs.",
         "Cancel": "Mégsem",
+        "ChamberTemp": "Kamra hőmérs.",
+        "Count": "Számol",
         "Create": "Létrehoz",
         "CreateNewDirectory": "Új mappa létrehozása",
         "CurrentPath": "Jelenlegi útvonal",
@@ -191,7 +226,10 @@
         "DeleteDirectory": "Mappa törlése",
         "DeleteDirectoryQuestion": "Tényleg szeretnéd törölni a következő \"{name}\" mappát és minden tartalmát?",
         "DeleteSelectedQuestion": "Tényleg szeretnél törölni {count} darab fájlt?",
+        "DeleteSingleFileQuestion": "Biztos törölni szeretnéd a \"{name}\" fájlt?",
         "Download": "Letöltés",
+        "Duplicate": "Duplikált",
+        "DuplicateFile": "Duplikált fájl",
         "EditFile": "Fájl szerkesztése",
         "Empty": "Üres",
         "Filament": "Filament",
@@ -236,13 +274,6 @@
         "UploadNewGcode": "Új Gcode feltöltése",
         "Used": "Felhasznált",
         "View3D": "3D nézet",
-        "AddBatchToQueue": "Tétel hozzáadása a várólistához",
-        "BedTemp": "Ágy hőmérs.",
-        "ChamberTemp": "Kamra hőmérs.",
-        "Count": "Számol",
-        "DeleteSingleFileQuestion": "Biztos törölni szeretnéd a \"{name}\" fájlt?",
-        "Duplicate": "Duplikált",
-        "DuplicateFile": "Duplikált fájl",
         "ExtruderTemp": "Adagoló hőmérs.",
         "GcodesRootDirectoryDoesntExists": "Nem találtunk G-kód könyvtárat. Kérjük, ellenőrizd a Klipper konfiguráció [virtual_sdcard] szakaszának „path” opcióját.",
         "InvalidNameAlreadyExists": "A név már létezik, kérjük válassz másik nevet.",
@@ -256,6 +287,7 @@
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Kitakarít",
+        "CNCMode": "CNC mód",
         "ColorMode": "Színes Mód",
         "Downloading": "Letöltés",
         "ForceLineRendering": "Vonalas renderelés Erőltetése",
@@ -269,6 +301,7 @@
         "ReloadRequired": "Újratöltés szükséges",
         "Rendering": "Renderelés",
         "RenderQuality": "Renderelési minőség",
+        "ShowGCode": "G-kód mutatása",
         "ShowObjectSelection": "Mutasd a kijelölt objektumokat",
         "ShowToolhead": "Fej mutatása",
         "ShowTravelMoves": "Fej mozgásának mutatása",
@@ -277,9 +310,7 @@
         "Tracking": "Követés",
         "Transparency": "Áttetszőség",
         "Ultra": "Ultra",
-        "VoxelMode": "Voxel Mód (ASMBL)",
-        "CNCMode": "CNC mód",
-        "ShowGCode": "G-kód mutatása"
+        "VoxelMode": "Voxel Mód (ASMBL)"
     },
     "Heightmap": {
         "Abort": "megszakítás",
@@ -292,15 +323,19 @@
             "Max": "Max",
             "Min": "Min",
             "Name": "Név",
+            "Range": "Távolság",
             "Size": "Méret",
-            "Variance": "Eltérés",
-            "Range": "Távolság"
+            "Variance": "Eltérés"
         },
         "DeleteBedMeshProfile": "Síkrács profil törlése",
         "DoYouReallyWantToDelete": "Tényleg törölni akarod a profilt: \"{name}\"?",
         "ErrorKlipperNotReady": "A Klipper nem áll készen. Magasságtérkép letiltva.",
         "Flat": "Lapos",
         "Heightmap": "Magasságtérkép",
+        "InvalidNameAlreadyExists": "A profil neve már létezik, kérjük válassz másik profilnevet.",
+        "InvalidNameAscii": "A név érvénytelen. Csak ascii karakterek engedélyezettek.",
+        "InvalidNameEmpty": "A bemenet nem lehet üres!",
+        "InvalidNameReserved": "Az „alapértelmezett” profil foglalt, kérjük válassz másik profilnevet.",
         "Later": "Később",
         "Mesh": "Síkrács",
         "Name": "Név",
@@ -319,18 +354,21 @@
         "TitleCalibrate": "Új síkrács kalibrálása",
         "TitleClear": "Síkrács tisztázása",
         "TitleHomeAll": "Kezdőpontba áll",
-        "Wireframe": "Drótháló",
-        "InvalidNameAlreadyExists": "A profil neve már létezik, kérjük válassz másik profilnevet.",
-        "InvalidNameAscii": "A név érvénytelen. Csak ascii karakterek engedélyezettek.",
-        "InvalidNameEmpty": "A bemenet nem lehet üres!",
-        "InvalidNameReserved": "Az „alapértelmezett” profil foglalt, kérjük válassz másik profilnevet."
+        "Wireframe": "Drótháló"
     },
     "History": {
+        "AddANote": "Jegyzet hozzáadása",
+        "AddMaintenance": "Karbantartás hozzáadása",
         "AddNote": "Megjegyzés hozzáadása",
+        "AddToQueueSuccessful": "Fájl {filename} hozzáadva a várólistához.",
         "AllJobs": "Mind",
         "AvgPrinttime": "Átlag nyomtatási idő - Ø",
         "Cancel": "Mégsem",
+        "Chart": "Diagram",
         "CreateNote": "Megjegyzés létrehozása",
+        "DateBasedReminder": "Dátum",
+        "DateBasedReminderDescription": "Ez az emlékeztető a dátumon alapul.",
+        "Days": "napok",
         "Delete": "Törlés",
         "DeleteSelectedQuestion": "Tényleg törölni akarsz {count} kiválasztott munkát?",
         "Details": "Részletek",
@@ -391,19 +429,14 @@
         "TotalJobs": "Összes munka",
         "TotalPrinttime": "Összes nyomtatási idő",
         "TotalTime": "Teljes idő",
-        "AddANote": "Jegyzet hozzáadása",
-        "AddMaintenance": "Karbantartás hozzáadása",
-        "AddToQueueSuccessful": "Fájl {filename} hozzáadva a várólistához.",
-        "Chart": "Diagram",
-        "DateBasedReminder": "Dátum",
-        "Days": "napok",
         "DeleteSingleJobQuestion": "Tényleg törölni szeretnéd a munkát?",
         "EditMaintenance": "Karbantartás szerkesztése",
-        "EntryPerformedAt": "Végrehajtva {date}.",
         "EntryCreatedAt": "Létrehozva {date}.",
+        "EntryNextPerform": "Következő elvégzés:",
+        "EntryPerformedAt": "Végrehajtva {date}.",
         "EntrySince": "Azóta használt:",
         "FilamentBasedReminder": "Nyomtatószál",
-        "EntryNextPerform": "Következő elvégzés:",
+        "FilamentBasedReminderDescription": "Ez az emlékeztető a nyomtatószál felhasználáson alapul.",
         "Hours": "órák",
         "InvalidNameEmpty": "Érvénytelen név. A név nem lehet üres!",
         "LoadCompleteHistory": "Teljes előzmény betöltése",
@@ -419,8 +452,6 @@
         "PerformMaintenance": "Karbantartás elvégzése",
         "PrintJobs": "Nyomtatási munkák",
         "PrinttimeBasedReminder": "Nyomtatási idő",
-        "DateBasedReminderDescription": "Ez az emlékeztető a dátumon alapul.",
-        "FilamentBasedReminderDescription": "Ez az emlékeztető a nyomtatószál felhasználáson alapul.",
         "PrinttimeBasedReminderDescription": "Ez az emlékeztető a nyomtatási időn alapul.",
         "Reminder": "Emlékeztető",
         "Repeat": "Ismétlés",
@@ -428,24 +459,25 @@
     },
     "JobQueue": {
         "AllJobs": "Minden Feladat",
+        "Cancel": "Mégsem",
+        "ChangeCount": "Számlálás módosítása",
+        "Count": "Számol",
         "Empty": "Üres",
+        "InvalidCountEmpty": "A bemenet nem lehet üres!",
+        "InvalidCountGreaterZero": "A bemenetnek nagyobbnak kell lennie 0-nál!",
         "JobQueue": "Feladatlista",
         "Jobs": "Feladatok",
         "Pause": "Szünet",
         "RemoveFromQueue": "Eltávolítás a Listáról",
         "Start": "Start",
-        "Cancel": "Mégsem",
-        "ChangeCount": "Számlálás módosítása",
-        "Count": "Számol",
-        "InvalidCountEmpty": "A bemenet nem lehet üres!",
-        "StartPrint": "Munkakezdés",
-        "InvalidCountGreaterZero": "A bemenetnek nagyobbnak kell lennie 0-nál!"
+        "StartPrint": "Munkakezdés"
     },
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Mind",
             "Cancel": "Mégsem",
             "ConfigFiles": "Konfig fájlok",
+            "ConfigRootDirectoryDoesntExists": "Nem találtunk konfigurációs könyvtárat. Kérjük, ellenőrizd a „config_path” opciót a Moonraker konfiguráció [file_manager] szakaszában.",
             "Create": "Létrehoz",
             "CreateDirectory": "Mappa létrehozása",
             "CreateFile": "Fájl létrehozása",
@@ -454,7 +486,10 @@
             "DeleteDirectory": "Mappa törlése",
             "DeleteDirectoryQuestion": "Tényleg szeretnéd törölni a(z) \"{name}\" mappát és minden tartalmát?",
             "DeleteSelectedQuestion": "Töröljem a kiválasztott {count} elemeket?",
+            "DeleteSingleFileQuestion": "Tényleg törölni szeretnéd a fájlt \"{name}\"?",
             "Download": "Letöltés",
+            "Duplicate": "Duplikált",
+            "DuplicateFile": "Duplikált fájl",
             "EditFile": "Fájl szerkesztése",
             "Empty": "Üres",
             "Files": "Fájlok",
@@ -475,11 +510,7 @@
             "Total": "Összesen",
             "UploadFile": "Fájl feltöltése",
             "Uploading": "Feltöltés",
-            "Used": "Felhasznált",
-            "ConfigRootDirectoryDoesntExists": "Nem találtunk konfigurációs könyvtárat. Kérjük, ellenőrizd a „config_path” opciót a Moonraker konfiguráció [file_manager] szakaszában.",
-            "Duplicate": "Duplikált",
-            "DuplicateFile": "Duplikált fájl",
-            "DeleteSingleFileQuestion": "Tényleg törölni szeretnéd a fájlt \"{name}\"?"
+            "Used": "Felhasznált"
         },
         "EndstopPanel": {
             "Endstop": "Végállás",
@@ -489,9 +520,9 @@
             "TRIGGERED": "AKTÍV"
         },
         "LogfilesPanel": {
-            "Logfiles": "Logfájlok",
             "Accept": "elfogad",
             "Cancel": "mégsem",
+            "Logfiles": "Logfájlok",
             "Rollover": "Görgetett naplók",
             "RolloverDescription": "Kérjük, válaszd ki, mely naplókat kell visszaállítani:",
             "RolloverToastFailed": "Görgetett napló: \"{name}\": {message}",
@@ -523,7 +554,11 @@
             }
         },
         "UpdatePanel": {
+            "Abort": "Megszakítás",
+            "AreYouSure": "Biztos vagy benne?",
             "CheckForUpdates": "Frissítések keresése",
+            "Close": "Bezár",
+            "CommitHistory": "Történet rögzítése",
             "Commits": "Véglegesítés",
             "CommitsAvailable": "nincs elérhető véglegesítés | {count} véglegesítés elérhető | {count} véglegesítés elérhető",
             "CommitsOnDate": "véglegesítés ekkor:{date}",
@@ -531,6 +566,9 @@
             "CommittedHoursAgo": "véglegesítve {hours} órával ezelőtt",
             "CommittedOnDate": "véglegesítve ekkor: {date}",
             "CommittedYesterday": "véglegesítve tegnap",
+            "ConfigChanges": "Konfigurációs változások",
+            "Corrupt": "sérült",
+            "CountPackagesCanBeUpgraded": "{count} csomagok frissíthetők",
             "Detached": "leválasztva",
             "Dirty": "megváltoztatott",
             "ERROR": "HIBA",
@@ -544,13 +582,6 @@
             "UpdateManager": "Frissítéskezelő",
             "Upgrade": "frissítés",
             "UpToDate": "legfrissebb",
-            "Abort": "Megszakítás",
-            "AreYouSure": "Biztos vagy benne?",
-            "Close": "Bezár",
-            "CommitHistory": "Történet rögzítése",
-            "ConfigChanges": "Konfigurációs változások",
-            "Corrupt": "sérült",
-            "CountPackagesCanBeUpgraded": "{count} csomagok frissíthetők",
             "GenericUpdateQuestion": "Ellenőrizd a rögzített történeteket (ha elérhető) és a projekt GitHub oldalát, hogy lásd, szükséges-e bármilyen manuális módosítás a frissítéshez.",
             "GitHubPage": "GitHub oldal",
             "HardRecovery": "Teljes visszaállítás",
@@ -561,23 +592,32 @@
             "LinkToGithub": "Link a GitHub-hoz",
             "MoonrakerUpdateQuestion": "Ez frissíti a Moonraker API-t. A gép további használatához szükség lehet a moonraker.conf fájl módosítására.",
             "MoreCommitsInfo": "Itt legfeljebb 30 megbízás jeleníthető meg. Az összes megbízás megtekintéséhez kattints az alábbi linkre:",
+            "SoftRecovery": "Alaphelyzetbe állítás",
             "StartUpdate": "Frissítés indítása",
             "ThesePackagesCanBeUpgrade": "Ezek a rendszercsomagok frissíthetők:",
             "UpdateWarning": "Frissítési figyelmeztetés: {name}",
             "UpgradeableSystemPackages": "Frissíthető rendszercsomagok",
-            "WebClientUpdateQuestion": "Bizonyos esetekben a webes kliens frissítése olyan változásokat eredményezhet, amelyek inkompatibilitást okozhatnak. További információkat lásd a kiadási jegyzékben.",
-            "SoftRecovery": "Alaphelyzetbe állítás"
+            "WebClientUpdateQuestion": "Bizonyos esetekben a webes kliens frissítése olyan változásokat eredményezhet, amelyek inkompatibilitást okozhatnak. További információkat lásd a kiadási jegyzékben."
         }
+    },
+    "ManualProbe": {
+        "Abort": "megszakít",
+        "Accept": "elfogad",
+        "Advanced": "Haladó",
+        "Headline": "Kézi szintezés"
     },
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Megengedett",
+            "CleanNozzle": "Fúvóka tisztítása",
             "EstimatedExtrusion": "Adagolás:",
             "Extrude": "Adagolás",
+            "ExtruderControl": "Adagoló vezérlő",
             "ExtruderTempTooLow": "Extruder hőm. <",
             "ExtrusionFactor": "Adagolási tényező",
             "ExtrusionFeedrate": "Extruder Előtolása",
             "FilamentLength": "Nyomtatószál hossz",
+            "FirmwareRetraction": "Firmware-es visszahúzás",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Visszahúzás hossza",
                 "RetractSpeed": "Visszahúzás sebessége",
@@ -586,21 +626,18 @@
             },
             "Headline": "Extruder",
             "LoadFilament": "Nyomtatószál betöltése",
+            "PressureAdvance": "Nyomás előtolás",
             "PressureAdvanceSettings": {
                 "Advance": "Fejlett mód",
                 "Extruder": "Extruder",
                 "SmoothTime": "Simítás ideje"
             },
+            "PurgeFilament": "Tisztítószál",
             "Requested": "Kért",
             "Retract": "Visszahúzás",
             "TooLargeExtrusion": "A visszahúzás túl nagy!",
-            "UnloadFilament": "Nyomtatószál kiadása",
-            "CleanNozzle": "Fúvóka tisztítása",
-            "ExtruderControl": "Adagoló vezérlő",
-            "FirmwareRetraction": "Firmware-es visszahúzás",
-            "PressureAdvance": "Nyomás előtolás",
-            "PurgeFilament": "Tisztítószál",
-            "Tools": "Eszközök"
+            "Tools": "Eszközök",
+            "UnloadFilament": "Nyomtatószál kiadása"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Újracsatlakozás",
@@ -608,26 +645,26 @@
             "WebcamOff": "Ki"
         },
         "KlippyStatePanel": {
+            "CheckKlippyAndUdsAddress": "Ellenőrizd, hogy a Klipper szolgáltatás fut-e, és a klippy_uds_address helyesen van-e beállítva a moonraker.conf állományban.",
             "FirmwareRestart": "Firmware újraindítása",
             "KlipperCheck": "Kérjük, ellenőrizd, a Klipper szolgáltatás fut-e, konfigurálva van-e UDS (Unix Domain Socket).",
+            "KlipperLog": "Klipper napló",
             "MoonrakerCannotConnect": "A Moonraker nem tud csatlakozni a Klipperhez!",
-            "Restart": "Újraindítás",
+            "MoonrakerLog": "Moonraker napló",
+            "PowerOn": "Bekapcsolás",
             "PrinterSwitchedOff": "Nyomtató kikapcsolva",
             "PrinterSwitchedOffDescription": "A nyomtató jelenleg ki van kapcsolva, és a Klipper nem tud csatlakozni. A nyomtató bekapcsolásához kattints az alábbi gombra:",
-            "ServiceReports": "{service} jelentések",
-            "CheckKlippyAndUdsAddress": "Ellenőrizd, hogy a Klipper szolgáltatás fut-e, és a klippy_uds_address helyesen van-e beállítva a moonraker.conf állományban.",
-            "KlipperLog": "Klipper napló",
-            "MoonrakerLog": "Moonraker napló",
-            "PowerOn": "Bekapcsolás"
+            "Restart": "Újraindítás",
+            "ServiceReports": "{service} jelentések"
         },
         "MachineSettingsPanel": {
             "Headline": "Gép beállításai",
             "MotionSettings": {
                 "Acceleration": "Gyorsulás",
                 "MaxAccelToDecel": "Lassulás Max Gyorsulása.",
+                "MinimumCruiseRatio": "Min. haladási arány",
                 "SquareCornerVelocity": "Sebesség a sarkokban",
-                "Velocity": "Gyorsaság",
-                "MinimumCruiseRatio": "Min. haladási arány"
+                "Velocity": "Gyorsaság"
             }
         },
         "MacrosPanel": {
@@ -635,12 +672,12 @@
             "Send": "küldés"
         },
         "MiniconsolePanel": {
+            "Autoscroll": "Automatikus görgetés",
             "Headline": "Konzol",
             "HideTemperatures": "Hőmérséklet elrejtése",
             "HideTimelapse": "Idővonal elrejtése",
             "SendCode": "Kód küldése...",
-            "SetupConsole": "Konzol beállítása",
-            "Autoscroll": "Automatikus görgetés"
+            "SetupConsole": "Konzol beállítása"
         },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Tedd bele a mainsail.cfg fájlt a printer.cfg fájlba.",
@@ -650,16 +687,16 @@
         },
         "MiscellaneousPanel": {
             "Headline": "Kiegészítők",
-            "RunoutSensor": {
-                "Detected": "érzékelt",
-                "Disabled": "letiltott",
-                "Empty": "Üres"
-            },
             "Light": {
                 "Blue": "kék",
                 "Green": "zöld",
                 "Red": "vörös",
                 "White": "fehér"
+            },
+            "RunoutSensor": {
+                "Detected": "érzékelt",
+                "Disabled": "letiltott",
+                "Empty": "Üres"
             }
         },
         "PowerControlPanel": {
@@ -667,6 +704,32 @@
             "Off": "KI",
             "On": "BE",
             "PowerControl": "Tápellátás vezérlés"
+        },
+        "SpoolmanPanel": {
+            "Cancel": "Mégsem",
+            "ChangeSpool": "Orsó cseréje",
+            "DaysAgo": "{days} nappal ezelőtt",
+            "EjectSpool": "Orsó kiadása",
+            "EjectSpoolQuestion": "Biztos, hogy kiveszed az nyomtatószál orsót?",
+            "Filament": "Nyomtatószál",
+            "FilamentTypeMismatch": "Az aktív orsón lévő anyag ({spoolType}) nem egyezik a G-kódban lévő anyaggal ({fileType}).",
+            "Headline": "Orsó segéd",
+            "LastUsed": "Legutóbb használt",
+            "Location": "Elhelyezkedés",
+            "Material": "Anyag",
+            "Never": "Soha",
+            "NoActiveSpool": "A szálkövetés inaktív. A kezdéshez válassz ki egy orsót.",
+            "NoResults": "Az aktuális keresési feltételeknek megfelelő orsó nem található.",
+            "NoSpools": "Nincs elérhető orsó",
+            "NoSpoolSelected": "Nincs kiválasztott orsó. Kérjük, válassz ki egy orsót, különben a nyomtatás nem lesz nyomonkövethető.",
+            "OpenSpoolManager": "Orsókezelő megnyitása",
+            "Refresh": "frissítés",
+            "Search": "Keresés",
+            "SelectSpool": "Válassz orsót",
+            "Today": "Ma",
+            "TooLessFilament": "Lehet, hogy a jelenlegi orsón nincs elég nyomtatószál ehhez a nyomtatáshoz. ({spoolWeight}g - {fileWeight}g)",
+            "Weight": "Súly",
+            "Yesterday": "Tegnap"
         },
         "StatusPanel": {
             "CancelPrint": "Nyomtatás megszakítása",
@@ -693,6 +756,18 @@
             "Layer": "Réteg",
             "Max": "max",
             "ObjectHeight": "Tárgy magassága",
+            "PauseAtLayer": {
+                "Abort": "megszakít",
+                "Accept": "elfogad",
+                "AtLayer": "Rétegben",
+                "Call": "Hívás",
+                "DescriptionPauseAtLayerActive": "Ez a funkció már aktív, és a \"{call}\" funkciót hívja meg a {layer} rétegen. Ha újra elküldöd a parancsot, ezek a beállítások felülíródnak.",
+                "DescriptionPauseNextLayerActive": "Ez a funkció már aktív, és a következő rétegnél meghívja a \"{call}\"-t.",
+                "Layer": "Réteg",
+                "NextLayer": "következő réteg",
+                "PauseAtLayer": "Szünet a rétegnél",
+                "Type": "Típus"
+            },
             "PausePrint": "Nyomtatás szüneteltetése",
             "Print": "Nyomtatás",
             "PrintTime": "Nyomtatási Idő",
@@ -703,19 +778,7 @@
             "Speed": "Sebesség",
             "Status": "Státusz",
             "Total": "Összesen",
-            "Unknown": "Ismeretlen",
-            "PauseAtLayer": {
-                "Abort": "megszakít",
-                "Accept": "elfogad",
-                "AtLayer": "Rétegben",
-                "DescriptionPauseAtLayerActive": "Ez a funkció már aktív, és a \"{call}\" funkciót hívja meg a {layer} rétegen. Ha újra elküldöd a parancsot, ezek a beállítások felülíródnak.",
-                "Layer": "Réteg",
-                "PauseAtLayer": "Szünet a rétegnél",
-                "Type": "Típus",
-                "Call": "Hívás",
-                "DescriptionPauseNextLayerActive": "Ez a funkció már aktív, és a következő rétegnél meghívja a \"{call}\"-t.",
-                "NextLayer": "következő réteg"
-            }
+            "Unknown": "Ismeretlen"
         },
         "TemperaturePanel": {
             "AutoscaleChart": "Grafikon automatikus méretezése",
@@ -729,6 +792,8 @@
                 "Temperature": "aktuális hőmérséklet"
             },
             "Headline": "Hőmérsékletek",
+            "HideMcuHostSensors": "Gazdagép/MCU érzékelők elrejtése",
+            "HideMonitors": "Monitorok elrejtése",
             "Max": "max",
             "Min": "min",
             "Name": "Név",
@@ -741,34 +806,33 @@
             "Target": "Cél",
             "TemperaturesInChart": "Hőmérséklet [°C]",
             "TempTooHigh": "A {name} hőmérséklete túl magas! (max: {max})",
-            "TempTooLow": "A {name} hőmérséklete túl alacsony! (min: {min})",
-            "HideMcuHostSensors": "Gazdagép/MCU érzékelők elrejtése",
-            "HideMonitors": "Monitorok elrejtése"
+            "TempTooLow": "A {name} hőmérséklete túl alacsony! (min: {min})"
         },
         "ToolheadControlPanel": {
             "Absolute": "abszolút",
             "ALL": "MIND",
+            "ControlButtons": "Vezérlőgombok",
+            "CoordinateFields": "Koordinátamezők",
             "Headline": "Fúvókafej",
             "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
             "Position": "Pozíció",
+            "PositionOutput": "Pozíció kimenet",
             "QGL": "QGL",
             "Relative": "relatív",
             "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
             "SpeedFactor": "Sebességállítás",
-            "ZTilt": "Z-dőlésszög",
-            "ControlButtons": "Vezérlőgombok",
-            "CoordinateFields": "Koordinátamezők",
-            "PositionOutput": "Pozíció kimenet",
-            "ZOffset": "Z-eltolás"
+            "ZOffset": "Z-eltolás",
+            "ZTilt": "Z-dőlésszög"
         },
         "WebcamPanel": {
             "All": "Mind",
             "FPS": "FPS",
             "Headline": "Webkamera",
-            "UnknownWebcamService": "Ismeretlen webkamera szolgáltatás",
-            "NoWebcam": "Nincs webkamera. Adj hozzá webkamerát a \"Felület beállításai\" -> \"Webkamerák\" menüpont alatt."
+            "NoWebcam": "Nincs webkamera. Adj hozzá webkamerát a \"Felület beállításai\" -> \"Webkamerák\" menüpont alatt.",
+            "UnknownWebcamService": "Ismeretlen webkamera szolgáltatás"
         },
         "ZoffsetPanel": {
+            "Clear": "Tisztítás",
             "Headline": "Z-eltolás",
             "Later": "Később",
             "Ok": "OK",
@@ -778,34 +842,7 @@
             "SaveInfoDescriptionPrint": "Új Z-eltolás kiszámítva és regisztrálva. Nyomtatás után kattints a \"BÁLLÍTÁS MENTÉSE\" gombra a felső sávban, a printer.cfg-be való mentéshez és a Klipper újraindításához.",
             "SaveInfoHeadline": "Információ",
             "ToEndstop": "a végállásig",
-            "ToProbe": "szondáig",
-            "Clear": "Tisztítás"
-        },
-        "SpoolmanPanel": {
-            "Cancel": "Mégsem",
-            "ChangeSpool": "Orsó cseréje",
-            "DaysAgo": "{days} nappal ezelőtt",
-            "EjectSpool": "Orsó kiadása",
-            "EjectSpoolQuestion": "Biztos, hogy kiveszed az nyomtatószál orsót?",
-            "Filament": "Nyomtatószál",
-            "FilamentTypeMismatch": "Az aktív orsón lévő anyag ({spoolType}) nem egyezik a G-kódban lévő anyaggal ({fileType}).",
-            "Headline": "Orsó segéd",
-            "Never": "Soha",
-            "NoActiveSpool": "A szálkövetés inaktív. A kezdéshez válassz ki egy orsót.",
-            "NoResults": "Az aktuális keresési feltételeknek megfelelő orsó nem található.",
-            "NoSpools": "Nincs elérhető orsó",
-            "NoSpoolSelected": "Nincs kiválasztott orsó. Kérjük, válassz ki egy orsót, különben a nyomtatás nem lesz nyomonkövethető.",
-            "OpenSpoolManager": "Orsókezelő megnyitása",
-            "Refresh": "frissítés",
-            "Search": "Keresés",
-            "Today": "Ma",
-            "TooLessFilament": "Lehet, hogy a jelenlegi orsón nincs elég nyomtatószál ehhez a nyomtatáshoz. ({spoolWeight}g - {fileWeight}g)",
-            "Weight": "Súly",
-            "LastUsed": "Legutóbb használt",
-            "Location": "Elhelyezkedés",
-            "Material": "Anyag",
-            "SelectSpool": "Válassz orsót",
-            "Yesterday": "Tegnap"
+            "ToProbe": "szondáig"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -827,8 +864,16 @@
         "Timelapse": "Idővonal",
         "Webcam": "Webkamera"
     },
+    "ScrewsTiltAdjust": {
+        "Accept": "elfogad",
+        "Base": "Alap",
+        "ErrorText": "Valami rosszul sült el a szintezés során.",
+        "Headline": "Csavarok dőlésbeállítás",
+        "Retry": "újra"
+    },
     "SelectPrinterDialog": {
         "AddPrinter": "Nyomtató hozzáadása",
+        "AddPrintersToJson": "Kérjük, add hozzá a nyomtatókat a config.json fájlhoz.",
         "CannotConnectTo": "Kapcsolódás sikertelen ehhez: {host}.",
         "ChangePrinter": "Nyomtatóváltás",
         "Connecting": "Kapcsolódás ehhez: {host}",
@@ -838,16 +883,15 @@
         "HostnameInvalid": "Gazdanév/IP érvénytelen",
         "HostnameIp": "Gazdanév/IP",
         "HostnameRequired": "Gazdanév szükséges",
+        "Name": "Név",
+        "Path": "Útvonal",
         "Port": "Port",
         "PortRequired": "Port szükséges",
         "RememberToAdd": "Add hozzá ezt '{cors}' a moonraker.conf-ba a 'cors_domains'-en belül.",
         "SelectPrinter": "Nyomtató választása",
         "TryAgain": "próbáld újra",
         "UpdatePrinter": "Nyomtató frissítése",
-        "YouCanFindMore": "További részleteket itt találsz",
-        "AddPrintersToJson": "Kérjük, add hozzá a nyomtatókat a config.json fájlhoz.",
-        "Path": "Útvonal",
-        "Name": "Név"
+        "YouCanFindMore": "További részleteket itt találsz"
     },
     "Settings": {
         "Cancel": "Mégsem",
@@ -880,6 +924,7 @@
             "EnableXYHoming": "Kombinált X és Y tengely alapállapot engedélyezése",
             "EstimatedExtrusionInfo": "Mutasd a becsült adagolási időt",
             "EstimatedExtrusionInfoDescription": "Mutasd / rejdtsd el az adagolás mennyisége és előtolása alapján becsült adagolási infókat",
+            "HideDuringPrint": "Tengelyvezérlők elrejtése nyomtatás közben",
             "InvertXMovement": "X-mozgás invertálása",
             "InvertYMovement": "Y-mozgás invertálása",
             "InvertZMovement": "Z-mozgás invertálása",
@@ -899,10 +944,9 @@
             "Style": "Stílus",
             "ValueGreaterThan": "Az értéknek nagyobbnak kell lennie mint {value}",
             "ZOffsetIncrements": "Z-Eltolás mérései (in mm)",
-            "ZTiltAdjust": "Z-dőlésszög Beállítása{isDefault}",
-            "HideDuringPrint": "Tengelyvezérlők elrejtése nyomtatás közben",
             "ZOffsetSaveOption": "Z-eltolás mentési opció",
-            "ZOffsetSaveOptionDescription": "A Z-eltolás mentésének beállítása"
+            "ZOffsetSaveOptionDescription": "A Z-eltolás mentésének beállítása",
+            "ZTiltAdjust": "Z-dőlésszög Beállítása{isDefault}"
         },
         "DashboardTab": {
             "Dashboard": "Irányítópult",
@@ -936,12 +980,22 @@
             "ShowAxes": "Tengelyek mutatása"
         },
         "GeneralTab": {
+            "12hours": "12-órás ({time})",
+            "24hours": "24-órás ({time})",
             "Backup": "Biztonsági mentés",
             "BackupDialog": "Kérlek jelöld ki az összes biztonsági mentésre jelölt szekciót:",
             "CalcEstimateTime": "Nagyjából becsült idő",
             "CalcEstimateTimeDescription": "Ha többet jelölsz ki, az átlagból számolok",
             "CalcEtaTime": "ETA számítás",
             "CalcEtaTimeDescription": "Ha többet jelölsz ki, az átlagból számolok",
+            "CalcPrintProgress": "Nyomtatás előrehaladás számítás",
+            "CalcPrintProgressDescription": "A nyomtatás előrehaladásának számítási módja.",
+            "CalcPrintProgressItems": {
+                "Filament": "Nyomtatószál",
+                "FileAbsolute": "Fájl pozíció (abszolút)",
+                "FileRelative": "Fájl pozíció (relatív)",
+                "Slicer": "Szeletelő (M73)"
+            },
             "CannotReadJson": "Nem olvasható/elemezhető a visszaállítási fájl.",
             "DbConsoleHistory": "Konzol előzmények",
             "DbHistoryJobs": "Elvégzett feladatok",
@@ -963,22 +1017,24 @@
             "Reset": "Visszaállítás",
             "Restore": "Helyreállítás",
             "RestoreDialog": "Kérlek jelöld ki az összes helyreállításra kijelölt szekciót:",
-            "24hours": "24-órás ({time})",
-            "12hours": "12-órás ({time})",
-            "CalcPrintProgress": "Nyomtatás előrehaladás számítás",
-            "CalcPrintProgressDescription": "A nyomtatás előrehaladásának számítási módja.",
-            "CalcPrintProgressItems": {
-                "Filament": "Nyomtatószál",
-                "FileAbsolute": "Fájl pozíció (abszolút)",
-                "FileRelative": "Fájl pozíció (relatív)",
-                "Slicer": "Szeletelő (M73)"
-            },
+            "DateFormat": "Dátum formátum",
             "DbMaintenance": "Karbantartás",
             "DbNavigation": "Navigáció",
             "Everything": "Mindent",
             "MainsailSettingsMoonrakerDb": "Mainsail beállítások a Moonraker DB-ben",
-            "TimeFormat": "Idő formátum",
-            "DateFormat": "Dátum formátum"
+            "TimeFormat": "Idő formátum"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Színsémák",
+            "Heightmap": "Magasságtérkép",
+            "IsDefault": "(Alapértelmezett)",
+            "Schemes": {
+                "GrayScale": "Szürkeárnyalat",
+                "Hot": "Forró",
+                "Hsv": "Hsv",
+                "Portland": "Portland",
+                "Spring": "Tavaszi"
+            }
         },
         "InterfaceSettings": "Interfész beállításai",
         "MacrosTab": {
@@ -1017,6 +1073,32 @@
             "UnknownGroup": "Ismeretlen Csoport",
             "Warning": "figyelmeztetés"
         },
+        "MiscellaneousTab": {
+            "AddGroup": "csoport felvétele",
+            "AddPreset": "előbeállítás hozzáadása",
+            "Color": "Szín",
+            "CreateGroup": "Csoport létrehozása",
+            "CreatePreset": "Előbeállítás készítése",
+            "End": "Vége",
+            "EndDescription": "A csoport utolsó LED-je.",
+            "Groups": "Csoportok",
+            "GroupSubTitle": "Kezdés: {start}, Vége: {end}",
+            "LightGroups": "{name} - Csoportok",
+            "LightPresets": "{name} - Előbeállítások",
+            "Miscellaneous": "Kiegészítők",
+            "NoGroupFound": "Nem található csoport",
+            "NoPresetFound": "Nem található előbeállítás",
+            "Presets": "Előbeállítások",
+            "Start": "Indítás",
+            "StartDescription": "A csoport első LED-je.",
+            "Name": "Név",
+            "NoDevicesFound": "Nem találhatóak eszközök",
+            "UnableToLoadLight": "Nem lehet betölteni a fényt",
+            "UnableToLoadPreset": "Előbeállítás betöltése nem lehetséges"
+        },
+        "NavigationTab": {
+            "Navigation": "Navigáció"
+        },
         "PresetsTab": {
             "AddPreset": "Készérték hozzáadása",
             "Cooldown": "Visszahűtés",
@@ -1039,19 +1121,21 @@
             "AddPrinter": "Nyomtató hozzáadása",
             "EditPrinter": "Nyomtató beállítása",
             "Hostname": "Gazdagép neve",
+            "Name": "Név",
+            "NameDescription": "Ez a név nem jelenik meg a felhasználói felületen, és csak az átirányításhoz használatos.",
             "Port": "Port",
             "RemotePrinters": "Nyomtatók",
             "UpdatePrinter": "Nyomtató frissítése",
-            "Name": "Név",
-            "NameDescription": "Ez a név nem jelenik meg a felhasználói felületen, és csak az átirányításhoz használatos.",
             "Path": "Útvonal",
             "UseConfigJson": "InstanceDB = JSON észlelve. Kérjük, használd a config.json-t a nyomtatók listájának módosításához."
         },
+        "Store": "áruház",
         "TimelapseTab": {
             "Autorender": "Auto renderelés",
             "AutorenderDescription": "Az idővonal renderélése a nyomtatás végén automatikusan elkezdődik, ha engedélyezed",
             "Camera": "Kamera",
             "CameraDescription": "Válassz melyik kamerát akarod használni",
+            "CameraDescriptionWithSnapshotUrl": "Válaszd ki a kamerát (a pillanatfelvétel URL-címével) kívánt használatra",
             "ConstantRateFactor": "Videóráta állandó",
             "ConstantRateFactorDescription": "A minőség kontra fájlméret állítását végzi a renderelésben. A CRF értéke 0–51 közötti, ahol 0 iveszteségmentes, 23 az alapértelmezett és 51 a legkisebb méretű(rossz minőség).",
             "duplicatelastframe": "utolsókockaduplázás",
@@ -1118,13 +1202,13 @@
             "RulesPositive": "Az értéknek pozitívnak kell lennie!",
             "RulesRequired": "Érték szükséges!",
             "RulesZeroAndPositive": "Az értéknek legalább 0-nak kell lennie!",
-            "CameraDescriptionWithSnapshotUrl": "Válaszd ki a kamerát (a pillanatfelvétel URL-címével) kívánt használatra",
             "CameraWarningAlreadySetSmall": "pillanatképek a [timelapse] szakaszban",
             "SelectWebcam": "Válassz webkamerát...",
             "CameraWarningAlreadySet": "Ez az érték már be van állítva a Moonraker konfigurációs fájljában.",
             "NoWebcamFound": "Nincs elérhető webkamera"
         },
         "UiSettingsTab": {
+            "BedScrewsDialog": "Ágycsavarok párbeszédpanel",
             "BoolBigThumbnail": "Nagy előnézet",
             "BoolBigThumbnailDescription": "Nagy előnézet mutatása a státusz panelben a nyomtatás alatt.",
             "BoolHideUploadAndPrintButton": "A feltöltés és nyomtatás gombok elrejtése",
@@ -1150,7 +1234,6 @@
             "Primary": "Elsődleges",
             "ShowWebcamInNavigation": "Webkamera mutatása a menüben",
             "UiSettings": "Nézet beállítások",
-            "BedScrewsDialog": "Ágycsavarok párbeszédpanel",
             "BedScrewsDialogDescription": "A BED_SCREWS_ADJUST segéddialógus megjelenítése.",
             "BigThumbnailBackground": "Nagyméretű miniatűrök háttérszíne",
             "ConfirmOnCoolDown": "A visszahűtés megerősítést kér",
@@ -1161,6 +1244,7 @@
             "DefaultNavigationStateDescription": "Alapértelmezés szerinti navigációs állapot.",
             "DefaultNavigationStateLastState": "utolsó állapot",
             "DisableFanAnimation": "Ventilátor animáció letiltása",
+            "DisableFanAnimationDescription": "Ez csökkentheti a böngésző terheltségét.",
             "HideSaveConfigButtonForBedMesh": "SAVE_CONFIG gomb elrejtése a bed_mesh módosításoknál",
             "HideSaveConfigButtonForBedMeshDescription": "A SAVE_CONFIG elrejtése, ha csak a bed_mesh módosításokat kell elmenteni a Klipperben.",
             "HideUpdateWarnings": "Frissítési figyelmeztetések elrejtése",
@@ -1172,8 +1256,8 @@
             "ScrewsTiltAdjustDialog": "Csavar dőlésbeállítás párbeszédpanel",
             "TempchartHeightDescription": "Módosíthatod a hőmérséklet-diagram magasságát a műszerfalon.",
             "Theme": "Téma",
-            "DisableFanAnimationDescription": "Ez csökkentheti a böngésző terheltségét.",
             "ManualProbeDialogDescription": "A PROBE_CALIBRATE vagy Z_ENDSTOP_CALIBRATE segéddialógus megjelenítése.",
+            "Mode": "Mód",
             "PowerDeviceNameDescription": "Válaszd ki, hogy melyik Moonraker tápegységet kívánod használni a nyomtató bekapcsolásához.",
             "ScrewsTiltAdjustDialogDescription": "A SCREWS_TILT_CALCULATE segéddialógus megjelenítése.",
             "ThemeLight": "Világos",
@@ -1182,9 +1266,9 @@
             "ThemeDescription": "A felület márkajelzésének testreszabása.",
             "PrintstatusThumbnailZoomDescription": "Ezzel kikapcsolod a miniatűrkép nagyítását az állapotpanelen.",
             "PrintstatusThumbnailZoom": "Nagyobb miniatűr nagyítás",
-            "Mode": "Mód",
             "ModeDescription": "Az alkalmazás általános megjelenésének megváltoztatása."
         },
+        "Update": "frissítés",
         "WebcamsTab": {
             "AddWebcam": "Webkamera hozzáadása",
             "CreateWebcam": "Webkamera létrehozása",
@@ -1224,47 +1308,7 @@
             "WebrtcJanus": "WebRTC (janus-átjáró)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)",
             "HideFps": "FPS számláló elrejtése"
-        },
-        "HeightmapTab": {
-            "ColorSchemes": "Színsémák",
-            "Heightmap": "Magasságtérkép",
-            "IsDefault": "(Alapértelmezett)",
-            "Schemes": {
-                "GrayScale": "Szürkeárnyalat",
-                "Hot": "Forró",
-                "Hsv": "Hsv",
-                "Portland": "Portland",
-                "Spring": "Tavaszi"
-            }
-        },
-        "MiscellaneousTab": {
-            "AddGroup": "csoport felvétele",
-            "AddPreset": "előbeállítás hozzáadása",
-            "Color": "Szín",
-            "End": "Vége",
-            "EndDescription": "A csoport utolsó LED-je.",
-            "Groups": "Csoportok",
-            "GroupSubTitle": "Kezdés: {start}, Vége: {end}",
-            "LightGroups": "{name} - Csoportok",
-            "NoGroupFound": "Nem található csoport",
-            "NoPresetFound": "Nem található előbeállítás",
-            "Presets": "Előbeállítások",
-            "Start": "Indítás",
-            "StartDescription": "A csoport első LED-je.",
-            "CreateGroup": "Csoport létrehozása",
-            "CreatePreset": "Előbeállítás készítése",
-            "Miscellaneous": "Kiegészítők",
-            "NoDevicesFound": "Nem találhatóak eszközök",
-            "Name": "Név",
-            "LightPresets": "{name} - Előbeállítások",
-            "UnableToLoadLight": "Nem lehet betölteni a fényt",
-            "UnableToLoadPreset": "Előbeállítás betöltése nem lehetséges"
-        },
-        "NavigationTab": {
-            "Navigation": "Navigáció"
-        },
-        "Store": "áruház",
-        "Update": "frissítés"
+        }
     },
     "Timelapse": {
         "AllFiles": "Mind",
@@ -1276,6 +1320,8 @@
         "Delete": "Törlés",
         "DeleteDirectory": "Mappa törlése",
         "DeleteDirectoryQuestion": "Tényleg szeretnéd minden összetevőjével együtt törölni a következő mappát: \"{name}\"?",
+        "DeleteSelectedQuestion": "Tényleg törölni szeretnéd a kiválasztott fájlokat {count}?",
+        "DeleteSingleFileQuestion": "Tényleg törölni szeretnéd a fájlt \"{name}\"?",
         "Download": "Letöltés",
         "DuplicateLastframe": "Utolsó képkocka duplikálása",
         "Empty": "Nem találhatóak idővonal fájlok.",
@@ -1314,53 +1360,7 @@
         "Type": "Típus",
         "Used": "Felhasznált",
         "Variable": "Variálható",
-        "Video": "Videó",
-        "DeleteSingleFileQuestion": "Tényleg törölni szeretnéd a fájlt \"{name}\"?",
-        "DeleteSelectedQuestion": "Tényleg törölni szeretnéd a kiválasztott fájlokat {count}?"
+        "Video": "Videó"
     },
-    "title": "Magyar",
-    "BedScrews": {
-        "Abort": "megszakít",
-        "Accept": "elfogadás",
-        "Adjusted": "beállított",
-        "Description": "Kattints a <b>BEÁLLÍTVA</b> gombra, ha a jelenlegi csavart beállítottad. Kattints az <b>ELFOGAD</b> gombra ha nem történt állítás.",
-        "Headline": "Ágycsavarok",
-        "ScrewAccepted": "Csavarok elfogadva",
-        "ScrewIndex": "Csavar index",
-        "ScrewName": "Csavar neve",
-        "ScrewOutput": "{current} / {max}"
-    },
-    "CoolDownDialog": {
-        "AreYouSure": "Biztos vagy benne?",
-        "CoolDown": "Visszahűtés",
-        "No": "Nem",
-        "Yes": "Igen"
-    },
-    "DevicesDialog": {
-        "CanBusInfo": "Csak a nem hozzárendelt csomópontok észlelhetők. A kommunikációs problémák elkerülése érdekében ajánlott, hogy csak egy nem hozzárendelt eszköz csatlakozzon a CANbus-hoz. További részletekért kattints a linkre:",
-        "ClickRefresh": "Kattints a frissítés gombra az eszközök kereséséhez.",
-        "DevicePath": "Eszköz elérési útja",
-        "Formats": "Formátumok",
-        "Headline": "Eszközök",
-        "HideSystemEntries": "Rendszerbejegyzések elrejtése",
-        "LibcameraId": "Libcamera ID",
-        "Refresh": "frissítés",
-        "Resolutions": "Felbontások",
-        "PathByHardware": "Útvonal hardver szerint",
-        "PathById": "Útvonal ID szerint",
-        "NoDeviceFound": "Nem található eszköz. Kérjük, ellenőrizd a kapcsolatot, és kattints a frissítés gombra."
-    },
-    "ManualProbe": {
-        "Abort": "megszakít",
-        "Accept": "elfogad",
-        "Advanced": "Haladó",
-        "Headline": "Kézi szintezés"
-    },
-    "ScrewsTiltAdjust": {
-        "Accept": "elfogad",
-        "Base": "Alap",
-        "ErrorText": "Valami rosszul sült el a szintezés során.",
-        "Headline": "Csavarok dőlésbeállítás",
-        "Retry": "újra"
-    }
+    "title": "Magyar"
 }
