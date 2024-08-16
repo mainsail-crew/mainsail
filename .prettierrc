@@ -18,6 +18,14 @@
             "options": {
                 "tabWidth": 2
             }
+        },
+        {
+            "files": "src/locales/*.json",
+            "options": {
+                "plugins": ["prettier-plugin-sort-json"],
+                "jsonRecursiveSort": true,
+                "jsonSortOrder": "{ \"placeThisFirst\": null, \"/^[a-zA-Z0-9]/\": \"caseInsensitiveNumeric\"  }"
+            }
         }
     ]
 }
