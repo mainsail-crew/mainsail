@@ -110,6 +110,7 @@
                 </v-tab-item>
             </v-tabs-items>
         </panel>
+        <cancel-job-dialog :show-dialog="showCancelJobDialog" @close="showCancelJobDialog = false" />
     </div>
 </template>
 
@@ -392,6 +393,17 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     btnCancelJob() {
+        const confirmOnCancelJob = this.$store.state.gui.uiSettings.confirmOnCancelJob
+        if (confirmOnCancelJob) {
+            this.showCancelJobDialog = true
+            return
+        }
+
+        this.cancelJob()
+    }
+
+    cancelJob() {
+        this.showCancelJobDialog = false
         this.$socket.emit('printer.print.cancel', {}, { loading: 'statusPrintCancel' })
     }
 

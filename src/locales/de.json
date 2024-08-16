@@ -144,6 +144,12 @@
         "ScrewName": "Name der Schraube",
         "ScrewOutput": "{current} von {max}"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "Bist du sicher?",
+        "CancelJob": "Druck abbrechen",
+        "No": "Nein",
+        "Yes": "Ja"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Kann keine Verbindung zu Moonraker ({host}) herstellen.",
         "CheckMoonrakerLog": "Wenn diese Meldung wiederholt erscheint, schaue bitte in die Logdatei unter:",
@@ -1202,6 +1208,8 @@
             "ConfirmOnEmergencyStopDescription": "Zeige vor einem Notstop einen Bestätigungsdialog.",
             "ConfirmOnPowerDeviceChange": "Bestätigung für Änderung der Stromversorgung von Geräten",
             "ConfirmOnPowerDeviceChangeDescription": "Zeige vor Änderung der Stromversorgung von Geräten einen Bestätigungsdialog.",
+            "ConfirmOnCancelJob": "Bestätigung für Druck abbrechen erforderlich",
+            "ConfirmOnCancelJobDescription": "Zeige vor dem Druck abbrechen einen Bestätigungsdialog.",
             "DefaultNavigationState": "Standard Navigationszustand",
             "DefaultNavigationStateAlwaysClosed": "immer geschlossen",
             "DefaultNavigationStateAlwaysOpen": "immer geöffnet",

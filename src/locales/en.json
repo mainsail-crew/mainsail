@@ -144,6 +144,12 @@
         "ScrewName": "Screw Name",
         "ScrewOutput": "{current} of {max}"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "Are you sure?",
+        "CancelJob": "Cancel Job",
+        "No": "No",
+        "Yes": "Yes"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
@@ -1202,6 +1208,8 @@
             "ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
             "ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
             "ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",
+            "ConfirmOnCancelJob": "Require confirm on Cancel Job",
+            "ConfirmOnCancelJobDescription": "Show a confirmation dialog on Cancel Job",
             "DefaultNavigationState": "Navigation default state",
             "DefaultNavigationStateAlwaysClosed": "always closed",
             "DefaultNavigationStateAlwaysOpen": "always open",
