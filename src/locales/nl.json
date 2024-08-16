@@ -1,5 +1,4 @@
 {
-    "_last_update": "2023-02-21",
     "App": {
         "Notifications": {
             "DependencyDescription": "De huidige {name} versie ondersteunt niet alle functies van Mainsail. Update {name} naar ten minste {neededVersion}.",
@@ -364,11 +363,15 @@
         "Name": "Naam",
         "Note": "Notitie",
         "ObjectHeight": "Object Hoogte",
+        "OneTime": "Een keer",
         "Perform": "Voeruit",
+        "Performed": "Voerde uit",
         "PrintDuration": "Print duur",
         "PrintHistory": "Print Geschiedenis",
         "PrintTime": "Printtijd",
         "PrinttimeAvg": "Printtijd gemiddeld",
+        "Reminder": "Herinnering",
+        "Repeat": "Herhaal",
         "Reprint": "Opnieuw printen",
         "Save": "Opslaan",
         "Search": "zoek",
@@ -398,11 +401,7 @@
         "TotalFilamentUsed": "Totaal Filament Verbruikt",
         "TotalJobs": "Totaal Jobs",
         "TotalPrinttime": "Totale Printtijd",
-        "TotalTime": "Totale Tijd",
-        "Performed": "Voerde uit",
-        "Reminder": "Herinnering",
-        "Repeat": "Herhaal",
-        "OneTime": "Een keer"
+        "TotalTime": "Totale Tijd"
     },
     "JobQueue": {
         "AllJobs": "Alle jobs",
@@ -1172,5 +1171,6 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Nederlands"
+    "title": "Nederlands",
+    "_last_update": "2023-02-21"
 }
