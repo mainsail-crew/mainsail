@@ -35,18 +35,22 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     @Prop({ default: null }) readonly printerUrl!: string | null
     @Ref() declare video: HTMLVideoElement
 
-    private pc: RTCPeerConnection | null = null
-    private restartTimeout: any = null
-    private status: string = 'connecting'
-    private eTag: string | null = null
-    private sessionUuid: string | null = null
-    private queuedCandidates: RTCIceCandidate[] = []
-    private offerData: OfferData = {
+    pc: RTCPeerConnection | null = null
+    restartTimeout: any = null
+    status: string = 'connecting'
+    eTag: string | null = null
+    sessionUuid: string | null = null
+    queuedCandidates: RTCIceCandidate[] = []
+    offerData: OfferData = {
         iceUfrag: '',
         icePwd: '',
         medias: [],
     }
-    private RESTART_PAUSE = 2000
+    RESTART_PAUSE = 2000
+
+    mounted() {
+        this.start()
+    }
 
     // stop the video and close the streams if the component is going to be destroyed so we don't leave hanging streams
     beforeDestroy() {
@@ -70,9 +74,15 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         let baseUrl = this.camSettings.stream_url
         if (!baseUrl.endsWith('/')) baseUrl += '/'
 
-        baseUrl = new URL('whep', baseUrl).toString()
+        try {
+            baseUrl = new URL('whep', baseUrl).toString()
 
-        return this.convertUrl(baseUrl, this.printerUrl)
+            return this.convertUrl(baseUrl, this.printerUrl)
+        } catch (e) {
+            this.log('invalid baseURL', baseUrl)
+
+            return null
+        }
     }
 
     // stop and restart the video if the url changes
@@ -87,7 +97,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     // start or stop the video when the expand state changes
-    @Watch('expanded', { immediate: true })
+    @Watch('expanded')
     expandChanged(newExpanded: boolean): void {
         if (!newExpanded) {
             this.terminate()
@@ -189,6 +199,14 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     start() {
+        // stop if url is not valid
+        if (this.url === null) {
+            this.log('invalid url')
+
+            this.scheduleRestart()
+            return
+        }
+
         this.log('requesting ICE servers from ' + this.url)
 
         fetch(this.url, {
@@ -232,7 +250,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         this.offerData = this.parseOffer(offer.sdp ?? '')
         this.pc?.setLocalDescription(offer)
 
-        fetch(this.url, {
+        fetch(this.url ?? '', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/sdp',
@@ -242,7 +260,8 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
             .then((res) => {
                 if (res.status !== 201) throw new Error('bad status code')
                 this.eTag = res.headers.get('ETag')
-                this.sessionUuid = res.headers.get('location')
+                const location = res.headers.get('Location') ?? ''
+                this.sessionUuid = location?.substring(location.lastIndexOf('/') + 1) ?? null
 
                 // fallback for MediaMTX v1.0.x with broken ETag header
                 if (res.headers.has('E-Tag')) this.eTag = res.headers.get('E-Tag')
@@ -301,7 +320,14 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     sendLocalCandidates(candidates: RTCIceCandidate[]) {
-        const url = new URL(this.sessionUuid ?? '', this.url).toString()
+        if (this.sessionUuid === null) {
+            this.log('Session-UUID is null')
+            this.scheduleRestart()
+
+            return
+        }
+
+        const url = (this.url ?? '') + '/' + this.sessionUuid
         fetch(url, {
             method: 'PATCH',
             headers: {
