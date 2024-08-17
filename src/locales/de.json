@@ -1190,9 +1190,9 @@
             "VariableFps": "Variable FPS",
             "VariableFpsDescription": "Wenn diese Option aktiviert ist, wird die Framerate des Ausgabevideos anhand der Zieldauer berechnet.",
             "VariableFpsMax": "Max. Variable FPS",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "Maximaler Wert für die variablen FPS",
             "VariableFpsMin": "Min. Variable FPS",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "Minimaler Wert für die variablen FPS"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
@@ -1252,7 +1252,7 @@
             "TempchartHeightDescription": "Verändert die Höhe vom Temperatur-Chart auf dem Dashboard.",
             "Theme": "Theme",
             "ThemeDark": "Dunkel",
-            "ThemeDescription": "Ändern Sie das allgemeine Erscheinungsbild der Anwendung.",
+            "ThemeDescription": "Ändere das Branding von der Oberfläche.",
             "ThemeLight": "Hell",
             "UiSettings": "UI-Einstellungen"
         },
