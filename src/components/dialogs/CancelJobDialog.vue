@@ -2,7 +2,7 @@
     <v-dialog :value="showDialog" width="400" persistent>
         <panel
             :title="$t('CancelJobDialog.CancelJob')"
-            toolbar-color="error"
+            toolbar-color="normal"
             card-class="cancel-job-dialog"
             :icon="mdiStop"
             :margin-bottom="false">
