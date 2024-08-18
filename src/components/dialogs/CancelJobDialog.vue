@@ -4,7 +4,7 @@
             :title="$t('CancelJobDialog.CancelJob')"
             toolbar-color="normal"
             card-class="cancel-job-dialog"
-            :icon="mdiStop"
+            :icon="mdiStopCircleOutline"
             :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="closePrompt">
@@ -26,14 +26,14 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 
-import { mdiCloseThick, mdiStop } from '@mdi/js'
+import { mdiCloseThick, mdiStopCircleOutline } from '@mdi/js'
 
 @Component({
     components: { Panel },
 })
 export default class CancelJobDialog extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
-    mdiStop = mdiStop
+    mdiStopCircleOutline = mdiStopCircleOutline
 
     @Prop({ type: Boolean, default: false }) showDialog!: boolean
 
