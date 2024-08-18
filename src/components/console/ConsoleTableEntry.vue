@@ -19,7 +19,7 @@ export default class ConsoleTableEntry extends Mixins(BaseMixin) {
     get entryStyle() {
         const classes = ['ma-0', 'flex-nowrap']
         classes.push(this.$store.state.gui.console.entryStyle ?? 'default')
-        if (this.event.type === 'action') classes.push('text--disabled')
+        if (['action', 'debug'].includes(this.event.type)) classes.push('text--disabled')
 
         return classes
     }
@@ -31,7 +31,7 @@ export default class ConsoleTableEntry extends Mixins(BaseMixin) {
     get messageClass() {
         const classes = ['console-message']
 
-        if (this.event.type === 'action') classes.push('text--disabled')
+        if (['action', 'debug'].includes(this.event.type)) classes.push('text--disabled')
         else if (this.event.message.startsWith('!! ')) classes.push('error--text')
         else classes.push('text--primary')
 
