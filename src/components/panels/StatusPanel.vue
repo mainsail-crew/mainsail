@@ -167,6 +167,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         bigThumbnail: any
     }
 
+    showCancelJobDialog = false
     boolShowObjects = false
     boolShowPauseAtLayer = false
 
