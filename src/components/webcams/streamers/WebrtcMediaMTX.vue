@@ -33,6 +33,7 @@ interface OfferData {
 export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
+    @Prop({ type: String, default: null }) readonly page!: string | null
     @Ref() declare video: HTMLVideoElement
 
     pc: RTCPeerConnection | null = null
@@ -47,10 +48,6 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         medias: [],
     }
     RESTART_PAUSE = 2000
-
-    mounted() {
-        this.start()
-    }
 
     // stop the video and close the streams if the component is going to be destroyed so we don't leave hanging streams
     beforeDestroy() {
@@ -73,16 +70,9 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     get url() {
         let baseUrl = this.camSettings.stream_url
         if (!baseUrl.endsWith('/')) baseUrl += '/'
+        baseUrl += 'whep'
 
-        try {
-            baseUrl = new URL('whep', baseUrl).toString()
-
-            return this.convertUrl(baseUrl, this.printerUrl)
-        } catch (e) {
-            this.log('invalid baseURL', baseUrl)
-
-            return null
-        }
+        return this.convertUrl(baseUrl, this.printerUrl)
     }
 
     // stop and restart the video if the url changes
@@ -93,11 +83,13 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get expanded(): boolean {
+        if (this.page === 'page') return true
+
         return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport) ?? false
     }
 
     // start or stop the video when the expanded state changes
-    @Watch('expanded')
+    @Watch('expanded', { immediate: true })
     expandChanged(newExpanded: boolean): void {
         if (!newExpanded) {
             this.terminate()
