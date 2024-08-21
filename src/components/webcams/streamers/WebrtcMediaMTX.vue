@@ -96,7 +96,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport) ?? false
     }
 
-    // start or stop the video when the expand state changes
+    // start or stop the video when the expanded state changes
     @Watch('expanded')
     expandChanged(newExpanded: boolean): void {
         if (!newExpanded) {
@@ -198,7 +198,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         return frag
     }
 
-    start() {
+    async start() {
         // stop if url is not valid
         if (this.url === null) {
             this.log('invalid url')
@@ -209,14 +209,13 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
 
         this.log('requesting ICE servers from ' + this.url)
 
-        fetch(this.url, {
-            method: 'OPTIONS',
-        })
-            .then((res) => this.onIceServers(res))
-            .catch((err) => {
-                this.log('error: ' + err)
-                this.scheduleRestart()
-            })
+        try {
+            const res = await fetch(this.url, { method: 'OPTIONS' })
+            this.onIceServers(res)
+        } catch (err) {
+            this.log('error: ' + err)
+            this.scheduleRestart()
+        }
     }
 
     onIceServers(res: Response) {
@@ -246,40 +245,37 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     // eslint-disable-next-line no-undef
-    onLocalOffer(offer: RTCSessionDescriptionInit) {
-        this.offerData = this.parseOffer(offer.sdp ?? '')
-        this.pc?.setLocalDescription(offer)
-
-        fetch(this.url ?? '', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/sdp',
-            },
-            body: offer.sdp,
-        })
-            .then((res) => {
-                if (res.status !== 201) throw new Error('bad status code')
-                this.eTag = res.headers.get('ETag')
-                const location = res.headers.get('Location') ?? ''
-                this.sessionUuid = location?.substring(location.lastIndexOf('/') + 1) ?? null
-
-                // fallback for MediaMTX v1.0.x with broken ETag header
-                if (res.headers.has('E-Tag')) this.eTag = res.headers.get('E-Tag')
-
-                return res.text()
+    async onLocalOffer(offer: RTCSessionDescriptionInit) {
+        try {
+            const res = await fetch(this.url ?? '', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/sdp' },
+                body: offer.sdp,
             })
-            .then((sdp) => {
-                this.onRemoteAnswer(
-                    new RTCSessionDescription({
-                        type: 'answer',
-                        sdp,
-                    })
-                )
-            })
-            .catch((err) => {
-                this.log(err)
-                this.scheduleRestart()
-            })
+
+            if (res.status !== 201) new Error('bad status code')
+
+            this.offerData = this.parseOffer(offer.sdp ?? '')
+            this.pc?.setLocalDescription(offer)
+
+            this.eTag = res.headers.get('ETag')
+            const location = res.headers.get('Location') ?? ''
+            this.sessionUuid = location?.substring(location.lastIndexOf('/') + 1) ?? null
+
+            // fallback for MediaMTX v1.0.x with broken ETag header
+            if (res.headers.has('E-Tag')) this.eTag = res.headers.get('E-Tag')
+
+            const sdp = await res.text()
+            this.onRemoteAnswer(
+                new RTCSessionDescription({
+                    type: 'answer',
+                    sdp,
+                })
+            )
+        } catch (err: any) {
+            this.log(err?.message ?? err ?? 'unknown error')
+            this.scheduleRestart()
+        }
     }
 
     onRemoteAnswer(answer: RTCSessionDescription) {
@@ -319,7 +315,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         }
     }
 
-    sendLocalCandidates(candidates: RTCIceCandidate[]) {
+    async sendLocalCandidates(candidates: RTCIceCandidate[]) {
         if (this.sessionUuid === null) {
             this.log('Session-UUID is null')
             this.scheduleRestart()
@@ -328,29 +324,31 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         }
 
         const url = (this.url ?? '') + '/' + this.sessionUuid
-        fetch(url, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/trickle-ice-sdpfrag',
-                'If-Match': this.eTag,
-                // eslint-disable-next-line no-undef
-            } as HeadersInit,
-            body: this.generateSdpFragment(this.offerData, candidates),
-        })
-            .then((res) => {
-                switch (res.status) {
-                    case 204:
-                        break
-                    case 404:
-                        throw new Error('stream not found')
-                    default:
-                        throw new Error(`bad status code ${res.status}`)
-                }
+        try {
+            const res = await fetch(url, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/trickle-ice-sdpfrag',
+                    'If-Match': this.eTag,
+                    // eslint-disable-next-line no-undef
+                } as HeadersInit,
+                body: this.generateSdpFragment(this.offerData, candidates),
             })
-            .catch((err) => {
-                this.log(err)
+
+            if (res.status === 204) return
+
+            if (res.status === 404) {
+                this.log('stream not found')
                 this.scheduleRestart()
-            })
+                return
+            }
+
+            this.log(`bad status code ${res.status}`)
+            this.scheduleRestart()
+        } catch (err: any) {
+            this.log(err)
+            this.scheduleRestart()
+        }
     }
 
     terminate() {
