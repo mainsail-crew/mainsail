@@ -205,7 +205,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
             const res = await fetch(this.url, { method: 'OPTIONS' })
             await this.onIceServers(res)
         } catch (err) {
-            this.log('error: ' + err)
+            this.log('error: Cannot connect to backend')
             this.scheduleRestart()
         }
     }
