@@ -203,14 +203,14 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
 
         try {
             const res = await fetch(this.url, { method: 'OPTIONS' })
-            this.onIceServers(res)
+            await this.onIceServers(res)
         } catch (err) {
             this.log('error: ' + err)
             this.scheduleRestart()
         }
     }
 
-    onIceServers(res: Response) {
+    async onIceServers(res: Response) {
         const iceServers = this.linkToIceServers(res.headers.get('Link'))
         this.log('ice servers:', iceServers)
 
@@ -233,7 +233,8 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
             this.video.srcObject = evt.streams[0]
         }
 
-        this.pc.createOffer().then((offer) => this.onLocalOffer(offer))
+        const offer = await this.pc.createOffer()
+        await this.onLocalOffer(offer)
     }
 
     // eslint-disable-next-line no-undef
@@ -273,8 +274,12 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     onRemoteAnswer(answer: RTCSessionDescription) {
         if (this.restartTimeout !== null) return
 
-        // this.pc.setRemoteDescription(new RTCSessionDescription(answer));
-        this.pc?.setRemoteDescription(answer)
+        try {
+            this.pc?.setRemoteDescription(answer)
+        } catch (err: any) {
+            this.log(err)
+            this.scheduleRestart()
+        }
 
         if (this.queuedCandidates.length !== 0) {
             this.sendLocalCandidates(this.queuedCandidates)
