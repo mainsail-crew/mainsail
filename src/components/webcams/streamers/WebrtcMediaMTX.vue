@@ -191,6 +191,12 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     async start() {
+        // clear any potentially open restart timeout
+        if (this.restartTimeout !== null) {
+            clearTimeout(this.restartTimeout)
+            this.restartTimeout = null
+        }
+
         // stop if url is not valid
         if (this.url === null) {
             this.log('invalid url')
