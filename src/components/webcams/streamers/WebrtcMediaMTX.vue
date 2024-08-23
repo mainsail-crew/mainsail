@@ -203,7 +203,12 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
 
         try {
             const res = await fetch(this.url, { method: 'OPTIONS' })
-            if (res.status !== 200) new Error('bad status code')
+            if (res.status !== 204) {
+                this.log('error: Received bad status code:', res.status)
+                this.scheduleRestart()
+                return
+            }
+
             await this.onIceServers(res)
         } catch (err) {
             this.log('error: Cannot connect to backend')
@@ -212,8 +217,6 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     async onIceServers(res: Response) {
-        this.log('start onIceServers')
-
         const iceServers = this.linkToIceServers(res.headers.get('Link'))
         this.log('ice servers:', iceServers)
 
@@ -249,7 +252,11 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
                 body: offer.sdp,
             })
 
-            if (res.status !== 201) new Error('bad status code')
+            if (res.status !== 201) {
+                this.log('error: Received bad status code:', res.status)
+                this.scheduleRestart()
+                return
+            }
 
             this.offerData = this.parseOffer(offer.sdp ?? '')
             this.pc?.setLocalDescription(offer)
