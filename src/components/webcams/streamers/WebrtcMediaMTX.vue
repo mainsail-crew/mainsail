@@ -203,6 +203,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
 
         try {
             const res = await fetch(this.url, { method: 'OPTIONS' })
+            if (res.status !== 200) new Error('bad status code')
             await this.onIceServers(res)
         } catch (err) {
             this.log('error: Cannot connect to backend')
@@ -211,6 +212,8 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     async onIceServers(res: Response) {
+        this.log('start onIceServers')
+
         const iceServers = this.linkToIceServers(res.headers.get('Link'))
         this.log('ice servers:', iceServers)
 
