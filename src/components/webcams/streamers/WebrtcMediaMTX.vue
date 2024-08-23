@@ -83,7 +83,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get expanded(): boolean {
-        if (this.page === 'page') return true
+        if (this.page !== 'dashboard') return true
 
         return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport) ?? false
     }
