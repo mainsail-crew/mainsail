@@ -38,6 +38,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) declare readonly printerUrl: string | null
+    @Prop({ type: String, default: null }) readonly page!: string | null
     @Ref() declare stream: HTMLVideoElement
 
     get url() {
@@ -59,8 +60,25 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         return output
     }
 
+    get expanded(): boolean {
+        if (this.page !== 'dashboard') return true
+
+        return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport) ?? false
+    }
+
+    // start or stop the video when the expanded state changes
+    @Watch('expanded', { immediate: true })
+    expandChanged(newExpanded: boolean): void {
+        if (!newExpanded) {
+            this.terminate()
+            return
+        }
+
+        this.start()
+    }
+
     // This WebRTC signaling pattern is designed for camera-streamer, a common webcam server the supports WebRTC.
-    async startStream() {
+    async start() {
         if (this.restartTimer) {
             this.log('Clearing restart timer before starting stream')
             window.clearTimeout(this.restartTimer)
@@ -163,7 +181,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
     onConnectionStateChange() {
         this.status = this.pc?.connectionState ?? 'connecting'
 
-        this.log(`ConnectionState: ${this.status}`)
+        this.log(`State: ${this.status}`)
 
         if (['failed', 'disconnected'].includes(this.status)) {
             this.restartStream(5000)
@@ -186,23 +204,24 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         window.console.log(message)
     }
 
-    mounted() {
-        this.startStream()
-    }
-
     beforeDestroy() {
         this.pc?.close()
         if (this.restartTimer) window.clearTimeout(this.restartTimer)
     }
 
-    restartStream(delay = 500) {
+    terminate() {
+        this.log('Terminating stream')
         this.pc?.close()
+    }
+
+    restartStream(delay = 500) {
+        this.terminate()
 
         if (this.restartTimer) return
 
         this.restartTimer = window.setTimeout(async () => {
             this.restartTimer = null
-            await this.startStream()
+            await this.start()
         }, delay)
     }
 
