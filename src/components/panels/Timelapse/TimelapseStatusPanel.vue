@@ -134,6 +134,14 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin, TimelapseMix
         return (this.$store.state.server.timelapse?.rendering.status ?? '') === 'running'
     }
 
+    get existsSnapshoturlInMoonrakerConfig() {
+        return 'snapshoturl' in this.$store.state.server.config.orig.timelapse
+    }
+
+    get moonrakerTimelapseConfig() {
+        return this.$store.state.server.config.config.timelapse ?? {}
+    }
+
     get camId() {
         return this.$store.state.server.timelapse.settings.camera ?? ''
     }
@@ -143,6 +151,18 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin, TimelapseMix
     }
 
     get webcamStyle() {
+        // if the snapshoturl is set in moonraker config,
+        // we also use the flix_x and flip_y values from the moonraker config
+        if (this.existsSnapshoturlInMoonrakerConfig) {
+            return {
+                transform: this.generateTransform(
+                    this.moonrakerTimelapseConfig.flip_x ?? false,
+                    this.moonrakerTimelapseConfig.flip_y ?? false,
+                    0
+                ),
+            }
+        }
+
         if (!this.camSettings) return {}
 
         return {
