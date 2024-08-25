@@ -152,7 +152,7 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin, TimelapseMix
 
     get webcamStyle() {
         // if the snapshoturl is set in moonraker config,
-        // we also use the flix_x and flip_y values from the moonraker config
+        // we also use the flip_x and flip_y values from the moonraker config
         if (this.existsSnapshoturlInMoonrakerConfig) {
             return {
                 transform: this.generateTransform(
