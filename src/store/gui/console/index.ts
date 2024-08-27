@@ -13,6 +13,7 @@ export const getDefaultState = (): GuiConsoleState => {
         height: 300,
         autoscroll: true,
         consolefilters: {},
+        rawOutput: false,
     }
 }
 

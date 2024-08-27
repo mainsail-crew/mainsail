@@ -1,7 +1,13 @@
 <template>
     <v-row :class="entryStyle">
         <v-col class="col-auto pr-0 text--disabled console-time">{{ entryFormatTime }}</v-col>
-        <v-col :class="messageClass" style="min-width: 0" @click.capture="commandClick" v-html="event.formatMessage" />
+        <v-col
+            v-if="!rawOutput"
+            :class="messageClass"
+            style="min-width: 0"
+            @click.capture="commandClick"
+            v-html="event.formatMessage" />
+        <v-col v-else :class="messageClass" style="min-width: 0" @click.capture="commandClick" v-text="event.message" />
     </v-row>
 </template>
 
@@ -36,6 +42,10 @@ export default class ConsoleTableEntry extends Mixins(BaseMixin) {
         else classes.push('text--primary')
 
         return classes
+    }
+
+    get rawOutput() {
+        return this.$store.state.gui.console.rawOutput ?? false
     }
 
     commandClick(event: Event) {
