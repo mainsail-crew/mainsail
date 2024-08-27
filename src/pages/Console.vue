@@ -71,6 +71,13 @@
                                 :label="filter.name"
                                 @change="toggleFilter(filter)" />
                         </v-list-item>
+                        <v-list-item class="minHeight36">
+                            <v-checkbox
+                                v-model="rawOutput"
+                                class="mt-0"
+                                hide-details
+                                :label="$t('Panels.MiniconsolePanel.RawOutput')" />
+                        </v-list-item>
                     </v-list>
                 </v-menu>
             </v-col>
@@ -191,6 +198,14 @@ export default class PageConsole extends Mixins(BaseMixin) {
 
     set autoscroll(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'console.autoscroll', value: newVal })
+    }
+
+    get rawOutput(): boolean {
+        return this.$store.state.gui.console.rawOutput ?? false
+    }
+
+    set rawOutput(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'console.rawOutput', value: newVal })
     }
 
     commandClick(msg: string): void {
