@@ -677,7 +677,8 @@
             "HideTemperatures": "Hőmérséklet elrejtése",
             "HideTimelapse": "Idővonal elrejtése",
             "SendCode": "Kód küldése...",
-            "SetupConsole": "Konzol beállítása"
+            "SetupConsole": "Konzol beállítása",
+            "RawOutput": "RAW-kimenet (hibakereséshez)"
         },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Tedd bele a mainsail.cfg fájlt a printer.cfg fájlba.",
