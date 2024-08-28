@@ -675,7 +675,8 @@
             "HideTemperatures": "Ocultar temperaturas",
             "HideTimelapse": "Ocultar timelapse",
             "SendCode": "Enviar código...",
-            "SetupConsole": "Configurar consola"
+            "SetupConsole": "Configurar consola",
+            "RawOutput": "Salida RAW (para depuración)"
         },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Asegúrese de incluir mainsail.cfg en su archivo printer.cfg.",
