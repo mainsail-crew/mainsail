@@ -34,11 +34,7 @@ const SOI = new Uint8Array(2)
 SOI[0] = 0xff
 SOI[1] = 0xd8
 
-// variables to read the stream
-let headers = ''
-let contentLength = -1
-let imageBuffer: Uint8Array = new Uint8Array(0)
-let bytesRead = 0
+let reader: ReadableStreamDefaultReader<Uint8Array> | null = null
 
 @Component
 export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
@@ -52,8 +48,6 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     aspectRatio: null | number = null
     timerFPS: number | null = null
     timerRestart: number | null = null
-    //stream: ReadableStream | null = null
-    reader: ReadableStreamDefaultReader<Uint8Array> | undefined = undefined
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
@@ -129,7 +123,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
         try {
             //readable stream credit to from https://github.com/aruntj/mjpeg-readable-stream
-            const response = await fetch(this.url, { mode: 'cors' })
+            let response: Response | null = await fetch(this.url, { mode: 'cors' })
 
             if (!response.ok) {
                 this.log(`${response.status}: ${response.statusText}`)
@@ -143,6 +137,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                 return
             }
 
+            this.status = 'connected'
+            this.statusMessage = ''
+
             this.timerFPS = window.setInterval(() => {
                 this.currentFPS = this.frames
                 this.frames = 0
@@ -152,12 +149,13 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                 this.restartStream()
             }, 10000)
 
-            this.reader = response.body?.getReader()
+            reader = response.body?.getReader()
 
-            this.status = 'connected'
-            this.statusMessage = ''
+            await this.readStream()
 
-            this.readStream()
+            // cleanup
+            reader = null
+            response = null
         } catch (error: any) {
             this.log(error.message)
             this.status = 'error'
@@ -171,51 +169,56 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
     async readStream() {
         // stop if the stream is not ready
-        if (!this.reader) return
+        if (!reader) return
 
         try {
-            const { done, value } = await this.reader.read()
-            if (done) return
+            // variables to read the stream
+            let headers = ''
+            let contentLength = -1
+            let imageBuffer: Uint8Array = new Uint8Array(0)
+            let bytesRead = 0
 
-            // stop if the stream has no value
-            if (!value) {
-                this.log('no value')
-                this.readStream()
-                return
-            }
+            let done: boolean | null = null
+            let value
 
-            for (let index = 0; index < value.length; index++) {
-                // we've found the start of the frame. Everything we've read till now is the header.
-                if (value[index] === SOI[0] && value[index + 1] === SOI[1]) {
-                    contentLength = this.getLength(headers)
-                    imageBuffer = new Uint8Array(new ArrayBuffer(contentLength))
+            do {
+                ;({ done, value } = await reader.read())
+
+                if (done || !value) continue
+
+                for (let index = 0; index < value.length; index++) {
+                    // we've found the start of the frame. Everything we've read till now is the header.
+                    if (value[index] === SOI[0] && value[index + 1] === SOI[1]) {
+                        contentLength = this.getLength(headers)
+                        imageBuffer = new Uint8Array(new ArrayBuffer(contentLength))
+                    }
+
+                    // we're still reading the header.
+                    if (contentLength <= 0) {
+                        headers += String.fromCharCode(value[index])
+                        continue
+                    }
+
+                    // we're now reading the jpeg.
+                    if (bytesRead < contentLength) {
+                        imageBuffer[bytesRead++] = value[index]
+                        continue
+                    }
+
+                    // we're done reading the jpeg. Time to render it.
+                    const frame = URL.createObjectURL(new Blob([imageBuffer], { type: TYPE_JPEG }))
+                    if (this.image) this.image.src = frame
+                    this.image.onload = () => URL.revokeObjectURL(frame)
+                    this.frames++
+                    contentLength = 0
+                    bytesRead = 0
+                    headers = ''
                 }
-
-                // we're still reading the header.
-                if (contentLength <= 0) {
-                    headers += String.fromCharCode(value[index])
-                    continue
-                }
-
-                // we're now reading the jpeg.
-                if (bytesRead < contentLength) {
-                    imageBuffer[bytesRead++] = value[index]
-                    continue
-                }
-
-                // we're done reading the jpeg. Time to render it.
-                const frame = URL.createObjectURL(new Blob([imageBuffer], { type: TYPE_JPEG }))
-                if (this.image) this.image.src = frame
-                this.image.onload = () => URL.revokeObjectURL(frame)
-                this.frames++
-                contentLength = 0
-                bytesRead = 0
-                headers = ''
-            }
-
-            this.readStream()
+            } while (!done)
         } catch (error: any) {
             this.log(`readStream error: ${error.message ?? ''}`, error)
+        } finally {
+            reader?.releaseLock()
         }
     }
 
@@ -248,8 +251,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         this.clearTimeouts()
 
         try {
-            await this.reader?.cancel()
-            this.reader?.releaseLock()
+            await reader?.cancel()
+            reader?.releaseLock()
+            reader = null
         } catch (error) {
             this.log('Error cancelling reader:', error)
         }
