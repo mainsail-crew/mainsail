@@ -813,6 +813,9 @@
         },
         "WebcamPanel": {
             "All": "All",
+            "ConnectingTo": "Connecting to {url}",
+            "Disconnected": "Disconnected",
+            "ErrorWhileConnecting": "Error while connecting to {url}",
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "No webcam available. Add a webcam under \"Interface Settings\" -> \"Webcams\".",

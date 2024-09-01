@@ -1,14 +1,22 @@
 <template>
     <div style="position: relative" class="d-flex justify-center">
         <img
+            v-show="status === 'connected'"
             ref="image"
-            v-observe-visibility="viewportVisibilityChanged"
             class="webcamImage"
             :style="webcamStyle"
             :alt="camSettings.name"
             src="#"
             @load="onload" />
-        <span v-if="showFpsCounter" class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span>
+        <span v-if="showFpsCounter && status === 'connected'" class="webcamFpsOutput">
+            {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
+        </span>
+        <v-row v-if="status !== 'connected'">
+            <v-col class="_webcam_mjpegstreamer_output text-center d-flex flex-column justify-center align-center">
+                <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
+                <span class="mt-3">{{ statusMessage }}</span>
+            </v-col>
+        </v-row>
     </div>
 </template>
 
@@ -38,14 +46,14 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     frames = 0
     // current displayed fps
     currentFPS = 0
+    status: string = 'connecting'
+    statusMessage: string = ''
     streamState = false
     aspectRatio: null | number = null
     timerFPS: number | null = null
     timerRestart: number | null = null
     //stream: ReadableStream | null = null
     reader: ReadableStreamDefaultReader<Uint8Array> | undefined = undefined
-    isVisibleViewport = false
-    isVisibleDocument = true
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
@@ -113,6 +121,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
             return
         }
         this.streamState = true
+        this.status = 'connecting'
+        this.statusMessage = this.$t('Panels.WebcamPanel.ConnectingTo', { url: this.url }).toString()
 
         // reset counter and timeout/interval
         this.clearTimeouts()
@@ -143,9 +153,19 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
             }, 10000)
 
             this.reader = response.body?.getReader()
+
+            this.status = 'connected'
+            this.statusMessage = ''
+
             this.readStream()
         } catch (error: any) {
             this.log(error.message)
+            this.status = 'error'
+            this.statusMessage = this.$t('Panels.WebcamPanel.ErrorWhileConnecting', { url: this.url }).toString()
+
+            this.timerRestart = window.setTimeout(() => {
+                this.restartStream()
+            }, 5000)
         }
     }
 
@@ -185,7 +205,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
                 // we're done reading the jpeg. Time to render it.
                 const frame = URL.createObjectURL(new Blob([imageBuffer], { type: TYPE_JPEG }))
-                this.image.src = frame
+                if (this.image) this.image.src = frame
                 this.image.onload = () => URL.revokeObjectURL(frame)
                 this.frames++
                 contentLength = 0
@@ -201,7 +221,6 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
     mounted() {
         document.addEventListener('visibilitychange', this.documentVisibilityChanged)
-        this.startStream()
     }
 
     beforeDestroy() {
@@ -223,15 +242,16 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
     async stopStream() {
         this.streamState = false
+        this.status = 'disconnected'
+        this.statusMessage = this.$t('Panels.WebcamPanel.Disconnected').toString()
 
         this.clearTimeouts()
 
         try {
             await this.reader?.cancel()
+            this.reader?.releaseLock()
         } catch (error) {
             this.log('Error cancelling reader:', error)
-        } finally {
-            this.reader?.releaseLock()
         }
     }
 
@@ -249,25 +269,14 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     // this function check if you changed the browser tab
     documentVisibilityChanged() {
         const visibility = document.visibilityState
-        this.isVisibleDocument = visibility === 'visible'
-        if (!this.isVisibleDocument) this.stopStream()
-        this.visibilityChanged()
-    }
+        const bool = visibility === 'visible'
 
-    // this function checks if the webcam is in the viewport
-    viewportVisibilityChanged(newVal: boolean) {
-        this.isVisibleViewport = newVal
-        this.visibilityChanged()
-    }
-
-    // this function stops the stream on scroll or on collapse of the webcam panel
-    visibilityChanged() {
-        if (this.isVisibleViewport && this.isVisibleDocument) {
-            this.startStream()
+        if (!bool) {
+            this.stopStream()
             return
         }
 
-        this.stopStream()
+        this.startStream()
     }
 
     onload() {
@@ -296,5 +305,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
 html.theme--light .webcamFpsOutput {
     background: rgba(255, 255, 255, 0.7);
+}
+
+._webcam_mjpegstreamer_output {
+    aspect-ratio: calc(3 / 2);
 }
 </style>
