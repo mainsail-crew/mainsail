@@ -5,6 +5,8 @@
             v-observe-visibility="viewportVisibilityChanged"
             class="webcamImage"
             :style="webcamStyle"
+            :alt="camSettings.name"
+            src="#"
             @load="onload" />
         <span v-if="showFpsCounter" class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span>
     </div>
@@ -12,7 +14,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
@@ -20,29 +22,36 @@ import WebcamMixin from '@/components/mixins/webcam'
 const CONTENT_LENGTH = 'content-length'
 const TYPE_JPEG = 'image/jpeg'
 
+const SOI = new Uint8Array(2)
+SOI[0] = 0xff
+SOI[1] = 0xd8
+
+// variables to read the stream
+let headers = ''
+let contentLength = -1
+let imageBuffer: Uint8Array = new Uint8Array(0)
+let bytesRead = 0
+
 @Component
 export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
-    private currentFPS = 0
-    private streamState = false
-    private aspectRatio: null | number = null
-    // eslint-disable-next-line no-undef
-    private timerFPS: NodeJS.Timeout | null = null
-    // eslint-disable-next-line no-undef
-    private timerRestart: NodeJS.Timeout | null = null
-    private stream: ReadableStream | null = null
-    private controller: AbortController | null = null
-    private isVisibleViewport = false
-    private isVisibleDocument = true
+    // current read stream frames counter
+    frames = 0
+    // current displayed fps
+    currentFPS = 0
+    streamState = false
+    aspectRatio: null | number = null
+    timerFPS: number | null = null
+    timerRestart: number | null = null
+    //stream: ReadableStream | null = null
+    reader: ReadableStreamDefaultReader<Uint8Array> | undefined = undefined
+    isVisibleViewport = false
+    isVisibleDocument = true
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
-
     @Prop({ default: true }) declare showFps: boolean
 
-    declare $refs: {
-        canvas: HTMLCanvasElement
-        image: HTMLImageElement
-    }
+    @Ref('image') readonly image!: HTMLImageElement
 
     get url() {
         return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
@@ -69,7 +78,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get fpsOutput() {
-        return this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS
+        return this.currentFPS.toString().padStart(2, '0')
     }
 
     get showFpsCounter() {
@@ -78,106 +87,121 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         return !(this.camSettings.extra_data?.hideFps ?? false)
     }
 
-    startStream() {
-        if (this.streamState) return
-        this.streamState = true
-
-        const SOI = new Uint8Array(2)
-        SOI[0] = 0xff
-        SOI[1] = 0xd8
-
-        function getLength(headers: any) {
-            let contentLength = -1
-            headers.split('\n').forEach((header: any) => {
-                const pair = header.split(':')
-                if (pair[0].toLowerCase() === CONTENT_LENGTH) {
-                    // Fix for issue https://github.com/aruntj/mjpeg-readable-stream/issues/3 suggested by martapanc
-                    contentLength = pair[1]
-                }
-            })
-            return contentLength
+    log(msg: string, obj?: any) {
+        if (obj) {
+            window.console.log(`[MJPEG streamer] ${msg}`, obj)
+            return
         }
 
-        this.controller = new AbortController()
-        const { signal } = this.controller
+        window.console.log(`[MJPEG streamer] ${msg}`)
+    }
 
-        //readable stream credit to from https://github.com/aruntj/mjpeg-readable-stream
-        fetch(this.url, { signal, mode: 'cors' })
-            .then((response) => response.body)
-            .then((rb) => {
-                const reader = rb?.getReader()
+    getLength(headers: any) {
+        let contentLength = -1
+        headers.split('\n').forEach((header: any) => {
+            const pair = header.split(':')
+            if (pair[0].toLowerCase() === CONTENT_LENGTH) {
+                // Fix for issue https://github.com/aruntj/mjpeg-readable-stream/issues/3 suggested by martapanc
+                contentLength = pair[1]
+            }
+        })
+        return contentLength
+    }
 
-                let headers = ''
-                let contentLength = -1
-                let imageBuffer: any = null
-                let bytesRead = 0
-                const img = this.$refs.image
+    async startStream() {
+        if (this.streamState) {
+            this.log('stream already started')
+            return
+        }
+        this.streamState = true
 
-                // calculating fps. This is pretty lame. Should probably implement a floating window function.
-                let frames = 0
+        // reset counter and timeout/interval
+        this.clearTimeouts()
 
-                this.timerFPS = setInterval(() => {
-                    this.currentFPS = frames
-                    frames = 0
-                }, 1000)
+        try {
+            //readable stream credit to from https://github.com/aruntj/mjpeg-readable-stream
+            const response = await fetch(this.url, { mode: 'cors' })
 
-                this.timerRestart = setInterval(() => {
-                    this.restartStream()
-                }, 60000)
+            if (!response.ok) {
+                this.log(`${response.status}: ${response.statusText}`)
+                await this.stopStream()
+                return
+            }
 
-                this.stream = new ReadableStream({
-                    start(controller) {
-                        // The following function handles each data chunk
-                        const pump = (): any => {
-                            // "done" is a Boolean and value a "Uint8Array"
-                            return reader?.read().then(({ done, value }) => {
-                                // If there is no more data to read
-                                if (done) {
-                                    controller.close()
-                                    return
-                                }
-                                // Get the data and send it to the browser via the controller
-                                controller.enqueue(value)
+            if (!response.body) {
+                this.log('ReadableStream not yet supported in this browser.')
+                await this.stopStream()
+                return
+            }
 
-                                if (value) {
-                                    for (let index = 0; index < value.length; index++) {
-                                        // we've found start of the frame. Everything we've read till now is the header.
-                                        if (value[index] === SOI[0] && value[index + 1] === SOI[1]) {
-                                            contentLength = getLength(headers)
-                                            imageBuffer = new Uint8Array(new ArrayBuffer(contentLength))
-                                        }
-                                        // we're still reading the header.
-                                        if (contentLength <= 0) {
-                                            headers += String.fromCharCode(value[index])
-                                        }
-                                        // we're now reading the jpeg.
-                                        else if (bytesRead < contentLength) {
-                                            imageBuffer[bytesRead++] = value[index]
-                                        }
-                                        // we're done reading the jpeg. Time to render it.
-                                        else {
-                                            if (img) {
-                                                img.src = URL.createObjectURL(
-                                                    new Blob([imageBuffer], { type: TYPE_JPEG })
-                                                )
-                                                img.onload = () => URL.revokeObjectURL(img.src)
-                                            }
-                                            frames++
-                                            contentLength = 0
-                                            bytesRead = 0
-                                            headers = ''
-                                        }
-                                    }
-                                }
+            this.timerFPS = window.setInterval(() => {
+                this.currentFPS = this.frames
+                this.frames = 0
+            }, 1000)
 
-                                return pump()
-                            })
-                        }
+            this.timerRestart = window.setTimeout(() => {
+                this.restartStream()
+            }, 10000)
 
-                        return pump()
-                    },
-                })
-            })
+            this.log('start read stream')
+            this.reader = response.body?.getReader()
+            this.readStream()
+        } catch (error: any) {
+            this.log(error.message)
+        }
+    }
+
+    async readStream() {
+        // stop if the stream is not ready
+        if (!this.reader) return
+
+        try {
+            const { done, value } = await this.reader.read()
+            if (done) {
+                this.log('done')
+                return
+            }
+
+            // stop if the stream has no value
+            if (!value) {
+                this.log('no value')
+                this.readStream()
+                return
+            }
+
+            for (let index = 0; index < value.length; index++) {
+                // we've found the start of the frame. Everything we've read till now is the header.
+                if (value[index] === SOI[0] && value[index + 1] === SOI[1]) {
+                    contentLength = this.getLength(headers)
+                    imageBuffer = new Uint8Array(new ArrayBuffer(contentLength))
+                }
+
+                // we're still reading the header.
+                if (contentLength <= 0) {
+                    headers += String.fromCharCode(value[index])
+                    continue
+                }
+
+                // we're now reading the jpeg.
+                if (bytesRead < contentLength) {
+                    imageBuffer[bytesRead++] = value[index]
+                    continue
+                }
+
+                // we're done reading the jpeg. Time to render it.
+                const frame = URL.createObjectURL(new Blob([imageBuffer], { type: TYPE_JPEG }))
+                this.image.src = frame
+                this.image.onload = () => URL.revokeObjectURL(frame)
+                this.frames++
+                contentLength = 0
+                bytesRead = 0
+                headers = ''
+            }
+
+            this.readStream()
+        } catch (error: any) {
+            this.log(`readStream error: ${error.message ?? ''}`, error)
+        }
     }
 
     mounted() {
@@ -190,18 +214,35 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         this.stopStream()
     }
 
-    stopStream() {
+    clearTimeouts() {
+        this.frames = 0
+        if (this.timerFPS) {
+            window.clearInterval(this.timerFPS)
+            this.timerFPS = null
+        }
+        if (this.timerRestart) {
+            window.clearTimeout(this.timerRestart)
+            this.timerRestart = null
+        }
+    }
+
+    async stopStream() {
         this.streamState = false
-        URL.revokeObjectURL(this.url)
-        if (this.timerFPS) clearTimeout(this.timerFPS)
-        if (this.timerRestart) clearTimeout(this.timerRestart)
-        this.controller?.abort()
-        this.stream?.cancel()
+
+        this.clearTimeouts()
+
+        try {
+            await this.reader?.cancel()
+        } catch (error) {
+            this.log('Fehler beim Abbrechen des Readers:', error)
+        } finally {
+            this.reader?.releaseLock()
+        }
     }
 
     async restartStream() {
-        this.stopStream()
-        this.startStream()
+        await this.stopStream()
+        await this.startStream()
     }
 
     @Watch('camSettings', { immediate: true, deep: true })
@@ -235,9 +276,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     onload() {
-        if (this.aspectRatio !== null || !this.$refs.image) return
+        if (this.aspectRatio !== null || !this.image) return
 
-        this.aspectRatio = this.$refs.image.naturalWidth / this.$refs.image.naturalHeight
+        this.aspectRatio = this.image.naturalWidth / this.image.naturalHeight
     }
 }
 </script>
