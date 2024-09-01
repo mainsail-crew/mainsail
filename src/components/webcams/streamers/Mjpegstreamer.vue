@@ -110,7 +110,6 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
     async startStream() {
         if (this.streamState) {
-            this.log('stream already started')
             return
         }
         this.streamState = true
@@ -143,7 +142,6 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                 this.restartStream()
             }, 10000)
 
-            this.log('start read stream')
             this.reader = response.body?.getReader()
             this.readStream()
         } catch (error: any) {
@@ -157,10 +155,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
         try {
             const { done, value } = await this.reader.read()
-            if (done) {
-                this.log('done')
-                return
-            }
+            if (done) return
 
             // stop if the stream has no value
             if (!value) {
