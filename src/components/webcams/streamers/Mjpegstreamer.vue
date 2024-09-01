@@ -229,7 +229,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         try {
             await this.reader?.cancel()
         } catch (error) {
-            this.log('Fehler beim Abbrechen des Readers:', error)
+            this.log('Error cancelling reader:', error)
         } finally {
             this.reader?.releaseLock()
         }
