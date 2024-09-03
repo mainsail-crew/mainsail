@@ -34,8 +34,6 @@ const SOI = new Uint8Array(2)
 SOI[0] = 0xff
 SOI[1] = 0xd8
 
-let reader: ReadableStreamDefaultReader<Uint8Array> | null = null
-
 @Component
 export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     // current read stream frames counter
@@ -48,6 +46,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     aspectRatio: null | number = null
     timerFPS: number | null = null
     timerRestart: number | null = null
+    reader: ReadableStreamDefaultReader<Uint8Array> | null = null
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
@@ -149,12 +148,12 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                 this.restartStream()
             }, 10000)
 
-            reader = response.body?.getReader()
+            this.reader = response.body?.getReader()
 
             await this.readStream()
 
             // cleanup
-            reader = null
+            this.reader = null
             response = null
         } catch (error: any) {
             this.log(error.message)
@@ -169,7 +168,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
     async readStream() {
         // stop if the stream is not ready
-        if (!reader) return
+        if (!this.reader) return
 
         try {
             // variables to read the stream
@@ -182,7 +181,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
             let value
 
             do {
-                ;({ done, value } = await reader.read())
+                ;({ done, value } = await this.reader.read())
 
                 if (done || !value) continue
 
@@ -218,7 +217,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         } catch (error: any) {
             this.log(`readStream error: ${error.message ?? ''}`, error)
         } finally {
-            reader?.releaseLock()
+            this.reader?.releaseLock()
         }
     }
 
@@ -251,9 +250,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         this.clearTimeouts()
 
         try {
-            await reader?.cancel()
-            reader?.releaseLock()
-            reader = null
+            await this.reader?.cancel()
+            this.reader?.releaseLock()
+            this.reader = null
         } catch (error) {
             this.log('Error cancelling reader:', error)
         }
