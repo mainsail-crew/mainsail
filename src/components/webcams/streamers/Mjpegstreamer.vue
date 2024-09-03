@@ -46,7 +46,6 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     aspectRatio: null | number = null
     timerFPS: number | null = null
     timerRestart: number | null = null
-    reader: ReadableStreamDefaultReader<Uint8Array> | null = null
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
@@ -54,6 +53,12 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     @Prop({ type: String, default: null }) readonly page!: string | null
 
     @Ref('image') readonly image!: HTMLImageElement
+
+    private reader: ReadableStreamDefaultReader<Uint8Array> | null
+    constructor() {
+        super()
+        this.reader = null
+    }
 
     get url() {
         return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
