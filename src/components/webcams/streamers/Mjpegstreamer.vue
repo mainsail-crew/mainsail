@@ -96,7 +96,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     // start or stop the video when the expanded state changes
-    @Watch('expanded')
+    @Watch('expanded', { immediate: true })
     expandChanged(newExpanded: boolean): void {
         if (!newExpanded) {
             this.stopStream()
@@ -127,13 +127,16 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         return contentLength
     }
 
-    async startStream() {
+    async startStream(skipStatus: boolean = false) {
         if (this.streamState) {
             return
         }
         this.streamState = true
-        this.status = 'connecting'
-        this.statusMessage = this.$t('Panels.WebcamPanel.ConnectingTo', { url: this.url }).toString()
+
+        if (!skipStatus) {
+            this.status = 'connecting'
+            this.statusMessage = this.$t('Panels.WebcamPanel.ConnectingTo', { url: this.url }).toString()
+        }
 
         // reset counter and timeout/interval
         this.clearTimeouts()
@@ -163,7 +166,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
             }, 1000)
 
             this.timerRestart = window.setTimeout(() => {
-                this.restartStream()
+                this.restartStream(true)
             }, 10000)
 
             this.reader = response.body?.getReader()
@@ -260,11 +263,13 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         }
     }
 
-    async stopStream() {
+    async stopStream(skipStatus: boolean = false) {
         this.streamState = false
-        this.status = 'disconnected'
-        this.statusMessage = this.$t('Panels.WebcamPanel.Disconnected').toString()
 
+        if (!skipStatus) {
+            this.status = 'disconnected'
+            this.statusMessage = this.$t('Panels.WebcamPanel.Disconnected').toString()
+        }
         this.clearTimeouts()
 
         try {
@@ -276,12 +281,12 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         }
     }
 
-    async restartStream() {
-        await this.stopStream()
-        await this.startStream()
+    async restartStream(skipStatus: boolean = false) {
+        await this.stopStream(skipStatus)
+        await this.startStream(skipStatus)
     }
 
-    @Watch('camSettings', { immediate: true, deep: true })
+    @Watch('camSettings', { deep: true })
     camSettingsChanged() {
         this.aspectRatio = null
         this.restartStream()
@@ -290,7 +295,11 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     // this function check if you changed the browser tab
     documentVisibilityChanged() {
         const visibility = document.visibilityState
-        const bool = visibility === 'visible'
+        let bool = visibility === 'visible'
+
+        if (this.page === 'dashboard' && !this.expanded) {
+            bool = false
+        }
 
         if (!bool) {
             this.stopStream()
