@@ -51,6 +51,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
     @Prop({ default: true }) declare showFps: boolean
+    @Prop({ type: String, default: null }) readonly page!: string | null
 
     @Ref('image') readonly image!: HTMLImageElement
 
@@ -86,6 +87,23 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         if (!this.showFps) return false
 
         return !(this.camSettings.extra_data?.hideFps ?? false)
+    }
+
+    get expanded(): boolean {
+        if (this.page !== 'dashboard') return true
+
+        return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport) ?? false
+    }
+
+    // start or stop the video when the expanded state changes
+    @Watch('expanded')
+    expandChanged(newExpanded: boolean): void {
+        if (!newExpanded) {
+            this.stopStream()
+            return
+        }
+
+        this.startStream()
     }
 
     log(msg: string, obj?: any) {
