@@ -148,7 +148,11 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
         try {
             //readable stream credit to from https://github.com/aruntj/mjpeg-readable-stream
-            let response: Response | null = await fetch(this.url, { mode: 'cors' })
+
+            const url = new URL(this.url)
+            url.searchParams.append('timestamp', new Date().getTime().toString())
+
+            let response: Response | null = await fetch(url.toString(), { mode: 'cors' })
 
             if (!response.ok) {
                 this.log(`${response.status}: ${response.statusText}`)
