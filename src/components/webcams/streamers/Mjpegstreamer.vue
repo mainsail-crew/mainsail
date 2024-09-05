@@ -165,9 +165,6 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                 return
             }
 
-            this.status = 'connected'
-            this.statusMessage = ''
-
             this.timerFPS = window.setInterval(() => {
                 this.currentFPS = this.frames
                 this.frames = 0
@@ -239,6 +236,12 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                         const objectURL = URL.createObjectURL(new Blob([imageBuffer], { type: 'image/jpeg' }))
                         this.image.src = objectURL
                         skipFrame = true
+
+                        // update status to 'connected' if the first frame is received
+                        if (this.status !== 'connected') {
+                            this.status = 'connected'
+                            this.statusMessage = ''
+                        }
 
                         this.image.onload = () => {
                             URL.revokeObjectURL(objectURL)
