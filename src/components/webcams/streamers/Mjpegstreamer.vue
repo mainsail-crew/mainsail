@@ -28,11 +28,19 @@ import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
 
 const CONTENT_LENGTH = 'content-length'
-const TYPE_JPEG = 'image/jpeg'
 
 const SOI = new Uint8Array(2)
 SOI[0] = 0xff
 SOI[1] = 0xd8
+
+function uint8ArrayToBase64(uint8Array) {
+    let binary = '';
+    const len = uint8Array.byteLength;
+    for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(uint8Array[i]);
+    }
+    return window.btoa(binary);
+}
 
 @Component
 export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
@@ -205,7 +213,6 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
             let headers = ''
             let contentLength = -1
             let imageBuffer: Uint8Array = new Uint8Array(0)
-            const decoder = new TextDecoder('latin1');
             let bytesRead = 0
 
             let done: boolean | null = null
@@ -237,7 +244,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
                     // we're done reading the jpeg. Time to render it.
                     if (this.image) {
-                        this.image.src = 'data:image/jpeg;base64,' + btoa(decoder.decode(imageBuffer))
+                        this.image.src = 'data:image/jpeg;base64,' + uint8ArrayToBase64(imageBuffer)
                     }
                     this.frames++
                     contentLength = 0
