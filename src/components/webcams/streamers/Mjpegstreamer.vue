@@ -247,7 +247,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                             URL.revokeObjectURL(objectURL)
                             skipFrame = false
                         }
-                    } else this.log('Skipping frame')
+                    }
                     this.frames++
                     contentLength = 0
                     bytesRead = 0
