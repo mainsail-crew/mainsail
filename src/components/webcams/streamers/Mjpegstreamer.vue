@@ -235,7 +235,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                     }
 
                     // we're done reading the jpeg. Time to render it.
-                    this.image?.src = 'data:image/jpeg;base64,' + btoa(String.fromCharCode.apply(null, imageBuffer))
+                    if (this.image) {
+                        this.image.src = 'data:image/jpeg;base64,' + btoa(Array.from(imageBuffer).map(byte => String.fromCharCode(byte)).join(''))
+                    }
                     this.frames++
                     contentLength = 0
                     bytesRead = 0
