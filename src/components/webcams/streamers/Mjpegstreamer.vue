@@ -22,9 +22,9 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {Mixins, Prop, Ref, Watch} from 'vue-property-decorator'
+import { Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
 
 const CONTENT_LENGTH = 'content-length'
@@ -33,13 +33,13 @@ const SOI = new Uint8Array(2)
 SOI[0] = 0xff
 SOI[1] = 0xd8
 
-function uint8ArrayToBase64(uint8Array) {
-    let binary = '';
-    const len = uint8Array.byteLength;
+function uint8ArrayToBase64(uint8Array: Uint8Array) {
+    let binary = ''
+    const len = uint8Array.byteLength
     for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(uint8Array[i]);
+        binary += String.fromCharCode(uint8Array[i])
     }
-    return window.btoa(binary);
+    return window.btoa(binary)
 }
 
 @Component
