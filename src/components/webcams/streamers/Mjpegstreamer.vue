@@ -22,9 +22,9 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
+import {Mixins, Prop, Ref, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
 
 const CONTENT_LENGTH = 'content-length'
@@ -235,9 +235,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                     }
 
                     // we're done reading the jpeg. Time to render it.
-                    const frame = URL.createObjectURL(new Blob([imageBuffer], { type: TYPE_JPEG }))
-                    if (this.image) this.image.src = frame
-                    this.image.onload = () => URL.revokeObjectURL(frame)
+                    this.image?.src = 'data:image/jpeg;base64,' + btoa(String.fromCharCode.apply(null, imageBuffer))
                     this.frames++
                     contentLength = 0
                     bytesRead = 0
