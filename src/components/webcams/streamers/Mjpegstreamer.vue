@@ -33,15 +33,6 @@ const SOI = new Uint8Array(2)
 SOI[0] = 0xff
 SOI[1] = 0xd8
 
-function uint8ArrayToBase64(uint8Array: Uint8Array) {
-    let binary = ''
-    const len = uint8Array.byteLength
-    for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(uint8Array[i])
-    }
-    return window.btoa(binary)
-}
-
 @Component
 export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     // current read stream frames counter
@@ -214,6 +205,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
             let contentLength = -1
             let imageBuffer: Uint8Array = new Uint8Array(0)
             let bytesRead = 0
+            let skipFrame = false
 
             let done: boolean | null = null
             let value
@@ -243,9 +235,16 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                     }
 
                     // we're done reading the jpeg. Time to render it.
-                    if (this.image) {
-                        this.image.src = 'data:image/jpeg;base64,' + uint8ArrayToBase64(imageBuffer)
-                    }
+                    if (this.image && !skipFrame) {
+                        const objectURL = URL.createObjectURL(new Blob([imageBuffer], { type: 'image/jpeg' }))
+                        this.image.src = objectURL
+                        skipFrame = true
+
+                        this.image.onload = () => {
+                            URL.revokeObjectURL(objectURL)
+                            skipFrame = false
+                        }
+                    } else this.log('Skipping frame')
                     this.frames++
                     contentLength = 0
                     bytesRead = 0
