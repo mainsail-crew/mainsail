@@ -205,6 +205,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
             let headers = ''
             let contentLength = -1
             let imageBuffer: Uint8Array = new Uint8Array(0)
+            const decoder = new TextDecoder('latin1');
             let bytesRead = 0
 
             let done: boolean | null = null
@@ -236,7 +237,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
                     // we're done reading the jpeg. Time to render it.
                     if (this.image) {
-                        this.image.src = 'data:image/jpeg;base64,' + btoa(Array.from(imageBuffer).map(byte => String.fromCharCode(byte)).join(''))
+                        this.image.src = 'data:image/jpeg;base64,' + btoa(decoder.decode(imageBuffer))
                     }
                     this.frames++
                     contentLength = 0
