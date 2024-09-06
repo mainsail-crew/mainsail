@@ -181,12 +181,26 @@ export const themes: Theme[] = [
         colorLogo: '#FF0000',
         logo: { show: true, light: false },
         sidebarBackground: { show: true, light: false },
+        css: true,
     },
     {
         name: 'prusa',
         displayName: 'Prusa Research (Sponsor)',
         colorLogo: '#fa6831',
         colorPrimary: '#fa6831',
+        logo: { show: true, light: false },
+    },
+    {
+        name: 'btt',
+        displayName: 'BigTreeTech (Sponsor)',
+        colorLogo: '#ef0025',
+        logo: { show: true, light: false },
+    },
+    {
+        name: 'multec',
+        displayName: 'Multec GmbH (Sponsor)',
+        colorLogo: '#234D7A',
+        colorPrimary: '#234D7A',
         logo: { show: true, light: false },
     },
 ]
