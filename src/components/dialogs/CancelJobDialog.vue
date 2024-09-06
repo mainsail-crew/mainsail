@@ -38,9 +38,7 @@ export default class CancelJobDialog extends Mixins(BaseMixin) {
     @Prop({ type: Boolean, default: false }) showDialog!: boolean
 
     cancelJob() {
-        this.$socket.emit('printer.print.cancel', {}, { loading: 'statusPrintCancel' })
-
-        this.closePrompt()
+        this.$emit('cancel-job')
     }
 
     closePrompt() {

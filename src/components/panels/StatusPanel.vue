@@ -110,7 +110,10 @@
                 </v-tab-item>
             </v-tabs-items>
         </panel>
-        <cancel-job-dialog :show-dialog="showCancelJobDialog" @close="showCancelJobDialog = false" />
+        <cancel-job-dialog
+            :show-dialog="showCancelJobDialog"
+            @cancel-job="cancelJob"
+            @close="showCancelJobDialog = false" />
     </div>
 </template>
 
@@ -142,9 +145,11 @@ import {
     mdiDotsVertical,
 } from '@mdi/js'
 import { PrinterStateMacro } from '@/store/printer/types'
+import CancelJobDialog from '@/components/dialogs/CancelJobDialog.vue'
 
 @Component({
     components: {
+        CancelJobDialog,
         KlippyStatePanel,
         MinSettingsPanel,
         Panel,
