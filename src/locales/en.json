@@ -154,6 +154,7 @@
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
         "Connecting": "Connecting to {host}",
+        "ErrorMessage": "Error message: {message}",
         "Failed": "Connection failed",
         "Initializing": "Initializing",
         "TryAgain": "try again"
