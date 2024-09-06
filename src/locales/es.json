@@ -1264,7 +1264,9 @@
             "ThemeDark": "Oscuro",
             "ThemeDescription": "Personaliza la marca de la interfaz.",
             "ThemeLight": "Claro",
-            "UiSettings": "Ajustes de UI"
+            "UiSettings": "Ajustes de UI",
+            "ConfirmOnCancelJob": "Se requiere confirmación para cancelar el trabajo",
+            "ConfirmOnCancelJobDescription": "Mostrar un cuadro de diálogo de confirmación para cancelar el trabajo"
         },
         "Update": "actualizar",
         "WebcamsTab": {
@@ -1360,5 +1362,11 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Español"
+    "title": "Español",
+    "CancelJobDialog": {
+        "AreYouSure": "¿Estás seguro?",
+        "No": "No",
+        "CancelJob": "Cancelar trabajo",
+        "Yes": "Sí"
+    }
 }
