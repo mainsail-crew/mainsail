@@ -144,6 +144,12 @@
         "ScrewName": "Name der Schraube",
         "ScrewOutput": "{current} von {max}"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "Bist du sicher?",
+        "CancelJob": "Druck abbrechen",
+        "No": "Nein",
+        "Yes": "Ja"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Kann keine Verbindung zu Moonraker ({host}) herstellen.",
         "CheckMoonrakerLog": "Wenn diese Meldung wiederholt erscheint, schaue bitte in die Logdatei unter:",
@@ -1196,6 +1202,8 @@
             "BoolBigThumbnailDescription": "Zeige ein großes Thumbnail in der Status-Anzeige während eines Drucks.",
             "BoolHideUploadAndPrintButton": "\"Hochladen & Drucken\" Schaltfläche ausblenden",
             "BoolHideUploadAndPrintButtonDescription": "Blendet die \"Hochladen & Drucken\" Schaltfläche in der Kopfleiste ein oder aus.",
+            "ConfirmOnCancelJob": "Bestätigung für Druck abbrechen erforderlich",
+            "ConfirmOnCancelJobDescription": "Zeige vor dem Druck abbrechen einen Bestätigungsdialog.",
             "ConfirmOnCoolDown": "Bestätigung für Abkühlen erforderlich",
             "ConfirmOnCoolDownDescription": "Zeige vor dem Abkühlen einen Bestätigungsdialog.",
             "ConfirmOnEmergencyStop": "Bestätigung für Notstopp erforderlich",
