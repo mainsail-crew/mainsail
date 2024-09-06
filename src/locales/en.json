@@ -669,6 +669,7 @@
             "Headline": "Console",
             "HideTemperatures": "Hide temperatures",
             "HideTimelapse": "Hide Timelapse",
+            "RawOutput": "RAW-Output (for debugging)",
             "SendCode": "Send code...",
             "SetupConsole": "Setup Console"
         },
