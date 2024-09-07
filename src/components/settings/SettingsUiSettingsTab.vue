@@ -179,6 +179,13 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
+                    :title="$t('Settings.UiSettingsTab.ConfirmOnCancelJob')"
+                    :sub-title="$t('Settings.UiSettingsTab.ConfirmOnCancelJobDescription')"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="confirmOnCancelJob" hide-details class="mt-0" />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
                     :title="$t('Settings.UiSettingsTab.NavigationStyle')"
                     :sub-title="$t('Settings.UiSettingsTab.NavigationStyleDescription')">
                     <v-select
@@ -424,6 +431,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
 
     set confirmOnPowerDeviceChange(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnPowerDeviceChange', value: newVal })
+    }
+
+    get confirmOnCancelJob() {
+        return this.$store.state.gui.uiSettings.confirmOnCancelJob
+    }
+
+    set confirmOnCancelJob(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnCancelJob', value: newVal })
     }
 
     get lockSliders() {

@@ -1,7 +1,7 @@
 <template>
     <div>
         <template v-if="service === 'mjpegstreamer'">
-            <mjpegstreamer-async :cam-settings="webcam" :show-fps="showFps" :printer-url="printerUrl" />
+            <mjpegstreamer-async :cam-settings="webcam" :show-fps="showFps" :printer-url="printerUrl" :page="page" />
         </template>
         <template v-else-if="service === 'mjpegstreamer-adaptive'">
             <mjpegstreamer-adaptive-async :cam-settings="webcam" :show-fps="showFps" :printer-url="printerUrl" />
