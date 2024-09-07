@@ -61,20 +61,22 @@
                         :name="filename"
                         :file-extension="fileExtension"
                         @lineChange="lineChanges" />
-                    <div
-                        v-if="fileStructureSidebar"
-                        class="d-none d-md-flex cursor-pointer cm-editor ͼo structure-sidebar">
+                    <div v-if="fileStructureSidebar" class="d-none d-md-flex structure-sidebar">
                         <v-treeview
                             activatable
                             dense
-                            dark
                             :active="structureActive"
                             :open="structureOpen"
                             item-key="line"
                             :items="configFileStructure"
+                            class="w-100"
                             @update:active="activeChanges">
                             <template #label="{ item }">
-                                <div :class="item.type == 'item' ? 'ͼp' : 'ͼt'">{{ item.name }}</div>
+                                <div
+                                    class="cursor-pointer _structure-sicebar-item"
+                                    :class="item.type == 'item' ? 'ͼp' : 'ͼt'">
+                                    {{ item.name }}
+                                </div>
                             </template>
                             <template v-if="restartServiceName === 'klipper'" #append="{ item }">
                                 <v-btn
@@ -509,5 +511,14 @@ export default class TheEditor extends Mixins(BaseMixin) {
 .structure-sidebar {
     width: 300px;
     overflow-y: auto;
+}
+._structure-sicebar-item {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+::v-deep .v-treeview-node__level + .v-treeview-node__level {
+    width: 12px;
 }
 </style>
