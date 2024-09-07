@@ -54,12 +54,12 @@
                 </template>
                 <v-card-text class="pa-0 d-flex">
                     <codemirror-async
-                        class="codemirror"
                         v-if="show"
                         ref="editor"
                         v-model="sourcecode"
                         :name="filename"
                         :file-extension="fileExtension"
+                        class="codemirror"
                         @lineChange="lineChanges" />
                     <div v-if="fileStructureSidebar" class="d-none d-md-flex structure-sidebar">
                         <v-treeview
@@ -95,7 +95,7 @@
                 </v-card-text>
             </panel>
         </v-dialog>
-        <v-snackbar v-model="loaderBool" :timeout="-1" :value="true" fixed right bottom>
+        <v-snackbar v-model="loaderBool" :timeout="-1" fixed right bottom>
             <div>
                 {{ snackbarHeadline }}
                 <br />
@@ -160,7 +160,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { capitalize, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
@@ -178,7 +178,6 @@ import {
     mdiUsb,
     mdiFormatListCheckbox,
 } from '@mdi/js'
-import type Codemirror from '@/components/inputs/Codemirror.vue'
 import DevicesDialog from '@/components/dialogs/DevicesDialog.vue'
 import { ConfigFileSection } from '@/store/files/types'
 
@@ -208,9 +207,8 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiUsb = mdiUsb
     mdiFormatListCheckbox = mdiFormatListCheckbox
 
-    declare $refs: {
-        editor: Codemirror
-    }
+    //@ts-ignore
+    @Ref('editor') editor!: CodemirrorAsync
 
     get changed() {
         return this.$store.state.editor.changed ?? false
@@ -349,41 +347,45 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get configFileStructure() {
-        if (['conf', 'cfg'].includes(this.fileExtension)) {
-            const sourcecode = this.sourcecode
-            const lines = sourcecode.split(/\n/gi)
-            const regex = /^[^#\S]*?(\[(?<section>.*?)]|(?<name>\w+)\s*?[:=])/gim
-            let section = null
-            let name = null
-            let structure: ConfigFileSection[] = []
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i]
-                const matches = [...line.matchAll(regex)]
-                if (matches.length > 0) {
-                    const match = matches[0]
-                    if (match['groups']['section']) {
-                        section = match['groups']['section']
-                        structure.push({
-                            name: section,
-                            type: 'section',
-                            line: i + 1,
-                            children: [],
-                        })
-                    } else if (match['groups']['name']) {
-                        name = match['groups']['name']
-                        structure[structure.length - 1]['children'].push({
-                            name: name,
-                            type: 'item',
-                            line: i + 1,
-                        })
-                    }
-                }
-            }
-            this.fileStructureSidebar = true
-            return structure
+        if (!['conf', 'cfg'].includes(this.fileExtension)) {
+            this.fileStructureSidebar = false
+            return null
         }
-        this.fileStructureSidebar = false
-        return null
+
+        const lines = this.sourcecode.split(/\n/gi)
+        const regex = /^[^#\S]*?(\[(?<section>.*?)]|(?<name>\w+)\s*?[:=])/gim
+        const structure: ConfigFileSection[] = []
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i]
+            const matches = [...line.matchAll(regex)]
+
+            // break if no matches were found
+            if (matches.length === 0) continue
+
+            const match = matches[0]
+            if (match['groups']['section']) {
+                structure.push({
+                    name: match['groups']['section'],
+                    type: 'section',
+                    line: i + 1,
+                    children: [],
+                })
+
+                continue
+            }
+
+            if (match['groups']['name']) {
+                structure[structure.length - 1]['children'].push({
+                    name: match['groups']['name'],
+                    type: 'item',
+                    line: i + 1,
+                })
+            }
+        }
+
+        this.fileStructureSidebar = true
+        return structure
     }
 
     cancelDownload() {
@@ -423,7 +425,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     activeChanges(key: any) {
-        this.$refs.editor.gotoLine(key)
+        this.editor?.gotoLine(key)
     }
 
     lineChanges(line: number) {
