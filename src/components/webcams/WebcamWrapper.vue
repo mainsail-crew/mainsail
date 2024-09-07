@@ -4,13 +4,17 @@
             <v-container v-if="webcams" fluid class="pb-4">
                 <v-row dense>
                     <v-col v-for="gridWebcam in webcams" :key="gridWebcam.name" cols="6">
-                        <webcam-wrapper-item :webcam="gridWebcam" :printer-url="printerUrl" :show-fps="showFps" />
+                        <webcam-wrapper-item
+                            :webcam="gridWebcam"
+                            :printer-url="printerUrl"
+                            :show-fps="showFps"
+                            :page="page" />
                     </v-col>
                 </v-row>
             </v-container>
         </template>
         <template v-else>
-            <webcam-wrapper-item :webcam="webcam" :printer-url="printerUrl" :show-fps="showFps" />
+            <webcam-wrapper-item :webcam="webcam" :printer-url="printerUrl" :show-fps="showFps" :page="page" />
         </template>
     </div>
 </template>
@@ -31,6 +35,7 @@ export default class WebcamWrapper extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) webcam!: GuiWebcamStateWebcam
     @Prop({ type: Boolean, default: true }) showFps!: Boolean
     @Prop({ type: String, default: null }) printerUrl!: string | null
+    @Prop({ type: String, default: null }) page!: string | null
 
     get webcams(): GuiWebcamStateWebcam[] {
         return this.$store.getters['gui/webcams/getWebcams']

@@ -740,7 +740,7 @@
             "InvertXMovement": "反轉X軸移動方向",
             "InvertYMovement": "反轉Y軸移動方向",
             "InvertZMovement": "反轉Z軸移動方向",
-            "IsDefault": "(預設)",
+            "IsDefault": " （預設）",
             "MaximumValues": "最大值：{maximum}",
             "MaximumValuesVisibility": "為了最好的可視畫推薦最大值{maximum}",
             "MinimumValues": "最小值：{minimum}",

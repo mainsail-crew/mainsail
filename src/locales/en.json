@@ -144,6 +144,12 @@
         "ScrewName": "Screw Name",
         "ScrewOutput": "{current} of {max}"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "Are you sure?",
+        "CancelJob": "Cancel Job",
+        "No": "No",
+        "Yes": "Yes"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
@@ -664,6 +670,7 @@
             "Headline": "Console",
             "HideTemperatures": "Hide temperatures",
             "HideTimelapse": "Hide Timelapse",
+            "RawOutput": "RAW-Output (for debugging)",
             "SendCode": "Send code...",
             "SetupConsole": "Setup Console"
         },
@@ -1197,6 +1204,8 @@
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
             "BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the top bar.",
+            "ConfirmOnCancelJob": "Require confirm on Cancel Job",
+            "ConfirmOnCancelJobDescription": "Show a confirmation dialog on Cancel Job",
             "ConfirmOnCoolDown": "Require confirm on CoolDown",
             "ConfirmOnCoolDownDescription": "Show a confirmation dialog on CoolDown",
             "ConfirmOnEmergencyStop": "Require confirm on Emergency Stop",
