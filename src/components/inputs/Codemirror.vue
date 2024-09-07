@@ -11,7 +11,7 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import { basicSetup } from 'codemirror'
 import { EditorView, keymap } from '@codemirror/view'
-import { EditorState } from '@codemirror/state'
+import { EditorState, Line } from '@codemirror/state'
 import { vscodeDark } from '@uiw/codemirror-theme-vscode'
 import { StreamLanguage } from '@codemirror/language'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
@@ -116,7 +116,9 @@ export default class Codemirror extends Mixins(BaseMixin) {
     }
 
     gotoLine(line: number) {
-        const l: any = this.cminstance?.state?.doc.line(line)
+        const l = this.cminstance?.state?.doc.line(line)
+        if (!l) return
+
         this.cminstance?.dispatch({
             selection: { head: l.from, anchor: l.to },
             scrollIntoView: true,
