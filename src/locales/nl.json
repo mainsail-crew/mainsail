@@ -1,5 +1,4 @@
 {
-    "_last_update": "2023-02-21",
     "App": {
         "Notifications": {
             "DependencyDescription": "De huidige {name} versie ondersteunt niet alle functies van Mainsail. Update {name} naar ten minste {neededVersion}.",
@@ -23,6 +22,9 @@
             "NextReboot": "volgende reboot",
             "NoNotification": "Geen notificaties beschikbaar",
             "Notifications": "Notificaties",
+            "OneDayShort": "1D",
+            "OneHourShort": "1U",
+            "OneWeekShort": "1W",
             "Remind": "Herinnering:"
         },
         "NumberInput": {
@@ -31,6 +33,12 @@
             "NoEmptyAllowedError": "Invoer mag niet leeg zijn!"
         },
         "Printers": "Printers",
+        "TextfieldWithCopy": {
+            "Copied": "Gekopieerd"
+        },
+        "TheServiceWorker": {
+            "Update": "Werk bij"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM core(s) worden momenteel gethrottled.",
             "DescriptionFrequencyCapped": "rPi ARM max frequency is momenteel beperkt tot 1.2 GHz.",
@@ -135,6 +143,17 @@
         "SendCode": "Verzend code...",
         "SetupConsole": "Instellingen"
     },
+    "CoolDownDialog": {
+        "CoolDown": "Koel af",
+        "No": "Nee",
+        "Yes": "Ja"
+    },
+    "DevicesDialog": {
+        "Formats": "Formats",
+        "Headline": "Apparaten",
+        "Refresh": "Herlaad",
+        "Resolutions": "Resoluties"
+    },
     "Dialogs": {
         "StartPrint": {
             "Cancel": "Annuleer",
@@ -146,6 +165,7 @@
     },
     "Editor": {
         "ConfigReference": "Config Referentie",
+        "DeviceDialog": "Apparaten",
         "DontSave": "Sla niet op",
         "Downloading": "Downloaden",
         "FailedSave": "{filename} kon niet worden geupload!",
@@ -180,6 +200,7 @@
         "DeleteDirectoryQuestion": "Weet je zeker dat je de \"{name}\" map wil verwijderen met alle inhoud?",
         "DeleteSelectedQuestion": "Weet je zeker dat je {count} geselecteerde bestanden wil verwijderen?",
         "Download": "Download",
+        "Duplicate": "Duplikaat",
         "EditFile": "Bewerk bestand",
         "Empty": "Leeg",
         "ExtruderTemp": "Extruder Temp.",
@@ -309,6 +330,8 @@
         "Cancel": "Annuleer",
         "Chart": "Grafiek",
         "CreateNote": "Creëer notitie",
+        "DateBasedReminder": "Datum",
+        "Days": "Dagen",
         "Delete": "Verwijder",
         "DeleteSelectedQuestion": "Weet je zeker dat je {count} geselecteerde jobs wil verwijderen?",
         "Details": "Details",
@@ -318,6 +341,7 @@
         "EstimatedFilament": "Geschat Filament",
         "EstimatedFilamentWeight": "Geschatte filamentgewicht",
         "EstimatedTime": "Geschatte Tijd",
+        "FilamentBasedReminder": "Filament",
         "FilamentCalc": "Filament berekend",
         "FilamentUsage": "Filamentgebruik",
         "FilamentUsed": "Filament gebruikt",
@@ -328,17 +352,26 @@
         "FirstLayerHeight": "Eerste Laag Hoogte",
         "HistoryFilamentUsage": "Filament",
         "HistoryPrinttimeAVG": "Afdrukken",
+        "Hours": "Uren",
         "JobDetails": "Job Details",
         "Jobs": "Jobs",
         "LastModified": "Laatst Gewijzigd",
         "LayerHeight": "Laaghoogte",
         "LongestPrinttime": "Langste Printtijd",
+        "Maintenance": "Onderhoud",
+        "Meter": "meter",
+        "Name": "Naam",
         "Note": "Notitie",
         "ObjectHeight": "Object Hoogte",
+        "OneTime": "Een keer",
+        "Perform": "Voeruit",
+        "Performed": "Voerde uit",
         "PrintDuration": "Print duur",
         "PrintHistory": "Print Geschiedenis",
         "PrintTime": "Printtijd",
         "PrinttimeAvg": "Printtijd gemiddeld",
+        "Reminder": "Herinnering",
+        "Repeat": "Herhaal",
         "Reprint": "Opnieuw printen",
         "Save": "Opslaan",
         "Search": "zoek",

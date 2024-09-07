@@ -7,6 +7,7 @@ export interface SocketState {
     isConnected: boolean
     isConnecting: boolean
     connectingFailed: boolean
+    connectionFailedMessage: string | null
     loadings: string[]
     initializationList: string[]
     connection_id: number | null

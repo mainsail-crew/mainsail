@@ -2,7 +2,7 @@
     <div>
         <v-row class="py-2">
             <v-col class="pl-6">
-                <strong>{{ repo.name }}</strong>
+                <strong>{{ name }}</strong>
                 <br />
                 <template v-if="type === 'git_repo' && commitsBehind.length">
                     <a class="info--text cursor--pointer" @click="boolShowCommitList = true">
@@ -159,6 +159,11 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
 
     get name() {
+        const info_tags = this.repo.info_tags ?? []
+        const description = info_tags.find((tag) => tag.startsWith('desc='))
+
+        if (description && description.trim() !== 'desc=') return description.replace('desc=', '').trim()
+
         return this.repo.name ?? 'UNKNOWN'
     }
 

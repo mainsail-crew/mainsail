@@ -90,4 +90,10 @@ export default class ThemeMixin extends Vue {
 
         return `/img/themes/mainBackground-${this.themeName}.png`
     }
+
+    get themeCss() {
+        if (!(this.theme.css ?? false)) return null
+
+        return `/css/themes/${this.themeName}.css`
+    }
 }
