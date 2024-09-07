@@ -1267,7 +1267,9 @@
             "ThemeDark": "Sötét",
             "ThemeDescription": "A felület márkajelzésének testreszabása.",
             "ThemeLight": "Világos",
-            "UiSettings": "Nézet beállítások"
+            "UiSettings": "Nézet beállítások",
+            "ConfirmOnCancelJob": "Megerősítést kér a Munka törlésekor",
+            "ConfirmOnCancelJobDescription": "Megerősítő párbeszédpanel megjelenítése a Munka törlésekor"
         },
         "Update": "frissítés",
         "WebcamsTab": {
@@ -1363,5 +1365,11 @@
         "Variable": "Variálható",
         "Video": "Videó"
     },
-    "title": "Magyar"
+    "title": "Magyar",
+    "CancelJobDialog": {
+        "AreYouSure": "Biztos vagy benne?",
+        "CancelJob": "Munka törlése",
+        "No": "Nem",
+        "Yes": "Igen"
+    }
 }
