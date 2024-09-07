@@ -1,17 +1,17 @@
 <template>
     <div class="vue-codemirror">
-        <div ref="codemirror" v-observe-visibility="visibilityChanged"></div>
+        <div ref="editor" v-observe-visibility="visibilityChanged"></div>
     </div>
 </template>
 
 <script lang="ts">
-// Inspired by these repo: https://github.com/surmon-china/vue-codemirror
+// Inspired by this repo: https://github.com/surmon-china/vue-codemirror
 
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import { basicSetup } from 'codemirror'
 import { EditorView, keymap } from '@codemirror/view'
-import { EditorState, Line } from '@codemirror/state'
+import { EditorState } from '@codemirror/state'
 import { vscodeDark } from '@uiw/codemirror-theme-vscode'
 import { StreamLanguage } from '@codemirror/language'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
@@ -27,9 +27,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
     private codemirror: null | EditorView = null
     private cminstance: null | EditorView = null
 
-    declare $refs: {
-        codemirror: HTMLElement
-    }
+    @Ref('editor') editor!: HTMLElement
 
     @Prop({ required: false, default: '' })
     declare readonly code: string
@@ -65,7 +63,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
 
     initialize() {
         this.codemirror = new EditorView({
-            parent: this.$refs.codemirror,
+            parent: this.editor,
         })
         this.cminstance = this.codemirror
 
