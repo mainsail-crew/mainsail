@@ -87,11 +87,12 @@
                                 :output-error-msg="true"
                                 :has-spinner="true"
                                 :spinner-factor="5"
-                                :step="0.01"
-                                :min="0.0"
-                                :max="0.99"
-                                :dec="2"
-                                @submit="sendCmd" />
+                                :step="1"
+                                :min="0"
+                                :max="99"
+                                :dec="0"
+                                unit="%"
+                                @submit="sendCruiseRatioCmd" />
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -144,7 +145,7 @@ export default class MachineSettingsPanel extends Mixins(BaseMixin) {
 
         if (value === null) return null
 
-        return Math.round(value * 100) / 100
+        return Math.round(value * 100)
     }
 
     get squareCornerVelocity(): number {
@@ -166,13 +167,19 @@ export default class MachineSettingsPanel extends Mixins(BaseMixin) {
     get defaultMinimumCruiseRatio(): number {
         const value = this.configPrinter.minimum_cruise_ratio ?? 0.5
 
-        return Math.round(value / 10) * 10
+        return Math.round(value * 100)
     }
 
     get defaultSquareCornerVelocity(): number {
         const value = this.configPrinter.square_corner_velocity ?? 8
 
         return Math.floor(value * 10) / 10
+    }
+
+    sendCruiseRatioCmd(params: { name: string; value: number }): void {
+        params.value = params.value / 100
+
+        this.sendCmd(params)
     }
 
     @Debounce(500)
