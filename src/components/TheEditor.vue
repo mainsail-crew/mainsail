@@ -65,6 +65,7 @@
                         <v-treeview
                             activatable
                             dense
+                            dark
                             :active="structureActive"
                             :open="structureOpen"
                             item-key="line"
@@ -73,7 +74,7 @@
                             @update:active="activeChanges">
                             <template #label="{ item }">
                                 <div
-                                    class="cursor-pointer _structure-sicebar-item"
+                                    class="cursor-pointer _structure-sidebar-item"
                                     :class="item.type == 'item' ? 'ͼp' : 'ͼt'">
                                     {{ item.name }}
                                 </div>
@@ -514,7 +515,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     width: 300px;
     overflow-y: auto;
 }
-._structure-sicebar-item {
+._structure-sidebar-item {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
