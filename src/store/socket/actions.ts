@@ -173,4 +173,8 @@ export const actions: ActionTree<SocketState, RootState> = {
     reportDebug(_, payload) {
         window.console.log(payload)
     },
+
+    setConnectionFailed({ commit }, payload) {
+        commit('setDisconnected', payload)
+    },
 }

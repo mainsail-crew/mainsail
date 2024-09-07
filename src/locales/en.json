@@ -144,10 +144,17 @@
         "ScrewName": "Screw Name",
         "ScrewOutput": "{current} of {max}"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "Are you sure?",
+        "CancelJob": "Cancel Job",
+        "No": "No",
+        "Yes": "Yes"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
         "Connecting": "Connecting to {host}",
+        "ErrorMessage": "Error message: {message}",
         "Failed": "Connection failed",
         "Initializing": "Initializing",
         "TryAgain": "try again"
@@ -197,6 +204,7 @@
         "Downloading": "Downloading",
         "FailedSave": "{filename} could not be uploaded!",
         "FileReadOnly": "read-only",
+        "FileStructure": "File Structure",
         "SaveClose": "Save & close",
         "SaveRestart": "Save & Restart",
         "SuccessfullySaved": "{filename} successfully saved.",
@@ -663,6 +671,7 @@
             "Headline": "Console",
             "HideTemperatures": "Hide temperatures",
             "HideTimelapse": "Hide Timelapse",
+            "RawOutput": "RAW-Output (for debugging)",
             "SendCode": "Send code...",
             "SetupConsole": "Setup Console"
         },
@@ -814,6 +823,9 @@
         },
         "WebcamPanel": {
             "All": "All",
+            "ConnectingTo": "Connecting to {url}",
+            "Disconnected": "Disconnected",
+            "ErrorWhileConnecting": "Error while connecting to {url}",
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "No webcam available. Add a webcam under \"Interface Settings\" -> \"Webcams\".",
@@ -1198,6 +1210,8 @@
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
             "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
             "BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the top bar.",
+            "ConfirmOnCancelJob": "Require confirm on Cancel Job",
+            "ConfirmOnCancelJobDescription": "Show a confirmation dialog on Cancel Job",
             "ConfirmOnCoolDown": "Require confirm on CoolDown",
             "ConfirmOnCoolDownDescription": "Show a confirmation dialog on CoolDown",
             "ConfirmOnEmergencyStop": "Require confirm on Emergency Stop",

@@ -144,6 +144,12 @@
         "ScrewName": "Name der Schraube",
         "ScrewOutput": "{current} von {max}"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "Bist du sicher?",
+        "CancelJob": "Druck abbrechen",
+        "No": "Nein",
+        "Yes": "Ja"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Kann keine Verbindung zu Moonraker ({host}) herstellen.",
         "CheckMoonrakerLog": "Wenn diese Meldung wiederholt erscheint, schaue bitte in die Logdatei unter:",
@@ -1184,9 +1190,9 @@
             "VariableFps": "Variable FPS",
             "VariableFpsDescription": "Wenn diese Option aktiviert ist, wird die Framerate des Ausgabevideos anhand der Zieldauer berechnet.",
             "VariableFpsMax": "Max. Variable FPS",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "Maximaler Wert für die variablen FPS",
             "VariableFpsMin": "Min. Variable FPS",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "Minimaler Wert für die variablen FPS"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
@@ -1196,6 +1202,8 @@
             "BoolBigThumbnailDescription": "Zeige ein großes Thumbnail in der Status-Anzeige während eines Drucks.",
             "BoolHideUploadAndPrintButton": "\"Hochladen & Drucken\" Schaltfläche ausblenden",
             "BoolHideUploadAndPrintButtonDescription": "Blendet die \"Hochladen & Drucken\" Schaltfläche in der Kopfleiste ein oder aus.",
+            "ConfirmOnCancelJob": "Bestätigung für Druck abbrechen erforderlich",
+            "ConfirmOnCancelJobDescription": "Zeige vor dem Druck abbrechen einen Bestätigungsdialog.",
             "ConfirmOnCoolDown": "Bestätigung für Abkühlen erforderlich",
             "ConfirmOnCoolDownDescription": "Zeige vor dem Abkühlen einen Bestätigungsdialog.",
             "ConfirmOnEmergencyStop": "Bestätigung für Notstopp erforderlich",
@@ -1244,7 +1252,7 @@
             "TempchartHeightDescription": "Verändert die Höhe vom Temperatur-Chart auf dem Dashboard.",
             "Theme": "Theme",
             "ThemeDark": "Dunkel",
-            "ThemeDescription": "Ändern Sie das allgemeine Erscheinungsbild der Anwendung.",
+            "ThemeDescription": "Ändere das Branding von der Oberfläche.",
             "ThemeLight": "Hell",
             "UiSettings": "UI-Einstellungen"
         },

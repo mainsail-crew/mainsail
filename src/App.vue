@@ -347,6 +347,26 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         this.drawFavicon(this.print_percent)
     }
 
+    @Watch('themeCss')
+    themeCssChanged(newVal: string | null): void {
+        // remove linked CSS file if it exists
+        const style = document.getElementById('theme-css')
+        if (style) style.remove()
+
+        // if themeCss does not exist, stop here and load no CSS file
+        if (newVal === null) return
+
+        // fetch the CSS file and append it to the head
+        fetch(newVal)
+            .then((response) => response.text())
+            .then((css) => {
+                const newStyle = document.createElement('style')
+                newStyle.id = 'theme-css'
+                newStyle.innerHTML = css
+                document.head.appendChild(newStyle)
+            })
+    }
+
     @Watch('print_percent')
     print_percentChanged(newVal: number): void {
         this.drawFavicon(newVal)
