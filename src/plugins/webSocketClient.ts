@@ -36,6 +36,11 @@ export class WebSocketClient {
                 window.console.error(`Response Error: ${data.error.message} (${wait?.action ?? 'no action'})`)
             }
 
+            if (data.error.message === 'Unauthorized' && wait?.action === 'server/setConnectionId') {
+                this.close()
+                this.store?.dispatch('socket/setConnectionFailed', data.error.message)
+            }
+
             if (wait?.id) {
                 const modulename = wait.action?.split('/')[1] ?? null
 
