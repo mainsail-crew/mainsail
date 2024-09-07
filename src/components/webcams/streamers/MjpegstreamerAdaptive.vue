@@ -1,54 +1,57 @@
 <template>
-    <div style="position: relative" class="d-flex justify-center">
-        <div v-if="!isLoaded" class="text-center py-5">
-            <v-progress-circular indeterminate color="primary" />
-        </div>
-        <canvas
+    <div v-observe-visibility="viewportVisibilityChanged" class="d-flex justify-center webcamBackground">
+        <img
+            v-show="status === 'connected'"
             ref="image"
-            v-observe-visibility="viewportVisibilityChanged"
-            width="600"
-            height="400"
+            class="webcamImage"
             :style="webcamStyle"
-            :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')" />
-        <span v-if="isLoaded && showFpsCounter" class="webcamFpsOutput">
+            :alt="camSettings.name"
+            src="#"
+            @error="onError"
+            @load="onLoad" />
+        <span v-if="status === 'connected' && showFpsCounter" class="webcamFpsOutput">
             {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
         </span>
+        <v-row v-if="status !== 'connected'">
+            <v-col class="_webcam_mjpegstreamer_output text-center d-flex flex-column justify-center align-center">
+                <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
+                <span class="mt-3">{{ statusMessage }}</span>
+            </v-col>
+        </v-row>
     </div>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
 export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin) {
-    private refresh = Math.ceil(Math.random() * Math.pow(10, 12))
-    private isVisible = true
-    private isVisibleDocument = true
-    private isVisibleViewport = false
-    private isLoaded = true
-    // eslint-disable-next-line no-undef
-    private timer: NodeJS.Timeout | undefined = undefined
+    isVisibleDocument = true
+    isVisibleViewport = false
+    status: string = 'connecting'
+    statusMessage: string = ''
 
-    private request_start_time = performance.now()
-    private start_time = performance.now()
-    private time = 0
-    private request_time = 0
-    private time_smoothing = 0.6
-    private request_time_smoothing = 0.1
-    private currentFPS = 0
-    private aspectRatio: null | number = null
+    timer: number | null = null
+    request_start_time = performance.now()
+    time = 0
+    request_time = 0
+    request_time_smoothing = 0.2
 
-    declare $refs: {
-        image: any
-    }
+    currentFPS: number | null = null
+    fpsTimer: number | null = null
+    frames = 0
+
+    aspectRatio: null | number = null
 
     @Prop({ required: true }) declare camSettings: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
     @Prop({ default: true }) declare showFps: boolean
+
+    @Ref('image') readonly image!: HTMLImageElement
 
     get webcamStyle() {
         const output = {
@@ -67,10 +70,19 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
             output.maxWidth = (window.innerHeight - 155) * this.aspectRatio + 'px'
         }
 
+        if (this.aspectRatio && [90, 270].includes(this.camSettings.rotation)) {
+            if (output.transform === 'none') output.transform = ''
+
+            const scale = 1 / this.aspectRatio
+            output.transform += ' rotate(' + this.camSettings.rotation + 'deg) scale(' + scale + ')'
+        }
+
         return output
     }
 
     get fpsOutput() {
+        if (this.currentFPS === null) return '--'
+
         return this.currentFPS < 10 ? '0' + this.currentFPS.toString() : this.currentFPS
     }
 
@@ -80,118 +92,35 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         return !(this.camSettings.extra_data?.hideFps ?? false)
     }
 
-    get rotate() {
-        return [90, 270].includes(this.camSettings.rotation ?? 0)
-    }
-
     get url() {
         return this.convertUrl(this.camSettings?.snapshot_url, this.printerUrl)
     }
 
-    refreshFrame() {
-        if (!this.isVisible) return
-
-        this.refresh = new Date().getTime()
-        this.setFrame()
-    }
-
-    async setFrame() {
-        let url = new URL(this.url)
-        url.searchParams.append('bypassCache', this.refresh.toString())
-
-        this.request_start_time = performance.now()
-        this.currentFPS = this.time > 0 ? Math.round(1000 / this.time) : 0
-
-        let canvas = this.$refs.image
-        if (canvas) {
-            const ctx = canvas.getContext('2d')
-            const frame: any = await this.loadImage(url.toString())
-
-            this.aspectRatio = frame.naturalWidth / frame.naturalHeight
-            if (this.rotate) this.aspectRatio = 1 / this.aspectRatio
-
-            // set canvas sizes
-            canvas.width = canvas.clientWidth
-            canvas.height = canvas.clientWidth / this.aspectRatio
-
-            if (this.rotate) {
-                const scale = canvas.height / frame.width
-                const x = canvas.width / 2
-                const y = canvas.height / 2
-                ctx.translate(x, y)
-                ctx.rotate((this.camSettings.rotation * Math.PI) / 180)
-                await ctx?.drawImage(
-                    frame,
-                    (-frame.width / 2) * scale,
-                    (-frame.height / 2) * scale,
-                    frame.width * scale,
-                    frame.height * scale
-                )
-                ctx.rotate(-((this.camSettings.rotation * Math.PI) / 180))
-                ctx.translate(-x, -y)
-            } else await ctx?.drawImage(frame, 0, 0, frame.width, frame.height, 0, 0, canvas.width, canvas.height)
-
-            this.isLoaded = true
-        }
-
-        this.$nextTick(() => {
-            this.onLoad()
-        })
-    }
-
-    onLoad() {
-        this.isLoaded = true
-
-        const targetFps = this.camSettings.target_fps || 10
-        const end_time = performance.now()
-        const current_time = end_time - this.start_time
-        this.time = this.time * this.time_smoothing + current_time * (1.0 - this.time_smoothing)
-        this.start_time = end_time
-
-        const target_time = 1000 / targetFps
-
-        const current_request_time = performance.now() - this.request_start_time
-        this.request_time =
-            this.request_time * this.request_time_smoothing + current_request_time * (1.0 - this.request_time_smoothing)
-        const timeout = Math.max(0, target_time - this.request_time)
-
-        this.$nextTick(() => {
-            this.timer = setTimeout(this.refreshFrame, timeout)
-        })
-    }
-
-    loadImage(url: string) {
-        return new Promise((r) => {
-            let image = new Image()
-            image.onload = () => r(image)
-            image.onerror = () => setTimeout(this.refreshFrame, 1000)
-            image.src = url
-        })
+    get isVisible() {
+        return this.isVisibleDocument && this.isVisibleViewport
     }
 
     mounted() {
         document.addEventListener('visibilitychange', this.documentVisibilityChanged)
-        this.refreshFrame()
     }
 
     beforeDestroy() {
         document.removeEventListener('visibilitychange', this.documentVisibilityChanged)
+        this.stopStream()
     }
 
     documentVisibilityChanged() {
         const visibility = document.visibilityState
         this.isVisibleDocument = visibility === 'visible'
-        if (!this.isVisibleDocument) this.stopStream()
-        this.visibilityChanged()
     }
 
     viewportVisibilityChanged(newVal: boolean) {
         this.isVisibleViewport = newVal
-        this.visibilityChanged()
     }
 
-    visibilityChanged() {
-        if (this.isVisibleViewport && this.isVisibleDocument) {
+    @Watch('isVisible', { immediate: true })
+    isVisibleChanged(newVal: boolean) {
+        if (newVal) {
             this.startStream()
             return
         }
@@ -199,23 +128,111 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.stopStream()
     }
 
+    refreshFrame() {
+        if (!this.isVisible) return
+
+        if (this.timer !== null) {
+            window.clearTimeout(this.timer)
+            this.timer = null
+        }
+
+        const url = new URL(this.url)
+        url.searchParams.append('bypassCache', new Date().getTime().toString())
+        this.image.src = url.toString()
+        this.request_start_time = performance.now()
+    }
+
+    onLoad() {
+        if (this.status !== 'connected') {
+            this.status = 'connected'
+            this.statusMessage = ''
+        }
+        this.frames++
+
+        if (this.aspectRatio === null) {
+            this.aspectRatio = this.image.naturalWidth / this.image.naturalHeight
+        }
+
+        const targetFps = this.camSettings.target_fps || 10
+        const target_time = 1000 / targetFps
+
+        const current_request_time = performance.now() - this.request_start_time
+        this.request_time =
+            this.request_time * this.request_time_smoothing + current_request_time * (1 - this.request_time_smoothing)
+        const timeout = Math.max(0, target_time - this.request_time)
+
+        this.timer = window.setTimeout(this.refreshFrame, timeout)
+    }
+
+    onError() {
+        this.status = 'error'
+        this.statusMessage = this.$t('Panels.WebcamPanel.ErrorWhileConnecting', { url: this.url }).toString()
+
+        if (this.timer !== null) return
+
+        this.timer = window.setTimeout(this.refreshFrame, 1000)
+    }
+
     startStream() {
-        if (this.isVisible) return
-        this.isVisible = true
+        // is not visible or already streaming
+        if (!this.isVisible) return
+
+        if (this.status !== 'connected') {
+            this.status = 'connecting'
+            this.statusMessage = this.$t('Panels.WebcamPanel.ConnectingTo', { url: this.url }).toString()
+        }
+
+        this.clearTimers()
+
+        this.fpsTimer = window.setInterval(() => {
+            this.currentFPS = this.frames
+            this.frames = 0
+        }, 1000)
+
         this.refreshFrame()
     }
 
     stopStream() {
-        this.isVisible = false
-        clearTimeout(this.timer)
-        this.timer = undefined
+        this.clearTimers()
+    }
+
+    clearTimers() {
+        if (this.timer) {
+            window.clearTimeout(this.timer)
+            this.timer = null
+        }
+
+        if (this.fpsTimer) {
+            window.clearTimeout(this.fpsTimer)
+            this.fpsTimer = null
+            this.frames = 0
+        }
+    }
+
+    @Watch('camSettings', { deep: true })
+    camSettingsChanged() {
+        this.aspectRatio = null
+        this.stopStream()
+
+        this.status = 'connecting'
+
+        this.startStream()
     }
 }
 </script>
 
 <style scoped>
+.webcamBackground {
+    position: relative;
+    background: rgba(0, 0, 0, 0.8);
+}
+
 .webcamImage {
     width: 100%;
+}
+
+._webcam_mjpegstreamer_output {
+    aspect-ratio: calc(3 / 2);
 }
 
 .webcamFpsOutput {
@@ -223,9 +240,13 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     position: absolute;
     bottom: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.8);
     padding: 3px 10px;
     border-top-left-radius: 5px;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+html.theme--light .webcamBackground {
+    background: rgba(255, 255, 255, 0.7);
 }
 
 html.theme--light .webcamFpsOutput {

@@ -26,7 +26,8 @@
             "NextReboot": "prochain redémarrage",
             "NoNotification": "Pas de notification disponible",
             "Notifications": "Notifications",
-            "Remind": "Rappel:"
+            "Remind": "Rappel:",
+            "ShowDetails": "afficher les détails"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Doit être supérieur ou égal à {min}!",
@@ -34,6 +35,9 @@
             "NoEmptyAllowedError": "L'entrée ne doit pas être vide !"
         },
         "Printers": "Imprimantes",
+        "TextfieldWithCopy": {
+            "Copied": "Copié"
+        },
         "TheServiceWorker": {
             "DescriptionNeedUpdate": "Le cache local est obsolète et doit être mis à jour. Veuillez cliquer sur le bouton ci-dessous pour mettre à jour le cache.",
             "TitleNeedUpdate": "PWA a besoin d'une mise à jour",
@@ -143,6 +147,17 @@
         "HideTimelapse": "Cacher le timelapse",
         "SendCode": "Envoyer le code...",
         "SetupConsole": "Configuration console"
+    },
+    "CoolDownDialog": {
+        "AreYouSure": "Êtes-vous sûr·e?",
+        "No": "Non",
+        "Yes": "Oui"
+    },
+    "DevicesDialog": {
+        "Formats": "Formats",
+        "Headline": "Appareils",
+        "HideSystemEntries": "Masquer les entrées système",
+        "Resolutions": "Résolutions"
     },
     "Dialogs": {
         "StartPrint": {
@@ -916,7 +931,7 @@
             "DbConsoleHistory": "Historique de la console",
             "DbHistoryJobs": "Historique des travaux",
             "DbHistoryTotals": "Historique Totaux",
-            "DBNavigation": "Navigation",
+            "DbNavigation": "Navigation",
             "DbTimelapseSettings": "Réglages Timelapse",
             "DbView": "Voir les paramètres",
             "EstimateValues": {

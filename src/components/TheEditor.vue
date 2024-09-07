@@ -31,6 +31,10 @@
                         <v-icon small class="mr-1">{{ mdiHelp }}</v-icon>
                         {{ $t('Editor.ConfigReference') }}
                     </v-btn>
+                    <v-btn v-if="configFileStructure" text tile class="d-none d-md-flex" @click="showFileStructure()">
+                        <v-icon small class="mr-1">{{ mdiFormatListCheckbox }}</v-icon>
+                        {{ $t('Editor.FileStructure') }}
+                    </v-btn>
                     <v-btn
                         v-if="restartServiceNameExists"
                         color="primary"
@@ -48,17 +52,50 @@
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
-                <v-card-text class="pa-0">
+                <v-card-text class="pa-0 d-flex">
                     <codemirror-async
                         v-if="show"
                         ref="editor"
                         v-model="sourcecode"
                         :name="filename"
-                        :file-extension="fileExtension" />
+                        :file-extension="fileExtension"
+                        class="codemirror"
+                        @lineChange="lineChanges" />
+                    <div v-if="fileStructureSidebar" class="d-none d-md-flex structure-sidebar">
+                        <v-treeview
+                            activatable
+                            dense
+                            :active="structureActive"
+                            :open="structureOpen"
+                            item-key="line"
+                            :items="configFileStructure"
+                            class="w-100"
+                            @update:active="activeChanges">
+                            <template #label="{ item }">
+                                <div
+                                    class="cursor-pointer _structure-sidebar-item"
+                                    :class="item.type == 'item' ? 'ͼp' : 'ͼt'">
+                                    {{ item.name }}
+                                </div>
+                            </template>
+                            <template v-if="restartServiceName === 'klipper'" #append="{ item }">
+                                <v-btn
+                                    v-if="item.type == 'section'"
+                                    icon
+                                    small
+                                    plain
+                                    color="grey darken-2"
+                                    :href="klipperConfigReference + '#' + item.name.split(' ')[0]"
+                                    target="_blank">
+                                    <v-icon small class="mr-1">{{ mdiHelpCircle }}</v-icon>
+                                </v-btn>
+                            </template>
+                        </v-treeview>
+                    </div>
                 </v-card-text>
             </panel>
         </v-dialog>
-        <v-snackbar v-model="loaderBool" :timeout="-1" :value="true" fixed right bottom>
+        <v-snackbar v-model="loaderBool" :timeout="-1" fixed right bottom>
             <div>
                 {{ snackbarHeadline }}
                 <br />
@@ -123,7 +160,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { capitalize, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
@@ -139,9 +176,10 @@ import {
     mdiHelpCircle,
     mdiRestart,
     mdiUsb,
+    mdiFormatListCheckbox,
 } from '@mdi/js'
-import type Codemirror from '@/components/inputs/Codemirror.vue'
 import DevicesDialog from '@/components/dialogs/DevicesDialog.vue'
+import { ConfigFileSection } from '@/store/files/types'
 
 @Component({
     components: { DevicesDialog, Panel, CodemirrorAsync },
@@ -149,6 +187,9 @@ import DevicesDialog from '@/components/dialogs/DevicesDialog.vue'
 export default class TheEditor extends Mixins(BaseMixin) {
     dialogConfirmChange = false
     dialogDevices = false
+    fileStructureSidebar = true
+    structureActive: number[] = []
+    structureOpen: number[] = []
 
     formatFilesize = formatFilesize
 
@@ -164,10 +205,10 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiFileDocumentOutline = mdiFileDocumentOutline
     mdiUsb = mdiUsb
+    mdiFormatListCheckbox = mdiFormatListCheckbox
 
-    declare $refs: {
-        editor: Codemirror
-    }
+    //@ts-ignore
+    @Ref('editor') editor!: CodemirrorAsync
 
     get changed() {
         return this.$store.state.editor.changed ?? false
@@ -305,6 +346,48 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return url
     }
 
+    get configFileStructure() {
+        if (!['conf', 'cfg'].includes(this.fileExtension)) {
+            this.fileStructureSidebar = false
+            return null
+        }
+
+        const lines = this.sourcecode.split(/\n/gi)
+        const regex = /^[^#\S]*?(\[(?<section>.*?)]|(?<name>\w+)\s*?[:=])/gim
+        const structure: ConfigFileSection[] = []
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i]
+            const matches = [...line.matchAll(regex)]
+
+            // break if no matches were found
+            if (matches.length === 0) continue
+
+            const match = matches[0]
+            if (match['groups']['section']) {
+                structure.push({
+                    name: match['groups']['section'],
+                    type: 'section',
+                    line: i + 1,
+                    children: [],
+                })
+
+                continue
+            }
+
+            if (match['groups']['name']) {
+                structure[structure.length - 1]['children'].push({
+                    name: match['groups']['name'],
+                    type: 'item',
+                    line: i + 1,
+                })
+            }
+        }
+
+        this.fileStructureSidebar = true
+        return structure
+    }
+
     cancelDownload() {
         this.$store.dispatch('editor/cancelLoad')
     }
@@ -334,6 +417,29 @@ export default class TheEditor extends Mixins(BaseMixin) {
         this.$store.dispatch('editor/saveFile', {
             content: this.sourcecode,
             restartServiceName: restartServiceName,
+        })
+    }
+
+    showFileStructure() {
+        this.fileStructureSidebar = !this.fileStructureSidebar
+    }
+
+    activeChanges(key: any) {
+        this.editor?.gotoLine(key)
+    }
+
+    lineChanges(line: number) {
+        this.configFileStructure?.map((item) => {
+            if (item.line == line) {
+                this.structureActive = [line]
+            } else {
+                item.children?.map((child) => {
+                    if (child.line == line) {
+                        this.structureActive = [line]
+                        if (!this.structureOpen.includes(item.line)) this.structureOpen.push(item.line)
+                    }
+                })
+            }
         })
     }
 
@@ -397,5 +503,24 @@ export default class TheEditor extends Mixins(BaseMixin) {
     box-shadow: none;
     background-color: var(--color-primary);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpath d='M15.88 8.29L10 14.17l-1.88-1.88a.996.996 0 1 0-1.41 1.41l2.59 2.59c.39.39 1.02.39 1.41 0L17.3 9.7a.996.996 0 0 0 0-1.41c-.39-.39-1.03-.39-1.42 0z' fill='%23fffff'/%3E %3C/svg%3E");
+}
+
+@media screen and (min-width: 960px) {
+    .codemirror {
+        width: calc(100% - 300px);
+    }
+}
+.structure-sidebar {
+    width: 300px;
+    overflow-y: auto;
+}
+._structure-sidebar-item {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+::v-deep .v-treeview-node__level + .v-treeview-node__level {
+    width: 12px;
 }
 </style>

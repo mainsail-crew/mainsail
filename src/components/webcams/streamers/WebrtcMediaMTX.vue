@@ -33,20 +33,21 @@ interface OfferData {
 export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
+    @Prop({ type: String, default: null }) readonly page!: string | null
     @Ref() declare video: HTMLVideoElement
 
-    private pc: RTCPeerConnection | null = null
-    private restartTimeout: any = null
-    private status: string = 'connecting'
-    private eTag: string | null = null
-    private sessionUuid: string | null = null
-    private queuedCandidates: RTCIceCandidate[] = []
-    private offerData: OfferData = {
+    pc: RTCPeerConnection | null = null
+    restartTimeout: any = null
+    status: string = 'connecting'
+    eTag: string | null = null
+    sessionUuid: string | null = null
+    queuedCandidates: RTCIceCandidate[] = []
+    offerData: OfferData = {
         iceUfrag: '',
         icePwd: '',
         medias: [],
     }
-    private RESTART_PAUSE = 2000
+    RESTART_PAUSE = 2000
 
     // stop the video and close the streams if the component is going to be destroyed so we don't leave hanging streams
     beforeDestroy() {
@@ -69,8 +70,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     get url() {
         let baseUrl = this.camSettings.stream_url
         if (!baseUrl.endsWith('/')) baseUrl += '/'
-
-        baseUrl = new URL('whep', baseUrl).toString()
+        baseUrl += 'whep'
 
         return this.convertUrl(baseUrl, this.printerUrl)
     }
@@ -83,10 +83,12 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get expanded(): boolean {
+        if (this.page !== 'dashboard') return true
+
         return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport) ?? false
     }
 
-    // start or stop the video when the expand state changes
+    // start or stop the video when the expanded state changes
     @Watch('expanded', { immediate: true })
     expandChanged(newExpanded: boolean): void {
         if (!newExpanded) {
@@ -188,20 +190,39 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         return frag
     }
 
-    start() {
+    async start() {
+        // clear any potentially open restart timeout
+        if (this.restartTimeout !== null) {
+            clearTimeout(this.restartTimeout)
+            this.restartTimeout = null
+        }
+
+        // stop if url is not valid
+        if (this.url === null) {
+            this.log('invalid url')
+
+            this.scheduleRestart()
+            return
+        }
+
         this.log('requesting ICE servers from ' + this.url)
 
-        fetch(this.url, {
-            method: 'OPTIONS',
-        })
-            .then((res) => this.onIceServers(res))
-            .catch((err) => {
-                this.log('error: ' + err)
+        try {
+            const res = await fetch(this.url, { method: 'OPTIONS' })
+            if (res.status !== 204) {
+                this.log('error: Received bad status code:', res.status)
                 this.scheduleRestart()
-            })
+                return
+            }
+
+            await this.onIceServers(res)
+        } catch (err) {
+            this.log('error: Cannot connect to backend')
+            this.scheduleRestart()
+        }
     }
 
-    onIceServers(res: Response) {
+    async onIceServers(res: Response) {
         const iceServers = this.linkToIceServers(res.headers.get('Link'))
         this.log('ice servers:', iceServers)
 
@@ -224,50 +245,57 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
             this.video.srcObject = evt.streams[0]
         }
 
-        this.pc.createOffer().then((offer) => this.onLocalOffer(offer))
+        const offer = await this.pc.createOffer()
+        await this.onLocalOffer(offer)
     }
 
     // eslint-disable-next-line no-undef
-    onLocalOffer(offer: RTCSessionDescriptionInit) {
-        this.offerData = this.parseOffer(offer.sdp ?? '')
-        this.pc?.setLocalDescription(offer)
-
-        fetch(this.url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/sdp',
-            },
-            body: offer.sdp,
-        })
-            .then((res) => {
-                if (res.status !== 201) throw new Error('bad status code')
-                this.eTag = res.headers.get('ETag')
-                this.sessionUuid = res.headers.get('location')
-
-                // fallback for MediaMTX v1.0.x with broken ETag header
-                if (res.headers.has('E-Tag')) this.eTag = res.headers.get('E-Tag')
-
-                return res.text()
+    async onLocalOffer(offer: RTCSessionDescriptionInit) {
+        try {
+            const res = await fetch(this.url ?? '', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/sdp' },
+                body: offer.sdp,
             })
-            .then((sdp) => {
-                this.onRemoteAnswer(
-                    new RTCSessionDescription({
-                        type: 'answer',
-                        sdp,
-                    })
-                )
-            })
-            .catch((err) => {
-                this.log(err)
+
+            if (res.status !== 201) {
+                this.log('error: Received bad status code:', res.status)
                 this.scheduleRestart()
-            })
+                return
+            }
+
+            this.offerData = this.parseOffer(offer.sdp ?? '')
+            this.pc?.setLocalDescription(offer)
+
+            this.eTag = res.headers.get('ETag')
+            const location = res.headers.get('Location') ?? ''
+            this.sessionUuid = location?.substring(location.lastIndexOf('/') + 1) ?? null
+
+            // fallback for MediaMTX v1.0.x with broken ETag header
+            if (res.headers.has('E-Tag')) this.eTag = res.headers.get('E-Tag')
+
+            const sdp = await res.text()
+            this.onRemoteAnswer(
+                new RTCSessionDescription({
+                    type: 'answer',
+                    sdp,
+                })
+            )
+        } catch (err: any) {
+            this.log(err?.message ?? err ?? 'unknown error')
+            this.scheduleRestart()
+        }
     }
 
     onRemoteAnswer(answer: RTCSessionDescription) {
         if (this.restartTimeout !== null) return
 
-        // this.pc.setRemoteDescription(new RTCSessionDescription(answer));
-        this.pc?.setRemoteDescription(answer)
+        try {
+            this.pc?.setRemoteDescription(answer)
+        } catch (err: any) {
+            this.log(err)
+            this.scheduleRestart()
+        }
 
         if (this.queuedCandidates.length !== 0) {
             this.sendLocalCandidates(this.queuedCandidates)
@@ -300,31 +328,40 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         }
     }
 
-    sendLocalCandidates(candidates: RTCIceCandidate[]) {
-        const url = new URL(this.sessionUuid ?? '', this.url).toString()
-        fetch(url, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/trickle-ice-sdpfrag',
-                'If-Match': this.eTag,
-                // eslint-disable-next-line no-undef
-            } as HeadersInit,
-            body: this.generateSdpFragment(this.offerData, candidates),
-        })
-            .then((res) => {
-                switch (res.status) {
-                    case 204:
-                        break
-                    case 404:
-                        throw new Error('stream not found')
-                    default:
-                        throw new Error(`bad status code ${res.status}`)
-                }
+    async sendLocalCandidates(candidates: RTCIceCandidate[]) {
+        if (this.sessionUuid === null) {
+            this.log('Session-UUID is null')
+            this.scheduleRestart()
+
+            return
+        }
+
+        const url = (this.url ?? '') + '/' + this.sessionUuid
+        try {
+            const res = await fetch(url, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/trickle-ice-sdpfrag',
+                    'If-Match': this.eTag,
+                    // eslint-disable-next-line no-undef
+                } as HeadersInit,
+                body: this.generateSdpFragment(this.offerData, candidates),
             })
-            .catch((err) => {
-                this.log(err)
+
+            if (res.status === 204) return
+
+            if (res.status === 404) {
+                this.log('stream not found')
                 this.scheduleRestart()
-            })
+                return
+            }
+
+            this.log(`bad status code ${res.status}`)
+            this.scheduleRestart()
+        } catch (err: any) {
+            this.log(err)
+            this.scheduleRestart()
+        }
     }
 
     terminate() {
