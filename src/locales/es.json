@@ -150,7 +150,8 @@
         "Connecting": "Conectando a {host}",
         "Failed": "Conexión Fallida",
         "Initializing": "Inicializando",
-        "TryAgain": "Intentar nuevamente"
+        "TryAgain": "Intentar nuevamente",
+        "ErrorMessage": "Mensaje de error: {message}"
     },
     "Console": {
         "CommandList": "Lista de comandos",
@@ -203,7 +204,8 @@
         "UnsavedChanges": "Cambios sin guardar",
         "UnsavedChangesMessage": "¿Quiere guardar los cambios realizados al archivo {filename}?",
         "UnsavedChangesSubMessage": "Sus cambios se perderán si no los guarda. Puede desactivar este mensaje en la configuración del editor.",
-        "Uploading": "Cargando"
+        "Uploading": "Cargando",
+        "FileStructure": "Estructura del archivo"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "¿Está seguro?",
@@ -828,7 +830,10 @@
             "FPS": "FPS",
             "Headline": "Cámara web",
             "NoWebcam": "No hay cámara web disponible. Agregue una cámara web en \"Configuración\" -> \"Cámaras web\".",
-            "UnknownWebcamService": "Servicio de cámara web desconocido"
+            "UnknownWebcamService": "Servicio de cámara web desconocido",
+            "ConnectingTo": "Conectando a {url}",
+            "Disconnected": "Desconectado",
+            "ErrorWhileConnecting": "Error al conectar a {url}"
         },
         "ZoffsetPanel": {
             "Clear": "Limpiar",
