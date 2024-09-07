@@ -203,6 +203,7 @@
         "Downloading": "Downloading",
         "FailedSave": "{filename} could not be uploaded!",
         "FileReadOnly": "read-only",
+        "FileStructure": "File Structure",
         "SaveClose": "Save & close",
         "SaveRestart": "Save & Restart",
         "SuccessfullySaved": "{filename} successfully saved.",
