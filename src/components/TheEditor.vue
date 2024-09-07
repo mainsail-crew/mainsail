@@ -65,7 +65,6 @@
                         <v-treeview
                             activatable
                             dense
-                            dark
                             :active="structureActive"
                             :open="structureOpen"
                             item-key="line"
