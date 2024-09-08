@@ -150,7 +150,8 @@
         "Connecting": "Csatlakozás ehhez: {host}",
         "Failed": "Kapcsolódás sikeretelen",
         "Initializing": "Inicializálás",
-        "TryAgain": "Próbáld újra"
+        "TryAgain": "Próbáld újra",
+        "ErrorMessage": "Hibaüzenet: {message}"
     },
     "Console": {
         "CommandList": "Parancslista",
@@ -203,7 +204,8 @@
         "UnsavedChanges": "Mentetlen Változások",
         "UnsavedChangesMessage": "Szeretnéd menteni a következőn végzett változtatásokat: {filename}?",
         "UnsavedChangesSubMessage": "A változtatásaid elvesznek ha nem mented őket. Ezt az üzenetet az Editor beállításokban kikapcsolhatod.",
-        "Uploading": "Feltöltés"
+        "Uploading": "Feltöltés",
+        "FileStructure": "Fájl struktúra"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Biztos?",
@@ -830,7 +832,10 @@
             "FPS": "FPS",
             "Headline": "Webkamera",
             "NoWebcam": "Nincs webkamera. Adj hozzá webkamerát a \"Felület beállításai\" -> \"Webkamerák\" menüpont alatt.",
-            "UnknownWebcamService": "Ismeretlen webkamera szolgáltatás"
+            "UnknownWebcamService": "Ismeretlen webkamera szolgáltatás",
+            "Disconnected": "Szétkapcsolt",
+            "ConnectingTo": "Csatlakozás a {url}",
+            "ErrorWhileConnecting": "Hiba a kapcsolódás közben {url}"
         },
         "ZoffsetPanel": {
             "Clear": "Tisztítás",
