@@ -19,7 +19,7 @@
                             {{ $t('Panels.ToolheadControlPanel.SpeedFactor') }}: {{ speedFactorOutput }} %
                         </div>
                         <div v-if="extrudeFactor !== 1">
-                            {{ $t('Panels.ExtruderControlPanel.ExtrusionFactor') }}: {{ extrudeFactor * 100 }} %
+                            {{ $t('Panels.ExtruderControlPanel.ExtrusionFactor') }}: {{ extrudeFactorOutput }} %
                         </div>
                     </span>
                 </v-tooltip>
