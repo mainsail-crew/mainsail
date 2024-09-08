@@ -103,7 +103,7 @@ export default class GitCommitsList extends Mixins(BaseMixin) {
     }
 
     get linkToGithub() {
-        return `https://github.com/${this.repo?.owner}/${this.repo?.name}/commits/${this.repo?.branch}/?after=${this.lastCommit?.sha}+0`
+        return `https://github.com/${this.repo?.owner}/${this.repo?.repo_name}/commits/${this.repo?.branch}/?after=${this.lastCommit?.sha}+0`
     }
 
     get overlayScrollbarsStyle() {
