@@ -149,7 +149,7 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
                 boxWidth: 100 * this.scaleX,
                 boxDepth: 100 * this.scaleY,
                 viewControl: {
-                    distance: 150,
+                    distance: 200,
                     ...this.defaultOrientation,
                 },
             },
