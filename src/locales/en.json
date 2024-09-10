@@ -1020,8 +1020,16 @@
         },
         "HeightmapTab": {
             "ColorSchemes": "Color Schemes",
+            "DefaultOrientation": "Default Orientation",
+            "DefaultOrientationDescription": "Select the default view for the bed mesh visualization.",
             "Heightmap": "Heightmap",
             "IsDefault": "(Default)",
+            "Orientations": {
+                "Front": "Front",
+                "LeftFront": "Left Front",
+                "RightFront": "Right Front",
+                "Top": "Top"
+            },
             "Schemes": {
                 "GrayScale": "Grayscale",
                 "Hot": "Hot",
