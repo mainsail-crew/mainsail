@@ -14,6 +14,7 @@ export class WebSocketClient {
     timerId: number | null = null
     store: Store<RootState> | null = null
     waits: Wait[] = []
+    heartbeatTimer: number | null = null
 
     constructor(options: WebSocketPluginOptions) {
         this.url = options.url
@@ -89,7 +90,7 @@ export class WebSocketClient {
             isConnecting: true,
         })
 
-        await this.instance?.close()
+        this.instance?.close()
         this.instance = new WebSocket(this.url)
 
         this.instance.onopen = () => {
@@ -116,14 +117,19 @@ export class WebSocketClient {
         this.instance.onmessage = (msg) => {
             if (this.store === null) return
 
+            // websocket is alive
+            this.heartbeat()
+
             const data = JSON.parse(msg.data)
             if (Array.isArray(data)) {
                 for (const message of data) {
                     this.handleMessage(message)
                 }
-            } else {
-                this.handleMessage(data)
+
+                return
             }
+
+            this.handleMessage(data)
         }
     }
 
@@ -193,6 +199,17 @@ export class WebSocketClient {
         }
 
         this.instance.send(JSON.stringify(body))
+    }
+
+    heartbeat(): void {
+        if (this.heartbeatTimer) clearInterval(this.heartbeatTimer)
+
+        this.heartbeatTimer = window.setTimeout(() => {
+            if (this.instance?.readyState !== WebSocket.OPEN || !this.store) return
+
+            this.close()
+            this.store?.dispatch('socket/onClose')
+        }, 10000)
     }
 }
 
