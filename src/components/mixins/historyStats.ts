@@ -5,7 +5,7 @@ import i18n from '@/plugins/i18n'
 
 @Component
 export default class HistoryStatsMixin extends Vue {
-    get allPrintStatusArray() {
+    get allPrintStatusChartData() {
         const output: ServerHistoryStateAllPrintStatusEntry[] = []
         const hidePrintStatus = this.$store.state.gui.view.history.hidePrintStatus ?? []
         const jobs = this.$store.state.server.history.jobs ?? []
@@ -59,44 +59,6 @@ export default class HistoryStatsMixin extends Vue {
         return output
     }
 
-    get allPrintStatusChartData() {
-        const output: ServerHistoryStateAllPrintStatusEntry[] = [...this.allPrintStatusArray]
-        const totalCount = this.$store.state.server.history.jobs.length ?? 0
-
-        const otherLimit = totalCount * 0.05
-        const others = output.filter((entry) => entry.value < otherLimit)
-        if (others.length === 0) return output
-
-        const otherValues = { amount: 0, filament: 0, time: 0 }
-        others.forEach((otherGroup) => {
-            const index = output.findIndex((entry) => entry.name === otherGroup.name)
-            if (index !== -1) {
-                otherValues.amount += output[index].value
-                otherValues.filament += output[index].valueFilament
-                otherValues.time += output[index].valueTime
-                output.splice(index, 1)
-            }
-        })
-
-        output.push({
-            name: 'others',
-            displayName: i18n.t(`History.StatusValues.Others`).toString(),
-            value: otherValues.amount,
-            valueTime: otherValues.time,
-            valueFilament: otherValues.filament,
-            itemStyle: {
-                opacity: 0.9,
-                color: '#616161',
-                borderColor: '#1E1E1E',
-                borderWidth: 2,
-                borderRadius: 3,
-            },
-            showInTable: true,
-        })
-
-        return output
-    }
-
     get selectedPrintStatusChartData() {
         const output: ServerHistoryStateAllPrintStatusEntry[] = []
         const jobs = this.$store.getters['server/history/getSelectedJobs']
@@ -145,6 +107,52 @@ export default class HistoryStatsMixin extends Vue {
                 itemStyle: itemStyle,
                 showInTable: !hidePrintStatus.includes(current.status),
             })
+        })
+
+        return output
+    }
+
+    get printStatusArray() {
+        let output: ServerHistoryStateAllPrintStatusEntry[] = []
+        const countSelected = this.$store.getters['server/history/getSelectedJobs'].length
+        const orgArray = countSelected ? this.selectedPrintStatusChartData : this.allPrintStatusChartData
+
+        orgArray.forEach((status: ServerHistoryStateAllPrintStatusEntry) => {
+            const tmp = { ...status }
+            tmp.name = status.displayName
+
+            if (this.valueName === 'filament') {
+                tmp.value = status.valueFilament
+            } else if (this.valueName === 'time') {
+                tmp.value = status.valueTime
+            }
+
+            output.push(tmp)
+        })
+
+        // group all entries with less than 5% of the total
+        const totalCount = output.reduce((acc, cur) => acc + cur.value, 0)
+        const otherLimit = totalCount * 0.05
+        const others = output.filter((entry) => entry.value < otherLimit)
+
+        // no, or only one entry found
+        if (others.length < 2) return output
+
+        const value = others.reduce((acc, cur) => acc + cur.value, 0)
+        output = output.filter((entry) => entry.value >= otherLimit)
+        const displayName = i18n.t(`History.StatusValues.Others`).toString() + ` (${others.length})`
+        output.push({
+            name: displayName,
+            displayName,
+            value,
+            itemStyle: {
+                opacity: 0.9,
+                color: '#616161',
+                borderColor: '#1E1E1E',
+                borderWidth: 2,
+                borderRadius: 3,
+            },
+            showInTable: true,
         })
 
         return output

@@ -17,7 +17,6 @@ import HistoryStatsMixin from '@/components/mixins/historyStats'
 import VueECharts from 'vue-echarts'
 import type { ECharts } from 'echarts/core'
 import { ECBasicOption } from 'echarts/types/dist/shared.d'
-import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/types'
 import { formatPrintTime } from '@/plugins/helpers'
 
 @Component({
@@ -72,33 +71,6 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
                 },
             ],
         }
-    }
-
-    get selectedJobs() {
-        return this.$store.getters['server/history/getSelectedJobs']
-    }
-
-    get printStatusArray() {
-        const output: ServerHistoryStateAllPrintStatusEntry[] = []
-        const orgArray = this.selectedJobs.length ? this.selectedPrintStatusChartData : this.allPrintStatusChartData
-
-        orgArray.forEach((status: ServerHistoryStateAllPrintStatusEntry) => {
-            const tmp = { ...status }
-            tmp.name = status.displayName
-
-            if (this.valueName === 'filament') {
-                tmp.value = status.valueFilament.toFixed(0)
-                if (status.valueFilament > 1000) tmp.value = Math.round(tmp.value / 1000).toString()
-            } else if (this.valueName === 'time') {
-                tmp.value = status.valueTime
-            }
-
-            output.push(tmp)
-        })
-
-        window.console.log(output)
-
-        return output
     }
 
     get chart(): ECharts | null {
