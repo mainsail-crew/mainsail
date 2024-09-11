@@ -5,14 +5,16 @@
         :option="chartOptions"
         :autoresize="true"
         :init-options="{ renderer: 'svg' }"
-        style="height: 200px; width: 100%"></e-chart>
+        style="height: 200px; width: 100%" />
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Watch } from 'vue-property-decorator'
+import { Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from '@/components/mixins/theme'
+import HistoryStatsMixin from '@/components/mixins/historyStats'
+import VueECharts from 'vue-echarts'
 import type { ECharts } from 'echarts/core'
 import { ECBasicOption } from 'echarts/types/dist/shared.d'
 import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/types'
@@ -20,10 +22,8 @@ import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/ty
 @Component({
     components: {},
 })
-export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeMixin) {
-    declare $refs: {
-        historyAllPrintStatus: any
-    }
+export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeMixin, HistoryStatsMixin) {
+    @Ref('historyAllPrintStatus') historyAllPrintStatus!: typeof VueECharts
 
     get chartOptions(): ECBasicOption {
         return {
@@ -63,17 +63,9 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
         return this.$store.getters['server/history/getSelectedJobs']
     }
 
-    get allPrintStatusArray() {
-        return this.$store.getters['server/history/getAllPrintStatusArray']
-    }
-
-    get selectedPrintStatusArray() {
-        return this.$store.getters['server/history/getSelectedPrintStatusArray']
-    }
-
     get printStatusArray() {
         const output: ServerHistoryStateAllPrintStatusEntry[] = []
-        const orgArray = this.selectedJobs.length ? this.selectedPrintStatusArray : this.allPrintStatusArray
+        const orgArray = this.selectedJobs.length ? this.selectedPrintStatusChartData : this.allPrintStatusChartData
 
         orgArray.forEach((status: ServerHistoryStateAllPrintStatusEntry) => {
             const tmp = { ...status }
@@ -81,11 +73,13 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
             output.push(tmp)
         })
 
+        window.console.log(output)
+
         return output
     }
 
     get chart(): ECharts | null {
-        return this.$refs.historyAllPrintStatus?.chart ?? null
+        return this.historyAllPrintStatus?.chart ?? null
     }
 
     beforeDestroy() {
