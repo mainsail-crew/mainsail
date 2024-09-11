@@ -17,8 +17,8 @@
                     </v-simple-table>
                 </v-col>
                 <v-col class="col-12 col-sm-6 col-md-4">
-                    <history-all-print-status-chart v-if="togglePrintStatus === 'chart'" />
-                    <history-all-print-status-table v-else />
+                    <history-all-print-status-chart v-if="togglePrintStatus === 'chart'" :value-name="toggleValue" />
+                    <history-all-print-status-table v-else :value-name="toggleValue" />
                     <div class="text-center mb-3">
                         <v-btn-toggle v-model="togglePrintStatus" small mandatory>
                             <v-btn small value="chart">{{ $t('History.Chart') }}</v-btn>
@@ -40,6 +40,13 @@
                             </template>
                             <span>{{ $t('History.LoadCompleteHistory') }}</span>
                         </v-tooltip>
+                    </div>
+                    <div class="text-center mb-3">
+                        <v-btn-toggle v-model="toggleValue" small mandatory>
+                            <v-btn v-for="option in toggleValueOptions" :key="option.value" small :value="option.value">
+                                {{ option.text }}
+                            </v-btn>
+                        </v-btn-toggle>
                     </div>
                 </v-col>
                 <v-col class="col-12 col-sm-12 col-md-4">
@@ -75,6 +82,16 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin, HistoryMix
     mdiChartAreaspline = mdiChartAreaspline
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
     formatPrintTime = formatPrintTime
+
+    toggleValue = 'amount'
+
+    get toggleValueOptions() {
+        return [
+            { text: this.$t('History.Amount'), value: 'amount' },
+            { text: this.$t('History.Filament'), value: 'filament' },
+            { text: this.$t('History.Time'), value: 'time' },
+        ]
+    }
 
     get selectedJobs() {
         return this.$store.getters['server/history/getSelectedJobs']

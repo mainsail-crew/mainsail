@@ -14,6 +14,8 @@ export default class HistoryStatsMixin extends Vue {
             const index = output.findIndex((element) => element.name === current.status)
             if (index !== -1) {
                 output[index].value += 1
+                output[index].valueFilament += current.filament_used
+                output[index].valueTime += current.print_duration
                 return
             }
 
@@ -47,6 +49,8 @@ export default class HistoryStatsMixin extends Vue {
                 name: current.status,
                 displayName,
                 value: 1,
+                valueFilament: current.filament_used,
+                valueTime: current.print_duration,
                 itemStyle,
                 showInTable: !hidePrintStatus.includes(current.status),
             })
@@ -61,31 +65,34 @@ export default class HistoryStatsMixin extends Vue {
 
         const otherLimit = totalCount * 0.05
         const others = output.filter((entry) => entry.value < otherLimit)
-        if (others.length > 1) {
-            let otherValue = 0
+        if (others.length === 0) return output
 
-            others.forEach((otherGroup) => {
-                const index = output.findIndex((entry) => entry.name === otherGroup.name)
-                if (index !== -1) {
-                    otherValue += output[index].value
-                    output.splice(index, 1)
-                }
-            })
+        const otherValues = { amount: 0, filament: 0, time: 0 }
+        others.forEach((otherGroup) => {
+            const index = output.findIndex((entry) => entry.name === otherGroup.name)
+            if (index !== -1) {
+                otherValues.amount += output[index].value
+                otherValues.filament += output[index].valueFilament
+                otherValues.time += output[index].valueTime
+                output.splice(index, 1)
+            }
+        })
 
-            output.push({
-                name: 'others',
-                displayName: i18n.t(`History.StatusValues.Others`).toString(),
-                value: otherValue,
-                itemStyle: {
-                    opacity: 0.9,
-                    color: '#616161',
-                    borderColor: '#1E1E1E',
-                    borderWidth: 2,
-                    borderRadius: 3,
-                },
-                showInTable: true,
-            })
-        }
+        output.push({
+            name: 'others',
+            displayName: i18n.t(`History.StatusValues.Others`).toString(),
+            value: otherValues.amount,
+            valueTime: otherValues.time,
+            valueFilament: otherValues.filament,
+            itemStyle: {
+                opacity: 0.9,
+                color: '#616161',
+                borderColor: '#1E1E1E',
+                borderWidth: 2,
+                borderRadius: 3,
+            },
+            showInTable: true,
+        })
 
         return output
     }
@@ -97,41 +104,47 @@ export default class HistoryStatsMixin extends Vue {
 
         jobs.forEach((current: ServerHistoryStateJob) => {
             const index = output.findIndex((element) => element.name === current.status)
-            if (index !== -1) output[index].value += 1
-            else {
-                const displayName = i18n.te(`History.StatusValues.${current.status}`, 'en').toString()
-                    ? i18n.t(`History.StatusValues.${current.status}`).toString()
-                    : current.status
-                const itemStyle = {
-                    opacity: 0.9,
-                    color: '#424242',
-                    borderColor: '#1E1E1E',
-                    borderWidth: 2,
-                    borderRadius: 3,
-                }
-
-                switch (current.status) {
-                    case 'completed':
-                        itemStyle['color'] = '#BDBDBD'
-                        break
-
-                    case 'in_progress':
-                        itemStyle['color'] = '#EEEEEE'
-                        break
-
-                    case 'cancelled':
-                        itemStyle['color'] = '#616161'
-                        break
-                }
-
-                output.push({
-                    name: current.status,
-                    displayName,
-                    value: 1,
-                    itemStyle: itemStyle,
-                    showInTable: !hidePrintStatus.includes(current.status),
-                })
+            if (index !== -1) {
+                output[index].value += 1
+                output[index].valueTime += current.print_duration
+                output[index].valueFilament += current.filament_used
+                return
             }
+
+            const displayName = i18n.te(`History.StatusValues.${current.status}`, 'en').toString()
+                ? i18n.t(`History.StatusValues.${current.status}`).toString()
+                : current.status
+            const itemStyle = {
+                opacity: 0.9,
+                color: '#424242',
+                borderColor: '#1E1E1E',
+                borderWidth: 2,
+                borderRadius: 3,
+            }
+
+            switch (current.status) {
+                case 'completed':
+                    itemStyle['color'] = '#BDBDBD'
+                    break
+
+                case 'in_progress':
+                    itemStyle['color'] = '#EEEEEE'
+                    break
+
+                case 'cancelled':
+                    itemStyle['color'] = '#616161'
+                    break
+            }
+
+            output.push({
+                name: current.status,
+                displayName,
+                value: 1,
+                valueTime: current.print_duration,
+                valueFilament: current.filament_used,
+                itemStyle: itemStyle,
+                showInTable: !hidePrintStatus.includes(current.status),
+            })
         })
 
         return output
