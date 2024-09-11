@@ -208,6 +208,7 @@ export class WebSocketClient {
             if (this.instance?.readyState !== WebSocket.OPEN || !this.store) return
 
             this.close()
+            this.store?.dispatch('socket/onClose')
         }, 10000)
     }
 }
