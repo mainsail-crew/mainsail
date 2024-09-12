@@ -196,7 +196,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
         let relative_url = ''
         if (this.item.filename.lastIndexOf('/') !== -1) {
-            relative_url = this.item.filename.substring(0, this.item.filename.lastIndexOf('/'))
+            relative_url = this.item.filename.substring(0, this.item.filename.lastIndexOf('/') + 1)
         }
 
         if ((thumbnail?.relative_path ?? null) === null) return false
