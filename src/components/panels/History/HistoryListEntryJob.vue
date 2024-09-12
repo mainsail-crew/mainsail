@@ -188,7 +188,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         if ((this.item.metadata?.thumbnails?.length ?? 0) < 1) return false
 
         const thumbnail = this.item.metadata?.thumbnails?.find(
-            (thumb: any) =>
+            (thumb) =>
                 thumb.width >= thumbnailSmallMin &&
                 thumb.width <= thumbnailSmallMax &&
                 thumb.height >= thumbnailSmallMin &&
@@ -201,7 +201,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     get bigThumbnail() {
         if ((this.item.metadata?.thumbnails?.length ?? 0) < 1) return false
 
-        const thumbnail = this.item.metadata?.thumbnails?.find((thumb: any) => thumb.width >= thumbnailBigMin)
+        const thumbnail = this.item.metadata?.thumbnails?.find((thumb) => thumb.width >= thumbnailBigMin)
 
         return this.createThumbnailUrl(thumbnail)
     }
