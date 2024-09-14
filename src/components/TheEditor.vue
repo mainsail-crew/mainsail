@@ -74,7 +74,8 @@
                             <template #label="{ item }">
                                 <div
                                     class="cursor-pointer _structure-sidebar-item"
-                                    :class="item.type == 'item' ? 'ͼp' : 'ͼt'">
+                                    :class="item.type == 'item' ? 'ͼp' : 'ͼt'"
+                                    @click="activeChangesItemClick">
                                     {{ item.name }}
                                 </div>
                             </template>
@@ -190,6 +191,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     fileStructureSidebar = true
     structureActive: number[] = []
     structureOpen: number[] = []
+    structureActiveChangedBySidebar: boolean = false
 
     formatFilesize = formatFilesize
 
@@ -424,7 +426,17 @@ export default class TheEditor extends Mixins(BaseMixin) {
         this.fileStructureSidebar = !this.fileStructureSidebar
     }
 
+    // Relies on event bubbling to flip the flag before treeview active change is handled
+    activeChangesItemClick() {
+        this.structureActiveChangedBySidebar = true
+    }
+
     activeChanges(key: any) {
+        if (!this.structureActiveChangedBySidebar) {
+            return
+        }
+
+        this.structureActiveChangedBySidebar = false
         this.editor?.gotoLine(key)
     }
 
