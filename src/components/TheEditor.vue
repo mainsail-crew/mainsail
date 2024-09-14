@@ -67,7 +67,7 @@
                             dense
                             :active="structureActive"
                             :open="structureOpen"
-                            item-key="line"
+                            :item-key="treeviewItemKeyProp"
                             :items="configFileStructure"
                             class="w-100"
                             @update:active="activeChanges">
@@ -189,6 +189,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     dialogConfirmChange = false
     dialogDevices = false
     fileStructureSidebar = true
+    treeviewItemKeyProp = 'line' as const
     structureActive: number[] = []
     structureOpen: number[] = []
     structureActiveChangedBySidebar: boolean = false
@@ -431,13 +432,18 @@ export default class TheEditor extends Mixins(BaseMixin) {
         this.structureActiveChangedBySidebar = true
     }
 
-    activeChanges(key: any) {
+    activeChanges(activeItems: Array<ConfigFileSection[typeof this.treeviewItemKeyProp]>) {
         if (!this.structureActiveChangedBySidebar) {
             return
         }
 
         this.structureActiveChangedBySidebar = false
-        this.editor?.gotoLine(key)
+
+        if (!activeItems.length) {
+            return
+        }
+
+        this.editor?.gotoLine(activeItems[0])
     }
 
     lineChanges(line: number) {
