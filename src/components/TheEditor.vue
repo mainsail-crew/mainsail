@@ -60,6 +60,7 @@
                         :name="filename"
                         :file-extension="fileExtension"
                         class="codemirror"
+                        :class="{ withSidebar: fileStructureSidebar }"
                         @lineChange="lineChanges" />
                     <div v-if="fileStructureSidebar" class="d-none d-md-flex structure-sidebar">
                         <v-treeview
@@ -524,10 +525,14 @@ export default class TheEditor extends Mixins(BaseMixin) {
 }
 
 @media screen and (min-width: 960px) {
-    .codemirror {
+    .codemirror:not(.withSidebar) {
+        width: 100%;
+    }
+    .codemirror.withSidebar {
         width: calc(100% - 300px);
     }
 }
+
 .structure-sidebar {
     width: 300px;
     overflow-y: auto;
