@@ -84,6 +84,11 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
             window.clearTimeout(this.restartTimer)
         }
 
+        if (!this.expanded) {
+            this.log('Not expanded, not starting stream')
+            return
+        }
+
         this.log(`Requesting ICE servers from ${this.url}`)
 
         try {
