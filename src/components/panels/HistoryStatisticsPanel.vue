@@ -71,10 +71,16 @@ import Panel from '@/components/ui/Panel.vue'
 import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
 import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
 import HistoryAllPrintStatusChart from '@/components/charts/HistoryAllPrintStatusChart.vue'
-import { ServerHistoryStateJob, ServerHistoryStateJobAuxiliaryTotal } from '@/store/server/history/types'
+import {
+    HistoryStatsValueNames,
+    ServerHistoryStateJob,
+    ServerHistoryStateJobAuxiliaryTotal,
+} from '@/store/server/history/types'
 import { mdiChartAreaspline, mdiDatabaseArrowDownOutline } from '@mdi/js'
 import { formatPrintTime } from '@/plugins/helpers'
 import HistoryMixin from '@/components/mixins/history'
+import { TranslateResult } from 'vue-i18n'
+
 @Component({
     components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatusChart },
 })
@@ -85,7 +91,7 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin, HistoryMix
 
     toggleValue = 'amount'
 
-    get toggleValueOptions() {
+    get toggleValueOptions(): { text: TranslateResult; value: HistoryStatsValueNames }[] {
         return [
             { text: this.$t('History.Amount'), value: 'amount' },
             { text: this.$t('History.Filament'), value: 'filament' },

@@ -1,10 +1,16 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { ServerHistoryStateAllPrintStatusEntry, ServerHistoryStateJob } from '@/store/server/history/types'
+import {
+    HistoryStatsValueNames,
+    ServerHistoryStateAllPrintStatusEntry,
+    ServerHistoryStateJob,
+} from '@/store/server/history/types'
 import i18n from '@/plugins/i18n'
 
 @Component
 export default class HistoryStatsMixin extends Vue {
+    valueName!: HistoryStatsValueNames
+
     get allPrintStatusChartData() {
         const output: ServerHistoryStateAllPrintStatusEntry[] = []
         const hidePrintStatus = this.$store.state.gui.view.history.hidePrintStatus ?? []
@@ -145,6 +151,8 @@ export default class HistoryStatsMixin extends Vue {
             name: displayName,
             displayName,
             value,
+            valueFilament: 0,
+            valueTime: 0,
             itemStyle: {
                 opacity: 0.9,
                 color: '#616161',

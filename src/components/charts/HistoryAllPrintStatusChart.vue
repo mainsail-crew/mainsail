@@ -18,12 +18,13 @@ import VueECharts from 'vue-echarts'
 import type { ECharts } from 'echarts/core'
 import { ECBasicOption } from 'echarts/types/dist/shared.d'
 import { formatPrintTime } from '@/plugins/helpers'
+import { HistoryStatsValueNames } from '@/store/server/history/types'
 
 @Component({
     components: {},
 })
 export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeMixin, HistoryStatsMixin) {
-    @Prop({ type: String, default: 'amount' }) valueName!: 'amount' | 'filament' | 'time'
+    @Prop({ type: String, default: 'amount' }) valueName!: HistoryStatsValueNames
     @Ref('historyAllPrintStatus') historyAllPrintStatus!: typeof VueECharts
 
     get chartOptions(): ECBasicOption {

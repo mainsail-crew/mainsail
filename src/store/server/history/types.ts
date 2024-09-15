@@ -89,3 +89,5 @@ export interface ServerHistoryStateAllPrintStatusEntry {
         borderRadius: number
     }
 }
+
+export type HistoryStatsValueNames = 'amount' | 'filament' | 'time'
