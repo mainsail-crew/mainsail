@@ -30,6 +30,13 @@ export class WebSocketClient {
     handleMessage(data: any) {
         const wait = this.getWaitById(data.id)
 
+        // reject promise if it exists
+        if ('error' in data && wait?.reject) {
+            wait.reject(data.error)
+            this.removeWaitById(wait.id)
+            return
+        }
+
         // report error messages
         if (data.error?.message) {
             // only report errors, if not disconnected and no init component
@@ -37,12 +44,7 @@ export class WebSocketClient {
                 window.console.error(`Response Error: ${data.error.message} (${wait?.action ?? 'no action'})`)
             }
 
-            if (data.error.message === 'Unauthorized' && wait?.action === 'server/setConnectionId') {
-                this.close()
-                this.store?.dispatch('socket/setConnectionFailed', data.error.message)
-            }
-
-            if (wait?.id) {
+            if (wait) {
                 const modulename = wait.action?.split('/')[1] ?? null
 
                 if (
@@ -69,8 +71,11 @@ export class WebSocketClient {
             return
         }
 
+        // resolve promise if it exists
+        if (wait?.resolve) wait.resolve(data.result ?? {})
+
         // pass result to action
-        if (wait?.action) {
+        if (wait.action) {
             let result = data.result
             if (result === 'ok') result = { result: result }
             if (typeof result === 'string') result = { result: result }
@@ -164,7 +169,7 @@ export class WebSocketClient {
 
         if (options.loading) this.store?.dispatch('socket/addLoading', { name: options.loading })
 
-        this.instance.send(
+        this.instance?.send(
             JSON.stringify({
                 jsonrpc: '2.0',
                 method,
@@ -172,6 +177,34 @@ export class WebSocketClient {
                 id,
             })
         )
+    }
+
+    async emitAndWait(method: string, params: Params, options: emitOptions = {}): Promise<any> {
+        return new Promise((resolve, reject) => {
+            if (this.instance?.readyState !== WebSocket.OPEN) reject()
+
+            const id = this.messageId++
+            this.waits.push({
+                id: id,
+                params: params,
+                action: options.action ?? null,
+                actionPayload: options.actionPayload ?? {},
+                loading: options.loading ?? null,
+                resolve,
+                reject,
+            })
+
+            if (options.loading) this.store?.dispatch('socket/addLoading', { name: options.loading })
+
+            this.instance?.send(
+                JSON.stringify({
+                    jsonrpc: '2.0',
+                    method,
+                    params,
+                    id,
+                })
+            )
+        })
     }
 
     emitBatch(messages: BatchMessage[]): void {
@@ -245,6 +278,8 @@ export interface Wait {
     action?: string | null
     actionPayload?: any
     loading?: string | null
+    resolve?: (value: any) => void
+    reject?: (reason: any) => void
 }
 
 interface Params {
