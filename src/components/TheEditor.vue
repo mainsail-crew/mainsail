@@ -67,14 +67,15 @@
                             dense
                             :active="structureActive"
                             :open="structureOpen"
-                            item-key="line"
+                            :item-key="treeviewItemKeyProp"
                             :items="configFileStructure"
                             class="w-100"
                             @update:active="activeChanges">
                             <template #label="{ item }">
                                 <div
                                     class="cursor-pointer _structure-sidebar-item"
-                                    :class="item.type == 'item' ? 'ͼp' : 'ͼt'">
+                                    :class="item.type == 'item' ? 'ͼp' : 'ͼt'"
+                                    @click="activeChangesItemClick">
                                     {{ item.name }}
                                 </div>
                             </template>
@@ -188,8 +189,10 @@ export default class TheEditor extends Mixins(BaseMixin) {
     dialogConfirmChange = false
     dialogDevices = false
     fileStructureSidebar = true
+    treeviewItemKeyProp = 'line' as const
     structureActive: number[] = []
     structureOpen: number[] = []
+    structureActiveChangedBySidebar: boolean = false
 
     formatFilesize = formatFilesize
 
@@ -424,8 +427,23 @@ export default class TheEditor extends Mixins(BaseMixin) {
         this.fileStructureSidebar = !this.fileStructureSidebar
     }
 
-    activeChanges(key: any) {
-        this.editor?.gotoLine(key)
+    // Relies on event bubbling to flip the flag before treeview active change is handled
+    activeChangesItemClick() {
+        this.structureActiveChangedBySidebar = true
+    }
+
+    activeChanges(activeItems: Array<ConfigFileSection[typeof this.treeviewItemKeyProp]>) {
+        if (!this.structureActiveChangedBySidebar) {
+            return
+        }
+
+        this.structureActiveChangedBySidebar = false
+
+        if (!activeItems.length) {
+            return
+        }
+
+        this.editor?.gotoLine(activeItems[0])
     }
 
     lineChanges(line: number) {
