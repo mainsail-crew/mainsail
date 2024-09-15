@@ -16,8 +16,26 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('updateManager/reset')
     },
 
-    async init({ dispatch }) {
+    async init({ commit, dispatch, rootState }) {
         window.console.debug('init Server')
+
+        // identify client
+        try {
+            const connection = await Vue.$socket.emitAndWait('server.connection.identify', {
+                client_name: 'mainsail',
+                version: rootState.packageVersion,
+                type: 'web',
+                url: 'https://github.com/mainsail-crew/mainsail',
+            })
+            commit('setConnectionId', connection.connection_id)
+        } catch (e: any) {
+            if (e.message === 'Unauthorized') {
+                this.dispatch('socket/setConnectionFailed', e.message)
+            }
+
+            window.console.error('Error while identifying client: ' + e.message)
+            return
+        }
 
         dispatch('socket/addInitModule', 'server/info', { root: true })
         dispatch('socket/addInitModule', 'server/config', { root: true })
@@ -25,7 +43,6 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('socket/addInitModule', 'server/procStats', { root: true })
         dispatch('socket/addInitModule', 'server/databaseList', { root: true })
 
-        dispatch('identify')
         Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo' })
         Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig' })
         Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo' })
@@ -33,25 +50,6 @@ export const actions: ActionTree<ServerState, RootState> = {
         Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases' })
 
         await dispatch('socket/removeInitModule', 'server', { root: true })
-    },
-
-    identify({ dispatch, rootState }): void {
-        dispatch('socket/addInitModule', 'server/identify', { root: true })
-        Vue.$socket.emit(
-            'server.connection.identify',
-            {
-                client_name: 'mainsail',
-                version: rootState.packageVersion,
-                type: 'web',
-                url: 'https://github.com/mainsail-crew/mainsail',
-            },
-            { action: 'server/setConnectionId' }
-        )
-    },
-
-    setConnectionId({ commit, dispatch }, payload) {
-        commit('setConnectionId', payload.connection_id)
-        dispatch('socket/removeInitModule', 'server/identify', { root: true })
     },
 
     checkDatabases({ dispatch, commit }, payload) {
