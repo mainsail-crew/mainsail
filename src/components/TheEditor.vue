@@ -525,6 +525,13 @@ export default class TheEditor extends Mixins(BaseMixin) {
 }
 
 @media screen and (min-width: 960px) {
+  .codemirror:not(.withSidebar) {
+    width: 100%;
+  }
+  .codemirror.withSidebar {
+    width: calc(100% - 300px);
+  }
+}
     .codemirror {
         width: 100%;
     }
