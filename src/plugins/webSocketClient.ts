@@ -71,9 +71,7 @@ export class WebSocketClient {
         }
 
         // resolve promise if it exists
-        if (wait?.resolve && 'result' in data) {
-            wait.resolve(data.result)
-        }
+        if (wait?.resolve) wait.resolve(data.result ?? {})
 
         // pass result to action
         if (wait.action) {
