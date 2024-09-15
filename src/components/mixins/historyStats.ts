@@ -7,8 +7,6 @@ import {
 } from '@/store/server/history/types'
 import i18n from '@/plugins/i18n'
 
-type StatusKeys = 'completed' | 'in_progress' | 'cancelled' | 'default'
-
 @Component
 export default class HistoryStatsMixin extends Vue {
     valueName!: HistoryStatsValueNames
@@ -21,16 +19,26 @@ export default class HistoryStatsMixin extends Vue {
         return this.getChartData(this.$store.getters['server/history/getSelectedJobs'])
     }
 
-    private getChartData(jobs: ServerHistoryStateJob[]) {
-        const output: ServerHistoryStateAllPrintStatusEntry[] = []
-        const hidePrintStatus = this.$store.state.gui.view.history.hidePrintStatus ?? []
-
-        const colorMap: Record<StatusKeys, string> = {
+    private getStatusColor(status: string) {
+        const colorMap: Record<string, string> = {
             completed: '#BDBDBD',
             in_progress: '#EEEEEE',
             cancelled: '#616161',
             default: '#424242',
         }
+
+        return colorMap[status] ?? colorMap.default
+    }
+
+    private getLocalizedStatusName(status: string) {
+        return i18n.te(`History.StatusValues.${status}`, 'en')
+            ? i18n.t(`History.StatusValues.${status}`).toString()
+            : status
+    }
+
+    private getChartData(jobs: ServerHistoryStateJob[]) {
+        const output: ServerHistoryStateAllPrintStatusEntry[] = []
+        const hidePrintStatus = this.$store.state.gui.view.history.hidePrintStatus ?? []
 
         jobs.forEach((current: ServerHistoryStateJob) => {
             const index = output.findIndex((element) => element.name === current.status)
@@ -41,19 +49,15 @@ export default class HistoryStatsMixin extends Vue {
                 return
             }
 
-            const displayName = i18n.te(`History.StatusValues.${current.status}`, 'en')
-                ? i18n.t(`History.StatusValues.${current.status}`).toString()
-                : current.status
-
             output.push({
                 name: current.status,
-                displayName,
+                displayName: this.getLocalizedStatusName(current.status),
                 value: 1,
                 valueFilament: current.filament_used,
                 valueTime: current.print_duration,
                 itemStyle: {
                     opacity: 0.9,
-                    color: colorMap[current.status as StatusKeys] ?? colorMap.default,
+                    color: this.getStatusColor(current.status),
                     borderColor: '#1E1E1E',
                     borderWidth: 2,
                     borderRadius: 3,
