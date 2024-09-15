@@ -321,9 +321,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             relative_url = this.item.filename.substring(0, this.item.filename.lastIndexOf('/') + 1)
         }
 
-        if ((thumbnail?.relative_path ?? null) === null) return false
-
-        return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url + thumbnail?.relative_path)}?timestamp=${
+        return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url + thumbnail.relative_path)}?timestamp=${
             this.item.metadata.modified
         }`
     }
