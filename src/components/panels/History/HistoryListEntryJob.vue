@@ -195,7 +195,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 thumb.height <= thumbnailSmallMax
         )
 
-        return this.createThumbnailUrl(thumbnail)
+        return thumbnail ? this.createThumbnailUrl(thumbnail) : false
     }
 
     get bigThumbnail() {
@@ -203,7 +203,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
         const thumbnail = this.item.metadata?.thumbnails?.find((thumb) => thumb.width >= thumbnailBigMin)
 
-        return this.createThumbnailUrl(thumbnail)
+        return thumbnail ? this.createThumbnailUrl(thumbnail) : false
     }
 
     get statusIcon() {
@@ -315,7 +315,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         }
     }
 
-    createThumbnailUrl(thumbnail: FileStateFileThumbnail | undefined) {
+    createThumbnailUrl(thumbnail: FileStateFileThumbnail) {
         let relative_url = ''
         if (this.item.filename.lastIndexOf('/') !== -1) {
             relative_url = this.item.filename.substring(0, this.item.filename.lastIndexOf('/') + 1)
