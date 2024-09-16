@@ -186,10 +186,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getFans: (state, getters) => {
         const fans: PrinterStateFan[] = []
-        const supportedFans = ['temperature_fan', 'controller_fan', 'heater_fan', 'fan_generic', 'fan']
+        const supportedFans = ['temperature_fan', 'controller_fan', 'heater_fan', 'fan_generic', 'fan_multi', 'fan']
         const objects = getters.getPrinterObjects(supportedFans)
 
-        const controllableFans = ['fan_generic', 'fan']
+        const controllableFans = ['fan_generic', 'fan_multi', 'fan']
 
         objects.foreach((object: PrinterGetterObject) => {
             fans.push({
@@ -300,13 +300,14 @@ export const getters: GetterTree<PrinterState, RootState> = {
             'controller_fan',
             'heater_fan',
             'fan_generic',
+            'fan_multi',
             'fan',
             'output_pin',
             'pwm_tool',
             'pwm_cycle_time',
         ]
 
-        const controllableFans = ['fan_generic', 'fan']
+        const controllableFans = ['fan_generic', 'fan_multi', 'fan']
 
         for (const [key, value] of Object.entries(state)) {
             const nameSplit = key.split(' ')

@@ -17,7 +17,24 @@
                     <v-icon v-else-if="type.includes('fan')" small :class="fanClasses">{{ mdiFan }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer />
-                    <small v-if="rpm !== null" :class="rpmClasses">{{ Math.round(rpm ?? 0) }} RPM</small>
+                    <small v-if="rpm !== null && !Array.isArray(rpm)" :class="rpmClasses">
+                        {{ Math.round(rpm ?? 0) }} RPM
+                    </small>
+                    <template v-if="Array.isArray(rpm)">
+                        <template v-for="(rpmval, index) in rpm">
+                            <small
+                                v-if="rpm !== null"
+                                :key="index"
+                                :class="{
+                                    'mr-3': index !== rpm.length - 1,
+                                    'red--text': rpmval === 0 && value > 0,
+                                    'mt-2': controllable,
+                                    'mr-3 mt-1': !controllable,
+                                }">
+                                {{ Math.round(rpmval ?? 0) }} RPM
+                            </small>
+                        </template>
+                    </template>
                     <span v-if="!controllable" class="font-weight-bold">
                         {{ Math.round(parseFloat(value) * 100) }} %
                     </span>
@@ -205,6 +222,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         let gcode = `SET_PIN PIN=${this.name} VALUE=${newVal.toFixed(2)}`
         if (this.type === 'fan') gcode = `M106 S${newVal.toFixed(0)}`
         if (this.type === 'fan_generic') gcode = `SET_FAN_SPEED FAN=${this.name} SPEED=${newVal}`
+        if (this.type === 'fan_multi') gcode = `SET_FAN_SPEED FAN=${this.name} SPEED=${newVal}`
         if (this.type === 'led')
             gcode = `SET_LED LED=${this.name} ${this.ledChannelName}=${newVal.toFixed(2)} SYNC=0 TRANSMIT=1`
 
