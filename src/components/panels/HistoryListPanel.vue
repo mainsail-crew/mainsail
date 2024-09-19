@@ -70,8 +70,7 @@
                                 </template>
                                 <span>{{ $t('History.Settings') }}</span>
                             </v-tooltip>
-                        </template>
-                        <span>{{ $t('History.Settings') }}</span>
+                        </template>                        
                         <v-list>
                             <v-list-item class="minHeight36">
                                 <v-checkbox
