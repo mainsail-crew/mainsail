@@ -16,8 +16,7 @@
                 <v-col class="offset-4 col-4 d-flex align-center justify-end">
                     <v-tooltip top>
                         <template #activator="{ on, attrs }" v-if="selectedJobs.length">
-                            <v-btn
-                                :title="$t('History.Delete')"
+                            <v-btn                                
                                 color="error"
                                 class="px-2 minwidth-0 ml-3"
                                 v-bind="attrs"
