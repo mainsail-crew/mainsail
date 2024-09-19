@@ -14,15 +14,20 @@
                         dense />
                 </v-col>
                 <v-col class="offset-4 col-4 d-flex align-center justify-end">
-                    <template v-if="selectedJobs.length">
-                        <v-btn
-                            :title="$t('History.Delete')"
-                            color="error"
-                            class="px-2 minwidth-0 ml-3"
-                            @click="deleteSelectedDialog = true">
-                            <v-icon>{{ mdiDelete }}</v-icon>
-                        </v-btn>
-                    </template>
+                    <v-tooltip top>
+                        <template #activator="{ on, attrs }" v-if="selectedJobs.length">
+                            <v-btn
+                                :title="$t('History.Delete')"
+                                color="error"
+                                class="px-2 minwidth-0 ml-3"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="deleteSelectedDialog = true">
+                                <v-icon>{{ mdiDelete }}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>{{ $t('History.Delete') }}</span>
+                    </v-tooltip>
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
                             <v-btn
@@ -58,10 +63,16 @@
                     </v-tooltip>
                     <v-menu :offset-y="true" :close-on-content-click="false">
                         <template #activator="{ on, attrs }">
-                            <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
-                                <v-icon>{{ mdiCog }}</v-icon>
-                            </v-btn>
+                            <v-tooltip top>
+                                <template #activator="{ on: onToolTip }">
+                                    <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="{ ...on, ...onToolTip }">
+                                        <v-icon>{{ mdiCog }}</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>{{ $t('History.Settings') }}</span>
+                            </v-tooltip>
                         </template>
+                        <span>{{ $t('History.Settings') }}</span>
                         <v-list>
                             <v-list-item class="minHeight36">
                                 <v-checkbox
