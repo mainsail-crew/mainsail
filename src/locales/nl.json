@@ -9,14 +9,17 @@
                 "DeprecatedOptionHeadline": "Verouderde Klipper optie",
                 "DeprecatedValue": "Waarde '{value}' in optie '{option}' in sectie '{section}' is verouderd en wordt in een toekomstige versie verwijderd.",
                 "DeprecatedValueHeadline": "Verouderde Klipper waarde",
-                "KlipperWarning": "Klipper waarschuwing"
+                "KlipperWarning": "Klipper waarschuwing",
+                "KlipperRuntimeWarning": "Klipper runtime waarschuwing"
             },
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "Bij het laden van de moonraker component '{component}' is een fout opgetreden. Controleer de logs en verhelp het probleem.",
                 "MoonrakerWarning": "Moonraker waarschuwing",
                 "UnparsedConfigOption": "Onbekende config optie '{option}: {value}' gedetecteerd in sectie [{section}]. Dit kan een optie zijn die niet langer beschikbaar is of een module die niet juist geladen is. In de toekomst zal dit een foutmeldig geven bij het opstarten.",
-                "UnparsedConfigSection": "Onbekende config sectie [{section}] gedetecteerd. Dit kan module zijn die niet juist geladen is. In de toekomst zal dit een foutmeldig geven bij het opstarten."
+                "UnparsedConfigSection": "Onbekende config sectie [{section}] gedetecteerd. Dit kan module zijn die niet juist geladen is. In de toekomst zal dit een foutmeldig geven bij het opstarten.",
+                "MoonrakerFailedInitComponentDescription": "Een fout werd ontdekt tijdens het initialiseren van het moonraker component '{component}'. Controleer de log file en verhelp het probleem.",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}"
             },
             "Never": "nooit",
             "NextReboot": "volgende reboot",
@@ -25,7 +28,18 @@
             "OneDayShort": "1D",
             "OneHourShort": "1U",
             "OneWeekShort": "1W",
-            "Remind": "Herinnering:"
+            "Remind": "Herinnering:",
+            "BrowserWarnings": {
+                "Description": "{name} is verouderd en niet volledig ondersteund. De huidige versie is {version}, maar Mainsail vereist versie {minVersion} of hoger.",
+                "Headline": "Verouderde Browser"
+            },
+            "MaintenanceReminder": "Onderhoud herinnering",
+            "MaintenanceReminderText": "Onderhoud \"{name}\" is nodig.",
+            "ShowDetails": "toon details",
+            "TmcOtFlag": "Stepper driver fout: OT flag gezet",
+            "TmcOtFlagText": "De stepper driver '{name}' heeft de OT flag getriggerd en is gestopt met werken. Dit kan veroorzaakt zijn door te hoge stroom. Controleer de stepper drivers en koeling.",
+            "TmcOtpwFlag": "Stepper driver waarschuwing: OTPW flag gezet",
+            "TmcOtpwFlagText": "De stepper driver '{name}' heeft de OTPW flag getriggerd en kan stoppen met werken als hij nog heter wordt. Dit is een indicatie van een overhitting. Dit kan veroorzaakt worden door een te hoge stroom. Controleer de driver settings en koeling."
         },
         "NumberInput": {
             "GreaterOrEqualError": "Moet groter of gelijk zijn dan {min}!",
@@ -37,7 +51,9 @@
             "Copied": "Gekopieerd"
         },
         "TheServiceWorker": {
-            "Update": "Werk bij"
+            "Update": "Werk bij",
+            "TitleNeedUpdate": "PWA moet geupdate worden",
+            "DescriptionNeedUpdate": "De lokale cache is verouderd en moet geupdate worden. Klik de knop hieronder om de cache te updaten."
         },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM core(s) worden momenteel gethrottled.",
@@ -62,7 +78,8 @@
             "Error": "FOUT",
             "Pause": "Pauzeer print",
             "Printing": "{percent}% Printen - {filename}",
-            "PrintingETA": "{percent}% Printen - ETA: {eta} - {filename}"
+            "PrintingETA": "{percent}% Printen - ETA: {eta} - {filename}",
+            "PrinterOff": "Printer UIT"
         },
         "TopBar": {
             "CannotUploadTheFile": "Kan het bestand niet uploaden!",
@@ -76,14 +93,14 @@
             "Cancel": "Annuleer",
             "ConfirmationDialog": {
                 "Description": {
-                    "HostReboot": "Wanneer je nu de host reboot, zal de huidige print mislukken.",
-                    "HostShutdown": "Wanneer je nu de host afsluit, zal de huidige print mislukken.",
-                    "KlipperFirmwareRestart": "Wanneer je nu de Klipper firmware herstart, zal de huidige print mislukken.",
-                    "KlipperRestart": "Wanneer je nu Klipper herstart, zal de huidige print mislukken.",
-                    "KlipperStop": "Wanneer je nu Klipper stopt, zal de huidige print mislukken.",
-                    "ServiceRestart": "Wanneer je nu deze service herstart, is de kans groot dat de huidige print zal mislukken.",
-                    "ServiceStart": "Wanneer je nu deze service start, is de kans groot dat de huidige print zal mislukken.",
-                    "ServiceStop": "Wanneer je nu deze service stopt, is de kans groot dat de huidige print zal mislukken."
+                    "HostReboot": "Wanneer je nu de host reboot, zal de huidige print mislukken!",
+                    "HostShutdown": "Wanneer je nu de host afsluit, zal de huidige print mislukken!",
+                    "KlipperFirmwareRestart": "Wanneer je nu de Klipper firmware herstart, zal de huidige print mislukken!",
+                    "KlipperRestart": "Wanneer je nu Klipper herstart, zal de huidige print mislukken!",
+                    "KlipperStop": "Wanneer je nu Klipper stopt, zal de huidige print mislukken!",
+                    "ServiceRestart": "Wanneer je nu deze service herstart, is de kans groot dat de huidige print zal mislukken!",
+                    "ServiceStart": "Wanneer je nu deze service start, is de kans groot dat de huidige print zal mislukken!",
+                    "ServiceStop": "Wanneer je nu deze service stopt, is de kans groot dat de huidige print zal mislukken!"
                 },
                 "Title": {
                     "HostReboot": "Host reboot",
@@ -110,7 +127,7 @@
         "UpdateDialog": {
             "Close": "Sluiten",
             "Empty": "Leeg",
-            "Recovering": "Herstellen van {software}",
+            "Recovering": "Herstellen van {software}...",
             "RecoveringDone": "Herstellen van {software} voltooid!",
             "Updating": "Updating {software}..",
             "UpdatingDone": "Updaten van {software} voltooid!"
@@ -133,7 +150,8 @@
         "Connecting": "Verbinden met {host}",
         "Failed": "Verbinding mislukt",
         "Initializing": "Initialiseren",
-        "TryAgain": "probeer nogmaals"
+        "TryAgain": "probeer nogmaals",
+        "ErrorMessage": "Foutmelding: {message}"
     },
     "Console": {
         "CommandList": "Lijst met opdrachten",
@@ -146,10 +164,11 @@
     "CoolDownDialog": {
         "CoolDown": "Koel af",
         "No": "Nee",
-        "Yes": "Ja"
+        "Yes": "Ja",
+        "AreYouSure": "Weet je het zeker?"
     },
     "DevicesDialog": {
-        "Formats": "Formats",
+        "Formats": "Formaten",
         "Headline": "Apparaten",
         "Refresh": "Herlaad",
         "Resolutions": "Resoluties"
@@ -252,7 +271,7 @@
     },
     "FullscreenUpload": {
         "CannotUploadFile": "Kan bestand niet uploaden!",
-        "DropFilesToUploadFiles": "Sleep bestand hier om te uploaden."
+        "DropFilesToUploadFiles": "Sleep bestand hier om te uploaden"
     },
     "GCodeViewer": {
         "ClearLoadedFile": "Leeg",
@@ -306,7 +325,7 @@
         "Later": "Later",
         "Mesh": "Mesh",
         "Name": "Naam",
-        "NoBedMeshHasBeenLoadedYet": "Er is nog geen bed_mesh ingeladen",
+        "NoBedMeshHasBeenLoadedYet": "Er is nog geen bed_mesh ingeladen.",
         "NoProfile": "Geen profiel beschikbaar",
         "Ok": "Ok",
         "Probed": "Geprobed",
@@ -317,7 +336,7 @@
         "RenameBedMeshProfile": "Hernoem Bed Mesh Profiel",
         "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Kleurverloop schalen",
-        "ScaleZMax": "Schaal z-max",
+        "ScaleZMax": "Schaal z-max.",
         "TitleCalibrate": "Kalibreer nieuwe bed mesh",
         "TitleClear": "Verijwder bed mesh",
         "TitleHomeAll": "Home alles",
@@ -364,8 +383,8 @@
         "Note": "Notitie",
         "ObjectHeight": "Object Hoogte",
         "OneTime": "Een keer",
-        "Perform": "Voeruit",
-        "Performed": "Voerde uit",
+        "Perform": "Voer uit",
+        "Performed": "Uitgevoerd",
         "PrintDuration": "Print duur",
         "PrintHistory": "Print Geschiedenis",
         "PrintTime": "Printtijd",
@@ -634,7 +653,7 @@
             "Flow": "Flow",
             "Headline": "Status",
             "Jobqueue": "Wachtrij",
-            "JobqueueMoreFiles": "geen jobs meer | nog een job |  {count} jobs",
+            "JobqueueMoreFiles": "geen jobs meer | nog een job | {count} jobs",
             "Layer": "Laag",
             "Max": "max",
             "ObjectHeight": "Objecthoogte",
@@ -748,7 +767,7 @@
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Voeg printer toe",
-        "AddPrintersToJson": "Voeg de printers toe aan de config.json",
+        "AddPrintersToJson": "Voeg de printers toe aan de config.json.",
         "CannotConnectTo": "Kan niet verbinden met {host}.",
         "ChangePrinter": "Wijzig printer",
         "Connecting": "Verbinden met {host}",
@@ -760,7 +779,7 @@
         "HostnameRequired": "Hostname is verplicht",
         "Port": "Poort",
         "PortRequired": "Poort is verplicht",
-        "RememberToAdd": "Vergeet niet om {cors} in moonraker.conf toe te voegen binnen 'cors_domains'",
+        "RememberToAdd": "Vergeet niet om {cors} in moonraker.conf toe te voegen binnen 'cors_domains'.",
         "SelectPrinter": "Selecteer printer",
         "TryAgain": "probeer nogmaals",
         "UpdatePrinter": "Update Printer",
@@ -800,7 +819,7 @@
             "InvertXMovement": "Inverteer X beweging",
             "InvertYMovement": "Inverteer Y beweging",
             "InvertZMovement": "Inverteer Z beweging",
-            "IsDefault": "(standaard)",
+            "IsDefault": " (standaard)",
             "MaximumValues": "Maximale waarden: {maximum}",
             "MaximumValuesVisibility": "Maximum van {maximum} waarden is geadviseerd voor beste overzicht",
             "MinimumValues": "Minimale waarden: {minimum}",
@@ -863,7 +882,7 @@
                 "FileRelative": "Bestandslocatie (relatief)",
                 "Slicer": "Slicer (M73)"
             },
-            "CannotReadJson": "Kan het backup bestand niet lezen/verwerken. ",
+            "CannotReadJson": "Kan het backup bestand niet lezen/verwerken.",
             "DateFormat": "Datumformaat",
             "DbConsoleHistory": "Console Geschiedenis",
             "DbHistoryJobs": "Geschiedenis Jobs",
@@ -904,7 +923,7 @@
             "Add": "voeg toe",
             "AddGroup": "voeg groep toe",
             "AvailableMacros": "Beschikbare Macros",
-            "ChangeMacroColor": "Verander de kleur van de knop",
+            "ChangeMacroColor": "Verander de kleur van de knop.",
             "Color": "Kleur",
             "CountMacros": "geen Macros toegevoegd | {count} Macro | {count} Macros",
             "Custom": "custom",
@@ -974,7 +993,7 @@
             "PresetInfo": "Je moet een minimum doeltemperatuur of custom G-Code instellen.",
             "PresetNamePlaceholder": "Voorbeeld naam (verplicht)",
             "StoreButton": "Sla preset op",
-            "UpdateButton": "Update preset.",
+            "UpdateButton": "Update preset",
             "UpdateCooldown": "Update afkoelen"
         },
         "RemotePrintersTab": {
@@ -1010,7 +1029,7 @@
             "Mode": "Modus",
             "ModeDescription": "Kies tussen Layermacro en Hyperlapse (tijd gebaseerde) modus",
             "OutputFramerate": "Uitvoer Framerate",
-            "OutputFramerateDescription": "Definieert  de framerate van de video. Note: dit wordt genegeerd wanneer variable_fps is ingeschakeld",
+            "OutputFramerateDescription": "Definieert de framerate van de video. Note: dit wordt genegeerd wanneer variable_fps is ingeschakeld",
             "Parkhead": "Parkhead",
             "ParkheadDescription": "Indien ingeschakeld, wordt de printkop geparkeerd voor een foto te nemen.",
             "Parkpos": "Parkeer postitie",
@@ -1035,11 +1054,11 @@
             "SaveFrames": "Sla frames op",
             "SaveFramesDescription": "Sla de frames op in een zip-bestand voor externe rendering",
             "StreamDelayCompensation": "Stream Delay Compensatie",
-            "StreamDelayCompensationDescription": "Vertraag de beeldopname.",
+            "StreamDelayCompensationDescription": "Vertraag de beeldopname",
             "Targetlength": "Doel lengte",
             "TargetlengthDescription": "De beoogde lengte wanneer variabele FPS is ingeschakeld",
             "TimeFormatCode": "Tijd Format Code",
-            "TimeFormatCodeDescription": "Dit bepaalt hoe de timestamp van het uitvoer bestand moet worden geëncodeerd.",
+            "TimeFormatCodeDescription": "Dit bepaalt hoe de timestamp van het uitvoer bestand moet worden geëncodeerd",
             "Timelapse": "Timelapse",
             "TravelSpeed": "Bewegingssnelheid",
             "TravelSpeedDescription": "Bewegingssnelheid tijdens het bewegen van en naar de parkeerpositie",
@@ -1056,9 +1075,9 @@
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Grote thumbnail",
-            "BoolBigThumbnailDescription": "Toon een grote thumbnail in het statuspaneel tijdens de print",
+            "BoolBigThumbnailDescription": "Toon een grote thumbnail in het statuspaneel tijdens de print.",
             "BoolHideUploadAndPrintButton": "Verberg Upload en Print knop",
-            "BoolHideUploadAndPrintButtonDescription": "Toon of verberg de \"Upload en Print\" knop in de bovenbalk",
+            "BoolHideUploadAndPrintButtonDescription": "Toon of verberg de \"Upload en Print\" knop in de bovenbalk.",
             "ConfirmOnEmergencyStop": "Vraag om bevestiging bij Noodstop",
             "ConfirmOnEmergencyStopDescription": "Toon een dialoogvenster bij een Noodstop",
             "ConfirmOnPowerDeviceChange": "Bevesting bij wijzigen van Stroomvoorziening van apparaten",
@@ -1171,5 +1190,11 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Nederlands"
+    "title": "Nederlands",
+    "CancelJobDialog": {
+        "No": "Nee",
+        "Yes": "Ja",
+        "AreYouSure": "Weet je het zeker?",
+        "CancelJob": "Annuleer Job"
+    }
 }
