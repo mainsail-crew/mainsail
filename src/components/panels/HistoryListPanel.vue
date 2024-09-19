@@ -16,7 +16,7 @@
                 <v-col class="offset-4 col-4 d-flex align-center justify-end">
                     <v-tooltip top>
                         <template #activator="{ on, attrs }" v-if="selectedJobs.length">
-                            <v-btn                                
+                            <v-btn
                                 color="error"
                                 class="px-2 minwidth-0 ml-3"
                                 v-bind="attrs"
@@ -70,7 +70,7 @@
                                 </template>
                                 <span>{{ $t('History.Settings') }}</span>
                             </v-tooltip>
-                        </template>                        
+                        </template>
                         <v-list>
                             <v-list-item class="minHeight36">
                                 <v-checkbox
