@@ -90,4 +90,4 @@ export interface ServerHistoryStateAllPrintStatusEntry {
     }
 }
 
-export type HistoryStatsValueNames = 'amount' | 'filament' | 'time'
+export type HistoryStatsValueNames = 'jobs' | 'filament' | 'time'

@@ -89,11 +89,11 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin, HistoryMix
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
     formatPrintTime = formatPrintTime
 
-    toggleValue = 'amount'
+    toggleValue = 'jobs'
 
     get toggleValueOptions(): { text: TranslateResult; value: HistoryStatsValueNames }[] {
         return [
-            { text: this.$t('History.Amount'), value: 'amount' },
+            { text: this.$t('History.Jobs'), value: 'jobs' },
             { text: this.$t('History.Filament'), value: 'filament' },
             { text: this.$t('History.Time'), value: 'time' },
         ]

@@ -24,7 +24,7 @@ import { HistoryStatsValueNames } from '@/store/server/history/types'
     components: {},
 })
 export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeMixin, HistoryStatsMixin) {
-    @Prop({ type: String, default: 'amount' }) valueName!: HistoryStatsValueNames
+    @Prop({ type: String, default: 'jobs' }) valueName!: HistoryStatsValueNames
     @Ref('historyAllPrintStatus') historyAllPrintStatus!: typeof VueECharts
 
     get chartOptions(): ECBasicOption {
