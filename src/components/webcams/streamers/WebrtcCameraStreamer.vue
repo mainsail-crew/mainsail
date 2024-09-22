@@ -11,7 +11,7 @@
         <v-row v-if="status !== 'connected'">
             <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
                 <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
-                <span class="mt-3">{{ status }}</span>
+                <span class="mt-3">{{ capitalize(status) }}</span>
             </v-col>
         </v-row>
     </div>
@@ -22,14 +22,19 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
+import { capitalize } from '../../../plugins/helpers'
 
 interface CameraStreamerResponse extends RTCSessionDescriptionInit {
     id: string
     iceServers?: RTCIceServer[]
 }
 
-@Component
+@Component({
+    methods: { capitalize },
+})
 export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin) {
+    capitalize = capitalize
+
     pc: RTCPeerConnection | null = null
     useStun = false
     aspectRatio: null | number = null
