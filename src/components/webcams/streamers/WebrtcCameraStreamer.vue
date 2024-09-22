@@ -22,7 +22,7 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
-import { capitalize } from '../../../plugins/helpers'
+import { capitalize } from '@/plugins/helpers'
 
 interface CameraStreamerResponse extends RTCSessionDescriptionInit {
     id: string
