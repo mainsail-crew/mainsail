@@ -106,7 +106,7 @@ export default class HistoryStatsMixin extends Vue {
         const countSelected = this.$store.getters['server/history/getSelectedJobs'].length
         const orgArray = countSelected ? this.selectedPrintStatusChartData : this.allPrintStatusChartData
 
-        const output = orgArray.map((status) => ({
+        return orgArray.map((status) => ({
             ...status,
             name: status.displayName,
             value:
@@ -116,7 +116,9 @@ export default class HistoryStatsMixin extends Vue {
                       ? status.valueTime
                       : status.value,
         }))
+    }
 
-        return this.groupSmallEntries(output, 0.05)
+    get groupedPrintStatusArray() {
+        return this.groupSmallEntries(this.printStatusArray, 0.05)
     }
 }

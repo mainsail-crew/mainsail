@@ -56,7 +56,7 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
             series: [
                 {
                     type: 'pie',
-                    data: this.printStatusArray,
+                    data: this.groupedPrintStatusArray,
                     avoidLabelOverlap: false,
                     radius: ['35%', '60%'],
                     emphasis: {
@@ -83,8 +83,8 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
         if (this.chart) this.chart.dispose()
     }
 
-    @Watch('printStatusArray')
-    printStatusArrayChanged(newVal: any) {
+    @Watch('groupedPrintStatusArray')
+    groupedPrintStatusArrayChanged(newVal: any) {
         this.chart?.setOption(
             {
                 series: {
