@@ -19,7 +19,7 @@
             <j-muxer-stream-async :cam-settings="webcam" :printer-url="printerUrl" />
         </template>
         <template v-else-if="service === 'webrtc-camerastreamer'">
-            <webrtc-camera-streamer-async :cam-settings="webcam" :printer-url="printerUrl" />
+            <webrtc-camera-streamer-async :cam-settings="webcam" :printer-url="printerUrl" :page="page" />
         </template>
         <template v-else-if="service === 'webrtc-janus'">
             <janus-streamer-async :cam-settings="webcam" :printer-url="printerUrl" />

@@ -16,10 +16,10 @@
                     </template>
                     <span>
                         <div v-if="speed_factor !== 1">
-                            {{ $t('Panels.ToolheadControlPanel.SpeedFactor') }}: {{ speed_factor * 100 }} %
+                            {{ $t('Panels.ToolheadControlPanel.SpeedFactor') }}: {{ speedFactorOutput }} %
                         </div>
                         <div v-if="extrudeFactor !== 1">
-                            {{ $t('Panels.ExtruderControlPanel.ExtrusionFactor') }}: {{ extrudeFactor * 100 }} %
+                            {{ $t('Panels.ExtruderControlPanel.ExtrusionFactor') }}: {{ extrudeFactorOutput }} %
                         </div>
                     </span>
                 </v-tooltip>
@@ -63,6 +63,14 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin, ExtruderM
 
     get showTooltip() {
         return this.speed_factor !== 1 || this.extrudeFactor !== 1
+    }
+
+    get speedFactorOutput() {
+        return (this.speed_factor * 100).toFixed(0)
+    }
+
+    get extrudeFactorOutput() {
+        return (this.extrudeFactor * 100).toFixed(0)
     }
 }
 </script>
