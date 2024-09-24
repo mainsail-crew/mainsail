@@ -14,7 +14,7 @@
                         dense />
                 </v-col>
                 <v-col class="offset-4 col-4 d-flex align-center justify-end">
-                    <v-tooltip top v-if="selectedJobs.length">
+                    <v-tooltip v-if="selectedJobs.length" top>
                         <template #activator="{ on, attrs }">
                             <v-btn
                                 color="error"
