@@ -6,7 +6,7 @@
         style="height: 600px; width: 100%; overflow: hidden" />
 </template>
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import BedmeshMixin from '@/components/mixins/bedmesh'
 
@@ -42,11 +42,6 @@ interface HeightmapSerie {
 
 @Component
 export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, ThemeMixin) {
-    declare $refs: {
-        // eslint-disable-next-line
-        heightmap: any
-    }
-
     @Prop({ type: Boolean, default: false }) showProbed!: boolean
     @Prop({ type: Boolean, default: false }) showMesh!: boolean
     @Prop({ type: Boolean, default: false }) showFlat!: boolean
@@ -54,8 +49,10 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
     @Prop({ type: Boolean, default: false }) scaleGradient!: boolean
     @Prop({ type: Number, default: 1 }) scaleZMax!: number
 
+    @Ref('heightmap') heightmap!: any
+
     get chart(): ECharts | null {
-        return this.$refs.heightmap?.chart ?? null
+        return this.heightmap?.chart ?? null
     }
 
     get chartOptions() {
@@ -151,7 +148,10 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
                 },
                 boxWidth: 100 * this.scaleX,
                 boxDepth: 100 * this.scaleY,
-                viewControl: { distance: 150 },
+                viewControl: {
+                    distance: 200,
+                    ...this.defaultOrientation,
+                },
             },
             series: this.series,
         }
@@ -386,6 +386,22 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
         if (this.minRangeXY === 0) return 1
 
         return this.absRangeY / this.minRangeXY
+    }
+
+    get defaultOrientation() {
+        const orientation = this.$store.state.gui.heightmap.defaultOrientation ?? 'rightFront'
+
+        switch (orientation) {
+            case 'leftFront':
+                return { alpha: 25, beta: -40 }
+            case 'front':
+                return { alpha: 25, beta: 0 }
+            case 'top':
+                return { alpha: 90, beta: 0 }
+
+            default:
+                return { alpha: 25, beta: 40 }
+        }
     }
 
     tooltipFormatter(data: any): string {
