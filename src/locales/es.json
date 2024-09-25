@@ -457,7 +457,8 @@
         "TotalFilamentUsed": "Filamento utilizado en total",
         "TotalJobs": "Trabajos totales",
         "TotalPrinttime": "Tiempo total de impresión",
-        "TotalTime": "Tiempo total"
+        "TotalTime": "Tiempo total",
+        "Settings": "Ajustes"
     },
     "JobQueue": {
         "AllJobs": "Todas las tareas",
@@ -1038,7 +1039,15 @@
                 "Hsv": "Espacio de color HSV",
                 "Portland": "Portland",
                 "Spring": "Primavera"
-            }
+            },
+            "Orientations": {
+                "RightFront": "Frontal derecho",
+                "Top": "Arriba",
+                "Front": "Delante",
+                "LeftFront": "Frontal izquierdo"
+            },
+            "DefaultOrientation": "Orientación por defecto",
+            "DefaultOrientationDescription": "Seleccione la orientación por defecto para la visualización de la malla."
         },
         "InterfaceSettings": "Configuración de la interfaz",
         "MacrosTab": {
