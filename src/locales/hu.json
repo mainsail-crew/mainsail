@@ -457,7 +457,8 @@
         "TotalFilamentUsed": "Összes elhasznált nyomtatószál",
         "TotalJobs": "Összes munka",
         "TotalPrinttime": "Összes nyomtatási idő",
-        "TotalTime": "Teljes idő"
+        "TotalTime": "Teljes idő",
+        "Settings": "Beállítások"
     },
     "JobQueue": {
         "AllJobs": "Minden Feladat",
@@ -1040,7 +1041,15 @@
                 "Hsv": "Hsv",
                 "Portland": "Portland",
                 "Spring": "Tavaszi"
-            }
+            },
+            "DefaultOrientation": "Alapértelmezett orientáció",
+            "Orientations": {
+                "Front": "Elülső",
+                "Top": "Felső",
+                "LeftFront": "Bal elülső",
+                "RightFront": "Jobb elülső"
+            },
+            "DefaultOrientationDescription": "Válaszd ki az alapértelmezett orientációt az ágy háló vizualizálására."
         },
         "InterfaceSettings": "Interfész beállításai",
         "MacrosTab": {
