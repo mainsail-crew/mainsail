@@ -228,7 +228,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 let singleChannelTarget = null
                 const colorData = object.state.color_data ?? []
 
-                if ('color_order' in object.settings) colorOrder = object.settings.color_order[0] ?? ''
+                if ('color_order' in object.settings)
+                    colorOrder = object.settings.color_order[0] ?? object.settings.color_order
 
                 if (object.type === 'led') {
                     colorOrder = ''
