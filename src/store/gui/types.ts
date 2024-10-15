@@ -125,6 +125,7 @@ export interface GuiState {
         tempchartHeight: number
         hideUpdateWarnings: boolean
         printstatusThumbnailZoom: boolean
+        hideOtherInstances: boolean
     }
     view: {
         blockFileUpload: boolean
