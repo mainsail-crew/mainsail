@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { CommandHelp } from '@/store/printer/types'
+import { GuiConsoleStateFilter } from '@/store/gui/console/types'
 
 @Component
 export default class ConsoleMixin extends Vue {
@@ -52,8 +53,8 @@ export default class ConsoleMixin extends Vue {
         return this.$store.state.gui.gcodehistory.entries ?? []
     }
 
-    toggleFilter(filter: string): void {
-        this.$store.dispatch('gui/updateConsoleFilter', filter)
+    toggleFilter(id: string | number, filter: GuiConsoleStateFilter): void {
+        this.$store.dispatch('gui/console/filterUpdate', { id, values: filter })
     }
 
     clearConsole() {

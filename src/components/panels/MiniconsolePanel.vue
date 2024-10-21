@@ -48,7 +48,7 @@
                             class="mt-0"
                             hide-details
                             :label="filter.name"
-                            @change="toggleFilter(filter)" />
+                            @change="toggleFilter(index, filter)" />
                     </v-list-item>
                     <v-list-item class="minHeight36">
                         <v-checkbox
