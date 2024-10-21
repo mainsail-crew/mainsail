@@ -22,7 +22,7 @@ export default class ConsoleMixin extends Vue {
     }
 
     get hideTlCommands(): boolean {
-        return this.$store.state.gui.console.hideWaitTemperatures
+        return this.$store.state.gui.console.hideTlCommands
     }
 
     set hideTlCommands(newVal) {
