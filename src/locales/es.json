@@ -150,7 +150,8 @@
         "Connecting": "Conectando a {host}",
         "Failed": "Conexión Fallida",
         "Initializing": "Inicializando",
-        "TryAgain": "Intentar nuevamente"
+        "TryAgain": "Intentar nuevamente",
+        "ErrorMessage": "Mensaje de error: {message}"
     },
     "Console": {
         "CommandList": "Lista de comandos",
@@ -203,7 +204,8 @@
         "UnsavedChanges": "Cambios sin guardar",
         "UnsavedChangesMessage": "¿Quiere guardar los cambios realizados al archivo {filename}?",
         "UnsavedChangesSubMessage": "Sus cambios se perderán si no los guarda. Puede desactivar este mensaje en la configuración del editor.",
-        "Uploading": "Cargando"
+        "Uploading": "Cargando",
+        "FileStructure": "Estructura del archivo"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "¿Está seguro?",
@@ -455,7 +457,8 @@
         "TotalFilamentUsed": "Filamento utilizado en total",
         "TotalJobs": "Trabajos totales",
         "TotalPrinttime": "Tiempo total de impresión",
-        "TotalTime": "Tiempo total"
+        "TotalTime": "Tiempo total",
+        "Settings": "Ajustes"
     },
     "JobQueue": {
         "AllJobs": "Todas las tareas",
@@ -675,7 +678,8 @@
             "HideTemperatures": "Ocultar temperaturas",
             "HideTimelapse": "Ocultar timelapse",
             "SendCode": "Enviar código...",
-            "SetupConsole": "Configurar consola"
+            "SetupConsole": "Configurar consola",
+            "RawOutput": "Salida RAW (para depuración)"
         },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Asegúrese de incluir mainsail.cfg en su archivo printer.cfg.",
@@ -827,7 +831,10 @@
             "FPS": "FPS",
             "Headline": "Cámara web",
             "NoWebcam": "No hay cámara web disponible. Agregue una cámara web en \"Configuración\" -> \"Cámaras web\".",
-            "UnknownWebcamService": "Servicio de cámara web desconocido"
+            "UnknownWebcamService": "Servicio de cámara web desconocido",
+            "ConnectingTo": "Conectando a {url}",
+            "Disconnected": "Desconectado",
+            "ErrorWhileConnecting": "Error al conectar a {url}"
         },
         "ZoffsetPanel": {
             "Clear": "Limpiar",
@@ -1032,7 +1039,15 @@
                 "Hsv": "Espacio de color HSV",
                 "Portland": "Portland",
                 "Spring": "Primavera"
-            }
+            },
+            "Orientations": {
+                "RightFront": "Frontal derecho",
+                "Top": "Arriba",
+                "Front": "Delante",
+                "LeftFront": "Frontal izquierdo"
+            },
+            "DefaultOrientation": "Orientación por defecto",
+            "DefaultOrientationDescription": "Seleccione la orientación por defecto para la visualización de la malla."
         },
         "InterfaceSettings": "Configuración de la interfaz",
         "MacrosTab": {
@@ -1263,7 +1278,9 @@
             "ThemeDark": "Oscuro",
             "ThemeDescription": "Personaliza la marca de la interfaz.",
             "ThemeLight": "Claro",
-            "UiSettings": "Ajustes de UI"
+            "UiSettings": "Ajustes de UI",
+            "ConfirmOnCancelJob": "Se requiere confirmación para cancelar el trabajo",
+            "ConfirmOnCancelJobDescription": "Mostrar un cuadro de diálogo de confirmación para cancelar el trabajo"
         },
         "Update": "actualizar",
         "WebcamsTab": {
@@ -1359,5 +1376,11 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Español"
+    "title": "Español",
+    "CancelJobDialog": {
+        "AreYouSure": "¿Estás seguro?",
+        "No": "No",
+        "CancelJob": "Cancelar trabajo",
+        "Yes": "Sí"
+    }
 }

@@ -22,7 +22,11 @@
             "NextReboot": "sonraki yeniden başlatma",
             "NoNotification": "Bildirim yok",
             "Notifications": "Bildirimler",
-            "Remind": "Hatırlat:"
+            "Remind": "Hatırlat:",
+            "BrowserWarnings": {
+                "Headline": "Eski sürüm tarayıcı",
+                "Description": "{name} eski sürümdür ve tam olarak desteklenmez. Mevcut sürüm {version} olarak gözükmektedir. Mainsail, sürüm {minVersion} veya üzerini gerektirir."
+            }
         },
         "NumberInput": {
             "GreaterOrEqualError": " {min}değerinden büyük veya eşit olmalıdır!",
