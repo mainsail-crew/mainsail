@@ -83,7 +83,7 @@
 import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
-import CommandHelpModal from '@/components/CommandHelpModal.vue'
+import CommandHelpModal from '@/components/console/CommandHelpModal.vue'
 import { mdiCog, mdiTrashCan } from '@mdi/js'
 import ConsoleMixin from '@/components/mixins/console'
 import ConsoleTextarea from '@/components/inputs/ConsoleTextarea.vue'

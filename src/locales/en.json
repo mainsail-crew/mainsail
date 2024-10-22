@@ -164,6 +164,7 @@
         "Empty": "Empty",
         "HideTemperatures": "Hide temperatures",
         "HideTimelapse": "Hide Timelapse",
+        "Search": "Search",
         "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
     },
