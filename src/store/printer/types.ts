@@ -6,21 +6,9 @@ export interface VTextareaType extends HTMLInputElement {
     }
 }
 
-export interface CommandHelp {
-    command: string
-    commandLow: string
-    description?: string | Record<string, unknown>
-}
-
-export interface ConsoleCommandHelp {
-    command: CommandHelp | null
-    original: string
-}
-
 export interface PrinterState {
     // eslint-disable-next-line
     [key: string]: any
-    helplist?: CommandHelp[]
     tempHistory?: PrinterTempHistoryState
 }
 
