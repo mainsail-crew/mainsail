@@ -282,6 +282,13 @@
                     :dynamic-slot-width="true">
                     <v-switch v-model="hideUpdateWarnings" hide-details class="mt-0" />
                 </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.HideOtherInstances')"
+                    :sub-title="$t('Settings.UiSettingsTab.HideOtherInstancesDescription')"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="hideOtherInstances" hide-details class="mt-0" />
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -613,6 +620,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
 
     set hideUpdateWarnings(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideUpdateWarnings', value: newVal })
+    }
+
+    get hideOtherInstances() {
+        return this.$store.state.gui.uiSettings.hideOtherInstances ?? false
+    }
+
+    set hideOtherInstances(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideOtherInstances', value: newVal })
     }
 
     clearColorObject(color: any): string {

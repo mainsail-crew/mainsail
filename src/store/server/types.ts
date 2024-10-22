@@ -33,6 +33,10 @@ export interface ServerState {
             [key: string]: ServerStateNetwork
         }
         system_uptime: number | null
+        instance_ids: {
+            moonraker: string
+            klipper: string
+        }
     } | null
     system_boot_at: Date | null
     moonraker_stats: {
