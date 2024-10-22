@@ -15,6 +15,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { PrinterStateMacro } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
+import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
 @Component({
     components: {},
@@ -27,10 +28,24 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get color() {
+        if (this.spool) {
+            return this.spool.filament?.color_hex ?? '000000'
+        }
+
         const color = this.macro.variables.color ?? this.macro.variables.colour ?? null
         if (color === '' || color === 'undefined') return null
 
         return color
+    }
+
+    get spoolId() {
+        return this.macro.variables.spool_id ?? null
+    }
+
+    get spool() {
+        const spools = this.$store.state.server.spoolman.spools ?? []
+
+        return spools.find((spool: ServerSpoolmanStateSpool) => spool.id === this.spoolId) ?? null
     }
 
     get primaryColor(): string {
