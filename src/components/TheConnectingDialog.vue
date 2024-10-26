@@ -18,6 +18,10 @@
                     <v-divider class="mt-4 mb-5" />
                 </template>
                 <div class="text-center mt-3">
+                    <v-btn v-if="helpButtonUrl" class="text--disabled mr-3" :href="helpButtonUrl" target="_blank">
+                        <v-icon left>{{ mdiHelp }}</v-icon>
+                        {{ $t('ConnectionDialog.Help') }}
+                    </v-btn>
                     <v-btn class="primary--text" @click="reconnect">{{ $t('ConnectionDialog.TryAgain') }}</v-btn>
                 </div>
             </v-card-text>
@@ -35,7 +39,7 @@ import BaseMixin from '@/components/mixins/base'
 
 import ThemeMixin from '@/components/mixins/theme'
 import ConnectionStatus from '@/components/ui/ConnectionStatus.vue'
-import { mdiConnection } from '@mdi/js'
+import { mdiConnection, mdiHelp } from '@mdi/js'
 
 @Component({
     components: {
@@ -44,6 +48,7 @@ import { mdiConnection } from '@mdi/js'
 })
 export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
     mdiConnection = mdiConnection
+    mdiHelp = mdiHelp
 
     counter = 0
 
@@ -87,6 +92,12 @@ export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
 
     get connectionFailedMessage() {
         return this.$store.state.socket.connectionFailedMessage ?? null
+    }
+
+    get helpButtonUrl() {
+        if (!this.$store.state.socket.connectionFailedMessage) return null
+
+        return `https://docs.mainsail.xyz/faq/mainsail_errors/connection-${this.connectionFailedMessage?.toLowerCase()}`
     }
 
     reconnect() {
