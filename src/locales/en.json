@@ -156,6 +156,7 @@
         "Connecting": "Connecting to {host}",
         "ErrorMessage": "Error message: {message}",
         "Failed": "Connection failed",
+        "Help": "Help",
         "Initializing": "Initializing",
         "TryAgain": "try again"
     },
