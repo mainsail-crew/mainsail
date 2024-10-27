@@ -151,7 +151,8 @@
         "Failed": "Conexión Fallida",
         "Initializing": "Inicializando",
         "TryAgain": "Intentar nuevamente",
-        "ErrorMessage": "Mensaje de error: {message}"
+        "ErrorMessage": "Mensaje de error: {message}",
+        "Help": "Ayuda"
     },
     "Console": {
         "CommandList": "Lista de comandos",
