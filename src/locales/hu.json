@@ -151,7 +151,8 @@
         "Failed": "Kapcsolódás sikeretelen",
         "Initializing": "Inicializálás",
         "TryAgain": "Próbáld újra",
-        "ErrorMessage": "Hibaüzenet: {message}"
+        "ErrorMessage": "Hibaüzenet: {message}",
+        "Help": "Súgó"
     },
     "Console": {
         "CommandList": "Parancslista",
