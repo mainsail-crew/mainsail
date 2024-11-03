@@ -738,7 +738,7 @@
         },
         "StatusPanel": {
             "CancelPrint": "Nyomtatás megszakítása",
-            "ClearPrintStats": "Nyomt. statisztikák törlése",
+            "ClearPrintStats": "Nyomtatási statisztikák törlése",
             "Difference": "Különbség",
             "EmptyGcodes": "Nincs elérhető G-Code.",
             "EmptyJobqueue": "Jelenleg nincs munka a várólistán.",
