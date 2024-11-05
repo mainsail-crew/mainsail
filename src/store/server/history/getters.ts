@@ -1,12 +1,6 @@
 import { GetterTree } from 'vuex'
-import {
-    HistoryListRowJob,
-    ServerHistoryState,
-    ServerHistoryStateAllPrintStatusEntry,
-    ServerHistoryStateJob,
-} from '@/store/server/history/types'
+import { HistoryListRowJob, ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
 import { mdiAlertOutline, mdiCheckboxMarkedCircleOutline, mdiCloseCircleOutline, mdiProgressClock } from '@mdi/js'
-import i18n from '@/plugins/i18n'
 import { HistoryListRowMaintenance } from '@/store/gui/maintenance/types'
 
 // I don't know why I cannot import the type from the HistoryListPanel, that's why I have to define it here again
