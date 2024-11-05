@@ -1,13 +1,12 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { CommandHelp } from '@/store/printer/types'
 import { GuiConsoleStateFilter } from '@/store/gui/console/types'
 
 @Component
 export default class ConsoleMixin extends Vue {
-    get helplist(): CommandHelp[] {
-        const commands = this.$store.state.printer.gcode?.commands ?? {}
-        const helplist: { command: string; help: string } = []
+    get helplist() {
+        const commands: { [key: string]: { help?: string } } = this.$store.state.printer.gcode?.commands ?? {}
+        const helplist: { command: string; help: string }[] = []
 
         for (const [key, values] of Object.entries(commands)) {
             helplist.push({ command: key, help: values.help ?? '' })
