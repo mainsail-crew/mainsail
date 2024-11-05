@@ -46,7 +46,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
     },
 
     async initSubscripts({ dispatch }) {
-        const payload = await Vue.$socket.emitAndWait('printer.objects.list', null, {})
+        const payload = await Vue.$socket.emitAndWait('printer.objects.list')
 
         let subscripts = {}
         const blocklist = ['menu']
