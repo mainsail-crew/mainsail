@@ -439,13 +439,13 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         // get all dismissed tmcwarnings and convert it to a string[]
         const tmcwarningsDismisses = getters['getDismissByCategory']('tmcwarning').map(
             (dismiss: GuiNotificationStateDismissEntry) => {
-                return dismiss.id
+                return `tmcwarning/${dismiss.id}`
             }
         )
 
         // return filtered tmcwarnings
         return notifications.filter((entry) => {
-            return !tmcwarningsDismisses.includes(entry.id.substring(11))
+            return !tmcwarningsDismisses.includes(entry.id)
         })
     },
 
