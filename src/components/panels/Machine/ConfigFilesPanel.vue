@@ -260,9 +260,9 @@
                     <img
                         v-if="dialogImage.item.url"
                         :src="dialogImage.item.url"
-                        style="max-height: 100%; width: auto; object-fit: contain"
+                        style="max-height: 100%; width: auto; max-width: 100%; object-fit: contain"
                         alt="image" />
-                    <div v-else-if="dialogImage.item.svg" class="fill-width" v-html="dialogImage.item.svg"></div>
+                    <div v-else-if="dialogImage.item.svg" class="fill-width" v-html="dialogImage.item.svg" />
                 </div>
             </panel>
         </v-dialog>
