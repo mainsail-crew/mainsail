@@ -11,7 +11,7 @@
         <v-row v-if="status !== 'connected'">
             <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
                 <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
-                <span class="mt-3">{{ status }}</span>
+                <span class="mt-3">{{ capitalize(status) }}</span>
             </v-col>
         </v-row>
     </div>
@@ -22,6 +22,7 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
+import { capitalize } from '@/plugins/helpers'
 
 interface OfferData {
     iceUfrag: string
@@ -31,6 +32,8 @@ interface OfferData {
 
 @Component
 export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
+    capitalize = capitalize
+
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
     @Prop({ type: String, default: null }) readonly page!: string | null
