@@ -21,9 +21,9 @@ export default class HistoryAllPrintStatusTableItem extends Mixins(BaseMixin) {
 
     get value() {
         if (this.valueName === 'filament') {
-            if (this.item.value > 1000) return Math.round(this.item.value / 1000).toString() + ' m'
+            if (this.item.value > 1000) return Math.round(this.item.value / 1000).toFixed(2) + ' m'
 
-            return this.item.value.toString() + ' mm'
+            return this.item.value.toFixed(0) + ' mm'
         }
 
         if (this.valueName === 'time') {
