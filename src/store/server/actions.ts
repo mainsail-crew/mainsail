@@ -170,6 +170,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         dispatch('stopKlippyConnectedInterval')
         commit('setKlippyConnected')
+        dispatch('printer/initGcodes', null, { root: true })
         dispatch('checkKlippyState', { state: payload.klippy_state, state_message: null })
     },
 

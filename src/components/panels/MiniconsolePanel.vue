@@ -91,7 +91,7 @@ import BaseMixin from '@/components/mixins/base'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCog, mdiConsoleLine, mdiTrashCan } from '@mdi/js'
-import CommandHelpModal from '@/components/CommandHelpModal.vue'
+import CommandHelpModal from '@/components/console/CommandHelpModal.vue'
 import ConsoleMixin from '@/components/mixins/console'
 import ConsoleTextarea from '@/components/inputs/ConsoleTextarea.vue'
 

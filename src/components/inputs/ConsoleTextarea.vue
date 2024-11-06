@@ -100,8 +100,8 @@ export default class ConsoleTextarea extends Mixins(BaseMixin, ConsoleMixin) {
         const lastNewlineIndex = beforeCursor.lastIndexOf('\n')
         const currentLine = beforeCursor.substring(lastNewlineIndex + 1)
 
-        const currentLineLowerCase = currentLine.toLowerCase()
-        const commands = this.helplist.filter((element) => element.commandLow.startsWith(currentLineLowerCase))
+        const currentLineUpperCase = currentLine.toUpperCase()
+        const commands = this.helplist.filter((element) => element.command.startsWith(currentLineUpperCase))
 
         if (commands.length === 0) return
 
@@ -116,8 +116,7 @@ export default class ConsoleTextarea extends Mixins(BaseMixin, ConsoleMixin) {
 
         let output = ''
         commands.forEach(
-            (command) =>
-                (output += `<a class="command font-weight-bold">${command.command}</a>: ${command.description}<br />`)
+            (command) => (output += `<a class="command font-weight-bold">${command.command}</a>: ${command.help}<br />`)
         )
 
         this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' })
