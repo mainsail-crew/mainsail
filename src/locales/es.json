@@ -160,7 +160,8 @@
         "HideTemperatures": "Ocultar temperaturas",
         "HideTimelapse": "Ocultar timelapse",
         "SendCode": "Enviar código...",
-        "SetupConsole": "Configurar consola"
+        "SetupConsole": "Configurar consola",
+        "Search": "Buscar"
     },
     "CoolDownDialog": {
         "AreYouSure": "¿Estás seguro?",
