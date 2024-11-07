@@ -58,6 +58,7 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
                     type: 'pie',
                     data: this.groupedPrintStatusArray,
                     avoidLabelOverlap: false,
+                    minAngle: 5,
                     radius: ['35%', '60%'],
                     emphasis: {
                         itemStyle: {
