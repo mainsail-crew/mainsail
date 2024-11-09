@@ -154,7 +154,9 @@
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
         "Connecting": "Connecting to {host}",
+        "ErrorMessage": "Error message: {message}",
         "Failed": "Connection failed",
+        "Help": "Help",
         "Initializing": "Initializing",
         "TryAgain": "try again"
     },
@@ -163,6 +165,7 @@
         "Empty": "Empty",
         "HideTemperatures": "Hide temperatures",
         "HideTimelapse": "Hide Timelapse",
+        "Search": "Search",
         "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
     },
@@ -203,6 +206,7 @@
         "Downloading": "Downloading",
         "FailedSave": "{filename} could not be uploaded!",
         "FileReadOnly": "read-only",
+        "FileStructure": "File Structure",
         "SaveClose": "Save & close",
         "SaveRestart": "Save & Restart",
         "SuccessfullySaved": "{filename} successfully saved.",
@@ -384,6 +388,7 @@
         "EstimatedFilament": "Estimated Filament",
         "EstimatedFilamentWeight": "Estimated Filament Weight",
         "EstimatedTime": "Estimated Time",
+        "Filament": "Filament",
         "FilamentBasedReminder": "Filament",
         "FilamentBasedReminderDescription": "This reminder is based on the filament usage.",
         "FilamentCalc": "Filament Calc",
@@ -431,6 +436,7 @@
         "SelectedFilamentUsed": "Selected Filament Used",
         "SelectedJobs": "Selected Jobs",
         "SelectedPrinttime": "Selected Print Time",
+        "Settings": "Settings",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Version",
         "StartTime": "Start Time",
@@ -448,6 +454,7 @@
             "server_exit": "Server exit"
         },
         "Table": "Table",
+        "Time": "Time",
         "TitleExportHistory": "Export History",
         "TotalDuration": "Total Time",
         "TotalFilamentUsed": "Total Filament Used",
@@ -819,6 +826,9 @@
         },
         "WebcamPanel": {
             "All": "All",
+            "ConnectingTo": "Connecting to {url}",
+            "Disconnected": "Disconnected",
+            "ErrorWhileConnecting": "Error while connecting to {url}",
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "No webcam available. Add a webcam under \"Interface Settings\" -> \"Webcams\".",
@@ -1015,8 +1025,16 @@
         },
         "HeightmapTab": {
             "ColorSchemes": "Color Schemes",
+            "DefaultOrientation": "Default Orientation",
+            "DefaultOrientationDescription": "Select the default orientation for the bed mesh visualization.",
             "Heightmap": "Heightmap",
             "IsDefault": "(Default)",
+            "Orientations": {
+                "Front": "Front",
+                "LeftFront": "Left Front",
+                "RightFront": "Right Front",
+                "Top": "Top"
+            },
             "Schemes": {
                 "GrayScale": "Grayscale",
                 "Hot": "Hot",

@@ -197,6 +197,7 @@
         "Downloading": "正在下载",
         "FailedSave": "上传{filename}失败！",
         "FileReadOnly": "只读文件",
+        "FileStructure": "结构",
         "SaveClose": "保存并关闭",
         "SaveRestart": "保存并重启",
         "SuccessfullySaved": "{filename}保存成功！",
