@@ -14,15 +14,19 @@
                         dense />
                 </v-col>
                 <v-col class="offset-4 col-4 d-flex align-center justify-end">
-                    <template v-if="selectedJobs.length">
-                        <v-btn
-                            :title="$t('History.Delete')"
-                            color="error"
-                            class="px-2 minwidth-0 ml-3"
-                            @click="deleteSelectedDialog = true">
-                            <v-icon>{{ mdiDelete }}</v-icon>
-                        </v-btn>
-                    </template>
+                    <v-tooltip v-if="selectedJobs.length" top>
+                        <template #activator="{ on, attrs }">
+                            <v-btn
+                                color="error"
+                                class="px-2 minwidth-0 ml-3"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="deleteSelectedDialog = true">
+                                <v-icon>{{ mdiDelete }}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>{{ $t('History.Delete') }}</span>
+                    </v-tooltip>
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
                             <v-btn
@@ -58,9 +62,14 @@
                     </v-tooltip>
                     <v-menu :offset-y="true" :close-on-content-click="false">
                         <template #activator="{ on, attrs }">
-                            <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
-                                <v-icon>{{ mdiCog }}</v-icon>
-                            </v-btn>
+                            <v-tooltip top>
+                                <template #activator="{ on: onToolTip }">
+                                    <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="{ ...on, ...onToolTip }">
+                                        <v-icon>{{ mdiCog }}</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>{{ $t('History.Settings') }}</span>
+                            </v-tooltip>
                         </template>
                         <v-list>
                             <v-list-item class="minHeight36">
@@ -80,11 +89,8 @@
                                     @change="showPrintJobs = !showPrintJobs" />
                             </v-list-item>
                             <v-divider />
-                            <template v-if="allPrintStatusArray.length">
-                                <v-list-item
-                                    v-for="status of allPrintStatusArray"
-                                    :key="status.key"
-                                    class="minHeight36">
+                            <template v-if="printStatusArray.length">
+                                <v-list-item v-for="status of printStatusArray" :key="status.key" class="minHeight36">
                                     <v-checkbox
                                         class="mt-0"
                                         hide-details
@@ -179,6 +185,7 @@ import { GuiMaintenanceStateEntry, HistoryListRowMaintenance } from '@/store/gui
 import HistoryListEntryMaintenance from '@/components/panels/History/HistoryListEntryMaintenance.vue'
 import HistoryListPanelDeleteSelectedDialog from '@/components/dialogs/HistoryListPanelDeleteSelectedDialog.vue'
 import HistoryMixin from '@/components/mixins/history'
+import HistoryStatsMixin from '@/components/mixins/historyStats'
 
 export type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance
 
@@ -202,7 +209,7 @@ export interface HistoryListPanelCol {
         Panel,
     },
 })
-export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin) {
+export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, HistoryStatsMixin) {
     mdiCloseThick = mdiCloseThick
     mdiCog = mdiCog
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline

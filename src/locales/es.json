@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Description": "{name} está desactualizado y no es totalmente compatible. La versión actual es {version}, pero Mainsail requiere la versión {minVersion} o superior.",
+                "Headline": "Navegador obsoleto"
+            },
             "DependencyDescription": "La versión actual de {name} no es compatible con todas las funciones de Mainsail. Actualice {name} a al menos {neededVersion}.",
             "DependencyName": "Dependencia: {name}",
             "DismissAll": "Descartar todo",
@@ -9,11 +13,16 @@
                 "DeprecatedOptionHeadline": "Opción de Klipper en desuso",
                 "DeprecatedValue": "El valor '{value}' en la opción '{option}' en la sección '{section}' está discontinuado y será removido en la próxima versión.",
                 "DeprecatedValueHeadline": "Valor de Klipper en desuso",
+                "KlipperRuntimeWarning": "Elimina la advertencia de tiempo de ejecución",
                 "KlipperWarning": "Advertencia de Klipper"
             },
+            "MaintenanceReminder": "Recordatorio de mantenimiento",
+            "MaintenanceReminderText": "Se debe realizar el mantenimiento a \"{name}\".",
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "Se detectó un error al cargar el componente moonraker '{componente}'. Verifique el archivo de registro y solucione el problema.",
+                "MoonrakerFailedInitComponentDescription": "Se detectó un error durante la inicialización del componente moonraker '{component}'. Verifique el archivo de registro y solucione el problema.",
+                "MoonrakerInitComponent": "Inicializar Moonraker: {component}",
                 "MoonrakerWarning": "Advertencia de Moonraker",
                 "UnparsedConfigOption": "Opción de configuración no analizada '{option}: {value}' detectada en la sección [{section}]. Esta puede ser una opción que ya no está disponible o puede ser el resultado de un módulo que no se pudo cargar. En el futuro, esto dará un error de inicio.",
                 "UnparsedConfigSection": "Sección de configuración no analizada [{section}] detectada. Esto puede ser por un componente que no se pudo cargar. En el futuro, esto dará un error de inicio."
@@ -22,7 +31,15 @@
             "NextReboot": "próximo reinicio",
             "NoNotification": "No hay notificación disponible",
             "Notifications": "Notificaciones",
-            "Remind": "Recordar:"
+            "OneDayShort": "1D",
+            "OneHourShort": "1H",
+            "OneWeekShort": "1Sem.",
+            "Remind": "Recordar:",
+            "ShowDetails": "Mostrar detalles",
+            "TmcOtFlag": "Error de controlador de paso: indicador OT fijado",
+            "TmcOtFlagText": "El controlador del motor de paso '{name}' ha disparado la bandera OT y dejó de funcionar. Esto puede ser causado por una corriente demasiado alta. Por favor, compruebe la configuración de controlador y enfriamiento.",
+            "TmcOtpwFlag": "Advertencia de controlador de paso: indicador OTPW fijado",
+            "TmcOtpwFlagText": "El controlador del motor de paso '{name}' ha activado la bandera OTPW y puede dejar de funcionar si se pone más caliente. Esto es una indicación de una condición de temperatura superior. Esto puede ser causado por una corriente demasiado alta. Por favor, compruebe la configuración de controlador y enfriamiento."
         },
         "NumberInput": {
             "GreaterOrEqualError": "¡Debe ser mayor o igual a {min}!",
@@ -30,6 +47,9 @@
             "NoEmptyAllowedError": "¡No puede estar vacío!"
         },
         "Printers": "Impresoras",
+        "TextfieldWithCopy": {
+            "Copied": "Copiado"
+        },
         "TheServiceWorker": {
             "DescriptionNeedUpdate": "El caché local necesita ser actualizado. Por favor, haga click en el botón de abajo para actualizar el caché.",
             "TitleNeedUpdate": "PWA necesita actualizarse",
@@ -140,10 +160,31 @@
         "SendCode": "Enviar código...",
         "SetupConsole": "Configurar consola"
     },
+    "CoolDownDialog": {
+        "AreYouSure": "¿Estás seguro?",
+        "CoolDown": "Enfriarse",
+        "No": "No",
+        "Yes": "Sí"
+    },
+    "DevicesDialog": {
+        "CanBusInfo": "Solo se pueden detectar los nodos no asignados. Se recomienda tener solo un dispositivo no asignado conectado al bus CAN para evitar problemas de comunicación. Para obtener más detalles, haga clic en el enlace:",
+        "ClickRefresh": "Haz clic en el botón actualizar para buscar dispositivos.",
+        "DevicePath": "Ruta del dispositivo",
+        "Formats": "Formatos",
+        "Headline": "Dispositivos",
+        "HideSystemEntries": "Ocultar entradas del sistema",
+        "LibcameraId": "Id de Libcamera",
+        "NoDeviceFound": "No se encontró ningún dispositivo. Verifique la conexión y haga clic en el botón Actualizar.",
+        "PathByHardware": "Ruta por hardware",
+        "PathById": "Ruta por ID",
+        "Refresh": "Refrescar",
+        "Resolutions": "Resoluciones"
+    },
     "Dialogs": {
         "StartPrint": {
             "Cancel": "Cancelar",
             "DoYouWantToStartFilename": "¿Desea iniciar {filename}?",
+            "DoYouWantToStartFilenameFilament": "¿Quieres iniciar {filename} con el siguiente filamento?",
             "Headline": "Iniciar trabajo",
             "Print": "imprimir",
             "Timelapse": "Lapso de tiempo"
@@ -151,6 +192,7 @@
     },
     "Editor": {
         "ConfigReference": "Configuración de referencia",
+        "DeviceDialog": "Dispositivos",
         "DontSave": "No guardar",
         "Downloading": "Descargando",
         "FailedSave": "¡{filename} no pudo cargarse!",
@@ -315,22 +357,35 @@
         "Wireframe": "Estructura de hilos"
     },
     "History": {
+        "AddANote": "Añadir una nota",
+        "AddMaintenance": "Agregar mantenimiento",
         "AddNote": "Agregar Nota",
+        "AddToQueueSuccessful": "El archivo {filename} está añadido a la cola.",
         "AllJobs": "Todos",
         "AvgPrinttime": "Tiempo promedio de imp.",
         "Cancel": "Cancelar",
         "Chart": "Gráfico",
         "CreateNote": "Crear Nota",
+        "DateBasedReminder": "Fecha",
+        "DateBasedReminderDescription": "Este recordatorio se basa en la fecha.",
+        "Days": "días",
         "Delete": "Eliminar",
         "DeleteSelectedQuestion": "¿Está seguro de que desea eliminar los {count} trabajos seleccionados?",
         "DeleteSingleJobQuestion": "¿Está seguro de que desea eliminar este trabajo?",
         "Details": "Detalles",
+        "EditMaintenance": "Editar mantenimiento",
         "EditNote": "Editar Nota",
         "Empty": "Vacío",
         "EndTime": "Hora de finalización",
+        "EntryCreatedAt": "Creado en {date}.",
+        "EntryNextPerform": "Próxima actuación:",
+        "EntryPerformedAt": "Realizado en {date}.",
+        "EntrySince": "Utilizado desde:",
         "EstimatedFilament": "Filamento estimado",
         "EstimatedFilamentWeight": "Peso de filamento estimado",
         "EstimatedTime": "Tiempo estimado",
+        "FilamentBasedReminder": "Filamento",
+        "FilamentBasedReminderDescription": "Este recordatorio se basa en el uso del filamento.",
         "FilamentCalc": "Filamento calculado",
         "FilamentUsage": "Uso de filamento",
         "FilamentUsed": "Filamento utilizado",
@@ -341,17 +396,35 @@
         "FirstLayerHeight": "Altura primera capa",
         "HistoryFilamentUsage": "Filamento",
         "HistoryPrinttimeAVG": "Impresiones",
+        "Hours": "horas",
+        "InvalidNameEmpty": "Nombre inválido. ¡El nombre no debe estar vacío!",
         "JobDetails": "Detalles del trabajo",
         "Jobs": "Trabajos",
         "LastModified": "Última modificación",
         "LayerHeight": "Altura de capa",
+        "LoadCompleteHistory": "Cargar historial completo",
         "LongestPrinttime": "Impresión más larga",
+        "Maintenance": "Mantenimiento",
+        "MaintenanceEntries": "Entradas de mantenimiento",
+        "Meter": "metro",
+        "Name": "Nombre",
+        "NoReminder": "Sin recordatorio",
         "Note": "Nota",
         "ObjectHeight": "Altura del objeto",
+        "OneTime": "Una vez",
+        "Perform": "Realizar",
+        "Performed": "Realizado",
+        "PerformedAndReschedule": "Realizado y reprogramado",
+        "PerformMaintenance": "Realizar mantenimiento",
         "PrintDuration": "Duración de la impresión",
         "PrintHistory": "Historial de impresiones",
+        "PrintJobs": "Trabajos de impresión",
         "PrintTime": "Tiempo de impresión",
         "PrinttimeAvg": "Tiempo promedio de imp.",
+        "PrinttimeBasedReminder": "Tiempo de impresión",
+        "PrinttimeBasedReminderDescription": "Este recordatorio se basa en el tiempo de impresión.",
+        "Reminder": "Recordatorio",
+        "Repeat": "Repetir",
         "Reprint": "Reimprimir",
         "Save": "guardar",
         "Search": "Buscar",
@@ -368,6 +441,7 @@
             "completed": "Completado",
             "error": "Error",
             "in_progress": "En progreso",
+            "interrupted": "Interrumpido",
             "klippy_disconnect": "Klippy desconectado",
             "klippy_shutdown": "Klippy apagado",
             "Others": "Otros",
@@ -395,7 +469,8 @@
         "Jobs": "Tareas",
         "Pause": "Pausar",
         "RemoveFromQueue": "Remover de la cola",
-        "Start": "Iniciar"
+        "Start": "Iniciar",
+        "StartPrint": "Iniciar tarea"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -532,12 +607,15 @@
     "Panels": {
         "ExtruderControlPanel": {
             "Allowed": "Permitida",
+            "CleanNozzle": "Limpiar la boquilla",
             "EstimatedExtrusion": "Extrusion estimada",
             "Extrude": "Extruir",
+            "ExtruderControl": "Control del extrusor",
             "ExtruderTempTooLow": "Temp del extrusor. <",
             "ExtrusionFactor": "Factor de extrusión",
             "ExtrusionFeedrate": "Velocidad de avance de extrusión",
             "FilamentLength": "Largo del filamento",
+            "FirmwareRetraction": "Reversión del firmware",
             "FirmwareRetractionSettings": {
                 "RetractLength": "Distancia de retracción",
                 "RetractSpeed": "Velocidad de retracción",
@@ -546,14 +624,17 @@
             },
             "Headline": "Extrusor",
             "LoadFilament": "Cargar filamento",
+            "PressureAdvance": "Avance de presión de extrusión",
             "PressureAdvanceSettings": {
                 "Advance": "Avance",
                 "Extruder": "Extrusor",
                 "SmoothTime": "Tiempo de suavizado"
             },
+            "PurgeFilament": "Purgar filamento",
             "Requested": "Solicitada",
             "Retract": "Retraer",
             "TooLargeExtrusion": "¡Extrusión muy grande!",
+            "Tools": "Herramientas",
             "UnloadFilament": "Descargar Filamento"
         },
         "FarmPrinterPanel": {
@@ -565,7 +646,9 @@
             "CheckKlippyAndUdsAddress": "Por favor comprueba si el servicio de Klipper se está ejecutando y klippy_uds_address está correctamente configurado en moonraker.conf.",
             "FirmwareRestart": "Reiniciar Firmware",
             "KlipperCheck": "Verifique que el servicio Klipper está corriendo y que un  UDS (Unix Domain Socket) esta configurado.",
+            "KlipperLog": "Registro de Klipper",
             "MoonrakerCannotConnect": "¡Moonraker no se pudo conectar a Klipper!",
+            "MoonrakerLog": "Registro de Moonraker",
             "PowerOn": "Encender",
             "PrinterSwitchedOff": "La impresora está apagada",
             "PrinterSwitchedOffDescription": "La impresora está actualmente apagada y Klipper no se puede conectar. Para encender la impresora, haz click en el botón de abajo:",
@@ -577,6 +660,7 @@
             "MotionSettings": {
                 "Acceleration": "Aceleración",
                 "MaxAccelToDecel": "Max. Acel. a Decel.",
+                "MinimumCruiseRatio": "Relación mínima de crucero",
                 "SquareCornerVelocity": "Velocidad esquinas rectas",
                 "Velocity": "Velocidad"
             }
@@ -586,6 +670,7 @@
             "Send": "Enviar"
         },
         "MiniconsolePanel": {
+            "Autoscroll": "Desplazamiento automático",
             "Headline": "Consola",
             "HideTemperatures": "Ocultar temperaturas",
             "HideTimelapse": "Ocultar timelapse",
@@ -617,6 +702,32 @@
             "Off": "Apagado",
             "On": "Encendido",
             "PowerControl": "Control de energía"
+        },
+        "SpoolmanPanel": {
+            "Cancel": "Cancelar",
+            "ChangeSpool": "Cambiar carrete",
+            "DaysAgo": "Hace {days} días",
+            "EjectSpool": "Expulsar el carrete",
+            "EjectSpoolQuestion": "¿Está seguro de expulsar la bobina del filamento?",
+            "Filament": "Filamento",
+            "FilamentTypeMismatch": "El material del carrecte en uso ({spoolType}) no coincide con el material del G-Code ({fileType}).",
+            "Headline": "Carrete de bobina",
+            "LastUsed": "Utilizado por última vez",
+            "Location": "Ubicación",
+            "Material": "Material",
+            "Never": "Nunca",
+            "NoActiveSpool": "El seguimiento del filamento está inactivo. Para empezar, seleccione una bobina.",
+            "NoResults": "No se ha encontrado ninguna bobina con los criterios de búsqueda actuales.",
+            "NoSpools": "No hay bobinas disponibles",
+            "NoSpoolSelected": "No hay bobina seleccionada. Selecciona una bobina o no se realizará el seguimiento de esta impresión.",
+            "OpenSpoolManager": "Abrir el Administrador de carretes",
+            "Refresh": "recargar",
+            "Search": "Buscar",
+            "SelectSpool": "Seleccionar carrete",
+            "Today": "Hoy",
+            "TooLessFilament": "Es posible que la bobina actual no tenga suficiente filamento para esta impresión. ({{spoolWeight}g de {fileWeight}g)",
+            "Weight": "Peso",
+            "Yesterday": "Ayer"
         },
         "StatusPanel": {
             "CancelPrint": "Cancelar impresión",
@@ -680,6 +791,7 @@
             },
             "Headline": "Temperaturas",
             "HideMcuHostSensors": "Ocultar Sensores Host/MCU",
+            "HideMonitors": "Ocultar monitores",
             "Max": "max",
             "Min": "min",
             "Name": "Nombre",
@@ -697,13 +809,17 @@
         "ToolheadControlPanel": {
             "Absolute": "absoluta",
             "ALL": "TODO",
+            "ControlButtons": "Botones de control",
+            "CoordinateFields": "Campos de coordenadas",
             "Headline": "Toolhead",
             "PleaseConfigureSteps": "Por favor configure los pasos",
             "Position": "Posición",
+            "PositionOutput": "Posición de salida",
             "QGL": "QGL",
             "Relative": "relativa",
             "SettingsInterfaceControl": "Configuración > Interfaz > Control",
             "SpeedFactor": "Factor de velocidad",
+            "ZOffset": "Desplazamiento del eje Z",
             "ZTilt": "Z Tilt"
         },
         "WebcamPanel": {
@@ -765,6 +881,8 @@
         "HostnameInvalid": "Nombre de host o IP inválida",
         "HostnameIp": "Nombre del host/IP",
         "HostnameRequired": "El nombre del host es obligatorio",
+        "Name": "Nombre",
+        "Path": "Ruta",
         "Port": "Puerto",
         "PortRequired": "El puerto es obligatorio",
         "RememberToAdd": "Por favor recuerde agregar {cors} en moonraker.conf dentro de 'cors_domains'.",
@@ -824,6 +942,8 @@
             "Style": "Estilo",
             "ValueGreaterThan": "El valor debe ser mayor a {value}",
             "ZOffsetIncrements": "Incrementos de Z-Offset  (en mm)",
+            "ZOffsetSaveOption": "Opciones para guardar el desplazamiento en el eje Z",
+            "ZOffsetSaveOptionDescription": "Cambiar opciones para guardar el desplazamiento en el eje Z",
             "ZTiltAdjust": "Ajuste de Z-Tilt{isDefault}"
         },
         "DashboardTab": {
@@ -879,7 +999,8 @@
             "DbConsoleHistory": "Historial de la Consola",
             "DbHistoryJobs": "Historial de Trabajos",
             "DbHistoryTotals": "Historial Totales",
-            "DBNavigation": "Navegación",
+            "DbMaintenance": "Mantenimiento",
+            "DbNavigation": "Navegación",
             "DbTimelapseSettings": "Ajustes de Timelapse",
             "DbView": "Ajustes de Vista",
             "DbWebcams": "Cámaras web",
@@ -900,6 +1021,18 @@
             "Restore": "Restaurar",
             "RestoreDialog": "Elija las secciones que quiere restaurar:",
             "TimeFormat": "Formato de Tiempo"
+        },
+        "HeightmapTab": {
+            "ColorSchemes": "Esquemas de colores",
+            "Heightmap": "Mapa de altura",
+            "IsDefault": "(Por defecto)",
+            "Schemes": {
+                "GrayScale": "Escala de grises",
+                "Hot": "Caliente",
+                "Hsv": "Espacio de color HSV",
+                "Portland": "Portland",
+                "Spring": "Primavera"
+            }
         },
         "InterfaceSettings": "Configuración de la interfaz",
         "MacrosTab": {
@@ -986,6 +1119,9 @@
             "AddPrinter": "Agregar impresora",
             "EditPrinter": "Editar impresora",
             "Hostname": "Nombre del Host",
+            "Name": "Nombre",
+            "NameDescription": "Este nombre no se mostrará en la GUI y solo se usará para redirecciones.",
+            "Path": "Ruta",
             "Port": "Puerto",
             "RemotePrinters": "Impresoras remotas",
             "UpdatePrinter": "Actualizar impresora",
@@ -997,6 +1133,9 @@
             "AutorenderDescription": "Si está activa, el video del timelapse será renderizado automáticamente al finalizar la impresión.",
             "Camera": "Cámara",
             "CameraDescription": "Elija qué cámara será utilizada.",
+            "CameraDescriptionWithSnapshotUrl": "Selecciona qué cámara (con URL de instantánea) debe utilizarse",
+            "CameraWarningAlreadySet": "Este valor ya está establecido en el archivo de configuración del Moonraker.",
+            "CameraWarningAlreadySetSmall": "snapshoturl en la sección [timelapse]",
             "ConstantRateFactor": "Factor de tasa constante",
             "ConstantRateFactorDescription": "Configura la calidad vs. el tamaño del archivo del video renderizado. El rango de la escala de FTC es de 0-51, donde 0 es sin pérdidas, 23 es predeterminado y 51 es la peor calidad posible. Un valor más bajo generalmente conduce a una mayor calidad y un rango subjetivamente sensato es 17-28. Considere que 17 o 18 no tienen pérdida visual. ",
             "duplicatelastframe": "Duplicar último cuadro",
@@ -1014,6 +1153,7 @@
             "HyperlapseCycleDescription": "Se tomará una foto cada X segundos.",
             "Mode": "Modo",
             "ModeDescription": "Elija en modo entre LayerMacro e Hyperlape (basado en tiempo).",
+            "NoWebcamFound": "No hay webcam disponible",
             "OutputFramerate": "Framerate",
             "OutputFramerateDescription": "Define los cuadros por segundo del video. Nota: Puede ser ignorado si variable_fps está activado.",
             "Parkhead": "Apartar cabezal",
@@ -1037,8 +1177,14 @@
             "RetractDistanceDescription": "El largo del filamento que el extrusor retrae.",
             "RetractSpeed": "Velocidad de retracción",
             "RetractSpeedDescription": "Velocidad con que el extrusor retrae el filamento.",
+            "RulesBetweenMinMax": "¡El valor debe estar entre {min} y {max}!",
+            "RulesMin": "¡El valor debe ser como mínimo de {min}!",
+            "RulesPositive": "¡El valor debe ser positivo!",
+            "RulesRequired": "¡El valor es obligatorio!",
+            "RulesZeroAndPositive": "¡El valor debe ser 0 o superior!",
             "SaveFrames": "Guardar cuadros",
             "SaveFramesDescription": "Guardar los cuadros como archivo .zip para render externo.",
+            "SelectWebcam": "Selecciona una webcam...",
             "StreamDelayCompensation": "Compensación de retraso de stream",
             "StreamDelayCompensationDescription": "Retraso de captura de cuadros.",
             "Targetlength": "Duración del video",
@@ -1055,17 +1201,20 @@
             "VariableFps": "FPS Variable",
             "VariableFpsDescription": "Si está activo, los cuadros por segundo del video serán calculado según el \"Largo del video\".",
             "VariableFpsMax": "FPS Variable máximo",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "Valor máximo de FPS variables",
             "VariableFpsMin": "FPS Variable mínimo",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "Valor mínimo de FPS variables"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Diálogo de tornillos de cama",
             "BedScrewsDialogDescription": "Mostrar diálogo de ayuda para BED_SCREWS_ADJUST.",
+            "BigThumbnailBackground": "Color de fondo para una vista previa grande",
             "BoolBigThumbnail": "Miniatura grande",
             "BoolBigThumbnailDescription": "Mostrar una miniatura grande en el panel de estado durante una impresión.",
             "BoolHideUploadAndPrintButton": "Ocultar botón de Subir e Imprimir",
             "BoolHideUploadAndPrintButtonDescription": "Mostrar u ocultar el botón de \"Upload and Print\" en la barra de arriba",
+            "ConfirmOnCoolDown": "Confirmar el enfriamiento",
+            "ConfirmOnCoolDownDescription": "Mostrar un diálogo de confirmación para el enfriamiento",
             "ConfirmOnEmergencyStop": "Requerir confirmación en Parada de Emergencia",
             "ConfirmOnEmergencyStopDescription": "Mostrar un diálogo de confirmación en Parada de Emergencia",
             "ConfirmOnPowerDeviceChange": "Solicitar confirmación para cambios en Alimentación del Dispositivo",
@@ -1093,6 +1242,8 @@
             "Logo": "Logo",
             "ManualProbeDialog": "Diálogo Manual del Ayudante de Sonda",
             "ManualProbeDialogDescription": "Mostrar diálogo de ayuda para PROBE_CALIBRATE o Z_ENDSTOP_CALIBRATE.",
+            "Mode": "Modo",
+            "ModeDescription": "Cambia el aspecto general de la aplicación.",
             "NavigationStyle": "Estilo de Navegación",
             "NavigationStyleDescription": "Modificar el aspecto de la navegación",
             "NavigationStyleIconsAndText": "Iconos + Texto",
@@ -1100,10 +1251,18 @@
             "PowerDeviceName": "Dispositivo de alimentación de la impresora",
             "PowerDeviceNameDescription": "Seleccione qué dispositivo de alimentación Moonraker debe utilizarse para encender la impresora.",
             "Primary": "Primario",
+            "PrintstatusThumbnailZoom": "Zoom para miniaturas grandes",
+            "PrintstatusThumbnailZoomDescription": "Esto desactivará el efecto zoom de la miniatura en el panel de estado.",
+            "ProgressAsFavicon": "Mostrar el progreso como un favicon",
+            "ProgressAsFaviconDescription": "Cambiar el favicon del logotipo de Mainsail por un círculo de progreso.",
             "ScrewsTiltAdjustDialog": "Diálogo de Ajuste de Inclinación de los Tornillos",
             "ScrewsTiltAdjustDialogDescription": "Mostrar diálogo de ayuda para SCREWS_TILT_CALCULATE.",
             "TempchartHeight": "Gráfico de Temperaturas de Altura",
             "TempchartHeightDescription": "Modifica la altura del gráfico de temperatura en el Cuadro De Mandos.",
+            "Theme": "Tema",
+            "ThemeDark": "Oscuro",
+            "ThemeDescription": "Personaliza la marca de la interfaz.",
+            "ThemeLight": "Claro",
             "UiSettings": "Ajustes de UI"
         },
         "Update": "actualizar",
@@ -1112,6 +1271,7 @@
             "CreateWebcam": "Crear cámara web",
             "EditCrowsnestConf": "Editar crowsnest.conf",
             "EditWebcam": "Editar cámara web",
+            "EnableAudio": "Activar los sonidos",
             "FlipWebcam": "Voltear la imagen de la cámara web:",
             "HideFps": "Ocultar contador de FPS",
             "Hlsstream": "Stream HLS",
@@ -1142,6 +1302,7 @@
             "Vertically": "verticalmente",
             "Webcams": "Cámaras web",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
+            "WebrtcGo2rtc": "WebRTC (go2rtc)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX / rtsp-simple-server)"
         }
