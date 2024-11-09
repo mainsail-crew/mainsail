@@ -89,11 +89,8 @@
                                     @change="showPrintJobs = !showPrintJobs" />
                             </v-list-item>
                             <v-divider />
-                            <template v-if="allPrintStatusArray.length">
-                                <v-list-item
-                                    v-for="status of allPrintStatusArray"
-                                    :key="status.key"
-                                    class="minHeight36">
+                            <template v-if="printStatusArray.length">
+                                <v-list-item v-for="status of printStatusArray" :key="status.key" class="minHeight36">
                                     <v-checkbox
                                         class="mt-0"
                                         hide-details
@@ -188,6 +185,7 @@ import { GuiMaintenanceStateEntry, HistoryListRowMaintenance } from '@/store/gui
 import HistoryListEntryMaintenance from '@/components/panels/History/HistoryListEntryMaintenance.vue'
 import HistoryListPanelDeleteSelectedDialog from '@/components/dialogs/HistoryListPanelDeleteSelectedDialog.vue'
 import HistoryMixin from '@/components/mixins/history'
+import HistoryStatsMixin from '@/components/mixins/historyStats'
 
 export type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance
 
@@ -211,7 +209,7 @@ export interface HistoryListPanelCol {
         Panel,
     },
 })
-export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin) {
+export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, HistoryStatsMixin) {
     mdiCloseThick = mdiCloseThick
     mdiCog = mdiCog
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
