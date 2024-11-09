@@ -388,6 +388,7 @@
         "EstimatedFilament": "Estimated Filament",
         "EstimatedFilamentWeight": "Estimated Filament Weight",
         "EstimatedTime": "Estimated Time",
+        "Filament": "Filament",
         "FilamentBasedReminder": "Filament",
         "FilamentBasedReminderDescription": "This reminder is based on the filament usage.",
         "FilamentCalc": "Filament Calc",
@@ -453,6 +454,7 @@
             "server_exit": "Server exit"
         },
         "Table": "Table",
+        "Time": "Time",
         "TitleExportHistory": "Export History",
         "TotalDuration": "Total Time",
         "TotalFilamentUsed": "Total Filament Used",
