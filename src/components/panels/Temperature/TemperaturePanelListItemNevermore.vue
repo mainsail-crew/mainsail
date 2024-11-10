@@ -6,19 +6,19 @@
             </v-icon>
         </td>
         <td class="name">
-            <span class="cursor-pointer" @click="showEditDialog = true">Nevermore</span>
+            <span class="cursor-pointer" @click="showEditDialog = true">{{ formatName }}</span>
         </td>
         <td class="text-no-wrap text-center" colspan="3">
             <temperature-panel-list-item-nevermore-value
                 :printer-object="printerObject"
+                :object-name="objectName"
                 :small="false"
-                object-name="nevermore"
                 key-name="gas" />
             <temperature-panel-list-item-nevermore-value
                 v-for="keyName in nevermoreValues"
                 :key="keyName"
                 :printer-object="printerObject"
-                object-name="nevermore"
+                :object-name="objectName"
                 :key-name="keyName" />
             <div v-if="rpm !== null">
                 <small :class="rpmClass">{{ rpm }} RPM</small>
@@ -26,9 +26,9 @@
         </td>
         <temperature-panel-list-item-edit
             :bool-show="showEditDialog"
-            object-name="nevermore"
-            name="nevermore"
-            format-name="Nevermore"
+            :object-name="objectName"
+            :name="name"
+            :format-name="formatName"
             additional-sensor-name="nevermore"
             :icon="mdiFan"
             :color="color"
@@ -40,6 +40,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { convertName } from '@/plugins/helpers'
 import { mdiFan } from '@mdi/js'
 import { opacityHeaterActive, opacityHeaterInactive } from '@/store/variables'
 
@@ -47,17 +48,27 @@ import { opacityHeaterActive, opacityHeaterInactive } from '@/store/variables'
 export default class TemperaturePanelListItemNevermore extends Mixins(BaseMixin) {
     mdiFan = mdiFan
 
+    @Prop({ type: String, required: true }) readonly objectName!: string
     @Prop({ type: Boolean, required: true }) readonly isResponsiveMobile!: boolean
 
     showEditDialog = false
     nevermoreValues = ['temperature', 'pressure', 'humidity']
 
     get printerObject() {
-        return this.$store.state.printer.nevermore ?? {}
+        return this.$store.state.printer[this.objectName] ?? {}
+    }
+
+    get name() {
+        const splits = this.objectName.split(' ')
+        return splits.length === 1 ? splits[0] : splits[1]
+    }
+
+    get formatName() {
+        return convertName(this.name)
     }
 
     get color() {
-        return this.$store.state.gui?.view?.tempchart?.datasetSettings?.nevermore?.color ?? '#ffffff'
+        return this.$store.state.gui?.view?.tempchart?.datasetSettings?.[this.objectName]?.color ?? '#ffffff'
     }
 
     get iconColor() {
