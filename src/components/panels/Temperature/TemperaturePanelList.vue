@@ -76,9 +76,7 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
     }
 
     get available_nevermores() {
-        return Object.keys(this.$store.state.printer).filter(
-            (name) => name === 'nevermore' || name.startsWith('nevermore ')
-        )
+        return Object.keys(this.$store.state.printer).filter((name) => name.startsWith('nevermore'))
     }
 
     get monitors() {
