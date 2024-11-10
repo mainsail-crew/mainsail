@@ -67,7 +67,7 @@ export default class TemperaturePanelListItemEdit extends Mixins(BaseMixin) {
 
     get additionalValues() {
         if (this.objectName === 'z_thermal_adjust') return ['current_z_adjust']
-        if (this.objectName === 'nevermore') return ['temperature', 'pressure', 'humidity', 'rpm']
+        if (this.objectName.startsWith('nevermore')) return ['temperature', 'pressure', 'humidity', 'rpm']
 
         return Object.keys(this.printerObjectAdditionalSensor).filter((key) => key !== 'temperature')
     }
