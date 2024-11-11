@@ -23,20 +23,32 @@ export default class TemperaturePanelListItemAdditionalSensorValue extends Mixin
     }
 
     get formatValue() {
+        const output = []
         let value = this.value?.toFixed(1)
         if (this.value === null) value = '--'
 
         // get unit
-        let unit: string | null = null
+        let unitPrefix: string | null = null
+        let unitSuffix: string | null = null
+
+        switch (this.keyName) {
+            case 'gas':
+                unitPrefix = 'IAQ'
+                break
+            case 'voc':
+                unitPrefix = 'VOC'
+                break
+        }
+
         switch (this.keyName) {
             case 'pressure':
-                unit = 'hPa'
+                unitSuffix = 'hPa'
                 break
             case 'humidity':
-                unit = '%'
+                unitSuffix = '%'
                 break
             case 'current_z_adjust':
-                unit = 'mm'
+                unitSuffix = 'mm'
                 break
         }
 
@@ -47,11 +59,19 @@ export default class TemperaturePanelListItemAdditionalSensorValue extends Mixin
             // convert z_adjust value if it is smaller than 0.1 to μm
             if (Math.abs(this.value) < 0.1) {
                 value = Math.round(this.value * 1000).toString()
-                unit = 'μm'
+                unitSuffix = 'μm'
             }
         }
 
-        return unit ? `${value} ${unit}` : value
+        if (['gas', 'voc'].includes(this.keyName) && this.value) {
+            value = this.value.toFixed(0)
+        }
+
+        if (unitPrefix) output.push(`${unitPrefix}:`)
+        output.push(value)
+        if (unitSuffix) output.push(unitSuffix)
+
+        return output.join(' ')
     }
 
     get guiSetting() {
