@@ -13,12 +13,31 @@
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "載入 moonraker 組件“{component}”時檢測到錯誤。請檢查日誌檔案並解決問題。",
-                "MoonrakerWarning": "Moonraker 警告"
+                "MoonrakerWarning": "Moonraker 警告",
+                "MoonrakerFailedInitComponentDescription": "初始化 Moonraker 元件「{component}」時檢測到錯誤。請檢查日誌文件並修正問題。",
+                "MoonrakerInitComponent": "初始化 Moonraker：{component}",
+                "UnparsedConfigOption": "在 [{section}] 區段檢測到未解析的配置選項「{option}: {value}」。這可能是已不再提供的選項，或是由於模組加載失敗所導致。未來這樣的情況將會導致啟動錯誤。",
+                "UnparsedConfigSection": "檢測到未解析的配置區段 [{section}]。這可能是由於元件加載失敗所導致。未來這樣的情況將會導致啟動錯誤。"
             },
             "NextReboot": "下次重啟",
             "NoNotification": "沒有可用的通知",
             "Notifications": "通知",
-            "Remind": "提醒："
+            "Remind": "提醒：",
+            "BrowserWarnings": {
+                "Headline": "過時的瀏覽器",
+                "Description": "{name} 已過時且不完全支援。目前的版本是 {version}，但 Mainsail 需要 {minVersion} 或更高版本。"
+            },
+            "MaintenanceReminder": "維護提醒",
+            "Never": "絕不",
+            "OneWeekShort": "一周",
+            "ShowDetails": "顯示詳細資料",
+            "OneHourShort": "一小時",
+            "OneDayShort": "一天",
+            "TmcOtFlag": "步進馬達錯誤：已設定OT旗標",
+            "TmcOtFlagText": "步進馬達「{name}」已觸發 OT 旗標並停止工作。這可能是電流過高所導致。請檢查步進馬達的設定及散熱情況。",
+            "DependencyDescription": "目前的 {name} 版本不支援 Mainsail 的所有功能。請將 {name} 更新至至少 {neededVersion} 版本。",
+            "TmcOtpwFlag": "步進馬達警告：已觸發 OTPW 旗標",
+            "TmcOtpwFlagText": "步進馬達 '{name}' 已觸發 OTPW 旗標，如果溫度繼續上升，可能會停止工作。這表示溫度過高的狀況。這可能是由於電流過高引起的。請檢查步進馬達設置和冷卻系統。"
         },
         "Printers": "列印機列表",
         "ThrottledStates": {
@@ -44,7 +63,8 @@
             "Error": "錯誤",
             "Pause": "暫停列印",
             "PrinterOff": "列印機關閉",
-            "Printing": "{percent}% 列印中 - {filename}"
+            "Printing": "{percent}% 列印中 - {filename}",
+            "PrintingETA": "{percent}% 列印中 - 預計完成時間: {eta} - {filename}"
         },
         "TopBar": {
             "CannotUploadTheFile": "無法上傳該檔案!",
@@ -71,7 +91,10 @@
                     "HostReboot": "主機重啟",
                     "HostShutdown": "主機關機",
                     "KlipperFirmwareRestart": "Klipper 韌體重新啟動",
-                    "KlipperRestart": "Klipper重新啟動"
+                    "KlipperRestart": "Klipper重新啟動",
+                    "ServiceStart": "服務啟動",
+                    "ServiceStop": "服務停止",
+                    "ServiceRestart": "服務重啟"
                 }
             },
             "HostControl": "主機控制",
@@ -83,7 +106,8 @@
             "ServiceControl": "服務控制",
             "Shutdown": "關機",
             "Start": "開始",
-            "Stop": "停止"
+            "Stop": "停止",
+            "Restart": "重新啟動"
         },
         "UpdateDialog": {
             "Close": "關閉",
@@ -92,6 +116,19 @@
             "RecoveringDone": "恢復 {software} 完成!",
             "Updating": "更新 {software}...",
             "UpdatingDone": "更新 {software} 完成!"
+        },
+        "NumberInput": {
+            "GreaterOrEqualError": "必須大於或等於 {min}！",
+            "NoEmptyAllowedError": "輸入不能為空白！",
+            "MustBeBetweenError": "必須介於 {min} 和 {max} 之間！"
+        },
+        "TheServiceWorker": {
+            "TitleNeedUpdate": "PWA 需要更新",
+            "DescriptionNeedUpdate": "本機快取已過時，需要更新。請點選下面的按鈕進行更新。",
+            "Update": "更新"
+        },
+        "TextfieldWithCopy": {
+            "Copied": "已複製"
         }
     },
     "BedScrews": {
@@ -981,8 +1018,8 @@
         },
         "UiSettingsTab": {
             "BedScrewsDialogDescription": "顯示 BED_SCREWS_ADJUST 的幫助對話框。",
-            "BoolBigThumbnail": "大縮略圖",
-            "BoolBigThumbnailDescription": "列印期間在狀態面板中顯示一個大縮略圖.",
+            "BoolBigThumbnail": "大縮圖",
+            "BoolBigThumbnailDescription": "列印期間在狀態面板中顯示大縮圖。",
             "BoolHideUploadAndPrintButton": "隱藏上傳和列印按鈕",
             "BoolHideUploadAndPrintButtonDescription": "顯示或隱藏頂部欄中的\"上傳和列印\"按鈕。",
             "ConfirmOnEmergencyStop": "需要確認緊急停止",
@@ -1013,7 +1050,13 @@
             "PowerDeviceNameDescription": "選擇應使用哪個 Moonraker 電源設備為列印機供電。",
             "Primary": "高亮顏色",
             "ScrewsTiltAdjustDialogDescription": "顯示 SCREWS_TILT_CALCULATE 的幫助程序對話框。",
-            "UiSettings": "使用者介面設定"
+            "UiSettings": "使用者介面設定",
+            "PrintstatusThumbnailZoom": "大縮圖縮放",
+            "ThemeDescription": "自訂特定風格的介面外觀。",
+            "BigThumbnailBackground": "大縮圖背景色",
+            "PrintstatusThumbnailZoomDescription": "這將停用狀態面板中縮圖的縮放效果。",
+            "ModeDescription": "變更應用程式的整體外觀和感覺。",
+            "Mode": "模式"
         },
         "Update": "更新",
         "WebcamsTab": {
