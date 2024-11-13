@@ -21,7 +21,8 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
 
     get rows() {
-        const cols = 6
+        let len = this.toolchangeMacros.length
+        let cols = Math.ceil(len / Math.ceil(len / 6.0))
         let rows = []
 
         for (let i = 0; i < this.toolchangeMacros.length; i += cols) {
