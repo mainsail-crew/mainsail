@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Description": "{name} is verouderd en niet volledig ondersteund. De huidige versie is {version}, maar Mainsail vereist versie {minVersion} of hoger.",
+                "Headline": "Verouderde Browser"
+            },
             "DependencyDescription": "De huidige {name} versie ondersteunt niet alle functies van Mainsail. Update {name} naar ten minste {neededVersion}.",
             "DependencyName": "Afhankelijkheid: {name}",
             "DismissAll": "Dismiss all",
@@ -9,17 +13,19 @@
                 "DeprecatedOptionHeadline": "Verouderde Klipper optie",
                 "DeprecatedValue": "Waarde '{value}' in optie '{option}' in sectie '{section}' is verouderd en wordt in een toekomstige versie verwijderd.",
                 "DeprecatedValueHeadline": "Verouderde Klipper waarde",
-                "KlipperWarning": "Klipper waarschuwing",
-                "KlipperRuntimeWarning": "Klipper runtime waarschuwing"
+                "KlipperRuntimeWarning": "Klipper runtime waarschuwing",
+                "KlipperWarning": "Klipper waarschuwing"
             },
+            "MaintenanceReminder": "Onderhoud herinnering",
+            "MaintenanceReminderText": "Onderhoud \"{name}\" is nodig.",
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "Bij het laden van de moonraker component '{component}' is een fout opgetreden. Controleer de logs en verhelp het probleem.",
+                "MoonrakerFailedInitComponentDescription": "Een fout werd ontdekt tijdens het initialiseren van het moonraker component '{component}'. Controleer de log file en verhelp het probleem.",
+                "MoonrakerInitComponent": "Init. Moonraker: {component}",
                 "MoonrakerWarning": "Moonraker waarschuwing",
                 "UnparsedConfigOption": "Onbekende config optie '{option}: {value}' gedetecteerd in sectie [{section}]. Dit kan een optie zijn die niet langer beschikbaar is of een module die niet juist geladen is. In de toekomst zal dit een foutmeldig geven bij het opstarten.",
-                "UnparsedConfigSection": "Onbekende config sectie [{section}] gedetecteerd. Dit kan module zijn die niet juist geladen is. In de toekomst zal dit een foutmeldig geven bij het opstarten.",
-                "MoonrakerFailedInitComponentDescription": "Een fout werd ontdekt tijdens het initialiseren van het moonraker component '{component}'. Controleer de log file en verhelp het probleem.",
-                "MoonrakerInitComponent": "Init. Moonraker: {component}"
+                "UnparsedConfigSection": "Onbekende config sectie [{section}] gedetecteerd. Dit kan module zijn die niet juist geladen is. In de toekomst zal dit een foutmeldig geven bij het opstarten."
             },
             "Never": "nooit",
             "NextReboot": "volgende reboot",
@@ -29,12 +35,6 @@
             "OneHourShort": "1U",
             "OneWeekShort": "1W",
             "Remind": "Herinnering:",
-            "BrowserWarnings": {
-                "Description": "{name} is verouderd en niet volledig ondersteund. De huidige versie is {version}, maar Mainsail vereist versie {minVersion} of hoger.",
-                "Headline": "Verouderde Browser"
-            },
-            "MaintenanceReminder": "Onderhoud herinnering",
-            "MaintenanceReminderText": "Onderhoud \"{name}\" is nodig.",
             "ShowDetails": "toon details",
             "TmcOtFlag": "Stepper driver fout: OT flag gezet",
             "TmcOtFlagText": "De stepper driver '{name}' heeft de OT flag getriggerd en is gestopt met werken. Dit kan veroorzaakt zijn door te hoge stroom. Controleer de stepper drivers en koeling.",
@@ -51,9 +51,9 @@
             "Copied": "Gekopieerd"
         },
         "TheServiceWorker": {
-            "Update": "Werk bij",
+            "DescriptionNeedUpdate": "De lokale cache is verouderd en moet geupdate worden. Klik de knop hieronder om de cache te updaten.",
             "TitleNeedUpdate": "PWA moet geupdate worden",
-            "DescriptionNeedUpdate": "De lokale cache is verouderd en moet geupdate worden. Klik de knop hieronder om de cache te updaten."
+            "Update": "Werk bij"
         },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "rPi ARM core(s) worden momenteel gethrottled.",
@@ -77,9 +77,9 @@
             "Complete": "Kompleet - {filename}",
             "Error": "FOUT",
             "Pause": "Pauzeer print",
+            "PrinterOff": "Printer UIT",
             "Printing": "{percent}% Printen - {filename}",
-            "PrintingETA": "{percent}% Printen - ETA: {eta} - {filename}",
-            "PrinterOff": "Printer UIT"
+            "PrintingETA": "{percent}% Printen - ETA: {eta} - {filename}"
         },
         "TopBar": {
             "CannotUploadTheFile": "Kan het bestand niet uploaden!",
@@ -144,14 +144,20 @@
         "ScrewName": "Schroef Naam",
         "ScrewOutput": "{current} van {max}"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "Weet je het zeker?",
+        "CancelJob": "Annuleer Job",
+        "No": "Nee",
+        "Yes": "Ja"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Kan niet verbinden met Moonraker ({host}).",
         "CheckMoonrakerLog": "Als deze melding vaker getoond wordt, kijk in de logs op:",
         "Connecting": "Verbinden met {host}",
+        "ErrorMessage": "Foutmelding: {message}",
         "Failed": "Verbinding mislukt",
         "Initializing": "Initialiseren",
-        "TryAgain": "probeer nogmaals",
-        "ErrorMessage": "Foutmelding: {message}"
+        "TryAgain": "probeer nogmaals"
     },
     "Console": {
         "CommandList": "Lijst met opdrachten",
@@ -162,10 +168,10 @@
         "SetupConsole": "Instellingen"
     },
     "CoolDownDialog": {
+        "AreYouSure": "Weet je het zeker?",
         "CoolDown": "Koel af",
         "No": "Nee",
-        "Yes": "Ja",
-        "AreYouSure": "Weet je het zeker?"
+        "Yes": "Ja"
     },
     "DevicesDialog": {
         "Formats": "Formaten",
@@ -1190,11 +1196,5 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Nederlands",
-    "CancelJobDialog": {
-        "No": "Nee",
-        "Yes": "Ja",
-        "AreYouSure": "Weet je het zeker?",
-        "CancelJob": "Annuleer Job"
-    }
+    "title": "Nederlands"
 }

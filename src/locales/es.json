@@ -144,24 +144,30 @@
         "ScrewName": "Nombre de Tornillo",
         "ScrewOutput": "{current} de {max}"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "¿Estás seguro?",
+        "CancelJob": "Cancelar trabajo",
+        "No": "No",
+        "Yes": "Sí"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "No se pudo conectar a ({host}) Moonraker.",
         "CheckMoonrakerLog": "Si este mensaje aparece repetidamente, por favor dé un vistazo al archivo de registro ubicado en:",
         "Connecting": "Conectando a {host}",
-        "Failed": "Conexión Fallida",
-        "Initializing": "Inicializando",
-        "TryAgain": "Intentar nuevamente",
         "ErrorMessage": "Mensaje de error: {message}",
-        "Help": "Ayuda"
+        "Failed": "Conexión Fallida",
+        "Help": "Ayuda",
+        "Initializing": "Inicializando",
+        "TryAgain": "Intentar nuevamente"
     },
     "Console": {
         "CommandList": "Lista de comandos",
         "Empty": "Vacío",
         "HideTemperatures": "Ocultar temperaturas",
         "HideTimelapse": "Ocultar timelapse",
+        "Search": "Buscar",
         "SendCode": "Enviar código...",
-        "SetupConsole": "Configurar consola",
-        "Search": "Buscar"
+        "SetupConsole": "Configurar consola"
     },
     "CoolDownDialog": {
         "AreYouSure": "¿Estás seguro?",
@@ -200,14 +206,14 @@
         "Downloading": "Descargando",
         "FailedSave": "¡{filename} no pudo cargarse!",
         "FileReadOnly": "Sólo lectura",
+        "FileStructure": "Estructura del archivo",
         "SaveClose": "Guardar y cerrar",
         "SaveRestart": "Guardar y reiniciar",
         "SuccessfullySaved": "{filename} guardado con éxito.",
         "UnsavedChanges": "Cambios sin guardar",
         "UnsavedChangesMessage": "¿Quiere guardar los cambios realizados al archivo {filename}?",
         "UnsavedChangesSubMessage": "Sus cambios se perderán si no los guarda. Puede desactivar este mensaje en la configuración del editor.",
-        "Uploading": "Cargando",
-        "FileStructure": "Estructura del archivo"
+        "Uploading": "Cargando"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "¿Está seguro?",
@@ -435,6 +441,7 @@
         "SelectedFilamentUsed": "Elija el filamento usado",
         "SelectedJobs": "Tareas elegidas",
         "SelectedPrinttime": "Tiempo de impresion elegido",
+        "Settings": "Ajustes",
         "Slicer": "Laminador",
         "SlicerVersion": "Versión del laminador",
         "StartTime": "Hora de inicio",
@@ -459,8 +466,7 @@
         "TotalFilamentUsed": "Filamento utilizado en total",
         "TotalJobs": "Trabajos totales",
         "TotalPrinttime": "Tiempo total de impresión",
-        "TotalTime": "Tiempo total",
-        "Settings": "Ajustes"
+        "TotalTime": "Tiempo total"
     },
     "JobQueue": {
         "AllJobs": "Todas las tareas",
@@ -679,9 +685,9 @@
             "Headline": "Consola",
             "HideTemperatures": "Ocultar temperaturas",
             "HideTimelapse": "Ocultar timelapse",
+            "RawOutput": "Salida RAW (para depuración)",
             "SendCode": "Enviar código...",
-            "SetupConsole": "Configurar consola",
-            "RawOutput": "Salida RAW (para depuración)"
+            "SetupConsole": "Configurar consola"
         },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Asegúrese de incluir mainsail.cfg en su archivo printer.cfg.",
@@ -830,13 +836,13 @@
         },
         "WebcamPanel": {
             "All": "Todos",
+            "ConnectingTo": "Conectando a {url}",
+            "Disconnected": "Desconectado",
+            "ErrorWhileConnecting": "Error al conectar a {url}",
             "FPS": "FPS",
             "Headline": "Cámara web",
             "NoWebcam": "No hay cámara web disponible. Agregue una cámara web en \"Configuración\" -> \"Cámaras web\".",
-            "UnknownWebcamService": "Servicio de cámara web desconocido",
-            "ConnectingTo": "Conectando a {url}",
-            "Disconnected": "Desconectado",
-            "ErrorWhileConnecting": "Error al conectar a {url}"
+            "UnknownWebcamService": "Servicio de cámara web desconocido"
         },
         "ZoffsetPanel": {
             "Clear": "Limpiar",
@@ -1033,23 +1039,23 @@
         },
         "HeightmapTab": {
             "ColorSchemes": "Esquemas de colores",
+            "DefaultOrientation": "Orientación por defecto",
+            "DefaultOrientationDescription": "Seleccione la orientación por defecto para la visualización de la malla.",
             "Heightmap": "Mapa de altura",
             "IsDefault": "(Por defecto)",
+            "Orientations": {
+                "Front": "Delante",
+                "LeftFront": "Frontal izquierdo",
+                "RightFront": "Frontal derecho",
+                "Top": "Arriba"
+            },
             "Schemes": {
                 "GrayScale": "Escala de grises",
                 "Hot": "Caliente",
                 "Hsv": "Espacio de color HSV",
                 "Portland": "Portland",
                 "Spring": "Primavera"
-            },
-            "Orientations": {
-                "RightFront": "Frontal derecho",
-                "Top": "Arriba",
-                "Front": "Delante",
-                "LeftFront": "Frontal izquierdo"
-            },
-            "DefaultOrientation": "Orientación por defecto",
-            "DefaultOrientationDescription": "Seleccione la orientación por defecto para la visualización de la malla."
+            }
         },
         "InterfaceSettings": "Configuración de la interfaz",
         "MacrosTab": {
@@ -1230,6 +1236,8 @@
             "BoolBigThumbnailDescription": "Mostrar una miniatura grande en el panel de estado durante una impresión.",
             "BoolHideUploadAndPrintButton": "Ocultar botón de Subir e Imprimir",
             "BoolHideUploadAndPrintButtonDescription": "Mostrar u ocultar el botón de \"Upload and Print\" en la barra de arriba",
+            "ConfirmOnCancelJob": "Se requiere confirmación para cancelar el trabajo",
+            "ConfirmOnCancelJobDescription": "Mostrar un cuadro de diálogo de confirmación para cancelar el trabajo",
             "ConfirmOnCoolDown": "Confirmar el enfriamiento",
             "ConfirmOnCoolDownDescription": "Mostrar un diálogo de confirmación para el enfriamiento",
             "ConfirmOnEmergencyStop": "Requerir confirmación en Parada de Emergencia",
@@ -1280,9 +1288,7 @@
             "ThemeDark": "Oscuro",
             "ThemeDescription": "Personaliza la marca de la interfaz.",
             "ThemeLight": "Claro",
-            "UiSettings": "Ajustes de UI",
-            "ConfirmOnCancelJob": "Se requiere confirmación para cancelar el trabajo",
-            "ConfirmOnCancelJobDescription": "Mostrar un cuadro de diálogo de confirmación para cancelar el trabajo"
+            "UiSettings": "Ajustes de UI"
         },
         "Update": "actualizar",
         "WebcamsTab": {
@@ -1378,11 +1384,5 @@
         "Variable": "Variable",
         "Video": "Video"
     },
-    "title": "Español",
-    "CancelJobDialog": {
-        "AreYouSure": "¿Estás seguro?",
-        "No": "No",
-        "CancelJob": "Cancelar trabajo",
-        "Yes": "Sí"
-    }
+    "title": "Español"
 }
