@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Description": "{name} eski sürümdür ve tam olarak desteklenmez. Mevcut sürüm {version} olarak gözükmektedir. Mainsail, sürüm {minVersion} veya üzerini gerektirir.",
+                "Headline": "Eski sürüm tarayıcı"
+            },
             "DependencyDescription": "Geçerli {name} sürümü, Mainsail'in tüm özelliklerini desteklemiyor. {name} ürününü en az {neededVersion} sürümüne güncelleyin.",
             "DependencyName": "Bağımlılık: {name}",
             "DismissAll": "Hepsini reddet",
@@ -22,11 +26,7 @@
             "NextReboot": "sonraki yeniden başlatma",
             "NoNotification": "Bildirim yok",
             "Notifications": "Bildirimler",
-            "Remind": "Hatırlat:",
-            "BrowserWarnings": {
-                "Headline": "Eski sürüm tarayıcı",
-                "Description": "{name} eski sürümdür ve tam olarak desteklenmez. Mevcut sürüm {version} olarak gözükmektedir. Mainsail, sürüm {minVersion} veya üzerini gerektirir."
-            }
+            "Remind": "Hatırlat:"
         },
         "NumberInput": {
             "GreaterOrEqualError": " {min}değerinden büyük veya eşit olmalıdır!",

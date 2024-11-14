@@ -144,15 +144,21 @@
         "ScrewName": "Csavar neve",
         "ScrewOutput": "{current} / {max}"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "Biztos vagy benne?",
+        "CancelJob": "Munka törlése",
+        "No": "Nem",
+        "Yes": "Igen"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Nem lehet csatlakozni a Moonrakerhez ({host}).",
         "CheckMoonrakerLog": "Ha ez az üzenet többször is megjelenik, nézd meg a naplófájlt, itt:",
         "Connecting": "Csatlakozás ehhez: {host}",
-        "Failed": "Kapcsolódás sikeretelen",
-        "Initializing": "Inicializálás",
-        "TryAgain": "Próbáld újra",
         "ErrorMessage": "Hibaüzenet: {message}",
-        "Help": "Súgó"
+        "Failed": "Kapcsolódás sikeretelen",
+        "Help": "Súgó",
+        "Initializing": "Inicializálás",
+        "TryAgain": "Próbáld újra"
     },
     "Console": {
         "CommandList": "Parancslista",
@@ -199,14 +205,14 @@
         "Downloading": "Letöltés",
         "FailedSave": "Nem tölthető fel: {filename}!",
         "FileReadOnly": "csak olvasható",
+        "FileStructure": "Fájl struktúra",
         "SaveClose": "Ment és bezár",
         "SaveRestart": "Ment és újraindít",
         "SuccessfullySaved": "{filename} mentése sikeres.",
         "UnsavedChanges": "Mentetlen Változások",
         "UnsavedChangesMessage": "Szeretnéd menteni a következőn végzett változtatásokat: {filename}?",
         "UnsavedChangesSubMessage": "A változtatásaid elvesznek ha nem mented őket. Ezt az üzenetet az Editor beállításokban kikapcsolhatod.",
-        "Uploading": "Feltöltés",
-        "FileStructure": "Fájl struktúra"
+        "Uploading": "Feltöltés"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Biztos?",
@@ -434,6 +440,7 @@
         "SelectedFilamentUsed": "Kiválasztott használt nyomtatószál",
         "SelectedJobs": "Kiválasztott Munkák",
         "SelectedPrinttime": "Kiválasztott Nyomtatási Idő",
+        "Settings": "Beállítások",
         "Slicer": "Szeletelő",
         "SlicerVersion": "Slicer verzió",
         "StartTime": "Kezdés",
@@ -458,8 +465,7 @@
         "TotalFilamentUsed": "Összes elhasznált nyomtatószál",
         "TotalJobs": "Összes munka",
         "TotalPrinttime": "Összes nyomtatási idő",
-        "TotalTime": "Teljes idő",
-        "Settings": "Beállítások"
+        "TotalTime": "Teljes idő"
     },
     "JobQueue": {
         "AllJobs": "Minden Feladat",
@@ -680,9 +686,9 @@
             "Headline": "Konzol",
             "HideTemperatures": "Hőmérséklet elrejtése",
             "HideTimelapse": "Idővonal elrejtése",
+            "RawOutput": "RAW-kimenet (hibakereséshez)",
             "SendCode": "Kód küldése...",
-            "SetupConsole": "Konzol beállítása",
-            "RawOutput": "RAW-kimenet (hibakereséshez)"
+            "SetupConsole": "Konzol beállítása"
         },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Tedd bele a mainsail.cfg fájlt a printer.cfg fájlba.",
@@ -831,13 +837,13 @@
         },
         "WebcamPanel": {
             "All": "Mind",
+            "ConnectingTo": "Csatlakozás a {url}",
+            "Disconnected": "Szétkapcsolt",
+            "ErrorWhileConnecting": "Hiba a kapcsolódás közben {url}",
             "FPS": "FPS",
             "Headline": "Webkamera",
             "NoWebcam": "Nincs webkamera. Adj hozzá webkamerát a \"Felület beállításai\" -> \"Webkamerák\" menüpont alatt.",
-            "UnknownWebcamService": "Ismeretlen webkamera szolgáltatás",
-            "Disconnected": "Szétkapcsolt",
-            "ConnectingTo": "Csatlakozás a {url}",
-            "ErrorWhileConnecting": "Hiba a kapcsolódás közben {url}"
+            "UnknownWebcamService": "Ismeretlen webkamera szolgáltatás"
         },
         "ZoffsetPanel": {
             "Clear": "Tisztítás",
@@ -1034,23 +1040,23 @@
         },
         "HeightmapTab": {
             "ColorSchemes": "Színsémák",
+            "DefaultOrientation": "Alapértelmezett orientáció",
+            "DefaultOrientationDescription": "Válaszd ki az alapértelmezett orientációt az ágy háló vizualizálására.",
             "Heightmap": "Magasságtérkép",
             "IsDefault": "(Alapértelmezett)",
+            "Orientations": {
+                "Front": "Elülső",
+                "LeftFront": "Bal elülső",
+                "RightFront": "Jobb elülső",
+                "Top": "Felső"
+            },
             "Schemes": {
                 "GrayScale": "Szürkeárnyalat",
                 "Hot": "Forró",
                 "Hsv": "Hsv",
                 "Portland": "Portland",
                 "Spring": "Tavaszi"
-            },
-            "DefaultOrientation": "Alapértelmezett orientáció",
-            "Orientations": {
-                "Front": "Elülső",
-                "Top": "Felső",
-                "LeftFront": "Bal elülső",
-                "RightFront": "Jobb elülső"
-            },
-            "DefaultOrientationDescription": "Válaszd ki az alapértelmezett orientációt az ágy háló vizualizálására."
+            }
         },
         "InterfaceSettings": "Interfész beállításai",
         "MacrosTab": {
@@ -1231,6 +1237,8 @@
             "BoolBigThumbnailDescription": "Nagy előnézet mutatása a státusz panelben a nyomtatás alatt.",
             "BoolHideUploadAndPrintButton": "A feltöltés és nyomtatás gombok elrejtése",
             "BoolHideUploadAndPrintButtonDescription": "Mutasd/Rejtsd el a \"Feltöltés és Nyomtatás\" gombot a felső menüben.",
+            "ConfirmOnCancelJob": "Megerősítést kér a Munka törlésekor",
+            "ConfirmOnCancelJobDescription": "Megerősítő párbeszédpanel megjelenítése a Munka törlésekor",
             "ConfirmOnCoolDown": "A visszahűtés megerősítést kér",
             "ConfirmOnCoolDownDescription": "Megerősítő párbeszédpanel megjelenítése visszahűtés esetén",
             "ConfirmOnEmergencyStop": "A Vészleállításhoz megerősítés szükséges",
@@ -1282,9 +1290,7 @@
             "ThemeDark": "Sötét",
             "ThemeDescription": "A felület márkajelzésének testreszabása.",
             "ThemeLight": "Világos",
-            "UiSettings": "Nézet beállítások",
-            "ConfirmOnCancelJob": "Megerősítést kér a Munka törlésekor",
-            "ConfirmOnCancelJobDescription": "Megerősítő párbeszédpanel megjelenítése a Munka törlésekor"
+            "UiSettings": "Nézet beállítások"
         },
         "Update": "frissítés",
         "WebcamsTab": {
@@ -1380,11 +1386,5 @@
         "Variable": "Variálható",
         "Video": "Videó"
     },
-    "title": "Magyar",
-    "CancelJobDialog": {
-        "AreYouSure": "Biztos vagy benne?",
-        "CancelJob": "Munka törlése",
-        "No": "Nem",
-        "Yes": "Igen"
-    }
+    "title": "Magyar"
 }
