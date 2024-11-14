@@ -13,6 +13,7 @@ import BaseMixin from '@/components/mixins/base'
 export default class TemperaturePanelListItemAdditionalSensorValue extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly printerObject!: { [key: string]: number }
     @Prop({ type: String, required: true }) readonly objectName!: string
+    @Prop({ type: String, required: true }) readonly sensorType!: string
     @Prop({ type: String, required: true }) readonly keyName!: string
 
     get value() {
@@ -31,13 +32,16 @@ export default class TemperaturePanelListItemAdditionalSensorValue extends Mixin
         let unitPrefix: string | null = null
         let unitSuffix: string | null = null
 
-        switch (this.keyName) {
-            case 'gas':
-                unitPrefix = 'IAQ'
-                break
-            case 'voc':
-                unitPrefix = 'VOC'
-                break
+        if (this.keyName === 'gas') {
+            switch (this.sensorType) {
+                case 'sgp40':
+                    unitPrefix = 'VOC'
+                    break
+
+                case 'bme680':
+                    unitPrefix = 'IAQ'
+                    break
+            }
         }
 
         switch (this.keyName) {
@@ -62,10 +66,7 @@ export default class TemperaturePanelListItemAdditionalSensorValue extends Mixin
                 unitSuffix = 'μm'
             }
         }
-
-        if (['gas', 'voc'].includes(this.keyName) && this.value) {
-            value = this.value.toFixed(0)
-        }
+        if (this.keyName.startsWith('gas') || this.keyName === 'voc') value = this.value?.toFixed(0)
 
         if (unitPrefix) output.push(`${unitPrefix}:`)
         output.push(value)
