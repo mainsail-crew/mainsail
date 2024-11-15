@@ -1,23 +1,18 @@
-<style scoped>
-.cursor--pointer {
-    cursor: pointer;
-}
-</style>
-
-<template v-if="klipperReadyForGui">
+<template>
     <panel
+        v-if="klipperReadyForGui"
         :title="$t('Machine.SystemPanel.SystemLoad')"
         :icon="mdiMemory"
         card-class="machine-systemload-panel"
         :collapsible="true">
         <v-card-text class="px-0 py-2">
             <div v-for="(mcu, index) of mcus" :key="mcu.name">
-                <v-divider v-if="index" class="my-2"></v-divider>
-                <system-panel-mcu :mcu="mcu"></system-panel-mcu>
+                <v-divider v-if="index" class="my-2" />
+                <system-panel-mcu :mcu="mcu" />
             </div>
             <div v-if="hostStats">
-                <v-divider v-if="mcus.length" class="my-2"></v-divider>
-                <system-panel-host></system-panel-host>
+                <v-divider v-if="mcus.length" class="my-2" />
+                <system-panel-host />
             </div>
         </v-card-text>
     </panel>
@@ -49,3 +44,9 @@ export default class SystemPanel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.cursor--pointer {
+    cursor: pointer;
+}
+</style>
