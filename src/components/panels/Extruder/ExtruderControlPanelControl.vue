@@ -250,10 +250,10 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
         return this.feedamount * this.extrudeFactor > this.maxExtrudeOnlyDistance
     }
 
-    get existsHelperMacro(): boolean {
+    get existsClientLinearMoveMacro() {
         const macros = this.$store.state.printer?.gcode?.commands ?? {}
 
-        return '_CLIENT_EXTRUDER_MOVE' in macros
+        return '_CLIENT_LINEAR_MOVE' in macros
     }
 
     @Watch('maxExtrudeOnlyDistance', { immediate: true })
@@ -283,8 +283,8 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
             `G1 E${length} F${this.feedrate * 60}\n` +
             `RESTORE_GCODE_STATE NAME=_ui_extrude`
 
-        if (this.existsHelperMacro) {
-            gcode = `_CLIENT_EXTRUDER_MOVE E=${length} F=${this.feedrate * 60}`
+        if (this.existsClientLinearMoveMacro) {
+            gcode = `_CLIENT_LINEAR_MOVE E=${length} F=${this.feedrate * 60}`
         }
 
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })

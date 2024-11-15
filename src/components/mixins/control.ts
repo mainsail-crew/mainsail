@@ -112,10 +112,10 @@ export default class ControlMixin extends Vue {
             })
     }
 
-    get existsClientAxisMoveMacro() {
+    get existsClientLinearMoveMacro() {
         const macros = this.$store.state.printer?.gcode?.commands ?? {}
 
-        return '_CLIENT_AXIS_MOVE' in macros
+        return '_CLIENT_LINEAR_MOVE' in macros
     }
 
     doHome() {
@@ -160,7 +160,7 @@ export default class ControlMixin extends Vue {
             `G1 ${gcode} F${feedrate * 60}\n` +
             `RESTORE_GCODE_STATE NAME=_ui_movement`
 
-        if (this.existsClientAxisMoveMacro) {
+        if (this.existsClientLinearMoveMacro) {
             gcode = gcode
                 .split(' ')
                 .map((part) => {
@@ -171,7 +171,7 @@ export default class ControlMixin extends Vue {
                 })
                 .join(' ')
 
-            command = `_CLIENT_AXIS_MOVE ${gcode} F=${feedrate * 60}`
+            command = `_CLIENT_LINEAR_MOVE ${gcode} F=${feedrate * 60}`
         }
 
         this.doSend(command)

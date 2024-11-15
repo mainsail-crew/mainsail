@@ -165,14 +165,14 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
 
     sendCmd(): void {
         let gcode: string[] = []
-        if (!this.existsClientAxisMoveMacro) {
+        if (!this.existsClientLinearMoveMacro) {
             gcode.push('SAVE_GCODE_STATE NAME=_ui_movement')
             gcode.push('G90')
         }
 
         if (this.input.z.pos !== this.gcodePositions.z) {
-            if (this.existsClientAxisMoveMacro)
-                gcode.push(`_CLIENT_AXIS_MOVE Z=${this.input.z.pos} F=${this.feedrateZ * 60} ABSOLUTE=1`)
+            if (this.existsClientLinearMoveMacro)
+                gcode.push(`_CLIENT_LINEAR_MOVE Z=${this.input.z.pos} F=${this.feedrateZ * 60} ABSOLUTE=1`)
             else gcode.push(`G1 Z${this.input.z.pos} F${this.feedrateZ * 60}`)
         }
 
@@ -180,11 +180,11 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
             let xPos = ''
             let yPos = ''
 
-            if (this.existsClientAxisMoveMacro) {
+            if (this.existsClientLinearMoveMacro) {
                 if (this.input.x.pos !== this.gcodePositions.x) xPos = ` X=${this.input.x.pos}`
                 if (this.input.y.pos !== this.gcodePositions.y) yPos = ` Y=${this.input.y.pos}`
 
-                gcode.push(`_CLIENT_AXIS_MOVE${xPos}${yPos} F=${this.feedrateXY * 60} ABSOLUTE=1`)
+                gcode.push(`_CLIENT_LINEAR_MOVE${xPos}${yPos} F=${this.feedrateXY * 60} ABSOLUTE=1`)
             } else {
                 if (this.input.x.pos !== this.gcodePositions.x) xPos = ` X${this.input.x.pos}`
                 if (this.input.y.pos !== this.gcodePositions.y) yPos = ` Y${this.input.y.pos}`
@@ -193,7 +193,7 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
             }
         }
 
-        if (!this.existsClientAxisMoveMacro) {
+        if (!this.existsClientLinearMoveMacro) {
             gcode.push('RESTORE_GCODE_STATE NAME=_ui_movement')
         }
 
