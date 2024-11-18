@@ -1,10 +1,10 @@
 <template>
-    <v-app dark :style="cssVars">
+    <v-app :style="cssVars">
         <template v-if="socketIsConnected && guiIsReady">
             <the-sidebar />
             <the-topbar />
             <v-main id="content" :style="mainStyle">
-                <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
+                <v-container id="page-container" fluid :class="containerClasses">
                     <router-view />
                 </v-container>
             </v-main>
@@ -17,6 +17,7 @@
             <the-manual-probe-dialog />
             <the-bed-screws-dialog />
             <the-screws-tilt-adjust-dialog />
+            <the-macro-prompt />
         </template>
         <the-select-printer-dialog v-else-if="instancesDB !== 'moonraker'" />
         <the-connecting-dialog v-else />
@@ -27,6 +28,7 @@
 import Component from 'vue-class-component'
 import TheSidebar from '@/components/TheSidebar.vue'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from './components/mixins/theme'
 import TheTopbar from '@/components/TheTopbar.vue'
 import { Mixins, Watch } from 'vue-property-decorator'
 import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
@@ -41,11 +43,14 @@ import TheManualProbeDialog from '@/components/dialogs/TheManualProbeDialog.vue'
 import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
 import TheScrewsTiltAdjustDialog from '@/components/dialogs/TheScrewsTiltAdjustDialog.vue'
 import { setAndLoadLocale } from './plugins/i18n'
+import TheMacroPrompt from '@/components/dialogs/TheMacroPrompt.vue'
+import { AppRoute } from '@/routes'
 
 Component.registerHooks(['metaInfo'])
 
 @Component({
     components: {
+        TheMacroPrompt,
         TheTimelapseRenderingSnackbar,
         TheEditor,
         TheSelectPrinterDialog,
@@ -60,7 +65,7 @@ Component.registerHooks(['metaInfo'])
         TheScrewsTiltAdjustDialog,
     },
 })
-export default class App extends Mixins(BaseMixin) {
+export default class App extends Mixins(BaseMixin, ThemeMixin) {
     public metaInfo(): any {
         let title = this.$store.getters['getTitle']
 
@@ -76,10 +81,6 @@ export default class App extends Mixins(BaseMixin) {
         return this.$store.getters['getTitle']
     }
 
-    get mainBackground(): string {
-        return this.$store.getters['files/getMainBackground']
-    }
-
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
     }
@@ -93,13 +94,15 @@ export default class App extends Mixins(BaseMixin) {
             paddingLeft: '0',
         }
 
-        if (this.mainBackground !== null) {
-            style.backgroundImage = 'url(' + this.mainBackground + ')'
+        if (this.mainBgImage !== null) {
+            style.backgroundImage = 'url(' + this.mainBgImage + ')'
         }
 
         // overwrite padding left for the sidebar
-        if (this.naviDrawer && this.navigationStyle === 'iconsAndText') style.paddingLeft = '220px'
-        if (this.naviDrawer && this.navigationStyle === 'iconsOnly') style.paddingLeft = '56px'
+        if (this.naviDrawer && !this.$vuetify.breakpoint.mdAndDown) {
+            if (this.navigationStyle === 'iconsAndText') style.paddingLeft = '220px'
+            if (this.navigationStyle === 'iconsOnly') style.paddingLeft = '56px'
+        }
 
         return style
     }
@@ -118,6 +121,10 @@ export default class App extends Mixins(BaseMixin) {
 
     get current_file(): string {
         return this.$store.state.printer.print_stats?.filename ?? ''
+    }
+
+    get mode(): string {
+        return this.$store.state.gui.uiSettings.mode
     }
 
     get logoColor(): string {
@@ -149,6 +156,7 @@ export default class App extends Mixins(BaseMixin) {
     get cssVars(): { [key: string]: string } {
         return {
             '--v-btn-text-primary': this.primaryTextColor,
+            '--color-logo': this.logoColor,
             '--color-primary': this.primaryColor,
             '--color-warning': this.warningColor,
             '--panel-toolbar-icon-btn-width': panelToolbarHeight + 'px',
@@ -160,6 +168,24 @@ export default class App extends Mixins(BaseMixin) {
 
     get print_percent(): number {
         return Math.floor(this.$store.getters['printer/getPrintPercent'] * 100)
+    }
+
+    get containerClasses() {
+        const currentRouteOptions = this.$router.options.routes?.find(
+            (route) => route.name === this.$route.name
+        ) as AppRoute
+
+        return {
+            'px-3': true,
+            'px-sm-6': true,
+            'py-sm-6': true,
+            'mx-auto': true,
+            fullscreen: currentRouteOptions?.fullscreen ?? false,
+        }
+    }
+
+    get progressAsFavicon() {
+        return this.$store.state.gui.uiSettings.progressAsFavicon
     }
 
     @Watch('language')
@@ -196,73 +222,114 @@ export default class App extends Mixins(BaseMixin) {
         })
     }
 
-    drawFavicon(val: number): void {
+    @Watch('mode')
+    modeChanged(newVal: string): void {
+        const dark = newVal !== 'light'
+        this.$vuetify.theme.dark = dark
+
+        const doc = document.documentElement
+        doc.className = dark ? 'theme--dark' : 'theme--light'
+    }
+
+    async drawFavicon(val: number): Promise<void> {
         const favicon16: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='16x16']")
         const favicon32: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='32x32']")
 
-        if (favicon16 && favicon32) {
-            if (this.printerIsPrinting) {
-                let faviconSize = 64
+        // if no favicon is found, stop
+        if (!favicon16 || !favicon32) return
 
-                let canvas = document.createElement('canvas')
-                canvas.width = faviconSize
-                canvas.height = faviconSize
-                const context = canvas.getContext('2d')
-                const centerX = canvas.width / 2
-                const centerY = canvas.height / 2
-                const radius = 32
+        // if progressAsFavicon is enabled and the printer is printing, draw the progress as favicon
+        if (this.progressAsFavicon && this.printerIsPrinting) {
+            let faviconSize = 64
 
-                // draw the grey circle
-                if (context) {
-                    context.beginPath()
-                    context.moveTo(centerX, centerY)
-                    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
-                    context.closePath()
-                    context.fillStyle = '#ddd'
-                    context.fill()
-                    context.strokeStyle = 'rgba(200, 208, 218, 0.66)'
-                    context.stroke()
+            let canvas = document.createElement('canvas')
+            canvas.width = faviconSize
+            canvas.height = faviconSize
+            const context = canvas.getContext('2d')
+            const centerX = canvas.width / 2
+            const centerY = canvas.height / 2
+            const radius = 32
 
-                    // draw the green circle based on percentage
-                    let startAngle = 1.5 * Math.PI
-                    let endAngle = 0
-                    let unitValue = (Math.PI - 0.5 * Math.PI) / 25
-                    if (val >= 0 && val <= 25) endAngle = startAngle + val * unitValue
-                    else if (val > 25 && val <= 50) endAngle = startAngle + val * unitValue
-                    else if (val > 50 && val <= 75) endAngle = startAngle + val * unitValue
-                    else if (val > 75 && val <= 100) endAngle = startAngle + val * unitValue
+            if (!context) return
 
-                    context.beginPath()
-                    context.moveTo(centerX, centerY)
-                    context.arc(centerX, centerY, radius, startAngle, endAngle, false)
-                    context.closePath()
-                    context.fillStyle = this.logoColor
-                    context.fill()
+            // draw the grey circle
+            context.beginPath()
+            context.moveTo(centerX, centerY)
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
+            context.closePath()
+            context.fillStyle = '#ddd'
+            context.fill()
+            context.strokeStyle = 'rgba(200, 208, 218, 0.66)'
+            context.stroke()
 
-                    favicon16.href = canvas.toDataURL('image/png')
-                    favicon32.href = canvas.toDataURL('image/png')
-                }
-            } else if (this.customFavicons) {
-                const [favicon16Path, favicon32Path] = this.customFavicons
-                favicon16.href = favicon16Path
-                favicon32.href = favicon32Path
-            } else {
-                const favicon =
-                    'data:image/svg+xml;base64,' +
-                    window.btoa(`
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">
-                            <g>
-                                <path style="fill:${this.logoColor};" d="M382.29,142.98L132.98,522.82L0,522.68L344.3,0l0,0C352.18,49.06,365.2,97.68,382.29,142.98"/>
-                                <path style="fill:${this.logoColor};" d="M413.28,213.54L208.5,522.92l132.94,0.19l135.03-206.33l0,0C452.69,284.29,431.53,249.77,413.28,213.54 L413.28,213.54"/>
-                                <path style="fill:${this.logoColor};" d="M599.38,447.69l-49.25,75.42L417,522.82l101.6-153.67l0,0C543.48,397.35,570.49,423.61,599.38,447.69 L599.38,447.69z"/>
-                            </g>
-                        </svg>
-                    `)
+            // draw the green circle based on percentage
+            let startAngle = 1.5 * Math.PI
+            let endAngle = 0
+            let unitValue = (Math.PI - 0.5 * Math.PI) / 25
+            if (val >= 0 && val <= 25) endAngle = startAngle + val * unitValue
+            else if (val > 25 && val <= 50) endAngle = startAngle + val * unitValue
+            else if (val > 50 && val <= 75) endAngle = startAngle + val * unitValue
+            else if (val > 75 && val <= 100) endAngle = startAngle + val * unitValue
 
-                favicon16.href = favicon
-                favicon32.href = favicon
-            }
+            context.beginPath()
+            context.moveTo(centerX, centerY)
+            context.arc(centerX, centerY, radius, startAngle, endAngle, false)
+            context.closePath()
+            context.fillStyle = this.logoColor
+            context.fill()
+
+            favicon16.href = canvas.toDataURL('image/png')
+            favicon32.href = canvas.toDataURL('image/png')
+
+            return
         }
+
+        // if custom favicons are set, use them
+        if (this.customFavicons) {
+            const [favicon16Path, favicon32Path] = this.customFavicons
+            favicon16.href = favicon16Path
+            favicon32.href = favicon32Path
+
+            return
+        }
+
+        // if a theme sidebar logo is set, use it
+        if ((this.theme?.logo?.show ?? false) && this.sidebarLogo.endsWith('.svg')) {
+            const response = await fetch(this.sidebarLogo)
+            if (!response.ok) return
+
+            const text = await response.text()
+            const modifiedSvg = text.replace(/fill="var\(--color-logo, #[0-9a-fA-F]{6}\)"/g, `fill="${this.logoColor}"`)
+
+            const blob = new Blob([modifiedSvg], { type: 'image/svg+xml' })
+            const reader = new FileReader()
+
+            reader.onloadend = () => {
+                const base64data = reader.result as string
+                favicon16.href = base64data
+                favicon32.href = base64data
+            }
+
+            reader.readAsDataURL(blob)
+
+            return
+        }
+
+        // if no custom favicon is set, use the default one
+        const favicon =
+            'data:image/svg+xml;base64,' +
+            window.btoa(`
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">
+                <g>
+                    <path style="fill:${this.logoColor};" d="M382.29,142.98L132.98,522.82L0,522.68L344.3,0l0,0C352.18,49.06,365.2,97.68,382.29,142.98"/>
+                    <path style="fill:${this.logoColor};" d="M413.28,213.54L208.5,522.92l132.94,0.19l135.03-206.33l0,0C452.69,284.29,431.53,249.77,413.28,213.54 L413.28,213.54"/>
+                    <path style="fill:${this.logoColor};" d="M599.38,447.69l-49.25,75.42L417,522.82l101.6-153.67l0,0C543.48,397.35,570.49,423.61,599.38,447.69 L599.38,447.69z"/>
+                </g>
+            </svg>
+        `)
+
+        favicon16.href = favicon
+        favicon32.href = favicon
     }
 
     @Watch('customFavicons')
@@ -270,9 +337,34 @@ export default class App extends Mixins(BaseMixin) {
         this.drawFavicon(this.print_percent)
     }
 
+    @Watch('progressAsFavicon')
+    progressAsFaviconChanged(): void {
+        this.drawFavicon(this.print_percent)
+    }
+
     @Watch('logoColor')
     logoColorChanged(): void {
         this.drawFavicon(this.print_percent)
+    }
+
+    @Watch('themeCss')
+    themeCssChanged(newVal: string | null): void {
+        // remove linked CSS file if it exists
+        const style = document.getElementById('theme-css')
+        if (style) style.remove()
+
+        // if themeCss does not exist, stop here and load no CSS file
+        if (newVal === null) return
+
+        // fetch the CSS file and append it to the head
+        fetch(newVal)
+            .then((response) => response.text())
+            .then((css) => {
+                const newStyle = document.createElement('style')
+                newStyle.id = 'theme-css'
+                newStyle.innerHTML = css
+                document.head.appendChild(newStyle)
+            })
     }
 
     @Watch('print_percent')

@@ -25,8 +25,10 @@ export interface RootStateDependency {
 }
 
 export interface ConfigJson {
+    defaultTheme?: 'dark' | 'light'
     hostname?: string | null
     port?: string | number | null
+    path?: string | null
     instancesDB?: 'moonraker' | 'browser' | 'json'
     instances?: ConfigJsonInstance[]
 }
@@ -34,4 +36,25 @@ export interface ConfigJson {
 export interface ConfigJsonInstance {
     hostname: string
     port?: number
+    path?: string
+}
+
+export interface Theme {
+    name: string
+    displayName: string
+    colorLogo: string
+    colorPrimary?: string
+    logo?: {
+        show: boolean
+        light: boolean
+    }
+    sidebarBackground?: {
+        show: boolean
+        light: boolean
+    }
+    mainBackground?: {
+        show: boolean
+        light: boolean
+    }
+    css?: boolean
 }

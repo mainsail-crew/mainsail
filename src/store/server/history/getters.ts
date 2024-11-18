@@ -1,14 +1,19 @@
 import { GetterTree } from 'vuex'
-import {
-    ServerHistoryState,
-    ServerHistoryStateAllPrintStatusEntry,
-    ServerHistoryStateJob,
-} from '@/store/server/history/types'
+import { HistoryListRowJob, ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
 import { mdiAlertOutline, mdiCheckboxMarkedCircleOutline, mdiCloseCircleOutline, mdiProgressClock } from '@mdi/js'
-import i18n from '@/plugins/i18n'
+import { HistoryListRowMaintenance } from '@/store/gui/maintenance/types'
+
+// I don't know why I cannot import the type from the HistoryListPanel, that's why I have to define it here again
+type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerHistoryState, any> = {
+    getSelectedJobs: (state, getters, rootState): ServerHistoryStateJob[] => {
+        const entries: HistoryListPanelRow[] = rootState.gui.view.history.selectedJobs ?? []
+
+        return entries.filter((entry) => entry.type === 'job') as ServerHistoryStateJob[]
+    },
+
     getTotalPrintTime(state) {
         let output = 0
 
@@ -66,142 +71,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
             : 0
     },
 
-    getAllPrintStatusArrayAll(state, getters, rootState) {
-        const output: ServerHistoryStateAllPrintStatusEntry[] = []
-
-        state.jobs.forEach((current) => {
-            const index = output.findIndex((element) => element.name === current.status)
-            if (index !== -1) output[index].value += 1
-            else {
-                const displayName = i18n.te(`History.StatusValues.${current.status}`, 'en')
-                    ? i18n.t(`History.StatusValues.${current.status}`).toString()
-                    : current.status
-
-                const itemStyle = {
-                    opacity: 0.9,
-                    color: '#424242',
-                    borderColor: '#1E1E1E',
-                    borderWidth: 2,
-                    borderRadius: 3,
-                }
-
-                switch (current.status) {
-                    case 'completed':
-                        itemStyle['color'] = '#BDBDBD'
-                        break
-
-                    case 'in_progress':
-                        itemStyle['color'] = '#EEEEEE'
-                        break
-
-                    case 'cancelled':
-                        itemStyle['color'] = '#616161'
-                        break
-                }
-
-                output.push({
-                    name: current.status,
-                    displayName,
-                    value: 1,
-                    itemStyle,
-                    showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
-                    label: {
-                        color: '#fff',
-                    },
-                })
-            }
-        })
-
-        return output
-    },
-
-    getAllPrintStatusArray(state, getters) {
-        const output: ServerHistoryStateAllPrintStatusEntry[] = [...getters.getAllPrintStatusArrayAll]
-        const totalCount = state.jobs.length
-
-        const otherLimit = totalCount * 0.05
-        const others = output.filter((entry) => entry.value < otherLimit)
-        if (others.length > 1) {
-            let otherValue = 0
-
-            others.forEach((otherGroup) => {
-                const index = output.findIndex((entry) => entry.name === otherGroup.name)
-                if (index !== -1) {
-                    otherValue += output[index].value
-                    output.splice(index, 1)
-                }
-            })
-
-            output.push({
-                name: 'others',
-                displayName: i18n.t(`History.StatusValues.Others`).toString(),
-                value: otherValue,
-                itemStyle: {
-                    opacity: 0.9,
-                    color: '#616161',
-                    borderColor: '#1E1E1E',
-                    borderWidth: 2,
-                    borderRadius: 3,
-                },
-                showInTable: true,
-                label: {
-                    color: '#fff',
-                },
-            })
-        }
-
-        return output
-    },
-
-    getSelectedPrintStatusArray(state, getters, rootState) {
-        const output: ServerHistoryStateAllPrintStatusEntry[] = []
-
-        rootState.gui.view.history.selectedJobs.forEach((current: ServerHistoryStateJob) => {
-            const index = output.findIndex((element) => element.name === current.status)
-            if (index !== -1) output[index].value += 1
-            else {
-                const displayName = i18n.te(`History.StatusValues.${current.status}`, 'en')
-                    ? i18n.t(`History.StatusValues.${current.status}`).toString()
-                    : current.status
-                const itemStyle = {
-                    opacity: 0.9,
-                    color: '#424242',
-                    borderColor: '#1E1E1E',
-                    borderWidth: 2,
-                    borderRadius: 3,
-                }
-
-                switch (current.status) {
-                    case 'completed':
-                        itemStyle['color'] = '#BDBDBD'
-                        break
-
-                    case 'in_progress':
-                        itemStyle['color'] = '#EEEEEE'
-                        break
-
-                    case 'cancelled':
-                        itemStyle['color'] = '#616161'
-                        break
-                }
-
-                output.push({
-                    name: current.status,
-                    displayName,
-                    value: 1,
-                    itemStyle: itemStyle,
-                    showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
-                    label: {
-                        color: '#fff',
-                    },
-                })
-            }
-        })
-
-        return output
-    },
-
-    getFilamentUsageArray(state, getters, rootState) {
+    getFilamentUsageArray(state, getters) {
         // eslint-disable-next-line
         const output: any = []
         const startDate = new Date()
@@ -211,9 +81,9 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         let jobsFiltered = [
             ...state.jobs.filter((job) => new Date(job.start_time * 1000) >= startDate && job.filament_used > 0),
         ]
-        if (rootState.gui.view.history.selectedJobs.length)
+        if (getters.getSelectedJobs.length)
             jobsFiltered = [
-                ...rootState.gui.view.history.selectedJobs.filter(
+                ...getters.getSelectedJobs.filter(
                     (job: ServerHistoryStateJob) =>
                         new Date(job.start_time * 1000) >= startDate && job.filament_used > 0
                 ),
@@ -241,16 +111,16 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         })
     },
 
-    getPrinttimeAvgArray(state, getters, rootState) {
+    getPrinttimeAvgArray(state, getters) {
         const output = [0, 0, 0, 0, 0]
         const startDate = new Date(new Date().getTime() - 60 * 60 * 24 * 14 * 1000)
 
         let jobsFiltered = [
             ...state.jobs.filter((job) => new Date(job.start_time * 1000) >= startDate && job.status === 'completed'),
         ]
-        if (rootState.gui.view.history.selectedJobs.length)
+        if (getters.getSelectedJobs.length)
             jobsFiltered = [
-                ...rootState.gui.view.history.selectedJobs.filter(
+                ...getters.getSelectedJobs.filter(
                     (job: ServerHistoryStateJob) =>
                         new Date(job.start_time * 1000) >= startDate && job.status === 'completed'
                 ),
@@ -301,7 +171,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 
             // find jobs via metadata
             const jobs = state.jobs.filter((job) => {
-                return job.metadata?.size === filesize && Math.round(job.metadata?.modified * 1000) === modified
+                return job.metadata?.size === filesize && Math.round((job.metadata?.modified ?? 0) * 1000) === modified
             })
             if (jobs.length) return jobs
             if (job_id) return jobs.filter((job) => job.job_id === job_id)
@@ -312,7 +182,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
     getPrintStatusByFilename: (state) => (filename: string, modified: number) => {
         if (state.jobs.length) {
             const job = state.jobs.find((job) => {
-                return job.filename === filename && Math.round(job.metadata?.modified * 1000) === modified
+                return job.filename === filename && Math.round((job.metadata?.modified ?? 0) * 1000) === modified
             })
 
             return job?.status ?? ''
@@ -363,7 +233,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         }
     },
 
-    getFilterdJobList: (state, getters, rootState) => {
+    getFilteredJobList: (state, getters, rootState) => {
         const hideStatus = rootState.gui.view.history.hidePrintStatus
 
         return state.jobs.filter((job: ServerHistoryStateJob) => {

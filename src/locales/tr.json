@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Description": "{name} eski sürümdür ve tam olarak desteklenmez. Mevcut sürüm {version} olarak gözükmektedir. Mainsail, sürüm {minVersion} veya üzerini gerektirir.",
+                "Headline": "Eski sürüm tarayıcı"
+            },
             "DependencyDescription": "Geçerli {name} sürümü, Mainsail'in tüm özelliklerini desteklemiyor. {name} ürününü en az {neededVersion} sürümüne güncelleyin.",
             "DependencyName": "Bağımlılık: {name}",
             "DismissAll": "Hepsini reddet",
@@ -639,7 +643,7 @@
             "Files": "Dosyalar",
             "Flow": "Akış",
             "Headline": "Durum",
-            "Jobqueue": "İş Kuyruğu ({count})",
+            "Jobqueue": "İş Kuyruğu",
             "JobqueueMoreFiles": "daha fazla iş yok | bir iş daha var | {count} iş daha var",
             "Layer": "Katman",
             "Max": "maks.",

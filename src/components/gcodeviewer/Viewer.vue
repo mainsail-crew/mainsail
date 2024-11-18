@@ -209,7 +209,7 @@
             </v-card-text>
             <resize-observer @notify="handleResize" />
         </panel>
-        <v-snackbar v-model="loading" :timeout="-1" :value="true" fixed right bottom dark>
+        <v-snackbar v-model="loading" :timeout="-1" fixed right bottom>
             <div>
                 {{ $t('GCodeViewer.Rendering') }} - {{ loadingPercent }}%
                 <br />
@@ -222,7 +222,7 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
+        <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" fixed right bottom>
             <template v-if="downloadSnackbar.total > 0">
                 <div>
                     {{ $t('GCodeViewer.Downloading') }} - {{ Math.round(downloadSnackbar.percent) }} % @
@@ -277,7 +277,7 @@
 import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import GCodeViewer from '@sindarius/gcodeviewer'
-import axios from 'axios'
+import axios, { AxiosProgressEvent } from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import CodeStream from '@/components/gcodeviewer/CodeStream.vue'
@@ -304,10 +304,6 @@ interface downloadSnackbar {
     speed: number
     total: number
     cancelTokenSource: any
-    lastProgress: {
-        time: number
-        loaded: number
-    }
 }
 
 let viewer: any = null
@@ -333,42 +329,38 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     formatFilesize = formatFilesize
 
-    private isBusy = false
-    private loading = false
-    private loadingPercent = 0
+    isBusy = false
+    loading = false
+    loadingPercent = 0
 
-    private tracking = false
-    private loadedFile: string | null = null
+    tracking = false
+    loadedFile: string | null = null
 
-    private reloadRequired = false
-    private fileSize = 0
-    private renderQuality = this.renderQualities[2]
+    reloadRequired = false
+    fileSize = 0
+    renderQuality = this.renderQualities[2]
 
-    private scrubPosition = 0
-    private scrubPlaying = false
-    private scrubSpeed = 1
-    private scrubInterval: ReturnType<typeof setInterval> | undefined = undefined
-    private scrubFileSize = 0
+    scrubPosition = 0
+    scrubPlaying = false
+    scrubSpeed = 1
+    scrubInterval: ReturnType<typeof setInterval> | undefined = undefined
+    scrubFileSize = 0
 
-    private downloadSnackbar: downloadSnackbar = {
+    downloadSnackbar: downloadSnackbar = {
         status: false,
         filename: '',
         percent: 0,
         speed: 0,
         total: 0,
         cancelTokenSource: {},
-        lastProgress: {
-            time: 0,
-            loaded: 0,
-        },
     }
 
-    private excludeObject = {
+    excludeObject = {
         bool: false,
         name: '',
     }
 
-    private fileData: string = ''
+    fileData: string = ''
 
     @Prop({ type: String, default: '', required: false }) declare filename: string
     @Ref('fileInput') declare fileInput: HTMLInputElement
@@ -634,7 +626,6 @@ export default class Viewer extends Mixins(BaseMixin) {
     async loadFile(filename: string) {
         this.downloadSnackbar.status = true
         this.downloadSnackbar.speed = 0
-        this.downloadSnackbar.lastProgress.time = 0
         this.downloadSnackbar.filename = filename.startsWith('gcodes/') ? filename.slice(7) : filename
         const CancelToken = axios.CancelToken
         this.downloadSnackbar.cancelTokenSource = CancelToken.source()
@@ -642,20 +633,10 @@ export default class Viewer extends Mixins(BaseMixin) {
             .get(this.apiUrl + '/server/files/' + encodeURI(filename), {
                 cancelToken: this.downloadSnackbar.cancelTokenSource.token,
                 responseType: 'blob',
-                onDownloadProgress: (progressEvent) => {
-                    this.downloadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
-                    if (this.downloadSnackbar.lastProgress.time) {
-                        const time = progressEvent.timeStamp - this.downloadSnackbar.lastProgress.time
-                        const data = progressEvent.loaded - this.downloadSnackbar.lastProgress.loaded
-
-                        if (time > 1000 || this.downloadSnackbar.speed === 0) {
-                            this.downloadSnackbar.speed = data / (time / 1000)
-                            this.downloadSnackbar.lastProgress.time = progressEvent.timeStamp
-                            this.downloadSnackbar.lastProgress.loaded = progressEvent.loaded
-                        }
-                    } else this.downloadSnackbar.lastProgress.time = progressEvent.timeStamp
-
-                    this.downloadSnackbar.total = progressEvent.total
+                onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
+                    this.downloadSnackbar.percent = (progressEvent.progress ?? 0) * 100
+                    this.downloadSnackbar.speed = progressEvent.rate ?? 0
+                    this.downloadSnackbar.total = progressEvent.total ?? 0
                 },
             })
             .then((res) => res.data.text())
@@ -724,42 +705,45 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('currentPosition')
     currentPositionChanged(newVal: number[]) {
-        if (viewer) {
-            const position = [
-                { axes: 'X', position: newVal[0] },
-                { axes: 'Y', position: newVal[1] },
-                { axes: 'Z', position: newVal[2] },
-            ]
+        if (!viewer || !this.tracking || this.scrubPlaying) return
 
-            viewer.updateToolPosition(position)
-        }
+        const position = [
+            { axes: 'X', position: newVal[0] },
+            { axes: 'Y', position: newVal[1] },
+            { axes: 'Z', position: newVal[2] },
+        ]
+
+        viewer.updateToolPosition(position)
     }
 
     @Watch('filePosition')
     filePositionChanged(newVal: number) {
-        if (!viewer) return
+        if (!viewer || !this.tracking || this.scrubPlaying) return
 
         const offset = 350
         if (newVal > 0 && this.printerIsPrinting && this.tracking && newVal > offset) {
             viewer.gcodeProcessor.updateFilePosition(newVal - offset)
             this.scrubPosition = newVal - offset
-        } else {
-            viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
+            return
         }
+
+        viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
     }
 
     @Watch('tracking')
     async trackingChanged(newVal: boolean) {
         if (!viewer) return
+
         if (newVal) {
             this.scrubPlaying = false
             //Force renderers reload.
             viewer.gcodeProcessor.updateFilePosition(0)
             viewer?.forceRender()
-        } else {
-            viewer.gcodeProcessor.setLiveTracking(false)
-            await this.reloadViewer()
+            return
         }
+
+        viewer.gcodeProcessor.setLiveTracking(false)
+        await this.reloadViewer()
     }
 
     @Watch('printerIsPrinting')
@@ -949,7 +933,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
     }
 
-    private colorModes = [
+    colorModes = [
         { text: 'Extruder', value: 0 },
         { text: 'Feed Rate', value: 1 },
         { text: 'Feature', value: 2 },

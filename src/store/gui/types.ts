@@ -27,6 +27,7 @@ export interface GuiState {
         stepsXY: number[]
         feedrateZ: number
         offsetsZ: number[]
+        offsetZSaveOption: null | 'Z_OFFSET_APPLY_ENDSTOP' | 'Z_OFFSET_APPLY_PROBE'
         stepsZ: number[]
         stepsAll: number[]
         stepsCircleXY: number[]
@@ -97,13 +98,17 @@ export interface GuiState {
     presets?: GuiPresetsState
     remoteprinters?: GuiRemoteprintersState
     uiSettings: {
+        mode: 'dark' | 'light'
+        theme: string
         logo: string
         primary: string
         displayCancelPrint: boolean
         lockSlidersOnTouchDevices: boolean
         lockSlidersDelay: number
         confirmOnEmergencyStop: boolean
+        confirmOnCoolDown: boolean
         confirmOnPowerDeviceChange: boolean
+        confirmOnCancelJob: boolean
         boolBigThumbnail: boolean
         bigThumbnailBackground: string
         boolWideNavDrawer: boolean
@@ -111,6 +116,7 @@ export interface GuiState {
         navigationStyle: 'iconsAndText' | 'iconsOnly'
         defaultNavigationStateSetting: 'alwaysOpen' | 'alwaysClosed' | 'lastState'
         powerDeviceName: string | null
+        progressAsFavicon: boolean
         hideSaveConfigForBedMash: boolean
         disableFanAnimation: boolean
         boolManualProbeDialog: boolean
@@ -118,6 +124,7 @@ export interface GuiState {
         boolScrewsTiltAdjustDialog: boolean
         tempchartHeight: number
         hideUpdateWarnings: boolean
+        printstatusThumbnailZoom: boolean
     }
     view: {
         blockFileUpload: boolean
@@ -130,6 +137,13 @@ export interface GuiState {
             currentPath: string
             rootPath: string
             selectedFiles: FileStateFile[]
+        }
+        extruder: {
+            showTools: boolean
+            showExtrusionFactor: boolean
+            showPressureAdvance: boolean
+            showFirmwareRetraction: boolean
+            showExtruderControl: boolean
         }
         gcodefiles: {
             countPerPage: number
@@ -157,6 +171,8 @@ export interface GuiState {
             hidePrintStatus: string[]
             hideColums: string[]
             selectedJobs: ServerHistoryStateJob[]
+            showMaintenanceEntries: boolean
+            showPrintJobs: boolean
         }
         jobqueue: {
             countPerPage: number
@@ -177,6 +193,13 @@ export interface GuiState {
             showHiddenFiles: boolean
             currentPath: string
             selectedFiles: FileStateFile[]
+        }
+        toolhead: {
+            showPosition: boolean
+            showCoordinates: boolean
+            showControl: boolean
+            showZOffset: boolean
+            showSpeedFactor: boolean
         }
         webcam: {
             currentCam: {

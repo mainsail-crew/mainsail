@@ -52,6 +52,7 @@ export const farm: Module<FarmState, RootState> = {
             commit(payload.id + '/setSocketData', {
                 hostname: payload.values.hostname,
                 port: payload.values.port,
+                path: payload.values.path,
                 isConnecting: true,
             })
             dispatch(payload.id + '/reconnect')

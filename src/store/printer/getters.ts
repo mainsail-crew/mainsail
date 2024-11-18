@@ -2,7 +2,6 @@ import { checkKlipperConfigModules } from '@/store/variables'
 import { GetterTree } from 'vuex'
 import {
     PrinterState,
-    PrinterStateBedMesh,
     PrinterStateExtruder,
     PrinterStateExtruderStepper,
     PrinterStateFan,
@@ -142,24 +141,31 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getMacros: (state) => {
         const array: PrinterStateMacro[] = []
-        const config = state.configfile?.config ?? {}
         const settings = state.configfile?.settings ?? null
+        const printerGcodes = state.gcode?.commands ?? {}
 
-        Object.keys(config)
-            .filter((prop) => prop.toLowerCase().startsWith('gcode_macro'))
+        const prefix = 'gcode_macro '
+        const prefixLength = prefix.length
+
+        Object.keys(state)
+            .filter((prop) => prop.toLowerCase().startsWith(prefix))
             .forEach((prop) => {
-                const name = prop.replace('gcode_macro ', '')
+                const name = prop.slice(prefixLength)
+                const printerGcode = printerGcodes[name.toUpperCase()] ?? {}
+
+                // remove macros with a '_' as first char
                 if (name.startsWith('_')) return
 
+                // remove macros with rename_existing in the config
                 const propLower = prop.toLowerCase()
-                const propSettings = settings[propLower]
+                const propSettings = settings[propLower] ?? {}
                 if ('rename_existing' in propSettings) return
 
                 const variables = state[prop] ?? {}
 
                 array.push({
                     name,
-                    description: settings[propLower].description ?? null,
+                    description: printerGcode?.help ?? null,
                     prop: propSettings,
                     params: getMacroParams(propSettings),
                     variables,
@@ -222,7 +228,13 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 let singleChannelTarget = null
                 const colorData = object.state.color_data ?? []
 
-                if ('color_order' in object.settings) colorOrder = object.settings.color_order[0] ?? ''
+                if ('color_order' in object.settings) {
+                    if (typeof object.settings.color_order === 'string') {
+                        colorOrder = object.settings.color_order
+                    } else if (Array.isArray(object.settings.color_order) && object.settings.color_order.length > 0) {
+                        colorOrder = object.settings.color_order[0]
+                    }
+                }
 
                 if (object.type === 'led') {
                     colorOrder = ''
@@ -290,7 +302,15 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getMiscellaneous: (state) => {
         const output: PrinterStateMiscellaneous[] = []
-        const supportedObjects = ['controller_fan', 'heater_fan', 'fan_generic', 'fan', 'output_pin']
+        const supportedObjects = [
+            'controller_fan',
+            'heater_fan',
+            'fan_generic',
+            'fan',
+            'output_pin',
+            'pwm_tool',
+            'pwm_cycle_time',
+        ]
 
         const controllableFans = ['fan_generic', 'fan']
 
@@ -309,10 +329,11 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
                     if (nameSplit[0].toLowerCase() === 'fan') scale = 255
 
-                    if (nameSplit[0].toLowerCase() === 'output_pin') {
+                    if (['output_pin', 'pwm_tool', 'pwm_cycle_time'].includes(nameSplit[0])) {
                         controllable = true
                         pwm = false
                         if ('pwm' in settings) pwm = settings?.pwm ?? false
+                        if (['pwm_tool', 'pwm_cycle_time'].includes(nameSplit[0])) pwm = true
                         if ('scale' in settings) scale = settings?.scale ?? 1
                     }
 
@@ -401,7 +422,9 @@ export const getters: GetterTree<PrinterState, RootState> = {
         Object.keys(state).forEach((key) => {
             if (key === 'mcu' || key.startsWith('mcu ')) {
                 const mcu = state[key]
-                const versionOutput = (mcu.mcu_version ?? 'unknown').split('-').slice(0, 4).join('-')
+                let versionOutput = (mcu.mcu_version ?? 'unknown').split('-').slice(0, 4).join('-')
+
+                if ('app' in mcu && mcu.app !== 'Klipper') versionOutput = mcu.app + ' ' + versionOutput
 
                 let load = 0
                 if (mcu.last_stats?.mcu_task_avg && mcu.last_stats?.mcu_task_stddev) {
@@ -524,38 +547,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
         })
 
         return output
-    },
-
-    getBedMeshProfiles: (state) => {
-        const profiles: PrinterStateBedMesh[] = []
-        let currentProfile = ''
-        if (state.bed_mesh) currentProfile = state.bed_mesh.profile_name
-
-        if (state.bed_mesh && 'profiles' in state.bed_mesh) {
-            Object.keys(state.bed_mesh?.profiles).forEach((key) => {
-                const value: any = state.bed_mesh.profiles[key]
-
-                let points: number[] = []
-                value.points.forEach((row: number[]) => {
-                    points = points.concat(row)
-                })
-
-                const min = Math.min(...points)
-                const max = Math.max(...points)
-
-                profiles.push({
-                    name: key,
-                    data: { ...value.mesh_params, points: value.points },
-                    points: points,
-                    min: min,
-                    max: max,
-                    variance: Math.abs(min - max),
-                    is_active: currentProfile === key,
-                })
-            })
-        }
-
-        return caseInsensitiveSort(profiles, 'name')
     },
 
     getExtruders: (state) => {
@@ -747,7 +738,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
             timeCount++
         }
 
-        if (time && timeCount) return Date.now() + (time / timeCount) * 1000
+        if (time && timeCount) return Math.round(Date.now() + (time / timeCount) * 1000)
 
         return 0
     },
@@ -763,6 +754,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         if (hours12Format && h > 11) am = false
         if (hours12Format && h > 12) h -= 12
+        if (hours12Format && h == 0) h += 12
         if (h < 10) h = '0' + h
 
         const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()

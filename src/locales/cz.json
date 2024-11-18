@@ -600,7 +600,7 @@
             "Files": "Soubory",
             "Flow": "Průtok",
             "Headline": "Stav",
-            "Jobqueue": "Seznam úloh ({count})",
+            "Jobqueue": "Seznam úloh",
             "JobqueueMoreFiles": "žádné další úlohy | jedna další úloha | {count} dalších úloh",
             "Layer": "Vrstva",
             "Max": "max",

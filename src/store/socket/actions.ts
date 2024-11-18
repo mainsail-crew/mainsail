@@ -18,9 +18,12 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('setData', payload)
 
         if ('$socket' in Vue.prototype) {
+            const normPath = payload.path.replaceAll(/(^\/*)|(\/*$)/g, '')
+            const path = normPath.length > 0 ? `/${normPath}` : ''
+
             await Vue.prototype.$socket.close()
             await Vue.prototype.$socket.setUrl(
-                state.protocol + '://' + payload.hostname + ':' + payload.port + '/websocket'
+                state.protocol + '://' + payload.hostname + ':' + payload.port + path + '/websocket'
             )
             await Vue.prototype.$socket.connect()
         }
@@ -132,6 +135,10 @@ export const actions: ActionTree<SocketState, RootState> = {
                 dispatch('server/spoolman/getActiveSpoolId', payload.params[0], { root: true })
                 break
 
+            case 'notify_sensor_update':
+                dispatch('server/sensor/updateSensors', payload.params[0], { root: true })
+                break
+
             default:
                 window.console.debug(payload)
         }
@@ -153,11 +160,21 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('addInitModule', payload)
     },
 
+    // remove only one module from init component like 'server/spoolman/getActiveSpoolId'
     removeInitModule({ commit }, payload: string) {
         commit('removeInitModule', payload)
     },
 
+    // remove a complete init component like 'server/spoolman'
+    removeInitComponent({ commit }, payload: string) {
+        commit('removeInitComponent', payload)
+    },
+
     reportDebug(_, payload) {
         window.console.log(payload)
+    },
+
+    setConnectionFailed({ commit }, payload) {
+        commit('setDisconnected', payload)
     },
 }

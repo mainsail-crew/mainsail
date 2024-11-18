@@ -1,15 +1,13 @@
-<style scoped></style>
-
 <template>
     <div>
         <v-row>
             <v-col>
-                <history-statistics-panel></history-statistics-panel>
+                <history-statistics-panel />
             </v-col>
         </v-row>
         <v-row class="mt-0">
             <v-col>
-                <history-list-panel></history-list-panel>
+                <history-list-panel />
             </v-col>
         </v-row>
     </div>
@@ -19,11 +17,9 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import HistoryListPanel from '@/components/panels/HistoryListPanel.vue'
 import HistoryStatisticsPanel from '@/components/panels/HistoryStatisticsPanel.vue'
+
 @Component({
-    components: {
-        HistoryStatisticsPanel,
-        HistoryListPanel,
-    },
+    components: { HistoryListPanel, HistoryStatisticsPanel },
 })
 export default class PageHistory extends Mixins(BaseMixin) {}
 </script>

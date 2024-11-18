@@ -19,6 +19,7 @@ export const actions: ActionTree<RootState, RootState> = {
         dispatch('socket/setSocket', {
             hostname: printerSocket.hostname,
             port: printerSocket.port,
+            path: printerSocket.path,
         })
     },
 
@@ -29,7 +30,7 @@ export const actions: ActionTree<RootState, RootState> = {
     /**
      * This function will parse the config.json content and config mainsail
      */
-    importConfigJson({ commit }, payload: ConfigJson) {
+    async importConfigJson({ commit }, payload: ConfigJson) {
         type RootStateInstancesDbType = 'moonraker' | 'browser' | 'json'
         let instancesDB: RootStateInstancesDbType = payload.instancesDB ?? 'moonraker'
         if (import.meta.env.VUE_APP_INSTANCES_DB)
@@ -52,5 +53,6 @@ export const actions: ActionTree<RootState, RootState> = {
 
         if (payload.hostname) commit('socket/setData', { hostname: payload.hostname })
         if (payload.port) commit('socket/setData', { port: parseInt(payload.port.toString()) })
+        if (payload.path) commit('socket/setData', { route_prefix: payload.path })
     },
 }

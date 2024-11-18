@@ -65,8 +65,11 @@
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
-                            <b>{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b>
-                            {{ absolutePath }}
+                            <b class="mr-1">{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b>
+                            <path-navigation
+                                :path="currentPath"
+                                :base-directory-label="`/${root}`"
+                                :on-segment-click="clickPathNavGoToDirectory" />
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null && !showMissingConfigRootWarning">
@@ -257,9 +260,9 @@
                     <img
                         v-if="dialogImage.item.url"
                         :src="dialogImage.item.url"
-                        style="max-height: 100%; width: auto"
+                        style="max-height: 100%; width: auto; max-width: 100%; object-fit: contain"
                         alt="image" />
-                    <div v-else-if="dialogImage.item.svg" class="fill-width" v-html="dialogImage.item.svg"></div>
+                    <div v-else-if="dialogImage.item.svg" class="fill-width" v-html="dialogImage.item.svg" />
                 </div>
             </panel>
         </v-dialog>
@@ -512,7 +515,7 @@
             </panel>
         </v-dialog>
 
-        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
+        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom>
             <span v-if="uploadSnackbar.max > 1" class="mr-1">
                 ({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})
             </span>
@@ -533,10 +536,12 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from '@/components/mixins/theme'
 import { formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
+import PathNavigation from '@/components/ui/PathNavigation.vue'
 import { hiddenRootDirectories } from '@/store/variables'
 import {
     mdiFilePlus,
@@ -596,10 +601,6 @@ interface uploadSnackbar {
     number: number
     max: number
     cancelTokenSource: any
-    lastProgress: {
-        time: number
-        loaded: number
-    }
 }
 
 interface draggingFile {
@@ -607,9 +608,9 @@ interface draggingFile {
 }
 
 @Component({
-    components: { Panel },
+    components: { Panel, PathNavigation },
 })
-export default class ConfigFilesPanel extends Mixins(BaseMixin) {
+export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     mdiInformation = mdiInformation
     mdiClose = mdiClose
     mdiCog = mdiCog
@@ -714,10 +715,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         number: 0,
         max: 0,
         cancelTokenSource: {},
-        lastProgress: {
-            time: 0,
-            loaded: 0,
-        },
     }
     private draggingFile: draggingFile = {
         item: {
@@ -775,7 +772,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             },
             {
                 text: this.$t('Machine.ConfigFilesPanel.UploadFile'),
-                color: 'grey darken-3',
+                color: this.machineButtonCol,
                 icon: mdiFileUpload,
                 loadingName: null,
                 onlyWriteable: true,
@@ -784,7 +781,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             },
             {
                 text: this.$t('Machine.ConfigFilesPanel.CreateFile'),
-                color: 'grey darken-3',
+                color: this.machineButtonCol,
                 icon: mdiFilePlus,
                 loadingName: null,
                 onlyWriteable: true,
@@ -793,7 +790,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             },
             {
                 text: this.$t('Machine.ConfigFilesPanel.CreateDirectory'),
-                color: 'grey darken-3',
+                color: this.machineButtonCol,
                 icon: mdiFolderPlus,
                 loadingName: null,
                 onlyWriteable: true,
@@ -802,7 +799,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             },
             {
                 text: this.$t('Machine.ConfigFilesPanel.RefreshDirectory'),
-                color: 'grey darken-3',
+                color: this.machineButtonCol,
                 icon: mdiRefresh,
                 loadingName: null,
                 onlyWriteable: false,
@@ -845,8 +842,15 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         }
 
         if (this.hideBackupFiles) {
-            const backupFileMatcher = /.*\/?printer-\d{8}_\d{6}\.cfg$/
-            files = files.filter((file) => !file.filename.match(backupFileMatcher))
+            const klipperBackupFileMatcher = /^printer-\d{8}_\d{6}\.cfg$/
+            const crowsnestBackupFileMatcher = /^crowsnest\.conf\.\d{4}-\d{2}-\d{2}-\d{4}$/
+
+            files = files.filter(
+                (file) =>
+                    !file.filename.match(klipperBackupFileMatcher) &&
+                    !file.filename.match(crowsnestBackupFileMatcher) &&
+                    !file.filename.endsWith('.bkp')
+            )
         }
 
         return files
@@ -1007,6 +1011,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     clickRowGoBack() {
         this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
+    }
+
+    clickPathNavGoToDirectory(segment: { location: string }) {
+        this.currentPath = segment.location
     }
 
     showContextMenu(e: any, item: FileStateFile) {

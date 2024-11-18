@@ -601,7 +601,7 @@
             "Files": "파일",
             "Flow": "유량",
             "Headline": "출력 상태",
-            "Jobqueue": "작업 대기열({count})",
+            "Jobqueue": "작업 대기열",
             "JobqueueMoreFiles": "더 이상 작업 없음 | 1개 이상의 작업 | {count}개 이상의 작업",
             "Layer": "레이어",
             "Max": "최대",

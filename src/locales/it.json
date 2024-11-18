@@ -17,7 +17,7 @@
                 "KlipperWarning": "Avviso di Klipper"
             },
 			"MaintenanceReminder": "Promemoria per la manutenzione",
-            "MaintenanceReminderText": "La manutenzione di \"{name}\" è in scadenza.",											  
+            "MaintenanceReminderText": "La manutenzione di \"{name}\" è in scadenza.",
 	        "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "È stato rilevato un errore durante il caricamento del componente '{component}' di Moonraker. Controllare il file di registro e risolvere il problema.",
@@ -34,12 +34,12 @@
 			"OneDayShort": "1D",
             "OneHourShort": "1H",
             "OneWeekShort": "1W",
-            "Remind": "Ricorda:"
+            "Remind": "Ricorda:",
 			"ShowDetails": "mostra dettagli",
             "TmcOtFlag": "Errore driver stepper: OT flag impostato",
-            "TmcOtFlagText": "Il driver dello stepper '{nome}' ha attivato il flag OT e ha smesso di funzionare. Ciò può essere causato da una corrente troppo elevata. Controllare le impostazioni del driver dello stepper e il raffreddamento.”,
+            "TmcOtFlagText": "Il driver dello stepper '{nome}' ha attivato il flag OT e ha smesso di funzionare. Ciò può essere causato da una corrente troppo elevata. Controllare le impostazioni del driver dello stepper e il raffreddamento.",
             "TmcOtpwFlag": "Avviso driver stepper: flag OTPW impostato",
-            "TmcOtpwFlagText": "Il driver dello stepper '{name}' ha attivato il flag OTPW e potrebbe smettere di funzionare se si surriscalda ulteriormente. Ciò indica una condizione di sovratemperatura causata da una corrente troppo elevata. Controllare le impostazioni del driver dello stepper e il raffreddamento”.																																																																		
+            "TmcOtpwFlagText": "Il driver dello stepper '{name}' ha attivato il flag OTPW e potrebbe smettere di funzionare se si surriscalda ulteriormente. Ciò indica una condizione di sovratemperatura causata da una corrente troppo elevata. Controllare le impostazioni del driver dello stepper e il raffreddamento."
         },
         "NumberInput": {
             "GreaterOrEqualError": "Deve essere maggiore o uguale a {min}!.",
@@ -176,7 +176,7 @@
         "Yes": "Si"
     },
     "DevicesDialog": {
-        "CanBusInfo": “È possibile rilevare solo i nodi non assegnati. Si raccomanda di avere un solo dispositivo non assegnato collegato al CANBUS per evitare problemi di comunicazione. Per maggiori dettagli, fare clic sul link:”,
+        "CanBusInfo": "È possibile rilevare solo i nodi non assegnati. Si raccomanda di avere un solo dispositivo non assegnato collegato al CANBUS per evitare problemi di comunicazione. Per maggiori dettagli, fare clic sul link:",
         "ClickRefresh": "Clicca sul pulsante AGGIORNA per cercare i dispositivi.",
         "DevicePath": "Percorso del dispositivo",
         "Formats": "Formati",
@@ -188,7 +188,7 @@
         "PathById": "Percorso per ID",
         "Refresh": "aggiorna",
         "Resolutions": "Risoluzioni"
-    },	  
+    },
     "Dialogs": {
         "StartPrint": {
             "Cancel": "Cancella",
@@ -345,6 +345,7 @@
         "InvalidNameEmpty": "Il valore non può essere nullo!",
         "InvalidNameReserved": "Il profilo 'default' è riservato, scegli un altro nome.",
         "Mesh": "Mesh",
+        "Later": "in seguito",
         "Name": "Nome",
         "NoBedMeshHasBeenLoadedYet": "Nessuna bed-mesh è stata caricata.",
         "NoProfile": "Nessun profilo disponibile",
@@ -353,6 +354,7 @@
         "Remove": "eliminare",
         "Rename": "rinominare",
         "RenameBedMeshProfile": "Rinomina Profilo Bed Mesh",
+        "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Scala gradiente",
         "ScaleZMax": "Scala z-max.",
         "TitleCalibrate": "Calibra nuova Bed Mesh",
@@ -401,10 +403,10 @@
         "FirstLayerHeight": "Altezza primo Layer",
         "HistoryFilamentUsage": "Filamento",
         "HistoryPrinttimeAVG": "Stampe",
-        "Hours": "ore"
-		"InvalidNameEmpty": "Nome non valido. Il nome può essere vuoto!”,
+        "Hours": "ore",
+		"InvalidNameEmpty": "Nome non valido. Il nome può essere vuoto!",
 		"JobDetails": "Dettagli del Processo di stampa",
-		"Jobs": "Processi di stampa"
+		"Jobs": "Processi di stampa",
 		"LastModified": "Ultima Modifica",
         "LayerHeight": "Altezza del Layer",
         "LoadCompleteHistory": "Carica la cronologia completa",
@@ -472,7 +474,7 @@
         "JobQueue": "Coda dei Lavori",
         "Pause": "Pausa",
         "RemoveFromQueue": "Rimuovi dalla coda",
-        "Start": "Inizia"
+        "Start": "Inizia",
 		"StartPrint": "Comincia Lavoro"
     },
     "Machine": {
@@ -649,7 +651,7 @@
             "CheckKlippyAndUdsAddress": "Controllare se il servizio Klipper è in esecuzione e se klippy_uds_address è configurato correttamente nel Moonraker.conf.",
             "FirmwareRestart": "Riavvio Firmware",
             "KlipperLog": "Klipper Log",
-			"MoonrakerCannotConnect": "Moonraker non riesce a connettersi a Klipper!",								
+			"MoonrakerCannotConnect": "Moonraker non riesce a connettersi a Klipper!",
 			"MoonrakerLog": "Moonraker Log",
             "PowerOn": "Accensione",
             "PrinterSwitchedOff": "La stampante è spenta",
@@ -676,7 +678,7 @@
             "Headline": "Console",
             "HideTemperatures": "Nascondi Temperature",
             "HideTimelapse": "Nascondi Timelapse",
-			"RawOutput": "RAW-Output (for debugging)",										  
+			"RawOutput": "RAW-Output (for debugging)",
             "SendCode": "Invia codice...",
             "SetupConsole": "Impostazioni Console"
         },
@@ -828,7 +830,7 @@
             "All": "Tutto",
 			"ConnectingTo": "Connessione a {url}",
             "Disconnected": "Disconnesso",
-            "ErrorWhileConnecting": "Errore durante la connessione a {url}",			 
+            "ErrorWhileConnecting": "Errore durante la connessione a {url}",
             "FPS": "FPS",
             "Headline": "Webcam",
             "NoWebcam": "Nessuna webcam disponibile. Aggiungi una webcam da \"Impostazioni dell'Interfaccia\" -> \"Webcams\".",
@@ -885,7 +887,7 @@
         "HostnameIp": "Hostname/IP",
         "HostnameRequired": "Hostname richiesto",
 		"Name": "Nome",
-        "Path": "Percorso",		   
+        "Path": "Percorso",
         "Port": "Porta",
         "PortRequired": "Porta richiesta",
         "RememberToAdd": "Ricordati di aggiungere {cors} in moonraker.conf all'interno di 'cors_domains'.",
@@ -1026,7 +1028,7 @@
         "HeightmapTab": {
             "ColorSchemes": "Schema Colore",
 			"DefaultOrientation": "Orientamento predefinito",
-			"DefaultOrientationDescription": "Selezionare l'orientamento predefinito per la visualizzazione della maglia del letto.",						 
+			"DefaultOrientationDescription": "Selezionare l'orientamento predefinito per la visualizzazione della maglia del letto.",
             "Heightmap": "Mappa Altimetrica",
 			"IsDefault": "(Default)",
 			"Orientations": {
@@ -1130,7 +1132,7 @@
             "Hostname": "Hostname",
 			"Name": "Nome",
             "NameDescription": "Questo nome non sarà visualizzato nella GUI e sarà utilizzato solo per i reindirizzamenti..",
-            "Path": "Percorso",			   
+            "Path": "Percorso",
             "Port": "Porta",
             "RemotePrinters": "Stampanti Remote",
             "UpdatePrinter": "Aggiorna Stampante",
@@ -1147,6 +1149,7 @@
 			"ConstantRateFactor": "Fattore di velocità costante",
 			"ConstantRateFactorDescription": "Questo configura la qualità vs grandezza del video. Il raggio della scala del CRF è 0-51, dove 0 è lossless, 23 è il default e 51 è la qualità peggiore possibile. Un valore più basso porta generalmente ad una qualità maggiore e un raggio consigliato è di 17-28. Considera 17 o 18 come visualmente lossless.",
 			"duplicatelastframe": "Duplica Ultimo Frame",
+            "CameraDescription": "Seleziona la webcam da utilizzare",
             "duplicatelastframeDescription": "Duplica l'ultimo frame alla fine del video",
             "Enabled": "Abilitato",
             "EnabledDescription": "Se disabilitato, le macro G-Code e l'autorender verranno ignorati.",
@@ -1161,7 +1164,7 @@
             "HyperlapseCycleDescription": "Una schermata sarà catturata ogni tot secondi",
             "Mode": "Modalità",
             "ModeDescription": "Seleziona tra Layermacro e Hyperlapse",
-			"NoWebcamFound": "Nessuna Webcam disponibile",									   
+			"NoWebcamFound": "Nessuna Webcam disponibile",
             "OutputFramerate": "Output Framerate",
             "OutputFramerateDescription": "Definisce il Framerate del video. Nota: questo sarà ignorato se variable_fps è ablititato",
             "Parkhead": "Park Toolhead",
@@ -1193,7 +1196,7 @@
             "SaveFrames": "Salva Frames",
             "SaveFramesDescription": "Salva i Frame in un file zip per rendering esterno",
             "StreamDelayCompensation": "Compensazione Ritardo Stream",
-			"SelectWebcam": "Seleziona webcam...",													   
+			"SelectWebcam": "Seleziona webcam...",
             "StreamDelayCompensationDescription": "Ritarda cattura frame",
             "Targetlength": "Lunghezza target",
             "TargetlengthDescription": "La lunghezza target quando Fps variabile è abilitato",
@@ -1229,7 +1232,7 @@
             "ConfirmOnEmergencyStopDescription": "Mostra finestra di dialogo per l'Arresto di Emergenza",
             "ConfirmOnPowerDeviceChange": "Richiedi conferma alle modifiche di Alimentazione Dispositivo",
             "ConfirmOnPowerDeviceChangeDescription": "Mostra finestra di dialogo per le modifiche di Alimentazione Dispositivo",
-            "DefaultNavigationState": "Stato predefinito della navigazione",										 
+            "DefaultNavigationState": "Stato predefinito della navigazione",
             "DefaultNavigationStateAlwaysClosed": "sempre chiuso",
             "DefaultNavigationStateAlwaysOpen": "sempre aperto",
             "DefaultNavigationStateDescription": "Quale stato dovrebbe avere la navigazione per impostazione predefinita.",
@@ -1253,7 +1256,7 @@
             "ManualProbeDialog": "Finestra di dialogo per il Manual Probe",
             "ManualProbeDialogDescription": "Mostra dialoghi di aiuto il PROBE_CALIBRATE o lo Z_ENDSTOP_CALIBRATE.",
 			"Mode": "Modalità",
-            "ModeDescription": "Modificare l'aspetto generale dell'applicazione.",			   
+            "ModeDescription": "Modificare l'aspetto generale dell'applicazione.",
 		    "NavigationStyle": "Stile navigazione",
             "NavigationStyleDescription": "Cambia l'aspetto di navigazione",
             "NavigationStyleIconsAndText": "Icone + Testo",

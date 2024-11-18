@@ -24,6 +24,7 @@ export interface FarmPrinterStateSocket {
     hostname: string
     port: number
     webPort: number
+    path: string
     protocol: string
     isConnected: boolean
     isConnecting: boolean

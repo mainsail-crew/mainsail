@@ -13,8 +13,8 @@ export default class BaseMixin extends Vue {
         return this.$store.getters['socket/getHostUrl']
     }
 
-    get hostPort(): boolean {
-        return this.$store.state.socket.port ?? 80
+    get hostPort(): number {
+        return parseInt(this.$store.state.socket.port ?? 80)
     }
 
     get instancesDB() {
@@ -52,10 +52,14 @@ export default class BaseMixin extends Vue {
     }
 
     get printerPowerDevice(): string {
-        let deviceName = this.$store.state.gui.uiSettings.powerDeviceName ?? null
-        if (deviceName === null) deviceName = 'printer'
+        const deviceName = this.$store.state.gui.uiSettings.powerDeviceName ?? null
+        if (deviceName !== null) return deviceName
 
-        return deviceName
+        const devices = this.$store.getters['server/power/getDevices'] ?? []
+        return (
+            devices.find((device: ServerPowerStateDevice) => device.device.toLowerCase() === 'printer')?.device ??
+            'printer'
+        )
     }
 
     get isPrinterPowerOff() {
@@ -183,11 +187,7 @@ export default class BaseMixin extends Vue {
     }
 
     get hours12Format() {
-        const setting = this.$store.state.gui.general.timeFormat
-        if (setting === '12hours') return true
-        if (setting === null && this.browserLocale === 'en-US') return true
-
-        return false
+        return this.$store.getters['gui/getHours12Format']
     }
 
     formatDate(value: number | Date): string {

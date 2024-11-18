@@ -62,14 +62,23 @@ export const camelize = (str: string): string => {
 }
 
 export function formatConsoleMessage(message: string): string {
-    message = message.replace(/!! /g, '')
-    message = message.replace(/\/\/ /g, '')
+    // remove !! at error msg start
+    message = message.replace(/^!! /g, '')
+    // remove !! after \n new line
+    message = message.replace(/\n!! /g, '\n')
+    // remove // at command msg start
+    message = message.replace(/^\/\/ /g, '')
+    // remove // at \n new line
+    message = message.replace(/\n\/\/ /g, '\n')
+    // remove echo
+    message = message.replace(/^echo:/g, '')
+    // remove debug
+    message = message.replace(/^debug:/g, '')
+    // replace linebreaks with html <br>
     message = message.replace('\n// ', '<br>')
     message = message.replace(/\r\n|\r|\n/g, '<br>')
-    //message = message.replaceAll('<br />', '<br>')
-    //return message.split('<br>');
 
-    return message
+    return message.trim()
 }
 
 export const convertName = (name: string): string => {
@@ -105,30 +114,30 @@ export const formatFrequency = (frequency: number): string => {
     return Math.max(frequency, 0.1).toFixed() + units[i]
 }
 
-export const formatPrintTime = (totalSeconds: number): string => {
-    if (totalSeconds) {
-        let output = ''
+export const formatPrintTime = (totalSeconds: number, boolDays = true): string => {
+    if (!totalSeconds) return '--'
 
+    const output: string[] = []
+
+    if (boolDays) {
         const days = Math.floor(totalSeconds / (3600 * 24))
         if (days) {
             totalSeconds %= 3600 * 24
-            output += days + 'd'
+            output.push(`${days}d`)
         }
-
-        const hours = Math.floor(totalSeconds / 3600)
-        totalSeconds %= 3600
-        if (hours) output += ' ' + hours + 'h'
-
-        const minutes = Math.floor(totalSeconds / 60)
-        if (minutes) output += ' ' + minutes + 'm'
-
-        const seconds = totalSeconds % 60
-        if (seconds) output += ' ' + seconds.toFixed(0) + 's'
-
-        return output
     }
 
-    return '--'
+    const hours = Math.floor(totalSeconds / 3600)
+    totalSeconds %= 3600
+    if (hours) output.push(`${hours}h`)
+
+    const minutes = Math.floor(totalSeconds / 60)
+    if (minutes) output.push(`${minutes}m`)
+
+    const seconds = totalSeconds % 60
+    if (seconds) output.push(`${seconds.toFixed(0)}s`)
+
+    return output.join(' ')
 }
 
 export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortDesc: boolean[]): FileStateFile[] => {
@@ -240,4 +249,38 @@ export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParam
 export function windowBeforeUnloadFunction(e: BeforeUnloadEvent) {
     e.preventDefault()
     e.returnValue = ''
+}
+
+export function copyToClipboard(text: string) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text)
+        return
+    }
+
+    const textArea = document.createElement('textarea')
+    let element = document.getElementById('devices-dialog')
+    if (!element) element = document.body
+
+    textArea.value = text
+    textArea.style.position = 'absolute'
+    textArea.style.top = '0'
+    textArea.style.left = '0'
+    textArea.style.zIndex = '100000'
+    textArea.style.opacity = '0'
+    element.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+    try {
+        document.execCommand('copy')
+    } catch (err) {
+        console.error('Unable to copy to clipboard', err)
+    }
+    textArea.remove()
+}
+
+export function sortResolutions(a: string, b: string) {
+    const aSplit = parseInt(a.split('x')[0])
+    const bSplit = parseInt(b.split('x')[0])
+
+    return aSplit - bSplit
 }

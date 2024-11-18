@@ -1,7 +1,12 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
+import { PrinterStateExtruder } from '@/store/printer/types'
 @Component
 export default class ExtruderMixin extends Vue {
+    get extruders(): PrinterStateExtruder[] {
+        return this.$store.getters['printer/getExtruders']
+    }
+
     get activeExtruder(): string {
         return this.$store.state.printer.toolhead?.extruder
     }

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { PrinterStateMacro, PrinterStateToolchangeMacro } from '@/store/printer/types'
 
 @Component
 export default class ControlMixin extends Vue {
@@ -63,6 +64,19 @@ export default class ControlMixin extends Vue {
         return this.$store.getters['gui/getDefaultControlActionButton']
     }
 
+    get actionButton(): string {
+        const button = this.$store.state.gui.control.actionButton ?? this.defaultActionButton
+
+        if (
+            (button === 'qgl' && !this.$store.getters['printer/existsQGL']) ||
+            (button === 'ztilt' && !this.$store.getters['printer/existsZTilt'])
+        ) {
+            return this.defaultActionButton
+        }
+
+        return button
+    }
+
     /**
      * Axes home states
      */
@@ -81,6 +95,21 @@ export default class ControlMixin extends Vue {
 
     get zAxisHomed(): boolean {
         return this.homedAxes.includes('z')
+    }
+
+    get macros() {
+        return this.$store.getters['printer/getMacros']
+    }
+
+    get toolchangeMacros(): PrinterStateToolchangeMacro[] {
+        return this.macros
+            .filter((macro: PrinterStateMacro) => macro.name.toUpperCase().match(/^T\d+/))
+            .sort((a: PrinterStateMacro, b: PrinterStateMacro) => {
+                const numberA = parseInt(a.name.slice(1))
+                const numberB = parseInt(b.name.slice(1))
+
+                return numberA - numberB
+            })
     }
 
     doHome() {
@@ -119,9 +148,11 @@ export default class ControlMixin extends Vue {
     }
 
     doSendMove(gcode: string, feedrate: number) {
-        gcode = 'G91' + '\n' + 'G1 ' + gcode + ' F' + feedrate * 60
-
-        if (this.absolute_coordinates) gcode += '\nG90'
+        gcode =
+            `SAVE_GCODE_STATE NAME=_ui_movement\n` +
+            `G91\n` +
+            `G1 ${gcode} F${feedrate * 60}\n` +
+            `RESTORE_GCODE_STATE NAME=_ui_movement`
 
         this.doSend(gcode)
     }

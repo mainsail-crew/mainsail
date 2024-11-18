@@ -7,7 +7,9 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 // eslint-disable-next-line
 export const getters: GetterTree<FarmPrinterState, any> = {
     getSocketUrl: (state) => {
-        return state.socket.protocol + '://' + state.socket.hostname + ':' + state.socket.port + '/websocket'
+        const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
+        const path = normPath.length > 0 ? `/${normPath}` : ''
+        return state.socket.protocol + '://' + state.socket.hostname + ':' + state.socket.port + path + '/websocket'
     },
 
     getSocketData: (state) => {
@@ -32,7 +34,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         )
             return state.data.gui.general.printername
 
-        return state.socket.port !== 80 ? state.socket.hostname + ':' + state.socket.port : state.socket.hostname
+        return state.socket.hostname + (state.socket.port != 80 ? ':' + state.socket.port : '') + state.socket.path
     },
 
     getPrinterSocketState: (state) => {
@@ -125,22 +127,25 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     getImage: (state) => {
         if (state.current_file.filename && state.current_file.thumbnails?.length) {
             const indexLastDir = state.current_file.filename.lastIndexOf('/')
-            const dir = indexLastDir !== -1 ? state.current_file.filename.substr(0, indexLastDir) + '/' : ''
+            const dir = indexLastDir !== -1 ? state.current_file.filename.substring(0, indexLastDir) + '/' : ''
             const thumbnail = state.current_file.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
 
+            const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
+            const path = normPath.length > 0 ? `/${normPath}` : ''
             if (thumbnail && 'relative_path' in thumbnail)
                 return (
                     '//' +
                     state.socket.hostname +
                     ':' +
                     state.socket.port +
+                    path +
                     '/server/files/gcodes/' +
                     dir +
                     thumbnail.relative_path
                 )
         }
 
-        return '/img/sidebar-background.svg'
+        return null
     },
 
     getThemeFileUrl: (state) => (acceptName: string, acceptExtensions: string[]) => {
@@ -150,7 +155,12 @@ export const getters: GetterTree<FarmPrinterState, any> = {
                 acceptExtensions.includes(element.substr(element.lastIndexOf('.') + 1))
         )
 
-        return file ? '//' + state.socket.hostname + ':' + state.socket.port + '/server/files/config/' + file : null
+        const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
+        const path = normPath.length > 0 ? `/${normPath}` : ''
+
+        return file
+            ? '//' + state.socket.hostname + ':' + state.socket.port + path + '/server/files/config/' + file
+            : null
     },
 
     getLogo: (state, getters) => {

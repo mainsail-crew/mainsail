@@ -582,10 +582,6 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     engineOffIcon =
         'M3.78 2.5L21.5 20.22l-1.27 1.28L18 19.27V20h-8l-2-2H5v-3H3v3H1v-8h2v3h2v-3l1.87-1.86L2.5 3.77L3.78 2.5M20 9v3h-2V8h-6V6h3V4H7.82l15 15H23V9h-3Z'
 
-    get actionButton(): string {
-        return this.$store.state.gui.control.actionButton ?? this.defaultActionButton
-    }
-
     get enableXYHoming(): boolean {
         return this.$store.state.gui.control.enableXYHoming
     }
@@ -745,6 +741,22 @@ svg a.step.outer {
     fill: #333;
 }
 
+html.theme--light svg a.step.inner {
+    fill: #ccc;
+}
+
+html.theme--light svg a.step.inner-mid {
+    fill: #ddd;
+}
+
+html.theme--light svg a.step.outer-mid {
+    fill: #eee;
+}
+
+html.theme--light svg a.step.outer {
+    fill: #fff;
+}
+
 svg .disabled a.step {
     pointer-events: none;
 }
@@ -756,6 +768,11 @@ svg g#stepsXY {
     font-family: 'Roboto-Regular', 'Roboto', sans-serif;
     font-size: 3px;
     fill: white;
+}
+
+html.theme--light svg g#stepsZ,
+html.theme--light svg g#stepsXY {
+    fill: black;
 }
 
 svg a#tilt_adjust text {
@@ -788,6 +805,11 @@ svg a.disabled circle {
 svg g#stepsXY.disabled text,
 svg g#stepsZ.disabled text {
     fill: rgba(255, 255, 255, 0.3);
+}
+
+html.theme--light svg g#stepsXY.disabled text,
+html.theme--light svg g#stepsZ.disabled text {
+    fill: rgba(0, 0, 0, 0.5);
 }
 
 svg a#tilt_adjust,

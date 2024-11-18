@@ -1,7 +1,7 @@
 <template>
     <div>
         <template v-if="service === 'mjpegstreamer'">
-            <mjpegstreamer-async :cam-settings="webcam" :show-fps="showFps" :printer-url="printerUrl" />
+            <mjpegstreamer-async :cam-settings="webcam" :show-fps="showFps" :printer-url="printerUrl" :page="page" />
         </template>
         <template v-else-if="service === 'mjpegstreamer-adaptive'">
             <mjpegstreamer-adaptive-async :cam-settings="webcam" :show-fps="showFps" :printer-url="printerUrl" />
@@ -19,13 +19,16 @@
             <j-muxer-stream-async :cam-settings="webcam" :printer-url="printerUrl" />
         </template>
         <template v-else-if="service === 'webrtc-camerastreamer'">
-            <webrtc-camera-streamer-async :cam-settings="webcam" :printer-url="printerUrl" />
+            <webrtc-camera-streamer-async :cam-settings="webcam" :printer-url="printerUrl" :page="page" />
         </template>
         <template v-else-if="service === 'webrtc-janus'">
             <janus-streamer-async :cam-settings="webcam" :printer-url="printerUrl" />
         </template>
         <template v-else-if="service === 'webrtc-mediamtx'">
-            <webrtc-media-m-t-x-async :cam-settings="webcam" :printer-url="printerUrl" />
+            <webrtc-media-m-t-x-async :cam-settings="webcam" :printer-url="printerUrl" :page="page" />
+        </template>
+        <template v-else-if="service === 'webrtc-go2rtc'">
+            <webrtc-go2rtc-async :cam-settings="webcam" :printer-url="printerUrl" />
         </template>
         <template v-else>
             <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
@@ -51,12 +54,14 @@ import { DynamicCamLoader } from '@/components/webcams/streamers/DynamicCamLoade
         Uv4lMjpegAsync: DynamicCamLoader('Uv4lMjpeg'),
         WebrtcCameraStreamerAsync: DynamicCamLoader('WebrtcCameraStreamer'),
         WebrtcMediaMTXAsync: DynamicCamLoader('WebrtcMediaMTX'),
+        WebrtcGo2rtcAsync: DynamicCamLoader('WebrtcGo2rtc'),
     },
 })
 export default class WebcamWrapperItem extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) webcam!: GuiWebcamStateWebcam
     @Prop({ type: Boolean, default: true }) showFps!: Boolean
     @Prop({ default: null }) printerUrl!: string | null
+    @Prop({ type: String, default: null }) page!: string | null
 
     get service() {
         return this.webcam?.service ?? 'unknown'

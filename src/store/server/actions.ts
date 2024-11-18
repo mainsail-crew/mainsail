@@ -16,8 +16,26 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('updateManager/reset')
     },
 
-    async init({ dispatch }) {
+    async init({ commit, dispatch, rootState }) {
         window.console.debug('init Server')
+
+        // identify client
+        try {
+            const connection = await Vue.$socket.emitAndWait('server.connection.identify', {
+                client_name: 'mainsail',
+                version: rootState.packageVersion,
+                type: 'web',
+                url: 'https://github.com/mainsail-crew/mainsail',
+            })
+            commit('setConnectionId', connection.connection_id)
+        } catch (e: any) {
+            if (e.message === 'Unauthorized') {
+                this.dispatch('socket/setConnectionFailed', e.message)
+            }
+
+            window.console.error('Error while identifying client: ' + e.message)
+            return
+        }
 
         dispatch('socket/addInitModule', 'server/info', { root: true })
         dispatch('socket/addInitModule', 'server/config', { root: true })
@@ -25,7 +43,6 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('socket/addInitModule', 'server/procStats', { root: true })
         dispatch('socket/addInitModule', 'server/databaseList', { root: true })
 
-        dispatch('identify')
         Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo' })
         Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig' })
         Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo' })
@@ -35,34 +52,19 @@ export const actions: ActionTree<ServerState, RootState> = {
         await dispatch('socket/removeInitModule', 'server', { root: true })
     },
 
-    identify({ dispatch, rootState }): void {
-        dispatch('socket/addInitModule', 'server/identify', { root: true })
-        Vue.$socket.emit(
-            'server.connection.identify',
-            {
-                client_name: 'mainsail',
-                version: rootState.packageVersion,
-                type: 'web',
-                url: 'https://github.com/mainsail-crew/mainsail',
-            },
-            { action: 'server/setConnectionId' }
-        )
-    },
-
-    setConnectionId({ commit, dispatch }, payload) {
-        commit('setConnectionId', payload.connection_id)
-        dispatch('socket/removeInitModule', 'server/identify', { root: true })
-    },
-
     checkDatabases({ dispatch, commit }, payload) {
         if (payload.namespaces?.includes('mainsail')) {
             dispatch('socket/addInitModule', 'gui/init', { root: true })
             dispatch('gui/init', null, { root: true })
         } else dispatch('gui/initDb', null, { root: true })
-        if (payload.namespaces?.includes('webcams')) {
-            dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
-            dispatch('gui/webcams/init', null, { root: true })
-        }
+        if (payload.namespaces?.includes('maintenance')) {
+            dispatch('socket/addInitModule', 'gui/maintenance/init', { root: true })
+            dispatch('gui/maintenance/init', null, { root: true })
+        } else dispatch('gui/maintenance/initDb', null, { root: true })
+
+        // init webcams
+        dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
+        dispatch('gui/webcams/init', null, { root: true })
 
         commit('saveDbNamespaces', payload.namespaces)
 
@@ -168,6 +170,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         dispatch('stopKlippyConnectedInterval')
         commit('setKlippyConnected')
+        dispatch('printer/initGcodes', null, { root: true })
         dispatch('checkKlippyState', { state: payload.klippy_state, state_message: null })
     },
 
@@ -254,6 +257,10 @@ export const actions: ActionTree<ServerState, RootState> = {
         else if ('error' in payload) message = message.error.message
 
         let formatMessage = formatConsoleMessage(message)
+        if (type === 'response') {
+            if (message.startsWith('// action:')) type = 'action'
+            else if (message.startsWith('// debug:')) type = 'debug'
+        }
 
         const filters = rootGetters['gui/console/getConsolefilterRules']
         let boolImport = true
@@ -290,5 +297,10 @@ export const actions: ActionTree<ServerState, RootState> = {
 
     serviceStateChanged({ commit }, payload) {
         commit('updateServiceState', payload)
+    },
+
+    addFailedInitComponent({ commit }, payload) {
+        commit('removeComponent', payload)
+        commit('addFailedInitComponent', payload)
     },
 }

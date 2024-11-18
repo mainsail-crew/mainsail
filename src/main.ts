@@ -35,6 +35,7 @@ import { DatasetComponent, GridComponent, LegendComponent, TooltipComponent } fr
 import 'vue-resize/dist/vue-resize.css'
 // @ts-ignore
 import VueResize from 'vue-resize'
+import { defaultMode } from './store/variables'
 
 Vue.config.productionTip = false
 
@@ -65,8 +66,11 @@ Vue.use(VueResize)
 
 const initLoad = async () => {
     try {
+        // get base url. by default, it is '/'
+        const base = import.meta.env.BASE_URL ?? '/'
+
         //load config.json
-        const res = await fetch('/config.json')
+        const res = await fetch(`${base}config.json`)
         const file = (await res.json()) as Record<string, unknown>
 
         window.console.debug('Loaded config.json')
@@ -75,6 +79,10 @@ const initLoad = async () => {
         if ('defaultLocale' in file) {
             await setAndLoadLocale(file.defaultLocale as string)
         }
+
+        // Handle mode outside store init and before vue mount for consistency in dialog
+        const mode = file.defaultMode ?? defaultMode
+        vuetify.framework.theme.dark = mode !== 'light'
     } catch (e) {
         window.console.error('Failed to load config.json')
         window.console.error(e)
@@ -85,12 +93,12 @@ const initLoad = async () => {
     if (store?.state?.instancesDB === 'moonraker') Vue.$socket.connect()
 }
 
-initLoad()
-
-new Vue({
-    vuetify,
-    router,
-    store,
-    i18n,
-    render: (h) => h(App),
-}).$mount('#app')
+initLoad().then(() =>
+    new Vue({
+        vuetify,
+        router,
+        store,
+        i18n,
+        render: (h) => h(App),
+    }).$mount('#app')
+)

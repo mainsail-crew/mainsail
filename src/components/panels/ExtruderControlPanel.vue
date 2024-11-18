@@ -4,8 +4,7 @@
         :icon="mdiPrinter3dNozzle"
         :title="$t('Panels.ExtruderControlPanel.Headline')"
         :collapsible="true"
-        card-class="extruder-control-panel"
-        class="pb-1">
+        card-class="extruder-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
         <template #buttons>
             <v-menu v-if="showFilamentMacros" :offset-y="true" :close-on-content-click="false" left>
@@ -51,29 +50,65 @@
                             </span>
                         </v-tooltip>
                     </v-list-item>
+                    <!-- FILAMENT PURGE -->
+                    <v-list-item v-if="purgeFilamentMacro">
+                        <v-tooltip top :disabled="canExecutePurgeMacro" color="secondary">
+                            <template #activator="{ on }">
+                                <div v-on="on">
+                                    <macro-button
+                                        :macro="purgeFilamentMacro"
+                                        :alias="$t('Panels.ExtruderControlPanel.PurgeFilament')"
+                                        :disabled="!canExecutePurgeMacro || printerIsPrintingOnly"
+                                        color="#272727" />
+                                </div>
+                            </template>
+                            <span>
+                                {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
+                                {{ minExtrudeTemp }} °C
+                            </span>
+                        </v-tooltip>
+                    </v-list-item>
+                    <!-- NOZZLE CLEAN -->
+                    <v-list-item v-if="cleanNozzleMacro">
+                        <macro-button
+                            :macro="cleanNozzleMacro"
+                            :alias="$t('Panels.ExtruderControlPanel.CleanNozzle')"
+                            :disabled="printerIsPrintingOnly"
+                            color="#272727" />
+                    </v-list-item>
                 </v-list>
             </v-menu>
+            <extruder-panel-settings />
         </template>
         <!-- TOOL SELECTOR BUTTONS -->
-        <extruder-control-panel-tools />
+        <extruder-control-panel-tools v-if="showTools && toolchangeMacros.length" />
         <!-- EXTRUSION FACTOR SLIDER -->
-        <extrusion-factor-settings />
+        <template v-if="showExtrusionFactor">
+            <v-divider v-if="showTools" />
+            <extrusion-factor-settings />
+        </template>
         <!-- PRESSURE ADVANCE SETTINGS -->
-        <pressure-advance-settings />
+        <template v-if="showPressureAdvance">
+            <v-divider v-if="showTools || showExtrusionFactor" />
+            <pressure-advance-settings />
+        </template>
         <!-- FIRMWARE RETRACTION SETTINGS -->
-        <firmware-retraction-settings />
-        <v-divider class="pb-1" />
+        <template v-if="showFirmwareRetraction">
+            <v-divider v-if="showTools || showExtrusionFactor || showPressureAdvance" />
+            <firmware-retraction-settings />
+        </template>
         <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
-        <extruder-control-panel-control />
-        <!-- EXTRUSION ESTIMATION NOTE -->
-        <estimated-extrusion-output />
+        <template v-if="showExtruderControl">
+            <v-divider v-if="showTools || showExtrusionFactor || showPressureAdvance || showFirmwareRetraction" />
+            <extruder-control-panel-control />
+        </template>
     </panel>
 </template>
 
 <script lang="ts">
 import { mdiPrinter3dNozzle, mdiDotsVertical } from '@mdi/js'
 import { Component, Mixins } from 'vue-property-decorator'
-import { PrinterStateExtruder, PrinterStateMacro } from '@/store/printer/types'
+import { PrinterStateMacro } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import Panel from '@/components/ui/Panel.vue'
@@ -99,11 +134,27 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get loadFilamentMacro(): PrinterStateMacro | undefined {
-        return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'LOAD_FILAMENT')
+        const macros = ['LOAD_FILAMENT', 'FILAMENT_LOAD']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
     }
 
     get unloadFilamentMacro(): PrinterStateMacro | undefined {
-        return this.macros.find((macro: PrinterStateMacro) => macro.name.toUpperCase() === 'UNLOAD_FILAMENT')
+        const macros = ['UNLOAD_FILAMENT', 'FILAMENT_UNLOAD']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
+    }
+
+    get purgeFilamentMacro(): PrinterStateMacro | undefined {
+        const macros = ['PURGE_FILAMENT', 'FILAMENT_PURGE']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
+    }
+
+    get cleanNozzleMacro(): PrinterStateMacro | undefined {
+        const macros = ['CLEAN_NOZZLE', 'NOZZLE_CLEAN', 'WIPE_NOZZLE', 'NOZZLE_WIPE']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
     }
 
     /**
@@ -122,12 +173,49 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         return this.heatWaitGcodes.some((gcode) => this.unloadFilamentMacro?.prop.gcode.includes(gcode))
     }
 
-    get showFilamentMacros(): boolean {
-        return this.loadFilamentMacro !== undefined || this.unloadFilamentMacro !== undefined
+    get canExecutePurgeMacro(): boolean {
+        if (this.extrudePossible) return true
+
+        return this.heatWaitGcodes.some((gcode) => this.purgeFilamentMacro?.prop.gcode.includes(gcode))
     }
 
-    get extruders(): PrinterStateExtruder[] {
-        return this.$store.getters['printer/getExtruders']
+    get showFilamentMacros(): boolean {
+        return (
+            this.loadFilamentMacro !== undefined ||
+            this.unloadFilamentMacro !== undefined ||
+            this.purgeFilamentMacro !== undefined ||
+            this.cleanNozzleMacro !== undefined
+        )
+    }
+
+    get showTools(): boolean {
+        if (this.toolchangeMacros.length < 1) return false
+
+        return this.$store.state.gui.view.extruder.showTools ?? true
+    }
+
+    get showExtrusionFactor(): boolean {
+        return this.$store.state.gui.view.extruder.showExtrusionFactor ?? true
+    }
+
+    get existsPressureAdvance(): boolean {
+        return !(this.$store.getters['printer/getExtruderSteppers'].length > 0)
+    }
+
+    get showPressureAdvance(): boolean {
+        if (!this.existsPressureAdvance) return false
+
+        return this.$store.state.gui.view.extruder.showPressureAdvance ?? true
+    }
+
+    get showFirmwareRetraction(): boolean {
+        if (!this.existsFirmwareRetraction) return false
+
+        return this.$store.state.gui.view.extruder.showFirmwareRetraction ?? true
+    }
+
+    get showExtruderControl(): boolean {
+        return this.$store.state.gui.view.extruder.showExtruderControl ?? true
     }
 }
 </script>

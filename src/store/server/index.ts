@@ -12,6 +12,7 @@ import { timelapse } from '@/store/server/timelapse'
 import { jobQueue } from '@/store/server/jobQueue'
 import { announcements } from '@/store/server/announcements'
 import { spoolman } from '@/store/server/spoolman'
+import { sensor } from '@/store/server/sensor'
 
 // create getDefaultState
 export const getDefaultState = (): ServerState => {
@@ -23,6 +24,7 @@ export const getDefaultState = (): ServerState => {
         klippy_message: '',
         components: [],
         failed_components: [],
+        failed_init_components: [],
         warnings: [],
         registered_directories: [],
         events: [],
@@ -61,5 +63,6 @@ export const server: Module<ServerState, any> = {
         jobQueue,
         announcements,
         spoolman,
+        sensor,
     },
 }

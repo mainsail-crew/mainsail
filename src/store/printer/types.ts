@@ -6,21 +6,9 @@ export interface VTextareaType extends HTMLInputElement {
     }
 }
 
-export interface CommandHelp {
-    command: string
-    commandLow: string
-    description?: string | Record<string, unknown>
-}
-
-export interface ConsoleCommandHelp {
-    command: CommandHelp | null
-    original: string
-}
-
 export interface PrinterState {
     // eslint-disable-next-line
     [key: string]: any
-    helplist?: CommandHelp[]
     tempHistory?: PrinterTempHistoryState
 }
 
@@ -157,26 +145,30 @@ export interface PrinterStateFilamentSensors {
 }
 
 export interface PrinterStateBedMesh {
-    name: string
-    data: {
-        algo: string
-        max_x: number
-        max_y: number
-        mesh_x_pps: number
-        mesh_y_pps: number
+    profile_name: string
+    mesh_min: [number, number]
+    mesh_max: [number, number]
+    probed_matrix: number[][]
+    mesh_matrix: number[][]
+    profiles: {
+        [key: string]: PrinterStateBedMeshProfile
+    }
+}
+
+export interface PrinterStateBedMeshProfile {
+    points: number[][]
+    mesh_params: {
         min_x: number
+        max_x: number
         min_y: number
-        points: { [key: number]: number[] }
-        tension: number
-        version: number
+        max_y: number
         x_count: number
         y_count: number
+        mesh_x_pps: number
+        mesh_y_pps: number
+        algo: 'bicubic' | 'lagrange'
+        tension: number
     }
-    points: number[]
-    min: number
-    max: number
-    variance: number
-    is_active: boolean
 }
 
 export interface PrinterStateMacroParam {
@@ -230,7 +222,7 @@ export interface PrinterStateKlipperConfigWarning {
     message: string
     option: string
     section: string
-    type: 'deprecated_value' | 'deprecated_option'
+    type: 'deprecated_value' | 'deprecated_option' | 'runtime_warning'
     value: string
 }
 

@@ -8,6 +8,7 @@ import { PrinterStateKlipperConfigWarning } from '@/store/printer/types'
 import { detect } from 'detect-browser'
 import semver from 'semver'
 import { minBrowserVersions } from '@/store/variables'
+import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 
 export const getters: GetterTree<GuiNotificationState, any> = {
     getNotifications: (state, getters) => {
@@ -28,11 +29,20 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         // moonraker failed components
         notifications = notifications.concat(getters['getNotificationsMoonrakerFailedComponents'])
 
+        // moonraker failed init components
+        notifications = notifications.concat(getters['getNotificationsMoonrakerFailedInitComponents'])
+
         // klipper warnings
         notifications = notifications.concat(getters['getNotificationsKlipperWarnings'])
 
+        // user-created reminders
+        notifications = notifications.concat(getters['getNotificationsOverdueMaintenance'])
+
         // browser warnings
         notifications = notifications.concat(getters['getNotificationsBrowserWarnings'])
+
+        // TMC overheat warnings
+        notifications = notifications.concat(getters['getNotificationsOverheatDrivers'])
 
         const mapType = {
             normal: 2,
@@ -224,6 +234,44 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         return notifications
     },
 
+    getNotificationsMoonrakerFailedInitComponents: (state, getters, rootState, rootGetters) => {
+        const notifications: GuiNotificationStateEntry[] = []
+
+        let failedInitCompontents = rootState.server.failed_init_components ?? []
+        if (failedInitCompontents.length) {
+            const date = rootState.server.system_boot_at ?? new Date()
+
+            // get all dismissed failed components and convert it to a string[]
+            const flagDismisses = rootGetters['gui/notifications/getDismissByCategory'](
+                'moonrakerFailedInitComponent'
+            ).map((dismiss: GuiNotificationStateDismissEntry) => {
+                return dismiss.id
+            })
+
+            // filter all dismissed failed init components
+            failedInitCompontents = failedInitCompontents.filter(
+                (component: string) => !flagDismisses.includes(component)
+            )
+
+            failedInitCompontents.forEach((component: string) => {
+                notifications.push({
+                    id: `moonrakerFailedInitComponent/${component}`,
+                    priority: 'high',
+                    title: i18n
+                        .t('App.Notifications.MoonrakerWarnings.MoonrakerInitComponent', { component })
+                        .toString(),
+                    description: i18n
+                        .t('App.Notifications.MoonrakerWarnings.MoonrakerFailedInitComponentDescription', { component })
+                        .toString(),
+                    date,
+                    dismissed: false,
+                } as GuiNotificationStateEntry)
+            })
+        }
+
+        return notifications
+    },
+
     getNotificationsKlipperWarnings: (state, getters, rootState, rootGetters) => {
         const notifications: GuiNotificationStateEntry[] = []
 
@@ -252,6 +300,8 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                 } else if (warning.type === 'deprecated_option') {
                     title = i18n.t('App.Notifications.KlipperWarnings.DeprecatedOptionHeadline').toString()
                     description = i18n.t('App.Notifications.KlipperWarnings.DeprecatedOption', warning).toString()
+                } else if (warning.type === 'runtime_warning') {
+                    title = i18n.t('App.Notifications.KlipperWarnings.KlipperRuntimeWarning').toString()
                 }
 
                 // generate url to mainsail docs to fix this warning
@@ -318,6 +368,85 @@ export const getters: GetterTree<GuiNotificationState, any> = {
         }
 
         return notifications
+    },
+
+    getNotificationsOverdueMaintenance: (state, getters, rootState, rootGetters) => {
+        const notifications: GuiNotificationStateEntry[] = []
+        let entries: GuiMaintenanceStateEntry[] = rootGetters['gui/maintenance/getOverdueEntries']
+        if (entries.length == 0) return []
+
+        const date = rootState.server.system_boot_at ?? new Date()
+
+        // get all dismissed reminders and convert it to a string[]
+        const remindersDismisses = rootGetters['gui/notifications/getDismissByCategory']('maintenance').map(
+            (dismiss: GuiNotificationStateDismissEntry) => {
+                return dismiss.id
+            }
+        )
+
+        // filter all dismissed reminders
+        entries = entries.filter((entry) => !remindersDismisses.includes(entry.id))
+
+        entries.forEach((entry) => {
+            notifications.push({
+                id: `maintenance/${entry.id}`,
+                priority: 'high',
+                title: i18n.t('App.Notifications.MaintenanceReminder').toString(),
+                description: i18n.t('App.Notifications.MaintenanceReminderText', { name: entry.name }).toString(),
+                date,
+                dismissed: false,
+            })
+        })
+
+        return notifications
+    },
+
+    getNotificationsOverheatDrivers: (state, getters, rootState) => {
+        const notifications: GuiNotificationStateEntry[] = []
+        const date = rootState.server.system_boot_at ?? new Date()
+
+        Object.keys(rootState.printer)
+            .filter((key) => key.startsWith('tmc'))
+            .forEach((key) => {
+                const printerObject = rootState.printer[key]
+                const name = key.split(' ')[1]
+
+                if ((printerObject.drv_status?.ot ?? null) === 1) {
+                    notifications.push({
+                        id: `tmcwarning/${key}-ot`,
+                        priority: 'critical',
+                        title: i18n.t('App.Notifications.TmcOtFlag').toString(),
+                        description: i18n.t('App.Notifications.TmcOtFlagText', { name }).toString(),
+                        date,
+                        dismissed: false,
+                        url: 'https://www.klipper3d.org/TMC_Drivers.html#tmc-reports-error-ot1overtemperror',
+                    })
+                }
+
+                if ((printerObject.drv_status?.otpw ?? null) === 1) {
+                    notifications.push({
+                        id: `tmcwarning/${key}-otpw`,
+                        priority: 'high',
+                        title: i18n.t('App.Notifications.TmcOtpwFlag').toString(),
+                        description: i18n.t('App.Notifications.TmcOtpwFlagText', { name }).toString(),
+                        date,
+                        dismissed: false,
+                        url: 'https://www.klipper3d.org/TMC_Drivers.html#tmc-reports-error-ot1overtemperror',
+                    })
+                }
+            })
+
+        // get all dismissed tmcwarnings and convert it to a string[]
+        const tmcwarningsDismisses = getters['getDismissByCategory']('tmcwarning').map(
+            (dismiss: GuiNotificationStateDismissEntry) => {
+                return `tmcwarning/${dismiss.id}`
+            }
+        )
+
+        // return filtered tmcwarnings
+        return notifications.filter((entry) => {
+            return !tmcwarningsDismisses.includes(entry.id)
+        })
     },
 
     getDismiss: (state, getters, rootState) => {

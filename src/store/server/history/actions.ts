@@ -9,32 +9,55 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
     },
 
     init() {
-        Vue.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
+        Vue.$socket.emit(
+            'server.history.list',
+            { start: 0, limit: 50, max: 100 },
+            { action: 'server/history/getHistory' }
+        )
         Vue.$socket.emit('server.history.totals', {}, { action: 'server/history/getTotals' })
     },
 
     getTotals({ commit }, payload) {
         commit('setTotals', payload.job_totals)
+
+        const auxiliary_totals = payload.auxiliary_totals ?? []
+        if (auxiliary_totals.length) {
+            commit('setAuxiliaryTotals', auxiliary_totals)
+        }
     },
 
     async getHistory({ commit, dispatch, state }, payload) {
-        if ('requestParams' in payload && 'start' in payload.requestParams && payload.requestParams.start === 0)
-            await commit('resetJobs')
+        if ('requestParams' in payload && (payload.requestParams?.start ?? 0) === 0) commit('resetJobs')
 
         payload.jobs?.forEach((job: ServerHistoryStateJob) => {
             if (state.jobs.findIndex((stateJob) => stateJob.job_id === job.job_id) === -1) commit('addJob', job)
         })
 
-        if (payload.requestParams?.limit > 0 && payload.jobs?.length === payload.requestParams.limit)
+        const start = payload.requestParams?.start ?? 0
+        const limit = payload.requestParams?.limit ?? 50
+        const max = payload.requestParams?.max ?? null
+
+        if (limit > 0 && (max === null || max > start + limit) && payload.jobs?.length === limit) {
             Vue.$socket.emit(
                 'server.history.list',
                 {
-                    start: payload.requestParams.start + payload.requestParams.limit,
-                    limit: payload.requestParams.limit,
+                    start: start + limit,
+                    limit: limit,
+                    max: max,
                 },
                 { action: 'server/history/getHistory' }
             )
-        else await dispatch('loadHistoryNotes')
+
+            // stop here until all pulls are done
+            return
+        }
+
+        if (payload.jobs?.length < limit) {
+            dispatch('socket/removeLoading', { name: 'historyLoadAll' }, { root: true })
+            commit('setAllLoaded')
+        }
+
+        dispatch('loadHistoryNotes')
     },
 
     loadHistoryNotes({ dispatch, rootState }) {

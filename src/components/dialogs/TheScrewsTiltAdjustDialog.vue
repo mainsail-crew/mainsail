@@ -50,6 +50,7 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiArrowCollapseDown, mdiCloseThick } from '@mdi/js'
 import ControlMixin from '@/components/mixins/control'
 import TheScrewsTiltAdjustDialogEntry from '@/components/dialogs/TheScrewsTiltAdjustDialogEntry.vue'
+import { ServerStateEvent } from '@/store/server/types'
 @Component({
     components: { TheScrewsTiltAdjustDialogEntry, Panel, Responsive, SettingsRow },
 })
@@ -92,9 +93,17 @@ export default class TheScrewsTiltAdjustDialog extends Mixins(BaseMixin, Control
     }
 
     async retryScrewsTiltAdjust() {
+        const entries = [...(this.$store.state.server.events ?? [])]
+        const lastCommand = entries
+            .reverse()
+            .find(
+                (entry: ServerStateEvent) =>
+                    entry.type === 'command' && entry.message.startsWith('SCREWS_TILT_CALCULATE')
+            )
+
         await this.$store.dispatch('printer/clearScrewsTiltAdjust')
 
-        this.doSend('SCREWS_TILT_CALCULATE')
+        this.doSend(lastCommand?.message ?? 'SCREWS_TILT_CALCULATE')
     }
 }
 </script>

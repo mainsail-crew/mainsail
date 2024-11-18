@@ -145,8 +145,11 @@
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
-                            <b>{{ $t('Files.CurrentPath') }}:</b>
-                            {{ currentPath || '/' }}
+                            <b class="mr-1">{{ $t('Files.CurrentPath') }}:</b>
+                            <path-navigation
+                                :path="currentPath"
+                                :base-directory-label="'/gcodes'"
+                                :on-segment-click="clickPathNavGoToDirectory" />
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
@@ -565,53 +568,10 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <v-dialog v-model="dialogAddBatchToQueue.show" max-width="400">
-            <panel
-                :title="$t('Files.AddToQueue')"
-                card-class="gcode-files-add-to-queue-dialog"
-                :icon="mdiPlaylistPlus"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="dialogAddBatchToQueue.show = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-
-                <v-card-text>
-                    <v-text-field
-                        ref="inputFieldAddToQueueCount"
-                        v-model="dialogAddBatchToQueue.count"
-                        :label="$t('Files.Count')"
-                        required
-                        hide-spin-buttons
-                        type="number"
-                        :rules="countInputRules"
-                        @keyup.enter="addBatchToQueueAction">
-                        <template #append-outer>
-                            <div class="_spin_button_group">
-                                <v-btn class="mt-n3" icon plain small @click="dialogAddBatchToQueue.count++">
-                                    <v-icon>{{ mdiChevronUp }}</v-icon>
-                                </v-btn>
-                                <v-btn
-                                    :disabled="dialogAddBatchToQueue.count <= 1"
-                                    class="mb-n3"
-                                    icon
-                                    plain
-                                    small
-                                    @click="dialogAddBatchToQueue.count--">
-                                    <v-icon>{{ mdiChevronDown }}</v-icon>
-                                </v-btn>
-                            </div>
-                        </template>
-                    </v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogAddBatchToQueue.show = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="addBatchToQueueAction">{{ $t('Files.AddToQueue') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+        <add-batch-to-queue-dialog
+            :is-visible="dialogAddBatchToQueue.isVisible"
+            :filename="dialogAddBatchToQueue.filename"
+            @close="closeAddBatchToQueueDialog" />
     </div>
 </template>
 
@@ -625,8 +585,6 @@ import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import draggable from 'vuedraggable'
 import {
-    mdiChevronDown,
-    mdiChevronUp,
     mdiDragVertical,
     mdiCheckboxBlankOutline,
     mdiCheckboxMarked,
@@ -651,7 +609,9 @@ import {
     mdiContentCopy,
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
+import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 import ControlMixin from '@/components/mixins/control'
+import PathNavigation from '@/components/ui/PathNavigation.vue'
 
 interface contextMenu {
     shown: boolean
@@ -668,12 +628,6 @@ interface draggingFile {
 
 interface dialogPrintFile {
     show: boolean
-    item: FileStateGcodefile
-}
-
-interface dialogAddBatchToQueue {
-    show: boolean
-    count: number
     item: FileStateGcodefile
 }
 
@@ -694,11 +648,9 @@ interface tableColumnSetting {
 }
 
 @Component({
-    components: { StartPrintDialog, Panel, SettingsRow, draggable },
+    components: { StartPrintDialog, AddBatchToQueueDialog, Panel, SettingsRow, PathNavigation, draggable },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
-    mdiChevronDown = mdiChevronDown
-    mdiChevronUp = mdiChevronUp
     mdiContentCopy = mdiContentCopy
     mdiFile = mdiFile
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
@@ -723,7 +675,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiDragVertical = mdiDragVertical
 
     formatFilesize = formatFilesize
-    formatPrintTime = formatPrintTime
     sortFiles = sortFiles
 
     declare $refs: {
@@ -775,10 +726,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         item: { ...this.contextMenu.item },
     }
 
-    private dialogAddBatchToQueue: dialogAddBatchToQueue = {
-        show: false,
-        count: 1,
-        item: { ...this.contextMenu.item },
+    dialogAddBatchToQueue: { isVisible: boolean; filename: string } = {
+        isVisible: false,
+        filename: '',
     }
 
     private dialogRenameFile: dialogRenameObject = {
@@ -1231,11 +1181,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     refreshMetadata(data: FileStateGcodefile[]) {
         const items = data.filter((file) => !file.isDirectory && !file.metadataRequested && !file.metadataPulled)
-        items.forEach((file: FileStateGcodefile) => {
-            this.$store.dispatch('files/requestMetadata', {
+        this.$store.dispatch(
+            'files/requestMetadata',
+            items.map((file: FileStateGcodefile) => ({
                 filename: 'gcodes' + this.currentPath + '/' + file.filename,
-            })
-        })
+            }))
+        )
     }
 
     clickRow(item: FileStateGcodefile, force = false) {
@@ -1255,6 +1206,10 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
     }
 
+    clickPathNavGoToDirectory(segment: { location: string }) {
+        this.currentPath = segment.location
+    }
+
     async addToQueue(item: FileStateGcodefile) {
         let filename = [this.currentPath, item.filename].join('/')
         if (filename.startsWith('/')) filename = filename.slice(1)
@@ -1263,23 +1218,15 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     openAddBatchToQueueDialog(item: FileStateGcodefile) {
-        this.dialogAddBatchToQueue.show = true
-        this.dialogAddBatchToQueue.count = 1
-        this.dialogAddBatchToQueue.item = item
-    }
-
-    async addBatchToQueueAction() {
-        let filename = [this.currentPath, this.dialogAddBatchToQueue.item.filename].join('/')
+        let filename = [this.currentPath, item.filename].join('/')
         if (filename.startsWith('/')) filename = filename.slice(1)
 
-        const array: string[] = []
-        for (let i = 0; i < this.dialogAddBatchToQueue.count; i++) {
-            array.push(filename)
-        }
+        this.dialogAddBatchToQueue.isVisible = true
+        this.dialogAddBatchToQueue.filename = filename
+    }
 
-        await this.$store.dispatch('server/jobQueue/addToQueue', array)
-
-        this.dialogAddBatchToQueue.show = false
+    closeAddBatchToQueueDialog() {
+        this.dialogAddBatchToQueue.isVisible = false
     }
 
     changeMetadataVisible(name: string, value: boolean) {
@@ -1510,44 +1457,35 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     outputValue(col: any, item: FileStateGcodefile) {
         const value = col.value in item ? item[col.value] : null
 
-        if (value !== null) {
-            switch (col.outputType) {
-                case 'filesize':
-                    return formatFilesize(value)
+        if (value === null) return '--'
 
-                case 'date':
-                    return this.formatDateTime(value)
+        switch (col.outputType) {
+            case 'filesize':
+                return formatFilesize(value)
 
-                case 'time':
-                    return this.formatPrintTime(value)
+            case 'date':
+                return this.formatDateTime(value)
 
-                case 'temp':
-                    return value.toFixed() + ' °C'
+            case 'time':
+                return formatPrintTime(value)
 
-                case 'length':
-                    if (value > 1000) return (value / 1000).toFixed(2) + ' m'
+            case 'temp':
+                return value.toFixed() + ' °C'
 
-                    return value.toFixed(2) + ' mm'
+            case 'length':
+                if (value > 1000) return (value / 1000).toFixed(2) + ' m'
 
-                case 'weight':
-                    return value.toFixed(2) + ' g'
+                return value.toFixed(2) + ' mm'
 
-                default:
-                    return value
-            }
-        } else return '--'
+            case 'weight':
+                return value.toFixed(2) + ' g'
+
+            default:
+                return value
+        }
     }
 }
 </script>
-
-<style scoped>
-._spin_button_group {
-    width: 24px;
-    margin-top: -6px;
-    margin-left: -6px;
-    margin-bottom: -6px;
-}
-</style>
 
 <style>
 /*noinspection CssUnusedSymbol*/

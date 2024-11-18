@@ -16,11 +16,13 @@ export const mutations: MutationTree<SocketState> = {
         Vue.set(state, 'connectingFailed', false)
     },
 
-    setDisconnected(state) {
+    setDisconnected(state, message?: string) {
         Vue.set(state, 'isConnected', false)
         Vue.set(state, 'isConnecting', false)
         Vue.set(state, 'connectingFailed', true)
         Vue.set(state, 'connection_id', null)
+
+        if (message) Vue.set(state, 'connectionFailedMessage', message)
     },
 
     setData(state, payload) {
@@ -59,6 +61,24 @@ export const mutations: MutationTree<SocketState> = {
         if (index === -1) return
 
         list.splice(index, 1)
+        Vue.set(state, 'initializationList', list)
+    },
+
+    removeInitComponent(state, payload) {
+        const list = [...state.initializationList]
+
+        // remove all components witch starts with payload
+        const indexes = list.reduce((acc: number[], item, index) => {
+            if (item.startsWith(payload)) acc.push(index)
+            return acc
+        }, [])
+
+        // stop if no items found
+        if (!indexes.length) return
+
+        // remove all items
+        indexes.forEach((index) => list.splice(index, 1))
+
         Vue.set(state, 'initializationList', list)
     },
 }

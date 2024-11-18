@@ -61,7 +61,6 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiCloseThick, mdiHelpCircle } from '@mdi/js'
 import CheckboxList from '@/components/inputs/CheckboxList.vue'
 import SettingsGeneralTabBackupDatabase from '@/components/settings/General/GeneralBackup.vue'
 import SettingsGeneralTabRestoreDatabase from '@/components/settings/General/GeneralRestore.vue'
@@ -79,9 +78,6 @@ import SettingsGeneralDatabase from '@/components/mixins/settingsGeneralDatabase
     },
 })
 export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGeneralDatabase) {
-    mdiHelpCircle = mdiHelpCircle
-    mdiCloseThick = mdiCloseThick
-
     availableLanguages: { text: string; value: string }[] = []
 
     async created() {
@@ -89,7 +85,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
         const languages: { text: string; value: string }[] = []
 
         for (const file in locales) {
-            const langKey = file.slice(file.lastIndexOf('.') - 2, file.lastIndexOf('.'))
+            const langKey = file.slice(file.lastIndexOf('/') + 1, file.lastIndexOf('.'))
             const title = await locales[file]()
 
             languages.push({
