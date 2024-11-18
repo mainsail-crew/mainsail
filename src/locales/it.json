@@ -166,7 +166,6 @@
         "HideTemperatures": "Nascondi temperature",
         "HideTimelapse": "Nascondi Timelapse",
         "Search": "Cerca",
-        "SendCode": "Invia codice...",
         "SetupConsole": "Impostazione Console"
     },
     "CoolDownDialog": {
@@ -344,7 +343,6 @@
         "InvalidNameAscii": "Il nome non è valido. Sono ammessi solo caratteri ascii.",
         "InvalidNameEmpty": "Il valore non può essere nullo!",
         "InvalidNameReserved": "Il profilo 'default' è riservato, scegli un altro nome.",
-        "Later": "in seguito",
         "Mesh": "Mesh",
         "Name": "Nome",
         "NoBedMeshHasBeenLoadedYet": "Nessuna bed-mesh è stata caricata.",
@@ -354,7 +352,6 @@
         "Remove": "eliminare",
         "Rename": "rinominare",
         "RenameBedMeshProfile": "Rinomina Profilo Bed Mesh",
-        "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Scala gradiente",
         "ScaleZMax": "Scala z-max.",
         "TitleCalibrate": "Calibra nuova Bed Mesh",
@@ -1143,7 +1140,6 @@
             "Autorender": "Autorender",
             "AutorenderDescription": "Se abilitato, il timelapse sarà automaticamente processato alla fine della stampa.",
             "Camera": "Camera",
-            "CameraDescription": "Seleziona la webcam da utilizzare",
             "CameraDescriptionWithSnapshotUrl": "Selezionare la telecamera da utilizzare (con l'URL dell'istantanea)",
             "CameraWarningAlreadySet": "Questo valore è già impostato nel file di configurazione di Moonraker.",
             "CameraWarningAlreadySetSmall": "l'url dell'istantanea nella sezione [timelapse].",
