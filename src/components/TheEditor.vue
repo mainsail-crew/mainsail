@@ -285,10 +285,14 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return this.$store.state.server.system_info?.available_services ?? []
     }
 
-    get restartServiceName() {
+    get restartAllowedOrPossible() {
         if (!this.isWriteable) return null
         if (['printing', 'paused'].includes(this.printer_state)) return null
 
+        return true
+    }
+
+    get restartServiceName() {
         // check for generic services <service>.conf (like moonraker.conf, crowsnest.conf, sonar.conf)
         if (this.availableServices.includes(this.filenameWithoutExtension) && this.fileExtension === 'conf')
             return this.filenameWithoutExtension
@@ -309,6 +313,8 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get restartServiceNameExists() {
+        if (!this.restartAllowedOrPossible) return false
+
         // hide the button, if there is no service found
         if (this.restartServiceName === null) return false
 
