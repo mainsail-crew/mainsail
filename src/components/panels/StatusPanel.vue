@@ -90,7 +90,7 @@
             </template>
             <v-tabs v-model="activeTab" fixed-tabs>
                 <v-tab v-if="current_filename" href="#status">{{ $t('Panels.StatusPanel.Status') }}</v-tab>
-                <v-tab href="#files">{{ $t('Panels.StatusPanel.Files') }}</v-tab>
+                <v-tab v-if="displayFilesTab" href="#files">{{ $t('Panels.StatusPanel.Files') }}</v-tab>
                 <v-tab href="#jobqueue">
                     <v-badge :color="jobQueueBadgeColor" :content="jobsCount.toString()" :inline="true">
                         {{ $t('Panels.StatusPanel.Jobqueue') }}
@@ -102,7 +102,7 @@
                 <v-tab-item v-if="current_filename" value="status">
                     <status-panel-printstatus />
                 </v-tab-item>
-                <v-tab-item value="files">
+                <v-tab-item v-if="displayFilesTab" value="files">
                     <status-panel-gcodefiles />
                 </v-tab-item>
                 <v-tab-item value="jobqueue">
@@ -362,8 +362,15 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return this.layer_count !== null && (this.existsSetPauseAtLayer || this.existsSetPauseNextLayer)
     }
 
+    get displayFilesTab() {
+        const count = this.$store.state.gui.uiSettings.dashboardFilesLimit ?? 5
+
+        return count > 0
+    }
+
     mounted() {
         if (this.current_filename !== '') this.activeTab = 'status'
+        if (!this.displayFilesTab) this.activeTab = 'jobqueue'
     }
 
     @Watch('current_filename')

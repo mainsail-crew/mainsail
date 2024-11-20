@@ -183,6 +183,7 @@ export const getDefaultState = (): GuiState => {
             tempchartHeight: 250,
             hideUpdateWarnings: false,
             printstatusThumbnailZoom: true,
+            dashboardFilesLimit: 5,
         },
         view: {
             blockFileUpload: false,

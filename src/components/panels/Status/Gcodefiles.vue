@@ -38,6 +38,10 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
         filesGcodeCard: Vue
     }
 
+    get filesLimit() {
+        return this.$store.state.gui.uiSettings.dashboardFilesLimit ?? 5
+    }
+
     get gcodeFiles() {
         let gcodes = this.$store.getters['files/getAllGcodes'] ?? []
         gcodes = gcodes
@@ -45,7 +49,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
             .sort((a: FileStateGcodefile, b: FileStateGcodefile) => {
                 return b.modified.getTime() - a.modified.getTime()
             })
-            .slice(0, 5)
+            .slice(0, this.filesLimit)
 
         const requestItems = gcodes.filter(
             (file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled

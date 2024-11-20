@@ -282,6 +282,20 @@
                     :dynamic-slot-width="true">
                     <v-switch v-model="hideUpdateWarnings" hide-details class="mt-0" />
                 </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.DashboardFilesLimit')"
+                    :sub-title="$t('Settings.UiSettingsTab.DashboardFilesLimitDescription')">
+                    <v-slider
+                        v-model.lazy="dashboardFilesLimit"
+                        hide-details
+                        :min="0"
+                        :max="10"
+                        :step="1"
+                        :label="
+                            $t('Settings.UiSettingsTab.DashboardFilesLimitLabel', { count: dashboardFilesLimit })
+                        " />
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -613,6 +627,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
 
     set hideUpdateWarnings(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideUpdateWarnings', value: newVal })
+    }
+
+    get dashboardFilesLimit() {
+        return this.$store.state.gui.uiSettings.dashboardFilesLimit ?? 5
+    }
+
+    set dashboardFilesLimit(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.dashboardFilesLimit', value: newVal })
     }
 
     clearColorObject(color: any): string {
