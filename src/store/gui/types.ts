@@ -126,6 +126,7 @@ export interface GuiState {
         hideUpdateWarnings: boolean
         printstatusThumbnailZoom: boolean
         dashboardFilesLimit: number
+        dashboardFilesFilter: GuiStateUiSettingsDashboardFilesFilter[]
     }
     view: {
         blockFileUpload: boolean
@@ -215,3 +216,5 @@ export interface GuiStateLayoutoption {
     name: string
     visible: boolean
 }
+
+export type GuiStateUiSettingsDashboardFilesFilter = 'new' | 'failed' | 'completed'

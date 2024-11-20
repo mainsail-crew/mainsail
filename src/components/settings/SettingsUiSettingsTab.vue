@@ -296,6 +296,18 @@
                             $t('Settings.UiSettingsTab.DashboardFilesLimitLabel', { count: dashboardFilesLimit })
                         " />
                 </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.DashboardFilesFilter')"
+                    :sub-title="$t('Settings.UiSettingsTab.DashboardFilesFilterDescription')">
+                    <v-select
+                        v-model="dashboardFilesFilter"
+                        :items="dashboardFilesFilters"
+                        multiple
+                        hide-details
+                        dense
+                        outlined />
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -635,6 +647,31 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
 
     set dashboardFilesLimit(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.dashboardFilesLimit', value: newVal })
+    }
+
+    get dashboardFilesFilter() {
+        return this.$store.state.gui.uiSettings.dashboardFilesFilter ?? []
+    }
+
+    set dashboardFilesFilter(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.dashboardFilesFilter', value: newVal })
+    }
+
+    get dashboardFilesFilters() {
+        return [
+            {
+                text: this.$t('Settings.UiSettingsTab.DashboardFilesFilterNew'),
+                value: 'new',
+            },
+            {
+                text: this.$t('Settings.UiSettingsTab.DashboardFilesFilterFailed'),
+                value: 'failed',
+            },
+            {
+                text: this.$t('Settings.UiSettingsTab.DashboardFilesFilterCompleted'),
+                value: 'completed',
+            },
+        ]
     }
 
     clearColorObject(color: any): string {
