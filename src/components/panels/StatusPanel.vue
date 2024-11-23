@@ -89,11 +89,15 @@
                 <v-divider class="mt-0 mb-0" />
             </template>
             <v-tabs v-model="activeTab" fixed-tabs>
-                <v-tab v-if="current_filename" href="#status">{{ $t('Panels.StatusPanel.Status') }}</v-tab>
-                <v-tab href="#files">{{ $t('Panels.StatusPanel.Files') }}</v-tab>
+                <v-tab v-if="current_filename" href="#status">
+                    <v-icon>{{ mdiSpeedometer }}</v-icon>
+                </v-tab>
+                <v-tab href="#files">
+                    <v-icon>{{ mdiFileDocumentMultipleOutline }}</v-icon>
+                </v-tab>
                 <v-tab href="#jobqueue">
                     <v-badge :color="jobQueueBadgeColor" :content="jobsCount.toString()" :inline="true">
-                        {{ $t('Panels.StatusPanel.Jobqueue') }}
+                        <v-icon color="disabled">{{ mdiTrayFull }}</v-icon>
                     </v-badge>
                 </v-tab>
             </v-tabs>
@@ -133,16 +137,19 @@ import Panel from '@/components/ui/Panel.vue'
 import {
     mdiAlertOutline,
     mdiBroom,
+    mdiCloseCircle,
+    mdiDotsVertical,
+    mdiFileDocumentMultipleOutline,
     mdiInformation,
+    mdiLayersPlus,
+    mdiMessageProcessingOutline,
     mdiPause,
     mdiPlay,
     mdiPrinter,
     mdiSelectionRemove,
+    mdiSpeedometer,
     mdiStop,
-    mdiMessageProcessingOutline,
-    mdiCloseCircle,
-    mdiLayersPlus,
-    mdiDotsVertical,
+    mdiTrayFull,
 } from '@mdi/js'
 import { PrinterStateMacro } from '@/store/printer/types'
 import CancelJobDialog from '@/components/dialogs/CancelJobDialog.vue'
@@ -162,11 +169,14 @@ import CancelJobDialog from '@/components/dialogs/CancelJobDialog.vue'
     },
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
-    mdiInformation = mdiInformation
-    mdiMessageProcessingOutline = mdiMessageProcessingOutline
+    mdiAlertOutline = mdiAlertOutline
     mdiCloseCircle = mdiCloseCircle
     mdiDotsVertical = mdiDotsVertical
-    mdiAlertOutline = mdiAlertOutline
+    mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
+    mdiInformation = mdiInformation
+    mdiMessageProcessingOutline = mdiMessageProcessingOutline
+    mdiSpeedometer = mdiSpeedometer
+    mdiTrayFull = mdiTrayFull
 
     declare $refs: {
         bigThumbnail: any
@@ -427,5 +437,9 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 ._border-radius {
     border-bottom-left-radius: inherit;
     border-bottom-right-radius: inherit;
+}
+
+.theme--dark.v-tabs > .v-tabs-bar .v-tab:not(.v-tab--active) > .v-badge > .v-icon {
+    color: rgba(255, 255, 255, 0.6);
 }
 </style>
