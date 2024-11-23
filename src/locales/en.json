@@ -748,10 +748,8 @@
             },
             "Filament": "Filament",
             "File": "File",
-            "Files": "Files",
             "Flow": "Flow",
             "Headline": "Status",
-            "Jobqueue": "Job Queue",
             "JobqueueMoreFiles": "no more jobs | one more job | {count} more jobs",
             "Layer": "Layer",
             "Max": "max",
@@ -776,7 +774,6 @@
             "ResumePrint": "Resume print",
             "Slicer": "Slicer",
             "Speed": "Speed",
-            "Status": "Status",
             "Total": "Total",
             "Unknown": "Unknown"
         },
