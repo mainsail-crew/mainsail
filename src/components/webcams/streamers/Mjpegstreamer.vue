@@ -11,6 +11,7 @@
         <span v-if="showFpsCounter && status === 'connected'" class="webcamFpsOutput">
             {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
         </span>
+        <webcam-nozzle-crosshair v-if="showNozzleCrosshair" :webcam="camSettings" />
         <v-row v-if="status !== 'connected'">
             <v-col class="_webcam_mjpegstreamer_output text-center d-flex flex-column justify-center align-center">
                 <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
@@ -97,6 +98,12 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         if (this.page !== 'dashboard') return true
 
         return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport) ?? false
+    }
+
+    get showNozzleCrosshair() {
+        const nozzleCrosshair = this.camSettings.extra_data?.nozzleCrosshair ?? false
+
+        return nozzleCrosshair && this.status === 'connected'
     }
 
     // start or stop the video when the expanded state changes

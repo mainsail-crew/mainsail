@@ -12,6 +12,7 @@
         <span v-if="status === 'connected' && showFpsCounter" class="webcamFpsOutput">
             {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
         </span>
+        <webcam-nozzle-crosshair v-if="showNozzleCrosshair" :webcam="camSettings" />
         <v-row v-if="status !== 'connected'">
             <v-col class="_webcam_mjpegstreamer_output text-center d-flex flex-column justify-center align-center">
                 <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
@@ -98,6 +99,12 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     get isVisible() {
         return this.isVisibleDocument && this.isVisibleViewport
+    }
+
+    get showNozzleCrosshair() {
+        const nozzleCrosshair = this.camSettings.extra_data?.nozzleCrosshair ?? false
+
+        return nozzleCrosshair && this.status === 'connected'
     }
 
     mounted() {
