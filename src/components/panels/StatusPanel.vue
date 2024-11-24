@@ -135,6 +135,7 @@ import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import StatusPanelPrintstatus from '@/components/panels/Status/Printstatus.vue'
 import StatusPanelGcodefiles from '@/components/panels/Status/Gcodefiles.vue'
+import StatusPanelHistory from '@/components/panels/Status/History.vue'
 import StatusPanelJobqueue from '@/components/panels/Status/Jobqueue.vue'
 import StatusPanelExcludeObject from '@/components/panels/Status/ExcludeObject.vue'
 import StatusPanelPrintstatusThumbnail from '@/components/panels/Status/PrintstatusThumbnail.vue'
@@ -169,6 +170,7 @@ import CancelJobDialog from '@/components/dialogs/CancelJobDialog.vue'
         Panel,
         StatusPanelExcludeObject,
         StatusPanelGcodefiles,
+        StatusPanelHistory,
         StatusPanelJobqueue,
         StatusPanelPrintstatus,
         StatusPanelPrintstatusThumbnail,

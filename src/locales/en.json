@@ -775,6 +775,7 @@
             "Slicer": "Slicer",
             "Speed": "Speed",
             "Total": "Total",
+            "TotalTime": "Total Time",
             "Unknown": "Unknown"
         },
         "TemperaturePanel": {
