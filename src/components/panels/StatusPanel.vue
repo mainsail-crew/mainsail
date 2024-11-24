@@ -396,7 +396,8 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     mounted() {
         if (this.current_filename !== '') this.activeTab = 'status'
-        if (!this.displayFilesTab) this.activeTab = 'jobqueue'
+        if (!this.displayFilesTab) this.activeTab = 'history'
+        if (!this.displayHistoryTab) this.activeTab = 'jobqueue'
     }
 
     @Watch('current_filename')
