@@ -1235,7 +1235,7 @@
             "DashboardFilesLimitDescription": "Select the maximum number of files to display on the dashboard Status Panel. (0 hides the files tab)",
             "DashboardFilesLimitLabel": "{count} files",
             "DashboardHistoryLimit": "Dashboard History Limit",
-            "DashboardHistoryLimitDescription": "Select the maximum number of jobs to display on the dashboard in the Status Panel. (0 will hide the history tab)",
+            "DashboardHistoryLimitDescription": "Select the maximum number of jobs to display on the dashboard in the Status Panel. (0 hides the history tab)",
             "DashboardHistoryLimitLabel": "{count} jobs",
             "DefaultNavigationState": "Navigation default state",
             "DefaultNavigationStateAlwaysClosed": "always closed",
