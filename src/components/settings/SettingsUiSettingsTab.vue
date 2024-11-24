@@ -308,6 +308,20 @@
                         dense
                         outlined />
                 </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.DashboardHistoryLimit')"
+                    :sub-title="$t('Settings.UiSettingsTab.DashboardHistoryLimitDescription')">
+                    <v-slider
+                        v-model.lazy="dashboardHistoryLimit"
+                        hide-details
+                        :min="0"
+                        :max="10"
+                        :step="1"
+                        :label="
+                            $t('Settings.UiSettingsTab.DashboardHistoryLimitLabel', { count: dashboardHistoryLimit })
+                        " />
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -672,6 +686,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
                 value: 'completed',
             },
         ]
+    }
+
+    get dashboardHistoryLimit() {
+        return this.$store.state.gui.uiSettings.dashboardHistoryLimit ?? 0
+    }
+
+    set dashboardHistoryLimit(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.dashboardHistoryLimit', value: newVal })
     }
 
     clearColorObject(color: any): string {

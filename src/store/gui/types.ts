@@ -127,6 +127,7 @@ export interface GuiState {
         printstatusThumbnailZoom: boolean
         dashboardFilesLimit: number
         dashboardFilesFilter: GuiStateUiSettingsDashboardFilesFilter[]
+        dashboardHistoryLimit: number
     }
     view: {
         blockFileUpload: boolean

@@ -95,6 +95,9 @@
                 <v-tab v-if="displayFilesTab" href="#files">
                     <v-icon>{{ mdiFileDocumentMultipleOutline }}</v-icon>
                 </v-tab>
+                <v-tab v-if="displayHistoryTab" href="#history">
+                    <v-icon>{{ mdiHistory }}</v-icon>
+                </v-tab>
                 <v-tab href="#jobqueue">
                     <v-badge :color="jobQueueBadgeColor" :content="jobsCount.toString()" :inline="true">
                         <v-icon color="disabled">{{ mdiTrayFull }}</v-icon>
@@ -108,6 +111,9 @@
                 </v-tab-item>
                 <v-tab-item v-if="displayFilesTab" value="files">
                     <status-panel-gcodefiles />
+                </v-tab-item>
+                <v-tab-item v-if="displayHistoryTab" value="history">
+                    <status-panel-history />
                 </v-tab-item>
                 <v-tab-item value="jobqueue">
                     <status-panel-jobqueue />
@@ -140,6 +146,7 @@ import {
     mdiCloseCircle,
     mdiDotsVertical,
     mdiFileDocumentMultipleOutline,
+    mdiHistory,
     mdiInformation,
     mdiLayersPlus,
     mdiMessageProcessingOutline,
@@ -174,6 +181,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiDotsVertical = mdiDotsVertical
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiInformation = mdiInformation
+    mdiHistory = mdiHistory
     mdiMessageProcessingOutline = mdiMessageProcessingOutline
     mdiSpeedometer = mdiSpeedometer
     mdiTrayFull = mdiTrayFull
@@ -374,6 +382,12 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     get displayFilesTab() {
         const count = this.$store.state.gui.uiSettings.dashboardFilesLimit ?? 5
+
+        return count > 0
+    }
+
+    get displayHistoryTab() {
+        const count = this.$store.state.gui.uiSettings.dashboardHistoryLimit ?? 0
 
         return count > 0
     }
