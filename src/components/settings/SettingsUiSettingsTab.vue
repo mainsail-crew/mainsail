@@ -689,7 +689,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
     }
 
     get dashboardHistoryLimit() {
-        return this.$store.state.gui.uiSettings.dashboardHistoryLimit ?? 0
+        return this.$store.state.gui.uiSettings.dashboardHistoryLimit ?? 5
     }
 
     set dashboardHistoryLimit(newVal) {

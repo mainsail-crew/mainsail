@@ -389,7 +389,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get displayHistoryTab() {
-        const count = this.$store.state.gui.uiSettings.dashboardHistoryLimit ?? 0
+        const count = this.$store.state.gui.uiSettings.dashboardHistoryLimit ?? 5
 
         return count > 0
     }

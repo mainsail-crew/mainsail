@@ -29,7 +29,7 @@ export default class StatusPanelHistory extends Mixins(BaseMixin) {
     }
 
     get maxLength() {
-        return this.$store.state.gui.uiSettings.dashboardHistoryLimit ?? 0
+        return this.$store.state.gui.uiSettings.dashboardHistoryLimit ?? 5
     }
 
     get jobsCombined() {
