@@ -736,6 +736,7 @@
             "ClearPrintStats": "Clear print stats",
             "Difference": "Difference",
             "EmptyGcodes": "No G-Code available.",
+            "EmptyHistory": "There is no job in the history.",
             "EmptyJobqueue": "There is currently no file in the job queue.",
             "Estimate": "Estimate",
             "ETA": "ETA",
