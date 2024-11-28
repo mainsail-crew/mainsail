@@ -185,6 +185,7 @@ export const getDefaultState = (): GuiState => {
             printstatusThumbnailZoom: true,
             dashboardFilesLimit: 5,
             dashboardFilesFilter: ['new', 'failed', 'completed'],
+            dashboardHistoryLimit: 5,
         },
         view: {
             blockFileUpload: false,

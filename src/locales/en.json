@@ -736,6 +736,7 @@
             "ClearPrintStats": "Clear print stats",
             "Difference": "Difference",
             "EmptyGcodes": "No G-Code available.",
+            "EmptyHistory": "There is no job in the history.",
             "EmptyJobqueue": "There is currently no file in the job queue.",
             "Estimate": "Estimate",
             "ETA": "ETA",
@@ -775,6 +776,7 @@
             "Slicer": "Slicer",
             "Speed": "Speed",
             "Total": "Total",
+            "TotalTime": "Total Time",
             "Unknown": "Unknown"
         },
         "TemperaturePanel": {
@@ -1234,6 +1236,9 @@
             "DashboardFilesLimit": "Dashboard Files Limit",
             "DashboardFilesLimitDescription": "Select the maximum number of files to display on the dashboard Status Panel. (0 hides the files tab)",
             "DashboardFilesLimitLabel": "{count} files",
+            "DashboardHistoryLimit": "Dashboard History Limit",
+            "DashboardHistoryLimitDescription": "Select the maximum number of jobs to display on the dashboard in the Status Panel. (0 hides the history tab)",
+            "DashboardHistoryLimitLabel": "{count} jobs",
             "DefaultNavigationState": "Navigation default state",
             "DefaultNavigationStateAlwaysClosed": "always closed",
             "DefaultNavigationStateAlwaysOpen": "always open",

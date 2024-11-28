@@ -95,6 +95,9 @@
                 <v-tab v-if="displayFilesTab" href="#files">
                     <v-icon>{{ mdiFileDocumentMultipleOutline }}</v-icon>
                 </v-tab>
+                <v-tab v-if="displayHistoryTab" href="#history">
+                    <v-icon>{{ mdiHistory }}</v-icon>
+                </v-tab>
                 <v-tab href="#jobqueue">
                     <v-badge :color="jobQueueBadgeColor" :content="jobsCount.toString()" :inline="true">
                         <v-icon color="disabled">{{ mdiTrayFull }}</v-icon>
@@ -108,6 +111,9 @@
                 </v-tab-item>
                 <v-tab-item v-if="displayFilesTab" value="files">
                     <status-panel-gcodefiles />
+                </v-tab-item>
+                <v-tab-item v-if="displayHistoryTab" value="history">
+                    <status-panel-history />
                 </v-tab-item>
                 <v-tab-item value="jobqueue">
                     <status-panel-jobqueue />
@@ -129,6 +135,7 @@ import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import StatusPanelPrintstatus from '@/components/panels/Status/Printstatus.vue'
 import StatusPanelGcodefiles from '@/components/panels/Status/Gcodefiles.vue'
+import StatusPanelHistory from '@/components/panels/Status/History.vue'
 import StatusPanelJobqueue from '@/components/panels/Status/Jobqueue.vue'
 import StatusPanelExcludeObject from '@/components/panels/Status/ExcludeObject.vue'
 import StatusPanelPrintstatusThumbnail from '@/components/panels/Status/PrintstatusThumbnail.vue'
@@ -140,6 +147,7 @@ import {
     mdiCloseCircle,
     mdiDotsVertical,
     mdiFileDocumentMultipleOutline,
+    mdiHistory,
     mdiInformation,
     mdiLayersPlus,
     mdiMessageProcessingOutline,
@@ -162,6 +170,7 @@ import CancelJobDialog from '@/components/dialogs/CancelJobDialog.vue'
         Panel,
         StatusPanelExcludeObject,
         StatusPanelGcodefiles,
+        StatusPanelHistory,
         StatusPanelJobqueue,
         StatusPanelPrintstatus,
         StatusPanelPrintstatusThumbnail,
@@ -174,6 +183,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiDotsVertical = mdiDotsVertical
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiInformation = mdiInformation
+    mdiHistory = mdiHistory
     mdiMessageProcessingOutline = mdiMessageProcessingOutline
     mdiSpeedometer = mdiSpeedometer
     mdiTrayFull = mdiTrayFull
@@ -378,9 +388,16 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return count > 0
     }
 
+    get displayHistoryTab() {
+        const count = this.$store.state.gui.uiSettings.dashboardHistoryLimit ?? 5
+
+        return count > 0
+    }
+
     mounted() {
         if (this.current_filename !== '') this.activeTab = 'status'
-        if (!this.displayFilesTab) this.activeTab = 'jobqueue'
+        if (!this.displayFilesTab) this.activeTab = 'history'
+        if (!this.displayHistoryTab) this.activeTab = 'jobqueue'
     }
 
     @Watch('current_filename')
