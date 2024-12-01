@@ -368,8 +368,6 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get nozzleCrosshair() {
-        window.console.log(this.webcam.extra_data)
-
         return this.webcam.extra_data?.nozzleCrosshair ?? false
     }
 
