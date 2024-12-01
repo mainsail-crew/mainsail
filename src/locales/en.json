@@ -706,6 +706,7 @@
             "PowerControl": "Power Control"
         },
         "SpoolmanPanel": {
+            "ActiveSpool": "Active Spool",
             "Cancel": "Cancel",
             "ChangeSpool": "Change Spool",
             "DaysAgo": "{days} days ago",
@@ -720,6 +721,7 @@
             "Never": "Never",
             "NoActiveSpool": "Filament tracking is inactive. To get started, please select a spool.",
             "NoResults": "No spool found with the current search criteria.",
+            "NoSpool": "No spool",
             "NoSpools": "No spools available",
             "NoSpoolSelected": "No spool selected. Please select a spool or this print will not be tracked.",
             "OpenSpoolManager": "open Spool Manager",
