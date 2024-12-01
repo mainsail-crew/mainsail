@@ -86,20 +86,16 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
                 continue
             }
 
-            const type = (event.message ?? '').replace('// action:prompt_', '').split(' ')[0].trim()
+            const match = event.message.match(this.promptMessageExp)
+            const type = match?.groups?.type ?? ''
 
-            // stop processing and clear events once we find a end action
+            // stop processing and clear events once we find an end action
             if (type === 'end') {
                 this.currentPrompt = []
                 break
             }
 
-            console.log(event.message)
-
-            // extract our message from the action event
-            // supports no quote, double quote, and single quote wrapped messages
-            const { groups: { msg1, msg2, msg3 } = {} } = event.message.match(this.promptMessageExp) ?? {}
-            const message = (msg1 ?? msg2 ?? msg3 ?? '').trim()
+            const message = (match?.groups?.msg1 || match?.groups?.msg2 || '').trim()
 
             // prepend the event to prompt events found in this chunk
             promptEvents.unshift({
