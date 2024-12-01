@@ -202,7 +202,10 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
         this.$socket.emit('printer.gcode.script', { script: gcode })
 
         // Close dialog if save_variables is not enabled
-        if (this.existsSaveVariables) this.close()
+        if (!this.existsSaveVariables) {
+            this.close()
+            return
+        }
 
         // Set spool_id to save_variable
         const gcode2 = `SAVE_VARIABLE VARIABLE=${this.tool.toUpperCase()}__SPOOL_ID VALUE=${spool.id}`
