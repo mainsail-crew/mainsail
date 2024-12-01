@@ -47,7 +47,7 @@
                         <v-row dense>
                             <v-col cols="3" class="position-relative">
                                 <v-btn
-                                    class="btnMinWidthAuto fill-width p-abs"
+                                    class="btnMinWidthAuto fill-width position-absolute"
                                     style="top: -50%; width: calc(100% - 8px)"
                                     :disabled="
                                         !xAxisHomed ||
@@ -74,7 +74,7 @@
                             </v-col>
                             <v-col cols="3" class="position-relative">
                                 <v-btn
-                                    class="btnMinWidthAuto fill-width p-abs"
+                                    class="btnMinWidthAuto fill-width position-absolute"
                                     style="top: -50%; width: calc(100% - 8px)"
                                     :disabled="
                                         !xAxisHomed ||
