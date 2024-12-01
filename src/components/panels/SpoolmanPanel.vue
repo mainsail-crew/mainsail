@@ -2,13 +2,8 @@
     <div>
         <panel :icon="mdiAdjust" :title="title" card-class="spoolman-panel" :collapsible="true">
             <template #buttons>
-                <spoolman-tools-dropdown :tools="toolsWithSpoolId" />
-                <v-btn
-                    v-if="toolsWithSpoolId.length === 0"
-                    icon
-                    tile
-                    :title="changeSpoolTooltip"
-                    @click="showChangeSpoolDialog = true">
+                <spoolman-tools-dropdown v-if="toolsWithSpoolId.length > 0" :tools="toolsWithSpoolId" />
+                <v-btn v-else icon tile :title="changeSpoolTooltip" @click="showChangeSpoolDialog = true">
                     <v-icon>{{ mdiSwapVertical }}</v-icon>
                 </v-btn>
                 <v-menu :offset-y="true" :close-on-content-click="false" left>
