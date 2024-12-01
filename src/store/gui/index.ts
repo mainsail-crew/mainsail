@@ -183,6 +183,9 @@ export const getDefaultState = (): GuiState => {
             tempchartHeight: 250,
             hideUpdateWarnings: false,
             printstatusThumbnailZoom: true,
+            dashboardFilesLimit: 5,
+            dashboardFilesFilter: ['new', 'failed', 'completed'],
+            dashboardHistoryLimit: 5,
             hideOtherInstances: false,
         },
         view: {

@@ -17,8 +17,8 @@
                     </v-simple-table>
                 </v-col>
                 <v-col class="col-12 col-sm-6 col-md-4">
-                    <history-all-print-status-chart v-if="togglePrintStatus === 'chart'" />
-                    <history-all-print-status-table v-else />
+                    <history-all-print-status-chart v-if="togglePrintStatus === 'chart'" :value-name="toggleValue" />
+                    <history-all-print-status-table v-else :value-name="toggleValue" />
                     <div class="text-center mb-3">
                         <v-btn-toggle v-model="togglePrintStatus" small mandatory>
                             <v-btn small value="chart">{{ $t('History.Chart') }}</v-btn>
@@ -40,6 +40,13 @@
                             </template>
                             <span>{{ $t('History.LoadCompleteHistory') }}</span>
                         </v-tooltip>
+                    </div>
+                    <div class="text-center mb-3">
+                        <v-btn-toggle v-model="toggleValue" small mandatory>
+                            <v-btn v-for="option in toggleValueOptions" :key="option.value" small :value="option.value">
+                                {{ option.text }}
+                            </v-btn>
+                        </v-btn-toggle>
                     </div>
                 </v-col>
                 <v-col class="col-12 col-sm-12 col-md-4">
@@ -64,10 +71,16 @@ import Panel from '@/components/ui/Panel.vue'
 import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
 import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
 import HistoryAllPrintStatusChart from '@/components/charts/HistoryAllPrintStatusChart.vue'
-import { ServerHistoryStateJob, ServerHistoryStateJobAuxiliaryTotal } from '@/store/server/history/types'
+import {
+    HistoryStatsValueNames,
+    ServerHistoryStateJob,
+    ServerHistoryStateJobAuxiliaryTotal,
+} from '@/store/server/history/types'
 import { mdiChartAreaspline, mdiDatabaseArrowDownOutline } from '@mdi/js'
 import { formatPrintTime } from '@/plugins/helpers'
 import HistoryMixin from '@/components/mixins/history'
+import { TranslateResult } from 'vue-i18n'
+
 @Component({
     components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatusChart },
 })
@@ -75,6 +88,16 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin, HistoryMix
     mdiChartAreaspline = mdiChartAreaspline
     mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
     formatPrintTime = formatPrintTime
+
+    toggleValue = 'jobs'
+
+    get toggleValueOptions(): { text: TranslateResult; value: HistoryStatsValueNames }[] {
+        return [
+            { text: this.$t('History.Jobs'), value: 'jobs' },
+            { text: this.$t('History.Filament'), value: 'filament' },
+            { text: this.$t('History.Time'), value: 'time' },
+        ]
+    }
 
     get selectedJobs() {
         return this.$store.getters['server/history/getSelectedJobs']

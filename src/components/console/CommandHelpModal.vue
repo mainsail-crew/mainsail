@@ -33,42 +33,24 @@
                         <v-col>
                             <v-text-field
                                 v-model="cmdListSearch"
-                                label="Search"
+                                :label="$t('Console.Search')"
                                 outlined
                                 hide-details
                                 clearable
-                                dense></v-text-field>
+                                dense />
                         </v-col>
                     </v-row>
                 </v-card-title>
-                <v-divider></v-divider>
+                <v-divider />
                 <overlay-scrollbars class="command-help-content" :class="isMobile ? 'mobileHeight' : 'height300'">
                     <v-card-text class="pt-0">
-                        <v-row>
-                            <v-col>
-                                <v-list>
-                                    <v-list-item
-                                        v-for="cmd of helplistFiltered"
-                                        :key="cmd.commandLow"
-                                        class="px-0"
-                                        two-line>
-                                        <v-list-item-content class="px-0">
-                                            <v-list-item-title
-                                                class="primary--text font-weight-bold cursor-pointer"
-                                                @click="
-                                                    $emit('onCommand', cmd.command)
-                                                    isOpen = false
-                                                ">
-                                                {{ cmd.command }}
-                                            </v-list-item-title>
-                                            <v-list-item-subtitle class="text-wrap">
-                                                {{ cmd.description }}
-                                            </v-list-item-subtitle>
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                </v-list>
-                            </v-col>
-                        </v-row>
+                        <v-list>
+                            <command-help-modal-entry
+                                v-for="command of helplistFiltered"
+                                :key="command"
+                                :command="command"
+                                @click-on-command="onCommand" />
+                        </v-list>
                     </v-card-text>
                 </overlay-scrollbars>
             </panel>
@@ -77,15 +59,15 @@
 </template>
 
 <script lang="ts">
-import BaseMixin from './mixins/base'
-import { CommandHelp } from '@/store/printer/types'
+import BaseMixin from '@/components/mixins/base'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import Component from 'vue-class-component'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiHelp, mdiCloseThick } from '@mdi/js'
+import CommandHelpModalEntry from '@/components/console/CommandHelpModalEntry.vue'
 
 @Component({
-    components: { Panel },
+    components: { CommandHelpModalEntry, Panel },
 })
 export default class CommandHelpModal extends Mixins(BaseMixin) {
     @Prop({ required: false, default: false }) declare isMini: boolean
@@ -101,25 +83,26 @@ export default class CommandHelpModal extends Mixins(BaseMixin) {
     mdiHelp = mdiHelp
     mdiCloseThick = mdiCloseThick
 
-    get helplist(): CommandHelp[] {
-        return this.$store.state.printer.helplist ?? []
+    get helplist(): string[] {
+        return Object.keys(this.$store.state.printer.gcode?.commands ?? {})
     }
 
-    get helplistFiltered(): CommandHelp[] {
+    get helplistFiltered(): string[] {
         return this.helplist
-            .filter(
-                (cmd) =>
-                    typeof cmd.description === 'string' &&
-                    (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase()))
-            )
-            .sort((a, b) => a.commandLow.localeCompare(b.commandLow))
+            .filter((cmd) => cmd.includes(this.cmdListSearch.toUpperCase()))
+            .sort((a, b) => a.localeCompare(b))
+    }
+
+    onCommand(gcode: string): void {
+        this.$emit('onCommand', gcode)
+        this.isOpen = false
     }
 
     @Watch('isOpen')
     onIsOpen(val: boolean): void {
-        if (!val) {
-            this.cmdListSearch = ''
-        }
+        if (val) return
+
+        this.cmdListSearch = ''
     }
 }
 </script>

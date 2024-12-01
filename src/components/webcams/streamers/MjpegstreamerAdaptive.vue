@@ -4,6 +4,7 @@
             v-show="status === 'connected'"
             ref="image"
             class="webcamImage"
+            draggable="false"
             :style="webcamStyle"
             :alt="camSettings.name"
             src="#"

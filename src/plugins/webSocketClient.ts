@@ -179,7 +179,7 @@ export class WebSocketClient {
         )
     }
 
-    async emitAndWait(method: string, params: Params, options: emitOptions = {}): Promise<any> {
+    async emitAndWait(method: string, params: Params | undefined = undefined, options: emitOptions = {}): Promise<any> {
         return new Promise((resolve, reject) => {
             if (this.instance?.readyState !== WebSocket.OPEN) reject()
 
