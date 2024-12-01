@@ -587,8 +587,6 @@ export default class Viewer extends Mixins(BaseMixin) {
             y: number[]
         }[] = []
         this.printing_objects.forEach((object: any) => {
-            window.console.log(object)
-
             const xValues = object.polygon.map((point: number[]) => point[0])
             const yValues = object.polygon.map((point: number[]) => point[1])
 
