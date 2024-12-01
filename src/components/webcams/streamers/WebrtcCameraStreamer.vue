@@ -249,10 +249,6 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
 </script>
 
 <style scoped>
-.position-relative {
-    position: relative;
-}
-
 .webcamStream {
     width: 100%;
 }
