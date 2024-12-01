@@ -7,16 +7,16 @@
                     <v-card-title class="mx-n2">
                         {{ $t('Settings.HeightmapTab.Heightmap') }}
                     </v-card-title>
-                    <v-divider class="ml-3"></v-divider>
+                    <v-divider class="ml-3" />
                 </div>
+                <settings-row
+                    :title="$t('Settings.HeightmapTab.DefaultOrientation')"
+                    :sub-title="$t('Settings.HeightmapTab.DefaultOrientationDescription')">
+                    <v-select v-model="defaultOrientation" :items="availableOrientations" hide-details outlined dense />
+                </settings-row>
+                <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.HeightmapTab.ColorSchemes')">
-                    <v-select
-                        v-model="colorScheme"
-                        :items="availableColorSchemes"
-                        hide-details
-                        outlined
-                        dense
-                        attach></v-select>
+                    <v-select v-model="colorScheme" :items="availableColorSchemes" hide-details outlined dense />
                 </settings-row>
             </v-card-text>
         </v-card>
@@ -39,6 +39,36 @@ import { mdiGrid } from '@mdi/js'
 })
 export default class SettingsHeightmapTab extends Mixins(BaseMixin) {
     mdiGrid = mdiGrid
+
+    get availableOrientations() {
+        return [
+            {
+                text: this.$t('Settings.HeightmapTab.Orientations.RightFront'),
+                value: 'rightFront',
+            },
+            {
+                text: this.$t('Settings.HeightmapTab.Orientations.LeftFront'),
+                value: 'leftFront',
+            },
+            {
+                text: this.$t('Settings.HeightmapTab.Orientations.Front'),
+                value: 'front',
+            },
+            {
+                text: this.$t('Settings.HeightmapTab.Orientations.Top'),
+                value: 'top',
+            },
+        ]
+    }
+
+    get defaultOrientation() {
+        return this.$store.state.gui.heightmap.defaultOrientation
+    }
+
+    set defaultOrientation(newVal) {
+        this.$store.dispatch('gui/heightmap/saveSetting', { name: 'defaultOrientation', value: newVal })
+    }
+
     get availableColorSchemes() {
         return [
             {

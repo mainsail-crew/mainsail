@@ -14,6 +14,7 @@ export class WebSocketClient {
     timerId: number | null = null
     store: Store<RootState> | null = null
     waits: Wait[] = []
+    heartbeatTimer: number | null = null
 
     constructor(options: WebSocketPluginOptions) {
         this.url = options.url
@@ -29,6 +30,13 @@ export class WebSocketClient {
     handleMessage(data: any) {
         const wait = this.getWaitById(data.id)
 
+        // reject promise if it exists
+        if ('error' in data && wait?.reject) {
+            wait.reject(data.error)
+            this.removeWaitById(wait.id)
+            return
+        }
+
         // report error messages
         if (data.error?.message) {
             // only report errors, if not disconnected and no init component
@@ -36,12 +44,7 @@ export class WebSocketClient {
                 window.console.error(`Response Error: ${data.error.message} (${wait?.action ?? 'no action'})`)
             }
 
-            if (data.error.message === 'Unauthorized' && wait?.action === 'server/setConnectionId') {
-                this.close()
-                this.store?.dispatch('socket/setConnectionFailed', data.error.message)
-            }
-
-            if (wait?.id) {
+            if (wait) {
                 const modulename = wait.action?.split('/')[1] ?? null
 
                 if (
@@ -68,8 +71,11 @@ export class WebSocketClient {
             return
         }
 
+        // resolve promise if it exists
+        if (wait?.resolve) wait.resolve(data.result ?? {})
+
         // pass result to action
-        if (wait?.action) {
+        if (wait.action) {
             let result = data.result
             if (result === 'ok') result = { result: result }
             if (typeof result === 'string') result = { result: result }
@@ -89,7 +95,7 @@ export class WebSocketClient {
             isConnecting: true,
         })
 
-        await this.instance?.close()
+        this.instance?.close()
         this.instance = new WebSocket(this.url)
 
         this.instance.onopen = () => {
@@ -116,14 +122,19 @@ export class WebSocketClient {
         this.instance.onmessage = (msg) => {
             if (this.store === null) return
 
+            // websocket is alive
+            this.heartbeat()
+
             const data = JSON.parse(msg.data)
             if (Array.isArray(data)) {
                 for (const message of data) {
                     this.handleMessage(message)
                 }
-            } else {
-                this.handleMessage(data)
+
+                return
             }
+
+            this.handleMessage(data)
         }
     }
 
@@ -158,7 +169,7 @@ export class WebSocketClient {
 
         if (options.loading) this.store?.dispatch('socket/addLoading', { name: options.loading })
 
-        this.instance.send(
+        this.instance?.send(
             JSON.stringify({
                 jsonrpc: '2.0',
                 method,
@@ -166,6 +177,34 @@ export class WebSocketClient {
                 id,
             })
         )
+    }
+
+    async emitAndWait(method: string, params: Params | undefined = undefined, options: emitOptions = {}): Promise<any> {
+        return new Promise((resolve, reject) => {
+            if (this.instance?.readyState !== WebSocket.OPEN) reject()
+
+            const id = this.messageId++
+            this.waits.push({
+                id: id,
+                params: params,
+                action: options.action ?? null,
+                actionPayload: options.actionPayload ?? {},
+                loading: options.loading ?? null,
+                resolve,
+                reject,
+            })
+
+            if (options.loading) this.store?.dispatch('socket/addLoading', { name: options.loading })
+
+            this.instance?.send(
+                JSON.stringify({
+                    jsonrpc: '2.0',
+                    method,
+                    params,
+                    id,
+                })
+            )
+        })
     }
 
     emitBatch(messages: BatchMessage[]): void {
@@ -193,6 +232,17 @@ export class WebSocketClient {
         }
 
         this.instance.send(JSON.stringify(body))
+    }
+
+    heartbeat(): void {
+        if (this.heartbeatTimer) clearInterval(this.heartbeatTimer)
+
+        this.heartbeatTimer = window.setTimeout(() => {
+            if (this.instance?.readyState !== WebSocket.OPEN || !this.store) return
+
+            this.close()
+            this.store?.dispatch('socket/onClose')
+        }, 10000)
     }
 }
 
@@ -228,6 +278,8 @@ export interface Wait {
     action?: string | null
     actionPayload?: any
     loading?: string | null
+    resolve?: (value: any) => void
+    reject?: (reason: any) => void
 }
 
 interface Params {

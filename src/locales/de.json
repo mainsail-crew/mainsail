@@ -155,6 +155,7 @@
         "CheckMoonrakerLog": "Wenn diese Meldung wiederholt erscheint, schaue bitte in die Logdatei unter:",
         "Connecting": "Verbinde zu {host}",
         "Failed": "Verbindung fehlgeschlagen",
+        "Help": "Hilfe",
         "Initializing": "Initialisieren",
         "TryAgain": "Erneut versuchen"
     },
@@ -740,10 +741,8 @@
             },
             "Filament": "Filament",
             "File": "Datei",
-            "Files": "Dateien",
             "Flow": "Fluss",
             "Headline": "Status",
-            "Jobqueue": "Warteschlange",
             "JobqueueMoreFiles": "keine weiteren Aufträge | einen weiteren Auftrag | {count} weitere Aufträge",
             "Layer": "Schicht",
             "Max": "max",
@@ -768,7 +767,6 @@
             "ResumePrint": "Druck fortführen",
             "Slicer": "Slicer",
             "Speed": "Geschwindigkeit",
-            "Status": "Status",
             "Total": "Gesamt",
             "Unknown": "Unbekannt"
         },
