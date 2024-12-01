@@ -1253,6 +1253,8 @@
             "GcodeThumbnails": "G-Code thumbnails",
             "GcodeThumbnailsDescription": "Click on the button to get to the instructions.",
             "Guide": "Guide",
+            "HideOtherInstances": "Hide other instances",
+            "HideOtherInstancesDescription": "Hide other instances of Klipper & Moonraker in the Service Menu.",
             "HideSaveConfigButtonForBedMesh": "Hide SAVE_CONFIG button for bed_mesh changes",
             "HideSaveConfigButtonForBedMeshDescription": "Hide SAVE_CONFIG, if only bed_mesh changes are pending to be saved in Klipper.",
             "HideUpdateWarnings": "Hide Update Warnings",

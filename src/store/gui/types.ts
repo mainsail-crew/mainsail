@@ -128,6 +128,7 @@ export interface GuiState {
         dashboardFilesLimit: number
         dashboardFilesFilter: GuiStateUiSettingsDashboardFilesFilter[]
         dashboardHistoryLimit: number
+        hideOtherInstances: boolean
     }
     view: {
         blockFileUpload: boolean
