@@ -537,7 +537,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from '@/components/mixins/theme'
-import { formatFilesize, sortFiles } from '@/plugins/helpers'
+import { escapePath, formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
@@ -1033,7 +1033,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
 
     downloadFile() {
         const filename = this.absolutePath + '/' + this.contextMenu.item.filename
-        const href = `${this.apiUrl}/server/files${encodeURI(filename)}`
+        const href = `${this.apiUrl}/server/files${escapePath(filename)}`
         window.open(href)
     }
 

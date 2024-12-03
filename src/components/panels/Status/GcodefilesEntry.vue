@@ -173,7 +173,7 @@ import {
 import Panel from '@/components/ui/Panel.vue'
 import { defaultBigThumbnailBackground } from '@/store/variables'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
-import { formatPrintTime } from '@/plugins/helpers'
+import { escapePath, formatPrintTime } from '@/plugins/helpers'
 
 @Component({
     components: {
@@ -295,7 +295,7 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 
     downloadFile() {
-        const href = this.apiUrl + '/server/files/gcodes/' + encodeURI(this.item.filename)
+        const href = this.apiUrl + '/server/files/gcodes/' + escapePath(this.item.filename)
 
         window.open(href)
     }
