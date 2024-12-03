@@ -5,7 +5,7 @@ import axios from 'axios'
 import { sha256 } from 'js-sha256'
 import Vue from 'vue'
 import i18n from '@/plugins/i18n'
-import { windowBeforeUnloadFunction } from '@/plugins/helpers'
+import { escapePath, windowBeforeUnloadFunction } from '@/plugins/helpers'
 
 export const actions: ActionTree<EditorState, RootState> = {
     reset({ commit }) {
@@ -52,7 +52,7 @@ export const actions: ActionTree<EditorState, RootState> = {
         fullFilepathArray.push(payload.filename)
 
         const fullFilepath = fullFilepathArray.join('/')
-        const url = rootGetters['socket/getUrl'] + '/server/files/' + encodeURI(fullFilepath) + `?${Date.now()}`
+        const url = rootGetters['socket/getUrl'] + '/server/files/' + escapePath(fullFilepath) + `?${Date.now()}`
 
         if (state.cancelToken) dispatch('cancelLoad')
 

@@ -2,6 +2,7 @@ import { GetterTree } from 'vuex'
 import { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import Vue from 'vue'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
+import { escapePath } from '@/plugins/helpers'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerJobQueueState, any> = {
@@ -50,9 +51,9 @@ export const getters: GetterTree<ServerJobQueueState, any> = {
                 return (
                     rootGetters['socket/getUrl'] +
                     '/server/files/' +
-                    path +
+                    escapePath(path) +
                     '/' +
-                    encodeURI(thumbnail.relative_path) +
+                    escapePath(thumbnail.relative_path) +
                     '?timestamp=' +
                     item.metadata?.modified.getTime()
                 )
@@ -73,9 +74,9 @@ export const getters: GetterTree<ServerJobQueueState, any> = {
                 return (
                     rootGetters['socket/getUrl'] +
                     '/server/files/' +
-                    path +
+                    escapePath(path) +
                     '/' +
-                    encodeURI(thumbnail.relative_path) +
+                    escapePath(thumbnail.relative_path) +
                     '?timestamp=' +
                     item.metadata?.modified.getTime()
                 )

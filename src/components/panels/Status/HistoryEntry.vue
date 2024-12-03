@@ -87,7 +87,7 @@ import { mdiCloseThick, mdiDelete, mdiFile, mdiPlaylistPlus, mdiPrinter } from '
 import { defaultBigThumbnailBackground, thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { ServerHistoryStateJobWithCount } from '@/store/server/history/types'
 import { FileStateFileThumbnail } from '@/store/files/types'
-import { formatPrintTime } from '@/plugins/helpers'
+import { escapePath, formatPrintTime } from '@/plugins/helpers'
 @Component
 export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
@@ -250,7 +250,7 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
             relative_url = this.job.filename.substring(0, this.job.filename.lastIndexOf('/') + 1)
         }
 
-        return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url + thumbnail.relative_path)}?timestamp=${
+        return `${this.apiUrl}/server/files/gcodes/${escapePath(relative_url + thumbnail.relative_path)}?timestamp=${
             this.job.metadata.modified
         }`
     }

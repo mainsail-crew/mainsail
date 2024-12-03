@@ -8,6 +8,7 @@ import {
 import { GetterTree } from 'vuex'
 import { FileState, FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
+import { escapePath } from '@/plugins/helpers'
 
 // eslint-disable-next-line
 export const getters: GetterTree<FileState, any> = {
@@ -50,7 +51,7 @@ export const getters: GetterTree<FileState, any> = {
             let files: FileStateFile[] = []
 
             if (path !== null) {
-                baseURL += encodeURI(path)
+                baseURL += escapePath(path)
                 const directory = getters['getDirectory']('gcodes' + path)
                 files = directory?.childrens ?? []
             } else {
@@ -134,17 +135,13 @@ export const getters: GetterTree<FileState, any> = {
                     )
 
                     if (small_thumbnail && 'relative_path' in small_thumbnail) {
-                        tmp.small_thumbnail = `${baseURL + subdirectory}/${encodeURI(
-                            small_thumbnail.relative_path
-                        )}?timestamp=${fileTimestamp}`
+                        tmp.small_thumbnail = `${baseURL}${escapePath(subdirectory + '/' + small_thumbnail.relative_path)}?timestamp=${fileTimestamp}`
                     }
 
                     const big_thumbnail = file.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
 
                     if (big_thumbnail && 'relative_path' in big_thumbnail) {
-                        tmp.big_thumbnail = `${baseURL + subdirectory}/${encodeURI(
-                            big_thumbnail.relative_path
-                        )}?timestamp=${fileTimestamp}`
+                        tmp.big_thumbnail = `${baseURL}${escapePath(subdirectory + '/' + big_thumbnail.relative_path)}?timestamp=${fileTimestamp}`
 
                         tmp.big_thumbnail_width = big_thumbnail.width
                     }
@@ -290,7 +287,7 @@ export const getters: GetterTree<FileState, any> = {
             )
 
             if (thumbnail && 'relative_path' in thumbnail) {
-                return `${rootGetters['socket/getUrl']}/server/files/${currentPath}/${encodeURI(
+                return `${rootGetters['socket/getUrl']}/server/files/${escapePath(currentPath)}/${escapePath(
                     thumbnail.relative_path
                 )}?timestamp=${item.modified.getTime()}`
             }
@@ -304,7 +301,7 @@ export const getters: GetterTree<FileState, any> = {
             const thumbnail = item.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail) {
-                return `${rootGetters['socket/getUrl']}/server/files/${encodeURI(currentPath)}/${encodeURI(
+                return `${rootGetters['socket/getUrl']}/server/files/${escapePath(currentPath)}/${escapePath(
                     thumbnail.relative_path
                 )}?timestamp=${item.modified.getTime()}`
             }
