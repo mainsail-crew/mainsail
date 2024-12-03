@@ -16,9 +16,7 @@
                             'col-3': el.is.large,
                         }"
                         class="v-subheader text--secondary mr-2">
-                        <v-icon small class="mr-1">
-                            {{ mdiCrosshairsGps }}
-                        </v-icon>
+                        <v-icon small class="mr-1">{{ mdiCrosshairsGps }}</v-icon>
                         <span v-if="!el.is.xsmall" class="text-no-wrap">
                             {{ $t('Panels.ToolheadControlPanel.Position') }}:&nbsp;
                         </span>
@@ -27,12 +25,8 @@
                     <v-col
                         v-if="currentProfileName"
                         class="v-subheader text--secondary pl-2 justify-end text-no-wrap text-truncate">
-                        <v-icon small class="mr-1">
-                            {{ mdiGrid }}
-                        </v-icon>
-                        <span class="text-no-wrap text-truncate">
-                            {{ currentProfileName }}
-                        </span>
+                        <v-icon small class="mr-1">{{ mdiGrid }}</v-icon>
+                        <span class="text-no-wrap text-truncate">{{ currentProfileName }}</span>
                     </v-col>
                 </v-row>
                 <v-row v-if="showCoordinates" dense>
@@ -45,7 +39,7 @@
                             :current-pos="gcodePositions.x"
                             :readonly="['printing'].includes(printer_state)"
                             :disabled="!xAxisHomed"
-                            @submit="sendCmd"></move-to-input>
+                            @submit="sendCmd" />
                     </v-col>
                     <v-col :class="el.is.xsmall ? 'col-12' : 'col-4'">
                         <move-to-input
@@ -56,7 +50,7 @@
                             :current-pos="gcodePositions.y"
                             :readonly="['printing'].includes(printer_state)"
                             :disabled="!yAxisHomed"
-                            @submit="sendCmd"></move-to-input>
+                            @submit="sendCmd" />
                     </v-col>
                     <v-col :class="el.is.xsmall ? 'col-12' : 'col-4'">
                         <move-to-input
@@ -67,7 +61,7 @@
                             :current-pos="gcodePositions.z"
                             :readonly="['printing'].includes(printer_state)"
                             :disabled="!zAxisHomed"
-                            @submit="sendCmd"></move-to-input>
+                            @submit="sendCmd" />
                     </v-col>
                 </v-row>
             </template>
@@ -170,24 +164,44 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     sendCmd(): void {
-        const xPos = this.input.x.pos !== this.gcodePositions.x ? ` X${this.input.x.pos}` : ''
-        const yPos = this.input.y.pos !== this.gcodePositions.y ? ` Y${this.input.y.pos}` : ''
-        const zPos = this.input.z.pos !== this.gcodePositions.z ? ` Z${this.input.z.pos}` : ''
-
-        let gcode = ''
-        if (!this.positionAbsolute) {
-            gcode += 'G90\n'
-        }
-        if (zPos !== '') {
-            gcode += `G1${zPos} F${this.feedrateZ * 60}\n`
-        }
-        if (xPos !== '' || yPos !== '') {
-            gcode += `G1${xPos}${yPos} F${this.feedrateXY * 60}`
+        let gcode: string[] = []
+        if (!this.existsClientLinearMoveMacro) {
+            gcode.push('SAVE_GCODE_STATE NAME=_ui_movement')
+            gcode.push('G90')
         }
 
-        if (gcode !== '' && this.input.x.valid && this.input.y.valid && this.input.z.valid) {
-            this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-            this.$socket.emit('printer.gcode.script', { script: gcode })
+        if (this.input.z.pos !== this.gcodePositions.z) {
+            if (this.existsClientLinearMoveMacro)
+                gcode.push(`_CLIENT_LINEAR_MOVE Z=${this.input.z.pos} F=${this.feedrateZ * 60} ABSOLUTE=1`)
+            else gcode.push(`G1 Z${this.input.z.pos} F${this.feedrateZ * 60}`)
+        }
+
+        if (this.input.x.pos !== this.gcodePositions.x || this.input.y.pos !== this.gcodePositions.y) {
+            let xPos = ''
+            let yPos = ''
+
+            if (this.existsClientLinearMoveMacro) {
+                if (this.input.x.pos !== this.gcodePositions.x) xPos = ` X=${this.input.x.pos}`
+                if (this.input.y.pos !== this.gcodePositions.y) yPos = ` Y=${this.input.y.pos}`
+
+                gcode.push(`_CLIENT_LINEAR_MOVE${xPos}${yPos} F=${this.feedrateXY * 60} ABSOLUTE=1`)
+            } else {
+                if (this.input.x.pos !== this.gcodePositions.x) xPos = ` X${this.input.x.pos}`
+                if (this.input.y.pos !== this.gcodePositions.y) yPos = ` Y${this.input.y.pos}`
+
+                gcode.push(`G1${xPos}${yPos} F${this.feedrateXY * 60}`)
+            }
+        }
+
+        if (!this.existsClientLinearMoveMacro) {
+            gcode.push('RESTORE_GCODE_STATE NAME=_ui_movement')
+        }
+
+        const gcodeStr = gcode.join('\n')
+
+        if (this.input.x.valid && this.input.y.valid && this.input.z.valid) {
+            this.$store.dispatch('server/addEvent', { message: gcodeStr, type: 'command' })
+            this.$socket.emit('printer.gcode.script', { script: gcodeStr })
         }
 
         return
