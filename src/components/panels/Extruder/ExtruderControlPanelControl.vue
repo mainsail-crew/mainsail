@@ -93,7 +93,7 @@
                             <template #activator="{ on }">
                                 <div v-on="on">
                                     <v-btn
-                                        :loading="loadings.includes('btnDetract')"
+                                        :loading="loadings.includes('btnExtrude')"
                                         :disabled="!extrudePossible || tooLargeExtrusion || printerIsPrintingOnly"
                                         small
                                         class="_btn-extruder-cmd"
@@ -157,7 +157,7 @@
                                     <template #activator="{ on }">
                                         <div class="pt-1 pb-2 px-3" v-on="on">
                                             <v-btn
-                                                :loading="loadings.includes('btnDetract')"
+                                                :loading="loadings.includes('btnExtrude')"
                                                 :disabled="
                                                     !extrudePossible || tooLargeExtrusion || printerIsPrintingOnly
                                                 "
@@ -250,6 +250,12 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
         return this.feedamount * this.extrudeFactor > this.maxExtrudeOnlyDistance
     }
 
+    get existsClientLinearMoveMacro() {
+        const macros = this.$store.state.printer?.gcode?.commands ?? {}
+
+        return '_CLIENT_LINEAR_MOVE' in macros
+    }
+
     @Watch('maxExtrudeOnlyDistance', { immediate: true })
     onMaxExtrudeOnlyDistanceChange(): void {
         /**
@@ -263,15 +269,26 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
     }
 
     sendRetract(): void {
-        const gcode = `M83\nG1 E-${this.feedamount} F${this.feedrate * 60}`
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnRetract' })
+        this.sendCommand(this.feedamount * -1, 'btnRetract')
     }
 
     sendExtrude(): void {
-        const gcode = `M83\nG1 E${this.feedamount} F${this.feedrate * 60}`
+        this.sendCommand(this.feedamount, 'btnExtrude')
+    }
+
+    sendCommand(length: number, loading: string): void {
+        let gcode =
+            `SAVE_GCODE_STATE NAME=_ui_extrude\n` +
+            `M83\n` +
+            `G1 E${length} F${this.feedrate * 60}\n` +
+            `RESTORE_GCODE_STATE NAME=_ui_extrude`
+
+        if (this.existsClientLinearMoveMacro) {
+            gcode = `_CLIENT_LINEAR_MOVE E=${length} F=${this.feedrate * 60}`
+        }
+
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading })
     }
 }
 </script>

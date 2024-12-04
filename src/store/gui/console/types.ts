@@ -9,6 +9,7 @@ export interface GuiConsoleState {
     consolefilters: {
         [key: string]: GuiConsoleStateFilter
     }
+    rawOutput: boolean
 }
 
 export interface GuiConsoleStateFilter {

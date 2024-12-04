@@ -87,6 +87,7 @@ import BaseMixin from '@/components/mixins/base'
 import { defaultBigThumbnailBackground, thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { mdiFileOutline, mdiFile } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
+import { escapePath } from '@/plugins/helpers'
 
 @Component({})
 export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
@@ -119,7 +120,7 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
                 }
 
                 if (thumbnail && 'relative_path' in thumbnail) {
-                    return `${this.apiUrl}/server/files/gcodes/${encodeURI(
+                    return `${this.apiUrl}/server/files/gcodes/${escapePath(
                         relative_url + thumbnail.relative_path
                     )}?timestamp=${this.current_file.modified}`
                 }
@@ -170,7 +171,7 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
                 }
 
                 if (thumbnail && 'relative_path' in thumbnail) {
-                    return `${this.apiUrl}/server/files/gcodes/${encodeURI(
+                    return `${this.apiUrl}/server/files/gcodes/${escapePath(
                         relative_url + thumbnail.relative_path
                     )}?timestamp=${this.current_file.modified}`
                 }

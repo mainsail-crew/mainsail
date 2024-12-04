@@ -28,6 +28,9 @@ export interface GuiWebcamStateWebcam {
     extra_data?: {
         enableAudio?: boolean
         hideFps?: boolean
+        nozzleCrosshair?: boolean
+        nozzleCrosshairColor?: string
+        nozzleCrosshairSize?: number
     }
     source?: 'config' | 'database'
 }
