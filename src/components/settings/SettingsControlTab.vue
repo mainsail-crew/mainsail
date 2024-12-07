@@ -178,18 +178,20 @@
                     </settings-row>
                     <v-divider class="my-2" />
                 </template>
-                <settings-row
-                    :title="$t('Settings.ControlTab.ZOffsetSaveOption')"
-                    :sub-title="$t('Settings.ControlTab.ZOffsetSaveOptionDescription')">
-                    <v-select
-                        v-model="offsetZSaveOption"
-                        :items="offsetZSaveOptions"
-                        class="mt-0"
-                        hide-details
-                        outlined
-                        dense />
-                </settings-row>
-                <v-divider class="my-2" />
+                <template v-if="klipperReadyForGui && endstop_pin !== null">
+                    <settings-row
+                        :title="$t('Settings.ControlTab.ZOffsetSaveOption')"
+                        :sub-title="$t('Settings.ControlTab.ZOffsetSaveOptionDescription')">
+                        <v-select
+                            v-model="offsetZSaveOption"
+                            :items="offsetZSaveOptions"
+                            class="mt-0"
+                            hide-details
+                            outlined
+                            dense />
+                    </settings-row>
+                    <v-divider class="my-2" />
+                </template>
                 <settings-row :title="$t('Settings.ControlTab.ZOffsetIncrements')" :mobile-second-row="true">
                     <v-combobox
                         v-model="offsetsZ"
@@ -580,7 +582,7 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin, 
     }
 
     mounted() {
-        this.$refs.formControlExtruder.validate()
+        this.$refs.formControlExtruder?.validate()
     }
 }
 </script>
