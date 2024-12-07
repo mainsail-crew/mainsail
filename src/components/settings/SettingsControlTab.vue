@@ -178,7 +178,7 @@
                     </settings-row>
                     <v-divider class="my-2" />
                 </template>
-                <template v-if="endstop_pin !== null">
+                <template v-if="klipperReadyForGui && endstop_pin !== null">
                     <settings-row
                         :title="$t('Settings.ControlTab.ZOffsetSaveOption')"
                         :sub-title="$t('Settings.ControlTab.ZOffsetSaveOptionDescription')">
