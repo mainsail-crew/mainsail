@@ -136,7 +136,12 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
 
         this.pc.addTransceiver('video', { direction: 'recvonly' })
 
-        this.pc.onicecandidate = (e: RTCPeerConnectionIceEvent) => this.onIceCandidate(e, iceResponse.id)
+        if ('iceServers' in iceResponse) {
+            this.pc.onicecandidate = (e: RTCPeerConnectionIceEvent) => this.onIceCandidate(e, iceResponse.id)
+        } else {
+            this.log('No ICE servers returned, so the current camera-streamer version may not support them')
+        }
+
         this.pc.onconnectionstatechange = () => this.onConnectionStateChange()
         this.pc.ontrack = (e) => this.onTrack(e)
 
