@@ -178,18 +178,20 @@
                     </settings-row>
                     <v-divider class="my-2" />
                 </template>
-                <settings-row
-                    :title="$t('Settings.ControlTab.ZOffsetSaveOption')"
-                    :sub-title="$t('Settings.ControlTab.ZOffsetSaveOptionDescription')">
-                    <v-select
-                        v-model="offsetZSaveOption"
-                        :items="offsetZSaveOptions"
-                        class="mt-0"
-                        hide-details
-                        outlined
-                        dense />
-                </settings-row>
-                <v-divider class="my-2" />
+                <template v-if="endstop_pin !== null">
+                    <settings-row
+                        :title="$t('Settings.ControlTab.ZOffsetSaveOption')"
+                        :sub-title="$t('Settings.ControlTab.ZOffsetSaveOptionDescription')">
+                        <v-select
+                            v-model="offsetZSaveOption"
+                            :items="offsetZSaveOptions"
+                            class="mt-0"
+                            hide-details
+                            outlined
+                            dense />
+                    </settings-row>
+                    <v-divider class="my-2" />
+                </template>
                 <settings-row :title="$t('Settings.ControlTab.ZOffsetIncrements')" :mobile-second-row="true">
                     <v-combobox
                         v-model="offsetsZ"
