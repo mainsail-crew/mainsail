@@ -580,7 +580,7 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin, 
     }
 
     mounted() {
-        this.$refs.formControlExtruder.validate()
+        this.$refs.formControlExtruder?.validate()
     }
 }
 </script>
