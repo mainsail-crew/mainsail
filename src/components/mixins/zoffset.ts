@@ -30,9 +30,7 @@ export default class ZoffsetMixin extends Vue {
     }
 
     get endstop_pin() {
-        const stepperConfig = this.settings[this.stepper_name] ?? {}
-
-        return stepperConfig?.endstop_pin.trim()
+        return this.settings[this.stepper_name]?.endstop_pin?.trim() ?? null
     }
 
     get zOffset(): number {

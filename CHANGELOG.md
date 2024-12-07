@@ -2,6 +2,108 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.13.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.13.0) - 2024-12-04
+### Features
+
+- **Console**: Change from Helplist to Printer.Gcode ([#2033](https://github.com/mainsail-crew/mainsail/pull/2033))
+- **Dashboard**: Add option to change length and filter files ([#2051](https://github.com/mainsail-crew/mainsail/pull/2051))
+- **Heightmap**: Add option to set the default orientation ([#2006](https://github.com/mainsail-crew/mainsail/pull/2006))
+- **History**: Add option to show stats in different values ([#2007](https://github.com/mainsail-crew/mainsail/pull/2007))
+- **StatusPanel**: Change tab text to icons ([#2054](https://github.com/mainsail-crew/mainsail/pull/2054))
+- **StatusPanel**: Add option to show history in StatusPanel ([#2055](https://github.com/mainsail-crew/mainsail/pull/2055))
+- **Webcam**: Add a optional overlay for IDEX calibration ([#2053](https://github.com/mainsail-crew/mainsail/pull/2053))
+- **console**: Add debug prefix ([#1973](https://github.com/mainsail-crew/mainsail/pull/1973))
+- **console**: Add option for RAW-output (for debugging) ([#1975](https://github.com/mainsail-crew/mainsail/pull/1975))
+- **spoolman**: Add multi tool support ([#1946](https://github.com/mainsail-crew/mainsail/pull/1946))
+- **theme**: Add option for dedicated CSS file per theme ([#1958](https://github.com/mainsail-crew/mainsail/pull/1958))
+- **updateManager**: Use info_tag desc for the name ([#1959](https://github.com/mainsail-crew/mainsail/pull/1959))
+- Added second layer confirmation for Cancel Job ([#1978](https://github.com/mainsail-crew/mainsail/pull/1978))
+- Adds a file structure sidebar in the editor ([#1943](https://github.com/mainsail-crew/mainsail/pull/1943))
+- Add output on connection dialog for unauthorized ([#1996](https://github.com/mainsail-crew/mainsail/pull/1996))
+- Add heartbeat to the moonraker websocket ([#2003](https://github.com/mainsail-crew/mainsail/pull/2003))
+- Add link to the Docs for Unauthorized connections ([#2035](https://github.com/mainsail-crew/mainsail/pull/2035))
+- Multiple nevermore support ([#1939](https://github.com/mainsail-crew/mainsail/pull/1939))
+- Add button to open the device dialog in SystemPanel ([#2046](https://github.com/mainsail-crew/mainsail/pull/2046))
+- Add SGP40 support ([#2040](https://github.com/mainsail-crew/mainsail/pull/2040))
+- Add option to hide other Klipper & Moonraker instances ([#2029](https://github.com/mainsail-crew/mainsail/pull/2029))
+- Use _CLIENT_LINEAR_MOVE macros instead of multi-line gcodes ([#2043](https://github.com/mainsail-crew/mainsail/pull/2043))
+
+### Bug Fixes and Improvements
+
+- **Editor**: Trigger gotoLine only when change is from sidebar ([#2012](https://github.com/mainsail-crew/mainsail/pull/2012))
+- **Editor**: Fix editor width when sidebar is hidden ([#2014](https://github.com/mainsail-crew/mainsail/pull/2014))
+- **ExtruderPanel**: Restore mode after extruding/retracting ([#1965](https://github.com/mainsail-crew/mainsail/pull/1965))
+- **ExtruderPanel**: Fix extrude and speed factor output ([#2002](https://github.com/mainsail-crew/mainsail/pull/2002))
+- **History**: Adjust button tooltips to consistent style ([#2018](https://github.com/mainsail-crew/mainsail/pull/2018))
+- **HistoryPanel**: Fix History thumbnails of files in folders ([#2010](https://github.com/mainsail-crew/mainsail/pull/2010))
+- **MediaMTX**: Fix some connection issues ([#1979](https://github.com/mainsail-crew/mainsail/pull/1979))
+- **Webcam**: Capitalize the connection state ([#2019](https://github.com/mainsail-crew/mainsail/pull/2019))
+- **Webcam**: Make webcam view non-draggable ([#2057](https://github.com/mainsail-crew/mainsail/pull/2057))
+- **console**: Trim output to remove spaces at first char ([#1962](https://github.com/mainsail-crew/mainsail/pull/1962))
+- **control**: Check set actionButton before display it ([#1953](https://github.com/mainsail-crew/mainsail/pull/1953))
+- **gcodeviewer**: Fix gcodeviewer simulation while printing ([#1954](https://github.com/mainsail-crew/mainsail/pull/1954))
+- **notifications**: Fix dismiss function for tmc warnings ([#1956](https://github.com/mainsail-crew/mainsail/pull/1956))
+- **webcam**: Fix memory leak in MJPEGStreamer client ([#1987](https://github.com/mainsail-crew/mainsail/pull/1987))
+- **webcam**: Fix some connection issues in Camera-Streamer ([#1981](https://github.com/mainsail-crew/mainsail/pull/1981))
+- Fix uuid request in MediaMTX webcam client ([#1968](https://github.com/mainsail-crew/mainsail/pull/1968))
+- Change Min Cruise Ratio to percent in MachineSettingsPanel ([#1992](https://github.com/mainsail-crew/mainsail/pull/1992))
+- Correct github commit after link in commit list ([#2000](https://github.com/mainsail-crew/mainsail/pull/2000))
+- Fix image viewer if the image is wider than the viewport ([#2020](https://github.com/mainsail-crew/mainsail/pull/2020))
+- Fix color picker for PCA9632 ([#2028](https://github.com/mainsail-crew/mainsail/pull/2028))
+- Tool rows in even lengths, and more visually tidy ([#2041](https://github.com/mainsail-crew/mainsail/pull/2041))
+- Fix reference link in editor while printing ([#2050](https://github.com/mainsail-crew/mainsail/pull/2050))
+- Fix save z offset in toolhead panel ([#2060](https://github.com/mainsail-crew/mainsail/pull/2060))
+- Keep macro prompt open for events older than 100 ([#2045](https://github.com/mainsail-crew/mainsail/pull/2045))
+- Escape all file URLs to support all kind of special chars ([#2065](https://github.com/mainsail-crew/mainsail/pull/2065))
+
+### Performance
+
+- Fix hang when leaving G-Code Preview page ([#1949](https://github.com/mainsail-crew/mainsail/pull/1949))
+
+### Refactor
+
+- **ControlPanel**: Use SAVE/RESTORE STATE when moving ([#1988](https://github.com/mainsail-crew/mainsail/pull/1988))
+- **ExtruderPanel**: Add `_` prefix to gcode_state name ([#1989](https://github.com/mainsail-crew/mainsail/pull/1989))
+- **timelapse**: Refactor the timelapse status panel ([#1982](https://github.com/mainsail-crew/mainsail/pull/1982))
+- **webcam**: Refactor Mjpegstreamer-Adaptive Webcam mode ([#1994](https://github.com/mainsail-crew/mainsail/pull/1994))
+- Refactor machine settings panel ([#1991](https://github.com/mainsail-crew/mainsail/pull/1991))
+- Refactor Console & MiniConsole ([#2031](https://github.com/mainsail-crew/mainsail/pull/2031))
+- Refactor files list in StatusPanel ([#2047](https://github.com/mainsail-crew/mainsail/pull/2047))
+- Refactor gcodeviewer page ([#2061](https://github.com/mainsail-crew/mainsail/pull/2061))
+
+### Styling
+
+- Run prettier in locale files
+- Run prettier in locale files
+
+### Localization
+
+- **it**: Update italian translation ([#2049](https://github.com/mainsail-crew/mainsail/pull/2049))
+- **zh**: Update chinese locale ([#1951](https://github.com/mainsail-crew/mainsail/pull/1951))
+- Translations update from Hosted Weblate ([#1952](https://github.com/mainsail-crew/mainsail/pull/1952))
+- Update Hungarian locale with Weblate
+- Update Spanish locale with Weblate
+- Update Hungarian locale with Weblate
+- Update Spanish locale with Weblate
+- Update Hungarian locale with Weblate
+- Update Spanish locale with Weblate
+- Update Hungarian locale with Weblate
+- Update Turkish locale with Weblate
+- Update Dutch locale with Weblate
+- Update Spanish locale with Weblate
+- Update Hungarian locale with Weblate
+- Update Spanish locale with Weblate
+- Update Hungarian locale with Weblate
+- Update Hungarian locale with Weblate
+- Update Spanish locale with Weblate
+- Update Chinese (Traditional Han script) locale with Weblate
+
+### Other
+
+- **Docker**: Enable ipv6 in nginx.conf ([#2030](https://github.com/mainsail-crew/mainsail/pull/2030))
+- **prettier**: Add support to sort locale json files ([#1976](https://github.com/mainsail-crew/mainsail/pull/1976))
+- **websocket**: Add function to send and wait for response ([#2004](https://github.com/mainsail-crew/mainsail/pull/2004))
+
 ## [2.12.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.12.0) - 2024-07-14
 ### Features
 
