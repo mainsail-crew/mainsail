@@ -2,6 +2,16 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.13.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.13.1) - 2024-12-07
+### Bug Fixes and Improvements
+
+- **Webcam**: Add ICE Candidates check to support older camera-streamer versions ([#2069](https://github.com/mainsail-crew/mainsail/pull/2069))
+- Fix interface settings Control-Tab when printer is not available ([#2071](https://github.com/mainsail-crew/mainsail/pull/2071))
+
+### Localization
+
+- **de**: Update german locale ([#2070](https://github.com/mainsail-crew/mainsail/pull/2070))
+
 ## [2.13.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.13.0) - 2024-12-04
 ### Features
 
