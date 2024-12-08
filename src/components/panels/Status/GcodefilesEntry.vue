@@ -95,8 +95,8 @@
         </v-menu>
         <start-print-dialog
             :bool="showPrintDialog"
-            :file="startPrintItem"
-            :current-path="pathOfFile"
+            :file="item"
+            current-path=""
             @closeDialog="showPrintDialog = false" />
         <add-batch-to-queue-dialog
             :is-visible="showAddBatchToQueueDialog"
