@@ -274,13 +274,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
         return this.item.filename.slice(this.item.filename.lastIndexOf('/') + 1)
     }
 
-    get startPrintItem() {
-        const file = { ...this.item }
-        file.filename = this.filename
-
-        return file
-    }
-
     showContextMenu(e: any) {
         if (this.contextMenuShow) return
 
