@@ -95,7 +95,7 @@
         </v-menu>
         <start-print-dialog
             :bool="showPrintDialog"
-            :file="item"
+            :file="startPrintItem"
             :current-path="pathOfFile"
             @closeDialog="showPrintDialog = false" />
         <add-batch-to-queue-dialog
@@ -272,6 +272,13 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
 
     get filename() {
         return this.item.filename.slice(this.item.filename.lastIndexOf('/') + 1)
+    }
+
+    get startPrintItem() {
+        const file = { ...this.item }
+        file.filename = this.filename
+
+        return file
     }
 
     showContextMenu(e: any) {
