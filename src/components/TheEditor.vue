@@ -542,6 +542,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
 .structure-sidebar {
     width: 300px;
     overflow-y: auto;
+    max-height: calc(100vh - 48px);
 }
 ._structure-sidebar-item {
     text-overflow: ellipsis;
