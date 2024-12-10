@@ -61,8 +61,7 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     private checkpointEvent: ServerStateEvent | null = null
     private currentPrompt: ServerStateEventPrompt[] = []
     // regex that extracts the type and message, omitting the wrapping double quotes of the message (if any)
-    private promptMessageExp =
-        /^\/\/ action:prompt_(?<type>[^\s]+) *(?:(?<quote>['"])(?<msg1>.*)\k<quote>|(?<msg2>.*))\s*$/
+    private promptMessageExp = /^\/\/ action:prompt_(?<type>[^\s]+) *(?<msg>.*)$/
 
     get events() {
         return this.$store.state.server.events
@@ -95,7 +94,7 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
                 break
             }
 
-            const message = (match?.groups?.msg1 || match?.groups?.msg2 || '').trim()
+            const message = (match?.groups?.msg || '').trim()
 
             // prepend the event to prompt events found in this chunk
             promptEvents.unshift({
