@@ -58,3 +58,10 @@ export interface Theme {
     }
     css?: boolean
 }
+
+export interface KlipperRepos {
+    [name: string]: {
+        url: string
+        docsLanguages?: string[]
+    }
+}

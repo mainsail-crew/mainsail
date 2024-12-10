@@ -43,6 +43,10 @@ export default class BaseMixin extends Vue {
         return this.socketIsConnected && this.klipperState === 'ready'
     }
 
+    get klipperAppName() {
+        return this.$store.state.printer.app_name ?? 'Klipper'
+    }
+
     get printerIsPrinting() {
         return this.klipperReadyForGui && ['printing', 'paused'].includes(this.printer_state)
     }
