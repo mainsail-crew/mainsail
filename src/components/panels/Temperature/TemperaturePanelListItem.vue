@@ -7,6 +7,12 @@
         </td>
         <td class="name">
             <span class="cursor-pointer" @click="showEditDialog = true">{{ formatName }}</span>
+            <v-tooltip v-if="isWait" top>
+                <template #activator="{ on, attrs }">
+                    <v-icon class="ml-2 text--disabled" small v-bind="attrs" v-on="on">{{ mdiFireAlert }}</v-icon>
+                </template>
+                <span>{{ $t('Panels.TemperaturePanel.WaitForTemperature') }}</span>
+            </v-tooltip>
         </td>
         <td v-if="!isResponsiveMobile" class="state">
             <v-tooltip v-if="state !== null" top>
@@ -68,6 +74,7 @@ import { convertName } from '@/plugins/helpers'
 import {
     mdiFan,
     mdiFire,
+    mdiFireAlert,
     mdiMemory,
     mdiPrinter3dNozzle,
     mdiPrinter3dNozzleAlert,
@@ -79,6 +86,8 @@ import { additionalSensors, opacityHeaterActive, opacityHeaterInactive } from '@
 
 @Component
 export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
+    mdiFireAlert = mdiFireAlert
+
     @Prop({ type: String, required: true }) readonly objectName!: string
     @Prop({ type: Boolean, required: true }) readonly isResponsiveMobile!: boolean
 
@@ -269,6 +278,16 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
         if (this.command === 'SET_TEMPERATURE_FAN_TARGET') return 'TEMPERATURE_FAN'
 
         return ''
+    }
+
+    get temperatureWait() {
+        return this.$store.state.printer.heaters?.temperature_wait ?? null
+    }
+
+    get isWait() {
+        if (this.temperatureWait === null) return false
+
+        return this.temperatureWait.includes(this.name)
     }
 }
 </script>
