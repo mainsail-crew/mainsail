@@ -5,50 +5,45 @@
                card-class="afc-panel"
                :collapsible="true"
                :expanded="true">
-            <div>
-                <v-expansion-panels>
-                    <v-expansion-panel>
-                        <v-expansion-panel-header>
-                            <strong>Extruder Tools</strong>
-                        </v-expansion-panel-header>
-                            <v-expansion-panel-content style="padding-top: 0em;">
-                                <div v-for="(tool, toolName) in toolData" style="margin-left: 15px;">
-                                    <div style="margin-right: 20px; float: left; margin-top: 0px;">
-                                        <span :class="{
-                                            'status-light': true,
-                                            'status-green': tool.tool_start_sensor,
-                                            'status-red': !tool.tool_start_sensor,
-                                        }">
-                                        </span>
-                                        {{ toolName }}
-                                        <span v-if="tool.tool_end_sensor !== null" :class="{
-                                            'status-light': true,
-                                            'status-green': tool.tool_end_sensor,
-                                            'status-red': !tool.tool_end_sensor,
-                                        }">
-                                        </span>
-                                    </div>
-                                    <div style="margin-right: 10px; float: left; margin-top: 0px;">
-                                        {{ tool.buffer }}: {{ tool.buffer_status }}
-                                    </div>
-                                    <div v-if="tool.lane_loaded !== ''" style="margin-right: 10px; float: right; margin-top: 0px;">
-                                        Lane Loaded: {{ tool.lane_loaded }}
-                                    </div>
-                                    <div v-if="tool.lane_loaded === ''" style="margin-right: 10px; float: right; margin-top: 0px;">
-                                        Lane Loaded:
-                                        <span style="color: red">
-                                            NONE
-                                        </span>
-                                    </div>
-                                </div>
-                            </v-expansion-panel-content>
-                    </v-expansion-panel>
-                </v-expansion-panels>
+            <template #buttons>
+                <v-btn icon tile :title="'Refresh AFC Spools'" @click="fetchSpoolData">
+                    <v-icon>{{ mdiRefresh }}</v-icon>
+                </v-btn>
+                <v-menu :offset-y="true" :close-on-content-click="true" left>
+                    <template #activator="{ on, attrs }">
+                        <v-btn icon tile v-bind="attrs" v-on="on">
+                            <v-icon>{{ mdiDotsVertical }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item>
+                            <v-radio-group v-model="selectedStyle">
+                                <v-radio label="Style 1" :value="1" @change="saveStyleIndex(1)"></v-radio>
+                                <v-radio label="Style 2" :value="0" @change="saveStyleIndex(0)"></v-radio>
+                            </v-radio-group>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </template>
+            <div class="status-wrapper">
+                <div class="tool-status">
+                    <strong>Tool:</strong>
+                    <span :class="{
+                            'status-light': true,
+                            'status-green': toolStartSensorStatus,
+                            'status-red': !toolStartSensorStatus,
+                        }"></span>
+                </div>
+                <div class="buffer-status">
+                    <span v-if="systemData?.extruders?.extruder?.buffer_status">
+                        <strong>Buffer:</strong> {{ bufferStatus() }}
+                    </span>
+                </div>
             </div>
             <div v-for="(unit, unitName) in unitsData"
                  :key="unitName"
                  class="unit-section">
-                <v-expansion-panels >
+                <v-expansion-panels>
                     <v-expansion-panel>
                         <v-expansion-panel-header>
                             <div class="unit-header"
@@ -58,7 +53,7 @@
                                 <h2 class="unit-title" style="margin: 0">
                                     {{ String(unitName).replace(/_/g, " ") }} |
                                 </h2>
-                                <span style="text-align: left; margin: 15px 0;">
+                                <span class="hub-status">
                                     <span><strong>Hub</strong></span>
                                     <span :class="{
                                             'status-light': true,
@@ -87,39 +82,50 @@
                                                           style="width: 60%; float: left"
                                                           :color='spool.empty'
                                                           class="mr-3" />
+
                                     </div>
                                     <div class="spool-header">
-                                        <span style="color:red" v-if="!spool.load && !spool.prep && !spool.tool_loaded">
-                                            <h3>{{ spool.laneName }}</h3>
+                                        <span :class="{
+                                                'status-light': true,
+                                                'status-not-ready': determineStatus(spool) === 'Not Ready',
+                                                'status-prep': determineStatus(spool) === 'Prep',
+                                                'status-ready': determineStatus(spool) === 'Ready',
+                                                'status-in-tool': determineStatus(spool) === 'In Tool',
+                                            }">
                                         </span>
-                                        <span style="color:yellow" v-if="!spool.load && spool.prep && !spool.tool_loaded">
-                                            <h3>{{ spool.laneName }}</h3>
-                                        </span>
-                                        <span style="color:green" v-if="spool.load && spool.prep && !spool.tool_loaded">
-                                            <h3>{{ spool.laneName }}</h3>
-                                        </span>
-                                        <span style="color:blue" v-if="spool.load && spool.prep && spool.tool_loaded">
-                                            <h3>{{ spool.laneName }}</h3>
-                                        </span>
+                                        <h3>{{ spool.laneName }}</h3>
                                         <div class="spacer"></div>
                                         <select :name="'map-' +spool.laneName"
                                                 class="afclist"
                                                 @change="handleMapChange($event, spool)">
-                                            <option v-for="option in mapList"
-                                                    :value="option"
-                                                    :selected="option === spool.map">
-                                                {{ option }}
-                                            </option>
+
+                                            <template v-for="option in mapList" v-bind:value="option">
+                                                <template v-if="spool.map === ''">
+                                                    <option :value="None">
+                                                        NONE
+                                                    </option>
+                                                </template>
+                                                <template v-else-if="option === spool.map">
+                                                    <option :value="option" selected>
+                                                        {{ option }}
+                                                    </option>
+                                                </template>
+                                                <template v-else>
+                                                    <option :value="option">
+                                                        {{ option }}
+                                                    </option>
+                                                </template>
+                                            </template>
                                         </select>
                                     </div>
                                     <infinity-icon v-if="spool.runout_lane === 'NONE'"
-                                                   :color="infispoolNo"
+                                                   :color="infispoolNo""
                                                    height="20px"
                                                    width="20px"
                                                    version="1.1"
                                                    id="Capa_1"
                                                    style="float: right; margin-top: 2px; margin-left: 5px;"
-                                                   viewBox="0 0 60 60" xml:space="preserve" />
+                                                   viewBox="0 0 60 60" xml:space="preserve"/>
                                     <infinity-icon v-else
                                                    height="20px"
                                                    :color="infispoolYes"
@@ -127,16 +133,23 @@
                                                    version="1.1"
                                                    id="Capa_1"
                                                    style="float: right; margin-top: 2px; margin-left: 5px;"
-                                                   viewBox="0 0 60 60" xml:space="preserve" />
-
+                                                   viewBox="0 0 60 60" xml:space="preserve"/>
+                                    
                                     <select :name="'run-' +spool.laneName"
                                             class="afclist"
                                             @change="handleRunoutChange($event, spool)">
-                                        <option v-for="option in laneList"
-                                                :value="option"
-                                                :selected="option === spool.runout_lane">
-                                            {{ option }}
-                                        </option>
+                                        <template v-for="option in laneList" v-bind:value="option">
+                                            <template v-if="option === spool.runout_lane">
+                                                <option :value="option" selected>
+                                                    {{ option }}
+                                                </option>
+                                            </template>
+                                            <template v-else>
+                                                <option :value="option">
+                                                    {{ option }}
+                                                </option>
+                                            </template>
+                                        </template>
                                     </select>
                                     <p v-if="spool.material">{{ spool.material }}</p>
                                     <p v-if="spool.weight">{{ spoolWeight(spool) }}</p>
@@ -156,8 +169,7 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from "vue-property-decorator"
+<script lang="ts">import { Component, Mixins } from "vue-property-decorator"
 import BaseMixin from "@/components/mixins/base"
 import Panel from "@/components/ui/Panel.vue"
 import { mdiAdjust, mdiRefresh, mdiDotsVertical } from "@mdi/js"
@@ -178,12 +190,11 @@ import InfinityIcon from '@/components/ui/InfinityIcon.vue'
         InfinityIcon
     },
 })
-
 export default class AfcPanel extends Mixins(BaseMixin) {
     mdiAdjust = mdiAdjust;
     mdiRefresh = mdiRefresh;
     mdiDotsVertical = mdiDotsVertical;
-    
+
     showChangeSpoolDialog = false;
     selectedLane: any = null; // This will hold data of the clicked lane
 
@@ -220,10 +231,10 @@ export default class AfcPanel extends Mixins(BaseMixin) {
 
     fetchSpoolData() {
         const afcData = this.afc_Data ? JSON.parse(JSON.stringify(this.afc_Data)) : null;
+
         if (afcData) {
-            this.unitsData = this.groupByUnit(this.spoolData);
             this.spoolData = this.extractLaneData(afcData);
-            this.toolData = afcData.system.extruders || {};
+            this.unitsData = this.groupByUnit(this.spoolData);
             this.systemData = afcData.system || {};
             for (const unitName in afcData) {
                 if (afcData.hasOwnProperty(unitName) && unitName !== "system") {
@@ -320,6 +331,7 @@ export default class AfcPanel extends Mixins(BaseMixin) {
         const selectedValue = (event.target as HTMLSelectElement).value;
         console.log(`Selected value for ${spool.laneName}: ${selectedValue}`);
 
+    //Example G-Code Call for you
         const gcode = `SET_RUNOUT LANE=${spool.laneName} RUNOUT=${selectedValue}`
         console.log('Dispatching G-code:', gcode)
 
@@ -365,9 +377,7 @@ export default class AfcPanel extends Mixins(BaseMixin) {
         }
         return "Not Ready";
     }
-}
-   
-    </script>
+}</script>
 
 <style scoped>
     .afc-panel-wrapper {
@@ -402,6 +412,7 @@ export default class AfcPanel extends Mixins(BaseMixin) {
         min-width: 80px;
         min-height: 117px;
         position: relative;
+        cursor: hand;
         transition: box-shadow 0.3s;
         margin-bottom: 0px;
         text-align: right;
@@ -427,11 +438,14 @@ export default class AfcPanel extends Mixins(BaseMixin) {
         background-color: #2e2e2e;
         color: white;
         text-align: right;
-        cursor: pointer;
     }
 
     .status-wrapper {
-        justify-content: space-evenly;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
         border-bottom: 1px solid #ccc;
         padding-bottom: 10px;
         margin-bottom: 15px;
@@ -451,6 +465,37 @@ export default class AfcPanel extends Mixins(BaseMixin) {
     }
 
     .status-red {
-         background-color: red;
+        background-color: red;
+    }
+
+    .hub-status {
+        text-align: left;
+        margin: 15px 0;
+    }
+
+    .buffer-status {
+        display: block;
+        margin-top: 5px;
+    }
+
+    .tool-status {
+        text-align: center;
+        margin-left: 15px;
+    }
+
+    .status-not-ready {
+        background-color: red;
+    }
+
+    .status-prep {
+        background-color: rgb(255, 255, 0);
+    }
+
+    .status-ready {
+        background-color: rgb(26, 230, 26);
+    }
+
+    .status-in-tool {
+        background-color: rgb(6, 197, 245);
     }
 </style>
