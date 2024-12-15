@@ -20,3 +20,14 @@ package-lock.json
 cypress/screenshots/
 cypress/videos/
 components.d.ts
+.env.development.local.example
+.env.development.local.example
+.vs/mainsail-AFC/FileContentIndex/5bdbf5aa-9859-4380-8abc-de4486603c4d.vsidx
+.vs/mainsail-AFC/FileContentIndex/c628b66e-9226-4f15-a947-8c3fce887af8.vsidx
+.vs/VSWorkspaceState.json
+.env.development.local.example
+.vs/mainsail-AFC/v17/.wsuo
+.vs/mainsail-AFC/v17/DocumentLayout.json
+.vs/mainsail-AFC/v17/workspaceFileList.bin
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
