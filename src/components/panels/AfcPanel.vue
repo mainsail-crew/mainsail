@@ -407,6 +407,7 @@ export default class AfcPanel extends Mixins(BaseMixin) {
     .filament-reel {
         position: absolute;
         bottom: 10px;
+        cursor: pointer;
     }
 
     .spool-card p {
