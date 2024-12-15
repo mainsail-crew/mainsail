@@ -376,7 +376,6 @@ export default class AfcPanel extends Mixins(BaseMixin) {
 
     .spool-container {
         display: flex;
-        float: left;
         flex-wrap: wrap;
         justify-content: space-evenly;
         gap: 8px;
@@ -398,8 +397,8 @@ export default class AfcPanel extends Mixins(BaseMixin) {
         padding-top: 0px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         flex: 1 1 calc(23% - 16px);
-        max-width: 120px;
-        min-width: 80px;
+        max-width: 180px;
+        min-width: 120px;
         min-height: 117px;
         position: relative;
         transition: box-shadow 0.3s;
