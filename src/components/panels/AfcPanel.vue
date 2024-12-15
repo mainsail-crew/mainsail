@@ -127,14 +127,16 @@
                                                    style="float: right; margin-top: 2px; margin-left: 5px;"
                                                    viewBox="0 0 60 60" xml:space="preserve" />
 
-                                    <select :name="'run-' +spool.laneName"
+                                    <select :name="'run-' + spool.laneName"
                                             class="afclist"
                                             @change="handleRunoutChange($event, spool)">
-                                        <option v-for="option in laneList"
+                                        <template v-for="option in laneList">
+                                            <option v-if="option !== spool.laneName"
                                                 :value="option"
                                                 :selected="option === spool.runout_lane">
-                                            {{ option }}
-                                        </option>
+                                                &nbsp {{ option }} &nbsp
+                                            </option>
+                                        </template>
                                     </select>
                                     <p v-if="spool.material">{{ spool.material }}</p>
                                     <p v-if="spool.weight">{{ spoolWeight(spool) }}</p>
