@@ -76,17 +76,15 @@
                                      :key="index"
                                      class="spool-card">
                                     <div class="filament-reel"
-                                         style="padding: 1rem"
+                                         style="padding: 5px; width: 50%;"
                                          :key="index"
                                          @click="openChangeSpoolDialog(spool)">
                                         <FilamentReelIcon v-if="spool.load"
                                                           :color="spool.color"
-                                                          style="width: 60%; float: left"
-                                                          class="mr-3" />
+                                                          style="width: 100%; float: left"/>
                                         <FilamentReelIcon v-else
-                                                          style="width: 60%; float: left"
-                                                          :color='spool.empty'
-                                                          class="mr-3" />
+                                                          style="width: 100%; float: left"
+                                                          :color='spool.empty'/>
                                     </div>
                                     <div class="spool-header">
                                         <span style="color:red" v-if="!spool.load && !spool.prep && !spool.tool_loaded">
@@ -408,8 +406,7 @@ export default class AfcPanel extends Mixins(BaseMixin) {
 
     .filament-reel {
         position: absolute;
-        bottom: -10px;
-        left: -10px;
+        bottom: 10px;
     }
 
     .spool-card p {
