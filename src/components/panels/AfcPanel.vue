@@ -79,12 +79,12 @@
                                          style="padding: 5px; width: 50%;"
                                          :key="index"
                                          @click="openChangeSpoolDialog(spool)">
-                                        <FilamentReelIcon v-if="spool.load"
+                                        <FilamentReelIcon v-if="spool.prep"
                                                           :color="spool.color"
-                                                          style="width: 100%; float: left"/>
+                                                          style="float: left"/>
                                         <FilamentReelIcon v-else
-                                                          style="width: 100%; float: left"
-                                                          :color='spool.empty'/>
+                                                          :color="'transparent'"
+                                                          style="float: left"/>
                                     </div>
                                     <div class="spool-header">
                                         <span style="color:red" v-if="!spool.load && !spool.prep && !spool.tool_loaded">
