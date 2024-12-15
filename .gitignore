@@ -31,3 +31,4 @@ components.d.ts
 .vs/mainsail-AFC/v17/workspaceFileList.bin
 .vs/ProjectSettings.json
 .vs/slnx.sqlite
+.env.development.local.example
