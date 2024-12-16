@@ -11,6 +11,7 @@
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
+
                 <v-card-title>
                     <v-text-field
                         v-model="search"
@@ -175,8 +176,8 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
                 }
             })
 
-        this.$emit('fetch-spool')
-        this.close()
+            this.$emit('fetch-spool')
+            this.close()
         }
     }
 
