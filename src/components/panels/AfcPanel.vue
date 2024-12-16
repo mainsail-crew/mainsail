@@ -188,6 +188,9 @@ export default class AfcPanel extends Mixins(BaseMixin) {
     selectedLane: any = null; // This will hold data of the clicked lane
 
     spoolData: any[] = [];
+    toolData: any[] = [];
+    mapList: any[] = [];
+    laneList: any[] = [];
     intervalId: number | null = null;
     systemData: any = null;
     index: number = 0;
