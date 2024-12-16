@@ -3,7 +3,7 @@
         <v-row v-for="(row, index) in rows" :key="'row_' + index" class="mt-0">
             <v-col>
                 <v-item-group class="_btn-group py-0 px-3">
-                    <extruder-control-panel-tools-item v-for="macro in row" :key="macro.name" :macro="macro" />
+                    <extruder-control-panel-tools-item v-for="macro in row" :key="macro" :name="macro" />
                 </v-item-group>
             </v-col>
         </v-row>
