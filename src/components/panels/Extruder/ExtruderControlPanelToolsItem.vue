@@ -1,18 +1,12 @@
 <template>
-    <v-btn
-        :disabled="printerIsPrintingOnly"
-        dense
-        class="flex-grow-1 px-0"
-        :style="buttonStyle"
-        @click="doSend(macro.name)">
+    <v-btn :disabled="printerIsPrintingOnly" dense class="flex-grow-1 px-0" :style="buttonStyle" @click="changeTool">
         <span v-if="color != null" class="_extruderColorState mr-1" :style="dotStyle" />
-        {{ macro.name }}
+        {{ name.toUpperCase() }}
     </v-btn>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { PrinterStateMacro } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
@@ -21,10 +15,19 @@ import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
     components: {},
 })
 export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin) {
-    @Prop({ type: Object }) macro!: PrinterStateMacro
+    @Prop({ type: String }) name!: string
+
+    get macro() {
+        const objectName = Object.keys(this.$store.state.printer).find(
+            (key) => key.toLowerCase() === `gcode_macro ${this.name?.toLowerCase()}`
+        )
+        if (!objectName) return undefined
+
+        return this.$store.state.printer[objectName] ?? {}
+    }
 
     get active() {
-        return this.macro.variables.active ?? false
+        return this.macro?.active ?? false
     }
 
     get color() {
@@ -32,14 +35,14 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
             return this.spool.filament?.color_hex ?? '000000'
         }
 
-        const color = this.macro.variables.color ?? this.macro.variables.colour ?? null
+        const color = this.macro?.color ?? this.macro?.colour ?? null
         if (color === '' || color === 'undefined') return null
 
         return color
     }
 
     get spoolId() {
-        return this.macro.variables.spool_id ?? null
+        return this.macro?.spool_id ?? null
     }
 
     get spool() {
@@ -89,6 +92,10 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
             'border-color': this.active ? this.primaryTextColor : '',
             'background-color': '#' + this.color,
         }
+    }
+
+    changeTool() {
+        this.doSend(this.name.toUpperCase())
     }
 }
 </script>
