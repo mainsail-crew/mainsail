@@ -32,3 +32,6 @@ components.d.ts
 .vs/ProjectSettings.json
 .vs/slnx.sqlite
 .env.development.local.example
+.env.development.local.example
+package-lock.json
+package.json
