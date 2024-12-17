@@ -608,6 +608,12 @@
         "Headline": "Manual Probe"
     },
     "Panels": {
+        "AfcSpoolmanPanel": {
+            "FilamentType": "Filament Type",
+            "RemainingWeight": "Remaining Weight",
+            "SpoolColor": "Filament Color",
+            "UpdateSpool": "Update Spool"
+        },
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
             "CleanNozzle": "Clean Nozzle",
