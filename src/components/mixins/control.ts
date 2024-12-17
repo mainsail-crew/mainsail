@@ -55,7 +55,16 @@ export default class ControlMixin extends Vue {
     }
 
     get colorZTilt() {
-        const status = this.$store.state.printer.z_tilt?.applied ?? true
+        let status = true
+
+        // normal Klipper z_tilt
+        if ('z_tilt' in this.$store.state.printer) {
+            status = this.$store.state.printer.z_tilt?.applied
+        }
+        // check Kalico next gen z_tilt
+        else if ('z_tilt_ng' in this.$store.state.printer) {
+            status = this.$store.state.printer.z_tilt_ng?.applied
+        }
 
         return status ? 'primary' : 'warning'
     }
