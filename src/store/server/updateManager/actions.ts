@@ -24,14 +24,17 @@ export const actions: ActionTree<ServerUpdateManagerState, RootState> = {
                 continue
             }
 
-            if (['web', 'web_beta'].includes(configured_type)) {
+            if (['web', 'web_beta', 'python'].includes(configured_type)) {
                 await commit('storeWebRepo', { ...module, name: key })
                 continue
             }
 
             if (key === 'system') {
                 await commit('updateSystem', { ...module })
+                continue
             }
+
+            console.warn(`Module '${key}' has an unknown type '${configured_type}'`)
         }
 
         await dispatch('socket/removeInitModule', 'server/updateManager/init', { root: true })
