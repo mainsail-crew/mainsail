@@ -57,6 +57,7 @@ export interface ServerUpdateManagerStateGitRepo {
     warnings?: string[]
     info_tags?: string[]
     recovery_url?: string
+    changelog_url?: string
 }
 
 export interface ServerUpdateManagerStateGitRepoGroupedCommits {
