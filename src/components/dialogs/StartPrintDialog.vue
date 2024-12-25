@@ -1,5 +1,10 @@
 <template>
-    <v-dialog v-model="bool" :max-width="400" @click:outside="closeDialog" @keydown.esc="closeDialog">
+    <v-dialog
+        v-model="bool"
+        :max-width="400"
+        content-class="overflow-x-hidden"
+        @click:outside="closeDialog"
+        @keydown.esc="closeDialog">
         <v-card>
             <div v-if="file.big_thumbnail" class="d-flex align-center justify-center" style="min-height: 200px">
                 <v-img

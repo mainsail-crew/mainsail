@@ -3,7 +3,7 @@
         "Notifications": {
             "BrowserWarnings": {
                 "Description": "{name} 已过时且没有完整支持。当前版本是{version}，但是Mainsail需要{minVersion}或更高版本。",
-                "Headline": "浏览器已过时"
+                "Headline": "浏览器版本过低"
             },
             "DependencyDescription": "当前版本的{name}并不支持Mainsail的全部功能。{name}需要至少更新到{neededVersion}版本。",
             "DependencyName": "依赖：{name}",
@@ -11,7 +11,7 @@
             "KlipperWarnings": {
                 "DeprecatedOption": "在'{section}'标签中的'{option}'选项已被弃用，将在未来的版本中删除。",
                 "DeprecatedOptionHeadline": "Klipper选项已被弃用",
-                "DeprecatedValue": "在'{section}'标签中的'{option}'选项的参数'{value}'已被弃用，将在未来的版本中删除。",
+                "DeprecatedValue": "在'{section}'标签中的'{option}'选项的'{value}'参数已被弃用，将在未来的版本中删除。",
                 "DeprecatedValueHeadline": "Klipper参数已被弃用",
                 "KlipperRuntimeWarning": "Klipper运行时警告",
                 "KlipperWarning": "Klipper警告"
@@ -22,7 +22,7 @@
                 "MoonrakerComponent": "Moonraker：{component}",
                 "MoonrakerFailedComponentDescription": "加载moonraker组件'{component}'时发生错误。请检查日志文件并修复此问题。",
                 "MoonrakerFailedInitComponentDescription": "初始化moonraker组件'{component}'时发生错误。请检查日志文件并修复此问题。",
-                "MoonrakerInitComponent": "初始化 Moonraker：{component}",
+                "MoonrakerInitComponent": "初始化Moonraker：{component}",
                 "MoonrakerWarning": "Moonraker警告",
                 "UnparsedConfigOption": "在[{section}]标签中检测到无法解析的配置'{option}: {value}'。这可能是一个不再可用的选项，也可能是组件加载失败的结果。在将来，这将导致启动错误。",
                 "UnparsedConfigSection": "检测到无法解析的标签[{section}]。这可能是一个不再可用的标签，也可能是组件加载失败的结果。在未来，这将导致启动错误。"
@@ -36,9 +36,9 @@
             "OneWeekShort": "1周",
             "Remind": "提醒：",
             "ShowDetails": "显示详情",
-            "TmcOtFlag": "步进驱动器错误：OT 标志设置",
-            "TmcOtFlagText": "步进驱动器 '{name}' 已触发 OT 标志并停止工作。这可能是由于电流过高引起的。请检查步进驱动器设置和冷却。",
-            "TmcOtpwFlag": "步进驱动器警告：OTPW 标志设置",
+            "TmcOtFlag": "步进驱动器错误：OT标志设置",
+            "TmcOtFlagText": "步进驱动器 '{name}' 已触发OT标志并停止工作。这可能是由于电流过高引起的。请检查步进驱动器设置和冷却。",
+            "TmcOtpwFlag": "步进驱动器警告：OTPW标志设置",
             "TmcOtpwFlagText": "步进驱动器 '{name}' 已触发 OTPW 标志，如果温度再升高可能会停止工作。这表明存在过热情况。可能是由于电流过高引起的。请检查步进驱动器设置和冷却。"
         },
         "NumberInput": {
@@ -144,11 +144,19 @@
         "ScrewName": "螺丝名称",
         "ScrewOutput": "{current}/{max}"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "是否确定？",
+        "CancelJob": "取消任务",
+        "No": "点错了",
+        "Yes": "确定"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "无法连接到Moonraker ({host})。",
         "CheckMoonrakerLog": "如果此消息重复显示，请查看位于以下位置的日志文件：",
         "Connecting": "连接{host}",
+        "ErrorMessage": "错误信息：{message}",
         "Failed": "连接失败",
+        "Help": "帮助",
         "Initializing": "正在初始化",
         "TryAgain": "重试"
     },
@@ -157,17 +165,18 @@
         "Empty": "没有内容",
         "HideTemperatures": "隐藏温度变化消息",
         "HideTimelapse": "隐藏延时摄影消息",
+        "Search": "搜索",
         "SendCode": "输入要执行的代码...",
         "SetupConsole": "设置控制台"
     },
     "CoolDownDialog": {
         "AreYouSure": "是否确定？",
-        "CoolDown": "降温",
-        "No": "取消",
+        "CoolDown": "冷却",
+        "No": "点错了",
         "Yes": "确定"
     },
     "DevicesDialog": {
-        "CanBusInfo": "只有未分配的节点才能被检测到。建议仅连接一个未分配的设备到CAN总线，以避免通信问题。更多详情，请点击链接：",
+        "CanBusInfo": "只有未分配的节点才能被检测到。建议仅连接一个未分配的设备到CAN总线，以避免通信问题。更多详情请点击链接：",
         "ClickRefresh": "点击刷新按钮以搜索设备。",
         "DevicePath": "设备路径",
         "Formats": "格式",
@@ -203,14 +212,14 @@
         "SuccessfullySaved": "{filename}保存成功！",
         "UnsavedChanges": "有未保存的更改",
         "UnsavedChangesMessage": "是否保存对{filename}的更改？",
-        "UnsavedChangesSubMessage": "如果不保存，您的更改将丢失。您可以在编辑器设置中关闭此提示。",
+        "UnsavedChangesSubMessage": "如果不保存，更改将丢失。可以在编辑器设置中关闭此提示。",
         "Uploading": "正在上传"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "确定要执行此操作吗？",
         "EmergencyStop": "紧急停止",
-        "No": "取消",
-        "Yes": "确定"
+        "No": "点错了",
+        "Yes": "立即执行"
     },
     "Files": {
         "AddBatchToQueue": "批量加入队列",
@@ -357,7 +366,7 @@
         "AddNote": "添加备注",
         "AddToQueueSuccessful": "文件{filename}已添加到队列。",
         "AllJobs": "全部",
-        "AvgPrinttime": "平均打印时长",
+        "AvgPrinttime": "打印时长 - Ø",
         "Cancel": "取消",
         "Chart": "图表",
         "CreateNote": "新建备注",
@@ -379,6 +388,7 @@
         "EstimatedFilament": "预估耗材用量",
         "EstimatedFilamentWeight": "预估耗材重量",
         "EstimatedTime": "预估打印时长",
+        "Filament": "耗材",
         "FilamentBasedReminder": "耗材",
         "FilamentBasedReminderDescription": "本提醒基于耗材使用量。",
         "FilamentCalc": "耗材预估长度",
@@ -390,7 +400,7 @@
         "FirstLayerExtTemp": "首层挤出温度",
         "FirstLayerHeight": "首层高度",
         "HistoryFilamentUsage": "耗材用量",
-        "HistoryPrinttimeAVG": "打印时长",
+        "HistoryPrinttimeAVG": "打印次数",
         "Hours": "小时",
         "InvalidNameEmpty": "无效名称。名称不能为空！",
         "JobDetails": "任务详情",
@@ -414,8 +424,8 @@
         "PrintDuration": "打印耗时",
         "PrintHistory": "打印历史",
         "PrintJobs": "打印任务",
-        "PrintTime": "打印持续时间",
-        "PrinttimeAvg": "平均打印时长",
+        "PrintTime": "打印时长",
+        "PrinttimeAvg": "打印时长 - Ø",
         "PrinttimeBasedReminder": "打印时长",
         "PrinttimeBasedReminderDescription": "本提醒基于打印时长",
         "Reminder": "提醒",
@@ -426,6 +436,7 @@
         "SelectedFilamentUsed": "已选中的任务耗材使用量",
         "SelectedJobs": "已选中的任务",
         "SelectedPrinttime": "已选中的任务打印时长",
+        "Settings": "设置",
         "Slicer": "切片软件",
         "SlicerVersion": "切片软件版本",
         "StartTime": "开始时间",
@@ -443,6 +454,7 @@
             "server_exit": "服务终止"
         },
         "Table": "表格",
+        "Time": "时长",
         "TitleExportHistory": "导出历史记录",
         "TotalDuration": "总消耗时长",
         "TotalFilamentUsed": "耗材使用总量",
@@ -508,7 +520,7 @@
             "EndstopInfo": "点击右侧同步按钮刷新限位状态",
             "Endstops": "限位",
             "open": "未触发",
-            "TRIGGERED": "被触发"
+            "TRIGGERED": "已触发"
         },
         "LogfilesPanel": {
             "Accept": "接受",
@@ -664,6 +676,7 @@
             "Headline": "控制台",
             "HideTemperatures": "隐藏温度变化消息",
             "HideTimelapse": "隐藏延时摄影消息",
+            "RawOutput": "未格式化的输出（调试用）",
             "SendCode": "发送代码...",
             "SetupConsole": "设置控制台"
         },
@@ -693,6 +706,7 @@
             "PowerControl": "电源控制"
         },
         "SpoolmanPanel": {
+            "ActiveSpool": "激活料盘",
             "Cancel": "取消",
             "ChangeSpool": "更换料盘",
             "DaysAgo": "{days}天前",
@@ -707,6 +721,7 @@
             "Never": "从未",
             "NoActiveSpool": "耗材追踪未激活。请先选择一个料盘以开始使用。",
             "NoResults": "未找到符合当前搜索条件的料盘。",
+            "NoSpool": "没有料盘",
             "NoSpools": "没有可用料盘",
             "NoSpoolSelected": "没有选择料盘。请选择一个料盘，否则将无法跟踪此次打印。",
             "OpenSpoolManager": "打开Spoolman后台",
@@ -723,7 +738,8 @@
             "ClearPrintStats": "清除打印统计数据",
             "Difference": "差异",
             "EmptyGcodes": "没有G-Code文件",
-            "EmptyJobqueue": "当前任务队列中没有文件存在。",
+            "EmptyHistory": "历史记录中没有任务。",
+            "EmptyJobqueue": "任务队列中没有文件。",
             "Estimate": "估算剩余",
             "ETA": "预估完成",
             "ExcludeObject": {
@@ -735,10 +751,8 @@
             },
             "Filament": "耗材用量",
             "File": "文件",
-            "Files": "文件",
             "Flow": "流量",
             "Headline": "状态",
-            "Jobqueue": "任务队列",
             "JobqueueMoreFiles": "没有任务 | 一个任务 | {count}个任务",
             "Layer": "打印层",
             "Max": "最高",
@@ -763,8 +777,8 @@
             "ResumePrint": "继续打印作业",
             "Slicer": "切片剩余",
             "Speed": "打印速度",
-            "Status": "状态",
-            "Total": "已用时间",
+            "Total": "合计",
+            "TotalTime": "已用时间",
             "Unknown": "未知"
         },
         "TemperaturePanel": {
@@ -773,8 +787,8 @@
             "Cooldown": "冷却",
             "Current": "当前",
             "Dataset": {
-                "Power": "功率PWM",
-                "Speed": "速度PWM",
+                "Power": "PWM功率",
+                "Speed": "PWM速度",
                 "Target": "目标温度",
                 "Temperature": "当前温度"
             },
@@ -809,10 +823,13 @@
             "SettingsInterfaceControl": "设置 > 界面 > 控制",
             "SpeedFactor": "速度倍数",
             "ZOffset": "Z轴偏移",
-            "ZTilt": "Z轴倾斜"
+            "ZTilt": "Z倾斜调平"
         },
         "WebcamPanel": {
             "All": "全部",
+            "ConnectingTo": "正在连接到 {url}",
+            "Disconnected": "连接已断开",
+            "ErrorWhileConnecting": "连接 {url} 时出错",
             "FPS": "帧率",
             "Headline": "摄像头",
             "NoWebcam": "没有可用的摄像头。在\"Mainsail设置\" -> \"摄像头\"添加新的摄像头。",
@@ -832,7 +849,7 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "是否确定？",
-        "No": "取消",
+        "No": "点错了",
         "TurnDeviceOff": "关闭{device}",
         "TurnDeviceOn": "打开{device}",
         "Yes": "确定"
@@ -922,7 +939,7 @@
             "MoveDistancesInMm": "移动距离预设(mm)",
             "MoveDistancesXYInMm": "X&Y轴移动距离预设(mm)",
             "MoveDistancesZInMm": "Z轴移动距离预设(mm)",
-            "QuadGantryLevel": "四轴调平(QGL){isDefault}",
+            "QuadGantryLevel": "龙门架调平(QGL){isDefault}",
             "SpeedEInMms": "挤出速度预设(mm/s)",
             "SpeedXY": "X&Y轴移动速度",
             "SpeedZ": "Z轴移动速度",
@@ -931,7 +948,7 @@
             "ZOffsetIncrements": "Z轴偏移调整幅度(mm)",
             "ZOffsetSaveOption": "Z轴偏移保存选项",
             "ZOffsetSaveOptionDescription": "更改选项以保存Z轴偏移",
-            "ZTiltAdjust": "Z轴倾斜调整"
+            "ZTiltAdjust": "Z倾斜调平"
         },
         "DashboardTab": {
             "Dashboard": "控制面板",
@@ -977,9 +994,9 @@
             "CalcPrintProgressDescription": "计算打印进度的方法。",
             "CalcPrintProgressItems": {
                 "Filament": "耗材用量",
-                "FileAbsolute": "Gcode文件位置（绝对）",
-                "FileRelative": "Gcode文件位置（相对）",
-                "Slicer": "切片软件 (M73)"
+                "FileAbsolute": "Gcode文件位置(绝对)",
+                "FileRelative": "Gcode文件位置(相对)",
+                "Slicer": "切片软件(M73)"
             },
             "CannotReadJson": "无法读取/解析备份文件。",
             "DateFormat": "日期格式",
@@ -1009,8 +1026,16 @@
         },
         "HeightmapTab": {
             "ColorSchemes": "配色方案",
+            "DefaultOrientation": "默认方向",
+            "DefaultOrientationDescription": "选择床网格可视化的默认方向。",
             "Heightmap": "高度图",
             "IsDefault": "(默认)",
+            "Orientations": {
+                "Front": "前面",
+                "LeftFront": "左前",
+                "RightFront": "右前",
+                "Top": "顶部"
+            },
             "Schemes": {
                 "GrayScale": "灰度",
                 "Hot": "热色调",
@@ -1136,7 +1161,7 @@
             "HyperlapseCycle": "Hyperlapse周期时间",
             "HyperlapseCycleDescription": "每隔X秒获取一张快照",
             "Mode": "模式",
-            "ModeDescription": "选择Layermacro模式(基于层变化)或者Hyperlapse模式(基于时间)",
+            "ModeDescription": "选择Layer macro模式(基于层变化)或者Hyperlapse模式(基于时间)",
             "NoWebcamFound": "没有发现摄像头",
             "OutputFramerate": "输出帧率",
             "OutputFramerateDescription": "设置视频帧率。注意：如果可变FPS设置开启，此设置会被忽略",
@@ -1185,9 +1210,9 @@
             "VariableFps": "可变FPS",
             "VariableFpsDescription": "如果开启，输出视频的帧率会根据目标时长来计算",
             "VariableFpsMax": "可变FPS最大值",
-            "VariableFpsMaxDescription": "",
+            "VariableFpsMaxDescription": "最大的可变FPS值",
             "VariableFpsMin": "可变FPS最小值",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "最小的可变FPS值"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "热床螺丝对话框",
@@ -1197,12 +1222,25 @@
             "BoolBigThumbnailDescription": "打印时在状态框中显示大缩略图",
             "BoolHideUploadAndPrintButton": "隐藏\"上传并打印\"按钮",
             "BoolHideUploadAndPrintButtonDescription": "在顶栏显示或者隐藏\"上传并打印\"按钮",
+            "ConfirmOnCancelJob": "取消任务需要确认",
+            "ConfirmOnCancelJobDescription": "在按下\"取消打印\"时显示确认对话框",
             "ConfirmOnCoolDown": "冷却需要确认",
             "ConfirmOnCoolDownDescription": "在按下\"冷却\"时显示确认对话框",
             "ConfirmOnEmergencyStop": "紧急停止需要确认",
             "ConfirmOnEmergencyStopDescription": "在按下\"紧急停止\"时显示确认对话框",
             "ConfirmOnPowerDeviceChange": "控制设备电源时需要确认",
             "ConfirmOnPowerDeviceChangeDescription": "控制设备电源时显示确认对话框",
+            "DashboardFilesFilter": "控制面板状态栏文件筛选",
+            "DashboardFilesFilterCompleted": "完成",
+            "DashboardFilesFilterDescription": "在控制面板状态栏中按文件的最后状态过滤。",
+            "DashboardFilesFilterFailed": "失败",
+            "DashboardFilesFilterNew": "新文件",
+            "DashboardFilesLimit": "控制面板状态栏文件归档",
+            "DashboardFilesLimitDescription": "在控制面板状态栏上显示的最大文件数。（0隐藏文件选项卡）",
+            "DashboardFilesLimitLabel": "{count} 个文件",
+            "DashboardHistoryLimit": "控制面板状态栏历史记录归档",
+            "DashboardHistoryLimitDescription": "在控制面板状态栏上显示的最大任务数。（0隐藏历史选项卡）",
+            "DashboardHistoryLimitLabel": "{count} 个任务",
             "DefaultNavigationState": "侧边栏默认状态",
             "DefaultNavigationStateAlwaysClosed": "始终隐藏",
             "DefaultNavigationStateAlwaysOpen": "始终显示",
@@ -1215,6 +1253,8 @@
             "GcodeThumbnails": "G-Code缩略图",
             "GcodeThumbnailsDescription": "单击\"指南\"按钮查看说明",
             "Guide": "指南",
+            "HideOtherInstances": "隐藏其他实例",
+            "HideOtherInstancesDescription": "在服务菜单中隐藏Klipper & Moonraker的其他实例。",
             "HideSaveConfigButtonForBedMesh": "仅bed_mesh更改时隐藏\"保存配置\"按钮",
             "HideSaveConfigButtonForBedMeshDescription": "如果只有bed_mesh更改需要保存到Klipper时，隐藏\"保存配置\"按钮。",
             "HideUpdateWarnings": "隐藏更新警告",
@@ -1252,9 +1292,11 @@
         "Update": "更新",
         "WebcamsTab": {
             "AddWebcam": "添加摄像头",
+            "Color": "颜色",
             "CreateWebcam": "添加摄像头",
             "EditCrowsnestConf": "编辑 crowsnest.conf",
             "EditWebcam": "编辑摄像头",
+            "Enable": "启用",
             "EnableAudio": "启用音频",
             "FlipWebcam": "翻转摄像头图像：",
             "HideFps": "隐藏FPS数值显示",
@@ -1274,10 +1316,12 @@
             "MjpegstreamerAdaptive": "自适应MJPEG-Streamer(试验性)",
             "Name": "名称",
             "NameAlreadyExists": "名称已经存在",
+            "NozzleCrosshair": "喷嘴十字准线",
             "Required": "需要填写名称",
             "Rotate": "旋转",
             "SaveWebcam": "保存摄像头",
             "Service": "服务",
+            "Size": "大小",
             "TargetFPS": "目标FPS",
             "UpdateWebcam": "更新摄像头",
             "UrlSnapshot": "快照URL",
