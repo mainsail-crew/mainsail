@@ -52,7 +52,7 @@
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
-                <v-card-text class="pa-0 d-flex">
+                <v-card-text class="pa-0 d-flex editor-content-height">
                     <codemirror-async
                         v-if="show"
                         ref="editor"
@@ -550,6 +550,10 @@ export default class TheEditor extends Mixins(BaseMixin) {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.editor-content-height {
+    height: calc(100dvh - 48px);
 }
 
 ::v-deep .v-treeview-node__level + .v-treeview-node__level {
