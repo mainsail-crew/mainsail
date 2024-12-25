@@ -2,7 +2,7 @@
     <div>
         <v-dialog v-model="showDialog" width="800" persistent :fullscreen="isMobile">
             <panel
-                :title="$t('Panels.SpoolmanPanel.ChangeSpool')"
+                :title="(setActiveSpool) ? $t('Panels.SpoolmanPanel.ChangeSpool') : $t('Panels.SpoolmanPanel.SelectSpool')"
                 :icon="mdiAdjust"
                 card-class="spoolman-change-spool-dialog"
                 :margin-bottom="false">
@@ -85,6 +85,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
 
     @Prop({ required: true }) declare readonly showDialog: boolean
     @Prop({ required: false, default: null }) declare readonly tool?: string
+    @Prop({ required: false, default: true }) declare readonly setActiveSpool?: boolean
 
     search = ''
 
@@ -188,6 +189,13 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     }
 
     setSpool(spool: ServerSpoolmanStateSpool) {
+        // If dialog is used for selection only, bypass setting of active spool and propogate event
+        if (!this.setActiveSpool) {
+            this.$emit('select-spool', spool)
+            this.close()
+            return
+        }
+
         this.$store.dispatch('server/spoolman/setActiveSpool', spool.id)
 
         // Close the dialog if no tool is selected

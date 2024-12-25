@@ -19,7 +19,8 @@
                     {{ question }}
                 </p>
             </v-card-text>
-            <start-print-dialog-spoolman v-if="moonrakerComponents.includes('spoolman')" :file="file" />
+            <start-print-dialog-mmu v-if="isMmuPrint" :file="file" />
+            <start-print-dialog-spoolman v-else-if="moonrakerComponents.includes('spoolman')" :file="file" />
             <template v-if="moonrakerComponents.includes('timelapse')">
                 <v-divider v-if="!moonrakerComponents.includes('spoolman')" class="mt-3 mb-2" />
                 <v-card-text class="py-0">
@@ -55,7 +56,7 @@ import { defaultBigThumbnailBackground } from '@/store/variables'
 
 @Component({
     components: {
-        SettingsRow,
+        SettingsRow
     },
 })
 export default class StartPrintDialog extends Mixins(BaseMixin) {
@@ -69,6 +70,14 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
 
     @Prop({ required: true })
     declare file: FileStateGcodefile
+
+    // Happy Hare MMU support for initial tool->gate mapping
+    get isMmuPrint() {
+        if (this.$store.state.printer.mmu?.enabled) {
+            return (this.file.referenced_tools?.length ?? 1) > 1 || this.$store.state.printer.mmu?.gate !== -2
+        }
+        return false;
+    }
 
     get timelapseEnabled() {
         return this.$store.state.server.timelapse?.settings?.enabled ?? false
@@ -111,7 +120,7 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
     }
 
     get question() {
-        if (this.active_spool)
+        if (this.active_spool && !this.isMmuPrint)
             return this.$t('Dialogs.StartPrint.DoYouWantToStartFilenameFilament', {
                 filename: this.file?.filename ?? 'unknown',
             })

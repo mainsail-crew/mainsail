@@ -20,7 +20,7 @@ export const themeDir = '.theme'
 export const datasetInterval = 1000
 export const datasetTypes = ['temperature', 'target', 'power', 'speed']
 export const datasetTypesInPercents = ['power', 'speed']
-export const additionalSensors = ['aht10', 'bme280', 'htu21d', 'sgp40']
+export const additionalSensors = ['aht10', 'bme280', 'htu21d', 'sgp40', 'sht3x']
 
 /*
  * List of valid gcode file extensions
@@ -60,6 +60,11 @@ export const allowedMetadata = [
     'estimated_time',
     'filament_name',
     'filament_type',
+    'filament_colors',
+    'extruder_colors',
+    'filament_temps',
+    'referenced_tools',
+    'mmu_print',
     'filament_total',
     'filament_weight_total',
     'nozzle_diameter',
@@ -93,6 +98,7 @@ export const allDashboardPanels = [
     'miniconsole',
     'miscellaneous',
     'spoolman',
+    'mmu',
     'temperature',
     'webcam',
 ]
