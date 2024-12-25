@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { PrinterStateMacro, PrinterStateToolchangeMacro } from '@/store/printer/types'
 
 @Component
 export default class ControlMixin extends Vue {
@@ -110,12 +109,12 @@ export default class ControlMixin extends Vue {
         return this.$store.getters['printer/getMacros']
     }
 
-    get toolchangeMacros(): PrinterStateToolchangeMacro[] {
-        return this.macros
-            .filter((macro: PrinterStateMacro) => macro.name.toUpperCase().match(/^T\d+/))
-            .sort((a: PrinterStateMacro, b: PrinterStateMacro) => {
-                const numberA = parseInt(a.name.slice(1))
-                const numberB = parseInt(b.name.slice(1))
+    get toolchangeMacros(): string[] {
+        return Object.keys(this.$store.state.printer.gcode?.commands ?? {})
+            .filter((gcode) => gcode.match(/^T\d+/))
+            .sort((a: string, b: string) => {
+                const numberA = parseInt(a.slice(1))
+                const numberB = parseInt(b.slice(1))
 
                 return numberA - numberB
             })
