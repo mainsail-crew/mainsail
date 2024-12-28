@@ -1,4 +1,4 @@
-import { Theme } from '@/store/types'
+import { KlipperRepos, Theme } from '@/store/types'
 
 export const defaultMode = 'dark'
 export const defaultTheme = 'mainsail'
@@ -130,12 +130,6 @@ export const hiddenRootDirectories = ['gcodes', 'timelapse', 'timelapse_frames']
 export const hiddenDirectories = ['.git']
 
 /*
- * List of available Klipper config reference translations
- * https://www.klipper3d.org/Config_Reference.html
- */
-export const availableKlipperConfigReferenceTranslations = ['it', 'hu', 'zh']
-
-/*
  * List of all downloadable logfiles
  */
 export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sonar']
@@ -205,3 +199,16 @@ export const themes: Theme[] = [
         logo: { show: true, light: false },
     },
 ]
+
+/*
+ * List of all supported Klipper-Repos
+ */
+export const klipperRepos: KlipperRepos = {
+    Klipper: {
+        url: 'https://www.klipper3d.org/',
+        docsLanguages: ['it', 'hu', 'zh'],
+    },
+    Kalico: {
+        url: 'https://docs.kalico.gg/',
+    },
+}
