@@ -608,6 +608,17 @@
         "Headline": "Manual Probe"
     },
     "Panels": {
+        "AfcPanel": {
+            "ExtruderTools": "Extruder Tools",
+            "Headline": "Automated Filament Control",
+            "Hub": "Hub",
+            "InfiniteSpool": "Next lane to load if the current lane runs out",
+            "LaneLoaded": "Loaded",
+            "LaneLoadedNone": "NONE",
+            "LaneMap": "Remap current lane to selected T command",
+            "PostExtruderSensor": "Post-Extruder Sensor",
+            "PreExtruderSensor": "Pre-Extruder Sensor"
+        },
         "AfcSpoolmanPanel": {
             "FilamentType": "Filament Type",
             "RemainingWeight": "Remaining Weight",
