@@ -1,25 +1,31 @@
 <template>
     <panel
         v-if="showPanel"
-        :icon="mdiAdjust"
         :title="$t('Panels.AfcPanel.Headline')"
         :collapsible="true"
         :expanded="true"
         card-class="afc-control-panel">
-        <div>
-            <v-expansion-panels v-model="toolExpandedIndex">
-                <v-expansion-panel>
-                    <v-expansion-panel-header>
-                        <strong>{{ $t('Panels.AfcPanel.ExtruderTools') }}</strong>
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content style="padding: 0 5px 16px">
-                        <afc-extruder-tools :tools="toolData" />
-                    </v-expansion-panel-content>
-                </v-expansion-panel>
-            </v-expansion-panels>
-        </div>
+        <template #icon>
+            <AFCLogo class="panel-icon" />
+        </template>
+        <v-expansion-panels v-model="toolExpandedIndex">
+            <v-expansion-panel>
+                <v-expansion-panel-header>
+                    <strong>
+                        {{ $t('Panels.AfcPanel.ExtruderTools') }}
+                        <span v-if="toolExpandedIndex !== 0" class="text-caption text--disabled pl-1">
+                            ( {{ toolCount }} )
+                        </span>
+                    </strong>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="panel-content">
+                    <afc-extruder-tools :tools="toolData" />
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+
         <v-expansion-panels v-model="unitExpandedIndex" multiple>
-            <afc-units :units-data="unitsData" />
+            <afc-units :units="unitsData" />
         </v-expansion-panels>
     </panel>
 </template>
@@ -28,28 +34,20 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiAdjust, mdiRefresh, mdiDotsVertical } from '@mdi/js'
-import SpoolIcon from '@/components/ui/SpoolIcon.vue'
-import { AFCRoot } from '@/store/server/afc'
+import AFCLogo from '@/components/ui/AFCLogo.vue'
+import { mdiAdjust } from '@mdi/js'
+import { Extruder, Unit, System } from '@/store/server/afc/types'
 
 @Component({
     components: {
         Panel,
-        SpoolIcon,
+        AFCLogo,
     },
 })
 export default class AfcPanel extends Mixins(BaseMixin) {
     mdiAdjust = mdiAdjust
-    mdiRefresh = mdiRefresh
-    mdiDotsVertical = mdiDotsVertical
 
-    spoolData: any[] = []
-    toolData: any[] = []
-    mapList: any[] = []
-    laneList: any[] = []
     intervalId: ReturnType<typeof setInterval> | null = null
-    systemData: any = null
-    unitsData: any = {}
     toolExpandedIndex: number | null = null
     unitExpandedIndex: number[] = []
     autoExpand: boolean = false
@@ -58,9 +56,33 @@ export default class AfcPanel extends Mixins(BaseMixin) {
         return this.klipperReadyForGui /* && Check if AFC is initialized */
     }
 
+    get toolData(): Extruder[] {
+        return this.$store.getters['server/afc/getExtruders']
+    }
+
+    get toolCount(): number {
+        return Object.keys(this.toolData).length
+    }
+
+    get unitsData(): Unit[] {
+        return this.$store.getters['server/afc/getUnits']
+    }
+
+    get systemData(): System | null {
+        return this.$store.getters['server/afc/getSystemInfo']
+    }
+
+    async fetchAFCData() {
+        await this.$store.dispatch('server/afc/fetchAFCData')
+        if (!this.autoExpand) {
+            this.configureAutoExpand()
+        }
+    }
+
     async mounted() {
-        this.fetchSpoolData()
-        this.intervalId = setInterval(this.fetchSpoolData, 100)
+        this.fetchAFCData()
+
+        this.intervalId = setInterval(this.fetchAFCData, 100)
     }
 
     beforeDestroy() {
@@ -70,101 +92,30 @@ export default class AfcPanel extends Mixins(BaseMixin) {
         }
     }
 
-    get afc_Data(): AFCRoot | null {
-        return this.$store.state.printer.AFC
-    }
-
-    fetchSpoolData() {
-        const afcData = this.afc_Data ? JSON.parse(JSON.stringify(this.afc_Data)) : null
-
-        if (!afcData) {
-            this.resetSpoolData()
-            return
-        }
-
-        this.spoolData = this.extractLaneData(afcData)
-        this.unitsData = this.groupByUnit(this.spoolData)
-        this.toolData = afcData.system?.extruders || {}
-        this.systemData = afcData.system || {}
-
-        Object.entries(afcData).forEach(([unitName, unit]) => {
-            if (unitName !== 'system' && this.unitsData[unitName]) {
-                const currentUnit = this.unitsData[unitName]
-                currentUnit.system = unit.system || {}
-                currentUnit.laneList = this.laneList || []
-                currentUnit.mapList = this.mapList || []
-            }
-        })
-
-        this.configureAutoExpand()
-    }
-
-    resetSpoolData() {
-        this.spoolData = []
-        this.unitsData = {}
-        this.systemData = {}
-    }
-
     configureAutoExpand() {
         if (Object.keys(this.toolData).length === 1 && this.toolExpandedIndex === null) {
             this.toolExpandedIndex = 0
         }
-        if (Object.keys(this.unitsData).length === 1 && !this.autoExpand) {
+        if (Object.keys(this.unitsData).length === 1) {
             this.unitExpandedIndex = [0]
             this.autoExpand = true
         }
     }
-
-    extractLaneData(spools: any) {
-        if (!spools || typeof spools !== 'object') {
-            this.laneList = []
-            this.mapList = []
-            return []
-        }
-
-        const lanes = []
-        const mapSet = new Set<string>()
-        const laneSet = new Set<string>()
-
-        Object.entries(spools).forEach(([unitName, unit]) => {
-            if (unitName === 'system' || typeof unit !== 'object') return
-
-            Object.entries(unit).forEach(([laneKey, laneData]) => {
-                if (laneKey !== 'system' && typeof laneData === 'object' && laneData !== null) {
-                    laneData.unitName = unitName
-                    laneData.laneName = laneKey
-                    laneData.empty = '#2e2e2e'
-                    laneData.material = laneData.material || ''
-                    laneData.color = laneData.color || '#000000'
-                    laneData.weight = laneData.weight || 0
-
-                    lanes.push(laneData)
-                    laneSet.add(laneKey)
-                    if (laneData.map) {
-                        mapSet.add(laneData.map)
-                    }
-                }
-            })
-        })
-
-        this.laneList = Array.from(laneSet).sort()
-        this.laneList.unshift('NONE')
-        this.mapList = Array.from(mapSet).sort()
-        return lanes
-    }
-
-    private groupByUnit(spoolData: any[]) {
-        const units: any = {}
-        spoolData.forEach((spool) => {
-            const unitName = spool.unitName
-            if (!units[unitName]) {
-                units[unitName] = { spools: [] }
-            }
-            units[unitName].spools.push(spool)
-        })
-        return units
-    }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.panel-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    user-select: none;
+    margin-right: 8px;
+}
+.panel-content {
+    padding: 0 5px 16px;
+}
+</style>

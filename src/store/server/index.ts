@@ -12,6 +12,7 @@ import { timelapse } from '@/store/server/timelapse'
 import { jobQueue } from '@/store/server/jobQueue'
 import { announcements } from '@/store/server/announcements'
 import { spoolman } from '@/store/server/spoolman'
+import { afc } from '@/store/server/afc'
 import { sensor } from '@/store/server/sensor'
 
 // create getDefaultState
@@ -56,6 +57,7 @@ export const server: Module<ServerState, any> = {
     actions,
     mutations,
     modules: {
+        afc,
         power,
         updateManager,
         history,

@@ -14,12 +14,13 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import AfcExtruderToolsItem from '@/components/panels/Afc/AfcExtruderToolsItem.vue'
+import { Extruder } from '@/store/server/afc/types'
 
 @Component({
     components: { AfcExtruderToolsItem },
 })
 export default class AfcExtruderTools extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) readonly tools!: Record<string, any>
+    @Prop({ type: Object, required: true }) readonly tools!: Extruder[]
 }
 </script>
 

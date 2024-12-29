@@ -620,7 +620,7 @@
             "PostExtruderSensor": "Post-Extruder Sensor",
             "PreExtruderSensor": "Pre-Extruder Sensor"
         },
-        "AfcSpoolmanPanel": {
+        "AfcSpoolPanel": {
             "FilamentType": "Filament Type",
             "RemainingWeight": "Remaining Weight",
             "SpoolColor": "Filament Color",

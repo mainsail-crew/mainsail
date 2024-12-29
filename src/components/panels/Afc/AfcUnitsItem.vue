@@ -25,10 +25,9 @@
         <v-expansion-panel-content>
             <div class="spool-container">
                 <afc-units-item-lane
-                    v-for="(spool, index) in unit.spools"
+                    v-for="(lane, index) in unit.lanes"
                     :key="index"
-                    :spool="spool"
-                    :unit="unit"
+                    :lane="lane"
                     class="spool-card rounded-lg shadow-md overflow-hidden" />
             </div>
         </v-expansion-panel-content>
@@ -41,16 +40,16 @@ import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import AfcUnitsItemLane from '@/components/panels/Afc/AfcUnitsItemLane.vue'
 import BoxTurtleIcon from '@/components/ui/BoxTurtleIcon.vue'
+import { Unit } from '@/store/server/afc/types'
 
 @Component({
     components: { AfcUnitsItemLane, BoxTurtleIcon },
 })
 export default class AfcUnitsItem extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) readonly unit!: Record<string, any>
-    @Prop({ type: String, required: true }) readonly unitName!: string
+    @Prop({ type: Object, required: true }) readonly unit!: Unit
 
     get formattedUnitName(): string {
-        return String(this.unitName).replace(/_/g, ' ')
+        return String(this.unit.unitName).replace(/_/g, ' ')
     }
 }
 </script>

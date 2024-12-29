@@ -46,10 +46,11 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { Extruder } from '@/store/server/afc/types'
 
-@Component()
+@Component({})
 export default class AfcExtruderToolsItem extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) readonly tool!: Record<string, any>
+    @Prop({ type: Object, required: true }) readonly tool!: Extruder
     @Prop({ type: String, required: true }) readonly toolName!: string
 }
 </script>
@@ -60,6 +61,7 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin) {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    flex-wrap: wrap;
 }
 
 .left-section {
@@ -79,13 +81,14 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin) {
 
 .buffer-info {
     text-align: center;
-    flex: 1;
+    flex: 1 0;
+    min-width: 120px;
 }
 
 .lane-status {
     text-align: right;
-    min-width: 100px;
-    flex-shrink: 0;
+    min-width: 120px;
+    flex: 0;
 }
 
 .status-light {
