@@ -396,8 +396,12 @@ export default class TheEditor extends Mixins(BaseMixin) {
             }
         }
 
-        this.fileStructureSidebar = true
+        this.fileStructureSidebar = this.defaultSidebarState
         return structure
+    }
+
+    get defaultSidebarState() {
+        return this.$store.state.gui.editor.defaultSidebarState ?? true
     }
 
     cancelDownload() {
