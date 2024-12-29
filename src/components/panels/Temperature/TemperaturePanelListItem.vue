@@ -1,5 +1,5 @@
 <template>
-    <tr v-longpress:600="(e) => openContentMenu(e)" @contextmenu.prevent="openContentMenu($event)">
+    <tr v-longpress:600="(e) => openContextMenu(e)" @contextmenu.prevent="openContextMenu($event)">
         <td class="icon">
             <v-icon :color="iconColor" :class="iconClass" tabindex="-1" @click="openEditDialog">
                 {{ icon }}
@@ -312,7 +312,7 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
         EventBus.$off('close-temperature-context-menu', this.closeContextMenu)
     }
 
-    openContentMenu(event: MouseEvent) {
+    openContextMenu(event: MouseEvent) {
         EventBus.$emit('close-temperature-context-menu')
 
         this.showContextMenu = true
