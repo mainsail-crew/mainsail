@@ -63,7 +63,15 @@ export default class FilamentReelIcon extends Mixins(BaseMixin) {
     declare readonly color: string
 
     get colorReel() {
-        return { fill: this.color }
+        const style: Record<string, string> = { fill: this.color }
+
+        // Apply stroke if color is not transparent
+        if (this.color !== 'transparent') {
+            style.stroke = 'black'
+            style.strokeWidth = '3px'
+        }
+
+        return style
     }
 
     get spoolColor() {

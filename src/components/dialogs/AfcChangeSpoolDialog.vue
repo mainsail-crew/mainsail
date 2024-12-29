@@ -78,43 +78,42 @@
                                 <!-- Color Picker with Label -->
                                 <v-col cols="12" md="6" class="d-flex justify-center align-center">
                                     <div class="color-picker-container">
-                                        <label class="color-picker-label"><h3>Filament Color</h3></label>
+                                        <label class="color-picker-label">
+                                            <h3>{{ $t('Panels.AfcSpoolPanel.SpoolColor') }}</h3>
+                                        </label>
                                         <v-color-picker v-model="spoolColor" flat class="color-picker" />
                                     </div>
                                 </v-col>
 
                                 <!-- Right Aligned Text Boxes and Button -->
                                 <v-col cols="12" md="6">
-                                    <div class="text-box-container" style="display: flex; flex-direction: row">
-                                        <!-- Text Boxes -->
-                                        <v-row>
-                                            <v-col cols="12">
-                                                <v-text-field
-                                                    v-model="spoolColor"
-                                                    :label="$t('Panels.AfcSpoolmanPanel.SpoolColor')"
-                                                    outlined />
-                                            </v-col>
-                                            <v-col cols="12">
-                                                <v-text-field
-                                                    v-model="filamentType"
-                                                    :label="$t('Panels.AfcSpoolmanPanel.FilamentType')"
-                                                    outlined />
-                                            </v-col>
-                                            <v-col cols="12">
-                                                <v-text-field
-                                                    v-model="remainingWeight"
-                                                    :label="$t('Panels.AfcSpoolmanPanel.RemainingWeight')"
-                                                    outlined
-                                                    type="number" />
-                                            </v-col>
-                                        </v-row>
-                                    </div>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <v-text-field
+                                                v-model="spoolColor"
+                                                :label="$t('Panels.AfcSpoolPanel.SpoolColor')"
+                                                outlined />
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <v-text-field
+                                                v-model="filamentType"
+                                                :label="$t('Panels.AfcSpoolPanel.FilamentType')"
+                                                outlined />
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <v-text-field
+                                                v-model="remainingWeight"
+                                                :label="$t('Panels.AfcSpoolPanel.RemainingWeight')"
+                                                outlined
+                                                type="number" />
+                                        </v-col>
+                                    </v-row>
                                 </v-col>
                             </v-row>
-                            <v-row style="width: 100%; margin-top: 16px">
+                            <v-row class="mt-4">
                                 <v-col cols="12">
                                     <v-btn color="primary" block @click="updateSpool">
-                                        {{ $t('Panels.AfcSpoolmanPanel.UpdateSpool') }}
+                                        {{ $t('Panels.AfcSpoolPanel.UpdateSpool') }}
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -134,12 +133,13 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiAdjust, mdiDatabase, mdiMagnify, mdiRefresh, mdiEject } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import SpoolmanChangeSpoolDialogRow from '@/components/dialogs/SpoolmanChangeSpoolDialogRow.vue'
+import { Lane } from '@/store/server/afc/types'
 
 @Component({
     components: { SpoolmanChangeSpoolDialogRow, Panel },
 })
 export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) laneData!: any
+    @Prop({ type: Object, required: true }) laneData!: Lane
     mdiAdjust = mdiAdjust
     mdiCloseThick = mdiCloseThick
     mdiDatabase = mdiDatabase
@@ -232,8 +232,6 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
     manualyClearSpool() {
         if (this.laneData != null) {
-            const cleanedColor = this.spoolColor.replace('#', '')
-
             const setColor = `SET_COLOR LANE=${this.laneData.laneName} COLOR=000000`
             const setWeight = `SET_WEIGHT LANE=${this.laneData.laneName}  WEIGHT=0`
             const setMaterial = `SET_MATERIAL LANE=${this.laneData.laneName}  MATERIAL=`
@@ -290,7 +288,6 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
                 this.manualyClearSpool()
             }
 
-            this.$emit('fetch-spool')
             this.close()
         }
     }
@@ -338,16 +335,15 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
                 console.error('Failed to send G-code:', error)
             }
         })
-        this.$emit('fetch-spool')
         this.close()
     }
 
     initializeFields() {
         if (this.laneData) {
             console.log('Initializing with laneData:', this.laneData)
-            this.filamentType = this.laneData.material || ''
-            this.remainingWeight = this.laneData.weight || 0
-            this.spoolColor = this.laneData.color || '#ffffff'
+            this.filamentType = this.laneData.spool.material || ''
+            this.remainingWeight = this.laneData.spool.weight || 0
+            this.spoolColor = this.laneData.spool.color || '#ffffff'
         }
     }
 
