@@ -3,15 +3,22 @@
         <v-expansion-panel-header>
             <div class="unit-header" style="display: flex; align-items: center; gap: 10px">
                 <BoxTurtleIcon v-if="unit.system.type === 'Box_Turtle'" class="box-turtle-icon" />
-                <h2 class="unit-title" style="margin: 0">{{ String(unitName).replace(/_/g, ' ') }} |</h2>
+                <h2 class="unit-title" style="margin: 0">{{ formattedUnitName }} |</h2>
                 <span class="hub-container">
                     <strong>{{ $t('Panels.AfcPanel.Hub') }}</strong>
-                    <span
-                        :class="{
-                            'status-light': true,
-                            success: getHubStatus({ unitName }),
-                            error: !getHubStatus({ unitName }),
-                        }"></span>
+                    <v-tooltip top>
+                        <template #activator="{ on, attrs }">
+                            <span
+                                v-bind="attrs"
+                                :class="{
+                                    'status-light': true,
+                                    success: unit.system.hub_loaded,
+                                    error: !unit.system.hub_loaded,
+                                }"
+                                v-on="on"></span>
+                        </template>
+                        <span>{{ $t('Panels.AfcPanel.HubStatus', { unit: formattedUnitName }) }}</span>
+                    </v-tooltip>
                 </span>
             </div>
         </v-expansion-panel-header>
@@ -42,10 +49,8 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly unit!: Record<string, any>
     @Prop({ type: String, required: true }) readonly unitName!: string
 
-    getHubStatus({ unitName }: { unitName: any }) {
-        if (this.unit?.system?.hub_loaded !== undefined) {
-            return this.unit.system.hub_loaded
-        }
+    get formattedUnitName(): string {
+        return String(this.unitName).replace(/_/g, ' ')
     }
 }
 </script>
@@ -79,7 +84,6 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
     padding-top: 0px;
     max-width: 150px;
     min-width: 110px;
-    min-height: 150px;
     flex: 1 1 110px;
     position: relative;
     text-align: right;

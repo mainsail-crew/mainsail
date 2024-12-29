@@ -232,8 +232,6 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
     manualyClearSpool() {
         if (this.laneData != null) {
-            const cleanedColor = this.spoolColor.replace('#', '')
-
             const setColor = `SET_COLOR LANE=${this.laneData.laneName} COLOR=000000`
             const setWeight = `SET_WEIGHT LANE=${this.laneData.laneName}  WEIGHT=0`
             const setMaterial = `SET_MATERIAL LANE=${this.laneData.laneName}  MATERIAL=`
@@ -290,7 +288,6 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
                 this.manualyClearSpool()
             }
 
-            this.$emit('fetch-spool')
             this.close()
         }
     }
@@ -338,7 +335,6 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
                 console.error('Failed to send G-code:', error)
             }
         })
-        this.$emit('fetch-spool')
         this.close()
     }
 

@@ -18,9 +18,9 @@
                 <template #activator="{ on, attrs }">
                     <select
                         v-bind="attrs"
-                        v-on="on"
                         :name="'map-' + spool.laneName"
                         class="afclist"
+                        v-on="on"
                         @change="handleMapChange($event, spool)">
                         <option
                             v-for="option in unit.mapList"
@@ -36,7 +36,9 @@
         </div>
         <div class="spool-card-body">
             <div class="filament-reel" @click="openChangeSpoolDialog(spool)">
-                <FilamentReelIcon :color="spool.prep ? spool.color : 'transparent'" />
+                <FilamentReelIcon
+                    :color="spool.prep ? spool.color : 'transparent'"
+                    style="width: 100%; height: 100%; max-width: inherit; max-height: inherit" />
             </div>
             <div class="spool-card-info">
                 <div class="infinite-spool">
@@ -44,9 +46,9 @@
                         <template #activator="{ on, attrs }">
                             <select
                                 v-bind="attrs"
-                                v-on="on"
                                 :name="'run-' + spool.laneName"
                                 class="afclist"
+                                v-on="on"
                                 @change="handleRunoutChange($event, spool)">
                                 <option
                                     v-for="option in unit.laneList.filter((option) => option !== spool.laneName)"
@@ -60,24 +62,25 @@
                         <span>{{ $t('Panels.AfcPanel.InfiniteSpool') }}</span>
                     </v-tooltip>
                     <infinity-icon
+                        id="Capa_1"
                         :color="spool.runout_lane === 'NONE' ? 'red' : 'green'"
                         class="infinity-icon"
                         version="1.1"
-                        id="Capa_1"
                         viewBox="0 0 60 60"
                         xml:space="preserve" />
                 </div>
-                <p v-if="spool.material">{{ spool.material }}</p>
-                <p v-if="spool.weight">{{ spoolWeight(spool) }}</p>
+                <div class="spool-info-container">
+                    <div v-if="spool.material" class="spool-info material">{{ spool.material }}</div>
+                    <div v-if="spool.weight" class="spool-info weight">{{ spoolWeight(spool) }}</div>
+                </div>
             </div>
         </div>
         <afc-change-spool-dialog
             v-if="selectedLane"
             :show-dialog="showChangeSpoolDialog"
-            :index="index"
+            :index="spool.laneName"
             :lane-data="selectedLane"
-            @close="showChangeSpoolDialog = false"
-            @fetch-spool="fetchSpoolData" />
+            @close="showChangeSpoolDialog = false" />
     </div>
 </template>
 
@@ -95,6 +98,8 @@ import FilamentReelIcon from '@/components/ui/FilamentReelIcon.vue'
 export default class AfcUnits extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly spool!: Record<string, any>
     @Prop({ type: Object, required: true }) readonly unit!: Record<string, any>
+
+    selectedLane: any = null // This will hold data of the clicked lane
 
     openChangeSpoolDialog(spool: any) {
         this.selectedLane = spool
@@ -135,6 +140,11 @@ export default class AfcUnits extends Mixins(BaseMixin) {
             }
         })
     }
+
+    spoolWeight(spool: any) {
+        const weight = parseInt(spool.weight, 10)
+        return weight ? `${weight} g` : ''
+    }
 }
 </script>
 
@@ -148,14 +158,46 @@ export default class AfcUnits extends Mixins(BaseMixin) {
 }
 
 .spool-card-body {
-    padding: 5px;
-    padding-top: 0px;
     display: flex;
     justify-content: space-between;
+    padding: 5px;
+    margin-bottom: 5px;
+    padding-top: 0;
 }
 
-.spool-card-body p {
-    margin: 4px 0;
+.spool-card-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 74px;
+}
+
+.spool-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-top: auto;
+    gap: 5px;
+}
+
+.spool-info.material {
+    text-align: right;
+    font-weight: bold;
+}
+
+.spool-info.weight {
+    text-align: right;
+    font-size: 0.9em;
+}
+
+.theme--dark .spool-info.weight {
+    color: #aaa;
+}
+
+.theme--light .spool-info.weight {
+    color: #333;
 }
 
 .infinity-icon {
@@ -173,6 +215,11 @@ export default class AfcUnits extends Mixins(BaseMixin) {
     cursor: pointer;
 }
 
+.filament-reel-base {
+    stroke: black;
+    stroke-width: 2px;
+}
+
 .theme--dark .spool-card .afclist {
     color: white;
     background-color: #2e2e2e;
@@ -188,8 +235,7 @@ export default class AfcUnits extends Mixins(BaseMixin) {
 
 .afclist {
     cursor: pointer;
-    padding-left: 6px;
+    padding-left: 5px;
     padding-right: 1px;
-    float: left;
 }
 </style>

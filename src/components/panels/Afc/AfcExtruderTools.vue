@@ -28,6 +28,7 @@ export default class AfcExtruderTools extends Mixins(BaseMixin) {
     transition: background-color 0.3s ease;
     padding: 5px;
     padding-left: 10px;
+    padding-right: 10px;
     width: 100%;
     display: flex;
     flex-wrap: wrap;

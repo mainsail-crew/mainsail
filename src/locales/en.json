@@ -612,6 +612,7 @@
             "ExtruderTools": "Extruder Tools",
             "Headline": "Automated Filament Control",
             "Hub": "Hub",
+            "HubStatus": "{unit} Hub Load Status",
             "InfiniteSpool": "Next lane to load if the current lane runs out",
             "LaneLoaded": "Loaded",
             "LaneLoadedNone": "NONE",
