@@ -18,7 +18,7 @@
                         </span>
                     </strong>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="panel-content">
+                <v-expansion-panel-content>
                     <afc-extruder-tools :tools="toolData" />
                 </v-expansion-panel-content>
             </v-expansion-panel>
@@ -114,8 +114,5 @@ export default class AfcPanel extends Mixins(BaseMixin) {
     vertical-align: middle;
     user-select: none;
     margin-right: 8px;
-}
-.panel-content {
-    padding: 0 5px 16px;
 }
 </style>
