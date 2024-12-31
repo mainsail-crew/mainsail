@@ -218,9 +218,13 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
             this.$nextTick(async () => {
                 try {
-                    await this.$store.dispatch('printer/sendGcode', setColor)
-                    await this.$store.dispatch('printer/sendGcode', setWeight)
-                    await this.$store.dispatch('printer/sendGcode', setMaterial)
+                    this.$socket.emit('printer.gcode.script', { script: setColor }, { loading: 'macro_' + setColor })
+                    this.$socket.emit('printer.gcode.script', { script: setWeight }, { loading: 'macro_' + setWeight })
+                    this.$socket.emit(
+                        'printer.gcode.script',
+                        { script: setMaterial },
+                        { loading: 'macro_' + setMaterial }
+                    )
                 } catch (error) {
                     console.error('Failed to send G-code:', error)
                 }
@@ -238,9 +242,13 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
             this.$nextTick(async () => {
                 try {
-                    await this.$store.dispatch('printer/sendGcode', setColor)
-                    await this.$store.dispatch('printer/sendGcode', setWeight)
-                    await this.$store.dispatch('printer/sendGcode', setMaterial)
+                    this.$socket.emit('printer.gcode.script', { script: setColor }, { loading: 'macro_' + setColor })
+                    this.$socket.emit('printer.gcode.script', { script: setWeight }, { loading: 'macro_' + setWeight })
+                    this.$socket.emit(
+                        'printer.gcode.script',
+                        { script: setMaterial },
+                        { loading: 'macro_' + setMaterial }
+                    )
                 } catch (error) {
                     console.error('Failed to send G-code:', error)
                 }
@@ -273,10 +281,18 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
             this.$nextTick(async () => {
                 try {
-                    await this.$store.dispatch('printer/sendGcode', setSpoolId)
+                    this.$socket.emit(
+                        'printer.gcode.script',
+                        { script: setSpoolId },
+                        { loading: 'macro_' + setSpoolId }
+                    )
                     console.log('SET_SPOOL_ID sent successfully')
 
-                    await this.$store.dispatch('printer/sendGcode', unloadLane)
+                    this.$socket.emit(
+                        'printer.gcode.script',
+                        { script: unloadLane },
+                        { loading: 'macro_' + unloadLane }
+                    )
                     console.log('UNLOAD_LANE sent successfully')
                 } catch (error) {
                     console.error('Failed to send G-code:', error)
@@ -329,7 +345,7 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
         this.$nextTick(async () => {
             try {
-                await this.$store.dispatch('printer/sendGcode', gcode)
+                this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_' + gcode })
                 console.log('G-code sent successfully')
             } catch (error) {
                 console.error('Failed to send G-code:', error)
