@@ -1,4 +1,4 @@
-import { Theme } from '@/store/types'
+import { KlipperRepos, Theme } from '@/store/types'
 
 export const defaultMode = 'dark'
 export const defaultTheme = 'mainsail'
@@ -20,7 +20,7 @@ export const themeDir = '.theme'
 export const datasetInterval = 1000
 export const datasetTypes = ['temperature', 'target', 'power', 'speed']
 export const datasetTypesInPercents = ['power', 'speed']
-export const additionalSensors = ['bme280', 'aht10', 'htu21d', 'sht3x']
+export const additionalSensors = ['aht10', 'bme280', 'htu21d', 'sgp40', 'sht3x']
 
 /*
  * List of valid gcode file extensions
@@ -129,12 +129,6 @@ export const hiddenRootDirectories = ['gcodes', 'timelapse', 'timelapse_frames']
 export const hiddenDirectories = ['.git']
 
 /*
- * List of available Klipper config reference translations
- * https://www.klipper3d.org/Config_Reference.html
- */
-export const availableKlipperConfigReferenceTranslations = ['it', 'hu', 'zh']
-
-/*
  * List of all downloadable logfiles
  */
 export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sonar']
@@ -204,3 +198,16 @@ export const themes: Theme[] = [
         logo: { show: true, light: false },
     },
 ]
+
+/*
+ * List of all supported Klipper-Repos
+ */
+export const klipperRepos: KlipperRepos = {
+    Klipper: {
+        url: 'https://www.klipper3d.org/',
+        docsLanguages: ['it', 'hu', 'zh'],
+    },
+    Kalico: {
+        url: 'https://docs.kalico.gg/',
+    },
+}

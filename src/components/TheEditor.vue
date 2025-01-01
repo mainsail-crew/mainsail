@@ -166,7 +166,7 @@ import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { capitalize, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
-import { availableKlipperConfigReferenceTranslations } from '@/store/variables'
+import { klipperRepos } from '@/store/variables'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import {
     mdiClose,
@@ -285,10 +285,14 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return this.$store.state.server.system_info?.available_services ?? []
     }
 
-    get restartServiceName() {
+    get restartAllowedOrPossible() {
         if (!this.isWriteable) return null
         if (['printing', 'paused'].includes(this.printer_state)) return null
 
+        return true
+    }
+
+    get restartServiceName() {
         // check for generic services <service>.conf (like moonraker.conf, crowsnest.conf, sonar.conf)
         if (this.availableServices.includes(this.filenameWithoutExtension) && this.fileExtension === 'conf')
             return this.filenameWithoutExtension
@@ -309,6 +313,8 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get restartServiceNameExists() {
+        if (!this.restartAllowedOrPossible) return false
+
         // hide the button, if there is no service found
         if (this.restartServiceName === null) return false
 
@@ -340,12 +346,14 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     get klipperConfigReference(): string {
         const currentLanguage = this.currentLanguage
-        const translations = availableKlipperConfigReferenceTranslations
-        let url = 'https://www.klipper3d.org/Config_Reference.html'
+        const klipperRepo = klipperRepos[this.klipperAppName] ?? klipperRepos.Klipper
 
-        if (translations.includes(currentLanguage)) {
-            url = `https://www.klipper3d.org/${currentLanguage}/Config_Reference.html`
+        let url = klipperRepo.url
+        if (klipperRepo.docsLanguages?.includes(currentLanguage)) {
+            url += `${currentLanguage}/`
         }
+
+        url += 'Config_Reference.html'
 
         return url
     }
@@ -536,6 +544,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
 .structure-sidebar {
     width: 300px;
     overflow-y: auto;
+    max-height: calc(100vh - 48px);
 }
 ._structure-sidebar-item {
     text-overflow: ellipsis;

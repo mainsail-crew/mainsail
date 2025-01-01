@@ -45,9 +45,9 @@
                             </v-col>
                         </v-row>
                         <v-row dense>
-                            <v-col cols="3" class="p-rel">
+                            <v-col cols="3" class="position-relative">
                                 <v-btn
-                                    class="btnMinWidthAuto fill-width p-abs"
+                                    class="btnMinWidthAuto fill-width position-absolute"
                                     style="top: -50%; width: calc(100% - 8px)"
                                     :disabled="
                                         !xAxisHomed ||
@@ -72,9 +72,9 @@
                                     <v-icon>{{ mdiChevronDown }}</v-icon>
                                 </v-btn>
                             </v-col>
-                            <v-col cols="3" class="p-rel">
+                            <v-col cols="3" class="position-relative">
                                 <v-btn
-                                    class="btnMinWidthAuto fill-width p-abs"
+                                    class="btnMinWidthAuto fill-width position-absolute"
                                     style="top: -50%; width: calc(100% - 8px)"
                                     :disabled="
                                         !xAxisHomed ||

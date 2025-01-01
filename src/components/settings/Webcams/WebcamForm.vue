@@ -143,6 +143,58 @@
                                 :label="$t('Settings.WebcamsTab.Vertically')" />
                         </v-col>
                     </v-row>
+                    <template v-if="nozzleCrosshairAvialable">
+                        <v-row>
+                            <v-col class="pt-3 pb-3">
+                                <div class="v-label v-label--active theme--dark text-subtitle-1">
+                                    {{ $t('Settings.WebcamsTab.NozzleCrosshair') }}:
+                                </div>
+                            </v-col>
+                        </v-row>
+                        <v-row class="mt-0">
+                            <v-col class="py-0">
+                                <v-checkbox
+                                    v-model="nozzleCrosshair"
+                                    class="mt-1"
+                                    hide-details
+                                    :label="$t('Settings.WebcamsTab.Enable')" />
+                            </v-col>
+                            <v-col v-if="nozzleCrosshair" class="py-0">
+                                <v-menu bottom left offset-y :close-on-content-click="false">
+                                    <template #activator="{ on, attrs }">
+                                        <v-btn
+                                            v-bind="attrs"
+                                            :color="nozzleCrosshairColor"
+                                            class="minwidth-0 px-5"
+                                            small
+                                            v-on="on" />
+                                    </template>
+                                    <v-color-picker
+                                        :value="nozzleCrosshairColor"
+                                        hide-mode-switch
+                                        mode="rgba"
+                                        @update:color="updateLogoColor" />
+                                </v-menu>
+                                <div
+                                    class="v-label v-label--active theme--dark text-subtitle-1 d-inline-block ml-2 mt-2">
+                                    {{ $t('Settings.WebcamsTab.Color') }}
+                                </div>
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="nozzleCrosshair">
+                            <v-col>
+                                <v-slider
+                                    v-model="nozzleCrosshairSize"
+                                    :max="1"
+                                    :min="0.01"
+                                    :step="0.01"
+                                    thumb-label
+                                    thumb-size="24"
+                                    hide-details
+                                    :label="$t('Settings.WebcamsTab.Size')" />
+                            </v-col>
+                        </v-row>
+                    </template>
                 </v-col>
                 <v-col class="col-12 col-sm-6 text-center" align-self="center">
                     <webcam-wrapper :webcam="webcam" page="settings" />
@@ -309,6 +361,52 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
         // @ts-ignore
         this.webcam.extra_data.enableAudio = newVal
+    }
+
+    get nozzleCrosshairAvialable() {
+        return ['mjpegstreamer', 'mjpegstreamer-adaptive', 'webrtc-camerastreamer'].includes(this.webcam.service)
+    }
+
+    get nozzleCrosshair() {
+        return this.webcam.extra_data?.nozzleCrosshair ?? false
+    }
+
+    set nozzleCrosshair(newVal) {
+        const extraData = { ...(this.webcam.extra_data ?? {}) }
+        extraData.nozzleCrosshair = newVal
+
+        this.webcam.extra_data = extraData
+    }
+
+    get nozzleCrosshairColor() {
+        return this.webcam.extra_data?.nozzleCrosshairColor ?? '#ff0000'
+    }
+
+    set nozzleCrosshairColor(newVal: string) {
+        const extraData = { ...(this.webcam.extra_data ?? {}) }
+        extraData.nozzleCrosshairColor = newVal
+
+        this.webcam.extra_data = extraData
+    }
+
+    updateLogoColor(color: string | { hex: string }) {
+        if (typeof color === 'object') {
+            this.nozzleCrosshairColor = color.hex
+            return
+        }
+
+        this.nozzleCrosshairColor = color
+    }
+
+    get nozzleCrosshairSize() {
+        return this.webcam.extra_data?.nozzleCrosshairSize ?? 0.1
+    }
+
+    set nozzleCrosshairSize(newVal: number) {
+        const extraData = { ...(this.webcam.extra_data ?? {}) }
+        extraData.nozzleCrosshairSize = newVal
+
+        this.webcam.extra_data = extraData
     }
 
     mounted() {

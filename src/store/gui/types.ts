@@ -125,6 +125,10 @@ export interface GuiState {
         tempchartHeight: number
         hideUpdateWarnings: boolean
         printstatusThumbnailZoom: boolean
+        dashboardFilesLimit: number
+        dashboardFilesFilter: GuiStateUiSettingsDashboardFilesFilter[]
+        dashboardHistoryLimit: number
+        hideOtherInstances: boolean
     }
     view: {
         blockFileUpload: boolean
@@ -214,3 +218,5 @@ export interface GuiStateLayoutoption {
     name: string
     visible: boolean
 }
+
+export type GuiStateUiSettingsDashboardFilesFilter = 'new' | 'failed' | 'completed'

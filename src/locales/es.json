@@ -144,11 +144,19 @@
         "ScrewName": "Nombre de Tornillo",
         "ScrewOutput": "{current} de {max}"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "¿Estás seguro?",
+        "CancelJob": "Cancelar trabajo",
+        "No": "No",
+        "Yes": "Sí"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "No se pudo conectar a ({host}) Moonraker.",
         "CheckMoonrakerLog": "Si este mensaje aparece repetidamente, por favor dé un vistazo al archivo de registro ubicado en:",
         "Connecting": "Conectando a {host}",
+        "ErrorMessage": "Mensaje de error: {message}",
         "Failed": "Conexión Fallida",
+        "Help": "Ayuda",
         "Initializing": "Inicializando",
         "TryAgain": "Intentar nuevamente"
     },
@@ -157,6 +165,7 @@
         "Empty": "Vacío",
         "HideTemperatures": "Ocultar temperaturas",
         "HideTimelapse": "Ocultar timelapse",
+        "Search": "Buscar",
         "SendCode": "Enviar código...",
         "SetupConsole": "Configurar consola"
     },
@@ -197,6 +206,7 @@
         "Downloading": "Descargando",
         "FailedSave": "¡{filename} no pudo cargarse!",
         "FileReadOnly": "Sólo lectura",
+        "FileStructure": "Estructura del archivo",
         "SaveClose": "Guardar y cerrar",
         "SaveRestart": "Guardar y reiniciar",
         "SuccessfullySaved": "{filename} guardado con éxito.",
@@ -431,6 +441,7 @@
         "SelectedFilamentUsed": "Elija el filamento usado",
         "SelectedJobs": "Tareas elegidas",
         "SelectedPrinttime": "Tiempo de impresion elegido",
+        "Settings": "Ajustes",
         "Slicer": "Laminador",
         "SlicerVersion": "Versión del laminador",
         "StartTime": "Hora de inicio",
@@ -674,6 +685,7 @@
             "Headline": "Consola",
             "HideTemperatures": "Ocultar temperaturas",
             "HideTimelapse": "Ocultar timelapse",
+            "RawOutput": "Salida RAW (para depuración)",
             "SendCode": "Enviar código...",
             "SetupConsole": "Configurar consola"
         },
@@ -824,6 +836,9 @@
         },
         "WebcamPanel": {
             "All": "Todos",
+            "ConnectingTo": "Conectando a {url}",
+            "Disconnected": "Desconectado",
+            "ErrorWhileConnecting": "Error al conectar a {url}",
             "FPS": "FPS",
             "Headline": "Cámara web",
             "NoWebcam": "No hay cámara web disponible. Agregue una cámara web en \"Configuración\" -> \"Cámaras web\".",
@@ -1024,8 +1039,16 @@
         },
         "HeightmapTab": {
             "ColorSchemes": "Esquemas de colores",
+            "DefaultOrientation": "Orientación por defecto",
+            "DefaultOrientationDescription": "Seleccione la orientación por defecto para la visualización de la malla.",
             "Heightmap": "Mapa de altura",
             "IsDefault": "(Por defecto)",
+            "Orientations": {
+                "Front": "Delante",
+                "LeftFront": "Frontal izquierdo",
+                "RightFront": "Frontal derecho",
+                "Top": "Arriba"
+            },
             "Schemes": {
                 "GrayScale": "Escala de grises",
                 "Hot": "Caliente",
@@ -1213,6 +1236,8 @@
             "BoolBigThumbnailDescription": "Mostrar una miniatura grande en el panel de estado durante una impresión.",
             "BoolHideUploadAndPrintButton": "Ocultar botón de Subir e Imprimir",
             "BoolHideUploadAndPrintButtonDescription": "Mostrar u ocultar el botón de \"Upload and Print\" en la barra de arriba",
+            "ConfirmOnCancelJob": "Se requiere confirmación para cancelar el trabajo",
+            "ConfirmOnCancelJobDescription": "Mostrar un cuadro de diálogo de confirmación para cancelar el trabajo",
             "ConfirmOnCoolDown": "Confirmar el enfriamiento",
             "ConfirmOnCoolDownDescription": "Mostrar un diálogo de confirmación para el enfriamiento",
             "ConfirmOnEmergencyStop": "Requerir confirmación en Parada de Emergencia",

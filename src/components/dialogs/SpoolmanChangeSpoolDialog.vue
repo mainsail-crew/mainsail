@@ -84,6 +84,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     mdiRefresh = mdiRefresh
 
     @Prop({ required: true }) declare readonly showDialog: boolean
+    @Prop({ required: false, default: null }) declare readonly tool?: string
 
     search = ''
 
@@ -135,6 +136,12 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
         return this.$store.state.server.config.config?.spoolman?.server ?? null
     }
 
+    get existsSaveVariables() {
+        const settings = this.$store.state.printer.configfile?.settings ?? {}
+
+        return 'save_variables' in settings
+    }
+
     openSpoolManager() {
         window.open(this.spoolManagerUrl, '_blank')
     }
@@ -182,6 +189,29 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
 
     setSpool(spool: ServerSpoolmanStateSpool) {
         this.$store.dispatch('server/spoolman/setActiveSpool', spool.id)
+
+        // Close the dialog if no tool is selected
+        if (!this.tool) {
+            this.close()
+            return
+        }
+
+        // Set spool_id for tool
+        const gcode = `SET_GCODE_VARIABLE MACRO=${this.tool} VARIABLE=spool_id VALUE=${spool.id}`
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
+
+        // Close dialog if save_variables is not enabled
+        if (!this.existsSaveVariables) {
+            this.close()
+            return
+        }
+
+        // Set spool_id to save_variable
+        const gcode2 = `SAVE_VARIABLE VARIABLE=${this.tool.toUpperCase()}__SPOOL_ID VALUE=${spool.id}`
+        this.$store.dispatch('server/addEvent', { message: gcode2, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode2 })
+
         this.close()
     }
 

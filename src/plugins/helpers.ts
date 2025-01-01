@@ -284,3 +284,10 @@ export function sortResolutions(a: string, b: string) {
 
     return aSplit - bSplit
 }
+
+export function escapePath(path: string): string {
+    return path
+        .split('/')
+        .map((part) => encodeURIComponent(part))
+        .join('/')
+}

@@ -58,27 +58,67 @@ export default class TheMacroPrompt extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
 
     private internalCloseCommand: number | null = null
+    private checkpointEvent: ServerStateEvent | null = null
+    private currentPrompt: ServerStateEventPrompt[] = []
+    // regex that extracts the type and message, omitting the wrapping double quotes of the message (if any)
+    private promptMessageExp = /^\/\/ action:prompt_(?<type>[^\s]+) *(?<msg>.*)$/
 
     get events() {
-        return this.$store.state.server.events.slice(-100)
+        return this.$store.state.server.events
     }
 
     get macroPromptEvents() {
-        return this.events
-            .filter((event: ServerStateEvent) => event.type === 'action')
-            .filter((event: ServerStateEvent) => event.message.startsWith('// action:prompt_'))
-            .map((event: ServerStateEvent) => {
-                const type = (event.message ?? '').replace('// action:prompt_', '').split(' ')[0].trim()
-                const message = (event.message ?? '').replace(`// action:prompt_${type}`, '').replace(/"/g, '').trim()
+        const events: ServerStateEvent[] = this.events
+        const promptEvents: ServerStateEventPrompt[] = []
+        // process events from most recent (end of array) to oldest (beginning of array) event until we reach
+        // the events we have already processed
+        for (let i = events.length - 1; i >= 0; i--) {
+            const event = events[i]
+            // if we've reached the checkpoint event (i.e. the point where we know there are no earlier prompts to process)
+            if (event === this.checkpointEvent) {
+                // break the loop
+                break
+            }
 
-                const promptContent: ServerStateEventPrompt = {
-                    date: event.date,
-                    type,
-                    message,
-                }
+            // not a prompt action, skip it
+            if (event.type !== 'action' || !event.message?.startsWith('// action:prompt_')) {
+                continue
+            }
 
-                return promptContent
+            const match = event.message.match(this.promptMessageExp)
+            const type = match?.groups?.type ?? ''
+
+            // stop processing and clear events once we find an end action
+            if (type === 'end') {
+                this.currentPrompt = []
+                break
+            }
+
+            const message = (match?.groups?.msg || '').trim()
+
+            // prepend the event to prompt events found in this chunk
+            promptEvents.unshift({
+                date: event.date,
+                type,
+                message,
             })
+
+            // stop processing events once we find a begin action
+            if (type === 'begin') {
+                this.currentPrompt = []
+                break
+            }
+        }
+
+        // save our checkpoint event...we'll never have to look at messages prior to the checkpoint again
+        this.checkpointEvent = events[events.length - 1]
+
+        // if we found new prompt events in this chunk, let's append them
+        if (promptEvents.length > 0) {
+            this.currentPrompt = [...this.currentPrompt, ...promptEvents]
+        }
+
+        return this.currentPrompt
     }
 
     get lastPromptBeginPos() {

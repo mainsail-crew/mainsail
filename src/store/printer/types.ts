@@ -241,12 +241,6 @@ export interface PrinterStateExtruderStepper {
     extruder: number
 }
 
-export interface PrinterStateToolchangeMacro {
-    name: string
-    active: boolean
-    color: string
-}
-
 export interface PrinterGetterObject {
     name: string
     type: string

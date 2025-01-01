@@ -579,7 +579,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { defaultBigThumbnailBackground, validGcodeExtensions } from '@/store/variables'
-import { formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
+import { escapePath, formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
@@ -1258,7 +1258,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     downloadFile() {
         const filename = this.currentPath + '/' + this.contextMenu.item.filename
-        const href = this.apiUrl + '/server/files/gcodes' + encodeURI(filename)
+        const href = this.apiUrl + '/server/files/gcodes' + escapePath(filename)
 
         window.open(href)
     }
@@ -1268,7 +1268,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
         const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
             for (const file of directory) {
-                const filePath = `${absolutPath}/${file.filename}`
+                const filePath = `${absolutPath}/${escapePath(file.filename)}`
 
                 if (file.isDirectory && file.childrens) {
                     await addElementToItems(filePath, file.childrens)

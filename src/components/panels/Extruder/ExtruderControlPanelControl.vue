@@ -250,6 +250,12 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
         return this.feedamount * this.extrudeFactor > this.maxExtrudeOnlyDistance
     }
 
+    get existsClientLinearMoveMacro() {
+        const macros = this.$store.state.printer?.gcode?.commands ?? {}
+
+        return '_CLIENT_LINEAR_MOVE' in macros
+    }
+
     @Watch('maxExtrudeOnlyDistance', { immediate: true })
     onMaxExtrudeOnlyDistanceChange(): void {
         /**
@@ -271,11 +277,15 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
     }
 
     sendCommand(length: number, loading: string): void {
-        const gcode =
+        let gcode =
             `SAVE_GCODE_STATE NAME=_ui_extrude\n` +
             `M83\n` +
             `G1 E${length} F${this.feedrate * 60}\n` +
             `RESTORE_GCODE_STATE NAME=_ui_extrude`
+
+        if (this.existsClientLinearMoveMacro) {
+            gcode = `_CLIENT_LINEAR_MOVE E=${length} F=${this.feedrate * 60}`
+        }
 
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading })
