@@ -1,34 +1,51 @@
 <template>
     <div>
         <div class="spool-card-header">
-            <span
-                :class="
-                    lane.load && lane.prep && lane.tool_loaded
-                        ? 'primary--text'
-                        : lane.load && lane.prep
-                          ? 'success--text'
-                          : lane.prep
-                            ? 'warning--text'
-                            : 'error--text'
-                ">
-                <h3>{{ lane.laneName }}</h3>
-            </span>
-            <div class="spacer"></div>
-            <v-tooltip top>
-                <template #activator="{ on, attrs }">
-                    <select
-                        v-bind="attrs"
-                        :name="'map-' + lane.laneName"
-                        class="afclist"
-                        v-on="on"
-                        @change="handleMapChange($event, lane)">
-                        <option v-for="option in mapList" :key="option" :value="option" :selected="option === lane.map">
-                            {{ option }}
-                        </option>
-                    </select>
+            <v-menu :offset-y="true" :close-on-content-click="true" left>
+                <template #activator="{ on: onMenu, attrs }">
+                    <v-tooltip top>
+                        <template #activator="{ on: onTooltip }">
+                            <span
+                                :class="laneStatusClass"
+                                :style="{ cursor: laneReady ? 'pointer' : 'default' }"
+                                v-bind="attrs"
+                                v-on="{ ...onMenu, ...onTooltip }">
+                                {{ lane.laneName }}
+                            </span>
+                        </template>
+                        <span>{{ laneStatus }}</span>
+                    </v-tooltip>
                 </template>
-                <span>{{ $t('Panels.AfcPanel.LaneMap') }}</span>
-            </v-tooltip>
+                <v-list v-if="laneReady" dense>
+                    <v-list-item v-if="!toolLoaded" @click="handleLaneAction($event, 'load')">
+                        <v-list-item-title>{{ $t('Panels.AfcPanel.Load') }}</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item v-if="toolLoaded" @click="handleLaneAction($event, 'unload')">
+                        <v-list-item-title>{{ $t('Panels.AfcPanel.Unload') }}</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item v-if="!toolLoaded" @click="handleLaneAction($event, 'eject')">
+                        <v-list-item-title>{{ $t('Panels.AfcPanel.Eject') }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+            <div class="spacer"></div>
+            <v-menu :offset-y="true" :close-on-content-click="true" left>
+                <template #activator="{ on: onMenu, attrs }">
+                    <v-tooltip top>
+                        <template #activator="{ on: onTooltip }">
+                            <span v-bind="attrs" v-on="{ ...onMenu, ...onTooltip }">
+                                {{ lane.map }}
+                            </span>
+                        </template>
+                        <span>{{ $t('Panels.AfcPanel.LaneMap') }}</span>
+                    </v-tooltip>
+                </template>
+                <v-list dense>
+                    <v-list-item v-for="option in mapList" :key="option" @click="handleMapChange($event, option)">
+                        <v-list-item-title>{{ option }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </div>
         <div class="spool-card-body">
             <div class="filament-reel" @click="openChangeSpoolDialog(lane)">
@@ -38,25 +55,26 @@
             </div>
             <div class="spool-card-info">
                 <div class="infinite-spool">
-                    <v-tooltip top>
-                        <template #activator="{ on, attrs }">
-                            <select
-                                v-bind="attrs"
-                                :name="'run-' + lane.laneName"
-                                class="afclist"
-                                v-on="on"
-                                @change="handleRunoutChange($event, lane)">
-                                <option
-                                    v-for="option in laneList.filter((option) => option !== lane.laneName)"
-                                    :key="option"
-                                    :value="option"
-                                    :selected="option === lane.runout_lane">
-                                    {{ option }}
-                                </option>
-                            </select>
+                    <v-menu :offset-y="true" :close-on-content-click="true" left>
+                        <template #activator="{ on: onMenu, attrs }">
+                            <v-tooltip top>
+                                <template #activator="{ on: onTooltip }">
+                                    <span v-bind="attrs" v-on="{ ...onMenu, ...onTooltip }">
+                                        {{ lane.runout_lane }}
+                                    </span>
+                                </template>
+                                <span>{{ $t('Panels.AfcPanel.InfiniteSpool') }}</span>
+                            </v-tooltip>
                         </template>
-                        <span>{{ $t('Panels.AfcPanel.InfiniteSpool') }}</span>
-                    </v-tooltip>
+                        <v-list dense>
+                            <v-list-item
+                                v-for="option in laneList.filter((option) => option !== lane.laneName)"
+                                :key="option"
+                                @click="handleMapChange($event, option)">
+                                <v-list-item-title>{{ option }}</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
                     <infinity-icon
                         id="Capa_1"
                         :color="lane.runout_lane === 'NONE' ? 'red' : 'green'"
@@ -84,6 +102,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { PrinterStateMacro } from '@/store/printer/types'
 import AfcChangeSpoolDialog from '@/components/dialogs/AfcChangeSpoolDialog.vue'
 import InfinityIcon from '@/components/ui/InfinityIcon.vue'
 import FilamentReelIcon from '@/components/ui/FilamentReelIcon.vue'
@@ -111,6 +130,37 @@ export default class AfcUnits extends Mixins(BaseMixin) {
         return this.$store.state.server.spoolman.active_spool
     }
 
+    get laneReady() {
+        return this.lane.load && this.lane.prep
+    }
+
+    get toolLoaded() {
+        return this.lane.tool_loaded
+    }
+
+    get laneStatusClass() {
+        return this.laneReady && this.toolLoaded
+            ? 'primary--text'
+            : this.laneReady
+              ? 'success--text'
+              : this.lane.prep
+                ? 'warning--text'
+                : 'error--text'
+    }
+
+    get laneStatus() {
+        switch (true) {
+            case this.laneReady && this.toolLoaded:
+                return this.$t('Panels.AfcPanel.LaneCommands')
+            case this.laneReady:
+                return this.$t('Panels.AfcPanel.LaneCommands')
+            case this.lane.prep:
+                return this.$t('Panels.AfcPanel.LaneErrorLoad')
+            default:
+                return this.$t('Panels.AfcPanel.LaneEmpty')
+        }
+    }
+
     openChangeSpoolDialog(lane: Lane) {
         this.selectedLane = lane
         this.showChangeSpoolDialog = true
@@ -127,14 +177,13 @@ export default class AfcUnits extends Mixins(BaseMixin) {
         console.log('Active spool weight changed:', weight)
 
         const gcode = `SET_WEIGHT LANE=${this.lane.laneName} WEIGHT=${weight}`
-        this.$nextTick(async () => {
-            try {
-                await this.$store.dispatch('printer/sendGcode', gcode)
-                console.log('G-code sent successfully')
-            } catch (error) {
-                console.error('Failed to send G-code:', error)
-            }
-        })
+
+        try {
+            this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_' + gcode })
+            console.log('G-code sent successfully')
+        } catch (error) {
+            console.error('Failed to send G-code:', error)
+        }
     }
 
     @Watch('lane.tool_loaded')
@@ -173,12 +222,11 @@ export default class AfcUnits extends Mixins(BaseMixin) {
         })
     }
 
-    handleMapChange(event: Event, lane: Lane) {
-        const selectedValue = (event.target as HTMLSelectElement).value
-        console.log(`Selected value for ${lane.laneName}: ${selectedValue}`)
+    handleMapChange(event: Event, option: string) {
+        console.log(`Selected value for ${this.lane.laneName}: ${option}`)
 
         //Example G-Code Call for you
-        const gcode = `SET_MAP LANE=${lane.laneName} MAP=${selectedValue}`
+        const gcode = `SET_MAP LANE=${this.lane.laneName} MAP=${option}`
         console.log('Dispatching G-code:', gcode)
 
         this.$nextTick(async () => {
@@ -189,6 +237,45 @@ export default class AfcUnits extends Mixins(BaseMixin) {
                 console.error('Failed to send G-code:', error)
             }
         })
+    }
+
+    handleLaneAction(event: Event, action: string) {
+        console.log(`Selected action for ${this.lane.laneName}: ${action}`)
+
+        let gcode = ''
+        switch (action) {
+            case 'load':
+                gcode = `CHANGE_TOOL LANE=${this.lane.laneName}`
+                break
+            case 'unload':
+                gcode = `TOOL_UNLOAD LANE=${this.lane.laneName}`
+                break
+            case 'eject':
+                gcode = `LANE_UNLOAD LANE=${this.lane.laneName}`
+                break
+            default:
+                console.warn(`Unknown action: ${action}`)
+                return
+        }
+
+        this.$nextTick(async () => {
+            try {
+                await this.$store.dispatch('printer/sendGcode', gcode)
+                console.log('G-code sent successfully')
+            } catch (error) {
+                console.error('Failed to send G-code:', error)
+            }
+        })
+    }
+
+    get macros() {
+        return this.$store.getters['printer/getMacros']
+    }
+
+    get setFilamentWeightMacro(): PrinterStateMacro | undefined {
+        const macros = ['SET_WEIGHT']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
     }
 
     spoolWeight(spool: Spool) {
@@ -270,22 +357,7 @@ export default class AfcUnits extends Mixins(BaseMixin) {
     stroke-width: 2px;
 }
 
-.theme--dark .spool-card .afclist {
-    color: white;
-    background-color: #2e2e2e;
-}
-
-.theme--light .spool-card .afclist {
-    background-color: #ebebeb;
-}
-
 .spacer {
     flex-grow: 1;
-}
-
-.afclist {
-    cursor: pointer;
-    padding-left: 5px;
-    padding-right: 1px;
 }
 </style>

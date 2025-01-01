@@ -609,16 +609,24 @@
     },
     "Panels": {
         "AfcPanel": {
+            "Detected": "Detected",
+            "Eject": "Eject Filament",
+            "Empty": "Empty",
             "ExtruderTools": "Extruder Tools",
             "Headline": "Automated Filament Control",
             "Hub": "Hub",
             "HubStatus": "{unit} Hub Load Status",
             "InfiniteSpool": "Next lane to load if the current lane runs out",
+            "LaneCommands": "Lane Controls",
+            "LaneEmpty": "Empty",
+            "LaneErrorLoad": "Check Lane, Filament not detected at the extruder",
             "LaneLoaded": "Loaded",
             "LaneLoadedNone": "NONE",
             "LaneMap": "Remap current lane to selected T command",
+            "Load": "Load Lane",
             "PostExtruderSensor": "Post-Extruder Sensor",
-            "PreExtruderSensor": "Pre-Extruder Sensor"
+            "PreExtruderSensor": "Pre-Extruder Sensor",
+            "Unload": "Unload Lane"
         },
         "AfcSpoolPanel": {
             "FilamentType": "Filament Type",
