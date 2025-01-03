@@ -16,8 +16,8 @@
         :prepend-icon="isTouchDevice ? mdiChevronDoubleRight : ''"
         :append-icon="mdiSend"
         @keydown.enter.prevent.stop="doSend"
-        @keyup.up="onKeyUp"
-        @keyup.down="onKeyDown"
+        @keydown.up="onKeyUp"
+        @keydown.down="onKeyDown"
         @keydown.tab="onAutocomplete"
         @click:prepend="onAutocomplete"
         @click:append="doSend" />
@@ -45,6 +45,12 @@ export default class ConsoleTextarea extends Mixins(BaseMixin, ConsoleMixin) {
         return this.gcode?.split('\n').length ?? 1
     }
 
+    getCurrentLine(): number {
+        const textarea = this.gcodeCommandField.$refs.input
+        const textBeforeCursor = textarea.value.substring(0, textarea.selectionStart)
+        return textBeforeCursor.split('\n').length
+    }
+
     setGcode(gcode: string): void {
         this.gcode = gcode
 
@@ -53,7 +59,11 @@ export default class ConsoleTextarea extends Mixins(BaseMixin, ConsoleMixin) {
         })
     }
 
-    onKeyUp(): void {
+    onKeyUp(event: KeyboardEvent): void {
+        const currentLine = this.getCurrentLine()
+        if (this.rows > 1 && currentLine > 1) return
+
+        event.preventDefault()
         if (this.lastCommandNumber === null && this.lastCommands.length) {
             this.lastCommandNumber = this.lastCommands.length - 1
             this.gcode = this.lastCommands[this.lastCommandNumber]
@@ -63,7 +73,12 @@ export default class ConsoleTextarea extends Mixins(BaseMixin, ConsoleMixin) {
         }
     }
 
-    onKeyDown(): void {
+    onKeyDown(event: KeyboardEvent): void {
+        const currentLine = this.getCurrentLine()
+        if (this.rows > currentLine) return
+
+        event.preventDefault()
+
         if (this.lastCommandNumber === null) return
 
         if (this.lastCommandNumber < this.lastCommands.length - 1) {
