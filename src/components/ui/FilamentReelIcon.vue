@@ -81,7 +81,9 @@ export default class FilamentReelIcon extends Mixins(BaseMixin) {
         const scaleY = this.filament === 0 ? 0 : minScale + (this.filament / 100) * (1 - minScale)
         const centerX = 128 // Center X of the SVG
         const centerY = 250 // Center Y of the SVG
-        return `translate(${centerX}, ${centerY}) scale(1, ${scaleY}) translate(${-centerX}, ${-centerY})`
+        return isNaN(scaleY)
+            ? ''
+            : `translate(${centerX}, ${centerY}) scale(1, ${scaleY}) translate(${-centerX}, ${-centerY})`
     }
 
     get spoolColor() {

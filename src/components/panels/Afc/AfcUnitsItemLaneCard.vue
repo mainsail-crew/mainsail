@@ -59,7 +59,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import AfcChangeSpoolDialog from '@/components/dialogs/AfcChangeSpoolDialog.vue'
 import InfinityIcon from '@/components/ui/InfinityIcon.vue'
