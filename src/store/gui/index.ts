@@ -190,6 +190,10 @@ export const getDefaultState = (): GuiState => {
         },
         view: {
             blockFileUpload: false,
+            afc: {
+                showSpoolName: true,
+                infiniteSpool: true,
+            },
             configfiles: {
                 countPerPage: 10,
                 sortBy: 'filename',

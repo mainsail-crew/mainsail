@@ -8,6 +8,35 @@
         <template #icon>
             <AFCLogo class="panel-icon" />
         </template>
+        <template #buttons>
+            <v-menu v-if="showAfcMacros" :offset-y="true" :close-on-content-click="false" left>
+                <template #activator="{ on, attrs }">
+                    <v-btn icon tile v-bind="attrs" v-on="on">
+                        <v-icon>{{ mdiDotsVertical }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-list dense>
+                    <!-- NOZZLE CLEAN -->
+                    <v-list-item v-if="afcBrushMacro">
+                        <macro-button
+                            :macro="afcBrushMacro"
+                            :alias="$t('Panels.AfcPanel.BrushNozzle')"
+                            :disabled="printerIsPrintingOnly"
+                            color="#272727" />
+                    </v-list-item>
+                    <!-- PARK NOZZLE -->
+                    <v-list-item v-if="afcParkMacro">
+                        <macro-button
+                            :macro="afcParkMacro"
+                            :alias="$t('Panels.AfcPanel.ParkNozzle')"
+                            :disabled="printerIsPrintingOnly"
+                            color="#272727" />
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+            <afc-panel-settings :units="unitsData" />
+        </template>
+
         <v-expansion-panels v-model="toolExpandedIndex">
             <v-expansion-panel>
                 <v-expansion-panel-header>
@@ -33,9 +62,11 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ControlMixin from '@/components/mixins/control'
+import { PrinterStateMacro } from '@/store/printer/types'
 import Panel from '@/components/ui/Panel.vue'
 import AFCLogo from '@/components/ui/AFCLogo.vue'
-import { mdiAdjust } from '@mdi/js'
+import { mdiDotsVertical } from '@mdi/js'
 import { Extruder, Unit, System } from '@/store/server/afc/types'
 
 @Component({
@@ -44,8 +75,8 @@ import { Extruder, Unit, System } from '@/store/server/afc/types'
         AFCLogo,
     },
 })
-export default class AfcPanel extends Mixins(BaseMixin) {
-    mdiAdjust = mdiAdjust
+export default class AfcPanel extends Mixins(BaseMixin, ControlMixin) {
+    mdiDotsVertical = mdiDotsVertical
 
     intervalId: ReturnType<typeof setInterval> | null = null
     toolExpandedIndex: number | null = null
@@ -70,6 +101,22 @@ export default class AfcPanel extends Mixins(BaseMixin) {
 
     get systemData(): System | null {
         return this.$store.getters['server/afc/getSystemInfo']
+    }
+
+    get afcParkMacro(): PrinterStateMacro | undefined {
+        const macros = ['AFC_PARK']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
+    }
+
+    get afcBrushMacro(): PrinterStateMacro | undefined {
+        const macros = ['AFC_BRUSH']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
+    }
+
+    get showAfcMacros(): boolean {
+        return this.afcParkMacro !== undefined || this.afcBrushMacro !== undefined
     }
 
     async fetchAFCData() {
