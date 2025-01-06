@@ -17,7 +17,7 @@
                 </template>
                 <v-list dense>
                     <!-- NOZZLE CLEAN -->
-                    <v-list-item v-if="afcBrushMacro">
+                    <v-list-item v-if="brushMacroEnabled">
                         <macro-button
                             :macro="afcBrushMacro"
                             :alias="$t('Panels.AfcPanel.BrushNozzle')"
@@ -25,7 +25,7 @@
                             color="#272727" />
                     </v-list-item>
                     <!-- PARK NOZZLE -->
-                    <v-list-item v-if="afcParkMacro">
+                    <v-list-item v-if="parkMacroEnabled">
                         <macro-button
                             :macro="afcParkMacro"
                             :alias="$t('Panels.AfcPanel.ParkNozzle')"
@@ -103,20 +103,28 @@ export default class AfcPanel extends Mixins(BaseMixin, ControlMixin) {
         return this.$store.getters['server/afc/getSystemInfo']
     }
 
+    get parkMacroEnabled(): boolean {
+        return this.$store.state.printer.configfile?.config?.AFC?.park?.toLowerCase() === 'true'
+    }
+
+    get brushMacroEnabled(): boolean {
+        return this.$store.state.printer.configfile?.config?.AFC?.wipe?.toLowerCase() === 'true'
+    }
+
     get afcParkMacro(): PrinterStateMacro | undefined {
-        const macros = ['AFC_PARK']
+        const macros = this.$store.state.printer.configfile?.config?.AFC?.park_cmd ?? 'AFC_PARK'
 
         return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
     }
 
     get afcBrushMacro(): PrinterStateMacro | undefined {
-        const macros = ['AFC_BRUSH']
+        const macros = this.$store.state.printer.configfile?.config?.AFC?.wipe_cmd ?? 'AFC_BRUSH'
 
         return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
     }
 
     get showAfcMacros(): boolean {
-        return this.afcParkMacro !== undefined || this.afcBrushMacro !== undefined
+        return this.parkMacroEnabled || this.brushMacroEnabled
     }
 
     async fetchAFCData() {
