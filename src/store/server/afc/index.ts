@@ -17,6 +17,7 @@ export const getDefaultState = (): AFCState => {
             },
             laneList: [],
             mapList: [],
+            bypass_status: false,
         },
         activeUnit: null,
         activeLane: null,

@@ -34,8 +34,12 @@ export const getters: GetterTree<AFCState, RootState> = {
         return state.data.system
     },
 
-    getExtruders: (state): any[] => {
+    getExtruders: (state): Extruder[] => {
         return state.data.system.extruders || []
+    },
+
+    getBypassStatus: (state): boolean => {
+        return state.data.bypass_status
     },
 
     getExtruder:

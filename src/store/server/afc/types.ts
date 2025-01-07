@@ -9,13 +9,27 @@ export interface AFCRoot {
     system: System
     laneList: string[]
     mapList: string[]
+    bypass_status: boolean
 }
 
-export interface Spool {
-    material: string
-    spool_id: string
-    color: string
-    weight: number
+export interface System {
+    current_load: string | null
+    num_units: number
+    num_lanes: number
+    num_extruders: number
+    extruders: Extruder[]
+}
+
+export interface Unit {
+    system: {
+        type: string
+        hub_loaded: boolean
+        can_cut: boolean
+        screen: string
+    }
+    unitName: string
+    lanes: Lane[]
+    hub: Hub
 }
 
 export interface Lane {
@@ -35,15 +49,11 @@ export interface Lane {
     empty: string
 }
 
-export interface Unit {
-    system: {
-        type: string
-        hub_loaded: boolean
-        can_cut: boolean
-        screen: string
-    }
-    unitName: string
-    lanes: Lane[]
+export interface Spool {
+    material: string
+    spool_id: string
+    color: string
+    weight: number
 }
 
 export interface Extruder {
@@ -51,14 +61,16 @@ export interface Extruder {
     lane_loaded: string
     tool_start_sensor: boolean
     tool_end_sensor: boolean
-    buffer: string
-    buffer_status: string
+    buffer: Buffer
 }
 
-export interface System {
-    current_load: string | null
-    num_units: number
-    num_lanes: number
-    num_extruders: number
-    extruders: Extruder[]
+export interface Hub {
+    name: string
+    state: boolean
+    cut: boolean
+}
+
+export interface Buffer {
+    name: string
+    state: string
 }

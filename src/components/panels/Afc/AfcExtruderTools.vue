@@ -1,10 +1,9 @@
 <template>
     <div class="tool-container">
         <afc-extruder-tools-item
-            v-for="(tool, toolName) in tools"
-            :key="toolName"
+            v-for="tool in tools"
+            :key="tool.name"
             :tool="tool"
-            :tool-name="toolName"
             class="tool-card rounded-lg shadow-md" />
     </div>
 </template>
@@ -20,7 +19,7 @@ import { Extruder } from '@/store/server/afc/types'
     components: { AfcExtruderToolsItem },
 })
 export default class AfcExtruderTools extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) readonly tools!: Extruder[]
+    @Prop({ type: Array, required: true }) readonly tools!: Extruder[]
 }
 </script>
 

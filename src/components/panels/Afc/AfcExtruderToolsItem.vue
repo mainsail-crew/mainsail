@@ -15,7 +15,7 @@
                     </template>
                     <span>{{ preSensorStatus }}</span>
                 </v-tooltip>
-                <span class="tool-name">{{ toolName }}</span>
+                <span class="tool-name">{{ tool.name }}</span>
                 <v-tooltip top>
                     <template #activator="{ on, attrs }">
                         <span
@@ -31,7 +31,7 @@
                     <span>{{ postSensorStatus }}</span>
                 </v-tooltip>
             </div>
-            <div class="buffer-info">{{ tool.buffer }}: {{ tool.buffer_status }}</div>
+            <div class="buffer-info">{{ tool.buffer.name }}: {{ tool.buffer.state }}</div>
             <div class="lane-status">
                 {{ $t('Panels.AfcPanel.LaneLoaded') }}:
                 <span :class="tool.lane_loaded !== '' ? 'primary--text' : 'error--text'">
@@ -51,7 +51,6 @@ import { Extruder } from '@/store/server/afc/types'
 @Component({})
 export default class AfcExtruderToolsItem extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly tool!: Extruder
-    @Prop({ type: String, required: true }) readonly toolName!: string
 
     get preSensorStatus(): string {
         const status = this.tool.tool_start_sensor
