@@ -104,11 +104,17 @@ export default class AfcPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get parkMacroEnabled(): boolean {
-        return this.$store.state.printer.configfile?.config?.AFC?.park?.toLowerCase() === 'true'
+        return (
+            this.$store.state.printer.configfile?.config?.AFC?.park?.toLowerCase() === 'true' &&
+            this.afcParkMacro !== undefined
+        )
     }
 
     get brushMacroEnabled(): boolean {
-        return this.$store.state.printer.configfile?.config?.AFC?.wipe?.toLowerCase() === 'true'
+        return (
+            this.$store.state.printer.configfile?.config?.AFC?.wipe?.toLowerCase() === 'true' &&
+            this.afcBrushMacro !== undefined
+        )
     }
 
     get afcParkMacro(): PrinterStateMacro | undefined {

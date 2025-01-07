@@ -21,6 +21,13 @@
                     :disabled="infiniteSpoolActive"
                     :label="$t('Panels.AfcPanel.ShowInfiniteSpool')" />
             </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="showUnitIcons"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.AfcPanel.ShowUnitIcons')" />
+            </v-list-item>
         </v-list>
     </v-menu>
 </template>
@@ -61,6 +68,14 @@ export default class AFCPanelSettings extends Mixins(BaseMixin, ControlMixin) {
 
     set showInfiniteSpool(newVal: boolean) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.afc.infiniteSpool', value: newVal })
+    }
+
+    get showUnitIcons(): boolean {
+        return this.$store.state.gui.view.afc.showUnitIcons ?? true
+    }
+
+    set showUnitIcons(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.afc.showUnitIcons', value: newVal })
     }
 }
 </script>

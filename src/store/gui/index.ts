@@ -193,6 +193,7 @@ export const getDefaultState = (): GuiState => {
             afc: {
                 showSpoolName: true,
                 infiniteSpool: true,
+                showUnitIcons: true,
             },
             configfiles: {
                 countPerPage: 10,

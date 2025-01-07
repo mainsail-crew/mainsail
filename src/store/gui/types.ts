@@ -135,6 +135,7 @@ export interface GuiState {
         afc: {
             showSpoolName: boolean
             infiniteSpool: boolean
+            showUnitIcons: boolean
         }
         configfiles: {
             countPerPage: number

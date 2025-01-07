@@ -2,7 +2,8 @@
     <v-expansion-panel>
         <v-expansion-panel-header>
             <div class="unit-header" style="display: flex; align-items: center; gap: 10px">
-                <component :is="iconType" id="iconType" class="unit-icon" />
+                <component :is="iconType" v-if="showUnitIcons" id="iconType" class="unit-icon" />
+                <div v-else style="padding-left: 10px" />
                 <h2 class="unit-title" style="margin: 0">{{ formattedUnitName }} |</h2>
                 <span class="hub-container">
                     <strong>{{ $t('Panels.AfcPanel.Hub') }}</strong>
@@ -51,6 +52,10 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
 
     get formattedUnitName(): string {
         return String(this.unit.unitName).replace(/_/g, ' ')
+    }
+
+    get showUnitIcons(): boolean {
+        return this.$store.state.gui.view.afc.showUnitIcons ?? true
     }
 
     get hubStatus(): string {
