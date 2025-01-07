@@ -631,6 +631,7 @@
             "PreExtruderSensor": "Pre-Extruder Sensor",
             "ShowInfiniteSpool": "Infinite Spool",
             "ShowSpoolName": "Spool Name",
+            "ShowUnitIcons": "Unit Icons",
             "Unload": "Unload Lane"
         },
         "AfcSpoolPanel": {
