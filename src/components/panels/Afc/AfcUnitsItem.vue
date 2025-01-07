@@ -2,7 +2,8 @@
     <v-expansion-panel>
         <v-expansion-panel-header>
             <div class="unit-header" style="display: flex; align-items: center; gap: 10px">
-                <BoxTurtleIcon v-if="unit.system.type === 'Box_Turtle'" class="box-turtle-icon" />
+                <component :is="iconType" v-if="showUnitIcons" id="iconType" class="unit-icon" />
+                <div v-else style="padding-left: 10px" />
                 <h2 class="unit-title" style="margin: 0">{{ formattedUnitName }} |</h2>
                 <span class="hub-container">
                     <strong>{{ $t('Panels.AfcPanel.Hub') }}</strong>
@@ -17,18 +18,18 @@
                                 }"
                                 v-on="on"></span>
                         </template>
-                        <span>{{ $t('Panels.AfcPanel.HubStatus', { unit: formattedUnitName }) }}</span>
+                        <span>{{ hubStatus }}</span>
                     </v-tooltip>
                 </span>
             </div>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-            <div class="spool-container">
+            <div class="lanes-container">
                 <afc-units-item-lane
                     v-for="(lane, index) in unit.lanes"
                     :key="index"
                     :lane="lane"
-                    class="spool-card rounded-lg shadow-md overflow-hidden" />
+                    class="lane-card rounded-lg shadow-md overflow-hidden" />
             </div>
         </v-expansion-panel-content>
     </v-expansion-panel>
@@ -40,10 +41,11 @@ import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import AfcUnitsItemLane from '@/components/panels/Afc/AfcUnitsItemLane.vue'
 import BoxTurtleIcon from '@/components/ui/BoxTurtleIcon.vue'
+import NightOwlIcon from '@/components/ui/NightOwlIcon.vue'
 import { Unit } from '@/store/server/afc/types'
 
 @Component({
-    components: { AfcUnitsItemLane, BoxTurtleIcon },
+    components: { AfcUnitsItemLane, BoxTurtleIcon, NightOwlIcon },
 })
 export default class AfcUnitsItem extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly unit!: Unit
@@ -51,11 +53,33 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
     get formattedUnitName(): string {
         return String(this.unit.unitName).replace(/_/g, ' ')
     }
+
+    get showUnitIcons(): boolean {
+        return this.$store.state.gui.view.afc.showUnitIcons ?? true
+    }
+
+    get hubStatus(): string {
+        const status = this.unit.system.hub_loaded
+            ? this.$t('Panels.AfcPanel.Detected')
+            : this.$t('Panels.AfcPanel.Empty')
+        return `${this.$t('Panels.AfcPanel.HubStatus', { unit: this.formattedUnitName })} - ${status}`
+    }
+
+    get iconType() {
+        switch (this.unit.system.type) {
+            case 'Box_Turtle':
+                return BoxTurtleIcon
+            case 'Night_Owl':
+                return NightOwlIcon
+            default:
+                return null
+        }
+    }
 }
 </script>
 
 <style scoped>
-.spool-container {
+.lanes-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -78,7 +102,7 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
     text-align: left;
 }
 
-.spool-card {
+.lane-card {
     transition: background-color 0.3s ease;
     padding-top: 0px;
     max-width: 150px;
@@ -89,11 +113,11 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
     width: 100%;
 }
 
-.theme--dark .spool-card {
+.theme--dark .lane-card {
     background-color: #2e2e2e;
 }
 
-.theme--light .spool-card {
+.theme--light .lane-card {
     background-color: #ebebeb;
 }
 
@@ -106,7 +130,7 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
     margin-left: 5px;
 }
 
-.box-turtle-icon {
+.unit-icon {
     width: 70px;
     height: 70px;
     margin-left: 10px;

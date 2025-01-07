@@ -265,7 +265,9 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
     }
 
     refresh() {
-        this.$store.dispatch('server/spoolman/refreshSpools')
+        if (this.spoolManagerUrl) {
+            this.$store.dispatch('server/spoolman/refreshSpools')
+        }
     }
 
     close() {
@@ -274,20 +276,11 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
     ejectSpool() {
         if (this.laneData != null) {
-            const setSpoolId = `SET_SPOOL_ID LANE=${this.laneData.laneName} SPOOL_ID=`
             const unloadLane = `LANE_UNLOAD LANE=${this.laneData.laneName}`
-            console.log('Dispatching G-code:', setSpoolId)
             console.log('Dispatching G-code:', unloadLane)
 
             this.$nextTick(async () => {
                 try {
-                    this.$socket.emit(
-                        'printer.gcode.script',
-                        { script: setSpoolId },
-                        { loading: 'macro_' + setSpoolId }
-                    )
-                    console.log('SET_SPOOL_ID sent successfully')
-
                     this.$socket.emit(
                         'printer.gcode.script',
                         { script: unloadLane },

@@ -30,7 +30,8 @@
             id="filament_base"
             d="M35,31c18.8-12.1,138-10.4,162.1,0c24.9,10.4,41.1,398.9,0,438.1
           c-37.2,12.2-147.7,11.4-162.1,0C22,458.8,16.2,43,35,31z"
-            :style="colorReel" />
+            :style="colorReel"
+            :transform="filamentBaseTransform" />
 
         <path
             id="spool_left_rim"
@@ -61,9 +62,10 @@ import BaseMixin from '@/components/mixins/base'
 export default class FilamentReelIcon extends Mixins(BaseMixin) {
     @Prop({ required: false, default: '#ff0' })
     declare readonly color: string
+    @Prop({ type: Number, default: 100 }) readonly filament!: number
 
     get colorReel() {
-        const style: Record<string, string> = { fill: this.color }
+        const style: Record<string, string> = { fill: this.filament === 0 ? 'transparent' : this.color }
 
         // Apply stroke if color is not transparent
         if (this.color !== 'transparent') {
@@ -72,6 +74,16 @@ export default class FilamentReelIcon extends Mixins(BaseMixin) {
         }
 
         return style
+    }
+
+    get filamentBaseTransform() {
+        const minScale = 0.37 // 37% is the minimum visible size
+        const scaleY = this.filament === 0 ? 0 : minScale + (this.filament / 100) * (1 - minScale)
+        const centerX = 128 // Center X of the SVG
+        const centerY = 250 // Center Y of the SVG
+        return isNaN(scaleY)
+            ? ''
+            : `translate(${centerX}, ${centerY}) scale(1, ${scaleY}) translate(${-centerX}, ${-centerY})`
     }
 
     get spoolColor() {

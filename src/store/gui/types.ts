@@ -132,6 +132,11 @@ export interface GuiState {
     }
     view: {
         blockFileUpload: boolean
+        afc: {
+            showSpoolName: boolean
+            infiniteSpool: boolean
+            showUnitIcons: boolean
+        }
         configfiles: {
             countPerPage: number
             sortBy: string

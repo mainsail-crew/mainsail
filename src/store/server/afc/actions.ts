@@ -37,7 +37,7 @@ export const actions: ActionTree<AFCState, RootState> = {
                             },
                         } as Lane
                         lanes.push(lane)
-                        if (lane.LANE !== undefined) {
+                        if (lane.prep && lane.load) {
                             laneSet.add(lane.laneName)
                         }
                         if (lane.map) {
