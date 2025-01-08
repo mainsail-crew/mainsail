@@ -13,8 +13,8 @@
                                 v-bind="attrs"
                                 :class="{
                                     'status-light': true,
-                                    success: unit.system.hub_loaded,
-                                    error: !unit.system.hub_loaded,
+                                    success: unit.hub.state,
+                                    error: !unit.hub.state,
                                 }"
                                 v-on="on"></span>
                         </template>
@@ -51,7 +51,7 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly unit!: Unit
 
     get formattedUnitName(): string {
-        return String(this.unit.unitName).replace(/_/g, ' ')
+        return String(this.unit.name).replace(/_/g, ' ')
     }
 
     get showUnitIcons(): boolean {
@@ -59,14 +59,12 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
     }
 
     get hubStatus(): string {
-        const status = this.unit.system.hub_loaded
-            ? this.$t('Panels.AfcPanel.Detected')
-            : this.$t('Panels.AfcPanel.Empty')
+        const status = this.unit.hub.state ? this.$t('Panels.AfcPanel.Detected') : this.$t('Panels.AfcPanel.Empty')
         return `${this.$t('Panels.AfcPanel.HubStatus', { unit: this.formattedUnitName })} - ${status}`
     }
 
     get iconType() {
-        switch (this.unit.system.type) {
+        switch (this.unit.type) {
             case 'Box_Turtle':
                 return BoxTurtleIcon
             case 'Night_Owl':

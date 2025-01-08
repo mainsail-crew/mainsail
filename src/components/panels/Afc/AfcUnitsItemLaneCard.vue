@@ -22,7 +22,7 @@
                         </template>
                         <v-list dense>
                             <v-list-item
-                                v-for="option in laneList.filter((option) => option !== lane.laneName)"
+                                v-for="option in laneList.filter((option) => option !== lane.name)"
                                 :key="option"
                                 @click="handleRunoutChange($event, option)">
                                 <v-list-item-title>{{ option }}</v-list-item-title>
@@ -51,7 +51,7 @@
         <afc-change-spool-dialog
             v-if="selectedLane"
             :show-dialog="showChangeSpoolDialog"
-            :index="lane.laneName"
+            :index="lane.name"
             :lane-data="selectedLane"
             @close="showChangeSpoolDialog = false" />
     </div>
@@ -173,9 +173,9 @@ export default class AfcUnits extends Mixins(BaseMixin) {
     }
 
     handleRunoutChange(event: Event, option: string) {
-        console.log(`Selected value for ${this.lane.laneName}: ${option}`)
+        console.log(`Selected value for ${this.lane.name}: ${option}`)
 
-        const gcode = `SET_RUNOUT LANE=${this.lane.laneName} RUNOUT=${option}`
+        const gcode = `SET_RUNOUT LANE=${this.lane.name} RUNOUT=${option}`
         console.log('Dispatching G-code:', gcode)
 
         this.$nextTick(async () => {

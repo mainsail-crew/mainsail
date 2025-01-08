@@ -10,8 +10,8 @@ export const getters: GetterTree<AFCState, RootState> = {
     getLane:
         (state) =>
         (unitName: string, laneName: string): Lane | null => {
-            const unit = state.data.units.find((unit) => unit.system.type === unitName)
-            return unit?.lanes.find((lane) => lane.laneName === laneName) || null
+            const unit = state.data.units.find((unit) => unit.type === unitName)
+            return unit?.lanes.find((lane) => lane.name === laneName) || null
         },
 
     getLaneList: (state): string[] => {

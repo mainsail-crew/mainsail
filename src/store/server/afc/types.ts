@@ -21,19 +21,19 @@ export interface System {
 }
 
 export interface Unit {
-    system: {
-        type: string
-        hub_loaded: boolean
-        can_cut: boolean
-        screen: string
-    }
-    unitName: string
+    type: string
+    screen: string
+    name: string
     lanes: Lane[]
     hub: Hub
 }
 
 export interface Lane {
-    LANE: number
+    name: string
+    unit: string
+    hub: Hub
+    buffer: FilBuffer
+    lane: number
     map: string
     load: boolean
     prep: boolean
@@ -44,8 +44,6 @@ export interface Lane {
     filament_status: string
     filament_status_led: string
     status: string
-    unitName: string
-    laneName: string
     empty: string
 }
 
@@ -59,9 +57,12 @@ export interface Spool {
 export interface Extruder {
     name: string
     lane_loaded: string
-    tool_start_sensor: boolean
-    tool_end_sensor: boolean
-    buffer: Buffer
+    ramming: boolean
+    has_start_sensor: boolean
+    has_end_sensor: boolean
+    tool_start_status: boolean
+    tool_end_status: boolean
+    buffer: FilBuffer
 }
 
 export interface Hub {
@@ -70,7 +71,7 @@ export interface Hub {
     cut: boolean
 }
 
-export interface Buffer {
+export interface FilBuffer {
     name: string
-    state: string
+    state: boolean
 }

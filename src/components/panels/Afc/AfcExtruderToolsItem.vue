@@ -8,8 +8,8 @@
                             v-bind="attrs"
                             :class="{
                                 'status-light': true,
-                                success: tool.tool_start_sensor,
-                                error: !tool.tool_start_sensor,
+                                success: tool.tool_start_status,
+                                error: !tool.tool_start_status,
                             }"
                             v-on="on"></span>
                     </template>
@@ -19,12 +19,12 @@
                 <v-tooltip top>
                     <template #activator="{ on, attrs }">
                         <span
-                            v-if="tool.tool_end_sensor !== null"
+                            v-if="tool.has_end_sensor"
                             v-bind="attrs"
                             :class="{
                                 'status-light': true,
-                                success: tool.tool_end_sensor,
-                                error: !tool.tool_end_sensor,
+                                success: tool.tool_end_status,
+                                error: !tool.tool_end_status,
                             }"
                             v-on="on"></span>
                     </template>
@@ -53,14 +53,14 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly tool!: Extruder
 
     get preSensorStatus(): string {
-        const status = this.tool.tool_start_sensor
+        const status = this.tool.tool_start_status
             ? this.$t('Panels.AfcPanel.Detected')
             : this.$t('Panels.AfcPanel.Empty')
         return `${this.$t('Panels.AfcPanel.PreExtruderSensor')} - ${status}`
     }
 
     get postSensorStatus(): string {
-        const status = this.tool.tool_end_sensor
+        const status = this.tool.tool_end_status
             ? this.$t('Panels.AfcPanel.Detected')
             : this.$t('Panels.AfcPanel.Empty')
         return `${this.$t('Panels.AfcPanel.PostExtruderSensor')} - ${status}`

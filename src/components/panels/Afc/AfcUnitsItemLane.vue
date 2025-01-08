@@ -6,7 +6,7 @@
                     <v-tooltip top>
                         <template #activator="{ on: onTooltip }">
                             <span :class="laneStatusClass" v-bind="attrs" v-on="{ ...onMenu, ...onTooltip }">
-                                {{ lane.laneName }}
+                                {{ lane.name }}
                             </span>
                         </template>
                         <span>{{ $t('Panels.AfcPanel.LaneCommands') }}</span>
@@ -51,7 +51,7 @@
                 </v-list>
             </v-menu>
             <span v-else :class="laneStatusClass" :style="{ cursor: 'default' }">
-                {{ lane.laneName }}
+                {{ lane.name }}
             </span>
             <div class="spacer"></div>
             <v-menu :offset-y="true" :close-on-content-click="true" left>
@@ -129,8 +129,8 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
     }
 
     handleToolLoaded() {
-        this.$store.dispatch('server/afc/setActiveLane', this.lane.laneName)
-        this.$store.dispatch('server/afc/setActiveUnit', this.lane.unitName)
+        this.$store.dispatch('server/afc/setActiveLane', this.lane.name)
+        this.$store.dispatch('server/afc/setActiveUnit', this.lane.name)
     }
 
     handleToolUnloaded() {
@@ -139,10 +139,10 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
     }
 
     handleMapChange(event: Event, option: string) {
-        console.log(`Selected value for ${this.lane.laneName}: ${option}`)
+        console.log(`Selected value for ${this.lane.name}: ${option}`)
 
         //Example G-Code Call for you
-        const gcode = `SET_MAP LANE=${this.lane.laneName} MAP=${option}`
+        const gcode = `SET_MAP LANE=${this.lane.name} MAP=${option}`
         console.log('Dispatching G-code:', gcode)
 
         this.$nextTick(async () => {
@@ -156,7 +156,7 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
     }
 
     handleLaneAction(event: Event, action: string) {
-        if (!this.lane.laneName) {
+        if (!this.lane.name) {
             console.warn('Lane name is empty, cannot perform action')
             return
         }
@@ -166,13 +166,13 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
         this.$nextTick(async () => {
             try {
                 if (action === 'load') {
-                    gcode = `CHANGE_TOOL LANE=${this.lane.laneName}`
+                    gcode = `CHANGE_TOOL LANE=${this.lane.name}`
                     await this.$store.dispatch('printer/sendGcode', gcode)
                 } else if (action === 'unload') {
-                    gcode = `TOOL_UNLOAD LANE=${this.lane.laneName}`
+                    gcode = `TOOL_UNLOAD LANE=${this.lane.name}`
                     await this.$store.dispatch('printer/sendGcode', gcode)
                 } else if (action === 'eject') {
-                    gcode = `LANE_UNLOAD LANE=${this.lane.laneName}`
+                    gcode = `LANE_UNLOAD LANE=${this.lane.name}`
                     await this.$store.dispatch('printer/sendGcode', gcode)
                 }
             } catch (error) {
