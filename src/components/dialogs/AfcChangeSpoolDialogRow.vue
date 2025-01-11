@@ -1,6 +1,6 @@
 <template>
     <tr class="cursor-pointer" @click="setSpoolRow">
-        <td style="width: 50px" class="pr-0 py-2" @click.stop="openSpoolDetails">
+        <td style="width: 50px" class="pr-0 py-2">
             <spool-icon :color="color" style="width: 50px; float: left" class="mr-3" />
         </td>
 

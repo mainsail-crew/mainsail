@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="spool-card-body">
-            <v-tooltip v-if="spoolManagerUrl" top>
+            <v-tooltip v-if="showSpoolVendor" top>
                 <template #activator="{ on: onTooltip, attrs }">
                     <div class="filament-reel" v-bind="attrs" @click="openChangeSpoolDialog(lane)" v-on="onTooltip">
                         <FilamentReelIcon
@@ -12,6 +12,12 @@
                 </template>
                 <span>#{{ lane.spool.spool_id }} | {{ spoolVendor }}</span>
             </v-tooltip>
+            <div v-else class="filament-reel" @click="openChangeSpoolDialog(lane)">
+                <FilamentReelIcon
+                    :color="lane.prep ? spoolColor : 'transparent'"
+                    :filament="filamentPercentage"
+                    style="width: 100%; height: 100%; max-width: inherit; max-height: inherit" />
+            </div>
             <div class="spool-card-info">
                 <div v-if="showInfiniteSpool" class="infinite-spool">
                     <v-menu :offset-y="true" :close-on-content-click="true" left>
@@ -91,6 +97,14 @@ export default class AfcUnits extends Mixins(BaseMixin) {
 
     get showInfiniteSpool(): boolean {
         return this.$store.state.gui.view.afc.infiniteSpool ?? true
+    }
+
+    get showSpoolVendor(): boolean {
+        if (this.spoolManagerUrl && this.spoolmanSpool?.filament?.vendor?.name && this.lane.spool?.spool_id) {
+            return true
+        } else {
+            return false
+        }
     }
 
     get spoolManagerUrl() {
