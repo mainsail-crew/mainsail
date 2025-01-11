@@ -1,12 +1,17 @@
 <template>
     <div>
         <div class="spool-card-body">
-            <div class="filament-reel" @click="openChangeSpoolDialog(lane)">
-                <FilamentReelIcon
-                    :color="lane.prep ? spoolColor : 'transparent'"
-                    :filament="filamentPercentage"
-                    style="width: 100%; height: 100%; max-width: inherit; max-height: inherit" />
-            </div>
+            <v-tooltip v-if="spoolManagerUrl" top>
+                <template #activator="{ on: onTooltip, attrs }">
+                    <div class="filament-reel" v-bind="attrs" @click="openChangeSpoolDialog(lane)" v-on="onTooltip">
+                        <FilamentReelIcon
+                            :color="lane.prep ? spoolColor : 'transparent'"
+                            :filament="filamentPercentage"
+                            style="width: 100%; height: 100%; max-width: inherit; max-height: inherit" />
+                    </div>
+                </template>
+                <span>#{{ lane.spool.spool_id }} | {{ spoolVendor }}</span>
+            </v-tooltip>
             <div class="spool-card-info">
                 <div v-if="showInfiniteSpool" class="infinite-spool">
                     <v-menu :offset-y="true" :close-on-content-click="true" left>
@@ -170,6 +175,18 @@ export default class AfcUnits extends Mixins(BaseMixin) {
         }
 
         return name
+    }
+
+    get spoolVendor() {
+        let vendor = ''
+
+        if (this.spoolManagerUrl && this.spoolmanSpool?.filament?.vendor?.name) {
+            vendor = this.spoolmanSpool.filament.vendor.name
+        } else {
+            vendor = ''
+        }
+
+        return vendor
     }
 
     handleRunoutChange(event: Event, option: string) {

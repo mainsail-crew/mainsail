@@ -626,12 +626,14 @@
             "LaneLoadedNone": "NONE",
             "LaneMap": "Remap current lane to selected T command",
             "Load": "Load Lane",
+            "OpenSpoolInfo": "Open Spool Info",
             "ParkNozzle": "Park Nozzle",
             "PostExtruderSensor": "Post-Extruder Sensor",
             "PreExtruderSensor": "Pre-Extruder Sensor",
             "ShowInfiniteSpool": "Infinite Spool",
             "ShowSpoolName": "Spool Name",
             "ShowUnitIcons": "Unit Icons",
+            "SpoolInfo": "Info",
             "Unload": "Unload Lane"
         },
         "AfcSpoolPanel": {
