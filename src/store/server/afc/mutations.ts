@@ -2,7 +2,6 @@ import { getDefaultState } from './index'
 import Vue from 'vue'
 import { MutationTree } from 'vuex'
 import { AFCState, Unit, Lane, Extruder, Hub, FilBuffer, Message } from '@/store/server/afc/types'
-import { set } from 'vue/types/umd'
 
 export const mutations: MutationTree<AFCState> = {
     reset(state) {

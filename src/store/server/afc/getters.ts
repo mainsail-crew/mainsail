@@ -1,7 +1,6 @@
 import { GetterTree } from 'vuex'
 import { AFCState, Unit, Lane, Extruder, Message } from '@/store/server/afc/types'
 import { RootState } from '@/store/types'
-import { get } from 'http'
 
 export const getters: GetterTree<AFCState, RootState> = {
     getUnits: (state): Unit[] => {

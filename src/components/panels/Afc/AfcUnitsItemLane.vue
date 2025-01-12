@@ -13,12 +13,14 @@
                     </v-tooltip>
                 </template>
                 <v-list dense>
-                    <v-tooltip top :disabled="extrudePossible || lane.spool.material" color="secondary">
+                    <v-tooltip top :disabled="extrudePossible || lane.spool.material !== ''" color="secondary">
                         <template #activator="{ on: onExtruderTemp }">
                             <div v-on="onExtruderTemp">
                                 <v-list-item
                                     v-if="!toolLoaded"
-                                    :disabled="(!extrudePossible && !lane.spool.material) || printerIsPrintingOnly"
+                                    :disabled="
+                                        (!extrudePossible && lane.spool.material === '') || printerIsPrintingOnly
+                                    "
                                     @click="handleLaneAction($event, 'load')">
                                     <v-list-item-title>{{ $t('Panels.AfcPanel.Load') }}</v-list-item-title>
                                 </v-list-item>
@@ -29,12 +31,14 @@
                             {{ minExtrudeTemp }} °C
                         </span>
                     </v-tooltip>
-                    <v-tooltip top :disabled="extrudePossible || lane.spool.material" color="secondary">
+                    <v-tooltip top :disabled="extrudePossible || lane.spool.material !== ''" color="secondary">
                         <template #activator="{ on: onExtruderTemp }">
                             <div v-on="onExtruderTemp">
                                 <v-list-item
                                     v-if="toolLoaded"
-                                    :disabled="(!extrudePossible && !lane.spool.material) || printerIsPrintingOnly"
+                                    :disabled="
+                                        (!extrudePossible && lane.spool.material === '') || printerIsPrintingOnly
+                                    "
                                     @click="handleLaneAction($event, 'unload')">
                                     <v-list-item-title>{{ $t('Panels.AfcPanel.Unload') }}</v-list-item-title>
                                 </v-list-item>
