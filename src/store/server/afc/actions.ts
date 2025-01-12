@@ -64,7 +64,6 @@ export const actions: ActionTree<AFCState, RootState> = {
                     has_end_sensor: extruderData.tool_end || false,
                     tool_start_status: extruderData.tool_start_status || false,
                     tool_end_status: extruderData.tool_end_status || false,
-                    buffer: buffers.find((b) => b.name === extruderData.buffer) || { name: '', state: '' },
                 }
                 extruders.push(extruder)
             }
@@ -139,7 +138,6 @@ export const actions: ActionTree<AFCState, RootState> = {
                         has_end_sensor: false,
                         tool_start_status: false,
                         tool_end_status: false,
-                        buffer: { name: '', state: '' },
                     },
                     lane: laneData.lane || 0,
                     map: laneData.map,

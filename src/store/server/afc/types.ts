@@ -65,7 +65,6 @@ export interface Extruder {
     has_end_sensor: boolean
     tool_start_status: boolean
     tool_end_status: boolean
-    buffer: FilBuffer
 }
 
 export interface Hub {
