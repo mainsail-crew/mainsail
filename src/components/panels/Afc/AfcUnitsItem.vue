@@ -4,8 +4,8 @@
             <div class="unit-header" style="display: flex; align-items: center; gap: 10px">
                 <component :is="iconType" v-if="showUnitIcons" id="iconType" class="unit-icon" />
                 <div v-else style="padding-left: 10px" />
-                <h2 class="unit-title" style="margin: 0">{{ formattedUnitName }} |</h2>
-                <span class="hub-container">
+                <h2 class="unit-title" style="margin: 0">{{ formattedUnitName }}</h2>
+                <span v-if="unit.hubs.length > 0" class="hub-container">
                     <strong>{{ $t('Panels.AfcPanel.Hub') }}</strong>
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
@@ -13,8 +13,8 @@
                                 v-bind="attrs"
                                 :class="{
                                     'status-light': true,
-                                    success: unit.hub.state,
-                                    error: !unit.hub.state,
+                                    success: currentHubState,
+                                    error: !currentHubState,
                                 }"
                                 v-on="on"></span>
                         </template>
@@ -42,13 +42,15 @@ import BaseMixin from '@/components/mixins/base'
 import AfcUnitsItemLane from '@/components/panels/Afc/AfcUnitsItemLane.vue'
 import BoxTurtleIcon from '@/components/ui/BoxTurtleIcon.vue'
 import NightOwlIcon from '@/components/ui/NightOwlIcon.vue'
-import { Unit } from '@/store/server/afc/types'
+import { Unit, Lane, Hub } from '@/store/server/afc/types'
 
 @Component({
     components: { AfcUnitsItemLane, BoxTurtleIcon, NightOwlIcon },
 })
 export default class AfcUnitsItem extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly unit!: Unit
+
+    currentHubState = false
 
     get formattedUnitName(): string {
         return String(this.unit.name).replace(/_/g, ' ')
@@ -58,9 +60,34 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
         return this.$store.state.gui.view.afc.showUnitIcons ?? true
     }
 
+    get currentLane(): Lane {
+        return this.$store.getters['server/afc/getCurrentLane']
+    }
+
+    get currentLoad(): Lane {
+        return this.$store.getters['server/afc/getCurrentLoad']
+    }
+
     get hubStatus(): string {
-        const status = this.unit.hub.state ? this.$t('Panels.AfcPanel.Detected') : this.$t('Panels.AfcPanel.Empty')
+        if (this.currentLoad && this.unit.hubs.some((hub) => hub === this.currentLoad.hub)) {
+            this.hubStatusBool(this.currentLoad.hub)
+            return this.hubStatusString(this.currentLoad.hub)
+        } else if (this.currentLane && this.unit.hubs.some((hub) => hub === this.currentLane.hub)) {
+            this.hubStatusBool(this.currentLane.hub)
+            return this.hubStatusString(this.currentLane.hub)
+        } else {
+            this.hubStatusBool(this.unit.hubs[0])
+            return this.hubStatusString(this.unit.hubs[0])
+        }
+    }
+
+    hubStatusString(hub: Hub): string {
+        const status = hub.state ? this.$t('Panels.AfcPanel.Detected') : this.$t('Panels.AfcPanel.Empty')
         return `${this.$t('Panels.AfcPanel.HubStatus', { unit: this.formattedUnitName })} - ${status}`
+    }
+
+    hubStatusBool(hub: Hub) {
+        this.currentHubState = hub.state
     }
 
     get iconType() {
@@ -88,6 +115,7 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
 .hub-container {
     text-align: left;
     margin: 20px 0;
+    padding-left: 10px;
 }
 
 .hub-container strong {

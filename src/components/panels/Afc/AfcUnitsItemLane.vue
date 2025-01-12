@@ -13,12 +13,12 @@
                     </v-tooltip>
                 </template>
                 <v-list dense>
-                    <v-tooltip top :disabled="extrudePossible" color="secondary">
+                    <v-tooltip top :disabled="extrudePossible || lane.spool.material" color="secondary">
                         <template #activator="{ on: onExtruderTemp }">
                             <div v-on="onExtruderTemp">
                                 <v-list-item
                                     v-if="!toolLoaded"
-                                    :disabled="!extrudePossible || printerIsPrintingOnly"
+                                    :disabled="(!extrudePossible && !lane.spool.material) || printerIsPrintingOnly"
                                     @click="handleLaneAction($event, 'load')">
                                     <v-list-item-title>{{ $t('Panels.AfcPanel.Load') }}</v-list-item-title>
                                 </v-list-item>
@@ -29,12 +29,12 @@
                             {{ minExtrudeTemp }} °C
                         </span>
                     </v-tooltip>
-                    <v-tooltip top :disabled="extrudePossible" color="secondary">
+                    <v-tooltip top :disabled="extrudePossible || lane.spool.material" color="secondary">
                         <template #activator="{ on: onExtruderTemp }">
                             <div v-on="onExtruderTemp">
                                 <v-list-item
                                     v-if="toolLoaded"
-                                    :disabled="!extrudePossible || printerIsPrintingOnly"
+                                    :disabled="(!extrudePossible && !lane.spool.material) || printerIsPrintingOnly"
                                     @click="handleLaneAction($event, 'unload')">
                                     <v-list-item-title>{{ $t('Panels.AfcPanel.Unload') }}</v-list-item-title>
                                 </v-list-item>
@@ -80,7 +80,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ExtruderMixin from '@/components/mixins/extruder'
 import { Lane } from '@/store/server/afc/types'
@@ -117,25 +117,6 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
 
     get laneStatus() {
         return this.lane.prep ? this.$t('Panels.AfcPanel.LaneErrorLoad') : this.$t('Panels.AfcPanel.LaneEmpty')
-    }
-
-    @Watch('lane.tool_loaded')
-    onToolLoadedChange(newVal: boolean, oldVal: boolean) {
-        if (newVal && !oldVal) {
-            this.handleToolLoaded()
-        } else if (!newVal && oldVal) {
-            this.handleToolUnloaded()
-        }
-    }
-
-    handleToolLoaded() {
-        this.$store.dispatch('server/afc/setActiveLane', this.lane.name)
-        this.$store.dispatch('server/afc/setActiveUnit', this.lane.name)
-    }
-
-    handleToolUnloaded() {
-        this.$store.dispatch('server/afc/setActiveLane', null)
-        this.$store.dispatch('server/afc/setActiveUnit', null)
     }
 
     handleMapChange(event: Event, option: string) {

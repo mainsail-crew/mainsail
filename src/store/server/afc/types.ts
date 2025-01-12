@@ -1,23 +1,23 @@
 export interface AFCState {
     data: AFCRoot
-    activeUnit: Unit | null
-    activeLane: Lane | null
 }
 
 export interface AFCRoot {
     units: Unit[]
-    system: System
+    current_load: Lane | null
+    current_lane: Lane | null
+    next_lane: Lane | null
+    current_state: string
+    current_toolchange: number
+    number_toolchange: number
+    lanes: Lane[]
+    hubs: Hub[]
+    buffers: FilBuffer[]
+    extruders: Extruder[]
     laneList: string[]
     mapList: string[]
     bypass_status: boolean
-}
-
-export interface System {
-    current_load: string | null
-    num_units: number
-    num_lanes: number
-    num_extruders: number
-    extruders: Extruder[]
+    message: Message
 }
 
 export interface Unit {
@@ -25,7 +25,9 @@ export interface Unit {
     screen: string
     name: string
     lanes: Lane[]
-    hub: Hub
+    hubs: Hub[]
+    buffers: FilBuffer[]
+    extruders: Extruder[]
 }
 
 export interface Lane {
@@ -33,6 +35,7 @@ export interface Lane {
     unit: string
     hub: Hub
     buffer: FilBuffer
+    extruder: Extruder
     lane: number
     map: string
     load: boolean
@@ -73,5 +76,10 @@ export interface Hub {
 
 export interface FilBuffer {
     name: string
-    state: boolean
+    state: string
+}
+
+export interface Message {
+    message: string
+    type: string
 }

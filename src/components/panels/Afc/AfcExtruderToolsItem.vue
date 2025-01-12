@@ -1,7 +1,7 @@
 <template>
     <div class="extruder-item">
         <div class="extruder-container">
-            <div class="left-section">
+            <div v-if="!tool.ramming" class="left-section">
                 <v-tooltip top>
                     <template #activator="{ on, attrs }">
                         <span
@@ -31,11 +31,29 @@
                     <span>{{ postSensorStatus }}</span>
                 </v-tooltip>
             </div>
-            <div class="buffer-info">{{ tool.buffer.name }}: {{ tool.buffer.state }}</div>
+            <div v-else class="left-section">
+                <v-tooltip top>
+                    <template #activator="{ on, attrs }">
+                        <span
+                            v-bind="attrs"
+                            :class="{
+                                'status-light': true,
+                                'disabled--text': true,
+                                success: rammingState && !tool.lane_loaded,
+                                error: !rammingState && !tool.lane_loaded,
+                                disabled: tool.lane_loaded,
+                            }"
+                            v-on="on"></span>
+                    </template>
+                    <span>{{ rammingSensorStatus }}</span>
+                </v-tooltip>
+                <span class="tool-name">{{ tool.name }}</span>
+            </div>
+            <div class="buffer-info">{{ getToolInfo().buffer }}</div>
             <div class="lane-status">
-                {{ $t('Panels.AfcPanel.LaneLoaded') }}:
+                {{ getToolInfo().state }} :
                 <span :class="tool.lane_loaded !== '' ? 'primary--text' : 'error--text'">
-                    {{ tool.lane_loaded !== '' ? tool.lane_loaded : $t('Panels.AfcPanel.LaneLoadedNone') }}
+                    {{ getToolInfo().lane }}
                 </span>
             </div>
         </div>
@@ -46,11 +64,51 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { Extruder } from '@/store/server/afc/types'
+import { Extruder, Lane } from '@/store/server/afc/types'
 
 @Component({})
 export default class AfcExtruderToolsItem extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly tool!: Extruder
+
+    get currentLane(): Lane {
+        return this.$store.getters['server/afc/getCurrentLane']
+    }
+
+    get currentLoad(): Lane {
+        return this.$store.getters['server/afc/getCurrentLoad']
+    }
+
+    get getCurrentState(): string {
+        return this.$store.getters['server/afc/getCurrentState']
+    }
+
+    get rammingState(): boolean {
+        if (this.currentLoad && this.currentLoad.extruder.name === this.tool.name) {
+            return this.currentLoad.buffer.state.toLowerCase() === 'trailing'
+        } else if (this.currentLane && this.currentLane.extruder.name === this.tool.name) {
+            return this.currentLane.buffer.state.toLowerCase() === 'trailing'
+        } else {
+            return false
+        }
+    }
+
+    getToolInfo() {
+        let state = `${this.$t('Panels.AfcPanel.Idle')}`
+        let lane = `${this.$t('Panels.AfcPanel.LaneLoadedNone')}`
+        let buffer = `${this.$t('Panels.AfcPanel.BufferDisabled')}`
+
+        if (this.currentLoad && this.currentLoad.extruder.name === this.tool.name) {
+            state = `${this.$t(`Panels.AfcPanel.${this.getCurrentState}`)}`
+            lane = `${this.currentLoad.name}`
+            buffer = `${this.currentLoad.buffer.name}: ${this.currentLoad.buffer.state}`
+        } else if (this.currentLane && this.currentLane.extruder.name === this.tool.name) {
+            state = `${this.$t(`Panels.AfcPanel.${this.getCurrentState}`)}`
+            lane = `${this.currentLane.name}`
+            buffer = `${this.currentLane.buffer.name}: ${this.currentLane.buffer.state}`
+        }
+
+        return { state, lane, buffer }
+    }
 
     get preSensorStatus(): string {
         const status = this.tool.tool_start_status
@@ -64,6 +122,15 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin) {
             ? this.$t('Panels.AfcPanel.Detected')
             : this.$t('Panels.AfcPanel.Empty')
         return `${this.$t('Panels.AfcPanel.PostExtruderSensor')} - ${status}`
+    }
+
+    get rammingSensorStatus(): string {
+        if (this.tool.lane_loaded) {
+            return `${this.$t('Panels.AfcPanel.RammingSensor')}`
+        } else {
+            const status = this.rammingState ? this.$t('Panels.AfcPanel.Detected') : this.$t('Panels.AfcPanel.Empty')
+            return `${this.$t('Panels.AfcPanel.RammingSensor')} - ${status}`
+        }
     }
 }
 </script>
@@ -101,7 +168,8 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin) {
 .lane-status {
     text-align: right;
     min-width: 120px;
-    flex: 0;
+    max-width: 130px;
+    flex: 1;
 }
 
 .status-light {
@@ -110,5 +178,10 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin) {
     border-radius: 50%;
     display: inline-block;
     margin: 0 5px;
+}
+
+.disabled {
+    background-color: var(--v-secondary-lighten4) !important;
+    border-color: var(--v-secondary-lighten4) !important;
 }
 </style>

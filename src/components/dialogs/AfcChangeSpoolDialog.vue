@@ -34,7 +34,7 @@
                                 <v-icon>{{ mdiEject }}</v-icon>
                             </v-btn>
                         </template>
-                        <span>{{ $t('Panels.SpoolmanPanel.EjectSpool') }}</span>
+                        <span>{{ $t('Panels.AfcPanel.SpoolEject') }}</span>
                     </v-tooltip>
                     <v-tooltip top>
                         <template #activator="{ on: onTooltip, attrs }">
@@ -305,17 +305,15 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
     ejectSpool() {
         if (this.laneData != null) {
-            const unloadLane = `LANE_UNLOAD LANE=${this.laneData.name}`
-            console.log('Dispatching G-code:', unloadLane)
+            const ejectSpoolman = `SET_SPOOL_ID LANE=${this.laneData.name} SPOOL_ID=`
 
             this.$nextTick(async () => {
                 try {
                     this.$socket.emit(
                         'printer.gcode.script',
-                        { script: unloadLane },
-                        { loading: 'macro_' + unloadLane }
+                        { script: ejectSpoolman },
+                        { loading: 'macro_' + ejectSpoolman }
                     )
-                    console.log('UNLOAD_LANE sent successfully')
                 } catch (error) {
                     console.error('Failed to send G-code:', error)
                 }
