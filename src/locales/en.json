@@ -608,6 +608,19 @@
         "Headline": "Manual Probe"
     },
     "Panels": {
+        "AfcCalibratePanel": {
+            "AllLanes": "All Lanes",
+            "Back": "Back",
+            "BowdenLength": "Bowden Length",
+            "Calibrate": "Calibrate",
+            "CalibrateBowdenLength": "Calibrate Bowden Length",
+            "CalibrateLanes": "Calibrate Lanes",
+            "CalibrateOption": "Please select from the list of available calibration options.",
+            "Lanes": "Lanes",
+            "Search": "Search",
+            "UnitName": "Name",
+            "UnitType": "Type"
+        },
         "AfcPanel": {
             "BrushNozzle": "Brush Nozzle",
             "BufferDisabled": "Buffer Not Active",
@@ -631,12 +644,14 @@
             "LaneLoadedNone": "NONE",
             "LaneMap": "Remap current lane to selected T command",
             "Load": "Load Lane",
+            "LoadError": "There was an issue loading unit information. Please check your configurations and make sure you are on the latest version of AFC.",
             "Loading": "Loading",
             "Moving": "Moving",
             "OpenSpoolInfo": "Open Spool Info",
             "ParkNozzle": "Park Nozzle",
             "PostExtruderSensor": "Post-Extruder Sensor",
             "PreExtruderSensor": "Pre-Extruder Sensor",
+            "Printing": "Printing",
             "RammingSensor": "Ramming Sensor",
             "Restoring": "Restoring",
             "ShowInfiniteSpool": "Infinite Spool",

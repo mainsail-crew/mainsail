@@ -65,9 +65,10 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { Extruder, Lane } from '@/store/server/afc/types'
+import ControlMixin from '@/components/mixins/control'
 
 @Component({})
-export default class AfcExtruderToolsItem extends Mixins(BaseMixin) {
+export default class AfcExtruderToolsItem extends Mixins(BaseMixin, ControlMixin) {
     @Prop({ type: Object, required: true }) readonly tool!: Extruder
 
     get currentLane(): Lane {
@@ -105,6 +106,10 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin) {
             state = `${this.$t(`Panels.AfcPanel.${this.getCurrentState}`)}`
             lane = `${this.currentLane.name}`
             buffer = `${this.currentLane.buffer.name}: ${this.currentLane.buffer.state}`
+        }
+
+        if (this.printerIsPrintingOnly) {
+            state = `${this.$t('Panels.AfcPanel.Printing')}`
         }
 
         return { state, lane, buffer }

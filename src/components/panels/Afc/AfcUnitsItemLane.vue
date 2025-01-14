@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="spool-card-header">
-            <v-menu v-if="laneReady" :offset-y="true" :close-on-content-click="true" left>
+            <v-menu v-if="lanePrep" :offset-y="true" :close-on-content-click="true" left>
                 <template #activator="{ on: onMenu, attrs }">
                     <v-tooltip top>
                         <template #activator="{ on: onTooltip }">
@@ -17,7 +17,7 @@
                         <template #activator="{ on: onExtruderTemp }">
                             <div v-on="onExtruderTemp">
                                 <v-list-item
-                                    v-if="!toolLoaded"
+                                    v-if="!toolLoaded && laneReady"
                                     :disabled="
                                         (!extrudePossible && lane.spool.material === '') || printerIsPrintingOnly
                                     "
@@ -103,6 +103,10 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
 
     get laneReady() {
         return this.lane.load && this.lane.prep
+    }
+
+    get lanePrep() {
+        return this.lane.prep
     }
 
     get toolLoaded() {

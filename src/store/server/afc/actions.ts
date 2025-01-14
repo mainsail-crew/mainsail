@@ -23,7 +23,7 @@ export const actions: ActionTree<AFCState, RootState> = {
         const hubs: Hub[] = []
         const lanes: Lane[] = []
 
-        afcData.buffers.forEach((bufferName: string) => {
+        afcData.buffers?.forEach((bufferName: string) => {
             const bufferData: any = printer[`AFC_buffer ${bufferName}`]
             if (bufferData) {
                 const buffer: FilBuffer = {
@@ -35,7 +35,7 @@ export const actions: ActionTree<AFCState, RootState> = {
             }
         })
 
-        afcData.hubs.forEach((hubName: string) => {
+        afcData.hubs?.forEach((hubName: string) => {
             const hubData: any = printer[`AFC_hub ${hubName}`]
             if (hubData) {
                 const hub: Hub = {
@@ -49,7 +49,7 @@ export const actions: ActionTree<AFCState, RootState> = {
         })
 
         // Process extruders
-        afcData.extruders.forEach((extruderName: string) => {
+        afcData.extruders?.forEach((extruderName: string) => {
             const extruderData: any = printer[`AFC_extruder ${extruderName}`]
             if (!extruderData) {
                 console.error(`Missing extruder data for: ${extruderName}`)
@@ -70,7 +70,7 @@ export const actions: ActionTree<AFCState, RootState> = {
         })
 
         // Process units
-        afcData.units.forEach((unitEntry: string) => {
+        afcData.units?.forEach((unitEntry: string) => {
             const [type, name]: [string, string] = unitEntry.split(' ') as [string, string]
             if (!type || !name) {
                 console.error(`Invalid unit entry: ${unitEntry}`)
@@ -93,21 +93,21 @@ export const actions: ActionTree<AFCState, RootState> = {
                 buffers: [],
             }
 
-            unitData.hubs.forEach((hubName: string) => {
+            unitData.hubs?.forEach((hubName: string) => {
                 const hub = hubs.find((h) => h.name === hubName)
                 if (hub) {
                     unit.hubs.push(hub)
                 }
             })
 
-            unitData.extruders.forEach((extruderName: string) => {
+            unitData.extruders?.forEach((extruderName: string) => {
                 const extruder = extruders.find((e) => e.name === extruderName)
                 if (extruder) {
                     unit.extruders.push(extruder)
                 }
             })
 
-            unitData.buffers.forEach((bufferName: string) => {
+            unitData.buffers?.forEach((bufferName: string) => {
                 const buffer = buffers.find((b) => b.name === bufferName)
                 if (buffer) {
                     unit.buffers.push(buffer)
@@ -118,7 +118,7 @@ export const actions: ActionTree<AFCState, RootState> = {
         })
 
         // Process lanes
-        afcData.lanes.forEach((laneName: string) => {
+        afcData.lanes?.forEach((laneName: string) => {
             const laneData: any = printer[`AFC_stepper ${laneName}`]
             if (!laneData) {
                 console.error(`Missing lane data for: ${laneName}`)
