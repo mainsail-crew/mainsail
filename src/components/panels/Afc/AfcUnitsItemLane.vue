@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :class="[{ active: activeLane }]">
         <div class="spool-card-header">
             <v-menu v-if="lanePrep" :offset-y="true" :close-on-content-click="true" left>
                 <template #activator="{ on: onMenu, attrs }">
@@ -113,6 +113,18 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
         return this.lane.tool_loaded
     }
 
+    get currentLane(): Lane {
+        return this.$store.getters['server/afc/getCurrentLane']
+    }
+
+    get currentLoad(): Lane {
+        return this.$store.getters['server/afc/getCurrentLoad']
+    }
+
+    get activeLane(): boolean {
+        return this.currentLane?.name === this.lane.name || this.currentLoad?.name === this.lane.name
+    }
+
     get laneStatusClass() {
         return this.laneReady && this.toolLoaded
             ? 'primary--text'
@@ -179,5 +191,10 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+}
+
+.active {
+    border: 1px solid var(--v-primary-base);
+    box-sizing: border-box;
 }
 </style>

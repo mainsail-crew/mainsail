@@ -1,5 +1,5 @@
 <template>
-    <div class="extruder-item">
+    <div :class="['extruder-item', { active: toolActive }]">
         <div class="extruder-container">
             <div v-if="!tool.ramming" class="left-section">
                 <v-tooltip top>
@@ -71,6 +71,8 @@ import ControlMixin from '@/components/mixins/control'
 export default class AfcExtruderToolsItem extends Mixins(BaseMixin, ControlMixin) {
     @Prop({ type: Object, required: true }) readonly tool!: Extruder
 
+    toolActive = false
+
     get currentLane(): Lane {
         return this.$store.getters['server/afc/getCurrentLane']
     }
@@ -99,17 +101,24 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin, ControlMixin
         let buffer = `${this.$t('Panels.AfcPanel.BufferDisabled')}`
 
         if (this.currentLoad && this.currentLoad.extruder.name === this.tool.name) {
-            state = `${this.$t(`Panels.AfcPanel.${this.getCurrentState}`)}`
+            if (this.printerIsPrintingOnly) {
+                state = `${this.$t('Panels.AfcPanel.Printing')}`
+            } else {
+                state = `${this.$t(`Panels.AfcPanel.${this.getCurrentState}`)}`
+            }
             lane = `${this.currentLoad.name}`
             buffer = `${this.currentLoad.buffer.name}: ${this.currentLoad.buffer.state}`
+            this.toolActive = true
         } else if (this.currentLane && this.currentLane.extruder.name === this.tool.name) {
             state = `${this.$t(`Panels.AfcPanel.${this.getCurrentState}`)}`
             lane = `${this.currentLane.name}`
             buffer = `${this.currentLane.buffer.name}: ${this.currentLane.buffer.state}`
-        }
-
-        if (this.printerIsPrintingOnly) {
-            state = `${this.$t('Panels.AfcPanel.Printing')}`
+            this.toolActive = true
+        } else if (this.tool.lane_loaded) {
+            state = `${this.$t('Panels.AfcPanel.Idle')}`
+            lane = `${this.tool.lane_loaded}`
+            buffer = ``
+            this.toolActive = false
         }
 
         return { state, lane, buffer }
@@ -183,6 +192,10 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin, ControlMixin
     border-radius: 50%;
     display: inline-block;
     margin: 0 5px;
+}
+
+.active {
+    border: 1px solid var(--v-primary-base);
 }
 
 .disabled {
