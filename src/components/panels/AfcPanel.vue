@@ -12,35 +12,43 @@
             <AFCLogo class="panel-icon" />
         </template>
         <template #buttons>
-            <v-btn v-if="showAFC && AFCCalibrate" icon tile :title="`Calibrate AFC`" @click="calibrateAFC">
-                <v-icon small>{{ mdiWrench }}</v-icon>
-            </v-btn>
-            <v-menu v-if="showAfcMacros && showAFC" :offset-y="true" :close-on-content-click="false" left>
-                <template #activator="{ on, attrs }">
-                    <v-btn icon tile v-bind="attrs" v-on="on">
-                        <v-icon>{{ mdiDotsVertical }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-list dense>
-                    <!-- NOZZLE CLEAN -->
-                    <v-list-item v-if="brushMacroEnabled">
-                        <macro-button
-                            :macro="afcBrushMacro"
-                            :alias="$t('Panels.AfcPanel.BrushNozzle')"
-                            :disabled="printerIsPrintingOnly"
-                            color="#272727" />
-                    </v-list-item>
-                    <!-- PARK NOZZLE -->
-                    <v-list-item v-if="parkMacroEnabled">
-                        <macro-button
-                            :macro="afcParkMacro"
-                            :alias="$t('Panels.AfcPanel.ParkNozzle')"
-                            :disabled="printerIsPrintingOnly"
-                            color="#272727" />
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-            <afc-panel-settings v-if="showAFC" :units="unitsData" />
+            <div v-if="showAFC" style="height: 100%">
+                <v-btn
+                    v-if="AFCCalibrate"
+                    icon
+                    tile
+                    :disabled="printerIsPrintingOnly"
+                    :title="$t('Panels.AfcPanel.Calibrate')"
+                    @click="calibrateAFC">
+                    <v-icon small>{{ mdiWrench }}</v-icon>
+                </v-btn>
+                <v-menu v-if="showAfcMacros" :offset-y="true" :close-on-content-click="false" left>
+                    <template #activator="{ on, attrs }">
+                        <v-btn icon tile v-bind="attrs" v-on="on">
+                            <v-icon>{{ mdiDotsVertical }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list dense>
+                        <!-- NOZZLE CLEAN -->
+                        <v-list-item v-if="brushMacroEnabled">
+                            <macro-button
+                                :macro="afcBrushMacro"
+                                :alias="$t('Panels.AfcPanel.BrushNozzle')"
+                                :disabled="printerIsPrintingOnly"
+                                color="#272727" />
+                        </v-list-item>
+                        <!-- PARK NOZZLE -->
+                        <v-list-item v-if="parkMacroEnabled">
+                            <macro-button
+                                :macro="afcParkMacro"
+                                :alias="$t('Panels.AfcPanel.ParkNozzle')"
+                                :disabled="printerIsPrintingOnly"
+                                color="#272727" />
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+                <afc-panel-settings :units="unitsData" />
+            </div>
         </template>
         <template v-if="display_message.message !== ''">
             <v-container>
