@@ -4,55 +4,16 @@
         :icon="mdiArrowExpandVertical"
         card-class="machine-endstop-panel"
         :collapsible="true">
-        <v-card-text class="pb-0">
-            <v-container px-0 py-0>
-                <template v-if="Object.keys(endstops).length">
-                    <v-row v-for="key of Object.keys(endstops)" :key="key">
-                        <v-col class="py-1">
-                            <label class="mt-1 d-inline-block">
-                                {{ $t('Machine.EndstopPanel.Endstop') }}
-                                <b>{{ key.toUpperCase() }}</b>
-                            </label>
-                            <v-chip
-                                small
-                                label
-                                class="float-right"
-                                :color="endstops[key] === 'open' ? 'green' : 'red'"
-                                text-color="white">
-                                <template v-if="endstops[key] === 'open'">
-                                    {{ $t('Machine.EndstopPanel.open') }}
-                                </template>
-                                <template v-else>
-                                    {{ $t('Machine.EndstopPanel.TRIGGERED') }}
-                                </template>
-                            </v-chip>
-                        </v-col>
-                    </v-row>
-                    <v-row v-if="existProbe">
-                        <v-col class="py-1">
-                            <label class="mt-1 d-inline-block">Probe</label>
-                            <v-chip small label class="float-right" :color="probe ? 'red' : 'green'" text-color="white">
-                                <template v-if="probe">
-                                    {{ $t('Machine.EndstopPanel.TRIGGERED') }}
-                                </template>
-                                <template v-else>
-                                    {{ $t('Machine.EndstopPanel.open') }}
-                                </template>
-                            </v-chip>
-                        </v-col>
-                    </v-row>
-                </template>
-                <template v-else>
-                    <v-row>
-                        <v-col>
-                            <p>{{ $t('Machine.EndstopPanel.EndstopInfo') }}</p>
-                        </v-col>
-                    </v-row>
-                </template>
-            </v-container>
+        <v-card-text class="pb-0 pt-6">
+            <EndstopPanelItem v-for="item in items" :key="item.name" :item="item" />
+            <v-row v-if="items.length === 0">
+                <v-col class="pt-0">
+                    <p class="mb-0">{{ $t('Machine.EndstopPanel.EndstopInfo') }}</p>
+                </v-col>
+            </v-row>
         </v-card-text>
         <v-card-actions class="pt-3">
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn icon :loading="loadings.includes('queryEndstops')" @click="syncEndstops">
                 <v-icon>{{ mdiSync }}</v-icon>
             </v-btn>
@@ -65,6 +26,13 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiArrowExpandVertical, mdiSync } from '@mdi/js'
+
+export interface EndstopItem {
+    type: 'endstop' | 'probe'
+    name: string
+    value: string
+}
+
 @Component({
     components: { Panel },
 })
@@ -72,26 +40,49 @@ export default class EndstopPanel extends Mixins(BaseMixin) {
     mdiArrowExpandVertical = mdiArrowExpandVertical
     mdiSync = mdiSync
 
-    public sortEndstops: any = {}
+    private probeNames = ['probe', 'dockable_probe']
 
-    get endstops() {
+    get items() {
+        let output: EndstopItem[] = []
+
         const endstops = this.$store.state.printer.endstops ?? {}
+        Object.keys(endstops).forEach((key) => {
+            output.push({ type: 'endstop', name: key, value: endstops[key] })
+        })
 
-        return Object.keys(endstops)
-            .sort()
-            .reduce((obj: any, key: string) => {
-                obj[key] = endstops[key]
-                return obj
-            }, {})
+        // dont show probe values if there are no endstop values
+        if (output.length === 0) return []
+
+        output = output.sort((a, b) => a.name.localeCompare(b.name))
+
+        this.probeNames.forEach((probeName) => {
+            if (probeName in this.$store.state.printer && 'last_query' in this.$store.state.printer[probeName]) {
+                const value = this.$store.state.printer[probeName].last_query ? 'TRIGGERED' : 'open'
+
+                output.push({
+                    type: 'probe',
+                    name: probeName,
+                    value,
+                })
+            }
+        })
+
+        return output
     }
 
-    get existProbe() {
-        return 'probe' in this.$store.state.printer.configfile.settings
-    }
+    get existsQueryProbe() {
+        const commands = this.$store.state.printer.gcode?.commands ?? null
+        if (commands) {
+            return 'QUERY_PROBE' in commands
+        }
 
-    get probe() {
-        if ('probe' in this.$store.state.printer && 'last_query' in this.$store.state.printer.probe)
-            return this.$store.state.printer.probe.last_query
+        // fallback for older Klipper versions
+        const settings = this.$store.state.printer.configfile?.settings ?? null
+        if (settings) {
+            this.probeNames.forEach((probeName) => {
+                if (probeName in settings) return true
+            })
+        }
 
         return false
     }
@@ -102,37 +93,11 @@ export default class EndstopPanel extends Mixins(BaseMixin) {
             {},
             { action: 'printer/getEndstopStatus', loading: 'queryEndstops' }
         )
-        if (this.existProbe) {
+
+        if (this.existsQueryProbe) {
             this.$store.dispatch('server/addEvent', { message: 'QUERY_PROBE', type: 'command' })
             this.$socket.emit('printer.gcode.script', { script: 'QUERY_PROBE' })
         }
     }
 }
-
-/*    import { mapState } from 'vuex'
-
-    export default {
-        created() {
-            this.getEndstops();
-        },
-        methods: {
-            ,
-            getEndstops() {
-                this.sortEndstops = {};
-
-                let keys = Object.keys(this.endstops);
-                keys.sort();
-
-                for (let i = 0; i < keys.length; i++) {
-                    let k = keys[i];
-                    this.sortEndstops[k] = this.endstops[k];
-                }
-            }
-        },
-        watch: {
-            endstops: function() {
-                this.getEndstops();
-            }
-        }
-    }*/
 </script>
