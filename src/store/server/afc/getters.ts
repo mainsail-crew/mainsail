@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { AFCState, Unit, Lane, System, Extruder } from '@/store/server/afc/types'
+import { AFCState, Unit, Lane, Extruder, Message } from '@/store/server/afc/types'
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<AFCState, RootState> = {
@@ -9,9 +9,8 @@ export const getters: GetterTree<AFCState, RootState> = {
 
     getLane:
         (state) =>
-        (unitName: string, laneName: string): Lane | null => {
-            const unit = state.data.units.find((unit) => unit.system.type === unitName)
-            return unit?.lanes.find((lane) => lane.laneName === laneName) || null
+        (laneName: string): Lane | null => {
+            return state.data.lanes.find((lane) => lane.name === laneName) || null
         },
 
     getLaneList: (state): string[] => {
@@ -22,25 +21,45 @@ export const getters: GetterTree<AFCState, RootState> = {
         return state.data.mapList
     },
 
-    getActiveUnit: (state): Unit | null => {
-        return state.activeUnit
+    getMessage: (state): Message => {
+        return state.data.message
     },
 
-    getActiveLane: (state): Lane | null => {
-        return state.activeLane
+    getCurrentLoad: (state): Lane | null => {
+        return state.data.current_load
     },
 
-    getSystemInfo: (state): System => {
-        return state.data.system
+    getCurrentLane: (state): Lane | null => {
+        return state.data.current_lane
     },
 
-    getExtruders: (state): any[] => {
-        return state.data.system.extruders || []
+    getNextLane: (state): Lane | null => {
+        return state.data.next_lane
+    },
+
+    getCurrentToolchange: (state): number => {
+        return state.data.current_toolchange
+    },
+
+    getNumberToolchange: (state): number => {
+        return state.data.number_toolchange
+    },
+
+    getCurrentState: (state): string => {
+        return state.data.current_state
+    },
+
+    getExtruders: (state): Extruder[] => {
+        return state.data.extruders || []
+    },
+
+    getBypassStatus: (state): boolean => {
+        return state.data.bypass_status
     },
 
     getExtruder:
         (state) =>
         (extruderName: string): Extruder | null => {
-            return state.data.system.extruders?.find((extruder) => extruder.name === extruderName) || null
+            return state.data.extruders.find((extruder) => extruder.name === extruderName) || null
         },
 }

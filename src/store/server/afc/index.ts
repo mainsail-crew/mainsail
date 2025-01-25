@@ -8,18 +8,24 @@ export const getDefaultState = (): AFCState => {
     return {
         data: {
             units: [],
-            system: {
-                current_load: null,
-                num_units: 0,
-                num_lanes: 0,
-                num_extruders: 0,
-                extruders: [],
-            },
+            current_load: null,
+            current_lane: null,
+            next_lane: null,
+            current_state: '',
+            current_toolchange: 0,
+            number_toolchange: 0,
+            lanes: [],
+            buffers: [],
+            hubs: [],
+            extruders: [],
             laneList: [],
             mapList: [],
+            bypass_status: false,
+            message: {
+                type: '',
+                message: '',
+            },
         },
-        activeUnit: null,
-        activeLane: null,
     }
 }
 

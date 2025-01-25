@@ -23,28 +23,46 @@
                         hide-details
                         style="max-width: 300px" />
                     <v-spacer />
-                    <v-btn
-                        :title="$t('Panels.SpoolmanPanel.EjectSpool')"
-                        class="px-2 minwidth-0 ml-3"
-                        :loading="loadings.includes('ejectSpool')"
-                        @click="ejectSpool">
-                        <v-icon>{{ mdiEject }}</v-icon>
-                    </v-btn>
-                    <v-btn
-                        v-if="spoolManagerUrl"
-                        :title="$t('Panels.SpoolmanPanel.Refresh')"
-                        class="px-2 minwidth-0 ml-3"
-                        :loading="loadings.includes('refreshSpools')"
-                        @click="refreshSpools">
-                        <v-icon>{{ mdiRefresh }}</v-icon>
-                    </v-btn>
-                    <v-btn
-                        v-if="spoolManagerUrl"
-                        :title="$t('Panels.SpoolmanPanel.OpenSpoolManager')"
-                        class="px-2 minwidth-0 ml-3"
-                        @click="openSpoolManager">
-                        <v-icon>{{ mdiDatabase }}</v-icon>
-                    </v-btn>
+                    <v-tooltip top>
+                        <template #activator="{ on: onTooltip, attrs }">
+                            <v-btn
+                                v-bind="attrs"
+                                class="px-2 minwidth-0 ml-3"
+                                :loading="loadings.includes('ejectSpool')"
+                                v-on="onTooltip"
+                                @click="ejectSpool">
+                                <v-icon>{{ mdiEject }}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>{{ $t('Panels.AfcPanel.SpoolEject') }}</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                        <template #activator="{ on: onTooltip, attrs }">
+                            <v-btn
+                                v-if="spoolManagerUrl"
+                                v-bind="attrs"
+                                class="px-2 minwidth-0 ml-3"
+                                :loading="loadings.includes('refreshSpools')"
+                                v-on="onTooltip"
+                                @click="refreshSpools">
+                                <v-icon>{{ mdiRefresh }}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>{{ $t('Panels.SpoolmanPanel.Refresh') }}</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                        <template #activator="{ on: onTooltip, attrs }">
+                            <v-btn
+                                v-if="spoolManagerUrl"
+                                v-bind="attrs"
+                                class="px-2 minwidth-0 ml-3"
+                                v-on="onTooltip"
+                                @click="openSpoolManager">
+                                <v-icon>{{ mdiDatabase }}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>{{ $t('Panels.SpoolmanPanel.OpenSpoolManager') }}</span>
+                    </v-tooltip>
                 </v-card-title>
                 <v-card-text class="px-0 pb-0">
                     <v-data-table
@@ -64,11 +82,12 @@
                         </template>
 
                         <template #item="{ item }">
-                            <SpoolmanChangeSpoolDialogRow
+                            <AfcChangeSpoolDialogRow
                                 :key="item.id"
                                 :spool="item"
                                 :max_id_digits="max_spool_id_digits"
-                                @set-spool="setSpool" />
+                                @set-spool="setSpool"
+                                @open-spool-details="openSpoolDetails" />
                         </template>
                     </v-data-table>
 
@@ -132,11 +151,11 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiAdjust, mdiDatabase, mdiMagnify, mdiRefresh, mdiEject } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
-import SpoolmanChangeSpoolDialogRow from '@/components/dialogs/SpoolmanChangeSpoolDialogRow.vue'
+import AfcChangeSpoolDialogRow from '@/components/dialogs/SpoolmanChangeSpoolDialogRow.vue'
 import { Lane } from '@/store/server/afc/types'
 
 @Component({
-    components: { SpoolmanChangeSpoolDialogRow, Panel },
+    components: { AfcChangeSpoolDialogRow, Panel },
 })
 export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) laneData!: Lane
@@ -196,6 +215,12 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
                 align: 'end',
                 value: 'remaining_weight',
             },
+            {
+                text: this.$t('Panels.AfcPanel.SpoolInfo'),
+                align: 'center',
+                value: '',
+                sortable: false,
+            },
         ]
     }
 
@@ -212,9 +237,9 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
         if (this.laneData != null) {
             const cleanedColor = this.spoolColor.replace('#', '')
 
-            const setColor = `SET_COLOR LANE=${this.laneData.laneName} COLOR=${cleanedColor}`
-            const setWeight = `SET_WEIGHT LANE=${this.laneData.laneName}  WEIGHT=${this.remainingWeight}`
-            const setMaterial = `SET_MATERIAL LANE=${this.laneData.laneName}  MATERIAL=${this.filamentType}`
+            const setColor = `SET_COLOR LANE=${this.laneData.name} COLOR=${cleanedColor}`
+            const setWeight = `SET_WEIGHT LANE=${this.laneData.name}  WEIGHT=${this.remainingWeight}`
+            const setMaterial = `SET_MATERIAL LANE=${this.laneData.name}  MATERIAL=${this.filamentType}`
 
             this.$nextTick(async () => {
                 try {
@@ -236,9 +261,9 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
     manualyClearSpool() {
         if (this.laneData != null) {
-            const setColor = `SET_COLOR LANE=${this.laneData.laneName} COLOR=000000`
-            const setWeight = `SET_WEIGHT LANE=${this.laneData.laneName}  WEIGHT=0`
-            const setMaterial = `SET_MATERIAL LANE=${this.laneData.laneName}  MATERIAL=`
+            const setColor = `SET_COLOR LANE=${this.laneData.name} COLOR=000000`
+            const setWeight = `SET_WEIGHT LANE=${this.laneData.name}  WEIGHT=0`
+            const setMaterial = `SET_MATERIAL LANE=${this.laneData.name}  MATERIAL=`
 
             this.$nextTick(async () => {
                 try {
@@ -260,6 +285,10 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
         window.open(this.spoolManagerUrl, '_blank')
     }
 
+    openSpoolDetails(spoolId: string) {
+        window.open(this.spoolManagerUrl + '/spool/show/' + spoolId, '_blank')
+    }
+
     mounted() {
         this.refresh()
     }
@@ -276,17 +305,15 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
     ejectSpool() {
         if (this.laneData != null) {
-            const unloadLane = `LANE_UNLOAD LANE=${this.laneData.laneName}`
-            console.log('Dispatching G-code:', unloadLane)
+            const ejectSpoolman = `SET_SPOOL_ID LANE=${this.laneData.name} SPOOL_ID=`
 
             this.$nextTick(async () => {
                 try {
                     this.$socket.emit(
                         'printer.gcode.script',
-                        { script: unloadLane },
-                        { loading: 'macro_' + unloadLane }
+                        { script: ejectSpoolman },
+                        { loading: 'macro_' + ejectSpoolman }
                     )
-                    console.log('UNLOAD_LANE sent successfully')
                 } catch (error) {
                     console.error('Failed to send G-code:', error)
                 }
@@ -333,7 +360,7 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
     setSpool(spool: any) {
         console.log('Spool set as:', spool)
         console.log('Lane data received:', this.laneData)
-        const gcode = `SET_SPOOL_ID LANE=${this.laneData.laneName} SPOOL_ID=${spool.id}`
+        const gcode = `SET_SPOOL_ID LANE=${this.laneData.name} SPOOL_ID=${spool.id}`
         console.log('Dispatching G-code:', gcode)
 
         this.$nextTick(async () => {

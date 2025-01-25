@@ -1,24 +1,26 @@
 <template>
-    <div>
+    <div :class="[{ active: activeLane }]">
         <div class="spool-card-header">
-            <v-menu v-if="laneReady" :offset-y="true" :close-on-content-click="true" left>
+            <v-menu v-if="lanePrep" :offset-y="true" :close-on-content-click="true" left>
                 <template #activator="{ on: onMenu, attrs }">
                     <v-tooltip top>
                         <template #activator="{ on: onTooltip }">
                             <span :class="laneStatusClass" v-bind="attrs" v-on="{ ...onMenu, ...onTooltip }">
-                                {{ lane.laneName }}
+                                {{ lane.name }}
                             </span>
                         </template>
                         <span>{{ $t('Panels.AfcPanel.LaneCommands') }}</span>
                     </v-tooltip>
                 </template>
                 <v-list dense>
-                    <v-tooltip top :disabled="extrudePossible" color="secondary">
+                    <v-tooltip top :disabled="extrudePossible || lane.spool.material !== ''" color="secondary">
                         <template #activator="{ on: onExtruderTemp }">
                             <div v-on="onExtruderTemp">
                                 <v-list-item
-                                    v-if="!toolLoaded"
-                                    :disabled="!extrudePossible || printerIsPrintingOnly"
+                                    v-if="!toolLoaded && laneReady"
+                                    :disabled="
+                                        (!extrudePossible && lane.spool.material === '') || printerIsPrintingOnly
+                                    "
                                     @click="handleLaneAction($event, 'load')">
                                     <v-list-item-title>{{ $t('Panels.AfcPanel.Load') }}</v-list-item-title>
                                 </v-list-item>
@@ -29,12 +31,14 @@
                             {{ minExtrudeTemp }} °C
                         </span>
                     </v-tooltip>
-                    <v-tooltip top :disabled="extrudePossible" color="secondary">
+                    <v-tooltip top :disabled="extrudePossible || lane.spool.material !== ''" color="secondary">
                         <template #activator="{ on: onExtruderTemp }">
                             <div v-on="onExtruderTemp">
                                 <v-list-item
                                     v-if="toolLoaded"
-                                    :disabled="!extrudePossible || printerIsPrintingOnly"
+                                    :disabled="
+                                        (!extrudePossible && lane.spool.material === '') || printerIsPrintingOnly
+                                    "
                                     @click="handleLaneAction($event, 'unload')">
                                     <v-list-item-title>{{ $t('Panels.AfcPanel.Unload') }}</v-list-item-title>
                                 </v-list-item>
@@ -51,7 +55,7 @@
                 </v-list>
             </v-menu>
             <span v-else :class="laneStatusClass" :style="{ cursor: 'default' }">
-                {{ lane.laneName }}
+                {{ lane.name }}
             </span>
             <div class="spacer"></div>
             <v-menu :offset-y="true" :close-on-content-click="true" left>
@@ -80,7 +84,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ExtruderMixin from '@/components/mixins/extruder'
 import { Lane } from '@/store/server/afc/types'
@@ -101,8 +105,24 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
         return this.lane.load && this.lane.prep
     }
 
+    get lanePrep() {
+        return this.lane.prep
+    }
+
     get toolLoaded() {
         return this.lane.tool_loaded
+    }
+
+    get currentLane(): Lane {
+        return this.$store.getters['server/afc/getCurrentLane']
+    }
+
+    get currentLoad(): Lane {
+        return this.$store.getters['server/afc/getCurrentLoad']
+    }
+
+    get activeLane(): boolean {
+        return this.currentLane?.name === this.lane.name || this.currentLoad?.name === this.lane.name
     }
 
     get laneStatusClass() {
@@ -119,30 +139,11 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
         return this.lane.prep ? this.$t('Panels.AfcPanel.LaneErrorLoad') : this.$t('Panels.AfcPanel.LaneEmpty')
     }
 
-    @Watch('lane.tool_loaded')
-    onToolLoadedChange(newVal: boolean, oldVal: boolean) {
-        if (newVal && !oldVal) {
-            this.handleToolLoaded()
-        } else if (!newVal && oldVal) {
-            this.handleToolUnloaded()
-        }
-    }
-
-    handleToolLoaded() {
-        this.$store.dispatch('server/afc/setActiveLane', this.lane.laneName)
-        this.$store.dispatch('server/afc/setActiveUnit', this.lane.unitName)
-    }
-
-    handleToolUnloaded() {
-        this.$store.dispatch('server/afc/setActiveLane', null)
-        this.$store.dispatch('server/afc/setActiveUnit', null)
-    }
-
     handleMapChange(event: Event, option: string) {
-        console.log(`Selected value for ${this.lane.laneName}: ${option}`)
+        console.log(`Selected value for ${this.lane.name}: ${option}`)
 
         //Example G-Code Call for you
-        const gcode = `SET_MAP LANE=${this.lane.laneName} MAP=${option}`
+        const gcode = `SET_MAP LANE=${this.lane.name} MAP=${option}`
         console.log('Dispatching G-code:', gcode)
 
         this.$nextTick(async () => {
@@ -156,7 +157,7 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
     }
 
     handleLaneAction(event: Event, action: string) {
-        if (!this.lane.laneName) {
+        if (!this.lane.name) {
             console.warn('Lane name is empty, cannot perform action')
             return
         }
@@ -166,13 +167,13 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
         this.$nextTick(async () => {
             try {
                 if (action === 'load') {
-                    gcode = `CHANGE_TOOL LANE=${this.lane.laneName}`
+                    gcode = `CHANGE_TOOL LANE=${this.lane.name}`
                     await this.$store.dispatch('printer/sendGcode', gcode)
                 } else if (action === 'unload') {
-                    gcode = `TOOL_UNLOAD LANE=${this.lane.laneName}`
+                    gcode = `TOOL_UNLOAD LANE=${this.lane.name}`
                     await this.$store.dispatch('printer/sendGcode', gcode)
                 } else if (action === 'eject') {
-                    gcode = `LANE_UNLOAD LANE=${this.lane.laneName}`
+                    gcode = `LANE_UNLOAD LANE=${this.lane.name}`
                     await this.$store.dispatch('printer/sendGcode', gcode)
                 }
             } catch (error) {
@@ -190,5 +191,10 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+}
+
+.active {
+    border: 1px solid var(--v-primary-base);
+    box-sizing: border-box;
 }
 </style>

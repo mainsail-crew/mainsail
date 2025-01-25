@@ -1,25 +1,42 @@
 export interface AFCState {
     data: AFCRoot
-    activeUnit: Unit | null
-    activeLane: Lane | null
 }
 
 export interface AFCRoot {
     units: Unit[]
-    system: System
+    current_load: Lane | null
+    current_lane: Lane | null
+    next_lane: Lane | null
+    current_state: string
+    current_toolchange: number
+    number_toolchange: number
+    lanes: Lane[]
+    hubs: Hub[]
+    buffers: FilBuffer[]
+    extruders: Extruder[]
     laneList: string[]
     mapList: string[]
+    bypass_status: boolean
+    message: Message
 }
 
-export interface Spool {
-    material: string
-    spool_id: string
-    color: string
-    weight: number
+export interface Unit {
+    type: string
+    screen: string
+    name: string
+    lanes: Lane[]
+    hubs: Hub[]
+    buffers: FilBuffer[]
+    extruders: Extruder[]
 }
 
 export interface Lane {
-    LANE: number
+    name: string
+    unit: string
+    hub: Hub
+    buffer: FilBuffer
+    extruder: Extruder
+    lane: number
     map: string
     load: boolean
     prep: boolean
@@ -30,35 +47,38 @@ export interface Lane {
     filament_status: string
     filament_status_led: string
     status: string
-    unitName: string
-    laneName: string
     empty: string
 }
 
-export interface Unit {
-    system: {
-        type: string
-        hub_loaded: boolean
-        can_cut: boolean
-        screen: string
-    }
-    unitName: string
-    lanes: Lane[]
+export interface Spool {
+    material: string
+    spool_id: string
+    color: string
+    weight: number
 }
 
 export interface Extruder {
     name: string
     lane_loaded: string
-    tool_start_sensor: boolean
-    tool_end_sensor: boolean
-    buffer: string
-    buffer_status: string
+    ramming: boolean
+    has_start_sensor: boolean
+    has_end_sensor: boolean
+    tool_start_status: boolean
+    tool_end_status: boolean
 }
 
-export interface System {
-    current_load: string | null
-    num_units: number
-    num_lanes: number
-    num_extruders: number
-    extruders: Extruder[]
+export interface Hub {
+    name: string
+    state: boolean
+    cut: boolean
+}
+
+export interface FilBuffer {
+    name: string
+    state: string
+}
+
+export interface Message {
+    message: string
+    type: string
 }

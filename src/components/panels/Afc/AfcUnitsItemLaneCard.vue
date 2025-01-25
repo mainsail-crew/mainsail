@@ -1,7 +1,18 @@
 <template>
     <div>
         <div class="spool-card-body">
-            <div class="filament-reel" @click="openChangeSpoolDialog(lane)">
+            <v-tooltip v-if="showSpoolVendor" top>
+                <template #activator="{ on: onTooltip, attrs }">
+                    <div class="filament-reel" v-bind="attrs" @click="openChangeSpoolDialog(lane)" v-on="onTooltip">
+                        <FilamentReelIcon
+                            :color="lane.prep ? spoolColor : 'transparent'"
+                            :filament="filamentPercentage"
+                            style="width: 100%; height: 100%; max-width: inherit; max-height: inherit" />
+                    </div>
+                </template>
+                <span>#{{ lane.spool.spool_id }} | {{ spoolVendor }}</span>
+            </v-tooltip>
+            <div v-else class="filament-reel" @click="openChangeSpoolDialog(lane)">
                 <FilamentReelIcon
                     :color="lane.prep ? spoolColor : 'transparent'"
                     :filament="filamentPercentage"
@@ -22,7 +33,7 @@
                         </template>
                         <v-list dense>
                             <v-list-item
-                                v-for="option in laneList.filter((option) => option !== lane.laneName)"
+                                v-for="option in laneList.filter((option) => option !== lane.name)"
                                 :key="option"
                                 @click="handleRunoutChange($event, option)">
                                 <v-list-item-title>{{ option }}</v-list-item-title>
@@ -51,7 +62,7 @@
         <afc-change-spool-dialog
             v-if="selectedLane"
             :show-dialog="showChangeSpoolDialog"
-            :index="lane.laneName"
+            :index="lane.name"
             :lane-data="selectedLane"
             @close="showChangeSpoolDialog = false" />
     </div>
@@ -86,6 +97,14 @@ export default class AfcUnits extends Mixins(BaseMixin) {
 
     get showInfiniteSpool(): boolean {
         return this.$store.state.gui.view.afc.infiniteSpool ?? true
+    }
+
+    get showSpoolVendor(): boolean {
+        if (this.spoolManagerUrl && this.spoolmanSpool?.filament?.vendor?.name && this.lane.spool?.spool_id) {
+            return true
+        } else {
+            return false
+        }
     }
 
     get spoolManagerUrl() {
@@ -172,10 +191,22 @@ export default class AfcUnits extends Mixins(BaseMixin) {
         return name
     }
 
-    handleRunoutChange(event: Event, option: string) {
-        console.log(`Selected value for ${this.lane.laneName}: ${option}`)
+    get spoolVendor() {
+        let vendor = ''
 
-        const gcode = `SET_RUNOUT LANE=${this.lane.laneName} RUNOUT=${option}`
+        if (this.spoolManagerUrl && this.spoolmanSpool?.filament?.vendor?.name) {
+            vendor = this.spoolmanSpool.filament.vendor.name
+        } else {
+            vendor = ''
+        }
+
+        return vendor
+    }
+
+    handleRunoutChange(event: Event, option: string) {
+        console.log(`Selected value for ${this.lane.name}: ${option}`)
+
+        const gcode = `SET_RUNOUT LANE=${this.lane.name} RUNOUT=${option}`
         console.log('Dispatching G-code:', gcode)
 
         this.$nextTick(async () => {
