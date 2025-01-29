@@ -14,9 +14,11 @@ import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import type { ECharts } from 'echarts/core'
 import ThemeMixin from '../mixins/theme'
+import HistoryMixin from '@/components/mixins/history'
+import { ServerHistoryStateJob } from '@/store/server/history/types'
 
 @Component({})
-export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
+export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin, ThemeMixin) {
     declare $refs: {
         historyFilamentUsage: any
     }
@@ -108,7 +110,45 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get filamentUsageArray() {
-        return this.$store.getters['server/history/getFilamentUsageArray']
+        // eslint-disable-next-line
+        const output: any = []
+        const startDate = new Date()
+        startDate.setTime(startDate.getTime() - 60 * 60 * 24 * 14 * 1000)
+        startDate.setHours(0, 0, 0, 0)
+
+        let jobsFiltered = [
+            ...this.allJobs.filter(
+                (job: ServerHistoryStateJob) => new Date(job.start_time * 1000) >= startDate && job.filament_used > 0
+            ),
+        ]
+        if (this.selectedJobs.length)
+            jobsFiltered = [
+                ...this.selectedJobs.filter(
+                    (job: ServerHistoryStateJob) =>
+                        new Date(job.start_time * 1000) >= startDate && job.filament_used > 0
+                ),
+            ]
+
+        for (let i = 0; i <= 14; i++) {
+            const tmpDate = new Date()
+            tmpDate.setTime(startDate.getTime() + 60 * 60 * 24 * i * 1000)
+
+            output.push([new Date(tmpDate).setHours(0, 0, 0, 0), 0])
+        }
+
+        if (jobsFiltered.length) {
+            jobsFiltered.forEach((current) => {
+                const currentStartDate = new Date(current.start_time * 1000).setHours(0, 0, 0, 0)
+                // eslint-disable-next-line
+                const index = output.findIndex((element: any) => element[0] === currentStartDate)
+                if (index !== -1) output[index][1] += Math.round(current.filament_used) / 1000
+            })
+        }
+
+        // eslint-disable-next-line
+        return output.sort((a: any, b: any) => {
+            return b[0] - a[0]
+        })
     }
 
     get chart(): ECharts | null {

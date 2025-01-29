@@ -99,10 +99,6 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin, HistoryMix
         ]
     }
 
-    get selectedJobs() {
-        return this.$store.getters['server/history/getSelectedJobs']
-    }
-
     get existsSelectedJobs() {
         return this.selectedJobs.length > 0
     }
