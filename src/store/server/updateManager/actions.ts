@@ -31,10 +31,7 @@ export const actions: ActionTree<ServerUpdateManagerState, RootState> = {
 
             if (key === 'system') {
                 await commit('updateSystem', { ...module })
-                continue
             }
-
-            console.warn(`Module '${key}' has an unknown type '${configured_type}'`)
         }
 
         await dispatch('socket/removeInitModule', 'server/updateManager/init', { root: true })
