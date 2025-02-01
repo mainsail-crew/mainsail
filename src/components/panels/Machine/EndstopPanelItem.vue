@@ -15,7 +15,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { EndstopItem } from '@/components/panels/Machine/EndstopPanel.vue'
-import { camelize, capitalize } from '@/plugins/helpers'
+import { convertName } from '@/plugins/helpers'
 @Component({
     components: { Panel },
 })
@@ -25,7 +25,7 @@ export default class EndstopPanelItem extends Mixins(BaseMixin) {
     get name() {
         if (this.item.type === 'endstop') return this.item.name.toUpperCase()
 
-        return capitalize(camelize(this.item.name))
+        return convertName(this.item.name)
     }
 
     get chipColor() {
