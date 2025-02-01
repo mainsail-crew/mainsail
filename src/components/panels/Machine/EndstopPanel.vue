@@ -40,8 +40,6 @@ export default class EndstopPanel extends Mixins(BaseMixin) {
     mdiArrowExpandVertical = mdiArrowExpandVertical
     mdiSync = mdiSync
 
-    private probeNames = ['probe', 'dockable_probe']
-
     get items() {
         let output: EndstopItem[] = []
 
@@ -55,17 +53,15 @@ export default class EndstopPanel extends Mixins(BaseMixin) {
 
         output = output.sort((a, b) => a.name.localeCompare(b.name))
 
-        this.probeNames.forEach((probeName) => {
-            if (probeName in this.$store.state.printer && 'last_query' in this.$store.state.printer[probeName]) {
-                const value = this.$store.state.printer[probeName].last_query ? 'TRIGGERED' : 'open'
+        if ('probe' in this.$store.state.printer && 'last_query' in this.$store.state.printer.probe) {
+            const value = this.$store.state.printer.probe.last_query ? 'TRIGGERED' : 'open'
 
-                output.push({
-                    type: 'probe',
-                    name: probeName,
-                    value,
-                })
-            }
-        })
+            output.push({
+                type: 'probe',
+                name: this.$store.state.printer.probe.name ?? 'probe',
+                value,
+            })
+        }
 
         return output
     }
@@ -77,14 +73,7 @@ export default class EndstopPanel extends Mixins(BaseMixin) {
         }
 
         // fallback for older Klipper versions
-        const settings = this.$store.state.printer.configfile?.settings ?? null
-        if (settings) {
-            this.probeNames.forEach((probeName) => {
-                if (probeName in settings) return true
-            })
-        }
-
-        return false
+        return 'probe' in this.$store.state.printer
     }
 
     syncEndstops() {
