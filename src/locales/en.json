@@ -962,6 +962,8 @@
         "EditorTab": {
             "ConfirmUnsavedChanges": "Prompt to save or discard unsaved changes",
             "ConfirmUnsavedChangesDescription": "If enabled, the editor requires a confirmation to either save or discard the changes made. If disabled, changes are silently discarded.",
+            "DefaultSidebarState": "Default Sidebar State",
+            "DefaultSidebarStateDescription": "Set the default state of the editor sidebar (open/closed).",
             "Editor": "Editor",
             "KlipperRestartMethod": "Klipper restart method",
             "KlipperRestartMethodDescription": "Select which restart method will be used on 'Save & Restart' when editing Klipper config files.",

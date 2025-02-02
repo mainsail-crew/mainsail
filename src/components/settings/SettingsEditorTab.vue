@@ -34,6 +34,13 @@
                         dense
                         attached />
                 </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Settings.EditorTab.DefaultSidebarState')"
+                    :sub-title="$t('Settings.EditorTab.DefaultSidebarStateDescription')"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="defaultSidebarState" hide-details class="mt-0" />
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -97,6 +104,14 @@ export default class SettingsEditorTab extends Mixins(BaseMixin) {
 
     set klipperRestartMethod(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'editor.klipperRestartMethod', value: newVal })
+    }
+
+    get defaultSidebarState() {
+        return this.$store.state.gui.editor.defaultSidebarState
+    }
+
+    set defaultSidebarState(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'editor.defaultSidebarState', value: newVal })
     }
 }
 </script>
