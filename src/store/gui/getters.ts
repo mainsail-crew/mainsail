@@ -1,10 +1,24 @@
 import { GetterTree } from 'vuex'
 import { GuiState } from '@/store/gui/types'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
-import { allDashboardPanels } from '@/store/variables'
+import { allDashboardPanels, defaultTheme, themes } from '@/store/variables'
+import { Theme } from '@/store/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
+    theme: (state): string => {
+        const theme = state.uiSettings.theme
+
+        // return defaultTheme, if theme doesnt exists
+        if (themes.findIndex((tmp: Theme) => tmp.name === theme) === -1) return defaultTheme
+
+        return theme
+    },
+
+    getTheme: (state, getters): Theme => {
+        return themes.find((theme: Theme) => theme.name === getters.theme) ?? themes[0]
+    },
+
     getDatasetValue: (state) => (payload: { name: string; type: string }) => {
         if (
             payload.name in state.view.tempchart.datasetSettings &&

@@ -6,21 +6,9 @@ export interface VTextareaType extends HTMLInputElement {
     }
 }
 
-export interface CommandHelp {
-    command: string
-    commandLow: string
-    description?: string | Record<string, unknown>
-}
-
-export interface ConsoleCommandHelp {
-    command: CommandHelp | null
-    original: string
-}
-
 export interface PrinterState {
     // eslint-disable-next-line
     [key: string]: any
-    helplist?: CommandHelp[]
     tempHistory?: PrinterTempHistoryState
 }
 
@@ -234,7 +222,7 @@ export interface PrinterStateKlipperConfigWarning {
     message: string
     option: string
     section: string
-    type: 'deprecated_value' | 'deprecated_option'
+    type: 'deprecated_value' | 'deprecated_option' | 'runtime_warning'
     value: string
 }
 
@@ -251,12 +239,6 @@ export interface PrinterStateExtruderStepper {
     key: string
     name: string
     extruder: number
-}
-
-export interface PrinterStateToolchangeMacro {
-    name: string
-    active: boolean
-    color: string
 }
 
 export interface PrinterGetterObject {

@@ -1,4 +1,7 @@
-export const defaultTheme = 'dark'
+import { KlipperRepos, Theme } from '@/store/types'
+
+export const defaultMode = 'dark'
+export const defaultTheme = 'mainsail'
 export const defaultLogoColor = '#D41216'
 export const defaultPrimaryColor = '#2196f3'
 export const defaultBigThumbnailBackground = '#1e1e1e'
@@ -17,7 +20,7 @@ export const themeDir = '.theme'
 export const datasetInterval = 1000
 export const datasetTypes = ['temperature', 'target', 'power', 'speed']
 export const datasetTypesInPercents = ['power', 'speed']
-export const additionalSensors = ['bme280', 'aht10', 'htu21d']
+export const additionalSensors = ['aht10', 'bme280', 'htu21d', 'sgp40', 'sht3x']
 
 /*
  * List of valid gcode file extensions
@@ -35,6 +38,7 @@ export const initableServerComponents = [
     'jobQueue',
     'announcements',
     'spoolman',
+    'sensor',
 ]
 
 /*
@@ -125,12 +129,6 @@ export const hiddenRootDirectories = ['gcodes', 'timelapse', 'timelapse_frames']
 export const hiddenDirectories = ['.git']
 
 /*
- * List of available Klipper config reference translations
- * https://www.klipper3d.org/Config_Reference.html
- */
-export const availableKlipperConfigReferenceTranslations = ['it', 'hu', 'zh']
-
-/*
  * List of all downloadable logfiles
  */
 export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sonar']
@@ -139,3 +137,77 @@ export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sona
  * List of all rollover logfiles
  */
 export const rolloverLogfiles = ['klipper', 'moonraker']
+
+/*
+ * List of all Themes
+ */
+export const themes: Theme[] = [
+    { name: 'mainsail', displayName: 'Mainsail', colorLogo: defaultLogoColor },
+    {
+        name: 'klipper',
+        displayName: 'Klipper',
+        colorLogo: '#b12f35',
+        logo: { show: true, light: false },
+    },
+    {
+        name: 'voron',
+        displayName: 'Voron Design',
+        colorLogo: '#FF2300',
+        logo: { show: true, light: false },
+    },
+    {
+        name: 'ldo',
+        displayName: 'LDO Motion (Sponsor)',
+        colorLogo: '#326799',
+        colorPrimary: '#326799',
+        logo: { show: true, light: false },
+    },
+    {
+        name: 'yumi',
+        displayName: 'YUMI (Sponsor)',
+        colorLogo: '#F6CF3D',
+        colorPrimary: '#F6CF3D',
+        logo: { show: true, light: false },
+    },
+    {
+        name: 'vzbot',
+        displayName: 'VzBot',
+        colorLogo: '#FF0000',
+        logo: { show: true, light: false },
+        sidebarBackground: { show: true, light: false },
+        css: true,
+    },
+    {
+        name: 'prusa',
+        displayName: 'Prusa Research (Sponsor)',
+        colorLogo: '#fa6831',
+        colorPrimary: '#fa6831',
+        logo: { show: true, light: false },
+    },
+    {
+        name: 'btt',
+        displayName: 'BigTreeTech (Sponsor)',
+        colorLogo: '#ef0025',
+        logo: { show: true, light: false },
+    },
+    {
+        name: 'multec',
+        displayName: 'Multec GmbH (Sponsor)',
+        colorLogo: '#234D7A',
+        colorPrimary: '#234D7A',
+        logo: { show: true, light: false },
+    },
+]
+
+/*
+ * List of all supported Klipper-Repos
+ */
+export const klipperRepos: KlipperRepos = {
+    Klipper: {
+        url: 'https://www.klipper3d.org/',
+        docsLanguages: ['it', 'hu', 'zh'],
+    },
+    Kalico: {
+        url: 'https://docs.kalico.gg/',
+    },
+}

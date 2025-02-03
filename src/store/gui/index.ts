@@ -3,7 +3,13 @@ import { Module } from 'vuex'
 import { actions } from '@/store/gui/actions'
 import { mutations } from '@/store/gui/mutations'
 import { getters } from '@/store/gui/getters'
-import { defaultTheme, defaultLogoColor, defaultPrimaryColor, defaultBigThumbnailBackground } from '@/store/variables'
+import {
+    defaultTheme,
+    defaultLogoColor,
+    defaultPrimaryColor,
+    defaultBigThumbnailBackground,
+    defaultMode,
+} from '@/store/variables'
 
 // load modules
 import { console } from '@/store/gui/console'
@@ -14,6 +20,7 @@ import { navigation } from '@/store/gui/navigation'
 import { notifications } from '@/store/gui/notifications'
 import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
+import { maintenance } from '@/store/gui/maintenance'
 import { webcams } from '@/store/gui/webcams'
 import { heightmap } from '@/store/gui/heightmap'
 
@@ -149,6 +156,7 @@ export const getDefaultState = (): GuiState => {
             entries: [],
         },
         uiSettings: {
+            mode: defaultMode,
             theme: defaultTheme,
             logo: defaultLogoColor,
             primary: defaultPrimaryColor,
@@ -158,6 +166,7 @@ export const getDefaultState = (): GuiState => {
             confirmOnEmergencyStop: false,
             confirmOnCoolDown: false,
             confirmOnPowerDeviceChange: false,
+            confirmOnCancelJob: false,
             boolBigThumbnail: true,
             bigThumbnailBackground: defaultBigThumbnailBackground,
             boolWideNavDrawer: false,
@@ -165,6 +174,7 @@ export const getDefaultState = (): GuiState => {
             navigationStyle: 'iconsAndText',
             defaultNavigationStateSetting: 'alwaysOpen',
             powerDeviceName: null,
+            progressAsFavicon: true,
             hideSaveConfigForBedMash: false,
             disableFanAnimation: false,
             boolManualProbeDialog: true,
@@ -172,6 +182,11 @@ export const getDefaultState = (): GuiState => {
             boolScrewsTiltAdjustDialog: true,
             tempchartHeight: 250,
             hideUpdateWarnings: false,
+            printstatusThumbnailZoom: true,
+            dashboardFilesLimit: 5,
+            dashboardFilesFilter: ['new', 'failed', 'completed'],
+            dashboardHistoryLimit: 5,
+            hideOtherInstances: false,
         },
         view: {
             blockFileUpload: false,
@@ -242,6 +257,8 @@ export const getDefaultState = (): GuiState => {
                     'object_height',
                 ],
                 selectedJobs: [],
+                showMaintenanceEntries: true,
+                showPrintJobs: true,
             },
             jobqueue: {
                 countPerPage: 10,
@@ -293,6 +310,7 @@ export const gui: Module<GuiState, any> = {
         console,
         gcodehistory,
         macros,
+        maintenance,
         miscellaneous,
         navigation,
         notifications,

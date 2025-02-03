@@ -2,7 +2,8 @@
     <div>
         <panel :icon="mdiAdjust" :title="title" card-class="spoolman-panel" :collapsible="true">
             <template #buttons>
-                <v-btn icon tile :title="changeSpoolTooltip" @click="showChangeSpoolDialog = true">
+                <spoolman-tools-dropdown v-if="toolsWithSpoolId.length > 0" :tools="toolsWithSpoolId" />
+                <v-btn v-else icon tile :title="changeSpoolTooltip" @click="showChangeSpoolDialog = true">
                     <v-icon>{{ mdiSwapVertical }}</v-icon>
                 </v-btn>
                 <v-menu :offset-y="true" :close-on-content-click="false" left>
@@ -91,6 +92,16 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
 
     get spoolManagerUrl() {
         return this.$store.state.server.config.config?.spoolman?.server ?? null
+    }
+
+    get toolsWithSpoolId() {
+        return Object.keys(this.$store.state.printer)
+            .filter((key) => /^gcode_macro T\d+$/i.test(key.toLowerCase()))
+            .filter((keys) => {
+                const object = this.$store.state.printer[keys] ?? {}
+
+                return Object.keys(object).some((key) => key.toLowerCase() === 'spool_id')
+            })
     }
 
     openSpoolManager() {

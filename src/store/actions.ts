@@ -19,6 +19,7 @@ export const actions: ActionTree<RootState, RootState> = {
         dispatch('socket/setSocket', {
             hostname: printerSocket.hostname,
             port: printerSocket.port,
+            path: printerSocket.path,
         })
     },
 
@@ -52,5 +53,6 @@ export const actions: ActionTree<RootState, RootState> = {
 
         if (payload.hostname) commit('socket/setData', { hostname: payload.hostname })
         if (payload.port) commit('socket/setData', { port: parseInt(payload.port.toString()) })
+        if (payload.path) commit('socket/setData', { route_prefix: payload.path })
     },
 }

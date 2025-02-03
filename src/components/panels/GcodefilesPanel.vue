@@ -579,7 +579,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { defaultBigThumbnailBackground, validGcodeExtensions } from '@/store/variables'
-import { formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
+import { escapePath, formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
@@ -675,7 +675,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiDragVertical = mdiDragVertical
 
     formatFilesize = formatFilesize
-    formatPrintTime = formatPrintTime
     sortFiles = sortFiles
 
     declare $refs: {
@@ -1259,7 +1258,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     downloadFile() {
         const filename = this.currentPath + '/' + this.contextMenu.item.filename
-        const href = this.apiUrl + '/server/files/gcodes' + encodeURI(filename)
+        const href = this.apiUrl + '/server/files/gcodes' + escapePath(filename)
 
         window.open(href)
     }
@@ -1269,7 +1268,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
         const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
             for (const file of directory) {
-                const filePath = `${absolutPath}/${file.filename}`
+                const filePath = `${absolutPath}/${escapePath(file.filename)}`
 
                 if (file.isDirectory && file.childrens) {
                     await addElementToItems(filePath, file.childrens)
@@ -1458,32 +1457,32 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     outputValue(col: any, item: FileStateGcodefile) {
         const value = col.value in item ? item[col.value] : null
 
-        if (value !== null) {
-            switch (col.outputType) {
-                case 'filesize':
-                    return formatFilesize(value)
+        if (value === null) return '--'
 
-                case 'date':
-                    return this.formatDateTime(value)
+        switch (col.outputType) {
+            case 'filesize':
+                return formatFilesize(value)
 
-                case 'time':
-                    return this.formatPrintTime(value)
+            case 'date':
+                return this.formatDateTime(value)
 
-                case 'temp':
-                    return value.toFixed() + ' °C'
+            case 'time':
+                return formatPrintTime(value)
 
-                case 'length':
-                    if (value > 1000) return (value / 1000).toFixed(2) + ' m'
+            case 'temp':
+                return value.toFixed() + ' °C'
 
-                    return value.toFixed(2) + ' mm'
+            case 'length':
+                if (value > 1000) return (value / 1000).toFixed(2) + ' m'
 
-                case 'weight':
-                    return value.toFixed(2) + ' g'
+                return value.toFixed(2) + ' mm'
 
-                default:
-                    return value
-            }
-        } else return '--'
+            case 'weight':
+                return value.toFixed(2) + ' g'
+
+            default:
+                return value
+        }
     }
 }
 </script>

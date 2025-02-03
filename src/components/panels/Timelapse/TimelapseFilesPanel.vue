@@ -423,7 +423,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { formatFilesize, sortFiles } from '@/plugins/helpers'
+import { escapePath, formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import PathNavigation from '@/components/ui/PathNavigation.vue'
@@ -678,7 +678,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         const filename = item.filename.slice(0, item.filename.lastIndexOf('.'))
         const preview = this.files?.find((file) => file.filename === filename + '.jpg')
         if (preview) {
-            return `${this.apiUrl}/server/files/${encodeURI(this.currentPath)}/${encodeURI(
+            return `${this.apiUrl}/server/files/${escapePath(this.currentPath)}/${escapePath(
                 preview.filename
             )}?timestamp=${preview.modified.getTime()}`
         }
@@ -694,7 +694,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             else if (item.filename.endsWith('zip')) {
                 this.downloadFile(item.filename)
             } else if (item.filename.endsWith('mp4')) {
-                this.videoDialogFilename = encodeURI(`${this.currentPath}/${item.filename}`)
+                this.videoDialogFilename = escapePath(`${this.currentPath}/${item.filename}`)
                 this.boolVideoDialog = true
             }
         }
@@ -730,7 +730,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     downloadFile(filename: string) {
         const path = this.currentPath + '/' + filename
-        const href = this.apiUrl + '/server/files/' + encodeURI(path)
+        const href = this.apiUrl + '/server/files/' + escapePath(path)
 
         window.open(href)
     }

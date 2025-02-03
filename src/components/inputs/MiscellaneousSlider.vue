@@ -199,9 +199,10 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     sendCmd(newVal: number): void {
         if (this.value === newVal) return
 
-        let gcode = `SET_PIN PIN=${this.name} VALUE=${newVal.toFixed(2)}`
         if (newVal < this.min) newVal = 0
         newVal = newVal * this.multi
+
+        let gcode = `SET_PIN PIN=${this.name} VALUE=${newVal.toFixed(2)}`
         if (this.type === 'fan') gcode = `M106 S${newVal.toFixed(0)}`
         if (this.type === 'fan_generic') gcode = `SET_FAN_SPEED FAN=${this.name} SPEED=${newVal}`
         if (this.type === 'led')

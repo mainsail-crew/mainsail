@@ -98,7 +98,8 @@ export interface GuiState {
     presets?: GuiPresetsState
     remoteprinters?: GuiRemoteprintersState
     uiSettings: {
-        theme: 'dark' | 'light'
+        mode: 'dark' | 'light'
+        theme: string
         logo: string
         primary: string
         displayCancelPrint: boolean
@@ -107,6 +108,7 @@ export interface GuiState {
         confirmOnEmergencyStop: boolean
         confirmOnCoolDown: boolean
         confirmOnPowerDeviceChange: boolean
+        confirmOnCancelJob: boolean
         boolBigThumbnail: boolean
         bigThumbnailBackground: string
         boolWideNavDrawer: boolean
@@ -114,6 +116,7 @@ export interface GuiState {
         navigationStyle: 'iconsAndText' | 'iconsOnly'
         defaultNavigationStateSetting: 'alwaysOpen' | 'alwaysClosed' | 'lastState'
         powerDeviceName: string | null
+        progressAsFavicon: boolean
         hideSaveConfigForBedMash: boolean
         disableFanAnimation: boolean
         boolManualProbeDialog: boolean
@@ -121,6 +124,11 @@ export interface GuiState {
         boolScrewsTiltAdjustDialog: boolean
         tempchartHeight: number
         hideUpdateWarnings: boolean
+        printstatusThumbnailZoom: boolean
+        dashboardFilesLimit: number
+        dashboardFilesFilter: GuiStateUiSettingsDashboardFilesFilter[]
+        dashboardHistoryLimit: number
+        hideOtherInstances: boolean
     }
     view: {
         blockFileUpload: boolean
@@ -167,6 +175,8 @@ export interface GuiState {
             hidePrintStatus: string[]
             hideColums: string[]
             selectedJobs: ServerHistoryStateJob[]
+            showMaintenanceEntries: boolean
+            showPrintJobs: boolean
         }
         jobqueue: {
             countPerPage: number
@@ -208,3 +218,5 @@ export interface GuiStateLayoutoption {
     name: string
     visible: boolean
 }
+
+export type GuiStateUiSettingsDashboardFilesFilter = 'new' | 'failed' | 'completed'

@@ -72,11 +72,13 @@ export function formatConsoleMessage(message: string): string {
     message = message.replace(/\n\/\/ /g, '\n')
     // remove echo
     message = message.replace(/^echo:/g, '')
-    message = message.replace(/^echo: /g, '')
+    // remove debug
+    message = message.replace(/^debug:/g, '')
     // replace linebreaks with html <br>
     message = message.replace('\n// ', '<br>')
     message = message.replace(/\r\n|\r|\n/g, '<br>')
-    return message
+
+    return message.trim()
 }
 
 export const convertName = (name: string): string => {
@@ -112,30 +114,30 @@ export const formatFrequency = (frequency: number): string => {
     return Math.max(frequency, 0.1).toFixed() + units[i]
 }
 
-export const formatPrintTime = (totalSeconds: number): string => {
-    if (totalSeconds) {
-        let output = ''
+export const formatPrintTime = (totalSeconds: number, boolDays = true): string => {
+    if (!totalSeconds) return '--'
 
+    const output: string[] = []
+
+    if (boolDays) {
         const days = Math.floor(totalSeconds / (3600 * 24))
         if (days) {
             totalSeconds %= 3600 * 24
-            output += days + 'd'
+            output.push(`${days}d`)
         }
-
-        const hours = Math.floor(totalSeconds / 3600)
-        totalSeconds %= 3600
-        if (hours) output += ' ' + hours + 'h'
-
-        const minutes = Math.floor(totalSeconds / 60)
-        if (minutes) output += ' ' + minutes + 'm'
-
-        const seconds = totalSeconds % 60
-        if (seconds) output += ' ' + seconds.toFixed(0) + 's'
-
-        return output
     }
 
-    return '--'
+    const hours = Math.floor(totalSeconds / 3600)
+    totalSeconds %= 3600
+    if (hours) output.push(`${hours}h`)
+
+    const minutes = Math.floor(totalSeconds / 60)
+    if (minutes) output.push(`${minutes}m`)
+
+    const seconds = totalSeconds % 60
+    if (seconds) output.push(`${seconds.toFixed(0)}s`)
+
+    return output.join(' ')
 }
 
 export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortDesc: boolean[]): FileStateFile[] => {
@@ -281,4 +283,11 @@ export function sortResolutions(a: string, b: string) {
     const bSplit = parseInt(b.split('x')[0])
 
     return aSplit - bSplit
+}
+
+export function escapePath(path: string): string {
+    return path
+        .split('/')
+        .map((part) => encodeURIComponent(part))
+        .join('/')
 }

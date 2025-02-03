@@ -62,8 +62,8 @@
                         hoverName === object.name
                             ? primaryColor
                             : excluded_objects.includes(object.name)
-                            ? '#6668'
-                            : '#bbb'
+                              ? '#6668'
+                              : '#bbb'
                     "
                     @mouseover="showObjectTooltip(object.name)"
                     @mouseout="hideObjectTooltip"

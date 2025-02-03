@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { CommandHelp } from '@/store/printer/types'
 
 @Component
 export default class ZoffsetMixin extends Vue {
@@ -11,8 +10,9 @@ export default class ZoffsetMixin extends Vue {
     get z_gcode_offset() {
         return this.homing_origin.length > 1 ? Math.round(this.homing_origin[2] * 1000) / 1000 : 0
     }
-    get helplist() {
-        return this.$store.state.printer.helplist ?? []
+
+    get commands() {
+        return this.$store.state.printer.gcode?.commands ?? {}
     }
 
     get settings() {
@@ -30,24 +30,23 @@ export default class ZoffsetMixin extends Vue {
     }
 
     get endstop_pin() {
-        const stepperConfig = this.settings[this.stepper_name] ?? {}
-
-        return stepperConfig?.endstop_pin
+        return this.settings[this.stepper_name]?.endstop_pin?.trim() ?? null
     }
 
     get zOffset(): number {
         return this.$store.state.printer?.gcode_move?.homing_origin[2].toFixed(3)
     }
     get isEndstopProbe() {
-        return this.endstop_pin.search('probe:z_virtual_endstop') !== -1
+        // remove spaces and search for probe:z_virtual_endstop
+        return this.endstop_pin.replaceAll(' ', '').search('probe:z_virtual_endstop') !== -1
     }
 
     get existZOffsetApplyProbe() {
-        return this.helplist.findIndex((gcode: CommandHelp) => gcode.commandLow === 'z_offset_apply_probe') !== -1
+        return 'Z_OFFSET_APPLY_PROBE' in this.commands
     }
 
     get existZOffsetApplyEndstop() {
-        return this.helplist.findIndex((gcode: CommandHelp) => gcode.commandLow === 'z_offset_apply_endstop') !== -1
+        return 'Z_OFFSET_APPLY_ENDSTOP' in this.commands
     }
 
     get showSaveButton() {
