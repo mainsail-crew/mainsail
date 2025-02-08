@@ -359,10 +359,9 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get configFileStructure() {
-        if (!['conf', 'cfg'].includes(this.fileExtension)) {
-            this.fileStructureSidebar = false
-            return null
-        }
+        this.fileStructureSidebar = false
+
+        if (!['conf', 'cfg'].includes(this.fileExtension)) return null
 
         const lines = this.sourcecode.split(/\n/gi)
         const regex = /^[^#\S]*?(\[(?<section>.*?)]|(?<name>\w+)\s*?[:=])/gim
@@ -387,7 +386,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
                 continue
             }
 
-            if (match['groups']['name']) {
+            if (structure.length && match['groups']['name']) {
                 structure[structure.length - 1]['children'].push({
                     name: match['groups']['name'],
                     type: 'item',
@@ -396,7 +395,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
             }
         }
 
-        this.fileStructureSidebar = true
+        if (structure.length > 0) this.fileStructureSidebar = true
         return structure
     }
 
