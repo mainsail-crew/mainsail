@@ -358,14 +358,10 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get fileStructureSidebar() {
-        window.console.log('get fileStructureSidebar', this.$store.state.gui.editor.fileStructureSidebar)
-
         return this.$store.state.gui.editor.fileStructureSidebar
     }
 
     set fileStructureSidebar(newVal) {
-        window.console.log('set fileStructureSidebar', newVal)
-
         this.$store.dispatch('gui/saveSetting', { name: 'editor.fileStructureSidebar', value: newVal })
     }
 
@@ -412,8 +408,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     toggleFileStructure() {
-        window.console.log('toggleFileStructure', this.fileStructureSidebar)
-
         this.fileStructureSidebar = !this.fileStructureSidebar
     }
 
