@@ -881,6 +881,7 @@
             "NOMacros": "マクロが見つかりませんでした...",
             "NoMacrosInGroup": "このグループにはマクロがありません。",
             "Primary": "一次",
+            "Search": "検索",
             "Secondary": "二次",
             "ShowInStatePaused": "プリンターが一時停止のとき表示/隠す。",
             "ShowInStatePrinting": "プリンターが印刷中のとき表示/隠す。",

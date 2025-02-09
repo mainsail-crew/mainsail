@@ -260,6 +260,10 @@
                     </v-row>
                 </template>
                 <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.AvailableMacros') }}</h3>
+                <settings-row :title="$t('Settings.MacrosTab.Search')">
+                    <v-text-field v-model="searchMacros" hide-details outlined dense></v-text-field>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <template v-if="availableMacros.length">
                     <template v-for="(macro, index) in availableMacros">
                         <v-divider v-if="index" :key="'availableMacro_deliver_' + index" class="my-2"></v-divider>
@@ -333,6 +337,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
 
     private boolFormEdit = false
     private editGroupId: string | null = ''
+    private searchMacros: string = '';
 
     get groupColors() {
         return [
@@ -377,7 +382,10 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
     }
 
     get allMacros() {
-        return this.$store.getters['printer/getMacros'] ?? []
+        const macros = this.$store.getters['printer/getMacros'] ?? []
+        return macros.filter((macro: any) => {
+            return macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) || macro.description.toLowerCase().includes(this.searchMacros.toLowerCase())
+        });
     }
 
     get availableMacros() {

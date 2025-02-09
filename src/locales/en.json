@@ -1071,6 +1071,7 @@
             "NOMacros": "No macros found...",
             "NoMacrosInGroup": "No macros in this group.",
             "Primary": "primary",
+            "Search": "Search",
             "Secondary": "secondary",
             "ShowInStatePaused": "Show/hide if printer is paused.",
             "ShowInStatePrinting": "Show/hide if printer is printing.",

@@ -1,6 +1,10 @@
 <template>
     <v-card-text>
         <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.Macros') }}</h3>
+        <settings-row :title="$t('Settings.MacrosTab.Search')">
+            <v-text-field v-model="searchMacros" hide-details outlined dense></v-text-field>
+        </settings-row>
+        <v-divider class="my-2"></v-divider>
         <template v-if="macros.length">
             <div v-for="(macro, index) in macros" :key="index">
                 <v-divider v-if="index" class="my-2"></v-divider>
@@ -31,8 +35,13 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
     components: { SettingsRow },
 })
 export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
+    searchMacros: string = '';
+
     get macros() {
-        return this.$store.getters['printer/getMacros'] ?? []
+        const macros = this.$store.getters['printer/getMacros'] ?? []
+        return macros.filter((macro: any) => {
+            return macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) || macro.description.toLowerCase().includes(this.searchMacros.toLowerCase())
+        });
     }
 
     get hiddenMacros() {
