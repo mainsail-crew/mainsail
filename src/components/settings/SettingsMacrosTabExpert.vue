@@ -337,7 +337,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
 
     private boolFormEdit = false
     private editGroupId: string | null = ''
-    private searchMacros: string = '';
+    private searchMacros: string = ''
 
     get groupColors() {
         return [
@@ -385,7 +385,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         const macros = this.$store.getters['printer/getMacros'] ?? []
         return macros.filter((macro: any) => {
             return macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) || macro.description.toLowerCase().includes(this.searchMacros.toLowerCase())
-        });
+        })
     }
 
     get availableMacros() {
@@ -411,12 +411,13 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         return macros
     }
 
-    set editGroupMacros(newVal) {}
+    set editGroupMacros(newVal) {
+    }
 
     existsGroupName(name: string) {
         return (
             this.groups.findIndex(
-                (group: GuiMacrosStateMacrogroup) => group.name === name && group.id != this.editGroupId
+                (group: GuiMacrosStateMacrogroup) => group.name === name && group.id != this.editGroupId,
             ) >= 0
         )
     }

@@ -31,17 +31,18 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+
 @Component({
     components: { SettingsRow },
 })
 export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
-    searchMacros: string = '';
+    searchMacros: string = ''
 
     get macros() {
         const macros = this.$store.getters['printer/getMacros'] ?? []
         return macros.filter((macro: any) => {
             return macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) || macro.description.toLowerCase().includes(this.searchMacros.toLowerCase())
-        });
+        })
     }
 
     get hiddenMacros() {
