@@ -1,10 +1,21 @@
 <template>
     <v-card-text>
         <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.Macros') }}</h3>
-        <settings-row :title="$t('Settings.MacrosTab.Search')">
-            <v-text-field v-model="searchMacros" hide-details outlined dense></v-text-field>
-        </settings-row>
-        <v-divider class="my-2"></v-divider>
+        <v-row>
+            <v-col>
+                <v-text-field
+                    v-model="searchMacros"
+                    :append-icon="mdiMagnify"
+                    :label="$t('Settings.MacrosTab.Search')"
+                    single-line
+                    outlined
+                    clearable
+                    hide-details
+                    dense
+                    style="max-width: 300px"></v-text-field>
+                <v-spacer />
+            </v-col>
+        </v-row>
         <template v-if="macros.length">
             <div v-for="(macro, index) in macros" :key="index">
                 <v-divider v-if="index" class="my-2"></v-divider>
@@ -31,11 +42,13 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+import { mdiMagnify } from '@mdi/js'
 
 @Component({
     components: { SettingsRow },
 })
 export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
+    mdiMagnify = mdiMagnify
     searchMacros: string = ''
 
     get macros() {

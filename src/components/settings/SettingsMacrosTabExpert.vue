@@ -260,10 +260,21 @@
                     </v-row>
                 </template>
                 <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.AvailableMacros') }}</h3>
-                <settings-row :title="$t('Settings.MacrosTab.Search')">
-                    <v-text-field v-model="searchMacros" hide-details outlined dense></v-text-field>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
+                <v-row>
+                    <v-col>
+                        <v-text-field
+                            v-model="searchMacros"
+                            :append-icon="mdiMagnify"
+                            :label="$t('Settings.MacrosTab.Search')"
+                            single-line
+                            outlined
+                            clearable
+                            hide-details
+                            dense
+                            style="max-width: 300px"></v-text-field>
+                        <v-spacer />
+                    </v-col>
+                </v-row>
                 <template v-if="availableMacros.length">
                     <template v-for="(macro, index) in availableMacros">
                         <v-divider v-if="index" :key="'availableMacro_deliver_' + index" class="my-2"></v-divider>
@@ -312,6 +323,7 @@ import {
     mdiDragVertical,
     mdiPalette,
     mdiPencil,
+    mdiMagnify,
 } from '@mdi/js'
 
 @Component({
@@ -329,6 +341,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
     mdiPlus = mdiPlus
     mdiDragVertical = mdiDragVertical
     mdiPalette = mdiPalette
+    mdiMagnify = mdiMagnify
 
     private rules = {
         required: (value: string) => value !== '' || 'required',
