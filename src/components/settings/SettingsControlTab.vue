@@ -15,7 +15,7 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <template v-if="['circle', 'cross'].includes(controlStyle) && actionOptions.length > 1">
-                    <settings-row :title="'Overwrite action button'">
+                    <settings-row :title="$t('Settings.ControlTab.OverwriteActionButton')">
                         <v-select v-model="actionButton" :items="actionOptions" outlined dense hide-details attach />
                     </settings-row>
                     <v-divider class="my-2" />

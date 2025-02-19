@@ -166,7 +166,6 @@
         "HideTemperatures": "Hide temperatures",
         "HideTimelapse": "Hide Timelapse",
         "Search": "Search",
-        "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
     },
     "CoolDownDialog": {
@@ -999,6 +998,7 @@
             "MoveDistancesInMm": "Move distance increments (in mm)",
             "MoveDistancesXYInMm": "Move distance increments X & Y axes (in mm)",
             "MoveDistancesZInMm": "Move distance increments Z axis (in mm)",
+            "OverwriteActionButton": "Overwrite action button",
             "QuadGantryLevel": "Quad Gantry Level{isDefault}",
             "SpeedEInMms": "Extrusion speed presets (in mm/s)",
             "SpeedXY": "Movement speed X & Y axes",
