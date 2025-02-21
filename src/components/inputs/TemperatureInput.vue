@@ -29,11 +29,11 @@
             </template>
             <v-list dense class="py-0">
                 <v-list-item
-                    v-for="preset of presets"
-                    :key="preset.index"
+                    v-for="(preset, index) of presets"
+                    :key="index"
                     link
                     style="min-height: 32px"
-                    @click="doSend(`${command} ${attributeName}=${name} TARGET=${preset.value}`)">
+                    @click="sendCommand(preset.value)">
                     <div class="_preset">
                         <v-icon v-if="preset.value === 0" else color="primary" small class="_preset-icon">
                             {{ mdiSnowflake }}
@@ -60,7 +60,7 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
     mdiFire = mdiFire
     mdiMenuDown = mdiMenuDown
 
-    private value: any = 0
+    value: any = 0
 
     @Prop({ type: String, required: true }) declare readonly name: string
     @Prop({ type: Number, required: true, default: 0 }) declare readonly target: number
@@ -68,27 +68,59 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
     @Prop({ type: Number, required: true }) declare readonly max_temp: number
     @Prop({ type: String, required: true }) declare readonly command: string
     @Prop({ type: String, required: true }) declare readonly attributeName: string
-    @Prop({ type: Array, default: [] }) declare presets: number[]
+    @Prop({ type: Array, default: [] }) declare presets: { value: number; text: string }[]
+
+    get temperatureWait() {
+        return this.$store.state.printer.heaters?.temperature_wait ?? null
+    }
 
     setTemps(): void {
         if (typeof this.value === 'object') this.value = this.value.value ?? 0
         if (this.value === null) this.value = 0
+        if (typeof this.value !== 'number') this.value = parseFloat(this.value)
 
+        // break if target temp is identical to input temp
+        if (this.target === this.value) {
+            return
+        }
+
+        // break when input temp is higher ten max_temp
         if (this.value > this.max_temp) {
             this.value = { value: this.target, text: this.target }
             this.$toast.error(
                 this.$t('Panels.TemperaturePanel.TempTooHigh', { name: this.name, max: this.max_temp }) + ''
             )
-        } else if (this.value < this.min_temp && this.value != 0) {
+
+            return
+        }
+
+        if (this.value < this.min_temp && this.value != 0) {
             this.value = { value: this.target, text: this.target }
             this.$toast.error(
                 this.$t('Panels.TemperaturePanel.TempTooLow', { name: this.name, min: this.min_temp }) + ''
             )
-        } else if (this.target !== parseFloat(this.value)) {
-            const gcode = this.command + ' ' + this.attributeName + '=' + this.name + ' TARGET=' + this.value
-            this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-            this.$socket.emit('printer.gcode.script', { script: gcode })
+
+            return
         }
+
+        this.sendCommand(this.value)
+    }
+
+    sendCommand(newTemp: number) {
+        // send api call to interrupt wait command
+        if (this.temperatureWait !== null && this.command === 'SET_HEATER_TEMPERATURE') {
+            this.$socket.emit('printer.heaters.set_target_temperature', {
+                heater: this.name,
+                target: newTemp,
+            })
+
+            return
+        }
+
+        // send gcode to set target temperature
+        const gcode = this.command + ' ' + this.attributeName + '=' + this.name + ' TARGET=' + newTemp
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
     mounted() {
