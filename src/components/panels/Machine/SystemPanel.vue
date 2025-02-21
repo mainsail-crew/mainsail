@@ -12,14 +12,12 @@
             </v-btn>
         </template>
         <v-card-text class="px-0 py-2">
-            <div v-for="(mcu, index) of mcus" :key="mcu.name">
-                <v-divider v-if="index" class="my-2" />
-                <system-panel-mcu :mcu="mcu" />
-            </div>
-            <div v-if="hostStats">
-                <v-divider v-if="mcus.length" class="my-2" />
-                <system-panel-host />
-            </div>
+            <template v-for="(mcu, index) of mcus">
+                <v-divider v-if="index" :key="`divider_${mcu}`" class="my-2" />
+                <system-panel-mcu :key="`mcu_entry_${mcu}`" :name="mcu" />
+            </template>
+            <v-divider v-if="mcus.length" class="my-2" />
+            <system-panel-host />
         </v-card-text>
         <devices-dialog :show-dialog="dialogDevices" @close="dialogDevices = false" />
     </panel>
@@ -44,9 +42,9 @@ export default class SystemPanel extends Mixins(BaseMixin) {
     dialogDevices = false
 
     get mcus() {
-        const mcus = this.$store.getters['printer/getMcus'] ?? []
+        const objectNames = Object.keys(this.$store.state.printer) ?? []
 
-        return caseInsensitiveSort(mcus, 'name')
+        return objectNames.filter((name) => name.startsWith('mcu ') || name === 'mcu').sort()
     }
 
     get hostStats() {
@@ -54,9 +52,3 @@ export default class SystemPanel extends Mixins(BaseMixin) {
     }
 }
 </script>
-
-<style scoped>
-.cursor--pointer {
-    cursor: pointer;
-}
-</style>
