@@ -19,9 +19,19 @@
                     {{ question }}
                 </p>
             </v-card-text>
-            <start-print-dialog-spoolman v-if="moonrakerComponents.includes('spoolman')" :file="file" />
+            <v-card-text v-if="file.filament_change_count" class="pb-0">
+                <p class="body-2">
+                    {{
+                        $t('Dialogs.StartPrint.ToolChangeCount', {
+                            count: file.filament_change_count,
+                        })
+                    }}
+                </p>
+            </v-card-text>
+            <start-print-dialog-afc v-if="afcEnabled" :file="file" @tool-count="validateToolCount" />
+            <start-print-dialog-spoolman v-else-if="moonrakerComponents.includes('spoolman')" :file="file" />
             <template v-if="moonrakerComponents.includes('timelapse')">
-                <v-divider v-if="!moonrakerComponents.includes('spoolman')" class="mt-3 mb-2" />
+                <v-divider v-if="!moonrakerComponents.includes('spoolman') || !afcEnabled" class="mt-3 mb-2" />
                 <v-card-text class="py-0">
                     <settings-row :title="$t('Dialogs.StartPrint.Timelapse')">
                         <v-switch v-model="timelapseEnabled" hide-details class="mt-0" />
@@ -35,7 +45,7 @@
                 <v-btn
                     color="primary"
                     text
-                    :disabled="printerIsPrinting || !klipperReadyForGui"
+                    :disabled="printerIsPrinting || !klipperReadyForGui || !validToolCount"
                     @click="startPrint(file.filename)">
                     {{ $t('Dialogs.StartPrint.Print') }}
                 </v-btn>
@@ -60,6 +70,7 @@ import { defaultBigThumbnailBackground } from '@/store/variables'
 })
 export default class StartPrintDialog extends Mixins(BaseMixin) {
     mdiPrinter3d = mdiPrinter3d
+    validToolCount = true
 
     @Prop({ required: true, default: false })
     declare readonly bool: boolean
@@ -72,6 +83,10 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
 
     get timelapseEnabled() {
         return this.$store.state.server.timelapse?.settings?.enabled ?? false
+    }
+
+    get afcEnabled() {
+        return 'AFC' in this.$store.state.printer
     }
 
     set timelapseEnabled(newVal) {
@@ -127,6 +142,10 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
         filename = (this.currentPath + '/' + filename).substring(1)
         this.closeDialog()
         this.$socket.emit('printer.print.start', { filename: filename }, { action: 'switchToDashboard' })
+    }
+
+    validateToolCount(valid: boolean) {
+        this.validToolCount = valid
     }
 
     closeDialog() {

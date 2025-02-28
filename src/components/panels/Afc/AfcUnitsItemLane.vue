@@ -1,5 +1,5 @@
 <template>
-    <div :class="[{ active: activeLane }]">
+    <div :class="laneStateClass">
         <div class="spool-card-header">
             <v-menu v-if="lanePrep" :offset-y="true" :close-on-content-click="true" left>
                 <template #activator="{ on: onMenu, attrs }">
@@ -52,6 +52,12 @@
                     <v-list-item v-if="!toolLoaded" @click="handleLaneAction($event, 'eject')">
                         <v-list-item-title>{{ $t('Panels.AfcPanel.Eject') }}</v-list-item-title>
                     </v-list-item>
+                    <v-list-item v-if="!toolLoaded && errorState" @click="handleLaneAction($event, 'setLoad')">
+                        <v-list-item-title>{{ $t('Panels.AfcPanel.SetLoadState') }}</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item v-if="toolLoaded && errorState" @click="handleLaneAction($event, 'unSetLoad')">
+                        <v-list-item-title>{{ $t('Panels.AfcPanel.ClearLoadState') }}</v-list-item-title>
+                    </v-list-item>
                 </v-list>
             </v-menu>
             <span v-else :class="laneStatusClass" :style="{ cursor: 'default' }">
@@ -87,6 +93,7 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ExtruderMixin from '@/components/mixins/extruder'
+import AfcMixin from '@/components/mixins/afc'
 import { Lane } from '@/store/server/afc/types'
 import AfcUnitsItemLaneCard from '@/components/panels/Afc/AfcUnitsItemLaneCard.vue'
 import AfcUnitsItemLaneCardEmpty from '@/components/panels/Afc/AfcUnitsItemLaneCardEmpty.vue'
@@ -94,12 +101,8 @@ import AfcUnitsItemLaneCardEmpty from '@/components/panels/Afc/AfcUnitsItemLaneC
 @Component({
     components: { AfcUnitsItemLaneCard, AfcUnitsItemLaneCardEmpty },
 })
-export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
+export default class AfcUnits extends Mixins(AfcMixin, BaseMixin, ExtruderMixin) {
     @Prop({ type: Object, required: true }) readonly lane!: Lane
-
-    get mapList(): string[] {
-        return this.$store.getters['server/afc/getMapList']
-    }
 
     get laneReady() {
         return this.lane.load && this.lane.prep
@@ -111,14 +114,6 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
 
     get toolLoaded() {
         return this.lane.tool_loaded
-    }
-
-    get currentLane(): Lane {
-        return this.$store.getters['server/afc/getCurrentLane']
-    }
-
-    get currentLoad(): Lane {
-        return this.$store.getters['server/afc/getCurrentLoad']
     }
 
     get activeLane(): boolean {
@@ -135,16 +130,16 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
                 : 'error--text'
     }
 
+    get laneStateClass() {
+        return this.activeLane && this.errorState ? 'error-load' : this.activeLane ? 'active-load' : ''
+    }
+
     get laneStatus() {
         return this.lane.prep ? this.$t('Panels.AfcPanel.LaneErrorLoad') : this.$t('Panels.AfcPanel.LaneEmpty')
     }
 
     handleMapChange(event: Event, option: string) {
-        console.log(`Selected value for ${this.lane.name}: ${option}`)
-
-        //Example G-Code Call for you
         const gcode = `SET_MAP LANE=${this.lane.name} MAP=${option}`
-        console.log('Dispatching G-code:', gcode)
 
         this.$nextTick(async () => {
             try {
@@ -175,6 +170,14 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
                 } else if (action === 'eject') {
                     gcode = `LANE_UNLOAD LANE=${this.lane.name}`
                     await this.$store.dispatch('printer/sendGcode', gcode)
+                } else if (action === 'unSetLoad') {
+                    gcode = `UNSET_LANE_LOADED`
+                    await this.$store.dispatch('printer/sendGcode', gcode)
+                } else if (action === 'setLoad') {
+                    gcode = `SET_LANE_LOADED LANE=${this.lane.name}`
+                    await this.$store.dispatch('printer/sendGcode', gcode)
+                } else {
+                    console.warn('Unknown action:', action)
                 }
             } catch (error) {
                 console.error('Failed to send G-code:', error)
@@ -193,8 +196,13 @@ export default class AfcUnits extends Mixins(BaseMixin, ExtruderMixin) {
     justify-content: space-evenly;
 }
 
-.active {
+.active-load {
     border: 1px solid var(--v-primary-base);
+    box-sizing: border-box;
+}
+
+.error-load {
+    border: 1px solid var(--v-error-base);
     box-sizing: border-box;
 }
 </style>

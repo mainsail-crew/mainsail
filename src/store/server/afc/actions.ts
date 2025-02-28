@@ -6,6 +6,28 @@ export const actions: ActionTree<AFCState, RootState> = {
     reset({ commit }) {
         commit('reset')
     },
+    loadUnitIcons({ commit, rootState }) {
+        const printer = rootState.printer
+        if (!printer || !printer['AFC']) {
+            commit('reset')
+            return
+        }
+
+        const afcData = printer['AFC']
+        const acceptExtensions = ['svg', 'jpg', 'jpeg', 'png', 'gif']
+
+        afcData.units?.forEach((unitEntry: string) => {
+            const [type, name]: [string, string] = unitEntry.split(' ') as [string, string]
+            if (!type || !name) {
+                console.error(`Invalid unit entry: ${unitEntry}`)
+                return
+            }
+
+            const test = this.getters['files/getThemeFileUrl'](type, acceptExtensions)
+
+            console.log(test)
+        })
+    },
 
     fetchAFCData({ commit, rootState }) {
         const printer = rootState.printer
@@ -182,6 +204,12 @@ export const actions: ActionTree<AFCState, RootState> = {
             unit.lanes.sort((a, b) => a.lane - b.lane)
         })
 
+        lanes.sort((a, b) => {
+            const mapA = parseInt(a.map.replace('T', ''), 10)
+            const mapB = parseInt(b.map.replace('T', ''), 10)
+            return mapA - mapB
+        })
+
         const laneList = Array.from(laneSet).sort()
         laneList.unshift('NONE')
         const mapList = Array.from(mapSet).sort()
@@ -192,12 +220,9 @@ export const actions: ActionTree<AFCState, RootState> = {
         commit('setLaneList', laneList)
         commit('setMapList', mapList)
         commit('setUnits', units)
+        commit('setLanes', lanes)
         commit('setCurrentLoad', lanes.find((lane) => afcData.current_load === lane.name) || null)
         commit('setCurrentLane', lanes.find((lane) => afcData.current_lane === lane.name) || null)
         commit('setNextLane', lanes.find((lane) => afcData.next_lane === lane.name) || null)
-        commit('setCurrentState', afcData.current_state || '')
-        commit('setCurrentToolchange', afcData.current_toolchange || 0)
-        commit('setNumberToolchange', afcData.number_toolchange || 0)
-        commit('setMessage', afcData.message || { type: '', message: '' })
     },
 }

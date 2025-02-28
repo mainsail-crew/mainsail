@@ -12,7 +12,7 @@
                         <span class="text--filament">{{ name }}</span>
                         <template v-if="location">
                             <br />
-                            <small>{{ $t('Panels.SpoolmanPanel.Location') }}: {{ location }}</small>
+                            <small>{{ $t('Panels.AfcSpoolPanel.Location') }}: {{ location }}</small>
                         </template>
                         <template v-if="spool.comment">
                             <br />
@@ -42,7 +42,7 @@
                         </v-btn>
                     </td>
                 </template>
-                <span>{{ $t('Panels.AfcPanel.OpenSpoolInfo') }}</span>
+                <span>{{ $t('Panels.AfcSpoolPanel.OpenSpoolInfo') }}</span>
             </v-tooltip>
         </td>
     </tr>

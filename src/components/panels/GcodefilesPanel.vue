@@ -294,7 +294,20 @@
                             v-for="col in tableColumns"
                             :key="col.value"
                             :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
-                            {{ outputValue(col, item) }}
+                            <template v-if="col.outputType === 'color' && outputValue(col, item) !== '--'">
+                                <div class="d-flex align-center py-1">
+                                    <ColorBox
+                                        v-for="(color, id) in item.filament_colors"
+                                        :key="color"
+                                        :color="color"
+                                        :weight="
+                                            item.filament_weights[id] ? `${item.filament_weights[id]} g` : '0 g'
+                                        " />
+                                </div>
+                            </template>
+                            <template v-else>
+                                {{ outputValue(col, item) }}
+                            </template>
                             <template v-if="col.value === 'slicer'">
                                 <br />
                                 <small v-if="item.slicer_version">{{ item.slicer_version }}</small>
@@ -612,6 +625,7 @@ import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 import ControlMixin from '@/components/mixins/control'
 import PathNavigation from '@/components/ui/PathNavigation.vue'
+import ColorBox from '@/components/ui/ColorBox.vue'
 
 interface contextMenu {
     shown: boolean
@@ -644,11 +658,11 @@ interface tableColumnSetting {
     sortable?: boolean
     class?: string
     pos?: number
-    outputType?: 'string' | 'date' | 'length' | 'weight' | 'filesize' | 'temp' | 'time'
+    outputType?: 'string' | 'date' | 'length' | 'weight' | 'filesize' | 'temp' | 'time' | 'color'
 }
 
 @Component({
-    components: { StartPrintDialog, AddBatchToQueueDialog, Panel, SettingsRow, PathNavigation, draggable },
+    components: { StartPrintDialog, AddBatchToQueueDialog, Panel, SettingsRow, PathNavigation, draggable, ColorBox },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiContentCopy = mdiContentCopy
@@ -882,6 +896,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                 outputType: 'string',
             },
             {
+                text: this.$t('Files.FilamentColor').toString(),
+                value: 'filament_colors',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'color',
+            },
+            {
                 text: this.$t('Files.FilamentUsage').toString(),
                 value: 'filament_total',
                 visible: true,
@@ -901,6 +922,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'time',
+            },
+            {
+                text: this.$t('Files.TotalToolChanges').toString(),
+                value: 'filament_change_count',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'string',
             },
             {
                 text: this.$t('Files.LastStartTime').toString(),
@@ -1457,7 +1485,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     outputValue(col: any, item: FileStateGcodefile) {
         const value = col.value in item ? item[col.value] : null
 
-        if (value === null) return '--'
+        if (value === null || (Array.isArray(value) && value.length === 0)) return '--'
 
         switch (col.outputType) {
             case 'filesize':
@@ -1479,6 +1507,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
             case 'weight':
                 return value.toFixed(2) + ' g'
+
+            case 'color':
+                return value
 
             default:
                 return value

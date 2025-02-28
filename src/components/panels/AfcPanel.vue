@@ -101,11 +101,12 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
+import AfcMixin from '@/components/mixins/afc'
 import { PrinterStateMacro } from '@/store/printer/types'
 import Panel from '@/components/ui/Panel.vue'
 import AFCLogo from '@/components/ui/AFCLogo.vue'
 import { mdiDotsVertical, mdiCloseCircle, mdiMessageProcessingOutline, mdiAlertOutline, mdiWrench } from '@mdi/js'
-import { Extruder, Unit, Message } from '@/store/server/afc/types'
+import { Message } from '@/store/server/afc/types'
 
 @Component({
     components: {
@@ -113,7 +114,7 @@ import { Extruder, Unit, Message } from '@/store/server/afc/types'
         AFCLogo,
     },
 })
-export default class AfcPanel extends Mixins(BaseMixin, ControlMixin) {
+export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) {
     mdiDotsVertical = mdiDotsVertical
     mdiCloseCircle = mdiCloseCircle
     mdiWrench = mdiWrench
@@ -132,19 +133,11 @@ export default class AfcPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get showPanel(): boolean {
-        return this.klipperReadyForGui /* && Check if AFC is initialized */
-    }
-
-    get toolData(): Extruder[] {
-        return this.$store.getters['server/afc/getExtruders']
+        return this.klipperReadyForGui && this.existsAfc
     }
 
     get toolCount(): number {
         return Object.keys(this.toolData).length
-    }
-
-    get unitsData(): Unit[] {
-        return this.$store.getters['server/afc/getUnits']
     }
 
     get AFCCalibrate(): boolean {
@@ -197,9 +190,8 @@ export default class AfcPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     infoMessage() {
-        const message = this.$store.getters['server/afc/getMessage']
-        if (message.message !== this.old_message.message) {
-            this.display_message = message
+        if (this.afcMessage.message !== this.old_message.message) {
+            this.display_message = this.afcMessage
         }
     }
 

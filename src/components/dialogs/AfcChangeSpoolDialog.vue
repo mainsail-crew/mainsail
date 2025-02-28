@@ -2,7 +2,7 @@
     <div>
         <v-dialog v-model="showDialog" width="800" persistent :fullscreen="isMobile">
             <panel
-                :title="$t('Panels.SpoolmanPanel.ChangeSpool')"
+                :title="$t('Panels.AfcSpoolPanel.ChangeSpool')"
                 :icon="mdiAdjust"
                 card-class="afc-change-spool-dialog"
                 :margin-bottom="false">
@@ -17,7 +17,7 @@
                         v-if="spoolManagerUrl"
                         v-model="search"
                         :append-icon="mdiMagnify"
-                        :label="$t('Panels.SpoolmanPanel.Search')"
+                        :label="$t('Panels.AfcSpoolPanel.Search')"
                         outlined
                         dense
                         hide-details
@@ -30,11 +30,11 @@
                                 class="px-2 minwidth-0 ml-3"
                                 :loading="loadings.includes('ejectSpool')"
                                 v-on="onTooltip"
-                                @click="ejectSpool">
+                                @click="unloadSpool = true">
                                 <v-icon>{{ mdiEject }}</v-icon>
                             </v-btn>
                         </template>
-                        <span>{{ $t('Panels.AfcPanel.SpoolEject') }}</span>
+                        <span>{{ $t('Panels.AfcSpoolPanel.SpoolEject') }}</span>
                     </v-tooltip>
                     <v-tooltip top>
                         <template #activator="{ on: onTooltip, attrs }">
@@ -48,7 +48,7 @@
                                 <v-icon>{{ mdiRefresh }}</v-icon>
                             </v-btn>
                         </template>
-                        <span>{{ $t('Panels.SpoolmanPanel.Refresh') }}</span>
+                        <span>{{ $t('Panels.AfcSpoolPanel.Refresh') }}</span>
                     </v-tooltip>
                     <v-tooltip top>
                         <template #activator="{ on: onTooltip, attrs }">
@@ -61,7 +61,7 @@
                                 <v-icon>{{ mdiDatabase }}</v-icon>
                             </v-btn>
                         </template>
-                        <span>{{ $t('Panels.SpoolmanPanel.OpenSpoolManager') }}</span>
+                        <span>{{ $t('Panels.AfcSpoolPanel.OpenSpoolManager') }}</span>
                     </v-tooltip>
                 </v-card-title>
                 <v-card-text class="px-0 pb-0">
@@ -75,10 +75,10 @@
                         :sort-desc="true"
                         :custom-filter="customFilter">
                         <template #no-data>
-                            <div class="text-center">{{ $t('Panels.SpoolmanPanel.NoSpools') }}</div>
+                            <div class="text-center">{{ $t('Panels.AfcSpoolPanel.NoSpools') }}</div>
                         </template>
                         <template #no-results>
-                            <div class="text-center">{{ $t('Panels.SpoolmanPanel.NoResults') }}</div>
+                            <div class="text-center">{{ $t('Panels.AfcSpoolPanel.NoResults') }}</div>
                         </template>
 
                         <template #item="{ item }">
@@ -141,6 +141,34 @@
                 </v-card-text>
             </panel>
         </v-dialog>
+
+        <!-- UNLOAD SPOOL DIALOG -->
+        <v-dialog v-model="unloadSpool" max-width="400">
+            <panel
+                :title="$t('Panels.AfcSpoolPanel.UnloadSpool')"
+                card-class="afc-unload-spool-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="unloadSpool = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">
+                        {{ $t('Panels.AfcSpoolPanel.UnloadSpoolQuestion') }}
+                    </p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="clearSpoolmanSpool">
+                        {{ $t('Panels.AfcSpoolPanel.No') }}
+                    </v-btn>
+                    <v-btn color="success" text @click="ejectSpool">
+                        {{ $t('Panels.AfcSpoolPanel.Yes') }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </div>
 </template>
 
@@ -169,6 +197,7 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
     filamentType = ''
     remainingWeight = 0
     spoolColor = '#ffffff'
+    unloadSpool = false
 
     @Prop({ required: true }) declare readonly showDialog: boolean
 
@@ -195,28 +224,28 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
                 sortable: false,
             },
             {
-                text: this.$t('Panels.SpoolmanPanel.Filament'),
+                text: this.$t('Panels.AfcSpoolPanel.Filament'),
                 align: 'start',
                 value: 'filament.name',
                 sortable: false,
             },
             {
-                text: this.$t('Panels.SpoolmanPanel.Material'),
+                text: this.$t('Panels.AfcSpoolPanel.Material'),
                 align: 'center',
                 value: 'filament.material',
             },
             {
-                text: this.$t('Panels.SpoolmanPanel.LastUsed'),
+                text: this.$t('Panels.AfcSpoolPanel.LastUsed'),
                 align: 'end',
                 value: 'last_used',
             },
             {
-                text: this.$t('Panels.SpoolmanPanel.Weight'),
+                text: this.$t('Panels.AfcSpoolPanel.Weight'),
                 align: 'end',
                 value: 'remaining_weight',
             },
             {
-                text: this.$t('Panels.AfcPanel.SpoolInfo'),
+                text: this.$t('Panels.AfcSpoolPanel.SpoolInfo'),
                 align: 'center',
                 value: '',
                 sortable: false,
@@ -305,6 +334,26 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
     ejectSpool() {
         if (this.laneData != null) {
+            const ejectSpool = `LANE_UNLOAD LANE=${this.laneData.name}`
+
+            this.$nextTick(async () => {
+                try {
+                    this.$socket.emit(
+                        'printer.gcode.script',
+                        { script: ejectSpool },
+                        { loading: 'macro_' + ejectSpool }
+                    )
+                } catch (error) {
+                    console.error('Failed to send G-code:', error)
+                }
+            })
+
+            this.clearSpoolmanSpool()
+        }
+    }
+
+    clearSpoolmanSpool() {
+        if (this.laneData != null) {
             const ejectSpoolman = `SET_SPOOL_ID LANE=${this.laneData.name} SPOOL_ID=`
 
             this.$nextTick(async () => {
@@ -324,7 +373,7 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
                 this.manualyClearSpool()
             }
 
-            this.close()
+            this.unloadSpool = false
         }
     }
 

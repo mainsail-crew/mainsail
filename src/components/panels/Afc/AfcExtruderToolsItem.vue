@@ -1,5 +1,5 @@
 <template>
-    <div :class="['extruder-item', { active: toolActive }]">
+    <div :class="['extruder-item', toolStateClass]">
         <div class="extruder-container">
             <div v-if="!tool.ramming" class="left-section">
                 <v-tooltip top>
@@ -52,7 +52,7 @@
             <div class="buffer-info">{{ getToolInfo().buffer }}</div>
             <div class="lane-status">
                 {{ getToolInfo().state }} :
-                <span :class="tool.lane_loaded !== '' ? 'primary--text' : 'error--text'">
+                <span :class="toolStateTextClass">
                     {{ getToolInfo().lane }}
                 </span>
             </div>
@@ -64,26 +64,15 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { Extruder, Lane } from '@/store/server/afc/types'
+import { Extruder } from '@/store/server/afc/types'
 import ControlMixin from '@/components/mixins/control'
+import AfcMixin from '@/components/mixins/afc'
 
 @Component({})
-export default class AfcExtruderToolsItem extends Mixins(BaseMixin, ControlMixin) {
+export default class AfcExtruderToolsItem extends Mixins(AfcMixin, BaseMixin, ControlMixin) {
     @Prop({ type: Object, required: true }) readonly tool!: Extruder
 
     toolActive = false
-
-    get currentLane(): Lane {
-        return this.$store.getters['server/afc/getCurrentLane']
-    }
-
-    get currentLoad(): Lane {
-        return this.$store.getters['server/afc/getCurrentLoad']
-    }
-
-    get getCurrentState(): string {
-        return this.$store.getters['server/afc/getCurrentState']
-    }
 
     get rammingState(): boolean {
         if (this.currentLoad && this.currentLoad.extruder.name === this.tool.name) {
@@ -104,13 +93,13 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin, ControlMixin
             if (this.printerIsPrintingOnly) {
                 state = `${this.$t('Panels.AfcPanel.Printing')}`
             } else {
-                state = `${this.$t(`Panels.AfcPanel.${this.getCurrentState}`)}`
+                state = `${this.$t(`Panels.AfcPanel.${this.currentState}`)}`
             }
             lane = `${this.currentLoad.name}`
             buffer = `${this.currentLoad.buffer.name}: ${this.currentLoad.buffer.state}`
             this.toolActive = true
         } else if (this.currentLane && this.currentLane.extruder.name === this.tool.name) {
-            state = `${this.$t(`Panels.AfcPanel.${this.getCurrentState}`)}`
+            state = `${this.$t(`Panels.AfcPanel.${this.currentState}`)}`
             lane = `${this.currentLane.name}`
             buffer = `${this.currentLane.buffer.name}: ${this.currentLane.buffer.state}`
             this.toolActive = true
@@ -119,9 +108,22 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin, ControlMixin
             lane = `${this.tool.lane_loaded}`
             buffer = ``
             this.toolActive = false
+        } else {
+            state = `${this.$t('Panels.AfcPanel.Idle')}`
+            lane = `${this.$t('Panels.AfcPanel.LaneLoadedNone')}`
+            buffer = `${this.$t('Panels.AfcPanel.BufferDisabled')}`
+            this.toolActive = false
         }
 
         return { state, lane, buffer }
+    }
+
+    get toolStateClass() {
+        return this.toolActive && this.errorState ? 'error-tool' : this.toolActive ? 'active-tool' : ''
+    }
+
+    get toolStateTextClass() {
+        return this.toolActive && this.errorState ? 'error--text' : this.toolActive ? 'primary--text' : ''
     }
 
     get preSensorStatus(): string {
@@ -194,8 +196,12 @@ export default class AfcExtruderToolsItem extends Mixins(BaseMixin, ControlMixin
     margin: 0 5px;
 }
 
-.active {
+.active-tool {
     border: 1px solid var(--v-primary-base);
+}
+
+.error-tool {
+    border: 1px solid var(--v-error-base);
 }
 
 .disabled {
