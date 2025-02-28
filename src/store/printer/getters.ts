@@ -780,9 +780,19 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     existsZtilt: (state) => {
-        if (!state.gcode) return false
+        // check for new Klipper gcode.commands for Z_TILT_ADJUST command
+        const commands = state.gcode?.commands ?? null
+        if (commands) {
+            return 'Z_TILT_ADJUST' in commands
+        }
 
-        return 'Z_TILT_ADJUST' in state.gcode.commands
+        // fallback for older Klipper versions
+        const settings = state.configfile?.settings ?? null
+        if (settings) {
+            return 'z_tilt' in settings
+        }
+
+        return false
     },
 
     existsBedTilt: (state) => {
