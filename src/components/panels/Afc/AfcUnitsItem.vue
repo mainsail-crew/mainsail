@@ -1,10 +1,10 @@
 <template>
     <v-expansion-panel>
         <v-expansion-panel-header>
-            <div class="unit-header" style="display: flex; align-items: center; gap: 10px">
+            <div class="unit-header">
                 <component :is="iconType" v-if="showUnitIcons" id="iconType" class="unit-icon" />
-                <div v-else style="padding-left: 10px" />
-                <h2 class="unit-title" style="margin: 0">{{ formattedUnitName }}</h2>
+                <div v-else class="pl-10" />
+                <h2 class="unit-title">{{ formattedUnitName }}</h2>
                 <span v-if="unit.hubs.length > 0" class="hub-container">
                     <strong>{{ $t('Panels.AfcPanel.Hub') }}</strong>
                     <v-tooltip top>
@@ -39,33 +39,22 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import AfcMixin from '@/components/mixins/afc'
 import AfcUnitsItemLane from '@/components/panels/Afc/AfcUnitsItemLane.vue'
 import BoxTurtleIcon from '@/components/ui/BoxTurtleIcon.vue'
 import NightOwlIcon from '@/components/ui/NightOwlIcon.vue'
-import { Unit, Lane, Hub } from '@/store/server/afc/types'
+import { Unit, Hub } from '@/store/server/afc/types'
 
 @Component({
     components: { AfcUnitsItemLane, BoxTurtleIcon, NightOwlIcon },
 })
-export default class AfcUnitsItem extends Mixins(BaseMixin) {
+export default class AfcUnitsItem extends Mixins(AfcMixin, BaseMixin) {
     @Prop({ type: Object, required: true }) readonly unit!: Unit
 
     currentHubState = false
 
     get formattedUnitName(): string {
         return String(this.unit.name).replace(/_/g, ' ')
-    }
-
-    get showUnitIcons(): boolean {
-        return this.$store.state.gui.view.afc.showUnitIcons ?? true
-    }
-
-    get currentLane(): Lane {
-        return this.$store.getters['server/afc/getCurrentLane']
-    }
-
-    get currentLoad(): Lane {
-        return this.$store.getters['server/afc/getCurrentLoad']
     }
 
     get hubStatus(): string {
@@ -122,9 +111,15 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
     margin-right: 5px;
 }
 
+.unit-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .unit-title {
     font-size: 1.5em;
-    margin-bottom: 16px;
+    margin: 0 0 5px 0;
     text-align: left;
 }
 
@@ -157,13 +152,11 @@ export default class AfcUnitsItem extends Mixins(BaseMixin) {
 }
 
 .unit-icon {
-    width: 70px;
-    height: 70px;
+    max-width: 70px;
+    max-height: 70px;
+    width: auto;
+    height: auto;
     margin-left: 10px;
-}
-
-.lane-status {
-    margin-right: 10px;
-    margin-left: 5px;
+    object-fit: contain;
 }
 </style>

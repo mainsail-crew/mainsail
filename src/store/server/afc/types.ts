@@ -1,15 +1,8 @@
 export interface AFCState {
-    data: AFCRoot
-}
-
-export interface AFCRoot {
     units: Unit[]
     current_load: Lane | null
     current_lane: Lane | null
     next_lane: Lane | null
-    current_state: string
-    current_toolchange: number
-    number_toolchange: number
     lanes: Lane[]
     hubs: Hub[]
     buffers: FilBuffer[]
@@ -17,7 +10,6 @@ export interface AFCRoot {
     laneList: string[]
     mapList: string[]
     bypass_status: boolean
-    message: Message
 }
 
 export interface Unit {

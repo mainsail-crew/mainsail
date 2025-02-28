@@ -72,6 +72,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import AfcMixin from '@/components/mixins/afc'
 import AfcChangeSpoolDialog from '@/components/dialogs/AfcChangeSpoolDialog.vue'
 import InfinityIcon from '@/components/ui/InfinityIcon.vue'
 import FilamentReelIcon from '@/components/ui/FilamentReelIcon.vue'
@@ -81,23 +82,11 @@ import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 @Component({
     components: { AfcChangeSpoolDialog, InfinityIcon, FilamentReelIcon },
 })
-export default class AfcUnits extends Mixins(BaseMixin) {
+export default class AfcUnits extends Mixins(BaseMixin, AfcMixin) {
     @Prop({ type: Object, required: true }) readonly lane!: Lane
 
     selectedLane: Lane | null = null // This will hold data of the clicked lane
     showChangeSpoolDialog: boolean = false
-
-    get laneList(): string[] {
-        return this.$store.getters['server/afc/getLaneList']
-    }
-
-    get showSpoolName(): boolean {
-        return this.$store.state.gui.view.afc.showSpoolName ?? true
-    }
-
-    get showInfiniteSpool(): boolean {
-        return this.$store.state.gui.view.afc.infiniteSpool ?? true
-    }
 
     get showSpoolVendor(): boolean {
         if (this.spoolManagerUrl && this.spoolmanSpool?.filament?.vendor?.name && this.lane.spool?.spool_id) {
@@ -105,10 +94,6 @@ export default class AfcUnits extends Mixins(BaseMixin) {
         } else {
             return false
         }
-    }
-
-    get spoolManagerUrl() {
-        return this.$store.state.server.config.config?.spoolman?.server ?? null
     }
 
     get active_spool(): ServerSpoolmanStateSpool | null {

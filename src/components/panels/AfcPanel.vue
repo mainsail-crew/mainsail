@@ -17,7 +17,7 @@
                     v-if="AFCCalibrate"
                     icon
                     tile
-                    :disabled="printerIsPrintingOnly"
+                    :disabled="printerIsPrintingOnly || bypassState"
                     :title="$t('Panels.AfcPanel.Calibrate')"
                     @click="calibrateAFC">
                     <v-icon small>{{ mdiWrench }}</v-icon>
@@ -70,6 +70,15 @@
             </v-container>
             <v-divider class="mt-0 mb-0" />
         </template>
+        <div v-if="bypassState" class="error--text subtitle-2 flex-nowrap bypass-active pt-2">
+            <v-icon class="mr-2 mt-0 float-left" color="error" small>
+                {{ mdiAlertOutline }}
+            </v-icon>
+            {{ $t('Panels.AfcPanel.BypassActive') }}
+            <v-icon class="ml-2 mt-0 float-left" color="error" small>
+                {{ mdiAlertOutline }}
+            </v-icon>
+        </div>
         <div v-if="showAFC">
             <v-expansion-panels v-model="toolExpandedIndex">
                 <v-expansion-panel>
@@ -98,14 +107,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
+import AfcMixin from '@/components/mixins/afc'
 import { PrinterStateMacro } from '@/store/printer/types'
 import Panel from '@/components/ui/Panel.vue'
 import AFCLogo from '@/components/ui/AFCLogo.vue'
 import { mdiDotsVertical, mdiCloseCircle, mdiMessageProcessingOutline, mdiAlertOutline, mdiWrench } from '@mdi/js'
-import { Extruder, Unit, Message } from '@/store/server/afc/types'
+import { Message } from '@/store/server/afc/types'
 
 @Component({
     components: {
@@ -113,9 +123,10 @@ import { Extruder, Unit, Message } from '@/store/server/afc/types'
         AFCLogo,
     },
 })
-export default class AfcPanel extends Mixins(BaseMixin, ControlMixin) {
+export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) {
     mdiDotsVertical = mdiDotsVertical
     mdiCloseCircle = mdiCloseCircle
+    mdiAlertOutline = mdiAlertOutline
     mdiWrench = mdiWrench
 
     intervalId: ReturnType<typeof setInterval> | null = null
@@ -132,19 +143,11 @@ export default class AfcPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get showPanel(): boolean {
-        return this.klipperReadyForGui /* && Check if AFC is initialized */
-    }
-
-    get toolData(): Extruder[] {
-        return this.$store.getters['server/afc/getExtruders']
+        return this.klipperReadyForGui && this.existsAfc
     }
 
     get toolCount(): number {
         return Object.keys(this.toolData).length
-    }
-
-    get unitsData(): Unit[] {
-        return this.$store.getters['server/afc/getUnits']
     }
 
     get AFCCalibrate(): boolean {
@@ -197,9 +200,8 @@ export default class AfcPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     infoMessage() {
-        const message = this.$store.getters['server/afc/getMessage']
-        if (message.message !== this.old_message.message) {
-            this.display_message = message
+        if (this.afcMessage.message !== this.old_message.message) {
+            this.display_message = this.afcMessage
         }
     }
 
@@ -245,12 +247,23 @@ export default class AfcPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     configureAutoExpand() {
-        if (Object.keys(this.toolData).length === 1 && this.toolExpandedIndex === null) {
+        if (Object.keys(this.toolData).length === 1 && this.toolExpandedIndex === null && !this.bypassState) {
             this.toolExpandedIndex = 0
         }
-        if (Object.keys(this.unitsData).length === 1) {
+        if (Object.keys(this.unitsData).length === 1 && !this.bypassState) {
             this.unitExpandedIndex = [0]
             this.autoExpand = true
+        }
+    }
+
+    @Watch('bypassState')
+    onBypassStateChange() {
+        if (this.bypassState) {
+            this.autoExpand = false
+            this.toolExpandedIndex = null
+            this.unitExpandedIndex = []
+        } else {
+            this.configureAutoExpand()
         }
     }
 }
@@ -266,5 +279,11 @@ export default class AfcPanel extends Mixins(BaseMixin, ControlMixin) {
     vertical-align: middle;
     user-select: none;
     margin-right: 8px;
+}
+
+.bypass-active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>

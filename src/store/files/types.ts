@@ -26,6 +26,9 @@ export interface FileStateFile {
     estimated_time?: number
     filament_total?: number
     filament_weight_total?: number
+    filament_weights?: number[]
+    filament_colors?: string
+    filament_change_count?: number
     first_layer_height?: number
     first_layer_bed_temp?: number
     first_layer_extr_temp?: number

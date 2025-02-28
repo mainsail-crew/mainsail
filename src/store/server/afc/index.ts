@@ -6,26 +6,17 @@ import { getters } from '@/store/server/afc/getters'
 
 export const getDefaultState = (): AFCState => {
     return {
-        data: {
-            units: [],
-            current_load: null,
-            current_lane: null,
-            next_lane: null,
-            current_state: '',
-            current_toolchange: 0,
-            number_toolchange: 0,
-            lanes: [],
-            buffers: [],
-            hubs: [],
-            extruders: [],
-            laneList: [],
-            mapList: [],
-            bypass_status: false,
-            message: {
-                type: '',
-                message: '',
-            },
-        },
+        units: [],
+        current_load: null,
+        current_lane: null,
+        next_lane: null,
+        lanes: [],
+        buffers: [],
+        hubs: [],
+        extruders: [],
+        laneList: [],
+        mapList: [],
+        bypass_status: false,
     }
 }
 
