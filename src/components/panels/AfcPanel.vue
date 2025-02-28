@@ -107,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import AfcMixin from '@/components/mixins/afc'
@@ -247,12 +247,23 @@ export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) 
     }
 
     configureAutoExpand() {
-        if (Object.keys(this.toolData).length === 1 && this.toolExpandedIndex === null) {
+        if (Object.keys(this.toolData).length === 1 && this.toolExpandedIndex === null && !this.bypassState) {
             this.toolExpandedIndex = 0
         }
-        if (Object.keys(this.unitsData).length === 1) {
+        if (Object.keys(this.unitsData).length === 1 && !this.bypassState) {
             this.unitExpandedIndex = [0]
             this.autoExpand = true
+        }
+    }
+
+    @Watch('bypassState')
+    onBypassStateChange() {
+        if (this.bypassState) {
+            this.autoExpand = false
+            this.toolExpandedIndex = null
+            this.unitExpandedIndex = []
+        } else {
+            this.configureAutoExpand()
         }
     }
 }
