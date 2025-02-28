@@ -110,14 +110,24 @@ export default class ControlMixin extends Vue {
     }
 
     get toolchangeMacros(): string[] {
-        return Object.keys(this.$store.state.printer.gcode?.commands ?? {})
-            .filter((gcode) => gcode.match(/^T\d+/))
-            .sort((a: string, b: string) => {
-                const numberA = parseInt(a.slice(1))
-                const numberB = parseInt(b.slice(1))
+        const sortToolchangeMacros = (a: string, b: string) => {
+            const numberA = parseInt(a.slice(1))
+            const numberB = parseInt(b.slice(1))
 
-                return numberA - numberB
-            })
+            return numberA - numberB
+        }
+
+        const commands = this.$store.state.printer.gcode?.commands ?? null
+        if (commands) {
+            return Object.keys(commands)
+                .filter((gcode) => gcode.match(/^T\d+/))
+                .sort(sortToolchangeMacros)
+        }
+
+        return Object.keys(this.$store.state.printer)
+            .filter((gcode) => gcode.toLowerCase().match(/^gcode_macro t\d+/))
+            .map((gcode) => gcode.slice(gcode.indexOf(' ') + 1))
+            .sort(sortToolchangeMacros)
     }
 
     get existsClientLinearMoveMacro() {
