@@ -613,6 +613,7 @@
         "AfcPanel": {
             "BrushNozzle": "Brush Nozzle",
             "BufferDisabled": "Buffer Not Active",
+            "BypassActive": "Bypass Active",
             "Calibrate": "Calibrate",
             "ClearLoadState": "Set Lane Unloaded",
             "Detected": "Detected",

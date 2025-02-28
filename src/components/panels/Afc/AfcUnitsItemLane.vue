@@ -19,7 +19,9 @@
                                 <v-list-item
                                     v-if="!toolLoaded && laneReady"
                                     :disabled="
-                                        (!extrudePossible && lane.spool.material === '') || printerIsPrintingOnly
+                                        (!extrudePossible && lane.spool.material === '') ||
+                                        printerIsPrintingOnly ||
+                                        bypassState
                                     "
                                     @click="handleLaneAction($event, 'load')">
                                     <v-list-item-title>{{ $t('Panels.AfcPanel.Load') }}</v-list-item-title>
@@ -37,7 +39,9 @@
                                 <v-list-item
                                     v-if="toolLoaded"
                                     :disabled="
-                                        (!extrudePossible && lane.spool.material === '') || printerIsPrintingOnly
+                                        (!extrudePossible && lane.spool.material === '') ||
+                                        printerIsPrintingOnly ||
+                                        bypassState
                                     "
                                     @click="handleLaneAction($event, 'unload')">
                                     <v-list-item-title>{{ $t('Panels.AfcPanel.Unload') }}</v-list-item-title>

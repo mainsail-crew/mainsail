@@ -17,7 +17,7 @@
                     v-if="AFCCalibrate"
                     icon
                     tile
-                    :disabled="printerIsPrintingOnly"
+                    :disabled="printerIsPrintingOnly || bypassState"
                     :title="$t('Panels.AfcPanel.Calibrate')"
                     @click="calibrateAFC">
                     <v-icon small>{{ mdiWrench }}</v-icon>
@@ -70,6 +70,15 @@
             </v-container>
             <v-divider class="mt-0 mb-0" />
         </template>
+        <div v-if="bypassState" class="error--text subtitle-2 flex-nowrap bypass-active pt-2">
+            <v-icon class="mr-2 mt-0 float-left" color="error" small>
+                {{ mdiAlertOutline }}
+            </v-icon>
+            {{ $t('Panels.AfcPanel.BypassActive') }}
+            <v-icon class="ml-2 mt-0 float-left" color="error" small>
+                {{ mdiAlertOutline }}
+            </v-icon>
+        </div>
         <div v-if="showAFC">
             <v-expansion-panels v-model="toolExpandedIndex">
                 <v-expansion-panel>
@@ -117,6 +126,7 @@ import { Message } from '@/store/server/afc/types'
 export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) {
     mdiDotsVertical = mdiDotsVertical
     mdiCloseCircle = mdiCloseCircle
+    mdiAlertOutline = mdiAlertOutline
     mdiWrench = mdiWrench
 
     intervalId: ReturnType<typeof setInterval> | null = null
@@ -258,5 +268,11 @@ export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) 
     vertical-align: middle;
     user-select: none;
     margin-right: 8px;
+}
+
+.bypass-active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>

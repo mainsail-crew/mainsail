@@ -44,16 +44,16 @@ export default class AfcMixin extends Vue {
         return this.$store.state.printer.AFC.error_state ?? false
     }
 
+    get bypassState(): boolean {
+        return this.$store.state.printer.AFC.bypass_state ?? false
+    }
+
     get mapList(): string[] {
         return this.$store.state.server.afc.mapList ?? []
     }
 
     get laneList(): string[] {
         return this.$store.state.server.afc.laneList ?? []
-    }
-
-    get bypassStatus(): boolean {
-        return this.$store.state.server.afc.bypass_status ?? false
     }
 
     get currentFilamentChange() {
