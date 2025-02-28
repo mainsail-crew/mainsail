@@ -1,6 +1,6 @@
 <template>
     <v-card-text class="pb-0">
-        <v-divider class="mt-4 mb-4"/>
+        <v-divider class="mt-4 mb-4" />
         <p class="body-2">
             {{ summary }}
         </p>
@@ -10,8 +10,11 @@
                 {{ $t('Panels.MmuPanel.EditTtgMap') }}
             </v-btn>
         </div>
-        <v-divider :class="classSecondDivider"/>
-        <mmu-edit-ttg-map-dialog :file="file" :show-dialog="showEditTtgMapDialog" @close="showEditTtgMapDialog = false"/>
+        <v-divider :class="classSecondDivider" />
+        <mmu-edit-ttg-map-dialog
+            :file="file"
+            :show-dialog="showEditTtgMapDialog"
+            @close="showEditTtgMapDialog = false" />
     </v-card-text>
 </template>
 
@@ -22,7 +25,7 @@ import MmuMixin from '@/components/mixins/mmu'
 import { FileStateGcodefile } from '@/store/files/types'
 import { mdiStateMachine } from '@mdi/js'
 
-@Component({ })
+@Component({})
 export default class StartPrintDialogMmu extends Mixins(BaseMixin, MmuMixin) {
     mdiStateMachine = mdiStateMachine
 
@@ -31,12 +34,12 @@ export default class StartPrintDialogMmu extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true }) readonly file!: FileStateGcodefile
 
     get summary() {
-        const referencedTools = this.file.referenced_tools ?? ""
+        const referencedTools = this.file.referenced_tools ?? ''
         const numTools = referencedTools.length
         if (numTools <= 1 && this.gate !== this.TOOL_GATE_BYPASS) {
             return this.$t('Panels.MmuPanel.StartPrintDialogMmu.SingleColor')
         }
-        return this.$t('Panels.MmuPanel.StartPrintDialogMmu.MultiColor', { 'numTools': numTools })
+        return this.$t('Panels.MmuPanel.StartPrintDialogMmu.MultiColor', { numTools: numTools })
     }
 
     get classSecondDivider() {
@@ -47,5 +50,4 @@ export default class StartPrintDialogMmu extends Mixins(BaseMixin, MmuMixin) {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

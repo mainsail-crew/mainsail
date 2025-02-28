@@ -212,10 +212,10 @@ export interface GuiState {
             }
         }
         mmu: {
-           showClogDetection: boolean
-           showTtgMap: boolean
-           showDetails: boolean
-           largeFilamentStatus: boolean
+            showClogDetection: boolean
+            showTtgMap: boolean
+            showDetails: boolean
+            largeFilamentStatus: boolean
         }
     }
 }

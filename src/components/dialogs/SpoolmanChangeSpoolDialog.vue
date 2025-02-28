@@ -2,7 +2,9 @@
     <div>
         <v-dialog v-model="showDialog" width="800" persistent :fullscreen="isMobile">
             <panel
-                :title="(setActiveSpool) ? $t('Panels.SpoolmanPanel.ChangeSpool') : $t('Panels.SpoolmanPanel.SelectSpool')"
+                :title="
+                    setActiveSpool ? $t('Panels.SpoolmanPanel.ChangeSpool') : $t('Panels.SpoolmanPanel.SelectSpool')
+                "
                 :icon="mdiAdjust"
                 card-class="spoolman-change-spool-dialog"
                 :margin-bottom="false">

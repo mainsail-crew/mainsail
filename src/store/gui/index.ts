@@ -294,10 +294,10 @@ export const getDefaultState = (): GuiState => {
                 },
             },
             mmu: {
-               showClogDetection: true,
-               showTtgMap: true,
-               showDetails: true,
-               largeFilamentStatus: false,
+                showClogDetection: true,
+                showTtgMap: true,
+                showDetails: true,
+                largeFilamentStatus: false,
             },
         },
     }

@@ -12,67 +12,79 @@
             </template>
 
             <v-card-subtitle>
-            {{ $t('Panels.MmuPanel.MmuRecoverDialog.Intro') }}
+                {{ $t('Panels.MmuPanel.MmuRecoverDialog.Intro') }}
             </v-card-subtitle>
 
             <v-card-text>
                 <v-row class="fixed-height">
-                    <v-col class="col-1"/>
+                    <v-col class="col-1" />
                     <v-col class="col-5 d-flex justify-center">
                         <v-row class="d-flex flex-row">
                             <v-col class="d-flex justify-center flex-column">
                                 <span class="settings-row-title">Tool</span>
-                                <span class="settings-row-subtitle">{{ $t('Panels.MmuPanel.MmuRecoverDialog.SetTool') }}</span>
+                                <span class="settings-row-subtitle">
+                                    {{ $t('Panels.MmuPanel.MmuRecoverDialog.SetTool') }}
+                                </span>
                             </v-col>
                         </v-row>
                     </v-col>
                     <v-col class="col-5 d-flex justify-end align-center">
-                        <v-select :items="toolsList"
-                                  v-model="selectedTool"
-                                  :error-messages="toolErrorMessage"
-                                  outlined dense/>
+                        <v-select
+                            :items="toolsList"
+                            v-model="selectedTool"
+                            :error-messages="toolErrorMessage"
+                            outlined
+                            dense />
                     </v-col>
                 </v-row>
                 <v-divider class="my-2"></v-divider>
                 <v-row class="fixed-height">
-                    <v-col class="col-1"/>
+                    <v-col class="col-1" />
                     <v-col class="col-5 d-flex justify-center">
                         <v-row class="d-flex flex-row">
                             <v-col class="d-flex justify-center flex-column">
                                 <span class="settings-row-title">Gate</span>
-                                <span class="settings-row-subtitle">{{ $t('Panels.MmuPanel.MmuRecoverDialog.SetGate') }}</span>
+                                <span class="settings-row-subtitle">
+                                    {{ $t('Panels.MmuPanel.MmuRecoverDialog.SetGate') }}
+                                </span>
                             </v-col>
                         </v-row>
                     </v-col>
                     <v-col class="col-5 d-flex justify-end align-center">
-                        <v-select :items="gatesList"
-                                  v-model="selectedGate"
-                                  :error-messages="gateErrorMessage"
-                                  outlined dense/>
+                        <v-select
+                            :items="gatesList"
+                            v-model="selectedGate"
+                            :error-messages="gateErrorMessage"
+                            outlined
+                            dense />
                     </v-col>
                 </v-row>
                 <v-divider class="my-2"></v-divider>
                 <v-row class="fixed-height">
-                    <v-col class="col-1"/>
+                    <v-col class="col-1" />
                     <v-col class="col-5 d-flex justify-center">
                         <v-row class="d-flex flex-row">
                             <v-col class="d-flex justify-center flex-column">
                                 <span class="settings-row-title">Filament Position</span>
-                                <span class="settings-row-subtitle">{{ $t('Panels.MmuPanel.MmuRecoverDialog.FilamentLoaded') }}</span>
+                                <span class="settings-row-subtitle">
+                                    {{ $t('Panels.MmuPanel.MmuRecoverDialog.FilamentLoaded') }}
+                                </span>
                             </v-col>
                         </v-row>
                     </v-col>
                     <v-col class="col-5 d-flex justify-end align-center">
-                        <v-select :items="posList"
-                                  v-model="selectedPos"
-                                  :error-messages="posErrorMessage"
-                                  outlined dense/>
+                        <v-select
+                            :items="posList"
+                            v-model="selectedPos"
+                            :error-messages="posErrorMessage"
+                            outlined
+                            dense />
                     </v-col>
                 </v-row>
             </v-card-text>
 
             <v-card-actions>
-                <v-spacer/>
+                <v-spacer />
                 <v-btn text @click="close">{{ $t('Panels.MmuPanel.Cancel') }}</v-btn>
                 <v-btn color="primary" :disabled="okDisabled" text @click="commit">
                     {{ $t('Panels.MmuPanel.Ok') }}
@@ -91,18 +103,18 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiCogRefresh } from '@mdi/js'
 
 @Component({
-    components: { Panel }
+    components: { Panel },
 })
 export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
     mdiCloseThick = mdiCloseThick
     mdiCogRefresh = mdiCogRefresh
 
-    @Prop({ required: true }) readonly showDialog!: boolean;
+    @Prop({ required: true }) readonly showDialog!: boolean
 
     private localGate: number = -1
     private localTool: number = -1
     private localFilamentPos: number = -1
-                                
+
     @Watch('showDialog')
     onShowDialogChanged(newValue: boolean): void {
         if (newValue) {
@@ -122,7 +134,7 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     set selectedTool(newTool: string): void {
-        const index = this.toolsList.findIndex(item => item === newTool);
+        const index = this.toolsList.findIndex((item) => item === newTool)
         if (index == this.numGates) {
             this.localTool = this.TOOL_GATE_BYPASS
         } else {
@@ -145,7 +157,7 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
         } else if (this.localGate === this.TOOL_GATE_BYPASS && this.localTool !== this.TOOL_GATE_BYPASS) {
             return this.$t('Panels.MmuPanel.MmuRecoverDialog.GateBypass')
         }
-        return ""
+        return ''
     }
 
     get selectedGate(): string {
@@ -158,7 +170,7 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     set selectedGate(newGate: string): void {
-        const index = this.gatesList.findIndex(item => item === newGate);
+        const index = this.gatesList.findIndex((item) => item === newGate)
         if (index == this.numGates) {
             this.localGate = this.TOOL_GATE_BYPASS
         } else {
@@ -183,14 +195,14 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
         } else if (this.localGate >= 0 && this.ttgMap[this.localGate] !== this.localTool) {
             return `Warning: ${this.$t('Panels.MmuPanel.MmuRecoverDialog.RemapWarningPrefix')} T${this.localTool}`
         }
-        return ""
+        return ''
     }
 
     private gateIndexText(gateIndex: number): string {
         const num_units = this.$store.state.printer?.mmu_machine?.num_units
         if (num_units > 1) {
             for (let i = 0; i < num_units; i++) {
-                const unitRef = `unit_${i}`;
+                const unitRef = `unit_${i}`
                 const unit = this.$store.state.printer?.mmu_machine?.[unitRef]
                 if (i > 0 && gateIndex >= unit.first_gate && gateIndex < unit.first_gate + unit.num_gates) {
                     return `${gateIndex} (unit #${i + 1})`
@@ -204,11 +216,11 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
         if (this.localFilamentPos === this.FILAMENT_POS_UNKNOWN) {
             return 'Unknown'
         } else if (this.localFilamentPos === this.FILAMENT_POS_UNLOADED) {
-            return "UNLOADED"
+            return 'UNLOADED'
         } else if (this.localFilamentPos === this.FILAMENT_POS_LOADED) {
-            return "LOADED"
+            return 'LOADED'
         }
-        return "Auto Recover"
+        return 'Auto Recover'
     }
 
     set selectedPos(newPos: string): void {
@@ -231,14 +243,14 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
         if (this.localFilamentPos === this.FILAMENT_POS_UNKNOWN) {
             return this.$t('Panels.MmuPanel.MmuRecoverDialog.NoPosition')
         }
-        return ""
+        return ''
     }
 
     get okDisabled(): boolean {
-        let tError = (this.toolErrorMessage !== "" && !this.toolErrorMessage.startsWith("Warning:"))
-        let gError = (this.gateErrorMessage !== "" && !this.gateErrorMessage.startsWith("Warning:"))
-        let pError = (this.posErrorMessage !== "" && !this.posErrorMessage.startsWith("Warning:"))
-        return (tError || gError || pError)
+        let tError = this.toolErrorMessage !== '' && !this.toolErrorMessage.startsWith('Warning:')
+        let gError = this.gateErrorMessage !== '' && !this.gateErrorMessage.startsWith('Warning:')
+        let pError = this.posErrorMessage !== '' && !this.posErrorMessage.startsWith('Warning:')
+        return tError || gError || pError
     }
 
     close() {
@@ -248,9 +260,9 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
     commit() {
         let cmd = `MMU_RECOVER TOOL=${this.localTool} GATE=${this.localGate}`
         if (this.localFilamentPos === this.FILAMENT_POS_UNLOADED) {
-            cmd += " LOADED=0"
+            cmd += ' LOADED=0'
         } else if (this.localFilamentPos === this.FILAMENT_POS_LOADED) {
-            cmd += " LOADED=1"
+            cmd += ' LOADED=1'
         }
         this.doSend(cmd)
         this.close()

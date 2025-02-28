@@ -56,7 +56,7 @@ import { defaultBigThumbnailBackground } from '@/store/variables'
 
 @Component({
     components: {
-        SettingsRow
+        SettingsRow,
     },
 })
 export default class StartPrintDialog extends Mixins(BaseMixin) {
@@ -76,7 +76,7 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
         if (this.$store.state.printer.mmu?.enabled) {
             return (this.file.referenced_tools?.length ?? 1) > 1 || this.$store.state.printer.mmu?.gate !== -2
         }
-        return false;
+        return false
     }
 
     get timelapseEnabled() {

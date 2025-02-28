@@ -1,42 +1,33 @@
 <template>
-  <v-container>
-    <div class="spool-row">{{ unitDisplayName }}</div>
-      <div class="spool-row">
+    <v-container>
+        <div class="spool-row">{{ unitDisplayName }}</div>
+        <div class="spool-row">
+            <div v-for="gate in unitGateRange" :key="'gate_' + gate" :class="gateClass(gate)" @click="selectGate(gate)">
+                <mmu-spool
+                    :width="width"
+                    :gateIndex="gate"
+                    :class="spoolClass(gate)"
+                    :editGateMap="editGateMap"
+                    :editGateSelected="editGateSelected" />
 
-        <div v-for="gate in unitGateRange"
-             :key="'gate_' + gate"
-             :class="gateClass(gate)"
-             @click="selectGate(gate)">
+                <mmu-gate-status :gateIndex="gate" :editGateMap="editGateMap" :editGateSelected="editGateSelected" />
+            </div>
 
-            <mmu-spool :width="width"
-                       :gateIndex="gate"
-                       :class="spoolClass(gate)"
-                       :editGateMap="editGateMap"
-                       :editGateSelected="editGateSelected"/>
+            <div v-if="!editGateMap && hasBypass" :class="gateClass(TOOL_GATE_BYPASS)" @click="selectBypass()">
+                <mmu-spool
+                    :width="width"
+                    :gateIndex="TOOL_GATE_BYPASS"
+                    :class="spoolClass(gate)"
+                    :editGateMap="editGateMap"
+                    :editGateSelected="editGateSelected" />
 
-            <mmu-gate-status :gateIndex="gate"
-                             :editGateMap="editGateMap"
-                             :editGateSelected="editGateSelected"/>
+                <mmu-gate-status
+                    :gateIndex="TOOL_GATE_BYPASS"
+                    :editGateMap="editGateMap"
+                    :editGateSelected="editGateSelected" />
+            </div>
         </div>
-
-        <div v-if="!editGateMap && hasBypass"
-             :class="gateClass(TOOL_GATE_BYPASS)"
-             @click="selectBypass()">
-
-            <mmu-spool :width="width"
-                       :gateIndex="TOOL_GATE_BYPASS"
-                       :class="spoolClass(gate)"
-                       :editGateMap="editGateMap"
-                       :editGateSelected="editGateSelected"/>
-
-            <mmu-gate-status :gateIndex="TOOL_GATE_BYPASS"
-                             :editGateMap="editGateMap"
-                             :editGateSelected="editGateSelected"/>
-        </div>
-
-      </div>
-    </div>
-  </v-container>
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -50,7 +41,6 @@ import MmuGateStatus from '@/components/panels/Mmu/MmuGateStatus.vue'
     components: { MmuSpool, MmuGateStatus },
 })
 export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
-
     @Prop({ required: false, default: 0 }) readonly unit!: number
     @Prop({ required: false, default: null }) readonly editGateMap!: MmuGateDetails[] | null
     @Prop({ required: false, default: -1 }) readonly editGateSelected!: number
@@ -67,15 +57,15 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
     get width(): number {
         if (this.numGates <= 9) {
-            return "56px"
+            return '56px'
         } else if (this.numGates <= 12) {
-            return "48px"
+            return '48px'
         }
-        return "40px"
+        return '40px'
     }
 
     gateClass(gate): string[] {
-        let classes=['gate-status', 'cursor-pointer']
+        let classes = ['gate-status', 'cursor-pointer']
         if (this.editGateMap && this.editGateSelected === gate) {
             classes.push('selected-gate')
         }
@@ -83,14 +73,14 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     }
 
     spoolClass(gate): string[] {
-        let classes=[]
+        let classes = []
         if (this.editGateMap) {
-           if (this.editGateSelected !== gate) {
-               classes.push('shrink')
-               if (!this.isMobile && !this.isTablet) {
-                   classes.push('grow-effect')
-               }
-           }
+            if (this.editGateSelected !== gate) {
+                classes.push('shrink')
+                if (!this.isMobile && !this.isTablet) {
+                    classes.push('grow-effect')
+                }
+            }
         } else if (!this.isMobile && !this.isTablet) {
             classes.push('hover-effect')
         }
@@ -101,7 +91,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         if (this.editGateMap) {
             this.$emit('select-gate', gate)
         } else if (!this.isPrinting) {
-            this.doSend("MMU_SELECT GATE=" + gate)
+            this.doSend('MMU_SELECT GATE=' + gate)
         }
     }
 
@@ -109,7 +99,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         if (this.editGateMap) {
             this.$emit('select-gate', this.TOOL_GATE_BYPASS)
         } else if (!this.isPrinting) {
-            this.doSend("MMU_SELECT BYPASS=1")
+            this.doSend('MMU_SELECT BYPASS=1')
         }
     }
 }
@@ -138,13 +128,13 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 .hover-effect {
     transition: transform 0.2s ease-in-out;
 }
-            
+
 .hover-effect:hover {
     transform: translateY(-4px);
-}  
+}
 
 .shrink {
-    transform: scale(0.75)
+    transform: scale(0.75);
 }
 
 .grow-effect {
@@ -152,6 +142,6 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 }
 
 .grow-effect:hover {
-    transform: scale(1.0)
+    transform: scale(1);
 }
 </style>

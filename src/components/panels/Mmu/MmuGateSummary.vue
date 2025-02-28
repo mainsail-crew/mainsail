@@ -1,5 +1,5 @@
 <template>
-    <v-list-item :lines="lines" :class="{ 'disabled-panel': (details.status === 0) }">
+    <v-list-item :lines="lines" :class="{ 'disabled-panel': details.status === 0 }">
         <v-list-item-content :class="contentClass">
             <div :class="toplineClass">{{ title }}</div>
             <v-list-item-title :class="titleClass">
@@ -21,9 +21,8 @@ import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
 import Panel from '@/components/ui/Panel.vue'
 
-@Component({ })
+@Component({})
 export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
-
     @Prop({ required: true, default: -1 }) declare readonly gateIndex!: number
     @Prop({ required: false, default: false }) readonly compact!: boolean
     @Prop({ required: false, default: true }) readonly showDetails!: boolean
@@ -34,12 +33,12 @@ export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get lines(): string {
-        if (this.showDetails) return "three"
-        return "two"
+        if (this.showDetails) return 'three'
+        return 'two'
     }
 
     get title(): string {
-        return [this.showGate ? this.gateText(this.gate) : null, this.vendorText].filter ((v) => v !== null).join(' | ')
+        return [this.showGate ? this.gateText(this.gate) : null, this.vendorText].filter((v) => v !== null).join(' | ')
     }
 
     get name(): string {
@@ -47,18 +46,20 @@ export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get subtitle(): string {
-        return [this.details.material, this.temperatureText, this.speedOverrideText].filter((v) => v !== null).join(' | ')
+        return [this.details.material, this.temperatureText, this.speedOverrideText]
+            .filter((v) => v !== null)
+            .join(' | ')
     }
 
     get extra(): string {
         let text = [this.spoolIdText, this.weightText, this.lengthText].filter((v) => v !== null).join(' | ')
-        if (!text) return "No spool ID"
+        if (!text) return 'No spool ID'
         return text
     }
 
     get speedOverrideText(): string {
         if (this.details.speedOverride === 100) return null
-        return "Speed: " + this.details.speedOverride + "%"
+        return 'Speed: ' + this.details.speedOverride + '%'
     }
 
     get temperatureText(): string {
@@ -68,7 +69,7 @@ export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
 
     get spoolIdText(): string {
         if (this.details.spoolId <= 0) return null
-        return "Spool ID: #" + this.details.spoolId
+        return 'Spool ID: #' + this.details.spoolId
     }
 
     // Only available with Spoolman...
@@ -150,5 +151,5 @@ export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
 
 .disabled-panel {
     opacity: 0.5;
-} 
+}
 </style>

@@ -1,16 +1,17 @@
 <template>
-  <v-container>
-    <v-row dense>
-        <v-col v-for="index in unitArray" cols="auto" :key="'unit_' + index">
-          <div :class="$vuetify.theme.dark ? 'mmu-unit-dark-theme' : 'mmu-unit-light-theme'">
-            <mmu-unit :unit="index"
-                      :editGateMap="editGateMap"
-                      :editGateSelected="editGateSelected"
-                      @select-gate="selectGate"/>
-          </div>
-        </v-col>
-    </v-row>
-  </v-container>
+    <v-container>
+        <v-row dense>
+            <v-col v-for="index in unitArray" cols="auto" :key="'unit_' + index">
+                <div :class="$vuetify.theme.dark ? 'mmu-unit-dark-theme' : 'mmu-unit-light-theme'">
+                    <mmu-unit
+                        :unit="index"
+                        :editGateMap="editGateMap"
+                        :editGateSelected="editGateSelected"
+                        @select-gate="selectGate" />
+                </div>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -19,9 +20,8 @@ import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
 import MmuUnit from '@/components/panels/Mmu/MmuUnit.vue'
 
-@Component({ })
+@Component({})
 export default class MmuMachine extends Mixins(BaseMixin, MmuMixin) {
-
     @Prop({ required: false, default: null }) readonly editGateMap!: MmuGateDetails[] | null
     @Prop({ required: false, default: -1 }) readonly editGateSelected!: number
 
@@ -38,11 +38,11 @@ export default class MmuMachine extends Mixins(BaseMixin, MmuMixin) {
 <style scoped>
 .mmu-unit-light-theme {
     border-radius: 10px;
-    background: #F0F0F0;
+    background: #f0f0f0;
 }
 
 .mmu-unit-dark-theme {
     border-radius: 10px;
-    background: #2C2C2C;
+    background: #2c2c2c;
 }
 </style>

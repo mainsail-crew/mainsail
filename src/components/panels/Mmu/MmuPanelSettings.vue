@@ -1,41 +1,37 @@
 <template>
-<v-menu :offset-y="true" :left="true" :close-on-content-click="false">
-    <template #activator="{ on, attrs }">
-        <v-btn icon tile v-bind="attrs" v-on="on">
-            <v-icon small>{{ mdiCog }}</v-icon>
-        </v-btn>
-    </template>
-    <v-list>
-        <v-list-item v-if="hasEncoder" class="minHeight36">
-            <v-checkbox
-                v-model="showClogDetection"
-                class="mt-0"
-                hide-details
-                :label="$t('Panels.MmuPanel.ShowClogDetection')" />
-        </v-list-item>
-        <v-list-item class="minHeight36">
-            <v-checkbox
-                v-model="showTtgMap"
-                class="mt-0"
-                hide-details
-                :label="$t('Panels.MmuPanel.ShowTtgMap')" />
-        </v-list-item>
-        <v-list-item class="minHeight36">
-            <v-checkbox
-                v-model="showDetails"
-                class="mt-0"
-                hide-details
-                :label="$t('Panels.MmuPanel.ShowDetails')" />
-        </v-list-item>
-        <v-list-item class="minHeight36">
-            <v-checkbox
-                v-model="largeFilamentStatus"
-                class="mt-0"
-                hide-details
-                :label="$t('Panels.MmuPanel.LargeFilamentStatus')" />
-        </v-list-item>
-    </v-list>
-</v-menu>
+    <v-menu :offset-y="true" :left="true" :close-on-content-click="false">
+        <template #activator="{ on, attrs }">
+            <v-btn icon tile v-bind="attrs" v-on="on">
+                <v-icon small>{{ mdiCog }}</v-icon>
+            </v-btn>
+        </template>
+        <v-list>
+            <v-list-item v-if="hasEncoder" class="minHeight36">
+                <v-checkbox
+                    v-model="showClogDetection"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.MmuPanel.ShowClogDetection')" />
+            </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox v-model="showTtgMap" class="mt-0" hide-details :label="$t('Panels.MmuPanel.ShowTtgMap')" />
+            </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="showDetails"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.MmuPanel.ShowDetails')" />
+            </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="largeFilamentStatus"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.MmuPanel.LargeFilamentStatus')" />
+            </v-list-item>
+        </v-list>
+    </v-menu>
 </template>
 
 <script lang="ts">
@@ -44,7 +40,7 @@ import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
 import { mdiCog } from '@mdi/js'
 
-@Component({ })
+@Component({})
 export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
     mdiCog = mdiCog
 
@@ -82,5 +78,4 @@ export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
