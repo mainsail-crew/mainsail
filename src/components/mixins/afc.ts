@@ -83,15 +83,4 @@ export default class AfcMixin extends Vue {
     get showInfiniteSpool(): boolean {
         return this.$store.state.gui.view.afc.infiniteSpool ?? true
     }
-
-    UnitIcon(unitType: string): string {
-        const unitIconPath = `img/units/${unitType}.svg`
-
-        // Check if the unit icon exists
-        if (unitIconPath) {
-            return unitIconPath
-        } else {
-            return ''
-        }
-    }
 }

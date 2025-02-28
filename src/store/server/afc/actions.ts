@@ -6,28 +6,6 @@ export const actions: ActionTree<AFCState, RootState> = {
     reset({ commit }) {
         commit('reset')
     },
-    loadUnitIcons({ commit, rootState }) {
-        const printer = rootState.printer
-        if (!printer || !printer['AFC']) {
-            commit('reset')
-            return
-        }
-
-        const afcData = printer['AFC']
-        const acceptExtensions = ['svg', 'jpg', 'jpeg', 'png', 'gif']
-
-        afcData.units?.forEach((unitEntry: string) => {
-            const [type, name]: [string, string] = unitEntry.split(' ') as [string, string]
-            if (!type || !name) {
-                console.error(`Invalid unit entry: ${unitEntry}`)
-                return
-            }
-
-            const test = this.getters['files/getThemeFileUrl'](type, acceptExtensions)
-
-            console.log(test)
-        })
-    },
 
     fetchAFCData({ commit, rootState }) {
         const printer = rootState.printer
