@@ -230,7 +230,7 @@ export default class MmuMixin extends Vue {
     }
 
     private unitDetails(unitIndex: number): MmuUnitDetails {
-        let ud: MmuUnitDetails = {}
+        const ud: MmuUnitDetails = {}
         const unitRef = `unit_${unitIndex}`
         ud.name = this.$store.state.printer.mmu_machine?.[unitRef]?.name ?? 'Unit'
         ud.version = this.$store.state.printer.mmu_machine?.[unitRef]?.version ?? '1.0'
@@ -400,7 +400,7 @@ export default class MmuMixin extends Vue {
     }
 
     private gateDetails(gateIndex: number): MmuGateDetails {
-        let gd: MmuGateDetails = {}
+        const gd: MmuGateDetails = {}
         if (gateIndex === this.TOOL_GATE_BYPASS) {
             gd.index = -2
             gd.gateName = 'Bypass'
@@ -455,7 +455,7 @@ export default class MmuMixin extends Vue {
     }
 
     private toolDetails(toolIndex: number, file?: FileStateGcodefile): SlicerToolDetails {
-        let td: SlicerToolDetails = {}
+        const td: SlicerToolDetails = {}
 
         // Have file so use metadata
         if (file) {
@@ -473,23 +473,23 @@ export default class MmuMixin extends Vue {
                     c2 = file.filament_colors ?? []
                     break
             }
-            let colors = c1.length === 0 || c1.every((str) => str === '') ? c2 : c1
+            const colors = c1.length === 0 || c1.every((str) => str === '') ? c2 : c1
             td.color = colors.length > toolIndex ? this.formColorString(colors[toolIndex]) : this.formColorString('')
 
             // This is just a string so split
-            let materials = file.filament_type ?? ''
+            const materials = file.filament_type ?? ''
             const processedMaterials = materials ? materials.split(/[,;]/).map((element) => element.trim()) : []
             td.material = processedMaterials[toolIndex] || 'Unknown'
 
-            let temps = file.filament_temps ?? []
+            const temps = file.filament_temps ?? []
             td.temp = temps.length > toolIndex ? temps[toolIndex] : -1
 
             // This is just a string so split
-            let names = file.filament_name ?? ''
+            const names = file.filament_name ?? ''
             const processedNames = names ? names.split(/[,;]/).map((element) => element.trim()) : []
             td.name = processedNames[toolIndex] || 'Unknown'
 
-            let referencedTools = file.referenced_tools ?? []
+            const referencedTools = file.referenced_tools ?? []
             td.inUse = referencedTools?.includes(toolIndex) ?? false
         } else {
             // Use Happy Hare's slicer_tool_map
@@ -612,7 +612,7 @@ export default class MmuMixin extends Vue {
     }
 
     get varsFilamentRemainingColor(): string {
-        let color = this.$store.state.printer.save_variables?.variables?.mmu_state_filament_remaining_color ?? ''
+        const color = this.$store.state.printer.save_variables?.variables?.mmu_state_filament_remaining_color ?? ''
         if (color) return this.formColorString(color)
         return color
     }

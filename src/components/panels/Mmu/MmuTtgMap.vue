@@ -104,39 +104,41 @@
                 marker-start="url(#squareStartSelected)"
                 marker-end="url(#arrowEndSelected)" />
         </g>
-        <g v-if="showESgroups" v-for="(group, index) in getEndlessSpoolGroups()">
-            <g v-if="group !== currentGroup">
-                <path
-                    :d="generateEndlessSpoolPathD(group, index)"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    class="stroke-regular-color"
-                    fill="none" />
-                <text
-                    :x="groupX + index * groupSpacing"
-                    :y="startY + map.length * verticalSpacing + 2"
-                    class="fill-regular-color"
-                    font-size="8px">
-                    {{ String.fromCharCode(group + 65) }}
-                </text>
+        <div v-if="showESgroups">
+            <g v-for="(group, index) in getEndlessSpoolGroups()" :key="index">
+                <g v-if="group !== currentGroup">
+                    <path
+                        :d="generateEndlessSpoolPathD(group, index)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        class="stroke-regular-color"
+                        fill="none" />
+                    <text
+                        :x="groupX + index * groupSpacing"
+                        :y="startY + map.length * verticalSpacing + 2"
+                        class="fill-regular-color"
+                        font-size="8px">
+                        {{ String.fromCharCode(group + 65) }}
+                    </text>
+                </g>
+                <g v-else>
+                    <path
+                        :d="generateEndlessSpoolPathD(group, index)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        class="stroke-selected-color"
+                        fill="none" />
+                    <text
+                        :x="groupX + index * groupSpacing"
+                        :y="startY + map.length * verticalSpacing + 2"
+                        class="fill-selected-color"
+                        font-size="8px"
+                        font-weight="bold">
+                        {{ String.fromCharCode(group + 65) }}
+                    </text>
+                </g>
             </g>
-            <g v-else>
-                <path
-                    :d="generateEndlessSpoolPathD(group, index)"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    class="stroke-selected-color"
-                    fill="none" />
-                <text
-                    :x="groupX + index * groupSpacing"
-                    :y="startY + map.length * verticalSpacing + 2"
-                    class="fill-selected-color"
-                    font-size="8px"
-                    font-weight="bold">
-                    {{ String.fromCharCode(group + 65) }}
-                </text>
-            </g>
-        </g>
+        </div>
     </svg>
 </template>
 

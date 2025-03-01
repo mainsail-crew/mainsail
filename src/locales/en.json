@@ -770,10 +770,11 @@
                 "FilamentLoaded": "Is the filament completely loaded to the extruder or completely unloaded?",
                 "GateBypass": "Gate is set to Bypass!",
                 "Intro": "This is a low level recovery for use when Happy Hare is out of sync with your MMU. It is recommended to try automatic recovery first however this will be required to correct the current tool or gate (Alternatively on Type-A MMU's you can unload and home the selector).",
+                "WarningPrefix": "Warning:",
                 "NoGate": "A gate must be selected",
-                "NoPosition": "Select current filament position",
+                "NoPosition": "Attempt to recover position",
                 "NoTool": "A tool must be selected",
-                "RemapWarningPrefix": "This will remap gate to",
+                "Remap": "This will remap gate to {tool}",
                 "SetGate": "Set to the current gate",
                 "SetTool": "Set to the current tool",
                 "ToolBypass": "Tool is set to Bypass!"

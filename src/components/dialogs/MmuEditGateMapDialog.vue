@@ -35,8 +35,8 @@
                         <v-row align="start">
                             <v-col class="d-flex justify-start align-center no-padding">
                                 <mmu-machine
-                                    :editGateMap="editGateMap"
-                                    :editGateSelected="editGateSelected"
+                                    :edit-gate-map="editGateMap"
+                                    :edit-gate-selected="editGateSelected"
                                     @select-gate="selectGate" />
                             </v-col>
                         </v-row>
@@ -117,9 +117,8 @@
                                                         spoolmanSupport === SPOOLMAN_PULL ||
                                                         spoolmanSupport === SPOOLMAN_OFF
                                                     "
-                                                    @blur="adjustSpoolId"
-                                                    outlined
-                                                    dense></v-text-field>
+                                                    outlined dense
+                                                    @blur="adjustSpoolId" />
                                             </v-col>
                                         </v-row>
 
@@ -129,11 +128,8 @@
                                                     v-model.trim="editGateMap[editGateSelected].filamentName"
                                                     :label="$t('Panels.MmuPanel.GateMapDialog.FilamentName')"
                                                     :disabled="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
-                                                    @blur="adjustName"
-                                                    outlined
-                                                    dense
-                                                    clearable
-                                                    hide-details />
+                                                    outlined dense clearable hide-details
+                                                    @blur="adjustName" />
                                             </v-col>
                                         </v-row>
 
@@ -143,11 +139,8 @@
                                                     v-model.trim="editGateMap[editGateSelected].material"
                                                     :label="$t('Panels.MmuPanel.GateMapDialog.Material')"
                                                     :disabled="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
-                                                    @blur="adjustMaterial"
-                                                    outlined
-                                                    dense
-                                                    clearable
-                                                    hide-details />
+                                                    outlined dense clearable hide-details
+                                                    @blur="adjustMaterial" />
                                             </v-col>
                                             <v-col cols="2"></v-col>
                                             <v-col cols="4">
@@ -161,10 +154,8 @@
                                                     "
                                                     suffix="°C"
                                                     :rules="temperatureRules"
-                                                    @blur="adjustTemperature"
-                                                    outlined
-                                                    dense
-                                                    hide-details />
+                                                    outlined dense hide-details
+                                                    @blur="adjustTemperature" />
                                             </v-col>
                                         </v-row>
 
@@ -589,7 +580,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
             }
         })
         const jsonString = JSON.stringify(mapObject)
-            .replace(/\"(\d+)\":/g, '$1: ')
+            .replace(/"(\d+)":/g, '$1: ')
             .replace(/"/g, "'")
         return jsonString
     }

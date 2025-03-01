@@ -6,10 +6,15 @@
         @mouseleave="$emit('mouseleave', details.index)">
         <td>{{ details.index }}</td>
         <td class="pr-0 py-2">
-            <mmu-spool :gateIndex="details.index" :showPercent="false" style="height: 60px; float: left" class="mr-0" />
+            <mmu-spool :gate-index="details.index"
+                       :show-percent="false"
+                       style="height: 60px; float: left" class="mr-0" />
         </td>
         <td class="py-0" style="min-width: 274px; max-width: 274px">
-            <mmu-gate-summary :gateIndex="details.index" :showDetails="true" :showGate="false" :compact="true" />
+            <mmu-gate-summary :gate-index="details.index"
+                              :show-details="true"
+                              :show-gate="false"
+                              :compact="true" />
         </td>
         <td>
             <span

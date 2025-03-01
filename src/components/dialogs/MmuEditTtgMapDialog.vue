@@ -47,8 +47,8 @@
                                                         <v-row>
                                                             <v-col cols="5" class="no-padding">
                                                                 <mmu-spool
-                                                                    :gateIndex="g"
-                                                                    :showPercent="false"
+                                                                    :gate-index="g"
+                                                                    :show-percent="false"
                                                                     width="100%" />
                                                             </v-col>
                                                             <v-col
@@ -79,8 +79,8 @@
                                 <mmu-ttg-map
                                     :map="localTtgMap"
                                     :groups="localEndlessSpoolGroups"
-                                    :selectedTool="selectedTool"
-                                    :selectedGate="selectedGate" />
+                                    :selected-tool="selectedTool"
+                                    :selected-gate="selectedGate" />
                                 <v-btn
                                     small
                                     color="secondary"
@@ -150,14 +150,14 @@
                                                         v-if="toolMetaData[selectedTool] || referencedTools.length > 0">
                                                         {{
                                                             $t('Panels.MmuPanel.TtgMapDialog.ToolNotUsed', {
-                                                                tool: this.toolText(selectedTool),
+                                                                tool: toolText(selectedTool),
                                                             })
                                                         }}
                                                     </div>
                                                     <div v-else>
                                                         {{
                                                             $t('Panels.MmuPanel.TtgMapDialog.NoSlicerInfo', {
-                                                                tool: this.toolText(selectedTool),
+                                                                tool: toolText(selectedTool),
                                                             })
                                                         }}
                                                     </div>
@@ -190,8 +190,8 @@
                                                     :key="item.index"
                                                     :ref="`row-${item.index}`"
                                                     :details="item"
-                                                    :selectedEsGroup="localEndlessSpoolGroups[selectedGate] ?? null"
-                                                    :selectedGate="selectedGate ?? null"
+                                                    :selected-es-group="localEndlessSpoolGroups[selectedGate] ?? null"
+                                                    :selected-gate="selectedGate ?? null"
                                                     @mouseover="onGateHover"
                                                     @mouseleave="onGateLeave"
                                                     @select-gate="selectGate" />
@@ -336,13 +336,11 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
                 sortable: false,
             },
             {
-                text: 'Filament Information',
                 text: this.$t('Panels.MmuPanel.TtgMapDialog.FilamentInfo'),
                 align: 'start',
                 sortable: false,
             },
             {
-                text: 'ES \u221E',
                 text: this.$t('Panels.MmuPanel.TtgMapDialog.EndlessSpool'),
                 align: 'center',
                 sortable: false,

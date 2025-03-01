@@ -1,10 +1,9 @@
 <template>
     <v-dialog v-model="showDialog" width="600" persistent :fullscreen="isMobile">
-        <panel
-            :title="$t('Panels.MmuPanel.RecoverState')"
-            :icon="mdiCogRefresh"
-            card-class="mmu-recover-state-dialog"
-            :margin-bottom="false">
+        <panel :title="$t('Panels.MmuPanel.RecoverState')"
+               :icon="mdiCogRefresh"
+               card-class="mmu-recover-state-dialog"
+               :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="close">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -193,7 +192,8 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
         } else if (this.localTool === this.TOOL_GATE_BYPASS && this.localGate !== this.TOOL_GATE_BYPASS) {
             return this.$t('Panels.MmuPanel.MmuRecoverDialog.ToolBypass')
         } else if (this.localGate >= 0 && this.ttgMap[this.localGate] !== this.localTool) {
-            return `Warning: ${this.$t('Panels.MmuPanel.MmuRecoverDialog.RemapWarningPrefix')} T${this.localTool}`
+            const msg = this.$t('Panels.MmuPanel.MmuRecoverDialog.Remap', {'tool': `T${this.localTool}`})
+            return `${this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix')} ${msg}`
         }
         return ''
     }
@@ -213,43 +213,38 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get selectedPos(): string {
-        if (this.localFilamentPos === this.FILAMENT_POS_UNKNOWN) {
-            return 'Unknown'
-        } else if (this.localFilamentPos === this.FILAMENT_POS_UNLOADED) {
+        if (this.localFilamentPos === this.FILAMENT_POS_UNLOADED) {
             return 'UNLOADED'
         } else if (this.localFilamentPos === this.FILAMENT_POS_LOADED) {
             return 'LOADED'
         }
-        return 'Auto Recover'
+        return 'UNKNOWN'
     }
 
     set selectedPos(newPos: string): void {
-        if (newPos === 'Unknown') {
-            return this.FILAMENT_POS_UNKNOWN
-        } else if (newPos === 'UNLOADED') {
-            return this.FILAMENT_POS_UNLOADED
+        if (newPos === 'UNLOADED') {
+            this.localFilamentPos = this.FILAMENT_POS_UNLOADED
         } else if (newPos === 'LOADED') {
-            return this.FILAMENT_POS_LOADED
-        } else {
-            return null
+            this.localFilamentPos = this.FILAMENT_POS_LOADED
         }
+        this.localFilamentPos = this.FILAMENT_POS_UNKNOWN
     }
 
     get posList(): string[] {
-        return ['Auto Recover', 'UNLOADED', 'LOADED']
+        return ['UNKNOWN', 'UNLOADED', 'LOADED']
     }
 
     get posErrorMessage(): string {
         if (this.localFilamentPos === this.FILAMENT_POS_UNKNOWN) {
-            return this.$t('Panels.MmuPanel.MmuRecoverDialog.NoPosition')
+            return `${this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix')} ${this.$t('Panels.MmuPanel.MmuRecoverDialog.NoPosition')}`
         }
         return ''
     }
 
     get okDisabled(): boolean {
-        let tError = this.toolErrorMessage !== '' && !this.toolErrorMessage.startsWith('Warning:')
-        let gError = this.gateErrorMessage !== '' && !this.gateErrorMessage.startsWith('Warning:')
-        let pError = this.posErrorMessage !== '' && !this.posErrorMessage.startsWith('Warning:')
+        let tError = this.toolErrorMessage !== '' && !this.toolErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
+        let gError = this.gateErrorMessage !== '' && !this.gateErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
+        let pError = this.posErrorMessage !== '' && !this.posErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
         return tError || gError || pError
     }
 
