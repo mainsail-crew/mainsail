@@ -1,10 +1,10 @@
 <template>
     <svg
+        ref="ttgMap"
         :viewBox="'0 0 ' + width + ' ' + height"
         preserveAspectRatio="xMidYMid meet"
         class="cursor-pointer"
-        @click="$emit('click')"
-        ref="ttgMap">
+        @click="$emit('click')">
         <defs>
             <marker
                 id="squareStart"

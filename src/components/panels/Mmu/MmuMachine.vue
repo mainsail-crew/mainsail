@@ -1,12 +1,12 @@
 <template>
     <v-container>
         <v-row dense>
-            <v-col v-for="index in unitArray" cols="auto" :key="'unit_' + index">
+            <v-col v-for="index in unitArray" :key="'unit_' + index" cols="auto">
                 <div :class="$vuetify.theme.dark ? 'mmu-unit-dark-theme' : 'mmu-unit-light-theme'">
                     <mmu-unit
                         :unit="index"
-                        :editGateMap="editGateMap"
-                        :editGateSelected="editGateSelected"
+                        :edit-gate-map="editGateMap"
+                        :edit-gate-selected="editGateSelected"
                         @select-gate="selectGate" />
                 </div>
             </v-col>
@@ -18,7 +18,6 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
-import MmuUnit from '@/components/panels/Mmu/MmuUnit.vue'
 
 @Component({})
 export default class MmuMachine extends Mixins(BaseMixin, MmuMixin) {

@@ -5,26 +5,29 @@
             <div v-for="gate in unitGateRange" :key="'gate_' + gate" :class="gateClass(gate)" @click="selectGate(gate)">
                 <mmu-spool
                     :width="width"
-                    :gateIndex="gate"
                     :class="spoolClass(gate)"
-                    :editGateMap="editGateMap"
-                    :editGateSelected="editGateSelected" />
+                    :gate-index="gate"
+                    :edit-gate-map="editGateMap"
+                    :edit-gate-selected="editGateSelected" />
 
-                <mmu-gate-status :gateIndex="gate" :editGateMap="editGateMap" :editGateSelected="editGateSelected" />
+                <mmu-gate-status
+                    :gate-index="gate"
+                    :edit-gate-map="editGateMap"
+                    :edit-gate-selected="editGateSelected" />
             </div>
 
             <div v-if="!editGateMap && hasBypass" :class="gateClass(TOOL_GATE_BYPASS)" @click="selectBypass()">
                 <mmu-spool
                     :width="width"
-                    :gateIndex="TOOL_GATE_BYPASS"
                     :class="spoolClass(gate)"
-                    :editGateMap="editGateMap"
-                    :editGateSelected="editGateSelected" />
+                    :gate-index="TOOL_GATE_BYPASS"
+                    :edit-gate-map="editGateMap"
+                    :edit-gate-selected="editGateSelected" />
 
                 <mmu-gate-status
-                    :gateIndex="TOOL_GATE_BYPASS"
-                    :editGateMap="editGateMap"
-                    :editGateSelected="editGateSelected" />
+                    :gate-index="TOOL_GATE_BYPASS"
+                    :edit-gate-map="editGateMap"
+                    :edit-gate-selected="editGateSelected" />
             </div>
         </div>
     </v-container>

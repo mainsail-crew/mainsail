@@ -1,9 +1,9 @@
 <template>
     <svg
+        ref="clogMeter"
         viewBox="0 0 140 140"
         preserveAspectRatio="xMidYMid meet"
-        :class="{ 'disabled-clog': encoderDetectionMode === 0 || encoderEnabled === false }"
-        ref="clogMeter">
+        :class="{ 'disabled-clog': encoderDetectionMode === 0 || encoderEnabled === false }">
         <g transform="rotate(120 70 70)">
             <circle
                 cx="70"

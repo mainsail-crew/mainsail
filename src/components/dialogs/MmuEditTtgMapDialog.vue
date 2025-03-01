@@ -357,7 +357,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
         }
     }
 
-    private selectGate(gate, item) {
+    private selectGate(gate) {
         this.selectedGate = gate
         Vue.set(this.localTtgMap, this.selectedTool, gate)
     }

@@ -74,8 +74,8 @@
                     </v-col>
                     <v-col class="col-5 d-flex justify-end align-center">
                         <v-select
-                            :items="posList"
                             v-model="selectedPos"
+                            :items="posList"
                             :error-messages="posErrorMessage"
                             outlined
                             dense />

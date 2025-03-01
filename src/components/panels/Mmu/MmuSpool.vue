@@ -1,5 +1,5 @@
 <template>
-    <svg viewBox="0 0 248 500" preserveAspectRatio="xMidYMid meet" ref="mmuSpoolSvg">
+    <svg ref="mmuSpoolSvg" viewBox="0 0 248 500" preserveAspectRatio="xMidYMid meet">
         <defs>
             <path
                 id="oval"
@@ -83,7 +83,6 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
-import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
 @Component({})
 export default class MmuSpool extends Mixins(BaseMixin, MmuMixin) {

@@ -94,7 +94,7 @@
                             <template v-if="showDetails">
                                 <v-row class="pb-3 pt-0" style="align-self: flex-start; width: 100%">
                                     <v-col class="pa-0">
-                                        <mmu-gate-summary :gateIndex="gate" />
+                                        <mmu-gate-summary :gate-index="gate" />
                                     </v-col>
                                 </v-row>
                             </template>
@@ -107,8 +107,8 @@
                                     width="75%"
                                     :map="ttgMap"
                                     :groups="endlessSpoolGroups"
-                                    :selectedTool="tool"
-                                    :selectedGate="gate"
+                                    :selected-tool="tool"
+                                    :selected-gate="gate"
                                     @click="showEditTtgMapDialog = true" />
                                 <div class="text--disabled">{{ $t('Panels.MmuPanel.ToolMapping') }}</div>
                             </template>

@@ -271,9 +271,9 @@
                             <v-col class="col-4 d-flex justify-end align-center pr-6">Entry</v-col>
                             <v-col class="col-8 d-flex align-center">
                                 <v-select
+                                    v-model="localEntryEffect"
                                     :items="LED_OPTIONS"
                                     :disabled="!hasLedsOfType('entry')"
-                                    v-model="localEntryEffect"
                                     hide-details
                                     outlined
                                     dense />
@@ -283,9 +283,9 @@
                             <v-col class="col-4 d-flex justify-end align-center pr-6">Exit</v-col>
                             <v-col class="col-8 d-flex align-center">
                                 <v-select
+                                    v-model="localExitEffect"
                                     :items="LED_OPTIONS"
                                     :disabled="!hasLedsOfType('exit')"
-                                    v-model="localExitEffect"
                                     hide-details
                                     outlined
                                     dense />
@@ -295,9 +295,9 @@
                             <v-col class="col-4 d-flex justify-end align-center pr-6">Status</v-col>
                             <v-col class="col-8 d-flex align-center">
                                 <v-select
+                                    v-model="localStatusEffect"
                                     :items="LED_STATUS_OPTIONS"
                                     :disabled="!hasLedsOfType('status')"
-                                    v-model="localStatusEffect"
                                     hide-details
                                     outlined
                                     dense />
@@ -324,8 +324,8 @@
                             </v-col>
                             <v-col class="col-8 d-flex align-center">
                                 <v-select
-                                    :items="T_MACRO_COLOR_OPTIONS"
                                     v-model="localTMacroColor"
+                                    :items="T_MACRO_COLOR_OPTIONS"
                                     hide-details
                                     outlined
                                     dense />
