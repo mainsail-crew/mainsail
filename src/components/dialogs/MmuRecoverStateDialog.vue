@@ -1,9 +1,10 @@
 <template>
     <v-dialog v-model="showDialog" width="600" persistent :fullscreen="isMobile">
-        <panel :title="$t('Panels.MmuPanel.RecoverState')"
-               :icon="mdiCogRefresh"
-               card-class="mmu-recover-state-dialog"
-               :margin-bottom="false">
+        <panel
+            :title="$t('Panels.MmuPanel.RecoverState')"
+            :icon="mdiCogRefresh"
+            card-class="mmu-recover-state-dialog"
+            :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="close">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -192,7 +193,7 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
         } else if (this.localTool === this.TOOL_GATE_BYPASS && this.localGate !== this.TOOL_GATE_BYPASS) {
             return this.$t('Panels.MmuPanel.MmuRecoverDialog.ToolBypass')
         } else if (this.localGate >= 0 && this.ttgMap[this.localGate] !== this.localTool) {
-            const msg = this.$t('Panels.MmuPanel.MmuRecoverDialog.Remap', {'tool': `T${this.localTool}`})
+            const msg = this.$t('Panels.MmuPanel.MmuRecoverDialog.Remap', { tool: `T${this.localTool}` })
             return `${this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix')} ${msg}`
         }
         return ''
@@ -242,9 +243,15 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get okDisabled(): boolean {
-        let tError = this.toolErrorMessage !== '' && !this.toolErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
-        let gError = this.gateErrorMessage !== '' && !this.gateErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
-        let pError = this.posErrorMessage !== '' && !this.posErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
+        let tError =
+            this.toolErrorMessage !== '' &&
+            !this.toolErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
+        let gError =
+            this.gateErrorMessage !== '' &&
+            !this.gateErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
+        let pError =
+            this.posErrorMessage !== '' &&
+            !this.posErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
         return tError || gError || pError
     }
 

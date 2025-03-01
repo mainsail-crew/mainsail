@@ -117,7 +117,8 @@
                                                         spoolmanSupport === SPOOLMAN_PULL ||
                                                         spoolmanSupport === SPOOLMAN_OFF
                                                     "
-                                                    outlined dense
+                                                    outlined
+                                                    dense
                                                     @blur="adjustSpoolId" />
                                             </v-col>
                                         </v-row>
@@ -128,7 +129,10 @@
                                                     v-model.trim="editGateMap[editGateSelected].filamentName"
                                                     :label="$t('Panels.MmuPanel.GateMapDialog.FilamentName')"
                                                     :disabled="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
-                                                    outlined dense clearable hide-details
+                                                    outlined
+                                                    dense
+                                                    clearable
+                                                    hide-details
                                                     @blur="adjustName" />
                                             </v-col>
                                         </v-row>
@@ -139,7 +143,10 @@
                                                     v-model.trim="editGateMap[editGateSelected].material"
                                                     :label="$t('Panels.MmuPanel.GateMapDialog.Material')"
                                                     :disabled="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
-                                                    outlined dense clearable hide-details
+                                                    outlined
+                                                    dense
+                                                    clearable
+                                                    hide-details
                                                     @blur="adjustMaterial" />
                                             </v-col>
                                             <v-col cols="2"></v-col>
@@ -154,7 +161,9 @@
                                                     "
                                                     suffix="°C"
                                                     :rules="temperatureRules"
-                                                    outlined dense hide-details
+                                                    outlined
+                                                    dense
+                                                    hide-details
                                                     @blur="adjustTemperature" />
                                             </v-col>
                                         </v-row>
