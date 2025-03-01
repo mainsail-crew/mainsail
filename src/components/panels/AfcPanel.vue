@@ -19,7 +19,7 @@
                     tile
                     :disabled="printerIsPrintingOnly || bypassState"
                     :title="$t('Panels.AfcPanel.Calibrate')"
-                    @click="calibrateAFC">
+                    @click="handleGcodeAction($event, 'calibrate')">
                     <v-icon small>{{ mdiWrench }}</v-icon>
                 </v-btn>
                 <v-menu v-if="showAfcMacros" :offset-y="true" :close-on-content-click="false" left>
@@ -44,6 +44,18 @@
                                 :alias="$t('Panels.AfcPanel.ParkNozzle')"
                                 :disabled="printerIsPrintingOnly"
                                 color="#272727" />
+                        </v-list-item>
+                        <!-- ENABLE INDICATOR LED-->
+                        <v-list-item v-if="AFCLedOn">
+                            <v-btn small color="#272727" @click="handleGcodeAction($event, 'ledOn')">
+                                {{ $t('Panels.AfcPanel.LedOn') }}
+                            </v-btn>
+                        </v-list-item>
+                        <!-- DISABLE INDICATOR LED-->
+                        <v-list-item v-if="AFCLedOff">
+                            <v-btn small color="#272727" @click="handleGcodeAction($event, 'ledOff')">
+                                {{ $t('Panels.AfcPanel.LedOff') }}
+                            </v-btn>
                         </v-list-item>
                     </v-list>
                 </v-menu>
@@ -154,6 +166,14 @@ export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) 
         return this.validMacro('AFC_CALIBRATION')
     }
 
+    get AFCLedOn(): boolean {
+        return this.validMacro('TURN_ON_AFC_LED')
+    }
+
+    get AFCLedOff(): boolean {
+        return this.validMacro('TURN_OFF_AFC_LED')
+    }
+
     get messageType(): { color: string; icon: string } {
         switch (this.display_message.type) {
             case 'error':
@@ -205,18 +225,27 @@ export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) 
         }
     }
 
-    calibrateAFC() {
-        const gcode = `AFC_CALIBRATION`
+    handleGcodeAction(event: Event, action: string) {
+        let gcode = ''
 
-        if (this.validMacro(gcode)) {
-            this.$nextTick(async () => {
-                try {
-                    this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_' + gcode })
-                } catch (error) {
-                    console.error('Failed to send G-code:', error)
+        this.$nextTick(async () => {
+            try {
+                if (action === 'calibrate') {
+                    gcode = `AFC_CALIBRATION`
+                    await this.$store.dispatch('printer/sendGcode', gcode)
+                } else if (action === 'ledOn') {
+                    gcode = `TURN_ON_AFC_LED`
+                    await this.$store.dispatch('printer/sendGcode', gcode)
+                } else if (action === 'ledOff') {
+                    gcode = `TURN_OFF_AFC_LED`
+                    await this.$store.dispatch('printer/sendGcode', gcode)
+                } else {
+                    console.warn('Unknown action:', action)
                 }
-            })
-        }
+            } catch (error) {
+                console.error('Failed to send G-code:', error)
+            }
+        })
     }
 
     clearDisplayMessage() {
