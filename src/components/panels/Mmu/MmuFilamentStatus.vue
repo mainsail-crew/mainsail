@@ -131,27 +131,36 @@
                 </transition>
             </g>
 
-            <circle cx="258" cy="140" r="8" style="stroke-width: 1" :class="encoderClass" />
-            <path d="M257 135 L261 140 L257 145" stroke-width="2" fill="none" />
-            <text x="278" y="145">Encoder</text>
-            <text x="345" y="145" font-size="11px">{{ encoderPosText }}</text>
-            <transition name="fade">
-                <text v-if="homedToEncoder" x="219.5" y="145" font-weight="bold">H</text>
-            </transition>
+            <g v-if="hasEncoder">
+                <circle cx="258" cy="140" r="8" style="stroke-width: 1" :class="encoderClass" />
+                <path d="M257 135 L261 140 L257 145" stroke-width="2" fill="none" />
+                <text x="278" y="145">Encoder</text>
+                <text x="345" y="145" font-size="11px">{{ encoderPosText }}</text>
+                <transition name="fade">
+                    <text v-if="homedToEncoder" x="219.5" y="145" font-weight="bold">H</text>
+                </transition>
+            </g>
 
-            <circle cx="258" cy="320" r="8" style="stroke-width: 1" :class="sensorClass('extruder')" />
-            <text x="278" y="325" :class="{ 'text-disabled': !isSensorEnabled('extruder') }">Extruder</text>
-            <transition name="fade">
-                <text v-if="homedToExtruder" x="219.5" y="325" font-weight="bold">H</text>
-            </transition>
+            <g v-if="hasSensor('extruder')">
+                <circle cx="258" cy="320" r="8" style="stroke-width: 1" :class="sensorClass('extruder')" />
+                <text x="278" y="325" :class="{ 'text-disabled': !isSensorEnabled('extruder') }">Extruder</text>
+                <transition name="fade">
+                    <text v-if="homedToExtruder" x="219.5" y="325" font-weight="bold">H</text>
+                </transition>
+            </g>
+
             <transition name="fade">
                 <text v-if="homedToExtruderEntrance" x="219.5" y="339" font-weight="bold">H</text>
             </transition>
-            <circle cx="258" cy="350" r="8" style="stroke-width: 1" :class="sensorClass('toolhead')" />
-            <text x="278" y="355" :class="{ 'text-disabled': !isSensorEnabled('toolhead') }">Toolhead</text>
-            <transition name="fade">
-                <text v-if="homedToToolhead" x="219.5" y="355" font-weight="bold">H</text>
-            </transition>
+
+            <g v-if="hasSensor('toolhead')">
+                <circle cx="258" cy="350" r="8" style="stroke-width: 1" :class="sensorClass('toolhead')" />
+                <text x="278" y="355" :class="{ 'text-disabled': !isSensorEnabled('toolhead') }">Toolhead</text>
+                <transition name="fade">
+                    <text v-if="homedToToolhead" x="219.5" y="355" font-weight="bold">H</text>
+                </transition>
+            </g>
+
             <text x="228" y="412" font-size="11px" font-weight="bold" text-anchor="end" :class="temperatureClass">
                 {{ temperatureText }}
             </text>
@@ -219,23 +228,23 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     private tipFormingClass: string = ''
 
     readonly POSITIONS = {
-        unknown: 8,
+        'unknown': 8,
         'before-pre-gate': 20,
-        'pre-gate': 25, // Not currently used
+        'pre-gate': 25,
         'after-pre-gate': 40,
-        'before-gear': 50, // Not currently used
-        gear: 55,
+        'before-gear': 50,
+        'gear': 55,
         'after-gear': 70,
-        gate: 85,
+        'gate': 85,
         'after-gate': 100,
-        encoder: 115, // Not currently used
-        'start-bowden': 135, // Bowden range vvv
+        'encoder': 115,
+        'start-bowden': 135,
         'mid-bowden': 221,
         'end-bowden': 290,
-        extruder: 295,
+        'extruder': 295,
         'extruder-entrance': 308,
-        'before-toolhead': 315, // Bowden range ^^^
-        toolhead: 325,
+        'before-toolhead': 315,
+        'toolhead': 325,
         'cooling-tube': 338,
         'cut-point': 355,
         'nozzle-start': 371,
