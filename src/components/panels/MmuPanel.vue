@@ -163,7 +163,6 @@ import MmuClogMeter from '@/components/panels/Mmu/MmuClogMeter.vue'
 import MmuGateSummary from '@/components/panels/Mmu/MmuGateSummary.vue'
 import MmuControls from '@/components/panels/Mmu/MmuControls.vue'
 import MmuTtgMap from '@/components/panels/Mmu/MmuTtgMap.vue'
-import MmuRefresh from '@/components/panels/Mmu/MmuRefresh.vue'
 
 @Component({
     components: {
