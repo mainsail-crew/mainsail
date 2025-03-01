@@ -103,8 +103,8 @@
                             <v-divider style="width: 100%" />
                             <template v-if="showTtgMap">
                                 <mmu-ttg-map
-                                    :startY="20"
                                     width="75%"
+                                    :start-y="20"
                                     :map="ttgMap"
                                     :groups="endlessSpoolGroups"
                                     :selected-tool="tool"

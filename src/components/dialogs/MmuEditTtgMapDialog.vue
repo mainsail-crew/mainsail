@@ -300,7 +300,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     @Watch('allTools')
-    onAllToolsChanged(newValue: boolean): void {
+    onAllToolsChanged(): void {
         this.selectedTool = -1
         this.selectedGate = -1
     }
