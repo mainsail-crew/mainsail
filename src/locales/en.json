@@ -913,6 +913,7 @@
             "Min": "min",
             "Name": "Name",
             "Presets": "Presets",
+            "Settings": "Settings",
             "SetupTemperatures": "Setup Temperatures",
             "ShowChart": "Show Chart",
             "ShowNameInChart": "Show {name} in chart",
@@ -921,7 +922,8 @@
             "Target": "Target",
             "TemperaturesInChart": "Temperature [°C]",
             "TempTooHigh": "Temperature too high for {name}! (max: {max})",
-            "TempTooLow": "Temperature too low for {name}! (min: {min})"
+            "TempTooLow": "Temperature too low for {name}! (min: {min})",
+            "TurnHeaterOff": "Turn Heater Off"
         },
         "ToolheadControlPanel": {
             "Absolute": "absolute",

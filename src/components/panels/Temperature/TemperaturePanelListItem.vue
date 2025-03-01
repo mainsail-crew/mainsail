@@ -1,12 +1,12 @@
 <template>
-    <tr>
+    <tr v-longpress:600="(e) => openContextMenu(e)" @contextmenu.prevent="openContextMenu($event)">
         <td class="icon">
-            <v-icon :color="iconColor" :class="iconClass" tabindex="-1" @click="showEditDialog = true">
+            <v-icon :color="iconColor" :class="iconClass" tabindex="-1" @click="openEditDialog">
                 {{ icon }}
             </v-icon>
         </td>
         <td class="name">
-            <span class="cursor-pointer" @click="showEditDialog = true">{{ formatName }}</span>
+            <span class="cursor-pointer" @click="openEditDialog">{{ formatName }}</span>
         </td>
         <td v-if="!isResponsiveMobile" class="state">
             <v-tooltip v-if="state !== null" top>
@@ -57,6 +57,18 @@
             :icon="icon"
             :color="color"
             @close-dialog="showEditDialog = false" />
+        <v-menu v-model="showContextMenu" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
+            <v-list>
+                <v-list-item v-if="isHeater" :disabled="!isHeaterActive" @click="turnOffHeater">
+                    <v-icon left>{{ mdiSnowflake }}</v-icon>
+                    {{ $t('Panels.TemperaturePanel.TurnHeaterOff') }}
+                </v-list-item>
+                <v-list-item @click="openEditDialog">
+                    <v-icon left>{{ mdiCog }}</v-icon>
+                    {{ $t('Panels.TemperaturePanel.Settings') }}
+                </v-list-item>
+            </v-list>
+        </v-menu>
     </tr>
 </template>
 
@@ -66,6 +78,7 @@ import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { convertName } from '@/plugins/helpers'
 import {
+    mdiCog,
     mdiFan,
     mdiFire,
     mdiMemory,
@@ -73,16 +86,24 @@ import {
     mdiPrinter3dNozzleAlert,
     mdiRadiator,
     mdiRadiatorDisabled,
+    mdiSnowflake,
     mdiThermometer,
 } from '@mdi/js'
 import { additionalSensors, opacityHeaterActive, opacityHeaterInactive } from '@/store/variables'
+import { CLOSE_TEMPERATURE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
 @Component
 export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
+    mdiCog = mdiCog
+    mdiSnowflake = mdiSnowflake
+
     @Prop({ type: String, required: true }) readonly objectName!: string
     @Prop({ type: Boolean, required: true }) readonly isResponsiveMobile!: boolean
 
     showEditDialog = false
+    showContextMenu = false
+    contextMenuX = 0
+    contextMenuY = 0
 
     get printerObject() {
         if (!(this.objectName in this.$store.state.printer)) return {}
@@ -269,6 +290,49 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
         if (this.command === 'SET_TEMPERATURE_FAN_TARGET') return 'TEMPERATURE_FAN'
 
         return ''
+    }
+
+    get availableHeaters() {
+        return this.$store.state.printer.heaters?.available_heaters ?? []
+    }
+
+    get isHeater() {
+        return this.availableHeaters.includes(this.objectName)
+    }
+
+    get isHeaterActive() {
+        return this.target > 0
+    }
+
+    mounted() {
+        EventBus.$on(CLOSE_TEMPERATURE_CONTEXT_MENU, this.closeContextMenu)
+    }
+
+    beforeDestroy() {
+        EventBus.$off(CLOSE_TEMPERATURE_CONTEXT_MENU, this.closeContextMenu)
+    }
+
+    openContextMenu(event: MouseEvent) {
+        EventBus.$emit(CLOSE_TEMPERATURE_CONTEXT_MENU)
+
+        this.showContextMenu = true
+        this.contextMenuX = event?.clientX || event?.pageX || window.screenX / 2
+        this.contextMenuY = event?.clientY || event?.pageY || window.screenY / 2
+    }
+
+    closeContextMenu() {
+        this.showContextMenu = false
+    }
+
+    openEditDialog() {
+        this.closeContextMenu()
+        this.showEditDialog = true
+    }
+
+    turnOffHeater() {
+        const gcode = `SET_HEATER_TEMPERATURE HEATER=${this.name} TARGET=0`
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 }
 </script>
