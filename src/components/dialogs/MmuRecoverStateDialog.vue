@@ -30,8 +30,8 @@
                     </v-col>
                     <v-col class="col-5 d-flex justify-end align-center">
                         <v-select
-                            :items="toolsList"
                             v-model="selectedTool"
+                            :items="toolsList"
                             :error-messages="toolErrorMessage"
                             outlined
                             dense />
@@ -52,8 +52,8 @@
                     </v-col>
                     <v-col class="col-5 d-flex justify-end align-center">
                         <v-select
-                            :items="gatesList"
                             v-model="selectedGate"
+                            :items="gatesList"
                             :error-messages="gateErrorMessage"
                             outlined
                             dense />

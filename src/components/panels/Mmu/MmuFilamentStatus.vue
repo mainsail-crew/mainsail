@@ -1,5 +1,5 @@
 <template>
-    <svg viewBox="140 20 285 421" preserveAspectRatio="xMidYMid meet" ref="filStatusSvg">
+    <svg ref="filStatusSvg" viewBox="140 20 285 421" preserveAspectRatio="xMidYMid meet">
         <defs>
             <g
                 id="sync-feedback"
@@ -34,7 +34,7 @@
                     <rect style="fill: rgb(88, 110, 117)" x="181" y="108" width="639" height="142" />
                     <path style="fill: rgb(88, 110, 117)" d="m 322 762 h 355 l -118 142 h -118 z" />
                 </g>
-                <g transform="matrix(23.2058 0 0 23.2058 329.7195 325.9517)" id="375155">
+                <g transform="matrix(23.2058 0 0 23.2058 329.7195 325.9517)">
                     <path
                         style="
                             stroke: rgb(0, 0, 0);
@@ -172,8 +172,8 @@
                 <transition name="fade">
                     <g
                         v-if="isSensorTriggered('filament_tension') || isSensorTriggered('filament_compression')"
-                        style="font-size: 14px"
                         key="feedback">
+                        style="font-size: 14px"
                         <text
                             v-if="isSensorTriggered('filament_tension') && isSensorTriggered('filament_compression')"
                             x="288"
@@ -190,7 +190,7 @@
         </g>
 
         <transition name="fade">
-            <use v-if="!syncDrive" xlink:href="#sync-extruder" ref="sync" transform="translate(278, 385) scale(.030)" />
+            <use v-if="!syncDrive" ref="sync" xlink:href="#sync-extruder" transform="translate(278, 385) scale(.030)" />
         </transition>
 
         <use v-if="action == ACTION_CUTTING_FILAMENT" ref="cut" xlink:href="#sissors" class="cut1-effect" />
@@ -244,7 +244,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     readonly BOWDEN_RANGE = 173 as const
 
     @Watch('$store.state.printer.mmu.bowden_progress')
-    onBowdenProgress(newProgress: number): void {
+    onBowdenProgress(): void {
         // Percentage movement in the bowden
         this.calcFilamentHeight(this.filamentPos)
     }
@@ -256,7 +256,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     @Watch('$store.state.printer.mmu.sensors')
-    onFilamentPosChanged(newSensors: object): void {
+    onSensorsChanged(): void {
         // Update on sensor change
         this.calcFilamentHeight(this.filamentPos)
     }

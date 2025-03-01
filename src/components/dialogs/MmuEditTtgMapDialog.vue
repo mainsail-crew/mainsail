@@ -22,8 +22,8 @@
                             </v-col>
                             <v-col cols="4" class="d-flex justify-end align-center no-padding pr-10">
                                 <v-switch
-                                    :disabled="allToolsDisabled"
                                     v-model="allTools"
+                                    :disabled="allToolsDisabled"
                                     :label="$t('Panels.MmuPanel.TtgMapDialog.AllTools')"
                                     hide-details
                                     class="short-switch"></v-switch>
@@ -36,9 +36,9 @@
                                 <v-row>
                                     <template v-for="(g, t) in localTtgMap">
                                         <v-col
-                                            cols="1"
                                             v-if="toolMetaData[t].inUse || allTools"
                                             :key="t"
+                                            cols="1"
                                             class="no-padding min-width-card">
                                             <v-card :class="toolCardClass(t)" @click="selectTool(t)">
                                                 <v-card-title class="justify-center">{{ toolText(t) }}</v-card-title>
@@ -192,8 +192,6 @@
                                                     :details="item"
                                                     :selected-es-group="localEndlessSpoolGroups[selectedGate] ?? null"
                                                     :selected-gate="selectedGate ?? null"
-                                                    @mouseover="onGateHover"
-                                                    @mouseleave="onGateLeave"
                                                     @select-gate="selectGate" />
                                             </template>
                                         </v-data-table>
@@ -357,14 +355,6 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
             this.selectedGate = this.localTtgMap[tool]
             this.scrollToGateRow(this.selectedGate)
         }
-    }
-
-    private onGateHover(gate) {
-        // TODO: Maybe tooltip to indicate compatibility
-    }
-
-    private onGateLeave(gate) {
-        // TODO: Maybe tooltip to indicate compatibility
     }
 
     private selectGate(gate, item) {

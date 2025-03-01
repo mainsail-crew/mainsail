@@ -280,8 +280,8 @@
 
         <!-- SPOOLMAN (ADAPTED) SPOOL SELECTOR -->
         <spoolman-change-spool-dialog
-            :showDialog="showSpoolmanSpoolChooserDialog"
-            :setActiveSpool="false"
+            :show-dialog="showSpoolmanSpoolChooserDialog"
+            :set-active-spool="false"
             @select-spool="selectSpoolmanSpool"
             @close="showSpoolmanSpoolChooserDialog = false" />
 

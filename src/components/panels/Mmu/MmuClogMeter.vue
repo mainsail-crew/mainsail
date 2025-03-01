@@ -15,6 +15,7 @@
                 :stroke-dasharray="circumference"
                 :stroke-dashoffset="dialArc"></circle>
             <circle
+                ref="dialCircle"
                 cx="70"
                 cy="70"
                 r="50"
@@ -22,8 +23,7 @@
                 fill="transparent"
                 stroke-width="18"
                 :stroke-dasharray="circumference"
-                :stroke-dashoffset="dashOffset"
-                ref="dialCircle"></circle>
+                :stroke-dashoffset="dashOffset" />
         </g>
         <g :transform="'rotate(' + headroomRotate + ' 70 70)'">
             <circle
@@ -35,10 +35,11 @@
                 stroke-width="18"
                 opacity="0.4"
                 :stroke-dasharray="circumference"
-                :stroke-dashoffset="headroomArc"></circle>
+                :stroke-dashoffset="headroomArc" />
         </g>
 
         <line
+            ref="minHeadroomLine"
             :x1="x1MinHeadroom"
             :y1="y1MinHeadroom"
             x2="70"
@@ -46,9 +47,7 @@
             :class="{ 'warning-color': headroomWarning, 'primary-color': !headroomWarning }"
             stroke-width="4"
             stroke-dashoffset="0"
-            stroke-dasharray="25,65"
-            ref="minHeadroomLine" />
-
+            stroke-dasharray="25,65" />
         <line
             :x1="x1Start"
             :y1="y1Start"
