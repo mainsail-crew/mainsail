@@ -3,7 +3,7 @@
         <v-row dense>
             <v-col cols="6">
                 <v-tooltip top color="secondary">
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                         <v-btn
                             ref="refBtn"
                             block
@@ -25,7 +25,7 @@
             </v-col>
             <v-col cols="6">
                 <v-tooltip top color="secondary">
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                         <v-btn
                             block
                             small
@@ -46,7 +46,7 @@
         <v-row dense>
             <v-col cols="6">
                 <v-tooltip top color="secondary">
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                         <v-btn
                             block
                             small
@@ -65,7 +65,7 @@
             </v-col>
             <v-col cols="6">
                 <v-tooltip top color="secondary">
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                         <v-btn
                             block
                             small
@@ -87,7 +87,7 @@
             <v-col cols="2"></v-col>
             <v-col cols="8">
                 <v-tooltip top color="secondary">
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                         <v-btn
                             block
                             small
@@ -109,7 +109,7 @@
         <v-row>
             <v-col cols="6">
                 <v-tooltip top color="secondary">
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                         <v-btn
                             large
                             block
@@ -129,7 +129,7 @@
             </v-col>
             <v-col cols="6">
                 <v-tooltip top color="secondary">
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                         <v-btn
                             large
                             block
