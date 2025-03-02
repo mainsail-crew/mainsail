@@ -227,6 +227,12 @@ export const getters: GetterTree<FileState, any> = {
         return getters['getThemeFileUrl'](acceptName, acceptExtensions)
     },
 
+    getUnitIcon: (state, getters) => (unitName: string) => {
+        const acceptExtensions = ['svg', 'jpg', 'jpeg', 'png', 'gif']
+
+        return getters['getThemeFileUrl'](unitName, acceptExtensions) ?? null
+    },
+
     getCustomStylesheet: (state, getters) => {
         const acceptName = 'custom'
         const acceptExtensions = ['css']

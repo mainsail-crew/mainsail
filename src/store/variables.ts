@@ -58,6 +58,7 @@ export const checkKlipperConfigModules = [
 export const allowedMetadata = [
     'uuid',
     'estimated_time',
+    'extruder_colors',
     'filament_name',
     'filament_type',
     'filament_total',
@@ -135,7 +136,7 @@ export const hiddenDirectories = ['.git']
 /*
  * List of all downloadable logfiles
  */
-export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sonar']
+export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sonar', 'AFC']
 
 /*
  * List of all rollover logfiles

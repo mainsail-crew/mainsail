@@ -2,6 +2,8 @@ import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { AFCState, Unit, Lane, Extruder, FilBuffer, Hub } from '@/store/server/afc/types'
 
+let afcDataFetchInterval: ReturnType<typeof setInterval> | null = null
+
 export const actions: ActionTree<AFCState, RootState> = {
     reset({ commit }) {
         commit('reset')
@@ -202,5 +204,22 @@ export const actions: ActionTree<AFCState, RootState> = {
         commit('setCurrentLoad', lanes.find((lane) => afcData.current_load === lane.name) || null)
         commit('setCurrentLane', lanes.find((lane) => afcData.current_lane === lane.name) || null)
         commit('setNextLane', lanes.find((lane) => afcData.next_lane === lane.name) || null)
+    },
+
+    startAFCDataFetchInterval({ dispatch }) {
+        if (afcDataFetchInterval !== null) {
+            return
+        }
+        dispatch('fetchAFCData')
+        afcDataFetchInterval = setInterval(() => {
+            dispatch('fetchAFCData')
+        }, 1000)
+    },
+
+    stopAFCDataFetchInterval() {
+        if (afcDataFetchInterval !== null) {
+            clearInterval(afcDataFetchInterval)
+            afcDataFetchInterval = null
+        }
     },
 }

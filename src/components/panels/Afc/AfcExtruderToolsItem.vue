@@ -165,7 +165,7 @@ export default class AfcExtruderToolsItem extends Mixins(AfcMixin, BaseMixin, Co
     align-items: center;
     gap: 8px;
     min-width: 120px;
-    flex-shrink: 0;
+    flex: 1 0;
 }
 
 .tool-name {
@@ -178,14 +178,15 @@ export default class AfcExtruderToolsItem extends Mixins(AfcMixin, BaseMixin, Co
 .buffer-info {
     text-align: center;
     flex: 1 0;
-    min-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 150px;
 }
 
 .lane-status {
     text-align: right;
     min-width: 120px;
-    max-width: 130px;
-    flex: 1;
+    flex: 1 0;
 }
 
 .status-light {

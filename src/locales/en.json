@@ -637,6 +637,8 @@
             "LaneLoaded": "Loaded",
             "LaneLoadedNone": "NONE",
             "LaneMap": "Remap lane to selected T command",
+            "LedOff": "LEDs Off",
+            "LedOn": "LEDs On",
             "Load": "Load Lane",
             "LoadError": "There was an issue loading unit information. Please check your configurations and make sure you are on the latest version of AFC.",
             "Loading": "Loading",

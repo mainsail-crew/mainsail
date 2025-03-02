@@ -297,12 +297,10 @@
                             <template v-if="col.outputType === 'color' && outputValue(col, item) !== '--'">
                                 <div class="d-flex align-center py-1">
                                     <ColorBox
-                                        v-for="(color, id) in item.filament_colors"
-                                        :key="color"
+                                        v-for="(color, id) in getUsedTools(item).extruder_colors"
+                                        :key="`${color}-${id}`"
                                         :color="color"
-                                        :weight="
-                                            item.filament_weights[id] ? `${item.filament_weights[id]} g` : '0 g'
-                                        " />
+                                        :weight="`${getUsedTools(item).filament_weights[id]} g`" />
                                 </div>
                             </template>
                             <template v-else>
@@ -897,7 +895,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
             },
             {
                 text: this.$t('Files.FilamentColor').toString(),
-                value: 'filament_colors',
+                value: 'extruder_colors',
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'color',
@@ -1102,6 +1100,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     getStatusColor(status: string | null) {
         return this.$store.getters['server/history/getPrintStatusIconColor'](status)
+    }
+
+    getUsedTools(item: any) {
+        return {
+            extruder_colors: item.extruder_colors.filter((_: string, id: number) => item.filament_weights[id] > 0),
+            filament_weights: item.filament_weights.filter((weight: number) => weight > 0),
+        }
     }
 
     dragOverFilelist(e: any, row: any) {
