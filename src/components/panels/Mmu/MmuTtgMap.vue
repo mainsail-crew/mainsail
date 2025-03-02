@@ -60,7 +60,7 @@
             </marker>
         </defs>
 
-        <g v-for="(g, t) in map" :key="t">
+        <g v-for="(g, t) in map" :key="'tool' + t">
             <text
                 :x="toolX"
                 :y="t * verticalSpacing + startY + 8"
@@ -104,8 +104,8 @@
                 marker-start="url(#squareStartSelected)"
                 marker-end="url(#arrowEndSelected)" />
         </g>
-        <div v-if="showESgroups">
-            <g v-for="(group, index) in getEndlessSpoolGroups()" :key="index">
+        <g v-if="showEsGroups">
+            <g v-for="(group, index) in getEndlessSpoolGroups()" :key="'group_' + index">
                 <g v-if="group !== currentGroup">
                     <path
                         :d="generateEndlessSpoolPathD(group, index)"
@@ -117,6 +117,7 @@
                         :x="groupX + index * groupSpacing"
                         :y="startY + map.length * verticalSpacing + 2"
                         class="fill-regular-color"
+                        fill="red"
                         font-size="8px">
                         {{ String.fromCharCode(group + 65) }}
                     </text>
@@ -132,13 +133,14 @@
                         :x="groupX + index * groupSpacing"
                         :y="startY + map.length * verticalSpacing + 2"
                         class="fill-selected-color"
+                        fill="red"
                         font-size="8px"
                         font-weight="bold">
                         {{ String.fromCharCode(group + 65) }}
                     </text>
                 </g>
             </g>
-        </div>
+        </g>
     </svg>
 </template>
 
@@ -155,7 +157,7 @@ export default class MmuTtgMap extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: false, default: 12 }) readonly groupSpacing!: number
     @Prop({ required: false, default: 80 }) readonly mapSpace!: number
     @Prop({ required: false, default: 10 }) readonly leader!: number
-    @Prop({ required: false, default: true }) readonly showESgroups!: boolean
+    @Prop({ required: false, default: true }) readonly showEsGroups!: boolean
 
     @Prop({ required: true }) readonly map: number[]
     @Prop({ required: true }) readonly groups: number[]
@@ -222,7 +224,7 @@ export default class MmuTtgMap extends Mixins(BaseMixin, MmuMixin) {
     }
 
     // Find groups with more than one gate
-    getEndlessSpoolGroups(): number[] {
+    private getEndlessSpoolGroups(): number[] {
         const countMap: { [key: number]: number } = {}
         this.groups.forEach((num) => {
             if (countMap[num]) {
