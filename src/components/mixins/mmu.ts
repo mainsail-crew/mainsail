@@ -486,7 +486,9 @@ export default class MmuMixin extends Vue {
 
             // This is just a string so split
             const names = file.filament_name ?? ''
-            const processedNames = names ? names.split(/[,;]/).map((element) => element.trim()) : []
+            const processedNames = names
+                ? names.split(/[,;]/).map((element) => element.trim().replace(/^["']|["']$/g, ''))
+                : []
             td.name = processedNames[toolIndex] || 'Unknown'
 
             const referencedTools = file.referenced_tools ?? []

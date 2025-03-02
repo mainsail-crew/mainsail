@@ -59,7 +59,7 @@
                                                                 <v-spacer />
                                                                 <v-divider />
                                                                 <div class="text-start no-break">
-                                                                    <strong>&infin;</strong>
+                                                                    <strong>&infin;&nbsp;</strong>
                                                                     <span class="tiny-font">{{ esSpoolsText(g) }}</span>
                                                                 </div>
                                                             </v-col>
