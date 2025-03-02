@@ -141,7 +141,6 @@ export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) 
     mdiAlertOutline = mdiAlertOutline
     mdiWrench = mdiWrench
 
-    intervalId: ReturnType<typeof setInterval> | null = null
     toolExpandedIndex: number | null = null
     unitExpandedIndex: number[] = []
     autoExpand: boolean = false
@@ -253,26 +252,14 @@ export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) 
         this.display_message = { message: '', type: '' }
     }
 
-    async fetchAFCData() {
-        await this.$store.dispatch('server/afc/fetchAFCData')
+    async mounted() {
+        await this.$store.dispatch('server/afc/startAFCDataFetchInterval')
+
         if (!this.autoExpand) {
             this.configureAutoExpand()
         }
 
         this.infoMessage()
-    }
-
-    async mounted() {
-        this.fetchAFCData()
-
-        this.intervalId = setInterval(this.fetchAFCData, 100)
-    }
-
-    beforeDestroy() {
-        if (this.intervalId !== null) {
-            clearInterval(this.intervalId)
-            this.intervalId = null
-        }
     }
 
     configureAutoExpand() {
@@ -283,6 +270,11 @@ export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) 
             this.unitExpandedIndex = [0]
             this.autoExpand = true
         }
+    }
+
+    @Watch('afcMessage')
+    onAfcMessageChange() {
+        this.infoMessage()
     }
 
     @Watch('bypassState')
@@ -314,5 +306,9 @@ export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) 
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.v-expansion-panel-content >>> .v-expansion-panel-content__wrap {
+    padding: 0px 10px 0px 10px !important;
 }
 </style>

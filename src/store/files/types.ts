@@ -24,10 +24,11 @@ export interface FileStateFile {
     uuid?: string | null
     job_id?: string | null
     estimated_time?: number
+    extruder_colors?: string[]
     filament_total?: number
     filament_weight_total?: number
     filament_weights?: number[]
-    filament_colors?: string
+    filament_colors?: string[]
     filament_change_count?: number
     first_layer_height?: number
     first_layer_bed_temp?: number

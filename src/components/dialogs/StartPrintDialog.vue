@@ -138,6 +138,12 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
         return this.file?.big_thumbnail_width ?? 400
     }
 
+    mounted() {
+        if (this.afcEnabled) {
+            this.$store.dispatch('server/afc/startAFCDataFetchInterval')
+        }
+    }
+
     startPrint(filename = '') {
         filename = (this.currentPath + '/' + filename).substring(1)
         this.closeDialog()

@@ -58,6 +58,7 @@ export const checkKlipperConfigModules = [
 export const allowedMetadata = [
     'uuid',
     'estimated_time',
+    'extruder_colors',
     'filament_name',
     'filament_type',
     'filament_total',

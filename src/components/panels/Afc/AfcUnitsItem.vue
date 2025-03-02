@@ -2,11 +2,10 @@
     <v-expansion-panel>
         <v-expansion-panel-header>
             <div class="unit-header">
-                <img
-                    v-if="showUnitIcons && validUnitIcon"
-                    :src="IconUrl"
-                    class="unit-icon"
-                    @error="validUnitIcon = false" />
+                <div v-if="showUnitIcons && validUnitIcon">
+                    <img v-if="isImage(IconUrl)" :src="IconUrl" class="unit-icon" @error="validUnitIcon = false" />
+                    <div v-else class="unit-icon" v-html="svgContent"></div>
+                </div>
                 <div v-else class="pl-10" />
                 <h2 class="unit-title">{{ formattedUnitName }}</h2>
                 <span v-if="unit.hubs.length > 0" class="hub-container">
@@ -56,6 +55,7 @@ export default class AfcUnitsItem extends Mixins(AfcMixin, BaseMixin) {
     currentHubState = false
     validUnitIcon = true
     IconUrl = ''
+    svgContent = ''
 
     get formattedUnitName(): string {
         return String(this.unit.name).replace(/_/g, ' ')
@@ -83,8 +83,25 @@ export default class AfcUnitsItem extends Mixins(AfcMixin, BaseMixin) {
         this.currentHubState = hub.state
     }
 
+    async fetchSvgContent(url: string) {
+        try {
+            const response = await fetch(url)
+            if (!response.ok) return
+            this.svgContent = await response.text()
+        } catch (error) {
+            this.validUnitIcon = false
+        }
+    }
+
+    isImage(url: string): boolean {
+        return /\.(png|jpe?g|gif)$/i.test(url)
+    }
+
     mounted() {
         this.IconUrl = this.unitIcon(this.unit.type)
+        if (this.IconUrl && !this.isImage(this.IconUrl)) {
+            this.fetchSvgContent(this.IconUrl)
+        }
     }
 }
 </script>
@@ -149,11 +166,18 @@ export default class AfcUnitsItem extends Mixins(AfcMixin, BaseMixin) {
 }
 
 .unit-icon {
-    max-width: 70px;
-    max-height: 70px;
-    width: auto;
-    height: auto;
+    fill: currentColor;
+    width: 30px;
+    height: 30px;
     margin-left: 10px;
     object-fit: contain;
+}
+
+.v-expansion-panel-content >>> .v-expansion-panel-content__wrap {
+    padding: 0px 10px 16px 10px !important;
+}
+
+.v-expansion-panel-header {
+    padding: 10px 24px 5px 24px !important;
 }
 </style>

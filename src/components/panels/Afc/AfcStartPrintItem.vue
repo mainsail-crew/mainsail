@@ -91,7 +91,6 @@ export default class AfcStartPrintItem extends Mixins(AfcMixin, BaseMixin) {
     @Watch('lane.map')
     @Watch('lane.spool.spool_id')
     onLaneInfoChange() {
-        console.log('lane.map or lane.spool.spool_id changed')
         if (this.lane.map !== this.currentMap || this.lane.spool.spool_id !== this.currentSpoolId) {
             this.currentMap = this.lane.map
             this.currentSpoolId = this.lane.spool.spool_id
@@ -125,7 +124,7 @@ export default class AfcStartPrintItem extends Mixins(AfcMixin, BaseMixin) {
     }
 
     get fileColor() {
-        return this.file.filament_colors?.[this.tIndex] ?? ''
+        return this.file.extruder_colors?.[this.tIndex] ?? ''
     }
 
     get fileWeight() {
