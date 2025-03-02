@@ -237,12 +237,13 @@ export default class MmuMixin extends Vue {
             numGates: this.$store.state.printer.mmu_machine?.[unitRef]?.num_gates ?? 1,
             firstGate: this.$store.state.printer.mmu_machine?.[unitRef]?.first_gate ?? 0,
             selectorType: this.$store.state.printer.mmu_machine?.[unitRef]?.selector_type ?? 'VirtualSelector',
-            variableRotationDistances: this.$store.state.printer.mmu_machine?.[unitRef]?.variable_rotation_distances ?? true,
+            variableRotationDistances:
+                this.$store.state.printer.mmu_machine?.[unitRef]?.variable_rotation_distances ?? true,
             variableBowdenLengths: this.$store.state.printer.mmu_machine?.[unitRef]?.variable_bowden_lengths ?? true,
             requireBowdenMove: this.$store.state.printer.mmu_machine?.[unitRef]?.require_bowden_move ?? true,
             filamentAlwaysGripped: this.$store.state.printer.mmu_machine?.[unitRef]?.filament_always_gripped ?? false,
             hasBypass: this.$store.state.printer.mmu_machine?.[unitRef]?.has_bypass ?? false,
-            multiGear: this.$store.state.printer.mmu_machine?.[unitRef]?.multi_gear ?? false
+            multiGear: this.$store.state.printer.mmu_machine?.[unitRef]?.multi_gear ?? false,
         }
         return ud
     }
