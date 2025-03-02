@@ -1,6 +1,7 @@
 <template>
     <tr class="cursor-pointer" @click="setSpoolRow">
-        <td style="width: 50px" class="pr-0 py-2">
+        <td style="width: 50px; position: relative" class="pr-0 py-2">
+            <div v-if="loaded_lane > -1" class="loaded-lane-overlay">{{ loaded_lane }}</div>
             <spool-icon :color="color" style="width: 50px; float: left" class="mr-3" />
         </td>
 
@@ -58,6 +59,7 @@ import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 export default class AfcChangeSpoolDialogRow extends Mixins(BaseMixin) {
     @Prop({ required: true }) declare readonly spool: ServerSpoolmanStateSpool
     @Prop({ required: false }) declare readonly max_id_digits: number
+    @Prop({ required: false }) declare readonly loaded_lane: number
 
     mdiDatabase = mdiDatabase
 
@@ -159,5 +161,16 @@ export default class AfcChangeSpoolDialogRow extends Mixins(BaseMixin) {
 .comment {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
+}
+
+.loaded-lane-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--v-success-base);
+    color: white;
+    padding: 2px 5px;
+    font-size: 1.1rem;
+    border-radius: 3px;
 }
 </style>

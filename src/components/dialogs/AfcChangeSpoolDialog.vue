@@ -86,6 +86,7 @@
                                 :key="item.id"
                                 :spool="item"
                                 :max_id_digits="max_spool_id_digits"
+                                :loaded_lane="checkLoadedSpool(item.id)"
                                 @set-spool="setSpool"
                                 @open-spool-details="openSpoolDetails" />
                         </template>
@@ -176,6 +177,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import AfcMixin from '@/components/mixins/afc'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiAdjust, mdiDatabase, mdiMagnify, mdiRefresh, mdiEject } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
@@ -185,7 +187,7 @@ import { Lane } from '@/store/server/afc/types'
 @Component({
     components: { AfcChangeSpoolDialogRow, Panel },
 })
-export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
+export default class AfcChangeSpoolDialog extends Mixins(AfcMixin, BaseMixin) {
     @Prop({ type: Object, required: true }) laneData!: Lane
     mdiAdjust = mdiAdjust
     mdiCloseThick = mdiCloseThick
@@ -255,6 +257,11 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
     get spoolManagerUrl() {
         return this.$store.state.server.config.config?.spoolman?.server ?? null
+    }
+
+    checkLoadedSpool(spoolId: number): number {
+        const lane = this.lanesData.find((lane) => lane.spool.spool_id === spoolId.toString())
+        return lane ? lane.lane : -1
     }
 
     updateSpool() {
@@ -407,15 +414,11 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
     }
 
     setSpool(spool: any) {
-        console.log('Spool set as:', spool)
-        console.log('Lane data received:', this.laneData)
         const gcode = `SET_SPOOL_ID LANE=${this.laneData.name} SPOOL_ID=${spool.id}`
-        console.log('Dispatching G-code:', gcode)
 
         this.$nextTick(async () => {
             try {
                 this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_' + gcode })
-                console.log('G-code sent successfully')
             } catch (error) {
                 console.error('Failed to send G-code:', error)
             }
@@ -425,7 +428,6 @@ export default class AfcChangeSpoolDialog extends Mixins(BaseMixin) {
 
     initializeFields() {
         if (this.laneData) {
-            console.log('Initializing with laneData:', this.laneData)
             this.filamentType = this.laneData.spool.material || ''
             this.remainingWeight = this.laneData.spool.weight || 0
             this.spoolColor = this.laneData.spool.color || '#ffffff'
