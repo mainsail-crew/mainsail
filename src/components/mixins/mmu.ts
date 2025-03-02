@@ -18,7 +18,7 @@ interface SlicerToolDetails {
     material: string
     temp: number
     name: string
-    in_use: boolean
+    inUse: boolean
 }
 
 interface MmuUnitDetails {
@@ -230,20 +230,20 @@ export default class MmuMixin extends Vue {
     }
 
     private unitDetails(unitIndex: number): MmuUnitDetails {
-        const ud: MmuUnitDetails = {}
         const unitRef = `unit_${unitIndex}`
-        ud.name = this.$store.state.printer.mmu_machine?.[unitRef]?.name ?? 'Unit'
-        ud.version = this.$store.state.printer.mmu_machine?.[unitRef]?.version ?? '1.0'
-        ud.numGates = this.$store.state.printer.mmu_machine?.[unitRef]?.num_gates ?? 1
-        ud.firstGate = this.$store.state.printer.mmu_machine?.[unitRef]?.first_gate ?? 0
-        ud.selectorType = this.$store.state.printer.mmu_machine?.[unitRef]?.selector_type ?? 'VirtualSelector'
-        ud.variableRotationDistances =
-            this.$store.state.printer.mmu_machine?.[unitRef]?.variable_rotation_distances ?? true
-        ud.variableBowdenLengths = this.$store.state.printer.mmu_machine?.[unitRef]?.variable_bowden_lengths ?? true
-        ud.requireBowdenMove = this.$store.state.printer.mmu_machine?.[unitRef]?.require_bowden_move ?? true
-        ud.filamentAlwaysGripped = this.$store.state.printer.mmu_machine?.[unitRef]?.filament_always_gripped ?? false
-        ud.hasBypass = this.$store.state.printer.mmu_machine?.[unitRef]?.has_bypass ?? false
-        ud.multiGear = this.$store.state.printer.mmu_machine?.[unitRef]?.multi_gear ?? false
+        const ud: MmuUnitDetails = {
+            name: this.$store.state.printer.mmu_machine?.[unitRef]?.name ?? 'Unit',
+            version: this.$store.state.printer.mmu_machine?.[unitRef]?.version ?? '1.0',
+            numGates: this.$store.state.printer.mmu_machine?.[unitRef]?.num_gates ?? 1,
+            firstGate: this.$store.state.printer.mmu_machine?.[unitRef]?.first_gate ?? 0,
+            selectorType: this.$store.state.printer.mmu_machine?.[unitRef]?.selector_type ?? 'VirtualSelector',
+            variableRotationDistances: this.$store.state.printer.mmu_machine?.[unitRef]?.variable_rotation_distances ?? true,
+            variableBowdenLengths: this.$store.state.printer.mmu_machine?.[unitRef]?.variable_bowden_lengths ?? true,
+            requireBowdenMove: this.$store.state.printer.mmu_machine?.[unitRef]?.require_bowden_move ?? true,
+            filamentAlwaysGripped: this.$store.state.printer.mmu_machine?.[unitRef]?.filament_always_gripped ?? false,
+            hasBypass: this.$store.state.printer.mmu_machine?.[unitRef]?.has_bypass ?? false,
+            multiGear: this.$store.state.printer.mmu_machine?.[unitRef]?.multi_gear ?? false
+        }
         return ud
     }
 
@@ -329,7 +329,7 @@ export default class MmuMixin extends Vue {
     }
 
     get filamentPos(): number {
-        return this.$store.state.printer.mmu?.filament_pos ?? FILAMENT_POS_UNKNOWN
+        return this.$store.state.printer.mmu?.filament_pos ?? this.FILAMENT_POS_UNKNOWN
     }
     readonly FILAMENT_POS_UNKNOWN: number = -1
     readonly FILAMENT_POS_UNLOADED: number = 0 // Parked in gate
@@ -403,7 +403,6 @@ export default class MmuMixin extends Vue {
         const gd: MmuGateDetails = {}
         if (gateIndex === this.TOOL_GATE_BYPASS) {
             gd.index = -2
-            gd.gateName = 'Bypass'
             gd.status = -1
             if (this.gate === gateIndex) {
                 gd.filamentName = this.$store.state.server.spoolman?.active_spool?.filament?.name ?? 'No active spool'
@@ -643,11 +642,11 @@ export default class MmuMixin extends Vue {
      * Miscellaneous
      */
 
-    gateText(gate): string {
+    gateText(gate: number): string {
         return gate === -1 ? '?' : gate === this.TOOL_GATE_BYPASS ? 'Bypass' : '@' + gate
     }
 
-    toolText(tool): string {
+    toolText(tool: number): string {
         return tool === -1 ? 'T?' : tool === this.TOOL_GATE_BYPASS ? 'Bypass' : 'T' + tool
     }
 
@@ -691,7 +690,7 @@ export default class MmuMixin extends Vue {
 
     // Fix Happy Hare color strings (# problematic in klipper CLI)
     readonly NO_FILAMENT_COLOR = '#808182E3'
-    private formColorString(color: string): string {
+    private formColorString(color: string | null): string {
         let hexaColor = this.NO_FILAMENT_COLOR
         if (!color) return hexaColor
 
