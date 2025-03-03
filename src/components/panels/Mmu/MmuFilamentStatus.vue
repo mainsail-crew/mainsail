@@ -199,7 +199,7 @@
         </g>
 
         <transition name="fade">
-            <use v-if="!syncDrive" ref="sync" xlink:href="#sync-extruder" transform="translate(278, 385) scale(.030)" />
+            <use v-if="syncDrive" ref="sync" xlink:href="#sync-extruder" transform="translate(278, 385) scale(.030)" />
         </transition>
 
         <use v-if="action == ACTION_CUTTING_FILAMENT" ref="cut" xlink:href="#sissors" class="cut1-effect" />
