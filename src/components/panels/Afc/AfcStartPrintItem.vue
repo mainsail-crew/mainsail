@@ -1,6 +1,6 @@
 <template>
     <div v-if="!isToolDisabled || showUnusedTools">
-        <div class="lane-item">
+        <div class="d-flex align-center pa-1">
             <v-menu :offset-y="true" :close-on-content-click="true" left>
                 <template #activator="{ on: onMenu, attrs }">
                     <v-tooltip top>
@@ -25,28 +25,51 @@
                         :class="{ disabled: isToolDisabled }"
                         v-on="onTooltip"
                         @click="handleToolClick">
-                        <div class="left-column">
-                            <ColorBox v-if="fileColor" :color="fileColor" />
+                        <div class="d-flex align-center">
                             <div class="filament-info">
-                                <span :class="getClassForType" flex>
-                                    {{ fileFilamentType }}
-                                </span>
-                                <span v-if="weightVisible" :class="getClassForWeight" flex>
-                                    {{ fileWeight }}
-                                </span>
+                                <v-badge :key="`${fileColor}`" inline :color="fileColor" class="pt-1">
+                                    <template #badge>
+                                        <div
+                                            :style="{
+                                                color: filamentTextColor(fileColor),
+                                                fontSize: '1.1em',
+                                                minWidth: '64px',
+                                                maxWidth: '64px',
+                                            }">
+                                            {{ fileWeight }}
+                                        </div>
+                                    </template>
+                                </v-badge>
+                                <small :class="getClassForType" class="filament-type pt-1" flex>
+                                    {{ fileFilamentType || '--' }}
+                                </small>
                             </div>
                         </div>
-                        <div class="right-column">
-                            {{ lane.name }}
-                            <ColorBox :color="spoolColor" />
+
+                        <div class="d-flex align-center">
+                            <span class="pr-2">
+                                {{ lane.name }}
+                            </span>
+
                             <div class="filament-info">
-                                <span :class="getClassForType" flex>
-                                    {{ spoolMaterial }}
-                                </span>
-                                <span v-if="spoolWeight" :class="getClassForWeight" flex>
-                                    {{ spoolWeight }}
-                                </span>
+                                <v-badge :key="`${spoolColor}`" inline :color="spoolColor" class="pt-1">
+                                    <template #badge>
+                                        <div
+                                            :style="{
+                                                color: filamentTextColor(spoolColor),
+                                                fontSize: '1.1em',
+                                                minWidth: '64px',
+                                                maxWidth: '64px',
+                                            }">
+                                            {{ spoolWeight }}
+                                        </div>
+                                    </template>
+                                </v-badge>
+                                <small :class="getClassForType" class="filament-type pt-1">
+                                    {{ spoolMaterial || '--' }}
+                                </small>
                             </div>
+
                             <span class="match-status">
                                 <v-icon
                                     :style="{ visibility: isToolDisabled ? 'hidden' : 'visible' }"
@@ -70,36 +93,43 @@ import { Lane } from '@/store/server/afc/types'
 import BaseMixin from '@/components/mixins/base'
 import AfcMixin from '@/components/mixins/afc'
 import { FileStateGcodefile } from '@/store/files/types'
+import { filamentTextColor } from '@/plugins/helpers'
 import { mdiCheck, mdiAlertOutline } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
-import ColorBox from '@/components/ui/ColorBox.vue'
 
-@Component({
-    components: { ColorBox },
-})
+@Component({})
 export default class AfcStartPrintItem extends Mixins(AfcMixin, BaseMixin) {
     @Prop({ required: true }) lane!: Lane
     @Prop({ required: true }) showUnusedTools!: boolean
     @Prop({ required: true }) file!: FileStateGcodefile
+
+    filamentTextColor = filamentTextColor
 
     mdiCheck = mdiCheck
     mdiAlertOutline = mdiAlertOutline
 
     currentMap = ''
     currentSpoolId = ''
+    curFile: FileStateGcodefile | null = null
 
     @Watch('lane.map')
     @Watch('lane.spool.spool_id')
+    @Watch('file')
     onLaneInfoChange() {
-        if (this.lane.map !== this.currentMap || this.lane.spool.spool_id !== this.currentSpoolId) {
+        if (
+            this.lane.map !== this.currentMap ||
+            this.lane.spool.spool_id !== this.currentSpoolId ||
+            this.curFile !== this.file
+        ) {
             this.currentMap = this.lane.map
             this.currentSpoolId = this.lane.spool.spool_id
+            this.curFile = this.file
             this.updateMatchInfo()
         }
     }
 
     mounted() {
-        this.updateMatchInfo()
+        this.onLaneInfoChange()
     }
 
     get isToolDisabled() {
@@ -134,8 +164,7 @@ export default class AfcStartPrintItem extends Mixins(AfcMixin, BaseMixin) {
     get isTypeMatch() {
         if (!this.fileFilamentType) return true
 
-        const laneMaterial = this.lane.spool.material.toLowerCase()
-        return this.fileFilamentType.toLowerCase() === laneMaterial
+        return this.compareMaterials(this.fileFilamentType, this.lane.spool.material)
     }
 
     get isWeightSufficient() {
@@ -232,6 +261,13 @@ export default class AfcStartPrintItem extends Mixins(AfcMixin, BaseMixin) {
         return !this.isTypeMatch ? 'warning--text' : ''
     }
 
+    compareMaterials(material1: string, material2: string): boolean {
+        const normalizedMaterial1 = material1.replace(/[+]/g, '').toLowerCase().split(' ')
+        const normalizedMaterial2 = material2.replace(/[+]/g, '').toLowerCase().split(' ')
+
+        return normalizedMaterial1.some((part) => normalizedMaterial2.includes(part))
+    }
+
     handleMapChange(event: Event, option: string) {
         const gcode = `SET_MAP LANE=${this.lane.name} MAP=${option}`
 
@@ -265,12 +301,6 @@ export default class AfcStartPrintItem extends Mixins(AfcMixin, BaseMixin) {
 </script>
 
 <style scoped>
-.lane-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-}
-
 .map {
     cursor: pointer;
     font-weight: bold;
@@ -287,16 +317,20 @@ export default class AfcStartPrintItem extends Mixins(AfcMixin, BaseMixin) {
     cursor: pointer;
 }
 
-.left-column,
-.right-column {
-    display: flex;
-    align-items: center;
-}
-
 .filament-info {
     display: flex;
     flex-direction: column;
+    align-items: center;
     min-width: 60px;
+}
+
+.filament-type {
+    max-width: 90px;
+    min-width: 90px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
 }
 
 .match-status {

@@ -51,7 +51,7 @@
             </div>
             <div class="buffer-info">{{ getToolInfo().buffer }}</div>
             <div class="lane-status">
-                {{ getToolInfo().state }} :
+                {{ getToolInfo().state }}:
                 <span :class="toolStateTextClass">
                     {{ getToolInfo().lane }}
                 </span>

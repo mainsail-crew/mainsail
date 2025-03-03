@@ -232,7 +232,7 @@
                             <v-simple-checkbox
                                 v-ripple
                                 :value="isSelected"
-                                class="pa-0 mr-0"
+                                class="pa-0 mr-0 d-flex"
                                 @click.stop="select(!isSelected)"></v-simple-checkbox>
                         </td>
                         <td class="px-0 text-center" style="width: 32px">
@@ -246,7 +246,7 @@
                                     :color="bigThumbnailTooltipColor"
                                     :disabled="!item.big_thumbnail">
                                     <template #activator="{ on, attrs }">
-                                        <vue-load-image>
+                                        <vue-load-image class="d-flex">
                                             <img
                                                 slot="image"
                                                 :src="item.small_thumbnail"
@@ -295,12 +295,28 @@
                             :key="col.value"
                             :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
                             <template v-if="col.outputType === 'color' && outputValue(col, item) !== '--'">
-                                <div class="d-flex align-center py-1">
-                                    <ColorBox
+                                <div class="d-flex align-center">
+                                    <div
                                         v-for="(color, id) in getUsedTools(item).extruder_colors"
                                         :key="`${color}-${id}`"
-                                        :color="color"
-                                        :weight="`${getUsedTools(item).filament_weights[id]} g`" />
+                                        style="flex-direction: column"
+                                        class="d-flex align-center pt-1">
+                                        <v-badge inline :color="color">
+                                            <template #badge>
+                                                <div
+                                                    :style="{
+                                                        color: filamentTextColor(color),
+                                                        fontSize: '1.1em',
+                                                        minWidth: '60px',
+                                                    }">
+                                                    {{ `${getUsedTools(item).filament_weights[id]} g` }}
+                                                </div>
+                                            </template>
+                                        </v-badge>
+                                        <small>
+                                            {{ getUsedTools(item).filament_type[id] }}
+                                        </small>
+                                    </div>
                                 </div>
                             </template>
                             <template v-else>
@@ -590,7 +606,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { defaultBigThumbnailBackground, validGcodeExtensions } from '@/store/variables'
-import { escapePath, formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
+import { escapePath, formatFilesize, formatPrintTime, sortFiles, filamentTextColor } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
@@ -623,7 +639,6 @@ import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 import ControlMixin from '@/components/mixins/control'
 import PathNavigation from '@/components/ui/PathNavigation.vue'
-import ColorBox from '@/components/ui/ColorBox.vue'
 
 interface contextMenu {
     shown: boolean
@@ -660,7 +675,7 @@ interface tableColumnSetting {
 }
 
 @Component({
-    components: { StartPrintDialog, AddBatchToQueueDialog, Panel, SettingsRow, PathNavigation, draggable, ColorBox },
+    components: { StartPrintDialog, AddBatchToQueueDialog, Panel, SettingsRow, PathNavigation, draggable },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiContentCopy = mdiContentCopy
@@ -688,6 +703,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     formatFilesize = formatFilesize
     sortFiles = sortFiles
+    filamentTextColor = filamentTextColor
 
     declare $refs: {
         fileUpload: HTMLInputElement
@@ -1106,6 +1122,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
         return {
             extruder_colors: item.extruder_colors.filter((_: string, id: number) => item.filament_weights[id] > 0),
             filament_weights: item.filament_weights.filter((weight: number) => weight > 0),
+            filament_type: item.filament_type
+                .split(';')
+                .filter((_: string, id: number) => item.filament_weights[id] > 0),
         }
     }
 

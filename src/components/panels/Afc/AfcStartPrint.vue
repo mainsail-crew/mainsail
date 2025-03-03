@@ -9,10 +9,10 @@
                 hide-details
                 class="mb-2" />
             <v-divider class="mt-0 mb-0" />
-            <div class="header-row pb-2 pt-2">
-                <span class="header-column">{{ $t('Panels.AfcPanel.File') }}</span>
-                <span class="spacer"></span>
-                <span class="header-column">{{ $t('Panels.AfcPanel.Tools') }}</span>
+            <div class="header-row pb-2 pt-2 d-flex align-center">
+                <span class="align-left pl-10 ml-7">{{ $t('Panels.AfcPanel.File') }}</span>
+                <span class="spacer" style="min-width: 100px"></span>
+                <span class="align-right pr-10 mr-6">{{ $t('Panels.AfcPanel.Tools') }}</span>
             </div>
             <v-divider class="mt-0 mb-0" />
             <div :class="{ 'lanes-container': lanesData.length > 4 }">
