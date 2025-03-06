@@ -192,7 +192,8 @@
                                                     :details="item"
                                                     :selected-es-group="localEndlessSpoolGroups[selectedGate] ?? null"
                                                     :selected-gate="selectedGate ?? null"
-                                                    @select-gate="selectGate" />
+                                                    @select-gate="selectGate"
+                                                    @select-es="selectEndlessSpool" />
                                             </template>
                                         </v-data-table>
                                     </v-col>
@@ -276,6 +277,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
         if (this.showDialog) {
             this.localTtgMap = Array.from(this.ttgMap)
             this.localEndlessSpoolGroups = Array.from(this.endlessSpoolGroups)
+            this.localGateMap = Array.from(this.gateMap)
 
             // Form tool meta data either from gcode file if starting print or from Happy Hare
             // slicer tool map after print start (should be the same info!)
@@ -316,7 +318,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     get gateItems() {
         if (this.selectedTool < 0) return []
-        return this.gateMap
+        return this.localGateMap
     }
 
     get gateTableHeaders() {
@@ -360,6 +362,26 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     private selectGate(gate) {
         this.selectedGate = gate
         Vue.set(this.localTtgMap, this.selectedTool, gate)
+    }
+
+    private selectEndlessSpool(gate) {
+        if (this.selectedGate !== -1 && this.selectedGate !== gate) {
+            // Adjust EndlessSpool groups if gate already selected
+            let group = this.localEndlessSpoolGroups[this.selectedGate]
+            if (this.localEndlessSpoolGroups[gate] === group) {
+                // Unselect (restore original group number if possible)
+                let newGroup = this.endlessSpoolGroups[gate]
+                if (newGroup === group) {
+                    const usedGroups = new Set(this.localEndlessSpoolGroups)
+                    let i = 0
+                    while (usedGroups.has(i)) i++
+                    newGroup = i
+                }
+                group = newGroup
+            }
+            Vue.set(this.localEndlessSpoolGroups, gate, group)
+            this.localGateMap[gate].endlessSpoolGroup = group
+        }
     }
 
     private scrollToGateRow(gate) {

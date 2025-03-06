@@ -12,13 +12,17 @@
                 style="height: 60px; float: left"
                 class="mr-0" />
         </td>
-        <td class="py-0" style="min-width: 274px; max-width: 274px">
+        <td class="py-0" style="min-width: 264px; max-width: 264px">
             <mmu-gate-summary :gate-index="details.index" :show-details="true" :show-gate="false" :compact="true" />
         </td>
         <td>
             <span
                 class="es-group-icon"
-                :style="{ background: details.endlessSpoolGroup === selectedEsGroup ? 'limegreen' : 'none' }" />
+                :style="{
+                    background: details.endlessSpoolGroup === selectedEsGroup ? 'limegreen' : 'none',
+                    cursor: 'context-menu',
+                }"
+                @click.stop="$emit('select-es', details.index)" />
         </td>
     </tr>
 </template>
@@ -59,8 +63,8 @@ export default class MmuGateDialogRow extends Mixins(BaseMixin, MmuMixin) {
 
 .es-group-icon {
     display: inline-block;
-    width: 12px;
-    height: 12px;
+    width: 24px;
+    height: 24px;
     border-radius: 25%;
     border: 1px solid var(--v-secondary-lighten3);
     vertical-align: middle;

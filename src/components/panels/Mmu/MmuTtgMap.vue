@@ -159,14 +159,22 @@ export default class MmuTtgMap extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: false, default: 10 }) readonly leader!: number
     @Prop({ required: false, default: true }) readonly showEsGroups!: boolean
 
-    @Prop({ required: true }) readonly map: number[]
-    @Prop({ required: true }) readonly groups: number[]
-    @Prop({ required: false, default: -1 }) readonly selectedTool: number
-    @Prop({ required: false, default: -1 }) readonly selectedGate: number
+    @Prop({ required: true }) declare readonly map: number[]
+    @Prop({ required: true }) declare readonly groups: number[]
+    @Prop({ required: false, default: -1 }) declare readonly selectedTool: number
+    @Prop({ required: false, default: -1 }) declare readonly selectedGate: number
 
-    private toolX: number = this.startX + 14
-    private gateX: number = this.startX + 2 * this.leader + this.mapSpace + 40
-    private groupX: number = this.startX + 2 * this.leader + this.mapSpace + 65
+    get toolX(): number {
+        return this.startX + 14
+    }
+
+    get gateX(): number {
+        return this.startX + 2 * this.leader + this.mapSpace + 40
+    }
+
+    get groupX(): number {
+        return this.startX + 2 * this.leader + this.mapSpace + 65
+    }
 
     get width(): number {
         return this.groupX + this.getEndlessSpoolGroups().length * this.groupSpacing // Single gate groups aren't displayed
@@ -234,7 +242,7 @@ export default class MmuTtgMap extends Mixins(BaseMixin, MmuMixin) {
             }
         })
         const duplicates = Object.keys(countMap)
-            .filter((key) => countMap[key] > 1)
+            .filter((key) => countMap[+key] > 1)
             .map(Number)
             .sort((a, b) => a - b)
         return duplicates

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-interface MmuGateDetails {
+export interface MmuGateDetails {
     index: number
     status: number
     filamentName: string
@@ -13,7 +13,7 @@ interface MmuGateDetails {
     endlessSpoolGroup: number | null
 }
 
-interface SlicerToolDetails {
+export interface SlicerToolDetails {
     color: string
     material: string
     temp: number
@@ -21,7 +21,7 @@ interface SlicerToolDetails {
     inUse: boolean
 }
 
-interface MmuUnitDetails {
+export interface MmuUnitDetails {
     name: string
     version: string
     numGates: number
@@ -202,7 +202,7 @@ export default class MmuMixin extends Vue {
         return Math.round(this.$store.state.printer.mmu?.encoder?.encoder_pos ?? 0)
     }
 
-    get encoderEnabled(): number {
+    get encoderEnabled(): boolean {
         return this.$store.state.printer.mmu?.encoder?.enabled
     }
 
@@ -229,7 +229,7 @@ export default class MmuMixin extends Vue {
         return this.$store.state.printer.mmu_machine?.num_units ?? 1
     }
 
-    private unitDetails(unitIndex: number): MmuUnitDetails {
+    unitDetails(unitIndex: number): MmuUnitDetails {
         const unitRef = `unit_${unitIndex}`
         const ud: MmuUnitDetails = {
             name: this.$store.state.printer.mmu_machine?.[unitRef]?.name ?? 'Unit',
@@ -400,8 +400,8 @@ export default class MmuMixin extends Vue {
         return this.gateStatus.map((_, index) => this.gateDetails(index))
     }
 
-    private gateDetails(gateIndex: number): MmuGateDetails {
-        const gd: MmuGateDetails = {}
+    gateDetails(gateIndex: number): MmuGateDetails {
+        const gd: Partial<MmuGateDetails> = {}
         if (gateIndex === this.TOOL_GATE_BYPASS) {
             gd.index = -2
             gd.status = -1
@@ -436,7 +436,7 @@ export default class MmuMixin extends Vue {
         return gd
     }
 
-    private spoolmanSpool(spoolId: number) {
+    spoolmanSpool(spoolId: number) {
         const activeSpool = this.$store.state.server.spoolman.active_spool ?? null
         if (activeSpool?.id === spoolId) {
             return activeSpool
@@ -454,8 +454,8 @@ export default class MmuMixin extends Vue {
         return this.$store.state.printer.mmu?.slicer_tool_map
     }
 
-    private toolDetails(toolIndex: number, file?: FileStateGcodefile): SlicerToolDetails {
-        const td: SlicerToolDetails = {}
+    toolDetails(toolIndex: number, file?: FileStateGcodefile): SlicerToolDetails {
+        const td: Partial<SlicerToolDetails> = {}
 
         // Have file so use metadata
         if (file) {
@@ -561,7 +561,7 @@ export default class MmuMixin extends Vue {
     readonly SPOOLMAN_PUSH: string = 'push' // Local gatemap is the source or truth
     readonly SPOOLMAN_PULL: string = 'pull' // Spoolman db is the source of truth
 
-    get sensors(): object[] {
+    get sensors(): { [key: string]: boolean | null } {
         return this.$store.state.printer.mmu?.sensors ?? []
     }
 
@@ -693,7 +693,7 @@ export default class MmuMixin extends Vue {
 
     // Fix Happy Hare color strings (# problematic in klipper CLI)
     readonly NO_FILAMENT_COLOR = '#808182E3'
-    private formColorString(color: string | null): string {
+    formColorString(color: string | null): string {
         let hexaColor = this.NO_FILAMENT_COLOR
         if (!color) return hexaColor
 
@@ -713,7 +713,7 @@ export default class MmuMixin extends Vue {
         return hexaColor.toUpperCase()
     }
 
-    private getLuminance({ r, g, b }) {
+    getLuminance({ r, g, b }: { r: number; g: number; b: number }): number {
         const a = [r, g, b].map(function (v) {
             v /= 255
             return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)

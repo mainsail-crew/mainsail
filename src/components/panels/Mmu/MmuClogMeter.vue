@@ -134,7 +134,7 @@ export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
         const angle = clogPercent * 3
         this.x1MinHeadroom = 70 + 66 * Math.cos(((120 + angle) * Math.PI) / 180)
         this.y1MinHeadroom = 70 + 66 * Math.sin(((120 + angle) * Math.PI) / 180)
-        this.headroomWarning = newMinHeadroom < this.encoderDesiredheadroom
+        this.headroomWarning = newMinHeadroom < this.encoderDesiredHeadroom
     }
 
     private animateMeter(newOffset: number) {

@@ -271,7 +271,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     @Watch('$store.state.printer.mmu.action')
-    onActionChanged(action: number): void {
+    onActionChanged(action: string): void {
         // Action being performed
         if (action === this.ACTION_FORMING_TIP) {
             this.tipFormingClass = 'form-tip-effect'
@@ -440,7 +440,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
 
     get encoderPosText(): string {
         if (this.encoderPos < 10000) return `${this.encoderPos} mm`
-        return this.encoderPos
+        return `${this.encoderPos}`
     }
 
     get temperatureClass(): string {
@@ -521,14 +521,14 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get upperNozzleFull(): boolean {
-        return this.filamentPos === this.FILAMENT_POS_LOADED || this.varsFilamentRemaining
+        return this.filamentPos === this.FILAMENT_POS_LOADED || !!this.varsFilamentRemaining
     }
 
     get lowerNozzleFull(): boolean {
         return (
             this.filamentPos === this.FILAMENT_POS_LOADED ||
-            this.varsFilamentRemaining ||
-            this.varsFilamentRemainingColor
+            !!this.varsFilamentRemaining ||
+            !!this.varsFilamentRemainingColor
         )
     }
 

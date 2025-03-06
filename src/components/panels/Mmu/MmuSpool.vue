@@ -86,7 +86,7 @@ import MmuMixin from '@/components/mixins/mmu'
 
 @Component({})
 export default class MmuSpool extends Mixins(BaseMixin, MmuMixin) {
-    @Prop({ required: true, default: -1 }) declare readonly gateIndex!: number
+    @Prop({ required: true, default: -1 }) declare readonly gateIndex: number
     @Prop({ required: false, default: '#AD8762' }) readonly spoolWheelColor: string
     @Prop({ required: false, default: true }) readonly showPercent: boolean
     @Prop({ required: false, default: null }) readonly editGateMap!: MmuGateDetails[] | null
@@ -106,8 +106,7 @@ export default class MmuSpool extends Mixins(BaseMixin, MmuMixin) {
         const spoolmanSpool = this.spoolmanSpool(this.details.spoolId)
         if (!spoolmanSpool) return -1
 
-        const spoolmanSupport = this.$store.state.printer.mmu.spoolman_support
-        if (this.details.spoolId <= 0 || spoolmanSupport === 'off') return -1
+        if (this.details.spoolId <= 0 || this.spoolmanSupport === 'off') return -1
 
         // Pull live from spoolman and calculate percentage
         const remaining = spoolmanSpool?.remaining_weight ?? null
@@ -124,18 +123,19 @@ export default class MmuSpool extends Mixins(BaseMixin, MmuMixin) {
         return this.details.color
     }
 
-    computedScale(start, end) {
+    computedScale(start: number, end: number) {
         if (this.editGateMap || this.filamentAmount < 0) return end
         return start + (end - start) * (this.filamentAmount / 100)
     }
 
     computeContrastColor(): void {
-        if (!this.$refs.filament) {
+        const filamentRef = this.$refs.filament as Element
+        if (!filamentRef) {
             this.contrastColor = 'black'
             return
         }
 
-        const fillColor = window.getComputedStyle(this.$refs.filament).fill
+        const fillColor = window.getComputedStyle(filamentRef).fill
         const rgbaMatch = fillColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/)
 
         if (rgbaMatch) {

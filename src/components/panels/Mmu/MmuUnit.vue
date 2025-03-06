@@ -58,7 +58,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         return Array.from({ length: unitDetails.numGates }, (v, k) => k + unitDetails.firstGate)
     }
 
-    get width(): number {
+    get width(): string {
         if (this.numGates <= 9) {
             return '56px'
         } else if (this.numGates <= 12) {
@@ -67,7 +67,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         return '40px'
     }
 
-    gateClass(gate): string[] {
+    gateClass(gate: number): string[] {
         let classes = ['gate-status', 'cursor-pointer']
         if (this.editGateMap && this.editGateSelected === gate) {
             classes.push('selected-gate')
@@ -75,7 +75,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         return classes
     }
 
-    spoolClass(gate): string[] {
+    spoolClass(gate: number): string[] {
         let classes = []
         if (this.editGateMap) {
             if (this.editGateSelected !== gate) {
@@ -90,7 +90,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         return classes
     }
 
-    selectGate(gate): null {
+    selectGate(gate: number) {
         if (this.editGateMap) {
             this.$emit('select-gate', gate)
         } else if (!this.isPrinting) {

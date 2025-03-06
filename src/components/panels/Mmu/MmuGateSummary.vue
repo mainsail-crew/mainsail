@@ -22,7 +22,7 @@ import MmuMixin from '@/components/mixins/mmu'
 
 @Component({})
 export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
-    @Prop({ required: true, default: -1 }) declare readonly gateIndex!: number
+    @Prop({ required: true, default: -1 }) declare readonly gateIndex: number
     @Prop({ required: false, default: false }) readonly compact!: boolean
     @Prop({ required: false, default: true }) readonly showDetails!: boolean
     @Prop({ required: false, default: true }) readonly showGate!: boolean
@@ -56,17 +56,17 @@ export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
         return text
     }
 
-    get speedOverrideText(): string {
+    get speedOverrideText(): string | null {
         if (this.details.speedOverride === 100) return null
         return 'Speed: ' + this.details.speedOverride + '%'
     }
 
-    get temperatureText(): string {
+    get temperatureText(): string | null {
         if (this.details.temperature <= 0) return null
         return this.details.temperature + '\u00B0' + 'C'
     }
 
-    get spoolIdText(): string {
+    get spoolIdText(): string | null {
         if (this.details.spoolId <= 0) return null
         return 'Spool ID: #' + this.details.spoolId
     }

@@ -41,7 +41,7 @@ import MmuMixin from '@/components/mixins/mmu'
 
 @Component({})
 export default class MmuGateStatus extends Mixins(BaseMixin, MmuMixin) {
-    @Prop({ required: true, default: -1 }) declare readonly gateIndex!: number
+    @Prop({ required: true }) declare readonly gateIndex!: number
     @Prop({ required: false, default: null }) readonly editGateMap!: MmuGateDetails[] | null
     @Prop({ required: false, default: -1 }) readonly editGateSelected!: number
 
