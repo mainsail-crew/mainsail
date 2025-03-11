@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="100%" height="100%"
+     viewBox="0 0 512 512"
+     preserveAspectRatio="xMidYMid meet">
+  <line stroke="currentColor" y1="219px" id="line11" x1="462.25px" stroke-width="8px" y2="219.75px" x2="293px" transform=""></line>
+  <line stroke="currentColor" y1="201px" id="line10" x1="469.25px" stroke-width="8px" y2="200px" x2="336.25px" transform=""></line>
+  <line stroke="currentColor" y1="137px" id="line8" x1="263.25px" stroke-width="8px" y2="39.25px" x2="263.5px" transform=""></line>
+  <line stroke="currentColor" y1="137.5px" id="line7" x1="247.75px" stroke-width="8px" y2="38.75px" x2="247.75px" transform=""></line>
+  <line stroke="currentColor" y1="138.25px" id="line6" x1="232.75px" stroke-width="8px" y2="39.25px" x2="233px" transform=""></line>
+  <line stroke="currentColor" y1="137.75px" id="line5" x1="216px" stroke-width="8px" y2="37.5px" x2="216.5px" transform=""></line>
+  <line stroke="currentColor" y1="219.75px" id="line4" x1="172.25px" stroke-width="8px" y2="220.75px" x2="75.25px" transform=""></line>
+  <line stroke="currentColor" y1="201.25px" id="line3" x1="173px" stroke-width="8px" y2="201.5px" x2="74.75px" transform=""></line>
+  <line stroke="currentColor" y1="183.5px" id="line2" x1="172.75px" stroke-width="8px" y2="183.25px" x2="75.25px" transform=""></line>
+  <rect stroke="currentColor" x="175.25px" height="72px" y="165.25px" id="rect7" stroke-width="8px" width="17.75px" fill="none" transform=""></rect>
+  <polyline points="292.5,197.25 297.5,195.625 302.625,193.75 307.375,191.125 311.625,188.625 317.25,185.625 322.625,181.875 327.625,178.625 332.25,175.375 338,171.25 342.75,166.125 347.375,161.75 352.625,156.75 357.375,151.75 361.125,146.5 365.375,141.25 369.875,135.625 373.625,130.25 377.25,124.25 380.5,118 383.5,111.5 386,105.375 388.375,98.625 390.375,92.25 392.125,86.125 393.625,79.125 394.875,72.375 396,65.25 396.625,57.75 396.75,50.875 397,48.125" stroke="currentColor" id="polyline4" stroke-width="8px" fill="none" transform=""></polyline>
+  <rect stroke="none" x="199.75px" height="75.75px" y="163.5px" id="rect3" stroke-width="8px" width="84px" fill="none" transform=""></rect>
+  <circle stroke="currentColor" id="circle2" cy="201.25px" stroke-width="8px" fill="none" r="29.5px" cx="242px" transform=""></circle>
+  <polygon points="442.25,306.25 432.25,289.5 413.5,274.75 391.5,271.25 374.75,275.75 362.5,284.25 354,297 350,313.25 352.5,330.75 359.25,343 372.75,353.5 390.75,361.25 410.5,368 422,378 426,394 418.75,409 404.25,417.75 390.75,418.5 378.75,415.25 370,407.5 363,396.5 346.75,403.75 351.25,415.5 359.75,425.5 373.5,432.25 391,437.75 404.75,437.25 418.5,432.5 427.75,425.5 438,414 442.75,398.75 443.25,384 439,371 432.25,360.5 421.75,352.25 407,345.75 390.5,339.25 377,333.25 369,323.25 367.25,308.75 377.25,296 391.5,289 407.75,291.5 420.5,301 429.75,312.5" stroke="none" id="polygon3" stroke-width="3px" fill="currentColor" transform=""></polygon>
+  <polygon points="99.875,302.875 106.125,292.75 115.625,284 126.25,277.875 141.5,272.625 157,272.25 170.75,276.625 182.875,286 190.25,298.125 194.75,313.625 193.375,331 185.375,341.75 176.75,350.5 171.875,351.875 182.25,356.75 191.625,367.25 195.75,380.125 197.75,391.75 195.5,406 188.875,418.375 177.125,429 160.5,436.125 143.25,436.375 129.375,432.375 119,425.75 108.375,415.875 100.875,404.5 117.25,396 125.625,408.625 137.75,417 151.75,419 165.25,417.25 174.75,409.625 180.375,398.5 182.5,387.125 178.625,374.25 170.375,366.125 159.875,360.5 143.375,360.75 142.625,342.25 160,341.75 169.125,335.375 176.375,327.375 177.875,314.5 173.125,300.125 161.75,292.375 150.625,289.125 135.75,291.875 124.875,298.125 118.625,306 114,313.75" stroke="currentColor" id="polygon1" stroke-width="0" fill="currentColor" transform=""></polygon>
+  <polygon points="214,441.5 213.75,276 257.75,334.75 273.5,364.25 292.75,331.25 333,275 334.5,442 316.25,442 317.25,320.5 276.75,394 232,323.25 232.25,441.25" stroke="currentColor" id="polygon2" stroke-width="0" fill="currentColor" transform=""></polygon>
+  <rect stroke="currentColor" height="90px" x="193.5px" y="155px" id="rect1" stroke-width="8px" width="97px" fill="none" transform=""></rect>
+  <polygon points="214.25,249.25" stroke="currentColor" id="polygon4" stroke-width="3px" fill="none" transform=""></polygon>
+  <rect stroke="none" x="219px" height="6px" y="250px" id="rect4" stroke-width="8px" width="47.75px" fill="none" transform=""></rect>
+  <polygon points="223.75,263.25 242.5,283 258.5,263" stroke="currentColor" id="polygon5" stroke-width="8" fill="none" transform=""></polygon>
+  <rect stroke="currentColor" x="214.75px" height="13.25px" y="246px" id="rect5" stroke-width="8px" width="55.75px" fill="none" transform=""></rect><polyline points="294,218.875 300.75,216.75 307.375,214.75 314.125,211.875 319.75,209.25 325.75,206.125 331.5,203 337.125,199.5 343,195.375 348.75,191.375 354.625,186.75 360.375,182.25 365.75,177.5 371,172.75 375.875,167.5 380.625,161.625 384.875,155.625 389,149.375 392.875,143.25 396.375,136.625 399.875,129.875 403.25,123.375 406.125,116.625 408.75,109.625 410,102.875 411.625,96 413.125,88.375 414.125,81.5 415.5,74.375 416.25,67.25" stroke="currentColor" id="polyline1" stroke-width="8px" fill="none" transform=""></polyline>
+  <polyline points="292.46875,220.34375" stroke="currentColor" id="polyline2" stroke-width="8px" fill="none" transform=""></polyline>
+  <polyline points="290.625,222.6875 295.96875,217.5625" stroke="currentColor" id="polyline3" stroke-width="8px" fill="none" transform=""></polyline>  <polyline points="291.75,173.5 297.5,170.5 303,167.25 309.25,164 314,160.5 319,156.75 324.25,152.75 329.25,148.5 334.5,142.75 338.25,138 342.25,132.75 346.25,127.5 350,122.75 354.25,117.25 357.5,112 360.75,105.75 363.5,99.5 366,93.25 368.25,86.5 370.25,80 372.5,73.75 373.75,66.75 375.25,60 375.75,53 375.75,47.5 376,42.25" stroke="currentColor" id="polyline5" stroke-width="8px" fill="none" transform=""></polyline>
+  <rect stroke="currentColor" x="203px" height="16.75px" y="138.5px" id="rect6" stroke-width="8px" width="78.25px" fill="none" transform=""></rect>
+  <line stroke="currentColor" y1="128px" id="line1" x1="160px" stroke-width="3px" y2="128px" x2="160px" transform=""></line>
+  <line stroke="currentColor" y1="183.75px" id="line9" x1="469.5px" stroke-width="8px" y2="182px" x2="361.5px" transform=""></line>
+</svg>
