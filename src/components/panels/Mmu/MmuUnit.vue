@@ -137,7 +137,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
                 if (!svg.includes('<svg')) throw new Error('Not an svg logo')
                 this.svgLogo = svg
             })
-            .catch((error) => {
+            .catch(() => {
                 const defaultUrl = '/img/mmu/mmu_HappyHare.svg'
                 fetch(defaultUrl)
                     .then((res) => {
@@ -149,7 +149,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
                     .then((svg) => {
                         this.svgLogo = svg
                     })
-                    .catch((error) => {
+                    .catch(() => {
                         this.svgLogo = null
                     })
             })
