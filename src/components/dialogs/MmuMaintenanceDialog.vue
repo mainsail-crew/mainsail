@@ -1,6 +1,9 @@
 <template>
     <v-dialog v-model="showDialog" width="600" persistent :fullscreen="isMobile">
-        <panel :title="$t('Panels.MmuPanel.MmuMaintenance')" :icon="mdiWrenchCog" card-class="mmu-edit-ttg-map-dialog">
+        <panel
+            :title="$t('Panels.MmuPanel.MmuMaintenanceTitle')"
+            :icon="mdiWrenchCog"
+            card-class="mmu-edit-ttg-map-dialog">
             <template #buttons>
                 <v-btn icon tile @click="close">
                     <v-icon>{{ mdiCloseThick }}</v-icon>

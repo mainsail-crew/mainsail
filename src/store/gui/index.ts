@@ -299,6 +299,7 @@ export const getDefaultState = (): GuiState => {
                 showTtgMap: true,
                 showDetails: true,
                 largeFilamentStatus: false,
+                showLogos: true,
             },
         },
     }

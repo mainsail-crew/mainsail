@@ -8,7 +8,7 @@ export interface MmuGateDetails {
     material: string
     color: string
     temperature: number
-    spoolId: number
+    spoolId: number | null
     speedOverride: number
     endlessSpoolGroup: number | null
 }
@@ -23,6 +23,7 @@ export interface SlicerToolDetails {
 
 export interface MmuUnitDetails {
     name: string
+    vendor: string
     version: string
     numGates: number
     firstGate: number
@@ -233,6 +234,7 @@ export default class MmuMixin extends Vue {
         const unitRef = `unit_${unitIndex}`
         const ud: MmuUnitDetails = {
             name: this.$store.state.printer.mmu_machine?.[unitRef]?.name ?? 'Unit',
+            vendor: this.$store.state.printer.mmu_machine?.[unitRef]?.vendor ?? 'Other',
             version: this.$store.state.printer.mmu_machine?.[unitRef]?.version ?? '1.0',
             numGates: this.$store.state.printer.mmu_machine?.[unitRef]?.num_gates ?? 1,
             firstGate: this.$store.state.printer.mmu_machine?.[unitRef]?.first_gate ?? 0,
@@ -409,7 +411,7 @@ export default class MmuMixin extends Vue {
                 gd.filamentName = this.$store.state.server.spoolman?.active_spool?.filament?.name ?? 'No active spool'
                 gd.material = this.$store.state.server.spoolman?.active_spool?.filament?.material ?? 'Unknown'
                 gd.color = this.formColorString(
-                    this.$store.state.server.spoolman?.active_spool?.filament.color_hex ?? null
+                    this.$store.state.server.spoolman?.active_spool?.filament?.color_hex ?? null
                 )
                 gd.temperature = this.$store.state.server.spoolman?.active_spool?.filament?.settings_extruder_temp ?? -1
                 gd.spoolId = this.$store.state.server.spoolman?.active_spool?.id ?? -1

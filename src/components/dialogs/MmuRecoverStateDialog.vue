@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="showDialog" width="600" persistent :fullscreen="isMobile">
         <panel
-            :title="$t('Panels.MmuPanel.RecoverState')"
+            :title="$t('Panels.MmuPanel.RecoverStateTitle')"
             :icon="mdiCogRefresh"
             card-class="mmu-recover-state-dialog"
             :margin-bottom="false">
@@ -105,7 +105,7 @@ import { mdiCloseThick, mdiCogRefresh } from '@mdi/js'
 @Component({
     components: { Panel },
 })
-export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
+export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     mdiCloseThick = mdiCloseThick
     mdiCogRefresh = mdiCogRefresh
 
@@ -133,7 +133,7 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
         return `T${this.localTool}`
     }
 
-    set selectedTool(newTool: string): void {
+    set selectedTool(newTool: string) {
         const index = this.toolsList.findIndex((item) => item === newTool)
         if (index == this.numGates) {
             this.localTool = this.TOOL_GATE_BYPASS
@@ -169,7 +169,7 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
         return `${this.gateIndexText(this.localGate)}`
     }
 
-    set selectedGate(newGate: string): void {
+    set selectedGate(newGate: string) {
         const index = this.gatesList.findIndex((item) => item === newGate)
         if (index == this.numGates) {
             this.localGate = this.TOOL_GATE_BYPASS
@@ -222,7 +222,7 @@ export default class MmuRecoverDialog extends Mixins(BaseMixin, MmuMixin) {
         return 'UNKNOWN'
     }
 
-    set selectedPos(newPos: string): void {
+    set selectedPos(newPos: string) {
         if (newPos === 'UNLOADED') {
             this.localFilamentPos = this.FILAMENT_POS_UNLOADED
         } else if (newPos === 'LOADED') {

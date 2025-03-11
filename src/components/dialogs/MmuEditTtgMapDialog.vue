@@ -2,7 +2,7 @@
     <div>
         <v-dialog v-model="showDialog" width="800" persistent :fullscreen="isMobile">
             <panel
-                :title="$t('Panels.MmuPanel.EditTtgMap')"
+                :title="$t('Panels.MmuPanel.EditTtgMapTitle')"
                 :icon="mdiStateMachine"
                 card-class="mmu-edit-ttg-map-dialog">
                 <template #buttons>
@@ -13,7 +13,7 @@
 
                 <!-- UPPER SECTION -->
                 <v-card-subtitle>
-                    <v-container fluid>
+                    <v-container>
                         <!-- HEADER -->
                         <v-row>
                             <v-col cols="8" class="d-flex justify-start align-center no-padding">
@@ -232,7 +232,8 @@ import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
 import Panel from '@/components/ui/Panel.vue'
 import Vue from 'vue'
-import { FileStateGcodefile } from '@/store/files/types'
+import type { FileStateGcodefile } from '@/store/files/types'
+import type { SlicerToolDetails } from '@/mixins/mmu'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import { mdiCloseThick, mdiStateMachine } from '@mdi/js'
 
@@ -248,7 +249,8 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     private localTtgMap: number[] = []
     private localEndlessSpoolGroups: number[] = []
-    private toolMetaData: object[] = []
+    private localGateMap: MmuGateDetails[] = []
+    private toolMetaData: SlicerToolDetails[] = []
     private referencedTools: number[] = []
     private allTools: boolean = true
     private allToolsDisabled: boolean = false
@@ -348,7 +350,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
         ]
     }
 
-    private selectTool(tool: number): string {
+    private selectTool(tool: number) {
         if (this.selectedTool === tool) {
             this.selectedTool = -1
             this.selectedGate = -1
@@ -359,12 +361,12 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
         }
     }
 
-    private selectGate(gate) {
+    private selectGate(gate: number) {
         this.selectedGate = gate
         Vue.set(this.localTtgMap, this.selectedTool, gate)
     }
 
-    private selectEndlessSpool(gate) {
+    private selectEndlessSpool(gate: number) {
         if (this.selectedGate !== -1 && this.selectedGate !== gate) {
             // Adjust EndlessSpool groups if gate already selected
             let group = this.localEndlessSpoolGroups[this.selectedGate]
@@ -384,7 +386,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
         }
     }
 
-    private scrollToGateRow(gate) {
+    private scrollToGateRow(gate: number) {
         this.$nextTick(() => {
             const targetRow = this.$refs[`row-${gate}`]
             if (targetRow) {
@@ -393,7 +395,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
         })
     }
 
-    private handleEscapePress(event) {
+    private handleEscapePress(event: KeyboardEvent) {
         if (event.key === 'Escape' || event.keyCode === 27) {
             this.selectedTool = -1
             this.selectedGate = -1
@@ -401,7 +403,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     private esSpoolsText(gate: number): string {
-        let esGates = []
+        let esGates: number[] = []
         let group = this.localEndlessSpoolGroups[gate]
         this.localEndlessSpoolGroups.forEach((g, index) => {
             let cIndex = (gate + index) % this.localEndlessSpoolGroups.length
@@ -488,7 +490,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     executeResetTtgMap() {
         this.initialize()
-        this.doLoadingSend('MMU_TTG_MAP RESET=1', 'mmu_ttg_map')
+        this.doSend('MMU_TTG_MAP RESET=1')
         this.showConfirmationDialog = false
     }
 

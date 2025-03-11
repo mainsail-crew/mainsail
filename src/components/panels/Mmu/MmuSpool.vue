@@ -83,14 +83,15 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
+import type { MmuGateDetails } from '@/components/mixins/mmu'
 
 @Component({})
 export default class MmuSpool extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true, default: -1 }) declare readonly gateIndex: number
-    @Prop({ required: false, default: '#AD8762' }) readonly spoolWheelColor: string
-    @Prop({ required: false, default: true }) readonly showPercent: boolean
+    @Prop({ required: false, default: '#AD8762' }) declare readonly spoolWheelColor: string
+    @Prop({ required: false, default: true }) declare readonly showPercent: boolean
     @Prop({ required: false, default: null }) readonly editGateMap!: MmuGateDetails[] | null
-    @Prop({ required: false, default: -1 }) readonly editGateSelected!: number
+    @Prop({ required: false, default: -1 }) declare readonly editGateSelected: number
 
     contrastColor: string = 'black'
 
@@ -106,7 +107,7 @@ export default class MmuSpool extends Mixins(BaseMixin, MmuMixin) {
         const spoolmanSpool = this.spoolmanSpool(this.details.spoolId)
         if (!spoolmanSpool) return -1
 
-        if (this.details.spoolId <= 0 || this.spoolmanSupport === 'off') return -1
+        if (!this.details.spoolId || this.details.spoolId <= 0 || this.spoolmanSupport === 'off') return -1
 
         // Pull live from spoolman and calculate percentage
         const remaining = spoolmanSpool?.remaining_weight ?? null
@@ -128,7 +129,7 @@ export default class MmuSpool extends Mixins(BaseMixin, MmuMixin) {
         return start + (end - start) * (this.filamentAmount / 100)
     }
 
-    computeContrastColor(): void {
+    computeContrastColor() {
         const filamentRef = this.$refs.filament as Element
         if (!filamentRef) {
             this.contrastColor = 'black'

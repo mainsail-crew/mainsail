@@ -1,16 +1,16 @@
 <template>
-    <svg ref="filStatusSvg" viewBox="140 20 285 421" preserveAspectRatio="xMidYMid meet">
+    <svg ref="filStatusSvg" viewBox="140 20 285 421" preserveAspectRatio="xMidYMid meet" class="svg-colors">
         <defs>
             <g
                 id="sync-feedback"
-                :style="'stroke:' + colorOutline + '; stroke-linecap: round; stroke-linejoin: round; fill: none;'">
+                style="stroke: var(--color-outline); stroke-linecap: round; stroke-linejoin: round; fill: none">
                 <path d="M18,9,13.78,3.39a1,1,0,0,0-1.56,0L8,9" style="stroke-width: 1; stroke-opacity: 0.8"></path>
                 <path d="M13,8.24,18,15H15H8Z" style="stroke-width: 2"></path>
             </g>
 
             <g
                 id="sissors"
-                :style="'stroke:' + colorOutline + ';fill: none; stroke-linecap: round; stroke-linejoin: round;'">
+                style="stroke: var(--color-outline); fill: none; stroke-linecap: round; stroke-linejoin: round">
                 <path
                     d="M8.8,7.72c-.6,1.21-2.34,1.64-3.89,1S2.6,6.48,3.2,5.28s2.34-1.64,3.89-1S9.4,6.52,8.8,7.72Zm-3.89,1L21,16M7.09,19.68c-1.55.68-3.29.25-3.89-1s.17-2.73,1.71-3.4,3.29-.25,3.89,1S8.63,19,7.09,19.68ZM21,8,4.91,15.32"
                     style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2"></path>
@@ -84,7 +84,7 @@
             :class="$vuetify.theme.dark ? 'zone-background-dark-theme' : 'zone-background-light-theme'"
             rx="10"
             ry="10" />
-        <g :style="'stroke:' + colorOutline + '; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1;'">
+        <g style="stroke: var(--color-outline); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1">
             <path
                 d="M242 25 L242 405 L249 411 L251 411 L258 405 L258 25"
                 style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1"></path>
@@ -105,12 +105,12 @@
             :fill="lowerNozzleColor" />
 
         <g
-            :style="
-                'stroke:' +
-                colorOutline +
-                '; fill:' +
-                colorFont +
-                '; stroke-linejoin: round; stroke-width: 0; font-family: Roboto; font-size: 16;'
+            style="
+                stroke: var(--color-outline);
+                stroke-linejoin: round;
+                stroke-width: 0;
+                font-family: Roboto;
+                font-size: 16;
             ">
             <g v-if="hasSensor('mmu_pre_gate')">
                 <circle cx="258" cy="50" r="8" style="stroke-width: 1" :class="sensorClass('mmu_pre_gate')" />
@@ -283,16 +283,6 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
             }
             this.tipFormingClass = ''
         }
-    }
-
-    get colorOutline(): string {
-        return '#2CA9BC'
-    }
-    get colorOutlineContrast(): string {
-        return '#222222'
-    }
-    get colorFont(): string {
-        return '#FFFFFF'
     }
 
     private calcFilamentHeight(filamentPos: number): void {
@@ -469,21 +459,25 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     sensorClass(sensorName: string): string {
+        let sClass = ''
         if (!this.isSensorEnabled(sensorName)) {
-            return sensorName === 'extruder' ? 'sensor-disabled-extruder' : 'sensor-disabled'
+            sClass = sensorName === 'extruder' ? 'sensor-disabled-extruder' : 'sensor-disabled'
         } else {
-            return this.isSensorTriggered(sensorName)
+            sClass = this.isSensorTriggered(sensorName)
                 ? 'sensor-triggered'
                 : sensorName === 'extruder'
                   ? 'sensor-open-extruder'
                   : 'sensor-open'
         }
+        return this.$vuetify.theme.dark ? sClass + '-dark-theme' : sClass + '-light-theme'
     }
 
     get encoderClass(): string {
+        let eClass = ''
         // TODO: Need to separate encoder runout disable from general availability (like other sensors)
-        if (this.filamentPos === this.FILAMENT_POS_UNLOADED) return 'sensor-disabled'
-        return this.encoderPos ? 'sensor-triggered' : 'sensor-open'
+        if (this.filamentPos === this.FILAMENT_POS_UNLOADED) eClass = 'sensor-disabled'
+        eClass = this.encoderPos ? 'sensor-triggered' : 'sensor-open'
+        return this.$vuetify.theme.dark ? eClass + '-dark-theme' : eClass + '-light-theme'
     }
 
     get hasSyncFeedback(): boolean {
@@ -558,44 +552,77 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
 </script>
 
 <style scoped>
-.text-disabled {
-    opacity: 0.5;
-}
-
-.zone-background-light-theme {
-    fill: #f0f0f0;
-}
-
-.zone-background-dark-theme {
-    fill: #2c2c2c;
+.svg-colors {
+    --background-light-theme: #ffffff;
+    --zone-background-light-theme: #f0f0f0;
+    --background-dark-theme: #1e1e1e;
+    --zone-background-dark-theme: #2c2c2c;
+    --disabled-stroke: #808080;
+    --color-outline: #2ca9bc;
 }
 
 svg text {
     fill: currentColor;
 }
 
-.sensor-disabled {
-    stroke: var(--v-secondary-lighten3, #808080);
-    stroke-dasharray: 2, 1;
-    fill: #2c2c2c;
+.text-disabled {
+    opacity: 0.5;
 }
 
-.sensor-triggered {
+.zone-background-light-theme {
+    fill: var(--zone-background-light-theme);
+}
+
+.sensor-triggered-light-theme {
     fill: limegreen;
 }
 
-.sensor-open {
-    fill: #2c2c2c;
-}
-
-.sensor-disabled-extruder {
-    stroke: var(--v-secondary-lighten3, #808080);
+.sensor-disabled-light-theme {
+    stroke: var(--disabled-stroke);
     stroke-dasharray: 2, 1;
-    fill: var(--v-secondary-darken2, #1e1e1e);
+    fill: var(--zone-background-light-theme);
 }
 
-.sensor-open-extruder {
-    fill: var(--v-secondary-darken2, #1e1e1e);
+.sensor-open-light-theme {
+    fill: var(--zone-background-light-theme);
+}
+
+.sensor-disabled-extruder-light-theme {
+    stroke: var(--disabled-stroke);
+    stroke-dasharray: 2, 1;
+    fill: var(--background-light-theme);
+}
+
+.sensor-open-extruder-light-theme {
+    fill: var(--background-light-theme);
+}
+
+.zone-background-dark-theme {
+    fill: var(--zone-background-dark-theme);
+}
+
+.sensor-triggered-dark-theme {
+    fill: limegreen;
+}
+
+.sensor-disabled-dark-theme {
+    stroke: var(--disabled-stroke);
+    stroke-dasharray: 2, 1;
+    fill: var(--zone-background-dark-theme);
+}
+
+.sensor-open-dark-theme {
+    fill: var(--zone-background-dark-theme);
+}
+
+.sensor-disabled-extruder-dark-theme {
+    stroke: var(--disabled-stroke);
+    stroke-dasharray: 2, 1;
+    fill: var(--background-dark-theme);
+}
+
+.sensor-open-extruder-dark-theme {
+    fill: var(--background-dark-theme);
 }
 
 .tool-text {

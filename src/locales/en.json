@@ -717,8 +717,10 @@
             "Dialog": {
                 "AreYouSure": "Are you sure?"
             },
-            "EditGateMap": "Edit Gate Info",
+            "EditGateMap": "Edit Filaments",
+            "EditGateMapTitle": "Edit Filaments (Gate Map)",
             "EditTtgMap": "Map Tools",
+            "EditTtgMapTitle": "Map Tools / Filaments (Edit TTG Map)",
             "GateMapDialog": {
                 "BadTemperature": "Temperature out of range",
                 "ChooseSpool": "Choose Spool",
@@ -737,7 +739,6 @@
                 "SpoolmanPull": "Spoolman support is in \"{mode}\" mode. Local editing of most gate properties is disabled. Assign spool/gate mapping in spoolman DB directly or use the MMU_SPOOLMAN command",
                 "Temperature": "Temperature"
             },
-            "Headline": "Mmu",
             "LargeFilamentStatus": "Large Filament Status",
             "MmuMaintenance": "MMU Maintenance",
             "MmuMaintenanceDialog": {
@@ -766,6 +767,7 @@
                 "Unsync": "Unsync",
                 "Up": "Up"
             },
+            "MmuMaintenanceTitle": "MMU Maintenance",
             "MmuRecoverDialog": {
                 "FilamentLoaded": "Is the filament completely loaded to the extruder or completely unloaded?",
                 "GateBypass": "Gate is set to Bypass!",
@@ -782,10 +784,13 @@
             "NoActiveSpool": "No active spool",
             "NoSpoolId": "No spool ID",
             "Ok": "Ok",
+            "PanelTitle": "Mmu",
             "RecoverFilamentPosition": "Recover Filament Position",
             "RecoverState": "Fix MMU State",
+            "RecoverStateTitle": "Fix MMU State (Error Recovery)",
             "ShowClogDetection": "Clog Detection",
             "ShowDetails": "Filament Details",
+            "ShowLogos": "Display Logo",
             "ShowTtgMap": "TTG Map",
             "StartPrintDialogMmu": {
                 "MultiColor": "This looks like a Multi Material Single Extruder print using {numTools} tools. You should probably review tool mapping",

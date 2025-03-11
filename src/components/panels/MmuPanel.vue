@@ -37,6 +37,7 @@
                                 {{ $t('Panels.MmuPanel.MmuMaintenance') }}
                             </v-btn>
                         </v-list-item>
+                        <v-divider class="my-2" />
                         <v-list-item :disabled="!enabled" :class="{ 'mmu-disabled': !enabled }">
                             <v-btn
                                 small
@@ -200,7 +201,7 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get title(): string {
-        const headline = this.$t('Panels.MmuPanel.Headline') as string
+        const headline = this.$t('Panels.MmuPanel.PanelTitle') as string
         if (!this.enabled) {
             return `${headline} (disabled)`
         }

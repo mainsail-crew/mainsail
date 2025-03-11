@@ -32,6 +32,7 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
+import type { MmuGateDetails } from '@/mixins/mmu'
 
 @Component({})
 export default class MmuGateDialogRow extends Mixins(BaseMixin, MmuMixin) {

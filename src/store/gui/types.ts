@@ -217,6 +217,7 @@ export interface GuiState {
             showTtgMap: boolean
             showDetails: boolean
             largeFilamentStatus: boolean
+            showLogos: boolean
         }
     }
 }

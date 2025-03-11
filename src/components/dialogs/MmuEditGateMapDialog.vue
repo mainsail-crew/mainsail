@@ -2,7 +2,7 @@
     <div>
         <v-dialog v-model="showDialog" width="800" persistent :fullscreen="isMobile">
             <panel
-                :title="$t('Panels.MmuPanel.EditGateMap')"
+                :title="$t('Panels.MmuPanel.EditGateMapTitle')"
                 :icon="mdiDatabaseEdit"
                 card-class="mmu-edit-ttg-map-dialog">
                 <template #buttons>
@@ -12,7 +12,7 @@
                 </template>
 
                 <!-- UPPER SECTION -->
-                <v-card-subtitle>
+                <v-card-subtitle v-if="editGateMap.length > 0">
                     <v-container fluid>
                         <!-- HEADER -->
                         <v-row>
@@ -103,7 +103,7 @@
                                             </v-col>
                                             <v-col cols="6">
                                                 <v-text-field
-                                                    v-model="editGateMap[editGateSelected].spoolId"
+                                                    v-model="spoolId"
                                                     type="number"
                                                     :label="$t('Panels.MmuPanel.GateMapDialog.SpoolmanId')"
                                                     :rules="spoolIdRules()"
@@ -160,7 +160,7 @@
                                                         useSpoolman || spoolmanSupport === SPOOLMAN_PULL
                                                     "
                                                     suffix="°C"
-                                                    :rules="temperatureRules"
+                                                    :rules="temperatureRules()"
                                                     outlined
                                                     dense
                                                     hide-details
@@ -302,14 +302,16 @@ import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
+import type { SlicerToolDetails, MmuGateDetails } from '@/compoents/mixins/mmu'
 import Panel from '@/components/ui/Panel.vue'
 import ServerSpoolmanStateSpool from '@/store/server/spoolman/types'
 import SpoolmanChangeSpoolDialog from '@/components/dialogs/SpoolmanChangeSpoolDialog.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import MmuMachine from '@/components/panels/Mmu/MmuMachine.vue'
 import { mdiCloseThick, mdiDatabaseEdit, mdiSpeedometer, mdiRestart, mdiMinus, mdiPlus, mdiAdjust } from '@mdi/js'
 
 @Component({
-    components: { Panel, ConfirmationDialog, SpoolmanChangeSpoolDialog },
+    components: { Panel, MmuMachine, ConfirmationDialog, SpoolmanChangeSpoolDialog },
 })
 export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     mdiCloseThick = mdiCloseThick
@@ -322,33 +324,33 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     @Prop({ required: true }) declare readonly showDialog: boolean
 
-    editGateMap: MmuGateDetails[] | null = null
-    editGateSelected: number = -1
+    private editGateMap: MmuGateDetails[] = []
+    private editGateSelected: number = -1
 
     private showConfirmationDialog: boolean = false
     private showSpoolmanSpoolChooserDialog: boolean = false
 
-    @Watch('gateMap')
-    onTtgMapChanged(): null {
-        this.initialize()
-    }
-
     @Watch('showDialog')
-    onShowDialogChanged(): null {
+    onShowDialogChanged() {
         this.initialize()
     }
 
-    private initialize(): null {
+    @Watch('gateMap')
+    onGateMapChanged() {
+        this.initialize()
+    }
+
+    private initialize() {
         if (this.showDialog) {
             this.refreshSpoolmanData()
             this.editGateMap = Array.from(this.gateMap)
         } else {
-            this.editGateMap = null
+            this.editGateMap = []
         }
         this.editGateSelected = -1
     }
 
-    private selectGate(gate: number): null {
+    private selectGate(gate: number) {
         if (this.editGateSelected !== -1) this.adjustSpoolId() // Get rid of null possibility
         if (this.editGateSelected === gate) {
             this.editGateSelected = -1
@@ -362,7 +364,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
         }
     }
 
-    private handleEscapePress(event): null {
+    private handleEscapePress(event: KeyboardEvent) {
         if (event.key === 'Escape' || event.keyCode === 27) {
             this.editGateSelected = -1
         }
@@ -376,6 +378,99 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     private adjustMaterial() {
         const material = this.editGateMap[this.editGateSelected].material.trim().replace(/[#'"]/g, '')
         this.editGateMap[this.editGateSelected].material = material
+    }
+
+    get spoolId(): number | null {
+        if (!this.editGateMap || !this.editGateMap[this.editGateSelected]) {
+            return null
+        }
+        return this.editGateMap[this.editGateSelected].spoolId
+    }
+
+    set spoolId(newSpoolIdStr: string | null) {
+        const newSpoolId = newSpoolIdStr ? parseInt(newSpoolIdStr) : null
+        this.editGateMap[this.editGateSelected].spoolId = newSpoolId !== null && !isNaN(newSpoolId) ? newSpoolId : null
+    }
+
+    private selectSpoolmanSpool(spool: ServerSpoolmanStateSpool) {
+        this.editGateMap[this.editGateSelected].spoolId = spool.id
+    }
+
+    @Watch('spoolId')
+    onSpoolIdChanged(newSpoolId: number | null) {
+        if (newSpoolId !== null && newSpoolId > 0) {
+            const spool = this.spoolmanSpool(newSpoolId)
+            this.editGateMap[this.editGateSelected].filamentName =
+                spool?.filament?.name ?? this.$t('Panels.MmuPanel.Unknown')
+            this.editGateMap[this.editGateSelected].material =
+                spool?.filament?.material ?? this.$t('Panels.MmuPanel.Unknown')
+            let color = this.formColorString(spool?.filament?.color_hex)
+            this.editGateMap[this.editGateSelected].color = color
+            this.editGateMap[this.editGateSelected].temperature = spool?.filament?.settings_extruder_temp ?? -1
+        }
+    }
+
+    private spoolIdRules() {
+        const spools: ServerSpoolmanStateSpool[] = this.$store.state.server.spoolman?.spools ?? []
+        return [
+            (v: number) => {
+                if (!v || v <= 0) return true
+                const spoolExists = spools.some((spool) => spool.id === v) ?? null
+                return spoolExists ? true : this.$t('Panels.MmuPanel.GateMapDialog.NoMatchingSpool')
+            },
+        ]
+    }
+
+    private adjustSpoolId() {
+        const spoolId = this.editGateMap[this.editGateSelected].spoolId ?? -1
+        this.editGateMap[this.editGateSelected].spoolId = spoolId
+    }
+
+    get spoolIdExists(): boolean {
+        const spools: ServerSpoolmanStateSpool[] = this.$store.state.server.spoolman?.spools ?? []
+        return spools.some((spool) => spool.id === this.spoolId)
+    }
+
+    get temperature(): number {
+        return this.editGateMap[this.editGateSelected].temperature
+    }
+
+    set temperature(newTemperatureStr: string) {
+        const newTemperature = newTemperatureStr ? parseInt(newTemperatureStr) : -1
+        this.editGateMap[this.editGateSelected].temperature = isNaN(newTemperature) ? -1 : newTemperature
+    }
+
+    private temperatureRules() {
+        return [
+            (v: string | number) => {
+                const num = parseFloat(String(v))
+                return !isNaN(num) && num >= 100 && num <= 290
+                    ? true
+                    : this.$t('Panels.MmuPanel.GateMapDialog.BadTemperature')
+            },
+        ]
+    }
+
+    private adjustTemperature() {
+        const temp = this.editGateMap[this.editGateSelected].temperature
+        if (temp < 100) {
+            this.editGateMap[this.editGateSelected].temperature = 100
+        } else if (temp > 290) {
+            this.editGateMap[this.editGateSelected].temperature = 290
+        }
+    }
+
+    get useSpoolman(): boolean {
+        const spoolId = this.editGateMap[this.editGateSelected].spoolId
+        return spoolId === null || spoolId > 0
+    }
+
+    set useSpoolman(newValue) {
+        if (!newValue) {
+            this.editGateMap[this.editGateSelected].spoolId = -1
+        } else {
+            this.editGateMap[this.editGateSelected].spoolId = null
+        }
     }
 
     get selectedGateStatus(): boolean {
@@ -392,77 +487,15 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
         }
     }
 
-    get useSpoolman(): boolean {
-        return (
-            this.editGateMap[this.editGateSelected].spoolId > 0 ||
-            this.editGateMap[this.editGateSelected].spoolId === null
-        )
-    }
-
-    set useSpoolman(newValue) {
-        if (!newValue) {
-            this.editGateMap[this.editGateSelected].spoolId = -1
-        } else {
-            this.editGateMap[this.editGateSelected].spoolId = null
-        }
-    }
-
-    private selectSpoolmanSpool(spool: ServerSpoolmanStateSpool) {
-        this.editGateMap[this.editGateSelected].spoolId = spool.id
-    }
-
-    private adjustSpoolId() {
-        const spoolId = this.editGateMap[this.editGateSelected].spoolId ?? -1
-        this.editGateMap[this.editGateSelected].spoolId = parseInt(spoolId)
-    }
-
-    private spoolIdRules() {
-        const spools: ServerSpoolmanStateSpool[] = this.$store.state.server.spoolman?.spools ?? []
-        return [
-            (sid: string | number) => {
-                const spoolId = parseInt(sid)
-                if (!spoolId || spoolId <= 0) return true
-                const spoolExists = spools.some((spool) => spool.id === spoolId) ?? null
-                return spoolExists ? true : this.$t('Panels.MmuPanel.GateMapDialog.NoMatchingSpool')
-            },
-        ]
-    }
-
-    get spoolIdExists(): boolean {
-        const spools: ServerSpoolmanStateSpool[] = this.$store.state.server.spoolman?.spools ?? []
-        return spools.some((spool) => spool.id === this.currentSpoolId)
-    }
-
-    get currentSpoolId(): number {
-        if (this.editGateMap) {
-            return parseInt(this.editGateMap[this.editGateSelected]?.spoolId ?? -1)
-        }
-        return -1
-    }
-
-    @Watch('currentSpoolId')
-    onCurrentSpoolIdChanged(newSpoolId): null {
-        if (newSpoolId > 0) {
-            const spool = this.spoolmanSpool(newSpoolId)
-            this.editGateMap[this.editGateSelected].filamentName =
-                spool?.filament?.name ?? this.$t('Panels.MmuPanel.Unknown')
-            this.editGateMap[this.editGateSelected].material =
-                spool?.filament?.material ?? this.$t('Panels.MmuPanel.Unknown')
-            let color = this.formColorString(spool?.filament?.color_hex)
-            this.editGateMap[this.editGateSelected].color = color
-            this.editGateMap[this.editGateSelected].temperature = spool?.filament?.settings_extruder_temp ?? -1
-        }
-    }
-
     get spoolmanColor(): string {
-        const spoolId = parseInt(this.editGateMap[this.editGateSelected].spoolId)
+        const spoolId = this.editGateMap[this.editGateSelected].spoolId ?? -1
         const spool = this.spoolmanSpool(spoolId)
         const color = spool?.filament.color_hex ?? '000'
         return `#${color}`
     }
 
     get spoolmanRemainingWeight() {
-        const spoolId = parseInt(this.editGateMap[this.editGateSelected].spoolId)
+        const spoolId = this.editGateMap[this.editGateSelected].spoolId ?? -1
         const spool = this.spoolmanSpool(spoolId)
         if (spool) {
             const remaining = spool.remaining_weight ?? 0
@@ -472,10 +505,12 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get spoolmanTotalWeight() {
-        const spoolId = parseInt(this.editGateMap[this.editGateSelected].spoolId)
+        const spoolId = this.editGateMap[this.editGateSelected].spoolId ?? -1
         const spool = this.spoolmanSpool(spoolId)
         if (spool) {
-            let total = spool.initial_weight ?? spool.filament?.weight ?? 0
+            // Technically this is what spoolman implements but not available in Fluidd:
+            //   let total = spool.initial_weight ?? spool.filament?.weight ?? 0
+            let total = spool.filament?.weight ?? 0
             if (total < 1000) {
                 return `${total.toFixed(0)}g`
             }
@@ -490,7 +525,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get spoolmanLastUsed() {
-        const spoolId = parseInt(this.editGateMap[this.editGateSelected].spoolId)
+        const spoolId = this.editGateMap[this.editGateSelected].spoolId ?? -1
         const spool = this.spoolmanSpool(spoolId)
         let usedStr = '-'
 
@@ -515,24 +550,6 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
         return `${this.$t('Panels.SpoolmanPanel.LastUsed')}: ${usedStr}`
     }
 
-    temperatureRules = [
-        (v: string | number) => {
-            const num = parseFloat(String(v))
-            return !isNaN(num) && num >= 100 && num <= 290
-                ? true
-                : this.$t('Panels.MmuPanel.GateMapDialog.BadTemperature')
-        },
-    ]
-
-    private adjustTemperature() {
-        const temp = parseFloat(this.editGateMap[this.editGateSelected].temperature)
-        if (temp < 100) {
-            this.editGateMap[this.editGateSelected].temperature = 100
-        } else if (temp > 290) {
-            this.editGateMap[this.editGateSelected].temperature = 290
-        }
-    }
-
     decrementSpeed(): void {
         let value = this.editGateMap[this.editGateSelected].speedOverride
         value = value > 10 ? Math.round(value - 10) : 10
@@ -545,7 +562,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
         this.editGateMap[this.editGateSelected].speedOverride = value
     }
 
-    resetSpeed(): void {
+    private resetSpeed(): void {
         this.editGateMap[this.editGateSelected].speedOverride = 100
     }
 
@@ -562,7 +579,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     close() {
-        this.editGateMap = null
+        this.editGateMap = []
         this.editGateSelected = -1
         this.$emit('close')
     }
@@ -575,8 +592,17 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
         this.close()
     }
 
-    private generateMapString(gateMap) {
-        const mapObject = {}
+    private generateMapString(gateMap: MmuGateDetails[]) {
+        type GateDetails = {
+            status: number
+            spool_id: number | null
+            material: string
+            color: string
+            name: string
+            temp: number
+            speed_override: number
+        }
+        const mapObject: Record<number, GateDetails> = {}
         gateMap.forEach((gate) => {
             mapObject[gate.index] = {
                 status: gate.status,
