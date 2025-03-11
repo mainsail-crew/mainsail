@@ -186,6 +186,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
 .mmu-logo {
     fill: currentColor;
+    stroke: currentColor;
     opacity: 0.7;
     padding-right: 8px;
     padding-bottom: 4px;
