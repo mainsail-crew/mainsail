@@ -1,5 +1,5 @@
 <template>
-    <svg ref="mmuGateStatusSvg" viewBox="0 0 120 54" xml:space="preserve" preserveAspectRatio="xMidYMid meet">
+    <svg ref="mmuGateStatusSvg" viewBox="0 0 120 60" xml:space="preserve" preserveAspectRatio="xMidYMid meet">
         <rect
             x="20"
             y="18"

@@ -1,10 +1,6 @@
 <template>
-    <v-container>
-        <div v-if="showLogos && svgLogo" class="logo-row">
-            <div class="mmu-logo" v-html="svgLogo"></div>
-            <div class="spool-row">{{ unitDisplayName }}</div>
-        </div>
-        <div v-else class="spool-row">
+    <v-container class="unit-container">
+        <div v-if="!showLogos" class="title-row unit-title">
             {{ unitDisplayName }}
         </div>
 
@@ -36,6 +32,15 @@
                     :edit-gate-map="editGateMap"
                     :edit-gate-selected="editGateSelected" />
             </div>
+        </div>
+
+        <div
+            v-if="showLogos && svgLogo"
+            :class="
+                $vuetify.theme.dark ? 'logo-row logo-background-dark-theme' : 'logo-row logo-background-light-theme'
+            ">
+            <div class="mmu-logo" v-html="svgLogo"></div>
+            <div class="unit-title">{{ unitDisplayName }}</div>
         </div>
     </v-container>
 </template>
@@ -93,11 +98,11 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         if (this.editGateMap) {
             if (this.editGateSelected !== gate) {
                 classes.push('shrink')
-                if (!this.isMobile && !this.isTablet) {
+                if (!this.isMobile) {
                     classes.push('grow-effect')
                 }
             }
-        } else if (!this.isMobile && !this.isTablet) {
+        } else if (!this.isMobile) {
             classes.push('hover-effect')
         }
         return classes
@@ -158,13 +163,30 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 </script>
 
 <style scoped>
+.unit-container {
+    padding: 0;
+}
+
+.title-row {
+    padding: 8px 0px 0px 16px;
+}
+
+.unit-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 12px;
+    width: 100%;
+}
+
 .spool-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
+    padding: 8px 16px 8px 16px;
     gap: 0px;
-    font-size: 12px;
 }
 
 .gate-status {
@@ -179,17 +201,27 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
 .logo-row {
     display: flex;
-    /*  justify-content: space-between; */
+    overflow: visible;
     height: 48px;
     width: 100%;
+    border-radius: 0 0 10px 10px;
+}
+
+.logo-background-dark-theme {
+    box-shadow: inset 0px 1px 4px #00000080;
+    background-image: linear-gradient(to bottom, #3c3c3c 0%, #2c2c2c 100%);
+}
+
+.logo-background-light-theme {
+    box-shadow: inset 0px 1px 4px #ffffff80;
+    background-image: linear-gradient(to bottom, #e0e0e0 0%, #f0f0f0 100%);
 }
 
 .mmu-logo {
     fill: currentColor;
     stroke: currentColor;
     opacity: 0.7;
-    padding-right: 8px;
-    padding-bottom: 4px;
+    padding: 8px 16px 8px 16px;
     height: 100%;
     width: auto;
 }
