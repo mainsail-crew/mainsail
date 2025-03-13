@@ -201,7 +201,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
 .logo-row {
     display: flex;
-    overflow: visible;
+    overflow: hidden;
     height: 48px;
     width: 100%;
     border-radius: 0 0 10px 10px;
@@ -222,8 +222,6 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     stroke: currentColor;
     opacity: 0.7;
     padding: 8px 16px 8px 16px;
-    height: 100%;
-    width: auto;
 }
 
 .hover-effect {
