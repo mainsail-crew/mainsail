@@ -1,7 +1,7 @@
 <template>
     <div :class="laneStateClass">
         <div class="spool-card-header">
-            <v-menu v-if="lanePrep" :offset-y="true" :close-on-content-click="true" left>
+            <v-menu v-if="lanePrep || laneRunout" :offset-y="true" :close-on-content-click="true" left>
                 <template #activator="{ on: onMenu, attrs }">
                     <v-tooltip top>
                         <template #activator="{ on: onTooltip }">
@@ -53,7 +53,9 @@
                             {{ minExtrudeTemp }} °C
                         </span>
                     </v-tooltip>
-                    <v-list-item v-if="!toolLoaded" @click="handleLaneAction($event, 'eject')">
+                    <v-list-item
+                        v-if="!toolLoaded || (laneRunout && !toolLoaded)"
+                        @click="handleLaneAction($event, 'eject')">
                         <v-list-item-title>{{ $t('Panels.AfcPanel.Eject') }}</v-list-item-title>
                     </v-list-item>
                     <v-list-item v-if="!toolLoaded && errorState" @click="handleLaneAction($event, 'setLoad')">
@@ -124,6 +126,10 @@ export default class AfcUnits extends Mixins(AfcMixin, BaseMixin, ExtruderMixin)
         return this.currentLane?.name === this.lane.name || this.currentLoad?.name === this.lane.name
     }
 
+    get laneRunout() {
+        return this.activeLane && !this.lane.prep
+    }
+
     get laneStatusClass() {
         return this.laneReady && this.toolLoaded
             ? 'primary--text'
@@ -139,7 +145,13 @@ export default class AfcUnits extends Mixins(AfcMixin, BaseMixin, ExtruderMixin)
     }
 
     get laneStatus() {
-        return this.lane.prep ? this.$t('Panels.AfcPanel.LaneErrorLoad') : this.$t('Panels.AfcPanel.LaneEmpty')
+        if (this.laneRunout) {
+            return this.$t('Panels.AfcPanel.LaneRunout')
+        } else if (this.lane.prep) {
+            return this.$t('Panels.AfcPanel.LaneErrorLoad')
+        } else {
+            return this.$t('Panels.AfcPanel.LaneEmpty')
+        }
     }
 
     handleMapChange(event: Event, option: string) {
