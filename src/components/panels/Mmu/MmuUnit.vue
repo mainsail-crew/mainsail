@@ -108,7 +108,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
     gateStatusClass(gate: number): string[] {
         const firstGate = gate === 0
-        const lastGate = gate === (this.unitGateRange.length - 1 && !this.showBypass) || gate === this.TOOL_GATE_BYPASS
+        const lastGate = (gate === this.unitGateRange.length - 1 && !this.showBypass) || gate === this.TOOL_GATE_BYPASS
         let classes = ['gate-status-row']
         if (firstGate) classes.push('first-gate')
         if (lastGate) classes.push('last-gate')
