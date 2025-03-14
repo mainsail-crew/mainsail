@@ -113,7 +113,7 @@ export default class MmuSpool extends Mixins(BaseMixin, MmuMixin) {
         const remaining = spoolmanSpool?.remaining_weight ?? null
         const total = spoolmanSpool?.initial_weight ?? spoolmanSpool?.filament?.weight ?? null
         if (remaining === null || total === null) return -1
-        return Math.round(Math.max(0, Math.min(100, (remaining / total) * 100)))
+        return Math.ceil(Math.max(0, Math.min(100, (remaining / total) * 100)))
     }
 
     get filamentColor(): string {

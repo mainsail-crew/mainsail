@@ -17,7 +17,7 @@
             text-anchor="middle"
             font-weight="bold"
             font-size="30px"
-            :class="!editGateMap && gateIndex === gate ? 'selected-text' : 'regular-text'">
+            :fill="textColor">
             {{ gateIndex }}
         </text>
         <text
@@ -27,7 +27,7 @@
             text-anchor="middle"
             font-weight="bold"
             font-size="20px"
-            :class="!editGateMap && gateIndex === gate ? 'selected-text' : 'regular-text'">
+            :fill="textColor">
             BYPASS
         </text>
     </svg>
@@ -68,15 +68,19 @@ export default class MmuGateStatus extends Mixins(BaseMixin, MmuMixin) {
             return 'none'
         }
     }
+
+    get textColor(): string {
+        if (!this.editGateMap && this.gate === this.gateIndex) {
+            return '#000000'
+        } else {
+            if (this.$vuetify.theme.dark) {
+                return '#c0c0c0'
+            } else {
+                return '#5d5d5d'
+            }
+        }
+    }
 }
 </script>
 
-<style scoped>
-.selected-text {
-    fill: #000000;
-}
-
-.regular-text {
-    fill: #c0c0c0;
-}
-</style>
+<style scoped></style>

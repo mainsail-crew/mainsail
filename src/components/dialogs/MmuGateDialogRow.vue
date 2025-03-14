@@ -70,4 +70,8 @@ export default class MmuGateDialogRow extends Mixins(BaseMixin, MmuMixin) {
     border: 1px solid var(--v-secondary-lighten3);
     vertical-align: middle;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}
 </style>

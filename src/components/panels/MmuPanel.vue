@@ -224,7 +224,7 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
         let posStr: string = ''
         if (['complete', 'error', 'cancelled', 'started'].includes(this.printState)) {
             posStr = this.capitalize(this.printState)
-        } else if (this.action == 'Idle') {
+        } else if (this.action === 'Idle') {
             if (this.printState === 'printing') {
                 posStr = `Printing (${this.numToolchanges}`
                 if (this.slicerToolMap.total_toolchanges) posStr += `/${this.slicerToolMap.total_toolchanges}`

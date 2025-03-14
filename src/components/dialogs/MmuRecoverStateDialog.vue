@@ -135,7 +135,7 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
 
     set selectedTool(newTool: string) {
         const index = this.toolsList.findIndex((item) => item === newTool)
-        if (index == this.numGates) {
+        if (index === this.numGates) {
             this.localTool = this.TOOL_GATE_BYPASS
         } else {
             this.localTool = index
@@ -171,7 +171,7 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
 
     set selectedGate(newGate: string) {
         const index = this.gatesList.findIndex((item) => item === newGate)
-        if (index == this.numGates) {
+        if (index === this.numGates) {
             this.localGate = this.TOOL_GATE_BYPASS
         } else {
             this.localGate = index
