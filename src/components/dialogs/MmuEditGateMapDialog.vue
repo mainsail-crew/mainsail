@@ -5,12 +5,6 @@
                 :title="$t('Panels.MmuPanel.EditGateMapTitle')"
                 :icon="mdiDatabaseEdit"
                 card-class="mmu-edit-ttg-map-dialog">
-                <template #buttons>
-                    <v-btn icon tile @click="close">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-
                 <!-- UPPER SECTION -->
                 <v-card-subtitle v-if="editGateMap.length > 0">
                     <v-container fluid>
@@ -272,7 +266,7 @@
                     <v-spacer />
                     <v-btn text @click="close">{{ $t('Panels.MmuPanel.Cancel') }}</v-btn>
                     <v-btn color="primary" text @click="commit">
-                        {{ $t('Panels.MmuPanel.Ok') }}
+                        {{ $t('Panels.MmuPanel.Save') }}
                     </v-btn>
                 </v-card-actions>
             </panel>
@@ -287,13 +281,13 @@
 
         <!-- CONFIRMATION FOR RESET ACTION -->
         <confirmation-dialog
-            :show="showConfirmationDialog"
+            :show="showResetConfirmationDialog"
             :title="$t('Panels.MmuPanel.Dialog.AreYouSure')"
             :text="$t('Panels.MmuPanel.GateMapDialog.ResetConfirmation')"
             :action-button-text="$t('Panels.MmuPanel.GateMapDialog.Reset')"
             :cancel-button-text="$t('Panels.MmuPanel.Cancel')"
             @action="executeResetGateMap"
-            @close="showConfirmationDialog = false" />
+            @close="showResetConfirmationDialog = false" />
     </div>
 </template>
 
@@ -308,13 +302,12 @@ import ServerSpoolmanStateSpool from '@/store/server/spoolman/types'
 import SpoolmanChangeSpoolDialog from '@/components/dialogs/SpoolmanChangeSpoolDialog.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import MmuMachine from '@/components/panels/Mmu/MmuMachine.vue'
-import { mdiCloseThick, mdiDatabaseEdit, mdiSpeedometer, mdiRestart, mdiMinus, mdiPlus, mdiAdjust } from '@mdi/js'
+import { mdiDatabaseEdit, mdiSpeedometer, mdiRestart, mdiMinus, mdiPlus, mdiAdjust } from '@mdi/js'
 
 @Component({
     components: { Panel, MmuMachine, ConfirmationDialog, SpoolmanChangeSpoolDialog },
 })
 export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
-    mdiCloseThick = mdiCloseThick
     mdiDatabaseEdit = mdiDatabaseEdit
     mdiSpeedometer = mdiSpeedometer
     mdiRestart = mdiRestart
@@ -327,7 +320,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     private editGateMap: MmuGateDetails[] = []
     private editGateSelected: number = -1
 
-    private showConfirmationDialog: boolean = false
+    private showResetConfirmationDialog: boolean = false
     private showSpoolmanSpoolChooserDialog: boolean = false
 
     @Watch('showDialog')
@@ -569,13 +562,13 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     // Actions...
 
     resetGateMap() {
-        this.showConfirmationDialog = true
+        this.showResetConfirmationDialog = true
     }
 
     executeResetGateMap() {
         this.initialize()
         this.doLoadingSend('MMU_GATE_MAP RESET=1', 'mmu_gate_map')
-        this.showConfirmationDialog = false
+        this.showResetConfirmationDialog = false
     }
 
     close() {

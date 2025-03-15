@@ -788,6 +788,7 @@
             "RecoverFilamentPosition": "Recover Filament Position",
             "RecoverState": "Fix MMU State",
             "RecoverStateTitle": "Fix MMU State (Error Recovery)",
+            "Save": "Save",
             "ShowClogDetection": "Clog Detection",
             "ShowDetails": "Filament Details",
             "ShowLogos": "Display Logo",
@@ -812,6 +813,7 @@
                 "Reset": "Reset",
                 "ResetConfirmation": "This will reset the entire tool-to-gate mapping and endless spool groups back to the default defined in 'mmu_parameters.cfg' or default 1:1 mapping in no defaults are available",
                 "SelectTool": "Select Tool to map then choose gate from list",
+                "SkipAutomap": "Skip Automap",
                 "SlicerExpects": "Slicer Expects",
                 "Temperature": "Temperature",
                 "ToolNotUsed": "{tool} not used in this print, choose default mapping"

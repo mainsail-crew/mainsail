@@ -570,6 +570,8 @@ export default class MmuMixin extends Vue {
     get espoolerActive(): string {
         return this.$store.state.printer.mmu?.espooler_active ?? ''
     }
+    readonly ESPOOLER_REWIND: string = 'rewind'
+    readonly ESPOOLER_ASSIST: string = 'assist'
 
     /*
      * Optional printer variables based on selector type
@@ -642,6 +644,11 @@ export default class MmuMixin extends Vue {
     }
     readonly LED_OPTIONS: string[] = ['off', 'gate_status', 'filament_color', 'slicer_color']
     readonly LED_STATUS_OPTIONS: string[] = [...this.LED_OPTIONS, 'on']
+
+    get macroVarsAutomapStrategy(): string {
+        return this.$store.state.printer['gcode_macro _MMU_SOFTWARE_VARS']?.automap_strategy ?? 'none'
+    }
+    readonly AUTOMAP_OPTIONS: string[] = ['none', 'filament_name', 'material', 'color', 'closest_color', 'spool_id']
 
     /*
      * Miscellaneous

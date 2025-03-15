@@ -5,12 +5,6 @@
                 :title="$t('Panels.MmuPanel.EditTtgMapTitle')"
                 :icon="mdiStateMachine"
                 card-class="mmu-edit-ttg-map-dialog">
-                <template #buttons>
-                    <v-btn icon tile @click="close">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-
                 <!-- UPPER SECTION -->
                 <v-card-subtitle>
                     <v-container>
@@ -20,13 +14,35 @@
                                 <span v-if="allTools">{{ $t('Panels.MmuPanel.TtgMapDialog.MapTools') }}</span>
                                 <span v-else>{{ $t('Panels.MmuPanel.TtgMapDialog.MapSlicerTools') }}</span>
                             </v-col>
-                            <v-col cols="4" class="d-flex justify-end align-center no-padding pr-10">
-                                <v-switch
-                                    v-model="allTools"
-                                    :disabled="allToolsDisabled"
-                                    :label="$t('Panels.MmuPanel.TtgMapDialog.AllTools')"
-                                    hide-details
-                                    class="short-switch"></v-switch>
+                            <v-col cols="4" class="d-flex flex-column align-end no-padding">
+                                <v-container>
+                                    <v-row class="justify-end pa-0">
+                                        <v-col class="d-flex align-center justify-end no-padding pr-6">
+                                            <div class="mr-4">
+                                                {{ $t('Panels.MmuPanel.TtgMapDialog.AllTools') }}
+                                            </div>
+                                            <v-switch
+                                                v-model="allTools"
+                                                :disabled="allToolsDisabled"
+                                                hide-details
+                                                class="short-switch"></v-switch>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row
+                                        v-if="!allToolsDisabled && macroVarsAutomapStrategy !== 'none'"
+                                        class="justify-end pa-0">
+                                        <v-col class="d-flex align-center justify-end no-padding pr-6">
+                                            <div class="mr-4">
+                                                {{ $t('Panels.MmuPanel.TtgMapDialog.SkipAutomap') }}
+                                            </div>
+                                            <v-switch
+                                                v-model="skipAutomap"
+                                                :disabled="allToolsDisabled"
+                                                hide-details
+                                                class="short-switch"></v-switch>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
                             </v-col>
                         </v-row>
 
@@ -207,7 +223,7 @@
                     <v-spacer />
                     <v-btn text @click="close">{{ $t('Panels.MmuPanel.Cancel') }}</v-btn>
                     <v-btn color="primary" text @click="commit">
-                        {{ $t('Panels.MmuPanel.Ok') }}
+                        {{ $t('Panels.MmuPanel.Save') }}
                     </v-btn>
                 </v-card-actions>
             </panel>
@@ -215,13 +231,13 @@
 
         <!-- CONFIRMATION FOR RESET ACTION -->
         <confirmation-dialog
-            :show="showConfirmationDialog"
+            :show="showResetConfirmationDialog"
             :title="$t('Panels.MmuPanel.Dialog.AreYouSure')"
             :text="$t('Panels.MmuPanel.TtgMapDialog.ResetConfirmation')"
             :action-button-text="$t('Panels.MmuPanel.TtgMapDialog.Reset')"
             :cancel-button-text="$t('Panels.MmuPanel.Cancel')"
             @action="executeResetTtgMap"
-            @close="showConfirmationDialog = false" />
+            @close="showResetConfirmationDialog = false" />
     </div>
 </template>
 
@@ -235,13 +251,12 @@ import Vue from 'vue'
 import type { FileStateGcodefile } from '@/store/files/types'
 import type { SlicerToolDetails } from '@/mixins/mmu'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
-import { mdiCloseThick, mdiStateMachine } from '@mdi/js'
+import { mdiStateMachine } from '@mdi/js'
 
 @Component({
     components: { Panel, ConfirmationDialog },
 })
 export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
-    mdiCloseThick = mdiCloseThick
     mdiStateMachine = mdiStateMachine
 
     @Prop({ required: true }) declare readonly showDialog: boolean
@@ -254,11 +269,12 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     private referencedTools: number[] = []
     private allTools: boolean = true
     private allToolsDisabled: boolean = false
+    private skipAutomap: boolean = false
 
     private selectedTool: number = -1
     private selectedGate: number = -1
 
-    private showConfirmationDialog: boolean = false
+    private showResetConfirmationDialog: boolean = false
 
     @Watch('ttgMap')
     onTtgMapChanged(): void {
@@ -301,6 +317,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
             this.selectedTool = -1
             this.selectedGate = -1
         }
+        this.skipAutomap = false
     }
 
     @Watch('allTools')
@@ -485,13 +502,13 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     // Actions...
 
     resetTtgMap() {
-        this.showConfirmationDialog = true
+        this.showResetConfirmationDialog = true
     }
 
     executeResetTtgMap() {
         this.initialize()
         this.doSend('MMU_TTG_MAP RESET=1')
-        this.showConfirmationDialog = false
+        this.showResetConfirmationDialog = false
     }
 
     close() {
@@ -503,7 +520,9 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     commit() {
         let mapStr = this.localTtgMap.join(',')
         let esGrpStr = this.localEndlessSpoolGroups.join(',')
-        let cmd = `MMU_TTG_MAP MAP="${mapStr}"`
+        let cmd = 'MMU_SLICER_TOOL_MAP SKIP_AUTOMAP=' + (this.skipAutomap ? 1 : 0)
+        this.doSend(cmd)
+        cmd = `MMU_TTG_MAP MAP="${mapStr}"`
         this.doSend(cmd)
         cmd = `MMU_ENDLESS_SPOOL GROUPS="${esGrpStr}"`
         this.doSend(cmd)
