@@ -5,8 +5,8 @@
                 "Description": "{name} більше не підтримується. Поточна версія {version}, але Mainsail потребує версію {minVersion} або вище.",
                 "Headline": "Застарілий браузер"
             },
-            "DependencyDescription": "Поточна версія {name} не підтримує всі функції Mainsail. Оновіть {Ім'я} принаймні до {needversion}.",
-            "DependencyName": "Залежність: {Ім'я}",
+            "DependencyDescription": "Поточна версія {name} не підтримує всі функції Mainsail. Оновіть {name} принаймні до {neededVersion}.",
+            "DependencyName": "Залежність: {name}",
             "DismissAll": "Відкинути всі",
             "KlipperWarnings": {
                 "DeprecatedOption": "Опція '{option}' у розділі '{section}' застаріла і буде видалена у майбутньому випуску.",

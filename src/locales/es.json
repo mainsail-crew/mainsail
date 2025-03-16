@@ -737,7 +737,7 @@
             "Search": "Buscar",
             "SelectSpool": "Seleccionar carrete",
             "Today": "Hoy",
-            "TooLessFilament": "Es posible que la bobina actual no tenga suficiente filamento para esta impresión. ({{spoolWeight}g de {fileWeight}g)",
+            "TooLessFilament": "Es posible que la bobina actual no tenga suficiente filamento para esta impresión. ({spoolWeight}g de {fileWeight}g)",
             "Weight": "Peso",
             "Yesterday": "Ayer"
         },
