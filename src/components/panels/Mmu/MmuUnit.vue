@@ -4,7 +4,7 @@
             <div v-for="(gate, index) in unitGateRange" :key="'gate_' + gate" class="gate" @click="selectGate(gate)">
                 <div :class="clipSpoolClass">
                     <mmu-spool
-                        :width="spoolWidth"
+                        :width="spoolWidth + 'px'"
                         :class="spoolClass(gate)"
                         :gate-index="gate"
                         :edit-gate-map="editGateMap"
@@ -42,7 +42,7 @@
             <div v-if="showBypass" class="gate" @click="selectBypass()">
                 <div :class="clipSpoolClass">
                     <mmu-spool
-                        :width="spoolWidth"
+                        :width="spoolWidth + 'px'"
                         :class="spoolClass(gate)"
                         :gate-index="TOOL_GATE_BYPASS"
                         :edit-gate-map="editGateMap"
@@ -56,12 +56,13 @@
             </div>
         </div>
 
-        <div v-if="showLogos && svgLogo" class="logo-row" :style="'height: ' + logoHeight + ';'">
-            <div class="mmu-logo" v-html="svgLogo"></div>
-            <div class="unit-title">{{ unitDisplayName }}</div>
-        </div>
-        <div v-else class="unit-title">
-            {{ unitDisplayName }}
+        <div class="logo-row" :style="'max-width: ' + logoRowWidth + 'px;'">
+            <div
+                v-if="showLogos && svgLogo"
+                class="mmu-logo"
+                v-html="svgLogo"
+                :style="'height: ' + logoHeight + 'px;'"></div>
+            <div class="unit-name">{{ unitDisplayName }}</div>
         </div>
     </v-container>
 </template>
@@ -93,13 +94,17 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         return Array.from({ length: unitDetails.numGates }, (v, k) => k + unitDetails.firstGate)
     }
 
-    get spoolWidth(): string {
+    get spoolWidth(): number {
         if (this.numGates <= 8) {
-            return '56px'
+            return 56
         } else if (this.numGates <= 16) {
-            return '48px'
+            return 48
         }
-        return '40px'
+        return 40
+    }
+
+    get logoRowWidth(): number {
+        return this.spoolWidth * (this.unitGateRange.length + (this.showBypass ? 1 : 0))
     }
 
     get clipSpoolClass(): string[] {
@@ -114,13 +119,8 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         return classes
     }
 
-    get logoHeight(): string {
-        if (this.numGates <= 8) {
-            return '48px'
-        } else if (this.numGates <= 16) {
-            return '40px'
-        }
-        return '32px'
+    get logoHeight(): number {
+        return this.spoolWidth - 8
     }
 
     get showLogos(): boolean {
@@ -128,17 +128,21 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get showBypass(): boolean {
-        return !this.editGateMap && this.hasBypass
+        return !this.editGateMap && this.unitDetails(this.unit).hasBypass
     }
 
     gateStatusClass(gate: number): string[] {
         const firstGate = gate === 0
         const lastGate = (gate === this.unitGateRange.length - 1 && !this.showBypass) || gate === this.TOOL_GATE_BYPASS
         let classes = ['gate-status-row']
-        if (firstGate) classes.push('first-gate')
-        if (lastGate) classes.push('last-gate')
+        if (firstGate) classes.push('first-gate' + (this.isFirefox() ? '-firefox' : ''))
+        if (lastGate) classes.push('last-gate' + (this.isFirefox() ? '-firefox' : ''))
         classes.push(this.$vuetify.theme.dark ? 'gate-status-row-dark-theme' : 'gate-status-row-light-theme')
         return classes
+    }
+
+    isFirefox(): boolean {
+        return navigator.userAgent.indexOf('Firefox') !== -1
     }
 
     spoolClass(gate: number): string[] {
@@ -215,16 +219,6 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     padding: 0;
 }
 
-.unit-title {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-    font-size: 12px;
-    padding: 0px 0px 8px 0px;
-    width: 100%;
-}
-
 .spool-row {
     display: flex;
     flex-wrap: wrap;
@@ -241,6 +235,27 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     z-index: 1;
 }
 
+.logo-row {
+    display: flex;
+}
+
+.mmu-logo {
+    padding: 4px 12px 8px 0px;
+    fill: currentColor;
+    stroke: currentColor;
+    opacity: 0.7;
+}
+
+.unit-name {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    white-space: nowrap;
+    margin-right: -12px;
+    overflow: hidden;
+    padding: 0px 0px 4px 0px;
+}
+
 .gate-status-row-dark-theme {
     box-shadow: inset 0px 4px 4px -4px #ffffff80;
     background-image: linear-gradient(to bottom, #3c3c3c 0%, #2c2c2c 100%);
@@ -252,18 +267,34 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 }
 
 .first-gate {
-    border-radius: 8px 0 0px 8px;
+    border-radius: 8px 0 0px 10px;
     margin-left: -16px;
     padding-left: 16px;
 }
 
 .last-gate {
-    border-radius: 0 8px 8px 0px;
+    border-radius: 0 8px 10px 0px;
     margin-right: -16px;
     padding-right: 16px;
 }
 
 .first-gate.last-gate {
+    border-radius: 8px 8px 10px 10px;
+}
+
+.last-gate-firefox {
+    border-radius: 0 8px 10px 0px;
+    padding-right: 16px;
+}
+
+.first-gate-firefox {
+    border-radius: 8px 0 0px 10px;
+    margin-left: -16px;
+    padding-left: 16px;
+    margin-right: 16px;
+}
+
+.first-gate-firefox.last-gate-firefox {
     border-radius: 8px 8px 10px 10px;
 }
 
@@ -298,21 +329,6 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
 .unhighlight-spool {
     opacity: 0.4;
-}
-
-.logo-row {
-    display: flex;
-    overflow: hidden;
-    margin-left: -16px;
-    width: 100%;
-    border-radius: 0 0 10px 10px;
-}
-
-.mmu-logo {
-    fill: currentColor;
-    stroke: currentColor;
-    opacity: 0.7;
-    padding: 4px 16px 8px 16px;
 }
 
 .hover-effect {
