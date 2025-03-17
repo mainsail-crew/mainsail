@@ -128,7 +128,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get showBypass(): boolean {
-        return !this.editGateMap && this.unitDetails(this.unit).hasBypass
+        return !this.editGateMap && this.unitDetails(this.unit).hasBypass && this.hasBypass
     }
 
     gateStatusClass(gate: number): string[] {
