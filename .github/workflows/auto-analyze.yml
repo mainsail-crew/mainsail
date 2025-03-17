@@ -3,6 +3,7 @@ name: 'Auto analyze if package.json was edited'
 on:
   pull_request:
     branches:
+      - 'ci/fix-auto-build-size'
       - develop
 
 permissions:
