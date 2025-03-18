@@ -36,9 +36,11 @@
         <div v-for="(sensor, index) of filamentSensors" :key="'sensor_' + index">
             <v-divider v-if="index || miscellaneous.length || lights.length" />
             <filament-sensor
+                :type="sensor.type"
                 :name="sensor.name"
                 :enabled="sensor.enabled"
-                :filament_detected="sensor.filament_detected" />
+                :filament_detected="sensor.filament_detected"
+                :filament_diameter="sensor.filament_diameter" />
         </div>
         <div v-for="(sensor, index) of moonrakerSensors" :key="'moonraker_sensor_' + index">
             <v-divider v-if="index || miscellaneous.length || lights.length || filamentSensors.length" />

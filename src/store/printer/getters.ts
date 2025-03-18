@@ -398,7 +398,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getFilamentSensors: (state) => {
-        const sensorObjectNames = ['filament_switch_sensor', 'filament_motion_sensor']
+        const sensorObjectNames = ['filament_switch_sensor', 'filament_motion_sensor', 'hall_filament_width_sensor']
         const sensors: PrinterStateFilamentSensors[] = []
 
         for (const [key, value] of Object.entries(state)) {
@@ -406,9 +406,11 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
             if (sensorObjectNames.includes(nameSplit[0])) {
                 sensors.push({
-                    name: nameSplit[1],
+                    type: nameSplit[0],
+                    name: nameSplit[1] ?? nameSplit[0],
                     enabled: value.enabled,
                     filament_detected: value.filament_detected,
+                    filament_diameter: value.Diameter,
                 })
             }
         }
