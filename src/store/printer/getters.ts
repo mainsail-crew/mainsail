@@ -7,6 +7,7 @@ import {
     PrinterStateFan,
     PrinterStateFilamentSensors,
     PrinterStateMiscellaneous,
+    PrinterStateMiscellaneousSensor,
     PrinterStateMcu,
     PrinterStateMacro,
     PrinterGetterObject,
@@ -383,6 +384,53 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
             return 0
         })
+    },
+
+    getMiscellaneousSensors: (state) => {
+        const output: PrinterStateMiscellaneousSensor[] = []
+        const supportedObjects = ['load_cell']
+
+        for (const [key, value] of Object.entries(state)) {
+            const nameSplit = key.split(' ')
+
+            if (!supportedObjects.includes(nameSplit[0])) continue
+            const name = nameSplit.length > 1 ? nameSplit[1] : nameSplit[0]
+            if (name.startsWith('_')) continue
+
+            const basis = {
+                name: name,
+                type: nameSplit[0],
+                value: 'value' in value ? value.value : null,
+                unit: 'unit' in value ? value.unit : '',
+            }
+            if (nameSplit[0] == 'load_cell') {
+                output.push({
+                    ...basis,
+                    value: value.force_g ?? NaN,
+                    unit: 'g',
+                })
+            } else {
+                output.push(basis)
+            }
+        }
+
+        output.sort((a, b) => {
+            if (a.type < b.type) return -1
+            if (a.type > b.type) return 1
+
+            if (a.unit < b.unit) return -1
+            if (a.unit > b.unit) return 1
+
+            const nameA = a.name.toUpperCase()
+            const nameB = b.name.toUpperCase()
+
+            if (nameA < nameB) return -1
+            if (nameA > nameB) return 1
+
+            return 0
+        })
+
+        return output
     },
 
     getAvailableHeaters: (state) => {
