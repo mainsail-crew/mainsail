@@ -3,9 +3,9 @@
         <div class="spool-row">
             <div v-for="(gate, index) in unitGateRange" :key="'gate_' + gate" class="gate" @click="selectGate(gate)">
                 <div :class="clipSpoolClass">
-                    <v-tooltip top>
+                    <v-tooltip top :open-delay="500" content-class="spool-tooltip">
                         <template #activator="{ on, attrs }">
-                            <div v-bind="attrs" v-on="on">
+                            <div v-bind="attrs" v-on="!editGateMap ? on : {}">
                                 <mmu-spool
                                     :width="spoolWidth + 'px'"
                                     :class="spoolClass(gate)"
@@ -14,11 +14,13 @@
                                     :edit-gate-selected="editGateSelected" />
                             </div>
                         </template>
-                        <span>
-                            <div v-for="(line, idx) in gateTooltip(gate)" :key="idx">
-                                {{ line }}
-                            </div>
-                        </span>
+                        <div
+                            v-for="(line, idx) in gateTooltip(gate)"
+                            :key="idx"
+                            class="spool-tooltip-line"
+                            :class="idx === 0 ? 'spool-tooltip-title' : ''">
+                            {{ line }}
+                        </div>
                     </v-tooltip>
                     <div
                         v-if="editGateMap && editGateSelected === gate"
@@ -51,19 +53,14 @@
             </div>
 
             <div v-if="showBypass" class="gate" @click="selectBypass()">
-                <v-tooltip top>
-                    <template #activator="{ on, attrs }">
-                        <div :class="clipSpoolClass" v-bind="attrs" v-on="on">
-                            <mmu-spool
-                                :width="spoolWidth + 'px'"
-                                :class="spoolClass(gate)"
-                                :gate-index="TOOL_GATE_BYPASS"
-                                :edit-gate-map="editGateMap"
-                                :edit-gate-selected="editGateSelected" />
-                        </div>
-                    </template>
-                    <span>{{ $t('Panels.MmuPanel.ToolTip.Bypass') }}</span>
-                </v-tooltip>
+                <div :class="clipSpoolClass">
+                    <mmu-spool
+                        :width="spoolWidth + 'px'"
+                        :class="spoolClass(gate)"
+                        :gate-index="TOOL_GATE_BYPASS"
+                        :edit-gate-map="editGateMap"
+                        :edit-gate-selected="editGateSelected" />
+                </div>
                 <mmu-gate-status
                     :class="gateStatusClass(TOOL_GATE_BYPASS)"
                     :gate-index="TOOL_GATE_BYPASS"
@@ -76,8 +73,8 @@
             <div
                 v-if="showLogos && svgLogo"
                 class="mmu-logo"
-                :style="'height: ' + logoHeight + 'px;'"
-                v-html="svgLogo"></div>
+                v-html="svgLogo"
+                :style="'height: ' + logoHeight + 'px;'"></div>
             <div class="unit-name">{{ unitDisplayName }}</div>
         </div>
     </v-container>
@@ -86,7 +83,8 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { MmuGateDetails } from '@/components/mixins/mmu'
+import MmuMixin from '@/components/mixins/mmu'
+import type { MmuGateDetails } from '@/components/mixins/mmu'
 import MmuSpool from '@/components/panels/Mmu/MmuSpool.vue'
 import MmuGateStatus from '@/components/panels/Mmu/MmuGateStatus.vue'
 
@@ -149,33 +147,26 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
     gateTooltip(gate: number): string[] {
         const details = this.gateDetails(gate)
-        const ret = []
         if (details.status === this.GATE_EMPTY) {
-            ret.push(this.$t('Panels.MmuPanel.ToolTip.Empty').toString())
+            return [this.$t('Panels.MmuPanel.ToolTip.Empty').toString()]
         }
-        if (details.filamentName && details.filamentName !== 'Unknown') {
-            if (details.filamentName.length > 17) {
-                ret.push(details.filamentName.substring(0, 15).trimEnd() + '...')
-            } else {
-                ret.push(details.filamentName)
-            }
-        }
-        if (details.material && details.material !== 'Unknown') {
-            ret.push(details.material + (details.temperature >= 0 ? ' | ' + details.temperature + '°C' : ''))
-        } else {
-            ret.push(this.$t('Panels.MmuPanel.ToolTip.MaterialNA').toString())
-        }
+        const ret = []
+        ret.push(details.filamentName)
+
+        const tempStr = details.temperature > 0 ? ' | ' + details.temperature + '°C' : ''
+        ret.push(details.material + tempStr)
+
         if (details.color && details.color !== '#808182E3') {
             const color = details.color
             ret.push(
-                this.$t('Panels.MmuPanel.ToolTip.Color') +
+                this.$t('Panels.MmuPanel.ToolTip.Color').toString() +
                     ': ' +
                     color.substring(0, 7) +
                     (color.length > 7 && color.substring(7, 9) !== 'FF' ? color.substring(7, 9) : '')
             )
         }
         if (details.spoolId && details.spoolId > 0) {
-            ret.push('Spool ID: ' + details.spoolId)
+            ret.push(this.$t('Panels.MmuPanel.ToolTip.SpoolId').toString() + ': ' + details.spoolId)
         }
         return ret
     }
@@ -266,6 +257,23 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 <style scoped>
 .unit-container {
     padding: 0;
+}
+
+.spool-tooltip {
+    max-width: 180px;
+    font-size: 12px;
+    line-height: 1.2em;
+    padding: 4px 8px;
+}
+
+.spool-tooltip-title {
+    font-weight: bold;
+}
+
+.spool-tooltip-line {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .spool-row {
