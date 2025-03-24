@@ -168,7 +168,8 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         if (details.color && details.color !== '#808182E3') {
             const color = details.color
             ret.push(
-                this.$t('Panels.MmuPanel.ToolTip.Color') + ': ' +
+                this.$t('Panels.MmuPanel.ToolTip.Color') +
+                    ': ' +
                     color.substring(0, 7) +
                     (color.length > 7 && color.substring(7, 9) !== 'FF' ? color.substring(7, 9) : '')
             )
