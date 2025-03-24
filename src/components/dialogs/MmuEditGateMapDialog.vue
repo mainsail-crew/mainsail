@@ -364,13 +364,13 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     private adjustName() {
-        const name = this.editGateMap[this.editGateSelected].filamentName.trim().replace(/[#'"]/g, '')
-        this.editGateMap[this.editGateSelected].filamentName = name
+        const filamentName = this.editGateMap[this.editGateSelected].filamentName ?? ''
+        this.editGateMap[this.editGateSelected].filamentName = filamentName.trim().replace(/[#'"]/g, '')
     }
 
     private adjustMaterial() {
-        const material = this.editGateMap[this.editGateSelected].material.trim().replace(/[#'"]/g, '')
-        this.editGateMap[this.editGateSelected].material = material
+        const material = this.editGateMap[this.editGateSelected].material ?? ''
+        this.editGateMap[this.editGateSelected].material = material.trim().replace(/[#'"]/g, '')
     }
 
     get spoolId(): number | null {
@@ -598,13 +598,13 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
         const mapObject: Record<number, GateDetails> = {}
         gateMap.forEach((gate) => {
             mapObject[gate.index] = {
-                status: gate.status,
-                spool_id: gate.spoolId,
-                material: gate.material,
+                status: gate.status ?? this.GATE_UNKNOWN,
+                spool_id: gate.spoolId ?? -1,
+                material: gate.material ?? '',
                 color: gate.color.replace(this.NO_FILAMENT_COLOR, '').replace('#', ''),
-                name: gate.filamentName,
-                temp: gate.temperature,
-                speed_override: gate.speedOverride,
+                name: gate.filamentName ?? '',
+                temp: gate.temperature ?? -1,
+                speed_override: gate.speedOverride ?? 100,
             }
         })
         const jsonString = JSON.stringify(mapObject)
