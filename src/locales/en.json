@@ -798,6 +798,12 @@
                 "SingleColor": "This looks like a single color print but you don't have the bypass selected on your MMU. You may want to check the chosen tool"
             },
             "ToolMapping": "Tool Mapping",
+            "ToolTip": {
+                "Bypass": "Bypass",
+                "Color": "Color",
+                "Empty": "Empty",
+                "MaterialNA": "Material: N/A"
+            },
             "TtgMapDialog": {
                 "AllTools": "All Tools",
                 "Color": "Color",

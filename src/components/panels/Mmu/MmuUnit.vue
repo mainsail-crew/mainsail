@@ -3,12 +3,23 @@
         <div class="spool-row">
             <div v-for="(gate, index) in unitGateRange" :key="'gate_' + gate" class="gate" @click="selectGate(gate)">
                 <div :class="clipSpoolClass">
-                    <mmu-spool
-                        :width="spoolWidth + 'px'"
-                        :class="spoolClass(gate)"
-                        :gate-index="gate"
-                        :edit-gate-map="editGateMap"
-                        :edit-gate-selected="editGateSelected" />
+                    <v-tooltip top>
+                        <template #activator="{ on, attrs }">
+                            <div v-bind="attrs" v-on="on">
+                                <mmu-spool
+                                    :width="spoolWidth + 'px'"
+                                    :class="spoolClass(gate)"
+                                    :gate-index="gate"
+                                    :edit-gate-map="editGateMap"
+                                    :edit-gate-selected="editGateSelected" />
+                            </div>
+                        </template>
+                        <span>
+                            <div v-for="(line, idx) in gateTooltip(gate)" :key="idx">
+                                {{ line }}
+                            </div>
+                        </span>
+                    </v-tooltip>
                     <div
                         v-if="editGateMap && editGateSelected === gate"
                         style="position: absolute; bottom: 0%; left: 0%; width: 100%; height: auto; background: none">
@@ -40,14 +51,19 @@
             </div>
 
             <div v-if="showBypass" class="gate" @click="selectBypass()">
-                <div :class="clipSpoolClass">
-                    <mmu-spool
-                        :width="spoolWidth + 'px'"
-                        :class="spoolClass(gate)"
-                        :gate-index="TOOL_GATE_BYPASS"
-                        :edit-gate-map="editGateMap"
-                        :edit-gate-selected="editGateSelected" />
-                </div>
+                <v-tooltip top>
+                    <template #activator="{ on, attrs }">
+                        <div :class="clipSpoolClass" v-bind="attrs" v-on="on">
+                            <mmu-spool
+                                :width="spoolWidth + 'px'"
+                                :class="spoolClass(gate)"
+                                :gate-index="TOOL_GATE_BYPASS"
+                                :edit-gate-map="editGateMap"
+                                :edit-gate-selected="editGateSelected" />
+                        </div>
+                    </template>
+                    <span>{{ $t('Panels.MmuPanel.ToolTip.Bypass') }}</span>
+                </v-tooltip>
                 <mmu-gate-status
                     :class="gateStatusClass(TOOL_GATE_BYPASS)"
                     :gate-index="TOOL_GATE_BYPASS"
@@ -60,8 +76,8 @@
             <div
                 v-if="showLogos && svgLogo"
                 class="mmu-logo"
-                v-html="svgLogo"
-                :style="'height: ' + logoHeight + 'px;'"></div>
+                :style="'height: ' + logoHeight + 'px;'"
+                v-html="svgLogo"></div>
             <div class="unit-name">{{ unitDisplayName }}</div>
         </div>
     </v-container>
@@ -70,7 +86,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin from '@/components/mixins/mmu'
+import MmuMixin, { MmuGateDetails } from '@/components/mixins/mmu'
 import MmuSpool from '@/components/panels/Mmu/MmuSpool.vue'
 import MmuGateStatus from '@/components/panels/Mmu/MmuGateStatus.vue'
 
@@ -82,7 +98,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: false, default: null }) readonly editGateMap!: MmuGateDetails[] | null
     @Prop({ required: false, default: -1 }) readonly editGateSelected!: number
 
-    private svgLogo = null
+    private svgLogo = null as string | null
 
     get unitDisplayName(): string {
         const name = this.unitDetails(this.unit).name
@@ -129,6 +145,39 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
     get showBypass(): boolean {
         return !this.editGateMap && this.unitDetails(this.unit).hasBypass && this.hasBypass
+    }
+
+    gateTooltip(gate: number): string[] {
+        const details = this.gateDetails(gate)
+        const ret = []
+        if (details.status === this.GATE_EMPTY) {
+            ret.push(this.$t('Panels.MmuPanel.ToolTip.Empty').toString())
+        }
+        if (details.filamentName && details.filamentName !== 'Unknown') {
+            if (details.filamentName.length > 17) {
+                ret.push(details.filamentName.substring(0, 15).trimEnd() + '...')
+            } else {
+                ret.push(details.filamentName)
+            }
+        }
+        if (details.material && details.material !== 'Unknown') {
+            ret.push(details.material + (details.temperature >= 0 ? ' | ' + details.temperature + '°C' : ''))
+        } else {
+            ret.push(this.$t('Panels.MmuPanel.ToolTip.MaterialNA').toString())
+        }
+        if (details.color && details.color !== '#808182E3') {
+            const color = details.color
+            ret.push(
+                this.$t('Panels.MmuPanel.ToolTip.Color') +
+                    ': ' +
+                    color.substring(0, 7) +
+                    (color.length > 7 && color.substring(7, 9) !== 'FF' ? color.substring(7, 9) : '')
+            )
+        }
+        if (details.spoolId && details.spoolId > 0) {
+            ret.push('Spool ID: ' + details.spoolId)
+        }
+        return ret
     }
 
     gateStatusClass(gate: number): string[] {
