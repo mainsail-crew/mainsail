@@ -227,8 +227,9 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
             this.localFilamentPos = this.FILAMENT_POS_UNLOADED
         } else if (newPos === 'LOADED') {
             this.localFilamentPos = this.FILAMENT_POS_LOADED
+        } else {
+            this.localFilamentPos = this.FILAMENT_POS_UNKNOWN
         }
-        this.localFilamentPos = this.FILAMENT_POS_UNKNOWN
     }
 
     get posList(): string[] {
