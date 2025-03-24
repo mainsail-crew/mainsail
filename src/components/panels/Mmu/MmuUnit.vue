@@ -3,9 +3,9 @@
         <div class="spool-row">
             <div v-for="(gate, index) in unitGateRange" :key="'gate_' + gate" class="gate" @click="selectGate(gate)">
                 <div :class="clipSpoolClass">
-                    <v-tooltip top :open-delay="500" content-class="spool-tooltip">
+                    <v-tooltip top :disabled="!!editGateMap" :open-delay="500" content-class="spool-tooltip">
                         <template #activator="{ on, attrs }">
-                            <div v-bind="attrs" v-on="!editGateMap ? on : {}">
+                            <div v-bind="attrs" v-on="on">
                                 <mmu-spool
                                     :width="spoolWidth + 'px'"
                                     :class="spoolClass(gate)"
