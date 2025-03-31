@@ -2,12 +2,12 @@
     <svg ref="mmuGateStatusSvg" viewBox="0 0 120 60" xml:space="preserve" preserveAspectRatio="xMidYMid meet">
         <rect
             x="20"
-            y="18"
+            y="16"
             width="80"
-            height="31"
+            height="35"
             rx="8"
             ry="8"
-            stroke-width="3"
+            stroke-width="4"
             :stroke="statusColor"
             :fill="selectedColor" />
         <text
