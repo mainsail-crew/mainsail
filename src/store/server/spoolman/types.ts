@@ -11,6 +11,7 @@ export interface ServerSpoolmanState {
     active_spool: ServerSpoolmanStateSpool | null
     vendors: ServerSpoolmanStateVendor[]
     feeds: string[]
+    spools: ServerSpoolmanStateSpool[]
 }
 
 export interface ServerSpoolmanStateVendor {
