@@ -34,7 +34,7 @@
             <use href="#center" transform="scale(0.41)" :fill="spoolWheelColor" />
         </g>
         <path
-            v-if="filamentAmount !== 0"
+            v-if="filamentAmount !== 0 || details.status !== GATE_EMPTY"
             ref="filament"
             d="M 0 -63 C 35 -63 63 -35 63 0 C 63 35 35 63 0 63 L -424 63 L -424 -63 z"
             vector-effect="non-scaling-stroke"
@@ -47,7 +47,7 @@
 
         <g v-if="!editGateMap">
             <text
-                v-if="showPercent && filamentAmount > 0"
+                v-if="filamentAmount > 0"
                 x="152"
                 y="270"
                 text-anchor="middle"
@@ -57,13 +57,13 @@
                 {{ filamentAmount }}%
             </text>
             <text
-                v-else-if="!showPercent && filamentAmount === 0"
+                v-else-if="filamentAmount === 0 && details.status != GATE_EMPTY"
                 x="140"
                 y="310"
                 text-anchor="middle"
                 font-weight="bold"
                 font-size="160px"
-                style="fill: red; stroke: #111111; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round">
+                style="fill: red; stroke: #111111; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round">
                 !
             </text>
             <use
@@ -89,7 +89,6 @@ import type { MmuGateDetails } from '@/components/mixins/mmu'
 export default class MmuSpool extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true, default: -1 }) declare readonly gateIndex: number
     @Prop({ required: false, default: '#AD8762' }) declare readonly spoolWheelColor: string
-    @Prop({ required: false, default: true }) declare readonly showPercent: boolean
     @Prop({ required: false, default: null }) readonly editGateMap!: MmuGateDetails[] | null
     @Prop({ required: false, default: -1 }) declare readonly editGateSelected: number
 

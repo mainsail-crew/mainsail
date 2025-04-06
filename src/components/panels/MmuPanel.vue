@@ -83,7 +83,7 @@
                     </v-row>
                     <v-row align="start">
                         <v-col :cols="col1Size" class="pt-0 d-flex flex-column align-center justify-center">
-                            <div class="text--disabled smaller-font min-height-text">{{ toolchangeText }}</div>
+                            <div class="text--disabled smaller-font">{{ toolchangeText }}</div>
                             <div class="min-height-text">{{ statusText }}</div>
                             <mmu-filament-status />
                             <template v-if="showClogDetection">
@@ -270,6 +270,8 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
 
 .smaller-font {
     font-size: 0.8em;
+    min-height: 1em;
+    line-height: 1em;
 }
 
 .min-height-text {
