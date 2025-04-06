@@ -400,6 +400,13 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
 
                 case this.FILAMENT_POS_IN_EXTRUDER:
                     pos = this.POSITIONS['cooling-tube']
+                    if (
+                        this.hasSensor('toolhead') &&
+                        this.isSensorEnabled('toolhead') &&
+                        !this.isSensorTriggered('toolhead')
+                    ) {
+                        pos = this.POSITIONS['before-toolhead'] // Don't show beyond toolhead sensor if not triggered
+                    }
                     break
 
                 case this.FILAMENT_POS_LOADED:

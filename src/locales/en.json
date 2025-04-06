@@ -739,6 +739,7 @@
                 "SpoolmanPull": "Spoolman support is in \"{mode}\" mode. Local editing of most gate properties is disabled. Assign spool/gate mapping in spoolman DB directly or use the MMU_SPOOLMAN command",
                 "Temperature": "Temperature"
             },
+            "Headline": "Mmu",
             "LargeFilamentStatus": "Large Filament Status",
             "MmuMaintenance": "MMU Maintenance",
             "MmuMaintenanceDialog": {
@@ -784,7 +785,6 @@
             "NoActiveSpool": "No active spool",
             "NoSpoolId": "No spool ID",
             "Ok": "Ok",
-            "PanelTitle": "Mmu",
             "RecoverFilamentPosition": "Recover Filament Position",
             "RecoverState": "Fix MMU State",
             "RecoverStateTitle": "Fix MMU State (Error Recovery)",

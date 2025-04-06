@@ -201,7 +201,7 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get title(): string {
-        const headline = this.$t('Panels.MmuPanel.PanelTitle') as string
+        const headline = this.$t('Panels.MmuPanel.Headline') as string
         if (!this.enabled) {
             return `${headline} (disabled)`
         }
@@ -273,7 +273,7 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
 }
 
 .min-height-text {
-    min-height: 1.2em;
-    line-height: 1.2em;
+    min-height: 1.1em;
+    line-height: 1.1em;
 }
 </style>
