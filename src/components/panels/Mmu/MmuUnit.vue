@@ -114,19 +114,19 @@ import MmuGateStatus from '@/components/panels/Mmu/MmuGateStatus.vue'
     components: { MmuSpool, MmuGateStatus },
 })
 export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
-    @Prop({ required: false, default: 0 }) readonly unit!: number
+    @Prop({ required: false, default: 0 }) readonly unitIndex!: number
     @Prop({ required: false, default: null }) readonly editGateMap!: MmuGateDetails[] | null
     @Prop({ required: false, default: -1 }) readonly editGateSelected!: number
 
     private svgLogo = null as string | null
 
     get unitDisplayName(): string {
-        const name = this.unitDetails(this.unit).name
-        return `#${this.unit + 1} ${name}`
+        const name = this.unitDetails(this.unitIndex).name
+        return `#${this.unitIndex + 1} ${name}`
     }
 
     get unitGateRange(): number[] {
-        const unitDetails = this.unitDetails(this.unit)
+        const unitDetails = this.unitDetails(this.unitIndex)
         return Array.from({ length: unitDetails.numGates }, (v, k) => k + unitDetails.firstGate)
     }
 
@@ -164,7 +164,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get showBypass(): boolean {
-        return !this.editGateMap && this.unitDetails(this.unit).hasBypass && this.hasBypass
+        return !this.editGateMap && this.unitDetails(this.unitIndex).hasBypass && this.hasBypass
     }
 
     gateTooltip(gate: number): string[] {
@@ -237,7 +237,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     }
 
     mounted() {
-        const unitVendor = this.unitDetails(this.unit).vendor
+        const unitVendor = this.unitDetails(this.unitIndex).vendor
         const svgLogoUrl = '/img/mmu/mmu_' + unitVendor + '.svg'
         this.fetchSvg(svgLogoUrl)
     }

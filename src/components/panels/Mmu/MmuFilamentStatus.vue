@@ -125,7 +125,9 @@
 
             <g v-if="hasSensor('mmu_gate')">
                 <circle cx="258" cy="110" r="8" style="stroke-width: 1" :class="sensorClass('mmu_gate')" />
-                <text x="278" y="115" :class="{ 'text-disabled': !isSensorEnabled('mmu_gate') }">Gate</text>
+                <text x="278" y="115" :class="{ 'text-disabled': !isSensorEnabled('mmu_gate') }">
+                    {{ gateSensorName }}
+                </text>
                 <transition name="fade">
                     <text v-if="homedToGate" x="219.5" y="115" font-weight="bold">H</text>
                 </transition>
@@ -438,6 +440,13 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     get encoderPosText(): string {
         if (this.encoderPos < 10000) return `${this.encoderPos} mm`
         return `${this.encoderPos}`
+    }
+
+    get gateSensorName(): string {
+        if (this.unitDetails(this.unit).multiGear) {
+            return 'Hub (Gate)'
+        }
+        return 'Gate'
     }
 
     get temperatureClass(): string {

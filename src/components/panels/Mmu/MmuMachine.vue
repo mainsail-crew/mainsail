@@ -4,7 +4,7 @@
             <v-col v-for="index in unitArray" :key="'unit_' + index" cols="auto">
                 <div :class="$vuetify.theme.dark ? 'mmu-unit mmu-unit-dark-theme' : 'mmu-unit mmu-unit-light-theme'">
                     <mmu-unit
-                        :unit="index"
+                        :unit-index="index"
                         :edit-gate-map="editGateMap"
                         :edit-gate-selected="editGateSelected"
                         @select-gate="selectGate" />

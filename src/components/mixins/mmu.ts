@@ -286,11 +286,16 @@ export default class MmuMixin extends Vue {
         return this.$store.state.printer.mmu?.is_homed ?? false
     }
 
+    get unit(): number {
+        return this.$store.state.printer.mmu?.unit ?? this.UNIT_UNKNOWN
+    }
+    readonly UNIT_UNKNOWN: number = -1
+
     get gate(): number {
-        return this.$store.state.printer.mmu?.gate
+        return this.$store.state.printer.mmu?.gate ?? this.TOOL_GATE_UNKNOWN
     }
     get tool(): number {
-        return this.$store.state.printer.mmu?.tool
+        return this.$store.state.printer.mmu?.tool ?? this.TOOL_GATE_UNKNOWN
     }
     readonly TOOL_GATE_UNKNOWN: number = -1
     readonly TOOL_GATE_BYPASS: number = -2
