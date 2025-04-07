@@ -300,6 +300,7 @@ export const getDefaultState = (): GuiState => {
                 showDetails: true,
                 largeFilamentStatus: false,
                 showLogos: true,
+                showUnavailableSpoolColor: false,
             },
         },
     }

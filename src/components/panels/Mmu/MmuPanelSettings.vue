@@ -31,6 +31,13 @@
                     :label="$t('Panels.MmuPanel.LargeFilamentStatus')" />
             </v-list-item>
             <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="showUnavailableSpoolColor"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.MmuPanel.ShowUnavailableSpoolColor')" />
+            </v-list-item>
+            <v-list-item class="minHeight36">
                 <v-checkbox v-model="showLogos" class="mt-0" hide-details :label="$t('Panels.MmuPanel.ShowLogos')" />
             </v-list-item>
         </v-list>
@@ -85,6 +92,14 @@ export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
 
     set showLogos(newVal: boolean) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.mmu.showLogos', value: newVal })
+    }
+
+    get showUnavailableSpoolColor(): boolean {
+        return this.$store.state.gui.view.mmu.showUnavailableSpoolColor ?? false
+    }
+
+    set showUnavailableSpoolColor(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.mmu.showUnavailableSpoolColor', value: newVal })
     }
 }
 </script>

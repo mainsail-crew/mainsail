@@ -99,9 +99,17 @@ export default class MmuSpool extends Mixins(BaseMixin, MmuMixin) {
         return this.gateDetails(this.gateIndex)
     }
 
+    get showUnavailableSpoolColor(): boolean {
+        return this.$store.state.gui.view.mmu.showUnavailableSpoolColor ?? false
+    }
+
     get filamentAmount(): number {
         if (this.editGateMap) return 100
-        if (this.details.status === this.GATE_EMPTY) return 0
+        if (
+            this.details.status === this.GATE_EMPTY &&
+            !(this.showUnavailableSpoolColor && this.details.color != this.NO_FILAMENT_COLOR)
+        )
+            return 0
 
         const spoolmanSpool = this.spoolmanSpool(this.details.spoolId)
         if (!spoolmanSpool) return -1
