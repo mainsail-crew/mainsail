@@ -57,7 +57,7 @@
                 {{ filamentAmount }}%
             </text>
             <text
-                v-else-if="filamentAmount === 0 && details.status != GATE_EMPTY"
+                v-else-if="filamentAmount === 0 && details.status !== GATE_EMPTY"
                 x="140"
                 y="310"
                 text-anchor="middle"
@@ -107,7 +107,7 @@ export default class MmuSpool extends Mixins(BaseMixin, MmuMixin) {
         if (this.editGateMap) return 100
         if (
             this.details.status === this.GATE_EMPTY &&
-            !(this.showUnavailableSpoolColor && this.details.color != this.NO_FILAMENT_COLOR)
+            !(this.showUnavailableSpoolColor && this.details.color !== this.NO_FILAMENT_COLOR)
         )
             return 0
 
