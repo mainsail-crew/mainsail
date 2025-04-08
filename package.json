@@ -65,7 +65,7 @@
         "vue-observe-visibility": "^1.0.0",
         "vue-property-decorator": "^9.1.2",
         "vue-resize": "^1.0.1",
-        "vue-toast-notification": "^0.6.1",
+        "vue-toast-notification": "^1.0.1",
         "vuedraggable": "^2.24.3",
         "vuetify": "^2.7.2",
         "vuex": "^3.6.2"
@@ -108,7 +108,7 @@
         "vue-debounce-decorator": "^1.0.1",
         "vue-i18n-extract": "^2.0.7",
         "vue-router": "^3.5.2",
-        "vue-template-compiler": "^2.6.14",
+        "vue-template-compiler": "^2.7.16",
         "workbox-core": "^7.0.0"
     },
     "postcss": {
