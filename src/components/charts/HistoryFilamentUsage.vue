@@ -110,8 +110,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
     }
 
     get filamentUsageArray() {
-        // eslint-disable-next-line
-        const output: any = []
+        const output: [number, number][] = []
         const startDate = new Date()
         startDate.setDate(startDate.getDate() - 14)
         startDate.setHours(0, 0, 0, 0)
@@ -134,20 +133,18 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
             tmpDate.setDate(tmpDate.getDate() + i)
             tmpDate.setHours(0, 0, 0, 0)
 
-            output.push([tmpDate, 0])
+            output.push([tmpDate.getTime(), 0])
         }
 
         if (jobsFiltered.length) {
             jobsFiltered.forEach((current) => {
                 const currentStartDate = new Date(current.start_time * 1000).setHours(0, 0, 0, 0)
-                // eslint-disable-next-line
-                const index = output.findIndex((element: any) => element[0] === currentStartDate)
+                const index = output.findIndex((element) => element[0] === currentStartDate)
                 if (index !== -1) output[index][1] += Math.round(current.filament_used) / 1000
             })
         }
 
-        // eslint-disable-next-line
-        return output.sort((a: any, b: any) => {
+        return output.sort((a, b) => {
             return b[0] - a[0]
         })
     }
@@ -162,7 +159,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
     }
 
     @Watch('filamentUsageArray')
-    filamentUsageArrayChanged(newVal: any) {
+    filamentUsageArrayChanged(newVal: [number, number][]) {
         this.chart?.setOption(
             {
                 series: {
