@@ -113,12 +113,16 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
             ]
 
         if (jobsFiltered.length) {
+            const hours = (duration: number) => duration / 3600
+
             jobsFiltered.forEach((current) => {
-                if (current.print_duration > 0 && current.print_duration <= 60 * 60 * 2) output[0]++
-                else if (current.print_duration > 60 * 60 * 2 && current.print_duration <= 60 * 60 * 6) output[1]++
-                else if (current.print_duration > 60 * 60 * 6 && current.print_duration <= 60 * 60 * 12) output[2]++
-                else if (current.print_duration > 60 * 60 * 12 && current.print_duration <= 60 * 60 * 24) output[3]++
-                else if (current.print_duration > 60 * 60 * 24) output[4]++
+                const printHours = hours(current.print_duration)
+
+                if (printHours > 0 && printHours <= 2) output[0]++
+                else if (printHours <= 6) output[1]++
+                else if (printHours <= 12) output[2]++
+                else if (printHours <= 24) output[3]++
+                else output[4]++
             })
         }
 
