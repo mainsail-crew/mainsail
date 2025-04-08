@@ -113,7 +113,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
         // eslint-disable-next-line
         const output: any = []
         const startDate = new Date()
-        startDate.setTime(startDate.getTime() - 60 * 60 * 24 * 14 * 1000)
+        startDate.setDate(startDate.getDate() - 14)
         startDate.setHours(0, 0, 0, 0)
 
         let jobsFiltered = [
@@ -130,10 +130,11 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
             ]
 
         for (let i = 0; i <= 14; i++) {
-            const tmpDate = new Date()
-            tmpDate.setTime(startDate.getTime() + 60 * 60 * 24 * i * 1000)
+            const tmpDate = new Date(startDate.getTime())
+            tmpDate.setDate(tmpDate.getDate() + i)
+            tmpDate.setHours(0, 0, 0, 0)
 
-            output.push([new Date(tmpDate).setHours(0, 0, 0, 0), 0])
+            output.push([tmpDate, 0])
         }
 
         if (jobsFiltered.length) {
