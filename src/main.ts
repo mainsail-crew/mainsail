@@ -76,9 +76,8 @@ const initLoad = async () => {
         window.console.debug('Loaded config.json')
 
         await store.dispatch('importConfigJson', file)
-        if ('defaultLocale' in file) {
-            await setAndLoadLocale(file.defaultLocale as string)
-        }
+        const locale = (file.defaultLocale ?? 'en') as string
+        await setAndLoadLocale(locale)
 
         // Handle mode outside store init and before vue mount for consistency in dialog
         const mode = file.defaultMode ?? defaultMode
