@@ -8,8 +8,6 @@ export interface EditorState {
     loaderBool: boolean
     loaderProgress: {
         direction: 'downloading' | 'uploading'
-        lastTimestamp: number
-        lastLoaded: number
         loaded: number
         total: number
         speed: string

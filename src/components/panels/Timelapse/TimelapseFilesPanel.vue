@@ -599,7 +599,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     get countPerPage() {
-        return this.$store.state.gui.view.gcodefiles?.countPerPage ?? 10
+        return this.$store.state.gui.view.timelapse?.countPerPage ?? 10
     }
 
     set countPerPage(newVal) {

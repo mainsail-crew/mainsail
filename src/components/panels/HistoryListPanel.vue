@@ -445,7 +445,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     get countPerPage() {
-        return this.$store.state.gui.view.historycountPerPage
+        return this.$store.state.gui.view.history.countPerPage ?? 10
     }
 
     set countPerPage(newVal) {

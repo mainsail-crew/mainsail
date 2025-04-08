@@ -1,6 +1,6 @@
 <template>
     <panel
-        v-if="klipperReadyForGui"
+        v-if="showPanel"
         :title="$t('Machine.SystemPanel.SystemLoad')"
         :icon="mdiMemory"
         card-class="machine-systemload-panel"
@@ -44,6 +44,8 @@ export default class SystemPanel extends Mixins(BaseMixin) {
     dialogDevices = false
 
     get mcus() {
+        if (!this.klipperReadyForGui) return []
+
         const mcus = this.$store.getters['printer/getMcus'] ?? []
 
         return caseInsensitiveSort(mcus, 'name')
@@ -51,6 +53,10 @@ export default class SystemPanel extends Mixins(BaseMixin) {
 
     get hostStats() {
         return this.$store.getters['server/getHostStats'] ?? null
+    }
+
+    get showPanel() {
+        return this.mcus.length > 0 || this.hostStats
     }
 }
 </script>
