@@ -28,6 +28,20 @@
                     hide-details
                     :label="$t('Panels.AfcPanel.ShowUnitIcons')" />
             </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="autoExpandUnits"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.AfcPanel.AutoExpandUnits')" />
+            </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="autoExpandTools"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.AfcPanel.AutoExpandTools')" />
+            </v-list-item>
         </v-list>
     </v-menu>
 </template>
@@ -76,6 +90,22 @@ export default class AFCPanelSettings extends Mixins(BaseMixin, ControlMixin) {
 
     set showUnitIcons(newVal: boolean) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.afc.showUnitIcons', value: newVal })
+    }
+
+    get autoExpandUnits(): boolean {
+        return this.$store.state.gui.view.afc.autoExpandUnits ?? true
+    }
+
+    set autoExpandUnits(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.afc.autoExpandUnits', value: newVal })
+    }
+
+    get autoExpandTools(): boolean {
+        return this.$store.state.gui.view.afc.autoExpandTools ?? true
+    }
+
+    set autoExpandTools(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.afc.autoExpandTools', value: newVal })
     }
 }
 </script>

@@ -611,6 +611,8 @@
     },
     "Panels": {
         "AfcPanel": {
+            "AutoExpandTools": "Auto Expand Tools",
+            "AutoExpandUnits": "Auto Expand Units",
             "BrushNozzle": "Brush Nozzle",
             "BufferDisabled": "Buffer Not Active",
             "BypassActive": "Bypass Active",

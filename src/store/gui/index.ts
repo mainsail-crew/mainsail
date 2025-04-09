@@ -195,6 +195,8 @@ export const getDefaultState = (): GuiState => {
                 showSpoolName: true,
                 infiniteSpool: true,
                 showUnitIcons: true,
+                autoExpandUnits: true,
+                autoExpandTools: true,
             },
             configfiles: {
                 countPerPage: 10,

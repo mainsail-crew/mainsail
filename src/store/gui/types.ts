@@ -137,6 +137,8 @@ export interface GuiState {
             showSpoolName: boolean
             infiniteSpool: boolean
             showUnitIcons: boolean
+            autoExpandUnits: boolean
+            autoExpandTools: boolean
         }
         configfiles: {
             countPerPage: number
