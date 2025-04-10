@@ -170,7 +170,7 @@
                                             <v-col cols="12" class="ps-6">
                                                 <v-switch
                                                     v-model="selectedGateStatus"
-                                                    :label="$t('Panels.MmuPanel.GateMapDialog.FilamentAvailable')"
+                                                    :label="selectedGateStatusLabel"
                                                     hide-details
                                                     class="short-switch" />
                                             </v-col>
@@ -473,11 +473,17 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     set selectedGateStatus(value: boolean) {
-        if (value) {
-            this.editGateMap[this.editGateSelected].status = this.GATE_AVAILABLE
-        } else {
-            this.editGateMap[this.editGateSelected].status = this.GATE_EMPTY
+        this.editGateMap[this.editGateSelected].status = value ? this.GATE_AVAILABLE : this.GATE_EMPTY
+    }
+
+    get selectedGateStatusLabel(): string {
+        const status = this.editGateMap[this.editGateSelected].status
+        if (status === this.GATE_UNKNOWN) {
+            return this.$t('Panels.MmuPanel.GateMapDialog.FilamentUnknown').toString()
+        } else if (status === this.GATE_EMPTY) {
+            return this.$t('Panels.MmuPanel.GateMapDialog.FilamentEmpty').toString()
         }
+        return this.$t('Panels.MmuPanel.GateMapDialog.FilamentAvailable').toString()
     }
 
     get spoolmanColor(): string {
