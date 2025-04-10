@@ -95,8 +95,8 @@
             <div
                 v-if="showLogos && svgLogo"
                 class="mmu-logo"
-                v-html="svgLogo"
-                :style="'height: ' + logoHeight + 'px;'"></div>
+                :style="'height: ' + logoHeight + 'px;'"
+                v-html="svgLogo"></div>
             <div class="unit-name">{{ unitDisplayName }}</div>
         </div>
     </v-container>
