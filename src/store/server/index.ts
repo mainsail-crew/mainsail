@@ -28,6 +28,7 @@ export const getDefaultState = (): ServerState => {
         warnings: [],
         registered_directories: [],
         events: [],
+        apikey: null,
         config: {},
         system_info: null,
         system_boot_at: null,

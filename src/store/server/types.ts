@@ -15,6 +15,7 @@ export interface ServerState {
     warnings: string[]
     registered_directories: string[]
     events: ServerStateEvent[]
+    apikey: string | null
     config: {
         // eslint-disable-next-line
         [key: string]: any

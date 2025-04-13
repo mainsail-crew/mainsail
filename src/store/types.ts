@@ -31,6 +31,7 @@ export interface ConfigJson {
     path?: string | null
     instancesDB?: 'moonraker' | 'browser' | 'json'
     instances?: ConfigJsonInstance[]
+    apikey?: string | null
 }
 
 export interface ConfigJsonInstance {

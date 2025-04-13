@@ -16,7 +16,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('updateManager/reset')
     },
 
-    async init({ commit, dispatch, rootState }) {
+    async init({ commit, dispatch, state, rootState }) {
         window.console.debug('init Server')
 
         // identify client
@@ -26,6 +26,7 @@ export const actions: ActionTree<ServerState, RootState> = {
                 version: rootState.packageVersion,
                 type: 'web',
                 url: 'https://github.com/mainsail-crew/mainsail',
+                api_key: state.apikey,
             })
             commit('setConnectionId', connection.connection_id)
         } catch (e: any) {
