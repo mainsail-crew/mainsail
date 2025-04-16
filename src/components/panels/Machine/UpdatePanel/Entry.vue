@@ -347,9 +347,6 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     }
 
     get pythonChangelog() {
-        if (this.repo.channel === 'dev')
-            return `${this.githubRepoUrl}/compare/${this.repo.current_hash}..${this.repo.remote_hash}`
-
         if (this.repo.changelog_url) return this.repo.changelog_url
 
         return this.webLinkRelease
