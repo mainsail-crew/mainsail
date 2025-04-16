@@ -252,6 +252,9 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     }
 
     get isCorrupt() {
+        // Only git repos can be corrupt
+        if (this.configuredType !== 'git_repo') return false
+
         return this.repo.corrupt ?? false
     }
 
