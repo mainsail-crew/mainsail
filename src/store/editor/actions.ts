@@ -5,40 +5,19 @@ import axios from 'axios'
 import { sha256 } from 'js-sha256'
 import Vue from 'vue'
 import i18n from '@/plugins/i18n'
-import { escapePath, windowBeforeUnloadFunction } from '@/plugins/helpers'
+import { escapePath, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 
 export const actions: ActionTree<EditorState, RootState> = {
     reset({ commit }) {
         commit('reset')
     },
 
-    downloadProgress({ state, commit }, payload: { progressEvent: any; direction: string; filesize: number | null }) {
-        let speedOutput: string = state.loaderProgress.speed
-        let lastTimestamp = state.loaderProgress.lastTimestamp
-        let lastLoaded = state.loaderProgress.lastLoaded
-
-        const diffTime = payload.progressEvent.timeStamp - state.loaderProgress.lastTimestamp
-        if (diffTime > 500) {
-            const diffData = payload.progressEvent.loaded - lastLoaded
-            let speed = diffData / diffTime
-            const unit = ['kB', 'MB', 'GB']
-            let unitSelect = 0
-            while (speed > 1024) {
-                speed /= 1024.0
-                unitSelect = Math.min(2, unitSelect + 1)
-            }
-            speedOutput = speed.toFixed(2) + unit[unitSelect]
-            lastTimestamp = payload.progressEvent.timeStamp
-            lastLoaded = payload.progressEvent.loaded
-        }
-
+    downloadProgress({ commit }, payload: { progressEvent: any; direction: string; filesize: number | null }) {
         commit('updateLoader', {
             direction: payload.direction,
-            speed: speedOutput,
+            speed: formatFilesize(payload.progressEvent.rate ?? 0),
             loaded: payload.progressEvent.loaded,
             total: payload.filesize ?? payload.progressEvent.total,
-            lastLoaded,
-            lastTimestamp,
         })
     },
 
@@ -157,8 +136,6 @@ export const actions: ActionTree<EditorState, RootState> = {
         commit('updateLoaderState', false)
         commit('updateLoader', {
             direction: 'downloading',
-            lastLoaded: 0,
-            lastTimestamp: 0,
             loaded: 0,
             total: 0,
             speed: '',

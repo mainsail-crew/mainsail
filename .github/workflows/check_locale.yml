@@ -14,12 +14,9 @@ jobs:
 
       - name: Fetch repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -28,9 +25,8 @@ jobs:
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v46
         with:
-          sha: ${{ github.event.pull_request.head.sha }}
           files: 'src/locales/*.json'
 
       - name: Run i18n-extract on changed locale files
@@ -46,7 +42,7 @@ jobs:
             echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
           done
       - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           message: |
             Language file analysis report:
@@ -54,4 +50,3 @@ jobs:
             |:---|---:|---:|
             ${{join(steps.i18n-extract.outputs.*, '
             ')}}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

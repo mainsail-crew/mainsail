@@ -13,25 +13,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Check package.json was changed
         id: changed-file-package-json
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v46
         with:
-          sha: ${{ github.event.pull_request.head.sha }}
+          files: 'package.json'
 
       - name: Install node
         uses: actions/setup-node@v4
-        if: contains(steps.changed-file-package-json.outputs.modified_files, 'package.json')
+        if: steps.changed-file-package-json.outputs.any_modified == 'true'
         with:
           node-version: 20
           cache: 'npm'
 
       - uses: preactjs/compressed-size-action@v2
-        if: contains(steps.changed-file-package-json.outputs.modified_files, 'package.json')
+        if: steps.changed-file-package-json.outputs.any_modified == 'true'
         with:
           strip-hash: "\\b\\w{8}\\."
           pattern: './dist/**/*.{js,css,html,json,woff2,svg,png}'
