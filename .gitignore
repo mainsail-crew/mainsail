@@ -20,3 +20,4 @@ package-lock.json
 cypress/screenshots/
 cypress/videos/
 components.d.ts
+i18n-extract
