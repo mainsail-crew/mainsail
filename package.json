@@ -16,7 +16,7 @@
         "lint": "eslint --ignore-path .gitignore src",
         "lint:fix": "npm run lint -- --fix",
         "build.zip": "cd ./dist && zip -r mainsail.zip ./ -x '**.DS_Store' ./ && cd ..",
-        "i18n-extract": "vue-i18n-extract use-config",
+        "i18n-extract": "vue-i18n-extract --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' --languageFiles './src/locales/*.json'",
         "preview": "vite preview",
         "start": "vite build && vite preview",
         "test": "start-server-and-test preview http://127.0.0.1:4173/ 'cypress run'",
@@ -72,7 +72,6 @@
     },
     "devDependencies": {
         "@mdi/js": "^7.0.0",
-        "@types/cypress": "^1.1.6",
         "@types/file-saver": "^2.0.5",
         "@types/jmuxer": "^2.0.3",
         "@types/lodash.kebabcase": "^4.1.6",
