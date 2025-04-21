@@ -72,7 +72,6 @@
     },
     "devDependencies": {
         "@mdi/js": "^7.0.0",
-        "@types/cypress": "^1.1.6",
         "@types/file-saver": "^2.0.5",
         "@types/jmuxer": "^2.0.3",
         "@types/lodash.kebabcase": "^4.1.6",
