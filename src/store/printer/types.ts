@@ -133,9 +133,11 @@ export interface PrinterStateMiscellaneousSensor {
 }
 
 export interface PrinterStateFilamentSensors {
+    type: string
     name: string
     enabled: boolean
     filament_detected: boolean
+    filament_diameter?: number
 }
 
 export interface PrinterStateBedMesh {
