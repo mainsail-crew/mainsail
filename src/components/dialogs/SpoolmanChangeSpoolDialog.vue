@@ -208,7 +208,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
         }
 
         // Set spool_id to save_variable
-        const gcode2 = `SAVE_VARIABLE VARIABLE=${this.tool.toUpperCase()}__SPOOL_ID VALUE=${spool.id}`
+        const gcode2 = `SAVE_VARIABLE VARIABLE=${this.tool.toLowerCase()}__spool_id VALUE=${spool.id}`
         this.$store.dispatch('server/addEvent', { message: gcode2, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode2 })
 

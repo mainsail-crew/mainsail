@@ -79,9 +79,9 @@ export default class UpdateHintAll extends Mixins(BaseMixin) {
             // check client web for updates
             if (
                 module.type === 'web' &&
-                semver.valid(module.data?.remote_version) &&
-                semver.valid(module.data?.version) &&
-                semver.gt(module.data?.remote_version, module.data?.version)
+                semver.valid(module.data?.remote_version, { loose: true }) &&
+                semver.valid(module.data?.version, { loose: true }) &&
+                semver.gt(module.data?.remote_version, module.data?.version, { loose: true })
             )
                 return true
 
