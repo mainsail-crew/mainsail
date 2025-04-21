@@ -396,10 +396,10 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
 
     get allMacros() {
         const macros = this.$store.getters['printer/getMacros'] ?? []
-        return macros.filter((macro: any) => {
+        return macros.filter((macro: PrinterStateMacro) => {
             return (
                 macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) ||
-                macro.description.toLowerCase().includes(this.searchMacros.toLowerCase())
+                macro.description?.toLowerCase().includes(this.searchMacros.toLowerCase())
             )
         })
     }

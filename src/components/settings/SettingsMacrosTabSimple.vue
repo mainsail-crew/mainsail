@@ -45,6 +45,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiMagnify } from '@mdi/js'
+import { PrinterStateMacro } from '@/store/printer/types'
 
 @Component({
     components: { SettingsRow },
@@ -55,10 +56,10 @@ export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
 
     get macros() {
         const macros = this.$store.getters['printer/getMacros'] ?? []
-        return macros.filter((macro: any) => {
+        return macros.filter((macro: PrinterStateMacro) => {
             return (
                 macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) ||
-                macro.description.toLowerCase().includes(this.searchMacros.toLowerCase())
+                macro.description?.toLowerCase().includes(this.searchMacros.toLowerCase())
             )
         })
     }
