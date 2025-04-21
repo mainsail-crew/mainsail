@@ -259,9 +259,11 @@
                         </v-col>
                     </v-row>
                 </template>
-                <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.AvailableMacros') }}</h3>
-                <v-row>
-                    <v-col>
+                <v-row class="mt-6 mb-3 flex-column flex-md-row">
+                    <v-col class="py-0 align-content-center mb-3 mb-md-0">
+                        <h3 class="text-h5">{{ $t('Settings.MacrosTab.AvailableMacros') }}</h3>
+                    </v-col>
+                    <v-col class="py-0">
                         <v-text-field
                             v-model="searchMacros"
                             :append-icon="mdiMagnify"
@@ -270,9 +272,7 @@
                             outlined
                             clearable
                             hide-details
-                            dense
-                            style="max-width: 300px"></v-text-field>
-                        <v-spacer />
+                            dense />
                     </v-col>
                 </v-row>
                 <template v-if="availableMacros.length">
