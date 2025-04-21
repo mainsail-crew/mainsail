@@ -54,7 +54,10 @@ export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
     get macros() {
         const macros = this.$store.getters['printer/getMacros'] ?? []
         return macros.filter((macro: any) => {
-            return macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) || macro.description.toLowerCase().includes(this.searchMacros.toLowerCase())
+            return (
+                macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) ||
+                macro.description.toLowerCase().includes(this.searchMacros.toLowerCase())
+            )
         })
     }
 

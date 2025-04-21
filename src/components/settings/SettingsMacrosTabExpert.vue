@@ -397,7 +397,10 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
     get allMacros() {
         const macros = this.$store.getters['printer/getMacros'] ?? []
         return macros.filter((macro: any) => {
-            return macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) || macro.description.toLowerCase().includes(this.searchMacros.toLowerCase())
+            return (
+                macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) ||
+                macro.description.toLowerCase().includes(this.searchMacros.toLowerCase())
+            )
         })
     }
 
@@ -424,13 +427,12 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         return macros
     }
 
-    set editGroupMacros(newVal) {
-    }
+    set editGroupMacros(newVal) {}
 
     existsGroupName(name: string) {
         return (
             this.groups.findIndex(
-                (group: GuiMacrosStateMacrogroup) => group.name === name && group.id != this.editGroupId,
+                (group: GuiMacrosStateMacrogroup) => group.name === name && group.id != this.editGroupId
             ) >= 0
         )
     }
