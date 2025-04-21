@@ -179,16 +179,14 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
 
     get localVersion() {
         const version = this.repo.version ?? '?'
-
-        if (!semver.valid(version)) return null
+        if (!semver.valid(version, { loose: true })) return null
 
         return version
     }
 
     get remoteVersion() {
         const version = this.repo.remote_version ?? '?'
-
-        if (!semver.valid(version)) return null
+        if (!semver.valid(version, { loose: true })) return null
 
         return version
     }
@@ -219,7 +217,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     get versionOutput() {
         let output = this.branchOutput ? `${this.branchOutput}: ` : ''
 
-        if (this.localVersion && this.remoteVersion && semver.gt(this.remoteVersion, this.localVersion)) {
+        if (this.semverUpdatable) {
             return `${output}${this.localVersion} > ${this.remoteVersion}`
         }
 
@@ -252,6 +250,9 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     }
 
     get isCorrupt() {
+        // Only git repos can be corrupt
+        if (this.configuredType !== 'git_repo') return false
+
         return this.repo.corrupt ?? false
     }
 
@@ -331,7 +332,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         if (!this.localVersion) return false
         if (!this.remoteVersion) return false
 
-        return semver.gt(this.remoteVersion, this.localVersion)
+        return semver.gt(this.remoteVersion, this.localVersion, { loose: true })
     }
 
     get repo_name() {
