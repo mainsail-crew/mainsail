@@ -29,7 +29,7 @@ export default class MiscellaneousSensor extends Mixins(BaseMixin) {
     @Prop({ type: String, required: false }) declare readonly unit: string
 
     get output() {
-        const value = isNaN(this.value) ? '---' : this.value
+        const value = isNaN(this.value) ? '--' : this.value
 
         if (this.unit === null) return this.value
 
