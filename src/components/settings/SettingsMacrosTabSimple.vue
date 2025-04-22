@@ -1,25 +1,42 @@
 <template>
     <v-card-text>
-        <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.Macros') }}</h3>
+        <v-row class="mt-6 mb-3 flex-column flex-md-row">
+            <v-col class="py-0 align-content-center mb-3 mb-md-0">
+                <h3 class="text-h5">{{ $t('Settings.MacrosTab.Macros') }}</h3>
+            </v-col>
+            <v-col class="py-0">
+                <v-text-field
+                    v-model="searchMacros"
+                    :append-icon="mdiMagnify"
+                    :label="$t('Settings.MacrosTab.Search')"
+                    single-line
+                    outlined
+                    clearable
+                    hide-details
+                    dense />
+            </v-col>
+        </v-row>
         <template v-if="macros.length">
-            <div v-for="(macro, index) in macros" :key="index">
-                <v-divider v-if="index" class="my-2"></v-divider>
-                <settings-row :title="macro.name" :sub-title="macro.description" :dynamic-slot-width="true">
+            <template v-for="(macro, index) in macros">
+                <v-divider v-if="index" :key="index + '_divider'" class="my-2" />
+                <settings-row
+                    :key="index"
+                    :title="macro.name"
+                    :sub-title="macro.description"
+                    :dynamic-slot-width="true">
                     <v-switch
                         :input-value="getMacroStatus(macro.name)"
                         hide-details
                         class="mt-0"
-                        @change="changeMacroStatus(macro.name)"></v-switch>
+                        @change="changeMacroStatus(macro.name)" />
                 </settings-row>
-            </div>
+            </template>
         </template>
-        <template v-else>
-            <v-row>
-                <v-col>
-                    <p class="mb-0 text-center font-italic">{{ $t('Settings.MacrosTab.NOMacros') }}</p>
-                </v-col>
-            </v-row>
-        </template>
+        <v-row v-else>
+            <v-col>
+                <p class="mb-0 text-center font-italic">{{ $t('Settings.MacrosTab.NOMacros') }}</p>
+            </v-col>
+        </v-row>
     </v-card-text>
 </template>
 
@@ -27,12 +44,24 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+import { mdiMagnify } from '@mdi/js'
+import { PrinterStateMacro } from '@/store/printer/types'
+
 @Component({
     components: { SettingsRow },
 })
 export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
+    mdiMagnify = mdiMagnify
+    searchMacros: string = ''
+
     get macros() {
-        return this.$store.getters['printer/getMacros'] ?? []
+        const macros = this.$store.getters['printer/getMacros'] ?? []
+        return macros.filter((macro: PrinterStateMacro) => {
+            return (
+                macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) ||
+                macro.description?.toLowerCase().includes(this.searchMacros.toLowerCase())
+            )
+        })
     }
 
     get hiddenMacros() {
