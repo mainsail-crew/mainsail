@@ -37,8 +37,8 @@ jobs:
           set -x
           mkdir ./i18n-extract
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "Executing: npx vue-i18n-extract --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' --languageFiles './src/locales/${file##*/}' --output './i18n-extract/${file##*/}'" # Debug line added
-            npx vue-i18n-extract --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' --languageFiles './src/locales/${file##*/}' --output './i18n-extract/${file##*/}'
+            echo "Executing: npx vue-i18n-extract --vueFiles ./src/**/{*.?(js|ts|vue),.i18nignore} --languageFiles ./src/locales/${file##*/} --output ./i18n-extract/${file##*/}" # Debug line added
+            npx vue-i18n-extract --vueFiles ./src/**/{*.?(js|ts|vue),.i18nignore} --languageFiles ./src/locales/${file##*/} --output ./i18n-extract/${file##*/}
             MISSING=$(cat i18n-extract/${file##*/} | jq '.missingKeys | length')
             UNUSED=$(cat i18n-extract/${file##*/} | jq '.unusedKeys | length')
             echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
