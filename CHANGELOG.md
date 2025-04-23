@@ -2,6 +2,21 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.13.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.13.2) - 2024-12-25
+### Bug Fixes and Improvements
+
+- **Editor**: Fix maximal height of the sidebar ([#2079](https://github.com/mainsail-crew/mainsail/pull/2079))
+- **Editor**: Fix docs link for Kalico ([#2080](https://github.com/mainsail-crew/mainsail/pull/2080))
+- **Tools**: Use gcode commands instead of config gcode macros ([#2088](https://github.com/mainsail-crew/mainsail/pull/2088))
+- **macro-prompts**: Preserve outer quotes ([#2076](https://github.com/mainsail-crew/mainsail/pull/2076))
+- Fix print start from dashboard for subdirectory files ([#2074](https://github.com/mainsail-crew/mainsail/pull/2074))
+- Hide horizontal scrollbar in StartPrintDialog.vue ([#2075](https://github.com/mainsail-crew/mainsail/pull/2075))
+- Fix z_tilt button for z_tilt_ng with Kalico ([#2078](https://github.com/mainsail-crew/mainsail/pull/2078))
+
+### Localization
+
+- **zh**: Update chinese locale ([#2081](https://github.com/mainsail-crew/mainsail/pull/2081))
+
 ## [2.13.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.13.1) - 2024-12-07
 ### Bug Fixes and Improvements
 

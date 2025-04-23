@@ -10,8 +10,14 @@
                         {{ versionOutput }}
                     </a>
                 </template>
-                <template v-else-if="type === 'web' && webUpdatable">
+                <template v-else-if="type === 'web' && semverUpdatable">
                     <a class="info--text text-decoration-none" :href="webLinkRelease" target="_blank">
+                        <v-icon small color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
+                        {{ versionOutput }}
+                    </a>
+                </template>
+                <template v-else-if="type === 'python' && semverUpdatable">
+                    <a class="info--text text-decoration-none" :href="pythonChangelog" target="_blank">
                         <v-icon small color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
                     </a>
@@ -173,16 +179,14 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
 
     get localVersion() {
         const version = this.repo.version ?? '?'
-
-        if (!semver.valid(version)) return null
+        if (!semver.valid(version, { loose: true })) return null
 
         return version
     }
 
     get remoteVersion() {
         const version = this.repo.remote_version ?? '?'
-
-        if (!semver.valid(version)) return null
+        if (!semver.valid(version, { loose: true })) return null
 
         return version
     }
@@ -213,7 +217,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     get versionOutput() {
         let output = this.branchOutput ? `${this.branchOutput}: ` : ''
 
-        if (this.localVersion && this.remoteVersion && semver.gt(this.remoteVersion, this.localVersion)) {
+        if (this.semverUpdatable) {
             return `${output}${this.localVersion} > ${this.remoteVersion}`
         }
 
@@ -246,6 +250,9 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     }
 
     get isCorrupt() {
+        // Only git repos can be corrupt
+        if (this.configuredType !== 'git_repo') return false
+
         return this.repo.corrupt ?? false
     }
 
@@ -269,7 +276,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         if (['printing', 'paused'].includes(this.printer_state)) return true
         if (!this.isValid || this.isCorrupt || this.isDirty || this.commitsBehind.length) return false
 
-        if (this.type === 'web') return !this.webUpdatable
+        if (['python', 'web'].includes(this.type)) return !this.semverUpdatable
 
         return this.commitsBehind.length === 0
     }
@@ -277,8 +284,8 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     get btnIcon() {
         if (this.isDetached || !this.isValid || this.isCorrupt || this.isDirty) return mdiCloseCircle
 
-        if (this.type === 'web') {
-            if (this.webUpdatable) return mdiProgressUpload
+        if (['python', 'web'].includes(this.type)) {
+            if (this.semverUpdatable) return mdiProgressUpload
             else if (this.localVersion === null || this.remoteVersion === null) return mdiHelpCircleOutline
         }
 
@@ -290,7 +297,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     get btnColor() {
         if (this.isCorrupt || this.isDetached || this.isDirty || !this.isValid) return 'orange'
 
-        if (this.type === 'web' && this.webUpdatable) return 'primary'
+        if (['python', 'web'].includes(this.type) && this.semverUpdatable) return 'primary'
         if (this.type === 'git_repo' && this.commitsBehind.length) return 'primary'
 
         return 'green'
@@ -302,8 +309,8 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         if (this.isDirty) return this.$t('Machine.UpdatePanel.Dirty')
         if (!this.isValid) return this.$t('Machine.UpdatePanel.Invalid')
 
-        if (this.type === 'web') {
-            if (this.webUpdatable) return this.$t('Machine.UpdatePanel.Update')
+        if (['python', 'web'].includes(this.type)) {
+            if (this.semverUpdatable) return this.$t('Machine.UpdatePanel.Update')
             else if (this.localVersion === null || this.remoteVersion === null)
                 return this.$t('Machine.UpdatePanel.Unknown')
         }
@@ -321,19 +328,32 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         return this.repo.warnings ?? []
     }
 
-    get webUpdatable() {
+    get semverUpdatable() {
         if (!this.localVersion) return false
         if (!this.remoteVersion) return false
 
-        return semver.gt(this.remoteVersion, this.localVersion)
+        return semver.gt(this.remoteVersion, this.localVersion, { loose: true })
     }
 
     get repo_name() {
         return this.repo.repo_name ?? this.repo.name ?? ''
     }
 
+    get githubRepoUrl() {
+        return `https://github.com/${this.repo.owner}/${this.repo_name}`
+    }
+
     get webLinkRelease() {
-        return `https://github.com/${this.repo.owner}/${this.repo_name}/releases/tag/${this.repo.remote_version}`
+        return `${this.githubRepoUrl}/releases/tag/${this.repo.remote_version}`
+    }
+
+    get pythonChangelog() {
+        if (this.repo.channel === 'dev')
+            return `${this.githubRepoUrl}/compare/${this.repo.current_hash}..${this.repo.remote_hash}`
+
+        if (this.repo.changelog_url) return this.repo.changelog_url
+
+        return this.webLinkRelease
     }
 
     get hideUpdateWarning() {

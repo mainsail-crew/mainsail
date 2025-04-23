@@ -166,7 +166,6 @@
         "HideTemperatures": "Hide temperatures",
         "HideTimelapse": "Hide Timelapse",
         "Search": "Search",
-        "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
     },
     "CoolDownDialog": {
@@ -799,6 +798,7 @@
             "Min": "min",
             "Name": "Name",
             "Presets": "Presets",
+            "Settings": "Settings",
             "SetupTemperatures": "Setup Temperatures",
             "ShowChart": "Show Chart",
             "ShowNameInChart": "Show {name} in chart",
@@ -807,7 +807,8 @@
             "Target": "Target",
             "TemperaturesInChart": "Temperature [°C]",
             "TempTooHigh": "Temperature too high for {name}! (max: {max})",
-            "TempTooLow": "Temperature too low for {name}! (min: {min})"
+            "TempTooLow": "Temperature too low for {name}! (min: {min})",
+            "TurnHeaterOff": "Turn Heater Off"
         },
         "ToolheadControlPanel": {
             "Absolute": "absolute",
@@ -939,6 +940,7 @@
             "MoveDistancesInMm": "Move distance increments (in mm)",
             "MoveDistancesXYInMm": "Move distance increments X & Y axes (in mm)",
             "MoveDistancesZInMm": "Move distance increments Z axis (in mm)",
+            "OverwriteActionButton": "Overwrite action button",
             "QuadGantryLevel": "Quad Gantry Level{isDefault}",
             "SpeedEInMms": "Extrusion speed presets (in mm/s)",
             "SpeedXY": "Movement speed X & Y axes",
@@ -1071,6 +1073,7 @@
             "NOMacros": "No macros found...",
             "NoMacrosInGroup": "No macros in this group.",
             "Primary": "primary",
+            "Search": "Search",
             "Secondary": "secondary",
             "ShowInStatePaused": "Show/hide if printer is paused.",
             "ShowInStatePrinting": "Show/hide if printer is printing.",

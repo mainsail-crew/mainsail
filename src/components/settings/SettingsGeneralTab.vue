@@ -56,8 +56,7 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -81,20 +80,21 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
     availableLanguages: { text: string; value: string }[] = []
 
     async created() {
-        const locales = import.meta.glob<string>('../../locales/*.json', { import: 'title' })
+        const locales = import.meta.glob('../../locales/*.json', { import: 'default' })
         const languages: { text: string; value: string }[] = []
 
         for (const file in locales) {
             const langKey = file.slice(file.lastIndexOf('/') + 1, file.lastIndexOf('.'))
-            const title = await locales[file]()
+            const locale = await locales[file]()
 
             languages.push({
-                text: title,
+                // @ts-ignore
+                text: locale.title,
                 value: langKey,
             })
         }
 
-        this.availableLanguages = languages
+        this.availableLanguages = languages.sort((a, b) => a.text.localeCompare(b.text))
     }
 
     get printerName() {
