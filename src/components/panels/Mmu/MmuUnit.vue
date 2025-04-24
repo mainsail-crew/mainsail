@@ -9,10 +9,10 @@
                         :close-on-content-click="false"
                         transition="slide-y-transition"
                         offset-y>
-                        <template #activator="{ on, attrs }">
+                        <template #activator="{ on: menuOn, attrs: menuAttrs }">
                             <v-tooltip top :disabled="!!editGateMap" :open-delay="500" content-class="spool-tooltip">
-                                <template #activator="{ on, attrs }">
-                                    <div v-bind="attrs" v-on="on">
+                                <template #activator="{ on: tooltipOn, attrs: tooltipAttrs }">
+                                    <div v-bind="{ ...menuAttrs, ...tooltipAttrs }" v-on="{ ...tooltipOn }">
                                         <mmu-spool
                                             :width="spoolWidth + 'px'"
                                             :class="spoolClass(g)"
@@ -35,6 +35,17 @@
                         <v-list dense>
                             <v-subheader class="compact-subheader">Gate {{ g }}</v-subheader>
                             <v-divider></v-divider>
+                            <v-list-item>
+                                <v-btn
+                                    small
+                                    style="width: 100%"
+                                    :disabled="!canSend"
+                                    :loading="loadings.includes('mmu_select')"
+                                    @click="doLoadingSend('MMU_SELECT GATE=' + g, 'mmu_select')">
+                                    <v-icon left>{{ mdiSwapHorizontal }}</v-icon>
+                                    {{ $t('Panels.MmuPanel.ButtonSelect') }}
+                                </v-btn>
+                            </v-list-item>
                             <v-list-item>
                                 <v-btn
                                     small
@@ -147,7 +158,7 @@ import MmuMixin from '@/components/mixins/mmu'
 import type { MmuGateDetails } from '@/components/mixins/mmu'
 import MmuSpool from '@/components/panels/Mmu/MmuSpool.vue'
 import MmuGateStatus from '@/components/panels/Mmu/MmuGateStatus.vue'
-import { mdiDownloadOutline, mdiEject } from '@mdi/js'
+import { mdiSwapHorizontal, mdiDownloadOutline, mdiEject } from '@mdi/js'
 
 @Component({
     components: { MmuSpool, MmuGateStatus },
@@ -157,6 +168,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: false, default: null }) readonly editGateMap!: MmuGateDetails[] | null
     @Prop({ required: false, default: -1 }) readonly editGateSelected!: number
 
+    mdiSwapHorizontal = mdiSwapHorizontal
     mdiDownloadOutline = mdiDownloadOutline
     mdiEject = mdiEject
 
