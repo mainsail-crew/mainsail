@@ -9,7 +9,7 @@
                         :close-on-content-click="false"
                         transition="slide-y-transition"
                         offset-y>
-                        <template #activator="{ on: menuOn, attrs: menuAttrs }">
+                        <template #activator="{ attrs: menuAttrs }">
                             <v-tooltip top :disabled="!!editGateMap" :open-delay="500" content-class="spool-tooltip">
                                 <template #activator="{ on: tooltipOn, attrs: tooltipAttrs }">
                                     <div v-bind="{ ...menuAttrs, ...tooltipAttrs }" v-on="{ ...tooltipOn }">
