@@ -3,10 +3,13 @@
         <div class="spool-row">
             <div v-for="(g, index) in unitGateRange" :key="'gate_' + g" class="gate" @click="selectGate(g)">
                 <div :class="clipSpoolClass">
-
-                    <v-menu :disabled="g === gate || !unitDetails(unitIndex).multiGear" v-model="gateMenuVisible[g]" :close-on-content-click="false" transition="slide-y-transition" offset-y>
+                    <v-menu
+                        :disabled="g === gate || !unitDetails(unitIndex).multiGear"
+                        v-model="gateMenuVisible[g]"
+                        :close-on-content-click="false"
+                        transition="slide-y-transition"
+                        offset-y>
                         <template #activator="{ on, attrs }">
-
                             <v-tooltip top :disabled="!!editGateMap" :open-delay="500" content-class="spool-tooltip">
                                 <template #activator="{ on, attrs }">
                                     <div v-bind="attrs" v-on="on">
@@ -16,7 +19,7 @@
                                             :gate-index="g"
                                             :edit-gate-map="editGateMap"
                                             :edit-gate-selected="editGateSelected" />
-                                      </div>
+                                    </div>
                                 </template>
 
                                 <div
@@ -30,24 +33,26 @@
                         </template>
 
                         <v-list dense>
-                            <v-subheader class="compact-subheader">
-                                Gate {{ g }}
-                            </v-subheader>
+                            <v-subheader class="compact-subheader">Gate {{ g }}</v-subheader>
                             <v-divider></v-divider>
                             <v-list-item>
-                                <v-btn small style="width: 100%"
-                                       :disabled="!canSend || ![GATE_UNKNOWN, GATE_EMPTY].includes(gateDetails(g).status)"
-                                       :loading="loadings.includes('mmu_preload')"
-                                       @click="doLoadingSend('MMU_PRELOAD GATE=' + g, 'mmu_preload')">
+                                <v-btn
+                                    small
+                                    style="width: 100%"
+                                    :disabled="!canSend || ![GATE_UNKNOWN, GATE_EMPTY].includes(gateDetails(g).status)"
+                                    :loading="loadings.includes('mmu_preload')"
+                                    @click="doLoadingSend('MMU_PRELOAD GATE=' + g, 'mmu_preload')">
                                     <v-icon left>{{ mdiDownloadOutline }}</v-icon>
                                     {{ $t('Panels.MmuPanel.ButtonPreload') }}
                                 </v-btn>
                             </v-list-item>
                             <v-list-item>
-                                <v-btn small style="width: 100%"
-                                       :disabled="!canSend"
-                                       :loading="loadings.includes('mmu_eject')"
-                                       @click="doLoadingSend('MMU_EJECT GATE=' + g, 'mmu_eject')">
+                                <v-btn
+                                    small
+                                    style="width: 100%"
+                                    :disabled="!canSend"
+                                    :loading="loadings.includes('mmu_eject')"
+                                    @click="doLoadingSend('MMU_EJECT GATE=' + g, 'mmu_eject')">
                                     <v-icon left>{{ mdiEject }}</v-icon>
                                     {{ $t('Panels.MmuPanel.ButtonEject') }}
                                 </v-btn>
@@ -267,7 +272,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
             if (![this.FILAMENT_POS_UNLOADED, this.FILAMENT_POS_UNKNOWN].includes(this.filamentPos)) {
                 this.gateMenuTimer && clearTimeout(this.gateMenuTimer)
                 this.gateMenuTimer = setTimeout(() => {
-                    Object.keys(this.gateMenuVisible).forEach(key => {
+                    Object.keys(this.gateMenuVisible).forEach((key) => {
                         this.$set(this.gateMenuVisible, Number(key), false)
                     })
                 }, 3000)
