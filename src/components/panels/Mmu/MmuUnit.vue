@@ -4,8 +4,8 @@
             <div v-for="(g, index) in unitGateRange" :key="'gate_' + g" class="gate" @click="selectGate(g)">
                 <div :class="clipSpoolClass">
                     <v-menu
-                        :disabled="g === gate || !unitDetails(unitIndex).multiGear"
                         v-model="gateMenuVisible[g]"
+                        :disabled="g === gate || !unitDetails(unitIndex).multiGear"
                         :close-on-content-click="false"
                         transition="slide-y-transition"
                         offset-y>
