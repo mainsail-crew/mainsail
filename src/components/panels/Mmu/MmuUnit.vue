@@ -269,8 +269,12 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         if (this.editGateMap) {
             this.$emit('select-gate', gate)
         } else if (!this.isPrinting) {
-            if (![this.FILAMENT_POS_UNLOADED, this.FILAMENT_POS_UNKNOWN].includes(this.filamentPos)) {
-                this.gateMenuTimer && clearTimeout(this.gateMenuTimer)
+            if (
+                this.unitDetails(this.unitIndex).multiGear &&
+                gate !== this.gate &&
+                ![this.FILAMENT_POS_UNLOADED, this.FILAMENT_POS_UNKNOWN].includes(this.filamentPos)
+            ) {
+                if (this.gateMenuTimer) clearTimeout(this.gateMenuTimer)
                 this.gateMenuTimer = setTimeout(() => {
                     Object.keys(this.gateMenuVisible).forEach((key) => {
                         this.$set(this.gateMenuVisible, Number(key), false)
@@ -278,7 +282,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
                 }, 3000)
                 this.$set(this.gateMenuVisible, gate, true)
             } else {
-                this.gateMenuTimer && clearTimeout(this.gateMenuTimer)
+                if (this.gateMenuTimer) clearTimeout(this.gateMenuTimer)
                 this.doSend('MMU_SELECT GATE=' + gate)
             }
         }
