@@ -3,25 +3,58 @@
         <div class="spool-row">
             <div v-for="(g, index) in unitGateRange" :key="'gate_' + g" class="gate" @click="selectGate(g)">
                 <div :class="clipSpoolClass">
-                    <v-tooltip top :disabled="!!editGateMap" :open-delay="500" content-class="spool-tooltip">
+
+                    <v-menu :disabled="g === gate || !unitDetails(unitIndex).multiGear" v-model="gateMenuVisible[g]" :close-on-content-click="false" transition="slide-y-transition" offset-y>
                         <template #activator="{ on, attrs }">
-                            <div v-bind="attrs" v-on="on">
-                                <mmu-spool
-                                    :width="spoolWidth + 'px'"
-                                    :class="spoolClass(g)"
-                                    :gate-index="g"
-                                    :edit-gate-map="editGateMap"
-                                    :edit-gate-selected="editGateSelected" />
-                            </div>
+
+                            <v-tooltip top :disabled="!!editGateMap" :open-delay="500" content-class="spool-tooltip">
+                                <template #activator="{ on, attrs }">
+                                    <div v-bind="attrs" v-on="on">
+                                        <mmu-spool
+                                            :width="spoolWidth + 'px'"
+                                            :class="spoolClass(g)"
+                                            :gate-index="g"
+                                            :edit-gate-map="editGateMap"
+                                            :edit-gate-selected="editGateSelected" />
+                                      </div>
+                                </template>
+
+                                <div
+                                    v-for="(line, idx) in gateTooltip(g)"
+                                    :key="idx"
+                                    class="spool-tooltip-line"
+                                    :class="idx === 0 ? 'spool-tooltip-title' : ''">
+                                    {{ line }}
+                                </div>
+                            </v-tooltip>
                         </template>
-                        <div
-                            v-for="(line, idx) in gateTooltip(g)"
-                            :key="idx"
-                            class="spool-tooltip-line"
-                            :class="idx === 0 ? 'spool-tooltip-title' : ''">
-                            {{ line }}
-                        </div>
-                    </v-tooltip>
+
+                        <v-list dense>
+                            <v-subheader class="compact-subheader">
+                                Gate {{ g }}
+                            </v-subheader>
+                            <v-divider></v-divider>
+                            <v-list-item>
+                                <v-btn small style="width: 100%"
+                                       :disabled="!canSend || ![GATE_UNKNOWN, GATE_EMPTY].includes(gateDetails(g).status)"
+                                       :loading="loadings.includes('mmu_preload')"
+                                       @click="doLoadingSend('MMU_PRELOAD GATE=' + g, 'mmu_preload')">
+                                    <v-icon left>{{ mdiDownloadOutline }}</v-icon>
+                                    {{ $t('Panels.MmuPanel.ButtonPreload') }}
+                                </v-btn>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-btn small style="width: 100%"
+                                       :disabled="!canSend"
+                                       :loading="loadings.includes('mmu_eject')"
+                                       @click="doLoadingSend('MMU_EJECT GATE=' + g, 'mmu_eject')">
+                                    <v-icon left>{{ mdiEject }}</v-icon>
+                                    {{ $t('Panels.MmuPanel.ButtonEject') }}
+                                </v-btn>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+
                     <div
                         v-if="(editGateMap && editGateSelected === g) || (!editGateMap && gate === g)"
                         style="position: absolute; bottom: 0%; left: 0%; width: 100%; height: auto; background: none">
@@ -109,6 +142,7 @@ import MmuMixin from '@/components/mixins/mmu'
 import type { MmuGateDetails } from '@/components/mixins/mmu'
 import MmuSpool from '@/components/panels/Mmu/MmuSpool.vue'
 import MmuGateStatus from '@/components/panels/Mmu/MmuGateStatus.vue'
+import { mdiDownloadOutline, mdiEject } from '@mdi/js'
 
 @Component({
     components: { MmuSpool, MmuGateStatus },
@@ -117,6 +151,12 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: false, default: 0 }) readonly unitIndex!: number
     @Prop({ required: false, default: null }) readonly editGateMap!: MmuGateDetails[] | null
     @Prop({ required: false, default: -1 }) readonly editGateSelected!: number
+
+    mdiDownloadOutline = mdiDownloadOutline
+    mdiEject = mdiEject
+
+    gateMenuVisible: Record<number, boolean> = {}
+    gateMenuTimer: ReturnType<typeof setTimeout> | null = null
 
     private svgLogo = null as string | null
 
@@ -224,7 +264,18 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         if (this.editGateMap) {
             this.$emit('select-gate', gate)
         } else if (!this.isPrinting) {
-            this.doSend('MMU_SELECT GATE=' + gate)
+            if (![this.FILAMENT_POS_UNLOADED, this.FILAMENT_POS_UNKNOWN].includes(this.filamentPos)) {
+                this.gateMenuTimer && clearTimeout(this.gateMenuTimer)
+                this.gateMenuTimer = setTimeout(() => {
+                    Object.keys(this.gateMenuVisible).forEach(key => {
+                        this.$set(this.gateMenuVisible, Number(key), false)
+                    })
+                }, 3000)
+                this.$set(this.gateMenuVisible, gate, true)
+            } else {
+                this.gateMenuTimer && clearTimeout(this.gateMenuTimer)
+                this.doSend('MMU_SELECT GATE=' + gate)
+            }
         }
     }
 
@@ -415,5 +466,12 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 .hover-effect:hover {
     transform: translateY(-5px);
     opacity: 1;
+}
+
+.v-list--dense .compact-subheader {
+    height: auto;
+    padding-bottom: 4px;
+    display: block;
+    text-align: center;
 }
 </style>
