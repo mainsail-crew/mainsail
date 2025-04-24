@@ -191,7 +191,7 @@
     "Dialogs": {
         "StartPrint": {
             "Cancel": "Отмена",
-            "DoYouWantToStartFilename": "Запустить печать файла {имя файла}?",
+            "DoYouWantToStartFilename": "Запустить печать файла {filename}?",
             "DoYouWantToStartFilenameFilament": "Запустить печать файла {filename} следующим прутком?",
             "Headline": "Запустить печать",
             "Print": "Печать",
@@ -363,7 +363,7 @@
         "AddANote": "Добавить примечание",
         "AddMaintenance": "Добавить напоминание о техобслуживании",
         "AddNote": "Добавить примечание",
-        "AddToQueueSuccessful": "Файл {имя файла} добавлен в очередь.",
+        "AddToQueueSuccessful": "Файл {filename} добавлен в очередь.",
         "AllJobs": "Все",
         "AvgPrinttime": "Среднее время печати",
         "Cancel": "Отмена",
@@ -1071,6 +1071,7 @@
             "NOMacros": "Макросы не найдены...",
             "NoMacrosInGroup": "В этой группе нет макросов.",
             "Primary": "Основной",
+            "Search": "Поиск",
             "Secondary": "Второстепенный",
             "ShowInStatePaused": "Показать/скрыть, когда печать на паузе.",
             "ShowInStatePrinting": "Показать/скрыть, когда принтер печатает.",

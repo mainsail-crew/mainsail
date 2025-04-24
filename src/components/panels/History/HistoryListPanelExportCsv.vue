@@ -16,22 +16,15 @@ import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { formatFilesize } from '@/plugins/helpers'
 import { mdiDatabaseExportOutline } from '@mdi/js'
 import { HistoryListPanelCol } from '@/components/panels/HistoryListPanel.vue'
+import HistoryMixin from '@/components/mixins/history'
 
 @Component
-export default class HistoryListPanelExportCsv extends Mixins(BaseMixin) {
+export default class HistoryListPanelExportCsv extends Mixins(BaseMixin, HistoryMixin) {
     formatFilesize = formatFilesize
     mdiDatabaseExportOutline = mdiDatabaseExportOutline
 
     @Prop({ type: Array, required: true }) headers!: HistoryListPanelCol[]
     @Prop({ type: Array, required: true }) tableFields!: HistoryListPanelCol[]
-
-    get jobs() {
-        return this.$store.getters['server/history/getFilteredJobList'] ?? []
-    }
-
-    get selectedJobs() {
-        return this.$store.state.gui.view.history.selectedJobs ?? []
-    }
 
     get existsSlicerCol() {
         return this.headers.find((header) => header.value === 'slicer')?.visible ?? false

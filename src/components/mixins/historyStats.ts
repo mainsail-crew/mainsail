@@ -6,18 +6,12 @@ import {
     ServerHistoryStateJob,
 } from '@/store/server/history/types'
 import i18n from '@/plugins/i18n'
+import { Mixins } from 'vue-property-decorator'
+import HistoryMixin from '@/components/mixins/history'
 
 @Component
-export default class HistoryStatsMixin extends Vue {
+export default class HistoryStatsMixin extends Mixins(HistoryMixin) {
     valueName!: HistoryStatsValueNames
-
-    get allPrintStatusChartData() {
-        return this.getChartData(this.$store.state.server.history.jobs ?? [])
-    }
-
-    get selectedPrintStatusChartData() {
-        return this.getChartData(this.$store.getters['server/history/getSelectedJobs'])
-    }
 
     private getStatusColor(status: string) {
         const colorMap: Record<string, string> = {
@@ -34,39 +28,6 @@ export default class HistoryStatsMixin extends Vue {
         return i18n.te(`History.StatusValues.${status}`, 'en')
             ? i18n.t(`History.StatusValues.${status}`).toString()
             : status
-    }
-
-    private getChartData(jobs: ServerHistoryStateJob[]) {
-        const output: ServerHistoryStateAllPrintStatusEntry[] = []
-        const hidePrintStatus = this.$store.state.gui.view.history.hidePrintStatus ?? []
-
-        jobs.forEach((current: ServerHistoryStateJob) => {
-            const index = output.findIndex((element) => element.name === current.status)
-            if (index !== -1) {
-                output[index].value += 1
-                output[index].valueFilament += current.filament_used
-                output[index].valueTime += current.print_duration
-                return
-            }
-
-            output.push({
-                name: current.status,
-                displayName: this.getLocalizedStatusName(current.status),
-                value: 1,
-                valueFilament: current.filament_used,
-                valueTime: current.print_duration,
-                itemStyle: {
-                    opacity: 0.9,
-                    color: this.getStatusColor(current.status),
-                    borderColor: '#1E1E1E',
-                    borderWidth: 2,
-                    borderRadius: 3,
-                },
-                showInTable: !hidePrintStatus.includes(current.status),
-            })
-        })
-
-        return output
     }
 
     private groupSmallEntries(
@@ -102,23 +63,77 @@ export default class HistoryStatsMixin extends Vue {
         return remaining
     }
 
-    get printStatusArray() {
-        const countSelected = this.$store.getters['server/history/getSelectedJobs'].length
-        const orgArray = countSelected ? this.selectedPrintStatusChartData : this.allPrintStatusChartData
+    get allPrintStati() {
+        let array = this.allJobs.map((job: ServerHistoryStateJob) => job.status)
 
-        return orgArray.map((status) => ({
-            ...status,
-            name: status.displayName,
-            value:
-                this.valueName === 'filament'
-                    ? status.valueFilament
-                    : this.valueName === 'time'
-                      ? status.valueTime
-                      : status.value,
-        }))
+        array = array.filter((item: string, index: number) => array.indexOf(item) === index)
+
+        return array
+    }
+
+    get printStatusArray(): ServerHistoryStateAllPrintStatusEntry[] {
+        return this.allPrintStati.map((status: string) => {
+            const filterdJobs = this.allJobs.filter((job: ServerHistoryStateJob) => job.status === status)
+
+            return {
+                name: status,
+                displayName: this.getLocalizedStatusName(status),
+                showInTable: !this.hidePrintStatus.includes(status),
+                value: filterdJobs.length,
+                itemStyle: {
+                    opacity: 0.9,
+                    color: this.getStatusColor(status),
+                    borderColor: '#1E1E1E',
+                    borderWidth: 2,
+                    borderRadius: 3,
+                },
+            }
+        })
+    }
+
+    get printStatusArrayChart() {
+        if (this.valueName === 'filament') {
+            const jobs = this.selectedJobs.length ? this.selectedJobs : this.jobs
+
+            return this.printStatusArray
+                .map((entry) => {
+                    const value = jobs.reduce(
+                        (acc: number, cur: ServerHistoryStateJob) =>
+                            cur.status === entry.name ? acc + cur.filament_used : acc,
+                        0
+                    )
+
+                    return {
+                        ...entry,
+                        value,
+                    }
+                })
+                .filter((entry) => entry.value > 0)
+        }
+
+        if (this.valueName === 'time') {
+            const jobs = this.selectedJobs.length ? this.selectedJobs : this.jobs
+
+            return this.printStatusArray
+                .map((entry) => {
+                    const value = jobs.reduce(
+                        (acc: number, cur: ServerHistoryStateJob) =>
+                            cur.status === entry.name ? acc + cur.total_duration : acc,
+                        0
+                    )
+
+                    return {
+                        ...entry,
+                        value,
+                    }
+                })
+                .filter((entry) => entry.value > 0)
+        }
+
+        return this.printStatusArray
     }
 
     get groupedPrintStatusArray() {
-        return this.groupSmallEntries(this.printStatusArray, 0.05)
+        return this.groupSmallEntries(this.printStatusArrayChart, 0.05)
     }
 }

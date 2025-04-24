@@ -1,5 +1,6 @@
 import { FileStateFile } from '@/store/files/types'
 import { PrinterStateMacroParams } from '@/store/printer/types'
+import { mdiFlash, mdiGauge, mdiLightningBoltOutline, mdiMeterElectricOutline, mdiScale, mdiThermometer } from '@mdi/js'
 import Vue from 'vue'
 
 export const setDataDeep = (currentState: any, payload: any) => {
@@ -290,6 +291,31 @@ export function escapePath(path: string): string {
         .split('/')
         .map((part) => encodeURIComponent(part))
         .join('/')
+}
+
+export const unitToSymbol = (unit: string): string => {
+    return (
+        {
+            // Energy
+            wh: mdiLightningBoltOutline,
+            kwh: mdiLightningBoltOutline,
+            mwh: mdiLightningBoltOutline,
+            j: mdiLightningBoltOutline,
+            // Power
+            w: mdiFlash,
+            // Electrical
+            v: mdiFlash,
+            a: mdiMeterElectricOutline,
+            // Temperature
+            '°c': mdiThermometer,
+            c: mdiThermometer,
+            '°f': mdiThermometer,
+            f: mdiThermometer,
+            '°': mdiThermometer,
+            // Mass
+            g: mdiScale,
+        }[unit?.toLowerCase()] ?? mdiGauge
+    )
 }
 
 export function filamentTextColor(hexColor: string): string {

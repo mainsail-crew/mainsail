@@ -2,6 +2,49 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.14.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.14.0) - 2025-04-23
+### Features
+
+- **Console**: Improve key up/down in Console with multi-line input/history ([#2108](https://github.com/mainsail-crew/mainsail/pull/2108))
+- **Editor**: Store last state of file structure sidebar ([#2140](https://github.com/mainsail-crew/mainsail/pull/2140))
+- **TemperaturePanel**: Add SHT3X support ([#2025](https://github.com/mainsail-crew/mainsail/pull/2025))
+- **Temperatures**: Add menu to open Settings & turn off heaters ([#2103](https://github.com/mainsail-crew/mainsail/pull/2103))
+- **UpdateManager**: Implement python package entries ([#2092](https://github.com/mainsail-crew/mainsail/pull/2092))
+- Add load cell gram scales in misc panel ([#2173](https://github.com/mainsail-crew/mainsail/pull/2173))
+- Add support for hall filament width sensor ([#2193](https://github.com/mainsail-crew/mainsail/pull/2193))
+- Add search functionality to macro settings interface ([#2141](https://github.com/mainsail-crew/mainsail/pull/2141))
+
+### Bug Fixes and Improvements
+
+- **Editor**: Fix structure sidebar for files with values without a section ([#2139](https://github.com/mainsail-crew/mainsail/pull/2139))
+- **History**: Fix count per page switch in the History List Panel ([#2133](https://github.com/mainsail-crew/mainsail/pull/2133))
+- **Locale**: Add missing translation key in SettingsControlTab ([#2104](https://github.com/mainsail-crew/mainsail/pull/2104))
+- **Timelapse**: Fix count per page switch in the Timelapse Files Panel ([#2134](https://github.com/mainsail-crew/mainsail/pull/2134))
+- **history**: Fix filter reactivity ([#2129](https://github.com/mainsail-crew/mainsail/pull/2129))
+- **spoolman**: Save spool_id in lowercase variable ([#2160](https://github.com/mainsail-crew/mainsail/pull/2160))
+- **updatemanager**: Loosely parse package semver ([#2179](https://github.com/mainsail-crew/mainsail/pull/2179))
+- **updatemanager**: Only git repos can soft recover ([#2191](https://github.com/mainsail-crew/mainsail/pull/2191))
+- **z-tilt**: Fix z_tilt check for older Klipper versions ([#2102](https://github.com/mainsail-crew/mainsail/pull/2102))
+- Update Gcode-Viewer lib from sindarius to fix G2/G3 visualisation ([#2127](https://github.com/mainsail-crew/mainsail/pull/2127))
+- Show system panel when Klipper is not ready ([#2149](https://github.com/mainsail-crew/mainsail/pull/2149))
+- Fix the axios up- & download rate ([#2172](https://github.com/mainsail-crew/mainsail/pull/2172))
+
+### Refactor
+
+- **Machine**: Refactor endstop panel and add dockable_probe ([#2124](https://github.com/mainsail-crew/mainsail/pull/2124))
+- Remove duplicate PrinterStateLight definition ([#2171](https://github.com/mainsail-crew/mainsail/pull/2171))
+
+### Localization
+
+- **en**: Remove unused key ([#2105](https://github.com/mainsail-crew/mainsail/pull/2105))
+- **ru**: Update Russian translations ([#2128](https://github.com/mainsail-crew/mainsail/pull/2128))
+
+### Other
+
+- Update gcodeviewer to v3.7.16 ([#2152](https://github.com/mainsail-crew/mainsail/pull/2152))
+- Update dependencies in package.json ([#2168](https://github.com/mainsail-crew/mainsail/pull/2168))
+- Remove deprecated @types/cypress package ([#2181](https://github.com/mainsail-crew/mainsail/pull/2181))
+
 ## [2.13.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.13.2) - 2024-12-25
 ### Bug Fixes and Improvements
 
