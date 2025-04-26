@@ -13,18 +13,12 @@
         "sourceMap": true,
         "skipLibCheck": true,
         "baseUrl": ".",
-        "types": [
-            "cypress",
-            "vite/client",
-            "vuetify",
-            "@intlify/vite-plugin-vue-i18n/client",
-            "vite-plugin-pwa/client"
-        ],
+        "types": ["cypress", "vite/client"],
         "paths": {
             "@/*": ["src/*"]
         },
         "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
-        "typeRoots": ["./node_modules/vuetify/types"]
+        "typeRoots": ["./node_modules/@types", "./node_modules/cypress/types", "./node_modules/vuetify/types"]
     },
     "include": [
         "components.d.ts",
@@ -34,7 +28,8 @@
         "src/**/*.vue",
         "cypress/**/*.ts",
         "tests/**/*.ts",
-        "tests/**/*.tsx"
+        "tests/**/*.tsx",
+        "node_modules/vite-plugin-pwa/client.d.ts"
     ],
     "exclude": ["node_modules"]
 }

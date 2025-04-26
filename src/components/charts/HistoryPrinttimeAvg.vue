@@ -13,11 +13,13 @@ import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import type { ECharts } from 'echarts/core'
 import ThemeMixin from '../mixins/theme'
+import { ServerHistoryStateJob } from '@/store/server/history/types'
+import HistoryMixin from '@/components/mixins/history'
 
 @Component({
     components: {},
 })
-export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
+export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin, ThemeMixin) {
     declare $refs: {
         historyPrinttimeAvg: any
     }
@@ -93,7 +95,38 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get printtimeAvgArray() {
-        return this.$store.getters['server/history/getPrinttimeAvgArray']
+        const output = [0, 0, 0, 0, 0]
+        const startDate = new Date(new Date().getTime() - 60 * 60 * 24 * 14 * 1000)
+
+        let jobsFiltered = [
+            ...this.allJobs.filter(
+                (job: ServerHistoryStateJob) =>
+                    new Date(job.start_time * 1000) >= startDate && job.status === 'completed'
+            ),
+        ]
+        if (this.selectedJobs.length)
+            jobsFiltered = [
+                ...this.selectedJobs.filter(
+                    (job: ServerHistoryStateJob) =>
+                        new Date(job.start_time * 1000) >= startDate && job.status === 'completed'
+                ),
+            ]
+
+        if (jobsFiltered.length) {
+            const hours = (duration: number) => duration / 3600
+
+            jobsFiltered.forEach((current) => {
+                const printHours = hours(current.print_duration)
+
+                if (printHours > 0 && printHours <= 2) output[0]++
+                else if (printHours <= 6) output[1]++
+                else if (printHours <= 12) output[2]++
+                else if (printHours <= 24) output[3]++
+                else output[4]++
+            })
+        }
+
+        return output
     }
 
     get chart(): ECharts | null {
