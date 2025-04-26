@@ -611,6 +611,8 @@
     },
     "Panels": {
         "AfcPanel": {
+            "AutoExpandTools": "Auto Expand Tools",
+            "AutoExpandUnits": "Auto Expand Units",
             "BrushNozzle": "Brush Nozzle",
             "BufferDisabled": "Buffer Not Active",
             "BypassActive": "Bypass Active",
@@ -637,6 +639,7 @@
             "LaneLoaded": "Loaded",
             "LaneLoadedNone": "NONE",
             "LaneMap": "Remap lane to selected T command",
+            "LaneRunout": "Lane Runout",
             "LedOff": "LEDs Off",
             "LedOn": "LEDs On",
             "Load": "Load Lane",

@@ -121,7 +121,7 @@ export const actions: ActionTree<AFCState, RootState> = {
 
         // Process lanes
         afcData.lanes?.forEach((laneName: string) => {
-            const laneData: any = printer[`AFC_stepper ${laneName}`]
+            const laneData: any = printer[`AFC_stepper ${laneName}`] || printer[`AFC_lane ${laneName}`]
             if (!laneData) {
                 console.error(`Missing lane data for: ${laneName}`)
                 return

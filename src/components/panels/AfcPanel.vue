@@ -143,7 +143,6 @@ export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) 
 
     toolExpandedIndex: number | null = null
     unitExpandedIndex: number[] = []
-    autoExpand: boolean = false
     display_message: Message = { message: '', type: '' }
     old_message: Message = { message: '', type: '' }
 
@@ -255,20 +254,26 @@ export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) 
     async mounted() {
         await this.$store.dispatch('server/afc/startAFCDataFetchInterval')
 
-        if (!this.autoExpand) {
-            this.configureAutoExpand()
-        }
+        this.configureAutoExpand()
 
         this.infoMessage()
     }
 
     configureAutoExpand() {
-        if (Object.keys(this.toolData).length === 1 && this.toolExpandedIndex === null && !this.bypassState) {
-            this.toolExpandedIndex = 0
+        // Handle auto-expand for tools
+        if (this.autoExpandTools) {
+            this.toolExpandedIndex = 0 // Expand the first tool panel
+        } else {
+            this.toolExpandedIndex = null // Collapse all tool panels
         }
-        if (Object.keys(this.unitsData).length === 1 && !this.bypassState) {
-            this.unitExpandedIndex = [0]
-            this.autoExpand = true
+
+        // Handle auto-expand for units
+        if (this.autoExpandUnits) {
+            if (Object.keys(this.unitsData).length > 0) {
+                this.unitExpandedIndex = this.unitsData.map((_, index) => index) // Expand all unit panels
+            }
+        } else {
+            this.unitExpandedIndex = [] // Collapse all unit panels
         }
     }
 
@@ -280,12 +285,17 @@ export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) 
     @Watch('bypassState')
     onBypassStateChange() {
         if (this.bypassState) {
-            this.autoExpand = false
             this.toolExpandedIndex = null
             this.unitExpandedIndex = []
         } else {
             this.configureAutoExpand()
         }
+    }
+
+    @Watch('autoExpandTools')
+    @Watch('autoExpandUnits')
+    onAutoExpandChange() {
+        this.configureAutoExpand()
     }
 }
 </script>
