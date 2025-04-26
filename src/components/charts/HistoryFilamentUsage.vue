@@ -14,9 +14,11 @@ import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import type { ECharts } from 'echarts/core'
 import ThemeMixin from '../mixins/theme'
+import HistoryMixin from '@/components/mixins/history'
+import { ServerHistoryStateJob } from '@/store/server/history/types'
 
 @Component({})
-export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
+export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin, ThemeMixin) {
     declare $refs: {
         historyFilamentUsage: any
     }
@@ -108,7 +110,43 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get filamentUsageArray() {
-        return this.$store.getters['server/history/getFilamentUsageArray']
+        const output: [number, number][] = []
+        const startDate = new Date()
+        startDate.setDate(startDate.getDate() - 14)
+        startDate.setHours(0, 0, 0, 0)
+
+        let jobsFiltered = [
+            ...this.allJobs.filter(
+                (job: ServerHistoryStateJob) => new Date(job.start_time * 1000) >= startDate && job.filament_used > 0
+            ),
+        ]
+        if (this.selectedJobs.length)
+            jobsFiltered = [
+                ...this.selectedJobs.filter(
+                    (job: ServerHistoryStateJob) =>
+                        new Date(job.start_time * 1000) >= startDate && job.filament_used > 0
+                ),
+            ]
+
+        for (let i = 0; i <= 14; i++) {
+            const tmpDate = new Date(startDate.getTime())
+            tmpDate.setDate(tmpDate.getDate() + i)
+            tmpDate.setHours(0, 0, 0, 0)
+
+            output.push([tmpDate.getTime(), 0])
+        }
+
+        if (jobsFiltered.length) {
+            jobsFiltered.forEach((current) => {
+                const currentStartDate = new Date(current.start_time * 1000).setHours(0, 0, 0, 0)
+                const index = output.findIndex((element) => element[0] === currentStartDate)
+                if (index !== -1) output[index][1] += Math.round(current.filament_used) / 1000
+            })
+        }
+
+        return output.sort((a, b) => {
+            return b[0] - a[0]
+        })
     }
 
     get chart(): ECharts | null {
@@ -121,7 +159,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     @Watch('filamentUsageArray')
-    filamentUsageArrayChanged(newVal: any) {
+    filamentUsageArrayChanged(newVal: [number, number][]) {
         this.chart?.setOption(
             {
                 series: {

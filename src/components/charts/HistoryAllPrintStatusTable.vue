@@ -2,7 +2,7 @@
     <v-simple-table>
         <tbody>
             <history-all-print-status-table-item
-                v-for="status in printStatusArray"
+                v-for="status in printStatusArrayChart"
                 :key="status.name"
                 :item="status"
                 :value-name="valueName" />

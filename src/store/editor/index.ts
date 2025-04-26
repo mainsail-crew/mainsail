@@ -15,8 +15,6 @@ export const getDefaultState = (): EditorState => {
         loaderBool: false,
         loaderProgress: {
             direction: 'downloading',
-            lastTimestamp: 0,
-            lastLoaded: 0,
             loaded: 0,
             total: 0,
             speed: '',

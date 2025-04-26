@@ -153,10 +153,7 @@ interface ColorData {
 }
 
 @Component({
-    components: {
-        ColorPicker,
-        MiscellaneousLight: () => import('@/components/inputs/MiscellaneousLight.vue'),
-    },
+    components: { ColorPicker },
 })
 export default class MiscellaneousLight extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick

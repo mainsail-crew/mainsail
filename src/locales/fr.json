@@ -990,6 +990,7 @@
             "NOMacros": "Pas de macros trouvées...",
             "NoMacrosInGroup": "Pas de macros dans ce groupe.",
             "Primary": "primaire",
+            "Search": "Recherche",
             "Secondary": "secondaire",
             "ShowInStatePaused": "Afficher/masquer si l'imprimante est en pause.",
             "ShowInStatePrinting": "Afficher/masquer si l'imprimante est en cours d'impression.",

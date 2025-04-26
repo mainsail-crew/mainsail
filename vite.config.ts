@@ -1,15 +1,17 @@
-import { createVuePlugin as vue } from 'vite-plugin-vue2'
-import loadVersion from 'vite-plugin-package-version'
+import vue from '@vitejs/plugin-vue2'
+import version from 'vite-plugin-package-version'
 import { defineConfig } from 'vite'
 
 import Components from 'unplugin-vue-components/vite'
 import { VuetifyResolver } from 'unplugin-vue-components/resolvers'
-import checker from 'vite-plugin-checker'
+import { checker } from 'vite-plugin-checker'
 
 import path from 'path'
 import buildVersion from './src/plugins/build-version'
 import buildReleaseInfo from './src/plugins/build-release_info'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
+import postcssNesting from 'postcss-nesting'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
 const PWAConfig: Partial<VitePWAOptions> = {
     registerType: 'autoUpdate',
@@ -67,17 +69,26 @@ export default defineConfig({
         buildVersion(),
         buildReleaseInfo(),
         vue(),
-        loadVersion(),
-        checker({ typescript: true }),
+        version(),
+        checker({
+            typescript: {
+                root: path.resolve(__dirname),
+                buildMode: false,
+            },
+        }),
         Components({
             dts: true, // enabled by default if `typescript` is installed
             resolvers: [VuetifyResolver()],
+        }),
+        VueI18nPlugin({
+            strictMessage: false, // allow HTML tags in translation
+            escapeHtml: false, // allow HTML tags in translation
         }),
     ],
 
     css: {
         postcss: {
-            plugins: [require('postcss-nesting')()],
+            plugins: [postcssNesting()],
         },
     },
 
@@ -103,12 +114,26 @@ export default defineConfig({
                 },
             },
         },
+        commonjsOptions: {
+            transformMixedEsModules: true,
+        },
     },
 
     envPrefix: 'VUE_',
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),
+            stream: 'stream-browserify',
+            events: 'events',
+        },
+    },
+
+    optimizeDeps: {
+        include: ['events'],
+        esbuildOptions: {
+            define: {
+                global: 'globalThis',
+            },
         },
     },
 

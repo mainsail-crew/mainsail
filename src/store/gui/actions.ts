@@ -397,18 +397,19 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    hideStatusInHistoryList({ commit, dispatch, state }, name) {
+    toggleStatusInHistoryList({ commit, dispatch, state }, name) {
         const array: string[] = [...state.view.history.hidePrintStatus]
+        const index = array.indexOf(name)
 
-        if (!array.includes(name)) {
-            array.push(name)
-            commit('setHistoryHidePrintStatus', array)
+        if (index === -1) array.push(name)
+        else array.splice(index, 1)
 
-            dispatch('updateSettings', {
-                keyName: 'view.history.hidePrintStatus',
-                newVal: array,
-            })
-        }
+        commit('setHistoryHidePrintStatus', array)
+
+        dispatch('updateSettings', {
+            keyName: 'view.history.hidePrintStatus',
+            newVal: array,
+        })
     },
 
     saveExpandPanel({ commit, dispatch, state }, payload) {
@@ -419,21 +420,6 @@ export const actions: ActionTree<GuiState, RootState> = {
             keyName: `dashboard.nonExpandPanels.${payload.viewport}`,
             newVal: state.dashboard.nonExpandPanels[payload.viewport],
         })
-    },
-
-    showStatusInHistoryList({ commit, dispatch, state }, name) {
-        const array: string[] = [...state.view.history.hidePrintStatus]
-
-        const index = array.indexOf(name)
-        if (index !== -1) {
-            array.splice(index, 1)
-            commit('setHistoryHidePrintStatus', array)
-
-            dispatch('updateSettings', {
-                keyName: 'view.history.hidePrintStatus',
-                newVal: array,
-            })
-        }
     },
 
     resetLayout({ dispatch }, name) {
