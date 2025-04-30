@@ -700,6 +700,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     async renderQualityChanged(newVal: number) {
         if (viewer && viewer.renderQuality !== newVal) {
             viewer.updateRenderQuality(newVal)
+            if (this.loadedFile === null) return
             await this.reloadViewer()
         }
     }
