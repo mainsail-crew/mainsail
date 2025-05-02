@@ -128,13 +128,45 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
 
         return [
             { value: null, text: `Browser (${date.toLocaleDateString(userLocale, { dateStyle: 'medium' })})` },
-            {
-                value: '2-digits',
-                text: date.toLocaleDateString(userLocale, { day: '2-digit', month: '2-digit', year: 'numeric' }),
-            },
+
             {
                 value: 'short',
                 text: date.toLocaleDateString(userLocale, { day: '2-digit', month: 'short', year: 'numeric' }),
+            },
+
+            {
+                value: 'mm-dd-yyyy',
+                text: `mm-dd-yyyy (${date.toLocaleDateString("en-US", { month: '2-digit', day: '2-digit', year: 'numeric' })})`,
+            },
+            {
+                value: 'mm-dd-yy',
+                text: `mm-dd-yy (${date.toLocaleDateString("en-US", { month: '2-digit', day: '2-digit', year: '2-digit' })})`,
+            },
+            {
+                value: "m-d-yyyy",
+                text: `m-d-yyyy (${date.toLocaleDateString("en-US", { month: 'numeric', day: 'numeric', year: 'numeric' })})`,
+            },
+            {
+                value: "m-d-yy",
+                text: `m-d-yy (${date.toLocaleDateString("en-US", { month: 'numeric', day: 'numeric', year: '2-digit' })})`,
+            },
+
+            {
+                value: "dd-mm-yyyy",
+                text: `dd-mm-yyyy (${date.toLocaleDateString("en-GB", { day: '2-digit', month: '2-digit', year: 'numeric' })})`
+            },
+            {
+                value: 'dd-mm-yy',
+                text: `dd-mm-yy (${date.toLocaleDateString("en-GB", { day: '2-digit', month: '2-digit', year: '2-digit' })})`,
+            },
+
+            {
+                value: "yyyy.mm.dd",
+                text: `yyyy. mm. dd (${date.toLocaleDateString("ko-KR", { day: '2-digit', month: '2-digit', year: 'numeric' })})`
+            },
+            {
+                value: 'yy.mm.dd',
+                text: `yy. mm. dd (${date.toLocaleDateString("ko-KR", { day: '2-digit', month: '2-digit', year: '2-digit' })})`,
             },
         ]
     }
