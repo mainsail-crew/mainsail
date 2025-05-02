@@ -13,6 +13,8 @@ import {
     mdiPrinter3dNozzle,
     mdiThermometerLines,
     mdiWebcam,
+    mdiAdjust,
+    mdiMulticast,
 } from '@mdi/js'
 
 @Component
@@ -67,6 +69,10 @@ export default class DashboardMixin extends BaseMixin {
                 return mdiEngine
             case 'extruder-control':
                 return mdiPrinter3dNozzle
+            case 'spoolman':
+                return mdiAdjust
+            case 'mmu':
+                return mdiMulticast
 
             default:
                 return mdiInformation
