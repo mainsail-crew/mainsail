@@ -145,32 +145,28 @@ export default class BaseMixin extends Vue {
         const format = this.$store.state.gui.general.dateFormat
 
         switch (format) {
+            case 'dd-mm-yyyy':
             case 'mm-dd-yyyy':
+            case 'dd.mm.yyyy':
+            case 'yyyy.mm.dd.':
                 return { month: '2-digit', day: '2-digit', year: 'numeric' }
 
+            case 'dd-mm-yy':
             case 'mm-dd-yy':
+            case 'dd.mm.yy':
+            case 'yy.mm.dd.':
                 return { month: '2-digit', day: '2-digit', year: '2-digit' }
 
             case 'm-d-yyyy':
+            case 'd.m.yyyy':
                 return { month: 'numeric', day: 'numeric', year: 'numeric' }
 
             case 'm-d-yy':
+            case 'd.m.yy':
                 return { month: 'numeric', day: 'numeric', year: '2-digit' }
 
-            case 'dd-mm-yyyy':
-                return { day: '2-digit', month: '2-digit', year: 'numeric' }
-
-            case 'dd-mm-yy':
-                return { day: '2-digit', month: '2-digit', year: '2-digit' }
-
-            case 'yyyy.mm.dd':
-                return { day: '2-digit', month: '2-digit', year: 'numeric' }
-
-            case 'yy.mm.dd':
-                return { day: '2-digit', month: '2-digit', year: '2-digit' }
-
             case 'short':
-                return { day: '2-digit', month: 'short', year: 'numeric' }
+                return { month: 'short', day: '2-digit', year: 'numeric' }
 
             default:
                 return { dateStyle: 'medium' }
@@ -232,7 +228,11 @@ export default class BaseMixin extends Vue {
         if (format) {
             switch (format[0]) {
                 case 'd':
-                    locale = 'en-GB'
+                    if (format.startsWith('dd-')) {
+                        locale = 'en-GB'
+                    } else {
+                        locale = 'de-DE'
+                    }
                     break
 
                 case 'm':

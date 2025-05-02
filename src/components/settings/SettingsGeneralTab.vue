@@ -161,12 +161,29 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
             },
 
             {
-                value: 'yyyy.mm.dd',
-                text: `yyyy. mm. dd (${date.toLocaleDateString('ko-KR', { day: '2-digit', month: '2-digit', year: 'numeric' })})`,
+                value: 'dd.mm.yyyy',
+                text: `dd.mm.yyyy (${date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })})`,
             },
             {
-                value: 'yy.mm.dd',
-                text: `yy. mm. dd (${date.toLocaleDateString('ko-KR', { day: '2-digit', month: '2-digit', year: '2-digit' })})`,
+                value: 'dd.mm.yy',
+                text: `dd.mm.yy (${date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' })})`,
+            },
+            {
+                value: 'd.m.yyyy',
+                text: `d.m.yyyy (${date.toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric', year: 'numeric' })})`,
+            },
+            {
+                value: 'd.m.yy',
+                text: `d.m.yy (${date.toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric', year: '2-digit' })})`,
+            },
+
+            {
+                value: 'yyyy.mm.dd.',
+                text: `yyyy. mm. dd. (${date.toLocaleDateString('ko-KR', { day: '2-digit', month: '2-digit', year: 'numeric' })})`,
+            },
+            {
+                value: 'yy.mm.dd.',
+                text: `yy. mm. dd. (${date.toLocaleDateString('ko-KR', { day: '2-digit', month: '2-digit', year: '2-digit' })})`,
             },
         ]
     }
