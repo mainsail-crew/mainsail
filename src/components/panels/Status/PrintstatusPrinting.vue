@@ -41,7 +41,10 @@
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
                             <div v-bind="attrs" v-on="on">
-                                <strong>{{ $t('Panels.StatusPanel.Filament') }}</strong>
+                                <strong v-if="existsAfc && current_file.filament_change_count > 10">
+                                    {{ $t('Panels.StatusPanel.Toolchange') }}
+                                </strong>
+                                <strong v-else>{{ $t('Panels.StatusPanel.Filament') }}</strong>
                                 <br />
                                 <span class="d-block text-center text-no-wrap">
                                     {{ outputFilamentUsed }}
@@ -135,6 +138,7 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import AfcMixin from '@/components/mixins/afc'
 import StatusPanelFilesJobqueue from '@/components/panels/Status/Jobqueue.vue'
 import StatusPanelFilesGcodes from '@/components/panels/Status/Gcodefiles.vue'
 
@@ -144,7 +148,7 @@ import StatusPanelFilesGcodes from '@/components/panels/Status/Gcodefiles.vue'
         StatusPanelFilesGcodes,
     },
 })
-export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin) {
+export default class StatusPanelPrintstatusPrinting extends Mixins(AfcMixin, BaseMixin) {
     private maxFlow: number = 0
 
     get current_file() {
@@ -233,6 +237,10 @@ export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin) {
     }
 
     get outputFilamentUsed() {
+        if (this.existsAfc && this.current_file.filament_change_count > 10) {
+            return `${this.currentFilamentChange} / ${this.current_file.filament_change_count}`
+        }
+
         return this.filament_used >= 1000
             ? (this.filament_used / 1000).toFixed(2) + ' m'
             : this.filament_used.toFixed(2) + ' mm'

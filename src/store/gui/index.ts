@@ -191,6 +191,13 @@ export const getDefaultState = (): GuiState => {
         },
         view: {
             blockFileUpload: false,
+            afc: {
+                showSpoolName: true,
+                infiniteSpool: true,
+                showUnitIcons: true,
+                autoExpandUnits: true,
+                autoExpandTools: true,
+            },
             configfiles: {
                 countPerPage: 10,
                 sortBy: 'filename',

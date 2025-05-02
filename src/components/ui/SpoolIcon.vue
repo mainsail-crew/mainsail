@@ -38,7 +38,7 @@ export default class SpoolIcon extends Mixins(BaseMixin) {
     }
 
     get styleCircle3() {
-        return { fill: '#343434' }
+        return { fill: '#424242' }
     }
 
     clickSpool() {

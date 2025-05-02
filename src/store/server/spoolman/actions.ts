@@ -79,10 +79,19 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
         )
     },
 
-    getActiveSpool({ commit }, payload) {
+    getActiveSpool({ commit, state }, payload) {
         if ('requestParams' in payload) delete payload.requestParams
         payload = convertV2response(payload)
         if (payload === null) return
+
+        // Update local spool to match current active spool
+        const spools = [...state.spools]
+        const spoolIndex = spools.findIndex((spool) => spool.id === payload.id)
+
+        if (spoolIndex !== -1) {
+            spools[spoolIndex] = { ...spools[spoolIndex], ...payload }
+            commit('setSpools', spools)
+        }
 
         commit('setActiveSpool', payload)
     },

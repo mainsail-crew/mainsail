@@ -1,0 +1,324 @@
+<template>
+    <panel
+        v-if="showPanel"
+        :title="$t('Panels.AfcPanel.Headline')"
+        :collapsible="true"
+        :expanded="true"
+        card-class="afc-control-panel">
+        <template #title>
+            <span>{{ $t('Panels.AfcPanel.Headline') }}</span>
+        </template>
+        <template #icon>
+            <AFCLogo class="panel-icon" />
+        </template>
+        <template #buttons>
+            <div v-if="showAFC" style="height: 100%">
+                <v-btn
+                    v-if="AFCCalibrate"
+                    icon
+                    tile
+                    :disabled="printerIsPrintingOnly || bypassState"
+                    :title="$t('Panels.AfcPanel.Calibrate')"
+                    @click="handleGcodeAction($event, 'calibrate')">
+                    <v-icon small>{{ mdiWrench }}</v-icon>
+                </v-btn>
+                <v-menu v-if="showAfcMacros" :offset-y="true" :close-on-content-click="false" left>
+                    <template #activator="{ on, attrs }">
+                        <v-btn icon tile v-bind="attrs" v-on="on">
+                            <v-icon>{{ mdiDotsVertical }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list dense>
+                        <!-- NOZZLE CLEAN -->
+                        <v-list-item v-if="brushMacroEnabled">
+                            <macro-button
+                                :macro="afcBrushMacro"
+                                :alias="$t('Panels.AfcPanel.BrushNozzle')"
+                                :disabled="printerIsPrintingOnly"
+                                color="#272727" />
+                        </v-list-item>
+                        <!-- PARK NOZZLE -->
+                        <v-list-item v-if="parkMacroEnabled">
+                            <macro-button
+                                :macro="afcParkMacro"
+                                :alias="$t('Panels.AfcPanel.ParkNozzle')"
+                                :disabled="printerIsPrintingOnly"
+                                color="#272727" />
+                        </v-list-item>
+                        <!-- ENABLE INDICATOR LED-->
+                        <v-list-item v-if="AFCLedOn">
+                            <v-btn small color="#272727" @click="handleGcodeAction($event, 'ledOn')">
+                                {{ $t('Panels.AfcPanel.LedOn') }}
+                            </v-btn>
+                        </v-list-item>
+                        <!-- DISABLE INDICATOR LED-->
+                        <v-list-item v-if="AFCLedOff">
+                            <v-btn small color="#272727" @click="handleGcodeAction($event, 'ledOff')">
+                                {{ $t('Panels.AfcPanel.LedOff') }}
+                            </v-btn>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+                <afc-panel-settings :units="unitsData" />
+            </div>
+        </template>
+        <template v-if="display_message.message !== ''">
+            <v-container>
+                <v-row class="flex-nowrap">
+                    <v-col class="py-2" style="min-width: 0">
+                        <span :class="`${messageType.color}--text subtitle-2 px-0`">
+                            <v-icon class="mr-2 mt-1 float-left" :color="messageType.color" small>
+                                {{ messageType.icon }}
+                            </v-icon>
+                            {{ display_message.message }}
+                        </span>
+                    </v-col>
+                    <v-col class="col-auto py-2">
+                        <v-icon class="text--disabled cursor-pointer" small @click="clearDisplayMessage">
+                            {{ mdiCloseCircle }}
+                        </v-icon>
+                    </v-col>
+                </v-row>
+            </v-container>
+            <v-divider class="mt-0 mb-0" />
+        </template>
+        <div v-if="bypassState" class="error--text subtitle-2 flex-nowrap bypass-active pt-2">
+            <v-icon class="mr-2 mt-0 float-left" color="error" small>
+                {{ mdiAlertOutline }}
+            </v-icon>
+            {{ $t('Panels.AfcPanel.BypassActive') }}
+            <v-icon class="ml-2 mt-0 float-left" color="error" small>
+                {{ mdiAlertOutline }}
+            </v-icon>
+        </div>
+        <div v-if="showAFC">
+            <v-expansion-panels v-model="toolExpandedIndex">
+                <v-expansion-panel>
+                    <v-expansion-panel-header>
+                        <strong>
+                            {{ $t('Panels.AfcPanel.ExtruderTools') }}
+                            <span v-if="toolExpandedIndex !== 0" class="text-caption text--disabled pl-1">
+                                ( {{ toolCount }} )
+                            </span>
+                        </strong>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <afc-extruder-tools :tools="toolData" />
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
+
+            <v-expansion-panels v-model="unitExpandedIndex" multiple>
+                <afc-units :units="unitsData" />
+            </v-expansion-panels>
+        </div>
+        <div v-else>
+            <v-card-text class="text-center error--text py-10">{{ $t('Panels.AfcPanel.LoadError') }}</v-card-text>
+        </div>
+    </panel>
+</template>
+
+<script lang="ts">
+import { Component, Mixins, Watch } from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import ControlMixin from '@/components/mixins/control'
+import AfcMixin from '@/components/mixins/afc'
+import { PrinterStateMacro } from '@/store/printer/types'
+import Panel from '@/components/ui/Panel.vue'
+import AFCLogo from '@/components/ui/AFCLogo.vue'
+import { mdiDotsVertical, mdiCloseCircle, mdiMessageProcessingOutline, mdiAlertOutline, mdiWrench } from '@mdi/js'
+import { Message } from '@/store/server/afc/types'
+
+@Component({
+    components: {
+        Panel,
+        AFCLogo,
+    },
+})
+export default class AfcPanel extends Mixins(AfcMixin, BaseMixin, ControlMixin) {
+    mdiDotsVertical = mdiDotsVertical
+    mdiCloseCircle = mdiCloseCircle
+    mdiAlertOutline = mdiAlertOutline
+    mdiWrench = mdiWrench
+
+    toolExpandedIndex: number | null = null
+    unitExpandedIndex: number[] = []
+    display_message: Message = { message: '', type: '' }
+    old_message: Message = { message: '', type: '' }
+
+    showCalibrateDialog = false
+
+    get showAFC(): boolean {
+        return this.unitsData.length > 0
+    }
+
+    get showPanel(): boolean {
+        return this.klipperReadyForGui && this.existsAfc
+    }
+
+    get toolCount(): number {
+        return Object.keys(this.toolData).length
+    }
+
+    get AFCCalibrate(): boolean {
+        return this.validMacro('AFC_CALIBRATION')
+    }
+
+    get AFCLedOn(): boolean {
+        return this.validMacro('TURN_ON_AFC_LED')
+    }
+
+    get AFCLedOff(): boolean {
+        return this.validMacro('TURN_OFF_AFC_LED')
+    }
+
+    get messageType(): { color: string; icon: string } {
+        switch (this.display_message.type) {
+            case 'error':
+                return { color: 'error', icon: mdiAlertOutline }
+            case 'warning':
+                return { color: 'warning', icon: mdiAlertOutline }
+            default:
+                return { color: '', icon: mdiMessageProcessingOutline }
+        }
+    }
+
+    get parkMacroEnabled(): boolean {
+        return (
+            this.$store.state.printer.configfile?.config?.AFC?.park?.toLowerCase() === 'true' &&
+            this.afcParkMacro !== undefined
+        )
+    }
+
+    get brushMacroEnabled(): boolean {
+        return (
+            this.$store.state.printer.configfile?.config?.AFC?.wipe?.toLowerCase() === 'true' &&
+            this.afcBrushMacro !== undefined
+        )
+    }
+
+    get afcParkMacro(): PrinterStateMacro | undefined {
+        const macros = this.$store.state.printer.configfile?.config?.AFC?.park_cmd ?? 'AFC_PARK'
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
+    }
+
+    get afcBrushMacro(): PrinterStateMacro | undefined {
+        const macros = this.$store.state.printer.configfile?.config?.AFC?.wipe_cmd ?? 'AFC_BRUSH'
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
+    }
+
+    get showAfcMacros(): boolean {
+        return this.parkMacroEnabled || this.brushMacroEnabled
+    }
+
+    validMacro(command: string): boolean {
+        return this.$store.state.printer.gcode.commands[command.toUpperCase()] !== undefined
+    }
+
+    infoMessage() {
+        if (this.afcMessage.message !== this.old_message.message) {
+            this.display_message = this.afcMessage
+        }
+    }
+
+    handleGcodeAction(event: Event, action: string) {
+        let gcode = ''
+
+        this.$nextTick(async () => {
+            try {
+                if (action === 'calibrate') {
+                    gcode = `AFC_CALIBRATION`
+                    await this.$store.dispatch('printer/sendGcode', gcode)
+                } else if (action === 'ledOn') {
+                    gcode = `TURN_ON_AFC_LED`
+                    await this.$store.dispatch('printer/sendGcode', gcode)
+                } else if (action === 'ledOff') {
+                    gcode = `TURN_OFF_AFC_LED`
+                    await this.$store.dispatch('printer/sendGcode', gcode)
+                } else {
+                    console.warn('Unknown action:', action)
+                }
+            } catch (error) {
+                console.error('Failed to send G-code:', error)
+            }
+        })
+    }
+
+    clearDisplayMessage() {
+        this.old_message = this.display_message
+        this.display_message = { message: '', type: '' }
+    }
+
+    async mounted() {
+        await this.$store.dispatch('server/afc/startAFCDataFetchInterval')
+
+        this.configureAutoExpand()
+
+        this.infoMessage()
+    }
+
+    configureAutoExpand() {
+        // Handle auto-expand for tools
+        if (this.autoExpandTools) {
+            this.toolExpandedIndex = 0 // Expand the first tool panel
+        } else {
+            this.toolExpandedIndex = null // Collapse all tool panels
+        }
+
+        // Handle auto-expand for units
+        if (this.autoExpandUnits) {
+            if (Object.keys(this.unitsData).length > 0) {
+                this.unitExpandedIndex = this.unitsData.map((_, index) => index) // Expand all unit panels
+            }
+        } else {
+            this.unitExpandedIndex = [] // Collapse all unit panels
+        }
+    }
+
+    @Watch('afcMessage')
+    onAfcMessageChange() {
+        this.infoMessage()
+    }
+
+    @Watch('bypassState')
+    onBypassStateChange() {
+        if (this.bypassState) {
+            this.toolExpandedIndex = null
+            this.unitExpandedIndex = []
+        } else {
+            this.configureAutoExpand()
+        }
+    }
+
+    @Watch('autoExpandTools')
+    @Watch('autoExpandUnits')
+    onAutoExpandChange() {
+        this.configureAutoExpand()
+    }
+}
+</script>
+
+<style scoped>
+.panel-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    user-select: none;
+    margin-right: 8px;
+}
+
+.bypass-active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.v-expansion-panel-content >>> .v-expansion-panel-content__wrap {
+    padding: 0px 10px 0px 10px !important;
+}
+</style>

@@ -58,10 +58,14 @@ export const checkKlipperConfigModules = [
 export const allowedMetadata = [
     'uuid',
     'estimated_time',
+    'extruder_colors',
     'filament_name',
     'filament_type',
     'filament_total',
     'filament_weight_total',
+    'filament_weights',
+    'filament_colors',
+    'filament_change_count',
     'nozzle_diameter',
     'first_layer_bed_temp',
     'first_layer_extr_temp',
@@ -95,6 +99,7 @@ export const allDashboardPanels = [
     'spoolman',
     'temperature',
     'webcam',
+    'afc',
 ]
 
 export const thumbnailSmallMin = 30
@@ -131,7 +136,7 @@ export const hiddenDirectories = ['.git']
 /*
  * List of all downloadable logfiles
  */
-export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sonar']
+export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sonar', 'AFC']
 
 /*
  * List of all rollover logfiles

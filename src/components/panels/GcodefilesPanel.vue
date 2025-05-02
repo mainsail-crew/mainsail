@@ -232,7 +232,7 @@
                             <v-simple-checkbox
                                 v-ripple
                                 :value="isSelected"
-                                class="pa-0 mr-0"
+                                class="pa-0 mr-0 d-flex"
                                 @click.stop="select(!isSelected)"></v-simple-checkbox>
                         </td>
                         <td class="px-0 text-center" style="width: 32px">
@@ -246,7 +246,7 @@
                                     :color="bigThumbnailTooltipColor"
                                     :disabled="!item.big_thumbnail">
                                     <template #activator="{ on, attrs }">
-                                        <vue-load-image>
+                                        <vue-load-image class="d-flex">
                                             <img
                                                 slot="image"
                                                 :src="item.small_thumbnail"
@@ -294,7 +294,34 @@
                             v-for="col in tableColumns"
                             :key="col.value"
                             :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
-                            {{ outputValue(col, item) }}
+                            <template v-if="col.outputType === 'color' && outputValue(col, item) !== '--'">
+                                <div class="d-flex align-center">
+                                    <div
+                                        v-for="(color, id) in getUsedTools(item).extruder_colors"
+                                        :key="`${color}-${id}`"
+                                        style="flex-direction: column"
+                                        class="d-flex align-center pt-1">
+                                        <v-badge inline :color="color">
+                                            <template #badge>
+                                                <div
+                                                    :style="{
+                                                        color: filamentTextColor(color),
+                                                        fontSize: '1.1em',
+                                                        minWidth: '60px',
+                                                    }">
+                                                    {{ `${getUsedTools(item).filament_weights[id]} g` }}
+                                                </div>
+                                            </template>
+                                        </v-badge>
+                                        <small>
+                                            {{ getUsedTools(item).filament_type[id] }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </template>
+                            <template v-else>
+                                {{ outputValue(col, item) }}
+                            </template>
                             <template v-if="col.value === 'slicer'">
                                 <br />
                                 <small v-if="item.slicer_version">{{ item.slicer_version }}</small>
@@ -579,7 +606,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { defaultBigThumbnailBackground, validGcodeExtensions } from '@/store/variables'
-import { escapePath, formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
+import { escapePath, formatFilesize, formatPrintTime, sortFiles, filamentTextColor } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
@@ -644,7 +671,7 @@ interface tableColumnSetting {
     sortable?: boolean
     class?: string
     pos?: number
-    outputType?: 'string' | 'date' | 'length' | 'weight' | 'filesize' | 'temp' | 'time'
+    outputType?: 'string' | 'date' | 'length' | 'weight' | 'filesize' | 'temp' | 'time' | 'color'
 }
 
 @Component({
@@ -676,6 +703,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     formatFilesize = formatFilesize
     sortFiles = sortFiles
+    filamentTextColor = filamentTextColor
 
     declare $refs: {
         fileUpload: HTMLInputElement
@@ -882,6 +910,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                 outputType: 'string',
             },
             {
+                text: this.$t('Files.FilamentColor').toString(),
+                value: 'extruder_colors',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'color',
+            },
+            {
                 text: this.$t('Files.FilamentUsage').toString(),
                 value: 'filament_total',
                 visible: true,
@@ -901,6 +936,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'time',
+            },
+            {
+                text: this.$t('Files.TotalToolChanges').toString(),
+                value: 'filament_change_count',
+                visible: true,
+                class: 'text-no-wrap',
+                outputType: 'string',
             },
             {
                 text: this.$t('Files.LastStartTime').toString(),
@@ -1074,6 +1116,16 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     getStatusColor(status: string | null) {
         return this.$store.getters['server/history/getPrintStatusIconColor'](status)
+    }
+
+    getUsedTools(item: any) {
+        return {
+            extruder_colors: item.extruder_colors.filter((_: string, id: number) => item.filament_weights[id] > 0),
+            filament_weights: item.filament_weights.filter((weight: number) => weight > 0),
+            filament_type: item.filament_type
+                .split(';')
+                .filter((_: string, id: number) => item.filament_weights[id] > 0),
+        }
     }
 
     dragOverFilelist(e: any, row: any) {
@@ -1457,7 +1509,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     outputValue(col: any, item: FileStateGcodefile) {
         const value = col.value in item ? item[col.value] : null
 
-        if (value === null) return '--'
+        if (value === null || (Array.isArray(value) && value.length === 0)) return '--'
 
         switch (col.outputType) {
             case 'filesize':
@@ -1479,6 +1531,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
             case 'weight':
                 return value.toFixed(2) + ' g'
+
+            case 'color':
+                return value
 
             default:
                 return value
