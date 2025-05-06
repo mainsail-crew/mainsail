@@ -6,9 +6,9 @@
         @click:outside="closeDialog"
         @keydown.esc="closeDialog">
         <v-card>
-            <div v-if="file.big_thumbnail" class="d-flex align-center justify-center" style="min-height: 200px">
+            <div v-if="bigThumbnailUrl" class="d-flex align-center justify-center" style="min-height: 200px">
                 <v-img
-                    :src="file.big_thumbnail"
+                    :src="bigThumbnailUrl"
                     :max-width="maxThumbnailWidth"
                     class="d-inline-block"
                     :style="bigThumbnailStyle" />
@@ -51,7 +51,7 @@ import { FileStateGcodefile } from '@/store/files/types'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiPrinter3d } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
-import { defaultBigThumbnailBackground } from '@/store/variables'
+import { defaultBigThumbnailBackground, thumbnailBigMin } from '@/store/variables'
 
 @Component({
     components: {
@@ -119,8 +119,31 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
         return this.$t('Dialogs.StartPrint.DoYouWantToStartFilename', { filename: this.file?.filename ?? 'unknown' })
     }
 
+    get fileTimestamp() {
+        return typeof this.file.modified.getTime === 'function' ? this.file.modified.getTime() : 0
+    }
+
+    get thumbnails() {
+        return this.file.thumbnails ?? []
+    }
+
+    get bigThumbnail() {
+        return this.thumbnails.find((thumbnail) => thumbnail.width >= thumbnailBigMin)
+    }
+
+    get bigThumbnailUrl() {
+        if (this.bigThumbnail === undefined || !('relative_path' in this.bigThumbnail)) return null
+
+        const baseArray = [this.apiUrl, 'server/files/gcodes']
+        if (this.currentPath) baseArray.push(this.currentPath)
+        baseArray.push(this.bigThumbnail.relative_path)
+        const baseUrl = baseArray.join('/')
+
+        return `${baseUrl}?timestamp=${this.fileTimestamp}`
+    }
+
     get maxThumbnailWidth() {
-        return this.file?.big_thumbnail_width ?? 400
+        return this.bigThumbnail?.width ?? 400
     }
 
     startPrint(filename = '') {
