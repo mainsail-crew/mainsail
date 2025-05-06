@@ -60,9 +60,9 @@
             "CannotUploadTheFile": "Não é possível carregar o arquivo!",
             "EmergencyStop": "Parada de emergência",
             "SAVE_CONFIG": "Salvar configuração",
-            "Uploading": "Upload",
             "UploadOfFileSuccessful": "Carregamento de {file} com sucesso!",
-            "UploadPrint": "Carregar e imprimir"
+            "UploadPrint": "Carregar e imprimir",
+            "Uploading": "Upload"
         },
         "TopCornerMenu": {
             "Cancel": "Cancelar",
@@ -132,7 +132,6 @@
         "Empty": "Esvaziar",
         "HideTemperatures": "Ocultar temperaturas",
         "HideTimelapse": "Ocultar lapso de tempo",
-        "SendCode": "Enviar código...",
         "SetupConsole": "Console de configuração"
     },
     "Dialogs": {
@@ -185,7 +184,6 @@
         "EditFile": "Editar arquivo",
         "Empty": "Esvaziar",
         "ExtruderTemp": "Temp. Extrusora",
-        "Filament": "Filamento",
         "FilamentName": "Nome do Filamento",
         "FilamentType": "Tipo de filamento",
         "FilamentUsage": "Uso de Filamento",
@@ -211,9 +209,9 @@
         "NozzleDiameter": "Diâmetro do Bico",
         "ObjectHeight": "Altura do Objeto",
         "Preheat": "Preaquecer",
-        "PrintedFiles": "Arquivos Impressos",
         "PrintStart": "Iniciar Impressão",
         "PrintTime": "Tempo Impressão",
+        "PrintedFiles": "Arquivos Impressos",
         "RefreshCurrentDirectory": "Atualizar Diretório Atual",
         "Rename": "Renomear",
         "RenameDirectory": "Renomear Diretório",
@@ -238,8 +236,8 @@
         "DropFilesToUploadFiles": "Soltar arquivos para upload"
     },
     "GCodeViewer": {
-        "ClearLoadedFile": "Limpar",
         "CNCMode": "Modo CNC",
+        "ClearLoadedFile": "Limpar",
         "ColorMode": "Modo de cor",
         "Downloading": "Downloading",
         "ForceLineRendering": "Forçar renderização de linha",
@@ -251,8 +249,8 @@
         "Max": "Máximo",
         "Medium": "Médio",
         "ReloadRequired": "Necessário recarregar",
-        "Rendering": "Renderização",
         "RenderQuality": "Qualidade de renderização",
+        "Rendering": "Renderização",
         "ShowGCode": "Mostrar código G",
         "ShowObjectSelection": "Mostrar Seleção de Objeto",
         "ShowToolhead": "Mostrar cabeça de ferramenta",
@@ -287,19 +285,15 @@
         "InvalidNameAscii": "O nome é inválido. Somente caracteres ASCII são permitidos.",
         "InvalidNameEmpty": "A entrada não deve estar vazia!",
         "InvalidNameReserved": "O perfil 'padrão' é reservado, escolha outro nome de perfil.",
-        "Later": "Depois",
         "Mesh": "Malha",
         "Name": "Nome",
         "NoBedMeshHasBeenLoadedYet": "Nenhuma malha da mesa foi carregada ainda.",
         "NoProfile": "Nenhum perfil disponível",
-        "Ok": "OK",
         "Probed": "Sondado",
         "Profiles": "Perfis",
         "Remove": "Excluir",
-        "RemoveSaveDescription": "O perfil bed_mesh foi registrado como excluído. Clique em SAVE_CONFIG para removê-lo do arquivo printer.cfg e reinicie o Klipper.",
         "Rename": "renomear",
         "RenameBedMeshProfile": "Renomear Perfil de Malha da Mesa",
-        "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Escala gradiente",
         "ScaleZMax": "Escala z-max.",
         "TitleCalibrate": "Calibrar nova malha da mesa",
@@ -356,19 +350,17 @@
         "Statistics": "Estatisticas",
         "Status": "Status",
         "StatusValues": {
+            "Others": "Others",
             "cancelled": "Cancelled",
             "completed": "Completed",
             "error": "Error",
             "in_progress": "In progress",
             "klippy_disconnect": "Klippy disconnect",
             "klippy_shutdown": "Klippy shutdown",
-            "Others": "Others",
             "server_exit": "Server exit"
         },
         "Table": "Table",
         "TitleExportHistory": "Export History",
-        "TitleRefreshHistory": "Refresh History",
-        "TitleSettings": "Settings",
         "TotalDuration": "Total Time",
         "TotalFilamentUsed": "Total Filament Used",
         "TotalJobs": "Total Jobs",
@@ -376,7 +368,6 @@
         "TotalTime": "Total Time"
     },
     "JobQueue": {
-        "AllJobs": "Todos os trabalhos",
         "Cancel": "Cancelar",
         "ChangeCount": "Alterar contagem",
         "Count": "Contagem",
@@ -384,7 +375,6 @@
         "InvalidCountEmpty": "A entrada não deve estar vazia!",
         "InvalidCountGreaterZero": "A entrada deve ser maior que 0!",
         "JobQueue": "Fila de trabalho",
-        "Jobs": "Trabalhos",
         "Pause": "Pausa",
         "RemoveFromQueue": "Remover da fila",
         "Start": "Começar"
@@ -432,8 +422,8 @@
             "Endstop": "Fim de curso",
             "EndstopInfo": "Pressione o botão de sincronização no canto inferior direito para carregar o status atual do fim de curso.",
             "Endstops": "Fins de curso",
-            "open": "Abrir",
-            "TRIGGERED": "Acionado"
+            "TRIGGERED": "Acionado",
+            "open": "Abrir"
         },
         "LogfilesPanel": {
             "Accept": "Aceitar",
@@ -480,17 +470,15 @@
             "CommittedYesterday": "committed ontem",
             "Detached": "independente",
             "Dirty": "lixo",
-            "ERROR": "Erro",
             "Invalid": "inválido",
             "OSPackages": "Pacotes do sistema operacional",
-            "PackagesCanBeUpgraded": "pacotes podem ser atualizados",
             "System": "Sistema",
             "Unknown": "Desconhecido",
+            "UpToDate": "Atualizado",
             "Update": "Atualizar",
             "UpdateAll": "Atualize todos os componentes",
             "UpdateManager": "Gerenciador de atualização",
-            "Upgrade": "Atualização",
-            "UpToDate": "Atualizado"
+            "Upgrade": "Atualização"
         }
     },
     "ManualProbe": {
@@ -554,18 +542,18 @@
             "Headline": "Macros",
             "Send": "enviar"
         },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Certifique-se de incluir mainsail.cfg em seu arquivo printer.cfg.",
+            "IsNotDefinedInConfig": "não está definido no config.",
+            "MissingConfiguration": "Configuração ausente",
+            "MoreInformation": "mais informações"
+        },
         "MiniconsolePanel": {
             "Headline": "Console",
             "HideTemperatures": "Ocultar temperaturas",
             "HideTimelapse": "Ocultar lapso de tempo",
             "SendCode": "Enviar código...",
             "SetupConsole": "Console de configuração"
-        },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Certifique-se de incluir mainsail.cfg em seu arquivo printer.cfg.",
-            "IsNotDefinedInConfig": "não está definido no config.",
-            "MissingConfiguration": "Configuração ausente",
-            "MoreInformation": "mais informações"
         },
         "MiscellaneousPanel": {
             "Headline": "Diversos",
@@ -577,7 +565,6 @@
             },
             "RunoutSensor": {
                 "Detected": "detectado",
-                "Disabled": "desabilitado",
                 "Empty": "Vazio"
             }
         },
@@ -591,23 +578,21 @@
             "CancelPrint": "Cancelar Impressão",
             "ClearPrintStats": "Limpar estatísticas de impressão",
             "Difference": "Diferença",
+            "ETA": "ETA",
             "EmptyGcodes": "Não há G-Code disponível.",
             "EmptyJobqueue": "No momento, não há nenhum arquivo na fila de trabalhos.",
             "Estimate": "Estimado",
-            "ETA": "ETA",
             "ExcludeObject": {
                 "Cancel": "cancelar",
-                "Excluded": "Excluído",
                 "ExcludeObject": "Excluir Objeto",
                 "ExcludeObjectHeadline": "Excluir Objeto",
-                "ExcludeObjectText": "Deseja realmente excluir \"{name}\"?"
+                "ExcludeObjectText": "Deseja realmente excluir \"{name}\"?",
+                "Excluded": "Excluído"
             },
             "Filament": "Filamento",
             "File": "Arquivo",
-            "Files": "Arquivos",
             "Flow": "Fluxo",
             "Headline": "Status",
-            "Jobqueue": "Fila de trabalhos",
             "JobqueueMoreFiles": "nenhum trabalho | mais um trabalho | {count} mais trabalhos",
             "Layer": "Camada",
             "Max": "max",
@@ -632,7 +617,6 @@
             "ResumePrint": "Retomar impressão",
             "Slicer": "Fatiador",
             "Speed": "Velocidade",
-            "Status": "Status",
             "Total": "Total",
             "Unknown": "Desconhecido"
         },
@@ -658,13 +642,13 @@
             "ShowNameInList": "Mostrar {name} na lista",
             "State": "Estado",
             "Target": "Alvo",
-            "TemperaturesInChart": "Temperatura [°C]",
             "TempTooHigh": "Temperatura muito alta para {name}! (máx: {max})",
-            "TempTooLow": "Temperatura muito baixa para {name}! (mín: {min})"
+            "TempTooLow": "Temperatura muito baixa para {name}! (mín: {min})",
+            "TemperaturesInChart": "Temperatura [°C]"
         },
         "ToolheadControlPanel": {
-            "Absolute": "absoluto",
             "ALL": "Todos",
+            "Absolute": "absoluto",
             "Headline": "Ferramenta",
             "PleaseConfigureSteps": "Por favor, configure os passos.",
             "Position": "Posição",
@@ -690,9 +674,7 @@
             "SaveConfig": "SALVAR CONFIG",
             "SaveInfoDescription": "O novo Z-Offset foi calculado e registrado. Clique em \"SALVAR CONFIG\" para salvá-lo no arquivo printer.cfg e reiniciar o Klipper.",
             "SaveInfoDescriptionPrint": "O novo Z-Offset foi calculado e registrado. Após a impressão, clique em \"SALVAR CONFIG\" na barra superior para salvá-lo no arquivo printer.cfg e reiniciar o Klipper.",
-            "SaveInfoHeadline": "Informação",
-            "ToEndstop": "até o Endstop",
-            "ToProbe": "até Sonda"
+            "SaveInfoHeadline": "Informação"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -847,7 +829,6 @@
             "DbHistoryTotals": "Histórico Totais",
             "DbTimelapseSettings": "Configs. Timelapse",
             "DbView": "Ver Configs.",
-            "DbWebcams": "Webcams",
             "EstimateValues": {
                 "Filament": "Filamento",
                 "File": "Arquivo",
@@ -857,7 +838,6 @@
             "FactoryReset": "Reset de Fábrica",
             "General": "Geral",
             "Language": "Idioma",
-            "MoonrakerDb": "Moonraker DB",
             "PrinterName": "Nome Impressora",
             "Reset": "reset",
             "Restore": "Restaura",
@@ -874,8 +854,8 @@
             "CountMacros": "sem Macros adicionadas | {count} Macro | {count} Macros",
             "Custom": "personalizado",
             "CustomColor": "Cor Personalizada",
-            "DeletedMacro": "Macro excluída",
             "DeleteMacroFromGroup": "Macro excluída do grupo.",
+            "DeletedMacro": "Macro excluída",
             "EditGroup": "Edita Grupo",
             "Error": "erro",
             "Expert": "Avançado",
@@ -885,10 +865,10 @@
             "Macrogroups": "Grupos",
             "Macros": "Macros",
             "Management": "Gerenciamento",
+            "NOMacros": "Macros não encontradas...",
             "Name": "Nome",
             "NoAvailableMacros": "Sem macros disponíveis.",
             "NoGroups": "Grupo não encontrado...",
-            "NOMacros": "Macros não encontradas...",
             "NoMacrosInGroup": "Sem macros neste grupo.",
             "Primary": "principal",
             "Search": "Buscar",
@@ -910,8 +890,8 @@
             "CreatePreset": "Cria pré-config",
             "End": "Fim",
             "EndDescription": "Último LED deste grupo.",
-            "Groups": "Grupos",
             "GroupSubTitle": "Início: {start}, Fim: {end}",
+            "Groups": "Grupos",
             "LightGroups": "{name} - Grupos",
             "LightPresets": "{name} - Pré-configs.",
             "Miscellaneous": "Diversos",
@@ -960,11 +940,8 @@
             "Autorender": "Auto renderiza",
             "AutorenderDescription": "Se ativado, o vídeo em timelapse será renderizado automaticamente ao final da impressão.",
             "Camera": "Camera",
-            "CameraDescription": "Selecione qual câmera será usada",
             "ConstantRateFactor": "Fator de Taxa Constante",
             "ConstantRateFactorDescription": "Configura a qualidade versus o tamanho do arquivo do vídeo renderizado. A escala do Fator de Taxa Constante (CRF) varia de 0 a 51, onde 0 é sem perdas, 23 é o valor padrão e 51 é a pior qualidade possível. Um valor menor geralmente resulta em maior qualidade, e uma faixa subjetivamente razoável é de 17 a 28. Considere 17 ou 18 como visualmente sem perdas.",
-            "duplicatelastframe": "Duplicar Último Quadro",
-            "duplicatelastframeDescription": "Duplica o último quadro no final do vídeo.",
             "Enabled": "Habilitado",
             "EnabledDescription": "Se desativado, as macros do G-Code são ignoradas e a renderização automática é pulada.",
             "Extraoutputparams": "Parâmetros de Saída Adicionais",
@@ -980,12 +957,12 @@
             "ModeDescription": "Selecione entre o modo Macro de Camada e o modo Hyperlapse (baseado em tempo).",
             "OutputFramerate": "Taxa de quadros de saída",
             "OutputFramerateDescription": "Define a taxa de quadros do vídeo. Observação: isso será ignorado se a variável_fps estiver ativada.",
+            "ParkTime": "Tempo Park",
+            "ParkTimeDescription": "Adicionar tempo ocioso adicional ao recolher.",
             "Parkhead": "Park Toolhead",
             "ParkheadDescription": "Se ativado, cabeçote será recolhido antes de tirar uma imagem.",
             "Parkpos": "Posição Park",
             "ParkposDescription": "Selecione a posição Park",
-            "ParkTime": "Tempo Park",
-            "ParkTimeDescription": "Adicionar tempo ocioso adicional ao recolher.",
             "Pixelformat": "Formato pixel",
             "PixelformatDescription": "Define o formato de pixel do vídeo de saída.",
             "PosDZ": "Posição Z",
@@ -1021,7 +998,9 @@
             "VariableFpsMax": "Max FPS Variável",
             "VariableFpsMaxDescription": "",
             "VariableFpsMin": "Min FPS Variável",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMinDescription": "",
+            "duplicatelastframe": "Duplicar Último Quadro",
+            "duplicatelastframeDescription": "Duplica o último quadro no final do vídeo."
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Configs. dos Fusos da Mesa",
