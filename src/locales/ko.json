@@ -60,9 +60,9 @@
             "CannotUploadTheFile": "파일을 업로드 할 수 없습니다!",
             "EmergencyStop": "비상 정지!",
             "SAVE_CONFIG": "설정 저장",
-            "Uploading": "업로드 중..",
             "UploadOfFileSuccessful": "{file} 업로드 완료!",
-            "UploadPrint": "업로드 & 출력"
+            "UploadPrint": "업로드 & 출력",
+            "Uploading": "업로드 중.."
         },
         "TopCornerMenu": {
             "Cancel": "취소",
@@ -132,7 +132,6 @@
         "Empty": "비어있음",
         "HideTemperatures": "온도 숨김",
         "HideTimelapse": "타임랩스 숨김",
-        "SendCode": "제어 명령 실행...",
         "SetupConsole": "콘솔 설정"
     },
     "Dialogs": {
@@ -183,7 +182,6 @@
         "EditFile": "파일 내용 수정",
         "Empty": "비어있음",
         "ExtruderTemp": "노즐 온도",
-        "Filament": "필라멘트",
         "FilamentName": "필라 이름",
         "FilamentType": "필라 유형",
         "FilamentUsage": "필라 소비량",
@@ -209,9 +207,9 @@
         "NozzleDiameter": "노즐 직경",
         "ObjectHeight": "출력물 높이",
         "Preheat": "예열",
-        "PrintedFiles": "출력된 파일",
         "PrintStart": "출력 시작",
         "PrintTime": "출력 시간",
+        "PrintedFiles": "출력된 파일",
         "RefreshCurrentDirectory": "현재 디렉토리 새로 고침",
         "Rename": "이름 변경",
         "RenameDirectory": "디렉토리 이름 변경",
@@ -234,8 +232,8 @@
         "DropFilesToUploadFiles": "업로드할 파일 삭제"
     },
     "GCodeViewer": {
-        "ClearLoadedFile": "초기화",
         "CNCMode": "CNC 모드",
+        "ClearLoadedFile": "초기화",
         "ColorMode": "컬러 모드",
         "Downloading": "정보 다운로딩 중..",
         "ForceLineRendering": "Force line 랜더링",
@@ -247,8 +245,8 @@
         "Max": "최상",
         "Medium": "중간",
         "ReloadRequired": "다시 로드해야 합니다",
-        "Rendering": "랜더링 중..",
         "RenderQuality": "랜더링 품질",
+        "Rendering": "랜더링 중..",
         "ShowGCode": "G-Code 보기",
         "ShowObjectSelection": "선택 도형 표시",
         "ShowToolhead": "툴 헤드 표시",
@@ -283,19 +281,15 @@
         "InvalidNameAscii": "아스키 문자열로 입력해 주세요",
         "InvalidNameEmpty": "입력란을 비울 수 없습니다",
         "InvalidNameReserved": "'default' 프로파일로 지정된 상태입니다 다른 프로파일 이름으로 지정해 주세요",
-        "Later": "다음에..",
         "Mesh": "메쉬 기준",
         "Name": "이름",
         "NoBedMeshHasBeenLoadedYet": "불러온 베드 메쉬 정보가 없습니다",
         "NoProfile": "프로파일이 존재하지 않습니다",
-        "Ok": "네",
         "Probed": "측정 기준",
         "Profiles": "프로파일",
         "Remove": "삭제",
-        "RemoveSaveDescription": "베드 메시 프로파일이 삭제된 상태로 등록됐습니다 SAVE_CONFIG 콘솔에서 실행하거나 우측 상단 '설정 저장'을 클릭해 printer.cfg에서 제거하고 클리퍼를 다시 시작합니다",
         "Rename": "이름 변경",
         "RenameBedMeshProfile": "베드 메시 프로파일 이름 변경",
-        "SAVE_CONFIG": "설정 저장",
         "ScaleGradient": "배율 조정",
         "ScaleZMax": "Z축 높이 확대/축소 배율",
         "TitleCalibrate": "베드 메시 교정 시작",
@@ -352,19 +346,17 @@
         "Statistics": "통계",
         "Status": "상태",
         "StatusValues": {
+            "Others": "기타",
             "cancelled": "취소됨",
             "completed": "종료",
             "error": "오류",
             "in_progress": "출력 중",
             "klippy_disconnect": "클리피 연결 해제",
             "klippy_shutdown": "클리피 종료",
-            "Others": "기타",
             "server_exit": "서버 종료"
         },
         "Table": "테이블",
         "TitleExportHistory": "기록 내보내기",
-        "TitleRefreshHistory": "기록 새로 고침",
-        "TitleSettings": "설정",
         "TotalDuration": "프린터 가동 시간",
         "TotalFilamentUsed": "총 필라 소비",
         "TotalJobs": "전체 출력 횟수",
@@ -372,7 +364,6 @@
         "TotalTime": "전체 시간"
     },
     "JobQueue": {
-        "AllJobs": "전체 작업",
         "Cancel": "취소",
         "ChangeCount": "카운트 변경",
         "Count": "카운트",
@@ -380,7 +371,6 @@
         "InvalidCountEmpty": "입력란을 비워둘 수 없습니다",
         "InvalidCountGreaterZero": "0보다 큰 값으로 입력해야 합니다",
         "JobQueue": "작업 대기열",
-        "Jobs": "작업",
         "Pause": "일시정지",
         "RemoveFromQueue": "대기열에서 삭제",
         "Start": "시작"
@@ -426,8 +416,8 @@
             "Endstop": "엔드 스탑",
             "EndstopInfo": "우측 하단 새로 고침 버튼을 클릭해 현재 엔드스탑 상태를 확인합니다",
             "Endstops": "엔드 스탑",
-            "open": "열림",
-            "TRIGGERED": "눌림"
+            "TRIGGERED": "눌림",
+            "open": "열림"
         },
         "LogfilesPanel": {
             "Accept": "확인",
@@ -474,17 +464,15 @@
             "CommittedYesterday": "어제 커밋됨",
             "Detached": "분리됨",
             "Dirty": "임의변경(Dirty)",
-            "ERROR": "오류",
             "Invalid": "무효",
             "OSPackages": "OS-패키지",
-            "PackagesCanBeUpgraded": "업그레이드 가능한 패키지",
             "System": "시스템",
             "Unknown": "알수 없는 버전",
+            "UpToDate": "최신 상태 유지중..",
             "Update": "업데이트",
             "UpdateAll": "모든 항목 업데이트",
             "UpdateManager": "업데이트 관리자",
-            "Upgrade": "업그레이드",
-            "UpToDate": "최신 상태 유지중.."
+            "Upgrade": "업그레이드"
         }
     },
     "ManualProbe": {
@@ -548,18 +536,18 @@
             "Headline": "매크로",
             "Send": "보내기"
         },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "printer.cfg안에 mainsail.cfg를 포함시켜야 합니다",
+            "IsNotDefinedInConfig": "설정에 정의되지 않았습니다",
+            "MissingConfiguration": "설정 값이 누락 되었습니다",
+            "MoreInformation": "정보 더보기"
+        },
         "MiniconsolePanel": {
             "Headline": "콘솔 명령",
             "HideTemperatures": "온도 숨김",
             "HideTimelapse": "타임랩스 숨김",
             "SendCode": "제어 명령 입력 후 엔터를 눌러 주세요..",
             "SetupConsole": "콘솔 명령 설정"
-        },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "printer.cfg안에 mainsail.cfg를 포함시켜야 합니다",
-            "IsNotDefinedInConfig": "설정에 정의되지 않았습니다",
-            "MissingConfiguration": "설정 값이 누락 되었습니다",
-            "MoreInformation": "정보 더보기"
         },
         "MiscellaneousPanel": {
             "Headline": "기타 (쿨링 팬, 조명 제어)",
@@ -571,7 +559,6 @@
             },
             "RunoutSensor": {
                 "Detected": "필라멘트 있음",
-                "Disabled": "비활성화됨",
                 "Empty": "필라멘트 없음"
             }
         },
@@ -585,23 +572,21 @@
             "CancelPrint": "취소",
             "ClearPrintStats": "통계 초기화",
             "Difference": "차이",
+            "ETA": "완료예정",
             "EmptyGcodes": "출력 가능한 G-code 파일이 없습니다",
             "EmptyJobqueue": "작업 대기열에 파일이 존재하지 않습니다",
             "Estimate": "실시간",
-            "ETA": "완료예정",
             "ExcludeObject": {
                 "Cancel": "취소",
-                "Excluded": "본 출력에서 제외됨",
                 "ExcludeObject": "출력 제외 대상",
                 "ExcludeObjectHeadline": "출력 제외 대상 선택",
-                "ExcludeObjectText": "\"{name}\"을(를) 제외 하시겠습니까??"
+                "ExcludeObjectText": "\"{name}\"을(를) 제외 하시겠습니까??",
+                "Excluded": "본 출력에서 제외됨"
             },
             "Filament": "길이",
             "File": "파일",
-            "Files": "파일",
             "Flow": "유량",
             "Headline": "출력 상태",
-            "Jobqueue": "작업 대기열",
             "JobqueueMoreFiles": "더 이상 작업 없음 | 1개 이상의 작업 | {count}개 이상의 작업",
             "Layer": "레이어",
             "Max": "최대",
@@ -626,7 +611,6 @@
             "ResumePrint": "작업 재개",
             "Slicer": "슬라이서",
             "Speed": "출력 속도",
-            "Status": "출력 상태",
             "Total": "전체",
             "Unknown": "알 수 없음"
         },
@@ -652,13 +636,13 @@
             "ShowNameInList": "목록에서 {name} 보기",
             "State": "전력 사용량",
             "Target": "설정 온도",
-            "TemperaturesInChart": "온도 [°C]",
             "TempTooHigh": "{name}의 온도가 너무 높습니다! (최대: {max})",
-            "TempTooLow": "{name}의 온도가 너무 낮습니다!! (최저: {min})"
+            "TempTooLow": "{name}의 온도가 너무 낮습니다!! (최저: {min})",
+            "TemperaturesInChart": "온도 [°C]"
         },
         "ToolheadControlPanel": {
-            "Absolute": "절대 좌표",
             "ALL": "전체",
+            "Absolute": "절대 좌표",
             "Headline": "툴 헤드 제어",
             "PleaseConfigureSteps": "steps를 설정해 주세요",
             "Position": "좌표 유형",
@@ -684,9 +668,7 @@
             "SaveConfig": "설정 저장",
             "SaveInfoDescription": "새 Z-옵셋을 측정 후 등록했습니다 저장하려면 우측 상단에서 \"설정 저장\"을 눌러 printer.cfg에 저장하고 클리퍼를 재시작 해주세요",
             "SaveInfoDescriptionPrint": "새 Z-옵셋을 측정 후 등록했습니다 우측 상단에서 \"설정 저장\"을 눌러 printer.cfg에 저장하고 클리퍼를 재시작 해주세요 ",
-            "SaveInfoHeadline": "정보",
-            "ToEndstop": "Z 엔드스탑 높이 값으로 저장",
-            "ToProbe": "프로브 높이 값으로 저장"
+            "SaveInfoHeadline": "정보"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -838,7 +820,6 @@
             "DbHistoryTotals": "전체 기록",
             "DbTimelapseSettings": "타임랩스 설정",
             "DbView": "보기 설정",
-            "DbWebcams": "웹캠",
             "EstimateValues": {
                 "Filament": "필라멘트 정보",
                 "File": "파일 정보",
@@ -848,7 +829,6 @@
             "FactoryReset": "기본 값으로 초기화",
             "General": "일반",
             "Language": "언어",
-            "MoonrakerDb": "문래커 데이터 베이스",
             "PrinterName": "프린터 표시 이름",
             "Reset": "재설정",
             "Restore": "복원하기",
@@ -865,8 +845,8 @@
             "CountMacros": "매크로 추가하지 않음 | {count}개의 매크로 | {count}개의 매크로",
             "Custom": "사용자화",
             "CustomColor": "사용자 정의 색상",
-            "DeletedMacro": "매크로 삭제",
             "DeleteMacroFromGroup": "그룹에 속한 매크로 삭제",
+            "DeletedMacro": "매크로 삭제",
             "EditGroup": "그룹 수정",
             "Error": "오류",
             "Expert": "사용자 정의",
@@ -876,10 +856,10 @@
             "Macrogroups": "그룹",
             "Macros": "매크로",
             "Management": "표시및 정렬 방법",
+            "NOMacros": "그룹을 찾을 수 없습니다..",
             "Name": "그룹 명",
             "NoAvailableMacros": "사용 가능한 매크로가 없습니다",
             "NoGroups": "그룹을 찾을 수 없습니다..",
-            "NOMacros": "그룹을 찾을 수 없습니다..",
             "NoMacrosInGroup": "이 그룹엔 매크로가 없습니다",
             "Primary": "1차색상",
             "Search": "검색",
@@ -901,8 +881,8 @@
             "CreatePreset": "프리셋 생성",
             "End": "끝 번호",
             "EndDescription": "LED의 마지막 열 번호를 지정합니다",
-            "Groups": "그룹",
             "GroupSubTitle": "시작: {start}, 끝: {end}",
+            "Groups": "그룹",
             "LightGroups": "{name} - 그룹",
             "LightPresets": "{name} - 프리셋",
             "Miscellaneous": "기타",
@@ -948,11 +928,8 @@
             "Autorender": "자동 렌더",
             "AutorenderDescription": "활성화 시킬 경우 타임랩스 비디오가 인쇄 마지막 단계에서 자동으로 렌더링됩니다",
             "Camera": "카메라",
-            "CameraDescription": "사용할 카메라 선택",
             "ConstantRateFactor": "고정 속도 비율",
             "ConstantRateFactorDescription": "렌더링된 비디오의 품질과 파일 크기를 설정하며 CRF 척도의 범위는 0-51이며, 여기서 0은 무손실이고 23은 기본값이며 51은 조악한 품질 값입니다 값이 작을수록 대개 품질이 향상되지만 보통 추천하는 범위는 17-28이지만 혹은 17~18의 값은 시각적으로 무손실로 간주할 수 있습니다",
-            "duplicatelastframe": "마지막 프레임 복제",
-            "duplicatelastframeDescription": "비디오 끝의 마지막 프레임을 복제합니다",
             "Enabled": "활성화",
             "EnabledDescription": "비활성화된 경우 G-Code 매크로를 무시하고 자동 정렬을 건너뜁니다",
             "Extraoutputparams": "추가 출력 매개 변수",
@@ -968,12 +945,12 @@
             "ModeDescription": "Layermacro와 Hyperlapse(시간 기반) 모드중 선택",
             "OutputFramerate": "출력 프레임 레이트",
             "OutputFramerateDescription": "비디오의 프레임 속도를 정의하며 variable_fps가 활성화된 경우 무시됩니다",
+            "ParkTime": "툴 헤드 고정 시간",
+            "ParkTimeDescription": "툴 헤드 고정 추가 시간이 필요한 경우 설정합니다",
             "Parkhead": "툴 헤드 위치 고정",
             "ParkheadDescription": "활성화된 경우 프레임을 찍기 전 툴 헤드가 고정됩니다",
             "Parkpos": "툴 헤드 고정 위치",
             "ParkposDescription": "툴 헤드 고정 위치 지정",
-            "ParkTime": "툴 헤드 고정 시간",
-            "ParkTimeDescription": "툴 헤드 고정 추가 시간이 필요한 경우 설정합니다",
             "Pixelformat": "픽셀 포맷",
             "PixelformatDescription": "비디오 출력 포맷을 설정합니다",
             "PosDZ": "툴 헤드 Z 고정 위치",
@@ -1009,7 +986,9 @@
             "VariableFpsMax": "최대 가변 FPS",
             "VariableFpsMaxDescription": "최대 가변 FPS 값을 지정합니다",
             "VariableFpsMin": "최소 가변 FPS",
-            "VariableFpsMinDescription": "최소 가변 FPS 값을 지정합니다"
+            "VariableFpsMinDescription": "최소 가변 FPS 값을 지정합니다",
+            "duplicatelastframe": "마지막 프레임 복제",
+            "duplicatelastframeDescription": "비디오 끝의 마지막 프레임을 복제합니다"
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "큰 썸네일 이미지",
@@ -1041,7 +1020,6 @@
             "PowerDeviceName": "프린터 전원장치",
             "PowerDeviceNameDescription": "프린터 전원을 켜는 데 사용할 문레이커 전원 장치를 선택합니다",
             "Primary": "아이콘 컬러",
-            "ShowWebcamInNavigation": "좌측 메뉴 바에 웹캠 메뉴 추가",
             "UiSettings": "UI 설정"
         },
         "Update": "업데이트",

@@ -81,9 +81,9 @@
             "CannotUploadTheFile": "Не вдається завантажити файл!",
             "EmergencyStop": "АВАРІЙНА ЗУПИНКА",
             "SAVE_CONFIG": "ЗБЕРЕГТИ КОНФІГУРАЦІЮ",
-            "Uploading": "Завантаження",
             "UploadOfFileSuccessful": "Завантаження {file} успішно!",
-            "UploadPrint": "Завантажити та надрукувати"
+            "UploadPrint": "Завантажити та надрукувати",
+            "Uploading": "Завантаження"
         },
         "TopCornerMenu": {
             "Cancel": "Скасувати",
@@ -153,7 +153,6 @@
         "Empty": "Порожньо",
         "HideTemperatures": "Сховати температуру",
         "HideTimelapse": "Сховати Таймлапс",
-        "SendCode": "Надіслати код...",
         "SetupConsole": "Консоль налаштування"
     },
     "CoolDownDialog": {
@@ -254,9 +253,9 @@
         "NozzleDiameter": "Діаметр Сопла",
         "ObjectHeight": "Висота Об'єкта",
         "Preheat": "Розігріти",
-        "PrintedFiles": "Надруковані Файли",
         "PrintStart": "Почати Друк",
         "PrintTime": "Час Друку",
+        "PrintedFiles": "Надруковані Файли",
         "RefreshCurrentDirectory": "Оновити поточну директорію",
         "Rename": "Перейменувати",
         "RenameDirectory": "Перейменувати директорію",
@@ -281,8 +280,8 @@
         "DropFilesToUploadFiles": "Скинути завантаження файлу"
     },
     "GCodeViewer": {
-        "ClearLoadedFile": "Очистити",
         "CNCMode": "Режим ЧПД",
+        "ClearLoadedFile": "Очистити",
         "ColorMode": "Кольоровий Режим",
         "Downloading": "Завантаження",
         "ForceLineRendering": "Примусова лінійна Візуалізація",
@@ -294,8 +293,8 @@
         "Max": "Максимум",
         "Medium": "Середньо",
         "ReloadRequired": "Потрібне перезавантаження",
-        "Rendering": "Візуалізація",
         "RenderQuality": "Якість Візуалізації",
+        "Rendering": "Візуалізація",
         "ShowGCode": "Показати G-Code",
         "ShowObjectSelection": "Показати Вибір Об'єктів",
         "ShowToolhead": "Показати Інструмент",
@@ -403,9 +402,9 @@
         "ObjectHeight": "Висота Об'єкта",
         "OneTime": "Одноразовий",
         "Perform": "виконати",
+        "PerformMaintenance": "Виконати технічне обслуговування",
         "Performed": "виконано",
         "PerformedAndReschedule": "виконано та переплановано",
-        "PerformMaintenance": "Виконати технічне обслуговування",
         "PrintDuration": "Час Друку",
         "PrintHistory": "Історія друку",
         "PrintJobs": "Завдання друку",
@@ -427,6 +426,7 @@
         "Statistics": "Статистика",
         "Status": "Статус",
         "StatusValues": {
+            "Others": "Інші",
             "cancelled": "Скасовані",
             "completed": "Закінчені",
             "error": "Помилкові",
@@ -434,7 +434,6 @@
             "interrupted": "Перерваний",
             "klippy_disconnect": "Klippy відключився",
             "klippy_shutdown": "Помилка Klipper",
-            "Others": "Інші",
             "server_exit": "Вихід сервера"
         },
         "Table": "Таблиця",
@@ -502,8 +501,8 @@
             "Endstop": "Кінцевик",
             "EndstopInfo": "Натисніть кнопку синхронізації на правому боці, щоб завантажити поточний статус Кінцевиків.",
             "Endstops": "Кінцевики",
-            "open": "ВІДКРИТО",
-            "TRIGGERED": "ЗАМКНЕНО"
+            "TRIGGERED": "ЗАМКНЕНО",
+            "open": "ВІДКРИТО"
         },
         "LogfilesPanel": {
             "Accept": "прийняти",
@@ -560,9 +559,9 @@
             "GenericUpdateQuestion": "Перевірте історію комітів (якщо доступна) і сторінку GitHub для цього пакету, щоб дізнатися, чи потрібні якісь ручні налаштування для цього оновлення.",
             "GitHubPage": "Сторінка GitHub",
             "HardRecovery": "Повне скидання",
+            "IUnderstandTheRisks": "Я розумію ризики",
             "InitUpdateManager": "Менеджер оновлень ще не ініціалізовано. Це нормально, коли ви запускаєте систему вперше. Натисніть кнопку оновити, щоб ініціалізувати всі компоненти.",
             "Invalid": "недійсний",
-            "IUnderstandTheRisks": "Я розумію ризики",
             "KlipperUpdateQuestionConfig": "Це оновлення також може містити зміни в параметрах конфігурації, які потрібно буде змінити у файлі printer.cfg, подробиці дивіться в журналі змін.",
             "KlipperUpdateQuestionFirmware": "Це призведе до оновлення програмного забезпечення Klipper хоста. Плати керування (MCU), на яких працює мікропрограмне забезпечення Klipper, можливо, потребуватиме перепрошивки за допомогою перекомпільованого мікропрограмного забезпечення, перш ніж принтер можна буде знову ввести в експлуатацію.",
             "LinkToGithub": "Посилання на GitHub",
@@ -574,13 +573,13 @@
             "System": "Система",
             "ThesePackagesCanBeUpgrade": "Ці системні пакети можна оновити:",
             "Unknown": "невідомо",
+            "UpToDate": "актуальний",
             "Update": "оновити",
             "UpdateAll": "Оновити всі",
             "UpdateManager": "Менеджер Оновлень",
             "UpdateWarning": "Попередження про оновлення: {name}",
             "Upgrade": "оновити",
             "UpgradeableSystemPackages": "Системні пакети що можна оновити",
-            "UpToDate": "актуальний",
             "WebClientUpdateQuestion": "У деяких випадках оновлення веб-клієнт має зміни, які можуть спричинити несумісність. Для отримання додаткової інформації див. примітки до релізу."
         }
     },
@@ -654,6 +653,12 @@
             "Headline": "Макрос",
             "Send": "Відправити"
         },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Переконайтеся, що ви включили mainsail.cfg у свій файл printer.cfg.",
+            "IsNotDefinedInConfig": "Відсутній імпорт в конфігурації.",
+            "MissingConfiguration": "Відсутня конфігурація",
+            "MoreInformation": "Більше інформації"
+        },
         "MiniconsolePanel": {
             "Autoscroll": "Автопрокручування",
             "Headline": "Консоль",
@@ -661,12 +666,6 @@
             "HideTimelapse": "Сховати таймлапс",
             "SendCode": "Надіслати код...",
             "SetupConsole": "Налаштувати Консоль"
-        },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Переконайтеся, що ви включили mainsail.cfg у свій файл printer.cfg.",
-            "IsNotDefinedInConfig": "Відсутній імпорт в конфігурації.",
-            "MissingConfiguration": "Відсутня конфігурація",
-            "MoreInformation": "Більше інформації"
         },
         "MiscellaneousPanel": {
             "Headline": "Різне",
@@ -702,8 +701,8 @@
             "Never": "Ніколи",
             "NoActiveSpool": "Відстеження філаменту неактивне. Щоб почати, будь ласка, виберіть котушку.",
             "NoResults": "За поточними критеріями пошуку шпулю не знайдено.",
-            "NoSpools": "Немає шпуль",
             "NoSpoolSelected": "Шпулю не вибрано. Виберіть шпулю, інакше цей друк не відстежуватиметься.",
+            "NoSpools": "Немає шпуль",
             "OpenSpoolManager": "відкрити менеджер шпуль",
             "Refresh": "оновити",
             "Search": "Пошук",
@@ -717,23 +716,21 @@
             "CancelPrint": "Скасувати друк",
             "ClearPrintStats": "Чітка статистика друку",
             "Difference": "Різниця",
+            "ETA": "Час закінчення",
             "EmptyGcodes": "Немає G-коду, що доступний.",
             "EmptyJobqueue": "Наразі в черзі завдань немає файлу.",
             "Estimate": "Оцінка",
-            "ETA": "Час закінчення",
             "ExcludeObject": {
                 "Cancel": "скасувати",
-                "Excluded": "Виключений",
                 "ExcludeObject": "Виключіть Об'єкт",
                 "ExcludeObjectHeadline": "Виключіть Об'єкт",
-                "ExcludeObjectText": "Ви дійсно хочете виключити \"{name}\"?"
+                "ExcludeObjectText": "Ви дійсно хочете виключити \"{name}\"?",
+                "Excluded": "Виключений"
             },
             "Filament": "Філамент",
             "File": "Файл",
-            "Files": "Файли",
             "Flow": "Потік",
             "Headline": "Статус",
-            "Jobqueue": "Черга завдань",
             "JobqueueMoreFiles": "більше нема робіт | ще одне завдання | {count} більше завдань",
             "Layer": "Шар",
             "Max": "макс",
@@ -758,7 +755,6 @@
             "ResumePrint": "Відновити друк",
             "Slicer": "Слайсер",
             "Speed": "Швидкість",
-            "Status": "Статус",
             "Total": "Всього",
             "Unknown": "Невідомий"
         },
@@ -786,13 +782,13 @@
             "ShowNameInList": "Показувати {name} у списку",
             "State": "Стан",
             "Target": "Встановити",
-            "TemperaturesInChart": "Температура [°C]",
             "TempTooHigh": "Температура занадто висока для{name}! (макс: {max})",
-            "TempTooLow": "Температура занадто низька для {name}! (мін: {min})"
+            "TempTooLow": "Температура занадто низька для {name}! (мін: {min})",
+            "TemperaturesInChart": "Температура [°C]"
         },
         "ToolheadControlPanel": {
-            "Absolute": "абсолютні",
             "ALL": "ВСІ",
+            "Absolute": "абсолютні",
             "ControlButtons": "Кнопки управління",
             "CoordinateFields": "Поля координат",
             "Headline": "Інструмент",
@@ -1024,8 +1020,8 @@
             "CountMacros": "Жодних макросів не додано | {count} Макрос | {count} Макросів",
             "Custom": "свій",
             "CustomColor": "Свій Колір",
-            "DeletedMacro": "Видалений макрос",
             "DeleteMacroFromGroup": "Видалити макрос з групи.",
+            "DeletedMacro": "Видалений макрос",
             "EditGroup": "Редагувати Групу",
             "Error": "помилка",
             "Expert": "Експерт",
@@ -1035,10 +1031,10 @@
             "Macrogroups": "Групи",
             "Macros": "Макрос",
             "Management": "Управління",
+            "NOMacros": "Макросів не знайдено...",
             "Name": "Ім'я",
             "NoAvailableMacros": "Немає доступних макросів.",
             "NoGroups": "Жодної групи не знайдено...",
-            "NOMacros": "Макросів не знайдено...",
             "NoMacrosInGroup": "У цій групі немає макросів.",
             "Primary": "основний",
             "Search": "Пошук",
@@ -1060,8 +1056,8 @@
             "CreatePreset": "Створити предустановку",
             "End": "Кінець",
             "EndDescription": "Останній світлодіод цієї групи.",
-            "Groups": "Групи",
             "GroupSubTitle": "Початок: {start}, кінець: {end}",
+            "Groups": "Групи",
             "LightGroups": "{name} - Групи",
             "LightPresets": "{name} - Предустановки",
             "Miscellaneous": "Різне",
@@ -1113,11 +1109,8 @@
             "Autorender": "Автовізуалізація",
             "AutorenderDescription": "Якщо ввімкнено, відео Таймлапс автоматично відображатиметься в кінці друку",
             "Camera": "Камера",
-            "CameraDescription": "Виберіть, яку камеру слід використовувати",
             "ConstantRateFactor": "Постійний коефіцієнт швидкості",
             "ConstantRateFactorDescription": "Це налаштовує якість проти розміру файлу наданих відео. Діапазон шкали CRF становить 0–51, де 0 без втрат, 23 - за замовчуванням, а 51 - найгірша якість можливої якості. Більш нижнє значення, як правило, призводить до більш високої якості, а суб'єктивно здоровий діапазон становить 17–28. Розглянемо 17 або 18.",
-            "duplicatelastframe": "Дублікат останнього кадру",
-            "duplicatelastframeDescription": "Дублює останній кадр на кінці відео",
             "Enabled": "Увімкнено",
             "EnabledDescription": "Якщо вимкнено, макроси G-коду ігноруються, а автоматичний показник пропускається.",
             "Extraoutputparams": "Додаткові Параметри Виводу",
@@ -1133,12 +1126,12 @@
             "ModeDescription": "Виберіть між режимом макросів та гіперлапсу (на основі часу)",
             "OutputFramerate": "Частота кадрів виводу",
             "OutputFramerateDescription": "Визначає частоту кадрів відео. Примітка. Це буде ігноровано, якщо ввімкнено Variable_FPS",
+            "ParkTime": "Час паркінгу",
+            "ParkTimeDescription": "Додайте додатковий час у режимі очікування при парковці.",
             "Parkhead": "Парковка голови",
             "ParkheadDescription": "Якщо ввімкнено, перед тим, як сфтографувати, буде припарковано інструмент.",
             "Parkpos": "Позиція парковки",
             "ParkposDescription": "Виберіть позицію паркування",
-            "ParkTime": "Час паркінгу",
-            "ParkTimeDescription": "Додайте додатковий час у режимі очікування при парковці.",
             "Pixelformat": "Формат пікселів",
             "PixelformatDescription": "Визначає формат пікселя вихідного відео",
             "PosDZ": "Позиція z",
@@ -1179,7 +1172,9 @@
             "VariableFpsMax": "Динамічний FPS макс",
             "VariableFpsMaxDescription": "Максимальне значення при динамічному FPS",
             "VariableFpsMin": "Динамічний FPS мін",
-            "VariableFpsMinDescription": "Мінімальне значення при динамічному FPS"
+            "VariableFpsMinDescription": "Мінімальне значення при динамічному FPS",
+            "duplicatelastframe": "Дублікат останнього кадру",
+            "duplicatelastframeDescription": "Дублює останній кадр на кінці відео"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Вікно гвинтів стола",
