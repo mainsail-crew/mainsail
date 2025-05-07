@@ -22,11 +22,10 @@
                 <v-row>
                     <v-col class="pr-0">{{ $t('Files.PrintedFiles') }}</v-col>
                     <v-col class="col-auto pl-0">
-                        <v-icon v-if="showPrintedFiles" color="primary" @click.stop="showPrintedFiles = false">
-                            {{ mdiCheckboxMarked }}
-                        </v-icon>
-                        <v-icon v-else color="grey lighten-1" @click.stop="showPrintedFiles = true">
-                            {{ mdiCheckboxBlankOutline }}
+                        <v-icon
+                            :color="showPrintedFiles ? 'primary' : 'grey lighten-1'"
+                            @click.stop="showPrintedFiles = !showPrintedFiles">
+                            {{ showPrintedFiles ? mdiCheckboxMarked : mdiCheckboxBlankOutline }}
                         </v-icon>
                     </v-col>
                 </v-row>
