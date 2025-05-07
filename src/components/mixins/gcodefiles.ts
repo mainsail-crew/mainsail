@@ -45,6 +45,10 @@ export default class GcodefilesMixin extends Vue {
         return this.$store.state.gui.view.gcodefiles.showPrintedFiles ?? true
     }
 
+    set showPrintedFiles(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.showPrintedFiles', value: newVal })
+    }
+
     get files() {
         return this.$store.getters['files/getGcodeFiles'](this.currentPath, this.showHiddenFiles, this.showPrintedFiles)
     }
