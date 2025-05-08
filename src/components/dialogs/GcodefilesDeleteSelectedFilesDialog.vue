@@ -1,9 +1,6 @@
 <template>
     <v-dialog :value="showDialog" width="400">
-        <panel
-            :title="$t('Files.DeleteDirectory')"
-            card-class="gcodefiles-delete-directory-dialog"
-            :margin-bottom="false">
+        <panel :title="$t('Files.Delete')" card-class="gcodefiles-delete-selected-dialog" :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="closePrompt">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
