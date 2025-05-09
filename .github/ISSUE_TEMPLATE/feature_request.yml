@@ -1,5 +1,6 @@
 name: Feature request
 description: You have an idea for a new feature? Tell us here!
+type: feature
 body:
   - type: markdown
     attributes:
