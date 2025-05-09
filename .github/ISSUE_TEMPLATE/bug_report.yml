@@ -1,6 +1,6 @@
 name: Bug report
 description: You found an issue while using Mainsail? Report it here!
-labels: ['⚡ Type: Bug']
+type: 'Bug'
 body:
   - type: markdown
     attributes:
