@@ -42,7 +42,7 @@ export default class GcodefilesDuplicateFileDialog extends Mixins(BaseMixin, Gco
     mdiCloseThick = mdiCloseThick
 
     name = ''
-    isInvalidName = false
+    isInvalidName = true
 
     @Prop({ type: Boolean, default: false }) showDialog!: boolean
     @Prop({ type: Object, required: true }) item!: FileStateGcodefile
@@ -75,7 +75,7 @@ export default class GcodefilesDuplicateFileDialog extends Mixins(BaseMixin, Gco
         if (!newVal) return
 
         this.name = this.item.filename
-        this.isInvalidName = false
+        this.isInvalidName = true
 
         setTimeout(() => {
             this.inputFieldDuplicateFile.focus()
