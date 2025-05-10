@@ -49,7 +49,7 @@ export default class GcodefilesRenameDirectoryDialog extends Mixins(BaseMixin, G
     mdiCloseThick = mdiCloseThick
 
     name = ''
-    isInvalidName = false
+    isInvalidName = true
 
     @Prop({ type: Boolean, default: false }) showDialog!: boolean
     @Prop({ type: Object, required: true }) item!: FileStateGcodefile
@@ -86,7 +86,7 @@ export default class GcodefilesRenameDirectoryDialog extends Mixins(BaseMixin, G
         if (!newVal) return
 
         this.name = this.item.filename
-        this.isInvalidName = false
+        this.isInvalidName = true
 
         setTimeout(() => {
             this.inputFieldRenameDirectory.focus()
