@@ -243,6 +243,7 @@
         "Empty": "Empty",
         "ExtruderTemp": "Extruder Temp.",
         "FilamentName": "Filament Name",
+        "Filaments": "Filaments",
         "FilamentType": "Filament Type",
         "FilamentUsage": "Filament Usage",
         "FilamentWeight": "Filament Weight",
