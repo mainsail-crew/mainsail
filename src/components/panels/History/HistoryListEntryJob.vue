@@ -149,7 +149,13 @@ import {
     mdiPrinter,
     mdiTextBoxSearch,
 } from '@mdi/js'
-import { escapePath, formatFilesize, formatPrintTime } from '@/plugins/helpers'
+import {
+    convertPrintStatusIcon,
+    convertPrintStatusIconColor,
+    escapePath,
+    formatFilesize,
+    formatPrintTime,
+} from '@/plugins/helpers'
 import { HistoryListPanelCol } from '@/components/panels/HistoryListPanel.vue'
 import HistoryListPanelNoteDialog from '@/components/dialogs/HistoryListPanelNoteDialog.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
@@ -207,11 +213,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get statusIcon() {
-        return this.$store.getters['server/history/getPrintStatusIcon'](this.item.status)
+        return convertPrintStatusIcon(this.item.status)
     }
 
     get statusColor() {
-        return this.$store.getters['server/history/getPrintStatusIconColor'](this.item.status)
+        return convertPrintStatusIconColor(this.item.status)
     }
 
     get statusName() {

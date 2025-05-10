@@ -5,36 +5,7 @@
         @contextmenu="showContextMenu($event)"
         @click="showPrintDialog = true">
         <td class="pr-0 text-center" style="width: 32px">
-            <template v-if="item.small_thumbnail">
-                <v-tooltip
-                    top
-                    content-class="tooltip__content-opacity1"
-                    :disabled="!item.big_thumbnail"
-                    :color="bigThumbnailTooltipColor">
-                    <template #activator="{ on, attrs }">
-                        <vue-load-image class="d-flex">
-                            <img
-                                slot="image"
-                                :src="item.small_thumbnail"
-                                :alt="item.filename"
-                                width="32"
-                                height="32"
-                                v-bind="attrs"
-                                v-on="on" />
-                            <div slot="preloader">
-                                <v-progress-circular indeterminate color="primary" />
-                            </div>
-                            <div slot="error">
-                                <v-icon>{{ mdiFile }}</v-icon>
-                            </div>
-                        </vue-load-image>
-                    </template>
-                    <span><img :src="item.big_thumbnail" :alt="item.filename" width="250" /></span>
-                </v-tooltip>
-            </template>
-            <template v-else>
-                <v-icon>{{ mdiFile }}</v-icon>
-            </template>
+            <gcodefiles-thumbnail :item="item" />
         </td>
         <td class="pr-2">
             <div class="d-block text-truncate" :style="styleContentTdWidth">{{ item.filename }}</div>
@@ -173,10 +144,12 @@ import {
 import Panel from '@/components/ui/Panel.vue'
 import { defaultBigThumbnailBackground } from '@/store/variables'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
-import { escapePath, formatPrintTime } from '@/plugins/helpers'
+import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath, formatPrintTime } from '@/plugins/helpers'
+import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbnail.vue'
 
 @Component({
     components: {
+        GcodefilesThumbnail,
         Panel,
         StartPrintDialog,
         AddBatchToQueueDialog,
@@ -257,11 +230,11 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 
     get statusIcon() {
-        return this.$store.getters['server/history/getPrintStatusIcon'](this.item.last_status)
+        return convertPrintStatusIcon(this.item.last_status ?? '')
     }
 
     get statusColor() {
-        return this.$store.getters['server/history/getPrintStatusIconColor'](this.item.last_status)
+        return convertPrintStatusIconColor(this.item.last_status ?? '')
     }
 
     get pathOfFile() {

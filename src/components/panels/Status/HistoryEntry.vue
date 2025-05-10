@@ -87,7 +87,7 @@ import { mdiCloseThick, mdiDelete, mdiFile, mdiPlaylistPlus, mdiPrinter } from '
 import { defaultBigThumbnailBackground, thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { ServerHistoryStateJobWithCount } from '@/store/server/history/types'
 import { FileStateFileThumbnail } from '@/store/files/types'
-import { escapePath, formatPrintTime } from '@/plugins/helpers'
+import { convertPrintStatusIcon, escapePath, formatPrintTime } from '@/plugins/helpers'
 @Component
 export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
@@ -127,11 +127,11 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
     }
 
     get statusIcon() {
-        return this.$store.getters['server/history/getPrintStatusIcon'](this.job.status)
+        return convertPrintStatusIcon(this.job.status)
     }
 
     get statusColor() {
-        return this.$store.getters['server/history/getPrintStatusIconColor'](this.job.status)
+        return convertPrintStatusIcon(this.job.status)
     }
 
     get statusName() {
