@@ -218,6 +218,7 @@
         "FilamentWeight": "Poids du filament",
         "Files": "Fichiers",
         "Filesize": "Taille du fichier",
+        "FilterGcodeFiles": "Filtrer les fichiers G-code",
         "Free": "Gratuit",
         "FreeDisk": "Disque libre",
         "GCodeFiles": "Fichiers G-Code",

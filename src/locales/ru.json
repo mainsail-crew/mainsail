@@ -248,6 +248,7 @@
         "FilamentWeight": "Вес прутка",
         "Files": "Кол-во файлов на странице",
         "Filesize": "Размер файла",
+        "FilterGcodeFiles": "Фильтровать G-коды",
         "Free": "Свободно",
         "FreeDisk": "Свободно места",
         "GCodeFiles": "G-код файлы",

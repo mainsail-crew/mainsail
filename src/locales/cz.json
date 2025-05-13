@@ -190,6 +190,7 @@
         "FilamentWeight": "Hmotnost filamentu",
         "Files": "Soubory",
         "Filesize": "Velikost souboru",
+        "FilterGcodeFiles": "Filtrovat G-code soubory",
         "Free": "Volné",
         "FreeDisk": "Volné místo na disku",
         "GCodeFiles": "Soubory G-Code",

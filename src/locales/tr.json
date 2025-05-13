@@ -202,6 +202,7 @@
         "FilamentWeight": "Filament Ağırlığı",
         "Files": "Dosyalar",
         "Filesize": "Dosya boyutu",
+        "FilterGcodeFiles": "Gcode Dosyalarını Filtrele",
         "Free": "Boş",
         "FreeDisk": "Boş disk",
         "GCodeFiles": "G-Kod Dosyaları",

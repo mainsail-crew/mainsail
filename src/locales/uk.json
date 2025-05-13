@@ -235,6 +235,7 @@
         "FilamentWeight": "Вага Прутка",
         "Files": "Файл",
         "Filesize": "Розмір",
+        "FilterGcodeFiles": "Фільтрувати файли Gcode",
         "Free": "Вільно",
         "FreeDisk": "вільний диск",
         "GCodeFiles": "Файли G-Code",

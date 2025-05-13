@@ -140,5 +140,12 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',
         port: 8080,
+        proxy: {
+            '/printer': 'http://192.168.1.34:7125',
+            '/machine': 'http://192.168.1.34:7125',
+            '/server': 'http://192.168.1.34:7125',
+            '/access': 'http://192.168.1.34:7125',
+            '/history': 'http://192.168.1.34:7125'
+        }
     },
 })

@@ -249,6 +249,7 @@
         "FilamentWeight": "Nyomtatószál súlya",
         "Files": "Fájlok",
         "Filesize": "Fájl méret",
+        "FilterGcodeFiles": "G-kód fájlok szűrése",
         "Free": "Szabad",
         "FreeDisk": "Szabad terület",
         "GCodeFiles": "G-Code Fájlok",

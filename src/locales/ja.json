@@ -190,6 +190,7 @@
         "FilamentWeight": "重量",
         "Files": "ファイル",
         "Filesize": "サイズ",
+        "FilterGcodeFiles": "Gコードファイルをフィルター",
         "Free": "空き",
         "FreeDisk": "空きディスク",
         "GCodeFiles": "Gコードファイル",

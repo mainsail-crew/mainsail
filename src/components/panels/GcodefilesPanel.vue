@@ -14,6 +14,13 @@
                             hide-details
                             dense
                             style="max-width: 300px"></v-text-field>
+                        <v-btn
+                            :title="$t('Files.FilterGcodeFiles')"
+                            class="px-2 minwidth-0 ml-3"
+                            :loading="loadings.includes('gcodeUpload')"
+                            @click="clickUploadButton">
+                            <v-icon>{{ mdiFilterVariant }}</v-icon>
+                        </v-btn>
                         <v-spacer></v-spacer>
                         <v-btn
                             v-if="selectedFiles.length"
@@ -607,6 +614,7 @@ import {
     mdiVideo3d,
     mdiFileDocumentEditOutline,
     mdiContentCopy,
+    mdiFilterVariant,
 } from '@mdi/js'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
@@ -673,6 +681,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
     mdiCheckboxMarked = mdiCheckboxMarked
     mdiDragVertical = mdiDragVertical
+    mdiFilterVariant = mdiFilterVariant
 
     formatFilesize = formatFilesize
     sortFiles = sortFiles

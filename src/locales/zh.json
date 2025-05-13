@@ -249,6 +249,7 @@
         "FilamentWeight": "耗材重量",
         "Files": "每页文件数量",
         "Filesize": "文件大小",
+        "FilterGcodeFiles": "筛选 G-code 文件",
         "Free": "未使用",
         "FreeDisk": "可用磁盘空间",
         "GCodeFiles": "G-Code文件",
