@@ -13,6 +13,7 @@
             <the-editor />
             <the-timelapse-rendering-snackbar />
             <the-fullscreen-upload />
+            <the-launch-file-handler />
             <the-upload-snackbar />
             <the-manual-probe-dialog />
             <the-bed-screws-dialog />
@@ -38,6 +39,7 @@ import TheEditor from '@/components/TheEditor.vue'
 import { panelToolbarHeight, topbarHeight, navigationItemHeight } from '@/store/variables'
 import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSnackbar.vue'
 import TheFullscreenUpload from '@/components/TheFullscreenUpload.vue'
+import TheLaunchFileHandler from '@/components/TheLaunchFileHandler.vue'
 import TheUploadSnackbar from '@/components/TheUploadSnackbar.vue'
 import TheManualProbeDialog from '@/components/dialogs/TheManualProbeDialog.vue'
 import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
@@ -59,6 +61,7 @@ Component.registerHooks(['metaInfo'])
         TheTopbar,
         TheSidebar,
         TheFullscreenUpload,
+        TheLaunchFileHandler,
         TheUploadSnackbar,
         TheManualProbeDialog,
         TheBedScrewsDialog,

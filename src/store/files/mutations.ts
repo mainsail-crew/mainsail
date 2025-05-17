@@ -12,6 +12,7 @@ export const mutations: MutationTree<FileState> = {
 
     createRootDir(state, payload) {
         state.filetree.push({
+            path: '',
             isDirectory: true,
             filename: payload.name,
             modified: new Date(),
@@ -77,6 +78,7 @@ export const mutations: MutationTree<FileState> = {
                 const modified = new Date(payload.item.modified * 1000)
 
                 parent.push({
+                    path,
                     isDirectory: false,
                     filename: filename,
                     modified: modified,
@@ -213,6 +215,7 @@ export const mutations: MutationTree<FileState> = {
 
         if (parent) {
             parent.push({
+                path,
                 isDirectory: true,
                 filename: dirname,
                 modified: payload.item.modified ?? new Date(),

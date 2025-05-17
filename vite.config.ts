@@ -39,6 +39,17 @@ const PWAConfig: Partial<VitePWAOptions> = {
                 purpose: 'any maskable',
             },
         ],
+        file_handlers: [
+            {
+                action: '/',
+                accept: {
+                    'text/gcode': ['.gcode', '.g', '.gco', '.ufp', '.nc'],
+                },
+            },
+        ],
+        launch_handler: {
+            client_mode: ['focus-existing'],
+        },
     },
     workbox: {
         globPatterns: ['**/*.{js,css,html,woff,woff2,png,svg}'],

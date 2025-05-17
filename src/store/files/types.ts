@@ -14,6 +14,7 @@ export interface FileState {
 }
 
 export interface FileStateFile {
+    path: string
     isDirectory: boolean
     filename: string
     modified: Date
