@@ -61,6 +61,7 @@ import MiscellaneousSensor from '@/components/panels/Miscellaneous/Miscellaneous
 import MoonrakerSensor from '@/components/panels/Miscellaneous/MoonrakerSensor.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiDipSwitch } from '@mdi/js'
+import MiscellaneousMixin from '@/components/mixins/miscellaneous'
 @Component({
     components: {
         Panel,
@@ -71,7 +72,7 @@ import { mdiDipSwitch } from '@mdi/js'
         MoonrakerSensor,
     },
 })
-export default class MiscellaneousPanel extends Mixins(BaseMixin) {
+export default class MiscellaneousPanel extends Mixins(BaseMixin, MiscellaneousMixin) {
     mdiDipSwitch = mdiDipSwitch
 
     get filamentSensors() {
@@ -80,24 +81,6 @@ export default class MiscellaneousPanel extends Mixins(BaseMixin) {
 
     get miscellaneous() {
         return this.$store.getters['printer/getMiscellaneous'] ?? []
-    }
-
-    get lights() {
-        const lights: { type: string; name: string }[] = []
-        const supportedObjects = ['dotstar', 'led', 'neopixel', 'pca9533', 'pca9632']
-
-        Object.keys(this.$store.state.printer).forEach((key) => {
-            const type = key.substring(0, key.indexOf(' '))
-            const name = key.substring(key.indexOf(' ') + 1)
-            if (!supportedObjects.includes(type) || name.startsWith('_')) return
-
-            lights.push({
-                type,
-                name,
-            })
-        })
-
-        return lights
     }
 
     get miscellaneousSensors() {

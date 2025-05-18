@@ -3,16 +3,16 @@
         <template v-if="boolForm">
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.MiscellaneousTab.CreatePreset') }}</h3>
-                <settings-row :title="$t('Settings.MiscellaneousTab.Name').toString()">
+                <settings-row :title="$t('Settings.MiscellaneousTab.Name')">
                     <v-text-field
                         v-model="form.name"
                         hide-details="auto"
                         :rules="[rules.required, rules.presetUnique]"
                         dense
-                        outlined></v-text-field>
+                        outlined />
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.MiscellaneousTab.Color').toString()">
+                <settings-row :title="$t('Settings.MiscellaneousTab.Color')">
                     <v-row>
                         <v-col class="text-center">
                             <color-picker
@@ -98,11 +98,11 @@
         </template>
         <template v-else>
             <v-card-text>
-                <h3 class="text-h5 mb-3">{{ $t('Settings.MiscellaneousTab.LightPresets', { name: light.name }) }}</h3>
+                <h3 class="text-h5 mb-3">{{ $t('Settings.MiscellaneousTab.LightPresets', { name: outputName }) }}</h3>
                 <template v-if="light">
                     <template v-if="presets.length">
                         <div v-for="(preset, index) in presets" :key="preset.id">
-                            <v-divider v-if="index" class="my-2"></v-divider>
+                            <v-divider v-if="index" class="my-2" />
                             <settings-row
                                 :title="preset.name"
                                 :sub-title="entryDescriptionText(preset)"
@@ -154,12 +154,11 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+import BaseMixin from '../../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiDelete, mdiPencil } from '@mdi/js'
 import { caseInsensitiveSort, convertName } from '@/plugins/helpers'
-import { PrinterStateLight } from '@/store/printer/types'
-import { GuiMiscellaneousStateEntry, GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
+import { GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
 import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
 import iro from '@jaames/iro'
 import { Debounce } from 'vue-debounce-decorator'
@@ -183,9 +182,9 @@ export default class SettingsMiscellaneousTabLightPresets extends Mixins(BaseMix
 
     convertName = convertName
 
-    private boolForm = false
+    boolForm = false
 
-    private form: {
+    form: {
         id: string | null
         name: string
         red: number | null
@@ -201,62 +200,102 @@ export default class SettingsMiscellaneousTabLightPresets extends Mixins(BaseMix
         white: null,
     }
 
-    private rules = {
+    rules = {
         required: (value: string) => value !== '' || 'required',
         presetUnique: (value: string) => !this.existsPresetName(value) || 'Name already exists',
         min: (value: number) => value >= 0 || 'Must be minimum 0',
         max: (value: number) => value <= 255 || 'Must be smaller then 256',
     }
 
-    @Prop({ type: Object, default: null })
-    declare light: PrinterStateLight | null
+    @Prop({ type: String, required: true }) declare type: string
+    @Prop({ type: String, required: true }) declare name: string
+
+    get outputName() {
+        return this.convertName(this.name)
+    }
 
     get entry() {
-        return this.$store.getters['gui/miscellaneous/getEntry']({
-            type: this.light?.type,
-            name: this.light?.name,
-        }) as GuiMiscellaneousStateEntry | null
+        const key = Object.keys(this.$store.state.gui.miscellaneous.entries).find((key) => {
+            const entry = this.$store.state.gui.miscellaneous.entries[key]
+
+            return entry.type === this.type && entry.name === this.name
+        })
+
+        return this.$store.state.gui.miscellaneous.entries[key ?? ''] ?? {}
     }
 
     get presets() {
         if (!this.entry) return []
 
+        window.console.log('presets', this.entry)
+
         const presets: GuiMiscellaneousStateEntryPreset[] = []
-        Object.entries(this.entry.presets).forEach(([key, preset]) => {
+        /*Object.entries(this.entry.presets).forEach(([key, preset]) => {
             presets.push({
                 ...preset,
                 id: key,
             })
-        })
-        window.console.log('getEntryPresets', presets)
+        })*/
 
         return caseInsensitiveSort(presets, 'name')
     }
 
+    get light() {
+        const printer = this.$store.state.printer ?? {}
+        const key = `${this.type} ${this.name}`
+
+        return printer[key] ?? {}
+    }
+
+    get settings() {
+        const settings = this.$store.state.printer.configfile?.settings ?? {}
+        const key = `${this.type} ${this.name}`
+
+        return settings[key] ?? {}
+    }
+
+    get colorOrder() {
+        if (this.type.toLowerCase() === 'led') {
+            let colorOrder = ''
+            if ('red_pin' in this.settings) colorOrder += 'R'
+            if ('green_pin' in this.settings) colorOrder += 'G'
+            if ('blue_pin' in this.settings) colorOrder += 'B'
+            if ('white_pin' in this.settings) colorOrder += 'W'
+
+            return colorOrder
+        }
+
+        return this.settings.color_order ?? ''
+    }
+
     get existRed() {
-        return this.light?.colorOrder.indexOf('R') !== -1
+        return this.colorOrder.includes('R')
     }
 
     get existGreen() {
-        return this.light?.colorOrder.indexOf('G') !== -1
+        return this.colorOrder.includes('G')
     }
 
     get existBlue() {
-        return this.light?.colorOrder.indexOf('B') !== -1
+        return this.colorOrder.includes('B')
     }
 
     get existWhite() {
-        return this.light?.colorOrder.indexOf('W') !== -1
+        return this.colorOrder.includes('W')
     }
 
     get colorRGB() {
-        return `rgb(${Math.round(this.form.red ?? 0)}, ${Math.round(this.form.green ?? 0)}, ${Math.round(
-            this.form.blue ?? 0
-        )})`
+        const red = Math.round(this.form.red ?? 0)
+        const green = Math.round(this.form.green ?? 0)
+        const blue = Math.round(this.form.blue ?? 0)
+
+        return `rgb(${red}, ${green}, ${blue})`
     }
 
     get colorRGBW() {
-        return `rgba(255, 255, 255, ${(this.form.white ?? 0) / 255})`
+        const white = Math.round(this.form.white ?? 0) / 255
+
+        return `rgba(255, 255, 255, ${white})`
     }
 
     get redInt() {

@@ -11,6 +11,23 @@
                 </v-btn>
             </template>
             <v-card-text>
+                <template v-if="presets.length">
+                    <v-row>
+                        <v-col class="light-presets-container pt-0 d-flex flex-wrap flex-row justify-center">
+                            <v-tooltip v-for="preset in presets" :key="preset.id" top>
+                                <template #activator="{ on, attrs }">
+                                    <div
+                                        :style="presetStyle(preset)"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        @click="usePreset(preset)" />
+                                </template>
+                                <span>{{ preset.name }}</span>
+                            </v-tooltip>
+                        </v-col>
+                    </v-row>
+                    <v-divider class="my-3" />
+                </template>
                 <v-row>
                     <v-col class="text-center">
                         <color-picker
@@ -96,11 +113,12 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { mdiCloseThick, mdiLightbulbOutline } from '@mdi/js'
 import BaseMixin from '@/components/mixins/base'
-import { convertName } from '@/plugins/helpers'
+import { caseInsensitiveSort, convertName } from '@/plugins/helpers'
 import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
 import iro from '@jaames/iro'
 import { IroColor } from '@irojs/iro-core'
 import { Debounce } from 'vue-debounce-decorator'
+import { GuiMiscellaneousStateEntry, GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
 
 interface ColorData {
     red: number
@@ -119,6 +137,7 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
     @Prop({ type: Boolean, default: false }) showDialog!: boolean
     @Prop({ type: String, required: true }) type!: string
     @Prop({ type: String, required: true }) name!: string
+    @Prop({ type: Object, required: false }) group!: GuiMiscellaneousStateEntry
     @Prop({ type: Number, default: 1 }) index!: number
 
     get outputName() {
@@ -130,6 +149,22 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
 
         const key = `${this.type.toLowerCase()} ${this.name.toLowerCase()}`
         return settings[key] ?? {}
+    }
+
+    get presets() {
+        const presets: GuiMiscellaneousStateEntryPreset[] = []
+        /*Object.entries(this.group?.presets).forEach(([key, preset]) => {
+            presets.push({
+                name: preset.name,
+                red: preset.red,
+                green: preset.green,
+                blue: preset.blue,
+                white: preset.white,
+                id: key,
+            })
+        })*/
+
+        return caseInsensitiveSort(presets, 'name')
     }
 
     get colorOrder() {

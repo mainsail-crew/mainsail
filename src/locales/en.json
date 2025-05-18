@@ -1090,6 +1090,7 @@
             "Color": "Color",
             "CreateGroup": "Create group",
             "CreatePreset": "Create preset",
+            "EditGroup": "Edit group",
             "End": "End",
             "EndDescription": "Last LED of this group.",
             "Groups": "Groups",

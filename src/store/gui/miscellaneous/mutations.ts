@@ -7,6 +7,7 @@ import {
     GuiMiscellaneousStateEntryLightgroup,
     GuiMiscellaneousStateEntryPreset,
 } from '@/store/gui/miscellaneous/types'
+import { v4 as uuidv4 } from 'uuid'
 
 export const mutations: MutationTree<GuiMiscellaneousState> = {
     reset(state) {
@@ -24,21 +25,21 @@ export const mutations: MutationTree<GuiMiscellaneousState> = {
         Vue.set(state.entries, payload.id, values)
     },
 
-    updateLightgroup(state, payload: payloadUpdateLightgroup) {
-        const lightgroup: GuiMiscellaneousStateEntryLightgroup = {
-            name: payload.values.name,
-            start: parseInt(payload.values.start.toString()),
-            end: parseInt(payload.values.end.toString()),
-        }
+    storeLightgroup(state, payload: payloadCreateLightgroup) {
+        const lightgroupId = uuidv4()
 
-        Vue.set(state.entries[payload.entryId].lightgroups, payload.lightgroupId, lightgroup)
+        Vue.set(state.entries[payload.entryId].lightgroups, lightgroupId, payload.values)
+    },
+
+    updateLightgroup(state, payload: payloadUpdateLightgroup) {
+        Vue.set(state.entries[payload.entryId].lightgroups, payload.lightgroupId, payload.values)
     },
 
     destroyLightgroup(state, payload: payloadDestroyLightgroup) {
-        const entries = { ...state.entries }
-        delete entries[payload.entryId].lightgroups[payload.lightgroupId]
+        const entry = { ...state.entries[payload.entryId] }
+        delete entry.lightgroups[payload.lightgroupId]
 
-        Vue.set(state, 'entries', entries)
+        Vue.set(state.entries, payload.entryId, entry)
     },
 
     updatePreset(state, payload: payloadUpdatePreset) {
@@ -67,6 +68,11 @@ interface payloadStore {
         type: string
         name: string
     }
+}
+
+interface payloadCreateLightgroup {
+    entryId: string
+    values: GuiMiscellaneousStateEntryLightgroup
 }
 
 interface payloadUpdateLightgroup {
