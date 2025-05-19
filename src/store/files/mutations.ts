@@ -3,7 +3,7 @@ import { getDefaultState } from './index'
 import { findDirectory } from '@/plugins/helpers'
 import { MutationTree } from 'vuex'
 import { FileState, FileStateFile } from '@/store/files/types'
-import { allowedMetadata } from '@/store/variables'
+import { allowedMetadata, validGcodeExtensions } from '@/store/variables'
 
 export const mutations: MutationTree<FileState> = {
     reset(state) {
@@ -68,6 +68,20 @@ export const mutations: MutationTree<FileState> = {
             filename = payload.item.path.substr(payload.item.path.lastIndexOf('/')).replace('/', '')
         const path = payload.item.path.substr(0, payload.item.path.lastIndexOf('/'))
         const parent = findDirectory(state.filetree, (payload.item.root + '/' + path).split('/'))
+
+        if (payload.item.root === 'gcodes') {
+            const extension = filename.substring(filename.lastIndexOf('.'))
+            const lastModified = state.latestGcodeFile?.modified ?? 0
+            if (validGcodeExtensions.includes(extension) && payload.item.modified > lastModified) {
+                state.latestGcodeFile = {
+                    path,
+                    filename,
+                    modified: payload.item.modified,
+                    size: payload.item.size,
+                    permissions: payload.item.permissions,
+                }
+            }
+        }
 
         if (parent) {
             const indexFile = parent.findIndex(

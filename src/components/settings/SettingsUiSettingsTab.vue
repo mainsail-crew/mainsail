@@ -329,6 +329,13 @@
                     :dynamic-slot-width="true">
                     <v-switch v-model="hideOtherInstances" hide-details class="mt-0" />
                 </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.ShowPrintOnUpload')"
+                    :sub-title="$t('Settings.UiSettingsTab.ShowPrintOnUploadDescription')"
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="showPrintOnUpload" hide-details class="mt-0" />
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -709,6 +716,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
 
     set hideOtherInstances(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideOtherInstances', value: newVal })
+    }
+
+    get showPrintOnUpload() {
+        return this.$store.state.gui.uiSettings.showPrintOnUpload ?? false
+    }
+
+    set showPrintOnUpload(newVal) {
+        this.$store.dispatch('gui/saveSettingInLocalStorage', { name: 'uiSettings.showPrintOnUpload', value: newVal })
     }
 
     clearColorObject(color: any): string {

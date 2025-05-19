@@ -188,6 +188,8 @@ export const getDefaultState = (): GuiState => {
             dashboardFilesFilter: ['new', 'failed', 'completed'],
             dashboardHistoryLimit: 5,
             hideOtherInstances: false,
+            // default to showPrintOnUpload if the user agent appears to be a slicer
+            showPrintOnUpload: navigator.userAgent.toLowerCase().includes('slicer'),
         },
         view: {
             afc: {

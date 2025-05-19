@@ -13,7 +13,7 @@ import BaseMixin from '@/components/mixins/base'
 import FilesMixin from '@/components/mixins/files'
 import Component from 'vue-class-component'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
-import { FileStateGcodefile } from '@/store/files/types'
+import { FileStateGcodefile, FileStateSimpleFile } from '@/store/files/types'
 import { launchCount } from '@/plugins/pwaLaunchCount'
 
 @Component({
@@ -56,8 +56,27 @@ export default class TheLaunchFileHandler extends Mixins(BaseMixin, FilesMixin) 
         }
     }
 
+    get latestGcodeFile(): FileStateSimpleFile | null {
+        return this.$store.state.files.latestGcodeFile as FileStateSimpleFile | null
+    }
+
+    get showPrintOnUpload(): boolean {
+        return this.$store.state.gui.uiSettings.showPrintOnUpload
+    }
+
+    @Watch('latestGcodeFile')
+    onLatestGcodeFileChange(file: FileStateSimpleFile | null) {
+        const latestKnownGcodeFileTime = Number(localStorage.getItem('latestKnownGcodeFileTime') ?? 0)
+        if (file && file.modified > latestKnownGcodeFileTime) {
+            localStorage.setItem('latestKnownGcodeFileTime', String(file.modified))
+            if (latestKnownGcodeFileTime > 0 && this.showPrintOnUpload)
+                this.uploadedFile = { path: file.path, filename: file.filename }
+        }
+    }
+
     mounted() {
         window.launchQueue?.setConsumer(this.onLaunch)
+        if (this.latestGcodeFile) this.onLatestGcodeFileChange(this.latestGcodeFile)
     }
 
     beforeDestroy() {
