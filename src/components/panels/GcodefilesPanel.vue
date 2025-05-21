@@ -17,8 +17,7 @@
                         <v-btn
                             :title="$t('Files.FilterGcodeFiles')"
                             class="px-2 minwidth-0 ml-3"
-                            :loading="loadings.includes('gcodeUpload')"
-                            @click="clickUploadButton">
+                            @click="clickFilterButton">
                             <v-icon>{{ mdiFilterVariant }}</v-icon>
                         </v-btn>
                         <v-spacer></v-spacer>
@@ -422,6 +421,32 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+
+        <v-dialog v-model="dialogFilterGcodeFiles.show" :max-width="400" content-class="overflow-x-hidden" @click:outside="closeDialog" @keydown.esc="closeDialog">
+            <panel
+                :title="$t('Files.FilterGcodeFiles')"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="dialogFilterGcodeFiles.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <!-- TODO: Make this localized. -->
+                <template>
+                    <v-card-text class="py-0">
+                        <settings-row title="Match nozzle diameter">
+                            <v-switch v-model="filterGcodeFiles.onlyShowMatchingNozzleDiameter" hide-details class="mt-0" />
+                        </settings-row>
+                    </v-card-text>
+                </template>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <!-- TODO: Localize "done" text. Would be {{ $t('Something.Done') }}-->
+                    <v-btn color="" text @click="dialogFilterGcodeFiles.show = false">{{ "Done" }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
             <panel :title="$t('Files.RenameFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
                 <template #buttons>
@@ -699,6 +724,14 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     private dialogCreateDirectory = {
         show: false,
         name: '',
+    }
+
+    private dialogFilterGcodeFiles = {
+        show: false
+    }
+
+    private filterGcodeFiles = {
+        onlyShowMatchingNozzleDiameter: false
     }
 
     private contextMenu: contextMenu = {
@@ -1173,6 +1206,11 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
             { path: 'gcodes' + this.currentPath },
             { action: 'files/getDirectory' }
         )
+    }
+
+    clickFilterButton() {
+        this.dialogFilterGcodeFiles.show = true
+        console.log("filter button clicked")
     }
 
     advancedSearch(value: any, search: string | null) {
