@@ -131,7 +131,7 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
         return this.thumbnails.find((thumbnail) => thumbnail.width >= thumbnailBigMin)
     }
 
-    get currentPathWithSlash() {
+    get currentPathWithoutSlash() {
         if (this.currentPath.startsWith('/')) return this.currentPath.substring(1)
 
         return this.currentPath
@@ -141,7 +141,7 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
         if (this.bigThumbnail === undefined || !('relative_path' in this.bigThumbnail)) return null
 
         const baseArray = [this.apiUrl, 'server/files/gcodes']
-        if (this.currentPathWithSlash) baseArray.push(this.currentPathWithSlash)
+        if (this.currentPathWithoutSlash) baseArray.push(this.currentPathWithoutSlash)
         baseArray.push(this.bigThumbnail.relative_path)
         const baseUrl = baseArray.join('/')
 
