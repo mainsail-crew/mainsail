@@ -210,6 +210,7 @@ export const getDefaultState = (): GuiState => {
             },
             gcodefiles: {
                 countPerPage: 10,
+                search: '',
                 sortBy: 'modified',
                 sortDesc: true,
                 showHiddenFiles: false,
