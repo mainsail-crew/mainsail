@@ -422,9 +422,10 @@
             </panel>
         </v-dialog>
 
-        <v-dialog v-model="dialogFilterGcodeFiles.show" :max-width="400" content-class="overflow-x-hidden" @click:outside="closeDialog" @keydown.esc="closeDialog">
+        <v-dialog v-model="dialogFilterGcodeFiles.show" :max-width="400" content-class="overflow-x-hidden">
             <panel
                 :title="$t('Files.FilterGcodeFiles')"
+                card-class=""
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogFilterGcodeFiles.show = false">
@@ -644,6 +645,7 @@ import {
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 import ControlMixin from '@/components/mixins/control'
+import ExtruderMixin from '@/components/mixins/extruder'
 import PathNavigation from '@/components/ui/PathNavigation.vue'
 
 interface contextMenu {
@@ -683,7 +685,7 @@ interface tableColumnSetting {
 @Component({
     components: { StartPrintDialog, AddBatchToQueueDialog, Panel, SettingsRow, PathNavigation, draggable },
 })
-export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
+export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin, ExtruderMixin) {
     mdiContentCopy = mdiContentCopy
     mdiFile = mdiFile
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
@@ -1027,7 +1029,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get files() {
-        return this.$store.getters['files/getGcodeFiles'](this.currentPath, this.showHiddenFiles, this.showPrintedFiles)
+        const files = this.$store.getters['files/getGcodeFiles'](this.currentPath, this.showHiddenFiles, this.showPrintedFiles)
+        // console.log(files.filter( (file) => (file.isDirectory || !this.filterGcodeFiles.onlyShowMatchingNozzleDiameter || file.nozzle_diameter === this.nozzleDiameter)))
+        return files.filter( (file) => (file.isDirectory || !this.filterGcodeFiles.onlyShowMatchingNozzleDiameter || file.nozzle_diameter === this.nozzleDiameter))
     }
 
     get filteredHeaders() {
@@ -1210,7 +1214,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin) {
 
     clickFilterButton() {
         this.dialogFilterGcodeFiles.show = true
-        console.log("filter button clicked")
     }
 
     advancedSearch(value: any, search: string | null) {
