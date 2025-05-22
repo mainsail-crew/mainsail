@@ -423,10 +423,7 @@
         </v-dialog>
 
         <v-dialog v-model="dialogFilterGcodeFiles.show" :max-width="400" content-class="overflow-x-hidden">
-            <panel
-                :title="$t('Files.FilterGcodeFiles')"
-                card-class=""
-                :margin-bottom="false">
+            <panel :title="$t('Files.FilterGcodeFiles')" card-class="" :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogFilterGcodeFiles.show = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -436,14 +433,17 @@
                 <template>
                     <v-card-text class="py-0">
                         <settings-row title="Match nozzle diameter">
-                            <v-switch v-model="filterGcodeFiles.onlyShowMatchingNozzleDiameter" hide-details class="mt-0" />
+                            <v-switch
+                                v-model="filterGcodeFiles.onlyShowMatchingNozzleDiameter"
+                                hide-details
+                                class="mt-0" />
                         </settings-row>
                     </v-card-text>
                 </template>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <!-- TODO: Localize "done" text. Would be {{ $t('Something.Done') }}-->
-                    <v-btn color="" text @click="dialogFilterGcodeFiles.show = false">{{ "Done" }}</v-btn>
+                    <v-btn color="" text @click="dialogFilterGcodeFiles.show = false">{{ 'Done' }}</v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -729,11 +729,11 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin, Ext
     }
 
     private dialogFilterGcodeFiles = {
-        show: false
+        show: false,
     }
 
     private filterGcodeFiles = {
-        onlyShowMatchingNozzleDiameter: false
+        onlyShowMatchingNozzleDiameter: false,
     }
 
     private contextMenu: contextMenu = {
@@ -1029,9 +1029,18 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin, Ext
     }
 
     get files() {
-        const files = this.$store.getters['files/getGcodeFiles'](this.currentPath, this.showHiddenFiles, this.showPrintedFiles)
+        const files = this.$store.getters['files/getGcodeFiles'](
+            this.currentPath,
+            this.showHiddenFiles,
+            this.showPrintedFiles
+        )
         // console.log(files.filter( (file) => (file.isDirectory || !this.filterGcodeFiles.onlyShowMatchingNozzleDiameter || file.nozzle_diameter === this.nozzleDiameter)))
-        return files.filter( (file) => (file.isDirectory || !this.filterGcodeFiles.onlyShowMatchingNozzleDiameter || file.nozzle_diameter === this.nozzleDiameter))
+        return files.filter(
+            (file) =>
+                file.isDirectory ||
+                !this.filterGcodeFiles.onlyShowMatchingNozzleDiameter ||
+                file.nozzle_diameter === this.nozzleDiameter
+        )
     }
 
     get filteredHeaders() {
