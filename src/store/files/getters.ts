@@ -13,18 +13,19 @@ import { escapePath } from '@/plugins/helpers'
 // eslint-disable-next-line
 export const getters: GetterTree<FileState, any> = {
     getDirectory: (state) => (requestedPath: string) => {
-        if (requestedPath.startsWith('/')) requestedPath = requestedPath.substr(1)
-        if (requestedPath.endsWith('/')) requestedPath = requestedPath.substr(0, requestedPath.length - 1)
+        if (requestedPath.startsWith('/')) requestedPath = requestedPath.substring(1)
+        if (requestedPath.endsWith('/')) requestedPath = requestedPath.substring(0, requestedPath.length - 1)
 
         const findDirectory = function (filetree: FileStateFile, pathArray: string[]): FileStateFile | null {
             if (pathArray.length) {
                 const newFiletree = filetree?.childrens?.find(
                     (element: FileStateFile) => element.isDirectory && element.filename === pathArray[0]
                 )
-                if (newFiletree) {
-                    pathArray.shift()
-                    return findDirectory(newFiletree, pathArray)
-                } else return null
+
+                if (!newFiletree) return null
+
+                pathArray.shift()
+                return findDirectory(newFiletree, pathArray)
             }
 
             return filetree
