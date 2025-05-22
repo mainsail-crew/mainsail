@@ -42,23 +42,21 @@ export const mutations: MutationTree<GuiMiscellaneousState> = {
         Vue.set(state.entries, payload.entryId, entry)
     },
 
-    updatePreset(state, payload: payloadUpdatePreset) {
-        const preset: GuiMiscellaneousStateEntryPreset = {
-            name: payload.values.name,
-            red: payload.values.red,
-            green: payload.values.green,
-            blue: payload.values.blue,
-            white: payload.values.white,
-        }
+    storePreset(state, payload: payloadCreatePreset) {
+        const presetId = uuidv4()
 
-        Vue.set(state.entries[payload.entryId].presets, payload.presetId, preset)
+        Vue.set(state.entries[payload.entryId].presets, presetId, payload.values)
+    },
+
+    updatePreset(state, payload: payloadUpdatePreset) {
+        Vue.set(state.entries[payload.entryId].presets, payload.presetId, payload.values)
     },
 
     destroyPreset(state, payload: payloadDestroyPreset) {
-        const entries = { ...state.entries }
-        delete entries[payload.entryId].presets[payload.presetId]
+        const entry = { ...state.entries[payload.entryId] }
+        delete entry.presets[payload.presetId]
 
-        Vue.set(state, 'entries', entries)
+        Vue.set(state.entries, payload.entryId, entry)
     },
 }
 
@@ -84,6 +82,11 @@ interface payloadUpdateLightgroup {
 interface payloadDestroyLightgroup {
     entryId: string
     lightgroupId: string
+}
+
+interface payloadCreatePreset {
+    entryId: string
+    values: GuiMiscellaneousStateEntryPreset
 }
 
 interface payloadUpdatePreset {

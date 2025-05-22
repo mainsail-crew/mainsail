@@ -21,11 +21,11 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
         })
     },
 
-    async store({ commit, dispatch }, payload: payloadStore) {
+    store({ commit, dispatch }, payload: payloadStore) {
         const id = uuidv4()
 
-        await commit('store', { id, values: payload })
-        await dispatch('upload', id)
+        commit('store', { id, values: payload })
+        dispatch('upload', id)
 
         return id
     },
@@ -73,72 +73,61 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
         dispatch('upload', entryId)
     },
 
-    async storePreset({ commit, dispatch, getters }, payload: payloadStorePreset) {
-        let entryId = getters['getId'](payload.entry)
-        if (entryId === null) entryId = await dispatch('store', payload.entry)
+    storePreset(
+        { commit, dispatch, state },
+        payload: {
+            type: string
+            name: string
+            preset: {
+                name: string
+                red: number | null
+                green: number | null
+                blue: number | null
+                white: number | null
+            }
+        }
+    ) {
+        let entryId =
+            Object.keys(state.entries).find(
+                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
+            ) ?? null
 
-        const presetId = uuidv4()
-        await commit('updatePreset', { entryId, presetId, values: payload.preset })
+        if (entryId === null) {
+            entryId = uuidv4()
+            commit('store', { id: entryId, values: { name: payload.name, type: payload.type } })
+        }
 
-        await dispatch('upload', entryId)
-
-        return presetId
+        commit('storePreset', { entryId, values: payload.preset })
+        dispatch('upload', entryId)
     },
 
-    async updatePreset({ commit, dispatch, getters }, payload: payloadStorePreset) {
-        const entryId = getters['getId'](payload.entry)
+    updatePreset(
+        { commit, dispatch, state },
+        payload: { type: string; name: string; presetId: string; preset: GuiMiscellaneousStateEntryPreset }
+    ) {
+        const entryId =
+            Object.keys(state.entries).find(
+                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
+            ) ?? null
         if (entryId === null) return
 
-        await commit('updatePreset', { entryId, presetId: payload.preset.id, values: payload.preset })
-
-        await dispatch('upload', entryId)
-
-        return payload.preset.id
+        commit('updatePreset', { entryId, presetId: payload.presetId, values: payload.preset })
+        dispatch('upload', entryId)
     },
 
-    async deletePreset({ commit, dispatch, getters }, payload: payloadDeletePreset) {
-        const entryId = getters['getId'](payload.entry)
+    deletePreset({ commit, dispatch, state }, payload: { type: string; name: string; presetId: string }) {
+        const entryId =
+            Object.keys(state.entries).find(
+                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
+            ) ?? null
         if (entryId === null) return
 
-        await commit('destroyPreset', { entryId, presetId: payload.presetId })
-
-        await dispatch('upload', entryId)
+        commit('destroyPreset', { entryId, presetId: payload.presetId })
+        dispatch('upload', entryId)
     },
 }
 
 interface payloadStore {
     type: string
     name: string
-}
-
-interface payloadStoreLightgroup {
-    entry: {
-        type: string
-        name: string
-    }
-    lightgroup: GuiMiscellaneousStateEntryLightgroup
-}
-
-interface payloadDeleteLightgroup {
-    entry: {
-        type: string
-        name: string
-    }
-    lightgroupId: string
-}
-
-interface payloadStorePreset {
-    entry: {
-        type: string
-        name: string
-    }
-    preset: GuiMiscellaneousStateEntryPreset
-}
-
-interface payloadDeletePreset {
-    entry: {
-        type: string
-        name: string
-    }
-    presetId: string
 }

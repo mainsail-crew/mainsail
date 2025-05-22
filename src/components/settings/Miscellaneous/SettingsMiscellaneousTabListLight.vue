@@ -51,7 +51,7 @@ export default class SettingsMiscellaneousTabListLight extends Mixins(BaseMixin,
     }
 
     openPresets() {
-        window.console.log('openPresets')
+        this.$emit('open-page', { page: 'presets', type: this.type, name: this.name })
     }
 }
 </script>

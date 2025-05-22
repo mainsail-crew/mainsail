@@ -1091,6 +1091,7 @@
             "CreateGroup": "Create group",
             "CreatePreset": "Create preset",
             "EditGroup": "Edit group",
+            "EditPreset": "Edit preset",
             "End": "End",
             "EndDescription": "Last LED of this group.",
             "Groups": "Groups",

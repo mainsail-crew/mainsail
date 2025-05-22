@@ -13,17 +13,12 @@
             <v-card-text>
                 <template v-if="presets.length">
                     <v-row>
-                        <v-col class="light-presets-container pt-0 d-flex flex-wrap flex-row justify-center">
-                            <v-tooltip v-for="preset in presets" :key="preset.id" top>
-                                <template #activator="{ on, attrs }">
-                                    <div
-                                        :style="presetStyle(preset)"
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        @click="usePreset(preset)" />
-                                </template>
-                                <span>{{ preset.name }}</span>
-                            </v-tooltip>
+                        <v-col class="light-presets-container d-flex flex-wrap flex-row justify-center">
+                            <miscellaneous-light-neopixel-dialog-preset
+                                v-for="preset in presets"
+                                :key="preset.id"
+                                :preset="preset"
+                                @update-color="updateColor" />
                         </v-col>
                     </v-row>
                     <v-divider class="my-3" />
@@ -118,7 +113,8 @@ import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
 import iro from '@jaames/iro'
 import { IroColor } from '@irojs/iro-core'
 import { Debounce } from 'vue-debounce-decorator'
-import { GuiMiscellaneousStateEntry, GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
+import { GuiMiscellaneousStateEntry } from '@/store/gui/miscellaneous/types'
+import MiscellaneousLightNeopixelDialogPreset from '@/components/dialogs/MiscellaneousLightNeopixelDialogPreset.vue'
 
 interface ColorData {
     red: number
@@ -129,7 +125,9 @@ interface ColorData {
     [key: string]: number
 }
 
-@Component
+@Component({
+    components: { MiscellaneousLightNeopixelDialogPreset },
+})
 export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiLightbulbOutline = mdiLightbulbOutline
@@ -151,18 +149,24 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
         return settings[key] ?? {}
     }
 
+    get guiEntry() {
+        const entries = (this.$store.state.gui.miscellaneous.entries ?? {}) as GuiMiscellaneousStateEntry[]
+
+        const result = Object.entries(entries).find(([, value]) => {
+            return value.type === this.type && value.name === this.name
+        })
+
+        return result ? result[1] : null
+    }
+
     get presets() {
-        const presets: GuiMiscellaneousStateEntryPreset[] = []
-        /*Object.entries(this.group?.presets).forEach(([key, preset]) => {
-            presets.push({
-                name: preset.name,
-                red: preset.red,
-                green: preset.green,
-                blue: preset.blue,
-                white: preset.white,
-                id: key,
-            })
-        })*/
+        if (!this.guiEntry?.presets) return []
+
+        const presets = Object.entries(this.guiEntry.presets).map(([key, value]) => {
+            return { ...value, id: key }
+        })
+
+        window.console.log(presets)
 
         return caseInsensitiveSort(presets, 'name')
     }
@@ -377,3 +381,16 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
     }
 }
 </script>
+
+<style scoped>
+.light-presets-container {
+    gap: 6px;
+}
+
+.light-presets-container ::v-deep > div {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+</style>
