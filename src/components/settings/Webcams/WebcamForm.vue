@@ -122,7 +122,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="pt-1 pb-3">
-                            <div class="v-label v-label--active theme--dark text-subtitle-1">
+                            <div class="v-label v-label--active text-subtitle-1">
                                 {{ $t('Settings.WebcamsTab.FlipWebcam') }}
                             </div>
                         </v-col>
@@ -146,7 +146,7 @@
                     <template v-if="nozzleCrosshairAvialable">
                         <v-row>
                             <v-col class="pt-3 pb-3">
-                                <div class="v-label v-label--active theme--dark text-subtitle-1">
+                                <div class="v-label v-label--active text-subtitle-1">
                                     {{ $t('Settings.WebcamsTab.NozzleCrosshair') }}:
                                 </div>
                             </v-col>
@@ -175,8 +175,7 @@
                                         mode="rgba"
                                         @update:color="updateLogoColor" />
                                 </v-menu>
-                                <div
-                                    class="v-label v-label--active theme--dark text-subtitle-1 d-inline-block ml-2 mt-2">
+                                <div class="v-label v-label--active text-subtitle-1 d-inline-block ml-2 mt-2">
                                     {{ $t('Settings.WebcamsTab.Color') }}
                                 </div>
                             </v-col>
