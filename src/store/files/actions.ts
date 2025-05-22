@@ -236,7 +236,7 @@ export const actions: ActionTree<FileState, RootState> = {
             case 'create_dir':
                 commit('setCreateDir', payload)
 
-                // request the directory to get the files in it and more important the usage
+                // Request directory details to update disk usage
                 Vue.$socket.emit(
                     'server.files.get_directory',
                     { path: `${payload.item.root}/${payload.item.path}` },
