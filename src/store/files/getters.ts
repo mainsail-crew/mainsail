@@ -90,10 +90,8 @@ export const getters: GetterTree<FileState, any> = {
                 const fileTimestamp = typeof file.modified.getTime === 'function' ? file.modified.getTime() : 0
                 const tmp: FileStateGcodefile = {
                     ...file,
+                    full_filename: path ? path + '/' + file.filename : file.filename,
                     preheat_gcode: null,
-                    small_thumbnail: null,
-                    big_thumbnail: null,
-                    big_thumbnail_width: null,
                     count_printed: 0,
                     last_start_time: null,
                     last_end_time: null,
@@ -119,37 +117,8 @@ export const getters: GetterTree<FileState, any> = {
                     tmp.preheat_gcode = preheat_gcode_array.join('\n')
                 }
 
-                if (file.thumbnails?.length) {
-                    let subdirectory = ''
-                    if (path === null) {
-                        const pos = file.filename.lastIndexOf('/')
-                        if (pos > 0) subdirectory = '/' + file.filename.slice(0, pos)
-                    }
-
-                    const small_thumbnail = file.thumbnails.find(
-                        (thumb) =>
-                            thumb.width >= thumbnailSmallMin &&
-                            thumb.width <= thumbnailSmallMax &&
-                            thumb.height >= thumbnailSmallMin &&
-                            thumb.height <= thumbnailSmallMax
-                    )
-
-                    if (small_thumbnail && 'relative_path' in small_thumbnail) {
-                        tmp.small_thumbnail = `${baseURL}${escapePath(subdirectory + '/' + small_thumbnail.relative_path)}?timestamp=${fileTimestamp}`
-                    }
-
-                    const big_thumbnail = file.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
-
-                    if (big_thumbnail && 'relative_path' in big_thumbnail) {
-                        tmp.big_thumbnail = `${baseURL}${escapePath(subdirectory + '/' + big_thumbnail.relative_path)}?timestamp=${fileTimestamp}`
-
-                        tmp.big_thumbnail_width = big_thumbnail.width
-                    }
-                }
-
-                const fullFilename = path && path.length ? path + '/' + file.filename : file.filename
                 let histories = rootGetters['server/history/getPrintJobsForGcodes'](
-                    fullFilename,
+                    tmp.full_filename,
                     fileTimestamp,
                     file.size,
                     file.uuid ?? null,
