@@ -135,6 +135,11 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
             },
 
             {
+                value: 'iso',
+                text: `ISO (${date.toISOString().split('T')[0]})`,
+            },
+
+            {
                 value: 'mm-dd-yyyy',
                 text: `mm-dd-yyyy (${date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })})`,
             },

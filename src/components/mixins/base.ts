@@ -141,7 +141,7 @@ export default class BaseMixin extends Vue {
         return roots.findIndex((root: string) => root === 'gcodes') >= 0
     }
 
-    get formatDateOptions(): DateTimeFormatOptions {
+    get formatDateOptions(): DateTimeFormatOptions | null {
         const format = this.$store.state.gui.general.dateFormat
 
         switch (format) {
@@ -167,6 +167,8 @@ export default class BaseMixin extends Vue {
 
             case 'short':
                 return { month: 'short', day: '2-digit', year: 'numeric' }
+            case 'iso':
+                return null;
 
             default:
                 return { dateStyle: 'medium' }
@@ -245,7 +247,7 @@ export default class BaseMixin extends Vue {
             }
         }
 
-        return tmp.toLocaleDateString(locale, this.formatDateOptions)
+        return this.formatDateOptions ? tmp.toLocaleDateString(locale, this.formatDateOptions) : tmp.toISOString().split('T')[0]
     }
 
     formatTime(value: number | Date, boolSeconds = false): string {
