@@ -168,7 +168,7 @@ export default class BaseMixin extends Vue {
             case 'short':
                 return { month: 'short', day: '2-digit', year: 'numeric' }
             case 'iso':
-                return null;
+                return null
 
             default:
                 return { dateStyle: 'medium' }
@@ -247,7 +247,9 @@ export default class BaseMixin extends Vue {
             }
         }
 
-        return this.formatDateOptions ? tmp.toLocaleDateString(locale, this.formatDateOptions) : tmp.toISOString().split('T')[0]
+        return this.formatDateOptions
+            ? tmp.toLocaleDateString(locale, this.formatDateOptions)
+            : tmp.toISOString().split('T')[0]
     }
 
     formatTime(value: number | Date, boolSeconds = false): string {
