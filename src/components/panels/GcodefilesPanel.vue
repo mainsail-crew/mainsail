@@ -606,10 +606,18 @@
             :filename="dialogAddBatchToQueue.filename"
             @close="closeAddBatchToQueueDialog" />
     </div>
+    <panel :title="$t('Files.GCodeFiles')" :icon="mdiFileDocumentMultipleOutline" card-class="gcode-files-panel">
+        <v-card-text>
+            <gcodefiles-panel-header />
+            <gcodefiles-panel-header-path-size />
+        </v-card-text>
+        <v-divider class="mb-3" />
+        <gcodefiles-panel-table />
+    </panel>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { defaultBigThumbnailBackground, validGcodeExtensions } from '@/store/variables'
 import { escapePath, formatFilesize, formatPrintTime, sortFiles } from '@/plugins/helpers'
@@ -681,9 +689,13 @@ interface tableColumnSetting {
     pos?: number
     outputType?: 'string' | 'date' | 'length' | 'weight' | 'filesize' | 'temp' | 'time'
 }
+import GcodefilesMixin from '@/components/mixins/gcodefiles'
+import GcodefilesPanelHeader from '@/components/panels/Gcodefiles/GcodefilesPanelHeader.vue'
+import { mdiFileDocumentMultipleOutline } from '@mdi/js'
+import GcodefilesPanelHeaderPathSize from '@/components/panels/Gcodefiles/GcodefilesPanelHeaderPathSize.vue'
 
 @Component({
-    components: { StartPrintDialog, AddBatchToQueueDialog, Panel, SettingsRow, PathNavigation, draggable },
+    components: { GcodefilesPanelHeaderPathSize, GcodefilesPanelHeader },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin, ExtruderMixin) {
     mdiContentCopy = mdiContentCopy
@@ -1543,47 +1555,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin, Ext
                 return value
         }
     }
+export default class GcodefilesPanel extends Mixins(BaseMixin, GcodefilesMixin) {
+    mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
 }
 </script>
-
-<style>
-/*noinspection CssUnusedSymbol*/
-.files-table .v-data-table-header__icon {
-    margin-left: 7px;
-}
-
-.files-table .file-list-cursor:hover {
-    cursor: pointer;
-}
-
-/*noinspection CssUnusedSymbol*/
-.file-list--select-td {
-    width: 20px;
-}
-
-/*noinspection CssUnusedSymbol*/
-.files-table th.text-start {
-    padding-right: 0 !important;
-}
-
-/*noinspection CssUnusedSymbol*/
-.v-chip.minimum-chip {
-    padding: 0;
-    min-width: 24px;
-}
-
-/*noinspection CssUnusedSymbol*/
-.v-chip.minimum-chip .v-chip__content {
-    margin: 0 auto;
-}
-
-/*noinspection CssUnusedSymbol*/
-.file-list__count_printed {
-    position: relative;
-    top: 1px;
-}
-
-.handle {
-    cursor: move;
-}
-</style>

@@ -152,6 +152,7 @@ export interface GuiState {
         }
         gcodefiles: {
             countPerPage: number
+            search: string
             sortBy: string
             sortDesc: boolean
             showHiddenFiles: boolean
