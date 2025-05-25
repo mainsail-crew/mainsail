@@ -2,7 +2,11 @@
     <panel :title="$t('Panels.AfcPanel.Headline')" :collapsible="true" card-class="afc-control-panel">
         <template #icon><afc-logo class="panel-icon mr-2 w-24 h-24" /></template>
         <v-card-text>
-            <afc-panel-extruder v-for="extruder in extruders" :key="extruder" :name="extruder" />
+            <afc-panel-extruder
+                v-for="(extruder, index) in extruders"
+                :key="extruder"
+                :name="extruder"
+                :class="{ 'mt-3': index > 0 }" />
         </v-card-text>
     </panel>
 </template>

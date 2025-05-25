@@ -1,7 +1,7 @@
 <template>
-    <div class="rounded-lg grey darken-3 mt-3">
+    <div class="rounded-lg grey darken-3 border-1" :class="containerClasses">
         <v-row>
-            <v-col class="pl-6 py-1">
+            <v-col class="pl-6 py-4">
                 <v-tooltip top>
                     <template #activator="{ on, attr }">
                         <span
@@ -24,7 +24,11 @@
                     <span>{{ postSensorOutput }}</span>
                 </v-tooltip>
             </v-col>
-            <v-col class="py-1">bla</v-col>
+            <v-col class="py-4 text-center">{{ bufferOutput }}</v-col>
+            <v-col class="py-4 pr-6 text-right">
+                {{ state }}:
+                <span :class="stateLaneClasses">{{ stateLane }}</span>
+            </v-col>
         </v-row>
     </div>
 </template>
@@ -58,15 +62,26 @@ export default class AfcPanelExtruder extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get hasActiveLane() {
-        const lanes = this.afcExtruder.lanes ?? []
+        if (this.afcCurrentLane === null) return false
 
-        return lanes.includes(this.afcCurrentLoad)
+        const lanes = this.afcExtruder.lanes ?? []
+        return lanes.includes(this.afcCurrentLane?.name)
+    }
+
+    get containerClasses() {
+        return {
+            'border-primary': this.hasActiveLane,
+            'border-error': this.hasActiveLane && this.afcErrorState,
+        }
     }
 
     get rammingState() {
-        if (!this.useRamming || !this.hasActiveLane) return false
+        if (!this.useRamming) return false
 
-        return true
+        const extruder = this.afcCurrentLane?.extruder ?? ''
+        const bufferState = (this.afcCurrentBuffer?.state ?? '').toLowerCase()
+
+        return extruder === this.name && bufferState === 'trailing'
     }
 
     get laneLoaded() {
@@ -80,8 +95,8 @@ export default class AfcPanelExtruder extends Mixins(BaseMixin, AfcMixin) {
     get preSensorClasses() {
         if (this.useRamming) {
             return {
-                success: !this.laneLoaded,
-                error: !this.laneLoaded,
+                success: !this.laneLoaded && this.rammingState,
+                error: !this.laneLoaded && !this.rammingState,
                 'grey lighten4': this.laneLoaded,
             }
         }
@@ -125,6 +140,38 @@ export default class AfcPanelExtruder extends Mixins(BaseMixin, AfcMixin) {
 
         return `${this.$t('Panels.AfcPanel.PostExtruderSensor')} - ${status}`
     }
+
+    get bufferOutput() {
+        const extruder = this.afcCurrentLane?.extruder ?? ''
+        if (extruder !== this.name) return this.$t('Panels.AfcPanel.BufferDisabled')
+
+        return `${this.afcCurrentLane?.buffer ?? '--'} - ${this.afcCurrentBuffer?.state ?? '--'}`
+    }
+
+    get state() {
+        const extruder = this.afcCurrentLane?.extruder ?? ''
+        if (extruder === this.name) {
+            if (this.printerIsPrintingOnly) return this.$t('Panels.AfcPanel.Printing')
+
+            return this.$t(`Panels.AfcPanel.${this.afcCurrentState}`)
+        }
+
+        return this.$t('Panels.AfcPanel.Idle')
+    }
+
+    get stateLane() {
+        if (this.afcExtruder.lane_loaded) return this.afcExtruder.lane_loaded
+        if (this.afcCurrentLane) return this.afcCurrentLane.name
+
+        return this.$t('Panels.AfcPanel.LaneLoadedNone')
+    }
+
+    get stateLaneClasses() {
+        return {
+            'primary--text': this.hasActiveLane,
+            'error--text': this.hasActiveLane && this.afcErrorState,
+        }
+    }
 }
 </script>
 
@@ -132,5 +179,18 @@ export default class AfcPanelExtruder extends Mixins(BaseMixin, AfcMixin) {
 .sensor-status {
     width: 10px;
     height: 10px;
+}
+
+.border-1 {
+    border-width: 1px;
+    border-style: solid;
+}
+
+.v-application .border-primary {
+    border-color: var(--v-primary-base) !important;
+}
+
+.v-application .border-error {
+    border-color: var(--v-error-base) !important;
 }
 </style>

@@ -608,12 +608,22 @@
     },
     "Panels": {
         "AfcPanel": {
+            "BufferDisabled": "Buffer Not Active",
             "Detected": "Detected",
+            "Ejecting": "Ejecting",
             "Empty": "Empty",
+            "Error": "Error",
             "Headline": "AFC",
+            "Idle": "Idle",
+            "LaneLoadedNone": "NONE",
+            "Loading": "Loading",
+            "Moving": "Moving",
             "PostExtruderSensor": "Post-Extruder Sensor",
             "PreExtruderSensor": "Pre-Extruder Sensor",
-            "RammingSensor": "Ramming Sensor"
+            "Printing": "Printing",
+            "RammingSensor": "Ramming Sensor",
+            "Restoring": "Restoring",
+            "Unloading": "Unloading"
         },
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
