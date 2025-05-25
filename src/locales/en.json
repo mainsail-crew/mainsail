@@ -607,6 +607,14 @@
         "Headline": "Manual Probe"
     },
     "Panels": {
+        "AfcPanel": {
+            "Detected": "Detected",
+            "Empty": "Empty",
+            "Headline": "AFC",
+            "PostExtruderSensor": "Post-Extruder Sensor",
+            "PreExtruderSensor": "Pre-Extruder Sensor",
+            "RammingSensor": "Ramming Sensor"
+        },
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
             "CleanNozzle": "Clean Nozzle",
