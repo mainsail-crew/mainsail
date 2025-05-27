@@ -798,6 +798,7 @@
             "Min": "min",
             "Name": "Name",
             "Presets": "Presets",
+            "Settings": "Settings",
             "SetupTemperatures": "Setup Temperatures",
             "ShowChart": "Show Chart",
             "ShowNameInChart": "Show {name} in chart",
@@ -806,7 +807,8 @@
             "Target": "Target",
             "TemperaturesInChart": "Temperature [°C]",
             "TempTooHigh": "Temperature too high for {name}! (max: {max})",
-            "TempTooLow": "Temperature too low for {name}! (min: {min})"
+            "TempTooLow": "Temperature too low for {name}! (min: {min})",
+            "TurnHeaterOff": "Turn Heater Off"
         },
         "ToolheadControlPanel": {
             "Absolute": "absolute",
@@ -1071,6 +1073,7 @@
             "NOMacros": "No macros found...",
             "NoMacrosInGroup": "No macros in this group.",
             "Primary": "primary",
+            "Search": "Search",
             "Secondary": "secondary",
             "ShowInStatePaused": "Show/hide if printer is paused.",
             "ShowInStatePrinting": "Show/hide if printer is printing.",

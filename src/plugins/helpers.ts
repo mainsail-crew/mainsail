@@ -1,5 +1,17 @@
 import { FileStateFile } from '@/store/files/types'
 import { PrinterStateMacroParams } from '@/store/printer/types'
+import {
+    mdiAlertOutline,
+    mdiCheckboxMarkedCircleOutline,
+    mdiCloseCircleOutline,
+    mdiFlash,
+    mdiGauge,
+    mdiLightningBoltOutline,
+    mdiMeterElectricOutline,
+    mdiProgressClock,
+    mdiScale,
+    mdiThermometer,
+} from '@mdi/js'
 import Vue from 'vue'
 
 export const setDataDeep = (currentState: any, payload: any) => {
@@ -290,4 +302,57 @@ export function escapePath(path: string): string {
         .split('/')
         .map((part) => encodeURIComponent(part))
         .join('/')
+}
+
+export const unitToSymbol = (unit: string): string => {
+    return (
+        {
+            // Energy
+            wh: mdiLightningBoltOutline,
+            kwh: mdiLightningBoltOutline,
+            mwh: mdiLightningBoltOutline,
+            j: mdiLightningBoltOutline,
+            // Power
+            w: mdiFlash,
+            // Electrical
+            v: mdiFlash,
+            a: mdiMeterElectricOutline,
+            // Temperature
+            '°c': mdiThermometer,
+            c: mdiThermometer,
+            '°f': mdiThermometer,
+            f: mdiThermometer,
+            '°': mdiThermometer,
+            // Mass
+            g: mdiScale,
+        }[unit?.toLowerCase()] ?? mdiGauge
+    )
+}
+
+export const convertPrintStatusIconColor = (status: string): string => {
+    switch (status) {
+        case 'in_progress':
+            return 'blue accent-3' //'blue-grey darken-1'
+        case 'completed':
+            return 'green' //'green'
+        case 'cancelled':
+            return 'red'
+
+        default:
+            return 'orange'
+    }
+}
+
+export const convertPrintStatusIcon = (status: string) => {
+    switch (status) {
+        case 'in_progress':
+            return mdiProgressClock
+        case 'completed':
+            return mdiCheckboxMarkedCircleOutline
+        case 'cancelled':
+            return mdiCloseCircleOutline
+
+        default:
+            return mdiAlertOutline
+    }
 }

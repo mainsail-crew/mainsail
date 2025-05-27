@@ -90,7 +90,7 @@
                             </v-list-item>
                             <v-divider />
                             <template v-if="printStatusArray.length">
-                                <v-list-item v-for="status of printStatusArray" :key="status.key" class="minHeight36">
+                                <v-list-item v-for="status of printStatusArray" :key="status.name" class="minHeight36">
                                     <v-checkbox
                                         class="mt-0"
                                         hide-details
@@ -118,7 +118,7 @@
         </v-card-text>
         <v-divider class="mb-3" />
         <v-data-table
-            v-model="selectedJobs"
+            v-model="selectedJobsTable"
             :items="entries"
             class="history-jobs-table"
             :headers="filteredHeaders"
@@ -232,10 +232,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         return this.$store.state.server.history.all_loaded ?? false
     }
 
-    get jobs() {
-        return this.$store.getters['server/history/getFilteredJobList'] ?? []
-    }
-
     get maintenanceEntries() {
         return this.$store.getters['gui/maintenance/getEntries'] ?? []
     }
@@ -261,14 +257,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         }
 
         return entries
-    }
-
-    get selectedJobs() {
-        return this.$store.state.gui.view.history.selectedJobs ?? []
-    }
-
-    set selectedJobs(newVal) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.history.selectedJobs', value: newVal })
     }
 
     get headers() {
@@ -457,7 +445,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     get countPerPage() {
-        return this.$store.state.gui.view.historycountPerPage
+        return this.$store.state.gui.view.history.countPerPage ?? 10
     }
 
     set countPerPage(newVal) {
@@ -465,7 +453,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     get hideColums() {
-        return this.$store.state.gui.view.history.hideColums
+        return this.$store.state.gui.view.history.hideColums ?? []
     }
 
     set hideColums(newVal) {
@@ -489,6 +477,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
 
     set showPrintJobs(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.history.showPrintJobs', value: newVal })
+    }
+
+    get selectedJobsTable() {
+        return this.$store.state.gui.view.history.selectedJobs ?? []
+    }
+
+    set selectedJobsTable(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.history.selectedJobs', value: newVal })
     }
 
     refreshHistory() {
@@ -541,12 +537,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     changeStatusVisible(status: any) {
-        if (status.showInTable) {
-            this.$store.dispatch('gui/hideStatusInHistoryList', status.name)
-            return
-        }
-
-        this.$store.dispatch('gui/showStatusInHistoryList', status.name)
+        this.$store.dispatch('gui/toggleStatusInHistoryList', status.name)
     }
 
     exportHistory() {

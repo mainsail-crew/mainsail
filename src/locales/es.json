@@ -737,7 +737,7 @@
             "Search": "Buscar",
             "SelectSpool": "Seleccionar carrete",
             "Today": "Hoy",
-            "TooLessFilament": "Es posible que la bobina actual no tenga suficiente filamento para esta impresión. ({{spoolWeight}g de {fileWeight}g)",
+            "TooLessFilament": "Es posible que la bobina actual no tenga suficiente filamento para esta impresión. ({spoolWeight}g de {fileWeight}g)",
             "Weight": "Peso",
             "Yesterday": "Ayer"
         },
@@ -1084,6 +1084,7 @@
             "NOMacros": "No se encontraron macros...",
             "NoMacrosInGroup": "No hay Macros en este grupo.",
             "Primary": "Primario",
+            "Search": "Buscar",
             "Secondary": "Secundario",
             "ShowInStatePaused": "Mostrar/Ocultar si la impresora está pausada.",
             "ShowInStatePrinting": "Mostrar/Ocultar si la impresora está imprimiendo.",

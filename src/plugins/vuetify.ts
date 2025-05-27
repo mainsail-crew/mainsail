@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuetify from 'vuetify/lib'
+import Vuetify from 'vuetify'
 import { Touch, Ripple } from 'vuetify/lib/directives'
 
 Vue.use(Vuetify, {

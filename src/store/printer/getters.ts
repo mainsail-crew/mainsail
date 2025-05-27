@@ -7,6 +7,7 @@ import {
     PrinterStateFan,
     PrinterStateFilamentSensors,
     PrinterStateMiscellaneous,
+    PrinterStateMiscellaneousSensor,
     PrinterStateMcu,
     PrinterStateMacro,
     PrinterGetterObject,
@@ -385,6 +386,53 @@ export const getters: GetterTree<PrinterState, RootState> = {
         })
     },
 
+    getMiscellaneousSensors: (state) => {
+        const output: PrinterStateMiscellaneousSensor[] = []
+        const supportedObjects = ['load_cell']
+
+        for (const [key, value] of Object.entries(state)) {
+            const nameSplit = key.split(' ')
+
+            if (!supportedObjects.includes(nameSplit[0])) continue
+            const name = nameSplit.length > 1 ? nameSplit[1] : nameSplit[0]
+            if (name.startsWith('_')) continue
+
+            const basis = {
+                name: name,
+                type: nameSplit[0],
+                value: 'value' in value ? value.value : null,
+                unit: 'unit' in value ? value.unit : '',
+            }
+            if (nameSplit[0] == 'load_cell') {
+                output.push({
+                    ...basis,
+                    value: value.force_g ?? NaN,
+                    unit: 'g',
+                })
+            } else {
+                output.push(basis)
+            }
+        }
+
+        output.sort((a, b) => {
+            if (a.type < b.type) return -1
+            if (a.type > b.type) return 1
+
+            if (a.unit < b.unit) return -1
+            if (a.unit > b.unit) return 1
+
+            const nameA = a.name.toUpperCase()
+            const nameB = b.name.toUpperCase()
+
+            if (nameA < nameB) return -1
+            if (nameA > nameB) return 1
+
+            return 0
+        })
+
+        return output
+    },
+
     getAvailableHeaters: (state) => {
         return state.heaters?.available_heaters ?? []
     },
@@ -398,7 +446,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getFilamentSensors: (state) => {
-        const sensorObjectNames = ['filament_switch_sensor', 'filament_motion_sensor']
+        const sensorObjectNames = ['filament_switch_sensor', 'filament_motion_sensor', 'hall_filament_width_sensor']
         const sensors: PrinterStateFilamentSensors[] = []
 
         for (const [key, value] of Object.entries(state)) {
@@ -406,9 +454,11 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
             if (sensorObjectNames.includes(nameSplit[0])) {
                 sensors.push({
-                    name: nameSplit[1],
+                    type: nameSplit[0],
+                    name: nameSplit[1] ?? nameSplit[0],
                     enabled: value.enabled,
                     filament_detected: value.filament_detected,
+                    filament_diameter: value.Diameter,
                 })
             }
         }
@@ -780,9 +830,19 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     existsZtilt: (state) => {
-        if (!state.gcode) return false
+        // check for new Klipper gcode.commands for Z_TILT_ADJUST command
+        const commands = state.gcode?.commands ?? null
+        if (commands) {
+            return 'Z_TILT_ADJUST' in commands
+        }
 
-        return 'Z_TILT_ADJUST' in state.gcode.commands
+        // fallback for older Klipper versions
+        const settings = state.configfile?.settings ?? null
+        if (settings) {
+            return 'z_tilt' in settings
+        }
+
+        return false
     },
 
     existsBedTilt: (state) => {

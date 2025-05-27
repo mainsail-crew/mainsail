@@ -122,6 +122,7 @@ export const getDefaultState = (): GuiState => {
             confirmUnsavedChanges: true,
             klipperRestartMethod: 'FIRMWARE_RESTART',
             tabSize: 2,
+            fileStructureSidebar: true,
         },
         gcodeViewer: {
             extruderColors: ['#E76F51FF', '#F4A261FF', '#E9C46AFF', '#2A9D8FFF', '#264653FF'],
@@ -209,6 +210,7 @@ export const getDefaultState = (): GuiState => {
             },
             gcodefiles: {
                 countPerPage: 10,
+                search: '',
                 sortBy: 'modified',
                 sortDesc: true,
                 showHiddenFiles: false,

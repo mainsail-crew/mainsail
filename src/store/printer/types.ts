@@ -109,19 +109,6 @@ export interface PrinterStateLight {
     singleChannelTarget: number | null
 }
 
-export interface PrinterStateLight {
-    name: string
-    type: 'led' | 'neopixel' | 'dotstar' | 'pca9533' | 'pca9632'
-    colorOrder: string
-    chainCount: number
-    initialRed: number | null
-    initialGreen: number | null
-    initialBlue: number | null
-    initialWhite: number | null
-    colorData: number[][]
-    singleChannelTarget: number | null
-}
-
 export interface PrinterStateMiscellaneous {
     name: string
     type: string
@@ -138,10 +125,19 @@ export interface PrinterStateMiscellaneous {
     max_power?: number
 }
 
+export interface PrinterStateMiscellaneousSensor {
+    type: string
+    name: string
+    value: number
+    unit: string
+}
+
 export interface PrinterStateFilamentSensors {
+    type: string
     name: string
     enabled: boolean
     filament_detected: boolean
+    filament_diameter?: number
 }
 
 export interface PrinterStateBedMesh {
