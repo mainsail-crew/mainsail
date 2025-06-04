@@ -1,11 +1,22 @@
 <template>
     <v-row>
         <v-col class="pl-6 pr-0 pt-0 pb-0 d-flex flex-column">
-            <afc-filament-reel
-                :percent="spoolPercent"
-                :color="spoolColor"
-                class="filamentSpool cursor-pointer"
-                @click-spool="onFilamentClick" />
+            <v-tooltip top>
+                <template #activator="{ on, attr }">
+                    <span v-bind="attr" v-on="on">
+                        <afc-filament-reel
+                            :percent="spoolPercent"
+                            :color="spoolColor"
+                            class="filamentSpool cursor-pointer"
+                            @click-spool="onFilamentClick" />
+                    </span>
+                </template>
+                <span>
+                    #{{ spoolId }} | {{ spoolVendor }}
+                    <br />
+                    {{ spoolFilamentName }}
+                </span>
+            </v-tooltip>
             <spoolman-change-spool-dialog
                 :show-dialog="showSpoolmanDialog"
                 :afc-lane="name"
@@ -100,6 +111,14 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
 
     get spoolMaterial() {
         return this.lane.material || '--'
+    }
+
+    get spoolVendor() {
+        return this.spool?.filament?.vendor?.name ?? 'Unknown'
+    }
+
+    get spoolFilamentName() {
+        return this.spool?.filament?.name ?? 'Unknown'
     }
 
     onFilamentClick() {
