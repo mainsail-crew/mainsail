@@ -29,15 +29,12 @@
                         hide-details />
                 </settings-row>
                 <v-divider class="my-3" />
-
                 <v-color-picker hide-mode-switch mode="hexa" :value="color" class="mx-auto" @update:color="setColor" />
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text color="disabled" @click="closeDialog">
-                    {{ $t('Panels.AfcPanel.Cancel') }}
-                </v-btn>
-                <v-btn :disabled="!material || !weight || !color" color="primary" text @click="setSpool">
+                <v-btn text color="disabled" @click="closeDialog">{{ $t('Panels.AfcPanel.Cancel') }}</v-btn>
+                <v-btn :disabled="disableSetBtn" color="primary" text @click="setSpool">
                     {{ $t('Panels.AfcPanel.SetSpool') }}
                 </v-btn>
             </v-card-actions>
@@ -86,6 +83,10 @@ export default class AfcUnitLaneFilamentDialog extends Mixins(BaseMixin, AfcMixi
 
     get currentWeight() {
         return Math.round(this.lane.weight ?? 0)
+    }
+
+    get disableSetBtn() {
+        return !this.material || !this.weight || !this.color
     }
 
     @Debounce(500)
