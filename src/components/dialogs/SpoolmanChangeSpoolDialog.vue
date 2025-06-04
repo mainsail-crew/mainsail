@@ -22,6 +22,14 @@
                         style="max-width: 300px" />
                     <v-spacer />
                     <v-btn
+                        v-if="afcLane"
+                        :title="$t('Panels.SpoolmanPanel.EjectSpool')"
+                        class="px-2 minwidth-0 ml-3"
+                        :loading="loadings.includes('ejectSpool')"
+                        @click="ejectSpool">
+                        <v-icon>{{ mdiEject }}</v-icon>
+                    </v-btn>
+                    <v-btn
                         :title="$t('Panels.SpoolmanPanel.Refresh')"
                         class="px-2 minwidth-0 ml-3"
                         :loading="loadings.includes('refreshSpools')"
@@ -70,7 +78,7 @@ import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiCloseThick, mdiAdjust, mdiDatabase, mdiMagnify, mdiRefresh } from '@mdi/js'
+import { mdiCloseThick, mdiAdjust, mdiDatabase, mdiMagnify, mdiRefresh, mdiEject } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import SpoolmanChangeSpoolDialogRow from '@/components/dialogs/SpoolmanChangeSpoolDialogRow.vue'
 @Component({
@@ -80,11 +88,13 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     mdiAdjust = mdiAdjust
     mdiCloseThick = mdiCloseThick
     mdiDatabase = mdiDatabase
+    mdiEject = mdiEject
     mdiMagnify = mdiMagnify
     mdiRefresh = mdiRefresh
 
     @Prop({ required: true }) declare readonly showDialog: boolean
     @Prop({ required: false, default: null }) declare readonly tool?: string
+    @Prop({ required: false, default: null }) declare readonly afcLane?: string
 
     search = ''
 
@@ -188,18 +198,28 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     }
 
     setSpool(spool: ServerSpoolmanStateSpool) {
-        this.$store.dispatch('server/spoolman/setActiveSpool', spool.id)
-
-        // Close the dialog if no tool is selected
-        if (!this.tool) {
+        // if afcLane is set, execute SET_SPOOL_ID and close, because it's not an active printing spool change
+        if (this.afcLane) {
+            this.sendGcode(`SET_SPOOL_ID LANE=${this.afcLane} SPOOL_ID=${spool.id}`)
             this.close()
             return
         }
 
+        // if tool is set, execute setMacroVariable and close, because it's not an active printing spool change
+        if (this.tool) {
+            this.setMacroVariable(spool)
+            this.close()
+            return
+        }
+
+        this.$store.dispatch('server/spoolman/setActiveSpool', spool.id)
+
+        this.close()
+    }
+
+    setMacroVariable(spool: ServerSpoolmanStateSpool) {
         // Set spool_id for tool
-        const gcode = `SET_GCODE_VARIABLE MACRO=${this.tool} VARIABLE=spool_id VALUE=${spool.id}`
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
+        this.sendGcode(`SET_GCODE_VARIABLE MACRO=${this.tool} VARIABLE=spool_id VALUE=${spool.id}`)
 
         // Close dialog if save_variables is not enabled
         if (!this.existsSaveVariables) {
@@ -208,10 +228,16 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
         }
 
         // Set spool_id to save_variable
-        const gcode2 = `SAVE_VARIABLE VARIABLE=${this.tool.toLowerCase()}__spool_id VALUE=${spool.id}`
-        this.$store.dispatch('server/addEvent', { message: gcode2, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode2 })
+        this.sendGcode(`SAVE_VARIABLE VARIABLE=${this.tool?.toLowerCase()}__spool_id VALUE=${spool.id}`)
+    }
 
+    sendGcode(gcode: string) {
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
+    }
+
+    ejectSpool() {
+        this.sendGcode(`SET_SPOOL_ID LANE=${this.afcLane} SPOOL_ID=`)
         this.close()
     }
 

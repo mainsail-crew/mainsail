@@ -145,7 +145,7 @@ export default class AfcPanelExtruder extends Mixins(BaseMixin, AfcMixin) {
         const extruder = this.afcCurrentLane?.extruder ?? ''
         if (extruder !== this.name) return this.$t('Panels.AfcPanel.BufferDisabled')
 
-        return `${this.afcCurrentLane?.buffer ?? '--'} - ${this.afcCurrentBuffer?.state ?? '--'}`
+        return `${this.afcCurrentLane?.buffer ?? '--'}: ${this.afcCurrentBuffer?.state ?? '--'}`
     }
 
     get state() {

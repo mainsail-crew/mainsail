@@ -34,4 +34,25 @@ export default class AfcMixin extends Vue {
     get afcCurrentState() {
         return this.afc.current_state ?? ''
     }
+
+    get afcMapList(): string[] {
+        const lanes = this.afc.lanes ?? []
+        const printer = this.$store.state.printer ?? {}
+
+        const mapList = []
+        for (const laneName of lanes) {
+            const key = `AFC_stepper ${laneName}`
+
+            if (!(key in printer)) continue
+
+            const lane = printer[key] ?? {}
+            mapList.push(lane.map)
+        }
+
+        return mapList.sort()
+    }
+
+    get afcExistsSpoolman() {
+        return this.$store.state.server.components.includes('spoolman')
+    }
 }
