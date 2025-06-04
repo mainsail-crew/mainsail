@@ -1,11 +1,12 @@
 <template>
     <div>
         <v-row>
-            <v-col class="pb-0">
+            <v-col class="pb-0 d-flex flex-row justify-space-between align-center">
                 <h3 class="text-h6">
                     <v-icon v-if="modulIcon" left>{{ modulIcon }}</v-icon>
                     {{ unitNameOutput }}
                 </h3>
+                <afc-panel-unit-hub v-for="hub in hubs" :key="hub" :name="hub" />
             </v-col>
         </v-row>
         <v-row>
@@ -40,6 +41,10 @@ export default class AfcPanelUnit extends Mixins(BaseMixin, AfcMixin) {
         const key = `AFC_${moduleName} ${this.unitName}`
 
         return printer[key] ?? {}
+    }
+
+    get hubs() {
+        return this.unit.hubs ?? []
     }
 
     get lanes() {

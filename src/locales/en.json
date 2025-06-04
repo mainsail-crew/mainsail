@@ -617,6 +617,8 @@
             "Error": "Error",
             "FilamentForLane": "Filament for {name}",
             "Headline": "AFC",
+            "Hub": "Hub",
+            "HubLoad": "Hub Load",
             "Idle": "Idle",
             "InfiniteSpoolDescription": "Next lane to load if {name} runs out",
             "InfiniteSpoolHeadline": "Infinite Spool",
