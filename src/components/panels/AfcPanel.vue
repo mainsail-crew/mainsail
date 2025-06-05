@@ -28,11 +28,3 @@ export default class AfcPanel extends Mixins(BaseMixin, AfcMixin) {
     }
 }
 </script>
-
-<style scoped>
-.panel-icon {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
-}
-</style>
