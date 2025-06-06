@@ -132,6 +132,11 @@ export interface GuiState {
         hideOtherInstances: boolean
     }
     view: {
+        afc: {
+            hiddenExtruders: string[]
+            hiddenUnits: string[]
+            showUnitIcons: boolean
+        }
         blockFileUpload: boolean
         configfiles: {
             countPerPage: number

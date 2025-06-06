@@ -4,9 +4,12 @@
         :icon="afcIconLogo"
         :collapsible="true"
         card-class="afc-control-panel">
+        <template #buttons>
+            <afc-panel-settings />
+        </template>
         <v-card-text class="pt-1">
-            <afc-panel-extruder v-for="extruder in extruders" :key="extruder" :name="extruder" class="mt-3" />
-            <afc-panel-unit v-for="unit in units" :key="unit" :name="unit" class="mt-3" />
+            <afc-panel-extruder v-for="extruder in filteredExtruders" :key="extruder" :name="extruder" class="mt-3" />
+            <afc-panel-unit v-for="unit in filteredUnits" :key="unit" :name="unit" class="mt-3" />
         </v-card-text>
     </panel>
 </template>
@@ -20,12 +23,12 @@ import { afcIconLogo } from '@/plugins/afcIcons'
 export default class AfcPanel extends Mixins(BaseMixin, AfcMixin) {
     afcIconLogo = afcIconLogo
 
-    get extruders(): string[] {
-        return this.afc.extruders ?? []
+    get filteredExtruders() {
+        return this.afcExtruders.filter((extruder) => !this.afcHiddenExtruders.includes(extruder))
     }
 
-    get units(): string[] {
-        return this.afc.units ?? []
+    get filteredUnits() {
+        return this.afcUnits.filter((unit) => !this.afcHiddenUnits.includes(unit))
     }
 }
 </script>

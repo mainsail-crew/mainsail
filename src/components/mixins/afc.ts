@@ -7,6 +7,14 @@ export default class AfcMixin extends Vue {
         return this.$store.state.printer.AFC ?? {}
     }
 
+    get afcExtruders(): string[] {
+        return this.afc.extruders ?? []
+    }
+
+    get afcUnits(): string[] {
+        return this.afc.units ?? []
+    }
+
     get afcErrorState() {
         return this.afc.error_state ?? false
     }
@@ -54,5 +62,17 @@ export default class AfcMixin extends Vue {
 
     get afcExistsSpoolman() {
         return this.$store.state.server.components.includes('spoolman')
+    }
+
+    get afcShowUnitIcons(): boolean {
+        return this.$store.state.gui.view.afc?.showUnitIcons ?? true
+    }
+
+    get afcHiddenExtruders(): string[] {
+        return this.$store.state.gui.view.afc?.hiddenExtruders ?? []
+    }
+
+    get afcHiddenUnits(): string[] {
+        return this.$store.state.gui.view.afc?.hiddenUnits ?? []
     }
 }

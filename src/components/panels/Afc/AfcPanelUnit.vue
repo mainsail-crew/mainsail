@@ -58,6 +58,8 @@ export default class AfcPanelUnit extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get modulIcon() {
+        if (!this.afcShowUnitIcons) return null
+
         switch (this.type) {
             case 'boxturtle':
                 return afcIconBoxTurtle
