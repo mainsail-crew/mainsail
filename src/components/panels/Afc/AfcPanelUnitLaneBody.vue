@@ -3,7 +3,7 @@
         <v-col class="pl-6 pr-0 pt-0 pb-0 d-flex flex-column">
             <v-tooltip top>
                 <template #activator="{ on, attr }">
-                    <span v-bind="attr" v-on="on">
+                    <span class="text-center" v-bind="attr" v-on="on">
                         <afc-filament-reel
                             :percent="spoolPercent"
                             :color="spoolColor"
