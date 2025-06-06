@@ -5,6 +5,7 @@
         :collapsible="true"
         card-class="afc-control-panel">
         <template #buttons>
+            <afc-panel-buttons />
             <afc-panel-settings />
         </template>
         <v-card-text class="pt-1">
