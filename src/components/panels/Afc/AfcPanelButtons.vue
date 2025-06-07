@@ -97,9 +97,3 @@ export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
     }
 }
 </script>
-
-<style scoped>
-.w-100 ::deep(.v-btn) {
-    width: 100%;
-}
-</style>
