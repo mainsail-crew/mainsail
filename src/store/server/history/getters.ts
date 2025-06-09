@@ -113,48 +113,6 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         return ''
     },
 
-    getPrintStatusIconColor: () => (status: string) => {
-        switch (status) {
-            case 'in_progress':
-                return 'blue accent-3' //'blue-grey darken-1'
-            case 'completed':
-                return 'green' //'green'
-            case 'cancelled':
-                return 'red'
-
-            default:
-                return 'orange'
-        }
-    },
-
-    getPrintStatusTextColor: () => (status: string) => {
-        switch (status) {
-            case 'in_progress':
-                return 'blue--text' //'blue-grey darken-1'
-            case 'completed':
-                return 'green--text' //'green'
-            case 'cancelled':
-                return 'red--text'
-
-            default:
-                return 'orange--text'
-        }
-    },
-
-    getPrintStatusIcon: () => (status: string) => {
-        switch (status) {
-            case 'in_progress':
-                return mdiProgressClock
-            case 'completed':
-                return mdiCheckboxMarkedCircleOutline
-            case 'cancelled':
-                return mdiCloseCircleOutline
-
-            default:
-                return mdiAlertOutline
-        }
-    },
-
     getFilteredJobList: (state, getters, rootState) => {
         const hideStatus = rootState.gui.view.history.hidePrintStatus
 
