@@ -9,7 +9,7 @@ import AfcMixin from '@/components/mixins/afc'
 @Component
 export default class AfcPanelMessage extends Mixins(BaseMixin, AfcMixin) {
     get type() {
-        const type = this.$store.state.printer.afc?.message?.type ?? 'error'
+        const type = this.afc.message?.type ?? 'error'
         const possibleTypes = ['info', 'warning', 'success', 'error']
 
         if (!possibleTypes.includes(type)) {
@@ -21,7 +21,7 @@ export default class AfcPanelMessage extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get message() {
-        return this.$store.state.printer.afc?.message?.message ?? ''
+        return this.afc.message?.message ?? ''
     }
 }
 </script>
