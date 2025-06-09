@@ -10,6 +10,7 @@
         </template>
         <v-card-text class="pt-1">
             <afc-panel-message />
+            <afc-panel-bypass />
             <afc-panel-extruder v-for="extruder in filteredExtruders" :key="extruder" :name="extruder" class="mt-3" />
             <afc-panel-unit v-for="unit in filteredUnits" :key="unit" :name="unit" class="mt-3" />
         </v-card-text>

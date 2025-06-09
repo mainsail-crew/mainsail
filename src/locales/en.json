@@ -610,6 +610,7 @@
         "AfcPanel": {
             "BrushNozzle": "Brush Nozzle",
             "BufferDisabled": "Buffer Not Active",
+            "BypassActive": "Filament loaded in bypass, tool changes are deactivated!",
             "Calibrate": "Calibrate",
             "Cancel": "Cancel",
             "Detected": "Detected",
