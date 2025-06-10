@@ -38,9 +38,10 @@ export default class AfcPanelUnit extends Mixins(BaseMixin, AfcMixin) {
     get unit() {
         const printer = this.$store.state.printer ?? {}
         const moduleName = this.name.substring(0, this.name.indexOf(' ')).replaceAll('_', '')
-        const key = `AFC_${moduleName} ${this.unitName}`
+        const unitObjectName = `AFC_${moduleName} ${this.unitName}`.toLowerCase()
+        const objectName = Object.keys(printer).find((key) => key.toLowerCase() === unitObjectName) ?? ''
 
-        return printer[key] ?? {}
+        return printer[objectName] ?? {}
     }
 
     get hubs() {

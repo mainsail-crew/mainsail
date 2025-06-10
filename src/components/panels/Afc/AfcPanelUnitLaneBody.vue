@@ -66,9 +66,10 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
 
     get lane() {
         const printer = this.$store.state.printer ?? {}
-        const key = `AFC_stepper ${this.name}`
+        const unitObjectName = `AFC_stepper ${this.name}`.toLowerCase()
+        const objectName = Object.keys(printer).find((key) => key.toLowerCase() === unitObjectName) ?? ''
 
-        return printer[key] ?? {}
+        return printer[objectName] ?? {}
     }
 
     get runoutLane() {
