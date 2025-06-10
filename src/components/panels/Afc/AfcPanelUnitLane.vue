@@ -12,12 +12,9 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import AfcMixin from '@/components/mixins/afc'
-import { afcIconInfintiy } from '@/plugins/afcIcons'
 
 @Component
 export default class AfcPanelUnitLane extends Mixins(BaseMixin, AfcMixin) {
-    afcIconInfintiy = afcIconInfintiy
-
     @Prop({ type: String, required: true }) readonly name!: string
 
     get lane() {
