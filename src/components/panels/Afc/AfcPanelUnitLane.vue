@@ -5,7 +5,7 @@
             <afc-panel-unit-lane-body :name="name" />
             <afc-panel-unit-lane-actions :name="name" />
         </template>
-        <afc-panel-unit-lane-empty v-else />
+        <afc-panel-unit-lane-empty v-else :name="name" />
     </div>
 </template>
 <script lang="ts">

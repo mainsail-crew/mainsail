@@ -640,6 +640,7 @@
             "ParkNozzle": "Park Nozzle",
             "PostExtruderSensor": "Post-Extruder Sensor",
             "PreExtruderSensor": "Pre-Extruder Sensor",
+            "PrepDetected": "Filament detected, but not loaded",
             "Printing": "Printing",
             "RammingSensor": "Ramming Sensor",
             "Restoring": "Restoring",
