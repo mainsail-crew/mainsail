@@ -24,9 +24,10 @@ export default class AfcMixin extends Vue {
         if (current === null) return null
 
         const key = `AFC_stepper ${current}`
+        const key2 = `AFC_lane ${current}`
         const printer = this.$store.state.printer ?? {}
 
-        return printer[key] ?? null
+        return printer[key] ?? printer[key2] ?? null
     }
 
     get afcCurrentBuffer() {
@@ -50,10 +51,11 @@ export default class AfcMixin extends Vue {
         const mapList = []
         for (const laneName of lanes) {
             const key = `AFC_stepper ${laneName}`
+            const key2 = `AFC_lane ${laneName}`
 
-            if (!(key in printer)) continue
+            const lane = printer[key] ?? printer[key2] ?? null
+            if (lane === null) continue
 
-            const lane = printer[key] ?? {}
             mapList.push(lane.map)
         }
 

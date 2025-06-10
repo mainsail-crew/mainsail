@@ -21,10 +21,10 @@ export default class AfcPanelUnitLaneHeader extends Mixins(BaseMixin, AfcMixin) 
 
     get lane() {
         const printer = this.$store.state.printer ?? {}
-        const unitObjectName = `AFC_stepper ${this.name}`.toLowerCase()
-        const objectName = Object.keys(printer).find((key) => key.toLowerCase() === unitObjectName) ?? ''
+        const key = `AFC_stepper ${this.name}`
+        const key2 = `AFC_lane ${this.name}`
 
-        return printer[objectName] ?? {}
+        return printer[key] ?? printer[key2] ?? {}
     }
 
     get mappedTool() {
