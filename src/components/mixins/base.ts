@@ -141,40 +141,6 @@ export default class BaseMixin extends Vue {
         return roots.findIndex((root: string) => root === 'gcodes') >= 0
     }
 
-    get formatDateOptions(): DateTimeFormatOptions | null {
-        const format = this.$store.state.gui.general.dateFormat
-
-        switch (format) {
-            case 'dd-mm-yyyy':
-            case 'mm-dd-yyyy':
-            case 'dd.mm.yyyy':
-            case 'yyyy.mm.dd.':
-                return { month: '2-digit', day: '2-digit', year: 'numeric' }
-
-            case 'dd-mm-yy':
-            case 'mm-dd-yy':
-            case 'dd.mm.yy':
-            case 'yy.mm.dd.':
-                return { month: '2-digit', day: '2-digit', year: '2-digit' }
-
-            case 'm-d-yyyy':
-            case 'd.m.yyyy':
-                return { month: 'numeric', day: 'numeric', year: 'numeric' }
-
-            case 'm-d-yy':
-            case 'd.m.yy':
-                return { month: 'numeric', day: 'numeric', year: '2-digit' }
-
-            case 'short':
-                return { month: 'short', day: '2-digit', year: 'numeric' }
-            case 'iso':
-                return null
-
-            default:
-                return { dateStyle: 'medium' }
-        }
-    }
-
     get formatTimeOptions(): DateTimeFormatOptions {
         const format = this.$store.state.gui.general.timeFormat
 
@@ -213,8 +179,9 @@ export default class BaseMixin extends Vue {
         return this.$store.getters['gui/getHours12Format']
     }
 
-    formatDate(value: number | Date): string {
-        let tmp = null
+    formatDate(value: number | Date, format: string | null = null): string {
+        if (format === null) format = this.$store.state.gui.general.dateFormat
+        let tmp: Date | null = null
 
         try {
             // @ts-ignore
@@ -223,33 +190,49 @@ export default class BaseMixin extends Vue {
             return 'UNKNOWN'
         }
 
-        const format = this.$store.state.gui.general.dateFormat as string | null
+        if (format === null) return tmp.toLocaleDateString(this.browserLocale, { dateStyle: 'medium' })
+        if (format === 'iso') return tmp.toISOString().split('T')[0]
+        if (format === 'short') return tmp.toLocaleDateString(this.browserLocale, { dateStyle: 'short' })
 
-        let locale: any = this.browserLocale
+        let delimiter = '/'
+        if (format.includes('-')) delimiter = '-'
+        if (format.includes('.')) delimiter = '.'
+        if (format.includes('. ')) delimiter = '. '
 
-        if (format) {
-            switch (format[0]) {
+        const splits = format.split(delimiter)
+        const output: string[] = []
+
+        splits.forEach((part) => {
+            // replace all dots is needed for kr-KO, because it ends only with a dot and not with '. '
+            part = part.trim().toLowerCase().replaceAll('.', '')
+
+            switch (part) {
+                case 'dd':
+                    output.push(tmp?.getDate().toString().padStart(2, '0') ?? '00')
+                    break
                 case 'd':
-                    if (format.startsWith('dd-')) {
-                        locale = 'en-GB'
-                    } else {
-                        locale = 'de-DE'
-                    }
+                    output.push(`${tmp?.getDate()}`)
                     break
-
+                case 'mm':
+                    output.push((tmp?.getMonth() ?? 0).toString().padStart(2, '0'))
+                    break
                 case 'm':
-                    locale = 'en-US'
+                    output.push(`${tmp?.getMonth() ?? 0}`)
                     break
-
-                case 'y':
-                    locale = 'ko-KR'
+                case 'yyyy':
+                    output.push(`${tmp?.getFullYear()}`)
                     break
+                case 'yy':
+                    output.push(`${tmp?.getFullYear().toString().slice(-2)}`)
+                    break
+                default:
+                    output.push(part)
             }
-        }
+        })
 
-        return this.formatDateOptions
-            ? tmp.toLocaleDateString(locale, this.formatDateOptions)
-            : tmp.toISOString().split('T')[0]
+        if (format.endsWith('.')) return output.join(delimiter) + '.'
+
+        return output.join(delimiter)
     }
 
     formatTime(value: number | Date, boolSeconds = false): string {

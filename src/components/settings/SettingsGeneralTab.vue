@@ -123,74 +123,37 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
 
     get dateFormatItems() {
         const date = new Date()
-        const userLocale =
-            navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
-
-        return [
-            { value: null, text: `Browser (${date.toLocaleDateString(userLocale, { dateStyle: 'medium' })})` },
-
-            {
-                value: 'short',
-                text: date.toLocaleDateString(userLocale, { day: '2-digit', month: 'short', year: 'numeric' }),
-            },
-
-            {
-                value: 'iso',
-                text: `ISO (${date.toISOString().split('T')[0]})`,
-            },
-
-            {
-                value: 'mm-dd-yyyy',
-                text: `mm-dd-yyyy (${date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })})`,
-            },
-            {
-                value: 'mm-dd-yy',
-                text: `mm-dd-yy (${date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' })})`,
-            },
-            {
-                value: 'm-d-yyyy',
-                text: `m-d-yyyy (${date.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })})`,
-            },
-            {
-                value: 'm-d-yy',
-                text: `m-d-yy (${date.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: '2-digit' })})`,
-            },
-
-            {
-                value: 'dd-mm-yyyy',
-                text: `dd-mm-yyyy (${date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })})`,
-            },
-            {
-                value: 'dd-mm-yy',
-                text: `dd-mm-yy (${date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' })})`,
-            },
-
-            {
-                value: 'dd.mm.yyyy',
-                text: `dd.mm.yyyy (${date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })})`,
-            },
-            {
-                value: 'dd.mm.yy',
-                text: `dd.mm.yy (${date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' })})`,
-            },
-            {
-                value: 'd.m.yyyy',
-                text: `d.m.yyyy (${date.toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric', year: 'numeric' })})`,
-            },
-            {
-                value: 'd.m.yy',
-                text: `d.m.yy (${date.toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric', year: '2-digit' })})`,
-            },
-
-            {
-                value: 'yyyy.mm.dd.',
-                text: `yyyy. mm. dd. (${date.toLocaleDateString('ko-KR', { day: '2-digit', month: '2-digit', year: 'numeric' })})`,
-            },
-            {
-                value: 'yy.mm.dd.',
-                text: `yy. mm. dd. (${date.toLocaleDateString('ko-KR', { day: '2-digit', month: '2-digit', year: '2-digit' })})`,
-            },
+        const availableFormats = [
+            null,
+            'short',
+            'iso',
+            'mm-dd-yyyy',
+            'mm-dd-yy',
+            'm-d-yyyy',
+            'm-d-yy',
+            'dd-mm-yyyy',
+            'dd-mm-yy',
+            'dd.mm.yyyy',
+            'dd.mm.yy',
+            'd.m.yyyy',
+            'd.m.yy',
+            'yyyy. mm. dd.',
+            'yy. mm. dd.',
         ]
+
+        return availableFormats.map((format) => {
+            let name = format
+            if (name === null) name = 'Browser'
+            else if (['short', 'iso'].includes(name)) name = name.toUpperCase()
+
+            let example = this.formatDate(date, format)
+            if (format === null) example = date.toLocaleDateString(this.browserLocale, { dateStyle: 'medium' })
+
+            return {
+                value: format,
+                text: `${name} (${example})`,
+            }
+        })
     }
 
     get timeFormat() {
