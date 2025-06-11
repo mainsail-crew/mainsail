@@ -8,6 +8,13 @@
         <v-list>
             <v-list-item class="minHeight36">
                 <v-checkbox
+                    v-model="showLaneInfinite"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.AfcPanel.ShowLaneInfinite')" />
+            </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
                     v-model="showUnitIcons"
                     class="mt-0"
                     hide-details
@@ -28,6 +35,14 @@ import { mdiCog } from '@mdi/js'
 @Component
 export default class AfcPanelSettings extends Mixins(BaseMixin, AfcMixin) {
     mdiCog = mdiCog
+
+    get showLaneInfinite(): boolean {
+        return this.$store.state.gui.view.afc?.showLaneInfinite ?? true
+    }
+
+    set showLaneInfinite(value: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.afc.showLaneInfinite', value })
+    }
 
     get showUnitIcons(): boolean {
         return this.$store.state.gui.view.afc?.showUnitIcons ?? true

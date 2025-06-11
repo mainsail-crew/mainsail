@@ -647,6 +647,7 @@
             "SetSpool": "Set Spool",
             "Settings": "Settings",
             "SettingsForLane": "Settings for {lane}",
+            "ShowLaneInfinite": "Show Infinite Button",
             "ShowTool": "Show Tool \"{name}\"",
             "ShowUnit": "Show Unit \"{name}\"",
             "ShowUnitIcons": "Show Unit Icons",

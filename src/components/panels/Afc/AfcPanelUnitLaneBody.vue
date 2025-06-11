@@ -27,7 +27,7 @@
                 @close="showFilamentDialog = false" />
         </v-col>
         <v-col class="pr-6 pl-2 pt-0 pb-0 d-flex flex-column justify-space-between align-end">
-            <v-btn x-small @click="showInfintiyDialog = true">
+            <v-btn v-if="afcShowLaneInfinite" x-small @click="showInfintiyDialog = true">
                 <v-icon v-if="runoutLane === 'NONE'" color="error" small>{{ afcIconInfintiy }}</v-icon>
                 <template v-else>{{ runoutLane }}</template>
             </v-btn>

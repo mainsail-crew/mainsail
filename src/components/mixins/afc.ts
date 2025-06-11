@@ -70,6 +70,10 @@ export default class AfcMixin extends Vue {
         return this.$store.state.gui.view.afc?.showUnitIcons ?? true
     }
 
+    get afcShowLaneInfinite(): boolean {
+        return this.$store.state.gui.view.afc?.showLaneInfinite ?? true
+    }
+
     get afcHiddenExtruders(): string[] {
         return this.$store.state.gui.view.afc?.hiddenExtruders ?? []
     }
