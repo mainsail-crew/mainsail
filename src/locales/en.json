@@ -613,6 +613,7 @@
             "BypassActive": "Filament loaded in bypass, tool changes are deactivated!",
             "Calibrate": "Calibrate",
             "Cancel": "Cancel",
+            "DebugJson": "Debug JSON",
             "Detected": "Detected",
             "EjectFilament": "Eject Filament",
             "Ejecting": "Ejecting",

@@ -15,6 +15,12 @@
             <v-list-item v-for="macro in macros" :key="macro.macroName">
                 <macro-button :macro="macro.macro" :alias="macro.text" color="" class="w-100" />
             </v-list-item>
+            <v-list-item>
+                <v-btn class="w-100" small @click="downloadDebugJson">
+                    <v-icon small left>{{ mdiArrowDownBold }}</v-icon>
+                    {{ $t('Panels.AfcPanel.DebugJson') }}
+                </v-btn>
+            </v-list-item>
         </v-list>
     </v-menu>
 </template>
@@ -22,12 +28,13 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import AfcMixin from '@/components/mixins/afc'
-import { mdiDotsVertical, mdiLightbulbOnOutline, mdiLightbulbOutline, mdiWrench } from '@mdi/js'
+import { mdiArrowDownBold, mdiDotsVertical, mdiLightbulbOnOutline, mdiLightbulbOutline, mdiWrench } from '@mdi/js'
 import { PrinterStateMacro } from '@/store/printer/types'
 
 @Component
 export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
     mdiDotsVertical = mdiDotsVertical
+    mdiArrowDownBold = mdiArrowDownBold
 
     get commands() {
         const commands = this.$store.state.printer.gcode?.commands ?? {}
@@ -94,6 +101,58 @@ export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
     doSend(gcode: string) {
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
+    }
+
+    downloadDebugJson() {
+        const AFC_DEBUG_FILENAME = 'afc_debug.json'
+        const output: {
+            config: { [key: string]: any }
+            settings: { [key: string]: any }
+            printer: { [key: string]: any }
+        } = {
+            config: {},
+            settings: {},
+            printer: {},
+        }
+        const printer = this.$store.state.printer ?? {}
+        const config = printer.configfile?.config ?? {}
+        const settings = printer.configfile?.settings ?? {}
+
+        Object.keys(config)
+            .filter((key) => key.toLowerCase().startsWith('afc'))
+            .forEach((name) => {
+                output.config[name] = { ...config[name] }
+            })
+
+        Object.keys(settings)
+            .filter((key) => key.toLowerCase().startsWith('afc'))
+            .forEach((name) => {
+                output.settings[name] = { ...settings[name] }
+            })
+
+        Object.keys(printer)
+            .filter((key) => key.toLowerCase().startsWith('afc'))
+            .forEach((name) => {
+                output.printer[name] = { ...printer[name] }
+            })
+
+        // Convert the output object to a JSON string and create a Blob for download
+        const jsonString = JSON.stringify(output, null, 2)
+        const blob = new Blob([jsonString], { type: 'application/json' })
+        const url = URL.createObjectURL(blob)
+
+        // Create a link element to trigger the download
+        const link = document.createElement('a')
+        link.href = url
+        link.download = AFC_DEBUG_FILENAME
+
+        // Append the link to the body, click it to trigger download, then remove it
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+
+        // Clean up the URL object
+        URL.revokeObjectURL(url)
     }
 }
 </script>
