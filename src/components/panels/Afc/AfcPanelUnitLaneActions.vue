@@ -5,7 +5,7 @@
                 <v-tooltip v-if="toolLoaded" top>
                     <template #activator="{ on, attrs }">
                         <v-btn
-                            :disabled="disabledLoadUnloadButton"
+                            :disabled="printerIsPrintingOnly"
                             dense
                             class="flex-grow-1 px-0 first-btn"
                             v-bind="attrs"
@@ -19,7 +19,7 @@
                 <v-tooltip v-else top>
                     <template #activator="{ on, attrs }">
                         <v-btn
-                            :disabled="disabledLoadUnloadButton"
+                            :disabled="printerIsPrintingOnly"
                             dense
                             class="flex-grow-1 px-0 first-btn"
                             v-bind="attrs"
@@ -83,20 +83,6 @@ export default class AfcPanelUnitLaneActions extends Mixins(BaseMixin, AfcMixin,
 
     get toolLoaded() {
         return this.lane.tool_loaded ?? false
-    }
-
-    get disabledLoadUnloadButton() {
-        // disable load/unload button if printer is printing only
-        if (this.printerIsPrintingOnly) return true
-
-        // enable load/unload button if loaded filament has extruder temp set and AFC can heat it before loading
-        if (this.filamentExtruderTemp > 0 && this.minExtrudeTemp <= this.filamentExtruderTemp) return false
-
-        return !this.extrudePossible
-    }
-
-    get filamentExtruderTemp() {
-        return this.lane.extruder_temp ?? 0
     }
 
     loadLane() {
