@@ -648,6 +648,7 @@
             "SetSpool": "Set Spool",
             "Settings": "Settings",
             "SettingsForLane": "Settings for {lane}",
+            "ShowFilamentName": "Show Filament Name",
             "ShowLaneInfinite": "Show Infinite Button",
             "ShowTool": "Show Tool \"{name}\"",
             "ShowUnit": "Show Unit \"{name}\"",

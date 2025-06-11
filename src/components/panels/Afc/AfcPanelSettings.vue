@@ -8,6 +8,13 @@
         <v-list>
             <v-list-item class="minHeight36">
                 <v-checkbox
+                    v-model="showFilamentName"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.AfcPanel.ShowFilamentName')" />
+            </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
                     v-model="showLaneInfinite"
                     class="mt-0"
                     hide-details
@@ -35,6 +42,14 @@ import { mdiCog } from '@mdi/js'
 @Component
 export default class AfcPanelSettings extends Mixins(BaseMixin, AfcMixin) {
     mdiCog = mdiCog
+
+    get showFilamentName(): boolean {
+        return this.$store.state.gui.view.afc?.showFilamentName ?? true
+    }
+
+    set showFilamentName(value: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.afc.showFilamentName', value })
+    }
 
     get showLaneInfinite(): boolean {
         return this.$store.state.gui.view.afc?.showLaneInfinite ?? true

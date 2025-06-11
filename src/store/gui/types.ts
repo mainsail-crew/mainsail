@@ -135,8 +135,9 @@ export interface GuiState {
         afc: {
             hiddenExtruders: string[]
             hiddenUnits: string[]
-            showUnitIcons: boolean
+            showFilamentName: boolean
             showLaneInfinite: boolean
+            showUnitIcons: boolean
         }
         blockFileUpload: boolean
         configfiles: {

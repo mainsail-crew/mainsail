@@ -66,12 +66,16 @@ export default class AfcMixin extends Vue {
         return this.$store.state.server.components.includes('spoolman')
     }
 
-    get afcShowUnitIcons(): boolean {
-        return this.$store.state.gui.view.afc?.showUnitIcons ?? true
+    get afcShowFilamentName(): boolean {
+        return this.$store.state.gui.view.afc?.showFilamentName ?? false
     }
 
     get afcShowLaneInfinite(): boolean {
         return this.$store.state.gui.view.afc?.showLaneInfinite ?? true
+    }
+
+    get afcShowUnitIcons(): boolean {
+        return this.$store.state.gui.view.afc?.showUnitIcons ?? true
     }
 
     get afcHiddenExtruders(): string[] {

@@ -193,6 +193,7 @@ export const getDefaultState = (): GuiState => {
             afc: {
                 hiddenExtruders: [],
                 hiddenUnits: [],
+                showFilamentName: false,
                 showLaneInfinite: true,
                 showUnitIcons: true,
             },
