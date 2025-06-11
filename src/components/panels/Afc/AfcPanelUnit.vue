@@ -21,7 +21,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import AfcMixin from '@/components/mixins/afc'
-import { afcIconBoxTurtle, afcIconHtlf, afcIconNightOwl } from '@/plugins/afcIcons'
+import { afcIconBoxTurtle, afcIconHtlf, afcIconNightOwl, afcIconQuattroBox } from '@/plugins/afcIcons'
 import { convertName } from '@/plugins/helpers'
 
 @Component
@@ -69,6 +69,8 @@ export default class AfcPanelUnit extends Mixins(BaseMixin, AfcMixin) {
                 return afcIconHtlf
             case 'nightowl':
                 return afcIconNightOwl
+            case 'quattrobox':
+                return afcIconQuattroBox
             default:
                 return null
         }
