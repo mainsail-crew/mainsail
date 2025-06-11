@@ -6,6 +6,7 @@
                     <v-icon v-if="modulIcon" left>{{ modulIcon }}</v-icon>
                     {{ unitNameOutput }}
                 </h3>
+                <v-spacer />
                 <afc-panel-unit-hub v-for="hub in hubs" :key="hub" :name="hub" />
             </v-col>
         </v-row>

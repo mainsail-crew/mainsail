@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="ml-3">
         <v-tooltip top>
             <template #activator="{ on, attr }">
                 <span
