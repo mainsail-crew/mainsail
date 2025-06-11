@@ -50,6 +50,7 @@ export default class AfcPanelUnitLane extends Mixins(BaseMixin, AfcMixin) {
     box-sizing: border-box !important;
     border-width: 1px;
     border-style: solid;
+    flex-basis: 0;
 }
 
 .v-application .border-error {
