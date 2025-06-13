@@ -47,11 +47,9 @@ export const getters: GetterTree<FileState, any> = {
             const rootGcodes = getters['getDirectory']('gcodes')
             if (rootGcodes === null) return []
 
-            let baseURL = `${rootGetters['socket/getUrl']}/server/files/gcodes`
             let files: FileStateFile[] = []
 
             if (path !== null) {
-                baseURL += escapePath(path)
                 const directory = getters['getDirectory']('gcodes' + path)
                 files = directory?.childrens ?? []
             } else {
