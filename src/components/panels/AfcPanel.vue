@@ -1,5 +1,6 @@
 <template>
     <panel
+        v-if="klipperReadyForGui"
         :title="$t('Panels.AfcPanel.Headline')"
         :icon="afcIconLogo"
         :collapsible="true"
