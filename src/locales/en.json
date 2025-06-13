@@ -634,6 +634,7 @@
             "LaneMappingToCommand": "Remap {name} to tool command",
             "LedOff": "LEDs Off",
             "LedOn": "LEDs On",
+            "LoadedInLane": "Loaded in {lane}",
             "Loading": "Loading",
             "LoadLane": "Load Lane",
             "Material": "Material",

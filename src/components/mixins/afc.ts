@@ -15,6 +15,32 @@ export default class AfcMixin extends Vue {
         return this.afc.units ?? []
     }
 
+    get afcLanes(): string[] {
+        return this.afc.lanes ?? []
+    }
+
+    get afcLoadedSpools() {
+        if (this.afcLanes.length === 0) return []
+
+        const spoolIds: { lane: string; spoolId: number }[] = []
+        const printer = this.$store.state.printer ?? {}
+        this.afcLanes.forEach((name) => {
+            const key_stepper = `AFC_stepper ${name}`
+            const key_lane = `AFC_lane ${name}`
+
+            const lane = printer[key_stepper] ?? printer[key_lane] ?? null
+
+            if (!lane || !lane.spool_id) return
+
+            spoolIds.push({
+                lane: name,
+                spoolId: lane.spool_id,
+            })
+        })
+
+        return spoolIds
+    }
+
     get afcErrorState() {
         return this.afc.error_state ?? false
     }
