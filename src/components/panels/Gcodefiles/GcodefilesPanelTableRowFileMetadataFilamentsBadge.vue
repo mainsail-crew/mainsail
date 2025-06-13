@@ -22,7 +22,7 @@ export default class GcodefilesPanelTableRowFileMetadataFilaments extends Mixins
     get weight() {
         const weight = this.filament.weight ?? 0
 
-        if (weight > 1000) return Math.round(weight / 10) / 100 + ' kg'
+        if (weight > 1000) return `${Math.round(weight / 10) / 100} kg`
         else if (weight > 100) return `${Math.round(weight)} g`
 
         return `${Math.round(weight * 10) / 10} g`
