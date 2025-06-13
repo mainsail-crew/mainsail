@@ -32,6 +32,15 @@
                 v-if="col.value === 'slicer'"
                 :key="col.value"
                 :item="item" />
+            <gcodefiles-panel-table-row-file-metadata-filaments
+                v-else-if="col.value === 'filaments'"
+                :key="col.value"
+                :item="item" />
+            <gcodefiles-panel-table-row-file-metadata-filament-strings
+                v-else-if="['filament_name', 'filament_type'].includes(col.value)"
+                :key="col.value"
+                :item="item"
+                :column="col.value" />
             <gcodefiles-panel-table-row-file-metadata v-else :key="col.value" :col="col" :item="item" />
         </template>
         <v-menu
@@ -146,10 +155,14 @@ import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath } from 
 import GcodefilesRenameFileDialog from '@/components/dialogs/GcodefilesRenameFileDialog.vue'
 import GcodefilesDuplicateFileDialog from '@/components/dialogs/GcodefilesDuplicateFileDialog.vue'
 import GcodefilesPanelTableRowFileMetadata from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadata.vue'
+import GcodefilesPanelTableRowFileMetadataFilaments from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadataFilaments.vue'
 import GcodefilesPanelTableRowFileMetadataSlicer from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadataSlicer.vue'
+import GcodefilesPanelTableRowFileMetadataFilamentStrings from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadataFilamentStrings.vue'
 
 @Component({
     components: {
+        GcodefilesPanelTableRowFileMetadataFilamentStrings,
+        GcodefilesPanelTableRowFileMetadataFilaments,
         GcodefilesPanelTableRowFileMetadataSlicer,
         GcodefilesPanelTableRowFileMetadata,
         GcodefilesDuplicateFileDialog,

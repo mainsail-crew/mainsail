@@ -141,6 +141,12 @@ export default class GcodefilesMixin extends Vue {
                 outputType: 'temp',
             },
             {
+                text: this.$t('Files.Filaments').toString(),
+                value: 'filaments',
+                visible: true,
+                class: 'text-no-wrap',
+            },
+            {
                 text: this.$t('Files.FilamentName').toString(),
                 value: 'filament_name',
                 visible: true,
