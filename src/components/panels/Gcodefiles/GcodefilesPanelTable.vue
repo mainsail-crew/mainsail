@@ -63,8 +63,6 @@ import GcodefilesPanelTableRowFile from '@/components/panels/Gcodefiles/Gcodefil
 export default class GcodefilesPanelTable extends Mixins(BaseMixin, GcodefilesMixin) {
     sortFiles = sortFiles
 
-    draggingFile: FileStateGcodefile | null = null
-
     get sortBy() {
         return this.$store.state.gui.view.gcodefiles.sortBy ?? 'modified'
     }
