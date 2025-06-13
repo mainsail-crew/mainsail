@@ -1,76 +1,74 @@
 <template>
-    <div>
-        <v-dialog v-model="showDialog" width="800" persistent :fullscreen="isMobile">
-            <panel
-                :title="$t('Panels.SpoolmanPanel.ChangeSpool')"
-                :icon="mdiAdjust"
-                card-class="spoolman-change-spool-dialog"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="close">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-title>
-                    <v-text-field
-                        v-model="search"
-                        :append-icon="mdiMagnify"
-                        :label="$t('Panels.SpoolmanPanel.Search')"
-                        outlined
-                        dense
-                        hide-details
-                        style="max-width: 300px" />
-                    <v-spacer />
-                    <v-btn
-                        v-if="afcLane"
-                        :title="$t('Panels.SpoolmanPanel.EjectSpool')"
-                        class="px-2 minwidth-0 ml-3"
-                        :loading="loadings.includes('ejectSpool')"
-                        @click="ejectSpool">
-                        <v-icon>{{ mdiEject }}</v-icon>
-                    </v-btn>
-                    <v-btn
-                        :title="$t('Panels.SpoolmanPanel.Refresh')"
-                        class="px-2 minwidth-0 ml-3"
-                        :loading="loadings.includes('refreshSpools')"
-                        @click="refreshSpools">
-                        <v-icon>{{ mdiRefresh }}</v-icon>
-                    </v-btn>
-                    <v-btn
-                        :title="$t('Panels.SpoolmanPanel.OpenSpoolManager')"
-                        class="px-2 minwidth-0 ml-3"
-                        @click="openSpoolManager">
-                        <v-icon>{{ mdiDatabase }}</v-icon>
-                    </v-btn>
-                </v-card-title>
-                <v-card-text class="px-0 pb-0">
-                    <v-data-table
-                        :headers="headers"
-                        :items="spools"
-                        item-key="id"
-                        :search="search"
-                        sort-by="last_used"
-                        :sort-desc="true"
-                        :custom-filter="customFilter">
-                        <template #no-data>
-                            <div class="text-center">{{ $t('Panels.SpoolmanPanel.NoSpools') }}</div>
-                        </template>
-                        <template #no-results>
-                            <div class="text-center">{{ $t('Panels.SpoolmanPanel.NoResults') }}</div>
-                        </template>
+    <v-dialog v-model="showDialog" width="800" persistent :fullscreen="isMobile">
+        <panel
+            :title="$t('Panels.SpoolmanPanel.ChangeSpool')"
+            :icon="mdiAdjust"
+            card-class="spoolman-change-spool-dialog"
+            :margin-bottom="false">
+            <template #buttons>
+                <v-btn icon tile @click="close">
+                    <v-icon>{{ mdiCloseThick }}</v-icon>
+                </v-btn>
+            </template>
+            <v-card-title>
+                <v-text-field
+                    v-model="search"
+                    :append-icon="mdiMagnify"
+                    :label="$t('Panels.SpoolmanPanel.Search')"
+                    outlined
+                    dense
+                    hide-details
+                    style="max-width: 300px" />
+                <v-spacer />
+                <v-btn
+                    v-if="afcLane"
+                    :title="$t('Panels.SpoolmanPanel.EjectSpool')"
+                    class="px-2 minwidth-0 ml-3"
+                    :loading="loadings.includes('ejectSpool')"
+                    @click="ejectSpool">
+                    <v-icon>{{ mdiEject }}</v-icon>
+                </v-btn>
+                <v-btn
+                    :title="$t('Panels.SpoolmanPanel.Refresh')"
+                    class="px-2 minwidth-0 ml-3"
+                    :loading="loadings.includes('refreshSpools')"
+                    @click="refreshSpools">
+                    <v-icon>{{ mdiRefresh }}</v-icon>
+                </v-btn>
+                <v-btn
+                    :title="$t('Panels.SpoolmanPanel.OpenSpoolManager')"
+                    class="px-2 minwidth-0 ml-3"
+                    @click="openSpoolManager">
+                    <v-icon>{{ mdiDatabase }}</v-icon>
+                </v-btn>
+            </v-card-title>
+            <v-card-text class="px-0 pb-0">
+                <v-data-table
+                    :headers="headers"
+                    :items="spools"
+                    item-key="id"
+                    :search="search"
+                    sort-by="last_used"
+                    :sort-desc="true"
+                    :custom-filter="customFilter">
+                    <template #no-data>
+                        <div class="text-center">{{ $t('Panels.SpoolmanPanel.NoSpools') }}</div>
+                    </template>
+                    <template #no-results>
+                        <div class="text-center">{{ $t('Panels.SpoolmanPanel.NoResults') }}</div>
+                    </template>
 
-                        <template #item="{ item }">
-                            <SpoolmanChangeSpoolDialogRow
-                                :key="item.id"
-                                :spool="item"
-                                :max_id_digits="max_spool_id_digits"
-                                @set-spool="setSpool" />
-                        </template>
-                    </v-data-table>
-                </v-card-text>
-            </panel>
-        </v-dialog>
-    </div>
+                    <template #item="{ item }">
+                        <SpoolmanChangeSpoolDialogRow
+                            :key="item.id"
+                            :spool="item"
+                            :max_id_digits="max_spool_id_digits"
+                            @set-spool="setSpool" />
+                    </template>
+                </v-data-table>
+            </v-card-text>
+        </panel>
+    </v-dialog>
 </template>
 
 <script lang="ts">
