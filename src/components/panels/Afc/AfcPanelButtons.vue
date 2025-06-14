@@ -40,26 +40,33 @@ export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
         const commands = this.$store.state.printer.gcode?.commands ?? {}
         const commandsList = Object.keys(commands)
 
-        return [
+        const buttons = [
             {
                 icon: mdiWrench,
                 text: this.$t('Panels.AfcPanel.Calibrate'),
                 command: 'AFC_CALIBRATION',
                 disabled: false,
             },
-            {
+        ]
+
+        const ledState = this.afc.led_state ?? false
+        if (ledState) {
+            buttons.push({
                 icon: mdiLightbulbOnOutline,
-                text: this.$t('Panels.AfcPanel.LedOn'),
-                command: 'TURN_ON_AFC_LED',
-                disabled: false,
-            },
-            {
-                icon: mdiLightbulbOutline,
                 text: this.$t('Panels.AfcPanel.LedOff'),
                 command: 'TURN_OFF_AFC_LED',
                 disabled: false,
-            },
-        ].filter((button) => {
+            })
+        } else {
+            buttons.push({
+                icon: mdiLightbulbOutline,
+                text: this.$t('Panels.AfcPanel.LedOn'),
+                command: 'TURN_ON_AFC_LED',
+                disabled: false,
+            })
+        }
+
+        return buttons.filter((button) => {
             return commandsList.includes(button.command.toUpperCase())
         })
     }
