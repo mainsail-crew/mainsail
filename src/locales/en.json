@@ -609,6 +609,7 @@
     },
     "Panels": {
         "AfcPanel": {
+            "AfcSettings": "AFC-Settings",
             "BrushNozzle": "Brush Nozzle",
             "BufferDisabled": "Buffer Not Active",
             "BypassActive": "Filament loaded in bypass, tool changes are deactivated!",

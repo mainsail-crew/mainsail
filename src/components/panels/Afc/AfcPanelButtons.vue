@@ -16,6 +16,13 @@
                 <macro-button :macro="macro.macro" :alias="macro.text" color="" class="w-100" />
             </v-list-item>
             <v-list-item>
+                <v-btn class="w-100" small @click="showAfcSettings = true">
+                    <v-icon small left>{{ mdiVariable }}</v-icon>
+                    {{ $t('Panels.AfcPanel.AfcSettings') }}
+                </v-btn>
+                <afc-settings-dialog :show="showAfcSettings" @close="showAfcSettings = false" />
+            </v-list-item>
+            <v-list-item>
                 <v-btn class="w-100" small @click="downloadDebugJson">
                     <v-icon small left>{{ mdiArrowDownBold }}</v-icon>
                     {{ $t('Panels.AfcPanel.DebugJson') }}
@@ -28,13 +35,23 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import AfcMixin from '@/components/mixins/afc'
-import { mdiArrowDownBold, mdiDotsVertical, mdiLightbulbOnOutline, mdiLightbulbOutline, mdiWrench } from '@mdi/js'
+import {
+    mdiArrowDownBold,
+    mdiDotsVertical,
+    mdiLightbulbOnOutline,
+    mdiLightbulbOutline,
+    mdiVariable,
+    mdiWrench,
+} from '@mdi/js'
 import { PrinterStateMacro } from '@/store/printer/types'
 
 @Component
 export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
     mdiDotsVertical = mdiDotsVertical
     mdiArrowDownBold = mdiArrowDownBold
+    mdiVariable = mdiVariable
+
+    showAfcSettings = false
 
     get commands() {
         const commands = this.$store.state.printer.gcode?.commands ?? {}
