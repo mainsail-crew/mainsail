@@ -32,7 +32,7 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
 
     storeLightgroup(
         { commit, dispatch, state },
-        payload: { type: string; name: string; lightgroup: { name: string; start: number; end: number } }
+        payload: { type: string; name: string; lightgroup: GuiMiscellaneousStateEntryLightgroup }
     ) {
         let entryId =
             Object.keys(state.entries).find(
@@ -78,13 +78,7 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
         payload: {
             type: string
             name: string
-            preset: {
-                name: string
-                red: number | null
-                green: number | null
-                blue: number | null
-                white: number | null
-            }
+            preset: GuiMiscellaneousStateEntryPreset
         }
     ) {
         let entryId =
