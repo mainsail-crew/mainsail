@@ -116,12 +116,7 @@ export default class SettingsMiscellaneousTabLightGroupsForm extends Mixins(Base
         Object.keys(this.entry.lightgroups).forEach((key) => {
             const lightgroup = this.entry.lightgroups[key]
 
-            groups.push({
-                id: key,
-                name: lightgroup.name,
-                start: lightgroup.start,
-                end: lightgroup.end,
-            })
+            groups.push({ ...lightgroup, id: key })
         })
 
         return caseInsensitiveSort(groups, 'name')
