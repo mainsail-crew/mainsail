@@ -113,10 +113,11 @@ export default class SettingsMiscellaneousTabLightGroupsForm extends Mixins(Base
         if (!this.entry?.lightgroups) return []
 
         const groups: GuiMiscellaneousStateEntryLightgroup[] = []
-        Object.keys(this.entry.lightgroups).forEach((key) => {
-            const lightgroup = this.entry.lightgroups[key]
+        Object.keys(this.entry.lightgroups).forEach((id) => {
+            const lightgroup = this.entry.lightgroups[id]
+            lightgroup.id = id
 
-            groups.push({ ...lightgroup, id: key })
+            groups.push(lightgroup)
         })
 
         return caseInsensitiveSort(groups, 'name')
