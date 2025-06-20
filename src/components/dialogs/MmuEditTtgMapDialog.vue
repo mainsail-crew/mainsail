@@ -520,11 +520,11 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     commit() {
         let mapStr = this.localTtgMap.join(',')
         let esGrpStr = this.localEndlessSpoolGroups.join(',')
-        let cmd = 'MMU_SLICER_TOOL_MAP SKIP_AUTOMAP=' + (this.skipAutomap ? 1 : 0)
-        this.doSend(cmd)
         cmd = `MMU_TTG_MAP MAP="${mapStr}" QUIET=1`
         this.doSend(cmd)
         cmd = `MMU_ENDLESS_SPOOL GROUPS="${esGrpStr}" QUIET=1`
+        this.doSend(cmd)
+        cmd = 'MMU_SLICER_TOOL_MAP SKIP_AUTOMAP=' + (this.skipAutomap ? 1 : 0)
         this.doSend(cmd)
         this.close()
     }
