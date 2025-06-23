@@ -18,11 +18,7 @@ export default class AfcPanelUnitLane extends Mixins(BaseMixin, AfcMixin) {
     @Prop({ type: String, required: true }) readonly name!: string
 
     get lane() {
-        const printer = this.$store.state.printer ?? {}
-        const key = `AFC_stepper ${this.name}`
-        const key2 = `AFC_lane ${this.name}`
-
-        return printer[key] ?? printer[key2] ?? {}
+        return this.getAfcLaneObject(this.name)
     }
 
     get laneActive() {

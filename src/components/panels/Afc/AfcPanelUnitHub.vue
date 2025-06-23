@@ -23,10 +23,7 @@ export default class AfcPanelUnitHub extends Mixins(BaseMixin, AfcMixin) {
     @Prop({ type: String, required: true }) readonly name!: string
 
     get hub() {
-        const printer = this.$store.state.printer ?? {}
-        const key = `AFC_hub ${this.name}`
-
-        return printer[key] ?? {}
+        return this.getAfcHubObject(this.name)
     }
 
     get sensorStatus() {

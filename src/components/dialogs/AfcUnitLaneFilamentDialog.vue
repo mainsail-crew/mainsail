@@ -67,10 +67,7 @@ export default class AfcUnitLaneFilamentDialog extends Mixins(BaseMixin, AfcMixi
     weight = 0
 
     get lane() {
-        const printer = this.$store.state.printer ?? {}
-        const key = `AFC_stepper ${this.name}`
-
-        return printer[key] ?? {}
+        return this.getAfcLaneObject(this.name)
     }
 
     get currentColor() {

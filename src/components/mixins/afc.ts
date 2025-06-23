@@ -23,13 +23,8 @@ export default class AfcMixin extends Vue {
         if (this.afcLanes.length === 0) return []
 
         const spoolIds: { lane: string; spoolId: number }[] = []
-        const printer = this.$store.state.printer ?? {}
         this.afcLanes.forEach((name) => {
-            const key_stepper = `AFC_stepper ${name}`
-            const key_lane = `AFC_lane ${name}`
-
-            const lane = printer[key_stepper] ?? printer[key_lane] ?? null
-
+            const lane = this.getAfcLaneObject(name)
             if (!lane || !lane.spool_id) return
 
             spoolIds.push({
@@ -49,21 +44,14 @@ export default class AfcMixin extends Vue {
         const current = this.afc.current_load ?? this.afc.current_lane ?? null
         if (current === null) return null
 
-        const key = `AFC_stepper ${current}`
-        const key2 = `AFC_lane ${current}`
-        const printer = this.$store.state.printer ?? {}
-
-        return printer[key] ?? printer[key2] ?? null
+        return this.getAfcLaneObject(current)
     }
 
     get afcCurrentBuffer() {
         const name = this.afcCurrentLane?.buffer ?? null
         if (name === null) return null
 
-        const key = `AFC_buffer ${name}`
-        const printer = this.$store.state.printer ?? {}
-
-        return printer[key] ?? null
+        return this.getAfcBufferObject(name)
     }
 
     get afcCurrentState() {
@@ -72,14 +60,10 @@ export default class AfcMixin extends Vue {
 
     get afcMapList(): string[] {
         const lanes = this.afc.lanes ?? []
-        const printer = this.$store.state.printer ?? {}
 
         const mapList = []
         for (const laneName of lanes) {
-            const key = `AFC_stepper ${laneName}`
-            const key2 = `AFC_lane ${laneName}`
-
-            const lane = printer[key] ?? printer[key2] ?? null
+            const lane = this.getAfcLaneObject(laneName)
             if (lane === null) continue
 
             mapList.push(lane.map)
@@ -110,5 +94,42 @@ export default class AfcMixin extends Vue {
 
     get afcHiddenUnits(): string[] {
         return this.$store.state.gui.view.afc?.hiddenUnits ?? []
+    }
+
+    getPrinterObject(key: string) {
+        const printer = this.$store.state.printer ?? {}
+        return printer[key] ?? null
+    }
+
+    getPrinterSettings(key: string) {
+        const settings = this.$store.state.printer.configfile?.settings ?? {}
+
+        return settings[key.toLowerCase()] ?? null
+    }
+
+    getAfcLaneObject(lane: string) {
+        const key_stepper = `AFC_stepper ${lane}`
+        const key_lane = `AFC_lane ${lane}`
+        return this.getPrinterObject(key_stepper) ?? this.getPrinterObject(key_lane) ?? {}
+    }
+
+    getAfcExtruderObject(extruder: string) {
+        const key_extruder = `AFC_extruder ${extruder}`
+        return this.getPrinterObject(key_extruder) ?? {}
+    }
+
+    getAfcExtruderSettings(extruder: string) {
+        const key = `AFC_extruder ${extruder}`
+        return this.getPrinterSettings(key) ?? {}
+    }
+
+    getAfcBufferObject(buffer: string) {
+        const key_buffer = `AFC_buffer ${buffer}`
+        return this.getPrinterObject(key_buffer)
+    }
+
+    getAfcHubObject(hub: string) {
+        const key = `AFC_hub ${hub}`
+        return this.getPrinterObject(key) ?? {}
     }
 }

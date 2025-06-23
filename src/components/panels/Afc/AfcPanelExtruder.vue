@@ -42,17 +42,11 @@ export default class AfcPanelExtruder extends Mixins(BaseMixin, AfcMixin) {
     @Prop({ type: String, required: true }) readonly name!: string
 
     get afcExtruder() {
-        const printer = this.$store.state.printer ?? {}
-        const name = `AFC_extruder ${this.name}`
-
-        return printer[name] ?? {}
+        return this.getAfcExtruderObject(this.name)
     }
 
     get settings() {
-        const settings = this.$store.state.printer.configfile?.settings ?? {}
-        const key = `AFC_extruder ${this.name}`.toLowerCase()
-
-        return settings[key] ?? {}
+        return this.getAfcExtruderSettings(this.name)
     }
 
     get useRamming() {

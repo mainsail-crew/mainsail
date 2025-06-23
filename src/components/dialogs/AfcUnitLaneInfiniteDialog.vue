@@ -53,10 +53,7 @@ export default class AfcUnitLaneInfiniteDialog extends Mixins(BaseMixin, AfcMixi
     @Prop({ type: String, required: true }) readonly name!: string
 
     get lane() {
-        const printer = this.$store.state.printer ?? {}
-        const key = `AFC_stepper ${this.name}`
-
-        return printer[key] ?? {}
+        return this.getAfcLaneObject(this.name)
     }
 
     get runoutLane() {
@@ -65,13 +62,12 @@ export default class AfcUnitLaneInfiniteDialog extends Mixins(BaseMixin, AfcMixi
 
     get laneList() {
         const allLanes = this.afc.lanes ?? []
-        const printer = this.$store.state.printer ?? {}
         let output = []
 
         for (const laneName of allLanes) {
             if (laneName === this.name) continue
 
-            const lane = printer[`AFC_stepper ${laneName}`] || {}
+            const lane = this.getAfcLaneObject(laneName)
             const prep = lane.prep ?? false
             const load = lane.prep ?? false
 
