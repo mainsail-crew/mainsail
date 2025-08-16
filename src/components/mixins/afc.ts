@@ -11,6 +11,10 @@ export default class AfcMixin extends Vue {
         return this.afc.extruders ?? []
     }
 
+    get afcHubs(): string[] {
+        return this.afc.hubs ?? []
+    }
+
     get afcUnits(): string[] {
         return this.afc.units ?? []
     }
@@ -111,6 +115,12 @@ export default class AfcMixin extends Vue {
         const key_stepper = `AFC_stepper ${lane}`
         const key_lane = `AFC_lane ${lane}`
         return this.getPrinterObject(key_stepper) ?? this.getPrinterObject(key_lane) ?? {}
+    }
+
+    getAfcLaneSettings(lane: string) {
+        const key_stepper = `AFC_stepper ${lane}`
+        const key_lane = `AFC_lane ${lane}`
+        return this.getPrinterSettings(key_stepper) ?? this.getPrinterSettings(key_lane) ?? {}
     }
 
     getAfcExtruderObject(extruder: string) {

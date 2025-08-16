@@ -1,7 +1,7 @@
 <template>
     <v-alert v-if="message" :icon="mdiAlert" :type="type" class="mt-3 align-content-center" dense text>
         <v-row>
-            <v-col class="grow">{{ message }}</v-col>
+            <v-col class="grow text-format">{{ message }}</v-col>
             <v-col class="shrink py-0 align-content-center">
                 <v-btn icon @click="clearMessage">
                     <v-icon small>{{ mdiClose }}</v-icon>
@@ -45,3 +45,11 @@ export default class AfcPanelMessage extends Mixins(BaseMixin, AfcMixin) {
     }
 }
 </script>
+
+<style scoped>
+.text-format {
+    white-space: break-spaces;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.875rem;
+}
+</style>
