@@ -69,7 +69,7 @@ export default class AfcUnitLaneInfiniteDialog extends Mixins(BaseMixin, AfcMixi
 
             const lane = this.getAfcLaneObject(laneName)
             const prep = lane.prep ?? false
-            const load = lane.prep ?? false
+            const load = lane.load ?? false
 
             if (prep && load) output.push(lane.name)
         }
