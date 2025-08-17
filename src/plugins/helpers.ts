@@ -86,6 +86,10 @@ export function formatConsoleMessage(message: string): string {
     message = message.replace(/^echo:/g, '')
     // remove debug
     message = message.replace(/^debug:/g, '')
+    // escape html content
+    message = message.replace(/&/g, '&amp;')
+    message = message.replace(/</g, '&lt;')
+    message = message.replace(/>/g, '&gt;')
     // replace linebreaks with html <br>
     message = message.replace('\n// ', '<br>')
     message = message.replace(/\r\n|\r|\n/g, '<br>')
