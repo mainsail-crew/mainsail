@@ -38,7 +38,7 @@ jobs:
             cat "$file" | jq empty || { echo "Invalid JSON in $file"; exit 1; }
             locale=$(basename "$file" .json)
             languageFiles="./src/locales/${locale}.json"
-            outputDir="./i18n-extract/${locale}"
+            outputFile="./i18n-extract/${locale}.json"
 
             echo "Extracting i18n data for locale: $locale"
             echo "Language files: $languageFiles"
@@ -47,10 +47,10 @@ jobs:
             npx vue-i18n-extract \
               --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' \
               --languageFiles "${languageFiles}" \
-              --output "${outputDir}" 
+              --output "${outputFile}" > /dev/null 2>&1
             
-            # MISSING=$(cat ./i18n-extract/${locale} | jq '.missingKeys | length')
-            # UNUSED=$(cat ./i18n-extract/${locale} | jq '.unusedKeys | length')
+            # MISSING=$(cat "${outputFile}" | jq '.missingKeys | length')
+            # UNUSED=$(cat "${outputFile}" | jq '.unusedKeys | length')
             # echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
           done
 
