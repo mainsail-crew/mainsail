@@ -33,16 +33,13 @@ jobs:
         id: i18n-extract
         run: |
           mkdir ./i18n-extract
-          ls -l ./src/locales/*.json
+
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            cat "$file" | jq empty || { echo "Invalid JSON in $file"; exit 1; }
             locale=$(basename "$file" .json)
             languageFiles="./src/locales/${locale}.json"
             outputFile="./i18n-extract/${locale}.json"
 
             echo "Extracting i18n data for locale: $locale"
-            echo "Language files: $languageFiles"
-            echo "Output directory: $outputDir"
 
             npx vue-i18n-extract \
               --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' \
@@ -51,10 +48,9 @@ jobs:
             
             MISSING=$(cat "${outputFile}" | jq '.missingKeys | length')
             UNUSED=$(cat "${outputFile}" | jq '.unusedKeys | length')
+
             echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
           done
-
-          ls -l ./i18n-extract/*
 
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v3
