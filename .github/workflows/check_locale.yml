@@ -39,12 +39,14 @@ jobs:
             languageFiles="./src/locales/${locale}.json"
             outputFile="./i18n-extract/${locale}.json"
 
-            echo "Extracting i18n data for locale: $locale"
+            echo "::group::Extracting i18n data for locale: ${locale}"
 
             npx vue-i18n-extract \
               --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' \
               --languageFiles "${languageFiles}" \
-              --output "${outputFile}" > /dev/null 2>&1
+              --output "${outputFile}"
+
+            echo "::endgroup::"
             
             MISSING=$(cat "${outputFile}" | jq '.missingKeys | length')
             UNUSED=$(cat "${outputFile}" | jq '.unusedKeys | length')
