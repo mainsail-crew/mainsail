@@ -33,10 +33,11 @@ jobs:
         id: i18n-extract
         run: |
           mkdir ./i18n-extract
+          ls -l ./src/locales/*.json
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             cat "$file" | jq empty || { echo "Invalid JSON in $file"; exit 1; }
             locale=$(basename "$file" .json)
-            languageFiles="./src/locales/${locale}"
+            languageFiles="./src/locales/${locale}.json"
             outputDir="./i18n-extract/${locale}"
 
             echo "Extracting i18n data for locale: $locale"
