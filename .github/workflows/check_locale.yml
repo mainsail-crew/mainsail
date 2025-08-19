@@ -49,9 +49,9 @@ jobs:
               --languageFiles "${languageFiles}" \
               --output "${outputFile}" > /dev/null 2>&1
             
-            # MISSING=$(cat "${outputFile}" | jq '.missingKeys | length')
-            # UNUSED=$(cat "${outputFile}" | jq '.unusedKeys | length')
-            # echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
+            MISSING=$(cat "${outputFile}" | jq '.missingKeys | length')
+            UNUSED=$(cat "${outputFile}" | jq '.unusedKeys | length')
+            echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
           done
 
           ls -l ./i18n-extract/*
