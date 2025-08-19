@@ -44,13 +44,17 @@ jobs:
             echo "Language files: $languageFiles"
             echo "Output directory: $outputDir"
 
-            npx vue-i18n-extract --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' --languageFiles "${languageFiles}" --output "${outputDir}"
-            ls -l ./i18n-extract
+            npx vue-i18n-extract \
+              --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' \
+              --languageFiles "${languageFiles}" \
+              --output "${outputDir}" 
             
-            MISSING=$(cat ./i18n-extract/${locale} | jq '.missingKeys | length')
-            UNUSED=$(cat ./i18n-extract/${locale} | jq '.unusedKeys | length')
-            echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
+            # MISSING=$(cat ./i18n-extract/${locale} | jq '.missingKeys | length')
+            # UNUSED=$(cat ./i18n-extract/${locale} | jq '.unusedKeys | length')
+            # echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
           done
+
+          ls -l ./i18n-extract/*
 
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v3
