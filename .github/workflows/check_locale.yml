@@ -31,16 +31,19 @@ jobs:
 
       - name: Run i18n-extract on changed locale files
         id: i18n-extract
-        env:
-          OUTPUT: ''
         run: |
           mkdir ./i18n-extract
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            npx vue-i18n-extract --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' --languageFiles ./src/locales/${file##*/} --output ./i18n-extract/${file##*/}
-            MISSING=$(cat i18n-extract/${file##*/} | jq '.missingKeys | length')
-            UNUSED=$(cat i18n-extract/${file##*/} | jq '.unusedKeys | length')
+            cat "$file" | jq empty || { echo "Invalid JSON in $file"; exit 1; }
+            echo "Processing file: $file"
+            locale=$(basename "$file" .json)
+            echo "Locale: $locale"
+            npx vue-i18n-extract --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' --languageFiles ./src/locales/${locale} --output ./i18n-extract/${locale}
+            MISSING=$(cat i18n-extract/${locale} | jq '.missingKeys | length')
+            UNUSED=$(cat i18n-extract/${locale} | jq '.unusedKeys | length')
             echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
           done
+
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v3
         with:
