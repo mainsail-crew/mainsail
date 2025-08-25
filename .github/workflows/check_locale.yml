@@ -5,11 +5,12 @@ on:
     paths:
       - 'src/locales/**'
 
+permissions:
+  pull-requests: write
+
 jobs:
   check_translations:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
     steps:
       - name: Install jq
         run: sudo apt install -y jq
