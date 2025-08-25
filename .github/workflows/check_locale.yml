@@ -61,7 +61,6 @@ jobs:
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
             Language file analysis report:
             |File|Missing Keys|Unused Keys|
