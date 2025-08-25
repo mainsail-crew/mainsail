@@ -5,12 +5,11 @@ on:
     paths:
       - 'src/locales/**'
 
-permissions:
-  pull-requests: write
-
 jobs:
   check_translations:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Install jq
         run: sudo apt install -y jq
@@ -60,6 +59,7 @@ jobs:
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v3
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
             Language file analysis report:
             |File|Missing Keys|Unused Keys|
