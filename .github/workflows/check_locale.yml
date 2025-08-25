@@ -1,6 +1,6 @@
 name: Check Translations
 on:
-  pull_request:
+  pull_request_target:
     types: [synchronize, opened]
     paths:
       - 'src/locales/**'
@@ -16,6 +16,8 @@ jobs:
 
       - name: Fetch repo
         uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install node
         uses: actions/setup-node@v4
