@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-form ref="form" v-model="formValid">
         <v-card-text>
             <h3 class="text-h5 mb-3">{{ title }}</h3>
             <settings-row :title="$t('Settings.MiscellaneousTab.Name')">
@@ -19,9 +19,10 @@
                     hide-details="auto"
                     type="number"
                     :step="1"
-                    :rules="[rules.minStart, rules.max]"
+                    :rules="[rules.required, rules.minStart, rules.max]"
                     dense
-                    outlined />
+                    outlined
+                    @keyup="revalidateForm" />
             </settings-row>
             <v-divider class="my-2" />
             <settings-row
@@ -32,22 +33,27 @@
                     hide-details="auto"
                     type="number"
                     :step="1"
-                    :rules="[rules.minEnd, rules.max]"
+                    :rules="[rules.required, rules.minEnd, rules.max]"
                     dense
-                    outlined />
+                    outlined
+                    @keyup="revalidateForm" />
             </settings-row>
         </v-card-text>
         <v-card-actions>
             <v-spacer />
             <v-btn text @click="close">{{ $t('Settings.Cancel') }}</v-btn>
-            <v-btn v-if="groupId !== null" text color="primary" @click="updateGroup">{{ $t('Settings.Update') }}</v-btn>
-            <v-btn v-else text color="primary" @click="storeGroup">{{ $t('Settings.Store') }}</v-btn>
+            <v-btn v-if="groupId !== null" text color="primary" :disabled="!formValid" @click="updateGroup">
+                {{ $t('Settings.Update') }}
+            </v-btn>
+            <v-btn v-else text color="primary" :disabled="!formValid" @click="storeGroup">
+                {{ $t('Settings.Store') }}
+            </v-btn>
         </v-card-actions>
-    </div>
+    </v-form>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { caseInsensitiveSort } from '@/plugins/helpers'
@@ -58,21 +64,30 @@ import { GuiMiscellaneousStateEntry, GuiMiscellaneousStateEntryLightgroup } from
     components: { SettingsRow },
 })
 export default class SettingsMiscellaneousTabLightGroupsForm extends Mixins(BaseMixin) {
+    formValid = false
     groupname = ''
     start = 1
     end = 1
 
-    rules = {
-        required: (value: string) => value !== '' || 'required',
-        groupUnique: (value: string) => !this.existsGroupName(value) || 'Name already exists',
-        minStart: (value: number) => value > 0 || 'smaller than 1',
-        minEnd: (value: number) => value >= this.start || 'smaller than start value',
-        max: (value: number) => value <= this.chainCount || 'higher than chain_count',
-    }
-
     @Prop({ type: String, default: null }) declare type: string | null
     @Prop({ type: String, default: null }) declare name: string | null
     @Prop({ type: String, default: null }) declare groupId: string | null
+
+    @Ref('form') declare form: HTMLFormElement
+
+    get rules() {
+        return {
+            required: (value: string) => value !== '' || this.$t('Settings.MiscellaneousTab.Required'),
+            groupUnique: (value: string) =>
+                !this.existsGroupName(value) || this.$t('Settings.MiscellaneousTab.NameExists'),
+            minStart: (value: string) => parseInt(value) > 0 || this.$t('Settings.MiscellaneousTab.GreaterThanZero'),
+            minEnd: (value: string) =>
+                parseInt(value) >= this.start || this.$t('Settings.MiscellaneousTab.HigherThanStart'),
+            max: (value: string) =>
+                parseInt(value) <= this.chainCount ||
+                this.$t('Settings.MiscellaneousTab.LessThanChainCount', { count: this.chainCount }),
+        }
+    }
 
     get title() {
         if (this.groupId) return this.$t('Settings.MiscellaneousTab.EditGroup')
@@ -138,6 +153,12 @@ export default class SettingsMiscellaneousTabLightGroupsForm extends Mixins(Base
 
     close() {
         this.$emit('close')
+    }
+
+    revalidateForm() {
+        this.$nextTick(() => {
+            this.form?.validate()
+        })
     }
 
     storeGroup() {
