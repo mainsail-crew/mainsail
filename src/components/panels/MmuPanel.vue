@@ -11,13 +11,11 @@
                     <v-list dense>
                         <v-list-item :disabled="!enabled" :class="{ 'mmu-disabled': !enabled }">
                             <v-btn small style="width: 100%" @click="showEditTtgMapDialog = true">
-                                <!--<v-icon left>{{ mdiStateMachine }}</v-icon>-->
                                 {{ $t('Panels.MmuPanel.EditTtgMap') }}
                             </v-btn>
                         </v-list-item>
                         <v-list-item :disabled="!enabled" :class="{ 'mmu-disabled': !enabled }">
                             <v-btn small style="width: 100%" @click="showEditGateMapDialog = true">
-                                <!--<v-icon left>{{ mdiDatabaseEdit }}</v-icon>-->
                                 {{ $t('Panels.MmuPanel.EditGateMap') }}
                             </v-btn>
                         </v-list-item>
@@ -27,13 +25,11 @@
                                 style="width: 100%"
                                 :disabled="!canSend"
                                 @click="showRecoverStateDialog = true">
-                                <!--<v-icon left>{{ mdiCogRefresh }}</v-icon>-->
                                 {{ $t('Panels.MmuPanel.RecoverState') }}
                             </v-btn>
                         </v-list-item>
                         <v-list-item :disabled="!enabled" :class="{ 'mmu-disabled': !enabled }">
                             <v-btn small style="width: 100%" :disabled="!canSend" @click="showMaintenanceDialog = true">
-                                <!--<v-icon left>{{ mdiWrenchCog }}</v-icon>-->
                                 {{ $t('Panels.MmuPanel.MmuMaintenance') }}
                             </v-btn>
                         </v-list-item>
@@ -143,15 +139,12 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
+import { capitalize } from '@/plugins/helpers'
 import {
     mdiMulticast,
     mdiDotsVertical,
     mdiAutoFix,
     mdiCheckAll,
-    mdiWrenchCog,
-    mdiCogRefresh,
-    mdiDatabaseEdit,
-    mdiStateMachine,
     mdiNoteText,
     mdiInformationOutline,
     mdiRefresh,
@@ -182,10 +175,6 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
     mdiDotsVertical = mdiDotsVertical
     mdiAutoFix = mdiAutoFix
     mdiCheckAll = mdiCheckAll
-    mdiWrenchCog = mdiWrenchCog
-    mdiCogRefresh = mdiCogRefresh
-    mdiDatabaseEdit = mdiDatabaseEdit
-    mdiStateMachine = mdiStateMachine
     mdiNoteText = mdiNoteText
     mdiInformationOutline = mdiInformationOutline
     mdiRefresh = mdiRefresh
@@ -223,7 +212,7 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
     get statusText(): string {
         let posStr: string = ''
         if (['complete', 'error', 'cancelled', 'started'].includes(this.printState)) {
-            posStr = this.capitalize(this.printState)
+            posStr = capitalize(this.printState)
         } else if (this.action === 'Idle') {
             if (this.printState === 'printing') {
                 posStr = `Printing (${this.numToolchanges}`
@@ -238,11 +227,6 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
             posStr = this.action
         }
         return posStr
-    }
-
-    private capitalize(str: string): string {
-        if (!str) return str
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
     }
 
     handleSyncSpoolman() {

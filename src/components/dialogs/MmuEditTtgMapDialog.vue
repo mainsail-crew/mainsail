@@ -413,7 +413,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     private handleEscapePress(event: KeyboardEvent) {
-        if (event.key === 'Escape' || event.keyCode === 27) {
+        if (event.key === 'Escape' || event.code === 'Escape') {
             this.selectedTool = -1
             this.selectedGate = -1
         }

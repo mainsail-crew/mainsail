@@ -43,13 +43,13 @@
                 <v-card-text class="px-4 pb-4">
                     <div class="fixed-area">
                         <transition name="fade">
-                            <div v-if="editGateSelected === -1" class="overlay-text">
+                            <div v-if="editGateSelected === TOOL_GATE_UNKNOWN" class="overlay-text">
                                 {{ $t('Panels.MmuPanel.GateMapDialog.SelectGate') }}
                             </div>
                         </transition>
 
                         <transition name="fade">
-                            <v-container v-if="editGateSelected !== -1">
+                            <v-container v-if="editGateSelected !== TOOL_GATE_UNKNOWN">
                                 <v-row class="ms-0 me-0 mb-4">
                                     <v-col
                                         class="d-flex justify-start align-center no-padding small-font text--secondary">
@@ -101,16 +101,8 @@
                                                     type="number"
                                                     :label="$t('Panels.MmuPanel.GateMapDialog.SpoolmanId')"
                                                     :rules="spoolIdRules()"
-                                                    :disabled="
-                                                        !useSpoolman ||
-                                                        spoolmanSupport === SPOOLMAN_PULL ||
-                                                        spoolmanSupport === SPOOLMAN_OFF
-                                                    "
-                                                    :hide-spin-buttons="
-                                                        !useSpoolman ||
-                                                        spoolmanSupport === SPOOLMAN_PULL ||
-                                                        spoolmanSupport === SPOOLMAN_OFF
-                                                    "
+                                                    :disabled="disableSpoolId()"
+                                                    :hide-spin-buttons="disableSpoolId()"
                                                     outlined
                                                     dense
                                                     @blur="adjustSpoolId" />
@@ -318,7 +310,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true }) declare readonly showDialog: boolean
 
     private editGateMap: MmuGateDetails[] = []
-    private editGateSelected: number = -1
+    private editGateSelected: number = this.TOOL_GATE_UNKNOWN
 
     private showResetConfirmationDialog: boolean = false
     private showSpoolmanSpoolChooserDialog: boolean = false
@@ -340,13 +332,13 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
         } else {
             this.editGateMap = []
         }
-        this.editGateSelected = -1
+        this.editGateSelected = this.TOOL_GATE_UNKNOWN
     }
 
     private selectGate(gate: number) {
-        if (this.editGateSelected !== -1) this.adjustSpoolId() // Get rid of null possibility
+        if (this.editGateSelected !== this.TOOL_GATE_UNKNOWN) this.adjustSpoolId() // Get rid of null possibility
         if (this.editGateSelected === gate) {
-            this.editGateSelected = -1
+            this.editGateSelected = this.TOOL_GATE_UNKNOWN
         } else {
             this.editGateSelected = gate
 
@@ -358,10 +350,11 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     private handleEscapePress(event: KeyboardEvent) {
-        if (event.key === 'Escape' || event.keyCode === 27) {
-            this.editGateSelected = -1
-        }
+      if (event.key === 'Escape' || event.code === 'Escape') {
+          this.editGateSelected = this.TOOL_GATE_UNKNOWN
+      }
     }
+
 
     private adjustName() {
         const filamentName = this.editGateMap[this.editGateSelected].filamentName ?? ''
@@ -412,6 +405,12 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
                 return spoolExists ? true : this.$t('Panels.MmuPanel.GateMapDialog.NoMatchingSpool')
             },
         ]
+    }
+
+    private disableSpoolId() {
+        return !this.useSpoolman ||
+               this.spoolmanSupport === this.SPOOLMAN_PULL ||
+               this.spoolmanSupport === this.SPOOLMAN_OFF
     }
 
     private adjustSpoolId() {
@@ -468,7 +467,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     get selectedGateStatus(): boolean {
         return (
-            this.editGateMap[this.editGateSelected].status === 1 || this.editGateMap[this.editGateSelected].status === 2
+            this.editGateMap[this.editGateSelected].status === this.GATE_AVAILABLE || this.editGateMap[this.editGateSelected].status === this.GATE_AVAILABLE_FROM_BUFFER
         )
     }
 
@@ -579,12 +578,12 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     close() {
         this.editGateMap = []
-        this.editGateSelected = -1
+        this.editGateSelected = this.TOOL_GATE_UNKNOWN
         this.$emit('close')
     }
 
     commit() {
-        if (this.editGateSelected !== -1) this.adjustSpoolId() // Get rid of null possibility
+        if (this.editGateSelected !== this.TOOL_GATE_UNKNOWN) this.adjustSpoolId() // Get rid of null possibility
         let mapStr = this.generateMapString(this.editGateMap)
         let cmd = `MMU_GATE_MAP MAP="${mapStr}" QUIET=1`
         this.doSend(cmd)

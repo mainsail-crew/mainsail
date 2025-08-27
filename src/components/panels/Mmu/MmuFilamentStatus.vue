@@ -171,7 +171,7 @@
                 {{ temperatureText }}
             </text>
 
-            <g v-if="hasSyncFeedback">
+            <g v-if="hasSyncFeedback && filamentPos >= FILAMENT_POS_END_BOWDEN">
                 <transition name="fade">
                     <g
                         v-if="isSensorTriggered('filament_tension') && isSensorTriggered('filament_compression')" key="neutral">
@@ -201,11 +201,11 @@
             <use v-if="isGripped" ref="grip" xlink:href="#filament-grip" transform="scale(.1) translate(1900, 420)" />
         </transition>
 
-        <use v-if="action == ACTION_CUTTING_FILAMENT" ref="cut" xlink:href="#sissors" class="cut1-effect" />
-        <use v-if="action == ACTION_CUTTING_TIP" ref="cutTip" xlink:href="#sissors" class="cut2-effect" />
+        <use v-if="action === ACTION_CUTTING_FILAMENT" ref="cut" xlink:href="#sissors" class="cut1-effect" />
+        <use v-if="action === ACTION_CUTTING_TIP" ref="cutTip" xlink:href="#sissors" class="cut2-effect" />
 
         <use
-            v-if="action == ACTION_PURGING"
+            v-if="action === ACTION_PURGING"
             ref="poop"
             xlink:href="#blob"
             class="blob-effect"
@@ -559,7 +559,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get isGripped(): boolean {
-        return (this.grip == 'Gripped' || this.servo == 'Down')
+        return (this.grip === 'Gripped' || this.servo === 'Down')
     }
 
     mounted() {
