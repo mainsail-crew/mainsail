@@ -288,9 +288,9 @@ import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
-import type { MmuGateDetails } from '@/compoents/mixins/mmu'
+import type { MmuGateDetails } from '@/components/mixins/mmu'
 import Panel from '@/components/ui/Panel.vue'
-import ServerSpoolmanStateSpool from '@/store/server/spoolman/types'
+import type { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import SpoolmanChangeSpoolDialog from '@/components/dialogs/SpoolmanChangeSpoolDialog.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import MmuMachine from '@/components/panels/Mmu/MmuMachine.vue'
@@ -310,7 +310,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true }) declare readonly showDialog: boolean
 
     private editGateMap: MmuGateDetails[] = []
-    private editGateSelected: number = this.TOOL_GATE_UNKNOWN
+    private editGateSelected: number = -1
 
     private showResetConfirmationDialog: boolean = false
     private showSpoolmanSpoolChooserDialog: boolean = false

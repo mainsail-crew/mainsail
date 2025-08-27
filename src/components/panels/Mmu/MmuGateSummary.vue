@@ -122,7 +122,6 @@ export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get detailsClass() {
-        if (this.compact) return ['subtitle-container', ' smaller-font']
         return ['subtitle-container', 'smaller-font']
     }
 }

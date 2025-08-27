@@ -249,7 +249,7 @@ import MmuMixin from '@/components/mixins/mmu'
 import Panel from '@/components/ui/Panel.vue'
 import Vue from 'vue'
 import type { FileStateGcodefile } from '@/store/files/types'
-import type { SlicerToolDetails } from '@/mixins/mmu'
+import type { MmuGateDetails, SlicerToolDetails } from '@/components/mixins/mmu'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import { mdiStateMachine } from '@mdi/js'
 
@@ -260,7 +260,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     mdiStateMachine = mdiStateMachine
 
     @Prop({ required: true }) declare readonly showDialog: boolean
-    @Prop({ required: false, default: null }) declare readonly file!: FileStateGcodefile | null
+    @Prop({ required: false, default: null }) readonly file!: FileStateGcodefile | null
 
     private localTtgMap: number[] = []
     private localEndlessSpoolGroups: number[] = []
@@ -291,7 +291,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
         this.initialize()
     }
 
-    private initialize(): null {
+    private initialize(): void {
         if (this.showDialog) {
             this.localTtgMap = Array.from(this.ttgMap)
             this.localEndlessSpoolGroups = Array.from(this.endlessSpoolGroups)
@@ -422,7 +422,7 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     private esSpoolsText(gate: number): string {
         let esGates: number[] = []
         let group = this.localEndlessSpoolGroups[gate]
-        this.localEndlessSpoolGroups.forEach((g, index) => {
+        this.localEndlessSpoolGroups.forEach((_, index) => {
             let cIndex = (gate + index) % this.localEndlessSpoolGroups.length
             if (this.localEndlessSpoolGroups[cIndex] === group && cIndex !== gate) {
                 esGates.push(cIndex)
@@ -435,42 +435,48 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     // Slicer tool...
 
     get toolNameText(): string {
-        return this.toolMetaData[this.selectedTool].name
+        return this.toolMetaData?.[this.selectedTool]?.name ?? ''
     }
 
     get toolDetailsText(): string {
-        let toolMaterialText = this.toolMetaData[this.selectedTool].material
+        const tmd = this.toolMetaData?.[this.selectedTool]
+        if (!tmd) return 'Unknown'
+
+        const toolMaterialText = tmd.material ?? 'Unknown'
         let toolTempText = null
-        if (this.toolMetaData[this.selectedTool].temp >= 0) {
-            toolTempText = this.toolMetaData[this.selectedTool].temp + '\u00B0' + 'C'
+        if (tmd.temp >= 0) {
+            toolTempText = tmd.temp + '\u00B0' + 'C'
         }
         return [toolMaterialText, toolTempText].filter((v) => v !== null).join(' | ')
     }
 
     get toolColor(): string {
-        return this.toolMetaData[this.selectedTool].color
+        return this.toolMetaData?.[this.selectedTool]?.color ?? ''
     }
 
     get alerts(): string[] | null {
+        const tmd = this.toolMetaData?.[this.selectedTool]
+        if (!tmd) return null
+
         const maxTempDiff = 5
         const maxColorDiff = 16000
         let alerts = []
 
         if (
-            this.toolMetaData[this.selectedTool].material.toUpperCase() !==
+            tmd.material.toUpperCase() !==
             this.gateDetails(this.selectedGate).material.toUpperCase()
         ) {
             alerts.push('\u2022 ' + this.$t('Panels.MmuPanel.TtgMapDialog.Material'))
         }
 
         if (
-            Math.abs(this.toolMetaData[this.selectedTool].temp - this.gateDetails(this.selectedGate).temperature) >
+            Math.abs(tmd.temp - this.gateDetails(this.selectedGate).temperature) >
             maxTempDiff
         ) {
             alerts.push('\u2022 ' + this.$t('Panels.MmuPanel.TtgMapDialog.Temperature'))
         }
 
-        const rgb1 = this.hexToRgb(this.formColorString(this.toolMetaData[this.selectedTool].color))
+        const rgb1 = this.hexToRgb(this.formColorString(tmd.color))
         const rgb2 = this.hexToRgb(this.formColorString(this.gateDetails(this.selectedGate).color))
         const colorDifference = this.weightedEuclideanDistance(rgb1, rgb2)
         if (colorDifference > maxColorDiff) {

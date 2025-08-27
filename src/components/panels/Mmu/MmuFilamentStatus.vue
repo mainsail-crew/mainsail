@@ -232,18 +232,18 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
         'pre-gate': 25,
         'after-pre-gate': 40,
         'before-gear': 50,
-        gear: 55,
+        'gear': 55,
         'after-gear': 70,
-        gate: 85,
+        'gate': 85,
         'after-gate': 100,
-        encoder: 115,
+        'encoder': 115,
         'start-bowden': 135,
         'mid-bowden': 221,
         'end-bowden': 290,
-        extruder: 295,
+        'extruder': 295,
         'extruder-entrance': 308,
         'before-toolhead': 315,
-        toolhead: 325,
+        'toolhead': 325,
         'cooling-tube': 338,
         'cut-point': 355,
         'nozzle-start': 371,
@@ -321,101 +321,100 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
                     }
                     break
             }
-        } else {
-            // Normal MMU use case leveraging state machine
-            switch (filamentPos) {
-                case this.FILAMENT_POS_UNLOADED:
-                    if (this.isSensorTriggered('mmu_gear')) {
-                        pos = this.POSITIONS['after-gear']
-                    } else if (this.isSensorTriggered('mmu_pre_gate')) {
-                        pos = this.POSITIONS['after-pre-gate']
-                    } else {
-                        pos = this.POSITIONS['before-pre-gate']
-                    }
-                    break
 
-                case this.FILAMENT_POS_HOMED_GATE:
-                    if (this.configGateHomingEndstop === 'mmu_gear') {
-                        pos = this.POSITIONS['gear']
-                    } else if (this.configGateHomingEndstop === 'mmu_gate') {
-                        pos = this.POSITIONS['gate']
-                    } else if (this.configGateHomingEndstop === 'extruder') {
-                        pos = this.POSITIONS['extruder'] // Special no-bowden case
-                    } else {
-                        pos = this.POSITIONS['after-gate']
-                    }
-                    break
-
-                // TODO: State not yet implmented in Happy Hare
-                //case this.FILAMENT_POS_HOMED_ENCODER:
-                //    pos = this.POSITIONS['encoder']
-                //    break
-
-                case this.FILAMENT_POS_START_BOWDEN:
-                    if (this.bowdenProgress >= 0) {
-                        pos = this.POSITIONS['start-bowden'] + (this.BOWDEN_RANGE * this.bowdenProgress) / 100
-                    } else {
-                        pos = this.POSITIONS['start-bowden']
-                    }
-                    break
-
-                case this.FILAMENT_POS_IN_BOWDEN:
-                    if (this.bowdenProgress >= 0) {
-                        pos = this.POSITIONS['start-bowden'] + (this.BOWDEN_RANGE * this.bowdenProgress) / 100
-                    } else {
-                        pos = this.POSITIONS['mid-bowden']
-                    }
-                    break
-
-                case this.FILAMENT_POS_END_BOWDEN:
-                    if (
-                        this.configGateHomingEndstop === 'none' ||
-                        (this.hasSensor('toolhead') &&
-                            this.isSensorEnabled('toolhead') &&
-                            !this.configExtruderForceHoming)
-                    ) {
-                        // No extruder homing will be performed so indicate at the extruder now
-                        pos = this.POSITIONS['extruder-entrance']
-                    } else {
-                        pos = this.POSITIONS['end-bowden']
-                    }
-                    break
-
-                case this.FILAMENT_POS_HOMED_ENTRY:
-                    pos = this.POSITIONS['extruder']
-                    break
-
-                case this.FILAMENT_POS_HOMED_EXTRUDER:
-                    pos = this.POSITIONS['extruder-entrance']
-                    break
-
-                case this.FILAMENT_POS_EXTRUDER_ENTRY:
-                    pos = this.POSITIONS['before-toolhead']
-                    break
-
-                case this.FILAMENT_POS_HOMED_TS:
-                    pos = this.POSITIONS['toolhead']
-                    break
-
-                case this.FILAMENT_POS_IN_EXTRUDER:
-                    pos = this.POSITIONS['cooling-tube']
-                    if (
-                        this.hasSensor('toolhead') &&
-                        this.isSensorEnabled('toolhead') &&
-                        !this.isSensorTriggered('toolhead')
-                    ) {
-                        pos = this.POSITIONS['before-toolhead'] // Don't show beyond toolhead sensor if not triggered
-                    }
-                    break
-
-                case this.FILAMENT_POS_LOADED:
-                    pos = this.POSITIONS['nozzle-start']
-                    break
-
-                default: // this.FILAMENT_POS_UNKNOWN
-                    pos = this.POSITIONS['unknown']
-            }
+            this.animateFilament(pos)
+            return
         }
+
+        // Normal MMU use case leveraging state machine
+        switch (filamentPos) {
+            case this.FILAMENT_POS_UNLOADED:
+                if (this.isSensorTriggered('mmu_gear')) {
+                    pos = this.POSITIONS['after-gear']
+                } else if (this.isSensorTriggered('mmu_pre_gate')) {
+                    pos = this.POSITIONS['after-pre-gate']
+                } else {
+                    pos = this.POSITIONS['before-pre-gate']
+                }
+                break
+
+            case this.FILAMENT_POS_HOMED_GATE:
+                if (this.configGateHomingEndstop === 'mmu_gear') {
+                    pos = this.POSITIONS['gear']
+                } else if (this.configGateHomingEndstop === 'mmu_gate') {
+                    pos = this.POSITIONS['gate']
+                } else if (this.configGateHomingEndstop === 'extruder') {
+                    pos = this.POSITIONS['extruder'] // Special no-bowden case
+                } else {
+                    pos = this.POSITIONS['after-gate']
+                }
+                break
+
+            case this.FILAMENT_POS_START_BOWDEN:
+                if (this.bowdenProgress >= 0) {
+                    pos = this.POSITIONS['start-bowden'] + (this.BOWDEN_RANGE * this.bowdenProgress) / 100
+                } else {
+                    pos = this.POSITIONS['start-bowden']
+                }
+                break
+
+            case this.FILAMENT_POS_IN_BOWDEN:
+                if (this.bowdenProgress >= 0) {
+                    pos = this.POSITIONS['start-bowden'] + (this.BOWDEN_RANGE * this.bowdenProgress) / 100
+                } else {
+                    pos = this.POSITIONS['mid-bowden']
+                }
+                break
+
+            case this.FILAMENT_POS_END_BOWDEN:
+                if (
+                    this.configGateHomingEndstop === 'none' ||
+                    (this.hasSensor('toolhead') &&
+                        this.isSensorEnabled('toolhead') &&
+                        !this.configExtruderForceHoming)
+                ) {
+                    // No extruder homing will be performed so indicate at the extruder now
+                    pos = this.POSITIONS['extruder-entrance']
+                } else {
+                    pos = this.POSITIONS['end-bowden']
+                }
+                break
+
+            case this.FILAMENT_POS_HOMED_ENTRY:
+                pos = this.POSITIONS['extruder']
+                break
+
+            case this.FILAMENT_POS_HOMED_EXTRUDER:
+                pos = this.POSITIONS['extruder-entrance']
+                break
+
+            case this.FILAMENT_POS_EXTRUDER_ENTRY:
+                pos = this.POSITIONS['before-toolhead']
+                break
+
+            case this.FILAMENT_POS_HOMED_TS:
+                pos = this.POSITIONS['toolhead']
+                break
+
+            case this.FILAMENT_POS_IN_EXTRUDER:
+                pos = this.POSITIONS['cooling-tube']
+                if (
+                    this.hasSensor('toolhead') &&
+                    this.isSensorEnabled('toolhead') &&
+                    !this.isSensorTriggered('toolhead')
+                ) {
+                    pos = this.POSITIONS['before-toolhead'] // Don't show beyond toolhead sensor if not triggered
+                }
+                break
+
+            case this.FILAMENT_POS_LOADED:
+                pos = this.POSITIONS['nozzle-start']
+                break
+
+            default: // this.FILAMENT_POS_UNKNOWN
+                pos = this.POSITIONS['unknown']
+        }
+
         this.animateFilament(pos)
     }
 
@@ -502,9 +501,8 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     get homedToEncoder(): boolean {
         if (this.filamentDirection === this.DIRECTION_LOAD) {
             return this.configGateHomingEndstop === 'encoder' && this.filamentPos === this.FILAMENT_POS_START_BOWDEN
-        } else {
-            return this.configGateHomingEndstop === 'encoder' && this.filamentPos === this.FILAMENT_POS_START_BOWDEN
         }
+        return this.configGateHomingEndstop === 'encoder' && this.filamentPos === this.FILAMENT_POS_START_BOWDEN
     }
 
     get homedToGear(): boolean {

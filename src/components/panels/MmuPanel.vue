@@ -116,7 +116,7 @@
                     </v-row>
                     <v-row v-if="reasonForPause">
                         <v-col cols="auto" class="d-flex align-center justify-center">
-                            <v-icon class="error-icon">{{ mdiInformationOutline }}</v-icon>
+                            <v-icon class="error--text">{{ mdiInformationOutline }}</v-icon>
                         </v-col>
                         <v-col class="d-flex align-center">
                             <div>
@@ -211,7 +211,7 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
 
     get statusText(): string {
         if (['complete', 'error', 'cancelled', 'started'].includes(this.printState)) {
-            return this.capitalize(this.printState)
+            return capitalize(this.printState)
         }
 
         if (this.action === 'Idle') {
@@ -250,10 +250,6 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
 .mmu-disabled {
     pointer-events: none !important;
     opacity: 0.5 !important;
-}
-
-.error-icon {
-    color: red;
 }
 
 .smaller-font {

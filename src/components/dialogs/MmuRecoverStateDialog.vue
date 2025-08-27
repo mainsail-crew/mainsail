@@ -153,9 +153,10 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
 
     get toolErrorMessage(): string {
         if (this.localTool === this.TOOL_GATE_UNKNOWN) {
-            return this.$t('Panels.MmuPanel.MmuRecoverDialog.NoTool')
-        } else if (this.localGate === this.TOOL_GATE_BYPASS && this.localTool !== this.TOOL_GATE_BYPASS) {
-            return this.$t('Panels.MmuPanel.MmuRecoverDialog.GateBypass')
+            return this.$t('Panels.MmuPanel.MmuRecoverDialog.NoTool').toString()
+        }
+        if (this.localGate === this.TOOL_GATE_BYPASS && this.localTool !== this.TOOL_GATE_BYPASS) {
+            return this.$t('Panels.MmuPanel.MmuRecoverDialog.GateBypass').toString()
         }
         return ''
     }
@@ -189,13 +190,15 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
 
     get gateErrorMessage(): string {
         if (this.localGate === this.TOOL_GATE_UNKNOWN) {
-            return this.$t('Panels.MmuPanel.MmuRecoverDialog.NoGate')
-        } else if (this.localTool === this.TOOL_GATE_BYPASS && this.localGate !== this.TOOL_GATE_BYPASS) {
-            return this.$t('Panels.MmuPanel.MmuRecoverDialog.ToolBypass')
-        } else if (this.localGate >= 0 && this.ttgMap[this.localGate] !== this.localTool) {
-            const msg = this.$t('Panels.MmuPanel.MmuRecoverDialog.Remap', { tool: `T${this.localTool}` })
-            return `${this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix')} ${msg}`
+            return this.$t('Panels.MmuPanel.MmuRecoverDialog.NoGate').toString()
         }
+        if (this.localTool === this.TOOL_GATE_BYPASS && this.localGate !== this.TOOL_GATE_BYPASS) {
+            return this.$t('Panels.MmuPanel.MmuRecoverDialog.ToolBypass').toString()
+        }
+        if (this.localGate >= 0 && this.ttgMap[this.localGate] !== this.localTool) {
+            const msg = this.$t('Panels.MmuPanel.MmuRecoverDialog.Remap', { tool: `T${this.localTool}` }).toString()
+            return `${this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString()} ${msg}`
+        }       
         return ''
     }
 
@@ -238,7 +241,7 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
 
     get posErrorMessage(): string {
         if (this.localFilamentPos === this.FILAMENT_POS_UNKNOWN) {
-            return `${this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix')} ${this.$t('Panels.MmuPanel.MmuRecoverDialog.NoPosition')}`
+            return `${this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString()} ${this.$t('Panels.MmuPanel.MmuRecoverDialog.NoPosition').toString()}`
         }
         return ''
     }
@@ -246,13 +249,13 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     get okDisabled(): boolean {
         let tError =
             this.toolErrorMessage !== '' &&
-            !this.toolErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
+            !this.toolErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString())
         let gError =
             this.gateErrorMessage !== '' &&
-            !this.gateErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
+            !this.gateErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString())
         let pError =
             this.posErrorMessage !== '' &&
-            !this.posErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix'))
+            !this.posErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString())
         return tError || gError || pError
     }
 

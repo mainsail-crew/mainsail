@@ -74,24 +74,7 @@
                     <div
                         v-if="(editGateMap && editGateSelected === g) || (!editGateMap && gate === g)"
                         style="position: absolute; bottom: 0%; left: 0%; width: 100%; height: auto; background: none">
-                        <svg width="100%" height="100%" viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <clipPath id="clip-half">
-                                    <rect x="0" y="0" width="80" height="60" />
-                                </clipPath>
-                                <radialGradient id="spotlight" cx="50%" cy="70%" r="50%" fx="50%" fy="100%">
-                                    <stop offset="0%" style="stop-color: rgba(255, 255, 255, 0.9); stop-opacity: 1" />
-                                    <stop offset="100%" style="stop-color: rgba(255, 255, 0, 0); stop-opacity: 0" />
-                                </radialGradient>
-                            </defs>
-                            <rect
-                                x="0"
-                                y="0"
-                                width="100%"
-                                height="100%"
-                                fill="url(#spotlight)"
-                                clip-path="url(#clip-half)" />
-                        </svg>
+                        <mmu-spool-clip />
                     </div>
                 </div>
                 <mmu-gate-status
@@ -112,24 +95,7 @@
                     <div
                         v-if="gate === TOOL_GATE_BYPASS"
                         style="position: absolute; bottom: 0%; left: 0%; width: 100%; height: auto; background: none">
-                        <svg width="100%" height="100%" viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <clipPath id="clip-half">
-                                    <rect x="0" y="0" width="80" height="60" />
-                                </clipPath>
-                                <radialGradient id="spotlight" cx="50%" cy="70%" r="50%" fx="50%" fy="100%">
-                                    <stop offset="0%" style="stop-color: rgba(255, 255, 255, 0.9); stop-opacity: 1" />
-                                    <stop offset="100%" style="stop-color: rgba(255, 255, 0, 0); stop-opacity: 0" />
-                                </radialGradient>
-                            </defs>
-                            <rect
-                                x="0"
-                                y="0"
-                                width="100%"
-                                height="100%"
-                                fill="url(#spotlight)"
-                                clip-path="url(#clip-half)" />
-                        </svg>
+                        <mmu-spool-clip />
                     </div>
                 </div>
                 <mmu-gate-status
@@ -157,11 +123,12 @@ import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
 import type { MmuGateDetails } from '@/components/mixins/mmu'
 import MmuSpool from '@/components/panels/Mmu/MmuSpool.vue'
+import MmuSpoolClip from '@/components/panels/Mmu/MmuSpoolClip.vue'
 import MmuGateStatus from '@/components/panels/Mmu/MmuGateStatus.vue'
 import { mdiSwapHorizontal, mdiDownloadOutline, mdiEject } from '@mdi/js'
 
 @Component({
-    components: { MmuSpool, MmuGateStatus },
+    components: { MmuSpool, MmuSpoolClip, MmuGateStatus },
 })
 export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: false, default: 0 }) readonly unitIndex!: number

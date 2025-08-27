@@ -38,10 +38,11 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
+import type { MmuGateDetails } from '@/components/mixins/mmu'
 
 @Component({})
 export default class MmuGateStatus extends Mixins(BaseMixin, MmuMixin) {
-    @Prop({ required: true }) declare readonly gateIndex!: number
+    @Prop({ required: true }) readonly gateIndex!: number
     @Prop({ required: false, default: null }) readonly editGateMap!: MmuGateDetails[] | null
     @Prop({ required: false, default: -1 }) readonly editGateSelected!: number
 

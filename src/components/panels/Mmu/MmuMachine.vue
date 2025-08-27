@@ -18,6 +18,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
+import type { MmuGateDetails } from '@/components/mixins/mmu'
 
 @Component({})
 export default class MmuMachine extends Mixins(BaseMixin, MmuMixin) {
@@ -28,7 +29,7 @@ export default class MmuMachine extends Mixins(BaseMixin, MmuMixin) {
         return Array.from({ length: this.numUnits }, (_, k) => k)
     }
 
-    private selectGate(gate: number): null {
+    private selectGate(gate: number): void {
         this.$emit('select-gate', gate)
     }
 }

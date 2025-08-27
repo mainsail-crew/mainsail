@@ -142,7 +142,6 @@ export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
         const currentOffset = parseFloat(getComputedStyle(circle).strokeDashoffset) ?? this.circumference
         const difference = Math.abs(currentOffset - newOffset)
         const duration = (difference / this.circumference) * this.rotationTime
-        //const duration = this.rotationTime
         circle.style.transition = `stroke-dashoffset ${duration}s ease-out`
         this.dashOffset = newOffset
     }
