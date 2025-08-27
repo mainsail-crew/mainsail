@@ -210,23 +210,27 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get statusText(): string {
-        let posStr: string = ''
         if (['complete', 'error', 'cancelled', 'started'].includes(this.printState)) {
-            posStr = capitalize(this.printState)
-        } else if (this.action === 'Idle') {
-            if (this.printState === 'printing') {
-                posStr = `Printing (${this.numToolchanges}`
-                if (this.slicerToolMap.total_toolchanges) posStr += `/${this.slicerToolMap.total_toolchanges}`
-                posStr += ' swaps)'
-            } else {
-                posStr = this.filament !== 'Unloaded' ? `Filament: ${this.filamentPosition}mm` : 'Filament: Unloaded'
-            }
-        } else if (this.action === 'Loading' || this.action === 'Unloading') {
-            posStr = `${this.action}: ${this.filamentPosition}mm`
-        } else {
-            posStr = this.action
+            return this.capitalize(this.printState)
         }
-        return posStr
+
+        if (this.action === 'Idle') {
+            if (this.printState === 'printing') {
+                let str = `Printing (${this.numToolchanges}`
+                if (this.slicerToolMap.total_toolchanges) str += `/${this.slicerToolMap.total_toolchanges}`
+                str += ' swaps)'
+                return str
+            }
+            return this.filament !== 'Unloaded'
+                ? `Filament: ${this.filamentPosition}mm`
+                : 'Filament: Unloaded'
+        }
+
+        if (this.action === 'Loading' || this.action === 'Unloading') {
+            return `${this.action}: ${this.filamentPosition}mm`
+        }
+
+        return this.action
     }
 
     handleSyncSpoolman() {
