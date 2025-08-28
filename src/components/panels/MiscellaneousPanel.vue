@@ -22,16 +22,7 @@
         </div>
         <div v-for="(light, index) of lights" :key="'light_' + light.name">
             <v-divider v-if="index || miscellaneous.length" />
-            <miscellaneous-slider
-                v-if="light.type === 'led' && light.colorOrder.length === 1"
-                :name="light.name"
-                type="led"
-                :rpm="null"
-                :controllable="true"
-                :pwm="true"
-                :target="light.singleChannelTarget"
-                :color-order="light.colorOrder" />
-            <miscellaneous-light v-else :object="light" :root="true" />
+            <miscellaneous-light :type="light.type" :name="light.name" />
         </div>
         <div v-for="(sensor, index) of filamentSensors" :key="'sensor_' + index">
             <v-divider v-if="index || miscellaneous.length || lights.length" />
@@ -64,12 +55,13 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MiscellaneousSlider from '@/components/inputs/MiscellaneousSlider.vue'
-import MiscellaneousLight from '@/components/inputs/MiscellaneousLight.vue'
 import FilamentSensor from '@/components/inputs/FilamentSensor.vue'
+import MiscellaneousLight from '@/components/panels/Miscellaneous/MiscellaneousLight.vue'
 import MiscellaneousSensor from '@/components/panels/Miscellaneous/MiscellaneousSensor.vue'
 import MoonrakerSensor from '@/components/panels/Miscellaneous/MoonrakerSensor.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiDipSwitch } from '@mdi/js'
+import MiscellaneousMixin from '@/components/mixins/miscellaneous'
 @Component({
     components: {
         Panel,
@@ -80,7 +72,7 @@ import { mdiDipSwitch } from '@mdi/js'
         MoonrakerSensor,
     },
 })
-export default class MiscellaneousPanel extends Mixins(BaseMixin) {
+export default class MiscellaneousPanel extends Mixins(BaseMixin, MiscellaneousMixin) {
     mdiDipSwitch = mdiDipSwitch
 
     get filamentSensors() {
@@ -89,10 +81,6 @@ export default class MiscellaneousPanel extends Mixins(BaseMixin) {
 
     get miscellaneous() {
         return this.$store.getters['printer/getMiscellaneous'] ?? []
-    }
-
-    get lights() {
-        return this.$store.getters['printer/getLights'] ?? []
     }
 
     get miscellaneousSensors() {

@@ -19,7 +19,7 @@
             @blur="value = target.toString()"
             @focus="$event.target.select()"
             @keydown="checkInvalidChars">
-            <template v-if="defaultValue" #append>
+            <template v-if="defaultValue !== null" #append>
                 <v-icon @click="resetToDefault">{{ value !== defaultValue.toString() ? mdiRestart : '' }}</v-icon>
             </template>
             <template v-if="hasSpinner" #append-outer>
@@ -70,7 +70,7 @@ export default class NumberInput extends Mixins(BaseMixin) {
     @Prop({ type: String, required: true }) declare readonly param: string
     // props defining incoming data
     @Prop({ type: Number, required: true }) declare readonly target: number
-    @Prop({ type: Number, required: false }) declare readonly defaultValue: number
+    @Prop({ type: Number, required: false, default: null }) declare readonly defaultValue: number
     // props for internal processing
     @Prop({ type: Number, required: true }) declare readonly min: number
     @Prop({ default: null }) declare readonly max: number | null
@@ -116,7 +116,7 @@ export default class NumberInput extends Mixins(BaseMixin) {
     }
 
     resetToDefault(): void {
-        this.value = this.defaultValue.toString()
+        this.value = this.defaultValue?.toString()
         this.submit()
     }
 
