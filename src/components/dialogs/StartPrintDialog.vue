@@ -44,7 +44,7 @@ import AfcMixin from '@/components/mixins/afc'
 @Component({
     components: { SettingsRow },
 })
-export default class StartPrintDialog extends Mixins(BaseMixin, AfcMixin) {
+export default class StartPrintDialog extends Mixins(BaseMixin) {
     mdiPrinter3d = mdiPrinter3d
 
     @Prop({ required: true, default: false }) readonly bool!: boolean
