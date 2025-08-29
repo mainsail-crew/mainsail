@@ -39,7 +39,6 @@ import { FileStateGcodefile } from '@/store/files/types'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiPrinter3d } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
-import AfcMixin from '@/components/mixins/afc'
 
 @Component({
     components: { SettingsRow },
