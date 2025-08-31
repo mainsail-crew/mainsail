@@ -9,13 +9,7 @@
                 <stop offset="100%" style="stop-color: rgba(255, 255, 0, 0); stop-opacity: 0" />
             </radialGradient>
         </defs>
-        <rect
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            fill="url(#spotlight)"
-            clip-path="url(#clip-half)" />
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#spotlight)" clip-path="url(#clip-half)" />
     </svg>
 </template>
 

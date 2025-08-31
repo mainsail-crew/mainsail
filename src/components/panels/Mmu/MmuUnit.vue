@@ -113,8 +113,8 @@
                 :style="'height: ' + logoHeight + 'px;'"
                 v-html="svgLogo"></div>
             <div class="unit-info">
-            <div v-if="showName" class="unit-name">{{ unitDisplayName }}</div>
-            <div v-if="unitClimateInfo" class="unit-climate">{{ unitClimateInfo }}</div>
+                <div v-if="showName" class="unit-name">{{ unitDisplayName }}</div>
+                <div v-if="unitClimateInfo" class="unit-climate">{{ unitClimateInfo }}</div>
             </div>
         </div>
     </v-container>
@@ -166,7 +166,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
             parts.push(`${humd.toFixed(0)}%`)
         }
 
-        return parts.join(" / ")
+        return parts.join(' / ')
     }
 
     get unitGateRange(): number[] {

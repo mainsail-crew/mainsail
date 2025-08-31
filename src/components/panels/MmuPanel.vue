@@ -221,9 +221,7 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
                 str += ' swaps)'
                 return str
             }
-            return this.filament !== 'Unloaded'
-                ? `Filament: ${this.filamentPosition}mm`
-                : 'Filament: Unloaded'
+            return this.filament !== 'Unloaded' ? `Filament: ${this.filamentPosition}mm` : 'Filament: Unloaded'
         }
 
         if (this.action === 'Loading' || this.action === 'Unloading') {

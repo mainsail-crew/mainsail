@@ -225,52 +225,52 @@ export default class MmuMixin extends Vue {
     }
 
     gateDetails(gateIndex: number): MmuGateDetails {
-      const mmu = this.$store.state.printer.mmu
-      const active = this.$store.state.server.spoolman?.active_spool
+        const mmu = this.$store.state.printer.mmu
+        const active = this.$store.state.server.spoolman?.active_spool
 
-      const defaults: MmuGateDetails = {
-          index: gateIndex,
-          status: this.GATE_UNKNOWN,
-          filamentName: 'Unknown',
-          material: 'Unknown',
-          color: this.formColorString(null),
-          temperature: -1,
-          spoolId: -1,
-          speedOverride: 100,
-          endlessSpoolGroup: gateIndex,
-      }
-
-      if (gateIndex === this.TOOL_GATE_BYPASS) {
-          const base: MmuGateDetails = {
-              ...defaults,
-              endlessSpoolGroup: null,
+        const defaults: MmuGateDetails = {
+            index: gateIndex,
+            status: this.GATE_UNKNOWN,
+            filamentName: 'Unknown',
+            material: 'Unknown',
+            color: this.formColorString(null),
+            temperature: -1,
+            spoolId: -1,
+            speedOverride: 100,
+            endlessSpoolGroup: gateIndex,
         }
 
-        if (this.gate === gateIndex) {
-            return {
-                ...base,
-                filamentName: active?.filament?.name ?? 'No active spool',
-                material: active?.filament?.material ?? 'Unknown',
-                color: this.formColorString(active?.filament?.color_hex ?? null),
-                temperature: active?.filament?.settings_extruder_temp ?? -1,
-                spoolId: active?.id ?? -1,
+        if (gateIndex === this.TOOL_GATE_BYPASS) {
+            const base: MmuGateDetails = {
+                ...defaults,
+                endlessSpoolGroup: null,
             }
+
+            if (this.gate === gateIndex) {
+                return {
+                    ...base,
+                    filamentName: active?.filament?.name ?? 'No active spool',
+                    material: active?.filament?.material ?? 'Unknown',
+                    color: this.formColorString(active?.filament?.color_hex ?? null),
+                    temperature: active?.filament?.settings_extruder_temp ?? -1,
+                    spoolId: active?.id ?? -1,
+                }
+            }
+
+            return base
         }
 
-        return base
-      }
-
-      return {
-          ...defaults,
-          status: mmu?.gate_status?.[gateIndex] ?? this.GATE_UNKNOWN,
-          filamentName: mmu?.gate_filament_name?.[gateIndex] || 'Unknown',
-          material: mmu?.gate_material?.[gateIndex] || 'Unknown',
-          color: this.formColorString(mmu?.gate_color?.[gateIndex] ?? ''),
-          temperature: mmu?.gate_temperature?.[gateIndex] ?? -1,
-          spoolId: mmu?.gate_spool_id?.[gateIndex] ?? -1,
-          speedOverride: mmu?.gate_speed_override?.[gateIndex] ?? 100,
-          endlessSpoolGroup: mmu?.endless_spool_groups?.[gateIndex] ?? defaults.endlessSpoolGroup,
-      }
+        return {
+            ...defaults,
+            status: mmu?.gate_status?.[gateIndex] ?? this.GATE_UNKNOWN,
+            filamentName: mmu?.gate_filament_name?.[gateIndex] || 'Unknown',
+            material: mmu?.gate_material?.[gateIndex] || 'Unknown',
+            color: this.formColorString(mmu?.gate_color?.[gateIndex] ?? ''),
+            temperature: mmu?.gate_temperature?.[gateIndex] ?? -1,
+            spoolId: mmu?.gate_spool_id?.[gateIndex] ?? -1,
+            speedOverride: mmu?.gate_speed_override?.[gateIndex] ?? 100,
+            endlessSpoolGroup: mmu?.endless_spool_groups?.[gateIndex] ?? defaults.endlessSpoolGroup,
+        }
     }
 
     spoolmanSpool(spoolId: number): ServerSpoolmanStateSpool | null {

@@ -67,8 +67,12 @@
                     vector-effect="non-scaling-stroke" />
             </g>
             <g id="filament-grip" style="stroke-linecap: round; stroke-linejoin: round">
-                <path fill="rgb(131,148,150)" d="M368,368 V376 C368,380.41,364.41,384,360,384 H344 V360 H360 C364.41,360,368,363.59,368,368 Z M368,408 V416 C368,420.41,364.41,424,360,424 C293.65,424,340.73,424,312,424 C307.59,424,304,420.41,304,416 V408 C304,403.59,307.59,400,312,400 C326.91,400,345.09,400,360,400 C364.41,400,368,403.59,368,408 Z M248.97,461.66 L242.34,455.03 C237.81,450.5,231.78,448,225.38,448 H160 V368 H193.38 C199.79,368,205.82,365.5,210.35,360.97 L248.97,322.35 C250.49,320.84,252.5,320,254.63,320 H320 C324.42,320,328,323.59,328,328 V384 C322.21,384,317.79,384,312,384 C307.59,384,304,380.42,304,376 V350.61 C304,346.19,300.43,342.61,296,342.61 S288,346.19,288,350.61 V357.2 L262.56,389 C261.04,390.91,258.75,392,256.31,392 H217.05 C212.63,392,209.05,395.58,209.05,400 S212.63,408,217.05,408 H256.31 C263.64,408,270.47,404.72,275.06,399 L288.74,381.9 C289.71,385.74,291.62,389.21,294.2,392.06 C290.39,396.31,288,401.86,288,408 V416 C288,427.06,295.56,436.31,305.76,439.08 C304.65,441.84,304,444.85,304,448.01 V456.01 C304,458.82,304.58,461.49,305.48,464.01 H254.63 C252.49,464.01,250.48,463.17,248.97,461.67 Z M368,456 C368,460.41,364.41,464,360,464 H328 C323.59,464,320,460.41,320,456 V448 C320,443.59,323.59,440,328,440 H360 C364.41,440,368,443.59,368,448 V456 Z M368,328 V336 C368,340.41,364.41,344,360,344 H344 V328 C344,325.18,343.42,322.51,342.53,320 H360 C364.41,320,368,323.59,368,328 Z"></path>
-                <path :fill="currentGateColor" d="M300,250 L350,250 L350,310 L300,310 Z M300,475 L350,475 L350,520 L300,520 Z"></path>
+                <path
+                    fill="rgb(131,148,150)"
+                    d="M368,368 V376 C368,380.41,364.41,384,360,384 H344 V360 H360 C364.41,360,368,363.59,368,368 Z M368,408 V416 C368,420.41,364.41,424,360,424 C293.65,424,340.73,424,312,424 C307.59,424,304,420.41,304,416 V408 C304,403.59,307.59,400,312,400 C326.91,400,345.09,400,360,400 C364.41,400,368,403.59,368,408 Z M248.97,461.66 L242.34,455.03 C237.81,450.5,231.78,448,225.38,448 H160 V368 H193.38 C199.79,368,205.82,365.5,210.35,360.97 L248.97,322.35 C250.49,320.84,252.5,320,254.63,320 H320 C324.42,320,328,323.59,328,328 V384 C322.21,384,317.79,384,312,384 C307.59,384,304,380.42,304,376 V350.61 C304,346.19,300.43,342.61,296,342.61 S288,346.19,288,350.61 V357.2 L262.56,389 C261.04,390.91,258.75,392,256.31,392 H217.05 C212.63,392,209.05,395.58,209.05,400 S212.63,408,217.05,408 H256.31 C263.64,408,270.47,404.72,275.06,399 L288.74,381.9 C289.71,385.74,291.62,389.21,294.2,392.06 C290.39,396.31,288,401.86,288,408 V416 C288,427.06,295.56,436.31,305.76,439.08 C304.65,441.84,304,444.85,304,448.01 V456.01 C304,458.82,304.58,461.49,305.48,464.01 H254.63 C252.49,464.01,250.48,463.17,248.97,461.67 Z M368,456 C368,460.41,364.41,464,360,464 H328 C323.59,464,320,460.41,320,456 V448 C320,443.59,323.59,440,328,440 H360 C364.41,440,368,443.59,368,448 V456 Z M368,328 V336 C368,340.41,364.41,344,360,344 H344 V328 C344,325.18,343.42,322.51,342.53,320 H360 C364.41,320,368,323.59,368,328 Z"></path>
+                <path
+                    :fill="currentGateColor"
+                    d="M300,250 L350,250 L350,310 L300,310 Z M300,475 L350,475 L350,520 L300,520 Z"></path>
             </g>
         </defs>
 
@@ -174,7 +178,8 @@
             <g v-if="hasSyncFeedback && filamentPos >= FILAMENT_POS_END_BOWDEN">
                 <transition name="fade">
                     <g
-                        v-if="isSensorTriggered('filament_tension') && isSensorTriggered('filament_compression')" key="neutral">
+                        v-if="isSensorTriggered('filament_tension') && isSensorTriggered('filament_compression')"
+                        key="neutral">
                         <text x="288" y="240">Neutral</text>
                         <use xlink:href="#sync-feedback" transform="translate(286, 247.5) scale(1.0,-1.0) rotate(90)" />
                     </g>
@@ -232,18 +237,18 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
         'pre-gate': 25,
         'after-pre-gate': 40,
         'before-gear': 50,
-        'gear': 55,
+        gear: 55,
         'after-gear': 70,
-        'gate': 85,
+        gate: 85,
         'after-gate': 100,
-        'encoder': 115,
+        encoder: 115,
         'start-bowden': 135,
         'mid-bowden': 221,
         'end-bowden': 290,
-        'extruder': 295,
+        extruder: 295,
         'extruder-entrance': 308,
         'before-toolhead': 315,
-        'toolhead': 325,
+        toolhead: 325,
         'cooling-tube': 338,
         'cut-point': 355,
         'nozzle-start': 371,
@@ -369,9 +374,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
             case this.FILAMENT_POS_END_BOWDEN:
                 if (
                     this.configGateHomingEndstop === 'none' ||
-                    (this.hasSensor('toolhead') &&
-                        this.isSensorEnabled('toolhead') &&
-                        !this.configExtruderForceHoming)
+                    (this.hasSensor('toolhead') && this.isSensorEnabled('toolhead') && !this.configExtruderForceHoming)
                 ) {
                     // No extruder homing will be performed so indicate at the extruder now
                     pos = this.POSITIONS['extruder-entrance']
@@ -557,7 +560,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get isGripped(): boolean {
-        return (this.grip === 'Gripped' || this.servo === 'Down')
+        return this.grip === 'Gripped' || this.servo === 'Down'
     }
 
     mounted() {

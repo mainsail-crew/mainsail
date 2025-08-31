@@ -198,7 +198,7 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
         if (this.localGate >= 0 && this.ttgMap[this.localGate] !== this.localTool) {
             const msg = this.$t('Panels.MmuPanel.MmuRecoverDialog.Remap', { tool: `T${this.localTool}` }).toString()
             return `${this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString()} ${msg}`
-        }       
+        }
         return ''
     }
 

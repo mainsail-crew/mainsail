@@ -333,6 +333,8 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
             this.editGateMap = []
         }
         this.editGateSelected = this.TOOL_GATE_UNKNOWN
+        this.min_extruder_temp = this.$store.state.printer.configfile.config.extruder?.min_temp ?? 90
+        this.max_extruder_temp = this.$store.state.printer.configfile.config.extruder?.max_temp ?? 290
     }
 
     private selectGate(gate: number) {
@@ -350,11 +352,10 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     private handleEscapePress(event: KeyboardEvent) {
-      if (event.key === 'Escape' || event.code === 'Escape') {
-          this.editGateSelected = this.TOOL_GATE_UNKNOWN
-      }
+        if (event.key === 'Escape' || event.code === 'Escape') {
+            this.editGateSelected = this.TOOL_GATE_UNKNOWN
+        }
     }
-
 
     private adjustName() {
         const filamentName = this.editGateMap[this.editGateSelected].filamentName ?? ''
@@ -408,9 +409,11 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     private disableSpoolId() {
-        return !this.useSpoolman ||
-               this.spoolmanSupport === this.SPOOLMAN_PULL ||
-               this.spoolmanSupport === this.SPOOLMAN_OFF
+        return (
+            !this.useSpoolman ||
+            this.spoolmanSupport === this.SPOOLMAN_PULL ||
+            this.spoolmanSupport === this.SPOOLMAN_OFF
+        )
     }
 
     private adjustSpoolId() {
@@ -436,7 +439,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
         return [
             (v: string | number) => {
                 const num = parseFloat(String(v))
-                return !isNaN(num) && num >= 100 && num <= 290
+                return !isNaN(num) && num >= this.min_extruder_temp && num <= this.max_extruder_temp
                     ? true
                     : this.$t('Panels.MmuPanel.GateMapDialog.BadTemperature')
             },
@@ -445,10 +448,10 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     private adjustTemperature() {
         const temp = this.editGateMap[this.editGateSelected].temperature
-        if (temp < 100) {
-            this.editGateMap[this.editGateSelected].temperature = 100
-        } else if (temp > 290) {
-            this.editGateMap[this.editGateSelected].temperature = 290
+        if (temp < this.min_extruder_temp) {
+            this.editGateMap[this.editGateSelected].temperature = this.min_extruder_temp
+        } else if (temp > this.max_extrduer_temp) {
+            this.editGateMap[this.editGateSelected].temperature = this.max_extruder_temp
         }
     }
 
@@ -467,7 +470,8 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     get selectedGateStatus(): boolean {
         return (
-            this.editGateMap[this.editGateSelected].status === this.GATE_AVAILABLE || this.editGateMap[this.editGateSelected].status === this.GATE_AVAILABLE_FROM_BUFFER
+            this.editGateMap[this.editGateSelected].status === this.GATE_AVAILABLE ||
+            this.editGateMap[this.editGateSelected].status === this.GATE_AVAILABLE_FROM_BUFFER
         )
     }
 

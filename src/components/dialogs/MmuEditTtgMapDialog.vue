@@ -462,17 +462,11 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
         const maxColorDiff = 16000
         let alerts = []
 
-        if (
-            tmd.material.toUpperCase() !==
-            this.gateDetails(this.selectedGate).material.toUpperCase()
-        ) {
+        if (tmd.material.toUpperCase() !== this.gateDetails(this.selectedGate).material.toUpperCase()) {
             alerts.push('\u2022 ' + this.$t('Panels.MmuPanel.TtgMapDialog.Material'))
         }
 
-        if (
-            Math.abs(tmd.temp - this.gateDetails(this.selectedGate).temperature) >
-            maxTempDiff
-        ) {
+        if (Math.abs(tmd.temp - this.gateDetails(this.selectedGate).temperature) > maxTempDiff) {
             alerts.push('\u2022 ' + this.$t('Panels.MmuPanel.TtgMapDialog.Temperature'))
         }
 
