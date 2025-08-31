@@ -25,6 +25,14 @@ export default class MmuMixin extends Vue {
         return this.$store.state.printer.mmu?.encoder?.enabled
     }
 
+    get headroom(): number {
+        return this.$store.state.printer.mmu?.encoder?.headroom
+    }
+
+    get min_headroom(): number {
+        return this.$store.state.printer.mmu?.encoder?.min_headroom
+    }
+
     get encoderDesiredHeadroom(): number {
         return this.$store.state.printer.mmu?.encoder?.desired_headroom
     }

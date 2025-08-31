@@ -256,25 +256,25 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
 
     readonly BOWDEN_RANGE = 173 as const
 
-    @Watch('$store.state.printer.mmu.bowden_progress')
+    @Watch('bowdenProgress')
     onBowdenProgress(): void {
         // Percentage movement in the bowden
         this.calcFilamentHeight(this.filamentPos)
     }
 
-    @Watch('$store.state.printer.mmu.filament_pos')
+    @Watch('filamentPos')
     onFilamentPosChanged(newPos: number): void {
         // Filament position state
         this.calcFilamentHeight(newPos)
     }
 
-    @Watch('$store.state.printer.mmu.sensors')
+    @Watch('sensors')
     onSensorsChanged(): void {
         // Update on sensor change
         this.calcFilamentHeight(this.filamentPos)
     }
 
-    @Watch('$store.state.printer.mmu.action')
+    @Watch('action')
     onActionChanged(action: string): void {
         // Action being performed
         if (action === this.ACTION_FORMING_TIP) {
