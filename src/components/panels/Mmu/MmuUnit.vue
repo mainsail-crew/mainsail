@@ -154,16 +154,22 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
     get unitClimateInfo(): string {
         const unit = this.unitDetails(this.unitIndex)
-        const temp = unit.temperature
-        const humd = unit.humidity
+
+        // Handle missing or quoted sensor name
+        const sensorName = unit.environmentSensor?.replace(/^"(.*)"$/, '$1')
+        if (!sensorName) return ''
+
+        const sensor = this.$store.state.printer?.[sensorName]
+        if (!sensor) return ''
+
         const parts: string[] = []
 
-        if (temp) {
-            parts.push(`${temp.toFixed(0)}°C`)
+        if (sensor.temperature) {
+            parts.push(`${sensor.temperature.toFixed(0)}°C`)
         }
 
-        if (humd) {
-            parts.push(`${humd.toFixed(0)}%`)
+        if (sensor.humidity) {
+            parts.push(`${sensor.humidity.toFixed(0)}%`)
         }
 
         return parts.join(' / ')
@@ -204,11 +210,11 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get showLogos(): boolean {
-        return this.$store.state.gui.view.mmu.showLogos ?? false
+        return this.$store.state.gui.view.mmu.showLogos
     }
 
     get showName(): boolean {
-        return this.$store.state.gui.view.mmu.showName ?? false
+        return this.$store.state.gui.view.mmu.showName
     }
 
     get showBypass(): boolean {
@@ -245,14 +251,10 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         const firstGate = gate === 0
         const lastGate = (gate === this.unitGateRange.length - 1 && !this.showBypass) || gate === this.TOOL_GATE_BYPASS
         let classes = ['gate-status-row']
-        if (firstGate) classes.push('first-gate' + (this.isFirefox() ? '-firefox' : ''))
-        if (lastGate) classes.push('last-gate' + (this.isFirefox() ? '-firefox' : ''))
+        if (firstGate) classes.push('first-gate')
+        if (lastGate) classes.push('last-gate')
         classes.push(this.$vuetify.theme.dark ? 'gate-status-row-dark-theme' : 'gate-status-row-light-theme')
         return classes
-    }
-
-    isFirefox(): boolean {
-        return navigator.userAgent.indexOf('Firefox') !== -1
     }
 
     spoolClass(gate: number): string[] {
@@ -437,22 +439,6 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 }
 
 .first-gate.last-gate {
-    border-radius: 8px 8px 10px 10px;
-}
-
-.last-gate-firefox {
-    border-radius: 0 8px 10px 0px;
-    padding-right: 16px;
-}
-
-.first-gate-firefox {
-    border-radius: 8px 0 0px 10px;
-    margin-left: -16px;
-    padding-left: 16px;
-    margin-right: 16px;
-}
-
-.first-gate-firefox.last-gate-firefox {
     border-radius: 8px 8px 10px 10px;
 }
 

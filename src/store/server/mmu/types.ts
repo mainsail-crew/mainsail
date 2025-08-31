@@ -31,6 +31,5 @@ export interface MmuUnitDetails {
     filamentAlwaysGripped: boolean
     hasBypass: boolean
     multiGear: boolean
-    temperature: number | null
-    humidity: number | null
+    environmentSensor: string | null
 }
