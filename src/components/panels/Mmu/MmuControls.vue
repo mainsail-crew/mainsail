@@ -217,7 +217,11 @@ export default class MmuControls extends Mixins(BaseMixin, MmuMixin) {
         return this.$store.state.printer.mmu?.gate_status?.[this.gate] ?? -1
     }
 
-    @Watch('$store.state.gui.view.mmu.largeFilamentStatus')
+    get largeFilamentStatus(): boolean {
+        return this.$store.state.gui.view.mmu.largeFilamentStatus
+    }
+
+    @Watch('largeFilamentStatus')
     onFilamentStatusSizeChange(): void {
         this.checkButtonWidth()
     }
