@@ -113,7 +113,9 @@
                 :style="'height: ' + logoHeight + 'px;'"
                 v-html="svgLogo"></div>
             <div class="unit-info">
-                <div v-if="showName" class="unit-name">{{ unitDisplayName }}</div>
+                <div class="unit-name">
+                    <span v-if="showName">{{ unitDisplayName }}</span>
+                </div>
                 <div v-if="unitClimateInfo" class="unit-climate">{{ unitClimateInfo }}</div>
             </div>
         </div>
@@ -397,14 +399,11 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
 .unit-name {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
-    text-align: left;
-    height: 100%;
-    padding: 0px;
-    margin-right: -12px;
+    padding: 4px 0 0 0;
 }
 
 .unit-climate {
@@ -412,7 +411,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     white-space: nowrap;
     overflow: hidden;
     text-align: right;
-    padding-bottom: 4px;
+    padding: 0px;
     opacity: 0.8;
 }
 
