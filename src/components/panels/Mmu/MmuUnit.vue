@@ -112,7 +112,10 @@
                 class="mmu-logo"
                 :style="'height: ' + logoHeight + 'px;'"
                 v-html="svgLogo"></div>
-            <div class="unit-name">{{ unitDisplayName }}</div>
+            <div class="unit-info">
+            <div v-if="showName" class="unit-name">{{ unitDisplayName }}</div>
+            <div v-if="unitClimateInfo" class="unit-climate">{{ unitClimateInfo }}</div>
+            </div>
         </div>
     </v-container>
 </template>
@@ -121,7 +124,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
-import type { MmuGateDetails } from '@/components/mixins/mmu'
+import type { MmuGateDetails } from '@/store/server/mmu/types'
 import MmuSpool from '@/components/panels/Mmu/MmuSpool.vue'
 import MmuSpoolClip from '@/components/panels/Mmu/MmuSpoolClip.vue'
 import MmuGateStatus from '@/components/panels/Mmu/MmuGateStatus.vue'
@@ -147,6 +150,23 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     get unitDisplayName(): string {
         const name = this.unitDetails(this.unitIndex).name
         return `#${this.unitIndex + 1} ${name}`
+    }
+
+    get unitClimateInfo(): string {
+        const unit = this.unitDetails(this.unitIndex)
+        const temp = unit.temperature
+        const humd = unit.humidity
+        const parts: string[] = []
+
+        if (temp) {
+            parts.push(`${temp.toFixed(0)}°C`)
+        }
+
+        if (humd) {
+            parts.push(`${humd.toFixed(0)}%`)
+        }
+
+        return parts.join(" / ")
     }
 
     get unitGateRange(): number[] {
@@ -185,6 +205,10 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
     get showLogos(): boolean {
         return this.$store.state.gui.view.mmu.showLogos ?? false
+    }
+
+    get showName(): boolean {
+        return this.$store.state.gui.view.mmu.showName ?? false
     }
 
     get showBypass(): boolean {
@@ -362,14 +386,32 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     opacity: 0.7;
 }
 
+.unit-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .unit-name {
     display: flex;
     align-items: center;
     font-size: 12px;
     white-space: nowrap;
-    margin-right: -12px;
     overflow: hidden;
-    padding: 0px 0px 4px 0px;
+    text-align: left;
+    height: 100%;
+    padding: 0px;
+    margin-right: -12px;
+}
+
+.unit-climate {
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: right;
+    padding-bottom: 4px;
+    opacity: 0.8;
 }
 
 .gate-status-row-dark-theme {

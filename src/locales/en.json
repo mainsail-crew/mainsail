@@ -795,6 +795,7 @@
             "ShowClogDetection": "Clog Detection",
             "ShowDetails": "Filament Details",
             "ShowLogos": "Display Logo",
+            "ShowName": "Display Unit Name",
             "ShowTtgMap": "TTG Map",
             "ShowUnavailableSpoolColor": "Show Unavailable Spools",
             "StartPrintDialogMmu": {

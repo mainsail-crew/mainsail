@@ -202,11 +202,11 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get showTtgMap(): boolean {
-        return this.$store.state.gui.view.mmu.showTtgMap ?? true
+        return this.$store.state.gui.view.mmu.showTtgMap
     }
 
     get showDetails(): boolean {
-        return this.$store.state.gui.view.mmu.showDetails ?? true
+        return this.$store.state.gui.view.mmu.showDetails
     }
 
     get statusText(): string {

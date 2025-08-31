@@ -249,7 +249,7 @@ import MmuMixin from '@/components/mixins/mmu'
 import Panel from '@/components/ui/Panel.vue'
 import Vue from 'vue'
 import type { FileStateGcodefile } from '@/store/files/types'
-import type { MmuGateDetails, SlicerToolDetails } from '@/components/mixins/mmu'
+import type { MmuGateDetails, SlicerToolDetails } from '@/store/server/mmu/types'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import { mdiStateMachine } from '@mdi/js'
 
