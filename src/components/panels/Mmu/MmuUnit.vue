@@ -168,9 +168,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
             const objectName = `${name} ${parts[1]}`
             return objectName in this.$store.state.printer
         })
-        const sensor = matchingKey
-          ? this.$store.state.printer[`${matchingKey} ${parts[1]}`]
-          : undefined
+        const sensor = matchingKey ? this.$store.state.printer[`${matchingKey} ${parts[1]}`] : undefined
 
         if (!sensor) return ''
         const values: string[] = []
