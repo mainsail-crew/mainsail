@@ -58,7 +58,7 @@ export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
     mdiCog = mdiCog
 
     get showClogDetection(): boolean {
-        return this.$store.state.gui.view.mmu.showClogDetection ?? true
+        return this.$store.state.gui.view.mmu.showClogDetection
     }
 
     set showClogDetection(newVal: boolean) {
@@ -66,7 +66,7 @@ export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get showTtgMap(): boolean {
-        return this.$store.state.gui.view.mmu.showTtgMap ?? true
+        return this.$store.state.gui.view.mmu.showTtgMap
     }
 
     set showTtgMap(newVal: boolean) {
@@ -74,7 +74,7 @@ export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get showDetails(): boolean {
-        return this.$store.state.gui.view.mmu.showDetails ?? true
+        return this.$store.state.gui.view.mmu.showDetails
     }
 
     set showDetails(newVal: boolean) {
@@ -82,7 +82,7 @@ export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get largeFilamentStatus(): boolean {
-        return this.$store.state.gui.view.mmu.largeFilamentStatus ?? true
+        return this.$store.state.gui.view.mmu.largeFilamentStatus
     }
 
     set largeFilamentStatus(newVal: boolean) {
@@ -90,7 +90,7 @@ export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get showLogos(): boolean {
-        return this.$store.state.gui.view.mmu.showLogos ?? false
+        return this.$store.state.gui.view.mmu.showLogos
     }
 
     set showLogos(newVal: boolean) {
@@ -102,11 +102,11 @@ export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get showName(): boolean {
-        return this.$store.state.gui.view.mmu.showName ?? false
+        return this.$store.state.gui.view.mmu.showName
     }
 
     get showUnavailableSpoolColor(): boolean {
-        return this.$store.state.gui.view.mmu.showUnavailableSpoolColor ?? false
+        return this.$store.state.gui.view.mmu.showUnavailableSpoolColor
     }
 
     set showUnavailableSpoolColor(newVal: boolean) {

@@ -131,6 +131,7 @@ import MmuSpool from '@/components/panels/Mmu/MmuSpool.vue'
 import MmuSpoolClip from '@/components/panels/Mmu/MmuSpoolClip.vue'
 import MmuGateStatus from '@/components/panels/Mmu/MmuGateStatus.vue'
 import { mdiSwapHorizontal, mdiDownloadOutline, mdiEject } from '@mdi/js'
+import { additionalSensors } from '@/store/variables'
 
 @Component({
     components: { MmuSpool, MmuSpoolClip, MmuGateStatus },
@@ -161,20 +162,28 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         const sensorName = unit.environmentSensor?.replace(/^"(.*)"$/, '$1')
         if (!sensorName) return ''
 
-        const sensor = this.$store.state.printer?.[sensorName]
-        if (!sensor) return ''
+        // Then find raw printer object so we can get environment data
+        const parts = sensorName.split(' ')
+        const matchingKey = additionalSensors.find((name) => {
+            const objectName = `${name} ${parts[1]}`
+            return objectName in this.$store.state.printer
+        })
+        const sensor = matchingKey
+          ? this.$store.state.printer[`${matchingKey} ${parts[1]}`]
+          : undefined
 
-        const parts: string[] = []
+        if (!sensor) return ''
+        const values: string[] = []
 
         if (sensor.temperature) {
-            parts.push(`${sensor.temperature.toFixed(0)}°C`)
+            values.push(`${sensor.temperature.toFixed(0)}°C`)
         }
 
         if (sensor.humidity) {
-            parts.push(`${sensor.humidity.toFixed(0)}%`)
+            values.push(`${sensor.humidity.toFixed(0)}%`)
         }
 
-        return parts.join(' / ')
+        return values.join(' / ')
     }
 
     get unitGateRange(): number[] {
