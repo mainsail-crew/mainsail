@@ -73,7 +73,7 @@ export default class MmuMixin extends Vue {
             filamentAlwaysGripped: this.$store.state.printer.mmu_machine?.[unitRef]?.filament_always_gripped ?? false,
             hasBypass: this.$store.state.printer.mmu_machine?.[unitRef]?.has_bypass ?? false,
             multiGear: this.$store.state.printer.mmu_machine?.[unitRef]?.multi_gear ?? false,
-            environmentSensor: this.$store.state.printer.mmu_machine?.[unitRef]?.environment_sensor,
+            environmentSensor: this.$store.state.printer.mmu_machine?.[unitRef]?.environment_sensor ?? '',
         }
         return ud
     }

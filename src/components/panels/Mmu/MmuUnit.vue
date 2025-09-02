@@ -173,11 +173,11 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         if (!sensor) return ''
         const values: string[] = []
 
-        if (sensor.temperature) {
+        if (sensor.temperature != null) {
             values.push(`${sensor.temperature.toFixed(0)}°C`)
         }
 
-        if (sensor.humidity) {
+        if (sensor.humidity != null) {
             values.push(`${sensor.humidity.toFixed(0)}%`)
         }
 
