@@ -18,7 +18,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
-import type { MmuGateDetails } from '@/store/server/mmu/types'
+import type { MmuGateDetails } from '@/store/mmu/types'
 
 @Component({})
 export default class MmuMachine extends Mixins(BaseMixin, MmuMixin) {

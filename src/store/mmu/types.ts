@@ -1,3 +1,14 @@
+export interface MmuGateMapEditorState {
+    gateMap: MmuGateDetails[]
+    gateSelected: number
+}
+
+export interface MmuTtgMapEditorState {
+    ttgMap: number[]
+    endlessSpoolGroups: number[]
+    gateMap: MmuGateDetails[]
+}
+
 export interface MmuGateDetails {
     index: number
     status: number

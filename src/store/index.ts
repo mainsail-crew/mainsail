@@ -14,6 +14,7 @@ import { gui } from '@/store/gui'
 import { farm } from '@/store/farm'
 import { editor } from '@/store/editor'
 import { gcodeviewer } from '@/store/gcodeviewer'
+import { mmuGateMapEditor, mmuTtgMapEditor } from '@/store/mmu'
 
 Vue.use(Vuex)
 
@@ -40,6 +41,8 @@ export default new Vuex.Store({
         farm,
         editor,
         gcodeviewer,
+        mmuGateMapEditor,
+        mmuTtgMapEditor,
     },
     getters: getters,
     mutations: mutations,

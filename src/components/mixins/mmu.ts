@@ -3,6 +3,7 @@ import Component from 'vue-class-component'
 import { W3C_COLORS } from '@/components/mixins/w3c'
 import type { FileStateGcodefile } from '@/store/files/types'
 import type { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
+import type { MmuGateDetails, SlicerToolDetails, MmuUnitDetails } from '@/store/mmu/types'
 
 @Component({})
 export default class MmuMixin extends Vue {

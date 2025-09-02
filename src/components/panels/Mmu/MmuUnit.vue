@@ -126,7 +126,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
-import type { MmuGateDetails } from '@/store/server/mmu/types'
+import type { MmuGateDetails } from '@/store/mmu/types'
 import MmuSpool from '@/components/panels/Mmu/MmuSpool.vue'
 import MmuSpoolClip from '@/components/panels/Mmu/MmuSpoolClip.vue'
 import MmuGateStatus from '@/components/panels/Mmu/MmuGateStatus.vue'

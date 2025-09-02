@@ -247,9 +247,8 @@ import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
 import Panel from '@/components/ui/Panel.vue'
-import Vue from 'vue'
 import type { FileStateGcodefile } from '@/store/files/types'
-import type { MmuGateDetails, SlicerToolDetails } from '@/store/server/mmu/types'
+import type { MmuGateDetails, SlicerToolDetails } from '@/store/mmu/types'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import { mdiStateMachine } from '@mdi/js'
 
@@ -262,9 +261,6 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true }) declare readonly showDialog: boolean
     @Prop({ required: false, default: null }) readonly file!: FileStateGcodefile | null
 
-    private localTtgMap: number[] = []
-    private localEndlessSpoolGroups: number[] = []
-    private localGateMap: MmuGateDetails[] = []
     private toolMetaData: SlicerToolDetails[] = []
     private referencedTools: number[] = []
     private allTools: boolean = true
@@ -275,6 +271,18 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     private selectedGate: number = -1
 
     private showResetConfirmationDialog: boolean = false
+
+    get localTtgMap(): number[] {
+        return this.$store.getters['mmuTtgMapEditor/ttgMap'] || []
+    }
+
+    get localEndlessSpoolGroups(): number[] {
+        return this.$store.getters['mmuTtgMapEditor/endlessSpoolGroups'] || []
+    }
+
+    get localGateMap(): MmuGateDetails[] {
+        return this.$store.getters['mmuTtgMapEditor/gateMap'] || []
+    }
 
     @Watch('ttgMap')
     onTtgMapChanged(): void {
@@ -293,27 +301,25 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     private initialize(): void {
         if (this.showDialog) {
-            this.localTtgMap = Array.from(this.ttgMap)
-            this.localEndlessSpoolGroups = Array.from(this.endlessSpoolGroups)
-            this.localGateMap = Array.from(this.gateMap)
+            this.$store.dispatch('mmuTtgMapEditor/init', {
+                ttgMap: Array.from(this.ttgMap),
+                endlessSpoolGroups: Array.from(this.endlessSpoolGroups),
+                gateMap: Array.from(this.gateMap),
+            })
 
             // Form tool meta data either from gcode file if starting print or from Happy Hare
             // slicer tool map after print start (should be the same info!)
 
             this.toolMetaData = []
             this.referencedTools = []
-            for (let i = 0; i < this.ttgMap.length; i++) {
+
+            for (let i = 0; i < this.localTtgMap.length; i++) {
                 this.toolMetaData[i] = this.toolDetails(i, this.file)
                 if (this.toolMetaData[i]?.inUse) this.referencedTools.push(i)
             }
 
-            if (this.referencedTools.length > 0) {
-                this.allTools = false
-                this.allToolsDisabled = false
-            } else {
-                this.allTools = true
-                this.allToolsDisabled = true
-            }
+            this.allTools = this.referencedTools.length === 0
+            this.allToolsDisabled = this.referencedTools.length === 0
             this.selectedTool = -1
             this.selectedGate = -1
         }
@@ -380,7 +386,9 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     private selectGate(gate: number) {
         this.selectedGate = gate
-        Vue.set(this.localTtgMap, this.selectedTool, gate)
+        if (this.selectedTool >= 0) {
+            this.$store.commit('mmuTtgMapEditor/mapToolGate', { tool: this.selectedTool, gate })
+        }
     }
 
     private selectEndlessSpool(gate: number) {
@@ -391,15 +399,14 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
                 // Unselect (restore original group number if possible)
                 let newGroup = this.endlessSpoolGroups[gate]
                 if (newGroup === group) {
-                    const usedGroups = new Set(this.localEndlessSpoolGroups)
+                    const usedGroup = new Set(this.localEndlessSpoolGroups)
                     let i = 0
-                    while (usedGroups.has(i)) i++
+                    while (usedGroup.has(i)) i++
                     newGroup = i
                 }
                 group = newGroup
             }
-            Vue.set(this.localEndlessSpoolGroups, gate, group)
-            this.localGateMap[gate].endlessSpoolGroup = group
+            this.$store.commit('mmuTtgMapEditor/mapGateGroup', { gate, group })
         }
     }
 
@@ -514,13 +521,14 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     close() {
         this.selectedTool = -1
         this.selectedGate = -1
+        this.$store.commit('mmuTtgMapEditor/reset')
         this.$emit('close')
     }
 
     commit() {
         let mapStr = this.localTtgMap.join(',')
         let esGrpStr = this.localEndlessSpoolGroups.join(',')
-        cmd = `MMU_TTG_MAP MAP="${mapStr}" QUIET=1`
+        let cmd = `MMU_TTG_MAP MAP="${mapStr}" QUIET=1`
         this.doSend(cmd)
         cmd = `MMU_ENDLESS_SPOOL GROUPS="${esGrpStr}" QUIET=1`
         this.doSend(cmd)
