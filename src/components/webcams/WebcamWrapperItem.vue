@@ -66,5 +66,3 @@ export default class WebcamWrapperItem extends Mixins(BaseMixin) {
     }
 }
 </script>
-
-<style scoped></style>
