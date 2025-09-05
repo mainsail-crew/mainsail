@@ -9,8 +9,8 @@
         <template v-else-if="service === 'uv4l-mjpeg'">
             <uv4l-mjpeg-async :cam-settings="webcam" :printer-url="printerUrl" />
         </template>
-        <template v-else-if="service === 'ipstream'">
-            <ipstreamer-async :cam-settings="webcam" :printer-url="printerUrl" />
+        <template v-else-if="service === 'html-video'">
+            <html-video-async :cam-settings="webcam" :printer-url="printerUrl" />
         </template>
         <template v-else-if="service === 'hlsstream'">
             <hlsstreamer-async :cam-settings="webcam" :printer-url="printerUrl" />
@@ -46,7 +46,7 @@ import { DynamicCamLoader } from '@/components/webcams/streamers/DynamicCamLoade
 @Component({
     components: {
         HlsstreamerAsync: DynamicCamLoader('Hlsstreamer'),
-        IpstreamerAsync: DynamicCamLoader('Ipstreamer'),
+        HtmlVideoAsyc: DynamicCamLoader('HtmlVideo'),
         JanusStreamerAsync: DynamicCamLoader('JanusStreamer'),
         JMuxerStreamAsync: DynamicCamLoader('JMuxerStream'),
         MjpegstreamerAsync: DynamicCamLoader('Mjpegstreamer'),

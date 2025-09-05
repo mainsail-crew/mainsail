@@ -1058,7 +1058,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "ノズル",
             "IconPrinter": "プリンター",
-            "Ipstream": "IPカメラ",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (試験的)",
             "Name": "名前",
