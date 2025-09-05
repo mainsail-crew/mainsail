@@ -190,6 +190,10 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "FilamentTypeMismatch": "Filament type in the G-Code ({file}) does not match the selected filament type ({lane}).",
+                "FilamentWeightNotEnough": "Not enough filament in the selected lane ({lane}). Required: {required}, Available: {available}."
+            },
             "Cancel": "Cancel",
             "DoYouWantToStartFilename": "Do you want to start {filename}?",
             "DoYouWantToStartFilenameFilament": "Do you want to start {filename} with the following filament?",

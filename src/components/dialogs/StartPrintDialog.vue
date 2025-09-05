@@ -13,7 +13,7 @@
                     {{ question }}
                 </p>
             </v-card-text>
-            <start-print-dialog-afc v-if="existsAfc" />
+            <start-print-dialog-afc v-if="existsAfc" :file="file" />
             <start-print-dialog-spoolman v-else-if="existsSpoolman" :file="file" />
             <start-print-dialog-timelapse v-if="existsTimelapse" />
             <v-divider v-if="showDivider" class="my-0" />
