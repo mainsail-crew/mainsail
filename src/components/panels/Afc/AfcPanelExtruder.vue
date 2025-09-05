@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-lg grey darken-3 border-1" :class="containerClasses">
+    <div class="rounded-lg grey border-1" :class="containerClasses">
         <v-row>
             <v-col class="pl-6 py-4 text-no-wrap">
                 <v-tooltip top>
@@ -66,6 +66,8 @@ export default class AfcPanelExtruder extends Mixins(BaseMixin, AfcMixin) {
         return {
             'border-primary': this.hasActiveLane,
             'border-error': this.hasActiveLane && this.afcErrorState,
+            'darken-3': this.$vuetify.theme.dark,
+            'lighten-2': !this.$vuetify.theme.dark,
         }
     }
 
