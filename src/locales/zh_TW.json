@@ -1075,7 +1075,6 @@
             "IconMcu": "主控制單元",
             "IconNozzle": "噴嘴",
             "IconPrinter": "列印機",
-            "Ipstream": "IP Camera",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "適應 MJPEG-Streamer (實驗功能)",
             "Name": "名稱",

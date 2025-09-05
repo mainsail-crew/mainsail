@@ -1,5 +1,5 @@
 <template>
-    <video v-observe-visibility="visibilityChanged" :src="url" autoplay :style="webcamStyle" class="webcamImage" />
+    <video :src="url" autoplay :style="webcamStyle" class="webcamImage" />
 </template>
 
 <script lang="ts">
@@ -9,9 +9,7 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
-export default class Ipstreamer extends Mixins(BaseMixin, WebcamMixin) {
-    private isVisible = true
-
+export default class HtmlVideo extends Mixins(BaseMixin, WebcamMixin) {
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
 
@@ -27,10 +25,6 @@ export default class Ipstreamer extends Mixins(BaseMixin, WebcamMixin) {
                 this.camSettings.rotation ?? 0
             ),
         }
-    }
-
-    visibilityChanged(isVisible: boolean) {
-        this.isVisible = isVisible
     }
 }
 </script>

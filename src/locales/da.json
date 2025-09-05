@@ -1270,7 +1270,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Dyse",
             "IconPrinter": "Printer",
-            "Ipstream": "IP Kamera",
             "JMuxerStream": "Rå h264 stream (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptiv MJPEG-Streamer (eksperimental)",
