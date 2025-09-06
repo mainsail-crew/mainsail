@@ -91,6 +91,11 @@ export const getters: GetterTree<GuiState, any> = {
             allPanels = allPanels.filter((name) => name !== 'spoolman')
         }
 
+        // remove afc panel, if no AFC module exists in Klipper
+        if (!rootState.printer?.AFC) {
+            allPanels = allPanels.filter((name) => name !== 'afc')
+        }
+
         return allPanels
     },
 
