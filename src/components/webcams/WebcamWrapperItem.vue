@@ -84,7 +84,7 @@ export default class WebcamWrapperItem extends Mixins(BaseMixin) {
     object-fit: contain;
 }
 
-html.theme--light ::v-deep.webcamBackground {
+html.theme--light ::v-deep .webcamBackground {
     background: rgba(255, 255, 255, 0.7);
 }
 </style>
