@@ -30,15 +30,10 @@ export default class HtmlVideo extends Mixins(BaseMixin, WebcamMixin) {
 
     get wrapperStyle() {
         if (this.aspectRatio !== null && this.aspectRatio < 1 && [90, 270].includes(this.camSettings.rotation)) {
-            return {
-                aspectRatio: 1 / this.aspectRatio,
-                maxHeight: `${window.innerHeight - 155}px`,
-            }
+            return { aspectRatio: 1 / this.aspectRatio }
         }
 
-        return {
-            maxHeight: `${window.innerHeight - 155}px`,
-        }
+        return {}
     }
 
     get webcamStyle() {
