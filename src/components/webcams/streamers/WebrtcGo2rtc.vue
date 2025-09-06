@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="webcamBackground" :style="wrapperStyle">
         <video
             v-show="status === 'connected'"
             ref="video"
@@ -7,7 +7,8 @@
             class="webcamImage"
             autoplay
             playsinline
-            muted />
+            muted
+            @loadedmetadata="onLoadedMetadata" />
         <v-row v-if="status !== 'connected'">
             <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
                 <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
@@ -25,15 +26,16 @@ import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
 export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
-    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop({ default: null }) readonly printerUrl!: string | null
-    @Ref() declare video: HTMLVideoElement
-
     pc: RTCPeerConnection | null = null
     ws: WebSocket | null = null
     restartPause = 2000
     restartTimeout: any = null
     status: string = 'connecting'
+    aspectRatio: number | null = null
+
+    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
+    @Prop({ default: null }) readonly printerUrl!: string | null
+    @Ref() declare video: HTMLVideoElement
 
     mounted() {
         this.start()
@@ -47,12 +49,21 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
         if (this.restartTimeout) clearTimeout(this.restartTimeout)
     }
 
+    get wrapperStyle() {
+        if (this.aspectRatio !== null && this.aspectRatio < 1 && [90, 270].includes(this.camSettings.rotation)) {
+            return { aspectRatio: 1 / this.aspectRatio }
+        }
+
+        return {}
+    }
+
     get webcamStyle() {
         return {
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
+                this.aspectRatio ?? 1
             ),
         }
     }
@@ -229,19 +240,23 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
             this.start()
         }, this.restartPause)
     }
+
+    onLoadedMetadata() {
+        const w = this.video?.videoWidth
+        const h = this.video?.videoHeight
+
+        if (!w || !h) {
+            this.aspectRatio = null
+            return
+        }
+
+        this.aspectRatio = w / h
+    }
 }
 </script>
 
 <style scoped>
-.webcamImage {
-    width: 100%;
-}
-
 ._webcam_webrtc_output {
     aspect-ratio: calc(3 / 2);
-}
-
-video {
-    width: 100%;
 }
 </style>

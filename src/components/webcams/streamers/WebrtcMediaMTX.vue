@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="webcamBackground" :style="wrapperStyle">
         <video
             v-show="status === 'connected'"
             ref="video"
@@ -7,7 +7,8 @@
             class="webcamImage"
             autoplay
             playsinline
-            muted />
+            muted
+            @loadedmetadata="onLoadedMetadata" />
         <v-row v-if="status !== 'connected'">
             <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
                 <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
@@ -51,6 +52,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         medias: [],
     }
     RESTART_PAUSE = 2000
+    aspectRatio: number | null = null
 
     // stop the video and close the streams if the component is going to be destroyed so we don't leave hanging streams
     beforeDestroy() {
@@ -60,12 +62,21 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         if (this.restartTimeout) clearTimeout(this.restartTimeout)
     }
 
+    get wrapperStyle() {
+        if (this.aspectRatio !== null && this.aspectRatio < 1 && [90, 270].includes(this.camSettings.rotation)) {
+            return { aspectRatio: 1 / this.aspectRatio }
+        }
+
+        return {}
+    }
+
     get webcamStyle() {
         return {
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
+                this.aspectRatio ?? 1
             ),
         }
     }
@@ -390,19 +401,23 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         this.eTag = ''
         this.queuedCandidates = []
     }
+
+    onLoadedMetadata() {
+        const w = this.video?.videoWidth
+        const h = this.video?.videoHeight
+
+        if (!w || !h) {
+            this.aspectRatio = null
+            return
+        }
+
+        this.aspectRatio = w / h
+    }
 }
 </script>
 
 <style scoped>
-.webcamImage {
-    width: 100%;
-}
-
 ._webcam_webrtc_output {
     aspect-ratio: calc(3 / 2);
-}
-
-video {
-    width: 100%;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div class="webcamBackground" :style="wrapperStyle">
         <video
             v-show="status === 'started'"
             ref="stream"
-            class="webcamStream"
+            class="webcamImage"
             :style="webcamStyle"
             autoplay
             muted
@@ -28,12 +28,12 @@ import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
 export default class JanusStreamer extends Mixins(BaseMixin, WebcamMixin) {
-    private janusClient: JanusJs | null = null
-    private session: JanusSession | null = null
-    private handle: JanusStreamingPlugin | null = null
-    private useStun = false
-    private aspectRatio: null | number = null
-    private status: string = 'connecting'
+    janusClient: JanusJs | null = null
+    session: JanusSession | null = null
+    handle: JanusStreamingPlugin | null = null
+    useStun = false
+    aspectRatio: null | number = null
+    status: string = 'connecting'
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) declare readonly printerUrl: string | null
@@ -54,28 +54,32 @@ export default class JanusStreamer extends Mixins(BaseMixin, WebcamMixin) {
         return url
     }
 
+    get wrapperStyle() {
+        if (this.aspectRatio !== null && this.aspectRatio < 1 && [90, 270].includes(this.camSettings.rotation)) {
+            return { aspectRatio: 1 / this.aspectRatio }
+        }
+
+        return {}
+    }
+
     get streamId() {
         const pathnameParts = new URL(this.camSettings.stream_url).pathname.split('/')
         return pathnameParts[pathnameParts.length - 1]
     }
 
     get webcamStyle() {
-        const output = {
+        return {
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
+                this.aspectRatio ?? 1
             ),
-            aspectRatio: 16 / 9,
         }
-
-        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
-
-        return output
     }
 
     get streamConfig() {
-        let config: ConstructorOptions = {
+        const config: ConstructorOptions = {
             server: this.url.toString(),
         }
 
@@ -136,15 +140,7 @@ export default class JanusStreamer extends Mixins(BaseMixin, WebcamMixin) {
 </script>
 
 <style scoped>
-.webcamStream {
-    width: 100%;
-}
-
 ._webcam_webrtc_output {
     aspect-ratio: calc(3 / 2);
-}
-
-video {
-    width: 100%;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <video ref="video" autoplay :style="webcamStyle" class="webcamImage" />
+    <div class="webcamBackground" :style="wrapperStyle">
+        <video ref="video" autoplay :style="webcamStyle" class="webcamImage" @loadedmetadata="onLoadedMetadata" />
         <v-row v-if="status !== 'connected'">
             <v-col class="_webcam_jmuxer_output text-center d-flex flex-column justify-center align-center">
                 <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
@@ -12,25 +12,31 @@
 
 <script lang="ts">
 import JMuxer from 'jmuxer'
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
 export default class JMuxerStreamer extends Mixins(BaseMixin, WebcamMixin) {
-    private jmuxer: JMuxer | null = null
-    private status: string = 'connecting'
+    jmuxer: JMuxer | null = null
+    status: string = 'connecting'
+    aspectRatio: number | null = null
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
-
-    declare $refs: {
-        video: HTMLVideoElement
-    }
+    @Ref() readonly video!: HTMLVideoElement
 
     get url() {
         return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
+    }
+
+    get wrapperStyle() {
+        if (this.aspectRatio !== null && this.aspectRatio < 1 && [90, 270].includes(this.camSettings.rotation)) {
+            return { aspectRatio: 1 / this.aspectRatio }
+        }
+
+        return {}
     }
 
     get webcamStyle() {
@@ -38,7 +44,8 @@ export default class JMuxerStreamer extends Mixins(BaseMixin, WebcamMixin) {
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
+                this.aspectRatio ?? 1
             ),
         }
     }
@@ -58,18 +65,17 @@ export default class JMuxerStreamer extends Mixins(BaseMixin, WebcamMixin) {
             return
         }
 
-        const video = this.$refs.video
         const targetFps = this.camSettings.target_fps || 10
 
         this.jmuxer = new JMuxer({
-            node: video,
+            node: this.video,
             mode: 'video',
             flushingTime: 0,
             fps: targetFps,
             // debug: true,
-            onReady: (data: any) => {
+            onReady: () => {
                 this.status = 'connected'
-                console.log('jmuxer ready:', data)
+                console.log('jmuxer ready')
             },
             onError: (data: any) => {
                 this.status = 'error'
@@ -100,14 +106,22 @@ export default class JMuxerStreamer extends Mixins(BaseMixin, WebcamMixin) {
         // restart stream, when camSettings change
         this.play()
     }
+
+    onLoadedMetadata() {
+        const w = this.video?.videoWidth
+        const h = this.video?.videoHeight
+
+        if (!w || !h) {
+            this.aspectRatio = null
+            return
+        }
+
+        this.aspectRatio = w / h
+    }
 }
 </script>
 
 <style scoped>
-.webcamImage {
-    width: 100%;
-}
-
 ._webcam_jmuxer_output {
     aspect-ratio: calc(3 / 2);
 }

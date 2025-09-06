@@ -63,7 +63,7 @@ export default class WebcamMixin extends Mixins(BaseMixin) {
         if (rotation != 0) {
             transforms.push(`rotate(${rotation}deg)`)
 
-            if (aspect_ratio != 1) transforms.push(`scale(${1 / aspect_ratio})`)
+            if (aspect_ratio != 1 && rotation != 180) transforms.push(`scale(${1 / aspect_ratio})`)
         }
 
         // return transform when exist

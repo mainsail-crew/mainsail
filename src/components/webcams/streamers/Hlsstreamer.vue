@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-center">
+    <div class="webcamBackground" :style="wrapperStyle">
         <video
             ref="video"
             v-observe-visibility="visibilityChanged"
@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Hls from 'hls.js'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
@@ -19,39 +19,35 @@ import WebcamMixin from '@/components/mixins/webcam'
 
 @Component
 export default class Hlsstreamer extends Mixins(BaseMixin, WebcamMixin) {
-    private aspectRatio: null | number = null
-    private isVisible = true
-    private hls: Hls | null = null
+    aspectRatio: null | number = null
+    isVisible = true
+    hls: Hls | null = null
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
-
-    declare $refs: {
-        video: HTMLVideoElement
-    }
+    @Ref() readonly video!: HTMLVideoElement
 
     get url() {
         return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
     }
 
+    get wrapperStyle() {
+        if (this.aspectRatio !== null && this.aspectRatio < 1 && [90, 270].includes(this.camSettings.rotation)) {
+            return { aspectRatio: 1 / this.aspectRatio }
+        }
+
+        return {}
+    }
+
     get webcamStyle() {
-        const output = {
+        return {
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
+                this.aspectRatio ?? 1
             ),
-            aspectRatio: 16 / 9,
-            maxHeight: window.innerHeight - 155 + 'px',
-            maxWidth: 'auto',
         }
-
-        if (this.aspectRatio) {
-            output.aspectRatio = this.aspectRatio
-            output.maxWidth = (window.innerHeight - 155) * this.aspectRatio + 'px'
-        }
-
-        return output
     }
 
     visibilityChanged(isVisible: boolean) {
@@ -61,9 +57,8 @@ export default class Hlsstreamer extends Mixins(BaseMixin, WebcamMixin) {
     mounted() {
         this.play()
 
-        const video = this.$refs.video
-        video.onplaying = () => {
-            this.aspectRatio = video.videoWidth / video.videoHeight
+        this.video.onplaying = () => {
+            this.aspectRatio = this.video.videoWidth / this.video.videoHeight
         }
     }
 
@@ -72,8 +67,6 @@ export default class Hlsstreamer extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     play() {
-        const video = this.$refs.video
-
         if (Hls.isSupported()) {
             this.hls?.destroy()
 
@@ -86,14 +79,14 @@ export default class Hlsstreamer extends Mixins(BaseMixin, WebcamMixin) {
                 backBufferLength: 5,
             })
             this.hls.loadSource(this.url)
-            this.hls.attachMedia(video)
+            this.hls.attachMedia(this.video)
             this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                video.play()
+                this.video.play()
             })
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        } else if (this.video.canPlayType('application/vnd.apple.mpegurl')) {
             fetch(this.url).then(() => {
-                video.src = this.url
-                video.play()
+                this.video.src = this.url
+                this.video.play()
             })
         }
     }
@@ -103,9 +96,3 @@ export default class Hlsstreamer extends Mixins(BaseMixin, WebcamMixin) {
     }
 }
 </script>
-
-<style scoped>
-.webcamImage {
-    width: 100%;
-}
-</style>
