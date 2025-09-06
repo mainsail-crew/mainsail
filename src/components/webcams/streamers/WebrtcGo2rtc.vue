@@ -50,11 +50,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get wrapperStyle() {
-        if (this.aspectRatio !== null && this.aspectRatio < 1 && [90, 270].includes(this.camSettings.rotation)) {
-            return { aspectRatio: 1 / this.aspectRatio }
-        }
-
-        return {}
+        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
     }
 
     get webcamStyle() {
