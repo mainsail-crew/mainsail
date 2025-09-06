@@ -1,11 +1,5 @@
 import { GetterTree } from 'vuex'
-import {
-    GuiMiscellaneousState,
-    GuiMiscellaneousStateEntry,
-    GuiMiscellaneousStateEntryLightgroup,
-    GuiMiscellaneousStateEntryPreset,
-} from '@/store/gui/miscellaneous/types'
-import { caseInsensitiveSort } from '@/plugins/helpers'
+import { GuiMiscellaneousState, GuiMiscellaneousStateEntry } from '@/store/gui/miscellaneous/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiMiscellaneousState, any> = {
@@ -33,43 +27,5 @@ export const getters: GetterTree<GuiMiscellaneousState, any> = {
 
     getId: (state, getters) => (payload: { type: string; name: string }) => {
         return getters.getEntry(payload)?.id ?? null
-    },
-
-    getEntryLightgroups: (state, getters) => (payload: { type: string; name: string }) => {
-        const entry = getters.getEntry(payload) as GuiMiscellaneousStateEntry | null
-
-        if (!entry) return []
-
-        const groups: GuiMiscellaneousStateEntryLightgroup[] = []
-        Object.entries(entry.lightgroups).forEach(([key, lightgroup]) => {
-            groups.push({
-                name: lightgroup.name,
-                start: lightgroup.start,
-                end: lightgroup.end,
-                id: key,
-            })
-        })
-
-        return caseInsensitiveSort(groups, 'name')
-    },
-
-    getEntryPresets: (state, getters) => (payload: { type: string; name: string }) => {
-        const entry = getters.getEntry(payload) as GuiMiscellaneousStateEntry | null
-
-        if (!entry) return []
-
-        const presets: GuiMiscellaneousStateEntryPreset[] = []
-        Object.entries(entry.presets).forEach(([key, preset]) => {
-            presets.push({
-                name: preset.name,
-                red: preset.red,
-                green: preset.green,
-                blue: preset.blue,
-                white: preset.white,
-                id: key,
-            })
-        })
-
-        return caseInsensitiveSort(presets, 'name')
     },
 }

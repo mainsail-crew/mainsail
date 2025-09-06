@@ -1,5 +1,5 @@
 <template>
-    <div class="grey darken-3 flex-grow-1 afc-unit-lane d-flex flex-column" :class="laneStatusClass">
+    <div class="grey flex-grow-1 afc-unit-lane d-flex flex-column" :class="laneStatusClass">
         <afc-panel-unit-lane-header :name="name" />
         <template v-if="laneReady">
             <afc-panel-unit-lane-body :name="name" />
@@ -28,10 +28,12 @@ export default class AfcPanelUnitLane extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get laneStatusClass() {
-        if (this.laneActive && this.afcErrorState) return 'border-error'
-        if (this.laneActive) return 'border-success'
-
-        return ''
+        return {
+            'darken-3': this.$vuetify.theme.dark,
+            'lighten-2': !this.$vuetify.theme.dark,
+            'border-error': this.laneActive && this.afcErrorState,
+            'border-success': this.laneActive && !this.afcErrorState,
+        }
     }
 
     get laneReady() {

@@ -1060,7 +1060,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Tryska",
             "IconPrinter": "Tiskárna",
-            "Ipstream": "IP kamera",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptivní MJPEG-Streamer (experimentální)",
             "Name": "Jméno",

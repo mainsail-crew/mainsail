@@ -289,7 +289,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'mjpegstreamer', text: this.$t('Settings.WebcamsTab.Mjpegstreamer') },
             { value: 'mjpegstreamer-adaptive', text: this.$t('Settings.WebcamsTab.MjpegstreamerAdaptive') },
             { value: 'uv4l-mjpeg', text: this.$t('Settings.WebcamsTab.Uv4lMjpeg') },
-            { value: 'ipstream', text: this.$t('Settings.WebcamsTab.Ipstream') },
+            { value: 'html-video', text: this.$t('Settings.WebcamsTab.HtmlVideo') },
             { value: 'webrtc-camerastreamer', text: this.$t('Settings.WebcamsTab.WebrtcCameraStreamer') },
             { value: 'webrtc-go2rtc', text: this.$t('Settings.WebcamsTab.WebrtcGo2rtc') },
             { value: 'webrtc-mediamtx', text: this.$t('Settings.WebcamsTab.WebrtcMediaMTX') },

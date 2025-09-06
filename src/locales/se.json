@@ -1184,7 +1184,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Munstycke (Nozzle)",
             "IconPrinter": "Skrivare",
-            "Ipstream": "IP-kamera",
             "JMuxerStream": "Raw h264-ström (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptiv MJPEG-Streamer (experimentell)",
