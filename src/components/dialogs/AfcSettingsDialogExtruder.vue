@@ -4,16 +4,18 @@
         <settings-row
             :title="$t('Panels.AfcPanel.SettingsDialog.LoadUnloadLane')"
             :sub-title="$t('Panels.AfcPanel.SettingsDialog.LoadUnloadLaneDescription')">
-            <v-btn
-                v-for="lane in lanes"
-                :key="lane"
-                :disabled="!filledLanes.includes(lane)"
-                small
-                class="ma-1"
-                :color="lane_loaded === lane ? 'primary' : ''"
-                @click="toggleLane(lane)">
-                {{ lane }}
-            </v-btn>
+            <div class="d-flex flex-wrap">
+                <v-btn
+                    v-for="lane in lanes"
+                    :key="lane"
+                    :disabled="!filledLanes.includes(lane)"
+                    small
+                    class="ma-1"
+                    :color="lane_loaded === lane ? 'primary' : ''"
+                    @click="toggleLane(lane)">
+                    {{ lane }}
+                </v-btn>
+            </div>
         </settings-row>
         <v-divider class="my-3" />
         <settings-row :title="$t('Panels.AfcPanel.SettingsDialog.ToolStn')" :sub-title="toolStnSubTitle">
