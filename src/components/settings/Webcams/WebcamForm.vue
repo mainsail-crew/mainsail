@@ -122,7 +122,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="pt-1 pb-3">
-                            <div class="v-label v-label--active theme--dark text-subtitle-1">
+                            <div class="v-label v-label--active text-subtitle-1">
                                 {{ $t('Settings.WebcamsTab.FlipWebcam') }}
                             </div>
                         </v-col>
@@ -146,7 +146,7 @@
                     <template v-if="nozzleCrosshairAvialable">
                         <v-row>
                             <v-col class="pt-3 pb-3">
-                                <div class="v-label v-label--active theme--dark text-subtitle-1">
+                                <div class="v-label v-label--active text-subtitle-1">
                                     {{ $t('Settings.WebcamsTab.NozzleCrosshair') }}:
                                 </div>
                             </v-col>
@@ -175,8 +175,7 @@
                                         mode="rgba"
                                         @update:color="updateLogoColor" />
                                 </v-menu>
-                                <div
-                                    class="v-label v-label--active theme--dark text-subtitle-1 d-inline-block ml-2 mt-2">
+                                <div class="v-label v-label--active text-subtitle-1 d-inline-block ml-2 mt-2">
                                     {{ $t('Settings.WebcamsTab.Color') }}
                                 </div>
                             </v-col>
@@ -290,7 +289,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'mjpegstreamer', text: this.$t('Settings.WebcamsTab.Mjpegstreamer') },
             { value: 'mjpegstreamer-adaptive', text: this.$t('Settings.WebcamsTab.MjpegstreamerAdaptive') },
             { value: 'uv4l-mjpeg', text: this.$t('Settings.WebcamsTab.Uv4lMjpeg') },
-            { value: 'ipstream', text: this.$t('Settings.WebcamsTab.Ipstream') },
+            { value: 'html-video', text: this.$t('Settings.WebcamsTab.HtmlVideo') },
             { value: 'webrtc-camerastreamer', text: this.$t('Settings.WebcamsTab.WebrtcCameraStreamer') },
             { value: 'webrtc-go2rtc', text: this.$t('Settings.WebcamsTab.WebrtcGo2rtc') },
             { value: 'webrtc-mediamtx', text: this.$t('Settings.WebcamsTab.WebrtcMediaMTX') },

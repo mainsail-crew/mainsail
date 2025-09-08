@@ -33,3 +33,4 @@ jobs:
           strip-hash: "\\b\\w{8}\\."
           pattern: './dist/**/*.{js,css,html,json,woff2,svg,png}'
           exclude: '{./dist/manifest.json,./dist/build.zip,**/*.map,**/node_modules/**}'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

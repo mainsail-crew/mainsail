@@ -190,6 +190,13 @@ export const getDefaultState = (): GuiState => {
             hideOtherInstances: false,
         },
         view: {
+            afc: {
+                hiddenExtruders: [],
+                hiddenUnits: [],
+                showFilamentName: false,
+                showLaneInfinite: true,
+                showUnitIcons: true,
+            },
             blockFileUpload: false,
             configfiles: {
                 countPerPage: 10,
@@ -210,17 +217,19 @@ export const getDefaultState = (): GuiState => {
             },
             gcodefiles: {
                 countPerPage: 10,
+                search: '',
                 sortBy: 'modified',
                 sortDesc: true,
                 showHiddenFiles: false,
                 showPrintedFiles: true,
-                hideMetadataColumns: [],
+                hideMetadataColumns: ['filament_name', 'filament_type', 'filament_weight_total'],
                 orderMetadataColumns: [
                     'size',
                     'modified',
                     'object_height',
                     'layer_height',
                     'nozzle_diameter',
+                    'filaments',
                     'filament_name',
                     'filament_type',
                     'filament_total',

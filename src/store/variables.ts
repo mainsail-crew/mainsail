@@ -58,7 +58,11 @@ export const checkKlipperConfigModules = [
 export const allowedMetadata = [
     'uuid',
     'estimated_time',
+    'extruder_colors',
+    'filament_change_count',
+    'filament_colors',
     'filament_name',
+    'filament_temps',
     'filament_type',
     'filament_colors',
     'extruder_colors',
@@ -67,6 +71,7 @@ export const allowedMetadata = [
     'mmu_print',
     'filament_total',
     'filament_weight_total',
+    'filament_weights',
     'nozzle_diameter',
     'first_layer_bed_temp',
     'first_layer_extr_temp',
@@ -76,8 +81,10 @@ export const allowedMetadata = [
     'gcode_start_byte',
     'job_id',
     'layer_height',
+    'mmu_print',
     'object_height',
     'print_start_time',
+    'referenced_tools',
     'size',
     'slicer',
     'slicer_version',
@@ -91,6 +98,7 @@ export const maxGcodeHistory = 50
  * List of generic dashboard panels
  */
 export const allDashboardPanels = [
+    'afc',
     'toolhead-control',
     'extruder-control',
     'macros',

@@ -7,33 +7,7 @@
             <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
         </v-col>
         <v-col class="col-auto d-flex flex-column justify-center pr-0 py-0">
-            <v-tooltip
-                v-if="smallThumbnail"
-                top
-                :disabled="!bigThumbnail"
-                content-class="tooltip__content-opacity1"
-                :color="bigThumbnailTooltipColor">
-                <template #activator="{ on, attrs }">
-                    <vue-load-image>
-                        <img
-                            slot="image"
-                            :src="smallThumbnail"
-                            :width="32"
-                            :height="32"
-                            :alt="job.filename"
-                            v-bind="attrs"
-                            v-on="on" />
-                        <div slot="preloader">
-                            <v-progress-circular indeterminate color="primary" />
-                        </div>
-                        <div slot="error">
-                            <v-icon>{{ mdiFile }}</v-icon>
-                        </div>
-                    </vue-load-image>
-                </template>
-                <span><img :src="bigThumbnail" :width="250" :alt="job.filename" /></span>
-            </v-tooltip>
-            <v-icon v-else>{{ mdiFile }}</v-icon>
+            <gcodefiles-thumbnail :item="job" />
         </v-col>
         <v-col class="py-1" style="min-width: 0; font-size: 0.875em">
             <div class="text-truncate">
@@ -79,7 +53,11 @@ import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiCloseThick, mdiCounter, mdiDragVertical, mdiFile, mdiPlay, mdiPlaylistRemove } from '@mdi/js'
 import { defaultBigThumbnailBackground } from '@/store/variables'
-@Component
+import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbnail.vue'
+
+@Component({
+    components: { GcodefilesThumbnail },
+})
 export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiCounter = mdiCounter

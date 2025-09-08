@@ -21,113 +21,107 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
         })
     },
 
-    async store({ commit, dispatch }, payload: payloadStore) {
+    store({ commit, dispatch }, payload: payloadStore) {
         const id = uuidv4()
 
-        await commit('store', { id, values: payload })
-        await dispatch('upload', id)
+        commit('store', { id, values: payload })
+        dispatch('upload', id)
 
         return id
     },
 
-    async storeLightgroup({ commit, dispatch, getters }, payload: payloadStoreLightgroup) {
-        let entryId = getters['getId'](payload.entry)
-        if (entryId === null) entryId = await dispatch('store', payload.entry)
+    storeLightgroup(
+        { commit, dispatch, state },
+        payload: { type: string; name: string; lightgroup: GuiMiscellaneousStateEntryLightgroup }
+    ) {
+        let entryId =
+            Object.keys(state.entries).find(
+                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
+            ) ?? null
 
-        const lightgroupId = uuidv4()
-        await commit('updateLightgroup', { entryId, lightgroupId, values: payload.lightgroup })
+        if (entryId === null) {
+            entryId = uuidv4()
+            commit('store', { id: entryId, values: { name: payload.name, type: payload.type } })
+        }
 
-        await dispatch('upload', entryId)
-
-        return lightgroupId
+        commit('storeLightgroup', { entryId, values: payload.lightgroup })
+        dispatch('upload', entryId)
     },
 
-    async updateLightgroup({ commit, dispatch, getters }, payload: payloadStoreLightgroup) {
-        const entryId = getters['getId'](payload.entry)
+    updateLightgroup(
+        { commit, dispatch, state },
+        payload: { type: string; name: string; lightgroupId: string; lightgroup: GuiMiscellaneousStateEntryLightgroup }
+    ) {
+        const entryId =
+            Object.keys(state.entries).find(
+                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
+            ) ?? null
         if (entryId === null) return
 
-        await commit('updateLightgroup', { entryId, lightgroupId: payload.lightgroup.id, values: payload.lightgroup })
-
-        await dispatch('upload', entryId)
-
-        return payload.lightgroup.id
+        commit('updateLightgroup', { entryId, lightgroupId: payload.lightgroupId, values: payload.lightgroup })
+        dispatch('upload', entryId)
     },
 
-    async deleteLightgroup({ commit, dispatch, getters }, payload: payloadDeleteLightgroup) {
-        const entryId = getters['getId'](payload.entry)
+    deleteLightgroup({ commit, dispatch, state }, payload: { type: string; name: string; lightgroupId: string }) {
+        const entryId =
+            Object.keys(state.entries).find(
+                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
+            ) ?? null
         if (entryId === null) return
 
-        await commit('destroyLightgroup', { entryId, lightgroupId: payload.lightgroupId })
-
-        await dispatch('upload', entryId)
+        commit('destroyLightgroup', { entryId, lightgroupId: payload.lightgroupId })
+        dispatch('upload', entryId)
     },
 
-    async storePreset({ commit, dispatch, getters }, payload: payloadStorePreset) {
-        let entryId = getters['getId'](payload.entry)
-        if (entryId === null) entryId = await dispatch('store', payload.entry)
+    storePreset(
+        { commit, dispatch, state },
+        payload: {
+            type: string
+            name: string
+            preset: GuiMiscellaneousStateEntryPreset
+        }
+    ) {
+        let entryId =
+            Object.keys(state.entries).find(
+                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
+            ) ?? null
 
-        const presetId = uuidv4()
-        await commit('updatePreset', { entryId, presetId, values: payload.preset })
+        if (entryId === null) {
+            entryId = uuidv4()
+            commit('store', { id: entryId, values: { name: payload.name, type: payload.type } })
+        }
 
-        await dispatch('upload', entryId)
-
-        return presetId
+        commit('storePreset', { entryId, values: payload.preset })
+        dispatch('upload', entryId)
     },
 
-    async updatePreset({ commit, dispatch, getters }, payload: payloadStorePreset) {
-        const entryId = getters['getId'](payload.entry)
+    updatePreset(
+        { commit, dispatch, state },
+        payload: { type: string; name: string; presetId: string; preset: GuiMiscellaneousStateEntryPreset }
+    ) {
+        const entryId =
+            Object.keys(state.entries).find(
+                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
+            ) ?? null
         if (entryId === null) return
 
-        await commit('updatePreset', { entryId, presetId: payload.preset.id, values: payload.preset })
-
-        await dispatch('upload', entryId)
-
-        return payload.preset.id
+        commit('updatePreset', { entryId, presetId: payload.presetId, values: payload.preset })
+        dispatch('upload', entryId)
     },
 
-    async deletePreset({ commit, dispatch, getters }, payload: payloadDeletePreset) {
-        const entryId = getters['getId'](payload.entry)
+    deletePreset({ commit, dispatch, state }, payload: { type: string; name: string; presetId: string }) {
+        const entryId =
+            Object.keys(state.entries).find(
+                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
+            ) ?? null
         if (entryId === null) return
 
-        await commit('destroyPreset', { entryId, presetId: payload.presetId })
-
-        await dispatch('upload', entryId)
+        commit('destroyPreset', { entryId, presetId: payload.presetId })
+        dispatch('upload', entryId)
     },
 }
 
 interface payloadStore {
     type: string
     name: string
-}
-
-interface payloadStoreLightgroup {
-    entry: {
-        type: string
-        name: string
-    }
-    lightgroup: GuiMiscellaneousStateEntryLightgroup
-}
-
-interface payloadDeleteLightgroup {
-    entry: {
-        type: string
-        name: string
-    }
-    lightgroupId: string
-}
-
-interface payloadStorePreset {
-    entry: {
-        type: string
-        name: string
-    }
-    preset: GuiMiscellaneousStateEntryPreset
-}
-
-interface payloadDeletePreset {
-    entry: {
-        type: string
-        name: string
-    }
-    presetId: string
 }

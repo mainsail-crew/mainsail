@@ -141,21 +141,6 @@ export default class BaseMixin extends Vue {
         return roots.findIndex((root: string) => root === 'gcodes') >= 0
     }
 
-    get formatDateOptions(): DateTimeFormatOptions {
-        const format = this.$store.state.gui.general.dateFormat
-
-        switch (format) {
-            case '2-digits':
-                return { day: '2-digit', month: '2-digit', year: 'numeric' }
-
-            case 'short':
-                return { day: '2-digit', month: 'short', year: 'numeric' }
-
-            default:
-                return { dateStyle: 'medium' }
-        }
-    }
-
     get formatTimeOptions(): DateTimeFormatOptions {
         const format = this.$store.state.gui.general.timeFormat
 
@@ -194,8 +179,9 @@ export default class BaseMixin extends Vue {
         return this.$store.getters['gui/getHours12Format']
     }
 
-    formatDate(value: number | Date): string {
-        let tmp = null
+    formatDate(value: number | Date, format: string | null = null): string {
+        if (format === null) format = this.$store.state.gui.general.dateFormat
+        let tmp: Date | null = null
 
         try {
             // @ts-ignore
@@ -204,7 +190,49 @@ export default class BaseMixin extends Vue {
             return 'UNKNOWN'
         }
 
-        return tmp.toLocaleDateString(this.browserLocale, this.formatDateOptions)
+        if (format === null) return tmp.toLocaleDateString(this.browserLocale, { dateStyle: 'medium' })
+        if (format === 'iso') return tmp.toISOString().split('T')[0]
+        if (format === 'short') return tmp.toLocaleDateString(this.browserLocale, { dateStyle: 'short' })
+
+        let delimiter = '/'
+        if (format.includes('-')) delimiter = '-'
+        if (format.includes('.')) delimiter = '.'
+        if (format.includes('. ')) delimiter = '. '
+
+        const splits = format.split(delimiter)
+        const output: string[] = []
+
+        splits.forEach((part) => {
+            // replace all dots is needed for kr-KO, because it ends only with a dot and not with '. '
+            part = part.trim().toLowerCase().replaceAll('.', '')
+
+            switch (part) {
+                case 'dd':
+                    output.push(tmp?.getDate().toString().padStart(2, '0') ?? '00')
+                    break
+                case 'd':
+                    output.push(`${tmp?.getDate()}`)
+                    break
+                case 'mm':
+                    output.push((tmp?.getMonth() ?? 0).toString().padStart(2, '0'))
+                    break
+                case 'm':
+                    output.push(`${tmp?.getMonth() ?? 0}`)
+                    break
+                case 'yyyy':
+                    output.push(`${tmp?.getFullYear()}`)
+                    break
+                case 'yy':
+                    output.push(`${tmp?.getFullYear().toString().slice(-2)}`)
+                    break
+                default:
+                    output.push(part)
+            }
+        })
+
+        if (format.endsWith('.')) return output.join(delimiter) + '.'
+
+        return output.join(delimiter)
     }
 
     formatTime(value: number | Date, boolSeconds = false): string {

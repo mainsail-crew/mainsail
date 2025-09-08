@@ -125,10 +125,19 @@ export interface PrinterStateMiscellaneous {
     max_power?: number
 }
 
+export interface PrinterStateMiscellaneousSensor {
+    type: string
+    name: string
+    value: number
+    unit: string
+}
+
 export interface PrinterStateFilamentSensors {
+    type: string
     name: string
     enabled: boolean
     filament_detected: boolean
+    filament_diameter?: number
 }
 
 export interface PrinterStateBedMesh {

@@ -235,6 +235,13 @@ export const actions: ActionTree<FileState, RootState> = {
 
             case 'create_dir':
                 commit('setCreateDir', payload)
+
+                // Request directory details to update disk usage
+                Vue.$socket.emit(
+                    'server.files.get_directory',
+                    { path: `${payload.item.root}/${payload.item.path}` },
+                    { action: 'files/getDirectory' }
+                )
                 break
 
             case 'move_dir':
