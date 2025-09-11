@@ -1,12 +1,13 @@
-import Vue from 'vue'
 import Component from 'vue-class-component'
 import { W3C_COLORS } from '@/components/mixins/w3c'
 import type { FileStateGcodefile } from '@/store/files/types'
 import type { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import type { MmuGateDetails, SlicerToolDetails, MmuUnitDetails } from '@/store/mmu/types'
+import { Mixins } from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
 
 @Component({})
-export default class MmuMixin extends Vue {
+export default class MmuMixin extends Mixins(BaseMixin) {
     get hasMmu(): boolean {
         return !!this.$store.state.printer.mmu
     }
@@ -30,36 +31,40 @@ export default class MmuMixin extends Vue {
     /*
      * Select encoder properties
      */
+    get encoder() {
+        return this.mmu.encoder ?? {}
+    }
+
     get encoderPos(): number {
-        return Math.round(this.$store.state.printer.mmu?.encoder?.encoder_pos ?? 0)
+        return Math.round(this.encoder?.encoder_pos ?? 0)
     }
 
     get encoderEnabled(): boolean {
-        return this.$store.state.printer.mmu?.encoder?.enabled
+        return this.encoder?.enabled
     }
 
     get headroom(): number {
-        return this.$store.state.printer.mmu?.encoder?.headroom
+        return this.encoder?.headroom
     }
 
     get min_headroom(): number {
-        return this.$store.state.printer.mmu?.encoder?.min_headroom
+        return this.encoder?.min_headroom
     }
 
     get encoderDesiredHeadroom(): number {
-        return this.$store.state.printer.mmu?.encoder?.desired_headroom
+        return this.encoder?.desired_headroom
     }
 
     get encoderDetectionLength(): number {
-        return this.$store.state.printer.mmu?.encoder?.detection_length
+        return this.encoder?.detection_length
     }
 
     get encoderDetectionMode(): number {
-        return this.$store.state.printer.mmu?.encoder?.detection_mode
+        return this.encoder?.detection_mode
     }
 
     get encoderFlowRate(): number {
-        return this.$store.state.printer.mmu?.encoder?.flow_rate
+        return this.encoder?.flow_rate
     }
 
     /*
@@ -74,22 +79,22 @@ export default class MmuMixin extends Vue {
     }
 
     unitDetails(unitIndex: number): MmuUnitDetails {
-        const unitRef = `unit_${unitIndex}`
-        const ud: MmuUnitDetails = {
-            name: this.$store.state.printer.mmu_machine?.[unitRef]?.name ?? 'Unit',
-            vendor: this.$store.state.printer.mmu_machine?.[unitRef]?.vendor ?? 'Other',
-            version: this.$store.state.printer.mmu_machine?.[unitRef]?.version ?? '1.0',
-            numGates: this.$store.state.printer.mmu_machine?.[unitRef]?.num_gates ?? 1,
-            firstGate: this.$store.state.printer.mmu_machine?.[unitRef]?.first_gate ?? 0,
-            selectorType: this.$store.state.printer.mmu_machine?.[unitRef]?.selector_type ?? 'VirtualSelector',
-            variableRotationDistances:
-                this.$store.state.printer.mmu_machine?.[unitRef]?.variable_rotation_distances ?? true,
-            variableBowdenLengths: this.$store.state.printer.mmu_machine?.[unitRef]?.variable_bowden_lengths ?? true,
-            requireBowdenMove: this.$store.state.printer.mmu_machine?.[unitRef]?.require_bowden_move ?? true,
-            filamentAlwaysGripped: this.$store.state.printer.mmu_machine?.[unitRef]?.filament_always_gripped ?? false,
-            hasBypass: this.$store.state.printer.mmu_machine?.[unitRef]?.has_bypass ?? false,
-            multiGear: this.$store.state.printer.mmu_machine?.[unitRef]?.multi_gear ?? false,
-            environmentSensor: this.$store.state.printer.mmu_machine?.[unitRef]?.environment_sensor ?? '',
+        const unit = this.getMmuUnit(unitIndex)
+
+        return {
+            name: unit.name ?? 'Unit',
+            vendor: unit.vendor ?? 'Other',
+            version: unit.version ?? '1.0',
+            numGates: unit.num_gates ?? 1,
+            firstGate: unit.first_gate ?? 0,
+            selectorType: unit.selector_type ?? 'VirtualSelector',
+            variableRotationDistances: unit.variable_rotation_distances ?? true,
+            variableBowdenLengths: unit.variable_bowden_lengths ?? true,
+            requireBowdenMove: unit.require_bowden_move ?? true,
+            filamentAlwaysGripped: unit.filament_always_gripped ?? false,
+            hasBypass: unit.has_bypass ?? false,
+            multiGear: unit.multi_gear ?? false,
+            environmentSensor: unit.environment_sensor ?? '',
         }
     }
 
@@ -97,85 +102,73 @@ export default class MmuMixin extends Vue {
      * All Happy Hare mmu printer variables
      */
     get enabled(): boolean {
-        return this.$store.state.printer.mmu?.enabled ?? false
+        return this.mmu?.enabled ?? false
     }
 
     get numGates(): number {
-        return this.$store.state.printer.mmu?.num_gates ?? 0
+        return this.mmu?.num_gates ?? 0
     }
 
-    get printState(): string {
-        return this.$store.state.printer.mmu?.print_state
+    get mmuPrintState(): string {
+        return this.mmu?.print_state ?? ''
     }
 
     get isPrinting(): boolean {
-        return ['started', 'printing'].includes(this.$store.state.printer.mmu?.print_state)
-    }
-
-    get isInPrint(): boolean {
-        return ['printing', 'pause_locked', 'paused'].includes(this.$store.state.printer.mmu?.print_state)
-    }
-
-    get isMmuPaused(): boolean {
-        return ['pause_locked', 'paused'].includes(this.$store.state.printer.mmu?.print_state)
+        return ['started', 'printing'].includes(this.mmuPrintState)
     }
 
     get isMmuPausedAndLocked(): boolean {
-        return ['pause_locked'].includes(this.$store.state.printer.mmu?.print_state)
-    }
-
-    get isHomed(): boolean {
-        return this.$store.state.printer.mmu?.is_homed ?? false
+        return ['pause_locked'].includes(this.mmuPrintState)
     }
 
     readonly UNIT_UNKNOWN: number = -1
     get unit(): number {
-        return this.$store.state.printer.mmu?.unit ?? this.UNIT_UNKNOWN
+        return this.mmu?.unit ?? this.UNIT_UNKNOWN
     }
 
     readonly TOOL_GATE_UNKNOWN: number = -1
     readonly TOOL_GATE_BYPASS: number = -2
     get gate(): number {
-        return this.$store.state.printer.mmu?.gate ?? this.TOOL_GATE_UNKNOWN
+        return this.mmu?.gate ?? this.TOOL_GATE_UNKNOWN
     }
     get tool(): number {
-        return this.$store.state.printer.mmu?.tool ?? this.TOOL_GATE_UNKNOWN
+        return this.mmu?.tool ?? this.TOOL_GATE_UNKNOWN
     }
 
     get activeFilament(): object[] {
-        return this.$store.state.printer.mmu?.active_filament
+        return this.mmu?.active_filament
     }
 
     get numToolchanges(): number {
-        return this.$store.state.printer.mmu?.num_toolchanges ?? 0
+        return this.mmu?.num_toolchanges ?? 0
     }
 
     get lastTool(): number {
-        return this.$store.state.printer.mmu?.last_tool ?? this.TOOL_GATE_UNKNOWN
+        return this.mmu?.last_tool ?? this.TOOL_GATE_UNKNOWN
     }
 
     get nextTool(): number {
-        return this.$store.state.printer.mmu?.next_tool ?? this.TOOL_GATE_UNKNOWN
+        return this.mmu?.next_tool ?? this.TOOL_GATE_UNKNOWN
     }
 
     get toolchangePurgeVolue(): number {
-        return this.$store.state.printer.mmu?.toolchange_purge_volume ?? 0
+        return this.mmu?.toolchange_purge_volume ?? 0
     }
 
     get lastToolchange(): string {
-        return this.$store.state.printer.mmu?.last_toolchange ?? ''
+        return this.mmu?.last_toolchange ?? ''
     }
 
     get operation(): string {
-        return this.$store.state.printer.mmu?.operation ?? ''
+        return this.mmu?.operation ?? ''
     }
 
     get filament(): string {
-        return this.$store.state.printer.mmu?.filament ?? 'Unknown'
+        return this.mmu?.filament ?? 'Unknown'
     }
 
     get filamentPosition(): number {
-        return (this.$store.state.printer.mmu?.filament_position ?? 0).toFixed(1)
+        return (this.mmu?.filament_position ?? 0).toFixed(1)
     }
 
     readonly FILAMENT_POS_UNKNOWN: number = -1
@@ -191,26 +184,26 @@ export default class MmuMixin extends Vue {
     readonly FILAMENT_POS_IN_EXTRUDER: number = 9 // In extruder past toolhead sensor
     readonly FILAMENT_POS_LOADED: number = 10 // Homed to nozzle
     get filamentPos(): number {
-        return this.$store.state.printer.mmu?.filament_pos ?? this.FILAMENT_POS_UNKNOWN
+        return this.mmu?.filament_pos ?? this.FILAMENT_POS_UNKNOWN
     }
 
     readonly DIRECTION_LOAD: number = 1
     readonly DIRECTION_UNKNOWN: number = 0
     readonly DIRECTION_UNLOAD: number = -1
     get filamentDirection(): number {
-        return this.$store.state.printer.mmu?.filament_direction
+        return this.mmu?.filament_direction
     }
 
     get bowdenProgress(): number {
-        return this.$store.state.printer.mmu?.bowden_progress ?? -1
+        return this.mmu?.bowden_progress ?? -1
     }
 
     get ttgMap(): number[] {
-        return this.$store.state.printer.mmu?.ttg_map
+        return this.mmu?.ttg_map
     }
 
     get endlessSpoolGroups(): number[] {
-        return this.$store.state.printer.mmu?.endless_spool_groups
+        return this.mmu?.endless_spool_groups
     }
 
     readonly GATE_UNKNOWN: number = -1
@@ -218,31 +211,31 @@ export default class MmuMixin extends Vue {
     readonly GATE_AVAILABLE: number = 1 // Available to load from either buffer or spool
     readonly GATE_AVAILABLE_FROM_BUFFER: number = 2
     get gateStatus(): number[] {
-        return this.$store.state.printer.mmu?.gate_status
+        return this.mmu?.gate_status
     }
 
     get gateFilamentName(): string[] {
-        return this.$store.state.printer.mmu?.gate_filament_name
+        return this.mmu?.gate_filament_name
     }
 
     get gateMaterial(): string[] {
-        return this.$store.state.printer.mmu?.gate_material
+        return this.mmu?.gate_material
     }
 
     get gateColor(): string[] {
-        return this.$store.state.printer.mmu?.gate_color
+        return this.mmu?.gate_color
     }
 
     get gateTemperature(): number[] {
-        return this.$store.state.printer.mmu?.gate_temperature
+        return this.mmu?.gate_temperature
     }
 
     get gateSpoolId(): number[] {
-        return this.$store.state.printer.mmu?.gate_spool_id
+        return this.mmu?.gate_spool_id
     }
 
     get gateSpeedOverride(): number[] {
-        return this.$store.state.printer.mmu?.gate_speed_override
+        return this.mmu?.gate_speed_override
     }
 
     get gateMap(): MmuGateDetails[] {
@@ -308,7 +301,7 @@ export default class MmuMixin extends Vue {
     }
 
     get slicerToolMap(): object {
-        return this.$store.state.printer.mmu?.slicer_tool_map
+        return this.mmu?.slicer_tool_map
     }
 
     toolDetails(toolIndex: number, file?: FileStateGcodefile): SlicerToolDetails {
@@ -354,13 +347,11 @@ export default class MmuMixin extends Vue {
             td.inUse = referencedTools?.includes(toolIndex) ?? false
         } else {
             // Use Happy Hare's slicer_tool_map
-            td.color = this.formColorString(
-                this.$store.state.printer.mmu?.slicer_tool_map?.tools?.[toolIndex]?.color ?? ''
-            )
-            td.material = this.$store.state.printer.mmu?.slicer_tool_map?.tools?.[toolIndex]?.material || 'Unknown'
-            td.temp = this.$store.state.printer.mmu?.slicer_tool_map?.tools?.[toolIndex]?.temp ?? -1
-            td.name = this.$store.state.printer.mmu?.slicer_tool_map?.tools?.[toolIndex]?.name || 'Unknown'
-            td.inUse = this.$store.state.printer.mmu?.slicer_tool_map?.tools?.[toolIndex]?.in_use || false
+            td.color = this.formColorString(this.mmu?.slicer_tool_map?.tools?.[toolIndex]?.color ?? '')
+            td.material = this.mmu?.slicer_tool_map?.tools?.[toolIndex]?.material || 'Unknown'
+            td.temp = this.mmu?.slicer_tool_map?.tools?.[toolIndex]?.temp ?? -1
+            td.name = this.mmu?.slicer_tool_map?.tools?.[toolIndex]?.name || 'Unknown'
+            td.inUse = this.mmu?.slicer_tool_map?.tools?.[toolIndex]?.in_use || false
         }
         return td
     }
@@ -379,37 +370,37 @@ export default class MmuMixin extends Vue {
     readonly ACTION_CUTTING_FILAMENT: string = 'Cutting Filament'
     readonly ACTION_PURGING: string = 'Purging'
     get action(): string {
-        return this.$store.state.printer.mmu?.action
+        return this.mmu?.action
     }
 
     get hasBypass(): boolean {
-        return this.$store.state.printer.mmu?.has_bypass ?? false
+        return this.mmu?.has_bypass ?? false
     }
 
     get syncDrive(): boolean {
-        return this.$store.state.printer.mmu?.sync_drive
+        return this.mmu?.sync_drive
     }
 
-    //return this.$store.state.printer.mmu?.sync_feedback_state
+    //return this.mmu?.sync_feedback_state
 
     get syncFeedbackEnabled(): boolean {
-        return this.$store.state.printer.mmu?.sync_feedback_enabled
+        return this.mmu?.sync_feedback_enabled
     }
 
     get clogDetectionEnabled(): boolean {
-        return this.$store.state.printer.mmu?.clog_detection_enabled
+        return this.mmu?.clog_detection_enabled
     }
 
     get endlessSpoolEnabled(): boolean {
-        return this.$store.state.printer.mmu?.endless_spool_enabled
+        return this.mmu?.endless_spool_enabled
     }
 
     get reasonForPause(): string {
-        return this.$store.state.printer.mmu?.reason_for_pause ?? ''
+        return this.mmu?.reason_for_pause ?? ''
     }
 
     get extruderFilamentRemaining(): number {
-        return this.$store.state.printer.mmu?.extruder_filament_remaining
+        return this.mmu?.extruder_filament_remaining
     }
 
     readonly SPOOLMAN_OFF: string = 'off' // Spoolman disabled
@@ -417,28 +408,28 @@ export default class MmuMixin extends Vue {
     readonly SPOOLMAN_PUSH: string = 'push' // Local gatemap is the source or truth
     readonly SPOOLMAN_PULL: string = 'pull' // Spoolman db is the source of truth
     get spoolmanSupport(): string {
-        return this.$store.state.printer.mmu?.spoolman_support ?? 'off'
+        return this.mmu?.spoolman_support ?? 'off'
     }
 
     get sensors(): { [key: string]: boolean | null } {
-        return this.$store.state.printer.mmu?.sensors ?? []
+        return this.mmu?.sensors ?? []
     }
 
     readonly ESPOOLER_REWIND: string = 'rewind'
     readonly ESPOOLER_ASSIST: string = 'assist'
     get espoolerActive(): string {
-        return this.$store.state.printer.mmu?.espooler_active ?? ''
+        return this.mmu?.espooler_active ?? ''
     }
 
     /*
      * Optional printer variables based on selector type
      */
     get servo(): string {
-        return this.$store.state.printer.mmu?.servo ?? 'Unknown'
+        return this.mmu?.servo ?? 'Unknown'
     }
 
     get grip(): string {
-        return this.$store.state.printer.mmu?.grip ?? 'Unknown'
+        return this.mmu?.grip ?? 'Unknown'
     }
 
     /*
@@ -518,10 +509,9 @@ export default class MmuMixin extends Vue {
     }
 
     get canSend(): boolean {
-        const idleTimeout = this.$store.state.printer.idle_timeout?.state
-        return (
-            this.klipperReadyForGui && !['printing'].includes(this.printer_state) && !['Printing'].includes(idleTimeout)
-        )
+        const idleTimeout = this.$store.state.printer.idle_timeout?.state ?? ''
+
+        return this.klipperReadyForGui && this.printer_state !== 'printing' && idleTimeout !== 'Printing'
     }
 
     /*
