@@ -150,6 +150,10 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
     private svgLogo = null as string | null
 
+    get unit() {
+        return this.getMmuUnit(this.unitIndex) ?? {}
+    }
+
     get unitDisplayName(): string {
         const name = this.unitDetails(this.unitIndex).name
         return `#${this.unitIndex + 1} ${name}`

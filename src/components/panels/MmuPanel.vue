@@ -210,12 +210,12 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get statusText(): string {
-        if (['complete', 'error', 'cancelled', 'started'].includes(this.printState)) {
-            return capitalize(this.printState)
+        if (['complete', 'error', 'cancelled', 'started'].includes(this.mmuPrintState)) {
+            return capitalize(this.mmuPrintState)
         }
 
         if (this.action === 'Idle') {
-            if (this.printState === 'printing') {
+            if (this.mmuPrintState === 'printing') {
                 let str = `Printing (${this.numToolchanges}`
                 if (this.slicerToolMap.total_toolchanges) str += `/${this.slicerToolMap.total_toolchanges}`
                 str += ' swaps)'

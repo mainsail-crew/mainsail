@@ -11,8 +11,20 @@ export default class MmuMixin extends Vue {
         return !!this.$store.state.printer.mmu
     }
 
+    get mmu() {
+        return this.$store.state.printer.mmu ?? {}
+    }
+
     get hasEncoder(): boolean {
-        return !!this.$store.state.printer.mmu?.encoder
+        return !!this.mmu.encoder
+    }
+
+    get mmuMachine() {
+        return this.$store.state.printer.mmu_machine ?? {}
+    }
+
+    get mmuSettings() {
+        return this.$store.state.printer.configfile?.settings?.mmu ?? {}
     }
 
     /*
@@ -54,7 +66,11 @@ export default class MmuMixin extends Vue {
      * All Happy Hare mmu_machine printer variables
      */
     get numUnits(): number {
-        return this.$store.state.printer.mmu_machine?.num_units ?? 1
+        return this.mmuMachine.num_units ?? 1
+    }
+
+    getMmuUnit(unitIndex: number) {
+        return this.mmuMachine?.[`unit_${unitIndex}`] ?? {}
     }
 
     unitDetails(unitIndex: number): MmuUnitDetails {
@@ -75,7 +91,6 @@ export default class MmuMixin extends Vue {
             multiGear: this.$store.state.printer.mmu_machine?.[unitRef]?.multi_gear ?? false,
             environmentSensor: this.$store.state.printer.mmu_machine?.[unitRef]?.environment_sensor ?? '',
         }
-        return ud
     }
 
     /*
@@ -442,11 +457,6 @@ export default class MmuMixin extends Vue {
         return (this.$store.state.printer.configfile.config.mmu?.extruder_force_homing ?? 0) === 1
     }
 
-    readonly T_MACRO_COLOR_OPTIONS: string[] = ['slicer', 'allgates', 'gatemap', 'off']
-    get configTMacroColor(): string {
-        return this.$store.state.printer.configfile.config.mmu?.t_macro_color ?? 'slicer'
-    }
-
     get varsCalibrationBowdenLengths(): number[] {
         return this.$store.state.printer.save_variables?.variables?.mmu_calibration_bowden_lengths
     }
@@ -459,28 +469,6 @@ export default class MmuMixin extends Vue {
         const color = this.$store.state.printer.save_variables?.variables?.mmu_state_filament_remaining_color ?? ''
         if (color) return this.formColorString(color)
         return color
-    }
-
-    get macroVarsLedEnable(): boolean {
-        return this.$store.state.printer['gcode_macro _MMU_LED_VARS']?.led_enable ?? false
-    }
-
-    get macroVarsLedAnimation(): boolean {
-        return this.$store.state.printer['gcode_macro _MMU_LED_VARS']?.led_animation ?? true
-    }
-
-    get macroVarsDefaultEntryEffect(): string {
-        return this.$store.state.printer['gcode_macro _MMU_LED_VARS']?.default_entry_effect ?? 'off'
-    }
-
-    get macroVarsDefaultExitEffect(): string {
-        return this.$store.state.printer['gcode_macro _MMU_LED_VARS']?.default_exit_effect ?? 'off'
-    }
-
-    readonly LED_OPTIONS: string[] = ['off', 'gate_status', 'filament_color', 'slicer_color']
-    readonly LED_STATUS_OPTIONS: string[] = [...this.LED_OPTIONS, 'on']
-    get macroVarsDefaultStatusEffect(): string {
-        return this.$store.state.printer['gcode_macro _MMU_LED_VARS']?.default_status_effect ?? 'off'
     }
 
     readonly AUTOMAP_OPTIONS: string[] = ['none', 'filament_name', 'material', 'color', 'closest_color', 'spool_id']

@@ -370,3 +370,14 @@ export function filamentTextColor(hexColor: string): string {
 
     return '#ffffff'
 }
+
+export function toBoolean(val: unknown): boolean {
+    if (typeof val === 'boolean') return val
+    if (typeof val === 'number') return val !== 0
+    if (typeof val === 'string') {
+        const s = val.trim().toLowerCase()
+        if (s === 'true' || s === '1' || s === 'yes' || s === 'y') return true
+        if (s === 'false' || s === '0' || s === 'no' || s === 'n') return false
+    }
+    return Boolean(val)
+}
