@@ -130,7 +130,7 @@
         </panel>
         <mmu-recover-state-dialog :show-dialog="showRecoverStateDialog" @close="showRecoverStateDialog = false" />
         <mmu-edit-ttg-map-dialog :show-dialog="showEditTtgMapDialog" @close="showEditTtgMapDialog = false" />
-        <mmu-edit-gate-map-dialog :show-dialog="showEditGateMapDialog" @close="showEditGateMapDialog = false" />
+        <mmu-edit-gate-map-dialog v-model="showEditGateMapDialog" />
         <mmu-maintenance-dialog :show-dialog="showMaintenanceDialog" @close="showMaintenanceDialog = false" />
     </div>
 </template>

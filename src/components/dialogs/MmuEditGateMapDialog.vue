@@ -260,7 +260,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Mixins, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
 import Panel from '@/components/ui/Panel.vue'
@@ -283,7 +283,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     mdiPlus = mdiPlus
     mdiAdjust = mdiAdjust
 
-    @Prop({ required: true }) declare readonly showDialog: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
     // Gate being edited
     get editGateSelected(): number {
@@ -557,9 +557,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     close() {
-        this.$store.commit('mmuGateMapEditor/clearMap')
-        this.$store.commit('mmuGateMapEditor/setSelectedGate', this.TOOL_GATE_UNKNOWN)
-        this.$emit('close')
+        this.showDialog = false
     }
 
     commit() {
