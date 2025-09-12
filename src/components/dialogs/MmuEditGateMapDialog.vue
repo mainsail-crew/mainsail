@@ -30,15 +30,12 @@
             <v-divider />
 
             <!-- LOWER SECTION -->
-            <v-card-text class="px-4 pb-4 min-height-420">
+            <v-card-text class="px-4 pb-4 min-height-420 position-relative">
                 <transition name="fade">
                     <div v-if="editGateSelected === TOOL_GATE_UNKNOWN" class="overlay-text">
                         {{ $t('Panels.MmuPanel.GateMapDialog.SelectGate') }}
                     </div>
-                </transition>
-
-                <transition name="fade">
-                    <v-container v-if="editGateSelected !== TOOL_GATE_UNKNOWN">
+                    <v-container v-else>
                         <v-row class="ms-0 me-0 mb-4">
                             <v-col class="d-flex justify-start align-center pa-0 small-font text--secondary">
                                 <div v-if="spoolmanSupport === SPOOLMAN_PULL">
@@ -641,8 +638,10 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
 .overlay-text {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
