@@ -6,42 +6,24 @@
             card-class="mmu-edit-ttg-map-dialog"
             :margin-bottom="false">
             <template #buttons>
+                <v-btn text tile :loading="loadings.includes('mmu_ttg_map')" @click="resetGateMap()">
+                    {{ $t('Panels.MmuPanel.GateMapDialog.Reset') }}
+                </v-btn>
                 <v-btn icon tile @click="close">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
 
             <!-- UPPER SECTION -->
-            <v-card-subtitle v-if="editGateMap.length > 0">
-                <v-container fluid>
-                    <!-- HEADER -->
-                    <v-row>
-                        <v-col cols="8" class="d-flex justify-start align-center pa-0">
-                            {{ $t('Panels.MmuPanel.GateMapDialog.SelectGate') }}
-                        </v-col>
-                        <v-col cols="4" class="d-flex justify-end pa-0">
-                            <v-btn
-                                small
-                                color="secondary"
-                                class="small-font"
-                                :loading="loadings.includes('mmu_ttg_map')"
-                                @click="resetGateMap()">
-                                {{ $t('Panels.MmuPanel.GateMapDialog.Reset') }}
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-
-                    <!-- DISPLAY GATES -->
-                    <v-row align="start">
-                        <v-col class="d-flex justify-start align-center pa-0">
-                            <mmu-machine
-                                :edit-gate-map="editGateMap"
-                                :edit-gate-selected="editGateSelected"
-                                @select-gate="selectGate" />
-                        </v-col>
-                    </v-row>
-                </v-container>
-            </v-card-subtitle>
+            <v-card-subtitle class="pb-0">{{ $t('Panels.MmuPanel.GateMapDialog.SelectGate') }}</v-card-subtitle>
+            <v-row v-if="editGateMap.length > 0" align="start">
+                <v-col>
+                    <mmu-machine
+                        :edit-gate-map="editGateMap"
+                        :edit-gate-selected="editGateSelected"
+                        @select-gate="selectGate" />
+                </v-col>
+            </v-row>
 
             <v-divider />
 
@@ -320,6 +302,8 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     // Whole gate map
     get editGateMap(): MmuGateDetails[] {
+        window.console.log('Gate map:', this.$store.getters['mmuGateMapEditor/gateMap'])
+
         return this.$store.getters['mmuGateMapEditor/gateMap']
     }
 
