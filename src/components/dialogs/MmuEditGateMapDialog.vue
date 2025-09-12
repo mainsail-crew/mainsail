@@ -302,8 +302,6 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     // Whole gate map
     get editGateMap(): MmuGateDetails[] {
-        window.console.log('Gate map:', this.$store.getters['mmuGateMapEditor/gateMap'])
-
         return this.$store.getters['mmuGateMapEditor/gateMap']
     }
 
