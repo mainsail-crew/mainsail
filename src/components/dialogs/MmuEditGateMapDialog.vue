@@ -30,212 +30,209 @@
             <v-divider />
 
             <!-- LOWER SECTION -->
-            <v-card-text class="px-4 pb-4">
-                <div class="fixed-area">
-                    <transition name="fade">
-                        <div v-if="editGateSelected === TOOL_GATE_UNKNOWN" class="overlay-text">
-                            {{ $t('Panels.MmuPanel.GateMapDialog.SelectGate') }}
-                        </div>
-                    </transition>
+            <v-card-text class="px-4 pb-4 min-height-420">
+                <transition name="fade">
+                    <div v-if="editGateSelected === TOOL_GATE_UNKNOWN" class="overlay-text">
+                        {{ $t('Panels.MmuPanel.GateMapDialog.SelectGate') }}
+                    </div>
+                </transition>
 
-                    <transition name="fade">
-                        <v-container v-if="editGateSelected !== TOOL_GATE_UNKNOWN">
-                            <v-row class="ms-0 me-0 mb-4">
-                                <v-col class="d-flex justify-start align-center pa-0 small-font text--secondary">
-                                    <div v-if="spoolmanSupport === SPOOLMAN_PULL">
-                                        {{
-                                            $t('Panels.MmuPanel.GateMapDialog.SpoolmanPull', {
-                                                mode: spoolmanSupport,
-                                            })
-                                        }}
-                                    </div>
-                                    <div v-else-if="spoolmanSupport === SPOOLMAN_OFF">
-                                        {{
-                                            $t('Panels.MmuPanel.GateMapDialog.SpoolmanOff', {
-                                                mode: spoolmanSupport,
-                                            })
-                                        }}
-                                    </div>
-                                    <div v-else>
-                                        {{
-                                            $t('Panels.MmuPanel.GateMapDialog.SpoolmanOther', {
-                                                mode: spoolmanSupport,
-                                            })
-                                        }}
-                                    </div>
-                                </v-col>
-                            </v-row>
+                <transition name="fade">
+                    <v-container v-if="editGateSelected !== TOOL_GATE_UNKNOWN">
+                        <v-row class="ms-0 me-0 mb-4">
+                            <v-col class="d-flex justify-start align-center pa-0 small-font text--secondary">
+                                <div v-if="spoolmanSupport === SPOOLMAN_PULL">
+                                    {{
+                                        $t('Panels.MmuPanel.GateMapDialog.SpoolmanPull', {
+                                            mode: spoolmanSupport,
+                                        })
+                                    }}
+                                </div>
+                                <div v-else-if="spoolmanSupport === SPOOLMAN_OFF">
+                                    {{
+                                        $t('Panels.MmuPanel.GateMapDialog.SpoolmanOff', {
+                                            mode: spoolmanSupport,
+                                        })
+                                    }}
+                                </div>
+                                <div v-else>
+                                    {{
+                                        $t('Panels.MmuPanel.GateMapDialog.SpoolmanOther', {
+                                            mode: spoolmanSupport,
+                                        })
+                                    }}
+                                </div>
+                            </v-col>
+                        </v-row>
 
-                            <!-- GATE DETAILS-->
-                            <v-row>
-                                <v-col cols="12" md="6" class="d-flex flex-column justify-start align-left pa-0 pt-3">
-                                    <v-row>
-                                        <v-col cols="6" class="pt-5 ps-6">
-                                            <v-switch
-                                                v-model="useSpoolman"
-                                                :label="$t('Panels.MmuPanel.GateMapDialog.Spoolman')"
-                                                :disabled="
-                                                    spoolmanSupport === SPOOLMAN_PULL ||
-                                                    spoolmanSupport === SPOOLMAN_OFF
-                                                "
-                                                hide-details
-                                                class="short-switch" />
-                                        </v-col>
-                                        <v-col cols="6">
+                        <!-- GATE DETAILS-->
+                        <v-row>
+                            <v-col cols="12" md="6" class="d-flex flex-column justify-start align-left pa-0 pt-3">
+                                <v-row>
+                                    <v-col cols="6" class="pt-5 ps-6">
+                                        <v-switch
+                                            v-model="useSpoolman"
+                                            :label="$t('Panels.MmuPanel.GateMapDialog.Spoolman')"
+                                            :disabled="
+                                                spoolmanSupport === SPOOLMAN_PULL || spoolmanSupport === SPOOLMAN_OFF
+                                            "
+                                            hide-details
+                                            class="short-switch" />
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <v-text-field
+                                            v-model="spoolId"
+                                            type="number"
+                                            :label="$t('Panels.MmuPanel.GateMapDialog.SpoolmanId')"
+                                            :rules="spoolIdRules()"
+                                            :disabled="disableSpoolId()"
+                                            :hide-spin-buttons="disableSpoolId()"
+                                            outlined
+                                            dense
+                                            @blur="adjustSpoolId" />
+                                    </v-col>
+                                </v-row>
+
+                                <v-row>
+                                    <v-col cols="12" class="ps-6">
+                                        <v-text-field
+                                            v-model.trim="editGateSelectedDetails.filamentName"
+                                            :label="$t('Panels.MmuPanel.GateMapDialog.FilamentName')"
+                                            :disabled="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
+                                            outlined
+                                            dense
+                                            clearable
+                                            hide-details
+                                            @blur="adjustName" />
+                                    </v-col>
+                                </v-row>
+
+                                <v-row>
+                                    <v-col cols="6" class="ps-6">
+                                        <v-text-field
+                                            v-model.trim="editGateSelectedDetails.material"
+                                            :label="$t('Panels.MmuPanel.GateMapDialog.Material')"
+                                            :disabled="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
+                                            outlined
+                                            dense
+                                            clearable
+                                            hide-details
+                                            @blur="adjustMaterial" />
+                                    </v-col>
+                                    <v-col cols="2"></v-col>
+                                    <v-col cols="4">
+                                        <v-text-field
+                                            v-model="editGateSelectedDetails.temperature"
+                                            type="number"
+                                            :label="$t('Panels.MmuPanel.GateMapDialog.Temperature')"
+                                            :disabled="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
+                                            :hide-spin-buttons="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
+                                            suffix="°C"
+                                            :rules="temperatureRules()"
+                                            outlined
+                                            dense
+                                            hide-details
+                                            @blur="adjustTemperature" />
+                                    </v-col>
+                                </v-row>
+
+                                <v-row class="pt-3 pb-3 ps-3">
+                                    <v-divider />
+                                </v-row>
+
+                                <v-row>
+                                    <v-col cols="12" class="ps-6">
+                                        <v-switch
+                                            v-model="selectedGateStatus"
+                                            :label="selectedGateStatusLabel"
+                                            hide-details
+                                            class="short-switch" />
+                                    </v-col>
+                                </v-row>
+
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-subheader class="speed-slider-subheader ps-6 pe-1">
+                                            <v-icon small class="mr-2">{{ mdiSpeedometer }}</v-icon>
+                                            <span>{{ $t('Panels.MmuPanel.GateMapDialog.LoadSpeed') }}</span>
+                                            <v-spacer></v-spacer>
                                             <v-text-field
-                                                v-model="spoolId"
+                                                v-model="editGateSelectedDetails.speedOverride"
                                                 type="number"
-                                                :label="$t('Panels.MmuPanel.GateMapDialog.SpoolmanId')"
-                                                :rules="spoolIdRules()"
-                                                :disabled="disableSpoolId()"
-                                                :hide-spin-buttons="disableSpoolId()"
+                                                suffix="%"
+                                                hide-spin-buttons
+                                                hide-details
                                                 outlined
                                                 dense
-                                                @blur="adjustSpoolId" />
-                                        </v-col>
-                                    </v-row>
+                                                readonly
+                                                class="_slider-input d-flex align-center pt-1">
+                                                <template #append>
+                                                    <v-icon small @click="resetSpeed">{{ mdiRestart }}</v-icon>
+                                                </template>
+                                            </v-text-field>
+                                        </v-subheader>
 
-                                    <v-row>
-                                        <v-col cols="12" class="ps-6">
-                                            <v-text-field
-                                                v-model.trim="editGateSelectedDetails.filamentName"
-                                                :label="$t('Panels.MmuPanel.GateMapDialog.FilamentName')"
-                                                :disabled="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
-                                                outlined
-                                                dense
-                                                clearable
-                                                hide-details
-                                                @blur="adjustName" />
-                                        </v-col>
-                                    </v-row>
+                                        <v-card-text class="pb-0 pe-0 pt-1 d-flex align-center">
+                                            <v-slider
+                                                v-model="editGateSelectedDetails.speedOverride"
+                                                :min="10"
+                                                :max="150"
+                                                hide-details>
+                                                <template #prepend>
+                                                    <v-icon @click="decrementSpeed">{{ mdiMinus }}</v-icon>
+                                                </template>
+                                                <template #append>
+                                                    <v-icon @click="incrementSpeed">{{ mdiPlus }}</v-icon>
+                                                </template>
+                                            </v-slider>
+                                        </v-card-text>
+                                    </v-col>
+                                </v-row>
 
-                                    <v-row>
-                                        <v-col cols="6" class="ps-6">
-                                            <v-text-field
-                                                v-model.trim="editGateSelectedDetails.material"
-                                                :label="$t('Panels.MmuPanel.GateMapDialog.Material')"
-                                                :disabled="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
-                                                outlined
-                                                dense
-                                                clearable
-                                                hide-details
-                                                @blur="adjustMaterial" />
-                                        </v-col>
-                                        <v-col cols="2"></v-col>
-                                        <v-col cols="4">
-                                            <v-text-field
-                                                v-model="editGateSelectedDetails.temperature"
-                                                type="number"
-                                                :label="$t('Panels.MmuPanel.GateMapDialog.Temperature')"
-                                                :disabled="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
-                                                :hide-spin-buttons="useSpoolman || spoolmanSupport === SPOOLMAN_PULL"
-                                                suffix="°C"
-                                                :rules="temperatureRules()"
-                                                outlined
-                                                dense
-                                                hide-details
-                                                @blur="adjustTemperature" />
-                                        </v-col>
-                                    </v-row>
+                                <v-row>
+                                    <v-spacer />
+                                </v-row>
+                            </v-col>
 
-                                    <v-row class="pt-3 pb-3 ps-3">
-                                        <v-divider />
-                                    </v-row>
-
-                                    <v-row>
-                                        <v-col cols="12" class="ps-6">
-                                            <v-switch
-                                                v-model="selectedGateStatus"
-                                                :label="selectedGateStatusLabel"
-                                                hide-details
-                                                class="short-switch" />
-                                        </v-col>
-                                    </v-row>
-
-                                    <v-row>
-                                        <v-col cols="12">
-                                            <v-subheader class="speed-slider-subheader ps-6 pe-1">
-                                                <v-icon small class="mr-2">{{ mdiSpeedometer }}</v-icon>
-                                                <span>{{ $t('Panels.MmuPanel.GateMapDialog.LoadSpeed') }}</span>
-                                                <v-spacer></v-spacer>
-                                                <v-text-field
-                                                    v-model="editGateSelectedDetails.speedOverride"
-                                                    type="number"
-                                                    suffix="%"
-                                                    hide-spin-buttons
-                                                    hide-details
-                                                    outlined
-                                                    dense
-                                                    readonly
-                                                    class="_slider-input d-flex align-center pt-1">
-                                                    <template #append>
-                                                        <v-icon small @click="resetSpeed">{{ mdiRestart }}</v-icon>
-                                                    </template>
-                                                </v-text-field>
-                                            </v-subheader>
-
-                                            <v-card-text class="pb-0 pe-0 pt-1 d-flex align-center">
-                                                <v-slider
-                                                    v-model="editGateSelectedDetails.speedOverride"
-                                                    :min="10"
-                                                    :max="150"
-                                                    hide-details>
-                                                    <template #prepend>
-                                                        <v-icon @click="decrementSpeed">{{ mdiMinus }}</v-icon>
-                                                    </template>
-                                                    <template #append>
-                                                        <v-icon @click="incrementSpeed">{{ mdiPlus }}</v-icon>
-                                                    </template>
-                                                </v-slider>
-                                            </v-card-text>
-                                        </v-col>
-                                    </v-row>
-
-                                    <v-row>
-                                        <v-spacer />
-                                    </v-row>
-                                </v-col>
-
-                                <v-col cols="12" md="6" class="d-flex justify-center">
-                                    <div v-if="!useSpoolman">
-                                        <v-color-picker
-                                            v-model="editGateSelectedDetails.color"
-                                            hide-inputs
-                                            swatches-max-height="120px"
-                                            show-swatches
-                                            mode="hexa"
-                                            show-alpha
-                                            hide-opacity="false" />
-                                    </div>
-                                    <div v-else>
-                                        <div :class="!spoolIdExists ? 'no-spool' : ''">
-                                            <spool-icon
-                                                height="120px"
-                                                width="100%"
-                                                :color="spoolmanColor"
-                                                @click-spool="showSpoolmanSpoolChooserDialog = true" />
-                                            <div class="pt-4">{{ spoolmanLastUsed }}</div>
-                                            <div>
-                                                <strong>{{ spoolmanRemainingWeight }}</strong>
-                                                <small class="ml-1">/ {{ spoolmanTotalWeight }}</small>
-                                            </div>
-                                        </div>
-                                        <div style="padding-top: 12px">
-                                            <v-btn
-                                                block
-                                                color="secondary"
-                                                class="spoolman-btn"
-                                                @click="showSpoolmanSpoolChooserDialog = true">
-                                                <v-icon>{{ mdiAdjust }}</v-icon>
-                                                {{ $t('Panels.MmuPanel.GateMapDialog.ChooseSpool') }}
-                                            </v-btn>
+                            <v-col cols="12" md="6" class="d-flex justify-center">
+                                <div v-if="!useSpoolman">
+                                    <v-color-picker
+                                        v-model="editGateSelectedDetails.color"
+                                        hide-inputs
+                                        swatches-max-height="120px"
+                                        show-swatches
+                                        mode="hexa"
+                                        show-alpha
+                                        hide-opacity="false" />
+                                </div>
+                                <div v-else>
+                                    <div :class="!spoolIdExists ? 'no-spool' : ''">
+                                        <spool-icon
+                                            height="120px"
+                                            width="100%"
+                                            :color="spoolmanColor"
+                                            @click-spool="showSpoolmanSpoolChooserDialog = true" />
+                                        <div class="pt-4">{{ spoolmanLastUsed }}</div>
+                                        <div>
+                                            <strong>{{ spoolmanRemainingWeight }}</strong>
+                                            <small class="ml-1">/ {{ spoolmanTotalWeight }}</small>
                                         </div>
                                     </div>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </transition>
-                </div>
+                                    <div style="padding-top: 12px">
+                                        <v-btn
+                                            block
+                                            color="secondary"
+                                            class="spoolman-btn"
+                                            @click="showSpoolmanSpoolChooserDialog = true">
+                                            <v-icon>{{ mdiAdjust }}</v-icon>
+                                            {{ $t('Panels.MmuPanel.GateMapDialog.ChooseSpool') }}
+                                        </v-btn>
+                                    </div>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </transition>
             </v-card-text>
 
             <v-card-actions>
@@ -615,6 +612,10 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 </script>
 
 <style scoped>
+.min-height-420 {
+    min-height: 420px;
+}
+
 .small-font {
     font-size: 0.8em;
 }
