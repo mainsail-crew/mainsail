@@ -15,15 +15,17 @@
             </template>
 
             <!-- UPPER SECTION -->
-            <v-card-subtitle class="pb-0">{{ $t('Panels.MmuPanel.GateMapDialog.SelectGate') }}</v-card-subtitle>
-            <v-row v-if="editGateMap.length > 0" align="start">
-                <v-col>
-                    <mmu-machine
-                        :edit-gate-map="editGateMap"
-                        :edit-gate-selected="editGateSelected"
-                        @select-gate="selectGate" />
-                </v-col>
-            </v-row>
+            <v-card-text v-if="editGateMap.length > 0">
+                <v-card-subtitle class="py-0">{{ $t('Panels.MmuPanel.GateMapDialog.SelectGate') }}</v-card-subtitle>
+                <v-row>
+                    <v-col>
+                        <mmu-machine
+                            :edit-gate-map="editGateMap"
+                            :edit-gate-selected="editGateSelected"
+                            @select-gate="selectGate" />
+                    </v-col>
+                </v-row>
+            </v-card-text>
 
             <v-divider />
 
