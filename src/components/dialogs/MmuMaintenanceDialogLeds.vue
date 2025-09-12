@@ -57,6 +57,12 @@ export default class MmuMaintenanceStateDialogLeds extends Mixins(BaseMixin, Mmu
         return this.$store.state.printer[key] ?? {}
     }
 
+    get mmuLedsSettings() {
+        const key = `mmu_leds ${this.unitName}`
+
+        return this.$store.state.printer.configfile?.settings?.[key] ?? {}
+    }
+
     get ledsEnable() {
         return toBoolean(this.mmuLeds.enabled ?? 'False')
     }
@@ -74,7 +80,7 @@ export default class MmuMaintenanceStateDialogLeds extends Mixins(BaseMixin, Mmu
     }
 
     get existsEntryLed() {
-        const pins = this.mmuSettings?.entry_leds ?? ''
+        const pins = this.mmuLedsSettings?.entry_leds ?? ''
 
         return pins !== ''
     }
@@ -88,13 +94,13 @@ export default class MmuMaintenanceStateDialogLeds extends Mixins(BaseMixin, Mmu
     }
 
     get existsExitLed() {
-        const pins = this.mmuSettings?.exit_leds ?? ''
+        const pins = this.mmuLedsSettings?.exit_leds ?? ''
 
         return pins !== ''
     }
 
     get exitEffect(): string {
-        return this.mmuLeds.exit_effect ?? 'off'
+        return this.mmuLedsSettings.exit_effect ?? 'off'
     }
 
     set exitEffect(newVal: string) {
@@ -108,7 +114,7 @@ export default class MmuMaintenanceStateDialogLeds extends Mixins(BaseMixin, Mmu
     }
 
     get statusEffect(): string {
-        return this.mmuLeds.status_effect ?? 'off'
+        return this.mmuLedsSettings.status_effect ?? 'off'
     }
 
     set statusEffect(newVal: string) {
