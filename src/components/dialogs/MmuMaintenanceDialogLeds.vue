@@ -11,18 +11,21 @@
                 class="ml-5" />
         </settings-row>
         <settings-row
+            v-if="existsEntryLed"
             :title="$t('Panels.MmuPanel.MmuMaintenanceDialog.EntryLeds')"
             :sub-title="$t('Panels.MmuPanel.MmuMaintenanceDialog.EntryLedsDescription')"
             dense>
             <v-select v-model="entryEffect" :items="options" hide-details outlined dense />
         </settings-row>
         <settings-row
+            v-if="existsExitLed"
             :title="$t('Panels.MmuPanel.MmuMaintenanceDialog.ExitLeds')"
             :sub-title="$t('Panels.MmuPanel.MmuMaintenanceDialog.ExitLedsDescription')"
             dense>
             <v-select v-model="exitEffect" :items="options" hide-details outlined dense />
         </settings-row>
         <settings-row
+            v-if="existsStatusLed"
             :title="$t('Panels.MmuPanel.MmuMaintenanceDialog.StatusLeds')"
             :sub-title="$t('Panels.MmuPanel.MmuMaintenanceDialog.StatusLedsDescription')"
             dense>
@@ -70,6 +73,12 @@ export default class MmuMaintenanceStateDialogLeds extends Mixins(BaseMixin, Mmu
         this.updateLedSettings('ANIMATION', newVal ? '1' : '0')
     }
 
+    get existsEntryLed() {
+        const pins = this.mmuSettings?.entry_leds ?? ''
+
+        return pins !== ''
+    }
+
     get entryEffect(): string {
         return this.mmuLeds.entry_effect ?? 'off'
     }
@@ -78,12 +87,24 @@ export default class MmuMaintenanceStateDialogLeds extends Mixins(BaseMixin, Mmu
         this.updateLedSettings('ENTRY_EFFECT', newVal)
     }
 
+    get existsExitLed() {
+        const pins = this.mmuSettings?.exit_leds ?? ''
+
+        return pins !== ''
+    }
+
     get exitEffect(): string {
         return this.mmuLeds.exit_effect ?? 'off'
     }
 
     set exitEffect(newVal: string) {
         this.updateLedSettings('EXIT_EFFECT', newVal)
+    }
+
+    get existsStatusLed() {
+        const pins = this.mmuSettings?.status_leds ?? ''
+
+        return pins !== ''
     }
 
     get statusEffect(): string {
