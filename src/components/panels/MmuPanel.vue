@@ -1,4 +1,3 @@
-<>
 <template>
     <div v-if='hasMmu'>
         <panel :icon='mdiMulticast' :title='title' :collapsible='true' card-class='mmu-panel'>
