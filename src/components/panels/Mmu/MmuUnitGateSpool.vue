@@ -165,9 +165,7 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get filamentColor() {
-        const color = this.mmu?.gate_color?.[this.gateIndex] || NO_FILAMENT_COLOR
-
-        return color.slice(0, 1) === '#' ? color : `#${color}`
+        return this.formColorString(this.mmu?.gate_color?.[this.gateIndex] ?? null)
     }
 
     get filamentMaterial() {

@@ -316,7 +316,7 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
     }
 
     get filamentColor() {
-        return `#${this.mmu?.gate_color[this.selectedGate] ?? 'FFFFFF'}`
+        return this.formColorString(this.mmu?.gate_color[this.selectedGate] ?? null)
     }
 
     set filamentColor(newValue: string) {

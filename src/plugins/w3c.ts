@@ -1,4 +1,4 @@
-export const W3C_COLORS = [
+export const W3C_COLORS: readonly { name: string; hex: string }[] = Object.freeze([
     { name: 'aliceblue', hex: '#F0F8FF' },
     { name: 'antiquewhite', hex: '#FAEBD7' },
     { name: 'aqua', hex: '#00FFFF' },
@@ -146,4 +146,4 @@ export const W3C_COLORS = [
     { name: 'whitesmoke', hex: '#F5F5F5' },
     { name: 'yellow', hex: '#FFFF00' },
     { name: 'yellowgreen', hex: '#9ACD32' },
-]
+])
