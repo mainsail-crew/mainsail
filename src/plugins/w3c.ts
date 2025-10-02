@@ -1,4 +1,4 @@
-export const W3C_COLORS: ReadonlyArray<[string, string]> = Object.freeze([
+export const W3C_COLORS = [
     { name: 'aliceblue', hex: '#F0F8FF' },
     { name: 'antiquewhite', hex: '#FAEBD7' },
     { name: 'aqua', hex: '#00FFFF' },
@@ -146,4 +146,4 @@ export const W3C_COLORS: ReadonlyArray<[string, string]> = Object.freeze([
     { name: 'whitesmoke', hex: '#F5F5F5' },
     { name: 'yellow', hex: '#FFFF00' },
     { name: 'yellowgreen', hex: '#9ACD32' },
-])
+]

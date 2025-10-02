@@ -101,7 +101,7 @@ export default class MmuMaintenanceStateDialogUnit extends Mixins(BaseMixin, Mmu
     @Prop({ required: true }) readonly unitIndex!: number
 
     get unit() {
-        return this.getMmuUnit(this.unitIndex)
+        return this.getMmuMachineUnit(this.unitIndex)
     }
 
     get name() {

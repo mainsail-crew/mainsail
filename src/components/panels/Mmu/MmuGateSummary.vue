@@ -19,6 +19,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
+import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
 @Component({})
 export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
@@ -27,7 +28,7 @@ export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: false, default: true }) readonly showDetails!: boolean
     @Prop({ required: false, default: true }) readonly showGate!: boolean
 
-    get details(): MmuGateDetails {
+    get details() {
         return this.gateDetails(this.gateIndex)
     }
 
@@ -73,15 +74,19 @@ export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
 
     // Only available with Spoolman...
 
+    get spoolmanSpool() {
+        const spools = this.$store.state.server.spoolman.spools ?? []
+
+        return spools.find((s: ServerSpoolmanStateSpool) => s.id === this.details.spoolId) ?? null
+    }
+
     get vendorText() {
-        const spoolmanSpool = this.spoolmanSpool(this.details.spoolId)
-        return spoolmanSpool?.filament?.vendor?.name ?? 'Unknown'
+        return this.spoolmanSpool?.filament?.vendor?.name ?? 'Unknown'
     }
 
     get weightText() {
-        const spoolmanSpool = this.spoolmanSpool(this.details.spoolId)
-        const remaining = spoolmanSpool?.remaining_weight ?? null
-        const total = spoolmanSpool?.initial_weight ?? spoolmanSpool?.filament?.weight ?? null
+        const remaining = this.spoolmanSpool?.remaining_weight ?? null
+        const total = this.spoolmanSpool?.initial_weight ?? this.spoolmanSpool?.filament?.weight ?? null
         if (remaining === null || total === null) return null
 
         if (total >= 1000) {
@@ -95,8 +100,7 @@ export default class MmuGateSummary extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get lengthText() {
-        const spoolmanSpool = this.spoolmanSpool(this.details.spoolId)
-        let remaining = spoolmanSpool?.remaining_length ?? null
+        let remaining = this.spoolmanSpool?.remaining_length ?? null
         if (remaining === null) return null
         return `${Math.round(remaining / 1000)}m`
     }

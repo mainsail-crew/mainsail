@@ -67,11 +67,11 @@
                 !
             </text>
             <use
-                v-if="espoolerActive === ESPOOLER_REWIND && gateIndex === gate"
+                v-if="espoolerActive === 'rewind' && gateIndex === gate"
                 href="#espool"
                 transform="translate(225,0) rotate(90) scale(2,2)" />
             <use
-                v-if="espoolerActive === ESPOOLER_ASSIST && gateIndex === gate"
+                v-if="espoolerActive === 'assist' && gateIndex === gate"
                 href="#espool"
                 transform="translate(225,500) rotate(270) scale(2,-2)" />
         </g>

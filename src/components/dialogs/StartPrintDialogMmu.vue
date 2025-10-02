@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin from '@/components/mixins/mmu'
+import MmuMixin, { TOOL_GATE_BYPASS } from '@/components/mixins/mmu'
 import { FileStateGcodefile } from '@/store/files/types'
 import { mdiStateMachine } from '@mdi/js'
 
@@ -36,7 +36,7 @@ export default class StartPrintDialogMmu extends Mixins(BaseMixin, MmuMixin) {
     get summary() {
         const referencedTools = this.file.referenced_tools ?? ''
         const numTools = referencedTools.length
-        if (numTools <= 1 && this.gate !== this.TOOL_GATE_BYPASS) {
+        if (numTools <= 1 && this.gate !== TOOL_GATE_BYPASS) {
             return this.$t('Panels.MmuPanel.StartPrintDialogMmu.SingleColor')
         }
         return this.$t('Panels.MmuPanel.StartPrintDialogMmu.MultiColor', { numTools: numTools })

@@ -155,11 +155,20 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { Debounce } from 'vue-debounce-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin from '@/components/mixins/mmu'
+import MmuMixin, {
+    TOOL_GATE_BYPASS,
+    GATE_AVAILABLE,
+    GATE_AVAILABLE_FROM_BUFFER,
+    GATE_EMPTY,
+} from '@/components/mixins/mmu'
 import { mdiDownloadOutline, mdiEject, mdiCheck, mdiAutoFix, mdiThermometerPlus, mdiDownload, mdiUpload } from '@mdi/js'
 
 @Component({})
 export default class MmuControls extends Mixins(BaseMixin, MmuMixin) {
+    GATE_AVAILABLE = GATE_AVAILABLE
+    GATE_AVAILABLE_FROM_BUFFER = GATE_AVAILABLE_FROM_BUFFER
+    GATE_EMPTY = GATE_EMPTY
+
     mdiDownloadOutline = mdiDownloadOutline
     mdiEject = mdiEject
     mdiCheck = mdiCheck
@@ -171,12 +180,12 @@ export default class MmuControls extends Mixins(BaseMixin, MmuMixin) {
     private btnSize: number = 2
 
     get unloadButtonText() {
-        if (this.gate === this.TOOL_GATE_BYPASS) return this.$t('Panels.MmuPanel.ButtonUnloadExt')
+        if (this.gate === TOOL_GATE_BYPASS) return this.$t('Panels.MmuPanel.ButtonUnloadExt')
         return this.$t('Panels.MmuPanel.ButtonUnload')
     }
 
     get loadButtonText() {
-        if (this.gate === this.TOOL_GATE_BYPASS) return this.$t('Panels.MmuPanel.ButtonLoadExt')
+        if (this.gate === TOOL_GATE_BYPASS) return this.$t('Panels.MmuPanel.ButtonLoadExt')
         return this.$t('Panels.MmuPanel.ButtonLoad')
     }
 

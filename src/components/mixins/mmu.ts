@@ -1,23 +1,141 @@
 import Component from 'vue-class-component'
-import { W3C_COLORS } from '@/components/mixins/w3c'
+import { W3C_COLORS } from '@/plugins/w3c'
 import type { FileStateGcodefile } from '@/store/files/types'
 import type { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
-import type { MmuGateDetails, SlicerToolDetails, MmuUnitDetails } from '@/store/mmu/types'
+import type { MmuGateDetails, SlicerToolDetails } from '@/store/mmu/types'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
+export interface MmuMachineUnit {
+    name: string
+    vendor:
+        | '3MS'
+        | 'AngryBeaver'
+        | 'BoxTurtle'
+        | 'EMU'
+        | 'ERCF'
+        | 'HappyHare'
+        | 'KMS'
+        | 'MMX'
+        | 'NightOwl'
+        | 'QuattroBox'
+        | 'Tradrack'
+        | 'VVD'
+    version: string
+    num_gates: number
+    first_gate: number
+    selector_type: 'VirtualSelector' | 'RotarySelector' | 'ServoSelector' | 'LinearSelector'
+    variable_rotation_distances: boolean
+    variable_bowden_lengths: boolean
+    require_bowden_move: boolean
+    filament_always_gripped: boolean
+    has_bypass: boolean
+    multi_gear: boolean
+    environment_sensor: string
+}
+
+export interface Mmu {
+    enabled: boolean
+    num_gates: number
+    is_homed: boolean
+    is_locked: boolean
+    is_paused: boolean
+    is_in_print: boolean
+    print_state: string
+    unit: number
+    tool: number
+    gate: number
+    active_filament: {
+        filament_name: string
+        material: string
+        color: string
+        spool_id: number
+        temperature: number
+    }
+    num_toolchanges: number
+    last_tool: number
+    next_tool: number
+    toolchange_purge_volume: number
+    last_toolchange: string
+    runout: boolean
+    operation: string
+    filament: string
+    filament_position: number
+    filament_pos: number
+    filament_direction: number
+    pending_spool_id: number
+    ttg_map: number[]
+    endless_spool_groups: number[]
+    gate_status: number[]
+    gate_filament_name: string[]
+    gate_material: string[]
+    gate_color: string[]
+    gate_temperature: number[]
+    gate_spool_id: number[]
+    gate_speed_override: number[]
+    gate_color_rgb: number[][]
+    slicer_color_rgb: number[][]
+    tool_extrusion_multipliers: number[]
+    tool_speed_multipliers: number[]
+    slicer_tool_map: {
+        tools: any
+        referenced_tools: number[]
+        initial_tool: number | null
+        purge_volumes: number[]
+        total_toolchanges: number | null
+        skip_automap: boolean
+    }
+    action: string
+    has_bypass: boolean
+    sync_drive: boolean
+    sync_feedback_enabled: boolean
+    sync_feedback_state: string
+    clog_detection: number
+    clog_detection_enabled: number
+    endless_spool: number
+    endless_spool_enabled: number
+    print_start_detection: number
+    reason_for_pause: string
+    extruder_filament_remaining: number
+    spoolman_support: 'off' | 'readonly' | 'push' | 'pull'
+    bowden_progress: number
+    espooler_active: 'rewind' | 'assist' | 'off'
+    sensors: {
+        mmu_pre_gate: boolean
+        mmu_gear: boolean
+        mmu_gate: false
+        filament_compression: boolean
+        filament_tension: boolean
+        extruder: boolean
+        toolhead: boolean
+    }
+}
+
+export const NO_FILAMENT_COLOR = '#808182E3'
+
+export const TOOL_GATE_BYPASS = -2
+export const TOOL_GATE_UNKNOWN = -1
+
+export const GATE_UNKNOWN = -1
+export const GATE_EMPTY = 0
+export const GATE_AVAILABLE = 1 // Available to load from either buffer or spool
+export const GATE_AVAILABLE_FROM_BUFFER = 2
+
+export const FILAMENT_SPEED_OVERRIDE_MIN = 10
+export const FILAMENT_SPEED_OVERRIDE_MAX = 150
+
 @Component({})
 export default class MmuMixin extends Mixins(BaseMixin) {
-    get hasMmu(): boolean {
-        return !!this.$store.state.printer.mmu
+    get hasMmu() {
+        return 'mmu' in this.$store.state.printer
     }
 
-    get mmu() {
-        return this.$store.state.printer.mmu ?? {}
+    get mmu(): Mmu | undefined {
+        return this.$store.state.printer.mmu ?? undefined
     }
 
     get hasEncoder(): boolean {
-        return !!this.mmu.encoder
+        return 'encoder' in (this.mmu ?? {})
     }
 
     get mmuMachine() {
@@ -28,11 +146,22 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.$store.state.printer.configfile?.settings?.mmu ?? {}
     }
 
+    get numGates(): number {
+        return this.mmu?.num_gates ?? 0
+    }
+
+    get spoolWidth(): number {
+        if (this.numGates <= 8) return 56
+        if (this.numGates <= 16) return 48
+
+        return 40
+    }
+
     /*
      * Select encoder properties
      */
     get encoder() {
-        return this.mmu.encoder ?? {}
+        return this.mmu?.encoder ?? {}
     }
 
     get encoderPos(): number {
@@ -74,28 +203,8 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmuMachine.num_units ?? 1
     }
 
-    getMmuUnit(unitIndex: number) {
-        return this.mmuMachine?.[`unit_${unitIndex}`] ?? {}
-    }
-
-    unitDetails(unitIndex: number): MmuUnitDetails {
-        const unit = this.getMmuUnit(unitIndex)
-
-        return {
-            name: unit.name ?? 'Unit',
-            vendor: unit.vendor ?? 'Other',
-            version: unit.version ?? '1.0',
-            numGates: unit.num_gates ?? 1,
-            firstGate: unit.first_gate ?? 0,
-            selectorType: unit.selector_type ?? 'VirtualSelector',
-            variableRotationDistances: unit.variable_rotation_distances ?? true,
-            variableBowdenLengths: unit.variable_bowden_lengths ?? true,
-            requireBowdenMove: unit.require_bowden_move ?? true,
-            filamentAlwaysGripped: unit.filament_always_gripped ?? false,
-            hasBypass: unit.has_bypass ?? false,
-            multiGear: unit.multi_gear ?? false,
-            environmentSensor: unit.environment_sensor ?? '',
-        }
+    getMmuMachineUnit(unitIndex: number): MmuMachineUnit | undefined {
+        return (this.mmuMachine?.[`unit_${unitIndex}`] as MmuMachineUnit) ?? undefined
     }
 
     /*
@@ -103,10 +212,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
      */
     get enabled(): boolean {
         return this.mmu?.enabled ?? false
-    }
-
-    get numGates(): number {
-        return this.mmu?.num_gates ?? 0
     }
 
     get mmuPrintState(): string {
@@ -126,13 +231,11 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmu?.unit ?? this.UNIT_UNKNOWN
     }
 
-    readonly TOOL_GATE_UNKNOWN: number = -1
-    readonly TOOL_GATE_BYPASS: number = -2
     get gate(): number {
-        return this.mmu?.gate ?? this.TOOL_GATE_UNKNOWN
+        return this.mmu?.gate ?? TOOL_GATE_UNKNOWN
     }
     get tool(): number {
-        return this.mmu?.tool ?? this.TOOL_GATE_UNKNOWN
+        return this.mmu?.tool ?? TOOL_GATE_UNKNOWN
     }
 
     get activeFilament(): object[] {
@@ -144,11 +247,11 @@ export default class MmuMixin extends Mixins(BaseMixin) {
     }
 
     get lastTool(): number {
-        return this.mmu?.last_tool ?? this.TOOL_GATE_UNKNOWN
+        return this.mmu?.last_tool ?? TOOL_GATE_UNKNOWN
     }
 
     get nextTool(): number {
-        return this.mmu?.next_tool ?? this.TOOL_GATE_UNKNOWN
+        return this.mmu?.next_tool ?? TOOL_GATE_UNKNOWN
     }
 
     get toolchangePurgeVolue(): number {
@@ -206,40 +309,10 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmu?.endless_spool_groups
     }
 
-    readonly GATE_UNKNOWN: number = -1
-    readonly GATE_EMPTY: number = 0
-    readonly GATE_AVAILABLE: number = 1 // Available to load from either buffer or spool
-    readonly GATE_AVAILABLE_FROM_BUFFER: number = 2
-    get gateStatus(): number[] {
-        return this.mmu?.gate_status
-    }
-
-    get gateFilamentName(): string[] {
-        return this.mmu?.gate_filament_name
-    }
-
-    get gateMaterial(): string[] {
-        return this.mmu?.gate_material
-    }
-
-    get gateColor(): string[] {
-        return this.mmu?.gate_color
-    }
-
-    get gateTemperature(): number[] {
-        return this.mmu?.gate_temperature
-    }
-
-    get gateSpoolId(): number[] {
-        return this.mmu?.gate_spool_id
-    }
-
-    get gateSpeedOverride(): number[] {
-        return this.mmu?.gate_speed_override
-    }
-
     get gateMap(): MmuGateDetails[] {
-        return this.gateStatus.map((_, index) => this.gateDetails(index))
+        const gateStatus = this.mmu?.gate_status ?? []
+
+        return gateStatus.map((_, index) => this.gateDetails(index))
     }
 
     gateDetails(gateIndex: number): MmuGateDetails {
@@ -248,7 +321,7 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
         const defaults: MmuGateDetails = {
             index: gateIndex,
-            status: this.GATE_UNKNOWN,
+            status: GATE_UNKNOWN,
             filamentName: 'Unknown',
             material: 'Unknown',
             color: this.formColorString(null),
@@ -258,7 +331,7 @@ export default class MmuMixin extends Mixins(BaseMixin) {
             endlessSpoolGroup: gateIndex,
         }
 
-        if (gateIndex === this.TOOL_GATE_BYPASS) {
+        if (gateIndex === TOOL_GATE_BYPASS) {
             const base: MmuGateDetails = {
                 ...defaults,
                 endlessSpoolGroup: null,
@@ -280,7 +353,7 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
         return {
             ...defaults,
-            status: mmu?.gate_status?.[gateIndex] ?? this.GATE_UNKNOWN,
+            status: mmu?.gate_status?.[gateIndex] ?? GATE_UNKNOWN,
             filamentName: mmu?.gate_filament_name?.[gateIndex] || 'Unknown',
             material: mmu?.gate_material?.[gateIndex] || 'Unknown',
             color: this.formColorString(mmu?.gate_color?.[gateIndex] ?? ''),
@@ -289,15 +362,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
             speedOverride: mmu?.gate_speed_override?.[gateIndex] ?? 100,
             endlessSpoolGroup: mmu?.endless_spool_groups?.[gateIndex] ?? defaults.endlessSpoolGroup,
         }
-    }
-
-    spoolmanSpool(spoolId: number): ServerSpoolmanStateSpool | null {
-        const activeSpool = this.$store.state.server.spoolman.active_spool ?? null
-        if (activeSpool?.id === spoolId) {
-            return activeSpool
-        }
-        const spools = this.$store.state.server.spoolman?.spools ?? []
-        return spools.find((spool) => spool.id === spoolId) ?? null
     }
 
     get slicerToolMap(): object {
@@ -403,11 +467,7 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmu?.extruder_filament_remaining
     }
 
-    readonly SPOOLMAN_OFF: string = 'off' // Spoolman disabled
-    readonly SPOOLMAN_READONLY: string = 'readonly' // Get filament attributes only
-    readonly SPOOLMAN_PUSH: string = 'push' // Local gatemap is the source or truth
-    readonly SPOOLMAN_PULL: string = 'pull' // Spoolman db is the source of truth
-    get spoolmanSupport(): string {
+    get spoolmanSupport() {
         return this.mmu?.spoolman_support ?? 'off'
     }
 
@@ -415,10 +475,8 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmu?.sensors ?? []
     }
 
-    readonly ESPOOLER_REWIND: string = 'rewind'
-    readonly ESPOOLER_ASSIST: string = 'assist'
-    get espoolerActive(): string {
-        return this.mmu?.espooler_active ?? ''
+    get espoolerActive(): 'rewind' | 'assist' | 'off' {
+        return this.mmu?.espooler_active ?? 'off'
     }
 
     /*
@@ -472,20 +530,20 @@ export default class MmuMixin extends Mixins(BaseMixin) {
      */
 
     gateText(gate: number): string {
-        return gate === -1 ? '?' : gate === this.TOOL_GATE_BYPASS ? 'Bypass' : '@' + gate
+        return gate === -1 ? '?' : gate === TOOL_GATE_BYPASS ? 'Bypass' : '@' + gate
     }
 
     toolText(tool: number): string {
-        return tool === -1 ? 'T?' : tool === this.TOOL_GATE_BYPASS ? 'Bypass' : 'T' + tool
+        return tool === -1 ? 'T?' : tool === TOOL_GATE_BYPASS ? 'Bypass' : 'T' + tool
     }
 
     // Empty string if nothing to report
     get toolchangeText(): string {
-        if (this.nextTool === this.TOOL_GATE_UNKNOWN) return ''
+        if (this.nextTool === TOOL_GATE_UNKNOWN) return ''
 
-        const label = (t: number) => (t === this.TOOL_GATE_BYPASS ? 'Bypass' : `T${t}`)
+        const label = (t: number) => (t === TOOL_GATE_BYPASS ? 'Bypass' : `T${t}`)
         const parts: string[] = ['Changing tool']
-        if (this.lastTool !== this.TOOL_GATE_UNKNOWN) {
+        if (this.lastTool !== TOOL_GATE_UNKNOWN) {
             parts.push('from', label(this.lastTool))
         }
         parts.push('to', label(this.nextTool))
@@ -518,26 +576,22 @@ export default class MmuMixin extends Mixins(BaseMixin) {
      * Helper functions
      */
 
-    // Fix Happy Hare color strings (# problematic in klipper CLI)
-    readonly NO_FILAMENT_COLOR = '#808182E3'
     formColorString(color: string | null): string {
-        let hexaColor = this.NO_FILAMENT_COLOR
-        if (!color) return hexaColor
+        if (!color) return NO_FILAMENT_COLOR
 
-        // Check if the color is a named color
         const namedColor = W3C_COLORS.find((c) => c.name === color.toLowerCase())
         if (namedColor) {
-            hexaColor = namedColor.hex
-        } else {
-            // Validate and format hex color codes
-            const hexColorPattern = /^#?[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$/
-            if (hexColorPattern.test(color)) {
-                hexaColor = color
-                if (!hexaColor.startsWith('#')) hexaColor = '#' + hexaColor
-            }
+            return namedColor.hex.length === 7 ? `${namedColor.hex}FF` : namedColor.hex.toUpperCase()
         }
-        if (hexaColor.length < 8) hexaColor = hexaColor + 'FF'
-        return hexaColor.toUpperCase()
+
+        const hexPattern = /^#?([0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?)$/
+        const match = color.match(hexPattern)
+        if (!match) return NO_FILAMENT_COLOR
+
+        const hex = match[1]
+        const normalized = `#${hex}${hex.length === 6 ? 'FF' : ''}`
+
+        return normalized.toUpperCase()
     }
 
     getLuminance({ r, g, b }: { r: number; g: number; b: number }): number {

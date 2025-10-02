@@ -222,7 +222,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin from '@/components/mixins/mmu'
+import MmuMixin, { TOOL_GATE_BYPASS } from '@/components/mixins/mmu'
 
 @Component({})
 export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
@@ -292,7 +292,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     private calcFilamentHeight(filamentPos: number): void {
         let pos = 0
 
-        if (this.gate === this.TOOL_GATE_BYPASS) {
+        if (this.gate === TOOL_GATE_BYPASS) {
             // Bypass use case places more emphasis on sensors
             switch (filamentPos) {
                 case this.FILAMENT_POS_EXTRUDER_ENTRY:
@@ -442,10 +442,10 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get gateSensorName(): string {
-        if (this.unitDetails(this.unit).multiGear) {
-            return 'Hub (Gate)'
-        }
-        return 'Gate'
+        const unit = this.getMmuMachineUnit(this.unit)
+        const multiGate = unit?.multi_gear ?? false
+
+        return multiGate ? 'Hub (Gate)' : 'Gate'
     }
 
     get temperatureClass(): string {
@@ -552,7 +552,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
 
     get currentGateColor(): string {
         let color = this.$store.state.printer.mmu?.gate_color[this.gate] ?? ''
-        if (this.gate === this.TOOL_GATE_BYPASS) {
+        if (this.gate === TOOL_GATE_BYPASS) {
             // Assume active spoolman spool if available
             color = this.$store.state.server.spoolman?.active_spool?.filament.color_hex ?? null
         }

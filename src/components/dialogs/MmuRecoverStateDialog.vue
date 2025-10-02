@@ -98,7 +98,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin from '@/components/mixins/mmu'
+import MmuMixin, { TOOL_GATE_BYPASS, TOOL_GATE_UNKNOWN } from '@/components/mixins/mmu'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiCogRefresh } from '@mdi/js'
 
@@ -125,9 +125,9 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get selectedTool(): string {
-        if (this.localTool === this.TOOL_GATE_UNKNOWN) {
+        if (this.localTool === TOOL_GATE_UNKNOWN) {
             return 'Unknown'
-        } else if (this.localTool === this.TOOL_GATE_BYPASS) {
+        } else if (this.localTool === TOOL_GATE_BYPASS) {
             return 'Bypass'
         }
         return `T${this.localTool}`
@@ -136,7 +136,7 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     set selectedTool(newTool: string) {
         const index = this.toolsList.findIndex((item) => item === newTool)
         if (index === this.numGates) {
-            this.localTool = this.TOOL_GATE_BYPASS
+            this.localTool = TOOL_GATE_BYPASS
         } else {
             this.localTool = index
         }
@@ -152,19 +152,19 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get toolErrorMessage(): string {
-        if (this.localTool === this.TOOL_GATE_UNKNOWN) {
+        if (this.localTool === TOOL_GATE_UNKNOWN) {
             return this.$t('Panels.MmuPanel.MmuRecoverDialog.NoTool').toString()
         }
-        if (this.localGate === this.TOOL_GATE_BYPASS && this.localTool !== this.TOOL_GATE_BYPASS) {
+        if (this.localGate === TOOL_GATE_BYPASS && this.localTool !== TOOL_GATE_BYPASS) {
             return this.$t('Panels.MmuPanel.MmuRecoverDialog.GateBypass').toString()
         }
         return ''
     }
 
     get selectedGate(): string {
-        if (this.localGate === this.TOOL_GATE_UNKNOWN) {
+        if (this.localGate === TOOL_GATE_UNKNOWN) {
             return 'Unknown'
-        } else if (this.localGate === this.TOOL_GATE_BYPASS) {
+        } else if (this.localGate === TOOL_GATE_BYPASS) {
             return 'Bypass'
         }
         return `${this.gateIndexText(this.localGate)}`
@@ -173,7 +173,7 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     set selectedGate(newGate: string) {
         const index = this.gatesList.findIndex((item) => item === newGate)
         if (index === this.numGates) {
-            this.localGate = this.TOOL_GATE_BYPASS
+            this.localGate = TOOL_GATE_BYPASS
         } else {
             this.localGate = index
         }
@@ -189,10 +189,10 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get gateErrorMessage(): string {
-        if (this.localGate === this.TOOL_GATE_UNKNOWN) {
+        if (this.localGate === TOOL_GATE_UNKNOWN) {
             return this.$t('Panels.MmuPanel.MmuRecoverDialog.NoGate').toString()
         }
-        if (this.localTool === this.TOOL_GATE_BYPASS && this.localGate !== this.TOOL_GATE_BYPASS) {
+        if (this.localTool === TOOL_GATE_BYPASS && this.localGate !== TOOL_GATE_BYPASS) {
             return this.$t('Panels.MmuPanel.MmuRecoverDialog.ToolBypass').toString()
         }
         if (this.localGate >= 0 && this.ttgMap[this.localGate] !== this.localTool) {
