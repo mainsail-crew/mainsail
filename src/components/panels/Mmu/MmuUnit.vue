@@ -70,7 +70,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     overflow: hidden;
 }
 
-::v-deep .theme--light .mmu-unit {
+html.theme--light .mmu-unit {
     background: #f0f0f0;
 }
 

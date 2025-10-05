@@ -141,6 +141,11 @@ export default class MmuUnitFooter extends Mixins(BaseMixin, MmuMixin) {
     border-top-right-radius: 8px;
 }
 
+html.theme--light .mmu-unit-footer {
+    box-shadow: inset 0 4px 4px -4px #ffffff80;
+    background-image: linear-gradient(to bottom, #d0d0d0 0%, #f0f0f0ff 100%);
+}
+
 .opacity-70 {
     opacity: 0.7;
 }

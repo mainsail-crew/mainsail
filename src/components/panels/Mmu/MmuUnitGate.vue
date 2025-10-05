@@ -70,7 +70,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     font-size: 14px;
 }
 
-::v-deep .theme--light .gate-number {
+html.theme--light .gate-number {
     color: #5d5d5d;
 }
 
