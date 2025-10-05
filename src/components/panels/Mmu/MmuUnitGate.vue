@@ -60,7 +60,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
 
 .gate-number {
     border: 2px solid #808080;
-    width: 70%;
+    width: 80%;
     position: relative;
     z-index: 4;
     text-align: center;
