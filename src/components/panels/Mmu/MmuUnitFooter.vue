@@ -14,6 +14,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin, { MmuMachineUnit } from '@/components/mixins/mmu'
 import {
+    mmuIcon3MS,
     mmuIconAngryBeaver,
     mmuIconBoxTurtle,
     mmuIconEmu,
@@ -93,7 +94,7 @@ export default class MmuUnitFooter extends Mixins(BaseMixin, MmuMixin) {
     get logo() {
         switch (this.mmuMachineUnit?.vendor) {
             case '3MS':
-                return mmuIconVvd
+                return mmuIcon3MS
 
             case 'AngryBeaver':
                 return mmuIconAngryBeaver
