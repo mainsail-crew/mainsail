@@ -49,7 +49,7 @@ export default class MmuUnitFooter extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get unitClimateSensorName() {
-        const name = this.mmuMachineUnit?.environment_sensor ?? undefined
+        const name = this.mmuMachineUnit?.environment_sensor?.replace(/^"(.*)"$/, '$1') ?? undefined
         if (!name) return undefined
 
         const parts = name.split(' ')
