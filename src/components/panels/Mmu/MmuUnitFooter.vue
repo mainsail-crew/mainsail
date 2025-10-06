@@ -1,6 +1,10 @@
 <template>
     <div class="mmu-unit-footer d-flex flex-row align-center px-4 pb-1">
-        <v-icon v-if="showLogos" class="mr-4 flex-grow-0 flex-shrink-0 opacity-70" :size="logoHeight">
+        <v-icon
+            v-if="showLogos"
+            class="mr-4 flex-grow-0 flex-shrink-0 opacity-70"
+            :class="logoClasses"
+            :size="logoHeight">
             {{ logo }}
         </v-icon>
         <div class="flex-grow-1 flex-shrink-1 min-width-0 text-caption">
@@ -28,6 +32,8 @@ import {
     mmuIconVvd,
 } from '@/plugins/mmuIcons'
 import { additionalSensors } from '@/store/variables'
+
+const squareLogoVendors = ['3MS', 'AngryBeaver', 'EMU', 'ERCF', 'KMS']
 
 @Component
 export default class MmuUnitFooter extends Mixins(BaseMixin, MmuMixin) {
@@ -87,12 +93,24 @@ export default class MmuUnitFooter extends Mixins(BaseMixin, MmuMixin) {
         return values.length > 0 ? values.join(' / ') : undefined
     }
 
+    get mmuVendor() {
+        return this.mmuMachineUnit?.vendor ?? 'Unknown'
+    }
+
     get logoHeight() {
+        if (squareLogoVendors.includes(this.mmuVendor)) return this.spoolWidth - 16
+
         return this.spoolWidth - 8
     }
 
+    get logoClasses() {
+        if (squareLogoVendors.includes(this.mmuVendor)) return ['my-1']
+
+        return []
+    }
+
     get logo() {
-        switch (this.mmuMachineUnit?.vendor) {
+        switch (this.mmuVendor) {
             case '3MS':
                 return mmuIcon3MS
 
