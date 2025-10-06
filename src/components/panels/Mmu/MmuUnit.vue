@@ -1,5 +1,5 @@
 <template>
-    <div class="mmu-unit d-inline-flex flex-column mx-1 rounded-lg">
+    <div class="mmu-unit d-inline-flex flex-column mx-1 rounded-lg mb-3">
         <div class="d-flex pt-3 px-4 mb-n7 position-relative">
             <mmu-unit-gate
                 v-for="gateIndex in numGates"

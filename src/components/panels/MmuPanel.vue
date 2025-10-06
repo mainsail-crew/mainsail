@@ -69,7 +69,7 @@
 
         <v-card-text>
             <v-row>
-                <v-col>
+                <v-col class="pb-0">
                     <MmuUnit
                         v-for="i in numUnits"
                         :key="i"

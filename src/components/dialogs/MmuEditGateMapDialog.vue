@@ -19,7 +19,7 @@
                     {{ $t('Panels.MmuPanel.GateMapDialog.SelectGate') }}
                 </v-card-subtitle>
                 <v-row>
-                    <v-col>
+                    <v-col class="pb-0">
                         <mmu-unit
                             v-for="i in numUnits"
                             :key="i"
