@@ -15,7 +15,8 @@
                             v-model="useSpoolman"
                             :label="$t('Panels.MmuPanel.GateMapDialog.Spoolman')"
                             hide-details
-                            class="pt-0 mt-0" />
+                            class="pt-0 mt-0"
+                            @change="resetSpoolId" />
                     </v-col>
                     <v-col :cols="hideSpoolmanSwitch ? 12 : 6">
                         <v-text-field
@@ -429,6 +430,10 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
 
     resetSpeed() {
         this.speedOverride = 100
+    }
+
+    resetSpoolId() {
+        this.setMmuGateMap('spoolid', -1)
     }
 
     @Debounce(500)
