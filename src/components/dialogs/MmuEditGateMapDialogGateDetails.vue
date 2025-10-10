@@ -248,6 +248,11 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
         const isValid = this.spoolIdRules.every((rule) => rule(spool_id) === true)
         if (!isValid) return
 
+        if (spool_id === -1) {
+            this.resetSpoolId()
+            return
+        }
+
         const spool = this.spoolmanSpools.find((spool: ServerSpoolmanStateSpool) => spool.id === spool_id)
         if (!spool) return
 
@@ -433,6 +438,8 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
     }
 
     resetSpoolId() {
+        if (this.spoolId === -1) return
+
         this.setMmuGateMap('spoolid', -1)
     }
 
