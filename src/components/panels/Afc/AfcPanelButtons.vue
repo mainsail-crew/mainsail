@@ -77,6 +77,15 @@ export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
             })
         }
 
+        if (this.afc?.td1_present) {
+            afcMacros.push({
+                icon: '',
+                text: 'Capture TD',
+                macroName: 'AFC_GET_TD_ONE_DATA',
+                disabled: false,
+            })
+        }
+
         if (settings.wipe) {
             afcMacros.push({
                 icon: null,

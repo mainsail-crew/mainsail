@@ -678,6 +678,7 @@
             "SettingsForLane": "Settings for {lane}",
             "ShowFilamentName": "Show Filament Name",
             "ShowLaneInfinite": "Show Infinite Button",
+            "ShowTd1Color": "Show TD-1 Color",
             "ShowTool": "Show Tool \"{name}\"",
             "ShowUnit": "Show Unit \"{name}\"",
             "ShowUnitIcons": "Show Unit Icons",
