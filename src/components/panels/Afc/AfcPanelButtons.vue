@@ -6,14 +6,8 @@
             </v-btn>
         </template>
         <v-list dense>
-            <v-list-item v-for="command in commands" :key="command.command">
-                <v-btn class="w-100" small @click="doSend(command.command)">
-                    <v-icon v-if="command.icon" small left>{{ command.icon }}</v-icon>
-                    {{ command.text }}
-                </v-btn>
-            </v-list-item>
             <v-list-item v-for="macro in macros" :key="macro.macroName">
-                <macro-button :macro="macro.macro" :alias="macro.text" color="" class="w-100" />
+                <macro-button :macro="macro.macro" :alias="macro.text" :icon="macro.icon" color="" class="w-100" />
             </v-list-item>
             <v-list-item>
                 <v-btn class="w-100" small @click="showAfcSettings = true">
@@ -53,48 +47,39 @@ export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
 
     showAfcSettings = false
 
-    get commands() {
-        const commands = this.$store.state.printer.gcode?.commands ?? {}
-        const commandsList = Object.keys(commands)
-
-        const buttons = [
-            {
-                icon: mdiWrench,
-                text: this.$t('Panels.AfcPanel.Calibrate'),
-                command: 'AFC_CALIBRATION',
-                disabled: false,
-            },
-        ]
-
-        const ledState = this.afc.led_state ?? false
-        if (ledState) {
-            buttons.push({
-                icon: mdiLightbulbOnOutline,
-                text: this.$t('Panels.AfcPanel.LedOff'),
-                command: 'TURN_OFF_AFC_LED',
-                disabled: false,
-            })
-        } else {
-            buttons.push({
-                icon: mdiLightbulbOutline,
-                text: this.$t('Panels.AfcPanel.LedOn'),
-                command: 'TURN_ON_AFC_LED',
-                disabled: false,
-            })
-        }
-
-        return buttons.filter((button) => {
-            return commandsList.includes(button.command.toUpperCase())
-        })
-    }
-
     get macros() {
         const macros = this.$store.getters['printer/getMacros']
         const settings = this.$store.state.printer.configfile?.settings.afc ?? {}
 
         const afcMacros = []
+
+        afcMacros.push({
+            icon: mdiWrench,
+            text: this.$t('Panels.AfcPanel.Calibrate'),
+            macroName: 'AFC_CALIBRATION',
+            disabled: false,
+        })
+
+        const ledState = this.afc.led_state ?? false
+        if (ledState) {
+            afcMacros.push({
+                icon: mdiLightbulbOnOutline,
+                text: this.$t('Panels.AfcPanel.LedOff'),
+                macroName: 'TURN_OFF_AFC_LED',
+                disabled: false,
+            })
+        } else {
+            afcMacros.push({
+                icon: mdiLightbulbOutline,
+                text: this.$t('Panels.AfcPanel.LedOn'),
+                macroName: 'TURN_ON_AFC_LED',
+                disabled: false,
+            })
+        }
+
         if (settings.wipe) {
             afcMacros.push({
+                icon: null,
                 text: this.$t('Panels.AfcPanel.BrushNozzle'),
                 macroName: settings?.wipe_cmd || 'AFC_BRUSH',
                 disabled: this.printerIsPrintingOnly,
@@ -103,6 +88,7 @@ export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
 
         if (settings.park) {
             afcMacros.push({
+                icon: null,
                 text: this.$t('Panels.AfcPanel.ParkNozzle'),
                 macroName: settings?.park_cmd || 'AFC_PARK',
                 disabled: this.printerIsPrintingOnly,
