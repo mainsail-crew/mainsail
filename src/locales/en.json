@@ -679,6 +679,7 @@
             "ShowFilamentName": "Show Filament Name",
             "ShowLaneInfinite": "Show Infinite Button",
             "ShowTool": "Show Tool \"{name}\"",
+            "ShowToolChangeCount": "Show Toolchange Count",
             "ShowUnit": "Show Unit \"{name}\"",
             "ShowUnitIcons": "Show Unit Icons",
             "Unloading": "Unloading",
@@ -855,6 +856,7 @@
             "ResumePrint": "Resume print",
             "Slicer": "Slicer",
             "Speed": "Speed",
+            "Toolchange": "Toolchange",
             "Total": "Total",
             "TotalTime": "Total Time",
             "Unknown": "Unknown"

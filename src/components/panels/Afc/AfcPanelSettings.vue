@@ -27,6 +27,13 @@
                     hide-details
                     :label="$t('Panels.AfcPanel.ShowUnitIcons')" />
             </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="showToolChangeCount"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.AfcPanel.ShowToolChangeCount')" />
+            </v-list-item>
             <v-divider />
             <afc-panel-settings-extruder v-for="extruder in afcExtruders" :key="extruder" :name="extruder" />
             <afc-panel-settings-unit v-for="unit in afcUnits" :key="unit" :name="unit" />
@@ -57,6 +64,14 @@ export default class AfcPanelSettings extends Mixins(BaseMixin, AfcMixin) {
 
     set showLaneInfinite(value: boolean) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.afc.showLaneInfinite', value })
+    }
+
+    get showToolChangeCount(): boolean {
+        return this.$store.state.gui.view.afc?.showToolChangeCount ?? true
+    }
+
+    set showToolChangeCount(value: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.afc.showToolChangeCount', value })
     }
 
     get showUnitIcons(): boolean {

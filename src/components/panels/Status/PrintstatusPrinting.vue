@@ -41,10 +41,10 @@
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
                             <div v-bind="attrs" v-on="on">
-                                <strong>{{ $t('Panels.StatusPanel.Filament') }}</strong>
+                                <strong>{{ filamentToolchangeText }}</strong>
                                 <br />
                                 <span class="d-block text-center text-no-wrap">
-                                    {{ outputFilamentUsed }}
+                                    {{ filamentToolChangeBody }}
                                 </span>
                             </div>
                         </template>
@@ -135,6 +135,7 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import AfcMixin from '@/components/mixins/afc'
 import StatusPanelFilesJobqueue from '@/components/panels/Status/Jobqueue.vue'
 import StatusPanelFilesGcodes from '@/components/panels/Status/Gcodefiles.vue'
 
@@ -144,7 +145,7 @@ import StatusPanelFilesGcodes from '@/components/panels/Status/Gcodefiles.vue'
         StatusPanelFilesGcodes,
     },
 })
-export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin) {
+export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin, AfcMixin) {
     private maxFlow: number = 0
 
     get current_file() {
@@ -232,10 +233,33 @@ export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin) {
         return this.$store.state.printer.print_stats?.filament_used ?? 0
     }
 
-    get outputFilamentUsed() {
+    get filamentToolchangeText() {
+        if (this.afc && this.afcShowToolChangeCount && this.current_file.filament_change_count > 0) {
+            return this.$t('Panels.StatusPanel.Toolchange')
+        } else {
+            return this.$t('Panels.StatusPanel.Filament')
+        }
+    }
+
+    get filamentToolChangeBody() {
+        if (this.afc && this.afcShowToolChangeCount && this.current_file.filament_change_count > 0) {
+            return this.toolChangeCount()
+        } else {
+            return this.outputFilamentUsed()
+        }
+    }
+
+    outputFilamentUsed() {
         return this.filament_used >= 1000
             ? (this.filament_used / 1000).toFixed(2) + ' m'
             : this.filament_used.toFixed(2) + ' mm'
+    }
+
+    toolChangeCount() {
+        if (this.afc && this.current_file.filament_change_count > 0) {
+            return `${this.currentFilamentChange} / ${this.current_file.filament_change_count}`
+        }
+        return 0
     }
 
     formatDuration(seconds: number) {

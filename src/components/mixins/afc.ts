@@ -100,6 +100,10 @@ export default class AfcMixin extends Vue {
         return this.$store.state.gui.view.afc?.hiddenUnits ?? []
     }
 
+    get afcShowToolChangeCount(): boolean {
+        return this.$store.state.gui.view.afc?.showToolChangeCount ?? true
+    }
+
     getPrinterObject(key: string) {
         const printer = this.$store.state.printer ?? {}
         return printer[key] ?? null
@@ -141,5 +145,9 @@ export default class AfcMixin extends Vue {
     getAfcHubObject(hub: string) {
         const key = `AFC_hub ${hub}`
         return this.getPrinterObject(key) ?? {}
+    }
+
+    get currentFilamentChange() {
+        return this.$store.state.printer.AFC?.current_toolchange ?? null
     }
 }

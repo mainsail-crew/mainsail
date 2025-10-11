@@ -196,6 +196,7 @@ export const getDefaultState = (): GuiState => {
                 showFilamentName: false,
                 showLaneInfinite: true,
                 showUnitIcons: true,
+                showToolChangeCount: true,
             },
             blockFileUpload: false,
             configfiles: {
