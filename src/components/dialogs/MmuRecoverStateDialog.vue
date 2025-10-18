@@ -118,8 +118,8 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     @Watch('showDialog')
     onShowDialogChanged(newValue: boolean): void {
         if (newValue) {
-            this.localGate = this.gate
-            this.localTool = this.tool
+            this.localGate = this.mmuGate
+            this.localTool = this.mmuTool
             this.localFilamentPos = this.filamentPos
         }
     }

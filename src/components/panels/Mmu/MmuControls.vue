@@ -180,12 +180,12 @@ export default class MmuControls extends Mixins(BaseMixin, MmuMixin) {
     private btnSize: number = 2
 
     get unloadButtonText() {
-        if (this.gate === TOOL_GATE_BYPASS) return this.$t('Panels.MmuPanel.ButtonUnloadExt')
+        if (this.mmuGate === TOOL_GATE_BYPASS) return this.$t('Panels.MmuPanel.ButtonUnloadExt')
         return this.$t('Panels.MmuPanel.ButtonUnload')
     }
 
     get loadButtonText() {
-        if (this.gate === TOOL_GATE_BYPASS) return this.$t('Panels.MmuPanel.ButtonLoadExt')
+        if (this.mmuGate === TOOL_GATE_BYPASS) return this.$t('Panels.MmuPanel.ButtonLoadExt')
         return this.$t('Panels.MmuPanel.ButtonLoad')
     }
 
@@ -223,7 +223,7 @@ export default class MmuControls extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get currentGateStatus(): number {
-        return this.$store.state.printer.mmu?.gate_status?.[this.gate] ?? -1
+        return this.$store.state.printer.mmu?.gate_status?.[this.mmuGate] ?? -1
     }
 
     get largeFilamentStatus(): boolean {

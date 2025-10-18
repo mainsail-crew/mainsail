@@ -195,7 +195,7 @@
                     </g>
                 </transition>
             </g>
-            <text x="160" y="60" :class="tool === -2 ? 'tool-bypass' : 'tool-text'">{{ toolText(tool) }}</text>
+            <text x="160" y="60" :class="mmuTool === -2 ? 'tool-bypass' : 'tool-text'">{{ toolText(mmuTool) }}</text>
         </g>
 
         <transition name="fade">
@@ -292,7 +292,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     private calcFilamentHeight(filamentPos: number): void {
         let pos = 0
 
-        if (this.gate === TOOL_GATE_BYPASS) {
+        if (this.mmuGate === TOOL_GATE_BYPASS) {
             // Bypass use case places more emphasis on sensors
             switch (filamentPos) {
                 case this.FILAMENT_POS_EXTRUDER_ENTRY:
@@ -551,8 +551,8 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get currentGateColor(): string {
-        let color = this.$store.state.printer.mmu?.gate_color[this.gate] ?? ''
-        if (this.gate === TOOL_GATE_BYPASS) {
+        let color = this.$store.state.printer.mmu?.gate_color[this.mmuGate] ?? ''
+        if (this.mmuGate === TOOL_GATE_BYPASS) {
             // Assume active spoolman spool if available
             color = this.$store.state.server.spoolman?.active_spool?.filament.color_hex ?? null
         }

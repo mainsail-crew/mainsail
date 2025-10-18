@@ -121,7 +121,8 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ default: '#AD8762' }) readonly spoolWheelColor!: string
     @Prop({ required: true }) readonly gateIndex!: number
     @Prop({ default: false }) readonly showDetails!: boolean
-    @Prop({ required: true }) readonly isSelected!: boolean
+    @Prop({ default: false }) readonly isSelected!: boolean
+    @Prop({ default: '' }) readonly svgClass!: string
 
     get showUnavailableSpoolColor(): boolean {
         return this.$store.state.gui.view.mmu.showUnavailableSpoolColor ?? false
@@ -214,7 +215,7 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
         return this.mmu?.espooler_active === 'assist'
     }
 
-    get spoolWidth(): number {
+    get spoolWidth() {
         if (this.numGates <= 8) return 56
         if (this.numGates <= 16) return 48
 
@@ -256,9 +257,15 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get svgClasses() {
-        return {
-            isSelected: this.isSelected,
-        }
+        const classes = [this.svgClass]
+        if (this.hasSelectGateListener) classes.push('hasSelectGate')
+        if (this.isSelected) classes.push('isSelected')
+
+        return classes
+    }
+
+    get hasSelectGateListener() {
+        return !!this.$listeners['select-gate']
     }
 
     selectGate() {
@@ -278,7 +285,7 @@ svg.isSelected {
     transform: translateY(-8px) !important;
 }
 
-svg:hover {
+svg.hasSelectGate:hover {
     transform: translateY(-4px);
 }
 

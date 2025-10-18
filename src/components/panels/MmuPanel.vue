@@ -73,7 +73,7 @@
                     <MmuUnit
                         v-for="i in numUnits"
                         :key="i"
-                        :selected-gate="gate"
+                        :selected-gate="mmuGate"
                         :unit-index="i - 1"
                         :show-details="true"
                         @select-gate="selectGate" />
@@ -97,7 +97,7 @@
                         <template v-if="showDetails">
                             <v-row class="pb-3 pt-0" style="align-self: flex-start; width: 100%">
                                 <v-col class="pa-0">
-                                    <mmu-gate-summary :gate-index="gate" />
+                                    <mmu-gate-summary :gate-index="mmuGate" />
                                 </v-col>
                             </v-row>
                         </template>
@@ -110,8 +110,8 @@
                                 :start-y="20"
                                 :map="ttgMap"
                                 :groups="endlessSpoolGroups"
-                                :selected-tool="tool"
-                                :selected-gate="gate"
+                                :selected-tool="mmuTool"
+                                :selected-gate="mmuGate"
                                 @click="showEditTtgMapDialog = true" />
                             <div class="text--disabled">{{ $t('Panels.MmuPanel.ToolMapping') }}</div>
                         </template>
@@ -133,10 +133,10 @@
                 </v-row>
             </v-container>
         </div>
-        <!--        <mmu-recover-state-dialog :show-dialog='showRecoverStateDialog' @close='showRecoverStateDialog = false' />
-                <mmu-edit-ttg-map-dialog :show-dialog='showEditTtgMapDialog' @close='showEditTtgMapDialog = false' />-->
         <mmu-edit-gate-map-dialog v-model="showEditGateMapDialog" />
-        <!--        <mmu-maintenance-dialog :show-dialog='showMaintenanceDialog' @close='showMaintenanceDialog = false' />-->
+        <mmu-edit-ttg-map-dialog v-model="showEditTtgMapDialog" />
+        <!--<mmu-recover-state-dialog v-model="showRecoverStateDialog" />-->
+        <!--<mmu-maintenance-dialog :show-dialog='showMaintenanceDialog' @close='showMaintenanceDialog = false' />-->
     </panel>
 </template>
 

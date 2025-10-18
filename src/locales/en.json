@@ -919,6 +919,7 @@
                 "Material": "Material",
                 "Mismatch": "Possible filament mismatch:",
                 "NoGateData": "No gate data",
+                "None": "none",
                 "NoSlicerInfo": "No slicer information, choose default mapping for {tool}",
                 "Reset": "Reset",
                 "ResetConfirmation": "This will reset the entire tool-to-gate mapping and endless spool groups back to the default defined in 'mmu_parameters.cfg' or default 1:1 mapping in no defaults are available",

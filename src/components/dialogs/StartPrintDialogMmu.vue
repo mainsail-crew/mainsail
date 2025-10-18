@@ -11,10 +11,7 @@
             </v-btn>
         </div>
         <v-divider :class="classSecondDivider" />
-        <mmu-edit-ttg-map-dialog
-            :file="file"
-            :show-dialog="showEditTtgMapDialog"
-            @close="showEditTtgMapDialog = false" />
+        <mmu-edit-ttg-map-dialog v-model="showEditTtgMapDialog" :file="file" />
     </v-card-text>
 </template>
 
@@ -36,7 +33,7 @@ export default class StartPrintDialogMmu extends Mixins(BaseMixin, MmuMixin) {
     get summary() {
         const referencedTools = this.file.referenced_tools ?? ''
         const numTools = referencedTools.length
-        if (numTools <= 1 && this.gate !== TOOL_GATE_BYPASS) {
+        if (numTools <= 1 && this.mmuGate !== TOOL_GATE_BYPASS) {
             return this.$t('Panels.MmuPanel.StartPrintDialogMmu.SingleColor')
         }
         return this.$t('Panels.MmuPanel.StartPrintDialogMmu.MultiColor', { numTools: numTools })

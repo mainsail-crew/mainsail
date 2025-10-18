@@ -124,6 +124,13 @@ export const GATE_AVAILABLE_FROM_BUFFER = 2
 export const FILAMENT_SPEED_OVERRIDE_MIN = 10
 export const FILAMENT_SPEED_OVERRIDE_MAX = 150
 
+export const MmuTtgMap_START_X = 10
+export const MmuTtgMap_START_Y = 8
+export const MmuTtgMap_VERTICAL_SPACING = 12
+export const MmuTtgMap_GROUP_SPACING = 12
+export const MmuTtgMap_MAP_SPACE = 80
+export const MmuTtgMap_LEADER = 10
+
 @Component({})
 export default class MmuMixin extends Mixins(BaseMixin) {
     get hasMmu() {
@@ -155,6 +162,14 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         if (this.numGates <= 16) return 48
 
         return 40
+    }
+
+    get ttgMap(): number[] {
+        return this.mmu?.ttg_map ?? []
+    }
+
+    get endlessSpoolGroups(): number[] {
+        return this.mmu?.endless_spool_groups ?? []
     }
 
     /*
@@ -231,10 +246,10 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmu?.unit ?? this.UNIT_UNKNOWN
     }
 
-    get gate(): number {
+    get mmuGate(): number {
         return this.mmu?.gate ?? TOOL_GATE_UNKNOWN
     }
-    get tool(): number {
+    get mmuTool(): number {
         return this.mmu?.tool ?? TOOL_GATE_UNKNOWN
     }
 
@@ -301,14 +316,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmu?.bowden_progress ?? -1
     }
 
-    get ttgMap(): number[] {
-        return this.mmu?.ttg_map
-    }
-
-    get endlessSpoolGroups(): number[] {
-        return this.mmu?.endless_spool_groups
-    }
-
     get gateMap(): MmuGateDetails[] {
         const gateStatus = this.mmu?.gate_status ?? []
 
@@ -337,7 +344,7 @@ export default class MmuMixin extends Mixins(BaseMixin) {
                 endlessSpoolGroup: null,
             }
 
-            if (this.gate === gateIndex) {
+            if (this.mmuGate === gateIndex) {
                 return {
                     ...base,
                     filamentName: active?.filament?.name ?? 'No active spool',
@@ -528,10 +535,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
     /*
      * Miscellaneous
      */
-
-    gateText(gate: number): string {
-        return gate === -1 ? '?' : gate === TOOL_GATE_BYPASS ? 'Bypass' : '@' + gate
-    }
 
     toolText(tool: number): string {
         return tool === -1 ? 'T?' : tool === TOOL_GATE_BYPASS ? 'Bypass' : 'T' + tool

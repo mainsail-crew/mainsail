@@ -21,7 +21,7 @@ export interface MmuGateDetails {
     endlessSpoolGroup: number | null
 }
 
-export interface SlicerToolDetails {
+export interface ySlicerToolDetails {
     color: string
     material: string
     temp: number
