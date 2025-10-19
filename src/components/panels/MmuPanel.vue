@@ -136,7 +136,7 @@
         <mmu-edit-gate-map-dialog v-model="showEditGateMapDialog" />
         <mmu-edit-ttg-map-dialog v-model="showEditTtgMapDialog" />
         <mmu-recover-state-dialog v-model="showRecoverStateDialog" />
-        <!--<mmu-maintenance-dialog :show-dialog='showMaintenanceDialog' @close='showMaintenanceDialog = false' />-->
+        <mmu-maintenance-dialog v-model="showMaintenanceDialog" />
     </panel>
 </template>
 

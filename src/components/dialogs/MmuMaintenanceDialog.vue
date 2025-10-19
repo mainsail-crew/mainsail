@@ -6,7 +6,7 @@
             card-class="mmu-edit-ttg-map-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="close">
+                <v-btn icon tile @click="showDialog = false">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -17,12 +17,8 @@
 
             <v-card-text>
                 <mmu-maintenance-dialog-actions />
-
-                <!-- PER MMU UNIT CUSTOM CONTROLS -->
                 <mmu-maintenance-dialog-unit v-for="i in numUnits" :key="'unit_' + i" :unit-index="i - 1" />
-
                 <mmu-maintenance-dialog-leds v-for="unit in mmuLedUnits" :key="'mmuLeds_' + unit" :unit-name="unit" />
-
                 <mmu-maintenance-dialog-config />
             </v-card-text>
         </panel>
@@ -31,7 +27,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
 import { mdiCloseThick, mdiWrenchCog } from '@mdi/js'
@@ -41,7 +37,7 @@ export default class MmuMaintenanceStateDialog extends Mixins(BaseMixin, MmuMixi
     mdiCloseThick = mdiCloseThick
     mdiWrenchCog = mdiWrenchCog
 
-    @Prop({ required: true }) readonly showDialog!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
     get mmuLedUnits() {
         return Object.keys(this.$store.state.printer)
@@ -49,10 +45,6 @@ export default class MmuMaintenanceStateDialog extends Mixins(BaseMixin, MmuMixi
             .map((key) => {
                 return key.slice(9)
             })
-    }
-
-    close() {
-        this.$emit('close')
     }
 }
 </script>
