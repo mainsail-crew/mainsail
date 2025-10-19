@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="showDialog" width="600" persistent :fullscreen="isMobile">
         <panel
-            :title="$t('Panels.MmuPanel.RecoverStateTitle')"
+            :title="$t('Panels.MmuPanel.RecoverState')"
             :icon="mdiCogRefresh"
             card-class="mmu-recover-state-dialog"
             :margin-bottom="false">
@@ -11,76 +11,44 @@
                 </v-btn>
             </template>
 
-            <v-card-subtitle>
-                {{ $t('Panels.MmuPanel.MmuRecoverDialog.Intro') }}
-            </v-card-subtitle>
-
             <v-card-text>
-                <v-row class="fixed-height">
-                    <v-col class="col-1" />
-                    <v-col class="col-5 d-flex justify-center">
-                        <v-row class="d-flex flex-row">
-                            <v-col class="d-flex justify-center flex-column">
-                                <span class="settings-row-title">Tool</span>
-                                <span class="settings-row-subtitle">
-                                    {{ $t('Panels.MmuPanel.MmuRecoverDialog.SetTool') }}
-                                </span>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                    <v-col class="col-5 d-flex justify-end align-center">
-                        <v-select
-                            v-model="selectedTool"
-                            :items="toolsList"
-                            :error-messages="toolErrorMessage"
-                            outlined
-                            dense />
-                    </v-col>
-                </v-row>
-                <v-divider class="my-2"></v-divider>
-                <v-row class="fixed-height">
-                    <v-col class="col-1" />
-                    <v-col class="col-5 d-flex justify-center">
-                        <v-row class="d-flex flex-row">
-                            <v-col class="d-flex justify-center flex-column">
-                                <span class="settings-row-title">Gate</span>
-                                <span class="settings-row-subtitle">
-                                    {{ $t('Panels.MmuPanel.MmuRecoverDialog.SetGate') }}
-                                </span>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                    <v-col class="col-5 d-flex justify-end align-center">
-                        <v-select
-                            v-model="selectedGate"
-                            :items="gatesList"
-                            :error-messages="gateErrorMessage"
-                            outlined
-                            dense />
-                    </v-col>
-                </v-row>
-                <v-divider class="my-2"></v-divider>
-                <v-row class="fixed-height">
-                    <v-col class="col-1" />
-                    <v-col class="col-5 d-flex justify-center">
-                        <v-row class="d-flex flex-row">
-                            <v-col class="d-flex justify-center flex-column">
-                                <span class="settings-row-title">Filament Position</span>
-                                <span class="settings-row-subtitle">
-                                    {{ $t('Panels.MmuPanel.MmuRecoverDialog.FilamentLoaded') }}
-                                </span>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                    <v-col class="col-5 d-flex justify-end align-center">
-                        <v-select
-                            v-model="selectedPos"
-                            :items="posList"
-                            :error-messages="posErrorMessage"
-                            outlined
-                            dense />
-                    </v-col>
-                </v-row>
+                <p>{{ $t('Panels.MmuPanel.MmuRecoverDialog.Intro') }}</p>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Panels.MmuPanel.MmuRecoverDialog.Tool')"
+                    :sub-title="$t('Panels.MmuPanel.MmuRecoverDialog.ToolDescription')">
+                    <v-select
+                        v-model="localTool"
+                        :items="toolsList"
+                        :error-messages="toolErrorMessage"
+                        outlined
+                        :hide-details="toolErrorMessage.length === 0"
+                        dense />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Panels.MmuPanel.MmuRecoverDialog.Gate')"
+                    :sub-title="$t('Panels.MmuPanel.MmuRecoverDialog.GateDescription')">
+                    <v-select
+                        v-model="localGate"
+                        :items="gatesList"
+                        :error-messages="gateErrorMessage"
+                        outlined
+                        :hide-details="gateErrorMessage.length === 0"
+                        dense />
+                </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Panels.MmuPanel.MmuRecoverDialog.FilamentPosition')"
+                    :sub-title="$t('Panels.MmuPanel.MmuRecoverDialog.FilamentPositionDescription')">
+                    <v-select
+                        v-model="localFilamentPos"
+                        :items="posList"
+                        :error-messages="posErrorMessage"
+                        outlined
+                        :hide-details="posErrorMessage.length === 0"
+                        dense />
+                </settings-row>
             </v-card-text>
 
             <v-card-actions>
@@ -96,201 +64,160 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Mixins, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { TOOL_GATE_BYPASS, TOOL_GATE_UNKNOWN } from '@/components/mixins/mmu'
-import Panel from '@/components/ui/Panel.vue'
+import MmuMixin, {
+    FILAMENT_POS_LOADED,
+    FILAMENT_POS_UNKNOWN,
+    FILAMENT_POS_UNLOADED,
+    GATE_UNKNOWN,
+    TOOL_GATE_BYPASS,
+    TOOL_GATE_UNKNOWN,
+} from '@/components/mixins/mmu'
 import { mdiCloseThick, mdiCogRefresh } from '@mdi/js'
 
-@Component({
-    components: { Panel },
-})
+@Component
 export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     mdiCloseThick = mdiCloseThick
     mdiCogRefresh = mdiCogRefresh
 
-    @Prop({ required: true }) readonly showDialog!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
-    private localGate: number = -1
-    private localTool: number = -1
-    private localFilamentPos: number = -1
+    localGate = GATE_UNKNOWN
+    localTool = TOOL_GATE_UNKNOWN
+    localFilamentPos = FILAMENT_POS_UNKNOWN
 
-    @Watch('showDialog')
-    onShowDialogChanged(newValue: boolean): void {
-        if (newValue) {
-            this.localGate = this.mmuGate
-            this.localTool = this.mmuTool
-            this.localFilamentPos = this.filamentPos
-        }
-    }
+    get toolsList() {
+        const tools = []
 
-    get selectedTool(): string {
-        if (this.localTool === TOOL_GATE_UNKNOWN) {
-            return 'Unknown'
-        } else if (this.localTool === TOOL_GATE_BYPASS) {
-            return 'Bypass'
-        }
-        return `T${this.localTool}`
-    }
-
-    set selectedTool(newTool: string) {
-        const index = this.toolsList.findIndex((item) => item === newTool)
-        if (index === this.numGates) {
-            this.localTool = TOOL_GATE_BYPASS
-        } else {
-            this.localTool = index
-        }
-    }
-
-    get toolsList(): string[] {
-        const tools: string[] = []
         for (let i = 0; i < this.numGates; i++) {
-            tools.push(`T${i}`)
+            tools.push({ text: `T${i}`, value: i })
         }
-        if (this.hasBypass) tools.push('Bypass')
+
+        if (this.hasBypass) {
+            tools.push({ text: this.$t('Panels.MmuPanel.Bypass').toString(), value: TOOL_GATE_BYPASS })
+        }
+
         return tools
     }
 
-    get toolErrorMessage(): string {
+    get toolErrorMessage() {
+        const messages = []
+
         if (this.localTool === TOOL_GATE_UNKNOWN) {
-            return this.$t('Panels.MmuPanel.MmuRecoverDialog.NoTool').toString()
+            messages.push(this.$t('Panels.MmuPanel.MmuRecoverDialog.NoTool').toString())
         }
+
         if (this.localGate === TOOL_GATE_BYPASS && this.localTool !== TOOL_GATE_BYPASS) {
-            return this.$t('Panels.MmuPanel.MmuRecoverDialog.GateBypass').toString()
+            messages.push(this.$t('Panels.MmuPanel.MmuRecoverDialog.GateBypass').toString())
         }
-        return ''
+
+        return messages
     }
 
-    get selectedGate(): string {
-        if (this.localGate === TOOL_GATE_UNKNOWN) {
-            return 'Unknown'
-        } else if (this.localGate === TOOL_GATE_BYPASS) {
-            return 'Bypass'
-        }
-        return `${this.gateIndexText(this.localGate)}`
-    }
+    get gatesList() {
+        const list = []
 
-    set selectedGate(newGate: string) {
-        const index = this.gatesList.findIndex((item) => item === newGate)
-        if (index === this.numGates) {
-            this.localGate = TOOL_GATE_BYPASS
-        } else {
-            this.localGate = index
-        }
-    }
-
-    get gatesList(): string[] {
-        const gates: string[] = []
         for (let gate = 0; gate < this.numGates; gate++) {
-            gates.push(this.gateIndexText(gate))
+            list.push({ text: this.gateIndexText(gate), value: gate })
         }
-        if (this.hasBypass) gates.push('Bypass')
-        return gates
+
+        if (this.hasBypass) {
+            list.push({ text: this.$t('Panels.MmuPanel.Bypass'), value: TOOL_GATE_BYPASS })
+        }
+
+        return list
     }
 
-    get gateErrorMessage(): string {
+    get gateErrorMessage() {
+        const messages = []
+
         if (this.localGate === TOOL_GATE_UNKNOWN) {
-            return this.$t('Panels.MmuPanel.MmuRecoverDialog.NoGate').toString()
+            messages.push(this.$t('Panels.MmuPanel.MmuRecoverDialog.NoGate').toString())
         }
+
         if (this.localTool === TOOL_GATE_BYPASS && this.localGate !== TOOL_GATE_BYPASS) {
-            return this.$t('Panels.MmuPanel.MmuRecoverDialog.ToolBypass').toString()
+            messages.push(this.$t('Panels.MmuPanel.MmuRecoverDialog.ToolBypass').toString())
         }
+
         if (this.localGate >= 0 && this.ttgMap[this.localGate] !== this.localTool) {
             const msg = this.$t('Panels.MmuPanel.MmuRecoverDialog.Remap', { tool: `T${this.localTool}` }).toString()
-            return `${this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString()} ${msg}`
+            messages.push(`${this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString()} ${msg}`)
         }
-        return ''
+
+        return messages
     }
 
-    private gateIndexText(gateIndex: number): string {
-        const num_units = this.$store.state.printer?.mmu_machine?.num_units
-        if (num_units > 1) {
-            for (let i = 0; i < num_units; i++) {
-                const unitRef = `unit_${i}`
-                const unit = this.$store.state.printer?.mmu_machine?.[unitRef]
-                if (i > 0 && gateIndex >= unit.first_gate && gateIndex < unit.first_gate + unit.num_gates) {
-                    return `${gateIndex} (unit #${i + 1})`
-                }
-            }
-        }
-        return `${gateIndex}`
-    }
-
-    get selectedPos(): string {
-        if (this.localFilamentPos === this.FILAMENT_POS_UNLOADED) {
-            return 'UNLOADED'
-        } else if (this.localFilamentPos === this.FILAMENT_POS_LOADED) {
-            return 'LOADED'
-        }
-        return 'UNKNOWN'
-    }
-
-    set selectedPos(newPos: string) {
-        if (newPos === 'UNLOADED') {
-            this.localFilamentPos = this.FILAMENT_POS_UNLOADED
-        } else if (newPos === 'LOADED') {
-            this.localFilamentPos = this.FILAMENT_POS_LOADED
-        } else {
-            this.localFilamentPos = this.FILAMENT_POS_UNKNOWN
-        }
-    }
-
-    get posList(): string[] {
-        return ['UNKNOWN', 'UNLOADED', 'LOADED']
+    get posList() {
+        return [
+            { text: this.$t('Panels.MmuPanel.MmuRecoverDialog.Unknown').toString(), value: FILAMENT_POS_UNKNOWN },
+            { text: this.$t('Panels.MmuPanel.MmuRecoverDialog.Unloaded').toString(), value: FILAMENT_POS_UNLOADED },
+            { text: this.$t('Panels.MmuPanel.MmuRecoverDialog.Loaded').toString(), value: FILAMENT_POS_LOADED },
+        ]
     }
 
     get posErrorMessage(): string {
-        if (this.localFilamentPos === this.FILAMENT_POS_UNKNOWN) {
+        if (this.localFilamentPos === FILAMENT_POS_UNKNOWN) {
             return `${this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString()} ${this.$t('Panels.MmuPanel.MmuRecoverDialog.NoPosition').toString()}`
         }
         return ''
     }
 
-    get okDisabled(): boolean {
-        let tError =
-            this.toolErrorMessage !== '' &&
-            !this.toolErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString())
-        let gError =
-            this.gateErrorMessage !== '' &&
-            !this.gateErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString())
-        let pError =
-            this.posErrorMessage !== '' &&
-            !this.posErrorMessage.startsWith(this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString())
-        return tError || gError || pError
+    get okDisabled() {
+        const warningPrefix = this.$t('Panels.MmuPanel.MmuRecoverDialog.WarningPrefix').toString()
+        const messages = [...this.toolErrorMessage, ...this.gateErrorMessage, ...this.posErrorMessage]
+
+        return messages.filter((msg) => !msg.startsWith(warningPrefix)).length > 0
+    }
+
+    get numUnits(): number {
+        return this.$store.state.printer?.mmu_machine?.num_units ?? 1
+    }
+
+    gateIndexText(gateIndex: number) {
+        if (this.numUnits <= 1) return `${gateIndex}`
+
+        for (let i = 0; i < this.numUnits; i++) {
+            const unit = this.getMmuMachineUnit(i)
+            if (!unit) continue
+
+            if (i > 0 && gateIndex >= unit.first_gate && gateIndex < unit.first_gate + unit.num_gates) {
+                return `${gateIndex} (unit #${i + 1})`
+            }
+        }
+
+        return `${gateIndex}`
     }
 
     close() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
     commit() {
-        let cmd = `MMU_RECOVER TOOL=${this.localTool} GATE=${this.localGate}`
-        if (this.localFilamentPos === this.FILAMENT_POS_UNLOADED) {
-            cmd += ' LOADED=0'
-        } else if (this.localFilamentPos === this.FILAMENT_POS_LOADED) {
-            cmd += ' LOADED=1'
+        const cmdParts = ['MMU_RECOVER']
+
+        cmdParts.push(`TOOL=${this.localTool}`)
+        cmdParts.push(`GATE=${this.localGate}`)
+
+        if ([FILAMENT_POS_UNLOADED, FILAMENT_POS_LOADED].includes(this.localFilamentPos)) {
+            cmdParts.push(`LOADED=${this.localFilamentPos === FILAMENT_POS_LOADED ? 1 : 0}`)
         }
-        this.doSend(cmd)
+
+        this.doSend(cmdParts.join(' '))
         this.close()
+    }
+
+    @Watch('showDialog', { immediate: true })
+    onShowDialogChanged(newValue: boolean): void {
+        if (!newValue) return
+
+        this.localGate = this.mmuGate
+        this.localTool = this.mmuTool
+        this.localFilamentPos = this.filamentPos
+
+        if (![FILAMENT_POS_UNLOADED, FILAMENT_POS_LOADED].includes(this.localFilamentPos)) {
+            this.localFilamentPos = FILAMENT_POS_UNKNOWN
+        }
     }
 }
 </script>
-
-<style scoped>
-.settings-row-title {
-    display: block;
-    width: 100%;
-    font-weight: bold;
-}
-
-.settings-row-subtitle {
-    display: block;
-    font-size: 0.8em;
-    line-height: 1.3;
-    margin-top: 3px;
-}
-
-.fixed-height {
-    min-height: 100px;
-}
-</style>

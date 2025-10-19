@@ -131,6 +131,19 @@ export const MmuTtgMap_GROUP_SPACING = 12
 export const MmuTtgMap_MAP_SPACE = 80
 export const MmuTtgMap_LEADER = 10
 
+export const FILAMENT_POS_UNKNOWN = -1
+export const FILAMENT_POS_UNLOADED = 0 // Parked in gate
+export const FILAMENT_POS_HOMED_GATE = 1 // Homed at either gate or gear sensor (currently assumed mutually exclusive sensors)
+export const FILAMENT_POS_START_BOWDEN = 2 // Point of fast load portion
+export const FILAMENT_POS_IN_BOWDEN = 3 // Some unknown position in the bowden
+export const FILAMENT_POS_END_BOWDEN = 4 // End of fast load portion
+export const FILAMENT_POS_HOMED_ENTRY = 5 // Homed at entry sensor
+export const FILAMENT_POS_HOMED_EXTRUDER = 6 // Collision homing case at extruder gear entry
+export const FILAMENT_POS_EXTRUDER_ENTRY = 7 // Past extruder gear entry
+export const FILAMENT_POS_HOMED_TS = 8 // Homed at toolhead sensor
+export const FILAMENT_POS_IN_EXTRUDER = 9 // In extruder past toolhead sensor
+export const FILAMENT_POS_LOADED = 10 // Homed to nozzle
+
 @Component({})
 export default class MmuMixin extends Mixins(BaseMixin) {
     get hasMmu() {
@@ -289,20 +302,8 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return (this.mmu?.filament_position ?? 0).toFixed(1)
     }
 
-    readonly FILAMENT_POS_UNKNOWN: number = -1
-    readonly FILAMENT_POS_UNLOADED: number = 0 // Parked in gate
-    readonly FILAMENT_POS_HOMED_GATE: number = 1 // Homed at either gate or gear sensor (currently assumed mutually exclusive sensors)
-    readonly FILAMENT_POS_START_BOWDEN: number = 2 // Point of fast load portion
-    readonly FILAMENT_POS_IN_BOWDEN: number = 3 // Some unknown position in the bowden
-    readonly FILAMENT_POS_END_BOWDEN: number = 4 // End of fast load portion
-    readonly FILAMENT_POS_HOMED_ENTRY: number = 5 // Homed at entry sensor
-    readonly FILAMENT_POS_HOMED_EXTRUDER: number = 6 // Collision homing case at extruder gear entry
-    readonly FILAMENT_POS_EXTRUDER_ENTRY: number = 7 // Past extruder gear entry
-    readonly FILAMENT_POS_HOMED_TS: number = 8 // Homed at toolhead sensor
-    readonly FILAMENT_POS_IN_EXTRUDER: number = 9 // In extruder past toolhead sensor
-    readonly FILAMENT_POS_LOADED: number = 10 // Homed to nozzle
     get filamentPos(): number {
-        return this.mmu?.filament_pos ?? this.FILAMENT_POS_UNKNOWN
+        return this.mmu?.filament_pos ?? FILAMENT_POS_UNKNOWN
     }
 
     readonly DIRECTION_LOAD: number = 1

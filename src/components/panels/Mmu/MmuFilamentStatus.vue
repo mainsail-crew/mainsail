@@ -118,7 +118,7 @@
                 stroke-linejoin: round;
                 stroke-width: 0;
                 font-family: Roboto;
-                font-size: 16;
+                font-size: 16px;
             ">
             <g v-if="hasSensor('mmu_pre_gate')">
                 <circle cx="258" cy="50" r="8" style="stroke-width: 1" :class="sensorClass('mmu_pre_gate')" />
@@ -222,10 +222,25 @@
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { TOOL_GATE_BYPASS } from '@/components/mixins/mmu'
+import MmuMixin, {
+    FILAMENT_POS_END_BOWDEN,
+    FILAMENT_POS_EXTRUDER_ENTRY,
+    FILAMENT_POS_HOMED_ENTRY,
+    FILAMENT_POS_HOMED_EXTRUDER,
+    FILAMENT_POS_HOMED_GATE,
+    FILAMENT_POS_HOMED_TS,
+    FILAMENT_POS_IN_BOWDEN,
+    FILAMENT_POS_IN_EXTRUDER,
+    FILAMENT_POS_LOADED,
+    FILAMENT_POS_START_BOWDEN,
+    FILAMENT_POS_UNLOADED,
+    TOOL_GATE_BYPASS,
+} from '@/components/mixins/mmu'
 
 @Component({})
 export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
+    FILAMENT_POS_END_BOWDEN = FILAMENT_POS_END_BOWDEN
+
     @Prop({ default: 0.7 }) readonly animationTime!: number
 
     private filamentRectHeight: number = 0
@@ -295,19 +310,19 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
         if (this.mmuGate === TOOL_GATE_BYPASS) {
             // Bypass use case places more emphasis on sensors
             switch (filamentPos) {
-                case this.FILAMENT_POS_EXTRUDER_ENTRY:
+                case FILAMENT_POS_EXTRUDER_ENTRY:
                     pos = this.POSITIONS['before-toolhead']
                     break
 
-                case this.FILAMENT_POS_HOMED_TS:
+                case FILAMENT_POS_HOMED_TS:
                     pos = this.POSITIONS['toolhead']
                     break
 
-                case this.FILAMENT_POS_IN_EXTRUDER:
+                case FILAMENT_POS_IN_EXTRUDER:
                     pos = this.POSITIONS['cooling-tube']
                     break
 
-                case this.FILAMENT_POS_LOADED:
+                case FILAMENT_POS_LOADED:
                     pos = this.POSITIONS['nozzle-start']
                     break
 
@@ -333,7 +348,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
 
         // Normal MMU use case leveraging state machine
         switch (filamentPos) {
-            case this.FILAMENT_POS_UNLOADED:
+            case FILAMENT_POS_UNLOADED:
                 if (this.isSensorTriggered('mmu_gear')) {
                     pos = this.POSITIONS['after-gear']
                 } else if (this.isSensorTriggered('mmu_pre_gate')) {
@@ -343,7 +358,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
                 }
                 break
 
-            case this.FILAMENT_POS_HOMED_GATE:
+            case FILAMENT_POS_HOMED_GATE:
                 if (this.configGateHomingEndstop === 'mmu_gear') {
                     pos = this.POSITIONS['gear']
                 } else if (this.configGateHomingEndstop === 'mmu_gate') {
@@ -355,7 +370,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
                 }
                 break
 
-            case this.FILAMENT_POS_START_BOWDEN:
+            case FILAMENT_POS_START_BOWDEN:
                 if (this.bowdenProgress >= 0) {
                     pos = this.POSITIONS['start-bowden'] + (this.BOWDEN_RANGE * this.bowdenProgress) / 100
                 } else {
@@ -363,7 +378,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
                 }
                 break
 
-            case this.FILAMENT_POS_IN_BOWDEN:
+            case FILAMENT_POS_IN_BOWDEN:
                 if (this.bowdenProgress >= 0) {
                     pos = this.POSITIONS['start-bowden'] + (this.BOWDEN_RANGE * this.bowdenProgress) / 100
                 } else {
@@ -371,7 +386,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
                 }
                 break
 
-            case this.FILAMENT_POS_END_BOWDEN:
+            case FILAMENT_POS_END_BOWDEN:
                 if (
                     this.configGateHomingEndstop === 'none' ||
                     (this.hasSensor('toolhead') && this.isSensorEnabled('toolhead') && !this.configExtruderForceHoming)
@@ -383,23 +398,23 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
                 }
                 break
 
-            case this.FILAMENT_POS_HOMED_ENTRY:
+            case FILAMENT_POS_HOMED_ENTRY:
                 pos = this.POSITIONS['extruder']
                 break
 
-            case this.FILAMENT_POS_HOMED_EXTRUDER:
+            case FILAMENT_POS_HOMED_EXTRUDER:
                 pos = this.POSITIONS['extruder-entrance']
                 break
 
-            case this.FILAMENT_POS_EXTRUDER_ENTRY:
+            case FILAMENT_POS_EXTRUDER_ENTRY:
                 pos = this.POSITIONS['before-toolhead']
                 break
 
-            case this.FILAMENT_POS_HOMED_TS:
+            case FILAMENT_POS_HOMED_TS:
                 pos = this.POSITIONS['toolhead']
                 break
 
-            case this.FILAMENT_POS_IN_EXTRUDER:
+            case FILAMENT_POS_IN_EXTRUDER:
                 pos = this.POSITIONS['cooling-tube']
                 if (
                     this.hasSensor('toolhead') &&
@@ -410,11 +425,11 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
                 }
                 break
 
-            case this.FILAMENT_POS_LOADED:
+            case FILAMENT_POS_LOADED:
                 pos = this.POSITIONS['nozzle-start']
                 break
 
-            default: // this.FILAMENT_POS_UNKNOWN
+            default: // FILAMENT_POS_UNKNOWN
                 pos = this.POSITIONS['unknown']
         }
 
@@ -490,7 +505,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     get encoderClass(): string {
         let eClass = ''
         // TODO: Need to separate encoder runout disable from general availability (like other sensors)
-        if (this.filamentPos === this.FILAMENT_POS_UNLOADED) eClass = 'sensor-disabled'
+        if (this.filamentPos === FILAMENT_POS_UNLOADED) eClass = 'sensor-disabled'
         eClass = this.encoderPos ? 'sensor-triggered' : 'sensor-open'
         return this.$vuetify.theme.dark ? eClass + '-dark-theme' : eClass + '-light-theme'
     }
@@ -503,38 +518,38 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
 
     get homedToEncoder(): boolean {
         if (this.filamentDirection === this.DIRECTION_LOAD) {
-            return this.configGateHomingEndstop === 'encoder' && this.filamentPos === this.FILAMENT_POS_START_BOWDEN
+            return this.configGateHomingEndstop === 'encoder' && this.filamentPos === FILAMENT_POS_START_BOWDEN
         }
-        return this.configGateHomingEndstop === 'encoder' && this.filamentPos === this.FILAMENT_POS_START_BOWDEN
+        return this.configGateHomingEndstop === 'encoder' && this.filamentPos === FILAMENT_POS_START_BOWDEN
     }
 
     get homedToGear(): boolean {
-        return this.configGateHomingEndstop === 'mmu_gear' && this.filamentPos === this.FILAMENT_POS_HOMED_GATE
+        return this.configGateHomingEndstop === 'mmu_gear' && this.filamentPos === FILAMENT_POS_HOMED_GATE
     }
 
     get homedToGate(): boolean {
-        return this.configGateHomingEndstop === 'mmu_gate' && this.filamentPos === this.FILAMENT_POS_HOMED_GATE
+        return this.configGateHomingEndstop === 'mmu_gate' && this.filamentPos === FILAMENT_POS_HOMED_GATE
     }
 
     get homedToExtruder(): boolean {
-        return this.filamentPos === this.FILAMENT_POS_HOMED_ENTRY
+        return this.filamentPos === FILAMENT_POS_HOMED_ENTRY
     }
 
     get homedToExtruderEntrance(): boolean {
-        return this.filamentPos === this.FILAMENT_POS_HOMED_EXTRUDER
+        return this.filamentPos === FILAMENT_POS_HOMED_EXTRUDER
     }
 
     get homedToToolhead(): boolean {
-        return this.filamentPos === this.FILAMENT_POS_HOMED_TS
+        return this.filamentPos === FILAMENT_POS_HOMED_TS
     }
 
     get upperNozzleFull(): boolean {
-        return this.filamentPos === this.FILAMENT_POS_LOADED || !!this.varsFilamentRemaining
+        return this.filamentPos === FILAMENT_POS_LOADED || !!this.varsFilamentRemaining
     }
 
     get lowerNozzleFull(): boolean {
         return (
-            this.filamentPos === this.FILAMENT_POS_LOADED ||
+            this.filamentPos === FILAMENT_POS_LOADED ||
             !!this.varsFilamentRemaining ||
             !!this.varsFilamentRemainingColor
         )
