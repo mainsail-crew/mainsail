@@ -223,6 +223,10 @@
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin, {
+    ACTION_CUTTING_FILAMENT,
+    ACTION_CUTTING_TIP,
+    ACTION_FORMING_TIP,
+    ACTION_PURGING,
     FILAMENT_POS_END_BOWDEN,
     FILAMENT_POS_EXTRUDER_ENTRY,
     FILAMENT_POS_HOMED_ENTRY,
@@ -240,6 +244,9 @@ import MmuMixin, {
 @Component({})
 export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     FILAMENT_POS_END_BOWDEN = FILAMENT_POS_END_BOWDEN
+    ACTION_CUTTING_FILAMENT = ACTION_CUTTING_FILAMENT
+    ACTION_CUTTING_TIP = ACTION_CUTTING_TIP
+    ACTION_PURGING = ACTION_PURGING
 
     @Prop({ default: 0.7 }) readonly animationTime!: number
 
@@ -292,7 +299,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     @Watch('action')
     onActionChanged(action: string): void {
         // Action being performed
-        if (action === this.ACTION_FORMING_TIP) {
+        if (action === ACTION_FORMING_TIP) {
             this.tipFormingClass = 'form-tip-effect'
         } else {
             if (this.tipFormingClass) {
