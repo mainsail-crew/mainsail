@@ -206,11 +206,11 @@
             <use v-if="isGripped" ref="grip" xlink:href="#filament-grip" transform="scale(.1) translate(1900, 420)" />
         </transition>
 
-        <use v-if="action === ACTION_CUTTING_FILAMENT" ref="cut" xlink:href="#sissors" class="cut1-effect" />
-        <use v-if="action === ACTION_CUTTING_TIP" ref="cutTip" xlink:href="#sissors" class="cut2-effect" />
+        <use v-if="mmuAction === ACTION_CUTTING_FILAMENT" ref="cut" xlink:href="#sissors" class="cut1-effect" />
+        <use v-if="mmuAction === ACTION_CUTTING_TIP" ref="cutTip" xlink:href="#sissors" class="cut2-effect" />
 
         <use
-            v-if="action === ACTION_PURGING"
+            v-if="mmuAction === ACTION_PURGING"
             ref="poop"
             xlink:href="#blob"
             class="blob-effect"

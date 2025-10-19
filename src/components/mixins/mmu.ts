@@ -144,6 +144,20 @@ export const FILAMENT_POS_HOMED_TS = 8 // Homed at toolhead sensor
 export const FILAMENT_POS_IN_EXTRUDER = 9 // In extruder past toolhead sensor
 export const FILAMENT_POS_LOADED = 10 // Homed to nozzle
 
+export const ACTION_IDLE = 'Idle'
+export const ACTION_LOADING = 'Loading'
+export const ACTION_LOADING_EXTRUDER = 'Loading Ext'
+export const ACTION_UNLOADING = 'Unloading'
+export const ACTION_UNLOADING_EXTRUDER = 'Unloading Ext'
+export const ACTION_FORMING_TIP = 'Forming Tip'
+export const ACTION_CUTTING_TIP = 'Cutting Tip'
+export const ACTION_HEATING = 'Heating'
+export const ACTION_CHECKING = 'Checking'
+export const ACTION_HOMING = 'Homing'
+export const ACTION_SELECTING = 'Selecting'
+export const ACTION_CUTTING_FILAMENT = 'Cutting Filament'
+export const ACTION_PURGING = 'Purging'
+
 @Component({})
 export default class MmuMixin extends Mixins(BaseMixin) {
     get hasMmu() {
@@ -183,6 +197,14 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
     get endlessSpoolGroups(): number[] {
         return this.mmu?.endless_spool_groups ?? []
+    }
+
+    get mmuAction(): string {
+        return this.mmu?.action ?? ACTION_IDLE
+    }
+
+    get mmuPrintState() {
+        return this.mmu?.print_state ?? ''
     }
 
     /*
@@ -238,13 +260,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
     /*
      * All Happy Hare mmu printer variables
      */
-    get enabled(): boolean {
-        return this.mmu?.enabled ?? false
-    }
-
-    get mmuPrintState(): string {
-        return this.mmu?.print_state ?? ''
-    }
 
     get isPrinting(): boolean {
         return ['started', 'printing'].includes(this.mmuPrintState)
@@ -268,10 +283,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
     get activeFilament(): object[] {
         return this.mmu?.active_filament
-    }
-
-    get numToolchanges(): number {
-        return this.mmu?.num_toolchanges ?? 0
     }
 
     get lastTool(): number {
@@ -372,10 +383,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         }
     }
 
-    get slicerToolMap(): object {
-        return this.mmu?.slicer_tool_map
-    }
-
     toolDetails(toolIndex: number, file?: FileStateGcodefile): SlicerToolDetails {
         const td: Partial<SlicerToolDetails> = {}
 
@@ -428,23 +435,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return td
     }
 
-    readonly ACTION_IDLE: string = 'Idle'
-    readonly ACTION_LOADING: string = 'Loading'
-    readonly ACTION_LOADING_EXTRUDER: string = 'Loading Ext'
-    readonly ACTION_UNLOADING: string = 'Unloading'
-    readonly ACTION_UNLOADING_EXTRUDER: string = 'Unloading Ext'
-    readonly ACTION_FORMING_TIP: string = 'Forming Tip'
-    readonly ACTION_CUTTING_TIP: string = 'Cutting Tip'
-    readonly ACTION_HEATING: string = 'Heating'
-    readonly ACTION_CHECKING: string = 'Checking'
-    readonly ACTION_HOMING: string = 'Homing'
-    readonly ACTION_SELECTING: string = 'Selecting'
-    readonly ACTION_CUTTING_FILAMENT: string = 'Cutting Filament'
-    readonly ACTION_PURGING: string = 'Purging'
-    get action(): string {
-        return this.mmu?.action
-    }
-
     get hasBypass(): boolean {
         return this.mmu?.has_bypass ?? false
     }
@@ -465,10 +455,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
     get endlessSpoolEnabled(): boolean {
         return this.mmu?.endless_spool_enabled
-    }
-
-    get reasonForPause(): string {
-        return this.mmu?.reason_for_pause ?? ''
     }
 
     get extruderFilamentRemaining(): number {
@@ -552,10 +538,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         }
         parts.push('to', label(this.nextTool))
         return parts.join(' ')
-    }
-
-    refreshSpoolmanData() {
-        this.$store.dispatch('server/spoolman/refreshSpools')
     }
 
     async doLoadingSend(gcode: string, loadingKey: string) {
