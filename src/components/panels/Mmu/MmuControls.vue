@@ -1,174 +1,84 @@
 <template>
-    <v-container class="d-flex flex-column">
+    <div class="py-2">
         <v-row dense>
             <v-col cols="6">
-                <v-tooltip top color="secondary">
-                    <template #activator="{ on }">
-                        <v-btn
-                            ref="refBtn"
-                            block
-                            small
-                            color="secondary"
-                            :class="btnClass"
-                            :disabled="
-                                !canSend || [GATE_AVAILABLE, GATE_AVAILABLE_FROM_BUFFER].includes(currentGateStatus)
-                            "
-                            :loading="loadings.includes('mmu_preload')"
-                            v-on="showTooltip ? on : {}"
-                            @click="doLoadingSend('MMU_PRELOAD', 'mmu_preload')">
-                            <v-icon left>{{ mdiDownloadOutline }}</v-icon>
-                            {{ $t('Panels.MmuPanel.ButtonPreload') }}
-                        </v-btn>
-                    </template>
-                    {{ $t('Panels.MmuPanel.ButtonPreload') }}
-                </v-tooltip>
+                <mmu-controls-button
+                    :disabled="btnPreloadDisabled"
+                    :icon="mdiDownloadOutline"
+                    :text="$t('Panels.MmuPanel.ButtonPreload')"
+                    command="MMU_PRELOAD" />
             </v-col>
             <v-col cols="6">
-                <v-tooltip top color="secondary">
-                    <template #activator="{ on }">
-                        <v-btn
-                            block
-                            small
-                            color="secondary"
-                            :class="btnClass"
-                            :disabled="!canSend || [GATE_EMPTY].includes(currentGateStatus)"
-                            :loading="loadings.includes('mmu_eject')"
-                            v-on="showTooltip ? on : {}"
-                            @click="doLoadingSend('MMU_EJECT', 'mmu_eject')">
-                            <v-icon left>{{ mdiEject }}</v-icon>
-                            {{ $t('Panels.MmuPanel.ButtonEject') }}
-                        </v-btn>
-                    </template>
-                    {{ $t('Panels.MmuPanel.ButtonEject') }}
-                </v-tooltip>
+                <mmu-controls-button
+                    :disabled="btnEjectDisabled"
+                    :icon="mdiEject"
+                    :text="$t('Panels.MmuPanel.ButtonEject')"
+                    command="MMU_EJECT" />
             </v-col>
         </v-row>
         <v-row dense>
             <v-col cols="6">
-                <v-tooltip top color="secondary">
-                    <template #activator="{ on }">
-                        <v-btn
-                            block
-                            small
-                            color="secondary"
-                            :class="btnClass"
-                            :disabled="!canSend"
-                            :loading="loadings.includes('mmu_check_gate')"
-                            v-on="showTooltip ? on : {}"
-                            @click="doLoadingSend('MMU_CHECK_GATE', 'mmu_check_gate')">
-                            <v-icon left>{{ mdiCheck }}</v-icon>
-                            {{ $t('Panels.MmuPanel.ButtonCheckGate') }}
-                        </v-btn>
-                    </template>
-                    {{ $t('Panels.MmuPanel.ButtonCheckGate') }}
-                </v-tooltip>
+                <mmu-controls-button
+                    :disabled="!canSend"
+                    :icon="mdiCheck"
+                    :text="$t('Panels.MmuPanel.ButtonCheckGate')"
+                    command="MMU_CHECK_GATE" />
             </v-col>
             <v-col cols="6">
-                <v-tooltip top color="secondary">
-                    <template #activator="{ on }">
-                        <v-btn
-                            block
-                            small
-                            color="secondary"
-                            :class="btnClass"
-                            :disabled="!canSend"
-                            :loading="loadings.includes('mmu_recover')"
-                            v-on="showTooltip ? on : {}"
-                            @click="doLoadingSend('MMU_RECOVER', 'mmu_recover')">
-                            <v-icon left>{{ mdiAutoFix }}</v-icon>
-                            {{ $t('Panels.MmuPanel.ButtonRecover') }}
-                        </v-btn>
-                    </template>
-                    {{ $t('Panels.MmuPanel.ButtonRecover') }}
-                </v-tooltip>
+                <mmu-controls-button
+                    :disabled="!canSend"
+                    :icon="mdiAutoFix"
+                    :text="$t('Panels.MmuPanel.ButtonRecover')"
+                    command="MMU_RECOVER" />
             </v-col>
         </v-row>
         <v-row dense>
-            <v-col cols="2"></v-col>
-            <v-col cols="8">
-                <v-tooltip top color="secondary">
-                    <template #activator="{ on }">
-                        <v-btn
-                            block
-                            small
-                            color="secondary"
-                            :class="btnClass"
-                            :disabled="!canSend || !isMmuPausedAndLocked"
-                            :loading="loadings.includes('mmu_unlock')"
-                            v-on="showTooltip ? on : {}"
-                            @click="doLoadingSend('MMU_UNLOCK', 'mmu_unlock')">
-                            <v-icon left>{{ mdiThermometerPlus }}</v-icon>
-                            {{ $t('Panels.MmuPanel.ButtonUnlock') }}
-                        </v-btn>
-                    </template>
-                    {{ $t('Panels.MmuPanel.ButtonUnlock') }}
-                </v-tooltip>
-            </v-col>
-            <v-col cols="2"></v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="6">
-                <v-tooltip top color="secondary">
-                    <template #activator="{ on }">
-                        <v-btn
-                            large
-                            block
-                            color="secondary"
-                            class="wrap-text-btn"
-                            :class="btnClass"
-                            :disabled="!canSend || filamentPos === FILAMENT_POS_UNLOADED"
-                            :loading="loadings.includes('mmu_unload')"
-                            v-on="showTooltip ? on : {}"
-                            @click="doLoadingSend('MMU_UNLOAD', 'mmu_unload')">
-                            <v-icon left>{{ mdiUpload }}</v-icon>
-                            {{ unloadButtonText }}
-                        </v-btn>
-                    </template>
-                    {{ unloadButtonText }}
-                </v-tooltip>
-            </v-col>
-            <v-col cols="6">
-                <v-tooltip top color="secondary">
-                    <template #activator="{ on }">
-                        <v-btn
-                            large
-                            block
-                            color="secondary"
-                            class="wrap-text-btn"
-                            :class="btnClass"
-                            :disabled="!canSend || filamentPos !== FILAMENT_POS_UNLOADED"
-                            :loading="loadings.includes('mmu_load')"
-                            v-on="showTooltip ? on : {}"
-                            @click="doLoadingSend('MMU_LOAD', 'mmu_load')">
-                            <v-icon left>{{ mdiDownload }}</v-icon>
-                            {{ loadButtonText }}
-                        </v-btn>
-                    </template>
-                    {{ loadButtonText }}
-                </v-tooltip>
+            <v-col cols="8" offset="2">
+                <mmu-controls-button
+                    :disabled="!canSend || !isMmuPausedAndLocked"
+                    :icon="mdiThermometerPlus"
+                    :text="$t('Panels.MmuPanel.ButtonUnlock')"
+                    command="MMU_UNLOCK" />
             </v-col>
         </v-row>
-    </v-container>
+        <v-row dense class="mt-4">
+            <v-col cols="6">
+                <mmu-controls-button
+                    :disabled="btnUnloadDisabled"
+                    :icon="mdiUpload"
+                    :text="btnUnloadText"
+                    size="large"
+                    command="MMU_UNLOAD" />
+            </v-col>
+            <v-col cols="6">
+                <mmu-controls-button
+                    :disabled="btnLoadDisabled"
+                    :icon="mdiDownload"
+                    :text="btnLoadText"
+                    size="large"
+                    command="MMU_LOAD" />
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
-import { Debounce } from 'vue-debounce-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin, {
     TOOL_GATE_BYPASS,
     GATE_AVAILABLE,
     GATE_AVAILABLE_FROM_BUFFER,
-    GATE_EMPTY,
+    FILAMENT_POS_UNLOADED,
+    GATE_UNKNOWN,
 } from '@/components/mixins/mmu'
 import { mdiDownloadOutline, mdiEject, mdiCheck, mdiAutoFix, mdiThermometerPlus, mdiDownload, mdiUpload } from '@mdi/js'
+import MmuControlsButton from '@/components/panels/Mmu/MmuControlsButton.vue'
 
-@Component({})
+@Component({
+    components: { MmuControlsButton },
+})
 export default class MmuControls extends Mixins(BaseMixin, MmuMixin) {
-    GATE_AVAILABLE = GATE_AVAILABLE
-    GATE_AVAILABLE_FROM_BUFFER = GATE_AVAILABLE_FROM_BUFFER
-    GATE_EMPTY = GATE_EMPTY
-
     mdiDownloadOutline = mdiDownloadOutline
     mdiEject = mdiEject
     mdiCheck = mdiCheck
@@ -177,100 +87,38 @@ export default class MmuControls extends Mixins(BaseMixin, MmuMixin) {
     mdiUpload = mdiUpload
     mdiDownload = mdiDownload
 
-    private btnSize: number = 2
-
-    get unloadButtonText() {
-        if (this.mmuGate === TOOL_GATE_BYPASS) return this.$t('Panels.MmuPanel.ButtonUnloadExt')
-        return this.$t('Panels.MmuPanel.ButtonUnload')
-    }
-
-    get loadButtonText() {
-        if (this.mmuGate === TOOL_GATE_BYPASS) return this.$t('Panels.MmuPanel.ButtonLoadExt')
-        return this.$t('Panels.MmuPanel.ButtonLoad')
-    }
-
-    @Debounce(500)
-    checkButtonWidth() {
-        this.$nextTick(() => {
-            const btn = this.$refs.refBtn
-            if (btn) {
-                const width = btn.$el.offsetWidth
-                if (width === 0) {
-                    this.btnSize = 2
-                } else if (width < 95) {
-                    this.btnSize = 0
-                } else if (width < 120) {
-                    this.btnSize = 1
-                } else {
-                    this.btnSize = 2
-                }
-            }
-        })
-    }
-
-    get btnClass(): string[] {
-        const classes = ['base-btn']
-        if (this.btnSize === 0) {
-            classes.push('btn-no-text')
-        } else if (this.btnSize === 1) {
-            classes.push('btn-small-text')
-        }
-        return classes
-    }
-
-    get showTooltip(): boolean {
-        return this.btnSize === 0
-    }
-
     get currentGateStatus(): number {
-        return this.$store.state.printer.mmu?.gate_status?.[this.mmuGate] ?? -1
+        const gateStatus = this.$store.state.printer.mmu?.gate_status ?? null
+
+        return gateStatus?.[this.mmuGate] ?? GATE_UNKNOWN
     }
 
-    get largeFilamentStatus(): boolean {
-        return this.$store.state.gui.view.mmu.largeFilamentStatus
+    get btnPreloadDisabled(): boolean {
+        return !this.canSend || [GATE_AVAILABLE, GATE_AVAILABLE_FROM_BUFFER].includes(this.currentGateStatus)
     }
 
-    @Watch('largeFilamentStatus')
-    onFilamentStatusSizeChange(): void {
-        this.checkButtonWidth()
+    get btnEjectDisabled(): boolean {
+        return !this.canSend || [GATE_AVAILABLE, GATE_AVAILABLE_FROM_BUFFER].includes(this.currentGateStatus)
     }
 
-    mounted() {
-        this.checkButtonWidth()
-        window.addEventListener('resize', this.checkButtonWidth)
+    get btnUnloadDisabled() {
+        return !this.canSend || this.filamentPos === FILAMENT_POS_UNLOADED
     }
 
-    beforeDestroy() {
-        window.removeEventListener('resize', this.checkButtonWidth)
+    get btnUnloadText() {
+        return this.mmuGate === TOOL_GATE_BYPASS
+            ? this.$t('Panels.MmuPanel.ButtonUnloadExt')
+            : this.$t('Panels.MmuPanel.ButtonUnload')
+    }
+
+    get btnLoadDisabled() {
+        return !this.canSend || this.filamentPos !== FILAMENT_POS_UNLOADED
+    }
+
+    get btnLoadText() {
+        return this.mmuGate === TOOL_GATE_BYPASS
+            ? this.$t('Panels.MmuPanel.ButtonLoadExt')
+            : this.$t('Panels.MmuPanel.ButtonLoad')
     }
 }
 </script>
-
-<style scoped>
-.base-btn {
-    max-width: 100%;
-    overflow: hidden;
-}
-
-.wrap-text-btn {
-    min-height: 3em;
-    display: inline-block;
-    white-space: normal;
-}
-
-.btn-small-text {
-    font-size: 0.6em;
-}
-
-.btn-small-text .v-icon {
-    margin-right: 2px;
-}
-
-.btn-no-text {
-    font-size: 0;
-}
-
-.btn-no-text .v-icon {
-    margin-right: 0;
-}
-</style>
