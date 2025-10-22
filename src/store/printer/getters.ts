@@ -350,7 +350,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getLedEffects: (state) => {
         const array: PrinterStateLedEffect[] = []
-        const settings = state.configfile?.settings ?? null
 
         const prefix = 'led_effect '
         const prefixLength = prefix.length
@@ -365,7 +364,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 if (name.startsWith('_')) return
 
                 const ledEffectState = state[prop] ?? {}
-                
+
                 array.push({
                     name,
                     is_enabled: ledEffectState.enabled ?? false,

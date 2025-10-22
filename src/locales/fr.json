@@ -592,6 +592,10 @@
             "Restart": "Redémarrage",
             "ServiceReports": "rapports de {service}"
         },
+        "LedEffectsPanel": {
+            "Headline": "Effets LED",
+            "StopAll": "Arrêter tous les effets"
+        },
         "MachineSettingsPanel": {
             "Headline": "Réglages machine",
             "MotionSettings": {
@@ -604,10 +608,6 @@
         "MacrosPanel": {
             "Headline": "Macros",
             "Send": "envoyer"
-        },
-        "LedEffectsPanel": {
-            "Headline": "Effets LED",
-            "StopAll": "Arrêter tous les effets"
         },
         "MiniconsolePanel": {
             "Autoscroll": "Défilement automatique",
