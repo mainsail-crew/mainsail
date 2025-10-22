@@ -547,6 +547,10 @@
             "Headline": "Makra",
             "Send": "odeslat"
         },
+        "LedEffectsPanel": {
+            "Headline": "LED Efekty",
+            "StopAll": "Zastavit všechny efekty"
+        },
         "MiniconsolePanel": {
             "Headline": "Konzole",
             "HideTemperatures": "Skrýt teploty",

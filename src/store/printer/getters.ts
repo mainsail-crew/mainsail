@@ -12,6 +12,7 @@ import {
     PrinterStateMacro,
     PrinterGetterObject,
     PrinterStateLight,
+    PrinterStateLedEffect,
 } from '@/store/printer/types'
 import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
@@ -345,6 +346,33 @@ export const getters: GetterTree<PrinterState, RootState> = {
         })
 
         return output
+    },
+
+    getLedEffects: (state) => {
+        const array: PrinterStateLedEffect[] = []
+        const settings = state.configfile?.settings ?? null
+
+        const prefix = 'led_effect '
+        const prefixLength = prefix.length
+
+        // Scan all printer state objects for led_effect entries
+        Object.keys(state)
+            .filter((prop) => prop.toLowerCase().startsWith(prefix))
+            .forEach((prop) => {
+                const name = prop.slice(prefixLength)
+
+                // remove effects with a '_' as first char
+                if (name.startsWith('_')) return
+
+                const ledEffectState = state[prop] ?? {}
+                
+                array.push({
+                    name,
+                    is_enabled: ledEffectState.enabled ?? false,
+                })
+            })
+
+        return caseInsensitiveSort(array, 'name')
     },
 
     getAvailableHeaters: (state) => {

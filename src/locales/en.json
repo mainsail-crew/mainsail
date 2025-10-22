@@ -749,6 +749,10 @@
             "Headline": "Macros",
             "Send": "send"
         },
+        "LedEffectsPanel": {
+            "Headline": "LED Effects",
+            "StopAll": "Stop All Effects"
+        },
         "MiniconsolePanel": {
             "Autoscroll": "Autoscroll",
             "Headline": "Console",

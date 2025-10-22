@@ -605,6 +605,10 @@
             "Headline": "Macros",
             "Send": "envoyer"
         },
+        "LedEffectsPanel": {
+            "Headline": "Effets LED",
+            "StopAll": "Arrêter tous les effets"
+        },
         "MiniconsolePanel": {
             "Autoscroll": "Défilement automatique",
             "Headline": "Console",
