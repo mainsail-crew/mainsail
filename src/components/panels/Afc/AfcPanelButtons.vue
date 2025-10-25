@@ -7,7 +7,13 @@
         </template>
         <v-list dense>
             <v-list-item v-for="macro in macros" :key="macro.macroName">
-                <macro-button :macro="macro.macro" :alias="macro.text" :icon="macro.icon" color="" class="w-100" />
+                <macro-button
+                    :macro="macro.macro"
+                    :alias="macro.text"
+                    :icon="macro.icon"
+                    :disabled="macro.disabled"
+                    color=""
+                    class="w-100" />
             </v-list-item>
             <v-list-item>
                 <v-btn class="w-100" small @click="showAfcSettings = true">
@@ -57,7 +63,7 @@ export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
             icon: mdiWrench,
             text: this.$t('Panels.AfcPanel.Calibrate'),
             macroName: 'AFC_CALIBRATION',
-            disabled: false,
+            disabled: this.printerIsPrintingOnly,
         })
 
         const ledState = this.afc.led_state ?? false
