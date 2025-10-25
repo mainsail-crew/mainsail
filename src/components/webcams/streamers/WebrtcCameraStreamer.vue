@@ -128,9 +128,6 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         // setup by the server. But note that older versions of camera-streamer won't return this property.
         let peerConnectionConfig: RTCConfiguration = {
             iceServers: iceResponse.iceServers ?? [],
-            // https://webrtc.org/getting-started/unified-plan-transition-guide
-            // @ts-ignore
-            sdpSemantics: 'unified-plan',
         }
         this.pc = new RTCPeerConnection(peerConnectionConfig)
 
@@ -145,7 +142,14 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         this.pc.onconnectionstatechange = () => this.onConnectionStateChange()
         this.pc.ontrack = (e) => this.onTrack(e)
 
-        await this.pc?.setRemoteDescription(iceResponse)
+        // fix malformed MSID attributes from camera-streamer
+        let sdp = iceResponse.sdp ?? ''
+        sdp = sdp.replace(/a=msid:\s+/g, 'a=msid:stream ')
+
+        await this.pc?.setRemoteDescription({
+            type: iceResponse.type,
+            sdp,
+        })
         const answer = await this.pc.createAnswer()
         await this.pc.setLocalDescription(answer)
 
