@@ -1,9 +1,5 @@
 <template>
-    <svg
-        ref="clogMeter"
-        viewBox="0 0 140 140"
-        preserveAspectRatio="xMidYMid meet"
-        :class="{ 'disabled-clog': encoderDetectionMode === 0 || encoderEnabled === false }">
+    <svg ref="clogMeter" viewBox="0 0 140 140" preserveAspectRatio="xMidYMid meet" :class="svgClasses">
         <g transform="rotate(120 70 70)">
             <circle
                 cx="70"
@@ -12,8 +8,8 @@
                 class="v-progress-circular__underlay"
                 fill="transparent"
                 stroke-width="18"
-                :stroke-dasharray="circumference"
-                :stroke-dashoffset="dialArc"></circle>
+                :stroke-dasharray="CIRCUMFERENCE"
+                :stroke-dashoffset="DIAL_ARC" />
             <circle
                 ref="dialCircle"
                 cx="70"
@@ -22,10 +18,10 @@
                 class="primary-color"
                 fill="transparent"
                 stroke-width="18"
-                :stroke-dasharray="circumference"
+                :stroke-dasharray="CIRCUMFERENCE"
                 :stroke-dashoffset="dashOffset" />
         </g>
-        <g :transform="'rotate(' + headroomRotate + ' 70 70)'">
+        <g :transform="headroomTransform">
             <circle
                 cx="70"
                 cy="70"
@@ -34,7 +30,7 @@
                 fill="transparent"
                 stroke-width="18"
                 opacity="0.4"
-                :stroke-dasharray="circumference"
+                :stroke-dasharray="CIRCUMFERENCE"
                 :stroke-dashoffset="headroomArc" />
         </g>
 
@@ -44,13 +40,13 @@
             :y1="y1MinHeadroom"
             x2="70"
             y2="70"
-            :class="{ 'warning-color': headroomWarning, 'primary-color': !headroomWarning }"
+            :class="minHeadroomLineClasses"
             stroke-width="4"
             stroke-dashoffset="0"
             stroke-dasharray="25,65" />
         <line
-            :x1="x1Start"
-            :y1="y1Start"
+            :x1="X1_START"
+            :y1="Y1_START"
             x2="70"
             y2="70"
             stroke="white"
@@ -58,8 +54,8 @@
             stroke-dashoffset="0"
             stroke-dasharray="24,65" />
         <line
-            :x1="x1End"
-            :y1="y1End"
+            :x1="X1_END"
+            :y1="Y1_END"
             x2="70"
             y2="70"
             class="warning-color"
@@ -86,64 +82,99 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
 
 @Component({})
 export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
-    @Prop({ default: 1 }) readonly rotationTime!: number
+    @Ref('dialCircle') readonly dialCircle!: SVGElement
 
-    private circumference: number = 2 * Math.PI * 50
-    private dialArc: number = this.circumference * (60 / 360)
-    private dashOffset: number = this.circumference
+    ROTATION_TIME = 1
+    CIRCUMFERENCE = 2 * Math.PI * 50
+    DIAL_ARC = this.CIRCUMFERENCE * (60 / 360)
+    X1_START = 70 + 65 * Math.cos((120 * Math.PI) / 180)
+    Y1_START = 70 + 65 * Math.sin((120 * Math.PI) / 180)
+    X1_END = 70 + 65 * Math.cos((60 * Math.PI) / 180)
+    Y1_END = 70 + 65 * Math.sin((60 * Math.PI) / 180)
 
-    private x1Start: number = 70 + 65 * Math.cos((120 * Math.PI) / 180)
-    private y1Start: number = 70 + 65 * Math.sin((120 * Math.PI) / 180)
-    private x1End: number = 70 + 65 * Math.cos((60 * Math.PI) / 180)
-    private y1End: number = 70 + 65 * Math.sin((60 * Math.PI) / 180)
+    get encoderDesiredHeadroom() {
+        return this.encoder?.desired_headroom ?? 0
+    }
 
-    x1MinHeadroom: number = 70 + 66 * Math.cos(((120 + 0) * Math.PI) / 180)
-    y1MinHeadroom: number = 70 + 66 * Math.sin(((120 + 0) * Math.PI) / 180)
-    headroomWarning: boolean = false
+    get encoderDetectionLength() {
+        return this.encoder?.detection_length ?? 0
+    }
+
+    get encoderDetectionMode() {
+        return this.encoder?.detection_mode ?? 0
+    }
+
+    get svgClasses() {
+        return { 'disabled-clog': this.encoderDetectionMode === 0 || !this.encoderEnabled }
+    }
+
+    get headroom() {
+        return this.encoder?.headroom ?? 0
+    }
+
+    get headroomMin() {
+        return this.encoder?.min_headroom ?? 0
+    }
+
+    get headroomWarning() {
+        return this.headroomMin < this.encoderDesiredHeadroom
+    }
+
+    get minHeadroomLineClasses() {
+        return {
+            'warning-color': this.headroomWarning,
+            'primary-color': !this.headroomWarning,
+        }
+    }
 
     get headroomArc(): number {
-        return this.circumference * (1 - (this.encoderDesiredHeadroom / this.encoderDetectionLength) * (300 / 360))
+        return this.CIRCUMFERENCE * (1 - (this.encoderDesiredHeadroom / this.encoderDetectionLength) * (300 / 360))
     }
 
     get headroomRotate(): number {
         return 420 - (this.encoderDesiredHeadroom / this.encoderDetectionLength) * 300
     }
 
-    @Watch('headroom')
-    onHeadroomChanged(newHeadroom: number): void {
-        const clogPercent =
-            (Math.min(Math.max(0, this.encoderDetectionLength - newHeadroom), this.encoderDetectionLength) /
-                this.encoderDetectionLength) *
-            100
-        const offset = ((100 - (clogPercent * 300) / 360) / 100) * this.circumference
-        this.animateMeter(offset)
+    get headroomTransform(): string {
+        return `rotate(${this.headroomRotate} 70 70)`
     }
 
-    @Watch('min_headroom')
-    onMinHeadroomChanged(newMinHeadroom: number): void {
-        const clogPercent =
-            (Math.min(Math.max(0, this.encoderDetectionLength - newMinHeadroom), this.encoderDetectionLength) /
+    get clogPercent() {
+        return (
+            (Math.min(Math.max(0, this.encoderDetectionLength - this.headroom), this.encoderDetectionLength) /
                 this.encoderDetectionLength) *
             100
-        const angle = clogPercent * 3
-        this.x1MinHeadroom = 70 + 66 * Math.cos(((120 + angle) * Math.PI) / 180)
-        this.y1MinHeadroom = 70 + 66 * Math.sin(((120 + angle) * Math.PI) / 180)
-        this.headroomWarning = newMinHeadroom < this.encoderDesiredHeadroom
+        )
     }
 
-    private animateMeter(newOffset: number) {
-        const circle = this.$refs.dialCircle as SVGElement
-        const currentOffset = parseFloat(getComputedStyle(circle).strokeDashoffset) ?? this.circumference
-        const difference = Math.abs(currentOffset - newOffset)
-        const duration = (difference / this.circumference) * this.rotationTime
-        circle.style.transition = `stroke-dashoffset ${duration}s ease-out`
-        this.dashOffset = newOffset
+    get clogAngle() {
+        return this.clogPercent * 3
+    }
+
+    get x1MinHeadroom() {
+        return 70 + 66 * Math.cos(((120 + this.clogAngle) * Math.PI) / 180)
+    }
+
+    get y1MinHeadroom() {
+        return 70 + 66 * Math.sin(((120 + this.clogAngle) * Math.PI) / 180)
+    }
+
+    get dashOffset() {
+        return ((100 - (this.clogPercent * 300) / 360) / 100) * this.CIRCUMFERENCE
+    }
+
+    @Watch('dashOffset', { immediate: true })
+    onDashOffsetChanged(newValue: number) {
+        const currentOffset = parseFloat(getComputedStyle(this.dialCircle).strokeDashoffset) ?? this.CIRCUMFERENCE
+        const difference = Math.abs(currentOffset - newValue)
+        const duration = (difference / this.CIRCUMFERENCE) * this.ROTATION_TIME
+        this.dialCircle.style.transition = `stroke-dashoffset ${duration}s ease-out`
     }
 }
 </script>

@@ -222,26 +222,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.encoder?.enabled
     }
 
-    get headroom(): number {
-        return this.encoder?.headroom
-    }
-
-    get min_headroom(): number {
-        return this.encoder?.min_headroom
-    }
-
-    get encoderDesiredHeadroom(): number {
-        return this.encoder?.desired_headroom
-    }
-
-    get encoderDetectionLength(): number {
-        return this.encoder?.detection_length
-    }
-
-    get encoderDetectionMode(): number {
-        return this.encoder?.detection_mode
-    }
-
     get encoderFlowRate(): number {
         return this.encoder?.flow_rate
     }
