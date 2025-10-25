@@ -3,60 +3,59 @@
         <defs>
             <g
                 id="sync-feedback"
-                style="stroke: var(--color-outline); stroke-linecap: round; stroke-linejoin: round; fill: none">
-                <path d="M18,9,13.78,3.39a1,1,0,0,0-1.56,0L8,9" style="stroke-width: 1; stroke-opacity: 0.8"></path>
-                <path d="M13,8.24,18,15H15H8Z" style="stroke-width: 2"></path>
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="stroke: var(--color-outline)">
+                <path d="M18,9,13.78,3.39a1,1,0,0,0-1.56,0L8,9" stroke-width="1" stroke-opacity="0.8" />
+                <path d="M13,8.24,18,15H15H8Z" stroke-width="2" />
             </g>
 
             <g
                 id="sissors"
-                style="stroke: var(--color-outline); fill: none; stroke-linecap: round; stroke-linejoin: round">
+                fill="none"
+                style="stroke: var(--color-outline); stroke-linecap: round; stroke-linejoin: round">
                 <path
                     d="M8.8,7.72c-.6,1.21-2.34,1.64-3.89,1S2.6,6.48,3.2,5.28s2.34-1.64,3.89-1S9.4,6.52,8.8,7.72Zm-3.89,1L21,16M7.09,19.68c-1.55.68-3.29.25-3.89-1s.17-2.73,1.71-3.4,3.29-.25,3.89,1S8.63,19,7.09,19.68ZM21,8,4.91,15.32"
-                    style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2"></path>
-                <line x1="31" y1="12.5" x2="44" y2="12.5" style="stroke-width: 1; stroke-dasharray: 2, 2" />
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2" />
+                <line x1="31" y1="12.5" x2="44" y2="12.5" stroke-width="1" stroke-dasharray="2,2" />
             </g>
 
             <g id="sync-extruder">
                 <g
-                    style="
-                        stroke: none;
-                        stroke-width: 2;
-                        stroke-dasharray: none;
-                        stroke-linecap: round;
-                        stroke-linejoin: round;
-                        stroke-miterlimit: 4;
-                    ">
-                    <rect style="fill: rgb(131, 148, 150)" x="145" y="506" width="710" height="256" />
-                    <rect style="fill: rgb(147, 161, 161)" x="324" y="506" width="355" height="256" />
-                    <rect style="fill: rgb(101, 123, 131)" x="274" y="364" width="455" height="142" />
-                    <rect style="fill: rgb(88, 110, 117)" x="181" y="222" rx="28" ry="28" width="639" height="142" />
-                    <rect style="fill: rgb(88, 110, 117)" x="181" y="108" width="639" height="142" />
-                    <path style="fill: rgb(88, 110, 117)" d="m 322 762 h 355 l -118 142 h -118 z" />
+                    stroke="none"
+                    stroke-width="2"
+                    stroke-dasharray="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-miterlimit="4">
+                    <rect fill="rgb(131, 148, 150)" x="145" y="506" width="710" height="256" />
+                    <rect fill="rgb(147, 161, 161)" x="324" y="506" width="355" height="256" />
+                    <rect fill="rgb(101, 123, 131)" x="274" y="364" width="455" height="142" />
+                    <rect fill="rgb(88, 110, 117)" x="181" y="222" rx="28" ry="28" width="639" height="142" />
+                    <rect fill="rgb(88, 110, 117)" x="181" y="108" width="639" height="142" />
+                    <path fill="rgb(88, 110, 117)" d="m 322 762 h 355 l -118 142 h -118 z" />
                 </g>
                 <g transform="matrix(23.2058 0 0 23.2058 329.7195 325.9517)">
                     <path
-                        style="
-                            stroke: rgb(0, 0, 0);
-                            stroke-width: 0;
-                            stroke-dasharray: none;
-                            stroke-linecap: butt;
-                            stroke-dashoffset: 0;
-                            stroke-linejoin: miter;
-                            stroke-miterlimit: 4;
-                            is-custom-font: none;
-                            font-file-url: none;
-                            fill: rgb(254, 162, 54);
-                            fill-rule: nonzero;
-                            opacity: 1;
-                        "
+                        fill="rgb(254, 162, 54)"
+                        fill-rule="nonzero"
+                        stroke="rgb(0, 0, 0)"
+                        stroke-width="0"
+                        stroke-dasharray="none"
+                        stroke-dashoffset="miter"
+                        stroke-linecap="butt"
+                        stroke-linejoin="miter"
+                        stroke-miterlimit="4"
                         vector-effect="non-scaling-stroke"
                         transform=" translate(-15.4288, -16.4198)"
-                        stroke-linecap="round"
                         d="M 25.032 26.16 c 2.884 -2.883 4.184 -6.74 3.928 -10.51 c -1.511 0.013 -3.021 0.021 -4.531 0.034 c 0.254 2.599 -0.603 5.287 -2.594 7.277 c -3.535 3.533 -9.263 3.533 -12.796 0 c -3.534 -3.533 -3.534 -9.26 0 -12.794 c 3.015 -3.016 7.625 -3.446 11.109 -1.314 c -1.181 1.167 -2.57 2.549 -2.57 2.549 c -1 1.062 0.016 1.766 0.69 1.77 h 8.828 c 0.338 0 0.611 -0.274 0.612 -0.612 V 3.804 c 0.041 -0.825 -0.865 -1.591 -1.756 -0.7 c 0 0 -1.495 1.48 -2.533 2.509 C 18.112 1.736 10.634 2.175 5.841 6.967 c -5.3 5.3 -5.3 13.892 0 19.193 C 11.141 31.459 19.733 31.459 25.032 26.16 z" />
                 </g>
             </g>
-            <g id="blob" style="stroke-linecap: round; stroke-linejoin: round">
+            <g id="blob" stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="0,0 -1,1 1,1 0,0" stroke-width="4" vector-effect="non-scaling-stroke" />
                 <polygon
                     points="-0.1,0.3 -0.5,0.7 0.3,0.7 -0.1,0.3"
@@ -66,36 +65,25 @@
                     opacity="0.3"
                     vector-effect="non-scaling-stroke" />
             </g>
-            <g id="filament-grip" style="stroke-linecap: round; stroke-linejoin: round">
+            <g id="filament-grip" stroke-linecap="round" stroke-linejoin="round">
                 <path
                     fill="rgb(131,148,150)"
-                    d="M368,368 V376 C368,380.41,364.41,384,360,384 H344 V360 H360 C364.41,360,368,363.59,368,368 Z M368,408 V416 C368,420.41,364.41,424,360,424 C293.65,424,340.73,424,312,424 C307.59,424,304,420.41,304,416 V408 C304,403.59,307.59,400,312,400 C326.91,400,345.09,400,360,400 C364.41,400,368,403.59,368,408 Z M248.97,461.66 L242.34,455.03 C237.81,450.5,231.78,448,225.38,448 H160 V368 H193.38 C199.79,368,205.82,365.5,210.35,360.97 L248.97,322.35 C250.49,320.84,252.5,320,254.63,320 H320 C324.42,320,328,323.59,328,328 V384 C322.21,384,317.79,384,312,384 C307.59,384,304,380.42,304,376 V350.61 C304,346.19,300.43,342.61,296,342.61 S288,346.19,288,350.61 V357.2 L262.56,389 C261.04,390.91,258.75,392,256.31,392 H217.05 C212.63,392,209.05,395.58,209.05,400 S212.63,408,217.05,408 H256.31 C263.64,408,270.47,404.72,275.06,399 L288.74,381.9 C289.71,385.74,291.62,389.21,294.2,392.06 C290.39,396.31,288,401.86,288,408 V416 C288,427.06,295.56,436.31,305.76,439.08 C304.65,441.84,304,444.85,304,448.01 V456.01 C304,458.82,304.58,461.49,305.48,464.01 H254.63 C252.49,464.01,250.48,463.17,248.97,461.67 Z M368,456 C368,460.41,364.41,464,360,464 H328 C323.59,464,320,460.41,320,456 V448 C320,443.59,323.59,440,328,440 H360 C364.41,440,368,443.59,368,448 V456 Z M368,328 V336 C368,340.41,364.41,344,360,344 H344 V328 C344,325.18,343.42,322.51,342.53,320 H360 C364.41,320,368,323.59,368,328 Z"></path>
+                    d="M368,368 V376 C368,380.41,364.41,384,360,384 H344 V360 H360 C364.41,360,368,363.59,368,368 Z M368,408 V416 C368,420.41,364.41,424,360,424 C293.65,424,340.73,424,312,424 C307.59,424,304,420.41,304,416 V408 C304,403.59,307.59,400,312,400 C326.91,400,345.09,400,360,400 C364.41,400,368,403.59,368,408 Z M248.97,461.66 L242.34,455.03 C237.81,450.5,231.78,448,225.38,448 H160 V368 H193.38 C199.79,368,205.82,365.5,210.35,360.97 L248.97,322.35 C250.49,320.84,252.5,320,254.63,320 H320 C324.42,320,328,323.59,328,328 V384 C322.21,384,317.79,384,312,384 C307.59,384,304,380.42,304,376 V350.61 C304,346.19,300.43,342.61,296,342.61 S288,346.19,288,350.61 V357.2 L262.56,389 C261.04,390.91,258.75,392,256.31,392 H217.05 C212.63,392,209.05,395.58,209.05,400 S212.63,408,217.05,408 H256.31 C263.64,408,270.47,404.72,275.06,399 L288.74,381.9 C289.71,385.74,291.62,389.21,294.2,392.06 C290.39,396.31,288,401.86,288,408 V416 C288,427.06,295.56,436.31,305.76,439.08 C304.65,441.84,304,444.85,304,448.01 V456.01 C304,458.82,304.58,461.49,305.48,464.01 H254.63 C252.49,464.01,250.48,463.17,248.97,461.67 Z M368,456 C368,460.41,364.41,464,360,464 H328 C323.59,464,320,460.41,320,456 V448 C320,443.59,323.59,440,328,440 H360 C364.41,440,368,443.59,368,448 V456 Z M368,328 V336 C368,340.41,364.41,344,360,344 H344 V328 C344,325.18,343.42,322.51,342.53,320 H360 C364.41,320,368,323.59,368,328 Z" />
                 <path
                     :fill="currentGateColor"
-                    d="M300,250 L350,250 L350,310 L300,310 Z M300,475 L350,475 L350,520 L300,520 Z"></path>
+                    d="M300,250 L350,250 L350,310 L300,310 Z M300,475 L350,475 L350,520 L300,520 Z" />
             </g>
         </defs>
 
-        <rect
-            x="150"
-            y="30"
-            width="265"
-            height="130"
-            :class="$vuetify.theme.dark ? 'zone-background-dark-theme' : 'zone-background-light-theme'"
-            rx="10"
-            ry="10" />
-        <rect
-            x="150"
-            y="333"
-            width="265"
-            height="66"
-            :class="$vuetify.theme.dark ? 'zone-background-dark-theme' : 'zone-background-light-theme'"
-            rx="10"
-            ry="10" />
-        <g style="stroke: var(--color-outline); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1">
+        <rect x="150" y="30" width="265" height="130" :class="zoneBackgroundClass" rx="10" ry="10" />
+        <rect x="150" y="333" width="265" height="66" :class="zoneBackgroundClass" rx="10" ry="10" />
+        <g style="stroke: var(--color-outline)">
             <path
+                fill="none"
                 d="M242 25 L242 405 L249 411 L251 411 L258 405 L258 25"
-                style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1"></path>
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1" />
         </g>
 
         <rect
@@ -113,13 +101,9 @@
             :fill="lowerNozzleColor" />
 
         <g
-            style="
-                stroke: var(--color-outline);
-                stroke-linejoin: round;
-                stroke-width: 0;
-                font-family: Roboto;
-                font-size: 16px;
-            ">
+            style="stroke: var(--color-outline); font-family: 'Roboto', sans-serif; font-size: 16px"
+            stroke-linejoin="round"
+            stroke-width="0">
             <g v-if="hasSensor('mmu_pre_gate')">
                 <circle cx="258" cy="50" r="8" style="stroke-width: 1" :class="sensorClass('mmu_pre_gate')" />
                 <text x="278" y="55" :class="{ 'text-disabled': !isSensorEnabled('mmu_pre_gate') }">Pre-Gate</text>
@@ -132,7 +116,7 @@
             </g>
 
             <g v-if="hasSensor('mmu_gate')">
-                <circle cx="258" cy="110" r="8" style="stroke-width: 1" :class="sensorClass('mmu_gate')" />
+                <circle cx="258" cy="110" r="8" stroke-width="1" :class="sensorClass('mmu_gate')" />
                 <text x="278" y="115" :class="{ 'text-disabled': !isSensorEnabled('mmu_gate') }">
                     {{ gateSensorName }}
                 </text>
@@ -142,7 +126,7 @@
             </g>
 
             <g v-if="hasEncoder">
-                <circle cx="258" cy="140" r="8" style="stroke-width: 1" :class="encoderClass" />
+                <circle cx="258" cy="140" r="8" stroke-width="1" :class="encoderClass" />
                 <path d="M257 135 L261 140 L257 145" stroke-width="2" fill="none" />
                 <text x="278" y="145">Encoder</text>
                 <text x="345" y="145" font-size="11px">{{ encoderPosText }}</text>
@@ -277,6 +261,10 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     } as const
 
     readonly BOWDEN_RANGE = 173 as const
+
+    get zoneBackgroundClass() {
+        return this.$vuetify.theme.dark ? 'zone-background-dark-theme' : 'zone-background-light-theme'
+    }
 
     @Watch('bowdenProgress')
     onBowdenProgress(): void {
