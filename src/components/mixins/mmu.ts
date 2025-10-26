@@ -1,7 +1,6 @@
 import Component from 'vue-class-component'
 import { W3C_COLORS } from '@/plugins/w3c'
 import type { FileStateGcodefile } from '@/store/files/types'
-import type { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import type { MmuGateDetails, SlicerToolDetails } from '@/store/mmu/types'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
@@ -101,13 +100,13 @@ export interface Mmu {
     bowden_progress: number
     espooler_active: 'rewind' | 'assist' | 'off'
     sensors: {
-        mmu_pre_gate: boolean
-        mmu_gear: boolean
-        mmu_gate: false
-        filament_compression: boolean
-        filament_tension: boolean
-        extruder: boolean
-        toolhead: boolean
+        mmu_pre_gate?: boolean
+        mmu_gear?: boolean
+        mmu_gate?: boolean
+        filament_compression?: boolean
+        filament_tension?: boolean
+        extruder?: boolean
+        toolhead?: boolean
     }
 }
 
@@ -168,7 +167,7 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.$store.state.printer.mmu ?? undefined
     }
 
-    get hasEncoder(): boolean {
+    get hasMmuEncoder(): boolean {
         return 'encoder' in (this.mmu ?? {})
     }
 
@@ -205,6 +204,18 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
     get mmuPrintState() {
         return this.mmu?.print_state ?? ''
+    }
+
+    get mmuSensors() {
+        return this.mmu?.sensors ?? undefined
+    }
+
+    hasMmuSensor(sensorName: keyof Mmu['sensors']) {
+        return this.mmuSensors !== undefined && sensorName in this.mmuSensors
+    }
+
+    getMmuSensor(sensorName: keyof Mmu['sensors']): boolean | undefined {
+        return this.mmuSensors ? this.mmuSensors[sensorName] : undefined
     }
 
     /*
@@ -425,10 +436,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
     //return this.mmu?.sync_feedback_state
 
-    get syncFeedbackEnabled(): boolean {
-        return this.mmu?.sync_feedback_enabled
-    }
-
     get clogDetectionEnabled(): boolean {
         return this.mmu?.clog_detection_enabled
     }
@@ -443,10 +450,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
     get spoolmanSupport() {
         return this.mmu?.spoolman_support ?? 'off'
-    }
-
-    get sensors(): { [key: string]: boolean | null } {
-        return this.mmu?.sensors ?? []
     }
 
     get espoolerActive(): 'rewind' | 'assist' | 'off' {
@@ -476,10 +479,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.$store.state.printer.configfile.config.mmu?.extruder_homing_endstop
     }
 
-    get configExtruderForceHoming(): boolean {
-        return (this.$store.state.printer.configfile.config.mmu?.extruder_force_homing ?? 0) === 1
-    }
-
     get varsCalibrationBowdenLengths(): number[] {
         return this.$store.state.printer.save_variables?.variables?.mmu_calibration_bowden_lengths
     }
@@ -502,10 +501,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
     /*
      * Miscellaneous
      */
-
-    toolText(tool: number): string {
-        return tool === -1 ? 'T?' : tool === TOOL_GATE_BYPASS ? 'Bypass' : 'T' + tool
-    }
 
     // Empty string if nothing to report
     get toolchangeText(): string {

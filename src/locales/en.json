@@ -803,6 +803,8 @@
             "EditGateMapTitle": "Edit Filaments (Gate Map)",
             "EditTtgMap": "Map Tools",
             "EditTtgMapTitle": "Map Tools / Filaments (Edit TTG Map)",
+            "Encoder": "Encoder",
+            "Extruder": "Extruder",
             "GateMapDialog": {
                 "BadTemperature": "Temperature out of range",
                 "ChooseSpool": "Choose Spool",
@@ -823,6 +825,7 @@
                 "SpoolmanPull": "Spoolman support is in \"PULL\" mode. Local editing of most gate properties is disabled. Assign spool/gate mapping in spoolman DB directly or use the MMU_SPOOLMAN command",
                 "Temperature": "Temperature"
             },
+            "Gear": "Gear",
             "Headline": "Mmu",
             "LargeFilamentStatus": "Large Filament Status",
             "MmuMaintenance": "MMU Maintenance",
@@ -896,6 +899,7 @@
             "NoActiveSpool": "No active spool",
             "NoSpoolId": "No spool ID",
             "Ok": "Ok",
+            "PreGate": "Pre-Gate",
             "RecoverFilamentPosition": "Recover Filament Position",
             "RecoverState": "Fix MMU State",
             "Save": "Save",
@@ -909,6 +913,7 @@
                 "MultiColor": "This looks like a Multi Material Single Extruder print using {numTools} tools. You should probably review tool mapping",
                 "SingleColor": "This looks like a single color print but you don't have the bypass selected on your MMU. You may want to check the chosen tool"
             },
+            "Toolhead": "Toolhead",
             "ToolMapping": "Tool Mapping",
             "ToolTip": {
                 "Color": "Color",

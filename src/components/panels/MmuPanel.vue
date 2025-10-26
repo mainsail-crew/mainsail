@@ -203,7 +203,7 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
     // END new code
 
     get showClogDetection(): boolean {
-        return this.hasEncoder && this.$store.state.gui.view.mmu.showClogDetection
+        return this.hasMmuEncoder && this.$store.state.gui.view.mmu.showClogDetection
     }
 
     get showTtgMap(): boolean {
