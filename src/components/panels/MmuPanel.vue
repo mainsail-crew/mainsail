@@ -212,18 +212,16 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
         this.doSend(`MMU_SELECT GATE=${gateIndex}`)
     }
 
-    // END new code
-
-    get showClogDetection(): boolean {
+    get showClogDetection() {
         return this.hasMmuEncoder && this.$store.state.gui.view.mmu.showClogDetection
     }
 
-    get showTtgMap(): boolean {
-        return this.$store.state.gui.view.mmu.showTtgMap
+    get showTtgMap() {
+        return this.$store.state.gui.view.mmu.showTtgMap ?? true
     }
 
-    get showDetails(): boolean {
-        return this.$store.state.gui.view.mmu.showDetails
+    get showDetails() {
+        return this.$store.state.gui.view.mmu.showDetails ?? true
     }
 
     get slicerToolMap() {
@@ -234,7 +232,7 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
         return this.slicerToolMap?.total_toolchanges ?? 0
     }
 
-    get numToolchanges(): number {
+    get numToolchanges() {
         return this.mmu?.num_toolchanges ?? 0
     }
 
@@ -258,7 +256,7 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
         return this.mmu?.next_tool ?? TOOL_GATE_UNKNOWN
     }
 
-    get statusText(): string {
+    get statusText() {
         if (['complete', 'error', 'cancelled', 'started'].includes(this.mmuPrintState)) {
             return capitalize(this.mmuPrintState)
         }
