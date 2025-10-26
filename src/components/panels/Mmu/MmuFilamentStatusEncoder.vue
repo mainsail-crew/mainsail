@@ -13,13 +13,18 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { FILAMENT_POS_START_BOWDEN, FILAMENT_POS_UNLOADED } from '@/components/mixins/mmu'
+import MmuMixin, {
+    DIRECTION_LOAD,
+    DIRECTION_UNKNOWN,
+    FILAMENT_POS_START_BOWDEN,
+    FILAMENT_POS_UNLOADED,
+} from '@/components/mixins/mmu'
 
 @Component
 export default class MmuFilamentStatusEncoder extends Mixins(BaseMixin, MmuMixin) {
     get encoderClass() {
         // TODO: Need to separate encoder runout disable from general availability (like other sensors)
-        if (this.filamentPos === FILAMENT_POS_UNLOADED) return 'sensor-disabled'
+        if (this.mmuFilamentPos === FILAMENT_POS_UNLOADED) return 'sensor-disabled'
 
         return this.encoderPos ? 'sensor-triggered' : 'sensor-open'
     }
@@ -28,12 +33,20 @@ export default class MmuFilamentStatusEncoder extends Mixins(BaseMixin, MmuMixin
         return this.encoderPos < 10000 ? `${this.encoderPos} mm` : `${this.encoderPos}`
     }
 
+    get filamentDirection() {
+        return this.mmu?.filament_direction ?? DIRECTION_UNKNOWN
+    }
+
     get homedToEncoder(): boolean {
-        if (this.filamentDirection === this.DIRECTION_LOAD) {
-            return this.configGateHomingEndstop === 'encoder' && this.filamentPos === FILAMENT_POS_START_BOWDEN
+        if (this.filamentDirection === DIRECTION_LOAD) {
+            return this.configGateHomingEndstop === 'encoder' && this.mmuFilamentPos === FILAMENT_POS_START_BOWDEN
         }
 
-        return this.configGateHomingEndstop === 'encoder' && this.filamentPos === FILAMENT_POS_START_BOWDEN
+        return this.configGateHomingEndstop === 'encoder' && this.mmuFilamentPos === FILAMENT_POS_START_BOWDEN
+    }
+
+    get encoderPos() {
+        return Math.round(this.mmuEncoder?.encoder_pos ?? 0)
     }
 }
 </script>

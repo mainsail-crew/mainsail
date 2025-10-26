@@ -1,37 +1,7 @@
 import Component from 'vue-class-component'
 import { W3C_COLORS } from '@/plugins/w3c'
-import type { FileStateGcodefile } from '@/store/files/types'
-import type { MmuGateDetails, SlicerToolDetails } from '@/store/mmu/types'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-
-export interface MmuMachineUnit {
-    name: string
-    vendor:
-        | '3MS'
-        | 'AngryBeaver'
-        | 'BoxTurtle'
-        | 'EMU'
-        | 'ERCF'
-        | 'HappyHare'
-        | 'KMS'
-        | 'MMX'
-        | 'NightOwl'
-        | 'QuattroBox'
-        | 'Tradrack'
-        | 'VVD'
-    version: string
-    num_gates: number
-    first_gate: number
-    selector_type: 'VirtualSelector' | 'RotarySelector' | 'ServoSelector' | 'LinearSelector'
-    variable_rotation_distances: boolean
-    variable_bowden_lengths: boolean
-    require_bowden_move: boolean
-    filament_always_gripped: boolean
-    has_bypass: boolean
-    multi_gear: boolean
-    environment_sensor: string
-}
 
 export interface Mmu {
     enabled: boolean
@@ -61,7 +31,7 @@ export interface Mmu {
     filament: string
     filament_position: number
     filament_pos: number
-    filament_direction: number
+    filament_direction: typeof DIRECTION_LOAD | typeof DIRECTION_UNKNOWN | typeof DIRECTION_UNLOAD
     pending_spool_id: number
     ttg_map: number[]
     endless_spool_groups: number[]
@@ -84,7 +54,20 @@ export interface Mmu {
         total_toolchanges: number | null
         skip_automap: boolean
     }
-    action: string
+    action:
+        | typeof ACTION_IDLE
+        | typeof ACTION_LOADING
+        | typeof ACTION_LOADING_EXTRUDER
+        | typeof ACTION_UNLOADING
+        | typeof ACTION_UNLOADING_EXTRUDER
+        | typeof ACTION_FORMING_TIP
+        | typeof ACTION_CUTTING_TIP
+        | typeof ACTION_HEATING
+        | typeof ACTION_CHECKING
+        | typeof ACTION_HOMING
+        | typeof ACTION_SELECTING
+        | typeof ACTION_CUTTING_FILAMENT
+        | typeof ACTION_PURGING
     has_bypass: boolean
     sync_drive: boolean
     sync_feedback_enabled: boolean
@@ -108,6 +91,51 @@ export interface Mmu {
         extruder?: boolean
         toolhead?: boolean
     }
+    servo?: 'Up' | 'Down' | 'Move' | 'Unknown'
+    grip?: 'Gripped' | 'Released' | 'Unknown'
+    encoder?: {
+        enabled: boolean
+        encoder_pos: number
+        flow_rate: number
+        detection_mode: typeof DIRECTION_LOAD | typeof DIRECTION_UNKNOWN | typeof DIRECTION_UNLOAD
+        desired_headroom: number
+        detection_length: number
+        headroom: number
+        min_headroom: number
+    }
+}
+
+export interface MmuMachine {
+    num_units: number
+    [key: string]: number | MmuMachineUnit
+}
+
+export interface MmuMachineUnit {
+    name: string
+    vendor:
+        | '3MS'
+        | 'AngryBeaver'
+        | 'BoxTurtle'
+        | 'EMU'
+        | 'ERCF'
+        | 'HappyHare'
+        | 'KMS'
+        | 'MMX'
+        | 'NightOwl'
+        | 'QuattroBox'
+        | 'Tradrack'
+        | 'VVD'
+    version: string
+    num_gates: number
+    first_gate: number
+    selector_type: 'VirtualSelector' | 'RotarySelector' | 'ServoSelector' | 'LinearSelector'
+    variable_rotation_distances: boolean
+    variable_bowden_lengths: boolean
+    require_bowden_move: boolean
+    filament_always_gripped: boolean
+    has_bypass: boolean
+    multi_gear: boolean
+    environment_sensor: string
 }
 
 export const NO_FILAMENT_COLOR = '#808182E3'
@@ -119,6 +147,8 @@ export const GATE_UNKNOWN = -1
 export const GATE_EMPTY = 0
 export const GATE_AVAILABLE = 1 // Available to load from either buffer or spool
 export const GATE_AVAILABLE_FROM_BUFFER = 2
+
+export const UNIT_UNKNOWN = -1
 
 export const FILAMENT_SPEED_OVERRIDE_MIN = 10
 export const FILAMENT_SPEED_OVERRIDE_MAX = 150
@@ -143,6 +173,10 @@ export const FILAMENT_POS_HOMED_TS = 8 // Homed at toolhead sensor
 export const FILAMENT_POS_IN_EXTRUDER = 9 // In extruder past toolhead sensor
 export const FILAMENT_POS_LOADED = 10 // Homed to nozzle
 
+export const DIRECTION_LOAD = 1
+export const DIRECTION_UNKNOWN = 0
+export const DIRECTION_UNLOAD = -1
+
 export const ACTION_IDLE = 'Idle'
 export const ACTION_LOADING = 'Loading'
 export const ACTION_LOADING_EXTRUDER = 'Loading Ext'
@@ -159,46 +193,42 @@ export const ACTION_PURGING = 'Purging'
 
 @Component({})
 export default class MmuMixin extends Mixins(BaseMixin) {
-    get hasMmu() {
-        return 'mmu' in this.$store.state.printer
-    }
-
     get mmu(): Mmu | undefined {
         return this.$store.state.printer.mmu ?? undefined
     }
 
-    get hasMmuEncoder(): boolean {
+    get hasMmuEncoder() {
         return 'encoder' in (this.mmu ?? {})
     }
 
-    get mmuMachine() {
-        return this.$store.state.printer.mmu_machine ?? {}
+    get mmuMachine(): MmuMachine | undefined {
+        return this.$store.state.printer.mmu_machine ?? undefined
     }
 
     get mmuSettings() {
         return this.$store.state.printer.configfile?.settings?.mmu ?? {}
     }
 
-    get numGates(): number {
+    get mmuNumGates() {
         return this.mmu?.num_gates ?? 0
     }
 
-    get spoolWidth(): number {
-        if (this.numGates <= 8) return 56
-        if (this.numGates <= 16) return 48
+    get spoolWidth() {
+        if (this.mmuNumGates <= 8) return 56
+        if (this.mmuNumGates <= 16) return 48
 
         return 40
     }
 
-    get ttgMap(): number[] {
+    get ttgMap() {
         return this.mmu?.ttg_map ?? []
     }
 
-    get endlessSpoolGroups(): number[] {
+    get endlessSpoolGroups() {
         return this.mmu?.endless_spool_groups ?? []
     }
 
-    get mmuAction(): string {
+    get mmuAction() {
         return this.mmu?.action ?? ACTION_IDLE
     }
 
@@ -210,321 +240,52 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmu?.sensors ?? undefined
     }
 
-    hasMmuSensor(sensorName: keyof Mmu['sensors']) {
-        return this.mmuSensors !== undefined && sensorName in this.mmuSensors
+    get mmuEncoder() {
+        return this.mmu?.encoder ?? undefined
     }
 
-    getMmuSensor(sensorName: keyof Mmu['sensors']): boolean | undefined {
-        return this.mmuSensors ? this.mmuSensors[sensorName] : undefined
+    get mmuNumUnits() {
+        return this.mmuMachine?.num_units ?? 1
     }
 
-    /*
-     * Select encoder properties
-     */
-    get encoder() {
-        return this.mmu?.encoder ?? {}
+    get mmuUnit() {
+        return this.mmu?.unit ?? UNIT_UNKNOWN
     }
 
-    get encoderPos(): number {
-        return Math.round(this.encoder?.encoder_pos ?? 0)
-    }
-
-    get encoderEnabled(): boolean {
-        return this.encoder?.enabled
-    }
-
-    get encoderFlowRate(): number {
-        return this.encoder?.flow_rate
-    }
-
-    /*
-     * All Happy Hare mmu_machine printer variables
-     */
-    get numUnits(): number {
-        return this.mmuMachine.num_units ?? 1
-    }
-
-    getMmuMachineUnit(unitIndex: number): MmuMachineUnit | undefined {
-        return (this.mmuMachine?.[`unit_${unitIndex}`] as MmuMachineUnit) ?? undefined
-    }
-
-    /*
-     * All Happy Hare mmu printer variables
-     */
-
-    get isPrinting(): boolean {
-        return ['started', 'printing'].includes(this.mmuPrintState)
-    }
-
-    get isMmuPausedAndLocked(): boolean {
-        return ['pause_locked'].includes(this.mmuPrintState)
-    }
-
-    readonly UNIT_UNKNOWN: number = -1
-    get unit(): number {
-        return this.mmu?.unit ?? this.UNIT_UNKNOWN
-    }
-
-    get mmuGate(): number {
+    get mmuGate() {
         return this.mmu?.gate ?? TOOL_GATE_UNKNOWN
     }
-    get mmuTool(): number {
+
+    get mmuTool() {
         return this.mmu?.tool ?? TOOL_GATE_UNKNOWN
     }
 
-    get activeFilament(): object[] {
-        return this.mmu?.active_filament
-    }
-
-    get lastTool(): number {
-        return this.mmu?.last_tool ?? TOOL_GATE_UNKNOWN
-    }
-
-    get nextTool(): number {
-        return this.mmu?.next_tool ?? TOOL_GATE_UNKNOWN
-    }
-
-    get toolchangePurgeVolue(): number {
-        return this.mmu?.toolchange_purge_volume ?? 0
-    }
-
-    get lastToolchange(): string {
-        return this.mmu?.last_toolchange ?? ''
-    }
-
-    get operation(): string {
-        return this.mmu?.operation ?? ''
-    }
-
-    get filament(): string {
-        return this.mmu?.filament ?? 'Unknown'
-    }
-
-    get filamentPosition(): number {
-        return (this.mmu?.filament_position ?? 0).toFixed(1)
-    }
-
-    get filamentPos(): number {
-        return this.mmu?.filament_pos ?? FILAMENT_POS_UNKNOWN
-    }
-
-    readonly DIRECTION_LOAD: number = 1
-    readonly DIRECTION_UNKNOWN: number = 0
-    readonly DIRECTION_UNLOAD: number = -1
-    get filamentDirection(): number {
-        return this.mmu?.filament_direction
-    }
-
-    get bowdenProgress(): number {
-        return this.mmu?.bowden_progress ?? -1
-    }
-
-    get gateMap(): MmuGateDetails[] {
-        const gateStatus = this.mmu?.gate_status ?? []
-
-        return gateStatus.map((_, index) => this.gateDetails(index))
-    }
-
-    gateDetails(gateIndex: number): MmuGateDetails {
-        const mmu = this.$store.state.printer.mmu
-        const active = this.$store.state.server.spoolman?.active_spool
-
-        const defaults: MmuGateDetails = {
-            index: gateIndex,
-            status: GATE_UNKNOWN,
-            filamentName: 'Unknown',
-            material: 'Unknown',
-            color: this.formColorString(null),
-            temperature: -1,
-            spoolId: -1,
-            speedOverride: 100,
-            endlessSpoolGroup: gateIndex,
-        }
-
-        if (gateIndex === TOOL_GATE_BYPASS) {
-            const base: MmuGateDetails = {
-                ...defaults,
-                endlessSpoolGroup: null,
-            }
-
-            if (this.mmuGate === gateIndex) {
-                return {
-                    ...base,
-                    filamentName: active?.filament?.name ?? 'No active spool',
-                    material: active?.filament?.material ?? 'Unknown',
-                    color: this.formColorString(active?.filament?.color_hex ?? null),
-                    temperature: active?.filament?.settings_extruder_temp ?? -1,
-                    spoolId: active?.id ?? -1,
-                }
-            }
-
-            return base
-        }
-
-        return {
-            ...defaults,
-            status: mmu?.gate_status?.[gateIndex] ?? GATE_UNKNOWN,
-            filamentName: mmu?.gate_filament_name?.[gateIndex] || 'Unknown',
-            material: mmu?.gate_material?.[gateIndex] || 'Unknown',
-            color: this.formColorString(mmu?.gate_color?.[gateIndex] ?? ''),
-            temperature: mmu?.gate_temperature?.[gateIndex] ?? -1,
-            spoolId: mmu?.gate_spool_id?.[gateIndex] ?? -1,
-            speedOverride: mmu?.gate_speed_override?.[gateIndex] ?? 100,
-            endlessSpoolGroup: mmu?.endless_spool_groups?.[gateIndex] ?? defaults.endlessSpoolGroup,
-        }
-    }
-
-    toolDetails(toolIndex: number, file?: FileStateGcodefile): SlicerToolDetails {
-        const td: Partial<SlicerToolDetails> = {}
-
-        // Have file so use metadata
-        if (file) {
-            // Different slicers use extruder/filament colors differently
-            let c1: string[]
-            let c2: string[]
-
-            switch (file.slicer) {
-                case 'OrcaSlicer':
-                case 'BambuStudio':
-                    c1 = file.filament_colors ?? []
-                    c2 = file.extruder_colors ?? []
-                    break
-                case 'SuperSlicer':
-                default: // Assume PrusaSlicer
-                    c1 = file.extruder_colors ?? []
-                    c2 = file.filament_colors ?? []
-                    break
-            }
-            const colors = c1.length === 0 || c1.every((str) => str === '') ? c2 : c1
-            td.color = colors.length > toolIndex ? this.formColorString(colors[toolIndex]) : this.formColorString('')
-
-            // This is just a string so split
-            const materials = file.filament_type ?? ''
-            const processedMaterials = materials ? materials.split(/[,;]/).map((element) => element.trim()) : []
-            td.material = processedMaterials[toolIndex] || 'Unknown'
-
-            const temps = file.filament_temps ?? []
-            td.temp = temps.length > toolIndex ? temps[toolIndex] : -1
-
-            // This is just a string so split
-            const names = file.filament_name ?? ''
-            const processedNames = names
-                ? names.split(/[,;]/).map((element) => element.trim().replace(/^["']|["']$/g, ''))
-                : []
-            td.name = processedNames[toolIndex] || 'Unknown'
-
-            const referencedTools = file.referenced_tools ?? []
-            td.inUse = referencedTools?.includes(toolIndex) ?? false
-        } else {
-            // Use Happy Hare's slicer_tool_map
-            td.color = this.formColorString(this.mmu?.slicer_tool_map?.tools?.[toolIndex]?.color ?? '')
-            td.material = this.mmu?.slicer_tool_map?.tools?.[toolIndex]?.material || 'Unknown'
-            td.temp = this.mmu?.slicer_tool_map?.tools?.[toolIndex]?.temp ?? -1
-            td.name = this.mmu?.slicer_tool_map?.tools?.[toolIndex]?.name || 'Unknown'
-            td.inUse = this.mmu?.slicer_tool_map?.tools?.[toolIndex]?.in_use || false
-        }
-        return td
-    }
-
-    get hasBypass(): boolean {
+    get mmuHasBypass() {
         return this.mmu?.has_bypass ?? false
     }
 
-    get syncDrive(): boolean {
-        return this.mmu?.sync_drive
+    get mmuFilamentPos() {
+        return this.mmu?.filament_pos ?? FILAMENT_POS_UNKNOWN
     }
 
-    //return this.mmu?.sync_feedback_state
-
-    get clogDetectionEnabled(): boolean {
-        return this.mmu?.clog_detection_enabled
+    get mmuSyncDrive() {
+        return this.mmu?.sync_drive ?? false
     }
 
-    get endlessSpoolEnabled(): boolean {
-        return this.mmu?.endless_spool_enabled
-    }
-
-    get extruderFilamentRemaining(): number {
-        return this.mmu?.extruder_filament_remaining
-    }
-
-    get spoolmanSupport() {
+    get mmuSpoolmanSupport() {
         return this.mmu?.spoolman_support ?? 'off'
     }
 
-    get espoolerActive(): 'rewind' | 'assist' | 'off' {
-        return this.mmu?.espooler_active ?? 'off'
-    }
-
-    /*
-     * Optional printer variables based on selector type
-     */
-    get servo(): string {
+    get mmuServo() {
         return this.mmu?.servo ?? 'Unknown'
     }
 
-    get grip(): string {
+    get mmuGrip() {
         return this.mmu?.grip ?? 'Unknown'
     }
 
-    /*
-     * Selective Happy Hare configuration parameters
-     */
-
     get configGateHomingEndstop(): string {
-        return this.$store.state.printer.configfile.config.mmu?.gate_homing_endstop
-    }
-
-    get configExtruderHomingEndstop(): string {
-        return this.$store.state.printer.configfile.config.mmu?.extruder_homing_endstop
-    }
-
-    get varsCalibrationBowdenLengths(): number[] {
-        return this.$store.state.printer.save_variables?.variables?.mmu_calibration_bowden_lengths
-    }
-
-    get varsFilamentRemaining(): string {
-        return this.$store.state.printer.save_variables?.variables?.mmu_state_filament_remaining ?? 0
-    }
-
-    get varsFilamentRemainingColor(): string {
-        const color = this.$store.state.printer.save_variables?.variables?.mmu_state_filament_remaining_color ?? ''
-        if (color) return this.formColorString(color)
-        return color
-    }
-
-    readonly AUTOMAP_OPTIONS: string[] = ['none', 'filament_name', 'material', 'color', 'closest_color', 'spool_id']
-    get macroVarsAutomapStrategy(): string {
-        return this.$store.state.printer['gcode_macro _MMU_SOFTWARE_VARS']?.automap_strategy ?? 'none'
-    }
-
-    /*
-     * Miscellaneous
-     */
-
-    // Empty string if nothing to report
-    get toolchangeText(): string {
-        if (this.nextTool === TOOL_GATE_UNKNOWN) return ''
-
-        const label = (t: number) => (t === TOOL_GATE_BYPASS ? 'Bypass' : `T${t}`)
-        const parts: string[] = ['Changing tool']
-        if (this.lastTool !== TOOL_GATE_UNKNOWN) {
-            parts.push('from', label(this.lastTool))
-        }
-        parts.push('to', label(this.nextTool))
-        return parts.join(' ')
-    }
-
-    async doLoadingSend(gcode: string, loadingKey: string) {
-        await this.$store.dispatch('socket/addLoading', { name: loadingKey })
-        this.doSend(gcode)
-        await new Promise((resolve) => setTimeout(resolve, 500))
-        await this.$store.dispatch('socket/removeLoading', { name: loadingKey })
-    }
-
-    doSend(gcode: string) {
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
+        return this.mmuSettings?.gate_homing_endstop
     }
 
     get canSend(): boolean {
@@ -537,7 +298,24 @@ export default class MmuMixin extends Mixins(BaseMixin) {
      * Helper functions
      */
 
-    formColorString(color: string | null): string {
+    getMmuMachineUnit(unitIndex: number): MmuMachineUnit | undefined {
+        return (this.mmuMachine?.[`unit_${unitIndex}`] as MmuMachineUnit) ?? undefined
+    }
+
+    hasMmuSensor(sensorName: keyof Mmu['sensors']) {
+        return this.mmuSensors !== undefined && sensorName in this.mmuSensors
+    }
+
+    getMmuSensor(sensorName: keyof Mmu['sensors']) {
+        return this.mmuSensors ? this.mmuSensors[sensorName] : undefined
+    }
+
+    doSend(gcode: string) {
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
+    }
+
+    formColorString(color: string | null) {
         if (!color) return NO_FILAMENT_COLOR
 
         const namedColor = W3C_COLORS.find((c) => c.name === color.toLowerCase())
@@ -555,7 +333,7 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return normalized.toUpperCase()
     }
 
-    getLuminance({ r, g, b }: { r: number; g: number; b: number }): number {
+    getLuminance({ r, g, b }: { r: number; g: number; b: number }) {
         const a = [r, g, b].map(function (v) {
             v /= 255
             return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)

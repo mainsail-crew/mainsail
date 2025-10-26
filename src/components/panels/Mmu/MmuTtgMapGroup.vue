@@ -29,7 +29,7 @@ export default class MmuTtgMapLine extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get textPositionY() {
-        return MmuTtgMap_START_Y + this.numGates * MmuTtgMap_VERTICAL_SPACING + 2
+        return MmuTtgMap_START_Y + this.mmuNumGates * MmuTtgMap_VERTICAL_SPACING + 2
     }
 
     get path() {

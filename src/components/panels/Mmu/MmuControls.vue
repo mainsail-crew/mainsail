@@ -87,6 +87,10 @@ export default class MmuControls extends Mixins(BaseMixin, MmuMixin) {
     mdiUpload = mdiUpload
     mdiDownload = mdiDownload
 
+    get isMmuPausedAndLocked() {
+        return this.mmuPrintState === 'pause_locked'
+    }
+
     get currentGateStatus(): number {
         const gateStatus = this.$store.state.printer.mmu?.gate_status ?? null
 
@@ -102,7 +106,7 @@ export default class MmuControls extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get btnUnloadDisabled() {
-        return !this.canSend || this.filamentPos === FILAMENT_POS_UNLOADED
+        return !this.canSend || this.mmuFilamentPos === FILAMENT_POS_UNLOADED
     }
 
     get btnUnloadText() {
@@ -112,7 +116,7 @@ export default class MmuControls extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get btnLoadDisabled() {
-        return !this.canSend || this.filamentPos !== FILAMENT_POS_UNLOADED
+        return !this.canSend || this.mmuFilamentPos !== FILAMENT_POS_UNLOADED
     }
 
     get btnLoadText() {

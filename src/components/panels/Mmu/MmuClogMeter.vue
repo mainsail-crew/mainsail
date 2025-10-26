@@ -84,7 +84,7 @@
 <script lang="ts">
 import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin from '@/components/mixins/mmu'
+import MmuMixin, { DIRECTION_UNKNOWN } from '@/components/mixins/mmu'
 
 @Component({})
 export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
@@ -99,15 +99,23 @@ export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
     Y1_END = 70 + 65 * Math.sin((60 * Math.PI) / 180)
 
     get encoderDesiredHeadroom() {
-        return this.encoder?.desired_headroom ?? 0
+        return this.mmuEncoder?.desired_headroom ?? 0
     }
 
     get encoderDetectionLength() {
-        return this.encoder?.detection_length ?? 0
+        return this.mmuEncoder?.detection_length ?? 0
     }
 
     get encoderDetectionMode() {
-        return this.encoder?.detection_mode ?? 0
+        return this.mmuEncoder?.detection_mode ?? DIRECTION_UNKNOWN
+    }
+
+    get encoderEnabled() {
+        return this.mmuEncoder?.enabled ?? false
+    }
+
+    get encoderFlowRate() {
+        return this.mmuEncoder?.flow_rate ?? 0
     }
 
     get svgClasses() {
@@ -115,11 +123,11 @@ export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get headroom() {
-        return this.encoder?.headroom ?? 0
+        return this.mmuEncoder?.headroom ?? 0
     }
 
     get headroomMin() {
-        return this.encoder?.min_headroom ?? 0
+        return this.mmuEncoder?.min_headroom ?? 0
     }
 
     get headroomWarning() {

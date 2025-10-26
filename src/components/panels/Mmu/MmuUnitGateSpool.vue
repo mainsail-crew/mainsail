@@ -140,7 +140,7 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
         if (this.status === GATE_EMPTY && !(this.showUnavailableSpoolColor && this.filamentColor !== NO_FILAMENT_COLOR))
             return 0
 
-        if (!this.spool || this.spoolmanSupport === 'off') return -1
+        if (!this.spool || this.mmuSpoolmanSupport === 'off') return -1
 
         // Pull live from spoolman and calculate percentage
         const remaining = this.spool.remaining_weight ?? null
@@ -216,8 +216,8 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get spoolWidth() {
-        if (this.numGates <= 8) return 56
-        if (this.numGates <= 16) return 48
+        if (this.mmuNumGates <= 8) return 56
+        if (this.mmuNumGates <= 16) return 48
 
         return 40
     }

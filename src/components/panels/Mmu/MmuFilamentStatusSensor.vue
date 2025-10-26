@@ -49,12 +49,12 @@ export default class MmuFilamentStatusSensor extends Mixins(BaseMixin, MmuMixin)
     }
 
     get homedTo() {
-        if (this.sensorName === 'extruder') return this.filamentPos === FILAMENT_POS_HOMED_ENTRY
-        if (this.sensorName === 'toolhead') return this.filamentPos === FILAMENT_POS_HOMED_TS
+        if (this.sensorName === 'extruder') return this.mmuFilamentPos === FILAMENT_POS_HOMED_ENTRY
+        if (this.sensorName === 'toolhead') return this.mmuFilamentPos === FILAMENT_POS_HOMED_TS
 
         if (!['mmu_gear', 'mmu_gate'].includes(this.sensorName)) return false
 
-        return this.configGateHomingEndstop === this.sensorName && this.filamentPos === FILAMENT_POS_HOMED_GATE
+        return this.configGateHomingEndstop === this.sensorName && this.mmuFilamentPos === FILAMENT_POS_HOMED_GATE
     }
 }
 </script>

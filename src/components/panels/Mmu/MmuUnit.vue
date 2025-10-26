@@ -2,7 +2,7 @@
     <div class="mmu-unit d-inline-flex flex-column mx-1 rounded-lg mb-3">
         <div class="d-flex pt-3 px-4 mb-n7 position-relative">
             <mmu-unit-gate
-                v-for="gateIndex in numGates"
+                v-for="gateIndex in mmuNumGates"
                 :key="gateIndex"
                 :gate-index="gateIndex - 1 + firstGateNumber"
                 :mmu-machine-unit="mmuMachineUnit"
@@ -10,7 +10,7 @@
                 :selected-gate="selectedGate"
                 @select-gate="selectGate" />
             <mmu-unit-gate
-                v-if="hasBypass"
+                v-if="mmuHasBypass"
                 :gate-index="TOOL_GATE_BYPASS"
                 :mmu-machine-unit="mmuMachineUnit"
                 :show-details="showDetails"

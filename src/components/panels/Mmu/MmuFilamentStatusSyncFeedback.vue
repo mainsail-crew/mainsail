@@ -30,7 +30,7 @@ export default class MmuFilamentStatusSyncFeedback extends Mixins(BaseMixin, Mmu
         return (
             this.syncFeedbackEnabled &&
             (this.hasFilamentCompressionSensor || this.hasFilamentTensionSensor) &&
-            this.filamentPos >= FILAMENT_POS_END_BOWDEN
+            this.mmuFilamentPos >= FILAMENT_POS_END_BOWDEN
         )
     }
 

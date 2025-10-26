@@ -6,7 +6,7 @@
                     <v-btn
                         block
                         small
-                        :disabled="!canSend || syncDrive"
+                        :disabled="!canSend || mmuSyncDrive"
                         color="secondary"
                         @click="doSend('MMU_SYNC_GEAR_MOTOR SYNC=1')">
                         <v-icon left>{{ mdiSync }}</v-icon>
@@ -17,7 +17,7 @@
                     <v-btn
                         block
                         small
-                        :disabled="!canSend || !syncDrive"
+                        :disabled="!canSend || !mmuSyncDrive"
                         color="secondary"
                         @click="doSend('MMU_SYNC_GEAR_MOTOR SYNC=0')">
                         <v-icon left>{{ mdiSyncOff }}</v-icon>

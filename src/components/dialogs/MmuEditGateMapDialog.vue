@@ -21,7 +21,7 @@
                 <v-row>
                     <v-col class="pb-0">
                         <mmu-unit
-                            v-for="i in numUnits"
+                            v-for="i in mmuNumUnits"
                             :key="i"
                             :selected-gate="selectedGate"
                             :unit-index="i - 1"

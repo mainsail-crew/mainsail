@@ -216,10 +216,10 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
     }
 
     get spoolmanSupportOutput() {
-        if (this.spoolmanSupport === 'off') return this.$t('Panels.MmuPanel.GateMapDialog.SpoolmanOff')
-        else if (this.spoolmanSupport === 'pull') return this.$t('Panels.MmuPanel.GateMapDialog.SpoolmanPull')
+        if (this.mmuSpoolmanSupport === 'off') return this.$t('Panels.MmuPanel.GateMapDialog.SpoolmanOff')
+        else if (this.mmuSpoolmanSupport === 'pull') return this.$t('Panels.MmuPanel.GateMapDialog.SpoolmanPull')
 
-        return this.$t('Panels.MmuPanel.GateMapDialog.SpoolmanOther', { mode: this.spoolmanSupport })
+        return this.$t('Panels.MmuPanel.GateMapDialog.SpoolmanOther', { mode: this.mmuSpoolmanSupport })
     }
 
     get spoolmanSpools() {
@@ -270,15 +270,15 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
     }
 
     get disableSpoolId() {
-        return !this.useSpoolman || ['pull', 'off'].includes(this.spoolmanSupport)
+        return !this.useSpoolman || ['pull', 'off'].includes(this.mmuSpoolmanSupport)
     }
 
     get disableFilamentFields() {
-        return this.useSpoolman || this.spoolmanSupport === 'pull'
+        return this.useSpoolman || this.mmuSpoolmanSupport === 'pull'
     }
 
     get hideSpoolmanSwitch() {
-        return ['pull', 'off'].includes(this.spoolmanSupport)
+        return ['pull', 'off'].includes(this.mmuSpoolmanSupport)
     }
 
     get filamentName() {

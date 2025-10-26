@@ -17,7 +17,7 @@
 
             <v-card-text>
                 <mmu-maintenance-dialog-actions />
-                <mmu-maintenance-dialog-unit v-for="i in numUnits" :key="'unit_' + i" :unit-index="i - 1" />
+                <mmu-maintenance-dialog-unit v-for="i in mmuNumUnits" :key="'unit_' + i" :unit-index="i - 1" />
                 <mmu-maintenance-dialog-leds v-for="unit in mmuLedUnits" :key="'mmuLeds_' + unit" :unit-name="unit" />
                 <mmu-maintenance-dialog-config />
             </v-card-text>

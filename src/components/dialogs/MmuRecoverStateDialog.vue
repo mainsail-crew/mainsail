@@ -90,11 +90,11 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     get toolsList() {
         const tools = []
 
-        for (let i = 0; i < this.numGates; i++) {
+        for (let i = 0; i < this.mmuNumGates; i++) {
             tools.push({ text: `T${i}`, value: i })
         }
 
-        if (this.hasBypass) {
+        if (this.mmuHasBypass) {
             tools.push({ text: this.$t('Panels.MmuPanel.Bypass').toString(), value: TOOL_GATE_BYPASS })
         }
 
@@ -118,11 +118,11 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     get gatesList() {
         const list = []
 
-        for (let gate = 0; gate < this.numGates; gate++) {
+        for (let gate = 0; gate < this.mmuNumGates; gate++) {
             list.push({ text: this.gateIndexText(gate), value: gate })
         }
 
-        if (this.hasBypass) {
+        if (this.mmuHasBypass) {
             list.push({ text: this.$t('Panels.MmuPanel.Bypass'), value: TOOL_GATE_BYPASS })
         }
 
@@ -175,9 +175,9 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     gateIndexText(gateIndex: number) {
-        if (this.numUnits <= 1) return `${gateIndex}`
+        if (this.mmuNumUnits <= 1) return `${gateIndex}`
 
-        for (let i = 0; i < this.numUnits; i++) {
+        for (let i = 0; i < this.mmuNumUnits; i++) {
             const unit = this.getMmuMachineUnit(i)
             if (!unit) continue
 
@@ -213,7 +213,7 @@ export default class MmuRecoverStateDialog extends Mixins(BaseMixin, MmuMixin) {
 
         this.localGate = this.mmuGate
         this.localTool = this.mmuTool
-        this.localFilamentPos = this.filamentPos
+        this.localFilamentPos = this.mmuFilamentPos
 
         if (![FILAMENT_POS_UNLOADED, FILAMENT_POS_LOADED].includes(this.localFilamentPos)) {
             this.localFilamentPos = FILAMENT_POS_UNKNOWN

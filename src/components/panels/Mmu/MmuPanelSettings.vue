@@ -53,7 +53,7 @@ import BaseMixin from '@/components/mixins/base'
 import MmuMixin from '@/components/mixins/mmu'
 import { mdiCog } from '@mdi/js'
 
-@Component({})
+@Component
 export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
     mdiCog = mdiCog
 
@@ -114,5 +114,3 @@ export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
     }
 }
 </script>
-
-<style scoped></style>

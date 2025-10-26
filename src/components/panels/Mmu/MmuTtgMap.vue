@@ -86,7 +86,7 @@ export default class MmuTtgMap extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get height() {
-        return MmuTtgMap_START_Y + this.numGates * MmuTtgMap_VERTICAL_SPACING + 6
+        return MmuTtgMap_START_Y + this.mmuNumGates * MmuTtgMap_VERTICAL_SPACING + 6
     }
 
     get viewbox() {
@@ -96,7 +96,7 @@ export default class MmuTtgMap extends Mixins(BaseMixin, MmuMixin) {
     get toolsArray() {
         const array = []
 
-        for (let tool = 0; tool < this.numGates; tool++) {
+        for (let tool = 0; tool < this.mmuNumGates; tool++) {
             if (tool === this.selectedTool) continue
             if (this.filteredTtgMap !== null && !this.filteredTtgMap?.some((map) => map.tool === tool)) continue
 
@@ -124,7 +124,7 @@ export default class MmuTtgMap extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get printGroups() {
-        if (this.filteredTtgMap !== null && this.filteredTtgMap?.length !== this.numGates) return []
+        if (this.filteredTtgMap !== null && this.filteredTtgMap?.length !== this.mmuNumGates) return []
 
         const groups: { [key: number]: number[] } = {}
         this.groups.forEach((group, index) => {

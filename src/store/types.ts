@@ -3,7 +3,6 @@ import { ServerState } from '@/store/server/types'
 import { PrinterState } from '@/store/printer/types'
 import { GuiState } from '@/store/gui/types'
 import { EditorState } from '@/store/editor/types'
-import { MmuGateMapEditorState, MmuTtgMapEditorState } from '@/store/mmu/types'
 
 export interface RootState {
     packageVersion: string
@@ -17,8 +16,6 @@ export interface RootState {
     printer?: PrinterState
     server?: ServerState
     editor?: EditorState
-    mmuGateMapEditor?: MmuGateMapEditorState
-    mmuTtgMapEditor?: MmuTtgMapEditorState
 }
 
 export interface RootStateDependency {

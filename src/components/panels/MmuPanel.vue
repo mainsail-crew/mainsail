@@ -1,5 +1,5 @@
 <template>
-    <panel v-if="hasMmu" :icon="mdiMulticast" :title="title" :collapsible="true" card-class="mmu-panel">
+    <panel v-if="showPanel" :icon="mdiMulticast" :title="title" :collapsible="true" card-class="mmu-panel">
         <template #buttons>
             <v-menu left offset-y :close-on-content-click="false">
                 <template #activator="{ on, attrs }">
@@ -34,14 +34,14 @@
                             small
                             class="w-100"
                             :loading="loadings.includes('mmu_stats')"
-                            @click="doLoadingSend('MMU_STATS SHOWCOUNTS=1', 'mmu_stats')">
+                            @click="doSend('MMU_STATS SHOWCOUNTS=1')">
                             <v-icon left>{{ mdiNoteText }}</v-icon>
                             {{ $t('Panels.MmuPanel.ButtonPrintStats') }}
                         </v-btn>
                     </v-list-item>
                     <v-list-item
-                        :disabled="!enabled || spoolmanSupport === 'off'"
-                        :class="{ 'mmu-disabled': !enabled || spoolmanSupport === 'off' }">
+                        :disabled="!enabled || mmuSpoolmanSupport === 'off'"
+                        :class="{ 'mmu-disabled': !enabled || mmuSpoolmanSupport === 'off' }">
                         <v-btn
                             small
                             class="w-100"
@@ -57,7 +57,7 @@
                             class="w-100"
                             :disabled="!canSend"
                             :loading="loadings.includes('mmu_check_gates')"
-                            @click="doLoadingSend('MMU_CHECK_GATES', 'mmu_check_gates')">
+                            @click="doSend('MMU_CHECK_GATES')">
                             <v-icon left>{{ mdiCheckAll }}</v-icon>
                             {{ $t('Panels.MmuPanel.ButtonCheckAllGates') }}
                         </v-btn>
@@ -71,7 +71,7 @@
             <v-row>
                 <v-col class="pb-0">
                     <MmuUnit
-                        v-for="i in numUnits"
+                        v-for="i in mmuNumUnits"
                         :key="i"
                         :selected-gate="mmuGate"
                         :unit-index="i - 1"
@@ -133,7 +133,13 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { ACTION_IDLE, ACTION_LOADING, ACTION_UNLOADING, TOOL_GATE_BYPASS } from '@/components/mixins/mmu'
+import MmuMixin, {
+    ACTION_IDLE,
+    ACTION_LOADING,
+    ACTION_UNLOADING,
+    TOOL_GATE_BYPASS,
+    TOOL_GATE_UNKNOWN,
+} from '@/components/mixins/mmu'
 import { capitalize } from '@/plugins/helpers'
 import { mdiMulticast, mdiDotsVertical, mdiCheckAll, mdiNoteText, mdiInformationOutline, mdiRefresh } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
@@ -167,6 +173,12 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
     showEditTtgMapDialog = false
     showEditGateMapDialog = false
     showMaintenanceDialog = false
+
+    get showPanel() {
+        if (!this.klipperReadyForGui) return false
+
+        return 'mmu' in this.$store.state.printer
+    }
 
     get enabled(): boolean {
         return this.mmu?.enabled ?? false
@@ -226,6 +238,26 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
         return this.mmu?.num_toolchanges ?? 0
     }
 
+    get toolchangeText() {
+        if (this.nextTool === TOOL_GATE_UNKNOWN) return ''
+
+        const label = (t: number) => (t === TOOL_GATE_BYPASS ? 'Bypass' : `T${t}`)
+        const parts: string[] = ['Changing tool']
+        if (this.lastTool !== TOOL_GATE_UNKNOWN) {
+            parts.push('from', label(this.lastTool))
+        }
+        parts.push('to', label(this.nextTool))
+        return parts.join(' ')
+    }
+
+    get lastTool() {
+        return this.mmu?.last_tool ?? TOOL_GATE_UNKNOWN
+    }
+
+    get nextTool() {
+        return this.mmu?.next_tool ?? TOOL_GATE_UNKNOWN
+    }
+
     get statusText(): string {
         if (['complete', 'error', 'cancelled', 'started'].includes(this.mmuPrintState)) {
             return capitalize(this.mmuPrintState)
@@ -244,11 +276,17 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
             return str
         }
 
-        return this.filament !== 'Unloaded' ? `Filament: ${this.filamentPosition}mm` : 'Filament: Unloaded'
+        const filament = this.mmu?.filament ?? 'Unknown'
+
+        return filament !== 'Unloaded' ? `Filament: ${this.filamentPosition}mm` : 'Filament: Unloaded'
     }
 
     get reasonForPause() {
         return this.mmu?.reason_for_pause ?? null
+    }
+
+    get filamentPosition() {
+        return (this.mmu?.filament_position ?? 0).toFixed(1)
     }
 
     handleSyncSpoolman() {

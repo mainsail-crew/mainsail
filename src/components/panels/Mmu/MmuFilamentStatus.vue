@@ -100,7 +100,7 @@
         </g>
 
         <transition name="fade">
-            <g v-if="syncDrive" id="sync-extruder" ref="sync" transform="translate(278, 385) scale(.030)">
+            <g v-if="mmuSyncDrive" id="sync-extruder" ref="sync" transform="translate(278, 385) scale(.030)">
                 <g
                     stroke="none"
                     stroke-width="2"
@@ -231,13 +231,11 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get filamentRectHeight() {
-        window.console.log('Calculating filament height for position:', this.filamentPos, this.mmuGate)
-
         if (this.mmuGate === TOOL_GATE_BYPASS) {
-            if (this.filamentPos === FILAMENT_POS_EXTRUDER_ENTRY) return POSITIONS.BEFORE_TOOLHEAD
-            if (this.filamentPos === FILAMENT_POS_HOMED_TS) return POSITIONS.TOOLHEAD
-            if (this.filamentPos === FILAMENT_POS_IN_EXTRUDER) return POSITIONS.COOLING_TUBE
-            if (this.filamentPos === FILAMENT_POS_LOADED) return POSITIONS.NOZZLE_START
+            if (this.mmuFilamentPos === FILAMENT_POS_EXTRUDER_ENTRY) return POSITIONS.BEFORE_TOOLHEAD
+            if (this.mmuFilamentPos === FILAMENT_POS_HOMED_TS) return POSITIONS.TOOLHEAD
+            if (this.mmuFilamentPos === FILAMENT_POS_IN_EXTRUDER) return POSITIONS.COOLING_TUBE
+            if (this.mmuFilamentPos === FILAMENT_POS_LOADED) return POSITIONS.NOZZLE_START
 
             if (this.toolheadSensor === true) return POSITIONS.TOOLHEAD
             if (this.extruderSensor === true) return POSITIONS.EXTRUDER
@@ -247,14 +245,14 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
             return POSITIONS.BEFORE_PRE_GATE
         }
 
-        if (this.filamentPos === FILAMENT_POS_UNLOADED) {
+        if (this.mmuFilamentPos === FILAMENT_POS_UNLOADED) {
             if (this.mmuGearSensor === true) return POSITIONS.AFTER_GEAR
             if (this.mmuPreGateSensor === true) return POSITIONS.AFTER_PRE_GATE
 
             return POSITIONS.BEFORE_PRE_GATE
         }
 
-        if (this.filamentPos === FILAMENT_POS_HOMED_GATE) {
+        if (this.mmuFilamentPos === FILAMENT_POS_HOMED_GATE) {
             if (this.configGateHomingEndstop === 'mmu_gear') return POSITIONS.GEAR
             if (this.configGateHomingEndstop === 'mmu_gate') return POSITIONS.GATE
             if (this.configGateHomingEndstop === 'extruder') return POSITIONS.EXTRUDER
@@ -263,16 +261,16 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
         }
 
         if (
-            [FILAMENT_POS_START_BOWDEN, FILAMENT_POS_IN_BOWDEN].includes(this.filamentPos) &&
+            [FILAMENT_POS_START_BOWDEN, FILAMENT_POS_IN_BOWDEN].includes(this.mmuFilamentPos) &&
             this.bowdenProgress >= 0
         ) {
             return POSITIONS.START_BOWDEN + (BOWDEN_RANGE * this.bowdenProgress) / 100
         }
 
-        if (this.filamentPos === FILAMENT_POS_START_BOWDEN) return POSITIONS.START_BOWDEN
-        if (this.filamentPos === FILAMENT_POS_IN_BOWDEN) return POSITIONS.MID_BOWDEN
+        if (this.mmuFilamentPos === FILAMENT_POS_START_BOWDEN) return POSITIONS.START_BOWDEN
+        if (this.mmuFilamentPos === FILAMENT_POS_IN_BOWDEN) return POSITIONS.MID_BOWDEN
 
-        if (this.filamentPos === FILAMENT_POS_END_BOWDEN) {
+        if (this.mmuFilamentPos === FILAMENT_POS_END_BOWDEN) {
             if (
                 this.configGateHomingEndstop === 'none' ||
                 (this.toolheadSensor !== undefined && this.toolheadSensor !== null && !this.configExtruderForceHoming)
@@ -282,19 +280,23 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
             return POSITIONS.END_BOWDEN
         }
 
-        if (this.filamentPos === FILAMENT_POS_HOMED_ENTRY) return POSITIONS.EXTRUDER
-        if (this.filamentPos === FILAMENT_POS_HOMED_EXTRUDER) return POSITIONS.EXTRUDER_ENTRANCE
-        if (this.filamentPos === FILAMENT_POS_EXTRUDER_ENTRY) return POSITIONS.BEFORE_TOOLHEAD
-        if (this.filamentPos === FILAMENT_POS_HOMED_TS) return POSITIONS.TOOLHEAD
-        if (this.filamentPos === FILAMENT_POS_IN_EXTRUDER) {
+        if (this.mmuFilamentPos === FILAMENT_POS_HOMED_ENTRY) return POSITIONS.EXTRUDER
+        if (this.mmuFilamentPos === FILAMENT_POS_HOMED_EXTRUDER) return POSITIONS.EXTRUDER_ENTRANCE
+        if (this.mmuFilamentPos === FILAMENT_POS_EXTRUDER_ENTRY) return POSITIONS.BEFORE_TOOLHEAD
+        if (this.mmuFilamentPos === FILAMENT_POS_HOMED_TS) return POSITIONS.TOOLHEAD
+        if (this.mmuFilamentPos === FILAMENT_POS_IN_EXTRUDER) {
             if (this.toolheadSensor === false) return POSITIONS.BEFORE_TOOLHEAD
 
             return POSITIONS.COOLING_TUBE
         }
 
-        if (this.filamentPos === FILAMENT_POS_LOADED) return POSITIONS.NOZZLE_START
+        if (this.mmuFilamentPos === FILAMENT_POS_LOADED) return POSITIONS.NOZZLE_START
 
         return POSITIONS.UNKNOWN
+    }
+
+    get bowdenProgress() {
+        return this.mmu?.bowden_progress ?? -1
     }
 
     get toolheadSensor() {
@@ -318,7 +320,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get gateSensorName() {
-        const unit = this.getMmuMachineUnit(this.unit)
+        const unit = this.getMmuMachineUnit(this.mmuUnit)
         const multiGate = unit?.multi_gear ?? false
 
         return multiGate ? 'Hub (Gate)' : 'Gate'
@@ -335,16 +337,26 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get homedToExtruderEntrance(): boolean {
-        return this.filamentPos === FILAMENT_POS_HOMED_EXTRUDER
+        return this.mmuFilamentPos === FILAMENT_POS_HOMED_EXTRUDER
+    }
+
+    get varsFilamentRemaining(): number {
+        return this.$store.state.printer.save_variables?.variables?.mmu_state_filament_remaining ?? 0
+    }
+
+    get varsFilamentRemainingColor(): string {
+        const color = this.$store.state.printer.save_variables?.variables?.mmu_state_filament_remaining_color ?? ''
+
+        return color ? this.formColorString(color) : color
     }
 
     get upperNozzleFull(): boolean {
-        return this.filamentPos === FILAMENT_POS_LOADED || !!this.varsFilamentRemaining
+        return this.mmuFilamentPos === FILAMENT_POS_LOADED || !!this.varsFilamentRemaining
     }
 
     get lowerNozzleFull() {
         return (
-            this.filamentPos === FILAMENT_POS_LOADED ||
+            this.mmuFilamentPos === FILAMENT_POS_LOADED ||
             !!this.varsFilamentRemaining ||
             !!this.varsFilamentRemainingColor
         )
@@ -369,7 +381,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get isGripped() {
-        return this.grip === 'Gripped' || this.servo === 'Down'
+        return this.mmuGrip === 'Gripped' || this.mmuServo === 'Down'
     }
 }
 </script>

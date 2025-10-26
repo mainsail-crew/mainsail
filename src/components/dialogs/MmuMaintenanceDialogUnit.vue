@@ -13,7 +13,7 @@
             </v-btn>
             <v-btn
                 small
-                :disabled="!canSend || grip === 'Gripped'"
+                :disabled="!canSend || mmuGrip === 'Gripped'"
                 color="secondary"
                 class="ml-2"
                 @click="doSend('MMU_GRIP')">
@@ -22,7 +22,7 @@
             </v-btn>
             <v-btn
                 small
-                :disabled="!canSend || grip === 'Released'"
+                :disabled="!canSend || mmuGrip === 'Released'"
                 color="secondary"
                 class="ml-2"
                 @click="doSend('MMU_RELEASE')">
@@ -42,7 +42,7 @@
             </v-btn>
             <v-btn
                 small
-                :disabled="!canSend || servo === 'Up'"
+                :disabled="!canSend || mmuServo === 'Up'"
                 color="secondary"
                 class="ml-2"
                 @click="doSend('MMU_SERVO POS=up')">
@@ -51,7 +51,7 @@
             </v-btn>
             <v-btn
                 small
-                :disabled="!canSend || servo === 'Down'"
+                :disabled="!canSend || mmuServo === 'Down'"
                 color="secondary"
                 class="ml-2"
                 @click="doSend('MMU_SERVO POS=down')">
@@ -60,7 +60,7 @@
             </v-btn>
             <v-btn
                 small
-                :disabled="!canSend || servo === 'Move'"
+                :disabled="!canSend || mmuServo === 'Move'"
                 color="secondary"
                 class="ml-2"
                 @click="doSend('MMU_SERVO POS=move')">
@@ -105,13 +105,13 @@ export default class MmuMaintenanceStateDialogUnit extends Mixins(BaseMixin, Mmu
     }
 
     get name() {
-        const name = this.unit?.name ?? 'Unit'
+        const name = this.mmuUnit?.name ?? 'Unit'
 
         return `MMU #${this.unitIndex + 1} - ${name}`
     }
 
     get selectorType() {
-        return this.unit.selectorType ?? 'VirtualSelector'
+        return this.mmuUnit.selectorType ?? 'VirtualSelector'
     }
 
     get isRotaryOrServoSelector() {
