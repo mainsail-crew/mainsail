@@ -358,7 +358,8 @@ export const convertPrintStatusIcon = (status: string) => {
 }
 
 export function filamentTextColor(hexColor: string): string {
-    const splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor)
+    const splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})(?:[a-f\d]{2})?$/i.exec(hexColor)
+
     if (splits === null || splits?.length < 3) return '#ffffff'
 
     const r = parseInt(splits[1], 16) * 0.2126
