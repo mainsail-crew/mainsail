@@ -64,6 +64,10 @@ text {
     fill: currentColor;
 }
 
+.text-disabled {
+    opacity: 0.5;
+}
+
 .sensor-triggered {
     fill: limegreen;
 }
