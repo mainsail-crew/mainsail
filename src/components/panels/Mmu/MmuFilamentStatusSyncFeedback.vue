@@ -55,3 +55,9 @@ export default class MmuFilamentStatusSyncFeedback extends Mixins(BaseMixin, Mmu
     }
 }
 </script>
+
+<style scoped>
+text {
+    fill: currentColor;
+}
+</style>
