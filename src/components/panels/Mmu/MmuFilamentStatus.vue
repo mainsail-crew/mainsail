@@ -54,6 +54,7 @@
             width="14"
             :height="filamentRectHeight"
             :fill="currentGateColor"
+            class="filament-animation"
             :class="tipFormingClass" />
         <polygon v-if="upperNozzleFull" points="257,380 243,380 243,396 257,396" :fill="upperNozzleColor" />
         <polygon
@@ -474,6 +475,10 @@ html.theme--light .zone-background {
         height: 338px;
     }
 }
+.filament-animation {
+    transition: height 0.5s ease-in;
+}
+
 .form-tip-effect {
     animation: form-tip 1s infinite;
 }
