@@ -190,6 +190,10 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "FilamentTypeMismatch": "Filament type in the G-Code ({file}) does not match the selected filament type ({lane}).",
+                "FilamentWeightNotEnough": "Not enough filament in the selected lane ({lane}). Required: {required}, Available: {available}."
+            },
             "Cancel": "Cancel",
             "DoYouWantToStartFilename": "Do you want to start {filename}?",
             "DoYouWantToStartFilenameFilament": "Do you want to start {filename} with the following filament?",
@@ -629,7 +633,7 @@
             "Idle": "Idle",
             "InfiniteSpoolDescription": "Next lane to load if {name} runs out",
             "InfiniteSpoolHeadline": "Infinite Spool",
-            "LaneControls": "Lane Controls",
+            "Initialized": "Initialized",
             "LaneLoadedNone": "NONE",
             "LaneMapping": "Lane Mapping",
             "LaneMappingToCommand": "Remap {name} to tool command",
@@ -656,14 +660,12 @@
                 "DistHub": "Distance to Hub",
                 "DistHubDescription": "Distance from the lane extruder gears to the hub in mm.",
                 "Help": "Help",
-                "Length": "Length",
                 "LoadUnloadLane": "Load / Unload Lane",
                 "LoadUnloadLaneDescription": "Click on the buttons to load or unload the filament from the lane to the extruder.",
                 "SaveExtruderValues": "Save Extruder Values",
                 "SaveExtruderValuesDescription": "This will write the current extruder values to the configuration file of the current extruder.",
                 "SaveHubDist": "Save Lane Values",
                 "SaveHubDistDescription": "Save the values from the specific lane to the configuration file.",
-                "SensorAfterExtruder": "Sensor after Extruder",
                 "SettingsForTitle": "Settings for {name}",
                 "ToolSensorAfterExtruder": "Tool Sensor after Extruder",
                 "ToolSensorAfterExtruderDescription": "Distance from the extruder gears to the tool_end sensor in mm. This is used to unload the filament from the extruder gears after the tool_end sensor isn't triggered anymore.",
@@ -675,7 +677,6 @@
                 "ToolStnUnloadDescription": "Distance to retract the filament to unload the filament from the tool in mm.",
                 "WriteToFile": "Write to File"
             },
-            "SettingsForLane": "Settings for {lane}",
             "ShowFilamentName": "Show Filament Name",
             "ShowLaneInfinite": "Show Infinite Button",
             "ShowTool": "Show Tool \"{name}\"",
@@ -1189,9 +1190,7 @@
             "Presets": "Presets",
             "Required": "This field is required.",
             "Start": "Start",
-            "StartDescription": "First LED of this group.",
-            "UnableToLoadLight": "Unable to load light",
-            "UnableToLoadPreset": "Unable to load preset"
+            "StartDescription": "First LED of this group."
         },
         "NavigationTab": {
             "Navigation": "Navigation"
