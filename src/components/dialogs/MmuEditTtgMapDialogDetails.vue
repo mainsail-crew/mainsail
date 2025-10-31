@@ -20,7 +20,7 @@
         <v-col cols="1" class="d-flex justify-center align-center">
             <span class="triangle" />
         </v-col>
-        <v-col cols="7" class="pa-0">
+        <v-col cols="7" class="pa-0 minwidth-0">
             <v-data-table
                 :headers="gateTableHeaders"
                 :items="gateItems"
@@ -200,5 +200,19 @@ export default class MmuEditTtgMapDialogDetails extends Mixins(BaseMixin, MmuMix
 ::v-deep .drop-down-table .v-data-table__wrapper {
     height: 300px;
     overflow-y: auto;
+}
+
+::v-deep .drop-down-table .v-data-table__wrapper table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+::v-deep .drop-down-table table th:nth-child(1),
+::v-deep .drop-down-table table th:nth-child(4) {
+    width: 64px;
+}
+
+::v-deep .drop-down-table table th:nth-child(2) {
+    width: 36px;
 }
 </style>
