@@ -105,7 +105,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         try {
             const requestIceServers = this.useStun ? [{ urls: ['stun:stun.l.google.com:19302'] }] : null
             const response = await fetch(this.url, {
-                body: JSON.stringify({ type: 'request', iceServers: requestIceServers }),
+                body: JSON.stringify({ type: 'request', iceServers: requestIceServers, keepAlive: true }),
                 method: 'POST',
             })
             if (response.status !== 200) {
