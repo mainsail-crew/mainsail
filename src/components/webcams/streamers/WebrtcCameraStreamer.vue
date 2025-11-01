@@ -144,6 +144,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
 
         this.pc.onconnectionstatechange = () => this.onConnectionStateChange()
         this.pc.ontrack = (e) => this.onTrack(e)
+        this.pc.ondatachannel = (e) => this.onDataChannel(e)
 
         await this.pc?.setRemoteDescription(iceResponse)
         const answer = await this.pc.createAnswer()
@@ -213,6 +214,20 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         if (e.track.kind !== 'video') return
 
         this.stream.srcObject = e.streams[0]
+    }
+
+    onDataChannel(event: RTCDataChannelEvent) {
+        const receiveChannel = event.channel
+
+        if (receiveChannel.label !== 'keepalive') {
+            this.log(`Unknown data channel label: ${receiveChannel.label}`)
+            return
+        }
+
+        receiveChannel.onmessage = (message) => {
+            this.log('Received keepalive ping, sending pong', message)
+            receiveChannel.send('pong')
+        }
     }
 
     log(msg: string, obj?: any) {
