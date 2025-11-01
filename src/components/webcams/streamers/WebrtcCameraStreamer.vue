@@ -219,13 +219,16 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
     onDataChannel(event: RTCDataChannelEvent) {
         const receiveChannel = event.channel
 
+        this.log(`Data channel opened: ${receiveChannel.label}`)
+
         if (receiveChannel.label !== 'keepalive') {
             this.log(`Unknown data channel label: ${receiveChannel.label}`)
             return
         }
 
         receiveChannel.onmessage = (message) => {
-            this.log('Received keepalive ping, sending pong', message)
+            if (message.data !== 'ping') return
+
             receiveChannel.send('pong')
         }
     }
