@@ -84,10 +84,10 @@
                     <div class="text--disabled body-2">{{ toolchangeText }}</div>
                     <div class="text-center body-1">{{ statusText }}</div>
                     <mmu-filament-status />
-                    <template v-if="showClogDetection">
+                    <div v-if="showClogDetection" class="text-center">
                         <mmu-clog-meter width="40%" />
-                        <div class="text--disabled body-1 text-center">{{ $t('Panels.MmuPanel.ClogDetection') }}</div>
-                    </template>
+                        <div class="text--disabled body-1">{{ $t('Panels.MmuPanel.ClogDetection') }}</div>
+                    </div>
                 </v-col>
                 <v-col :cols="12 - col1Size">
                     <template v-if="showDetails">

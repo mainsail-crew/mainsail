@@ -86,9 +86,9 @@ import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin, { DIRECTION_UNKNOWN } from '@/components/mixins/mmu'
 
-@Component({})
+@Component
 export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
-    @Ref('dialCircle') readonly dialCircle!: SVGElement
+    @Ref('dialCircle') dialCircle!: SVGCircleElement
 
     ROTATION_TIME = 1
     CIRCUMFERENCE = 2 * Math.PI * 50
@@ -141,19 +141,23 @@ export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
         }
     }
 
-    get headroomArc(): number {
+    get headroomArc() {
         return this.CIRCUMFERENCE * (1 - (this.encoderDesiredHeadroom / this.encoderDetectionLength) * (300 / 360))
     }
 
-    get headroomRotate(): number {
+    get headroomRotate() {
+        if (this.encoderDetectionLength === 0) return 120
+
         return 420 - (this.encoderDesiredHeadroom / this.encoderDetectionLength) * 300
     }
 
-    get headroomTransform(): string {
+    get headroomTransform() {
         return `rotate(${this.headroomRotate} 70 70)`
     }
 
     get clogPercent() {
+        if (this.encoderDetectionLength === 0) return 100
+
         return (
             (Math.min(Math.max(0, this.encoderDetectionLength - this.headroom), this.encoderDetectionLength) /
                 this.encoderDetectionLength) *
@@ -179,7 +183,9 @@ export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
 
     @Watch('dashOffset', { immediate: true })
     onDashOffsetChanged(newValue: number) {
-        const currentOffset = parseFloat(getComputedStyle(this.dialCircle).strokeDashoffset) ?? this.CIRCUMFERENCE
+        if (!this.dialCircle) return
+
+        const currentOffset = parseFloat(this.dialCircle?.style?.strokeDashoffset) || this.CIRCUMFERENCE
         const difference = Math.abs(currentOffset - newValue)
         const duration = (difference / this.CIRCUMFERENCE) * this.ROTATION_TIME
         this.dialCircle.style.transition = `stroke-dashoffset ${duration}s ease-out`
