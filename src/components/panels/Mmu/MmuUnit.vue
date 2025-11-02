@@ -10,7 +10,7 @@
                 :selected-gate="selectedGate"
                 @select-gate="selectGate" />
             <mmu-unit-gate
-                v-if="mmuHasBypass"
+                v-if="hasBypass"
                 :gate-index="TOOL_GATE_BYPASS"
                 :mmu-machine-unit="mmuMachineUnit"
                 :show-details="showDetails"
@@ -45,15 +45,8 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         return this.mmuMachineUnit?.first_gate ?? 0
     }
 
-    get numGates() {
-        return this.mmuMachineUnit?.num_gates ?? 0
-    }
-
     get hasBypass() {
         if (this.hideBypass) return false
-
-        // I don't know why this is also needed. I just copied this from the original PR.
-        if (!this.mmu?.has_bypass) return false
 
         return this.mmuMachineUnit?.has_bypass ?? true
     }
