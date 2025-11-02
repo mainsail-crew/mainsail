@@ -1,7 +1,7 @@
 <template>
     <g>
         <path :d="path" stroke-width="2" stroke-linecap="round" :class="elementClass" fill="none" />
-        <text :x="textPositionX" :y="textPositionY" :class="elementClass" font-size="8px">
+        <text :x="textPositionX" :y="textPositionY" :class="elementClass" stroke-width="0" font-size="8px">
             {{ groupChar }}
         </text>
     </g>
@@ -18,6 +18,7 @@ import MmuMixin, {
 
 @Component
 export default class MmuTtgMapLine extends Mixins(BaseMixin, MmuMixin) {
+    @Prop({ required: true }) readonly groupNumber!: number
     @Prop({ required: true }) readonly group!: number[]
     @Prop({ required: true }) readonly index!: number
     @Prop({ required: true }) readonly gateX!: number
@@ -52,11 +53,11 @@ export default class MmuTtgMapLine extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get groupChar() {
-        return String.fromCharCode(this.index + 65)
+        return String.fromCharCode(this.groupNumber + 65)
     }
 
     get elementClass() {
-        return this.index === this.currentGroup ? 'selected' : 'regular'
+        return this.groupNumber === this.currentGroup ? 'selected' : 'regular'
     }
 }
 </script>

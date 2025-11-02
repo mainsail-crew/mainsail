@@ -37,9 +37,10 @@
         </g>
 
         <mmu-ttg-map-group
-            v-for="(group, index) in printGroups"
-            :key="'group_' + index"
-            :group="group"
+            v-for="([key, gates], index) in Object.entries(printGroups)"
+            :key="'group_' + key"
+            :group-number="+key"
+            :group="gates"
             :current-group="currentGroup"
             :index="index"
             :gate-x="gateX"
@@ -116,8 +117,15 @@ export default class MmuTtgMap extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get currentGroup() {
-        if (this.selectedGate >= 0 && this.selectedGate < this.groups.length) {
+        if (this.selectedGate !== GATE_UNKNOWN) {
             return this.groups[this.selectedGate]
+        }
+
+        if (this.selectedTool !== TOOL_GATE_UNKNOWN) {
+            const gate = this.ttgMap[this.selectedTool]
+            if (gate !== GATE_UNKNOWN) {
+                return this.groups[gate]
+            }
         }
 
         return -1
@@ -135,13 +143,14 @@ export default class MmuTtgMap extends Mixins(BaseMixin, MmuMixin) {
             groups[group].push(index)
         })
 
-        // convert to array
-        const result: number[][] = []
+        // remove single gate groups
         Object.keys(groups).forEach((key) => {
-            result.push(groups[+key])
+            if (groups[+key].length > 1) return
+
+            delete groups[+key]
         })
 
-        return result.filter((group) => group.length > 1)
+        return groups
     }
 }
 </script>
