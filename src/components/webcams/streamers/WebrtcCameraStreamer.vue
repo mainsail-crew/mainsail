@@ -105,7 +105,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         try {
             const requestIceServers = this.useStun ? [{ urls: ['stun:stun.l.google.com:19302'] }] : null
             const response = await fetch(this.url, {
-                body: JSON.stringify({ type: 'request', iceServers: requestIceServers }),
+                body: JSON.stringify({ type: 'request', iceServers: requestIceServers, keepAlive: true }),
                 method: 'POST',
             })
             if (response.status !== 200) {
@@ -144,6 +144,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
 
         this.pc.onconnectionstatechange = () => this.onConnectionStateChange()
         this.pc.ontrack = (e) => this.onTrack(e)
+        this.pc.ondatachannel = (e) => this.onDataChannel(e)
 
         await this.pc?.setRemoteDescription(iceResponse)
         const answer = await this.pc.createAnswer()
@@ -213,6 +214,23 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         if (e.track.kind !== 'video') return
 
         this.stream.srcObject = e.streams[0]
+    }
+
+    onDataChannel(event: RTCDataChannelEvent) {
+        const receiveChannel = event.channel
+
+        this.log(`Data channel opened: ${receiveChannel.label}`)
+
+        if (receiveChannel.label !== 'keepalive') {
+            this.log(`Unknown data channel label: ${receiveChannel.label}`)
+            return
+        }
+
+        receiveChannel.onmessage = (message) => {
+            if (message.data !== 'ping') return
+
+            receiveChannel.send('pong')
+        }
     }
 
     log(msg: string, obj?: any) {
