@@ -78,7 +78,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, VModel } from 'vue-property-decorator'
+import { Mixins, Prop, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin, { TOOL_GATE_UNKNOWN } from '@/components/mixins/mmu'
 import Panel from '@/components/ui/Panel.vue'
@@ -162,6 +162,13 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     beforeDestroy() {
         document.removeEventListener('keydown', this.handleEscapePress)
+    }
+
+    @Watch('showDialog')
+    onShowDialogChange(newValue: boolean) {
+        if (!newValue) return
+
+        this.allTools = this.file === null
     }
 }
 </script>

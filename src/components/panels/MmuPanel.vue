@@ -124,7 +124,7 @@
             </v-card-text>
         </template>
         <mmu-edit-gate-map-dialog v-model="showEditGateMapDialog" />
-        <mmu-edit-ttg-map-dialog v-model="showEditTtgMapDialog" />
+        <mmu-edit-ttg-map-dialog v-model="showEditTtgMapDialog" :file="fileForTtgMap" />
         <mmu-recover-state-dialog v-model="showRecoverStateDialog" />
         <mmu-maintenance-dialog v-model="showMaintenanceDialog" />
     </panel>
@@ -285,6 +285,12 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
 
     get filamentPosition() {
         return (this.mmu?.filament_position ?? 0).toFixed(1)
+    }
+
+    get fileForTtgMap() {
+        if (!this.printerIsPrinting) return null
+
+        return this.$store.state.printer.current_file ?? null
     }
 
     handleSyncSpoolman() {
