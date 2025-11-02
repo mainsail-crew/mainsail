@@ -5,6 +5,7 @@
             :gate-index="gateIndex"
             :show-details="showDetails"
             :is-selected="isSelected"
+            :unhighlight-spools="unhighlightSpools"
             @select-gate="selectGate" />
 
         <span class="gate-number rounded cursor-pointer" :class="gateNumberClass" @click="selectGate">
@@ -23,6 +24,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true }) readonly mmuMachineUnit!: MmuMachineUnit
     @Prop({ default: false }) readonly showDetails!: boolean
     @Prop({ required: true }) readonly selectedGate!: number
+    @Prop({ default: false }) readonly unhighlightSpools!: boolean
 
     get gateName() {
         if (this.gateIndex === TOOL_GATE_BYPASS) return 'Bypass'

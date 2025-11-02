@@ -7,6 +7,7 @@
                 :gate-index="gateIndex - 1 + firstGateNumber"
                 :mmu-machine-unit="mmuMachineUnit"
                 :show-details="showDetails"
+                :unhighlight-spools="unhighlightSpools"
                 :selected-gate="selectedGate"
                 @select-gate="selectGate" />
             <mmu-unit-gate
@@ -36,6 +37,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true }) readonly unitIndex!: number
     @Prop({ default: false }) readonly showDetails!: boolean
     @Prop({ default: false }) readonly hideBypass!: boolean
+    @Prop({ default: false }) readonly unhighlightSpools!: boolean
 
     get mmuMachineUnit() {
         return this.getMmuMachineUnit(this.unitIndex)
