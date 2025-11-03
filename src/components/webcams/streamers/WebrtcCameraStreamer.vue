@@ -38,7 +38,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
     capitalize = capitalize
 
     pc: RTCPeerConnection | null = null
-    useStun = false
+    useStun = true
     aspectRatio: null | number = null
     status: string = 'connecting'
     restartTimer: number | null = null
@@ -108,6 +108,16 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
                 body: JSON.stringify({ type: 'request', iceServers: requestIceServers, keepAlive: true }),
                 method: 'POST',
             })
+
+            if (this.useStun && response.status === 500) {
+                const errorMessage = await response.text()
+                this.log('Server returned 500 error, likely due to unsupported ICE server request.')
+                this.log(`Serer error message: ${errorMessage}`)
+                this.useStun = false
+                this.restartStream()
+                return
+            }
+
             if (response.status !== 200) {
                 this.log(`Failed to start stream: ${response.status}`)
                 this.restartStream()
