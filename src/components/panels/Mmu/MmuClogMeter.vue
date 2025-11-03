@@ -159,7 +159,7 @@ export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
         if (this.encoderDetectionLength === 0) return 100
 
         return (
-            (Math.min(Math.max(0, this.encoderDetectionLength - this.headroom), this.encoderDetectionLength) /
+            (Math.min(Math.max(0, this.encoderDetectionLength - this.headroomMin), this.encoderDetectionLength) /
                 this.encoderDetectionLength) *
             100
         )
