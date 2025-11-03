@@ -161,7 +161,7 @@ export default class MmuEditTtgMapDialogDetails extends Mixins(BaseMixin, MmuMix
     }
 
     selectGate(gate: number) {
-        this.doSend(`MMU_REMAP_TTG TOOL=${this.tool} GATE=${gate}`)
+        this.doSend(`MMU_REMAP_TTG TOOL=${this.tool} GATE=${gate} QUIET=1`)
     }
 
     selectEndlessSpoolGroup(gate: number) {
