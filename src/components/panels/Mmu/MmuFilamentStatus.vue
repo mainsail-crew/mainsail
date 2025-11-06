@@ -11,6 +11,33 @@
                 <path d="M13,8.24,18,15H15H8Z" stroke-width="2" />
             </g>
             <g
+                id="sync-feedback-buffer-piston"
+                fill="none"
+                style="stroke: var(--color-outline); fill: var(--color-outline)">
+                <rect x="3" y="0" width="30" height="40" rx="3" ry="3" fill="none" stroke-width="1.5" />
+                <path d="M-15 -4 L-6 0 L-15 4 Z" stroke-width="1" fill-opacity="0.6" />
+                <path d="M8 40 L 28 40" stroke-width="4" />
+            </g>
+            <g
+                id="sync-feedback-buffer-box"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="stroke: var(--color-outline)">
+                <rect
+                    x="0"
+                    y="0"
+                    width="36"
+                    height="45"
+                    rx="3"
+                    ry="3"
+                    class="fil-background"
+                    stroke-width="2"
+                    fill-opacity="0.6" />
+                <path d="M-3 10 0 10 M-3 22 0.5 22 M-3 34.5 0 34.5" stroke-width="2" stroke-opacity="0.6" />
+                <path d="M8 0 L 28 0" stroke-width="4" />
+            </g>
+            <g
                 id="sissors"
                 fill="none"
                 stroke-linecap="round"
@@ -407,6 +434,14 @@ svg text {
 
 html.theme--light .zone-background {
     fill: var(--zone-background-light-theme);
+}
+
+.fil-background {
+    fill: var(--background-dark-theme);
+}
+
+html.theme--light .fil-background {
+    fill: var(--background-light-theme);
 }
 
 .tool-text {

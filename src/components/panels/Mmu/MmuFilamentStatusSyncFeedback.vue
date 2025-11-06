@@ -1,21 +1,30 @@
 <template>
     <g v-if="hasSyncFeedback">
-        <transition name="fade">
-            <g v-if="filamentTensionSensor && filamentCompressionSensor" key="neutral">
-                <text x="288" y="240">Neutral</text>
-                <use xlink:href="#sync-feedback" transform="translate(286, 247.5) scale(1.0,-1.0) rotate(90)" />
-            </g>
-            <g v-else-if="filamentTensionSensor" key="tension">
-                <text x="288" y="240">Tension</text>
-                <use xlink:href="#sync-feedback" transform="translate(258, 199) scale(1.2)" />
-                <use xlink:href="#sync-feedback" transform="translate(258, 271) scale(1.2,-1.2)" />
-            </g>
-            <g v-else-if="filamentCompressionSensor" key="compression">
-                <text x="288" y="240">Compression</text>
-                <use xlink:href="#sync-feedback" transform="translate(258, 235) scale(1.2)" />
-                <use xlink:href="#sync-feedback" transform="translate(258, 235) scale(1.2,-1.2)" />
-            </g>
-        </transition>
+        <use
+            xlink:href="#sync-feedback-buffer-piston"
+            :style="{
+                transform: `translate(232px, ${syncFeedbackPistonPos}px)`,
+                transition: 'transform 250ms ease',
+            }" />
+        <use xlink:href="#sync-feedback-buffer-box" transform="translate(232, 212)" />
+        <g v-if="syncFeedbackActive">
+            <transition name="fade">
+                <g v-if="filamentTensionSensor && filamentCompressionSensor" key="neutral">
+                    <text x="298" y="240">Neutral</text>
+                    <use xlink:href="#sync-feedback" transform="translate(296, 247.5) scale(1.0,-1.0) rotate(90)" />
+                </g>
+                <g v-else-if="filamentTensionSensor" key="tension">
+                    <text x="298" y="240">Tension</text>
+                    <use xlink:href="#sync-feedback" transform="translate(272, 199) scale(1.2)" />
+                    <use xlink:href="#sync-feedback" transform="translate(272, 271) scale(1.2,-1.2)" />
+                </g>
+                <g v-else-if="filamentCompressionSensor" key="compression">
+                    <text x="298" y="240">Compression</text>
+                    <use xlink:href="#sync-feedback" transform="translate(272, 235) scale(1.2)" />
+                    <use xlink:href="#sync-feedback" transform="translate(272, 235) scale(1.2,-1.2)" />
+                </g>
+            </transition>
+        </g>
     </g>
 </template>
 
@@ -27,15 +36,25 @@ import MmuMixin, { FILAMENT_POS_END_BOWDEN } from '@/components/mixins/mmu'
 @Component
 export default class MmuFilamentStatusSyncFeedback extends Mixins(BaseMixin, MmuMixin) {
     get hasSyncFeedback(): boolean {
-        return (
-            this.syncFeedbackEnabled &&
-            (this.hasFilamentCompressionSensor || this.hasFilamentTensionSensor) &&
-            this.mmuFilamentPos >= FILAMENT_POS_END_BOWDEN
-        )
+        return this.hasFilamentCompressionSensor || this.hasFilamentTensionSensor || this.hasFilamentProportionalSensor
+    }
+
+    get syncFeedbackActive(): boolean {
+        return this.hasSyncFeedback && this.mmuFilamentPos >= FILAMENT_POS_END_BOWDEN
     }
 
     get syncFeedbackEnabled() {
         return this.mmu?.sync_feedback_enabled ?? false
+    }
+
+    get syncFeedbackPistonPos(): int {
+        const bias = this.mmu?.sync_feedback_bias_modelled ?? 0.0
+        const yPos = bias * 12 + 234
+        return yPos
+    }
+
+    get hasFilamentProportionalSensor() {
+        return this.hasMmuSensor('filament_proportional')
     }
 
     get hasFilamentCompressionSensor() {
