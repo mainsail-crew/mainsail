@@ -710,7 +710,8 @@
             "PressureAdvanceSettings": {
                 "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
-                "SmoothTime": "Smooth Time"
+                "SmoothTime": "Smooth Time",
+                "SyncedWithExtruder": "Synced with {extruder}"
             },
             "PurgeFilament": "Purge Filament",
             "Requested": "Requested",
