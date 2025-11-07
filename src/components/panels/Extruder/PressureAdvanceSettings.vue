@@ -60,6 +60,8 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
     get extruderSettings() {
         const settings = this.$store.state.printer.configfile?.settings ?? {}
 
+        window.console.log(settings[this.extruder])
+
         return settings[this.extruder] ?? undefined
     }
 
@@ -76,7 +78,11 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
     }
 
     get defaultSmoothTime() {
-        return this.roundToThreeDecimals(this.extruderSettings?.smooth_time ?? DEFAULT_SMOOTH_TIME)
+        return this.roundToThreeDecimals(
+            this.extruderSettings?.pressure_advance_smooth_time ??
+                this.extruderSettings?.smooth_time ??
+                DEFAULT_SMOOTH_TIME
+        )
     }
 
     private roundToThreeDecimals(value: number): number {
