@@ -447,7 +447,12 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
     }
 
     setMmuGateMap(attribute: string, value: string | number) {
-        const gcode = `MMU_GATE_MAP GATE=${this.selectedGate} ${attribute.toUpperCase()}=${value} QUIET=1`
+        let escapedValue = value
+        if (typeof value === 'string' && value.includes(' ')) {
+            escapedValue = `"${value}"`
+        }
+
+        const gcode = `MMU_GATE_MAP GATE=${this.selectedGate} ${attribute.toUpperCase()}=${escapedValue} QUIET=1`
         this.doSend(gcode)
     }
 
