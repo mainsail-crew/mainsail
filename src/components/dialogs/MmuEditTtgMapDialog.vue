@@ -45,7 +45,7 @@
                                         hide-details
                                         class="mt-0 pt-0" />
                                 </div>
-                                <mmu-ttg-map :selected-tool="selectedTool" :filtered-ttg-map="filteredTtgMap" />
+                                <mmu-ttg-map :selected-tool="selectedTool" />
                             </v-col>
                         </v-row>
                     </v-col>
