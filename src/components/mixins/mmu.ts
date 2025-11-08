@@ -209,6 +209,10 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.$store.state.printer.configfile?.settings?.mmu ?? {}
     }
 
+    get mmuSoftwareVars() {
+        return this.$store.state.printer['gcode_macro _MMU_SOFTWARE_VARS']
+    }
+
     get mmuNumGates() {
         return this.mmu?.num_gates ?? 0
     }

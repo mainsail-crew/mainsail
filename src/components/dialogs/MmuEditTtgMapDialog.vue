@@ -37,13 +37,17 @@
                     <v-col cols="4">
                         <v-row>
                             <v-col class="">
-                                <div class="d-flex align-center justify-center">
+                                <div class="d-flex align-center justify-end pr-8">
                                     <span class="mr-4">{{ $t('Panels.MmuPanel.TtgMapDialog.AllTools') }}</span>
                                     <v-switch
                                         v-model="allTools"
                                         :disabled="allToolsDisabled"
                                         hide-details
                                         class="mt-0 pt-0" />
+                                </div>
+                                <div v-if="showSkipAutomap" class="d-flex align-center justify-end pr-8">
+                                    <span class="mr-4">{{ $t('Panels.MmuPanel.TtgMapDialog.SkipAutomap') }}</span>
+                                    <v-switch v-model="skipAutomap" hide-details class="mt-0 pt-0" />
                                 </div>
                                 <mmu-ttg-map :selected-tool="selectedTool" />
                             </v-col>
@@ -109,6 +113,20 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     get allToolsDisabled() {
         return this.file === null
+    }
+
+    get skipAutomap() {
+        return this.mmu?.slicer_tool_map?.skip_automap ?? false
+    }
+
+    set skipAutomap(value: boolean) {
+        this.doSend(`MMU_SLICER_TOOL_MAP SKIP_AUTOMAP=${value ? 1 : 0}`)
+    }
+
+    get showSkipAutomap() {
+        const automapStrategy = this.mmuSoftwareVars.automap_strategy ?? 'none'
+
+        return this.file !== null && automapStrategy !== 'none'
     }
 
     get fileTools() {
