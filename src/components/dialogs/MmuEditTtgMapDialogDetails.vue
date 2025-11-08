@@ -38,6 +38,7 @@
                 <template #item="{ item }">
                     <mmu-edit-ttg-map-dialog-details-row
                         :key="item"
+                        :ref="`ttg-map-row-${item}`"
                         :gate="item"
                         :selected-gate="selectedGate"
                         @select-gate="selectGate(item)"
@@ -50,10 +51,11 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin, { GATE_UNKNOWN, TOOL_GATE_BYPASS } from '@/components/mixins/mmu'
 import { FileStateGcodefile } from '@/store/files/types'
+import Vue from 'vue'
 
 @Component
 export default class MmuEditTtgMapDialogDetails extends Mixins(BaseMixin, MmuMixin) {
@@ -175,6 +177,22 @@ export default class MmuEditTtgMapDialogDetails extends Mixins(BaseMixin, MmuMix
         groups[gate] = groups[gate] === selectedGroup ? gate : selectedGroup
 
         this.doSend(`MMU_ENDLESS_SPOOL GROUPS="${groups.join(',')}" QUIET=1`)
+    }
+
+    mounted() {
+        this.scrollToSelectedGate()
+    }
+
+    @Watch('tool')
+    onToolChanged() {
+        this.scrollToSelectedGate()
+    }
+
+    scrollToSelectedGate() {
+        this.$nextTick(() => {
+            const element = (this.$refs[`ttg-map-row-${this.selectedGate}`] as Vue)?.$el as HTMLTableRowElement
+            element?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        })
     }
 }
 </script>
