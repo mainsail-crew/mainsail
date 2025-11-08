@@ -1,8 +1,8 @@
 <template>
     <v-row>
-        <v-col cols="4" class="d-flex align-center">
-            <v-list v-if="fileNeedsTool">
-                <v-list-item>
+        <v-col cols="4" class="d-flex align-center pr-0">
+            <v-list v-if="fileNeedsTool" class="max-width-100">
+                <v-list-item class="pr-0">
                     <v-list-item-content>
                         <div class="text-overline">{{ $t('Panels.MmuPanel.TtgMapDialog.SlicerExpects') }}</div>
                         <v-divider />
@@ -12,6 +12,17 @@
                         </div>
                         <v-list-item-title class="wrap-tool-name">{{ fileFilamentName }}</v-list-item-title>
                         <v-list-item-subtitle>{{ fileFilamentDetails }}</v-list-item-subtitle>
+                        <v-alert
+                            v-if="selectedGateWarnings.length > 0"
+                            color="warning"
+                            dense
+                            text
+                            class="mt-2 max-width-100">
+                            <p class="mb-2">{{ $t('Panels.MmuPanel.TtgMapDialog.Mismatch') }}</p>
+                            <ul class="mb-0">
+                                <li v-for="(warning, index) in selectedGateWarnings" :key="index">{{ warning }}</li>
+                            </ul>
+                        </v-alert>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
@@ -162,6 +173,40 @@ export default class MmuEditTtgMapDialogDetails extends Mixins(BaseMixin, MmuMix
         return this.ttgMap[this.tool] ?? null
     }
 
+    get selectedGateMaterial() {
+        return this.mmu?.gate_material?.[this.selectedGate] ?? null
+    }
+
+    get selectedGateMaterial() {
+        return this.mmu?.gate_material?.[this.selectedGate] ?? null
+    }
+
+    get selectedGateTemperature() {
+        return this.mmu?.gate_temperature?.[this.selectedGate] ?? null
+    }
+
+    get selectedGateColor() {
+        return this.mmu?.gate_color?.[this.selectedGate] ?? null
+    }
+
+    get selectedGateWarnings() {
+        const warnings = []
+
+        if (this.selectedGateMaterial !== this.fileFilamentType) {
+            warnings.push(this.$t('Panels.MmuPanel.TtgMapDialog.Material'))
+        }
+
+        if (this.selectedGateTemperature !== this.fileFilamentTemp) {
+            warnings.push(this.$t('Panels.MmuPanel.TtgMapDialog.Temperature'))
+        }
+
+        if (this.selectedGateColor !== this.fileFilamentColor) {
+            warnings.push(this.$t('Panels.MmuPanel.TtgMapDialog.Color'))
+        }
+
+        return warnings
+    }
+
     selectGate(gate: number) {
         this.doSend(`MMU_REMAP_TTG TOOL=${this.tool} GATE=${gate} QUIET=1`)
     }
@@ -198,6 +243,10 @@ export default class MmuEditTtgMapDialogDetails extends Mixins(BaseMixin, MmuMix
 </script>
 
 <style scoped>
+.max-width-100 {
+    max-width: 100%;
+}
+
 .tool-swatch {
     display: inline-block;
     width: 15px;
