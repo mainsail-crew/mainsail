@@ -8,7 +8,7 @@
             <v-list-item-subtitle class="d-flex justify-space-between w-100" :class="subtitleClass">
                 {{ subtitle }}
             </v-list-item-subtitle>
-            <v-list-item-subtitle v-if="compact" class="d-flex justify-space-between w-100 smaller-font">
+            <v-list-item-subtitle v-if="!compact" class="d-flex justify-space-between w-100 smaller-font">
                 {{ extra }}
             </v-list-item-subtitle>
         </v-list-item-content>
