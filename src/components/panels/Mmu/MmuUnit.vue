@@ -2,7 +2,7 @@
     <div class="mmu-unit d-inline-flex flex-column mx-1 rounded-lg mb-3">
         <div class="d-flex pt-3 px-4 mb-n7 position-relative">
             <mmu-unit-gate
-                v-for="gateIndex in mmuNumGates"
+                v-for="gateIndex in numGates"
                 :key="gateIndex"
                 :gate-index="gateIndex - 1 + firstGateNumber"
                 :mmu-machine-unit="mmuMachineUnit"
@@ -40,6 +40,10 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
     get mmuMachineUnit() {
         return this.getMmuMachineUnit(this.unitIndex)
+    }
+
+    get numGates() {
+        return this.mmuMachineUnit?.num_gates ?? 0
     }
 
     get firstGateNumber() {
