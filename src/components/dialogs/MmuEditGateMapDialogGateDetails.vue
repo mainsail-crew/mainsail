@@ -287,7 +287,8 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
 
     set filamentName(newName: unknown) {
         const value = String(newName ?? 'Unknown').replace(/["']/g, '')
-        this.setMmuGateMap('name', value)
+
+        this.debounceSetMmuGateMap('name', value)
     }
 
     get filamentMaterial() {
@@ -296,7 +297,7 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
 
     set filamentMaterial(newValue: unknown) {
         const value = String(newValue ?? 'Unknown').replace(/["']/g, '')
-        this.setMmuGateMap('material', value)
+        this.debounceSetMmuGateMap('material', value)
     }
 
     get filamentTemperature() {
@@ -307,7 +308,7 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
         const isValid = this.temperatureRules.every((rule) => rule(newValue) === true)
         if (!isValid) return
 
-        this.setMmuGateMap('temp', newValue)
+        this.debounceSetMmuGateMap('temp', newValue)
     }
 
     get temperatureRules() {
@@ -362,7 +363,7 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
         const value = isNaN(newValue)
             ? 100
             : Math.min(Math.max(newValue, FILAMENT_SPEED_OVERRIDE_MIN), FILAMENT_SPEED_OVERRIDE_MAX)
-        this.setMmuGateMap('speed', value)
+        this.debounceSetMmuGateMap('speed', value)
     }
 
     get spoolmanSpool() {
@@ -426,11 +427,13 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
     }
 
     decrementSpeed() {
-        this.speedOverride = Math.max(FILAMENT_SPEED_OVERRIDE_MIN, Math.round(this.speedOverride - 10))
+        const value = Math.max(FILAMENT_SPEED_OVERRIDE_MIN, Math.round(this.speedOverride - 10))
+        this.setMmuGateMap('speed', value)
     }
 
     incrementSpeed() {
-        this.speedOverride = Math.min(FILAMENT_SPEED_OVERRIDE_MAX, Math.round(this.speedOverride + 10))
+        const value = Math.min(FILAMENT_SPEED_OVERRIDE_MAX, Math.round(this.speedOverride + 10))
+        this.setMmuGateMap('speed', value)
     }
 
     resetSpeed() {
@@ -443,10 +446,14 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
         this.setMmuGateMap('spoolid', -1)
     }
 
-    @Debounce(500)
     setMmuGateMap(attribute: string, value: string | number) {
         const gcode = `MMU_GATE_MAP GATE=${this.selectedGate} ${attribute.toUpperCase()}=${value} QUIET=1`
         this.doSend(gcode)
+    }
+
+    @Debounce(500)
+    debounceSetMmuGateMap(attribute: string, value: string | number) {
+        this.setMmuGateMap(attribute, value)
     }
 }
 </script>
