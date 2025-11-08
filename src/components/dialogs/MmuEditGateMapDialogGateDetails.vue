@@ -437,7 +437,7 @@ export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, M
     }
 
     resetSpeed() {
-        this.speedOverride = 100
+        this.setMmuGateMap('speed', 100)
     }
 
     resetSpoolId() {
