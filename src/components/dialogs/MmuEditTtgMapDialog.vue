@@ -49,7 +49,7 @@
                                     <span class="mr-4">{{ $t('Panels.MmuPanel.TtgMapDialog.SkipAutomap') }}</span>
                                     <v-switch v-model="skipAutomap" hide-details class="mt-0 pt-0" />
                                 </div>
-                                <mmu-ttg-map :selected-tool="selectedTool" />
+                                <mmu-ttg-map :selected-tool="selectedTool" :selected-gate="selectedGate" />
                             </v-col>
                         </v-row>
                     </v-col>
@@ -152,6 +152,14 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
         })
 
         return ttgMap
+    }
+
+    get selectedGate() {
+        if (this.selectedTool === TOOL_GATE_UNKNOWN) {
+            return TOOL_GATE_UNKNOWN
+        }
+
+        return this.ttgMap[this.selectedTool]
     }
 
     selectTool(tool: number) {
