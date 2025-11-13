@@ -786,7 +786,6 @@
             "ButtonPreload": "Preload",
             "ButtonPrintStats": "Print Stats",
             "ButtonRecover": "Recover",
-            "ButtonSelect": "Select",
             "ButtonSyncSpoolman": "Sync Spoolman",
             "ButtonUnload": "Unload",
             "ButtonUnloadExt": "Unload Ext",
@@ -794,7 +793,6 @@
             "Bypass": "Bypass",
             "Cancel": "Cancel",
             "ClogDetection": "Clog Detection",
-            "CommingSoon": "Comming Soon...",
             "Dialog": {
                 "AreYouSure": "Are you sure?"
             },
@@ -849,13 +847,10 @@
                     "On": "On",
                     "SlicerColor": "Slicer Color"
                 },
-                "Leds": "LEDs",
-                "LedsForUnit": "LEDs for {unit}",
                 "Load": "Load",
                 "MmuMotors": "MMU Motors",
                 "MotorSync": "Extruder Motor Sync",
                 "Move": "Move",
-                "NoCustomControls": "No Custom Controls",
                 "Off": "Off",
                 "On": "On",
                 "Release": "Release",
@@ -872,7 +867,6 @@
                 "TxMacroColor": "Tx Macro Color",
                 "TxMacroColorDescription": "Which color should be displayed in the Tx macro button in the extruder panel?",
                 "Unload": "Unload",
-                "Unlock": "Unlock",
                 "Unsync": "Unsync",
                 "Up": "Up"
             },
@@ -896,13 +890,9 @@
                 "Unloaded": "Unloaded",
                 "WarningPrefix": "Warning:"
             },
-            "NoActiveSpool": "No active spool",
-            "NoSpoolId": "No spool ID",
             "Ok": "Ok",
             "PreGate": "Pre-Gate",
-            "RecoverFilamentPosition": "Recover Filament Position",
             "RecoverState": "Fix MMU State",
-            "Save": "Save",
             "ShowClogDetection": "Clog Detection",
             "ShowDetails": "Filament Details",
             "ShowLogos": "Display Logo",
