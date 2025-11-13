@@ -27,26 +27,13 @@ import { TranslateResult } from 'vue-i18n'
 
 @Component
 export default class SettingsRow extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: false })
-    declare readonly loading: boolean
-
-    @Prop({ required: false, default: '' })
-    declare readonly icon: string
-
-    @Prop({ required: true })
-    declare readonly title: string | TranslateResult
-
-    @Prop({ required: false })
-    declare readonly subTitle: string | TranslateResult
-
-    @Prop({ type: Boolean, default: false })
-    declare readonly dynamicSlotWidth: boolean
-
-    @Prop({ required: false, default: false })
-    declare readonly mobileSecondRow: boolean
-
-    @Prop({ type: Boolean, default: false })
-    declare readonly dense: boolean
+    @Prop({ required: false, default: false }) readonly loading!: boolean
+    @Prop({ required: false, default: '' }) readonly icon!: string
+    @Prop({ required: true }) readonly title!: string | TranslateResult
+    @Prop({ required: false }) readonly subTitle!: string | TranslateResult
+    @Prop({ required: false, default: false }) readonly dynamicSlotWidth!: boolean
+    @Prop({ required: false, default: false }) readonly mobileSecondRow!: boolean
+    @Prop({ default: false }) readonly dense!: boolean
 
     get firstColClasses() {
         const dense = this.dense ? ' py-1' : ''

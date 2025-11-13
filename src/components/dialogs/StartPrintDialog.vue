@@ -6,30 +6,18 @@
         @click:outside="closeDialog"
         @keydown.esc="closeDialog">
         <v-card>
-            <div v-if="bigThumbnailUrl" class="d-flex align-center justify-center" style="min-height: 200px">
-                <v-img
-                    :src="bigThumbnailUrl"
-                    :max-width="maxThumbnailWidth"
-                    class="d-inline-block"
-                    :style="bigThumbnailStyle" />
-            </div>
+            <start-print-dialog-thumbnail :file="file" :current-path="currentPath" />
             <v-card-title class="text-h5">{{ $t('Dialogs.StartPrint.Headline') }}</v-card-title>
             <v-card-text class="pb-0">
                 <p class="body-2">
                     {{ question }}
                 </p>
             </v-card-text>
-            <start-print-dialog-mmu v-if="isMmuPrint" :file="file" />
-            <start-print-dialog-spoolman v-else-if="moonrakerComponents.includes('spoolman')" :file="file" />
-            <template v-if="moonrakerComponents.includes('timelapse')">
-                <v-divider v-if="!moonrakerComponents.includes('spoolman')" class="mt-3 mb-2" />
-                <v-card-text class="py-0">
-                    <settings-row :title="$t('Dialogs.StartPrint.Timelapse')">
-                        <v-switch v-model="timelapseEnabled" hide-details class="mt-0" />
-                    </settings-row>
-                </v-card-text>
-                <v-divider class="mt-2 mb-0" />
-            </template>
+            <start-print-dialog-afc v-if="existsAfc" :file="file" />
+            <start-print-dialog-mmu v-else-if="existsMmu" :file="file" />
+            <start-print-dialog-spoolman v-else-if="existsSpoolman" :file="file" />
+            <start-print-dialog-timelapse v-if="existsTimelapse" />
+            <v-divider v-if="showDivider" class="my-0" />
             <v-card-actions>
                 <v-spacer />
                 <v-btn text @click="closeDialog">{{ $t('Dialogs.StartPrint.Cancel') }}</v-btn>
@@ -52,113 +40,48 @@ import { FileStateGcodefile } from '@/store/files/types'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiPrinter3d } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
-import { defaultBigThumbnailBackground, thumbnailBigMin } from '@/store/variables'
 
 @Component({
-    components: {
-        SettingsRow,
-    },
+    components: { SettingsRow },
 })
 export default class StartPrintDialog extends Mixins(BaseMixin) {
     mdiPrinter3d = mdiPrinter3d
 
-    @Prop({ required: true, default: false })
-    declare readonly bool: boolean
+    @Prop({ required: true, default: false }) readonly bool!: boolean
+    @Prop({ required: true, default: '' }) readonly currentPath!: string
+    @Prop({ required: true }) readonly file!: FileStateGcodefile
 
-    @Prop({ required: true, default: '' })
-    declare readonly currentPath: string
-
-    @Prop({ required: true })
-    declare file: FileStateGcodefile
-
-    // Happy Hare MMU support for initial tool->gate mapping
-    get isMmuPrint() {
-        if (this.$store.state.printer.mmu?.enabled) {
-            return (this.file.referenced_tools?.length ?? 1) > 1 || this.$store.state.printer.mmu?.gate !== -2
-        }
-        return false
+    get existsAfc() {
+        return 'AFC' in this.$store.state.printer
     }
 
-    get timelapseEnabled() {
-        return this.$store.state.server.timelapse?.settings?.enabled ?? false
+    get existsMmu() {
+        return (this.$store.state.printer.mmu?.enabled && this.$store.state.printer.mmu?.gate !== -2)
     }
 
-    set timelapseEnabled(newVal) {
-        this.$socket.emit(
-            'machine.timelapse.post_settings',
-            { enabled: newVal },
-            { action: 'server/timelapse/initSettings' }
-        )
+    get existsSpoolman() {
+        return this.moonrakerComponents.includes('spoolman')
     }
 
-    get bigThumbnailBackground() {
-        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+    get existsTimelapse() {
+        return this.moonrakerComponents.includes('timelapse')
     }
 
-    get bigThumbnailStyle() {
-        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
-            return {}
-        }
-
-        return { backgroundColor: this.bigThumbnailBackground }
+    get showDivider() {
+        return this.existsAfc || this.existsSpoolman || this.existsTimelapse
     }
 
     get active_spool(): ServerSpoolmanStateSpool | null {
         return this.$store.state.server.spoolman.active_spool ?? null
     }
 
-    get filamentVendor() {
-        return this.active_spool?.filament?.vendor?.name ?? 'Unknown'
-    }
-
-    get filamentName() {
-        return this.active_spool?.filament.name ?? 'Unknown'
-    }
-
-    get filament() {
-        return `${this.filamentVendor} - ${this.filamentName}`
-    }
-
     get question() {
-        if (this.active_spool && !this.isMmuPrint)
+        if (this.active_spool)
             return this.$t('Dialogs.StartPrint.DoYouWantToStartFilenameFilament', {
                 filename: this.file?.filename ?? 'unknown',
             })
 
         return this.$t('Dialogs.StartPrint.DoYouWantToStartFilename', { filename: this.file?.filename ?? 'unknown' })
-    }
-
-    get fileTimestamp() {
-        return typeof this.file.modified.getTime === 'function' ? this.file.modified.getTime() : 0
-    }
-
-    get thumbnails() {
-        return this.file.thumbnails ?? []
-    }
-
-    get bigThumbnail() {
-        return this.thumbnails.find((thumbnail) => thumbnail.width >= thumbnailBigMin)
-    }
-
-    get currentPathWithoutSlash() {
-        if (this.currentPath.startsWith('/')) return this.currentPath.substring(1)
-
-        return this.currentPath
-    }
-
-    get bigThumbnailUrl() {
-        if (this.bigThumbnail === undefined || !('relative_path' in this.bigThumbnail)) return null
-
-        const baseArray = [this.apiUrl, 'server/files/gcodes']
-        if (this.currentPathWithoutSlash) baseArray.push(this.currentPathWithoutSlash)
-        baseArray.push(this.bigThumbnail.relative_path)
-        const baseUrl = baseArray.join('/')
-
-        return `${baseUrl}?timestamp=${this.fileTimestamp}`
-    }
-
-    get maxThumbnailWidth() {
-        return this.bigThumbnail?.width ?? 400
     }
 
     startPrint(filename = '') {
