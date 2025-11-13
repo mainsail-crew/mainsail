@@ -912,6 +912,7 @@
             },
             "TtgMapDialog": {
                 "AllTools": "All Tools",
+                "Bypass": "Bypass",
                 "Color": "Color",
                 "EndlessSpool": "ES \u221E",
                 "FilamentInfo": "Filament Information",
