@@ -177,10 +177,6 @@ export default class MmuEditTtgMapDialogDetails extends Mixins(BaseMixin, MmuMix
         return this.mmu?.gate_material?.[this.selectedGate] ?? null
     }
 
-    get selectedGateMaterial() {
-        return this.mmu?.gate_material?.[this.selectedGate] ?? null
-    }
-
     get selectedGateTemperature() {
         return this.mmu?.gate_temperature?.[this.selectedGate] ?? null
     }
