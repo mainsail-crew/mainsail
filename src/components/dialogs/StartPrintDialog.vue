@@ -56,7 +56,7 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
     }
 
     get existsMmu() {
-        return (this.$store.state.printer.mmu?.enabled && this.$store.state.printer.mmu?.gate !== -2)
+        return this.$store.state.printer.mmu?.enabled && this.$store.state.printer.mmu?.gate !== -2
     }
 
     get existsSpoolman() {
