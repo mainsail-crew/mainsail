@@ -12,7 +12,7 @@ RUN npm ci
 
 COPY ./ /app/
 
-RUN npm run build
+RUN npm run build && rm /app/dist/mainsail.zip
 
 # set port to >1024 port for non root running
 RUN sed 's/80/8080/g' .docker/nginx.conf > .docker/nginx.conf.unprivileged
