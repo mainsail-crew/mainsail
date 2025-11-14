@@ -155,30 +155,36 @@ export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
         return `rotate(${this.headroomRotate} 70 70)`
     }
 
-    get clogPercent() {
-        if (this.encoderDetectionLength === 0) return 100
+    get clogAngleHeadroomMin() {
+        if (this.encoderDetectionLength === 0) return 300 // position at 0% clog
 
-        return (
-            (Math.min(Math.max(0, this.encoderDetectionLength - this.headroomMin), this.encoderDetectionLength) /
-                this.encoderDetectionLength) *
-            100
-        )
-    }
-
-    get clogAngle() {
-        return this.clogPercent * 3
+        return this.calcClogPercent(this.headroomMin, this.encoderDetectionLength) * 3
     }
 
     get x1MinHeadroom() {
-        return 70 + 66 * Math.cos(((120 + this.clogAngle) * Math.PI) / 180)
+        return 70 + 66 * Math.cos(((120 + this.clogAngleHeadroomMin) * Math.PI) / 180)
     }
 
     get y1MinHeadroom() {
-        return 70 + 66 * Math.sin(((120 + this.clogAngle) * Math.PI) / 180)
+        return 70 + 66 * Math.sin(((120 + this.clogAngleHeadroomMin) * Math.PI) / 180)
+    }
+
+    get clogPercentHeadroom() {
+        if (this.encoderDetectionLength === 0) return 100 // position at 100% clog
+
+        return this.calcClogPercent(this.headroom, this.encoderDetectionLength)
     }
 
     get dashOffset() {
-        return ((100 - (this.clogPercent * 300) / 360) / 100) * this.CIRCUMFERENCE
+        const arcPercentage = (this.clogPercentHeadroom * 300) / 360
+
+        return this.CIRCUMFERENCE * (1 - arcPercentage / 100)
+    }
+
+    private calcClogPercent(newHeadroom: number, encoderDetectionLength: number) {
+        const clampedHeadroom = Math.max(0, Math.min(newHeadroom, encoderDetectionLength))
+
+        return ((encoderDetectionLength - clampedHeadroom) / encoderDetectionLength) * 100
     }
 
     @Watch('dashOffset', { immediate: true })
