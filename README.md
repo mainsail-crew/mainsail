@@ -11,9 +11,6 @@
     <a aria-label="Downloads" href="https://github.com/mainsail-crew/mainsail/releases">
       <img src="https://img.shields.io/github/downloads/mainsail-crew/mainsail/total?style=flat-square">
   </a>
-    <a aria-label="Localization" href="https://docs.mainsail.xyz/development/localization">
-      <img src="https://shields-staging.herokuapp.com/github/directory-file-count/mainsail-crew/mainsail/src%2Flocales?label=localizations&extension=json&type=file&style=flat-square">
-  </a>
     <a aria-label="Stars" href="https://github.com/mainsail-crew/mainsail/stargazers">
       <img src="https://img.shields.io/github/stars/mainsail-crew/mainsail?style=flat-square">
   </a>

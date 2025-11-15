@@ -8,12 +8,16 @@ on:
 jobs:
   check_translations:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Install jq
         run: sudo apt install -y jq
 
       - name: Fetch repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install node
         uses: actions/setup-node@v4
@@ -31,16 +35,29 @@ jobs:
 
       - name: Run i18n-extract on changed locale files
         id: i18n-extract
-        env:
-          OUTPUT: ''
         run: |
           mkdir ./i18n-extract
+
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            npx vue-i18n-extract --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' --languageFiles ./src/locales/${file##*/} --output ./i18n-extract/${file##*/}
-            MISSING=$(cat i18n-extract/${file##*/} | jq '.missingKeys | length')
-            UNUSED=$(cat i18n-extract/${file##*/} | jq '.unusedKeys | length')
+            locale=$(basename "$file" .json)
+            languageFiles="./src/locales/${locale}.json"
+            outputFile="./i18n-extract/${locale}.json"
+
+            echo "::group::Extracting i18n data for locale: ${locale}"
+
+            npx vue-i18n-extract \
+              --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' \
+              --languageFiles "${languageFiles}" \
+              --output "${outputFile}"
+
+            echo "::endgroup::"
+            
+            MISSING=$(cat "${outputFile}" | jq '.missingKeys | length')
+            UNUSED=$(cat "${outputFile}" | jq '.unusedKeys | length')
+
             echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
           done
+
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v3
         with:

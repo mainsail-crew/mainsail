@@ -1,5 +1,5 @@
 <template>
-    <v-item-group class="d-inline-block">
+    <v-item-group class="d-inline-flex">
         <v-tooltip :disabled="!hasDescription" top>
             <template #activator="{ on, attrs }">
                 <v-btn
@@ -8,6 +8,7 @@
                     :class="paramArray.length ? 'macroWithParameters' : ''"
                     :loading="loadings.includes('macro_' + macro.name)"
                     :disabled="disabled"
+                    class="flex-grow-1"
                     v-bind="attrs"
                     v-on="on"
                     @click="doSendMacro(macro.name)">

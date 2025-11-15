@@ -1,5 +1,8 @@
 <template>
-    <div v-observe-visibility="viewportVisibilityChanged" class="d-flex justify-center webcamBackground">
+    <div
+        v-observe-visibility="viewportVisibilityChanged"
+        class="d-flex justify-center webcamBackground"
+        :style="wrapperStyle">
         <img
             v-show="status === 'connected'"
             ref="image"
@@ -55,31 +58,28 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     @Ref('image') readonly image!: HTMLImageElement
 
+    get wrapperStyle() {
+        if (this.aspectRatio !== null && this.aspectRatio < 1 && [90, 270].includes(this.camSettings.rotation)) {
+            return {
+                aspectRatio: 1 / this.aspectRatio,
+                maxHeight: `${window.innerHeight - 155}px`,
+            }
+        }
+
+        return {
+            maxHeight: `${window.innerHeight - 155}px`,
+        }
+    }
+
     get webcamStyle() {
-        const output = {
+        return {
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
+                this.aspectRatio ?? 1
             ),
-            aspectRatio: 16 / 9,
-            maxHeight: window.innerHeight - 155 + 'px',
-            maxWidth: 'auto',
         }
-
-        if (this.aspectRatio) {
-            output.aspectRatio = this.aspectRatio
-            output.maxWidth = (window.innerHeight - 155) * this.aspectRatio + 'px'
-        }
-
-        if (this.aspectRatio && [90, 270].includes(this.camSettings.rotation)) {
-            if (output.transform === 'none') output.transform = ''
-
-            const scale = 1 / this.aspectRatio
-            output.transform += ' rotate(' + this.camSettings.rotation + 'deg) scale(' + scale + ')'
-        }
-
-        return output
     }
 
     get fpsOutput() {
@@ -233,10 +233,14 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 .webcamBackground {
     position: relative;
     background: rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+    margin: 0 auto;
 }
 
 .webcamImage {
     width: 100%;
+    transform-origin: center center;
+    object-fit: contain;
 }
 
 ._webcam_mjpegstreamer_output {

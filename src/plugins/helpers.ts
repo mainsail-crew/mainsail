@@ -370,3 +370,10 @@ export function filamentTextColor(hexColor: string): string {
 
     return '#ffffff'
 }
+
+export function filamentWeightFormat(weight: number): string {
+    if (weight > 1000) return `${Math.round(weight / 10) / 100} kg`
+    else if (weight > 100) return `${Math.round(weight)} g`
+
+    return `${Math.round(weight * 10) / 10} g`
+}

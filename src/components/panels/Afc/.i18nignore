@@ -1,0 +1,8 @@
+$t('Panels.AfcPanel.Initialized')
+$t('Panels.AfcPanel.Idle')
+$t('Panels.AfcPanel.Error')
+$t('Panels.AfcPanel.Loading')
+$t('Panels.AfcPanel.Unloading')
+$t('Panels.AfcPanel.Ejecting')
+$t('Panels.AfcPanel.Moving')
+$t('Panels.AfcPanel.Restoring')
