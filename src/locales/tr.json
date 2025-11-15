@@ -69,9 +69,9 @@
             "CannotUploadTheFile": "Dosya yüklenemiyor!",
             "EmergencyStop": "Acil Stop",
             "SAVE_CONFIG": "YAPILANDIRMAYI KAYDET",
+            "Uploading": "Karşıya Yükleniyor",
             "UploadOfFileSuccessful": "{file} karşıya yüklemesi başarılı!",
-            "UploadPrint": "Yükle ve Yazdır",
-            "Uploading": "Karşıya Yükleniyor"
+            "UploadPrint": "Yükle ve Yazdır"
         },
         "TopCornerMenu": {
             "Cancel": "İptal Et",
@@ -219,9 +219,9 @@
         "NozzleDiameter": "Nozül Çapı",
         "ObjectHeight": "Nesne Yüksekliği",
         "Preheat": "Ön ısıtma",
+        "PrintedFiles": "Basılmış dosyalar",
         "PrintStart": "Baskı başlangıcı",
         "PrintTime": "Baskı Süresi",
-        "PrintedFiles": "Basılmış dosyalar",
         "RefreshCurrentDirectory": "Geçerli Dizini yenile",
         "Rename": "Yeniden Adlandır",
         "RenameDirectory": "Dizini Yeniden Adlandır",
@@ -246,8 +246,8 @@
         "DropFilesToUploadFiles": "Yüklenecek dosyaları bırakın"
     },
     "GCodeViewer": {
-        "CNCMode": "CNC Modu",
         "ClearLoadedFile": "Temizle",
+        "CNCMode": "CNC Modu",
         "ColorMode": "Renk modu",
         "Downloading": "İndiriliyor",
         "ForceLineRendering": "Çizgi İşlemeyi Zorla",
@@ -259,8 +259,8 @@
         "Max": "Maks",
         "Medium": "Orta",
         "ReloadRequired": "Yeniden yükleme gerekli",
-        "RenderQuality": "Render kalitesi",
         "Rendering": "İşleme",
+        "RenderQuality": "Render kalitesi",
         "ShowGCode": "G-Kodunu Göster",
         "ShowObjectSelection": "Nesne Seçimini Göster",
         "ShowToolhead": "Baskı Kafasını Göster",
@@ -361,13 +361,13 @@
         "Statistics": "Istatistik",
         "Status": "Durum",
         "StatusValues": {
-            "Others": "Diğerleri",
             "cancelled": "İptal Edildi",
             "completed": "Tamamlandı",
             "error": "Hata",
             "in_progress": "Devam etmekte",
             "klippy_disconnect": "Klippy bağlantısını kes",
             "klippy_shutdown": "Klippy kapat",
+            "Others": "Diğerleri",
             "server_exit": "Sunucu çıkışı"
         },
         "Table": "Tablo",
@@ -434,8 +434,8 @@
             "Endstop": "Endstop",
             "EndstopInfo": "Mevcut endstop durumunu yüklemek için sağ alttaki senkronizasyon düğmesine basın.",
             "Endstops": "Endstoplar",
-            "TRIGGERED": "TETİKLENDİ",
-            "open": "AÇIK"
+            "open": "AÇIK",
+            "TRIGGERED": "TETİKLENDİ"
         },
         "LogfilesPanel": {
             "Accept": "kabul et",
@@ -491,9 +491,9 @@
             "GenericUpdateQuestion": "Bu güncelleme için herhangi bir manuel düzenleme gerekip gerekmediğini görmek için commit geçmişini (varsa) ve bu proje için GitHub sayfasını kontrol edin.",
             "GitHubPage": "GitHub Sayfası",
             "HardRecovery": "Sert Kurtarma",
-            "IUnderstandTheRisks": "Riskleri anlıyorum",
             "InitUpdateManager": "Güncelleme Yöneticisi henüz başlatılmamış. Sistemi ilk kez başlattığınızda bu normaldir. Tüm bileşenleri başlatmak için lütfen yenileme düğmesine tıklayın.",
             "Invalid": "geçersiz",
+            "IUnderstandTheRisks": "Riskleri anlıyorum",
             "KlipperUpdateQuestionConfig": "Bu güncelleme, config parametrelerinde değişiklikler içerebilir ve bu değişiklikleri printer.cfg dosyasında düzenlemeniz gerekebilir. Detaylar için değişiklik günlüğüne bakın.",
             "KlipperUpdateQuestionFirmware": "Bu, Klipper ana yazılımını güncelleyecek. Klipper firmware'i çalıştıran kontrol kartları, makineyi tekrar kullanıma sokmadan önce derlenmiş firmware ile yeniden yazılması gerekebilir.",
             "LinkToGithub": "GitHub Bağlantısı",
@@ -505,13 +505,13 @@
             "System": "Sistem",
             "ThesePackagesCanBeUpgrade": "Bu sistem paketleri güncellenebilir:",
             "Unknown": "bilinmeyen",
-            "UpToDate": "güncel",
             "Update": "güncelleme",
             "UpdateAll": "Tüm Bileşenleri Güncelle",
             "UpdateManager": "Güncelleme Yöneticisi",
             "UpdateWarning": "Güncelleme Uyarısı: {name}",
             "Upgrade": "yükseltme",
             "UpgradeableSystemPackages": "Yükseltilebilir Sistem Paketleri",
+            "UpToDate": "güncel",
             "WebClientUpdateQuestion": "Web istemciyi güncelleme, uyumsuzluklara neden olabilecek değişiklikler içerebilir. Daha fazla bilgi için sürüm notlarına bakın."
         }
     },
@@ -576,18 +576,18 @@
             "Headline": "Makrolar",
             "Send": "gönder"
         },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Lütfen printer.cfg dosyanızda mainsail.cfg dosyasını eklediğinizden emin olun.",
-            "IsNotDefinedInConfig": "config dosyasında tanımlı değil.",
-            "MissingConfiguration": "Eksik konfigürasyon",
-            "MoreInformation": "daha fazla bilgi"
-        },
         "MiniconsolePanel": {
             "Headline": "Konsol",
             "HideTemperatures": "Sıcaklıkları Gizle",
             "HideTimelapse": "Timelapse'ı Gizle",
             "SendCode": "Kod Gönder...",
             "SetupConsole": "Konsolu Ayarla"
+        },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Lütfen printer.cfg dosyanızda mainsail.cfg dosyasını eklediğinizden emin olun.",
+            "IsNotDefinedInConfig": "config dosyasında tanımlı değil.",
+            "MissingConfiguration": "Eksik konfigürasyon",
+            "MoreInformation": "daha fazla bilgi"
         },
         "MiscellaneousPanel": {
             "Headline": "Çeşitli",
@@ -612,16 +612,16 @@
             "CancelPrint": "Baskıyı İptal Et",
             "ClearPrintStats": "Baskı İstatistiklerini Temizle",
             "Difference": "Fark",
-            "ETA": "Tahmini Bitiş Zamanı",
             "EmptyGcodes": "Hiçbir G-Kodu yok.",
             "EmptyJobqueue": "Şu anda iş kuyruğunda dosya yok.",
             "Estimate": "Tahmin",
+            "ETA": "Tahmini Bitiş Zamanı",
             "ExcludeObject": {
                 "Cancel": "iptal et",
+                "Excluded": "Hariç Tutuldu",
                 "ExcludeObject": "Nesneyi Hariç Tut",
                 "ExcludeObjectHeadline": "Nesneyi Hariç Tut",
-                "ExcludeObjectText": "\"{name}\" nesnesini gerçekten hariç tutmak istiyor musunuz?",
-                "Excluded": "Hariç Tutuldu"
+                "ExcludeObjectText": "\"{name}\" nesnesini gerçekten hariç tutmak istiyor musunuz?"
             },
             "Filament": "Filament",
             "File": "Dosya",
@@ -676,13 +676,13 @@
             "ShowNameInList": "{name}'i listede göster",
             "State": "Durum",
             "Target": "Hedef",
+            "TemperaturesInChart": "Sıcaklık [°C]",
             "TempTooHigh": "{name} için sıcaklık çok yüksek! (maks: {max})",
-            "TempTooLow": "{name} için sıcaklık çok düşük! (min: {min})",
-            "TemperaturesInChart": "Sıcaklık [°C]"
+            "TempTooLow": "{name} için sıcaklık çok düşük! (min: {min})"
         },
         "ToolheadControlPanel": {
-            "ALL": "TÜMÜ",
             "Absolute": "mutlak",
+            "ALL": "TÜMÜ",
             "Headline": "Araç Başlığı",
             "PleaseConfigureSteps": "Lütfen adımları yapılandırın",
             "Position": "Konum",
@@ -890,8 +890,8 @@
             "CountMacros": "Makro eklenmedi | {count} Makro | {count} Makrolar",
             "Custom": "özel",
             "CustomColor": "Özel Renk",
-            "DeleteMacroFromGroup": "Makroyu gruptan sil.",
             "DeletedMacro": "Silinen makro",
+            "DeleteMacroFromGroup": "Makroyu gruptan sil.",
             "EditGroup": "Grubu Düzenle",
             "Error": "hata",
             "Expert": "Uzman",
@@ -901,10 +901,10 @@
             "Macrogroups": "Gruplar",
             "Macros": "Makrolar",
             "Management": "Yönetim",
-            "NOMacros": "Makro bulunamadı...",
             "Name": "Ad",
             "NoAvailableMacros": "Mevcut makro yok.",
             "NoGroups": "Grup bulunamadı...",
+            "NOMacros": "Makro bulunamadı...",
             "NoMacrosInGroup": "Bu grupta makro yok.",
             "Primary": "birincil",
             "Search": "Ara",
@@ -926,8 +926,8 @@
             "CreatePreset": "Ön Ayar Oluştur",
             "End": "Son",
             "EndDescription": "Bu grubun son LED'i.",
-            "GroupSubTitle": "Başlangıç: {start}, Son: {end}",
             "Groups": "Gruplar",
+            "GroupSubTitle": "Başlangıç: {start}, Son: {end}",
             "LightGroups": "{name} - Gruplar",
             "LightPresets": "{name} - Ön Ayarlar",
             "Miscellaneous": "Çeşitli",
@@ -978,6 +978,8 @@
             "Camera": "Kamera",
             "ConstantRateFactor": "Sabit Oran Faktörü",
             "ConstantRateFactorDescription": "Bu, oluşturulan video kalitesini ve dosya boyutunu yapılandırır. CRF ölçeğinin aralığı 0-51 arasındadır, 0 kayıpsız, 23 varsayılan ve 51 en düşük kaliteye sahiptir. Daha düşük bir değer genellikle daha yüksek kaliteye yol açar ve nispeten sağlıklı bir aralık 17-28'dir. Görsel olarak kayıpsız kabul edilebilecek 17 veya 18'i düşünün.",
+            "duplicatelastframe": "Son Karesini Kopyala",
+            "duplicatelastframeDescription": "Video sonuna son kareyi kopyalar",
             "Enabled": "Etkin",
             "EnabledDescription": "Devre dışı bırakılırsa, G-Code makroları yok sayılır ve otomatik render atlanır.",
             "Extraoutputparams": "Ekstra Çıkış Parametreleri",
@@ -993,12 +995,12 @@
             "ModeDescription": "Katman makrosu ve Hyperlapse (zamana dayalı) modu arasında seçim yapın",
             "OutputFramerate": "Çıkış Kare Hızı",
             "OutputFramerateDescription": "Video kare hızını belirler. Not: variable_fps etkinleştirildiyse bu göz ardı edilecektir.",
-            "ParkTime": "Park Süresi",
-            "ParkTimeDescription": "Park ederken ekstra boş süre ekler.",
             "Parkhead": "Baskı kafasını park et",
             "ParkheadDescription": "Etkinleştirildiğinde, kamera başlık, bir kare almadan önce park edilecektir.",
             "Parkpos": "Park Konumu",
             "ParkposDescription": "Park konumunu seçin",
+            "ParkTime": "Park Süresi",
+            "ParkTimeDescription": "Park ederken ekstra boş süre ekler.",
             "Pixelformat": "Piksel Formatı",
             "PixelformatDescription": "Oluşturulan videoyun piksel formatını tanımlar",
             "PosDZ": "Konum Z",
@@ -1034,9 +1036,7 @@
             "VariableFpsMax": "Değişken FPS maks.",
             "VariableFpsMaxDescription": "",
             "VariableFpsMin": "Değişken FPS min.",
-            "VariableFpsMinDescription": "",
-            "duplicatelastframe": "Son Karesini Kopyala",
-            "duplicatelastframeDescription": "Video sonuna son kareyi kopyalar"
+            "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Tabla Vidaları Diyaloğu",

@@ -81,9 +81,9 @@
             "CannotUploadTheFile": "Kan ikke uploade filen!",
             "EmergencyStop": "Nødstop",
             "SAVE_CONFIG": "GEM KONFIGURATION",
+            "Uploading": "Uploader",
             "UploadOfFileSuccessful": "Upload af {file} udført!",
-            "UploadPrint": "Upload & Print",
-            "Uploading": "Uploader"
+            "UploadPrint": "Upload & Print"
         },
         "TopCornerMenu": {
             "Cancel": "Annuller",
@@ -253,9 +253,9 @@
         "NozzleDiameter": "Nozzle diameter",
         "ObjectHeight": "Total højde",
         "Preheat": "Forvarm",
+        "PrintedFiles": "Printede filer",
         "PrintStart": "Start print",
         "PrintTime": "Printtid",
-        "PrintedFiles": "Printede filer",
         "RefreshCurrentDirectory": "Opdater mappe",
         "Rename": "Omdøb",
         "RenameDirectory": "Omdøb mappe",
@@ -280,8 +280,8 @@
         "DropFilesToUploadFiles": "Drop filer her for at uploade"
     },
     "GCodeViewer": {
-        "CNCMode": "CNC Mode",
         "ClearLoadedFile": "Fjern",
+        "CNCMode": "CNC Mode",
         "ColorMode": "Farvevisning",
         "Downloading": "Downloader",
         "ForceLineRendering": "Gennemtving Linje Rendering",
@@ -293,8 +293,8 @@
         "Max": "Maks",
         "Medium": "Medium",
         "ReloadRequired": "Opdatering påkrævet",
-        "RenderQuality": "Renderingskvalitet",
         "Rendering": "Rendering",
+        "RenderQuality": "Renderingskvalitet",
         "ShowGCode": "Vis G-kode",
         "ShowObjectSelection": "Vis Objekt valg",
         "ShowToolhead": "Vis nozzle",
@@ -402,9 +402,9 @@
         "ObjectHeight": "Objekt Højde",
         "OneTime": "Éngangs",
         "Perform": "Udfør",
-        "PerformMaintenance": "Udfør Vedligeholdelse",
         "Performed": "Udført",
         "PerformedAndReschedule": "Udført og planlagt",
+        "PerformMaintenance": "Udfør Vedligeholdelse",
         "PrintDuration": "Print varighed",
         "PrintHistory": "Print historik",
         "PrintJobs": "Print job",
@@ -426,7 +426,6 @@
         "Statistics": "Statistik",
         "Status": "Status",
         "StatusValues": {
-            "Others": "Andre",
             "cancelled": "Annulleret",
             "completed": "Færdige",
             "error": "Fejl",
@@ -434,6 +433,7 @@
             "interrupted": "Afbrudt",
             "klippy_disconnect": "Klippy afbrudt",
             "klippy_shutdown": "Klippy lukket ned",
+            "Others": "Andre",
             "server_exit": "Server afslutning"
         },
         "Table": "Tabel",
@@ -501,8 +501,8 @@
             "Endstop": "Endestop",
             "EndstopInfo": "Klik på \"Sync\"-knappen nederst til højre for at opdatere Endstop status.",
             "Endstops": "Endestops",
-            "TRIGGERED": "Aktiveret",
-            "open": "Åben"
+            "open": "Åben",
+            "TRIGGERED": "Aktiveret"
         },
         "LogfilesPanel": {
             "Accept": "Acceptér",
@@ -559,9 +559,9 @@
             "GenericUpdateQuestion": "Tjek Forpligtelseshistorikken (hvis tilgængelig) og GitHub siden for dette projekt, for at se om der er behov for manuelle justeringer for denne opdatering.",
             "GitHubPage": "GitHub side",
             "HardRecovery": "Hård nulstilling",
-            "IUnderstandTheRisks": "Jeg forstår risisci",
             "InitUpdateManager": "Opdateringsmanageren er ikke initialiseret endnu. Dette er normalt ved første opstart. Klik venligst på \"Opdater\" for at initialisere alle komponenter.",
             "Invalid": "Ugyldig",
+            "IUnderstandTheRisks": "Jeg forstår risisci",
             "KlipperUpdateQuestionConfig": "Denne opdatering kan indeholde ændringer til konfigurationsparametre, som efterfølgende skal modificeres i printer.cfg filen. Tjek ændringsloggen for yderligere detaljer.",
             "KlipperUpdateQuestionFirmware": "Denne opdatering kan indeholde ændringer til værts-firmwaren. Bundkortet skal muligvis flashes med opdateret firmware før printeren kan bruges igen.",
             "LinkToGithub": "Link til GitHub",
@@ -573,13 +573,13 @@
             "System": "System",
             "ThesePackagesCanBeUpgrade": "Disse pakker kan opgraderes:",
             "Unknown": "Ukendt",
-            "UpToDate": "up-to-date",
             "Update": "Opdater",
             "UpdateAll": "Opdater alle komponenter",
             "UpdateManager": "Opdateringsmanager",
             "UpdateWarning": "Opdateringsadvarsel: {name}",
             "Upgrade": "Opgrader",
             "UpgradeableSystemPackages": "Systempakker med opdateringer",
+            "UpToDate": "up-to-date",
             "WebClientUpdateQuestion": "I visse tilfælde kan opdateringer til webklienten forårsage problemer med inkompatibilitet. Se ændingsloggen for yderligere information."
         }
     },
@@ -653,12 +653,6 @@
             "Headline": "Makroer",
             "Send": "Send"
         },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Husk at inkludere mainsail.cfg i din CONFIG fil.",
-            "IsNotDefinedInConfig": "er ikke defineret i CONFIG.",
-            "MissingConfiguration": "Konfiguration mangler",
-            "MoreInformation": "Mere information"
-        },
         "MiniconsolePanel": {
             "Autoscroll": "Automatisk rulning",
             "Headline": "Terminal",
@@ -666,6 +660,12 @@
             "HideTimelapse": "Skjul Timelapse",
             "SendCode": "Send kode...",
             "SetupConsole": "Terminalindstillinger"
+        },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Husk at inkludere mainsail.cfg i din CONFIG fil.",
+            "IsNotDefinedInConfig": "er ikke defineret i CONFIG.",
+            "MissingConfiguration": "Konfiguration mangler",
+            "MoreInformation": "Mere information"
         },
         "MiscellaneousPanel": {
             "Headline": "Diverse",
@@ -701,8 +701,8 @@
             "Never": "Aldrig",
             "NoActiveSpool": "Filamentforbrug registreres ikke. Vælg en spole for at begynde.",
             "NoResults": "Ingen spole fundet der matcher søgekriterierne.",
-            "NoSpoolSelected": "Ingen spole valgt. Vælg en spole for at registrere filamentforbrug.",
             "NoSpools": "Ingen spoler tilgængelige",
+            "NoSpoolSelected": "Ingen spole valgt. Vælg en spole for at registrere filamentforbrug.",
             "OpenSpoolManager": "Åben SpoolMan",
             "Refresh": "Opdatér",
             "Search": "Søg",
@@ -716,16 +716,16 @@
             "CancelPrint": "Afbryd print",
             "ClearPrintStats": "Slet printstatistik",
             "Difference": "Opvarmning",
-            "ETA": "ETA",
             "EmptyGcodes": "Ingen G-kode tilgængelig.",
             "EmptyJobqueue": "Der er ingen jobs i kø.",
             "Estimate": "Estimeret",
+            "ETA": "ETA",
             "ExcludeObject": {
                 "Cancel": "Annuller",
+                "Excluded": "Ekskluderet",
                 "ExcludeObject": "Ekskluder objekt",
                 "ExcludeObjectHeadline": "Ekskluder objekt",
-                "ExcludeObjectText": "Vil du ekskludere \"{name}\"?",
-                "Excluded": "Ekskluderet"
+                "ExcludeObjectText": "Vil du ekskludere \"{name}\"?"
             },
             "Filament": "Filament",
             "File": "Fil",
@@ -782,13 +782,13 @@
             "ShowNameInList": "Vis {name} på liste",
             "State": "Status",
             "Target": "Indstillet",
+            "TemperaturesInChart": "Temperatur [°C]",
             "TempTooHigh": "Temperaturen er for høj for {name}! (max: {max})",
-            "TempTooLow": "Temperaturen er for lav for {name}! (min: {min})",
-            "TemperaturesInChart": "Temperatur [°C]"
+            "TempTooLow": "Temperaturen er for lav for {name}! (min: {min})"
         },
         "ToolheadControlPanel": {
-            "ALL": "Alle",
             "Absolute": "absolut",
+            "ALL": "Alle",
             "ControlButtons": "Kontrol-knapper",
             "CoordinateFields": "Koordinatfelter",
             "Headline": "Kontrolpanel",
@@ -1020,8 +1020,8 @@
             "CountMacros": "Ingen Makroer tilføjet | {count} Makro | {count} Makroer",
             "Custom": "Brugerdefineret",
             "CustomColor": "Brugerdefineret farve",
-            "DeleteMacroFromGroup": "Fjern makro fra gruppe.",
             "DeletedMacro": "Makro fjernet",
+            "DeleteMacroFromGroup": "Fjern makro fra gruppe.",
             "EditGroup": "Edit Gruppe",
             "Error": "Fejl",
             "Expert": "Ekspert",
@@ -1031,10 +1031,10 @@
             "Macrogroups": "Grupper",
             "Macros": "Makroer",
             "Management": "Håndtering",
-            "NOMacros": "Ingen makroer fundet...",
             "Name": "Navn",
             "NoAvailableMacros": "Ingen tilgængelige makroer.",
             "NoGroups": "Ingen grupper fundet...",
+            "NOMacros": "Ingen makroer fundet...",
             "NoMacrosInGroup": "Ingen makroer i denne gruppe.",
             "Primary": "Primær",
             "Search": "Søg",
@@ -1056,8 +1056,8 @@
             "CreatePreset": "Tilføj forudindstilling",
             "End": "Slut",
             "EndDescription": "Sidste LED i denne gruppe.",
-            "GroupSubTitle": "Start: {start}, Slut: {end}",
             "Groups": "Grupper",
+            "GroupSubTitle": "Start: {start}, Slut: {end}",
             "LightGroups": "{name} - Grupper",
             "LightPresets": "{name} - Forudindstillinger",
             "Miscellaneous": "Diverse",
@@ -1114,6 +1114,8 @@
             "CameraWarningAlreadySetSmall": "snapshot url i [timelapse] sektionen",
             "ConstantRateFactor": "Constant Rate Faktor",
             "ConstantRateFactorDescription": "Konfigurerer Kvalitet / Filstørrelse af den renderede video. Kan justeres mellem 0-51, Hvor 0 er tabsfri, 23 er standard og 51 er værste kvalitet (mindste filstørrelse). En lavere værdi giver højere kvalitet, og et \"normalt\" område er 17-28. 17 eller 18 kan betragtes som visuelt tabsfrit.",
+            "duplicatelastframe": "Kopier sidste frame",
+            "duplicatelastframeDescription": "Kopierer sidste frame i videoen",
             "Enabled": "Aktiveret",
             "EnabledDescription": "Hvis inaktiv, bliver G-Kode makroer ignoreret og AutoRendering bliver sprunget over.",
             "Extraoutputparams": "Ekstra output parametre",
@@ -1130,12 +1132,12 @@
             "NoWebcamFound": "Intet Webcam tilgængeligt",
             "OutputFramerate": "Output Framerate",
             "OutputFramerateDescription": "Definerer framerate i videoen. Bemærk: Dette ignoreres hvis \"variable_fps\" er aktiveret",
-            "ParkTime": "Parkeringstid",
-            "ParkTimeDescription": "Tilføj yderligere tid til parkering for bedre præcision.",
             "Parkhead": "Parker Hotend",
             "ParkheadDescription": "Hvis aktiv, vil hotend blive parkeret før der tages billeder.",
             "Parkpos": "Parkeringsposition",
             "ParkposDescription": "Vælg parkeringsposition",
+            "ParkTime": "Parkeringstid",
+            "ParkTimeDescription": "Tilføj yderligere tid til parkering for bedre præcision.",
             "Pixelformat": "Pixelformat",
             "PixelformatDescription": "Definerer pixelformatet i videoen",
             "PosDZ": "Position Z",
@@ -1177,9 +1179,7 @@
             "VariableFpsMax": "Variabel FPS maks",
             "VariableFpsMaxDescription": "Største værdi for variabel FPS",
             "VariableFpsMin": "Variabel FPS min",
-            "VariableFpsMinDescription": "Mindste værdi for variabel FPS",
-            "duplicatelastframe": "Kopier sidste frame",
-            "duplicatelastframeDescription": "Kopierer sidste frame i videoen"
+            "VariableFpsMinDescription": "Mindste værdi for variabel FPS"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Bed-skrue justeringsvindue",

@@ -60,9 +60,9 @@
             "CannotUploadTheFile": "アップロードできませんでした!",
             "EmergencyStop": "緊急停止",
             "SAVE_CONFIG": "設定保存",
+            "Uploading": "アップロード中",
             "UploadOfFileSuccessful": "{file}のアップロードが完了しました!",
-            "UploadPrint": "アップロード & 印刷",
-            "Uploading": "アップロード中"
+            "UploadPrint": "アップロード & 印刷"
         },
         "TopCornerMenu": {
             "Cancel": "取り消し",
@@ -207,9 +207,9 @@
         "NozzleDiameter": "ノズル穴径",
         "ObjectHeight": "印刷物の高さ",
         "Preheat": "予備加熱",
+        "PrintedFiles": "印刷したファイル",
         "PrintStart": "印刷開始",
         "PrintTime": "印刷時間",
-        "PrintedFiles": "印刷したファイル",
         "RefreshCurrentDirectory": "現在のディレクトリの更新",
         "Rename": "名前変更",
         "RenameDirectory": "ディレクトリ名の変更",
@@ -232,8 +232,8 @@
         "DropFilesToUploadFiles": "アップロードするファイルをドロップ"
     },
     "GCodeViewer": {
-        "CNCMode": "CNCモード",
         "ClearLoadedFile": "クリア",
+        "CNCMode": "CNCモード",
         "ColorMode": "カラーモード",
         "Downloading": "ダウンロード中",
         "ForceLineRendering": "強制ラインレンダリング",
@@ -245,8 +245,8 @@
         "Max": "最大",
         "Medium": "中",
         "ReloadRequired": "リロードが必要",
-        "RenderQuality": "レンダークオリティー",
         "Rendering": "レンダリング",
+        "RenderQuality": "レンダークオリティー",
         "ShowGCode": "Gコードを表示",
         "ShowObjectSelection": "オブジェクト選択表示",
         "ShowToolhead": "ツールヘッド表示",
@@ -345,13 +345,13 @@
         "Statistics": "統計",
         "Status": "状態",
         "StatusValues": {
-            "Others": "その他",
             "cancelled": "取り消し",
             "completed": "完了",
             "error": "エラー",
             "in_progress": "進行中",
             "klippy_disconnect": "Klippy切断",
             "klippy_shutdown": "Klippyシャットダウン",
+            "Others": "その他",
             "server_exit": "サーバー終了"
         },
         "Table": "テーブル",
@@ -415,8 +415,8 @@
             "Endstop": "エンドストップ",
             "EndstopInfo": "右下の同期ボタンを押すと現在のエンドストップの状態を読み込みます。",
             "Endstops": "エンドストップ",
-            "TRIGGERED": "トリガー",
-            "open": "オープン"
+            "open": "オープン",
+            "TRIGGERED": "トリガー"
         },
         "LogfilesPanel": {
             "Accept": "確認",
@@ -467,11 +467,11 @@
             "OSPackages": "OSパッケージ",
             "System": "システム",
             "Unknown": "不明",
-            "UpToDate": "最新の状態",
             "Update": "更新",
             "UpdateAll": "すべてのコンポーネントを更新",
             "UpdateManager": "アップデートマネージャー",
-            "Upgrade": "アップグレード"
+            "Upgrade": "アップグレード",
+            "UpToDate": "最新の状態"
         }
     },
     "ManualProbe": {
@@ -535,18 +535,18 @@
             "Headline": "マクロ",
             "Send": "送信"
         },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "printer.cfgにmainsail.cfgがインクルードされているか確認してください。",
-            "IsNotDefinedInConfig": "設定で定義されていません。",
-            "MissingConfiguration": "失われた設定",
-            "MoreInformation": "その他の情報"
-        },
         "MiniconsolePanel": {
             "Headline": "コンソール",
             "HideTemperatures": "温度報告を隠す",
             "HideTimelapse": "タイムラプス報告を隠す",
             "SendCode": "コード送信...",
             "SetupConsole": "コンソール設定"
+        },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "printer.cfgにmainsail.cfgがインクルードされているか確認してください。",
+            "IsNotDefinedInConfig": "設定で定義されていません。",
+            "MissingConfiguration": "失われた設定",
+            "MoreInformation": "その他の情報"
         },
         "MiscellaneousPanel": {
             "Headline": "その他",
@@ -571,16 +571,16 @@
             "CancelPrint": "印刷取り消し",
             "ClearPrintStats": "印刷状態の表示クリア",
             "Difference": "差分",
-            "ETA": "推定完了時刻",
             "EmptyGcodes": "Gコードがありません。",
             "EmptyJobqueue": "現在、ジョブキューにファイルがありません。",
             "Estimate": "推定",
+            "ETA": "推定完了時刻",
             "ExcludeObject": {
                 "Cancel": "取り消し",
+                "Excluded": "除外",
                 "ExcludeObject": "オブジェクト除外",
                 "ExcludeObjectHeadline": "オブジェクト除外",
-                "ExcludeObjectText": "\"{name}\"を除外します。よろしいですか？",
-                "Excluded": "除外"
+                "ExcludeObjectText": "\"{name}\"を除外します。よろしいですか？"
             },
             "Filament": "フィラメント",
             "File": "ファイル",
@@ -635,13 +635,13 @@
             "ShowNameInList": "一覧に{name}を表示",
             "State": "状態",
             "Target": "目標",
+            "TemperaturesInChart": "温度 [°C]",
             "TempTooHigh": "{name}の温度が高すぎます! (最高: {max})",
-            "TempTooLow": "{name}の温度が低すぎます! (最低: {min})",
-            "TemperaturesInChart": "温度 [°C]"
+            "TempTooLow": "{name}の温度が低すぎます! (最低: {min})"
         },
         "ToolheadControlPanel": {
-            "ALL": "すべて",
             "Absolute": "絶対",
+            "ALL": "すべて",
             "Headline": "ツールヘッド",
             "PleaseConfigureSteps": "ステップを設定をしてください",
             "Position": "位置",
@@ -844,8 +844,8 @@
             "CountMacros": "追加マクロなし | {count}個のマクロ | {count}個のマクロ",
             "Custom": "カスタム",
             "CustomColor": "カスタムカラー",
-            "DeleteMacroFromGroup": "グループからマクロを削除",
             "DeletedMacro": "削除されたマクロ",
+            "DeleteMacroFromGroup": "グループからマクロを削除",
             "EditGroup": "グループ編集",
             "Error": "エラー",
             "Expert": "エキスパート",
@@ -855,10 +855,10 @@
             "Macrogroups": "グループ",
             "Macros": "マクロ",
             "Management": "管理",
-            "NOMacros": "マクロが見つかりませんでした...",
             "Name": "名前",
             "NoAvailableMacros": "マクロがありません。",
             "NoGroups": "グループが見つかりませんでした...",
+            "NOMacros": "マクロが見つかりませんでした...",
             "NoMacrosInGroup": "このグループにはマクロがありません。",
             "Primary": "一次",
             "Search": "検索",
@@ -880,8 +880,8 @@
             "CreatePreset": "プリセット作成",
             "End": "終了",
             "EndDescription": "このグループ最後のLEDです。",
-            "GroupSubTitle": "開始: {start}, 終了: {end}",
             "Groups": "グループ",
+            "GroupSubTitle": "開始: {start}, 終了: {end}",
             "LightGroups": "{name} - グループ",
             "LightPresets": "{name} - プリセット",
             "Miscellaneous": "その他",
@@ -929,6 +929,8 @@
             "Camera": "カメラ",
             "ConstantRateFactor": "Constant Rate Factor",
             "ConstantRateFactorDescription": "CFRは動画のファイルサイズに対する画質を設定します。CRFの値は0から51を指定でき、0のときはロスレス、23がデフォルト、51で最低画質になります。小さな値ほど高画質になる傾向がありますが、17から28が実用的な範囲です。 17から18で視覚的にはほぼロスレスと変わらないことを留意してください。",
+            "duplicatelastframe": "最後のフレームを複製",
+            "duplicatelastframeDescription": "動画の最終フレームを複製します。",
             "Enabled": "有効",
             "EnabledDescription": "無効にするとタイムラプスビデオはレンダリングされません。",
             "Extraoutputparams": "追加の出力パラメータ",
@@ -944,12 +946,12 @@
             "ModeDescription": "レイヤーマクロとハイパーラプス(タイムベース)のモードを選択できます。",
             "OutputFramerate": "出力フレームレート",
             "OutputFramerateDescription": "動画のフレームレートを定義します。※variable_fpsが有効な時、ここでの設定は無視されます。",
-            "ParkTime": "待機時間",
-            "ParkTimeDescription": "待機時の追加の待機時間。",
             "Parkhead": "ツールヘッド待機",
             "ParkheadDescription": "有効時、1フレーム撮影する前に待機位置に移動します。",
             "Parkpos": "待機位置",
             "ParkposDescription": "待機位置の選択",
+            "ParkTime": "待機時間",
+            "ParkTimeDescription": "待機時の追加の待機時間。",
             "Pixelformat": "ピクセルフォーマット",
             "PixelformatDescription": "出力動画のピクセルフォーマットを定義します。",
             "PosDZ": "位置 Z",
@@ -985,9 +987,7 @@
             "VariableFpsMax": "可変フレームレートの最高値",
             "VariableFpsMaxDescription": "",
             "VariableFpsMin": "可変フレームレートの最低値",
-            "VariableFpsMinDescription": "",
-            "duplicatelastframe": "最後のフレームを複製",
-            "duplicatelastframeDescription": "動画の最終フレームを複製します。"
+            "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "大きなサムネイル",

@@ -60,9 +60,9 @@
             "CannotUploadTheFile": "Não é possível carregar o arquivo!",
             "EmergencyStop": "Parada de emergência",
             "SAVE_CONFIG": "Salvar configuração",
+            "Uploading": "Upload",
             "UploadOfFileSuccessful": "Carregamento de {file} com sucesso!",
-            "UploadPrint": "Carregar e imprimir",
-            "Uploading": "Upload"
+            "UploadPrint": "Carregar e imprimir"
         },
         "TopCornerMenu": {
             "Cancel": "Cancelar",
@@ -209,9 +209,9 @@
         "NozzleDiameter": "Diâmetro do Bico",
         "ObjectHeight": "Altura do Objeto",
         "Preheat": "Preaquecer",
+        "PrintedFiles": "Arquivos Impressos",
         "PrintStart": "Iniciar Impressão",
         "PrintTime": "Tempo Impressão",
-        "PrintedFiles": "Arquivos Impressos",
         "RefreshCurrentDirectory": "Atualizar Diretório Atual",
         "Rename": "Renomear",
         "RenameDirectory": "Renomear Diretório",
@@ -236,8 +236,8 @@
         "DropFilesToUploadFiles": "Soltar arquivos para upload"
     },
     "GCodeViewer": {
-        "CNCMode": "Modo CNC",
         "ClearLoadedFile": "Limpar",
+        "CNCMode": "Modo CNC",
         "ColorMode": "Modo de cor",
         "Downloading": "Downloading",
         "ForceLineRendering": "Forçar renderização de linha",
@@ -249,8 +249,8 @@
         "Max": "Máximo",
         "Medium": "Médio",
         "ReloadRequired": "Necessário recarregar",
-        "RenderQuality": "Qualidade de renderização",
         "Rendering": "Renderização",
+        "RenderQuality": "Qualidade de renderização",
         "ShowGCode": "Mostrar código G",
         "ShowObjectSelection": "Mostrar Seleção de Objeto",
         "ShowToolhead": "Mostrar cabeça de ferramenta",
@@ -350,13 +350,13 @@
         "Statistics": "Estatisticas",
         "Status": "Status",
         "StatusValues": {
-            "Others": "Others",
             "cancelled": "Cancelled",
             "completed": "Completed",
             "error": "Error",
             "in_progress": "In progress",
             "klippy_disconnect": "Klippy disconnect",
             "klippy_shutdown": "Klippy shutdown",
+            "Others": "Others",
             "server_exit": "Server exit"
         },
         "Table": "Table",
@@ -422,8 +422,8 @@
             "Endstop": "Fim de curso",
             "EndstopInfo": "Pressione o botão de sincronização no canto inferior direito para carregar o status atual do fim de curso.",
             "Endstops": "Fins de curso",
-            "TRIGGERED": "Acionado",
-            "open": "Abrir"
+            "open": "Abrir",
+            "TRIGGERED": "Acionado"
         },
         "LogfilesPanel": {
             "Accept": "Aceitar",
@@ -474,11 +474,11 @@
             "OSPackages": "Pacotes do sistema operacional",
             "System": "Sistema",
             "Unknown": "Desconhecido",
-            "UpToDate": "Atualizado",
             "Update": "Atualizar",
             "UpdateAll": "Atualize todos os componentes",
             "UpdateManager": "Gerenciador de atualização",
-            "Upgrade": "Atualização"
+            "Upgrade": "Atualização",
+            "UpToDate": "Atualizado"
         }
     },
     "ManualProbe": {
@@ -542,18 +542,18 @@
             "Headline": "Macros",
             "Send": "enviar"
         },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Certifique-se de incluir mainsail.cfg em seu arquivo printer.cfg.",
-            "IsNotDefinedInConfig": "não está definido no config.",
-            "MissingConfiguration": "Configuração ausente",
-            "MoreInformation": "mais informações"
-        },
         "MiniconsolePanel": {
             "Headline": "Console",
             "HideTemperatures": "Ocultar temperaturas",
             "HideTimelapse": "Ocultar lapso de tempo",
             "SendCode": "Enviar código...",
             "SetupConsole": "Console de configuração"
+        },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Certifique-se de incluir mainsail.cfg em seu arquivo printer.cfg.",
+            "IsNotDefinedInConfig": "não está definido no config.",
+            "MissingConfiguration": "Configuração ausente",
+            "MoreInformation": "mais informações"
         },
         "MiscellaneousPanel": {
             "Headline": "Diversos",
@@ -578,16 +578,16 @@
             "CancelPrint": "Cancelar Impressão",
             "ClearPrintStats": "Limpar estatísticas de impressão",
             "Difference": "Diferença",
-            "ETA": "ETA",
             "EmptyGcodes": "Não há G-Code disponível.",
             "EmptyJobqueue": "No momento, não há nenhum arquivo na fila de trabalhos.",
             "Estimate": "Estimado",
+            "ETA": "ETA",
             "ExcludeObject": {
                 "Cancel": "cancelar",
+                "Excluded": "Excluído",
                 "ExcludeObject": "Excluir Objeto",
                 "ExcludeObjectHeadline": "Excluir Objeto",
-                "ExcludeObjectText": "Deseja realmente excluir \"{name}\"?",
-                "Excluded": "Excluído"
+                "ExcludeObjectText": "Deseja realmente excluir \"{name}\"?"
             },
             "Filament": "Filamento",
             "File": "Arquivo",
@@ -642,13 +642,13 @@
             "ShowNameInList": "Mostrar {name} na lista",
             "State": "Estado",
             "Target": "Alvo",
+            "TemperaturesInChart": "Temperatura [°C]",
             "TempTooHigh": "Temperatura muito alta para {name}! (máx: {max})",
-            "TempTooLow": "Temperatura muito baixa para {name}! (mín: {min})",
-            "TemperaturesInChart": "Temperatura [°C]"
+            "TempTooLow": "Temperatura muito baixa para {name}! (mín: {min})"
         },
         "ToolheadControlPanel": {
-            "ALL": "Todos",
             "Absolute": "absoluto",
+            "ALL": "Todos",
             "Headline": "Ferramenta",
             "PleaseConfigureSteps": "Por favor, configure os passos.",
             "Position": "Posição",
@@ -854,8 +854,8 @@
             "CountMacros": "sem Macros adicionadas | {count} Macro | {count} Macros",
             "Custom": "personalizado",
             "CustomColor": "Cor Personalizada",
-            "DeleteMacroFromGroup": "Macro excluída do grupo.",
             "DeletedMacro": "Macro excluída",
+            "DeleteMacroFromGroup": "Macro excluída do grupo.",
             "EditGroup": "Edita Grupo",
             "Error": "erro",
             "Expert": "Avançado",
@@ -865,10 +865,10 @@
             "Macrogroups": "Grupos",
             "Macros": "Macros",
             "Management": "Gerenciamento",
-            "NOMacros": "Macros não encontradas...",
             "Name": "Nome",
             "NoAvailableMacros": "Sem macros disponíveis.",
             "NoGroups": "Grupo não encontrado...",
+            "NOMacros": "Macros não encontradas...",
             "NoMacrosInGroup": "Sem macros neste grupo.",
             "Primary": "principal",
             "Search": "Buscar",
@@ -890,8 +890,8 @@
             "CreatePreset": "Cria pré-config",
             "End": "Fim",
             "EndDescription": "Último LED deste grupo.",
-            "GroupSubTitle": "Início: {start}, Fim: {end}",
             "Groups": "Grupos",
+            "GroupSubTitle": "Início: {start}, Fim: {end}",
             "LightGroups": "{name} - Grupos",
             "LightPresets": "{name} - Pré-configs.",
             "Miscellaneous": "Diversos",
@@ -942,6 +942,8 @@
             "Camera": "Camera",
             "ConstantRateFactor": "Fator de Taxa Constante",
             "ConstantRateFactorDescription": "Configura a qualidade versus o tamanho do arquivo do vídeo renderizado. A escala do Fator de Taxa Constante (CRF) varia de 0 a 51, onde 0 é sem perdas, 23 é o valor padrão e 51 é a pior qualidade possível. Um valor menor geralmente resulta em maior qualidade, e uma faixa subjetivamente razoável é de 17 a 28. Considere 17 ou 18 como visualmente sem perdas.",
+            "duplicatelastframe": "Duplicar Último Quadro",
+            "duplicatelastframeDescription": "Duplica o último quadro no final do vídeo.",
             "Enabled": "Habilitado",
             "EnabledDescription": "Se desativado, as macros do G-Code são ignoradas e a renderização automática é pulada.",
             "Extraoutputparams": "Parâmetros de Saída Adicionais",
@@ -957,12 +959,12 @@
             "ModeDescription": "Selecione entre o modo Macro de Camada e o modo Hyperlapse (baseado em tempo).",
             "OutputFramerate": "Taxa de quadros de saída",
             "OutputFramerateDescription": "Define a taxa de quadros do vídeo. Observação: isso será ignorado se a variável_fps estiver ativada.",
-            "ParkTime": "Tempo Park",
-            "ParkTimeDescription": "Adicionar tempo ocioso adicional ao recolher.",
             "Parkhead": "Park Toolhead",
             "ParkheadDescription": "Se ativado, cabeçote será recolhido antes de tirar uma imagem.",
             "Parkpos": "Posição Park",
             "ParkposDescription": "Selecione a posição Park",
+            "ParkTime": "Tempo Park",
+            "ParkTimeDescription": "Adicionar tempo ocioso adicional ao recolher.",
             "Pixelformat": "Formato pixel",
             "PixelformatDescription": "Define o formato de pixel do vídeo de saída.",
             "PosDZ": "Posição Z",
@@ -998,9 +1000,7 @@
             "VariableFpsMax": "Max FPS Variável",
             "VariableFpsMaxDescription": "",
             "VariableFpsMin": "Min FPS Variável",
-            "VariableFpsMinDescription": "",
-            "duplicatelastframe": "Duplicar Último Quadro",
-            "duplicatelastframeDescription": "Duplica o último quadro no final do vídeo."
+            "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Configs. dos Fusos da Mesa",

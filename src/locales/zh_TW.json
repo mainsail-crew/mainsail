@@ -83,9 +83,9 @@
             "CannotUploadTheFile": "無法上傳該檔案!",
             "EmergencyStop": "緊急停止",
             "SAVE_CONFIG": "保存配置",
+            "Uploading": "上傳",
             "UploadOfFileSuccessful": "上傳 {file} 成功!",
-            "UploadPrint": "上傳並列印",
-            "Uploading": "上傳"
+            "UploadPrint": "上傳並列印"
         },
         "TopCornerMenu": {
             "Cancel": "取消",
@@ -223,9 +223,9 @@
         "NozzleDiameter": "噴嘴直徑",
         "ObjectHeight": "物體高度",
         "Preheat": "預熱",
+        "PrintedFiles": "列印的檔案",
         "PrintStart": "開始列印",
         "PrintTime": "列印時間",
-        "PrintedFiles": "列印的檔案",
         "RefreshCurrentDirectory": "刷新目前目錄",
         "Rename": "重新命名",
         "RenameDirectory": "重新命名目錄",
@@ -248,8 +248,8 @@
         "DropFilesToUploadFiles": "刪除要上傳的文件"
     },
     "GCodeViewer": {
-        "CNCMode": "CNC模式",
         "ClearLoadedFile": "清除",
+        "CNCMode": "CNC模式",
         "ColorMode": "顏色模式",
         "Downloading": "下載中",
         "ForceLineRendering": "Force Line Rendering",
@@ -261,8 +261,8 @@
         "Max": "最大",
         "Medium": "中",
         "ReloadRequired": "需要重新載入",
-        "RenderQuality": "渲染品質",
         "Rendering": "渲染中",
+        "RenderQuality": "渲染品質",
         "ShowGCode": "顯示 G-Code",
         "ShowObjectSelection": "顯示物件選擇",
         "ShowToolhead": "顯示工具頭",
@@ -361,13 +361,13 @@
         "Statistics": "統計",
         "Status": "狀態",
         "StatusValues": {
-            "Others": "其他",
             "cancelled": "取消",
             "completed": "完成",
             "error": "錯誤",
             "in_progress": "進行中",
             "klippy_disconnect": "Klippy失去連接",
             "klippy_shutdown": "Klippy已關閉",
+            "Others": "其他",
             "server_exit": "伺服器離線"
         },
         "Table": "表",
@@ -433,8 +433,8 @@
             "Endstop": "限位開關",
             "EndstopInfo": "按下右下角的同步按鈕以載入目前的限位狀態.",
             "Endstops": "限位",
-            "TRIGGERED": "已觸發",
-            "open": "未觸發"
+            "open": "未觸發",
+            "TRIGGERED": "已觸發"
         },
         "LogfilesPanel": {
             "Accept": "接受",
@@ -484,11 +484,11 @@
             "OSPackages": "操作系統包",
             "System": "系統",
             "Unknown": "未知的",
-            "UpToDate": "最新的",
             "Update": "更新",
             "UpdateAll": "更新所有組件",
             "UpdateManager": "更新管理器",
-            "Upgrade": "升級"
+            "Upgrade": "升級",
+            "UpToDate": "最新的"
         }
     },
     "ManualProbe": {
@@ -551,18 +551,18 @@
             "Headline": "巨集",
             "Send": "傳送"
         },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "確保在printer.cfg檔案中包含mainsail.cfg.",
-            "IsNotDefinedInConfig": "沒有再設定檔裡面定義.",
-            "MissingConfiguration": "遺失設定",
-            "MoreInformation": "更多訊息"
-        },
         "MiniconsolePanel": {
             "Headline": "控制台",
             "HideTemperatures": "隱藏溫度變化訊息",
             "HideTimelapse": "隱藏縮時攝影訊息",
             "SendCode": "傳送代碼...",
             "SetupConsole": "設定控制台"
+        },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "確保在printer.cfg檔案中包含mainsail.cfg.",
+            "IsNotDefinedInConfig": "沒有再設定檔裡面定義.",
+            "MissingConfiguration": "遺失設定",
+            "MoreInformation": "更多訊息"
         },
         "MiscellaneousPanel": {
             "Headline": "雜項",
@@ -587,16 +587,16 @@
             "CancelPrint": "取消列印",
             "ClearPrintStats": "清除列印統計數據",
             "Difference": "差異",
-            "ETA": "預計完成時間",
             "EmptyGcodes": "沒有G-Code檔案",
             "EmptyJobqueue": "目前任務隊列沒有檔案。",
             "Estimate": "估算時間",
+            "ETA": "預計完成時間",
             "ExcludeObject": {
                 "Cancel": "取消",
+                "Excluded": "排除",
                 "ExcludeObject": "排除物件",
                 "ExcludeObjectHeadline": "排除物件",
-                "ExcludeObjectText": "你真的要排除 \"{name}\"?",
-                "Excluded": "排除"
+                "ExcludeObjectText": "你真的要排除 \"{name}\"?"
             },
             "Filament": "耗材用量",
             "File": "檔案",
@@ -647,13 +647,13 @@
             "ShowNameInList": "顯示 {name} 在列表中",
             "State": "狀態",
             "Target": "目標",
+            "TemperaturesInChart": "溫度 [°C]",
             "TempTooHigh": "溫度{name}過高！(最高：{max})",
-            "TempTooLow": "溫度{name}過低！(最低：{min})",
-            "TemperaturesInChart": "溫度 [°C]"
+            "TempTooLow": "溫度{name}過低！(最低：{min})"
         },
         "ToolheadControlPanel": {
-            "ALL": "歸位所有",
             "Absolute": "絕對座標",
+            "ALL": "歸位所有",
             "Headline": "工具頭",
             "PleaseConfigureSteps": "請設定步進",
             "Position": "位置",
@@ -856,8 +856,8 @@
             "CountMacros": "沒有新增巨集| {count} 個巨集 | {count} 個巨集",
             "Custom": "自訂",
             "CustomColor": "C自訂顏色",
-            "DeleteMacroFromGroup": "從組中刪除巨集。",
             "DeletedMacro": "刪除巨集",
+            "DeleteMacroFromGroup": "從組中刪除巨集。",
             "EditGroup": "編輯組",
             "Error": "錯誤",
             "Expert": "專家",
@@ -867,10 +867,10 @@
             "Macrogroups": "分組",
             "Macros": "巨集",
             "Management": "管理",
-            "NOMacros": "沒有找到巨集...",
             "Name": "名稱",
             "NoAvailableMacros": "沒有可用的巨集",
             "NoGroups": "沒有找到群組...",
+            "NOMacros": "沒有找到巨集...",
             "NoMacrosInGroup": "該組沒有巨集",
             "Primary": "原始",
             "Search": "搜尋",
@@ -892,8 +892,8 @@
             "CreatePreset": "建立預設",
             "End": "結束",
             "EndDescription": "該組的最後一個 LED。",
-            "GroupSubTitle": "開始： {start}，結束： {end}",
             "Groups": "群組",
+            "GroupSubTitle": "開始： {start}，結束： {end}",
             "LightGroups": "{name} - 群組",
             "LightPresets": "{name} - 預設",
             "Name": "名稱",
@@ -939,6 +939,8 @@
             "Camera": "攝影機",
             "ConstantRateFactor": "固定偵率係數(CRF)",
             "ConstantRateFactorDescription": "這裡設定渲染影片的品質與檔案大小，CRF量表的參數範圍視 0–51，0為無損畫質、預設為23、51是最插畫值。數值越低畫質越好，建議合理數值為17-28。設定為17或18在視覺上和無損畫質差不多。",
+            "duplicatelastframe": "重複影片結尾的最後一幀",
+            "duplicatelastframeDescription": "重複影片結尾的最後一幀數量",
             "Enabled": "啟用",
             "EnabledDescription": "如果禁用，將忽略G-Code巨集並跳過自動渲染。",
             "Extraoutputparams": "而外的輸出參數",
@@ -953,12 +955,12 @@
             "ModeDescription": "在 Layermacro（基於層變化）和 Hyperlapse（基於時間）模式之間進行選擇",
             "OutputFramerate": "輸出幀率",
             "OutputFramerateDescription": "定義影片的幀率。注意：如果啟用了 可變FPS，這將被忽略",
-            "ParkTime": "停靠時間",
-            "ParkTimeDescription": "當工具頭停靠增加額外等待時間",
             "Parkhead": "停放工具頭到停靠位置",
             "ParkheadDescription": "如果啟用，工具頭將在拍照前移動到停靠位置。",
             "Parkpos": "停靠位置",
             "ParkposDescription": "選擇停靠位置",
+            "ParkTime": "停靠時間",
+            "ParkTimeDescription": "當工具頭停靠增加額外等待時間",
             "Pixelformat": "像素格式",
             "PixelformatDescription": "定義輸出影片的像素格式",
             "PosDZ": "Z位置",
@@ -992,9 +994,7 @@
             "VariableFps": "可變 FPS",
             "VariableFpsDescription": "如果啟用，將根據目標時長計算輸出影片的幀率",
             "VariableFpsMax": "可變 FPS 最大值",
-            "VariableFpsMin": "可變 FPS 最小值",
-            "duplicatelastframe": "重複影片結尾的最後一幀",
-            "duplicatelastframeDescription": "重複影片結尾的最後一幀數量"
+            "VariableFpsMin": "可變 FPS 最小值"
         },
         "UiSettingsTab": {
             "BedScrewsDialogDescription": "顯示 BED_SCREWS_ADJUST 的幫助對話框。",

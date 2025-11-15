@@ -71,9 +71,9 @@
             "CannotUploadTheFile": "Det går inte att ladda upp filen!",
             "EmergencyStop": "Nödstopp",
             "SAVE_CONFIG": "SPARA KONFIGURATION",
+            "Uploading": "Laddar upp",
             "UploadOfFileSuccessful": "Uppladdningen av {file} lyckades!",
-            "UploadPrint": "Ladda upp och skriv ut",
-            "Uploading": "Laddar upp"
+            "UploadPrint": "Ladda upp och skriv ut"
         },
         "TopCornerMenu": {
             "Cancel": "Avbryt",
@@ -222,9 +222,9 @@
         "NozzleDiameter": "Diameter Munstycke (Nozzle)",
         "ObjectHeight": "Objektets höjd",
         "Preheat": "Förvärm",
+        "PrintedFiles": "Utskrivna filer",
         "PrintStart": "Utskriftsstart",
         "PrintTime": "Utskriftstid",
-        "PrintedFiles": "Utskrivna filer",
         "RefreshCurrentDirectory": "Uppdatera aktuell katalog",
         "Rename": "Ändra namn",
         "RenameDirectory": "Byt namn på katalogen",
@@ -249,8 +249,8 @@
         "DropFilesToUploadFiles": "Släpp filer för att ladda upp"
     },
     "GCodeViewer": {
-        "CNCMode": "CNC-läge",
         "ClearLoadedFile": "Rensa",
+        "CNCMode": "CNC-läge",
         "ColorMode": "Färgläge",
         "Downloading": "Laddar ner",
         "ForceLineRendering": "Tvinga linjerendering",
@@ -262,8 +262,8 @@
         "Max": "Maximal",
         "Medium": "Medium",
         "ReloadRequired": "Omladdning krävs",
-        "RenderQuality": "Renderingskvalitet",
         "Rendering": "Rendering",
+        "RenderQuality": "Renderingskvalitet",
         "ShowGCode": "Visa G-kod",
         "ShowObjectSelection": "Visa objektval",
         "ShowToolhead": "Visa verktygshuvud",
@@ -364,13 +364,13 @@
         "Statistics": "Statistik",
         "Status": "Status",
         "StatusValues": {
-            "Others": "Övrigt",
             "cancelled": "Avbruten",
             "completed": "Slutförd",
             "error": "Fel",
             "in_progress": "Pågående",
             "klippy_disconnect": "Klippy koppla bort",
             "klippy_shutdown": "Avstängning av Klippy",
+            "Others": "Övrigt",
             "server_exit": "Avsluta servern"
         },
         "Table": "Tabell",
@@ -437,8 +437,8 @@
             "Endstop": "Endstop",
             "EndstopInfo": "Tryck på synk-knappen längst ner till höger för att ladda aktuell endstop status.",
             "Endstops": "Endstops",
-            "TRIGGERED": "UTLÖSTES",
-            "open": "ÖPPEN"
+            "open": "ÖPPEN",
+            "TRIGGERED": "UTLÖSTES"
         },
         "LogfilesPanel": {
             "Accept": "godkänn",
@@ -495,9 +495,9 @@
             "GenericUpdateQuestion": "Kontrollera commit-historiken (om tillgänglig) och GitHub-sidan för det här projektet för att se om några manuella justeringar är nödvändiga för den här uppdateringen.",
             "GitHubPage": "GitHub-sida",
             "HardRecovery": "Hård återställning",
-            "IUnderstandTheRisks": "Jag förstår riskerna",
             "InitUpdateManager": "Uppdateringshanteraren har inte initierats ännu. Detta är normalt när du startar systemet för första gången. Klicka på uppdateringsknappen för att initiera alla komponenter.",
             "Invalid": "ogiltig",
+            "IUnderstandTheRisks": "Jag förstår riskerna",
             "KlipperUpdateQuestionConfig": "Den här uppdateringen kan också innehålla ändringar av konfigurationsparametrar som skulle behöva ändras i filen printer.cfg, se ändringsloggen för detaljer.",
             "KlipperUpdateQuestionFirmware": "Detta kommer att uppdatera Klippers värdprogramvara. Styrkort som kör Klippers firmware kan behöva flashas med omkompilerad firmware innan maskinen kan tas i drift igen.",
             "LinkToGithub": "Länk till GitHub",
@@ -509,13 +509,13 @@
             "System": "System",
             "ThesePackagesCanBeUpgrade": "Dessa systempaket kan uppgraderas:",
             "Unknown": "okänd",
-            "UpToDate": "aktuell",
             "Update": "uppdatera",
             "UpdateAll": "Uppdatera alla komponenter",
             "UpdateManager": "Uppdateringshanterare",
             "UpdateWarning": "Uppdatera varning: {name}",
             "Upgrade": "uppgradera",
             "UpgradeableSystemPackages": "Uppgraderbara systempaket",
+            "UpToDate": "aktuell",
             "WebClientUpdateQuestion": "I vissa fall kan uppdatering av webbklienten ha ändringar som kan orsaka inkompatibilitet. Se versionskommentarerna för mer information."
         }
     },
@@ -587,12 +587,6 @@
             "Headline": "Makron",
             "Send": "skicka"
         },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Säkerhetställ att du inkluderar mainsail.cfg i filen printer.cfg.",
-            "IsNotDefinedInConfig": "är inte definierad i config.",
-            "MissingConfiguration": "Konfiguration saknas",
-            "MoreInformation": "mer information"
-        },
         "MiniconsolePanel": {
             "Autoscroll": "Auto-scrolla",
             "Headline": "Konsol",
@@ -600,6 +594,12 @@
             "HideTimelapse": "Dölj Timelapse",
             "SendCode": "Skicka kod...",
             "SetupConsole": "Installationskonsol"
+        },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Säkerhetställ att du inkluderar mainsail.cfg i filen printer.cfg.",
+            "IsNotDefinedInConfig": "är inte definierad i config.",
+            "MissingConfiguration": "Konfiguration saknas",
+            "MoreInformation": "mer information"
         },
         "MiscellaneousPanel": {
             "Headline": "Övrigt",
@@ -635,8 +635,8 @@
             "Never": "Aldrig",
             "NoActiveSpool": "Filamentspårning är inaktiv. För att komma igång, välj en spole.",
             "NoResults": "Ingen spole hittades med de aktuella sökkriterierna.",
-            "NoSpoolSelected": "Ingen spole vald. Välj en spole annars kommer denna utskrift inte att spåras.",
             "NoSpools": "Inga spolar tillgängliga",
+            "NoSpoolSelected": "Ingen spole vald. Välj en spole annars kommer denna utskrift inte att spåras.",
             "OpenSpoolManager": "öppna Spool Manager",
             "Refresh": "uppdatera",
             "Search": "Sök",
@@ -650,16 +650,16 @@
             "CancelPrint": "Avbryt utskrift",
             "ClearPrintStats": "Rensa utskriftsstatistik",
             "Difference": "Differens",
-            "ETA": "Beräknad tid",
             "EmptyGcodes": "Ingen G-kod tillgänglig.",
             "EmptyJobqueue": "Det finns för närvarande ingen fil i jobbkön.",
             "Estimate": "Uppskattning",
+            "ETA": "Beräknad tid",
             "ExcludeObject": {
                 "Cancel": "avbryt",
+                "Excluded": "Exluderad",
                 "ExcludeObject": "Exkludera objekt",
                 "ExcludeObjectHeadline": "Exkludera objekt",
-                "ExcludeObjectText": "Vill du verkligen exkludera \"{name}\"?",
-                "Excluded": "Exluderad"
+                "ExcludeObjectText": "Vill du verkligen exkludera \"{name}\"?"
             },
             "Filament": "Filament",
             "File": "Fil",
@@ -716,13 +716,13 @@
             "ShowNameInList": "Visa {name} i listan",
             "State": "Läge",
             "Target": "Mål",
+            "TemperaturesInChart": "Temperatur [°C]",
             "TempTooHigh": "Temperaturen är för hög för {name}! (max: {max})",
-            "TempTooLow": "Temperaturen är för låg för {name}! (min: {min})",
-            "TemperaturesInChart": "Temperatur [°C]"
+            "TempTooLow": "Temperaturen är för låg för {name}! (min: {min})"
         },
         "ToolheadControlPanel": {
-            "ALL": "ALLA",
             "Absolute": "absolut",
+            "ALL": "ALLA",
             "ControlButtons": "Kontrollknappar",
             "CoordinateFields": "Koordinatfält",
             "Headline": "Verktygshuvud",
@@ -951,8 +951,8 @@
             "CountMacros": "inga makron tillagda | {count} Makro | {count} makron",
             "Custom": "anpassad",
             "CustomColor": "Anpassad färg",
-            "DeleteMacroFromGroup": "Ta bort makro från gruppen.",
             "DeletedMacro": "Raderat makro",
+            "DeleteMacroFromGroup": "Ta bort makro från gruppen.",
             "EditGroup": "Redigera grupp",
             "Error": "fel",
             "Expert": "Expert",
@@ -962,10 +962,10 @@
             "Macrogroups": "Grupper",
             "Macros": "Makron",
             "Management": "Hantering",
-            "NOMacros": "Inga makron hittades...",
             "Name": "Namn",
             "NoAvailableMacros": "Inga tillgängliga makron.",
             "NoGroups": "Ingen grupp hittades...",
+            "NOMacros": "Inga makron hittades...",
             "NoMacrosInGroup": "Inga makron i den här gruppen.",
             "Primary": "primär",
             "Search": "Sök",
@@ -987,8 +987,8 @@
             "CreatePreset": "Skapa förinställning",
             "End": "Slutet",
             "EndDescription": "Sista lysdioden för denna grupp.",
-            "GroupSubTitle": "Start: {start}, Slut: {end}",
             "Groups": "Grupper",
+            "GroupSubTitle": "Start: {start}, Slut: {end}",
             "LightGroups": "{name} – grupper",
             "LightPresets": "{name} - Förinställningar",
             "Miscellaneous": "Diverse",
@@ -1039,6 +1039,8 @@
             "Camera": "Kamera",
             "ConstantRateFactor": "Konstant Rate Factor",
             "ConstantRateFactorDescription": "Detta konfigurerar kvalitet kontra filstorlek på den renderade videon. CRF-skalans intervall är 0–51, där 0 är förlustfri, 23 är standard och 51 är sämsta möjliga kvalitet. Ett lägre värde leder generellt till högre kvalitet och ett subjektivt förnuftigt intervall är 17–28. Betrakta 17 eller 18 som visuellt förlustfria.",
+            "duplicatelastframe": "duplicatelastframe",
+            "duplicatelastframeDescription": "Duplicerar den sista bildrutan i slutet av videon",
             "Enabled": "Aktiverad",
             "EnabledDescription": "Om den är inaktiverad ignoreras G-Code-makron och automatisk rendering hoppas över.",
             "Extraoutputparams": "Extraoutputparams",
@@ -1054,12 +1056,12 @@
             "ModeDescription": "Välj mellan Layermacro och Hyperlapse (tidsbaserat) läge",
             "OutputFramerate": "Utgångsbildhastighet",
             "OutputFramerateDescription": "Definierar bildhastigheten för videon. Obs: detta kommer att ignoreras om variable_fps är aktiverat",
-            "ParkTime": "Parkeringstid",
-            "ParkTimeDescription": "Lägg till ytterligare vilotid vid parkering.",
             "Parkhead": "Parkera verktygshuvud",
             "ParkheadDescription": "Om aktiverat, kommer verktygshuvudet att parkeras innan du tar en bild.",
             "Parkpos": "Parkeringsposition",
             "ParkposDescription": "Välj parkeringsposition",
+            "ParkTime": "Parkeringstid",
+            "ParkTimeDescription": "Lägg till ytterligare vilotid vid parkering.",
             "Pixelformat": "Pixelformat",
             "PixelformatDescription": "Definierar pixelformatet för utdatavideon",
             "PosDZ": "Position Z",
@@ -1095,9 +1097,7 @@
             "VariableFpsMax": "Variable FPS max",
             "VariableFpsMaxDescription": "Maximalt värde för variabel FPS",
             "VariableFpsMin": "Variable FPS min",
-            "VariableFpsMinDescription": "Minsta värde för variabel FPS",
-            "duplicatelastframe": "duplicatelastframe",
-            "duplicatelastframeDescription": "Duplicerar den sista bildrutan i slutet av videon"
+            "VariableFpsMinDescription": "Minsta värde för variabel FPS"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Bäddskruvar dialog",

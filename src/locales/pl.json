@@ -69,9 +69,9 @@
             "CannotUploadTheFile": "Błąd wgrywania pliku!",
             "EmergencyStop": "Awaryjny STOP",
             "SAVE_CONFIG": "ZAPISZ KONFIGURACJE",
+            "Uploading": "Wgrywanie",
             "UploadOfFileSuccessful": "Wgranie {file} zakończono pomyślnie!",
-            "UploadPrint": "Wgraj i Drukuj",
-            "Uploading": "Wgrywanie"
+            "UploadPrint": "Wgraj i Drukuj"
         },
         "TopCornerMenu": {
             "Cancel": "Anuluj",
@@ -220,9 +220,9 @@
         "NozzleDiameter": "Średnica dyszy",
         "ObjectHeight": "Wysokość obiektu",
         "Preheat": "Podgrzej",
+        "PrintedFiles": "Wydrukowane pliki",
         "PrintStart": "Start wydruku",
         "PrintTime": "Czas druku",
-        "PrintedFiles": "Wydrukowane pliki",
         "RefreshCurrentDirectory": "Odśwież aktualny katalog",
         "Rename": "Zmień nazwę",
         "RenameDirectory": "Zmiana nazwy katalogu",
@@ -247,8 +247,8 @@
         "DropFilesToUploadFiles": "Upuść plik, aby go wgrać"
     },
     "GCodeViewer": {
-        "CNCMode": "Tryb CNC",
         "ClearLoadedFile": "Wyczyść",
+        "CNCMode": "Tryb CNC",
         "ColorMode": "Tryb koloru",
         "Downloading": "Pobieranie",
         "ForceLineRendering": "Wymuszanie renderowania linii",
@@ -260,8 +260,8 @@
         "Max": "Maksymalna",
         "Medium": "Średnia",
         "ReloadRequired": "Wymagane załadowanie ponowne",
-        "RenderQuality": "Jakość renderowania",
         "Rendering": "Renderowanie",
+        "RenderQuality": "Jakość renderowania",
         "ShowGCode": "Pokaż kod G",
         "ShowObjectSelection": "Pokazuj wybieranie obiektu",
         "ShowToolhead": "Pokazuj głowicę",
@@ -362,13 +362,13 @@
         "Statistics": "Statystyki",
         "Status": "Status",
         "StatusValues": {
-            "Others": "Pozostałe",
             "cancelled": "Anulowano",
             "completed": "Ukończono",
             "error": "Błąd",
             "in_progress": "W trakcie",
             "klippy_disconnect": "Klipper został rozłączony",
             "klippy_shutdown": "Zamykanie Klippera",
+            "Others": "Pozostałe",
             "server_exit": "Wyjście z serwera"
         },
         "Table": "Tabela",
@@ -435,8 +435,8 @@
             "Endstop": "Krańcówka",
             "EndstopInfo": "Naciśnij synchronizację w prawym narożniku żeby załadować aktualny status krańcówek.",
             "Endstops": "Status krańcówek",
-            "TRIGGERED": "URUCHOMIONA",
-            "open": "NIEURUCHOMIONA"
+            "open": "NIEURUCHOMIONA",
+            "TRIGGERED": "URUCHOMIONA"
         },
         "LogfilesPanel": {
             "Accept": "Akceptuj",
@@ -493,9 +493,9 @@
             "GenericUpdateQuestion": "Sprawdź historię zatwierdzeń (jeśli dostępne) i stronę GitHub dla tego projektu, aby sprawdzić, czy konieczne są jakiekolwiek ręczne korekty dla tej aktualizacji.",
             "GitHubPage": "Strona GitHub",
             "HardRecovery": "Przywróć twardo",
-            "IUnderstandTheRisks": "Rozumiem ryzyko",
             "InitUpdateManager": "Menedżer aktualizacji nie został jeszcze zainicjowany. Jest to normalne zjawisko podczas pierwszego uruchomienia systemu. Kliknij przycisk odświeżania, aby zainicjować wszystkie komponenty.",
             "Invalid": "Nieprawidłowe",
+            "IUnderstandTheRisks": "Rozumiem ryzyko",
             "KlipperUpdateQuestionConfig": "Ta aktualizacja może również zawierać zmiany w parametrach konfiguracyjnych, które będą musiały zostać zmodyfikowane w pliku printer.cfg, szczegóły można znaleźć w dzienniku zmian.",
             "KlipperUpdateQuestionFirmware": "Spowoduje to aktualizację oprogramowania hosta Klipper. Płyty sterujące z działającym firmware Klipper mogą wymagać flashowania ponownie skompilowanym firmware przed przywróceniem urządzenia do pracy.",
             "LinkToGithub": "Link do GitHub",
@@ -507,13 +507,13 @@
             "System": "System",
             "ThesePackagesCanBeUpgrade": "Te pakiety systemowe mogą być zaktualizowane:",
             "Unknown": "nieznany",
-            "UpToDate": "aktualny",
             "Update": "Aktualizuj",
             "UpdateAll": "Zaktualizuj wszystko",
             "UpdateManager": "Menadżer aktualizacji",
             "UpdateWarning": "Ostrzeżenie o aktualizacji: {name}",
             "Upgrade": "Uaktualnij",
             "UpgradeableSystemPackages": "Pakiety systemowe, które można uaktualnić",
+            "UpToDate": "aktualny",
             "WebClientUpdateQuestion": "W niektórych przypadkach aktualizacja klienta sieciowego może spowodować zmiany, które mogą spowodować niezgodność. Więcej informacji można znaleźć w uwagach wydania."
         }
     },
@@ -578,12 +578,6 @@
             "Headline": "Makra",
             "Send": "Wyślij"
         },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Upewnij się, że printer.cfg zawiera mainsail.cfg.",
-            "IsNotDefinedInConfig": "nie jest określone w konfiguracji.",
-            "MissingConfiguration": "Brakująca konfiguracja",
-            "MoreInformation": "Więcej informacji"
-        },
         "MiniconsolePanel": {
             "Autoscroll": "Autoprzewijanie",
             "Headline": "Konsola",
@@ -591,6 +585,12 @@
             "HideTimelapse": "Ukryj timelapse",
             "SendCode": "Wyślij polecenie...",
             "SetupConsole": "Konfiguracja konsoli"
+        },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Upewnij się, że printer.cfg zawiera mainsail.cfg.",
+            "IsNotDefinedInConfig": "nie jest określone w konfiguracji.",
+            "MissingConfiguration": "Brakująca konfiguracja",
+            "MoreInformation": "Więcej informacji"
         },
         "MiscellaneousPanel": {
             "Headline": "Różne",
@@ -626,8 +626,8 @@
             "Never": "Nigdy",
             "NoActiveSpool": "Śledzenie filamentu nie jest aktywne. Aby rozpocząć, wybierz szpulę.",
             "NoResults": "Nie znaleziono szpuli z bieżącymi kryteriami wyszukiwania.",
-            "NoSpoolSelected": "Nie wybrano szpuli. Wybierz szpulę, w przeciwnym razie wydruk nie będzie śledzony.",
             "NoSpools": "Brak dostępnych szpul",
+            "NoSpoolSelected": "Nie wybrano szpuli. Wybierz szpulę, w przeciwnym razie wydruk nie będzie śledzony.",
             "OpenSpoolManager": "Otwórz menedżer szpul",
             "Refresh": "Odśwież",
             "Search": "Szukaj",
@@ -641,16 +641,16 @@
             "CancelPrint": "Anuluj wydruk",
             "ClearPrintStats": "Wyczyść statystyki drukarki",
             "Difference": "Różnica",
-            "ETA": "Koniec",
             "EmptyGcodes": "Brak dostępnego G-Code.",
             "EmptyJobqueue": "Aktualnie nie ma żadnego pliku w kolejce wydruków.",
             "Estimate": "Pozostało",
+            "ETA": "Koniec",
             "ExcludeObject": {
                 "Cancel": "Anuluj",
+                "Excluded": "Wyklucz",
                 "ExcludeObject": "Wyklucz obiekt",
                 "ExcludeObjectHeadline": "Wykluczanie Obiektu",
-                "ExcludeObjectText": "Czy na pewno chcesz wykluczyć \"{name}\"?",
-                "Excluded": "Wyklucz"
+                "ExcludeObjectText": "Czy na pewno chcesz wykluczyć \"{name}\"?"
             },
             "Filament": "Filament",
             "File": "Plik",
@@ -707,13 +707,13 @@
             "ShowNameInList": "Pokaż {name} na liście",
             "State": "Stan",
             "Target": "Docelowa",
+            "TemperaturesInChart": "Temperatura [°C]",
             "TempTooHigh": "Temperatura zbyt wysoka dla {name}! (max: {max})",
-            "TempTooLow": "Temperatura zbyt mała dla {name}! (min: {min})",
-            "TemperaturesInChart": "Temperatura [°C]"
+            "TempTooLow": "Temperatura zbyt mała dla {name}! (min: {min})"
         },
         "ToolheadControlPanel": {
-            "ALL": "WSZYSTKIE",
             "Absolute": "Absolutna",
+            "ALL": "WSZYSTKIE",
             "Headline": "Sterowanie drukarką",
             "PleaseConfigureSteps": "Proszę skonfigurować kroki",
             "Position": "Pozycja",
@@ -924,8 +924,8 @@
             "CountMacros": "Brak nowych makr| {count} x Makr | {count} x Makr",
             "Custom": "Personalizacja",
             "CustomColor": "Kolor niestandardowy",
-            "DeleteMacroFromGroup": "Usuń makro z grupy.",
             "DeletedMacro": "Usunięto makro",
+            "DeleteMacroFromGroup": "Usuń makro z grupy.",
             "EditGroup": "Edytuj grupę",
             "Error": "Błąd",
             "Expert": "Ekspert",
@@ -935,10 +935,10 @@
             "Macrogroups": "Grupy Makr",
             "Macros": "Makra",
             "Management": "Zarządzanie",
-            "NOMacros": "Nie znaleziono makr...",
             "Name": "Nazwa",
             "NoAvailableMacros": "Brak dostępnych makr.",
             "NoGroups": "Nie znaleziono grupy...",
+            "NOMacros": "Nie znaleziono makr...",
             "NoMacrosInGroup": "Brak makr w tej grupie.",
             "Primary": "Podstawowy",
             "Search": "Szukaj",
@@ -960,8 +960,8 @@
             "CreatePreset": "Utwórz nastawę",
             "End": "Koniec",
             "EndDescription": "Ostatnia dioda LED tej grupy.",
-            "GroupSubTitle": "Początek: {start}, Koniec: {end}",
             "Groups": "Grupy",
+            "GroupSubTitle": "Początek: {start}, Koniec: {end}",
             "LightGroups": "{name} - Grupy świateł",
             "LightPresets": "{name} - Nastawy",
             "Miscellaneous": "Różne",
@@ -1012,6 +1012,8 @@
             "Camera": "Kamera",
             "ConstantRateFactor": "Stała kompensacja rozmiaru",
             "ConstantRateFactorDescription": "Konfiguruje jakość w stosunku do rozmiaru pliku renderowanego wideo. Zakres skali CRF wynosi 0-51, gdzie 0 oznacza bezstratną jakość, 23 to wartość domyślna, a 51 to najgorsza możliwa jakość. Niższa wartość generalnie prowadzi do wyższej jakości, a subiektywnie rozsądny zakres to 17-28. Wartość 17 lub 18 należy uznać za wizualnie bezstratną.",
+            "duplicatelastframe": "Duplikuj ostatnią klatkę na koniec filmu",
+            "duplicatelastframeDescription": "Powiela ostatnią klatkę na końcu filmu",
             "Enabled": "Włączone",
             "EnabledDescription": "Jeżeli wyłączone, makra G-Code są ignorowane i automatyczne generowanie wideo jest pomijane.",
             "Extraoutputparams": "Dodatkowe parametry wyjściowe",
@@ -1027,12 +1029,12 @@
             "ModeDescription": "Wybierz pomiędzy makrami warstw a trybem Hyperlapse (opartym na czasie).",
             "OutputFramerate": "Wyjściowa liczba kl./s",
             "OutputFramerateDescription": "Określa liczbę klatek na sekundę wideo. Uwaga: ta opcja zostanie zignorowana, jeśli włączona jest opcja variable_fps.",
-            "ParkTime": "Czas podczas parkowania",
-            "ParkTimeDescription": "Dodaj dodatkowy czas bezczynny podczas parkowania.",
             "Parkhead": "Parkuj głowicę",
             "ParkheadDescription": "Jeżeli włączone, głowica będzie parkowana przed uchwyceniem klatki.",
             "Parkpos": "Pozycja parkowania",
             "ParkposDescription": "Wybierz pozycję parkowania",
+            "ParkTime": "Czas podczas parkowania",
+            "ParkTimeDescription": "Dodaj dodatkowy czas bezczynny podczas parkowania.",
             "Pixelformat": "Jakość",
             "PixelformatDescription": "Określa format pikseli dla wyjściowego wideo.",
             "PosDZ": "Pozycja Z",
@@ -1068,9 +1070,7 @@
             "VariableFpsMax": "Maks. zmiennych kl./s",
             "VariableFpsMaxDescription": "Maksymalna zmienna liczba klatek na sekundę.",
             "VariableFpsMin": "Min. zmiennych kl./s",
-            "VariableFpsMinDescription": "Minimalna zmienna liczba klatek na sekundę.",
-            "duplicatelastframe": "Duplikuj ostatnią klatkę na koniec filmu",
-            "duplicatelastframeDescription": "Powiela ostatnią klatkę na końcu filmu"
+            "VariableFpsMinDescription": "Minimalna zmienna liczba klatek na sekundę."
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Okno śrub stołu",
