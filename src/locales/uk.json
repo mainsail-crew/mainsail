@@ -1251,7 +1251,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Сопло",
             "IconPrinter": "Прінтер",
-            "Ipstream": "IP-камера",
             "JMuxerStream": "Необроблений потік h264 (jmuxer)",
             "Mjpegstreamer": "MJPEG-Стример",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (експериментальний)",

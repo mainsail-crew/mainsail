@@ -1313,7 +1313,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Fúvóka",
             "IconPrinter": "Nyomtató",
-            "Ipstream": "IP kamera",
             "JMuxerStream": "Raw h264 sugárzás (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamelő",
             "MjpegstreamerAdaptive": "Adaptív MJPEG-Streamelő (kísérleti)",

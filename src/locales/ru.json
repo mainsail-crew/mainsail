@@ -1311,7 +1311,6 @@
             "IconMcu": "Микроконтроллёр",
             "IconNozzle": "Сопло",
             "IconPrinter": "Принтер",
-            "Ipstream": "IP-видеокамера",
             "JMuxerStream": "Сырой H264 поток (jmuxer)",
             "Mjpegstreamer": "MJPEG-поток",
             "MjpegstreamerAdaptive": "Адаптивный MJPEG-поток",

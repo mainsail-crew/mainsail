@@ -1097,7 +1097,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Nozul",
             "IconPrinter": "Yazıcı",
-            "Ipstream": "IP Kamerası",
             "JMuxerStream": "Ham h264 akışı (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Uyarlamalı MJPEG-Streamer (deneysel)",

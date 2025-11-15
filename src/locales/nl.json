@@ -1106,7 +1106,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Nozzle",
             "IconPrinter": "Printer",
-            "Ipstream": "IP Camera",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptieve MJPEG-Streamer (experimenteel)",
             "Name": "Naam",

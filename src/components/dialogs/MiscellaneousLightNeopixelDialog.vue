@@ -166,8 +166,6 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
             return { ...value, id: key }
         })
 
-        window.console.log(presets)
-
         return caseInsensitiveSort(presets, 'name')
     }
 

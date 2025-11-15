@@ -1173,7 +1173,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Buse",
             "IconPrinter": "Imprimante",
-            "Ipstream": "Caméra IP",
             "JMuxerStream": "Flux de données brutes h264 (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Streamer MJPEG adaptatif (experimental)",

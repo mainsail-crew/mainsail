@@ -1138,7 +1138,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Dysza",
             "IconPrinter": "Drukarka",
-            "Ipstream": "Transmisja po IP",
             "JMuxerStream": "Nieskompresowany strumień h264 (jmuxer)",
             "Mjpegstreamer": "Transmisja MJPEG",
             "MjpegstreamerAdaptive": "Adaptacyjna transmisja MJPEG *(eksperymentalne)",

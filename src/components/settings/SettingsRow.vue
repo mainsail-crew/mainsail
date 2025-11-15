@@ -27,26 +27,16 @@ import { TranslateResult } from 'vue-i18n'
 
 @Component
 export default class SettingsRow extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: false })
-    declare readonly loading: boolean
-
-    @Prop({ required: false, default: '' })
-    declare readonly icon: string
-
-    @Prop({ required: true })
-    declare readonly title: string | TranslateResult
-
-    @Prop({ required: false })
-    declare readonly subTitle: string | TranslateResult
-
-    @Prop({ required: false, default: false })
-    declare readonly dynamicSlotWidth: boolean
-
-    @Prop({ required: false, default: false })
-    declare readonly mobileSecondRow: boolean
+    @Prop({ required: false, default: false }) declare readonly loading: boolean
+    @Prop({ required: false, default: '' }) declare readonly icon: string
+    @Prop({ required: true }) declare readonly title: string | TranslateResult
+    @Prop({ required: false }) declare readonly subTitle: string | TranslateResult
+    @Prop({ required: false, default: false }) declare readonly dynamicSlotWidth: boolean
+    @Prop({ required: false, default: false }) declare readonly mobileSecondRow: boolean
+    @Prop({ default: false }) declare readonly dense: boolean
 
     get firstColClasses() {
-        const defaultClasses = ' d-flex justify-center'
+        let defaultClasses = ' d-flex justify-center'
 
         if (this.dynamicSlotWidth) return 'col' + defaultClasses
         else if (this.mobileSecondRow) return 'col-12 col-md-6' + defaultClasses
@@ -55,7 +45,10 @@ export default class SettingsRow extends Mixins(BaseMixin) {
     }
 
     get secondColClasses() {
-        const defaultClasses = ' d-flex justify-end align-center settings-row-slot'
+        let defaultClasses = ' d-flex justify-end align-center'
+
+        if (!this.dense) defaultClasses += ' settings-row-slot'
+        else defaultClasses += ' py-0'
 
         if (this.dynamicSlotWidth) return 'col-auto' + defaultClasses
         else if (this.mobileSecondRow) return 'col-12 col-md-6 pt-0 pt-md-3' + defaultClasses

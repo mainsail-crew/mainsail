@@ -56,14 +56,18 @@ export default class WebcamMixin extends Mixins(BaseMixin) {
         }
     }
 
-    generateTransform(flip_horizontal: boolean, flip_vertical: boolean, rotation: number) {
-        let transforms = ''
-        if (flip_horizontal) transforms += ' scaleX(-1)'
-        if (flip_vertical) transforms += ' scaleY(-1)'
-        if (rotation === 180) transforms += ' rotate(180deg)'
+    generateTransform(flip_horizontal: boolean, flip_vertical: boolean, rotation: number, aspect_ratio: number = 1) {
+        const transforms = []
+        if (flip_horizontal) transforms.push('scaleX(-1)')
+        if (flip_vertical) transforms.push('scaleY(-1)')
+        if (rotation != 0) {
+            transforms.push(`rotate(${rotation}deg)`)
+
+            if (aspect_ratio != 1) transforms.push(`scale(${1 / aspect_ratio})`)
+        }
 
         // return transform when exist
-        if (transforms.trimStart().length) return transforms.trimStart()
+        if (transforms.length) return transforms.join(' ')
 
         // return none as fallback
         return 'none'

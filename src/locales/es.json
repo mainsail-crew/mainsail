@@ -1289,7 +1289,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Boquilla",
             "IconPrinter": "Impresora",
-            "Ipstream": "Cámara IP",
             "JMuxerStream": "stream h264 crudo (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "MJPEG-Streamer Adaptativo (experimental)",
