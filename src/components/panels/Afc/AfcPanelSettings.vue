@@ -27,6 +27,13 @@
                     hide-details
                     :label="$t('Panels.AfcPanel.ShowUnitIcons')" />
             </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="showTd1Color"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.AfcPanel.ShowTd1Color')" />
+            </v-list-item>
             <v-divider />
             <afc-panel-settings-extruder v-for="extruder in afcExtruders" :key="extruder" :name="extruder" />
             <afc-panel-settings-unit v-for="unit in afcUnits" :key="unit" :name="unit" />
@@ -65,6 +72,14 @@ export default class AfcPanelSettings extends Mixins(BaseMixin, AfcMixin) {
 
     set showUnitIcons(value: boolean) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.afc.showUnitIcons', value })
+    }
+
+    get showTd1Color(): boolean {
+        return this.$store.state.gui.view.afc?.showTd1Color ?? true
+    }
+
+    set showTd1Color(value: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.afc.showTd1Color', value })
     }
 }
 </script>

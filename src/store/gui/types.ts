@@ -138,6 +138,7 @@ export interface GuiState {
             showFilamentName: boolean
             showLaneInfinite: boolean
             showUnitIcons: boolean
+            showTd1Color: boolean
         }
         blockFileUpload: boolean
         configfiles: {
