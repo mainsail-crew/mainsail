@@ -114,11 +114,6 @@ export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
             .filter((button) => button.macro !== null)
     }
 
-    doSend(gcode: string) {
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
-    }
-
     downloadDebugJson() {
         const AFC_DEBUG_FILENAME = 'afc_debug.json'
         const output: {
