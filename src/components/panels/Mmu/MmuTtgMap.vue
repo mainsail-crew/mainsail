@@ -105,9 +105,7 @@ export default class MmuTtgMap extends Mixins(BaseMixin, MmuMixin) {
         }
 
         // add selected tool at the end, because of the svg layering (last drawn is on top)
-        if (this.selectedTool !== TOOL_GATE_UNKNOWN) {
-            array.push(this.selectedTool)
-        }
+        if (this.selectedTool >= 0) array.push(this.selectedTool)
 
         return array
     }
