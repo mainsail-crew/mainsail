@@ -4,6 +4,10 @@ import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
 @Component
 export default class AfcMixin extends Vue {
+    get afcExists() {
+        return 'AFC' in this.$store.state.printer
+    }
+
     get afc() {
         return this.$store.state.printer.AFC ?? {}
     }
@@ -99,6 +103,10 @@ export default class AfcMixin extends Vue {
 
     get afcHiddenUnits(): string[] {
         return this.$store.state.gui.view.afc?.hiddenUnits ?? []
+    }
+
+    get afcCurrentToolchange() {
+        return this.afc.current_toolchange ?? undefined
     }
 
     getPrinterObject(key: string) {
