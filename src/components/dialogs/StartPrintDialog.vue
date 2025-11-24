@@ -14,6 +14,7 @@
                 </p>
             </v-card-text>
             <start-print-dialog-afc v-if="afcExists" :file="file" />
+            <start-print-dialog-mmu v-else-if="existsMmu" :file="file" />
             <start-print-dialog-spoolman v-else-if="existsSpoolman" :file="file" />
             <start-print-dialog-timelapse v-if="existsTimelapse" />
             <v-divider v-if="showDivider" class="my-0" />
@@ -50,6 +51,10 @@ export default class StartPrintDialog extends Mixins(BaseMixin, AfcMixin) {
     @Prop({ required: true, default: false }) readonly bool!: boolean
     @Prop({ required: true, default: '' }) readonly currentPath!: string
     @Prop({ required: true }) readonly file!: FileStateGcodefile
+
+    get existsMmu() {
+        return this.$store.state.printer.mmu?.enabled && this.$store.state.printer.mmu?.gate !== -2
+    }
 
     get existsSpoolman() {
         return this.moonrakerComponents.includes('spoolman')

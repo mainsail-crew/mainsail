@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="showDialog" width="800" persistent :fullscreen="isMobile">
         <panel
-            :title="$t('Panels.SpoolmanPanel.ChangeSpool')"
+            :title="setActiveSpool ? $t('Panels.SpoolmanPanel.ChangeSpool') : $t('Panels.SpoolmanPanel.SelectSpool')"
             :icon="mdiAdjust"
             card-class="spoolman-change-spool-dialog"
             :margin-bottom="false">
@@ -93,6 +93,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     @Prop({ required: true }) declare readonly showDialog: boolean
     @Prop({ required: false, default: null }) declare readonly tool?: string
     @Prop({ required: false, default: null }) declare readonly afcLane?: string
+    @Prop({ required: false, default: true }) declare readonly setActiveSpool?: boolean
 
     search = ''
 
@@ -196,6 +197,13 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     }
 
     setSpool(spool: ServerSpoolmanStateSpool) {
+        // If dialog is used for selection only, bypass setting of active spool and propogate event
+        if (!this.setActiveSpool) {
+            this.$emit('select-spool', spool)
+            this.close()
+            return
+        }
+
         // if afcLane is set, execute SET_SPOOL_ID and close, because it's not an active printing spool change
         if (this.afcLane) {
             this.sendGcode(`SET_SPOOL_ID LANE=${this.afcLane} SPOOL_ID=${spool.id}`)
