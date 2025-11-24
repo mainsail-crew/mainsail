@@ -1013,6 +1013,7 @@
             "ResumePrint": "Resume print",
             "Slicer": "Slicer",
             "Speed": "Speed",
+            "Toolchange": "Toolchange",
             "Total": "Total",
             "TotalTime": "Total Time",
             "Unknown": "Unknown"

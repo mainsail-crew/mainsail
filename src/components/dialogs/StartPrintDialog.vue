@@ -13,7 +13,7 @@
                     {{ question }}
                 </p>
             </v-card-text>
-            <start-print-dialog-afc v-if="existsAfc" :file="file" />
+            <start-print-dialog-afc v-if="afcExists" :file="file" />
             <start-print-dialog-mmu v-else-if="existsMmu" :file="file" />
             <start-print-dialog-spoolman v-else-if="existsSpoolman" :file="file" />
             <start-print-dialog-timelapse v-if="existsTimelapse" />
@@ -40,20 +40,17 @@ import { FileStateGcodefile } from '@/store/files/types'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiPrinter3d } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
+import AfcMixin from '@/components/mixins/afc'
 
 @Component({
     components: { SettingsRow },
 })
-export default class StartPrintDialog extends Mixins(BaseMixin) {
+export default class StartPrintDialog extends Mixins(BaseMixin, AfcMixin) {
     mdiPrinter3d = mdiPrinter3d
 
     @Prop({ required: true, default: false }) readonly bool!: boolean
     @Prop({ required: true, default: '' }) readonly currentPath!: string
     @Prop({ required: true }) readonly file!: FileStateGcodefile
-
-    get existsAfc() {
-        return 'AFC' in this.$store.state.printer
-    }
 
     get existsMmu() {
         return this.$store.state.printer.mmu?.enabled && this.$store.state.printer.mmu?.gate !== -2
@@ -68,7 +65,7 @@ export default class StartPrintDialog extends Mixins(BaseMixin) {
     }
 
     get showDivider() {
-        return this.existsAfc || this.existsSpoolman || this.existsTimelapse
+        return this.afcExists || this.existsSpoolman || this.existsTimelapse
     }
 
     get active_spool(): ServerSpoolmanStateSpool | null {

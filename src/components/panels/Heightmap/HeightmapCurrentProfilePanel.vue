@@ -94,7 +94,7 @@ export default class HeightmapCurrentProfilePanel extends Mixins(BaseMixin, Bedm
     }
 
     get index_max_x() {
-        return this.index_max % this.y_count
+        return this.index_max % this.x_count
     }
 
     get position_max_x() {
@@ -114,7 +114,7 @@ export default class HeightmapCurrentProfilePanel extends Mixins(BaseMixin, Bedm
     }
 
     get index_min_x() {
-        return this.index_min % this.y_count
+        return this.index_min % this.x_count
     }
 
     get position_min_x() {

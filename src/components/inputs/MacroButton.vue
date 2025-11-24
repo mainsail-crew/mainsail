@@ -12,6 +12,7 @@
                     v-bind="attrs"
                     v-on="on"
                     @click="doSendMacro(macro.name)">
+                    <v-icon v-if="icon" small left>{{ icon }}</v-icon>
                     {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
                 </v-btn>
             </template>
@@ -150,6 +151,9 @@ export default class MacroButton extends Mixins(BaseMixin) {
 
     @Prop({ default: false })
     declare readonly disabled: boolean
+
+    @Prop({ default: null })
+    declare readonly icon: string | null
 
     get klipperMacro() {
         return this.$store.getters['printer/getMacro'](this.macro.name)
