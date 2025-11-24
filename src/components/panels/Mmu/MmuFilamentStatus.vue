@@ -13,6 +13,8 @@
             <g
                 id="sync-feedback-buffer-piston"
                 fill="none"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
                 style="stroke: var(--color-outline); fill: var(--color-outline)">
                 <rect x="3" y="0" width="30" height="40" rx="3" ry="3" fill="none" stroke-width="1.5" />
                 <path d="M-15 -4 L-6 0 L-15 4 Z" stroke-width="1" fill-opacity="0.6" />
