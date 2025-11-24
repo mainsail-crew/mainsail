@@ -54,6 +54,10 @@ text {
     fill: currentColor;
 }
 
+.text-disabled {
+    opacity: 0.5;
+}
+
 .sensor-disabled {
     stroke: var(--disabled-stroke);
     stroke-dasharray: 2, 1;
