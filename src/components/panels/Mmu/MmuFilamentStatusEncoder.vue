@@ -13,7 +13,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { DIRECTION_LOAD, DIRECTION_UNKNOWN, FILAMENT_POS_START_BOWDEN } from '@/components/mixins/mmu'
+import MmuMixin, { DIRECTION_UNKNOWN, FILAMENT_POS_START_BOWDEN } from '@/components/mixins/mmu'
 
 @Component
 export default class MmuFilamentStatusEncoder extends Mixins(BaseMixin, MmuMixin) {
@@ -36,10 +36,6 @@ export default class MmuFilamentStatusEncoder extends Mixins(BaseMixin, MmuMixin
     }
 
     get homedToEncoder(): boolean {
-        if (this.filamentDirection === DIRECTION_LOAD) {
-            return this.configGateHomingEndstop === 'encoder' && this.mmuFilamentPos === FILAMENT_POS_START_BOWDEN
-        }
-
         return this.configGateHomingEndstop === 'encoder' && this.mmuFilamentPos === FILAMENT_POS_START_BOWDEN
     }
 
@@ -52,6 +48,10 @@ export default class MmuFilamentStatusEncoder extends Mixins(BaseMixin, MmuMixin
 <style scoped>
 text {
     fill: currentColor;
+}
+
+.text-disabled {
+    opacity: 0.5;
 }
 
 .sensor-disabled {
