@@ -76,7 +76,7 @@ export default class WebcamMixin extends Mixins(BaseMixin) {
     getWrapperStyle(aspectRatio: number | null, rotation: number) {
         if (aspectRatio == null || aspectRatio == 1 || rotation == 0 || rotation == 180) return {}
 
-        if (rotation == 90 || rotation == 270) {
+        if (aspectRatio < 1 && (rotation == 90 || rotation == 270)) {
             return { aspectRatio: 1 / aspectRatio }
         }
 
