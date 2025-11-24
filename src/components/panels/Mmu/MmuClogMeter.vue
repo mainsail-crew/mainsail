@@ -155,36 +155,39 @@ export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
         return `rotate(${this.headroomRotate} 70 70)`
     }
 
-    get clogAngleHeadroomMin() {
-        if (this.encoderDetectionLength === 0) return 300 // position at 0% clog
-
-        return this.calcClogPercent(this.headroomMin, this.encoderDetectionLength) * 3
-    }
-
-    get x1MinHeadroom() {
-        return 70 + 66 * Math.cos(((120 + this.clogAngleHeadroomMin) * Math.PI) / 180)
-    }
-
-    get y1MinHeadroom() {
-        return 70 + 66 * Math.sin(((120 + this.clogAngleHeadroomMin) * Math.PI) / 180)
-    }
-
-    get clogPercentHeadroom() {
-        if (this.encoderDetectionLength === 0) return 100 // position at 100% clog
+    get clogPercent() {
+        if (this.encoderDetectionLength === 0) return 100
 
         return this.calcClogPercent(this.headroom, this.encoderDetectionLength)
     }
 
-    get dashOffset() {
-        const arcPercentage = (this.clogPercentHeadroom * 300) / 360
+    get minHeadroomPercent() {
+        if (this.encoderDetectionLength === 0) return 100
 
-        return this.CIRCUMFERENCE * (1 - arcPercentage / 100)
+        return this.calcClogPercent(this.headroomMin, this.encoderDetectionLength)
     }
 
-    private calcClogPercent(newHeadroom: number, encoderDetectionLength: number) {
-        const clampedHeadroom = Math.max(0, Math.min(newHeadroom, encoderDetectionLength))
+    get minHeadroomAngle() {
+        return this.minHeadroomPercent * 3 // 300 degree range
+    }
 
-        return ((encoderDetectionLength - clampedHeadroom) / encoderDetectionLength) * 100
+    get x1MinHeadroom() {
+        return 70 + 66 * Math.cos(((120 + this.minHeadroomAngle) * Math.PI) / 180)
+    }
+
+    get y1MinHeadroom() {
+        return 70 + 66 * Math.sin(((120 + this.minHeadroomAngle) * Math.PI) / 180)
+    }
+
+    get dashOffset() {
+        return this.CIRCUMFERENCE * ((100 - (this.clogPercent * 300) / 360) / 100)
+    }
+
+    private calcClogPercent(value: number, encoderDetectionLength: number) {
+        return (
+            (Math.min(Math.max(0, encoderDetectionLength - value), encoderDetectionLength) / encoderDetectionLength) *
+            100
+        )
     }
 
     @Watch('dashOffset', { immediate: true })
