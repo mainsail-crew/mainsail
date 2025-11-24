@@ -1,5 +1,5 @@
 <template>
-    <v-item-group class="d-inline-block">
+    <v-item-group class="d-inline-flex">
         <v-tooltip :disabled="!hasDescription" top>
             <template #activator="{ on, attrs }">
                 <v-btn
@@ -8,9 +8,11 @@
                     :class="paramArray.length ? 'macroWithParameters' : ''"
                     :loading="loadings.includes('macro_' + macro.name)"
                     :disabled="disabled"
+                    class="flex-grow-1"
                     v-bind="attrs"
                     v-on="on"
                     @click="doSendMacro(macro.name)">
+                    <v-icon v-if="icon" small left>{{ icon }}</v-icon>
                     {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
                 </v-btn>
             </template>
@@ -149,6 +151,9 @@ export default class MacroButton extends Mixins(BaseMixin) {
 
     @Prop({ default: false })
     declare readonly disabled: boolean
+
+    @Prop({ default: null })
+    declare readonly icon: string | null
 
     get klipperMacro() {
         return this.$store.getters['printer/getMacro'](this.macro.name)

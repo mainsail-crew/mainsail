@@ -747,10 +747,8 @@
             },
             "Filament": "Filamento",
             "File": "File",
-            "Files": "Files",
             "Flow": "Flusso",
             "Headline": "Stato",
-            "Jobqueue": "Coda di lavoro",
             "JobqueueMoreFiles": "niente più lavori | resta un lavoro | restano {count} lavori",
             "Layer": "Layer",
             "Max": "max",
@@ -775,7 +773,6 @@
             "ResumePrint": "Riprendi stampa",
             "Slicer": "Slicer",
             "Speed": "Velocità",
-            "Status": "Stato",
             "Total": "Totale",
             "Unknown": "Sconosciuto"
         },

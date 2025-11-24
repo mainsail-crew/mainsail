@@ -13,7 +13,7 @@ export const mutations: MutationTree<GuiState> = {
         setDataDeep(state, payload)
     },
 
-    saveSetting(state, payload) {
+    saveSetting(state, payload: { name: string; value: any }) {
         // eslint-disable-next-line
         const deepSet = (obj: any, is: string[] | string, value: any): any => {
             if (is !== undefined && typeof is === 'string') return deepSet(obj, is.split('.'), value)

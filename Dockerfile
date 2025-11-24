@@ -12,7 +12,7 @@ RUN npm ci
 
 COPY ./ /app/
 
-RUN npm run build
+RUN npm run build && rm /app/dist/mainsail.zip
 
 # set port to >1024 port for non root running
 RUN sed 's/80/8080/g' .docker/nginx.conf > .docker/nginx.conf.unprivileged
@@ -22,6 +22,8 @@ RUN sed 's/80/8080/g' .docker/nginx.conf > .docker/nginx.conf.unprivileged
 #
 FROM nginxinc/nginx-unprivileged:stable-alpine AS unprivileged
 
+USER root
+RUN rm -rf /usr/share/nginx/html/*
 COPY --link --from=builder /app/.docker/nginx.conf.unprivileged  /etc/nginx/conf.d/default.conf
 COPY --link --from=builder /app/dist/ /usr/share/nginx/html/
 
@@ -32,5 +34,6 @@ USER nginx
 #
 FROM nginx:stable-alpine AS runner
 
+RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/.docker/nginx.conf  /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist/ /usr/share/nginx/html/

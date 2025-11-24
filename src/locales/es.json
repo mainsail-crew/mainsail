@@ -166,7 +166,6 @@
         "HideTemperatures": "Ocultar temperaturas",
         "HideTimelapse": "Ocultar timelapse",
         "Search": "Buscar",
-        "SendCode": "Enviar código...",
         "SetupConsole": "Configurar consola"
     },
     "CoolDownDialog": {
@@ -243,7 +242,6 @@
         "EditFile": "Editar archivo",
         "Empty": "Vacío",
         "ExtruderTemp": "Temp. Extructor",
-        "Filament": "Filamento",
         "FilamentName": "Nombre del filamento",
         "FilamentType": "Tipo de filamento",
         "FilamentUsage": "Uso de filamento",
@@ -334,8 +332,7 @@
             "Min": "Min",
             "Name": "Nombre",
             "Range": "Rango",
-            "Size": "Tamaño",
-            "Variance": "Variación"
+            "Size": "Tamaño"
         },
         "DeleteBedMeshProfile": "Borrar perfil de la malla de cama",
         "DoYouReallyWantToDelete": "¿Realmente quiere eliminar el perfil \"{name}\"?",
@@ -346,19 +343,15 @@
         "InvalidNameAscii": "El nombre es inválido. Solo caracteres ascii son permitidos.",
         "InvalidNameEmpty": "¡La entrada no puede estar vacía!",
         "InvalidNameReserved": "El perfil 'default' está reservado, por favor escoge otro nombre de perfil.",
-        "Later": "Más tarde",
         "Mesh": "Malla",
         "Name": "Nombre",
         "NoBedMeshHasBeenLoadedYet": "bed_mesh no ha sido cargado aún.",
         "NoProfile": "No hay perfil disponible",
-        "Ok": "OK",
         "Probed": "Sondeada",
         "Profiles": "Perfil",
         "Remove": "remover",
-        "RemoveSaveDescription": "El perfil bed_mesh se ha registrado como eliminado. Haga click en SAVE_CONFIG para removerlo del archivo printer.cfg y reinicie Klipper.",
         "Rename": "renombrar",
         "RenameBedMeshProfile": "Renombrar perfil de BED_MESH",
-        "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Gradiente de escala",
         "ScaleZMax": "Escalar Z-Max",
         "TitleCalibrate": "Calibrar nueva malla de cama",
@@ -460,8 +453,6 @@
         },
         "Table": "Tabla",
         "TitleExportHistory": "Exportar historial",
-        "TitleRefreshHistory": "Actualizar historial",
-        "TitleSettings": "Configuración",
         "TotalDuration": "Duración total",
         "TotalFilamentUsed": "Filamento utilizado en total",
         "TotalJobs": "Trabajos totales",
@@ -469,7 +460,6 @@
         "TotalTime": "Tiempo total"
     },
     "JobQueue": {
-        "AllJobs": "Todas las tareas",
         "Cancel": "Cancelar",
         "ChangeCount": "Cambiar contador",
         "Count": "Contador",
@@ -477,7 +467,6 @@
         "InvalidCountEmpty": "¡La entrada no puede estar vacía!",
         "InvalidCountGreaterZero": "¡La entrada debe ser mayor que 0!",
         "JobQueue": "Cola de tareas",
-        "Jobs": "Tareas",
         "Pause": "Pausar",
         "RemoveFromQueue": "Remover de la cola",
         "Start": "Iniciar",
@@ -656,7 +645,6 @@
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "Por favor comprueba si el servicio de Klipper se está ejecutando y klippy_uds_address está correctamente configurado en moonraker.conf.",
             "FirmwareRestart": "Reiniciar Firmware",
-            "KlipperCheck": "Verifique que el servicio Klipper está corriendo y que un  UDS (Unix Domain Socket) esta configurado.",
             "KlipperLog": "Registro de Klipper",
             "MoonrakerCannotConnect": "¡Moonraker no se pudo conectar a Klipper!",
             "MoonrakerLog": "Registro de Moonraker",
@@ -705,7 +693,6 @@
             },
             "RunoutSensor": {
                 "Detected": "detectado",
-                "Disabled": "deshabilitado",
                 "Empty": "Vacío"
             }
         },
@@ -758,10 +745,8 @@
             },
             "Filament": "Filamento",
             "File": "Archivo",
-            "Files": "Archivos",
             "Flow": "Flujo",
             "Headline": "Estado",
-            "Jobqueue": "Cola de trabajo",
             "JobqueueMoreFiles": "no mas trabajos | un trabajo mas | {count} trabajos mas",
             "Layer": "Capa",
             "Max": "max",
@@ -786,7 +771,6 @@
             "ResumePrint": "Reanudar impresión",
             "Slicer": "Laminador",
             "Speed": "Velocidad",
-            "Status": "Estado",
             "Total": "Total",
             "Unknown": "Desconocido"
         },
@@ -853,9 +837,7 @@
             "SaveConfig": "SAVEE CONFIG",
             "SaveInfoDescription": "El nuervo Z-Offset fue calculado y registrado. Haga click en \"SAVE CONFIG\" para guardar el nuevo Z-Offset en su archivo printer.cfg y reiniciar Klipper.",
             "SaveInfoDescriptionPrint": "El nuevo Z-Offset fue calculado y registrado. Después de imprimir, haga click en \"SAVE CONFIG\" en la barra superior para guardarlo en printer.cfg y reiniciar Klipper.",
-            "SaveInfoHeadline": "Información",
-            "ToEndstop": "al fin de carrera",
-            "ToProbe": "a la sonda"
+            "SaveInfoHeadline": "Información"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -1018,7 +1000,6 @@
             "DbNavigation": "Navegación",
             "DbTimelapseSettings": "Ajustes de Timelapse",
             "DbView": "Ajustes de Vista",
-            "DbWebcams": "Cámaras web",
             "EstimateValues": {
                 "Filament": "Filamento",
                 "File": "Archivo",
@@ -1030,7 +1011,6 @@
             "General": "General",
             "Language": "Idioma",
             "MainsailSettingsMoonrakerDb": "Ajustes de Mainsail en Moonraker DB",
-            "MoonrakerDb": "Moonraker DB",
             "PrinterName": "Nombre de la impresora",
             "Reset": "Reiniciar",
             "Restore": "Restaurar",
@@ -1156,7 +1136,6 @@
             "Autorender": "Autorrenderizado",
             "AutorenderDescription": "Si está activa, el video del timelapse será renderizado automáticamente al finalizar la impresión.",
             "Camera": "Cámara",
-            "CameraDescription": "Elija qué cámara será utilizada.",
             "CameraDescriptionWithSnapshotUrl": "Selecciona qué cámara (con URL de instantánea) debe utilizarse",
             "CameraWarningAlreadySet": "Este valor ya está establecido en el archivo de configuración del Moonraker.",
             "CameraWarningAlreadySetSmall": "snapshoturl en la sección [timelapse]",

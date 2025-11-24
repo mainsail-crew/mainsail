@@ -93,6 +93,7 @@ export const maxGcodeHistory = 50
  * List of generic dashboard panels
  */
 export const allDashboardPanels = [
+    'afc',
     'toolhead-control',
     'extruder-control',
     'macros',

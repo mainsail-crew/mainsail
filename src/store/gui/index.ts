@@ -190,6 +190,13 @@ export const getDefaultState = (): GuiState => {
             hideOtherInstances: false,
         },
         view: {
+            afc: {
+                hiddenExtruders: [],
+                hiddenUnits: [],
+                showFilamentName: false,
+                showLaneInfinite: true,
+                showUnitIcons: true,
+            },
             blockFileUpload: false,
             configfiles: {
                 countPerPage: 10,
