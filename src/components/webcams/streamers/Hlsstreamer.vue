@@ -6,7 +6,8 @@
             autoplay
             muted
             :style="webcamStyle"
-            class="webcamImage" />
+            class="webcamImage"
+            @loadedmetadata="onLoadedMetadata" />
     </div>
 </template>
 
@@ -52,10 +53,18 @@ export default class Hlsstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
     mounted() {
         this.play()
+    }
 
-        this.video.onplaying = () => {
-            this.aspectRatio = this.video.videoWidth / this.video.videoHeight
+    onLoadedMetadata() {
+        const w = this.video?.videoWidth
+        const h = this.video?.videoHeight
+
+        if (!w || !h) {
+            this.aspectRatio = null
+            return
         }
+
+        this.aspectRatio = w / h
     }
 
     updated() {

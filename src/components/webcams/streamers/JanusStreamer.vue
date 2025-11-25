@@ -8,7 +8,7 @@
             autoplay
             muted
             playsinline
-            @playing="updateAspectRatio" />
+            @loadedmetadata="onLoadedMetadata" />
         <v-row v-if="status !== 'started'">
             <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
                 <v-progress-circular v-if="status === 'connecting'" indeterminate color="primary" class="mb-3" />
@@ -119,8 +119,16 @@ export default class JanusStreamer extends Mixins(BaseMixin, WebcamMixin) {
         this.startStream()
     }
 
-    updateAspectRatio() {
-        this.aspectRatio = this.stream.videoWidth / this.stream.videoHeight
+    onLoadedMetadata() {
+        const w = this.stream?.videoWidth
+        const h = this.stream?.videoHeight
+
+        if (!w || !h) {
+            this.aspectRatio = null
+            return
+        }
+
+        this.aspectRatio = w / h
     }
 
     beforeDestroy() {
