@@ -276,15 +276,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
     }
 
     onLoadedMetadata() {
-        const w = this.stream?.videoWidth
-        const h = this.stream?.videoHeight
-
-        if (!w || !h) {
-            this.aspectRatio = null
-            return
-        }
-
-        this.aspectRatio = w / h
+        this.aspectRatio = this.updateAspectRatioFromVideo(this.stream)
     }
 
     @Watch('url')

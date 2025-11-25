@@ -331,9 +331,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     onload() {
-        if (this.aspectRatio !== null || !this.image) return
+        if (this.aspectRatio !== null) return
 
-        this.aspectRatio = this.image.naturalWidth / this.image.naturalHeight
+        this.aspectRatio = this.updateAspectRatioFromImage(this.image)
     }
 }
 </script>

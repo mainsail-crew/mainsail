@@ -82,4 +82,22 @@ export default class WebcamMixin extends Mixins(BaseMixin) {
 
         return { aspectRatio: aspectRatio }
     }
+
+    updateAspectRatioFromVideo(videoElement: HTMLVideoElement | null | undefined): number | null {
+        const w = videoElement?.videoWidth
+        const h = videoElement?.videoHeight
+
+        if (!w || !h) return null
+
+        return w / h
+    }
+
+    updateAspectRatioFromImage(imageElement: HTMLImageElement | null | undefined): number | null {
+        const w = imageElement?.naturalWidth
+        const h = imageElement?.naturalHeight
+
+        if (!w || !h) return null
+
+        return w / h
+    }
 }

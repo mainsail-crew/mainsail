@@ -146,7 +146,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.frames++
 
         if (this.aspectRatio === null) {
-            this.aspectRatio = this.image.naturalWidth / this.image.naturalHeight
+            this.aspectRatio = this.updateAspectRatioFromImage(this.image)
         }
 
         const targetFps = this.camSettings.target_fps || 10

@@ -56,15 +56,7 @@ export default class Hlsstreamer extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     onLoadedMetadata() {
-        const w = this.video?.videoWidth
-        const h = this.video?.videoHeight
-
-        if (!w || !h) {
-            this.aspectRatio = null
-            return
-        }
-
-        this.aspectRatio = w / h
+        this.aspectRatio = this.updateAspectRatioFromVideo(this.video)
     }
 
     updated() {
