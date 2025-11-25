@@ -1,13 +1,14 @@
 <template>
-    <div class="position-relative d-flex">
+    <div class="webcamBackground" :style="wrapperStyle">
         <video
             v-show="status === 'connected'"
             ref="stream"
-            class="webcamStream"
+            class="webcamImage"
             :style="webcamStyle"
             autoplay
             muted
-            playsinline />
+            playsinline
+            @loadedmetadata="onLoadedMetadata" />
         <webcam-nozzle-crosshair v-if="nozzleCrosshair" :webcam="camSettings" />
         <v-row v-if="status !== 'connected'">
             <v-col class="_webcam_webrtc_output text-center d-flex flex-column justify-center align-center">
@@ -52,19 +53,19 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
     }
 
+    get wrapperStyle() {
+        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
+    }
+
     get webcamStyle() {
-        const output = {
+        return {
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
+                this.aspectRatio ?? 1
             ),
-            aspectRatio: 16 / 9,
         }
-
-        if (this.aspectRatio) output.aspectRatio = this.aspectRatio
-
-        return output
     }
 
     get nozzleCrosshair() {
@@ -274,6 +275,10 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         }, delay)
     }
 
+    onLoadedMetadata() {
+        this.aspectRatio = this.updateAspectRatioFromVideo(this.stream)
+    }
+
     @Watch('url')
     changedUrl() {
         this.restartStream()
@@ -282,15 +287,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
 </script>
 
 <style scoped>
-.webcamStream {
-    width: 100%;
-}
-
 ._webcam_webrtc_output {
     aspect-ratio: calc(3 / 2);
-}
-
-video {
-    width: 100%;
 }
 </style>
