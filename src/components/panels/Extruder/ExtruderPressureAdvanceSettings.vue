@@ -23,7 +23,11 @@
                                 dense />
                         </div>
                     </v-col>
-                    <v-col>
+                    <v-col
+                        :class="{
+                            'col-12': el.is.small || el.is.medium,
+                            'col-8': extruders.length > 1 && !el.is.small && !el.is.medium,
+                        }">
                         <pressure-advance-settings :extruder="selectedExtruder" :is-small="el.is.small" />
                     </v-col>
                 </v-row>
