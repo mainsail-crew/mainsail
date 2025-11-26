@@ -1,5 +1,5 @@
 <template>
-    <div style="position: relative" class="d-flex justify-center">
+    <div class="webcamBackground" :style="wrapperStyle">
         <img
             v-show="status === 'connected'"
             ref="image"
@@ -47,15 +47,14 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     aspectRatio: null | number = null
     timerFPS: number | null = null
     timerRestart: number | null = null
+    reader: ReadableStreamDefaultReader<Uint8Array> | null
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
     @Prop({ default: true }) declare showFps: boolean
     @Prop({ type: String, default: null }) readonly page!: string | null
-
     @Ref('image') readonly image!: HTMLImageElement
 
-    private reader: ReadableStreamDefaultReader<Uint8Array> | null
     constructor() {
         super()
         this.reader = null
@@ -65,24 +64,19 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
     }
 
+    get wrapperStyle() {
+        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
+    }
+
     get webcamStyle() {
-        const output = {
+        return {
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
+                this.aspectRatio ?? 1
             ),
-            aspectRatio: 16 / 9,
-            maxHeight: window.innerHeight - 155 + 'px',
-            maxWidth: 'auto',
         }
-
-        if (this.aspectRatio) {
-            output.aspectRatio = this.aspectRatio
-            output.maxWidth = (window.innerHeight - 155) * this.aspectRatio + 'px'
-        }
-
-        return output
     }
 
     get fpsOutput() {
@@ -337,19 +331,14 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     onload() {
-        if (this.aspectRatio !== null || !this.image) return
+        if (this.aspectRatio !== null) return
 
-        this.aspectRatio = this.image.naturalWidth / this.image.naturalHeight
+        this.aspectRatio = this.updateAspectRatioFromImage(this.image)
     }
 }
 </script>
 
 <style scoped>
-.webcamImage {
-    width: 100%;
-    background: lightgray;
-}
-
 .webcamFpsOutput {
     display: inline-block;
     position: absolute;

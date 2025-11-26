@@ -1,5 +1,5 @@
 <template>
-    <div v-observe-visibility="viewportVisibilityChanged" class="d-flex justify-center webcamBackground">
+    <div v-observe-visibility="viewportVisibilityChanged" class="webcamBackground" :style="wrapperStyle">
         <img
             v-show="status === 'connected'"
             ref="image"
@@ -55,31 +55,19 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     @Ref('image') readonly image!: HTMLImageElement
 
+    get wrapperStyle() {
+        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
+    }
+
     get webcamStyle() {
-        const output = {
+        return {
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0
+                this.camSettings.rotation ?? 0,
+                this.aspectRatio ?? 1
             ),
-            aspectRatio: 16 / 9,
-            maxHeight: window.innerHeight - 155 + 'px',
-            maxWidth: 'auto',
         }
-
-        if (this.aspectRatio) {
-            output.aspectRatio = this.aspectRatio
-            output.maxWidth = (window.innerHeight - 155) * this.aspectRatio + 'px'
-        }
-
-        if (this.aspectRatio && [90, 270].includes(this.camSettings.rotation)) {
-            if (output.transform === 'none') output.transform = ''
-
-            const scale = 1 / this.aspectRatio
-            output.transform += ' rotate(' + this.camSettings.rotation + 'deg) scale(' + scale + ')'
-        }
-
-        return output
     }
 
     get fpsOutput() {
@@ -158,7 +146,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.frames++
 
         if (this.aspectRatio === null) {
-            this.aspectRatio = this.image.naturalWidth / this.image.naturalHeight
+            this.aspectRatio = this.updateAspectRatioFromImage(this.image)
         }
 
         const targetFps = this.camSettings.target_fps || 10
@@ -230,15 +218,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 </script>
 
 <style scoped>
-.webcamBackground {
-    position: relative;
-    background: rgba(0, 0, 0, 0.8);
-}
-
-.webcamImage {
-    width: 100%;
-}
-
 ._webcam_mjpegstreamer_output {
     aspect-ratio: calc(3 / 2);
 }
@@ -251,10 +230,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     padding: 3px 10px;
     border-top-left-radius: 5px;
     background: rgba(0, 0, 0, 0.8);
-}
-
-html.theme--light .webcamBackground {
-    background: rgba(255, 255, 255, 0.7);
 }
 
 html.theme--light .webcamFpsOutput {

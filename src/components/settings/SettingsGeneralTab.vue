@@ -123,20 +123,37 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
 
     get dateFormatItems() {
         const date = new Date()
-        const userLocale =
-            navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
-
-        return [
-            { value: null, text: `Browser (${date.toLocaleDateString(userLocale, { dateStyle: 'medium' })})` },
-            {
-                value: '2-digits',
-                text: date.toLocaleDateString(userLocale, { day: '2-digit', month: '2-digit', year: 'numeric' }),
-            },
-            {
-                value: 'short',
-                text: date.toLocaleDateString(userLocale, { day: '2-digit', month: 'short', year: 'numeric' }),
-            },
+        const availableFormats = [
+            null,
+            'short',
+            'iso',
+            'mm-dd-yyyy',
+            'mm-dd-yy',
+            'm-d-yyyy',
+            'm-d-yy',
+            'dd-mm-yyyy',
+            'dd-mm-yy',
+            'dd.mm.yyyy',
+            'dd.mm.yy',
+            'd.m.yyyy',
+            'd.m.yy',
+            'yyyy. mm. dd.',
+            'yy. mm. dd.',
         ]
+
+        return availableFormats.map((format) => {
+            let name = format
+            if (name === null) name = 'Browser'
+            else if (['short', 'iso'].includes(name)) name = name.toUpperCase()
+
+            let example = this.formatDate(date, format)
+            if (format === null) example = date.toLocaleDateString(this.browserLocale, { dateStyle: 'medium' })
+
+            return {
+                value: format,
+                text: `${name} (${example})`,
+            }
+        })
     }
 
     get timeFormat() {

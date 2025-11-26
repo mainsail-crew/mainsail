@@ -1,0 +1,50 @@
+<template>
+    <div class="webcamBackground" :style="wrapperStyle">
+        <video
+            ref="video"
+            :src="url"
+            autoplay
+            :style="webcamStyle"
+            class="webcamImage"
+            @loadedmetadata="onLoadedMetadata" />
+    </div>
+</template>
+
+<script lang="ts">
+import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import WebcamMixin from '@/components/mixins/webcam'
+
+@Component
+export default class HtmlVideo extends Mixins(BaseMixin, WebcamMixin) {
+    aspectRatio: number | null = null
+
+    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
+    @Prop({ default: null }) readonly printerUrl!: string | null
+
+    @Ref('video') readonly video!: HTMLVideoElement
+    get url() {
+        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
+    }
+
+    get wrapperStyle() {
+        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
+    }
+
+    get webcamStyle() {
+        return {
+            transform: this.generateTransform(
+                this.camSettings.flip_horizontal ?? false,
+                this.camSettings.flip_vertical ?? false,
+                this.camSettings.rotation ?? 0,
+                this.aspectRatio ?? 1
+            ),
+        }
+    }
+
+    onLoadedMetadata() {
+        this.aspectRatio = this.updateAspectRatioFromVideo(this.video)
+    }
+}
+</script>

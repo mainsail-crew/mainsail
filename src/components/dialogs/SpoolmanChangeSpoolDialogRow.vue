@@ -18,6 +18,12 @@
                             <br />
                             <small class="comment">{{ spool.comment }}</small>
                         </template>
+                        <template v-if="spoolLoaded">
+                            <br />
+                            <v-chip color="primary" small class="mt-2">
+                                {{ $t('Panels.AfcPanel.LoadedInLane', { lane: spoolLoaded.lane.toUpperCase() }) }}
+                            </v-chip>
+                        </template>
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
@@ -36,8 +42,9 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
+import AfcMixin from '@/components/mixins/afc'
 @Component({})
-export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
+export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin, AfcMixin) {
     @Prop({ required: true }) declare readonly spool: ServerSpoolmanStateSpool
     @Prop({ required: false }) declare readonly max_id_digits: number
 
@@ -116,6 +123,13 @@ export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin) {
         }
 
         return date.toLocaleDateString()
+    }
+
+    get spoolLoaded() {
+        const spools = this.afcLoadedSpools ?? []
+        if (!spools.length) return false
+
+        return spools.find((s) => s.spoolId === this.spool.id)
     }
 
     setSpoolRow() {

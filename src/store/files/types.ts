@@ -24,15 +24,24 @@ export interface FileStateFile {
     uuid?: string | null
     job_id?: string | null
     estimated_time?: number
+    extruder_colors?: string[]
+    filament_change_count?: number
+    filament_colors?: string[]
+    filament_name?: string
+    filament_temps?: number[]
     filament_total?: number
+    filament_type?: string
     filament_weight_total?: number
+    filament_weights?: number[]
     first_layer_height?: number
     first_layer_bed_temp?: number
     first_layer_extr_temp?: number
     gcode_start_byte?: number
     gcode_end_byte?: number
     layer_height?: number
+    mmu_print?: number
     object_height?: number
+    referenced_tools?: number[]
     slicer?: string
     slicer_version?: string
     thumbnails?: FileStateFileThumbnail[]
@@ -43,10 +52,8 @@ export interface FileStateFile {
 }
 
 export interface FileStateGcodefile extends FileStateFile {
+    full_filename: string
     preheat_gcode: string | null
-    small_thumbnail: string | null
-    big_thumbnail: string | null
-    big_thumbnail_width: number | null
     count_printed: number
     last_end_time: Date | null
     last_filament_used: number | null
@@ -55,6 +62,13 @@ export interface FileStateGcodefile extends FileStateFile {
     last_start_time: Date | null
     last_total_duration: number | null
     [key: string]: any
+}
+
+export interface FileStateGcodefileFilament {
+    color: string
+    name: string
+    type: string
+    weight: number
 }
 
 export interface FileStateDiskUsage {

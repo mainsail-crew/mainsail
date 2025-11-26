@@ -132,7 +132,6 @@
         "Empty": "비어있음",
         "HideTemperatures": "온도 숨김",
         "HideTimelapse": "타임랩스 숨김",
-        "SendCode": "제어 명령 실행...",
         "SetupConsole": "콘솔 설정"
     },
     "Dialogs": {
@@ -183,7 +182,6 @@
         "EditFile": "파일 내용 수정",
         "Empty": "비어있음",
         "ExtruderTemp": "노즐 온도",
-        "Filament": "필라멘트",
         "FilamentName": "필라 이름",
         "FilamentType": "필라 유형",
         "FilamentUsage": "필라 소비량",
@@ -283,19 +281,15 @@
         "InvalidNameAscii": "아스키 문자열로 입력해 주세요",
         "InvalidNameEmpty": "입력란을 비울 수 없습니다",
         "InvalidNameReserved": "'default' 프로파일로 지정된 상태입니다 다른 프로파일 이름으로 지정해 주세요",
-        "Later": "다음에..",
         "Mesh": "메쉬 기준",
         "Name": "이름",
         "NoBedMeshHasBeenLoadedYet": "불러온 베드 메쉬 정보가 없습니다",
         "NoProfile": "프로파일이 존재하지 않습니다",
-        "Ok": "네",
         "Probed": "측정 기준",
         "Profiles": "프로파일",
         "Remove": "삭제",
-        "RemoveSaveDescription": "베드 메시 프로파일이 삭제된 상태로 등록됐습니다 SAVE_CONFIG 콘솔에서 실행하거나 우측 상단 '설정 저장'을 클릭해 printer.cfg에서 제거하고 클리퍼를 다시 시작합니다",
         "Rename": "이름 변경",
         "RenameBedMeshProfile": "베드 메시 프로파일 이름 변경",
-        "SAVE_CONFIG": "설정 저장",
         "ScaleGradient": "배율 조정",
         "ScaleZMax": "Z축 높이 확대/축소 배율",
         "TitleCalibrate": "베드 메시 교정 시작",
@@ -363,8 +357,6 @@
         },
         "Table": "테이블",
         "TitleExportHistory": "기록 내보내기",
-        "TitleRefreshHistory": "기록 새로 고침",
-        "TitleSettings": "설정",
         "TotalDuration": "프린터 가동 시간",
         "TotalFilamentUsed": "총 필라 소비",
         "TotalJobs": "전체 출력 횟수",
@@ -372,7 +364,6 @@
         "TotalTime": "전체 시간"
     },
     "JobQueue": {
-        "AllJobs": "전체 작업",
         "Cancel": "취소",
         "ChangeCount": "카운트 변경",
         "Count": "카운트",
@@ -380,7 +371,6 @@
         "InvalidCountEmpty": "입력란을 비워둘 수 없습니다",
         "InvalidCountGreaterZero": "0보다 큰 값으로 입력해야 합니다",
         "JobQueue": "작업 대기열",
-        "Jobs": "작업",
         "Pause": "일시정지",
         "RemoveFromQueue": "대기열에서 삭제",
         "Start": "시작"
@@ -474,10 +464,8 @@
             "CommittedYesterday": "어제 커밋됨",
             "Detached": "분리됨",
             "Dirty": "임의변경(Dirty)",
-            "ERROR": "오류",
             "Invalid": "무효",
             "OSPackages": "OS-패키지",
-            "PackagesCanBeUpgraded": "업그레이드 가능한 패키지",
             "System": "시스템",
             "Unknown": "알수 없는 버전",
             "Update": "업데이트",
@@ -571,7 +559,6 @@
             },
             "RunoutSensor": {
                 "Detected": "필라멘트 있음",
-                "Disabled": "비활성화됨",
                 "Empty": "필라멘트 없음"
             }
         },
@@ -598,10 +585,8 @@
             },
             "Filament": "길이",
             "File": "파일",
-            "Files": "파일",
             "Flow": "유량",
             "Headline": "출력 상태",
-            "Jobqueue": "작업 대기열",
             "JobqueueMoreFiles": "더 이상 작업 없음 | 1개 이상의 작업 | {count}개 이상의 작업",
             "Layer": "레이어",
             "Max": "최대",
@@ -626,7 +611,6 @@
             "ResumePrint": "작업 재개",
             "Slicer": "슬라이서",
             "Speed": "출력 속도",
-            "Status": "출력 상태",
             "Total": "전체",
             "Unknown": "알 수 없음"
         },
@@ -684,9 +668,7 @@
             "SaveConfig": "설정 저장",
             "SaveInfoDescription": "새 Z-옵셋을 측정 후 등록했습니다 저장하려면 우측 상단에서 \"설정 저장\"을 눌러 printer.cfg에 저장하고 클리퍼를 재시작 해주세요",
             "SaveInfoDescriptionPrint": "새 Z-옵셋을 측정 후 등록했습니다 우측 상단에서 \"설정 저장\"을 눌러 printer.cfg에 저장하고 클리퍼를 재시작 해주세요 ",
-            "SaveInfoHeadline": "정보",
-            "ToEndstop": "Z 엔드스탑 높이 값으로 저장",
-            "ToProbe": "프로브 높이 값으로 저장"
+            "SaveInfoHeadline": "정보"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -838,7 +820,6 @@
             "DbHistoryTotals": "전체 기록",
             "DbTimelapseSettings": "타임랩스 설정",
             "DbView": "보기 설정",
-            "DbWebcams": "웹캠",
             "EstimateValues": {
                 "Filament": "필라멘트 정보",
                 "File": "파일 정보",
@@ -848,7 +829,6 @@
             "FactoryReset": "기본 값으로 초기화",
             "General": "일반",
             "Language": "언어",
-            "MoonrakerDb": "문래커 데이터 베이스",
             "PrinterName": "프린터 표시 이름",
             "Reset": "재설정",
             "Restore": "복원하기",
@@ -948,7 +928,6 @@
             "Autorender": "자동 렌더",
             "AutorenderDescription": "활성화 시킬 경우 타임랩스 비디오가 인쇄 마지막 단계에서 자동으로 렌더링됩니다",
             "Camera": "카메라",
-            "CameraDescription": "사용할 카메라 선택",
             "ConstantRateFactor": "고정 속도 비율",
             "ConstantRateFactorDescription": "렌더링된 비디오의 품질과 파일 크기를 설정하며 CRF 척도의 범위는 0-51이며, 여기서 0은 무손실이고 23은 기본값이며 51은 조악한 품질 값입니다 값이 작을수록 대개 품질이 향상되지만 보통 추천하는 범위는 17-28이지만 혹은 17~18의 값은 시각적으로 무손실로 간주할 수 있습니다",
             "duplicatelastframe": "마지막 프레임 복제",
@@ -1041,7 +1020,6 @@
             "PowerDeviceName": "프린터 전원장치",
             "PowerDeviceNameDescription": "프린터 전원을 켜는 데 사용할 문레이커 전원 장치를 선택합니다",
             "Primary": "아이콘 컬러",
-            "ShowWebcamInNavigation": "좌측 메뉴 바에 웹캠 메뉴 추가",
             "UiSettings": "UI 설정"
         },
         "Update": "업데이트",
@@ -1061,7 +1039,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "노즐",
             "IconPrinter": "프린터",
-            "Ipstream": "IP Camera",
             "Mjpegstreamer": "MJPEG-스트리머",
             "MjpegstreamerAdaptive": "어댑티브 MJPEG-스트리머 (테스트)",
             "Name": "이름",

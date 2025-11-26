@@ -132,7 +132,6 @@
         "Empty": "Esvaziar",
         "HideTemperatures": "Ocultar temperaturas",
         "HideTimelapse": "Ocultar lapso de tempo",
-        "SendCode": "Enviar código...",
         "SetupConsole": "Console de configuração"
     },
     "Dialogs": {
@@ -185,7 +184,6 @@
         "EditFile": "Editar arquivo",
         "Empty": "Esvaziar",
         "ExtruderTemp": "Temp. Extrusora",
-        "Filament": "Filamento",
         "FilamentName": "Nome do Filamento",
         "FilamentType": "Tipo de filamento",
         "FilamentUsage": "Uso de Filamento",
@@ -287,19 +285,15 @@
         "InvalidNameAscii": "O nome é inválido. Somente caracteres ASCII são permitidos.",
         "InvalidNameEmpty": "A entrada não deve estar vazia!",
         "InvalidNameReserved": "O perfil 'padrão' é reservado, escolha outro nome de perfil.",
-        "Later": "Depois",
         "Mesh": "Malha",
         "Name": "Nome",
         "NoBedMeshHasBeenLoadedYet": "Nenhuma malha da mesa foi carregada ainda.",
         "NoProfile": "Nenhum perfil disponível",
-        "Ok": "OK",
         "Probed": "Sondado",
         "Profiles": "Perfis",
         "Remove": "Excluir",
-        "RemoveSaveDescription": "O perfil bed_mesh foi registrado como excluído. Clique em SAVE_CONFIG para removê-lo do arquivo printer.cfg e reinicie o Klipper.",
         "Rename": "renomear",
         "RenameBedMeshProfile": "Renomear Perfil de Malha da Mesa",
-        "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Escala gradiente",
         "ScaleZMax": "Escala z-max.",
         "TitleCalibrate": "Calibrar nova malha da mesa",
@@ -367,8 +361,6 @@
         },
         "Table": "Table",
         "TitleExportHistory": "Export History",
-        "TitleRefreshHistory": "Refresh History",
-        "TitleSettings": "Settings",
         "TotalDuration": "Total Time",
         "TotalFilamentUsed": "Total Filament Used",
         "TotalJobs": "Total Jobs",
@@ -376,7 +368,6 @@
         "TotalTime": "Total Time"
     },
     "JobQueue": {
-        "AllJobs": "Todos os trabalhos",
         "Cancel": "Cancelar",
         "ChangeCount": "Alterar contagem",
         "Count": "Contagem",
@@ -384,7 +375,6 @@
         "InvalidCountEmpty": "A entrada não deve estar vazia!",
         "InvalidCountGreaterZero": "A entrada deve ser maior que 0!",
         "JobQueue": "Fila de trabalho",
-        "Jobs": "Trabalhos",
         "Pause": "Pausa",
         "RemoveFromQueue": "Remover da fila",
         "Start": "Começar"
@@ -480,10 +470,8 @@
             "CommittedYesterday": "committed ontem",
             "Detached": "independente",
             "Dirty": "lixo",
-            "ERROR": "Erro",
             "Invalid": "inválido",
             "OSPackages": "Pacotes do sistema operacional",
-            "PackagesCanBeUpgraded": "pacotes podem ser atualizados",
             "System": "Sistema",
             "Unknown": "Desconhecido",
             "Update": "Atualizar",
@@ -577,7 +565,6 @@
             },
             "RunoutSensor": {
                 "Detected": "detectado",
-                "Disabled": "desabilitado",
                 "Empty": "Vazio"
             }
         },
@@ -604,10 +591,8 @@
             },
             "Filament": "Filamento",
             "File": "Arquivo",
-            "Files": "Arquivos",
             "Flow": "Fluxo",
             "Headline": "Status",
-            "Jobqueue": "Fila de trabalhos",
             "JobqueueMoreFiles": "nenhum trabalho | mais um trabalho | {count} mais trabalhos",
             "Layer": "Camada",
             "Max": "max",
@@ -632,7 +617,6 @@
             "ResumePrint": "Retomar impressão",
             "Slicer": "Fatiador",
             "Speed": "Velocidade",
-            "Status": "Status",
             "Total": "Total",
             "Unknown": "Desconhecido"
         },
@@ -690,9 +674,7 @@
             "SaveConfig": "SALVAR CONFIG",
             "SaveInfoDescription": "O novo Z-Offset foi calculado e registrado. Clique em \"SALVAR CONFIG\" para salvá-lo no arquivo printer.cfg e reiniciar o Klipper.",
             "SaveInfoDescriptionPrint": "O novo Z-Offset foi calculado e registrado. Após a impressão, clique em \"SALVAR CONFIG\" na barra superior para salvá-lo no arquivo printer.cfg e reiniciar o Klipper.",
-            "SaveInfoHeadline": "Informação",
-            "ToEndstop": "até o Endstop",
-            "ToProbe": "até Sonda"
+            "SaveInfoHeadline": "Informação"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -847,7 +829,6 @@
             "DbHistoryTotals": "Histórico Totais",
             "DbTimelapseSettings": "Configs. Timelapse",
             "DbView": "Ver Configs.",
-            "DbWebcams": "Webcams",
             "EstimateValues": {
                 "Filament": "Filamento",
                 "File": "Arquivo",
@@ -857,7 +838,6 @@
             "FactoryReset": "Reset de Fábrica",
             "General": "Geral",
             "Language": "Idioma",
-            "MoonrakerDb": "Moonraker DB",
             "PrinterName": "Nome Impressora",
             "Reset": "reset",
             "Restore": "Restaura",
@@ -960,7 +940,6 @@
             "Autorender": "Auto renderiza",
             "AutorenderDescription": "Se ativado, o vídeo em timelapse será renderizado automaticamente ao final da impressão.",
             "Camera": "Camera",
-            "CameraDescription": "Selecione qual câmera será usada",
             "ConstantRateFactor": "Fator de Taxa Constante",
             "ConstantRateFactorDescription": "Configura a qualidade versus o tamanho do arquivo do vídeo renderizado. A escala do Fator de Taxa Constante (CRF) varia de 0 a 51, onde 0 é sem perdas, 23 é o valor padrão e 51 é a pior qualidade possível. Um valor menor geralmente resulta em maior qualidade, e uma faixa subjetivamente razoável é de 17 a 28. Considere 17 ou 18 como visualmente sem perdas.",
             "duplicatelastframe": "Duplicar Último Quadro",
@@ -1080,7 +1059,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Bico",
             "IconPrinter": "Impressora",
-            "Ipstream": "Câmera IP",
             "JMuxerStream": "Raw h264 stream (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptivo MJPEG-Streamer (experimental)",
