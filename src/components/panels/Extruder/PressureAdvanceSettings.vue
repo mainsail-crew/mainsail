@@ -60,8 +60,6 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
     get extruderSettings() {
         const settings = this.$store.state.printer.configfile?.settings ?? {}
 
-        window.console.log(settings[this.extruder])
-
         return settings[this.extruder] ?? undefined
     }
 
