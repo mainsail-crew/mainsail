@@ -48,7 +48,7 @@ export default class ExtruderPressureAdvanceSettings extends Mixins(BaseMixin) {
 
     get extruders() {
         return Object.keys(this.$store.state.printer)
-            .filter((e) => e.startsWith('extruder'))
+            .filter((e) => e.startsWith('extruder') && !e.startsWith('extruder_stepper'))
             .sort((a, b) => a.localeCompare(b))
     }
 
