@@ -46,12 +46,20 @@ jobs:
     needs: ['push-version-number']
     runs-on: ubuntu-latest
     steps:
-      - uses: everlytic/branch-merge@1.1.5
+      - name: Checkout master
+        uses: actions/checkout@v4
         with:
-          github_token: ${{ github.token }}
-          source_ref: 'develop'
-          target_branch: 'master'
-          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
+          ref: 'master'
+          token: ${{ secrets.PAT }}
+          fetch-depth: 0
+
+      - name: Fast-forward merge from develop
+        shell: bash
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git merge --ff-only origin/develop
+          git push origin master
 
   release:
     needs: ['update-master-branch']
