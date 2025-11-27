@@ -133,6 +133,7 @@ jobs:
         with:
           ref: 'develop'
           fetch-depth: 0
+          token: ${{ secrets.PAT }}
 
       - name: Get latest tag
         id: latest_tag
