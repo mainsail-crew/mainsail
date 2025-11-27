@@ -21,6 +21,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: 'develop'
+          token: ${{ secrets.PAT }}
 
       - name: get-npm-version
         id: package-version
