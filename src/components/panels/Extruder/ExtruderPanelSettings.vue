@@ -20,7 +20,7 @@
                     hide-details
                     :label="$t('Panels.ExtruderControlPanel.ExtrusionFactor')" />
             </v-list-item>
-            <v-list-item v-if="existsPressureAdvance" class="minHeight36">
+            <v-list-item class="minHeight36">
                 <v-checkbox
                     v-model="showPressureAdvance"
                     class="mt-0"
@@ -69,10 +69,6 @@ export default class ExtruderPanelSettings extends Mixins(BaseMixin, ControlMixi
 
     set showExtrusionFactor(newVal: boolean) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.extruder.showExtrusionFactor', value: newVal })
-    }
-
-    get existsPressureAdvance(): boolean {
-        return !(this.$store.getters['printer/getExtruderSteppers'].length > 0)
     }
 
     get showPressureAdvance(): boolean {
