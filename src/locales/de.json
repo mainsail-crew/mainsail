@@ -85,9 +85,9 @@
             "CannotUploadTheFile": "Hochladen nicht möglich!",
             "EmergencyStop": "Notaus",
             "SAVE_CONFIG": "SAVE CONFIG",
-            "Uploading": "Hochladen",
             "UploadOfFileSuccessful": "Hochladen von {file} erfolgreich!",
-            "UploadPrint": "Hochladen & Drucken"
+            "UploadPrint": "Hochladen & Drucken",
+            "Uploading": "Hochladen"
         },
         "TopCornerMenu": {
             "Cancel": "Abbrechen",
@@ -243,10 +243,10 @@
         "Empty": "Leer",
         "ExtruderTemp": "Extruder Temp.",
         "FilamentName": "Filament Name",
-        "Filaments": "Filamente",
         "FilamentType": "Filament Typ",
         "FilamentUsage": "Filamentverbrauch",
         "FilamentWeight": "Filamentgewicht",
+        "Filaments": "Filamente",
         "Files": "Dateien",
         "Filesize": "Dateigröße",
         "Free": "Frei",
@@ -268,9 +268,9 @@
         "NozzleDiameter": "Düsendurchmesser",
         "ObjectHeight": "Objekthöhe",
         "Preheat": "Vorheizen",
-        "PrintedFiles": "Bereits gedruckt",
         "PrintStart": "Druck starten",
         "PrintTime": "Druckdauer",
+        "PrintedFiles": "Bereits gedruckt",
         "RefreshCurrentDirectory": "Verzeichnis aktualisieren",
         "Rename": "Umbenennen",
         "RenameDirectory": "Verzeichnis umbenennen",
@@ -295,8 +295,8 @@
         "DropFilesToUploadFiles": "Datei ablegen zum Hochladen"
     },
     "GCodeViewer": {
-        "ClearLoadedFile": "Löschen",
         "CNCMode": "CNC Modus",
+        "ClearLoadedFile": "Löschen",
         "ColorMode": "Farbmodus",
         "Downloading": "Downloaden",
         "ForceLineRendering": "Erzwinge Liniendarstellung",
@@ -308,8 +308,8 @@
         "Max": "Max",
         "Medium": "Mittel",
         "ReloadRequired": "Neu laden erforderlich",
-        "Rendering": "Rendering",
         "RenderQuality": "Darstellungsqualität",
+        "Rendering": "Rendering",
         "ShowGCode": "Zeige G-Code",
         "ShowObjectSelection": "Zeige Objektauswahl",
         "ShowToolhead": "Zeige Werkzeugkopf",
@@ -418,9 +418,9 @@
         "ObjectHeight": "Objekthöhe",
         "OneTime": "Einmalig",
         "Perform": "ausführen",
+        "PerformMaintenance": "Wartung ausführen",
         "Performed": "ausgeführt",
         "PerformedAndReschedule": "ausgeführt und neu planen",
-        "PerformMaintenance": "Wartung ausführen",
         "PrintDuration": "Druckdauer",
         "PrintHistory": "Historie",
         "PrintJobs": "Drucke",
@@ -443,6 +443,7 @@
         "Statistics": "Statistik",
         "Status": "Status",
         "StatusValues": {
+            "Others": "Sonstige",
             "cancelled": "Abgebrochen",
             "completed": "Abgeschlossen",
             "error": "Fehler",
@@ -450,7 +451,6 @@
             "interrupted": "Unterbrochen",
             "klippy_disconnect": "Klippy getrennt",
             "klippy_shutdown": "Klippy heruntergefahren",
-            "Others": "Sonstige",
             "server_exit": "Server-Exit"
         },
         "Table": "Tabelle",
@@ -519,8 +519,8 @@
             "Endstop": "Endschalter",
             "EndstopInfo": "Drücke die Sync-Schaltfläche in der rechten Ecke, um den aktuellen Zustand abzufragen.",
             "Endstops": "Endschalter",
-            "open": "OFFEN",
-            "TRIGGERED": "AUSGELÖST"
+            "TRIGGERED": "AUSGELÖST",
+            "open": "OFFEN"
         },
         "LogfilesPanel": {
             "Accept": "akzeptieren",
@@ -577,9 +577,9 @@
             "GenericUpdateQuestion": "Überprüfe den Commit-Verlauf (falls verfügbar) und die GitHub-Projektseite von diesem Projekt, um festzustellen, ob manuelle Anpassungen nach dieser Aktualisierung erforderlich sind.",
             "GitHubPage": "GitHub Projektseite",
             "HardRecovery": "Harte Wiederherstellung",
+            "IUnderstandTheRisks": "Ich habe die Risiken verstanden",
             "InitUpdateManager": "Der Update Manager ist noch nicht initialisiert. Dies ist normal, wenn das System zum ersten Mal gestartet wird. Bitte klicke auf die Aktualisierungsschaltfläche, um alle Komponenten zu initialisieren.",
             "Invalid": "ungültig",
-            "IUnderstandTheRisks": "Ich habe die Risiken verstanden",
             "KlipperUpdateQuestionConfig": "Dieses Update kann Änderungen an den Konfigurationsparametern enthalten, die in der Datei printer.cfg geändert werden müssen; Informationen hierzu findest du im Änderungsprotokoll.",
             "KlipperUpdateQuestionFirmware": "Dadurch wird die Klipper-Host-Software aktualisiert. Steuerplatinen, auf denen die Klipper-Firmware läuft, müssen möglicherweise mit einer neu kompilierten Firmware geflasht werden, bevor die Maschine wieder in Betrieb genommen werden kann.",
             "LinkToGithub": "Link zu GitHub",
@@ -591,13 +591,13 @@
             "System": "System",
             "ThesePackagesCanBeUpgrade": "Diese Systempakete können aktualisiert werden:",
             "Unknown": "unbekannt",
+            "UpToDate": "aktuell",
             "Update": "update",
             "UpdateAll": "Alle Komponenten updaten",
             "UpdateManager": "Update Manager",
             "UpdateWarning": "Aktualisierungswarnung: {name}",
             "Upgrade": "upgrade",
             "UpgradeableSystemPackages": "Aktualisierbare Systempakete",
-            "UpToDate": "aktuell",
             "WebClientUpdateQuestion": "In einigen Fällen kann die Aktualisierung des Webclients Änderungen mit sich bringen, die zu Inkompatibilitäten führen können. Weitere Informationen sind in den Veröffentlichungshinweisen zu finden."
         }
     },
@@ -671,6 +671,12 @@
             "Headline": "Makros",
             "Send": "senden"
         },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Stelle sicher dass die Datei mainsail.cfg in der printer.cfg-Datei aufgeführt ist.",
+            "IsNotDefinedInConfig": "ist nicht in der Konfig definiert.",
+            "MissingConfiguration": "Fehlende Konfiguration",
+            "MoreInformation": "mehr Informationen"
+        },
         "MiniconsolePanel": {
             "Autoscroll": "Autoscroll",
             "Headline": "Konsole",
@@ -679,12 +685,6 @@
             "RawOutput": "RAW-Ausgabe (zum Debuggen)",
             "SendCode": "Befehl senden...",
             "SetupConsole": "Einstellungen"
-        },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Stelle sicher dass die Datei mainsail.cfg in der printer.cfg-Datei aufgeführt ist.",
-            "IsNotDefinedInConfig": "ist nicht in der Konfig definiert.",
-            "MissingConfiguration": "Fehlende Konfiguration",
-            "MoreInformation": "mehr Informationen"
         },
         "MiscellaneousPanel": {
             "Headline": "Sonstiges",
@@ -722,8 +722,8 @@
             "NoActiveSpool": "Die Filamentverfolgung ist inaktiv. Um zu beginnen, wählen Sie bitte eine Rolle aus.",
             "NoResults": "Keine Rolle mit den aktuellen Suchkriterien gefunden.",
             "NoSpool": "Keine Rolle",
-            "NoSpools": "Keine Rolle verfügbar",
             "NoSpoolSelected": "Keine Rolle ausgewählt. Bitte wählen Sie eine Spule aus, sonst kann dieser Druck nicht verfolgt werden.",
+            "NoSpools": "Keine Rolle verfügbar",
             "OpenSpoolManager": "Rollenverwaltung öffnen",
             "Refresh": "aktualisieren",
             "Search": "Suchen",
@@ -737,17 +737,17 @@
             "CancelPrint": "Druck abbrechen",
             "ClearPrintStats": "Druckstatistiken löschen",
             "Difference": "Unterschied",
+            "ETA": "ETA",
             "EmptyGcodes": "Kein G-Code verfügbar.",
             "EmptyHistory": "Kein Druckjob im Verlauf.",
             "EmptyJobqueue": "Aktuell keine Datei in der Warteschlange.",
             "Estimate": "Schätzung",
-            "ETA": "ETA",
             "ExcludeObject": {
                 "Cancel": "abbrechen",
-                "Excluded": "ausgeschlossen",
                 "ExcludeObject": "Objekt ausschließen",
                 "ExcludeObjectHeadline": "Objekt ausschließen",
-                "ExcludeObjectText": "Willst du wirklich \"{name}\" ausschließen?"
+                "ExcludeObjectText": "Willst du wirklich \"{name}\" ausschließen?",
+                "Excluded": "ausgeschlossen"
             },
             "Filament": "Filament",
             "File": "Datei",
@@ -805,13 +805,13 @@
             "ShowNameInList": "Zeige {name} in Liste",
             "State": "Status",
             "Target": "Ziel",
-            "TemperaturesInChart": "Temperatur [°C]",
             "TempTooHigh": "Temperature von {name} zu hoch! (max: {max})",
-            "TempTooLow": "Temperature von {name} zu niedrig! (min: {min})"
+            "TempTooLow": "Temperature von {name} zu niedrig! (min: {min})",
+            "TemperaturesInChart": "Temperatur [°C]"
         },
         "ToolheadControlPanel": {
-            "Absolute": "absolut",
             "ALL": "ALLE",
+            "Absolute": "absolut",
             "ControlButtons": "Kontrollknöpfe",
             "CoordinateFields": "Koordinatenfelder",
             "Headline": "Werkzeugkopf",
@@ -1054,8 +1054,8 @@
             "CountMacros": "keine Makros hinzugefügt | {count} Makro | {count} Makros",
             "Custom": "benutzerdefiniert",
             "CustomColor": "Benutzerdefinierte Farbe",
-            "DeletedMacro": "Makro gelöscht",
             "DeleteMacroFromGroup": "Makro aus Gruppe entfernen.",
+            "DeletedMacro": "Makro gelöscht",
             "EditGroup": "Gruppe bearbeiten",
             "Error": "Fehler",
             "Expert": "Experte",
@@ -1065,10 +1065,10 @@
             "Macrogroups": "Gruppen",
             "Macros": "Makros",
             "Management": "Verwaltung",
+            "NOMacros": "keine Makros gefunden...",
             "Name": "Name",
             "NoAvailableMacros": "Keine verfügbaren Makros.",
             "NoGroups": "Keine Gruppen gefunden...",
-            "NOMacros": "keine Makros gefunden...",
             "NoMacrosInGroup": "Keine Makros in dieser Gruppe.",
             "Primary": "primär",
             "Search": "Suche",
@@ -1090,8 +1090,8 @@
             "CreatePreset": "Voreinstellung erstellen",
             "End": "Ende",
             "EndDescription": "Letzte LED von dieser Gruppe.",
-            "Groups": "Gruppen",
             "GroupSubTitle": "Start: {start}, Ende: {end}",
+            "Groups": "Gruppen",
             "LightGroups": "{name} - Gruppen",
             "LightPresets": "{name} - Voreinstellungen",
             "Miscellaneous": "Sonstiges",
@@ -1101,9 +1101,7 @@
             "NoPresetFound": "Keine Voreinstellungen gefunden",
             "Presets": "Voreinstellungen",
             "Start": "Start",
-            "StartDescription": "Erste LED von dieser Gruppe.",
-            "UnableToLoadLight": "Licht konnte nicht geladen werden",
-            "UnableToLoadPreset": "Voreinstellung konnte nicht geladen werden"
+            "StartDescription": "Erste LED von dieser Gruppe."
         },
         "NavigationTab": {
             "Navigation": "Navigation"
@@ -1148,8 +1146,6 @@
             "CameraWarningAlreadySetSmall": "snapshoturl ist in der [timelapse] Sektion",
             "ConstantRateFactor": "Constant Rate Factor",
             "ConstantRateFactorDescription": "Damit wird die Qualität im Verhältnis zur Dateigröße des gerenderten Videos konfiguriert. Die CRF-Skala reicht von 0-51, wobei 0 für verlustfrei, 23 für die Standardeinstellung und 51 für die schlechtestmögliche Qualität steht. Ein niedrigerer Wert führt im Allgemeinen zu höherer Qualität, und ein subjektiv vernünftiger Bereich ist 17-28. 17 oder 18 gelten als visuell verlustfrei.",
-            "duplicatelastframe": "Letztes Bild duplizieren",
-            "duplicatelastframeDescription": "Dupliziert das letzte Bild am Ende des Videos",
             "Enabled": "Aktiviert",
             "EnabledDescription": "Wenn diese Option deaktiviert ist, werden G-Code Makros ignoriert und Autorender wird übersprungen.",
             "Extraoutputparams": "Extra-Ausgabeparameter",
@@ -1166,12 +1162,12 @@
             "NoWebcamFound": "Keine Webcam verfügbar",
             "OutputFramerate": "Ausgabe Bildrate",
             "OutputFramerateDescription": "Bestimmt die Framerate des Videos. Hinweis: Dies wird ignoriert, wenn variable_fps aktiviert ist",
+            "ParkTime": "Park Dauer",
+            "ParkTimeDescription": "Verlängern der Park Dauer",
             "Parkhead": "Druckkopf parken",
             "ParkheadDescription": "Wenn diese Option aktiviert ist, wird der Druckkopf vor der Aufnahme eines Bildes geparkt.",
             "Parkpos": "Park-Position",
             "ParkposDescription": "Wähle Park-Position",
-            "ParkTime": "Park Dauer",
-            "ParkTimeDescription": "Verlängern der Park Dauer",
             "Pixelformat": "Pixelformat",
             "PixelformatDescription": "Definiert das Pixelformat des Ausgabevideos",
             "PosDZ": "Position Z",
@@ -1213,7 +1209,9 @@
             "VariableFpsMax": "Max. Variable FPS",
             "VariableFpsMaxDescription": "Maximaler Wert für die variablen FPS",
             "VariableFpsMin": "Min. Variable FPS",
-            "VariableFpsMinDescription": "Minimaler Wert für die variablen FPS"
+            "VariableFpsMinDescription": "Minimaler Wert für die variablen FPS",
+            "duplicatelastframe": "Letztes Bild duplizieren",
+            "duplicatelastframeDescription": "Dupliziert das letzte Bild am Ende des Videos"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Hilfsfenster für Bettschraubenjustierung",
