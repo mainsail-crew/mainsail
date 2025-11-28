@@ -1528,6 +1528,8 @@
             "ProgressAsFaviconDescription": "Change the Mainsail logo favicon to a progress circle.",
             "ScrewsTiltAdjustDialog": "Screws Tilt Adjust Dialog",
             "ScrewsTiltAdjustDialogDescription": "Display helper dialog for SCREWS_TILT_CALCULATE.",
+            "ShowPrintOnUpload": "Show Print on Upload",
+            "ShowPrintOnUploadDescription": "Display the show print dialog after uploading a file. This setting is local to the browser.",
             "TempchartHeight": "Height Temperature Chart",
             "TempchartHeightDescription": "Modify the height of the temperature chart on the Dashboard.",
             "Theme": "Theme",
