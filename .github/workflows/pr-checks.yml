@@ -1,0 +1,162 @@
+name: PR Checks
+
+on:
+  pull_request_target:
+    types: [synchronize, opened, reopened, edited]
+
+jobs:
+  pr-title:
+    name: Validate PR title
+    if: github.event.action != 'synchronize'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            fix
+            feat
+            perf
+            refactor
+            style
+            locale
+            docs
+            test
+            chore
+            build
+            ci
+            revert
+          requireScope: false
+          ignoreLabels: |
+            bot
+            ignore-semantic-pull-request
+
+  code-style:
+    name: Code style check
+    if: github.event.action != 'edited'
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint: true
+          prettier: true
+
+  check-translations:
+    name: Check translations
+    if: github.event.action != 'edited'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v46
+        with:
+          files: 'src/locales/*.json'
+
+      - name: Install jq
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: sudo apt install -y jq
+
+      - name: Install node
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: npm ci
+
+      - name: Run i18n-extract on changed locale files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        id: i18n-extract
+        run: |
+          mkdir ./i18n-extract
+
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            locale=$(basename "$file" .json)
+            languageFiles="./src/locales/${locale}.json"
+            outputFile="./i18n-extract/${locale}.json"
+
+            echo "::group::Extracting i18n data for locale: ${locale}"
+
+            npx vue-i18n-extract \
+              --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' \
+              --languageFiles "${languageFiles}" \
+              --output "${outputFile}"
+
+            echo "::endgroup::"
+            
+            MISSING=$(cat "${outputFile}" | jq '.missingKeys | length')
+            UNUSED=$(cat "${outputFile}" | jq '.unusedKeys | length')
+
+            echo "$file=|${file##*/}|${MISSING}|${UNUSED}|" >> $GITHUB_OUTPUT
+          done
+
+      - name: Comment PR
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+            Language file analysis report:
+            |File|Missing Keys|Unused Keys|
+            |:---|---:|---:|
+            ${{join(steps.i18n-extract.outputs.*, '
+            ')}}
+
+  bundle-size:
+    name: Analyze bundle size
+    if: github.event.action != 'edited'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Check package files changed
+        id: changed-files
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
+        with:
+          files: |
+            package.json
+            package-lock.json
+
+      - name: Install node
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+
+      - uses: preactjs/compressed-size-action@v2
+        if: steps.changed-files.outputs.any_changed == 'true'
+        with:
+          strip-hash: "\\b\\w{8}\\."
+          pattern: './dist/**/*.{js,css,html,json,woff2,svg,png}'
+          exclude: '{./dist/manifest.json,./dist/build.zip,**/*.map,**/node_modules/**}'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
