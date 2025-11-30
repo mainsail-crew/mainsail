@@ -291,7 +291,6 @@ jobs:
 
           # Total row
           total_diff=$((total_pr - total_base))
-          echo "" >> bundle-report.md
           echo "| **Total** | **$(format_size $total_base)** | **$(format_size $total_pr)** | **$(format_diff $total_diff)** |" >> bundle-report.md
 
           # Cleanup
