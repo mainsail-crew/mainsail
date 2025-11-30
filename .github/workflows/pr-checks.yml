@@ -101,7 +101,119 @@ jobs:
 
       - name: Upload translation report
         if: steps.changed-files.outputs.any_changed == 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: translation-report
           path: translation-report.md
+
+  bundle-size:
+    name: Analyze bundle size
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v6
+        with:
+          path: pr
+
+      - name: Check package files changed
+        id: changed-files
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
+        with:
+          path: pr
+          files: |
+            package.json
+            package-lock.json
+
+      - name: Checkout base branch
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.base_ref }}
+          path: base
+
+      - name: Install node
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+
+      - name: Build base branch
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          cd base
+          npm ci
+          npm run build
+
+      - name: Build PR branch
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          cd pr
+          npm ci
+          npm run build
+
+      - name: Compare bundle sizes
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "## Bundle Size Comparison" > bundle-report.md
+          echo "" >> bundle-report.md
+          echo "| File | Base | PR | Diff |" >> bundle-report.md
+          echo "|:-----|-----:|---:|-----:|" >> bundle-report.md
+
+          format_size() {
+            local bytes=$1
+            if [ $bytes -ge 1048576 ]; then
+              echo "$(echo "scale=2; $bytes / 1048576" | bc) MB"
+            elif [ $bytes -ge 1024 ]; then
+              echo "$(echo "scale=2; $bytes / 1024" | bc) KB"
+            else
+              echo "$bytes B"
+            fi
+          }
+
+          format_diff() {
+            local diff=$1
+            if [ $diff -gt 0 ]; then
+              echo "+$(format_size $diff)"
+            elif [ $diff -lt 0 ]; then
+              echo "-$(format_size ${diff#-})"
+            else
+              echo "0"
+            fi
+          }
+
+          total_base=0
+          total_pr=0
+
+          # Compare JS and CSS files
+          for pr_file in pr/dist/assets/*.{js,css}; do
+            [ -f "$pr_file" ] || continue
+            name=$(basename "$pr_file")
+            
+            # Remove hash from filename for matching (e.g., index-abc123.js -> index.js)
+            base_pattern=$(echo "$name" | sed 's/-[a-f0-9]\{8\}\././g')
+            base_file=$(find base/dist/assets -name "*${base_pattern}" 2>/dev/null | head -1)
+            
+            pr_size=$(stat -c%s "$pr_file" 2>/dev/null || stat -f%z "$pr_file")
+            total_pr=$((total_pr + pr_size))
+            
+            if [ -n "$base_file" ] && [ -f "$base_file" ]; then
+              base_size=$(stat -c%s "$base_file" 2>/dev/null || stat -f%z "$base_file")
+              total_base=$((total_base + base_size))
+              diff=$((pr_size - base_size))
+              echo "| $name | $(format_size $base_size) | $(format_size $pr_size) | $(format_diff $diff) |" >> bundle-report.md
+            else
+              echo "| $name | - | $(format_size $pr_size) | new |" >> bundle-report.md
+            fi
+          done
+
+          # Add total row
+          total_diff=$((total_pr - total_base))
+          echo "" >> bundle-report.md
+          echo "| **Total** | **$(format_size $total_base)** | **$(format_size $total_pr)** | **$(format_diff $total_diff)** |" >> bundle-report.md
+
+      - name: Upload bundle report
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: bundle-report
+          path: bundle-report.md
