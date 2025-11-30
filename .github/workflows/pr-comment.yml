@@ -16,9 +16,9 @@ jobs:
       pull-requests: write
       actions: read
     steps:
-      - name: Get PR number
+      - name: Get PR number and check artifacts
         id: pr
-        uses: actions/github-script@v8
+        uses: actions/github-script@v7
         with:
           script: |
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -35,15 +35,13 @@ jobs:
             }
             core.setOutput('number', prNumber);
 
-            // Check which artifacts exist
+            // Check if translation report exists
             const hasTranslation = artifacts.data.artifacts.some(a => a.name === 'translation-report');
-            const hasBundle = artifacts.data.artifacts.some(a => a.name === 'bundle-report');
             core.setOutput('has_translation', hasTranslation);
-            core.setOutput('has_bundle', hasBundle);
 
       - name: Download translation report
         if: steps.pr.outputs.has_translation == 'true'
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v5
         with:
           name: translation-report
           path: ./reports
@@ -57,20 +55,3 @@ jobs:
           file-path: ./reports/translation-report.md
           pr-number: ${{ steps.pr.outputs.number }}
           comment-tag: translation-report
-
-      - name: Download bundle report
-        if: steps.pr.outputs.has_bundle == 'true'
-        uses: actions/download-artifact@v6
-        with:
-          name: bundle-report
-          path: ./reports
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Comment bundle report
-        if: steps.pr.outputs.has_bundle == 'true'
-        uses: thollander/actions-comment-pull-request@v3
-        with:
-          file-path: ./reports/bundle-report.md
-          pr-number: ${{ steps.pr.outputs.number }}
-          comment-tag: bundle-report
