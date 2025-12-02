@@ -19,6 +19,7 @@
                     </span>
                 </v-tooltip>
                 <spoolman-change-spool-dialog
+                    v-if="afcExistsSpoolman"
                     :show-dialog="showSpoolmanDialog"
                     :afc-lane="name"
                     @close="showSpoolmanDialog = false" />

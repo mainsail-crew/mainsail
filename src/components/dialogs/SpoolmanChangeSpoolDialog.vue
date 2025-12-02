@@ -155,10 +155,6 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
         window.open(this.spoolManagerUrl, '_blank')
     }
 
-    mounted() {
-        this.refresh()
-    }
-
     refresh() {
         this.$store.dispatch('server/spoolman/refreshSpools')
     }
@@ -249,7 +245,10 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
 
     @Watch('showDialog')
     onShowDialogChanged(newVal: boolean) {
-        if (newVal) this.search = ''
+        if (!newVal) return
+
+        this.refresh()
+        this.search = ''
     }
 }
 </script>
