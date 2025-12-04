@@ -9,8 +9,7 @@
             :close-on-content-click="false"
             :open-on-click="false"
             absolute
-            offset-y
-        >
+            offset-y>
             <template #activator="{ attrs }">
                 <div
                     class="d-flex"
@@ -19,16 +18,14 @@
                     @pointerdown="onPointerDown"
                     @pointerup="onPointerUp"
                     @pointercancel="onPointerUp"
-                    @pointerleave="onPointerUp"
-                >
+                    @pointerleave="onPointerUp">
                     <mmu-unit-gate-spool
                         class="position-relative zindex-1"
                         :gate-index="gateIndex"
                         :show-details="showDetails"
                         :is-selected="isSelected"
                         :unhighlight-spools="unhighlightSpools"
-                        @select-gate="selectGate"
-                    />
+                        @select-gate="selectGate" />
                 </div>
             </template>
 
@@ -41,8 +38,7 @@
                         style="width: 100%"
                         :disabled="!canSend"
                         :loading="loadings.includes('mmu_select')"
-                        @click="gateCommand('MMU_SELECT')"
-                    >
+                        @click="gateCommand('MMU_SELECT')">
                         <v-icon left>
                             {{ mdiSwapHorizontal }}
                         </v-icon>
@@ -55,8 +51,7 @@
                         style="width: 100%"
                         :disabled="!canSend"
                         :loading="loadings.includes('mmu_preload')"
-                        @click="gateCommand('MMU_PRELOAD')"
-                    >
+                        @click="gateCommand('MMU_PRELOAD')">
                         <v-icon left>
                             {{ mdiDownloadOutline }}
                         </v-icon>
@@ -69,8 +64,7 @@
                         style="width: 100%"
                         :disabled="!canSend"
                         :loading="loadings.includes('mmu_eject')"
-                        @click="gateCommand('MMU_EJECT')"
-                    >
+                        @click="gateCommand('MMU_EJECT')">
                         <v-icon left>
                             {{ mdiEject }}
                         </v-icon>
@@ -80,11 +74,7 @@
             </v-list>
         </v-menu>
 
-        <span
-            class="gate-number rounded cursor-pointer"
-            :class="gateNumberClass"
-            @click="selectGate"
-        >
+        <span class="gate-number rounded cursor-pointer" :class="gateNumberClass" @click="selectGate">
             {{ gateName }}
         </span>
     </div>
@@ -120,7 +110,6 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     isPressing = false
     pressStartX = 0
     pressStartY = 0
-
 
     get gateName() {
         if (this.gateIndex === TOOL_GATE_BYPASS) return 'Bypass'
