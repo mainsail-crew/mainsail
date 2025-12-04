@@ -296,6 +296,17 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
     handleSyncSpoolman() {
         this.doSend('MMU_SPOOLMAN REFRESH=1 QUIET=1', 'mmu_spoolman')
     }
+
+    mounted() {
+        this.refreshSpoolman() // Need spool info for spool rack display
+    }
+
+    refreshSpoolman() {
+        const actionName = 'server/spoolman/refreshSpools'
+        if (this.$store && this.$store._actions && this.$store._actions[actionName]) {
+            this.$store.dispatch(actionName)
+        }
+    }
 }
 </script>
 
