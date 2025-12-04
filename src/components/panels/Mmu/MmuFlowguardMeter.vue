@@ -120,7 +120,7 @@
 <script lang="ts">
 import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { DIRECTION_UNKNOWN } from '@/components/mixins/mmu'
+import MmuMixin from '@/components/mixins/mmu'
 
 @Component
 export default class MmuFlowguardMeter extends Mixins(BaseMixin, MmuMixin) {
