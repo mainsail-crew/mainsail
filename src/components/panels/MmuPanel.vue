@@ -34,7 +34,7 @@
                             small
                             class="w-100"
                             :loading="loadings.includes('mmu_stats')"
-                            @click="doSend('MMU_STATS SHOWCOUNTS=1')">
+                            @click="doSend('MMU_STATS SHOWCOUNTS=1', 'mmu_stats')">
                             <v-icon left>{{ mdiNoteText }}</v-icon>
                             {{ $t('Panels.MmuPanel.ButtonPrintStats') }}
                         </v-btn>
@@ -57,7 +57,7 @@
                             class="w-100"
                             :disabled="!canSend"
                             :loading="loadings.includes('mmu_check_gates')"
-                            @click="doSend('MMU_CHECK_GATES')">
+                            @click="doSend('MMU_CHECK_GATES', 'mmu_check_gates')">
                             <v-icon left>{{ mdiCheckAll }}</v-icon>
                             {{ $t('Panels.MmuPanel.ButtonCheckAllGates') }}
                         </v-btn>
@@ -70,7 +70,7 @@
         <v-card-text :class="{ 'mmu-disabled': !enabled }">
             <v-row>
                 <v-col class="pb-0">
-                    <MmuUnit
+                    <mmu-unit
                         v-for="i in mmuNumUnits"
                         :key="i"
                         :selected-gate="mmuGate"
@@ -85,7 +85,7 @@
                     <div class="text-center body-1">{{ statusText }}</div>
                     <mmu-filament-status />
                     <div v-if="showClogDetection" class="text-center">
-                        <mmu-clog-meter width="40%" />
+                        <mmu-clog-meter v-if="hasMmuEncoder" width="40%" />
                         <div class="text--disabled body-1">{{ $t('Panels.MmuPanel.ClogDetection') }}</div>
                     </div>
                 </v-col>
@@ -205,11 +205,11 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
 
     selectGate(gateIndex: number) {
         if (gateIndex === TOOL_GATE_BYPASS) {
-            this.doSend('MMU_SELECT BYPASS=1')
+            this.doSend('MMU_SELECT BYPASS=1', 'mmu_select')
             return
         }
 
-        this.doSend(`MMU_SELECT GATE=${gateIndex}`)
+        this.doSend(`MMU_SELECT GATE=${gateIndex}`, 'mmu_select')
     }
 
     get showClogDetection() {
@@ -294,7 +294,7 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
     }
 
     handleSyncSpoolman() {
-        this.doSend('MMU_SPOOLMAN REFRESH=1 QUIET=1')
+        this.doSend('MMU_SPOOLMAN REFRESH=1 QUIET=1', 'mmu_spoolman')
     }
 }
 </script>
