@@ -92,6 +92,15 @@ Mainsail is a Vue 2 + TypeScript web interface for Klipper 3D printer firmware. 
 
 ## Code Review Guidelines
 
+### How to Review (for AI Agents)
+
+- Only comment when confidence is HIGH (>80%) that an issue exists
+- Be concise: one sentence per comment when possible
+- Focus on changed files only
+- Propose minimal, targeted fixes with line references
+
+### What to Check
+
 - Ensure adherence to code style guidelines
 - Verify TypeScript types and interfaces
 - New strings added to en.json (alphabetically sorted)
