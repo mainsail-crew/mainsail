@@ -806,6 +806,7 @@
             "EditTtgMapTitle": "Map Tools / Filaments (Edit TTG Map)",
             "Encoder": "Encoder",
             "Extruder": "Extruder",
+            "Gate": "Gate",
             "GateMapDialog": {
                 "BadTemperature": "Temperature out of range",
                 "ChooseSpool": "Choose Spool",
