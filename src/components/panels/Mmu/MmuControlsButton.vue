@@ -8,9 +8,10 @@
                 :large="btnSizeLarge"
                 color="secondary"
                 :disabled="disabled"
+                :loading="loadings.includes(command.toLowerCase())"
                 v-bind="attrs"
                 v-on="on"
-                @click="doSend(command)">
+                @click="doSend(command, command.toLowerCase())">
                 <v-icon :left="!showTooltip">{{ icon }}</v-icon>
                 <template v-if="!showTooltip">{{ text }}</template>
             </v-btn>
