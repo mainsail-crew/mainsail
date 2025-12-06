@@ -7,7 +7,6 @@
                 :gate-index="gateIndex - 1 + firstGateNumber"
                 :mmu-machine-unit="mmuMachineUnit"
                 :show-details="showDetails"
-                :show-context-menu="showContextMenu"
                 :unhighlight-spools="unhighlightSpools"
                 :selected-gate="selectedGate"
                 :gate-pos="gatePos(idx)"
@@ -16,15 +15,11 @@
                 v-if="hasBypass"
                 :gate-index="TOOL_GATE_BYPASS"
                 :mmu-machine-unit="mmuMachineUnit"
-                :show-context-menu="false"
                 :selected-gate="selectedGate"
                 gate-pos="R"
                 @select-gate="selectGate" />
         </div>
-        <mmu-unit-footer
-            class="pt-0 position-relative"
-            :mmu-machine-unit="mmuMachineUnit"
-            :unit-index="unitIndex" />
+        <mmu-unit-footer class="pt-0 position-relative" :mmu-machine-unit="mmuMachineUnit" :unit-index="unitIndex" />
     </div>
 </template>
 <script lang="ts">
@@ -39,7 +34,6 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true }) readonly selectedGate!: number
     @Prop({ required: true }) readonly unitIndex!: number
     @Prop({ default: false }) readonly showDetails!: boolean
-    @Prop({ default: false }) readonly showContextMenu!: boolean
     @Prop({ default: false }) readonly hideBypass!: boolean
     @Prop({ default: false }) readonly unhighlightSpools!: boolean
 
@@ -62,11 +56,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     }
 
     gatePos(idx: number) {
-        return idx === 0
-          ? 'L'
-          : idx  === (this.numGates - 1) && !this.hasBypass
-          ? "R"
-          : ''
+        return idx === 0 ? 'L' : idx === this.numGates - 1 && !this.hasBypass ? 'R' : ''
     }
 
     selectGate(gateIndex: number) {
