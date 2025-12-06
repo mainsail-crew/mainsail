@@ -97,8 +97,12 @@
             stroke-dashoffset="0"
             stroke-dasharray="18,63" />
 
-        <text x="70" y="58" text-anchor="middle" class="small-text-color" font-size="12px">{{ $t('Panels.MmuPanel.Flow') }}</text>
-        <text x="70" y="72" text-anchor="middle" class="small-text-color" font-size="12px">{{ $t('Panels.MmuPanel.Guard') }}</text>
+        <text x="70" y="58" text-anchor="middle" class="small-text-color" font-size="12px">
+            {{ $t('Panels.MmuPanel.Flow') }}
+        </text>
+        <text x="70" y="72" text-anchor="middle" class="small-text-color" font-size="12px">
+            {{ $t('Panels.MmuPanel.Guard') }}
+        </text>
         <text
             v-if="flowguardActive && !flowguardTrigger"
             x="70"
@@ -112,7 +116,9 @@
         <text v-if="flowguardTrigger" x="70" y="90" text-anchor="middle" class="small-text-warning" font-size="16px">
             {{ flowguardTrigger }}
         </text>
-        <text x="58" y="139" text-anchor="end" class="small-text-color" font-size="12px">{{ $t('Panels.MmuPanel.Tangle') }}</text>
+        <text x="58" y="139" text-anchor="end" class="small-text-color" font-size="12px">
+            {{ $t('Panels.MmuPanel.Tangle') }}
+        </text>
         <text x="86" y="139" class="small-text-color" font-size="12px">{{ $t('Panels.MmuPanel.Clog') }}</text>
     </svg>
 </template>
