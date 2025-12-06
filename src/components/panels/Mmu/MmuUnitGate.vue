@@ -24,14 +24,9 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin, { MmuMachineUnit, TOOL_GATE_BYPASS } from '@/components/mixins/mmu'
-import { mdiSwapHorizontal, mdiDownloadOutline, mdiEject } from '@mdi/js'
 
 @Component
 export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
-    mdiSwapHorizontal = mdiSwapHorizontal
-    mdiDownloadOutline = mdiDownloadOutline
-    mdiEject = mdiEject
-
     @Prop({ required: true }) readonly gateIndex!: number
     @Prop({ required: true }) readonly mmuMachineUnit!: MmuMachineUnit
     @Prop({ default: false }) readonly showDetails!: boolean
