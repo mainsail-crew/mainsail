@@ -118,8 +118,8 @@ export default class AfcUnitLaneFilamentDialog extends Mixins(BaseMixin, AfcMixi
         this.showDialog = false
     }
 
-    @Watch('show')
-    onShowChange(newValue: boolean) {
+    @Watch('showDialog')
+    onShowDialogChange(newValue: boolean) {
         if (!newValue) return
 
         this.color = this.currentColor
