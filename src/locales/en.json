@@ -795,7 +795,7 @@
             "ButtonUnlock": "Unlock",
             "Bypass": "Bypass",
             "Cancel": "Cancel",
-            "ClogDetection": "Clog Detection",
+            "ClogDetection": "Clog/Tangle Detection",
             "Dialog": {
                 "AreYouSure": "Are you sure?"
             },
@@ -897,7 +897,7 @@
             "Ok": "Ok",
             "PreGate": "Pre-Gate",
             "RecoverState": "Fix MMU State",
-            "ShowClogDetection": "Clog Detection",
+            "ShowClogDetection": "Clog/Tangle Detection",
             "ShowDetails": "Filament Details",
             "ShowLogos": "Display Logo",
             "ShowName": "Display Unit Name",
