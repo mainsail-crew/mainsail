@@ -63,7 +63,9 @@
             stroke-dashoffset="0"
             stroke-dasharray="22,63" />
 
-        <text x="70" y="68" text-anchor="middle" class="small-text-color" font-size="12px">FLOWRATE</text>
+        <text x="70" y="68" text-anchor="middle" class="small-text-color" font-size="12px">
+            {{ $t('Panels.MmuPanel.Flowrate') }}
+        </text>
         <text x="70" y="90" text-anchor="middle" class="small-text-color" font-size="20px">{{ encoderFlowRate }}%</text>
         <text
             v-if="encoderDetectionMode === 2"
