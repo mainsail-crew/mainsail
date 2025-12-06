@@ -8,7 +8,11 @@ on:
       - 'v*'
   pull_request:
     branches:
-      - '*'
+      - 'develop'
+    paths:
+      - '.docker/**'
+      - '.dockerignore'
+      - 'Dockerfile'
 
 env:
   REGISTRY: ghcr.io
