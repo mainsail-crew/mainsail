@@ -70,6 +70,8 @@ export interface Mmu {
         | typeof ACTION_PURGING
     has_bypass: boolean
     sync_drive: boolean
+    sync_feedback_bias_modelled: number
+    sync_feedback_bias_raw: number
     sync_feedback_enabled: boolean
     sync_feedback_state: string
     clog_detection: number
@@ -199,6 +201,22 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
     get hasMmuEncoder() {
         return 'encoder' in (this.mmu ?? {})
+    }
+
+    get hasFilamentProportionalSensor() {
+        return this.hasMmuSensor('filament_proportional')
+    }
+
+    get hasFilamentCompressionSensor() {
+        return this.hasMmuSensor('filament_compression')
+    }
+
+    get hasFilamentTensionSensor() {
+        return this.hasMmuSensor('filament_tension')
+    }
+
+    get hasSyncFeedback(): boolean {
+        return this.hasFilamentCompressionSensor || this.hasFilamentTensionSensor || this.hasFilamentProportionalSensor
     }
 
     get mmuMachine(): MmuMachine | undefined {
