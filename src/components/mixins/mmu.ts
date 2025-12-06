@@ -72,6 +72,15 @@ export interface Mmu {
     sync_drive: boolean
     sync_feedback_enabled: boolean
     sync_feedback_state: string
+    flowguard?: {
+        trigger: string
+        reason: string
+        level: number
+        max_clog: number
+        max_tangle: number
+        active: boolean
+        enabled: boolean
+    }
     clog_detection: number
     clog_detection_enabled: number
     endless_spool: number
