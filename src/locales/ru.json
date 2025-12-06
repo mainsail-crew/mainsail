@@ -85,9 +85,9 @@
             "CannotUploadTheFile": "Не удаётся загрузить файл!",
             "EmergencyStop": "Аварийная остановка",
             "SAVE_CONFIG": "Сохранить конфигурацию",
-            "Uploading": "Загрузка",
             "UploadOfFileSuccessful": "Загрузка файла {file} прошла успешно!",
-            "UploadPrint": "Загрузить и напечатать"
+            "UploadPrint": "Загрузить и напечатать",
+            "Uploading": "Загрузка"
         },
         "TopCornerMenu": {
             "Cancel": "Отмена",
@@ -267,9 +267,9 @@
         "NozzleDiameter": "Диаметр сопла",
         "ObjectHeight": "Высота модели",
         "Preheat": "Преднагрев",
-        "PrintedFiles": "Распечатанные файлы",
         "PrintStart": "Запустить печать",
         "PrintTime": "Продолжит. печати",
+        "PrintedFiles": "Распечатанные файлы",
         "RefreshCurrentDirectory": "Обновить текущую папку",
         "Rename": "Переименовать",
         "RenameDirectory": "Переименовать папку",
@@ -294,8 +294,8 @@
         "DropFilesToUploadFiles": "Перетащите файлы для загрузки"
     },
     "GCodeViewer": {
-        "ClearLoadedFile": "Очистить",
         "CNCMode": "Режим ЧПУ",
+        "ClearLoadedFile": "Очистить",
         "ColorMode": "Тип отображения",
         "Downloading": "Загрузка",
         "ForceLineRendering": "Принудительный рендеринг линий",
@@ -307,8 +307,8 @@
         "Max": "Максимальное",
         "Medium": "Среднее",
         "ReloadRequired": "Требуется перезагрузка",
-        "Rendering": "Рендеринг",
         "RenderQuality": "Качество рендеринга",
+        "Rendering": "Рендеринг",
         "ShowGCode": "Окно G-кода",
         "ShowObjectSelection": "Подсвечивать выбранную модель",
         "ShowToolhead": "Маркер инструмента",
@@ -417,9 +417,9 @@
         "ObjectHeight": "Высота модели",
         "OneTime": "Одноразовое",
         "Perform": "Выполнить",
+        "PerformMaintenance": "Выполнить техобслуживание",
         "Performed": "Выполнено",
         "PerformedAndReschedule": "Выполнено и перенесено",
-        "PerformMaintenance": "Выполнить техобслуживание",
         "PrintDuration": "Продолжит. печати",
         "PrintHistory": "История печати",
         "PrintJobs": "Задания печати",
@@ -442,6 +442,7 @@
         "Statistics": "Статистика",
         "Status": "Статус",
         "StatusValues": {
+            "Others": "Прочее",
             "cancelled": "Отменено",
             "completed": "Завершено",
             "error": "Ошибка",
@@ -449,7 +450,6 @@
             "interrupted": "Прервано",
             "klippy_disconnect": "Потеря связь с Klippy",
             "klippy_shutdown": "Остановка Klippy",
-            "Others": "Прочее",
             "server_exit": "Выйти с сервера"
         },
         "Table": "Таблица",
@@ -518,8 +518,8 @@
             "Endstop": "Концевик",
             "EndstopInfo": "Нажмите кнопку синхронизации справа внизу, чтобы загрузить текущее состояние концевиков.",
             "Endstops": "Концевики",
-            "open": "Не сработал",
-            "TRIGGERED": "Сработал"
+            "TRIGGERED": "Сработал",
+            "open": "Не сработал"
         },
         "LogfilesPanel": {
             "Accept": "Принять",
@@ -576,9 +576,9 @@
             "GenericUpdateQuestion": "Проверьте историю коммитов (если она доступна) и страницу этого проекта на GitHub, чтобы узнать, нужны ли какие-либо ручные корректировки для этого обновления.",
             "GitHubPage": "Страница на GitHub",
             "HardRecovery": "Жёсткое восстановление",
+            "IUnderstandTheRisks": "Я понимаю риски",
             "InitUpdateManager": "Менеджер обновлений ещё не инициализирован. Это нормальное явление при первом запуске системы. Для инициализации всех компонентов нажмите кнопку «Обновить».",
             "Invalid": "недопустимый",
-            "IUnderstandTheRisks": "Я понимаю риски",
             "KlipperUpdateQuestionConfig": "Это обновит программное обеспечение хоста Klipper. Платы управления, работающие с прошивкой Klipper, возможно, потребуется прошить перекомпилированной прошивкой, прежде чем устройство можно будет вернуть в рабочее состояние.",
             "KlipperUpdateQuestionFirmware": "Это обновление также может содержать изменения в параметрах конфигурации, которые должны быть изменены в файле printer.cfg. Дополнительные сведения смотрите в журнале изменений.",
             "LinkToGithub": "Ссылка на GitHub",
@@ -590,13 +590,13 @@
             "System": "Система",
             "ThesePackagesCanBeUpgrade": "Эти системные пакеты могут быть обновлены:",
             "Unknown": "Неизвестно",
+            "UpToDate": "Актуальная версия",
             "Update": "Обновить",
             "UpdateAll": "Обновить все компоненты",
             "UpdateManager": "Менеджер обновлений",
             "UpdateWarning": "Предупреждение об обновлении: {name}",
             "Upgrade": "Обновить",
             "UpgradeableSystemPackages": "Обновляемые системные пакеты",
-            "UpToDate": "Актуальная версия",
             "WebClientUpdateQuestion": "В некоторых случаях обновление веб-клиента может привести к изменениям, которые могут привести к несовместимости. Дополнительную информацию смотрите в примечаниях к выпуску."
         }
     },
@@ -670,6 +670,12 @@
             "Headline": "Макросы",
             "Send": "Отправить"
         },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Убедитесь, что файл mainsail.cfg вписан в файл printer.cfg.",
+            "IsNotDefinedInConfig": "отсутствует в конфигурационном файле.",
+            "MissingConfiguration": "Отсутствующая конфигурация",
+            "MoreInformation": "Дополнительная информация"
+        },
         "MiniconsolePanel": {
             "Autoscroll": "Автопрокрутка",
             "Headline": "Консоль",
@@ -678,12 +684,6 @@
             "RawOutput": "«Сырые» данные на выходе (для отладки)",
             "SendCode": "Отправить команду...",
             "SetupConsole": "Настройка консоли"
-        },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Убедитесь, что файл mainsail.cfg вписан в файл printer.cfg.",
-            "IsNotDefinedInConfig": "отсутствует в конфигурационном файле.",
-            "MissingConfiguration": "Отсутствующая конфигурация",
-            "MoreInformation": "Дополнительная информация"
         },
         "MiscellaneousPanel": {
             "Headline": "Разное",
@@ -721,8 +721,8 @@
             "NoActiveSpool": "Отслеживание прутка неактивно. Для начала выберите катушку.",
             "NoResults": "Катушка с текущими критериями поиска не найдена.",
             "NoSpool": "Катушка отсутствует",
-            "NoSpools": "Катушка не выбрана",
             "NoSpoolSelected": "Катушка не выбрана. Выберите катушку, иначе эта печать не будет отслеживаться.",
+            "NoSpools": "Катушка не выбрана",
             "OpenSpoolManager": "Открыть управление прутками",
             "Refresh": "Обновить",
             "Search": "Поиск",
@@ -736,17 +736,17 @@
             "CancelPrint": "Отменить печать",
             "ClearPrintStats": "Очистить статистику печати",
             "Difference": "Разница",
+            "ETA": "Время завершения",
             "EmptyGcodes": "G-код файлы отсутствуют.",
             "EmptyHistory": "История печати пуста.",
             "EmptyJobqueue": "Текущая очередь заданий пуста.",
             "Estimate": "Расчётное время",
-            "ETA": "Время завершения",
             "ExcludeObject": {
                 "Cancel": "Отмена",
-                "Excluded": "Исключена",
                 "ExcludeObject": "Исключить модель",
                 "ExcludeObjectHeadline": "Исключить модель",
-                "ExcludeObjectText": "Вы действительно хотите исключить модель \"{name}\" из печати?"
+                "ExcludeObjectText": "Вы действительно хотите исключить модель \"{name}\" из печати?",
+                "Excluded": "Исключена"
             },
             "Filament": "Пруток",
             "File": "Файл",
@@ -804,13 +804,13 @@
             "ShowNameInList": "Показать {name} в списке",
             "State": "Мощность",
             "Target": "Заданная",
-            "TemperaturesInChart": "Температуры [°C]",
             "TempTooHigh": "Слишком высокая температура для {name}! (макс.: {max})",
-            "TempTooLow": "Слишком низкая температура для {name}! (мин.: {min})"
+            "TempTooLow": "Слишком низкая температура для {name}! (мин.: {min})",
+            "TemperaturesInChart": "Температуры [°C]"
         },
         "ToolheadControlPanel": {
-            "Absolute": "Абсолютная",
             "ALL": "ВСЕ",
+            "Absolute": "Абсолютная",
             "ControlButtons": "Кнопки управления",
             "CoordinateFields": "Поля ввода координат",
             "Headline": "Печатная голова",
@@ -1054,8 +1054,8 @@
             "CountMacros": "Макросы отсутствуют | {count} макрос | Макросов: {count}",
             "Custom": "Пользовательский",
             "CustomColor": "Пользовательский цвет",
-            "DeletedMacro": "Макрос удалён",
             "DeleteMacroFromGroup": "Удалить макрос из группы.",
+            "DeletedMacro": "Макрос удалён",
             "EditGroup": "Редактирование группы",
             "Error": "Ошибка",
             "Expert": "Продвинутое",
@@ -1065,10 +1065,10 @@
             "Macrogroups": "Группы",
             "Macros": "Макросы",
             "Management": "Управление",
+            "NOMacros": "Макросы не найдены...",
             "Name": "Имя",
             "NoAvailableMacros": "Макросы отсутствуют.",
             "NoGroups": "Группы не найдены...",
-            "NOMacros": "Макросы не найдены...",
             "NoMacrosInGroup": "В этой группе нет макросов.",
             "Primary": "Основной",
             "Search": "Поиск",
@@ -1090,8 +1090,8 @@
             "CreatePreset": "Создать профиль",
             "End": "Конечный",
             "EndDescription": "Последняя LED-лента этой группы.",
-            "Groups": "Группы",
             "GroupSubTitle": "Начальный: {start}, конечный: {end}",
+            "Groups": "Группы",
             "LightGroups": "{name} - Группы",
             "LightPresets": "{name} - профиль",
             "Miscellaneous": "Разное",
@@ -1101,9 +1101,7 @@
             "NoPresetFound": "Профили не найдены",
             "Presets": "Профили",
             "Start": "Начальный",
-            "StartDescription": "Первая LED-лента этой группы.",
-            "UnableToLoadLight": "Не удаётся загрузить свет",
-            "UnableToLoadPreset": "Не удаётся загрузить профиль"
+            "StartDescription": "Первая LED-лента этой группы."
         },
         "NavigationTab": {
             "Navigation": "Навигация"
@@ -1148,8 +1146,6 @@
             "CameraWarningAlreadySetSmall": "snapshoturl в разделе [timelapse]",
             "ConstantRateFactor": "Фактор постоянного оценивания (CRF)",
             "ConstantRateFactorDescription": "Метод одно-проходного сжатия видео, обеспечивающий компромисс между качеством и размером видео. Диапазон шкалы CRF от 0 до 51, где 0 - сжатие без потерь, 23 - значение по умолчанию, а 51 - наихудшее возможное качество. Субъективно разумный диапазон это значение 17-28. Можете считать, что не имеет смысла ставить значение меньше 17/18, так как далее уже визуально не заметы отличия.",
-            "duplicatelastframe": "Дублирование последних кадров",
-            "duplicatelastframeDescription": "Дублирование последних n кадров в конец видео.",
             "Enabled": "Включено",
             "EnabledDescription": "Если отключено, макросы G-кода игнорируются, а авторендеринг пропускается.",
             "Extraoutputparams": "Дополнительные выходные параметры",
@@ -1166,12 +1162,12 @@
             "NoWebcamFound": "Видеокамера недоступна",
             "OutputFramerate": "Частота кадров",
             "OutputFramerateDescription": "Задание частоты кадров выходного видео. Примечание: параметр игнорируется, если включена переменная частота кадров (variable_fps).",
+            "ParkTime": "Продолжительность парковки",
+            "ParkTimeDescription": "Увеличение времени простоя при парковке.",
             "Parkhead": "Парковка печатной головы",
             "ParkheadDescription": "Если включено, перед съемкой кадра печатающая головка будет парковаться.",
             "Parkpos": "Парковочное положение",
             "ParkposDescription": "Выбор места парковки печатной головы.",
-            "ParkTime": "Продолжительность парковки",
-            "ParkTimeDescription": "Увеличение времени простоя при парковке.",
             "Pixelformat": "Формат пикселей",
             "PixelformatDescription": "Задание формата пиксельный (соотношения сторон) выходного видео.",
             "PosDZ": "Позиция по Z",
@@ -1213,7 +1209,9 @@
             "VariableFpsMax": "Макс. переменная частота кадров",
             "VariableFpsMaxDescription": "Максимальное значение переменной частоты кадров.",
             "VariableFpsMin": "Мин. переменная частота кадров",
-            "VariableFpsMinDescription": "Минимальное значение переменной частоты кадров."
+            "VariableFpsMinDescription": "Минимальное значение переменной частоты кадров.",
+            "duplicatelastframe": "Дублирование последних кадров",
+            "duplicatelastframeDescription": "Дублирование последних n кадров в конец видео."
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Окно регулировки винтов стола",
