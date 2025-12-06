@@ -248,6 +248,7 @@
         "FilamentWeight": "Peso del Filamento",
         "Files": "File",
         "Filesize": "Dimensioni File",
+        "FilterGcodeFiles": "Filtra file G-code",
         "Free": "Libero",
         "FreeDisk": "Disco Libero",
         "GCodeFiles": "File G-Code",
