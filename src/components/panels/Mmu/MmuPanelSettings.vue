@@ -6,7 +6,7 @@
             </v-btn>
         </template>
         <v-list>
-            <v-list-item v-if="hasMmuEncoder" class="minHeight36">
+            <v-list-item v-if="hasMmuEncoder || hasSyncFeedback" class="minHeight36">
                 <v-checkbox
                     v-model="showClogDetection"
                     class="mt-0"

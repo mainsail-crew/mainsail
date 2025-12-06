@@ -70,8 +70,19 @@ export interface Mmu {
         | typeof ACTION_PURGING
     has_bypass: boolean
     sync_drive: boolean
+    sync_feedback_bias_modelled: number
+    sync_feedback_bias_raw: number
     sync_feedback_enabled: boolean
     sync_feedback_state: string
+    flowguard?: {
+        trigger: string
+        reason: string
+        level: number
+        max_clog: number
+        max_tangle: number
+        active: boolean
+        enabled: boolean
+    }
     clog_detection: number
     clog_detection_enabled: number
     endless_spool: number
@@ -314,9 +325,9 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmuSensors ? this.mmuSensors[sensorName] : undefined
     }
 
-    doSend(gcode: string) {
+    doSend(gcode: string, loading: string = 'mmu') {
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading })
     }
 
     formColorString(color: string | null) {
