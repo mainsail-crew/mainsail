@@ -25,7 +25,7 @@
                             :label="$t('Panels.MmuPanel.GateMapDialog.SpoolmanId')"
                             :rules="spoolIdRules"
                             :disabled="disableSpoolId"
-                            :hide-spin-buttons="disableSpoolId"
+                            hide-spin-buttons
                             outlined
                             dense
                             hide-details />
