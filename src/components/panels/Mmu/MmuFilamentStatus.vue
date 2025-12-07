@@ -357,7 +357,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get toolClass() {
-        return this.mmuTool === TOOL_GATE_BYPASS ? 'tool-bypass' : 'tool-text'
+        return this.mmuGate === TOOL_GATE_BYPASS ? 'tool-bypass' : 'tool-text'
     }
 
     get toolText() {
@@ -452,8 +452,8 @@ html.theme--light .fil-background {
 }
 
 .tool-bypass {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: normal;
 }
 
 @keyframes fadeInOut {
