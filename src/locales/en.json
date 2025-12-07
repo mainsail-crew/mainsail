@@ -780,7 +780,7 @@
             }
         },
         "MmuPanel": {
-            "Active": "ACTIVE",
+            "Active": "Active",
             "ButtonCheckAllGates": "Check All Gates",
             "ButtonCheckGate": "Check Gate",
             "ButtonEject": "Eject",
@@ -796,8 +796,9 @@
             "ButtonUnlock": "Unlock",
             "Bypass": "Bypass",
             "Cancel": "Cancel",
-            "Clog": "CLOG",
+            "Clog": "Clog",
             "ClogDetection": "Clog Detection",
+            "ClogTangleDetection": "Clog/Tangle Detection",
             "Dialog": {
                 "AreYouSure": "Are you sure?"
             },
@@ -808,7 +809,7 @@
             "EditTtgMapTitle": "Map Tools / Filaments (Edit TTG Map)",
             "Encoder": "Encoder",
             "Extruder": "Extruder",
-            "Flow": "FLOW",
+            "Flow": "Flow",
             "Gate": "Gate",
             "GateMapDialog": {
                 "BadTemperature": "Temperature out of range",
@@ -831,7 +832,7 @@
                 "Temperature": "Temperature"
             },
             "Gear": "Gear",
-            "Guard": "GUARD",
+            "Guard": "Guard",
             "Headline": "Mmu",
             "LargeFilamentStatus": "Large Filament Status",
             "MmuMaintenance": "MMU Maintenance",
@@ -902,6 +903,7 @@
             "PreGate": "Pre-Gate",
             "RecoverState": "Fix MMU State",
             "ShowClogDetection": "Clog Detection",
+            "ShowClogTangleDetection": "Clog/Tangle Detection",
             "ShowDetails": "Filament Details",
             "ShowLogos": "Display Logo",
             "ShowName": "Display Unit Name",
@@ -911,7 +913,7 @@
                 "MultiColor": "This looks like a Multi Material Single Extruder print using {numTools} tools. You should probably review tool mapping",
                 "SingleColor": "This looks like a single color print but you don't have the bypass selected on your MMU. You may want to check the chosen tool"
             },
-            "Tangle": "TANGLE",
+            "Tangle": "Tangle",
             "Toolhead": "Toolhead",
             "ToolMapping": "Tool Mapping",
             "ToolTip": {

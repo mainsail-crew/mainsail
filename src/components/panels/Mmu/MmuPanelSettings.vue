@@ -11,7 +11,7 @@
                     v-model="showClogDetection"
                     class="mt-0"
                     hide-details
-                    :label="$t('Panels.MmuPanel.ShowClogDetection')" />
+                    :label="$t('Panels.MmuPanel.ShowClogTangleDetection')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox v-model="showTtgMap" class="mt-0" hide-details :label="$t('Panels.MmuPanel.ShowTtgMap')" />

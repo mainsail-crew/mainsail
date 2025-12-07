@@ -143,6 +143,22 @@ export default class MmuFlowguardMeter extends Mixins(BaseMixin, MmuMixin) {
     Y1_ZERO = 70 + 59 * Math.sin((270 * Math.PI) / 180)
     DANGER = 0.8
 
+    get tangleTextUpper() {
+        return $t('Panels.MmuPanel.Tangle').toUpperCase()
+    }
+
+    get clogTextUpper() {
+        return $t('Panels.MmuPanel.Clog').toUpperCase()
+    }
+
+    get flowTextUpper() {
+        return $t('Panels.MmuPanel.Flow').toUpperCase()
+    }
+
+    get guardTextUpper() {
+        return $t('Panels.MmuPanel.Guard').toUpperCase()
+    }
+
     get flowguardEnabled() {
         return this.mmu?.flowguard?.enabled ?? false
     }
