@@ -1,6 +1,9 @@
 <template>
     <div class="d-flex flex-column align-center">
-        <div v-longpress:500="openContextMenu" class="d-flex flex-wrap mb-n2 pt-1 position-relative" @contextmenu.prevent="openContextMenu($event)">
+        <div
+            v-longpress:500="openContextMenu"
+            class="d-flex flex-wrap mb-n2 pt-1 position-relative"
+            @contextmenu.prevent="openContextMenu($event)">
             <mmu-unit-gate-spool
                 class="position-relative zindex-1"
                 :gate-index="gateIndex"
