@@ -10,5 +10,8 @@ export interface SocketState {
     connectionFailedMessage: string | null
     loadings: string[]
     initializationList: string[]
+    initializationStep: string | null
+    initializationProgress: number | null
+    initializationError: string | null
     connection_id: number | null
 }
