@@ -12,8 +12,8 @@
                 :unhighlight-spools="unhighlightSpools"
                 @select-gate="selectGate" />
         </div>
-        <div class="mmu-unit-box d-flex zindex-3 pb-1 pt-2" :class="gateClass(gatePos)">
-            <div class="d-flex" style="width: 100%" :class="gateClassContents(gatePos)">
+        <div class="mmu-unit-box d-flex zindex-3 pb-1 pt-2" :class="gateClass">
+            <div class="d-flex" style="width: 100%" :class="gateClassContents">
                 <span class="gate-number rounded cursor-pointer" :class="gateNumberClass" @click="selectGate">
                     {{ gateName }}
                 </span>
@@ -98,6 +98,22 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
         ]
     }
 
+    get gateClass() {
+        if (this.gatePos === 'L') {
+            return 'left-gate'
+        }
+
+        if (this.gatePos === 'R') {
+            return 'right-gate'
+        }
+
+        return ''
+    }
+
+    get gateClassContents() {
+        return this.gateClass ? `${this.gateClass}-contents` : ''
+    }
+
     selectGate() {
         this.$emit('select-gate', this.gateIndex)
     }
@@ -141,15 +157,6 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
 
     gateCommand(command: string) {
         this.doSend(`${command} GATE=${this.gateIndex}`)
-    }
-
-    gateClass(pos: string) {
-        return pos === 'L' ? 'left-gate' : pos === 'R' ? 'right-gate' : ''
-    }
-
-    gateClassContents(pos: string) {
-        const baseClass = this.gateClass(pos)
-        return baseClass ? `${baseClass}-contents` : ''
     }
 }
 </script>
