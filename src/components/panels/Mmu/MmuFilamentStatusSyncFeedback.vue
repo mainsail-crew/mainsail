@@ -43,12 +43,9 @@ export default class MmuFilamentStatusSyncFeedback extends Mixins(BaseMixin, Mmu
         return this.mmu?.sync_feedback_enabled ?? false
     }
 
-    get syncFeedbackBiasModelled() {
-        return this.mmu?.sync_feedback_bias_modelled ?? 0.0
-    }
-
     get syncFeedbackPistonPos(): int {
-        const yPos = this.syncFeedbackBiasModelled * 12 + 234
+        const bias = this.mmu?.sync_feedback_bias_modelled ?? 0.0
+        const yPos = bias * 12 + 234
         return yPos
     }
 
