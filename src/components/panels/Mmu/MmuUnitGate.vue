@@ -1,9 +1,6 @@
 <template>
     <div class="d-flex flex-column align-center">
-        <div
-            v-longpress:500="openContextMenu"
-            class="d-flex flex-wrap mb-n2 pt-1 position-relative"
-            @contextmenu.prevent="openContextMenu($event)">
+        <div v-longpress:500="openContextMenu" class="d-flex" @contextmenu.prevent="openContextMenu($event)">
             <mmu-unit-gate-spool
                 class="position-relative zindex-1"
                 :gate-index="gateIndex"
@@ -12,13 +9,9 @@
                 :unhighlight-spools="unhighlightSpools"
                 @select-gate="selectGate" />
         </div>
-        <div class="mmu-unit-box d-flex zindex-3 pb-1 pt-2" :class="gateClass(gatePos)">
-            <div class="d-flex" style="width: 100%" :class="gateClassContents(gatePos)">
-                <span class="gate-number rounded cursor-pointer" :class="gateNumberClass" @click="selectGate">
-                    {{ gateName }}
-                </span>
-            </div>
-        </div>
+        <span class="gate-number rounded cursor-pointer" :class="gateNumberClass" @click="selectGate">
+            {{ gateName }}
+        </span>
         <v-menu
             v-model="contextMenu"
             transition="slide-y-transition"
@@ -33,12 +26,7 @@
                 </v-subheader>
                 <v-divider class="mb-2" />
                 <v-list-item v-for="(button, index) in contextMenuButtons" :key="index">
-                    <v-btn
-                        small
-                        class="w-100"
-                        :disabled="!canSend"
-                        :loading="loadings.includes(button.command.toLowerCase())"
-                        @click="gateCommand(button.command)">
+                    <v-btn small class="w-100" :disabled="!canSend" :loading="loadings.includes(button.command.toLowerCase())" @click="gateCommand(button.command)">
                         <v-icon left>{{ button.icon }}</v-icon>
                         {{ button.label }}
                     </v-btn>
@@ -66,7 +54,6 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ default: false }) readonly showContextMenu!: boolean
     @Prop({ required: true }) readonly selectedGate!: number
     @Prop({ default: false }) readonly unhighlightSpools!: boolean
-    @Prop({ default: '' }) readonly gatePos!: string
 
     closeTimeout: number | null = null
     contextMenu = false
@@ -147,15 +134,6 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     gateCommand(command: string) {
         this.doSend(`${command} GATE=${this.gateIndex}`, command.toLowerCase())
     }
-
-    gateClass(pos: string) {
-        return pos === 'L' ? 'left-gate' : pos === 'R' ? 'right-gate' : ''
-    }
-
-    gateClassContents(pos: string) {
-        const baseClass = this.gateClass(pos)
-        return baseClass ? `${baseClass}-contents` : ''
-    }
 }
 </script>
 
@@ -164,12 +142,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     z-index: 1;
 }
 
-.zindex-3 {
-    z-index: 3;
-}
-
 .gate-number {
-    margin-left: 2px;
     border: 2px solid #808080;
     width: 80%;
     position: relative;
@@ -203,42 +176,5 @@ html.theme--light .gate-number {
 
 .gate-number.border-unknown {
     border-color: orange;
-}
-
-.mmu-unit-box {
-    box-shadow: inset 0 4px 4px -4px #ffffff80;
-    background-image: linear-gradient(to bottom, #3c3c3c 0%, #2c2c2c 100%);
-    border-radius: 0px 0px 8px 8px;
-    justify-content: center;
-    width: 100%;
-}
-
-html.theme--light .mmu-unit-box {
-    box-shadow: inset 0 4px 4px -4px #ffffff80;
-    background-image: linear-gradient(to bottom, #c0c0c0 0%, #f0f0f0 100%);
-}
-
-.left-gate {
-    border-radius: 8px 0 0px 0px;
-    position: relative;
-    margin-left: -16px;
-    width: calc(100% + 16px);
-}
-
-.left-gate-contents {
-    width: 100%;
-    margin-left: 16px;
-}
-
-.right-gate {
-    border-radius: 0 8px 0px 0px;
-    position: relative;
-    margin-right: -16px;
-    width: calc(100% + 16px);
-}
-
-.right-gate-contents {
-    width: 100%;
-    margin-right: 16px;
 }
 </style>

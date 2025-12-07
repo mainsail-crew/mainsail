@@ -1,5 +1,5 @@
 <template>
-    <div class="mmu-unit-footer zindex-4 d-flex flex-row align-center px-4 pb-1">
+    <div class="mmu-unit-footer d-flex flex-row align-center px-4 pb-1">
         <v-icon
             v-if="showLogos"
             class="mr-4 flex-grow-0 flex-shrink-0 opacity-70"
@@ -153,19 +153,18 @@ export default class MmuUnitFooter extends Mixins(BaseMixin, MmuMixin) {
 
 <style scoped>
 .mmu-unit-footer {
-    background: #2c2c2c;
-    border-radius: 0px 0px 8px 8px;
+    box-shadow: inset 0 4px 4px -4px #ffffff80;
+    background-image: linear-gradient(to bottom, #3c3c3c 0%, #2c2c2c 100%);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 html.theme--light .mmu-unit-footer {
-    background: #f0f0f0;
+    box-shadow: inset 0 4px 4px -4px #ffffff80;
+    background-image: linear-gradient(to bottom, #d0d0d0 0%, #f0f0f0ff 100%);
 }
 
 .opacity-70 {
     opacity: 0.7;
-}
-
-.zindex-4 {
-    z-index: 4;
 }
 </style>
