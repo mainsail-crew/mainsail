@@ -6,7 +6,7 @@
  *
  * To add a new method:
  * 1. Add the method signature to the MoonrakerRPCInterface
- * 2. Define the parameter type (use `void` for methods without parameters)
+ * 2. Define the parameter type (use empty parameter list `()` for methods without parameters)
  * 3. Define the return type wrapped in Promise<>
  *
  * @example
