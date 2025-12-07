@@ -7,7 +7,7 @@
                 transition: 'transform 250ms ease',
             }" />
         <use xlink:href="#sync-feedback-buffer-box" transform="translate(232, 212)" />
-        <g v-if="syncFeedbackEnabled && syncFeedbackActive">
+        <g v-if="syncFeedbackActive">
             <transition name="fade">
                 <g v-if="filamentTensionSensor && filamentCompressionSensor" key="neutral">
                     <text x="298" y="240">Neutral</text>
@@ -36,12 +36,9 @@ import MmuMixin, { FILAMENT_POS_END_BOWDEN } from '@/components/mixins/mmu'
 @Component
 export default class MmuFilamentStatusSyncFeedback extends Mixins(BaseMixin, MmuMixin) {
     get syncFeedbackActive(): boolean {
-        return this.hasSyncFeedbackEnabled && this.mmuFilamentPos >= FILAMENT_POS_END_BOWDEN
-    }
-
-    get syncFeedbackEnabled() {
         const enabled = this.mmu?.sync_feedback_enabled ?? false
-        return this.hasSyncFeedback && enabled
+        const loaded = this.mmuFilamentPos >= FILAMENT_POS_END_BOWDEN
+        return this.hasSyncFeedback && enabled && loaded
     }
 
     get syncFeedbackBiasModelled() {
