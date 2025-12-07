@@ -67,19 +67,13 @@ export const mutations: MutationTree<ServerState> = {
     },
 
     setData(state, payload) {
-        if ('requestParams' in payload) delete payload.requestParams
+        const validKeys = Object.keys(state) as (keyof ServerState)[]
 
         Object.entries(payload).forEach(([key, value]) => {
-            Vue.set(state, key, value)
+            if (!validKeys.includes(key as keyof ServerState)) return
+
+            Vue.set(state, key as keyof ServerState, value)
         })
-    },
-
-    saveDbNamespaces(state, payload) {
-        Vue.set(state, 'dbNamespaces', payload)
-    },
-
-    setConfig(state, payload) {
-        Vue.set(state, 'config', payload)
     },
 
     setConsoleClearedThisSession(state) {
@@ -140,18 +134,11 @@ export const mutations: MutationTree<ServerState> = {
         }
     },
 
-    setSystemInfo(state, payload) {
-        Vue.set(state, 'system_info', payload)
-    },
+    setThrottledState(state, payload: ServerState['throttled_state'] | null) {
+        if (payload === null) return
 
-    setThrottledState(state, payload) {
-        if (payload && 'bits' in payload) Vue.set(state.throttled_state, 'bits', payload.bits)
-
-        if (payload && 'flags' in payload) Vue.set(state.throttled_state, 'flags', payload.flags)
-    },
-
-    setSystemBootAt(state, payload) {
-        Vue.set(state, 'system_boot_at', payload)
+        if ('bits' in payload) Vue.set(state.throttled_state, 'bits', payload.bits)
+        if ('flags' in payload) Vue.set(state.throttled_state, 'flags', payload.flags)
     },
 
     addRootDirectory(state, payload) {
@@ -165,7 +152,7 @@ export const mutations: MutationTree<ServerState> = {
     },
 
     addFailedInitComponent(state, payload) {
-        const failed_init_components = state.failed_init_components
+        const failed_init_components = [...state.failed_init_components]
         if (!failed_init_components.includes(payload)) failed_init_components.push(payload)
 
         Vue.set(state, 'failed_init_components', failed_init_components)

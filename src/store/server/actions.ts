@@ -50,15 +50,12 @@ export const actions: ActionTree<ServerState, RootState> = {
         })
 
         try {
-            const connection = await Vue.$socket.emitAndWait<MoonrakerApiIdentifyResponse>(
-                'server.connection.identify',
-                {
-                    client_name: 'mainsail',
-                    version: rootState.packageVersion,
-                    type: 'web',
-                    url: 'https://github.com/mainsail-crew/mainsail',
-                }
-            )
+            const connection = await Vue.$socket.emitAndWait('server.connection.identify', {
+                client_name: 'mainsail',
+                version: rootState.packageVersion,
+                type: 'web',
+                url: 'https://github.com/mainsail-crew/mainsail',
+            })
             commit('setConnectionId', connection.connection_id)
         } catch (e: any) {
             if (e?.message === 'Unauthorized') {
@@ -75,11 +72,8 @@ export const actions: ActionTree<ServerState, RootState> = {
         })
 
         const serverInfo = await Vue.$socket.emitAndWait('server.info')
-
-        if ('plugins' in serverInfo) delete serverInfo.plugins
-        if ('failed_plugins' in serverInfo) delete serverInfo.failed_plugins
-
         if (serverInfo.registered_directories?.length) {
+            // TODO: create a dedicated action for this
             dispatch('files/initRootDirs', serverInfo.registered_directories, { root: true })
         }
 
@@ -94,7 +88,11 @@ export const actions: ActionTree<ServerState, RootState> = {
         })
 
         const serverConfig = await Vue.$socket.emitAndWait('server.config')
-        commit('setConfig', serverConfig)
+        commit('setData', {
+            config: serverConfig.config,
+            config_orig: serverConfig.orig,
+            config_files: serverConfig.files,
+        })
     },
 
     async initSystemInfo({ commit, dispatch }) {
@@ -103,7 +101,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         })
 
         const systemInfo = await Vue.$socket.emitAndWait('machine.system_info')
-        commit('setSystemInfo', systemInfo.system_info)
+        commit('setData', { system_info: systemInfo.system_info })
     },
 
     async initProcStats({ commit, dispatch }) {
@@ -113,12 +111,10 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         const procStats = await Vue.$socket.emitAndWait('machine.proc_stats')
 
-        if (procStats.throttled_state !== null) {
-            commit('setThrottledState', procStats.throttled_state)
-        }
+        commit('setThrottledState', procStats.throttled_state)
         if (procStats.system_uptime) {
             const system_boot_at = new Date(Date.now() - procStats.system_uptime * 1000)
-            commit('setSystemBootAt', system_boot_at)
+            commit('setData', { system_boot_at })
         }
     },
 
@@ -129,6 +125,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         const dbList = await Vue.$socket.emitAndWait('server.database.list', { root: 'config' })
 
+        // TODO: move to separate actions
         if (dbList.namespaces?.includes('mainsail')) {
             dispatch('socket/addInitModule', 'gui/init', { root: true })
             dispatch('gui/init', null, { root: true })
@@ -136,6 +133,7 @@ export const actions: ActionTree<ServerState, RootState> = {
             dispatch('gui/initDb', null, { root: true })
         }
 
+        // TODO: move to separate actions
         if (dbList.namespaces?.includes('maintenance')) {
             dispatch('socket/addInitModule', 'gui/maintenance/init', { root: true })
             dispatch('gui/maintenance/init', null, { root: true })
@@ -143,12 +141,15 @@ export const actions: ActionTree<ServerState, RootState> = {
             dispatch('gui/maintenance/initDb', null, { root: true })
         }
 
+        // TODO: move to separate actions
         dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
+        // TODO: move to separate actions
         dispatch('gui/webcams/init', null, { root: true })
 
-        commit('saveDbNamespaces', dbList.namespaces)
+        commit('setData', { dbNamespaces: dbList.namespaces })
     },
 
+    // TODO: rework to async module initialization
     async initServerComponents({ dispatch }, serverComponents: string[]) {
         const componentsToInit = serverComponents.filter((component: string) =>
             initableServerComponents.includes(camelize(component))

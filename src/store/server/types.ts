@@ -2,6 +2,9 @@ import { ServerPowerState } from '@/store/server/power/types'
 import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 import { ServerHistoryState } from '@/store/server/history/types'
 import { ServerTimelapseState } from '@/store/server/timelapse/types'
+import type { RPCResult } from '@/types/MoonrakerRPCInterface'
+
+type ServerConfigResponse = RPCResult<'server.config'>
 
 export interface ServerState {
     klippy_connected: boolean
@@ -15,10 +18,9 @@ export interface ServerState {
     warnings: string[]
     registered_directories: string[]
     events: ServerStateEvent[]
-    config: {
-        // eslint-disable-next-line
-        [key: string]: any
-    }
+    config: ServerConfigResponse['config']
+    config_orig: ServerConfigResponse['orig']
+    config_files: ServerConfigResponse['files']
     system_info: {
         available_services: string[]
         cpu_info: ServerStateCpuInfo

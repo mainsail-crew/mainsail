@@ -25,8 +25,8 @@ export default class WebcamMixin extends Mixins(BaseMixin) {
 
         if (baseUrl.startsWith('/webcam')) {
             const ports = [80]
-            ports.push(this.$store.state.server.config?.config?.server?.port ?? 7125)
-            ports.push(this.$store.state.server.config?.config?.server?.ssl_port ?? 7130)
+            ports.push(this.$store.getters['server/getConfigValue']('server', 'port', 7125))
+            ports.push(this.$store.getters['server/getConfigValue']('server', 'ssl_port', 7130))
 
             if (!ports.includes(this.hostPort)) url.port = this.hostPort.toString()
         }

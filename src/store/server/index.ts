@@ -29,6 +29,8 @@ export const getDefaultState = (): ServerState => {
         registered_directories: [],
         events: [],
         config: {},
+        config_orig: {},
+        config_files: [],
         system_info: null,
         system_boot_at: null,
         cpu_temp: 0,
