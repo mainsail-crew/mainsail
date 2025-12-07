@@ -98,10 +98,10 @@
             stroke-dasharray="18,63" />
 
         <text x="70" y="58" text-anchor="middle" class="small-text-color" font-size="12px">
-            {{ $t('Panels.MmuPanel.Flow') }}
+            {{ flowTextUpper }}
         </text>
         <text x="70" y="72" text-anchor="middle" class="small-text-color" font-size="12px">
-            {{ $t('Panels.MmuPanel.Guard') }}
+            {{ guardTextUpper }}
         </text>
         <text
             v-if="flowguardActive && !flowguardTrigger"
@@ -111,15 +111,17 @@
             class="small-text-color"
             font-size="12px"
             font-weight="bold">
-            {{ $t('Panels.MmuPanel.Active') }}
+            {{ activeTextUpper }}
         </text>
         <text v-if="flowguardTrigger" x="70" y="90" text-anchor="middle" class="small-text-warning" font-size="16px">
             {{ flowguardTrigger }}
         </text>
         <text x="58" y="139" text-anchor="end" class="small-text-color" font-size="12px">
-            {{ $t('Panels.MmuPanel.Tangle') }}
+            {{ tangleTextUpper }}
         </text>
-        <text x="86" y="139" class="small-text-color" font-size="12px">{{ $t('Panels.MmuPanel.Clog') }}</text>
+        <text x="86" y="139" class="small-text-color" font-size="12px">
+            {{ clogTextUpper }}
+        </text>
     </svg>
 </template>
 
@@ -144,19 +146,23 @@ export default class MmuFlowguardMeter extends Mixins(BaseMixin, MmuMixin) {
     DANGER = 0.8
 
     get tangleTextUpper() {
-        return $t('Panels.MmuPanel.Tangle').toUpperCase()
+        return this.$t('Panels.MmuPanel.Tangle').toUpperCase()
     }
 
     get clogTextUpper() {
-        return $t('Panels.MmuPanel.Clog').toUpperCase()
+        return this.$t('Panels.MmuPanel.Clog').toUpperCase()
     }
 
     get flowTextUpper() {
-        return $t('Panels.MmuPanel.Flow').toUpperCase()
+        return this.$t('Panels.MmuPanel.Flow').toUpperCase()
     }
 
     get guardTextUpper() {
-        return $t('Panels.MmuPanel.Guard').toUpperCase()
+        return this.$t('Panels.MmuPanel.Guard').toUpperCase()
+    }
+
+    get activeTextUpper() {
+        return this.$t('Panels.MmuPanel.Active').toUpperCase()
     }
 
     get flowguardEnabled() {
