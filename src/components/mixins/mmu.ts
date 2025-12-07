@@ -314,9 +314,9 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmuSensors ? this.mmuSensors[sensorName] : undefined
     }
 
-    doSend(gcode: string) {
+    doSend(gcode: string, loading: string = 'mmu') {
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading })
     }
 
     formColorString(color: string | null) {
