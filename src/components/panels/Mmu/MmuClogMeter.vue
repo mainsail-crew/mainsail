@@ -64,7 +64,7 @@
             stroke-dasharray="22,63" />
 
         <text x="70" y="68" text-anchor="middle" class="small-text-color" font-size="12px">
-            {{ $t('Panels.MmuPanel.Flowrate') }}
+            {{ flowrateTextUpper }}
         </text>
         <text x="70" y="90" text-anchor="middle" class="small-text-color" font-size="20px">{{ encoderFlowRate }}%</text>
         <text
@@ -99,6 +99,10 @@ export default class MmuClogMeter extends Mixins(BaseMixin, MmuMixin) {
     Y1_START = 70 + 63 * Math.sin((120 * Math.PI) / 180)
     X1_END = 70 + 63 * Math.cos((60 * Math.PI) / 180)
     Y1_END = 70 + 63 * Math.sin((60 * Math.PI) / 180)
+
+    get flowrateTextUpper() {
+        return this.$t('Panels.MmuPanel.Flowrate').toUpperCase()
+    }
 
     get encoderDesiredHeadroom() {
         return this.mmuEncoder?.desired_headroom ?? 0
