@@ -788,14 +788,13 @@
             "ButtonPreload": "Preload",
             "ButtonPrintStats": "Print Stats",
             "ButtonRecover": "Recover",
-            "ButtonSelect": "Select",
             "ButtonSyncSpoolman": "Sync Spoolman",
             "ButtonUnload": "Unload",
             "ButtonUnloadExt": "Unload Ext",
             "ButtonUnlock": "Unlock",
             "Bypass": "Bypass",
             "Cancel": "Cancel",
-            "ClogDetection": "Clog/Tangle Detection",
+            "ClogDetection": "Clog Detection",
             "Dialog": {
                 "AreYouSure": "Are you sure?"
             },
@@ -806,7 +805,7 @@
             "EditTtgMapTitle": "Map Tools / Filaments (Edit TTG Map)",
             "Encoder": "Encoder",
             "Extruder": "Extruder",
-            "Flowrate": "FLOWRATE",
+            "Flowrate": "Flowrate",
             "GateMapDialog": {
                 "BadTemperature": "Temperature out of range",
                 "ChooseSpool": "Choose Spool",
@@ -897,7 +896,7 @@
             "Ok": "Ok",
             "PreGate": "Pre-Gate",
             "RecoverState": "Fix MMU State",
-            "ShowClogDetection": "Clog/Tangle Detection",
+            "ShowClogDetection": "Clog Detection",
             "ShowDetails": "Filament Details",
             "ShowLogos": "Display Logo",
             "ShowName": "Display Unit Name",
