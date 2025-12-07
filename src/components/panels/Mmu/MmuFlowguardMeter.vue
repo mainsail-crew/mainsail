@@ -98,10 +98,10 @@
             stroke-dasharray="18,63" />
 
         <text x="70" y="58" text-anchor="middle" class="small-text-color" font-size="12px">
-            {{ flowTextUpper }}
+            {{ $t('Panels.MmuPanel.Flow').toUpperCase() }}
         </text>
         <text x="70" y="72" text-anchor="middle" class="small-text-color" font-size="12px">
-            {{ guardTextUpper }}
+            {{ $t('Panels.MmuPanel.Guard').toUpperCase() }}
         </text>
         <text
             v-if="flowguardActive && !flowguardTrigger"
@@ -111,16 +111,16 @@
             class="small-text-color"
             font-size="12px"
             font-weight="bold">
-            {{ activeTextUpper }}
+            {{ $t('Panels.MmuPanel.Active').toUpperCase() }}
         </text>
         <text v-if="flowguardTrigger" x="70" y="90" text-anchor="middle" class="small-text-warning" font-size="16px">
             {{ flowguardTrigger }}
         </text>
         <text x="58" y="139" text-anchor="end" class="small-text-color" font-size="12px">
-            {{ tangleTextUpper }}
+            {{ $t('Panels.MmuPanel.Tangle').toUpperCase() }}
         </text>
         <text x="86" y="139" class="small-text-color" font-size="12px">
-            {{ clogTextUpper }}
+            {{ $t('Panels.MmuPanel.Clog').toUpperCase() }}
         </text>
     </svg>
 </template>
@@ -144,26 +144,6 @@ export default class MmuFlowguardMeter extends Mixins(BaseMixin, MmuMixin) {
     X1_ZERO = 70 + 59 * Math.cos((270 * Math.PI) / 180)
     Y1_ZERO = 70 + 59 * Math.sin((270 * Math.PI) / 180)
     DANGER = 0.8
-
-    get tangleTextUpper() {
-        return this.$t('Panels.MmuPanel.Tangle').toUpperCase()
-    }
-
-    get clogTextUpper() {
-        return this.$t('Panels.MmuPanel.Clog').toUpperCase()
-    }
-
-    get flowTextUpper() {
-        return this.$t('Panels.MmuPanel.Flow').toUpperCase()
-    }
-
-    get guardTextUpper() {
-        return this.$t('Panels.MmuPanel.Guard').toUpperCase()
-    }
-
-    get activeTextUpper() {
-        return this.$t('Panels.MmuPanel.Active').toUpperCase()
-    }
 
     get flowguardEnabled() {
         return this.mmu?.flowguard?.enabled ?? false
