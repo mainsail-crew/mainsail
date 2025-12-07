@@ -62,8 +62,9 @@ export const actions: ActionTree<PrinterState, RootState> = {
 
             // reset screws_tilt_adjust if it exists
             if ('screws_tilt_adjust' in result.status) {
-                result.status.screws_tilt_adjust.error = false
-                result.status.screws_tilt_adjust.results = {}
+                const screwsTiltAdjust = result.status.screws_tilt_adjust as { error: boolean; results: object }
+                screwsTiltAdjust.error = false
+                screwsTiltAdjust.results = {}
             }
 
             dispatch('getData', result)
