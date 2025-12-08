@@ -18,7 +18,6 @@
                 :mmu-machine-unit="mmuMachineUnit"
                 :show-context-menu="false"
                 :selected-gate="selectedGate"
-                gate-pos="R"
                 @select-gate="selectGate" />
         </div>
         <mmu-unit-footer class="pt-0 position-relative" :mmu-machine-unit="mmuMachineUnit" :unit-index="unitIndex" />
