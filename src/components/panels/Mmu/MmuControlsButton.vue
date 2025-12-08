@@ -11,7 +11,7 @@
                 :loading="btnLoading"
                 v-bind="attrs"
                 v-on="on"
-                @click="doSend(command, command.toLowerCase())">
+                @click="sendCommand">
                 <v-icon :left="!showTooltip">{{ icon }}</v-icon>
                 <template v-if="!showTooltip">{{ text }}</template>
             </v-btn>
@@ -71,6 +71,10 @@ export default class MmuControlsButton extends Mixins(BaseMixin, MmuMixin) {
 
     beforeDestroy() {
         window.removeEventListener('resize', this.calcBtnSize)
+    }
+
+    sendCommand() {
+        this.doSend(this.command, this.command.toLowerCase())
     }
 
     @Watch('largeFilamentStatus')
