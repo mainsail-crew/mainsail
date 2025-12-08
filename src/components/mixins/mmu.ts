@@ -203,22 +203,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return 'encoder' in (this.mmu ?? {})
     }
 
-    get hasFilamentProportionalSensor() {
-        return this.hasMmuSensor('filament_proportional')
-    }
-
-    get hasFilamentCompressionSensor() {
-        return this.hasMmuSensor('filament_compression')
-    }
-
-    get hasFilamentTensionSensor() {
-        return this.hasMmuSensor('filament_tension')
-    }
-
-    get hasSyncFeedback(): boolean {
-        return this.hasFilamentCompressionSensor || this.hasFilamentTensionSensor || this.hasFilamentProportionalSensor
-    }
-
     get mmuMachine(): MmuMachine | undefined {
         return this.$store.state.printer.mmu_machine ?? undefined
     }
