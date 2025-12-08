@@ -215,7 +215,7 @@ html.theme--light .gate-number {
 .mmu-unit-box {
     box-shadow: inset 0 4px 4px -4px #ffffff80;
     background-image: linear-gradient(to bottom, #3c3c3c 0%, #2c2c2c 100%);
-    border-radius: 0px 0px 8px 8px;
+    border-radius: 0 0 8px 8px;
     justify-content: center;
     width: 100%;
 }
@@ -226,7 +226,7 @@ html.theme--light .mmu-unit-box {
 }
 
 .left-gate {
-    border-radius: 8px 0 0px 0px;
+    border-radius: 8px 0 0 0;
     position: relative;
     margin-left: -16px;
     width: calc(100% + 16px);
@@ -238,7 +238,7 @@ html.theme--light .mmu-unit-box {
 }
 
 .right-gate {
-    border-radius: 0 8px 0px 0px;
+    border-radius: 0 8px 0 0;
     position: relative;
     margin-right: -16px;
     width: calc(100% + 16px);
