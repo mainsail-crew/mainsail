@@ -12,7 +12,7 @@
                 :unhighlight-spools="unhighlightSpools"
                 @select-gate="selectGate" />
         </div>
-        <div class="mmu-unit-box d-flex zindex-3 pb-1 pt-2" :class="gateClass">
+        <div class="mmu-unit-box d-flex zindex-3 pb-1 pt-2 position-relative" :class="gateClass">
             <div class="d-flex w-100 gate-contents">
                 <span class="gate-number rounded cursor-pointer" :class="gateNumberClass" @click="selectGate">
                     {{ gateName }}
@@ -234,7 +234,6 @@ html.theme--light .mmu-unit-box {
 
 .left-gate {
     border-radius: 8px 0 0 0;
-    position: relative;
     margin-left: -16px;
     width: calc(100% + 16px);
 }
@@ -245,7 +244,6 @@ html.theme--light .mmu-unit-box {
 
 .right-gate {
     border-radius: 0 8px 0 0;
-    position: relative;
     margin-right: -16px;
     width: calc(100% + 16px);
 }
