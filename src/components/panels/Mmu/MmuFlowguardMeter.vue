@@ -48,7 +48,6 @@
                 :stroke-dashoffset="tangleHeadroomDashOffset" />
         </g>
         <line
-            ref="minHeadroomLine"
             :x1="x1MaxClog"
             :y1="y1MaxClog"
             x2="70"
@@ -59,7 +58,6 @@
             stroke-dashoffset="0"
             stroke-dasharray="18,63" />
         <line
-            ref="minHeadroomLine"
             :x1="x1MaxTangle"
             :y1="y1MaxTangle"
             x2="70"
