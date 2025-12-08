@@ -13,7 +13,7 @@
                 @select-gate="selectGate" />
         </div>
         <div class="mmu-unit-box d-flex zindex-3 pb-1 pt-2" :class="gateClass">
-            <div class="d-flex" style="width: 100%" :class="gateClassContents">
+            <div class="d-flex w-100 gate-contents">
                 <span class="gate-number rounded cursor-pointer" :class="gateNumberClass" @click="selectGate">
                     {{ gateName }}
                 </span>
@@ -66,7 +66,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ default: false }) readonly showContextMenu!: boolean
     @Prop({ required: true }) readonly selectedGate!: number
     @Prop({ default: false }) readonly unhighlightSpools!: boolean
-    @Prop({ default: '' }) readonly gatePos!: string
+    @Prop({ default: false }) readonly hasBypass!: boolean
 
     closeTimeout: number | null = null
     contextMenu = false
@@ -103,20 +103,27 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
         ]
     }
 
-    get gateClass() {
-        if (this.gatePos === 'L') {
-            return 'left-gate'
-        }
+    get gatePosition() {
+        const firstGateNumber = this.mmuMachineUnit?.first_gate ?? 0
 
-        if (this.gatePos === 'R') {
-            return 'right-gate'
-        }
-
-        return ''
+        return this.gateIndex + 1 - firstGateNumber
     }
 
-    get gateClassContents() {
-        return this.gateClass ? `${this.gateClass}-contents` : ''
+    get firstGate() {
+        return this.gatePosition === 1
+    }
+
+    get lastGate() {
+        if (this.gateIndex === TOOL_GATE_BYPASS) return true
+
+        return this.gatePosition === this.mmuMachineUnit?.num_gates && !this.hasBypass
+    }
+
+    get gateClass() {
+        return {
+            'left-gate': this.firstGate,
+            'right-gate': this.lastGate,
+        }
     }
 
     selectGate() {
@@ -232,8 +239,7 @@ html.theme--light .mmu-unit-box {
     width: calc(100% + 16px);
 }
 
-.left-gate-contents {
-    width: 100%;
+.left-gate .gate-contents {
     margin-left: 16px;
 }
 
@@ -244,8 +250,13 @@ html.theme--light .mmu-unit-box {
     width: calc(100% + 16px);
 }
 
-.right-gate-contents {
-    width: 100%;
+.right-gate .gate-contents {
     margin-right: 16px;
+}
+
+.left-gate.right-gate {
+    border-radius: 8px 8px 0 0;
+    width: calc(100% + 32px);
+    margin-right: -16px;
 }
 </style>

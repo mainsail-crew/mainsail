@@ -2,7 +2,7 @@
     <div class="mmu-unit d-inline-flex flex-column mx-1 rounded-lg mb-3">
         <div class="d-flex flex-wrap pt-3 px-4 position-relative">
             <mmu-unit-gate
-                v-for="(gateIndex, idx) in numGates"
+                v-for="gateIndex in numGates"
                 :key="gateIndex"
                 :gate-index="gateIndex - 1 + firstGateNumber"
                 :mmu-machine-unit="mmuMachineUnit"
@@ -10,7 +10,7 @@
                 :show-context-menu="showContextMenu"
                 :unhighlight-spools="unhighlightSpools"
                 :selected-gate="selectedGate"
-                :gate-pos="gatePos(idx)"
+                :has-bypass="hasBypass"
                 @select-gate="selectGate" />
             <mmu-unit-gate
                 v-if="hasBypass"
@@ -56,10 +56,6 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         if (this.hideBypass) return false
 
         return this.mmuMachineUnit?.has_bypass ?? true
-    }
-
-    gatePos(idx: number) {
-        return idx === 0 ? 'L' : idx === this.numGates - 1 && !this.hasBypass ? 'R' : ''
     }
 
     selectGate(gateIndex: number) {
