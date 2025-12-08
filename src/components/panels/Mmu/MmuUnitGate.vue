@@ -26,7 +26,12 @@
                 </v-subheader>
                 <v-divider class="mb-2" />
                 <v-list-item v-for="(button, index) in contextMenuButtons" :key="index">
-                    <v-btn small class="w-100" :disabled="!canSend" @click="gateCommand(button.command)">
+                    <v-btn
+                        small
+                        class="w-100"
+                        :disabled="!canSend"
+                        :loading="loadings.includes(button.command.toLowerCase())"
+                        @click="gateCommand(button.command)">
                         <v-icon left>{{ button.icon }}</v-icon>
                         {{ button.label }}
                     </v-btn>
@@ -132,7 +137,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     }
 
     gateCommand(command: string) {
-        this.doSend(`${command} GATE=${this.gateIndex}`)
+        this.doSend(`${command} GATE=${this.gateIndex}`, command.toLowerCase())
     }
 }
 </script>
