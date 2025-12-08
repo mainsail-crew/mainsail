@@ -788,6 +788,7 @@
             "ButtonPreload": "Preload",
             "ButtonPrintStats": "Print Stats",
             "ButtonRecover": "Recover",
+            "ButtonSelect": "Select",
             "ButtonSyncSpoolman": "Sync Spoolman",
             "ButtonUnload": "Unload",
             "ButtonUnloadExt": "Unload Ext",
@@ -806,6 +807,7 @@
             "Encoder": "Encoder",
             "Extruder": "Extruder",
             "Flowrate": "Flowrate",
+            "Gate": "Gate",
             "GateMapDialog": {
                 "BadTemperature": "Temperature out of range",
                 "ChooseSpool": "Choose Spool",

@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" width="400" @click:outside="closeDialog">
+    <v-dialog v-model="showDialog" width="400">
         <panel
             :title="$t('Panels.AfcPanel.FilamentForLane', { name })"
             :icon="afcIconLogo"
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
@@ -59,7 +59,7 @@ export default class AfcUnitLaneFilamentDialog extends Mixins(BaseMixin, AfcMixi
     afcIconLogo = afcIconLogo
     mdiCloseThick = mdiCloseThick
 
-    @Prop({ type: Boolean, required: true }) readonly show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: String, required: true }) readonly name!: string
 
     color = '#000000'
@@ -115,11 +115,11 @@ export default class AfcUnitLaneFilamentDialog extends Mixins(BaseMixin, AfcMixi
     }
 
     closeDialog() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
-    @Watch('show')
-    onShowChange(newValue: boolean) {
+    @Watch('showDialog')
+    onShowDialogChange(newValue: boolean) {
         if (!newValue) return
 
         this.color = this.currentColor
