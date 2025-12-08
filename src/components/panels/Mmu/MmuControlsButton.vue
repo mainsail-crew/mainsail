@@ -8,7 +8,7 @@
                 :large="btnSizeLarge"
                 color="secondary"
                 :disabled="disabled"
-                :loading="loadings.includes(command.toLowerCase())"
+                :loading="btnLoading"
                 v-bind="attrs"
                 v-on="on"
                 @click="doSend(command, command.toLowerCase())">
@@ -47,6 +47,10 @@ export default class MmuControlsButton extends Mixins(BaseMixin, MmuMixin) {
 
     get btnSizeLarge() {
         return this.size === 'large'
+    }
+
+    get btnLoading() {
+        return this.loadings.includes(this.command.toLowerCase())
     }
 
     calcBtnSize() {
