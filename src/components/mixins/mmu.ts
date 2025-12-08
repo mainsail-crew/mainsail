@@ -98,6 +98,7 @@ export interface Mmu {
         mmu_gear?: boolean
         mmu_gate?: boolean
         filament_compression?: boolean
+        filament_proportional?: boolean
         filament_tension?: boolean
         extruder?: boolean
         toolhead?: boolean
