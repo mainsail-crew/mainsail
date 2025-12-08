@@ -780,6 +780,7 @@
             }
         },
         "MmuPanel": {
+            "Active": "Active",
             "ButtonCheckAllGates": "Check All Gates",
             "ButtonCheckGate": "Check Gate",
             "ButtonEject": "Eject",
@@ -795,7 +796,8 @@
             "ButtonUnlock": "Unlock",
             "Bypass": "Bypass",
             "Cancel": "Cancel",
-            "ClogDetection": "Clog Detection",
+            "Clog": "Clog",
+            "ClogTangleDetection": "Clog/Tangle Detection",
             "Dialog": {
                 "AreYouSure": "Are you sure?"
             },
@@ -806,6 +808,7 @@
             "EditTtgMapTitle": "Map Tools / Filaments (Edit TTG Map)",
             "Encoder": "Encoder",
             "Extruder": "Extruder",
+            "Flow": "Flow",
             "Flowrate": "Flowrate",
             "Gate": "Gate",
             "GateMapDialog": {
@@ -829,6 +832,7 @@
                 "Temperature": "Temperature"
             },
             "Gear": "Gear",
+            "Guard": "Guard",
             "Headline": "Mmu",
             "LargeFilamentStatus": "Large Filament Status",
             "MmuMaintenance": "MMU Maintenance",
@@ -898,7 +902,7 @@
             "Ok": "Ok",
             "PreGate": "Pre-Gate",
             "RecoverState": "Fix MMU State",
-            "ShowClogDetection": "Clog Detection",
+            "ShowClogTangleDetection": "Clog/Tangle Detection",
             "ShowDetails": "Filament Details",
             "ShowLogos": "Display Logo",
             "ShowName": "Display Unit Name",
@@ -908,6 +912,7 @@
                 "MultiColor": "This looks like a Multi Material Single Extruder print using {numTools} tools. You should probably review tool mapping",
                 "SingleColor": "This looks like a single color print but you don't have the bypass selected on your MMU. You may want to check the chosen tool"
             },
+            "Tangle": "Tangle",
             "Toolhead": "Toolhead",
             "ToolMapping": "Tool Mapping",
             "ToolTip": {

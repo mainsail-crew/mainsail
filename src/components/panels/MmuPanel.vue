@@ -86,8 +86,9 @@
                     <div class="text-center body-1">{{ statusText }}</div>
                     <mmu-filament-status />
                     <div v-if="showClogDetection" class="text-center">
-                        <mmu-clog-meter width="40%" />
-                        <div class="text--disabled body-1">{{ $t('Panels.MmuPanel.ClogDetection') }}</div>
+                        <mmu-clog-meter v-if="hasMmuEncoder" width="40%" />
+                        <mmu-flowguard-meter v-if="hasSyncFeedback" width="40%" />
+                        <div class="text--disabled body-1">{{ $t('Panels.MmuPanel.ClogTangleDetection') }}</div>
                     </div>
                 </v-col>
                 <v-col :cols="12 - col1Size">

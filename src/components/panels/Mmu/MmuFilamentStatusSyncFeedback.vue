@@ -35,10 +35,6 @@ import MmuMixin, { FILAMENT_POS_END_BOWDEN } from '@/components/mixins/mmu'
 
 @Component
 export default class MmuFilamentStatusSyncFeedback extends Mixins(BaseMixin, MmuMixin) {
-    get hasSyncFeedback(): boolean {
-        return this.hasFilamentCompressionSensor || this.hasFilamentTensionSensor || this.hasFilamentProportionalSensor
-    }
-
     get syncFeedbackActive(): boolean {
         const enabled = this.mmu?.sync_feedback_enabled ?? false
         const loaded = this.mmuFilamentPos >= FILAMENT_POS_END_BOWDEN
@@ -51,18 +47,6 @@ export default class MmuFilamentStatusSyncFeedback extends Mixins(BaseMixin, Mmu
 
     get syncFeedbackPistonPos(): number {
         return this.syncFeedbackBiasModelled * 12 + 234
-    }
-
-    get hasFilamentProportionalSensor() {
-        return this.hasMmuSensor('filament_proportional')
-    }
-
-    get hasFilamentCompressionSensor() {
-        return this.hasMmuSensor('filament_compression')
-    }
-
-    get hasFilamentTensionSensor() {
-        return this.hasMmuSensor('filament_tension')
     }
 }
 </script>

@@ -6,12 +6,12 @@
             </v-btn>
         </template>
         <v-list>
-            <v-list-item v-if="hasMmuEncoder" class="minHeight36">
+            <v-list-item v-if="hasMmuEncoder || hasSyncFeedback" class="minHeight36">
                 <v-checkbox
                     v-model="showClogDetection"
                     class="mt-0"
                     hide-details
-                    :label="$t('Panels.MmuPanel.ShowClogDetection')" />
+                    :label="$t('Panels.MmuPanel.ShowClogTangleDetection')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox v-model="showTtgMap" class="mt-0" hide-details :label="$t('Panels.MmuPanel.ShowTtgMap')" />
