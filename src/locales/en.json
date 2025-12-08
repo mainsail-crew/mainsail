@@ -797,7 +797,6 @@
             "Bypass": "Bypass",
             "Cancel": "Cancel",
             "Clog": "Clog",
-            "ClogDetection": "Clog Detection",
             "ClogTangleDetection": "Clog/Tangle Detection",
             "Dialog": {
                 "AreYouSure": "Are you sure?"
@@ -903,7 +902,6 @@
             "Ok": "Ok",
             "PreGate": "Pre-Gate",
             "RecoverState": "Fix MMU State",
-            "ShowClogDetection": "Clog Detection",
             "ShowClogTangleDetection": "Clog/Tangle Detection",
             "ShowDetails": "Filament Details",
             "ShowLogos": "Display Logo",
