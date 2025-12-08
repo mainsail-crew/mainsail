@@ -23,10 +23,7 @@
                     :show-dialog="showSpoolmanDialog"
                     :afc-lane="name"
                     @close="showSpoolmanDialog = false" />
-                <afc-unit-lane-filament-dialog
-                    :show="showFilamentDialog"
-                    :name="name"
-                    @close="showFilamentDialog = false" />
+                <afc-unit-lane-filament-dialog v-model="showFilamentDialog" :name="name" />
             </v-col>
             <v-col class="pr-6 pl-2 pt-0 pb-0 d-flex flex-column justify-space-between align-end">
                 <v-btn v-if="afcShowLaneInfinite" x-small @click="showInfintiyDialog = true">

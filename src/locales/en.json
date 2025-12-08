@@ -810,6 +810,7 @@
             "Encoder": "Encoder",
             "Extruder": "Extruder",
             "Flow": "Flow",
+            "Flowrate": "Flowrate",
             "Gate": "Gate",
             "GateMapDialog": {
                 "BadTemperature": "Temperature out of range",
