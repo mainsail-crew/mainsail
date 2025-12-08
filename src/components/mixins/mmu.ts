@@ -70,6 +70,8 @@ export interface Mmu {
         | typeof ACTION_PURGING
     has_bypass: boolean
     sync_drive: boolean
+    sync_feedback_bias_modelled: number
+    sync_feedback_bias_raw: number
     sync_feedback_enabled: boolean
     sync_feedback_state: string
     clog_detection: number
