@@ -154,7 +154,7 @@ export default class MmuUnitFooter extends Mixins(BaseMixin, MmuMixin) {
 <style scoped>
 .mmu-unit-footer {
     background: #2c2c2c;
-    border-radius: 0px 0px 8px 8px;
+    border-radius: 0 0 8px 8px;
 }
 
 html.theme--light .mmu-unit-footer {
