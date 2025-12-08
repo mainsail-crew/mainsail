@@ -49,9 +49,8 @@ export default class MmuFilamentStatusSyncFeedback extends Mixins(BaseMixin, Mmu
         return this.mmu?.sync_feedback_bias_modelled ?? 0.0
     }
 
-    get syncFeedbackPistonPos(): int {
-        const yPos = this.syncFeedbackBiasModelled * 12 + 234
-        return yPos
+    get syncFeedbackPistonPos(): number {
+        return this.syncFeedbackBiasModelled * 12 + 234
     }
 
     get hasFilamentProportionalSensor() {
