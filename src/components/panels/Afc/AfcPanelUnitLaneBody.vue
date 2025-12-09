@@ -102,7 +102,7 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get spoolColor() {
-        if (this.hasTd && this.afcShowTd1Color) return `#${this.tdColor}`
+        if (this.hasTd && this.showTd1Color) return `#${this.tdColor}`
 
         return this.lane.color || '#000000'
     }
@@ -135,6 +135,10 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
 
     get spoolFilamentName() {
         return this.spool?.filament?.name ?? 'Unknown'
+    }
+
+    get showTd1Color(): boolean {
+        return this.$store.state.gui.view.afc?.showTd1Color ?? true
     }
 
     get hasTd() {
