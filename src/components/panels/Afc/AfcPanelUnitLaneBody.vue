@@ -102,9 +102,8 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get spoolColor() {
-        if (this.afc?.td1_present && this.afcShowTd1Color) {
-            return `#${this.lane?.td1_color}`
-        }
+        if (this.hasTd && this.afcShowTd1Color) return `#${this.tdColor}`
+
         return this.lane.color || '#000000'
     }
 
