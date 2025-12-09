@@ -38,15 +38,11 @@
                 <span class="text--disabled">{{ spoolRemainingWeightOutput }}</span>
                 <v-tooltip v-if="tdPresent" top>
                     <template #activator="{ on, attr }">
-                        <span
-                            v-if="tdPresent"
-                            class="d-flex align-center justify-center text--disable"
-                            v-bind="attr"
-                            v-on="on">
-                            TD - {{ td }}
+                        <span class="d-flex align-center justify-center text--disable" v-bind="attr" v-on="on">
+                            TD: {{ td }}
                         </span>
                     </template>
-                    <span>Color - #{{ tdColor }}</span>
+                    <span>{{ $t('Panels.AfcPanel.Color') }}: #{{ tdColor }}</span>
                 </v-tooltip>
             </v-col>
         </v-row>
