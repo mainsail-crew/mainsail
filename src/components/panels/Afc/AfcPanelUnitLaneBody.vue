@@ -36,10 +36,10 @@
                     @close="showInfintiyDialog = false" />
                 <span class="font-weight-bold">{{ spoolMaterial }}</span>
                 <span class="text--disabled">{{ spoolRemainingWeightOutput }}</span>
-                <v-tooltip v-if="tdPresent" top>
+                <v-tooltip v-if="hasTd" top>
                     <template #activator="{ on, attr }">
-                        <span class="d-flex align-center justify-center text--disable" v-bind="attr" v-on="on">
-                            TD: {{ td }}
+                        <span class="d-flex align-center justify-center text--disabled" v-bind="attr" v-on="on">
+                            TD: {{ tdValue }}
                         </span>
                     </template>
                     <span>{{ $t('Panels.AfcPanel.Color') }}: #{{ tdColor }}</span>
@@ -138,19 +138,16 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         return this.spool?.filament?.name ?? 'Unknown'
     }
 
-    get tdPresent() {
-        if (this.lane.td1_td === undefined || this.lane?.td1_td?.length === 0) {
-            return false
-        }
-        return true
+    get hasTd() {
+        return (this.lane?.td1_td || null) !== null
     }
 
-    get td() {
-        return this.lane?.td1_td || ''
+    get tdValue() {
+        return this.lane?.td1_td || '--'
     }
 
     get tdColor() {
-        return this.lane?.td1_color || ''
+        return this.lane?.td1_color || '------'
     }
 
     onFilamentClick() {
