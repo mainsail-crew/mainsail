@@ -1,130 +1,99 @@
 <template>
-    <responsive
-        :breakpoints="{
-            small: (el) => el.width <= 350,
-            medium: (el) => el.width > 350 && el.width <= 500,
-        }">
-        <template #default="{ el }">
-            <v-container>
-                <v-row>
-                    <v-col v-if="allExtruders.length > 1" :class="{ 'col-12': el.is.small || el.is.medium }">
-                        <div class="d-flex align-center">
-                            <v-btn v-if="selectedExtruder !== activeExtruder" icon plain @click="resetToActiveExtruder">
-                                <v-icon>{{ mdiRestart }}</v-icon>
-                            </v-btn>
-                            <v-select
-                                v-model="selectedExtruder"
-                                :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Extruder')"
-                                :items="allExtruders"
-                                :value="activeExtruder"
-                                hide-details
-                                outlined
-                                dense />
-                        </div>
-                    </v-col>
-                    <v-col :class="{ 'col-12': el.is.small }">
-                        <number-input
-                            :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Advance')"
-                            param="ADVANCE"
-                            :target="pressureAdvance"
-                            :default-value="defaultPressureAdvance"
-                            :extruder="selectedExtruder"
-                            :output-error-msg="true"
-                            :has-spinner="true"
-                            :min="0"
-                            :max="null"
-                            :step="0.001"
-                            :dec="3"
-                            unit="s"
-                            @submit="sendCmd" />
-                    </v-col>
-                    <v-col :class="{ 'col-12': el.is.small }">
-                        <number-input
-                            :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.SmoothTime')"
-                            param="SMOOTH_TIME"
-                            :target="smoothTime"
-                            :default-value="defaultSmoothTime"
-                            :extruder="selectedExtruder"
-                            :output-error-msg="true"
-                            :has-spinner="true"
-                            :spinner-factor="10"
-                            :min="0"
-                            :max="0.2"
-                            :step="0.001"
-                            :dec="3"
-                            unit="s"
-                            @submit="sendCmd" />
-                    </v-col>
-                </v-row>
-            </v-container>
-        </template>
-    </responsive>
+    <v-row>
+        <v-col :class="{ 'col-6': !isSmall, 'col-12': isSmall }">
+            <number-input
+                :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.Advance')"
+                param="ADVANCE"
+                :target="pressureAdvance"
+                :default-value="defaultPressureAdvance"
+                :extruder="extruder"
+                :output-error-msg="true"
+                :has-spinner="true"
+                :min="0"
+                :max="null"
+                :step="0.001"
+                :dec="3"
+                unit="s"
+                @submit="sendCmd" />
+        </v-col>
+        <v-col :class="{ 'col-6': !isSmall, 'col-12': isSmall }">
+            <number-input
+                :label="$t('Panels.ExtruderControlPanel.PressureAdvanceSettings.SmoothTime')"
+                param="SMOOTH_TIME"
+                :target="smoothTime"
+                :default-value="defaultSmoothTime"
+                :extruder="extruder"
+                :output-error-msg="true"
+                :has-spinner="true"
+                :spinner-factor="10"
+                :min="0"
+                :max="0.2"
+                :step="0.001"
+                :dec="3"
+                unit="s"
+                @submit="sendCmd" />
+        </v-col>
+    </v-row>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { Debounce } from 'vue-debounce-decorator'
 import BaseMixin from '@/components/mixins/base'
 import NumberInput from '@/components/inputs/NumberInput.vue'
-import Panel from '@/components/ui/Panel.vue'
 import Responsive from '@/components/ui/Responsive.vue'
-import { mdiRestart } from '@mdi/js'
+
+const PRECISION = 1000
+const DEFAULT_SMOOTH_TIME = 0.04
 
 @Component({
-    components: { NumberInput, Panel, Responsive },
+    components: { NumberInput, Responsive },
 })
 export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
-    mdiRestart = mdiRestart
+    @Prop({ default: false }) readonly isSmall!: boolean
+    @Prop({ required: true }) readonly extruder!: string
 
-    private extruders: string[] = []
-    private selectedExtruder = ''
-
-    resetToActiveExtruder(): void {
-        this.selectedExtruder = this.$store.state.printer.toolhead?.extruder
+    get extruderObject() {
+        return this.$store.state.printer?.[this.extruder] ?? undefined
     }
 
-    get allExtruders(): string[] {
-        Object.keys(this.$store.state.printer).forEach((e) => {
-            if (e.startsWith('extruder') && !this.extruders.includes(e)) this.extruders.push(e)
-        })
-        this.extruders.length === 1 ? this.resetToActiveExtruder() : {}
+    get extruderSettings() {
+        const settings = this.$store.state.printer.configfile?.settings ?? {}
 
-        return this.extruders
-    }
-
-    get activeExtruder(): string {
-        this.resetToActiveExtruder()
-        return this.$store.state.printer.toolhead?.extruder
+        return settings[this.extruder] ?? undefined
     }
 
     get pressureAdvance(): number {
-        return Math.floor((this.$store.state.printer?.[this.selectedExtruder]?.pressure_advance ?? 0) * 1000) / 1000
+        return this.roundToThreeDecimals(this.extruderObject?.pressure_advance ?? 0)
     }
 
-    get smoothTime(): number {
-        return Math.floor((this.$store.state.printer?.[this.selectedExtruder]?.smooth_time ?? 0.04) * 1000) / 1000
+    get smoothTime() {
+        return this.roundToThreeDecimals(this.extruderObject?.smooth_time ?? DEFAULT_SMOOTH_TIME)
     }
 
-    get defaultPressureAdvance(): number {
-        return (
-            Math.floor(
-                (this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance ?? 0) * 1000
-            ) / 1000
+    get defaultPressureAdvance() {
+        return this.roundToThreeDecimals(this.extruderSettings?.pressure_advance ?? 0)
+    }
+
+    get defaultSmoothTime() {
+        return this.roundToThreeDecimals(
+            this.extruderSettings?.pressure_advance_smooth_time ??
+                this.extruderSettings?.smooth_time ??
+                DEFAULT_SMOOTH_TIME
         )
     }
 
-    get defaultSmoothTime(): number {
-        return (
-            Math.floor(
-                (this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]
-                    ?.pressure_advance_smooth_time ?? 0.04) * 1000
-            ) / 1000
-        )
+    private roundToThreeDecimals(value: number): number {
+        return Math.floor(value * PRECISION) / PRECISION
     }
 
     @Debounce(500)
-    sendCmd(params: { name: string; value: number }): void {
-        const gcode = `SET_PRESSURE_ADVANCE EXTRUDER=${this.selectedExtruder} ${params.name}=${params.value}`
+    sendCmd(params: { name: string; value: number }) {
+        const extruder = this.extruder.startsWith('extruder_stepper ')
+            ? this.extruder.substring('extruder_stepper '.length)
+            : this.extruder
+
+        const gcode = `SET_PRESSURE_ADVANCE EXTRUDER=${extruder} ${params.name}=${params.value}`
 
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })

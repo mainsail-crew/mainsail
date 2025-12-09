@@ -90,7 +90,14 @@
         <!-- PRESSURE ADVANCE SETTINGS -->
         <template v-if="showPressureAdvance">
             <v-divider v-if="showTools || showExtrusionFactor" />
-            <pressure-advance-settings />
+            <extruder-pressure-advance-settings v-if="extruderSteppers.length === 0" />
+            <template v-else>
+                <extruder-stepper-pressure-advance-settings
+                    v-for="(extruderStepper, index) in extruderSteppers"
+                    :key="extruderStepper"
+                    :class="{ 'pt-3': index === 0 }"
+                    :extruder-stepper="extruderStepper" />
+            </template>
         </template>
         <!-- FIRMWARE RETRACTION SETTINGS -->
         <template v-if="showFirmwareRetraction">
@@ -111,14 +118,9 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { PrinterStateMacro } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
-import Panel from '@/components/ui/Panel.vue'
 import ExtruderMixin from '@/components/mixins/extruder'
 
-@Component({
-    components: {
-        Panel,
-    },
-})
+@Component
 export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin, ExtruderMixin) {
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
     mdiDotsVertical = mdiDotsVertical
@@ -198,13 +200,13 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
         return this.$store.state.gui.view.extruder.showExtrusionFactor ?? true
     }
 
-    get existsPressureAdvance(): boolean {
-        return !(this.$store.getters['printer/getExtruderSteppers'].length > 0)
+    get extruderSteppers() {
+        return Object.keys(this.$store.state.printer)
+            .filter((e) => e.startsWith('extruder_stepper '))
+            .sort((a, b) => a.localeCompare(b))
     }
 
     get showPressureAdvance(): boolean {
-        if (!this.existsPressureAdvance) return false
-
         return this.$store.state.gui.view.extruder.showPressureAdvance ?? true
     }
 

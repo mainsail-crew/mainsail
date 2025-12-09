@@ -358,15 +358,32 @@ export const convertPrintStatusIcon = (status: string) => {
 }
 
 export function filamentTextColor(hexColor: string): string {
-    const splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor)
-    if (splits) {
-        const r = parseInt(splits[1], 16) * 0.2126
-        const g = parseInt(splits[2], 16) * 0.7152
-        const b = parseInt(splits[3], 16) * 0.0722
-        const perceivedLightness = (r + g + b) / 255
+    const splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})(?:[a-f\d]{2})?$/i.exec(hexColor)
 
-        return perceivedLightness > 0.6 ? '#222' : '#fff'
+    if (splits === null || splits?.length < 3) return '#ffffff'
+
+    const r = parseInt(splits[1], 16) * 0.2126
+    const g = parseInt(splits[2], 16) * 0.7152
+    const b = parseInt(splits[3], 16) * 0.0722
+    const perceivedLightness = (r + g + b) / 255
+
+    return perceivedLightness > 0.6 ? '#222' : '#fff'
+}
+
+export function toBoolean(val: unknown): boolean {
+    if (typeof val === 'boolean') return val
+    if (typeof val === 'number') return val !== 0
+    if (typeof val === 'string') {
+        const s = val.trim().toLowerCase()
+        if (s === 'true' || s === '1' || s === 'yes' || s === 'y') return true
+        if (s === 'false' || s === '0' || s === 'no' || s === 'n') return false
     }
+    return Boolean(val)
+}
 
-    return '#ffffff'
+export function filamentWeightFormat(weight: number): string {
+    if (weight > 1000) return `${Math.round(weight / 10) / 100} kg`
+    else if (weight > 100) return `${Math.round(weight)} g`
+
+    return `${Math.round(weight * 10) / 10} g`
 }

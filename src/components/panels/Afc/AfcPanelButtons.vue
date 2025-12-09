@@ -44,6 +44,7 @@ import {
     mdiWrench,
 } from '@mdi/js'
 import { PrinterStateMacro } from '@/store/printer/types'
+import { TranslateResult } from 'vue-i18n'
 
 @Component
 export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
@@ -56,32 +57,27 @@ export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
     get macros() {
         const macros = this.$store.getters['printer/getMacros']
         const settings = this.$store.state.printer.configfile?.settings.afc ?? {}
-
-        const afcMacros = []
-
-        afcMacros.push({
-            icon: mdiWrench,
-            text: this.$t('Panels.AfcPanel.Calibrate'),
-            macroName: 'AFC_CALIBRATION',
-            disabled: this.printerIsPrintingOnly,
-        })
-
         const ledState = this.afc.led_state ?? false
-        if (ledState) {
-            afcMacros.push({
-                icon: mdiLightbulbOnOutline,
-                text: this.$t('Panels.AfcPanel.LedOff'),
-                macroName: 'TURN_OFF_AFC_LED',
+
+        const afcMacros: {
+            icon: string | null
+            text: string | TranslateResult
+            macroName: string
+            disabled: boolean
+        }[] = [
+            {
+                icon: mdiWrench,
+                text: this.$t('Panels.AfcPanel.Calibrate'),
+                macroName: 'AFC_CALIBRATION',
+                disabled: this.printerIsPrintingOnly,
+            },
+            {
+                icon: ledState ? mdiLightbulbOnOutline : mdiLightbulbOutline,
+                text: ledState ? this.$t('Panels.AfcPanel.LedOff') : this.$t('Panels.AfcPanel.LedOn'),
+                macroName: ledState ? 'TURN_OFF_AFC_LED' : 'TURN_ON_AFC_LED',
                 disabled: false,
-            })
-        } else {
-            afcMacros.push({
-                icon: mdiLightbulbOutline,
-                text: this.$t('Panels.AfcPanel.LedOn'),
-                macroName: 'TURN_ON_AFC_LED',
-                disabled: false,
-            })
-        }
+            },
+        ]
 
         if (this.afc?.td1_present) {
             afcMacros.push({
@@ -121,11 +117,6 @@ export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
                 }
             })
             .filter((button) => button.macro !== null)
-    }
-
-    doSend(gcode: string) {
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
     downloadDebugJson() {

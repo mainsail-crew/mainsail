@@ -43,6 +43,7 @@ export interface ServerSpoolmanStateSpool {
     filament: ServerSpoolmanStateFilament
     first_used: string
     last_used: string
+    initial_weight?: number
     remaining_length: number
     remaining_weight: number
     used_length: number

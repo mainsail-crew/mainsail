@@ -221,6 +221,15 @@ export interface GuiState {
                 page: string
             }
         }
+        mmu: {
+            showClogDetection: boolean
+            showTtgMap: boolean
+            showDetails: boolean
+            largeFilamentStatus: boolean
+            showLogos: boolean
+            showName: boolean
+            showUnavailableSpoolColor: boolean
+        }
     }
 }
 

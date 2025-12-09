@@ -1,5 +1,5 @@
 <template>
-    <v-row>
+    <v-row :dense="dense">
         <v-col :class="firstColClasses">
             <v-row class="d-flex flex-row">
                 <v-col v-if="loading" class="col-auto d-flex justify-center align-center pr-0">
@@ -27,26 +27,17 @@ import { TranslateResult } from 'vue-i18n'
 
 @Component
 export default class SettingsRow extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: false })
-    declare readonly loading: boolean
-
-    @Prop({ required: false, default: '' })
-    declare readonly icon: string
-
-    @Prop({ required: true })
-    declare readonly title: string | TranslateResult
-
-    @Prop({ required: false })
-    declare readonly subTitle: string | TranslateResult
-
-    @Prop({ required: false, default: false })
-    declare readonly dynamicSlotWidth: boolean
-
-    @Prop({ required: false, default: false })
-    declare readonly mobileSecondRow: boolean
+    @Prop({ required: false, default: false }) readonly loading!: boolean
+    @Prop({ required: false, default: '' }) readonly icon!: string
+    @Prop({ required: true }) readonly title!: string | TranslateResult
+    @Prop({ required: false }) readonly subTitle!: string | TranslateResult
+    @Prop({ required: false, default: false }) readonly dynamicSlotWidth!: boolean
+    @Prop({ required: false, default: false }) readonly mobileSecondRow!: boolean
+    @Prop({ default: false }) readonly dense!: boolean
 
     get firstColClasses() {
-        const defaultClasses = ' d-flex justify-center'
+        const dense = this.dense ? ' py-1' : ''
+        const defaultClasses = ' d-flex justify-center' + dense
 
         if (this.dynamicSlotWidth) return 'col' + defaultClasses
         else if (this.mobileSecondRow) return 'col-12 col-md-6' + defaultClasses
@@ -55,7 +46,8 @@ export default class SettingsRow extends Mixins(BaseMixin) {
     }
 
     get secondColClasses() {
-        const defaultClasses = ' d-flex justify-end align-center settings-row-slot'
+        const dense = this.dense ? ' py-1' : ' settings-row-slot'
+        const defaultClasses = ' d-flex justify-end align-center' + dense
 
         if (this.dynamicSlotWidth) return 'col-auto' + defaultClasses
         else if (this.mobileSecondRow) return 'col-12 col-md-6 pt-0 pt-md-3' + defaultClasses

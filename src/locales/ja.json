@@ -132,7 +132,6 @@
         "Empty": "空",
         "HideTemperatures": "温度報告を隠す",
         "HideTimelapse": "タイムラプス報告を隠す",
-        "SendCode": "コード送信...",
         "SetupConsole": "コンソール設定"
     },
     "Dialogs": {
@@ -183,7 +182,6 @@
         "EditFile": "ファイル編集",
         "Empty": "空",
         "ExtruderTemp": "エクストルーダー温度",
-        "Filament": "フィラメント",
         "FilamentName": "フィラメント名",
         "FilamentType": "材質",
         "FilamentUsage": "長さ",
@@ -282,19 +280,15 @@
         "InvalidNameAlreadyExists": "プロファイル名は既に存在しています。違う名前をつけてください。",
         "InvalidNameEmpty": "名前の入力は空であってはなりません!",
         "InvalidNameReserved": "プロファイル名 'default' は予約されています。違う名前をつけてください。",
-        "Later": "あとで",
         "Mesh": "メッシュ",
         "Name": "名前",
         "NoBedMeshHasBeenLoadedYet": "ベッドメッシュが読み込まれていません。",
         "NoProfile": "有効なプロファイルがありません。",
-        "Ok": "OK",
         "Probed": "実測面",
         "Profiles": "プロファイル",
         "Remove": "削除",
-        "RemoveSaveDescription": "このベッドメッシュのプロファイル削除が登録されました。 設定保存をクリックするとprinter.cfgからプロファイルを除去し、Klipperを再始動します。",
         "Rename": "名前変更",
         "RenameBedMeshProfile": "ベッドメッシュのプロファイル名変更",
-        "SAVE_CONFIG": "設定保存",
         "ScaleGradient": "目盛の勾配",
         "ScaleZMax": "目盛のZ軸最大値",
         "TitleCalibrate": "新規ベッドメッシュの校正",
@@ -362,8 +356,6 @@
         },
         "Table": "テーブル",
         "TitleExportHistory": "履歴をエクスポート",
-        "TitleRefreshHistory": "履歴を更新",
-        "TitleSettings": "設定",
         "TotalDuration": "総時間",
         "TotalFilamentUsed": "総フィラメント長",
         "TotalJobs": "総ジョブ数",
@@ -371,7 +363,6 @@
         "TotalTime": "総時間"
     },
     "JobQueue": {
-        "AllJobs": "全ジョブ",
         "Cancel": "取り消し",
         "ChangeCount": "回数変更",
         "Count": "回数",
@@ -379,7 +370,6 @@
         "InvalidCountEmpty": "回数は空であってはなりません！",
         "InvalidCountGreaterZero": "回数は0以上でなければなりません！",
         "JobQueue": "ジョブキュー",
-        "Jobs": "ジョブ",
         "Pause": "一時停止",
         "RemoveFromQueue": "キューから削除",
         "Start": "開始"
@@ -473,10 +463,8 @@
             "CommittedYesterday": "昨日コミット",
             "Detached": "detached",
             "Dirty": "dirty",
-            "ERROR": "エラー",
             "Invalid": "無効",
             "OSPackages": "OSパッケージ",
-            "PackagesCanBeUpgraded": "アップグレード可能なパッケージ",
             "System": "システム",
             "Unknown": "不明",
             "Update": "更新",
@@ -570,7 +558,6 @@
             },
             "RunoutSensor": {
                 "Detected": "検出",
-                "Disabled": "無効",
                 "Empty": "空"
             }
         },
@@ -597,10 +584,8 @@
             },
             "Filament": "フィラメント",
             "File": "ファイル",
-            "Files": "ファイル",
             "Flow": "フロー",
             "Headline": "状態",
-            "Jobqueue": "ジョブキュー",
             "JobqueueMoreFiles": "ジョブなし | あとひとつのジョブ | あと {count}個のジョブ",
             "Layer": "層",
             "Max": "最大",
@@ -625,7 +610,6 @@
             "ResumePrint": "印刷再開",
             "Slicer": "スライサー",
             "Speed": "速度",
-            "Status": "状態",
             "Total": "総計",
             "Unknown": "不明"
         },
@@ -683,9 +667,7 @@
             "SaveConfig": "設定保存",
             "SaveInfoDescription": "新しいZ軸オフセットが計算され登録されました。\"設定保存\"をクリックするとprinter.cfgに保存して、Klipperを再始動します。",
             "SaveInfoDescriptionPrint": "新しいZ軸オフセットが計算され登録されました。印刷後、トップバーの\"設定保存\"をクリックするとprinter.cfgに保存して、Klipperを再始動します。",
-            "SaveInfoHeadline": "情報",
-            "ToEndstop": "エンドストップまで",
-            "ToProbe": "プローブまで"
+            "SaveInfoHeadline": "情報"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -837,7 +819,6 @@
             "DbHistoryTotals": "履歴総計",
             "DbTimelapseSettings": "タイムラプス設定",
             "DbView": "ビュー設定",
-            "DbWebcams": "カメラ",
             "EstimateValues": {
                 "Filament": "フィラメント",
                 "File": "ファイル",
@@ -847,7 +828,6 @@
             "FactoryReset": "インストール直後の状態に初期化",
             "General": "全般",
             "Language": "言語",
-            "MoonrakerDb": "Moonraker DB",
             "PrinterName": "プリンター名",
             "Reset": "初期化",
             "Restore": "復元",
@@ -947,7 +927,6 @@
             "Autorender": "自動レンダリング",
             "AutorenderDescription": "有効にすると、タイムラプスビデオは印刷終了すると自動的にレンダリングされます。",
             "Camera": "カメラ",
-            "CameraDescription": "使用するカメラを選択してください。",
             "ConstantRateFactor": "Constant Rate Factor",
             "ConstantRateFactorDescription": "CFRは動画のファイルサイズに対する画質を設定します。CRFの値は0から51を指定でき、0のときはロスレス、23がデフォルト、51で最低画質になります。小さな値ほど高画質になる傾向がありますが、17から28が実用的な範囲です。 17から18で視覚的にはほぼロスレスと変わらないことを留意してください。",
             "duplicatelastframe": "最後のフレームを複製",
@@ -1038,7 +1017,6 @@
             "PowerDeviceName": "プリンター電源機器",
             "PowerDeviceNameDescription": "プリンターの電源投入に使用するMoonrakerの電源デバイスを選択します。",
             "Primary": "一次",
-            "ShowWebcamInNavigation": "ナビゲーションにカメラを表示",
             "UiSettings": "UI設定"
         },
         "Update": "更新",

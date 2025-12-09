@@ -47,6 +47,9 @@ body {
 .h-100 {
     height: 100% !important;
 }
+.h-auto {
+    height: auto !important;
+}
 
 .position-absolute {
     position: absolute !important;
@@ -80,6 +83,38 @@ body {
     border: 4px solid #272727;
     min-width: 100px;
     min-height: 100px;
+}
+
+.bt-1,
+.bb-1,
+.bl-1,
+.br-1 {
+    border-width: 0;
+    border-style: solid !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.bt-1 {
+    border-top-width: 1px !important;
+}
+
+.br-1 {
+    border-right-width: 1px !important;
+}
+
+.bb-1 {
+    border-bottom-width: 1px !important;
+}
+
+.bl-1 {
+    border-left-width: 1px !important;
+}
+
+.theme--light .bt-1,
+.theme--light .bb-1,
+.theme--light .bl-1,
+.theme--light .br-1 {
+    border-color: rgba(0, 0, 0, 0.12) !important;
 }
 
 /* Light theme */

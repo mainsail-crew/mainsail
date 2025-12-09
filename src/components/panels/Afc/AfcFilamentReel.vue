@@ -1,5 +1,13 @@
 <template>
-    <svg xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 256 500" xml:space="preserve" @click="clickSpool">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        x="0"
+        y="0"
+        viewBox="0 0 256 500"
+        xml:space="preserve"
+        width="100"
+        height="80"
+        @click="clickSpool">
         <path
             id="spool_right_rim"
             d="M202.1,0.3h-5v2.3C179,19,165,123.6,165,250s14,231.1,32.2,247.5v2.3h5

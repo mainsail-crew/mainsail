@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
 @Component
 export default class AfcMixin extends Vue {
+    get afcExists() {
+        return 'AFC' in this.$store.state.printer
+    }
+
     get afc() {
         return this.$store.state.printer.AFC ?? {}
     }
@@ -100,6 +105,10 @@ export default class AfcMixin extends Vue {
         return this.$store.state.gui.view.afc?.hiddenUnits ?? []
     }
 
+    get afcCurrentToolchange() {
+        return this.afc.current_toolchange ?? undefined
+    }
+
     get afcShowTd1Color(): boolean {
         return this.$store.state.gui.view.afc?.showTd1Color ?? true
     }
@@ -125,6 +134,20 @@ export default class AfcMixin extends Vue {
         const key_stepper = `AFC_stepper ${lane}`
         const key_lane = `AFC_lane ${lane}`
         return this.getPrinterSettings(key_stepper) ?? this.getPrinterSettings(key_lane) ?? {}
+    }
+
+    getAfcLaneFilament(laneName: string) {
+        const lane = this.getAfcLaneObject(laneName)
+        const spoolId = lane?.spool_id ?? 0
+        const spools = this.$store.state.server.spoolman?.spools || []
+        const spool = spools.find((spool: ServerSpoolmanStateSpool) => spool.id === spoolId) || null
+
+        return {
+            color: lane?.color ?? '#000000',
+            name: spool?.filament?.name ?? '--',
+            type: lane?.material ?? '--',
+            weight: lane?.weight ?? 0,
+        }
     }
 
     getAfcExtruderObject(extruder: string) {
