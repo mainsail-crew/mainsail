@@ -1006,9 +1006,7 @@
             "NoPresetFound": "Pas de préréglage trouvé",
             "Presets": "Préréglages",
             "Start": "Démarrage",
-            "StartDescription": "Première DEL de ce groupe.",
-            "UnableToLoadLight": "Impossible de charger la lumière",
-            "UnableToLoadPreset": "Impossible de charger la présélection"
+            "StartDescription": "Première DEL de ce groupe."
         },
         "NavigationTab": {
             "Navigation": "Navigation"
@@ -1103,9 +1101,7 @@
             "VariableFps": "IPS variable",
             "VariableFpsDescription": "Si activé, le nombre d'images par seconde (IPS) sera calculé tenant compte de la taille du fichier de sortie.",
             "VariableFpsMax": "IPS variable max",
-            "VariableFpsMaxDescription": "",
-            "VariableFpsMin": "IPS variable min",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMin": "IPS variable min"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Bed Screws",
