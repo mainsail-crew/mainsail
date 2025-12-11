@@ -1094,9 +1094,7 @@
             "NoPresetFound": "Ningún preset encontrado",
             "Presets": "Presets",
             "Start": "Comenzar",
-            "StartDescription": "Primer LED de este grupo.",
-            "UnableToLoadLight": "No se puede cargar la luz",
-            "UnableToLoadPreset": "No se puede cargar el preset"
+            "StartDescription": "Primer LED de este grupo."
         },
         "NavigationTab": {
             "Navigation": "Navegación"
