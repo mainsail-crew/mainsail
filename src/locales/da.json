@@ -1067,9 +1067,7 @@
             "NoPresetFound": "Ingen forudindstilling fundet",
             "Presets": "Forudindstillinger",
             "Start": "Første",
-            "StartDescription": "Første LED i denne gruppe.",
-            "UnableToLoadLight": "Kunne ikke indlæse LED",
-            "UnableToLoadPreset": "Kunne ikke indlæse forudindstilling"
+            "StartDescription": "Første LED i denne gruppe."
         },
         "NavigationTab": {
             "Navigation": "Navigation"
