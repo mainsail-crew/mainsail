@@ -777,6 +777,7 @@
             "ResumePrint": "Pokračovat v tisku",
             "Slicer": "Slicer",
             "Speed": "Rychlost",
+            "Toolchange": "Výměna nástroje",
             "Total": "Celkem",
             "TotalTime": "Celkový čas",
             "Unknown": "Neznámý"
@@ -1111,9 +1112,7 @@
             "Presets": "Předvolby",
             "Required": "Toto pole je vyžadováno.",
             "Start": "Start",
-            "StartDescription": "První LED této skupiny.",
-            "UnableToLoadLight": "Nelze načíst světlo",
-            "UnableToLoadPreset": "Nelze načíst předvolbu"
+            "StartDescription": "První LED této skupiny."
         },
         "NavigationTab": {
             "Navigation": "Navigace"
@@ -1321,7 +1320,6 @@
             "IconMcu": "MCU",
             "IconNozzle": "Tryska",
             "IconPrinter": "Tiskárna",
-            "Ipstream": "IP kamera",
             "JMuxerStream": "Raw h264 stream (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptivní MJPEG-Streamer (experimentální)",
