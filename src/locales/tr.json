@@ -937,9 +937,7 @@
             "NoPresetFound": "Ön ayar bulunamadı",
             "Presets": "Ön Ayarlar",
             "Start": "Başla",
-            "StartDescription": "Bu grubun ilk LED'i.",
-            "UnableToLoadLight": "Işık yüklenemiyor",
-            "UnableToLoadPreset": "Ön ayar yüklenemiyor"
+            "StartDescription": "Bu grubun ilk LED'i."
         },
         "NavigationTab": {
             "Navigation": "Navigasyon"
@@ -1034,9 +1032,7 @@
             "VariableFps": "Değişken FPS",
             "VariableFpsDescription": "Etkinleştirildiğinde, çıkış videosunun kare hızı hedef uzunluğa dayalı olarak hesaplanır",
             "VariableFpsMax": "Değişken FPS maks.",
-            "VariableFpsMaxDescription": "",
-            "VariableFpsMin": "Değişken FPS min.",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMin": "Değişken FPS min."
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Tabla Vidaları Diyaloğu",
