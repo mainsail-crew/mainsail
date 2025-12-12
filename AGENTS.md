@@ -52,7 +52,7 @@ Mainsail is a Vue 2 + TypeScript web interface for Klipper 3D printer firmware. 
   - `farm/` - Multi-printer support
 - `/src/components/mixins/` - Reusable Vue mixins
 - `/src/plugins/` - Vue plugins (webSocketClient.ts for Moonraker communication, vuetify.ts, i18n.ts, router.ts)
-- `/src/plugins/helper.ts` - Utility functions (shared across components)
+- `/src/plugins/helpers.ts` - Utility functions (shared across components)
 - `/src/locales/` - Translation JSON files
 
 **Key Technologies:**
