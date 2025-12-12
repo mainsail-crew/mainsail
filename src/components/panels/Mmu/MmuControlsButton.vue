@@ -8,9 +8,10 @@
                 :large="btnSizeLarge"
                 color="secondary"
                 :disabled="disabled"
+                :loading="btnLoading"
                 v-bind="attrs"
                 v-on="on"
-                @click="doSend(command)">
+                @click="sendCommand">
                 <v-icon :left="!showTooltip">{{ icon }}</v-icon>
                 <template v-if="!showTooltip">{{ text }}</template>
             </v-btn>
@@ -48,6 +49,10 @@ export default class MmuControlsButton extends Mixins(BaseMixin, MmuMixin) {
         return this.size === 'large'
     }
 
+    get btnLoading() {
+        return this.loadings.includes(this.command.toLowerCase())
+    }
+
     calcBtnSize() {
         const width = this.button.$el.clientWidth ?? undefined
 
@@ -66,6 +71,10 @@ export default class MmuControlsButton extends Mixins(BaseMixin, MmuMixin) {
 
     beforeDestroy() {
         window.removeEventListener('resize', this.calcBtnSize)
+    }
+
+    sendCommand() {
+        this.doSend(this.command, this.command.toLowerCase())
     }
 
     @Watch('largeFilamentStatus')

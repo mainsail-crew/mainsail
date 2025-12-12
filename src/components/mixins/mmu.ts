@@ -70,8 +70,19 @@ export interface Mmu {
         | typeof ACTION_PURGING
     has_bypass: boolean
     sync_drive: boolean
+    sync_feedback_bias_modelled: number
+    sync_feedback_bias_raw: number
     sync_feedback_enabled: boolean
     sync_feedback_state: string
+    flowguard?: {
+        trigger: string
+        reason: string
+        level: number
+        max_clog: number
+        max_tangle: number
+        active: boolean
+        enabled: boolean
+    }
     clog_detection: number
     clog_detection_enabled: number
     endless_spool: number
@@ -87,6 +98,7 @@ export interface Mmu {
         mmu_gear?: boolean
         mmu_gate?: boolean
         filament_compression?: boolean
+        filament_proportional?: boolean
         filament_tension?: boolean
         extruder?: boolean
         toolhead?: boolean
@@ -199,6 +211,22 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
     get hasMmuEncoder() {
         return 'encoder' in (this.mmu ?? {})
+    }
+
+    get hasFilamentProportionalSensor() {
+        return this.hasMmuSensor('filament_proportional')
+    }
+
+    get hasFilamentCompressionSensor() {
+        return this.hasMmuSensor('filament_compression')
+    }
+
+    get hasFilamentTensionSensor() {
+        return this.hasMmuSensor('filament_tension')
+    }
+
+    get hasSyncFeedback(): boolean {
+        return this.hasFilamentCompressionSensor || this.hasFilamentTensionSensor || this.hasFilamentProportionalSensor
     }
 
     get mmuMachine(): MmuMachine | undefined {
@@ -314,9 +342,9 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmuSensors ? this.mmuSensors[sensorName] : undefined
     }
 
-    doSend(gcode: string) {
+    doSend(gcode: string, loading: string | null = null) {
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading })
     }
 
     formColorString(color: string | null) {

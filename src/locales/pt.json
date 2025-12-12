@@ -901,9 +901,7 @@
             "NoPresetFound": "Pré-config. não encontrada",
             "Presets": "Pré-Configgs.",
             "Start": "Início",
-            "StartDescription": "Primeiro LED deste grupo.",
-            "UnableToLoadLight": "Não foi possível carregar luz",
-            "UnableToLoadPreset": "Não foi possível carregar pré-config."
+            "StartDescription": "Primeiro LED deste grupo."
         },
         "NavigationTab": {
             "Navigation": "Navegação"
@@ -998,9 +996,7 @@
             "VariableFps": "FPS Variável",
             "VariableFpsDescription": "Se ativado, a taxa de quadros do vídeo de saída será calculada com base no comprimento alvo.",
             "VariableFpsMax": "Max FPS Variável",
-            "VariableFpsMaxDescription": "",
-            "VariableFpsMin": "Min FPS Variável",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMin": "Min FPS Variável"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Configs. dos Fusos da Mesa",

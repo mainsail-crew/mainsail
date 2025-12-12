@@ -971,9 +971,7 @@
             "NoPresetFound": "Nie znaleziono nastawy",
             "Presets": "Nastawy",
             "Start": "Początek",
-            "StartDescription": "Pierwsza dioda LED tej grupy.",
-            "UnableToLoadLight": "Nie można wczytać światła",
-            "UnableToLoadPreset": "Nie można wczytać nastawy"
+            "StartDescription": "Pierwsza dioda LED tej grupy."
         },
         "NavigationTab": {
             "Navigation": "Nawigacja"

@@ -998,9 +998,7 @@
             "NoPresetFound": "Ingen förinställning hittades",
             "Presets": "Förinställningar",
             "Start": "Start",
-            "StartDescription": "Första lysdioden i denna grupp.",
-            "UnableToLoadLight": "Det går inte att ladda ljus",
-            "UnableToLoadPreset": "Det gick inte att ladda förinställningen"
+            "StartDescription": "Första lysdioden i denna grupp."
         },
         "NavigationTab": {
             "Navigation": "Navigering"

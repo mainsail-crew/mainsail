@@ -1,26 +1,26 @@
 <template>
     <div class="mmu-unit d-inline-flex flex-column mx-1 rounded-lg mb-3">
-        <div class="d-flex pt-3 px-4 mb-n7 position-relative">
+        <div class="d-flex flex-wrap pt-3 px-4 position-relative">
             <mmu-unit-gate
                 v-for="gateIndex in numGates"
                 :key="gateIndex"
                 :gate-index="gateIndex - 1 + firstGateNumber"
                 :mmu-machine-unit="mmuMachineUnit"
                 :show-details="showDetails"
+                :show-context-menu="showContextMenu"
                 :unhighlight-spools="unhighlightSpools"
                 :selected-gate="selectedGate"
+                :has-bypass="hasBypass"
                 @select-gate="selectGate" />
             <mmu-unit-gate
                 v-if="hasBypass"
                 :gate-index="TOOL_GATE_BYPASS"
                 :mmu-machine-unit="mmuMachineUnit"
+                :show-context-menu="false"
                 :selected-gate="selectedGate"
                 @select-gate="selectGate" />
         </div>
-        <mmu-unit-footer
-            class="pt-8 position-relative zindex-3"
-            :mmu-machine-unit="mmuMachineUnit"
-            :unit-index="unitIndex" />
+        <mmu-unit-footer class="pt-0 position-relative" :mmu-machine-unit="mmuMachineUnit" :unit-index="unitIndex" />
     </div>
 </template>
 <script lang="ts">
@@ -35,6 +35,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true }) readonly selectedGate!: number
     @Prop({ required: true }) readonly unitIndex!: number
     @Prop({ default: false }) readonly showDetails!: boolean
+    @Prop({ default: false }) readonly showContextMenu!: boolean
     @Prop({ default: false }) readonly hideBypass!: boolean
     @Prop({ default: false }) readonly unhighlightSpools!: boolean
 
@@ -70,9 +71,5 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
 html.theme--light .mmu-unit {
     background: #f0f0f0;
-}
-
-.zindex-3 {
-    z-index: 3;
 }
 </style>
