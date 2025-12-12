@@ -104,8 +104,9 @@ Mainsail is a Vue 2 + TypeScript web interface for Klipper 3D printer firmware. 
 - Ensure adherence to code style guidelines
 - Verify TypeScript types and interfaces
 - New strings added to en.json (alphabetically sorted)
-- No raw `console.log` statements in production code. For intentional debug/logging output, create a dedicated `log()`
-  method with a descriptive prefix (e.g., `[WebRTC camera-streamer]`). See `WebrtcCameraStreamer.vue` for reference.
+- No raw `console.log` statements in production code. For intentional debug/logging output, define a **module-scoped**
+  `log()` helper that wraps `console.log` with a descriptive prefix (e.g., `[WebRTC camera-streamer]`), and use it
+  consistently within that file. See `WebrtcCameraStreamer.vue` for a reference implementation.
 - **Performance:** Use `@Debounce(ms)` for inputs triggering API calls, `throttle()` for resize handlers
 - **Cleanup in `beforeDestroy`:** Remove event listeners, clear timers, disconnect observers, dispose ECharts, close
   WebSocket/WebRTC connections
