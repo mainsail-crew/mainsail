@@ -10,6 +10,7 @@ import {
     mdiEngine,
     mdiGamepad,
     mdiInformation,
+    mdiLedStrip,
     mdiPrinter3dNozzle,
     mdiThermometerLines,
     mdiWebcam,
@@ -62,6 +63,8 @@ export default class DashboardMixin extends BaseMixin {
                 return mdiCodeTags
             case 'miscellaneous':
                 return mdiDipSwitch
+            case 'led-effects':
+                return mdiLedStrip
             case 'temperature':
                 return mdiThermometerLines
             case 'miniconsole':

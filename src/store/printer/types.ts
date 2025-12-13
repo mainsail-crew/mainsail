@@ -109,6 +109,11 @@ export interface PrinterStateLight {
     singleChannelTarget: number | null
 }
 
+export interface PrinterStateLedEffect {
+    name: string
+    is_enabled: boolean
+}
+
 export interface PrinterStateMiscellaneous {
     name: string
     type: string
