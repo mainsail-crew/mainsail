@@ -157,7 +157,18 @@
         "ErrorMessage": "Error message: {message}",
         "Failed": "Connection failed",
         "Help": "Help",
+        "InitializationFailed": "Initialization failed",
         "Initializing": "Initializing",
+        "InitSteps": {
+            "CheckingKlipper": "Checking Klipper connection...",
+            "IdentifyingClient": "Identifying client...",
+            "LoadingComponent": "Loading {component}...",
+            "LoadingDatabase": "Loading database...",
+            "LoadingProcStats": "Loading process stats...",
+            "LoadingServerConfig": "Loading server config...",
+            "LoadingServerInfo": "Loading server info...",
+            "LoadingSystemInfo": "Loading system info..."
+        },
         "TryAgain": "try again"
     },
     "Console": {

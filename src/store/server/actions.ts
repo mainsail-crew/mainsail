@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import router from '@/plugins/router'
 import { ActionTree } from 'vuex'
-import { ServerState, ServerStateEvent } from '@/store/server/types'
+import { MoonrakerApiIdentifyResponse, ServerState, ServerStateEvent } from '@/store/server/types'
 import { camelize, formatConsoleMessage } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 import { initableServerComponents } from '@/store/variables'
+import i18n from '@/plugins/i18n'
 
 export const actions: ActionTree<ServerState, RootState> = {
     reset({ commit, dispatch }) {
@@ -16,10 +17,38 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('updateManager/reset')
     },
 
-    async init({ commit, dispatch, rootState }) {
+    async init({ dispatch }) {
         window.console.debug('init Server')
 
-        // identify client
+        try {
+            await dispatch('initIdentifyClient')
+            const serverComponents = await dispatch('initServerInfo')
+            await dispatch('initServerConfig')
+            await dispatch('initSystemInfo')
+            await dispatch('initProcStats')
+            await dispatch('initDatabases')
+            await dispatch('initServerComponents', serverComponents)
+            await dispatch('initKlippyConnection')
+
+            // Server init complete
+            dispatch('socket/removeInitModule', 'server', { root: true })
+            dispatch('socket/setInitializationStep', null, { root: true })
+        } catch (e: any) {
+            window.console.error('Server init failed:', e)
+
+            if (e?.message === 'Unauthorized') {
+                dispatch('socket/setConnectionFailed', 'Unauthorized', { root: true })
+            } else {
+                dispatch('socket/setInitializationError', e?.message ?? 'Unknown error', { root: true })
+            }
+        }
+    },
+
+    async initIdentifyClient({ commit, dispatch, rootState }) {
+        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.IdentifyingClient').toString(), {
+            root: true,
+        })
+
         try {
             const connection = await Vue.$socket.emitAndWait('server.connection.identify', {
                 client_name: 'mainsail',
@@ -29,94 +58,133 @@ export const actions: ActionTree<ServerState, RootState> = {
             })
             commit('setConnectionId', connection.connection_id)
         } catch (e: any) {
-            if (e.message === 'Unauthorized') {
-                this.dispatch('socket/setConnectionFailed', e.message)
+            if (e?.message === 'Unauthorized') {
+                dispatch('socket/setConnectionFailed', 'Unauthorized', { root: true })
+            } else {
+                dispatch('socket/setInitializationError', e?.message ?? 'Unknown error', { root: true })
             }
-
-            window.console.error('Error while identifying client: ' + e.message)
-            return
         }
-
-        dispatch('socket/addInitModule', 'server/info', { root: true })
-        dispatch('socket/addInitModule', 'server/config', { root: true })
-        dispatch('socket/addInitModule', 'server/systemInfo', { root: true })
-        dispatch('socket/addInitModule', 'server/procStats', { root: true })
-        dispatch('socket/addInitModule', 'server/databaseList', { root: true })
-
-        Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo' })
-        Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig' })
-        Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo' })
-        Vue.$socket.emit('machine.proc_stats', {}, { action: 'server/initProcStats' })
-        Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases' })
-
-        await dispatch('socket/removeInitModule', 'server', { root: true })
     },
 
-    checkDatabases({ dispatch, commit }, payload) {
-        if (payload.namespaces?.includes('mainsail')) {
+    async initServerInfo({ commit, dispatch }) {
+        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.LoadingServerInfo').toString(), {
+            root: true,
+        })
+
+        const serverInfo = await Vue.$socket.emitAndWait('server.info')
+        if (serverInfo.registered_directories?.length) {
+            // TODO: create a dedicated action for this
+            dispatch('files/initRootDirs', serverInfo.registered_directories, { root: true })
+        }
+
+        commit('setData', serverInfo)
+
+        return serverInfo.components ?? []
+    },
+
+    async initServerConfig({ commit, dispatch }) {
+        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.LoadingServerConfig').toString(), {
+            root: true,
+        })
+
+        const serverConfig = await Vue.$socket.emitAndWait('server.config')
+        commit('setData', {
+            config: serverConfig.config,
+            config_orig: serverConfig.orig,
+            config_files: serverConfig.files,
+        })
+    },
+
+    async initSystemInfo({ commit, dispatch }) {
+        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.LoadingSystemInfo').toString(), {
+            root: true,
+        })
+
+        const systemInfo = await Vue.$socket.emitAndWait('machine.system_info')
+        commit('setData', { system_info: systemInfo.system_info })
+    },
+
+    async initProcStats({ commit, dispatch }) {
+        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.LoadingProcStats').toString(), {
+            root: true,
+        })
+
+        const procStats = await Vue.$socket.emitAndWait('machine.proc_stats')
+
+        commit('setThrottledState', procStats.throttled_state)
+        if (procStats.system_uptime) {
+            const system_boot_at = new Date(Date.now() - procStats.system_uptime * 1000)
+            commit('setData', { system_boot_at })
+        }
+    },
+
+    async initDatabases({ commit, dispatch }) {
+        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.LoadingDatabase').toString(), {
+            root: true,
+        })
+
+        const dbList = await Vue.$socket.emitAndWait('server.database.list', { root: 'config' })
+
+        // TODO: move to separate actions
+        if (dbList.namespaces?.includes('mainsail')) {
             dispatch('socket/addInitModule', 'gui/init', { root: true })
             dispatch('gui/init', null, { root: true })
-        } else dispatch('gui/initDb', null, { root: true })
-        if (payload.namespaces?.includes('maintenance')) {
+        } else {
+            dispatch('gui/initDb', null, { root: true })
+        }
+
+        // TODO: move to separate actions
+        if (dbList.namespaces?.includes('maintenance')) {
             dispatch('socket/addInitModule', 'gui/maintenance/init', { root: true })
             dispatch('gui/maintenance/init', null, { root: true })
-        } else dispatch('gui/maintenance/initDb', null, { root: true })
+        } else {
+            dispatch('gui/maintenance/initDb', null, { root: true })
+        }
 
-        // init webcams
+        // TODO: move to separate actions
         dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
+        // TODO: move to separate actions
         dispatch('gui/webcams/init', null, { root: true })
 
-        commit('saveDbNamespaces', payload.namespaces)
-
-        Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected' })
-        dispatch('socket/removeInitModule', 'server/databaseList', { root: true })
+        commit('setData', { dbNamespaces: dbList.namespaces })
     },
 
-    initServerInfo({ dispatch, commit }, payload) {
-        // delete old plugin entries
-        if ('plugins' in payload) delete payload.plugins
-        if ('failed_plugins' in payload) delete payload.failed_plugins
+    // TODO: rework to async module initialization
+    async initServerComponents({ dispatch }, serverComponents: string[]) {
+        const componentsToInit = serverComponents.filter((component: string) =>
+            initableServerComponents.includes(camelize(component))
+        )
+        const totalComponents = componentsToInit.length
 
-        if (payload.components?.length) {
-            for (let component of payload.components) {
-                component = camelize(component)
-                if (initableServerComponents.includes(component)) {
-                    window.console.debug('init server component: ' + component)
-                    dispatch('socket/addInitModule', 'server/' + component + '/init', { root: true })
-                    dispatch('server/' + component + '/init', {}, { root: true })
-                }
-            }
+        for (let i = 0; i < componentsToInit.length; i++) {
+            const component = componentsToInit[i]
+            const camelizedComponent = camelize(component)
+
+            const progress = Math.round(((i + 1) / totalComponents) * 100)
+            dispatch('socket/setInitializationProgress', progress, { root: true })
+            dispatch(
+                'socket/setInitializationStep',
+                i18n.t('ConnectionDialog.InitSteps.LoadingComponent', { component: camelizedComponent }).toString(),
+                { root: true }
+            )
+
+            window.console.debug('init server component: ' + camelizedComponent)
+            dispatch('socket/addInitModule', 'server/' + camelizedComponent + '/init', { root: true })
+            dispatch('server/' + camelizedComponent + '/init', {}, { root: true })
         }
-
-        if (payload.registered_directories?.length) {
-            dispatch('files/initRootDirs', payload.registered_directories, { root: true })
-        }
-
-        commit('setData', payload)
-        dispatch('socket/removeInitModule', 'server/info', { root: true })
     },
 
-    initServerConfig({ commit, dispatch }, payload) {
-        commit('setConfig', payload)
-        dispatch('socket/removeInitModule', 'server/config', { root: true })
-    },
+    async initKlippyConnection({ dispatch }) {
+        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.CheckingKlipper').toString(), {
+            root: true,
+        })
+        dispatch('socket/setInitializationProgress', null, { root: true })
 
-    initSystemInfo({ commit, dispatch }, payload) {
-        commit('setSystemInfo', payload.system_info)
-        dispatch('socket/removeInitModule', 'server/systemInfo', { root: true })
-    },
-
-    initProcStats({ commit, dispatch }, payload) {
-        if (payload.throttled_state !== null) {
-            commit('setThrottledState', payload.throttled_state)
-        }
-
-        if (payload.system_uptime) {
-            const system_boot_at = new Date(new Date().getTime() - payload.system_uptime * 1000)
-            commit('setSystemBootAt', system_boot_at)
-        }
-
-        dispatch('socket/removeInitModule', 'server/procStats', { root: true })
+        const klippyStatus = await Vue.$socket.emitAndWait('server.info')
+        dispatch('checkKlippyConnected', {
+            klippy_connected: klippyStatus.klippy_connected,
+            klippy_state: klippyStatus.klippy_state,
+        })
     },
 
     updateProcStats({ commit }, payload) {

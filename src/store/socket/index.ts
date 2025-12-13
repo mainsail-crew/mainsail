@@ -23,6 +23,9 @@ export const getDefaultState = (): SocketState => {
         connectionFailedMessage: null,
         loadings: [],
         initializationList: ['server'],
+        initializationStep: null,
+        initializationProgress: null,
+        initializationError: null,
         connection_id: null,
     }
 }

@@ -26,7 +26,15 @@ export default class BaseMixin extends Vue {
     }
 
     get guiIsReady() {
-        return this.$store.state.socket.initializationList.length === 0
+        // GUI is ready when:
+        // 1. No init step is running (initializationStep === null)
+        // 2. No init error occurred
+        // 3. InitializationList is empty (for components still using old mechanism)
+        return (
+            this.$store.state.socket.initializationStep === null &&
+            this.$store.state.socket.initializationError === null &&
+            this.$store.state.socket.initializationList.length === 0
+        )
     }
 
     get klippyIsConnected(): boolean {

@@ -165,8 +165,6 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
     },
 
     getTemperatureStoreSize: (state, getters, rootState, rootGetters) => {
-        const dataStoreSize = rootGetters['server/getConfig']('data_store', 'temperature_store_size')
-
-        return dataStoreSize ?? 1200
+        return rootGetters['server/getConfigValue']('data_store', 'temperature_store_size', 1200)
     },
 }

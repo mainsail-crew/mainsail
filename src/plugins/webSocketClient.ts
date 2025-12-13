@@ -2,6 +2,7 @@ import { Store } from 'vuex'
 import _Vue from 'vue'
 import { RootState } from '@/store/types'
 import { initableServerComponents } from '@/store/variables'
+import type { RPCMethods, RPCParams, RPCResult } from '@/types/MoonrakerRPCInterface'
 
 export class WebSocketClient {
     url = ''
@@ -179,8 +180,12 @@ export class WebSocketClient {
         )
     }
 
-    async emitAndWait(method: string, params: Params | undefined = undefined, options: emitOptions = {}): Promise<any> {
-        return new Promise((resolve, reject) => {
+    emitAndWait<M extends RPCMethods>(
+        method: M,
+        params?: RPCParams<M>,
+        options: emitOptions = {}
+    ): Promise<RPCResult<M>> {
+        return new Promise<RPCResult<M>>((resolve, reject) => {
             if (this.instance?.readyState !== WebSocket.OPEN) reject()
 
             const id = this.messageId++
@@ -190,7 +195,7 @@ export class WebSocketClient {
                 action: options.action ?? null,
                 actionPayload: options.actionPayload ?? {},
                 loading: options.loading ?? null,
-                resolve,
+                resolve: resolve as (value: unknown) => void,
                 reject,
             })
 

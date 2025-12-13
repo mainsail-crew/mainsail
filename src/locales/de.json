@@ -157,7 +157,18 @@
         "ErrorMessage": "Fehler-Nachricht: {message}",
         "Failed": "Verbindung fehlgeschlagen",
         "Help": "Hilfe",
+        "InitializationFailed": "Initialisierung fehlgeschlagen",
         "Initializing": "Initialisieren",
+        "InitSteps": {
+            "CheckingKlipper": "Klipper-Verbindung prüfen...",
+            "IdentifyingClient": "Client identifizieren...",
+            "LoadingComponent": "{component} laden...",
+            "LoadingDatabase": "Datenbank laden...",
+            "LoadingProcStats": "Prozess-Statistiken laden...",
+            "LoadingServerConfig": "Server-Konfiguration laden...",
+            "LoadingServerInfo": "Server-Info laden...",
+            "LoadingSystemInfo": "Systeminfo laden..."
+        },
         "TryAgain": "Erneut versuchen"
     },
     "Console": {

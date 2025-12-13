@@ -177,4 +177,20 @@ export const actions: ActionTree<SocketState, RootState> = {
     setConnectionFailed({ commit }, payload) {
         commit('setDisconnected', payload)
     },
+
+    setInitializationStep({ commit }, payload: string | null) {
+        commit('setInitializationStep', payload)
+    },
+
+    setInitializationProgress({ commit }, payload: number | null) {
+        commit('setInitializationProgress', payload)
+    },
+
+    setInitializationError({ commit }, payload: string | null) {
+        commit('setInitializationError', payload)
+    },
+
+    resetInitialization({ commit }) {
+        commit('resetInitialization')
+    },
 }

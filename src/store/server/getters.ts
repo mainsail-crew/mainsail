@@ -31,13 +31,21 @@ export const getters: GetterTree<ServerState, any> = {
             return reverse ? events.reverse() : events
         },
 
-    getConfig: (state) => (section: string, attribute: string) => {
-        const config = state.config?.config ?? {}
+    getConfigSection:
+        (state) =>
+        <T = Record<string, unknown>>(section: string, fallback: T | null = null): T | null => {
+            const config = state.config ?? {}
+            if (section in config) return config[section] as T
+            return fallback
+        },
 
-        if (section in config && attribute in config[section]) return config[section][attribute]
-
-        return null
-    },
+    getConfigValue:
+        (state, getters) =>
+        <T = unknown>(section: string, attribute: string, fallback: T | null = null): T | null => {
+            const sectionData = getters.getConfigSection(section)
+            if (sectionData !== null && attribute in sectionData) return sectionData[attribute] as T
+            return fallback
+        },
 
     getHostStats: (state, getters, rootState, rootGetters) => {
         interface HostStats {
