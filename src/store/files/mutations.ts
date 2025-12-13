@@ -3,7 +3,7 @@ import { getDefaultState } from './index'
 import { findDirectory } from '@/plugins/helpers'
 import { MutationTree } from 'vuex'
 import { FileState, FileStateFile } from '@/store/files/types'
-import { allowedMetadata } from '@/store/variables'
+import { allowedMetadata, validGcodeExtensions } from '@/store/variables'
 
 export const mutations: MutationTree<FileState> = {
     reset(state) {
@@ -12,6 +12,7 @@ export const mutations: MutationTree<FileState> = {
 
     createRootDir(state, payload) {
         state.filetree.push({
+            path: '',
             isDirectory: true,
             filename: payload.name,
             modified: new Date(),
@@ -68,6 +69,20 @@ export const mutations: MutationTree<FileState> = {
         const path = payload.item.path.substr(0, payload.item.path.lastIndexOf('/'))
         const parent = findDirectory(state.filetree, (payload.item.root + '/' + path).split('/'))
 
+        if (payload.item.root === 'gcodes') {
+            const extension = filename.substring(filename.lastIndexOf('.'))
+            const lastModified = state.latestGcodeFile?.modified ?? 0
+            if (validGcodeExtensions.includes(extension) && payload.item.modified > lastModified) {
+                state.latestGcodeFile = {
+                    path,
+                    filename,
+                    modified: payload.item.modified,
+                    size: payload.item.size,
+                    permissions: payload.item.permissions,
+                }
+            }
+        }
+
         if (parent) {
             const indexFile = parent.findIndex(
                 (element: FileStateFile) => !element.isDirectory && element.filename === filename
@@ -77,6 +92,7 @@ export const mutations: MutationTree<FileState> = {
                 const modified = new Date(payload.item.modified * 1000)
 
                 parent.push({
+                    path,
                     isDirectory: false,
                     filename: filename,
                     modified: modified,
@@ -213,6 +229,7 @@ export const mutations: MutationTree<FileState> = {
 
         if (parent) {
             parent.push({
+                path,
                 isDirectory: true,
                 filename: dirname,
                 modified: payload.item.modified ?? new Date(),
