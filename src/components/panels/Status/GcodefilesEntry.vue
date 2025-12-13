@@ -146,6 +146,7 @@ import { defaultBigThumbnailBackground } from '@/store/variables'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath, formatPrintTime } from '@/plugins/helpers'
 import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbnail.vue'
+import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
 @Component({
     components: {
@@ -248,15 +249,17 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 
     showContextMenu(e: any) {
-        if (this.contextMenuShow) return
-
         e?.preventDefault()
+        EventBus.$emit(CLOSE_CONTEXT_MENU)
+
         this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
         this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
 
-        this.$nextTick(() => {
-            this.contextMenuShow = true
-        })
+        this.contextMenuShow = true
+    }
+
+    closeContextMenu() {
+        this.contextMenuShow = false
     }
 
     addToQueue() {
@@ -312,6 +315,11 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
 
     mounted() {
         this.renameFileNewName = this.filename
+        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
+    }
+
+    beforeDestroy() {
+        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 }
 </script>
