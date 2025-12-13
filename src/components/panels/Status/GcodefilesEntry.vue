@@ -54,7 +54,7 @@
                     <v-icon class="mr-1">{{ mdiFileDocumentEditOutline }}</v-icon>
                     {{ $t('Files.EditFile') }}
                 </v-list-item>
-                <v-list-item @click="showRenameFileDialog = true">
+                <v-list-item @click="openRenameFileDialog">
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
@@ -85,10 +85,10 @@
                 </template>
                 <v-card-text>
                     <v-text-field
-                        ref="inputFieldRenameFile"
                         v-model="renameFileNewName"
                         :label="$t('Files.Name')"
                         required
+                        autofocus
                         @keyup.enter="renameFile" />
                 </v-card-text>
                 <v-card-actions>
@@ -169,10 +169,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     @Prop({ type: Number, required: true }) contentTdWidth!: number
 
     currentPath = ''
-
-    declare $refs: {
-        inputFieldRenameFile: HTMLInputElement
-    }
 
     contextMenuShow = false
     contextMenuX = 0
@@ -261,6 +257,11 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
         window.open(href)
     }
 
+    openRenameFileDialog() {
+        this.renameFileNewName = this.filename
+        this.showRenameFileDialog = true
+    }
+
     renameFile() {
         this.showRenameFileDialog = false
 
@@ -299,7 +300,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 
     mounted() {
-        this.renameFileNewName = this.filename
         EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 
