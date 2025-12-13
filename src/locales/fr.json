@@ -1149,7 +1149,16 @@
             "ScrewsTiltAdjustDialogDescription": "Affiche une boîte de dialogue d'aide pour SCREWS_TILT_CALCULATE.",
             "TempchartHeight": "Hauteur dans le tableau des températures",
             "TempchartHeightDescription": "Modifie la hauteur du graphique de température sur le tableau de bord.",
-            "UiSettings": "Interface"
+            "UiSettings": "Interface",
+            "ThemeLight": "Claire",
+            "ThemeDark": "Foncé",
+            "Theme": "Thème",
+            "ProgressAsFaviconDescription": "Remplacez l'icône du logo Mainsail par un cercle de progression.",
+            "ProgressAsFavicon": "Montrer la progression à la place du favicon",
+            "PrintstatusThumbnailZoomDescription": "Cela désactivera l'effet de zoom sur la miniature dans le panneau de statut.",
+            "ModeDescription": "Change l'apparence générale de l'application.",
+            "HideOtherInstancesDescription": "Cacher les autres instances de Klipper & Moonraker dans le menu Service.",
+            "HideOtherInstances": "Cacher les autres instances"
         },
         "Update": "mise à jour",
         "WebcamsTab": {
@@ -1187,7 +1196,11 @@
             "Webcams": "Caméras",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcJanus": "WebRTC (janus-gateway)",
-            "WebrtcMediaMTX": "WebRTC (MediaMTX)"
+            "WebrtcMediaMTX": "WebRTC (MediaMTX)",
+            "HtmlVideo": "Vidéo HTML",
+            "EnableAudio": "Activer l'audio",
+            "Enable": "Activer",
+            "Color": "Couleur"
         }
     },
     "Timelapse": {
