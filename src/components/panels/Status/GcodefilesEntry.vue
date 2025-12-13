@@ -130,7 +130,6 @@ import ControlMixin from '@/components/mixins/control'
 import { FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import {
-    mdiFile,
     mdiPlay,
     mdiPlaylistPlus,
     mdiFire,
@@ -142,10 +141,10 @@ import {
     mdiCloseThick,
 } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
-import { defaultBigThumbnailBackground } from '@/store/variables'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath, formatPrintTime } from '@/plugins/helpers'
 import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbnail.vue'
+import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
 @Component({
     components: {
@@ -156,7 +155,6 @@ import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbn
     },
 })
 export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, ControlMixin) {
-    mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiPlaylistPlus = mdiPlaylistPlus
     mdiFire = mdiFire
@@ -185,18 +183,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
 
     get styleContentTdWidth() {
         return `width: ${this.contentTdWidth}px;`
-    }
-
-    get bigThumbnailBackground() {
-        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
-    }
-
-    get bigThumbnailTooltipColor() {
-        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
-            return undefined
-        }
-
-        return this.bigThumbnailBackground
     }
 
     get existsMetadata() {
@@ -244,15 +230,17 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 
     showContextMenu(e: any) {
-        if (this.contextMenuShow) return
-
         e?.preventDefault()
+        EventBus.$emit(CLOSE_CONTEXT_MENU)
+
         this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
         this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
 
-        this.$nextTick(() => {
-            this.contextMenuShow = true
-        })
+        this.contextMenuShow = true
+    }
+
+    closeContextMenu() {
+        this.contextMenuShow = false
     }
 
     addToQueue() {
@@ -309,6 +297,14 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
         )
 
         this.showDeleteDialog = false
+    }
+
+    mounted() {
+        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
+    }
+
+    beforeDestroy() {
+        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 }
 </script>
