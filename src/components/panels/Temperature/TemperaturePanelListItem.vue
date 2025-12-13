@@ -90,7 +90,7 @@ import {
     mdiThermometer,
 } from '@mdi/js'
 import { additionalSensors, opacityHeaterActive, opacityHeaterInactive } from '@/store/variables'
-import { CLOSE_TEMPERATURE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
+import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
 @Component
 export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
@@ -305,15 +305,15 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        EventBus.$on(CLOSE_TEMPERATURE_CONTEXT_MENU, this.closeContextMenu)
+        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 
     beforeDestroy() {
-        EventBus.$off(CLOSE_TEMPERATURE_CONTEXT_MENU, this.closeContextMenu)
+        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 
     openContextMenu(event: MouseEvent) {
-        EventBus.$emit(CLOSE_TEMPERATURE_CONTEXT_MENU)
+        EventBus.$emit(CLOSE_CONTEXT_MENU)
 
         this.showContextMenu = true
         this.contextMenuX = event?.clientX || event?.pageX || window.screenX / 2
