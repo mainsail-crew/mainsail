@@ -71,6 +71,7 @@ import MmuMixin, {
     GATE_AVAILABLE_FROM_BUFFER,
     FILAMENT_POS_UNLOADED,
     GATE_UNKNOWN,
+    GATE_EMPTY,
 } from '@/components/mixins/mmu'
 import { mdiDownloadOutline, mdiEject, mdiCheck, mdiAutoFix, mdiThermometerPlus, mdiDownload, mdiUpload } from '@mdi/js'
 import MmuControlsButton from '@/components/panels/Mmu/MmuControlsButton.vue'
@@ -102,7 +103,7 @@ export default class MmuControls extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get btnEjectDisabled(): boolean {
-        return !this.canSend || [GATE_AVAILABLE, GATE_AVAILABLE_FROM_BUFFER].includes(this.currentGateStatus)
+        return !this.canSend || this.currentGateStatus === GATE_EMPTY
     }
 
     get btnUnloadDisabled() {
