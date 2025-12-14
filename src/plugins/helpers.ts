@@ -387,3 +387,19 @@ export function filamentWeightFormat(weight: number): string {
 
     return `${Math.round(weight * 10) / 10} g`
 }
+
+// This function is based on the Fluidd implementation
+// https://github.com/fluidd-core/fluidd/blob/2425607e4eb507d4da84c18bfa77fecbc42f8a32/src/util/string-formatters.ts#L47
+export function convertStringToArray(str: string, separator = ';'): string[] {
+    if (!str) return []
+    if (str.startsWith('["') && str.endsWith('"]')) {
+        try {
+            const arr = JSON.parse(str)
+            if (Array.isArray(arr)) return arr.map((s) => s.trim())
+        } catch (e) {
+            // Fallback to separator split
+        }
+    }
+
+    return str.split(separator).map((s) => s.replace(/^"|"$/g, '').trim())
+}

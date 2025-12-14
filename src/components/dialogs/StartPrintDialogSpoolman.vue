@@ -22,6 +22,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SpoolmanPanelActiveSpool from '@/components/panels/Spoolman/SpoolmanPanelActiveSpool.vue'
 import { FileStateGcodefile } from '@/store/files/types'
+import { convertStringToArray } from '@/plugins/helpers'
 
 @Component({
     components: { SpoolmanPanelActiveSpool },
@@ -69,9 +70,7 @@ export default class StartPrintDialogSpoolman extends Mixins(BaseMixin) {
             return alerts
         }
 
-        let gcodeFilamentType = this.file.filament_type ?? ''
-        if (gcodeFilamentType.includes(';')) gcodeFilamentType = gcodeFilamentType.split(';')[0]
-
+        const gcodeFilamentType = convertStringToArray(this.file.filament_type ?? '')[0] ?? ''
         if (
             gcodeFilamentType !== '' &&
             this.activeSpool?.filament?.material?.toLowerCase() !== gcodeFilamentType.toLowerCase()
