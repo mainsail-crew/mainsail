@@ -38,7 +38,7 @@ format_diff() {
   if [ "$diff" -gt 0 ]; then
     printf "+%s" "$(format_size $diff)"
   elif [ "$diff" -lt 0 ]; then
-    printf "-%s" "$(format_size ${diff#-})"
+    printf -- "-%s" "$(format_size ${diff#-})"
   else
     echo "0"
   fi
