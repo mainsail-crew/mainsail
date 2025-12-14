@@ -101,7 +101,7 @@ jobs:
 
       - name: Upload translation report
         if: steps.changed-files.outputs.any_changed == 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: translation-report
           path: translation-report.md
@@ -157,7 +157,7 @@ jobs:
 
       - name: Upload bundle report
         if: steps.changed-files.outputs.any_changed == 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: bundle-report
           path: bundle-report.md

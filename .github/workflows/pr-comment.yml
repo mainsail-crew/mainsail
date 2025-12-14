@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Get PR number and check artifacts
         id: pr
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -43,7 +43,7 @@ jobs:
 
       - name: Download translation report
         if: steps.pr.outputs.has_translation == 'true'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: translation-report
           path: ./reports
@@ -60,7 +60,7 @@ jobs:
 
       - name: Download bundle report
         if: steps.pr.outputs.has_bundle == 'true'
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: bundle-report
           path: ./reports
