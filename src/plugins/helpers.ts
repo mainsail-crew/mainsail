@@ -395,7 +395,9 @@ export function convertStringToArray(str: string, separator = ';'): string[] {
     if (str.startsWith('["') && str.endsWith('"]')) {
         try {
             const arr = JSON.parse(str)
-            if (Array.isArray(arr)) return arr.map((s) => s.trim())
+            if (Array.isArray(arr) && arr.every((item) => typeof item === 'string')) {
+                return arr.map((s) => s.trim())
+            }
         } catch (e) {
             // Fallback to separator split
         }
