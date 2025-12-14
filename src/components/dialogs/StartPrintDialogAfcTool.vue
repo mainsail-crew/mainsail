@@ -44,7 +44,7 @@ import BaseMixin from '@/components/mixins/base'
 import { FileStateGcodefile } from '@/store/files/types'
 import AfcMixin from '@/components/mixins/afc'
 import { mdiAlert, mdiCheckCircle, mdiChevronDown } from '@mdi/js'
-import { filamentWeightFormat } from '@/plugins/helpers'
+import { convertStringToArray, filamentWeightFormat } from '@/plugins/helpers'
 
 @Component
 export default class StartPrintDialogAfc extends Mixins(BaseMixin, AfcMixin) {
@@ -62,8 +62,8 @@ export default class StartPrintDialogAfc extends Mixins(BaseMixin, AfcMixin) {
 
     get fileFilament() {
         const fileColors = this.file.filament_colors ?? []
-        const fileNames = (this.file.filament_name ?? '').replace(/"/g, '').split(';')
-        const fileTypes = (this.file.filament_type ?? '').split(';')
+        const fileNames = convertStringToArray(this.file.filament_name ?? '')
+        const fileTypes = convertStringToArray(this.file.filament_type ?? '')
         const fileWeights = this.file.filament_weights ?? []
 
         return {

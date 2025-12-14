@@ -12,6 +12,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FileStateGcodefile, FileStateGcodefileFilament } from '@/store/files/types'
+import { convertStringToArray } from '@/plugins/helpers'
 
 @Component
 export default class GcodefilesPanelTableRowFileMetadataFilaments extends Mixins(BaseMixin) {
@@ -22,7 +23,7 @@ export default class GcodefilesPanelTableRowFileMetadataFilaments extends Mixins
     }
 
     get filament_types() {
-        return (this.item.filament_type ?? '').split(';')
+        return convertStringToArray(this.item.filament_type ?? '')
     }
 
     get filament_weights_exists() {
@@ -34,7 +35,7 @@ export default class GcodefilesPanelTableRowFileMetadataFilaments extends Mixins
     }
 
     get filament_names() {
-        return (this.item.filament_name ?? '').replace(/"/g, '').split(';')
+        return convertStringToArray(this.item.filament_name ?? '')
     }
 
     get filaments(): FileStateGcodefileFilament[] {
