@@ -1,0 +1,152 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [synchronize, opened, reopened]
+
+jobs:
+  code-style:
+    name: Code style check
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint: true
+          prettier: true
+
+  check-translations:
+    name: Check translations
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v47.0.1
+        with:
+          files: 'src/locales/*.json'
+
+      - name: Install jq
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: sudo apt install -y jq
+
+      - name: Install node
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: npm ci
+
+      - name: Run i18n-extract
+        if: steps.changed-files.outputs.any_changed == 'true'
+        id: i18n-extract
+        env:
+          CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          mkdir ./i18n-extract
+
+          echo "## Language file analysis report" > translation-report.md
+          echo "" >> translation-report.md
+          echo "|File|Missing Keys|Unused Keys|" >> translation-report.md
+          echo "|:---|---:|---:|" >> translation-report.md
+
+          for file in ${CHANGED_FILES}; do
+            locale=$(basename "$file" .json)
+            languageFiles="./src/locales/${locale}.json"
+            outputFile="./i18n-extract/${locale}.json"
+
+            echo "::group::Extracting i18n data for locale: ${locale}"
+
+            npx vue-i18n-extract \
+              --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' \
+              --languageFiles "${languageFiles}" \
+              --output "${outputFile}"
+
+            MISSING=$(cat "${outputFile}" | jq '.missingKeys | length')
+            UNUSED=$(cat "${outputFile}" | jq '.unusedKeys | length')
+
+            echo "|${file##*/}|${MISSING}|${UNUSED}|" >> translation-report.md
+
+            echo "::endgroup::"
+          done
+
+      - name: Upload translation report
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/upload-artifact@v6
+        with:
+          name: translation-report
+          path: translation-report.md
+
+  bundle-size:
+    name: Analyze bundle size
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v6
+        with:
+          path: pr
+
+      - name: Check package files changed
+        id: changed-files
+        uses: tj-actions/changed-files@v47.0.1
+        with:
+          path: pr
+          files: |
+            package.json
+            package-lock.json
+
+      - name: Checkout base branch
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.base_ref }}
+          path: base
+
+      - name: Install node
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+
+      - name: Build base branch
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          cd base
+          npm ci
+          npm run build
+
+      - name: Build PR branch
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          cd pr
+          npm ci
+          npm run build
+
+      - name: Compare bundle sizes
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: ./base/.github/scripts/compare-bundle-sizes.sh "base/dist/assets" "pr/dist/assets"
+
+      - name: Upload bundle report
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/upload-artifact@v6
+        with:
+          name: bundle-report
+          path: bundle-report.md
