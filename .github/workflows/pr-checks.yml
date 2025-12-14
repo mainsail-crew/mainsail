@@ -153,7 +153,7 @@ jobs:
 
       - name: Compare bundle sizes
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: ./.github/scripts/compare-bundle-sizes.sh "base/dist/assets" "pr/dist/assets"
+        run: ./base/.github/scripts/compare-bundle-sizes.sh "base/dist/assets" "pr/dist/assets"
 
       - name: Upload bundle report
         if: steps.changed-files.outputs.any_changed == 'true'
