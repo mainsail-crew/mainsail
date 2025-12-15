@@ -428,6 +428,34 @@ export function convertHexToRgb(hex: string): { r: number; g: number; b: number 
     }
 }
 
+/**
+ * Compares two hex colors and returns true if they match within the given tolerance.
+ *
+ * The comparison is performed on each RGB channel independently. Two colors are considered
+ * matching if the absolute difference for each channel (R, G, B) is within the tolerance.
+ *
+ * @param color1 - First hex color string (e.g., '#FF5500', 'FF5500', '#F50', or 'F50')
+ * @param color2 - Second hex color string (e.g., '#FF5500', 'FF5500', '#F50', or 'F50')
+ * @param tolerance - Maximum allowed difference per RGB channel (0-255). Defaults to 0 (exact match)
+ * @returns `true` if colors match within tolerance, `false` if they don't match or if either color is invalid
+ *
+ * @example
+ * // Exact match
+ * colorsMatch('#FF0000', '#FF0000') // true
+ *
+ * @example
+ * // Match with tolerance
+ * colorsMatch('#FF0000', '#FE0000', 1) // true (red differs by 1)
+ * colorsMatch('#FF0000', '#FD0000', 1) // false (red differs by 2)
+ *
+ * @example
+ * // Shorthand hex support
+ * colorsMatch('#F00', '#FF0000') // true
+ *
+ * @example
+ * // Invalid color returns false
+ * colorsMatch('#FF0000', 'invalid') // false
+ */
 export function colorsMatch(color1: string, color2: string, tolerance = 0): boolean {
     const rgb1 = convertHexToRgb(color1)
     const rgb2 = convertHexToRgb(color2)
