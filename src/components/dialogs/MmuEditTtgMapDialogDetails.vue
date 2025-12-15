@@ -67,7 +67,7 @@ import BaseMixin from '@/components/mixins/base'
 import MmuMixin, { GATE_UNKNOWN, TOOL_GATE_BYPASS } from '@/components/mixins/mmu'
 import { FileStateGcodefile } from '@/store/files/types'
 import Vue from 'vue'
-import { convertStringToArray } from '@/plugins/helpers'
+import { colorsMatch, convertStringToArray } from '@/plugins/helpers'
 
 @Component
 export default class MmuEditTtgMapDialogDetails extends Mixins(BaseMixin, MmuMixin) {
@@ -197,7 +197,7 @@ export default class MmuEditTtgMapDialogDetails extends Mixins(BaseMixin, MmuMix
             warnings.push(this.$t('Panels.MmuPanel.TtgMapDialog.Temperature'))
         }
 
-        if (this.selectedGateColor !== this.fileFilamentColor) {
+        if (this.selectedGateColor === null || !colorsMatch(this.selectedGateColor, this.fileFilamentColor, 10)) {
             warnings.push(this.$t('Panels.MmuPanel.TtgMapDialog.Color'))
         }
 

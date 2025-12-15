@@ -405,3 +405,38 @@ export function convertStringToArray(str: string, separator = ';'): string[] {
 
     return str.split(separator).map((s) => s.replace(/^"|"$/g, '').trim())
 }
+
+export function convertHexToRgb(hex: string): { r: number; g: number; b: number } | null {
+    let cleaned = hex.replace(/^#/, '').toLowerCase()
+
+    if (cleaned.length === 8) cleaned = cleaned.slice(0, 6)
+    if (cleaned.length === 3) {
+        cleaned = cleaned
+            .split('')
+            .map((c) => c + c)
+            .join('')
+    }
+
+    if (cleaned.length !== 6 || !/^[0-9a-f]{6}$/.test(cleaned)) {
+        return null
+    }
+
+    return {
+        r: parseInt(cleaned.slice(0, 2), 16),
+        g: parseInt(cleaned.slice(2, 4), 16),
+        b: parseInt(cleaned.slice(4, 6), 16),
+    }
+}
+
+export function colorsMatch(color1: string, color2: string, tolerance = 0): boolean {
+    const rgb1 = convertHexToRgb(color1)
+    const rgb2 = convertHexToRgb(color2)
+
+    if (rgb1 === null || rgb2 === null) return false
+
+    return (
+        Math.abs(rgb1.r - rgb2.r) <= tolerance &&
+        Math.abs(rgb1.g - rgb2.g) <= tolerance &&
+        Math.abs(rgb1.b - rgb2.b) <= tolerance
+    )
+}
