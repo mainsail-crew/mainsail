@@ -440,7 +440,7 @@ export function convertHexToRgb(hex: string): { r: number; g: number; b: number 
     let cleaned = hex.replace(/^#/, '').toLowerCase()
 
     if (cleaned.length === 8) cleaned = cleaned.slice(0, 6)
-    if (cleaned.length === 3) {
+    else if (cleaned.length === 3) {
         cleaned = cleaned
             .split('')
             .map((c) => c + c)
