@@ -406,6 +406,36 @@ export function convertStringToArray(str: string, separator = ';'): string[] {
     return str.split(separator).map((s) => s.replace(/^"|"$/g, '').trim())
 }
 
+/**
+ * Converts a hex color string to an RGB object.
+ *
+ * Supports multiple hex formats:
+ * - 6-digit: `#FF5500` or `FF5500`
+ * - 3-digit shorthand: `#F50` or `F50` (expanded to `FF5500`)
+ * - 8-digit with alpha: `#FF5500AA` (alpha channel is ignored)
+ *
+ * @param hex - Hex color string with or without leading `#`
+ * @returns Object with `r`, `g`, `b` properties (0-255 each), or `null` if the input is invalid
+ *
+ * @example
+ * // Standard 6-digit hex
+ * convertHexToRgb('#FF5500') // { r: 255, g: 85, b: 0 }
+ * // Without hash prefix
+ * convertHexToRgb('FF5500') // { r: 255, g: 85, b: 0 }
+ *
+ * @example
+ * // 3-digit shorthand (expanded: F→FF, 5→55, 0→00)
+ * convertHexToRgb('#F50') // { r: 255, g: 85, b: 0 }
+ *
+ * @example
+ * // 8-digit with alpha (alpha is stripped)
+ * convertHexToRgb('#FF5500AA') // { r: 255, g: 85, b: 0 }
+ *
+ * @example
+ * // Invalid input returns null
+ * convertHexToRgb('invalid') // null
+ * convertHexToRgb('#GG0000') // null
+ */
 export function convertHexToRgb(hex: string): { r: number; g: number; b: number } | null {
     let cleaned = hex.replace(/^#/, '').toLowerCase()
 
