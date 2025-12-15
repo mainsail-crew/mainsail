@@ -123,8 +123,6 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
     },
 
     refreshSpools({ dispatch }) {
-        window.console.log('Refreshing spools...')
-
         Vue.$socket.emit(
             'server.spoolman.proxy',
             {
