@@ -74,6 +74,7 @@ export interface Mmu {
     sync_feedback_bias_raw: number
     sync_feedback_enabled: boolean
     sync_feedback_state: string
+    sync_feedback_flow_rate: number
     flowguard?: {
         trigger: string
         reason: string

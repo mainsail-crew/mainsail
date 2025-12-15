@@ -95,10 +95,10 @@
             stroke-dashoffset="0"
             stroke-dasharray="18,63" />
 
-        <text x="70" y="58" text-anchor="middle" class="small-text-color" font-size="12px">
+        <text x="70" y="56" text-anchor="middle" class="small-text-color" font-size="12px">
             {{ $t('Panels.MmuPanel.Flow').toUpperCase() }}
         </text>
-        <text x="70" y="72" text-anchor="middle" class="small-text-color" font-size="12px">
+        <text x="70" y="69" text-anchor="middle" class="small-text-color" font-size="12px">
             {{ $t('Panels.MmuPanel.Guard').toUpperCase() }}
         </text>
         <text
@@ -107,9 +107,9 @@
             y="90"
             text-anchor="middle"
             class="small-text-color"
-            font-size="12px"
+            :font-size="flowrateTextSize"
             font-weight="bold">
-            {{ $t('Panels.MmuPanel.Active').toUpperCase() }}
+            {{ flowrateText }}
         </text>
         <text v-if="flowguardTrigger" x="70" y="90" text-anchor="middle" class="small-text-warning" font-size="16px">
             {{ flowguardTrigger }}
@@ -153,6 +153,21 @@ export default class MmuFlowguardMeter extends Mixins(BaseMixin, MmuMixin) {
 
     get flowguardTrigger() {
         return (this.mmu?.flowguard?.trigger ?? '').toUpperCase()
+    }
+
+    get flowrateText() {
+        if (this.hasFilamentProportionalSensor) {
+            const flow_rate = this.mmu?.sync_feedback_flow_rate ?? 100.0
+            return `${Math.round(flow_rate)}%`
+        }
+        return this.$t('Panels.MmuPanel.Active').toUpperCase()
+    }
+
+    get flowrateTextSize() {
+        if (this.hasFilamentProportionalSensor) {
+            return '18px'
+        }
+        return '14px'
     }
 
     get maxClog() {
