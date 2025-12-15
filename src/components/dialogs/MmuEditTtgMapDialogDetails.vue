@@ -197,7 +197,8 @@ export default class MmuEditTtgMapDialogDetails extends Mixins(BaseMixin, MmuMix
             warnings.push(this.$t('Panels.MmuPanel.TtgMapDialog.Temperature'))
         }
 
-        if (this.selectedGateColor === null || !colorsMatch(this.selectedGateColor, this.fileFilamentColor, 10)) {
+        const selectedGateColorString = this.formColorString(this.selectedGateColor)
+        if (this.selectedGateColor === null || !colorsMatch(selectedGateColorString, this.fileFilamentColor, 10)) {
             warnings.push(this.$t('Panels.MmuPanel.TtgMapDialog.Color'))
         }
 
