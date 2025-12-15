@@ -56,6 +56,10 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
         dispatch('socket/addInitModule', 'server/spoolman/getVendors', { root: true })
 
         dispatch('socket/removeInitModule', 'server/spoolman/init', { root: true })
+
+        // init load spools, but don't wait for it to finish
+        // this is needed because HappyHare or AFC need this data to display all spool data
+        dispatch('refreshSpools')
     },
 
     getActiveSpoolId({ commit, dispatch }, payload) {
@@ -119,6 +123,8 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
     },
 
     refreshSpools({ dispatch }) {
+        window.console.log('Refreshing spools...')
+
         Vue.$socket.emit(
             'server.spoolman.proxy',
             {
