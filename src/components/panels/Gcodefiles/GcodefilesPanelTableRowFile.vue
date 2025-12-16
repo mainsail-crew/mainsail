@@ -117,10 +117,7 @@
             :is-visible="showAddBatchToQueueDialog"
             :filename="item.full_filename"
             @close="showAddBatchToQueueDialog = false" />
-        <gcodefiles-rename-file-dialog
-            :item="item"
-            :show-dialog="showRenameFileDialog"
-            @close="showRenameFileDialog = false" />
+        <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
         <gcodefiles-duplicate-file-dialog
             :item="item"
             :show-dialog="showDuplicateFileDialog"
