@@ -418,15 +418,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get syncFeedbackPistonText() {
-        if (this.hasFilamentProportionalSensor) {
-            const bias = this.syncFeedbackBiasModelled
-            return bias.toFixed(2)
-        }
-        return ''
-    }
-
-    get syncFeedbackBiasModelled() {
-        return this.mmu?.sync_feedback_bias_modelled ?? 0.0
+        return (this.mmu?.sync_feedback_bias_modelled ?? 0.0).toFixed(2)
     }
 }
 </script>
