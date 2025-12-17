@@ -354,6 +354,10 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
         return (this.$store.state.printer.configfile.config.mmu?.extruder_force_homing ?? 0) === 1
     }
 
+    get configExtruderHomingEndstop() {
+        return this.mmuSettings?.extruder_homing_endstop
+    }
+
     get gateSensorName() {
         const unit = this.getMmuMachineUnit(this.mmuUnit)
         const multiGate = unit?.multi_gear ?? false

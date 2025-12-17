@@ -320,10 +320,6 @@ export default class MmuMixin extends Mixins(BaseMixin) {
         return this.mmuSettings?.gate_homing_endstop
     }
 
-    get configExtruderHomingEndstop(): string {
-        return this.mmuSettings?.extruder_homing_endstop
-    }
-
     get canSend(): boolean {
         const idleTimeout = this.$store.state.printer.idle_timeout?.state ?? ''
 
