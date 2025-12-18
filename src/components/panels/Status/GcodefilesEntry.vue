@@ -73,31 +73,7 @@
             :is-visible="showAddBatchToQueueDialog"
             :filename="filename"
             @close="showAddBatchToQueueDialog = false" />
-        <v-dialog v-model="showRenameFileDialog" :max-width="400">
-            <panel
-                :title="$t('Files.RenameFile')"
-                card-class="dashboard-files-rename-file-dialog"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="showRenameFileDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <v-text-field
-                        v-model="renameFileNewName"
-                        :label="$t('Files.Name')"
-                        required
-                        autofocus
-                        @keyup.enter="renameFile" />
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="showRenameFileDialog = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="renameFile">{{ $t('Files.Rename') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+        <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
         <v-dialog v-model="showDeleteDialog" max-width="400">
             <panel :title="$t('Files.Delete')" card-class="gcode-files-delete-dialog" :margin-bottom="false">
                 <template #buttons>
