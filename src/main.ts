@@ -31,10 +31,7 @@ import { use } from 'echarts/core'
 import { SVGRenderer } from 'echarts/renderers'
 import { BarChart, LineChart, PieChart } from 'echarts/charts'
 import { DatasetComponent, GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
-// vue-resize
-import 'vue-resize/dist/vue-resize.css'
-// @ts-ignore
-import VueResize from 'vue-resize'
+
 import { defaultMode } from './store/variables'
 
 Vue.config.productionTip = false
@@ -61,8 +58,6 @@ Vue.use(OverlayScrollbarsPlugin, {
 
 use([SVGRenderer, LineChart, BarChart, LegendComponent, PieChart, DatasetComponent, GridComponent, TooltipComponent])
 Vue.component('EChart', ECharts)
-
-Vue.use(VueResize)
 
 const initLoad = async () => {
     try {

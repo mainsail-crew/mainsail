@@ -3,7 +3,6 @@
         <div class="line horizontal" :style="styleLines" />
         <div class="line vertical" :style="styleLines" />
         <div class="circle" :style="styleCircle" />
-        <resize-observer @notify="handleResize" />
     </div>
 </template>
 
@@ -12,6 +11,7 @@ import Component from 'vue-class-component'
 import { Mixins, Prop, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import { Debounce } from 'vue-debounce-decorator'
 
 @Component
 export default class WebcamWrapper extends Mixins(BaseMixin) {
@@ -19,6 +19,7 @@ export default class WebcamWrapper extends Mixins(BaseMixin) {
     @Ref() container!: HTMLDivElement
 
     clientHeight = 0
+    resizeObserver: ResizeObserver | null = null
 
     get color() {
         return this.webcam.extra_data?.nozzleCrosshairColor ?? '#ff0000'
@@ -45,8 +46,16 @@ export default class WebcamWrapper extends Mixins(BaseMixin) {
 
     mounted() {
         this.handleResize()
+
+        this.resizeObserver = new ResizeObserver(() => this.handleResize())
+        this.resizeObserver.observe(this.container)
     }
 
+    beforeDestroy() {
+        this.resizeObserver?.disconnect()
+    }
+
+    @Debounce(200)
     handleResize() {
         this.$nextTick(() => {
             this.clientHeight = this.container.clientHeight
