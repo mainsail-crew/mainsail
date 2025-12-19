@@ -242,8 +242,6 @@ const POSITIONS = {
     NOZZLE_START: 371,
 } as const
 
-const BOWDEN_RANGE = 173
-
 @Component({
     components: {
         MmuFilamentStatusTemperature,
@@ -294,22 +292,13 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
             [FILAMENT_POS_START_BOWDEN, FILAMENT_POS_IN_BOWDEN].includes(this.mmuFilamentPos) &&
             this.bowdenProgress >= 0
         ) {
-            return POSITIONS.START_BOWDEN + (BOWDEN_RANGE * this.bowdenProgress) / 100
+            const bowdenRange = this.endOfBowdenPos - POSITIONS.START_BOWDEN
+            return POSITIONS.START_BOWDEN + (bowdenRange * this.bowdenProgress) / 100
         }
 
         if (this.mmuFilamentPos === FILAMENT_POS_START_BOWDEN) return POSITIONS.START_BOWDEN
         if (this.mmuFilamentPos === FILAMENT_POS_IN_BOWDEN) return POSITIONS.MID_BOWDEN
-
-        if (this.mmuFilamentPos === FILAMENT_POS_END_BOWDEN) {
-            if (
-                this.configGateHomingEndstop === 'none' ||
-                (this.toolheadSensor !== undefined && this.toolheadSensor !== null && !this.configExtruderForceHoming)
-            )
-                return POSITIONS.EXTRUDER_ENTRANCE
-
-            return POSITIONS.END_BOWDEN
-        }
-
+        if (this.mmuFilamentPos === FILAMENT_POS_END_BOWDEN) return this.endOfBowdenPos
         if (this.mmuFilamentPos === FILAMENT_POS_HOMED_ENTRY) return POSITIONS.EXTRUDER
         if (this.mmuFilamentPos === FILAMENT_POS_HOMED_EXTRUDER) return POSITIONS.EXTRUDER_ENTRANCE
         if (this.mmuFilamentPos === FILAMENT_POS_EXTRUDER_ENTRY) return POSITIONS.BEFORE_TOOLHEAD
@@ -323,6 +312,17 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
         if (this.mmuFilamentPos === FILAMENT_POS_LOADED) return POSITIONS.NOZZLE_START
 
         return POSITIONS.UNKNOWN
+    }
+
+    get endOfBowdenPos() {
+        if (typeof this.toolheadSensor === 'boolean' && !this.configExtruderForceHoming) return POSITIONS.END_BOWDEN
+
+        const extruderHomingEndstops = ['none', 'collision', 'mmu_gear_touch', 'filament_compression']
+        if (extruderHomingEndstops.includes(this.configExtruderHomingEndstop)) return POSITIONS.EXTRUDER_ENTRANCE
+
+        if (this.configExtruderHomingEndstop === 'extruder') return POSITIONS.EXTRUDER
+
+        return POSITIONS.END_BOWDEN
     }
 
     get bowdenProgress() {
@@ -347,6 +347,10 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
 
     get configExtruderForceHoming(): boolean {
         return (this.$store.state.printer.configfile.config.mmu?.extruder_force_homing ?? 0) === 1
+    }
+
+    get configExtruderHomingEndstop() {
+        return this.mmuSettings?.extruder_homing_endstop ?? 'none'
     }
 
     get gateSensorName() {
