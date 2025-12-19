@@ -317,13 +317,8 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     get endOfBowdenPos() {
         if (typeof this.toolheadSensor === 'boolean' && !this.configExtruderForceHoming) return POSITIONS.END_BOWDEN
 
-        if (
-            this.configExtruderHomingEndstop === 'none' ||
-            this.configExtruderHomingEndstop === 'collision' ||
-            this.configExtruderHomingEndstop === 'mmu_gear_touch' ||
-            this.configExtruderHomingEndstop === 'filament_compression'
-        )
-            return POSITIONS.EXTRUDER_ENTRANCE
+        const homingEndstops = ['none', 'collision', 'mmu_gear_touch', 'filament_compression']
+        if (homingEndstops.includes(this.configExtruderHomingEndstop)) return POSITIONS.EXTRUDER_ENTRANCE
 
         if (this.configExtruderHomingEndstop === 'extruder') return POSITIONS.EXTRUDER
 
