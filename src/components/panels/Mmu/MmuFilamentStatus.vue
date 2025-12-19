@@ -317,8 +317,8 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     get endOfBowdenPos() {
         if (typeof this.toolheadSensor === 'boolean' && !this.configExtruderForceHoming) return POSITIONS.END_BOWDEN
 
-        const homingEndstops = ['none', 'collision', 'mmu_gear_touch', 'filament_compression']
-        if (homingEndstops.includes(this.configExtruderHomingEndstop)) return POSITIONS.EXTRUDER_ENTRANCE
+        const extruderHomingEndstops = ['none', 'collision', 'mmu_gear_touch', 'filament_compression']
+        if (extruderHomingEndstops.includes(this.configExtruderHomingEndstop)) return POSITIONS.EXTRUDER_ENTRANCE
 
         if (this.configExtruderHomingEndstop === 'extruder') return POSITIONS.EXTRUDER
 
@@ -350,7 +350,7 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get configExtruderHomingEndstop() {
-        return this.mmuSettings?.extruder_homing_endstop
+        return this.mmuSettings?.extruder_homing_endstop ?? 'none'
     }
 
     get gateSensorName() {
