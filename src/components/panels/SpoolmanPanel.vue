@@ -88,18 +88,6 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
         return this.$store.state.server.spoolman.active_spool ?? null
     }
 
-    get spoolManagerUrl() {
-        let baseurl = this.$store.state.server.config.config?.spoolman?.server ?? undefined
-        if (baseurl === null) return undefined
-
-        const url = new URL(baseurl)
-        if (['localhost', '127.0.0.1'].includes(url.hostname)) {
-            url.hostname = this.$store.state.socket.hostname
-        }
-
-        return url.toString()
-    }
-
     get toolsWithSpoolId() {
         return Object.keys(this.$store.state.printer)
             .filter((key) => /^gcode_macro T\d+$/i.test(key.toLowerCase()))
