@@ -141,6 +141,24 @@ export default class BaseMixin extends Vue {
         return roots.findIndex((root: string) => root === 'gcodes') >= 0
     }
 
+    get spoolManagerUrl() {
+        const baseurl = this.$store.state.server.config.config?.spoolman?.server ?? undefined
+        if (!baseurl) return undefined
+
+        try {
+            const url = new URL(baseurl)
+            if (['localhost', '127.0.0.1'].includes(url.hostname)) {
+                url.hostname = this.$store.state.socket.hostname
+            }
+
+            return url.toString()
+        } catch (e) {
+            window.console.warn('[Spoolman]: SpoolManager URL is invalid:', baseurl)
+
+            return undefined
+        }
+    }
+
     get formatTimeOptions(): DateTimeFormatOptions {
         const format = this.$store.state.gui.general.timeFormat
 
