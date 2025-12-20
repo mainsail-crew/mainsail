@@ -141,10 +141,6 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
         ]
     }
 
-    get spoolManagerUrl() {
-        return this.$store.state.server.config.config?.spoolman?.server ?? null
-    }
-
     get existsSaveVariables() {
         const settings = this.$store.state.printer.configfile?.settings ?? {}
 
