@@ -36,6 +36,7 @@
                     <v-icon>{{ mdiRefresh }}</v-icon>
                 </v-btn>
                 <v-btn
+                    v-if="spoolManagerUrl"
                     :title="$t('Panels.SpoolmanPanel.OpenSpoolManager')"
                     class="px-2 minwidth-0 ml-3"
                     @click="openSpoolManager">
@@ -139,10 +140,6 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
                 value: 'remaining_weight',
             },
         ]
-    }
-
-    get spoolManagerUrl() {
-        return this.$store.state.server.config.config?.spoolman?.server ?? null
     }
 
     get existsSaveVariables() {
