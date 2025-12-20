@@ -36,6 +36,7 @@
                     <v-icon>{{ mdiRefresh }}</v-icon>
                 </v-btn>
                 <v-btn
+                    v-if="spoolManagerUrl"
                     :title="$t('Panels.SpoolmanPanel.OpenSpoolManager')"
                     class="px-2 minwidth-0 ml-3"
                     @click="openSpoolManager">
