@@ -147,7 +147,7 @@ export default class BaseMixin extends Vue {
 
         try {
             const url = new URL(baseurl)
-            if (['localhost', '127.0.0.1'].includes(url.hostname)) {
+            if (['localhost', '127.0.0.1', '::1'].includes(url.hostname)) {
                 url.hostname = this.$store.state.socket.hostname
             }
 
