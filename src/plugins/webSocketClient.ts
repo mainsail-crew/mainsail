@@ -2,7 +2,7 @@ import { Store } from 'vuex'
 import _Vue from 'vue'
 import { RootState } from '@/store/types'
 import { initableServerComponents } from '@/store/variables'
-import type { RPCMethods, RPCParams, RPCResult } from '@/types/MoonrakerRPCInterface'
+import type { RPCMethods, RPCParams, RPCResult } from '@/types/moonraker'
 
 export class WebSocketClient {
     url = ''
