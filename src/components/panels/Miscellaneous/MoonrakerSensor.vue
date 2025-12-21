@@ -42,7 +42,7 @@ export default class MoonrakerSensor extends Mixins(BaseMixin) {
     get displayName() {
         // If the friendly name is the same as the sensor name, then it hasn't been customized in the config
         // this is the fallback value in Moonraker, so we convert the sensor name to a more user-friendly format
-        if (this.sensor?.friendly_name === this.name) {
+        if (this.sensor === undefined || this.sensor?.friendly_name === this.name) {
             return this.convertName(this.name)
         }
 
