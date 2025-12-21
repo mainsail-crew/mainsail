@@ -14,29 +14,28 @@
                 <status-panel-gcodefiles-entry :key="item.filename" :content-td-width="contentTdWidth" :item="item" />
             </template>
         </v-data-table>
-        <resize-observer @notify="handleResize" />
     </v-card>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+import { Mixins, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import { FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import StatusPanelGcodefilesEntry from '@/components/panels/Status/GcodefilesEntry.vue'
 import Vue from 'vue'
+import { Debounce } from 'vue-debounce-decorator'
 
 @Component({
     components: { Panel, StatusPanelGcodefilesEntry },
 })
 export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixin) {
     contentTdWidth = 100
+    resizeObserver: ResizeObserver | null = null
 
-    declare $refs: {
-        filesGcodeCard: Vue
-    }
+    @Ref() readonly filesGcodeCard!: Vue
 
     get filesLimit() {
         return this.$store.state.gui.uiSettings.dashboardFilesLimit ?? 5
@@ -83,15 +82,21 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     }
 
     mounted() {
-        setTimeout(() => {
-            this.calcContentTdWidth()
-        }, 200)
+        this.resizeObserver = new ResizeObserver(() => this.handleResize())
+        this.resizeObserver.observe(this.filesGcodeCard.$el)
+
+        this.calcContentTdWidth()
+    }
+
+    beforeDestroy() {
+        this.resizeObserver?.disconnect()
     }
 
     calcContentTdWidth() {
-        this.contentTdWidth = this.$refs.filesGcodeCard.$el.clientWidth - 48 - 48 - 32
+        this.contentTdWidth = this.filesGcodeCard?.$el.clientWidth - 48 - 48 - 32
     }
 
+    @Debounce(200)
     handleResize() {
         this.$nextTick(() => {
             this.calcContentTdWidth()

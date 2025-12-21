@@ -1101,9 +1101,7 @@
             "NoPresetFound": "Профили не найдены",
             "Presets": "Профили",
             "Start": "Начальный",
-            "StartDescription": "Первая LED-лента этой группы.",
-            "UnableToLoadLight": "Не удаётся загрузить свет",
-            "UnableToLoadPreset": "Не удаётся загрузить профиль"
+            "StartDescription": "Первая LED-лента этой группы."
         },
         "NavigationTab": {
             "Navigation": "Навигация"

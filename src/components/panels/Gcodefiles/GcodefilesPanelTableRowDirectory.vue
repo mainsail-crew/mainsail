@@ -51,6 +51,7 @@ import BaseMixin from '@/components/mixins/base'
 import GcodefilesMixin from '@/components/mixins/gcodefiles'
 import { FileStateGcodefile } from '@/store/files/types'
 import { mdiDelete, mdiFolder, mdiRenameBox } from '@mdi/js'
+import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
 @Component
 export default class GcodefilesPanelTableRowDirectory extends Mixins(BaseMixin, GcodefilesMixin) {
@@ -80,15 +81,17 @@ export default class GcodefilesPanelTableRowDirectory extends Mixins(BaseMixin, 
     }
 
     showContextMenuAction(e: MouseEvent) {
-        if (this.showContextMenu) return
-
         e?.preventDefault()
+        EventBus.$emit(CLOSE_CONTEXT_MENU)
+
         this.showContextMenuX = e?.clientX || e?.pageX || window.screenX / 2
         this.showContextMenuY = e?.clientY || e?.pageY || window.screenY / 2
 
-        this.$nextTick(() => {
-            this.showContextMenu = true
-        })
+        this.showContextMenu = true
+    }
+
+    closeContextMenu() {
+        this.showContextMenu = false
     }
 
     goToDirectory() {
@@ -129,6 +132,14 @@ export default class GcodefilesPanelTableRowDirectory extends Mixins(BaseMixin, 
     onDrag(e: DragEvent) {
         e.preventDefault()
         e.stopPropagation()
+    }
+
+    mounted() {
+        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
+    }
+
+    beforeDestroy() {
+        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 }
 </script>

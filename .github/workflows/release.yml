@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout develop branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: 'develop'
           token: ${{ secrets.PAT }}
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: 'master'
           token: ${{ secrets.PAT }}
@@ -67,13 +67,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: 'master'
           fetch-depth: 0
 
       - name: Install node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20
 
@@ -101,7 +101,7 @@ jobs:
           args: ${{ steps.latest_tag.outputs.TAG_NAME }}..HEAD
 
       - name: Create release and upload build
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         id: create-release
         with:
           name: v${{ github.event.inputs.version }}
@@ -114,7 +114,7 @@ jobs:
         run: cp ./remote/* ./dist/
 
       - name: Upload to remote server
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.REMOTEHOST }}
           username: ${{ secrets.REMOTEUSER }}
@@ -129,7 +129,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: 'develop'
           fetch-depth: 0
@@ -153,7 +153,7 @@ jobs:
       - name: Show CHANGELOG
         run: |
           cat CHANGELOG.md
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: 'docs(changelog): update changelog'
           file_pattern: CHANGELOG.md

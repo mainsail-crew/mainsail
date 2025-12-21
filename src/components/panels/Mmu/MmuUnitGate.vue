@@ -1,6 +1,9 @@
 <template>
     <div class="d-flex flex-column align-center">
-        <div v-longpress:500="openContextMenu" class="d-flex" @contextmenu.prevent="openContextMenu($event)">
+        <div
+            v-longpress:500="openContextMenu"
+            class="d-flex flex-wrap mb-n2 pt-1 position-relative"
+            @contextmenu.prevent="openContextMenu($event)">
             <mmu-unit-gate-spool
                 class="position-relative zindex-1"
                 :gate-index="gateIndex"
@@ -9,9 +12,13 @@
                 :unhighlight-spools="unhighlightSpools"
                 @select-gate="selectGate" />
         </div>
-        <span class="gate-number rounded cursor-pointer" :class="gateNumberClass" @click="selectGate">
-            {{ gateName }}
-        </span>
+        <div class="mmu-unit-box d-flex zindex-3 pb-1 pt-2 position-relative" :class="gateClass">
+            <div class="d-flex w-100 gate-contents">
+                <span class="gate-number rounded cursor-pointer" :class="gateNumberClass" @click="selectGate">
+                    {{ gateName }}
+                </span>
+            </div>
+        </div>
         <v-menu
             v-model="contextMenu"
             transition="slide-y-transition"
@@ -26,7 +33,12 @@
                 </v-subheader>
                 <v-divider class="mb-2" />
                 <v-list-item v-for="(button, index) in contextMenuButtons" :key="index">
-                    <v-btn small class="w-100" :disabled="!canSend" @click="gateCommand(button.command)">
+                    <v-btn
+                        small
+                        class="w-100"
+                        :disabled="!canSend"
+                        :loading="loadings.includes(button.command.toLowerCase())"
+                        @click="gateCommand(button.command)">
                         <v-icon left>{{ button.icon }}</v-icon>
                         {{ button.label }}
                     </v-btn>
@@ -54,6 +66,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ default: false }) readonly showContextMenu!: boolean
     @Prop({ required: true }) readonly selectedGate!: number
     @Prop({ default: false }) readonly unhighlightSpools!: boolean
+    @Prop({ default: false }) readonly hasBypass!: boolean
 
     closeTimeout: number | null = null
     contextMenu = false
@@ -88,6 +101,29 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
             { icon: this.mdiDownloadOutline, command: 'MMU_PRELOAD', label: this.$t('Panels.MmuPanel.ButtonPreload') },
             { icon: this.mdiEject, command: 'MMU_EJECT', label: this.$t('Panels.MmuPanel.ButtonEject') },
         ]
+    }
+
+    get gatePosition() {
+        const firstGateNumber = this.mmuMachineUnit?.first_gate ?? 0
+
+        return this.gateIndex + 1 - firstGateNumber
+    }
+
+    get firstGate() {
+        return this.gatePosition === 1
+    }
+
+    get lastGate() {
+        if (this.gateIndex === TOOL_GATE_BYPASS) return true
+
+        return this.gatePosition === this.mmuMachineUnit?.num_gates && !this.hasBypass
+    }
+
+    get gateClass() {
+        return {
+            'left-gate': this.firstGate,
+            'right-gate': this.lastGate,
+        }
     }
 
     selectGate() {
@@ -132,7 +168,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     }
 
     gateCommand(command: string) {
-        this.doSend(`${command} GATE=${this.gateIndex}`)
+        this.doSend(`${command} GATE=${this.gateIndex}`, command.toLowerCase())
     }
 }
 </script>
@@ -142,7 +178,12 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     z-index: 1;
 }
 
+.zindex-3 {
+    z-index: 3;
+}
+
 .gate-number {
+    margin-left: 2px;
     border: 2px solid #808080;
     width: 80%;
     position: relative;
@@ -176,5 +217,44 @@ html.theme--light .gate-number {
 
 .gate-number.border-unknown {
     border-color: orange;
+}
+
+.mmu-unit-box {
+    box-shadow: inset 0 4px 4px -4px #ffffff80;
+    background-image: linear-gradient(to bottom, #3c3c3c 0%, #2c2c2c 100%);
+    border-radius: 0 0 8px 8px;
+    justify-content: center;
+    width: 100%;
+}
+
+html.theme--light .mmu-unit-box {
+    box-shadow: inset 0 4px 4px -4px #ffffff80;
+    background-image: linear-gradient(to bottom, #c0c0c0 0%, #f0f0f0 100%);
+}
+
+.left-gate {
+    border-radius: 8px 0 0 0;
+    margin-left: -16px;
+    width: calc(100% + 16px);
+}
+
+.left-gate .gate-contents {
+    margin-left: 16px;
+}
+
+.right-gate {
+    border-radius: 0 8px 0 0;
+    margin-right: -16px;
+    width: calc(100% + 16px);
+}
+
+.right-gate .gate-contents {
+    margin-right: 16px;
+}
+
+.left-gate.right-gate {
+    border-radius: 8px 8px 0 0;
+    width: calc(100% + 32px);
+    margin-right: -16px;
 }
 </style>

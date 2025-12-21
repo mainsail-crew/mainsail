@@ -1,48 +1,46 @@
 <template>
-    <div>
-        <panel :icon="mdiAdjust" :title="title" card-class="spoolman-panel" :collapsible="true">
-            <template #buttons>
-                <spoolman-tools-dropdown v-if="toolsWithSpoolId.length > 0" :tools="toolsWithSpoolId" />
-                <v-btn v-else icon tile :title="changeSpoolTooltip" @click="showChangeSpoolDialog = true">
-                    <v-icon>{{ mdiSwapVertical }}</v-icon>
-                </v-btn>
-                <v-menu :offset-y="true" :close-on-content-click="false" left>
-                    <template #activator="{ on, attrs }">
-                        <v-btn icon tile v-bind="attrs" v-on="on">
-                            <v-icon>{{ mdiDotsVertical }}</v-icon>
+    <panel :icon="mdiAdjust" :title="title" card-class="spoolman-panel" :collapsible="true">
+        <template #buttons>
+            <spoolman-tools-dropdown v-if="toolsWithSpoolId.length > 0" :tools="toolsWithSpoolId" />
+            <v-btn v-else icon tile :title="changeSpoolTooltip" @click="showChangeSpoolDialog = true">
+                <v-icon>{{ mdiSwapVertical }}</v-icon>
+            </v-btn>
+            <v-menu :offset-y="true" :close-on-content-click="false" left>
+                <template #activator="{ on, attrs }">
+                    <v-btn icon tile v-bind="attrs" v-on="on">
+                        <v-icon>{{ mdiDotsVertical }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-list dense>
+                    <v-list-item>
+                        <v-btn small class="w-100" @click="showEjectSpoolDialog = true">
+                            <v-icon left>{{ mdiEject }}</v-icon>
+                            {{ $t('Panels.SpoolmanPanel.EjectSpool') }}
                         </v-btn>
-                    </template>
-                    <v-list dense>
-                        <v-list-item>
-                            <v-btn small style="width: 100%" @click="showEjectSpoolDialog = true">
-                                <v-icon left>{{ mdiEject }}</v-icon>
-                                {{ $t('Panels.SpoolmanPanel.EjectSpool') }}
-                            </v-btn>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-btn small style="width: 100%" @click="openSpoolManager">
-                                <v-icon left>{{ mdiOpenInNew }}</v-icon>
-                                {{ $t('Panels.SpoolmanPanel.OpenSpoolManager') }}
-                            </v-btn>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-            </template>
-            <v-card-text v-if="active_spool === null">
-                <v-row>
-                    <v-col class="text-center">
-                        <p class="text--disabled">{{ $t('Panels.SpoolmanPanel.NoActiveSpool') }}</p>
-                        <v-btn small color="primary" @click="showChangeSpoolDialog = true">
-                            {{ $t('Panels.SpoolmanPanel.SelectSpool') }}
+                    </v-list-item>
+                    <v-list-item v-if="spoolManagerUrl">
+                        <v-btn small class="w-100" @click="openSpoolManager">
+                            <v-icon left>{{ mdiOpenInNew }}</v-icon>
+                            {{ $t('Panels.SpoolmanPanel.OpenSpoolManager') }}
                         </v-btn>
-                    </v-col>
-                </v-row>
-            </v-card-text>
-            <spoolman-panel-active-spool v-else @change-spool="showChangeSpoolDialog = true" />
-        </panel>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </template>
+        <v-card-text v-if="active_spool === null">
+            <v-row>
+                <v-col class="text-center">
+                    <p class="text--disabled">{{ $t('Panels.SpoolmanPanel.NoActiveSpool') }}</p>
+                    <v-btn small color="primary" @click="showChangeSpoolDialog = true">
+                        {{ $t('Panels.SpoolmanPanel.SelectSpool') }}
+                    </v-btn>
+                </v-col>
+            </v-row>
+        </v-card-text>
+        <spoolman-panel-active-spool v-else @change-spool="showChangeSpoolDialog = true" />
         <spoolman-change-spool-dialog :show-dialog="showChangeSpoolDialog" @close="showChangeSpoolDialog = false" />
         <spoolman-eject-spool-dialog :show-dialog="showEjectSpoolDialog" @close="showEjectSpoolDialog = false" />
-    </div>
+    </panel>
 </template>
 
 <script lang="ts">
@@ -88,10 +86,6 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
 
     get active_spool(): ServerSpoolmanStateSpool | null {
         return this.$store.state.server.spoolman.active_spool ?? null
-    }
-
-    get spoolManagerUrl() {
-        return this.$store.getters['server/getConfigValue']('spoolman', 'server')
     }
 
     get toolsWithSpoolId() {

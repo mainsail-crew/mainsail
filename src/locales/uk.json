@@ -1067,9 +1067,7 @@
             "NoPresetFound": "Предустановки не знайдено",
             "Presets": "Предустановки",
             "Start": "Cтарт",
-            "StartDescription": "Перший світлодіод цієї групи.",
-            "UnableToLoadLight": "Не вдалося завантажити світло",
-            "UnableToLoadPreset": "Неможливо завантажити предналаштування"
+            "StartDescription": "Перший світлодіод цієї групи."
         },
         "NavigationTab": {
             "Navigation": "Навігація"

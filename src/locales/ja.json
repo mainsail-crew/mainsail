@@ -891,9 +891,7 @@
             "NoPresetFound": "プリセットが見つかりませんでした。",
             "Presets": "プリセット",
             "Start": "開始",
-            "StartDescription": "このグループ最初のLEDです。",
-            "UnableToLoadLight": "照明を読み込めませんでした。",
-            "UnableToLoadPreset": "プリセットを読み込めませんでした。"
+            "StartDescription": "このグループ最初のLEDです。"
         },
         "PresetsTab": {
             "AddPreset": "プリセット追加",
@@ -985,9 +983,7 @@
             "VariableFps": "可変フレームレート",
             "VariableFpsDescription": "有効の時、出力動画のフレームレートは目標再生時間をもとに計算されます。",
             "VariableFpsMax": "可変フレームレートの最高値",
-            "VariableFpsMaxDescription": "",
-            "VariableFpsMin": "可変フレームレートの最低値",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMin": "可変フレームレートの最低値"
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "大きなサムネイル",

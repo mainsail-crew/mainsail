@@ -54,7 +54,7 @@
                     <v-icon class="mr-1">{{ mdiFileDocumentEditOutline }}</v-icon>
                     {{ $t('Files.EditFile') }}
                 </v-list-item>
-                <v-list-item @click="showRenameFileDialog = true">
+                <v-list-item @click="openRenameFileDialog">
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
@@ -73,31 +73,7 @@
             :is-visible="showAddBatchToQueueDialog"
             :filename="filename"
             @close="showAddBatchToQueueDialog = false" />
-        <v-dialog v-model="showRenameFileDialog" :max-width="400">
-            <panel
-                :title="$t('Files.RenameFile')"
-                card-class="dashboard-files-rename-file-dialog"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="showRenameFileDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <v-text-field
-                        ref="inputFieldRenameFile"
-                        v-model="renameFileNewName"
-                        :label="$t('Files.Name')"
-                        required
-                        @keyup.enter="renameFile" />
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="showRenameFileDialog = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="renameFile">{{ $t('Files.Rename') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+        <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
         <v-dialog v-model="showDeleteDialog" max-width="400">
             <panel :title="$t('Files.Delete')" card-class="gcode-files-delete-dialog" :margin-bottom="false">
                 <template #buttons>
@@ -130,7 +106,6 @@ import ControlMixin from '@/components/mixins/control'
 import { FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import {
-    mdiFile,
     mdiPlay,
     mdiPlaylistPlus,
     mdiFire,
@@ -142,10 +117,10 @@ import {
     mdiCloseThick,
 } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
-import { defaultBigThumbnailBackground } from '@/store/variables'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath, formatPrintTime } from '@/plugins/helpers'
 import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbnail.vue'
+import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
 @Component({
     components: {
@@ -156,7 +131,6 @@ import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbn
     },
 })
 export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, ControlMixin) {
-    mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiPlaylistPlus = mdiPlaylistPlus
     mdiFire = mdiFire
@@ -172,10 +146,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
 
     currentPath = ''
 
-    declare $refs: {
-        inputFieldRenameFile: HTMLInputElement
-    }
-
     contextMenuShow = false
     contextMenuX = 0
     contextMenuY = 0
@@ -189,18 +159,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
 
     get styleContentTdWidth() {
         return `width: ${this.contentTdWidth}px;`
-    }
-
-    get bigThumbnailBackground() {
-        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
-    }
-
-    get bigThumbnailTooltipColor() {
-        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
-            return undefined
-        }
-
-        return this.bigThumbnailBackground
     }
 
     get existsMetadata() {
@@ -248,15 +206,17 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 
     showContextMenu(e: any) {
-        if (this.contextMenuShow) return
-
         e?.preventDefault()
+        EventBus.$emit(CLOSE_CONTEXT_MENU)
+
         this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
         this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
 
-        this.$nextTick(() => {
-            this.contextMenuShow = true
-        })
+        this.contextMenuShow = true
+    }
+
+    closeContextMenu() {
+        this.contextMenuShow = false
     }
 
     addToQueue() {
@@ -271,6 +231,11 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
         const href = this.apiUrl + '/server/files/gcodes/' + escapePath(this.item.filename)
 
         window.open(href)
+    }
+
+    openRenameFileDialog() {
+        this.renameFileNewName = this.filename
+        this.showRenameFileDialog = true
     }
 
     renameFile() {
@@ -311,7 +276,11 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 
     mounted() {
-        this.renameFileNewName = this.filename
+        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
+    }
+
+    beforeDestroy() {
+        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 }
 </script>
