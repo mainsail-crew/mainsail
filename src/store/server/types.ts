@@ -2,7 +2,7 @@ import { ServerPowerState } from '@/store/server/power/types'
 import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 import { ServerHistoryState } from '@/store/server/history/types'
 import { ServerTimelapseState } from '@/store/server/timelapse/types'
-import type { RPCResult } from '@/types/MoonrakerRPCInterface'
+import type { RPCResult } from '@/types/moonraker'
 
 type ServerConfigResponse = RPCResult<'server.config'>
 

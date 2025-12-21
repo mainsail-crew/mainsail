@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import router from '@/plugins/router'
 import { ActionTree } from 'vuex'
-import { MoonrakerApiIdentifyResponse, ServerState, ServerStateEvent } from '@/store/server/types'
+import { ServerState, ServerStateEvent } from '@/store/server/types'
 import { camelize, formatConsoleMessage } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 import { initableServerComponents } from '@/store/variables'

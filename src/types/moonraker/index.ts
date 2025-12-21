@@ -26,13 +26,15 @@
  * 'method.without.params': () => Promise<{ data: string[] }>
  */
 
-import type { ServerRPC } from './ServerRPC'
+import type { DatabaseRPC } from './DatabaseRPC'
+import type { MachineRPC } from './MachineRPC'
 import type { PrinterRPC } from './PrinterRPC'
+import type { ServerRPC } from './ServerRPC'
 
 /**
  * Combined Moonraker RPC Interface containing all method categories.
  */
-export interface MoonrakerRPCInterface extends ServerRPC, PrinterRPC {}
+export interface MoonrakerRPCInterface extends DatabaseRPC, MachineRPC, PrinterRPC, ServerRPC {}
 
 /**
  * Union type of all available RPC method names.
