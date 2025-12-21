@@ -34,10 +34,6 @@ import type { PrinterRPC } from './PrinterRPC'
  */
 export interface MoonrakerRPCInterface extends ServerRPC, PrinterRPC {}
 
-// Re-export individual RPC interfaces
-export type { ServerRPC } from './ServerRPC'
-export type { PrinterRPC } from './PrinterRPC'
-
 /**
  * Union type of all available RPC method names.
  * This is used to strictly type the method parameter in emitAndWait.
