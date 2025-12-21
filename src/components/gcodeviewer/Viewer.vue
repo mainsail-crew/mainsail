@@ -207,7 +207,6 @@
                     type="file"
                     @change="fileSelected" />
             </v-card-text>
-            <resize-observer @notify="handleResize" />
         </panel>
         <v-snackbar v-model="loading" :timeout="-1" fixed right bottom>
             <div>
@@ -362,6 +361,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     fileData: string = ''
 
+    resizeObserver: ResizeObserver | null = null
+
     @Prop({ type: String, default: '', required: false }) declare filename: string
     @Ref('fileInput') declare fileInput: HTMLInputElement
     @Ref('viewerCanvasContainer') declare viewerCanvasContainer: HTMLElement
@@ -382,9 +383,10 @@ export default class Viewer extends Mixins(BaseMixin) {
         await this.init()
 
         if (this.loadedFile !== null) this.scrubFileSize = viewer.fileSize
-        if (viewer) {
-            this.fileData = viewer.fileData
-        }
+        if (viewer) this.fileData = viewer.fileData
+
+        this.resizeObserver = new ResizeObserver(() => this.handleResize())
+        this.resizeObserver.observe(this.viewerCanvasContainer)
     }
 
     beforeDestroy() {
@@ -399,6 +401,8 @@ export default class Viewer extends Mixins(BaseMixin) {
             clearInterval(this.scrubInterval)
             this.scrubInterval = undefined
         }
+
+        this.resizeObserver?.disconnect()
     }
 
     @Debounce(200)

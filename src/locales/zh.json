@@ -794,7 +794,6 @@
             "ButtonUnlock": "解锁",
             "Bypass": "旁通",
             "Cancel": "取消",
-            "ClogDetection": "堵塞检测",
             "Dialog": {
                 "AreYouSure": "是否确定？"
             },
@@ -895,7 +894,6 @@
             "Ok": "确定",
             "PreGate": "预通道",
             "RecoverState": "修复MMU状态",
-            "ShowClogDetection": "堵塞检测",
             "ShowDetails": "耗材详情",
             "ShowLogos": "显示Logo",
             "ShowName": "显示单元名称",

@@ -1,6 +1,6 @@
 {
     "name": "mainsail",
-    "version": "2.15.0",
+    "version": "2.16.0",
     "private": true,
     "type": "module",
     "decription": "a klipper web interface",
@@ -64,7 +64,6 @@
         "vue-meta": "^2.4.0",
         "vue-observe-visibility": "^1.0.0",
         "vue-property-decorator": "^9.1.2",
-        "vue-resize": "^1.0.1",
         "vue-toast-notification": "^1.0.1",
         "vuedraggable": "^2.24.3",
         "vuetify": "^2.7.2",

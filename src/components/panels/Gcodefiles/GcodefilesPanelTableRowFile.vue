@@ -117,10 +117,7 @@
             :is-visible="showAddBatchToQueueDialog"
             :filename="item.full_filename"
             @close="showAddBatchToQueueDialog = false" />
-        <gcodefiles-rename-file-dialog
-            :item="item"
-            :show-dialog="showRenameFileDialog"
-            @close="showRenameFileDialog = false" />
+        <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
         <gcodefiles-duplicate-file-dialog
             :item="item"
             :show-dialog="showDuplicateFileDialog"
@@ -158,6 +155,7 @@ import GcodefilesPanelTableRowFileMetadata from '@/components/panels/Gcodefiles/
 import GcodefilesPanelTableRowFileMetadataFilaments from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadataFilaments.vue'
 import GcodefilesPanelTableRowFileMetadataSlicer from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadataSlicer.vue'
 import GcodefilesPanelTableRowFileMetadataFilamentStrings from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadataFilamentStrings.vue'
+import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
 @Component({
     components: {
@@ -225,15 +223,17 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
     }
 
     showContextMenuAction(e: MouseEvent) {
-        if (this.showContextMenu) return
-
         e?.preventDefault()
+        EventBus.$emit(CLOSE_CONTEXT_MENU)
+
         this.showContextMenuX = e?.clientX || e?.pageX || window.screenX / 2
         this.showContextMenuY = e?.clientY || e?.pageY || window.screenY / 2
 
-        this.$nextTick(() => {
-            this.showContextMenu = true
-        })
+        this.showContextMenu = true
+    }
+
+    closeContextMenu() {
+        this.showContextMenu = false
     }
 
     clickOnRow() {
@@ -289,6 +289,14 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
     onDrag(e: DragEvent) {
         e.preventDefault()
         e.stopPropagation()
+    }
+
+    mounted() {
+        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
+    }
+
+    beforeDestroy() {
+        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 }
 </script>

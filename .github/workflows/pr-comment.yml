@@ -1,0 +1,76 @@
+name: PR Comment
+
+run-name: 'PR Comment for run #${{ github.event.workflow_run.id }}'
+
+on:
+  workflow_run:
+    workflows: ['PR Checks']
+    types: [completed]
+
+jobs:
+  comment:
+    name: Post PR comments
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.event == 'pull_request'
+    permissions:
+      pull-requests: write
+      actions: read
+    steps:
+      - name: Get PR number and check artifacts
+        id: pr
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id,
+            });
+
+            // Get PR number from workflow run
+            const prNumber = context.payload.workflow_run.pull_requests[0]?.number;
+            if (!prNumber) {
+              console.log('No PR found');
+              return;
+            }
+            core.setOutput('number', prNumber);
+
+            // Check which artifacts exist
+            const hasTranslation = artifacts.data.artifacts.some(a => a.name === 'translation-report');
+            const hasBundle = artifacts.data.artifacts.some(a => a.name === 'bundle-report');
+            core.setOutput('has_translation', hasTranslation);
+            core.setOutput('has_bundle', hasBundle);
+
+      - name: Download translation report
+        if: steps.pr.outputs.has_translation == 'true'
+        uses: actions/download-artifact@v7
+        with:
+          name: translation-report
+          path: ./reports
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment translation report
+        if: steps.pr.outputs.has_translation == 'true'
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          file-path: ./reports/translation-report.md
+          pr-number: ${{ steps.pr.outputs.number }}
+          comment-tag: translation-report
+
+      - name: Download bundle report
+        if: steps.pr.outputs.has_bundle == 'true'
+        uses: actions/download-artifact@v7
+        with:
+          name: bundle-report
+          path: ./reports
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment bundle report
+        if: steps.pr.outputs.has_bundle == 'true'
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          file-path: ./reports/bundle-report.md
+          pr-number: ${{ steps.pr.outputs.number }}
+          comment-tag: bundle-report

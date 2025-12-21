@@ -961,9 +961,7 @@
             "NoPresetFound": "Geen presets gevonden",
             "Presets": "Presets",
             "Start": "Start",
-            "StartDescription": "Eerste LED van deze groep.",
-            "UnableToLoadLight": "Niet gelukt het licht te laden",
-            "UnableToLoadPreset": "Niet gelukt de preset te laden"
+            "StartDescription": "Eerste LED van deze groep."
         },
         "PresetsTab": {
             "AddPreset": "voeg preset toe",

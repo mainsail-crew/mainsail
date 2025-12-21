@@ -1103,9 +1103,7 @@
             "NoPresetFound": "Nem található előbeállítás",
             "Presets": "Előbeállítások",
             "Start": "Indítás",
-            "StartDescription": "A csoport első LED-je.",
-            "UnableToLoadLight": "Nem lehet betölteni a fényt",
-            "UnableToLoadPreset": "Előbeállítás betöltése nem lehetséges"
+            "StartDescription": "A csoport első LED-je."
         },
         "NavigationTab": {
             "Navigation": "Navigáció"

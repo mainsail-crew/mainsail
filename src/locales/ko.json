@@ -892,9 +892,7 @@
             "NoPresetFound": "프리셋이 없습니다",
             "Presets": "프리셋",
             "Start": "시작 번호",
-            "StartDescription": "LED의 시작 열 번호를 지정합니다",
-            "UnableToLoadLight": "라이트를 로드할 수 없습니다",
-            "UnableToLoadPreset": "프리셋을 로드할 수 없습니다"
+            "StartDescription": "LED의 시작 열 번호를 지정합니다"
         },
         "PresetsTab": {
             "AddPreset": "프리셋 추가",

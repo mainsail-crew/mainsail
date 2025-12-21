@@ -387,3 +387,114 @@ export function filamentWeightFormat(weight: number): string {
 
     return `${Math.round(weight * 10) / 10} g`
 }
+
+// This function is based on the Fluidd implementation
+// https://github.com/fluidd-core/fluidd/blob/2425607e4eb507d4da84c18bfa77fecbc42f8a32/src/util/string-formatters.ts#L47
+export function convertStringToArray(str: string, separator = ';'): string[] {
+    if (!str) return []
+    if (str.startsWith('["') && str.endsWith('"]')) {
+        try {
+            const arr = JSON.parse(str)
+            if (Array.isArray(arr) && arr.every((item) => typeof item === 'string')) {
+                return arr.map((s) => s.trim())
+            }
+        } catch (e) {
+            // Fallback to separator split
+        }
+    }
+
+    return str.split(separator).map((s) => s.replace(/^"|"$/g, '').trim())
+}
+
+/**
+ * Converts a hex color string to an RGB object.
+ *
+ * Supports multiple hex formats:
+ * - 6-digit: `#FF5500` or `FF5500`
+ * - 3-digit shorthand: `#F50` or `F50` (expanded to `FF5500`)
+ * - 8-digit with alpha: `#FF5500AA` (alpha channel is ignored)
+ *
+ * @param hex - Hex color string with or without leading `#`
+ * @returns Object with `r`, `g`, `b` properties (0-255 each), or `null` if the input is invalid
+ *
+ * @example
+ * // Standard 6-digit hex
+ * convertHexToRgb('#FF5500') // { r: 255, g: 85, b: 0 }
+ * // Without hash prefix
+ * convertHexToRgb('FF5500') // { r: 255, g: 85, b: 0 }
+ *
+ * @example
+ * // 3-digit shorthand (expanded: F→FF, 5→55, 0→00)
+ * convertHexToRgb('#F50') // { r: 255, g: 85, b: 0 }
+ *
+ * @example
+ * // 8-digit with alpha (alpha is stripped)
+ * convertHexToRgb('#FF5500AA') // { r: 255, g: 85, b: 0 }
+ *
+ * @example
+ * // Invalid input returns null
+ * convertHexToRgb('invalid') // null
+ * convertHexToRgb('#GG0000') // null
+ */
+export function convertHexToRgb(hex: string): { r: number; g: number; b: number } | null {
+    let cleaned = hex.replace(/^#/, '').toLowerCase()
+
+    if (cleaned.length === 8) cleaned = cleaned.slice(0, 6)
+    else if (cleaned.length === 3) {
+        cleaned = cleaned
+            .split('')
+            .map((c) => c + c)
+            .join('')
+    }
+
+    if (cleaned.length !== 6 || !/^[0-9a-f]{6}$/.test(cleaned)) {
+        return null
+    }
+
+    return {
+        r: parseInt(cleaned.slice(0, 2), 16),
+        g: parseInt(cleaned.slice(2, 4), 16),
+        b: parseInt(cleaned.slice(4, 6), 16),
+    }
+}
+
+/**
+ * Compares two hex colors and returns true if they match within the given tolerance.
+ *
+ * The comparison is performed on each RGB channel independently. Two colors are considered
+ * matching if the absolute difference for each channel (R, G, B) is within the tolerance.
+ *
+ * @param color1 - First hex color string (e.g., '#FF5500', 'FF5500', '#F50', or 'F50')
+ * @param color2 - Second hex color string (e.g., '#FF5500', 'FF5500', '#F50', or 'F50')
+ * @param tolerance - Maximum allowed difference per RGB channel (0-255). Defaults to 0 (exact match)
+ * @returns `true` if colors match within tolerance, `false` if they don't match or if either color is invalid
+ *
+ * @example
+ * // Exact match
+ * colorsMatch('#FF0000', '#FF0000') // true
+ *
+ * @example
+ * // Match with tolerance
+ * colorsMatch('#FF0000', '#FE0000', 1) // true (red differs by 1)
+ * colorsMatch('#FF0000', '#FD0000', 1) // false (red differs by 2)
+ *
+ * @example
+ * // Shorthand hex support
+ * colorsMatch('#F00', '#FF0000') // true
+ *
+ * @example
+ * // Invalid color returns false
+ * colorsMatch('#FF0000', 'invalid') // false
+ */
+export function colorsMatch(color1: string, color2: string, tolerance = 0): boolean {
+    const rgb1 = convertHexToRgb(color1)
+    const rgb2 = convertHexToRgb(color2)
+
+    if (rgb1 === null || rgb2 === null) return false
+
+    return (
+        Math.abs(rgb1.r - rgb2.r) <= tolerance &&
+        Math.abs(rgb1.g - rgb2.g) <= tolerance &&
+        Math.abs(rgb1.b - rgb2.b) <= tolerance
+    )
+}
