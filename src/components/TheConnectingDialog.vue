@@ -1,23 +1,10 @@
 <template>
     <v-dialog v-model="showDialog" persistent :width="400">
         <panel :title="titleText" :icon="mdiConnection" card-class="the-connection-dialog" :margin-bottom="false">
-            <!-- Error State (connection failed or init error) -->
             <v-card-text v-if="connectingFailed || initializationError" class="pt-5">
                 <connection-status :moonraker="false" />
-                <p class="text-center mt-3 mb-0">
-                    <template v-if="initializationError">
-                        {{ $t('ConnectionDialog.InitializationFailed') }}
-                    </template>
-                    <template v-else>
-                        {{ $t('ConnectionDialog.CannotConnectTo', { host: formatHostname }) }}
-                    </template>
-                </p>
-                <p v-if="initializationError" class="text-center mt-1 red--text">
-                    {{ $t('ConnectionDialog.ErrorMessage', { message: initializationError }) }}
-                </p>
-                <p v-else-if="connectionFailedMessage" class="text-center mt-1 red--text">
-                    {{ $t('ConnectionDialog.ErrorMessage', { message: connectionFailedMessage }) }}
-                </p>
+                <p class="text-center mt-3 mb-0">{{ errorMessageNeutral }}</p>
+                <p v-if="errorMessageRed" class="text-center mt-1 red--text">{{ errorMessageRed }}</p>
                 <template v-if="counter > 2">
                     <v-divider class="my-3" />
                     <p>{{ $t('ConnectionDialog.CheckMoonrakerLog') }}</p>
@@ -34,7 +21,6 @@
                     <v-btn class="primary--text" @click="reconnect">{{ $t('ConnectionDialog.TryAgain') }}</v-btn>
                 </div>
             </v-card-text>
-            <!-- Connecting/Initializing State -->
             <v-card-text v-else class="pt-5">
                 <v-progress-linear
                     :color="progressBarColor"
@@ -121,6 +107,22 @@ export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
 
     get connectionFailedMessage() {
         return this.$store.state.socket.connectionFailedMessage ?? null
+    }
+
+    get errorMessageNeutral() {
+        if (this.initializationError) return this.$t('ConnectionDialog.InitializationFailed')
+
+        return this.$t('ConnectionDialog.CannotConnectTo', { host: this.formatHostname })
+    }
+
+    get errorMessageRed() {
+        if (this.initializationError)
+            return this.$t('ConnectionDialog.ErrorMessage', { message: this.initializationError })
+
+        if (this.connectionFailedMessage)
+            return this.$t('ConnectionDialog.ErrorMessage', { message: this.connectionFailedMessage })
+
+        return null
     }
 
     get helpButtonUrl() {
