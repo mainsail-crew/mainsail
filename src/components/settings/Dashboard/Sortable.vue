@@ -19,7 +19,8 @@
                 handle=".handle"
                 class="v-list-item-group fill-height"
                 ghost-class="ghost"
-                :group="groupname">
+                :group="groupname"
+                :force-fallback="true">
                 <transition-group>
                     <settings-dashboard-sortable-item
                         v-for="element in layout"

@@ -2,7 +2,12 @@
     <div>
         <v-card-text>
             <h3 class="text-h5 mb-3">{{ $t('Settings.NavigationTab.Navigation') }}</h3>
-            <draggable v-model="sortableNaviPoints" handle=".handle" ghost-class="ghost" group="navigation-points">
+            <draggable
+                v-model="sortableNaviPoints"
+                handle=".handle"
+                ghost-class="ghost"
+                group="navigation-points"
+                :force-fallback="true">
                 <settings-navigation-tab-item
                     v-for="(naviPoint, index) in sortableNaviPoints"
                     :key="index"
