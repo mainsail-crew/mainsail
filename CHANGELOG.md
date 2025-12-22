@@ -2,6 +2,38 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.16.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.16.1) - 2025-12-22
+### Bug Fixes and Improvements
+
+- **Configfiles**: Fix context menu handling ([#2339](https://github.com/mainsail-crew/mainsail/pull/2339))
+- **Docker**: Disable ipv6 when it is not available on the Host ([#2354](https://github.com/mainsail-crew/mainsail/pull/2354))
+- **Gcodefiles**: Fix context menu handling ([#2338](https://github.com/mainsail-crew/mainsail/pull/2338))
+- **HappyHare**: Fix eject button disabling logic ([#2336](https://github.com/mainsail-crew/mainsail/pull/2336))
+- **HappyHare**: Clog detection meter dependent on encoder OR sync-feedback ([#2342](https://github.com/mainsail-crew/mainsail/pull/2342))
+- **HappyHare**: Fix color match in TTG Map ([#2341](https://github.com/mainsail-crew/mainsail/pull/2341))
+- **HappyHare**: Fixes animated filament position so filament doesn't go backwards ([#2347](https://github.com/mainsail-crew/mainsail/pull/2347))
+- **HappyHare**: Remove too much divider in print start dialog ([#2350](https://github.com/mainsail-crew/mainsail/pull/2350))
+- **MacroPrompt**: Fix margin between multi line buttons ([#2352](https://github.com/mainsail-crew/mainsail/pull/2352))
+- **MoonrakerSensor**: Fix sensor name display logic ([#2356](https://github.com/mainsail-crew/mainsail/pull/2356))
+- **Settings**: Fix drag&drop sortable in Orcaslicer ([#2353](https://github.com/mainsail-crew/mainsail/pull/2353))
+- **Spoolman**: Fix init load from spool db ([#2340](https://github.com/mainsail-crew/mainsail/pull/2340))
+- **Spoolman**: Replace spoolman url to api hostname when localhost ([#2351](https://github.com/mainsail-crew/mainsail/pull/2351))
+- **StatusPanel**: Fix context menu handling ([#2333](https://github.com/mainsail-crew/mainsail/pull/2333))
+- **StatusPanel**: Fix autofocus in rename dialog from gcodefiles ([#2335](https://github.com/mainsail-crew/mainsail/pull/2335))
+- **StatusPanel**: Fix filename exists check in rename gcodefile dialog ([#2345](https://github.com/mainsail-crew/mainsail/pull/2345))
+- Fix splitting gcode filament_names metadata ([#2337](https://github.com/mainsail-crew/mainsail/pull/2337))
+
+### Refactor
+
+- **Sidebar**: Simplify template structure and active state handling ([#2355](https://github.com/mainsail-crew/mainsail/pull/2355))
+- **StatusPanel**: Remove old/unused code in GcodefilesEntry ([#2334](https://github.com/mainsail-crew/mainsail/pull/2334))
+- **Theme**: Update Yumi logo ([#2357](https://github.com/mainsail-crew/mainsail/pull/2357))
+- Replace vue-resize with ResizeObserver ([#2348](https://github.com/mainsail-crew/mainsail/pull/2348))
+
+### Other
+
+- **AI**: Add guidelines for AI-Agents ([#2304](https://github.com/mainsail-crew/mainsail/pull/2304))
+
 ## [2.16.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.16.0) - 2025-12-12
 ### Features
 
