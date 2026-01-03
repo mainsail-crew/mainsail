@@ -30,6 +30,7 @@ import {
     mmuIconQuattroBox,
     mmuIconTradrack,
     mmuIconVvd,
+    mmuThemeIcons,
 } from '@/plugins/mmuIcons'
 import { additionalSensors } from '@/store/variables'
 
@@ -110,7 +111,19 @@ export default class MmuUnitFooter extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get logo() {
-        switch (this.mmuVendor) {
+        const baseIcon = this.getBaseIcon(this.mmuVendor)
+        const themeVariants = mmuThemeIcons[this.mmuVendor]
+
+        if (!themeVariants) return baseIcon
+
+        const isDark = this.$vuetify.theme.dark
+        const themeIcon = isDark ? themeVariants.dark : themeVariants.light
+
+        return themeIcon ?? baseIcon
+    }
+
+    private getBaseIcon(vendor: string) {
+        switch (vendor) {
             case '3MS':
                 return mmuIcon3MS
 
