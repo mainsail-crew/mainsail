@@ -35,10 +35,7 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <gcodefiles-rename-directory-dialog
-            :item="item"
-            :show-dialog="showRenameDirectoryDialog"
-            @close="showRenameDirectoryDialog = false" />
+        <gcodefiles-rename-directory-dialog v-model="showRenameDirectoryDialog" :item="item" />
         <confirmation-dialog
             v-model="showDeleteDirectoryDialog"
             :title="$t('Files.DeleteDirectory')"

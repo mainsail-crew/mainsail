@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="showDialog" width="400">
+    <v-dialog v-model="showDialog" width="400">
         <panel
             :title="$t('Files.RenameDirectory')"
             card-class="gcodefiles-rename-directory-dialog"
@@ -11,7 +11,7 @@
             </template>
             <v-card-text>
                 <v-text-field
-                    ref="inputFieldRenameDirectory"
+                    ref="inputField"
                     v-model="name"
                     :label="$t('Files.Name')"
                     required
@@ -35,25 +35,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
 import GcodefilesMixin from '@/components/mixins/gcodefiles'
 import { FileStateGcodefile } from '@/store/files/types'
 
-@Component({
-    components: { Panel },
-})
+@Component
 export default class GcodefilesRenameDirectoryDialog extends Mixins(BaseMixin, GcodefilesMixin) {
     mdiCloseThick = mdiCloseThick
 
     name = ''
     isInvalidName = true
 
-    @Prop({ type: Boolean, default: false }) showDialog!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, required: true }) item!: FileStateGcodefile
-    @Ref('inputFieldRenameDirectory') readonly inputFieldRenameDirectory!: HTMLInputElement
+    @Ref() readonly inputField!: HTMLInputElement
 
     nameInputRules = [
         (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
@@ -78,7 +75,7 @@ export default class GcodefilesRenameDirectoryDialog extends Mixins(BaseMixin, G
     }
 
     closePrompt() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
     @Watch('showDialog')
@@ -89,8 +86,8 @@ export default class GcodefilesRenameDirectoryDialog extends Mixins(BaseMixin, G
         this.isInvalidName = true
 
         setTimeout(() => {
-            this.inputFieldRenameDirectory.focus()
-        }, 200)
+            this.inputField?.focus()
+        })
     }
 }
 </script>
