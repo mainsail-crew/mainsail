@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="showDialog" width="500" persistent :fullscreen="isMobile">
+    <v-dialog v-model="showDialog" width="500" persistent :fullscreen="isMobile">
         <panel
             id="devices-dialog"
             :title="$t('DevicesDialog.Headline')"
@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 
@@ -70,7 +70,7 @@ export default class DevicesDialog extends Mixins(BaseMixin) {
     tab = 'serial'
     hideSystemEntries = true
 
-    @Prop({ type: Boolean, default: false }) showDialog!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
     get tabs() {
         const output: { tab: string; title: string }[] = [
@@ -103,7 +103,7 @@ export default class DevicesDialog extends Mixins(BaseMixin) {
     }
 
     closePrompt() {
-        this.$emit('close')
+        this.showDialog = false
     }
 }
 </script>
