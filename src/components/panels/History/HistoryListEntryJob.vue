@@ -122,11 +122,7 @@
             :job="item"
             @close-dialog="noteDialogBool = false" />
         <!-- add to queue dialog -->
-        <add-batch-to-queue-dialog
-            :is-visible="addBatchToQueueDialogBool"
-            :show-toast="true"
-            :filename="item.filename"
-            @close="addBatchToQueueDialogBool = false" />
+        <add-batch-to-queue-dialog v-model="addBatchToQueueDialogBool" :show-toast="true" :filename="item.filename" />
     </tr>
 </template>
 <script lang="ts">

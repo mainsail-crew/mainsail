@@ -113,10 +113,7 @@
             :file="item"
             :current-path="currentPath"
             @closeDialog="showStartPrintDialog = false" />
-        <add-batch-to-queue-dialog
-            :is-visible="showAddBatchToQueueDialog"
-            :filename="item.full_filename"
-            @close="showAddBatchToQueueDialog = false" />
+        <add-batch-to-queue-dialog v-model="showAddBatchToQueueDialog" :filename="item.full_filename" />
         <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
         <gcodefiles-duplicate-file-dialog
             :item="item"

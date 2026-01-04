@@ -69,10 +69,7 @@
             :file="item"
             current-path=""
             @closeDialog="showPrintDialog = false" />
-        <add-batch-to-queue-dialog
-            :is-visible="showAddBatchToQueueDialog"
-            :filename="filename"
-            @close="showAddBatchToQueueDialog = false" />
+        <add-batch-to-queue-dialog v-model="showAddBatchToQueueDialog" :filename="filename" />
         <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
         <v-dialog v-model="showDeleteDialog" max-width="400">
             <panel :title="$t('Files.Delete')" card-class="gcode-files-delete-dialog" :margin-bottom="false">

@@ -71,11 +71,7 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <add-batch-to-queue-dialog
-            :is-visible="addBatchToQueueDialogBool"
-            :show-toast="true"
-            :filename="job.filename"
-            @close="addBatchToQueueDialogBool = false" />
+        <add-batch-to-queue-dialog v-model="addBatchToQueueDialogBool" :show-toast="true" :filename="job.filename" />
     </v-row>
 </template>
 
