@@ -20,21 +20,19 @@
             </v-btn>
         </v-list-item-action>
         <confirmation-dialog
-            :show="showRestartDialog"
+            v-model="showRestartDialog"
             :title="dialogRestartTitle"
             :text="dialogRestartDescription"
             :action-button-text="$t('App.TopCornerMenu.Restart')"
             :cancel-button-text="$t('App.TopCornerMenu.Cancel')"
-            @action="serviceRestart"
-            @close="showRestartDialog = false" />
+            @action="serviceRestart" />
         <confirmation-dialog
-            :show="showStopDialog"
+            v-model="showStopDialog"
             :title="dialogStopTitle"
             :text="dialogStopDescription"
             :action-button-text="$t('App.TopCornerMenu.Stop')"
             :cancel-button-text="$t('App.TopCornerMenu.Cancel')"
-            @action="serviceStop"
-            @close="showStopDialog = false" />
+            @action="serviceStop" />
     </v-list-item>
 </template>
 <script lang="ts">

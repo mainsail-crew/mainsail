@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" width="400" :fullscreen="isMobile">
+    <v-dialog v-model="showDialog" width="400" :fullscreen="isMobile">
         <panel card-class="confirm-top-corner-menu-dialog" :icon="mdiAlert" :title="title" :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="close">
@@ -24,7 +24,7 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import Panel from '@/components/ui/Panel.vue'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, Prop, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiAlert, mdiCloseThick } from '@mdi/js'
 
@@ -35,7 +35,7 @@ export default class ConfirmationDialog extends Mixins(BaseMixin) {
     mdiAlert = mdiAlert
     mdiCloseThick = mdiCloseThick
 
-    @Prop({ type: Boolean, required: true }) show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: String, required: true }) title!: string
     @Prop({ type: String, required: true }) text!: string
     @Prop({ type: String, required: true }) actionButtonText!: string
@@ -46,7 +46,7 @@ export default class ConfirmationDialog extends Mixins(BaseMixin) {
     }
 
     close() {
-        this.$emit('close')
+        this.showDialog = false
     }
 }
 </script>

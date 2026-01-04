@@ -101,13 +101,12 @@
             </v-card>
         </v-dialog>
         <confirmation-dialog
-            :show="dialogConfirmation.show"
+            v-model="dialogConfirmation.show"
             :title="dialogConfirmation.title"
             :text="dialogConfirmation.description"
             :action-button-text="dialogConfirmation.actionButtonText"
             :cancel-button-text="$t('App.TopCornerMenu.Cancel')"
-            @action="executeDialog"
-            @close="dialogConfirmation.show = false" />
+            @action="executeDialog" />
     </div>
 </template>
 
