@@ -48,10 +48,9 @@
             </v-card-actions>
         </panel>
         <history-list-panel-perform-maintenance
-            :show="showPerformDialog"
+            v-model="showPerformDialog"
             :item="item"
-            @close="showPerformDialog = false"
-            @close-both="closePerform" />
+            @close-details-dialog="closeDialog" />
         <history-list-panel-edit-maintenance v-model="showEditDialog" :item="item" />
     </v-dialog>
 </template>
@@ -120,11 +119,6 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
 
     closeDialog() {
         this.showDialog = false
-    }
-
-    closePerform() {
-        this.showPerformDialog = false
-        this.closeDialog()
     }
 }
 </script>

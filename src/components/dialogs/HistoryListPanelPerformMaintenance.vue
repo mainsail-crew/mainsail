@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" :max-width="400" persistent @keydown.esc="closeDialog">
+    <v-dialog v-model="showDialog" :max-width="400" persistent @keydown.esc="closeDialog">
         <panel
             :title="$t('History.PerformMaintenance')"
             :icon="mdiNotebook"
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiNotebook } from '@mdi/js'
@@ -41,7 +41,7 @@ export default class HistoryListPanelPerformMaintenance extends Mixins(BaseMixin
     mdiCloseThick = mdiCloseThick
     mdiNotebook = mdiNotebook
 
-    @Prop({ type: Boolean, default: false }) readonly show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, default: false }) readonly item!: GuiMaintenanceStateEntry
 
     note: string = ''
@@ -59,17 +59,19 @@ export default class HistoryListPanelPerformMaintenance extends Mixins(BaseMixin
     }
 
     closeDialog() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
     perform() {
         this.$store.dispatch('gui/maintenance/perform', { id: this.item.id, note: this.note })
-        this.$emit('close-both')
+        this.$emit('close-details-dialog')
     }
 
-    @Watch('show')
-    onShowChanged(show: boolean) {
-        if (show) this.note = ''
+    @Watch('showDialog')
+    onShowDialogChanged(newVal: boolean) {
+        if (!newVal) return
+
+        this.note = ''
     }
 }
 </script>
