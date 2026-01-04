@@ -38,8 +38,8 @@
             </v-row>
         </v-card-text>
         <spoolman-panel-active-spool v-else @change-spool="showChangeSpoolDialog = true" />
-        <spoolman-change-spool-dialog :show-dialog="showChangeSpoolDialog" @close="showChangeSpoolDialog = false" />
-        <spoolman-eject-spool-dialog :show-dialog="showEjectSpoolDialog" @close="showEjectSpoolDialog = false" />
+        <spoolman-change-spool-dialog v-model="showChangeSpoolDialog" />
+        <spoolman-eject-spool-dialog v-model="showEjectSpoolDialog" />
     </panel>
 </template>
 

@@ -158,10 +158,9 @@
 
         <!-- SPOOLMAN (ADAPTED) SPOOL SELECTOR -->
         <spoolman-change-spool-dialog
-            :show-dialog="showSpoolmanSpoolChooserDialog"
+            v-model="showSpoolmanSpoolChooserDialog"
             :set-active-spool="false"
-            @select-spool="selectSpoolmanSpool"
-            @close="showSpoolmanSpoolChooserDialog = false" />
+            @select-spool="selectSpoolmanSpool" />
     </v-container>
 </template>
 

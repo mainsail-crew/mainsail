@@ -13,7 +13,7 @@
                 {{ buttonText }}
             </v-btn>
         </div>
-        <spoolman-change-spool-dialog :show-dialog="showChangeSpoolDialog" @close="showChangeSpoolDialog = false" />
+        <spoolman-change-spool-dialog v-model="showChangeSpoolDialog" />
     </v-card-text>
 </template>
 

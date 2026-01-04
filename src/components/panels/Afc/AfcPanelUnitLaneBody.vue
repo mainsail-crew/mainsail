@@ -18,11 +18,7 @@
                         {{ spoolFilamentName }}
                     </span>
                 </v-tooltip>
-                <spoolman-change-spool-dialog
-                    v-if="afcExistsSpoolman"
-                    :show-dialog="showSpoolmanDialog"
-                    :afc-lane="name"
-                    @close="showSpoolmanDialog = false" />
+                <spoolman-change-spool-dialog v-if="afcExistsSpoolman" v-model="showSpoolmanDialog" :afc-lane="name" />
                 <afc-unit-lane-filament-dialog v-model="showFilamentDialog" :name="name" />
             </v-col>
             <v-col class="pr-6 pl-2 pt-0 pb-0 d-flex flex-column justify-space-between align-end">

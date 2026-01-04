@@ -74,7 +74,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Mixins, Prop, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiAdjust, mdiDatabase, mdiMagnify, mdiRefresh, mdiEject } from '@mdi/js'
@@ -91,7 +91,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     mdiMagnify = mdiMagnify
     mdiRefresh = mdiRefresh
 
-    @Prop({ required: true }) declare readonly showDialog: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ required: false, default: null }) declare readonly tool?: string
     @Prop({ required: false, default: null }) declare readonly afcLane?: string
     @Prop({ required: false, default: true }) declare readonly setActiveSpool?: boolean
@@ -157,7 +157,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     }
 
     close() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
     refreshSpools() {
