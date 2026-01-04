@@ -1,6 +1,6 @@
 <template>
     <panel
-        v-if="showPanel"
+        v-if="klipperReadyForGui"
         :icon="mdiLedStrip"
         :title="$t('Panels.LedEffectsPanel.Headline')"
         :collapsible="true"
@@ -51,10 +51,6 @@ const STOP_LED_EFFECTS_COMMAND = 'STOP_LED_EFFECTS'
 export default class LedEffectsPanel extends Mixins(BaseMixin) {
     mdiLedStrip = mdiLedStrip
     mdiStop = mdiStop
-
-    get showPanel() {
-        return this.klipperReadyForGui && this.ledEffects.length > 0
-    }
 
     get ledEffects() {
         const prefix = 'led_effect '

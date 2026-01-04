@@ -101,6 +101,15 @@ export const getters: GetterTree<GuiState, any> = {
             allPanels = allPanels.filter((name) => name !== 'mmu')
         }
 
+        // remove led_effects panel, if no led_effect object exists in Klipper
+        const ledEffectsPrefix = 'led_effect '
+        const existsLedEffects = Object.keys(rootState.printer ?? {}).some((name) =>
+            name.toLowerCase().startsWith(ledEffectsPrefix)
+        )
+        if (!existsLedEffects) {
+            allPanels = allPanels.filter((name) => name !== 'led-effects')
+        }
+
         return allPanels
     },
 
