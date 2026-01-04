@@ -116,11 +116,10 @@
         </v-row>
         <git-commits-list v-if="type === 'git_repo'" v-model="boolShowCommitList" :repo="repo" />
         <update-hint
-            :bool-show-dialog="boolShowUpdateHint"
+            v-model="boolShowUpdateHint"
             :repo="repo"
             @open-commit-history="boolShowCommitList = true"
-            @do-update="doUpdate"
-            @close-dialog="closeShowUpdateHint" />
+            @do-update="doUpdate" />
     </div>
 </template>
 

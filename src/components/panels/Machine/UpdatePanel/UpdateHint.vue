@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="boolShowDialog" persistent max-width="600">
+    <v-dialog v-model="showDialog" persistent max-width="600">
         <panel
             :title="$t('Machine.UpdatePanel.AreYouSure')"
             :icon="mdiProgressQuestion"
@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerUpdateManagerStateGitRepo } from '@/store/server/updateManager/types'
 import { mdiProgressQuestion, mdiCloseThick } from '@mdi/js'
@@ -53,7 +53,7 @@ export default class UpdateHint extends Mixins(BaseMixin) {
 
     checkboxUpdateQuestion = false
 
-    @Prop({ required: true }) readonly boolShowDialog!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
 
     doUpdate() {
@@ -65,7 +65,7 @@ export default class UpdateHint extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('close-dialog')
+        this.showDialog = false
     }
 }
 </script>
