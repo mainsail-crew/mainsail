@@ -96,6 +96,11 @@ export const getters: GetterTree<GuiState, any> = {
             allPanels = allPanels.filter((name) => name !== 'afc')
         }
 
+        // remove mmu panel, if no Happy Hare exists in Klipper
+        if (!rootState.printer?.mmu) {
+            allPanels = allPanels.filter((name) => name !== 'mmu')
+        }
+
         return allPanels
     },
 

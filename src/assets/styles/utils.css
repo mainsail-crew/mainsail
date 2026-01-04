@@ -36,6 +36,10 @@
     min-height: 36px;
 }
 
+.min-width-0 {
+    min-width: 0 !important;
+}
+
 .cursor-pointer {
     cursor: pointer !important;
 }

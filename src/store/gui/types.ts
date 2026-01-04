@@ -138,6 +138,7 @@ export interface GuiState {
             showFilamentName: boolean
             showLaneInfinite: boolean
             showUnitIcons: boolean
+            showTd1Color: boolean
         }
         blockFileUpload: boolean
         configfiles: {
@@ -219,6 +220,15 @@ export interface GuiState {
                 dashboard: string
                 page: string
             }
+        }
+        mmu: {
+            showClogDetection: boolean
+            showTtgMap: boolean
+            showDetails: boolean
+            largeFilamentStatus: boolean
+            showLogos: boolean
+            showName: boolean
+            showUnavailableSpoolColor: boolean
         }
     }
 }

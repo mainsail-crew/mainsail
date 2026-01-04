@@ -41,7 +41,7 @@
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
                             <div v-bind="attrs" v-on="on">
-                                <strong>{{ $t('Panels.StatusPanel.Filament') }}</strong>
+                                <strong>{{ outputFilamentTitle }}</strong>
                                 <br />
                                 <span class="d-block text-center text-no-wrap">
                                     {{ outputFilamentUsed }}
@@ -137,6 +137,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import StatusPanelFilesJobqueue from '@/components/panels/Status/Jobqueue.vue'
 import StatusPanelFilesGcodes from '@/components/panels/Status/Gcodefiles.vue'
+import AfcMixin from '@/components/mixins/afc'
 
 @Component({
     components: {
@@ -144,7 +145,7 @@ import StatusPanelFilesGcodes from '@/components/panels/Status/Gcodefiles.vue'
         StatusPanelFilesGcodes,
     },
 })
-export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin) {
+export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin, AfcMixin) {
     private maxFlow: number = 0
 
     get current_file() {
@@ -232,7 +233,21 @@ export default class StatusPanelPrintstatusPrinting extends Mixins(BaseMixin) {
         return this.$store.state.printer.print_stats?.filament_used ?? 0
     }
 
+    get showToolchange() {
+        return this.afcExists && this.current_file.filament_change_count > 10 && this.afcCurrentToolchange !== undefined
+    }
+
+    get outputFilamentTitle() {
+        if (this.showToolchange) return this.$t('Panels.StatusPanel.Toolchange')
+
+        return this.$t('Panels.StatusPanel.Filament')
+    }
+
     get outputFilamentUsed() {
+        if (this.showToolchange) {
+            return `${this.afcCurrentToolchange} / ${this.current_file.filament_change_count}`
+        }
+
         return this.filament_used >= 1000
             ? (this.filament_used / 1000).toFixed(2) + ' m'
             : this.filament_used.toFixed(2) + ' mm'

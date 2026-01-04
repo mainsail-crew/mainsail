@@ -145,7 +145,6 @@
         "Empty": "Vide",
         "HideTemperatures": "Cacher les températures",
         "HideTimelapse": "Cacher le timelapse",
-        "SendCode": "Envoyer le code...",
         "SetupConsole": "Configuration console"
     },
     "CoolDownDialog": {
@@ -211,7 +210,6 @@
         "EditFile": "Editer le fichier",
         "Empty": "Vide",
         "ExtruderTemp": "Température Extrudeur",
-        "Filament": "Filament",
         "FilamentName": "Nom du filament",
         "FilamentType": "Type de filament",
         "FilamentUsage": "Utilisation du filament",
@@ -313,19 +311,15 @@
         "InvalidNameAscii": "Le nom n'est pas valide. Seuls les caractères ascii sont autorisés.",
         "InvalidNameEmpty": "L'entrée ne doit pas être vide!",
         "InvalidNameReserved": "Le profil 'par défaut' est réservé, veuillez choisir un autre nom de profil.",
-        "Later": "Plus tard",
         "Mesh": "Calculé",
         "Name": "Nom",
         "NoBedMeshHasBeenLoadedYet": "Aucun maillage chargé",
         "NoProfile": "Pas de profil disponible",
-        "Ok": "OK",
         "Probed": "Mesuré",
         "Profiles": "Profils",
         "Remove": "supprimer",
-        "RemoveSaveDescription": "Le maillage a été enregistré comme supprimé. Cliquez sur SAVE_CONFIG pour le retirer du fichier printer.cfg et redémarrez Klipper.",
         "Rename": "renommer",
         "RenameBedMeshProfile": "Renommer le maillage",
-        "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Facteur d'échelle",
         "ScaleZMax": "Maximum axe Z.",
         "TitleCalibrate": "Calibrage du nouveau maillage",
@@ -394,8 +388,6 @@
         },
         "Table": "Table",
         "TitleExportHistory": "Exporter l'historique",
-        "TitleRefreshHistory": "Rafraîchir l'historique",
-        "TitleSettings": "Paramètres",
         "TotalDuration": "Durée totale",
         "TotalFilamentUsed": "Total du filament utilisé",
         "TotalJobs": "Nombre travaux",
@@ -403,7 +395,6 @@
         "TotalTime": "Durée totale"
     },
     "JobQueue": {
-        "AllJobs": "Tous",
         "Cancel": "Annuler",
         "ChangeCount": "Nombre de changements",
         "Count": "Nombre",
@@ -411,7 +402,6 @@
         "InvalidCountEmpty": "L'entrée ne doit pas être vide!",
         "InvalidCountGreaterZero": "L'entrée doit être supérieure à 0!",
         "JobQueue": "File d'attente",
-        "Jobs": "Jobs",
         "Pause": "Pause",
         "RemoveFromQueue": "Retirer de la file d'attente",
         "Start": "Démarrage"
@@ -633,7 +623,6 @@
             },
             "RunoutSensor": {
                 "Detected": "détecté",
-                "Disabled": "inactif",
                 "Empty": "Vide"
             }
         },
@@ -686,10 +675,8 @@
             },
             "Filament": "Filament",
             "File": "Fichier",
-            "Files": "Fichiers",
             "Flow": "Débit",
             "Headline": "Statut",
-            "Jobqueue": "File d'attente",
             "JobqueueMoreFiles": "pas de travaux | un travail | {count} travaux",
             "Layer": "Couche",
             "Max": "max",
@@ -714,7 +701,6 @@
             "ResumePrint": "Reprendre l'impression",
             "Slicer": "Trancheur",
             "Speed": "Vitesse",
-            "Status": "Statut",
             "Total": "Total",
             "Unknown": "Inconnu"
         },
@@ -1024,9 +1010,7 @@
             "NoPresetFound": "Pas de préréglage trouvé",
             "Presets": "Préréglages",
             "Start": "Démarrage",
-            "StartDescription": "Première DEL de ce groupe.",
-            "UnableToLoadLight": "Impossible de charger la lumière",
-            "UnableToLoadPreset": "Impossible de charger la présélection"
+            "StartDescription": "Première DEL de ce groupe."
         },
         "NavigationTab": {
             "Navigation": "Navigation"
@@ -1063,7 +1047,6 @@
             "Autorender": "Rendu automatique",
             "AutorenderDescription": "Si cette option est activée, la vidéo du timelapse sera automatiquement calculée à la fin de l'impression.",
             "Camera": "Caméra",
-            "CameraDescription": "Sélectionner la caméra à utiliser",
             "ConstantRateFactor": "Facteur d'échantillonnage",
             "ConstantRateFactorDescription": "Il configure la qualité par rapport à la taille du fichier de la vidéo rendue. L'échelle CRF va de 0 à 51, où 0 correspond à une qualité sans perte, 23 est la valeur par défaut et 51 est la pire qualité possible.. Une valeur plus faible est généralement synonyme de meilleure qualité et une fourchette subjectivement saine se situe entre 17 et 28. Les valeurs 17 et 18 sont considérées comme étant visuellement sans perte.",
             "duplicatelastframe": "Dupliquer la dernière image",
@@ -1122,9 +1105,7 @@
             "VariableFps": "IPS variable",
             "VariableFpsDescription": "Si activé, le nombre d'images par seconde (IPS) sera calculé tenant compte de la taille du fichier de sortie.",
             "VariableFpsMax": "IPS variable max",
-            "VariableFpsMaxDescription": "",
-            "VariableFpsMin": "IPS variable min",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMin": "IPS variable min"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Bed Screws",

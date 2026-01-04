@@ -196,6 +196,7 @@ export const getDefaultState = (): GuiState => {
                 showFilamentName: false,
                 showLaneInfinite: true,
                 showUnitIcons: true,
+                showTd1Color: true,
             },
             blockFileUpload: false,
             configfiles: {
@@ -274,6 +275,15 @@ export const getDefaultState = (): GuiState => {
                 countPerPage: 10,
             },
             lockedSliders: [],
+            mmu: {
+                showClogDetection: true,
+                showTtgMap: true,
+                showDetails: true,
+                largeFilamentStatus: false,
+                showLogos: true,
+                showName: true,
+                showUnavailableSpoolColor: false,
+            },
             tempchart: {
                 boolTempchart: true,
                 hiddenDataset: [],

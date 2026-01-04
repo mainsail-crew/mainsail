@@ -1,0 +1,21 @@
+{
+    "App": {
+        "Notifications": {
+            "BrowserWarnings": {
+                "Description": "{name} je zastarané a nie sú plne podporované. Aktuálna verzia je {verzia}, ale Mainsail vyžaduje verziu {minVersion} alebo vyšší."
+            },
+            "DependencyDescription": "Aktuálna verzia {name} nepodporuje všetky funkcie Mainsail. Aktualizovať {name} aspoň {needVersion}.",
+            "DependencyName": "V závislosti od: {name}",
+            "DismissAll": "Zrušiť všetko",
+            "KlipperWarnings": {
+                "DeprecatedOption": "Možnosť '{option}' v sekcii {section}' je zastaraná a bude odstránená v budúcej verzii.",
+                "DeprecatedOptionHeadline": "Zastaraná možnosť Klipper",
+                "DeprecatedValue": "Hodnota {value}' v možnosti '{option}' v sekcii '{section}' je zastaraná a bude odstránená v budúcej verzii.",
+                "DeprecatedValueHeadline": "Zastaraná hodnota Klipper",
+                "KlipperRuntimeWarning": "Upozornenie počas behu Klipperu",
+                "KlipperWarning": "Upozornenie Klipper"
+            }
+        }
+    },
+    "title": "Slovenský"
+}

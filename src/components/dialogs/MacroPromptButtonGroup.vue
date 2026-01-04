@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col class="text-center">
+        <v-col class="text-center py-0">
             <macro-prompt-button
                 v-for="(button, index) in children"
                 :key="'prompt_' + groupIndex + '_' + index"

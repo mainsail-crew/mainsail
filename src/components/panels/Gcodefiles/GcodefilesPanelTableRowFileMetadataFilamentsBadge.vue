@@ -13,19 +13,14 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FileStateGcodefileFilament } from '@/store/files/types'
-import { filamentTextColor } from '@/plugins/helpers'
+import { filamentTextColor, filamentWeightFormat } from '@/plugins/helpers'
 
 @Component
 export default class GcodefilesPanelTableRowFileMetadataFilaments extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly filament!: FileStateGcodefileFilament
 
     get weight() {
-        const weight = this.filament.weight ?? 0
-
-        if (weight > 1000) return `${Math.round(weight / 10) / 100} kg`
-        else if (weight > 100) return `${Math.round(weight)} g`
-
-        return `${Math.round(weight * 10) / 10} g`
+        return filamentWeightFormat(this.filament.weight ?? 0)
     }
 
     get fontColor() {

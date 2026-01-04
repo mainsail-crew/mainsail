@@ -183,14 +183,14 @@ export const actions: ActionTree<FileState, RootState> = {
     },
 
     getMetadata({ commit, rootState }, payload) {
-        if (payload !== undefined && payload.filename !== '') {
-            if (payload.filename === rootState?.printer?.print_stats?.filename) {
-                commit('printer/clearCurrentFile', null, { root: true })
-                commit('printer/setData', { current_file: payload }, { root: true })
-            }
+        if (payload === null || payload === undefined || payload.filename === '') return
 
-            commit('setMetadata', payload)
+        if (payload.filename === rootState?.printer?.print_stats?.filename) {
+            commit('printer/clearCurrentFile', null, { root: true })
+            commit('printer/setData', { current_file: payload }, { root: true })
         }
+
+        commit('setMetadata', payload)
     },
 
     getMetadataCurrentFile({ commit }, payload) {

@@ -143,7 +143,6 @@
         "Empty": "Tom",
         "HideTemperatures": "Dölj temperaturer",
         "HideTimelapse": "Dölj Timelapse",
-        "SendCode": "Skicka kod...",
         "SetupConsole": "Installationskonsol"
     },
     "Dialogs": {
@@ -198,7 +197,6 @@
         "EditFile": "Redigera fil",
         "Empty": "Tom",
         "ExtruderTemp": "Extruder Temp.",
-        "Filament": "Filament",
         "FilamentName": "Filament Namn",
         "FilamentType": "Filament Typ",
         "FilamentUsage": "Filament Användning",
@@ -300,19 +298,15 @@
         "InvalidNameAscii": "Namnet är ogiltigt. Endast ascii-tecken är tillåtna.",
         "InvalidNameEmpty": "Inmatning får inte vara tom!",
         "InvalidNameReserved": "Profilen \"default\" är reserverad, välj ett annat profilnamn.",
-        "Later": "Senare",
         "Mesh": "Nät (Mesh)",
         "Name": "Namn",
         "NoBedMeshHasBeenLoadedYet": "Inget sängnät (bed mesh) har laddats ännu.",
         "NoProfile": "Ingen profil tillgänglig",
-        "Ok": "OK",
         "Probed": "Sonderat",
         "Profiles": "Profiler",
         "Remove": "radera",
-        "RemoveSaveDescription": "bed_mesh profile har registrerats som raderad. Klicka på SAVE_CONFIG för att ta bort den från printer.cfg och starta om Klipper.",
         "Rename": "döp om",
         "RenameBedMeshProfile": "Döp om sängnätsprofil (Bed Mesh Profile)",
-        "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Skala övertoning",
         "ScaleZMax": "Skala z-max.",
         "TitleCalibrate": "Kalibrera nytt sängnät (bed mesh)",
@@ -381,8 +375,6 @@
         },
         "Table": "Tabell",
         "TitleExportHistory": "Exportera historik",
-        "TitleRefreshHistory": "Uppdatera historik",
-        "TitleSettings": "Inställningar",
         "TotalDuration": "Total tid",
         "TotalFilamentUsed": "Totalt använt filament",
         "TotalJobs": "Totalt antal jobb",
@@ -390,7 +382,6 @@
         "TotalTime": "Total tid"
     },
     "JobQueue": {
-        "AllJobs": "Alla jobb",
         "Cancel": "Avbryt",
         "ChangeCount": "Ändra räkning",
         "Count": "Räkna",
@@ -398,7 +389,6 @@
         "InvalidCountEmpty": "Inmatning får inte vara tom!",
         "InvalidCountGreaterZero": "Inmatningen måste vara större än 0!",
         "JobQueue": "Jobbkö",
-        "Jobs": "Jobb",
         "Pause": "Pausa",
         "RemoveFromQueue": "Ta bort från kö",
         "Start": "Starta"
@@ -673,10 +663,8 @@
             },
             "Filament": "Filament",
             "File": "Fil",
-            "Files": "Filer",
             "Flow": "Flöde (Flow)",
             "Headline": "Status",
-            "Jobqueue": "Jobbkö",
             "JobqueueMoreFiles": "inga fler jobb | ett jobb till | {count} jobb till",
             "Layer": "Lager",
             "Max": "max",
@@ -701,7 +689,6 @@
             "ResumePrint": "Fortsätt utskrift",
             "Slicer": "Slicer",
             "Speed": "Hastighet",
-            "Status": "Status",
             "Total": "Totalt",
             "Unknown": "Okänd"
         },
@@ -1011,9 +998,7 @@
             "NoPresetFound": "Ingen förinställning hittades",
             "Presets": "Förinställningar",
             "Start": "Start",
-            "StartDescription": "Första lysdioden i denna grupp.",
-            "UnableToLoadLight": "Det går inte att ladda ljus",
-            "UnableToLoadPreset": "Det gick inte att ladda förinställningen"
+            "StartDescription": "Första lysdioden i denna grupp."
         },
         "NavigationTab": {
             "Navigation": "Navigering"
@@ -1050,7 +1035,6 @@
             "Autorender": "Automatisk rendering",
             "AutorenderDescription": "Om det är aktiverat renderas timelapse-videon automatiskt i slutet av utskriften",
             "Camera": "Kamera",
-            "CameraDescription": "Välj vilken kamera som ska användas",
             "ConstantRateFactor": "Konstant Rate Factor",
             "ConstantRateFactorDescription": "Detta konfigurerar kvalitet kontra filstorlek på den renderade videon. CRF-skalans intervall är 0–51, där 0 är förlustfri, 23 är standard och 51 är sämsta möjliga kvalitet. Ett lägre värde leder generellt till högre kvalitet och ett subjektivt förnuftigt intervall är 17–28. Betrakta 17 eller 18 som visuellt förlustfria.",
             "duplicatelastframe": "duplicatelastframe",

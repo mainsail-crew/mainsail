@@ -1,8 +1,8 @@
 <template>
-    <v-dialog :value="showDialog" width="400">
+    <v-dialog v-model="showDialog" width="400">
         <panel :title="$t('Files.RenameFile')" card-class="gcodefiles-rename-file-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closePrompt">
+                <v-btn icon tile @click="showDialog = false">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -18,7 +18,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closePrompt">{{ $t('Files.Cancel') }}</v-btn>
+                <v-btn text @click="showDialog = false">{{ $t('Files.Cancel') }}</v-btn>
                 <v-btn :disabled="isInvalidName || name.length === 0" color="primary" text @click="renameFileAction">
                     {{ $t('Files.Rename') }}
                 </v-btn>
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
@@ -44,7 +44,7 @@ export default class GcodefilesRenameFileDialog extends Mixins(BaseMixin, Gcodef
     name = ''
     isInvalidName = true
 
-    @Prop({ type: Boolean, default: false }) showDialog!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, required: true }) item!: FileStateGcodefile
     @Ref('inputFieldRenameFile') readonly inputFieldRenameFile!: HTMLInputElement
 
@@ -67,11 +67,7 @@ export default class GcodefilesRenameFileDialog extends Mixins(BaseMixin, Gcodef
             { action: 'files/getMove' }
         )
 
-        this.closePrompt()
-    }
-
-    closePrompt() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
     @Watch('showDialog')

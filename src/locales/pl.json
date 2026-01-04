@@ -141,7 +141,6 @@
         "Empty": "Puste",
         "HideTemperatures": "Ukryj temperatury",
         "HideTimelapse": "Ukryj timelapse",
-        "SendCode": "Wyślij polecenie...",
         "SetupConsole": "Konsola ustawień"
     },
     "Dialogs": {
@@ -196,7 +195,6 @@
         "EditFile": "Edytuj plik",
         "Empty": "Puste",
         "ExtruderTemp": "Temp. ekstrudera",
-        "Filament": "Filament",
         "FilamentName": "Nazwa filamentu",
         "FilamentType": "Typ filamentu",
         "FilamentUsage": "Zużycie filamentu",
@@ -298,19 +296,15 @@
         "InvalidNameAscii": "Nazwa jest nieprawidłowa. Dozwolone są tylko znaki ASCII.",
         "InvalidNameEmpty": "Pole wejściowe nie może być puste!",
         "InvalidNameReserved": "Profil \"default\" jest zarezerwowany, wybierz inną nazwę profilu.",
-        "Later": "Później",
         "Mesh": "Siatka",
         "Name": "Nazwa",
         "NoBedMeshHasBeenLoadedYet": "Nie wczytano siatki stołu.",
         "NoProfile": "Brak profili",
-        "Ok": "Ok",
         "Probed": "Zmierzone",
         "Profiles": "Profile",
         "Remove": "Usuń",
-        "RemoveSaveDescription": "Siatka została zarejestrowana jako usunięta. Zapisz konfigurację w celu usunięcia siatki z printer.cfg i uruchom ponownie Klippera.",
         "Rename": "Zmień nazwę",
         "RenameBedMeshProfile": "Zmień nazwę siatki stołu",
-        "SAVE_CONFIG": "Zapisz konfigurację",
         "ScaleGradient": "Skaluj gradient",
         "ScaleZMax": "Skaluj maks. poz. osi Z.",
         "TitleCalibrate": "Kalibracja nowej siatki",
@@ -379,8 +373,6 @@
         },
         "Table": "Tabela",
         "TitleExportHistory": "Eksportuj historię",
-        "TitleRefreshHistory": "Odśwież historię",
-        "TitleSettings": "Ustawienia",
         "TotalDuration": "Łączny czas trwania",
         "TotalFilamentUsed": "Łączne zużycie filamentu",
         "TotalJobs": "Ilość wszystkich wydruków",
@@ -610,7 +602,6 @@
             },
             "RunoutSensor": {
                 "Detected": "wykryto",
-                "Disabled": "wyłączone",
                 "Empty": "Puste"
             }
         },
@@ -663,10 +654,8 @@
             },
             "Filament": "Filament",
             "File": "Plik",
-            "Files": "Pliki",
             "Flow": "Przepływ",
             "Headline": "Status",
-            "Jobqueue": "W kolejce",
             "JobqueueMoreFiles": "brak więcej wydruków | jeszcze jeden wydruk | {count} więcej wydruków",
             "Layer": "Warstwa",
             "Max": "Maks.",
@@ -691,7 +680,6 @@
             "ResumePrint": "Wznowienie wydruku",
             "Slicer": "Slicer",
             "Speed": "Prędkość",
-            "Status": "Status",
             "Total": "Całkowicie",
             "Unknown": "Nieznany"
         },
@@ -983,9 +971,7 @@
             "NoPresetFound": "Nie znaleziono nastawy",
             "Presets": "Nastawy",
             "Start": "Początek",
-            "StartDescription": "Pierwsza dioda LED tej grupy.",
-            "UnableToLoadLight": "Nie można wczytać światła",
-            "UnableToLoadPreset": "Nie można wczytać nastawy"
+            "StartDescription": "Pierwsza dioda LED tej grupy."
         },
         "NavigationTab": {
             "Navigation": "Nawigacja"
@@ -1022,7 +1008,6 @@
             "Autorender": "Autorenderowanie",
             "AutorenderDescription": "Jeśli opcja ta jest włączona, timelapse będzie automatycznie renderowany na końcu druku.",
             "Camera": "Kamera",
-            "CameraDescription": "Wybierz kamerę, która ma być używana",
             "ConstantRateFactor": "Stała kompensacja rozmiaru",
             "ConstantRateFactorDescription": "Konfiguruje jakość w stosunku do rozmiaru pliku renderowanego wideo. Zakres skali CRF wynosi 0-51, gdzie 0 oznacza bezstratną jakość, 23 to wartość domyślna, a 51 to najgorsza możliwa jakość. Niższa wartość generalnie prowadzi do wyższej jakości, a subiektywnie rozsądny zakres to 17-28. Wartość 17 lub 18 należy uznać za wizualnie bezstratną.",
             "duplicatelastframe": "Duplikuj ostatnią klatkę na koniec filmu",
@@ -1081,9 +1066,9 @@
             "VariableFps": "Zmienne kl./s",
             "VariableFpsDescription": "Jeśli włączone, częstotliwość klatek wyjściowego wideo będzie obliczana na podstawie docelowej długości.",
             "VariableFpsMax": "Maks. zmiennych kl./s",
-            "VariableFpsMaxDescription": "Maksymalnie dozwolona zmienna liczba klatek na sekundę.",
+            "VariableFpsMaxDescription": "Maksymalna zmienna liczba klatek na sekundę.",
             "VariableFpsMin": "Min. zmiennych kl./s",
-            "VariableFpsMinDescription": "Minimalnie dozwolona zmienna liczba klatek na sekundę."
+            "VariableFpsMinDescription": "Minimalna zmienna liczba klatek na sekundę."
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Okno śrub stołu",
@@ -1100,7 +1085,7 @@
             "DefaultNavigationState": "Domyślny stan nawigacji",
             "DefaultNavigationStateAlwaysClosed": "zawsze zamknięty",
             "DefaultNavigationStateAlwaysOpen": "zawsze otwarty",
-            "DefaultNavigationStateDescription": "Który stan powinien mieć domyślną nawigację?",
+            "DefaultNavigationStateDescription": "Który stan powinien mieć domyślną nawigację.",
             "DefaultNavigationStateLastState": "ostatni stan",
             "DisableFanAnimation": "Wyłącz animację wentylatora",
             "DisableFanAnimationDescription": "To może zmniejszyć obciążenie przeglądarki.",

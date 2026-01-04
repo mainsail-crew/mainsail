@@ -44,7 +44,7 @@ import { DynamicCamLoader } from '@/components/webcams/streamers/DynamicCamLoade
 @Component({
     components: {
         HlsstreamerAsync: DynamicCamLoader('Hlsstreamer'),
-        HtmlVideoAsyc: DynamicCamLoader('HtmlVideo'),
+        HtmlVideoAsync: DynamicCamLoader('HtmlVideo'),
         JanusStreamerAsync: DynamicCamLoader('JanusStreamer'),
         JMuxerStreamAsync: DynamicCamLoader('JMuxerStream'),
         MjpegstreamerAsync: DynamicCamLoader('Mjpegstreamer'),
@@ -66,3 +66,25 @@ export default class WebcamWrapperItem extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+::v-deep .webcamBackground {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: rgba(0, 0, 0, 0.8);
+    margin: 0 auto;
+    max-height: calc(100vh - 155px);
+}
+
+::v-deep .webcamImage {
+    width: 100%;
+    transform-origin: center center;
+    object-fit: contain;
+}
+
+html.theme--light ::v-deep .webcamBackground {
+    background: rgba(255, 255, 255, 0.7);
+}
+</style>

@@ -149,7 +149,6 @@
         "Empty": "空的",
         "HideTemperatures": "隱藏溫度",
         "HideTimelapse": "隱藏縮時攝影",
-        "SendCode": "傳送代碼...",
         "SetupConsole": "設定控制台"
     },
     "Dialogs": {
@@ -199,7 +198,6 @@
         "EditFile": "編輯檔案",
         "Empty": "空的",
         "ExtruderTemp": "擠出機溫度",
-        "Filament": "耗材",
         "FilamentName": "耗材名稱",
         "FilamentType": "耗材類型",
         "FilamentUsage": "耗材用量",
@@ -298,19 +296,15 @@
         "InvalidNameAscii": "名稱無效。只允許使用 ascii 字符。",
         "InvalidNameEmpty": "輸入值不能為空！",
         "InvalidNameReserved": "預設 'default' 已保留，請選擇其他預設名稱。",
-        "Later": "Later",
         "Mesh": "網格",
         "Name": "名稱",
         "NoBedMeshHasBeenLoadedYet": "網床沒有載入.",
         "NoProfile": "沒有可用的設定檔",
-        "Ok": "好的",
         "Probed": "探測",
         "Profiles": "設定檔",
         "Remove": "刪除",
-        "RemoveSaveDescription": "預設網床已標記需刪除。點擊\"儲存設定\"將會從printer.cfg中移除並重新啟動Klipper。",
         "Rename": "重新命名",
         "RenameBedMeshProfile": "重新命名網床設定檔",
-        "SAVE_CONFIG": "儲存設定",
         "ScaleGradient": "尺度梯度",
         "ScaleZMax": "Z最大標度",
         "TitleCalibrate": "校正新床網",
@@ -378,8 +372,6 @@
         },
         "Table": "表",
         "TitleExportHistory": "導出歷史紀錄",
-        "TitleRefreshHistory": "刷新歷史紀錄",
-        "TitleSettings": "設定",
         "TotalDuration": "總計時間",
         "TotalFilamentUsed": "耗材使用總量",
         "TotalJobs": "使用次數",
@@ -387,7 +379,6 @@
         "TotalTime": "總計消耗時間"
     },
     "JobQueue": {
-        "AllJobs": "全部任務",
         "Cancel": "取消",
         "ChangeCount": "更改統計",
         "Count": "統計",
@@ -395,7 +386,6 @@
         "InvalidCountEmpty": "輸入不能為空！",
         "InvalidCountGreaterZero": "輸入必須大於0！",
         "JobQueue": "任務隊列",
-        "Jobs": "每頁顯示任務數",
         "Pause": "暫停",
         "RemoveFromQueue": "從隊列中刪除",
         "Start": "開始"
@@ -490,10 +480,8 @@
             "CommittedYesterday": "昨天提交",
             "Detached": "獨立的",
             "Dirty": "出錯的",
-            "ERROR": "錯誤",
             "Invalid": "無效的",
             "OSPackages": "操作系統包",
-            "PackagesCanBeUpgraded": "程式包可以升級",
             "System": "系統",
             "Unknown": "未知的",
             "Update": "更新",
@@ -586,7 +574,6 @@
             },
             "RunoutSensor": {
                 "Detected": "監測",
-                "Disabled": "關閉",
                 "Empty": "空的"
             }
         },
@@ -613,10 +600,8 @@
             },
             "Filament": "耗材用量",
             "File": "檔案",
-            "Files": "檔案",
             "Flow": "流量",
             "Headline": "狀態",
-            "Jobqueue": "任務隊列",
             "JobqueueMoreFiles": "沒有任務 | 一個任務 | {count}個任務",
             "Layer": "層",
             "Max": "最高",
@@ -637,7 +622,6 @@
             "ResumePrint": "恢復列印",
             "Slicer": "切片時間",
             "Speed": "速度",
-            "Status": "狀態",
             "Total": "已經耗時",
             "Unknown": "未知"
         },
@@ -695,9 +679,7 @@
             "SaveConfig": "儲存配置",
             "SaveInfoDescription": "已經計算生成新的Z偏移. 點擊 儲存配置 儲存到 printer.cfg 中並重啟 Klipper.",
             "SaveInfoDescriptionPrint": "已經計算生成新的Z偏移. 列印後點擊 儲存配置 儲存到 printer.cfg 中並重啟 Klipper.",
-            "SaveInfoHeadline": "資訊",
-            "ToEndstop": "到限位",
-            "ToProbe": "到探測器"
+            "SaveInfoHeadline": "資訊"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -849,7 +831,6 @@
             "DbHistoryTotals": "歷史總計",
             "DbTimelapseSettings": "時間格式設定",
             "DbView": "瀏覽設定",
-            "DbWebcams": "攝影機",
             "EstimateValues": {
                 "Filament": "耗材",
                 "File": "檔案",
@@ -859,7 +840,6 @@
             "FactoryReset": "恢復預設設定",
             "General": "通用",
             "Language": "語言",
-            "MoonrakerDb": "Moonraker 資料庫",
             "PrinterName": "列印機名稱",
             "Reset": "重置",
             "Restore": "復原",
@@ -922,9 +902,7 @@
             "NoPresetFound": "未找到預設",
             "Presets": "預設",
             "Start": "開始",
-            "StartDescription": "該組的第一個 LED。",
-            "UnableToLoadLight": "無法載入燈",
-            "UnableToLoadPreset": "無法載入預設"
+            "StartDescription": "該組的第一個 LED。"
         },
         "PresetsTab": {
             "AddPreset": "新增預設",
@@ -957,7 +935,6 @@
             "Autorender": "自動渲染",
             "AutorenderDescription": "如果啟用，延時影片將在列印結束時自動渲染",
             "Camera": "攝影機",
-            "CameraDescription": "選擇應該使用哪個攝影機",
             "ConstantRateFactor": "固定偵率係數(CRF)",
             "ConstantRateFactorDescription": "這裡設定渲染影片的品質與檔案大小，CRF量表的參數範圍視 0–51，0為無損畫質、預設為23、51是最插畫值。數值越低畫質越好，建議合理數值為17-28。設定為17或18在視覺上和無損畫質差不多。",
             "duplicatelastframe": "重複影片結尾的最後一幀",

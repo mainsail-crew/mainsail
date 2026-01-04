@@ -63,7 +63,7 @@ export default class WebcamMixin extends Mixins(BaseMixin) {
         if (rotation != 0) {
             transforms.push(`rotate(${rotation}deg)`)
 
-            if (aspect_ratio != 1) transforms.push(`scale(${1 / aspect_ratio})`)
+            if (aspect_ratio != 1 && rotation != 180) transforms.push(`scale(${1 / aspect_ratio})`)
         }
 
         // return transform when exist
@@ -71,5 +71,33 @@ export default class WebcamMixin extends Mixins(BaseMixin) {
 
         // return none as fallback
         return 'none'
+    }
+
+    getWrapperStyle(aspectRatio: number | null, rotation: number) {
+        if (aspectRatio == null || aspectRatio == 1 || rotation == 0 || rotation == 180) return {}
+
+        if (aspectRatio < 1 && (rotation == 90 || rotation == 270)) {
+            return { aspectRatio: 1 / aspectRatio }
+        }
+
+        return { aspectRatio: aspectRatio }
+    }
+
+    updateAspectRatioFromVideo(videoElement: HTMLVideoElement | null | undefined): number | null {
+        const w = videoElement?.videoWidth
+        const h = videoElement?.videoHeight
+
+        if (!w || !h) return null
+
+        return w / h
+    }
+
+    updateAspectRatioFromImage(imageElement: HTMLImageElement | null | undefined): number | null {
+        const w = imageElement?.naturalWidth
+        const h = imageElement?.naturalHeight
+
+        if (!w || !h) return null
+
+        return w / h
     }
 }

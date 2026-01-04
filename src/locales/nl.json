@@ -164,7 +164,6 @@
         "Empty": "Leeg",
         "HideTemperatures": "Verberg temperaturen",
         "HideTimelapse": "Verberg Timelapse",
-        "SendCode": "Verzend code...",
         "SetupConsole": "Instellingen"
     },
     "CoolDownDialog": {
@@ -229,7 +228,6 @@
         "EditFile": "Bewerk bestand",
         "Empty": "Leeg",
         "ExtruderTemp": "Extruder Temp.",
-        "Filament": "Filament",
         "FilamentName": "Filamentnaam",
         "FilamentType": "Filament Type",
         "FilamentUsage": "Filamentgebruik",
@@ -328,19 +326,15 @@
         "InvalidNameAlreadyExists": "Profielnaam bestaat al, kies een andere profielnaam.",
         "InvalidNameEmpty": "Veld mag niet leeg zijn!",
         "InvalidNameReserved": "Profiel 'default' is gereserveerd, kies een andere profielnaam.",
-        "Later": "Later",
         "Mesh": "Mesh",
         "Name": "Naam",
         "NoBedMeshHasBeenLoadedYet": "Er is nog geen bed_mesh ingeladen.",
         "NoProfile": "Geen profiel beschikbaar",
-        "Ok": "Ok",
         "Probed": "Geprobed",
         "Profiles": "Profielen",
         "Remove": "verwijderen",
-        "RemoveSaveDescription": "Het bed_mesh profiel is als verwijderd gemarkeerd. Klik op SAVE_CONFIG om het van de printer.cfg te verwijderen en Klipper te herstarten.",
         "Rename": "hernoemen",
         "RenameBedMeshProfile": "Hernoem Bed Mesh Profiel",
-        "SAVE_CONFIG": "SAVE_CONFIG",
         "ScaleGradient": "Kleurverloop schalen",
         "ScaleZMax": "Schaal z-max.",
         "TitleCalibrate": "Kalibreer nieuwe bed mesh",
@@ -420,8 +414,6 @@
         },
         "Table": "Tabel",
         "TitleExportHistory": "Export geschiedenis",
-        "TitleRefreshHistory": "Ververs geschiedenis",
-        "TitleSettings": "Instellingen",
         "TotalDuration": "Totale Tijd",
         "TotalFilamentUsed": "Totaal Filament Verbruikt",
         "TotalJobs": "Totaal Jobs",
@@ -429,7 +421,6 @@
         "TotalTime": "Totale Tijd"
     },
     "JobQueue": {
-        "AllJobs": "Alle jobs",
         "Cancel": "Annuleer",
         "ChangeCount": "Verander aantal",
         "Count": "Aantal",
@@ -437,7 +428,6 @@
         "InvalidCountEmpty": "Invoer mag niet leeg zijn!",
         "InvalidCountGreaterZero": "Invoer moet groter dan 0 zijn!",
         "JobQueue": "Job wachtrij",
-        "Jobs": "Jobs",
         "Pause": "Pauze",
         "RemoveFromQueue": "Verwijder uit wachtrij",
         "Start": "Start"
@@ -531,10 +521,8 @@
             "CommittedYesterday": "gisteren gecommit",
             "Detached": "detached",
             "Dirty": "vies",
-            "ERROR": "FOUT",
             "Invalid": "ongeldig",
             "OSPackages": "OS-Packages",
-            "PackagesCanBeUpgraded": "pakketten kunnen worden geüpgraded",
             "System": "Systeem",
             "Unknown": "onbekend",
             "Update": "update",
@@ -628,7 +616,6 @@
             },
             "RunoutSensor": {
                 "Detected": "gedetecteerd",
-                "Disabled": "uitgeschakeld",
                 "Empty": "Leeg"
             }
         },
@@ -655,10 +642,8 @@
             },
             "Filament": "Filament",
             "File": "Bestand",
-            "Files": "Bestanden",
             "Flow": "Flow",
             "Headline": "Status",
-            "Jobqueue": "Wachtrij",
             "JobqueueMoreFiles": "geen jobs meer | nog een job | {count} jobs",
             "Layer": "Laag",
             "Max": "max",
@@ -683,7 +668,6 @@
             "ResumePrint": "Hervat print",
             "Slicer": "Slicer",
             "Speed": "Snelheid",
-            "Status": "Status",
             "Total": "Totaal",
             "Unknown": "Onbekend"
         },
@@ -741,9 +725,7 @@
             "SaveConfig": "SAVE CONFIG",
             "SaveInfoDescription": "De nieuwe z-offset is berekend en geregistreerd. Klik op \"SAVE CONFIG\" om de nieuwe z-offset op te slaan in je printer.cf en Klipper te herstarten.",
             "SaveInfoDescriptionPrint": "De nieuwe z-offset is berekend en geregistreerd. Klik na het printen op \"SAVE CONFIG\" om de nieuwe z-offset op te slaan in je printer.cf en Klipper te herstarten.",
-            "SaveInfoHeadline": "Informatie",
-            "ToEndstop": "naar Endstop",
-            "ToProbe": "naar Probe"
+            "SaveInfoHeadline": "Informatie"
         }
     },
     "PowerDeviceChangeDialog": {
@@ -895,7 +877,6 @@
             "DbHistoryTotals": "Geschiedenis Totalen",
             "DbTimelapseSettings": "Timelapse Instellingen",
             "DbView": "Weergaveinstellingen",
-            "DbWebcams": "Webcams",
             "EstimateValues": {
                 "Filament": "Filament",
                 "File": "Bestand",
@@ -905,7 +886,6 @@
             "FactoryReset": "Herstel naar fabrieksinstellingen",
             "General": "Algemeen",
             "Language": "Taal",
-            "MoonrakerDb": "Moonraker DB",
             "PrinterName": "Printer naam",
             "Reset": "reset",
             "Restore": "Herstellen",
@@ -981,9 +961,7 @@
             "NoPresetFound": "Geen presets gevonden",
             "Presets": "Presets",
             "Start": "Start",
-            "StartDescription": "Eerste LED van deze groep.",
-            "UnableToLoadLight": "Niet gelukt het licht te laden",
-            "UnableToLoadPreset": "Niet gelukt de preset te laden"
+            "StartDescription": "Eerste LED van deze groep."
         },
         "PresetsTab": {
             "AddPreset": "voeg preset toe",
@@ -1017,7 +995,6 @@
             "Autorender": "Autorender",
             "AutorenderDescription": "Wanneer ingeschakeld, zal de timelapse video automatisch renderen aan het eind van de print",
             "Camera": "Camera",
-            "CameraDescription": "Selecteer welke camera gebruikt wordt",
             "ConstantRateFactor": "Constant Rate Factor",
             "ConstantRateFactorDescription": "Dit bepaalt de kwaliteit vs bestandsgrootte van de gerenderde video. De CRF schaal is van 0-51 waar 0 zonder verlies is, 23 de standaard en 51 de slechts mogelijke kwaliteit. Een lagere waarde geeft over het algemeen betere kwaliteit en een gangbare waarde is 17-28. Zie 17 of 18 als praktisch zonder kwaliteitsverlies.",
             "duplicatelastframe": "duplicatelastframe",
@@ -1108,7 +1085,6 @@
             "PowerDeviceName": "Printer power apparaat",
             "PowerDeviceNameDescription": "Selecteer welk Moonraker power apparaat gebruikt moet worden om de printer te schakelen.",
             "Primary": "Primair",
-            "ShowWebcamInNavigation": "Toon Webcam in de navigatie",
             "UiSettings": "UI Instellingen"
         },
         "Update": "updaten",

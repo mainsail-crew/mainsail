@@ -1,8 +1,5 @@
 <template>
-    <div
-        v-observe-visibility="viewportVisibilityChanged"
-        class="d-flex justify-center webcamBackground"
-        :style="wrapperStyle">
+    <div v-observe-visibility="viewportVisibilityChanged" class="webcamBackground" :style="wrapperStyle">
         <img
             v-show="status === 'connected'"
             ref="image"
@@ -59,16 +56,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     @Ref('image') readonly image!: HTMLImageElement
 
     get wrapperStyle() {
-        if (this.aspectRatio !== null && this.aspectRatio < 1 && [90, 270].includes(this.camSettings.rotation)) {
-            return {
-                aspectRatio: 1 / this.aspectRatio,
-                maxHeight: `${window.innerHeight - 155}px`,
-            }
-        }
-
-        return {
-            maxHeight: `${window.innerHeight - 155}px`,
-        }
+        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
     }
 
     get webcamStyle() {
@@ -158,7 +146,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
         this.frames++
 
         if (this.aspectRatio === null) {
-            this.aspectRatio = this.image.naturalWidth / this.image.naturalHeight
+            this.aspectRatio = this.updateAspectRatioFromImage(this.image)
         }
 
         const targetFps = this.camSettings.target_fps || 10
@@ -230,19 +218,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 </script>
 
 <style scoped>
-.webcamBackground {
-    position: relative;
-    background: rgba(0, 0, 0, 0.8);
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-.webcamImage {
-    width: 100%;
-    transform-origin: center center;
-    object-fit: contain;
-}
-
 ._webcam_mjpegstreamer_output {
     aspect-ratio: calc(3 / 2);
 }
@@ -255,10 +230,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
     padding: 3px 10px;
     border-top-left-radius: 5px;
     background: rgba(0, 0, 0, 0.8);
-}
-
-html.theme--light .webcamBackground {
-    background: rgba(255, 255, 255, 0.7);
 }
 
 html.theme--light .webcamFpsOutput {

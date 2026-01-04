@@ -747,10 +747,8 @@
             },
             "Filament": "Filamento",
             "File": "File",
-            "Files": "Files",
             "Flow": "Flusso",
             "Headline": "Stato",
-            "Jobqueue": "Coda di lavoro",
             "JobqueueMoreFiles": "niente più lavori | resta un lavoro | restano {count} lavori",
             "Layer": "Layer",
             "Max": "max",
@@ -775,7 +773,6 @@
             "ResumePrint": "Riprendi stampa",
             "Slicer": "Slicer",
             "Speed": "Velocità",
-            "Status": "Stato",
             "Total": "Totale",
             "Unknown": "Sconosciuto"
         },
@@ -1099,9 +1096,7 @@
             "NoPresetFound": "Nessun preset trovato",
             "Presets": "Presets",
             "Start": "Start",
-            "StartDescription": "Primo LED di questo gruppo.",
-            "UnableToLoadLight": "Impossibile caricare luce",
-            "UnableToLoadPreset": "Impossibile caricare preset"
+            "StartDescription": "Primo LED di questo gruppo."
         },
         "NavigationTab": {
             "Navigation": "Navigazione"
@@ -1209,9 +1204,7 @@
             "VariableFps": "FPS Variabili",
             "VariableFpsDescription": "Se abilitato, il framerate del video di output sarà calcolato in base alla lunghezza target",
             "VariableFpsMax": "FPS Variabili max",
-            "VariableFpsMaxDescription": "",
-            "VariableFpsMin": "FPS Variabili min",
-            "VariableFpsMinDescription": ""
+            "VariableFpsMin": "FPS Variabili min"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Finestra di dialogo per il BED_SCREWS_ADJUST",
