@@ -25,14 +25,13 @@
             </div>
         </td>
         <temperature-panel-list-item-edit
-            :bool-show="showEditDialog"
+            v-model="showEditDialog"
             :object-name="objectName"
             :name="name"
             :format-name="formatName"
             additional-sensor-name="nevermore"
             :icon="mdiFan"
-            :color="color"
-            @close-dialog="showEditDialog = false" />
+            :color="color" />
     </tr>
 </template>
 

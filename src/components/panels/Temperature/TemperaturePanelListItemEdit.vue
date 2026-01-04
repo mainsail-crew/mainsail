@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="boolShow" persistent :width="400">
+    <v-dialog v-model="showDialog" persistent :width="400">
         <panel :title="formatName" :icon="icon" card-class="temperature-edit-heater-dialog" :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="closeDialog">
@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, Prop, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiCloseThick } from '@mdi/js'
 import TemperaturePanelListItemEditChartSerie from '@/components/panels/Temperature/TemperaturePanelListItemEditChartSerie.vue'
@@ -47,7 +47,7 @@ import { Debounce } from 'vue-debounce-decorator'
 export default class TemperaturePanelListItemEdit extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
 
-    @Prop({ type: Boolean, required: true }) readonly boolShow!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: String, required: true }) readonly objectName!: string
     @Prop({ type: String, required: true }) readonly name!: string
     @Prop({ required: true }) readonly additionalSensorName!: string | null
@@ -85,7 +85,7 @@ export default class TemperaturePanelListItemEdit extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('close-dialog')
+        this.showDialog = false
     }
 }
 </script>

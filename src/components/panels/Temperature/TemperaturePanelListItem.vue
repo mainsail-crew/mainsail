@@ -49,14 +49,13 @@
                 :attribute-name="commandAttributeName" />
         </td>
         <temperature-panel-list-item-edit
-            :bool-show="showEditDialog"
+            v-model="showEditDialog"
             :object-name="objectName"
             :name="name"
             :format-name="formatName"
             :additional-sensor-name="additionalSensorName"
             :icon="icon"
-            :color="color"
-            @close-dialog="showEditDialog = false" />
+            :color="color" />
         <v-menu v-model="showContextMenu" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
             <v-list>
                 <v-list-item v-if="isHeater" :disabled="!isHeaterActive" @click="turnOffHeater">
