@@ -53,6 +53,7 @@
         </v-col>
         <confirmation-dialog
             v-model="showRemove"
+            :icon="mdiGrid"
             :title="$t('Heightmap.BedMeshRemove')"
             :text="$t('Heightmap.DoYouReallyWantToDelete', { name })"
             :action-button-text="$t('Heightmap.Remove')"
@@ -63,7 +64,7 @@
 </template>
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { mdiDelete, mdiPencil, mdiProgressUpload } from '@mdi/js'
+import { mdiDelete, mdiGrid, mdiPencil, mdiProgressUpload } from '@mdi/js'
 import BaseMixin from '@/components/mixins/base'
 import { PrinterStateBedMeshProfile } from '@/store/printer/types'
 import HeightmapRenameProfileDialog from '@/components/dialogs/HeightmapRenameProfileDialog.vue'
@@ -74,6 +75,7 @@ import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 })
 export default class HeightmapProfilesPanelRow extends Mixins(BaseMixin) {
     mdiDelete = mdiDelete
+    mdiGrid = mdiGrid
     mdiPencil = mdiPencil
     mdiProgressUpload = mdiProgressUpload
 
