@@ -582,6 +582,10 @@
             "Restart": "Redémarrage",
             "ServiceReports": "rapports de {service}"
         },
+        "LedEffectsPanel": {
+            "Headline": "Effets LED",
+            "StopAll": "Arrêter tous les effets"
+        },
         "MachineSettingsPanel": {
             "Headline": "Réglages machine",
             "MotionSettings": {

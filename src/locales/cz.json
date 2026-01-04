@@ -657,6 +657,10 @@
             "Restart": "Restartovat",
             "ServiceReports": "{service} hlásí"
         },
+        "LedEffectsPanel": {
+            "Headline": "LED Efekty",
+            "StopAll": "Zastavit všechny efekty"
+        },
         "MachineSettingsPanel": {
             "Headline": "Tiskárna",
             "MotionSettings": {

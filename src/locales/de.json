@@ -740,6 +740,10 @@
             "Restart": "Neustart",
             "ServiceReports": "{service} meldet"
         },
+        "LedEffectsPanel": {
+            "Headline": "LED Effekte",
+            "StopAll": "Alle Effekte stoppen"
+        },
         "MachineSettingsPanel": {
             "Headline": "Maschine",
             "MotionSettings": {
