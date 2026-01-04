@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" persistent width="400" :fullscreen="isMobile">
+    <v-dialog v-model="showDialog" persistent width="400" :fullscreen="isMobile">
         <panel
             :title="$t('Machine.LogfilesPanel.Rollover')"
             card-class="machine_rollover_logfiles-dialog"
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiFileSyncOutline } from '@mdi/js'
@@ -60,7 +60,7 @@ export default class LogfilesPanelRolloverDialog extends Mixins(BaseMixin) {
     rolloverLogfiles = rolloverLogfiles
     capitalize = capitalize
 
-    @Prop({ type: Boolean, default: false }) show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
     selectedRolloverLogs: string[] = []
 
@@ -88,7 +88,7 @@ export default class LogfilesPanelRolloverDialog extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('close-dialog')
+        this.showDialog = false
     }
 }
 </script>
