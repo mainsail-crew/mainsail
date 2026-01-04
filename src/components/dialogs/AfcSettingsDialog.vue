@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" width="700" @click:outside="closeDialog">
+    <v-dialog v-model="showDialog" width="700" @click:outside="closeDialog">
         <panel
             :title="$t('Panels.AfcPanel.AfcSettings')"
             :icon="afcIconLogo"
@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiLifebuoy } from '@mdi/js'
@@ -45,10 +45,10 @@ export default class AfcSettingsDialog extends Mixins(BaseMixin, AfcMixin) {
     mdiCloseThick = mdiCloseThick
     mdiLifebuoy = mdiLifebuoy
 
-    @Prop({ type: Boolean, required: true }) readonly show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
     closeDialog() {
-        this.$emit('close')
+        this.showDialog = false
     }
 }
 </script>
