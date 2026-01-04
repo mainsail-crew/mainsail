@@ -6,13 +6,7 @@
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
-            <v-card-text class="pt-3">
-                <v-row>
-                    <v-col>
-                        <p class="body-2">{{ text }}</p>
-                    </v-col>
-                </v-row>
-            </v-card-text>
+            <v-card-text>{{ text }}</v-card-text>
             <v-card-actions>
                 <v-spacer />
                 <v-btn text @click="close">{{ cancelButtonText }}</v-btn>
