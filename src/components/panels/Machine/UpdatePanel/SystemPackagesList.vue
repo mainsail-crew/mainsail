@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="boolShowDialog" persistent max-width="800">
+    <v-dialog v-model="showDialog" persistent max-width="800">
         <panel
             :title="$t('Machine.UpdatePanel.UpgradeableSystemPackages')"
             :icon="mdiPackageVariantClosed"
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiCloseThick, mdiPackageVariantClosed } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
@@ -39,11 +39,11 @@ export default class SystemPackagesList extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiPackageVariantClosed = mdiPackageVariantClosed
 
-    @Prop({ required: true }) readonly boolShowDialog!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ required: true }) readonly packagesList!: string[]
 
     closeDialog() {
-        this.$emit('close-dialog')
+        this.showDialog = false
     }
 }
 </script>
