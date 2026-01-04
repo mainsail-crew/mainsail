@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="showDialog" width="400">
+    <v-dialog v-model="showDialog" width="400">
         <panel :title="$t('Files.DuplicateFile')" card-class="gcodefiles-duplicate-file-dialog" :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="closePrompt">
@@ -8,7 +8,7 @@
             </template>
             <v-card-text>
                 <v-text-field
-                    ref="inputFieldDuplicateFile"
+                    ref="inputField"
                     v-model="name"
                     :label="$t('Files.Name')"
                     required
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
@@ -44,9 +44,9 @@ export default class GcodefilesDuplicateFileDialog extends Mixins(BaseMixin, Gco
     name = ''
     isInvalidName = true
 
-    @Prop({ type: Boolean, default: false }) showDialog!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, required: true }) item!: FileStateGcodefile
-    @Ref('inputFieldDuplicateFile') readonly inputFieldDuplicateFile!: HTMLInputElement
+    @Ref() readonly inputField!: HTMLInputElement
 
     nameInputRules = [
         (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
@@ -67,7 +67,7 @@ export default class GcodefilesDuplicateFileDialog extends Mixins(BaseMixin, Gco
     }
 
     closePrompt() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
     @Watch('showDialog')
@@ -78,8 +78,8 @@ export default class GcodefilesDuplicateFileDialog extends Mixins(BaseMixin, Gco
         this.isInvalidName = true
 
         setTimeout(() => {
-            this.inputFieldDuplicateFile.focus()
-        }, 200)
+            this.inputField?.focus()
+        })
     }
 }
 </script>

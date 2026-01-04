@@ -115,10 +115,7 @@
             @closeDialog="showStartPrintDialog = false" />
         <add-batch-to-queue-dialog v-model="showAddBatchToQueueDialog" :filename="item.full_filename" />
         <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
-        <gcodefiles-duplicate-file-dialog
-            :item="item"
-            :show-dialog="showDuplicateFileDialog"
-            @close="showDuplicateFileDialog = false" />
+        <gcodefiles-duplicate-file-dialog v-model="showDuplicateFileDialog" :item="item" />
         <confirmation-dialog
             v-model="showDeleteFileDialog"
             :title="$t('Files.Delete')"
