@@ -14,10 +14,9 @@
                     :index="1"
                     @click-button="showDialog = true" />
                 <miscellaneous-light-neopixel-dialog
-                    :show-dialog="showDialog"
+                    v-model="showDialog"
                     :type="type"
                     :name="name"
-                    @close="showDialog = false"
                     @update-color="sendCommand" />
             </v-subheader>
             <miscellaneous-light-neopixel-group

@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="showDialog" width="400">
+    <v-dialog v-model="showDialog" width="400">
         <panel
             :title="outputName"
             :icon="mdiLightbulbOutline"
@@ -105,7 +105,7 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
 import { mdiCloseThick, mdiLightbulbOutline } from '@mdi/js'
 import BaseMixin from '@/components/mixins/base'
 import { caseInsensitiveSort, convertName } from '@/plugins/helpers'
@@ -132,7 +132,7 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
     mdiCloseThick = mdiCloseThick
     mdiLightbulbOutline = mdiLightbulbOutline
 
-    @Prop({ type: Boolean, default: false }) showDialog!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: String, required: true }) type!: string
     @Prop({ type: String, required: true }) name!: string
     @Prop({ type: Object, required: false }) group!: GuiMiscellaneousStateEntry
@@ -375,7 +375,7 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
     }
 
     closePrompt() {
-        this.$emit('close')
+        this.showDialog = false
     }
 }
 </script>

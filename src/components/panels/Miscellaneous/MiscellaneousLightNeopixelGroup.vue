@@ -11,11 +11,10 @@
             :index="group.start"
             @click-button="showDialog = true" />
         <miscellaneous-light-neopixel-dialog
-            :show-dialog="showDialog"
+            v-model="showDialog"
             :type="type"
             :name="name"
             :index="group.start"
-            @close="showDialog = false"
             @update-color="sendCommand" />
     </v-subheader>
 </template>
