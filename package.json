@@ -102,7 +102,7 @@
         "vite": "^5.4.21",
         "vite-plugin-checker": "^0.8.0",
         "vite-plugin-package-version": "^1.1.0",
-        "vite-plugin-pwa": "^0.17.5",
+        "vite-plugin-pwa": "^1.2.0",
         "vue-debounce-decorator": "^1.0.1",
         "vue-i18n-extract": "^2.0.7",
         "vue-router": "^3.5.2",
