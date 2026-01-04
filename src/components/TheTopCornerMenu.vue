@@ -229,7 +229,6 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin, ServiceMixins) {
 
     executeDialog() {
         this.dialogConfirmation.executableFunction(this.dialogConfirmation.serviceName)
-        this.dialogConfirmation.show = false
     }
 
     klipperRestart() {

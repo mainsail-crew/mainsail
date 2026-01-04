@@ -128,8 +128,6 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
     }
 
     cooldown(): void {
-        this.showCoolDownDialog = false
-
         this.$store.dispatch('server/addEvent', { message: this.cooldownGcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: this.cooldownGcode })
     }

@@ -43,6 +43,7 @@ export default class ConfirmationDialog extends Mixins(BaseMixin) {
 
     action() {
         this.$emit('action')
+        this.showDialog = false
     }
 
     close() {

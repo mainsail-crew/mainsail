@@ -449,7 +449,6 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     cancelJob() {
-        this.showCancelJobDialog = false
         this.$socket.emit('printer.print.cancel', {}, { loading: 'statusPrintCancel' })
     }
 

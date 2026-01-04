@@ -97,7 +97,6 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     executeResetGateMap() {
         this.doSend('MMU_GATE_MAP RESET=1')
-        this.showResetConfirmationDialog = false
     }
 
     close() {

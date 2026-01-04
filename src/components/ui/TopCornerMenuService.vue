@@ -134,13 +134,11 @@ export default class TopCornerMenuService extends Mixins(BaseMixin, ServiceMixin
     }
 
     serviceRestart() {
-        this.showRestartDialog = false
         this.$socket.emit('machine.services.restart', { service: this.service })
         this.closeMenu()
     }
 
     serviceStop() {
-        this.showStopDialog = false
         this.$socket.emit('machine.services.stop', { service: this.service })
         this.closeMenu()
     }

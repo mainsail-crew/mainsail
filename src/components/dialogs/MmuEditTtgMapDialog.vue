@@ -171,7 +171,6 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     resetTtgMap() {
-        this.showResetDialog = false
         this.doSend('MMU_TTG_MAP RESET=1\nMMU_ENDLESS_SPOOL RESET=1')
     }
 
