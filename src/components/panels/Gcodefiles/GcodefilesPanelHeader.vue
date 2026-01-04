@@ -56,9 +56,7 @@
                 @click="showCreateDirectoryDialog = true">
                 <v-icon>{{ mdiFolderPlus }}</v-icon>
             </v-btn>
-            <gcodefiles-create-directory-dialog
-                :show-dialog="showCreateDirectoryDialog"
-                @close="showCreateDirectoryDialog = false" />
+            <gcodefiles-create-directory-dialog v-model="showCreateDirectoryDialog" />
             <v-btn :title="$t('Files.RefreshCurrentDirectory')" class="px-2 minwidth-0 ml-3" @click="refreshFileList">
                 <v-icon>{{ mdiRefresh }}</v-icon>
             </v-btn>
