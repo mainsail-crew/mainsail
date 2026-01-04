@@ -37,10 +37,7 @@
                 </v-btn>
             </v-card-actions>
         </panel>
-        <git-commits-list
-            :bool-show-dialog="boolShowCommitHistory"
-            :repo="showCommitsRepo"
-            @close-dialog="boolShowCommitHistory = false" />
+        <git-commits-list v-model="boolShowCommitHistory" :repo="showCommitsRepo" />
     </v-dialog>
 </template>
 
