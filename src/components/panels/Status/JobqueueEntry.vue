@@ -39,10 +39,7 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <jobqueue-entry-change-count-dialog
-            :show="showChangeCountDialog"
-            :job="job"
-            @close="showChangeCountDialog = false" />
+        <jobqueue-entry-change-count-dialog v-model="showChangeCountDialog" :job="job" />
     </v-row>
 </template>
 

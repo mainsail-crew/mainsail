@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" max-width="400">
+    <v-dialog v-model="showDialog" max-width="400">
         <panel
             :title="$t('JobQueue.ChangeCount')"
             :icon="mdiCounter"
@@ -13,7 +13,7 @@
 
             <v-card-text>
                 <v-text-field
-                    ref="inputFieldAddToQueueCount"
+                    ref="inputField"
                     v-model="count"
                     :label="$t('JobQueue.Count')"
                     required
@@ -42,7 +42,7 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiChevronUp, mdiChevronDown, mdiCounter } from '@mdi/js'
@@ -57,8 +57,9 @@ export default class JobqueueEntryChangeCountDialog extends Mixins(BaseMixin) {
     mdiChevronDown = mdiChevronDown
     mdiCounter = mdiCounter
 
-    @Prop({ type: Boolean, required: true }) show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, required: true }) job!: ServerJobQueueStateJob
+    @Ref() inputField!: HTMLInputElement
 
     count = 1
 
@@ -77,12 +78,17 @@ export default class JobqueueEntryChangeCountDialog extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
-    @Watch('show')
-    showChanged(show: boolean) {
-        if (show) this.count = (this.job.combinedIds?.length ?? 0) + 1
+    @Watch('showDialog')
+    onShowDialogChanged(newVal: boolean) {
+        if (!newVal) return
+
+        this.count = (this.job.combinedIds?.length ?? 0) + 1
+        setTimeout(() => {
+            this.inputField.focus()
+        })
     }
 }
 </script>
