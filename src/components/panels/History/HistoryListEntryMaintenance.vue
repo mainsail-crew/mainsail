@@ -51,10 +51,7 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <history-list-panel-detail-maintenance
-            :show="detailsDialogBool"
-            :item="item"
-            @close="detailsDialogBool = false" />
+        <history-list-panel-detail-maintenance v-model="detailsDialogBool" :item="item" />
     </tr>
 </template>
 <script lang="ts">

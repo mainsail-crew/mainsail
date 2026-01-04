@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" :max-width="500" persistent @keydown.esc="closeDialog">
+    <v-dialog v-model="showDialog" :max-width="500" persistent @keydown.esc="closeDialog">
         <panel
             :title="$t('History.Maintenance')"
             :icon="mdiNotebook"
@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiNotebook, mdiPencil } from '@mdi/js'
@@ -73,7 +73,7 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
     mdiNotebook = mdiNotebook
     mdiPencil = mdiPencil
 
-    @Prop({ type: Boolean, default: false }) readonly show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, default: false }) readonly item!: GuiMaintenanceStateEntry
 
     showEditDialog = false
@@ -119,7 +119,7 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
     }
 
     closeDialog() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
     closePerform() {
