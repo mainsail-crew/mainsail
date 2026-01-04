@@ -30,10 +30,7 @@
                     <v-icon v-if="runoutLane === 'NONE'" color="error" small>{{ afcIconInfintiy }}</v-icon>
                     <template v-else>{{ runoutLane }}</template>
                 </v-btn>
-                <afc-unit-lane-infinite-dialog
-                    :show="showInfintiyDialog"
-                    :name="name"
-                    @close="showInfintiyDialog = false" />
+                <afc-unit-lane-infinite-dialog v-model="showInfintiyDialog" :name="name" />
                 <span class="font-weight-bold">{{ spoolMaterial }}</span>
                 <span class="text--disabled">{{ spoolRemainingWeightOutput }}</span>
                 <v-tooltip v-if="hasTd" top>
