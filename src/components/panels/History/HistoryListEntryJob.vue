@@ -111,10 +111,7 @@
             </v-list>
         </v-menu>
         <!-- details dialog -->
-        <history-list-panel-details-dialog
-            :show="detailsDialogBool"
-            :job="item"
-            @close-dialog="detailsDialogBool = false" />
+        <history-list-panel-details-dialog v-model="detailsDialogBool" :job="item" />
         <!-- create/edit note dialog -->
         <history-list-panel-note-dialog
             :show="noteDialogBool"
