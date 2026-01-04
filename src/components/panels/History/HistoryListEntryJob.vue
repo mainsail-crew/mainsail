@@ -113,11 +113,7 @@
         <!-- details dialog -->
         <history-list-panel-details-dialog v-model="detailsDialogBool" :job="item" />
         <!-- create/edit note dialog -->
-        <history-list-panel-note-dialog
-            :show="noteDialogBool"
-            :type="noteDialogType"
-            :job="item"
-            @close-dialog="noteDialogBool = false" />
+        <history-list-panel-note-dialog v-model="noteDialogBool" :type="noteDialogType" :job="item" />
         <!-- add to queue dialog -->
         <add-batch-to-queue-dialog v-model="addBatchToQueueDialogBool" :show-toast="true" :filename="item.filename" />
     </tr>

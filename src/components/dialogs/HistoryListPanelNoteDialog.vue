@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="show" :max-width="600" persistent @keydown.esc="closeDialog">
+    <v-dialog v-model="showDialog" :max-width="600" persistent @keydown.esc="closeDialog">
         <panel :title="panelTitle" :icon="icon" card-class="history-note-dialog" :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="closeDialog">
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -41,7 +41,7 @@ export default class HistoryListPanelNoteDialog extends Mixins(BaseMixin) {
 
     note: string = ''
 
-    @Prop({ type: Boolean, required: true }) readonly show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: String, required: true }) readonly type!: 'create' | 'edit'
     @Prop({ type: Object, required: true }) readonly job!: ServerHistoryStateJob
 
@@ -67,12 +67,14 @@ export default class HistoryListPanelNoteDialog extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('close-dialog')
+        this.showDialog = false
     }
 
-    @Watch('show', { immediate: true })
-    onShowChanged() {
-        if (this.show) this.note = this.job.note ?? ''
+    @Watch('showDialog')
+    onShowDialogChanged(newVal: boolean) {
+        if (!newVal) return
+
+        this.note = this.job.note ?? ''
     }
 }
 </script>
