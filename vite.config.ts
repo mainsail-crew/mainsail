@@ -19,7 +19,10 @@ const PWAConfig: Partial<VitePWAOptions> = {
     manifest: {
         name: 'Mainsail',
         short_name: 'Mainsail',
+        description: 'Web interface for Klipper 3D printer firmware',
         theme_color: '#D51F26',
+        display: 'standalone',
+        start_url: '/',
         background_color: '#121212',
         icons: [
             {
@@ -45,10 +48,13 @@ const PWAConfig: Partial<VitePWAOptions> = {
         navigateFallbackDenylist: [/^\/(access|api|printer|server|websocket)/, /^\/webcam[2-4]?/],
         runtimeCaching: [
             {
-                urlPattern: (options) => options.url.pathname.startsWith('/config.json'),
+                urlPattern: /\/config\.json$/,
                 handler: 'StaleWhileRevalidate',
                 options: {
                     cacheName: 'config.json',
+                    cacheableResponse: {
+                        statuses: [0, 200],
+                    },
                 },
             },
         ],
