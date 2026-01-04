@@ -1,6 +1,6 @@
 <template>
     <v-dialog v-model="showDialog" width="400" :fullscreen="isMobile">
-        <panel card-class="confirm-top-corner-menu-dialog" :icon="mdiAlert" :title="title" :margin-bottom="false">
+        <panel card-class="confirm-top-corner-menu-dialog" :icon="iconToUse" :title="title" :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="close">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -40,6 +40,11 @@ export default class ConfirmationDialog extends Mixins(BaseMixin) {
     @Prop({ type: String, required: true }) text!: string
     @Prop({ type: String, required: true }) actionButtonText!: string
     @Prop({ type: String, required: true }) cancelButtonText!: string
+    @Prop({ type: String, default: null }) icon!: string | null
+
+    get iconToUse() {
+        return this.icon ?? this.mdiAlert
+    }
 
     action() {
         this.$emit('action')
