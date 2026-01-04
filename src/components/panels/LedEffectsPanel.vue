@@ -1,11 +1,10 @@
 <template>
     <panel
-        v-if="klipperReadyForGui && ledEffects.length > 0"
+        v-if="showPanel"
         :icon="mdiLedStrip"
         :title="$t('Panels.LedEffectsPanel.Headline')"
         :collapsible="true"
         card-class="led-effects-panel">
-        <!-- Stop All Effects Button in header -->
         <template #buttons>
             <v-tooltip left>
                 <template #activator="{ on, attrs }">
@@ -13,7 +12,7 @@
                         v-bind="attrs"
                         icon
                         tile
-                        :loading="loadings.includes('STOP_LED_EFFECTS')"
+                        :loading="isLoadingAllEffects"
                         :disabled="printerIsPrintingOnly"
                         v-on="on"
                         @click="stopAllEffects">
@@ -23,15 +22,13 @@
                 <span>{{ $t('Panels.LedEffectsPanel.StopAll') }}</span>
             </v-tooltip>
         </template>
-        <!-- LED Effect Buttons -->
         <v-card-text class="py-2">
             <v-row>
                 <v-col class="text-center">
                     <led-effect-button
-                        v-for="(effect, index) in ledEffects"
-                        :key="'led_effect_' + index"
-                        :effect="effect"
-                        color="primary"
+                        v-for="name in ledEffects"
+                        :key="'led_effect_' + name"
+                        :name="name"
                         class="mx-1 my-1" />
                 </v-col>
             </v-row>
@@ -46,6 +43,8 @@ import Panel from '@/components/ui/Panel.vue'
 import LedEffectButton from '@/components/inputs/LedEffectButton.vue'
 import { mdiLedStrip, mdiStop } from '@mdi/js'
 
+const STOP_LED_EFFECTS_COMMAND = 'STOP_LED_EFFECTS'
+
 @Component({
     components: { LedEffectButton, Panel },
 })
@@ -53,16 +52,32 @@ export default class LedEffectsPanel extends Mixins(BaseMixin) {
     mdiLedStrip = mdiLedStrip
     mdiStop = mdiStop
 
-    get ledEffects() {
-        return this.$store.getters['printer/getLedEffects'] ?? []
+    get showPanel() {
+        return this.klipperReadyForGui && this.ledEffects.length > 0
     }
 
-    /**
-     * Stops all LED effects by sending the STOP_LED_EFFECTS command
-     */
+    get ledEffects() {
+        const prefix = 'led_effect '
+        const prefixLength = prefix.length
+
+        return Object.keys(this.$store.state.printer)
+            .filter((prop) => prop.toLowerCase().startsWith(prefix))
+            .map((prop) => prop.slice(prefixLength))
+            .filter((name) => !name.startsWith('_'))
+            .sort((a, b) => a.localeCompare(b))
+    }
+
+    get isLoadingAllEffects() {
+        return this.loadings.includes(STOP_LED_EFFECTS_COMMAND)
+    }
+
     stopAllEffects() {
-        this.$store.dispatch('server/addEvent', { message: 'STOP_LED_EFFECTS', type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: 'STOP_LED_EFFECTS' }, { loading: 'STOP_LED_EFFECTS' })
+        this.$store.dispatch('server/addEvent', { message: STOP_LED_EFFECTS_COMMAND, type: 'command' })
+        this.$socket.emit(
+            'printer.gcode.script',
+            { script: STOP_LED_EFFECTS_COMMAND },
+            { loading: STOP_LED_EFFECTS_COMMAND }
+        )
     }
 }
 </script>
