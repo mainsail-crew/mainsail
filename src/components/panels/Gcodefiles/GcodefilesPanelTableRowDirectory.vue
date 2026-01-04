@@ -39,10 +39,13 @@
             :item="item"
             :show-dialog="showRenameDirectoryDialog"
             @close="showRenameDirectoryDialog = false" />
-        <gcodefiles-delete-directory-dialog
-            :item="item"
-            :show-dialog="showDeleteDirectoryDialog"
-            @close="showDeleteDirectoryDialog = false" />
+        <confirmation-dialog
+            v-model="showDeleteDirectoryDialog"
+            :title="$t('Files.DeleteDirectory')"
+            :text="$t('Files.DeleteDirectoryQuestion', { name: item.filename })"
+            :action-button-text="$t('Files.Delete')"
+            :cancel-button-text="$t('Files.Cancel')"
+            @action="deleteDirectory" />
     </tr>
 </template>
 <script lang="ts">
@@ -96,6 +99,14 @@ export default class GcodefilesPanelTableRowDirectory extends Mixins(BaseMixin, 
 
     goToDirectory() {
         this.currentPath += '/' + this.item.filename
+    }
+
+    deleteDirectory() {
+        this.$socket.emit(
+            'server.files.delete_directory',
+            { path: 'gcodes' + this.currentPath + '/' + this.item.filename, force: true },
+            { action: 'files/getDeleteDir' }
+        )
     }
 
     onDrop(e: DragEvent) {
