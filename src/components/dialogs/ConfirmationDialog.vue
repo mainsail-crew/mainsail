@@ -10,7 +10,7 @@
             <v-card-actions>
                 <v-spacer />
                 <v-btn text @click="close">{{ cancelButtonText }}</v-btn>
-                <v-btn text color="error" @click="action">{{ actionButtonText }}</v-btn>
+                <v-btn text :color="actionButtonColor" @click="action">{{ actionButtonText }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -34,6 +34,7 @@ export default class ConfirmationDialog extends Mixins(BaseMixin) {
     @Prop({ type: String, required: true }) text!: string
     @Prop({ type: String, required: true }) actionButtonText!: string
     @Prop({ type: String, required: true }) cancelButtonText!: string
+    @Prop({ type: String, default: 'error' }) actionButtonColor!: string
     @Prop({ type: String, default: null }) icon!: string | null
 
     get iconToUse() {
