@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiEject } from '@mdi/js'
@@ -41,10 +41,10 @@ export default class SpoolmanEjectSpoolDialog extends Mixins(BaseMixin) {
     mdiEject = mdiEject
     mdiCloseThick = mdiCloseThick
 
-    @Prop({ required: true }) declare readonly showDialog: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
     close() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
     removeSpool() {
