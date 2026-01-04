@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" max-width="400">
+    <v-dialog v-model="showDialog" max-width="400">
         <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="closeDialog">
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
@@ -31,7 +31,7 @@ import { HistoryListPanelRow } from '@/components/panels/HistoryListPanel.vue'
 export default class HistoryListPanelDeleteSelectedDialog extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
 
-    @Prop({ type: Boolean, required: true }) readonly show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
     get selectedJobs() {
         return this.$store.state.gui.view.history.selectedJobs ?? []
@@ -48,7 +48,7 @@ export default class HistoryListPanelDeleteSelectedDialog extends Mixins(BaseMix
     }
 
     closeDialog() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
     deleteSelectedJobs() {

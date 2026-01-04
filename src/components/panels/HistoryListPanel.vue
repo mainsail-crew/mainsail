@@ -157,7 +157,7 @@
                     @select="select" />
             </template>
         </v-data-table>
-        <history-list-panel-delete-selected-dialog :show="deleteSelectedDialog" @close="deleteSelectedDialog = false" />
+        <history-list-panel-delete-selected-dialog v-model="deleteSelectedDialog" />
         <history-list-panel-add-maintenance :show="addMaintenanceDialog" @close="addMaintenanceDialog = false" />
     </panel>
 </template>
