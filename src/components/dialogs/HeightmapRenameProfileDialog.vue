@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" persistent :max-width="400" @keydown.esc="closeDialog">
+    <v-dialog v-model="showDialog" persistent :max-width="400" @keydown.esc="closeDialog">
         <panel
             :title="$t('Heightmap.RenameBedMeshProfile')"
             :icon="mdiGrid"
@@ -17,11 +17,7 @@
                     :label="$t('Heightmap.Name')"
                     required
                     :rules="rules"
-                    @update:error="
-                        (newVal) => {
-                            isInvalidName = newVal
-                        }
-                    "
+                    @update:error="onUpdateError"
                     @keyup.enter="renameProfile" />
             </v-card-text>
             <v-card-actions>
@@ -35,7 +31,7 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiCloseThick, mdiGrid } from '@mdi/js'
 
@@ -44,12 +40,9 @@ export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiGrid = mdiGrid
 
-    @Prop({ type: Boolean, required: true }) show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: String, required: true }) name!: string
-
-    $refs!: {
-        input: HTMLInputElement
-    }
+    @Ref() input!: HTMLInputElement
 
     isInvalidName = false
     newName = ''
@@ -57,7 +50,8 @@ export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
     rules = [
         (value: string) => !!value || this.$t('Heightmap.InvalidNameEmpty'),
         (value: string) => value !== 'default' || this.$t('Heightmap.InvalidNameReserved'),
-        (value: string) => !this.profileNames.includes(value) || this.$t('Heightmap.InvalidNameAlreadyExists'),
+        (value: string) =>
+            !this.profileNames.includes(value) || value === this.name || this.$t('Heightmap.InvalidNameAlreadyExists'),
         // eslint-disable-next-line no-control-regex
         (value: string) => value === value.replace(/[^\x00-\x7F]/g, '') || this.$t('Heightmap.InvalidNameAscii'),
     ]
@@ -67,6 +61,11 @@ export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
     }
 
     renameProfile() {
+        if (this.name === this.newName) {
+            this.closeDialog()
+            return
+        }
+
         const gcode = `BED_MESH_PROFILE SAVE="${this.newName}"\nBED_MESH_PROFILE REMOVE="${this.name}"`
 
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
@@ -76,20 +75,22 @@ export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
-    @Watch('show')
-    showChanged() {
-        if (this.show) {
-            this.newName = this.name
+    onUpdateError(hasError: boolean) {
+        this.isInvalidName = hasError
+    }
 
-            this.$nextTick(() => {
-                setTimeout(() => {
-                    this.$refs.input?.focus()
-                }, 100)
-            })
-        }
+    @Watch('showDialog')
+    onShowDialogChanged(newVal: boolean) {
+        if (!newVal) return
+
+        this.newName = this.name
+
+        setTimeout(() => {
+            this.input?.focus()
+        })
     }
 }
 </script>
