@@ -52,7 +52,7 @@
             :item="item"
             @close="showPerformDialog = false"
             @close-both="closePerform" />
-        <history-list-panel-edit-maintenance :show="showEditDialog" :item="item" @close="showEditDialog = false" />
+        <history-list-panel-edit-maintenance v-model="showEditDialog" :item="item" />
     </v-dialog>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" :max-width="600" persistent @keydown.esc="closeDialog">
+    <v-dialog v-model="showDialog" :max-width="600" persistent @keydown.esc="closeDialog">
         <panel
             :title="$t('History.EditMaintenance')"
             :icon="mdiNotebook"
@@ -123,7 +123,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Prop, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -143,7 +143,7 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiNotebook = mdiNotebook
 
-    @Prop({ type: Boolean, default: false }) readonly show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, required: true }) readonly item!: GuiMaintenanceStateEntry
 
     name: string = ''
@@ -178,14 +178,6 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
         ]
     }
 
-    get totalFilamentUsed() {
-        return this.$store.state.server.history.job_totals?.total_filament_used ?? 0
-    }
-
-    get totalPrinttime() {
-        return this.$store.state.server.history.job_totals?.total_print_time ?? 0
-    }
-
     get isValid() {
         if (this.name === '') return false
 
@@ -201,7 +193,7 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
     save() {
@@ -233,19 +225,19 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
         this.closeDialog()
     }
 
-    @Watch('show')
-    onShowChanged() {
-        if (this.show) {
-            this.name = this.item.name
-            this.note = this.item.note
-            this.reminder = this.item.reminder?.type ?? null
-            this.reminderFilament = this.item.reminder?.filament.bool ?? false
-            this.reminderFilamentValue = this.item.reminder?.filament.value ?? 0
-            this.reminderPrinttime = this.item.reminder?.printtime.bool ?? false
-            this.reminderPrinttimeValue = this.item.reminder?.printtime.value ?? 0
-            this.reminderDate = this.item.reminder?.date.bool ?? false
-            this.reminderDateValue = this.item.reminder?.date.value ?? 0
-        }
+    @Watch('showDialog')
+    onShowDialogChanged(newVal: boolean) {
+        if (!newVal || !this.item) return
+
+        this.name = this.item.name
+        this.note = this.item.note
+        this.reminder = this.item.reminder?.type ?? null
+        this.reminderFilament = this.item.reminder?.filament.bool ?? false
+        this.reminderFilamentValue = this.item.reminder?.filament.value ?? 0
+        this.reminderPrinttime = this.item.reminder?.printtime.bool ?? false
+        this.reminderPrinttimeValue = this.item.reminder?.printtime.value ?? 0
+        this.reminderDate = this.item.reminder?.date.bool ?? false
+        this.reminderDateValue = this.item.reminder?.date.value ?? 0
     }
 }
 </script>
