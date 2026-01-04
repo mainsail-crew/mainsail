@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" persistent :max-width="400" @keydown.esc="closeDialog">
+    <v-dialog v-model="showDialog" persistent :max-width="400" @keydown.esc="closeDialog">
         <panel
             :title="$t('Heightmap.BedMeshCalibrate')"
             :icon="mdiGrid"
@@ -35,7 +35,7 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Ref, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiCloseThick, mdiGrid } from '@mdi/js'
 
@@ -44,11 +44,8 @@ export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiGrid = mdiGrid
 
-    @Prop({ type: Boolean, required: true }) show!: boolean
-
-    $refs!: {
-        input: HTMLInputElement
-    }
+    @VModel({ type: Boolean }) showDialog!: boolean
+    @Ref() input!: HTMLInputElement
 
     isInvalidName = false
     name = ''
@@ -69,20 +66,17 @@ export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
-    @Watch('show')
-    showChanged() {
-        if (this.show) {
-            this.name = 'default'
+    @Watch('showDialog')
+    onShowDialogChanged(newVal: boolean) {
+        if (!newVal) return
 
-            this.$nextTick(() => {
-                setTimeout(() => {
-                    this.$refs.input?.focus()
-                }, 100)
-            })
-        }
+        this.name = 'default'
+        setTimeout(() => {
+            this.input?.focus()
+        })
     }
 }
 </script>
