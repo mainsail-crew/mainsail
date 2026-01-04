@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="boolShowDialog" persistent max-width="600">
+    <v-dialog v-model="showDialog" persistent max-width="600">
         <panel
             :title="$t('Machine.UpdatePanel.AreYouSure')"
             :icon="mdiProgressQuestion"
@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerUpdateManagerStateGitRepo, ServerUpdateManagerStateGuiList } from '@/store/server/updateManager/types'
 import { mdiProgressQuestion, mdiCloseThick } from '@mdi/js'
@@ -62,7 +62,7 @@ export default class UpdateHintAll extends Mixins(BaseMixin) {
     boolShowCommitHistory = false
     showCommitsRepo: ServerUpdateManagerStateGitRepo | null = null
 
-    @Prop({ required: true }) readonly boolShowDialog!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
     get modules() {
         return this.$store.getters['server/updateManager/getUpdateManagerList'] ?? []
@@ -92,7 +92,7 @@ export default class UpdateHintAll extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('close-dialog')
+        this.showDialog = false
     }
 
     updateAll() {
