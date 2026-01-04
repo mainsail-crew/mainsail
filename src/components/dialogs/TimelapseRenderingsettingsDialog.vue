@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" :max-width="700" :max-height="500">
+    <v-dialog v-model="showDialog" :max-width="700" :max-height="500">
         <panel
             :title="$t('Timelapse.RenderSettings')"
             :icon="mdiTextBoxSearchOutline"
@@ -99,7 +99,7 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, VModel } from 'vue-property-decorator'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import BaseMixin from '@/components/mixins/base'
@@ -113,7 +113,7 @@ export default class TimelapseRenderingsettingsDialog extends Mixins(BaseMixin, 
     mdiCloseThick = mdiCloseThick
     mdiTextBoxSearchOutline = mdiTextBoxSearchOutline
 
-    @Prop({ type: Boolean, default: false }) show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
     get framerateTypeOptions() {
         return [
@@ -128,7 +128,7 @@ export default class TimelapseRenderingsettingsDialog extends Mixins(BaseMixin, 
     }
 
     close() {
-        this.$emit('close')
+        this.showDialog = false
     }
 }
 </script>

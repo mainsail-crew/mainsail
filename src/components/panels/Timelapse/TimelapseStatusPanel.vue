@@ -69,9 +69,7 @@
                 </settings-row>
             </template>
         </v-card-text>
-        <timelapse-renderingsettings-dialog
-            :show="boolDialogRendersettings"
-            @close="boolDialogRendersettings = false" />
+        <timelapse-renderingsettings-dialog v-model="boolDialogRendersettings" />
     </panel>
 </template>
 <script lang="ts">
