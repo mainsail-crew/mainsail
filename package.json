@@ -66,7 +66,7 @@
         "vue-property-decorator": "^9.1.2",
         "vue-toast-notification": "^1.0.1",
         "vuedraggable": "^2.24.3",
-        "vuetify": "^2.7.2",
+        "vuetify": "^3.0.0",
         "vuex": "^3.6.2"
     },
     "devDependencies": {
