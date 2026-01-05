@@ -85,7 +85,7 @@
                 </template>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text @click="form.bool = false">{{ $t('Settings.Cancel') }}</v-btn>
+                <v-btn text @click="form.bool = false">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn v-if="form.id === null" text color="primary" @click="storePrinter">
                     {{ $t('Settings.RemotePrintersTab.AddPrinter') }}
                 </v-btn>

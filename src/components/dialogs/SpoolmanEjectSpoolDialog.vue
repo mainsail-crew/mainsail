@@ -19,7 +19,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="close">{{ $t('Panels.SpoolmanPanel.Cancel') }}</v-btn>
+                <v-btn text @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn color="primary" text @click="removeSpool">
                     {{ $t('Panels.SpoolmanPanel.EjectSpool') }}
                 </v-btn>

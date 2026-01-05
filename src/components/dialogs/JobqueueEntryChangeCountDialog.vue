@@ -35,7 +35,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn color="" text @click="closeDialog">{{ $t('JobQueue.Cancel') }}</v-btn>
+                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn color="primary" text @click="update">{{ $t('JobQueue.ChangeCount') }}</v-btn>
             </v-card-actions>
         </panel>

@@ -196,7 +196,6 @@
                 "FilamentTypeMismatch": "Filament type in the G-Code ({file}) does not match the selected filament type ({lane}).",
                 "FilamentWeightNotEnough": "Not enough filament in the selected lane ({lane}). Required: {required}, Available: {available}."
             },
-            "Cancel": "Cancel",
             "DoYouWantToStartFilename": "Do you want to start {filename}?",
             "DoYouWantToStartFilenameFilament": "Do you want to start {filename} with the following filament?",
             "Headline": "Start Job",
@@ -465,7 +464,6 @@
         "TotalTime": "Total Time"
     },
     "JobQueue": {
-        "Cancel": "Cancel",
         "ChangeCount": "Change count",
         "Count": "Count",
         "Empty": "Empty",
@@ -524,7 +522,6 @@
         },
         "LogfilesPanel": {
             "Accept": "accept",
-            "Cancel": "cancel",
             "Logfiles": "Log Files",
             "Rollover": "Rollover Logs",
             "RolloverDescription": "Please select which logs should be reset:",
@@ -614,7 +611,6 @@
             "BufferDisabled": "Buffer Not Active",
             "BypassActive": "Filament loaded in bypass, tool changes are deactivated!",
             "Calibrate": "Calibrate",
-            "Cancel": "Cancel",
             "CaptureTD": "Capture TD",
             "Color": "Color",
             "DebugJson": "Debug JSON",
@@ -954,7 +950,6 @@
         },
         "SpoolmanPanel": {
             "ActiveSpool": "Active Spool",
-            "Cancel": "Cancel",
             "ChangeSpool": "Change Spool",
             "DaysAgo": "{days} days ago",
             "EjectSpool": "Eject spool",
@@ -1143,7 +1138,6 @@
         "YouCanFindMore": "You can find more details at"
     },
     "Settings": {
-        "Cancel": "Cancel",
         "Close": "Close",
         "ConsoleTab": {
             "AddFilter": "add filter",

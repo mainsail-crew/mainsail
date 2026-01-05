@@ -32,7 +32,7 @@
             <v-card-actions>
                 <v-spacer />
                 <v-btn text @click="closeDialog">
-                    {{ $t('Machine.LogfilesPanel.Cancel') }}
+                    {{ $t('Buttons.Cancel') }}
                 </v-btn>
                 <v-btn color="primary" text @click="btnRolloverLogs">
                     {{ $t('Machine.LogfilesPanel.Accept') }}
