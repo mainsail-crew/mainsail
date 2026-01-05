@@ -79,27 +79,13 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <v-dialog v-model="dialogPowerDeviceChange.show" width="400" :fullscreen="isMobile">
-            <v-card>
-                <v-card-title class="headline">
-                    {{
-                        dialogPowerDeviceChange.value === 'off'
-                            ? $t('PowerDeviceChangeDialog.TurnDeviceOn', { device: dialogPowerDeviceChange.device })
-                            : $t('PowerDeviceChangeDialog.TurnDeviceOff', { device: dialogPowerDeviceChange.device })
-                    }}
-                </v-card-title>
-                <v-card-text>{{ $t('PowerDeviceChangeDialog.AreYouSure') }}</v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="red darken-1" text @click="dialogPowerDeviceChange.show = false">
-                        {{ $t('PowerDeviceChangeDialog.No') }}
-                    </v-btn>
-                    <v-btn color="green darken-1" text @click="powerDeviceToggle">
-                        {{ $t('PowerDeviceChangeDialog.Yes') }}
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <confirmation-dialog
+            v-model="dialogPowerDeviceChange.show"
+            :title="powerDeviceDialogTitle"
+            :text="$t('PowerDeviceChangeDialog.AreYouSure')"
+            :action-button-text="$t('PowerDeviceChangeDialog.Yes')"
+            :cancel-button-text="$t('PowerDeviceChangeDialog.No')"
+            @action="powerDeviceToggle" />
         <confirmation-dialog
             v-model="dialogConfirmation.show"
             :title="dialogConfirmation.title"
@@ -194,6 +180,16 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin, ServiceMixins) {
         return devices.filter((device: ServerPowerStateDevice) => !device.device.startsWith('_'))
     }
 
+    get powerDeviceDialogTitle(): string {
+        return this.dialogPowerDeviceChange.value === 'off'
+            ? this.$t('PowerDeviceChangeDialog.TurnDeviceOn', {
+                  device: this.dialogPowerDeviceChange.device,
+              }).toString()
+            : this.$t('PowerDeviceChangeDialog.TurnDeviceOff', {
+                  device: this.dialogPowerDeviceChange.device,
+              }).toString()
+    }
+
     checkDialog(executableFunction: any, serviceName: string, action: string) {
         if (!this.printerIsPrinting) {
             executableFunction(serviceName)
@@ -256,7 +252,6 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin, ServiceMixins) {
     }
 
     powerDeviceToggle() {
-        this.dialogPowerDeviceChange.show = false
         const rpc =
             this.dialogPowerDeviceChange.value === 'off' ? 'machine.device_power.on' : 'machine.device_power.off'
         this.$socket.emit(
