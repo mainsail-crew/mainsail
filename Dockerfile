@@ -26,8 +26,6 @@ USER root
 RUN rm -rf /usr/share/nginx/html/*
 COPY --link --from=builder /app/.docker/nginx.conf.unprivileged  /etc/nginx/conf.d/default.conf
 COPY --link --from=builder /app/dist/ /usr/share/nginx/html/
-COPY --chmod=755 --link --from=builder /app/.docker/00-remove-ipv6-if-unavailable.sh /docker-entrypoint.d/
-
 USER nginx
 
 #
