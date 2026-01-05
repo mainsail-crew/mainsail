@@ -65,7 +65,6 @@
             "UploadPrint": "アップロード & 印刷"
         },
         "TopCornerMenu": {
-            "Cancel": "取り消し",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "ホストをリブートすると現在の印刷が中断されます!",
@@ -119,6 +118,12 @@
         "ScrewName": "スクリュー名",
         "ScrewOutput": "{current}/{max}"
     },
+    "Buttons": {
+        "Cancel": "取り消し",
+        "Delete": "削除",
+        "No": "いいえ",
+        "Yes": "はい"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Moonraker({host})に接続できません",
         "CheckMoonrakerLog": "このメッセージが繰り返し表示される場合は、以下のログファイルを参照してください。:",
@@ -136,7 +141,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "取り消し",
             "DoYouWantToStartFilename": "{filename}の印刷を開始しますか？",
             "Headline": "ジョブ開始",
             "Print": "印刷",
@@ -168,7 +172,6 @@
         "AddToQueue": "ジョブキューに追加",
         "AllFiles": "すべてのファイル",
         "BedTemp": "ベッド温度",
-        "Cancel": "取り消し",
         "ChamberTemp": "チャンバー温度",
         "Count": "回数",
         "Create": "作成",
@@ -259,7 +262,6 @@
         "VoxelMode": "ボクセルモード (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "中止",
         "BedMeshCalibrate": "ベッドメッシュの校正",
         "BedMeshRemove": "ベッドメッシュの解除",
         "Calibrate": "校正",
@@ -286,7 +288,6 @@
         "NoProfile": "有効なプロファイルがありません。",
         "Probed": "実測面",
         "Profiles": "プロファイル",
-        "Remove": "削除",
         "Rename": "名前変更",
         "RenameBedMeshProfile": "ベッドメッシュのプロファイル名変更",
         "ScaleGradient": "目盛の勾配",
@@ -300,7 +301,6 @@
         "AddNote": "ノート追加",
         "AllJobs": "全ジョブ",
         "AvgPrinttime": "平均印刷時間",
-        "Cancel": "取り消し",
         "Chart": "チャート",
         "CreateNote": "メモ作成",
         "Delete": "削除",
@@ -363,7 +363,6 @@
         "TotalTime": "総時間"
     },
     "JobQueue": {
-        "Cancel": "取り消し",
         "ChangeCount": "回数変更",
         "Count": "回数",
         "Empty": "空",
@@ -377,14 +376,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "すべてのファイル",
-            "Cancel": "取り消し",
             "ConfigFiles": "設定ファイル",
             "ConfigRootDirectoryDoesntExists": "設定ディレクトリが見つかりませんでした。Moonrakerの設定[file_manager]セクションの\"config_path\"オプションを確認してください。",
             "Create": "作成",
             "CreateDirectory": "ディレクトリ作成",
             "CreateFile": "ファイル作成",
             "CurrentPath": "現在のパス",
-            "Delete": "削除",
             "DeleteDirectory": "ディレクトリ削除",
             "DeleteDirectoryQuestion": "ディレクトリ\"{name}\"と中に含まれるすべてのファイルが削除されます。よろしいですか？",
             "DeleteSelectedQuestion": "選択した {count}個を削除しますか？",
@@ -420,7 +417,6 @@
         },
         "LogfilesPanel": {
             "Accept": "確認",
-            "Cancel": "取り消し",
             "Logfiles": "ログファイル",
             "Rollover": "ログファイルのロールオーバー",
             "RolloverDescription": "リセットするログを選んでください:",
@@ -576,7 +572,6 @@
             "Estimate": "推定",
             "ETA": "推定完了時刻",
             "ExcludeObject": {
-                "Cancel": "取り消し",
                 "Excluded": "除外",
                 "ExcludeObject": "オブジェクト除外",
                 "ExcludeObjectHeadline": "オブジェクト除外",
@@ -672,10 +667,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "よろしいですか？",
-        "No": "いいえ",
         "TurnDeviceOff": "{device}オフ",
-        "TurnDeviceOn": "{device}オン",
-        "Yes": "はい"
+        "TurnDeviceOn": "{device}オン"
     },
     "Router": {
         "Console": "コンソール",
@@ -716,7 +709,6 @@
         "YouCanFindMore": "詳細はこちらでご覧になれます"
     },
     "Settings": {
-        "Cancel": "取り消し",
         "Close": "クローズ",
         "ConsoleTab": {
             "AddFilter": "フィルター追加",
@@ -1053,11 +1045,9 @@
     "Timelapse": {
         "AllFiles": "すべてのファイル",
         "Autorender": "自動レンダリング",
-        "Cancel": "取り消し",
         "Create": "作成",
         "CreateNewDirectory": "新規ディレクトリの作成",
         "CurrentPath": "現在のパス",
-        "Delete": "削除",
         "DeleteDirectory": "ディレクトリの削除",
         "DeleteDirectoryQuestion": "ディレクトリ\"{name}\"と中に含まれるすべてのファイルが削除されます。よろしいですか？",
         "DeleteSelectedQuestion": "選択された{count}個のファイルが削除されます。よろしいですか？",

@@ -90,7 +90,6 @@
             "UploadPrint": "Upload & Print"
         },
         "TopCornerMenu": {
-            "Cancel": "Annuleer",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Wanneer je nu de host reboot, zal de huidige print mislukken!",
@@ -144,11 +143,15 @@
         "ScrewName": "Schroef Naam",
         "ScrewOutput": "{current} van {max}"
     },
-    "CancelJobDialog": {
-        "AreYouSure": "Weet je het zeker?",
-        "CancelJob": "Annuleer Job",
+    "Buttons": {
+        "Cancel": "Annuleer",
+        "Delete": "Verwijder",
         "No": "Nee",
         "Yes": "Ja"
+    },
+    "CancelJobDialog": {
+        "AreYouSure": "Weet je het zeker?",
+        "CancelJob": "Annuleer Job"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Kan niet verbinden met Moonraker ({host}).",
@@ -168,9 +171,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "Weet je het zeker?",
-        "CoolDown": "Koel af",
-        "No": "Nee",
-        "Yes": "Ja"
+        "CoolDown": "Koel af"
     },
     "DevicesDialog": {
         "Formats": "Formaten",
@@ -180,7 +181,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Annuleer",
             "DoYouWantToStartFilename": "Wil je {filename} starten?",
             "Headline": "Start print",
             "Print": "print",
@@ -213,7 +213,6 @@
         "AddToQueue": "Voeg aan wachtrij toe",
         "AllFiles": "Alle",
         "BedTemp": "Bed Temp.",
-        "Cancel": "Annuleer",
         "ChamberTemp": "Kamer Temp.",
         "Count": "Aantal",
         "Create": "Creëer",
@@ -305,7 +304,6 @@
         "VoxelMode": "Voxel Modus (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "annuleer",
         "BedMeshCalibrate": "Bed Mesh Kalibreren",
         "BedMeshRemove": "Bed Mesh verwijderen",
         "Calibrate": "kalibreren",
@@ -332,7 +330,6 @@
         "NoProfile": "Geen profiel beschikbaar",
         "Probed": "Geprobed",
         "Profiles": "Profielen",
-        "Remove": "verwijderen",
         "Rename": "hernoemen",
         "RenameBedMeshProfile": "Hernoem Bed Mesh Profiel",
         "ScaleGradient": "Kleurverloop schalen",
@@ -346,7 +343,6 @@
         "AddNote": "Voeg notitie toe",
         "AllJobs": "Alle",
         "AvgPrinttime": "Gemiddelde printtijd",
-        "Cancel": "Annuleer",
         "Chart": "Grafiek",
         "CreateNote": "Creëer notitie",
         "DateBasedReminder": "Datum",
@@ -421,7 +417,6 @@
         "TotalTime": "Totale Tijd"
     },
     "JobQueue": {
-        "Cancel": "Annuleer",
         "ChangeCount": "Verander aantal",
         "Count": "Aantal",
         "Empty": "Leeg",
@@ -435,14 +430,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Alle",
-            "Cancel": "Annuleer",
             "ConfigFiles": "Config bestanden",
             "ConfigRootDirectoryDoesntExists": "Geen configuratie directory gevonden. Controleer de optie \"config_path\" in de [file_manager] sectie van de Moonraker configuratie.",
             "Create": "Maak",
             "CreateDirectory": "Maak map",
             "CreateFile": "Maak bestand",
             "CurrentPath": "Huidig pad",
-            "Delete": "Verwijder",
             "DeleteDirectory": "Verwijder map",
             "DeleteDirectoryQuestion": "Weet je zeker dat je de \"{name}\" map wil verwijderen met alle inhoud?",
             "DeleteSelectedQuestion": "Verwijder {count} geselecteerde elementen?",
@@ -478,7 +471,6 @@
         },
         "LogfilesPanel": {
             "Accept": "accepteer",
-            "Cancel": "annuleer",
             "Logfiles": "Logbestanden",
             "Rollover": "Roteer logs",
             "RolloverDescription": "Selecteer welke logs moeten roteren:",
@@ -634,7 +626,6 @@
             "Estimate": "Schatting",
             "ETA": "ETA",
             "ExcludeObject": {
-                "Cancel": "annuleer",
                 "Excluded": "Uitgesloten",
                 "ExcludeObject": "Object uitsluiten",
                 "ExcludeObjectHeadline": "Object uitsluiten",
@@ -730,10 +721,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Weet je het zeker?",
-        "No": "Nee",
         "TurnDeviceOff": "Zet {device} uit",
-        "TurnDeviceOn": "Zet {device} aan",
-        "Yes": "Ja"
+        "TurnDeviceOn": "Zet {device} aan"
     },
     "Router": {
         "Console": "Console",
@@ -774,7 +763,6 @@
         "YouCanFindMore": "Je kunt meer details vinden op"
     },
     "Settings": {
-        "Cancel": "Annuleer",
         "Close": "Sluit",
         "ConsoleTab": {
             "AddFilter": "voeg filter toe",
@@ -1124,11 +1112,9 @@
     "Timelapse": {
         "AllFiles": "Alle",
         "Autorender": "Autorender",
-        "Cancel": "Annuleer",
         "Create": "Creëer",
         "CreateNewDirectory": "Creëer nieuwe Map",
         "CurrentPath": "Huidige pad",
-        "Delete": "Verwijder",
         "DeleteDirectory": "Verwijder map",
         "DeleteDirectoryQuestion": "Weet je zeker dat je de \"{name}\" map wil verwijderen met alle inhoud?",
         "DeleteSelectedQuestion": "Weet je zeker dat je {count} geselecteerde bestanden wil verwijderen?",

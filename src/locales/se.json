@@ -76,7 +76,6 @@
             "UploadPrint": "Ladda upp och skriv ut"
         },
         "TopCornerMenu": {
-            "Cancel": "Avbryt",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Om du startar om värddatorn kommer den aktuella utskriften att misslyckas!",
@@ -130,6 +129,12 @@
         "ScrewName": "Skruvnamn",
         "ScrewOutput": "{current} av {max}"
     },
+    "Buttons": {
+        "Cancel": "Avbryt",
+        "Delete": "Radera",
+        "No": "Nej",
+        "Yes": "Ja"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Kan inte ansluta till Moonraker ({host}).",
         "CheckMoonrakerLog": "Om det här meddelandet visas upprepade gånger, vänligen ta en titt i loggfilen som finns på:",
@@ -147,7 +152,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Avbryt",
             "DoYouWantToStartFilename": "Vill du starta {filename}?",
             "DoYouWantToStartFilenameFilament": "Vill du starta {filename} med följande filament?",
             "Headline": "Starta jobb",
@@ -180,7 +184,6 @@
         "AddToQueue": "Lägg till i kö",
         "AllFiles": "Alla",
         "BedTemp": "Bäddtemp.",
-        "Cancel": "Avbryt",
         "ChamberTemp": "Kammartemp.",
         "Count": "Räkna",
         "Create": "Skapa",
@@ -276,7 +279,6 @@
         "VoxelMode": "Voxelläge (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "avbryt",
         "BedMeshCalibrate": "Kalibrera sängnät (Bed Mesh)",
         "BedMeshRemove": "Ta bort sängnät (Bed Mesh)",
         "Calibrate": "kalibrera",
@@ -304,7 +306,6 @@
         "NoProfile": "Ingen profil tillgänglig",
         "Probed": "Sonderat",
         "Profiles": "Profiler",
-        "Remove": "radera",
         "Rename": "döp om",
         "RenameBedMeshProfile": "Döp om sängnätsprofil (Bed Mesh Profile)",
         "ScaleGradient": "Skala övertoning",
@@ -318,7 +319,6 @@
         "AddNote": "Lägg till anteckning",
         "AllJobs": "Alla",
         "AvgPrinttime": "Utskriftstid - Ø",
-        "Cancel": "Avbryt",
         "Chart": "Diagram",
         "CreateNote": "Skapa anteckning",
         "Delete": "Radera",
@@ -382,7 +382,6 @@
         "TotalTime": "Total tid"
     },
     "JobQueue": {
-        "Cancel": "Avbryt",
         "ChangeCount": "Ändra räkning",
         "Count": "Räkna",
         "Empty": "Tom",
@@ -396,14 +395,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Alla",
-            "Cancel": "Avbryt",
             "ConfigFiles": "Konfigurationsfiler",
             "ConfigRootDirectoryDoesntExists": "Ingen konfigurationskatalog hittades. Kontrollera alternativet \"config_path\" i avsnittet [file_hanterare] i Moonraker-konfigurationen.",
             "Create": "Skapa",
             "CreateDirectory": "Skapa katalog",
             "CreateFile": "Skapa fil",
             "CurrentPath": "Nuvarande sökväg",
-            "Delete": "Radera",
             "DeleteDirectory": "Radera historik",
             "DeleteDirectoryQuestion": "Vill du verkligen radera katalogen \"{name}\" med allt dess innehåll?",
             "DeleteSelectedQuestion": "Vill du ta bort {count} markerade element?",
@@ -442,7 +439,6 @@
         },
         "LogfilesPanel": {
             "Accept": "godkänn",
-            "Cancel": "avbryt",
             "Logfiles": "Loggfiler",
             "Rollover": "Överrullningsloggar",
             "RolloverDescription": "Välj vilka loggar som ska återställas:",
@@ -621,7 +617,6 @@
             "PowerControl": "Strömstyrning"
         },
         "SpoolmanPanel": {
-            "Cancel": "Avbryt",
             "ChangeSpool": "Byt spole",
             "DaysAgo": "för {days} dagar sedan",
             "EjectSpool": "Mata ut spolen",
@@ -655,7 +650,6 @@
             "Estimate": "Uppskattning",
             "ETA": "Beräknad tid",
             "ExcludeObject": {
-                "Cancel": "avbryt",
                 "Excluded": "Exluderad",
                 "ExcludeObject": "Exkludera objekt",
                 "ExcludeObjectHeadline": "Exkludera objekt",
@@ -757,10 +751,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Är du säker?",
-        "No": "Nej",
         "TurnDeviceOff": "Stäng av {device}",
-        "TurnDeviceOn": "Slå på {device}",
-        "Yes": "Ja"
+        "TurnDeviceOn": "Slå på {device}"
     },
     "Router": {
         "Console": "konsol",
@@ -802,7 +794,6 @@
         "YouCanFindMore": "Du kan hitta mer information på"
     },
     "Settings": {
-        "Cancel": "Avbryt",
         "Close": "Stäng",
         "ConsoleTab": {
             "AddFilter": "lägg till filter",
@@ -1193,11 +1184,9 @@
     "Timelapse": {
         "AllFiles": "Alla",
         "Autorender": "Automatisk rendering",
-        "Cancel": "Avbryt",
         "Create": "Skapa",
         "CreateNewDirectory": "skapa katalog",
         "CurrentPath": "Nuvarande sökväg",
-        "Delete": "Radera",
         "DeleteDirectory": "Radera katalog",
         "DeleteDirectoryQuestion": "Vill du verkligen ta bort katalogen \"{name}\" med allt dess innehåll?",
         "DeleteSelectedQuestion": "Vill du verkligen ta bort {count} valda filer?",

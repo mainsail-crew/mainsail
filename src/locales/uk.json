@@ -86,7 +86,6 @@
             "UploadPrint": "Завантажити та надрукувати"
         },
         "TopCornerMenu": {
-            "Cancel": "Скасувати",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Перезавантаження хоста призведе до зупинки поточного друку!",
@@ -140,6 +139,12 @@
         "ScrewName": "Назва гвинта",
         "ScrewOutput": "{current} з {max}"
     },
+    "Buttons": {
+        "Cancel": "Скасувати",
+        "Delete": "Видалити",
+        "No": "Ні",
+        "Yes": "Так"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Не вдається підключитися до Moonraker ({host}).",
         "CheckMoonrakerLog": "Якщо це повідомлення з’являється неодноразово, будь ласка, подивіться у файл журналу, розташований за адресою:",
@@ -157,9 +162,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "Ти впевнений?",
-        "CoolDown": "Охолодження",
-        "No": "Ні",
-        "Yes": "Так"
+        "CoolDown": "Охолодження"
     },
     "DevicesDialog": {
         "CanBusInfo": "Можна виявити лише непризначені вузли. Рекомендується мати лише один непризначений пристрій, підключений до шини can, щоб уникнути проблем зі зв’язком. Щоб отримати детальнішу інформацію, натисніть на посилання:",
@@ -177,7 +180,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Скасувати",
             "DoYouWantToStartFilename": "Ви хочете роздрукувати {filename}?",
             "DoYouWantToStartFilenameFilament": "Хочете почати друк {filename} з наявного філаменту?",
             "Headline": "Почати друк",
@@ -211,7 +213,6 @@
         "AddToQueue": "Додати в чергу",
         "AllFiles": "ВСІ",
         "BedTemp": "t° Столу.",
-        "Cancel": "Скасувати",
         "ChamberTemp": "t° Камери.",
         "Count": "Кількість",
         "Create": "Створити",
@@ -307,7 +308,6 @@
         "VoxelMode": "Режим Вокселя (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "Перервати",
         "BedMeshCalibrate": "Калібрування Сітки Столу",
         "BedMeshRemove": "Видалити Сітку Столу",
         "Calibrate": "калібрувати",
@@ -335,7 +335,6 @@
         "NoProfile": "Немає профілю",
         "Probed": "Зондований",
         "Profiles": "Профілі",
-        "Remove": "видалити",
         "Rename": "перейменувати",
         "RenameBedMeshProfile": "Перейменуйте профіль сітки для столу",
         "ScaleGradient": "Градієнт Масштабу",
@@ -352,7 +351,6 @@
         "AddToQueueSuccessful": "Файл {filename} додано до черги.",
         "AllJobs": "ВСІ",
         "AvgPrinttime": "Час Друку - Ø",
-        "Cancel": "Скасувати",
         "Chart": "Графік",
         "CreateNote": "Створити Примітку",
         "DateBasedReminder": "Дата",
@@ -445,7 +443,6 @@
         "TotalTime": "Загальний Час"
     },
     "JobQueue": {
-        "Cancel": "Скасувати",
         "ChangeCount": "Змінити кількість",
         "Count": "Кількість",
         "Empty": "Порожньо",
@@ -460,14 +457,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "ВСІ",
-            "Cancel": "Скасувати",
             "ConfigFiles": "Конфігураційні файли",
             "ConfigRootDirectoryDoesntExists": "Не знайдено каталогу конфігурації. Будь ласка, перевірте опцію \"config_path\" у [file_manager] розділі конфігурації Moonraker.",
             "Create": "Створити",
             "CreateDirectory": "Створити Диркторію",
             "CreateFile": "Створити Файл",
             "CurrentPath": "Директорія",
-            "Delete": "Видалити",
             "DeleteDirectory": "Видалити директорію",
             "DeleteDirectoryQuestion": "Видалити директорію \"{name}\" і весь її вміст?",
             "DeleteSelectedQuestion": "Видалити {count} вибрані елементи?",
@@ -506,7 +501,6 @@
         },
         "LogfilesPanel": {
             "Accept": "прийняти",
-            "Cancel": "скасувати",
             "Logfiles": "Журнали",
             "Rollover": "Журнали переходів",
             "RolloverDescription": "Виберіть, які журнали потрібно скинути:",
@@ -687,7 +681,6 @@
             "PowerControl": "Управління Живленням"
         },
         "SpoolmanPanel": {
-            "Cancel": "Скасувати",
             "ChangeSpool": "Зміна шпулі",
             "DaysAgo": "{days} днів тому",
             "EjectSpool": "Прибрати шпулю",
@@ -721,7 +714,6 @@
             "Estimate": "Оцінка",
             "ETA": "Час закінчення",
             "ExcludeObject": {
-                "Cancel": "скасувати",
                 "Excluded": "Виключений",
                 "ExcludeObject": "Виключіть Об'єкт",
                 "ExcludeObjectHeadline": "Виключіть Об'єкт",
@@ -823,10 +815,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Ви впевнені?",
-        "No": "НІ",
         "TurnDeviceOff": "Поворот {device} ВИМК",
-        "TurnDeviceOn": "Поворот {device} УВІМК",
-        "Yes": "ТАК"
+        "TurnDeviceOn": "Поворот {device} УВІМК"
     },
     "Router": {
         "Console": "Консоль",
@@ -870,7 +860,6 @@
         "YouCanFindMore": "Ви можете знайти більше деталей на"
     },
     "Settings": {
-        "Cancel": "Скасувати",
         "Close": "Закрити",
         "ConsoleTab": {
             "AddFilter": "додати фільтр",
@@ -1274,11 +1263,9 @@
     "Timelapse": {
         "AllFiles": "ВСІ",
         "Autorender": "Auto-render",
-        "Cancel": "Скасувати",
         "Create": "Створити",
         "CreateNewDirectory": "створити директорію",
         "CurrentPath": "Директорія",
-        "Delete": "Видалити",
         "DeleteDirectory": "Видалити директорію",
         "DeleteDirectoryQuestion": "Ви дійсно хочете видалити \"{name}\" директоріб із усім її вмістом?",
         "DeleteSelectedQuestion": "Ви дійсно хочете видалити {count} вибрані файли?",

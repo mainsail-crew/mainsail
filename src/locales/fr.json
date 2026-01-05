@@ -78,7 +78,6 @@
             "UploadPrint": "Charger et imprimer"
         },
         "TopCornerMenu": {
-            "Cancel": "Annuler",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Le redémarrage de l'hôte entraînera l'échec de l'impression en cours!",
@@ -132,6 +131,12 @@
         "ScrewName": "Nom de la vis",
         "ScrewOutput": "{current} de {max}"
     },
+    "Buttons": {
+        "Cancel": "Annuler",
+        "Delete": "Supprimer",
+        "No": "Non",
+        "Yes": "Oui"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Impossible de se connecter à Moonraker ({host}).",
         "CheckMoonrakerLog": "Si ce message apparaît de manière répétée, veuillez consulter le fichier log situé à l'adresse suivante:",
@@ -148,9 +153,7 @@
         "SetupConsole": "Configuration console"
     },
     "CoolDownDialog": {
-        "AreYouSure": "Êtes-vous sûr·e?",
-        "No": "Non",
-        "Yes": "Oui"
+        "AreYouSure": "Êtes-vous sûr·e?"
     },
     "DevicesDialog": {
         "Formats": "Formats",
@@ -160,7 +163,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Annuler",
             "DoYouWantToStartFilename": "Voulez-vous commencer {filename}?",
             "DoYouWantToStartFilenameFilament": "Voulez-vous démarrer {filename} avec le filament suivant?",
             "Headline": "Démarrage Impression",
@@ -193,7 +195,6 @@
         "AddToQueue": "Ajouter à la file d'attente",
         "AllFiles": "Tous",
         "BedTemp": "Température plateau",
-        "Cancel": "Annuler",
         "ChamberTemp": "Température chambre",
         "Count": "Nombre",
         "Create": "Créer",
@@ -289,7 +290,6 @@
         "VoxelMode": "Mode Voxel (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "annuler",
         "BedMeshCalibrate": "Calibrage du maillage",
         "BedMeshRemove": "Supprimer le maillage",
         "Calibrate": "calibrer",
@@ -317,7 +317,6 @@
         "NoProfile": "Pas de profil disponible",
         "Probed": "Mesuré",
         "Profiles": "Profils",
-        "Remove": "supprimer",
         "Rename": "renommer",
         "RenameBedMeshProfile": "Renommer le maillage",
         "ScaleGradient": "Facteur d'échelle",
@@ -331,7 +330,6 @@
         "AddNote": "Ajouter une note",
         "AllJobs": "Tous",
         "AvgPrinttime": "Temps d'impression - Ø",
-        "Cancel": "Annuler",
         "Chart": "Graphique",
         "CreateNote": "Créer une note",
         "Delete": "Supprimer",
@@ -395,7 +393,6 @@
         "TotalTime": "Durée totale"
     },
     "JobQueue": {
-        "Cancel": "Annuler",
         "ChangeCount": "Nombre de changements",
         "Count": "Nombre",
         "Empty": "Vide",
@@ -409,14 +406,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Tous",
-            "Cancel": "Annuler",
             "ConfigFiles": "Fichiers de configuration",
             "ConfigRootDirectoryDoesntExists": "Aucun répertoire de configuration n'a été trouvé. Veuillez vérifier l'option \"config_path\" dans la section [file_manager] de la configuration de Moonraker.",
             "Create": "Créer",
             "CreateDirectory": "Créer un répertoire",
             "CreateFile": "Créer un fichier",
             "CurrentPath": "Chemin actuel",
-            "Delete": "Supprimer",
             "DeleteDirectory": "Supprimer le répertoire",
             "DeleteDirectoryQuestion": "Supprimer le répertoire \"{name}\" et tout son contenu?",
             "DeleteSelectedQuestion": "Supprimer les {count} élements sélectionnés?",
@@ -455,7 +450,6 @@
         },
         "LogfilesPanel": {
             "Accept": "accepter",
-            "Cancel": "annuler",
             "Logfiles": "Fichiers logs",
             "Rollover": "Logs glissants",
             "RolloverDescription": "Veuillez sélectionner les logs à réinitialiser:",
@@ -633,7 +627,6 @@
             "PowerControl": "Alimentation"
         },
         "SpoolmanPanel": {
-            "Cancel": "Annuler",
             "ChangeSpool": "Changer de bobine",
             "DaysAgo": "{days} jours avant",
             "EjectSpool": "Ejecter la bobine",
@@ -667,7 +660,6 @@
             "Estimate": "Estimation",
             "ETA": "TEA",
             "ExcludeObject": {
-                "Cancel": "annuler",
                 "Excluded": "Exclus",
                 "ExcludeObject": "Exclure un objet",
                 "ExcludeObjectHeadline": "Exclure un objet",
@@ -769,10 +761,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Êtes-vous sûr?",
-        "No": "Non",
         "TurnDeviceOff": "Arrêter {device}",
-        "TurnDeviceOn": "Mettre en marche {device}",
-        "Yes": "Oui"
+        "TurnDeviceOn": "Mettre en marche {device}"
     },
     "Router": {
         "Console": "Console",
@@ -814,7 +804,6 @@
         "YouCanFindMore": "Vous trouverez plus d'informations à l'adresse suivante"
     },
     "Settings": {
-        "Cancel": "Annuler",
         "Close": "Fermer",
         "ConsoleTab": {
             "AddFilter": "ajouter un filtre",
@@ -1197,11 +1186,9 @@
     "Timelapse": {
         "AllFiles": "Tous",
         "Autorender": "Rendu automatique",
-        "Cancel": "Annuler",
         "Create": "Créer",
         "CreateNewDirectory": "créer un répertoire",
         "CurrentPath": "Chemin actuel",
-        "Delete": "Supprimer",
         "DeleteDirectory": "Supprimer le répertoire",
         "DeleteDirectoryQuestion": "Voulez-vous vraiment supprimer le répertoire \"{name}\" avec tout son contenu?",
         "DeleteSelectedQuestion": "Voulez-vous vraiment supprimer les {count} fichiers sélectionnés ?",

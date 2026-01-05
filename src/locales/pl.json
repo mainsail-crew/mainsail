@@ -74,7 +74,6 @@
             "UploadPrint": "Wgraj i Drukuj"
         },
         "TopCornerMenu": {
-            "Cancel": "Anuluj",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Ponowne uruchomienie hosta zatrzyma wydruk!",
@@ -128,6 +127,12 @@
         "ScrewName": "Nazwa śruby",
         "ScrewOutput": "{current} z {max}"
     },
+    "Buttons": {
+        "Cancel": "Anuluj",
+        "Delete": "Usuń",
+        "No": "Nie",
+        "Yes": "Tak"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Połączenie ({host}) z Moonrakerem nieudane.",
         "CheckMoonrakerLog": "Jeżeli ta wiadomość się powtarza, sprawdź plik:",
@@ -145,7 +150,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Anuluj",
             "DoYouWantToStartFilename": "Czy chcesz rozpocząć druk {filename}?",
             "DoYouWantToStartFilenameFilament": "Rozpocząć {filename} z następującym filamentem?",
             "Headline": "Rozpocznij",
@@ -178,7 +182,6 @@
         "AddToQueue": "Dodaj do kolejki",
         "AllFiles": "Wszystkie",
         "BedTemp": "Temp. stołu",
-        "Cancel": "Anuluj",
         "ChamberTemp": "Temp. komory",
         "Count": "Ilość",
         "Create": "Stwórz",
@@ -274,7 +277,6 @@
         "VoxelMode": "Tryb wokseli (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "Anuluj",
         "BedMeshCalibrate": "Kalibracja nowej siatki stołu",
         "BedMeshRemove": "Usuń siatkę stołu",
         "Calibrate": "Kalibracja",
@@ -302,7 +304,6 @@
         "NoProfile": "Brak profili",
         "Probed": "Zmierzone",
         "Profiles": "Profile",
-        "Remove": "Usuń",
         "Rename": "Zmień nazwę",
         "RenameBedMeshProfile": "Zmień nazwę siatki stołu",
         "ScaleGradient": "Skaluj gradient",
@@ -316,7 +317,6 @@
         "AddNote": "Dodaj notatkę",
         "AllJobs": "Łącznie",
         "AvgPrinttime": "Średni czas wydruku - Ø",
-        "Cancel": "Anuluj",
         "Chart": "Wykres",
         "CreateNote": "Stwórz notatkę",
         "Delete": "Usuń",
@@ -380,7 +380,6 @@
         "TotalTime": "Całkowity czas druku"
     },
     "JobQueue": {
-        "Cancel": "Anuluj",
         "ChangeCount": "Zmień ilość",
         "Count": "Ilość",
         "Empty": "Puste",
@@ -394,14 +393,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Wszystkie",
-            "Cancel": "Anuluj",
             "ConfigFiles": "Pliki konfiguracyjne",
             "ConfigRootDirectoryDoesntExists": "Nie znaleziono katalogu konfiguracyjnego. Sprawdź opcję \"config_path\" w sekcji [file_manager] konfiguracji Moonrakera.",
             "Create": "Nowy",
             "CreateDirectory": "Nowy katalog",
             "CreateFile": "Nowy plik",
             "CurrentPath": "Ścieżka",
-            "Delete": "Usuń",
             "DeleteDirectory": "Usuń katalog",
             "DeleteDirectoryQuestion": "Czy na pewno chcesz usunąć katalog \"{name}\" z jego całą zawartością?",
             "DeleteSelectedQuestion": "Usunąć {count} wybranych elementów?",
@@ -440,7 +437,6 @@
         },
         "LogfilesPanel": {
             "Accept": "Akceptuj",
-            "Cancel": "Anuluj",
             "Logfiles": "Pliki logów",
             "Rollover": "Zresetuj logi",
             "RolloverDescription": "Wybierz, które logi mają zostać zresetowane:",
@@ -612,7 +608,6 @@
             "PowerControl": "Kontrola zasilania"
         },
         "SpoolmanPanel": {
-            "Cancel": "Anuluj",
             "ChangeSpool": "Zmień szpulę",
             "DaysAgo": "{days} dni temu",
             "EjectSpool": "Wysuń szpulę",
@@ -646,7 +641,6 @@
             "Estimate": "Pozostało",
             "ETA": "Koniec",
             "ExcludeObject": {
-                "Cancel": "Anuluj",
                 "Excluded": "Wyklucz",
                 "ExcludeObject": "Wyklucz obiekt",
                 "ExcludeObjectHeadline": "Wykluczanie Obiektu",
@@ -744,10 +738,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Czy na pewno?",
-        "No": "Nie",
         "TurnDeviceOff": "Wyłącz {device}",
-        "TurnDeviceOn": "Włącz {device}",
-        "Yes": "Tak"
+        "TurnDeviceOn": "Włącz {device}"
     },
     "Router": {
         "Console": "Konsola poleceń",
@@ -789,7 +781,6 @@
         "YouCanFindMore": "Możesz znaleźć więcej szczegółów w"
     },
     "Settings": {
-        "Cancel": "Anuluj",
         "Close": "Zamknij",
         "ConsoleTab": {
             "AddFilter": "Dodaj filtr",
@@ -1160,11 +1151,9 @@
     "Timelapse": {
         "AllFiles": "Wszystkie",
         "Autorender": "Autorender",
-        "Cancel": "Anuluj",
         "Create": "Stwórz",
         "CreateNewDirectory": "Stwórz katalog",
         "CurrentPath": "Ścieżka",
-        "Delete": "Usuń",
         "DeleteDirectory": "Usuń katalog",
         "DeleteDirectoryQuestion": "Czy na pewno chcesz usunąć katalog \"{name}\" z jego całą zawartością?",
         "DeleteSelectedQuestion": "Czy na pewno chcesz usunąć {count} wybranych plików?",

@@ -65,7 +65,6 @@
             "UploadPrint": "업로드 & 출력"
         },
         "TopCornerMenu": {
-            "Cancel": "취소",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "호스트를 재부팅하면 현재 출력은 취소됩니다!",
@@ -119,6 +118,12 @@
         "ScrewName": "스크류 이름",
         "ScrewOutput": " {max} 중 {current} "
     },
+    "Buttons": {
+        "Cancel": "취소",
+        "Delete": "삭제",
+        "No": "아니오",
+        "Yes": "네"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "{host}로 문레이커 접속이 불가합니다",
         "CheckMoonrakerLog": "이 메세지가 계속 나타날 경우 해당 경로의 로그 파일을 점검해 주세요",
@@ -136,7 +141,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "아니오",
             "DoYouWantToStartFilename": "{filename} 파일을 출력 하시겠습니까?",
             "Headline": "출력 시작 확인",
             "Print": "출력 시작",
@@ -168,7 +172,6 @@
         "AddToQueue": "작업 대기열에 추가",
         "AllFiles": "모든 파일",
         "BedTemp": "베드 온도",
-        "Cancel": "취소",
         "ChamberTemp": "챔버 온도",
         "Count": "카운트",
         "Create": "신규 생성",
@@ -259,7 +262,6 @@
         "VoxelMode": "Voxel 모드 (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "취소",
         "BedMeshCalibrate": "베드 메쉬 교정",
         "BedMeshRemove": "베드 메쉬 삭제",
         "Calibrate": "교정 시작",
@@ -287,7 +289,6 @@
         "NoProfile": "프로파일이 존재하지 않습니다",
         "Probed": "측정 기준",
         "Profiles": "프로파일",
-        "Remove": "삭제",
         "Rename": "이름 변경",
         "RenameBedMeshProfile": "베드 메시 프로파일 이름 변경",
         "ScaleGradient": "배율 조정",
@@ -301,7 +302,6 @@
         "AddNote": "노트 추가",
         "AllJobs": "전체",
         "AvgPrinttime": "평균 출력 시간",
-        "Cancel": "취소",
         "Chart": "차트",
         "CreateNote": "노트 생성",
         "Delete": "삭제",
@@ -364,7 +364,6 @@
         "TotalTime": "전체 시간"
     },
     "JobQueue": {
-        "Cancel": "취소",
         "ChangeCount": "카운트 변경",
         "Count": "카운트",
         "Empty": "비어있음",
@@ -378,14 +377,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "전체",
-            "Cancel": "취소",
             "ConfigFiles": "설정 파일",
             "ConfigRootDirectoryDoesntExists": "설정 경로가 존재하지 않습니다 문레이커 설정의 [file_manager] 섹션에서 \"config_path\" 옵션을 수정해 주세요",
             "Create": "생성",
             "CreateDirectory": "신규 디렉토리 생성",
             "CreateFile": "신규 파일 생성",
             "CurrentPath": "현재 경로",
-            "Delete": "삭제",
             "DeleteDirectory": "디렉토리 삭제",
             "DeleteDirectoryQuestion": "\"{name}\" 디렉토리와 하위 모든 내용을 삭제하시겠습니까?",
             "DeleteSelectedQuestion": "{count}개의 선택된 요소를 삭제하시겠습니까?",
@@ -421,7 +418,6 @@
         },
         "LogfilesPanel": {
             "Accept": "확인",
-            "Cancel": "취소",
             "Logfiles": "로그 기록",
             "Rollover": "로그 기록 관리",
             "RolloverDescription": "초기화 시킬 로그 파일을 선택해 주세요:",
@@ -577,7 +573,6 @@
             "Estimate": "실시간",
             "ETA": "완료예정",
             "ExcludeObject": {
-                "Cancel": "취소",
                 "Excluded": "본 출력에서 제외됨",
                 "ExcludeObject": "출력 제외 대상",
                 "ExcludeObjectHeadline": "출력 제외 대상 선택",
@@ -673,10 +668,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "확실합니까?",
-        "No": "아니오",
         "TurnDeviceOff": "{device} 장치 끄기",
-        "TurnDeviceOn": "{device} 장치 켜기",
-        "Yes": "네"
+        "TurnDeviceOn": "{device} 장치 켜기"
     },
     "Router": {
         "Console": "콘솔 명령",
@@ -717,7 +710,6 @@
         "YouCanFindMore": "부가 설명은 다음을 참고해 주세요"
     },
     "Settings": {
-        "Cancel": "취소",
         "Close": "닫기",
         "ConsoleTab": {
             "AddFilter": "필터 추가",
@@ -1058,11 +1050,9 @@
     "Timelapse": {
         "AllFiles": "전체",
         "Autorender": "자동 렌더",
-        "Cancel": "취소",
         "Create": "생성",
         "CreateNewDirectory": "신규 디렉토리 생성",
         "CurrentPath": "현재 경로",
-        "Delete": "삭제",
         "DeleteDirectory": "디렉토리 삭제",
         "DeleteDirectoryQuestion": "\"{name}\" 디렉토리와 하위 모든 내용을 삭제 하시겠습니까?",
         "DeleteSelectedQuestion": "{count}개의 파일을 정말로 삭제하시겠습니까?",

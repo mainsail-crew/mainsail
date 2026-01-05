@@ -90,7 +90,6 @@
             "UploadPrint": "Carica e stampa"
         },
         "TopCornerMenu": {
-            "Cancel": "Cancella",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Se riavvii l'host ora, la stampa corrente fallirà.",
@@ -144,11 +143,15 @@
         "ScrewName": "Nome Screw",
         "ScrewOutput": "{current} di {max}"
     },
-    "CancelJobDialog": {
-        "AreYouSure": "Sei sicuro?",
-        "CancelJob": "Cancella Lavoro",
+    "Buttons": {
+        "Cancel": "Annulla",
+        "Delete": "Elimina",
         "No": "No",
         "Yes": "Si"
+    },
+    "CancelJobDialog": {
+        "AreYouSure": "Sei sicuro?",
+        "CancelJob": "Cancella Lavoro"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Impossibile connettersi a Moonraker ({host}).",
@@ -170,9 +173,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "Sei sicuro?",
-        "CoolDown": "Raffreddamento",
-        "No": "No",
-        "Yes": "Si"
+        "CoolDown": "Raffreddamento"
     },
     "DevicesDialog": {
         "CanBusInfo": "È possibile rilevare solo i nodi non assegnati. Si raccomanda di avere un solo dispositivo non assegnato collegato al CANBUS per evitare problemi di comunicazione. Per maggiori dettagli, fare clic sul link:",
@@ -190,7 +191,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Cancella",
             "DoYouWantToStartFilename": "Vuoi cominciare {filename}?",
             "DoYouWantToStartFilenameFilament": "Vuoi cominciare {filename} con il seguente filamento?",
             "Headline": "Inizio Lavoro",
@@ -225,7 +225,6 @@
         "AddToQueue": "Aggiungi alla coda",
         "AllFiles": "Tutto",
         "BedTemp": "Bed Temp.",
-        "Cancel": "Annulla",
         "ChamberTemp": "Temp. Chamber",
         "Count": "Conteggio",
         "Create": "Crea",
@@ -321,7 +320,6 @@
         "VoxelMode": "Modalità Voxel (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "interrompi",
         "BedMeshCalibrate": "Calibrazione Bed Mesh",
         "BedMeshRemove": "Rimuovi Bed Mesh",
         "Calibrate": "calibra",
@@ -349,7 +347,6 @@
         "NoProfile": "Nessun profilo disponibile",
         "Probed": "Analizzato",
         "Profiles": "Profili",
-        "Remove": "eliminare",
         "Rename": "rinominare",
         "RenameBedMeshProfile": "Rinomina Profilo Bed Mesh",
         "ScaleGradient": "Scala gradiente",
@@ -366,7 +363,6 @@
         "AddToQueueSuccessful": "File {filename} aggiunto alla coda",
         "AllJobs": "Tutto",
         "AvgPrinttime": "Tempo di stampa medio",
-        "Cancel": "Cancella",
         "Chart": "Grafico",
         "CreateNote": "Crea Nota",
         "DateBasedReminder": "Data",
@@ -462,7 +458,6 @@
         "TotalTime": "Durata Totale"
     },
     "JobQueue": {
-        "Cancel": "Cancella",
         "ChangeCount": "Cambia conteggio",
         "Count": "Conteggio",
         "Empty": "Vuoto",
@@ -477,14 +472,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Tutti",
-            "Cancel": "Annulla",
             "ConfigFiles": "File di Configurazione",
             "ConfigRootDirectoryDoesntExists": "Nessuna directory di configurazione trovata. Controlla l'opzione \"config_path\" nella sezione [file_manager] della configurazione di Moonraker.",
             "Create": "Crea",
             "CreateDirectory": "Crea Directory",
             "CreateFile": "Crea File",
             "CurrentPath": "Percorso attuale",
-            "Delete": "Elimina",
             "DeleteDirectory": "Elimina Directory ",
             "DeleteDirectoryQuestion": "Vuoi davvero eliminare la directory \"{name}\" con tutto il suo contenuto?",
             "DeleteSelectedQuestion": "Elimino i {count} elementi selezionati?",
@@ -523,7 +516,6 @@
         },
         "LogfilesPanel": {
             "Accept": "accetta",
-            "Cancel": "cancella",
             "Logfiles": "File di registro",
             "Rollover": "Reimposta i file registro",
             "RolloverDescription": "Selezionare i file di registro da inizializzare:",
@@ -705,7 +697,6 @@
             "PowerControl": "Controllo Alimentazione"
         },
         "SpoolmanPanel": {
-            "Cancel": "Cancella",
             "ChangeSpool": "Cambia Bobina",
             "DaysAgo": "{days} giorni fa",
             "EjectSpool": "Espelli bobina",
@@ -739,7 +730,6 @@
             "Estimate": "Stima",
             "ETA": "Tempo stimato di fine stampa",
             "ExcludeObject": {
-                "Cancel": "cancella",
                 "Excluded": "Escluso",
                 "ExcludeObject": "Escludi Oggetto",
                 "ExcludeObjectHeadline": "Escludi Oggetto",
@@ -844,10 +834,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Sei sicuro?",
-        "No": "No",
         "TurnDeviceOff": "Spegni {device}",
-        "TurnDeviceOn": "Accendi {device}",
-        "Yes": "Si"
+        "TurnDeviceOn": "Accendi {device}"
     },
     "Router": {
         "Console": "Console",
@@ -891,7 +879,6 @@
         "YouCanFindMore": "Puoi trovare maggiori dettagli su"
     },
     "Settings": {
-        "Cancel": "Annulla",
         "Close": "Chiudi",
         "ConsoleTab": {
             "AddFilter": "aggiungi filtro",
@@ -1312,11 +1299,9 @@
     "Timelapse": {
         "AllFiles": "Tutti",
         "Autorender": "Autorender",
-        "Cancel": "Cancella",
         "Create": "Crea",
         "CreateNewDirectory": "crea directory",
         "CurrentPath": "Percorso Attuale",
-        "Delete": "Elimina",
         "DeleteDirectory": "Elimina Directory",
         "DeleteDirectoryQuestion": "Sei sicuro di voler eliminare la directory \"{name}\" con tutto il suo contenuto?",
         "DeleteSelectedQuestion": "Sei sicuro di voler eliminare {count} files selezionati?",

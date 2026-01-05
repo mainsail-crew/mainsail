@@ -90,7 +90,6 @@
             "UploadPrint": "上传并打印"
         },
         "TopCornerMenu": {
-            "Cancel": "取消",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "重启上位机会导致当前打印失败！",
@@ -144,11 +143,15 @@
         "ScrewName": "螺丝名称",
         "ScrewOutput": "{current}/{max}"
     },
-    "CancelJobDialog": {
-        "AreYouSure": "是否确定？",
-        "CancelJob": "取消任务",
+    "Buttons": {
+        "Cancel": "取消",
+        "Delete": "删除",
         "No": "点错了",
         "Yes": "确定"
+    },
+    "CancelJobDialog": {
+        "AreYouSure": "是否确定？",
+        "CancelJob": "取消任务"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "无法连接到Moonraker ({host})。",
@@ -170,9 +173,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "是否确定？",
-        "CoolDown": "冷却",
-        "No": "点错了",
-        "Yes": "确定"
+        "CoolDown": "冷却"
     },
     "DevicesDialog": {
         "CanBusInfo": "只有未分配的节点才能被检测到。建议仅连接一个未分配的设备到CAN总线，以避免通信问题。更多详情请点击链接：",
@@ -194,7 +195,6 @@
                 "FilamentTypeMismatch": "G-Code({file})中的耗材类型与所选耗材通道中的耗材类型({lane})不匹配。",
                 "FilamentWeightNotEnough": "所选耗材通道({lane})中的耗材不足。需要:{required}，可用:{available}。"
             },
-            "Cancel": "取消",
             "DoYouWantToStartFilename": "是否开始打印文件{filename}？",
             "DoYouWantToStartFilenameFilament": "是否使用以下耗材开始打印文件{filename}？",
             "Headline": "开始任务",
@@ -229,7 +229,6 @@
         "AddToQueue": "加入队列",
         "AllFiles": "全部文件",
         "BedTemp": "热床温度",
-        "Cancel": "取消操作",
         "ChamberTemp": "仓室温度",
         "Count": "数量",
         "Create": "创建",
@@ -326,7 +325,6 @@
         "VoxelMode": "三维像素模式(ASMBL)"
     },
     "Heightmap": {
-        "Abort": "中止",
         "BedMeshCalibrate": "校准床网",
         "BedMeshRemove": "移除床网",
         "Calibrate": "测量",
@@ -354,7 +352,6 @@
         "NoProfile": "没有预设可用",
         "Probed": "测量结果",
         "Profiles": "预设",
-        "Remove": "删除",
         "Rename": "重命名",
         "RenameBedMeshProfile": "重命名预设床网",
         "ScaleGradient": "尺度梯度",
@@ -371,7 +368,6 @@
         "AddToQueueSuccessful": "文件{filename}已添加到队列。",
         "AllJobs": "全部",
         "AvgPrinttime": "打印时长 - Ø",
-        "Cancel": "取消",
         "Chart": "图表",
         "CreateNote": "新建备注",
         "DateBasedReminder": "日期",
@@ -467,7 +463,6 @@
         "TotalTime": "总消耗时长"
     },
     "JobQueue": {
-        "Cancel": "取消",
         "ChangeCount": "变更计数",
         "Count": "计数",
         "Empty": "没有任务",
@@ -482,14 +477,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "全部",
-            "Cancel": "取消",
             "ConfigFiles": "配置文件",
             "ConfigRootDirectoryDoesntExists": "未找到配置文件夹。请检查Moonraker配置[file_manager]标签中的\"config_path\"项是否正确填写。",
             "Create": "新建",
             "CreateDirectory": "新建文件夹",
             "CreateFile": "新建文件",
             "CurrentPath": "当前路径",
-            "Delete": "删除",
             "DeleteDirectory": "删除文件夹",
             "DeleteDirectoryQuestion": "你确定删除\"{name}\"文件夹和里面的所有内容吗？",
             "DeleteSelectedQuestion": "删除已选中的{count}个项目？",
@@ -528,7 +521,6 @@
         },
         "LogfilesPanel": {
             "Accept": "接受",
-            "Cancel": "取消",
             "Logfiles": "日志文件",
             "Rollover": "清理日志",
             "RolloverDescription": "请选择需要重置的日志：",
@@ -618,7 +610,6 @@
             "BufferDisabled": "缓存未激活",
             "BypassActive": "耗材已加载到旁通，工具切换已被禁用！",
             "Calibrate": "校准",
-            "Cancel": "取消",
             "DebugJson": "调试JSON",
             "Detected": "已检测",
             "EjectFilament": "弹出耗材",
@@ -793,7 +784,6 @@
             "ButtonUnloadExt": "卸载拓展",
             "ButtonUnlock": "解锁",
             "Bypass": "旁通",
-            "Cancel": "取消",
             "Dialog": {
                 "AreYouSure": "是否确定？"
             },
@@ -942,7 +932,6 @@
         },
         "SpoolmanPanel": {
             "ActiveSpool": "激活料盘",
-            "Cancel": "取消",
             "ChangeSpool": "更换料盘",
             "DaysAgo": "{days}天前",
             "EjectSpool": "弹出料盘",
@@ -978,7 +967,6 @@
             "Estimate": "估算剩余",
             "ETA": "预估完成",
             "ExcludeObject": {
-                "Cancel": "取消",
                 "Excluded": "已排除",
                 "ExcludeObject": "排除对象",
                 "ExcludeObjectHeadline": "排除对象",
@@ -1087,10 +1075,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "是否确定？",
-        "No": "点错了",
         "TurnDeviceOff": "关闭{device}",
-        "TurnDeviceOn": "打开{device}",
-        "Yes": "确定"
+        "TurnDeviceOn": "打开{device}"
     },
     "Router": {
         "Console": "控制台",
@@ -1134,7 +1120,6 @@
         "YouCanFindMore": "你可以从这里查看更多信息："
     },
     "Settings": {
-        "Cancel": "取消",
         "Close": "关闭",
         "ConsoleTab": {
             "AddFilter": "添加过滤器",
@@ -1583,11 +1568,9 @@
     "Timelapse": {
         "AllFiles": "全部文件",
         "Autorender": "自动渲染",
-        "Cancel": "取消",
         "Create": "新建",
         "CreateNewDirectory": "新建文件夹",
         "CurrentPath": "当前路径",
-        "Delete": "删除",
         "DeleteDirectory": "删除文件夹",
         "DeleteDirectoryQuestion": "你确定要删除\"{name}\"文件夹和里面所有的文件吗？",
         "DeleteSelectedQuestion": "你确定要删除选中的{count}个文件吗？",

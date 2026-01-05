@@ -90,7 +90,6 @@
             "UploadPrint": "Feltöltés és nyomtatás"
         },
         "TopCornerMenu": {
-            "Cancel": "Mégsem",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "A gazda újraindítása a jelenlegi nyomtatás kudarcával fog járni!",
@@ -144,11 +143,15 @@
         "ScrewName": "Csavar neve",
         "ScrewOutput": "{current} / {max}"
     },
-    "CancelJobDialog": {
-        "AreYouSure": "Biztos vagy benne?",
-        "CancelJob": "Munka törlése",
+    "Buttons": {
+        "Cancel": "Mégsem",
+        "Delete": "Törlés",
         "No": "Nem",
         "Yes": "Igen"
+    },
+    "CancelJobDialog": {
+        "AreYouSure": "Biztos vagy benne?",
+        "CancelJob": "Munka törlése"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Nem lehet csatlakozni a Moonrakerhez ({host}).",
@@ -170,9 +173,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "Biztos vagy benne?",
-        "CoolDown": "Visszahűtés",
-        "No": "Nem",
-        "Yes": "Igen"
+        "CoolDown": "Visszahűtés"
     },
     "DevicesDialog": {
         "CanBusInfo": "Csak a nem hozzárendelt csomópontok észlelhetők. A kommunikációs problémák elkerülése érdekében ajánlott, hogy csak egy nem hozzárendelt eszköz csatlakozzon a CANbus-hoz. További részletekért kattints a linkre:",
@@ -190,7 +191,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Mégsem",
             "DoYouWantToStartFilename": "Elkezded a {filename} nyomtatását?",
             "DoYouWantToStartFilenameFilament": "Szeretnéd a {filename} fájlt a következő nyomtatószállal indítani?",
             "Headline": "Feladat kezdése",
@@ -225,7 +225,6 @@
         "AddToQueue": "Várólistához adva",
         "AllFiles": "Mind",
         "BedTemp": "Ágy hőmérs.",
-        "Cancel": "Mégsem",
         "ChamberTemp": "Kamra hőmérs.",
         "Count": "Számol",
         "Create": "Létrehoz",
@@ -321,7 +320,6 @@
         "VoxelMode": "Voxel Mód (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "megszakítás",
         "BedMeshCalibrate": "Síkrács kalibrálása",
         "BedMeshRemove": "Síkrács eltávolítása",
         "Calibrate": "kalibrálás",
@@ -349,7 +347,6 @@
         "NoProfile": "Nincs elérhető profil",
         "Probed": "Bemért",
         "Profiles": "Profilok",
-        "Remove": "eltávolítás",
         "Rename": "átnevez",
         "RenameBedMeshProfile": "Síkrács profil átnevezése",
         "ScaleGradient": "Gradiens skálázása",
@@ -366,7 +363,6 @@
         "AddToQueueSuccessful": "Fájl {filename} hozzáadva a várólistához.",
         "AllJobs": "Mind",
         "AvgPrinttime": "Átlag nyomtatási idő - Ø",
-        "Cancel": "Mégsem",
         "Chart": "Diagram",
         "CreateNote": "Megjegyzés létrehozása",
         "DateBasedReminder": "Dátum",
@@ -462,7 +458,6 @@
         "TotalTime": "Teljes idő"
     },
     "JobQueue": {
-        "Cancel": "Mégsem",
         "ChangeCount": "Számlálás módosítása",
         "Count": "Számol",
         "Empty": "Üres",
@@ -477,14 +472,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Mind",
-            "Cancel": "Mégsem",
             "ConfigFiles": "Konfig fájlok",
             "ConfigRootDirectoryDoesntExists": "Nem találtunk konfigurációs könyvtárat. Kérjük, ellenőrizd a „config_path” opciót a Moonraker konfiguráció [file_manager] szakaszában.",
             "Create": "Létrehoz",
             "CreateDirectory": "Mappa létrehozása",
             "CreateFile": "Fájl létrehozása",
             "CurrentPath": "Aktuális útvonal",
-            "Delete": "Törlés",
             "DeleteDirectory": "Mappa törlése",
             "DeleteDirectoryQuestion": "Tényleg szeretnéd törölni a(z) \"{name}\" mappát és minden tartalmát?",
             "DeleteSelectedQuestion": "Töröljem a kiválasztott {count} elemeket?",
@@ -523,7 +516,6 @@
         },
         "LogfilesPanel": {
             "Accept": "elfogad",
-            "Cancel": "mégsem",
             "Logfiles": "Logfájlok",
             "Rollover": "Görgetett naplók",
             "RolloverDescription": "Kérjük, válaszd ki, mely naplókat kell visszaállítani:",
@@ -706,7 +698,6 @@
         },
         "SpoolmanPanel": {
             "ActiveSpool": "Aktív tekercs",
-            "Cancel": "Mégsem",
             "ChangeSpool": "Orsó cseréje",
             "DaysAgo": "{days} nappal ezelőtt",
             "EjectSpool": "Orsó kiadása",
@@ -742,7 +733,6 @@
             "Estimate": "Becslés",
             "ETA": "Becs.Idő",
             "ExcludeObject": {
-                "Cancel": "mégsem",
                 "Excluded": "Kizárva",
                 "ExcludeObject": "Test kizárása",
                 "ExcludeObjectHeadline": "Test kizárása",
@@ -850,10 +840,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Biztos?",
-        "No": "Nem",
         "TurnDeviceOff": "{device} kikapcsolása",
-        "TurnDeviceOn": "{device} bekapcsolása",
-        "Yes": "Igen"
+        "TurnDeviceOn": "{device} bekapcsolása"
     },
     "Router": {
         "Console": "Konzol",
@@ -897,7 +885,6 @@
         "YouCanFindMore": "További részleteket itt találsz"
     },
     "Settings": {
-        "Cancel": "Mégsem",
         "Close": "Bezárás",
         "ConsoleTab": {
             "AddFilter": "szűrő hozzáadása",
@@ -1338,11 +1325,9 @@
     "Timelapse": {
         "AllFiles": "Mind",
         "Autorender": "Automatikus renderelés",
-        "Cancel": "Mégsem",
         "Create": "Létrehoz",
         "CreateNewDirectory": "mappa létrehozása",
         "CurrentPath": "Jelenlegi elérési út",
-        "Delete": "Törlés",
         "DeleteDirectory": "Mappa törlése",
         "DeleteDirectoryQuestion": "Tényleg szeretnéd minden összetevőjével együtt törölni a következő mappát: \"{name}\"?",
         "DeleteSelectedQuestion": "Tényleg törölni szeretnéd a kiválasztott fájlokat {count}?",

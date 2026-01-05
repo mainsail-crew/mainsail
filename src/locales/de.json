@@ -90,7 +90,6 @@
             "UploadPrint": "Hochladen & Drucken"
         },
         "TopCornerMenu": {
-            "Cancel": "Abbrechen",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Ein Neustart des Hosts wird zum Abbruch des aktuellen Druckauftrags führen!",
@@ -144,11 +143,15 @@
         "ScrewName": "Name der Schraube",
         "ScrewOutput": "{current} von {max}"
     },
-    "CancelJobDialog": {
-        "AreYouSure": "Bist du sicher?",
-        "CancelJob": "Druck abbrechen",
+    "Buttons": {
+        "Cancel": "Abbrechen",
+        "Delete": "Löschen",
         "No": "Nein",
         "Yes": "Ja"
+    },
+    "CancelJobDialog": {
+        "AreYouSure": "Bist du sicher?",
+        "CancelJob": "Druck abbrechen"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Kann keine Verbindung zu Moonraker ({host}) herstellen.",
@@ -170,9 +173,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "Bist du sicher?",
-        "CoolDown": "Abkühlen",
-        "No": "Nein",
-        "Yes": "Ja"
+        "CoolDown": "Abkühlen"
     },
     "DevicesDialog": {
         "CanBusInfo": "Nur nicht zugewiesene Knoten können erkannt werden. Es wird empfohlen, nur ein nicht zugewiesenes Gerät an den Can-Bus anzuschließen, um Kommunikationsprobleme zu vermeiden. Klicke hier für weitere Informationen:",
@@ -194,7 +195,6 @@
                 "FilamentTypeMismatch": "Die Filament Typ im G-Code {{file}} stimmt nicht überein zum ausgewählten Filament Typ {{lane}}.",
                 "FilamentWeightNotEnough": "Nicht genug Filament in der ausgewählte Linie ({lane}). Benötigt: {required}, Verfügbar: {available}."
             },
-            "Cancel": "abbrechen",
             "DoYouWantToStartFilename": "Willst du {filename} starten?",
             "DoYouWantToStartFilenameFilament": "Willst du {filename} mit dem folgenden Filament starten?",
             "Headline": "Starte Job",
@@ -229,7 +229,6 @@
         "AddToQueue": "Zur Auftragswarteschlange hinzufügen",
         "AllFiles": "Alle",
         "BedTemp": "Bett Temp.",
-        "Cancel": "Abbrechen",
         "ChamberTemp": "Kammer Temp.",
         "Count": "Anzahl",
         "Create": "Erstellen",
@@ -326,7 +325,6 @@
         "VoxelMode": "Voxel Modus (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "abbruch",
         "BedMeshCalibrate": "Bed Mesh Kalibrierung",
         "BedMeshRemove": "Bed Mesh entfernen",
         "Calibrate": "kalibrieren",
@@ -354,7 +352,6 @@
         "NoProfile": "Kein Profil verfügbar",
         "Probed": "Abgetastet",
         "Profiles": "Profile",
-        "Remove": "löschen",
         "Rename": "umbenennen",
         "RenameBedMeshProfile": "Bed Mesh umbenennen",
         "ScaleGradient": "Farbverlauf skalieren",
@@ -371,7 +368,6 @@
         "AddToQueueSuccessful": "Datei {filename} zur Warteschlange hinzugefügt.",
         "AllJobs": "Alle",
         "AvgPrinttime": "Druckzeit - Ø",
-        "Cancel": "abbrechen",
         "Chart": "Diagramm",
         "CreateNote": "Notiz anlegen",
         "DateBasedReminder": "Datum",
@@ -467,7 +463,6 @@
         "TotalTime": "Gesamtzeit"
     },
     "JobQueue": {
-        "Cancel": "abbrechen",
         "ChangeCount": "Anzahl ändern",
         "Count": "Anzahl",
         "Empty": "Leer",
@@ -482,14 +477,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Alle",
-            "Cancel": "Abbruch",
             "ConfigFiles": "Konfigurationsdateien",
             "ConfigRootDirectoryDoesntExists": "Keinen Konfigurations-Ordner gefunden. Bitte überprüfe die Option \"config_path\" im Abschnitt [file_manager] in der Moonraker Konfiguration.",
             "Create": "Erstellen",
             "CreateDirectory": "Verzeichnis erstellen",
             "CreateFile": "Datei erstellen",
             "CurrentPath": "Aktueller Pfad",
-            "Delete": "Löschen",
             "DeleteDirectory": "Verzeichnis löschen",
             "DeleteDirectoryQuestion": "Verzeichnis \"{name}\" und den gesamten Inhalt löschen?",
             "DeleteSelectedQuestion": "{count} ausgewählte Elemente löschen?",
@@ -528,7 +521,6 @@
         },
         "LogfilesPanel": {
             "Accept": "akzeptieren",
-            "Cancel": "abbrechen",
             "Logfiles": "Logdateien",
             "Rollover": "Logdatei zurücksetzen",
             "RolloverDescription": "Wähle Logs zum zurücksetzen:",
@@ -618,7 +610,6 @@
             "BufferDisabled": "Puffer nicht aktiv",
             "BypassActive": "Filament in Bypass geladen, Werkzeugwechsel sind deaktiviert!",
             "Calibrate": "Kalibrieren",
-            "Cancel": "Abbrechen",
             "CaptureTD": "TD erfassen",
             "Color": "Farbe",
             "DebugJson": "Debug JSON",
@@ -802,7 +793,6 @@
             "ButtonUnloadExt": "Entladen ext",
             "ButtonUnlock": "Freigeben",
             "Bypass": "Bypass",
-            "Cancel": "Abbrechen",
             "Clog": "Verstopfung",
             "ClogTangleDetection": "Verstopfung/Verheddern Erkennung",
             "Dialog": {
@@ -959,7 +949,6 @@
         },
         "SpoolmanPanel": {
             "ActiveSpool": "Aktive Rolle",
-            "Cancel": "Abbrechen",
             "ChangeSpool": "Rolle wechseln",
             "DaysAgo": "vor {days} Tagen",
             "EjectSpool": "Rolle auswerfen",
@@ -995,7 +984,6 @@
             "Estimate": "Schätzung",
             "ETA": "ETA",
             "ExcludeObject": {
-                "Cancel": "abbrechen",
                 "Excluded": "ausgeschlossen",
                 "ExcludeObject": "Objekt ausschließen",
                 "ExcludeObjectHeadline": "Objekt ausschließen",
@@ -1104,10 +1092,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Bist du sicher?",
-        "No": "Nein",
         "TurnDeviceOff": "{device} ausschalten",
-        "TurnDeviceOn": "{device} anschalten",
-        "Yes": "Ja"
+        "TurnDeviceOn": "{device} anschalten"
     },
     "Router": {
         "Console": "Konsole",
@@ -1151,7 +1137,6 @@
         "YouCanFindMore": "Weitere Details findest du unter"
     },
     "Settings": {
-        "Cancel": "Abbruch",
         "Close": "Schließen",
         "ConsoleTab": {
             "AddFilter": "Filter hinzufügen",
@@ -1600,11 +1585,9 @@
     "Timelapse": {
         "AllFiles": "Alle",
         "Autorender": "Autorender",
-        "Cancel": "Abbrechen",
         "Create": "Erstellen",
         "CreateNewDirectory": "Neues Verzeichnis",
         "CurrentPath": "Aktueller Pfad",
-        "Delete": "Löschen",
         "DeleteDirectory": "Verzeichnis löschen",
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",

@@ -90,7 +90,6 @@
             "UploadPrint": "Cargar e imprimir"
         },
         "TopCornerMenu": {
-            "Cancel": "Cancelar",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "¡Reiniciar el Host causará que la impresión en curso falle!",
@@ -144,11 +143,15 @@
         "ScrewName": "Nombre de Tornillo",
         "ScrewOutput": "{current} de {max}"
     },
-    "CancelJobDialog": {
-        "AreYouSure": "¿Estás seguro?",
-        "CancelJob": "Cancelar trabajo",
+    "Buttons": {
+        "Cancel": "Cancelar",
+        "Delete": "Eliminar",
         "No": "No",
         "Yes": "Sí"
+    },
+    "CancelJobDialog": {
+        "AreYouSure": "¿Estás seguro?",
+        "CancelJob": "Cancelar trabajo"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "No se pudo conectar a ({host}) Moonraker.",
@@ -170,9 +173,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "¿Estás seguro?",
-        "CoolDown": "Enfriarse",
-        "No": "No",
-        "Yes": "Sí"
+        "CoolDown": "Enfriarse"
     },
     "DevicesDialog": {
         "CanBusInfo": "Solo se pueden detectar los nodos no asignados. Se recomienda tener solo un dispositivo no asignado conectado al bus CAN para evitar problemas de comunicación. Para obtener más detalles, haga clic en el enlace:",
@@ -190,7 +191,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Cancelar",
             "DoYouWantToStartFilename": "¿Desea iniciar {filename}?",
             "DoYouWantToStartFilenameFilament": "¿Quieres iniciar {filename} con el siguiente filamento?",
             "Headline": "Iniciar trabajo",
@@ -225,7 +225,6 @@
         "AddToQueue": "Añadir a la fila",
         "AllFiles": "Todos",
         "BedTemp": "Temp. Cama",
-        "Cancel": "Cancelar",
         "ChamberTemp": "Temp. Cámara",
         "Count": "Contador",
         "Create": "Crear",
@@ -321,7 +320,6 @@
         "VoxelMode": "Modo Voxel (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "Abortar",
         "BedMeshCalibrate": "Calibrar malla de la cama",
         "BedMeshRemove": "Borrar malla de cama",
         "Calibrate": "Calibrar",
@@ -349,7 +347,6 @@
         "NoProfile": "No hay perfil disponible",
         "Probed": "Sondeada",
         "Profiles": "Perfil",
-        "Remove": "remover",
         "Rename": "renombrar",
         "RenameBedMeshProfile": "Renombrar perfil de BED_MESH",
         "ScaleGradient": "Gradiente de escala",
@@ -366,7 +363,6 @@
         "AddToQueueSuccessful": "El archivo {filename} está añadido a la cola.",
         "AllJobs": "Todos",
         "AvgPrinttime": "Tiempo promedio de imp.",
-        "Cancel": "Cancelar",
         "Chart": "Gráfico",
         "CreateNote": "Crear Nota",
         "DateBasedReminder": "Fecha",
@@ -460,7 +456,6 @@
         "TotalTime": "Tiempo total"
     },
     "JobQueue": {
-        "Cancel": "Cancelar",
         "ChangeCount": "Cambiar contador",
         "Count": "Contador",
         "Empty": "Vacía",
@@ -475,14 +470,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Todos",
-            "Cancel": "Cancelar",
             "ConfigFiles": "Archivos de configuración",
             "ConfigRootDirectoryDoesntExists": "Ningún directorio encontrado. Por favor habilita la opción \"config_path\" en la sección [file_manager] de la configuración de Moonraker.",
             "Create": "Crear",
             "CreateDirectory": "Crear directorio",
             "CreateFile": "Crear archivo",
             "CurrentPath": "Ruta actual",
-            "Delete": "Eliminar",
             "DeleteDirectory": "Eliminar carpeta",
             "DeleteDirectoryQuestion": "¿Realmente quiere eliminar \"{name}\" con todo su contenido?",
             "DeleteSelectedQuestion": "¿Eliminar {count} elementos seleccionados?",
@@ -521,7 +514,6 @@
         },
         "LogfilesPanel": {
             "Accept": "Aceptar",
-            "Cancel": "Cancelar",
             "Logfiles": "Archivos de registro",
             "Rollover": "Registros de Rotación",
             "RolloverDescription": "Por favor seleciona los registros que deben ser reseteados:",
@@ -703,7 +695,6 @@
             "PowerControl": "Control de energía"
         },
         "SpoolmanPanel": {
-            "Cancel": "Cancelar",
             "ChangeSpool": "Cambiar carrete",
             "DaysAgo": "Hace {days} días",
             "EjectSpool": "Expulsar el carrete",
@@ -737,7 +728,6 @@
             "Estimate": "Estimación",
             "ETA": "ETA",
             "ExcludeObject": {
-                "Cancel": "Cancelar",
                 "Excluded": "Excluido",
                 "ExcludeObject": "Excluir objeto",
                 "ExcludeObjectHeadline": "Excluir objeto",
@@ -842,10 +832,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "¿Está seguro?",
-        "No": "No",
         "TurnDeviceOff": "Apagar {device}",
-        "TurnDeviceOn": "Encender {device}",
-        "Yes": "Si"
+        "TurnDeviceOn": "Encender {device}"
     },
     "Router": {
         "Console": "Consola",
@@ -889,7 +877,6 @@
         "YouCanFindMore": "Puede encontrar más detalles en"
     },
     "Settings": {
-        "Cancel": "Cancelar",
         "Close": "Cerrar",
         "ConsoleTab": {
             "AddFilter": "Agregar filtro",
@@ -1312,11 +1299,9 @@
     "Timelapse": {
         "AllFiles": "Todos",
         "Autorender": "Autorrenderizado",
-        "Cancel": "Cancelar",
         "Create": "Crear",
         "CreateNewDirectory": "Crear directorio",
         "CurrentPath": "Ruta actual",
-        "Delete": "Eliminar",
         "DeleteDirectory": "Eliminar directorio",
         "DeleteDirectoryQuestion": "¿Está seguro de que desea eliminar la carpeta \"{name}\" con todo su contenido?",
         "DeleteSelectedQuestion": "¿Realmente quieres borrar {count} archivos selecionados?",

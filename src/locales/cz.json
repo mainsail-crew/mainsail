@@ -90,7 +90,6 @@
             "UploadPrint": "Nahrát a tisknout"
         },
         "TopCornerMenu": {
-            "Cancel": "Zrušit",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Restartování hosta způsobí, že aktuální tisk selže!",
@@ -144,11 +143,15 @@
         "ScrewName": "Název šroubu",
         "ScrewOutput": "{current} z {max}"
     },
-    "CancelJobDialog": {
-        "AreYouSure": "Jste si jistý?",
-        "CancelJob": "Zrušit úlohu",
+    "Buttons": {
+        "Cancel": "Zrušit",
+        "Delete": "Smazat",
         "No": "Ne",
         "Yes": "Ano"
+    },
+    "CancelJobDialog": {
+        "AreYouSure": "Jste si jistý?",
+        "CancelJob": "Zrušit úlohu"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Nelze se připojit k Moonraker ({host}).",
@@ -170,9 +173,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "Jste si jistý?",
-        "CoolDown": "Ochlazení",
-        "No": "Ne",
-        "Yes": "Ano"
+        "CoolDown": "Ochlazení"
     },
     "DevicesDialog": {
         "CanBusInfo": "Detekovat lze pouze nepřiřazené uzly. Doporučuje se mít k CAN sběrnici připojené pouze jedno nepřiřazené zařízení, aby se předešlo komunikačním problémům. Pro více informací klikněte na odkaz:",
@@ -190,7 +191,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Zrušit",
             "DoYouWantToStartFilename": "Chcete začít tisk {filename}?",
             "DoYouWantToStartFilenameFilament": "Chcete spustit {filename} s následujícím filamentem?",
             "Headline": "Začít tisk",
@@ -225,7 +225,6 @@
         "AddToQueue": "Přidat do fronty",
         "AllFiles": "Vše",
         "BedTemp": "Teplota podložky",
-        "Cancel": "Zrušit",
         "ChamberTemp": "Teplota komory",
         "Count": "Počet",
         "Create": "Vytvořit",
@@ -322,7 +321,6 @@
         "VoxelMode": "Voxelový režim (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "Přerušit",
         "BedMeshCalibrate": "Vytvořit drátěný model podložky",
         "BedMeshRemove": "Odebrat model podložky",
         "Calibrate": "kalibrovat",
@@ -350,7 +348,6 @@
         "NoProfile": "Žádný profil není k dispozici",
         "Probed": "Změřeno",
         "Profiles": "Profily",
-        "Remove": "smazat",
         "Rename": "přejmenovat",
         "RenameBedMeshProfile": "Přejmenovat profil sítě podložky",
         "ScaleGradient": "Škálovat gradient",
@@ -367,7 +364,6 @@
         "AddToQueueSuccessful": "Soubor {filename} byl přidán do fronty.",
         "AllJobs": "Všechny",
         "AvgPrinttime": "Průměrný čas tisku",
-        "Cancel": "Zrušit",
         "Chart": "Graf",
         "CreateNote": "Vytvořit poznámku",
         "DateBasedReminder": "Datum",
@@ -463,7 +459,6 @@
         "TotalTime": "Celkový čas"
     },
     "JobQueue": {
-        "Cancel": "Zrušit",
         "ChangeCount": "Změnit počet",
         "Count": "Počet",
         "Empty": "Prázdné",
@@ -478,14 +473,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Vše",
-            "Cancel": "Zrušit",
             "ConfigFiles": "Konfigurační soubory",
             "ConfigRootDirectoryDoesntExists": "Nenalezen adresář s konfiguracemi. Zkontrolujte prosím volbu \"config_path\" v sekci [file_manager] konfigurace Moonraker.",
             "Create": "Vytvořit",
             "CreateDirectory": "Vytvořit adresář",
             "CreateFile": "Vytvořit soubor",
             "CurrentPath": "Aktuální cesta",
-            "Delete": "Smazat",
             "DeleteDirectory": "Smazat adresář",
             "DeleteDirectoryQuestion": "Smazat adresář \"{name}\" a všechny jeho obsahy?",
             "DeleteSelectedQuestion": "Smazat {count} vybrané položky?",
@@ -524,7 +517,6 @@
         },
         "LogfilesPanel": {
             "Accept": "potvrdit",
-            "Cancel": "zrušit",
             "Logfiles": "Log soubory",
             "Rollover": "Převést logy",
             "RolloverDescription": "Vyberte, které logy by měly být resetovány:",
@@ -711,7 +703,6 @@
         },
         "SpoolmanPanel": {
             "ActiveSpool": "Aktivní cívka",
-            "Cancel": "Zrušit",
             "ChangeSpool": "Změnit cívku",
             "DaysAgo": "{days} dní před",
             "EjectSpool": "Vysunout cívku",
@@ -747,7 +738,6 @@
             "Estimate": "Předpokládaný čas",
             "ETA": "Odhadovaný čas dokončení",
             "ExcludeObject": {
-                "Cancel": "Zrušit",
                 "Excluded": "Vyloučený",
                 "ExcludeObject": "Vyloučit objekt",
                 "ExcludeObjectHeadline": "Vyloučit objekt",
@@ -856,10 +846,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Jste si jisti?",
-        "No": "Ne",
         "TurnDeviceOff": "Vypnout {device}",
-        "TurnDeviceOn": "Zapnout {device}",
-        "Yes": "Ano"
+        "TurnDeviceOn": "Zapnout {device}"
     },
     "Router": {
         "Console": "Konzole",
@@ -903,7 +891,6 @@
         "YouCanFindMore": "Další informace naleznete na"
     },
     "Settings": {
-        "Cancel": "Zrušit",
         "Close": "Zavřít",
         "ConsoleTab": {
             "AddFilter": "Přidat filtr",
@@ -1351,11 +1338,9 @@
     "Timelapse": {
         "AllFiles": "Všechny",
         "Autorender": "Automatické vykreslování",
-        "Cancel": "Zrušit",
         "Create": "Vytvořit",
         "CreateNewDirectory": "vytvořit adresář",
         "CurrentPath": "Aktuální cesta",
-        "Delete": "Smazat",
         "DeleteDirectory": "Smazat adresář",
         "DeleteDirectoryQuestion": "Opravdu chcete smazat adresář \"{name}\" se všemi jeho obsahy?",
         "DeleteSelectedQuestion": "Opravdu chcete smazat {count} vybrané soubory?",

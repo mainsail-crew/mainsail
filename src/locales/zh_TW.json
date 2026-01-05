@@ -88,7 +88,6 @@
             "UploadPrint": "上傳並列印"
         },
         "TopCornerMenu": {
-            "Cancel": "取消",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "重啟主機會導致目前列印失敗！",
@@ -136,6 +135,12 @@
         "Accept": "接受",
         "Adjusted": "調整後"
     },
+    "Buttons": {
+        "Cancel": "取消",
+        "Delete": "刪除",
+        "No": "否",
+        "Yes": "是"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "不能連接到 Moonraker ({host}).",
         "CheckMoonrakerLog": "如果此消息重複出現，請查看下面的日誌檔案:",
@@ -153,7 +158,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "取消",
             "DoYouWantToStartFilename": "您想要開始 {filename}嗎?",
             "Headline": "開始",
             "Print": "列印",
@@ -185,7 +189,6 @@
         "AddToQueue": "新增到列隊",
         "AllFiles": "所有檔案",
         "BedTemp": "熱床溫度",
-        "Cancel": "取消",
         "ChamberTemp": "艙室溫度",
         "Create": "建立",
         "CreateNewDirectory": "建立新目錄",
@@ -275,7 +278,6 @@
         "VoxelMode": "Voxel Mode (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "中止",
         "BedMeshCalibrate": "網床校正",
         "BedMeshRemove": "移除網床",
         "Calibrate": "校正",
@@ -302,7 +304,6 @@
         "NoProfile": "沒有可用的設定檔",
         "Probed": "探測",
         "Profiles": "設定檔",
-        "Remove": "刪除",
         "Rename": "重新命名",
         "RenameBedMeshProfile": "重新命名網床設定檔",
         "ScaleGradient": "尺度梯度",
@@ -316,7 +317,6 @@
         "AddNote": "新增備註",
         "AllJobs": "全部",
         "AvgPrinttime": "平均列印時間",
-        "Cancel": "取消",
         "Chart": "圖表",
         "CreateNote": "新增備註",
         "Delete": "刪除",
@@ -379,7 +379,6 @@
         "TotalTime": "總計消耗時間"
     },
     "JobQueue": {
-        "Cancel": "取消",
         "ChangeCount": "更改統計",
         "Count": "統計",
         "Empty": "空",
@@ -393,14 +392,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "所有",
-            "Cancel": "取消",
             "ConfigFiles": "設定檔",
             "ConfigRootDirectoryDoesntExists": "未找到設定目錄。請檢查Moonraker設定[file_manager]標籤中的\"config_path\"項是否正確填寫。",
             "Create": "建立",
             "CreateDirectory": "建立目錄",
             "CreateFile": "建立檔案",
             "CurrentPath": "目前路徑",
-            "Delete": "刪除",
             "DeleteDirectory": "刪除目錄",
             "DeleteDirectoryQuestion": "確認刪除 \"{name}\" 檔案夾和其中的所有內容?",
             "DeleteSelectedQuestion": "刪除已選中的{count}個檔案？",
@@ -438,7 +435,6 @@
         },
         "LogfilesPanel": {
             "Accept": "接受",
-            "Cancel": "取消",
             "Logfiles": "日誌檔案",
             "Rollover": "滾動日誌",
             "RolloverDescription": "請選擇應重置哪些日誌：",
@@ -592,7 +588,6 @@
             "Estimate": "估算時間",
             "ETA": "預計完成時間",
             "ExcludeObject": {
-                "Cancel": "取消",
                 "Excluded": "排除",
                 "ExcludeObject": "排除物件",
                 "ExcludeObjectHeadline": "排除物件",
@@ -684,10 +679,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "你確定嗎?",
-        "No": "否",
         "TurnDeviceOff": "關閉 {device}",
-        "TurnDeviceOn": "打開 {device}",
-        "Yes": "是"
+        "TurnDeviceOn": "打開 {device}"
     },
     "Router": {
         "Console": "控制台",
@@ -726,7 +719,6 @@
         "YouCanFindMore": "您可以在以下網址找到更多詳細訊息:"
     },
     "Settings": {
-        "Cancel": "取消",
         "Close": "關閉",
         "ConsoleTab": {
             "AddFilter": "新增篩選器",
@@ -1072,11 +1064,9 @@
     "Timelapse": {
         "AllFiles": "所有",
         "Autorender": "自動渲染",
-        "Cancel": "取消",
         "Create": "建立",
         "CreateNewDirectory": "建立目錄",
         "CurrentPath": "目前路徑",
-        "Delete": "刪除",
         "DeleteDirectory": "刪除目錄",
         "DeleteDirectoryQuestion": "您真的要刪除 \"{name}\" 目錄及其所有內容嗎？",
         "DeleteSelectedQuestion": "您真的要刪除選中的{count}個檔案嗎？",
