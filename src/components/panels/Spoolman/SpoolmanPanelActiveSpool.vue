@@ -19,11 +19,10 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import SpoolmanChangeSpoolDialog from '@/components/dialogs/SpoolmanChangeSpoolDialog.vue'
-import SpoolmanEjectSpoolDialog from '@/components/dialogs/SpoolmanEjectSpoolDialog.vue'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
 @Component({
-    components: { Panel, SpoolmanChangeSpoolDialog, SpoolmanEjectSpoolDialog },
+    components: { Panel, SpoolmanChangeSpoolDialog },
 })
 export default class SpoolmanPanelActiveSpool extends Mixins(BaseMixin) {
     @Prop({ required: false, default: false }) readonly small!: boolean
