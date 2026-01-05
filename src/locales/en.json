@@ -144,7 +144,6 @@
         "ScrewOutput": "{current} of {max}"
     },
     "Buttons": {
-        "Abort": "Abort",
         "Cancel": "Cancel",
         "Confirm": "Confirm",
         "Delete": "Delete",
