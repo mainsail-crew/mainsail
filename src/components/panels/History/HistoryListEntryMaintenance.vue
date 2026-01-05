@@ -47,7 +47,7 @@
                 </v-list-item>
                 <v-list-item class="red--text" @click="deleteEntry">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
-                    {{ $t('History.Delete') }}
+                    {{ $t('Buttons.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>

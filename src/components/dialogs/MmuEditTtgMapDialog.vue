@@ -73,7 +73,6 @@
                 :title="$t('Panels.MmuPanel.Dialog.AreYouSure')"
                 :text="$t('Panels.MmuPanel.TtgMapDialog.ResetConfirmation')"
                 :action-button-text="$t('Panels.MmuPanel.TtgMapDialog.Reset')"
-                :cancel-button-text="$t('Panels.MmuPanel.Cancel')"
                 @action="resetTtgMap" />
         </panel>
     </v-dialog>

@@ -29,7 +29,7 @@
                         </v-btn>
                         <v-btn
                             v-if="selectedFiles.length"
-                            :title="$t('Timelapse.Delete')"
+                            :title="$t('Buttons.Delete')"
                             color="error"
                             class="px-2 minwidth-0 ml-3"
                             @click="deleteSelectedDialog = true">
@@ -208,14 +208,14 @@
                     class="red--text"
                     @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
-                    {{ $t('Timelapse.Delete') }}
+                    {{ $t('Buttons.Delete') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     class="red--text"
                     @click="deleteDirectory(contextMenu.item)">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
-                    {{ $t('Timelapse.Delete') }}
+                    {{ $t('Buttons.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -241,7 +241,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Timelapse.Cancel') }}</v-btn>
+                    <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Buttons.Cancel') }}</v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="renameFileAction">
                         {{ $t('Timelapse.Rename') }}
                     </v-btn>
@@ -271,7 +271,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogCreateDirectory.show = false">
-                        {{ $t('Timelapse.Cancel') }}
+                        {{ $t('Buttons.Cancel') }}
                     </v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="createDirectoryAction">
                         {{ $t('Timelapse.Create') }}
@@ -302,7 +302,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogRenameDirectory.show = false">
-                        {{ $t('Timelapse.Cancel') }}
+                        {{ $t('Buttons.Cancel') }}
                     </v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="renameDirectoryAction">
                         {{ $t('Timelapse.Rename') }}
@@ -314,8 +314,7 @@
             v-model="dialogDeleteDirectory.show"
             :title="$t('Timelapse.DeleteDirectory')"
             :text="$t('Timelapse.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename })"
-            :action-button-text="$t('Timelapse.Delete')"
-            :cancel-button-text="$t('Timelapse.Cancel')"
+            :action-button-text="$t('Buttons.Delete')"
             @action="deleteDirectoryAction" />
         <v-dialog v-model="boolVideoDialog" :max-width="700">
             <panel
@@ -358,8 +357,7 @@
             v-model="deleteDialog"
             :title="$t('Timelapse.Delete')"
             :text="$t('Timelapse.DeleteSingleFileQuestion', { name: contextMenu.item.filename })"
-            :action-button-text="$t('Timelapse.Delete')"
-            :cancel-button-text="$t('Timelapse.Cancel')"
+            :action-button-text="$t('Buttons.Delete')"
             @action="removeFile" />
 
         <!-- CONFIRM DELETE MULTIPLE FILES DIALOG -->
@@ -367,8 +365,7 @@
             v-model="deleteSelectedDialog"
             :title="$t('Timelapse.Delete')"
             :text="deleteSelectedDialogText"
-            :action-button-text="$t('Timelapse.Delete')"
-            :cancel-button-text="$t('Timelapse.Cancel')"
+            :action-button-text="$t('Buttons.Delete')"
             @action="deleteSelectedFiles" />
     </div>
 </template>

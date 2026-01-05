@@ -25,7 +25,7 @@
                                 <v-icon>{{ mdiDelete }}</v-icon>
                             </v-btn>
                         </template>
-                        <span>{{ $t('History.Delete') }}</span>
+                        <span>{{ $t('Buttons.Delete') }}</span>
                     </v-tooltip>
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">

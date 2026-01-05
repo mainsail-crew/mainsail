@@ -22,7 +22,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('Heightmap.Abort') }}</v-btn>
+                <v-btn text @click="closeDialog">{{ $t('Buttons.Abort') }}</v-btn>
                 <v-btn :disabled="isInvalidName" color="primary" text @click="renameProfile">
                     {{ $t('Heightmap.Rename') }}
                 </v-btn>

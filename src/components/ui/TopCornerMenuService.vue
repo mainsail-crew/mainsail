@@ -24,14 +24,12 @@
             :title="dialogRestartTitle"
             :text="dialogRestartDescription"
             :action-button-text="$t('App.TopCornerMenu.Restart')"
-            :cancel-button-text="$t('App.TopCornerMenu.Cancel')"
             @action="serviceRestart" />
         <confirmation-dialog
             v-model="showStopDialog"
             :title="dialogStopTitle"
             :text="dialogStopDescription"
             :action-button-text="$t('App.TopCornerMenu.Stop')"
-            :cancel-button-text="$t('App.TopCornerMenu.Cancel')"
             @action="serviceStop" />
     </v-list-item>
 </template>

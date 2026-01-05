@@ -99,7 +99,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('History.Cancel') }}</v-btn>
+                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn color="primary" text :disabled="!isValid" @click="save">{{ $t('History.Save') }}</v-btn>
             </v-card-actions>
         </panel>

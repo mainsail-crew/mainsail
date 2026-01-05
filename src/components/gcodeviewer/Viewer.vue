@@ -250,7 +250,6 @@
             :title="$t('Panels.StatusPanel.ExcludeObject.ExcludeObjectHeadline')"
             :text="$t('Panels.StatusPanel.ExcludeObject.ExcludeObjectText', { name: excludeObject.name })"
             :action-button-text="$t('Panels.StatusPanel.ExcludeObject.ExcludeObject')"
-            :cancel-button-text="$t('Panels.StatusPanel.ExcludeObject.Cancel')"
             action-button-color="primary"
             @action="cancelObject" />
     </div>

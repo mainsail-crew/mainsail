@@ -11,8 +11,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn color="" text @click="closeDialog">{{ $t('History.Cancel') }}</v-btn>
-                <v-btn color="error" text @click="deleteSelectedJobs">{{ $t('History.Delete') }}</v-btn>
+                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn color="error" text @click="deleteSelectedJobs">{{ $t('Buttons.Delete') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>

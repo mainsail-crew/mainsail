@@ -56,8 +56,8 @@
             :icon="mdiGrid"
             :title="$t('Heightmap.BedMeshRemove')"
             :text="$t('Heightmap.DoYouReallyWantToDelete', { name })"
-            :action-button-text="$t('Heightmap.Remove')"
-            :cancel-button-text="$t('Heightmap.Abort')"
+            :action-button-text="$t('Buttons.Delete')"
+            :cancel-button-text="$t('Buttons.Abort')"
             @action="removeProfile" />
         <heightmap-rename-profile-dialog v-model="showRename" :name="name" />
     </v-row>

@@ -27,7 +27,6 @@
             :title="$t('Panels.StatusPanel.ExcludeObject.ExcludeObjectHeadline')"
             :text="$t('Panels.StatusPanel.ExcludeObject.ExcludeObjectText', { name: excludeObjectDialogName })"
             :action-button-text="$t('Panels.StatusPanel.ExcludeObject.ExcludeObject')"
-            :cancel-button-text="$t('Panels.StatusPanel.ExcludeObject.Cancel')"
             action-button-color="primary"
             @action="cancelObject" />
         <status-panel-exclude-object-dialog

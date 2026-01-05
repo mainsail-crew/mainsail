@@ -83,15 +83,14 @@
             v-model="dialogPowerDeviceChange.show"
             :title="powerDeviceDialogTitle"
             :text="$t('PowerDeviceChangeDialog.AreYouSure')"
-            :action-button-text="$t('PowerDeviceChangeDialog.Yes')"
-            :cancel-button-text="$t('PowerDeviceChangeDialog.No')"
+            :action-button-text="$t('Buttons.Yes')"
+            :cancel-button-text="$t('Buttons.No')"
             @action="powerDeviceToggle" />
         <confirmation-dialog
             v-model="dialogConfirmation.show"
             :title="dialogConfirmation.title"
             :text="dialogConfirmation.description"
             :action-button-text="dialogConfirmation.actionButtonText"
-            :cancel-button-text="$t('App.TopCornerMenu.Cancel')"
             @action="executeDialog" />
     </div>
 </template>

@@ -33,8 +33,7 @@
                 v-model="showDeleteSelectedDialog"
                 :title="$t('Files.Delete')"
                 :text="deleteSelectedText"
-                :action-button-text="$t('Files.Delete')"
-                :cancel-button-text="$t('Files.Cancel')"
+                :action-button-text="$t('Buttons.Delete')"
                 @action="deleteSelectedFiles" />
             <input
                 ref="fileUpload"

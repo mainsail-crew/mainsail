@@ -53,7 +53,7 @@
 
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="close">{{ $t('Panels.MmuPanel.Cancel') }}</v-btn>
+                <v-btn text @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn color="primary" :disabled="okDisabled" text @click="commit">
                     {{ $t('Panels.MmuPanel.Ok') }}
                 </v-btn>

@@ -48,9 +48,9 @@
             :icon="mdiSnowflake"
             :title="$t('CoolDownDialog.CoolDown')"
             :text="$t('CoolDownDialog.AreYouSure')"
-            :action-button-text="$t('CoolDownDialog.Yes')"
+            :action-button-text="$t('Buttons.Yes')"
             :action-button-color="'primary'"
-            :cancel-button-text="$t('CoolDownDialog.No')"
+            :cancel-button-text="$t('Buttons.No')"
             @action="cooldown" />
     </div>
 </template>

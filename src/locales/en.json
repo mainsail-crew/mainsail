@@ -90,7 +90,6 @@
             "UploadPrint": "Upload & Print"
         },
         "TopCornerMenu": {
-            "Cancel": "Cancel",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Rebooting the Host will cause the current print to fail!",
@@ -144,11 +143,17 @@
         "ScrewName": "Screw Name",
         "ScrewOutput": "{current} of {max}"
     },
-    "CancelJobDialog": {
-        "AreYouSure": "Are you sure?",
-        "CancelJob": "Cancel Job",
+    "Buttons": {
+        "Abort": "Abort",
+        "Cancel": "Cancel",
+        "Confirm": "Confirm",
+        "Delete": "Delete",
         "No": "No",
         "Yes": "Yes"
+    },
+    "CancelJobDialog": {
+        "AreYouSure": "Are you sure?",
+        "CancelJob": "Cancel Job"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
@@ -170,9 +175,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "Are you sure?",
-        "CoolDown": "CoolDown",
-        "No": "No",
-        "Yes": "Yes"
+        "CoolDown": "CoolDown"
     },
     "DevicesDialog": {
         "CanBusInfo": "Only unassigned nodes can be detected. It’s recommended to have only one unassigned device connected to the can bus to avoid communication issues. For more details, please click on the link:",
@@ -229,7 +232,6 @@
         "AddToQueue": "Add to Queue",
         "AllFiles": "All",
         "BedTemp": "Bed Temp.",
-        "Cancel": "Cancel",
         "ChamberTemp": "Chamber Temp.",
         "Count": "Count",
         "Create": "Create",
@@ -326,7 +328,6 @@
         "VoxelMode": "Voxel Mode (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "abort",
         "BedMeshCalibrate": "Bed Mesh Calibrate",
         "BedMeshRemove": "Bed Mesh Remove",
         "Calibrate": "calibrate",
@@ -354,7 +355,6 @@
         "NoProfile": "No profile available",
         "Probed": "Probed",
         "Profiles": "Profiles",
-        "Remove": "delete",
         "Rename": "rename",
         "RenameBedMeshProfile": "Rename Bed Mesh Profile",
         "ScaleGradient": "Scale gradient",
@@ -371,7 +371,6 @@
         "AddToQueueSuccessful": "File {filename} added to Queue.",
         "AllJobs": "All",
         "AvgPrinttime": "Print Time - Ø",
-        "Cancel": "Cancel",
         "Chart": "Chart",
         "CreateNote": "Create Note",
         "DateBasedReminder": "Date",
@@ -482,14 +481,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "All",
-            "Cancel": "Cancel",
             "ConfigFiles": "Config Files",
             "ConfigRootDirectoryDoesntExists": "No configuration directory found. Please check option \"config_path\" in the [file_manager] section of the Moonraker configuration.",
             "Create": "Create",
             "CreateDirectory": "Create Directory",
             "CreateFile": "Create File",
             "CurrentPath": "Current path",
-            "Delete": "Delete",
             "DeleteDirectory": "Delete Directory",
             "DeleteDirectoryQuestion": "Delete directory \"{name}\" and all its contents?",
             "DeleteSelectedQuestion": "Delete {count} selected elements?",
@@ -802,7 +799,6 @@
             "ButtonUnloadExt": "Unload Ext",
             "ButtonUnlock": "Unlock",
             "Bypass": "Bypass",
-            "Cancel": "Cancel",
             "Clog": "Clog",
             "ClogTangleDetection": "Clog/Tangle Detection",
             "Dialog": {
@@ -995,7 +991,6 @@
             "Estimate": "Estimate",
             "ETA": "ETA",
             "ExcludeObject": {
-                "Cancel": "cancel",
                 "Excluded": "Excluded",
                 "ExcludeObject": "Exclude Object",
                 "ExcludeObjectHeadline": "Exclude Object",
@@ -1104,10 +1099,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Are you sure?",
-        "No": "No",
         "TurnDeviceOff": "Turn {device} off",
-        "TurnDeviceOn": "Turn {device} on",
-        "Yes": "Yes"
+        "TurnDeviceOn": "Turn {device} on"
     },
     "Router": {
         "Console": "Console",
@@ -1600,11 +1593,9 @@
     "Timelapse": {
         "AllFiles": "All",
         "Autorender": "Auto-render",
-        "Cancel": "Cancel",
         "Create": "Create",
         "CreateNewDirectory": "create directory",
         "CurrentPath": "Current Path",
-        "Delete": "Delete",
         "DeleteDirectory": "Delete Directory",
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",

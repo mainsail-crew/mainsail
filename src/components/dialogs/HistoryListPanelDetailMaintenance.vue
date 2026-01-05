@@ -41,7 +41,7 @@
             <v-divider class="mt-0" />
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('History.Cancel') }}</v-btn>
+                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn v-if="showPerformButton" text color="primary" @click="showPerformDialog = true">
                     {{ $t('History.Perform') }}
                 </v-btn>

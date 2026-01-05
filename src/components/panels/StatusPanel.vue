@@ -125,8 +125,8 @@
             :icon="mdiStopCircleOutline"
             :title="$t('CancelJobDialog.CancelJob')"
             :text="$t('CancelJobDialog.AreYouSure')"
-            :action-button-text="$t('CancelJobDialog.Yes')"
-            :cancel-button-text="$t('CancelJobDialog.No')"
+            :action-button-text="$t('Buttons.Yes')"
+            :cancel-button-text="$t('Buttons.No')"
             @action="cancelJob" />
     </div>
 </template>

@@ -120,8 +120,7 @@
             v-model="showDeleteFileDialog"
             :title="$t('Files.Delete')"
             :text="$t('Files.DeleteSingleFileQuestion', { name: item.filename })"
-            :action-button-text="$t('Files.Delete')"
-            :cancel-button-text="$t('Files.Cancel')"
+            :action-button-text="$t('Buttons.Delete')"
             @action="deleteFile" />
     </tr>
 </template>

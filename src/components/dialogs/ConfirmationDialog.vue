@@ -9,7 +9,7 @@
             <v-card-text>{{ text }}</v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="close">{{ cancelButtonText }}</v-btn>
+                <v-btn text @click="close">{{ cancelButtonComputed }}</v-btn>
                 <v-btn text :color="actionButtonColor" @click="action">{{ actionButtonText }}</v-btn>
             </v-card-actions>
         </panel>
@@ -33,12 +33,16 @@ export default class ConfirmationDialog extends Mixins(BaseMixin) {
     @Prop({ type: String, required: true }) title!: string
     @Prop({ type: String, required: true }) text!: string
     @Prop({ type: String, required: true }) actionButtonText!: string
-    @Prop({ type: String, required: true }) cancelButtonText!: string
+    @Prop({ type: String, default: '' }) cancelButtonText!: string
     @Prop({ type: String, default: 'error' }) actionButtonColor!: string
     @Prop({ type: String, default: null }) icon!: string | null
 
     get iconToUse() {
         return this.icon ?? this.mdiAlert
+    }
+
+    get cancelButtonComputed(): string {
+        return this.cancelButtonText || this.$t('Buttons.Cancel').toString()
     }
 
     action() {
