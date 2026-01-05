@@ -39,7 +39,14 @@
         </v-card-text>
         <spoolman-panel-active-spool v-else @change-spool="showChangeSpoolDialog = true" />
         <spoolman-change-spool-dialog v-model="showChangeSpoolDialog" />
-        <spoolman-eject-spool-dialog v-model="showEjectSpoolDialog" />
+        <confirmation-dialog
+            v-model="showEjectSpoolDialog"
+            :title="$t('Panels.SpoolmanPanel.EjectSpool')"
+            :text="$t('Panels.SpoolmanPanel.EjectSpoolQuestion')"
+            :action-button-text="$t('Panels.SpoolmanPanel.EjectSpool')"
+            action-button-color="primary"
+            :icon="mdiEject"
+            @action="ejectSpool" />
     </panel>
 </template>
 
@@ -49,12 +56,12 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiAdjust, mdiDotsVertical, mdiEject, mdiOpenInNew, mdiSwapVertical } from '@mdi/js'
 import SpoolmanChangeSpoolDialog from '@/components/dialogs/SpoolmanChangeSpoolDialog.vue'
-import SpoolmanEjectSpoolDialog from '@/components/dialogs/SpoolmanEjectSpoolDialog.vue'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import SpoolmanPanelActiveSpool from '@/components/panels/Spoolman/SpoolmanPanelActiveSpool.vue'
 
 @Component({
-    components: { SpoolmanPanelActiveSpool, Panel, SpoolmanChangeSpoolDialog, SpoolmanEjectSpoolDialog },
+    components: { ConfirmationDialog, SpoolmanPanelActiveSpool, Panel, SpoolmanChangeSpoolDialog },
 })
 export default class SpoolmanPanel extends Mixins(BaseMixin) {
     mdiAdjust = mdiAdjust
@@ -100,6 +107,10 @@ export default class SpoolmanPanel extends Mixins(BaseMixin) {
 
     openSpoolManager() {
         window.open(this.spoolManagerUrl, '_blank')
+    }
+
+    ejectSpool() {
+        this.$store.dispatch('server/spoolman/setActiveSpool', null)
     }
 }
 </script>
