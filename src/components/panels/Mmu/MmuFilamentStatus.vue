@@ -19,6 +19,9 @@
                 <rect x="3" y="0" width="30" height="40" rx="3" ry="3" fill="none" stroke-width="1.5" />
                 <path d="M-15 -4 L-6 0 L-15 4 Z" stroke-width="1" fill-opacity="0.6" />
                 <path d="M8 40 L 28 40" stroke-width="4" />
+                <text v-if="hasFilamentProportionalSensor" x="-22" y="4" font-size="11px" text-anchor="end" style="fill: var(--color-outline)">
+                    {{ syncFeedbackPistonText }}
+                </text>
             </g>
             <g
                 id="sync-feedback-buffer-box"
@@ -416,6 +419,10 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
 
     get isGripped() {
         return this.mmuGrip === 'Gripped' || this.mmuServo === 'Down'
+    }
+
+    get syncFeedbackPistonText() {
+        return (this.mmu?.sync_feedback_bias_modelled ?? 0.0).toFixed(2)
     }
 }
 </script>
