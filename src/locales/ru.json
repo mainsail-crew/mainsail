@@ -216,9 +216,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Вы уверены, что хотите это сделать?",
-        "EmergencyStop": "Аварийная остановка",
-        "No": "Нет",
-        "Yes": "Да"
+        "EmergencyStop": "Аварийная остановка"
     },
     "Files": {
         "AddBatchToQueue": "Добавить несколько заданий в очередь",

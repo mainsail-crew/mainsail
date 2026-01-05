@@ -220,9 +220,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Bist du sicher?",
-        "EmergencyStop": "Notaus",
-        "No": "Nein",
-        "Yes": "Ja"
+        "EmergencyStop": "Notaus"
     },
     "Files": {
         "AddBatchToQueue": "Stapel zur Auftragswarteschlange hinzufügen",

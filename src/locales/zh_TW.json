@@ -180,9 +180,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "你確定嗎?",
-        "EmergencyStop": "緊急停止",
-        "No": "否",
-        "Yes": "是"
+        "EmergencyStop": "緊急停止"
     },
     "Files": {
         "AddBatchToQueue": "將批次添加到隊列",

@@ -216,9 +216,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "¿Está seguro?",
-        "EmergencyStop": "Parada de emergencia",
-        "No": "No",
-        "Yes": "Sí"
+        "EmergencyStop": "Parada de emergencia"
     },
     "Files": {
         "AddBatchToQueue": "Añadir lote a la fila",

@@ -175,9 +175,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Är du säker?",
-        "EmergencyStop": "Nödstopp",
-        "No": "Nej",
-        "Yes": "Ja"
+        "EmergencyStop": "Nödstopp"
     },
     "Files": {
         "AddBatchToQueue": "Lägg till omgång till kö",

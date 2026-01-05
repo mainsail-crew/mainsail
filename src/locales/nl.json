@@ -204,9 +204,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Weet je het zeker?",
-        "EmergencyStop": "Noodstop",
-        "No": "Nee",
-        "Yes": "Ja"
+        "EmergencyStop": "Noodstop"
     },
     "Files": {
         "AddBatchToQueue": "Voeg batch toe aan wachtrij",

@@ -216,9 +216,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Jste si jisti?",
-        "EmergencyStop": "Nouzové zastavení",
-        "No": "Ne",
-        "Yes": "Ano"
+        "EmergencyStop": "Nouzové zastavení"
     },
     "Files": {
         "AddBatchToQueue": "Přidat dávku do fronty",

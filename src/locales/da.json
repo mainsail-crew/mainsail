@@ -204,9 +204,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Er du sikker?",
-        "EmergencyStop": "Nødstop",
-        "No": "Nej",
-        "Yes": "Ja"
+        "EmergencyStop": "Nødstop"
     },
     "Files": {
         "AddBatchToQueue": "tilføj batch til kø",

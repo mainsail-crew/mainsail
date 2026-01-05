@@ -216,9 +216,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Biztos?",
-        "EmergencyStop": "Vészstop",
-        "No": "Nem",
-        "Yes": "Igen"
+        "EmergencyStop": "Vészstop"
     },
     "Files": {
         "AddBatchToQueue": "Tétel hozzáadása a várólistához",

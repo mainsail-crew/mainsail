@@ -172,9 +172,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Emin misiniz?",
-        "EmergencyStop": "Acil Stop",
-        "No": "Hayır",
-        "Yes": "Evet"
+        "EmergencyStop": "Acil Stop"
     },
     "Files": {
         "AddBatchToQueue": "Partiyi Kuyruğa ekle",

@@ -220,9 +220,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "确定要执行此操作吗？",
-        "EmergencyStop": "紧急停止",
-        "No": "点错了",
-        "Yes": "立即执行"
+        "EmergencyStop": "紧急停止"
     },
     "Files": {
         "AddBatchToQueue": "批量加入队列",

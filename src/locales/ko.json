@@ -163,9 +163,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "확실합니까?",
-        "EmergencyStop": "비상 정지",
-        "No": "아니오",
-        "Yes": "네"
+        "EmergencyStop": "비상 정지"
     },
     "Files": {
         "AddBatchToQueue": "작업 대기열에 연속 작업 추가",

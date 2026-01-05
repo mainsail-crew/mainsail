@@ -173,9 +173,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Czy na pewno?",
-        "EmergencyStop": "Awaryjny STOP",
-        "No": "Nie",
-        "Yes": "Tak"
+        "EmergencyStop": "Awaryjny STOP"
     },
     "Files": {
         "AddBatchToQueue": "Dodaj serię do kolejki",

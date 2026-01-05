@@ -216,9 +216,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Sei sicuro?",
-        "EmergencyStop": "Arresto di Emergenza",
-        "No": "No",
-        "Yes": "Si"
+        "EmergencyStop": "Arresto di Emergenza"
     },
     "Files": {
         "AddBatchToQueue": "Aggiungi batch alla coda",

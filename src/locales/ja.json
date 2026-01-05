@@ -163,9 +163,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "よろしいですか？",
-        "EmergencyStop": "緊急停止",
-        "No": "いいえ",
-        "Yes": "はい"
+        "EmergencyStop": "緊急停止"
     },
     "Files": {
         "AddBatchToQueue": "ジョブキューにバッチを追加",

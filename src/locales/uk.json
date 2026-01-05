@@ -204,9 +204,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Ви впевнені?",
-        "EmergencyStop": "АВАРІЙНА ЗУПИНКА",
-        "No": "НІ",
-        "Yes": "ТАК"
+        "EmergencyStop": "АВАРІЙНА ЗУПИНКА"
     },
     "Files": {
         "AddBatchToQueue": "Додати партію в чергу",

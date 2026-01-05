@@ -221,9 +221,7 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Are you sure?",
-        "EmergencyStop": "Emergency Stop",
-        "No": "No",
-        "Yes": "Yes"
+        "EmergencyStop": "Emergency Stop"
     },
     "Files": {
         "AddBatchToQueue": "Add batch to Queue",
