@@ -245,30 +245,14 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-dialog v-model="excludeObject.bool" max-width="400">
-            <v-card>
-                <v-toolbar flat dense>
-                    <v-toolbar-title>
-                        <span class="subheading">
-                            <v-icon left>{{ mdiSelectionRemove }}</v-icon>
-                            {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectHeadline') }}
-                        </span>
-                    </v-toolbar-title>
-                </v-toolbar>
-                <v-card-text class="mt-3">
-                    {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectText', { name: excludeObject.name }) }}
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn text @click="excludeObject.bool = false">
-                        {{ $t('Panels.StatusPanel.ExcludeObject.Cancel') }}
-                    </v-btn>
-                    <v-btn color="primary" text @click="cancelObject">
-                        {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObject') }}
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <confirmation-dialog
+            v-model="excludeObject.bool"
+            :title="$t('Panels.StatusPanel.ExcludeObject.ExcludeObjectHeadline')"
+            :text="$t('Panels.StatusPanel.ExcludeObject.ExcludeObjectText', { name: excludeObject.name })"
+            :action-button-text="$t('Panels.StatusPanel.ExcludeObject.ExcludeObject')"
+            :cancel-button-text="$t('Panels.StatusPanel.ExcludeObject.Cancel')"
+            action-button-color="primary"
+            @action="cancelObject" />
     </div>
 </template>
 
@@ -294,6 +278,7 @@ import {
     mdiBroom,
     mdiSelectionRemove,
 } from '@mdi/js'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import { Debounce } from 'vue-debounce-decorator'
 
 interface downloadSnackbar {
@@ -307,7 +292,7 @@ interface downloadSnackbar {
 
 let viewer: any = null
 @Component({
-    components: { Panel, CodeStream },
+    components: { ConfirmationDialog, Panel, CodeStream },
 })
 export default class Viewer extends Mixins(BaseMixin) {
     /**
@@ -1152,7 +1137,6 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     cancelObject() {
         this.$socket.emit('printer.gcode.script', { script: 'EXCLUDE_OBJECT NAME=' + this.excludeObject.name })
-        this.excludeObject.bool = false
     }
 }
 </script>
