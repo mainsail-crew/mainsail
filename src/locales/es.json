@@ -124,7 +124,6 @@
             "Stop": "Parar"
         },
         "UpdateDialog": {
-            "Close": "Cerrar",
             "Empty": "Vacío",
             "Recovering": "Recuperando {software}...",
             "RecoveringDone": "¡Recuperación de {software} realizada!",
@@ -145,8 +144,10 @@
     },
     "Buttons": {
         "Cancel": "Cancelar",
+        "Close": "Cerrar",
         "Delete": "Eliminar",
         "No": "No",
+        "Save": "Guardar",
         "Yes": "Sí"
     },
     "CancelJobDialog": {
@@ -423,7 +424,6 @@
         "Reminder": "Recordatorio",
         "Repeat": "Repetir",
         "Reprint": "Reimprimir",
-        "Save": "guardar",
         "Search": "Buscar",
         "SelectedFilamentUsed": "Elija el filamento usado",
         "SelectedJobs": "Tareas elegidas",
@@ -547,7 +547,6 @@
             "Abort": "Abortar",
             "AreYouSure": "¿Estás seguro?",
             "CheckForUpdates": "Comprobar actualizaciones",
-            "Close": "Cerrar",
             "CommitHistory": "Historial de Commits",
             "Commits": "Commits",
             "CommitsAvailable": "no hay commits disponibles | {count} commit disponible | {count} commits disponibles",
@@ -821,7 +820,6 @@
             "Headline": "Z-Offset",
             "Later": "Más tarde",
             "Ok": "OK",
-            "Save": "Guardar",
             "SaveConfig": "SAVEE CONFIG",
             "SaveInfoDescription": "El nuervo Z-Offset fue calculado y registrado. Haga click en \"SAVE CONFIG\" para guardar el nuevo Z-Offset en su archivo printer.cfg y reiniciar Klipper.",
             "SaveInfoDescriptionPrint": "El nuevo Z-Offset fue calculado y registrado. Después de imprimir, haga click en \"SAVE CONFIG\" en la barra superior para guardarlo en printer.cfg y reiniciar Klipper.",
@@ -875,7 +873,6 @@
         "YouCanFindMore": "Puede encontrar más detalles en"
     },
     "Settings": {
-        "Close": "Cerrar",
         "ConsoleTab": {
             "AddFilter": "Agregar filtro",
             "Console": "Consola",

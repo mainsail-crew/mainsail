@@ -124,7 +124,6 @@
             "Stop": "Zastavení"
         },
         "UpdateDialog": {
-            "Close": "Zavřít",
             "Empty": "Prázdné",
             "Recovering": "Obnovování {software}...",
             "RecoveringDone": "Obnova {software} dokončena!",
@@ -145,8 +144,10 @@
     },
     "Buttons": {
         "Cancel": "Zrušit",
+        "Close": "Zavřít",
         "Delete": "Smazat",
         "No": "Ne",
+        "Save": "Uložit",
         "Yes": "Ano"
     },
     "CancelJobDialog": {
@@ -425,7 +426,6 @@
         "Reminder": "Připomínka",
         "Repeat": "Opakovat",
         "Reprint": "Opakovaný tisk",
-        "Save": "Uložit",
         "Search": "Hledat",
         "SelectedFilamentUsed": "Spotřeba vybraného filamentu",
         "SelectedJobs": "Vybrané tisky",
@@ -550,7 +550,6 @@
             "Abort": "Přerušit",
             "AreYouSure": "Jste si jisti?",
             "CheckForUpdates": "Kontrola aktualizací",
-            "Close": "Zavřít",
             "CommitHistory": "Historie změn",
             "Commits": "Commit(y)",
             "CommitsAvailable": "žádné commity k dispozici | {count} commit k dispozici | {count} commity k dispozici",
@@ -835,7 +834,6 @@
             "Headline": "Z-offset",
             "Later": "Později",
             "Ok": "OK",
-            "Save": "Uložit",
             "SaveConfig": "ULOŽIT KONFIGURACI",
             "SaveInfoDescription": "Nový Z-offset byl vypočítán a uložen. Klikněte na tlačítko \"ULOŽIT KONFIGURACI\" pro uložení do printer.cfg a restart Klipperu.",
             "SaveInfoDescriptionPrint": "Nový Z-offset byl vypočítán a uložen. Po dokončení tisku klikněte na tlačítko \"ULOŽIT KONFIGURACI\" v horní liště pro uložení do printer.cfg a restart Klipperu.",
@@ -889,7 +887,6 @@
         "YouCanFindMore": "Další informace naleznete na"
     },
     "Settings": {
-        "Close": "Zavřít",
         "ConsoleTab": {
             "AddFilter": "Přidat filtr",
             "Console": "Konzole",

@@ -99,7 +99,6 @@
             "Stop": "Pare"
         },
         "UpdateDialog": {
-            "Close": "Fechar",
             "Empty": "Esvaziar",
             "Recovering": "Recuperando {software}...",
             "RecoveringDone": "Recuperando {software} feito!",
@@ -120,8 +119,10 @@
     },
     "Buttons": {
         "Cancel": "Cancelar",
+        "Close": "Fechar",
         "Delete": "Excluir",
         "No": "Não",
+        "Save": "Salvar",
         "Yes": "Sim"
     },
     "ConnectionDialog": {
@@ -337,7 +338,6 @@
         "PrintTime": "Tempo de impressão",
         "PrinttimeAvg": "Tempo de impressão - Ø",
         "Reprint": "Reimprimir",
-        "Save": "Salvar",
         "Search": "Procurar",
         "SelectedFilamentUsed": "Filamento selecionado usado",
         "SelectedJobs": "Trabalhos selecionados",
@@ -663,7 +663,6 @@
             "Headline": "Z-Offset",
             "Later": "Depois",
             "Ok": "OK",
-            "Save": "Salvar",
             "SaveConfig": "SALVAR CONFIG",
             "SaveInfoDescription": "O novo Z-Offset foi calculado e registrado. Clique em \"SALVAR CONFIG\" para salvá-lo no arquivo printer.cfg e reiniciar o Klipper.",
             "SaveInfoDescriptionPrint": "O novo Z-Offset foi calculado e registrado. Após a impressão, clique em \"SALVAR CONFIG\" na barra superior para salvá-lo no arquivo printer.cfg e reiniciar o Klipper.",
@@ -714,7 +713,6 @@
         "YouCanFindMore": "Você pode encontrar mais detalhes em"
     },
     "Settings": {
-        "Close": "Fechar",
         "ConsoleTab": {
             "AddFilter": "adicionar filtro",
             "Console": "Console",

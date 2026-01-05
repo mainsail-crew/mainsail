@@ -124,7 +124,6 @@
             "Stop": "Stop"
         },
         "UpdateDialog": {
-            "Close": "Schließen",
             "Empty": "Leer",
             "Recovering": "Wiederherstellung {software}...",
             "RecoveringDone": "Wiederherstellung {software} abgeschlossen!",
@@ -145,8 +144,10 @@
     },
     "Buttons": {
         "Cancel": "Abbrechen",
+        "Close": "Schließen",
         "Delete": "Löschen",
         "No": "Nein",
+        "Save": "Speichern",
         "Yes": "Ja"
     },
     "CancelJobDialog": {
@@ -429,7 +430,6 @@
         "Reminder": "Erinnerung",
         "Repeat": "Wiederholen",
         "Reprint": "Erneut drucken",
-        "Save": "speichern",
         "Search": "Suchen",
         "SelectedFilamentUsed": "Ausg. Filamentverbrauch",
         "SelectedJobs": "Ausg. Drucke",
@@ -554,7 +554,6 @@
             "Abort": "abbrechen",
             "AreYouSure": "Bist du dir sicher?",
             "CheckForUpdates": "auf Aktualisierungen prüfen",
-            "Close": "schließen",
             "CommitHistory": "Commit Verlauf",
             "Commits": "Commits",
             "CommitsAvailable": "keine Einreichung verfügbar | {count} Einreichung verfügbar | {count} Einreichungen verfügbar",
@@ -1081,7 +1080,6 @@
             "Headline": "Z-Versatz",
             "Later": "Später",
             "Ok": "OK",
-            "Save": "Speichern",
             "SaveConfig": "SAVE CONFIG",
             "SaveInfoDescription": "Der neue Z-Versatz wurde berechnet und registriert. Auf \"SAVE CONFIG\", klicken um den neuen Z-Versatz in der printer.cfg zu speichern und Klipper neu zu starten.",
             "SaveInfoDescriptionPrint": "Der neue Z-Versatz wurde berechnet und registriert. Nach dem Drucken auf \"SAVE CONFIG\" in der oberen Leiste klicken um den neuen Z-Versatz in der printer.cfg zu speichern und Klipper neu zu starten.",
@@ -1135,7 +1133,6 @@
         "YouCanFindMore": "Weitere Details findest du unter"
     },
     "Settings": {
-        "Close": "Schließen",
         "ConsoleTab": {
             "AddFilter": "Filter hinzufügen",
             "Console": "Konsole",

@@ -110,7 +110,6 @@
             "Stop": "Stoppa"
         },
         "UpdateDialog": {
-            "Close": "Stäng",
             "Empty": "Tom",
             "Recovering": "Återställer {software}...",
             "RecoveringDone": "Återställning av {software} klar!",
@@ -131,8 +130,10 @@
     },
     "Buttons": {
         "Cancel": "Avbryt",
+        "Close": "Stäng",
         "Delete": "Radera",
         "No": "Nej",
+        "Save": "Spara",
         "Yes": "Ja"
     },
     "ConnectionDialog": {
@@ -351,7 +352,6 @@
         "PrintTime": "Utskriftstid",
         "PrinttimeAvg": "Utskriftstid - Ø",
         "Reprint": "Skriv ut på nytt",
-        "Save": "spara",
         "Search": "sök",
         "SelectedFilamentUsed": "Valt filament som används",
         "SelectedJobs": "Valda jobb",
@@ -472,7 +472,6 @@
             "Abort": "Avbryt",
             "AreYouSure": "Är du säker?",
             "CheckForUpdates": "Sök efter uppdateringar",
-            "Close": "Stäng",
             "CommitHistory": "Commit Historik",
             "Commits": "Commits",
             "CommitsAvailable": "inga commits tillgängliga | {count} commit tillgänglig | {count} commits tillgängliga",
@@ -740,7 +739,6 @@
             "Headline": "Z-Offset",
             "Later": "Senare",
             "Ok": "OK",
-            "Save": "Spara",
             "SaveConfig": "SPARA KONFIG",
             "SaveInfoDescription": "Den nya z-offset har beräknats och registrerats. Klicka på SAVE_CONFIG för att lagra den nya z-offset i din printer.cfg och starta om Klipper.",
             "SaveInfoDescriptionPrint": "Den nya Z-offseten har beräknats och registrerats. Efter utskrift, klicka på SAVE_CONFIG i den övre raden för att lagra den i printer.cfg och starta om Klipper.",
@@ -792,7 +790,6 @@
         "YouCanFindMore": "Du kan hitta mer information på"
     },
     "Settings": {
-        "Close": "Stäng",
         "ConsoleTab": {
             "AddFilter": "lägg till filter",
             "Console": "Konsol",

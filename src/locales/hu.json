@@ -124,7 +124,6 @@
             "Stop": "Stop"
         },
         "UpdateDialog": {
-            "Close": "Bezárás",
             "Empty": "Üres",
             "Recovering": "{software} helyreállítása...",
             "RecoveringDone": "{software} helyreállítása kész!",
@@ -145,8 +144,10 @@
     },
     "Buttons": {
         "Cancel": "Mégsem",
+        "Close": "Bezárás",
         "Delete": "Törlés",
         "No": "Nem",
+        "Save": "Mentés",
         "Yes": "Igen"
     },
     "CancelJobDialog": {
@@ -424,7 +425,6 @@
         "Reminder": "Emlékeztető",
         "Repeat": "Ismétlés",
         "Reprint": "Újranyomtat",
-        "Save": "ment",
         "Search": "keresés",
         "SelectedFilamentUsed": "Kiválasztott használt nyomtatószál",
         "SelectedJobs": "Kiválasztott Munkák",
@@ -549,7 +549,6 @@
             "Abort": "Megszakítás",
             "AreYouSure": "Biztos vagy benne?",
             "CheckForUpdates": "Frissítések keresése",
-            "Close": "Bezár",
             "CommitHistory": "Történet rögzítése",
             "Commits": "Véglegesítés",
             "CommitsAvailable": "nincs elérhető véglegesítés | {count} véglegesítés elérhető | {count} véglegesítés elérhető",
@@ -829,7 +828,6 @@
             "Headline": "Z-eltolás",
             "Later": "Később",
             "Ok": "OK",
-            "Save": "Mentés",
             "SaveConfig": "BÁLLÍTÁS_MENTÉSE",
             "SaveInfoDescription": "Új Z-eltolás kiszámítva és regisztrálva. Kattints a \"BÁLLÍTÁS_MENTÉSE\" gombra az új Z-eltolás eltárolásához a printer.cfg-be és indítsd újra a Klippert.",
             "SaveInfoDescriptionPrint": "Új Z-eltolás kiszámítva és regisztrálva. Nyomtatás után kattints a \"BÁLLÍTÁS MENTÉSE\" gombra a felső sávban, a printer.cfg-be való mentéshez és a Klipper újraindításához.",
@@ -883,7 +881,6 @@
         "YouCanFindMore": "További részleteket itt találsz"
     },
     "Settings": {
-        "Close": "Bezárás",
         "ConsoleTab": {
             "AddFilter": "szűrő hozzáadása",
             "Console": "Konzol",

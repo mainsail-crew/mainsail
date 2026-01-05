@@ -122,7 +122,6 @@
             "Stop": "停止"
         },
         "UpdateDialog": {
-            "Close": "關閉",
             "Empty": "空的",
             "Recovering": "恢復 {software}...",
             "RecoveringDone": "恢復 {software} 完成!",
@@ -137,8 +136,10 @@
     },
     "Buttons": {
         "Cancel": "取消",
+        "Close": "關閉",
         "Delete": "刪除",
         "No": "否",
+        "Save": "儲存",
         "Yes": "是"
     },
     "ConnectionDialog": {
@@ -348,7 +349,6 @@
         "PrintTime": "列印時間",
         "PrinttimeAvg": "平均列印時間",
         "Reprint": "重新列印",
-        "Save": "儲存",
         "Search": "搜尋",
         "SelectedFilamentUsed": "已選中的紀錄耗材使用量",
         "SelectedJobs": "已選中的紀錄",
@@ -668,7 +668,6 @@
             "Headline": "Z軸偏移",
             "Later": "最後的",
             "Ok": "好",
-            "Save": "儲存",
             "SaveConfig": "儲存配置",
             "SaveInfoDescription": "已經計算生成新的Z偏移. 點擊 儲存配置 儲存到 printer.cfg 中並重啟 Klipper.",
             "SaveInfoDescriptionPrint": "已經計算生成新的Z偏移. 列印後點擊 儲存配置 儲存到 printer.cfg 中並重啟 Klipper.",
@@ -717,7 +716,6 @@
         "YouCanFindMore": "您可以在以下網址找到更多詳細訊息:"
     },
     "Settings": {
-        "Close": "關閉",
         "ConsoleTab": {
             "AddFilter": "新增篩選器",
             "Console": "主控台",

@@ -112,7 +112,6 @@
             "Stop": "Arrêter"
         },
         "UpdateDialog": {
-            "Close": "Fermer",
             "Empty": "Vide",
             "Recovering": "Récupération {software}...",
             "RecoveringDone": "Récupération {software} effectuée!",
@@ -133,8 +132,10 @@
     },
     "Buttons": {
         "Cancel": "Annuler",
+        "Close": "Fermer",
         "Delete": "Supprimer",
         "No": "Non",
+        "Save": "Sauvegarder",
         "Yes": "Oui"
     },
     "ConnectionDialog": {
@@ -362,7 +363,6 @@
         "PrintTime": "Durée d'impression",
         "PrinttimeAvg": "Temps moyen d'impression",
         "Reprint": "Réimpression",
-        "Save": "sauvegarder",
         "Search": "recherche",
         "SelectedFilamentUsed": "Filament sélectionné utilisé",
         "SelectedJobs": "Travaux sélectionnés",
@@ -483,7 +483,6 @@
             "Abort": "Abandonner",
             "AreYouSure": "Êtes-vous sûr?",
             "CheckForUpdates": "Vérifier les mises à jour",
-            "Close": "Fermer",
             "CommitHistory": "Historique des publications",
             "Commits": "Publications",
             "CommitsAvailable": "pas de publications disponibles | {count} publication disponible | {count} publications disponibles",
@@ -750,7 +749,6 @@
             "Headline": "Offset Z",
             "Later": "Plus tard",
             "Ok": "OK",
-            "Save": "Sauvegarder",
             "SaveConfig": "SAVE CONFIG",
             "SaveInfoDescription": "Le nouveau décalage Z a été calculé et enregistré. Cliquez sur \"SAVE CONFIG\" pour l'enregistrer dans le fichier printer.cfg et redémarrer Klipper.",
             "SaveInfoDescriptionPrint": "Le nouveau décalage Z a été calculé et enregistré. Après l'impression, cliquez sur \"SAVE CONFIG\" dans la barre supérieure pour l'enregistrer dans le fichier printer.cfg et redémarrer Klipper.",
@@ -802,7 +800,6 @@
         "YouCanFindMore": "Vous trouverez plus d'informations à l'adresse suivante"
     },
     "Settings": {
-        "Close": "Fermer",
         "ConsoleTab": {
             "AddFilter": "ajouter un filtre",
             "Console": "Console",

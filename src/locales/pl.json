@@ -108,7 +108,6 @@
             "Stop": "Stop"
         },
         "UpdateDialog": {
-            "Close": "Zamknij",
             "Empty": "Puste",
             "Recovering": "Odzyskiwanie {software}...",
             "RecoveringDone": "Odzyskiwanie {software} zakończone!",
@@ -129,8 +128,10 @@
     },
     "Buttons": {
         "Cancel": "Anuluj",
+        "Close": "Zamknij",
         "Delete": "Usuń",
         "No": "Nie",
+        "Save": "Zapisz",
         "Yes": "Tak"
     },
     "ConnectionDialog": {
@@ -349,7 +350,6 @@
         "PrintTime": "Czas druku",
         "PrinttimeAvg": "Czas druku - Ø",
         "Reprint": "Wydrukuj ponownie",
-        "Save": "zapisz",
         "Search": "Wyszukaj",
         "SelectedFilamentUsed": "Zużyty filament",
         "SelectedJobs": "Wybrane wydruki",
@@ -470,7 +470,6 @@
             "Abort": "Przerwij",
             "AreYouSure": "Czy na pewno?",
             "CheckForUpdates": "Sprawdź dostępność aktualizacji",
-            "Close": "Zamknij",
             "CommitHistory": "Historia zatwierdzeń",
             "Commits": "Zatwierdzenia",
             "CommitsAvailable": "Brak nowych zatwierdzeń | Dostępne zatwierdzenia: {count} | Dostępne zatwierdzenia: {count}",
@@ -727,7 +726,6 @@
             "Headline": "Przesunięcie osi Z",
             "Later": "Później",
             "Ok": "Okej",
-            "Save": "Zapisz",
             "SaveConfig": "ZAPISZ KONFIGURACJĘ",
             "SaveInfoDescription": "Nowe przesunięcie Z zostało obliczone i zarejestrowane. Kliknij przycisk \"ZAPISZ KONFIGURACJĘ\", aby zapisać ją w pliku printer.cfg i zrestartować Klipper.",
             "SaveInfoDescriptionPrint": "Nowe przesunięcie Z zostało obliczone i zarejestrowane. Po wydrukowaniu kliknij \"ZAPISZ KONFIGURACJĘ\" na górnym pasku, aby zapisać ją w pliku printer.cfg i zrestartować Klipper.",
@@ -779,7 +777,6 @@
         "YouCanFindMore": "Możesz znaleźć więcej szczegółów w"
     },
     "Settings": {
-        "Close": "Zamknij",
         "ConsoleTab": {
             "AddFilter": "Dodaj filtr",
             "Console": "Konsola",

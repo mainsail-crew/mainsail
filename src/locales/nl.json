@@ -124,7 +124,6 @@
             "Stop": "Stop"
         },
         "UpdateDialog": {
-            "Close": "Sluiten",
             "Empty": "Leeg",
             "Recovering": "Herstellen van {software}...",
             "RecoveringDone": "Herstellen van {software} voltooid!",
@@ -145,8 +144,10 @@
     },
     "Buttons": {
         "Cancel": "Annuleer",
+        "Close": "Sluiten",
         "Delete": "Verwijder",
         "No": "Nee",
+        "Save": "Opslaan",
         "Yes": "Ja"
     },
     "CancelJobDialog": {
@@ -386,7 +387,6 @@
         "Reminder": "Herinnering",
         "Repeat": "Herhaal",
         "Reprint": "Opnieuw printen",
-        "Save": "Opslaan",
         "Search": "zoek",
         "SelectedFilamentUsed": "Geselecteerd Filament verbruikt",
         "SelectedJobs": "Geselecteerde jobs",
@@ -710,7 +710,6 @@
             "Headline": "Z offset",
             "Later": "Later",
             "Ok": "Ok",
-            "Save": "Opslaan",
             "SaveConfig": "SAVE CONFIG",
             "SaveInfoDescription": "De nieuwe z-offset is berekend en geregistreerd. Klik op \"SAVE CONFIG\" om de nieuwe z-offset op te slaan in je printer.cf en Klipper te herstarten.",
             "SaveInfoDescriptionPrint": "De nieuwe z-offset is berekend en geregistreerd. Klik na het printen op \"SAVE CONFIG\" om de nieuwe z-offset op te slaan in je printer.cf en Klipper te herstarten.",
@@ -761,7 +760,6 @@
         "YouCanFindMore": "Je kunt meer details vinden op"
     },
     "Settings": {
-        "Close": "Sluit",
         "ConsoleTab": {
             "AddFilter": "voeg filter toe",
             "Console": "Console",

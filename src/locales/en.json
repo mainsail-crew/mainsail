@@ -124,7 +124,6 @@
             "Stop": "Stop"
         },
         "UpdateDialog": {
-            "Close": "Close",
             "Empty": "Empty",
             "Recovering": "Recovering {software}...",
             "RecoveringDone": "Recovering {software} done!",
@@ -145,9 +144,11 @@
     },
     "Buttons": {
         "Cancel": "Cancel",
+        "Close": "Close",
         "Confirm": "Confirm",
         "Delete": "Delete",
         "No": "No",
+        "Save": "Save",
         "Yes": "Yes"
     },
     "CancelJobDialog": {
@@ -430,7 +431,6 @@
         "Reminder": "Reminder",
         "Repeat": "Repeat",
         "Reprint": "Reprint",
-        "Save": "save",
         "Search": "search",
         "SelectedFilamentUsed": "Selected Filament Used",
         "SelectedJobs": "Selected Jobs",
@@ -555,7 +555,6 @@
             "Abort": "Abort",
             "AreYouSure": "Are you sure?",
             "CheckForUpdates": "Check for updates",
-            "Close": "Close",
             "CommitHistory": "Commit History",
             "Commits": "Commits",
             "CommitsAvailable": "no commits available | {count} commit available | {count} commits available",
@@ -920,7 +919,7 @@
                 "AllTools": "All Tools",
                 "Bypass": "Bypass",
                 "Color": "Color",
-                "EndlessSpool": "ES \u221E",
+                "EndlessSpool": "ES ∞",
                 "FilamentInfo": "Filament Information",
                 "Gate": "Gate",
                 "MapSlicerTools": "Map slicer tools to MMU gates for print",
@@ -1082,7 +1081,6 @@
             "Headline": "Z-Offset",
             "Later": "Later",
             "Ok": "OK",
-            "Save": "Save",
             "SaveConfig": "SAVE CONFIG",
             "SaveInfoDescription": "The new Z-Offset has been calculated and registered. Click on \"SAVE CONFIG\" to save it to the printer.cfg and restart Klipper.",
             "SaveInfoDescriptionPrint": "The new Z-Offset has been calculated and registered. After printing, click on \"SAVE CONFIG\" in the top bar to save it to the printer.cfg and restart Klipper.",
@@ -1136,7 +1134,6 @@
         "YouCanFindMore": "You can find more details at"
     },
     "Settings": {
-        "Close": "Close",
         "ConsoleTab": {
             "AddFilter": "add filter",
             "Console": "Console",

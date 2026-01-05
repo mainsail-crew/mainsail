@@ -116,7 +116,7 @@
             <v-card-actions>
                 <v-spacer />
                 <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn color="primary" text :disabled="!isValid" @click="save">{{ $t('History.Save') }}</v-btn>
+                <v-btn color="primary" text :disabled="!isValid" @click="save">{{ $t('Buttons.Save') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>

@@ -20,7 +20,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text color="primary" @click="closeDialog">{{ $t('Machine.UpdatePanel.Close') }}</v-btn>
+                <v-btn text color="primary" @click="closeDialog">{{ $t('Buttons.Close') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>

@@ -120,7 +120,6 @@
             "Stop": "Стоп"
         },
         "UpdateDialog": {
-            "Close": "Закрити",
             "Empty": "Порожній",
             "Recovering": "Відновлення {software}...",
             "RecoveringDone": "Відновлення {software} виконано!",
@@ -141,8 +140,10 @@
     },
     "Buttons": {
         "Cancel": "Скасувати",
+        "Close": "Закрити",
         "Delete": "Видалити",
         "No": "Ні",
+        "Save": "Зберегти",
         "Yes": "Так"
     },
     "ConnectionDialog": {
@@ -411,7 +412,6 @@
         "Reminder": "Нагадування",
         "Repeat": "Повторити",
         "Reprint": "Передрукувати",
-        "Save": "зберегти",
         "Search": "пошук",
         "SelectedFilamentUsed": "Використано філаменту",
         "SelectedJobs": "Вибрані завдання",
@@ -534,7 +534,6 @@
             "Abort": "Перервати",
             "AreYouSure": "Ти впевнений?",
             "CheckForUpdates": "Перевірити оновлення",
-            "Close": "Закрити",
             "CommitHistory": "Історія комітів",
             "Commits": "Коміт",
             "CommitsAvailable": "Немає комітів | {count} доступний коміт | {count} доступних комітів",
@@ -804,7 +803,6 @@
             "Headline": "Z-Offset",
             "Later": "Пізніше",
             "Ok": "OK",
-            "Save": "Зберегти",
             "SaveConfig": "ЗБЕРЕГТИ КОНФІГУРАЦІЮ",
             "SaveInfoDescription": "Новий Z-Offset був обчислений та зареєстрований. Натисніть на \"ЗБЕРЕГТИ КОНФІГУРАЦІЮ\" Щоб зберегти його на printer.cfg та перезапустити Klipper.",
             "SaveInfoDescriptionPrint": "Новий Z-Offset був обчислений та зареєстрований. Після друку натисніть на \"ЗБЕРЕГТИ КОНФІГУРАЦІЮ\" у верхній панелі, щоб зберегти його у printer.cfg та перезапустити Klipper.",
@@ -858,7 +856,6 @@
         "YouCanFindMore": "Ви можете знайти більше деталей на"
     },
     "Settings": {
-        "Close": "Закрити",
         "ConsoleTab": {
             "AddFilter": "додати фільтр",
             "Console": "Консоль",

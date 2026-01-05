@@ -16,7 +16,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer />
-            <v-btn text @click="close">{{ $t('Settings.Close') }}</v-btn>
+            <v-btn text @click="close">{{ $t('Buttons.Close') }}</v-btn>
             <v-btn text color="primary" @click="createPreset">{{ $t('Settings.MiscellaneousTab.AddPreset') }}</v-btn>
         </v-card-actions>
     </div>

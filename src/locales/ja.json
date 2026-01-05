@@ -99,7 +99,6 @@
             "Stop": "停止"
         },
         "UpdateDialog": {
-            "Close": "クローズ",
             "Empty": "空",
             "Recovering": "{software}復旧中...",
             "RecoveringDone": "{software}復旧完了!",
@@ -120,8 +119,10 @@
     },
     "Buttons": {
         "Cancel": "取り消し",
+        "Close": "クローズ",
         "Delete": "削除",
         "No": "いいえ",
+        "Save": "保存",
         "Yes": "はい"
     },
     "ConnectionDialog": {
@@ -332,7 +333,6 @@
         "PrintTime": "印刷時間",
         "PrinttimeAvg": "平均印刷時間",
         "Reprint": "再印刷",
-        "Save": "保存",
         "Search": "検索",
         "SelectedFilamentUsed": "選択された使用フィラメント長",
         "SelectedJobs": "選択されたジョブ",
@@ -656,7 +656,6 @@
             "Headline": "Z軸オフセット",
             "Later": "あとで",
             "Ok": "OK",
-            "Save": "保存",
             "SaveConfig": "設定保存",
             "SaveInfoDescription": "新しいZ軸オフセットが計算され登録されました。\"設定保存\"をクリックするとprinter.cfgに保存して、Klipperを再始動します。",
             "SaveInfoDescriptionPrint": "新しいZ軸オフセットが計算され登録されました。印刷後、トップバーの\"設定保存\"をクリックするとprinter.cfgに保存して、Klipperを再始動します。",
@@ -707,7 +706,6 @@
         "YouCanFindMore": "詳細はこちらでご覧になれます"
     },
     "Settings": {
-        "Close": "クローズ",
         "ConsoleTab": {
             "AddFilter": "フィルター追加",
             "Console": "コンソール",

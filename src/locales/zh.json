@@ -124,7 +124,6 @@
             "Stop": "停止"
         },
         "UpdateDialog": {
-            "Close": "关闭",
             "Empty": "空",
             "Recovering": "正在恢复{software}...",
             "RecoveringDone": "{software}恢复完成！",
@@ -145,8 +144,10 @@
     },
     "Buttons": {
         "Cancel": "取消",
+        "Close": "关闭",
         "Delete": "删除",
         "No": "点错了",
+        "Save": "保存",
         "Yes": "确定"
     },
     "CancelJobDialog": {
@@ -429,7 +430,6 @@
         "Reminder": "提醒",
         "Repeat": "重复",
         "Reprint": "重新打印",
-        "Save": "保存",
         "Search": "搜索",
         "SelectedFilamentUsed": "已选中的任务耗材使用量",
         "SelectedJobs": "已选中的任务",
@@ -554,7 +554,6 @@
             "Abort": "中止",
             "AreYouSure": "是否确定？",
             "CheckForUpdates": "检查更新",
-            "Close": "关闭",
             "CommitHistory": "查看提交记录",
             "Commits": "提交",
             "CommitsAvailable": "没有新的提交 | 有{count}个提交 | 有{count}个提交",
@@ -1064,7 +1063,6 @@
             "Headline": "Z轴偏移",
             "Later": "稍候再说",
             "Ok": "好的",
-            "Save": "保存",
             "SaveConfig": "保存配置",
             "SaveInfoDescription": "已经计算生成新的Z轴偏移。点击\"保存配置\"后会自动保存到printer.cfg中并重启Klipper。",
             "SaveInfoDescriptionPrint": "已经计算生成新的Z轴偏移。打印完成后点击\"保存配置\"后会自动保存到printer.cfg中并重启Klipper。",
@@ -1118,7 +1116,6 @@
         "YouCanFindMore": "你可以从这里查看更多信息："
     },
     "Settings": {
-        "Close": "关闭",
         "ConsoleTab": {
             "AddFilter": "添加过滤器",
             "Console": "控制台",

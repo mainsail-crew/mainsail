@@ -120,7 +120,6 @@
             "Stop": "Stop"
         },
         "UpdateDialog": {
-            "Close": "Luk",
             "Empty": "Tøm",
             "Recovering": "Gendanner {software}...",
             "RecoveringDone": "Gendannelse af {software} udført!",
@@ -141,8 +140,10 @@
     },
     "Buttons": {
         "Cancel": "Annuller",
+        "Close": "Luk",
         "Delete": "Slet",
         "No": "Nej",
+        "Save": "Gem",
         "Yes": "Ja"
     },
     "ConnectionDialog": {
@@ -411,7 +412,6 @@
         "Reminder": "Påmindelse",
         "Repeat": "Gentag",
         "Reprint": "Print igen",
-        "Save": "Gem",
         "Search": "Søg",
         "SelectedFilamentUsed": "Filament brugt på valgte",
         "SelectedJobs": "Valgte jobs",
@@ -534,7 +534,6 @@
             "Abort": "Afbryd",
             "AreYouSure": "Er du sikker?",
             "CheckForUpdates": "Tjek for opdateringer",
-            "Close": "Luk",
             "CommitHistory": "Forpligtelseshistorik",
             "Commits": "Forpligtelse",
             "CommitsAvailable": "Ingen commits tilgængelige | {count} commits tilgængelige | {count} commits tilgængelige",
@@ -804,7 +803,6 @@
             "Headline": "Z-Offset",
             "Later": "Senere",
             "Ok": "OK",
-            "Save": "Gem",
             "SaveConfig": "GEM KONFIGURATION",
             "SaveInfoDescription": "Det nye z-offset er blevet beregnet og registreret. Klik på \"GEM KONFIGURATION\" for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
             "SaveInfoDescriptionPrint": "Det nye z-offset er blevet beregnet og registreret. Klik på \"GEM KONFIGURATION\" i topbaren efter endt print for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
@@ -858,7 +856,6 @@
         "YouCanFindMore": "Du kan finde flere detaljer her"
     },
     "Settings": {
-        "Close": "Luk",
         "ConsoleTab": {
             "AddFilter": "Tilføj filter",
             "Console": "Terminal",

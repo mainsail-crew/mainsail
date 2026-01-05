@@ -108,7 +108,6 @@
             "Stop": "Durdur"
         },
         "UpdateDialog": {
-            "Close": "Kapat",
             "Empty": "Boş",
             "Recovering": "{software} kurtarılıyor...",
             "RecoveringDone": "{software} kurtarma işlemi tamamlandı!",
@@ -129,8 +128,10 @@
     },
     "Buttons": {
         "Cancel": "İptal et",
+        "Close": "Kapat",
         "Delete": "Sil",
         "No": "Hayır",
+        "Save": "Kaydet",
         "Yes": "Evet"
     },
     "ConnectionDialog": {
@@ -348,7 +349,6 @@
         "PrintTime": "Baskı Süresi",
         "PrinttimeAvg": "Baskı Süresi - Ø",
         "Reprint": "Yeniden yazdır",
-        "Save": "kayıt et",
         "Search": "ara",
         "SelectedFilamentUsed": "Seçilmiş Kullanılan Filament",
         "SelectedJobs": "Seçilmiş İşler",
@@ -469,7 +469,6 @@
             "Abort": "İptal Et",
             "AreYouSure": "Emin misiniz?",
             "CheckForUpdates": "Güncellemeleri Kontrol Et",
-            "Close": "Kapat",
             "CommitHistory": "Commit Geçmişi",
             "Commits": "Commit'ler",
             "CommitsAvailable": "hiçbir commit mevcut | {count} commit mevcut | {count} commit mevcut",
@@ -697,7 +696,6 @@
             "Headline": "Z-Offset",
             "Later": "Daha sonra",
             "Ok": "Tamam",
-            "Save": "Kaydet",
             "SaveConfig": "KONFIGÜRASYONU KAYDET",
             "SaveInfoDescription": "Yeni Z-Offset hesaplandı ve kaydedildi. printer.cfg dosyasına kaydetmek ve Klipper'ı yeniden başlatmak için üst çubuktaki \"KONFIGÜRASYONU KAYDET\" düğmesine tıklayın.",
             "SaveInfoDescriptionPrint": "Yeni Z-Offset hesaplandı ve kaydedildi. Baskıdan sonra, printer.cfg dosyasına kaydetmek ve Klipper'ı yeniden başlatmak için üst çubuktaki \"KONFIGÜRASYONU KAYDET\" düğmesine tıklayın.",
@@ -749,7 +747,6 @@
         "YouCanFindMore": "Daha fazla ayrıntı için şu adreste bulabilirsiniz"
     },
     "Settings": {
-        "Close": "Kapat",
         "ConsoleTab": {
             "AddFilter": "filtre ekle",
             "Console": "Konsol",

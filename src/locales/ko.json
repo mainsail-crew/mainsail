@@ -99,7 +99,6 @@
             "Stop": "종료"
         },
         "UpdateDialog": {
-            "Close": "닫기",
             "Empty": "비어있음",
             "Recovering": "{software} 복구 중..",
             "RecoveringDone": "{software} 복구 완료!",
@@ -120,8 +119,10 @@
     },
     "Buttons": {
         "Cancel": "취소",
+        "Close": "닫기",
         "Delete": "삭제",
         "No": "아니오",
+        "Save": "저장",
         "Yes": "네"
     },
     "ConnectionDialog": {
@@ -333,7 +334,6 @@
         "PrintTime": "출력 시간",
         "PrinttimeAvg": "출력 시간",
         "Reprint": "재출력",
-        "Save": "저장",
         "Search": "검색",
         "SelectedFilamentUsed": "필라 소비",
         "SelectedJobs": "선택한 출력",
@@ -657,7 +657,6 @@
             "Headline": "Z-옵셋",
             "Later": "나중에",
             "Ok": "네",
-            "Save": "저장",
             "SaveConfig": "설정 저장",
             "SaveInfoDescription": "새 Z-옵셋을 측정 후 등록했습니다 저장하려면 우측 상단에서 \"설정 저장\"을 눌러 printer.cfg에 저장하고 클리퍼를 재시작 해주세요",
             "SaveInfoDescriptionPrint": "새 Z-옵셋을 측정 후 등록했습니다 우측 상단에서 \"설정 저장\"을 눌러 printer.cfg에 저장하고 클리퍼를 재시작 해주세요 ",
@@ -708,7 +707,6 @@
         "YouCanFindMore": "부가 설명은 다음을 참고해 주세요"
     },
     "Settings": {
-        "Close": "닫기",
         "ConsoleTab": {
             "AddFilter": "필터 추가",
             "Console": "콘솔 명령",
