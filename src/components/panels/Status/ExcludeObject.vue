@@ -22,30 +22,14 @@
             </div>
         </v-container>
         <v-divider class="mt-0 mb-0" />
-        <v-dialog v-model="boolShowExcludeObjectDialog" max-width="400">
-            <v-card>
-                <v-toolbar flat dense>
-                    <v-toolbar-title>
-                        <span class="subheading">
-                            <v-icon left>{{ mdiSelectionRemove }}</v-icon>
-                            {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectHeadline') }}
-                        </span>
-                    </v-toolbar-title>
-                </v-toolbar>
-                <v-card-text class="mt-3">
-                    {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectText', { name: excludeObjectDialogName }) }}
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn text @click="boolShowExcludeObjectDialog = false">
-                        {{ $t('Panels.StatusPanel.ExcludeObject.Cancel') }}
-                    </v-btn>
-                    <v-btn color="primary" text @click="cancelObject">
-                        {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObject') }}
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <confirmation-dialog
+            v-model="boolShowExcludeObjectDialog"
+            :title="$t('Panels.StatusPanel.ExcludeObject.ExcludeObjectHeadline')"
+            :text="$t('Panels.StatusPanel.ExcludeObject.ExcludeObjectText', { name: excludeObjectDialogName })"
+            :action-button-text="$t('Panels.StatusPanel.ExcludeObject.ExcludeObject')"
+            :cancel-button-text="$t('Panels.StatusPanel.ExcludeObject.Cancel')"
+            action-button-color="primary"
+            @action="cancelObject" />
         <status-panel-exclude-object-dialog
             :show-dialog.sync="showDialogPass"
             :exclude-object-dialog-name.sync="excludeObjectDialogName"
@@ -61,8 +45,9 @@ import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import StatusPanelExcludeObjectDialog from '@/components/panels/Status/ExcludeObjectDialog.vue'
 import { mdiPrinter3dNozzle, mdiSelectionRemove } from '@mdi/js'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 @Component({
-    components: { StatusPanelExcludeObjectDialog },
+    components: { ConfirmationDialog, StatusPanelExcludeObjectDialog },
 })
 export default class StatusPanelExcludeObject extends Mixins(BaseMixin) {
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
@@ -108,7 +93,6 @@ export default class StatusPanelExcludeObject extends Mixins(BaseMixin) {
 
     cancelObject() {
         this.$socket.emit('printer.gcode.script', { script: 'EXCLUDE_OBJECT NAME=' + this.excludeObjectDialogName })
-        this.boolShowExcludeObjectDialog = false
     }
 }
 </script>
