@@ -71,6 +71,7 @@ import {
     mdiNotebookCheck,
     mdiTextBoxSearch,
 } from '@mdi/js'
+import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 import { HistoryListPanelCol } from '@/components/panels/HistoryListPanel.vue'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListPanelDetailMaintenance from '@/components/dialogs/HistoryListPanelDetailMaintenance.vue'
@@ -192,19 +193,28 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     showContextMenu(e: any) {
         e?.preventDefault()
-        if (this.contextMenuBool) return
+        EventBus.$emit(CLOSE_CONTEXT_MENU)
 
-        this.contextMenuBool = true
         this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
         this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
 
-        this.$nextTick(() => {
-            this.contextMenuBool = true
-        })
+        this.contextMenuBool = true
+    }
+
+    closeContextMenu() {
+        this.contextMenuBool = false
     }
 
     deleteEntry() {
         this.$store.dispatch('gui/maintenance/delete', this.item.id)
+    }
+
+    mounted() {
+        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
+    }
+
+    beforeDestroy() {
+        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 }
 </script>
