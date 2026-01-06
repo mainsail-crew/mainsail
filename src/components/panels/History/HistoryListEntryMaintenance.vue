@@ -2,7 +2,7 @@
     <tr
         :key="item.id"
         v-longpress:600="(e) => showContextMenu(e)"
-        :class="cssClasses"
+        class="file-list-cursor user-select-none"
         @contextmenu="showContextMenu($event)"
         @click="detailsDialogBool = true">
         <td class="pr-0">
@@ -94,12 +94,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly item!: GuiMaintenanceStateEntry
     @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelCol[]
     @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
-
-    get cssClasses() {
-        let output = ['file-list-cursor', 'user-select-none']
-
-        return output
-    }
 
     get restFilament() {
         const start = this.item?.start_filament ?? 0
