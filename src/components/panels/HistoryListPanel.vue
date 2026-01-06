@@ -165,7 +165,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { HistoryListRowJob, ServerHistoryStateJob } from '@/store/server/history/types'
+import { HistoryListPanelCol, HistoryListRowJob, ServerHistoryStateJob } from '@/store/server/history/types'
 import { caseInsensitiveSort, formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import {
@@ -188,16 +188,6 @@ import HistoryMixin from '@/components/mixins/history'
 import HistoryStatsMixin from '@/components/mixins/historyStats'
 
 export type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance
-
-export interface HistoryListPanelCol {
-    text: string
-    value: string
-    align: string
-    configable: boolean
-    visible: boolean
-    filterable?: boolean
-    outputType?: string
-}
 
 @Component({
     components: {

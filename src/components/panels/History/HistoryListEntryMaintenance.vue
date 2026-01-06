@@ -71,7 +71,7 @@ import {
     mdiNotebookCheck,
     mdiTextBoxSearch,
 } from '@mdi/js'
-import { HistoryListPanelCol } from '@/components/panels/HistoryListPanel.vue'
+import { HistoryListPanelCol } from '@/store/server/history/types'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListPanelDetailMaintenance from '@/components/dialogs/HistoryListPanelDetailMaintenance.vue'
 
