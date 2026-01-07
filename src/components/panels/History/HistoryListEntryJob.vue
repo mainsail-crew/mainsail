@@ -156,7 +156,7 @@ import {
     formatFilesize,
     formatPrintTime,
 } from '@/plugins/helpers'
-import { HistoryListPanelCol } from '@/components/panels/HistoryListPanel.vue'
+import { HistoryListPanelCol } from '@/store/server/history/types'
 import HistoryListPanelNoteDialog from '@/components/dialogs/HistoryListPanelNoteDialog.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 
