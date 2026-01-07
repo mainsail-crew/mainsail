@@ -71,7 +71,7 @@ export default class AfcUnitLaneFilamentDialog extends Mixins(BaseMixin, AfcMixi
     }
 
     get currentColor() {
-        return this.lane.color ?? '#000000'
+        return this.lane.color || '#000000'
     }
 
     get currentMaterial() {
