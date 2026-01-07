@@ -33,7 +33,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text color="disabled" @click="closeDialog">{{ $t('Panels.AfcPanel.Cancel') }}</v-btn>
+                <v-btn text color="disabled" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn :disabled="disableSetBtn" color="primary" text @click="setSpool">
                     {{ $t('Panels.AfcPanel.SetSpool') }}
                 </v-btn>

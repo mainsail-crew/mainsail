@@ -69,32 +69,14 @@
             :file="item"
             current-path=""
             @closeDialog="showPrintDialog = false" />
-        <add-batch-to-queue-dialog
-            :is-visible="showAddBatchToQueueDialog"
-            :filename="filename"
-            @close="showAddBatchToQueueDialog = false" />
+        <add-batch-to-queue-dialog v-model="showAddBatchToQueueDialog" :filename="filename" />
         <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
-        <v-dialog v-model="showDeleteDialog" max-width="400">
-            <panel :title="$t('Files.Delete')" card-class="gcode-files-delete-dialog" :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="showDeleteDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <p class="mb-0">{{ $t('Files.DeleteSingleFileQuestion', { name: filename }) }}</p>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="showDeleteDialog = false">
-                        {{ $t('Files.Cancel') }}
-                    </v-btn>
-                    <v-btn color="error" text @click="removeFile">
-                        {{ $t('Files.Delete') }}
-                    </v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+        <confirmation-dialog
+            v-model="showDeleteDialog"
+            :title="$t('Files.Delete')"
+            :text="$t('Files.DeleteSingleFileQuestion', { name: filename })"
+            :action-button-text="$t('Buttons.Delete')"
+            @action="removeFile" />
     </tr>
 </template>
 
@@ -114,10 +96,10 @@ import {
     mdiFileDocumentEditOutline,
     mdiRenameBox,
     mdiDelete,
-    mdiCloseThick,
 } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath, formatPrintTime } from '@/plugins/helpers'
 import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbnail.vue'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
@@ -128,6 +110,7 @@ import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
         Panel,
         StartPrintDialog,
         AddBatchToQueueDialog,
+        ConfirmationDialog,
     },
 })
 export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, ControlMixin) {
@@ -139,7 +122,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiRenameBox = mdiRenameBox
     mdiDelete = mdiDelete
-    mdiCloseThick = mdiCloseThick
 
     @Prop({ type: Object, required: true }) item!: FileStateGcodefile
     @Prop({ type: Number, required: true }) contentTdWidth!: number
@@ -195,12 +177,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
         return convertPrintStatusIconColor(this.item.last_status ?? '')
     }
 
-    get pathOfFile() {
-        return this.item.filename.lastIndexOf('/') >= 0
-            ? '/' + this.item.filename.slice(0, this.item.filename.lastIndexOf('/'))
-            : ''
-    }
-
     get filename() {
         return this.item.filename.slice(this.item.filename.lastIndexOf('/') + 1)
     }
@@ -238,19 +214,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
         this.showRenameFileDialog = true
     }
 
-    renameFile() {
-        this.showRenameFileDialog = false
-
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: 'gcodes/' + this.item.filename,
-                dest: 'gcodes/' + this.pathOfFile + this.renameFileNewName,
-            },
-            { action: 'files/getMove' }
-        )
-    }
-
     editFile() {
         const pos = this.item.filename.lastIndexOf('/')
         const path = pos > 0 ? this.item.filename.slice(0, pos + 1) : ''
@@ -271,8 +234,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
             { path: 'gcodes/' + this.item.filename },
             { action: 'files/getDeleteFile' }
         )
-
-        this.showDeleteDialog = false
     }
 
     mounted() {
@@ -284,9 +245,3 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 }
 </script>
-
-<style scoped>
-.filesGcodeCard {
-    position: relative;
-}
-</style>

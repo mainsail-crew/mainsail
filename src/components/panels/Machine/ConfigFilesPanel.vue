@@ -219,14 +219,14 @@
                     class="red--text"
                     @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
-                    {{ $t('Machine.ConfigFilesPanel.Delete') }}
+                    {{ $t('Buttons.Delete') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     class="red--text"
                     @click="deleteDirectory(contextMenu.item)">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
-                    {{ $t('Machine.ConfigFilesPanel.Delete') }}
+                    {{ $t('Buttons.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -289,7 +289,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogCreateFile.show = false">
-                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                        {{ $t('Buttons.Cancel') }}
                     </v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="createFileAction">
                         {{ $t('Machine.ConfigFilesPanel.Create') }}
@@ -320,7 +320,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogRenameFile.show = false">
-                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                        {{ $t('Buttons.Cancel') }}
                     </v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="renameFileAction">
                         {{ $t('Machine.ConfigFilesPanel.Rename') }}
@@ -351,7 +351,7 @@
                 <v-card-actions>
                     <v-spacer />
                     <v-btn color="" text @click="dialogDuplicateFile.show = false">
-                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                        {{ $t('Buttons.Cancel') }}
                     </v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="duplicateFileAction">
                         {{ $t('Machine.ConfigFilesPanel.Duplicate') }}
@@ -382,7 +382,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogCreateDirectory.show = false">
-                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                        {{ $t('Buttons.Cancel') }}
                     </v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="createDirectoryAction">
                         {{ $t('Machine.ConfigFilesPanel.Create') }}
@@ -413,7 +413,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogRenameDirectory.show = false">
-                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                        {{ $t('Buttons.Cancel') }}
                     </v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="renameDirectoryAction">
                         {{ $t('Machine.ConfigFilesPanel.Rename') }}
@@ -421,99 +421,28 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
-            <panel
-                :title="$t('Machine.ConfigFilesPanel.DeleteDirectory')"
-                card-class="maschine-configfiles-delete-directory-dialog"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="dialogDeleteDirectory.show = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <p class="mb-0">
-                        {{
-                            $t('Machine.ConfigFilesPanel.DeleteDirectoryQuestion', {
-                                name: dialogDeleteDirectory.item.filename,
-                            })
-                        }}
-                    </p>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogDeleteDirectory.show = false">
-                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
-                    </v-btn>
-                    <v-btn color="error" text @click="deleteDirectoryAction">
-                        {{ $t('Machine.ConfigFilesPanel.Delete') }}
-                    </v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
-
-        <!-- CONFIRM DELETE SINGLE FILE DIALOG -->
-        <v-dialog v-model="deleteDialog" max-width="400">
-            <panel
-                :title="$t('Machine.ConfigFilesPanel.Delete')"
-                card-class="maschine-configfiles-delete-dialog"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="deleteDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <p class="mb-0">
-                        {{
-                            $t('Machine.ConfigFilesPanel.DeleteSingleFileQuestion', { name: contextMenu.item.filename })
-                        }}
-                    </p>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="deleteDialog = false">
-                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
-                    </v-btn>
-                    <v-btn color="error" text @click="removeFile">
-                        {{ $t('Machine.ConfigFilesPanel.Delete') }}
-                    </v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
-
-        <!-- CONFIRM DELETE MULTIPLE FILES DIALOG -->
-        <v-dialog v-model="deleteSelectedDialog" max-width="400">
-            <panel
-                :title="$t('Machine.ConfigFilesPanel.Delete')"
-                card-class="maschine-configfiles-delete-selected-dialog"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="deleteSelectedDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <p v-if="selectedFiles.length === 1" class="mb-0">
-                        {{
-                            $t('Machine.ConfigFilesPanel.DeleteSingleFileQuestion', { name: selectedFiles[0].filename })
-                        }}
-                    </p>
-                    <p v-else class="mb-0">
-                        {{ $t('Machine.ConfigFilesPanel.DeleteSelectedQuestion', { count: selectedFiles.length }) }}
-                    </p>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="deleteSelectedDialog = false">
-                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
-                    </v-btn>
-                    <v-btn color="error" text @click="deleteSelectedFiles">
-                        {{ $t('Machine.ConfigFilesPanel.Delete') }}
-                    </v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+        <confirmation-dialog
+            v-model="dialogDeleteDirectory.show"
+            :title="$t('Machine.ConfigFilesPanel.DeleteDirectory')"
+            :text="
+                $t('Machine.ConfigFilesPanel.DeleteDirectoryQuestion', {
+                    name: dialogDeleteDirectory.item.filename,
+                })
+            "
+            :action-button-text="$t('Buttons.Delete')"
+            @action="deleteDirectoryAction" />
+        <confirmation-dialog
+            v-model="deleteDialog"
+            :title="$t('Machine.ConfigFilesPanel.Delete')"
+            :text="$t('Machine.ConfigFilesPanel.DeleteSingleFileQuestion', { name: contextMenu.item.filename })"
+            :action-button-text="$t('Buttons.Delete')"
+            @action="removeFile" />
+        <confirmation-dialog
+            v-model="deleteSelectedDialog"
+            :title="$t('Machine.ConfigFilesPanel.Delete')"
+            :text="deleteSelectedDialogText"
+            :action-button-text="$t('Buttons.Delete')"
+            @action="deleteSelectedFiles" />
 
         <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom>
             <span v-if="uploadSnackbar.max > 1" class="mr-1">
@@ -562,6 +491,7 @@ import {
     mdiLockOutline,
     mdiContentCopy,
 } from '@mdi/js'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
 interface contextMenu {
     shown: boolean
@@ -608,7 +538,7 @@ interface draggingFile {
 }
 
 @Component({
-    components: { Panel, PathNavigation },
+    components: { ConfirmationDialog, Panel, PathNavigation },
 })
 export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     mdiInformation = mdiInformation
@@ -760,7 +690,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
                 },
             },
             {
-                text: this.$t('Machine.ConfigFilesPanel.Delete'),
+                text: this.$t('Buttons.Delete'),
                 color: 'error',
                 icon: mdiDelete,
                 loadingName: null,
@@ -958,6 +888,18 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.currentPath', value: newVal })
     }
 
+    get deleteSelectedDialogText(): string {
+        if (this.selectedFiles.length === 1) {
+            return this.$t('Machine.ConfigFilesPanel.DeleteSingleFileQuestion', {
+                name: this.selectedFiles[0].filename,
+            }).toString()
+        }
+
+        return this.$t('Machine.ConfigFilesPanel.DeleteSelectedQuestion', {
+            count: this.selectedFiles.length,
+        }).toString()
+    }
+
     refreshFileList() {
         this.$socket.emit(
             'server.files.get_directory',
@@ -1116,7 +1058,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     deleteDirectoryAction() {
-        this.dialogDeleteDirectory.show = false
         this.$socket.emit(
             'server.files.delete_directory',
             { path: this.absolutePath + '/' + this.dialogDeleteDirectory.item.filename, force: true },
@@ -1203,8 +1144,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
             { path: this.absolutePath + '/' + this.contextMenu.item.filename },
             { action: 'files/getDeleteFile' }
         )
-
-        this.deleteDialog = false
     }
 
     deleteSelectedFiles() {
@@ -1225,7 +1164,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         })
 
         this.selectedFiles = []
-        this.deleteSelectedDialog = false
     }
 
     uploadFileButton() {

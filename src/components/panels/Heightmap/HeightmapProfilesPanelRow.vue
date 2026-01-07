@@ -51,23 +51,31 @@
                 <v-icon>{{ mdiDelete }}</v-icon>
             </v-btn>
         </v-col>
-        <heightmap-remove-profile-dialog :show="showRemove" :name="name" @close="showRemove = false" />
-        <heightmap-rename-profile-dialog :show="showRename" :name="name" @close="showRename = false" />
+        <confirmation-dialog
+            v-model="showRemove"
+            :icon="mdiGrid"
+            :title="$t('Heightmap.BedMeshRemove')"
+            :text="$t('Heightmap.DoYouReallyWantToDelete', { name })"
+            :action-button-text="$t('Buttons.Delete')"
+            :cancel-button-text="$t('Buttons.Cancel')"
+            @action="removeProfile" />
+        <heightmap-rename-profile-dialog v-model="showRename" :name="name" />
     </v-row>
 </template>
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { mdiDelete, mdiPencil, mdiProgressUpload } from '@mdi/js'
+import { mdiDelete, mdiGrid, mdiPencil, mdiProgressUpload } from '@mdi/js'
 import BaseMixin from '@/components/mixins/base'
 import { PrinterStateBedMeshProfile } from '@/store/printer/types'
 import HeightmapRenameProfileDialog from '@/components/dialogs/HeightmapRenameProfileDialog.vue'
-import HeightmapRemoveProfileDialog from '@/components/dialogs/HeightmapRemoveProfileDialog.vue'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
 @Component({
-    components: { HeightmapRenameProfileDialog, HeightmapRemoveProfileDialog },
+    components: { HeightmapRenameProfileDialog, ConfirmationDialog },
 })
 export default class HeightmapProfilesPanelRow extends Mixins(BaseMixin) {
     mdiDelete = mdiDelete
+    mdiGrid = mdiGrid
     mdiPencil = mdiPencil
     mdiProgressUpload = mdiProgressUpload
 
@@ -137,6 +145,13 @@ export default class HeightmapProfilesPanelRow extends Mixins(BaseMixin) {
 
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: this.loadingNameLoad })
+    }
+
+    removeProfile(): void {
+        const gcode = `BED_MESH_PROFILE REMOVE="${this.name}"`
+
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: this.loadingNameRemove })
     }
 }
 </script>

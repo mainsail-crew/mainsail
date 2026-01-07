@@ -106,27 +106,16 @@
                 </v-list-item>
                 <v-list-item class="red--text" @click="deleteJob">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
-                    {{ $t('History.Delete') }}
+                    {{ $t('Buttons.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
         <!-- details dialog -->
-        <history-list-panel-details-dialog
-            :show="detailsDialogBool"
-            :job="item"
-            @close-dialog="detailsDialogBool = false" />
+        <history-list-panel-details-dialog v-model="detailsDialogBool" :job="item" />
         <!-- create/edit note dialog -->
-        <history-list-panel-note-dialog
-            :show="noteDialogBool"
-            :type="noteDialogType"
-            :job="item"
-            @close-dialog="noteDialogBool = false" />
+        <history-list-panel-note-dialog v-model="noteDialogBool" :type="noteDialogType" :job="item" />
         <!-- add to queue dialog -->
-        <add-batch-to-queue-dialog
-            :is-visible="addBatchToQueueDialogBool"
-            :show-toast="true"
-            :filename="item.filename"
-            @close="addBatchToQueueDialogBool = false" />
+        <add-batch-to-queue-dialog v-model="addBatchToQueueDialogBool" :show-toast="true" :filename="item.filename" />
     </tr>
 </template>
 <script lang="ts">

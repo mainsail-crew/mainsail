@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" :max-width="600" persistent @keydown.esc="closeDialog">
+    <v-dialog v-model="showDialog" :max-width="600" persistent @keydown.esc="closeDialog">
         <panel
             :title="$t('History.AddMaintenance')"
             :icon="mdiNotebookPlus"
@@ -99,15 +99,15 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('History.Cancel') }}</v-btn>
-                <v-btn color="primary" text :disabled="!isValid" @click="save">{{ $t('History.Save') }}</v-btn>
+                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn color="primary" text :disabled="!isValid" @click="save">{{ $t('Buttons.Save') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -126,7 +126,7 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiNotebookPlus = mdiNotebookPlus
 
-    @Prop({ type: Boolean, default: false }) readonly show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
     name: string = ''
     note: string = ''
@@ -183,7 +183,7 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('close')
+        this.showDialog = false
     }
 
     save() {
@@ -236,9 +236,9 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
         this.reminderDateValue = 0
     }
 
-    @Watch('show')
+    @Watch('showDialog')
     onShowChanged() {
-        if (this.show) this.resetValues()
+        if (this.showDialog) this.resetValues()
     }
 }
 </script>

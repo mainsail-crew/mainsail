@@ -46,13 +46,11 @@
 
         <!-- CONFIRMATION FOR RESET ACTION -->
         <confirmation-dialog
-            :show="showResetConfirmationDialog"
+            v-model="showResetConfirmationDialog"
             :title="$t('Panels.MmuPanel.Dialog.AreYouSure')"
             :text="$t('Panels.MmuPanel.GateMapDialog.ResetConfirmation')"
             :action-button-text="$t('Panels.MmuPanel.GateMapDialog.Reset')"
-            :cancel-button-text="$t('Panels.MmuPanel.Cancel')"
-            @action="executeResetGateMap"
-            @close="showResetConfirmationDialog = false" />
+            @action="executeResetGateMap" />
     </v-dialog>
 </template>
 
@@ -98,7 +96,6 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     executeResetGateMap() {
         this.doSend('MMU_GATE_MAP RESET=1')
-        this.showResetConfirmationDialog = false
     }
 
     close() {

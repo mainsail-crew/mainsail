@@ -69,13 +69,11 @@
 
             <!-- CONFIRMATION FOR RESET ACTION -->
             <confirmation-dialog
-                :show="showResetDialog"
+                v-model="showResetDialog"
                 :title="$t('Panels.MmuPanel.Dialog.AreYouSure')"
                 :text="$t('Panels.MmuPanel.TtgMapDialog.ResetConfirmation')"
                 :action-button-text="$t('Panels.MmuPanel.TtgMapDialog.Reset')"
-                :cancel-button-text="$t('Panels.MmuPanel.Cancel')"
-                @action="resetTtgMap"
-                @close="showResetDialog = false" />
+                @action="resetTtgMap" />
         </panel>
     </v-dialog>
 </template>
@@ -172,7 +170,6 @@ export default class MmuEditTtgMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     resetTtgMap() {
-        this.showResetDialog = false
         this.doSend('MMU_TTG_MAP RESET=1\nMMU_ENDLESS_SPOOL RESET=1')
     }
 

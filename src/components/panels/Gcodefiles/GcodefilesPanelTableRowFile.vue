@@ -113,19 +113,15 @@
             :file="item"
             :current-path="currentPath"
             @closeDialog="showStartPrintDialog = false" />
-        <add-batch-to-queue-dialog
-            :is-visible="showAddBatchToQueueDialog"
-            :filename="item.full_filename"
-            @close="showAddBatchToQueueDialog = false" />
+        <add-batch-to-queue-dialog v-model="showAddBatchToQueueDialog" :filename="item.full_filename" />
         <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
-        <gcodefiles-duplicate-file-dialog
-            :item="item"
-            :show-dialog="showDuplicateFileDialog"
-            @close="showDuplicateFileDialog = false" />
-        <gcodefiles-delete-file-dialog
-            :item="item"
-            :show-dialog="showDeleteFileDialog"
-            @close="showDeleteFileDialog = false" />
+        <gcodefiles-duplicate-file-dialog v-model="showDuplicateFileDialog" :item="item" />
+        <confirmation-dialog
+            v-model="showDeleteFileDialog"
+            :title="$t('Files.Delete')"
+            :text="$t('Files.DeleteSingleFileQuestion', { name: item.filename })"
+            :action-button-text="$t('Buttons.Delete')"
+            @action="deleteFile" />
     </tr>
 </template>
 <script lang="ts">
@@ -151,6 +147,7 @@ import ControlMixin from '@/components/mixins/control'
 import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath } from '@/plugins/helpers'
 import GcodefilesRenameFileDialog from '@/components/dialogs/GcodefilesRenameFileDialog.vue'
 import GcodefilesDuplicateFileDialog from '@/components/dialogs/GcodefilesDuplicateFileDialog.vue'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import GcodefilesPanelTableRowFileMetadata from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadata.vue'
 import GcodefilesPanelTableRowFileMetadataFilaments from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadataFilaments.vue'
 import GcodefilesPanelTableRowFileMetadataSlicer from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadataSlicer.vue'
@@ -159,6 +156,7 @@ import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
 @Component({
     components: {
+        ConfirmationDialog,
         GcodefilesPanelTableRowFileMetadataFilamentStrings,
         GcodefilesPanelTableRowFileMetadataFilaments,
         GcodefilesPanelTableRowFileMetadataSlicer,
@@ -277,6 +275,14 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
             size: this.item.size,
             permissions: this.item.permissions,
         })
+    }
+
+    deleteFile() {
+        this.$socket.emit(
+            'server.files.delete_file',
+            { path: 'gcodes' + this.currentPath + '/' + this.item.filename },
+            { action: 'files/getDeleteFile' }
+        )
     }
 
     onDragStart(e: DragEvent) {

@@ -300,7 +300,7 @@
                 </template>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text @click="cancelEditMacrogroup">{{ $t('Settings.Close') }}</v-btn>
+                <v-btn text @click="cancelEditMacrogroup">{{ $t('Buttons.Close') }}</v-btn>
             </v-card-actions>
         </template>
     </div>

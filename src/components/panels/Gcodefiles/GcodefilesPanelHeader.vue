@@ -29,9 +29,12 @@
                 @click="showDeleteSelectedDialog = true">
                 <v-icon>{{ mdiDelete }}</v-icon>
             </v-btn>
-            <gcodefiles-delete-selected-files-dialog
-                :show-dialog="showDeleteSelectedDialog"
-                @close="showDeleteSelectedDialog = false" />
+            <confirmation-dialog
+                v-model="showDeleteSelectedDialog"
+                :title="$t('Files.Delete')"
+                :text="deleteSelectedText"
+                :action-button-text="$t('Buttons.Delete')"
+                @action="deleteSelectedFiles" />
             <input
                 ref="fileUpload"
                 type="file"
@@ -52,9 +55,7 @@
                 @click="showCreateDirectoryDialog = true">
                 <v-icon>{{ mdiFolderPlus }}</v-icon>
             </v-btn>
-            <gcodefiles-create-directory-dialog
-                :show-dialog="showCreateDirectoryDialog"
-                @close="showCreateDirectoryDialog = false" />
+            <gcodefiles-create-directory-dialog v-model="showCreateDirectoryDialog" />
             <v-btn :title="$t('Files.RefreshCurrentDirectory')" class="px-2 minwidth-0 ml-3" @click="refreshFileList">
                 <v-icon>{{ mdiRefresh }}</v-icon>
             </v-btn>
@@ -69,11 +70,11 @@ import GcodefilesMixin from '@/components/mixins/gcodefiles'
 import { mdiCloudDownload, mdiDelete, mdiFolderPlus, mdiMagnify, mdiRefresh, mdiUpload } from '@mdi/js'
 import { FileStateFile } from '@/store/files/types'
 import { escapePath } from '@/plugins/helpers'
-import GcodefilesDeleteSelectedFilesDialog from '@/components/dialogs/GcodefilesDeleteSelectedFilesDialog.vue'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import { validGcodeExtensions } from '@/store/variables'
 
 @Component({
-    components: { GcodefilesDeleteSelectedFilesDialog },
+    components: { ConfirmationDialog },
 })
 export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesMixin) {
     mdiCloudDownload = mdiCloudDownload
@@ -92,6 +93,14 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
         if (this.isIOS) return []
 
         return validGcodeExtensions
+    }
+
+    get deleteSelectedText(): string {
+        if (this.selectedFiles.length === 1) {
+            return this.$t('Files.DeleteSingleFileQuestion', { name: this.selectedFiles[0].filename }).toString()
+        }
+
+        return this.$t('Files.DeleteSelectedQuestion', { count: this.selectedFiles.length }).toString()
     }
 
     downloadSelectedFiles() {
@@ -160,6 +169,28 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
             { path: 'gcodes' + this.currentPath },
             { action: 'files/getDirectory' }
         )
+    }
+
+    deleteSelectedFiles(): void {
+        this.selectedFiles.forEach((item) => {
+            if (item.isDirectory) {
+                this.$socket.emit(
+                    'server.files.delete_directory',
+                    { path: 'gcodes' + this.currentPath + '/' + item.filename, force: true },
+                    { action: 'files/getDeleteDir' }
+                )
+
+                return
+            }
+
+            this.$socket.emit(
+                'server.files.delete_file',
+                { path: 'gcodes' + this.currentPath + '/' + item.filename },
+                { action: 'files/getDeleteFile' }
+            )
+        })
+
+        this.selectedFiles = []
     }
 }
 </script>

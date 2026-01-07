@@ -35,7 +35,7 @@
                                 class="px-2"
                                 @click="saveZOffset">
                                 <v-icon small>{{ mdiContentSave }}</v-icon>
-                                <span v-if="!el.is.xsmall" class="ml-1">{{ $t('Panels.ZoffsetPanel.Save') }}</span>
+                                <span v-if="!el.is.xsmall" class="ml-1">{{ $t('Buttons.Save') }}</span>
                             </v-btn>
                         </div>
                     </v-col>

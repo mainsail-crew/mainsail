@@ -20,21 +20,17 @@
             </v-btn>
         </v-list-item-action>
         <confirmation-dialog
-            :show="showRestartDialog"
+            v-model="showRestartDialog"
             :title="dialogRestartTitle"
             :text="dialogRestartDescription"
             :action-button-text="$t('App.TopCornerMenu.Restart')"
-            :cancel-button-text="$t('App.TopCornerMenu.Cancel')"
-            @action="serviceRestart"
-            @close="showRestartDialog = false" />
+            @action="serviceRestart" />
         <confirmation-dialog
-            :show="showStopDialog"
+            v-model="showStopDialog"
             :title="dialogStopTitle"
             :text="dialogStopDescription"
             :action-button-text="$t('App.TopCornerMenu.Stop')"
-            :cancel-button-text="$t('App.TopCornerMenu.Cancel')"
-            @action="serviceStop"
-            @close="showStopDialog = false" />
+            @action="serviceStop" />
     </v-list-item>
 </template>
 <script lang="ts">
@@ -136,13 +132,11 @@ export default class TopCornerMenuService extends Mixins(BaseMixin, ServiceMixin
     }
 
     serviceRestart() {
-        this.showRestartDialog = false
         this.$socket.emit('machine.services.restart', { service: this.service })
         this.closeMenu()
     }
 
     serviceStop() {
-        this.showStopDialog = false
         this.$socket.emit('machine.services.stop', { service: this.service })
         this.closeMenu()
     }

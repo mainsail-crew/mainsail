@@ -41,7 +41,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer />
-            <v-btn text @click="close">{{ $t('Settings.Cancel') }}</v-btn>
+            <v-btn text @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
             <v-btn v-if="groupId !== null" text color="primary" :disabled="!formValid" @click="updateGroup">
                 {{ $t('Settings.Update') }}
             </v-btn>

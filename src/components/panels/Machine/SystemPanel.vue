@@ -21,7 +21,7 @@
                 <system-panel-host />
             </div>
         </v-card-text>
-        <devices-dialog :show-dialog="dialogDevices" @close="dialogDevices = false" />
+        <devices-dialog v-model="dialogDevices" />
     </panel>
 </template>
 
