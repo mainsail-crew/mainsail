@@ -138,6 +138,7 @@ import {
     mdiPrinter,
     mdiTextBoxSearch,
 } from '@mdi/js'
+import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 import {
     convertPrintStatusIcon,
     convertPrintStatusIconColor,
@@ -234,15 +235,16 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     showContextMenu(e: any) {
         e?.preventDefault()
-        if (this.contextMenuBool) return
+        EventBus.$emit(CLOSE_CONTEXT_MENU)
 
-        this.contextMenuBool = true
         this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
         this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
 
-        this.$nextTick(() => {
-            this.contextMenuBool = true
-        })
+        this.contextMenuBool = true
+    }
+
+    closeContextMenu() {
+        this.contextMenuBool = false
     }
 
     startPrint() {
@@ -319,6 +321,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return `${this.apiUrl}/server/files/gcodes/${escapePath(relative_url + thumbnail.relative_path)}?timestamp=${
             this.item.metadata.modified
         }`
+    }
+
+    mounted() {
+        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
+    }
+
+    beforeDestroy() {
+        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 }
 </script>
