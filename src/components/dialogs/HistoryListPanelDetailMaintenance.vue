@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="show" :max-width="500" persistent @keydown.esc="closeDialog">
+    <v-dialog v-model="showDialog" :max-width="500" persistent @keydown.esc="closeDialog">
         <panel
             :title="$t('History.Maintenance')"
             :icon="mdiNotebook"
@@ -41,23 +41,22 @@
             <v-divider class="mt-0" />
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('History.Cancel') }}</v-btn>
+                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn v-if="showPerformButton" text color="primary" @click="showPerformDialog = true">
                     {{ $t('History.Perform') }}
                 </v-btn>
             </v-card-actions>
         </panel>
         <history-list-panel-perform-maintenance
-            :show="showPerformDialog"
+            v-model="showPerformDialog"
             :item="item"
-            @close="showPerformDialog = false"
-            @close-both="closePerform" />
-        <history-list-panel-edit-maintenance :show="showEditDialog" :item="item" @close="showEditDialog = false" />
+            @close-details-dialog="closeDialog" />
+        <history-list-panel-edit-maintenance v-model="showEditDialog" :item="item" />
     </v-dialog>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiNotebook, mdiPencil } from '@mdi/js'
@@ -73,7 +72,7 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
     mdiNotebook = mdiNotebook
     mdiPencil = mdiPencil
 
-    @Prop({ type: Boolean, default: false }) readonly show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, default: false }) readonly item!: GuiMaintenanceStateEntry
 
     showEditDialog = false
@@ -119,12 +118,7 @@ export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin)
     }
 
     closeDialog() {
-        this.$emit('close')
-    }
-
-    closePerform() {
-        this.showPerformDialog = false
-        this.closeDialog()
+        this.showDialog = false
     }
 }
 </script>

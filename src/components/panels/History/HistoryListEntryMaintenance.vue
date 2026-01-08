@@ -2,7 +2,7 @@
     <tr
         :key="item.id"
         v-longpress:600="(e) => showContextMenu(e)"
-        :class="cssClasses"
+        class="file-list-cursor user-select-none"
         @contextmenu="showContextMenu($event)"
         @click="detailsDialogBool = true">
         <td class="pr-0">
@@ -47,14 +47,11 @@
                 </v-list-item>
                 <v-list-item class="red--text" @click="deleteEntry">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
-                    {{ $t('History.Delete') }}
+                    {{ $t('Buttons.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
-        <history-list-panel-detail-maintenance
-            :show="detailsDialogBool"
-            :item="item"
-            @close="detailsDialogBool = false" />
+        <history-list-panel-detail-maintenance v-model="detailsDialogBool" :item="item" />
     </tr>
 </template>
 <script lang="ts">
@@ -72,7 +69,7 @@ import {
     mdiTextBoxSearch,
 } from '@mdi/js'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
-import { HistoryListPanelCol } from '@/components/panels/HistoryListPanel.vue'
+import { HistoryListPanelCol } from '@/store/server/history/types'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListPanelDetailMaintenance from '@/components/dialogs/HistoryListPanelDetailMaintenance.vue'
 
@@ -95,12 +92,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly item!: GuiMaintenanceStateEntry
     @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelCol[]
     @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
-
-    get cssClasses() {
-        let output = ['file-list-cursor', 'user-select-none']
-
-        return output
-    }
 
     get restFilament() {
         const start = this.item?.start_filament ?? 0

@@ -30,7 +30,7 @@
                 </v-row>
             </v-card-text>
         </panel>
-        <logfiles-panel-rollover-dialog :show="showRolloverDialog" @close-dialog="showRolloverDialog = false" />
+        <logfiles-panel-rollover-dialog v-model="showRolloverDialog" />
     </div>
 </template>
 

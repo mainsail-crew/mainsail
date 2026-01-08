@@ -14,7 +14,7 @@
                         dense />
                 </v-col>
                 <v-col class="offset-4 col-4 d-flex align-center justify-end">
-                    <v-tooltip v-if="selectedJobs.length" top>
+                    <v-tooltip v-if="selectedJobsTable.length" top>
                         <template #activator="{ on, attrs }">
                             <v-btn
                                 color="error"
@@ -25,7 +25,7 @@
                                 <v-icon>{{ mdiDelete }}</v-icon>
                             </v-btn>
                         </template>
-                        <span>{{ $t('History.Delete') }}</span>
+                        <span>{{ $t('Buttons.Delete') }}</span>
                     </v-tooltip>
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
@@ -157,15 +157,21 @@
                     @select="select" />
             </template>
         </v-data-table>
-        <history-list-panel-delete-selected-dialog :show="deleteSelectedDialog" @close="deleteSelectedDialog = false" />
-        <history-list-panel-add-maintenance :show="addMaintenanceDialog" @close="addMaintenanceDialog = false" />
+        <confirmation-dialog
+            v-model="deleteSelectedDialog"
+            :title="$t('History.Delete')"
+            :text="deleteSelectedQuestion"
+            :action-button-text="$t('Buttons.Delete')"
+            :icon="mdiDelete"
+            @action="deleteSelectedJobs" />
+        <history-list-panel-add-maintenance v-model="addMaintenanceDialog" />
     </panel>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { HistoryListRowJob, ServerHistoryStateJob } from '@/store/server/history/types'
+import { HistoryListPanelCol, HistoryListRowJob, ServerHistoryStateJob } from '@/store/server/history/types'
 import { caseInsensitiveSort, formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import {
@@ -183,25 +189,15 @@ import HistoryListEntryJob from '@/components/panels/History/HistoryListEntryJob
 import HistoryListPanelAddMaintenance from '@/components/dialogs/HistoryListPanelAddMaintenance.vue'
 import { GuiMaintenanceStateEntry, HistoryListRowMaintenance } from '@/store/gui/maintenance/types'
 import HistoryListEntryMaintenance from '@/components/panels/History/HistoryListEntryMaintenance.vue'
-import HistoryListPanelDeleteSelectedDialog from '@/components/dialogs/HistoryListPanelDeleteSelectedDialog.vue'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import HistoryMixin from '@/components/mixins/history'
 import HistoryStatsMixin from '@/components/mixins/historyStats'
 
 export type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance
 
-export interface HistoryListPanelCol {
-    text: string
-    value: string
-    align: string
-    configable: boolean
-    visible: boolean
-    filterable?: boolean
-    outputType?: string
-}
-
 @Component({
     components: {
-        HistoryListPanelDeleteSelectedDialog,
+        ConfirmationDialog,
         HistoryListEntryMaintenance,
         HistoryListPanelAddMaintenance,
         HistoryListEntryJob,
@@ -708,6 +704,32 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
                         return value
                 }
         }
+    }
+
+    get deleteSelectedQuestion(): string {
+        if (this.selectedJobsTable.length === 1) return this.$t('History.DeleteSingleJobQuestion').toString()
+
+        return this.$t('History.DeleteSelectedQuestion', { count: this.selectedJobsTable.length }).toString()
+    }
+
+    deleteSelectedJobs() {
+        this.selectedJobsTable.forEach((item: HistoryListPanelRow) => {
+            if (item.type === 'maintenance') {
+                this.$store.dispatch('gui/maintenance/delete', item.id)
+                return
+            }
+
+            // break if job_id is not present
+            if (!('job_id' in item)) return
+
+            this.$socket.emit(
+                'server.history.delete_job',
+                { uid: item.job_id },
+                { action: 'server/history/getDeletedJobs' }
+            )
+        })
+
+        this.selectedJobsTable = []
     }
 }
 </script>

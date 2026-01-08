@@ -90,7 +90,6 @@
             "UploadPrint": "Загрузить и напечатать"
         },
         "TopCornerMenu": {
-            "Cancel": "Отмена",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Перезагрузка хоста приведёт к сбою текущей печати!",
@@ -125,7 +124,6 @@
             "Stop": "Остановить"
         },
         "UpdateDialog": {
-            "Close": "Закрыть",
             "Empty": "Пусто",
             "Recovering": "Восстановление {software}...",
             "RecoveringDone": "Восстановление {software} выполнено!",
@@ -144,11 +142,17 @@
         "ScrewName": "Имя винта",
         "ScrewOutput": "{current} из {max}"
     },
+    "Buttons": {
+        "Cancel": "Отмена",
+        "Close": "Закрыть",
+        "Delete": "Удалить",
+        "No": "Нет",
+        "Save": "Сохранить",
+        "Yes": "Да"
+    },
     "CancelJobDialog": {
         "AreYouSure": "Вы уверены, что хотите отменить задание?",
-        "CancelJob": "Отменить задание",
-        "No": "Нет",
-        "Yes": "Да"
+        "CancelJob": "Отменить задание"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Не удаётся подключиться к Moonraker ({host}).",
@@ -170,9 +174,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "Вы уверены, что хотите отключить нагрев?",
-        "CoolDown": "Отключение нагрева",
-        "No": "Нет",
-        "Yes": "Да"
+        "CoolDown": "Отключение нагрева"
     },
     "DevicesDialog": {
         "CanBusInfo": "Только не привязанные узлы могут быть обнаружены. Во избежание проблем со связью рекомендуется подключать к CAN-шине только одно не привязанное устройство. Для получения более подробной информации перейдите по ссылке:",
@@ -190,7 +192,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Отмена",
             "DoYouWantToStartFilename": "Запустить печать файла {filename}?",
             "DoYouWantToStartFilenameFilament": "Запустить печать файла {filename} следующим прутком?",
             "Headline": "Запустить печать",
@@ -216,16 +217,13 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Вы уверены, что хотите это сделать?",
-        "EmergencyStop": "Аварийная остановка",
-        "No": "Нет",
-        "Yes": "Да"
+        "EmergencyStop": "Аварийная остановка"
     },
     "Files": {
         "AddBatchToQueue": "Добавить несколько заданий в очередь",
         "AddToQueue": "Добавить задание в очередь",
         "AllFiles": "Все",
         "BedTemp": "Темп. стола",
-        "Cancel": "Отмена",
         "ChamberTemp": "Темп. в камере",
         "Count": "Количество",
         "Create": "Создать",
@@ -321,7 +319,6 @@
         "VoxelMode": "Воксельный режим (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "Отмена",
         "BedMeshCalibrate": "Калибровка сетки стола",
         "BedMeshRemove": "Удалить сетку стола",
         "Calibrate": "Калибровка",
@@ -349,7 +346,6 @@
         "NoProfile": "Отсутствуют доступные профили.",
         "Probed": "Зондировано",
         "Profiles": "Профили",
-        "Remove": "Удалить",
         "Rename": "Переименовать",
         "RenameBedMeshProfile": "Переимен. профиль сетки стола",
         "ScaleGradient": "Масштаб градиента",
@@ -366,7 +362,6 @@
         "AddToQueueSuccessful": "Файл {filename} добавлен в очередь.",
         "AllJobs": "Все",
         "AvgPrinttime": "Среднее время печати",
-        "Cancel": "Отмена",
         "Chart": "Диаграмма",
         "CreateNote": "Добавление примечания",
         "DateBasedReminder": "Дата",
@@ -430,7 +425,6 @@
         "Reminder": "Напоминание",
         "Repeat": "Повторяющееся",
         "Reprint": "Напечатать повторно",
-        "Save": "Сохранить",
         "Search": "Поиск",
         "SelectedFilamentUsed": "Расход прутка выбранных заданий",
         "SelectedJobs": "Выбрано заданий",
@@ -462,7 +456,6 @@
         "TotalTime": "Общее время работы"
     },
     "JobQueue": {
-        "Cancel": "Отмена",
         "ChangeCount": "Изменить количество",
         "Count": "Количество",
         "Empty": "Пусто",
@@ -477,14 +470,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Все",
-            "Cancel": "Отмена",
             "ConfigFiles": "Конфигурационные файлы",
             "ConfigRootDirectoryDoesntExists": "Папка конфигурации не найден. Пожалуйста, проверьте параметр \"config_path\" в разделе [file_manager] конфигурации Moonraker.",
             "Create": "Создать",
             "CreateDirectory": "Создать папку",
             "CreateFile": "Создать файл",
             "CurrentPath": "Текущий путь",
-            "Delete": "Удалить",
             "DeleteDirectory": "Удалить папку",
             "DeleteDirectoryQuestion": "Вы действительно хотите удалить папку \"{name}\" со всем его содержимым?",
             "DeleteSelectedQuestion": "Выбрано элементов: {count}. Хотите удалить?",
@@ -523,7 +514,6 @@
         },
         "LogfilesPanel": {
             "Accept": "Принять",
-            "Cancel": "Отмена",
             "Logfiles": "Файлы журналов",
             "Rollover": "Сброс данных журналов",
             "RolloverDescription": "Выберите журналы, данные которых хотите сбросить:",
@@ -559,7 +549,6 @@
             "Abort": "Отмена",
             "AreYouSure": "Вы уверены, что хотите это сделать?",
             "CheckForUpdates": "Проверить обновления",
-            "Close": "Закрыть",
             "CommitHistory": "История коммитов",
             "Commits": "Коммиты",
             "CommitsAvailable": "Нет доступных коммитов | Доступен {count} коммит | Доступно коммитов: {count}",
@@ -706,7 +695,6 @@
         },
         "SpoolmanPanel": {
             "ActiveSpool": "Активная катушка",
-            "Cancel": "Отмена",
             "ChangeSpool": "Сменить катушку",
             "DaysAgo": "Дней назад: {days}",
             "EjectSpool": "Извлечь катушку",
@@ -742,7 +730,6 @@
             "Estimate": "Расчётное время",
             "ETA": "Время завершения",
             "ExcludeObject": {
-                "Cancel": "Отмена",
                 "Excluded": "Исключена",
                 "ExcludeObject": "Исключить модель",
                 "ExcludeObjectHeadline": "Исключить модель",
@@ -839,7 +826,6 @@
             "Headline": "Смещение Z коорд.",
             "Later": "Позже",
             "Ok": "OK",
-            "Save": "Сохранить",
             "SaveConfig": "СОХРАНИТЬ КОНФИГУРАЦИЮ",
             "SaveInfoDescription": "Новое смещение координат оси Z было рассчитано и зарегистрировано. Нажмите кнопку «СОХРАНИТЬ КОНФИГУРАЦИЮ» для сохранения в файле printer.cfg и перезапуска Klipper.",
             "SaveInfoDescriptionPrint": "Новое смещение координат оси Z было рассчитано и зарегистрировано. После печати, нажмите кнопку «СОХРАНИТЬ КОНФИГУРАЦИЮ» на верхней панели для сохранения и перезапуска Klipper.",
@@ -848,10 +834,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Вы уверены, что хотите это сделать?",
-        "No": "Нет",
         "TurnDeviceOff": "Выключить {device}",
-        "TurnDeviceOn": "Включить {device}",
-        "Yes": "Да"
+        "TurnDeviceOn": "Включить {device}"
     },
     "Router": {
         "Console": "Консоль",
@@ -895,8 +879,6 @@
         "YouCanFindMore": "Более подробную информацию можете найти на"
     },
     "Settings": {
-        "Cancel": "Отмена",
-        "Close": "Закрыть",
         "ConsoleTab": {
             "AddFilter": "Добавить фильтр",
             "Console": "Консоль",
@@ -1336,11 +1318,9 @@
     "Timelapse": {
         "AllFiles": "Все",
         "Autorender": "Авторендеринг",
-        "Cancel": "Отмена",
         "Create": "Создать",
         "CreateNewDirectory": "Создать папку",
         "CurrentPath": "Текущий путь",
-        "Delete": "Удалить",
         "DeleteDirectory": "Удалить папку",
         "DeleteDirectoryQuestion": "Вы действительно хотите удалить папку \"{name}\" со всем его содержимым?",
         "DeleteSelectedQuestion": "Выбрано файлов: {count}. Хотите удалить?",
