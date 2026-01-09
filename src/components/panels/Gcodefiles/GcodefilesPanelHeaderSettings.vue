@@ -36,7 +36,8 @@
                 handle=".handle"
                 class="v-list-item-group"
                 ghost-class="ghost"
-                group="gcodeFilesColumnOrder">
+                group="gcodeFilesColumnOrder"
+                :force-fallback="true">
                 <v-list-item v-for="header of configurableHeaders" :key="header.value" class="minHeight36">
                     <v-row>
                         <v-col class="col-auto pr-0">

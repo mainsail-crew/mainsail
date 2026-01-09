@@ -47,7 +47,7 @@
                 <v-col class="text-right">{{ variance }} mm</v-col>
             </v-row>
         </v-card-text>
-        <heightmap-rename-profile-dialog :show="showRename" :name="name" @close="showRename = false" />
+        <heightmap-rename-profile-dialog v-model="showRename" :name="name" />
     </panel>
 </template>
 <script lang="ts">

@@ -90,7 +90,6 @@
             "UploadPrint": "Upload & Print"
         },
         "TopCornerMenu": {
-            "Cancel": "Cancel",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Rebooting the Host will cause the current print to fail!",
@@ -125,7 +124,6 @@
             "Stop": "Stop"
         },
         "UpdateDialog": {
-            "Close": "Close",
             "Empty": "Empty",
             "Recovering": "Recovering {software}...",
             "RecoveringDone": "Recovering {software} done!",
@@ -144,11 +142,18 @@
         "ScrewName": "Screw Name",
         "ScrewOutput": "{current} of {max}"
     },
+    "Buttons": {
+        "Cancel": "Cancel",
+        "Close": "Close",
+        "Confirm": "Confirm",
+        "Delete": "Delete",
+        "No": "No",
+        "Save": "Save",
+        "Yes": "Yes"
+    },
     "CancelJobDialog": {
         "AreYouSure": "Are you sure?",
-        "CancelJob": "Cancel Job",
-        "No": "No",
-        "Yes": "Yes"
+        "CancelJob": "Cancel Job"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
@@ -170,9 +175,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "Are you sure?",
-        "CoolDown": "CoolDown",
-        "No": "No",
-        "Yes": "Yes"
+        "CoolDown": "CoolDown"
     },
     "DevicesDialog": {
         "CanBusInfo": "Only unassigned nodes can be detected. It’s recommended to have only one unassigned device connected to the can bus to avoid communication issues. For more details, please click on the link:",
@@ -194,7 +197,6 @@
                 "FilamentTypeMismatch": "Filament type in the G-Code ({file}) does not match the selected filament type ({lane}).",
                 "FilamentWeightNotEnough": "Not enough filament in the selected lane ({lane}). Required: {required}, Available: {available}."
             },
-            "Cancel": "Cancel",
             "DoYouWantToStartFilename": "Do you want to start {filename}?",
             "DoYouWantToStartFilenameFilament": "Do you want to start {filename} with the following filament?",
             "Headline": "Start Job",
@@ -220,16 +222,13 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Are you sure?",
-        "EmergencyStop": "Emergency Stop",
-        "No": "No",
-        "Yes": "Yes"
+        "EmergencyStop": "Emergency Stop"
     },
     "Files": {
         "AddBatchToQueue": "Add batch to Queue",
         "AddToQueue": "Add to Queue",
         "AllFiles": "All",
         "BedTemp": "Bed Temp.",
-        "Cancel": "Cancel",
         "ChamberTemp": "Chamber Temp.",
         "Count": "Count",
         "Create": "Create",
@@ -326,7 +325,6 @@
         "VoxelMode": "Voxel Mode (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "abort",
         "BedMeshCalibrate": "Bed Mesh Calibrate",
         "BedMeshRemove": "Bed Mesh Remove",
         "Calibrate": "calibrate",
@@ -354,7 +352,6 @@
         "NoProfile": "No profile available",
         "Probed": "Probed",
         "Profiles": "Profiles",
-        "Remove": "delete",
         "Rename": "rename",
         "RenameBedMeshProfile": "Rename Bed Mesh Profile",
         "ScaleGradient": "Scale gradient",
@@ -371,7 +368,6 @@
         "AddToQueueSuccessful": "File {filename} added to Queue.",
         "AllJobs": "All",
         "AvgPrinttime": "Print Time - Ø",
-        "Cancel": "Cancel",
         "Chart": "Chart",
         "CreateNote": "Create Note",
         "DateBasedReminder": "Date",
@@ -435,7 +431,6 @@
         "Reminder": "Reminder",
         "Repeat": "Repeat",
         "Reprint": "Reprint",
-        "Save": "save",
         "Search": "search",
         "SelectedFilamentUsed": "Selected Filament Used",
         "SelectedJobs": "Selected Jobs",
@@ -467,7 +462,6 @@
         "TotalTime": "Total Time"
     },
     "JobQueue": {
-        "Cancel": "Cancel",
         "ChangeCount": "Change count",
         "Count": "Count",
         "Empty": "Empty",
@@ -482,14 +476,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "All",
-            "Cancel": "Cancel",
             "ConfigFiles": "Config Files",
             "ConfigRootDirectoryDoesntExists": "No configuration directory found. Please check option \"config_path\" in the [file_manager] section of the Moonraker configuration.",
             "Create": "Create",
             "CreateDirectory": "Create Directory",
             "CreateFile": "Create File",
             "CurrentPath": "Current path",
-            "Delete": "Delete",
             "DeleteDirectory": "Delete Directory",
             "DeleteDirectoryQuestion": "Delete directory \"{name}\" and all its contents?",
             "DeleteSelectedQuestion": "Delete {count} selected elements?",
@@ -528,7 +520,6 @@
         },
         "LogfilesPanel": {
             "Accept": "accept",
-            "Cancel": "cancel",
             "Logfiles": "Log Files",
             "Rollover": "Rollover Logs",
             "RolloverDescription": "Please select which logs should be reset:",
@@ -564,7 +555,6 @@
             "Abort": "Abort",
             "AreYouSure": "Are you sure?",
             "CheckForUpdates": "Check for updates",
-            "Close": "Close",
             "CommitHistory": "Commit History",
             "Commits": "Commits",
             "CommitsAvailable": "no commits available | {count} commit available | {count} commits available",
@@ -618,7 +608,6 @@
             "BufferDisabled": "Buffer Not Active",
             "BypassActive": "Filament loaded in bypass, tool changes are deactivated!",
             "Calibrate": "Calibrate",
-            "Cancel": "Cancel",
             "CaptureTD": "Capture TD",
             "Color": "Color",
             "DebugJson": "Debug JSON",
@@ -740,6 +729,10 @@
             "Restart": "Restart",
             "ServiceReports": "{service} reports"
         },
+        "LedEffectsPanel": {
+            "Headline": "LED Effects",
+            "StopAll": "Stop All Effects"
+        },
         "MachineSettingsPanel": {
             "Headline": "Machine",
             "MotionSettings": {
@@ -798,7 +791,6 @@
             "ButtonUnloadExt": "Unload Ext",
             "ButtonUnlock": "Unlock",
             "Bypass": "Bypass",
-            "Cancel": "Cancel",
             "Clog": "Clog",
             "ClogTangleDetection": "Clog/Tangle Detection",
             "Dialog": {
@@ -927,7 +919,7 @@
                 "AllTools": "All Tools",
                 "Bypass": "Bypass",
                 "Color": "Color",
-                "EndlessSpool": "ES \u221E",
+                "EndlessSpool": "ES ∞",
                 "FilamentInfo": "Filament Information",
                 "Gate": "Gate",
                 "MapSlicerTools": "Map slicer tools to MMU gates for print",
@@ -955,7 +947,6 @@
         },
         "SpoolmanPanel": {
             "ActiveSpool": "Active Spool",
-            "Cancel": "Cancel",
             "ChangeSpool": "Change Spool",
             "DaysAgo": "{days} days ago",
             "EjectSpool": "Eject spool",
@@ -991,7 +982,6 @@
             "Estimate": "Estimate",
             "ETA": "ETA",
             "ExcludeObject": {
-                "Cancel": "cancel",
                 "Excluded": "Excluded",
                 "ExcludeObject": "Exclude Object",
                 "ExcludeObjectHeadline": "Exclude Object",
@@ -1091,7 +1081,6 @@
             "Headline": "Z-Offset",
             "Later": "Later",
             "Ok": "OK",
-            "Save": "Save",
             "SaveConfig": "SAVE CONFIG",
             "SaveInfoDescription": "The new Z-Offset has been calculated and registered. Click on \"SAVE CONFIG\" to save it to the printer.cfg and restart Klipper.",
             "SaveInfoDescriptionPrint": "The new Z-Offset has been calculated and registered. After printing, click on \"SAVE CONFIG\" in the top bar to save it to the printer.cfg and restart Klipper.",
@@ -1100,10 +1089,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Are you sure?",
-        "No": "No",
         "TurnDeviceOff": "Turn {device} off",
-        "TurnDeviceOn": "Turn {device} on",
-        "Yes": "Yes"
+        "TurnDeviceOn": "Turn {device} on"
     },
     "Router": {
         "Console": "Console",
@@ -1147,8 +1134,6 @@
         "YouCanFindMore": "You can find more details at"
     },
     "Settings": {
-        "Cancel": "Cancel",
-        "Close": "Close",
         "ConsoleTab": {
             "AddFilter": "add filter",
             "Console": "Console",
@@ -1596,11 +1581,9 @@
     "Timelapse": {
         "AllFiles": "All",
         "Autorender": "Auto-render",
-        "Cancel": "Cancel",
         "Create": "Create",
         "CreateNewDirectory": "create directory",
         "CurrentPath": "Current Path",
-        "Delete": "Delete",
         "DeleteDirectory": "Delete Directory",
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",

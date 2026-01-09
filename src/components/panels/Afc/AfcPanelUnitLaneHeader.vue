@@ -4,7 +4,7 @@
             <v-btn dense small class="w-100 elevation-0" @click="showDialog = true">
                 {{ name }} > {{ mappedTool }}
             </v-btn>
-            <afc-unit-lane-mapping-tool-dialog :name="name" :show="showDialog" @close="showDialog = false" />
+            <afc-unit-lane-mapping-tool-dialog v-model="showDialog" :name="name" />
         </v-col>
     </v-row>
 </template>

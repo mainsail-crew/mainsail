@@ -115,7 +115,7 @@
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">
                     <v-btn text @click="form.bool = false">
-                        {{ $t('Settings.Cancel') }}
+                        {{ $t('Buttons.Cancel') }}
                     </v-btn>
                     <v-btn color="primary" text type="submit">
                         {{

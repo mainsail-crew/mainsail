@@ -61,7 +61,7 @@
                 <v-row>
                     <v-col class="text-center pt-5">
                         <v-btn text :disabled="!complete" color="primary" @click="close">
-                            {{ $t('App.UpdateDialog.Close') }}
+                            {{ $t('Buttons.Close') }}
                         </v-btn>
                     </v-col>
                 </v-row>

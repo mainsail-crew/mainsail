@@ -39,6 +39,7 @@
                     class="jobqueue-list mb-3"
                     ghost-class="ghost"
                     group="jobs"
+                    :force-fallback="true"
                     @end="updateOrder">
                     <jobqueue-entry v-for="job in jobs" :key="job.job_id" :job="job" :show-handle="true" />
                 </draggable>

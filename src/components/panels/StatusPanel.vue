@@ -120,10 +120,14 @@
                 </v-tab-item>
             </v-tabs-items>
         </panel>
-        <cancel-job-dialog
-            :show-dialog="showCancelJobDialog"
-            @cancel-job="cancelJob"
-            @close="showCancelJobDialog = false" />
+        <confirmation-dialog
+            v-model="showCancelJobDialog"
+            :icon="mdiStopCircleOutline"
+            :title="$t('CancelJobDialog.CancelJob')"
+            :text="$t('CancelJobDialog.AreYouSure')"
+            :action-button-text="$t('Buttons.Yes')"
+            :cancel-button-text="$t('Buttons.No')"
+            @action="cancelJob" />
     </div>
 </template>
 
@@ -157,14 +161,15 @@ import {
     mdiSelectionRemove,
     mdiSpeedometer,
     mdiStop,
+    mdiStopCircleOutline,
     mdiTrayFull,
 } from '@mdi/js'
 import { PrinterStateMacro } from '@/store/printer/types'
-import CancelJobDialog from '@/components/dialogs/CancelJobDialog.vue'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
 @Component({
     components: {
-        CancelJobDialog,
+        ConfirmationDialog,
         KlippyStatePanel,
         MinSettingsPanel,
         Panel,
@@ -186,6 +191,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiHistory = mdiHistory
     mdiMessageProcessingOutline = mdiMessageProcessingOutline
     mdiSpeedometer = mdiSpeedometer
+    mdiStopCircleOutline = mdiStopCircleOutline
     mdiTrayFull = mdiTrayFull
 
     declare $refs: {
@@ -443,7 +449,6 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     cancelJob() {
-        this.showCancelJobDialog = false
         this.$socket.emit('printer.print.cancel', {}, { loading: 'statusPrintCancel' })
     }
 

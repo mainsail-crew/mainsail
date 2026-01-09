@@ -76,7 +76,6 @@
             "UploadPrint": "Ladda upp och skriv ut"
         },
         "TopCornerMenu": {
-            "Cancel": "Avbryt",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Om du startar om värddatorn kommer den aktuella utskriften att misslyckas!",
@@ -111,7 +110,6 @@
             "Stop": "Stoppa"
         },
         "UpdateDialog": {
-            "Close": "Stäng",
             "Empty": "Tom",
             "Recovering": "Återställer {software}...",
             "RecoveringDone": "Återställning av {software} klar!",
@@ -130,6 +128,14 @@
         "ScrewName": "Skruvnamn",
         "ScrewOutput": "{current} av {max}"
     },
+    "Buttons": {
+        "Cancel": "Avbryt",
+        "Close": "Stäng",
+        "Delete": "Radera",
+        "No": "Nej",
+        "Save": "Spara",
+        "Yes": "Ja"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Kan inte ansluta till Moonraker ({host}).",
         "CheckMoonrakerLog": "Om det här meddelandet visas upprepade gånger, vänligen ta en titt i loggfilen som finns på:",
@@ -147,7 +153,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Avbryt",
             "DoYouWantToStartFilename": "Vill du starta {filename}?",
             "DoYouWantToStartFilenameFilament": "Vill du starta {filename} med följande filament?",
             "Headline": "Starta jobb",
@@ -171,16 +176,13 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Är du säker?",
-        "EmergencyStop": "Nödstopp",
-        "No": "Nej",
-        "Yes": "Ja"
+        "EmergencyStop": "Nödstopp"
     },
     "Files": {
         "AddBatchToQueue": "Lägg till omgång till kö",
         "AddToQueue": "Lägg till i kö",
         "AllFiles": "Alla",
         "BedTemp": "Bäddtemp.",
-        "Cancel": "Avbryt",
         "ChamberTemp": "Kammartemp.",
         "Count": "Räkna",
         "Create": "Skapa",
@@ -276,7 +278,6 @@
         "VoxelMode": "Voxelläge (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "avbryt",
         "BedMeshCalibrate": "Kalibrera sängnät (Bed Mesh)",
         "BedMeshRemove": "Ta bort sängnät (Bed Mesh)",
         "Calibrate": "kalibrera",
@@ -304,7 +305,6 @@
         "NoProfile": "Ingen profil tillgänglig",
         "Probed": "Sonderat",
         "Profiles": "Profiler",
-        "Remove": "radera",
         "Rename": "döp om",
         "RenameBedMeshProfile": "Döp om sängnätsprofil (Bed Mesh Profile)",
         "ScaleGradient": "Skala övertoning",
@@ -318,7 +318,6 @@
         "AddNote": "Lägg till anteckning",
         "AllJobs": "Alla",
         "AvgPrinttime": "Utskriftstid - Ø",
-        "Cancel": "Avbryt",
         "Chart": "Diagram",
         "CreateNote": "Skapa anteckning",
         "Delete": "Radera",
@@ -353,7 +352,6 @@
         "PrintTime": "Utskriftstid",
         "PrinttimeAvg": "Utskriftstid - Ø",
         "Reprint": "Skriv ut på nytt",
-        "Save": "spara",
         "Search": "sök",
         "SelectedFilamentUsed": "Valt filament som används",
         "SelectedJobs": "Valda jobb",
@@ -382,7 +380,6 @@
         "TotalTime": "Total tid"
     },
     "JobQueue": {
-        "Cancel": "Avbryt",
         "ChangeCount": "Ändra räkning",
         "Count": "Räkna",
         "Empty": "Tom",
@@ -396,14 +393,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Alla",
-            "Cancel": "Avbryt",
             "ConfigFiles": "Konfigurationsfiler",
             "ConfigRootDirectoryDoesntExists": "Ingen konfigurationskatalog hittades. Kontrollera alternativet \"config_path\" i avsnittet [file_hanterare] i Moonraker-konfigurationen.",
             "Create": "Skapa",
             "CreateDirectory": "Skapa katalog",
             "CreateFile": "Skapa fil",
             "CurrentPath": "Nuvarande sökväg",
-            "Delete": "Radera",
             "DeleteDirectory": "Radera historik",
             "DeleteDirectoryQuestion": "Vill du verkligen radera katalogen \"{name}\" med allt dess innehåll?",
             "DeleteSelectedQuestion": "Vill du ta bort {count} markerade element?",
@@ -442,7 +437,6 @@
         },
         "LogfilesPanel": {
             "Accept": "godkänn",
-            "Cancel": "avbryt",
             "Logfiles": "Loggfiler",
             "Rollover": "Överrullningsloggar",
             "RolloverDescription": "Välj vilka loggar som ska återställas:",
@@ -478,7 +472,6 @@
             "Abort": "Avbryt",
             "AreYouSure": "Är du säker?",
             "CheckForUpdates": "Sök efter uppdateringar",
-            "Close": "Stäng",
             "CommitHistory": "Commit Historik",
             "Commits": "Commits",
             "CommitsAvailable": "inga commits tillgängliga | {count} commit tillgänglig | {count} commits tillgängliga",
@@ -621,7 +614,6 @@
             "PowerControl": "Strömstyrning"
         },
         "SpoolmanPanel": {
-            "Cancel": "Avbryt",
             "ChangeSpool": "Byt spole",
             "DaysAgo": "för {days} dagar sedan",
             "EjectSpool": "Mata ut spolen",
@@ -655,7 +647,6 @@
             "Estimate": "Uppskattning",
             "ETA": "Beräknad tid",
             "ExcludeObject": {
-                "Cancel": "avbryt",
                 "Excluded": "Exluderad",
                 "ExcludeObject": "Exkludera objekt",
                 "ExcludeObjectHeadline": "Exkludera objekt",
@@ -748,7 +739,6 @@
             "Headline": "Z-Offset",
             "Later": "Senare",
             "Ok": "OK",
-            "Save": "Spara",
             "SaveConfig": "SPARA KONFIG",
             "SaveInfoDescription": "Den nya z-offset har beräknats och registrerats. Klicka på SAVE_CONFIG för att lagra den nya z-offset i din printer.cfg och starta om Klipper.",
             "SaveInfoDescriptionPrint": "Den nya Z-offseten har beräknats och registrerats. Efter utskrift, klicka på SAVE_CONFIG i den övre raden för att lagra den i printer.cfg och starta om Klipper.",
@@ -757,10 +747,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Är du säker?",
-        "No": "Nej",
         "TurnDeviceOff": "Stäng av {device}",
-        "TurnDeviceOn": "Slå på {device}",
-        "Yes": "Ja"
+        "TurnDeviceOn": "Slå på {device}"
     },
     "Router": {
         "Console": "konsol",
@@ -802,8 +790,6 @@
         "YouCanFindMore": "Du kan hitta mer information på"
     },
     "Settings": {
-        "Cancel": "Avbryt",
-        "Close": "Stäng",
         "ConsoleTab": {
             "AddFilter": "lägg till filter",
             "Console": "Konsol",
@@ -1193,11 +1179,9 @@
     "Timelapse": {
         "AllFiles": "Alla",
         "Autorender": "Automatisk rendering",
-        "Cancel": "Avbryt",
         "Create": "Skapa",
         "CreateNewDirectory": "skapa katalog",
         "CurrentPath": "Nuvarande sökväg",
-        "Delete": "Radera",
         "DeleteDirectory": "Radera katalog",
         "DeleteDirectoryQuestion": "Vill du verkligen ta bort katalogen \"{name}\" med allt dess innehåll?",
         "DeleteSelectedQuestion": "Vill du verkligen ta bort {count} valda filer?",

@@ -201,7 +201,7 @@
             </v-row>
         </v-card-text>
         <v-card-actions class="d-flex justify-end">
-            <v-btn text @click="closeForm">{{ $t('Settings.Cancel') }}</v-btn>
+            <v-btn text @click="closeForm">{{ $t('Buttons.Cancel') }}</v-btn>
             <v-btn color="primary" text type="submit" :disabled="!valid">{{ actionButtonText }}</v-btn>
         </v-card-actions>
     </v-form>

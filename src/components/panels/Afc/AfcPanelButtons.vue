@@ -20,7 +20,7 @@
                     <v-icon small left>{{ mdiVariable }}</v-icon>
                     {{ $t('Panels.AfcPanel.AfcSettings') }}
                 </v-btn>
-                <afc-settings-dialog :show="showAfcSettings" @close="showAfcSettings = false" />
+                <afc-settings-dialog v-model="showAfcSettings" />
             </v-list-item>
             <v-list-item>
                 <v-btn class="w-100" small @click="downloadDebugJson">

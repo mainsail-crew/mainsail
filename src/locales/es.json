@@ -90,7 +90,6 @@
             "UploadPrint": "Cargar e imprimir"
         },
         "TopCornerMenu": {
-            "Cancel": "Cancelar",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "¡Reiniciar el Host causará que la impresión en curso falle!",
@@ -125,7 +124,6 @@
             "Stop": "Parar"
         },
         "UpdateDialog": {
-            "Close": "Cerrar",
             "Empty": "Vacío",
             "Recovering": "Recuperando {software}...",
             "RecoveringDone": "¡Recuperación de {software} realizada!",
@@ -144,11 +142,17 @@
         "ScrewName": "Nombre de Tornillo",
         "ScrewOutput": "{current} de {max}"
     },
+    "Buttons": {
+        "Cancel": "Cancelar",
+        "Close": "Cerrar",
+        "Delete": "Eliminar",
+        "No": "No",
+        "Save": "Guardar",
+        "Yes": "Sí"
+    },
     "CancelJobDialog": {
         "AreYouSure": "¿Estás seguro?",
-        "CancelJob": "Cancelar trabajo",
-        "No": "No",
-        "Yes": "Sí"
+        "CancelJob": "Cancelar trabajo"
     },
     "ConnectionDialog": {
         "CannotConnectTo": "No se pudo conectar a ({host}) Moonraker.",
@@ -170,9 +174,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "¿Estás seguro?",
-        "CoolDown": "Enfriarse",
-        "No": "No",
-        "Yes": "Sí"
+        "CoolDown": "Enfriarse"
     },
     "DevicesDialog": {
         "CanBusInfo": "Solo se pueden detectar los nodos no asignados. Se recomienda tener solo un dispositivo no asignado conectado al bus CAN para evitar problemas de comunicación. Para obtener más detalles, haga clic en el enlace:",
@@ -190,7 +192,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Cancelar",
             "DoYouWantToStartFilename": "¿Desea iniciar {filename}?",
             "DoYouWantToStartFilenameFilament": "¿Quieres iniciar {filename} con el siguiente filamento?",
             "Headline": "Iniciar trabajo",
@@ -216,16 +217,13 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "¿Está seguro?",
-        "EmergencyStop": "Parada de emergencia",
-        "No": "No",
-        "Yes": "Sí"
+        "EmergencyStop": "Parada de emergencia"
     },
     "Files": {
         "AddBatchToQueue": "Añadir lote a la fila",
         "AddToQueue": "Añadir a la fila",
         "AllFiles": "Todos",
         "BedTemp": "Temp. Cama",
-        "Cancel": "Cancelar",
         "ChamberTemp": "Temp. Cámara",
         "Count": "Contador",
         "Create": "Crear",
@@ -321,7 +319,6 @@
         "VoxelMode": "Modo Voxel (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "Abortar",
         "BedMeshCalibrate": "Calibrar malla de la cama",
         "BedMeshRemove": "Borrar malla de cama",
         "Calibrate": "Calibrar",
@@ -349,7 +346,6 @@
         "NoProfile": "No hay perfil disponible",
         "Probed": "Sondeada",
         "Profiles": "Perfil",
-        "Remove": "remover",
         "Rename": "renombrar",
         "RenameBedMeshProfile": "Renombrar perfil de BED_MESH",
         "ScaleGradient": "Gradiente de escala",
@@ -366,7 +362,6 @@
         "AddToQueueSuccessful": "El archivo {filename} está añadido a la cola.",
         "AllJobs": "Todos",
         "AvgPrinttime": "Tiempo promedio de imp.",
-        "Cancel": "Cancelar",
         "Chart": "Gráfico",
         "CreateNote": "Crear Nota",
         "DateBasedReminder": "Fecha",
@@ -429,7 +424,6 @@
         "Reminder": "Recordatorio",
         "Repeat": "Repetir",
         "Reprint": "Reimprimir",
-        "Save": "guardar",
         "Search": "Buscar",
         "SelectedFilamentUsed": "Elija el filamento usado",
         "SelectedJobs": "Tareas elegidas",
@@ -460,7 +454,6 @@
         "TotalTime": "Tiempo total"
     },
     "JobQueue": {
-        "Cancel": "Cancelar",
         "ChangeCount": "Cambiar contador",
         "Count": "Contador",
         "Empty": "Vacía",
@@ -475,14 +468,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Todos",
-            "Cancel": "Cancelar",
             "ConfigFiles": "Archivos de configuración",
             "ConfigRootDirectoryDoesntExists": "Ningún directorio encontrado. Por favor habilita la opción \"config_path\" en la sección [file_manager] de la configuración de Moonraker.",
             "Create": "Crear",
             "CreateDirectory": "Crear directorio",
             "CreateFile": "Crear archivo",
             "CurrentPath": "Ruta actual",
-            "Delete": "Eliminar",
             "DeleteDirectory": "Eliminar carpeta",
             "DeleteDirectoryQuestion": "¿Realmente quiere eliminar \"{name}\" con todo su contenido?",
             "DeleteSelectedQuestion": "¿Eliminar {count} elementos seleccionados?",
@@ -521,7 +512,6 @@
         },
         "LogfilesPanel": {
             "Accept": "Aceptar",
-            "Cancel": "Cancelar",
             "Logfiles": "Archivos de registro",
             "Rollover": "Registros de Rotación",
             "RolloverDescription": "Por favor seleciona los registros que deben ser reseteados:",
@@ -557,7 +547,6 @@
             "Abort": "Abortar",
             "AreYouSure": "¿Estás seguro?",
             "CheckForUpdates": "Comprobar actualizaciones",
-            "Close": "Cerrar",
             "CommitHistory": "Historial de Commits",
             "Commits": "Commits",
             "CommitsAvailable": "no hay commits disponibles | {count} commit disponible | {count} commits disponibles",
@@ -703,7 +692,6 @@
             "PowerControl": "Control de energía"
         },
         "SpoolmanPanel": {
-            "Cancel": "Cancelar",
             "ChangeSpool": "Cambiar carrete",
             "DaysAgo": "Hace {days} días",
             "EjectSpool": "Expulsar el carrete",
@@ -737,7 +725,6 @@
             "Estimate": "Estimación",
             "ETA": "ETA",
             "ExcludeObject": {
-                "Cancel": "Cancelar",
                 "Excluded": "Excluido",
                 "ExcludeObject": "Excluir objeto",
                 "ExcludeObjectHeadline": "Excluir objeto",
@@ -833,7 +820,6 @@
             "Headline": "Z-Offset",
             "Later": "Más tarde",
             "Ok": "OK",
-            "Save": "Guardar",
             "SaveConfig": "SAVEE CONFIG",
             "SaveInfoDescription": "El nuervo Z-Offset fue calculado y registrado. Haga click en \"SAVE CONFIG\" para guardar el nuevo Z-Offset en su archivo printer.cfg y reiniciar Klipper.",
             "SaveInfoDescriptionPrint": "El nuevo Z-Offset fue calculado y registrado. Después de imprimir, haga click en \"SAVE CONFIG\" en la barra superior para guardarlo en printer.cfg y reiniciar Klipper.",
@@ -842,10 +828,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "¿Está seguro?",
-        "No": "No",
         "TurnDeviceOff": "Apagar {device}",
-        "TurnDeviceOn": "Encender {device}",
-        "Yes": "Si"
+        "TurnDeviceOn": "Encender {device}"
     },
     "Router": {
         "Console": "Consola",
@@ -889,8 +873,6 @@
         "YouCanFindMore": "Puede encontrar más detalles en"
     },
     "Settings": {
-        "Cancel": "Cancelar",
-        "Close": "Cerrar",
         "ConsoleTab": {
             "AddFilter": "Agregar filtro",
             "Console": "Consola",
@@ -1312,11 +1294,9 @@
     "Timelapse": {
         "AllFiles": "Todos",
         "Autorender": "Autorrenderizado",
-        "Cancel": "Cancelar",
         "Create": "Crear",
         "CreateNewDirectory": "Crear directorio",
         "CurrentPath": "Ruta actual",
-        "Delete": "Eliminar",
         "DeleteDirectory": "Eliminar directorio",
         "DeleteDirectoryQuestion": "¿Está seguro de que desea eliminar la carpeta \"{name}\" con todo su contenido?",
         "DeleteSelectedQuestion": "¿Realmente quieres borrar {count} archivos selecionados?",

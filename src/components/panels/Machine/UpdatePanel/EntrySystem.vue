@@ -26,10 +26,7 @@
                 </v-chip>
             </v-col>
         </v-row>
-        <system-packages-list
-            :bool-show-dialog="boolShowPackageList"
-            :packages-list="package_list"
-            @close-dialog="closePackagesList" />
+        <system-packages-list v-model="boolShowPackageList" :packages-list="package_list" />
     </div>
 </template>
 
