@@ -61,6 +61,19 @@
                                 :rules="rulesStreamUrl" />
                         </v-col>
                     </v-row>
+                    <v-row v-if="showIframeAspectRatio">
+                        <v-col class="py-2">
+                            <v-text-field
+                                v-model="webcam.aspect_ratio"
+                                :label="$t('Settings.WebcamsTab.IframeAspectRatio')"
+                                hide-details="auto"
+                                :hint="$t('Settings.WebcamsTab.IframeAspectRatioFormat')"
+                                outlined
+                                dense
+                                persistent-hint
+                                :rules="[rules.required, rules.aspect]" />
+                        </v-col>
+                    </v-row>
                     <v-row>
                         <v-col class="py-2">
                             <v-text-field
@@ -235,6 +248,8 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     rules = {
         required: (value: string) => value !== '' || this.$t('Settings.WebcamsTab.Required'),
         unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamsTab.NameAlreadyExists'),
+        aspect: (value: string) =>
+            /^\d+\s*[:/]\s*\d+$/.test(value) || this.$t('Settings.WebcamsTab.InvalidAspectRatio'),
     }
 
     get webcams() {
@@ -290,6 +305,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'mjpegstreamer-adaptive', text: this.$t('Settings.WebcamsTab.MjpegstreamerAdaptive') },
             { value: 'uv4l-mjpeg', text: this.$t('Settings.WebcamsTab.Uv4lMjpeg') },
             { value: 'html-video', text: this.$t('Settings.WebcamsTab.HtmlVideo') },
+            { value: 'iframe', text: this.$t('Settings.WebcamsTab.Iframe') },
             { value: 'webrtc-camerastreamer', text: this.$t('Settings.WebcamsTab.WebrtcCameraStreamer') },
             { value: 'webrtc-go2rtc', text: this.$t('Settings.WebcamsTab.WebrtcGo2rtc') },
             { value: 'webrtc-mediamtx', text: this.$t('Settings.WebcamsTab.WebrtcMediaMTX') },
@@ -328,6 +344,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         return [
             'hlsstream',
             'html-video',
+            'iframe',
             'jmuxer-stream',
             'mjpegstreamer',
             'mjpegstreamer-adaptive',
@@ -345,6 +362,10 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
     get hasAudioOption() {
         return ['webrtc-go2rtc'].includes(this.webcam.service)
+    }
+
+    get showIframeAspectRatio() {
+        return this.webcam.service === 'iframe'
     }
 
     get hideFps() {

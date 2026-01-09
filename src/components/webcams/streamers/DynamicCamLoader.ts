@@ -3,6 +3,7 @@ import Vue from 'vue'
 type StreamerTypes =
     | 'Hlsstreamer'
     | 'HtmlVideo'
+    | 'IframePage'
     | 'JanusStreamer'
     | 'JMuxerStream'
     | 'Mjpegstreamer'
@@ -19,6 +20,8 @@ function getDynamicCamImport(componentName: StreamerTypes) {
             return () => import('@/components/webcams/streamers/Hlsstreamer.vue')
         case 'HtmlVideo':
             return () => import('@/components/webcams/streamers/HtmlVideo.vue')
+        case 'IframePage':
+            return () => import('@/components/webcams/streamers/IframePage.vue')
         case 'JanusStreamer':
             return () => import('@/components/webcams/streamers/JanusStreamer.vue')
         case 'JMuxerStream':

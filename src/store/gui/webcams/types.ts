@@ -8,6 +8,7 @@ export interface GuiWebcamStateWebcam {
     service:
         | 'hlsstream'
         | 'html-video'
+        | 'iframe'
         | 'jmuxer-stream'
         | 'mjpegstreamer'
         | 'mjpegstreamer-adaptive'
@@ -25,6 +26,7 @@ export interface GuiWebcamStateWebcam {
     flip_vertical: boolean
     rotation: number
     aspect_ratio?: string
+    height?: number
     extra_data?: {
         enableAudio?: boolean
         hideFps?: boolean
