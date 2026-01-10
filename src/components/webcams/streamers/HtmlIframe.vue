@@ -43,7 +43,6 @@ export default class HtmlIframe extends Mixins(BaseMixin, WebcamMixin) {
                 this.camSettings.flip_vertical ?? false,
                 this.camSettings.rotation ?? 0
             ),
-            width: '100%',
         }
 
         if (this.iframeAspectRatio) {
