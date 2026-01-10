@@ -61,19 +61,6 @@
                                 :rules="rulesStreamUrl" />
                         </v-col>
                     </v-row>
-                    <v-row v-if="showIframeAspectRatio">
-                        <v-col class="py-2">
-                            <v-text-field
-                                v-model="webcam.aspect_ratio"
-                                :label="$t('Settings.WebcamsTab.IframeAspectRatio')"
-                                hide-details="auto"
-                                :hint="$t('Settings.WebcamsTab.IframeAspectRatioFormat')"
-                                outlined
-                                dense
-                                persistent-hint
-                                :rules="[rules.required, rules.aspect]" />
-                        </v-col>
-                    </v-row>
                     <v-row>
                         <v-col class="py-2">
                             <v-text-field
@@ -97,6 +84,15 @@
                         </v-col>
                     </v-row>
                     <v-row v-if="hasTargetFps || hasRotate">
+                        <v-col v-if="hasAspectRatio" class="py-2">
+                            <v-text-field
+                                v-model="webcam.aspect_ratio"
+                                :label="$t('Settings.WebcamsTab.AspectRatio')"
+                                hide-details="auto"
+                                outlined
+                                dense
+                                :rules="[rules.required, rules.aspect]" />
+                        </v-col>
                         <v-col v-if="hasTargetFps" class="py-2 col-6">
                             <v-text-field
                                 v-model="webcam.target_fps"
@@ -248,8 +244,17 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     rules = {
         required: (value: string) => value !== '' || this.$t('Settings.WebcamsTab.Required'),
         unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamsTab.NameAlreadyExists'),
-        aspect: (value: string) =>
-            /^\d+\s*[:/]\s*\d+$/.test(value) || this.$t('Settings.WebcamsTab.InvalidAspectRatio'),
+        aspect: (value: string) => {
+            const match = value.match(/^(\d+)\s*[:/]\s*(\d+)$/)
+            if (!match) return this.$t('Settings.WebcamsTab.InvalidAspectRatio')
+
+            const width = parseInt(match[1])
+            const height = parseInt(match[2])
+
+            if (width < 1 || height < 1) return this.$t('Settings.WebcamsTab.InvalidAspectRatio')
+
+            return true
+        },
     }
 
     get webcams() {
@@ -360,12 +365,12 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         return ['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(this.webcam.service)
     }
 
-    get hasAudioOption() {
-        return ['webrtc-go2rtc'].includes(this.webcam.service)
+    get hasAspectRatio() {
+        return ['iframe'].includes(this.webcam.service)
     }
 
-    get showIframeAspectRatio() {
-        return this.webcam.service === 'iframe'
+    get hasAudioOption() {
+        return ['webrtc-go2rtc'].includes(this.webcam.service)
     }
 
     get hideFps() {

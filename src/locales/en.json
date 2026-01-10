@@ -1535,6 +1535,7 @@
         "Update": "update",
         "WebcamsTab": {
             "AddWebcam": "add webcam",
+            "AspectRatio": "Aspect ratio",
             "Color": "Color",
             "CreateWebcam": "Create Webcam",
             "EditCrowsnestConf": "Edit crowsnest.conf",
@@ -1555,9 +1556,7 @@
             "IconMcu": "MCU",
             "IconNozzle": "Nozzle",
             "IconPrinter": "Printer",
-            "IframeAspectRatio": "Aspect ratio",
-            "IframeAspectRatioFormat": "[width : height]",
-            "InvalidAspectRatio": "Invalid aspect ratio",
+            "InvalidAspectRatio": "Has to be WIDTH:HEIGHT (e.g. 16:9)",
             "JMuxerStream": "Raw h264 stream (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
