@@ -23,12 +23,41 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         try {
             await dispatch('initIdentifyClient')
-            const serverComponents = await dispatch('initServerInfo')
+            const { components, registeredDirectories } = (await dispatch('initServerInfo')) as {
+                components: string[]
+                registeredDirectories: string[]
+            }
             await dispatch('initServerConfig')
             await dispatch('initSystemInfo')
             await dispatch('initProcStats')
-            await dispatch('initDatabases')
-            await dispatch('initServerComponents', serverComponents)
+            const dbNamespaces = (await dispatch('initDatabases')) as string[]
+
+            if (registeredDirectories.length) {
+                // TODO: convert to async module initialization
+                dispatch('files/initRootDirs', registeredDirectories, { root: true })
+            }
+
+            // TODO: convert to async module initialization
+            if (dbNamespaces.includes('mainsail')) {
+                dispatch('socket/addInitModule', 'gui/init', { root: true })
+                dispatch('gui/init', null, { root: true })
+            } else {
+                dispatch('gui/initDb', null, { root: true })
+            }
+
+            // TODO: convert to async module initialization
+            if (dbNamespaces.includes('maintenance')) {
+                dispatch('socket/addInitModule', 'gui/maintenance/init', { root: true })
+                dispatch('gui/maintenance/init', null, { root: true })
+            } else {
+                dispatch('gui/maintenance/initDb', null, { root: true })
+            }
+
+            // TODO: convert to async module initialization
+            dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
+            dispatch('gui/webcams/init', null, { root: true })
+
+            await dispatch('initServerComponents', components)
             await dispatch('initKlippyConnection')
 
             // Server init complete
@@ -66,14 +95,12 @@ export const actions: ActionTree<ServerState, RootState> = {
         })
 
         const serverInfo = await Vue.$socket.emitAndWait('server.info')
-        if (serverInfo.registered_directories?.length) {
-            // TODO: create a dedicated action for this
-            dispatch('files/initRootDirs', serverInfo.registered_directories, { root: true })
-        }
-
         commit('setData', serverInfo)
 
-        return serverInfo.components ?? []
+        return {
+            components: serverInfo.components ?? [],
+            registeredDirectories: serverInfo.registered_directories ?? [],
+        }
     },
 
     async initServerConfig({ commit, dispatch }) {
@@ -118,29 +145,9 @@ export const actions: ActionTree<ServerState, RootState> = {
         })
 
         const dbList = await Vue.$socket.emitAndWait('server.database.list', { root: 'config' })
-
-        // TODO: move to separate actions
-        if (dbList.namespaces?.includes('mainsail')) {
-            dispatch('socket/addInitModule', 'gui/init', { root: true })
-            dispatch('gui/init', null, { root: true })
-        } else {
-            dispatch('gui/initDb', null, { root: true })
-        }
-
-        // TODO: move to separate actions
-        if (dbList.namespaces?.includes('maintenance')) {
-            dispatch('socket/addInitModule', 'gui/maintenance/init', { root: true })
-            dispatch('gui/maintenance/init', null, { root: true })
-        } else {
-            dispatch('gui/maintenance/initDb', null, { root: true })
-        }
-
-        // TODO: move to separate actions
-        dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
-        // TODO: move to separate actions
-        dispatch('gui/webcams/init', null, { root: true })
-
         commit('setData', { dbNamespaces: dbList.namespaces })
+
+        return dbList.namespaces || []
     },
 
     // TODO: rework to async module initialization
