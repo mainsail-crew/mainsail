@@ -13,7 +13,7 @@ import WebcamMixin from '@/components/mixins/webcam'
 const DEFAULT_IFRAME_HEIGHT = 720
 
 @Component
-export default class IframePage extends Mixins(BaseMixin, WebcamMixin) {
+export default class HtmlIframe extends Mixins(BaseMixin, WebcamMixin) {
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
 
