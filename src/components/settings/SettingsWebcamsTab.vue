@@ -35,7 +35,7 @@ import WebcamForm from '@/components/settings/Webcams/WebcamForm.vue'
 import WebcamListEntry from '@/components/settings/Webcams/WebcamListEntry.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
-const DEFAULT_IFRAME_ASPECT_RATIO = '16:9'
+const DEFAULT_ASPECT_RATIO = '16:9'
 
 @Component({
     components: {
@@ -91,7 +91,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             rotation: 0,
             flip_horizontal: false,
             flip_vertical: false,
-            aspect_ratio: DEFAULT_IFRAME_ASPECT_RATIO,
+            aspect_ratio: DEFAULT_ASPECT_RATIO,
             extra_data: {},
         }
 
