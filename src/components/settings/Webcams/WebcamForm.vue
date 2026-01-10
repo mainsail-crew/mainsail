@@ -245,7 +245,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         required: (value: string) => value !== '' || this.$t('Settings.WebcamsTab.Required'),
         unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamsTab.NameAlreadyExists'),
         aspect: (value: string) => {
-            const match = value.match(/^(\d+)\s*[:/]\s*(\d+)$/)
+            const match = value.toString().match(/^(\d+)\s*[:/]\s*(\d+)$/)
             if (!match) return this.$t('Settings.WebcamsTab.InvalidAspectRatio')
 
             const width = parseInt(match[1])
