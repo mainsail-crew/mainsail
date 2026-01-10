@@ -10,8 +10,6 @@ import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
 
-const DEFAULT_IFRAME_HEIGHT = 720
-
 @Component
 export default class HtmlIframe extends Mixins(BaseMixin, WebcamMixin) {
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
@@ -36,25 +34,15 @@ export default class HtmlIframe extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get iframeStyle() {
-        const style: Record<string, string> = {
+        return {
             border: 'none',
             transform: this.generateTransform(
                 this.camSettings.flip_horizontal ?? false,
                 this.camSettings.flip_vertical ?? false,
                 this.camSettings.rotation ?? 0
             ),
+            'aspect-ratio': this.iframeAspectRatio || '16:9',
         }
-
-        if (this.iframeAspectRatio) {
-            style['aspect-ratio'] = this.iframeAspectRatio
-            style['max-height'] = 'unset'
-            return style
-        }
-
-        const height = this.camSettings.height ?? DEFAULT_IFRAME_HEIGHT
-        style.height = `${height}px`
-
-        return style
     }
 }
 </script>
