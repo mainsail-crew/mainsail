@@ -29,7 +29,7 @@
                         </v-btn>
                         <v-btn
                             v-if="selectedFiles.length"
-                            :title="$t('Timelapse.Delete')"
+                            :title="$t('Buttons.Delete')"
                             color="error"
                             class="px-2 minwidth-0 ml-3"
                             @click="deleteSelectedDialog = true">
@@ -208,14 +208,14 @@
                     class="red--text"
                     @click="deleteDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
-                    {{ $t('Timelapse.Delete') }}
+                    {{ $t('Buttons.Delete') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     class="red--text"
                     @click="deleteDirectory(contextMenu.item)">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
-                    {{ $t('Timelapse.Delete') }}
+                    {{ $t('Buttons.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -241,7 +241,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Timelapse.Cancel') }}</v-btn>
+                    <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Buttons.Cancel') }}</v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="renameFileAction">
                         {{ $t('Timelapse.Rename') }}
                     </v-btn>
@@ -271,7 +271,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogCreateDirectory.show = false">
-                        {{ $t('Timelapse.Cancel') }}
+                        {{ $t('Buttons.Cancel') }}
                     </v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="createDirectoryAction">
                         {{ $t('Timelapse.Create') }}
@@ -302,7 +302,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogRenameDirectory.show = false">
-                        {{ $t('Timelapse.Cancel') }}
+                        {{ $t('Buttons.Cancel') }}
                     </v-btn>
                     <v-btn :disabled="isInvalidName" color="primary" text @click="renameDirectoryAction">
                         {{ $t('Timelapse.Rename') }}
@@ -310,30 +310,12 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
-            <panel
-                :title="$t('Timelapse.DeleteDirectory')"
-                card-class="gcode-files-delete-directory-dialog"
-                :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="dialogDeleteDirectory.show = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <p class="mb-0">
-                        {{ $t('Timelapse.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename }) }}
-                    </p>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogDeleteDirectory.show = false">
-                        {{ $t('Timelapse.Cancel') }}
-                    </v-btn>
-                    <v-btn color="error" text @click="deleteDirectoryAction">{{ $t('Timelapse.Delete') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+        <confirmation-dialog
+            v-model="dialogDeleteDirectory.show"
+            :title="$t('Timelapse.DeleteDirectory')"
+            :text="$t('Timelapse.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename })"
+            :action-button-text="$t('Buttons.Delete')"
+            @action="deleteDirectoryAction" />
         <v-dialog v-model="boolVideoDialog" :max-width="700">
             <panel
                 :title="$t('Timelapse.Video')"
@@ -371,53 +353,20 @@
         </v-dialog>
 
         <!-- CONFIRM DELETE SINGLE FILE DIALOG -->
-        <v-dialog v-model="deleteDialog" max-width="400">
-            <panel :title="$t('Timelapse.Delete')" card-class="timelapse-delete-dialog" :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="deleteDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <p class="mb-0">
-                        {{ $t('Timelapse.DeleteSingleFileQuestion', { name: contextMenu.item.filename }) }}
-                    </p>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="deleteDialog = false">
-                        {{ $t('Timelapse.Cancel') }}
-                    </v-btn>
-                    <v-btn color="error" text @click="removeFile">
-                        {{ $t('Timelapse.Delete') }}
-                    </v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+        <confirmation-dialog
+            v-model="deleteDialog"
+            :title="$t('Timelapse.Delete')"
+            :text="$t('Timelapse.DeleteSingleFileQuestion', { name: contextMenu.item.filename })"
+            :action-button-text="$t('Buttons.Delete')"
+            @action="removeFile" />
 
         <!-- CONFIRM DELETE MULTIPLE FILES DIALOG -->
-        <v-dialog v-model="deleteSelectedDialog" max-width="400">
-            <panel :title="$t('Timelapse.Delete')" card-class="timelapse-delete-selected-dialog" :margin-bottom="false">
-                <template #buttons>
-                    <v-btn icon tile @click="deleteSelectedDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-card-text>
-                    <p v-if="selectedFiles.length === 1" class="mb-0">
-                        {{ $t('Timelapse.DeleteSingleFileQuestion', { name: selectedFiles[0].filename }) }}
-                    </p>
-                    <p v-else class="mb-0">
-                        {{ $t('Timelapse.DeleteSelectedQuestion', { count: selectedFiles.length }) }}
-                    </p>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="deleteSelectedDialog = false">{{ $t('Timelapse.Cancel') }}</v-btn>
-                    <v-btn color="error" text @click="deleteSelectedFiles">{{ $t('Timelapse.Delete') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
+        <confirmation-dialog
+            v-model="deleteSelectedDialog"
+            :title="$t('Timelapse.Delete')"
+            :text="deleteSelectedDialogText"
+            :action-button-text="$t('Buttons.Delete')"
+            @action="deleteSelectedFiles" />
     </div>
 </template>
 <script lang="ts">
@@ -442,6 +391,7 @@ import {
     mdiRenameBox,
     mdiDelete,
 } from '@mdi/js'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
 interface dialogRenameObject {
     show: boolean
@@ -450,7 +400,7 @@ interface dialogRenameObject {
 }
 
 @Component({
-    components: { Panel, PathNavigation },
+    components: { ConfirmationDialog, Panel, PathNavigation },
 })
 export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
@@ -638,6 +588,18 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     set selectedFiles(newVal) {
         this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.timelapse.selectedFiles', value: newVal })
+    }
+
+    get deleteSelectedDialogText(): string {
+        if (this.selectedFiles.length === 1) {
+            return this.$t('Timelapse.DeleteSingleFileQuestion', {
+                name: this.selectedFiles[0].filename,
+            }).toString()
+        }
+
+        return this.$t('Timelapse.DeleteSelectedQuestion', {
+            count: this.selectedFiles.length,
+        }).toString()
     }
 
     createDirectory() {
@@ -871,8 +833,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
                 { path: this.currentPath + '/' + previewFilename },
                 { action: 'files/getDeleteFile' }
             )
-
-        this.deleteDialog = false
     }
 
     deleteDirectory(item: FileStateFile) {
@@ -881,7 +841,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     deleteDirectoryAction() {
-        this.dialogDeleteDirectory.show = false
         this.$socket.emit(
             'server.files.delete_directory',
             { path: this.currentPath + '/' + this.contextMenu.item.filename, force: true },
@@ -925,7 +884,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         })
 
         this.selectedFiles = []
-        this.deleteSelectedDialog = false
     }
 }
 </script>

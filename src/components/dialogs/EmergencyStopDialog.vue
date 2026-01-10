@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="showDialog" width="400" persistent>
+    <v-dialog v-model="showDialog" width="400" persistent>
         <panel
             :title="$t('EmergencyStopDialog.EmergencyStop')"
             toolbar-color="error"
@@ -14,15 +14,15 @@
             <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closePrompt">{{ $t('EmergencyStopDialog.No') }}</v-btn>
-                <v-btn color="primary" text @click="emergencyStop">{{ $t('EmergencyStopDialog.Yes') }}</v-btn>
+                <v-btn text @click="closePrompt">{{ $t('Buttons.No') }}</v-btn>
+                <v-btn color="error" text @click="emergencyStop">{{ $t('Buttons.Yes') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 
@@ -35,7 +35,7 @@ export default class EmergencyStopDialog extends Mixins(BaseMixin) {
     mdiAlertOctagonOutline = mdiAlertOctagonOutline
     mdiCloseThick = mdiCloseThick
 
-    @Prop({ type: Boolean, default: false }) showDialog!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
 
     emergencyStop() {
         this.$socket.emit('printer.emergency_stop', {}, { loading: 'topbarEmergencyStop' })
@@ -44,7 +44,7 @@ export default class EmergencyStopDialog extends Mixins(BaseMixin) {
     }
 
     closePrompt() {
-        this.$emit('close')
+        this.showDialog = false
     }
 }
 </script>

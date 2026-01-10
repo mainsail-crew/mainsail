@@ -3,11 +3,11 @@
         <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
             <template #activator="{ on, attrs }">
                 <v-list-item
-                    router
+                    :router="to !== undefined"
                     :to="to"
                     :href="href"
                     :target="target"
-                    class="small-list-item"
+                    :class="itemClass"
                     v-bind="attrs"
                     v-on="on">
                     <v-list-item-icon class="my-3 mr-3 menu-item-icon">
@@ -62,6 +62,19 @@ export default class SidebarItem extends Mixins(BaseMixin) {
 
     get borderBottom() {
         return this.item.to === '/allPrinters'
+    }
+
+    get isActive(): boolean {
+        if (this.item.target === '_blank' || !this.item.to) return false
+
+        return this.$route.path === this.item.to
+    }
+
+    get itemClass() {
+        return {
+            'small-list-item': true,
+            'active-nav-item': this.isActive,
+        }
     }
 }
 </script>

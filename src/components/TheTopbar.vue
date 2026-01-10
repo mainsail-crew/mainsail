@@ -69,7 +69,7 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <emergency-stop-dialog :show-dialog="showEmergencyStopDialog" @close="showEmergencyStopDialog = false" />
+        <emergency-stop-dialog v-model="showEmergencyStopDialog" />
     </div>
 </template>
 

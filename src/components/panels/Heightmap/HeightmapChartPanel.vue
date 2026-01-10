@@ -128,7 +128,7 @@
                 </v-row>
             </v-card-text>
         </template>
-        <heightmap-calibrate-mesh-dialog :show="calibrateDialog" @close="calibrateDialog = false" />
+        <heightmap-calibrate-mesh-dialog v-model="calibrateDialog" />
     </panel>
 </template>
 <script lang="ts">

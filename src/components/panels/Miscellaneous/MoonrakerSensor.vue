@@ -3,7 +3,7 @@
         <v-row>
             <v-col class="pb-3">
                 <v-subheader class="mb-1 d-block _moonraker-sensor-subheader">
-                    {{ convertName(name) }}
+                    {{ displayName }}
                 </v-subheader>
                 <v-subheader class="d-block _moonraker-sensor-subheader">
                     <moonraker-sensor-value
@@ -32,11 +32,25 @@ export default class MoonrakerSensor extends Mixins(BaseMixin) {
 
     @Prop({ type: String, required: true }) declare readonly name: string
 
-    get valueNames() {
+    get sensor() {
         const sensors = this.$store.state.server.sensor.sensors
-        if (!(this.name in sensors)) return []
+        if (!(this.name in sensors)) return undefined
 
-        return Object.keys(sensors[this.name].values)
+        return sensors[this.name]
+    }
+
+    get displayName() {
+        // If the friendly name is the same as the sensor name, then it hasn't been customized in the config
+        // this is the fallback value in Moonraker, so we convert the sensor name to a more user-friendly format
+        if (this.sensor === undefined || this.sensor?.friendly_name === this.name) {
+            return this.convertName(this.name)
+        }
+
+        return this.sensor?.friendly_name
+    }
+
+    get valueNames() {
+        return Object.keys(this.sensor?.values ?? {})
     }
 }
 </script>

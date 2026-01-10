@@ -6,10 +6,7 @@
             <span v-if="spoolId === null" class="font-italic ml-1">({{ $t('Panels.SpoolmanPanel.NoSpool') }})</span>
             <span v-else class="ml-1">({{ spool?.filament?.name ?? '--' }})</span>
         </v-btn>
-        <spoolman-change-spool-dialog
-            :show-dialog="showChangeSpoolDialog"
-            :tool="name"
-            @close="showChangeSpoolDialog = false" />
+        <spoolman-change-spool-dialog v-model="showChangeSpoolDialog" :tool="name" />
     </v-list-item>
 </template>
 

@@ -14,7 +14,7 @@
             </v-list-item>
             <spoolman-tools-dropdown-item v-for="tool in tools" :key="tool" :object-name="tool" />
         </v-list>
-        <spoolman-change-spool-dialog :show-dialog="showChangeSpoolDialog" @close="showChangeSpoolDialog = false" />
+        <spoolman-change-spool-dialog v-model="showChangeSpoolDialog" />
     </v-menu>
 </template>
 

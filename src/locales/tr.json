@@ -74,7 +74,6 @@
             "UploadPrint": "Yükle ve Yazdır"
         },
         "TopCornerMenu": {
-            "Cancel": "İptal Et",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Ana Bilgisayarı yeniden başlatmak geçerli baskının başarısız olmasına neden olur!",
@@ -109,7 +108,6 @@
             "Stop": "Durdur"
         },
         "UpdateDialog": {
-            "Close": "Kapat",
             "Empty": "Boş",
             "Recovering": "{software} kurtarılıyor...",
             "RecoveringDone": "{software} kurtarma işlemi tamamlandı!",
@@ -128,6 +126,14 @@
         "ScrewName": "Vida İsmi",
         "ScrewOutput": "{current} / {max}"
     },
+    "Buttons": {
+        "Cancel": "İptal et",
+        "Close": "Kapat",
+        "Delete": "Sil",
+        "No": "Hayır",
+        "Save": "Kaydet",
+        "Yes": "Evet"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Moonraker'a ({host}) bağlanılamıyor.",
         "CheckMoonrakerLog": "Bu mesaj tekrar tekrar görünüyorsa, lütfen şu adreste bulunan log dosyasına bakın:",
@@ -145,7 +151,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "İptal Et",
             "DoYouWantToStartFilename": "{filename} dosyasını başlatmak istiyor musunuz?",
             "Headline": "İşe Başla",
             "Print": "yazdır",
@@ -168,16 +173,13 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Emin misiniz?",
-        "EmergencyStop": "Acil Stop",
-        "No": "Hayır",
-        "Yes": "Evet"
+        "EmergencyStop": "Acil Stop"
     },
     "Files": {
         "AddBatchToQueue": "Partiyi Kuyruğa ekle",
         "AddToQueue": "Sıraya ekle",
         "AllFiles": "Hepsi",
         "BedTemp": "Tabla Sıcaklığı",
-        "Cancel": "İptal et",
         "ChamberTemp": "Kafes Sıcaklığı",
         "Count": "Say",
         "Create": "Oluştur",
@@ -273,7 +275,6 @@
         "VoxelMode": "Voksel Modu (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "İptal",
         "BedMeshCalibrate": "Tabla Mesh Kalibrasyonu",
         "BedMeshRemove": "Tabla Mesh Kaldır",
         "Calibrate": "Kalibre et",
@@ -301,7 +302,6 @@
         "NoProfile": "Kullanılabilir profil yok",
         "Probed": "Problandı",
         "Profiles": "Profiller",
-        "Remove": "sil",
         "Rename": "yeniden adlandır",
         "RenameBedMeshProfile": "Tabla Mesh Profilini Yeniden Adlandır",
         "ScaleGradient": "Ölçek gradyanı",
@@ -315,7 +315,6 @@
         "AddNote": "Not ekle",
         "AllJobs": "hepsi",
         "AvgPrinttime": "Baskı Süresi - Ø",
-        "Cancel": "İptal et",
         "Chart": "Grafik",
         "CreateNote": "Not oluştur",
         "Delete": "Sil",
@@ -350,7 +349,6 @@
         "PrintTime": "Baskı Süresi",
         "PrinttimeAvg": "Baskı Süresi - Ø",
         "Reprint": "Yeniden yazdır",
-        "Save": "kayıt et",
         "Search": "ara",
         "SelectedFilamentUsed": "Seçilmiş Kullanılan Filament",
         "SelectedJobs": "Seçilmiş İşler",
@@ -379,7 +377,6 @@
         "TotalTime": "Toplam zaman"
     },
     "JobQueue": {
-        "Cancel": "İptal etmek",
         "ChangeCount": "Sayıyı değiştir",
         "Count": "Say",
         "Empty": "Boş",
@@ -393,14 +390,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Hepsi",
-            "Cancel": "İptal Et",
             "ConfigFiles": "Yapılandırma Dosyaları",
             "ConfigRootDirectoryDoesntExists": "Yapılandırma dizini bulunamadı. Lütfen Moonraker yapılandırmasının [file_manager] bölümündeki \"config_path\" seçeneğini işaretleyin.",
             "Create": "Oluştur",
             "CreateDirectory": "Dizin Oluştur",
             "CreateFile": "Dosya Oluştur",
             "CurrentPath": "Şuanki yol",
-            "Delete": "Sil",
             "DeleteDirectory": "Dizini sil",
             "DeleteDirectoryQuestion": "\"{name}\" dizini ve tüm içeriği silinsin mi?",
             "DeleteSelectedQuestion": "Seçilen {count} öğe silinsin mi?",
@@ -439,7 +434,6 @@
         },
         "LogfilesPanel": {
             "Accept": "kabul et",
-            "Cancel": "iptal Et",
             "Logfiles": "Log dosyaları",
             "Rollover": "Logları Döndür",
             "RolloverDescription": "Lütfen hangi logların sıfırlanması gerektiğini seçin:",
@@ -475,7 +469,6 @@
             "Abort": "İptal Et",
             "AreYouSure": "Emin misiniz?",
             "CheckForUpdates": "Güncellemeleri Kontrol Et",
-            "Close": "Kapat",
             "CommitHistory": "Commit Geçmişi",
             "Commits": "Commit'ler",
             "CommitsAvailable": "hiçbir commit mevcut | {count} commit mevcut | {count} commit mevcut",
@@ -617,7 +610,6 @@
             "Estimate": "Tahmin",
             "ETA": "Tahmini Bitiş Zamanı",
             "ExcludeObject": {
-                "Cancel": "iptal et",
                 "Excluded": "Hariç Tutuldu",
                 "ExcludeObject": "Nesneyi Hariç Tut",
                 "ExcludeObjectHeadline": "Nesneyi Hariç Tut",
@@ -704,7 +696,6 @@
             "Headline": "Z-Offset",
             "Later": "Daha sonra",
             "Ok": "Tamam",
-            "Save": "Kaydet",
             "SaveConfig": "KONFIGÜRASYONU KAYDET",
             "SaveInfoDescription": "Yeni Z-Offset hesaplandı ve kaydedildi. printer.cfg dosyasına kaydetmek ve Klipper'ı yeniden başlatmak için üst çubuktaki \"KONFIGÜRASYONU KAYDET\" düğmesine tıklayın.",
             "SaveInfoDescriptionPrint": "Yeni Z-Offset hesaplandı ve kaydedildi. Baskıdan sonra, printer.cfg dosyasına kaydetmek ve Klipper'ı yeniden başlatmak için üst çubuktaki \"KONFIGÜRASYONU KAYDET\" düğmesine tıklayın.",
@@ -713,10 +704,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Emin misiniz?",
-        "No": "Hayır",
         "TurnDeviceOff": "{device}'ı kapat",
-        "TurnDeviceOn": "{device}'ı aç",
-        "Yes": "Evet"
+        "TurnDeviceOn": "{device}'ı aç"
     },
     "Router": {
         "Console": "Konsol",
@@ -758,8 +747,6 @@
         "YouCanFindMore": "Daha fazla ayrıntı için şu adreste bulabilirsiniz"
     },
     "Settings": {
-        "Cancel": "İptal",
-        "Close": "Kapat",
         "ConsoleTab": {
             "AddFilter": "filtre ekle",
             "Console": "Konsol",
@@ -1117,11 +1104,9 @@
     "Timelapse": {
         "AllFiles": "Tümü",
         "Autorender": "Otomatik Render",
-        "Cancel": "İptal",
         "Create": "Oluştur",
         "CreateNewDirectory": "dizin oluştur",
         "CurrentPath": "Geçerli Yol",
-        "Delete": "Sil",
         "DeleteDirectory": "Dizini Sil",
         "DeleteDirectoryQuestion": "\"{name}\" adlı dizini tüm içeriğiyle birlikte silmek istediğinizden emin misiniz?",
         "DeleteSelectedQuestion": "{count} seçili dosyayı silmek istediğinizden emin misiniz?",

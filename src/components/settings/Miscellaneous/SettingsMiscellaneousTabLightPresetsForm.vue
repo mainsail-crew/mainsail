@@ -89,7 +89,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer />
-            <v-btn text @click="close">{{ $t('Settings.Cancel') }}</v-btn>
+            <v-btn text @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
             <v-btn v-if="presetId !== null" text color="primary" @click="updatePreset">
                 {{ $t('Settings.Update') }}
             </v-btn>

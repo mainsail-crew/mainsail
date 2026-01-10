@@ -157,7 +157,7 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <devices-dialog :show-dialog="dialogDevices" @close="dialogDevices = false" />
+        <devices-dialog v-model="dialogDevices" />
     </div>
 </template>
 

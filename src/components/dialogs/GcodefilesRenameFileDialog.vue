@@ -18,7 +18,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="showDialog = false">{{ $t('Files.Cancel') }}</v-btn>
+                <v-btn text @click="showDialog = false">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn :disabled="isInvalidName || name.length === 0" color="primary" text @click="renameFileAction">
                     {{ $t('Files.Rename') }}
                 </v-btn>

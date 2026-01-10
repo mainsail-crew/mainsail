@@ -106,27 +106,16 @@
                 </v-list-item>
                 <v-list-item class="red--text" @click="deleteJob">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
-                    {{ $t('History.Delete') }}
+                    {{ $t('Buttons.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
         <!-- details dialog -->
-        <history-list-panel-details-dialog
-            :show="detailsDialogBool"
-            :job="item"
-            @close-dialog="detailsDialogBool = false" />
+        <history-list-panel-details-dialog v-model="detailsDialogBool" :job="item" />
         <!-- create/edit note dialog -->
-        <history-list-panel-note-dialog
-            :show="noteDialogBool"
-            :type="noteDialogType"
-            :job="item"
-            @close-dialog="noteDialogBool = false" />
+        <history-list-panel-note-dialog v-model="noteDialogBool" :type="noteDialogType" :job="item" />
         <!-- add to queue dialog -->
-        <add-batch-to-queue-dialog
-            :is-visible="addBatchToQueueDialogBool"
-            :show-toast="true"
-            :filename="item.filename"
-            @close="addBatchToQueueDialogBool = false" />
+        <add-batch-to-queue-dialog v-model="addBatchToQueueDialogBool" :show-toast="true" :filename="item.filename" />
     </tr>
 </template>
 <script lang="ts">
@@ -149,6 +138,7 @@ import {
     mdiPrinter,
     mdiTextBoxSearch,
 } from '@mdi/js'
+import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 import {
     convertPrintStatusIcon,
     convertPrintStatusIconColor,
@@ -156,7 +146,7 @@ import {
     formatFilesize,
     formatPrintTime,
 } from '@/plugins/helpers'
-import { HistoryListPanelCol } from '@/components/panels/HistoryListPanel.vue'
+import { HistoryListPanelCol } from '@/store/server/history/types'
 import HistoryListPanelNoteDialog from '@/components/dialogs/HistoryListPanelNoteDialog.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 
@@ -245,15 +235,16 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     showContextMenu(e: any) {
         e?.preventDefault()
-        if (this.contextMenuBool) return
+        EventBus.$emit(CLOSE_CONTEXT_MENU)
 
-        this.contextMenuBool = true
         this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
         this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
 
-        this.$nextTick(() => {
-            this.contextMenuBool = true
-        })
+        this.contextMenuBool = true
+    }
+
+    closeContextMenu() {
+        this.contextMenuBool = false
     }
 
     startPrint() {
@@ -330,6 +321,14 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return `${this.apiUrl}/server/files/gcodes/${escapePath(relative_url + thumbnail.relative_path)}?timestamp=${
             this.item.metadata.modified
         }`
+    }
+
+    mounted() {
+        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
+    }
+
+    beforeDestroy() {
+        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 }
 </script>

@@ -86,7 +86,6 @@
             "UploadPrint": "Upload & Print"
         },
         "TopCornerMenu": {
-            "Cancel": "Annuller",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Hvis du genstarter værten nu, vil det igangværende print fejle!",
@@ -121,7 +120,6 @@
             "Stop": "Stop"
         },
         "UpdateDialog": {
-            "Close": "Luk",
             "Empty": "Tøm",
             "Recovering": "Gendanner {software}...",
             "RecoveringDone": "Gendannelse af {software} udført!",
@@ -140,6 +138,14 @@
         "ScrewName": "Skrue Navn",
         "ScrewOutput": "{current} af {max}"
     },
+    "Buttons": {
+        "Cancel": "Annuller",
+        "Close": "Luk",
+        "Delete": "Slet",
+        "No": "Nej",
+        "Save": "Gem",
+        "Yes": "Ja"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Kan ikke forbinde med Moonraker ({host}).",
         "CheckMoonrakerLog": "Hvis denne besked vises flere gange, kig da i logfilen her:",
@@ -157,9 +163,7 @@
     },
     "CoolDownDialog": {
         "AreYouSure": "Er du sikker?",
-        "CoolDown": "Nedkøling",
-        "No": "Nej",
-        "Yes": "Ja"
+        "CoolDown": "Nedkøling"
     },
     "DevicesDialog": {
         "CanBusInfo": "Kun ikke tildelte nodes kan findes. Det anbefales kun at have én ikke tildelt enhed forbundet til CanBus for at undgå kommunikationsproblemer. For flere detaljer, klik på linket:",
@@ -177,7 +181,6 @@
     },
     "Dialogs": {
         "StartPrint": {
-            "Cancel": "Annuller",
             "DoYouWantToStartFilename": "Vil du begynde at printe: {filename}?",
             "DoYouWantToStartFilenameFilament": "Vil du begynde at printe {filename} med dette filament?",
             "Headline": "Start print",
@@ -202,16 +205,13 @@
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Er du sikker?",
-        "EmergencyStop": "Nødstop",
-        "No": "Nej",
-        "Yes": "Ja"
+        "EmergencyStop": "Nødstop"
     },
     "Files": {
         "AddBatchToQueue": "tilføj batch til kø",
         "AddToQueue": "Tilføj til kø",
         "AllFiles": "Alle",
         "BedTemp": "Bed temperatur.",
-        "Cancel": "Annuller",
         "ChamberTemp": "Indelukke temperatur.",
         "Count": "Tæl",
         "Create": "Opret",
@@ -307,7 +307,6 @@
         "VoxelMode": "Voxel Mode (ASMBL)"
     },
     "Heightmap": {
-        "Abort": "Afbryd",
         "BedMeshCalibrate": "Kalibrer Bed Mesh",
         "BedMeshRemove": "Slet Bed Mesh",
         "Calibrate": "Kalibrer",
@@ -335,7 +334,6 @@
         "NoProfile": "Ingen profil tilgængelig",
         "Probed": "Målt",
         "Profiles": "Profiler",
-        "Remove": "Fjern",
         "Rename": "Omdøb",
         "RenameBedMeshProfile": "Omdøb Bed Mesh profil",
         "ScaleGradient": "Skala graduering",
@@ -352,7 +350,6 @@
         "AddToQueueSuccessful": "Filen {filename} tilføjet til Køen.",
         "AllJobs": "Alle job",
         "AvgPrinttime": "Gns. printtid",
-        "Cancel": "Annuller",
         "Chart": "Skema",
         "CreateNote": "Gem note",
         "DateBasedReminder": "Dato",
@@ -415,7 +412,6 @@
         "Reminder": "Påmindelse",
         "Repeat": "Gentag",
         "Reprint": "Print igen",
-        "Save": "Gem",
         "Search": "Søg",
         "SelectedFilamentUsed": "Filament brugt på valgte",
         "SelectedJobs": "Valgte jobs",
@@ -445,7 +441,6 @@
         "TotalTime": "Total Tid"
     },
     "JobQueue": {
-        "Cancel": "Annuller",
         "ChangeCount": "Ændre antal",
         "Count": "Tæl",
         "Empty": "Tom",
@@ -460,14 +455,12 @@
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Alle",
-            "Cancel": "Annuller",
             "ConfigFiles": "Konfigurationsfiler",
             "ConfigRootDirectoryDoesntExists": "Ingen konfiguration fundet. Tjek venligst opsætningen af \"config_path\" under [file_manager] sektionen af Moonraker konfigurationen.",
             "Create": "Ny",
             "CreateDirectory": "Ny mappe",
             "CreateFile": "Ny Fil",
             "CurrentPath": "Du er her",
-            "Delete": "Slet",
             "DeleteDirectory": "Slet mappe",
             "DeleteDirectoryQuestion": "Vil du slette mappen \"{name}\" og alt dens indhold?",
             "DeleteSelectedQuestion": "Vil du slette alle {count} valgte filer?",
@@ -506,7 +499,6 @@
         },
         "LogfilesPanel": {
             "Accept": "Acceptér",
-            "Cancel": "Annuller",
             "Logfiles": "Logfiler",
             "Rollover": "Nulstil log-filer",
             "RolloverDescription": "Vælg hvilke log-filer der skal nulstilles:",
@@ -542,7 +534,6 @@
             "Abort": "Afbryd",
             "AreYouSure": "Er du sikker?",
             "CheckForUpdates": "Tjek for opdateringer",
-            "Close": "Luk",
             "CommitHistory": "Forpligtelseshistorik",
             "Commits": "Forpligtelse",
             "CommitsAvailable": "Ingen commits tilgængelige | {count} commits tilgængelige | {count} commits tilgængelige",
@@ -687,7 +678,6 @@
             "PowerControl": "Strømstyring"
         },
         "SpoolmanPanel": {
-            "Cancel": "Annuller",
             "ChangeSpool": "Skift spool",
             "DaysAgo": "{days} dage siden",
             "EjectSpool": "Afmontér spole",
@@ -721,7 +711,6 @@
             "Estimate": "Estimeret",
             "ETA": "ETA",
             "ExcludeObject": {
-                "Cancel": "Annuller",
                 "Excluded": "Ekskluderet",
                 "ExcludeObject": "Ekskluder objekt",
                 "ExcludeObjectHeadline": "Ekskluder objekt",
@@ -814,7 +803,6 @@
             "Headline": "Z-Offset",
             "Later": "Senere",
             "Ok": "OK",
-            "Save": "Gem",
             "SaveConfig": "GEM KONFIGURATION",
             "SaveInfoDescription": "Det nye z-offset er blevet beregnet og registreret. Klik på \"GEM KONFIGURATION\" for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
             "SaveInfoDescriptionPrint": "Det nye z-offset er blevet beregnet og registreret. Klik på \"GEM KONFIGURATION\" i topbaren efter endt print for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
@@ -823,10 +811,8 @@
     },
     "PowerDeviceChangeDialog": {
         "AreYouSure": "Er du sikker?",
-        "No": "Nej",
         "TurnDeviceOff": "Sluk {device}",
-        "TurnDeviceOn": "Tænd {device}",
-        "Yes": "Ja"
+        "TurnDeviceOn": "Tænd {device}"
     },
     "Router": {
         "Console": "Terminal",
@@ -870,8 +856,6 @@
         "YouCanFindMore": "Du kan finde flere detaljer her"
     },
     "Settings": {
-        "Cancel": "Annuller",
-        "Close": "Luk",
         "ConsoleTab": {
             "AddFilter": "Tilføj filter",
             "Console": "Terminal",
@@ -1281,11 +1265,9 @@
     "Timelapse": {
         "AllFiles": "Alle",
         "Autorender": "Autorendering",
-        "Cancel": "Annuller",
         "Create": "Opret",
         "CreateNewDirectory": "Ny mappe",
         "CurrentPath": "Du er her",
-        "Delete": "Slet",
         "DeleteDirectory": "Slet mappe",
         "DeleteDirectoryQuestion": "Vil du slette mappen \"{name}\" og alt dens indhold?",
         "DeleteSelectedQuestion": "Er du sikker på du vil slette alle {count} valgte filer?",

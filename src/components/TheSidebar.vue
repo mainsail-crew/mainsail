@@ -14,26 +14,20 @@
 
         <overlay-scrollbars class="nav-scrollbar">
             <v-list class="pr-0 pt-0 ml-0">
-                <v-list-item-group active-class="active-nav-item">
-                    <v-list-item
-                        v-if="isMobile"
-                        router
-                        to="/"
-                        :class="mobileLogoClass"
-                        :style="'height: ' + topbarHeight + 'px'"
-                        :ripple="false">
-                        <template v-if="sidebarLogo">
-                            <img :src="sidebarLogo" :style="logoCssVars" class="nav-logo" alt="Logo" />
-                        </template>
-                        <template v-else>
-                            <mainsail-logo :color="logoColor" :style="logoCssVars" class="nav-logo" :ripple="false" />
-                        </template>
-                        <template v-if="navigationStyle !== 'iconsOnly'">
-                            <span class="text-h6 font-weight-regular text-truncate">{{ printerName }}</span>
-                        </template>
-                    </v-list-item>
-                    <sidebar-item v-for="(category, index) in visibleNaviPoints" :key="index" :item="category" />
-                </v-list-item-group>
+                <v-list-item
+                    v-if="isMobile"
+                    router
+                    to="/"
+                    :class="mobileLogoClass"
+                    :style="`height: ${topbarHeight}px`"
+                    :ripple="false">
+                    <img v-if="sidebarLogo" :src="sidebarLogo" :style="logoCssVars" class="nav-logo" alt="Logo" />
+                    <mainsail-logo v-else :color="logoColor" :style="logoCssVars" class="nav-logo" :ripple="false" />
+                    <span v-if="navigationStyle !== 'iconsOnly'" class="text-h6 font-weight-regular text-truncate">
+                        {{ printerName }}
+                    </span>
+                </v-list-item>
+                <sidebar-item v-for="(category, index) in visibleNaviPoints" :key="index" :item="category" />
             </v-list>
         </overlay-scrollbars>
         <template #append>
@@ -86,22 +80,17 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin, Theme
         return this.$store.getters['files/getCustomSidebarBackground'] ?? this.sidebarBgImage
     }
 
-    get currentPage(): string {
-        return this.$route.fullPath
-    }
-
     get boolNaviTemp(): boolean {
         return !this.isMobile && this.$vuetify.breakpoint.mdAndDown
     }
 
     get sidebarCssVars(): any {
-        if (this.boolNaviTemp) {
-            return {
-                top: `${topbarHeight}px !important`,
-                'padding-bottom': `${topbarHeight}px`,
-            }
+        if (!this.boolNaviTemp) return {}
+
+        return {
+            top: `${topbarHeight}px !important`,
+            'padding-bottom': `${topbarHeight}px`,
         }
-        return {}
     }
 
     get sidebarLogo(): string {
@@ -119,23 +108,20 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin, Theme
     }
 
     get logoCssVars() {
-        if (this.navigationStyle !== 'iconsOnly') {
-            return {
-                'margin-right': '16px',
-            }
-        }
-        return {}
+        if (this.navigationStyle === 'iconsOnly') return {}
+
+        return { 'margin-right': '16px' }
     }
 
     get mobileLogoClass() {
-        const output = ['sidebar-logo', 'no-text-decoration', 'no-background', 'no-border']
-
-        if (this.navigationStyle === 'iconsOnly') {
-            output.push('pa-0')
-            output.push('justify-center')
+        return {
+            'sidebar-logo': true,
+            'no-text-decoration': true,
+            'no-background': true,
+            'no-border': true,
+            'pa-0': this.navigationStyle === 'iconsOnly',
+            'justify-center': this.navigationStyle === 'iconsOnly',
         }
-
-        return output
     }
 }
 </script>

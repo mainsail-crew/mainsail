@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="show" :max-width="600" persistent @keydown.esc="closeDialog">
+    <v-dialog v-model="showDialog" :max-width="600" persistent @keydown.esc="closeDialog">
         <panel
             :title="$t('History.JobDetails').toString()"
             :icon="mdiUpdate"
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -47,7 +47,7 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
     formatPrintTime = formatPrintTime
 
-    @Prop({ type: Boolean, required: true }) readonly show!: boolean
+    @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, required: true }) readonly job!: ServerHistoryStateJob
 
     get entries() {
@@ -171,7 +171,7 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
     }
 
     closeDialog() {
-        this.$emit('close-dialog')
+        this.showDialog = false
     }
 }
 </script>
