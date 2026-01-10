@@ -6,6 +6,7 @@ import { camelize, formatConsoleMessage } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 import { initableServerComponents } from '@/store/variables'
 import i18n from '@/plugins/i18n'
+import type { JsonRpcError } from '@/types/moonraker'
 
 export const actions: ActionTree<ServerState, RootState> = {
     reset({ commit, dispatch }) {
@@ -33,14 +34,15 @@ export const actions: ActionTree<ServerState, RootState> = {
             // Server init complete
             dispatch('socket/removeInitModule', 'server', { root: true })
             dispatch('socket/setInitializationStep', null, { root: true })
-        } catch (e: any) {
-            window.console.error('Server init failed:', e)
-
-            if (e?.message === 'Unauthorized') {
-                dispatch('socket/setConnectionFailed', 'Unauthorized', { root: true })
-            } else {
-                dispatch('socket/setInitializationError', e?.message ?? 'Unknown error', { root: true })
+        } catch (e) {
+            const message = (e as JsonRpcError).message || 'Unknown error'
+            if (message === 'Unauthorized') {
+                dispatch('socket/setConnectionFailed', message, { root: true })
+                return
             }
+
+            window.console.error(`Server init failed: ${message}`, e)
+            dispatch('socket/setInitializationError', message, { root: true })
         }
     },
 
@@ -49,21 +51,13 @@ export const actions: ActionTree<ServerState, RootState> = {
             root: true,
         })
 
-        try {
-            const connection = await Vue.$socket.emitAndWait('server.connection.identify', {
-                client_name: 'mainsail',
-                version: rootState.packageVersion,
-                type: 'web',
-                url: 'https://github.com/mainsail-crew/mainsail',
-            })
-            commit('setConnectionId', connection.connection_id)
-        } catch (e: any) {
-            if (e?.message === 'Unauthorized') {
-                dispatch('socket/setConnectionFailed', 'Unauthorized', { root: true })
-            } else {
-                dispatch('socket/setInitializationError', e?.message ?? 'Unknown error', { root: true })
-            }
-        }
+        const connection = await Vue.$socket.emitAndWait('server.connection.identify', {
+            client_name: 'mainsail',
+            version: rootState.packageVersion,
+            type: 'web',
+            url: 'https://github.com/mainsail-crew/mainsail',
+        })
+        commit('setConnectionId', connection.connection_id)
     },
 
     async initServerInfo({ commit, dispatch }) {

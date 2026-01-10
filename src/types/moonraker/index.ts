@@ -53,3 +53,23 @@ export type RPCParams<M extends RPCMethods> =
  * Helper type to extract the return type from an RPC method.
  */
 export type RPCResult<M extends RPCMethods> = Awaited<ReturnType<MoonrakerRPCInterface[M]>>
+
+/**
+ * JSON-RPC 2.0 Error Object
+ * @see https://moonraker.readthedocs.io/en/latest/external_api/introduction/#json-rpc-api-overview
+ */
+export interface JsonRpcError {
+    code: number
+    message: string
+}
+
+/**
+ * JSON-RPC 2.0 Response Object
+ * @see https://moonraker.readthedocs.io/en/latest/external_api/introduction/#json-rpc-api-overview
+ */
+export interface JsonRpcResponse {
+    jsonrpc: '2.0'
+    id?: number
+    result?: unknown
+    error?: JsonRpcError
+}
