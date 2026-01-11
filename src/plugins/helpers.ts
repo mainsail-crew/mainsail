@@ -48,14 +48,20 @@ export const findDirectory = (folder: FileStateFile[], dirArray: string[]): File
     return null
 }
 
-export const caseInsensitiveSort = (values: any[], orderType: string): any[] => {
+export const caseInsensitiveSort = <T extends object>(values: T[], ...orderTypes: (keyof T)[]): T[] => {
     return values.sort((a, b) => {
-        const stringA = a[orderType].toLowerCase()
-        const stringB = b[orderType].toLowerCase()
+        for (const orderType of orderTypes) {
+            const valA: unknown = a[orderType]
+            const valB: unknown = b[orderType]
 
-        if (stringA < stringB) return -1
-        if (stringA > stringB) return 1
+            if (typeof valA !== 'string' || typeof valB !== 'string') continue
 
+            const result = valA.localeCompare(valB, undefined, {
+                numeric: true,
+                sensitivity: 'base',
+            })
+            if (result !== 0) return result
+        }
         return 0
     })
 }
