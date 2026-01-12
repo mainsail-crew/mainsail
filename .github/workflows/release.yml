@@ -104,6 +104,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         id: create-release
         with:
+          token: ${{ secrets.PAT }}
           name: v${{ github.event.inputs.version }}
           tag_name: v${{ github.event.inputs.version }}
           files: ./mainsail.zip
