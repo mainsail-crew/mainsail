@@ -32,6 +32,26 @@ export interface GuiWebcamStateWebcam {
         nozzleCrosshair?: boolean
         nozzleCrosshairColor?: string
         nozzleCrosshairSize?: number
+        overlayShowExtruders?: boolean
+        overlayShowHeatbed?: boolean
+        overlayShowFanSpeed?: boolean
+        overlayShowPrintTime?: boolean
+        overlayShowEta?: boolean
+        overlayShowEstimate?: boolean
+        overlayShowFlowRate?: boolean
+        overlayShowSpeed?: boolean
+        overlayShowLayerCount?: boolean
+        overlayPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        overlayExtrudersPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        overlayHeatbedPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        overlayFanSpeedPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        overlayPrintTimePosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        overlayEtaPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        overlayEstimatePosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        overlayFlowRatePosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        overlaySpeedPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        overlayLayerCountPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        overlayBackgroundColor?: string
     }
     source?: 'config' | 'database'
 }
