@@ -32,6 +32,7 @@ export interface GuiWebcamStateWebcam {
         nozzleCrosshair?: boolean
         nozzleCrosshairColor?: string
         nozzleCrosshairSize?: number
+        overlaysEnabled?: boolean
         overlayShowExtruders?: boolean
         overlayShowHeatbed?: boolean
         overlayShowFanSpeed?: boolean

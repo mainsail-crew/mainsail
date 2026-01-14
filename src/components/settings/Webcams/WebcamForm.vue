@@ -128,208 +128,16 @@
                         </v-col>
                     </v-row>
                     <v-row class="mt-0 overlay-config-row" align="center">
-                        <v-col class="py-0" cols="7">
+                        <v-col class="py-0" cols="6">
                             <v-checkbox
-                                v-model="overlayShowExtruders"
+                                v-model="overlaysEnabled"
                                 class="mt-1"
                                 hide-details
-                                :label="$t('Settings.WebcamsTab.OverlayShowExtruders')" />
+                                :label="$t('Settings.WebcamsTab.Enable')" />
                         </v-col>
-                        <v-col class="py-0" cols="5">
-                            <v-select
-                                v-model="overlayExtrudersPosition"
-                                :items="overlayPositionItems"
-                                hide-details
-                                outlined
-                                dense
-                                :disabled="!overlayShowExtruders"
-                                :label="$t('Settings.WebcamsTab.OverlayPositionShort')" />
-                        </v-col>
-                    </v-row>
-                    <v-row class="mt-0 overlay-config-row" align="center">
-                        <v-col class="py-0" cols="7">
-                            <v-checkbox
-                                v-model="overlayShowHeatbed"
-                                class="mt-1"
-                                hide-details
-                                :label="$t('Settings.WebcamsTab.OverlayShowHeatbed')" />
-                        </v-col>
-                        <v-col class="py-0" cols="5">
-                            <v-select
-                                v-model="overlayHeatbedPosition"
-                                :items="overlayPositionItems"
-                                hide-details
-                                outlined
-                                dense
-                                :disabled="!overlayShowHeatbed"
-                                :label="$t('Settings.WebcamsTab.OverlayPositionShort')" />
-                        </v-col>
-                    </v-row>
-                    <v-row class="mt-0 overlay-config-row" align="center">
-                        <v-col class="py-0" cols="7">
-                            <v-checkbox
-                                v-model="overlayShowFanSpeed"
-                                class="mt-1"
-                                hide-details
-                                :label="$t('Settings.WebcamsTab.OverlayShowFanSpeed')" />
-                        </v-col>
-                        <v-col class="py-0" cols="5">
-                            <v-select
-                                v-model="overlayFanSpeedPosition"
-                                :items="overlayPositionItems"
-                                hide-details
-                                outlined
-                                dense
-                                :disabled="!overlayShowFanSpeed"
-                                :label="$t('Settings.WebcamsTab.OverlayPositionShort')" />
-                        </v-col>
-                    </v-row>
-                    <v-row class="mt-0 overlay-config-row" align="center">
-                        <v-col class="py-0" cols="7">
-                            <v-checkbox
-                                v-model="overlayShowPrintTime"
-                                class="mt-1"
-                                hide-details
-                                :label="$t('Settings.WebcamsTab.OverlayShowPrintTime')" />
-                        </v-col>
-                        <v-col class="py-0" cols="5">
-                            <v-select
-                                v-model="overlayPrintTimePosition"
-                                :items="overlayPositionItems"
-                                hide-details
-                                outlined
-                                dense
-                                :disabled="!overlayShowPrintTime"
-                                :label="$t('Settings.WebcamsTab.OverlayPositionShort')" />
-                        </v-col>
-                    </v-row>
-                    <v-row v-if="overlayShowPrintTime" class="overlay-config-row">
-                        <v-col class="py-0" cols="12">
-                            <v-radio-group v-model="overlayPrintTimeSource" row hide-details>
-                                <v-radio
-                                    :label="$t('Settings.WebcamsTab.OverlayPrintTimeCurrent')"
-                                    value="current"
-                                    color="primary" />
-                                <v-radio
-                                    :label="$t('Settings.WebcamsTab.OverlayPrintTimeTotal')"
-                                    value="total"
-                                    color="primary" />
-                            </v-radio-group>
-                        </v-col>
-                    </v-row>
-                    <v-row class="mt-0 overlay-config-row" align="center">
-                        <v-col class="py-0" cols="7">
-                            <v-checkbox
-                                v-model="overlayShowEstimate"
-                                class="mt-1"
-                                hide-details
-                                :label="$t('Settings.WebcamsTab.OverlayShowEstimate')" />
-                        </v-col>
-                        <v-col class="py-0" cols="5">
-                            <v-select
-                                v-model="overlayEstimatePosition"
-                                :items="overlayPositionItems"
-                                hide-details
-                                outlined
-                                dense
-                                :disabled="!overlayShowEstimate"
-                                :label="$t('Settings.WebcamsTab.OverlayPositionShort')" />
-                        </v-col>
-                    </v-row>
-                    <v-row v-if="overlayShowEstimate" class="overlay-config-row">
-                        <v-col class="py-0" cols="12">
-                            <v-radio-group v-model="overlayEstimateSource" row hide-details>
-                                <v-radio
-                                    :label="$t('Settings.WebcamsTab.OverlayEstimateAvg')"
-                                    value="avg"
-                                    color="primary" />
-                                <v-radio
-                                    :label="$t('Settings.WebcamsTab.OverlayEstimateSlicer')"
-                                    value="slicer"
-                                    color="primary" />
-                            </v-radio-group>
-                        </v-col>
-                    </v-row>
-                    <v-row class="mt-0 overlay-config-row" align="center">
-                        <v-col class="py-0" cols="7">
-                            <v-checkbox
-                                v-model="overlayShowFlowRate"
-                                class="mt-1"
-                                hide-details
-                                :label="$t('Settings.WebcamsTab.OverlayShowFlowRate')" />
-                        </v-col>
-                        <v-col class="py-0" cols="5">
-                            <v-select
-                                v-model="overlayFlowRatePosition"
-                                :items="overlayPositionItems"
-                                hide-details
-                                outlined
-                                dense
-                                :disabled="!overlayShowFlowRate"
-                                :label="$t('Settings.WebcamsTab.OverlayPositionShort')" />
-                        </v-col>
-                    </v-row>
-                    <v-row class="mt-0 overlay-config-row" align="center">
-                        <v-col class="py-0" cols="7">
-                            <v-checkbox
-                                v-model="overlayShowSpeed"
-                                class="mt-1"
-                                hide-details
-                                :label="$t('Settings.WebcamsTab.OverlayShowSpeed')" />
-                        </v-col>
-                        <v-col class="py-0" cols="5">
-                            <v-select
-                                v-model="overlaySpeedPosition"
-                                :items="overlayPositionItems"
-                                hide-details
-                                outlined
-                                dense
-                                :disabled="!overlayShowSpeed"
-                                :label="$t('Settings.WebcamsTab.OverlayPositionShort')" />
-                        </v-col>
-                    </v-row>
-                    <v-row class="mt-0 overlay-config-row" align="center">
-                        <v-col class="py-0" cols="7">
-                            <v-checkbox
-                                v-model="overlayShowLayerCount"
-                                class="mt-1"
-                                hide-details
-                                :label="$t('Settings.WebcamsTab.OverlayShowLayerCount')" />
-                        </v-col>
-                        <v-col class="py-0" cols="5">
-                            <v-select
-                                v-model="overlayLayerCountPosition"
-                                :items="overlayPositionItems"
-                                hide-details
-                                outlined
-                                dense
-                                :disabled="!overlayShowLayerCount"
-                                :label="$t('Settings.WebcamsTab.OverlayPositionShort')" />
-                        </v-col>
-                    </v-row>
-                    <v-row class="mt-0 overlay-config-row" align="center">
-                        <v-col class="py-0" cols="7">
-                            <v-checkbox
-                                v-model="overlayShowEta"
-                                class="mt-1"
-                                hide-details
-                                :label="$t('Settings.WebcamsTab.OverlayShowEta')" />
-                        </v-col>
-                        <v-col class="py-0" cols="5">
-                            <v-select
-                                v-model="overlayEtaPosition"
-                                :items="overlayPositionItems"
-                                hide-details
-                                outlined
-                                dense
-                                :disabled="!overlayShowEta"
-                                :label="$t('Settings.WebcamsTab.OverlayPositionShort')" />
-                        </v-col>
-                    </v-row>
-                    <v-row class="mt-0 overlay-config-row" align="center">
-                        <v-col class="py-0" cols="12">
-                            <div class="d-flex align-center">
-                                <span class="mr-3">{{ $t('Settings.WebcamsTab.OverlayBackground') }}</span>
+
+                        <v-col class="py-0" cols="6">
+                            <div v-if="overlaysEnabled" class="d-flex align-center">
                                 <v-menu bottom left offset-y :close-on-content-click="false">
                                     <template #activator="{ on, attrs }">
                                         <v-btn
@@ -342,9 +150,184 @@
                                     </template>
                                     <v-color-picker v-model="overlayBackgroundColor" mode="rgba" hide-mode-switch />
                                 </v-menu>
+                                <span class="ml-3">{{ $t('Settings.WebcamsTab.OverlayBackgroundColor') }}</span>
                             </div>
                         </v-col>
                     </v-row>
+                    <template v-if="overlaysEnabled">
+                        <v-row class="mt-0 overlay-config-row" align="center">
+                            <v-col class="py-0" cols="9">
+                                <v-checkbox v-model="overlayShowExtruders" class="mt-1" hide-details>
+                                    <template #label>
+                                        <v-icon small class="mr-1">{{ getOverlayIcon('extruders') }}</v-icon>
+                                        {{ $t('Settings.WebcamsTab.OverlayShowExtruders') }}
+                                    </template>
+                                </v-checkbox>
+                            </v-col>
+                            <v-col class="py-0 d-flex justify-end" cols="3">
+                                <overlay-position-button
+                                    :active="overlayShowExtruders"
+                                    :value="overlayExtrudersPosition"
+                                    @change="overlayExtrudersPosition = $event" />
+                            </v-col>
+                        </v-row>
+                        <v-row class="mt-0 overlay-config-row" align="center">
+                            <v-col class="py-0" cols="9">
+                                <v-checkbox v-model="overlayShowHeatbed" class="mt-1" hide-details>
+                                    <template #label>
+                                        <v-icon small class="mr-1">{{ getOverlayIcon('heatbed') }}</v-icon>
+                                        {{ $t('Settings.WebcamsTab.OverlayShowHeatbed') }}
+                                    </template>
+                                </v-checkbox>
+                            </v-col>
+                            <v-col class="py-0 d-flex justify-end" cols="3">
+                                <overlay-position-button
+                                    :active="overlayShowHeatbed"
+                                    :value="overlayHeatbedPosition"
+                                    @change="overlayHeatbedPosition = $event" />
+                            </v-col>
+                        </v-row>
+                        <v-row class="mt-0 overlay-config-row" align="center">
+                            <v-col class="py-0" cols="9">
+                                <v-checkbox v-model="overlayShowFanSpeed" class="mt-1" hide-details>
+                                    <template #label>
+                                        <v-icon small class="mr-1">{{ getOverlayIcon('fan') }}</v-icon>
+                                        {{ $t('Settings.WebcamsTab.OverlayShowFanSpeed') }}
+                                    </template>
+                                </v-checkbox>
+                            </v-col>
+                            <v-col class="py-0 d-flex justify-end" cols="3">
+                                <overlay-position-button
+                                    :active="overlayShowFanSpeed"
+                                    :value="overlayFanSpeedPosition"
+                                    @change="overlayFanSpeedPosition = $event" />
+                            </v-col>
+                        </v-row>
+                        <v-row class="mt-0 overlay-config-row" align="center">
+                            <v-col class="py-0" cols="9">
+                                <v-checkbox v-model="overlayShowPrintTime" class="mt-1" hide-details>
+                                    <template #label>
+                                        <v-icon small class="mr-1">{{ getOverlayIcon('printTime') }}</v-icon>
+                                        {{ $t('Settings.WebcamsTab.OverlayShowPrintTime') }}
+                                    </template>
+                                </v-checkbox>
+                            </v-col>
+                            <v-col class="py-0 d-flex justify-end" cols="3">
+                                <overlay-position-button
+                                    :active="overlayShowPrintTime"
+                                    :value="overlayPrintTimePosition"
+                                    @change="overlayPrintTimePosition = $event" />
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="overlayShowPrintTime" class="overlay-config-row">
+                            <v-col class="py-0" cols="12">
+                                <v-radio-group v-model="overlayPrintTimeSource" class="mt-0 ml-4" hide-details>
+                                    <v-radio
+                                        :label="$t('Settings.WebcamsTab.OverlayPrintTimeCurrent')"
+                                        value="current"
+                                        color="primary" />
+                                    <v-radio
+                                        :label="$t('Settings.WebcamsTab.OverlayPrintTimeTotal')"
+                                        value="total"
+                                        color="primary" />
+                                </v-radio-group>
+                            </v-col>
+                        </v-row>
+                        <v-row class="mt-0 overlay-config-row" align="center">
+                            <v-col class="py-0" cols="9">
+                                <v-checkbox v-model="overlayShowEstimate" class="mt-1" hide-details>
+                                    <template #label>
+                                        <v-icon small class="mr-1">{{ getOverlayIcon('estimate') }}</v-icon>
+                                        {{ $t('Settings.WebcamsTab.OverlayShowEstimate') }}
+                                    </template>
+                                </v-checkbox>
+                            </v-col>
+                            <v-col class="py-0 d-flex justify-end" cols="3">
+                                <overlay-position-button
+                                    :active="overlayShowEstimate"
+                                    :value="overlayEstimatePosition"
+                                    @change="overlayEstimatePosition = $event" />
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="overlayShowEstimate" class="overlay-config-row">
+                            <v-col class="py-0" cols="12">
+                                <v-radio-group v-model="overlayEstimateSource" class="mt-0 ml-4" hide-details>
+                                    <v-radio
+                                        :label="$t('Settings.WebcamsTab.OverlayEstimateAvg')"
+                                        value="avg"
+                                        color="primary" />
+                                    <v-radio
+                                        :label="$t('Settings.WebcamsTab.OverlayEstimateSlicer')"
+                                        value="slicer"
+                                        color="primary" />
+                                </v-radio-group>
+                            </v-col>
+                        </v-row>
+                        <v-row class="mt-0 overlay-config-row" align="center">
+                            <v-col class="py-0" cols="9">
+                                <v-checkbox v-model="overlayShowFlowRate" class="mt-1" hide-details>
+                                    <template #label>
+                                        <v-icon small class="mr-1">{{ getOverlayIcon('flowRate') }}</v-icon>
+                                        {{ $t('Settings.WebcamsTab.OverlayShowFlowRate') }}
+                                    </template>
+                                </v-checkbox>
+                            </v-col>
+                            <v-col class="py-0 d-flex justify-end" cols="3">
+                                <overlay-position-button
+                                    :active="overlayShowFlowRate"
+                                    :value="overlayFlowRatePosition"
+                                    @change="overlayFlowRatePosition = $event" />
+                            </v-col>
+                        </v-row>
+                        <v-row class="mt-0 overlay-config-row" align="center">
+                            <v-col class="py-0" cols="9">
+                                <v-checkbox v-model="overlayShowSpeed" class="mt-1" hide-details>
+                                    <template #label>
+                                        <v-icon small class="mr-1">{{ getOverlayIcon('speed') }}</v-icon>
+                                        {{ $t('Settings.WebcamsTab.OverlayShowSpeed') }}
+                                    </template>
+                                </v-checkbox>
+                            </v-col>
+                            <v-col class="py-0 d-flex justify-end" cols="3">
+                                <overlay-position-button
+                                    :active="overlayShowSpeed"
+                                    :value="overlaySpeedPosition"
+                                    @change="overlaySpeedPosition = $event" />
+                            </v-col>
+                        </v-row>
+                        <v-row class="mt-0 overlay-config-row" align="center">
+                            <v-col class="py-0" cols="9">
+                                <v-checkbox v-model="overlayShowLayerCount" class="mt-1" hide-details>
+                                    <template #label>
+                                        <v-icon small class="mr-1">{{ getOverlayIcon('layerCount') }}</v-icon>
+                                        {{ $t('Settings.WebcamsTab.OverlayShowLayerCount') }}
+                                    </template>
+                                </v-checkbox>
+                            </v-col>
+                            <v-col class="py-0 d-flex justify-end" cols="3">
+                                <overlay-position-button
+                                    :active="overlayShowLayerCount"
+                                    :value="overlayLayerCountPosition"
+                                    @change="overlayLayerCountPosition = $event" />
+                            </v-col>
+                        </v-row>
+                        <v-row class="mt-0 overlay-config-row" align="center">
+                            <v-col class="py-0" cols="9">
+                                <v-checkbox v-model="overlayShowEta" class="mt-1" hide-details>
+                                    <template #label>
+                                        <v-icon small class="mr-1">{{ getOverlayIcon('eta') }}</v-icon>
+                                        {{ $t('Settings.WebcamsTab.OverlayShowEta') }}
+                                    </template>
+                                </v-checkbox>
+                            </v-col>
+                            <v-col class="py-0 d-flex justify-end" cols="3">
+                                <overlay-position-button
+                                    :active="overlayShowEta"
+                                    :value="overlayEtaPosition"
+                                    @change="overlayEtaPosition = $event" />
+                            </v-col>
+                        </v-row>
+                    </template>
                     <v-row v-if="hasAudioOption">
                         <v-col class="pt-1 pb-3">
                             <v-checkbox
@@ -377,7 +360,7 @@
                                 :label="$t('Settings.WebcamsTab.Vertically')" />
                         </v-col>
                     </v-row>
-                    <template v-if="nozzleCrosshairAvialable">
+                    <template v-if="nozzleCrosshairAvailable">
                         <v-row>
                             <v-col class="pt-3 pb-3">
                                 <div class="v-label v-label--active text-subtitle-1">
@@ -445,6 +428,18 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+import OverlayPositionButton from '@/components/settings/Webcams/OverlayPositionButton.vue'
+import {
+    mdiCalendarClock,
+    mdiClockOutline,
+    mdiFan,
+    mdiLayersTriple,
+    mdiPrinter3dNozzle,
+    mdiProgressClock,
+    mdiRadiator,
+    mdiSpeedometer,
+    mdiWaterPercent,
+} from '@mdi/js'
 import { mdiDelete, mdiPencil, mdiMenuDown } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
@@ -464,6 +459,7 @@ type OverlayPositionKey =
 @Component({
     components: {
         SettingsRow,
+        OverlayPositionButton,
     },
 })
 export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
@@ -494,6 +490,32 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         },
     }
 
+    overlayIcons = {
+        extruders: mdiPrinter3dNozzle,
+        heatbed: mdiRadiator,
+        fan: mdiFan,
+        printTime: mdiClockOutline,
+        estimate: mdiProgressClock,
+        flowRate: mdiWaterPercent,
+        speed: mdiSpeedometer,
+        layerCount: mdiLayersTriple,
+        eta: mdiCalendarClock,
+    }
+
+    getOverlayIcon(key: keyof typeof this.overlayIcons) {
+        return this.overlayIcons[key]
+    }
+
+    get overlaysEnabled() {
+        return this.webcam.extra_data?.overlaysEnabled ?? false
+    }
+
+    set overlaysEnabled(newVal: boolean) {
+        const extraData = { ...(this.webcam.extra_data ?? {}) }
+        extraData.overlaysEnabled = newVal
+        this.webcam.extra_data = extraData
+    }
+
     get overlayShowExtruders() {
         return this.webcam.extra_data?.overlayShowExtruders ?? false
     }
@@ -503,7 +525,6 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         extraData.overlayShowExtruders = newVal
         this.webcam.extra_data = extraData
     }
-
     get overlayShowHeatbed() {
         return this.webcam.extra_data?.overlayShowHeatbed ?? false
     }
@@ -608,6 +629,16 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         this.setOverlayPositionValue('overlayFanSpeedPosition', newVal)
     }
 
+    get overlayPrintTimeSource(): 'current' | 'total' {
+        return this.webcam.extra_data?.overlayPrintTimeSource ?? 'current'
+    }
+
+    set overlayPrintTimeSource(newVal: 'current' | 'total') {
+        const extraData = { ...(this.webcam.extra_data ?? {}) }
+        extraData.overlayPrintTimeSource = newVal
+        this.webcam.extra_data = extraData
+    }
+
     get overlayPrintTimePosition() {
         return this.getOverlayPositionValue('overlayPrintTimePosition')
     }
@@ -674,15 +705,6 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         const extraData = { ...(this.webcam.extra_data ?? {}) }
         extraData.overlayBackgroundColor = newVal
         this.webcam.extra_data = extraData
-    }
-
-    get overlayPositionItems() {
-        return [
-            { value: 'bottom-left', text: this.$t('Settings.WebcamsTab.OverlayPositionBottomLeft') },
-            { value: 'bottom-right', text: this.$t('Settings.WebcamsTab.OverlayPositionBottomRight') },
-            { value: 'top-left', text: this.$t('Settings.WebcamsTab.OverlayPositionTopLeft') },
-            { value: 'top-right', text: this.$t('Settings.WebcamsTab.OverlayPositionTopRight') },
-        ]
     }
 
     private getOverlayPositionValue(key: OverlayPositionKey): OverlayPosition {
@@ -852,7 +874,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         this.webcam.extra_data.enableAudio = newVal
     }
 
-    get nozzleCrosshairAvialable() {
+    get nozzleCrosshairAvailable() {
         return ['mjpegstreamer', 'mjpegstreamer-adaptive', 'webrtc-camerastreamer'].includes(this.webcam.service)
     }
 

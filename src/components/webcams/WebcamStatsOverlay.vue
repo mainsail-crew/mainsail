@@ -107,6 +107,10 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
         return this.overlayDisplayMode === 'hidden'
     }
 
+    get overlaysEnabled() {
+        return this.webcam.extra_data?.overlaysEnabled ?? false
+    }
+
     get showExtruders() {
         return this.webcam.extra_data?.overlayShowExtruders ?? false
     }
@@ -153,6 +157,7 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
         const groups = new Map<OverlayPosition, OverlayGroup>()
 
         const addRow = (positionKey: OverlayPositionKey, row: OverlayRow) => {
+            if (!this.overlaysEnabled) return
             const position = this.getOverlayPositionValue(positionKey)
             let group = groups.get(position)
             if (!group) {
@@ -394,6 +399,10 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
         const speed = this.live_velocity
         const text = speed !== null && !Number.isNaN(speed) ? `${speed} mm/s` : null
         return this.resolveValue('speed', text)
+    }
+
+    get overlayPrintTimeSource(): 'total' | 'current' {
+        return this.webcam.extra_data?.overlayPrintTimeSource ?? 'total'
     }
 
     get printTimeValue() {
