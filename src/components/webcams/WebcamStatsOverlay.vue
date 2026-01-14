@@ -143,6 +143,10 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
         return this.webcam.extra_data?.overlayShowLayerCount ?? false
     }
 
+    get estimateSource(): 'avg' | 'slicer' {
+        return this.webcam.extra_data?.overlayEstimateSource ?? 'avg'
+    }
+
     get overlayGroups(): OverlayGroup[] {
         if (this.isHiddenMode) return []
 
@@ -333,7 +337,9 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
     }
 
     get estimateValue() {
-        const seconds = this.$store.getters['printer/getEstimatedTimeAvg'] ?? 0
+        const source = this.estimateSource
+        const getter = source === 'slicer' ? 'printer/getEstimatedTimeSlicer' : 'printer/getEstimatedTimeAvg'
+        const seconds = this.$store.getters[getter] ?? 0
         if (!seconds) return null
 
         return this.formatDuration(seconds)
@@ -380,29 +386,21 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
         return this.resolveValue('flowRate', text)
     }
 
-    get speedValue() {
-        const requestedSpeed = this.$store.state.printer.gcode_move?.speed ?? 0
-        const speedFactor = this.$store.state.printer.gcode_move?.speed_factor ?? 1
-        const maxVelocity = this.$store.state.printer.toolhead?.max_velocity ?? 0
-
-        if (!requestedSpeed) return null
-
-        const speed = (requestedSpeed / 60) * speedFactor
-        const limitedSpeed = maxVelocity ? Math.min(speed, maxVelocity) : speed
-
-        if (limitedSpeed <= 0) return null
-
-        return limitedSpeed
+    get live_velocity() {
+        return Math.abs(this.$store.state.printer.motion_report?.live_velocity?.toFixed(0)) ?? null
     }
 
     get speedText() {
-        const speed = this.speedValue
-        const text = speed !== null ? `${speed.toFixed(0)} mm/s` : null
+        const speed = this.live_velocity
+        const text = speed !== null && !Number.isNaN(speed) ? `${speed} mm/s` : null
         return this.resolveValue('speed', text)
     }
 
     get printTimeValue() {
-        const duration = this.$store.state.printer.print_stats?.print_duration ?? 0
+        const duration =
+            this.overlayPrintTimeSource === 'total'
+                ? this.$store.state.printer.print_stats?.total_duration ?? 0
+                : this.$store.state.printer.print_stats?.print_duration ?? 0
         if (!duration) return null
 
         return formatPrintTime(duration, false)

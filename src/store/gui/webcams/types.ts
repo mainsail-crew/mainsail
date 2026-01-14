@@ -52,6 +52,8 @@ export interface GuiWebcamStateWebcam {
         overlaySpeedPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
         overlayLayerCountPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
         overlayBackgroundColor?: string
+        overlayPrintTimeSource?: 'current' | 'total'
+        overlayEstimateSource?: 'avg' | 'slicer'
     }
     source?: 'config' | 'database'
 }

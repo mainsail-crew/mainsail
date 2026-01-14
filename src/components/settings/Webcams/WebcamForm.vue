@@ -203,6 +203,20 @@
                                 :label="$t('Settings.WebcamsTab.OverlayPositionShort')" />
                         </v-col>
                     </v-row>
+                    <v-row v-if="overlayShowPrintTime" class="overlay-config-row">
+                        <v-col class="py-0" cols="12">
+                            <v-radio-group v-model="overlayPrintTimeSource" row hide-details>
+                                <v-radio
+                                    :label="$t('Settings.WebcamsTab.OverlayPrintTimeCurrent')"
+                                    value="current"
+                                    color="primary" />
+                                <v-radio
+                                    :label="$t('Settings.WebcamsTab.OverlayPrintTimeTotal')"
+                                    value="total"
+                                    color="primary" />
+                            </v-radio-group>
+                        </v-col>
+                    </v-row>
                     <v-row class="mt-0 overlay-config-row" align="center">
                         <v-col class="py-0" cols="7">
                             <v-checkbox
@@ -220,6 +234,20 @@
                                 dense
                                 :disabled="!overlayShowEstimate"
                                 :label="$t('Settings.WebcamsTab.OverlayPositionShort')" />
+                        </v-col>
+                    </v-row>
+                    <v-row v-if="overlayShowEstimate" class="overlay-config-row">
+                        <v-col class="py-0" cols="12">
+                            <v-radio-group v-model="overlayEstimateSource" row hide-details>
+                                <v-radio
+                                    :label="$t('Settings.WebcamsTab.OverlayEstimateAvg')"
+                                    value="avg"
+                                    color="primary" />
+                                <v-radio
+                                    :label="$t('Settings.WebcamsTab.OverlayEstimateSlicer')"
+                                    value="slicer"
+                                    color="primary" />
+                            </v-radio-group>
                         </v-col>
                     </v-row>
                     <v-row class="mt-0 overlay-config-row" align="center">
@@ -594,6 +622,16 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
     set overlayEtaPosition(newVal: OverlayPosition) {
         this.setOverlayPositionValue('overlayEtaPosition', newVal)
+    }
+
+    get overlayEstimateSource(): 'avg' | 'slicer' {
+        return this.webcam.extra_data?.overlayEstimateSource ?? 'avg'
+    }
+
+    set overlayEstimateSource(newVal: 'avg' | 'slicer') {
+        const extraData = { ...(this.webcam.extra_data ?? {}) }
+        extraData.overlayEstimateSource = newVal
+        this.webcam.extra_data = extraData
     }
 
     get overlayEstimatePosition() {
