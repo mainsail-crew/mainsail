@@ -20,7 +20,17 @@ export const themeDir = '.theme'
 export const datasetInterval = 1000
 export const datasetTypes = ['temperature', 'target', 'power', 'speed']
 export const datasetTypesInPercents = ['power', 'speed']
-export const additionalSensors = ['aht10', 'aht1x', 'aht2x', 'aht3x', 'bme280', 'htu21d', 'sgp40', 'sht3x', 'temperature_combined']
+export const additionalSensors = [
+    'aht10',
+    'aht1x',
+    'aht2x',
+    'aht3x',
+    'bme280',
+    'htu21d',
+    'sgp40',
+    'sht3x',
+    'temperature_combined',
+]
 
 /*
  * List of valid gcode file extensions
