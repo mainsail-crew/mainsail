@@ -315,11 +315,11 @@ export const actions: ActionTree<GuiState, RootState> = {
             } else if (key in mainsailDb) {
                 backup[key] = { ...mainsailDb[key] }
 
-                excludeKeys.forEach((excludeKey) => {
-                    if (!excludeKey.startsWith(key + '.')) return
-
-                    deletePath(backup[key], excludeKey.substring(key.length + 1))
-                })
+                excludeKeys
+                    .filter((excludeKey) => excludeKey.startsWith(key + '.'))
+                    .forEach((excludeKey) => {
+                        deletePath(backup[key], excludeKey.substring(key.length + 1))
+                    })
             }
         }
 
