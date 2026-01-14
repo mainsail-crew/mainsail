@@ -695,6 +695,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const eta = getters['getEstimatedTimeETA']
         if (eta === 0) return '--'
 
+        const now = new Date()
         const date = new Date(eta)
         let am = true
         let h: string | number = date.getHours()
@@ -706,10 +707,25 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
 
-        const diff = eta - new Date().getTime()
         let output = h + ':' + m
         if (hours12Format) output += ` ${am ? 'AM' : 'PM'}`
-        if (diff > 60 * 60 * 24 * 1000) output += `+${Math.trunc(diff / (60 * 60 * 24 * 1000))}`
+
+        const checkDatePlusDayDiff = (dayDiff: number) => {
+            const shiftedNow = new Date(now.getTime() + dayDiff * 24 * 60 * 60 * 1000)
+            return (
+                date.getDate() === shiftedNow.getDate() &&
+                date.getMonth() === shiftedNow.getMonth() &&
+                date.getFullYear() === shiftedNow.getFullYear()
+            )
+        }
+        if (!checkDatePlusDayDiff(0)) {
+            // date is not today -> check for tomorrow or more
+            let dayDiff = 1
+            while (!checkDatePlusDayDiff(dayDiff)) {
+                dayDiff++
+            }
+            output += ` +${dayDiff}`
+        }
 
         return output
     },
