@@ -399,8 +399,8 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
     get printTimeValue() {
         const duration =
             this.overlayPrintTimeSource === 'total'
-                ? this.$store.state.printer.print_stats?.total_duration ?? 0
-                : this.$store.state.printer.print_stats?.print_duration ?? 0
+                ? (this.$store.state.printer.print_stats?.total_duration ?? 0)
+                : (this.$store.state.printer.print_stats?.print_duration ?? 0)
         if (!duration) return null
 
         return formatPrintTime(duration, false)
