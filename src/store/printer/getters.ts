@@ -693,39 +693,30 @@ export const getters: GetterTree<PrinterState, RootState> = {
     getEstimatedTimeETAFormat: (state, getters, rootState, rootGetters) => {
         const hours12Format = rootGetters['gui/getHours12Format'] ?? false
         const eta = getters['getEstimatedTimeETA']
-        if (eta === 0) return '--'
 
         const now = new Date()
-        const date = new Date(eta)
-        let am = true
-        let h: string | number = date.getHours()
+        const etaDate = new Date(eta)
+        if (etaDate <= now) return '--'
 
-        if (hours12Format && h > 11) am = false
-        if (hours12Format && h > 12) h -= 12
-        if (hours12Format && h == 0) h += 12
-        if (h < 10) h = '0' + h
+        const hours = etaDate.getHours()
+        const minutes = etaDate.getMinutes()
 
-        const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
+        let displayHour = hours
+        let amPm = ''
 
-        let output = h + ':' + m
-        if (hours12Format) output += ` ${am ? 'AM' : 'PM'}`
-
-        const checkDatePlusDayDiff = (dayDiff: number) => {
-            const shiftedNow = new Date(now.getTime() + dayDiff * 24 * 60 * 60 * 1000)
-            return (
-                date.getDate() === shiftedNow.getDate() &&
-                date.getMonth() === shiftedNow.getMonth() &&
-                date.getFullYear() === shiftedNow.getFullYear()
-            )
+        if (hours12Format) {
+            amPm = hours >= 12 ? ' PM' : ' AM'
+            displayHour = hours % 12 || 12
         }
-        if (!checkDatePlusDayDiff(0)) {
-            // date is not today -> check for tomorrow or more
-            let dayDiff = 1
-            while (!checkDatePlusDayDiff(dayDiff)) {
-                dayDiff++
-            }
-            output += ` +${dayDiff}`
-        }
+
+        const output = `${String(displayHour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}${amPm}`
+
+        const MS_PER_DAY = 86_400_000
+        now.setHours(0, 0, 0, 0)
+        etaDate.setHours(0, 0, 0, 0)
+        const dayDiff = Math.round((etaDate.getTime() - now.getTime()) / MS_PER_DAY)
+
+        if (dayDiff > 0) return `${output} +${dayDiff}`
 
         return output
     },
