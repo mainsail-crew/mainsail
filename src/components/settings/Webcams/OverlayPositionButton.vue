@@ -9,7 +9,7 @@
                 cyclePosition()
             },
         }">
-        <v-icon small>{{ icon }}</v-icon>
+        <v-icon>{{ icon }}</v-icon>
     </v-btn>
 </template>
 
