@@ -32,6 +32,7 @@ export const getDefaultState = (): FarmPrinterState => {
         settings: {},
         databases: [],
         current_file: {
+            path: '',
             isDirectory: false,
             filename: '',
             modified: new Date(),

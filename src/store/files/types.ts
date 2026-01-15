@@ -11,9 +11,11 @@ export interface FileState {
         percent: number
         speed: number
     }
+    latestGcodeFile: FileStateSimpleFile | null
 }
 
 export interface FileStateFile {
+    path: string
     isDirectory: boolean
     filename: string
     modified: Date
@@ -109,6 +111,14 @@ export interface ApiGetDirectoryReturnFile {
     modified: number
     size: number
     filename: string
+    permissions: string
+}
+
+export interface FileStateSimpleFile {
+    modified: number
+    size: number
+    filename: string
+    path: string
     permissions: string
 }
 

@@ -130,6 +130,7 @@ export interface GuiState {
         dashboardFilesFilter: GuiStateUiSettingsDashboardFilesFilter[]
         dashboardHistoryLimit: number
         hideOtherInstances: boolean
+        showPrintOnUpload: boolean
     }
     view: {
         afc: {

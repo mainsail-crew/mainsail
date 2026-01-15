@@ -107,6 +107,19 @@ export const actions: ActionTree<GuiState, RootState> = {
             })
         }
 
+        // load local storage gui settings
+        if (localStorage.getItem('guiSettings')) {
+            const localGuiSettings = JSON.parse(localStorage.getItem('guiSettings') ?? '{}')
+            if (localGuiSettings) {
+                for (const key in localGuiSettings) {
+                    dispatch('saveSettingWithoutUpload', {
+                        name: key,
+                        value: localGuiSettings[key],
+                    })
+                }
+            }
+        }
+
         await commit('setData', payload.value)
         await dispatch('socket/removeInitModule', 'gui/init', { root: true })
     },
@@ -183,6 +196,13 @@ export const actions: ActionTree<GuiState, RootState> = {
 
     saveSettingWithoutUpload({ commit }, payload) {
         commit('saveSetting', payload)
+    },
+
+    saveSettingInLocalStorage({ commit }, payload) {
+        commit('saveSetting', payload)
+        const localGuiSettings = JSON.parse(localStorage.getItem('guiSettings') ?? '{}')
+        localGuiSettings[payload.name] = payload.value
+        localStorage.setItem('guiSettings', JSON.stringify(localGuiSettings))
     },
 
     updateSettings(_, payload) {

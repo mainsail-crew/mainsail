@@ -16,6 +16,7 @@ export const getDefaultState = (): FileState => {
             percent: 0,
             speed: 0,
         },
+        latestGcodeFile: null,
     }
 }
 
