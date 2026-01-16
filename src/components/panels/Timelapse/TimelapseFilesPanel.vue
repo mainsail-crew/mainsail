@@ -579,7 +579,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     set currentPath(newVal) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.timelapse.currentPath', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.currentPath', value: newVal })
     }
 
     get selectedFiles() {
@@ -587,7 +587,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     set selectedFiles(newVal) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.timelapse.selectedFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.selectedFiles', value: newVal })
     }
 
     get deleteSelectedDialogText(): string {

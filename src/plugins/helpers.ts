@@ -48,14 +48,20 @@ export const findDirectory = (folder: FileStateFile[], dirArray: string[]): File
     return null
 }
 
-export const caseInsensitiveSort = (values: any[], orderType: string): any[] => {
+export const caseInsensitiveSort = <T extends object>(values: T[], ...orderTypes: (keyof T)[]): T[] => {
     return values.sort((a, b) => {
-        const stringA = a[orderType].toLowerCase()
-        const stringB = b[orderType].toLowerCase()
+        for (const orderType of orderTypes) {
+            const valA: unknown = a[orderType]
+            const valB: unknown = b[orderType]
 
-        if (stringA < stringB) return -1
-        if (stringA > stringB) return 1
+            if (typeof valA !== 'string' || typeof valB !== 'string') continue
 
+            const result = valA.localeCompare(valB, undefined, {
+                numeric: true,
+                sensitivity: 'base',
+            })
+            if (result !== 0) return result
+        }
         return 0
     })
 }
@@ -497,4 +503,27 @@ export function colorsMatch(color1: string, color2: string, tolerance = 0): bool
         Math.abs(rgb1.g - rgb2.g) <= tolerance &&
         Math.abs(rgb1.b - rgb2.b) <= tolerance
     )
+}
+
+/**
+ * Deletes a nested property from an object using a dot-separated path.
+ *
+ * The object is mutated in place. If any part of the path does not exist,
+ * the function returns without making changes.
+ *
+ * @param obj - The object to modify.
+ * @param path - Dot-separated path to the property to delete (e.g. "a.b.c").
+ */
+export const deletePath = (obj: any, path: string) => {
+    const parts = path.split('.')
+    const last = parts.pop()
+    if (!last) return
+
+    let current = obj
+    for (const part of parts) {
+        if (current[part] === undefined) return
+        current = current[part]
+    }
+
+    if (current && typeof current === 'object') delete current[last]
 }

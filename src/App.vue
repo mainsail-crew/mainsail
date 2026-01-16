@@ -46,8 +46,6 @@ import { setAndLoadLocale } from './plugins/i18n'
 import TheMacroPrompt from '@/components/dialogs/TheMacroPrompt.vue'
 import { AppRoute } from '@/routes'
 
-Component.registerHooks(['metaInfo'])
-
 @Component({
     components: {
         TheMacroPrompt,
@@ -66,19 +64,12 @@ Component.registerHooks(['metaInfo'])
     },
 })
 export default class App extends Mixins(BaseMixin, ThemeMixin) {
-    public metaInfo(): any {
+    get title(): string {
         let title = this.$store.getters['getTitle']
 
         if (this.isPrinterPowerOff) title = this.$t('App.Titles.PrinterOff')
 
-        return {
-            title,
-            titleTemplate: '%s',
-        }
-    }
-
-    get title(): string {
-        return this.$store.getters['getTitle']
+        return title
     }
 
     get naviDrawer(): boolean {
@@ -186,6 +177,11 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
 
     get progressAsFavicon() {
         return this.$store.state.gui.uiSettings.progressAsFavicon
+    }
+
+    @Watch('title', { immediate: true })
+    titleChanged(newVal: string): void {
+        document.title = newVal
     }
 
     @Watch('language')

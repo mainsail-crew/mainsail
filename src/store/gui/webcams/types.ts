@@ -8,6 +8,7 @@ export interface GuiWebcamStateWebcam {
     service:
         | 'hlsstream'
         | 'html-video'
+        | 'iframe'
         | 'jmuxer-stream'
         | 'mjpegstreamer'
         | 'mjpegstreamer-adaptive'
