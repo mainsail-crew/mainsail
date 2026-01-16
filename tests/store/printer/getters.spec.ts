@@ -52,7 +52,7 @@ describe('printer/getEstimatedTimeETAFormat', () => {
         const eta = new Date(2024, 0, 1, 0, 0, 0).getTime()
         expect(runGetter(eta)).toBe('00:00 +1')
     })
-    
+
     it('formats time in 24-hour mode with day offset case 3', () => {
         vi.setSystemTime(new Date(2024, 0, 1, 22, 0, 0))
         const eta = new Date(2024, 0, 3, 1, 0, 0).getTime()
