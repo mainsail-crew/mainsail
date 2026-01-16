@@ -673,7 +673,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     set blockFileUpload(newVal) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.blockFileUpload', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.blockFileUpload', value: newVal })
     }
 
     get toolbarButtons() {
@@ -800,7 +800,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     set selectedFiles(newVal) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.selectedFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.selectedFiles', value: newVal })
     }
 
     get countPerPage() {
@@ -875,7 +875,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     set root(newVal) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.rootPath', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.rootPath', value: newVal })
     }
 
     get currentPath() {
@@ -885,7 +885,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     set currentPath(newVal) {
         this.selectedFiles = []
 
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.currentPath', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.currentPath', value: newVal })
     }
 
     get deleteSelectedDialogText(): string {
