@@ -22,7 +22,7 @@
 import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import { JanusJs, JanusSession, JanusStreamingPlugin } from 'typed_janus_js'
 import BaseMixin from '@/components/mixins/base'
-import { ConstructorOptions } from 'typed_janus_js/src/interfaces/janus'
+import { ConstructorOptions } from 'typed_janus_js/dist/interfaces/janus'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamMixin from '@/components/mixins/webcam'
 

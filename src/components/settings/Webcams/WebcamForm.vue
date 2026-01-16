@@ -84,6 +84,15 @@
                         </v-col>
                     </v-row>
                     <v-row v-if="hasTargetFps || hasRotate">
+                        <v-col v-if="hasAspectRatio" class="py-2">
+                            <v-text-field
+                                v-model="webcam.aspect_ratio"
+                                :label="$t('Settings.WebcamsTab.AspectRatio')"
+                                hide-details="auto"
+                                outlined
+                                dense
+                                :rules="[rules.required, rules.aspect]" />
+                        </v-col>
                         <v-col v-if="hasTargetFps" class="py-2 col-6">
                             <v-text-field
                                 v-model="webcam.target_fps"
@@ -235,6 +244,17 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     rules = {
         required: (value: string) => value !== '' || this.$t('Settings.WebcamsTab.Required'),
         unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamsTab.NameAlreadyExists'),
+        aspect: (value: string) => {
+            const match = value.toString().match(/^(\d+)\s*[:/]\s*(\d+)$/)
+            if (!match) return this.$t('Settings.WebcamsTab.InvalidAspectRatio')
+
+            const width = parseInt(match[1])
+            const height = parseInt(match[2])
+
+            if (width < 1 || height < 1) return this.$t('Settings.WebcamsTab.InvalidAspectRatio')
+
+            return true
+        },
     }
 
     get webcams() {
@@ -290,6 +310,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
             { value: 'mjpegstreamer-adaptive', text: this.$t('Settings.WebcamsTab.MjpegstreamerAdaptive') },
             { value: 'uv4l-mjpeg', text: this.$t('Settings.WebcamsTab.Uv4lMjpeg') },
             { value: 'html-video', text: this.$t('Settings.WebcamsTab.HtmlVideo') },
+            { value: 'iframe', text: this.$t('Settings.WebcamsTab.HtmlIframe') },
             { value: 'webrtc-camerastreamer', text: this.$t('Settings.WebcamsTab.WebrtcCameraStreamer') },
             { value: 'webrtc-go2rtc', text: this.$t('Settings.WebcamsTab.WebrtcGo2rtc') },
             { value: 'webrtc-mediamtx', text: this.$t('Settings.WebcamsTab.WebrtcMediaMTX') },
@@ -328,6 +349,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         return [
             'hlsstream',
             'html-video',
+            'iframe',
             'jmuxer-stream',
             'mjpegstreamer',
             'mjpegstreamer-adaptive',
@@ -341,6 +363,10 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
     get hasFpsCounter() {
         return ['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(this.webcam.service)
+    }
+
+    get hasAspectRatio() {
+        return ['iframe'].includes(this.webcam.service)
     }
 
     get hasAudioOption() {

@@ -12,6 +12,7 @@
             :show-fps="showFps"
             :printer-url="printerUrl" />
         <uv4l-mjpeg-async v-else-if="service === 'uv4l-mjpeg'" :cam-settings="webcam" :printer-url="printerUrl" />
+        <html-iframe-async v-else-if="service === 'iframe'" :cam-settings="webcam" :printer-url="printerUrl" />
         <html-video-async v-else-if="service === 'html-video'" :cam-settings="webcam" :printer-url="printerUrl" />
         <hlsstreamer-async v-else-if="service === 'hlsstream'" :cam-settings="webcam" :printer-url="printerUrl" />
         <j-muxer-stream-async
@@ -45,6 +46,7 @@ import { DynamicCamLoader } from '@/components/webcams/streamers/DynamicCamLoade
     components: {
         HlsstreamerAsync: DynamicCamLoader('Hlsstreamer'),
         HtmlVideoAsync: DynamicCamLoader('HtmlVideo'),
+        HtmlIframeAsync: DynamicCamLoader('HtmlIframe'),
         JanusStreamerAsync: DynamicCamLoader('JanusStreamer'),
         JMuxerStreamAsync: DynamicCamLoader('JMuxerStream'),
         MjpegstreamerAsync: DynamicCamLoader('Mjpegstreamer'),

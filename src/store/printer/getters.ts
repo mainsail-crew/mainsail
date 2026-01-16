@@ -327,23 +327,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
             }
         }
 
-        output.sort((a, b) => {
-            if (a.type < b.type) return -1
-            if (a.type > b.type) return 1
-
-            if (a.unit < b.unit) return -1
-            if (a.unit > b.unit) return 1
-
-            const nameA = a.name.toUpperCase()
-            const nameB = b.name.toUpperCase()
-
-            if (nameA < nameB) return -1
-            if (nameA > nameB) return 1
-
-            return 0
-        })
-
-        return output
+        return caseInsensitiveSort(output, 'type', 'unit', 'name')
     },
 
     getAvailableHeaters: (state) => {
