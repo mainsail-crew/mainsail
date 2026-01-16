@@ -504,3 +504,26 @@ export function colorsMatch(color1: string, color2: string, tolerance = 0): bool
         Math.abs(rgb1.b - rgb2.b) <= tolerance
     )
 }
+
+/**
+ * Deletes a nested property from an object using a dot-separated path.
+ *
+ * The object is mutated in place. If any part of the path does not exist,
+ * the function returns without making changes.
+ *
+ * @param obj - The object to modify.
+ * @param path - Dot-separated path to the property to delete (e.g. "a.b.c").
+ */
+export const deletePath = (obj: any, path: string) => {
+    const parts = path.split('.')
+    const last = parts.pop()
+    if (!last) return
+
+    let current = obj
+    for (const part of parts) {
+        if (current[part] === undefined) return
+        current = current[part]
+    }
+
+    if (current && typeof current === 'object') delete current[last]
+}

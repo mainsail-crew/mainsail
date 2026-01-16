@@ -21,6 +21,8 @@
         "typeRoots": ["./node_modules/@types", "./node_modules/cypress/types", "./node_modules/vuetify/types"]
     },
     "include": [
+        "vite.config.ts",
+        "src/types/*.d.ts",
         "components.d.ts",
         "src/main.ts",
         "src/*/*.ts",
