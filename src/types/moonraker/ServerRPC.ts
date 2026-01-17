@@ -72,4 +72,23 @@ export interface ServerRPC {
         /** The version of the Moonraker API as string */
         api_version_string: string
     }>
+
+    /**
+     * Request cached GCode responses.
+     * Returns a FIFO queue of gcode messages with the oldest item at index 0.
+     */
+    'server.gcode_store': (params?: {
+        /** Number of cached responses to return (default: all) */
+        count?: number
+    }) => Promise<{
+        /** Array of cached gcode messages (FIFO, oldest first) */
+        gcode_store: Array<{
+            /** The GCode message */
+            message: string
+            /** Unix timestamp when message was received */
+            time: number
+            /** Message type: command (via API) or response (from Klippy) */
+            type: 'command' | 'response'
+        }>
+    }>
 }

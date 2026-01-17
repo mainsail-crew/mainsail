@@ -61,6 +61,7 @@ export const actions: ActionTree<ServerState, RootState> = {
             dispatch('gui/webcams/init', null, { root: true })
 
             await dispatch('initServerComponents', components)
+            await dispatch('initGcodeStore')
             await dispatch('initKlippyConnection')
 
             // Server init complete
@@ -179,6 +180,30 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
+    async initGcodeStore({ commit, rootGetters }) {
+        commit('clearGcodeStore')
+
+        const { gcode_store } = await Vue.$socket.emitAndWait('server.gcode_store')
+        let events = [...gcode_store]
+
+        const cleared_since = rootGetters['gui/console/getConsoleClearedSince']
+        if (cleared_since) {
+            events = events.filter((event) => !(event.time * 1000 < cleared_since))
+        }
+
+        const filters = rootGetters['gui/console/getConsolefilterRules'] as string[]
+        filters.forEach((filter) => {
+            try {
+                const regex = new RegExp(filter)
+                events = events.filter((event) => !regex.test(event.message))
+            } catch {
+                logError('invalid console filter:', filter)
+            }
+        })
+
+        commit('setGcodeStore', events)
+    },
+
     async initKlippyConnection({ dispatch }) {
         dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.CheckingKlipper').toString(), {
             root: true,
@@ -254,42 +279,6 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         clearInterval(state.klippy_polling_timer)
         commit('setKlippyPollingTimer', null)
-    },
-
-    getData({ commit }, payload) {
-        commit('setData', payload)
-    },
-
-    getGcodeStore({ commit, dispatch, rootGetters }, payload) {
-        commit('clearGcodeStore')
-
-        let events: ServerStateEvent[] = payload.gcode_store
-        const filters = rootGetters['gui/console/getConsolefilterRules']
-        filters.forEach((filter: string) => {
-            try {
-                const regex = new RegExp(filter)
-                events = events.filter((event) => !regex.test(event.message))
-            } catch {
-                window.console.error("Custom console filter '" + filter + "' doesn't work")
-            }
-        })
-
-        const cleared_since = rootGetters['gui/console/getConsoleClearedSince']
-
-        events = events.filter((event) => {
-            if (!cleared_since) {
-                return true
-            }
-
-            if (event.time && event.time * 1000 < cleared_since) {
-                return false
-            }
-
-            return !(event.date && new Date(event.date).valueOf() < cleared_since)
-        })
-
-        commit('setGcodeStore', events)
-        dispatch('socket/removeInitModule', 'server/gcode_store', { root: true })
     },
 
     addRootDirectory({ commit, state }, data) {

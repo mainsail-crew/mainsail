@@ -17,10 +17,8 @@ export const actions: ActionTree<PrinterState, RootState> = {
         dispatch('socket/addInitModule', 'printer/info', { root: true })
         dispatch('socket/addInitModule', 'printer/initSubscripts', { root: true })
         dispatch('socket/addInitModule', 'printer/initTempHistory', { root: true })
-        dispatch('socket/addInitModule', 'server/gcode_store', { root: true })
 
         Vue.$socket.emit('printer.info', {}, { action: 'printer/getInfo' })
-        Vue.$socket.emit('server.gcode_store', {}, { action: 'server/getGcodeStore' })
 
         dispatch('initSubscripts')
     },
