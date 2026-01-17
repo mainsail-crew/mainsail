@@ -154,7 +154,6 @@ export const actions: ActionTree<ServerState, RootState> = {
         return dbList.namespaces || []
     },
 
-    // TODO: rework to async module initialization
     async initServerComponents({ dispatch }, serverComponents: string[]) {
         const componentsToInit = serverComponents.filter((component: string) =>
             initableServerComponents.includes(camelize(component))
@@ -174,9 +173,7 @@ export const actions: ActionTree<ServerState, RootState> = {
                 { root: true }
             )
 
-            window.console.debug('init server component: ' + camelizedComponent)
-            dispatch('socket/addInitModule', 'server/' + camelizedComponent + '/init', { root: true })
-            dispatch('server/' + camelizedComponent + '/init', {}, { root: true })
+            await dispatch('server/' + camelizedComponent + '/init', {}, { root: true })
         }
     },
 
