@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import { ServerState } from '@/store/server/types'
-import { formatConsoleMessage } from '@/plugins/helpers'
+import { ServerState, ServerStateEvent } from '@/store/server/types'
 import { maxEventHistory } from '@/store/variables'
 
 export const mutations: MutationTree<ServerState> = {
@@ -80,37 +79,11 @@ export const mutations: MutationTree<ServerState> = {
         Vue.set(state, 'events', [])
     },
 
-    setGcodeStore(state, payload: { time: number; type: string; message: string }[]) {
-        //const t0 = performance.now()
-
-        if (payload.length >= maxEventHistory) {
-            payload = payload.slice(payload.length - maxEventHistory)
-        }
-
-        payload.forEach((message) => {
-            const date = new Date(message.time * 1000)
-            let formatMessage = formatConsoleMessage(message.message)
-
-            let type = message.type
-            if (type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
-            if (type === 'response') {
-                if (message.message.startsWith('// action:')) type = 'action'
-                else if (message.message.startsWith('// debug:')) type = 'debug'
-            }
-
-            state.events.push({
-                date,
-                message: message.message,
-                formatMessage: formatMessage,
-                type,
-            })
-        })
-
-        //const t1 = performance.now()
-        //window.console.debug("import events", t1-t0)
+    setGcodeStore(state, payload: ServerStateEvent[]) {
+        Vue.set(state, 'events', payload)
     },
 
-    addEvent(state, payload) {
+    addEvent(state, payload: ServerStateEvent) {
         if (
             ['command', 'autocomplete'].includes(payload.type) &&
             state.events[state.events.length - 1]?.type === 'autocomplete'
@@ -118,15 +91,10 @@ export const mutations: MutationTree<ServerState> = {
             state.events.pop()
         }
 
-        state.events.push({
-            date: payload.date,
-            message: payload.message,
-            formatMessage: payload.formatMessage,
-            type: payload.type,
-        })
+        state.events.push(payload)
 
-        if (state.events.length >= maxEventHistory) {
-            state.events = state.events.slice(state.events.length - maxEventHistory)
+        if (state.events.length > maxEventHistory) {
+            state.events.splice(0, state.events.length - maxEventHistory)
         }
     },
 

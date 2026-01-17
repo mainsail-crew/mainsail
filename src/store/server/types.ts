@@ -74,7 +74,7 @@ export interface ServerStateEvent {
     time?: number
     type: string
     message: string
-    formatMessage: string | string[]
+    formatMessage: string
 }
 
 export interface ServerStateEventPrompt {

@@ -4,13 +4,37 @@ import { ActionTree } from 'vuex'
 import { ServerState, ServerStateEvent } from '@/store/server/types'
 import { camelize, formatConsoleMessage } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
-import { initableServerComponents } from '@/store/variables'
+import { initableServerComponents, maxEventHistory } from '@/store/variables'
 import i18n from '@/plugins/i18n'
 import type { JsonRpcError } from '@/types/moonraker'
 
 const LOG_PREFIX = '[Server]'
 const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
 const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
+
+interface RawGcodeEvent {
+    message: string
+    type: string
+    time?: number
+}
+
+function formatGcodeEvent(event: RawGcodeEvent): ServerStateEvent {
+    let type = event.type
+    if (type === 'response') {
+        if (event.message.startsWith('// action:')) type = 'action'
+        else if (event.message.startsWith('// debug:')) type = 'debug'
+    }
+
+    const formatted = formatConsoleMessage(event.message)
+    const formatMessage = event.type === 'command' ? `<a class="command text--blue">${formatted}</a>` : formatted
+
+    return {
+        date: event.time ? new Date(event.time * 1000) : new Date(),
+        message: event.message,
+        formatMessage,
+        type,
+    }
+}
 
 export const actions: ActionTree<ServerState, RootState> = {
     reset({ commit, dispatch }) {
@@ -181,24 +205,29 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('clearGcodeStore')
 
         const { gcode_store } = await Vue.$socket.emitAndWait('server.gcode_store')
-        let events = [...gcode_store]
-
         const cleared_since = rootGetters['gui/console/getConsoleClearedSince']
-        if (cleared_since) {
-            events = events.filter((event) => !(event.time * 1000 < cleared_since))
-        }
-
         const filters = rootGetters['gui/console/getConsolefilterRules'] as string[]
-        filters.forEach((filter) => {
-            try {
-                const regex = new RegExp(filter)
-                events = events.filter((event) => !regex.test(event.message))
-            } catch {
-                logError('invalid console filter:', filter)
-            }
+        const regexFilters = filters
+            .map((filter) => {
+                try {
+                    return new RegExp(filter)
+                } catch {
+                    logError('invalid console filter:', filter)
+                    return null
+                }
+            })
+            .filter((r): r is RegExp => r !== null)
+
+        let events = gcode_store.filter((event: RawGcodeEvent) => {
+            if (cleared_since && event.time && event.time * 1000 < cleared_since) return false
+            return !regexFilters.some((regex) => regex.test(event.message))
         })
 
-        commit('setGcodeStore', events)
+        if (events.length > maxEventHistory) {
+            events = events.slice(-maxEventHistory)
+        }
+
+        commit('setGcodeStore', events.map(formatGcodeEvent))
     },
 
     async initKlippyConnection({ dispatch }) {
@@ -285,52 +314,35 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     addEvent({ commit, rootGetters }, payload) {
-        let message = payload
-        let type = 'response'
+        const type = typeof payload === 'object' && 'type' in payload ? payload.type : 'response'
+        let message: string
+        if (typeof payload === 'string') {
+            message = payload
+        } else if ('message' in payload) {
+            message = payload.message
+        } else if ('result' in payload) {
+            message = payload.result
+        } else if ('error' in payload) {
+            message = payload.error.message
+        } else return
 
-        if (typeof payload === 'object' && 'type' in payload) type = payload.type
-
-        if ('message' in payload) message = payload.message
-        else if ('result' in payload) message = payload.result
-        else if ('error' in payload) message = message.error.message
-
-        let formatMessage = formatConsoleMessage(message)
-        if (type === 'response') {
-            if (message.startsWith('// action:')) type = 'action'
-            else if (message.startsWith('// debug:')) type = 'debug'
-        }
-
-        const filters = rootGetters['gui/console/getConsolefilterRules']
-        let boolImport = true
-        filters.every((filter: string) => {
+        const filters = rootGetters['gui/console/getConsolefilterRules'] as string[]
+        const isFiltered = filters.some((filter) => {
             try {
-                const regex = new RegExp(filter)
-                if (regex.test(formatMessage)) boolImport = false
+                return new RegExp(filter).test(message)
             } catch {
-                window.console.error("Custom console filter '" + filter + "' doesn't work!")
+                logError('invalid console filter:', filter)
+                return false
             }
-
-            return boolImport
         })
+        if (isFiltered) return
 
-        if (boolImport) {
-            if (payload.type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
+        const event = formatGcodeEvent({ message, type })
+        commit('addEvent', event)
 
-            commit('addEvent', {
-                date: new Date(),
-                message: message,
-                formatMessage: formatMessage,
-                type: type,
-            })
-
-            if (
-                ['error', 'response'].includes(type) &&
-                !['/', '/console'].includes(router.currentRoute.path) &&
-                message.startsWith('!! ')
-            ) {
-                Vue.$toast.error(formatMessage)
-            }
-        }
+        const isErrorMessage = ['error', 'response'].includes(event.type) && message.startsWith('!! ')
+        const isOnConsolePage = ['/', '/console'].includes(router.currentRoute.path)
+        if (isErrorMessage && !isOnConsolePage) Vue.$toast.error(event.formatMessage)
     },
 
     serviceStateChanged({ commit }, payload) {
