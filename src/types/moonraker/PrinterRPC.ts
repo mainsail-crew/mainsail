@@ -8,6 +8,30 @@
  */
 export interface PrinterRPC {
     /**
+     * Returns information about the state of Klipper.
+     */
+    'printer.info': () => Promise<{
+        /** Current Klipper state */
+        state: 'ready' | 'startup' | 'shutdown' | 'error'
+        /** A message providing more details about the current state */
+        state_message: string
+        /** The hostname of the machine running Klipper */
+        hostname: string
+        /** The path to the active Klipper software configuration file */
+        software_version: string
+        /** The CPU model of the host machine */
+        cpu_info: string
+        /** The Klipper process git repo information */
+        klipper_path: string
+        /** The path to the Python executable used to launch Klipper */
+        python_path: string
+        /** The path to Klipper's log file */
+        log_file: string
+        /** The path to Klipper's configuration file */
+        config_file: string
+    }>
+
+    /**
      * Returns a list of all available printer objects.
      */
     'printer.objects.list': () => Promise<{

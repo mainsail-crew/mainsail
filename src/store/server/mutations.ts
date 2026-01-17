@@ -18,10 +18,6 @@ export const mutations: MutationTree<ServerState> = {
         Vue.set(state, 'klippy_state', payload)
     },
 
-    setKlippyStateTimer(state, payload) {
-        Vue.set(state, 'klippy_state_timer', payload)
-    },
-
     setKlippyMessage(state, payload) {
         Vue.set(state, 'klippy_message', payload)
     },
@@ -53,8 +49,8 @@ export const mutations: MutationTree<ServerState> = {
         Vue.set(state, 'system_cpu_usage', payload)
     },
 
-    setKlippyConnectedTimer(state, timer) {
-        Vue.set(state, 'klippy_connected_timer', timer)
+    setKlippyPollingTimer(state, timer: number | null) {
+        Vue.set(state, 'klippy_polling_timer', timer)
     },
 
     setProcStats(state, payload) {

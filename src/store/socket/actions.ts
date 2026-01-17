@@ -57,10 +57,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_klippy_ready':
-                commit('server/setKlippyConnected', null, { root: true })
-                dispatch('server/stopKlippyConnectedInterval', null, { root: true })
-                dispatch('server/stopKlippyStateInterval', null, { root: true })
-                dispatch('printer/init', null, { root: true })
+                dispatch('server/setKlippyReady', null, { root: true })
                 break
 
             case 'notify_klippy_disconnected':

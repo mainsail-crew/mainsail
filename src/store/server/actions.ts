@@ -10,8 +10,7 @@ import type { JsonRpcError } from '@/types/moonraker'
 
 export const actions: ActionTree<ServerState, RootState> = {
     reset({ commit, dispatch }) {
-        dispatch('stopKlippyConnectedInterval')
-        dispatch('stopKlippyStateInterval')
+        dispatch('stopKlippyPolling')
 
         commit('reset')
         dispatch('power/reset')
@@ -181,11 +180,37 @@ export const actions: ActionTree<ServerState, RootState> = {
         })
         dispatch('socket/setInitializationProgress', null, { root: true })
 
-        const klippyStatus = await Vue.$socket.emitAndWait('server.info')
-        dispatch('checkKlippyConnected', {
-            klippy_connected: klippyStatus.klippy_connected,
-            klippy_state: klippyStatus.klippy_state,
-        })
+        const isReady = await dispatch('checkAndUpdateKlippyState')
+        if (!isReady) dispatch('startKlippyPolling')
+    },
+
+    async checkAndUpdateKlippyState({ commit, dispatch, rootState }): Promise<boolean> {
+        const serverInfo = await Vue.$socket.emitAndWait('server.info')
+
+        if (!serverInfo.klippy_connected) {
+            commit('setKlippyState', 'disconnected')
+            return false
+        }
+
+        commit('setKlippyConnected')
+
+        const printerInfo = await Vue.$socket.emitAndWait('printer.info')
+        commit('setKlippyState', printerInfo.state)
+        commit('setKlippyMessage', printerInfo.state_message)
+
+        if (printerInfo.state !== 'ready') {
+            // just load commands, if no command is loaded yet. this is necessary to have autocomplete working in the
+            // console right after the first load, but klippy is not ready yet
+            const commands = rootState.printer?.gcode?.commands ?? {}
+            if (Object.keys(commands).length === 0) {
+                dispatch('printer/initGcodes', null, { root: true })
+            }
+
+            return false
+        }
+
+        dispatch('printer/init', null, { root: true })
+        return true
     },
 
     updateProcStats({ commit }, payload) {
@@ -196,81 +221,34 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     setKlippyReady({ dispatch }) {
-        dispatch('stopKlippyConnectedInterval')
-        dispatch('stopKlippyStateInterval')
-        dispatch('printer/reset', null, { root: true })
+        dispatch('stopKlippyPolling')
         dispatch('printer/init', null, { root: true })
     },
 
     setKlippyDisconnected({ commit, dispatch }) {
-        commit('setKlippyDisconnected', null)
-        dispatch('stopKlippyStateInterval')
-        dispatch('startKlippyConnectedInterval')
+        commit('setKlippyDisconnected')
+        dispatch('startKlippyPolling')
     },
 
     setKlippyShutdown({ commit, dispatch }) {
-        commit('setKlippyShutdown', null)
-        dispatch('stopKlippyStateInterval')
-        dispatch('startKlippyConnectedInterval')
+        commit('setKlippyShutdown')
+        dispatch('startKlippyPolling')
     },
 
-    startKlippyConnectedInterval({ commit, state }) {
-        if (state.klippy_connected_timer) return
+    startKlippyPolling({ state, commit, dispatch }) {
+        if (state.klippy_polling_timer) return
 
-        const timer = setInterval(() => {
-            Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected' })
-        }, 2000)
-        commit('setKlippyConnectedTimer', timer)
+        const timer = window.setInterval(() => {
+            dispatch('checkAndUpdateKlippyState')
+        }, 1000)
+        commit('setKlippyPollingTimer', timer)
     },
 
-    stopKlippyConnectedInterval({ commit, state }) {
-        if (state.klippy_connected_timer === null) return
+    stopKlippyPolling({ state, commit }) {
+        if (!state.klippy_polling_timer) return
 
-        clearInterval(state.klippy_connected_timer)
-        commit('setKlippyConnectedTimer', null)
-    },
-
-    checkKlippyConnected({ commit, dispatch }, payload) {
-        if (!payload.klippy_connected) {
-            dispatch('startKlippyConnectedInterval')
-
-            return
-        }
-
-        dispatch('stopKlippyConnectedInterval')
-        commit('setKlippyConnected')
-        dispatch('printer/initGcodes', null, { root: true })
-        dispatch('checkKlippyState', { state: payload.klippy_state, state_message: null })
-    },
-
-    startKlippyStateInterval({ commit, state }) {
-        if (state.klippy_state_timer) return
-
-        const timer = setInterval(() => {
-            Vue.$socket.emit('printer.info', {}, { action: 'server/checkKlippyState' })
-        }, 2000)
-        commit('setKlippyStateTimer', timer)
-    },
-
-    stopKlippyStateInterval({ commit, state }) {
-        if (state.klippy_state_timer === null) return
-
-        clearInterval(state.klippy_state_timer)
-        commit('setKlippyStateTimer', null)
-    },
-
-    checkKlippyState({ commit, dispatch }, payload: { state: string; state_message: string | null }) {
-        commit('setKlippyState', payload.state)
-        commit('setKlippyMessage', payload.state_message)
-
-        if (payload.state !== 'ready') {
-            dispatch('startKlippyStateInterval')
-            return
-        }
-
-        dispatch('stopKlippyConnectedInterval')
-        dispatch('stopKlippyStateInterval')
-        dispatch('printer/init', null, { root: true })
+        clearInterval(state.klippy_polling_timer)
+        commit('setKlippyPollingTimer', null)
     },
 
     getData({ commit }, payload) {

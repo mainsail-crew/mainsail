@@ -8,10 +8,9 @@ type ServerConfigResponse = RPCResult<'server.config'>
 
 export interface ServerState {
     klippy_connected: boolean
-    klippy_connected_timer: number | null
     klippy_state: string
-    klippy_state_timer: number | null
     klippy_message: string
+    klippy_polling_timer: number | null
     components: string[]
     failed_components: string[]
     failed_init_components: string[]

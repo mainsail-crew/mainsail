@@ -18,10 +18,9 @@ import { sensor } from '@/store/server/sensor'
 export const getDefaultState = (): ServerState => {
     return {
         klippy_connected: false,
-        klippy_connected_timer: null,
         klippy_state: '',
-        klippy_state_timer: null,
         klippy_message: '',
+        klippy_polling_timer: null,
         components: [],
         failed_components: [],
         failed_init_components: [],
