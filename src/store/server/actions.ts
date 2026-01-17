@@ -8,6 +8,10 @@ import { initableServerComponents } from '@/store/variables'
 import i18n from '@/plugins/i18n'
 import type { JsonRpcError } from '@/types/moonraker'
 
+const LOG_PREFIX = '[Server]'
+const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
+const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
+
 export const actions: ActionTree<ServerState, RootState> = {
     reset({ commit, dispatch }) {
         dispatch('stopKlippyPolling')
@@ -18,7 +22,7 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     async init({ dispatch }) {
-        window.console.debug('init Server')
+        logDebug('init')
 
         try {
             await dispatch('initIdentifyClient')
@@ -69,7 +73,7 @@ export const actions: ActionTree<ServerState, RootState> = {
                 return
             }
 
-            window.console.error(`Server init failed: ${message}`, e)
+            logError('init failed:', message, e)
             dispatch('socket/setInitializationError', message, { root: true })
         }
     },
@@ -159,6 +163,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         for (let i = 0; i < componentsToInit.length; i++) {
             const component = componentsToInit[i]
             const camelizedComponent = camelize(component)
+            logDebug('init component:', camelizedComponent)
 
             const progress = Math.round(((i + 1) / totalComponents) * 100)
             dispatch('socket/setInitializationProgress', progress, { root: true })
