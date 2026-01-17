@@ -282,9 +282,9 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     addRootDirectory({ commit, state }, data) {
-        if (!state.registered_directories.includes(data.item.root)) {
-            commit('addRootDirectory', { name: data.item.root })
-        }
+        if (state.registered_directories.includes(data.item.root)) return
+
+        commit('addRootDirectory', { name: data.item.root })
     },
 
     addEvent({ commit, rootGetters }, payload) {
