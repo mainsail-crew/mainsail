@@ -48,6 +48,7 @@ export class WebSocketClient {
             if (wait) {
                 const modulename = wait.action?.split('/')[1] ?? null
 
+                // TODO: remove after converting to async init server components
                 if (
                     modulename &&
                     wait.action?.startsWith('server/') &&

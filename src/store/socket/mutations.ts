@@ -46,6 +46,7 @@ export const mutations: MutationTree<SocketState> = {
         if (state.loadings.length) Vue.set(state, 'loadings', [])
     },
 
+    // TODO: remove after converting to async init server components
     addInitModule(state, payload) {
         const list = [...state.initializationList]
         const index = list.indexOf(payload)
@@ -55,6 +56,7 @@ export const mutations: MutationTree<SocketState> = {
         Vue.set(state, 'initializationList', list)
     },
 
+    // TODO: remove after converting to async init server components
     removeInitModule(state, payload) {
         const list = [...state.initializationList]
         const index = list.indexOf(payload)
@@ -64,6 +66,7 @@ export const mutations: MutationTree<SocketState> = {
         Vue.set(state, 'initializationList', list)
     },
 
+    // TODO: remove after converting to async init server components
     removeInitComponent(state, payload) {
         const list = [...state.initializationList]
 
