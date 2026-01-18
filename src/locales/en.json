@@ -167,7 +167,6 @@
         "InitSteps": {
             "CheckingKlipper": "Checking Klipper connection...",
             "IdentifyingClient": "Identifying client...",
-            "InitServerModule": "Initializing server module: {module}...",
             "LoadingComponent": "Loading {component}...",
             "LoadingDatabase": "Loading database...",
             "LoadingProcStats": "Loading process stats...",
