@@ -173,7 +173,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         const totalComponents = componentsToInit.length
         if (totalComponents === 0) return
 
-        for (let i = 0; i < componentsToInit.length; i++) {
+        for (let i = 0; i < totalComponents; i++) {
             const component = componentsToInit[i]
             logDebug('init component:', convertName(component))
 
