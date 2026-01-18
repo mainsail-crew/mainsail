@@ -156,23 +156,31 @@
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Kann keine Verbindung zu Moonraker ({host}) herstellen.",
+        "CheckingKlipper": "Klipper-Verbindung prüfen...",
         "CheckMoonrakerLog": "Wenn diese Meldung wiederholt erscheint, schaue bitte in die Logdatei unter:",
         "Connecting": "Verbinde zu {host}",
         "ErrorMessage": "Fehler-Nachricht: {message}",
         "Failed": "Verbindung fehlgeschlagen",
         "Help": "Hilfe",
+        "IdentifyingClient": "Client identifizieren...",
+        "InitComponents": {
+            "Announcements": "Ankündigungen",
+            "Database": "Datenbanken",
+            "History": "Historie",
+            "JobQueue": "Job-Warteschlange",
+            "Power": "Power",
+            "ProcStats": "Prozess-Statistiken",
+            "Sensor": "Moonraker sensoren",
+            "ServerConfig": "Server-Konfiguration",
+            "ServerInfo": "Server Informationen",
+            "Spoolman": "Spoolman",
+            "SystemInfo": "System Informationen",
+            "Timelapse": "Zeitraffer",
+            "UpdateManager": "Update Manager"
+        },
         "InitializationFailed": "Initialisierung fehlgeschlagen",
         "Initializing": "Initialisieren",
-        "InitSteps": {
-            "CheckingKlipper": "Klipper-Verbindung prüfen...",
-            "IdentifyingClient": "Client identifizieren...",
-            "LoadingComponent": "{component} laden...",
-            "LoadingDatabase": "Datenbank laden...",
-            "LoadingProcStats": "Prozess-Statistiken laden...",
-            "LoadingServerConfig": "Server-Konfiguration laden...",
-            "LoadingServerInfo": "Server-Info laden...",
-            "LoadingSystemInfo": "Systeminfo laden..."
-        },
+        "LoadingComponent": "{component} laden...",
         "TryAgain": "Erneut versuchen"
     },
     "Console": {

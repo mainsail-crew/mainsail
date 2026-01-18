@@ -2,7 +2,7 @@ import Vue from 'vue'
 import router from '@/plugins/router'
 import { ActionTree } from 'vuex'
 import { ServerState, ServerStateEvent } from '@/store/server/types'
-import { camelize, convertName, formatConsoleMessage } from '@/plugins/helpers'
+import { camelize, capitalize, convertName, formatConsoleMessage } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 import { initableServerComponents, maxEventHistory } from '@/store/variables'
 import i18n from '@/plugins/i18n'
@@ -102,7 +102,7 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     async initIdentifyClient({ commit, dispatch, rootState }) {
-        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.IdentifyingClient').toString(), {
+        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.IdentifyingClient').toString(), {
             root: true,
         })
 
@@ -116,9 +116,7 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     async initServerInfo({ commit, dispatch }) {
-        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.LoadingServerInfo').toString(), {
-            root: true,
-        })
+        dispatch('socket/setInitializationStepComponent', 'ServerInfo', { root: true })
 
         const serverInfo = await Vue.$socket.emitAndWait('server.info')
         commit('setData', serverInfo)
@@ -130,9 +128,7 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     async initServerConfig({ commit, dispatch }) {
-        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.LoadingServerConfig').toString(), {
-            root: true,
-        })
+        dispatch('socket/setInitializationStepComponent', 'ServerConfig', { root: true })
 
         const serverConfig = await Vue.$socket.emitAndWait('server.config')
         commit('setData', {
@@ -143,18 +139,14 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     async initSystemInfo({ commit, dispatch }) {
-        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.LoadingSystemInfo').toString(), {
-            root: true,
-        })
+        dispatch('socket/setInitializationStepComponent', 'SystemInfo', { root: true })
 
         const systemInfo = await Vue.$socket.emitAndWait('machine.system_info')
         commit('setData', { system_info: systemInfo.system_info })
     },
 
     async initProcStats({ commit, dispatch }) {
-        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.LoadingProcStats').toString(), {
-            root: true,
-        })
+        dispatch('socket/setInitializationStepComponent', 'ProcStats', { root: true })
 
         const procStats = await Vue.$socket.emitAndWait('machine.proc_stats')
 
@@ -166,9 +158,7 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     async initDatabases({ commit, dispatch }) {
-        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.LoadingDatabase').toString(), {
-            root: true,
-        })
+        dispatch('socket/setInitializationStepComponent', 'Database', { root: true })
 
         const dbList = await Vue.$socket.emitAndWait('server.database.list', { root: 'config' })
         commit('setData', { dbNamespaces: dbList.namespaces })
@@ -188,11 +178,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
             const progress = Math.round(((i + 1) / totalComponents) * 100)
             dispatch('socket/setInitializationProgress', progress, { root: true })
-            dispatch(
-                'socket/setInitializationStep',
-                i18n.t('ConnectionDialog.InitSteps.LoadingComponent', { component: convertName(component) }).toString(),
-                { root: true }
-            )
+            dispatch('socket/setInitializationStepComponent', capitalize(camelize(component)), { root: true })
 
             await dispatch('server/' + camelize(component) + '/init', {}, { root: true })
         }
@@ -228,7 +214,7 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     async initKlippyConnection({ dispatch }) {
-        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitSteps.CheckingKlipper').toString(), {
+        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.CheckingKlipper').toString(), {
             root: true,
         })
         dispatch('socket/setInitializationProgress', null, { root: true })

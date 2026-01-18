@@ -157,23 +157,31 @@
     },
     "ConnectionDialog": {
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
+        "CheckingKlipper": "Checking Klipper connection...",
         "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:",
         "Connecting": "Connecting to {host}",
         "ErrorMessage": "Error message: {message}",
         "Failed": "Connection failed",
         "Help": "Help",
+        "IdentifyingClient": "Identifying client...",
+        "InitComponents": {
+            "Announcements": "Announcements",
+            "Database": "Database",
+            "History": "History",
+            "JobQueue": "Job Queue",
+            "Power": "Power",
+            "ProcStats": "Process Statistics",
+            "Sensor": "Moonraker Sensors",
+            "ServerConfig": "Server Config",
+            "ServerInfo": "Server Info",
+            "Spoolman": "Spoolman",
+            "SystemInfo": "System Info",
+            "Timelapse": "Timelapse",
+            "UpdateManager": "Update Manager"
+        },
         "InitializationFailed": "Initialization failed",
         "Initializing": "Initializing",
-        "InitSteps": {
-            "CheckingKlipper": "Checking Klipper connection...",
-            "IdentifyingClient": "Identifying client...",
-            "LoadingComponent": "Loading {component}...",
-            "LoadingDatabase": "Loading database...",
-            "LoadingProcStats": "Loading process stats...",
-            "LoadingServerConfig": "Loading server config...",
-            "LoadingServerInfo": "Loading server info...",
-            "LoadingSystemInfo": "Loading system info..."
-        },
+        "LoadingComponent": "Loading {component}...",
         "TryAgain": "try again"
     },
     "Console": {

@@ -2,6 +2,8 @@ import Vue from 'vue'
 import { ActionTree } from 'vuex'
 import { SocketState } from '@/store/socket/types'
 import { RootState } from '@/store/types'
+import i18n from '@/plugins/i18n'
+import { convertName } from '@/plugins/helpers'
 
 export const actions: ActionTree<SocketState, RootState> = {
     reset({ commit }) {
@@ -178,6 +180,18 @@ export const actions: ActionTree<SocketState, RootState> = {
 
     setInitializationStep({ commit }, payload: string | null) {
         commit('setInitializationStep', payload)
+    },
+
+    setInitializationStepComponent({ commit }, component: string) {
+        const translationKey = `ConnectionDialog.InitComponents.${component}`
+        let componentName = convertName(component)
+        if (i18n.te(translationKey)) {
+            componentName = i18n.t(translationKey).toString()
+        }
+
+        const output = i18n.t('ConnectionDialog.LoadingComponent', { component: componentName }).toString()
+
+        commit('setInitializationStep', output)
     },
 
     setInitializationProgress({ commit }, payload: number | null) {
