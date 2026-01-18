@@ -169,7 +169,7 @@
             "Database": "Database",
             "History": "History",
             "JobQueue": "Job Queue",
-            "Power": "Power",
+            "Power": "Power-Devices",
             "ProcStats": "Process Statistics",
             "Sensor": "Moonraker Sensors",
             "ServerConfig": "Server Config",
