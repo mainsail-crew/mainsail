@@ -171,6 +171,7 @@ export const actions: ActionTree<ServerState, RootState> = {
             initableServerComponents.includes(camelize(component))
         )
         const totalComponents = componentsToInit.length
+        if (totalComponents === 0) return
 
         for (let i = 0; i < componentsToInit.length; i++) {
             const component = componentsToInit[i]
