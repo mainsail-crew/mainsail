@@ -153,16 +153,17 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('clearLoadings')
     },
 
+    // TODO: remove after converting to async init server components
     addInitModule({ commit }, payload: string) {
         commit('addInitModule', payload)
     },
 
-    // remove only one module from init component like 'server/spoolman/getActiveSpoolId'
+    // TODO: remove after converting to async init server components
     removeInitModule({ commit }, payload: string) {
         commit('removeInitModule', payload)
     },
 
-    // remove a complete init component like 'server/spoolman'
+    // TODO: remove after converting to async init server components
     removeInitComponent({ commit }, payload: string) {
         commit('removeInitComponent', payload)
     },
