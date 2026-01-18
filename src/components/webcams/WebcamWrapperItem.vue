@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="webcam-wrapper-item">
         <mjpegstreamer-async
             v-if="service === 'mjpegstreamer'"
             :cam-settings="webcam"
@@ -32,6 +32,7 @@
             :page="page" />
         <webrtc-go2rtc-async v-else-if="service === 'webrtc-go2rtc'" :cam-settings="webcam" :printer-url="printerUrl" />
         <p v-else class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
+        <webcam-stats-overlay :webcam="webcam" :overlay-display-mode="overlayDisplayMode" />
     </div>
 </template>
 
@@ -41,6 +42,9 @@ import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { DynamicCamLoader } from '@/components/webcams/streamers/DynamicCamLoader'
+import WebcamStatsOverlay from '@/components/webcams/WebcamStatsOverlay.vue'
+
+type WebcamOverlayDisplayMode = 'auto' | 'all' | 'hidden' | 'dummy'
 
 @Component({
     components: {
@@ -55,6 +59,7 @@ import { DynamicCamLoader } from '@/components/webcams/streamers/DynamicCamLoade
         WebrtcCameraStreamerAsync: DynamicCamLoader('WebrtcCameraStreamer'),
         WebrtcMediaMTXAsync: DynamicCamLoader('WebrtcMediaMTX'),
         WebrtcGo2rtcAsync: DynamicCamLoader('WebrtcGo2rtc'),
+        WebcamStatsOverlay,
     },
 })
 export default class WebcamWrapperItem extends Mixins(BaseMixin) {
@@ -62,6 +67,7 @@ export default class WebcamWrapperItem extends Mixins(BaseMixin) {
     @Prop({ type: Boolean, default: true }) showFps!: Boolean
     @Prop({ default: null }) printerUrl!: string | null
     @Prop({ type: String, default: null }) page!: string | null
+    @Prop({ type: String, default: 'auto' }) overlayDisplayMode!: WebcamOverlayDisplayMode
 
     get service() {
         return this.webcam?.service ?? 'unknown'
@@ -70,6 +76,10 @@ export default class WebcamWrapperItem extends Mixins(BaseMixin) {
 </script>
 
 <style scoped>
+.webcam-wrapper-item {
+    position: relative;
+}
+
 ::v-deep .webcamBackground {
     display: flex;
     justify-content: center;
