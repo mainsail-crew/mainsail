@@ -206,6 +206,7 @@
         "FilamentWeight": "耗材重量",
         "Files": "檔案",
         "Filesize": "檔案大小",
+        "FilterGcodeFiles": "篩選 G-code 檔案",
         "Free": "空餘: ",
         "FreeDisk": "剩餘空間",
         "GCodeFiles": "G-Code 檔案",

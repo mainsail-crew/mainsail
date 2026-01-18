@@ -190,6 +190,7 @@
         "FilamentWeight": "필라 무게",
         "Files": "파일",
         "Filesize": "파일 크기",
+        "FilterGcodeFiles": "G-Code 파일 필터링",
         "Free": "여유 용량",
         "FreeDisk": "사용 가능 디스크 공간",
         "GCodeFiles": "G-Code 파일",
