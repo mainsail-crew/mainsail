@@ -152,7 +152,3 @@ export interface ServerStateNetworkInterface {
     tx_bytes: number
     details?: ServerStateNetwork
 }
-
-export interface MoonrakerApiIdentifyResponse {
-    connection_id: string
-}
