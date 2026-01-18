@@ -2,7 +2,7 @@ import Vue from 'vue'
 import router from '@/plugins/router'
 import { ActionTree } from 'vuex'
 import { ServerState, ServerStateEvent } from '@/store/server/types'
-import { camelize, formatConsoleMessage } from '@/plugins/helpers'
+import { camelize, convertName, formatConsoleMessage } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 import { initableServerComponents, maxEventHistory } from '@/store/variables'
 import i18n from '@/plugins/i18n'
@@ -88,8 +88,6 @@ export const actions: ActionTree<ServerState, RootState> = {
             await dispatch('initGcodeStore')
             await dispatch('initKlippyConnection')
 
-            // Server init complete
-            dispatch('socket/removeInitModule', 'server', { root: true })
             dispatch('socket/setInitializationStep', null, { root: true })
         } catch (e) {
             const message = (e as JsonRpcError).message || 'Unknown error'
@@ -186,18 +184,17 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         for (let i = 0; i < componentsToInit.length; i++) {
             const component = componentsToInit[i]
-            const camelizedComponent = camelize(component)
-            logDebug('init component:', camelizedComponent)
+            logDebug('init component:', convertName(component))
 
             const progress = Math.round(((i + 1) / totalComponents) * 100)
             dispatch('socket/setInitializationProgress', progress, { root: true })
             dispatch(
                 'socket/setInitializationStep',
-                i18n.t('ConnectionDialog.InitSteps.LoadingComponent', { component: camelizedComponent }).toString(),
+                i18n.t('ConnectionDialog.InitSteps.LoadingComponent', { component: convertName(component) }).toString(),
                 { root: true }
             )
 
-            await dispatch('server/' + camelizedComponent + '/init', {}, { root: true })
+            await dispatch('server/' + camelize(component) + '/init', {}, { root: true })
         }
     },
 
