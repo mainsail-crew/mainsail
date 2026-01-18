@@ -11,7 +11,7 @@ export type ResponsiveElement = {
 
 @Component
 export default class ResponsiveMixin extends BaseMixin {
-    @Prop() protected declare breakpoints: {
+    @Prop() declare protected breakpoints: {
         [key: string]: (el: DOMRect) => boolean
     }
 
