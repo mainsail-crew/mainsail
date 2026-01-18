@@ -95,7 +95,7 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     mdiMinus = mdiMinus
     mdiPlus = mdiPlus
 
-    private declare timeout: ReturnType<typeof setTimeout>
+    declare private timeout: ReturnType<typeof setTimeout>
     private isLocked: boolean = false
     private invalidChars: string[] = ['e', 'E', '+']
 
