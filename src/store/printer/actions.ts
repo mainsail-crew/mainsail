@@ -17,10 +17,8 @@ export const actions: ActionTree<PrinterState, RootState> = {
         dispatch('socket/addInitModule', 'printer/info', { root: true })
         dispatch('socket/addInitModule', 'printer/initSubscripts', { root: true })
         dispatch('socket/addInitModule', 'printer/initTempHistory', { root: true })
-        dispatch('socket/addInitModule', 'server/gcode_store', { root: true })
 
         Vue.$socket.emit('printer.info', {}, { action: 'printer/getInfo' })
-        Vue.$socket.emit('server.gcode_store', {}, { action: 'server/getGcodeStore' })
 
         dispatch('initSubscripts')
     },
@@ -82,15 +80,6 @@ export const actions: ActionTree<PrinterState, RootState> = {
     getData({ commit, dispatch, state }, payload) {
         if ('status' in payload) payload = payload.status
         if ('requestParams' in payload) delete payload.requestParams
-
-        if ('webhooks' in payload) {
-            this.dispatch(
-                'server/getData',
-                { klippy_state: payload.webhooks.state, klippy_message: payload.webhooks.state_message },
-                { root: true }
-            )
-            delete payload.webhooks
-        }
 
         if ('bed_mesh' in state && 'bed_mesh' in payload && 'profiles' in payload.bed_mesh) {
             commit('setBedMeshProfiles', payload.bed_mesh.profiles)
