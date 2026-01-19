@@ -17,19 +17,44 @@ export interface PrinterRPC {
         state_message: string
         /** The hostname of the machine running Klipper */
         hostname: string
-        /** The path to the active Klipper software configuration file */
-        software_version: string
-        /** The CPU model of the host machine */
-        cpu_info: string
-        /** The Klipper process git repo information */
+        /** The path to the Klipper application */
         klipper_path: string
         /** The path to the Python executable used to launch Klipper */
         python_path: string
+        /** The PID of the current Klippy process */
+        process_id: number
+        /** The UID of the user the Klippy process belongs to */
+        user_id: number
+        /** The GID of the group the Klippy process belongs to */
+        group_id: number
         /** The path to Klipper's log file */
         log_file: string
         /** The path to Klipper's configuration file */
         config_file: string
+        /** Version of the currently running instance of Klipper */
+        software_version: string
+        /** A brief description of the host machine's CPU */
+        cpu_info: string
     }>
+
+    /**
+     * Immediately halts the printer and puts it in a "shutdown" state.
+     * Should be used to implement an "emergency stop" button.
+     */
+    'printer.emergency_stop': () => Promise<'ok'>
+
+    /**
+     * Requests a Klipper "soft" restart.
+     * This will reload the Klippy application and configuration.
+     * Connected MCUs will not be reset.
+     */
+    'printer.restart': () => Promise<'ok'>
+
+    /**
+     * Requests a complete Klipper restart.
+     * Both the Klippy Application and connected MCUs will be reset.
+     */
+    'printer.firmware_restart': () => Promise<'ok'>
 
     /**
      * Returns a list of all available printer objects.
@@ -67,4 +92,49 @@ export interface PrinterRPC {
         /** Current status of all queried objects */
         status: Record<string, unknown>
     }>
+
+    /**
+     * Query the status of all registered endstops.
+     */
+    'printer.query_endstops.status': () => Promise<Record<string, 'open' | 'TRIGGERED'>>
+
+    /**
+     * Executes a GCode command.
+     * Multiple commands may be executed by separating them with a newline.
+     * The request returns when the command or series of commands have completed,
+     * or when the command results in an error.
+     */
+    'printer.gcode.script': (params: {
+        /** A GCode command to run. Multiple commands may be specified, separated by a newline. */
+        script: string
+    }) => Promise<'ok'>
+
+    /**
+     * Retrieves a list of registered GCode command descriptions.
+     * Not all registered GCode commands have a description.
+     */
+    'printer.gcode.help': () => Promise<Record<string, string>>
+
+    /**
+     * Start a print job.
+     */
+    'printer.print.start': (params: {
+        /** The name of the gcode file to print. May be a path relative to the gcode folder. */
+        filename: string
+    }) => Promise<'ok'>
+
+    /**
+     * Pause the current print job.
+     */
+    'printer.print.pause': () => Promise<'ok'>
+
+    /**
+     * Resume the current print job.
+     */
+    'printer.print.resume': () => Promise<'ok'>
+
+    /**
+     * Cancel the current print job.
+     */
+    'printer.print.cancel': () => Promise<'ok'>
 }
