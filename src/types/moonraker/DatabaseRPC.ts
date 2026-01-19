@@ -13,10 +13,7 @@ export interface DatabaseRPC {
      * Lists all namespaces with read and/or write access.
      * Also lists database backup files.
      */
-    'server.database.list': (params?: {
-        /** The root namespace to list (optional) */
-        root?: string
-    }) => Promise<{
+    'server.database.list': () => Promise<{
         /** An array of namespaces registered with the database */
         namespaces: string[]
         /** An array of database backup filenames */
