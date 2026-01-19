@@ -7,46 +7,6 @@
  */
 export interface ServerRPC {
     /**
-     * Get the current Moonraker configuration.
-     * Returns the full configuration including all components.
-     */
-    'server.config': () => Promise<{
-        /** An object containing the full Moonraker configuration */
-        config: Record<string, Record<string, unknown>>
-        /** An object containing the original configuration as read from config files */
-        orig: Record<string, Record<string, string>>
-        /** An array of file objects describing the config files parsed */
-        files: Array<{
-            /** The name of the configuration file (relative path) */
-            filename: string
-            /** The config sections parsed from this file */
-            sections: string[]
-        }>
-    }>
-
-    /**
-     * Identify the client connection to Moonraker.
-     * This should be called immediately after the websocket connection is established.
-     */
-    'server.connection.identify': (params: {
-        /** The name of your client (e.g., 'Mainsail', 'Fluidd', 'KlipperScreen') */
-        client_name: string
-        /** The current version of the connected client */
-        version: string
-        /** Application type */
-        type: 'web' | 'mobile' | 'desktop' | 'display' | 'bot' | 'agent' | 'other'
-        /** The URL for your client's homepage */
-        url: string
-        /** Optional JWT for user authentication */
-        access_token?: string
-        /** Optional system API key for clients without user authentication */
-        api_key?: string
-    }) => Promise<{
-        /** The connection's unique identifier */
-        connection_id: number
-    }>
-
-    /**
      * Query Moonraker server information.
      * Returns details about the server state, loaded components, and version info.
      */
@@ -74,6 +34,47 @@ export interface ServerRPC {
     }>
 
     /**
+     * Get the current Moonraker configuration.
+     * Returns the full configuration including all components.
+     */
+    'server.config': () => Promise<{
+        /** An object containing the full Moonraker configuration */
+        config: Record<string, Record<string, unknown>>
+        /** An object containing the original configuration as read from config files */
+        orig: Record<string, Record<string, string>>
+        /** An array of file objects describing the config files parsed */
+        files: Array<{
+            /** The name of the configuration file (relative path) */
+            filename: string
+            /** The config sections parsed from this file */
+            sections: string[]
+        }>
+    }>
+
+    /**
+     * Request cached temperature data.
+     * Returns temperature history for all sensors.
+     */
+    'server.temperature_store': (params?: {
+        /** When true, include temperature monitors (sensors that may have null values) */
+        include_monitors?: boolean
+    }) => Promise<
+        Record<
+            string,
+            {
+                /** History of temperature measurements (null values possible for monitors) */
+                temperatures: (number | null)[]
+                /** History of temperature targets for heaters */
+                targets?: number[]
+                /** History of power values for heaters (0-1 PWM duty cycle) */
+                powers?: number[]
+                /** History of speed values for fans (0-1 PWM duty cycle) */
+                speeds?: number[]
+            }
+        >
+    >
+
+    /**
      * Request cached GCode responses.
      * Returns a FIFO queue of gcode messages with the oldest item at index 0.
      */
@@ -90,5 +91,55 @@ export interface ServerRPC {
             /** Message type: command (via API) or response (from Klippy) */
             type: 'command' | 'response'
         }>
+    }>
+
+    /**
+     * Requests a manual rollover for log files registered with Moonraker's log management facility.
+     * Currently limited to moonraker.log and klippy.log.
+     */
+    'server.logs.rollover': (params?: {
+        /** The application for which the log should be rolled over. When omitted, all logs are rolled over. */
+        application?: 'moonraker' | 'klipper'
+    }) => Promise<{
+        /** A list of application names successfully rolled over */
+        rolled_over: string[]
+        /** An object where fields are application names that failed, values are error messages */
+        failed: Record<string, string>
+    }>
+
+    /**
+     * Restart the Moonraker server.
+     */
+    'server.restart': () => Promise<'ok'>
+
+    /**
+     * Identify the client connection to Moonraker.
+     * This should be called immediately after the websocket connection is established.
+     */
+    'server.connection.identify': (params: {
+        /** The name of your client (e.g., 'Mainsail', 'Fluidd', 'KlipperScreen') */
+        client_name: string
+        /** The current version of the connected client */
+        version: string
+        /** Application type */
+        type: 'web' | 'mobile' | 'desktop' | 'display' | 'bot' | 'agent' | 'other'
+        /** The URL for your client's homepage */
+        url: string
+        /** Optional JWT for user authentication */
+        access_token?: string
+        /** Optional system API key for clients without user authentication */
+        api_key?: string
+    }) => Promise<{
+        /** The connection's unique identifier */
+        connection_id: number
+    }>
+
+    /**
+     * Get the unique identifier for this websocket connection.
+     * @deprecated Use server.connection.identify instead to retrieve the connection ID.
+     */
+    'server.websocket.id': () => Promise<{
+        /** A unique identifier for this connection */
+        websocket_id: number
     }>
 }
