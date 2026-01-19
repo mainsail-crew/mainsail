@@ -160,7 +160,7 @@ export const actions: ActionTree<ServerState, RootState> = {
     async initDatabases({ commit, dispatch }) {
         dispatch('socket/setInitializationStepComponent', 'Database', { root: true })
 
-        const dbList = await Vue.$socket.emitAndWait('server.database.list', { root: 'config' })
+        const dbList = await Vue.$socket.emitAndWait('server.database.list')
         commit('setData', { dbNamespaces: dbList.namespaces })
 
         return dbList.namespaces || []
