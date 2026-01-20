@@ -234,6 +234,12 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         commit('setKlippyConnected')
 
+        // when klippy_state is shutdown, printer.info will not be available or load forever
+        if (serverInfo.klippy_state === 'shutdown') {
+            commit('setKlippyShutdown')
+            return false
+        }
+
         const printerInfo = await Vue.$socket.emitAndWait('printer.info')
         commit('setKlippyState', printerInfo.state)
         commit('setKlippyMessage', printerInfo.state_message)
