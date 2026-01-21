@@ -186,20 +186,37 @@ export class WebSocketClient {
     emitAndWait<M extends RPCMethods>(
         method: M,
         params?: RPCParams<M>,
-        options: emitOptions = {}
+        options: emitOptionsWithTimeout = {}
     ): Promise<RPCResult<M>> {
         return new Promise<RPCResult<M>>((resolve, reject) => {
-            if (this.instance?.readyState !== WebSocket.OPEN) reject()
+            if (this.instance?.readyState !== WebSocket.OPEN) {
+                reject(new Error('WebSocket not open'))
+                return
+            }
 
             const id = this.messageId++
+            let timeoutId: number | null = null
+            if (options.timeout) {
+                timeoutId = window.setTimeout(() => {
+                    this.removeWaitById(id)
+                    reject(new WebSocketTimeoutError(`Timeout: ${method}`))
+                }, options.timeout)
+            }
+
             this.waits.push({
                 id: id,
                 params: params,
                 action: options.action ?? null,
                 actionPayload: options.actionPayload ?? {},
                 loading: options.loading ?? null,
-                resolve: resolve as (value: unknown) => void,
-                reject,
+                resolve: (value) => {
+                    if (timeoutId) clearTimeout(timeoutId)
+                    resolve(value as RPCResult<M>)
+                },
+                reject: (reason) => {
+                    if (timeoutId) clearTimeout(timeoutId)
+                    reject(reason)
+                },
             })
 
             if (options.loading) this.store?.dispatch('socket/addLoading', { name: options.loading })
@@ -299,4 +316,15 @@ interface emitOptions {
     action?: string | null
     actionPayload?: Params
     loading?: string | null
+}
+
+interface emitOptionsWithTimeout extends emitOptions {
+    timeout?: number
+}
+
+export class WebSocketTimeoutError extends Error {
+    constructor(method: string) {
+        super(`Timeout: ${method}`)
+        this.name = 'WebSocketTimeoutError'
+    }
 }

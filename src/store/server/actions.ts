@@ -7,6 +7,8 @@ import { RootState } from '@/store/types'
 import { initableServerComponents, maxEventHistory } from '@/store/variables'
 import i18n from '@/plugins/i18n'
 import type { JsonRpcError } from '@/types/moonraker'
+import { WebSocketTimeoutError } from '@/plugins/webSocketClient'
+import { PrinterRPC } from '@/types/moonraker/PrinterRPC'
 
 const LOG_PREFIX = '[Server]'
 const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
@@ -234,29 +236,35 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         commit('setKlippyConnected')
 
-        // when klippy_state is shutdown, printer.info will not be available or load forever
-        if (serverInfo.klippy_state === 'shutdown') {
-            commit('setKlippyShutdown')
-            return false
-        }
+        try {
+            const printerInfo = await Vue.$socket.emitAndWait('printer.info', undefined, { timeout: 5000 })
 
-        const printerInfo = await Vue.$socket.emitAndWait('printer.info')
-        commit('setKlippyState', printerInfo.state)
-        commit('setKlippyMessage', printerInfo.state_message)
+            commit('setKlippyState', printerInfo.state)
+            commit('setKlippyMessage', printerInfo.state_message)
 
-        if (printerInfo.state !== 'ready') {
-            // just load commands, if no command is loaded yet. this is necessary to have autocomplete working in the
-            // console right after the first load, but klippy is not ready yet
-            const commands = rootState.printer?.gcode?.commands ?? {}
-            if (Object.keys(commands).length === 0) {
-                dispatch('printer/initGcodes', null, { root: true })
+            if (printerInfo.state !== 'ready') {
+                // just load commands, if no command is loaded yet. this is necessary to have autocomplete working in the
+                // console right after the first load, but klippy is not ready yet
+                const commands = rootState.printer?.gcode?.commands ?? {}
+                if (Object.keys(commands).length === 0) {
+                    dispatch('printer/initGcodes', null, { root: true })
+                }
+
+                return false
             }
 
-            return false
-        }
+            dispatch('printer/init', null, { root: true })
+            return true
+        } catch (e) {
+            if (e instanceof WebSocketTimeoutError) {
+                logDebug('printer.info timed out, klippy might be shutting down')
+                commit('setKlippyState', serverInfo.klippy_state)
+                commit('setKlippyMessage', 'Klippy not responding')
+                return false
+            }
 
-        dispatch('printer/init', null, { root: true })
-        return true
+            throw e
+        }
     },
 
     updateProcStats({ commit }, payload) {
