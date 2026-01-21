@@ -8,7 +8,6 @@ import { initableServerComponents, maxEventHistory } from '@/store/variables'
 import i18n from '@/plugins/i18n'
 import type { JsonRpcError } from '@/types/moonraker'
 import { WebSocketTimeoutError } from '@/plugins/webSocketClient'
-import { PrinterRPC } from '@/types/moonraker/PrinterRPC'
 
 const LOG_PREFIX = '[Server]'
 const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
