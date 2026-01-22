@@ -221,8 +221,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         })
         dispatch('socket/setInitializationProgress', null, { root: true })
 
-        const isReady = await dispatch('checkAndUpdateKlippyState')
-        if (!isReady) dispatch('startKlippyPolling')
+        await dispatch('startKlippyPolling')
     },
 
     async checkAndUpdateKlippyState({ commit, dispatch, rootState }): Promise<boolean> {
@@ -236,7 +235,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('setKlippyConnected')
 
         try {
-            const printerInfo = await Vue.$socket.emitAndWait('printer.info', undefined, { timeout: 5000 })
+            const printerInfo = await Vue.$socket.emitAndWait('printer.info', undefined, { timeout: 2000 })
 
             commit('setKlippyState', printerInfo.state)
             commit('setKlippyMessage', printerInfo.state_message)
@@ -288,19 +287,28 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('startKlippyPolling')
     },
 
-    startKlippyPolling({ state, commit, dispatch }) {
+    async startKlippyPolling({ state, commit, dispatch }) {
         if (state.klippy_polling_timer) return
 
-        const timer = window.setInterval(() => {
-            dispatch('checkAndUpdateKlippyState')
-        }, 1000)
-        commit('setKlippyPollingTimer', timer)
+        const poll = async () => {
+            const isReady = await dispatch('checkAndUpdateKlippyState')
+            if (isReady) {
+                commit('setKlippyPollingTimer', null)
+                return
+            }
+
+            const timer = window.setTimeout(poll, 1000)
+            commit('setKlippyPollingTimer', timer)
+        }
+
+        // await first poll and then set the timer
+        await poll()
     },
 
     stopKlippyPolling({ state, commit }) {
         if (!state.klippy_polling_timer) return
 
-        clearInterval(state.klippy_polling_timer)
+        clearTimeout(state.klippy_polling_timer)
         commit('setKlippyPollingTimer', null)
     },
 
