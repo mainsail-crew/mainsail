@@ -186,7 +186,9 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
-    async initGcodeStore({ commit, rootGetters }) {
+    async initGcodeStore({ commit, dispatch, rootGetters }) {
+        dispatch('socket/setInitializationStepComponent', 'GcodeStore', { root: true })
+
         commit('clearGcodeStore')
 
         const { gcode_store } = await Vue.$socket.emitAndWait('server.gcode_store')
