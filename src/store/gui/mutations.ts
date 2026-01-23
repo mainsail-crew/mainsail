@@ -43,10 +43,6 @@ export const mutations: MutationTree<GuiState> = {
         Vue.set(state.view.gcodefiles, 'hideMetadataColumns', array)
     },
 
-    setGcodefilesShowHiddenFiles(state, value) {
-        Vue.set(state.view.gcodefiles, 'showHiddenFiles', value)
-    },
-
     setCurrentWebcam(state, payload) {
         Vue.set(state.view.webcam.currentCam, payload.page, payload.value)
     },

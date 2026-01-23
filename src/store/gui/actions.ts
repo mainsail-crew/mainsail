@@ -6,6 +6,10 @@ import { getDefaultState } from './index'
 import { excludeKeys, themeDir } from '@/store/variables'
 import { deletePath } from '@/plugins/helpers'
 
+const LOG_PREFIX = '[GUI]'
+const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
+const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
+
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit, dispatch }) {
         commit('reset')
@@ -18,7 +22,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     init() {
-        window.console.debug('init gui')
+        logDebug('init')
         Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/initStore' })
     },
 
@@ -112,64 +116,56 @@ export const actions: ActionTree<GuiState, RootState> = {
         await dispatch('socket/removeInitModule', 'gui/init', { root: true })
     },
 
-    /*
-     * Create mainsail namespace in moonraker DB and fill in default values
-     */
     async initDb({ dispatch, rootGetters }) {
-        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
+        logDebug('create Mainsail namespace')
 
-        const urlDefault =
+        const defaults: any = await this.dispatch('gui/getDefaults')
+        defaults.initVersion = rootGetters['getVersion']
+
+        dispatch('gui/restoreValues', defaults)
+    },
+
+    async getDefaults({ rootGetters }) {
+        const urlDefaultJson =
             rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
-        const responseDefault = await fetch(urlDefault)
+
         let defaults: any = {}
-        if (responseDefault) {
-            defaults = await responseDefault.json()
-            if (defaults.error?.code === 404) defaults = {}
+        try {
+            defaults = await fetch(urlDefaultJson).then((result) => result.json())
+            if (defaults.error?.code === 404) logDebug('default.json not found')
+
+            if ('error' in defaults) return {}
+        } catch (error) {
+            logError('Error while parsing default.json', error)
         }
 
-        for (const key in defaults) {
-            if (['webcams', 'timelapse'].includes(key)) {
-                for (const key2 of defaults[key]) {
-                    await fetch(baseUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            namespace: key,
-                            key: key2,
-                            value: defaults[key][key2],
-                        }),
-                    })
-                }
-            } else {
-                await fetch(baseUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        namespace: 'mainsail',
-                        key: key,
-                        value: defaults[key],
-                    }),
+        return defaults
+    },
+
+    async restoreValues(_, values) {
+        const keys = Object.keys(values)
+
+        // these keys are handled separately, because they are in their own namespaces and not a child of mainsail
+        const ownNamespaces = ['timelapse', 'webcams']
+        const ownNamespaceKeys = keys.filter((key) => ownNamespaces.includes(key))
+        const mainsailKeys = keys.filter((key) => !ownNamespaces.includes(key))
+
+        for (const key of ownNamespaceKeys) {
+            const subKeys = Object.keys(values[key])
+            for (const subKey of subKeys) {
+                const value = values[key][subKey]
+                await Vue.$socket.emitAndWait('server.database.post_item', {
+                    namespace: key,
+                    key: subKey,
+                    value,
                 })
             }
         }
 
-        await fetch(baseUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                namespace: 'mainsail',
-                key: 'initVersion',
-                value: rootGetters['getVersion'],
-            }),
-        })
-
-        dispatch('init')
+        for (const key of mainsailKeys) {
+            const value = values[key]
+            await Vue.$socket.emitAndWait('server.database.post_item', { namespace: 'mainsail', key, value })
+        }
     },
 
     saveSetting({ commit }, payload) {
@@ -183,7 +179,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    updateSettings(_, payload) {
+    async updateSettings(_, payload) {
         const keyName = payload.keyName
         let newState = payload.newVal
         if (
@@ -194,7 +190,11 @@ export const actions: ActionTree<GuiState, RootState> = {
         )
             newState = Object.assign(payload.value[keyName], { ...newState })
 
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
+        await Vue.$socket.emitAndWait('server.database.post_item', {
+            namespace: 'mainsail',
+            key: keyName,
+            value: newState,
+        })
     },
 
     setGcodefilesMetadata({ commit, dispatch, state }, data) {
@@ -202,14 +202,6 @@ export const actions: ActionTree<GuiState, RootState> = {
         dispatch('updateSettings', {
             keyName: 'view.gcodefiles.hideMetadataColumns',
             newVal: state.view.gcodefiles.hideMetadataColumns,
-        })
-    },
-
-    setGcodefilesShowHiddenFiles({ commit, dispatch, state }, data) {
-        commit('setGcodefilesShowHiddenFiles', data)
-        dispatch('updateSettings', {
-            keyName: 'view.gcodefiles.showHiddenFiles',
-            newVal: state.view.gcodefiles.showHiddenFiles,
         })
     },
 
