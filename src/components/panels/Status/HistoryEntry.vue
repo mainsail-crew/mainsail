@@ -54,7 +54,7 @@
         <v-menu v-model="showContextMenu" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
             <v-list>
                 <v-list-item
-                    v-if="item.exists && file"
+                    v-if="job.exists && file"
                     :disabled="printerIsPrinting || !klipperReadyForGui"
                     @click="startPrintDialogBool = true">
                     <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
@@ -76,7 +76,7 @@
         </v-menu>
         <add-batch-to-queue-dialog v-model="addBatchToQueueDialogBool" :show-toast="true" :filename="job.filename" />
         <start-print-dialog
-            v-if="item.exists && file"
+            v-if="job.exists && file"
             v-model="startPrintDialogBool"
             :file="file"
             :current-path="currentPath" />
