@@ -64,11 +64,7 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <start-print-dialog
-            :bool="showPrintDialog"
-            :file="item"
-            current-path=""
-            @closeDialog="showPrintDialog = false" />
+        <start-print-dialog v-model="showPrintDialog" :file="item" current-path="" />
         <add-batch-to-queue-dialog v-model="showAddBatchToQueueDialog" :filename="filename" />
         <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
         <confirmation-dialog
