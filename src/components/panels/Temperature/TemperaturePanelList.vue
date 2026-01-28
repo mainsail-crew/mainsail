@@ -25,6 +25,7 @@
                         v-for="objectName in heaterObjects"
                         :key="objectName"
                         :object-name="objectName"
+                        :input-digits="inputFieldDigits"
                         :is-responsive-mobile="el.is.mobile ?? false" />
                     <temperature-panel-list-item-nevermore
                         v-for="objectName in nevermoreObjects"
@@ -121,6 +122,18 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
         return this.$store.state.printer?.configfile?.settings ?? {}
     }
 
+    get maxTemperatureSetting() {
+        return this.heaterObjects.reduce((maxTemp, heaterObject) => {
+            const settingObject = this.settings[heaterObject.toLowerCase()] ?? {}
+            const max_temp = settingObject.max_temp ?? 0
+            return Math.max(maxTemp, max_temp)
+        }, 0)
+    }
+
+    get inputFieldDigits() {
+        return this.maxTemperatureSetting.toString().length
+    }
+
     checkMcuHostSensor(fullName: string) {
         const settingsObject = this.settings[fullName.toLowerCase()] ?? {}
         const sensor_type = settingsObject.sensor_type ?? ''
@@ -182,6 +195,7 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
 }
 
 .temperature-panel-table ::v-deep .target {
-    width: 140px;
+    width: 1px;
+    white-space: nowrap;
 }
 </style>
