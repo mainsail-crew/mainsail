@@ -232,10 +232,10 @@ export default class BaseMixin extends Vue {
                     output.push(`${tmp?.getDate()}`)
                     break
                 case 'mm':
-                    output.push((tmp?.getMonth() ?? 0).toString().padStart(2, '0'))
+                    output.push(((tmp?.getMonth() ?? 0) + 1).toString().padStart(2, '0'))
                     break
                 case 'm':
-                    output.push(`${tmp?.getMonth() ?? 0}`)
+                    output.push(`${(tmp?.getMonth() ?? 0) + 1}`)
                     break
                 case 'yyyy':
                     output.push(`${tmp?.getFullYear()}`)

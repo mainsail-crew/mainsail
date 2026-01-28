@@ -90,9 +90,9 @@
                     {{ $t('History.AddNote') }}
                 </v-list-item>
                 <v-list-item
-                    v-if="item.exists"
+                    v-if="item.exists && file"
                     :disabled="printerIsPrinting || !klipperReadyForGui"
-                    @click="startPrint">
+                    @click="startPrintDialogBool = true">
                     <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
                     {{ $t('History.Reprint') }}
                 </v-list-item>
@@ -110,12 +110,14 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <!-- details dialog -->
         <history-list-panel-details-dialog v-model="detailsDialogBool" :job="item" />
-        <!-- create/edit note dialog -->
         <history-list-panel-note-dialog v-model="noteDialogBool" :type="noteDialogType" :job="item" />
-        <!-- add to queue dialog -->
         <add-batch-to-queue-dialog v-model="addBatchToQueueDialogBool" :show-toast="true" :filename="item.filename" />
+        <start-print-dialog
+            v-if="item.exists && file"
+            v-model="startPrintDialogBool"
+            :file="file"
+            :current-path="currentPath" />
     </tr>
 </template>
 <script lang="ts">
@@ -123,7 +125,8 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import Panel from '@/components/ui/Panel.vue'
 import BaseMixin from '@/components/mixins/base'
-import { FileStateFileThumbnail } from '@/store/files/types'
+import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
+import { FileStateFileThumbnail, FileStateGcodefile } from '@/store/files/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import {
@@ -151,7 +154,13 @@ import HistoryListPanelNoteDialog from '@/components/dialogs/HistoryListPanelNot
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 
 @Component({
-    components: { AddBatchToQueueDialog, HistoryListPanelNoteDialog, HistoryListPanelDetailsDialog, Panel },
+    components: {
+        AddBatchToQueueDialog,
+        HistoryListPanelNoteDialog,
+        HistoryListPanelDetailsDialog,
+        Panel,
+        StartPrintDialog,
+    },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
@@ -175,10 +184,20 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     noteDialogType: 'create' | 'edit' = 'create'
 
     addBatchToQueueDialogBool = false
+    startPrintDialogBool = false
 
     @Prop({ type: Object, required: true }) readonly item!: ServerHistoryStateJob
     @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelCol[]
     @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
+
+    get file(): FileStateGcodefile | undefined {
+        return this.$store.getters['files/getFile']('gcodes/' + this.item.filename) ?? undefined
+    }
+
+    get currentPath(): string {
+        const lastSlash = this.item.filename.lastIndexOf('/')
+        return lastSlash > 0 ? '/' + this.item.filename.slice(0, lastSlash) : ''
+    }
 
     get smallThumbnail() {
         if ((this.item.metadata?.thumbnails?.length ?? 0) < 1) return false
@@ -245,12 +264,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     closeContextMenu() {
         this.contextMenuBool = false
-    }
-
-    startPrint() {
-        if (!this.item.exists) return
-
-        this.$socket.emit('printer.print.start', { filename: this.item.filename }, { action: 'switchToDashboard' })
     }
 
     createNote() {

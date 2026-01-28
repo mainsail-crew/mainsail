@@ -108,11 +108,7 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <start-print-dialog
-            :bool="showStartPrintDialog"
-            :file="item"
-            :current-path="currentPath"
-            @closeDialog="showStartPrintDialog = false" />
+        <start-print-dialog v-model="showStartPrintDialog" :file="item" :current-path="currentPath" />
         <add-batch-to-queue-dialog v-model="showAddBatchToQueueDialog" :filename="item.full_filename" />
         <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
         <gcodefiles-duplicate-file-dialog v-model="showDuplicateFileDialog" :item="item" />

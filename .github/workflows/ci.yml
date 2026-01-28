@@ -32,7 +32,7 @@ jobs:
           name: mainsail-latest.zip
           path: dist/mainsail.zip
 
-  test:
+  cypress:
     name: Cypress Tests
     runs-on: ubuntu-latest
     steps:
@@ -54,3 +54,21 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           start: npm run preview
+
+  vitest:
+    name: Vitest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit

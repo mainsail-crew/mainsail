@@ -433,13 +433,13 @@
             @action="deleteDirectoryAction" />
         <confirmation-dialog
             v-model="deleteDialog"
-            :title="$t('Machine.ConfigFilesPanel.Delete')"
+            :title="$t('Buttons.Delete')"
             :text="$t('Machine.ConfigFilesPanel.DeleteSingleFileQuestion', { name: contextMenu.item.filename })"
             :action-button-text="$t('Buttons.Delete')"
             @action="removeFile" />
         <confirmation-dialog
             v-model="deleteSelectedDialog"
-            :title="$t('Machine.ConfigFilesPanel.Delete')"
+            :title="$t('Buttons.Delete')"
             :text="deleteSelectedDialogText"
             :action-button-text="$t('Buttons.Delete')"
             @action="deleteSelectedFiles" />
