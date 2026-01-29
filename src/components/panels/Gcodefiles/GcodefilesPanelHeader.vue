@@ -108,6 +108,7 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
             const filepath = `${this.currentPath}/${this.selectedFiles[0].filename}`
             const href = `${this.apiUrl}/server/files/gcodes${escapePath(filepath)}`
             window.open(href)
+            return
         }
 
         let items: string[] = []
