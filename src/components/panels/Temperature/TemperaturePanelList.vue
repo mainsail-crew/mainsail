@@ -132,7 +132,10 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
     }
 
     get inputFieldDigits() {
-        return this.maxTemperatureSetting.toString().length
+        const MIN_INPUT_DIGITS = 3
+        const digits = this.maxTemperatureSetting.toString().length
+
+        return Math.max(MIN_INPUT_DIGITS, digits)
     }
 
     checkMcuHostSensor(fullName: string) {
