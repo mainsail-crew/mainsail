@@ -967,13 +967,24 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         this.contextMenu.shown = true
     }
 
-    downloadFile() {
-        const filename = this.absolutePath + '/' + this.contextMenu.item.filename
-        const href = `${this.apiUrl}/server/files${escapePath(filename)}`
+    private startDownloadFile(filename: string) {
+        const filepath = `${this.absolutePath}/${filename}`
+        const href = `${this.apiUrl}/server/files${escapePath(filepath)}`
         window.open(href)
     }
 
+    downloadFile() {
+        this.startDownloadFile(this.contextMenu.item.filename)
+        this.contextMenu.shown = false
+    }
+
     async downloadSelectedFiles() {
+        if (this.selectedFiles.length === 1) {
+            this.startDownloadFile(this.selectedFiles[0].filename)
+            this.selectedFiles = []
+            return
+        }
+
         let items: string[] = []
 
         const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
