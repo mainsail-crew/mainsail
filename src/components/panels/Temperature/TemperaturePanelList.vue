@@ -125,8 +125,9 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
     get maxTemperatureSetting() {
         return this.heaterObjects.reduce((maxTemp, heaterObject) => {
             const settingObject = this.settings[heaterObject.toLowerCase()] ?? {}
-            const max_temp = settingObject.max_temp ?? 0
-            return Math.max(maxTemp, max_temp)
+            const maxTempSetting = Number(settingObject.max_temp ?? 0)
+
+            return Math.max(maxTemp, maxTempSetting)
         }, 0)
     }
 
