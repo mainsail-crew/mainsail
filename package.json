@@ -21,6 +21,7 @@
         "start": "vite build && vite preview",
         "test": "start-server-and-test preview http://127.0.0.1:4173/ 'cypress run'",
         "test:ui": "cypress open",
+        "test:unit": "vitest run",
         "changelog": "git cliff v0.0.4..$(git describe --tags $(git rev-list --tags --max-count=1)) --output CHANGELOG.md"
     },
     "dependencies": {
@@ -32,7 +33,6 @@
         "@codemirror/search": "^6.0.0",
         "@codemirror/state": "^6.1.0",
         "@codemirror/view": "^6.0.3",
-        "@intlify/unplugin-vue-i18n": "^2.0.0",
         "@jaames/iro": "^5.5.2",
         "@lezer/highlight": "^1.0.0",
         "@sindarius/gcodeviewer": "^3.7.17",
@@ -74,13 +74,13 @@
         "@types/jmuxer": "^2.0.3",
         "@types/lodash.kebabcase": "^4.1.6",
         "@types/lodash.throttle": "^4.1.6",
-        "@types/node": "^20.0.0",
+        "@types/node": "^20.19.0",
         "@types/overlayscrollbars": "^1.12.1",
         "@types/semver": "^7.3.8",
         "@types/uuid": "^9.0.0",
         "@typescript-eslint/eslint-plugin": "^6.0.0",
         "@typescript-eslint/parser": "^6.0.0",
-        "@vitejs/plugin-vue2": "^2.3.3",
+        "@vitejs/plugin-vue2": "^2.3.4",
         "@vue/eslint-config-typescript": "^12.0.0",
         "autoprefixer": "^10.4.2",
         "cypress": "^14.2.0",
@@ -93,15 +93,16 @@
         "postcss-nesting": "^12.0.1",
         "prettier": "^3.3.3",
         "prettier-plugin-sort-json": "^4.0.0",
-        "sass": "~1.32",
+        "sass": "^1.97.2",
         "start-server-and-test": "^2.0.5",
         "stream-browserify": "^3.0.0",
         "typescript": "^4.9.5",
         "unplugin-vue-components": "^0.22.12",
-        "vite": "^5.4.21",
+        "vite": "^7.3.1",
         "vite-plugin-checker": "^0.8.0",
         "vite-plugin-package-version": "^1.1.0",
         "vite-plugin-pwa": "^1.2.0",
+        "vitest": "^3.2.4",
         "vue-debounce-decorator": "^1.0.1",
         "vue-i18n-extract": "^2.0.7",
         "vue-router": "^3.5.2",
@@ -124,6 +125,6 @@
         "last 2 edge major versions"
     ],
     "engines": {
-        "node": "^18 || ^20"
+        "node": "^20.19.0 || >=22.12.0"
     }
 }

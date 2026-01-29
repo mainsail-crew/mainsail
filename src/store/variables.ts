@@ -20,7 +20,17 @@ export const themeDir = '.theme'
 export const datasetInterval = 1000
 export const datasetTypes = ['temperature', 'target', 'power', 'speed']
 export const datasetTypesInPercents = ['power', 'speed']
-export const additionalSensors = ['aht10', 'aht1x', 'aht2x', 'aht3x', 'bme280', 'htu21d', 'sgp40', 'sht3x', 'temperature_combined']
+export const additionalSensors = [
+    'aht10',
+    'aht1x',
+    'aht2x',
+    'aht3x',
+    'bme280',
+    'htu21d',
+    'sgp40',
+    'sht3x',
+    'temperature_combined',
+]
 
 /*
  * List of valid gcode file extensions
@@ -152,6 +162,23 @@ export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sona
  * List of all rollover logfiles
  */
 export const rolloverLogfiles = ['klipper', 'moonraker']
+
+/*
+ * List of keys that should not be saved to Moonraker DB
+ * and are excluded when backup/restore settings
+ */
+export const excludeKeys = [
+    'view.timelapse.currentPath',
+    'view.timelapse.selectedFiles',
+    'view.history.selectedJobs',
+    'view.blockFileUpload',
+    'view.configfiles.selectedFiles',
+    'view.configfiles.rootPath',
+    'view.configfiles.currentPath',
+    'view.gcodefiles.search',
+    'view.gcodefiles.currentPath',
+    'view.gcodefiles.selectedFiles',
+]
 
 /*
  * List of all Themes

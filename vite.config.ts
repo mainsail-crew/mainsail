@@ -11,7 +11,6 @@ import buildVersion from './src/plugins/build-version'
 import buildReleaseInfo from './src/plugins/build-release_info'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 import postcssNesting from 'postcss-nesting'
-import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
 const PWAConfig: Partial<VitePWAOptions> = {
     registerType: 'autoUpdate',
@@ -86,13 +85,19 @@ export default defineConfig({
             dts: true, // enabled by default if `typescript` is installed
             resolvers: [VuetifyResolver()],
         }),
-        VueI18nPlugin({
-            strictMessage: false, // allow HTML tags in translation
-            escapeHtml: false, // allow HTML tags in translation
-        }),
     ],
 
     css: {
+        preprocessorOptions: {
+            sass: {
+                silenceDeprecations: ['import', 'global-builtin', 'slash-div', 'if-function'],
+                quietDeps: true,
+            },
+            scss: {
+                silenceDeprecations: ['import', 'global-builtin', 'slash-div', 'if-function'],
+                quietDeps: true,
+            },
+        },
         postcss: {
             plugins: [postcssNesting()],
         },
@@ -146,5 +151,10 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',
         port: 8080,
+    },
+
+    test: {
+        environment: 'node',
+        include: ['tests/**/*.spec.ts'],
     },
 })

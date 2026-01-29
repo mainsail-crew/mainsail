@@ -3,7 +3,8 @@ import { ActionTree } from 'vuex'
 import { GuiState, GuiStateLayoutoption } from '@/store/gui/types'
 import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
-import { themeDir } from '@/store/variables'
+import { excludeKeys, themeDir } from '@/store/variables'
+import { deletePath } from '@/plugins/helpers'
 
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit, dispatch }) {
@@ -173,16 +174,13 @@ export const actions: ActionTree<GuiState, RootState> = {
 
     saveSetting({ commit }, payload) {
         commit('saveSetting', payload)
+        if (excludeKeys.includes(payload.name)) return
 
         Vue.$socket.emit('server.database.post_item', {
             namespace: 'mainsail',
             key: payload.name,
             value: payload.value,
         })
-    },
-
-    saveSettingWithoutUpload({ commit }, payload) {
-        commit('saveSetting', payload)
     },
 
     updateSettings(_, payload) {
@@ -316,6 +314,12 @@ export const actions: ActionTree<GuiState, RootState> = {
                 if (objects?.result?.value) backup[key] = { ...objects?.result?.value }
             } else if (key in mainsailDb) {
                 backup[key] = { ...mainsailDb[key] }
+
+                excludeKeys
+                    .filter((excludeKey) => excludeKey.startsWith(key + '.'))
+                    .forEach((excludeKey) => {
+                        deletePath(backup[key], excludeKey.substring(key.length + 1))
+                    })
             }
         }
 
