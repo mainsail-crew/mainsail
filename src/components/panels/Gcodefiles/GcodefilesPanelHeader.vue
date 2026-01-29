@@ -104,6 +104,12 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
     }
 
     downloadSelectedFiles() {
+        if (this.selectedFiles.length === 1) {
+            const filepath = `${this.currentPath}/${escapePath(this.selectedFiles[0].filename)}`
+            const href = `${this.apiUrl}/server/files/gcodes${escapePath(filepath)}`
+            window.open(href)
+        }
+
         let items: string[] = []
 
         const addElementToItems = (absolutPath: string, directory: FileStateFile[]) => {
