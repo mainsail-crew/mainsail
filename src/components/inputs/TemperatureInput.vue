@@ -9,9 +9,10 @@
                 outlined
                 hide-details
                 hide-spin-buttons
-                class="_temp-input pr-1"
+                class="_temp-input"
+                :style="inputStyle"
                 @blur="value = target"
-                @focus="$event.target.select()"></v-text-field>
+                @focus="$event.target.select()" />
         </form>
         <v-menu v-if="presets" :offset-y="true" left title="Preheat">
             <template #activator="{ on, attrs }">
@@ -69,6 +70,20 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
     @Prop({ type: String, required: true }) declare readonly command: string
     @Prop({ type: String, required: true }) declare readonly attributeName: string
     @Prop({ type: Array, default: [] }) declare presets: number[]
+    @Prop({ type: Number, default: 3 }) declare readonly inputDigits: number
+
+    get inputStyle() {
+        const PER_DIGIT = 10
+        const WIDTH_C_GRAD = 21
+        const PADDING = 20
+        const SPACE_FOR_DECIMAL = 10
+
+        const width = this.inputDigits * PER_DIGIT + WIDTH_C_GRAD + PADDING + SPACE_FOR_DECIMAL
+
+        return {
+            width: `${width}px`,
+        }
+    }
 
     private normalizeValue(raw: number | string | null): number {
         if (typeof raw === 'string') raw = parseFloat(raw)
@@ -113,11 +128,6 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
 </script>
 
 <style scoped>
-._temp-input {
-    min-width: 4.2rem;
-    max-width: 5rem;
-}
-
 ._temp-input >>> .v-input__slot {
     min-height: 1rem !important;
     padding-left: 8px !important;
