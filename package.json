@@ -47,6 +47,7 @@
         "js-sha256": "^0.10.0",
         "lodash.kebabcase": "^4.1.1",
         "lodash.throttle": "^4.1.1",
+        "lucide-vue": "^0.517.0",
         "overlayscrollbars": "^1.13.1",
         "overlayscrollbars-vue": "^0.2.2",
         "regenerator-runtime": "^0.14.0",

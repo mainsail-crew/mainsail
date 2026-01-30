@@ -134,7 +134,30 @@ const routes: AppRoute[] = [
         showInNavi: false,
         path: '/settings/machine',
         redirect: '/config',
+    }, 
+    {
+        name: 'view',
+        title: 'View',
+        path: '/view',
+        icon: mdiVideo3d,
+        component: () => import('../pages/Viewer.vue'),
+        alwaysShow: true,
+        showInNavi: true,
+        position: 100,
+        fullscreen: true,
     },
+    {
+        name: 'novo',
+        title: 'Novo',
+        path: '/',
+        icon: mdiMonitorDashboard,
+        component: Dashboard,
+        alwaysShow: true,
+        showInNavi: true,
+        position: 110,
+    },
+
+
 ]
 
 export default routes
