@@ -466,7 +466,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from '@/components/mixins/theme'
-import { escapePath, formatFilesize, sortFiles } from '@/plugins/helpers'
+import { escapePath, formatFilesize, generateTimestamp, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
@@ -992,17 +992,9 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
 
         await addElementToItems(this.absolutePath, this.selectedFiles)
 
-        const date = new Date()
-        const month = (date.getMonth() + 1).toString().padStart(2, '0')
-        const day = date.getDate().toString().padStart(2, '0')
-        const hours = date.getHours().toString().padStart(2, '0')
-        const minutes = date.getMinutes().toString().padStart(2, '0')
-        const seconds = date.getSeconds().toString().padStart(2, '0')
-        const timestamp = `${date.getFullYear()}${month}${day}-${hours}${minutes}${seconds}`
-
         this.$socket.emit(
             'server.files.zip',
-            { items, dest: `config/${this.root}-${timestamp}.zip` },
+            { items, dest: `config/${this.root}-${generateTimestamp()}.zip` },
             { action: 'files/downloadZip', loading: 'configDownloadZip' }
         )
 

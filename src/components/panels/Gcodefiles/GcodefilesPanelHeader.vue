@@ -69,7 +69,7 @@ import BaseMixin from '@/components/mixins/base'
 import GcodefilesMixin from '@/components/mixins/gcodefiles'
 import { mdiCloudDownload, mdiDelete, mdiFolderPlus, mdiMagnify, mdiRefresh, mdiUpload } from '@mdi/js'
 import { FileStateFile } from '@/store/files/types'
-import { escapePath } from '@/plugins/helpers'
+import { escapePath, generateTimestamp } from '@/plugins/helpers'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import { validGcodeExtensions } from '@/store/variables'
 
@@ -121,12 +121,10 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
         }
 
         addElementToItems('gcodes/' + this.currentPath, this.selectedFiles)
-        const date = new Date()
-        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDate()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
 
         this.$socket.emit(
             'server.files.zip',
-            { items, dest: `config/gcodes-${timestamp}.zip` },
+            { items, dest: `config/gcodes-${generateTimestamp()}.zip` },
             { action: 'files/downloadZip', loading: 'gcodeDownloadZip' }
         )
 

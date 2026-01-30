@@ -527,3 +527,21 @@ export const deletePath = (obj: any, path: string) => {
 
     if (current && typeof current === 'object') delete current[last]
 }
+
+/**
+ * Generates a timestamp string in the format `YYYYMMDD-HHMMSS`.
+ *
+ * @param date - Optional date object. Defaults to current date/time.
+ * @returns Formatted timestamp string (e.g., `20260130-070253`)
+ *
+ * @example
+ * generateTimestamp() // '20260130-070253' (current time)
+ * generateTimestamp(new Date('2025-12-25T10:30:00')) // '20251225-103000'
+ */
+export function generateTimestamp(date: Date = new Date()): string {
+    const pad = (n: number) => n.toString().padStart(2, '0')
+    const dateString = `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}`
+    const timeString = `${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}`
+
+    return `${dateString}-${timeString}`
+}
