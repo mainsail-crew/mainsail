@@ -20,7 +20,7 @@
 ### Vue Components ([VUE_TYPESCRIPT.md](VUE_TYPESCRIPT.md))
 
 - [ ] Uses Vue Class Component syntax
-- [ ] Class member order correct (@Prop → Data → Getters → Methods → @Watch → Lifecycle)
+- [ ] Class member order correct (`@Prop` → Data → Getters → `@Watch` → Lifecycle → Methods
 - [ ] `beforeDestroy` cleans up all resources
 - [ ] Complex template logic extracted to computed properties
 

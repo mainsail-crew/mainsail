@@ -12,9 +12,9 @@ See canonical example: [examples/VueComponentExample.vue](examples/VueComponentE
 1. `@Prop` declarations
 2. Data fields (class properties)
 3. Getters (computed properties)
-4. Methods
-5. `@Watch` decorators
-6. Lifecycle hooks (mounted, beforeDestroy)
+4. `@Watch` decorators
+5. Lifecycle hooks (mounted, beforeDestroy)
+6. Methods
 
 ### Documentation
 
@@ -36,6 +36,7 @@ Keep templates declarative - no inline filtering or complex expressions.
 ## Cleanup in beforeDestroy
 
 Always clean up resources:
+
 - Event listeners
 - Timers and intervals
 - Observers (ResizeObserver, MutationObserver)

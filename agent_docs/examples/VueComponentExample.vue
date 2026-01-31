@@ -46,22 +46,13 @@ export default class VueComponentExample extends Mixins(BaseMixin) {
         return this.count > 0 && !this.isLoading
     }
 
-    // 4. Methods
-    handleClick(): void {
-        this.count++
-    }
-
-    onResize(): void {
-        // Handle resize
-    }
-
-    // 5. Watchers
+    // 4. Watchers
     @Watch('initialCount', { immediate: true })
     onInitialCountChanged(newVal: number): void {
         this.count = newVal
     }
 
-    // 6. Lifecycle hooks
+    // 5. Lifecycle hooks
     mounted(): void {
         window.addEventListener('resize', this.onResize)
     }
@@ -74,6 +65,15 @@ export default class VueComponentExample extends Mixins(BaseMixin) {
         // - WebSocket/WebRTC connections
         // - ECharts instances
         window.removeEventListener('resize', this.onResize)
+    }
+
+    // 6. Methods
+    handleClick(): void {
+        this.count++
+    }
+
+    onResize(): void {
+        // Handle resize
     }
 }
 </script>
