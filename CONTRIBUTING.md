@@ -54,7 +54,6 @@ Before you work on a PR and submit it, please pay attention to the following gui
 2. Do not submit PRs against the `master` branch. PRs need to be submitted against the `develop` branch.
 3. Follow our [Code Standards](https://docs.mainsail.xyz/overview/developement/code-standards)
 4. If there is an issue describing the problem you're fixing or a discussion of a feature you are implementing, make sure to link it in the PRs body.
-
    - You can also add `fix #<id>` or `fixes #<id>` in the PR body where `<id>` is the issue id.
    - Example PR title, body and sign-off:
 
