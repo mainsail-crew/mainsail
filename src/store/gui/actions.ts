@@ -110,11 +110,11 @@ export const actions: ActionTree<GuiState, RootState> = {
         }
     },
 
-    saveSetting({ commit }, payload) {
+    async saveSetting({ commit }, payload) {
         commit('saveSetting', payload)
         if (excludeKeys.includes(payload.name)) return
 
-        Vue.$socket.emit('server.database.post_item', {
+        await Vue.$socket.emitAndWait('server.database.post_item', {
             namespace: 'mainsail',
             key: payload.name,
             value: payload.value,
