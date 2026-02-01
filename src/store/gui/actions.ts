@@ -143,14 +143,6 @@ export const actions: ActionTree<GuiState, RootState> = {
         await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: 'mainsail', key })
     },
 
-    setTempchartDatasetAdditionalSensorSetting({ commit, dispatch, state }, payload) {
-        commit('setTempchartDatasetAdditionalSensorSetting', payload)
-        dispatch('updateSettings', {
-            keyName: 'view.tempchart',
-            newVal: state.view.tempchart,
-        })
-    },
-
     async resetMoonrakerDB({ rootGetters }, payload) {
         const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
 
