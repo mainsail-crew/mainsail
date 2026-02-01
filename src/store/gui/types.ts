@@ -7,7 +7,14 @@ import { GuiNotificationState } from '@/store/gui/notifications/types'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import { GuiNavigationState } from '@/store/gui/navigation/types'
 
+export type DeepPartial<T> = {
+    [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P]
+}
+
+export type GuiStateInitPayload = DeepPartial<GuiState>
+
 export interface GuiState {
+    initVersion: string | null
     general: {
         printername: string
         language: string

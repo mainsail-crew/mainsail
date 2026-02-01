@@ -26,6 +26,7 @@ import { heightmap } from '@/store/gui/heightmap'
 
 export const getDefaultState = (): GuiState => {
     return {
+        initVersion: null,
         general: {
             printername: '',
             language: 'en',

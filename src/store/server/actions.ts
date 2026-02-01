@@ -65,9 +65,6 @@ export const actions: ActionTree<ServerState, RootState> = {
                 dispatch('files/initRootDirs', registeredDirectories, { root: true })
             }
 
-            if (!dbNamespaces.includes('mainsail')) {
-                await dispatch('gui/initDb', null, { root: true })
-            }
             await dispatch('gui/init', null, { root: true })
 
             // TODO: convert to async module initialization
@@ -77,10 +74,6 @@ export const actions: ActionTree<ServerState, RootState> = {
             } else {
                 dispatch('gui/maintenance/initDb', null, { root: true })
             }
-
-            // TODO: convert to async module initialization
-            dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
-            dispatch('gui/webcams/init', null, { root: true })
 
             await dispatch('initServerComponents', components)
             await dispatch('initGcodeStore')

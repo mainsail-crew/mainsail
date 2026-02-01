@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
-import { GuiState, GuiStateLayoutoption } from '@/store/gui/types'
+import { GuiState, GuiStateInitPayload } from '@/store/gui/types'
 import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
 import { excludeKeys, themeDir } from '@/store/variables'
@@ -21,108 +21,50 @@ export const actions: ActionTree<GuiState, RootState> = {
         dispatch('webcams/reset')
     },
 
-    init() {
+    async init({ commit, dispatch, rootGetters, rootState }) {
         logDebug('init')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/initStore' })
-    },
 
-    async initStore({ commit, dispatch, rootGetters, rootState }, payload) {
-        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
-        const mainsailUrl = baseUrl + '?namespace=mainsail'
+        let values: GuiStateInitPayload = {}
+        try {
+            const payload = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: 'mainsail' })
+            values = payload.value as GuiStateInitPayload
+        } catch (error) {
+            logDebug('create Mainsail namespace')
 
-        if ('remoteprinters' in payload.value) {
-            if (rootState.instancesDB === 'moonraker')
-                dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
-            delete payload.value.remoteprinters
+            values = await this.dispatch('gui/getDefaults')
+            values.initVersion = rootGetters['getVersion']
+
+            dispatch('restoreValues', values)
         }
 
-        // delete currentPath if exists
-        if (payload.value?.view?.gcodefiles?.currentPath) {
-            window.console.debug('remove currentPath from gui namespace')
-            await fetch(mainsailUrl + '&key=view.gcodefiles.currentPath', { method: 'DELETE' })
+        if ('remoteprinters' in values) {
+            if (rootState.instancesDB === 'moonraker') {
+                dispatch('remoteprinters/initStore', values.remoteprinters?.printers ?? {})
+            }
+            delete values.remoteprinters
         }
 
-        // delete currentPath if exists
-        if (payload.value?.view?.configfiles?.currentPath) {
-            window.console.debug('remove currentPath from gui namespace')
-            await fetch(mainsailUrl + '&key=view.configfiles.currentPath', { method: 'DELETE' })
+        for (const key of excludeKeys) {
+            const parts = key.split('.')
+            let value: any = values
+
+            for (const part of parts) {
+                if (value === undefined || value === null) break
+                value = value[part]
+            }
+
+            if (value === undefined || value === null) continue
+
+            logDebug(`remove ${key} from gui namespace`)
+            await dispatch('deleteSetting', key)
+            deletePath(values, key)
         }
 
-        //update cooldownGcode from V2.0.1 to V2.1.0
-        if ('cooldownGcode' in payload.value) {
-            window.console.debug('update cooldownGcode to new namespace')
-            dispatch('saveSetting', { name: 'presets.cooldownGcode', value: payload.value.cooldownGcode })
+        commit('setData', values)
 
-            await fetch(mainsailUrl + '&key=cooldownGcode', { method: 'DELETE' })
-            delete payload.value.cooldownGcode
-        }
-
-        //update presets from V2.0.1 to V2.1.0
-        if ('presets' in payload.value && Array.isArray(payload.value.presets)) {
-            window.console.debug('update presets to new namespace')
-
-            payload.value.presets.forEach((preset: any) => {
-                dispatch('presets/store', { values: preset })
-            })
-
-            delete payload.value.presets
-        }
-
-        //update nonExpandPanels from V2.1.x to V2.2.0
-        if (
-            'dashboard' in payload.value &&
-            'nonExpandPanels' in payload.value.dashboard &&
-            Array.isArray(payload.value.dashboard.nonExpandPanels)
-        ) {
-            await fetch(mainsailUrl + '&key=dashboard.nonExpandPanels', { method: 'DELETE' })
-            dispatch('saveSetting', {
-                name: 'dashboard.nonExpandPanels.widescreen',
-                value: payload.value.dashboard.nonExpandPanels,
-            })
-            delete payload.value.dashboard.nonExpandPanels
-        }
-
-        //update tools to temperatures panel from V2.1.x to V2.2.0
-        if ('dashboard' in payload.value) {
-            const dashboard = payload.value.dashboard
-            const layouts = [
-                'mobileLayout',
-                'tabletLayout1',
-                'tabletLayout2',
-                'desktopLayout1',
-                'desktopLayout2',
-                'widescreenLayout1',
-                'widescreenLayout2',
-                'widescreenLayout3',
-            ]
-
-            layouts.forEach((layout) => {
-                if (layout in dashboard) {
-                    const index = dashboard[layout].findIndex((entry: GuiStateLayoutoption) => entry.name === 'tools')
-
-                    if (index !== -1) {
-                        dashboard[layout][index].name = 'temperature'
-
-                        dispatch('saveSetting', {
-                            name: 'dashboard.' + layout,
-                            value: dashboard[layout],
-                        })
-                    }
-                }
-            })
-        }
-
-        await commit('setData', payload.value)
-        await dispatch('socket/removeInitModule', 'gui/init', { root: true })
-    },
-
-    async initDb({ dispatch, rootGetters }) {
-        logDebug('create Mainsail namespace')
-
-        const defaults: any = await this.dispatch('gui/getDefaults')
-        defaults.initVersion = rootGetters['getVersion']
-
-        dispatch('gui/restoreValues', defaults)
+        // TODO: convert to async module initialization
+        dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
+        dispatch('gui/webcams/init', null, { root: true })
     },
 
     async getDefaults({ rootGetters }) {
