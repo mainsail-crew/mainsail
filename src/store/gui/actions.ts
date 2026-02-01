@@ -237,61 +237,48 @@ export const actions: ActionTree<GuiState, RootState> = {
         document.body.removeChild(element)
     },
 
-    async restoreMoonrakerDB({ rootGetters }, payload) {
-        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
-        const mainsailUrl = baseUrl + '?namespace=mainsail'
-        const responseNamespaces = await fetch(rootGetters['socket/getUrl'] + '/server/database/list')
-        const objectsNamespaces = await responseNamespaces.json()
-        const namespacesArray = objectsNamespaces?.result?.namespaces ?? []
-        let mainsailArray: string[] = []
+    async restoreMoonrakerDB(_, payload) {
+        const namespacesArray = await Vue.$socket
+            .emitAndWait('server.database.list')
+            .then((res) => res.namespaces ?? [])
 
+        let mainsailArray: string[] = []
         if (namespacesArray.includes('mainsail')) {
-            const responseMainsail = await fetch(mainsailUrl)
-            const objectsMainsail = await responseMainsail.json()
-            mainsailArray = Object.keys(objectsMainsail?.result?.value ?? {})
+            mainsailArray = await Vue.$socket
+                .emitAndWait('server.database.get_item', { namespace: 'mainsail' })
+                .then((res) => Object.keys(res.value ?? {}))
         }
 
         for (const key of payload.dbCheckboxes) {
             if (['timelapse', 'webcams'].includes(key)) {
                 if (namespacesArray.includes(key)) {
-                    const url = baseUrl + '?namespace=' + key
-                    const response = await fetch(url)
-                    const objects = await response.json()
-                    if (objects?.result?.value) {
-                        for (const item of Object.keys(objects?.result?.value)) {
-                            await fetch(url + '&key=' + item, { method: 'DELETE' })
-                        }
+                    const objects = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: key })
+                    for (const item of Object.keys(objects.value ?? {})) {
+                        await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: key, key: item })
                     }
                 }
 
                 for (const key2 of Object.keys(payload.restoreObjects[key])) {
                     const value = payload.restoreObjects[key][key2]
-                    await fetch(baseUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            namespace: key,
-                            key: key2,
-                            value,
-                        }),
+                    await Vue.$socket.emitAndWait('server.database.post_item', {
+                        namespace: key,
+                        key: key2,
+                        value,
                     })
                 }
-            } else {
-                if (mainsailArray.includes(key)) await fetch(mainsailUrl + '&key=' + key, { method: 'DELETE' })
-                await fetch(mainsailUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        namespace: 'mainsail',
-                        key,
-                        value: payload.restoreObjects[key],
-                    }),
-                })
+
+                continue
             }
+
+            if (mainsailArray.includes(key)) {
+                await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: 'mainsail', key })
+            }
+
+            await Vue.$socket.emitAndWait('server.database.post_item', {
+                namespace: 'mainsail',
+                key,
+                value: payload.restoreObjects[key],
+            })
         }
 
         window.location.reload()
@@ -310,14 +297,11 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    resetLayout({ dispatch }, name) {
+    resetLayout({ dispatch }, name: keyof GuiState['dashboard']) {
         const defaultState = getDefaultState()
-        // @ts-ignore
-        const newVal: any = defaultState.dashboard[name] ?? []
-
         dispatch('saveSetting', {
-            name: 'dashboard.' + name,
-            value: newVal,
+            name: `dashboard.${name}`,
+            value: defaultState.dashboard[name] ?? [],
         })
     },
 
