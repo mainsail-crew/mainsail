@@ -96,7 +96,7 @@
                                         hide-details
                                         :input-value="status.showInTable"
                                         :label="`${status.displayName} (${status.value})`"
-                                        @change="changeStatusVisible(status)" />
+                                        @change="changeStatusVisible(status.name)" />
                                 </v-list-item>
                                 <v-divider />
                             </template>
@@ -534,8 +534,17 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         this.hideColums = columns
     }
 
-    changeStatusVisible(status: any) {
-        this.$store.dispatch('gui/toggleStatusInHistoryList', status.name)
+    changeStatusVisible(status: string) {
+        const printStatusArray = [...this.$store.state.gui.view.history.hidePrintStatus]
+        const index = printStatusArray.indexOf(status)
+
+        if (index === -1) printStatusArray.push(status)
+        else printStatusArray.splice(index, 1)
+
+        this.$store.dispatch('gui/saveSetting', {
+            name: 'view.history.hidePrintStatus',
+            value: printStatusArray,
+        })
     }
 
     exportHistory() {

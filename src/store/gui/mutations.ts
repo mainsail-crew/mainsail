@@ -33,10 +33,6 @@ export const mutations: MutationTree<GuiState> = {
         else if (payload.hidden !== true && index > -1) state.view.tempchart.hiddenDataset.splice(index, 1)
     },
 
-    setHistoryHidePrintStatus(state, payload) {
-        Vue.set(state.view.history, 'hidePrintStatus', payload)
-    },
-
     addClosePanel(state, payload) {
         const nonExpandPanels = [...state.dashboard.nonExpandPanels[payload.viewport]]
 

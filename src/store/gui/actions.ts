@@ -307,21 +307,6 @@ export const actions: ActionTree<GuiState, RootState> = {
         window.location.reload()
     },
 
-    toggleStatusInHistoryList({ commit, dispatch, state }, name) {
-        const array: string[] = [...state.view.history.hidePrintStatus]
-        const index = array.indexOf(name)
-
-        if (index === -1) array.push(name)
-        else array.splice(index, 1)
-
-        commit('setHistoryHidePrintStatus', array)
-
-        dispatch('updateSettings', {
-            keyName: 'view.history.hidePrintStatus',
-            newVal: array,
-        })
-    },
-
     saveExpandPanel({ commit, dispatch, state }, payload) {
         if (!payload.value) commit('addClosePanel', { name: payload.name, viewport: payload.viewport })
         else commit('removeClosePanel', { name: payload.name, viewport: payload.viewport })
