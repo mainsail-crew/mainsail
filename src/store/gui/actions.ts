@@ -307,14 +307,6 @@ export const actions: ActionTree<GuiState, RootState> = {
         window.location.reload()
     },
 
-    setHistoryColumns({ commit, dispatch, state }, data) {
-        commit('setHistoryColumns', data)
-        dispatch('updateSettings', {
-            keyName: 'view.history',
-            newVal: state.view.history,
-        })
-    },
-
     toggleStatusInHistoryList({ commit, dispatch, state }, name) {
         const array: string[] = [...state.view.history.hidePrintStatus]
         const index = array.indexOf(name)

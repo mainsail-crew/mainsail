@@ -33,14 +33,6 @@ export const mutations: MutationTree<GuiState> = {
         else if (payload.hidden !== true && index > -1) state.view.tempchart.hiddenDataset.splice(index, 1)
     },
 
-    setHistoryColumns(state, data) {
-        if (data.value && state.view.history.hideColums.includes(data.name)) {
-            state.view.history.hideColums.splice(state.view.history.hideColums.indexOf(data.name), 1)
-        } else if (!data.value && !state.view.history.hideColums.includes(data.name)) {
-            state.view.history.hideColums.push(data.name)
-        }
-    },
-
     setHistoryHidePrintStatus(state, payload) {
         Vue.set(state.view.history, 'hidePrintStatus', payload)
     },

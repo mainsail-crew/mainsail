@@ -525,11 +525,13 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     changeColumnVisible(name: string) {
-        if (this.headers.filter((header) => header.value === name).length) {
-            let value = this.headers.filter((header) => header.value === name)[0].visible
+        const columns = [...this.hideColums]
+        const index = columns.indexOf(name)
 
-            this.$store.dispatch('gui/setHistoryColumns', { name: name, value: value })
-        }
+        if (index !== -1) columns.splice(index, 1)
+        else columns.push(name)
+
+        this.hideColums = columns
     }
 
     changeStatusVisible(status: any) {
