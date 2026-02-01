@@ -29,15 +29,10 @@ export const getters: GetterTree<GuiState, any> = {
         return ['temperature', 'target'].includes(payload.type)
     },
 
-    getDatasetAdditionalSensorValue: (state) => (payload: { name: string; sensor: string }) => {
-        if (
-            payload.name in state.view.tempchart.datasetSettings &&
-            'additionalSensors' in state.view.tempchart.datasetSettings[payload.name] &&
-            payload.sensor in state.view.tempchart.datasetSettings[payload.name].additionalSensors
-        )
-            return state.view.tempchart.datasetSettings[payload.name].additionalSensors[payload.sensor]
+    getChartDataAdditionalSensorValue: (state) => (payload: { name: string; sensor: string }) => {
+        const additionalSensors = state.view.tempchart.datasetSettings[payload.name]?.additionalSensors ?? {}
 
-        return true
+        return additionalSensors[payload.sensor] ?? true
     },
 
     getPanelExpand: (state) => (name: string, viewport: GuiViewport) => {

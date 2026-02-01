@@ -17,14 +17,14 @@ export default class TemperaturePanelListItemEditAdditionalSensor extends Mixins
     @Prop({ type: String, required: true }) readonly additionalSensor!: string
 
     get value() {
-        return this.$store.getters['gui/getDatasetAdditionalSensorValue']({
+        return this.$store.getters['gui/getChartDataAdditionalSensorValue']({
             name: this.objectName,
-            type: this.additionalSensor,
+            sensor: this.additionalSensor,
         })
     }
 
     set value(newVal) {
-        this.$store.dispatch('gui/setDatasetAdditionalSensorStatus', {
+        this.$store.dispatch('gui/setChartDataAdditionalSensorStatus', {
             objectName: this.objectName,
             dataset: this.additionalSensor,
             value: newVal,

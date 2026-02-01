@@ -55,7 +55,7 @@ export default class TemperaturePanelListItemAdditionalSensorValue extends Mixin
     }
 
     get guiSetting() {
-        return this.$store.getters['gui/getDatasetAdditionalSensorValue']({
+        return this.$store.getters['gui/getChartDataAdditionalSensorValue']({
             name: this.objectName,
             sensor: this.keyName,
         })

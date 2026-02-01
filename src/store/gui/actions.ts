@@ -343,44 +343,23 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    announcementDismissFlag(_, payload) {
-        window.console.log(payload)
+    setChartData({ dispatch, state }, payload: { objectName: string; dataset: string; value: boolean | string }) {
+        const value = { ...(state.view.tempchart.datasetSettings[payload.objectName] ?? {}) }
+        value[payload.dataset] = payload.value
+
+        dispatch('saveSetting', { name: `view.tempchart.datasetSettings.${payload.objectName}`, value })
     },
 
-    setChartDatasetStatus(
-        { commit, dispatch, state },
+    setChartDataAdditionalSensorStatus(
+        { dispatch, state },
         payload: { objectName: string; dataset: string; value: boolean }
     ) {
-        commit('setChartDatasetStatus', payload)
+        const value = { ...(state.view.tempchart.datasetSettings[payload.objectName]?.additionalSensors ?? {}) }
+        value[payload.dataset] = payload.value
 
-        dispatch('updateSettings', {
-            keyName: 'view.tempchart.datasetSettings',
-            newVal: state.view.tempchart.datasetSettings,
-        })
-    },
-
-    setDatasetAdditionalSensorStatus(
-        { commit, dispatch, state },
-        payload: { objectName: string; dataset: string; value: boolean }
-    ) {
-        commit('setDatasetAdditionalSensorStatus', payload)
-
-        dispatch('updateSettings', {
-            keyName: 'view.tempchart.datasetSettings',
-            newVal: state.view.tempchart.datasetSettings,
-        })
-    },
-
-    setChartColor({ commit, dispatch, state }, payload: { objectName: string; value: boolean }) {
-        commit('setChartDatasetStatus', {
-            objectName: payload.objectName,
-            dataset: 'color',
-            value: payload.value,
-        })
-
-        dispatch('updateSettings', {
-            keyName: 'view.tempchart.datasetSettings',
-            newVal: state.view.tempchart.datasetSettings,
+        dispatch('saveSetting', {
+            name: `view.tempchart.datasetSettings.${payload.objectName}.additionalSensors`,
+            value,
         })
     },
 }
