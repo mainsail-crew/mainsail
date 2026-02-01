@@ -202,29 +202,30 @@ export const actions: ActionTree<GuiState, RootState> = {
         window.location.reload()
     },
 
-    async backupMoonrakerDB({ rootGetters }, payload) {
+    async backupMoonrakerDB(_, payload) {
         const backup: any = {}
 
-        const responseMainsail = await fetch(rootGetters['socket/getUrl'] + '/server/database/item?namespace=mainsail')
-        const objectsMainsail = await responseMainsail.json()
-        const mainsailDb = objectsMainsail?.result?.value ?? {}
+        const mainsailDb: any = await Vue.$socket
+            .emitAndWait('server.database.get_item', { namespace: 'mainsail' })
+            .then((res) => res.value ?? {})
 
         for (const key of payload) {
             if (['timelapse', 'webcams'].includes(key)) {
-                const url = rootGetters['socket/getUrl'] + '/server/database/item?namespace=' + key
+                const result = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: key })
+                if (result?.value) backup[key] = { ...result.value }
 
-                const response = await fetch(url)
-                const objects = await response.json()
-                if (objects?.result?.value) backup[key] = { ...objects?.result?.value }
-            } else if (key in mainsailDb) {
-                backup[key] = { ...mainsailDb[key] }
-
-                excludeKeys
-                    .filter((excludeKey) => excludeKey.startsWith(key + '.'))
-                    .forEach((excludeKey) => {
-                        deletePath(backup[key], excludeKey.substring(key.length + 1))
-                    })
+                continue
             }
+
+            if (!(key in mainsailDb)) continue
+
+            backup[key] = { ...mainsailDb[key] }
+
+            excludeKeys
+                .filter((excludeKey) => excludeKey.startsWith(key + '.'))
+                .forEach((excludeKey) => {
+                    deletePath(backup[key], excludeKey.substring(key.length + 1))
+                })
         }
 
         const element = document.createElement('a')
