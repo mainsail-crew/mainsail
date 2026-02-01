@@ -44,6 +44,7 @@ export const getDefaultState = (): ServerState => {
         dbNamespaces: [],
         websocket_count: 0,
         moonraker_version: '',
+        console_cleared_this_session: false,
     }
 }
 

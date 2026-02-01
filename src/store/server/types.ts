@@ -62,7 +62,7 @@ export interface ServerState {
     websocket_count: number
     moonraker_version: string
 
-    console_cleared_this_session?: boolean
+    console_cleared_this_session: boolean
 
     power?: ServerPowerState
     updateManager?: ServerUpdateManagerState
