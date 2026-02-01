@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { GuiState } from '@/store/gui/types'
+import { GuiState, GuiViewport } from '@/store/gui/types'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { allDashboardPanels, defaultTheme, themes } from '@/store/variables'
 import { Theme } from '@/store/types'
@@ -40,7 +40,7 @@ export const getters: GetterTree<GuiState, any> = {
         return true
     },
 
-    getPanelExpand: (state) => (name: string, viewport: string) => {
+    getPanelExpand: (state) => (name: string, viewport: GuiViewport) => {
         if ('dashboard' in state && viewport in state.dashboard.nonExpandPanels) {
             return !state.dashboard.nonExpandPanels[viewport].includes(name)
         }

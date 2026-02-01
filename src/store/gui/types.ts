@@ -11,6 +11,7 @@ export type DeepPartial<T> = {
     [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P]
 }
 
+export type GuiViewport = 'mobile' | 'tablet' | 'desktop' | 'widescreen'
 export type GuiStateInitPayload = DeepPartial<GuiState>
 
 export interface GuiState {
@@ -52,9 +53,7 @@ export interface GuiState {
         }
     }
     dashboard: {
-        nonExpandPanels: {
-            [index: string]: string[]
-        }
+        nonExpandPanels: Record<GuiViewport, string[]>
         mobileLayout: GuiStateLayoutoption[]
         tabletLayout1: GuiStateLayoutoption[]
         tabletLayout2: GuiStateLayoutoption[]

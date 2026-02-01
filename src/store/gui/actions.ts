@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
-import { GuiState, GuiStateInitPayload } from '@/store/gui/types'
+import { GuiState, GuiStateInitPayload, GuiViewport } from '@/store/gui/types'
 import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
 import { excludeKeys, themeDir } from '@/store/variables'
@@ -307,13 +307,16 @@ export const actions: ActionTree<GuiState, RootState> = {
         window.location.reload()
     },
 
-    saveExpandPanel({ commit, dispatch, state }, payload) {
-        if (!payload.value) commit('addClosePanel', { name: payload.name, viewport: payload.viewport })
-        else commit('removeClosePanel', { name: payload.name, viewport: payload.viewport })
+    saveExpandPanel({ dispatch, state }, payload: { name: string; viewport: GuiViewport; value: boolean }) {
+        const array = [...state.dashboard.nonExpandPanels[payload.viewport]]
+        const index = array.indexOf(payload.name)
 
-        dispatch('updateSettings', {
-            keyName: `dashboard.nonExpandPanels.${payload.viewport}`,
-            newVal: state.dashboard.nonExpandPanels[payload.viewport],
+        if (!payload.value && index === -1) array.push(payload.name)
+        else if (payload.value && index !== -1) array.splice(index, 1)
+
+        dispatch('saveSetting', {
+            name: `dashboard.nonExpandPanels.${payload.viewport}`,
+            value: array,
         })
     },
 

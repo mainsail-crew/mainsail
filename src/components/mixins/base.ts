@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { DateTimeFormatOptions } from 'vue-i18n'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
+import { GuiViewport } from '@/store/gui/types'
 
 @Component
 export default class BaseMixin extends Vue {
@@ -116,11 +117,12 @@ export default class BaseMixin extends Vue {
         return this.$vuetify.breakpoint.xl
     }
 
-    get viewport() {
+    get viewport(): GuiViewport {
         if (this.isMobile) return 'mobile'
         else if (this.isTablet) return 'tablet'
         else if (this.isDesktop) return 'desktop'
-        else return 'widescreen'
+
+        return 'widescreen'
     }
 
     get isTouchDevice() {
