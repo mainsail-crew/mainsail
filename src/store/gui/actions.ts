@@ -143,17 +143,8 @@ export const actions: ActionTree<GuiState, RootState> = {
         await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: 'mainsail', key })
     },
 
-    async resetMoonrakerDB({ rootGetters }, payload) {
-        const urlDefault =
-            rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
-
-        let defaults: any = {}
-        try {
-            defaults = await fetch(urlDefault).then((result) => result.json())
-        } catch (error) {
-            window.console.error('Error while fetching/parsing default.json', error)
-            defaults = {}
-        }
+    async resetMoonrakerDB(_, payload) {
+        const defaults = await this.dispatch('gui/getDefaults')
 
         for (const key of payload) {
             if (['maintenance', 'timelapse', 'webcams'].includes(key)) {
@@ -167,7 +158,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
                 if (!(key in defaults)) continue
 
-                for (const key2 of defaults[key]) {
+                for (const key2 of Object.keys(defaults[key])) {
                     await Vue.$socket.emitAndWait('server.database.post_item', {
                         namespace: key,
                         key: key2,
