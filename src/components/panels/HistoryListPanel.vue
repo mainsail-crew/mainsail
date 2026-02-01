@@ -452,10 +452,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         return this.$store.state.gui.view.history.hideColums ?? []
     }
 
-    set hideColums(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value: newVal })
-    }
-
     get showMaintenanceEntries() {
         return this.$store.state.gui.view.history.showMaintenanceEntries
     }
@@ -525,16 +521,15 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     changeColumnVisible(name: string) {
-        this.hideColums = toggleArrayItem(this.hideColums, name)
+        const value = toggleArrayItem(this.hideColums, name)
+
+        this.$store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value })
     }
 
     changeStatusVisible(status: string) {
-        const printStatusArray = toggleArrayItem(this.$store.state.gui.view.history.hidePrintStatus, status)
+        const value = toggleArrayItem(this.$store.state.gui.view.history.hidePrintStatus, status)
 
-        this.$store.dispatch('gui/saveSetting', {
-            name: 'view.history.hidePrintStatus',
-            value: printStatusArray,
-        })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.history.hidePrintStatus', value })
     }
 
     exportHistory() {
