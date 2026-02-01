@@ -143,14 +143,6 @@ export const actions: ActionTree<GuiState, RootState> = {
         await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: 'mainsail', key })
     },
 
-    setCurrentWebcam({ commit, dispatch, state }, payload) {
-        commit('setCurrentWebcam', payload)
-        dispatch('updateSettings', {
-            keyName: 'view.webcam.currentCam',
-            newVal: state.view.webcam.currentCam,
-        })
-    },
-
     setTempchartDatasetAdditionalSensorSetting({ commit, dispatch, state }, payload) {
         commit('setTempchartDatasetAdditionalSensorSetting', payload)
         dispatch('updateSettings', {

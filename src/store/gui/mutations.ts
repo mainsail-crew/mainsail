@@ -33,10 +33,6 @@ export const mutations: MutationTree<GuiState> = {
         else if (payload.hidden !== true && index > -1) state.view.tempchart.hiddenDataset.splice(index, 1)
     },
 
-    setCurrentWebcam(state, payload) {
-        Vue.set(state.view.webcam.currentCam, payload.page, payload.value)
-    },
-
     setHistoryColumns(state, data) {
         if (data.value && state.view.history.hideColums.includes(data.name)) {
             state.view.history.hideColums.splice(state.view.history.hideColums.indexOf(data.name), 1)
