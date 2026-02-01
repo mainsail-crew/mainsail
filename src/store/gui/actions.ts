@@ -144,8 +144,6 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     async resetMoonrakerDB({ rootGetters }, payload) {
-        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
-
         const urlDefault =
             rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
 
@@ -159,54 +157,46 @@ export const actions: ActionTree<GuiState, RootState> = {
 
         for (const key of payload) {
             if (['maintenance', 'timelapse', 'webcams'].includes(key)) {
-                const url = baseUrl + '?namespace=' + key
+                const objects = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: key })
 
-                const response = await fetch(url)
-                const objects = await response.json()
-                if (objects?.result?.value) {
-                    for (const item of Object.keys(objects?.result?.value)) {
-                        await fetch(url + '&key=' + item, { method: 'DELETE' })
+                if (objects?.value) {
+                    for (const item of Object.keys(objects?.value)) {
+                        await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: key, key: item })
                     }
                 }
 
-                if (key in defaults) {
-                    for (const key2 of defaults[key]) {
-                        await fetch(baseUrl, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                namespace: key,
-                                key: key2,
-                                value: defaults[key][key2],
-                            }),
-                        })
-                    }
-                }
-            } else if (key === 'history_jobs') {
-                await fetch(rootGetters['socket/getUrl'] + '/server/history/job?all=true', { method: 'DELETE' })
-            } else if (key === 'history_totals') {
-                await fetch(rootGetters['socket/getUrl'] + '/server/history/reset_totals', { method: 'POST' })
-            } else {
-                await fetch(rootGetters['socket/getUrl'] + '/server/database/item?namespace=mainsail&key=' + key, {
-                    method: 'DELETE',
-                })
+                if (!(key in defaults)) continue
 
-                if (key in defaults) {
-                    await fetch(baseUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            namespace: 'mainsail',
-                            key: key,
-                            value: defaults[key],
-                        }),
+                for (const key2 of defaults[key]) {
+                    await Vue.$socket.emitAndWait('server.database.post_item', {
+                        namespace: key,
+                        key: key2,
+                        value: defaults[key][key2],
                     })
                 }
+
+                continue
             }
+
+            if (key === 'history_jobs') {
+                await Vue.$socket.emitAndWait('server.history.delete_job', { all: true })
+                continue
+            }
+
+            if (key === 'history_totals') {
+                await Vue.$socket.emitAndWait('server.history.reset_totals')
+                continue
+            }
+
+            await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: 'mainsail', key })
+
+            if (!(key in defaults)) continue
+
+            await Vue.$socket.emitAndWait('server.database.post_item', {
+                namespace: 'mainsail',
+                key: key,
+                value: defaults[key],
+            })
         }
 
         window.location.reload()
