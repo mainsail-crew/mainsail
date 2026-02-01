@@ -172,7 +172,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { HistoryListPanelCol, HistoryListRowJob, ServerHistoryStateJob } from '@/store/server/history/types'
-import { caseInsensitiveSort, formatFilesize } from '@/plugins/helpers'
+import { caseInsensitiveSort, formatFilesize, toggleArrayItem } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiCloseThick,
@@ -525,21 +525,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     changeColumnVisible(name: string) {
-        const columns = [...this.hideColums]
-        const index = columns.indexOf(name)
-
-        if (index !== -1) columns.splice(index, 1)
-        else columns.push(name)
-
-        this.hideColums = columns
+        this.hideColums = toggleArrayItem(this.hideColums, name)
     }
 
     changeStatusVisible(status: string) {
-        const printStatusArray = [...this.$store.state.gui.view.history.hidePrintStatus]
-        const index = printStatusArray.indexOf(status)
-
-        if (index === -1) printStatusArray.push(status)
-        else printStatusArray.splice(index, 1)
+        const printStatusArray = toggleArrayItem(this.$store.state.gui.view.history.hidePrintStatus, status)
 
         this.$store.dispatch('gui/saveSetting', {
             name: 'view.history.hidePrintStatus',

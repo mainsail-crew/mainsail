@@ -46,6 +46,7 @@ import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiMagnify } from '@mdi/js'
 import { PrinterStateMacro } from '@/store/printer/types'
+import { toggleArrayItem } from '@/plugins/helpers'
 
 @Component({
     components: { SettingsRow },
@@ -73,11 +74,7 @@ export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
     }
 
     changeMacroStatus(name: string) {
-        const hiddenMacros = [...this.hiddenMacros]
-
-        if (this.hiddenMacros.includes(name.toUpperCase()))
-            hiddenMacros.splice(hiddenMacros.indexOf(name.toUpperCase()), 1)
-        else hiddenMacros.push(name.toUpperCase())
+        const hiddenMacros = toggleArrayItem(this.hiddenMacros, name.toUpperCase())
 
         this.$store.dispatch('gui/macros/saveSetting', { name: 'hiddenMacros', value: hiddenMacros })
     }
