@@ -25,18 +25,4 @@ export const mutations: MutationTree<GuiState> = {
 
         deepSet(state, payload.name, payload.value)
     },
-
-    setHeaterChartVisibility(state, payload) {
-        const index = state.view.tempchart.hiddenDataset.indexOf(payload.name.toUpperCase())
-
-        if (payload.hidden && index === -1) state.view.tempchart.hiddenDataset.push(payload.name.toUpperCase())
-        else if (payload.hidden !== true && index > -1) state.view.tempchart.hiddenDataset.splice(index, 1)
-    },
-
-    deleteFromDashboardLayout(state, payload) {
-        // @ts-ignore
-        const layoutArray = [...state.dashboard[payload.layoutname]]
-        layoutArray.splice(payload.index, 1)
-        Vue.set(state.dashboard, payload.layoutname, layoutArray)
-    },
 }
