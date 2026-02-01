@@ -129,7 +129,9 @@ export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
         if (!this.$store.state.socket.connectionFailedMessage && !this.initializationError) return null
 
         const message = this.initializationError ?? this.connectionFailedMessage
-        return `https://docs.mainsail.xyz/faq/mainsail_errors/connection-${message?.toLowerCase()}`
+        if (!message) return null
+        const slug = encodeURIComponent(message.toLowerCase())
+        return `https://docs.mainsail.xyz/faq/mainsail_errors/connection-${slug}`
     }
 
     reconnect() {

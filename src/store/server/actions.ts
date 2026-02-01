@@ -175,7 +175,7 @@ export const actions: ActionTree<ServerState, RootState> = {
             const component = componentsToInit[i]
             logDebug('init component:', convertName(component))
 
-            const progress = Math.round(((i + 1) / totalComponents) * 100)
+            const progress = Math.round((i / totalComponents) * 100)
             dispatch('socket/setInitializationProgress', progress, { root: true })
             dispatch('socket/setInitializationStepComponent', capitalize(camelize(component)), { root: true })
 
@@ -291,7 +291,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         const poll = async () => {
             const isReady = await dispatch('checkAndUpdateKlippyState')
-            if (isReady) {
+            if (isReady || !state.klippy_polling_timer) {
                 commit('setKlippyPollingTimer', null)
                 return
             }

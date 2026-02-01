@@ -166,6 +166,7 @@
         "InitComponents": {
             "Announcements": "Ankündigungen",
             "Database": "Datenbanken",
+            "GcodeStore": "G-Code Verlauf",
             "History": "Historie",
             "JobQueue": "Job-Warteschlange",
             "Power": "Stromgeräte",

@@ -15,7 +15,7 @@ import ResponsiveMixin from '@/components/mixins/responsive'
 
 @Component
 export default class Responsive extends Mixins(ResponsiveMixin) {
-    @Prop({ default: false }) protected declare noHide: boolean
+    @Prop({ default: false }) declare protected noHide: boolean
 
     init = false
 

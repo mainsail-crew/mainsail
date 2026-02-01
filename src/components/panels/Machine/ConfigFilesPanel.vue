@@ -433,13 +433,13 @@
             @action="deleteDirectoryAction" />
         <confirmation-dialog
             v-model="deleteDialog"
-            :title="$t('Machine.ConfigFilesPanel.Delete')"
+            :title="$t('Buttons.Delete')"
             :text="$t('Machine.ConfigFilesPanel.DeleteSingleFileQuestion', { name: contextMenu.item.filename })"
             :action-button-text="$t('Buttons.Delete')"
             @action="removeFile" />
         <confirmation-dialog
             v-model="deleteSelectedDialog"
-            :title="$t('Machine.ConfigFilesPanel.Delete')"
+            :title="$t('Buttons.Delete')"
             :text="deleteSelectedDialogText"
             :action-button-text="$t('Buttons.Delete')"
             @action="deleteSelectedFiles" />
@@ -466,7 +466,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from '@/components/mixins/theme'
-import { escapePath, formatFilesize, sortFiles } from '@/plugins/helpers'
+import { escapePath, formatFilesize, generateTimestamp, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
@@ -967,13 +967,24 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         this.contextMenu.shown = true
     }
 
-    downloadFile() {
-        const filename = this.absolutePath + '/' + this.contextMenu.item.filename
-        const href = `${this.apiUrl}/server/files${escapePath(filename)}`
+    private startDownloadFile(filename: string) {
+        const filepath = `${this.absolutePath}/${filename}`
+        const href = `${this.apiUrl}/server/files${escapePath(filepath)}`
         window.open(href)
     }
 
+    downloadFile() {
+        this.startDownloadFile(this.contextMenu.item.filename)
+        this.contextMenu.shown = false
+    }
+
     async downloadSelectedFiles() {
+        if (this.selectedFiles.length === 1) {
+            this.startDownloadFile(this.selectedFiles[0].filename)
+            this.selectedFiles = []
+            return
+        }
+
         let items: string[] = []
 
         const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
@@ -992,17 +1003,9 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
 
         await addElementToItems(this.absolutePath, this.selectedFiles)
 
-        const date = new Date()
-        const month = (date.getMonth() + 1).toString().padStart(2, '0')
-        const day = date.getDate().toString().padStart(2, '0')
-        const hours = date.getHours().toString().padStart(2, '0')
-        const minutes = date.getMinutes().toString().padStart(2, '0')
-        const seconds = date.getSeconds().toString().padStart(2, '0')
-        const timestamp = `${date.getFullYear()}${month}${day}-${hours}${minutes}${seconds}`
-
         this.$socket.emit(
             'server.files.zip',
-            { items, dest: `config/${this.root}-${timestamp}.zip` },
+            { items, dest: `config/${this.root}-${generateTimestamp()}.zip` },
             { action: 'files/downloadZip', loading: 'configDownloadZip' }
         )
 

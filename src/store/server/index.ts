@@ -17,6 +17,7 @@ import { sensor } from '@/store/server/sensor'
 // create getDefaultState
 export const getDefaultState = (): ServerState => {
     return {
+        connection_id: null,
         klippy_connected: false,
         klippy_state: '',
         klippy_message: '',
@@ -43,6 +44,7 @@ export const getDefaultState = (): ServerState => {
         dbNamespaces: [],
         websocket_count: 0,
         moonraker_version: '',
+        console_cleared_this_session: false,
     }
 }
 

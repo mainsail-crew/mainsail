@@ -46,6 +46,7 @@
                 :min_temp="min_temp"
                 :max_temp="max_temp"
                 :command="command"
+                :input-digits="inputDigits"
                 :attribute-name="commandAttributeName" />
         </td>
         <temperature-panel-list-item-edit
@@ -98,6 +99,7 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
 
     @Prop({ type: String, required: true }) readonly objectName!: string
     @Prop({ type: Boolean, required: true }) readonly isResponsiveMobile!: boolean
+    @Prop({ type: Number, default: 3 }) readonly inputDigits!: number
 
     showEditDialog = false
     showContextMenu = false
