@@ -197,12 +197,8 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    setGcodefilesMetadata({ commit, dispatch, state }, data) {
-        commit('setGcodefilesMetadata', data)
-        dispatch('updateSettings', {
-            keyName: 'view.gcodefiles.hideMetadataColumns',
-            newVal: state.view.gcodefiles.hideMetadataColumns,
-        })
+    async deleteSetting(_, key: string) {
+        await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: 'mainsail', key })
     },
 
     setCurrentWebcam({ commit, dispatch, state }, payload) {

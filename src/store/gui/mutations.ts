@@ -33,16 +33,6 @@ export const mutations: MutationTree<GuiState> = {
         else if (payload.hidden !== true && index > -1) state.view.tempchart.hiddenDataset.splice(index, 1)
     },
 
-    setGcodefilesMetadata(state, data) {
-        const array = [...state.view.gcodefiles.hideMetadataColumns]
-        const index = array.findIndex((value: string) => value === data.name)
-
-        if (data.value && index !== -1) array.splice(index, 1)
-        else if (!data.value && index === -1) array.push(data.name)
-
-        Vue.set(state.view.gcodefiles, 'hideMetadataColumns', array)
-    },
-
     setCurrentWebcam(state, payload) {
         Vue.set(state.view.webcam.currentCam, payload.page, payload.value)
     },
