@@ -7,6 +7,7 @@ import type { RPCResult } from '@/types/moonraker'
 type ServerConfigResponse = RPCResult<'server.config'>
 
 export interface ServerState {
+    connection_id: string | null
     klippy_connected: boolean
     klippy_state: string
     klippy_message: string
