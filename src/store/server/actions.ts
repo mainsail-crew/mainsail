@@ -294,7 +294,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         const poll = async () => {
             const isReady = await dispatch('checkAndUpdateKlippyState')
-            if (isReady) {
+            if (isReady || !state.klippy_polling_timer) {
                 commit('setKlippyPollingTimer', null)
                 return
             }
