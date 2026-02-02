@@ -2,7 +2,7 @@
     <div class="d-flex align-center">
         <form @submit.prevent="setTemps">
             <v-text-field
-                v-model="value"
+                v-model.number="value"
                 suffix="°C"
                 type="number"
                 dense
@@ -61,7 +61,7 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
     mdiFire = mdiFire
     mdiMenuDown = mdiMenuDown
 
-    value: any = 0
+    value: number | string = 0
 
     @Prop({ type: String, required: true }) declare readonly name: string
     @Prop({ type: Number, required: true, default: 0 }) declare readonly target: number
@@ -85,25 +85,35 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
         }
     }
 
-    setTemps(): void {
-        if (typeof this.value === 'object') this.value = this.value.value ?? 0
-        if (this.value === null) this.value = 0
+    private normalizeValue(raw: number | string | null): number {
+        if (typeof raw === 'string') raw = parseFloat(raw)
+        if (raw === null || isNaN(raw)) return 0
+        return raw
+    }
 
-        if (this.value > this.max_temp) {
-            this.value = { value: this.target, text: this.target }
-            this.$toast.error(
-                this.$t('Panels.TemperaturePanel.TempTooHigh', { name: this.name, max: this.max_temp }) + ''
-            )
-        } else if (this.value < this.min_temp && this.value != 0) {
-            this.value = { value: this.target, text: this.target }
-            this.$toast.error(
-                this.$t('Panels.TemperaturePanel.TempTooLow', { name: this.name, min: this.min_temp }) + ''
-            )
-        } else if (this.target !== parseFloat(this.value)) {
-            const gcode = this.command + ' ' + this.attributeName + '=' + this.name + ' TARGET=' + this.value
-            this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-            this.$socket.emit('printer.gcode.script', { script: gcode })
+    setTemps(): void {
+        const temp = this.normalizeValue(this.value)
+
+        if (temp > this.max_temp) {
+            this.value = this.target
+            const key = 'Panels.TemperaturePanel.TempTooHigh'
+            const msg = this.$t(key, { name: this.name, max: this.max_temp }).toString()
+            this.$toast.error(msg)
+            return
         }
+
+        if (temp < this.min_temp && temp !== 0) {
+            this.value = this.target
+            const key = 'Panels.TemperaturePanel.TempTooLow'
+            const msg = this.$t(key, { name: this.name, min: this.min_temp }).toString()
+            this.$toast.error(msg)
+            return
+        }
+
+        // don't send a command if the temperature is unchanged
+        if (this.target === temp) return
+
+        this.doSend(`${this.command} ${this.attributeName}=${this.name} TARGET=${temp}`)
     }
 
     mounted() {
