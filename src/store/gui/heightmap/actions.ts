@@ -1,20 +1,17 @@
-import { ActionTree } from 'vuex'
+import { ActionContext, ActionTree } from 'vuex'
 import { RootState } from '../../types'
-import { HeightmapState } from './types'
+import { GuiHeightmapState } from './types'
 
-export const actions: ActionTree<HeightmapState, RootState> = {
+export const actions: ActionTree<GuiHeightmapState, RootState> = {
     saveActiveColorScheme({ commit }, payload: string) {
         commit('saveActiveColorScheme', payload)
     },
 
-    saveSetting({ dispatch }, payload) {
-        dispatch(
-            'gui/saveSetting',
-            {
-                name: 'heightmap.' + payload.name,
-                value: payload.value,
-            },
-            { root: true }
-        )
+    async saveSetting<T extends keyof GuiHeightmapState>(
+        { dispatch }: ActionContext<GuiHeightmapState, RootState>,
+        payload: { name: T; value: GuiHeightmapState[T] }
+    ) {
+        const key = `heightmap.${payload.name}`
+        await dispatch('gui/saveSetting', { name: key, value: payload.value }, { root: true })
     },
 }

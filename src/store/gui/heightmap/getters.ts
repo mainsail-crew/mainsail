@@ -1,7 +1,7 @@
 import { GetterTree } from 'vuex'
-import { HeightmapState } from './types'
+import { GuiHeightmapState } from './types'
 
-export const getters: GetterTree<HeightmapState, any> = {
+export const getters: GetterTree<GuiHeightmapState, any> = {
     getActiveColorSchemeList: (state): string[] => {
         switch (state.activecolorscheme.toLowerCase()) {
             case 'hsv':

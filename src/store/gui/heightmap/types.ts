@@ -1,4 +1,4 @@
-export interface HeightmapState {
+export interface GuiHeightmapState {
     activecolorscheme: string
     defaultOrientation: 'rightFront' | 'leftFront' | 'front' | 'top'
 }
