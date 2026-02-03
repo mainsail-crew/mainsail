@@ -1,6 +1,5 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
-import Vue from 'vue'
 import { GuiGcodehistoryState } from '@/store/gui/gcodehistory/types'
 import { maxGcodeHistory } from '@/store/variables'
 
@@ -9,21 +8,10 @@ export const actions: ActionTree<GuiGcodehistoryState, RootState> = {
         commit('reset')
     },
 
-    upload({ state }) {
-        Vue.$socket.emit('server.database.post_item', {
-            namespace: 'mainsail',
-            key: 'gcodehistory.entries',
-            value: state.entries,
-        })
-    },
+    async addToHistory({ dispatch, state }, gcode: string) {
+        if (state.entries.at(-1) === gcode) return
 
-    async addToHistory({ commit, dispatch, state }, payload) {
-        const newHistory = [...state.entries]
-        newHistory.push(payload)
-
-        while (newHistory.length > maxGcodeHistory) newHistory.splice(0, 1)
-
-        await commit('updateHistory', newHistory)
-        await dispatch('upload')
+        const newHistory = [...state.entries, gcode].slice(-maxGcodeHistory)
+        await dispatch('gui/saveSetting', { name: `gcodehistory.entries`, value: newHistory }, { root: true })
     },
 }
