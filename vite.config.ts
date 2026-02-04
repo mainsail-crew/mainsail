@@ -38,7 +38,7 @@ const PWAConfig: Partial<VitePWAOptions> = {
                 src: '/img/icons/icon-512-maskable.png',
                 sizes: '512x512',
                 type: 'image/png',
-                purpose: 'any maskable',
+                purpose: 'maskable',
             },
         ],
     },
