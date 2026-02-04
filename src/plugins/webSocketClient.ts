@@ -2,7 +2,7 @@ import { Store } from 'vuex'
 import _Vue from 'vue'
 import { RootState } from '@/store/types'
 import { initableServerComponents } from '@/store/variables'
-import type { RPCMethods, RPCParams, RPCResult } from '@/types/moonraker'
+import type { RPCMethods, RPCParams, RPCResult, JsonRpcError, JsonRpcResponse } from '@/types/moonraker'
 
 const HEARTBEAT_TIMEOUT = 10_000
 const MAX_RECONNECT_DELAY = 30_000
@@ -36,8 +36,10 @@ export class WebSocketClient {
         this.url = url
     }
 
-    private handleMessage(data: SocketIncomingMessage): void {
-        const wait = typeof data.id === 'number' ? this.getWaitById(data.id) : null
+    private handleMessage(data: JsonRpcResponse): void {
+        const wait = this.getWaitById(data.id)
+    /*handleMessage(data: SocketIncomingMessage): void {
+        const wait = typeof data.id === 'number' ? this.getWaitById(data.id) : null*/
 
         // reject promise if it exists
         if (data.error && wait?.reject) {
@@ -56,6 +58,7 @@ export class WebSocketClient {
             if (wait) {
                 const modulename = wait.action?.split('/')[1] ?? null
 
+                // TODO: remove after converting to async init server components
                 if (
                     modulename &&
                     wait.action?.startsWith('server/') &&
@@ -170,8 +173,10 @@ export class WebSocketClient {
         this.reconnect()
     }
 
-    private getWaitById(id: number): Wait | null {
-        return this.waits.find((wait: Wait) => wait.id === id) ?? null
+    private getWaitById(id: number | undefined): Wait | undefined {
+        if (id === undefined) return undefined
+
+        return this.waits.find((wait: Wait) => wait.id === id)
     }
 
     private removeWaitById(id: number): void {
@@ -210,7 +215,7 @@ export class WebSocketClient {
     emitAndWait<M extends RPCMethods>(
         method: M,
         params?: RPCParams<M>,
-        options: EmitOptions = {}
+        options: EmitOptionsWithTimeout = {}
     ): Promise<RPCResult<M>> {
         return new Promise<RPCResult<M>>((resolve, reject) => {
             if (this.instance?.readyState !== WebSocket.OPEN) {
@@ -219,14 +224,28 @@ export class WebSocketClient {
             }
 
             const id = this.messageId++
+            let timeoutId: number | null = null
+            if (options.timeout) {
+                timeoutId = window.setTimeout(() => {
+                    this.removeWaitById(id)
+                    reject(new WebSocketTimeoutError(`Timeout: ${method}`))
+                }, options.timeout)
+            }
+
             this.waits.push({
                 id: id,
                 params: params,
                 action: options.action ?? null,
                 actionPayload: options.actionPayload ?? {},
                 loading: options.loading ?? null,
-                resolve: resolve as (value: unknown) => void,
-                reject,
+                resolve: (value) => {
+                    if (timeoutId) clearTimeout(timeoutId)
+                    resolve(value as RPCResult<M>)
+                },
+                reject: (reason) => {
+                    if (timeoutId) clearTimeout(timeoutId)
+                    reject(reason)
+                },
             })
 
             if (options.loading) this.store.dispatch('socket/addLoading', { name: options.loading })
@@ -368,7 +387,7 @@ interface Wait {
     actionPayload?: Params
     loading?: string | null
     resolve?: (value: unknown) => void
-    reject?: (reason?: unknown) => void
+    reject?: (reason?: JsonRpcError | Error) => void
 }
 
 type Params = object
@@ -377,4 +396,15 @@ interface EmitOptions {
     action?: string | null
     actionPayload?: Params
     loading?: string | null
+}
+
+interface EmitOptionsWithTimeout extends EmitOptions {
+    timeout?: number
+}
+
+export class WebSocketTimeoutError extends Error {
+    constructor(method: string) {
+        super(`Timeout: ${method}`)
+        this.name = 'WebSocketTimeoutError'
+    }
 }

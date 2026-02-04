@@ -2,20 +2,23 @@ import { ServerPowerState } from '@/store/server/power/types'
 import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 import { ServerHistoryState } from '@/store/server/history/types'
 import { ServerTimelapseState } from '@/store/server/timelapse/types'
+import type { RPCResult } from '@/types/moonraker'
+
+type ServerConfigResponse = RPCResult<'server.config'>
 
 export interface ServerState {
+    connection_id: string | null
     klippy_connected: boolean
-    klippy_connected_timer: number | null
     klippy_state: string
-    klippy_state_timer: number | null
     klippy_message: string
+    klippy_polling_timer: number | null
     components: string[]
     failed_components: string[]
     failed_init_components: string[]
     warnings: string[]
     registered_directories: string[]
     events: ServerStateEvent[]
-    config: ServerStateConfig
+    config: ServerConfigResponse
     system_info: {
         available_services: string[]
         cpu_info: ServerStateCpuInfo
@@ -57,7 +60,7 @@ export interface ServerState {
     websocket_count: number
     moonraker_version: string
 
-    console_cleared_this_session?: boolean
+    console_cleared_this_session: boolean
 
     power?: ServerPowerState
     updateManager?: ServerUpdateManagerState
@@ -71,7 +74,7 @@ export interface ServerStateEvent {
     time?: number
     type: string
     message: string
-    formatMessage: string | string[]
+    formatMessage: string
 }
 
 export interface ServerStateEventPrompt {
@@ -148,13 +151,4 @@ export interface ServerStateNetworkInterface {
     rx_bytes: number
     tx_bytes: number
     details?: ServerStateNetwork
-}
-
-export interface ServerStateConfigSection {
-    [key: string]: string | number | boolean
-}
-
-export interface ServerStateConfig {
-    config: Record<string, ServerStateConfigSection>
-    orig: Record<string, ServerStateConfigSection>
 }

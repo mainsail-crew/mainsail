@@ -18,11 +18,11 @@ import { RootState } from '@/store/types'
 // create getDefaultState
 export const getDefaultState = (): ServerState => {
     return {
+        connection_id: null,
         klippy_connected: false,
-        klippy_connected_timer: null,
         klippy_state: '',
-        klippy_state_timer: null,
         klippy_message: '',
+        klippy_polling_timer: null,
         components: [],
         failed_components: [],
         failed_init_components: [],
@@ -33,6 +33,7 @@ export const getDefaultState = (): ServerState => {
             config: {},
             orig: {},
         },
+        config_files: [],
         system_info: null,
         system_boot_at: null,
         cpu_temp: 0,
@@ -46,6 +47,7 @@ export const getDefaultState = (): ServerState => {
         dbNamespaces: [],
         websocket_count: 0,
         moonraker_version: '',
+        console_cleared_this_session: false,
     }
 }
 

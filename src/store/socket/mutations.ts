@@ -46,6 +46,7 @@ export const mutations: MutationTree<SocketState> = {
         if (state.loadings.length) Vue.set(state, 'loadings', [])
     },
 
+    // TODO: remove after converting to async init server components
     addInitModule(state, payload) {
         const list = [...state.initializationList]
         const index = list.indexOf(payload)
@@ -55,6 +56,7 @@ export const mutations: MutationTree<SocketState> = {
         Vue.set(state, 'initializationList', list)
     },
 
+    // TODO: remove after converting to async init server components
     removeInitModule(state, payload) {
         const list = [...state.initializationList]
         const index = list.indexOf(payload)
@@ -64,6 +66,7 @@ export const mutations: MutationTree<SocketState> = {
         Vue.set(state, 'initializationList', list)
     },
 
+    // TODO: remove after converting to async init server components
     removeInitComponent(state, payload) {
         const list = [...state.initializationList]
 
@@ -80,5 +83,23 @@ export const mutations: MutationTree<SocketState> = {
         indexes.forEach((index) => list.splice(index, 1))
 
         Vue.set(state, 'initializationList', list)
+    },
+
+    setInitializationStep(state, payload: string | null) {
+        Vue.set(state, 'initializationStep', payload)
+    },
+
+    setInitializationProgress(state, payload: number | null) {
+        Vue.set(state, 'initializationProgress', payload)
+    },
+
+    setInitializationError(state, payload: string | null) {
+        Vue.set(state, 'initializationError', payload)
+    },
+
+    resetInitialization(state) {
+        Vue.set(state, 'initializationStep', null)
+        Vue.set(state, 'initializationProgress', null)
+        Vue.set(state, 'initializationError', null)
     },
 }

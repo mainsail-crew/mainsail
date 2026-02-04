@@ -2,6 +2,8 @@ import Vue from 'vue'
 import { ActionTree } from 'vuex'
 import { SocketState } from '@/store/socket/types'
 import { RootState } from '@/store/types'
+import i18n from '@/plugins/i18n'
+import { convertName } from '@/plugins/helpers'
 
 export const actions: ActionTree<SocketState, RootState> = {
     reset({ commit }) {
@@ -28,6 +30,7 @@ export const actions: ActionTree<SocketState, RootState> = {
     onOpen({ commit, dispatch, rootState }) {
         //set socket connection to connected
         commit('setConnected')
+        commit('resetInitialization')
 
         // init server
         dispatch('server/init', null, { root: true })
@@ -53,10 +56,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_klippy_ready':
-                commit('server/setKlippyConnected', null, { root: true })
-                dispatch('server/stopKlippyConnectedInterval', null, { root: true })
-                dispatch('server/stopKlippyStateInterval', null, { root: true })
-                dispatch('printer/init', null, { root: true })
+                dispatch('server/setKlippyReady', null, { root: true })
                 break
 
             case 'notify_klippy_disconnected':
@@ -152,16 +152,17 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('clearLoadings')
     },
 
+    // TODO: remove after converting to async init server components
     addInitModule({ commit }, payload: string) {
         commit('addInitModule', payload)
     },
 
-    // remove only one module from init component like 'server/spoolman/getActiveSpoolId'
+    // TODO: remove after converting to async init server components
     removeInitModule({ commit }, payload: string) {
         commit('removeInitModule', payload)
     },
 
-    // remove a complete init component like 'server/spoolman'
+    // TODO: remove after converting to async init server components
     removeInitComponent({ commit }, payload: string) {
         commit('removeInitComponent', payload)
     },
@@ -172,5 +173,33 @@ export const actions: ActionTree<SocketState, RootState> = {
 
     setConnectionFailed({ commit }, payload) {
         commit('setDisconnected', payload)
+    },
+
+    setInitializationStep({ commit }, payload: string | null) {
+        commit('setInitializationStep', payload)
+    },
+
+    setInitializationStepComponent({ commit }, component: string) {
+        const translationKey = `ConnectionDialog.InitComponents.${component}`
+        let componentName = convertName(component)
+        if (i18n.te(translationKey)) {
+            componentName = i18n.t(translationKey).toString()
+        }
+
+        const output = i18n.t('ConnectionDialog.LoadingComponent', { component: componentName }).toString()
+
+        commit('setInitializationStep', output)
+    },
+
+    setInitializationProgress({ commit }, payload: number | null) {
+        commit('setInitializationProgress', payload)
+    },
+
+    setInitializationError({ commit }, payload: string | null) {
+        commit('setInitializationError', payload)
+    },
+
+    resetInitialization({ commit }) {
+        commit('resetInitialization')
     },
 }

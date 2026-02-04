@@ -9,6 +9,10 @@ export interface SocketState {
     connectingFailed: boolean
     connectionFailedMessage: string | null
     loadings: string[]
+    // TODO: remove after converting to async init server components
     initializationList: string[]
+    initializationStep: string | null
+    initializationProgress: number | null
+    initializationError: string | null
     connection_id: number | null
 }

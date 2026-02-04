@@ -29,7 +29,7 @@ export default class HistoryMixin extends Vue {
     }
 
     get moonrakerHistoryFields() {
-        const config = this.$store.state.server.config?.config ?? {}
+        const config = this.$store.state.server.config ?? {}
         const sensors = Object.keys(config).filter((key) => key.startsWith('sensor '))
         const historyFields: { desc: string; unit: string; provider: string; name: string; parameter: string }[] = []
 
