@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import { ServerState } from '@/store/server/types'
-import { formatConsoleMessage } from '@/plugins/helpers'
+import { ServerState, ServerStateEvent } from '@/store/server/types'
 import { maxEventHistory } from '@/store/variables'
 
 export const mutations: MutationTree<ServerState> = {
@@ -16,10 +15,6 @@ export const mutations: MutationTree<ServerState> = {
 
     setKlippyState(state, payload) {
         Vue.set(state, 'klippy_state', payload)
-    },
-
-    setKlippyStateTimer(state, payload) {
-        Vue.set(state, 'klippy_state_timer', payload)
     },
 
     setKlippyMessage(state, payload) {
@@ -53,8 +48,8 @@ export const mutations: MutationTree<ServerState> = {
         Vue.set(state, 'system_cpu_usage', payload)
     },
 
-    setKlippyConnectedTimer(state, timer) {
-        Vue.set(state, 'klippy_connected_timer', timer)
+    setKlippyPollingTimer(state, timer: number | null) {
+        Vue.set(state, 'klippy_polling_timer', timer)
     },
 
     setProcStats(state, payload) {
@@ -67,19 +62,13 @@ export const mutations: MutationTree<ServerState> = {
     },
 
     setData(state, payload) {
-        if ('requestParams' in payload) delete payload.requestParams
+        const validKeys = Object.keys(state) as (keyof ServerState)[]
 
         Object.entries(payload).forEach(([key, value]) => {
-            Vue.set(state, key, value)
+            if (!validKeys.includes(key as keyof ServerState)) return
+
+            Vue.set(state, key as keyof ServerState, value)
         })
-    },
-
-    saveDbNamespaces(state, payload) {
-        Vue.set(state, 'dbNamespaces', payload)
-    },
-
-    setConfig(state, payload) {
-        Vue.set(state, 'config', payload)
     },
 
     setConsoleClearedThisSession(state) {
@@ -90,37 +79,11 @@ export const mutations: MutationTree<ServerState> = {
         Vue.set(state, 'events', [])
     },
 
-    setGcodeStore(state, payload: { time: number; type: string; message: string }[]) {
-        //const t0 = performance.now()
-
-        if (payload.length >= maxEventHistory) {
-            payload = payload.slice(payload.length - maxEventHistory)
-        }
-
-        payload.forEach((message) => {
-            const date = new Date(message.time * 1000)
-            let formatMessage = formatConsoleMessage(message.message)
-
-            let type = message.type
-            if (type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
-            if (type === 'response') {
-                if (message.message.startsWith('// action:')) type = 'action'
-                else if (message.message.startsWith('// debug:')) type = 'debug'
-            }
-
-            state.events.push({
-                date,
-                message: message.message,
-                formatMessage: formatMessage,
-                type,
-            })
-        })
-
-        //const t1 = performance.now()
-        //window.console.debug("import events", t1-t0)
+    setGcodeStore(state, payload: ServerStateEvent[]) {
+        Vue.set(state, 'events', payload)
     },
 
-    addEvent(state, payload) {
+    addEvent(state, payload: ServerStateEvent) {
         if (
             ['command', 'autocomplete'].includes(payload.type) &&
             state.events[state.events.length - 1]?.type === 'autocomplete'
@@ -128,30 +91,18 @@ export const mutations: MutationTree<ServerState> = {
             state.events.pop()
         }
 
-        state.events.push({
-            date: payload.date,
-            message: payload.message,
-            formatMessage: payload.formatMessage,
-            type: payload.type,
-        })
+        state.events.push(payload)
 
-        if (state.events.length >= maxEventHistory) {
-            state.events = state.events.slice(state.events.length - maxEventHistory)
+        if (state.events.length > maxEventHistory) {
+            state.events.splice(0, state.events.length - maxEventHistory)
         }
     },
 
-    setSystemInfo(state, payload) {
-        Vue.set(state, 'system_info', payload)
-    },
+    setThrottledState(state, payload: ServerState['throttled_state'] | null) {
+        if (payload === null) return
 
-    setThrottledState(state, payload) {
-        if (payload && 'bits' in payload) Vue.set(state.throttled_state, 'bits', payload.bits)
-
-        if (payload && 'flags' in payload) Vue.set(state.throttled_state, 'flags', payload.flags)
-    },
-
-    setSystemBootAt(state, payload) {
-        Vue.set(state, 'system_boot_at', payload)
+        if ('bits' in payload) Vue.set(state.throttled_state, 'bits', payload.bits)
+        if ('flags' in payload) Vue.set(state.throttled_state, 'flags', payload.flags)
     },
 
     addRootDirectory(state, payload) {
@@ -165,7 +116,7 @@ export const mutations: MutationTree<ServerState> = {
     },
 
     addFailedInitComponent(state, payload) {
-        const failed_init_components = state.failed_init_components
+        const failed_init_components = [...state.failed_init_components]
         if (!failed_init_components.includes(payload)) failed_init_components.push(payload)
 
         Vue.set(state, 'failed_init_components', failed_init_components)

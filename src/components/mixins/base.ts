@@ -26,7 +26,12 @@ export default class BaseMixin extends Vue {
     }
 
     get guiIsReady() {
-        return this.$store.state.socket.initializationList.length === 0
+        return (
+            this.$store.state.socket.initializationStep === null &&
+            this.$store.state.socket.initializationError === null &&
+            // TODO: remove after converting to async init server components
+            this.$store.state.socket.initializationList.length === 0
+        )
     }
 
     get klippyIsConnected(): boolean {
