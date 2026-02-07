@@ -52,13 +52,14 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin, { MmuMachineUnit, TOOL_GATE_BYPASS } from '@/components/mixins/mmu'
-import { mdiSwapHorizontal, mdiDownloadOutline, mdiEject } from '@mdi/js'
+import { mdiSwapHorizontal, mdiDownloadOutline, mdiEject, mdiArrowDecision } from '@mdi/js'
 
 @Component
 export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     mdiSwapHorizontal = mdiSwapHorizontal
     mdiDownloadOutline = mdiDownloadOutline
     mdiEject = mdiEject
+    mdiArrowDecision = mdiArrowDecision
 
     @Prop({ required: true }) readonly gateIndex!: number
     @Prop({ required: true }) readonly mmuMachineUnit!: MmuMachineUnit
@@ -100,6 +101,11 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
             { icon: this.mdiSwapHorizontal, command: 'MMU_SELECT', label: this.$t('Panels.MmuPanel.ButtonSelect') },
             { icon: this.mdiDownloadOutline, command: 'MMU_PRELOAD', label: this.$t('Panels.MmuPanel.ButtonPreload') },
             { icon: this.mdiEject, command: 'MMU_EJECT', label: this.$t('Panels.MmuPanel.ButtonEject') },
+            {
+                icon: this.mdiArrowDecision,
+                command: 'MMU_CHANGE_TOOL',
+                label: this.$t('Panels.MmuPanel.ButtonChangeTool'),
+            },
         ]
     }
 

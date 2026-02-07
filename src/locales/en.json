@@ -777,6 +777,7 @@
         },
         "MmuPanel": {
             "Active": "Active",
+            "ButtonChangeTool": "Change Tool",
             "ButtonCheckAllGates": "Check All Gates",
             "ButtonCheckGate": "Check Gate",
             "ButtonEject": "Eject",
