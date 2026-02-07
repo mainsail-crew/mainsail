@@ -134,11 +134,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, {
-    TOOL_GATE_BYPASS,
-    TOOL_GATE_UNKNOWN,
-} from '@/components/mixins/mmu'
-import { capitalize } from '@/plugins/helpers'
+import MmuMixin, { TOOL_GATE_BYPASS, TOOL_GATE_UNKNOWN } from '@/components/mixins/mmu'
 import { mdiMulticast, mdiDotsVertical, mdiCheckAll, mdiNoteText, mdiInformationOutline, mdiRefresh } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
 import MmuPanelSettings from '@/components/panels/Mmu/MmuPanelSettings.vue'
