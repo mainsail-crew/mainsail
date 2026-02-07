@@ -218,18 +218,6 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
         return this.$store.state.gui.view.mmu.showDetails ?? true
     }
 
-    get slicerToolMap() {
-        return this.mmu?.slicer_tool_map ?? undefined
-    }
-
-    get totalToolchanges() {
-        return this.slicerToolMap?.total_toolchanges ?? 0
-    }
-
-    get numToolchanges() {
-        return this.mmu?.num_toolchanges ?? 0
-    }
-
     get toolchangeText() {
         if (this.nextTool === TOOL_GATE_UNKNOWN) return ''
 

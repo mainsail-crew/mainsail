@@ -434,8 +434,20 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
         return this.mmuGrip === 'Gripped' || this.mmuServo === 'Down'
     }
 
+    get slicerToolMap() {
+        return this.mmu?.slicer_tool_map ?? undefined
+    }
+
     get syncFeedbackPistonText() {
         return (this.mmu?.sync_feedback_bias_modelled ?? 0.0).toFixed(2)
+    }
+
+    get totalToolchanges() {
+        return this.slicerToolMap?.total_toolchanges ?? 0
+    }
+
+    get numToolchanges() {
+        return this.mmu?.num_toolchanges ?? 0
     }
 
     get statusText() {
