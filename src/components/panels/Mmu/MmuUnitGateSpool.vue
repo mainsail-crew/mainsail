@@ -205,20 +205,14 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get isEspoolerRewind() {
-        const espoolers = this.mmu?.espooler
-        if (espoolers) {
-            return espoolers[this.gateIndex] === 'rewind'
-        }
+        if (this.mmuEspoolers) return this.mmuEspoolers[this.gateIndex] === 'rewind'
 
         // Legacy Happy Hare (selected gate only)
         return this.gateIndex === this.mmu?.gate && this.mmu?.espooler_active === 'rewind'
     }
 
     get isEspoolerAssist() {
-        const espoolers = this.mmu?.espooler
-        if (espoolers) {
-            return espoolers[this.gateIndex] === 'assist'
-        }
+        if (this.mmuEspoolers) return this.mmuEspoolers[this.gateIndex] === 'assist'
 
         // Legacy Happy Hare (selected gate only)
         return this.gateIndex === this.mmu?.gate && this.mmu?.espooler_active === 'assist'

@@ -3,6 +3,8 @@ import { W3C_COLORS } from '@/plugins/w3c'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
+export type MmuEspoolerState = 'rewind' | 'assist' | 'off'
+
 export interface Mmu {
     enabled: boolean
     num_gates: number
@@ -93,7 +95,7 @@ export interface Mmu {
     extruder_filament_remaining: number
     spoolman_support: 'off' | 'readonly' | 'push' | 'pull'
     bowden_progress: number
-    espooler_active: 'rewind' | 'assist' | 'off'
+    espooler_active: MmuEspoolerState
     sensors: {
         mmu_pre_gate?: boolean
         mmu_gear?: boolean
@@ -116,6 +118,7 @@ export interface Mmu {
         headroom: number
         min_headroom: number
     }
+    espooler?: MmuEspoolerState[]
 }
 
 export interface MmuMachine {
@@ -315,6 +318,10 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
     get mmuGrip() {
         return this.mmu?.grip ?? 'Unknown'
+    }
+
+    get mmuEspoolers() {
+        return this.mmu?.espooler
     }
 
     get configGateHomingEndstop(): string {
