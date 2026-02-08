@@ -210,7 +210,7 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
             return espoolers[this.gateIndex] === 'rewind'
         }
 
-        // Legacy Happy Hare v3.4.2 (selected gate only)
+        // Legacy Happy Hare (selected gate only)
         return this.gateIndex === this.mmu?.gate && this.mmu?.espooler_active === 'rewind'
     }
 
@@ -220,7 +220,7 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
             return espoolers[this.gateIndex] === 'assist'
         }
 
-        // Legacy Happy Hare v3.4.2 (selected gate only)
+        // Legacy Happy Hare (selected gate only)
         return this.gateIndex === this.mmu?.gate && this.mmu?.espooler_active === 'assist'
     }
 
