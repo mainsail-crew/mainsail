@@ -209,6 +209,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { capitalize } from '@/plugins/helpers'
 import MmuMixin, {
     ACTION_IDLE,
     ACTION_LOADING,
