@@ -51,7 +51,7 @@ export const actions: ActionTree<GuiTempgroupsState, RootState> = {
             sensors: payload.values.sensors ?? [],
         }
 
-        await commit('groupStore', { id, values: group })
+        commit('groupStore', { id, values: group })
         await dispatch('groupUpload', id)
 
         return id

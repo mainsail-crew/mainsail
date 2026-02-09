@@ -170,7 +170,7 @@ export default class SettingsTempgroupsTabEdit extends Mixins(BaseMixin, ThemeMi
         groupUnique: (value: string) => !this.existsGroupName(value) || this.$t('Settings.TempgroupsTab.NameExists'),
     }
 
-    private searchSensors: string = ''
+    private searchSensors: string | null = ''
     private displayNameDialog = false
     private editingSensorName: string = ''
     private editingDisplayName: string = ''

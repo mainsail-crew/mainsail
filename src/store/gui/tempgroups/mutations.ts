@@ -43,8 +43,7 @@ export const mutations: MutationTree<GuiTempgroupsState> = {
         if (group) {
             const sensors = [...(group.sensors ?? [])]
             const maxPos = sensors.reduce((max, s) => Math.max(max, s.pos), -1)
-            payload.sensor.pos = maxPos + 1
-            sensors.push(payload.sensor)
+            sensors.push({ ...payload.sensor, pos: maxPos + 1 })
 
             Vue.set(state.groups[payload.id], 'sensors', sensors)
         }
@@ -64,9 +63,10 @@ export const mutations: MutationTree<GuiTempgroupsState> = {
             const sensors = [...(group.sensors ?? [])]
             const sensorIndex = sensors.findIndex((s) => s.name === payload.sensorName)
             if (sensorIndex !== -1) {
-                const sensor = sensors[sensorIndex]
-                // @ts-ignore
-                sensor[payload.option] = payload.value
+                sensors[sensorIndex] = {
+                    ...sensors[sensorIndex],
+                    [payload.option]: payload.value,
+                }
                 Vue.set(state.groups[payload.id], 'sensors', sensors)
             }
         }
