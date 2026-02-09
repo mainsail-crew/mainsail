@@ -22,24 +22,24 @@
                 </thead>
                 <tbody>
                     <temperature-panel-list-item
-                        v-for="objectName in heaterObjects"
+                        v-for="objectName in filteredHeaterObjects"
                         :key="objectName"
                         :object-name="objectName"
                         :input-digits="inputFieldDigits"
                         :is-responsive-mobile="el.is.mobile ?? false" />
                     <temperature-panel-list-item-nevermore
-                        v-for="objectName in nevermoreObjects"
+                        v-for="objectName in filteredNevermoreObjects"
                         :key="objectName"
                         :object-name="objectName"
                         :is-responsive-mobile="el.is.mobile ?? false" />
                     <temperature-panel-list-item
-                        v-for="objectName in temperature_sensors"
+                        v-for="objectName in filteredTemperatureSensors"
                         :key="objectName"
                         :object-name="objectName"
                         :is-responsive-mobile="el.is.mobile ?? false" />
                     <template v-if="!hideMonitors">
                         <temperature-panel-list-item
-                            v-for="objectName in monitors"
+                            v-for="objectName in filteredMonitors"
                             :key="objectName"
                             :object-name="objectName"
                             :is-responsive-mobile="el.is.mobile ?? false" />
@@ -52,7 +52,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import TemperaturePanelListItemNevermore from '@/components/panels/Temperature/TemperaturePanelListItemNevermore.vue'
 
@@ -60,6 +60,8 @@ import TemperaturePanelListItemNevermore from '@/components/panels/Temperature/T
     components: { TemperaturePanelListItemNevermore },
 })
 export default class TemperaturePanelList extends Mixins(BaseMixin) {
+    @Prop({ default: null }) declare readonly sensorFilter: string[] | null
+
     get available_heaters() {
         return this.$store.state.printer?.heaters?.available_heaters ?? []
     }
@@ -116,6 +118,26 @@ export default class TemperaturePanelList extends Mixins(BaseMixin) {
 
     get nevermoreObjects() {
         return this.filterNamesAndSort(this.available_nevermores)
+    }
+
+    get filteredHeaterObjects(): string[] {
+        if (!this.sensorFilter) return this.heaterObjects
+        return this.heaterObjects.filter((name) => this.sensorFilter!.includes(name))
+    }
+
+    get filteredNevermoreObjects(): string[] {
+        if (!this.sensorFilter) return this.nevermoreObjects
+        return this.nevermoreObjects.filter((name) => this.sensorFilter!.includes(name))
+    }
+
+    get filteredTemperatureSensors(): string[] {
+        if (!this.sensorFilter) return this.temperature_sensors
+        return this.temperature_sensors.filter((name) => this.sensorFilter!.includes(name))
+    }
+
+    get filteredMonitors(): string[] {
+        if (!this.sensorFilter) return this.monitors
+        return this.monitors.filter((name) => this.sensorFilter!.includes(name))
     }
 
     get settings() {

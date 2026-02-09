@@ -2,6 +2,7 @@ import { GuiMacrosState } from '@/store/gui/macros/types'
 import { GuiConsoleState } from '@/store/gui/console/types'
 import { GuiPresetsState } from '@/store/gui/presets/types'
 import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
+import { GuiTempgroupsState } from '@/store/gui/tempgroups/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { GuiNotificationState } from '@/store/gui/notifications/types'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
@@ -98,6 +99,7 @@ export interface GuiState {
     notifications?: GuiNotificationState
     presets?: GuiPresetsState
     remoteprinters?: GuiRemoteprintersState
+    tempgroups?: GuiTempgroupsState
     uiSettings: {
         mode: 'dark' | 'light'
         theme: string

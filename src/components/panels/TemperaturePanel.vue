@@ -10,10 +10,11 @@
             <temperature-panel-settings />
         </template>
         <v-card-text class="pa-0">
-            <temperature-panel-list />
+            <temperature-panel-tabs v-if="shouldShowTabs" />
+            <temperature-panel-list :sensor-filter="sensorFilter" />
             <template v-if="boolTempchart">
                 <v-divider class="my-0" />
-                <temp-chart />
+                <temp-chart :sensor-filter="sensorFilter" />
             </template>
         </v-card-text>
     </panel>
@@ -31,9 +32,10 @@ import Panel from '@/components/ui/Panel.vue'
 import Responsive from '@/components/ui/Responsive.vue'
 import { mdiCloseThick, mdiThermometerLines } from '@mdi/js'
 import TemperaturePanelPresets from '@/components/panels/Temperature/TemperaturePanelPresets.vue'
+import TemperaturePanelTabs from '@/components/panels/Temperature/TemperaturePanelTabs.vue'
 
 @Component({
-    components: { Panel, TempChart, TemperatureInput, Responsive, TemperaturePanelPresets },
+    components: { Panel, TempChart, TemperatureInput, Responsive, TemperaturePanelPresets, TemperaturePanelTabs },
 })
 export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
     mdiCloseThick = mdiCloseThick
@@ -44,6 +46,14 @@ export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
 
     get boolTempchart(): boolean {
         return this.$store.state.gui.view.tempchart.boolTempchart ?? false
+    }
+
+    get shouldShowTabs(): boolean {
+        return this.$store.getters['gui/tempgroups/shouldShowTabs'] ?? false
+    }
+
+    get sensorFilter(): string[] | null {
+        return this.$store.getters['gui/tempgroups/getActiveSensorFilter'] ?? null
     }
 }
 </script>

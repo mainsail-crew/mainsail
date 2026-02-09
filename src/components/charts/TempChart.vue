@@ -14,7 +14,7 @@
 <script lang="ts">
 import { convertName } from '@/plugins/helpers'
 import Component from 'vue-class-component'
-import { Mixins, Watch } from 'vue-property-decorator'
+import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import { PrinterTempHistoryStateSourceEntry } from '@/store/printer/tempHistory/types'
 
@@ -35,6 +35,8 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     declare $refs: {
         tempchart: any
     }
+
+    @Prop({ default: null }) declare readonly sensorFilter: string[] | null
 
     hoverChart = false
     private isVisible = true
@@ -75,7 +77,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
             dataset: {
                 source: [],
             },
-            series: this.series,
+            series: this.filteredSeries,
         }
     }
 
@@ -219,7 +221,22 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get series() {
-        return this.$store.state.printer.tempHistory.series ?? {}
+        return this.$store.state.printer.tempHistory.series ?? []
+    }
+    get filteredSeries() {
+        const allSeries = this.series
+
+        if (!this.sensorFilter || this.sensorFilter.length === 0) {
+            return allSeries
+        }
+
+        return allSeries.filter((serie: { name: string }) => {
+            const lastDashIndex = serie.name.lastIndexOf('-')
+            if (lastDashIndex === -1) return false
+
+            const sensorName = serie.name.substring(0, lastDashIndex)
+            return this.sensorFilter!.includes(sensorName)
+        })
     }
 
     get source() {

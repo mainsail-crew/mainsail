@@ -81,6 +81,7 @@ import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab
 import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
 import SettingsTimelapseTab from '@/components/settings/SettingsTimelapseTab.vue'
 import SettingsNavigationTab from '@/components/settings/SettingsNavigationTab.vue'
+import SettingsTempgroupsTab from '@/components/settings/SettingsTempgroupsTab.vue'
 
 import Panel from '@/components/ui/Panel.vue'
 import {
@@ -101,6 +102,7 @@ import {
     mdiDipSwitch,
     mdiMenu,
     mdiGrid,
+    mdiThermometer,
 } from '@mdi/js'
 import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneousTab.vue'
 import SettingsHeightmapTab from '@/components/settings/SettingsHeightmapTab.vue'
@@ -123,6 +125,7 @@ import SettingsHeightmapTab from '@/components/settings/SettingsHeightmapTab.vue
         SettingsMiscellaneousTab,
         SettingsNavigationTab,
         SettingsHeightmapTab,
+        SettingsTempgroupsTab,
     },
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
@@ -210,6 +213,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 icon: mdiGrid,
                 name: 'heightmap',
                 title: this.$t('Settings.HeightmapTab.Heightmap'),
+            },
+            {
+                icon: mdiThermometer,
+                name: 'tempgroups',
+                title: this.$t('Settings.TempgroupsTab.TempGroups'),
             },
         ]
 

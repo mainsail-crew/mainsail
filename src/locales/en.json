@@ -1021,6 +1021,7 @@
             "Unknown": "Unknown"
         },
         "TemperaturePanel": {
+            "All": "All",
             "AutoscaleChart": "Autoscale Chart",
             "Avg": "Avg",
             "Cooldown": "Cooldown",
@@ -1381,6 +1382,30 @@
             "UseConfigJson": "InstanceDB = JSON detected. Please use the config.json to modify the printers list."
         },
         "Store": "store",
+        "TempgroupsTab": {
+            "Add": "add",
+            "AddGroup": "add group",
+            "AvailableSensors": "Available Sensors",
+            "CountSensors": "no sensors added | {count} sensor | {count} sensors",
+            "DisplayName": "Display name",
+            "EditDisplayName": "Edit display name",
+            "EditGroup": "Edit Group",
+            "General": "General",
+            "Groups": "Groups",
+            "GroupSensors": "Group Sensors",
+            "Name": "Name",
+            "NameExists": "Name already exists",
+            "NameRequired": "Name is required",
+            "NoAvailableSensors": "No available sensors.",
+            "NoGroups": "No groups found...",
+            "NoSensorsInGroup": "No sensors in this group.",
+            "RemoveSensor": "Remove sensor from group",
+            "Search": "Search",
+            "ShowAllTab": "Show 'All' tab",
+            "ShowChart": "Show chart",
+            "TempGroups": "Temp Groups",
+            "UnknownGroup": "Unknown Group"
+        },
         "TimelapseTab": {
             "Autorender": "Autorender",
             "AutorenderDescription": "If enabled, the timelapse video will automatically render at the end of the print",
@@ -1580,6 +1605,21 @@
             "WebrtcJanus": "WebRTC (janus-gateway)",
             "WebrtcMediaMTX": "WebRTC (MediaMTX)"
         }
+    },
+    "Tempgroups": {
+        "AddGroup": "Add Group",
+        "AvailableSensors": "Available sensors",
+        "CreateGroup": "Create Group",
+        "DeleteGroup": "Delete Group",
+        "DeleteGroupQuestion": "Do you really want to delete the group \"{name}\"?",
+        "DisplayName": "Display Name",
+        "EditGroup": "Edit Group",
+        "GroupName": "Group Name",
+        "NoSensorsAdded": "No sensors added to this group.",
+        "SensorsInGroup": "Sensors in this group",
+        "ShowAllTab": "Show \"All\" tab",
+        "ShowChart": "Show Chart",
+        "Title": "Temperature Groups"
     },
     "Timelapse": {
         "AllFiles": "All",
