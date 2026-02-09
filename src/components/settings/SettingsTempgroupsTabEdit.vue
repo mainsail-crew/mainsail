@@ -205,6 +205,7 @@ export default class SettingsTempgroupsTabEdit extends Mixins(BaseMixin, ThemeMi
     @Debounce(250)
     updateGroupNameDebounced(newVal: string) {
         if (!this.groupId) return
+        if (newVal.trim() === '' || this.existsGroupName(newVal)) return
         this.$store.dispatch('gui/tempgroups/groupUpdate', {
             id: this.groupId,
             values: { name: newVal },
