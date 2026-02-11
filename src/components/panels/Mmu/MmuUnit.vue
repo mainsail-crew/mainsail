@@ -58,12 +58,12 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         return this.mmuMachineUnit?.has_bypass ?? true
     }
 
-    selectGate(gateIndex: number) {
-        this.$emit('select-gate', gateIndex)
-    }
-
     editFilament(gateIndex: number) {
         this.$emit('edit-filament', gateIndex)
+    }
+
+    selectGate(gateIndex: number) {
+        this.$emit('select-gate', gateIndex)
     }
 }
 </script>

@@ -126,7 +126,10 @@
                 </v-row>
             </v-card-text>
         </template>
-        <mmu-edit-gate-map-dialog v-model="showEditGateMapDialog" :initial-gate="initialEditGate" @close="initialEditGate = null" />
+        <mmu-edit-gate-map-dialog
+            v-model="showEditGateMapDialog"
+            :initial-gate="initialEditGate"
+            @close="initialEditGate = null" />
         <mmu-edit-ttg-map-dialog v-model="showEditTtgMapDialog" :file="fileForTtgMap" />
         <mmu-recover-state-dialog v-model="showRecoverStateDialog" />
         <mmu-maintenance-dialog v-model="showMaintenanceDialog" />
@@ -207,6 +210,11 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
         return this.largeFilamentStatus ? 6 : 5
     }
 
+    editFilament(gateIndex: number) {
+        this.initialEditGate = gateIndex
+        this.showEditGateMapDialog = true
+    }
+
     selectGate(gateIndex: number) {
         if (gateIndex === TOOL_GATE_BYPASS) {
             this.doSend('MMU_SELECT BYPASS=1', 'mmu_select')
@@ -214,11 +222,6 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
         }
 
         this.doSend(`MMU_SELECT GATE=${gateIndex}`, 'mmu_select')
-    }
-
-    editFilament(gateIndex: number) {
-        this.initialEditGate = gateIndex
-        this.showEditGateMapDialog = true
     }
 
     get showClogDetection() {

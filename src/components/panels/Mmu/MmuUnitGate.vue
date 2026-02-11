@@ -114,7 +114,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get contextMenuHeader() {
-        if (this.gateIndex >= 0) return this.$t('Panels.MmuPanel.Gate') + " " + this.gateIndex
+        if (this.gateIndex >= 0) return this.$t('Panels.MmuPanel.Gate') + ' ' + this.gateIndex
         return this.gateName
     }
 
@@ -170,15 +170,12 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
                 label: this.$t('Panels.MmuPanel.ButtonChangeTool'),
                 loading: 'mmu_change_tool',
                 action: { kind: 'gcode', command: 'MMU_CHANGE_TOOL' },
-                disabled: () =>
-                    !this.canSend ||
-                    this.gateIndex === this.selectedGate ||
-                    this.isPrinting,
+                disabled: () => !this.canSend || this.gateIndex === this.selectedGate || this.isPrinting,
             },
         ]
-    
+
         if (this.gateIndex < 0) return items.slice(0, 1)
-    
+
         return items
     }
 
@@ -201,6 +198,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
 
     get lastGate() {
         if (this.gateIndex === TOOL_GATE_BYPASS) return true
+
         return this.gatePosition === this.mmuMachineUnit?.num_gates && !this.hasBypass
     }
 
