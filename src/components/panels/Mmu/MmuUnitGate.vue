@@ -32,15 +32,15 @@
                     {{ $t('Panels.MmuPanel.Gate') }} {{ gateIndex }}
                 </v-subheader>
                 <v-divider class="mb-2" />
-                <v-list-item v-for="(button, index) in contextMenuButtons" :key="index">
+                <v-list-item v-for="(item, index) in contextMenuItems" :key="index">
                     <v-btn
                         small
                         class="w-100"
-                        :disabled="!canSend"
-                        :loading="loadings.includes(button.command.toLowerCase())"
-                        @click="gateCommand(button.command)">
-                        <v-icon left>{{ button.icon }}</v-icon>
-                        {{ button.label }}
+                        :disabled="isItemDisabled(item)"
+                        :loading="loadings.includes(item.loading)"
+                        @click="runMenuItem(item)">
+                        <v-icon left>{{ item.icon }}</v-icon>
+                        {{ item.label }}
                     </v-btn>
                 </v-list-item>
             </v-list>
@@ -51,8 +51,20 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { MmuMachineUnit, TOOL_GATE_BYPASS } from '@/components/mixins/mmu'
-import { mdiSwapHorizontal, mdiDownloadOutline, mdiEject, mdiAxisArrow } from '@mdi/js'
+import MmuMixin, { MmuMachineUnit, TOOL_GATE_BYPASS, FILAMENT_POS_LOADED } from '@/components/mixins/mmu'
+import { mdiSwapHorizontal, mdiDownloadOutline, mdiEject, mdiAxisArrow, mdiDatabaseEdit } from '@mdi/js'
+
+type MenuDisabled = boolean | ((gate: number) => boolean)
+
+type MenuAction = { kind: 'gcode'; command: string } | { kind: 'call'; fn: (gate: number) => void }
+
+type ContextMenuItem = {
+    icon: string
+    label: string
+    loading: string
+    disabled?: MenuDisabled
+    action: MenuAction
+}
 
 @Component
 export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
@@ -60,6 +72,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     mdiDownloadOutline = mdiDownloadOutline
     mdiEject = mdiEject
     mdiAxisArrow = mdiAxisArrow
+    mdiDatabaseEdit = mdiDatabaseEdit
 
     @Prop({ required: true }) readonly gateIndex!: number
     @Prop({ required: true }) readonly mmuMachineUnit!: MmuMachineUnit
@@ -96,17 +109,71 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
         return this.selectedGate === this.gateIndex
     }
 
-    get contextMenuButtons() {
+    private isItemDisabled(item: ContextMenuItem): boolean {
+        if (!item.disabled) return false
+        return typeof item.disabled === 'function' ? item.disabled(this.gateIndex) : item.disabled
+    }
+
+    private runMenuItem(item: ContextMenuItem) {
+        if (this.isItemDisabled(item)) return
+
+        this.closeContextMenu()
+
+        if (item.action.kind === 'gcode') {
+            console.info(`PAUL: sending: ${item.action.command} GATE=${this.gateIndex} with loading=${item.loading}`)
+            if (!this.canSend) return
+            this.doSend(`${item.action.command} GATE=${this.gateIndex}`, item.loading)
+        } else {
+            item.action.fn(this.gateIndex)
+        }
+    }
+
+    get contextMenuItems(): ContextMenuItem[] {
         return [
-            { icon: this.mdiSwapHorizontal, command: 'MMU_SELECT', label: this.$t('Panels.MmuPanel.ButtonSelect') },
-            { icon: this.mdiDownloadOutline, command: 'MMU_PRELOAD', label: this.$t('Panels.MmuPanel.ButtonPreload') },
-            { icon: this.mdiEject, command: 'MMU_EJECT', label: this.$t('Panels.MmuPanel.ButtonEject') },
+            {
+                icon: this.mdiDatabaseEdit,
+                label: this.$t('Panels.MmuPanel.EditGateMap'),
+                loading: '',
+                action: { kind: 'call', fn: () => this.editFilament(this.gateIndex) },
+                disabled: () => false,
+            },
+            {
+                icon: this.mdiSwapHorizontal,
+                label: this.$t('Panels.MmuPanel.ButtonSelect'),
+                loading: 'mmu_select',
+                action: { kind: 'gcode', command: 'MMU_SELECT' },
+                disabled: () =>
+                    !this.canSend ||
+                    this.gateIndex === this.selectedGate ||
+                    this.isPrinting ||
+                    this.mmuFilamentPos === FILAMENT_POS_LOADED,
+            },
+            {
+                icon: this.mdiDownloadOutline,
+                label: this.$t('Panels.MmuPanel.ButtonPreload'),
+                loading: 'mmu_preload',
+                action: { kind: 'gcode', command: 'MMU_PRELOAD' },
+                disabled: () => !this.canSend,
+            },
+            {
+                icon: this.mdiEject,
+                label: this.$t('Panels.MmuPanel.ButtonEject'),
+                loading: 'mmu_eject',
+                action: { kind: 'gcode', command: 'MMU_EJECT' },
+                disabled: () => !this.canSend,
+            },
             {
                 icon: this.mdiAxisArrow,
-                command: 'MMU_CHANGE_TOOL',
                 label: this.$t('Panels.MmuPanel.ButtonChangeTool'),
+                loading: 'mmu_change_tool',
+                action: { kind: 'gcode', command: 'MMU_CHANGE_TOOL' },
+                disabled: () => !this.canSend || this.gateIndex === this.selectedGate || this.isPrinting,
             },
         ]
+    }
+
+    private editFilament(gate: number) {
+        this.$emit('edit-filament', gate)
     }
 
     get gatePosition() {
@@ -139,7 +206,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     openContextMenu(e: MouseEvent) {
         e.preventDefault()
 
-        if (this.gateIndex < 0 || this.gateIndex === this.selectedGate || !this.showContextMenu) return
+        if (this.gateIndex < 0 || !this.showContextMenu) return
 
         this.menuX = e.clientX - 20
         this.menuY = e.clientY - 20
@@ -171,10 +238,6 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     beforeDestroy() {
         removeEventListener('mmu-close-gate-context-menus', this.closeContextMenu)
         this.clearCloseTimeout()
-    }
-
-    gateCommand(command: string) {
-        this.doSend(`${command} GATE=${this.gateIndex}`, command.toLowerCase())
     }
 }
 </script>

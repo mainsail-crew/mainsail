@@ -77,6 +77,7 @@
                         :unit-index="i - 1"
                         :show-details="true"
                         :show-context-menu="true"
+                        @edit-filament="editFilament"
                         @select-gate="selectGate" />
                 </v-col>
             </v-row>
@@ -212,6 +213,11 @@ export default class MmuPanel extends Mixins(BaseMixin, MmuMixin) {
         }
 
         this.doSend(`MMU_SELECT GATE=${gateIndex}`, 'mmu_select')
+    }
+
+    editFilament(gateIndex: number) {
+        // PAUL NEW
+        console.info(`PAUL: editFilament(${gateIndex}`)
     }
 
     get showClogDetection() {

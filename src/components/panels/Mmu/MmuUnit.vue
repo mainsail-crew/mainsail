@@ -11,6 +11,7 @@
                 :unhighlight-spools="unhighlightSpools"
                 :selected-gate="selectedGate"
                 :has-bypass="hasBypass"
+                @edit-filament="editFilament"
                 @select-gate="selectGate" />
             <mmu-unit-gate
                 v-if="hasBypass"
@@ -59,6 +60,10 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 
     selectGate(gateIndex: number) {
         this.$emit('select-gate', gateIndex)
+    }
+
+    editFilament(gateIndex: number) {
+        this.$emit('edit-filament', gateIndex)
     }
 }
 </script>
