@@ -26,6 +26,7 @@
                             :selected-gate="selectedGate"
                             :unit-index="i - 1"
                             :hide-bypass="true"
+                            :show-context-menu="false"
                             :unhighlight-spools="true"
                             @select-gate="selectGate" />
                     </v-col>
