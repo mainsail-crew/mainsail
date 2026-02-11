@@ -36,7 +36,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true }) readonly selectedGate!: number
     @Prop({ required: true }) readonly unitIndex!: number
     @Prop({ default: false }) readonly showDetails!: boolean
-    @Prop({ default: false }) readonly showContextMenu!: boolean
+    @Prop({ default: true }) readonly showContextMenu!: boolean
     @Prop({ default: false }) readonly hideBypass!: boolean
     @Prop({ default: false }) readonly unhighlightSpools!: boolean
 

@@ -76,7 +76,6 @@
                         :selected-gate="mmuGate"
                         :unit-index="i - 1"
                         :show-details="true"
-                        :show-context-menu="true"
                         @edit-filament="editFilament"
                         @select-gate="selectGate" />
                 </v-col>
