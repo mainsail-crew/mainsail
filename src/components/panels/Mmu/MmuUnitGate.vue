@@ -1,24 +1,23 @@
 <template>
-    <div class="d-flex flex-column align-center">
-        <div
-            v-longpress:500="openContextMenu"
-            class="d-flex flex-wrap mb-n2 pt-1 position-relative"
-            @contextmenu.prevent="openContextMenu($event)">
+    <div class="d-flex flex-column align-center cursor-pointer" @click="handleClickGate" @contextmenu.prevent>
+        <div class="d-flex flex-wrap mb-n2 pt-1 position-relative">
             <mmu-unit-gate-spool
                 class="position-relative zindex-1"
                 :gate-index="gateIndex"
                 :show-details="showDetails"
                 :is-selected="isSelected"
                 :unhighlight-spools="unhighlightSpools"
-                @select-gate="selectGate" />
+                @select-spool="() => {}" />
         </div>
+
         <div class="mmu-unit-box d-flex zindex-3 pb-1 pt-2 position-relative" :class="gateClass">
             <div class="d-flex w-100 gate-contents">
-                <span class="gate-number rounded cursor-pointer" :class="gateNumberClass" @click="selectGate">
+                <span class="gate-number rounded" :class="gateNumberClass">
                     {{ gateName }}
                 </span>
             </div>
         </div>
+
         <v-menu
             v-model="contextMenu"
             transition="slide-y-transition"
@@ -29,7 +28,7 @@
             offset-y>
             <v-list dense @mouseleave="closeContextMenu">
                 <v-subheader class="d-block text-subtitle-2 text-center mb-0 h-auto pb-2">
-                    {{ $t('Panels.MmuPanel.Gate') }} {{ gateIndex }}
+                    {{ contextMenuHeader }}
                 </v-subheader>
                 <v-divider class="mb-2" />
                 <v-list-item v-for="(item, index) in contextMenuItems" :key="index">
@@ -114,13 +113,17 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
         return typeof item.disabled === 'function' ? item.disabled(this.gateIndex) : item.disabled
     }
 
+    get contextMenuHeader() {
+        if (this.gateIndex >= 0) return this.$t('Panels.MmuPanel.Gate') + " " + this.gateIndex
+        return this.gateName
+    }
+
     private runMenuItem(item: ContextMenuItem) {
         if (this.isItemDisabled(item)) return
 
         this.closeContextMenu()
 
         if (item.action.kind === 'gcode') {
-            console.info(`PAUL: sending: ${item.action.command} GATE=${this.gateIndex} with loading=${item.loading}`)
             if (!this.canSend) return
             this.doSend(`${item.action.command} GATE=${this.gateIndex}`, item.loading)
         } else {
@@ -129,24 +132,24 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get contextMenuItems(): ContextMenuItem[] {
-        return [
-            {
-                icon: this.mdiDatabaseEdit,
-                label: this.$t('Panels.MmuPanel.EditGateMap'),
-                loading: '',
-                action: { kind: 'call', fn: () => this.editFilament(this.gateIndex) },
-                disabled: () => false,
-            },
+        const items: ContextMenuItem[] = [
             {
                 icon: this.mdiSwapHorizontal,
                 label: this.$t('Panels.MmuPanel.ButtonSelect'),
-                loading: 'mmu_select',
-                action: { kind: 'gcode', command: 'MMU_SELECT' },
+                loading: '',
+                action: { kind: 'call', fn: () => this.selectGate() },
                 disabled: () =>
                     !this.canSend ||
                     this.gateIndex === this.selectedGate ||
                     this.isPrinting ||
                     this.mmuFilamentPos === FILAMENT_POS_LOADED,
+            },
+            {
+                icon: this.mdiDatabaseEdit,
+                label: this.$t('Panels.MmuPanel.EditGateMap'),
+                loading: '',
+                action: { kind: 'call', fn: () => this.editFilament() },
+                disabled: () => false,
             },
             {
                 icon: this.mdiDownloadOutline,
@@ -167,18 +170,28 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
                 label: this.$t('Panels.MmuPanel.ButtonChangeTool'),
                 loading: 'mmu_change_tool',
                 action: { kind: 'gcode', command: 'MMU_CHANGE_TOOL' },
-                disabled: () => !this.canSend || this.gateIndex === this.selectedGate || this.isPrinting,
+                disabled: () =>
+                    !this.canSend ||
+                    this.gateIndex === this.selectedGate ||
+                    this.isPrinting,
             },
         ]
+    
+        if (this.gateIndex < 0) return items.slice(0, 1)
+    
+        return items
     }
 
-    private editFilament(gate: number) {
-        this.$emit('edit-filament', gate)
+    private editFilament() {
+        this.$emit('edit-filament', this.gateIndex)
+    }
+
+    private selectGate() {
+        this.$emit('select-gate', this.gateIndex)
     }
 
     get gatePosition() {
         const firstGateNumber = this.mmuMachineUnit?.first_gate ?? 0
-
         return this.gateIndex + 1 - firstGateNumber
     }
 
@@ -188,7 +201,6 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
 
     get lastGate() {
         if (this.gateIndex === TOOL_GATE_BYPASS) return true
-
         return this.gatePosition === this.mmuMachineUnit?.num_gates && !this.hasBypass
     }
 
@@ -199,14 +211,13 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
         }
     }
 
-    selectGate() {
-        this.$emit('select-gate', this.gateIndex)
+    handleClickGate(e: MouseEvent) {
+        if (this.showContextMenu) return this.openContextMenu(e)
+        this.selectGate(this.gateIndex)
     }
 
     openContextMenu(e: MouseEvent) {
         e.preventDefault()
-
-        if (this.gateIndex < 0 || !this.showContextMenu) return
 
         this.menuX = e.clientX - 20
         this.menuY = e.clientY - 20
@@ -226,7 +237,6 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
 
     clearCloseTimeout() {
         if (this.closeTimeout === null) return
-
         clearTimeout(this.closeTimeout)
         this.closeTimeout = null
     }

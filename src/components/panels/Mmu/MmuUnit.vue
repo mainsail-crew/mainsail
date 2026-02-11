@@ -17,7 +17,7 @@
                 v-if="hasBypass"
                 :gate-index="TOOL_GATE_BYPASS"
                 :mmu-machine-unit="mmuMachineUnit"
-                :show-context-menu="false"
+                :show-context-menu="showContextMenu"
                 :selected-gate="selectedGate"
                 @select-gate="selectGate" />
         </div>
