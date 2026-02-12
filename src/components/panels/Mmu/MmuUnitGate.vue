@@ -131,6 +131,18 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
         }
     }
 
+    get canCrossload() {
+        return this.mmuMachineUnit?.can_crossload ?? false
+    }
+
+    get isLoaded() {
+        return this.mmuFilamentPos === FILAMENT_POS_LOADED
+    }
+
+    get isSelectedGate() {
+        return this.gateIndex === this.selectedGate
+    }
+
     get contextMenuItems(): ContextMenuItem[] {
         const items: ContextMenuItem[] = [
             {
@@ -138,11 +150,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
                 label: this.$t('Panels.MmuPanel.ButtonSelect'),
                 loading: '',
                 action: { kind: 'call', fn: () => this.selectGate() },
-                disabled: () =>
-                    !this.canSend ||
-                    this.gateIndex === this.selectedGate ||
-                    this.isPrinting ||
-                    this.mmuFilamentPos === FILAMENT_POS_LOADED,
+                disabled: () => !this.canSend || this.isSelectedGate || this.isPrinting || this.isLoaded,
             },
             {
                 icon: this.mdiDatabaseEdit,
@@ -156,21 +164,24 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
                 label: this.$t('Panels.MmuPanel.ButtonPreload'),
                 loading: 'mmu_preload',
                 action: { kind: 'gcode', command: 'MMU_PRELOAD' },
-                disabled: () => !this.canSend,
+                disabled: () =>
+                    !this.canSend ||
+                    (!this.isSelectedGate && !this.canCrossload) ||
+                    (this.isSelectedGate && this.isLoaded),
             },
             {
                 icon: this.mdiEject,
                 label: this.$t('Panels.MmuPanel.ButtonEject'),
                 loading: 'mmu_eject',
                 action: { kind: 'gcode', command: 'MMU_EJECT' },
-                disabled: () => !this.canSend,
+                disabled: () => !this.canSend || (this.gateIndex !== this.selectedGate && !this.canCrossload),
             },
             {
                 icon: this.mdiAxisArrow,
                 label: this.$t('Panels.MmuPanel.ButtonChangeTool'),
                 loading: 'mmu_change_tool',
                 action: { kind: 'gcode', command: 'MMU_CHANGE_TOOL' },
-                disabled: () => !this.canSend || this.gateIndex === this.selectedGate || this.isPrinting,
+                disabled: () => !this.canSend || this.isSelectedGate || this.isPrinting,
             },
         ]
 
@@ -211,7 +222,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
 
     handleClickGate(e: MouseEvent) {
         if (this.showContextMenu) return this.openContextMenu(e)
-        this.selectGate(this.gateIndex)
+        this.selectGate()
     }
 
     openContextMenu(e: MouseEvent) {
