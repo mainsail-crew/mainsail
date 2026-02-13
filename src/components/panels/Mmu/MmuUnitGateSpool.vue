@@ -8,8 +8,7 @@
                 :width="spoolWidth"
                 v-bind="attrs"
                 :class="svgClasses"
-                v-on="on"
-                @click="selectSpool">
+                v-on="on">
                 <defs>
                     <path
                         id="oval"
@@ -259,19 +258,11 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
 
     get svgClasses() {
         const classes = [this.svgClass]
-        if (this.hasSelectSpoolListener) classes.push('hasSelectSpool')
+        classes.push('isHover')
         if (this.isSelected) classes.push('isSelected')
         if (!this.isSelected && this.unhighlightSpools) classes.push('unhighlighted')
 
         return classes
-    }
-
-    get hasSelectSpoolListener() {
-        return !!this.$listeners['select-spool']
-    }
-
-    selectSpool() {
-        this.$emit('select-spool')
     }
 }
 </script>
@@ -279,7 +270,6 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
 <style scoped>
 svg {
     outline: none;
-    cursor: pointer;
     transition:
         transform 0.2s,
         opacity 0.2s;
@@ -294,7 +284,7 @@ svg.isSelected {
     opacity: 1 !important;
 }
 
-svg.hasSelectSpool:hover {
+svg.isHover:hover {
     transform: translateY(-4px);
 }
 
