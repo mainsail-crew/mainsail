@@ -172,6 +172,10 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         return this.repo.configured_type
     }
 
+    get isSemverType() {
+        return ['executable', 'python', 'web', 'zip'].includes(this.type)
+    }
+
     get localVersion() {
         const version = this.repo.version ?? '?'
         if (!semver.valid(version, { loose: true })) return null
@@ -271,7 +275,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         if (['printing', 'paused'].includes(this.printer_state)) return true
         if (!this.isValid || this.isCorrupt || this.isDirty || this.commitsBehind.length) return false
 
-        if (['executable', 'python', 'web', 'zip'].includes(this.type)) return !this.semverUpdatable
+        if (this.isSemverType) return !this.semverUpdatable
 
         return this.commitsBehind.length === 0
     }
@@ -279,7 +283,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     get btnIcon() {
         if (this.isDetached || !this.isValid || this.isCorrupt || this.isDirty) return mdiCloseCircle
 
-        if (['executable', 'python', 'web', 'zip'].includes(this.type)) {
+        if (this.isSemverType) {
             if (this.semverUpdatable) return mdiProgressUpload
             else if (this.localVersion === null || this.remoteVersion === null) return mdiHelpCircleOutline
         }
@@ -292,7 +296,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     get btnColor() {
         if (this.isCorrupt || this.isDetached || this.isDirty || !this.isValid) return 'orange'
 
-        if (['executable', 'python', 'web', 'zip'].includes(this.type) && this.semverUpdatable) return 'primary'
+        if (this.isSemverType && this.semverUpdatable) return 'primary'
         if (this.type === 'git_repo' && this.commitsBehind.length) return 'primary'
 
         return 'green'
@@ -304,7 +308,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         if (this.isDirty) return this.$t('Machine.UpdatePanel.Dirty')
         if (!this.isValid) return this.$t('Machine.UpdatePanel.Invalid')
 
-        if (['executable', 'python', 'web', 'zip'].includes(this.type)) {
+        if (this.isSemverType) {
             if (this.semverUpdatable) return this.$t('Machine.UpdatePanel.Update')
             else if (this.localVersion === null || this.remoteVersion === null)
                 return this.$t('Machine.UpdatePanel.Unknown')
