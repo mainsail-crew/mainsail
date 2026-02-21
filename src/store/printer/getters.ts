@@ -693,23 +693,30 @@ export const getters: GetterTree<PrinterState, RootState> = {
     getEstimatedTimeETAFormat: (state, getters, rootState, rootGetters) => {
         const hours12Format = rootGetters['gui/getHours12Format'] ?? false
         const eta = getters['getEstimatedTimeETA']
-        if (eta === 0) return '--'
 
-        const date = new Date(eta)
-        let am = true
-        let h: string | number = date.getHours()
+        const now = new Date()
+        const etaDate = new Date(eta)
+        if (etaDate <= now) return '--'
 
-        if (hours12Format && h > 11) am = false
-        if (hours12Format && h > 12) h -= 12
-        if (hours12Format && h == 0) h += 12
-        if (h < 10) h = '0' + h
+        const hours = etaDate.getHours()
+        const minutes = etaDate.getMinutes()
 
-        const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
+        let displayHour = hours
+        let amPm = ''
 
-        const diff = eta - new Date().getTime()
-        let output = h + ':' + m
-        if (hours12Format) output += ` ${am ? 'AM' : 'PM'}`
-        if (diff > 60 * 60 * 24 * 1000) output += `+${Math.trunc(diff / (60 * 60 * 24 * 1000))}`
+        if (hours12Format) {
+            amPm = hours >= 12 ? ' PM' : ' AM'
+            displayHour = hours % 12 || 12
+        }
+
+        const output = `${String(displayHour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}${amPm}`
+
+        const MS_PER_DAY = 86_400_000
+        now.setHours(0, 0, 0, 0)
+        etaDate.setHours(0, 0, 0, 0)
+        const dayDiff = Math.round((etaDate.getTime() - now.getTime()) / MS_PER_DAY)
+
+        if (dayDiff > 0) return `${output} +${dayDiff}`
 
         return output
     },

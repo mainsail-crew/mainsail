@@ -164,6 +164,23 @@ export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sona
 export const rolloverLogfiles = ['klipper', 'moonraker']
 
 /*
+ * List of keys that should not be saved to Moonraker DB
+ * and are excluded when backup/restore settings
+ */
+export const excludeKeys = [
+    'view.timelapse.currentPath',
+    'view.timelapse.selectedFiles',
+    'view.history.selectedJobs',
+    'view.blockFileUpload',
+    'view.configfiles.selectedFiles',
+    'view.configfiles.rootPath',
+    'view.configfiles.currentPath',
+    'view.gcodefiles.search',
+    'view.gcodefiles.currentPath',
+    'view.gcodefiles.selectedFiles',
+]
+
+/*
  * List of all Themes
  */
 export const themes: Theme[] = [

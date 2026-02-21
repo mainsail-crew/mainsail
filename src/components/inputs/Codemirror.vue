@@ -17,7 +17,7 @@ import { vscodeDark, vscodeLight } from '@uiw/codemirror-theme-vscode'
 import { StreamLanguage } from '@codemirror/language'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
 import { gcode } from '@/plugins/StreamParserGcode'
-import { indentWithTab } from '@codemirror/commands'
+import { insertTab, indentLess } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
 import { indentUnit } from '@codemirror/language'
@@ -85,7 +85,10 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
             basicSetup,
             this.vscodeTheme,
             indentUnit.of(' '.repeat(this.tabSize)),
-            keymap.of([indentWithTab]),
+            keymap.of([
+                { key: 'Tab', run: insertTab },
+                { key: 'Shift-Tab', run: indentLess },
+            ]),
             EditorView.updateListener.of((update) => {
                 if (update.selectionSet) {
                     const line = this.cminstance?.state?.doc.lineAt(this.cminstance?.state?.selection.main.head).number

@@ -19,7 +19,7 @@ export default class GcodefilesMixin extends Vue {
     }
 
     set search(value: string) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.search', value })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.search', value })
     }
 
     get currentPath() {
@@ -30,7 +30,7 @@ export default class GcodefilesMixin extends Vue {
     }
 
     set currentPath(newVal) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.currentPath', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.currentPath', value: newVal })
     }
 
     get showHiddenFiles() {
@@ -263,7 +263,7 @@ export default class GcodefilesMixin extends Vue {
     }
 
     set selectedFiles(newVal) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.selectedFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.selectedFiles', value: newVal })
     }
 
     existsFilename(name: string) {

@@ -115,7 +115,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     mdiLightbulbOnOutline = mdiLightbulbOnOutline
 
     convertName = convertName
-    private declare timeout: ReturnType<typeof setTimeout>
+    declare private timeout: ReturnType<typeof setTimeout>
     private isLocked: boolean = false
     private invalidChars: string[] = ['e', 'E', '+']
 

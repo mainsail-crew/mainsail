@@ -96,8 +96,8 @@ small_css_count=0
 threshold=51200
 
 while read -r normalized; do
-  base_size=$(grep "^$normalized " "$base_sizes" | awk '{print $2}' | head -1)
-  pr_size=$(grep "^$normalized " "$pr_sizes" | awk '{print $2}' | head -1)
+  base_size=$(grep "^$normalized " "$base_sizes" 2>/dev/null | awk '{print $2}' | head -1 || true)
+  pr_size=$(grep "^$normalized " "$pr_sizes" 2>/dev/null | awk '{print $2}' | head -1 || true)
 
   base_size=${base_size:-0}
   pr_size=${pr_size:-0}

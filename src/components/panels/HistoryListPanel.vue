@@ -480,7 +480,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     set selectedJobsTable(newVal) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.history.selectedJobs', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.history.selectedJobs', value: newVal })
     }
 
     refreshHistory() {

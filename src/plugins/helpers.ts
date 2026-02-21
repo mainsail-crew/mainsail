@@ -504,3 +504,44 @@ export function colorsMatch(color1: string, color2: string, tolerance = 0): bool
         Math.abs(rgb1.b - rgb2.b) <= tolerance
     )
 }
+
+/**
+ * Deletes a nested property from an object using a dot-separated path.
+ *
+ * The object is mutated in place. If any part of the path does not exist,
+ * the function returns without making changes.
+ *
+ * @param obj - The object to modify.
+ * @param path - Dot-separated path to the property to delete (e.g. "a.b.c").
+ */
+export const deletePath = (obj: any, path: string) => {
+    const parts = path.split('.')
+    const last = parts.pop()
+    if (!last) return
+
+    let current = obj
+    for (const part of parts) {
+        if (current[part] === undefined) return
+        current = current[part]
+    }
+
+    if (current && typeof current === 'object') delete current[last]
+}
+
+/**
+ * Generates a timestamp string in the format `YYYYMMDD-HHMMSS`.
+ *
+ * @param date - Optional date object. Defaults to current date/time.
+ * @returns Formatted timestamp string (e.g., `20260130-070253`)
+ *
+ * @example
+ * generateTimestamp() // '20260130-070253' (current time)
+ * generateTimestamp(new Date('2025-12-25T10:30:00')) // '20251225-103000'
+ */
+export function generateTimestamp(date: Date = new Date()): string {
+    const pad = (n: number) => n.toString().padStart(2, '0')
+    const dateString = `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}`
+    const timeString = `${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}`
+
+    return `${dateString}-${timeString}`
+}
