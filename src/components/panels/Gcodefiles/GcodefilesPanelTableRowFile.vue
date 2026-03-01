@@ -186,7 +186,7 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
 
     @Prop({ type: Object, required: true }) readonly item!: FileStateGcodefile
     @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
-    @Prop({ type: Function, required: true }) readonly select!: Function
+    @Prop({ type: Function, required: true }) readonly select!: (value: boolean) => void
 
     get isGcodeFile() {
         const format = this.item.filename.slice(this.item.filename.lastIndexOf('.'))

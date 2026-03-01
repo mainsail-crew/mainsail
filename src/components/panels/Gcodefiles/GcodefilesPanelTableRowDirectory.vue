@@ -69,7 +69,7 @@ export default class GcodefilesPanelTableRowDirectory extends Mixins(BaseMixin, 
 
     @Prop({ type: Object, required: true }) readonly item!: FileStateGcodefile
     @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
-    @Prop({ type: Function, required: true }) readonly select!: Function
+    @Prop({ type: Function, required: true }) readonly select!: (value: boolean) => void
 
     get trClasses() {
         return {
