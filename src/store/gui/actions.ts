@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
-import { GuiState, GuiStateLayoutoption } from '@/store/gui/types'
+import { GuiState, GuiStateDashboard, GuiStateDashboardLayoutKey, GuiStateLayoutoption } from '@/store/gui/types'
 import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
 import { excludeKeys, themeDir } from '@/store/variables'
@@ -80,8 +80,8 @@ export const actions: ActionTree<GuiState, RootState> = {
 
         //update tools to temperatures panel from V2.1.x to V2.2.0
         if ('dashboard' in payload.value) {
-            const dashboard = payload.value.dashboard
-            const layouts = [
+            const dashboard = payload.value.dashboard as GuiStateDashboard
+            const layouts: GuiStateDashboardLayoutKey[] = [
                 'mobileLayout',
                 'tabletLayout1',
                 'tabletLayout2',
@@ -94,14 +94,15 @@ export const actions: ActionTree<GuiState, RootState> = {
 
             layouts.forEach((layout) => {
                 if (layout in dashboard) {
-                    const index = dashboard[layout].findIndex((entry: GuiStateLayoutoption) => entry.name === 'tools')
+                    const layoutArray = dashboard[layout] as GuiStateLayoutoption[]
+                    const index = layoutArray.findIndex((entry) => entry.name === 'tools')
 
                     if (index !== -1) {
-                        dashboard[layout][index].name = 'temperature'
+                        layoutArray[index].name = 'temperature'
 
                         dispatch('saveSetting', {
                             name: 'dashboard.' + layout,
-                            value: dashboard[layout],
+                            value: layoutArray,
                         })
                     }
                 }
@@ -425,10 +426,9 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    resetLayout({ dispatch }, name) {
+    resetLayout({ dispatch }, name: GuiStateDashboardLayoutKey) {
         const defaultState = getDefaultState()
-        // @ts-ignore
-        const newVal: any = defaultState.dashboard[name] ?? []
+        const newVal = defaultState.dashboard[name]
 
         dispatch('saveSetting', {
             name: 'dashboard.' + name,

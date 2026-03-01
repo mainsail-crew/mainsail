@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { GuiState } from '@/store/gui/types'
+import { GuiState, GuiStateDashboard, GuiStateLayoutoption } from '@/store/gui/types'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { allDashboardPanels, defaultTheme, themes } from '@/store/variables'
 import { Theme } from '@/store/types'
@@ -115,17 +115,18 @@ export const getters: GetterTree<GuiState, any> = {
     getPanels:
         (state, getters, rootState) =>
         (viewport: string, column: number, onlyVisible: boolean = false) => {
-            const layoutName = column ? `${viewport}Layout${column}` : `${viewport}Layout`
-            // @ts-ignore
-            let panels = state.dashboard[layoutName]?.filter((element: any) => element !== null) ?? []
+            const layoutName = (column ? `${viewport}Layout${column}` : `${viewport}Layout`) as keyof GuiStateDashboard
+            let panels = state.dashboard[layoutName] as GuiStateLayoutoption[]
+
+            panels = panels?.filter((element) => element !== null) ?? []
             const allPossiblePanels = getters['getAllPossiblePanels']
 
             if (column < 2) {
-                const allViewportPanels = getters['getAllPanelsFromViewport'](viewport)
-                const missingPanels: any[] = []
+                const allViewportPanels = getters['getAllPanelsFromViewport'](viewport) as GuiStateLayoutoption[]
+                const missingPanels: GuiStateLayoutoption[] = []
 
                 allPossiblePanels.forEach((panelname: string) => {
-                    if (!allViewportPanels.find((panel: any) => panel.name === panelname))
+                    if (!allViewportPanels.find((panel) => panel.name === panelname))
                         missingPanels.push({
                             name: panelname,
                             visible: true,
@@ -135,16 +136,16 @@ export const getters: GetterTree<GuiState, any> = {
             }
 
             if (onlyVisible) {
-                panels = panels.filter((element: any) => element.visible)
+                panels = panels.filter((element) => element.visible)
             }
 
             if (rootState.gui.macros.mode === 'simple')
-                panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
+                panels = panels.filter((element) => !element.name.startsWith('macrogroup_'))
             else {
-                panels = panels.filter((element: any) => element.name !== 'macros')
+                panels = panels.filter((element) => element.name !== 'macros')
                 const macrogroups = getters['macros/getAllMacrogroups']
                 if (macrogroups.length) {
-                    panels = panels.filter((element: any) => {
+                    panels = panels.filter((element) => {
                         if (!element.name.startsWith('macrogroup_')) return true
 
                         const macrogroupId = element.name.slice(11)
@@ -157,21 +158,21 @@ export const getters: GetterTree<GuiState, any> = {
                 }
             }
 
-            return panels.filter((element: any) => allPossiblePanels.includes(element.name))
+            return panels.filter((element) => allPossiblePanels.includes(element.name))
         },
 
     getAllPanelsFromViewport: (state) => (viewport: string) => {
-        let panels: any = []
+        let panels: GuiStateLayoutoption[] = []
 
-        if (`${viewport}Layout` in state.dashboard) {
-            // @ts-ignore
-            panels = panels.concat(state.dashboard[`${viewport}Layout`])
+        const layoutKey = `${viewport}Layout` as keyof GuiStateDashboard
+        if (layoutKey in state.dashboard) {
+            panels = panels.concat(state.dashboard[layoutKey] as GuiStateLayoutoption[])
         }
 
         let nr = 1
         while (`${viewport}Layout${nr}` in state.dashboard) {
-            // @ts-ignore
-            panels = panels.concat(state.dashboard[`${viewport}Layout${nr}`])
+            const layoutKeyNr = `${viewport}Layout${nr}` as keyof GuiStateDashboard
+            panels = panels.concat(state.dashboard[layoutKeyNr] as GuiStateLayoutoption[])
             nr++
         }
 

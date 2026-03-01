@@ -16,10 +16,10 @@ import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { VisualMapComponent } from 'echarts/components'
 
-// @ts-ignore
+// type definitions for echarts-gl do not exist
+// @ts-expect-error no type definitions available
 import { Grid3DComponent } from 'echarts-gl/components'
-//type definitions for echarts-gl do not exist
-// @ts-ignore
+// @ts-expect-error no type definitions available
 import { SurfaceChart } from 'echarts-gl/charts'
 import type { ECharts } from 'echarts'
 import ThemeMixin from '@/components/mixins/theme'

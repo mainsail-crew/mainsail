@@ -109,7 +109,7 @@ import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
 import { mdiCloseThick, mdiLightbulbOutline } from '@mdi/js'
 import BaseMixin from '@/components/mixins/base'
 import { caseInsensitiveSort, convertName } from '@/plugins/helpers'
-import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
+import type { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
 import iro from '@jaames/iro'
 import { IroColor } from '@irojs/iro-core'
 import { Debounce } from 'vue-debounce-decorator'
@@ -244,10 +244,10 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
             margin: 15,
             layout: [],
         }
+        const layout: { component: unknown; options?: Record<string, unknown> }[] = []
 
         if (this.colorOrder.includes('R')) {
-            // @ts-ignore
-            options?.layout.push({
+            layout.push({
                 component: iro.ui.Slider,
                 options: {
                     sliderType: 'red',
@@ -256,8 +256,7 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
         }
 
         if (this.colorOrder.includes('G')) {
-            // @ts-ignore
-            options?.layout.push({
+            layout.push({
                 component: iro.ui.Slider,
                 options: {
                     sliderType: 'green',
@@ -266,8 +265,7 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
         }
 
         if (this.colorOrder.includes('B')) {
-            // @ts-ignore
-            options?.layout.push({
+            layout.push({
                 component: iro.ui.Slider,
                 options: {
                     sliderType: 'blue',
@@ -287,8 +285,11 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
                     },
                 },
             ]
+
+            return options
         }
 
+        options.layout = layout
         return options
     }
 

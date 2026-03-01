@@ -45,8 +45,7 @@ export const getters: GetterTree<GuiPresetsState, any> = {
                 ) === -1
             ) {
                 output.push({
-                    // @ts-ignore
-                    value: parseFloat(preset.values[payload.name].value),
+                    value: Number(preset.values[payload.name].value),
                     text: preset.values[payload.name].value + ' °C',
                 })
             }

@@ -649,22 +649,27 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, csvSeperator: string | null = null) {
-        //@ts-ignore
-        let value = col.value in job ? job[col.value] : null
-        if (value === null) value = col.value in job.metadata ? job.metadata[col.value] : null
+        const key = col.value as string
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let value: any = null
+        if (key in job) {
+            value = job[key as keyof ServerHistoryStateJob]
+        } else if (key in job.metadata) {
+            value = job.metadata[key]
+        }
 
         if (col.value === 'slicer') {
             let slicerString = 'slicer' in job.metadata && job.metadata.slicer ? job.metadata.slicer : '--'
             if ('slicer_version' in job.metadata && job.metadata.slicer_version)
                 slicerString += ' ' + job.metadata.slicer_version
 
-            if (csvSeperator !== null && value.includes(csvSeperator)) return '"' + slicerString + '"'
+            if (csvSeperator !== null && value?.includes(csvSeperator)) return '"' + slicerString + '"'
 
             return slicerString
         }
 
-        if (col.value.startsWith('history_field_')) {
-            const sensorName = col.value.replace('history_field_', '')
+        if (key.startsWith('history_field_')) {
+            const sensorName = key.replace('history_field_', '')
             const sensor = job.auxiliary_data?.find((sensor) => sensor.name === sensorName)
 
             let value = sensor?.value?.toString()
@@ -696,7 +701,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
                         return value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
 
                     case 'string':
-                        if (csvSeperator !== null && value.includes(csvSeperator)) value = '"' + value + '"'
+                        if (csvSeperator !== null && value?.includes(csvSeperator)) value = '"' + value + '"'
 
                         return value
 

@@ -386,8 +386,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
             return
         }
 
-        // @ts-ignore
-        this.webcam.extra_data.hideFps = newVal
+        this.webcam.extra_data!.hideFps = newVal
     }
 
     get enableAudio() {
@@ -403,8 +402,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
             return
         }
 
-        // @ts-ignore
-        this.webcam.extra_data.enableAudio = newVal
+        this.webcam.extra_data!.enableAudio = newVal
     }
 
     get nozzleCrosshairAvialable() {

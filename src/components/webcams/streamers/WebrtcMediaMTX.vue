@@ -234,12 +234,11 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         const iceServers = this.linkToIceServers(res.headers.get('Link'))
         this.log('ice servers:', iceServers)
 
+        // https://webrtc.org/getting-started/unified-plan-transition-guide
         this.pc = new RTCPeerConnection({
             iceServers,
-            // https://webrtc.org/getting-started/unified-plan-transition-guide
-            // @ts-ignore
             sdpSemantics: 'unified-plan',
-        })
+        } as RTCConfiguration & { sdpSemantics?: string })
 
         const direction = 'sendrecv'
         this.pc.addTransceiver('video', { direction })

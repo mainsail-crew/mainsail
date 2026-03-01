@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import { GuiState } from '@/store/gui/types'
+import { GuiState, GuiStateDashboard, GuiStateLayoutoption } from '@/store/gui/types'
 import { setDataDeep } from '@/plugins/helpers'
 
 export const mutations: MutationTree<GuiState> = {
@@ -83,8 +83,7 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     deleteFromDashboardLayout(state, payload) {
-        // @ts-ignore
-        const layoutArray = [...state.dashboard[payload.layoutname]]
+        const layoutArray = [...(state.dashboard[payload.layoutname as keyof GuiStateDashboard] as GuiStateLayoutoption[])]
         layoutArray.splice(payload.index, 1)
         Vue.set(state.dashboard, payload.layoutname, layoutArray)
     },

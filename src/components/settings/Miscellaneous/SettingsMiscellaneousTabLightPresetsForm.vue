@@ -114,6 +114,7 @@ interface ColorData {
     green: number | null
     blue: number | null
     white: number | null
+    [key: string]: number | null
 }
 
 @Component({
@@ -257,10 +258,10 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
             margin: 15,
             layout: [],
         }
+        const layout: { component: unknown; options?: Record<string, unknown> }[] = []
 
         if (this.existRed) {
-            // @ts-ignore
-            options?.layout.push({
+            layout.push({
                 component: iro.ui.Slider,
                 options: {
                     sliderType: 'red',
@@ -269,8 +270,7 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
         }
 
         if (this.existGreen) {
-            // @ts-ignore
-            options?.layout.push({
+            layout.push({
                 component: iro.ui.Slider,
                 options: {
                     sliderType: 'green',
@@ -279,8 +279,7 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
         }
 
         if (this.existBlue) {
-            // @ts-ignore
-            options?.layout.push({
+            layout.push({
                 component: iro.ui.Slider,
                 options: {
                     sliderType: 'blue',
@@ -300,8 +299,11 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
                     },
                 },
             ]
+
+            return options
         }
 
+        options.layout = layout
         return options
     }
 
@@ -343,7 +345,6 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
             white: this.white,
         }
 
-        // @ts-ignore
         color.white = payload.alpha * 255
 
         this.colorChanged(color)
@@ -357,7 +358,6 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
             white: this.white,
         }
 
-        // @ts-ignore
         color[payload.name] = payload.value
 
         this.colorChanged(color)

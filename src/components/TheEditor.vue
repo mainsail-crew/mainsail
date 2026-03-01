@@ -210,7 +210,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiUsb = mdiUsb
     mdiFormatListCheckbox = mdiFormatListCheckbox
 
-    //@ts-ignore
     @Ref('editor') editor!: CodemirrorAsync
 
     get changed() {

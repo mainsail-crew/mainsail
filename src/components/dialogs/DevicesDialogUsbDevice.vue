@@ -33,9 +33,9 @@ export default class DevicesDialogUsbDevice extends Mixins(BaseMixin) {
         const types = ['protocol', 'class', 'serial', 'usb_location']
         const output: { key: string; value: string }[] = []
 
-        Object.keys(this.device).forEach((key) => {
-            // @ts-ignore
-            let value = this.device[key] ?? null
+        const device = this.device as Record<string, string | number | undefined>
+        Object.keys(device).forEach((key) => {
+            let value = device[key] ?? null
 
             if (!types.includes(key) || value === null) return
 
