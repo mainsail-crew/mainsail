@@ -9,10 +9,8 @@ export interface FarmPrinterState {
     data: {
         gui: GuiState
         webcams: GuiWebcamStateWebcam[]
-
         [key: string]: any
     }
-
     settings: any
     databases: string[]
     current_file: FileStateFile
@@ -31,7 +29,6 @@ export interface FarmPrinterStateSocket {
     reconnects: number
     maxReconnects: number
     reconnectInterval: number
-
     wsData: any[]
 }
 
