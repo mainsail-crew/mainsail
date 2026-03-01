@@ -264,13 +264,6 @@ export interface WebSocketPluginOptions {
     store: Store<RootState>
 }
 
-export interface WebSocketClient {
-    connect(): void
-    close(): void
-    emit(method: string, params: Params, emitOptions: emitOptions): void
-    emitBatch(messages: BatchMessage[]): void
-}
-
 export interface BatchMessage {
     method: string
     params: Params
