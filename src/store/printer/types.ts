@@ -103,9 +103,7 @@ export interface PrinterStateMiscellaneous {
     pwm: boolean
     rpm: number
     scale: number
-
     object: any
-
     config: any
     off_below?: number
     max_power?: number
