@@ -6,7 +6,6 @@ import pluginJsonc from 'eslint-plugin-jsonc'
 import globals from 'globals'
 
 export default defineConfigWithVueTs(
-    // Global ignores (replaces --ignore-path .gitignore)
     {
         ignores: [
             'node_modules/',
@@ -23,10 +22,7 @@ export default defineConfigWithVueTs(
         ],
     },
 
-    // Core ESLint recommended rules (replaces eslint:recommended)
     eslint.configs.recommended,
-
-    // Vue 2 recommended rules (replaces plugin:vue/recommended)
     ...pluginVue.configs['flat/vue2-recommended'],
 
     // TypeScript setup (replaces @vue/typescript v12)
@@ -70,7 +66,6 @@ export default defineConfigWithVueTs(
         },
     },
 
-    // JSON locale files (replaces overrides section)
     ...pluginJsonc.configs['flat/base'],
     {
         files: ['src/locales/*.json'],
