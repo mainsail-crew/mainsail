@@ -311,7 +311,7 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin, 
         this.$store.dispatch('gui/saveSetting', { name: 'control.style', value: newVal })
     }
 
-    get hideDuringPrint(): Boolean {
+    get hideDuringPrint(): boolean {
         return this.$store.state.gui.control.hideDuringPrint ?? false
     }
 
