@@ -450,7 +450,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getMcuTempSensors: (state, getters) => {
         const checkObjects = ['temperature_sensor', 'temperature_fan']
-
         const output: { key: string; settings: any; object: any }[] = []
 
         const objects = getters.getPrinterConfigObjects(checkObjects)
@@ -481,7 +480,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
         let output: McuTempSensor | null = null
 
         const sensors = getters.getMcuTempSensors
-
         sensors.forEach((sensor: { key: string; settings: any; object: any }) => {
             if (mcuName.endsWith(sensor.settings?.sensor_mcu) && sensor.object?.temperature) {
                 output = {
