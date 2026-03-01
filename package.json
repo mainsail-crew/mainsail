@@ -126,5 +126,11 @@
     ],
     "engines": {
         "node": "^20.19.0 || >=22.12.0"
+    },
+    "overrides": {
+        "minimatch@>=9.0.0 <9.0.7": "~9.0.7",
+        "typed_janus_js": {
+            "lodash": ">=4.17.23"
+        }
     }
 }
