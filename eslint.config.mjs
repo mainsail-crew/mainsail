@@ -34,11 +34,7 @@ export default defineConfigWithVueTs(
             globals: {
                 ...globals.browser,
                 ...globals.es2021,
-                ...globals.node,
-                Atomics: 'readonly',
-                SharedArrayBuffer: 'readonly',
             },
-            sourceType: 'module',
         },
     },
 
