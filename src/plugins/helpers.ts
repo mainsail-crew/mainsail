@@ -404,7 +404,7 @@ export function convertStringToArray(str: string, separator = ';'): string[] {
             if (Array.isArray(arr) && arr.every((item) => typeof item === 'string')) {
                 return arr.map((s) => s.trim())
             }
-        } catch (e) {
+        } catch {
             // Fallback to separator split
         }
     }

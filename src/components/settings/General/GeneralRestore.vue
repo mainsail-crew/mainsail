@@ -105,7 +105,7 @@ export default class SettingsGeneralTabRestoreDatabase extends Mixins(BaseMixin,
                 this.restoreableNamespaces = this.restoreableNamespaces.sort(this.sortNamespaces)
 
                 this.openDialog()
-            } catch (e) {
+            } catch {
                 Vue.$toast.error(this.$t('Settings.GeneralTab.CannotReadJson').toString())
             }
         }

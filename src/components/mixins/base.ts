@@ -152,7 +152,7 @@ export default class BaseMixin extends Vue {
             }
 
             return url.toString()
-        } catch (e) {
+        } catch {
             window.console.warn('[Spoolman]: SpoolManager URL is invalid:', baseurl)
 
             return undefined
@@ -204,7 +204,7 @@ export default class BaseMixin extends Vue {
         try {
             // @ts-ignore
             tmp = (typeof value.getMonth === 'function' ? value : new Date(value)) as Date
-        } catch (_) {
+        } catch {
             return 'UNKNOWN'
         }
 
@@ -259,7 +259,7 @@ export default class BaseMixin extends Vue {
         try {
             // @ts-ignore
             tmp = (typeof value.getMonth === 'function' ? value : new Date(value)) as Date
-        } catch (_) {
+        } catch {
             return 'UNKNOWN'
         }
 

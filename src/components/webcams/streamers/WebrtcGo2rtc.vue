@@ -72,7 +72,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
         try {
             urlSearch = new URL(this.camSettings.stream_url).search.toString()
             url = new URL('api/ws' + urlSearch, this.camSettings.stream_url)
-        } catch (e) {
+        } catch {
             this.log('invalid url', this.camSettings.stream_url)
         }
 
