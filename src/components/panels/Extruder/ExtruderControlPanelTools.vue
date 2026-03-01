@@ -23,7 +23,7 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     get rows() {
         const len = this.toolchangeMacros.length
         const cols = Math.ceil(len / Math.ceil(len / 6))
-        let rows = []
+        const rows = []
 
         for (let i = 0; i < this.toolchangeMacros.length; i += cols) {
             rows.push(this.toolchangeMacros.slice(i, i + cols))

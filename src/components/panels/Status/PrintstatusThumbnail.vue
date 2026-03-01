@@ -192,7 +192,7 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
     }
 
     get thumbnailStyle() {
-        let output: { height: string; backgroundColor?: string } = {
+        const output: { height: string; backgroundColor?: string } = {
             height: '200px',
         }
 

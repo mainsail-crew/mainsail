@@ -363,7 +363,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
         })
 
         const limitDate = new Date(Date.now() - this.maxHistory * 1000)
-        let newSource = newVal.filter((entry: PrinterTempHistoryStateSourceEntry) => {
+        const newSource = newVal.filter((entry: PrinterTempHistoryStateSourceEntry) => {
             return entry.date >= limitDate
         })
 

@@ -69,7 +69,7 @@ export default class GitCommitsList extends Mixins(BaseMixin) {
     }
 
     get groupedCommits() {
-        let output: ServerUpdateManagerStateGitRepoGroupedCommits[] = []
+        const output: ServerUpdateManagerStateGitRepoGroupedCommits[] = []
         let lastCommit: ServerUpdateManagerStateGitRepoCommit | null = null
 
         this.commitsBehind.forEach((commit: any) => {

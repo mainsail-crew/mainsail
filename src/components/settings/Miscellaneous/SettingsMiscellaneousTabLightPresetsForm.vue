@@ -252,7 +252,7 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
     }
 
     get colorPickerOptions() {
-        let options: ColorPickerProps = {
+        const options: ColorPickerProps = {
             width: 200,
             margin: 15,
             layout: [],
@@ -306,7 +306,7 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
     }
 
     get colorPickerWhiteOptions() {
-        let options: ColorPickerProps = {
+        const options: ColorPickerProps = {
             width: 200,
             margin: 15,
             layout: [

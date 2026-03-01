@@ -85,7 +85,7 @@ export default class WebcamPanel extends Mixins(BaseMixin, WebcamMixin) {
     get currentCamId(): string {
         if (this.webcams.length === 1) return this.webcams[0].name ?? 'all'
 
-        let currentCamId = this.$store.state.gui.view.webcam.currentCam[this.currentPage ?? ''] ?? 'all'
+        const currentCamId = this.$store.state.gui.view.webcam.currentCam[this.currentPage ?? ''] ?? 'all'
         if (this.webcams.findIndex((webcam: GuiWebcamStateWebcam) => webcam.name === currentCamId) !== -1)
             return currentCamId
         else if (currentCamId !== undefined && this.webcams.length === 1) return this.webcams[0].name ?? ''

@@ -169,7 +169,7 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
 
     @Debounce(500)
     colorsUpdated(value: any, index: number): void {
-        let colors = this.extruderColors
+        const colors = this.extruderColors
         colors[index] = value.hex
         this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.extruderColors', value: colors })
     }

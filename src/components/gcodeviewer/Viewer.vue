@@ -568,7 +568,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     refreshPrintingObjects() {
         if (this.loadedFile !== this.sdCardFilePath || this.printing_objects.length === 0) return
 
-        let objects: {
+        const objects: {
             cancelled: boolean
             name: string
             x: number[]

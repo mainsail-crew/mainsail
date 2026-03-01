@@ -164,7 +164,7 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     sendCmd(): void {
-        let gcode: string[] = []
+        const gcode: string[] = []
         if (!this.existsClientLinearMoveMacro) {
             gcode.push('SAVE_GCODE_STATE NAME=_ui_movement')
             gcode.push('G90')

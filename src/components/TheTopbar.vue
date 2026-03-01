@@ -257,7 +257,7 @@ export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
     async uploadAndStart() {
         if (this.$refs.fileUploadAndStart?.files.length) {
             await this.$store.dispatch('socket/addLoading', { name: 'btnUploadAndStart' })
-            let successFiles = []
+            const successFiles = []
             for (const file of this.$refs.fileUploadAndStart?.files || []) {
                 const result = await this.doUploadAndStart(file)
                 successFiles.push(result)

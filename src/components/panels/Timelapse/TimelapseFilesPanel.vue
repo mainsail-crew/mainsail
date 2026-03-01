@@ -698,7 +698,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     async downloadSelectedFiles() {
-        let items: string[] = []
+        const items: string[] = []
 
         const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
             for (const file of directory) {

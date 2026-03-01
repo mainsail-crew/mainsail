@@ -222,7 +222,7 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin, ThemeMixin, Webc
     }
 
     get panelClass(): string[] {
-        let output = []
+        const output = []
 
         if (!this.printer.socket.isConnected && !this.printer.socket.isConnecting) output.push('disabledPrinter')
 

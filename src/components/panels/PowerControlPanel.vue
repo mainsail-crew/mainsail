@@ -66,7 +66,7 @@ export default {
     },
     methods: {
         setPower(device, value) {
-            let rpc = value === 1 ? 'machine.device_power.on' : 'machine.device_power.off'
+            const rpc = value === 1 ? 'machine.device_power.on' : 'machine.device_power.off'
             Vue.$socket.emit(rpc, { [device.device]: null }, 'server/power/responseToggle')
         },
     },

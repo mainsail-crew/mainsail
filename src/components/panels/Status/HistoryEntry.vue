@@ -203,14 +203,14 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
     }
 
     get estimatedTime() {
-        let totalSeconds = this.job.print_duration ?? 0
+        const totalSeconds = this.job.print_duration ?? 0
         if (totalSeconds == 0) return '--'
 
         return formatPrintTime(totalSeconds)
     }
 
     get totalTime() {
-        let totalSeconds: number = this.job.total_duration ?? 0
+        const totalSeconds: number = this.job.total_duration ?? 0
         if (totalSeconds === 0) return null
 
         return formatPrintTime(totalSeconds)

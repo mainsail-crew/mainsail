@@ -55,7 +55,7 @@ export default class SettingsMiscellaneousTabLightPresetsListEntry extends Mixin
     }
 
     get subTitle() {
-        let output: string[] = []
+        const output: string[] = []
 
         if (this.colorOrder.includes('R')) output.push(`R: ${this.preset.red}`)
         if (this.colorOrder.includes('G')) output.push(`G: ${this.preset.green}`)
