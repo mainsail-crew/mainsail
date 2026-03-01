@@ -7,19 +7,7 @@ import globals from 'globals'
 
 export default defineConfigWithVueTs(
     {
-        ignores: [
-            'node_modules/',
-            'dist/',
-            'dev-dist/',
-            'temp/',
-            'design/',
-            'i18n-extract/',
-            'packages/',
-            'components.d.ts',
-            'cypress/',
-            '*.local',
-            '.env',
-        ],
+        ignores: ['dist/', 'dev-dist/', 'i18n-extract/', 'components.d.ts', 'cypress/'],
     },
 
     eslint.configs.recommended,
