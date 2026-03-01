@@ -13,7 +13,7 @@ export default defineConfigWithVueTs(
     eslint.configs.recommended,
     ...pluginVue.configs['flat/vue2-recommended'],
 
-    // TypeScript setup (replaces @vue/typescript v12)
+    // TypeScript setup
     // base = parser setup for .ts and .vue files
     // eslintRecommended = disables core ESLint rules that conflict with TS
     vueTsConfigs.base,
@@ -29,7 +29,6 @@ export default defineConfigWithVueTs(
         },
     },
 
-    // Global language options (replaces env + globals)
     {
         languageOptions: {
             globals: {
@@ -43,7 +42,6 @@ export default defineConfigWithVueTs(
         },
     },
 
-    // Vue custom rules (replaces rules section)
     {
         files: ['**/*.vue'],
         rules: {
