@@ -18,6 +18,7 @@ export default defineConfigWithVueTs(
     // eslintRecommended = disables core ESLint rules that conflict with TS
     vueTsConfigs.base,
     vueTsConfigs.eslintRecommended,
+    vueTsConfigs.recommended,
 
     {
         languageOptions: {
