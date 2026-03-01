@@ -1,3 +1,4 @@
+import eslint from '@eslint/js'
 import pluginVue from 'eslint-plugin-vue'
 import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
 import eslintConfigPrettier from 'eslint-config-prettier'
@@ -22,6 +23,9 @@ export default defineConfigWithVueTs(
         ],
     },
 
+    // Core ESLint recommended rules (replaces eslint:recommended)
+    eslint.configs.recommended,
+
     // Vue 2 recommended rules (replaces plugin:vue/recommended)
     ...pluginVue.configs['flat/vue2-recommended'],
 
@@ -30,6 +34,23 @@ export default defineConfigWithVueTs(
     // eslintRecommended = disables core ESLint rules that conflict with TS
     vueTsConfigs.base,
     vueTsConfigs.eslintRecommended,
+
+    // Disable no-unused-vars for TS/Vue files — core rule doesn't understand
+    // TypeScript properly (false positives on type imports, declaration files).
+    // Will be replaced by @typescript-eslint/no-unused-vars when enabling vueTsConfigs.recommended
+    {
+        files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts', '**/*.vue'],
+        rules: {
+            'no-unused-vars': 'off',
+        },
+    },
+
+    // Disable rules not present in old ESLint 8 config
+    {
+        rules: {
+            'no-useless-assignment': 'off',
+        },
+    },
 
     // Global language options (replaces env + globals)
     {

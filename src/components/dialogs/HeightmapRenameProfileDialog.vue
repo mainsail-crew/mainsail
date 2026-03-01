@@ -53,6 +53,7 @@ export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
         (value: string) =>
             !this.profileNames.includes(value) || value === this.name || this.$t('Heightmap.InvalidNameAlreadyExists'),
 
+        // eslint-disable-next-line no-control-regex
         (value: string) => value === value.replace(/[^\x00-\x7F]/g, '') || this.$t('Heightmap.InvalidNameAscii'),
     ]
 
