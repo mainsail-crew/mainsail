@@ -13,7 +13,6 @@ export const getDefaultState = (): GuiMaintenanceState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const maintenance: Module<GuiMaintenanceState, any> = {
     namespaced: true,
     state,

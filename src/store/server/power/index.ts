@@ -13,7 +13,6 @@ export const getDefaultState = (): ServerPowerState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const power: Module<ServerPowerState, any> = {
     namespaced: true,
     state,

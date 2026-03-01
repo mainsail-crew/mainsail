@@ -20,7 +20,6 @@ export const getDefaultState = (): GuiConsoleState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const console: Module<GuiConsoleState, any> = {
     namespaced: true,
     state,

@@ -24,7 +24,6 @@ export const getDefaultState = (): ServerSpoolmanState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const spoolman: Module<ServerSpoolmanState, any> = {
     namespaced: true,
     state,

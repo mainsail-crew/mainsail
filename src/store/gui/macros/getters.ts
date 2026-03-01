@@ -2,7 +2,6 @@ import { GetterTree } from 'vuex'
 import { GuiMacrosState, GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 
-// eslint-disable-next-line
 export const getters: GetterTree<GuiMacrosState, any> = {
     getAllMacrogroups: (state) => {
         const macrogroups: GuiMacrosStateMacrogroup[] = []

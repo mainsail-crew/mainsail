@@ -42,6 +42,5 @@ export interface PrinterTempHistoryStateSerie {
 }
 
 export interface PrinterTempHistoryStateSourceEntry {
-    // eslint-disable-next-line
     [key: string]: any
 }

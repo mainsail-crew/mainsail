@@ -13,7 +13,6 @@ export const getDefaultState = (): GuiGcodehistoryState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const gcodehistory: Module<GuiGcodehistoryState, any> = {
     namespaced: true,
     state,

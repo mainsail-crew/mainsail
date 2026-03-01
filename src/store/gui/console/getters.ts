@@ -3,7 +3,6 @@ import { GuiConsoleState, GuiConsoleStateFilter } from '@/store/gui/console/type
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import { timelapseConsoleFilters } from '@/store/variables'
 
-// eslint-disable-next-line
 export const getters: GetterTree<GuiConsoleState, any> = {
     getConsolefilters: (state) => {
         const consolefilters: GuiConsoleStateFilter[] = []

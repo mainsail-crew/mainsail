@@ -2,7 +2,6 @@ import { GetterTree } from 'vuex'
 import { GuiPresetsState, GuiPresetsStatePreset } from '@/store/gui/presets/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 
-// eslint-disable-next-line
 export const getters: GetterTree<GuiPresetsState, any> = {
     getCooldownGcode: (state) => {
         return state.cooldownGcode ?? 'TURN_OFF_HEATERS'

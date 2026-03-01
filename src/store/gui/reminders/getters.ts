@@ -1,7 +1,6 @@
 import { GetterTree } from 'vuex'
 import { GuiRemindersState, GuiRemindersStateReminder } from '@/store/gui/reminders/types'
 
-// eslint-disable-next-line
 export const getters: GetterTree<GuiRemindersState, any> = {
     getReminders: (state) => {
         const reminders: GuiRemindersStateReminder[] = []

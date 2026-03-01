@@ -1,7 +1,6 @@
 import { GetterTree } from 'vuex'
 import { ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
 
-// eslint-disable-next-line
 export const getters: GetterTree<ServerHistoryState, any> = {
     getTotalPrintTime(state) {
         let output = 0

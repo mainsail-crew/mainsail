@@ -15,7 +15,6 @@ export const getDefaultState = (): GuiMacrosState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const macros: Module<GuiMacrosState, any> = {
     namespaced: true,
     state,

@@ -13,7 +13,6 @@ export const getDefaultState = (): GuiRemoteprintersState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const remoteprinters: Module<GuiRemoteprintersState, any> = {
     namespaced: true,
     state,

@@ -1,7 +1,6 @@
 import { GetterTree } from 'vuex'
 import { GuiMaintenanceState, GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 
-// eslint-disable-next-line
 export const getters: GetterTree<GuiMaintenanceState, any> = {
     getEntries: (state) => {
         const entries: GuiMaintenanceStateEntry[] = []

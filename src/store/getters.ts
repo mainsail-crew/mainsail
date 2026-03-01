@@ -4,7 +4,6 @@ import semver from 'semver'
 import { minKlipperVersion, minMoonrakerVersion } from '@/store/variables'
 import i18n from '@/plugins/i18n'
 
-// eslint-disable-next-line
 export const getters: GetterTree<RootState, any> = {
     getVersion: (state) => {
         return state.packageVersion

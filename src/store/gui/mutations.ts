@@ -14,7 +14,6 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     saveSetting(state, payload: { name: string; value: any }) {
-        // eslint-disable-next-line
         const deepSet = (obj: any, is: string[] | string, value: any): any => {
             if (is !== undefined && typeof is === 'string') return deepSet(obj, is.split('.'), value)
             else if (is.length == 1 && value !== undefined) return (obj[is[0]] = value)

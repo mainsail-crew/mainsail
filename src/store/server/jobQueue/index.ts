@@ -14,7 +14,6 @@ export const getDefaultState = (): ServerJobQueueState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const jobQueue: Module<ServerJobQueueState, any> = {
     namespaced: true,
     state,

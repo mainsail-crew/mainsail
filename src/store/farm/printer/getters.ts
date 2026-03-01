@@ -4,7 +4,6 @@ import { GetterTree } from 'vuex'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
-// eslint-disable-next-line
 export const getters: GetterTree<FarmPrinterState, any> = {
     getSocketUrl: (state) => {
         const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
@@ -20,7 +19,6 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         return rootState.socket.hostname === state.socket.hostname && rootState.socket.port === state.socket.port
     },
 
-    // eslint-disable-next-line
     getSetting: (state) => (name: string, fallback: any) => {
         return state.settings[name] ?? fallback
     },

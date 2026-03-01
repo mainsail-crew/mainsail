@@ -35,7 +35,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
             if ('requestParams' in payload) delete payload.requestParams
 
             const objectKeys = Object.keys(payload)
-            // eslint-disable-next-line
+
             const importData: any = {}
 
             objectKeys.forEach((key: string) => {

@@ -33,7 +33,6 @@ export const mutations: MutationTree<FileState> = {
 
         const fileIndex = path?.findIndex((element: FileStateFile) => element.filename === filename)
         if (path && fileIndex !== undefined && fileIndex !== -1) {
-            // eslint-disable-next-line
             const currentFile = { ...path[fileIndex] } as any
             currentFile.metadataRequested = true
 
@@ -49,7 +48,6 @@ export const mutations: MutationTree<FileState> = {
 
         const fileIndex = path?.findIndex((element: FileStateFile) => element.filename === filename)
         if (path && fileIndex !== undefined && fileIndex !== -1) {
-            // eslint-disable-next-line
             const currentFile = { ...path[fileIndex] } as any
             allowedMetadata.forEach((key: string) => {
                 if (key in payload) currentFile[key] = payload[key]
