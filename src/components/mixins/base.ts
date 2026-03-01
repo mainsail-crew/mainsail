@@ -254,7 +254,7 @@ export default class BaseMixin extends Vue {
     }
 
     formatTime(value: number | Date, boolSeconds = false): string {
-        let tmp = null
+        let tmp
 
         try {
             // @ts-ignore

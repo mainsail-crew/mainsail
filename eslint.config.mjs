@@ -45,13 +45,6 @@ export default defineConfigWithVueTs(
         },
     },
 
-    // Disable rules not present in old ESLint 8 config
-    {
-        rules: {
-            'no-useless-assignment': 'off',
-        },
-    },
-
     // Global language options (replaces env + globals)
     {
         languageOptions: {

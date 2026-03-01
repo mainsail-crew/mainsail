@@ -240,7 +240,6 @@ export const actions: ActionTree<GuiState, RootState> = {
             defaults = await fetch(urlDefault).then((result) => result.json())
         } catch (error) {
             window.console.error('Error while fetching/parsing default.json', error)
-            defaults = {}
         }
 
         for (const key of payload) {

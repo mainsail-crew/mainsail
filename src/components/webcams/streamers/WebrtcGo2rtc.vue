@@ -65,6 +65,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get url() {
+        // eslint-disable-next-line no-useless-assignment -- urlSearch is used inside try after reassignment
         let urlSearch = ''
         let url = new URL(location.href)
 
