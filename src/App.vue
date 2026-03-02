@@ -81,7 +81,7 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get mainStyle() {
-        const style: any = {
+        const style: Record<string, string> = {
             paddingLeft: '0',
         }
 

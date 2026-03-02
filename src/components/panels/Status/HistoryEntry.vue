@@ -232,7 +232,7 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
         return this.moonrakerComponents.includes('job_queue')
     }
 
-    openContextMenu(e: any) {
+    openContextMenu(e: MouseEvent) {
         e?.preventDefault()
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 

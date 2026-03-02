@@ -670,7 +670,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.currentPath = `${this.rootDirectory}${segment.location}`
     }
 
-    showContextMenu(e: any, item: FileStateFile) {
+    showContextMenu(e: MouseEvent, item: FileStateFile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true

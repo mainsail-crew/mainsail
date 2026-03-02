@@ -243,7 +243,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         }
     }
 
-    log(msg: string, obj?: any) {
+    log(msg: string, obj?: unknown) {
         const message = `[WebRTC camera-streamer] ${msg}`
         if (obj) {
             window.console.log(message, obj)

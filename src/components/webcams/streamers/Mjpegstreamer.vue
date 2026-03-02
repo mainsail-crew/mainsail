@@ -112,7 +112,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         this.startStream()
     }
 
-    log(msg: string, obj?: any) {
+    log(msg: string, obj?: unknown) {
         if (obj) {
             window.console.log(`[MJPEG streamer] ${msg}`, obj)
             return
@@ -121,9 +121,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         window.console.log(`[MJPEG streamer] ${msg}`)
     }
 
-    getLength(headers: any) {
+    getLength(headers: string) {
         let contentLength = -1
-        headers.split('\n').forEach((header: any) => {
+        headers.split('\n').forEach((header: string) => {
             const pair = header.split(':')
             if (pair[0].toLowerCase() === CONTENT_LENGTH) {
                 // Fix for issue https://github.com/aruntj/mjpeg-readable-stream/issues/3 suggested by martapanc

@@ -182,7 +182,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.$emit('select', newVal)
     }
 
-    showContextMenu(e: any) {
+    showContextMenu(e: MouseEvent) {
         e?.preventDefault()
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 

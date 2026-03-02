@@ -177,7 +177,7 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
         return this.item.filename.slice(this.item.filename.lastIndexOf('/') + 1)
     }
 
-    showContextMenu(e: any) {
+    showContextMenu(e: MouseEvent) {
         e?.preventDefault()
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 

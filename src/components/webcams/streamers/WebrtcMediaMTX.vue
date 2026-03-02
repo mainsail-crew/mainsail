@@ -41,7 +41,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     @Ref() declare video: HTMLVideoElement
 
     pc: RTCPeerConnection | null = null
-    restartTimeout: any = null
+    restartTimeout: ReturnType<typeof setTimeout> | null = null
     status: string = 'connecting'
     eTag: string | null = null
     sessionUuid: string | null = null
@@ -109,7 +109,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         this.start()
     }
 
-    log(msg: string, obj?: any) {
+    log(msg: string, obj?: unknown) {
         if (obj) {
             window.console.log(`[WebRTC mediamtx] ${msg}`, obj)
             return
@@ -121,7 +121,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     // webrtc player methods
     // adapted from https://github.com/bluenviron/mediamtx/blob/main/internal/core/webrtc_read_index.html
 
-    unquoteCredential = (v: any) => JSON.parse(`"${v}"`)
+    unquoteCredential = (v: string) => JSON.parse(`"${v}"`)
 
     linkToIceServers(links: string | null): RTCIceServer[] {
         if (links === null) return []
@@ -170,7 +170,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
 
     generateSdpFragment(offerData: OfferData, candidates: RTCIceCandidate[]) {
         // I don't found a specification for this, but it seems to be the only way to make it work
-        const candidatesByMedia: any = {}
+        const candidatesByMedia: Record<number, RTCIceCandidate[]> = {}
         for (const candidate of candidates) {
             const mid = candidate.sdpMLineIndex
             if (mid === null) continue

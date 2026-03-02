@@ -115,7 +115,7 @@ interface dialogPowerDeviceChange {
 interface dialogConfirmation {
     show: boolean
     serviceName: string | null
-    executableFunction: any | null
+    executableFunction: ((serviceName: string) => void) | null
     title: string
     description: string
     actionButtonText: string
@@ -189,7 +189,7 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin, ServiceMixins) {
               }).toString()
     }
 
-    checkDialog(executableFunction: any, serviceName: string, action: string) {
+    checkDialog(executableFunction: (serviceName: string) => void, serviceName: string, action: string) {
         if (!this.printerIsPrinting) {
             executableFunction(serviceName)
             return

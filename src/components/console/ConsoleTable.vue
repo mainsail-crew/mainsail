@@ -22,13 +22,14 @@
 import Component from 'vue-class-component'
 import Vue from 'vue'
 import { Prop } from 'vue-property-decorator'
+import { ServerStateEvent } from '@/store/server/types'
 import ConsoleTableEntry from '@/components/console/ConsoleTableEntry.vue'
 @Component({
     components: { ConsoleTableEntry },
 })
 export default class ConsoleTable extends Vue {
     @Prop({ required: true })
-    declare readonly events: any[]
+    declare readonly events: ServerStateEvent[]
 
     @Prop({ required: false, default: false })
     declare readonly isMini: boolean

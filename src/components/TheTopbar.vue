@@ -78,7 +78,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { validGcodeExtensions } from '@/store/variables'
 import Component from 'vue-class-component'
-import axios, { AxiosProgressEvent } from 'axios'
+import axios, { AxiosProgressEvent, CancelTokenSource } from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
 import TheTopCornerMenu from '@/components/TheTopCornerMenu.vue'
 import TheSettingsMenu from '@/components/TheSettingsMenu.vue'
@@ -98,7 +98,7 @@ type uploadSnackbar = {
     percent: number
     speed: number
     total: number
-    cancelTokenSource: any
+    cancelTokenSource: CancelTokenSource | null
 }
 
 @Component({

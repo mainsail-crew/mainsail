@@ -157,7 +157,7 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         return this.bigThumbnailBackground
     }
 
-    openContextMenu(e: any) {
+    openContextMenu(e: MouseEvent) {
         e?.preventDefault()
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 

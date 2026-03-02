@@ -29,7 +29,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
     pc: RTCPeerConnection | null = null
     ws: WebSocket | null = null
     restartPause = 2000
-    restartTimeout: any = null
+    restartTimeout: ReturnType<typeof setTimeout> | null = null
     status: string = 'connecting'
     aspectRatio: number | null = null
 
@@ -125,7 +125,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
         this.start()
     }
 
-    log(msg: string, obj?: any) {
+    log(msg: string, obj?: unknown) {
         if (obj) {
             window.console.log(`[WebRTC go2rtc] ${msg}`, obj)
             return
