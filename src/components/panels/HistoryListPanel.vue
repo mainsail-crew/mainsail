@@ -658,7 +658,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
             value = job.metadata[key]
         }
 
-        if (col.value === 'slicer') {
+        if (key === 'slicer') {
             if ('slicer_version' in job.metadata) value += ' ' + job.metadata.slicer_version
 
             if (csvSeperator !== null && value?.includes(csvSeperator)) return '"' + value + '"'
