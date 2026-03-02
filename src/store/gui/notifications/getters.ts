@@ -86,7 +86,7 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
         // get all current flags
         let flags = rootGetters['server/getThrottledStateFlags']
         if (flags.length) {
-            const date = rootState.server.system_boot_at ?? new Date()
+            const date = rootState.server?.system_boot_at ?? new Date()
 
             // get all dismissed flags and convert it to a string[]
             const flagDismisses = rootGetters['gui/notifications/getDismissByCategory']('flag').map(
@@ -119,7 +119,7 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
 
         let dependencies = rootGetters['getDependencies']
         if (dependencies.length) {
-            const date = rootState.server.system_boot_at ?? new Date()
+            const date = rootState.server?.system_boot_at ?? new Date()
 
             // get all dismissed dependencies and convert it to a string[]
             const flagDismisses = rootGetters['gui/notifications/getDismissByCategory']('dependency').map(
@@ -158,9 +158,9 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
     getNotificationsMoonrakerWarnings: (state, getters, rootState, rootGetters) => {
         const notifications: GuiNotificationStateEntry[] = []
 
-        let warnings = rootState.server.warnings ?? []
+        let warnings = rootState.server?.warnings ?? []
         if (warnings.length) {
-            const date = rootState.server.system_boot_at ?? new Date()
+            const date = rootState.server?.system_boot_at ?? new Date()
 
             // get all dismissed moonraker warnings and convert it to a string[]
             const warningsDismisses = rootGetters['gui/notifications/getDismissByCategory']('moonrakerWarning').map(
@@ -203,9 +203,9 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
     getNotificationsMoonrakerFailedComponents: (state, getters, rootState, rootGetters) => {
         const notifications: GuiNotificationStateEntry[] = []
 
-        let failedCompontents = rootState.server.failed_components ?? []
+        let failedCompontents = rootState.server?.failed_components ?? []
         if (failedCompontents.length) {
-            const date = rootState.server.system_boot_at ?? new Date()
+            const date = rootState.server?.system_boot_at ?? new Date()
 
             // get all dismissed failed components and convert it to a string[]
             const flagDismisses = rootGetters['gui/notifications/getDismissByCategory']('moonrakerFailedComponent').map(
@@ -237,9 +237,9 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
     getNotificationsMoonrakerFailedInitComponents: (state, getters, rootState, rootGetters) => {
         const notifications: GuiNotificationStateEntry[] = []
 
-        let failedInitCompontents = rootState.server.failed_init_components ?? []
+        let failedInitCompontents = rootState.server?.failed_init_components ?? []
         if (failedInitCompontents.length) {
-            const date = rootState.server.system_boot_at ?? new Date()
+            const date = rootState.server?.system_boot_at ?? new Date()
 
             // get all dismissed failed components and convert it to a string[]
             const flagDismisses = rootGetters['gui/notifications/getDismissByCategory'](
@@ -275,9 +275,9 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
     getNotificationsKlipperWarnings: (state, getters, rootState, rootGetters) => {
         const notifications: GuiNotificationStateEntry[] = []
 
-        let warnings = (rootState.printer.configfile?.warnings ?? []) as PrinterStateKlipperConfigWarning[]
+        let warnings = (rootState.printer?.configfile?.warnings ?? []) as PrinterStateKlipperConfigWarning[]
         if (warnings.length) {
-            const date = rootState.server.system_boot_at ?? new Date()
+            const date = rootState.server?.system_boot_at ?? new Date()
 
             // get all dismissed klipper warnings and convert it to a string[]
             const warningsDismisses = rootGetters['gui/notifications/getDismissByCategory']('klipperWarning').map(
@@ -330,7 +330,7 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
         const notifications: GuiNotificationStateEntry[] = []
 
         const browser = detect()
-        const date = rootState.server.system_boot_at ?? new Date()
+        const date = rootState.server?.system_boot_at ?? new Date()
 
         // stop here, because no browser detected
         if (browser === null) return notifications
@@ -375,7 +375,7 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
         let entries: GuiMaintenanceStateEntry[] = rootGetters['gui/maintenance/getOverdueEntries']
         if (entries.length == 0) return []
 
-        const date = rootState.server.system_boot_at ?? new Date()
+        const date = rootState.server?.system_boot_at ?? new Date()
 
         // get all dismissed reminders and convert it to a string[]
         const remindersDismisses = rootGetters['gui/notifications/getDismissByCategory']('maintenance').map(
@@ -403,12 +403,12 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
 
     getNotificationsOverheatDrivers: (state, getters, rootState) => {
         const notifications: GuiNotificationStateEntry[] = []
-        const date = rootState.server.system_boot_at ?? new Date()
+        const date = rootState.server?.system_boot_at ?? new Date()
 
-        Object.keys(rootState.printer)
+        Object.keys(rootState.printer ?? {})
             .filter((key) => key.startsWith('tmc'))
             .forEach((key) => {
-                const printerObject = rootState.printer[key]
+                const printerObject = rootState.printer?.[key]
                 const name = key.split(' ')[1]
 
                 if ((printerObject.drv_status?.ot ?? null) === 1) {
@@ -451,7 +451,7 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
 
     getDismiss: (state, getters, rootState) => {
         const currentTime = new Date()
-        const systemBootAt = rootState.server.system_boot_at ?? new Date()
+        const systemBootAt = rootState.server?.system_boot_at ?? new Date()
         let dismisses = [...state.dismiss]
         dismisses = dismisses.filter((dismiss) => {
             if (dismiss.type === 'reboot') {

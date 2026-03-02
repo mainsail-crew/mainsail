@@ -86,7 +86,7 @@ export const getters: GetterTree<GuiState, RootState> = {
         }
 
         // remove spoolman panel, if no spoolman component exists in moonraker
-        if (!rootState.server.components.includes('spoolman')) {
+        if (!rootState.server?.components.includes('spoolman')) {
             allPanels = allPanels.filter((name) => name !== 'spoolman')
         }
 
@@ -139,7 +139,7 @@ export const getters: GetterTree<GuiState, RootState> = {
                 panels = panels.filter((element) => element.visible)
             }
 
-            if (rootState.gui.macros.mode === 'simple')
+            if (rootState.gui?.macros?.mode === 'simple')
                 panels = panels.filter((element) => !element.name.startsWith('macrogroup_'))
             else {
                 panels = panels.filter((element) => element.name !== 'macros')

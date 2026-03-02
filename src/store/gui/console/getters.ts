@@ -18,9 +18,9 @@ export const getters: GetterTree<GuiConsoleState, RootState> = {
     getConsolefilterRules: (state, getters, rootState) => {
         const output = []
 
-        if (rootState.gui.console.hideWaitTemperatures) output.push('^(?:ok\\s+)?(B|C|T\\d*):')
+        if (rootState.gui?.console?.hideWaitTemperatures) output.push('^(?:ok\\s+)?(B|C|T\\d*):')
 
-        if (rootState.gui.console.hideTlCommands)
+        if (rootState.gui?.console?.hideTlCommands)
             timelapseConsoleFilters.forEach((rule: string) => {
                 output.push(rule)
             })
