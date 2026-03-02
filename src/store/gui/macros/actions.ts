@@ -79,17 +79,17 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
 
             const layoutArray = [...(dashboard[layoutname] as GuiStateLayoutoption[])]
             const index = layoutArray.findIndex((layoutPos) => layoutPos.name === 'macrogroup_' + id)
-            if (index !== -1) {
-                commit('gui/deleteFromDashboardLayout', { layoutname, index }, { root: true })
-                dispatch(
-                    'gui/updateSettings',
-                    {
-                        keyName: 'dashboard.' + layoutname,
-                        newVal: dashboard[layoutname],
-                    },
-                    { root: true }
-                )
-            }
+            if (index === -1) return
+
+            commit('gui/deleteFromDashboardLayout', { layoutname, index }, { root: true })
+            dispatch(
+                'gui/updateSettings',
+                {
+                    keyName: 'dashboard.' + layoutname,
+                    newVal: dashboard[layoutname],
+                },
+                { root: true }
+            )
         })
     },
 }
