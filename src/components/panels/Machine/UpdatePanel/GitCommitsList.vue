@@ -72,7 +72,7 @@ export default class GitCommitsList extends Mixins(BaseMixin) {
         const output: ServerUpdateManagerStateGitRepoGroupedCommits[] = []
         let lastCommit: ServerUpdateManagerStateGitRepoCommit | null = null
 
-        this.commitsBehind.forEach((commit: any) => {
+        this.commitsBehind.forEach((commit: ServerUpdateManagerStateGitRepoCommit) => {
             const lastCommitDate = new Date((lastCommit?.date ?? 0) * 1000)
             const commitDate = new Date(commit.date * 1000)
 
