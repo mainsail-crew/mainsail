@@ -299,8 +299,8 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             value = item.metadata[key]
         }
 
-        if ((col.value as string).startsWith('history_field_')) {
-            const fieldName = (col.value as string).replace('history_field_', '')
+        if (key.startsWith('history_field_')) {
+            const fieldName = key.replace('history_field_', '')
             const field = item.auxiliary_data?.find((field) => field.name === fieldName)
             if (field && !Array.isArray(field.value)) return `${Math.round(field.value * 1000) / 1000} ${field.units}`
         }
