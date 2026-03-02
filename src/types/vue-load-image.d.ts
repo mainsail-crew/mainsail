@@ -1,3 +1,6 @@
 declare module 'vue-load-image' {
-    export const VueLoadImage: any
+    import { DefineComponent } from 'vue'
+
+    const VueLoadImage: DefineComponent<Record<string, never>, Record<string, never>, unknown>
+    export default VueLoadImage
 }

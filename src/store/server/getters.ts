@@ -1,8 +1,9 @@
 import { GetterTree } from 'vuex'
 import { ServerState, ServerStateNetworkInterface } from '@/store/server/types'
 import { formatConsoleMessage, formatFilesize } from '@/plugins/helpers'
+import {RootState} from "@/store/types";
 
-export const getters: GetterTree<ServerState, any> = {
+export const getters: GetterTree<ServerState, RootState> = {
     getConsoleEvents:
         (state) =>
         (reverse = true, limit = 500) => {

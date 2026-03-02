@@ -2,7 +2,7 @@ import { GetterTree } from 'vuex'
 import { GuiNotificationState, GuiNotificationStateDismissEntry, GuiNotificationStateEntry } from './types'
 import { ServerAnnouncementsStateEntry } from '@/store/server/announcements/types'
 import i18n from '@/plugins/i18n.js'
-import { RootStateDependency } from '@/store/types'
+import {RootState, RootStateDependency} from '@/store/types'
 import { sha256 } from 'js-sha256'
 import { PrinterStateKlipperConfigWarning } from '@/store/printer/types'
 import { detect } from 'detect-browser'
@@ -10,7 +10,7 @@ import semver from 'semver'
 import { minBrowserVersions } from '@/store/variables'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 
-export const getters: GetterTree<GuiNotificationState, any> = {
+export const getters: GetterTree<GuiNotificationState, RootState> = {
     getNotifications: (state, getters) => {
         let notifications: GuiNotificationStateEntry[] = []
 

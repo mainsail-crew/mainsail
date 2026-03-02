@@ -1,7 +1,8 @@
 import { GetterTree } from 'vuex'
 import { GuiRemindersState, GuiRemindersStateReminder } from '@/store/gui/reminders/types'
+import {RootState} from "../../types";
 
-export const getters: GetterTree<GuiRemindersState, any> = {
+export const getters: GetterTree<GuiRemindersState, RootState> = {
     getReminders: (state) => {
         const reminders: GuiRemindersStateReminder[] = []
 

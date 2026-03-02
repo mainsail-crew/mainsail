@@ -2,9 +2,9 @@ import { GetterTree } from 'vuex'
 import { GuiState, GuiStateDashboard, GuiStateLayoutoption } from '@/store/gui/types'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { allDashboardPanels, defaultTheme, themes } from '@/store/variables'
-import { Theme } from '@/store/types'
+import {RootState, Theme} from '@/store/types'
 
-export const getters: GetterTree<GuiState, any> = {
+export const getters: GetterTree<GuiState, RootState> = {
     theme: (state): string => {
         const theme = state.uiSettings.theme
 

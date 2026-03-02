@@ -3,8 +3,9 @@ import { convertName } from '@/plugins/helpers'
 import { GetterTree } from 'vuex'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import {RootState} from "@/store/types";
 
-export const getters: GetterTree<FarmPrinterState, any> = {
+export const getters: GetterTree<FarmPrinterState, RootState> = {
     getSocketUrl: (state) => {
         const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
         const path = normPath.length > 0 ? `/${normPath}` : ''
@@ -16,7 +17,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     isCurrentPrinter: (state, getters, rootState) => {
-        return rootState.socket.hostname === state.socket.hostname && rootState.socket.port === state.socket.port
+        return rootState.socket?.hostname === state.socket.hostname && rootState.socket.port === state.socket.port
     },
 
     getSetting: (state) => (name: string, fallback: any) => {
