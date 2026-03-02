@@ -659,13 +659,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         }
 
         if (col.value === 'slicer') {
-            let slicerString = 'slicer' in job.metadata && job.metadata.slicer ? job.metadata.slicer : '--'
-            if ('slicer_version' in job.metadata && job.metadata.slicer_version)
-                slicerString += ' ' + job.metadata.slicer_version
+            if ('slicer_version' in job.metadata) value += ' ' + job.metadata.slicer_version
 
-            if (csvSeperator !== null && value?.includes(csvSeperator)) return '"' + slicerString + '"'
+            if (csvSeperator !== null && value?.includes(csvSeperator)) return '"' + value + '"'
 
-            return slicerString
+            return value
         }
 
         if (key.startsWith('history_field_')) {
