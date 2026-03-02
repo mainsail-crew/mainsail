@@ -307,7 +307,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
         if (value === null) return '--'
 
-        if (col.value === 'slicer') value += '<br />' + item.metadata.slicer_version
+        if (key === 'slicer') value += '<br />' + item.metadata.slicer_version
 
         switch (col.outputType) {
             case 'filesize':
