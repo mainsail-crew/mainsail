@@ -501,9 +501,10 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
     }
 
     set lockSlidersDelay(newVal) {
-        if (newVal < 0) return
+        const value = Number(newVal)
+        if (!Number.isFinite(value) || value < 0) return
 
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.lockSlidersDelay', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.lockSlidersDelay', value })
     }
 
     get boolWideNavDrawer() {
