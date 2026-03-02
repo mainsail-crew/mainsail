@@ -959,7 +959,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         this.currentPath = segment.location
     }
 
-    showContextMenu(e: any, item: FileStateFile) {
+    showContextMenu(e: MouseEvent | LongpressEvent, item: FileStateFile) {
         e?.preventDefault()
         this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2
         this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2

@@ -1,7 +1,7 @@
 <template>
     <tr
         :key="item.job_id"
-        v-longpress:600="(e) => showContextMenu(e)"
+        v-longpress:600="showContextMenu"
         :class="cssClasses"
         @contextmenu="showContextMenu($event)"
         @click="detailsDialogBool = true">
@@ -122,6 +122,7 @@
 </template>
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+import type { LongpressEvent } from '@/directives/longpress'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import Panel from '@/components/ui/Panel.vue'
 import BaseMixin from '@/components/mixins/base'
@@ -252,7 +253,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.$emit('select', newVal)
     }
 
-    showContextMenu(e: any) {
+    showContextMenu(e: MouseEvent | LongpressEvent) {
         e?.preventDefault()
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 

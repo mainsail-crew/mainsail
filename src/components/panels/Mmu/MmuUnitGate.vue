@@ -50,6 +50,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin, { MmuMachineUnit, TOOL_GATE_BYPASS } from '@/components/mixins/mmu'
 import { mdiSwapHorizontal, mdiDownloadOutline, mdiEject } from '@mdi/js'
@@ -130,7 +131,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
         this.$emit('select-gate', this.gateIndex)
     }
 
-    openContextMenu(e: MouseEvent) {
+    openContextMenu(e: MouseEvent | LongpressEvent) {
         e.preventDefault()
 
         if (this.gateIndex < 0 || this.gateIndex === this.selectedGate || !this.showContextMenu) return

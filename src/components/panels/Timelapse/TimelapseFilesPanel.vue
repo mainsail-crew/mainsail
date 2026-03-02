@@ -371,6 +371,7 @@
 </template>
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
+import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
 import { escapePath, formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
@@ -670,7 +671,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.currentPath = `${this.rootDirectory}${segment.location}`
     }
 
-    showContextMenu(e: MouseEvent, item: FileStateFile) {
+    showContextMenu(e: MouseEvent | LongpressEvent, item: FileStateFile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true
