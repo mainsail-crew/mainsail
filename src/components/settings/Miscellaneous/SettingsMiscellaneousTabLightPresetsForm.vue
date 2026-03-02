@@ -260,6 +260,22 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
         }
         const layout: { component: unknown; options?: Record<string, unknown> }[] = []
 
+        if (this.existRed && this.existGreen && this.existBlue) {
+            options.layout = [
+                {
+                    component: iro.ui.Wheel,
+                },
+                {
+                    component: iro.ui.Slider,
+                    options: {
+                        sliderType: 'value',
+                    },
+                },
+            ]
+
+            return options
+        }
+
         if (this.existRed) {
             layout.push({
                 component: iro.ui.Slider,
@@ -285,22 +301,6 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
                     sliderType: 'blue',
                 },
             })
-        }
-
-        if (this.existRed && this.existGreen && this.existBlue) {
-            options.layout = [
-                {
-                    component: iro.ui.Wheel,
-                },
-                {
-                    component: iro.ui.Slider,
-                    options: {
-                        sliderType: 'value',
-                    },
-                },
-            ]
-
-            return options
         }
 
         options.layout = layout

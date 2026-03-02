@@ -246,34 +246,11 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
         }
         const layout: { component: unknown; options?: Record<string, unknown> }[] = []
 
-        if (this.colorOrder.includes('R')) {
-            layout.push({
-                component: iro.ui.Slider,
-                options: {
-                    sliderType: 'red',
-                },
-            })
-        }
+        const existRed = this.colorOrder.includes('R')
+        const existGreen = this.colorOrder.includes('G')
+        const existBlue = this.colorOrder.includes('B')
 
-        if (this.colorOrder.includes('G')) {
-            layout.push({
-                component: iro.ui.Slider,
-                options: {
-                    sliderType: 'green',
-                },
-            })
-        }
-
-        if (this.colorOrder.includes('B')) {
-            layout.push({
-                component: iro.ui.Slider,
-                options: {
-                    sliderType: 'blue',
-                },
-            })
-        }
-
-        if (this.colorOrder.includes('R') && this.colorOrder.includes('G') && this.colorOrder.includes('B')) {
+        if (existRed && existGreen && existBlue) {
             options.layout = [
                 {
                     component: iro.ui.Wheel,
@@ -287,6 +264,33 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
             ]
 
             return options
+        }
+
+        if (existRed) {
+            layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'red',
+                },
+            })
+        }
+
+        if (existGreen) {
+            layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'green',
+                },
+            })
+        }
+
+        if (existBlue) {
+            layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'blue',
+                },
+            })
         }
 
         options.layout = layout
