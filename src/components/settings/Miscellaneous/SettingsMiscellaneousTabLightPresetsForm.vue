@@ -258,7 +258,7 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
             margin: 15,
             layout: [],
         }
-        const layout: { component: unknown; options?: Record<string, unknown> }[] = []
+        const layout: ColorPickerProps['layout'] = []
 
         if (this.existRed && this.existGreen && this.existBlue) {
             options.layout = [

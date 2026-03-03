@@ -244,7 +244,7 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
             margin: 15,
             layout: [],
         }
-        const layout: { component: unknown; options?: Record<string, unknown> }[] = []
+        const layout: ColorPickerProps['layout'] = []
 
         const existRed = this.colorOrder.includes('R')
         const existGreen = this.colorOrder.includes('G')
