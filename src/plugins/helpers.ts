@@ -42,22 +42,20 @@ export const parseNumber = (value: unknown, fallback: number): number => {
     return Number.isFinite(parsedValue) ? parsedValue : fallback
 }
 
-export const setDataDeep = (currentState: any, payload: any) => {
-    if (payload !== null && typeof payload === 'object') {
-        Object.keys(payload).forEach((key: string) => {
-            const value = payload[key]
+export const setDataDeep = (currentState: unknown, payload: unknown): void => {
+    if (!isRecord(currentState) || !isRecord(payload)) return
 
-            if (
-                typeof value === 'object' &&
-                !Array.isArray(value) &&
-                key in currentState &&
-                value !== null &&
-                currentState[key] !== null
-            ) {
-                setDataDeep(currentState[key], value)
-            } else Vue.set(currentState, key, value)
-        })
-    }
+    Object.keys(payload).forEach((key: string) => {
+        const value = payload[key]
+        const currentValue = currentState[key]
+
+        if (isRecord(value) && isRecord(currentValue)) {
+            setDataDeep(currentValue, value)
+            return
+        }
+
+        Vue.set(currentState, key, value)
+    })
 }
 
 export const findDirectory = (folder: FileStateFile[], dirArray: string[]): FileStateFile[] | null => {
@@ -190,31 +188,46 @@ export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortD
     const sortBySingle = sortBy.length ? sortBy[0] : 'filename'
     const sortDescSingle = sortDesc[0]
 
+    const reduceArrayToNumber = (value: unknown[]): number => {
+        return value.reduce((sum: number, item: unknown) => sum + (typeof item === 'number' ? item : 0), 0)
+    }
+
     if (items !== null) {
         // Sort by index
-        items.sort(function (a: any, b: any) {
-            if (a[sortBySingle] === b[sortBySingle]) return 0
-            if (a[sortBySingle] === null || a[sortBySingle] === undefined) return -1
-            if (b[sortBySingle] === null || b[sortBySingle] === undefined) return 1
+        items.sort((a: FileStateFile, b: FileStateFile) => {
+            const valueA = a[sortBySingle]
+            const valueB = b[sortBySingle]
 
-            if (a[sortBySingle].constructor === String && b[sortBySingle].constructor === String) {
-                return a[sortBySingle].localeCompare(b[sortBySingle], undefined, { sensivity: 'base' })
+            if (valueA === valueB) return 0
+            if (valueA === null || valueA === undefined) return -1
+            if (valueB === null || valueB === undefined) return 1
+
+            if (typeof valueA === 'string' && typeof valueB === 'string') {
+                return valueA.localeCompare(valueB, undefined, { sensitivity: 'base' })
             }
 
-            if (a[sortBySingle] instanceof Array && b[sortBySingle] instanceof Array) {
-                const reducedA = a[sortBySingle].length ? a.filament.reduce((a: any, b: any) => a + b) : 0
-                const reducedB = b[sortBySingle].length ? b.filament.reduce((a: any, b: any) => a + b) : 0
-                return reducedA - reducedB
+            if (Array.isArray(valueA) && Array.isArray(valueB)) {
+                return reduceArrayToNumber(valueA) - reduceArrayToNumber(valueB)
             }
 
-            return a[sortBySingle] - b[sortBySingle]
+            if (valueA instanceof Date && valueB instanceof Date) {
+                return valueA.getTime() - valueB.getTime()
+            }
+
+            if (typeof valueA === 'number' && typeof valueB === 'number') {
+                return valueA - valueB
+            }
+
+            return String(valueA).localeCompare(String(valueB), undefined, { numeric: true, sensitivity: 'base' })
         })
 
         // Deal with descending order
         if (sortDescSingle) items.reverse()
 
         // Then make sure directories come first
-        items.sort((a: any, b: any) => (a.isDirectory === b.isDirectory ? 0 : a.isDirectory ? -1 : 1))
+        items.sort((a: FileStateFile, b: FileStateFile) =>
+            a.isDirectory === b.isDirectory ? 0 : a.isDirectory ? -1 : 1
+        )
     }
 
     return items ?? []
@@ -542,18 +555,18 @@ export function colorsMatch(color1: string, color2: string, tolerance = 0): bool
  * @param obj - The object to modify.
  * @param path - Dot-separated path to the property to delete (e.g. "a.b.c").
  */
-export const deletePath = (obj: any, path: string) => {
+export const deletePath = (obj: Record<string, unknown>, path: string): void => {
     const parts = path.split('.')
     const last = parts.pop()
     if (!last) return
 
-    let current = obj
+    let current: unknown = obj
     for (const part of parts) {
-        if (current[part] === undefined) return
+        if (!isRecord(current) || !(part in current)) return
         current = current[part]
     }
 
-    if (current && typeof current === 'object') delete current[last]
+    if (isRecord(current)) delete current[last]
 }
 
 /**
