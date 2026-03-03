@@ -22,6 +22,7 @@ import { Grid3DComponent } from 'echarts-gl/components'
 // @ts-expect-error no type definitions available
 import { SurfaceChart } from 'echarts-gl/charts'
 import type { ECharts } from 'echarts'
+import type { CallbackDataParams } from 'echarts/types/dist/shared.d'
 import ThemeMixin from '@/components/mixins/theme'
 
 use([CanvasRenderer, VisualMapComponent, Grid3DComponent, SurfaceChart])
@@ -40,6 +41,16 @@ interface HeightmapSerie {
     }
 }
 
+interface HeightmapChartRef {
+    chart?: ECharts
+}
+
+type HeightmapTooltipData = CallbackDataParams & {
+    seriesName: string
+    encode: Record<string, number[]>
+    data: number[]
+}
+
 @Component
 export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, ThemeMixin) {
     @Prop({ type: Boolean, default: false }) showProbed!: boolean
@@ -49,7 +60,7 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
     @Prop({ type: Boolean, default: false }) scaleGradient!: boolean
     @Prop({ type: Number, default: 1 }) scaleZMax!: number
 
-    @Ref('heightmap') heightmap!: any
+    @Ref('heightmap') readonly heightmap!: HeightmapChartRef | undefined
 
     get chart(): ECharts | null {
         return this.heightmap?.chart ?? null
@@ -120,9 +131,9 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
                 },
                 axisPointer: {
                     label: {
-                        formatter: function (value: any) {
-                            value = parseFloat(value)
-                            return value.toFixed(2)
+                        formatter: function (value: string | number) {
+                            const val = typeof value === 'string' ? parseFloat(value) : value
+                            return val.toFixed(2)
                         },
                     },
                 },
@@ -157,7 +168,7 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
         }
     }
 
-    get selected(): { [key: string]: boolean } {
+    get selected(): Record<string, boolean> {
         return {
             probed: this.showProbed,
             mesh: this.showMesh,
@@ -166,7 +177,7 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
     }
 
     get series(): HeightmapSerie[] {
-        const series = []
+        const series: HeightmapSerie[] = []
 
         if (this.bed_mesh) {
             series.push(this.seriesProbed)
@@ -196,7 +207,7 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
             const xStep = (xMax - xMin) / (xCount - 1)
             const yStep = (yMax - yMin) / (yCount - 1)
 
-            const data: any[] = []
+            const data: number[][] = []
 
             let yPoint = 0
             this.bed_mesh.probed_matrix.forEach((meshRow: number[]) => {
@@ -234,7 +245,7 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
             const xStep = (xMax - xMin) / (xCount - 1)
             const yStep = (yMax - yMin) / (yCount - 1)
 
-            const data: any[] = []
+            const data: number[][] = []
 
             let yPoint = 0
             this.bed_mesh.mesh_matrix.forEach((meshRow: number[]) => {
@@ -335,7 +346,7 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
         let max = 0
 
         if (this.bed_mesh) {
-            const points = []
+            const points: number[] = []
             if (this.showProbed) {
                 for (const row of this.bed_mesh.probed_matrix) for (const col of row) points.push(col)
             }
@@ -404,7 +415,7 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
         }
     }
 
-    tooltipFormatter(data: any): string {
+    tooltipFormatter(data: HeightmapTooltipData): string {
         const outputArray: string[] = []
         outputArray.push(`<b>${data.seriesName}</b>`)
 

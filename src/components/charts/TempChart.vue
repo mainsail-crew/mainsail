@@ -14,30 +14,78 @@
 <script lang="ts">
 import { convertName } from '@/plugins/helpers'
 import Component from 'vue-class-component'
-import { Mixins, Watch } from 'vue-property-decorator'
+import { Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
-import { PrinterTempHistoryStateSourceEntry } from '@/store/printer/tempHistory/types'
+import { PrinterTempHistoryStateSerie, PrinterTempHistoryStateSourceEntry } from '@/store/printer/tempHistory/types'
 
 import type { ECharts } from 'echarts/core'
-import type { ECBasicOption } from 'echarts/types/dist/shared.d'
+import type {
+    CallbackDataParams,
+    ECBasicOption,
+    TopLevelFormatterParams,
+    TooltipPositionCallback,
+} from 'echarts/types/dist/shared.d'
 import { mdiClock } from '@mdi/js'
 import { datasetTypesInPercents } from '@/store/variables'
 import ThemeMixin from '../mixins/theme'
 
-interface echartsTooltipObj {
-    [key: string]: any
+interface TempChartTooltipPosition {
+    top: number
+    left?: number
+    right?: number
 }
 
-@Component({
-    components: {},
-})
+interface TempChartRef {
+    chart?: ECharts
+}
+
+interface TempChartTooltipData extends CallbackDataParams {
+    seriesName: string
+    marker: string
+    axisValueLabel: string
+    value: Record<string, number | null>
+}
+
+@Component
 export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
-    declare $refs: {
-        tempchart: any
-    }
+    @Ref('tempchart') readonly tempchart!: TempChartRef | undefined
 
     hoverChart = false
     private isVisible = true
+
+    // tooltip will be fixed on the right if mouse hovering on the left,
+    // and on the left if hovering on the right.
+    private readonly tooltipPosition: TooltipPositionCallback = (point, _params, _el, _rect, size) => {
+        const position: TempChartTooltipPosition = { top: 60 }
+        const side: 'left' | 'right' = point[0] < size.viewSize[0] / 2 ? 'left' : 'right'
+        position[side] = 5
+
+        return position
+    }
+
+    private isTempChartTooltipData(param: CallbackDataParams): param is TempChartTooltipData {
+        const tooltipParam = param as CallbackDataParams & {
+            seriesName?: unknown
+            marker?: unknown
+            axisValueLabel?: unknown
+            value?: unknown
+        }
+
+        return (
+            typeof tooltipParam.seriesName === 'string' &&
+            typeof tooltipParam.marker === 'string' &&
+            typeof tooltipParam.axisValueLabel === 'string' &&
+            typeof tooltipParam.value === 'object' &&
+            tooltipParam.value !== null
+        )
+    }
+
+    private normalizeTooltipDatasets(params: TopLevelFormatterParams): TempChartTooltipData[] {
+        const entries = Array.isArray(params) ? params : [params]
+
+        return entries.filter(this.isTempChartTooltipData)
+    }
+
     get chartOptions(): ECBasicOption {
         return {
             renderer: 'svg',
@@ -93,13 +141,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
             formatter: this.tooltipFormatter,
             confine: true,
             className: 'echarts-tooltip',
-            position: function (pos: any, params: any, dom: any, rect: any, size: any) {
-                // tooltip will be fixed on the right if mouse hovering on the left,
-                // and on the left if hovering on the right.
-                const obj: echartsTooltipObj = { top: 60 }
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5
-                return obj
-            },
+            position: this.tooltipPosition,
         }
     }
 
@@ -109,7 +151,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
                 name: this.$t('Panels.TemperaturePanel.TemperaturesInChart'),
                 type: 'value',
                 min: 0,
-                max: (value: any) => {
+                max: (value: { max: number }) => {
                     if (!this.autoscale) return this.maxTemp
 
                     return Math.ceil((value.max + 5) / 20) * 20
@@ -211,18 +253,18 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get chart(): ECharts | null {
-        return this.$refs.tempchart?.chart ?? null
+        return this.tempchart?.chart ?? null
     }
 
     get maxHistory() {
         return this.$store.getters['printer/tempHistory/getTemperatureStoreSize']
     }
 
-    get series() {
-        return this.$store.state.printer.tempHistory.series ?? {}
+    get series(): PrinterTempHistoryStateSerie[] {
+        return this.$store.state.printer.tempHistory.series ?? []
     }
 
-    get source() {
+    get source(): PrinterTempHistoryStateSourceEntry[] {
         return this.$store.state.printer.tempHistory.source ?? []
     }
 
@@ -275,12 +317,13 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
         this.isVisible = isVisible
     }
 
-    tooltipFormatter(datasets: any) {
+    tooltipFormatter(params: TopLevelFormatterParams): string {
         let output = ''
 
-        const mainDatasets = datasets.filter((dataset: any) => dataset.seriesName.endsWith('-temperature'))
+        const datasets = this.normalizeTooltipDatasets(params)
+        const mainDatasets = datasets.filter((dataset) => dataset.seriesName.endsWith('-temperature'))
         if (datasets.length) {
-            let outputTime = datasets[0]['axisValueLabel']
+            let outputTime = datasets[0].axisValueLabel
             outputTime = outputTime.substring(outputTime.indexOf(' '))
             const theme = this.$vuetify.theme.dark ? 'theme-dark' : ''
 
@@ -300,7 +343,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
                 '</div>'
         }
 
-        mainDatasets.forEach((dataset: any) => {
+        mainDatasets.forEach((dataset) => {
             const baseSeriesName = dataset.seriesName.substring(0, dataset.seriesName.lastIndexOf('-'))
             let displayName = baseSeriesName
             if (displayName.indexOf(' ') !== -1) {
@@ -332,11 +375,9 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
 
             datasetTypesInPercents.forEach((attrKey) => {
                 const seriesName = `${baseSeriesName}-${attrKey}`
-                if (!(seriesName in dataset.value)) return
+                if (!(seriesName in dataset.value) || dataset.value[seriesName] === null) return
 
-                let value = dataset.value[seriesName]
-                value = value !== null ? (dataset.value[seriesName] * 100).toFixed(0) : '--'
-                output += ` [ ${value}% ]`
+                output += ` [ ${((dataset.value[seriesName] ?? 0) * 100).toFixed(0)}% ]`
             })
 
             output += '</div>'
@@ -347,7 +388,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     @Watch('selectedLegends')
-    selectedLegendsChanged(newVal: any) {
+    selectedLegendsChanged(newVal: Record<string, boolean>) {
         if (this.chart?.isDisposed() !== true) this.chart?.setOption({ legend: { selected: newVal } })
     }
 

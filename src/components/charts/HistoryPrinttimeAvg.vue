@@ -9,22 +9,23 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Watch } from 'vue-property-decorator'
+import { Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import type { ECharts } from 'echarts/core'
+import type { ECBasicOption } from 'echarts/types/dist/shared.d'
 import ThemeMixin from '../mixins/theme'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import HistoryMixin from '@/components/mixins/history'
 
-@Component({
-    components: {},
-})
-export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin, ThemeMixin) {
-    declare $refs: {
-        historyPrinttimeAvg: any
-    }
+interface HistoryPrinttimeAvgChartRef {
+    chart?: ECharts
+}
 
-    get chartOptions(): any {
+@Component
+export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin, ThemeMixin) {
+    @Ref('historyPrinttimeAvg') readonly historyPrinttimeAvg!: HistoryPrinttimeAvgChartRef | undefined
+
+    get chartOptions(): ECBasicOption {
         return {
             animation: false,
             grid: {
@@ -94,8 +95,8 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
         }
     }
 
-    get printtimeAvgArray() {
-        const output = [0, 0, 0, 0, 0]
+    get printtimeAvgArray(): number[] {
+        const output: number[] = [0, 0, 0, 0, 0]
         const startDate = new Date(new Date().getTime() - 60 * 60 * 24 * 14 * 1000)
 
         let jobsFiltered = [
@@ -130,7 +131,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
     }
 
     get chart(): ECharts | null {
-        return this.$refs.historyPrinttimeAvg?.chart ?? null
+        return this.historyPrinttimeAvg?.chart ?? null
     }
 
     beforeDestroy() {
@@ -139,7 +140,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
     }
 
     @Watch('printtimeAvgArray')
-    printtimeAvgArrayChanged(newVal: any) {
+    printtimeAvgArrayChanged(newVal: number[]) {
         this.chart?.setOption(
             {
                 series: {
