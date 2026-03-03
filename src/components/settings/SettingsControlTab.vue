@@ -268,7 +268,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
@@ -282,9 +282,7 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin, 
     mdiGamepad = mdiGamepad
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
 
-    declare $refs: {
-        formControlExtruder: HTMLFormElement
-    }
+    @Ref() readonly formControlExtruder!: HTMLFormElement
 
     get controlStyles() {
         return [
@@ -582,7 +580,7 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin, 
     }
 
     mounted() {
-        this.$refs.formControlExtruder?.validate()
+        this.formControlExtruder?.validate()
     }
 }
 </script>

@@ -88,6 +88,10 @@ import { mdiCog, mdiTrashCan } from '@mdi/js'
 import ConsoleMixin from '@/components/mixins/console'
 import ConsoleTextarea from '@/components/inputs/ConsoleTextarea.vue'
 
+interface ConsoleScrollRef {
+    osInstance: () => { scroll: (position: { y: string }) => void } | null
+}
+
 @Component({
     components: {
         CommandHelpModal,
@@ -98,7 +102,7 @@ export default class PageConsole extends Mixins(BaseMixin, ConsoleMixin) {
     mdiCog = mdiCog
     mdiTrashCan = mdiTrashCan
 
-    @Ref() readonly consoleScroll!: any
+    @Ref() readonly consoleScroll!: ConsoleScrollRef | undefined
     @Ref() readonly gcodeCommandField!: typeof ConsoleTextarea
 
     get events() {

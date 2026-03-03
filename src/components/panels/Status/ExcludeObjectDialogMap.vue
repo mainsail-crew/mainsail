@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, Prop, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { defaultPrimaryColor } from '@/store/variables'
 
@@ -96,37 +96,38 @@ interface PrintingObject {
 
 @Component
 export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
-    private coordinationCrossColor = '#888'
-    private stripesOffset = 50
+    @Prop({ required: false, default: '' }) readonly hoverName!: string
+    @Ref() readonly tooltipObjectMap!: HTMLDivElement | undefined
 
-    @Prop({ required: false, default: '' }) declare readonly hoverName: string
-
-    declare $refs: {
-        tooltipObjectMap: HTMLDivElement
-    }
+    coordinationCrossColor = '#888'
+    stripesOffset = 50
 
     get printing_objects(): PrintingObject[] {
-        return (this.$store.state.printer.exclude_object?.objects ?? [])
-            .map((object: ExcludeObjectStateEntry) => {
-                let total = 0
-                const polygon = object.polygon ?? []
+        const objects = this.$store.state.printer.exclude_object?.objects ?? []
 
-                for (let i = 0; i < polygon.length; i++) {
-                    const pointA = polygon[i]
-                    const pointB = i === polygon.length - 1 ? polygon[0] : polygon[i + 1]
+        return (
+            objects
+                .map((object: ExcludeObjectStateEntry) => {
+                    let total = 0
+                    const polygon = object.polygon ?? []
 
-                    total += pointA[0] * pointB[1] - pointA[1] * pointB[0]
-                }
+                    for (let i = 0; i < polygon.length; i++) {
+                        const pointA = polygon[i]
+                        const pointB = i === polygon.length - 1 ? polygon[0] : polygon[i + 1]
 
-                return {
-                    center: object.center,
-                    name: object.name,
-                    polygon: object.polygon,
-                    size: Math.abs(total),
-                }
-            })
-            // sort all objects by size
-            .sort((a: PrintingObject, b: PrintingObject) => b.size - a.size)
+                        total += pointA[0] * pointB[1] - pointA[1] * pointB[0]
+                    }
+
+                    return {
+                        center: object.center,
+                        name: object.name,
+                        polygon: object.polygon,
+                        size: Math.abs(total),
+                    }
+                })
+                // sort all objects by size
+                .sort((a: PrintingObject, b: PrintingObject) => b.size - a.size)
+        )
     }
 
     get printing_objects_with_polygons(): (PrintingObject & { polygon: PolygonPoint[] })[] {
@@ -229,28 +230,28 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     }
 
     showObjectTooltip(text: string) {
-        if (!this.$refs.tooltipObjectMap) return
+        if (!this.tooltipObjectMap) return
 
-        this.$refs.tooltipObjectMap.innerHTML = text
-        this.$refs.tooltipObjectMap.style.display = 'block'
+        this.tooltipObjectMap.innerHTML = text
+        this.tooltipObjectMap.style.display = 'block'
 
         window.addEventListener('mousemove', this.moveTooltip)
     }
 
     hideObjectTooltip() {
-        if (!this.$refs.tooltipObjectMap) return
+        if (!this.tooltipObjectMap) return
 
-        this.$refs.tooltipObjectMap.style.display = 'none'
+        this.tooltipObjectMap.style.display = 'none'
 
         window.removeEventListener('mousemove', this.moveTooltip)
     }
 
     moveTooltip(event: MouseEvent) {
-        if (!this.$refs.tooltipObjectMap) return
+        if (!this.tooltipObjectMap) return
 
-        const top = event.offsetY - this.$refs.tooltipObjectMap.clientHeight - 15
-        this.$refs.tooltipObjectMap.style.left = `${event.offsetX - 20}px`
-        this.$refs.tooltipObjectMap.style.top = `${top}px`
+        const top = event.offsetY - this.tooltipObjectMap.clientHeight - 15
+        this.tooltipObjectMap.style.left = `${event.offsetX - 20}px`
+        this.tooltipObjectMap.style.top = `${top}px`
     }
 
     openExcludeObjectDialog(name: string) {
