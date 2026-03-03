@@ -171,7 +171,12 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { HistoryListPanelCol, HistoryListRowJob, ServerHistoryStateJob } from '@/store/server/history/types'
+import {
+    HistoryListPanelCol,
+    HistoryListRowJob,
+    ServerHistoryStateAllPrintStatusEntry,
+    ServerHistoryStateJob,
+} from '@/store/server/history/types'
 import { caseInsensitiveSort, formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import {
@@ -194,6 +199,12 @@ import HistoryMixin from '@/components/mixins/history'
 import HistoryStatsMixin from '@/components/mixins/historyStats'
 
 export type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance
+
+type SortableHistoryRowValue = string | number | number[] | null | undefined
+
+type SortableHistoryRow = HistoryListPanelRow & {
+    [key: string]: SortableHistoryRowValue
+}
 
 @Component({
     components: {
@@ -422,22 +433,24 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         return headers
     }
 
-    get tableFields() {
+    get tableFields(): HistoryListPanelCol[] {
         return this.filteredHeaders.filter(
-            (col: any) => !['filename', 'status'].includes(col.value) && col.value !== ''
+            (col: HistoryListPanelCol) => !['filename', 'status'].includes(col.value) && col.value !== ''
         )
     }
 
-    get configHeaders() {
-        return this.headers.filter((header: any) => header.configable === true)
+    get configHeaders(): HistoryListPanelCol[] {
+        return this.headers.filter((header: HistoryListPanelCol) => header.configable === true)
     }
 
-    get filteredHeaders() {
-        return this.headers.filter((header: any) => header.visible === true)
+    get filteredHeaders(): HistoryListPanelCol[] {
+        return this.headers.filter((header: HistoryListPanelCol) => header.visible === true)
     }
 
-    get allPrintStatusArray() {
-        return caseInsensitiveSort(this.$store.getters['server/history/getAllPrintStatusArray'] ?? [], 'name')
+    get allPrintStatusArray(): ServerHistoryStateAllPrintStatusEntry[] {
+        const statuses = this.$store.getters['server/history/getAllPrintStatusArray'] ?? []
+
+        return caseInsensitiveSort(statuses as ServerHistoryStateAllPrintStatusEntry[], 'name')
     }
 
     get countPerPage() {
@@ -475,11 +488,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         this.$store.dispatch('gui/saveSetting', { name: 'view.history.showPrintJobs', value: newVal })
     }
 
-    get selectedJobsTable() {
+    get selectedJobsTable(): HistoryListPanelRow[] {
         return this.$store.state.gui.view.history.selectedJobs ?? []
     }
 
-    set selectedJobsTable(newVal) {
+    set selectedJobsTable(newVal: HistoryListPanelRow[]) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.history.selectedJobs', value: newVal })
     }
 
@@ -489,28 +502,37 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
     }
 
-    sortFiles(items: any[], sortBy: string[], sortDesc: boolean[]) {
+    sortFiles(items: SortableHistoryRow[], sortBy: string[], sortDesc: boolean[]) {
         const sortByClean = sortBy.length ? sortBy[0] : 'filename'
         const sortDescClean = sortDesc[0]
 
         if (items !== undefined) {
             // Sort by index
-            items.sort(function (a, b) {
-                if (a[sortByClean] === b[sortByClean]) return 0
-                if (a[sortByClean] === null || a[sortByClean] === undefined) return -1
-                if (b[sortByClean] === null || b[sortByClean] === undefined) return 1
+            items.sort((a: SortableHistoryRow, b: SortableHistoryRow) => {
+                const valueA = a[sortByClean]
+                const valueB = b[sortByClean]
 
-                if (a[sortByClean].constructor === String && b[sortByClean].constructor === String) {
-                    return a[sortByClean].localeCompare(b[sortByClean], undefined, { sensivity: 'base' })
+                if (valueA === valueB) return 0
+                if (valueA === null || valueA === undefined) return -1
+                if (valueB === null || valueB === undefined) return 1
+
+                if (typeof valueA === 'string' && typeof valueB === 'string') {
+                    return valueA.localeCompare(valueB, undefined, { sensitivity: 'base' })
                 }
 
-                if (a[sortByClean] instanceof Array && b[sortByClean] instanceof Array) {
-                    const reducedA = a[sortByClean].length ? a.filament.reduce((a: any, b: any) => a + b) : 0
-                    const reducedB = b[sortByClean].length ? b.filament.reduce((a: any, b: any) => a + b) : 0
+                if (Array.isArray(valueA) && Array.isArray(valueB)) {
+                    const reducedA = valueA.length
+                        ? valueA.reduce((sum: number, current: number) => sum + current, 0)
+                        : 0
+                    const reducedB = valueB.length
+                        ? valueB.reduce((sum: number, current: number) => sum + current, 0)
+                        : 0
                     return reducedA - reducedB
                 }
 
-                return a[sortByClean] - b[sortByClean]
+                if (typeof valueA === 'number' && typeof valueB === 'number') return valueA - valueB
+
+                return 0
             })
 
             // Deal with descending order
@@ -532,7 +554,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         }
     }
 
-    changeStatusVisible(status: any) {
+    changeStatusVisible(status: ServerHistoryStateAllPrintStatusEntry) {
         this.$store.dispatch('gui/toggleStatusInHistoryList', status.name)
     }
 
@@ -561,8 +583,8 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         content.push(row)
 
         let jobs = [...this.entries]
-        if (this.selectedJobs.length) {
-            jobs = [...this.selectedJobs]
+        if (this.selectedJobsTable.length) {
+            jobs = [...this.selectedJobsTable]
         }
 
         if (jobs.length) {
@@ -649,7 +671,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, csvSeperator: string | null = null) {
-        const key = col.value as string
+        const key = col.value
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let value: any = null
         if (key in job) {

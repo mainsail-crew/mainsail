@@ -89,9 +89,14 @@ export interface ServerHistoryStateAllPrintStatusEntry {
 
 export type HistoryStatsValueNames = 'jobs' | 'filament' | 'time'
 
+export type HistoryListPanelColValue = Extract<
+    keyof ServerHistoryStateJob | keyof ServerHistoryStateJob['metadata'],
+    string
+>
+
 export interface HistoryListPanelCol {
     text: string
-    value: keyof ServerHistoryStateJob | keyof ServerHistoryStateJob['metadata']
+    value: HistoryListPanelColValue
     align: string
     configable: boolean
     visible: boolean

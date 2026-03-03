@@ -291,7 +291,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     outputValue(col: HistoryListPanelCol, item: ServerHistoryStateJob) {
-        const key = col.value as string
+        const key = col.value
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let value: any = null
         if (key in item) {

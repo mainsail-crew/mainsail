@@ -61,6 +61,12 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { mdiMenuDown, mdiViewGrid, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
 
+interface GuiWebcamStateAllView {
+    name: string
+    service: 'grid'
+    icon: string
+}
+
 @Component({
     components: {
         Panel,
@@ -96,12 +102,12 @@ export default class WebcamPanel extends Mixins(BaseMixin, WebcamMixin) {
         this.$store.dispatch('gui/setCurrentWebcam', { page: this.currentPage, value: newVal })
     }
 
-    get currentCam(): any {
+    get currentCam(): GuiWebcamStateWebcam | GuiWebcamStateAllView {
         const cam = this.webcams.find((cam: GuiWebcamStateWebcam) => cam.name === this.currentCamId)
 
         return (
             cam ?? {
-                name: this.$t('Panels.WebcamPanel.All'),
+                name: this.$t('Panels.WebcamPanel.All').toString(),
                 service: 'grid',
                 icon: mdiViewGrid,
             }

@@ -370,7 +370,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Ref } from 'vue-property-decorator'
 import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
 import { escapePath, formatFilesize, sortFiles } from '@/plugins/helpers'
@@ -400,6 +400,10 @@ interface dialogRenameObject {
     item: FileStateFile
 }
 
+interface FocusableInputRef {
+    focus: () => void
+}
+
 @Component({
     components: { ConfirmationDialog, Panel, PathNavigation },
 })
@@ -421,11 +425,9 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     mdiRenameBox = mdiRenameBox
     mdiDelete = mdiDelete
 
-    declare $refs: {
-        inputFieldRenameFile: any
-        inputFieldCreateDirectory: any
-        inputFieldRenameDirectory: any
-    }
+    @Ref() readonly inputFieldRenameFile!: FocusableInputRef | undefined
+    @Ref() readonly inputFieldCreateDirectory!: FocusableInputRef | undefined
+    @Ref() readonly inputFieldRenameDirectory!: FocusableInputRef | undefined
 
     private search = ''
     private boolVideoDialog = false
@@ -608,7 +610,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.dialogCreateDirectory.show = true
 
         setTimeout(() => {
-            this.$refs.inputFieldCreateDirectory?.focus()
+            this.inputFieldCreateDirectory?.focus()
         }, 200)
     }
 
@@ -750,7 +752,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.dialogRenameFile.show = true
 
         setTimeout(() => {
-            this.$refs.inputFieldRenameFile?.focus()
+            this.inputFieldRenameFile?.focus()
         }, 200)
     }
 
@@ -795,7 +797,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.dialogRenameDirectory.show = true
 
         setTimeout(() => {
-            this.$refs.inputFieldRenameDirectory?.focus()
+            this.inputFieldRenameDirectory?.focus()
         }, 200)
     }
 

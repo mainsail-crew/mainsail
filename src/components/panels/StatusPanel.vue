@@ -194,10 +194,6 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiStopCircleOutline = mdiStopCircleOutline
     mdiTrayFull = mdiTrayFull
 
-    declare $refs: {
-        bigThumbnail: any
-    }
-
     showCancelJobDialog = false
     boolShowObjects = false
     boolShowPauseAtLayer = false

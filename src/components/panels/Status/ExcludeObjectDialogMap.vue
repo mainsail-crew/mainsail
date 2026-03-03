@@ -79,6 +79,21 @@ import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { defaultPrimaryColor } from '@/store/variables'
 
+type PolygonPoint = [number, number]
+
+interface ExcludeObjectStateEntry {
+    center?: PolygonPoint
+    name: string
+    polygon?: PolygonPoint[]
+}
+
+interface PrintingObject {
+    center?: PolygonPoint
+    name: string
+    polygon?: PolygonPoint[]
+    size: number
+}
+
 @Component
 export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     private coordinationCrossColor = '#888'
@@ -90,35 +105,35 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
         tooltipObjectMap: HTMLDivElement
     }
 
-    get printing_objects() {
-        return (
-            (this.$store.state.printer.exclude_object?.objects ?? [])
-                .map((object: any) => {
-                    let total = 0
+    get printing_objects(): PrintingObject[] {
+        return (this.$store.state.printer.exclude_object?.objects ?? [])
+            .map((object: ExcludeObjectStateEntry) => {
+                let total = 0
+                const polygon = object.polygon ?? []
 
-                    if ('polygon' in object) {
-                        for (let i = 0; i < object.polygon.length; i++) {
-                            const pointA = object.polygon[i]
-                            const pointB = i === object.polygon.length - 1 ? object.polygon[0] : object.polygon[i + 1]
+                for (let i = 0; i < polygon.length; i++) {
+                    const pointA = polygon[i]
+                    const pointB = i === polygon.length - 1 ? polygon[0] : polygon[i + 1]
 
-                            total += pointA[0] * pointB[1] - pointA[1] * pointB[0]
-                        }
-                    }
+                    total += pointA[0] * pointB[1] - pointA[1] * pointB[0]
+                }
 
-                    return {
-                        center: object.center,
-                        name: object.name,
-                        polygon: object.polygon,
-                        size: Math.abs(total),
-                    }
-                })
-                // sort all objects by size
-                .sort((a: any, b: any) => b.size - a.size)
-        )
+                return {
+                    center: object.center,
+                    name: object.name,
+                    polygon: object.polygon,
+                    size: Math.abs(total),
+                }
+            })
+            // sort all objects by size
+            .sort((a: PrintingObject, b: PrintingObject) => b.size - a.size)
     }
 
-    get printing_objects_with_polygons() {
-        return this.printing_objects.filter((object: any) => 'polygon' in object)
+    get printing_objects_with_polygons(): (PrintingObject & { polygon: PolygonPoint[] })[] {
+        return this.printing_objects.filter(
+            (object: PrintingObject): object is PrintingObject & { polygon: PolygonPoint[] } =>
+                Array.isArray(object.polygon)
+        )
     }
 
     get current_object() {

@@ -106,30 +106,37 @@ export default class HistoryListPanelExportCsv extends Mixins(BaseMixin, History
         return rows
     }
 
-    private outputValue(col: any, job: any, escapeChar: string) {
-        let value = col.value in job ? job[col.value] : null
-        if (value === null) value = col.value in job.metadata ? job.metadata[col.value] : null
+    private outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, escapeChar: string): string {
+        const key = col.value
+        let value: unknown = null
+
+        if (key in job) {
+            value = job[key as keyof ServerHistoryStateJob]
+        } else if (key in job.metadata) {
+            value = job.metadata[key]
+        }
 
         switch (col.outputType) {
             case 'date':
-                return this.formatDateTime(value * 1000)
+                return typeof value === 'number' ? this.formatDateTime(value * 1000) : ''
 
             case 'time':
-                return value?.toFixed() ?? ''
+                return typeof value === 'number' ? value.toFixed() : ''
 
             default:
-                switch (typeof value) {
-                    case 'number':
-                        return value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
-
-                    case 'string':
-                        if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
-
-                        return value
-
-                    default:
-                        return value
+                if (typeof value === 'number') {
+                    return value.toLocaleString(this.browserLocale, { useGrouping: false })
                 }
+
+                if (typeof value === 'string') {
+                    if (escapeChar !== null && value.includes(escapeChar)) return '"' + value + '"'
+
+                    return value
+                }
+
+                if (value === null || value === undefined) return ''
+
+                return String(value)
         }
     }
 }

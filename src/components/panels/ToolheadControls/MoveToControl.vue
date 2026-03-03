@@ -77,6 +77,17 @@ import MoveToInput from '@/components/inputs/MoveToInput.vue'
 import Responsive from '@/components/ui/Responsive.vue'
 import { mdiCrosshairsGps, mdiGrid } from '@mdi/js'
 
+interface MoveToAxisInput {
+    pos: string
+    valid: boolean
+}
+
+interface MoveToInputs {
+    x: MoveToAxisInput
+    y: MoveToAxisInput
+    z: MoveToAxisInput
+}
+
 @Component({
     components: { MoveToInput, Responsive },
 })
@@ -84,7 +95,7 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
     mdiCrosshairsGps = mdiCrosshairsGps
     mdiGrid = mdiGrid
 
-    input: { [index: string]: any } = {
+    input: MoveToInputs = {
         x: { pos: '', valid: true },
         y: { pos: '', valid: true },
         z: { pos: '', valid: true },
