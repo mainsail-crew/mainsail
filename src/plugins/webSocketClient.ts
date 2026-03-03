@@ -295,10 +295,7 @@ export interface Wait {
     reject?: (reason?: unknown) => void
 }
 
-interface Params {
-    data?: unknown
-    [key: string]: unknown
-}
+type Params = object
 
 interface emitOptions {
     action?: string | null
