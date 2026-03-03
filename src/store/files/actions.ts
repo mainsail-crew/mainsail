@@ -10,7 +10,7 @@ import {
 import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
 import { hiddenDirectories, validGcodeExtensions } from '@/store/variables'
-import axios, { AxiosProgressEvent } from 'axios'
+import axios, { AxiosProgressEvent, AxiosResponse } from 'axios'
 import { BatchMessage } from '@/plugins/webSocketClient'
 
 export const actions: ActionTree<FileState, RootState> = {
@@ -337,7 +337,7 @@ export const actions: ActionTree<FileState, RootState> = {
                         commit('uploadSetSpeed', rate)
                     },
                 })
-                .then((result: any) => {
+                .then((result: AxiosResponse<{ item: { path: string } }>) => {
                     commit('uploadSetShow', false)
                     const lastPos = result.data.item.path.lastIndexOf('/')
                     const filename = result.data.item.path.slice(lastPos + 1)
