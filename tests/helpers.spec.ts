@@ -1,7 +1,24 @@
 import { describe, expect, it } from 'vitest'
-import { isRecord } from '@/plugins/helpers'
+import { isRecord, parseNumber } from '@/plugins/helpers'
 
 describe('helpers', () => {
+    describe('parseNumber', () => {
+        it('returns number values unchanged', () => {
+            expect(parseNumber(250, 0)).toBe(250)
+        })
+
+        it('parses numeric strings', () => {
+            expect(parseNumber('250', 0)).toBe(250)
+            expect(parseNumber('0.400', 0)).toBe(0.4)
+        })
+
+        it('returns fallback for undefined or invalid values', () => {
+            expect(parseNumber(undefined, 170)).toBe(170)
+            expect(parseNumber('abc', 170)).toBe(170)
+            expect(parseNumber(Infinity, 170)).toBe(170)
+        })
+    })
+
     describe('isRecord', () => {
         it('returns true for plain objects', () => {
             expect(isRecord({ foo: 'bar' })).toBe(true)

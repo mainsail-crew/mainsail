@@ -49,7 +49,7 @@ export interface Mmu {
     tool_extrusion_multipliers: number[]
     tool_speed_multipliers: number[]
     slicer_tool_map: {
-        tools: any
+        tools: unknown
         referenced_tools: number[]
         initial_tool: number | null
         purge_volumes: number[]

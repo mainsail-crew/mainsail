@@ -203,6 +203,41 @@ export interface PrinterStateKlipperConfigWarning {
     value: string
 }
 
+export type PrinterConfigNumberLike = number | string
+
+export interface ExtruderConfigSettings {
+    pressure_advance: PrinterConfigNumberLike
+    pressure_advance_smooth_time: PrinterConfigNumberLike
+    step_pin: string
+    dir_pin: string
+    rotation_distance: PrinterConfigNumberLike
+    microsteps: PrinterConfigNumberLike
+    full_steps_per_rotation: PrinterConfigNumberLike
+    gear_ratio: string | number[][]
+    enable_pin: string
+    sensor_type: string
+    pullup_resistor: PrinterConfigNumberLike
+    sensor_pin: string
+    min_temp: PrinterConfigNumberLike
+    max_temp: PrinterConfigNumberLike
+    min_extrude_temp: PrinterConfigNumberLike
+    max_power: PrinterConfigNumberLike
+    smooth_time: PrinterConfigNumberLike
+    control: string
+    pid_kp: PrinterConfigNumberLike
+    pid_ki: PrinterConfigNumberLike
+    pid_kd: PrinterConfigNumberLike
+    heater_pin: string
+    pwm_cycle_time: PrinterConfigNumberLike
+    nozzle_diameter: PrinterConfigNumberLike
+    filament_diameter: PrinterConfigNumberLike
+    max_extrude_cross_section: PrinterConfigNumberLike
+    max_extrude_only_velocity: PrinterConfigNumberLike
+    max_extrude_only_accel: PrinterConfigNumberLike
+    max_extrude_only_distance: PrinterConfigNumberLike
+    instantaneous_corner_velocity: PrinterConfigNumberLike
+}
+
 export interface PrinterStateExtruder {
     key: string
     name: string

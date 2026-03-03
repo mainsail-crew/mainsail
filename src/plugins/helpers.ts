@@ -18,6 +18,30 @@ export const isRecord = (value: unknown): value is Record<string, unknown> => {
     return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
+/**
+ * Parses an unknown value into a finite number.
+ *
+ * If parsing fails (`NaN`) or yields a non-finite value (`Infinity`, `-Infinity`),
+ * the provided fallback is returned instead.
+ *
+ * This is useful for Klipper/Moonraker config values that may be delivered as strings
+ * (e.g. `"250"`, `"0.400"`) while callers require a safe `number`.
+ *
+ * @param value - Input value to parse.
+ * @param fallback - Value returned when parsing does not produce a finite number.
+ * @returns Parsed finite number, or `fallback`.
+ *
+ * @example
+ * parseNumber('250', 0) // 250
+ * parseNumber('0.400', 0) // 0.4
+ * parseNumber('abc', 170) // 170
+ */
+export const parseNumber = (value: unknown, fallback: number): number => {
+    const parsedValue = Number(value)
+
+    return Number.isFinite(parsedValue) ? parsedValue : fallback
+}
+
 export const setDataDeep = (currentState: any, payload: any) => {
     if (payload !== null && typeof payload === 'object') {
         Object.keys(payload).forEach((key: string) => {
