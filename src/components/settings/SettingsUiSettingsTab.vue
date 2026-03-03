@@ -345,6 +345,8 @@ import { mdiRestart, mdiTimerOutline } from '@mdi/js'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
 import ThemeMixin from '@/components/mixins/theme'
 
+type ColorPickerValue = string | { hex: string }
+
 @Component({
     components: { SettingsRow },
 })
@@ -712,24 +714,25 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideOtherInstances', value: newVal })
     }
 
-    clearColorObject(color: any): string {
-        if (typeof color === 'object' && 'hex' in color) color = color.hex
-        if (color.length > 7) color = color.substr(0, 7)
-        return color
+    clearColorObject(color: ColorPickerValue): string {
+        const colorValue = typeof color === 'object' && 'hex' in color ? color.hex : color
+        if (colorValue.length > 7) return colorValue.substr(0, 7)
+
+        return colorValue
     }
 
     @Debounce(500)
-    updateLogoColor(newVal: any) {
+    updateLogoColor(newVal: ColorPickerValue) {
         this.logoColor = this.clearColorObject(newVal)
     }
 
     @Debounce(500)
-    updatePrimaryColor(newVal: any) {
+    updatePrimaryColor(newVal: ColorPickerValue) {
         this.primaryColor = this.clearColorObject(newVal)
     }
 
     @Debounce(500)
-    updateBigThumbnailBackground(newVal: any) {
+    updateBigThumbnailBackground(newVal: ColorPickerValue) {
         this.bigThumbnailBackground = this.clearColorObject(newVal)
     }
 

@@ -577,7 +577,7 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin, 
         if (!(this.feedrateZ > 0)) this.feedrateZ = 25
     }
 
-    onlyUnique(value: any, index: any, self: any[]) {
+    onlyUnique(value: number, index: number, self: number[]) {
         return self.indexOf(value) === index
     }
 

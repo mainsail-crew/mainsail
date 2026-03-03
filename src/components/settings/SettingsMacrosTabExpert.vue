@@ -327,6 +327,15 @@ import {
     mdiMagnify,
 } from '@mdi/js'
 
+type ColorPickerValue = string | { hex: string }
+
+interface DraggableChangeEvent {
+    moved?: {
+        oldIndex?: number
+        newIndex?: number
+    }
+}
+
 @Component({
     components: { SettingsRow, draggable },
 })
@@ -438,10 +447,11 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         )
     }
 
-    clearColorObject(color: any): string {
-        if (typeof color === 'object' && 'hex' in color) color = color.hex
-        if (color.length > 7) color = color.substr(0, 7)
-        return color
+    clearColorObject(color: ColorPickerValue): string {
+        const colorValue = typeof color === 'object' && 'hex' in color ? color.hex : color
+        if (colorValue.length > 7) return colorValue.substr(0, 7)
+
+        return colorValue
     }
 
     updateShowGeneral(newVal: boolean) {
@@ -487,7 +497,9 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         })
     }
 
-    updateMacroOrder(output: any) {
+    updateMacroOrder(output: DraggableChangeEvent) {
+        if (!output.moved) return
+
         const oldIndex = output.moved.oldIndex ?? 0
         const newIndex = output.moved.newIndex ?? 0
         const oldPos = this.editGroupMacros[oldIndex].pos
@@ -528,7 +540,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
     }
 
     updateMacrogroupOption(option: string, newVal: boolean | string) {
-        const values: any = {}
+        const values: Record<string, boolean | string> = {}
         values[option] = newVal
 
         this.$store.dispatch('gui/macros/groupUpdate', {

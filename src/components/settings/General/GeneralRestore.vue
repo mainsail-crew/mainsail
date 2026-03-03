@@ -65,7 +65,7 @@ export default class SettingsGeneralTabRestoreDatabase extends Mixins(BaseMixin,
     showDialog = false
     restoreableNamespaces: { value: string; label: string | TranslateResult }[] = []
     restoreCheckboxes: string[] = []
-    restoreObjects: any = {}
+    restoreObjects: Record<string, unknown> = {}
 
     onSelectRestoreCheckboxes(backupCheckboxes: string[]) {
         this.restoreCheckboxes = backupCheckboxes
