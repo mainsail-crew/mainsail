@@ -42,5 +42,5 @@ export interface PrinterTempHistoryStateSerie {
 }
 
 export interface PrinterTempHistoryStateSourceEntry {
-    [key: string]: any
+    [key: string]: any // eslint-disable-line @typescript-eslint/no-explicit-any
 }

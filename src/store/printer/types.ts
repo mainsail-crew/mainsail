@@ -7,7 +7,7 @@ export interface VTextareaType extends HTMLInputElement {
 }
 
 export interface PrinterState {
-    [key: string]: any
+    [key: string]: any // eslint-disable-line @typescript-eslint/no-explicit-any
     tempHistory?: PrinterTempHistoryState
 }
 
@@ -103,8 +103,8 @@ export interface PrinterStateMiscellaneous {
     pwm: boolean
     rpm: number
     scale: number
-    object: any
-    config: any
+    object: Record<string, unknown>
+    config: Record<string, unknown>
     off_below?: number
     max_power?: number
 }
@@ -164,16 +164,16 @@ export interface PrinterStateMacro {
     name: string
     description: string | null
     prop: {
-        [key: string]: any
+        [key: string]: unknown
     }
     variables: {
-        [key: string]: any
+        [key: string]: unknown
     }
     params: PrinterStateMacroParams
 }
 
 export interface PrinterStateKlipperConfig {
-    [key: string]: any
+    [key: string]: unknown
 }
 
 export interface PrinterStateMcu {
@@ -222,12 +222,12 @@ export interface PrinterGetterObject {
     name: string
     type: string
     state: {
-        [key: string]: any
+        [key: string]: unknown
     }
     config: {
         [key: string]: string
     }
     settings: {
-        [key: string]: any
+        [key: string]: unknown
     }
 }

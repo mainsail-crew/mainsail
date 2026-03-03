@@ -113,7 +113,7 @@ export const mutations: MutationTree<GuiState> = {
 
         // set new value if additionalSensor object doesn't exist in view.tempchart.datasetSettings
         if (!('additionalSensors' in state.view.tempchart.datasetSettings[payload.objectName])) {
-            const newVal: { [key: string]: any } = {}
+            const newVal: Record<string, boolean> = {}
             newVal[payload.dataset] = payload.value
 
             Vue.set(state.view.tempchart.datasetSettings[payload.objectName], 'additionalSensors', newVal)
@@ -121,7 +121,7 @@ export const mutations: MutationTree<GuiState> = {
         }
 
         Vue.set(
-            state.view.tempchart.datasetSettings[payload.objectName].additionalSensors,
+            state.view.tempchart.datasetSettings[payload.objectName].additionalSensors as Record<string, boolean>,
             payload.dataset,
             payload.value
         )

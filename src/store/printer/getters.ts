@@ -195,7 +195,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
             fans.push({
                 name: object.name,
                 type: object.type,
-                speed: object.state.speed ?? 0,
+                speed: (object.state.speed as number) ?? 0,
                 controllable: controllableFans.includes(object.type),
             })
         })

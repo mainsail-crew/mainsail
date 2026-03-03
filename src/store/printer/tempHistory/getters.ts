@@ -116,7 +116,7 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
                 if (state.series.findIndex((serie) => serie.name === serieName) === -1) return
 
                 // add to selected
-                selected[serieName] = viewSettings[key][attrKey]
+                selected[serieName] = viewSettings[key][attrKey] as boolean
             })
         })
 

@@ -186,7 +186,7 @@ export interface GuiState {
             hideMcuHostSensors: boolean
             hideMonitors: boolean
             autoscale: boolean
-            datasetSettings: any
+            datasetSettings: Record<string, Record<string, unknown>>
         }
         timelapse: {
             countPerPage: number
