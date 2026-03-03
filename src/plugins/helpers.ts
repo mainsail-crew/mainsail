@@ -14,6 +14,10 @@ import {
 } from '@mdi/js'
 import Vue from 'vue'
 
+export const isRecord = (value: unknown): value is Record<string, unknown> => {
+    return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
 export const setDataDeep = (currentState: any, payload: any) => {
     if (payload !== null && typeof payload === 'object') {
         Object.keys(payload).forEach((key: string) => {
