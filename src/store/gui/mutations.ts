@@ -13,16 +13,25 @@ export const mutations: MutationTree<GuiState> = {
         setDataDeep(state, payload)
     },
 
-    saveSetting(state, payload: { name: string; value: any }) {
-        const deepSet = (obj: any, is: string[] | string, value: any): any => {
-            if (is !== undefined && typeof is === 'string') return deepSet(obj, is.split('.'), value)
-            else if (is.length == 1 && value !== undefined) return (obj[is[0]] = value)
-            else if (is.length == 0) return obj
-            else if (!(is[0] in obj)) obj[is[0]] = {}
-            return deepSet(obj[is[0]], is.slice(1), value)
+    saveSetting(state, payload: { name: string; value: unknown }) {
+        const deepSet = (target: Record<string, unknown>, path: string[], value: unknown): void => {
+            const [currentKey, ...restPath] = path
+            if (!currentKey) return
+
+            if (restPath.length === 0) {
+                target[currentKey] = value
+                return
+            }
+
+            const nextValue = target[currentKey]
+            if (typeof nextValue !== 'object' || nextValue === null || Array.isArray(nextValue)) {
+                target[currentKey] = {}
+            }
+
+            deepSet(target[currentKey] as Record<string, unknown>, restPath, value)
         }
 
-        deepSet(state, payload.name, payload.value)
+        deepSet(state as unknown as Record<string, unknown>, payload.name.split('.'), payload.value)
     },
 
     setHeaterChartVisibility(state, payload) {
@@ -91,7 +100,7 @@ export const mutations: MutationTree<GuiState> = {
     setChartDatasetStatus(state, payload: { objectName: string; dataset: string; value: boolean }) {
         // set new value if object doesn't exist in view.tempchart.datasetSettings
         if (!(payload.objectName in state.view.tempchart.datasetSettings)) {
-            const newVal: { [key: string]: any } = {}
+            const newVal: Record<string, boolean> = {}
             newVal[payload.dataset] = payload.value
 
             Vue.set(state.view.tempchart.datasetSettings, payload.objectName, newVal)
@@ -104,7 +113,7 @@ export const mutations: MutationTree<GuiState> = {
     setDatasetAdditionalSensorStatus(state, payload: { objectName: string; dataset: string; value: boolean }) {
         // set new value if object doesn't exist in view.tempchart.datasetSettings
         if (!(payload.objectName in state.view.tempchart.datasetSettings)) {
-            const newVal: { additionalSensors: { [key: string]: any } } = { additionalSensors: {} }
+            const newVal: { additionalSensors: Record<string, boolean> } = { additionalSensors: {} }
             newVal.additionalSensors[payload.dataset] = payload.value
 
             Vue.set(state.view.tempchart.datasetSettings, payload.objectName, newVal)
