@@ -176,6 +176,25 @@ export interface PrinterStateKlipperConfig {
     [key: string]: unknown
 }
 
+export interface PrinterConfigMcuTempSensor {
+    sensor_type?: string
+    sensor_mcu?: string
+    [key: string]: unknown
+}
+
+export interface PrinterTempSensorObject {
+    temperature?: number
+    measured_min_temp?: number
+    measured_max_temp?: number
+    [key: string]: unknown
+}
+
+export interface McuTempSensorEntry {
+    key: string
+    settings: PrinterConfigMcuTempSensor
+    object: PrinterTempSensorObject
+}
+
 export interface PrinterStateMcu {
     name: string
     mcu_constants: { [key: string]: string | number }

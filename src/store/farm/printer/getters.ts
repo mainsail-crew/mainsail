@@ -3,7 +3,7 @@ import { convertName } from '@/plugins/helpers'
 import { GetterTree } from 'vuex'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getters: GetterTree<FarmPrinterState, RootState> = {
     getSocketUrl: (state) => {
@@ -20,8 +20,8 @@ export const getters: GetterTree<FarmPrinterState, RootState> = {
         return rootState.socket?.hostname === state.socket.hostname && rootState.socket.port === state.socket.port
     },
 
-    getSetting: (state) => (name: string, fallback: any) => {
-        return state.settings[name] ?? fallback
+    getSetting: (state) => <T>(name: string, fallback: T): T => {
+        return (state.settings[name] as T | undefined) ?? fallback
     },
 
     getPrinterName: (state) => {
