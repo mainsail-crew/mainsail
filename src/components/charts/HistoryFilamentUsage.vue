@@ -29,10 +29,10 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
             return ''
 
         const marker = typeof entry.marker === 'string' ? entry.marker : ''
-        const outputTimeDate = new Date(entry.data[0])
+        const outputDate = this.formatDate(entry.data[0])
         const outputValue = Math.round(entry.data[1] * 10) / 10
 
-        return marker + outputTimeDate.toLocaleDateString() + ': ' + outputValue + 'm'
+        return `${marker}${outputDate}: ${outputValue}m`
     }
 
     get chartOptions(): ECBasicOption {
@@ -47,7 +47,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
             tooltip: {
                 trigger: 'axis',
                 borderWidth: 0,
-                formatter: this.formatTooltip,
+                formatter: (params: TopLevelFormatterParams) => this.formatTooltip(params),
             },
             xAxis: {
                 type: 'time',
