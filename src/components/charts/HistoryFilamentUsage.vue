@@ -13,54 +13,26 @@ import Component from 'vue-class-component'
 import { Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import type { ECharts } from 'echarts/core'
-import type { CallbackDataParams, ECBasicOption, TopLevelFormatterParams } from 'echarts/types/dist/shared.d'
+import type { ECBasicOption, TopLevelFormatterParams } from 'echarts/types/dist/shared.d'
 import type { EChartRef } from '@/types/echarts'
 import ThemeMixin from '../mixins/theme'
 import HistoryMixin from '@/components/mixins/history'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 
-interface HistoryFilamentUsageTooltipData extends CallbackDataParams {
-    marker: string
-    axisValueLabel: string
-    data: [number, number]
-}
-
 @Component
 export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin, ThemeMixin) {
     @Ref('historyFilamentUsage') readonly historyFilamentUsage!: EChartRef | undefined
 
-    private isHistoryFilamentUsageTooltipData(param: CallbackDataParams): param is HistoryFilamentUsageTooltipData {
-        const tooltipParam = param as CallbackDataParams & {
-            marker?: unknown
-            axisValueLabel?: unknown
-            data?: unknown
-        }
+    formatTooltip(params: TopLevelFormatterParams): string {
+        const entry = Array.isArray(params) ? params[0] : params
+        if (!Array.isArray(entry?.data) || typeof entry.data[0] !== 'number' || typeof entry.data[1] !== 'number')
+            return ''
 
-        return (
-            typeof tooltipParam.marker === 'string' &&
-            typeof tooltipParam.axisValueLabel === 'string' &&
-            Array.isArray(tooltipParam.data) &&
-            tooltipParam.data.length >= 2 &&
-            typeof tooltipParam.data[0] === 'number' &&
-            typeof tooltipParam.data[1] === 'number'
-        )
-    }
+        const marker = typeof entry.marker === 'string' ? entry.marker : ''
+        const outputTimeDate = new Date(entry.data[0])
+        const outputValue = Math.round(entry.data[1] * 10) / 10
 
-    private formatTooltip(params: TopLevelFormatterParams): string {
-        const datasets = (Array.isArray(params) ? params : [params]).filter(this.isHistoryFilamentUsageTooltipData)
-        if (!datasets.length) return ''
-
-        const dataset = datasets[0]
-        const dateParts = dataset.axisValueLabel
-            .split(/[^0-9]/)
-            .filter(Boolean)
-            .map((value) => parseInt(value, 10))
-        if (dateParts.length < 3) return dataset.marker
-
-        const outputTimeDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2])
-        const outputValue = Math.round(dataset.data[1] * 10) / 10
-
-        return dataset.marker + outputTimeDate.toLocaleDateString() + ': ' + outputValue + 'm'
+        return marker + outputTimeDate.toLocaleDateString() + ': ' + outputValue + 'm'
     }
 
     get chartOptions(): ECBasicOption {
@@ -75,7 +47,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
             tooltip: {
                 trigger: 'axis',
                 borderWidth: 0,
-                formatter: (params: TopLevelFormatterParams) => this.formatTooltip(params),
+                formatter: this.formatTooltip,
             },
             xAxis: {
                 type: 'time',
