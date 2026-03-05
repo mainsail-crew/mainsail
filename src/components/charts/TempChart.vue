@@ -6,7 +6,7 @@
         :init-options="{ renderer: 'svg' }"
         :autoresize="true"
         :style="tempchartStyle"
-        class="tempchart"
+        class="w-100"
         @mouseenter.native="hoverChart = true"
         @mouseleave.native="hoverChart = false" />
 </template>
@@ -17,14 +17,8 @@ import Component from 'vue-class-component'
 import { Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import { PrinterTempHistoryStateSerie, PrinterTempHistoryStateSourceEntry } from '@/store/printer/tempHistory/types'
-
 import type { ECharts } from 'echarts/core'
-import type {
-    CallbackDataParams,
-    ECBasicOption,
-    TopLevelFormatterParams,
-    TooltipPositionCallback,
-} from 'echarts/types/dist/shared.d'
+import type { ECBasicOption, TopLevelFormatterParams, TooltipPositionCallback } from 'echarts/types/dist/shared.d'
 import type { EChartRef } from '@/types/echarts'
 import { mdiClock } from '@mdi/js'
 import { datasetTypesInPercents } from '@/store/variables'
@@ -36,52 +30,12 @@ interface TempChartTooltipPosition {
     right?: number
 }
 
-interface TempChartTooltipData extends CallbackDataParams {
-    seriesName: string
-    marker: string
-    axisValueLabel: string
-    value: Record<string, number | null>
-}
-
 @Component
 export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     @Ref('tempchart') readonly tempchart!: EChartRef | undefined
 
     hoverChart = false
-    private isVisible = true
-
-    // tooltip will be fixed on the right if mouse hovering on the left,
-    // and on the left if hovering on the right.
-    private readonly tooltipPosition: TooltipPositionCallback = (point, _params, _el, _rect, size) => {
-        const position: TempChartTooltipPosition = { top: 60 }
-        const side: 'left' | 'right' = point[0] < size.viewSize[0] / 2 ? 'left' : 'right'
-        position[side] = 5
-
-        return position
-    }
-
-    private isTempChartTooltipData(param: CallbackDataParams): param is TempChartTooltipData {
-        const tooltipParam = param as CallbackDataParams & {
-            seriesName?: unknown
-            marker?: unknown
-            axisValueLabel?: unknown
-            value?: unknown
-        }
-
-        return (
-            typeof tooltipParam.seriesName === 'string' &&
-            typeof tooltipParam.marker === 'string' &&
-            typeof tooltipParam.axisValueLabel === 'string' &&
-            typeof tooltipParam.value === 'object' &&
-            tooltipParam.value !== null
-        )
-    }
-
-    private normalizeTooltipDatasets(params: TopLevelFormatterParams): TempChartTooltipData[] {
-        const entries = Array.isArray(params) ? params : [params]
-
-        return entries.filter(this.isTempChartTooltipData)
-    }
+    isVisible = true
 
     get chartOptions(): ECBasicOption {
         return {
@@ -135,7 +89,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
                 fontSize: '14px',
             },
             padding: 15,
-            formatter: this.tooltipFormatter,
+            formatter: (params: TopLevelFormatterParams) => this.tooltipFormatter(params),
             confine: true,
             className: 'echarts-tooltip',
             position: this.tooltipPosition,
@@ -307,81 +261,100 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
 
     beforeDestroy() {
         if (typeof window === 'undefined') return
-        if (this.chart) this.chart.dispose()
+
+        this.chart?.dispose()
     }
 
     visibilityChanged(isVisible: boolean) {
         this.isVisible = isVisible
     }
 
+    // tooltip will be fixed on the right if mouse hovering on the left,
+    // and on the left if hovering on the right.
+    tooltipPosition: TooltipPositionCallback = (point, _params, _el, _rect, size) => {
+        const position: TempChartTooltipPosition = { top: 60 }
+        const side: 'left' | 'right' = point[0] < size.viewSize[0] / 2 ? 'left' : 'right'
+        position[side] = 5
+
+        return position
+    }
+
     tooltipFormatter(params: TopLevelFormatterParams): string {
-        let output = ''
+        const entries = Array.isArray(params) ? params : [params]
+        if (!entries.length) return ''
 
-        const datasets = this.normalizeTooltipDatasets(params)
-        const mainDatasets = datasets.filter((dataset) => dataset.seriesName.endsWith('-temperature'))
-        if (datasets.length) {
-            let outputTime = datasets[0].axisValueLabel
-            outputTime = outputTime.substring(outputTime.indexOf(' '))
-            const theme = this.$vuetify.theme.dark ? 'theme-dark' : ''
+        let outputTime = ''
+        const axisPayload = entries[0] as { axisValue?: string | number; axisValueLabel?: string }
 
-            output +=
-                '<div class="row">' +
-                '<div class="col py-1" style=\'border-bottom: 1px solid rgba(255, 255, 255, 0.24);\'>' +
-                `<span class="v-icon mdi ${theme}" style="margin-right: 5px;">` +
-                '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" viewBox="0 0 24 24" class="v-icon__svg" style="font-size: 12px; width: 12px; height: 12px;">' +
-                `<path d="${mdiClock}">` +
-                '</path>' +
-                '</svg>' +
-                '</span>' +
-                '<span class="font-weight-bold">' +
-                outputTime +
-                '</span>' +
-                '</div>' +
-                '</div>'
-        }
+        if (typeof axisPayload.axisValue === 'number') outputTime = this.formatTime(axisPayload.axisValue)
+        else if (typeof axisPayload.axisValue === 'string') {
+            const parsedAxisDate = Date.parse(axisPayload.axisValue)
+            outputTime = Number.isNaN(parsedAxisDate) ? axisPayload.axisValue : this.formatTime(parsedAxisDate)
+        } else if (typeof axisPayload.axisValueLabel === 'string') outputTime = axisPayload.axisValueLabel
 
-        mainDatasets.forEach((dataset) => {
-            const baseSeriesName = dataset.seriesName.substring(0, dataset.seriesName.lastIndexOf('-'))
+        let outputRows = ''
+
+        for (const entry of entries) {
+            if (
+                typeof entry.seriesName !== 'string' ||
+                typeof entry.marker !== 'string' ||
+                typeof entry.value !== 'object' ||
+                entry.value === null ||
+                !entry.seriesName.endsWith('-temperature')
+            )
+                continue
+
+            const value = entry.value as Record<string, number | null>
+            const baseSeriesName = entry.seriesName.substring(0, entry.seriesName.lastIndexOf('-'))
             let displayName = baseSeriesName
-            if (displayName.indexOf(' ') !== -1) {
-                displayName = displayName.substring(displayName.indexOf(' ') + 1)
-            }
+            if (displayName.indexOf(' ') !== -1) displayName = displayName.substring(displayName.indexOf(' ') + 1)
 
-            output += '<div class="row">'
-
-            output += '<div class="col-auto py-0">'
-            output += dataset.marker
-            output += "<span class='ml-2'>" + convertName(displayName) + ':</span>'
-            output += '</div>'
-
-            output += '<div class="col text-right py-0 font-weight-bold">'
+            outputRows += '<div class="row">'
+            outputRows += `<div class="col-auto py-0">${entry.marker}<span class='ml-2'>${convertName(displayName)}:</span></div>`
+            outputRows += '<div class="col text-right py-0 font-weight-bold">'
 
             const seriesNameTemperature = `${baseSeriesName}-temperature`
             const seriesNameTarget = `${baseSeriesName}-target`
 
-            if (seriesNameTemperature in dataset.value) {
-                const value = dataset.value[seriesNameTemperature]
-                output += value !== null ? value.toFixed(1) : '--'
+            if (seriesNameTemperature in value) {
+                const temperatureValue = value[seriesNameTemperature]
+                outputRows += temperatureValue !== null ? temperatureValue.toFixed(1) : '--'
             }
-            if (seriesNameTarget in dataset.value) {
-                output += ' / '
-                const value = dataset.value[seriesNameTarget]
-                output += value !== null ? value.toFixed(1) : '--'
+            if (seriesNameTarget in value) {
+                outputRows += ' / '
+                const targetValue = value[seriesNameTarget]
+                outputRows += targetValue !== null ? targetValue.toFixed(1) : '--'
             }
-            output += '°C'
+            outputRows += '°C'
 
             datasetTypesInPercents.forEach((attrKey) => {
                 const seriesName = `${baseSeriesName}-${attrKey}`
-                if (!(seriesName in dataset.value) || dataset.value[seriesName] === null) return
+                if (!(seriesName in value) || value[seriesName] === null) return
 
-                output += ` [ ${((dataset.value[seriesName] ?? 0) * 100).toFixed(0)}% ]`
+                outputRows += ` [ ${((value[seriesName] ?? 0) * 100).toFixed(0)}% ]`
             })
 
-            output += '</div>'
-            output += '</div>'
-        })
+            outputRows += '</div>'
+            outputRows += '</div>'
+        }
 
-        return output
+        if (!outputRows) return ''
+
+        const theme = this.$vuetify.theme.dark ? 'theme-dark' : ''
+
+        const header =
+            '<div class="row">' +
+            '<div class="col py-1" style=\'border-bottom: 1px solid rgba(255, 255, 255, 0.24);\'>' +
+            `<span class="v-icon mdi ${theme}" style="margin-right: 5px;">` +
+            '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" viewBox="0 0 24 24" class="v-icon__svg" style="font-size: 12px; width: 12px; height: 12px;">' +
+            `<path d="${mdiClock}"></path>` +
+            '</svg>' +
+            '</span>' +
+            `<span class="font-weight-bold">${outputTime}</span>` +
+            '</div>' +
+            '</div>'
+
+        return header + outputRows
     }
 
     @Watch('selectedLegends')
@@ -416,9 +389,3 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     }
 }
 </script>
-
-<style scoped>
-.tempchart {
-    width: 100%;
-}
-</style>
