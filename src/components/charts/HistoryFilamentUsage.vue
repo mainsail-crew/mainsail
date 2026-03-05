@@ -14,13 +14,10 @@ import { Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import type { ECharts } from 'echarts/core'
 import type { CallbackDataParams, ECBasicOption, TopLevelFormatterParams } from 'echarts/types/dist/shared.d'
+import type { EChartRef } from '@/types/echarts'
 import ThemeMixin from '../mixins/theme'
 import HistoryMixin from '@/components/mixins/history'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
-
-interface HistoryFilamentUsageChartRef {
-    chart?: ECharts
-}
 
 interface HistoryFilamentUsageTooltipData extends CallbackDataParams {
     marker: string
@@ -30,7 +27,7 @@ interface HistoryFilamentUsageTooltipData extends CallbackDataParams {
 
 @Component
 export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin, ThemeMixin) {
-    @Ref('historyFilamentUsage') readonly historyFilamentUsage!: HistoryFilamentUsageChartRef | undefined
+    @Ref('historyFilamentUsage') readonly historyFilamentUsage!: EChartRef | undefined
 
     private isHistoryFilamentUsageTooltipData(param: CallbackDataParams): param is HistoryFilamentUsageTooltipData {
         const tooltipParam = param as CallbackDataParams & {

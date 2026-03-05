@@ -25,6 +25,7 @@ import type {
     TopLevelFormatterParams,
     TooltipPositionCallback,
 } from 'echarts/types/dist/shared.d'
+import type { EChartRef } from '@/types/echarts'
 import { mdiClock } from '@mdi/js'
 import { datasetTypesInPercents } from '@/store/variables'
 import ThemeMixin from '../mixins/theme'
@@ -33,10 +34,6 @@ interface TempChartTooltipPosition {
     top: number
     left?: number
     right?: number
-}
-
-interface TempChartRef {
-    chart?: ECharts
 }
 
 interface TempChartTooltipData extends CallbackDataParams {
@@ -48,7 +45,7 @@ interface TempChartTooltipData extends CallbackDataParams {
 
 @Component
 export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
-    @Ref('tempchart') readonly tempchart!: TempChartRef | undefined
+    @Ref('tempchart') readonly tempchart!: EChartRef | undefined
 
     hoverChart = false
     private isVisible = true

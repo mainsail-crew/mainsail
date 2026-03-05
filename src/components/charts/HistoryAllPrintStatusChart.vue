@@ -15,24 +15,18 @@ import { Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from '@/components/mixins/theme'
 import HistoryStatsMixin from '@/components/mixins/historyStats'
+import type { ECBasicOption } from 'echarts/types/dist/shared.d'
 import type { ECharts } from 'echarts/core'
-import type { ECBasicOption, TooltipOption } from 'echarts/types/dist/shared.d'
+import type { EChartRef } from '@/types/echarts'
 import { formatPrintTime } from '@/plugins/helpers'
 import { HistoryStatsValueNames, ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/types'
-
-interface HistoryAllPrintStatusChartRef {
-    chart?: ECharts
-}
-
-type TooltipValueFormatter = NonNullable<TooltipOption['valueFormatter']>
-type TooltipValue = Parameters<TooltipValueFormatter>[0]
 
 @Component
 export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeMixin, HistoryStatsMixin) {
     @Prop({ type: String, default: 'jobs' }) valueName!: HistoryStatsValueNames
-    @Ref('historyAllPrintStatus') readonly historyAllPrintStatus!: HistoryAllPrintStatusChartRef | undefined
+    @Ref('historyAllPrintStatus') readonly historyAllPrintStatus!: EChartRef | undefined
 
-    getNumericTooltipValue(value: TooltipValue): number {
+    getNumericTooltipValue(value: unknown): number {
         const rawValue = Array.isArray(value) ? value[0] : value
         const numericValue = Number(rawValue)
 
@@ -51,7 +45,7 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
             tooltip: {
                 trigger: 'item',
                 borderWidth: 0,
-                valueFormatter: (value: TooltipValue) => {
+                valueFormatter: (value: unknown) => {
                     const numericValue = this.getNumericTooltipValue(value)
 
                     if (this.valueName === 'filament') {

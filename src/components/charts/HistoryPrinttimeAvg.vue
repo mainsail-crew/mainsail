@@ -13,17 +13,14 @@ import { Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import type { ECharts } from 'echarts/core'
 import type { ECBasicOption } from 'echarts/types/dist/shared.d'
+import type { EChartRef } from '@/types/echarts'
 import ThemeMixin from '../mixins/theme'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import HistoryMixin from '@/components/mixins/history'
 
-interface HistoryPrinttimeAvgChartRef {
-    chart?: ECharts
-}
-
 @Component
 export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin, ThemeMixin) {
-    @Ref('historyPrinttimeAvg') readonly historyPrinttimeAvg!: HistoryPrinttimeAvgChartRef | undefined
+    @Ref('historyPrinttimeAvg') readonly historyPrinttimeAvg!: EChartRef | undefined
 
     get chartOptions(): ECBasicOption {
         return {

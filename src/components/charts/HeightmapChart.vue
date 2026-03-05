@@ -3,7 +3,8 @@
         ref="heightmap"
         :option="chartOptions"
         :init-options="{ renderer: 'canvas' }"
-        style="height: 600px; width: 100%; overflow: hidden" />
+        class="w-100 overflow-hidden"
+        style="height: 600px" />
 </template>
 <script lang="ts">
 import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
@@ -18,8 +19,9 @@ import { VisualMapComponent } from 'echarts/components'
 
 import { Grid3DComponent } from 'echarts-gl/components'
 import { SurfaceChart } from 'echarts-gl/charts'
-import type { ECharts } from 'echarts'
+import type { ECharts } from 'echarts/core'
 import type { CallbackDataParams } from 'echarts/types/dist/shared.d'
+import type { EChartRef } from '@/types/echarts'
 import ThemeMixin from '@/components/mixins/theme'
 
 use([CanvasRenderer, VisualMapComponent, Grid3DComponent, SurfaceChart])
@@ -38,10 +40,6 @@ interface HeightmapSerie {
     }
 }
 
-interface HeightmapChartRef {
-    chart?: ECharts
-}
-
 type HeightmapTooltipData = CallbackDataParams & {
     seriesName: string
     encode: Record<string, number[]>
@@ -57,7 +55,7 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
     @Prop({ type: Boolean, default: false }) scaleGradient!: boolean
     @Prop({ type: Number, default: 1 }) scaleZMax!: number
 
-    @Ref('heightmap') readonly heightmap!: HeightmapChartRef | undefined
+    @Ref('heightmap') readonly heightmap!: EChartRef | undefined
 
     get chart(): ECharts | null {
         return this.heightmap?.chart ?? null
