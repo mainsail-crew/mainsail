@@ -165,7 +165,7 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
         }
     }
 
-    get selected(): Record<string, boolean> {
+    get selected(): Record<'probed' | 'mesh' | 'flat', boolean> {
         return {
             probed: this.showProbed,
             mesh: this.showMesh,
