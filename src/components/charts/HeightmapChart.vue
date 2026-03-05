@@ -126,7 +126,7 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
                 },
                 axisPointer: {
                     label: {
-                        formatter: function (value: string | number) {
+                        formatter: (value: string | number) => {
                             const val = typeof value === 'string' ? parseFloat(value) : value
                             return val.toFixed(2)
                         },
