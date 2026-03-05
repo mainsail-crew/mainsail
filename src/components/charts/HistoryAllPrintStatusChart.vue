@@ -5,7 +5,8 @@
         :option="chartOptions"
         :autoresize="true"
         :init-options="{ renderer: 'svg' }"
-        style="height: 200px; width: 100%" />
+        class="w-100"
+        style="height: 200px" />
 </template>
 
 <script lang="ts">
@@ -26,14 +27,12 @@ interface HistoryAllPrintStatusChartRef {
 type TooltipValueFormatter = NonNullable<TooltipOption['valueFormatter']>
 type TooltipValue = Parameters<TooltipValueFormatter>[0]
 
-@Component({
-    components: {},
-})
+@Component
 export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeMixin, HistoryStatsMixin) {
     @Prop({ type: String, default: 'jobs' }) valueName!: HistoryStatsValueNames
     @Ref('historyAllPrintStatus') readonly historyAllPrintStatus!: HistoryAllPrintStatusChartRef | undefined
 
-    private getNumericTooltipValue(value: TooltipValue): number {
+    getNumericTooltipValue(value: TooltipValue): number {
         const rawValue = Array.isArray(value) ? value[0] : value
         const numericValue = Number(rawValue)
 
@@ -96,7 +95,8 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
 
     beforeDestroy() {
         if (typeof window === 'undefined') return
-        if (this.chart) this.chart.dispose()
+
+        this.chart?.dispose()
     }
 
     @Watch('groupedPrintStatusArray')
