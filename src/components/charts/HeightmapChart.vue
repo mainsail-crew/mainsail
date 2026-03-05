@@ -16,10 +16,7 @@ import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { VisualMapComponent } from 'echarts/components'
 
-// type definitions for echarts-gl do not exist
-// @ts-expect-error no type definitions available
 import { Grid3DComponent } from 'echarts-gl/components'
-// @ts-expect-error no type definitions available
 import { SurfaceChart } from 'echarts-gl/charts'
 import type { ECharts } from 'echarts'
 import type { CallbackDataParams } from 'echarts/types/dist/shared.d'
