@@ -427,7 +427,8 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
 
     beforeDestroy(): void {
         if (typeof window === 'undefined') return
-        if (this.chart) this.chart.dispose()
+
+        this.chart?.dispose()
     }
 }
 </script>
