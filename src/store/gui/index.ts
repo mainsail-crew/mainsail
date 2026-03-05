@@ -21,6 +21,7 @@ import { notifications } from '@/store/gui/notifications'
 import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
 import { maintenance } from '@/store/gui/maintenance'
+import { tempgroups } from '@/store/gui/tempgroups'
 import { webcams } from '@/store/gui/webcams'
 import { heightmap } from '@/store/gui/heightmap'
 
@@ -336,6 +337,7 @@ export const gui: Module<GuiState, any> = {
         notifications,
         presets,
         remoteprinters,
+        tempgroups,
         webcams,
         heightmap,
     },
