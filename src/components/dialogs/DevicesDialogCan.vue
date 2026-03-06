@@ -50,7 +50,7 @@ import BaseMixin from '@/components/mixins/base'
 import DevicesDialogCanDevice from '@/components/dialogs/DevicesDialogCanDevice.vue'
 import { mdiInformationVariantCircle } from '@mdi/js'
 import type { RPCResult } from '@/types/moonraker'
-import type { CanUuid } from '@/types/moonraker/MachineRPC'
+import type { CanDevice } from '@/types/moonraker/MachineRPC'
 
 @Component({
     components: { DevicesDialogCanDevice },
@@ -58,7 +58,7 @@ import type { CanUuid } from '@/types/moonraker/MachineRPC'
 export default class DevicesDialogCan extends Mixins(BaseMixin) {
     mdiInformationVariantCircle = mdiInformationVariantCircle
 
-    devices: CanUuid[] = []
+    devices: CanDevice[] = []
     loading = false
     loaded = false
 

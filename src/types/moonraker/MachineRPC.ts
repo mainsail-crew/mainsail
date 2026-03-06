@@ -125,7 +125,7 @@ export interface LibcameraDevice {
 /**
  * Unassigned CAN UUID reported by Moonraker.
  */
-export interface CanUuid {
+export interface CanDevice {
     /** UUID of the unassigned CAN node. */
     uuid: string
     /** Application running on the node, usually `Klipper` or `Katapult`. */
@@ -169,6 +169,6 @@ export interface MachineRPC {
         interface?: string
     }) => Promise<{
         /** Array of discovered CAN UUIDs. Empty when no unassigned nodes are found. */
-        can_uuids: CanUuid[]
+        can_uuids: CanDevice[]
     }>
 }
