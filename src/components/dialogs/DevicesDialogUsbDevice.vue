@@ -23,29 +23,28 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { UsbDevice } from '@/components/dialogs/DevicesDialogUsb.vue'
+import type { UsbDevice } from '@/types/moonraker/MachineRPC'
 
 @Component
 export default class DevicesDialogUsbDevice extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) device!: UsbDevice
 
     get details() {
-        const types = ['protocol', 'class', 'serial', 'usb_location']
+        const keys = ['protocol', 'class', 'serial', 'usb_location'] as const
         const output: { key: string; value: string }[] = []
 
-        const device = this.device as Record<string, string | number | undefined>
-        Object.keys(device).forEach((key) => {
-            let value = device[key] ?? null
+        keys.forEach((key) => {
+            const value = this.device[key]
+            if (value === null) return
 
-            if (!types.includes(key) || value === null) return
-
-            if (key === 'class' && this.device['subclass']) {
-                value += `, ${this.device['subclass']}`
+            let detail = value
+            if (key === 'class' && this.device.subclass !== null) {
+                detail += `, ${this.device.subclass}`
             }
 
             output.push({
                 key,
-                value,
+                value: detail,
             })
         })
 
