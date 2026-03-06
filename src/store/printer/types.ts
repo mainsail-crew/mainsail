@@ -11,6 +11,12 @@ export interface PrinterState {
     tempHistory?: PrinterTempHistoryState
 }
 
+export interface EndstopItem {
+    type: 'endstop' | 'probe'
+    name: string
+    value: string
+}
+
 export interface PrinterStateHeater {
     name: string
     type: 'extruder' | 'heater_bed' | 'heater_generic'
