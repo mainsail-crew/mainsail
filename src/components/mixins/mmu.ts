@@ -48,14 +48,7 @@ export interface Mmu {
     slicer_color_rgb: number[][]
     tool_extrusion_multipliers: number[]
     tool_speed_multipliers: number[]
-    slicer_tool_map: {
-        tools: unknown
-        referenced_tools: number[]
-        initial_tool: number | null
-        purge_volumes: number[]
-        total_toolchanges: number | null
-        skip_automap: boolean
-    }
+    slicer_tool_map: MmuSlicerToolMap
     action:
         | typeof ACTION_IDLE
         | typeof ACTION_LOADING
@@ -152,6 +145,23 @@ export interface MmuMachineUnit {
     has_bypass: boolean
     multi_gear: boolean
     environment_sensor: string
+}
+
+export interface MmuSlicerToolMap {
+    tools: Record<string, MmuSlicerToolMapTool>
+    referenced_tools: number[]
+    initial_tool: number | null
+    purge_volumes: number[][]
+    total_toolchanges: number | null
+    skip_automap: boolean
+}
+
+export interface MmuSlicerToolMapTool {
+    color: string
+    material: string
+    temp: number
+    name: string
+    in_use: boolean
 }
 
 export const NO_FILAMENT_COLOR = '#808182E3'
