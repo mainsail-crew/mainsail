@@ -94,10 +94,7 @@ import { mdiCog, mdiConsoleLine, mdiTrashCan } from '@mdi/js'
 import CommandHelpModal from '@/components/console/CommandHelpModal.vue'
 import ConsoleMixin from '@/components/mixins/console'
 import ConsoleTextarea from '@/components/inputs/ConsoleTextarea.vue'
-
-interface MiniConsoleScrollRef {
-    osInstance: () => { scroll: (position: { y: string }) => void } | undefined
-}
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 @Component({
     components: {
@@ -111,7 +108,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin, ConsoleMixin) {
     mdiConsoleLine = mdiConsoleLine
     mdiCog = mdiCog
 
-    @Ref() readonly miniConsoleScroll!: MiniConsoleScrollRef | undefined
+    @Ref() readonly miniConsoleScroll?: OverlayScrollbarsComponent
     @Ref() readonly gcodeCommandField!: typeof ConsoleTextarea
 
     get consoleHeight() {
