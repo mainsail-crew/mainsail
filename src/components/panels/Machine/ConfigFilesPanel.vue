@@ -1192,29 +1192,29 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     async uploadFile() {
-        if (this.fileUpload.files?.length) {
-            const files = [...this.fileUpload.files]
-            this.fileUpload.value = ''
+        const files = [...(this.fileUpload.files ?? [])]
+        if (files.length === 0) return
 
-            await this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
-            await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
-            await this.$store.dispatch('files/uploadSetMaxNumber', files.length)
+        this.fileUpload.value = ''
 
-            for (const file of files) {
-                await this.$store.dispatch('files/uploadIncrementCurrentNumber')
-                const path = this.currentPath.slice(0, 1) === '/' ? this.currentPath.slice(1) : this.currentPath
-                const result = await this.$store.dispatch('files/uploadFile', {
-                    file,
-                    path,
-                    root: 'config',
-                })
+        await this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
+        await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
+        await this.$store.dispatch('files/uploadSetMaxNumber', files.length)
 
-                if (result !== false)
-                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
-            }
+        for (const file of files) {
+            await this.$store.dispatch('files/uploadIncrementCurrentNumber')
+            const path = this.currentPath.slice(0, 1) === '/' ? this.currentPath.slice(1) : this.currentPath
+            const result = await this.$store.dispatch('files/uploadFile', {
+                file,
+                path,
+                root: 'config',
+            })
 
-            await this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
+            if (result !== false)
+                this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
         }
+
+        await this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
     }
 
     cancelUpload() {
@@ -1240,45 +1240,41 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     dragOverFilelist(e: DragEvent, row: FileStateFile) {
-        if (this.blockFileUpload) {
-            e.preventDefault()
+        if (!this.blockFileUpload) return
+        e.preventDefault()
 
-            const parentElement = (e.target as HTMLElement | null)?.parentElement
-            if (row.isDirectory && parentElement) parentElement.style.backgroundColor = '#43A04720'
-        }
+        const parentElement = (e.target as HTMLElement | null)?.parentElement
+        if (row.isDirectory && parentElement) parentElement.style.backgroundColor = '#43A04720'
     }
 
     dragLeaveFilelist(e: DragEvent) {
-        if (this.blockFileUpload) {
-            e.preventDefault()
-            e.stopPropagation()
+        if (!this.blockFileUpload) return
+        e.preventDefault()
+        e.stopPropagation()
 
-            const parentElement = (e.target as HTMLElement | null)?.parentElement
-            if (parentElement) parentElement.style.backgroundColor = 'transparent'
-        }
+        const parentElement = (e.target as HTMLElement | null)?.parentElement
+        if (parentElement) parentElement.style.backgroundColor = 'transparent'
     }
 
     async dragDropFilelist(e: DragEvent, row: FileStateFile) {
-        if (this.blockFileUpload) {
-            e.preventDefault()
-            const parentElement = (e.target as HTMLElement | null)?.parentElement
-            if (parentElement) parentElement.style.backgroundColor = 'transparent'
+        if (!this.blockFileUpload) return
+        e.preventDefault()
+        const parentElement = (e.target as HTMLElement | null)?.parentElement
+        if (parentElement) parentElement.style.backgroundColor = 'transparent'
 
-            let dest: string
-            if (row.filename === '..') {
-                dest =
-                    this.absolutePath.slice(1, this.absolutePath.lastIndexOf('/') + 1) + this.draggingFile.item.filename
-            } else dest = this.absolutePath + '/' + row.filename + '/' + this.draggingFile.item.filename
-
-            this.$socket.emit(
-                'server.files.move',
-                {
-                    source: this.absolutePath.slice(1) + '/' + this.draggingFile.item.filename,
-                    dest: dest,
-                },
-                { action: 'files/getMove' }
-            )
+        let dest = this.absolutePath + '/' + row.filename + '/' + this.draggingFile.item.filename
+        if (row.filename === '..') {
+            dest = this.absolutePath.slice(1, this.absolutePath.lastIndexOf('/') + 1) + this.draggingFile.item.filename
         }
+
+        this.$socket.emit(
+            'server.files.move',
+            {
+                source: this.absolutePath.slice(1) + '/' + this.draggingFile.item.filename,
+                dest: dest,
+            },
+            { action: 'files/getMove' }
+        )
     }
 }
 </script>
