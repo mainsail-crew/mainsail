@@ -924,42 +924,45 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     clickRow(item: FileStateFile, force = false) {
-        if (!this.contextMenu.shown || force) {
-            if (force) this.contextMenu.shown = false
+        if (this.contextMenu.shown && !force) return
+        if (force) this.contextMenu.shown = false
 
-            if (!item.isDirectory) {
-                if (
-                    ['png', 'jpeg', 'jpg', 'gif', 'bmp', 'tif', 'svg'].includes(
-                        item.filename.split('.').pop()?.toLowerCase() ?? ''
-                    )
-                ) {
-                    const url = `${this.apiUrl}/server/files${this.absolutePath}/${item.filename}?t=${Date.now()}`
-                    this.dialogImage.item.name = item.filename
-                    if (['svg'].includes(item.filename.split('.').pop()?.toLowerCase() ?? '')) {
-                        fetch(url)
-                            .then((res) => res.text())
-                            .then((svg) => {
-                                this.dialogImage.show = true
-                                this.dialogImage.item.svg = svg
-                            })
-                    } else {
-                        this.dialogImage.show = true
-                        this.dialogImage.item.url = url
-                    }
-                } else {
-                    this.$store.dispatch('editor/openFile', {
-                        root: this.root,
-                        path: this.currentPath,
-                        filename: item.filename,
-                        size: item.size,
-                        permissions: item.permissions,
-                    })
-                }
-            } else {
-                this.currentPath += '/' + item.filename
-                this.currentPage = 1
-            }
+        if (item.isDirectory) {
+            this.currentPath += '/' + item.filename
+            this.currentPage = 1
+
+            return
         }
+
+        const extension = item.filename.split('.').pop()?.toLowerCase() ?? ''
+        const url = `${this.apiUrl}/server/files${this.absolutePath}/${item.filename}?t=${Date.now()}`
+
+        if (extension === 'svg') {
+            fetch(url)
+                .then((res) => res.text())
+                .then((svg) => {
+                    this.dialogImage.show = true
+                    this.dialogImage.item.name = item.filename
+                    this.dialogImage.item.svg = svg
+                })
+
+            return
+        }
+
+        if (['png', 'jpeg', 'jpg', 'gif', 'bmp', 'tif'].includes(extension)) {
+            this.dialogImage.show = true
+            this.dialogImage.item.name = item.filename
+            this.dialogImage.item.url = url
+            return
+        }
+
+        this.$store.dispatch('editor/openFile', {
+            root: this.root,
+            path: this.currentPath,
+            filename: item.filename,
+            size: item.size,
+            permissions: item.permissions,
+        })
     }
 
     clickRowGoBack() {
