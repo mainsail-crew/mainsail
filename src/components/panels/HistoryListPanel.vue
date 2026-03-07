@@ -200,12 +200,6 @@ import HistoryStatsMixin from '@/components/mixins/historyStats'
 
 export type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance
 
-type SortableHistoryRowValue = string | number | number[] | null | undefined
-
-type SortableHistoryRow = HistoryListPanelRow & {
-    [key: string]: SortableHistoryRowValue
-}
-
 @Component({
     components: {
         ConfirmationDialog,
@@ -440,11 +434,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     get configHeaders(): HistoryListPanelCol[] {
-        return this.headers.filter((header: HistoryListPanelCol) => header.configable === true)
+        return this.headers.filter((header: HistoryListPanelCol) => header.configable)
     }
 
     get filteredHeaders(): HistoryListPanelCol[] {
-        return this.headers.filter((header: HistoryListPanelCol) => header.visible === true)
+        return this.headers.filter((header: HistoryListPanelCol) => header.visible)
     }
 
     get allPrintStatusArray(): ServerHistoryStateAllPrintStatusEntry[] {
@@ -502,42 +496,38 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
     }
 
-    sortFiles(items: SortableHistoryRow[], sortBy: string[], sortDesc: boolean[]) {
-        const sortByClean = sortBy.length ? sortBy[0] : 'filename'
+    sortFiles(items: HistoryListPanelRow[], sortBy: string[], sortDesc: boolean[]) {
+        const sortByClean = (sortBy.length ? sortBy[0] : 'filename') as keyof HistoryListPanelRow
         const sortDescClean = sortDesc[0]
 
-        if (items !== undefined) {
-            // Sort by index
-            items.sort((a: SortableHistoryRow, b: SortableHistoryRow) => {
-                const valueA = a[sortByClean]
-                const valueB = b[sortByClean]
+        if (items === undefined) return []
 
-                if (valueA === valueB) return 0
-                if (valueA === null || valueA === undefined) return -1
-                if (valueB === null || valueB === undefined) return 1
+        // Sort by index
+        items.sort((a: HistoryListPanelRow, b: HistoryListPanelRow) => {
+            const valueA = a[sortByClean]
+            const valueB = b[sortByClean]
 
-                if (typeof valueA === 'string' && typeof valueB === 'string') {
-                    return valueA.localeCompare(valueB, undefined, { sensitivity: 'base' })
-                }
+            if (valueA === valueB) return 0
+            if (valueA === null || valueA === undefined) return -1
+            if (valueB === null || valueB === undefined) return 1
 
-                if (Array.isArray(valueA) && Array.isArray(valueB)) {
-                    const reducedA = valueA.length
-                        ? valueA.reduce((sum: number, current: number) => sum + current, 0)
-                        : 0
-                    const reducedB = valueB.length
-                        ? valueB.reduce((sum: number, current: number) => sum + current, 0)
-                        : 0
-                    return reducedA - reducedB
-                }
+            if (typeof valueA === 'string' && typeof valueB === 'string') {
+                return valueA.localeCompare(valueB, undefined, { sensitivity: 'base' })
+            }
 
-                if (typeof valueA === 'number' && typeof valueB === 'number') return valueA - valueB
+            if (Array.isArray(valueA) && Array.isArray(valueB)) {
+                const reducedA = valueA.length ? valueA.reduce((sum: number, current: number) => sum + current, 0) : 0
+                const reducedB = valueB.length ? valueB.reduce((sum: number, current: number) => sum + current, 0) : 0
+                return reducedA - reducedB
+            }
 
-                return 0
-            })
+            if (typeof valueA === 'number' && typeof valueB === 'number') return valueA - valueB
 
-            // Deal with descending order
-            if (sortDescClean) items.reverse()
-        }
+            return 0
+        })
+
+        // Deal with descending order
+        if (sortDescClean) items.reverse()
 
         return items
     }
@@ -672,38 +662,30 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
 
     outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, csvSeperator: string | null = null) {
         const key = col.value
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let value: any = null
+        let value: string | number | null = null
         if (key in job) {
-            value = job[key as keyof ServerHistoryStateJob]
+            const raw = job[key as keyof ServerHistoryStateJob]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
         } else if (key in job.metadata) {
-            value = job.metadata[key]
+            const raw = job.metadata[key]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
         }
-
-        if (key === 'slicer') {
-            if ('slicer_version' in job.metadata) value += ' ' + job.metadata.slicer_version
-
-            if (csvSeperator !== null && value?.includes(csvSeperator)) return '"' + value + '"'
-
-            return value
-        }
+        if (key === 'slicer' && 'slicer_version' in job.metadata) value += ` ${job.metadata.slicer_version}`
 
         if (key.startsWith('history_field_')) {
             const sensorName = key.replace('history_field_', '')
             const sensor = job.auxiliary_data?.find((sensor) => sensor.name === sensorName)
 
-            let value = sensor?.value?.toString()
-
-            // return value, when it is not an array
+            value = sensor?.value?.toString() ?? null
             if (sensor && !Array.isArray(sensor.value)) {
                 value = sensor.value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
             }
+        }
 
-            // return empty string, when value is null
-            if (!value) return '--'
+        if (value === null) return '--'
 
-            // escape fields with the csvSeperator in the content
-            if (csvSeperator !== null && value?.includes(csvSeperator)) return `"${value}"`
+        if (typeof value === 'string') {
+            if (csvSeperator !== null && value?.includes(csvSeperator)) value = '"' + value + '"'
 
             return value
         }
@@ -716,18 +698,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
                 return value?.toFixed() ?? ''
 
             default:
-                switch (typeof value) {
-                    case 'number':
-                        return value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
-
-                    case 'string':
-                        if (csvSeperator !== null && value?.includes(csvSeperator)) value = '"' + value + '"'
-
-                        return value
-
-                    default:
-                        return value
-                }
+                return value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
         }
     }
 
