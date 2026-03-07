@@ -108,35 +108,38 @@ export default class HistoryListPanelExportCsv extends Mixins(BaseMixin, History
 
     private outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, escapeChar: string): string {
         const key = col.value
-        let value: unknown = null
-
+        let value: string | number | null = null
         if (key in job) {
-            value = job[key as keyof ServerHistoryStateJob]
+            const raw = job[key as keyof ServerHistoryStateJob]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
         } else if (key in job.metadata) {
-            value = job.metadata[key]
+            const raw = job.metadata[key]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
+        }
+
+        if (key.startsWith('history_field_')) {
+            const fieldName = key.replace('history_field_', '')
+            const field = job.auxiliary_data?.find((field) => field.name === fieldName)
+            if (field && !Array.isArray(field.value)) return `${Math.round(field.value * 1000) / 1000} ${field.units}`
+        }
+
+        if (value === null) return ''
+
+        if (typeof value === 'string') {
+            if (value.includes(escapeChar)) return '"' + value + '"'
+
+            return value
         }
 
         switch (col.outputType) {
             case 'date':
-                return typeof value === 'number' ? this.formatDateTime(value * 1000) : ''
+                return this.formatDateTime(value * 1000)
 
             case 'time':
-                return typeof value === 'number' ? value.toFixed() : ''
+                return value.toFixed()
 
             default:
-                if (typeof value === 'number') {
-                    return value.toLocaleString(this.browserLocale, { useGrouping: false })
-                }
-
-                if (typeof value === 'string') {
-                    if (escapeChar !== null && value.includes(escapeChar)) return '"' + value + '"'
-
-                    return value
-                }
-
-                if (value === null || value === undefined) return ''
-
-                return String(value)
+                return value.toLocaleString(this.browserLocale, { useGrouping: false })
         }
     }
 }
