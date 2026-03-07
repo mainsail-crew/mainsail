@@ -2,14 +2,26 @@ import Vue from 'vue'
 
 export type LongpressEvent = Partial<Touch> & { preventDefault: () => void }
 
+type LongpressBinding = ((...args: unknown[]) => void) | { handler: (...args: unknown[]) => void; args: unknown[] }
+
+/**
+ * Resolve the callback from the directive binding.
+ * Accepts either a plain function or an object `{ handler, args }` where
+ * `args` are appended after the event parameter.
+ */
+function resolveHandler(value: LongpressBinding): (e: LongpressEvent) => void {
+    if (typeof value === 'function') return value
+    return (e: LongpressEvent) => value.handler(e, ...value.args)
+}
+
 Vue.directive('longpress', {
     bind: function (el, binding, vNode) {
-        // Make sure expression provided is a function
-        if (typeof binding.value !== 'function') {
+        // Make sure expression provided is a function or { handler, args } object
+        if (typeof binding.value !== 'function' && typeof binding.value?.handler !== 'function') {
             // Fetch name of component
             const compName = vNode.context?.$options.name
             // pass warning to console
-            let warn = `[longpress:] provided expression '${binding.expression}' is not a function, but has to be`
+            let warn = `[longpress:] provided expression '${binding.expression}' is not a function or { handler, args } object`
             if (compName) {
                 warn += ` Found in component '${compName}' `
             }
@@ -21,7 +33,7 @@ Vue.directive('longpress', {
 
         // Run Function
         const handler = (e: Partial<Touch> & { preventDefault: TouchEvent['preventDefault'] }) => {
-            binding.value(e)
+            resolveHandler(binding.value)(e)
         }
 
         // Define variable

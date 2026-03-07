@@ -122,7 +122,7 @@
                 <template #item="{ index, item, isSelected, select }">
                     <tr
                         :key="`${index} ${item.filename}`"
-                        v-longpress:600="showContextMenuHandler(item)"
+                        v-longpress:600="{ handler: showContextMenu, args: [item] }"
                         class="file-list-cursor user-select-none"
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)">
@@ -671,10 +671,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     clickPathNavGoToDirectory(segment: { location: string }) {
         this.currentPath = `${this.rootDirectory}${segment.location}`
-    }
-
-    showContextMenuHandler(item: FileStateFile) {
-        return (e: MouseEvent | LongpressEvent) => this.showContextMenu(e, item)
     }
 
     showContextMenu(e: MouseEvent | LongpressEvent, item: FileStateFile) {

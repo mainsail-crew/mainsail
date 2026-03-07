@@ -137,7 +137,7 @@
                 <template #item="{ index, item, isSelected, select }">
                     <tr
                         :key="`${index} ${item.filename}`"
-                        v-longpress:600="showContextMenuHandler(item)"
+                        v-longpress:600="{ handler: showContextMenu, args: [item] }"
                         class="file-list-cursor user-select-none"
                         :data-name="item.filename"
                         draggable="true"
@@ -972,10 +972,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
 
     setIsInvalidName(bool: boolean) {
         this.isInvalidName = bool
-    }
-
-    showContextMenuHandler(item: FileStateFile) {
-        return (e: MouseEvent | LongpressEvent) => this.showContextMenu(e, item)
     }
 
     showContextMenu(e: MouseEvent | LongpressEvent, item: FileStateFile) {
