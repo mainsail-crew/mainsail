@@ -393,15 +393,12 @@ import {
     mdiDelete,
 } from '@mdi/js'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import type { FocusableRef } from '@/types/vuetify'
 
 interface dialogRenameObject {
     show: boolean
     newName: string
     item: FileStateFile
-}
-
-interface FocusableInputRef {
-    focus: () => void
 }
 
 @Component({
@@ -425,9 +422,9 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     mdiRenameBox = mdiRenameBox
     mdiDelete = mdiDelete
 
-    @Ref() readonly inputFieldRenameFile!: FocusableInputRef | undefined
-    @Ref() readonly inputFieldCreateDirectory!: FocusableInputRef | undefined
-    @Ref() readonly inputFieldRenameDirectory!: FocusableInputRef | undefined
+    @Ref() readonly inputFieldRenameFile!: FocusableRef | undefined
+    @Ref() readonly inputFieldCreateDirectory!: FocusableRef | undefined
+    @Ref() readonly inputFieldRenameDirectory!: FocusableRef | undefined
 
     private search = ''
     private boolVideoDialog = false
