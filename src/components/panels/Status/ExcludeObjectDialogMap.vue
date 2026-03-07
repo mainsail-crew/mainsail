@@ -130,11 +130,8 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
         )
     }
 
-    get printing_objects_with_polygons(): (PrintingObject & { polygon: PolygonPoint[] })[] {
-        return this.printing_objects.filter(
-            (object: PrintingObject): object is PrintingObject & { polygon: PolygonPoint[] } =>
-                Array.isArray(object.polygon)
-        )
+    get printing_objects_with_polygons(): PrintingObject[] {
+        return this.printing_objects.filter((object) => Array.isArray(object.polygon))
     }
 
     get current_object() {
