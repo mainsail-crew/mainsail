@@ -34,18 +34,14 @@ export default class DevicesDialogUsbDevice extends Mixins(BaseMixin) {
         const output: { key: string; value: string }[] = []
 
         keys.forEach((key) => {
-            const value = this.device[key]
+            let value = this.device[key]
             if (value === null) return
 
-            let detail = value
             if (key === 'class' && this.device.subclass !== null) {
-                detail += `, ${this.device.subclass}`
+                value += `, ${this.device.subclass}`
             }
 
-            output.push({
-                key,
-                value: detail,
-            })
+            output.push({ key, value })
         })
 
         return output
