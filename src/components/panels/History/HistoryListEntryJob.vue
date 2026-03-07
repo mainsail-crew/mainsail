@@ -292,12 +292,13 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     outputValue(col: HistoryListPanelCol, item: ServerHistoryStateJob) {
         const key = col.value
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let value: any = null
+        let value: string | number | null = null
         if (key in item) {
-            value = item[key as keyof ServerHistoryStateJob]
+            const raw = item[key as keyof ServerHistoryStateJob]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
         } else if (key in item.metadata) {
-            value = item.metadata[key]
+            const raw = item.metadata[key]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
         }
 
         if (key.startsWith('history_field_')) {
@@ -308,7 +309,9 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
         if (value === null) return '--'
 
-        if (key === 'slicer') value += '<br />' + item.metadata.slicer_version
+        if (key === 'slicer') return `${value}<br />${item.metadata.slicer_version}`
+
+        if (typeof value !== 'number') return value
 
         switch (col.outputType) {
             case 'filesize':
@@ -321,12 +324,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 return formatPrintTime(value, false)
 
             case 'temp':
-                return value?.toFixed() + ' °C'
+                return value.toFixed() + ' °C'
 
             case 'length':
                 if (value > 1000) return (value / 1000).toFixed(2) + ' m'
 
-                return value?.toFixed(2) + ' mm'
+                return value.toFixed(2) + ' mm'
 
             default:
                 return value
