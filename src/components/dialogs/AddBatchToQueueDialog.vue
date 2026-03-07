@@ -62,7 +62,7 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
     @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Boolean, default: false }) readonly showToast!: boolean
     @Prop({ type: String, required: true }) readonly filename!: string
-    @Ref() inputField!: FocusableRef
+    @Ref() readonly inputField!: FocusableRef
 
     isValid = false
     // because of the text field, the input is always a string

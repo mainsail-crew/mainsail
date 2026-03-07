@@ -60,7 +60,7 @@ export default class JobqueueEntryChangeCountDialog extends Mixins(BaseMixin) {
 
     @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, required: true }) job!: ServerJobQueueStateJob
-    @Ref() inputField!: FocusableRef
+    @Ref() readonly inputField!: FocusableRef
 
     count = 1
 

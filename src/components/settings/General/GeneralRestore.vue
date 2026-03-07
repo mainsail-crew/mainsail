@@ -60,7 +60,7 @@ export default class SettingsGeneralTabRestoreDatabase extends Mixins(BaseMixin,
     mdiHelpCircle = mdiHelpCircle
     mdiCloseThick = mdiCloseThick
 
-    @Ref() uploadBackupFile!: HTMLInputElement
+    @Ref() readonly uploadBackupFile!: HTMLInputElement
 
     showDialog = false
     restoreableNamespaces: { value: string; label: string | TranslateResult }[] = []

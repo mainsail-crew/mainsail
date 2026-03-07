@@ -143,8 +143,8 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin, ThemeMixin, Webc
     resizeObserver: ResizeObserver | null = null
 
     @Prop({ type: Object, required: true }) declare printer: FarmPrinterState
-    @Ref() declare readonly imageDiv: Vue
-    @Ref() declare readonly panel: Vue
+    @Ref() readonly imageDiv!: Vue
+    @Ref() readonly panel!: Vue
 
     get printerUrl() {
         const thisUrl = window.location.href.split('/')

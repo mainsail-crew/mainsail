@@ -47,7 +47,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) declare readonly printerUrl: string | null
     @Prop({ type: String, default: null }) readonly page!: string | null
-    @Ref() declare stream: HTMLVideoElement
+    @Ref() readonly stream!: HTMLVideoElement
 
     get url() {
         return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)

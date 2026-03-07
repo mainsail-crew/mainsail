@@ -35,7 +35,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
-    @Ref() declare video: HTMLVideoElement
+    @Ref() readonly video!: HTMLVideoElement
 
     mounted() {
         this.start()

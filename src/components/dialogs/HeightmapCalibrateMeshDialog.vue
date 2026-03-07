@@ -46,7 +46,7 @@ export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
     mdiGrid = mdiGrid
 
     @VModel({ type: Boolean }) showDialog!: boolean
-    @Ref() input!: FocusableRef
+    @Ref() readonly input!: FocusableRef
 
     isInvalidName = false
     name = ''

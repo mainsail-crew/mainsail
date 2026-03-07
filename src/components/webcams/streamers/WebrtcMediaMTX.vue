@@ -38,7 +38,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
     @Prop({ type: String, default: null }) readonly page!: string | null
-    @Ref() declare video: HTMLVideoElement
+    @Ref() readonly video!: HTMLVideoElement
 
     pc: RTCPeerConnection | null = null
     restartTimeout: ReturnType<typeof setTimeout> | null = null

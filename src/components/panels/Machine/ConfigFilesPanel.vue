@@ -561,12 +561,12 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     sortFiles = sortFiles
     formatFilesize = formatFilesize
 
-    @Ref() inputDialogCreateFileName!: FocusableRef
-    @Ref() inputDialogRenameFileName!: FocusableRef
-    @Ref() inputDialogDuplicateFileName!: FocusableRef
-    @Ref() inputDialogCreateDirectoryName!: FocusableRef
-    @Ref() inputDialogRenameDirectoryName!: FocusableRef
-    @Ref() fileUpload!: HTMLInputElement
+    @Ref() readonly inputDialogCreateFileName!: FocusableRef
+    @Ref() readonly inputDialogRenameFileName!: FocusableRef
+    @Ref() readonly inputDialogDuplicateFileName!: FocusableRef
+    @Ref() readonly inputDialogCreateDirectoryName!: FocusableRef
+    @Ref() readonly inputDialogRenameDirectoryName!: FocusableRef
+    @Ref() readonly fileUpload!: HTMLInputElement
 
     currentPage = 1
 

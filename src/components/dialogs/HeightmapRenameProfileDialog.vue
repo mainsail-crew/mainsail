@@ -43,7 +43,7 @@ export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
 
     @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: String, required: true }) name!: string
-    @Ref() input!: FocusableRef
+    @Ref() readonly input!: FocusableRef
 
     isInvalidName = false
     newName = ''
