@@ -177,7 +177,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
         this.consoleHeightTmp = this.consoleHeight
     }
 
-    get consoleFilters(): ConsoleFilter[] {
+    get consoleFilters() {
         return (this.$store.getters['gui/console/getConsolefilters'] ?? []) as ConsoleFilter[]
     }
 
@@ -258,10 +258,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     existsPresetName(name: string) {
-        return (
-            this.consoleFilters.findIndex((filter: ConsoleFilter) => filter.name === name && filter.id !== this.form.id) >=
-            0
-        )
+        return this.consoleFilters.some((filter) => filter.name === name && filter.id !== this.form.id)
     }
 
     clearForm() {
