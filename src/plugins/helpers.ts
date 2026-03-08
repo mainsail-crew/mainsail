@@ -13,7 +13,7 @@ import {
     mdiThermometer,
 } from '@mdi/js'
 import Vue from 'vue'
-import { VColorPickerColor } from 'vuetify/src/components/VColorPicker/util'
+import { VColorPickerColor } from '@/types/vuetify'
 
 export const isRecord = (value: unknown): value is Record<string, unknown> => {
     return typeof value === 'object' && value !== null && !Array.isArray(value)
