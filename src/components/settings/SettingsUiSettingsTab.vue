@@ -344,8 +344,7 @@ import { Debounce } from 'vue-debounce-decorator'
 import { mdiRestart, mdiTimerOutline } from '@mdi/js'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
 import ThemeMixin from '@/components/mixins/theme'
-
-type ColorPickerValue = string | { hex: string }
+import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
 
 @Component({
     components: { SettingsRow },
@@ -714,26 +713,19 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideOtherInstances', value: newVal })
     }
 
-    clearColorObject(color: ColorPickerValue): string {
-        const colorValue = typeof color === 'object' && 'hex' in color ? color.hex : color
-        if (colorValue.length > 7) return colorValue.substr(0, 7)
-
-        return colorValue
-    }
-
     @Debounce(500)
     updateLogoColor(newVal: ColorPickerValue) {
-        this.logoColor = this.clearColorObject(newVal)
+        this.logoColor = clearColorObject(newVal)
     }
 
     @Debounce(500)
     updatePrimaryColor(newVal: ColorPickerValue) {
-        this.primaryColor = this.clearColorObject(newVal)
+        this.primaryColor = clearColorObject(newVal)
     }
 
     @Debounce(500)
     updateBigThumbnailBackground(newVal: ColorPickerValue) {
-        this.bigThumbnailBackground = this.clearColorObject(newVal)
+        this.bigThumbnailBackground = clearColorObject(newVal)
     }
 
     @Watch('theme')

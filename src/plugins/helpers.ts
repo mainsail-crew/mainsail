@@ -13,6 +13,7 @@ import {
     mdiThermometer,
 } from '@mdi/js'
 import Vue from 'vue'
+import { VColorPickerColor } from 'vuetify/src/components/VColorPicker/util'
 
 export const isRecord = (value: unknown): value is Record<string, unknown> => {
     return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -567,6 +568,28 @@ export const deletePath = (obj: Record<string, unknown>, path: string): void => 
     }
 
     if (isRecord(current)) delete current[last]
+}
+
+export type ColorPickerValue = string | VColorPickerColor
+
+/**
+ * Extracts a plain 7-character hex color string (`#RRGGBB`) from a Vuetify
+ * color-picker value, which may be either a string or an object with a `hex`
+ * property.  Any alpha portion (8-digit hex) is stripped.
+ *
+ * @param color - Value emitted by Vuetify's `v-color-picker` `update:color` event.
+ * @returns 7-character hex color string (e.g. `#FF5500`).
+ *
+ * @example
+ * clearColorObject('#FF5500FF') // '#FF5500'
+ * clearColorObject({ hex: '#FF5500FF' }) // '#FF5500'
+ * clearColorObject('#F00') // '#F00'
+ */
+export function clearColorObject(color: ColorPickerValue): string {
+    const colorValue = typeof color === 'object' && 'hex' in color ? color.hex : color
+    if (colorValue.length > 7) return colorValue.slice(0, 7)
+
+    return colorValue
 }
 
 /**

@@ -150,8 +150,7 @@ import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { Debounce } from 'vue-debounce-decorator'
 import Vue from 'vue'
-
-type ColorPickerValue = string | { hex: string }
+import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
 
 @Component({
     components: { SettingsRow },
@@ -171,8 +170,8 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
 
     @Debounce(500)
     colorsUpdated(value: ColorPickerValue, index: number): void {
-        const colors = this.extruderColors
-        colors[index] = this.clearColorObject(value)
+        const colors = [...this.extruderColors]
+        colors[index] = clearColorObject(value)
         this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.extruderColors', value: colors })
     }
 
@@ -202,14 +201,7 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
 
     @Debounce(500)
     updateColorValue(colorElement: string, newVal: ColorPickerValue): void {
-        Vue.set(this, colorElement, this.clearColorObject(newVal))
-    }
-
-    clearColorObject(color: ColorPickerValue): string {
-        const colorValue = typeof color === 'object' && 'hex' in color ? color.hex : color
-        if (colorValue.length > 7) return colorValue.substr(0, 7)
-
-        return colorValue
+        Vue.set(this, colorElement, clearColorObject(newVal))
     }
 
     get minFeed(): number {
