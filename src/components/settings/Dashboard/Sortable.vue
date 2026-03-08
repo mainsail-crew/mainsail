@@ -71,22 +71,21 @@ export default class SettingsDashboardSortable extends Mixins(DashboardMixin) {
     }
 
     set layout(newVal: Array<GuiStateLayoutoption | undefined>) {
-        const filteredLayout = newVal.filter(
-            (element: GuiStateLayoutoption | undefined): element is GuiStateLayoutoption => element !== undefined
-        )
+        const filteredLayout = newVal.filter((element) => element !== undefined)
 
         this.$store.dispatch('gui/saveSetting', { name: `dashboard.${this.layoutname}`, value: filteredLayout })
     }
 
     changeVisible(name: string, newVal: boolean) {
-        const index = this.layout.findIndex((element: GuiStateLayoutoption) => element.name === name)
-        if (index !== -1) {
-            this.layout[index].visible = newVal
-            this.$store.dispatch('gui/saveSetting', {
-                name: `dashboard.${this.layoutname}`,
-                value: this.layout,
-            })
-        }
+        const index = this.layout.findIndex((element) => element.name === name)
+        if (index === -1) return
+
+        const newLayout = [...this.layout]
+        newLayout[index] = { ...newLayout[index], visible: newVal }
+        this.$store.dispatch('gui/saveSetting', {
+            name: `dashboard.${this.layoutname}`,
+            value: newLayout,
+        })
     }
 }
 </script>
