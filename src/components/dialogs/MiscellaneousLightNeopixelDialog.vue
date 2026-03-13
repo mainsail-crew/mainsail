@@ -239,7 +239,7 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
     }
 
     get colorPickerOptions() {
-        let options: ColorPickerProps = {
+        const options: ColorPickerProps = {
             width: 200,
             margin: 15,
             layout: [],
@@ -293,7 +293,7 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
     }
 
     get colorPickerWhiteOptions() {
-        let options: ColorPickerProps = {
+        const options: ColorPickerProps = {
             width: 200,
             margin: 15,
             layout: [

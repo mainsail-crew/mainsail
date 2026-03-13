@@ -2,7 +2,6 @@ import { GetterTree } from 'vuex'
 import { ServerState, ServerStateNetworkInterface } from '@/store/server/types'
 import { formatConsoleMessage, formatFilesize } from '@/plugins/helpers'
 
-// eslint-disable-next-line
 export const getters: GetterTree<ServerState, any> = {
     getConsoleEvents:
         (state) =>

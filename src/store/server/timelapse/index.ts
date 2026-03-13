@@ -58,7 +58,6 @@ export const getDefaultState = (): ServerTimelapseState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const timelapse: Module<ServerTimelapseState, any> = {
     namespaced: true,
     state,

@@ -237,7 +237,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get cssClasses() {
-        let output = ['file-list-cursor', 'user-select-none']
+        const output = ['file-list-cursor', 'user-select-none']
 
         if (!this.item.exists) output.push('text--disabled')
 

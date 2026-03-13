@@ -790,7 +790,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get rulesStreamUrl() {
-        let rules = []
+        const rules = []
 
         if (this.webcam.service !== 'mjpegstreamer-adaptive') {
             rules.push(this.rules.required)
@@ -800,7 +800,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get rulesSnapshotUrl() {
-        let rules = []
+        const rules = []
 
         if (this.webcam.service === 'mjpegstreamer-adaptive') {
             rules.push(this.rules.required)
@@ -839,7 +839,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get classIconButtonArrow() {
-        let classes = ['_transition']
+        const classes = ['_transition']
 
         if (this.selectIcon) classes.push('_rotate-180')
 

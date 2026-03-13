@@ -13,7 +13,7 @@
         "format": "npm run format:base -- --write",
         "format:base": "prettier .",
         "format:check": "npm run format:base -- --check",
-        "lint": "eslint --ignore-path .gitignore src",
+        "lint": "eslint src",
         "lint:fix": "npm run lint -- --fix",
         "build.zip": "cd ./dist && zip -r mainsail.zip ./ -x '**.DS_Store' ./ && cd ..",
         "i18n-extract": "vue-i18n-extract --vueFiles './src/**/{*.?(js|ts|vue),.i18nignore}' --languageFiles './src/locales/*.json'",
@@ -69,6 +69,7 @@
         "vuex": "^3.6.2"
     },
     "devDependencies": {
+        "@eslint/js": "^10.0.1",
         "@mdi/js": "^7.0.0",
         "@types/file-saver": "^2.0.5",
         "@types/jmuxer": "^2.0.3",
@@ -78,17 +79,16 @@
         "@types/overlayscrollbars": "^1.12.1",
         "@types/semver": "^7.3.8",
         "@types/uuid": "^9.0.0",
-        "@typescript-eslint/eslint-plugin": "^6.0.0",
-        "@typescript-eslint/parser": "^6.0.0",
         "@vitejs/plugin-vue2": "^2.3.4",
-        "@vue/eslint-config-typescript": "^12.0.0",
+        "@vue/eslint-config-typescript": "^14.0.0",
         "autoprefixer": "^10.4.2",
         "cypress": "^14.2.0",
-        "eslint": "^8.9.0",
-        "eslint-config-prettier": "^9.0.0",
-        "eslint-plugin-jsonc": "^2.2.1",
-        "eslint-plugin-vue": "^9.0.0",
+        "eslint": "^10.0.0",
+        "eslint-config-prettier": "^10.0.0",
+        "eslint-plugin-jsonc": "^2.21.0",
+        "eslint-plugin-vue": "^10.0.0",
         "events": "^3.3.0",
+        "globals": "^15.0.0",
         "postcss": "^8.4.31",
         "postcss-nesting": "^12.0.1",
         "prettier": "^3.3.3",
@@ -126,5 +126,11 @@
     ],
     "engines": {
         "node": "^20.19.0 || >=22.12.0"
+    },
+    "overrides": {
+        "minimatch@>=9.0.0 <9.0.7": "~9.0.7",
+        "typed_janus_js": {
+            "lodash": ">=4.17.23"
+        }
     }
 }

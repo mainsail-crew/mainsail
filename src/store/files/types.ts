@@ -94,7 +94,6 @@ export interface ApiGetDirectoryReturn {
     files: ApiGetDirectoryReturnFile[]
     disk_usage: FileStateDiskUsage
     root_info?: FileStateRootInfo
-    // eslint-disable-next-line
     requestParams?: any
 }
 

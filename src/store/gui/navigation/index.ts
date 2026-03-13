@@ -13,7 +13,6 @@ export const getDefaultState = (): GuiNavigationState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const navigation: Module<GuiNavigationState, any> = {
     namespaced: true,
     state,

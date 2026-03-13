@@ -698,7 +698,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     async downloadSelectedFiles() {
-        let items: string[] = []
+        const items: string[] = []
 
         const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
             for (const file of directory) {
@@ -715,10 +715,10 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
                 if (file.filename.endsWith('.mp4')) {
                     const indexLastPoint = file.filename.lastIndexOf('.')
                     const filenameWithoutExtension = file.filename.slice(0, indexLastPoint)
-                    const filenamePng = `${filenameWithoutExtension}.jpg`
+                    const filenameJpg = `${filenameWithoutExtension}.jpg`
 
-                    if (this.files.indexOf((file: FileStateFile) => file.filename === filenamePng) !== -1) {
-                        items.push(`${absolutPath}/${filenamePng}`)
+                    if (this.files.some((f: FileStateFile) => f.filename === filenameJpg)) {
+                        items.push(`${absolutPath}/${filenameJpg}`)
                     }
                 }
             }

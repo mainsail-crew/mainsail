@@ -55,7 +55,7 @@ export default class WebcamListEntry extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     toogleStatus() {
-        let webcam = { ...this.webcam }
+        const webcam = { ...this.webcam }
         webcam.enabled = !webcam.enabled
         this.$store.dispatch('gui/webcams/update', { webcam: webcam, oldWebcamName: webcam.name })
     }

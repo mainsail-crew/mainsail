@@ -100,7 +100,7 @@ export default class MiscellaneousLightNeopixelGroup extends Mixins(BaseMixin) {
 
         commandParts.push('SYNC=0')
 
-        let lines = []
+        const lines = []
         const command = commandParts.join(' ')
         for (let i = this.group.start; i <= this.group.end; i++) {
             lines.push(`${command} INDEX=${i}`)

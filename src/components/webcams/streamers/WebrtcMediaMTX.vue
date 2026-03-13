@@ -123,7 +123,6 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
 
     unquoteCredential = (v: any) => JSON.parse(`"${v}"`)
 
-    // eslint-disable-next-line no-undef
     linkToIceServers(links: string | null): RTCIceServer[] {
         if (links === null) return []
 
@@ -135,7 +134,6 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
             // break if match is null
             if (m === null) return { urls: '' }
 
-            // eslint-disable-next-line no-undef
             const ret: RTCIceServer = {
                 urls: [m[1]],
             }
@@ -259,7 +257,6 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         await this.onLocalOffer(offer)
     }
 
-    // eslint-disable-next-line no-undef
     async onLocalOffer(offer: RTCSessionDescriptionInit) {
         try {
             const res = await fetch(this.url ?? '', {
@@ -353,7 +350,6 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
                 headers: {
                     'Content-Type': 'application/trickle-ice-sdpfrag',
                     'If-Match': this.eTag,
-                    // eslint-disable-next-line no-undef
                 } as HeadersInit,
                 body: this.generateSdpFragment(this.offerData, candidates),
             })

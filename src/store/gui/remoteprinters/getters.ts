@@ -2,7 +2,6 @@ import { GetterTree } from 'vuex'
 import { GuiRemoteprintersState, GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 
-// eslint-disable-next-line
 export const getters: GetterTree<GuiRemoteprintersState, any> = {
     getRemoteprinters: (state, getters, rootState, rootGetters) => {
         const printers: GuiRemoteprintersStatePrinter[] = []

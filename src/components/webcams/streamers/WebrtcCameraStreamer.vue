@@ -137,7 +137,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
 
         // It's important to set any ICE servers returned, which could include servers we requested or servers
         // setup by the server. But note that older versions of camera-streamer won't return this property.
-        let peerConnectionConfig: RTCConfiguration = {
+        const peerConnectionConfig: RTCConfiguration = {
             iceServers: iceResponse.iceServers ?? [],
             // https://webrtc.org/getting-started/unified-plan-transition-guide
             // @ts-ignore

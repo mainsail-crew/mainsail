@@ -4,7 +4,6 @@ import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { allDashboardPanels, defaultTheme, themes } from '@/store/variables'
 import { Theme } from '@/store/types'
 
-// eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
     theme: (state): string => {
         const theme = state.uiSettings.theme

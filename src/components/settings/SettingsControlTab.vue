@@ -320,7 +320,7 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin, 
     }
 
     get actionOptions() {
-        let actions = [
+        const actions = [
             {
                 text: this.$t('Settings.ControlTab.MotorsOff', {
                     isDefault: this.defaultActionButton === 'm84' ? this.$t('Settings.ControlTab.IsDefault') : '',

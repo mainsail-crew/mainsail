@@ -14,7 +14,6 @@ export const getDefaultState = (): GuiPresetsState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const presets: Module<GuiPresetsState, any> = {
     namespaced: true,
     state,

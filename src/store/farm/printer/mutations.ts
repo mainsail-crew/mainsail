@@ -70,7 +70,6 @@ export const mutations: MutationTree<FarmPrinterState> = {
     },
 
     setConfigDir(state, payload) {
-        // eslint-disable-next-line
         Object.values(payload).forEach((file: any) => {
             if (file.path?.startsWith('.theme/')) {
                 state.theme_files.push(file.path)

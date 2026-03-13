@@ -1,7 +1,6 @@
 import { GetterTree } from 'vuex'
 import { GuiMiscellaneousState, GuiMiscellaneousStateEntry } from '@/store/gui/miscellaneous/types'
 
-// eslint-disable-next-line
 export const getters: GetterTree<GuiMiscellaneousState, any> = {
     getEntries: (state) => {
         const output: GuiMiscellaneousStateEntry[] = []

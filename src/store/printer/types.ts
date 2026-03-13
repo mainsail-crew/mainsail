@@ -7,7 +7,6 @@ export interface VTextareaType extends HTMLInputElement {
 }
 
 export interface PrinterState {
-    // eslint-disable-next-line
     [key: string]: any
     tempHistory?: PrinterTempHistoryState
 }
@@ -104,9 +103,7 @@ export interface PrinterStateMiscellaneous {
     pwm: boolean
     rpm: number
     scale: number
-    // eslint-disable-next-line
     object: any
-    // eslint-disable-next-line
     config: any
     off_below?: number
     max_power?: number
@@ -167,18 +164,15 @@ export interface PrinterStateMacro {
     name: string
     description: string | null
     prop: {
-        // eslint-disable-next-line
         [key: string]: any
     }
     variables: {
-        // eslint-disable-next-line
         [key: string]: any
     }
     params: PrinterStateMacroParams
 }
 
 export interface PrinterStateKlipperConfig {
-    // eslint-disable-next-line
     [key: string]: any
 }
 

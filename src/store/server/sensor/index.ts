@@ -13,7 +13,6 @@ export const getDefaultState = (): ServerSensorState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const sensor: Module<ServerSensorState, any> = {
     namespaced: true,
     state,

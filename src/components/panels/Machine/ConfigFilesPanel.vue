@@ -985,7 +985,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
             return
         }
 
-        let items: string[] = []
+        const items: string[] = []
 
         const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
             for (const file of directory) {
@@ -1080,7 +1080,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     createFileAction() {
         const file = new File([''], this.dialogCreateFile.name)
 
-        let formData = new FormData()
+        const formData = new FormData()
         formData.append('file', file)
         formData.append('root', this.root)
         if (this.currentPath.length) formData.append('path', this.currentPath.slice(1))

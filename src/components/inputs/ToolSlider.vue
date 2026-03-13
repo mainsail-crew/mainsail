@@ -137,7 +137,7 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     }
 
     startLockTimer(): void {
-        let t = this.lockSlidersDelay
+        const t = this.lockSlidersDelay
         if (!this.isTouchDevice || !this.lockSliders || t <= 0) return
         this.timeout = setTimeout(() => (this.isLocked = true), t * 1000)
     }

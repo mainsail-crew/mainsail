@@ -13,7 +13,6 @@ export const getDefaultState = (): GuiRemindersState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const reminders: Module<GuiRemindersState, any> = {
     namespaced: true,
     state,

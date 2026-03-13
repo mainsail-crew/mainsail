@@ -10,7 +10,6 @@ import { FileState, FileStateFile, FileStateGcodefile } from '@/store/files/type
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { escapePath } from '@/plugins/helpers'
 
-// eslint-disable-next-line
 export const getters: GetterTree<FileState, any> = {
     getDirectory: (state) => (requestedPath: string) => {
         if (requestedPath.startsWith('/')) requestedPath = requestedPath.substring(1)

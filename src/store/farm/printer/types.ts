@@ -9,10 +9,8 @@ export interface FarmPrinterState {
     data: {
         gui: GuiState
         webcams: GuiWebcamStateWebcam[]
-        // eslint-disable-next-line
         [key: string]: any
     }
-    // eslint-disable-next-line
     settings: any
     databases: string[]
     current_file: FileStateFile
@@ -31,7 +29,6 @@ export interface FarmPrinterStateSocket {
     reconnects: number
     maxReconnects: number
     reconnectInterval: number
-    // eslint-disable-next-line
     wsData: any[]
 }
 

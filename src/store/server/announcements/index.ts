@@ -14,7 +14,6 @@ export const getDefaultState = (): ServerAnnouncementsState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const announcements: Module<ServerAnnouncementsState, any> = {
     namespaced: true,
     state,

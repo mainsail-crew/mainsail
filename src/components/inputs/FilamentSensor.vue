@@ -57,7 +57,7 @@ export default class FilamentSensor extends Mixins(BaseMixin) {
     }
 
     changeSensor() {
-        let gcodes = ['SET_FILAMENT_SENSOR SENSOR=' + this.name + ' ENABLE=' + (this.enabled ? 0 : 1)]
+        const gcodes = ['SET_FILAMENT_SENSOR SENSOR=' + this.name + ' ENABLE=' + (this.enabled ? 0 : 1)]
         if (this.type == 'hall_filament_width_sensor') {
             gcodes.push((this.enabled ? 'DIS' : 'EN') + 'ABLE_FILAMENT_WIDTH_SENSOR')
         }

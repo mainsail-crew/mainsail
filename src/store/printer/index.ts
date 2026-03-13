@@ -14,7 +14,6 @@ export const getDefaultState = (): PrinterState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
 export const printer: Module<PrinterState, any> = {
     namespaced: true,
     state,

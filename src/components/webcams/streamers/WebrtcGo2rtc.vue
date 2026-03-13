@@ -65,6 +65,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get url() {
+        // eslint-disable-next-line no-useless-assignment -- urlSearch is used inside try after reassignment
         let urlSearch = ''
         let url = new URL(location.href)
 
@@ -149,7 +150,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
             iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
         })
 
-        let localTracks: MediaStreamTrack[] = []
+        const localTracks: MediaStreamTrack[] = []
         const kinds = ['video', 'audio']
         kinds.forEach((kind: string) => {
             const track = this.pc?.addTransceiver(kind, { direction: 'recvonly' }).receiver.track
