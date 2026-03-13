@@ -2,6 +2,26 @@ export interface GuiWebcamState {
     webcams: GuiWebcamStateWebcam[]
 }
 
+export type OverlayPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+export type WebcamOverlayDisplayMode = 'auto' | 'all' | 'hidden' | 'dummy'
+
+export type OverlayPositionKey =
+    | 'overlayExtrudersPosition'
+    | 'overlayHeatbedPosition'
+    | 'overlayFanSpeedPosition'
+    | 'overlayPrintTimePosition'
+    | 'overlayEstimatePosition'
+    | 'overlayEtaPosition'
+    | 'overlayFlowRatePosition'
+    | 'overlaySpeedPosition'
+    | 'overlayLayerCountPosition'
+
+export type OverlayPrintTimeSource = 'current' | 'total'
+export type OverlayEstimateSource = 'avg' | 'slicer'
+
+export const DEFAULT_PRINT_TIME_SOURCE: OverlayPrintTimeSource = 'current'
+export const DEFAULT_ESTIMATE_SOURCE: OverlayEstimateSource = 'avg'
+
 export interface GuiWebcamStateWebcam {
     name: string
     location?: string
@@ -42,19 +62,19 @@ export interface GuiWebcamStateWebcam {
         overlayShowFlowRate?: boolean
         overlayShowSpeed?: boolean
         overlayShowLayerCount?: boolean
-        overlayPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-        overlayExtrudersPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-        overlayHeatbedPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-        overlayFanSpeedPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-        overlayPrintTimePosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-        overlayEtaPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-        overlayEstimatePosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-        overlayFlowRatePosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-        overlaySpeedPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-        overlayLayerCountPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        overlayPosition?: OverlayPosition
+        overlayExtrudersPosition?: OverlayPosition
+        overlayHeatbedPosition?: OverlayPosition
+        overlayFanSpeedPosition?: OverlayPosition
+        overlayPrintTimePosition?: OverlayPosition
+        overlayEtaPosition?: OverlayPosition
+        overlayEstimatePosition?: OverlayPosition
+        overlayFlowRatePosition?: OverlayPosition
+        overlaySpeedPosition?: OverlayPosition
+        overlayLayerCountPosition?: OverlayPosition
         overlayBackgroundColor?: string
-        overlayPrintTimeSource?: 'current' | 'total'
-        overlayEstimateSource?: 'avg' | 'slicer'
+        overlayPrintTimeSource?: OverlayPrintTimeSource
+        overlayEstimateSource?: OverlayEstimateSource
     }
     source?: 'config' | 'database'
 }

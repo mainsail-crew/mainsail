@@ -9,7 +9,8 @@
                             :printer-url="printerUrl"
                             :show-fps="showFps"
                             :page="page"
-                            :overlay-display-mode="overlayDisplayMode" />
+                            :overlay-display-mode="overlayDisplayMode"
+                            :font-size-override="fontSizeOverride" />
                     </v-col>
                 </v-row>
             </v-container>
@@ -20,7 +21,8 @@
                 :printer-url="printerUrl"
                 :show-fps="showFps"
                 :page="page"
-                :overlay-display-mode="overlayDisplayMode" />
+                :overlay-display-mode="overlayDisplayMode"
+                :font-size-override="fontSizeOverride" />
         </template>
     </div>
 </template>
@@ -29,10 +31,8 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import { GuiWebcamStateWebcam, WebcamOverlayDisplayMode } from '@/store/gui/webcams/types'
 import WebcamWrapperItem from '@/components/webcams/WebcamWrapperItem.vue'
-
-type WebcamOverlayDisplayMode = 'auto' | 'all' | 'hidden' | 'dummy'
 
 @Component({
     components: {
@@ -45,6 +45,7 @@ export default class WebcamWrapper extends Mixins(BaseMixin) {
     @Prop({ type: String, default: null }) printerUrl!: string | null
     @Prop({ type: String, default: null }) page!: string | null
     @Prop({ type: String, default: 'auto' }) overlayDisplayMode!: WebcamOverlayDisplayMode
+    @Prop({ type: Number, default: null }) fontSizeOverride!: number | null
 
     get webcams(): GuiWebcamStateWebcam[] {
         return this.$store.getters['gui/webcams/getWebcams']

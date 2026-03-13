@@ -1,7 +1,7 @@
 <template>
     <v-btn
         icon
-        v-bind="attrs"
+        v-bind="$attrs"
         :class="['overlay-position-btn', { 'overlay-position-btn--inactive': !active }]"
         v-on="{
             click: (e) => {
@@ -17,8 +17,7 @@
 import Component from 'vue-class-component'
 import { Prop, Vue } from 'vue-property-decorator'
 import { mdiPanTopLeft, mdiPanTopRight, mdiPanBottomLeft, mdiPanBottomRight } from '@mdi/js'
-
-type OverlayPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+import { OverlayPosition } from '@/store/gui/webcams/types'
 
 @Component
 export default class OverlayPositionButton extends Vue {

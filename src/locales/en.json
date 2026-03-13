@@ -1544,6 +1544,7 @@
         "Update": "update",
         "WebcamsTab": {
             "AddWebcam": "add webcam",
+            "AlwaysVisibleItems": "Always visible",
             "AspectRatio": "Aspect ratio",
             "Color": "Color",
             "CreateWebcam": "Create Webcam",
@@ -1599,6 +1600,7 @@
             "UrlStream": "URL Stream",
             "Uv4lMjpeg": "UV4L-MJPEG",
             "Vertically": "vertically",
+            "VisibleDuringPrint": "Visible during print",
             "Webcams": "Webcams",
             "WebrtcCameraStreamer": "WebRTC (camera-streamer)",
             "WebrtcGo2rtc": "WebRTC (go2rtc)",

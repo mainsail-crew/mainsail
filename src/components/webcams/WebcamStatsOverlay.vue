@@ -8,7 +8,8 @@
             <div
                 v-for="row in group.rows"
                 :key="row.key"
-                class="overlay-row mb-1 d-flex align-center"
+                class="overlay-row d-flex align-center"
+                :style="{ fontSize: effectiveFontSize + 'px', lineHeight: '1.4', marginBottom: '0.3em' }"
                 :title="row.title">
                 <v-icon small class="mr-2 overlay-icon">{{ row.icon }}</v-icon>
                 <span class="sr-only">{{ row.title }}</span>
@@ -29,7 +30,14 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import {
+    DEFAULT_ESTIMATE_SOURCE,
+    GuiWebcamStateWebcam,
+    OverlayEstimateSource,
+    OverlayPosition,
+    OverlayPositionKey,
+    WebcamOverlayDisplayMode,
+} from '@/store/gui/webcams/types'
 import { formatPrintTime } from '@/plugins/helpers'
 import {
     mdiCalendarClock,
@@ -42,18 +50,6 @@ import {
     mdiSpeedometer,
     mdiWaterPercent,
 } from '@mdi/js'
-
-type OverlayPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-type OverlayPositionKey =
-    | 'overlayExtrudersPosition'
-    | 'overlayHeatbedPosition'
-    | 'overlayFanSpeedPosition'
-    | 'overlayPrintTimePosition'
-    | 'overlayEstimatePosition'
-    | 'overlayEtaPosition'
-    | 'overlayFlowRatePosition'
-    | 'overlaySpeedPosition'
-    | 'overlayLayerCountPosition'
 
 type OverlayValueKey = 'printTime' | 'estimate' | 'flowRate' | 'speed' | 'layerCount' | 'eta' | 'fan'
 
@@ -83,7 +79,8 @@ interface OverlayGroup {
 export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly webcam!: GuiWebcamStateWebcam
     @Prop({ type: String, default: 'auto' })
-    readonly overlayDisplayMode!: 'auto' | 'all' | 'hidden' | 'dummy'
+    readonly overlayDisplayMode!: WebcamOverlayDisplayMode
+    @Prop({ type: Number, default: null }) readonly fontSizeOverride!: number | null
 
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
     mdiRadiator = mdiRadiator
@@ -97,6 +94,10 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
 
     get isDummyMode() {
         return this.overlayDisplayMode === 'dummy'
+    }
+
+    get effectiveFontSize() {
+        return this.fontSizeOverride ?? 14
     }
 
     get isShowAllMode() {
@@ -147,8 +148,8 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
         return this.webcam.extra_data?.overlayShowLayerCount ?? false
     }
 
-    get estimateSource(): 'avg' | 'slicer' {
-        return this.webcam.extra_data?.overlayEstimateSource ?? 'avg'
+    get estimateSource(): OverlayEstimateSource {
+        return this.webcam.extra_data?.overlayEstimateSource ?? DEFAULT_ESTIMATE_SOURCE
     }
 
     get overlayGroups(): OverlayGroup[] {
@@ -402,7 +403,7 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
     }
 
     get overlayPrintTimeSource(): 'total' | 'current' {
-        return this.webcam.extra_data?.overlayPrintTimeSource ?? 'total'
+        return this.webcam.extra_data?.overlayPrintTimeSource ?? 'current'
     }
 
     get printTimeValue() {
@@ -570,13 +571,11 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: column;
-    gap: 4px;
     margin: 8px;
     pointer-events: none;
 }
 
 .overlay-row {
-    font-size: 0.9rem;
     flex-wrap: wrap;
 }
 

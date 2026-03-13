@@ -32,7 +32,10 @@
             :page="page" />
         <webrtc-go2rtc-async v-else-if="service === 'webrtc-go2rtc'" :cam-settings="webcam" :printer-url="printerUrl" />
         <p v-else class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
-        <webcam-stats-overlay :webcam="webcam" :overlay-display-mode="overlayDisplayMode" />
+        <webcam-stats-overlay
+            :webcam="webcam"
+            :overlay-display-mode="overlayDisplayMode"
+            :font-size-override="fontSizeOverride" />
     </div>
 </template>
 
@@ -40,11 +43,9 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import { GuiWebcamStateWebcam, WebcamOverlayDisplayMode } from '@/store/gui/webcams/types'
 import { DynamicCamLoader } from '@/components/webcams/streamers/DynamicCamLoader'
 import WebcamStatsOverlay from '@/components/webcams/WebcamStatsOverlay.vue'
-
-type WebcamOverlayDisplayMode = 'auto' | 'all' | 'hidden' | 'dummy'
 
 @Component({
     components: {
@@ -68,6 +69,7 @@ export default class WebcamWrapperItem extends Mixins(BaseMixin) {
     @Prop({ default: null }) printerUrl!: string | null
     @Prop({ type: String, default: null }) page!: string | null
     @Prop({ type: String, default: 'auto' }) overlayDisplayMode!: WebcamOverlayDisplayMode
+    @Prop({ type: Number, default: null }) fontSizeOverride!: number | null
 
     get service() {
         return this.webcam?.service ?? 'unknown'
