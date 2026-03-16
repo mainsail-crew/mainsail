@@ -1,19 +1,29 @@
 <template>
     <v-card-text class="py-3 px-2 bt-1">
-        <spoolman-panel-active-spool
-            v-if="activeSpoolId !== null"
-            :small="true"
-            class="my-0"
-            @change-spool="showChangeSpoolDialog = true" />
-        <v-alert v-for="alert in alerts" :key="alert.text" text :color="alert.color" class="mx-3">
-            {{ alert.text }}
-        </v-alert>
-        <div class="text-center">
-            <v-btn color="primary" small class="mx-auto" @click="showChangeSpoolDialog = true">
-                {{ buttonText }}
-            </v-btn>
-        </div>
-        <spoolman-change-spool-dialog v-model="showChangeSpoolDialog" />
+        <template v-if="isMultiTool">
+            <start-print-dialog-spoolman-tool
+                v-for="(tool, index) in toolIndices"
+                :key="tool"
+                :file="file"
+                :tool-index="tool"
+                :border-top="index > 0" />
+        </template>
+        <template v-else>
+            <spoolman-panel-active-spool
+                v-if="activeSpoolId !== null"
+                :small="true"
+                class="my-0"
+                @change-spool="showChangeSpoolDialog = true" />
+            <v-alert v-for="alert in alerts" :key="alert.text" text :color="alert.color" class="mx-3">
+                {{ alert.text }}
+            </v-alert>
+            <div class="text-center">
+                <v-btn color="primary" small class="mx-auto" @click="showChangeSpoolDialog = true">
+                    {{ buttonText }}
+                </v-btn>
+            </div>
+            <spoolman-change-spool-dialog v-model="showChangeSpoolDialog" />
+        </template>
     </v-card-text>
 </template>
 
@@ -21,16 +31,40 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SpoolmanPanelActiveSpool from '@/components/panels/Spoolman/SpoolmanPanelActiveSpool.vue'
+import StartPrintDialogSpoolmanTool from '@/components/dialogs/StartPrintDialogSpoolmanTool.vue'
+import SpoolmanChangeSpoolDialog from '@/components/dialogs/SpoolmanChangeSpoolDialog.vue'
 import { FileStateGcodefile } from '@/store/files/types'
 import { convertStringToArray } from '@/plugins/helpers'
 
 @Component({
-    components: { SpoolmanPanelActiveSpool },
+    components: { SpoolmanPanelActiveSpool, StartPrintDialogSpoolmanTool, SpoolmanChangeSpoolDialog },
 })
 export default class StartPrintDialogSpoolman extends Mixins(BaseMixin) {
     @Prop({ required: true }) readonly file!: FileStateGcodefile
 
     showChangeSpoolDialog = false
+
+    get toolSpools(): Record<number, number | null> {
+        return this.$store.state.server.spoolman?.tool_spools ?? {}
+    }
+
+    get toolIndices(): number[] {
+        return Object.keys(this.toolSpools).map((k) => parseInt(k)).sort((a, b) => a - b)
+    }
+
+    get isMultiTool(): boolean {
+        // Multi-tool if we have more than one tool in the map,
+        // or if the file references multiple filaments
+        if (this.toolIndices.length > 1) return true
+
+        const weights = this.file.filament_weights ?? []
+        if (weights.length > 1) return true
+
+        const types = convertStringToArray(this.file.filament_type ?? '')
+        if (types.length > 1) return true
+
+        return false
+    }
 
     get activeSpoolId() {
         let spoolId = this.$store.state.server.spoolman?.active_spool_id ?? null
@@ -41,14 +75,6 @@ export default class StartPrintDialogSpoolman extends Mixins(BaseMixin) {
 
     get activeSpool() {
         return this.$store.state.server.spoolman?.active_spool ?? null
-    }
-
-    get classSecondDivider() {
-        const classes = ['mt-4']
-
-        classes.push(this.moonrakerComponents.includes('timelapse') ? 'mb-2' : 'mb-0')
-
-        return classes
     }
 
     get buttonText() {

@@ -6,7 +6,10 @@
             <span v-if="spoolId === null" class="font-italic ml-1">({{ $t('Panels.SpoolmanPanel.NoSpool') }})</span>
             <span v-else class="ml-1">({{ spool?.filament?.name ?? '--' }})</span>
         </v-btn>
-        <spoolman-change-spool-dialog v-model="showChangeSpoolDialog" :tool="name" />
+        <v-btn v-if="spoolId !== null" icon x-small class="ml-1" :title="$t('Panels.SpoolmanPanel.EjectSpool')" @click="ejectSpool">
+            <v-icon small>{{ mdiEject }}</v-icon>
+        </v-btn>
+        <spoolman-change-spool-dialog v-model="showChangeSpoolDialog" :tool-index="toolIndex" />
     </v-list-item>
 </template>
 
@@ -14,17 +17,21 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
+import SpoolmanChangeSpoolDialog from '@/components/dialogs/SpoolmanChangeSpoolDialog.vue'
+import { mdiEject } from '@mdi/js'
 
 @Component({
-    components: {},
+    components: { SpoolmanChangeSpoolDialog },
 })
 export default class SpoolmanToolsDropdownItem extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: false }) readonly objectName!: string
+    mdiEject = mdiEject
+
+    @Prop({ required: true }) readonly toolIndex!: number
 
     showChangeSpoolDialog = false
 
     get name() {
-        return (this.objectName.split(' ')[1] ?? 'Unknown').toUpperCase()
+        return `T${this.toolIndex}`
     }
 
     get color() {
@@ -37,18 +44,38 @@ export default class SpoolmanToolsDropdownItem extends Mixins(BaseMixin) {
         }
     }
 
-    get spoolId() {
-        const object = this.$store.state.printer[this.objectName] ?? {}
+    get spoolId(): number | null {
+        // Prefer Moonraker API tool_spools
+        const toolSpools = this.$store.state.server.spoolman.tool_spools ?? {}
+        if (this.toolIndex in toolSpools) {
+            return toolSpools[this.toolIndex] ?? null
+        }
 
+        // Fall back to legacy gcode_macro detection
+        const macroName = `gcode_macro T${this.toolIndex}`
+        const object = this.$store.state.printer[macroName] ?? {}
         return object.spool_id ?? null
     }
 
-    get spool() {
+    get spool(): ServerSpoolmanStateSpool | null {
+        // Prefer tool_spool_details from Moonraker API
+        const detail = this.$store.state.server.spoolman.tool_spool_details?.[this.toolIndex] ?? null
+        if (detail) return detail
+
+        // Fall back to searching spools list
+        if (this.spoolId === null) return null
         return this.spools.find((spool) => spool.id === this.spoolId) ?? null
     }
 
     get spools(): ServerSpoolmanStateSpool[] {
         return this.$store.state.server.spoolman.spools ?? []
+    }
+
+    ejectSpool() {
+        this.$store.dispatch('server/spoolman/setToolSpool', {
+            tool: this.toolIndex,
+            spool_id: null,
+        })
     }
 }
 </script>

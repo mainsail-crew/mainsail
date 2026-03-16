@@ -12,7 +12,7 @@
                     {{ $t('Panels.SpoolmanPanel.ActiveSpool') }}
                 </v-btn>
             </v-list-item>
-            <spoolman-tools-dropdown-item v-for="tool in tools" :key="tool" :object-name="tool" />
+            <spoolman-tools-dropdown-item v-for="tool in tools" :key="tool" :tool-index="tool" />
         </v-list>
         <spoolman-change-spool-dialog v-model="showChangeSpoolDialog" />
     </v-menu>
@@ -23,15 +23,16 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { mdiSwapVertical } from '@mdi/js'
 import SpoolmanToolsDropdownItem from '@/components/panels/Spoolman/SpoolmanToolsDropdownItem.vue'
+import SpoolmanChangeSpoolDialog from '@/components/dialogs/SpoolmanChangeSpoolDialog.vue'
 
 @Component({
-    components: { SpoolmanToolsDropdownItem },
+    components: { SpoolmanToolsDropdownItem, SpoolmanChangeSpoolDialog },
 })
 export default class SpoolmanToolsDropdown extends Mixins(BaseMixin) {
     mdiSwapVertical = mdiSwapVertical
 
     showChangeSpoolDialog = false
 
-    @Prop({ required: false, default: false }) readonly tools!: string[]
+    @Prop({ required: false, default: () => [] }) readonly tools!: number[]
 }
 </script>

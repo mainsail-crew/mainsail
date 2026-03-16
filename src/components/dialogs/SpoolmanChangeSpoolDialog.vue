@@ -92,6 +92,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     mdiRefresh = mdiRefresh
 
     @VModel({ type: Boolean }) showDialog!: boolean
+    @Prop({ required: false, default: null }) declare readonly toolIndex?: number | null
     @Prop({ required: false, default: null }) declare readonly tool?: string
     @Prop({ required: false, default: null }) declare readonly afcLane?: string
     @Prop({ required: false, default: true }) declare readonly setActiveSpool?: boolean
@@ -140,6 +141,11 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
                 value: 'remaining_weight',
             },
         ]
+    }
+
+    get hasToolSpools(): boolean {
+        const toolSpools = this.$store.state.server.spoolman.tool_spools ?? {}
+        return Object.keys(toolSpools).length > 0
     }
 
     get existsSaveVariables() {
@@ -204,9 +210,35 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
             return
         }
 
-        // if tool is set, execute setMacroVariable and close, because it's not an active printing spool change
+        // If toolIndex is set, use Moonraker API to set per-tool spool
+        if (this.toolIndex !== null && this.toolIndex !== undefined) {
+            if (this.hasToolSpools) {
+                // Use Moonraker per-tool API
+                this.$store.dispatch('server/spoolman/setToolSpool', {
+                    tool: this.toolIndex,
+                    spool_id: spool.id,
+                })
+            } else {
+                // Legacy fallback: use gcode_macro variable
+                this.setMacroVariable(spool)
+            }
+            this.close()
+            return
+        }
+
+        // Legacy tool prop (string-based, from old gcode_macro path)
         if (this.tool) {
-            this.setMacroVariable(spool)
+            if (this.hasToolSpools) {
+                // Parse tool number from string like "T0"
+                const match = this.tool.match(/T(\d+)/i)
+                const toolNum = match ? parseInt(match[1]) : 0
+                this.$store.dispatch('server/spoolman/setToolSpool', {
+                    tool: toolNum,
+                    spool_id: spool.id,
+                })
+            } else {
+                this.setMacroVariable(spool)
+            }
             this.close()
             return
         }
@@ -217,8 +249,11 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     }
 
     setMacroVariable(spool: ServerSpoolmanStateSpool) {
+        const macroName = this.tool ?? (this.toolIndex !== null ? `T${this.toolIndex}` : null)
+        if (!macroName) return
+
         // Set spool_id for tool
-        this.sendGcode(`SET_GCODE_VARIABLE MACRO=${this.tool} VARIABLE=spool_id VALUE=${spool.id}`)
+        this.sendGcode(`SET_GCODE_VARIABLE MACRO=${macroName} VARIABLE=spool_id VALUE=${spool.id}`)
 
         // Close dialog if save_variables is not enabled
         if (!this.existsSaveVariables) {
@@ -227,7 +262,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
         }
 
         // Set spool_id to save_variable
-        this.sendGcode(`SAVE_VARIABLE VARIABLE=${this.tool?.toLowerCase()}__spool_id VALUE=${spool.id}`)
+        this.sendGcode(`SAVE_VARIABLE VARIABLE=${macroName.toLowerCase()}__spool_id VALUE=${spool.id}`)
     }
 
     sendGcode(gcode: string) {

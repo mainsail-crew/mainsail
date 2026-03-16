@@ -50,6 +50,13 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
             { action: 'server/spoolman/getVendors' }
         )
 
+        // Fetch tool_spool_map from status endpoint
+        Vue.$socket.emit(
+            'server.spoolman.status',
+            {},
+            { action: 'server/spoolman/getToolSpoolMap' }
+        )
+
         dispatch('socket/addInitModule', 'server/spoolman/getActiveSpoolId', { root: true })
         dispatch('socket/addInitModule', 'server/spoolman/getHealth', { root: true })
         dispatch('socket/addInitModule', 'server/spoolman/getInfo', { root: true })
@@ -150,6 +157,91 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
         if (id !== null) params['spool_id'] = id
 
         Vue.$socket.emit('server.spoolman.post_spool_id', params)
+    },
+
+    setToolSpool(_, { tool, spool_id }: { tool: number; spool_id: number | null }) {
+        const params: { spool_id?: number; tool: number } = { tool }
+        if (spool_id !== null) params['spool_id'] = spool_id
+
+        Vue.$socket.emit('server.spoolman.post_spool_id', params)
+    },
+
+    getToolSpoolMap({ commit, dispatch }, payload) {
+        if ('requestParams' in payload) delete payload.requestParams
+        const toolSpoolMap = payload.tool_spool_map
+        if (!toolSpoolMap) return
+
+        const parsed: Record<number, number | null> = {}
+        for (const [key, value] of Object.entries(toolSpoolMap)) {
+            parsed[parseInt(key)] = value as number | null
+        }
+        commit('setToolSpools', parsed)
+
+        // Fetch spool details for each tool
+        for (const [tool, spoolId] of Object.entries(parsed)) {
+            if (spoolId === null) {
+                commit('setToolSpoolDetail', { tool: parseInt(tool), spool: null })
+                continue
+            }
+            dispatch('fetchToolSpoolDetail', { tool: parseInt(tool), spool_id: spoolId })
+        }
+    },
+
+    fetchToolSpoolDetail({ commit }, { tool, spool_id }: { tool: number; spool_id: number }) {
+        Vue.$socket.emit(
+            'server.spoolman.proxy',
+            {
+                request_method: 'GET',
+                use_v2_response: true,
+                path: `/v1/spool/${spool_id}`,
+            },
+            {
+                action: 'server/spoolman/getToolSpoolDetail',
+                actionPayload: { tool },
+            }
+        )
+    },
+
+    getToolSpoolDetail({ commit }, payload) {
+        const tool = payload.tool ?? null
+        if (tool === null) return
+        delete payload.tool
+        if ('requestParams' in payload) delete payload.requestParams
+
+        payload = convertV2response(payload)
+        commit('setToolSpoolDetail', { tool, spool: payload })
+    },
+
+    handleActiveSpoolSet({ commit, dispatch }, payload) {
+        // Handle notify_active_spool_set with tool field
+        const tool = payload.tool ?? 0
+        const spoolId = payload.spool_id ?? null
+
+        commit('setToolSpool', { tool, spool_id: spoolId })
+
+        if (spoolId !== null) {
+            dispatch('fetchToolSpoolDetail', { tool, spool_id: spoolId })
+        } else {
+            commit('setToolSpoolDetail', { tool, spool: null })
+        }
+
+        // Update legacy active_spool_id for tool 0
+        if (tool === 0) {
+            commit('setActiveSpoolId', spoolId)
+            if (spoolId !== null) {
+                Vue.$socket.emit(
+                    'server.spoolman.proxy',
+                    {
+                        request_method: 'GET',
+                        use_v2_response: true,
+                        path: `/v1/spool/${spoolId}`,
+                    },
+                    { action: 'server/spoolman/getActiveSpool' }
+                )
+            } else {
+                commit('setActiveSpool', null)
+            }
+        }
     },
 
     refreshActiveSpool({ state }) {

@@ -18,6 +18,8 @@ export const getDefaultState = (): ServerSpoolmanState => {
         active_spool: null,
         vendors: [],
         feeds: [],
+        tool_spools: {},
+        tool_spool_details: {},
     }
 }
 

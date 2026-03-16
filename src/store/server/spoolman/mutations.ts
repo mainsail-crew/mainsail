@@ -31,4 +31,16 @@ export const mutations: MutationTree<ServerSpoolmanState> = {
     setSpools(state, payload) {
         Vue.set(state, 'spools', payload)
     },
+
+    setToolSpools(state, payload: Record<number, number | null>) {
+        Vue.set(state, 'tool_spools', payload)
+    },
+
+    setToolSpool(state, { tool, spool_id }: { tool: number; spool_id: number | null }) {
+        Vue.set(state.tool_spools, tool, spool_id)
+    },
+
+    setToolSpoolDetail(state, { tool, spool }: { tool: number; spool: any }) {
+        Vue.set(state.tool_spool_details, tool, spool)
+    },
 }
