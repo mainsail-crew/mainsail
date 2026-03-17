@@ -249,7 +249,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
     }
 
     setMacroVariable(spool: ServerSpoolmanStateSpool) {
-        const macroName = this.tool ?? (this.toolIndex !== null ? `T${this.toolIndex}` : null)
+        const macroName = this.tool ?? (this.toolIndex != null ? `T${this.toolIndex}` : null)
         if (!macroName) return
 
         // Set spool_id for tool

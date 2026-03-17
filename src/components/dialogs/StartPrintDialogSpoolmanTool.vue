@@ -5,7 +5,7 @@
                 <template #activator="{ on, attrs }">
                     <v-icon color="warning" v-bind="attrs" v-on="on">{{ mdiAlert }}</v-icon>
                 </template>
-                <span>{{ warnings.join('\n') }}</span>
+                <span style="white-space: pre-line">{{ warnings.join('\n') }}</span>
             </v-tooltip>
             <v-icon v-else color="success">{{ mdiCheckCircle }}</v-icon>
         </v-col>
