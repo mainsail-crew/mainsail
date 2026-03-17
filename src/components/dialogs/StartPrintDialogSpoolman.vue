@@ -49,21 +49,27 @@ export default class StartPrintDialogSpoolman extends Mixins(BaseMixin) {
     }
 
     get toolIndices(): number[] {
-        return Object.keys(this.toolSpools).map((k) => parseInt(k)).sort((a, b) => a - b)
+        // Build a canonical tool list from all available sources
+        const indices = new Set<number>()
+
+        // From Moonraker tool_spool_map
+        for (const k of Object.keys(this.toolSpools)) {
+            const n = Number.parseInt(k, 10)
+            if (!Number.isNaN(n)) indices.add(n)
+        }
+
+        // From file metadata (filament_weights array length implies tool count)
+        const weights = this.file.filament_weights ?? []
+        for (let i = 0; i < weights.length; i++) indices.add(i)
+
+        const types = convertStringToArray(this.file.filament_type ?? '')
+        for (let i = 0; i < types.length; i++) indices.add(i)
+
+        return Array.from(indices).sort((a, b) => a - b)
     }
 
     get isMultiTool(): boolean {
-        // Multi-tool if we have more than one tool in the map,
-        // or if the file references multiple filaments
-        if (this.toolIndices.length > 1) return true
-
-        const weights = this.file.filament_weights ?? []
-        if (weights.length > 1) return true
-
-        const types = convertStringToArray(this.file.filament_type ?? '')
-        if (types.length > 1) return true
-
-        return false
+        return this.toolIndices.length > 1
     }
 
     get activeSpoolId() {

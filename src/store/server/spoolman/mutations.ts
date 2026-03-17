@@ -38,6 +38,11 @@ export const mutations: MutationTree<ServerSpoolmanState> = {
 
     setToolSpool(state, { tool, spool_id }: { tool: number; spool_id: number | null }) {
         Vue.set(state.tool_spools, tool, spool_id)
+        // Invalidate cached detail when spool changes or is ejected
+        const currentDetail = state.tool_spool_details[tool] ?? null
+        if (spool_id === null || currentDetail?.id !== spool_id) {
+            Vue.set(state.tool_spool_details, tool, null)
+        }
     },
 
     setToolSpoolDetail(state, { tool, spool }: { tool: number; spool: any }) {

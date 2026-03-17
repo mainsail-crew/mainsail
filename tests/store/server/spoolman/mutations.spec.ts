@@ -135,6 +135,31 @@ describe('spoolman mutations', () => {
             expect(state.tool_spools[0]).toBe(10)
             expect(state.tool_spools[1]).toBeNull()
         })
+
+        it('invalidates cached detail on eject', () => {
+            const state = getDefaultState()
+            state.tool_spools = { 0: 10 }
+            state.tool_spool_details = { 0: makeSpool(10) }
+            mutations.setToolSpool(state, { tool: 0, spool_id: null })
+            expect(state.tool_spool_details[0]).toBeNull()
+        })
+
+        it('invalidates cached detail when spool changes', () => {
+            const state = getDefaultState()
+            state.tool_spools = { 0: 10 }
+            state.tool_spool_details = { 0: makeSpool(10) }
+            mutations.setToolSpool(state, { tool: 0, spool_id: 20 })
+            expect(state.tool_spool_details[0]).toBeNull()
+        })
+
+        it('keeps cached detail when spool id is unchanged', () => {
+            const state = getDefaultState()
+            const spool = makeSpool(10)
+            state.tool_spools = { 0: 10 }
+            state.tool_spool_details = { 0: spool }
+            mutations.setToolSpool(state, { tool: 0, spool_id: 10 })
+            expect(state.tool_spool_details[0]).toEqual(spool)
+        })
     })
 
     describe('setToolSpoolDetail', () => {

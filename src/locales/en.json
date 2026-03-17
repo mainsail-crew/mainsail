@@ -961,6 +961,8 @@
             "NoActiveSpool": "Filament tracking is inactive. To get started, please select a spool.",
             "NoResults": "No spool found with the current search criteria.",
             "NoSpool": "No spool",
+            "RemainingWeight": "{weight}g remaining",
+            "UnknownFilament": "Unknown",
             "NoSpools": "No spools available",
             "NoSpoolSelected": "No spool selected. Please select a spool or this print will not be tracked.",
             "OpenSpoolManager": "open Spool Manager",

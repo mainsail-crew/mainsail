@@ -72,10 +72,18 @@ export default class SpoolmanToolsDropdownItem extends Mixins(BaseMixin) {
     }
 
     ejectSpool() {
-        this.$store.dispatch('server/spoolman/setToolSpool', {
-            tool: this.toolIndex,
-            spool_id: null,
-        })
+        const toolSpools = this.$store.state.server.spoolman.tool_spools ?? {}
+        if (this.toolIndex in toolSpools) {
+            // Native Moonraker API path
+            this.$store.dispatch('server/spoolman/setToolSpool', {
+                tool: this.toolIndex,
+                spool_id: null,
+            })
+        } else {
+            // Legacy gcode_macro path
+            const macroName = `T${this.toolIndex}`
+            this.$store.dispatch('printer/sendGcode', `SET_GCODE_VARIABLE MACRO=${macroName} VARIABLE=spool_id VALUE=0`)
+        }
     }
 }
 </script>

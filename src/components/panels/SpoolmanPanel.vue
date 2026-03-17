@@ -39,7 +39,7 @@
                         <v-list-item-title class="text-subtitle-2">
                             <strong>T{{ tool }}</strong>
                             <span v-if="getToolSpool(tool)" class="ml-2">
-                                {{ getToolSpool(tool).filament?.name ?? 'Unknown' }}
+                                {{ getToolSpool(tool).filament?.name ?? $t('Panels.SpoolmanPanel.UnknownFilament') }}
                             </span>
                             <span v-else class="ml-2 text--disabled font-italic">
                                 {{ $t('Panels.SpoolmanPanel.NoSpool') }}
@@ -47,7 +47,7 @@
                         </v-list-item-title>
                         <v-list-item-subtitle v-if="getToolSpool(tool)">
                             {{ getToolSpool(tool).filament?.material ?? '' }}
-                            | {{ Math.round(getToolSpool(tool).remaining_weight ?? 0) }}g remaining
+                            | {{ $t('Panels.SpoolmanPanel.RemainingWeight', { weight: Math.round(getToolSpool(tool).remaining_weight ?? 0) }) }}
                         </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>

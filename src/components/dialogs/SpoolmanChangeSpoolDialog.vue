@@ -230,8 +230,13 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
         if (this.tool) {
             if (this.hasToolSpools) {
                 // Parse tool number from string like "T0"
-                const match = this.tool.match(/T(\d+)/i)
-                const toolNum = match ? parseInt(match[1]) : 0
+                const match = this.tool.match(/^T(\d+)$/i)
+                if (!match) {
+                    this.setMacroVariable(spool)
+                    this.close()
+                    return
+                }
+                const toolNum = Number.parseInt(match[1], 10)
                 this.$store.dispatch('server/spoolman/setToolSpool', {
                     tool: toolNum,
                     spool_id: spool.id,

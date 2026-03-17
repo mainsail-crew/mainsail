@@ -173,7 +173,9 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
 
         const parsed: Record<number, number | null> = {}
         for (const [key, value] of Object.entries(toolSpoolMap)) {
-            parsed[parseInt(key)] = value as number | null
+            const tool = Number.parseInt(key, 10)
+            if (Number.isNaN(tool)) continue
+            parsed[tool] = value === 0 ? null : (value as number | null)
         }
         commit('setToolSpools', parsed)
 
@@ -215,7 +217,8 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
     handleActiveSpoolSet({ commit, dispatch }, payload) {
         // Handle notify_active_spool_set with tool field
         const tool = payload.tool ?? 0
-        const spoolId = payload.spool_id ?? null
+        const rawId = payload.spool_id ?? null
+        const spoolId = rawId === 0 ? null : rawId
 
         commit('setToolSpool', { tool, spool_id: spoolId })
 

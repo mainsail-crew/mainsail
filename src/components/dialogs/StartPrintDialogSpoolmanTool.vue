@@ -94,13 +94,13 @@ export default class StartPrintDialogSpoolmanTool extends Mixins(BaseMixin) {
             )
         }
 
-        // Check insufficient weight
-        const fileWeight = Math.round(this.fileFilamentWeight)
-        const spoolWeight = Math.round(this.spoolDetail?.remaining_weight ?? 0)
-        if (fileWeight > 0 && spoolWeight < fileWeight) {
+        // Check insufficient weight (only when spool details are loaded)
+        const fileWeight = this.fileFilamentWeight
+        if (this.spoolDetail && fileWeight > 0 && this.spoolDetail.remaining_weight < fileWeight) {
+            const spoolWeight = Math.round(this.spoolDetail.remaining_weight)
             warnings.push(
                 this.$t('Panels.SpoolmanPanel.TooLessFilament', {
-                    fileWeight,
+                    fileWeight: Math.round(fileWeight),
                     spoolWeight,
                 }) as string
             )
