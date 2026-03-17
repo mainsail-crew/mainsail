@@ -210,8 +210,9 @@ export const actions: ActionTree<ServerSpoolmanState, RootState> = {
         delete payload.tool
         if ('requestParams' in payload) delete payload.requestParams
 
-        payload = convertV2response(payload)
-        commit('setToolSpoolDetail', { tool, spool: payload })
+        const spool = convertV2response(payload)
+        if (spool == null) return
+        commit('setToolSpoolDetail', { tool, spool })
     },
 
     handleActiveSpoolSet({ commit, dispatch }, payload) {

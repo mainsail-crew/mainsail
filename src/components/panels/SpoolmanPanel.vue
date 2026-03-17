@@ -88,9 +88,11 @@ import SpoolmanChangeSpoolDialog from '@/components/dialogs/SpoolmanChangeSpoolD
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import SpoolmanPanelActiveSpool from '@/components/panels/Spoolman/SpoolmanPanelActiveSpool.vue'
+import SpoolmanToolsDropdown from '@/components/panels/Spoolman/SpoolmanToolsDropdown.vue'
+import SpoolIcon from '@/components/ui/SpoolIcon.vue'
 
 @Component({
-    components: { ConfirmationDialog, SpoolmanPanelActiveSpool, Panel, SpoolmanChangeSpoolDialog },
+    components: { ConfirmationDialog, SpoolmanPanelActiveSpool, SpoolmanToolsDropdown, SpoolIcon, Panel, SpoolmanChangeSpoolDialog },
 })
 export default class SpoolmanPanel extends Mixins(BaseMixin) {
     mdiAdjust = mdiAdjust
