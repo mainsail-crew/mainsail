@@ -127,7 +127,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
             const pair = header.split(':')
             if (pair[0].toLowerCase() === CONTENT_LENGTH) {
                 // Fix for issue https://github.com/aruntj/mjpeg-readable-stream/issues/3 suggested by martapanc
-                contentLength = pair[1]
+                contentLength = Number(pair[1])
             }
         })
         return contentLength
