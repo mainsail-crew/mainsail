@@ -51,9 +51,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
-    @Prop({ default: true }) declare showFps: boolean
+    @Prop({ default: true }) readonly showFps!: boolean
     @Prop({ type: String, default: null }) readonly page!: string | null
-    @Ref('image') readonly image!: HTMLImageElement
+    @Ref() readonly image!: HTMLImageElement
 
     constructor() {
         super()

@@ -45,7 +45,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
     restartTimer: number | null = null
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop({ default: null }) declare readonly printerUrl: string | null
+    @Prop({ default: null }) readonly printerUrl!: string | null
     @Prop({ type: String, default: null }) readonly page!: string | null
     @Ref() readonly stream!: HTMLVideoElement
 
