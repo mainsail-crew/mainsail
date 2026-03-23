@@ -327,13 +327,7 @@ import {
     mdiMagnify,
 } from '@mdi/js'
 import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
-
-interface DraggableChangeEvent {
-    moved?: {
-        oldIndex?: number
-        newIndex?: number
-    }
-}
+import { DraggableChangeEvent } from '@/types/vuedraggable'
 
 @Component({
     components: { SettingsRow, draggable },
@@ -489,11 +483,11 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         })
     }
 
-    updateMacroOrder(output: DraggableChangeEvent) {
+    updateMacroOrder(output: DraggableChangeEvent<GuiMacrosStateMacrogroupMacro>) {
         if (!output.moved) return
 
-        const oldIndex = output.moved.oldIndex ?? 0
-        const newIndex = output.moved.newIndex ?? 0
+        const oldIndex = output.moved.oldIndex
+        const newIndex = output.moved.newIndex
         const oldPos = this.editGroupMacros[oldIndex].pos
         const newPos = this.editGroupMacros[newIndex].pos
 
