@@ -127,7 +127,7 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
     },
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
-    @Ref() readonly settingsScroll?: OverlayScrollbarsComponent
+    @Ref() readonly settingsScroll!: OverlayScrollbarsComponent
 
     mdiCloseThick = mdiCloseThick
     mdiCogs = mdiCogs
