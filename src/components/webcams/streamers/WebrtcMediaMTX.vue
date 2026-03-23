@@ -31,6 +31,10 @@ interface OfferData {
     medias: string[]
 }
 
+interface RTCIceServerWithCredentialType extends RTCIceServer {
+    credentialType?: string
+}
+
 @Component
 export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
     capitalize = capitalize
@@ -134,7 +138,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
             // break if match is null
             if (m === null) return { urls: '' }
 
-            const ret: RTCIceServer = {
+            const ret: RTCIceServerWithCredentialType = {
                 urls: [m[1]],
             }
 
