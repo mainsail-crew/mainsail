@@ -258,7 +258,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                 }
             } while (!done)
         } catch (error: unknown) {
-            this.log(`readStream error: ${error instanceof Error ? error.message : String(error)}`, error)
+            const message = error instanceof Error ? error.message : String(error)
+            this.log(`readStream error: ${message}`, error)
         } finally {
             this.reader?.releaseLock()
         }
