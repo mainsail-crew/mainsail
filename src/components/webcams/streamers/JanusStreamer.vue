@@ -36,7 +36,7 @@ export default class JanusStreamer extends Mixins(BaseMixin, WebcamMixin) {
     status: string = 'connecting'
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop({ default: null }) declare readonly printerUrl: string | null
+    @Prop({ default: null }) readonly printerUrl!: string | null
     @Ref() readonly stream!: HTMLVideoElement
 
     get url() {
