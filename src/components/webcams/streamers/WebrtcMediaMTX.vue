@@ -292,7 +292,8 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
                 })
             )
         } catch (err: unknown) {
-            this.log(err instanceof Error ? err.message : String(err ?? 'unknown error'))
+            const message = err instanceof Error ? err.message : String(err ?? 'unknown error')
+            this.log(message)
             this.scheduleRestart()
         }
     }
@@ -303,7 +304,8 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
         try {
             this.pc?.setRemoteDescription(answer)
         } catch (err: unknown) {
-            this.log(err instanceof Error ? err.message : String(err))
+            const message = err instanceof Error ? err.message : String(err)
+            this.log(message)
             this.scheduleRestart()
         }
 
