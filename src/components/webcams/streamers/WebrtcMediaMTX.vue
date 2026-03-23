@@ -387,7 +387,7 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
 
         this.terminate()
 
-        this.restartTimeout = window.setTimeout(() => {
+        this.restartTimeout = setTimeout(() => {
             this.log('scheduling restart')
             this.restartTimeout = null
             this.start()
