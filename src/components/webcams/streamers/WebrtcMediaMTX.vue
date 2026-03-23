@@ -368,7 +368,8 @@ export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
             this.log(`bad status code ${res.status}`)
             this.scheduleRestart()
         } catch (err: unknown) {
-            this.log(err instanceof Error ? err.message : String(err))
+            const message = err instanceof Error ? err.message : String(err)
+            this.log(message)
             this.scheduleRestart()
         }
     }
