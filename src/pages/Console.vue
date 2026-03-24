@@ -99,7 +99,7 @@ export default class PageConsole extends Mixins(BaseMixin, ConsoleMixin) {
     mdiCog = mdiCog
     mdiTrashCan = mdiTrashCan
 
-    @Ref() readonly consoleScroll?: OverlayScrollbarsComponent
+    @Ref() readonly consoleScroll!: OverlayScrollbarsComponent
     @Ref() readonly gcodeCommandField!: typeof ConsoleTextarea
 
     get events() {
