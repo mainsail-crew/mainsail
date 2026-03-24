@@ -14,24 +14,8 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     saveSetting(state, payload: { name: string; value: unknown }) {
-        const deepSet = (target: Record<string, unknown>, path: string[], value: unknown): void => {
-            const [currentKey, ...restPath] = path
-            if (!currentKey) return
-
-            if (restPath.length === 0) {
-                target[currentKey] = value
-                return
-            }
-
-            const nextValue = target[currentKey]
-            if (typeof nextValue !== 'object' || nextValue === null || Array.isArray(nextValue)) {
-                target[currentKey] = {}
-            }
-
-            deepSet(target[currentKey] as Record<string, unknown>, restPath, value)
-        }
-
-        deepSet(state as unknown as Record<string, unknown>, payload.name.split('.'), payload.value)
+        const nested = payload.name.split('.').reduceRight<unknown>((value, key) => ({ [key]: value }), payload.value)
+        setDataDeep(state, nested)
     },
 
     setHeaterChartVisibility(state, payload) {
