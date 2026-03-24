@@ -2,7 +2,7 @@ import { GetterTree } from 'vuex'
 import { GuiState, GuiStateDashboard, GuiStateLayoutoption } from '@/store/gui/types'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { allDashboardPanels, defaultTheme, themes } from '@/store/variables'
-import {RootState, Theme} from '@/store/types'
+import { RootState, Theme } from '@/store/types'
 
 export const getters: GetterTree<GuiState, RootState> = {
     theme: (state): string => {
@@ -31,11 +31,7 @@ export const getters: GetterTree<GuiState, RootState> = {
     getDatasetAdditionalSensorValue: (state) => (payload: { name: string; sensor: string }) => {
         if (payload.name in state.view.tempchart.datasetSettings) {
             const entry = state.view.tempchart.datasetSettings[payload.name]
-            if (
-                typeof entry === 'object' &&
-                entry !== null &&
-                'additionalSensors' in entry
-            ) {
+            if (typeof entry === 'object' && entry !== null && 'additionalSensors' in entry) {
                 const sensors = entry.additionalSensors as Record<string, unknown>
                 if (payload.sensor in sensors) return sensors[payload.sensor] as boolean
             }

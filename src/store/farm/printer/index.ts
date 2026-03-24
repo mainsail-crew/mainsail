@@ -4,7 +4,7 @@ import { actions } from '@/store/farm/printer/actions'
 import { mutations } from '@/store/farm/printer/mutations'
 import { getters } from '@/store/farm/printer/getters'
 import { Module } from 'vuex'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): FarmPrinterState => {
     return {

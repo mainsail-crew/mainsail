@@ -3,7 +3,7 @@ import { actions } from '@/store/gui/console/actions'
 import { mutations } from '@/store/gui/console/mutations'
 import { getters } from '@/store/gui/console/getters'
 import { GuiConsoleState } from '@/store/gui/console/types'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): GuiConsoleState => {
     return {

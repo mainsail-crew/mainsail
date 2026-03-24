@@ -3,7 +3,7 @@ import { actions } from '@/store/gui/gcodehistory/actions'
 import { mutations } from '@/store/gui/gcodehistory/mutations'
 import { getters } from '@/store/gui/gcodehistory/getters'
 import { GuiGcodehistoryState } from '@/store/gui/gcodehistory/types'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): GuiGcodehistoryState => {
     return {

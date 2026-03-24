@@ -2,7 +2,7 @@ import { GetterTree } from 'vuex'
 import { GuiConsoleState, GuiConsoleStateFilter } from '@/store/gui/console/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import { timelapseConsoleFilters } from '@/store/variables'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getters: GetterTree<GuiConsoleState, RootState> = {
     getConsolefilters: (state) => {
