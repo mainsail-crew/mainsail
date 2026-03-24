@@ -100,7 +100,7 @@ export const capitalize = (str: string): string => {
 export const camelize = (str: string): string => {
     return str
         .replace(/_/g, ' ')
-        .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
+        .replace(/^\w|[A-Z]|\b\w/g, (word, index) => {
             return index === 0 ? word.toLowerCase() : word.toUpperCase()
         })
         .replace(/\s+/g, '')
@@ -240,22 +240,7 @@ export function strLongestEqual(a: string, b: string): string {
     while (i < l && (a.charCodeAt(i) ^ b.charCodeAt(i)) === 0) {
         i += 1
     }
-    return a.substr(0, i)
-}
-
-export function reverseString(str: string): string {
-    return str === '' ? '' : reverseString(str.substr(1)) + str.charAt(0)
-}
-
-export function formatTime(date: Date): string {
-    let hours: string | number = date.getHours()
-    if (hours < 10) hours = '0' + hours.toString()
-    let minutes: string | number = date.getMinutes()
-    if (minutes < 10) minutes = '0' + minutes.toString()
-    let seconds: string | number = date.getSeconds()
-    if (seconds < 10) seconds = '0' + seconds.toString()
-
-    return hours + ':' + minutes + ':' + seconds
+    return a.substring(0, i)
 }
 
 export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParams {
