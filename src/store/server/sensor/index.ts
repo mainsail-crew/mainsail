@@ -3,7 +3,7 @@ import { ServerSensorState } from '@/store/server/sensor/types'
 import { actions } from '@/store/server/sensor/actions'
 import { mutations } from '@/store/server/sensor/mutations'
 import { getters } from '@/store/server/sensor/getters'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): ServerSensorState => {
     return {

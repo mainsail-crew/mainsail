@@ -1,6 +1,6 @@
 import { GetterTree } from 'vuex'
 import { HeightmapState } from './types'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getters: GetterTree<HeightmapState, RootState> = {
     getActiveColorSchemeList: (state): string[] => {

@@ -3,7 +3,7 @@ import { ServerAnnouncementsState } from '@/store/server/announcements/types'
 import { actions } from '@/store/server/announcements/actions'
 import { mutations } from '@/store/server/announcements/mutations'
 import { getters } from '@/store/server/announcements/getters'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): ServerAnnouncementsState => {
     return {

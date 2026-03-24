@@ -3,7 +3,7 @@ import { ServerTimelapseState } from '@/store/server/timelapse/types'
 import { actions } from '@/store/server/timelapse/actions'
 import { mutations } from '@/store/server/timelapse/mutations'
 import { getters } from '@/store/server/timelapse/getters'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): ServerTimelapseState => {
     return {

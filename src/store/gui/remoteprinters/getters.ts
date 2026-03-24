@@ -1,7 +1,7 @@
 import { GetterTree } from 'vuex'
 import { GuiRemoteprintersState, GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getters: GetterTree<GuiRemoteprintersState, RootState> = {
     getRemoteprinters: (state, getters, rootState, rootGetters) => {

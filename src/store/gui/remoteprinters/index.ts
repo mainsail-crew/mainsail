@@ -3,7 +3,7 @@ import { actions } from '@/store/gui/remoteprinters/actions'
 import { mutations } from '@/store/gui/remoteprinters/mutations'
 import { getters } from '@/store/gui/remoteprinters/getters'
 import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): GuiRemoteprintersState => {
     return {

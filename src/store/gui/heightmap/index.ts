@@ -2,7 +2,7 @@ import { Module } from 'vuex'
 import { HeightmapState } from './types'
 import { getters } from './getters'
 import { actions } from './actions'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): HeightmapState => {
     return {

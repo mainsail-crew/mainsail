@@ -3,7 +3,7 @@ import { ServerHistoryState } from '@/store/server/history/types'
 import { actions } from '@/store/server/history/actions'
 import { mutations } from '@/store/server/history/mutations'
 import { getters } from '@/store/server/history/getters'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): ServerHistoryState => {
     return {

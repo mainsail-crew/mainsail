@@ -6,7 +6,7 @@ import { getters } from '@/store/printer/getters'
 
 // import modules
 import { tempHistory } from '@/store/printer/tempHistory'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): PrinterState => {
     return {}

@@ -1,6 +1,6 @@
 import { GetterTree } from 'vuex'
 import { GuiWebcamState, GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import {RootState} from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getters: GetterTree<GuiWebcamState, RootState> = {
     getWebcams: (state) => {
