@@ -412,17 +412,17 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getPrinterConfigObjects: (state) => (objectNames: string[]) => {
-        const output: Record<string, PrinterConfigMcuTempSensor> = {}
+        const settings = state.configfile.settings
+        if (!settings) return {}
 
-        if (state.configfile?.settings) {
-            Object.keys(state.configfile.settings).forEach((key) => {
-                const keySplits = key.split(' ')
+        const output: Record<string, unknown> = {}
+        Object.keys(settings).forEach((key) => {
+            const keySplits = key.split(' ')
 
-                if (objectNames.includes(keySplits[0])) {
-                    output[key] = state.configfile.settings[key]
-                }
-            })
-        }
+            if (objectNames.includes(keySplits[0])) {
+                output[key] = settings[key]
+            }
+        })
 
         return output
     },
@@ -434,7 +434,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         const objects = getters.getPrinterConfigObjects(checkObjects)
         Object.keys(objects).forEach((key) => {
-            const settings: PrinterConfigMcuTempSensor = objects[key]
+            const settings = objects[key] as PrinterConfigMcuTempSensor
             const caseKey: string =
                 Object.keys(state).find((state_key: string) => state_key.toLowerCase() === key.toLowerCase()) || ''
             if (
