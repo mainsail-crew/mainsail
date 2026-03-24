@@ -76,7 +76,9 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     deleteFromDashboardLayout(state, payload) {
-        const layoutArray = [...(state.dashboard[payload.layoutname as keyof GuiStateDashboard] as GuiStateLayoutoption[])]
+        const layoutArray = [
+            ...(state.dashboard[payload.layoutname as keyof GuiStateDashboard] as GuiStateLayoutoption[]),
+        ]
         layoutArray.splice(payload.index, 1)
         Vue.set(state.dashboard, payload.layoutname, layoutArray)
     },

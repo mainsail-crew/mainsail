@@ -12,7 +12,10 @@ export const actions: ActionTree<EditorState, RootState> = {
         commit('reset')
     },
 
-    downloadProgress({ commit }, payload: { progressEvent: AxiosProgressEvent; direction: string; filesize: number | null }) {
+    downloadProgress(
+        { commit },
+        payload: { progressEvent: AxiosProgressEvent; direction: string; filesize: number | null }
+    ) {
         commit('updateLoader', {
             direction: payload.direction,
             speed: formatFilesize(payload.progressEvent.rate ?? 0),

@@ -20,9 +20,11 @@ export const getters: GetterTree<FarmPrinterState, RootState> = {
         return rootState.socket?.hostname === state.socket.hostname && rootState.socket.port === state.socket.port
     },
 
-    getSetting: (state) => <T>(name: string, fallback: T): T => {
-        return (state.settings[name] as T | undefined) ?? fallback
-    },
+    getSetting:
+        (state) =>
+        <T>(name: string, fallback: T): T => {
+            return (state.settings[name] as T | undefined) ?? fallback
+        },
 
     getPrinterName: (state) => {
         if (

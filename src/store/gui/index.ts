@@ -1,5 +1,5 @@
 import { GuiState } from '@/store/gui/types'
-import { RootState } from "@/store/types";
+import { RootState } from '@/store/types'
 import { Module } from 'vuex'
 import { actions } from '@/store/gui/actions'
 import { mutations } from '@/store/gui/mutations'

@@ -9,7 +9,7 @@ import { GetterTree } from 'vuex'
 import { FileState, FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { escapePath } from '@/plugins/helpers'
-import { RootState } from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getters: GetterTree<FileState, RootState> = {
     getDirectory: (state) => (requestedPath: string) => {

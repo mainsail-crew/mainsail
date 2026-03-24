@@ -3,7 +3,7 @@ import { FileState } from '@/store/files/types'
 import { actions } from '@/store/files/actions'
 import { mutations } from '@/store/files/mutations'
 import { getters } from '@/store/files/getters'
-import { RootState } from "@/store/types";
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): FileState => {
     return {
