@@ -24,9 +24,9 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
                 }
             )
 
-            await commit('setEntries', entries)
+            commit('setEntries', entries)
         }
-        if ('feeds' in payload) await commit('setFeeds', payload.feeds)
+        if ('feeds' in payload) commit('setFeeds', payload.feeds)
 
         await dispatch('socket/removeInitModule', 'server/announcements/init', { root: true })
     },
